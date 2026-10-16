@@ -89,7 +89,7 @@
     nc_child_deduction: 3_000
 
 
-- name: 2025 single filer who can be claimed as a dependent: North Carolina child deduction
+- name: "2025 single filer who can be claimed as a dependent: North Carolina child deduction"
   period: 2025
   input:
     people:
@@ -118,7 +118,7 @@
     # dependent; IRC 152(b)(1) leaves none here.
     nc_child_deduction: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: North Carolina child deduction (the claimable spouse is the head)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: North Carolina child deduction (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -152,7 +152,7 @@
   output:
     nc_child_deduction: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: North Carolina child deduction (the claimable spouse is the spouse)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: North Carolina child deduction (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:
@@ -186,7 +186,7 @@
   output:
     nc_child_deduction: 0
 
-- name: 2025 joint return on which both spouses can be claimed as dependents: North Carolina child deduction
+- name: "2025 joint return on which both spouses can be claimed as dependents: North Carolina child deduction"
   period: 2025
   input:
     people:
@@ -220,7 +220,7 @@
   output:
     nc_child_deduction: 0
 
-- name: 2025 joint return on which neither spouse can be claimed: North Carolina child deduction
+- name: "2025 joint return on which neither spouse can be claimed: North Carolina child deduction"
   period: 2025
   input:
     people:
@@ -255,7 +255,7 @@
     # AGI $10,000 is in the lowest bracket: $3,000 per child.
     nc_child_deduction: 3000
 
-- name: 2025 single filer who cannot be claimed as a dependent: North Carolina child deduction
+- name: "2025 single filer who cannot be claimed as a dependent: North Carolina child deduction"
   period: 2025
   input:
     people:

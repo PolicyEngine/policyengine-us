@@ -8,7 +8,7 @@
     pa_tax_forgiveness_amount: 1
 
 
-- name: 2025 single filer who can be claimed as a dependent: Pennsylvania tax forgiveness
+- name: "2025 single filer who can be claimed as a dependent: Pennsylvania tax forgiveness"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -33,7 +33,7 @@
     pa_tax_forgiveness_eligible_share: 0
     pa_tax_forgiveness_amount: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: Pennsylvania tax forgiveness (the claimable spouse is the head)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: Pennsylvania tax forgiveness (the claimable spouse is the head)"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -67,7 +67,7 @@
     pa_tax_forgiveness_eligible_share: 0.5
     pa_tax_forgiveness_amount: 92.1
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: Pennsylvania tax forgiveness (the claimable spouse is the spouse)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: Pennsylvania tax forgiveness (the claimable spouse is the spouse)"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -98,7 +98,7 @@
     pa_tax_forgiveness_eligible_share: 0.5
     pa_tax_forgiveness_amount: 92.1
 
-- name: 2025 joint return on which both spouses can be claimed as dependents: Pennsylvania tax forgiveness
+- name: "2025 joint return on which both spouses can be claimed as dependents: Pennsylvania tax forgiveness"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -129,7 +129,7 @@
     pa_tax_forgiveness_eligible_share: 0
     pa_tax_forgiveness_amount: 0
 
-- name: 2025 joint return on which neither spouse can be claimed: Pennsylvania tax forgiveness
+- name: "2025 joint return on which neither spouse can be claimed: Pennsylvania tax forgiveness"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -161,7 +161,7 @@
     pa_tax_forgiveness_eligible_share: 1
     pa_tax_forgiveness_amount: 184.2
 
-- name: 2025 single filer who cannot be claimed as a dependent: Pennsylvania tax forgiveness
+- name: "2025 single filer who cannot be claimed as a dependent: Pennsylvania tax forgiveness"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -184,7 +184,7 @@
     pa_tax_forgiveness_eligible_share: 1
     pa_tax_forgiveness_amount: 92.1
 
-- name: 2025 single filer who can be claimed as a dependent: Pennsylvania tax forgiveness when person_a's claiming parent qualifies
+- name: "2025 single filer who can be claimed as a dependent: Pennsylvania tax forgiveness when person_a's claiming parent qualifies"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -209,7 +209,7 @@
     # the PA-40 Schedule SP of his or her parents" who qualify.
     pa_tax_forgiveness_amount: 92.1
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: Pennsylvania tax forgiveness when person_a's claiming parent qualifies (the claimable spouse is the head)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: Pennsylvania tax forgiveness when person_a's claiming parent qualifies (the claimable spouse is the head)"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -241,7 +241,7 @@
     # Both spouses qualify, each on a separate return with joint income.
     pa_tax_forgiveness_amount: 184.2
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: Pennsylvania tax forgiveness when person_a's claiming parent qualifies (the claimable spouse is the spouse)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: Pennsylvania tax forgiveness when person_a's claiming parent qualifies (the claimable spouse is the spouse)"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -272,7 +272,7 @@
   output:
     pa_tax_forgiveness_amount: 184.2
 
-- name: 2025 joint return on which both spouses can be claimed as dependents: Pennsylvania tax forgiveness when person_a's claiming parent qualifies
+- name: "2025 joint return on which both spouses can be claimed as dependents: Pennsylvania tax forgiveness when person_a's claiming parent qualifies"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -304,7 +304,7 @@
     # Only person_a's parent qualifies: forgiveness on person_a's $92.10.
     pa_tax_forgiveness_amount: 92.1
 
-- name: 2025 joint return on which both spouses can be claimed as dependents: Pennsylvania tax forgiveness when both claiming parents qualify
+- name: "2025 joint return on which both spouses can be claimed as dependents: Pennsylvania tax forgiveness when both claiming parents qualify"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -336,7 +336,7 @@
   output:
     pa_tax_forgiveness_amount: 184.2
 
-- name: 2025 single filer who can be claimed as a dependent: Pennsylvania tax forgiveness with a child
+- name: "2025 single filer who can be claimed as a dependent: Pennsylvania tax forgiveness with a child"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -369,7 +369,7 @@
     pa_tax_forgiveness_rate: 0.4
     pa_tax_forgiveness_amount: 98.24
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: Pennsylvania tax forgiveness with a child (the claimable spouse is the head)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: Pennsylvania tax forgiveness with a child (the claimable spouse is the head)"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -407,7 +407,7 @@
     pa_tax_forgiveness_rate: 0.2
     pa_tax_forgiveness_amount: 92.1
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: Pennsylvania tax forgiveness with a child (the claimable spouse is the spouse)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: Pennsylvania tax forgiveness with a child (the claimable spouse is the spouse)"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -444,7 +444,7 @@
     pa_tax_forgiveness_rate: 0.2
     pa_tax_forgiveness_amount: 92.1
 
-- name: 2025 joint return on which neither spouse can be claimed: Pennsylvania tax forgiveness with a child
+- name: "2025 joint return on which neither spouse can be claimed: Pennsylvania tax forgiveness with a child"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -482,7 +482,7 @@
     pa_tax_forgiveness_rate: 1
     pa_tax_forgiveness_amount: 460.5
 
-- name: 2025 single filer who cannot be claimed as a dependent: Pennsylvania tax forgiveness with a child
+- name: "2025 single filer who cannot be claimed as a dependent: Pennsylvania tax forgiveness with a child"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -513,7 +513,7 @@
     pa_tax_forgiveness_amount: 245.6
 
 
-- name: 2025 single filer who can be claimed as a dependent but is not claimed: Pennsylvania tax forgiveness
+- name: "2025 single filer who can be claimed as a dependent but is not claimed: Pennsylvania tax forgiveness"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -539,7 +539,7 @@
     pa_tax_forgiveness_eligible_share: 1
     pa_tax_forgiveness_amount: 92.1
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent but is not claimed: Pennsylvania tax forgiveness (the claimable spouse is the head)
+- name: "2025 joint return with one spouse who can be claimed as a dependent but is not claimed: Pennsylvania tax forgiveness (the claimable spouse is the head)"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -573,7 +573,7 @@
     pa_tax_forgiveness_eligible_share: 1
     pa_tax_forgiveness_amount: 184.2
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent but is not claimed: Pennsylvania tax forgiveness (the claimable spouse is the spouse)
+- name: "2025 joint return with one spouse who can be claimed as a dependent but is not claimed: Pennsylvania tax forgiveness (the claimable spouse is the spouse)"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -606,7 +606,7 @@
     pa_tax_forgiveness_eligible_share: 1
     pa_tax_forgiveness_amount: 184.2
 
-- name: 2025 single filer who can be claimed as a dependent but is not claimed: Pennsylvania tax forgiveness
+- name: "2025 single filer who can be claimed as a dependent but is not claimed: Pennsylvania tax forgiveness"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -637,7 +637,7 @@
     pa_tax_forgiveness_rate: 0.4
     pa_tax_forgiveness_amount: 98.24
 
-- name: 2025 single filer who can be claimed as a dependent by someone who files only for a refund: Pennsylvania tax forgiveness
+- name: "2025 single filer who can be claimed as a dependent by someone who files only for a refund: Pennsylvania tax forgiveness"
   period: 2025
   absolute_error_margin: 0.01
   input:

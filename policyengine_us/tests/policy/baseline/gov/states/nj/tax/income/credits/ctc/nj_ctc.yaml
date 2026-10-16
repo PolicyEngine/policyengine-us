@@ -477,7 +477,7 @@
     nj_ctc: 0
 
 
-- name: 2025 single filer who can be claimed as a dependent: New Jersey child tax credit
+- name: "2025 single filer who can be claimed as a dependent: New Jersey child tax credit"
   period: 2025
   input:
     people:
@@ -505,7 +505,7 @@
     # 54A:3-1 dependent exemption. IRC 152(b)(1): a return on which the filer (or, if joint, either spouse) can be claimed as a dependent has no dependents.
     nj_ctc: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: New Jersey child tax credit (the claimable spouse is the head)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: New Jersey child tax credit (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -539,7 +539,7 @@
   output:
     nj_ctc: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: New Jersey child tax credit (the claimable spouse is the spouse)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: New Jersey child tax credit (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:
@@ -573,7 +573,7 @@
   output:
     nj_ctc: 0
 
-- name: 2025 joint return on which both spouses can be claimed as dependents: New Jersey child tax credit
+- name: "2025 joint return on which both spouses can be claimed as dependents: New Jersey child tax credit"
   period: 2025
   input:
     people:
@@ -607,7 +607,7 @@
   output:
     nj_ctc: 0
 
-- name: 2025 joint return on which neither spouse can be claimed: New Jersey child tax credit
+- name: "2025 joint return on which neither spouse can be claimed: New Jersey child tax credit"
   period: 2025
   input:
     people:
@@ -642,7 +642,7 @@
     # NJ taxable income under $30,000: $1,000 per child under 6.
     nj_ctc: 1000
 
-- name: 2025 single filer who cannot be claimed as a dependent: New Jersey child tax credit
+- name: "2025 single filer who cannot be claimed as a dependent: New Jersey child tax credit"
   period: 2025
   input:
     people:
@@ -668,7 +668,7 @@
   output:
     nj_ctc: 1000
 
-- name: 2026 single filer who can be claimed as a dependent: New Jersey child tax credit
+- name: "2026 single filer who can be claimed as a dependent: New Jersey child tax credit"
   period: 2026
   input:
     people:
@@ -696,7 +696,7 @@
     # 54A:3-1 dependent exemption. IRC 152(b)(1): a return on which the filer (or, if joint, either spouse) can be claimed as a dependent has no dependents.
     nj_ctc: 0
 
-- name: 2026 joint return with one spouse who can be claimed as a dependent: New Jersey child tax credit (the claimable spouse is the head)
+- name: "2026 joint return with one spouse who can be claimed as a dependent: New Jersey child tax credit (the claimable spouse is the head)"
   period: 2026
   input:
     people:
@@ -730,7 +730,7 @@
   output:
     nj_ctc: 0
 
-- name: 2026 joint return with one spouse who can be claimed as a dependent: New Jersey child tax credit (the claimable spouse is the spouse)
+- name: "2026 joint return with one spouse who can be claimed as a dependent: New Jersey child tax credit (the claimable spouse is the spouse)"
   period: 2026
   input:
     people:
@@ -764,7 +764,7 @@
   output:
     nj_ctc: 0
 
-- name: 2026 joint return on which both spouses can be claimed as dependents: New Jersey child tax credit
+- name: "2026 joint return on which both spouses can be claimed as dependents: New Jersey child tax credit"
   period: 2026
   input:
     people:
@@ -798,7 +798,7 @@
   output:
     nj_ctc: 0
 
-- name: 2026 joint return on which neither spouse can be claimed: New Jersey child tax credit
+- name: "2026 joint return on which neither spouse can be claimed: New Jersey child tax credit"
   period: 2026
   input:
     people:
@@ -833,7 +833,7 @@
     # NJ taxable income under $30,000: $1,250 per child under 6.
     nj_ctc: 1250
 
-- name: 2026 single filer who cannot be claimed as a dependent: New Jersey child tax credit
+- name: "2026 single filer who cannot be claimed as a dependent: New Jersey child tax credit"
   period: 2026
   input:
     people:

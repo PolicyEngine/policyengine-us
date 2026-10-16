@@ -221,7 +221,7 @@
     ok_stc: 80
 
 
-- name: 2025 single filer who can be claimed as a dependent: Oklahoma sales tax credit
+- name: "2025 single filer who can be claimed as a dependent: Oklahoma sales tax credit"
   period: 2025
   input:
     people:
@@ -244,7 +244,7 @@
     # the Income Tax Act, which gives a claimable filer none.
     ok_stc: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: Oklahoma sales tax credit (the claimable spouse is the head)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: Oklahoma sales tax credit (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -273,7 +273,7 @@
   output:
     ok_stc: 40
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: Oklahoma sales tax credit (the claimable spouse is the spouse)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: Oklahoma sales tax credit (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:
@@ -302,7 +302,7 @@
   output:
     ok_stc: 40
 
-- name: 2025 joint return on which both spouses can be claimed as dependents: Oklahoma sales tax credit
+- name: "2025 joint return on which both spouses can be claimed as dependents: Oklahoma sales tax credit"
   period: 2025
   input:
     people:
@@ -331,7 +331,7 @@
   output:
     ok_stc: 0
 
-- name: 2025 joint return on which neither spouse can be claimed: Oklahoma sales tax credit
+- name: "2025 joint return on which neither spouse can be claimed: Oklahoma sales tax credit"
   period: 2025
   input:
     people:
@@ -360,7 +360,7 @@
   output:
     ok_stc: 80
 
-- name: 2025 single filer who cannot be claimed as a dependent: Oklahoma sales tax credit
+- name: "2025 single filer who cannot be claimed as a dependent: Oklahoma sales tax credit"
   period: 2025
   input:
     people:
@@ -381,7 +381,7 @@
   output:
     ok_stc: 40
 
-- name: 2025 single filer who can be claimed as a dependent: Oklahoma sales tax credit with a child
+- name: "2025 single filer who can be claimed as a dependent: Oklahoma sales tax credit with a child"
   period: 2025
   input:
     people:
@@ -407,7 +407,7 @@
   output:
     ok_stc: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: Oklahoma sales tax credit with a child (the claimable spouse is the head)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: Oklahoma sales tax credit with a child (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -442,7 +442,7 @@
     # The child is not an allowable exemption on this return (IRC 152(b)(1)).
     ok_stc: 40
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: Oklahoma sales tax credit with a child (the claimable spouse is the spouse)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: Oklahoma sales tax credit with a child (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:
@@ -476,7 +476,7 @@
   output:
     ok_stc: 40
 
-- name: 2025 joint return on which both spouses can be claimed as dependents: Oklahoma sales tax credit with a child
+- name: "2025 joint return on which both spouses can be claimed as dependents: Oklahoma sales tax credit with a child"
   period: 2025
   input:
     people:
@@ -510,7 +510,7 @@
   output:
     ok_stc: 0
 
-- name: 2025 joint return on which neither spouse can be claimed: Oklahoma sales tax credit with a child
+- name: "2025 joint return on which neither spouse can be claimed: Oklahoma sales tax credit with a child"
   period: 2025
   input:
     people:
@@ -544,7 +544,7 @@
   output:
     ok_stc: 120
 
-- name: 2025 single filer who cannot be claimed as a dependent: Oklahoma sales tax credit with a child
+- name: "2025 single filer who cannot be claimed as a dependent: Oklahoma sales tax credit with a child"
   period: 2025
   input:
     people:
@@ -570,7 +570,7 @@
   output:
     ok_stc: 80
 
-- name: 2025 single filer who can be claimed as a dependent: Oklahoma sales tax credit income limit with a child
+- name: "2025 single filer who can be claimed as a dependent: Oklahoma sales tax credit income limit with a child"
   period: 2025
   input:
     people:
@@ -598,7 +598,7 @@
     # dependent the filer can claim, or age 65+, or a disability.
     ok_stc: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: Oklahoma sales tax credit income limit with a child (the claimable spouse is the head)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: Oklahoma sales tax credit income limit with a child (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -632,7 +632,7 @@
   output:
     ok_stc: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: Oklahoma sales tax credit income limit with a child (the claimable spouse is the spouse)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: Oklahoma sales tax credit income limit with a child (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:
@@ -666,7 +666,7 @@
   output:
     ok_stc: 0
 
-- name: 2025 joint return on which both spouses can be claimed as dependents: Oklahoma sales tax credit income limit with a child
+- name: "2025 joint return on which both spouses can be claimed as dependents: Oklahoma sales tax credit income limit with a child"
   period: 2025
   input:
     people:
@@ -700,7 +700,7 @@
   output:
     ok_stc: 0
 
-- name: 2025 joint return on which neither spouse can be claimed: Oklahoma sales tax credit income limit with a child
+- name: "2025 joint return on which neither spouse can be claimed: Oklahoma sales tax credit income limit with a child"
   period: 2025
   input:
     people:
@@ -735,7 +735,7 @@
     # The child qualifies the return for the $50,000 limit: 3 x $40.
     ok_stc: 120
 
-- name: 2025 single filer who cannot be claimed as a dependent: Oklahoma sales tax credit income limit with a child
+- name: "2025 single filer who cannot be claimed as a dependent: Oklahoma sales tax credit income limit with a child"
   period: 2025
   input:
     people:

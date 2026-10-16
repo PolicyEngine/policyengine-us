@@ -140,7 +140,7 @@
     nj_eitc: 0
 
 
-- name: 2025 single filer who can be claimed as a dependent: New Jersey childless EITC below the federal age
+- name: "2025 single filer who can be claimed as a dependent: New Jersey childless EITC below the federal age"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -167,7 +167,7 @@
     nj_childless_eitc_age_eligible: false
     nj_eitc: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: New Jersey childless EITC below the federal age (the claimable spouse is the head)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: New Jersey childless EITC below the federal age (the claimable spouse is the head)"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -198,7 +198,7 @@
     nj_childless_eitc_age_eligible: false
     nj_eitc: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: New Jersey childless EITC below the federal age (the claimable spouse is the spouse)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: New Jersey childless EITC below the federal age (the claimable spouse is the spouse)"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -229,7 +229,7 @@
     nj_childless_eitc_age_eligible: false
     nj_eitc: 0
 
-- name: 2025 joint return on which both spouses can be claimed as dependents: New Jersey childless EITC below the federal age
+- name: "2025 joint return on which both spouses can be claimed as dependents: New Jersey childless EITC below the federal age"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -260,7 +260,7 @@
     nj_childless_eitc_age_eligible: false
     nj_eitc: 0
 
-- name: 2025 joint return on which neither spouse can be claimed: New Jersey childless EITC below the federal age
+- name: "2025 joint return on which neither spouse can be claimed: New Jersey childless EITC below the federal age"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -292,7 +292,7 @@
     nj_childless_eitc_age_eligible: true
     nj_eitc: 259.6
 
-- name: 2025 single filer who cannot be claimed as a dependent: New Jersey childless EITC below the federal age
+- name: "2025 single filer who cannot be claimed as a dependent: New Jersey childless EITC below the federal age"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -315,7 +315,7 @@
     nj_childless_eitc_age_eligible: true
     nj_eitc: 259.6
 
-- name: 2025 single filer who can be claimed as a dependent: New Jersey childless EITC at federal ages
+- name: "2025 single filer who can be claimed as a dependent: New Jersey childless EITC at federal ages"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -338,7 +338,7 @@
     # Neither the federal credit nor the NJ age fallback is available.
     nj_eitc: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: New Jersey childless EITC at federal ages (the claimable spouse is the head)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: New Jersey childless EITC at federal ages (the claimable spouse is the head)"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -368,7 +368,7 @@
   output:
     nj_eitc: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: New Jersey childless EITC at federal ages (the claimable spouse is the spouse)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: New Jersey childless EITC at federal ages (the claimable spouse is the spouse)"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -398,7 +398,7 @@
   output:
     nj_eitc: 0
 
-- name: 2025 joint return on which both spouses can be claimed as dependents: New Jersey childless EITC at federal ages
+- name: "2025 joint return on which both spouses can be claimed as dependents: New Jersey childless EITC at federal ages"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -428,7 +428,7 @@
   output:
     nj_eitc: 0
 
-- name: 2025 joint return on which neither spouse can be claimed: New Jersey childless EITC at federal ages
+- name: "2025 joint return on which neither spouse can be claimed: New Jersey childless EITC at federal ages"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -459,7 +459,7 @@
     # $3,000 x 7.65% = $229.50 federal EITC; 40% = $91.80.
     nj_eitc: 91.8
 
-- name: 2025 single filer who cannot be claimed as a dependent: New Jersey childless EITC at federal ages
+- name: "2025 single filer who cannot be claimed as a dependent: New Jersey childless EITC at federal ages"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -482,7 +482,7 @@
     nj_eitc: 91.8
 
 
-- name: 2025 single filer who can be claimed as a dependent but is not claimed: New Jersey childless EITC below the federal age
+- name: "2025 single filer who can be claimed as a dependent but is not claimed: New Jersey childless EITC below the federal age"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -508,7 +508,7 @@
     nj_childless_eitc_age_eligible: false
     nj_eitc: 0
 
-- name: 2025 single filer who can be claimed as a dependent by someone who files only for a refund: New Jersey childless EITC below the federal age
+- name: "2025 single filer who can be claimed as a dependent by someone who files only for a refund: New Jersey childless EITC below the federal age"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -535,7 +535,7 @@
     nj_childless_eitc_age_eligible: true
     nj_eitc: 259.6
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent by someone who files only for a refund: New Jersey childless EITC below the federal age (the claimable spouse is the head)
+- name: "2025 joint return with one spouse who can be claimed as a dependent by someone who files only for a refund: New Jersey childless EITC below the federal age (the claimable spouse is the head)"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -570,7 +570,7 @@
     nj_childless_eitc_age_eligible: true
     nj_eitc: 259.6
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent by someone who files only for a refund: New Jersey childless EITC below the federal age (the claimable spouse is the spouse)
+- name: "2025 joint return with one spouse who can be claimed as a dependent by someone who files only for a refund: New Jersey childless EITC below the federal age (the claimable spouse is the spouse)"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -604,7 +604,7 @@
     nj_childless_eitc_age_eligible: true
     nj_eitc: 259.6
 
-- name: 2025 single filer listed as a dependent by someone who files only for a refund: New Jersey childless EITC below the federal age
+- name: "2025 single filer listed as a dependent by someone who files only for a refund: New Jersey childless EITC below the federal age"
   period: 2025
   absolute_error_margin: 0.01
   input:

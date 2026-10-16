@@ -31,7 +31,7 @@
     nj_dependents_exemption: 0
 
 
-- name: 2025 single filer who can be claimed as a dependent: New Jersey dependent exemption
+- name: "2025 single filer who can be claimed as a dependent: New Jersey dependent exemption"
   period: 2025
   input:
     people:
@@ -59,7 +59,7 @@
     # for federal tax purposes. IRC 152(b)(1): a return on which the filer (or, if joint, either spouse) can be claimed as a dependent has no dependents.
     nj_dependents_exemption: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: New Jersey dependent exemption (the claimable spouse is the head)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: New Jersey dependent exemption (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -93,7 +93,7 @@
   output:
     nj_dependents_exemption: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: New Jersey dependent exemption (the claimable spouse is the spouse)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: New Jersey dependent exemption (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:
@@ -127,7 +127,7 @@
   output:
     nj_dependents_exemption: 0
 
-- name: 2025 joint return on which both spouses can be claimed as dependents: New Jersey dependent exemption
+- name: "2025 joint return on which both spouses can be claimed as dependents: New Jersey dependent exemption"
   period: 2025
   input:
     people:
@@ -161,7 +161,7 @@
   output:
     nj_dependents_exemption: 0
 
-- name: 2025 joint return on which neither spouse can be claimed: New Jersey dependent exemption
+- name: "2025 joint return on which neither spouse can be claimed: New Jersey dependent exemption"
   period: 2025
   input:
     people:
@@ -196,7 +196,7 @@
     # One dependent at $1,500.
     nj_dependents_exemption: 1500
 
-- name: 2025 single filer who cannot be claimed as a dependent: New Jersey dependent exemption
+- name: "2025 single filer who cannot be claimed as a dependent: New Jersey dependent exemption"
   period: 2025
   input:
     people:
@@ -223,7 +223,7 @@
     nj_dependents_exemption: 1500
 
 
-- name: 2025 single filer who can be claimed as a dependent but is not claimed: New Jersey dependent exemption
+- name: "2025 single filer who can be claimed as a dependent but is not claimed: New Jersey dependent exemption"
   period: 2025
   input:
     people:
@@ -252,7 +252,7 @@
     # claimed, not on an actual claim.
     nj_dependents_exemption: 0
 
-- name: 2025 single filer who can be claimed as a dependent by someone who files only for a refund: New Jersey dependent exemption
+- name: "2025 single filer who can be claimed as a dependent by someone who files only for a refund: New Jersey dependent exemption"
   period: 2025
   input:
     people:
@@ -281,7 +281,7 @@
     # Publication 501: such a filer can still claim their own dependents.
     nj_dependents_exemption: 1500
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent by someone who files only for a refund: New Jersey dependent exemption (the claimable spouse is the head)
+- name: "2025 joint return with one spouse who can be claimed as a dependent by someone who files only for a refund: New Jersey dependent exemption (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -319,7 +319,7 @@
     # Publication 501's exception restores the dependent.
     nj_dependents_exemption: 1500
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent by someone who files only for a refund: New Jersey dependent exemption (the claimable spouse is the spouse)
+- name: "2025 joint return with one spouse who can be claimed as a dependent by someone who files only for a refund: New Jersey dependent exemption (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:

@@ -63,7 +63,7 @@
     nd_stillborn_subtraction: 0
 
 
-- name: 2025 single filer who can be claimed as a dependent: North Dakota stillborn child subtraction
+- name: "2025 single filer who can be claimed as a dependent: North Dakota stillborn child subtraction"
   period: 2025
   input:
     people:
@@ -87,7 +87,7 @@
     # child as a dependent" on your federal return. IRC 152(b)(1): a return on which the filer (or, if joint, either spouse) can be claimed as a dependent has no dependents.
     nd_stillborn_subtraction: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: North Dakota stillborn child subtraction (the claimable spouse is the head)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: North Dakota stillborn child subtraction (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -117,7 +117,7 @@
   output:
     nd_stillborn_subtraction: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: North Dakota stillborn child subtraction (the claimable spouse is the spouse)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: North Dakota stillborn child subtraction (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:
@@ -147,7 +147,7 @@
   output:
     nd_stillborn_subtraction: 0
 
-- name: 2025 joint return on which both spouses can be claimed as dependents: North Dakota stillborn child subtraction
+- name: "2025 joint return on which both spouses can be claimed as dependents: North Dakota stillborn child subtraction"
   period: 2025
   input:
     people:
@@ -177,7 +177,7 @@
   output:
     nd_stillborn_subtraction: 0
 
-- name: 2025 joint return on which neither spouse can be claimed: North Dakota stillborn child subtraction
+- name: "2025 joint return on which neither spouse can be claimed: North Dakota stillborn child subtraction"
   period: 2025
   input:
     people:
@@ -208,7 +208,7 @@
     # One stillbirth at the 2025 amount of $5,241.
     nd_stillborn_subtraction: 5241
 
-- name: 2025 single filer who cannot be claimed as a dependent: North Dakota stillborn child subtraction
+- name: "2025 single filer who cannot be claimed as a dependent: North Dakota stillborn child subtraction"
   period: 2025
   input:
     people:
@@ -231,7 +231,7 @@
     nd_stillborn_subtraction: 5241
 
 
-- name: 2025 single filer who can be claimed as a dependent by someone who files only for a refund: North Dakota stillborn child subtraction
+- name: "2025 single filer who can be claimed as a dependent by someone who files only for a refund: North Dakota stillborn child subtraction"
   period: 2025
   input:
     people:
@@ -256,7 +256,7 @@
     # Publication 501's exception leaves the filer able to claim a dependent.
     nd_stillborn_subtraction: 5241
 
-- name: 2025 single filer who can be claimed as a dependent but is not claimed: North Dakota stillborn child subtraction
+- name: "2025 single filer who can be claimed as a dependent but is not claimed: North Dakota stillborn child subtraction"
   period: 2025
   input:
     people:

@@ -26,7 +26,7 @@
     pa_eitc: 743
 
 
-- name: 2025 single filer who can be claimed as a dependent: Working Pennsylvanians credit without a child
+- name: "2025 single filer who can be claimed as a dependent: Working Pennsylvanians credit without a child"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -50,7 +50,7 @@
     # return with a filer who can be claimed as a dependent.
     pa_eitc: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: Working Pennsylvanians credit without a child (the claimable spouse is the head)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: Working Pennsylvanians credit without a child (the claimable spouse is the head)"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -80,7 +80,7 @@
   output:
     pa_eitc: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: Working Pennsylvanians credit without a child (the claimable spouse is the spouse)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: Working Pennsylvanians credit without a child (the claimable spouse is the spouse)"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -110,7 +110,7 @@
   output:
     pa_eitc: 0
 
-- name: 2025 joint return on which both spouses can be claimed as dependents: Working Pennsylvanians credit without a child
+- name: "2025 joint return on which both spouses can be claimed as dependents: Working Pennsylvanians credit without a child"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -140,7 +140,7 @@
   output:
     pa_eitc: 0
 
-- name: 2025 joint return on which neither spouse can be claimed: Working Pennsylvanians credit without a child
+- name: "2025 joint return on which neither spouse can be claimed: Working Pennsylvanians credit without a child"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -171,7 +171,7 @@
     # $3,000 x 7.65% = $229.50; 10% = $22.95.
     pa_eitc: 22.95
 
-- name: 2025 single filer who cannot be claimed as a dependent: Working Pennsylvanians credit without a child
+- name: "2025 single filer who cannot be claimed as a dependent: Working Pennsylvanians credit without a child"
   period: 2025
   absolute_error_margin: 0.01
   input:

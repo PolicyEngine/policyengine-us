@@ -146,7 +146,7 @@
     ok_eitc: 0
 
 
-- name: 2025 single filer who can be claimed as a dependent: Oklahoma childless EITC
+- name: "2025 single filer who can be claimed as a dependent: Oklahoma childless EITC"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -172,7 +172,7 @@
     ok_federal_eitc_demographic_eligible: false
     ok_eitc: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: Oklahoma childless EITC (the claimable spouse is the head)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: Oklahoma childless EITC (the claimable spouse is the head)"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -203,7 +203,7 @@
     ok_federal_eitc_demographic_eligible: false
     ok_eitc: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent: Oklahoma childless EITC (the claimable spouse is the spouse)
+- name: "2025 joint return with one spouse who can be claimed as a dependent: Oklahoma childless EITC (the claimable spouse is the spouse)"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -234,7 +234,7 @@
     ok_federal_eitc_demographic_eligible: false
     ok_eitc: 0
 
-- name: 2025 joint return on which both spouses can be claimed as dependents: Oklahoma childless EITC
+- name: "2025 joint return on which both spouses can be claimed as dependents: Oklahoma childless EITC"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -265,7 +265,7 @@
     ok_federal_eitc_demographic_eligible: false
     ok_eitc: 0
 
-- name: 2025 joint return on which neither spouse can be claimed: Oklahoma childless EITC
+- name: "2025 joint return on which neither spouse can be claimed: Oklahoma childless EITC"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -297,7 +297,7 @@
     ok_federal_eitc_demographic_eligible: true
     ok_eitc: 19.125
 
-- name: 2025 single filer who cannot be claimed as a dependent: Oklahoma childless EITC
+- name: "2025 single filer who cannot be claimed as a dependent: Oklahoma childless EITC"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -321,7 +321,7 @@
     ok_eitc: 19.125
 
 
-- name: 2025 single filer who can be claimed as a dependent by someone who files only for a refund: Oklahoma childless EITC
+- name: "2025 single filer who can be claimed as a dependent by someone who files only for a refund: Oklahoma childless EITC"
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -348,7 +348,7 @@
     ok_federal_eitc_demographic_eligible: true
     ok_eitc: 19.125
 
-- name: 2025 single filer who can be claimed as a dependent but is not claimed: Oklahoma childless EITC
+- name: "2025 single filer who can be claimed as a dependent but is not claimed: Oklahoma childless EITC"
   period: 2025
   absolute_error_margin: 0.01
   input:

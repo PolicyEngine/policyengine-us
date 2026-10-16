@@ -184,7 +184,7 @@
   output:
     oh_non_public_school_credits: 400
 
-- name: 2024 single filer who can be claimed as a dependent: Ohio nonpublic school tuition credit
+- name: "2024 single filer who can be claimed as a dependent: Ohio nonpublic school tuition credit"
   period: 2024
   input:
     people:
@@ -213,7 +213,7 @@
     # 5747.01(O) takes dependents from the IRC. IRC 152(b)(1): a return on which the filer (or, if joint, either spouse) can be claimed as a dependent has no dependents.
     oh_non_public_school_credits_potential: 0
 
-- name: 2024 joint return with one spouse who can be claimed as a dependent: Ohio nonpublic school tuition credit (the claimable spouse is the head)
+- name: "2024 joint return with one spouse who can be claimed as a dependent: Ohio nonpublic school tuition credit (the claimable spouse is the head)"
   period: 2024
   input:
     people:
@@ -248,7 +248,7 @@
   output:
     oh_non_public_school_credits_potential: 0
 
-- name: 2024 joint return with one spouse who can be claimed as a dependent: Ohio nonpublic school tuition credit (the claimable spouse is the spouse)
+- name: "2024 joint return with one spouse who can be claimed as a dependent: Ohio nonpublic school tuition credit (the claimable spouse is the spouse)"
   period: 2024
   input:
     people:
@@ -283,7 +283,7 @@
   output:
     oh_non_public_school_credits_potential: 0
 
-- name: 2024 joint return on which both spouses can be claimed as dependents: Ohio nonpublic school tuition credit
+- name: "2024 joint return on which both spouses can be claimed as dependents: Ohio nonpublic school tuition credit"
   period: 2024
   input:
     people:
@@ -318,7 +318,7 @@
   output:
     oh_non_public_school_credits_potential: 0
 
-- name: 2024 joint return on which neither spouse can be claimed: Ohio nonpublic school tuition credit
+- name: "2024 joint return on which neither spouse can be claimed: Ohio nonpublic school tuition credit"
   period: 2024
   input:
     people:
@@ -354,7 +354,7 @@
     # $400 of tuition, under the $1,000 cap below $50,000 of AGI.
     oh_non_public_school_credits_potential: 400
 
-- name: 2024 single filer who cannot be claimed as a dependent: Ohio nonpublic school tuition credit
+- name: "2024 single filer who cannot be claimed as a dependent: Ohio nonpublic school tuition credit"
   period: 2024
   input:
     people:
@@ -405,7 +405,7 @@
     oh_non_public_school_credits_potential: 0
 
 
-- name: 2024 joint return with one spouse who can be claimed as a dependent by someone who files only for a refund: Ohio nonpublic school tuition credit (the claimable spouse is the head)
+- name: "2024 joint return with one spouse who can be claimed as a dependent by someone who files only for a refund: Ohio nonpublic school tuition credit (the claimable spouse is the head)"
   period: 2024
   input:
     people:
@@ -444,7 +444,7 @@
     # Publication 501's exception restores the dependent: $400 of tuition.
     oh_non_public_school_credits_potential: 400
 
-- name: 2024 joint return with one spouse who can be claimed as a dependent by someone who files only for a refund: Ohio nonpublic school tuition credit (the claimable spouse is the spouse)
+- name: "2024 joint return with one spouse who can be claimed as a dependent by someone who files only for a refund: Ohio nonpublic school tuition credit (the claimable spouse is the spouse)"
   period: 2024
   input:
     people:
