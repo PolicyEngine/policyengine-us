@@ -10,7 +10,7 @@
   output:
     va_tanf: 0
 
-- name: If tanf eligible, small payment is still paid.
+- name: If tanf eligible, a payment under $10 a month is not made.
   period: 2023
   input:
     va_tanf_eligibility: true
@@ -20,32 +20,35 @@
     va_tanf_countable_income: 2_000
     county_str: ARLINGTON_COUNTY_VA
   output:
-    # Grant standard $2,100 - countable income $2,000 = $100 payment
-    va_tanf: 100
+    # Grant standard $2,100 - countable income $2,000 = $100 a year,
+    # or $8.33 a month, under the $10 minimum (TANF Manual 502.1 A.2)
+    va_tanf: 0
 
-- name: If up tanf eligible, small payment is still paid.
-  period: 2023
+- name: If up tanf eligible before July 2022, the UP grant standard applies.
+  period: 2021
   input:
     va_tanf_eligibility: true
     va_up_tanf_eligibility: true
     va_tanf_grant_standard: 0
-    va_tanf_up_grant_standard: 2_100
-    va_tanf_countable_income: 2_000
+    va_tanf_up_grant_standard: 2_400
+    va_tanf_countable_income: 1_200
     county_str: ARLINGTON_COUNTY_VA
   output:
-    # UP grant standard $2,100 - countable income $2,000 = $100 payment
-    va_tanf: 100
+    # UP grant standard $2,400 - countable income $1,200 = $1,200 payment
+    # ($200 - $100 = $100 a month, below the monthly maximum)
+    va_tanf: 1_200
 
 - name: If tanf eligible, payment less than maximum payment, they get the difference.
   period: 2023
   input:
     va_tanf_eligibility: true
     va_up_tanf_eligibility: false
-    va_tanf_grant_standard: 10_000
+    va_tanf_grant_standard: 12_000
     va_tanf_up_grant_standard: 0
-    va_tanf_countable_income: 4_000
+    va_tanf_countable_income: 6_000
     county_str: ARLINGTON_COUNTY_VA
   output:
+    # $1,000 - $500 = $500 a month
     va_tanf: 6_000
 
 - name: Grant equals countable income.
@@ -71,6 +74,62 @@
     county_str: ARLINGTON_COUNTY_VA
   output:
     va_tanf: 6_000
+
+# Payment rounding and minimum (TANF Manual 502.1 A): the budgetary
+# deficiency is adjusted to the next lower dollar, and no payment is made
+# when it is under $10.
+
+- name: A deficiency under $10 is not paid.
+  period: 2025-01
+  input:
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: false
+    va_tanf_grant_standard: 481.635
+    va_tanf_up_grant_standard: 0
+    va_tanf_countable_income: 479.2
+    county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    # $481.635 - $479.20 = $2.435, under $10
+    va_tanf: 0
+
+- name: A deficiency of $9.99 is not paid.
+  period: 2025-01
+  input:
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: false
+    va_tanf_grant_standard: 500
+    va_tanf_up_grant_standard: 0
+    va_tanf_countable_income: 490.01
+    county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    # $500 - $490.01 = $9.99, under $10
+    va_tanf: 0
+
+- name: A deficiency of exactly $10 is paid.
+  period: 2025-01
+  input:
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: false
+    va_tanf_grant_standard: 500
+    va_tanf_up_grant_standard: 0
+    va_tanf_countable_income: 490
+    county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    # $500 - $490 = $10
+    va_tanf: 10
+
+- name: The payment is rounded down to the next lower dollar.
+  period: 2025-01
+  input:
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: false
+    va_tanf_grant_standard: 481.635
+    va_tanf_up_grant_standard: 0
+    va_tanf_countable_income: 100
+    county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    # $481.635 - $100 = $381.635, rounded down to $381
+    va_tanf: 381
 
 # Max payment cap tests -- max payment = ceil(base_max * standard_multiplier)
 # For 2023: multiplier is 1.155 for all 12 months

@@ -14,4 +14,8 @@ class md_tca(Variable):
         grant_standard = spm_unit("md_tca_maximum_benefit", period)
         countable_income = spm_unit("md_tca_countable_income", period)
         benefit = max_(grant_standard - countable_income, 0)
-        return min_(benefit, grant_standard)
+        capped_benefit = min_(benefit, grant_standard)
+        # A benefit is issued only when the unit is eligible for at least
+        # the minimum (COMAR 07.03.03.13 E(2)).
+        p = parameters(period).gov.states.md.tca
+        return where(capped_benefit >= p.minimum_payment, capped_benefit, 0)
