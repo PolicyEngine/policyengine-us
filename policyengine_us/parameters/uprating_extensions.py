@@ -625,9 +625,9 @@ def extend_medicaid_home_equity_limits(
 ) -> None:
     """Project the CPI-indexed Medicaid long-term care home equity limits.
 
-    Each year after the last CMS-published value, the agricultural home
-    equity limit becomes the prior year's limit increased by that year's
-    CPI-U percentage (see ``get_cms_cpi_u_percentage_increase``), rounded to
+    Each year after their last CMS-published values, the minimum and
+    agricultural home equity limits become their prior year's limit increased
+    by that year's CPI-U percentage (see ``get_cms_cpi_u_percentage_increase``), rounded to
     the nearest $1,000, effective January 1. Before P.L. 119-21 section 71108
     caps other homes at $1,000,000 beginning in 2028, the agricultural and
     non-agricultural limits are the same indexed maximum, so each year before
@@ -641,21 +641,24 @@ def extend_medicaid_home_equity_limits(
     home_equity = parameters.gov.hhs.medicaid.eligibility.long_term_care.home_equity
     cpi = parameters.gov.bls.cpi
     agricultural = home_equity.agricultural_limit
-    first_projected_year = 1 + max(
-        int(value.instant_str[:4]) for value in agricultural.values_list
-    )
-    for year in range(first_projected_year, end_year + 1):
-        agricultural.update(
-            period=f"year:{year}-01-01:1",
-            value=adjust_home_equity_limit_for_inflation(
-                agricultural(f"{year - 1}-01-01"),
-                get_cms_cpi_u_percentage_increase(cpi, year),
-            ),
+    percentages = {}
+    for parameter in (home_equity.minimum_limit, agricultural):
+        first_projected_year = 1 + max(
+            int(value.instant_str[:4]) for value in parameter.values_list
         )
-    agricultural.update(
-        start=instant(f"{end_year}-01-01"),
-        value=agricultural(f"{end_year}-01-01"),
-    )
+        for year in range(first_projected_year, end_year + 1):
+            if year not in percentages:
+                percentages[year] = get_cms_cpi_u_percentage_increase(cpi, year)
+            parameter.update(
+                period=f"year:{year}-01-01:1",
+                value=adjust_home_equity_limit_for_inflation(
+                    parameter(f"{year - 1}-01-01"), percentages[year]
+                ),
+            )
+        parameter.update(
+            start=instant(f"{end_year}-01-01"),
+            value=parameter(f"{end_year}-01-01"),
+        )
     non_agricultural = home_equity.limit
     encoded_years = {
         int(value.instant_str[:4]) for value in non_agricultural.values_list
@@ -668,6 +671,90 @@ def extend_medicaid_home_equity_limits(
                 period=f"year:{year}-01-01:1",
                 value=agricultural(f"{year}-01-01"),
             )
+
+
+def get_cms_spousal_impoverishment_multiplier(
+    parameters: ParameterNode, year: int
+) -> float:
+    """CMS's cumulative 42 USC 1396r-5(g) CPI-U adjustment multiplier.
+
+    The statutory CSRA and MMMNA bases are adjusted by CPI-U growth from
+    September 1988 to September before the eligibility year. CMS's annual
+    bulletins round this cumulative percentage to one decimal place before
+    applying it: the 2026 increase is 171.1%, giving a multiplier of 2.711.
+    This cumulative calculation avoids compounding rounded annual increases.
+
+    Published not-seasonally-adjusted Septembers take precedence. Beyond the
+    last publication, the model's projected CPI-U growth is applied to that
+    published NSA level. Normalizing the forecast at the last common month
+    avoids treating the SA/NSA level difference as future inflation.
+    """
+    cpi = parameters.gov.bls.cpi
+    indexing = parameters.gov.hhs.medicaid.eligibility.long_term_care.financial.federal.indexing
+    date = f"{year}-01-01"
+    base_year = int(indexing.base_year(date))
+    reference_month = int(indexing.reference_month(date))
+    rounding_interval = Decimal(str(indexing.percentage_rounding_interval(date)))
+    base_date = f"{base_year}-{reference_month:02d}-01"
+    current_date = f"{year - 1}-{reference_month:02d}-01"
+    september = cpi.cpi_u_nsa_september
+    published_dates = {value.instant_str for value in september.values_list}
+    base = Decimal(str(september(base_date)))
+    if current_date in published_dates:
+        current = Decimal(str(september(current_date)))
+    else:
+        anchor_date = max(date for date in published_dates if date < current_date)
+        anchor = Decimal(str(september(anchor_date)))
+        projected_current = Decimal(
+            str(get_projected_cpi_u_for_month(cpi.cpi_u, instant(current_date)))
+        )
+        projected_anchor = Decimal(
+            str(get_projected_cpi_u_for_month(cpi.cpi_u, instant(anchor_date)))
+        )
+        current = anchor * projected_current / projected_anchor
+    change = 100 * (current / base - 1)
+    rounded_change = (change / rounding_interval).quantize(
+        Decimal(1), rounding=ROUND_HALF_UP
+    ) * rounding_interval
+    return float(1 + max(rounded_change, 0) / 100)
+
+
+def extend_medicaid_spousal_impoverishment_standards(
+    parameters: ParameterNode, end_year: int
+) -> None:
+    """Project federal CSRA bounds and the MMMNA maximum under 1396r-5(g).
+
+    Each unpublished year's standards apply the cumulative CPI-U multiplier
+    to the statutory dollar bases, effective January 1. CMS-published values
+    encoded in YAML take precedence for their years. July's minimum MMMNA
+    follows the separate poverty-guideline schedule and is not changed here.
+
+    Like the other projections in this module, the values are fixed when the
+    parameter tree is built; later reforms can override individual years.
+    """
+    federal = parameters.gov.hhs.medicaid.eligibility.long_term_care.financial.federal
+    multipliers = {}
+    for parameter, statutory_base in (
+        (federal.csra.minimum, federal.csra.minimum_base),
+        (federal.csra.maximum, federal.csra.maximum_base),
+        (federal.mmmna.maximum, federal.mmmna.maximum_base),
+    ):
+        first_projected_year = 1 + max(
+            int(value.instant_str[:4]) for value in parameter.values_list
+        )
+        for year in range(first_projected_year, end_year + 1):
+            if year not in multipliers:
+                multipliers[year] = get_cms_spousal_impoverishment_multiplier(
+                    parameters, year
+                )
+            value = Decimal(str(statutory_base(f"{year}-01-01"))) * Decimal(
+                str(multipliers[year])
+            )
+            parameter.update(period=f"year:{year}-01-01:1", value=float(value))
+        parameter.update(
+            start=instant(f"{end_year}-01-01"),
+            value=parameter(f"{end_year}-01-01"),
+        )
 
 
 def extend_wa_millionaires_standard_deduction(
@@ -1172,6 +1259,10 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
 
     # Medicaid long-term care home equity limits, CMS's rounded CPI-U method
     extend_medicaid_home_equity_limits(parameters, end_year=END_YEAR)
+
+    # Federal Medicaid CSRA bounds and MMMNA maximum use cumulative CPI-U
+    # since September 1988, rather than chaining annual rounded changes.
+    extend_medicaid_spousal_impoverishment_standards(parameters, end_year=END_YEAR)
 
     # The limits on a dependent's standard deduction follow 26 U.S.C.
     # 63(c)(4)'s chained CPI-U schedule, computed from the statutory 1987 and
