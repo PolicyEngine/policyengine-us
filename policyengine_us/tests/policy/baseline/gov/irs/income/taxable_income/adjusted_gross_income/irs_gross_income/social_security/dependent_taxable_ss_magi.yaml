@@ -142,3 +142,31 @@
   output:
     # Modified AGI = 3,000 + 13,000 tax-exempt interest (IRC 86(b)(2)(B)).
     dependent_taxable_ss_magi: [0, 16_000]
+
+- name: A dependent's own IRA deduction reduces their modified AGI
+  # Pub. 915 Worksheet 1: $29,000 wages less a $5,000 IRA deduction gives
+  # modified AGI of $24,000. Adding half of $10,000 in benefits gives $29,000,
+  # $4,000 over the $25,000 base, so half of that, $2,000, is taxable.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 80_000
+        is_tax_unit_head: true
+      student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        employment_income: 29_000
+        traditional_ira_contributions: 5_000
+        social_security_survivors: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    dependent_taxable_ss_magi: [0, 24_000]
