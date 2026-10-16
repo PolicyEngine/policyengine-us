@@ -17,5 +17,6 @@ class pa_ssp_care_home(Variable):
     default_value = PASSPCareHome.NONE
     reference = (
         "https://www.pacodeandbulletin.gov/secure/pacode/data/055/chapter299/s299.1.html",
+        "https://www.pacodeandbulletin.gov/secure/pacode/data/055/chapter299/s299.22.html",
         "https://secure.ssa.gov/poms.nsf/lnx/0501415058#k1",
     )
