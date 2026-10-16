@@ -1,0 +1,1 @@
+Count passive estate and trust income (Schedule E Part III line 34a column (d) less line 34b column (c)) in the passive basket of the EITC investment income test, as Publication 596 Worksheet 1 lines 11-13 do, through a new passive_estate_income input: the passive subset of estate_income, which defaults to zero.
