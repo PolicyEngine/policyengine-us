@@ -30,3 +30,211 @@
     state_code: MA
   output:
     ma_tafdc_partially_disregarded_earned_income: 0
+
+# 106 CMR 704.275(A): the dependent care deduction is made after the 50%
+# disregard, and "the amount allowed for dependent care is the actual
+# expenditure for dependent care ... or the maximum allowable deduction,
+# whichever is less." The unit's deduction is subtracted once from the unit's
+# earnings after the 50% disregard; each earner carries a share in proportion
+# to their earnings after the disregard.
+# In the cases below the child is age 1 and the unit works full time, so the
+# maximum is $200 a month; care costs $3,000 a year ($250 a month), so the
+# unit's deduction is $200 a month.
+
+- name: One earner on a joint return, the deduction is subtracted in full once
+  period: 2026-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+        weekly_hours_worked_before_lsr: 40
+      parent2:
+        age: 30
+      child:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    marital_units:
+      marital_unit:
+        members: [parent1, parent2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        is_tanf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 3_000
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MA
+  output:
+    ma_tafdc_dependent_care_deduction: 200
+    # parent1: ($1,000 - $200 work expense) x 0.5 = $400; $400 - $200 = $200.
+    # Before, half of the $200 was assigned to parent2, who has no earnings,
+    # and was lost: $400 - $100 = $300.
+    ma_tafdc_partially_disregarded_earned_income: [200, 0, 0]
+
+- name: Two earners on separate returns, the deduction is subtracted once in total
+  period: 2026-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 8_400  # $700/month
+        weekly_hours_worked_before_lsr: 40
+      parent2:
+        age: 30
+        employment_income_before_lsr: 8_400  # $700/month
+        weekly_hours_worked_before_lsr: 40
+      child:
+        age: 1
+    tax_units:
+      tax_unit1:
+        members: [parent1, child]
+      tax_unit2:
+        members: [parent2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        is_tanf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 3_000
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MA
+  output:
+    ma_tafdc_dependent_care_deduction: 200
+    # Each: ($700 - $200) x 0.5 = $250; unit total $500 - $200 = $300, split
+    # $150 each (equal shares). Before, each earner had the full $200
+    # subtracted: $50 each, $400 deducted for a $200 cost.
+    ma_tafdc_partially_disregarded_earned_income: [150, 150, 0]
+
+- name: Two earners with unequal earnings share the deduction by earnings
+  period: 2026-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+        weekly_hours_worked_before_lsr: 40
+      parent2:
+        age: 30
+        employment_income_before_lsr: 4_800  # $400/month
+        weekly_hours_worked_before_lsr: 40
+      child:
+        age: 1
+    tax_units:
+      tax_unit1:
+        members: [parent1, child]
+      tax_unit2:
+        members: [parent2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        is_tanf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 3_000
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MA
+  output:
+    # parent1: ($1,000 - $200) x 0.5 = $400; parent2: ($400 - $200) x 0.5 = $100.
+    # Unit: $500 - $200 = $300. Shares 400/500 and 100/500:
+    # parent1 $400 - $160 = $240; parent2 $100 - $40 = $60.
+    ma_tafdc_partially_disregarded_earned_income: [240, 60, 0]
+
+- name: Single parent with one child, unchanged
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+        weekly_hours_worked_before_lsr: 40
+      child:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        is_tanf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 3_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: MA
+  output:
+    # ($1,000 - $200) x 0.5 = $400; $400 - $200 = $200.
+    ma_tafdc_partially_disregarded_earned_income: [200, 0]
+
+- name: One earner on a joint return, annual grant
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 12_000
+        weekly_hours_worked_before_lsr: 40
+      parent2:
+        age: 30
+      child:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    marital_units:
+      marital_unit:
+        members: [parent1, parent2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        is_tanf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 3_000
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MA
+  output:
+    # $200 a month after the deductions, counted for the 6 months after the
+    # six-month 100% disregard: $200 x 6 = $1,200.
+    ma_tafdc_countable_earned_income: [1_200, 0, 0]
+    # Payment standard $901 x 12 = $10,812; ($901 - $1,200 / 12) x 12 = $9,612,
+    # plus the $500 clothing allowance for the child.
+    ma_tafdc: 10_112
+
+- name: Two earners on separate returns, annual grant
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 8_400
+        weekly_hours_worked_before_lsr: 40
+      parent2:
+        age: 30
+        employment_income_before_lsr: 8_400
+        weekly_hours_worked_before_lsr: 40
+      child:
+        age: 1
+    tax_units:
+      tax_unit1:
+        members: [parent1, child]
+      tax_unit2:
+        members: [parent2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        is_tanf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 3_000
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MA
+  output:
+    # $150 a month each for the 6 months after the 100% disregard: $900 each.
+    ma_tafdc_countable_earned_income: [900, 900, 0]
+    # ($901 - $1,800 / 12) x 12 = $9,012, plus the $500 clothing allowance.
+    ma_tafdc: 9_512
