@@ -727,3 +727,48 @@
     #
     # Not eligible
     va_tanf: 0
+
+- name: TANF-UP family of eight in Group II in 2025 gets the TANF maximum
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_disabled: false
+      person2:
+        age: 33
+        is_disabled: false
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 9
+      person6:
+        age: 7
+      person7:
+        age: 5
+      person8:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: VA
+        county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    # Both parents are able-bodied, so the unit is a TANF-UP unit.
+    va_up_tanf_eligibility: true
+    # No income.
+    va_tanf_countable_income: 0
+    va_tanf_income_eligibility: true
+    # TANF standard (Group II, size 8): $822 * 1.155 = $949.41
+    # From July 2022 the TANF standard and the TANF maximum apply:
+    # min($949.41, ceil($625 * 1.155) = $722) = $722
+    # (the TANF-UP maximum would be ceil($544 * 1.155) = $629)
+    va_tanf: 722
