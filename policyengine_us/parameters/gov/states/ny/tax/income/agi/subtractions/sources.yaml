@@ -10,6 +10,7 @@ values:
     # local governments, or the federal government. Pensions from other states are not exempt.
     # PolicyEngine subtracts taxable_public_pension_income as an in-state/federal proxy.
     - taxable_public_pension_income
+    - ny_other_subtractions
 metadata:
   unit: list
   period: year
