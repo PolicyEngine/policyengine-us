@@ -30,7 +30,7 @@ class medicaid_ltss_home_equity_eligible(Variable):
         "modeled here; that chassis applies the federal maximum in every "
         "state, so it passes Texas or Delaware equity between the federal "
         "minimum and maximum that this screen bars (follow-up: "
-        "https://github.com/PolicyEngine/policyengine-us/issues/9895)."
+        "PolicyEngine/policyengine-us#9895)."
     )
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396p#f",
