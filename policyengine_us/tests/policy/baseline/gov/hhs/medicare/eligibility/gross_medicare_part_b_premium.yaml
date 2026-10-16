@@ -1,0 +1,1776 @@
+# Part B premiums for 2015-2023, from the Federal Register notices of the
+# Part B premium rates for each year: the standard premium plus the
+# income-related monthly adjustment amount for the tier, times 12. Each person
+# is a separate tax unit with MAGI from two years prior provided directly.
+# Thresholds are "more than $X" for the first four tiers and "at least $X" for
+# the 85% tier, which the Bipartisan Budget Act of 2018 added for 2019.
+
+- name: 2015 single filers across the Part B premium tiers.
+  period: 2015
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 85_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 85_001
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 107_001
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 160_001
+      tax_unit5:
+        members: [person5]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 214_001
+      tax_unit6:
+        members: [person6]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+  output:
+    # MAGI 85,000, at the threshold: $104.90 a month
+    # MAGI 85,001, lowest income in the 35% tier: $146.90 (35%) a month
+    # MAGI 107,001, lowest income in the 50% tier: $209.80 (50%) a month
+    # MAGI 160,001, lowest income in the 65% tier: $272.70 (65%) a month
+    # MAGI 214,001, lowest income in the 80% tier: $335.70 (80%) a month
+    # MAGI 2,000,000, no 85% tier before 2019: $335.70 (80%) a month
+    gross_medicare_part_b_premium: [1_258.8, 1_762.8, 2_517.6, 3_272.4, 4_028.4, 4_028.4]
+
+- name: 2015 joint filers across the Part B premium tiers.
+  period: 2015
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 170_000
+      tax_unit2:
+        members: [person2]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 170_001
+      tax_unit3:
+        members: [person3]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 214_001
+      tax_unit4:
+        members: [person4]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 320_001
+      tax_unit5:
+        members: [person5]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 428_001
+      tax_unit6:
+        members: [person6]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+  output:
+    # MAGI 170,000, at the threshold: $104.90 a month
+    # MAGI 170,001, lowest income in the 35% tier: $146.90 (35%) a month
+    # MAGI 214,001, lowest income in the 50% tier: $209.80 (50%) a month
+    # MAGI 320,001, lowest income in the 65% tier: $272.70 (65%) a month
+    # MAGI 428,001, lowest income in the 80% tier: $335.70 (80%) a month
+    # MAGI 2,000,000, no 85% tier before 2019: $335.70 (80%) a month
+    gross_medicare_part_b_premium: [1_258.8, 1_762.8, 2_517.6, 3_272.4, 4_028.4, 4_028.4]
+
+- name: 2015 married filing separately filers across the Part B premium tiers.
+  period: 2015
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 85_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 85_001
+      tax_unit3:
+        members: [person3]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 129_000
+      tax_unit4:
+        members: [person4]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 129_001
+      tax_unit5:
+        members: [person5]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+  output:
+    # MAGI 85,000, at the threshold: $104.90 a month
+    # MAGI 85,001, just above it: $272.70 (65%) a month
+    # MAGI 129,000, at the second threshold: $272.70 (65%) a month
+    # MAGI 129,001, just above it: $335.70 (80%) a month
+    # MAGI 2,000,000, far above every threshold: $335.70 (80%) a month
+    gross_medicare_part_b_premium: [1_258.8, 3_272.4, 3_272.4, 4_028.4, 4_028.4]
+
+- name: 2016 single filers across the Part B premium tiers.
+  period: 2016
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 85_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 85_001
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 107_001
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 160_001
+      tax_unit5:
+        members: [person5]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 214_001
+      tax_unit6:
+        members: [person6]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+  output:
+    # MAGI 85,000, at the threshold: $121.80 a month
+    # MAGI 85,001, lowest income in the 35% tier: $170.50 (35%) a month
+    # MAGI 107,001, lowest income in the 50% tier: $243.60 (50%) a month
+    # MAGI 160,001, lowest income in the 65% tier: $316.70 (65%) a month
+    # MAGI 214,001, lowest income in the 80% tier: $389.80 (80%) a month
+    # MAGI 2,000,000, no 85% tier before 2019: $389.80 (80%) a month
+    gross_medicare_part_b_premium: [1_461.6, 2_046, 2_923.2, 3_800.4, 4_677.6, 4_677.6]
+
+- name: 2016 head of household filers across the Part B premium tiers.
+  period: 2016
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        medicare_irmaa_magi_two_years_prior: 85_000
+      tax_unit2:
+        members: [person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        medicare_irmaa_magi_two_years_prior: 85_001
+      tax_unit3:
+        members: [person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        medicare_irmaa_magi_two_years_prior: 107_001
+      tax_unit4:
+        members: [person4]
+        filing_status: HEAD_OF_HOUSEHOLD
+        medicare_irmaa_magi_two_years_prior: 160_001
+      tax_unit5:
+        members: [person5]
+        filing_status: HEAD_OF_HOUSEHOLD
+        medicare_irmaa_magi_two_years_prior: 214_001
+      tax_unit6:
+        members: [person6]
+        filing_status: HEAD_OF_HOUSEHOLD
+        medicare_irmaa_magi_two_years_prior: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+  output:
+    # MAGI 85,000, at the threshold: $121.80 a month
+    # MAGI 85,001, lowest income in the 35% tier: $170.50 (35%) a month
+    # MAGI 107,001, lowest income in the 50% tier: $243.60 (50%) a month
+    # MAGI 160,001, lowest income in the 65% tier: $316.70 (65%) a month
+    # MAGI 214,001, lowest income in the 80% tier: $389.80 (80%) a month
+    # MAGI 2,000,000, no 85% tier before 2019: $389.80 (80%) a month
+    gross_medicare_part_b_premium: [1_461.6, 2_046, 2_923.2, 3_800.4, 4_677.6, 4_677.6]
+
+- name: 2016 surviving spouse filers across the Part B premium tiers.
+  period: 2016
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SURVIVING_SPOUSE
+        medicare_irmaa_magi_two_years_prior: 85_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SURVIVING_SPOUSE
+        medicare_irmaa_magi_two_years_prior: 85_001
+      tax_unit3:
+        members: [person3]
+        filing_status: SURVIVING_SPOUSE
+        medicare_irmaa_magi_two_years_prior: 107_001
+      tax_unit4:
+        members: [person4]
+        filing_status: SURVIVING_SPOUSE
+        medicare_irmaa_magi_two_years_prior: 160_001
+      tax_unit5:
+        members: [person5]
+        filing_status: SURVIVING_SPOUSE
+        medicare_irmaa_magi_two_years_prior: 214_001
+      tax_unit6:
+        members: [person6]
+        filing_status: SURVIVING_SPOUSE
+        medicare_irmaa_magi_two_years_prior: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+  output:
+    # MAGI 85,000, at the threshold: $121.80 a month
+    # MAGI 85,001, lowest income in the 35% tier: $170.50 (35%) a month
+    # MAGI 107,001, lowest income in the 50% tier: $243.60 (50%) a month
+    # MAGI 160,001, lowest income in the 65% tier: $316.70 (65%) a month
+    # MAGI 214,001, lowest income in the 80% tier: $389.80 (80%) a month
+    # MAGI 2,000,000, no 85% tier before 2019: $389.80 (80%) a month
+    gross_medicare_part_b_premium: [1_461.6, 2_046, 2_923.2, 3_800.4, 4_677.6, 4_677.6]
+
+- name: 2016 joint filers across the Part B premium tiers.
+  period: 2016
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 170_000
+      tax_unit2:
+        members: [person2]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 170_001
+      tax_unit3:
+        members: [person3]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 214_001
+      tax_unit4:
+        members: [person4]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 320_001
+      tax_unit5:
+        members: [person5]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 428_001
+      tax_unit6:
+        members: [person6]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+  output:
+    # MAGI 170,000, at the threshold: $121.80 a month
+    # MAGI 170,001, lowest income in the 35% tier: $170.50 (35%) a month
+    # MAGI 214,001, lowest income in the 50% tier: $243.60 (50%) a month
+    # MAGI 320,001, lowest income in the 65% tier: $316.70 (65%) a month
+    # MAGI 428,001, lowest income in the 80% tier: $389.80 (80%) a month
+    # MAGI 2,000,000, no 85% tier before 2019: $389.80 (80%) a month
+    gross_medicare_part_b_premium: [1_461.6, 2_046, 2_923.2, 3_800.4, 4_677.6, 4_677.6]
+
+- name: 2016 married filing separately filers across the Part B premium tiers.
+  period: 2016
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 85_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 85_001
+      tax_unit3:
+        members: [person3]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 129_000
+      tax_unit4:
+        members: [person4]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 129_001
+      tax_unit5:
+        members: [person5]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+  output:
+    # MAGI 85,000, at the threshold: $121.80 a month
+    # MAGI 85,001, just above it: $316.70 (65%) a month
+    # MAGI 129,000, at the second threshold: $316.70 (65%) a month
+    # MAGI 129,001, just above it: $389.80 (80%) a month
+    # MAGI 2,000,000, far above every threshold: $389.80 (80%) a month
+    gross_medicare_part_b_premium: [1_461.6, 3_800.4, 3_800.4, 4_677.6, 4_677.6]
+
+- name: 2017 single filers across the Part B premium tiers.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 85_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 85_001
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 107_001
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 160_001
+      tax_unit5:
+        members: [person5]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 214_001
+      tax_unit6:
+        members: [person6]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+  output:
+    # MAGI 85,000, at the threshold: $134.00 a month
+    # MAGI 85,001, lowest income in the 35% tier: $187.50 (35%) a month
+    # MAGI 107,001, lowest income in the 50% tier: $267.90 (50%) a month
+    # MAGI 160,001, lowest income in the 65% tier: $348.30 (65%) a month
+    # MAGI 214,001, lowest income in the 80% tier: $428.60 (80%) a month
+    # MAGI 2,000,000, no 85% tier before 2019: $428.60 (80%) a month
+    gross_medicare_part_b_premium: [1_608, 2_250, 3_214.8, 4_179.6, 5_143.2, 5_143.2]
+
+- name: 2017 joint filers across the Part B premium tiers.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 170_000
+      tax_unit2:
+        members: [person2]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 170_001
+      tax_unit3:
+        members: [person3]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 214_001
+      tax_unit4:
+        members: [person4]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 320_001
+      tax_unit5:
+        members: [person5]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 428_001
+      tax_unit6:
+        members: [person6]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+  output:
+    # MAGI 170,000, at the threshold: $134.00 a month
+    # MAGI 170,001, lowest income in the 35% tier: $187.50 (35%) a month
+    # MAGI 214,001, lowest income in the 50% tier: $267.90 (50%) a month
+    # MAGI 320,001, lowest income in the 65% tier: $348.30 (65%) a month
+    # MAGI 428,001, lowest income in the 80% tier: $428.60 (80%) a month
+    # MAGI 2,000,000, no 85% tier before 2019: $428.60 (80%) a month
+    gross_medicare_part_b_premium: [1_608, 2_250, 3_214.8, 4_179.6, 5_143.2, 5_143.2]
+
+- name: 2017 married filing separately filers across the Part B premium tiers.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 85_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 85_001
+      tax_unit3:
+        members: [person3]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 129_000
+      tax_unit4:
+        members: [person4]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 129_001
+      tax_unit5:
+        members: [person5]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+  output:
+    # MAGI 85,000, at the threshold: $134.00 a month
+    # MAGI 85,001, just above it: $348.30 (65%) a month
+    # MAGI 129,000, at the second threshold: $348.30 (65%) a month
+    # MAGI 129,001, just above it: $428.60 (80%) a month
+    # MAGI 2,000,000, far above every threshold: $428.60 (80%) a month
+    gross_medicare_part_b_premium: [1_608, 4_179.6, 4_179.6, 5_143.2, 5_143.2]
+
+- name: 2018 single filers across the Part B premium tiers.
+  period: 2018
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 85_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 85_001
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 107_001
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 133_501
+      tax_unit5:
+        members: [person5]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 160_001
+      tax_unit6:
+        members: [person6]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+  output:
+    # MAGI 85,000, at the threshold: $134.00 a month
+    # MAGI 85,001, lowest income in the 35% tier: $187.50 (35%) a month
+    # MAGI 107,001, lowest income in the 50% tier: $267.90 (50%) a month
+    # MAGI 133,501, lowest income in the 65% tier: $348.30 (65%) a month
+    # MAGI 160,001, lowest income in the 80% tier: $428.60 (80%) a month
+    # MAGI 2,000,000, no 85% tier before 2019: $428.60 (80%) a month
+    gross_medicare_part_b_premium: [1_608, 2_250, 3_214.8, 4_179.6, 5_143.2, 5_143.2]
+
+- name: 2018 joint filers across the Part B premium tiers.
+  period: 2018
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 170_000
+      tax_unit2:
+        members: [person2]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 170_001
+      tax_unit3:
+        members: [person3]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 214_001
+      tax_unit4:
+        members: [person4]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 267_001
+      tax_unit5:
+        members: [person5]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 320_001
+      tax_unit6:
+        members: [person6]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+  output:
+    # MAGI 170,000, at the threshold: $134.00 a month
+    # MAGI 170,001, lowest income in the 35% tier: $187.50 (35%) a month
+    # MAGI 214,001, lowest income in the 50% tier: $267.90 (50%) a month
+    # MAGI 267,001, lowest income in the 65% tier: $348.30 (65%) a month
+    # MAGI 320,001, lowest income in the 80% tier: $428.60 (80%) a month
+    # MAGI 2,000,000, no 85% tier before 2019: $428.60 (80%) a month
+    gross_medicare_part_b_premium: [1_608, 2_250, 3_214.8, 4_179.6, 5_143.2, 5_143.2]
+
+- name: 2018 married filing separately filers across the Part B premium tiers.
+  period: 2018
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 85_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 85_001
+      tax_unit3:
+        members: [person3]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3]
+  output:
+    # MAGI 85,000, at the threshold: $134.00 a month
+    # MAGI 85,001, just above it: $428.60 (80%) a month
+    # MAGI 2,000,000, far above every threshold: $428.60 (80%) a month
+    gross_medicare_part_b_premium: [1_608, 5_143.2, 5_143.2]
+
+- name: 2019 single filers across the Part B premium tiers.
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+      person7:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 85_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 85_001
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 107_001
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 133_501
+      tax_unit5:
+        members: [person5]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 160_001
+      tax_unit6:
+        members: [person6]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 499_999
+      tax_unit7:
+        members: [person7]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 500_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+  output:
+    # MAGI 85,000, at the threshold: $135.50 a month
+    # MAGI 85,001, lowest income in the 35% tier: $189.60 (35%) a month
+    # MAGI 107,001, lowest income in the 50% tier: $270.90 (50%) a month
+    # MAGI 133,501, lowest income in the 65% tier: $352.20 (65%) a month
+    # MAGI 160,001, lowest income in the 80% tier: $433.40 (80%) a month
+    # MAGI 499,999, just below the 85% tier: $433.40 (80%) a month
+    # MAGI 500,000, lowest income in the 85% tier: $460.50 (85%) a month
+    gross_medicare_part_b_premium: [1_626, 2_275.2, 3_250.8, 4_226.4, 5_200.8, 5_200.8, 5_526]
+
+- name: 2019 head of household filers across the Part B premium tiers.
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+      person7:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        medicare_irmaa_magi_two_years_prior: 85_000
+      tax_unit2:
+        members: [person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        medicare_irmaa_magi_two_years_prior: 85_001
+      tax_unit3:
+        members: [person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        medicare_irmaa_magi_two_years_prior: 107_001
+      tax_unit4:
+        members: [person4]
+        filing_status: HEAD_OF_HOUSEHOLD
+        medicare_irmaa_magi_two_years_prior: 133_501
+      tax_unit5:
+        members: [person5]
+        filing_status: HEAD_OF_HOUSEHOLD
+        medicare_irmaa_magi_two_years_prior: 160_001
+      tax_unit6:
+        members: [person6]
+        filing_status: HEAD_OF_HOUSEHOLD
+        medicare_irmaa_magi_two_years_prior: 499_999
+      tax_unit7:
+        members: [person7]
+        filing_status: HEAD_OF_HOUSEHOLD
+        medicare_irmaa_magi_two_years_prior: 500_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+  output:
+    # MAGI 85,000, at the threshold: $135.50 a month
+    # MAGI 85,001, lowest income in the 35% tier: $189.60 (35%) a month
+    # MAGI 107,001, lowest income in the 50% tier: $270.90 (50%) a month
+    # MAGI 133,501, lowest income in the 65% tier: $352.20 (65%) a month
+    # MAGI 160,001, lowest income in the 80% tier: $433.40 (80%) a month
+    # MAGI 499,999, just below the 85% tier: $433.40 (80%) a month
+    # MAGI 500,000, lowest income in the 85% tier: $460.50 (85%) a month
+    gross_medicare_part_b_premium: [1_626, 2_275.2, 3_250.8, 4_226.4, 5_200.8, 5_200.8, 5_526]
+
+- name: 2019 surviving spouse filers across the Part B premium tiers.
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+      person7:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SURVIVING_SPOUSE
+        medicare_irmaa_magi_two_years_prior: 85_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SURVIVING_SPOUSE
+        medicare_irmaa_magi_two_years_prior: 85_001
+      tax_unit3:
+        members: [person3]
+        filing_status: SURVIVING_SPOUSE
+        medicare_irmaa_magi_two_years_prior: 107_001
+      tax_unit4:
+        members: [person4]
+        filing_status: SURVIVING_SPOUSE
+        medicare_irmaa_magi_two_years_prior: 133_501
+      tax_unit5:
+        members: [person5]
+        filing_status: SURVIVING_SPOUSE
+        medicare_irmaa_magi_two_years_prior: 160_001
+      tax_unit6:
+        members: [person6]
+        filing_status: SURVIVING_SPOUSE
+        medicare_irmaa_magi_two_years_prior: 499_999
+      tax_unit7:
+        members: [person7]
+        filing_status: SURVIVING_SPOUSE
+        medicare_irmaa_magi_two_years_prior: 500_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+  output:
+    # MAGI 85,000, at the threshold: $135.50 a month
+    # MAGI 85,001, lowest income in the 35% tier: $189.60 (35%) a month
+    # MAGI 107,001, lowest income in the 50% tier: $270.90 (50%) a month
+    # MAGI 133,501, lowest income in the 65% tier: $352.20 (65%) a month
+    # MAGI 160,001, lowest income in the 80% tier: $433.40 (80%) a month
+    # MAGI 499,999, just below the 85% tier: $433.40 (80%) a month
+    # MAGI 500,000, lowest income in the 85% tier: $460.50 (85%) a month
+    gross_medicare_part_b_premium: [1_626, 2_275.2, 3_250.8, 4_226.4, 5_200.8, 5_200.8, 5_526]
+
+- name: 2019 joint filers across the Part B premium tiers.
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+      person7:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 170_000
+      tax_unit2:
+        members: [person2]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 170_001
+      tax_unit3:
+        members: [person3]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 214_001
+      tax_unit4:
+        members: [person4]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 267_001
+      tax_unit5:
+        members: [person5]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 320_001
+      tax_unit6:
+        members: [person6]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 749_999
+      tax_unit7:
+        members: [person7]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 750_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+  output:
+    # MAGI 170,000, at the threshold: $135.50 a month
+    # MAGI 170,001, lowest income in the 35% tier: $189.60 (35%) a month
+    # MAGI 214,001, lowest income in the 50% tier: $270.90 (50%) a month
+    # MAGI 267,001, lowest income in the 65% tier: $352.20 (65%) a month
+    # MAGI 320,001, lowest income in the 80% tier: $433.40 (80%) a month
+    # MAGI 749,999, just below the 85% tier: $433.40 (80%) a month
+    # MAGI 750,000, lowest income in the 85% tier: $460.50 (85%) a month
+    gross_medicare_part_b_premium: [1_626, 2_275.2, 3_250.8, 4_226.4, 5_200.8, 5_200.8, 5_526]
+
+- name: 2019 married filing separately filers across the Part B premium tiers.
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 85_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 85_001
+      tax_unit3:
+        members: [person3]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 414_999
+      tax_unit4:
+        members: [person4]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 415_000
+      tax_unit5:
+        members: [person5]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+  output:
+    # MAGI 85,000, at the threshold: $135.50 a month
+    # MAGI 85,001, just above it: $433.40 (80%) a month
+    # MAGI 414,999, just below the top tier: $433.40 (80%) a month
+    # MAGI 415,000, at the top tier: $460.50 (85%) a month
+    # MAGI 2,000,000, far above every threshold: $460.50 (85%) a month
+    gross_medicare_part_b_premium: [1_626, 5_200.8, 5_200.8, 5_526, 5_526]
+
+- name: 2020 single filers across the Part B premium tiers.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+      person7:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 87_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 87_001
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 109_001
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 136_001
+      tax_unit5:
+        members: [person5]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 163_001
+      tax_unit6:
+        members: [person6]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 499_999
+      tax_unit7:
+        members: [person7]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 500_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+  output:
+    # MAGI 87,000, at the threshold: $144.60 a month
+    # MAGI 87,001, lowest income in the 35% tier: $202.40 (35%) a month
+    # MAGI 109,001, lowest income in the 50% tier: $289.20 (50%) a month
+    # MAGI 136,001, lowest income in the 65% tier: $376.00 (65%) a month
+    # MAGI 163,001, lowest income in the 80% tier: $462.70 (80%) a month
+    # MAGI 499,999, just below the 85% tier: $462.70 (80%) a month
+    # MAGI 500,000, lowest income in the 85% tier: $491.60 (85%) a month
+    gross_medicare_part_b_premium: [1_735.2, 2_428.8, 3_470.4, 4_512, 5_552.4, 5_552.4, 5_899.2]
+
+- name: 2020 joint filers across the Part B premium tiers.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+      person7:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 174_000
+      tax_unit2:
+        members: [person2]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 174_001
+      tax_unit3:
+        members: [person3]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 218_001
+      tax_unit4:
+        members: [person4]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 272_001
+      tax_unit5:
+        members: [person5]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 326_001
+      tax_unit6:
+        members: [person6]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 749_999
+      tax_unit7:
+        members: [person7]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 750_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+  output:
+    # MAGI 174,000, at the threshold: $144.60 a month
+    # MAGI 174,001, lowest income in the 35% tier: $202.40 (35%) a month
+    # MAGI 218,001, lowest income in the 50% tier: $289.20 (50%) a month
+    # MAGI 272,001, lowest income in the 65% tier: $376.00 (65%) a month
+    # MAGI 326,001, lowest income in the 80% tier: $462.70 (80%) a month
+    # MAGI 749,999, just below the 85% tier: $462.70 (80%) a month
+    # MAGI 750,000, lowest income in the 85% tier: $491.60 (85%) a month
+    gross_medicare_part_b_premium: [1_735.2, 2_428.8, 3_470.4, 4_512, 5_552.4, 5_552.4, 5_899.2]
+
+- name: 2020 married filing separately filers across the Part B premium tiers.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 87_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 87_001
+      tax_unit3:
+        members: [person3]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 412_999
+      tax_unit4:
+        members: [person4]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 413_000
+      tax_unit5:
+        members: [person5]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+  output:
+    # MAGI 87,000, at the threshold: $144.60 a month
+    # MAGI 87,001, just above it: $462.70 (80%) a month
+    # MAGI 412,999, just below the top tier: $462.70 (80%) a month
+    # MAGI 413,000, at the top tier: $491.60 (85%) a month
+    # MAGI 2,000,000, far above every threshold: $491.60 (85%) a month
+    gross_medicare_part_b_premium: [1_735.2, 5_552.4, 5_552.4, 5_899.2, 5_899.2]
+
+- name: 2021 single filers across the Part B premium tiers.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+      person7:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 88_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 88_001
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 111_001
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 138_001
+      tax_unit5:
+        members: [person5]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 165_001
+      tax_unit6:
+        members: [person6]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 499_999
+      tax_unit7:
+        members: [person7]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 500_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+  output:
+    # MAGI 88,000, at the threshold: $148.50 a month
+    # MAGI 88,001, lowest income in the 35% tier: $207.90 (35%) a month
+    # MAGI 111,001, lowest income in the 50% tier: $297.00 (50%) a month
+    # MAGI 138,001, lowest income in the 65% tier: $386.10 (65%) a month
+    # MAGI 165,001, lowest income in the 80% tier: $475.20 (80%) a month
+    # MAGI 499,999, just below the 85% tier: $475.20 (80%) a month
+    # MAGI 500,000, lowest income in the 85% tier: $504.90 (85%) a month
+    gross_medicare_part_b_premium: [1_782, 2_494.8, 3_564, 4_633.2, 5_702.4, 5_702.4, 6_058.8]
+
+- name: 2021 head of household filers across the Part B premium tiers.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+      person7:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        medicare_irmaa_magi_two_years_prior: 88_000
+      tax_unit2:
+        members: [person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        medicare_irmaa_magi_two_years_prior: 88_001
+      tax_unit3:
+        members: [person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        medicare_irmaa_magi_two_years_prior: 111_001
+      tax_unit4:
+        members: [person4]
+        filing_status: HEAD_OF_HOUSEHOLD
+        medicare_irmaa_magi_two_years_prior: 138_001
+      tax_unit5:
+        members: [person5]
+        filing_status: HEAD_OF_HOUSEHOLD
+        medicare_irmaa_magi_two_years_prior: 165_001
+      tax_unit6:
+        members: [person6]
+        filing_status: HEAD_OF_HOUSEHOLD
+        medicare_irmaa_magi_two_years_prior: 499_999
+      tax_unit7:
+        members: [person7]
+        filing_status: HEAD_OF_HOUSEHOLD
+        medicare_irmaa_magi_two_years_prior: 500_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+  output:
+    # MAGI 88,000, at the threshold: $148.50 a month
+    # MAGI 88,001, lowest income in the 35% tier: $207.90 (35%) a month
+    # MAGI 111,001, lowest income in the 50% tier: $297.00 (50%) a month
+    # MAGI 138,001, lowest income in the 65% tier: $386.10 (65%) a month
+    # MAGI 165,001, lowest income in the 80% tier: $475.20 (80%) a month
+    # MAGI 499,999, just below the 85% tier: $475.20 (80%) a month
+    # MAGI 500,000, lowest income in the 85% tier: $504.90 (85%) a month
+    gross_medicare_part_b_premium: [1_782, 2_494.8, 3_564, 4_633.2, 5_702.4, 5_702.4, 6_058.8]
+
+- name: 2021 surviving spouse filers across the Part B premium tiers.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+      person7:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SURVIVING_SPOUSE
+        medicare_irmaa_magi_two_years_prior: 88_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SURVIVING_SPOUSE
+        medicare_irmaa_magi_two_years_prior: 88_001
+      tax_unit3:
+        members: [person3]
+        filing_status: SURVIVING_SPOUSE
+        medicare_irmaa_magi_two_years_prior: 111_001
+      tax_unit4:
+        members: [person4]
+        filing_status: SURVIVING_SPOUSE
+        medicare_irmaa_magi_two_years_prior: 138_001
+      tax_unit5:
+        members: [person5]
+        filing_status: SURVIVING_SPOUSE
+        medicare_irmaa_magi_two_years_prior: 165_001
+      tax_unit6:
+        members: [person6]
+        filing_status: SURVIVING_SPOUSE
+        medicare_irmaa_magi_two_years_prior: 499_999
+      tax_unit7:
+        members: [person7]
+        filing_status: SURVIVING_SPOUSE
+        medicare_irmaa_magi_two_years_prior: 500_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+  output:
+    # MAGI 88,000, at the threshold: $148.50 a month
+    # MAGI 88,001, lowest income in the 35% tier: $207.90 (35%) a month
+    # MAGI 111,001, lowest income in the 50% tier: $297.00 (50%) a month
+    # MAGI 138,001, lowest income in the 65% tier: $386.10 (65%) a month
+    # MAGI 165,001, lowest income in the 80% tier: $475.20 (80%) a month
+    # MAGI 499,999, just below the 85% tier: $475.20 (80%) a month
+    # MAGI 500,000, lowest income in the 85% tier: $504.90 (85%) a month
+    gross_medicare_part_b_premium: [1_782, 2_494.8, 3_564, 4_633.2, 5_702.4, 5_702.4, 6_058.8]
+
+- name: 2021 joint filers across the Part B premium tiers.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+      person7:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 176_000
+      tax_unit2:
+        members: [person2]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 176_001
+      tax_unit3:
+        members: [person3]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 222_001
+      tax_unit4:
+        members: [person4]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 276_001
+      tax_unit5:
+        members: [person5]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 330_001
+      tax_unit6:
+        members: [person6]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 749_999
+      tax_unit7:
+        members: [person7]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 750_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+  output:
+    # MAGI 176,000, at the threshold: $148.50 a month
+    # MAGI 176,001, lowest income in the 35% tier: $207.90 (35%) a month
+    # MAGI 222,001, lowest income in the 50% tier: $297.00 (50%) a month
+    # MAGI 276,001, lowest income in the 65% tier: $386.10 (65%) a month
+    # MAGI 330,001, lowest income in the 80% tier: $475.20 (80%) a month
+    # MAGI 749,999, just below the 85% tier: $475.20 (80%) a month
+    # MAGI 750,000, lowest income in the 85% tier: $504.90 (85%) a month
+    gross_medicare_part_b_premium: [1_782, 2_494.8, 3_564, 4_633.2, 5_702.4, 5_702.4, 6_058.8]
+
+- name: 2021 married filing separately filers across the Part B premium tiers.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 88_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 88_001
+      tax_unit3:
+        members: [person3]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 411_999
+      tax_unit4:
+        members: [person4]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 412_000
+      tax_unit5:
+        members: [person5]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+  output:
+    # MAGI 88,000, at the threshold: $148.50 a month
+    # MAGI 88,001, just above it: $475.20 (80%) a month
+    # MAGI 411,999, just below the top tier: $475.20 (80%) a month
+    # MAGI 412,000, at the top tier: $504.90 (85%) a month
+    # MAGI 2,000,000, far above every threshold: $504.90 (85%) a month
+    gross_medicare_part_b_premium: [1_782, 5_702.4, 5_702.4, 6_058.8, 6_058.8]
+
+- name: 2022 single filers across the Part B premium tiers.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+      person7:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 91_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 91_001
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 114_001
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 142_001
+      tax_unit5:
+        members: [person5]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 170_001
+      tax_unit6:
+        members: [person6]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 499_999
+      tax_unit7:
+        members: [person7]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 500_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+  output:
+    # MAGI 91,000, at the threshold: $170.10 a month
+    # MAGI 91,001, lowest income in the 35% tier: $238.10 (35%) a month
+    # MAGI 114,001, lowest income in the 50% tier: $340.20 (50%) a month
+    # MAGI 142,001, lowest income in the 65% tier: $442.30 (65%) a month
+    # MAGI 170,001, lowest income in the 80% tier: $544.30 (80%) a month
+    # MAGI 499,999, just below the 85% tier: $544.30 (80%) a month
+    # MAGI 500,000, lowest income in the 85% tier: $578.30 (85%) a month
+    gross_medicare_part_b_premium: [2_041.2, 2_857.2, 4_082.4, 5_307.6, 6_531.6, 6_531.6, 6_939.6]
+
+- name: 2022 joint filers across the Part B premium tiers.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+      person7:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 182_000
+      tax_unit2:
+        members: [person2]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 182_001
+      tax_unit3:
+        members: [person3]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 228_001
+      tax_unit4:
+        members: [person4]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 284_001
+      tax_unit5:
+        members: [person5]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 340_001
+      tax_unit6:
+        members: [person6]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 749_999
+      tax_unit7:
+        members: [person7]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 750_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+  output:
+    # MAGI 182,000, at the threshold: $170.10 a month
+    # MAGI 182,001, lowest income in the 35% tier: $238.10 (35%) a month
+    # MAGI 228,001, lowest income in the 50% tier: $340.20 (50%) a month
+    # MAGI 284,001, lowest income in the 65% tier: $442.30 (65%) a month
+    # MAGI 340,001, lowest income in the 80% tier: $544.30 (80%) a month
+    # MAGI 749,999, just below the 85% tier: $544.30 (80%) a month
+    # MAGI 750,000, lowest income in the 85% tier: $578.30 (85%) a month
+    gross_medicare_part_b_premium: [2_041.2, 2_857.2, 4_082.4, 5_307.6, 6_531.6, 6_531.6, 6_939.6]
+
+- name: 2022 married filing separately filers across the Part B premium tiers.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 91_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 91_001
+      tax_unit3:
+        members: [person3]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 408_999
+      tax_unit4:
+        members: [person4]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 409_000
+      tax_unit5:
+        members: [person5]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+  output:
+    # MAGI 91,000, at the threshold: $170.10 a month
+    # MAGI 91,001, just above it: $544.30 (80%) a month
+    # MAGI 408,999, just below the top tier: $544.30 (80%) a month
+    # MAGI 409,000, at the top tier: $578.30 (85%) a month
+    # MAGI 2,000,000, far above every threshold: $578.30 (85%) a month
+    gross_medicare_part_b_premium: [2_041.2, 6_531.6, 6_531.6, 6_939.6, 6_939.6]
+
+- name: 2023 single filers across the Part B premium tiers.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+      person7:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 97_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 97_001
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 123_001
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 153_001
+      tax_unit5:
+        members: [person5]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 183_001
+      tax_unit6:
+        members: [person6]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 499_999
+      tax_unit7:
+        members: [person7]
+        filing_status: SINGLE
+        medicare_irmaa_magi_two_years_prior: 500_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+  output:
+    # MAGI 97,000, at the threshold: $164.90 a month
+    # MAGI 97,001, lowest income in the 35% tier: $230.80 (35%) a month
+    # MAGI 123,001, lowest income in the 50% tier: $329.70 (50%) a month
+    # MAGI 153,001, lowest income in the 65% tier: $428.60 (65%) a month
+    # MAGI 183,001, lowest income in the 80% tier: $527.50 (80%) a month
+    # MAGI 499,999, just below the 85% tier: $527.50 (80%) a month
+    # MAGI 500,000, lowest income in the 85% tier: $560.50 (85%) a month
+    gross_medicare_part_b_premium: [1_978.8, 2_769.6, 3_956.4, 5_143.2, 6_330, 6_330, 6_726]
+
+- name: 2023 joint filers across the Part B premium tiers.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+      person6:
+        age: 66
+      person7:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 194_000
+      tax_unit2:
+        members: [person2]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 194_001
+      tax_unit3:
+        members: [person3]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 246_001
+      tax_unit4:
+        members: [person4]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 306_001
+      tax_unit5:
+        members: [person5]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 366_001
+      tax_unit6:
+        members: [person6]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 749_999
+      tax_unit7:
+        members: [person7]
+        filing_status: JOINT
+        medicare_irmaa_magi_two_years_prior: 750_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+  output:
+    # MAGI 194,000, at the threshold: $164.90 a month
+    # MAGI 194,001, lowest income in the 35% tier: $230.80 (35%) a month
+    # MAGI 246,001, lowest income in the 50% tier: $329.70 (50%) a month
+    # MAGI 306,001, lowest income in the 65% tier: $428.60 (65%) a month
+    # MAGI 366,001, lowest income in the 80% tier: $527.50 (80%) a month
+    # MAGI 749,999, just below the 85% tier: $527.50 (80%) a month
+    # MAGI 750,000, lowest income in the 85% tier: $560.50 (85%) a month
+    gross_medicare_part_b_premium: [1_978.8, 2_769.6, 3_956.4, 5_143.2, 6_330, 6_330, 6_726]
+
+- name: 2023 married filing separately filers across the Part B premium tiers.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 66
+      person2:
+        age: 66
+      person3:
+        age: 66
+      person4:
+        age: 66
+      person5:
+        age: 66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 97_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 97_001
+      tax_unit3:
+        members: [person3]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 402_999
+      tax_unit4:
+        members: [person4]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 403_000
+      tax_unit5:
+        members: [person5]
+        filing_status: SEPARATE
+        medicare_irmaa_magi_two_years_prior: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+  output:
+    # MAGI 97,000, at the threshold: $164.90 a month
+    # MAGI 97,001, just above it: $527.50 (80%) a month
+    # MAGI 402,999, just below the top tier: $527.50 (80%) a month
+    # MAGI 403,000, at the top tier: $560.50 (85%) a month
+    # MAGI 2,000,000, far above every threshold: $560.50 (85%) a month
+    gross_medicare_part_b_premium: [1_978.8, 6_330, 6_330, 6_726, 6_726]
