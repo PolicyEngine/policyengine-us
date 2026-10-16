@@ -1,8 +1,8 @@
 # Integration tests for NH FANF (Financial Assistance to Needy Families)
 # Tests the complete benefit calculation pipeline with real-world scenarios
 # Note: Tests default to applicant status (20% earned income disregard)
-# Recipients get 75% disregard per Cliff Effect Initiative (Sept 2022)
-# Sources: RSA 167:77-g; FAM 601; FAM 603; SR 97-03; BFA SR 22-28
+# Recipients get a 50% disregard per He-W 654.13(e)
+# Sources: RSA 167:77-g; He-W 654.13; FAM 601; FAM 603; SR 97-03; BFA SR 22-28
 
 - name: Case 1, single parent with one child, no income, maximum benefit.
   period: 2024-01
@@ -158,7 +158,7 @@
     # 1,560 - 840 = 720
     nh_fanf: 720
 
-- name: Case 7, recipient with 75 percent earned income disregard.
+- name: Case 7, recipient with 50 percent earned income disregard.
   period: 2024-01
   input:
     people:
@@ -177,12 +177,12 @@
         members: [person1, person2]
         state_code: NH
   output:
-    # Recipient: 1,000 * 0.25 = 250
-    nh_fanf_countable_earned_income: 250
-    nh_fanf_countable_income: 250
+    # Recipient: 1,000 * 0.50 = 500
+    nh_fanf_countable_earned_income: 500
+    nh_fanf_countable_income: 500
     nh_fanf_eligible: true
-    # 1,022 - 250 = 772
-    nh_fanf: 772
+    # 1,022 - 500 = 522
+    nh_fanf: 522
 
 - name: Case 8, recipient with higher resource limit.
   period: 2024-01
@@ -227,15 +227,15 @@
         members: [person1, person2]
         state_code: NH
   output:
-    # Recipient: 2,000 * 0.25 = 500
+    # Recipient: 2,000 * 0.50 = 1,000
     # Child care: $200
-    # Countable: 500 - 200 = 300
+    # Countable: 1,000 - 200 = 800
     nh_fanf_child_care_deduction: 200
-    nh_fanf_countable_earned_income: 300
-    nh_fanf_countable_income: 300
+    nh_fanf_countable_earned_income: 800
+    nh_fanf_countable_income: 800
     nh_fanf_eligible: true
-    # 1,022 - 300 = 722
-    nh_fanf: 722
+    # 1,022 - 800 = 222
+    nh_fanf: 222
 
 - name: Case 10, large 8-person household.
   period: 2024-01
@@ -327,9 +327,9 @@
         state_code: NH
   output:
     nh_fanf_payment_standard: 1_291
-    # Recipient: 200 * 0.25 = 50
+    # Recipient: 200 * 0.50 = 100
     # Child care (part-time): 2 * $100 = $200
-    # Countable: max(50 - 200, 0) = 0
+    # Countable: max(100 - 200, 0) = 0
     nh_fanf_child_care_deduction: 200
     nh_fanf_countable_earned_income: 0
     nh_fanf_countable_income: 0
@@ -410,9 +410,65 @@
         members: [person1, person2]
         state_code: NH
   output:
-    # Recipient: 1,000 * 0.25 = 250 (75% disregard)
-    nh_fanf_countable_earned_income: 250
-    nh_fanf_countable_income: 250
+    # Recipient: 1,000 * 0.50 = 500 (50% disregard)
+    nh_fanf_countable_earned_income: 500
+    nh_fanf_countable_income: 500
     nh_fanf_eligible: true
-    # 1,022 - 250 = 772 (vs 222 for applicant - $550 more benefit!)
-    nh_fanf: 772
+    # 1,022 - 500 = 522 (vs 222 for applicant: $300 more benefit)
+    nh_fanf: 522
+
+- name: Case 16, recipient family of three in 2025, 50 percent disregard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 18_000  # $1,500/month
+      person2:
+        age: 5
+      person3:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    # 60% x $26,650 (2025 FPG for 3) / 12 = $1,332.50
+    nh_fanf_payment_standard: 1_332.50
+    # He-W 654.13(e): 1,500 * 0.50 = 750
+    nh_fanf_countable_earned_income: 750
+    nh_fanf_income_eligible: true
+    # 1,332.50 - 750 = 582.50
+    nh_fanf: 582.50
+
+- name: Case 17, recipient with countable earnings above the payment standard is ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 32_400  # $2,700/month
+      person2:
+        age: 5
+      person3:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    nh_fanf_payment_standard: 1_332.50
+    # 2,700 * 0.50 = 1,350 > 1,332.50
+    nh_fanf_countable_earned_income: 1_350
+    nh_fanf_income_eligible: false
+    nh_fanf: 0
