@@ -278,3 +278,37 @@ def test_default_dataset_uses_its_supplied_tax_unit_roles():
                 f"{variable} disagrees with tax_unit_role_input == {name} for "
                 f"{mismatched} of {role.size} people."
             )
+
+
+def test_default_dataset_has_no_modeled_state_unemployment_compensation():
+    """Modeled state unemployment insurance is zero on the certified default build.
+
+    `total_unemployment_compensation` falls back to the modeled state
+    unemployment insurance programs only when no unemployment compensation is
+    reported. Those programs need wage-history and claim inputs (base-period
+    wages, high-quarter wages, credit weeks, weeks claimed) that default to 0
+    and that `populace_us_2024` does not carry, so routing income flows through
+    the total leaves population results unchanged. 2025 is checked because its
+    modeled list holds every program (AL, NJ, NY, OK, PA, UT); earlier years
+    hold a subset.
+
+    The whole population is checked, with no subsample, because a build that
+    gains those inputs for a few records would be missed by a sample. Only this
+    one variable and the person weights are computed. If this fails, the build
+    now feeds modeled UI into every program that counts unemployment
+    compensation, and that aggregate effect needs review.
+    """
+    import numpy as np
+
+    from policyengine_us import Microsimulation
+
+    simulation = Microsimulation()  # populace_us_2024, full population.
+    modeled = np.asarray(
+        simulation.calculate("modeled_state_unemployment_compensation", 2025)
+    )
+    nonzero = int((modeled != 0).sum())
+    assert nonzero == 0, (
+        f"populace_us_2024 (certified default build), 2025: {nonzero} of "
+        f"{modeled.size} people have nonzero modeled state unemployment "
+        f"compensation (unweighted total {modeled.sum():,.0f})."
+    )

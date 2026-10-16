@@ -1,0 +1,24 @@
+- name: Line 3 adds back the federal IRA deduction, not total contributions
+  # 2025 M1PR instructions, line 3 (PDF page 7): "the sum of your deductions
+  # for your qualified retirement plan contributions from lines 16 and 20 of
+  # federal Schedule 1". An active participant with $100,000 of wages is
+  # fully phased out of the IRA deduction, so line 3 is $0. The line 10
+  # retirement subtraction still uses the $7,000 contributed.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 100_000
+        ira_active_participant: true
+        traditional_ira_contributions: 7_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MN
+  output:
+    traditional_ira_deduction: 0
+    mn_homestead_credit_refund_household_income: 93_000
