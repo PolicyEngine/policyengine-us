@@ -1,0 +1,249 @@
+- name: Retirement election retains the standard path on a tax tie
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 68
+    taxable_private_pension_income: 8000
+    is_tax_unit_head: true
+    wi_income_tax_before_credits: 100
+    wi_non_refundable_credits: 0
+    wi_retirement_income_exclusion_tax: 100
+    wi_earned_income_credit: 0
+    wi_homestead_credit: 0
+    state_code: WI
+  output:
+    wi_retirement_income_exclusion_elected: false
+    state_income_tax_before_refundable_credits: 100
+    state_refundable_credits: 0
+    state_income_tax: 100
+
+- name: Refundable credits can make the standard retirement path preferable
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 68
+    taxable_private_pension_income: 8000
+    is_tax_unit_head: true
+    wi_income_tax_before_credits: 100
+    wi_non_refundable_credits: 0
+    wi_retirement_income_exclusion_tax: 0
+    wi_earned_income_credit: 200
+    wi_homestead_credit: 0
+    state_code: WI
+  output:
+    wi_retirement_income_exclusion_elected: false
+    state_income_tax_before_refundable_credits: 100
+    state_refundable_credits: 200
+    state_income_tax: -100
+
+- name: Electing retirement exclusion forfeits otherwise available section 71.07 credits
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 68
+    taxable_private_pension_income: 30000
+    is_tax_unit_head: true
+    wi_income_tax_before_credits: 1000
+    wi_non_refundable_credits: 200
+    wi_retirement_income_exclusion_tax: 100
+    wi_earned_income_credit: 300
+    wi_homestead_credit: 0
+    state_code: WI
+  output:
+    wi_retirement_income_exclusion_elected: true
+    state_income_tax_before_refundable_credits: 100
+    state_refundable_credits: 0
+    state_income_tax: 100
+
+- name: Retirement election is unavailable before the 2025 effective date
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    age: 68
+    taxable_private_pension_income: 30000
+    is_tax_unit_head: true
+    wi_income_tax_before_credits: 1000
+    wi_non_refundable_credits: 200
+    wi_retirement_income_exclusion_tax: 100
+    wi_earned_income_credit: 300
+    wi_homestead_credit: 0
+    state_code: WI
+  output:
+    wi_retirement_income_exclusion_elected: false
+    state_income_tax_before_refundable_credits: 800
+    state_refundable_credits: 300
+    state_income_tax: 500
+
+- name: The 2025 retirement election forfeits homestead and earned income credits
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 68
+    taxable_private_pension_income: 30000
+    is_tax_unit_head: true
+    wi_income_tax_before_credits: 1000
+    wi_non_refundable_credits: 100
+    wi_retirement_income_exclusion_tax: 100
+    wi_earned_income_credit: 25
+    wi_homestead_credit: 200
+    state_code: WI
+  output:
+    wi_retirement_income_exclusion_elected: true
+    state_income_tax_before_refundable_credits: 100
+    state_refundable_credits: 0
+    state_income_tax: 100
+
+- name: The 2026 retirement election retains homestead but forfeits earned income credit
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    age: 68
+    taxable_private_pension_income: 30000
+    is_tax_unit_head: true
+    wi_income_tax_before_credits: 1000
+    wi_non_refundable_credits: 100
+    wi_retirement_income_exclusion_tax: 100
+    wi_earned_income_credit: 25
+    wi_homestead_credit: 200
+    state_code: WI
+  output:
+    wi_retirement_income_exclusion_elected: true
+    state_income_tax_before_refundable_credits: 100
+    state_refundable_credits: 200
+    state_income_tax: -100
+
+- name: Single retirement exclusion cannot subtract the same pension on lines 16 and 17
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 68
+    taxable_private_pension_income: 8000
+    is_tax_unit_head: true
+    state_code: WI
+  output:
+    wi_retirement_income_subtraction: 5000
+    wi_retirement_income_exclusion_amount: 8000
+    wi_retirement_income_exclusion_line17_offset: 5000
+
+- name: Pooled joint exclusion preserves the maximum remaining line 17 subtraction
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        age: 68
+        taxable_private_pension_income: 45000
+        farm_operations_income: -30000
+        is_tax_unit_head: true
+      spouse:
+        age: 68
+        taxable_private_pension_income: 8000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WI
+  output:
+    adjusted_gross_income: 23000
+    wi_retirement_income_subtraction: 10000
+    wi_retirement_income_exclusion_amount: 48000
+    # $5,000 remains after line 16; all of it can be retained on line 17.
+    wi_retirement_income_exclusion_line17_offset: 5000
+
+- name: Unequal spouse pensions preserve both line 17 amounts under joint pooling
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        age: 68
+        taxable_private_pension_income: 53000
+        farm_operations_income: -35000
+        is_tax_unit_head: true
+      spouse:
+        age: 68
+        taxable_private_pension_income: 5000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WI
+  output:
+    adjusted_gross_income: 23000
+    wi_retirement_income_subtraction: 10000
+    wi_retirement_income_exclusion_amount: 48000
+    # Allocate line 16 to the head's income above the two line 17 amounts.
+    wi_retirement_income_exclusion_line17_offset: 0
+
+- name: Younger spouse income does not enter the retirement exclusion pool
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        age: 68
+        taxable_private_pension_income: 8000
+        is_tax_unit_head: true
+      spouse:
+        age: 66
+        taxable_private_pension_income: 8000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WI
+  output:
+    wi_retirement_income_subtraction: 10000
+    wi_retirement_income_exclusion_amount: 8000
+    wi_retirement_income_exclusion_line17_offset: 5000
+
+- name: IRA distributions cannot be subtracted on both retirement lines
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 68
+    taxable_ira_distributions: 8000
+    is_tax_unit_head: true
+    state_code: WI
+  output:
+    wi_retirement_income_exclusion_amount: 8000
+    wi_retirement_income_subtraction: 5000
+    wi_retirement_income_exclusion_line17_offset: 5000
+
+- name: 401k distributions cannot be subtracted on both retirement lines
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 68
+    taxable_401k_distributions: 8000
+    is_tax_unit_head: true
+    state_code: WI
+  output:
+    wi_retirement_income_exclusion_amount: 8000
+    wi_retirement_income_subtraction: 5000
+    wi_retirement_income_exclusion_line17_offset: 5000
+
+- name: Roth conversions cannot be subtracted on both retirement lines
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 68
+    taxable_roth_conversions: 8000
+    is_tax_unit_head: true
+    state_code: WI
+  output:
+    wi_retirement_income_exclusion_amount: 8000
+    wi_retirement_income_subtraction: 5000
+    wi_retirement_income_exclusion_line17_offset: 5000
