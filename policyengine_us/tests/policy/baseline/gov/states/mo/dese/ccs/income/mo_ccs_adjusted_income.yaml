@@ -61,3 +61,24 @@
   output:
     # Countable 500/mo; premiums 1,000/mo; max(500 - 1,000, 0) = 0.
     mo_ccs_adjusted_income: 0
+
+- name: Pretax and after-tax premiums are each deducted once from gross wages.
+  period: 2026-01
+  input:
+    state_code: MO
+    employment_income: 36_000
+    health_insurance_premiums: 2_400
+    pre_tax_health_insurance_premiums: 3_600
+  output:
+    mo_ccs_countable_income: 3_000
+    mo_ccs_adjusted_income: 2_500
+
+- name: Moving all premiums to pretax payroll leaves adjusted income unchanged.
+  period: 2026-01
+  input:
+    state_code: MO
+    employment_income: 36_000
+    pre_tax_health_insurance_premiums: 6_000
+  output:
+    mo_ccs_countable_income: 3_000
+    mo_ccs_adjusted_income: 2_500

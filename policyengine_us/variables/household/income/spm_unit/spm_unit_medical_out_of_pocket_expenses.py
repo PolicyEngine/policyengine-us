@@ -10,8 +10,9 @@ class spm_unit_medical_out_of_pocket_expenses(Variable):
     documentation = (
         "Total medical out-of-pocket expenses at the SPM unit level, "
         "combining health insurance premiums with non-premium medical "
-        "expenses. Health insurance premiums include other health insurance "
-        "premiums plus modeled Marketplace, CHIP, Medicaid, and Medicare "
+        "expenses. Health insurance premiums include pretax payroll premiums "
+        "and disjoint other health insurance premiums plus modeled "
+        "Marketplace, CHIP, Medicaid, and Medicare "
         "Part A and Part B premiums net of Medicare Savings Program coverage "
         "where modeled, plus the Part D IRMAA surcharge. "
         "Non-premium expenses include other medical expenses and "
