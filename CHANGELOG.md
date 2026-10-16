@@ -1,3 +1,10 @@
+## [2.44.0] - 2026-10-16
+
+### Added
+
+- Add New Jersey state supplementary payments and the ineligible-spouse variation, verified for 2026.
+
+
 ## [2.43.0] - 2026-10-16
 
 ### Added
