@@ -27,8 +27,9 @@ class wi_works_placement(Variable):
         person = spm_unit.members
 
         # CMC: Custodial Parent of Infant (child <= 8 weeks ≈ 2 months)
-        child_age_months = person("monthly_age", period)
-        has_infant = spm_unit.any(child_age_months <= p.cmc_infant_age_limit)
+        # The limit is in months; monthly_age is in years, so convert age.
+        age_in_months = person("age", period.this_year) * MONTHS_IN_YEAR
+        has_infant = spm_unit.any(age_in_months <= p.cmc_infant_age_limit)
 
         # ARP: At Risk Pregnancy (3rd trimester = month 7+)
         is_pregnant = person("is_pregnant", period)
