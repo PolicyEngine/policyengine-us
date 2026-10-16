@@ -6,8 +6,8 @@ values:
   2024-01-01: 301.236 # 2023Q3: (299.899 + 301.551 + 302.257) / 3
   2025-01-01: 308.729 # 2024Q3: (308.501 + 308.640 + 309.046) / 3
   2026-01-01: 317.265 # 2025Q3: (316.349 + 317.306 + 318.139) / 3
+  2027-01-01: 328.746 # 2026Q3: (327.104 + 328.481 + 330.654) / 3
   # Forecasts from marrying CPI-W actuals with CBO's CPI-U forecast.
-  2027-01-01: 326.149 # 2026Q3: 330.1 * 306.199 / 310.989
   2028-01-01: 332.241 # 2027Q3: 337.3 * 306.199 / 310.989
   2029-01-01: 339.431 # 2028Q3: 344.6 * 306.199 / 310.989
   2030-01-01: 346.917 # 2029Q3: 352.2 * 306.199 / 310.989
@@ -24,5 +24,9 @@ metadata:
   reference:
     - title: Historical values
       href: https://www.ssa.gov/oact/cola/colaseries.html
+    - title: BLS CPI-W, U.S. city average, all items, not seasonally adjusted (CWUR0000SA0)
+      href: https://data.bls.gov/timeseries/CWUR0000SA0
+    - title: 2027 Cost-of-Living Adjustment (COLA) Fact Sheet
+      href: https://www.ssa.gov/news/en/cola/factsheets/2027.html
     - title: CBO Economic Projections, February 2024.
       href: https://www.cbo.gov/publication/59710
