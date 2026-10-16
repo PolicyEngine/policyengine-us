@@ -1,0 +1,1 @@
+Backfill the Texas SSI supplement's personal needs allowance at $30 from July 1988 (no supplement before September 1999), so Texas simulations for months from July 1988 through August 1999 no longer fail, and document the supplement's sources from 1999 to 2026.

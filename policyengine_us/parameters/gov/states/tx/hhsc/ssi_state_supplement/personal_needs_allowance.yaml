@@ -1,6 +1,11 @@
 description: Texas provides this amount as the personal needs allowance for Supplemental Security Income recipients in Medicaid-funded long-term care facilities under the Optional State Supplement program.
 
 values:
+  # H-1500 and the 2002 DHS handbook give $30 before September 1999 without a
+  # start date. The modeled backfill starts July 1, 1988, when the $30 federal
+  # minimum in 42 USC 1396a(q)(2) took effect; Texas's own adoption date is
+  # not in these sources.
+  1988-07-01: 30
   1999-09-01: 45
   2001-09-01: 60
   2003-09-01: 45
@@ -16,3 +21,17 @@ metadata:
       href: https://statutes.capitol.texas.gov/Docs/HR/htm/HR.32.htm
     - title: HHSC MEPD Handbook Section H-1500 - Personal Needs Allowance
       href: https://www.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/h-1500-personal-needs-allowance
+    - title: 1 Texas Administrative Code Section 358.381(c)
+      href: https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-358-381
+    - title: 42 USC 1396a(q)(2) - Minimum monthly personal needs allowance
+      href: https://www.law.cornell.edu/uscode/text/42/1396a#q_2
+    - title: Texas DHS Medicaid Eligibility Handbook Revision Notice 02-1 (December 21, 2001), Personal Needs Allowance - Effective September 1, 2001
+      href: https://web.archive.org/web/20020504200936/http://www.dhs.state.tx.us:80/handbooks/archives/meh/02-1/memo.htm
+    - title: H.B. 2292, 78th Texas Legislature (2003), Section 2.207
+      href: https://capitol.texas.gov/tlodocs/78R/billtext/html/HB02292F.htm
+    - title: Texas DHS Medicaid Eligibility Handbook Item 3231, Personal Needs Allowance (Revision 03-7, effective September 1, 2003)
+      href: https://web.archive.org/web/20030910100506/http://www.dhs.state.tx.us:80/handbooks/meh/3000/3231.htm
+    - title: HHSC MEPD Handbook Section H-6000 (Revision 09-4, effective December 1, 2009)
+      href: https://web.archive.org/web/20100126020411/http://www.dads.state.tx.us/handbooks/mepd/H/H-6000.htm
+    - title: H.B. 54, 88th Texas Legislature (2023)
+      href: https://capitol.texas.gov/tlodocs/88R/billtext/html/HB00054F.htm
