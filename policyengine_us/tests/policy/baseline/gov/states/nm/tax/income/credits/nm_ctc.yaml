@@ -37,3 +37,107 @@
     filing_status: SINGLE
   output:
     nm_ctc: 75
+
+- name: 2025 single filer who can be claimed as a dependent gets no child income tax credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 20
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NM
+  output:
+    # NMSA 7-2-18.34(A): "a taxpayer who is a resident and is not a dependent
+    # of another individual".
+    nm_ctc: 0
+
+- name: 2025 joint return with one claimable spouse keeps the child income tax credit (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: NM
+  output:
+    # "your spouse may still qualify to claim rebates or credits" (PIT-RC);
+    # AGI $10,000 is in the first bracket: $637 per qualifying child.
+    nm_ctc: 637
+
+- name: 2025 joint return with one claimable spouse keeps the child income tax credit (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: NM
+  output:
+    nm_ctc: 637
+
+- name: 2025 joint return with both spouses claimable gets no child income tax credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: NM
+  output:
+    nm_ctc: 0
