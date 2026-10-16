@@ -166,3 +166,20 @@
     state_code: MO
   output:
     mo_federal_income_tax_deduction: 0
+
+- name: The section 1341 credit does not reduce the tax on the federal return
+  # The MO-1040 Line 9 chart starts from Form 1040 Line 22 and does not
+  # subtract Schedule 3 Line 13b. Income tax of 340 is 1,840 on Line 22 less
+  # the 1,500 credit; 25% of 1,840 is 460.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    mo_adjusted_gross_income: 30_000
+    income_tax: 340
+    claim_of_right_credit: 1_500
+    recovery_rebate_credit: 0
+    refundable_ctc: 0
+    filing_status: SINGLE
+    state_code: MO
+  output:
+    mo_federal_income_tax_deduction: 460

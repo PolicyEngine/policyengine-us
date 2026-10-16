@@ -26,4 +26,11 @@ class nj_eligible_pension_income(Variable):
         role_eligible = is_head | is_spouse
 
         eligible = demographic_eligible & role_eligible
-        return eligible * add(person, period, p.sources)
+        # Line A is line 20a, which a claim of right repayment of pension
+        # income reduces (N.J.S.A. 54A:5-2; TAM 2011-7).
+        pension_income = max_(
+            add(person, period, p.sources)
+            - person("nj_claim_of_right_pension_offset", period),
+            0,
+        )
+        return eligible * pension_income

@@ -1,0 +1,1 @@
+Add the federal claim of right repayment deduction and section 1341 credit (26 U.S.C. 1341), North Carolina's bar on its claim of right deduction when federal tax is computed under section 1341(a)(5), and North Carolina's tax payment for restored income (G.S. 105-266.2).
