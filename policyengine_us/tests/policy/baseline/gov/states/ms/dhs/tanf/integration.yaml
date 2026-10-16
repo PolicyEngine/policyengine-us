@@ -304,3 +304,64 @@
     # $500 <= $1,522.55 = true
     ms_tanf_income_eligible: true
     ms_tanf_eligible: true
+
+- name: Case 9, parent of two with $200 a month of earnings gets the $90 work expense deduction.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 2_400
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_cash_assets: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MS
+  output:
+    # Monthly countable income: 200 - 90 = 110
+    ms_tanf_countable_income: 110 * 12
+    # (260 - 110) * 12 = 1_800
+    ms_tanf: 1_800
+
+- name: Case 10, parent of two with $200 a month of earnings and $50 a month of child care.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 2_400
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_cash_assets: 0
+        childcare_expenses: 600
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MS
+  output:
+    # Monthly countable income: 200 - 90 - 50 = 60
+    ms_tanf_countable_income: 60 * 12
+    # (260 - 60) * 12 = 2_400
+    ms_tanf: 2_400
