@@ -182,7 +182,8 @@
         state_code: NC
   output:
     # No income, so SSI would be payable, but 1,800 + 3,500 = 5,300 exceeds
-    # the 2,000 limit.
+    # the 3,000 limit for an individual living with an ineligible spouse
+    # (20 CFR 416.1205(a)).
     ssi: [0, 0]
     # person1's own resources (1,800) would pass SA-3200 I, but SA requires
     # SSI eligibility when the income would qualify.
