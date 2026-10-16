@@ -50,7 +50,7 @@
   output:
     nc_tanf: 0
 
-- name: One adult and one child household with $422 monthly income receives $300 per year
+- name: One adult and one child household with $422 monthly income receives $996.30 per year
   period: 2024
   input:
     people:
@@ -68,7 +68,8 @@
         members: [adult1, child1]
         state_code: NC
   output:
-    nc_tanf: 300
+    # Countable earnings: 422 * (1 - 0.275) = 305.95; 0.5 * (472 - 305.95) = 83.025 a month
+    nc_tanf: 83.025 * 12  # 996.30
 
 - name: One adult and two children household with one SSI recipient receives $236 per month
   period: 2024
@@ -93,7 +94,7 @@
   output:
     nc_tanf: 236 * 12
 
-- name: One adult and two children household with $400 monthly income and one SSI recipient receives $36 per month
+- name: One adult and two children household with $400 monthly income and one SSI recipient receives $91 per month
   period: 2024
   input:
     people:
@@ -114,9 +115,10 @@
         members: [adult1, child1, child2]
         state_code: NC
   output:
-    nc_tanf: 36 * 12
+    # Countable earnings: 400 * (1 - 0.275) = 290; 0.5 * (472 - 290) = 91 a month
+    nc_tanf: 91 * 12
 
-- name: One adult and two children household with $400 monthly income and two SSI recipient receives $0 per month
+- name: One adult and two children household with $400 monthly income and two SSI recipient receives $36 per month
   period: 2024
   input:
     people:
@@ -138,9 +140,10 @@
         members: [adult1, child1, child2]
         state_code: NC
   output:
-    nc_tanf: 0
+    # Household size 1. Countable earnings: 400 * (1 - 0.275) = 290; 0.5 * (362 - 290) = 36 a month
+    nc_tanf: 36 * 12
 
-- name: One adult and two children household with $330 monthly income and two SSI recipient receives $16 per month
+- name: One adult and two children household with $330 monthly income and two SSI recipient receives $61.375 per month
   period: 2024
   input:
     people:
@@ -162,9 +165,10 @@
         members: [adult1, child1, child2]
         state_code: NC
   output:
-    nc_tanf: 16 * 12
+    # Countable earnings: 330 * (1 - 0.275) = 239.25; 0.5 * (362 - 239.25) = 61.375 a month
+    nc_tanf: 61.375 * 12  # 736.50
 
-- name: One adult and one child household with income $430 monthly income receives $0 per year
+- name: One adult and one child household with income $430 monthly income receives $961.50 per year
   period: 2024
   input:
     people:
@@ -182,7 +186,8 @@
         members: [adult1, child1]
         state_code: NC
   output:
-    nc_tanf: 0
+    # Countable earnings: 430 * (1 - 0.275) = 311.75; 0.5 * (472 - 311.75) = 80.125 a month
+    nc_tanf: 80.125 * 12  # 961.50
 
 - name: 14 people household including a child with no income receives $6252 per year
   period: 2024
@@ -252,7 +257,7 @@
   output:
     nc_tanf: (1042 - 0) * 0.5 * 12   
 
-- name: 14 people household including a child with $692 monthly income receives $300 per year
+- name: 14 people household including a child with $692 monthly income receives $3,241.80 per year
   period: 2024
   input:
     people:
@@ -318,9 +323,10 @@
         members: [adult1, adult2, adult3, adult4, adult5, adult6, adult7, adult8, adult9, adult10, adult11, adult12, adult13, child1]
         state_code: NC
   output:
-    nc_tanf: (1042 - 692) * 0.5 * 12 
+    # Countable earnings: 692 * (1 - 0.275) = 501.70; 0.5 * (1_042 - 501.70) = 270.15 a month
+    nc_tanf: 270.15 * 12  # 3_241.80
 
-- name: 14 people household including a child with $1000 monthly income receives $0 per year
+- name: 14 people household including a child with $1000 monthly income receives $1,902 per year
   period: 2024
   input:
     people:
@@ -386,4 +392,60 @@
         members: [adult1, adult2, adult3, adult4, adult5, adult6, adult7, adult8, adult9, adult10, adult11, adult12, adult13, child1]
         state_code: NC
   output:
-    nc_tanf: 0
+    # Countable earnings: 1_000 * (1 - 0.275) = 725; 0.5 * (1_042 - 725) = 158.50 a month
+    nc_tanf: 158.5 * 12  # 1_902
+
+- name: Single parent with five children and $598 monthly earnings receives $1,586.70 per year.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 7_176
+      child1:
+        age: 15
+      child2:
+        age: 12
+      child3:
+        age: 9
+      child4:
+        age: 6
+      child5:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4, child5]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4, child5]
+        state_code: NC
+  output:
+    # Countable earnings: 7_176 * (1 - 0.275) = 5_202.60 (433.55 a month)
+    nc_tanf_countable_earned_income: 5_202.6
+    # Need standard for 6: 698 * 12 = 8_376; 8_376 - 5_202.60 = 3_173.40
+    nc_tanf_reduced_need_standard: 3_173.4
+    nc_tanf_income_eligible: true
+    # 0.5 * 3_173.40 = 1_586.70 (132.225 a month)
+    nc_tanf: 1_586.7
+
+- name: Parent with two children and $600 monthly earnings receives $54.50 per month.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 7_200
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: NC
+  output:
+    # Countable earnings: 600 * (1 - 0.275) = 435 a month; 0.5 * (544 - 435) = 54.50
+    nc_tanf: 54.5 * 12
