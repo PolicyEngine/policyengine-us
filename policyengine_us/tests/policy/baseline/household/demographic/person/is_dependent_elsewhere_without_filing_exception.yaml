@@ -1,0 +1,36 @@
+- name: Unclaimed but claimable filer fails the dependent taxpayer test
+  period: 2025
+  input:
+    claimed_as_dependent_on_another_return: false
+    claimable_as_dependent_on_another_return: true
+  output:
+    dependent_claimant_filing_exception: false
+    is_dependent_elsewhere_without_filing_exception: true
+
+- name: Nonrequired refund-only claimant restores dependent taxpayer eligibility
+  period: 2025
+  input:
+    claimable_as_dependent_on_another_return: true
+    dependent_claimant_filing_exception: true
+  output:
+    # Publication 501 PDF p.11, Dependent Taxpayer Test exception.
+    is_dependent_elsewhere_without_filing_exception: false
+    claimable_as_dependent_on_another_return: true
+
+- name: Nonrequired claimant filing no return restores dependent taxpayer eligibility
+  period: 2025
+  input:
+    claimable_as_dependent_on_another_return: true
+    dependent_claimant_filing_exception: true
+  output:
+    # Publication 596 PDF p.18 includes the nonrequired claimant who files no return.
+    is_dependent_elsewhere_without_filing_exception: false
+    claimable_as_dependent_on_another_return: true
+
+- name: The filing exception does not create claimability
+  period: 2025
+  input:
+    claimable_as_dependent_on_another_return: false
+    dependent_claimant_filing_exception: true
+  output:
+    is_dependent_elsewhere_without_filing_exception: false

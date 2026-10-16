@@ -6,7 +6,7 @@ class nm_property_tax_rebate_eligible(Variable):
     entity = TaxUnit
     label = "Eligible for the New Mexico property tax rebate"
     definition_period = YEAR
-    reference = "https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf"
+    reference = "https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf#page=70"
     defined_for = StateCode.NM
 
     def formula(tax_unit, period, parameters):

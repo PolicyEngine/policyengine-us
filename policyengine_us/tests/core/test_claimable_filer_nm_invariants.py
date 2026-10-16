@@ -1,14 +1,19 @@
 """New Mexico rules for a filer who can be claimed as a dependent.
 
-The child income tax credit, the 65+ medical care credit and exemption, the
-working families credit, the elderly property tax rebate, the child day care
-credit, the 100+ exemption and the deduction for certain dependents apply
-NMSA chapter 7 article 2's "not a dependent of another individual" tests per
-filer, and count no dependents on a return with a claimable filer.
+Several credits and exemptions bar "a dependent of another individual", and
+dependent-based amounts need dependents that a return with a claimable filer
+cannot have (IRC 152(b)(1)).
 
-For couples drawn by Hypothesis and a seeded population in NM, with
-either, both or neither spouse claimed, each output is the same under either
-head/spouse labelling, and marking another filer as claimed never raises it.
+For couples with either, both or neither spouse claimed:
+
+1. Swap invariance: each output is the same under either head/spouse
+   labelling (Hypothesis batches, the seeded population and the crafted
+   centenarian cases).
+2. Monotonicity: marking another filer as claimed never raises an output
+   (seeded population and crafted cases only).
+
+The crafted cases add spouses aged 100 or older, whom the generated population
+(ages 18 to 90) never has.
 """
 
 import pytest
@@ -41,6 +46,23 @@ OUTPUTS = [
 ]
 
 
+def _centenarian_cases():
+    # One or both spouses aged 100 or older, with income to exempt.
+    centenarian = {"age": 101, "taxable_pension_income": 20_000.0}
+    older = {"age": 103, "taxable_interest_income": 5_000.0}
+    younger = {"age": 70, "social_security_retirement": 12_000.0}
+    return [
+        {
+            "state": "NM",
+            "adults": couple,
+            "dependents": [],
+            "claimed": claimed,
+        }
+        for couple in ([centenarian, younger], [centenarian, older])
+        for claimed in [(True, False), (False, True), (True, True)]
+    ]
+
+
 @st.composite
 def couples(draw):
     return {
@@ -64,6 +86,10 @@ def test_nm_claimable_filer_rules_are_label_free(year, units):
 
 @pytest.mark.parametrize("year", YEARS)
 def test_nm_claimable_filer_rules_seeded_population(year):
-    units = _seeded_couples(STATES, per_state=3) + _crafted_cases(STATES)
+    units = (
+        _seeded_couples(STATES, per_state=3)
+        + _crafted_cases(STATES)
+        + _centenarian_cases()
+    )
     check_swap(units, year, OUTPUTS)
     check_monotone(units, year, OUTPUTS)

@@ -13,12 +13,30 @@ class nm_medical_expense_credit(Variable):
     )
     defined_for = StateCode.NM
 
+    documentation = (
+        "Senior medical credit based on gross unreimbursed costs paid, preserving "
+        "premiums deducted through the federal self-employed health insurance ALD. "
+        "Only the exclusion applied to a computed federal medical amount is "
+        "restored; caller-supplied subtotals remain unchanged even with components. "
+        "This assumes qualifying costs were funded from income included in AGI. "
+        "Premium inputs use payer attribution: each person reports premiums that "
+        "person paid, including family coverage regardless of whom it covers. "
+    )
+
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         pcredits = parameters(period).gov.states.nm.tax.income.credits
         p = pcredits.unreimbursed_medical_care_expense
         age = person("age", period)
-        medical_expense = tax_unit("itemized_medical_expenses", period)
+        # Restore only premiums excluded from a computed federal subtotal.
+        medical_expense = add(
+            tax_unit,
+            period,
+            [
+                "itemized_medical_expenses",
+                "itemized_medical_expenses_applied_exclusion",
+            ],
+        )
         expense_eligible = medical_expense >= p.min_expenses
         # NMSA 7-2-18.13(A) allows the credit to "a taxpayer ... who is
         # sixty-five years of age or older and who is not a dependent of
@@ -29,8 +47,8 @@ class nm_medical_expense_credit(Variable):
         # ("If you are a dependent with a spouse who was not a dependent of
         # another taxpayer, your spouse may still qualify").
         filer = person("is_tax_unit_head_or_spouse", period)
-        claimed_elsewhere = person("claimed_as_dependent_on_another_return", period)
-        qualifying_filer = filer & (age >= p.age_eligibility) & ~claimed_elsewhere
+        claimable = person("claimable_as_dependent_on_another_return", period)
+        qualifying_filer = filer & (age >= p.age_eligibility) & ~claimable
         eligible = tax_unit.any(qualifying_filer) & expense_eligible
         # exemption is halved for married filing separately
         filing_status = tax_unit("filing_status", period)

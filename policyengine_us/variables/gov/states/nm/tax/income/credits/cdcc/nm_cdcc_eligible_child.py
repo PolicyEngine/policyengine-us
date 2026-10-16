@@ -18,6 +18,6 @@ class nm_cdcc_eligible_child(Variable):
         # IRC 152(b)(1) a return on which the filer (or, if joint, either
         # spouse) can be claimed as a dependent has no dependents.
         dependent_filer = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         return age_eligible & dependent & ~dependent_filer

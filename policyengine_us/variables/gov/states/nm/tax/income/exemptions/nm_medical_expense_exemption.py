@@ -12,13 +12,33 @@ class nm_medical_expense_exemption(Variable):
     )
     defined_for = StateCode.NM
 
+    documentation = (
+        "Senior medical exemption based on gross unreimbursed costs paid, "
+        "preserving premiums deducted through the federal self-employed health "
+        "insurance ALD. Only the exclusion applied to a computed federal medical "
+        "amount is restored; caller-supplied subtotals remain unchanged even "
+        "with components. "
+        "This assumes qualifying costs were funded from income "
+        "included in AGI. Premium inputs use payer attribution: each person "
+        "reports premiums that person paid, including family coverage regardless "
+        "of whom it covers. "
+    )
+
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         p = parameters(
             period
         ).gov.states.nm.tax.income.exemptions.unreimbursed_medical_care_expense
         age = person("age", period)
-        medical_expense = tax_unit("itemized_medical_expenses", period)
+        # Restore only premiums excluded from a computed federal subtotal.
+        medical_expense = add(
+            tax_unit,
+            period,
+            [
+                "itemized_medical_expenses",
+                "itemized_medical_expenses_applied_exclusion",
+            ],
+        )
         # NMSA 7-2-5.9(A) allows the exemption to "any individual sixty-five
         # years of age or older" for expenses paid "for that individual or
         # for the individual's spouse or dependent", and PIT-ADJ line 18 asks
