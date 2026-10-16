@@ -1,0 +1,22 @@
+description: Virginia pays two-parent families the separate Unemployed Parent standards of assistance, instead of the regular standards, under the Temporary Assistance for Needy Families program when this is true.
+
+metadata:
+  unit: bool
+  period: month
+  label: Virginia TANF-UP separate standards of assistance in effect
+  reference:
+    - title: Virginia TANF Manual (11/20), Section 304, Appendix 3 - Standards of Assistance - TANF-UP (7/20)
+      href: https://web.archive.org/web/20210719231146/https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=27
+    - title: Virginia TANF Manual (7/24), Section 304.1 - Standards of Assistance
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/tanfview/tanf/Chapter-300---Need-and-Amount-of-Assistance.pdf#page=19
+    - title: Virginia TANF Manual (7/24), Section 304, Appendix 2 - Standards of Assistance (7/22)
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/tanfview/tanf/Chapter-300---Need-and-Amount-of-Assistance.pdf#page=29
+    - title: 2024 Appropriation Act (HB 6001, Chapter 2), Item 325 C
+      href: https://budget.lis.virginia.gov/item/2024/2/HB6001/Chapter/1/325/
+
+values:
+  # The 11/20 manual has a separate TANF-UP schedule (Appendix 3, dated 7/20).
+  # The current manual has one schedule for all units (Appendix 2, dated 7/22)
+  # and no TANF-UP schedule.
+  2020-07-01: true
+  2022-07-01: false

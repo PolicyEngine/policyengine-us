@@ -1,0 +1,1 @@
+Pay Virginia TANF-UP (two-parent) units the TANF standards of assistance and maximum payment from July 2022, when Virginia's TANF Manual has one schedule of standards for all units, instead of the July 2020 TANF-UP schedule.

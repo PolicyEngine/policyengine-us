@@ -12,10 +12,14 @@ class va_tanf(Variable):
 
     def formula(spm_unit, period, parameters):
         # the calculated payment
+        # Two-parent (TANF-UP) units get the separate TANF-UP standards only
+        # while Virginia has them; otherwise the TANF standards apply.
+        p_up = parameters(period).gov.states.va.dss.tanf.payment.up_grant_standard
         up_tanf_eligibility = spm_unit("va_up_tanf_eligibility", period)
+        uses_up_standards = up_tanf_eligibility & p_up.in_effect
         grant_standard = spm_unit("va_tanf_grant_standard", period)
         up_grant_standard = spm_unit("va_tanf_up_grant_standard", period)
-        grant = where(up_tanf_eligibility, up_grant_standard, grant_standard)
+        grant = where(uses_up_standards, up_grant_standard, grant_standard)
         countable_income = spm_unit("va_tanf_countable_income", period)
         payment = max_(grant - countable_income, 0)
 
@@ -36,7 +40,7 @@ class va_tanf(Variable):
             p_payment.grant_standard.group2.max,
         )
         base_max = where(
-            up_tanf_eligibility,
+            uses_up_standards,
             up_tanf_base_max,
             tanf_base_max,
         )
