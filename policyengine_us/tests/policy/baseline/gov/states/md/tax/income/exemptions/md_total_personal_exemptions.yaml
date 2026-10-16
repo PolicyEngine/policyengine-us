@@ -168,3 +168,29 @@
   output:
     # 3 exemptions x $3,200 = $9,600.
     md_total_personal_exemptions: 9600
+
+- name: Federal dependent exemption repeal preserves Maryland exemptions for an unclaimed family
+  period: 2025
+  reforms: policyengine_us.reforms.treasury.repeal_dependent_exemptions.repeal_dependent_exemptions
+  input:
+    gov.contrib.treasury.repeal_dependent_exemptions: true
+    people:
+      head: {age: 35, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      spouse: {age: 35, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child_a: {age: 4, is_tax_unit_dependent: true}
+      child_b: {age: 7, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child_a, child_b]
+        filing_status: JOINT
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [head, spouse, child_a, child_b]
+        state_code: MD
+  output:
+    exemptions_count: 2
+    md_personal_exemptions_count: 4
+    # Tax-General 10-211(a)(3), (b)(1): Maryland's dependent exemptions
+    # survive the federal-only reform; 4 x $3,200 at joint AGI < $150,000.
+    md_total_personal_exemptions: 12_800
