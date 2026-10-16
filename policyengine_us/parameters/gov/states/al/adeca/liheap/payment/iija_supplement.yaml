@@ -1,0 +1,19 @@
+description: Alabama provides this Infrastructure Investment and Jobs Act supplement with each regular heating assistance award under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01: 100
+  # The draft FY2027 plan drops the supplement, and the IIJA appropriation ran
+  # through September 30, 2026.
+  2026-10-01: 0
+metadata:
+  unit: currency-USD
+  period: year
+  label: Alabama LIHEAP IIJA heating supplement
+  reference:
+    - title: Alabama FY2026 LIHEAP State Plan, section 2.5
+      href: https://liheapch.acf.gov/docs/2026/state-plans/AL_Plan_2026.pdf#page=10
+    - title: HHS TAGGS FY2026 Alabama LIHEAP Infrastructure Supplement award 2601ALLIEI
+      href: https://taggs.hhs.gov/Detail/AwardDetail?arg_AwardNum=2601ALLIEI&arg_ProgOfficeCode=31
+    - title: "Alabama draft FY2027 LIHEAP State Plan, section 2.5 (no IIJA supplement) #page 9-10"
+      href: https://adeca.alabama.gov/wp-content/uploads/FY27-LIHEAP-State-Plan.pdf#page=9
+    - title: Infrastructure Investment and Jobs Act, Pub. L. 117-58, Division J, Title VII, 135 Stat. 1412
+      href: https://www.govinfo.gov/content/pkg/PLAW-117publ58/pdf/PLAW-117publ58.pdf#page=984

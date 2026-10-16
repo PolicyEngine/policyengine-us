@@ -1,0 +1,657 @@
+# Source: ADECA FY2026 LIHEAP Policy Manual and its Appendix D Payment Assistance Chart.
+
+# Manual pp17–18: 12000 + 6000 + 600 + 2400 + 1800 = 22800; no additional business deduction.
+- name: Case 1, adult wages and existing net business sources are counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 12_000
+        self_employment_income: 6_000
+        sstb_self_employment_income: 600
+        farm_operations_income: 2_400
+        partnership_s_corp_income: 1_800
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        heating_type: PROPANE
+        al_tanf: 0
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members:
+        - person1
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_countable_income: 22_800
+
+# Manual pp17-19: earned income under 18 is excluded, but annual SSI of 2,400 and survivor benefits of 1,200 count: 12,000 + 2,400 + 1,200 = 15,600.
+- name: Case 2, age 17 earned income follows the under eighteen boundary.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        ssi: 2_400
+        employment_income: 6_000
+        self_employment_income: 2_400
+        survivor_benefits: 1_200
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        heating_type: PROPANE
+        al_tanf: 0
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_countable_income: 15_600
+
+# Manual pp17-19: earned income counts from age 18: 12,000 + 6,000 + 2,400 + 2,400 + 1,200 = 24,000.
+- name: Case 3, age 18 earned income follows the under eighteen boundary.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+        ssi: 2_400
+        employment_income: 6_000
+        self_employment_income: 2_400
+        survivor_benefits: 1_200
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        heating_type: PROPANE
+        al_tanf: 0
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_countable_income: 24_000
+
+# Manual p18: all six distinct sources count; farm_rent_income and survivor_benefits are independent inputs.
+- name: Case 4, independent farm rent and survivor receipts are included.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 12_000
+        rental_income: 2_400
+        farm_rent_income: 1_200
+        survivor_benefits: 600
+        pension_income: 4_800
+        disability_benefits: 1_200
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        heating_type: PROPANE
+        al_tanf: 0
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members:
+        - person1
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_countable_income: 22_200
+
+# Manual p18: annual wages of 1,200 plus annual TANF of 3,600 = 4,800. The YEAR test supplies an annual amount to the MONTH-defined al_tanf.
+- name: Case 5, Alabama TANF receipts are counted once and annualized once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 1_200
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        heating_type: PROPANE
+        al_tanf: 3_600
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_countable_income: 4_800
+
+# Manual pp18–19 excludes SNAP, capital gains and utility allowances; allowance deduction is a benefit rule.
+- name: Case 6, capital gains SNAP and HUD allowances do not become income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 12_000
+        capital_gains: 30_000
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        heating_type: PROPANE
+        al_tanf: 0
+        bottled_gas_expense: 1_200
+        snap: 6_000
+    households:
+      household:
+        members:
+        - person1
+        state_code: AL
+        hud_utility_allowance: 1_200
+  output:
+    al_liheap_countable_income: 12_000
+
+# Manual p17 counts "total monthly cash receipts ... from all sources", so each source is floored at zero.
+# max(6_000, 0) wages + max(-18_000, 0) self-employment = 6_000 + 0 = 6_000.
+- name: Case 7, a business loss does not offset wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 6_000
+        self_employment_income: -18_000
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        heating_type: PROPANE
+        al_tanf: 0
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members:
+        - person1
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_countable_income: 6_000
+
+# Manual p18 counts net gambling winnings; gambling losses cannot create negative gambling income.
+- name: Case 8, gambling receipts are net of losses without a negative gambling offset.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 12_000
+        gambling_winnings: 5_000
+        gambling_losses: 2_000
+        ssi: 0
+      person2:
+        age: 39
+        immigration_status: CITIZEN
+        gambling_winnings: 1_000
+        gambling_losses: 3_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: AL
+  output:
+    al_liheap_countable_income: 15_000
+
+
+
+# Manual p22 mixed-status example: the nonqualified parent's $500 monthly income counts in full,
+# but only the two citizen children determine size. The current propane matrix gives $510.
+- name: Case 9, nonqualified parent income counts in full for two qualified children.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        self_employment_income: 6_000
+        ssi: 0
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 6
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AL
+  output:
+    al_liheap_household_size: 2
+    al_liheap_countable_income: 6_000
+    al_liheap_income_limit: 31_728
+    al_liheap_income_band: 1
+    al_liheap_base_payment: 510
+
+# Manual p18 counts periodic estate or trust receipts. Existing estate_income is disjoint
+# from separately reported interest, dividends and capital gains; this is not a lump inheritance.
+# Wages 23,400 + periodic estate income 1,200 = 24,600 exceeds the annualized 23,472 income ceiling.
+- name: Case 10, periodic estate income raises income above the eligibility limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 23_400
+        estate_income: 1_200
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    al_liheap_countable_income: 24_600
+    al_liheap_eligible: false
+
+# Manual p18 counts railroad retirement, financial support from family or friends,
+# and dividends. 21,000 + 1,200 + 1,200 + 600 = 24,000 exceeds the 23,472 annual ceiling.
+- name: Case 11, railroad benefits regular family support and dividends raise income above the limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        immigration_status: CITIZEN
+        employment_income: 21_000
+        railroad_benefits: 1_200
+        financial_assistance: 1_200
+        ordinary_dividend_income: 600
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    al_liheap_countable_income: 24_000
+    al_liheap_income_limit: 23_472
+    al_liheap_eligible: false
+
+# Manual p18 counts "Government employee pensions (including military retirement pay)".
+# Military retirement pay 6_000 + civilian pension 1_200 = 7_200; 7_200 / 12 = 600 <= 652
+# size-one band 1 top, so electricity 440 - 0 + IIJA 100 = 540.
+- name: Case 12, military retirement pay is counted alongside a civilian pension.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 58
+        immigration_status: CITIZEN
+        ssi: 0
+        military_retirement_pay: 6_000
+        taxable_pension_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_countable_income: 7_200
+    al_liheap_income_band: 1
+    al_liheap: 540
+
+# Manual p17 counts cash receipts from all sources, so each person's source is floored at zero.
+# person1: wages 12_000 + rent 6_000 = 18_000. person2: max(-4_000, 0) business
+# + max(-6_000, 0) rent + farm rent 1_200 = 1_200. Total 19_200; 19_200 / 12 = 1_600 is above
+# the size-two band 1 top 881 and at most the band 2 top 1_763. Propane 500 - 30 + 10 + 100 = 580.
+- name: Case 13, one member's losses offset neither another source nor another member's income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 12_000
+        rental_income: 6_000
+      person2:
+        age: 44
+        immigration_status: CITIZEN
+        ssi: 0
+        self_employment_income: -4_000
+        rental_income: -6_000
+        farm_rent_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_countable_income: 19_200
+    al_liheap_income_limit: 31_728
+    al_liheap_income_band: 2
+    al_liheap: 580
+
+# Both families have the same 3_600 annual (300 per month) Alabama TANF entitlement.
+# The first takes up TANF: wages 1_200 + tanf 3_600 = 4_800.
+# The second does not: tanf is 0, so countable income is wages 1_200 only.
+- name: Case 14, TANF is counted only when the family takes it up.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 1_200
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 1_200
+      person4:
+        age: 5
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        al_tanf: 3_600
+        takes_up_tanf_if_eligible: true
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        al_tanf: 3_600
+        takes_up_tanf_if_eligible: false
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: AL
+        hud_utility_allowance: 0
+      household2:
+        members: [person3, person4]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_tanf: [3_600, 3_600]
+    tanf: [3_600, 0]
+    al_liheap_countable_income: [4_800, 1_200]
+
+# Manual p17 counts cash receipts from all sources; the pp18-19 exclusions do not list
+# the Alabama State Supplementary Payment, so it counts alongside SSI.
+# person1 (70) receives SSI in their own household, computed rather than input:
+# 2026 individual FBR 994 x 12 = 11_928. Independent Homelife Care Level A in a
+# private home adds the al_ssp supplement: 60 x 12 = 720.
+# person2, the adult child, works full time at the 7.25 federal minimum wage
+# (29 U.S.C. 206(a)(1)(C); Alabama has no state minimum wage law per
+# https://www.dol.gov/agencies/whd/minimum-wage/state): 7.25 x 2_080 hours = 15_080.
+# Separate tax and marital units keep the child's wages out of SSI spousal deeming.
+# Countable income: SSI 11_928 + al_ssp 720 + wages 15_080 = 27_728.
+# Leave SSI unset for both people so the model computes receipt.
+# FY2026 Appendix D gives 390 for two people, propane and the third income band;
+# with no HUD allowance, the plan's 100 IIJA supplement makes the final award 490.
+- name: Case 15, Alabama SSP of an SSI recipient living with a working adult child is counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        al_ssp_care_setting: PRIVATE_HOME_IHC
+        al_receives_elderly_disabled_medicaid_waiver: true
+        al_meets_snf_criteria: true
+      person2:
+        age: 42
+        immigration_status: CITIZEN
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    ssi: [11_928, 0]
+    al_ssp: [720, 0]
+    al_liheap_countable_income: 27_728
+    al_liheap: 490
+
+# Plan item 1.9 (p6) checks "Including MediCare deduction", so Social Security counts gross.
+# The 2026 standard Part B premium is 202.90 x 12 = 2,434.80, but countable income stays
+# 20,000, not 20,000 - 2,434.80 = 17,565.20. 20,000 / 12 = 1,666.67 is above the size-one
+# band 2 top of 1,305 and at most the 1,956 limit, so band 3. Natural gas: 480 - 120 = 360,
+# plus the $100 IIJA supplement, is 460.
+- name: Case 16, Social Security counts gross of the Medicare Part B premium.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security_retirement: 20_000
+        medicare_part_b_premium: 2_434.8
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_countable_income: 20_000
+    al_liheap_income_band: 3
+    al_liheap: 460
+
+# Manual 5.5.1 (pp17-18) counts "Unemployment compensation". With none reported, the
+# modeled Alabama UI counts. Base period: full-time work at the $7.25 federal minimum wage
+# (29 U.S.C. 206(a)(1)(C); Alabama has none) is 520 x 7.25 = 3,770 a quarter, 15,080 a year.
+# Weekly benefit (Code of Ala. 25-4-72(b)): (3,770 + 3,770) / 52 = 145, under the $275
+# maximum. The January 2026 rate of 2.7% gives 14 weeks (25-4-74); the maximum benefit is
+# min(14 x 145 = 2,030, 0.25 x 15,080 = 3,770) = 2,030. After the one waiting week, 15 weeks
+# unemployed pay 14 x 145 = 2,030. Wages for the other 37 weeks: 37 x 40 x 7.25 = 10,730.
+# Countable income: 10,730 + 2,030 = 12,760, or 1,063.33 a month, in the size-one band 2
+# ($653-$1,305). Electricity: 440 - 30 = 410, plus the $100 IIJA supplement, is 510.
+- name: Case 17, modeled Alabama unemployment insurance counts as unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 10_730
+        al_ui_base_period_wages: 15_080
+        al_ui_high_quarter_wages: 3_770
+        al_ui_second_high_quarter_wages: 3_770
+        al_ui_quarters_with_wages: 4
+        weeks_unemployed: 15
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_ui: 2_030
+    # No reported unemployment compensation, so the total falls back to modeled al_ui.
+    total_unemployment_compensation: 2_030
+    al_liheap_countable_income: 12_760
+    al_liheap_income_band: 2
+    al_liheap: 510
+
+# Manual pp17-19: each listed unearned source is set to 100 times its position in the
+# list, so 100 x (1 + 2 + ... + 20) = 100 x 210 = 21,000, with no earnings or gambling.
+# A nonzero reported amount overrides modeled UI. ssi and al_ssp are MONTH-defined, so
+# their annual inputs are split across months and summed back.
+- name: Case 18, every listed unearned source counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        unemployment_compensation: 100
+        strike_benefits: 200
+        social_security: 300
+        ssi: 400
+        al_ssp: 500
+        pension_income: 600
+        military_retirement_pay: 700
+        survivor_benefits: 800
+        veterans_benefits: 900
+        disability_benefits: 1_000
+        workers_compensation: 1_100
+        child_support_received: 1_200
+        alimony_income: 1_300
+        interest_income: 1_400
+        ordinary_dividend_income: 1_500
+        rental_income: 1_600
+        farm_rent_income: 1_700
+        estate_income: 1_800
+        railroad_benefits: 1_900
+        financial_assistance: 2_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    total_unemployment_compensation: 100
+    al_liheap_countable_income: 21_000
