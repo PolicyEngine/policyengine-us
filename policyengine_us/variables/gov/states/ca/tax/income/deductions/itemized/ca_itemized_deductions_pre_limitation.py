@@ -10,6 +10,7 @@ class ca_itemized_deductions_pre_limitation(Variable):
     reference = (
         "https://www.ftb.ca.gov/forms/2021/2021-540-ca-instructions.html",
         "https://www.ftb.ca.gov/forms/2022/2022-540-ca-instructions.html",
+        # Schedule CA (540) Part II line 16, claim of right
         "https://www.ftb.ca.gov/forms/2025/2025-540-ca-instructions.html",
         "https://www.ftb.ca.gov/about-ftb/data-reports-plans/summary-of-federal-income-tax-changes/index.html",
         # 2024 Schedule CA (540) instructions, line 15
@@ -34,6 +35,11 @@ class ca_itemized_deductions_pre_limitation(Variable):
                 "charitable_deduction_for_non_itemizers",
                 "misc_deduction",
                 "casualty_loss_deduction",
+                # California chooses between its own claim of right deduction
+                # and credit whichever method federal tax used, and allows
+                # neither for income it did not tax, so the federal deduction
+                # does not carry over. California's own rule is not modeled.
+                "claim_of_right_deduction",
             )
         ]
         deductions += [

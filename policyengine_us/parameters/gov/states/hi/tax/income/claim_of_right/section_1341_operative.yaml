@@ -1,0 +1,15 @@
+description: Hawaii applies the claim of right computation of section 1341 of the Internal Revenue Code, using Hawaii tax, if this is true.
+values:
+  2018-01-01: false
+  2022-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Hawaii section 1341 claim of right computation operative
+  reference:
+    - title: "Act 56, SLH 2023, sections 2 and 7(1) (HRS 235-2.3(b)(40); taxable years beginning after December 31, 2021) #page 3,5"
+      href: https://data.capitol.hawaii.gov/sessions/sessionlaws/Years/SLH2023/SLH2023_Act56.pdf#page=3
+    - title: "Act 35, SLH 2026 (HB2329 CD1), HRS 235-2.3(b)(45) #page 11"
+      href: https://data.capitol.hawaii.gov/sessions/session2026/bills/HB2329_CD1_.pdf#page=11
+    - title: 2025 Form N-364, Claim of Right Tax Credit
+      href: https://files.hawaii.gov/tax/forms/2025/n364_i.pdf
