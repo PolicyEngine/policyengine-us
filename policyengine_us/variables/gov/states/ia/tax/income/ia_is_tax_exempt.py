@@ -36,9 +36,10 @@ class ia_is_tax_exempt(Variable):
         # The instructions limit the ordinary exemption to filers who are "not
         # claimed as a dependent on another person's Iowa return". A single
         # filer who is claimed is instead exempt when income, without adding
-        # back deductions, is "less than $5,000"; a joint, head of household
-        # or surviving spouse return is not exempt if either spouse is
-        # claimed. Iowa Code 422.5(2)-(3) denies the exemption only when the
+        # back deductions, is "less than $5,000"; every non-single status
+        # (joint, head of household, surviving spouse or married filing
+        # separately) is not exempt if any filer is claimed.
+        # Iowa Code 422.5(2)-(3) denies the exemption only when the
         # claimer's own net income exceeds the limit; the model has no input
         # for the claimer's income, so it follows the instructions. Both turn
         # on being claimed, not on being claimable, so this reads the claim.
