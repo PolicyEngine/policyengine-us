@@ -1,0 +1,24 @@
+description: Oklahoma uses these sources as earned income under the Low Income Home Energy Assistance Program.
+# Existing net business inputs stand in for gross receipts less the 50%
+# business-expense deduction (OAC 340:20-1-11(c)(4)); no new expense input.
+# partnership_s_corp_income mixes active partners' self-employment earnings,
+# earned under 340:20-1-11(a)(2), with S corporation and passive partnership
+# shares that Oklahoma SNAP counts as unearned (340:50-7-29(b)(2), (c)(8)).
+# The input cannot separate them; only the $240 earned deduction differs.
+values:
+  2025-09-15:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+
+metadata:
+  unit: list
+  period: year
+  label: Oklahoma LIHEAP earned income sources
+  reference:
+    - title: "OAC 340:20-1-11(a)-(b), September 2025 permanent adoption #page 576-578"
+      href: https://oklahoma.gov/content/dam/ok/en/omma/content/rulemaking-process/rules/Register_Volume-42_Issue-20.pdf#page=576
+    - title: OAC 340:50-7-22, Incorporated SNAP income exclusions
+      href: https://prod-ok-administrativerules.tecuity.com/api/BlobStorageGetFile?storageContainer=TitleHtml&name=Title_340.html

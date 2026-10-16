@@ -1,0 +1,293 @@
+# Oklahoma independent fully qualified household components; no final eligibility or award is asserted.
+
+# C-7 dated 2026-10-01: 240 monthly x 12 = 2,880 for each of two workers. 24,000 - 2,880 - 2,880 = 18,240; worker 1 has
+# two sources but gets one allowance.
+- name: Case 1, FY2027 earned allowance applies once per worker rather than once per source or household.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        employment_income: 12_000
+        self_employment_income: 6_000
+      person2:
+        age: 39
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        employment_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_liheap_gross_income: 24_000
+    ok_liheap_net_income: 18_240
+
+# C-7 FY2027 per-worker earned allowance limited to actual 1,200 earnings. 7,200 - min(1,200, 2,880) = 6,000; the remaining
+# allowance does not reduce the pension.
+- name: Case 2, FY2027 unused earned allowance cannot offset unearned income.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        employment_income: 1_200
+        pension_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    ok_liheap_gross_income: 7_200
+    ok_liheap_net_income: 6_000
+
+# C-7 FY2027 size 1 limit 1,729 x 12 = 20,748. Gross 20,754/12 = 1,729.50 rounds half up to 1,730, above the limit;
+# net 20,754 - 2,880 = 17,874 is below it. No final eligibility output is asserted.
+- name: Case 3, FY2027 gross income that rounds above its monthly limit still has a lower benefit net income.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        employment_income: 20_754
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    ok_liheap_gross_income: 20_754
+    ok_liheap_income_limit: 20_748
+    ok_liheap_net_income: 17_874
+
+# Register pp. 580-581 permit age 60+ or disabled person costs. 30,000 - 2,880 worker allowance - 2,400 elder medical
+# - 1,200 medical of the SSDI recipient = 23,520. Age 59 nondisabled medical 3,600 is not deductible.
+- name: Case 4, FY2027 medical deduction follows each elderly or disabled person separately.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        pension_income: 12_000
+        other_medical_expenses: 2_400
+      person2:
+        age: 59
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        employment_income: 12_000
+        other_medical_expenses: 3_600
+      person3:
+        age: 39
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: true
+        ssi: 0
+        social_security_disability: 6_000
+        other_medical_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OK
+  output:
+    ok_liheap_gross_income: 30_000
+    ok_liheap_net_income: 23_520
+
+# Register p. 581 and C-7 FY2027: 12,000 - 2,880 earned allowance - 1,200 support paid = 7,920.
+- name: Case 5, FY2027 legally binding child support is deducted after the earned allowance.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        employment_income: 12_000
+        child_support_expense: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    ok_liheap_gross_income: 12_000
+    ok_liheap_net_income: 7_920
+
+# Earned deduction first limited to 1,200; further legally mandated support of 2,400 cannot make final net income negative.
+- name: Case 6, FY2027 deductions exceeding income stop at zero.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        employment_income: 1_200
+        child_support_expense: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    ok_liheap_gross_income: 1_200
+    ok_liheap_net_income: 0
+
+# Register p. 581 allows the OKDHS CCS copay for actual recipients. Annual copay 1,200 (100 monthly) is deducted once with
+# a positive subsidy: 12,000 - 2,880 - 1,200 = 7,920.
+- name: Case 7, FY2027 reported CCS copay is deducted for an actual subsidy recipient.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 2_400
+        ok_ccs_copay: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_liheap_gross_income: 12_000
+    ok_liheap_net_income: 7_920
+
+# Register p. 581 receipt condition: with a zero CCS subsidy, a scheduled copay of 1,200 is not a deductible actual
+# recipient expense. 12,000 - 2,880 = 9,120.
+- name: Case 8, FY2027 calculated copay is not deducted without a subsidy receipt.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_liheap_gross_income: 12_000
+    ok_liheap_net_income: 9_120
