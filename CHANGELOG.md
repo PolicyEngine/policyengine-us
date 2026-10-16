@@ -1,3 +1,45 @@
+## [2.46.0] - 2026-10-16
+
+### Added
+
+- Add Wyoming's State Supplemental Payment for residents whose sole income is SSI, verified for 2026.
+
+
+## [2.45.1] - 2026-10-16
+
+### Fixed
+
+- Apply the federal rules for a filer who can be claimed as a dependent on another return: no child tax credit, credit for other dependents or under-13 care qualifying child (or that child's care expenses) on such a return (IRC 24, 21, 152(b)(1)), no personal exemption for that filer (IRC 151(d)(2)) in the exemption count Rhode Island, Delaware, Ohio, Wisconsin, Oregon, Hawaii and New Mexico read, no recovery rebate for that filer, including under the Armed Forces exception, no tuition and fees deduction (IRC 222(c)(3)), and no education credits or student loan interest deduction on a return with a claimed filer (IRC 25A(g)(3), 221(c)).
+
+
+## [2.45.0] - 2026-10-16
+
+### Added
+
+- Add Pennsylvania optional state SSI supplements and institutional payments, verified for 2026, and count half of the supplement in Pennsylvania Property Tax/Rent Rebate income.
+
+
+## [2.44.0] - 2026-10-16
+
+### Added
+
+- Add New Jersey state supplementary payments and the ineligible-spouse variation, verified for 2026.
+
+
+## [2.43.0] - 2026-10-16
+
+### Added
+
+- Model full 5-tier charitable deduction percentage limits and coupling under IRC § 170(b) and IRS Pub 526 Worksheet 2, adding variables for organization-split cash, non-cash, and capital gain property donations, statutory ceiling parameters, post-ceiling floor support, non-itemizer cash restriction to 50% organizations per § 170(p), and California pre-TCJA 5-tier conformity and decoupling per R&TC §§ 17024.5 and 17250.1. Fixes #10189. Partially addresses #10190.
+
+
+## [2.42.14] - 2026-10-15
+
+### Fixed
+
+- Stop the second Rest shard when a CI run is cancelled; run at most 6 Baseline groups at once and start Contrib (also at most 6) once Baseline passes, so the Pull request workflow runs at most 11 jobs at a time instead of about 25; run two YAML batch subprocesses per Baseline and Contrib runner while its free memory allows, cutting their runner time by about a third; and continue YAML test batches in a fresh subprocess once one passes an 8 GB memory budget, so batches no longer need re-splitting by hand as tests grow.
+
+
 ## [2.42.13] - 2026-10-14
 
 ### Fixed

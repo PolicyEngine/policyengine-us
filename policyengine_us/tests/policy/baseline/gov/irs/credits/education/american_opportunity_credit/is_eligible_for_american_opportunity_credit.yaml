@@ -177,3 +177,323 @@
     has_tin: true
   output:
     is_eligible_for_american_opportunity_credit: false
+
+- name: 2024 student claimed as a dependent elsewhere cannot claim the credit
+  period: 2024
+  input:
+    people:
+      student:
+        age: 20
+        is_pursuing_credential_for_american_opportunity_credit: true
+        attends_eligible_educational_institution_for_american_opportunity_credit: true
+        is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+        has_american_opportunity_credit_1098_t_or_exception: true
+        has_american_opportunity_credit_institution_ein: true
+        has_tin: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [student]
+    households:
+      household:
+        members: [student]
+        state_code: TX
+  output:
+    # IRC 25A(g)(3); Form 8863: "You're claimed as a dependent on another
+    # person's tax return".
+    is_eligible_for_american_opportunity_credit: false
+
+- name: 2024 joint return with one spouse claimed elsewhere cannot claim the credit for either spouse (the claimable spouse is the head)
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 20
+        is_pursuing_credential_for_american_opportunity_credit: true
+        attends_eligible_educational_institution_for_american_opportunity_credit: true
+        is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+        has_american_opportunity_credit_1098_t_or_exception: true
+        has_american_opportunity_credit_institution_ein: true
+        has_tin: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        is_pursuing_credential_for_american_opportunity_credit: true
+        attends_eligible_educational_institution_for_american_opportunity_credit: true
+        is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+        has_american_opportunity_credit_1098_t_or_exception: true
+        has_american_opportunity_credit_institution_ein: true
+        has_tin: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    # Form 1040 instructions: "or your spouse if filing jointly".
+    is_eligible_for_american_opportunity_credit: [false, false]
+
+- name: 2024 joint return with one spouse claimed elsewhere cannot claim the credit for either spouse (the claimable spouse is the spouse)
+  period: 2024
+  input:
+    people:
+      person_b:
+        age: 20
+        is_pursuing_credential_for_american_opportunity_credit: true
+        attends_eligible_educational_institution_for_american_opportunity_credit: true
+        is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+        has_american_opportunity_credit_1098_t_or_exception: true
+        has_american_opportunity_credit_institution_ein: true
+        has_tin: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        is_pursuing_credential_for_american_opportunity_credit: true
+        attends_eligible_educational_institution_for_american_opportunity_credit: true
+        is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+        has_american_opportunity_credit_1098_t_or_exception: true
+        has_american_opportunity_credit_institution_ein: true
+        has_tin: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+  output:
+    is_eligible_for_american_opportunity_credit: [false, false]
+
+- name: 2024 joint return with neither spouse claimed keeps both students' eligibility
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 20
+        is_pursuing_credential_for_american_opportunity_credit: true
+        attends_eligible_educational_institution_for_american_opportunity_credit: true
+        is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+        has_american_opportunity_credit_1098_t_or_exception: true
+        has_american_opportunity_credit_institution_ein: true
+        has_tin: true
+      person_b:
+        age: 20
+        is_pursuing_credential_for_american_opportunity_credit: true
+        attends_eligible_educational_institution_for_american_opportunity_credit: true
+        is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+        has_american_opportunity_credit_1098_t_or_exception: true
+        has_american_opportunity_credit_institution_ein: true
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    is_eligible_for_american_opportunity_credit: [true, true]
+
+# IRC 25A(g)(3) and 26 CFR 1.25A-1(f): the bar applies to a student who is
+# claimed; a student who can be claimed but is not keeps the credit.
+- name: 2024 student who can be claimed but is not claimed keeps the credit
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 20
+        is_pursuing_credential_for_american_opportunity_credit: true
+        attends_eligible_educational_institution_for_american_opportunity_credit: true
+        is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+        has_american_opportunity_credit_1098_t_or_exception: true
+        has_american_opportunity_credit_institution_ein: true
+        has_tin: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: TX
+  output:
+    is_eligible_for_american_opportunity_credit: true
+
+# IRC 25A(f)(1)(A)(iii): a dependent's tuition counts only if the taxpayer is
+# allowed a section 151 deduction for the dependent, and a return on which a filer
+# can be claimed has no dependents (IRC 152(b)(1)), unless the would-be claimant
+# meets the filing exception (Publication 501).
+- name: 2024 dependent student of a filer who can be claimed is not eligible
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 45
+        has_tin: true
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      student:
+        age: 19
+        is_pursuing_credential_for_american_opportunity_credit: true
+        attends_eligible_educational_institution_for_american_opportunity_credit: true
+        is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+        has_american_opportunity_credit_1098_t_or_exception: true
+        has_american_opportunity_credit_institution_ein: true
+        has_tin: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    is_eligible_for_american_opportunity_credit: [false, false]
+
+- name: 2024 dependent student of a claimable filer within the filing exception is eligible
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 45
+        has_tin: true
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      student:
+        age: 19
+        is_pursuing_credential_for_american_opportunity_credit: true
+        attends_eligible_educational_institution_for_american_opportunity_credit: true
+        is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+        has_american_opportunity_credit_1098_t_or_exception: true
+        has_american_opportunity_credit_institution_ein: true
+        has_tin: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    is_eligible_for_american_opportunity_credit: [false, true]
+
+- name: 2024 dependent student of a filer who cannot be claimed is eligible
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 45
+        has_tin: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      student:
+        age: 19
+        is_pursuing_credential_for_american_opportunity_credit: true
+        attends_eligible_educational_institution_for_american_opportunity_credit: true
+        is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+        has_american_opportunity_credit_1098_t_or_exception: true
+        has_american_opportunity_credit_institution_ein: true
+        has_tin: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    is_eligible_for_american_opportunity_credit: [false, true]
+
+- name: 2024 dependent student of a joint return with one claimable spouse is not eligible (the claimable spouse is the head)
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 45
+        has_tin: true
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 45
+        has_tin: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      student:
+        age: 19
+        is_pursuing_credential_for_american_opportunity_credit: true
+        attends_eligible_educational_institution_for_american_opportunity_credit: true
+        is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+        has_american_opportunity_credit_1098_t_or_exception: true
+        has_american_opportunity_credit_institution_ein: true
+        has_tin: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, student]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, student]
+        state_code: TX
+  output:
+    is_eligible_for_american_opportunity_credit: [false, false, false]
+
+- name: 2024 dependent student of a joint return with one claimable spouse is not eligible (the claimable spouse is the spouse)
+  period: 2024
+  input:
+    people:
+      person_b:
+        age: 45
+        has_tin: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 45
+        has_tin: true
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      student:
+        age: 19
+        is_pursuing_credential_for_american_opportunity_credit: true
+        attends_eligible_educational_institution_for_american_opportunity_credit: true
+        is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+        has_american_opportunity_credit_1098_t_or_exception: true
+        has_american_opportunity_credit_institution_ein: true
+        has_tin: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, student]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, student]
+        state_code: TX
+  output:
+    is_eligible_for_american_opportunity_credit: [false, false, false]
