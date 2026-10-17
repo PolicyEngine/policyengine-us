@@ -6,11 +6,11 @@ description: Florida counts these gross family income sources under the School R
 # a person-level income source, is counted. Matches the ME/WV CCAP convention.
 values:
   2025-10-01:
+    # employment_income already includes tips and commissions.
     - employment_income
     - self_employment_income
     - sstb_self_employment_income
     - farm_income
-    - tip_income
     - social_security_retirement
     - social_security_disability
     - social_security_survivors
