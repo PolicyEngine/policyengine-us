@@ -1,0 +1,228 @@
+description: States provide breakfast, but not lunch, at no cost to students eligible for reduced-price meals under the School Breakfast Program if this is true.
+# True only while a state covers the reduced-price breakfast copay but not the
+# lunch copay. Coverage of both meals is in state_covers_reduced_price_copay,
+# and the two parameters are never true for the same state and date.
+# Assume enrollment at a covered school; each state's conditions are noted
+# beside its entry. Budget-funded coverage ends at its enacted funding end;
+# standing statutes carry forward.
+# Federal nationwide waivers made all school meals free through June 30, 2022.
+# The model does not represent them, so values dated before July 1, 2022 show
+# state effects that families did not see.
+metadata:
+  propagate_metadata_to_children: true
+  label: State covers reduced-price school breakfast copays only
+  period: year
+  unit: bool
+  breakdown:
+    - state_code
+  reference:
+    - title: 7 CFR 245.2 - Definitions (reduced price meal)
+      href: https://www.law.cornell.edu/cfr/text/7/245.2
+AA:
+  0000-01-01: false
+AE:
+  0000-01-01: false
+AK:
+  0000-01-01: false
+AL:
+  0000-01-01: false
+AP:
+  0000-01-01: false
+AR:
+  0000-01-01: false
+AZ:
+  0000-01-01: false
+CA:
+  0000-01-01: false
+CO:
+  0000-01-01: false
+CT:
+  0000-01-01: false
+DC:
+  0000-01-01: false
+DE:
+  0000-01-01: false
+FL:
+  0000-01-01: false
+GA:
+  0000-01-01: false
+GU:
+  0000-01-01: false
+HI:
+  0000-01-01: false
+IA:
+  0000-01-01: false
+ID:
+  0000-01-01: false
+IL:
+  0000-01-01: false
+IN:
+  0000-01-01: false
+KS:
+  0000-01-01: false
+KY:
+  0000-01-01: false
+LA:
+  0000-01-01: false
+MA:
+  0000-01-01: false
+MD:
+  0000-01-01: false
+  # Breakfast only in FY2022; the lunch charge ended in FY2023, when both meals
+  # became free (state_covers_reduced_price_copay). Not modeled: in FY2022 the
+  # State paid only 30 cents of the 40-cent reduced-price lunch charge
+  # (§ 7-602(d)(2)(iii)).
+  2021-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Maryland Education § 7-602(e)(1)
+          href: https://mgaleg.maryland.gov/2026RS/Statute_Web/ged/7-602.pdf#page=2
+  2022-07-01:
+    value: false
+    metadata:
+      reference:
+        - title: Maryland Education § 7-602(e)(2)
+          href: https://mgaleg.maryland.gov/2026RS/Statute_Web/ged/7-602.pdf#page=2
+ME:
+  0000-01-01: false
+MI:
+  0000-01-01: false
+MN:
+  0000-01-01: false
+MO:
+  0000-01-01: false
+MP:
+  0000-01-01: false
+MS:
+  0000-01-01: false
+MT:
+  0000-01-01: false
+NC:
+  0000-01-01: false
+  # S.L. 2011-342 § 1 covers the reduced-price breakfast copay from July 1,
+  # 2011. In SY 2020-21 and from SY 2022-23 the state also covers lunch, so
+  # both meals are free (state_covers_reduced_price_copay). Not modeled:
+  # breakfast coverage is subject to sufficient appropriations.
+  2011-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: North Carolina S.L. 2011-342 § 1 (breakfast)
+          href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/HTML/2011-2012/SL2011-342.html
+  2020-07-01:
+    value: false
+    metadata:
+      reference:
+        - title: North Carolina S.L. 2020-80 § 2.3.(b) (lunch, 2020-2021 school year)
+          href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/PDF/2019-2020/SL2020-80.pdf#page=14
+  # No state law covered the lunch copay for the 2021-2022 school year.
+  2021-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: North Carolina S.L. 2011-342 § 1 (breakfast)
+          href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/HTML/2011-2012/SL2011-342.html
+  2022-07-01:
+    value: false
+    metadata:
+      reference:
+        - title: North Carolina S.L. 2022-74 § 7.3 (lunch, 2022-2023 school year)
+          href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/PDF/2021-2022/SL2022-74.pdf#page=28
+ND:
+  0000-01-01: false
+NE:
+  0000-01-01: false
+NH:
+  0000-01-01: false
+  # Schools that apply receive 3 cents per breakfast plus 27 cents per
+  # reduced-price breakfast, which equals the 30-cent charge, and the
+  # Department of Education requests biennial appropriations so that
+  # reduced-price students are offered breakfast at no cost. Lunch is not
+  # covered. Not modeled: schools opt in by application.
+  2019-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: New Hampshire RSA 189:11-a, VII(b)
+          href: https://gc.nh.gov/rsa/html/XV/189/189-11-a.htm
+NJ:
+  0000-01-01: false
+NM:
+  0000-01-01: false
+NV:
+  0000-01-01: false
+NY:
+  0000-01-01: false
+OH:
+  0000-01-01: false
+OK:
+  0000-01-01: false
+OR:
+  0000-01-01: false
+PA:
+  0000-01-01: false
+PR:
+  0000-01-01: false
+PW:
+  0000-01-01: false
+RI:
+  0000-01-01: false
+SC:
+  0000-01-01: false
+SD:
+  0000-01-01: false
+TN:
+  0000-01-01: false
+TX:
+  0000-01-01: false
+  # The 2024-25 General Appropriations Act funds free breakfast in lieu of
+  # reduced-price breakfast in FY2024 and FY2025 (Texas fiscal years start
+  # September 1). Lunch was added on September 1, 2025, when both meals became
+  # free (state_covers_reduced_price_copay). Not modeled: the treatment of
+  # breakfasts served in August 2023 is unverified.
+  2023-09-01:
+    value: true
+    metadata:
+      reference:
+        - title: "Texas General Appropriations Act 2024-25, Art. IX § 17.19(b) #page 1005-1006"
+          href: https://www.lbb.texas.gov/Documents/GAA/General_Appropriations_Act_2024_2025.pdf#page=1005
+  2025-09-01:
+    value: false
+    metadata:
+      reference:
+        - title: "Texas General Appropriations Act 2026-27, Art. VI, Department of Agriculture riders 29, 31 #page 729-730"
+          href: https://www.lbb.texas.gov/Documents/GAA/General_Appropriations_Act_2026_2027.pdf#page=729
+UT:
+  0000-01-01: false
+VA:
+  0000-01-01: false
+VI:
+  0000-01-01: false
+VT:
+  0000-01-01: false
+WA:
+  0000-01-01: false
+  # The 2019-21 operating budget listed eliminating breakfast copays for all
+  # eligible public school students, and lunch copays for kindergarten through
+  # grade 3 only, as allowable uses. From SY 2021-22 both meals are free
+  # (state_covers_reduced_price_copay). Not modeled: the grade-limited lunch
+  # coverage. Coverage before FY2020 is unverified.
+  2019-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Washington ESSB 5092 (2021 c 334) § 1505, amending 2019 c 415 § 508(1)(a)
+          href: https://lawfilesext.leg.wa.gov/biennium/2021-22/Pdf/Bills/Session%20Laws/Senate/5092-S.SL.pdf#page=997
+  2021-07-01:
+    value: false
+    metadata:
+      reference:
+        - title: Washington RCW 28A.235.160(7)
+          href: https://app.leg.wa.gov/RCW/default.aspx?cite=28A.235.160
+WI:
+  0000-01-01: false
+WV:
+  0000-01-01: false
+WY:
+  0000-01-01: false

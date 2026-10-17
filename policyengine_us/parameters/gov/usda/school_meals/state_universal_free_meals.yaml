@@ -1,4 +1,9 @@
-description: Whether a state provides free breakfast and lunch to all students participating in the National School Lunch Program and School Breakfast Program, regardless of household income.
+description: States provide breakfast and lunch at no cost to all students regardless of household income under the National School Lunch Program and School Breakfast Program if this is true.
+# Universal free breakfast alone is in state_universal_free_breakfast.
+# Federal nationwide waivers made all school meals free through June 30, 2022.
+# The model does not represent them.
+# Budget-funded programs end at their enacted funding end; standing statutes
+# carry forward.
 metadata:
   propagate_metadata_to_children: true
   label: State universal free school meals
@@ -43,10 +48,14 @@ CO:
           href: https://leg.colorado.gov/bills/hb22-1414
         - title: "Colorado Proposition FF (2022) — Healthy School Meals for All funding"
           href: https://ballotpedia.org/Colorado_Proposition_FF,_Reduce_Income_Tax_Deduction_Amounts_to_Fund_School_Meals_Program_Measure_(2022)
-        - title: "C.R.S. § 22-82.9-101 et seq. — Healthy School Meals for All"
-          href: https://leg.colorado.gov/sites/default/files/images/olls/crs2024-title-22.pdf
+        - title: "C.R.S. § 22-82.9-201 et seq. — Healthy School Meals for All"
+          href: https://leg.colorado.gov/sites/default/files/images/olls/crs2024-title-22.pdf#page=1332
 CT:
   0000-01-01: false
+  # Connecticut's SY 2022-23 program (SMART funds) stays false: school food
+  # authorities opted in, and the Connecticut State Department of Education
+  # did not treat it as universal free meals. Universal breakfast in
+  # SY 2023-24 and SY 2026-27 is in state_universal_free_breakfast.
 DC:
   0000-01-01: false
 DE:
@@ -75,12 +84,28 @@ LA:
   0000-01-01: false
 MA:
   0000-01-01: false
+  # The FY2023 budget made breakfast and lunch free to all students in
+  # SY 2022-23; M.G.L. c. 69, § 1C(a)(1) made it permanent from July 1, 2023.
+  # Not modeled: the Department of Elementary and Secondary Education's
+  # regulation (SY 2022-23) and the statute (from FY2024) require schools to
+  # adopt the community eligibility provision or Provision 2. Nonpublic
+  # schools are included.
+  2022-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Massachusetts St. 2022, c. 126, item 7053-1925 (FY2023 universal free school meals)
+          href: https://malegislature.gov/Laws/SessionLaws/Acts/2022/Chapter126
+        - title: "Massachusetts DESE, Universal Free School Meals: FY24 Legislative Report #page 5-6"
+          href: https://www.doe.mass.edu/cnp/universal-free-school-meals.pdf#page=5
   2023-07-01:
     value: true
     metadata:
       reference:
         - title: "Massachusetts FY2024 Budget — Ch. 28 of the Acts of 2023, Outside Sections (universal school meals)"
           href: https://malegislature.gov/Laws/SessionLaws/Acts/2023/Chapter28
+        - title: Massachusetts General Laws c. 69, § 1C(a)(1)
+          href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXII/Chapter69/Section1C
 MD:
   0000-01-01: false
 ME:
@@ -145,6 +170,28 @@ NM:
           href: https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0004.pdf#page=4
 NV:
   0000-01-01: false
+  # State American Rescue Plan Act funds, approved by the Interim Finance
+  # Committee on June 21, 2022, paid for universal free meals in SY 2022-23
+  # and SY 2023-24. Not modeled: the program covered public schools operating
+  # the National School Lunch Program; private school and residential child
+  # care institution coverage is unverified.
+  2022-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Nevada Department of Agriculture news release, June 27, 2022 (Interim Finance Committee approval of ARPA free school meals)
+          href: https://agri.nv.gov/News/2022/Students_in_Nevada_won%E2%80%99t_worry_about_school_meals_next_year/
+        - title: "Nevada Department of Agriculture, Food and Nutrition Board Report, August 31, 2023 #page 2-3"
+          href: https://agri.nv.gov/uploadedFiles/agrinvgov/Content/About/Board_of_Agriculture/Food_and_Nutrition_Board_Report-20230831.pdf#page=2
+        - title: Nevada Department of Agriculture, Food and Nutrition Board Report, June 4, 2024
+          href: https://agri.nv.gov/uploadedFiles/agrinvgov/Content/About/Board_of_Agriculture/Food_and_Nutrition_Board_Report_06-04-2024.pdf#page=3
+  # SY 2024-25 was not funded: the Governor vetoed A.B. 319 (2023).
+  2024-07-01:
+    value: false
+    metadata:
+      reference:
+        - title: Nevada Department of Agriculture, Food and Nutrition Board Report, August 31, 2023 (A.B. 319 veto)
+          href: https://agri.nv.gov/uploadedFiles/agrinvgov/Content/About/Board_of_Agriculture/Food_and_Nutrition_Board_Report-20230831.pdf#page=1
 NY:
   0000-01-01: false
   2025-07-01:
@@ -185,12 +232,26 @@ VI:
   0000-01-01: false
 VT:
   0000-01-01: false
+  # Act 151 of 2022 made meals universal for SY 2022-23 only (its Sec. 3 was
+  # repealed on July 1, 2023); Act 64 of 2023 made them permanent from July 1,
+  # 2023. Not modeled: from July 1, 2023 a public school board may exempt
+  # itself for one year (16 V.S.A. § 1265(a)), an exemption Act 151 suspended
+  # for SY 2022-23 only; approved independent schools are optional and are
+  # reimbursed only for students on public tuition; the state supplement
+  # requires the community eligibility provision, Provision 2 or the option
+  # that draws the most federal funding; second breakfasts are not reimbursed.
+  2022-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: "Vermont Act 151 of 2022 (S.100), Secs. 3-5, 9 #page 3-7"
+          href: https://legislature.vermont.gov/Documents/2022/Docs/ACTS/ACT151/ACT151%20As%20Enacted.pdf#page=3
   2023-07-01:
     value: true
     metadata:
       reference:
-        - title: "Vermont Act 64 (2023) / H.165 — Universal School Meals"
-          href: https://legislature.vermont.gov/Documents/2024/Docs/ACTS/ACT064/ACT064%20As%20Enacted.pdf#page=1
+        - title: "Vermont Act 64 of 2023 (H.165), 16 V.S.A. §§ 1264(a)(1)(B), 4017, and Sec. 5 #page 4-7,16"
+          href: https://legislature.vermont.gov/Documents/2024/Docs/ACTS/ACT064/ACT064%20As%20Enacted.pdf#page=4
         - title: "16 V.S.A. § 4017 — Universal school meals supplement"
           href: https://legislature.vermont.gov/statutes/section/16/133/04017
 WA:

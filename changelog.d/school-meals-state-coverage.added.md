@@ -1,0 +1,1 @@
+Model state school meal coverage beyond universal meals: reduced-price copay coverage in 20 more jurisdictions, state free-meal income limits above 185% of poverty (NJ, ND, OR, HI), universal breakfast and single-meal copay coverage with separate breakfast and lunch tiers, and corrected universal-meal dates for MA, VT and NV.

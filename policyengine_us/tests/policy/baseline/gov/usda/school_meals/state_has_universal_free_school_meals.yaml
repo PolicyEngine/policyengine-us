@@ -40,14 +40,14 @@
   output:
     state_has_universal_free_school_meals: false
 
-- name: Massachusetts provides universal free meals from FY24.
+- name: Massachusetts universal free meals continue under M.G.L. c. 69, section 1C in 2024.
   period: 2024
   input:
     state_code: MA
   output:
     state_has_universal_free_school_meals: true
 
-- name: Massachusetts had no universal program before FY24 budget took effect.
+- name: Massachusetts had no universal program in calendar 2022 (read on January 1, before SY 2022-23).
   period: 2022
   input:
     state_code: MA
@@ -96,14 +96,14 @@
   output:
     state_has_universal_free_school_meals: false
 
-- name: Vermont provides universal free meals from SY 2023-24.
+- name: Vermont universal free meals continue under Act 64 of 2023 in 2024.
   period: 2024
   input:
     state_code: VT
   output:
     state_has_universal_free_school_meals: true
 
-- name: Vermont had no universal program before Act 64 (2023) took effect.
+- name: Vermont had no universal program in calendar 2022 (read on January 1, before Act 151 took effect for SY 2022-23).
   period: 2022
   input:
     state_code: VT
@@ -145,3 +145,55 @@
   output:
     # CA universal active since 2022-07-01; TX never; NY not until 2025-07-01.
     state_has_universal_free_school_meals: [true, false, false]
+
+# Annual periods read parameters on January 1. A start date of July 1, 2022
+# first affects calendar 2023.
+# Massachusetts: St. 2022, c. 126, item 7053-1925 funded universal meals for
+# SY 2022-23 (from 2022-07-01); M.G.L. c. 69, section 1C applies from
+# 2023-07-01.
+- name: Massachusetts provides universal free meals in 2023 under the FY2023 budget.
+  period: 2023
+  input:
+    state_code: MA
+  output:
+    state_has_universal_free_school_meals: true
+
+# Vermont: Act 151 of 2022 made meals universal for SY 2022-23 (effective
+# 2022-07-01); Act 64 of 2023 continues them from 2023-07-01.
+- name: Vermont provides universal free meals in 2023 under Act 151 of 2022.
+  period: 2023
+  input:
+    state_code: VT
+  output:
+    state_has_universal_free_school_meals: true
+
+# Nevada: State ARPA funds paid for universal meals in SY 2022-23 and
+# SY 2023-24 (2022-07-01 to 2024-06-30). A.B. 319, which would have funded
+# SY 2024-25, was vetoed, so the parameter is false from 2024-07-01.
+- name: Nevada had no universal program in calendar 2022 (read on January 1, before SY 2022-23).
+  period: 2022
+  input:
+    state_code: NV
+  output:
+    state_has_universal_free_school_meals: false
+
+- name: Nevada provides universal free meals in 2023 with State ARPA funds.
+  period: 2023
+  input:
+    state_code: NV
+  output:
+    state_has_universal_free_school_meals: true
+
+- name: Nevada universal free meals continue in 2024, read on January 1 during SY 2023-24.
+  period: 2024
+  input:
+    state_code: NV
+  output:
+    state_has_universal_free_school_meals: true
+
+- name: Nevada universal free meals ended after SY 2023-24.
+  period: 2025
+  input:
+    state_code: NV
+  output:
+    state_has_universal_free_school_meals: false

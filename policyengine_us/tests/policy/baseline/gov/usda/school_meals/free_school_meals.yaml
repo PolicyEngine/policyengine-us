@@ -13,3 +13,192 @@
     school_meal_net_subsidy: 1
   output:
     free_school_meals: 0
+
+# Per-meal split: each meal's value is its rate above the paid rate, and
+# free_school_meals takes the FREE meals' share of school_meal_net_subsidy.
+# Calendar 2025 contiguous rates: breakfast FREE 2.37, PAID 0.39; lunch
+# REDUCED 4.03, PAID 0.42. Breakfast 2.37 - 0.39 = 1.98; lunch
+# 4.03 - 0.42 = 3.61; total 5.59. 1,006.20 * 1.98 / 5.59 = 356.40.
+- name: Free breakfast with reduced-price lunch takes the breakfast share of the net subsidy.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: REDUCED
+    school_meal_net_subsidy: 1_006.20
+  output:
+    free_school_meals: 356.40
+
+# Both meals at the paid rate have no value above it, so the share is 0
+# rather than a division by zero.
+- name: No free value when both meals are paid, even with a net subsidy input.
+  period: 2025
+  input:
+    school_meal_breakfast_tier: PAID
+    school_meal_lunch_tier: PAID
+    school_meal_net_subsidy: 1
+  output:
+    free_school_meals: 0
+
+# State per-meal policies from income and state, one K-12 child, 180 school
+# days, no categorical eligibility. Each meal counts here only when its own
+# tier is FREE: (meal rate - paid rate) * 180.
+
+# Calendar 2020 rates: breakfast (SBP) FREE 1.84, REDUCED 1.54,
+# PAID 0.31; lunch (NSLP) FREE 3.41, REDUCED 3.01, PAID 0.32.
+# NC at 180% of FPG: breakfast FREE, lunch REDUCED.
+#   breakfast (1.84 - 0.31) * 180 = 275.40.
+# WA at 180% of FPG: breakfast FREE, lunch REDUCED.
+#   breakfast (1.84 - 0.31) * 180 = 275.40.
+- name: Only breakfast counts as free in North Carolina and Washington in 2020.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: [NC, WA]
+    school_meal_fpg_ratio: [1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false]
+    is_in_k12_school: [true, true]
+  output:
+    free_school_meals: [275.40, 275.40]
+
+# Calendar 2021 rates: breakfast (SBP) FREE 1.89, REDUCED 1.59,
+# PAID 0.32; lunch (NSLP) FREE 3.51, REDUCED 3.11, PAID 0.33.
+# WA at 180% of FPG: breakfast FREE, lunch REDUCED.
+#   breakfast (1.89 - 0.32) * 180 = 282.60.
+# NC at 180% of FPG: breakfast FREE, lunch FREE.
+#   breakfast (1.89 - 0.32) * 180 = 282.60; lunch (3.51 - 0.33) * 180 = 572.40; total 855.00.
+- name: Only breakfast counts as free in Washington, and both meals in North Carolina, in 2021.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: [WA, NC]
+    school_meal_fpg_ratio: [1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false]
+    is_in_k12_school: [true, true]
+  output:
+    free_school_meals: [282.60, 855.00]
+
+# Calendar 2022 rates: breakfast (SBP) FREE 1.97, REDUCED 1.67,
+# PAID 0.33; lunch (NSLP) FREE 3.66, REDUCED 3.26, PAID 0.35.
+# MD at 180% of FPG: breakfast FREE, lunch REDUCED.
+#   breakfast (1.97 - 0.33) * 180 = 295.20.
+- name: Only breakfast counts as free in Maryland in 2022.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: MD
+    school_meal_fpg_ratio: 1.8
+    meets_school_meal_categorical_eligibility: false
+    is_in_k12_school: true
+  output:
+    free_school_meals: 295.20
+
+# Calendar 2023 rates: breakfast (SBP) FREE 2.11, REDUCED 1.81,
+# PAID 0.35; lunch (NSLP) FREE 3.93, REDUCED 3.53, PAID 0.37.
+# DC at 300% of FPG: breakfast FREE, lunch PAID.
+#   breakfast (2.11 - 0.35) * 180 = 316.80.
+- name: District of Columbia universal free breakfast counts as free in 2023.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: DC
+    school_meal_fpg_ratio: 3
+    meets_school_meal_categorical_eligibility: false
+    is_in_k12_school: true
+  output:
+    free_school_meals: 316.80
+
+# Calendar 2024 rates: breakfast (SBP) FREE 2.28, REDUCED 1.98,
+# PAID 0.38; lunch (NSLP) FREE 4.25, REDUCED 3.85, PAID 0.40.
+# TX at 180% of FPG: breakfast FREE, lunch REDUCED.
+#   breakfast (2.28 - 0.38) * 180 = 342.00.
+# PA at 300% of FPG: breakfast FREE, lunch PAID.
+#   breakfast (2.28 - 0.38) * 180 = 342.00.
+- name: Free breakfast in Texas and Pennsylvania counts as free in 2024.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: [TX, PA]
+    school_meal_fpg_ratio: [1.8, 3]
+    meets_school_meal_categorical_eligibility: [false, false]
+    is_in_k12_school: [true, true]
+  output:
+    free_school_meals: [342.00, 342.00]
+
+# Calendar 2025 rates: breakfast (SBP) FREE 2.37, REDUCED 2.07,
+# PAID 0.39; lunch (NSLP) FREE 4.43, REDUCED 4.03, PAID 0.42.
+# TX at 180% of FPG: breakfast FREE, lunch REDUCED.
+#   breakfast (2.37 - 0.39) * 180 = 356.40.
+- name: Only breakfast counts as free in Texas in 2025.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: TX
+    school_meal_fpg_ratio: 1.8
+    meets_school_meal_categorical_eligibility: false
+    is_in_k12_school: true
+  output:
+    free_school_meals: 356.40
+
+# Calendar 2026 rates: breakfast (SBP) FREE 2.46, REDUCED 2.16,
+# PAID 0.40; lunch (NSLP) FREE 4.60, REDUCED 4.20, PAID 0.44.
+# UT at 180% of FPG: breakfast REDUCED, lunch FREE.
+#   lunch (4.60 - 0.44) * 180 = 748.80.
+# NH at 180% of FPG: breakfast FREE, lunch REDUCED.
+#   breakfast (2.46 - 0.40) * 180 = 370.80.
+# AR at 300% of FPG: breakfast FREE, lunch PAID.
+#   breakfast (2.46 - 0.40) * 180 = 370.80.
+# FL at 180% of FPG: breakfast REDUCED, lunch REDUCED.
+#   no free meal: 0.
+# TX at 180% of FPG: breakfast FREE, lunch FREE.
+#   breakfast (2.46 - 0.40) * 180 = 370.80; lunch (4.60 - 0.44) * 180 = 748.80; total 1,119.60.
+- name: Free meals follow each meal's tier in Utah, New Hampshire, Arkansas, Florida and Texas in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [UT, NH, AR, FL, TX]
+    school_meal_fpg_ratio: [1.8, 1.8, 3, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false]
+    is_in_k12_school: [true, true, true, true, true]
+  output:
+    free_school_meals: [748.80, 370.80, 370.80, 0, 1_119.60]
+
+# Calendar 2027 rates: breakfast (SBP) FREE 2.54, REDUCED 2.24,
+# PAID 0.42; lunch (NSLP) FREE 4.76, REDUCED 4.36, PAID 0.45.
+# SC at 300% of FPG: breakfast FREE, lunch PAID.
+#   breakfast (2.54 - 0.42) * 180 = 381.60.
+- name: South Carolina universal free breakfast counts as free in 2027.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: SC
+    school_meal_fpg_ratio: 3
+    meets_school_meal_categorical_eligibility: false
+    is_in_k12_school: true
+  output:
+    free_school_meals: 381.60
+
+# Edge case: the per-meal split uses each state group's own rates. Calendar
+# 2027, one K-12 child, 180 school days. Each meal's value is its rate above
+# the paid rate:
+# AK breakfast FREE 4.09 - 0.64 = 3.45, REDUCED 3.79 - 0.64 = 3.15;
+#   lunch FREE 7.72 - 0.74 = 6.98, REDUCED 7.32 - 0.74 = 6.58.
+# HI breakfast FREE 3.29 - 0.52 = 2.77, REDUCED 2.99 - 0.52 = 2.47;
+#   lunch FREE 6.19 - 0.59 = 5.60, REDUCED 5.79 - 0.59 = 5.20.
+# Free value is the FREE meals' value * 180:
+#   AK free breakfast, reduced-price lunch: 3.45 * 180 = 621.00.
+#   AK reduced-price breakfast, free lunch: 6.98 * 180 = 1,256.40.
+#   AK free breakfast, paid lunch: 3.45 * 180 = 621.00.
+#   HI free breakfast, reduced-price lunch: 2.77 * 180 = 498.60.
+#   HI reduced-price breakfast, free lunch: 5.60 * 180 = 1,008.00.
+#   HI free breakfast, paid lunch: 2.77 * 180 = 498.60.
+- name: Free meal values in Alaska and Hawaii use their own rates for mixed meal tiers in 2027.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AK, AK, AK, HI, HI, HI]
+    school_meal_breakfast_tier: [FREE, REDUCED, FREE, FREE, REDUCED, FREE]
+    school_meal_lunch_tier: [REDUCED, FREE, PAID, REDUCED, FREE, PAID]
+    is_in_k12_school: [true, true, true, true, true, true]
+  output:
+    free_school_meals: [621.00, 1_256.40, 621.00, 498.60, 1_008.00, 498.60]

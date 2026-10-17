@@ -1,0 +1,167 @@
+description: States provide lunch, but not breakfast, at no cost to students eligible for reduced-price meals under the National School Lunch Program if this is true.
+# True only while a state covers the reduced-price lunch copay but not the
+# breakfast copay. Coverage of both meals is in state_covers_reduced_price_copay,
+# and the two parameters are never true for the same state and date.
+# Assume enrollment at a covered school; each state's conditions are noted
+# beside its entry. Budget-funded coverage ends at its enacted funding end;
+# standing statutes carry forward.
+metadata:
+  propagate_metadata_to_children: true
+  label: State covers reduced-price school lunch copays only
+  period: year
+  unit: bool
+  breakdown:
+    - state_code
+  reference:
+    - title: 7 CFR 245.2 - Definitions (reduced price meal)
+      href: https://www.law.cornell.edu/cfr/text/7/245.2
+AA:
+  0000-01-01: false
+AE:
+  0000-01-01: false
+AK:
+  0000-01-01: false
+AL:
+  0000-01-01: false
+AP:
+  0000-01-01: false
+AR:
+  0000-01-01: false
+AZ:
+  0000-01-01: false
+CA:
+  0000-01-01: false
+CO:
+  0000-01-01: false
+CT:
+  0000-01-01: false
+DC:
+  0000-01-01: false
+DE:
+  0000-01-01: false
+FL:
+  0000-01-01: false
+GA:
+  0000-01-01: false
+GU:
+  0000-01-01: false
+HI:
+  0000-01-01: false
+IA:
+  0000-01-01: false
+ID:
+  0000-01-01: false
+IL:
+  0000-01-01: false
+IN:
+  0000-01-01: false
+KS:
+  0000-01-01: false
+KY:
+  0000-01-01: false
+LA:
+  0000-01-01: false
+MA:
+  0000-01-01: false
+MD:
+  0000-01-01: false
+ME:
+  0000-01-01: false
+MI:
+  0000-01-01: false
+MN:
+  0000-01-01: false
+MO:
+  0000-01-01: false
+MP:
+  0000-01-01: false
+MS:
+  0000-01-01: false
+MT:
+  0000-01-01: false
+NC:
+  0000-01-01: false
+ND:
+  0000-01-01: false
+NE:
+  0000-01-01: false
+NH:
+  0000-01-01: false
+NJ:
+  0000-01-01: false
+NM:
+  0000-01-01: false
+NV:
+  0000-01-01: false
+NY:
+  0000-01-01: false
+OH:
+  0000-01-01: false
+OK:
+  0000-01-01: false
+OR:
+  0000-01-01: false
+PA:
+  0000-01-01: false
+PR:
+  0000-01-01: false
+PW:
+  0000-01-01: false
+RI:
+  0000-01-01: false
+SC:
+  0000-01-01: false
+SD:
+  0000-01-01: false
+TN:
+  0000-01-01: false
+TX:
+  0000-01-01: false
+UT:
+  0000-01-01: false
+  # Local education agencies (LEAs) in the National School Lunch Program must
+  # serve lunch at no charge to K-12 students eligible for reduced-price meals;
+  # breakfast is not covered. H.B. 100 appropriated no money. The 2026 General
+  # Session appropriated $2,500,000 one-time to reimburse LEAs "for three
+  # years". Which fiscal years is unverified (FY2026-28 or FY2027-29), so
+  # coverage ends after FY2028, the last year covered under either reading.
+  # Not modeled: if appropriations fall short, LEAs are reimbursed pro rata
+  # and may ask parents to cover the remaining cost.
+  2025-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: "Utah H.B. 100 (2025), Utah Code § 53F-2-423 #page 2-3"
+          href: https://le.utah.gov/Session/2025/bills/enrolled/HB0100.pdf#page=2
+        - title: Utah Code § 53F-2-423
+          href: https://le.utah.gov/xcode/Title53F/Chapter2/C53F-2-S423_2025070120250507.html
+  2028-07-01:
+    value: false
+    metadata:
+      reference:
+        - title: Utah Office of the Legislative Fiscal Analyst, 2026 General Session Budget Summary (Reduced-Price School Lunch)
+          href: https://le.utah.gov/interim/2026/pdf/00002079.pdf#page=9
+VA:
+  0000-01-01: false
+VI:
+  0000-01-01: false
+VT:
+  0000-01-01: false
+WA:
+  0000-01-01: false
+  # From July 1, 2027 no enacted operating budget lists breakfast copay
+  # elimination, so only the statutory lunch coverage remains. Before then
+  # both meals are free (state_covers_reduced_price_copay). Not modeled:
+  # public schools only; the model's K-12 ages exclude pre-K.
+  2027-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Washington RCW 28A.235.160(7)
+          href: https://app.leg.wa.gov/RCW/default.aspx?cite=28A.235.160
+WI:
+  0000-01-01: false
+WV:
+  0000-01-01: false
+WY:
+  0000-01-01: false

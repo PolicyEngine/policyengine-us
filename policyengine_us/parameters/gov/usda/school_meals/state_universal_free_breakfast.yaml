@@ -1,0 +1,234 @@
+description: States provide breakfast at no cost to all students regardless of household income under the School Breakfast Program if this is true.
+# Breakfast only; universal free breakfast and lunch is in
+# state_universal_free_meals. Assume enrollment at a covered school; each
+# state's conditions are noted beside its entry.
+# Budget-funded programs end at their enacted funding end; standing statutes
+# carry forward.
+# Federal nationwide waivers made all school meals free through June 30, 2022.
+# The model does not represent them.
+metadata:
+  propagate_metadata_to_children: true
+  label: State universal free school breakfast
+  period: year
+  unit: bool
+  breakdown:
+    - state_code
+  reference:
+    - title: 42 U.S. Code § 1773 - School breakfast program
+      href: https://www.law.cornell.edu/uscode/text/42/1773
+AA:
+  0000-01-01: false
+AE:
+  0000-01-01: false
+AK:
+  0000-01-01: false
+AL:
+  0000-01-01: false
+AP:
+  0000-01-01: false
+AR:
+  0000-01-01: false
+  # From SY 2025-26, each public school student who does not otherwise receive
+  # a free breakfast gets one breakfast a day at no cost. Not modeled: the
+  # breakfast is provided "upon his or her request".
+  2025-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Arkansas Act 123 of 2025 (SB 59), A.C.A. § 6-18-722(f)
+          href: https://arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2025R%2FPublic%2FACT123.pdf#page=2
+        - title: Arkansas Department of Education, Commissioner's Memo COM-25-080
+          href: https://adecm.ade.arkansas.gov/ViewApprovedMemo.aspx?Id=5752
+AZ:
+  0000-01-01: false
+CA:
+  0000-01-01: false
+CO:
+  0000-01-01: false
+CT:
+  0000-01-01: false
+  # STABLE (SY 2023-24) and RISE (SY 2026-27) funded free breakfast for all
+  # students at participating schools. STAR (SY 2024-25) covered reduced-price
+  # copays only, and SY 2025-26 had no state funding. Not modeled: STABLE and
+  # RISE were school food authority opt-in programs (RISE all sites or none)
+  # that excluded community eligibility provision schools.
+  2023-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: "Connecticut CSDE Operational Memorandum 18-23 (P.A. 23-204, STABLE funds, SY 2023-24) #page 1,7"
+          href: https://portal.ct.gov/-/media/sde/nutrition/nslp/memos/om2023/om18-23.pdf#page=1
+  2024-07-01:
+    value: false
+    metadata:
+      reference:
+        - title: Connecticut CSDE Operational Memorandum 16-24 (P.A. 24-81 § 242, STAR funds, SY 2024-25)
+          href: https://portal.ct.gov/-/media/sde/nutrition/nslp/memos/om2024/om16-24.pdf#page=1
+  2026-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: "Connecticut CSDE Operational Memorandum 13-26 (P.A. 26-68, RISE funds, SY 2026-27) #page 1,4"
+          href: https://portal.ct.gov/-/media/sde/nutrition/nslp/memos/om2026/om13-26.pdf#page=1
+  # RISE funds cover SY 2026-27 only.
+  2027-07-01:
+    value: false
+    metadata:
+      reference:
+        - title: "Connecticut CSDE Operational Memorandum 13-26 (P.A. 26-68, RISE funds, SY 2026-27) #page 1,4"
+          href: https://portal.ct.gov/-/media/sde/nutrition/nslp/memos/om2026/om13-26.pdf#page=1
+DC:
+  0000-01-01: false
+  # Public and public charter schools. Participating private schools joined on
+  # October 20, 2011 (D.C. Law 19-37), which is not modeled separately.
+  2010-08-01:
+    value: true
+    metadata:
+      reference:
+        - title: "D.C. Law 18-209 (Healthy Schools Act of 2010), secs. 203(a)(1), 802(a) #page 6,19"
+          href: https://code.dccouncil.gov/us/dc/council/laws/docs/18-209.pdf#page=6
+        - title: D.C. Code § 38-822.03(a)(1)
+          href: https://code.dccouncil.gov/us/dc/council/code/sections/38-822.03
+DE:
+  0000-01-01: false
+  # 85 Del. Laws c. 65, § 33 moved implementation up from July 1, 2026 to
+  # July 1, 2025. Not modeled: public schools in the School Breakfast Program
+  # only; § 4137C(d) excludes community eligibility provision and Provision 1,
+  # 2 and 3 schools.
+  2025-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Delaware 85 Del. Laws c. 110 (HS 1 for HB 91), 14 Del. C. § 4137C(b), (d)
+          href: https://legis.delaware.gov/SessionLaws/Chapter/GetPdfDocument?fileAttachmentId=650776#page=1
+        - title: Delaware 85 Del. Laws c. 65, § 33 (implementation July 1, 2025)
+          href: https://legis.delaware.gov/SessionLaws/Chapter/GetPdfDocument?fileAttachmentId=650671#page=29
+        - title: Delaware Department of Education, SNP SY 2025-26 Operational Memo 4
+          href: https://education.delaware.gov/wp-content/uploads/2025/09/SNP-SY25-26-Operational-Memo-4-School-Breakfast-Program-Outreach.pdf#page=2
+FL:
+  0000-01-01: false
+GA:
+  0000-01-01: false
+GU:
+  0000-01-01: false
+HI:
+  0000-01-01: false
+IA:
+  0000-01-01: false
+ID:
+  0000-01-01: false
+IL:
+  0000-01-01: false
+IN:
+  0000-01-01: false
+KS:
+  0000-01-01: false
+KY:
+  0000-01-01: false
+LA:
+  0000-01-01: false
+MA:
+  0000-01-01: false
+MD:
+  0000-01-01: false
+ME:
+  0000-01-01: false
+MI:
+  0000-01-01: false
+MN:
+  0000-01-01: false
+MO:
+  0000-01-01: false
+MP:
+  0000-01-01: false
+MS:
+  0000-01-01: false
+MT:
+  0000-01-01: false
+NC:
+  0000-01-01: false
+ND:
+  0000-01-01: false
+NE:
+  0000-01-01: false
+NH:
+  0000-01-01: false
+NJ:
+  0000-01-01: false
+NM:
+  0000-01-01: false
+NV:
+  0000-01-01: false
+NY:
+  0000-01-01: false
+OH:
+  0000-01-01: false
+OK:
+  0000-01-01: false
+OR:
+  0000-01-01: false
+PA:
+  0000-01-01: false
+  # Funded from SY 2023-24 and codified by Act 33 on December 13, 2023. Not
+  # modeled: reimbursement is "to the extent funds are available". The
+  # universal breakfast reported for October 2022 to June 2023 is unverified
+  # and not encoded.
+  2023-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Pennsylvania Act 33 of 2023, 24 P.S. § 13-1337.1(c.2)
+          href: https://www.legis.state.pa.us/WU01/LI/LI/US/HTM/2023/0/0033..HTM
+        - title: Pennsylvania Governor's Office news release, August 8, 2023 (universal free breakfast; free lunch for reduced-price-eligible students)
+          href: https://www.pa.gov/governor/newsroom/2023-press-releases/governor-shapiro-signs-ceremonial-budget-bill-creating-universal
+PR:
+  0000-01-01: false
+PW:
+  0000-01-01: false
+RI:
+  0000-01-01: false
+SC:
+  0000-01-01: false
+  # Proviso 1.103(B) gives each public school student who is not otherwise
+  # free one breakfast a day at no cost in SY 2026-27. Not modeled: the
+  # breakfast is provided "upon his or her request"; the South Carolina
+  # Department of Education limits it to schools outside the community
+  # eligibility provision; and the roughly $2,780,000 cap ($2.12 a meal) is far
+  # below statewide demand.
+  2026-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: South Carolina FY2026-27 Appropriations Act, Part IB, Proviso 1.103(B)
+          href: https://www.scstatehouse.gov/sess126_2025-2026/appropriations2026/tap1b.htm
+        - title: South Carolina Department of Education memo, Proviso 1.103 of the FY2026-27 General Appropriations Act (September 9, 2026)
+          href: https://www.ed.sc.gov/newsroom/school-district-memoranda-archive/proviso-1103-of-the-fiscal-year-fy-2026-2027-general-appropriations-act/proviso-1103-of-the-fiscal-year-fy-2026-2027-general-appropriations-act-memo/#page=1
+  # The FY2026-27 proviso is the last one enacted.
+  2027-07-01:
+    value: false
+    metadata:
+      reference:
+        - title: South Carolina FY2026-27 Appropriations Act, Part IB, Proviso 1.103(B)
+          href: https://www.scstatehouse.gov/sess126_2025-2026/appropriations2026/tap1b.htm
+SD:
+  0000-01-01: false
+TN:
+  0000-01-01: false
+TX:
+  0000-01-01: false
+UT:
+  0000-01-01: false
+VA:
+  0000-01-01: false
+VI:
+  0000-01-01: false
+VT:
+  0000-01-01: false
+WA:
+  0000-01-01: false
+WI:
+  0000-01-01: false
+WV:
+  0000-01-01: false
+WY:
+  0000-01-01: false

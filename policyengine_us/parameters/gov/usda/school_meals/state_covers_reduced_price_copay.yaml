@@ -1,7 +1,23 @@
 description: States provide breakfast and lunch at no cost to students eligible for reduced-price meals under the National School Lunch Program and School Breakfast Program if this is true.
-# Only North Carolina coverage is verified here. Other false entries preserve
-# existing model behavior; they do not establish that a state has no coverage.
+# Every jurisdiction with a true entry below is verified against the cited law.
+# Virginia is intentionally false (see its entry). North Dakota students in the
+# reduced-price band are covered through state_free_income_limit from July 1,
+# 2023 to June 30, 2027, and Oregon's also from July 1, 2021. Coverage of only
+# one meal is in
+# state_covers_reduced_price_copay_breakfast_only and
+# state_covers_reduced_price_copay_lunch_only; this parameter is never true for
+# a state and date where either of those is. Other false entries do not
+# establish that a state has no coverage.
 # Assume enrollment at a covered school participating in both meal programs.
+# Not modeled: opt-in, proration and appropriation limits, public-only
+# coverage, grade limits, community eligibility provision (CEP) exclusions,
+# partial-year starts, and household inputs for school participation or CEP
+# status; each state's conditions are noted beside its entry.
+# Budget-funded coverage ends at its enacted funding end; standing statutes
+# carry forward.
+# Federal nationwide waivers made all school meals free through June 30, 2022.
+# The model does not represent them, so values dated before July 1, 2022 show
+# state effects in calendar 2021 and 2022 that families did not see.
 metadata:
   propagate_metadata_to_children: true
   label: State covers reduced-price school meal copays
@@ -24,26 +40,182 @@ AP:
   0000-01-01: false
 AR:
   0000-01-01: false
+  # Act 656 bars public schools from charging K-12 students the reduced-price
+  # copay; pre-K is not covered. The act was approved April 11, 2023 without an
+  # emergency clause; its general effective date (reported as August 1, 2023)
+  # is unverified, and either date first affects calendar 2024.
+  2023-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: "Arkansas Act 656 of 2023 (SB 477), A.C.A. § 6-18-722(b)(1), (e)(2) #page 2-3"
+          href: https://arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2023R%2FPublic%2FACT656.pdf#page=2
 AZ:
   0000-01-01: false
+  # No statute: the Arizona Department of Education (ADE) pays the copay from
+  # one-time money each year, first federal ESSER funds and then state
+  # appropriations. The House summary calls the FY2026 money ongoing, but ADE
+  # memos call each year's money one-time. Not modeled:
+  # payments are reduced proportionately if the money falls short, and CEP
+  # sites and Provision 2 or 3 sites in a non-base year are excluded (their
+  # meals are already free).
+  # January 2023 to June 2024: federal ESSER funds administered by ADE.
+  2023-01-01:
+    value: true
+    metadata:
+      reference:
+        - title: "Arizona Department of Education HNS 10-2022, Reduced-price Meal Subsidy #page 1-2"
+          href: https://www.azed.gov/sites/default/files/2022/12/HNS%2010-%202022%20Reduced-price%20Meal%20Subsidy.pdf#page=1
+  2024-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Arizona House summary of HB 2897 (2024 General Appropriations Act), school meal grants, items 41-42
+          href: https://www.azleg.gov/legtext/56leg/2R/summary/H.HB2897_061224_APPROP.pdf#page=8
+  2025-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Arizona House summary of HB 2947 (2025 General Appropriations Act), School Meals, item 31
+          href: https://www.azleg.gov/legtext/57leg/1R/summary/H.HB2947_060625_APPROP.DOCX.htm
+        - title: Arizona Department of Education HNS 07-2025 (SY 2025-26 state-funded reduced-price meals)
+          href: https://www.azed.gov/sites/default/files/2025/07/HNS%2007-%202025%20Reduced-Price%20Meals%20-%20State-funded%20Reimbursements%20in%20SY%202025-2026.pdf#page=1
+  2026-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: "Arizona Department of Education HNS 08-2026 (SY 2026-27 state-funded reduced-price meals) #page 1-2"
+          href: https://cms.azed.gov/sites/default/files/2026/06/HNS%2008-2026%20Reduced-Price%20Meals%20-%20State-funded%20Reimbursements%20in%20SY%202026-2027.pdf#page=1
+  # The FY2027 money is one-time, and reimbursement is not available after
+  # June 21, 2027. No later appropriation is enacted.
+  2027-07-01:
+    value: false
+    metadata:
+      reference:
+        - title: "Arizona Department of Education HNS 08-2026 (SY 2026-27 state-funded reduced-price meals) #page 1-2"
+          href: https://cms.azed.gov/sites/default/files/2026/06/HNS%2008-2026%20Reduced-Price%20Meals%20-%20State-funded%20Reimbursements%20in%20SY%202026-2027.pdf#page=1
 CA:
   0000-01-01: false
 CO:
   0000-01-01: false
 CT:
   0000-01-01: false
+  # Connecticut funds coverage one school year at a time. Under STABLE
+  # (SY 2023-24) and RISE (SY 2026-27), breakfast is free to all students
+  # (state_universal_free_breakfast) and lunch to reduced-price students, so
+  # reduced-price students pay for neither meal. Not modeled: STABLE and RISE
+  # were school food authority opt-in programs (RISE all sites or none);
+  # STABLE excluded new sponsors and new breakfast sites; every program
+  # excluded CEP sites. STAR (SY 2024-25) required eligible public, charter and
+  # residential child care institution sponsors to offer it.
+  2023-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: "Connecticut CSDE Operational Memorandum 18-23 (P.A. 23-204, STABLE funds, SY 2023-24) #page 1,7"
+          href: https://portal.ct.gov/-/media/sde/nutrition/nslp/memos/om2023/om18-23.pdf#page=1
+  2024-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: "Connecticut CSDE Operational Memorandum 16-24 (P.A. 24-81 § 242, STAR funds, SY 2024-25) #page 1,3-4"
+          href: https://portal.ct.gov/-/media/sde/nutrition/nslp/memos/om2024/om16-24.pdf#page=1
+  # No state funding in SY 2025-26.
+  2025-07-01:
+    value: false
+    metadata:
+      reference:
+        - title: Connecticut CSDE School Lunch Tray, August 20, 2025 (no state funding for SY 2025-26)
+          href: https://portal.ct.gov/-/media/sde/nutrition/slt/2025/slt_08_20_2025.pdf#page=4
+  2026-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: "Connecticut CSDE Operational Memorandum 13-26 (P.A. 26-68, RISE funds, SY 2026-27) #page 1,4"
+          href: https://portal.ct.gov/-/media/sde/nutrition/nslp/memos/om2026/om13-26.pdf#page=1
+  # RISE funds cover SY 2026-27 only.
+  2027-07-01:
+    value: false
+    metadata:
+      reference:
+        - title: "Connecticut CSDE Operational Memorandum 13-26 (P.A. 26-68, RISE funds, SY 2026-27) #page 1,4"
+          href: https://portal.ct.gov/-/media/sde/nutrition/nslp/memos/om2026/om13-26.pdf#page=1
 DC:
   0000-01-01: false
+  # Public and public charter schools. Participating private schools joined on
+  # October 20, 2011 (D.C. Law 19-37), which is not modeled separately.
+  # Breakfast is free to all students (state_universal_free_breakfast).
+  2010-08-01:
+    value: true
+    metadata:
+      reference:
+        - title: "D.C. Law 18-209 (Healthy Schools Act of 2010), secs. 203(b)(1), 802(a) #page 6,19"
+          href: https://code.dccouncil.gov/us/dc/council/laws/docs/18-209.pdf#page=6
+        - title: D.C. Code § 38-822.03(b)(1)
+          href: https://code.dccouncil.gov/us/dc/council/code/sections/38-822.03
 DE:
   0000-01-01: false
+  # 84 Del. Laws c. 317 was approved July 23, 2024 and applies from the
+  # following school year, SY 2024-25. Not modeled: public district and charter
+  # schools only; § 4137A has no CEP exclusion, but Department of Education
+  # guidance excludes CEP schools.
+  2024-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Delaware Code tit. 14, § 4137A(b)
+          href: https://delcode.delaware.gov/title14/c041/sc01/index.html
+        - title: Delaware 84 Del. Laws c. 317 (HS 2 for HB 125), § 2 (effective the school year following enactment)
+          href: https://legis.delaware.gov/SessionLaws/Chapter?id=41948
+        - title: Delaware Department of Education, SNP SY 2025-26 Operational Memo 4
+          href: https://education.delaware.gov/wp-content/uploads/2025/09/SNP-SY25-26-Operational-Memo-4-School-Breakfast-Program-Outreach.pdf#page=1
 FL:
   0000-01-01: false
 GA:
   0000-01-01: false
+  # No statute: state funds in each annual budget. Federal funding for
+  # SY 2023-24 (a State Board action) is unverified and not encoded. The FY2027
+  # budget (HB 974) carries the FY2026 Nutrition program base, which includes
+  # item 155.4, into program 24.13 with no line deleting it, so coverage
+  # continues through FY2027 and ends with that last enacted budget.
+  2024-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Georgia House Budget and Research Office, School Nutrition Funding policy brief (July 2024; FY2025 budget)
+          href: https://www.legis.ga.gov/api/document/docs/default-source/house-budget-and-research-office-document-library/newsandhighlights/2024/2024_policy_brief_school_nutrition_funding.pdf?sfvrsn=34d9c7cc_2#page=1
+  2025-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Georgia FY2026 General Appropriations Act (HB 68), item 155.4
+          href: https://www.legis.ga.gov/api/document/docs/default-source/senate-budget-office-document-library/appropriations/2026/general/cc-bill_hb-68-fy26g_final.pdf?sfvrsn=f03de74b_2#page=102
+  2026-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Georgia FY2027 General Appropriations Act (HB 974), program 24.13 (Nutrition), lines 1958-1965
+          href: https://www.legis.ga.gov/api/document/docs/default-source/house-budget-and-research-office-document-library/2027-fiscal-year/fy_2027_bill_conf_cmte_(hb_974).pdf#page=60
+  # FY2027, the last enacted budget, ends June 30, 2027.
+  2027-07-01:
+    value: false
+    metadata:
+      reference:
+        - title: Georgia FY2027 General Appropriations Act (HB 974), program 24.13 (Nutrition), lines 1958-1965
+          href: https://www.legis.ga.gov/api/document/docs/default-source/house-budget-and-research-office-document-library/2027-fiscal-year/fy_2027_bill_conf_cmte_(hb_974).pdf#page=60
 GU:
   0000-01-01: false
 HI:
   0000-01-01: false
+  # HRS § 302A-404(b) applies from SY 2025-26 and is not limited to department
+  # schools; charter school coverage is unverified. Act 139 appropriated
+  # $565,000 or so much as may be necessary for each of FY2026 and FY2027.
+  2025-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Hawaii Act 139, SLH 2025 (SB 1300 CD1), HRS § 302A-404(b)
+          href: https://data.capitol.hawaii.gov/sessions/session2025/bills/SB1300_CD1_.HTM
 IA:
   0000-01-01: false
 ID:
@@ -58,10 +230,32 @@ KY:
   0000-01-01: false
 LA:
   0000-01-01: false
+  # R.S. 17:192(B)(3) applies from SY 2023-24 to students in kindergarten
+  # through grade 12; pre-K is excluded. Not modeled: Act 305 took effect only
+  # with a specific appropriation, and coverage depends on continued funding;
+  # the Louisiana Department of Education confirms SY 2026-27.
+  2023-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Louisiana R.S. 17:192(B)(3)
+          href: https://legis.la.gov/Legis/LawPrint.aspx?d=80035
+        - title: Louisiana Act 305 of 2023 (HB 282), Secs. 2-3
+          href: https://legis.la.gov/legis/ViewDocument.aspx?d=1332458#page=2
 MA:
   0000-01-01: false
 MD:
   0000-01-01: false
+  # Education § 7-602(e) ended the reduced-price breakfast charge in FY2022
+  # (state_covers_reduced_price_copay_breakfast_only) and the lunch charge in
+  # FY2023. Not modeled: county boards plus nonpublic schools that opt in to
+  # the State Free Feeding Program.
+  2022-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: "Maryland Education § 7-602(d)-(e) #page 1-2"
+          href: https://mgaleg.maryland.gov/2026RS/Statute_Web/ged/7-602.pdf#page=1
 ME:
   0000-01-01: false
 MI:
@@ -125,44 +319,204 @@ NC:
         - title: North Carolina S.L. 2025-89 § 7.1 (effective retroactively to July 1, 2025)
           href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/PDF/2025-2026/SL2025-89.pdf#page=32
 ND:
+  # Reduced-price students are covered through state_free_income_limit from
+  # July 1, 2023 to June 30, 2027.
   0000-01-01: false
 NE:
   0000-01-01: false
+  # LB966 creates a pilot for school years 2026-27 through 2031-32 that schools
+  # apply to join, but the Nebraska Department of Education requires every
+  # school food authority to charge reduced-price students $0 with no
+  # application, so the model treats it as statewide. Not modeled: CEP schools
+  # are excluded (their meals are already free); appropriations cover FY2027
+  # and FY2028 only, mostly from the Hunger-Free Schools Cash Fund.
+  2026-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Nebraska LB966 (2026), Hunger-Free Schools Act, secs. 3-4
+          href: https://nebraskalegislature.gov/FloorDocs/109/PDF/Slip/LB966.pdf#page=1
+        - title: Nebraska Department of Education, charge policy guidance (Hunger-Free Schools Act)
+          href: https://www.education.ne.gov/ns/forms-resources/national-school-lunch-program/charge-policy/
+  # The statutory pilot ends with school year 2031-32.
+  2032-07-01:
+    value: false
+    metadata:
+      reference:
+        - title: Nebraska LB966 (2026), Hunger-Free Schools Act, sec. 4(1)
+          href: https://nebraskalegislature.gov/FloorDocs/109/PDF/Slip/LB966.pdf#page=1
 NH:
+  # Breakfast only: state_covers_reduced_price_copay_breakfast_only.
   0000-01-01: false
 NJ:
   0000-01-01: false
+  # P.L.2019, c.445 took effect 180 days after its approval on January 21, 2020.
+  # Not modeled: it covered public schools; P.L.2023, c.336 extended free meals
+  # to participating nonpublic schools from January 16, 2024.
+  2020-07-19:
+    value: true
+    metadata:
+      reference:
+        - title: New Jersey P.L.2019, c.445 (N.J.S.A. 18A:33-21.1)
+          href: https://pub.njleg.gov/Bills/2018/PL19/445_.HTM
 NM:
   0000-01-01: false
+  # School districts and charter schools from SY 2020-21. Moot from July 1,
+  # 2023, when New Mexico meals became universal (state_universal_free_meals).
+  2020-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: "New Mexico HB 10 (2020), Sections 1(B), 2, School meals--reduced-price copayments eliminated #page 1-2"
+          href: https://www.nmlegis.gov/Sessions/20%20Regular/final/HB0010.pdf#page=1
 NV:
   0000-01-01: false
 NY:
   0000-01-01: false
 OH:
   0000-01-01: false
+  # ORC 3313.819(B) took effect October 3, 2023 and covers public and chartered
+  # nonpublic schools; the state reimburses schools from funds appropriated for
+  # that purpose (ORC 3301.91). Whether meals served before October 3, 2023 were
+  # reimbursed is unverified; a July 1, 2023 date gives the same annual result.
+  2023-10-03:
+    value: true
+    metadata:
+      reference:
+        - title: Ohio Revised Code § 3313.819(B)
+          href: https://codes.ohio.gov/ohio-revised-code/section-3313.819
+        - title: Ohio Revised Code § 3301.91(B)-(C)
+          href: https://codes.ohio.gov/ohio-revised-code/section-3301.91
 OK:
   0000-01-01: false
 OR:
   0000-01-01: false
+  # Oregon Laws 2015, c. 718 made reduced-price lunch free from SY 2015-16;
+  # reduced-price breakfast was already free (the clause appears in the 2009
+  # ORS edition; its operative date is unverified). From July 1, 2021 the
+  # 300 percent income limit (state_free_income_limit) also covers these
+  # students. Not modeled: public schools only, and ORS 327.531(3) suspends
+  # no-charge meals if the Department of Education lacks funds.
+  2015-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Oregon Laws 2015, c. 718, §§ 1-2 (reduced-price lunch at no charge from SY 2015-16)
+          href: https://www.oregonlegislature.gov/bills_laws/lawsstatutes/2015orlaw0718.pdf#page=1
+        - title: Oregon Revised Statutes 327.531, 327.535(6)
+          href: https://www.oregonlegislature.gov/bills_laws/ors/ors327.html
 PA:
   0000-01-01: false
+  # The FY2023-24 budget funded free lunch for reduced-price students and
+  # universal free breakfast (state_universal_free_breakfast) from SY 2023-24;
+  # Act 33 codified both on December 13, 2023. Not modeled: reimbursement is
+  # "to the extent funds are available", and nonpublic school coverage is
+  # unverified.
+  2023-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Pennsylvania Act 33 of 2023, 24 P.S. § 13-1337.1(c.2)
+          href: https://www.legis.state.pa.us/WU01/LI/LI/US/HTM/2023/0/0033..HTM
+        - title: Pennsylvania Governor's Office news release, August 8, 2023 (universal free breakfast; free lunch for reduced-price-eligible students)
+          href: https://www.pa.gov/governor/newsroom/2023-press-releases/governor-shapiro-signs-ceremonial-budget-bill-creating-universal
 PR:
   0000-01-01: false
 PW:
   0000-01-01: false
 RI:
   0000-01-01: false
+  # P.L. 2024, ch. 117 took effect June 17, 2024; funding starts in FY2025.
+  # Not modeled: public schools only, "to the extent that federal, state, and
+  # other funds are available".
+  2024-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Rhode Island Gen. Laws § 16-8-10 (lunch)
+          href: https://webserver.rilegislature.gov/Statutes/TITLE16/16-8/16-8-10.htm
+        - title: Rhode Island Gen. Laws § 16-8-10.1(a) (breakfast)
+          href: https://webserver.rilegislature.gov/Statutes/TITLE16/16-8/16-8-10.1.htm
 SC:
   0000-01-01: false
+  # Annual budget provisos bar charging the copay "for the current fiscal
+  # year"; the FY2023-24 act had no such proviso. Not modeled: reimbursements
+  # are reduced proportionately if funds fall short, though the bar on charging
+  # still holds.
+  2024-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: South Carolina FY2024-25 Appropriations Act, Part IB, Proviso 1.115
+          href: https://www.scstatehouse.gov/sess125_2023-2024/appropriations2024/tap1b.htm
+  2025-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: South Carolina FY2025-26 Appropriations Act, Part IB, Proviso 1.109
+          href: https://www.scstatehouse.gov/sess126_2025-2026/appropriations2025/tap1b.htm
+  2026-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: South Carolina FY2026-27 Appropriations Act, Part IB, Proviso 1.103(A)
+          href: https://www.scstatehouse.gov/sess126_2025-2026/appropriations2026/tap1b.htm
+  # The FY2026-27 proviso is the last one enacted.
+  2027-07-01:
+    value: false
+    metadata:
+      reference:
+        - title: South Carolina FY2026-27 Appropriations Act, Part IB, Proviso 1.103(A)
+          href: https://www.scstatehouse.gov/sess126_2025-2026/appropriations2026/tap1b.htm
 SD:
   0000-01-01: false
+  # From July 1, 2026 school districts may not charge reduced-price students.
+  # The bar is unconditional; only reimbursement depends on appropriations.
+  # Not modeled: public school districts only.
+  2026-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: South Dakota 2026 Session Laws ch. 84 (HB 1082), secs. 2-3
+          href: https://mylrc.sdlegislature.gov/api/Documents/SessionLaw/306555.pdf?Year=2026#page=1
+        - title: South Dakota Department of Education, HB 1082 FAQs
+          href: https://doe.sd.gov/cans/documents/HB1082-FAQs.pdf#page=1
 TN:
   0000-01-01: false
 TX:
   0000-01-01: false
+  # No statute: General Appropriations Act riders fund free breakfast and, from
+  # September 1, 2025, free lunch for reduced-price students. Breakfast alone
+  # from September 1, 2023 is in
+  # state_covers_reduced_price_copay_breakfast_only. Not modeled: the school
+  # year starts in August, but state lunch funding covers only lunches served
+  # from September 1, 2025, so August 2025 lunches could be charged.
+  2025-09-01:
+    value: true
+    metadata:
+      reference:
+        - title: "Texas General Appropriations Act 2026-27, Art. VI, Department of Agriculture riders 29, 31 #page 729-730"
+          href: https://www.lbb.texas.gov/Documents/GAA/General_Appropriations_Act_2026_2027.pdf#page=729
+        - title: Texas Department of Agriculture, Reduced-Price School Meals Now Free
+          href: https://squaremeals.org/Programs/School-Breakfast-Program/Reduced-Price-School-Meals-Now-Free
+  # The riders fund FY2026 and FY2027; FY2027 ends August 31, 2027.
+  2027-09-01:
+    value: false
+    metadata:
+      reference:
+        - title: "Texas General Appropriations Act 2026-27, Art. VI, Department of Agriculture riders 29, 31 #page 729-730"
+          href: https://www.lbb.texas.gov/Documents/GAA/General_Appropriations_Act_2026_2027.pdf#page=729
 UT:
+  # Lunch only: state_covers_reduced_price_copay_lunch_only.
   0000-01-01: false
 VA:
+  # Virginia stays false. Appropriation Act Item 125, paragraph 39 funds local
+  # school divisions "to reduce or eliminate" the reduced-price breakfast and
+  # lunch charges and lets the Department of Education reduce the money
+  # proportionately. Funding falls from $4,100,000 to $1,600,000 a year from
+  # July 1, 2026, and there is no statute. The value stays false until
+  # evidence shows that divisions charge $0
+  # (https://budget.lis.virginia.gov/item/2026/2/HB30/Chapter/1/125/).
   0000-01-01: false
 VI:
   0000-01-01: false
@@ -170,6 +524,44 @@ VT:
   0000-01-01: false
 WA:
   0000-01-01: false
+  # Lunch: RCW 28A.235.160(7) requires districts to eliminate lunch copays for
+  # pre-K-12 students from SY 2021-22, a standing statute. Breakfast: each
+  # biennial operating budget lists eliminating breakfast copays as an
+  # allowable use of state matching money, not a mandate. Not modeled: public
+  # schools only; the model's K-12 ages exclude pre-K.
+  2021-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Washington RCW 28A.235.160(7)
+          href: https://app.leg.wa.gov/RCW/default.aspx?cite=28A.235.160
+        - title: Washington ESSB 5092 (2021 c 334) § 508(1)(a)
+          href: https://lawfilesext.leg.wa.gov/biennium/2021-22/Pdf/Bills/Session%20Laws/Senate/5092-S.SL.pdf#page=396
+  2023-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Washington RCW 28A.235.160(7)
+          href: https://app.leg.wa.gov/RCW/default.aspx?cite=28A.235.160
+        - title: Washington ESSB 5167 (2025 c 424) § 1506, amending 2024 c 376 § 508(1)(a)
+          href: https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Session%20Laws/Senate/5167-S.SL.pdf#page=1233
+  2025-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Washington RCW 28A.235.160(7)
+          href: https://app.leg.wa.gov/RCW/default.aspx?cite=28A.235.160
+        - title: "Washington ESSB 5167 (2025 c 424) § 508(1)(a) #page 372-373"
+          href: https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Session%20Laws/Senate/5167-S.SL.pdf#page=372
+  # The breakfast allowable use is enacted through the 2025-27 biennium, which
+  # ends June 30, 2027. Statutory lunch coverage continues in
+  # state_covers_reduced_price_copay_lunch_only.
+  2027-07-01:
+    value: false
+    metadata:
+      reference:
+        - title: "Washington ESSB 5167 (2025 c 424) § 508(1)(a) #page 372-373"
+          href: https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Session%20Laws/Senate/5167-S.SL.pdf#page=372
 WI:
   0000-01-01: false
 WV:
