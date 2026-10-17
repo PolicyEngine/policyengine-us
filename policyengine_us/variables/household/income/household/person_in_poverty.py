@@ -6,7 +6,8 @@ class person_in_poverty(Variable):
     documentation = "Whether person is in poverty"
     entity = Person
     definition_period = YEAR
-    value_type = bool
+    value_type = float
+    quantity_type = STOCK
 
     def formula(person, period, parameters):
         return person.spm_unit("in_poverty", period)
