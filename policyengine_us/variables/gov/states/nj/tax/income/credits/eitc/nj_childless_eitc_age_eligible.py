@@ -13,6 +13,9 @@ class nj_childless_eitc_age_eligible(Variable):
         # qualifications, except for the minimum or maximum age, for the
         # federal earned income tax credit".
         "https://pub.njleg.state.nj.us/Bills/2020/PL21/130_.HTM",
+        "https://www.law.cornell.edu/uscode/text/26/32#c_1_A_ii",
+        # 2025 NJ-1040 instructions, line 58.
+        "https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=44",
     )
     defined_for = StateCode.NJ
 
@@ -28,13 +31,30 @@ class nj_childless_eitc_age_eligible(Variable):
         # Get the NJ EITC paramaeter tree.
         p = parameters(period).gov.states.nj.tax.income.credits.eitc
 
-        # Check if the filer meets NJ EITC age requirements.
+        # Check if the filer meets NJ EITC age requirements. The age test
+        # applies to the filer or, on a joint return, either spouse, never to
+        # a dependent (IRC 32(c)(1)(A)(ii)(II)).
         age = person("age", period)
-        age_eligible = age >= p.eligibility.age.min
+        is_filer_or_spouse = ~person("is_tax_unit_dependent", period)
+        age_eligible = (age >= p.eligibility.age.min) & is_filer_or_spouse
 
         # Section 32(c)(1)(C): a filer who claims the benefits of section 911
         # fails a federal qualification other than age.
         claims_section_911 = elects_section_911_exclusion(tax_unit, period)
+
+        # Section 32(c)(1)(A)(ii)(III): without a qualifying child, the filer
+        # must not be a dependent of another taxpayer, and on a joint return
+        # neither spouse may be, unless the would-be claimant files only for a
+        # refund (Publication 596), as for the federal credit.
+        dependent_elsewhere = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
+        # The NJ-1040 line 58 worksheet also requires "You are not listed as a
+        # dependent on another tax return", an actual claim.
+        filer = person("is_tax_unit_head_or_spouse", period)
+        listed_elsewhere = tax_unit.any(
+            filer & person("claimed_as_dependent_on_another_return", period)
+        )
 
         return (
             ~separate
@@ -42,4 +62,6 @@ class nj_childless_eitc_age_eligible(Variable):
             & tax_unit.any(age_eligible)
             & tax_unit("nj_eitc_income_eligible", period)
             & ~claims_section_911
+            & ~dependent_elsewhere
+            & ~listed_elsewhere
         )

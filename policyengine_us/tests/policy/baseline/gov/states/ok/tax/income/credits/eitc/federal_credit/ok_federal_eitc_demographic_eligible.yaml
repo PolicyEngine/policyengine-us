@@ -47,3 +47,32 @@
     state_code: OK
   output:
     ok_federal_eitc_demographic_eligible: false
+
+
+- name: 2025 the 2020 age test applies to the filer, not to a dependent
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+      relative:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, relative]
+    households:
+      household:
+        members: [person_a, relative]
+        state_code: OK
+  output:
+    # A 20-year-old filer misses the 2020 age-25 minimum even with an older
+    # dependent who is not a qualifying child.
+    ok_federal_eitc_demographic_eligible: false

@@ -251,3 +251,65 @@
   # $95, from 1,997.38 to 2,092.38.
   output:
     ok_income_tax: 2092.38
+
+- name: OK dependent exemption reform - a single filer who can be claimed as a dependent has no exemptions
+  period: 2025
+  reforms: policyengine_us.reforms.states.ok.dependent_exemption.ok_dependent_exemption_reform.ok_dependent_exemption_reform
+  input:
+    gov.contrib.states.ok.dependent_exemption.in_effect: true
+    gov.contrib.states.ok.dependent_exemption.amount: 2_000
+    people:
+      parent:
+        age: 20
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+      child1:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1]
+        state_name: OK
+  output:
+    # No regular exemption for the claimable filer, and no dependents on the
+    # return (IRC 152(b)(1)), so the reform's dependent amount never applies.
+    ok_eligible_dependents_count: 0
+    ok_dependent_exemption: 0
+    ok_exemptions: 0
+
+- name: OK dependent exemption reform - one claimable spouse keeps only the other spouse's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.states.ok.dependent_exemption.ok_dependent_exemption_reform.ok_dependent_exemption_reform
+  input:
+    gov.contrib.states.ok.dependent_exemption.in_effect: true
+    gov.contrib.states.ok.dependent_exemption.amount: 2_000
+    people:
+      spouse_b:
+        age: 22
+        employment_income: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      spouse_a:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child1:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [spouse_b, spouse_a, child1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [spouse_b, spouse_a, child1]
+        state_name: OK
+  output:
+    ok_eligible_dependents_count: 0
+    ok_older_dependents_count: 0
+    ok_exemptions: 1_000

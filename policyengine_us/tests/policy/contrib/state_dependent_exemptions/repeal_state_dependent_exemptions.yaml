@@ -151,3 +151,67 @@
   output:
     # Baseline keeps the dependent add: 7,600 + 1 x 1,000 + 6,800 = 15,400.
     ma_income_tax_exemption_threshold: 15_400
+
+- name: Oklahoma joint filers with one dependent, one spouse claimable elsewhere - reform keeps only the other spouse's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 30
+        employment_income: 2_500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 2_500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: OK
+  output:
+    # As in the baseline, a spouse who can be claimed as a dependent has no
+    # regular exemption (Form 511 item F); the reform removes the dependent.
+    ok_count_exemptions: 1
+
+- name: Oklahoma joint filers with one dependent, one spouse claimable elsewhere - reform keeps only the other spouse's exemption (labels exchanged)
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_b:
+        age: 30
+        employment_income: 2_500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 2_500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: OK
+  output:
+    ok_count_exemptions: 1
