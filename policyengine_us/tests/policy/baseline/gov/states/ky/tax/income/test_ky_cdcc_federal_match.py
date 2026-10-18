@@ -21,11 +21,13 @@ IRC 26 liability cap), P the same credit on the pre-OBBBA rate schedule
 4. The federal potential credit equals a reference written from IRC 21(a)(2)
    (and, from 2026, the Act's amended schedule) times the relevant expenses.
 5. 0 <= k <= K.
-6. Under a reform that turns Kentucky's OBBBA conformity off, K = 0.2 * P
-   from 2026, and K is unchanged in 2025 (checked on the grid only, since the
-   reformed system costs about 0.55 GiB and 7 seconds to build).
-7. The OBBBA marker that the pre-OBBBA mirrors read switches on in exactly the
-   years the live rate schedule departs from the frozen pre-OBBBA one.
+6. The Act's effective date that the pre-OBBBA mirrors key on (P.L. 119-21
+   sec. 70405(b)) is the first year the baseline section 21 parameters depart
+   from the frozen pre-OBBBA schedule.
+
+The conformity parameter as a reform lever (Kentucky reads P when it is false
+and the Act changes section 21) is covered in ky_cdcc.yaml, where a parameter
+input needs no separately built system.
 
 Each Simulation holds every year at once, so a batch costs one Simulation.
 The model computes in single precision, so comparisons allow one cent or eight
@@ -36,20 +38,21 @@ from math import ceil
 
 import numpy as np
 import pytest
-from policyengine_core.reforms import Reform
 
-from policyengine_us import CountryTaxBenefitSystem, Simulation
+from policyengine_us import Simulation
+from policyengine_us.variables.gov.irs.credits.cdcc.pre_obbba_cdcc import (
+    OBBBA_SECTION_21_EFFECTIVE,
+    PRE_OBBBA_INSTANT,
+)
 
 hypothesis = pytest.importorskip("hypothesis")
 st = pytest.importorskip("hypothesis.strategies")
 
 MATCH = 0.2
-CONFORMITY = "gov.states.ky.tax.income.irc_conformity.obbba"
 YEARS = [2021, 2025, 2026, 2027]
 MATCH_YEARS = [2025, 2026, 2027]
 NO_OBBBA_CHANGE_YEARS = [2021, 2025]
 OBBBA_YEARS = [2026, 2027]
-REFORM_YEARS = [2025, 2026, 2027]
 
 OUTPUTS = [
     "adjusted_gross_income",
@@ -69,14 +72,6 @@ PAIRS = [
     ("pre_obbba_cdcc", "cdcc"),
     ("pre_obbba_capped_cdcc", "capped_cdcc"),
 ]
-
-
-@pytest.fixture(scope="module")
-def decoupled_system():
-    # Built once for the module and released at its end, so the reformed
-    # parameter tree does not stay resident for the rest of the test process.
-    reform = Reform.from_dict({CONFORMITY: {"2018-01-01.2100-12-31": False}}, "us")
-    yield CountryTaxBenefitSystem(reform=reform)
 
 
 def tolerance(*amounts):
@@ -119,8 +114,8 @@ def situation(units, years):
     return {"people": people, "tax_units": tax_units, "households": households}
 
 
-def calculate(units, years, outputs, **system):
-    sim = Simulation(situation=situation(units, years), **system)
+def calculate(units, years, outputs):
+    sim = Simulation(situation=situation(units, years))
     return {
         year: {name: sim.calculate(name, year) for name in outputs} for year in years
     }
@@ -178,24 +173,6 @@ def check(units):
     return result
 
 
-def check_decoupled(units, baseline, system):
-    # 6. With Kentucky's OBBBA conformity off, Kentucky reads the pre-OBBBA
-    # credit once the Act changes section 21, and nothing changes before.
-    decoupled = calculate(
-        units, REFORM_YEARS, ["ky_cdcc_potential"], tax_benefit_system=system
-    )
-    for year in REFORM_YEARS:
-        r = baseline[year]
-        tol = tolerance(r["cdcc_potential"])
-        big_k = decoupled[year]["ky_cdcc_potential"]
-        if year in OBBBA_YEARS:
-            np.testing.assert_allclose(big_k, MATCH * r["pre_obbba_cdcc"], atol=tol)
-            # Conforming never lowers Kentucky's credit.
-            assert (r["ky_cdcc_potential"] >= big_k - tol).all()
-        else:
-            np.testing.assert_allclose(big_k, r["ky_cdcc_potential"], atol=tol)
-
-
 def unit(married, wages, spouse_wages, child_ages, expenses):
     return {
         "married": married,
@@ -232,9 +209,8 @@ GRID = [
 ]
 
 
-def test_grid_matches_20_percent_of_federal_credit(decoupled_system):
+def test_grid_matches_20_percent_of_federal_credit():
     result = check(GRID)
-    check_decoupled(GRID, result, decoupled_system)
     # The grid has 2026 units where the Act raises the credit, units where
     # both schedules give the same positive credit, and units whose federal
     # credit the liability cap cuts.
@@ -245,17 +221,20 @@ def test_grid_matches_20_percent_of_federal_credit(decoupled_system):
     assert differs.any() and (same & (r["cdcc"] > 0)).any() and capped.any()
 
 
-def test_obbba_marker_matches_rate_schedule():
-    # 7. The mirrors read amended_structure.applies as the years the Act
-    # changes section 21. It must switch on with the Act's rate changes.
+def test_obbba_effective_date_matches_rate_schedule():
+    # 6. From the Act's effective date on, and only then, the baseline section
+    # 21 schedule departs from the frozen one in both its rates and its amended
+    # second phase-out.
     from policyengine_us.system import system
 
     parameters = system.parameters
-    frozen = parameters.gov.irs.credits.cdcc("2025-01-01").phase_out
+    frozen = parameters.gov.irs.credits.cdcc(PRE_OBBBA_INSTANT).phase_out
+    effective = OBBBA_SECTION_21_EFFECTIVE.year
     for year in range(2022, 2036):
         live = parameters.gov.irs.credits.cdcc(f"{year}-01-01").phase_out
         departs = (live.max, live.min) != (frozen.max, frozen.min)
-        assert bool(live.amended_structure.applies) == departs, year
+        assert departs == (year >= effective), year
+        assert bool(live.amended_structure.applies) == (year >= effective), year
 
 
 unit_strategy = st.builds(

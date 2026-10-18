@@ -1,14 +1,20 @@
+from policyengine_core.periods import instant
+
 from policyengine_us.model_api import *
 
+# P.L. 119-21 sec. 70405(b): the Act's amendment of section 21(a)(2) "shall
+# apply to taxable years beginning after December 31, 2025." These mirrors model
+# section 21 without that amendment, so they key on the statutory date rather
+# than on a section 21 parameter that a reform could change.
+OBBBA_SECTION_21_EFFECTIVE = instant("2026-01-01")
+# Any 2023-2025 instant gives the pre-OBBBA rate schedule.
+PRE_OBBBA_INSTANT = "2025-01-01"
 
-def obbba_amends_section_21(parameters, period):
-    # The Act's section 21 amendments (the higher maximum and minimum rates
-    # and the amended second phase-out) all take effect for tax years
-    # beginning after 2025-12-31. The amended phase-out structure flag is
-    # dated with them, so it marks the years the Act changes section 21. In
-    # other years the pre-OBBBA credit is the live credit, including the 2021
-    # American Rescue Plan Act schedule.
-    return parameters(period).gov.irs.credits.cdcc.phase_out.amended_structure.applies
+
+def obbba_amends_section_21(period):
+    # Before the effective date the pre-OBBBA credit is the live credit,
+    # including the 2021 American Rescue Plan Act schedule.
+    return period.start >= OBBBA_SECTION_21_EFFECTIVE
 
 
 class pre_obbba_cdcc_potential(Variable):
@@ -30,17 +36,16 @@ class pre_obbba_cdcc_potential(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/21#a_2"
 
     def formula(tax_unit, period, parameters):
-        if not obbba_amends_section_21(parameters, period):
+        if not obbba_amends_section_21(period):
             return tax_unit("cdcc_potential", period)
         # Only the section 21(a)(2) rate schedule changed under OBBBA
         # (phase_out.max 0.35->0.50, phase_out.min 0.20->0.35, plus a new
         # amended second phase-out), all dated 2026-01-01. The section 21(b)-(e)
         # expense base is unchanged, so freeze only the rate by reading the cdcc
-        # parameter subtree at a pre-OBBBA instant. Any 2023-2025 instant yields
-        # the same schedule; use 2025-01-01. The pre-OBBBA schedule has no
-        # second phase-out after 2021 (second_start is infinite from 2022), so
-        # the first phase-out is the whole rate computation.
-        frozen = parameters("2025-01-01").gov.irs.credits.cdcc
+        # parameter subtree at a pre-OBBBA instant. The pre-OBBBA schedule has
+        # no second phase-out after 2021 (second_start is infinite from 2022),
+        # so the first phase-out is the whole rate computation.
+        frozen = parameters(PRE_OBBBA_INSTANT).gov.irs.credits.cdcc
         agi = tax_unit("adjusted_gross_income", period)
         excess_agi = max_(0, agi - frozen.phase_out.start)
         increments = np.ceil(excess_agi / frozen.phase_out.increment)
@@ -69,7 +74,7 @@ class pre_obbba_cdcc(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/21"
 
     def formula(tax_unit, period, parameters):
-        if not obbba_amends_section_21(parameters, period):
+        if not obbba_amends_section_21(period):
             return tax_unit("cdcc", period)
         # The Act leaves the credit non-refundable, so apply the section 26
         # liability cap as the live cdcc does in non-refundable years.
@@ -93,7 +98,7 @@ class pre_obbba_capped_cdcc(Variable):
     reference = "https://www.irs.gov/instructions/i2441"
 
     def formula(tax_unit, period, parameters):
-        if not obbba_amends_section_21(parameters, period):
+        if not obbba_amends_section_21(period):
             return tax_unit("capped_cdcc", period)
         cdcc = tax_unit("pre_obbba_cdcc", period)
         # 2022 Form 2441 Credit Limit Worksheet: cap at tax before credits less

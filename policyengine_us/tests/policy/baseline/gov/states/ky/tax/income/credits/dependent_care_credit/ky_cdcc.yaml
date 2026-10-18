@@ -195,3 +195,55 @@
     pre_obbba_cdcc: 1_200
     ky_cdcc_potential: 240
     ky_cdcc: 240
+
+# The conformity parameter is the lever: with it off, Kentucky reads the
+# pre-OBBBA credit once the Act changes section 21.
+- name: 2026 single parent under a reform that keeps Kentucky's Code before the Act
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.states.ky.tax.income.irc_conformity.obbba: false
+    people:
+      parent:
+        age: 30
+        employment_income: 50_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        tax_unit_childcare_expenses: 1_000
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    cdcc: 350
+    # 20% of the $200 pre-OBBBA credit.
+    ky_cdcc_potential: 40
+
+# Before 2026 the Act does not change section 21, so the lever has no effect.
+- name: 2025 single parent under a reform that sets Kentucky's Code to include the Act
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    gov.states.ky.tax.income.irc_conformity.obbba: true
+    people:
+      parent:
+        age: 30
+        employment_income: 50_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        tax_unit_childcare_expenses: 1_000
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    cdcc: 200
+    ky_cdcc_potential: 40
