@@ -126,3 +126,25 @@
   output:
     # The tax unit's bills are line 23: 500 + 2_000.
     mt_elderly_homeowner_or_renter_credit_property_tax_billed: 2_500
+
+- name: Case 7, fractional bills are summed exactly.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 1_200.50
+      person2:
+        age: 66
+        real_estate_taxes: 799.25
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # 1_200.50 + 799.25.
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: 1_999.75

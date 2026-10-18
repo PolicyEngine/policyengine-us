@@ -346,3 +346,33 @@
     # Line 24 counts the tax unit's rent, a dependent's included: 6_000.
     mt_elderly_homeowner_or_renter_credit_property_tax_billed: 0
     mt_elderly_homeowner_or_renter_credit_gross_rent: 6_000
+
+- name: Case 14, a bill on another tax unit's spouse counts in the household's bill.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        rent: 0
+      person2:
+        age: 45
+        rent: 0
+      person3:
+        age: 43
+        rent: 0
+        real_estate_taxes: 4_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # The child's joint return is billed through the spouse; the parent's
+    # line 24 is the household's whole bill, 4_000.
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: [0, 4_000]
+    mt_elderly_homeowner_or_renter_credit_gross_rent: [4_000, 0]

@@ -1574,3 +1574,43 @@
     # = 900.
     mt_elderly_homeowner_or_renter_credit_gross_rent: 6_000
     mt_elderly_homeowner_or_renter_credit: [900, 0]
+
+- name: 2024 Schedule 2EC, a parent in the home of a child's joint return billed through the spouse
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        taxable_pension_income: 14_000
+        rent: 0
+        ssi: 0
+      person2:
+        age: 45
+        rent: 0
+        ssi: 0
+      person3:
+        age: 43
+        rent: 0
+        real_estate_taxes: 4_000
+        ssi: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_name: MT
+  output:
+    # Line 18 = 14_000; line 20 = 1_400; line 21 = 0; line 22 = 0. Parent:
+    # line 23 = 0; line 24 = the household's bill, 4_000, held by the
+    # child's spouse; line 25 = 600; line 27 = 600; line 30 = 600.
+    mt_elderly_homeowner_or_renter_credit_gross_rent: [4_000, 0]
+    mt_elderly_homeowner_or_renter_credit: [600, 0, 0]
