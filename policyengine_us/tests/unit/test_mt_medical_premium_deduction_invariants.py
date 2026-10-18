@@ -305,6 +305,7 @@ UNIT_VARIABLES = [
     "mt_premium_deduction_joint",
     "itemized_medical_expenses",
     "itemized_medical_expenses_applied_exclusion",
+    "itemized_medical_expenses_long_term_care_premiums",
     "medical_expense_deduction",
 ]
 
@@ -427,11 +428,15 @@ def _check(units, year, mode):
     )
 
     # 6. Line 1 base tracks the federal definition apart from the premiums.
+    # The generator never supplies the subtotal, so it holds no long-term care
+    # premiums.
+    assert (run["itemized_medical_expenses_long_term_care_premiums"] == 0).all()
     np.testing.assert_allclose(
         _unit_sum(run, other),
         run["itemized_medical_expenses"]
         + run["itemized_medical_expenses_applied_exclusion"]
-        - _unit_sum(run, premium),
+        - _unit_sum(run, premium)
+        - run["itemized_medical_expenses_long_term_care_premiums"],
         atol=TOLERANCE,
     )
 

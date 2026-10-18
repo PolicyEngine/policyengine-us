@@ -1,0 +1,66 @@
+- name: Premiums below the limit count in full
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    long_term_health_insurance_premiums: 300
+  output:
+    eligible_long_term_care_premiums: 300
+
+- name: Age 40 is in the 40 or less band
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    long_term_health_insurance_premiums: 1_000
+  output:
+    # Rev. Proc. 2021-45: 40 or less, $450.
+    eligible_long_term_care_premiums: 450
+
+- name: Age 41 is in the more than 40 band
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age: 41
+    long_term_health_insurance_premiums: 1_000
+  output:
+    # More than 40 but not more than 50: $850.
+    eligible_long_term_care_premiums: 850
+
+- name: Age 70 is in the more than 60 band
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    long_term_health_insurance_premiums: 10_000
+  output:
+    # More than 60 but not more than 70: $4,510 for 2022.
+    eligible_long_term_care_premiums: 4_510
+
+- name: Age 71 is in the more than 70 band
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age: 71
+    long_term_health_insurance_premiums: 10_000
+  output:
+    eligible_long_term_care_premiums: 5_640
+
+- name: 2026 limit for more than 70
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 75
+    long_term_health_insurance_premiums: 7_000
+  output:
+    # Rev. Proc. 2025-32: more than 70, $6,200.
+    eligible_long_term_care_premiums: 6_200
+
+- name: No premiums
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    age: 55
+    long_term_health_insurance_premiums: 0
+  output:
+    eligible_long_term_care_premiums: 0

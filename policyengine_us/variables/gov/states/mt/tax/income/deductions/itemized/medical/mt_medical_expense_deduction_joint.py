@@ -27,8 +27,9 @@ class mt_medical_expense_deduction_joint(Variable):
             # insurance premiums deducted in full on lines 2 and 3. Start
             # from the federal subtotal, restore the self-employed premiums
             # its formula excluded (zero for a supplied subtotal), and take
-            # out every member's premiums. For a computed subtotal this is
-            # the members' other medical expenses.
+            # out every member's medical insurance premiums and the
+            # long-term care premiums the subtotal includes. For a computed
+            # subtotal this is the members' other medical expenses.
             premiums = add(
                 tax_unit, period, ["medical_expense_health_insurance_premiums"]
             )
@@ -36,7 +37,8 @@ class mt_medical_expense_deduction_joint(Variable):
                 0,
                 tax_unit("itemized_medical_expenses", period)
                 + tax_unit("itemized_medical_expenses_applied_exclusion", period)
-                - premiums,
+                - premiums
+                - tax_unit("itemized_medical_expenses_long_term_care_premiums", period),
             )
             # Line 1b takes Montana AGI from page 1, line 14. A joint return
             # reports that line in a single column, so the floor applies to
