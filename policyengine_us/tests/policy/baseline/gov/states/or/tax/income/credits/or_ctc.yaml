@@ -197,3 +197,101 @@
     # $28,200 exceeds the $28,100 phase-out start by $100 of the $5,000
     # width: 1,100 x (1 - 100 / 5,000) = 1,078.
     or_ctc: 1_078
+
+
+- name: 2025 single filer who can be claimed as a dependent gets no Oregon Kids Credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        or_agi: 8000
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    # HB 3235 counts dependents under IRC 152(a) without disregarding 152(b)(1).
+    or_ctc: 0
+
+- name: 2025 joint return with one claimable spouse gets no Oregon Kids Credit (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        or_agi: 8000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: OR
+  output:
+    or_ctc: 0
+
+- name: 2025 joint return with one claimable spouse gets no Oregon Kids Credit (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        or_agi: 8000
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: OR
+  output:
+    or_ctc: 0
+
+- name: 2025 joint return with neither spouse claimable gets the Oregon Kids Credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+      person_b:
+        age: 22
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        or_agi: 8000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: OR
+  output:
+    or_ctc: 1_050

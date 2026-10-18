@@ -11,6 +11,10 @@
     tax_units:
       tax_unit:
         members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
   output:
     mt_elderly_homeowner_or_renter_credit: 0
 
@@ -33,6 +37,10 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
   output:  
   # min_((propertytax + rent*rate - (grossincome-standard)*reduction_rate), 1150) * percentage(grossincome)
   # 1500+ 9000*2*0.15 - (34000-12600)*0.05 = 3130 # 1150*100%
@@ -57,6 +65,10 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
   output:  
   # min_((propertytax + rent*rate - (grossincome-standard)*reduction_rate), 1000) * percentage(grossincome)
   # 1500+ 9000*2*0.15 - (34000-6300)*0.05 = 2815 # 1000*100%
@@ -87,6 +99,10 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
   output:  
   # min_((propertytax + rent*rate - (grossincome-standard)*reduction_rate), 1150) * percentage(grossincome)
   # 1000+ 9000*0.15 - (43000-12600)*0.05 = 830 # 830*10% = 83
@@ -111,6 +127,10 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
   output:
     # Each person's gross household income is under the $35,000 threshold
     # (multiplier 1.0 per-person), but the tax-unit sum is $44,000 which
@@ -130,6 +150,10 @@
     tax_units:
       tax_unit:
         members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
   output:
     mt_elderly_homeowner_or_renter_credit: 0
 
@@ -327,6 +351,304 @@
     mt_elderly_homeowner_or_renter_credit_net_household_income: [870, 0]
     mt_elderly_homeowner_or_renter_credit: [1_130, 0]
 
+# Government assistance in gross household income. § 15-30-2337(9)(a)
+# counts "all nontaxable income, including but not limited to ... (vi) cash
+# public assistance and relief". 2024 and 2025 Schedule 2EC line 16 names
+# SSI payments, workers' compensation "and any other government assistance";
+# the 2014-2023 instructions list "Disability benefits including, but not
+# limited to, veteran's disability, SSI payments and workers' compensation".
+
+- name: 2024 Schedule 2EC worked case, the claimant's SSI counts on line 16
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 15_000
+        ssi: 6_000
+        real_estate_taxes: 1_200
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # Line 5 pensions 15_000; line 16 SSI 6_000; line 18 = 21_000.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 21_000
+    # Line 19 12_600; line 20 = 8_400; line 21 = 0.039 (8_000 to 8_999);
+    # line 22 = 8_400 x 0.039 = 327.60.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: 327.60
+    # Line 23 = 1_200; line 26 = 1_200; line 27 = 1_200 - 327.60 = 872.40;
+    # line 28 = 872.40 (under 1_150); line 29 = 100%; line 30 = 872.40.
+    # Without the SSI, line 18 = 15_000, line 22 = 2_400 x 0.006 = 14.40 and
+    # the credit would be the 1_150 cap.
+    mt_elderly_homeowner_or_renter_credit: 872.40
+
+
+- name: 2025 Schedule 2EC worked case, a household member's workers' compensation counts on line 17
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        taxable_pension_income: 18_000
+        real_estate_taxes: 1_500
+      person2:
+        age: 45
+        workers_compensation: 9_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # The claimant's adult son lives in the household and files his own
+    # return. Line 5 pensions 18_000; line 17 his workers' compensation, a
+    # line 16 item for another member, 9_000; line 18 = 27_000.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [18_000, 9_000]
+    # Line 20 = 27_000 - 12_600 = 14_400; line 21 = 0.05; line 22 = 720.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [720, 0]
+    # Line 27 = 1_500 - 720 = 780; line 28 = 780; line 29 = 100%; line 30 =
+    # 780. Without his workers' compensation, line 18 = 18_000, line 22 =
+    # 5_400 x 0.028 = 151.20 and the credit would be the 1_150 cap.
+    mt_elderly_homeowner_or_renter_credit: [780, 0]
+
+
+- name: 2024 Schedule 2EC worked case, a household member's guaranteed income payments count on line 17
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 16_000
+        real_estate_taxes: 1_200
+      person2:
+        age: 35
+        gi_cash_assistance: 6_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # The claimant's daughter files her own return and receives 6_000 from a
+    # guaranteed income pilot, which is outside federal AGI. § 15-30-2337(9)(a)
+    # counts "all nontaxable income", and line 16 counts "any other
+    # government assistance". Line 5 = 16_000; line 17 = 6_000; line 18 =
+    # 22_000.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [16_000, 6_000]
+    # Line 20 = 9_400; line 21 = 0.042; line 22 = 394.80.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [394.80, 0]
+    # Line 27 = 1_200 - 394.80 = 805.20; line 28 = 805.20; line 29 = 100%;
+    # line 30 = 805.20. Without the payments, line 18 = 16_000, line 22 =
+    # 3_400 x 0.016 = 54.40 and the credit 1_145.60.
+    mt_elderly_homeowner_or_renter_credit: [805.20, 0]
+
+
+- name: 2024 Schedule 2EC worked case, TANF in a shared SPM unit counts once across two returns
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        real_estate_taxes: 1_500
+      person2:
+        age: 30
+      person3:
+        age: 5
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 4_800
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_name: MT
+  output:
+    # The claimant's daughter and granddaughter live with her; the daughter
+    # files her own return and receives 4_800 of TANF. Line 5 pensions
+    # 20_000; line 17 the TANF 4_800; line 18 = 24_800. The model holds TANF
+    # for the SPM unit and counts each member's per capita share
+    # (tanf_person, 1_600 each), so the household total counts it once.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [21_600, 1_600, 1_600]
+    # Line 20 = 24_800 - 12_600 = 12_200; line 21 = 0.05; line 22 = 610.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [610, 0, 0]
+    # Line 27 = 1_500 - 610 = 890; line 28 = 890; line 29 = 100%; line 30 =
+    # 890. Without the TANF, line 18 = 20_000, line 22 = 7_400 x 0.035 = 259
+    # and the credit would be the 1_150 cap. Counting the whole 4_800 for
+    # each of the three members would give line 18 = 34_400 and a credit of
+    # 1_500 - 1_090 = 410.
+    mt_elderly_homeowner_or_renter_credit: [890, 0, 0]
+
+
+- name: 2024 Schedule 2EC worked case, Montana TANF paid to a separate SPM unit counts on line 17
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        real_estate_taxes: 1_500
+      person2:
+        age: 30
+      person3:
+        age: 5
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2, person3]
+        mt_tanf: 4_800
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_name: MT
+  output:
+    # The same household with the daughter's family in its own SPM unit and
+    # the payment entered as Montana TANF (ARM 37.78), which tanf sums with
+    # the other states' programs. Line 17 = 4_800; line 18 = 24_800.
+    tanf: [0, 4_800]
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 2_400, 2_400]
+    # Line 22 = (24_800 - 12_600) x 0.05 = 610; line 27 = 890; line 30 = 890.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [610, 0, 0]
+    mt_elderly_homeowner_or_renter_credit: [890, 0, 0]
+
+
+- name: 2023 Elderly Homeowner/Renter Credit Schedule worked case, workers' compensation and a spouse's SSI count on line 8
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 14_000
+        workers_compensation: 6_000
+        real_estate_taxes: 1_000
+      person2:
+        age: 64
+        ssi: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Joint return. Line 1 federal AGI 14_000; line 8 "Disability benefits
+    # including, but not limited to, veteran's disability, SSI payments, and
+    # workers' compensation": 6_000 + 5_000 = 11_000; line 10 = 25_000.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 5_000]
+    # Line 11 12_600; line 12 = 12_400; line 13 = 0.05; line 14 = 620.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [620, 0]
+    # Line 15 = 1_000; line 18 = 1_000; line 19 = 1_000 - 620 = 380; line 20
+    # = 380; line 21 = 100%; line 22 = 380. Without either amount, line 10 =
+    # 14_000, line 12 = 1_400 at a 0 rate and the credit would be 1_000.
+    mt_elderly_homeowner_or_renter_credit: [380, 0]
+
+
+- name: 2017 Form 2EC worked case, a household member's SSI counts in gross household income
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 15_000
+        real_estate_taxes: 1_000
+      person2:
+        age: 40
+        # 2017 federal benefit rate: 735 a month.
+        ssi: 8_820
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # The claimant's adult son receives SSI. Gross Household Income
+    # Worksheet: line 6 pensions 15_000; line 7 income of other household
+    # members, his SSI 8_820 ("Disability benefits including ... SSI
+    # payments"); line 8 = 23_820, Form 2EC line 1.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [15_000, 8_820]
+    # Line 2 6_300; line 3 = 17_520; line 4 = 0.05; line 5 = 876.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [876, 0]
+    # Line 6 = 1_000; line 9 = 1_000; line 10 = 1_000 - 876 = 124; line 11 =
+    # 124 (under 1_000); line 12 = 100%; line 13 = 124. Without his SSI, line
+    # 1 = 15_000, line 5 = 8_700 x 0.039 = 339.30 and the credit 660.70.
+    mt_elderly_homeowner_or_renter_credit: [124, 0]
+
+
+- name: 2016 Form 2EC worked case, cash public assistance received by another household member counts
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 12_000
+        real_estate_taxes: 900
+      person2:
+        age: 30
+      person3:
+        age: 5
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2, person3]
+        tanf: 5_400
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_name: MT
+  output:
+    # Gross Household Income Worksheet: line 8 pensions 12_000; the
+    # daughter's 5_400 of TANF, cash public assistance (line 7), as income of
+    # another household member (line 9); line 10 = 17_400, Form 2EC line 1.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [12_000, 2_700, 2_700]
+    # Line 2 6_300; line 3 = 11_100; line 4 = 0.048; line 5 = 532.80.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [532.80, 0, 0]
+    # Line 6 = 900; line 10 = 900 - 532.80 = 367.20; line 11 = 367.20; line
+    # 12 = 100%; line 13 = 367.20. Without the TANF, line 1 = 12_000, line 5
+    # = 5_700 x 0.028 = 159.60 and the credit 740.40.
+    mt_elderly_homeowner_or_renter_credit: [367.20, 0, 0]
+
 - name: 2024 Schedule 2EC worked case, a dependent's wages move the credit into the 40 percent band
   period: 2024
   absolute_error_margin: 0.01
@@ -407,6 +729,201 @@
     mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 10_000]
     mt_elderly_homeowner_or_renter_credit_net_household_income: [870, 0]
     mt_elderly_homeowner_or_renter_credit: [1_130, 0]
+
+- name: 2024 Schedule 2EC, two eligible siblings filing separately in one household; only the larger claim is paid
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 10_000
+        rent: 4_800
+      person2:
+        age: 70
+        taxable_pension_income: 15_000
+        rent: 7_200
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Both siblings are 62 or older and file their own returns. Line 18
+    # gross household income = 10_000 + 15_000 = 25_000 for each; line 20 =
+    # 25_000 - 12_600 = 12_400; line 21 = 0.05; line 22 = 620.
+    # person1: line 25 = 4_800 x 0.15 = 720; line 27 = 720 - 620 = 100.
+    # person2: line 25 = 7_200 x 0.15 = 1_080; line 27 = 1_080 - 620 = 460.
+    # Line 29 = 100% (under 35_000). "Only one claimant per household in a
+    # claim period ... is entitled to relief" (§ 15-30-2341(1)); the
+    # household claims through person2, whose credit is larger. Before the
+    # limit both were paid, 560 in total.
+    mt_elderly_homeowner_or_renter_credit_pre_one_claimant: [100, 460]
+    mt_elderly_homeowner_or_renter_credit_selected_claimant: [false, true]
+    mt_elderly_homeowner_or_renter_credit: [0, 460]
+    mt_refundable_credits: [0, 460]
+    taxsim_state_property_tax_credit: [0, 460]
+    # 2024 Form 2, PDF p. 1: federal standard deduction 16,550 plus
+    # old-age subtraction 5,500 exceeds either pension. Tax before
+    # refundable credits is zero, so only person2 receives a refund.
+    mt_income_tax: [0, -460]
+
+- name: 2024 Schedule 2EC, one eligible tax unit and one younger household member who files separately
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 10_000
+        rent: 4_800
+      person2:
+        age: 58
+        taxable_pension_income: 15_000
+        rent: 7_200
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Same household as above, but person2 is under 62 and cannot be a
+    # claimant (§ 15-30-2338(1)(a)), even though their rent is larger.
+    # Line 22 = 620; person1's line 27 = 720 - 620 = 100.
+    mt_elderly_homeowner_or_renter_credit_selected_claimant: [true, false]
+    mt_elderly_homeowner_or_renter_credit: [100, 0]
+
+- name: 2025 Schedule 2EC, a joint couple who both qualify make one claim
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 15_000
+        real_estate_taxes: 2_000
+      person2:
+        age: 66
+        taxable_pension_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # "If filing jointly and both spouses qualify for the credit, enter the
+    # spouse listed as the taxpayer on page 1 as the claimant" (2025
+    # instructions). Line 18 = 25_000; line 22 = 12_400 x 0.05 = 620;
+    # line 27 = 2_000 - 620 = 1_380; line 28 = 1_150 cap; line 30 = 1_150,
+    # held by the tax unit head.
+    mt_elderly_homeowner_or_renter_credit_selected_claimant: true
+    mt_elderly_homeowner_or_renter_credit: [1_150, 0]
+
+- name: 2024 Schedule 2EC, two eligible tax units with equal credits; exactly one claims
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_pension_income: 12_500
+        rent: 6_000
+      person2:
+        age: 72
+        taxable_pension_income: 12_500
+        rent: 6_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Line 18 = 25_000; line 22 = 620; each line 27 = 900 - 620 = 280. The
+    # household gets one 280 credit; the tie goes to the first tax unit in
+    # the household's member order.
+    mt_elderly_homeowner_or_renter_credit_pre_one_claimant: [280, 280]
+    mt_elderly_homeowner_or_renter_credit_selected_claimant: [true, false]
+    mt_elderly_homeowner_or_renter_credit: [280, 0]
+
+- name: 2024 Schedule 2EC, the one-claimant limit applies within each household, not across households
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        real_estate_taxes: 2_000
+      person2:
+        age: 75
+        taxable_pension_income: 10_000
+        rent: 6_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household1:
+        members: [person1]
+        state_name: MT
+      household2:
+        members: [person2]
+        state_name: MT
+  output:
+    # Household 1: line 18 = 20_000; line 20 = 7_400; line 21 = 0.035;
+    # line 22 = 259; line 27 = 2_000 - 259 = 1_741; line 28 = 1_150.
+    # Household 2: line 18 = 10_000; line 20 = 0; line 22 = 0;
+    # line 27 = 6_000 x 0.15 = 900. Each household has its own claimant.
+    mt_elderly_homeowner_or_renter_credit_selected_claimant: [true, true]
+    mt_elderly_homeowner_or_renter_credit: [1_150, 900]
+
+- name: 2023 dependent self-employment income preserves the deductible half of SE tax
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        is_tax_unit_dependent: false
+        taxable_pension_income: 20_000
+        rent: 12_000
+      child:
+        age: 18
+        is_tax_unit_dependent: true
+        self_employment_income: 10_000
+    tax_units:
+      claimant_unit:
+        members: [claimant, child]
+    households:
+      household:
+        members: [claimant, child]
+        state_code: MT
+  output:
+    # 2023 Schedule SE, PDF p. 1, lines 4a and 10-13:
+    # https://www.irs.gov/pub/irs-prior/f1040sse--2023.pdf#page=1
+    # 10,000 * .9235 * (.124 + .029) / 2 = 706.4775 deductible SE tax.
+    # 2023 MT instructions, PDF pp. 51-52, lines 1 and 9: use each
+    # member's federal AGI and add back losses, preserving other adjustments.
+    # https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=51
+    # Income = 20,000 + 10,000 - 706.4775 = 29,293.5225.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 9_293.5225]
+    # Credit = 12,000 * .15 - (29,293.5225 - 12,600) * .05 = 965.323875.
+    mt_elderly_homeowner_or_renter_credit: [965.323875, 0]
 
 - name: 2024 Schedule 2EC worked case, a household member's federal EITC counts as a refundable credit received
   period: 2024
@@ -580,3 +1097,202 @@
     # = 1_099.89; line 21 = 100%; line 22 = 1_099.89.
     mt_elderly_homeowner_or_renter_credit_net_household_income: [900.11, 0]
     mt_elderly_homeowner_or_renter_credit: [1_099.89, 0]
+
+- name: Federal refundable credits and actual receipts reduce both elderly claims before selecting the larger one
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 10_000
+        rent: 4_800
+        mt_elderly_homeowner_or_renter_credit_received: 60
+        mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received: 20
+      person2:
+        age: 70
+        taxable_pension_income: 15_000
+        rent: 7_200
+        mt_elderly_homeowner_or_renter_credit_received: 40
+        mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received: 80
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        income_tax_refundable_credits: 500
+      tax_unit2:
+        members: [person2]
+        income_tax_refundable_credits: 300
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Schedule 2EC line 8 counts each return's federal refundable credits
+    # once, plus actual elderly-credit and rebate receipts. Person amounts:
+    # 10_000 + 500 + 60 + 20 = 10_580; 15_000 + 300 + 40 + 80 = 15_420.
+    # Line 18 = 26_000; line 22 = (26_000 - 12_600) * .05 = 670.
+    # Line 25 rent equivalents = [4_800, 7_200] * .15 = [720, 1_080].
+    # Line 27 = [720, 1_080] - 670 = [50, 410], both below the 1_150 cap.
+    # Line 29 = 100% below 35_000. Only the larger 410 claim is paid;
+    # without the 1_000 of federal credits/receipts, it would be 460.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [10_580, 15_420]
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [670, 670]
+    mt_elderly_homeowner_or_renter_credit_pre_one_claimant: [50, 410]
+    mt_elderly_homeowner_or_renter_credit_selected_claimant: [false, true]
+    mt_elderly_homeowner_or_renter_credit: [0, 410]
+
+- name: 2024 Schedule 2EC, a household member's netted capital loss does not raise the credit
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        real_estate_taxes: 2_000
+      person2:
+        age: 30
+        long_term_capital_gains: 10_000
+        short_term_capital_gains: -4_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Line 5 = 20_000; line 17 = 10_000 (the gain without the loss); line
+    # 18 = 30_000; line 20 = 17_400; line 22 = 17_400 x 0.05 = 870; line 27 =
+    # 2_000 - 870 = 1_130; line 29 = 100%; line 30 = 1_130. Netting the loss
+    # would give line 18 = 26_000, line 22 = 670 and the 1_150 cap.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [870, 0]
+    mt_elderly_homeowner_or_renter_credit: [1_130, 0]
+
+- name: 2024 Schedule 2EC, a capital loss netted between spouses on a joint return is added back once
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        long_term_capital_gains: 10_000
+        real_estate_taxes: 2_000
+      person2:
+        age: 68
+        short_term_capital_gains: -4_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Federal AGI 20_000 + 10_000 - 4_000 = 26_000; the 4_000 loss is added
+    # back once. Line 18 = 30_000; line 22 = 870; line 30 = 1_130.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [870, 0]
+    mt_elderly_homeowner_or_renter_credit: [1_130, 0]
+
+- name: 2024 Schedule 2EC, a minor filing alone in the household counts once
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        real_estate_taxes: 2_000
+        is_tax_unit_dependent: false
+      person2:
+        age: 16
+        employment_income: 10_000
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Line 18 = 20_000 + 10_000 = 30_000; line 30 = 1_130. Counting the
+    # minor's wages twice would give 40_000, line 22 = 1_370 and a credit of
+    # (2_000 - 1_370) x 30% = 189.
+    mt_elderly_homeowner_or_renter_credit: [1_130, 0]
+
+- name: 2024 Schedule 2EC, a capital loss carryover does not raise the credit
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        long_term_capital_gains: 6_000
+        long_term_capital_loss_carryover: 4_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # Line 5 = 20_000; line 7 = the year's 10_000 gain; line 18 = 30_000;
+    # line 22 = 870; line 30 = 1_130. Counting the 6_000 net would give line
+    # 18 = 26_000, line 22 = 670 and the 1_150 cap.
+    mt_elderly_homeowner_or_renter_credit: 1_130
+
+- name: 2024 Schedule 2EC, a carryover against a net loss supplied directly adds no gain
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 30_000
+        capital_gains: -5_000
+        long_term_capital_loss_carryover: 5_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # Line 18 = 30_000; line 22 = 17_400 x 0.05 = 870; line 30 = 1_130.
+    # Counting the carryover as a gain would give 35_000 and 880 x 40% = 352.
+    mt_elderly_homeowner_or_renter_credit: 1_130
+
+- name: 2024 Schedule 2EC, a dependent's gain counts when another person's capital_gains is supplied
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        capital_gains: 0
+        real_estate_taxes: 2_000
+      person2:
+        age: 16
+        long_term_capital_gains: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Line 18 = 20_000 + 10_000 = 30_000; line 22 = 870; line 30 = 1_130.
+    mt_elderly_homeowner_or_renter_credit: [1_130, 0]
