@@ -1,9 +1,10 @@
 # The pre_obbba_cdcc family recomputes the federal section 21 credit on the
 # rate schedule as it stood before the One Big Beautiful Bill Act (OBBBA). For
-# 2025 it must equal the live cdcc (identical schedule); for 2026 it must hold
-# the pre-OBBBA rate (max 35%, min 20%, no amended second phase-out) while the
-# live cdcc reflects the OBBBA increase (max 50%, min 35%). Read by states whose
-# income tax statically conforms to a pre-2026 IRC (KY, ME, VT).
+# every year the Act does not change section 21 it must equal the live cdcc,
+# including 2021's refundable American Rescue Plan Act credit; for 2026 it must
+# hold the pre-OBBBA rate (max 35%, min 20%, no amended second phase-out) while
+# the live cdcc reflects the OBBBA increase (max 50%, min 35%). Read by states
+# whose income tax statically conforms to a pre-OBBBA IRC.
 
 # Low-income joint family, two children, $6,000 childcare, AGI below the first
 # phase-out start so the applicable rate is at its maximum.
@@ -65,3 +66,37 @@
     pre_obbba_cdcc_potential: 1_200
     pre_obbba_cdcc: 1_200
     pre_obbba_capped_cdcc: 1_200
+
+# 2021: the American Rescue Plan Act made the credit refundable with a 50% rate
+# below $125,000 of AGI and $8,000 / $16,000 expense limits (IRC 21(g)). The Act
+# did not change 2021, so the pre-OBBBA credit is the live refundable credit,
+# not the 2025 rate on 2021 expense limits ($1,200 before this fix).
+- name: 2021 pre-OBBBA CDCC equals the live refundable ARPA credit
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 25_000
+      spouse:
+        age: 35
+        employment_income: 25_000
+      child1:
+        age: 5
+      child2:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 6_000
+        premium_tax_credit: 0
+  output:
+    # 50% x $6,000 = $3,000, refundable, so not capped at liability.
+    cdcc_potential: 3_000
+    cdcc: 3_000
+    capped_cdcc: 3_000
+    pre_obbba_cdcc_potential: 3_000
+    pre_obbba_cdcc: 3_000
+    pre_obbba_capped_cdcc: 3_000

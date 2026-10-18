@@ -21,10 +21,78 @@
   output:
     ky_cdcc: 0
 
-# KRS 141.010(21) freezes Kentucky's IRC at December 31, 2024, so from 2026 the
-# credit uses the pre-OBBBA federal section 21 credit (20% of $1,200 = $240),
-# not the OBBBA-inflated live credit (which would give 20% of $1,780 = $356).
-- name: 2026 uses the pre-OBBBA federal credit under static conformity
+# KRS 141.067 sets the credit at 20% of the federal credit allowed under IRC
+# section 21, and KRS 141.010(21) fixes Kentucky's Code at a reference date.
+# For 2025 that date is December 31, 2024, before the One Big Beautiful Bill
+# Act; from 2026 it is December 31, 2025 (2026 Ky. Acts ch. 161, sec. 6), so
+# Kentucky adopts the Act's section 21 rate schedule: 50% less one point per
+# $2,000 of AGI over $15,000, floored at 35%, then one point per $2,000 ($4,000
+# joint) of AGI over $75,000 ($150,000 joint), floored at 20%. The pre-OBBBA
+# schedule is 35% less one point per $2,000 over $15,000, floored at 20%.
+
+- name: 2025 single parent, $50,000 earnings, $1,000 care for a child of five
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 50_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        tax_unit_childcare_expenses: 1_000
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    # 2025 is before the Act's section 21 change: 35% - 18 points = 17%,
+    # floored at 20%, so $200 federally, under the federal liability.
+    cdcc: 200
+    pre_obbba_cdcc: 200
+    ky_cdcc_potential: 40
+    ky_cdcc: 40
+    # ($50,000 - $3,270 standard deduction) x 4% = $1,869.20, less $40.
+    ky_income_tax: 1_829.2
+
+- name: 2026 single parent, $50,000 earnings, $1,000 care for a child of five
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 50_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        tax_unit_childcare_expenses: 1_000
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    # The Act's schedule: 50% - 18 points = 32%, floored at 35%; AGI is under
+    # the $75,000 second phase-down. 35% x $1,000 = $350, under the federal
+    # liability. The pre-OBBBA schedule would give 20%, or $200.
+    cdcc: 350
+    pre_obbba_cdcc: 200
+    # 20% of $350.
+    ky_cdcc_potential: 70
+    ky_cdcc: 70
+    # ($50,000 - $3,360 standard deduction) x 3.5% = $1,632.40, less $70.
+    ky_income_tax: 1_562.4
+
+# The federal credit is capped at federal liability (IRC 26), and Kentucky
+# matches the capped "credit allowed".
+- name: 2026 joint filers with $50,000 earnings and $6,000 care get 20% of the capped federal credit
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -54,5 +122,76 @@
         members: [head, spouse, child1, child2]
         state_code: KY
   output:
-    # 20% of the pre-OBBBA $1,200 federal credit.
+    # 35% x $6,000 = $2,100, capped at the $1,780 federal liability.
+    cdcc_potential: 2_100
+    cdcc: 1_780
+    # 20% of $1,780.
+    ky_cdcc_potential: 356
+    ky_cdcc: 356
+
+- name: 2026 joint filers in the Act's second phase-down
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 80_000
+      spouse:
+        age: 40
+        employment_income: 80_000
+      child1:
+        age: 3
+      child2:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 6_000
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: KY
+  output:
+    # 35% less one point per $4,000 (or part) over $150,000: $10,000 is three
+    # increments, so 32%. 32% x $6,000 = $1,920. Pre-OBBBA: 20%, or $1,200.
+    cdcc: 1_920
+    pre_obbba_cdcc: 1_200
+    # 20% of $1,920.
+    ky_cdcc_potential: 384
+    ky_cdcc: 384
+
+- name: 2026 joint filers at the bottom of the Act's second phase-down
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 110_000
+      spouse:
+        age: 40
+        employment_income: 110_000
+      child1:
+        age: 3
+      child2:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 6_000
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: KY
+  output:
+    # $70,000 over $150,000 is 18 increments: 35% - 18 = 17%, floored at 20%,
+    # the same rate as the pre-OBBBA schedule. 20% x $6,000 = $1,200.
+    cdcc: 1_200
+    pre_obbba_cdcc: 1_200
+    ky_cdcc_potential: 240
     ky_cdcc: 240
