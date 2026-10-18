@@ -1,6 +1,13 @@
 description: Total employment income.
 values:
+  # IRS SOI Publication 1304 Table 1.4, all returns: salaries and wages.
+  # Amounts are published in thousands of dollars. Each value is for the tax
+  # year of its date.
   2015-01-01: 7_112_222_959_000
+  2016-01-01: 7_217_425_529_000
+  2017-01-01: 7_577_563_943_000
+  2018-01-01: 7_907_550_652_000
+  2019-01-01: 8_273_071_046_000
   2020-01-01: 8_416_495_535_000
   2021-01-01: 9_022_352_941_000
 metadata:
@@ -8,5 +15,17 @@ metadata:
   label: SOI employment income
   uprating: calibration.gov.cbo.income_by_source.employment_income
   reference:
-    - title: IRS SOI Tax Stats - Individual Statistical Tables by Size of Adjusted Gross Income
-      href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2015, salaries and wages
+      href: https://www.irs.gov/pub/irs-soi/15in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2016, salaries and wages
+      href: https://www.irs.gov/pub/irs-soi/16in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2017, salaries and wages
+      href: https://www.irs.gov/pub/irs-soi/17in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2018, salaries and wages
+      href: https://www.irs.gov/pub/irs-soi/18in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2019, salaries and wages
+      href: https://www.irs.gov/pub/irs-soi/19in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2020, salaries and wages
+      href: https://www.irs.gov/pub/irs-soi/20in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2021, salaries and wages
+      href: https://www.irs.gov/pub/irs-soi/21in14ar.xls
