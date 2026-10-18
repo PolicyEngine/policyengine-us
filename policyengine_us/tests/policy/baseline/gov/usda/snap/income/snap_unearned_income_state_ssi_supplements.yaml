@@ -16,10 +16,10 @@
         state_name: CA
   output:
     ssi: 994
-    ca_state_supplement: 341.81
+    ca_state_supplement: 368.81 # 1,233.94 + 128.87 - 994
     # Without the supplement the household's SNAP unearned income would be the
     # $994 federal SSI benefit alone, and SNAP would be $143.
-    snap_unearned_income: 1_335.81
+    snap_unearned_income: 1_362.81
     snap: 24
 
 - name: Massachusetts state supplement counts as SNAP unearned income.
@@ -62,8 +62,8 @@
         members: [person1, person2]
         state_name: CA
   output:
-    ca_state_supplement: 341.81
-    snap_unearned_income: 1_335.81
+    ca_state_supplement: 368.81 # 1,233.94 + 128.87 - 994
+    snap_unearned_income: 1_362.81
 
 # Indiana pays its Residential Care Assistance Program supplement to the
 # facility as a per diem. 273.9(b)(2)(i) counts assistance "even if provided in
