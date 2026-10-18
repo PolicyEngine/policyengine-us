@@ -454,13 +454,13 @@
       person1:
         is_tax_unit_head: true
         age: 30
-        other_medical_expenses: 10_000
         long_term_health_insurance_premiums: 400
     tax_units:
       tax_unit:
         members: [person1]
-        # Schedule A line 1: 10,000 + the 400 of eligible premiums.
+        # Schedule A line 1: 10,000 of other expenses + the 400 of premiums.
         itemized_medical_expenses: 10_400
+        itemized_medical_expenses_long_term_care_premiums: 400
         mt_agi_joint: 40_000
     households:
       household:
@@ -470,7 +470,7 @@
     # Line 1: (10,400 - 400) - 7.5% x 40,000 = 7,000. Line 3: 400.
     mt_medical_expense_deduction_joint: 7_400
 
-- name: Only the eligible part of long-term care premiums sits inside a supplied subtotal
+- name: Only the part of long-term care premiums inside a supplied subtotal leaves line 1
   period: 2022
   absolute_error_margin: 0.01
   input:
@@ -483,8 +483,10 @@
     tax_units:
       tax_unit:
         members: [person1]
-        # Schedule A line 1: 10,000 + 4,510 (the 2022 limit for ages 61-70).
+        # Schedule A line 1 counts 4,510 of the premiums (the 2022 limit for
+        # ages 61-70, Rev. Proc. 2021-45).
         itemized_medical_expenses: 14_510
+        itemized_medical_expenses_long_term_care_premiums: 4_510
         mt_agi_joint: 40_000
     households:
       household:
@@ -494,3 +496,81 @@
     # Line 1: (14,510 - 4,510) - 3,000 = 7,000. Line 3 deducts all 6,000,
     # without the federal limit.
     mt_medical_expense_deduction_joint: 13_000
+
+- name: Long-term care premiums taken as the self-employed deduction are neither in the subtotal nor on line 3
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+        long_term_health_insurance_premiums: 400
+        self_employed_health_insurance_ald_person: 400
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # Schedule A line 1 leaves out premiums deducted under 162(l).
+        itemized_medical_expenses: 10_000
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Line 1: 10,000 - 3,000 = 7,000. Line 3: 400 - 400 = 0.
+    mt_medical_expense_deduction_joint: 7_000
+
+- name: A filer's premiums for an older parent's long-term care policy
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        # Payer attribution: the filer paid the parent's 5,000 policy.
+        long_term_health_insurance_premiums: 5_000
+      person2:
+        is_tax_unit_dependent: true
+        age: 75
+        medicare_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        # Schedule A line 1: 10,000 + all 5,000, within the parent's age-75
+        # limit of 5,640.
+        itemized_medical_expenses: 15_000
+        itemized_medical_expenses_long_term_care_premiums: 5_000
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Line 1: (15,000 - 5,000) - 3,000 = 7,000. Line 3: 5,000.
+    mt_medical_expense_deduction_joint: [12_000, 0]
+
+- name: A supplied subtotal with no long-term care premiums keeps them on line 3 only
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+        long_term_health_insurance_premiums: 400
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # Same contents as the computed subtotal: no long-term care premiums.
+        itemized_medical_expenses: 10_000
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    itemized_medical_expenses_long_term_care_premiums: 0
+    # Line 1: 10,000 - 3,000 = 7,000. Line 3: 400.
+    mt_medical_expense_deduction_joint: 7_400

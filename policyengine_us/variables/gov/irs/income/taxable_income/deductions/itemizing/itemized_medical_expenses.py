@@ -28,7 +28,12 @@ class itemized_medical_expenses(Variable):
         "of whom it covers. A parent-paid dependent policy belongs on the parent. "
         "The exclusion is bounded to filer-paid premiums; beneficiary-attributed "
         "inputs with an ALD exceeding that pool are inconsistent with this contract "
-        "and cannot establish conservation of the supplied ALD."
+        "and cannot establish conservation of the supplied ALD. A supplied value "
+        "bypasses this formula and is used as given: no self-employed exclusion is "
+        "applied to it (itemized_medical_expenses_applied_exclusion is 0), and "
+        "states that start from medical costs paid take it as that amount. If a "
+        "supplied value includes long-term care premiums, as Schedule A line 1 "
+        "can, report them in itemized_medical_expenses_long_term_care_premiums."
     )
 
     def formula(tax_unit, period, parameters):
