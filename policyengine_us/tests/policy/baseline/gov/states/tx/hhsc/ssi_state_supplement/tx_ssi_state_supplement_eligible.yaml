@@ -1,9 +1,11 @@
 # Unit tests for Texas SSI State Supplement eligibility
-# Eligible if: eligible for SSI with countable income not over the $30 reduced
-# standard (a $0 federal payment at the limit included) and takes up SSI, or
-# reported to receive SSI; AND residing in a Medicaid-funded facility; AND in
-# Texas
-# Reference: Texas Human Resources Code Section 32.024(w); HHSC MEPD Handbook
+# Eligible if: eligible for SSI with own countable income not over the $30
+# reduced standard (a $0 federal payment at the limit included) and takes up
+# SSI, or reported to receive SSI; AND on SSI's reduced medical facility rate;
+# AND residing in a Medicaid-funded facility; AND in Texas
+# Reference: 1 TAC 358.381(c)(2) ("For a person receiving the reduced SSI
+# federal benefit rate, HHSC issues a supplement"); Texas Human Resources Code
+# Section 32.024(w); HHSC MEPD Handbook
 # H-1500 ("SSI recipients who live in an institutional setting and receive the
 # $30 reduced federal benefit receive a state supplement") and H-6000 (an SSI
 # recipient in a facility "remains eligible for SSI if their countable income
@@ -15,6 +17,8 @@
     is_ssi_eligible: true
     ssi_countable_income: 0
     is_in_medicaid_facility: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
     state_code: TX
   output:
     tx_ssi_state_supplement_eligible: true
@@ -34,6 +38,8 @@
   input:
     is_ssi_eligible: false
     is_in_medicaid_facility: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
     state_code: TX
   output:
     tx_ssi_state_supplement_eligible: false
@@ -53,6 +59,8 @@
     is_ssi_eligible: false
     receives_ssi: true
     is_in_medicaid_facility: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
     state_code: TX
   output:
     tx_ssi_state_supplement_eligible: true
@@ -64,6 +72,8 @@
     is_ssi_eligible: true
     ssi_countable_income: 360
     is_in_medicaid_facility: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
     state_code: TX
   output:
     tx_ssi_state_supplement_eligible: true
@@ -75,6 +85,8 @@
     is_ssi_eligible: true
     ssi_countable_income: 372
     is_in_medicaid_facility: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
     state_code: TX
   output:
     tx_ssi_state_supplement_eligible: false
@@ -86,6 +98,8 @@
     ssi_countable_income: 0
     takes_up_ssi_if_eligible: false
     is_in_medicaid_facility: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
     state_code: TX
   output:
     tx_ssi_state_supplement_eligible: false
@@ -96,6 +110,30 @@
     gov.ssa.ssi.abolish_ssi: true
     is_ssi_eligible: true
     ssi_countable_income: 0
+    is_in_medicaid_facility: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    state_code: TX
+  output:
+    tx_ssi_state_supplement_eligible: false
+
+- name: Case 10, a facility resident still on SSI's full rate is not eligible.
+  # Only is_in_medicaid_facility is set, so SSI pays the own-household rate,
+  # as in the month of entry (H-6000); 1 TAC 358.381(c)(2) limits the
+  # supplement to people receiving the reduced rate.
+  period: 2024
+  input:
+    is_ssi_eligible: true
+    ssi_countable_income: 0
+    is_in_medicaid_facility: true
+    state_code: TX
+  output:
+    tx_ssi_state_supplement_eligible: false
+
+- name: Case 11, reported SSI receipt on the full rate is not eligible.
+  period: 2024-01
+  input:
+    receives_ssi: true
     is_in_medicaid_facility: true
     state_code: TX
   output:

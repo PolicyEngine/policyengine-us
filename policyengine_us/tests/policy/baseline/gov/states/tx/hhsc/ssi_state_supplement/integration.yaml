@@ -9,7 +9,9 @@
 # - No additional state income rules beyond federal SSI
 # - Each spouse of a couple in a facility receives the reduced benefit ($60
 #   for the couple, H-6000), so each receives the supplement
+# - Only people on SSI's reduced facility rate qualify (1 TAC 358.381(c)(2))
 #
+# Reference: 1 TAC 358.381(c)(2)
 # Reference: Texas Human Resources Code Section 32.024(w)
 # Reference: HHSC MEPD Handbook H-1500 and H-6000
 # Reference: SSA State Assistance Programs for SSI Recipients - Texas
@@ -150,9 +152,7 @@
   # "SSA lowers the SSI payment standard to the reduced standard for a couple
   # ($60)", i.e. $30 for each spouse, and "HHSC supplements the reduced SSI
   # payment standard by $45 per month to ensure SSI recipients also have a $75
-  # personal needs allowance." SSA's January 2011 Texas table: "Couples
-  # residing in this living arrangement for more than 30 days are treated as
-  # two individuals."
+  # personal needs allowance."
   period: 2024
   input:
     people:
@@ -387,5 +387,67 @@
         state_code: TX
   output:
     ssi: 0
+    tx_ssi_state_supplement_eligible: false
+    tx_ssi_state_supplement: 0
+
+- name: Scenario 14, facility resident whose ineligible spouse at home has a pension.
+  # The resident (80) is on the $30 facility rate with no income; the spouse
+  # (60, not disabled) lives at home with a $500/month pension. 20 CFR
+  # 416.1163(f)(5): while the $30 rate applies, the spouse's income is not
+  # deemed and only the resident's own countable income ($0) counts, so the
+  # resident gets the $45 supplement.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 80
+        is_tax_unit_head: true
+        is_in_medicaid_facility: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 60
+        pension_income: 6_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_ssi_state_supplement_eligible: [true, false]
+    tx_ssi_state_supplement: [540, 0]
+
+- name: Scenario 15, facility resident on SSI's full rate gets no supplement.
+  # Only is_in_medicaid_facility is set, so SSI pays the $943 own-household
+  # rate, as in the month of entry (H-6000). 1 TAC 358.381(c)(2) gives the
+  # supplement only to a person "receiving the reduced SSI federal benefit
+  # rate".
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 80
+        is_in_medicaid_facility: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    ssi: 11_316
     tx_ssi_state_supplement_eligible: false
     tx_ssi_state_supplement: 0
