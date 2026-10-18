@@ -11,7 +11,7 @@ election, the Vermont child care contribution, the Colorado alternative
 minimum tax, Mississippi's nonrefundable credits, and the contributed Michigan
 surtax.
 
-Three properties guard against a sixth:
+Three properties:
 
 1. Structure, with no simulation. Where a state's ``xx_income_tax`` is a sum,
    it adds exactly that state's members of the before-refundable list and
@@ -24,18 +24,24 @@ Three properties guard against a sixth:
    household pays it to the state, but it is not an income tax
    (``state_income_tax_excludes_use_tax.yaml``).
 
+Properties 1 and 2 find a new state's gap. Property 3 holds by construction
+while ``state_income_tax`` is the plain sum of the two lists; it fails if an
+override inside ``state_income_tax``, like the Wisconsin and New Jersey ones
+this test replaced, comes back.
+
 Properties 2 and 3 must hold for every tax unit and household, so the tests
 draw a seeded population in each of the 50 states and DC and run it as one
 vectorized simulation. Where a state's ``xx_income_tax`` is a sum, property 1
-already implies property 2, so Hypothesis draws further households only in the
-states that compute it with a formula. YAML cases cannot express these
+already implies property 2, so the states that compute it with a formula get
+more: a seeded 2023 population, for Montana's separate filing on one form, and
+Hypothesis draws in 2023 and 2025. YAML cases cannot express these
 properties: each compares two computed totals on every row instead of one
 total with a stated amount.
 """
 
 import numpy as np
 import pytest
-from hypothesis import HealthCheck, given, settings
+from hypothesis import HealthCheck, Phase, given, settings
 from hypothesis import strategies as st
 
 from policyengine_us import Simulation
@@ -61,9 +67,14 @@ STATES_WITH_FORMULA_INCOME_TAX = {
     # Lower of the joint return and separate returns on one form, each after
     # refundable credits.
     "MT",
-    # No refundable credits: the before-refundable list holds nc_income_tax.
+    # No refundable credits in baseline, so the before-refundable list holds
+    # nc_income_tax itself. The contributed EITC and child care credit reforms
+    # net their refundable credits inside nc_income_tax, which keeps NC out of
+    # the refundable list.
     "NC",
-    # No tax at or below the filing threshold.
+    # No tax at or below the filing threshold. The zero-out is in both
+    # nj_income_tax_before_refundable_credits and nj_income_tax; the second
+    # copy keeps tests that set the first as an input right.
     "NJ",
     # Tax before refundable credits less refundable credits, both following
     # the retirement income exclusion election.
@@ -462,10 +473,28 @@ def formula_state_households(draw):
     return state, [unit]
 
 
+def test_formula_states_keep_the_properties_in_2023():
+    # Montana lets spouses file separately on one form through 2023.
+    households = [
+        (state, units)
+        for state, units in _seeded_households()
+        if state in STATES_WITH_FORMULA_INCOME_TAX
+    ]
+    simulation = Simulation(situation=_situation(households, 2023))
+    separately = np.asarray(simulation.calculate("mt_files_separately", 2023))
+    assert separately.sum() >= 1
+    for state in sorted(STATES_WITH_FORMULA_INCOME_TAX):
+        _check_state_income_tax_equals_own_income_tax(simulation, state, 2023)
+    _check_household_totals(simulation, 2023)
+
+
 @settings(
     max_examples=4,
     deadline=None,
     derandomize=True,
+    # Each example builds a full simulation, so shrinking a failure could run
+    # for hours in CI. A failing example is reported unshrunk.
+    phases=[Phase.explicit, Phase.generate],
     suppress_health_check=[HealthCheck.too_slow, HealthCheck.data_too_large],
 )
 @given(

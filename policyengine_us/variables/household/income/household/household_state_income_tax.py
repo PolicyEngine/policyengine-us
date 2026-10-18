@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class household_state_income_tax(Variable):
-    # This definition contains all modelled states, and exists to solve circular dependencies in state_income_tax.
+    # The same sum as state_income_tax, kept for callers that read this name.
     value_type = float
     entity = TaxUnit
     label = "household State tax"
