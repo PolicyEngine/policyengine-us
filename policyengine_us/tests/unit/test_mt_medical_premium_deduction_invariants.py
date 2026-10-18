@@ -274,7 +274,8 @@ def _situation(units, year):
             unit_supplied.append(unit["supplied_unit_deduction"] is not None)
             groups["households"][f"{tag}_household"] = {
                 "members": members,
-                "state_code": "MT",
+                # Keyed by year: a bare value is not applied to the run year.
+                "state_code": {year: "MT"},
             }
     people = {
         name: {key: {year: value} for key, value in values.items()}
@@ -322,6 +323,7 @@ def _run(units, year):
     }
     out["unit"] = sim.populations["tax_unit"].members_entity_id
     out["filing_status"] = sim.calculate("filing_status", year).decode_to_str()
+    out["state_code"] = sim.calculate("state_code", year).decode_to_str()
     out["expected_premium"] = expected_premium
     out["increase"] = increase
     out["role"] = roles
@@ -342,6 +344,7 @@ def _check(units, year):
     joint = run["mt_medical_expense_deduction_joint"]
     indiv = run["mt_medical_expense_deduction_indiv"]
     deduction = _unit_sum(run, joint)
+    assert (run["state_code"] == "MT").all()
     assert (joint[role != "head"] == 0).all()
 
     if year == FEDERAL_YEAR:
