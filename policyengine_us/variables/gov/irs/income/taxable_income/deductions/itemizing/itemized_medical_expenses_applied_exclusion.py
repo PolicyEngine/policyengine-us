@@ -26,4 +26,13 @@ class itemized_medical_expenses_applied_exclusion(Variable):
             tax_unit.simulation, "itemized_medical_expenses", period
         ):
             return 0
-        return tax_unit("itemized_medical_expenses_excluded_premiums", period)
+        # Medical insurance premiums and eligible long-term care premiums the
+        # self-employed health insurance deduction took.
+        return add(
+            tax_unit,
+            period,
+            [
+                "itemized_medical_expenses_excluded_premiums",
+                "itemized_medical_expenses_excluded_long_term_care_premiums",
+            ],
+        )

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class itemized_medical_expenses_excluded_premiums(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Self-employed health insurance premiums excluded from Schedule A"
+    label = "Self-employed medical insurance premiums excluded from Schedule A"
     unit = USD
     definition_period = YEAR
     reference = [
@@ -26,4 +26,7 @@ class itemized_medical_expenses_excluded_premiums(Variable):
             "medical_expense_health_insurance_premiums", tax_unit, period
         )
         se_health_insurance_ald = tax_unit("self_employed_health_insurance_ald", period)
+        # The deduction is taken from medical insurance premiums first; any
+        # rest covers eligible long-term care premiums
+        # (itemized_medical_expenses_excluded_long_term_care_premiums).
         return min_(filer_premiums, max_(0, se_health_insurance_ald))

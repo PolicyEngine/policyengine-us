@@ -11,6 +11,7 @@ class itemized_medical_expenses(Variable):
         "https://www.law.cornell.edu/uscode/text/26/213",
         "https://www.law.cornell.edu/uscode/text/26/162#l_3",
         "https://www.irs.gov/instructions/i1040sca",
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=2",
     ]
     documentation = (
         "Medical expenses counted before applying the itemized medical "
@@ -18,9 +19,12 @@ class itemized_medical_expenses(Variable):
         "to include amounts paid for diagnosis, cure, mitigation, treatment, "
         "or prevention of disease; transportation primarily for essential "
         "medical care; qualified long-term care services; and insurance "
-        "premiums covering medical care. Current modeling uses health "
-        "insurance premiums and other medical expenses, excluding general "
-        "over-the-counter health expenses. Premiums deducted through the "
+        "premiums covering medical care, with long-term care insurance "
+        "premiums counted up to the 213(d)(10) limit for the insured person's "
+        "age. Current modeling uses health insurance premiums, those eligible "
+        "long-term care premiums (recorded on the insured person) and other "
+        "medical expenses, excluding general over-the-counter health "
+        "expenses. Premiums deducted through the "
         "filer's self-employed health insurance deduction are excluded under "
         "IRC Section 162(l)(3) before the medical expense floor is applied. "
         "Premium inputs use payer attribution: each person reports premiums "
@@ -39,5 +43,10 @@ class itemized_medical_expenses(Variable):
         excluded_premiums = tax_unit(
             "itemized_medical_expenses_excluded_premiums", period
         )
+        # Eligible long-term care premiums less the part the same deduction
+        # took.
+        long_term_care_premiums = tax_unit(
+            "itemized_medical_expenses_long_term_care_premiums", period
+        )
         other_expenses = add(tax_unit, period, ["other_medical_expenses"])
-        return premiums - excluded_premiums + other_expenses
+        return premiums - excluded_premiums + long_term_care_premiums + other_expenses
