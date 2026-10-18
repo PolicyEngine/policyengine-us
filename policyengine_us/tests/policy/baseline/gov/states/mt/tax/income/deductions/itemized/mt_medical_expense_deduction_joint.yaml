@@ -591,16 +591,18 @@
         members: [person1]
         # Schedule A line 1: 10,000 of other expenses; the 6,000 of medical
         # premiums and the 400 of long-term care premiums were taken as the
-        # self-employed deduction.
+        # self-employed deduction, so all 6,400 are the excluded amount.
         itemized_medical_expenses: 10_000
-        itemized_medical_expenses_applied_exclusion: 6_000
+        itemized_medical_expenses_applied_exclusion: 6_400
         mt_agi_joint: 40_000
     households:
       household:
         members: [person1]
         state_code: MT
   output:
-    # Line 1: (10,000 + 6,000 - 6,000) - 3,000 = 7,000. Lines 2 and 3: 0.
+    # Medical premiums left in the subtotal: max(0, 6,000 - 6,400) = 0; the
+    # other 400 of the exclusion covered long-term care premiums, which are
+    # not in it. Line 1: 10,000 - 3,000 = 7,000. Lines 2 and 3: 0.
     mt_premium_deduction_joint: 0
     mt_medical_expense_deduction_joint: 7_000
 

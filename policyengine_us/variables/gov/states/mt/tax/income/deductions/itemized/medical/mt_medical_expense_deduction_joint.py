@@ -25,19 +25,22 @@ class mt_medical_expense_deduction_joint(Variable):
             # Itemized Deductions Schedule line 1 takes the medical and dental
             # expenses allowed under the Internal Revenue Code other than the
             # insurance premiums deducted in full on lines 2 and 3. Start
-            # from the federal subtotal, restore the self-employed premiums
-            # its formula excluded (zero for a supplied subtotal), and take
-            # out every member's medical insurance premiums and the
-            # long-term care premiums the subtotal includes. For a computed
-            # subtotal this is the members' other medical expenses.
+            # from the federal subtotal and take out the premiums still in
+            # it: the members' medical insurance premiums less the
+            # self-employed exclusion applied to them (applied to medical
+            # premiums first; any excess covered long-term care premiums,
+            # which are not in the subtotal), and the long-term care premiums
+            # the subtotal includes. For a computed subtotal this leaves the
+            # members' other medical expenses.
             premiums = add(
                 tax_unit, period, ["medical_expense_health_insurance_premiums"]
             )
+            excluded = tax_unit("itemized_medical_expenses_applied_exclusion", period)
+            premiums_in_subtotal = max_(0, premiums - excluded)
             expense = max_(
                 0,
                 tax_unit("itemized_medical_expenses", period)
-                + tax_unit("itemized_medical_expenses_applied_exclusion", period)
-                - premiums
+                - premiums_in_subtotal
                 - tax_unit("itemized_medical_expenses_long_term_care_premiums", period),
             )
             # Line 1b takes Montana AGI from page 1, line 14. A joint return

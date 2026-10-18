@@ -33,9 +33,11 @@ class itemized_medical_expenses(Variable):
         "medical costs paid before any self-employed exclusion "
         "(itemized_medical_expenses_applied_exclusion is 0). If it is a Schedule "
         "A line 1 amount that already leaves out premiums taken as the "
-        "self-employed health insurance deduction, also supply that amount as "
-        "itemized_medical_expenses_applied_exclusion. If it includes long-term "
-        "care premiums, report them in "
+        "self-employed health insurance deduction, also supply all of those "
+        "premiums, medical and long-term care, as "
+        "itemized_medical_expenses_applied_exclusion; the exclusion is taken "
+        "from medical insurance premiums first, as this formula does. Report "
+        "any long-term care premiums still inside the supplied value in "
         "itemized_medical_expenses_long_term_care_premiums."
     )
 
