@@ -88,7 +88,7 @@
     # (6,000 + 3,000) - (1,000 + 2,000) = 6,000.
     mt_premium_deduction_joint: 6_000
 
-- name: A dependent's own deduction is netted from the dependent's premiums only
+- name: A dependent's own premiums and deduction do not enter the filer's deduction
   period: 2022
   absolute_error_margin: 0.01
   input:
@@ -109,12 +109,10 @@
         members: [person1, person2]
         state_code: MT
   output:
-    # The dependent's deduction is on the dependent's own return, so it is
-    # not part of the return's deduction and does not reduce the head's
-    # 3,000. The dependent's line 2 is 1,000 - 1,000 = 0 and line 3 is
-    # 300 - (1,200 - 1,000) = 100.
+    # Neither the dependent's premiums nor their deduction belongs to the
+    # filer. Only the head's 3,000 counts, with no self-employed exclusion.
     self_employed_health_insurance_ald: 0
-    mt_premium_deduction_joint: 3_100
+    mt_premium_deduction_joint: 3_000
 
 - name: Outside Montana the amount is zero
   period: 2022

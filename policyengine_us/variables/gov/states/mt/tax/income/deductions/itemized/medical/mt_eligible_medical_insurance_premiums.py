@@ -17,8 +17,8 @@ class mt_eligible_medical_insurance_premiums(Variable):
         "premiums are a separate input that never enters "
         "medical_expense_health_insurance_premiums. Premium inputs use payer "
         "attribution: each person reports the premiums that person paid. "
-        "This per-person amount serves separate returns and dependents; a "
-        "joint return nets the return's deduction in "
+        "This per-person amount serves the head and spouse on separate "
+        "returns; a joint return nets the return's deduction in "
         "mt_premium_deduction_joint."
     )
     reference = (

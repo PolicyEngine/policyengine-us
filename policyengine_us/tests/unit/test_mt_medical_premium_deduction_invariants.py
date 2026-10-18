@@ -8,12 +8,12 @@ self-employed health insurance deduction, and pre-tax premiums. Former MCA
 15-30-2131(1)(a)(iii)-(iv) and (1)(g). From 2024 Montana takes federal
 itemized deductions, where premiums stay under the federal floor.
 
-For the head and spouse that deduction is part of Montana AGI. A dependent
-takes it on the dependent's own return, where it does not reduce the filer's
-Montana AGI; under PolicyEngine's payer attribution those premiums were paid
-by the dependent, so they are netted from the dependent's own premiums. The
-properties below hold for the premium inputs as attributed and the deduction
-as modeled; they do not establish who paid a premium.
+For the head and spouse that deduction is part of Montana AGI. Premium inputs
+use payer attribution: payments for dependent coverage belong on the paying
+filer's input. A dependent's own premiums and self-employed deduction belong
+on the dependent's own return and do not enter the filers' premium deduction.
+The properties below hold for those attributed inputs and the deduction as
+modeled; they do not independently establish who paid a premium.
 
 Why Python rather than YAML: Hypothesis generates mixed populations (single,
 head of household and joint returns with dependents; premiums reported
@@ -40,17 +40,18 @@ independently. For every tax unit:
    head. The separate variant is max(0, own other expenses - 7.5% x own
    Montana AGI) + own lines 2 and 3 for the head and spouse; dependents hold
    nothing.
-2. Premium conservation against closed forms. Per person (separate returns
-   and dependents): line 2 + line 3 = max(0, premiums + long-term care
+2. Premium conservation against closed forms. Per-person helpers:
+   line 2 + line 3 = max(0, premiums + long-term care
    premiums - own deduction), and line 2 = premiums - min(premiums, own
    deduction). Joint return: lines 2 and 3 = max(0, filers' premiums +
-   filers' long-term care premiums - the return's deduction) + each
-   dependent's per-person amount. Premiums are computed from the raw inputs.
-   So each deduction is netted exactly once.
+   filers' long-term care premiums - the return's deduction). Only the head
+   and spouse claim the per-person helpers on separate returns. Premiums are
+   computed from the raw inputs. Each deduction is netted exactly once.
 3. Bounds (2021-2023): premiums are never floored, so the deduction is at
    least lines 2 and 3 and at most those plus other expenses.
-4. Slope (2021-2023): raising after-tax or long-term care premiums that no
-   deduction can absorb raises the deduction by exactly the increase.
+4. Slope (2021-2023): raising filers' after-tax or long-term care premiums
+   that no deduction can absorb raises the deduction by exactly the increase.
+   Raising dependent-paid premiums does not increase the filers' deduction.
    Montana AGI is unchanged by those increases (asserted).
 5. Pre-tax premiums never change lines 2 or 3.
 6. Line 1 base: other expenses equal federal itemized medical expenses plus
@@ -267,7 +268,7 @@ def _situation(units, year, mode, unit_inputs=None):
                     groups["marital_units"][f"{tag}_single_{j}"] = {"members": [name]}
                 else:
                     couple.append(name)
-                unit_increase += sum(_increases(unit, role, values, mode, "raised"))
+                    unit_increase += sum(_increases(unit, role, values, mode, "raised"))
             increase.append(unit_increase)
             groups["marital_units"][f"{tag}_couple"] = {"members": couple}
             tax_unit = {"members": members}
@@ -367,8 +368,7 @@ def _check(units, year, mode):
     line_2 = run["mt_eligible_medical_insurance_premiums"]
     line_3 = run["mt_eligible_long_term_care_insurance_premiums"]
     other = run["other_medical_expenses"]
-    dependent = role == "dependent"
-    filer = ~dependent
+    filer = role != "dependent"
 
     # 2. Premium conservation against closed forms.
     np.testing.assert_allclose(premium, run["expected_premium"], atol=TOLERANCE)
@@ -405,7 +405,7 @@ def _check(units, year, mode):
         _unit_sum(run, filer * (run["expected_premium"] + long_term_care))
         - return_deduction,
         0,
-    ) + _unit_sum(run, dependent * (line_2 + line_3))
+    )
     full = run["mt_premium_deduction_joint"]
     np.testing.assert_allclose(full, expected_joint_premiums, atol=TOLERANCE)
 
@@ -421,7 +421,8 @@ def _check(units, year, mode):
     assert (deduction >= full - TOLERANCE).all()
     assert (deduction <= full + _unit_sum(run, other) + TOLERANCE).all()
 
-    # 4. Slope of one where no deduction can absorb the increase.
+    # 4. Slope of one for filer increases no deduction can absorb, and zero
+    # for dependent increases. The raised twin changes both sets of payers.
     np.testing.assert_allclose(
         run["mt_agi_joint"][raised], run["mt_agi_joint"][base], atol=TOLERANCE
     )
@@ -493,6 +494,19 @@ def test_seeded_population(year, mode):
     if result is None:
         return
     run, floored, full = result
+    # The slope check includes dependent-only increases: their premiums rise
+    # while the filers' premiums and deduction remain unchanged.
+    dependent_increase = np.array(
+        [
+            sum(
+                sum(_increases(unit, role, values, mode, "raised"))
+                for role, values in _entries(unit)
+                if role == "dependent"
+            )
+            for unit in units
+        ]
+    )
+    assert np.any((dependent_increase > 1) & (run["increase"][: len(units)] == 0))
     # Non-vacuity: some returns deduct premiums while line 1 is below the
     # floor, where flooring premiums with other expenses would cut the
     # deduction; some deduct line 1 too; there are single and joint returns;
@@ -522,8 +536,7 @@ def test_seeded_population(year, mode):
         # A return-level deduction reduces the filers' lines 2 and 3.
         filer = run["role"] != "dependent"
         gross = _unit_sum(run, filer * (premiums + long_term_care))
-        dependent_part = _unit_sum(run, ~filer * (line_2 + line_3))
-        assert np.any(full - dependent_part < gross - 1)
+        assert np.any(full < gross - 1)
     _check_net_subtotal(run, units, year, mode)
 
 

@@ -15,9 +15,10 @@ class mt_premium_deduction_joint(Variable):
         "netted from their premiums once: first from medical insurance "
         "premiums, by the same bounded exclusion the computed federal "
         "Schedule A subtotal uses, then from long-term care premiums. A "
-        "deduction supplied for the return is honored. A dependent's "
-        "deduction belongs on the dependent's own return and is netted from "
-        "that dependent's premiums. Premium inputs use payer attribution."
+        "deduction supplied for the return is honored. Premium inputs use "
+        "payer attribution: only the head's and spouse's payments count, "
+        "including payments for dependent coverage. A dependent's own "
+        "premium payments do not enter the filers' deduction."
     )
     reference = (
         "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7",
@@ -41,18 +42,8 @@ class mt_premium_deduction_joint(Variable):
         # The bounded exclusion the computed federal subtotal applies to these
         # premiums: min(premiums, deduction).
         used_on_line_2 = tax_unit("itemized_medical_expenses_excluded_premiums", period)
-        filer_amount = (
+        return (
             premiums
             - used_on_line_2
             + max_(0, long_term_care_premiums - (deduction - used_on_line_2))
         )
-        person = tax_unit.members
-        is_dependent = person("is_tax_unit_dependent", period)
-        dependent_amount = tax_unit.sum(
-            is_dependent
-            * (
-                person("mt_eligible_medical_insurance_premiums", period)
-                + person("mt_eligible_long_term_care_insurance_premiums", period)
-            )
-        )
-        return filer_amount + dependent_amount

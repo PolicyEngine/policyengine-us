@@ -14,8 +14,8 @@ class mt_eligible_long_term_care_insurance_premiums(Variable):
         "deduction. That deduction is applied first to the medical insurance "
         "premiums on line 2 and the remainder to these premiums; lines 2 and "
         "3 are both deducted in full, so the order does not change the total. "
-        "This per-person amount serves separate returns and dependents; a "
-        "joint return nets the return's deduction in "
+        "This per-person amount serves the head and spouse on separate "
+        "returns; a joint return nets the return's deduction in "
         "mt_premium_deduction_joint."
     )
     reference = (
