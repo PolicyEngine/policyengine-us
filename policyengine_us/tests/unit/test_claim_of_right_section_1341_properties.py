@@ -41,7 +41,7 @@ otherwise.
 Last, one itemizing household per state: with the credit method fixed, the
 repayment leaves every state's income tax unchanged in the model (no state
 input is supplied), and with the deduction method fixed it leaves Arizona's,
-California's, Kansas's and Wisconsin's unchanged.
+Kansas's and Wisconsin's unchanged.
 """
 
 import gc
@@ -80,9 +80,9 @@ STATES = [
     if state.name not in {"AA", "AE", "AP", "AS", "GU", "MP", "PR", "PW", "VI"}
 ]
 # States whose own rules leave out the federal claim of right repayment
-# deduction: A.R.S. 43-1021(9), the California Schedule CA (540) instructions
-# for Part II line 16, K.S.A. 79-32,120(a) and Wisconsin Form 1 Schedule 1.
-STATES_WITHOUT_THE_DEDUCTION = ["AZ", "CA", "KS", "WI"]
+# deduction: A.R.S. 43-1021(9), K.S.A. 79-32,120(a) and Wisconsin Form 1
+# Schedule 1. California carries the federal deduction in Schedule CA column A.
+STATES_WITHOUT_THE_DEDUCTION = ["AZ", "KS", "WI"]
 BRANCHES = [
     "income_tax_if_claiming_claim_of_right_deduction",
     "income_tax_if_claiming_claim_of_right_credit",
