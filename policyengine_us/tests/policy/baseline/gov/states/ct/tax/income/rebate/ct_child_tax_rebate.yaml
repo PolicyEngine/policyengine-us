@@ -925,7 +925,7 @@
   output:
     ct_child_tax_rebate: 0
 
-- name: 2021 joint return with neither spouse claimable, no 2022 child tax rebate
+- name: 2021 joint return with neither spouse claimable gets the 2022 child tax rebate
   period: 2021
   input:
     people:

@@ -547,7 +547,7 @@
     co_ctc: 0
     co_ctc_eligible_children_count: 0
 
-- name: 2025 joint return with neither spouse claimable, no Colorado child tax credit
+- name: 2025 joint return with neither spouse claimable gets the Colorado child tax credit
   period: 2025
   input:
     people:
@@ -687,7 +687,7 @@
     co_federal_ctc_maximum: 0
     co_ctc: 0
 
-- name: 2023 joint return with neither spouse claimable, no Colorado share of the federal child tax credit
+- name: 2023 joint return with neither spouse claimable gets the Colorado share of the federal child tax credit
   period: 2023
   input:
     people:

@@ -144,7 +144,7 @@
   output:
     in_nonpublic_school_deduction: 0
 
-- name: 2025 joint return with neither spouse claimable, no nonpublic school deduction
+- name: 2025 joint return with neither spouse claimable gets the nonpublic school deduction
   period: 2025
   input:
     people:

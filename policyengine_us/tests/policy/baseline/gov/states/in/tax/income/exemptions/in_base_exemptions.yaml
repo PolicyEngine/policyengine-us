@@ -125,7 +125,7 @@
   output:
     in_base_exemptions: 2_000
 
-- name: 2025 joint return with neither spouse claimable, the filers keep their own exemptions but claim no dependent
+- name: 2025 joint return with neither spouse claimable gets base exemptions for both filers and their dependent
   period: 2025
   input:
     people:

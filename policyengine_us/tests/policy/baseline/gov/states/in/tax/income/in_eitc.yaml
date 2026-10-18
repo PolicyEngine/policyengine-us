@@ -234,7 +234,7 @@
   output:
     in_eitc: 0
 
-- name: 2025 joint return with neither spouse claimable, no Indiana EITC without a qualifying child
+- name: 2025 joint return with neither spouse claimable gets the Indiana EITC without a qualifying child
   period: 2025
   absolute_error_margin: 0.01
   input:

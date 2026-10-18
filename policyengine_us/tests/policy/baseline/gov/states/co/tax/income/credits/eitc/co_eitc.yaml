@@ -517,7 +517,7 @@
   output:
     co_eitc: 0
 
-- name: 2025 joint return with neither spouse claimable, no Colorado EITC without a qualifying child
+- name: 2025 joint return with neither spouse claimable gets the Colorado EITC without a qualifying child
   period: 2025
   absolute_error_margin: 0.01
   input:

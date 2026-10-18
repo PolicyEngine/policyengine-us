@@ -162,7 +162,7 @@
   output:
     ct_property_tax_credit_eligible: false
 
-- name: 2021 joint return with neither spouse claimable, no 2021 property tax credit through the dependent route
+- name: 2021 joint return with neither spouse claimable is eligible for the property tax credit through the dependent route
   period: 2021
   input:
     people:

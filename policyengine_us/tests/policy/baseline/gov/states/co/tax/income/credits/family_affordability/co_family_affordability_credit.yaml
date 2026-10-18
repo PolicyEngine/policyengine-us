@@ -228,7 +228,7 @@
   output:
     co_family_affordability_credit: [0, 0, 0]
 
-- name: 2025 joint return with neither spouse claimable, no Colorado family affordability credit
+- name: 2025 joint return with neither spouse claimable gets the Colorado family affordability credit
   period: 2025
   input:
     people:
