@@ -60,6 +60,10 @@ independently. For every tax unit:
    per person, the joint and separate variants agree.
 8. From 2024 the joint deduction is the federal medical expense deduction and
    the separate variant is zero.
+9. Differential (seeded, 2021-2023): supplying a net Schedule A subtotal, the
+   exclusion of all premiums the self-employed deduction took (medical
+   first), and the long-term care premiums still inside gives the same
+   Montana deduction as the computed path.
 """
 
 import numpy as np
@@ -242,9 +246,10 @@ def _expected_premium(unit, role, values, mode, variant):
     return (0.0 if values["premium_source"] == "direct" else premium) + part_b
 
 
-def _situation(units, year, mode):
+def _situation(units, year, mode, unit_inputs=None):
     people, groups = {}, {"tax_units": {}, "households": {}, "marital_units": {}}
     expected_premium, increase, roles = [], [], []
+    unit_index = 0
     for variant in VARIANTS:
         for i, unit in enumerate(units):
             tag = f"{variant}_{i}"
@@ -270,6 +275,10 @@ def _situation(units, year, mode):
                 tax_unit["self_employed_health_insurance_ald"] = {
                     year: unit["supplied_unit_deduction"]
                 }
+            # Supplied for every tax unit, so none falls back to 0.
+            for name, values in (unit_inputs or {}).items():
+                tax_unit[name] = {year: float(values[unit_index])}
+            unit_index += 1
             groups["tax_units"][f"{tag}_tax_unit"] = tax_unit
             groups["households"][f"{tag}_household"] = {
                 "members": members,
@@ -305,13 +314,16 @@ UNIT_VARIABLES = [
     "mt_premium_deduction_joint",
     "itemized_medical_expenses",
     "itemized_medical_expenses_applied_exclusion",
+    "itemized_medical_expenses_excluded_premiums",
     "itemized_medical_expenses_long_term_care_premiums",
     "medical_expense_deduction",
 ]
 
 
-def _run(units, year, mode):
-    situation, expected_premium, increase, roles = _situation(units, year, mode)
+def _run(units, year, mode, unit_inputs=None):
+    situation, expected_premium, increase, roles = _situation(
+        units, year, mode, unit_inputs
+    )
     sim = Simulation(situation=situation)
     out = {
         name: np.asarray(sim.calculate(name, year), dtype=float)
@@ -511,3 +523,51 @@ def test_seeded_population(year, mode):
         gross = _unit_sum(run, filer * (premiums + long_term_care))
         dependent_part = _unit_sum(run, ~filer * (line_2 + line_3))
         assert np.any(full - dependent_part < gross - 1)
+    _check_net_subtotal(run, units, year, mode)
+
+
+def _check_net_subtotal(run, units, year, mode):
+    """9. A net Schedule A subtotal gives the computed path's deduction.
+
+    Supply, for every return, the subtotal as Schedule A line 1 would hold it
+    (the computed subtotal plus the filers' long-term care premiums the
+    self-employed deduction did not take), the exclusion as all premiums that
+    deduction took (medical first), and the long-term care premiums still
+    inside. Montana's deduction must not change.
+    """
+    filer = run["role"] != "dependent"
+    return_deduction = np.maximum(run["self_employed_health_insurance_ald"], 0)
+    medical_excluded = run["itemized_medical_expenses_excluded_premiums"]
+    filer_long_term_care = _unit_sum(
+        run, filer * run["long_term_health_insurance_premiums"]
+    )
+    long_term_care_excluded = np.minimum(
+        filer_long_term_care, return_deduction - medical_excluded
+    )
+    inside = filer_long_term_care - long_term_care_excluded
+    net = _run(
+        units,
+        year,
+        mode,
+        {
+            "itemized_medical_expenses": run["itemized_medical_expenses"] + inside,
+            "itemized_medical_expenses_applied_exclusion": medical_excluded
+            + long_term_care_excluded,
+            "itemized_medical_expenses_long_term_care_premiums": inside,
+        },
+    )
+    np.testing.assert_allclose(net["mt_agi_joint"], run["mt_agi_joint"], atol=TOLERANCE)
+    np.testing.assert_allclose(
+        _unit_sum(net, net["mt_medical_expense_deduction_joint"]),
+        _unit_sum(run, run["mt_medical_expense_deduction_joint"]),
+        atol=TOLERANCE,
+    )
+    # Non-vacuity: with supplied deductions, some exclusions cover long-term
+    # care premiums on returns with dependents' premiums, where taking the
+    # exclusion from every member's premiums would differ. A derived
+    # deduction never exceeds the filers' own medical premiums.
+    if mode != "derived":
+        dependent_premiums = _unit_sum(
+            run, ~filer * run["medical_expense_health_insurance_premiums"]
+        )
+        assert np.any((long_term_care_excluded > 1) & (dependent_premiums > 1))

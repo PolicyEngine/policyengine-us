@@ -36,8 +36,9 @@ class itemized_medical_expenses(Variable):
         "self-employed health insurance deduction, also supply all of those "
         "premiums, medical and long-term care, as "
         "itemized_medical_expenses_applied_exclusion; the exclusion is taken "
-        "from medical insurance premiums first, as this formula does. Report "
-        "any long-term care premiums still inside the supplied value in "
+        "from the head's and spouse's medical insurance premiums first, as this "
+        "formula does. Report any long-term care premiums still inside the "
+        "supplied value, by that same split, in "
         "itemized_medical_expenses_long_term_care_premiums."
     )
 

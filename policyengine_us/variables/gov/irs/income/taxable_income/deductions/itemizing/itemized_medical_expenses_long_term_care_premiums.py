@@ -18,5 +18,10 @@ class itemized_medical_expenses_long_term_care_premiums(Variable):
         "health insurance deduction. The computed subtotal counts no "
         "long-term care premiums, so leave this at 0 unless you supply a "
         "subtotal that includes them. States that deduct long-term care "
-        "premiums separately remove this amount from the subtotal first."
+        "premiums separately remove this amount from the subtotal first. With "
+        "a subtotal that leaves out premiums taken as the self-employed "
+        "deduction, follow the split itemized_medical_expenses_applied_exclusion "
+        "uses, whatever the return itself did: this is the eligible long-term "
+        "care premiums less any part of that exclusion above the head's and "
+        "spouse's medical insurance premiums."
     )
