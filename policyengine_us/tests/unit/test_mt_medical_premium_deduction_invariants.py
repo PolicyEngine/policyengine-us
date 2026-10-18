@@ -17,11 +17,15 @@ as modeled; they do not establish who paid a premium.
 
 Why Python rather than YAML: Hypothesis generates mixed populations (single,
 head of household and joint returns with dependents; premiums reported
-directly, decomposed or with Medicare Part B; derived deductions, deductions
-supplied per person, and deductions supplied only for the return), and every
-batch also holds twins of each return whose differences are asserted. YAML
-cases check fixed examples; these properties check relations between
-generated returns.
+directly, decomposed or with Medicare Part B), and every batch also holds
+twins of each return whose differences are asserted. YAML cases check fixed
+examples; these properties check relations between generated returns.
+
+Each batch takes the self-employed deduction one way: derived from
+self-employment income ("derived"), supplied for every person ("person"), or
+supplied for every return with person amounts derived ("unit"). The mode is
+per batch because core treats a formula variable supplied for some members as
+an input for all of them, filling the rest with 0.
 
 Each batch runs as one vectorized simulation holding three copies of every
 tax unit: the drawn return, a twin with higher after-tax and long-term care
@@ -71,10 +75,12 @@ FORM_FLOOR = 0.075  # Itemized Deductions Schedule line 1c
 STATE_YEARS = [2021, 2022, 2023]
 FEDERAL_YEAR = 2024
 YEARS = STATE_YEARS + [FEDERAL_YEAR]
+MODES = ["derived", "person", "unit"]
 VARIANTS = ["base", "raised", "no_pre_tax"]
 
 amount = st.one_of(st.just(0.0), st.integers(1, 15_000).map(float))
 small_amount = st.one_of(st.just(0.0), st.integers(1, 5_000).map(float))
+deduction_amount = st.one_of(st.just(0.0), st.integers(1, 20_000).map(float))
 
 
 @st.composite
@@ -86,10 +92,8 @@ def people(draw):
         "self_employment_income": (
             float(draw(st.integers(-20_000, 60_000))) if self_employed else 0.0
         ),
-        # A deduction claimed on Schedule 1, line 17, supplied as an input.
-        "supplied_deduction": draw(
-            st.one_of(st.none(), st.integers(0, 20_000).map(float))
-        ),
+        # A deduction claimed on Schedule 1, line 17, used in "person" mode.
+        "supplied_deduction": draw(deduction_amount),
         "premium_source": draw(st.sampled_from(["direct", "decomposed", "medicare"])),
         "premium": draw(amount),
         "part_b": draw(st.integers(0, 3_000).map(float)),
@@ -111,10 +115,8 @@ def tax_units(draw):
         "head": draw(people()),
         "spouse": draw(people()) if kind.startswith("joint") else None,
         "dependents": [draw(people()) for _ in range(n_dependents)],
-        # The return's deduction, supplied without person amounts.
-        "supplied_unit_deduction": draw(
-            st.one_of(st.none(), st.integers(0, 20_000).map(float))
-        ),
+        # The return's deduction, used in "unit" mode.
+        "supplied_unit_deduction": draw(deduction_amount),
     }
 
 
@@ -135,9 +137,7 @@ def _seeded_units(n=120):
             "self_employment_income": (
                 float(rng.integers(-20_000, 60_001)) if self_employed else 0.0
             ),
-            "supplied_deduction": (
-                float(rng.integers(0, 20_001)) if rng.random() < 0.2 else None
-            ),
+            "supplied_deduction": maybe(20_000),
             "premium_source": str(rng.choice(["direct", "decomposed", "medicare"])),
             "premium": maybe(15_000),
             "part_b": float(rng.integers(0, 3_001)),
@@ -159,16 +159,10 @@ def _seeded_units(n=120):
                 "head": person(),
                 "spouse": person() if kind.startswith("joint") else None,
                 "dependents": [person() for _ in range(n_dependents)],
-                "supplied_unit_deduction": (
-                    float(rng.integers(0, 20_001)) if rng.random() < 0.15 else None
-                ),
+                "supplied_unit_deduction": maybe(20_000),
             }
         )
     return units
-
-
-def _may_have_deduction(values):
-    return values["self_employed"] or values["supplied_deduction"] is not None
 
 
 def _entries(unit):
@@ -178,28 +172,37 @@ def _entries(unit):
     return entries + [("dependent", d) for d in unit["dependents"]]
 
 
-def _raisable(unit, role, values):
+def _no_own_deduction(values, mode):
+    """Whether the person's own deduction is known to be zero."""
+    if mode == "person":
+        return values["supplied_deduction"] == 0
+    return not values["self_employed"]
+
+
+def _raisable(unit, role, values, mode):
     """Whether no deduction can absorb a premium increase for this person.
 
     The return's deduction is pooled over the head's and spouse's premiums,
     so any filer's deduction can absorb another filer's increase.
     """
     if role == "dependent":
-        return not _may_have_deduction(values)
+        return _no_own_deduction(values, mode)
     filers = [v for r, v in _entries(unit) if r != "dependent"]
-    return unit["supplied_unit_deduction"] is None and not any(
-        _may_have_deduction(v) for v in filers
-    )
+    if not all(_no_own_deduction(v, mode) for v in filers):
+        return False
+    return mode != "unit" or unit["supplied_unit_deduction"] == 0
 
 
-def _increases(unit, role, values, variant):
-    if variant != "raised" or not _raisable(unit, role, values):
+def _increases(unit, role, values, mode, variant):
+    if variant != "raised" or not _raisable(unit, role, values, mode):
         return 0.0, 0.0
     return values["premium_increase"], values["long_term_care_increase"]
 
 
-def _person_inputs(unit, role, values, variant):
-    premium_increase, long_term_care_increase = _increases(unit, role, values, variant)
+def _person_inputs(unit, role, values, mode, variant):
+    premium_increase, long_term_care_increase = _increases(
+        unit, role, values, mode, variant
+    )
     premium = values["premium"] + premium_increase
     source = values["premium_source"]
     inputs = {
@@ -223,25 +226,25 @@ def _person_inputs(unit, role, values, variant):
         "medicare_enrolled": source == "medicare",
         "medicare_part_b_premium": values["part_b"] if source == "medicare" else 0.0,
     }
-    if values["supplied_deduction"] is not None:
+    if mode == "person":
         inputs["self_employed_health_insurance_ald_person"] = values[
             "supplied_deduction"
         ]
     return inputs
 
 
-def _expected_premium(unit, role, values, variant):
+def _expected_premium(unit, role, values, mode, variant):
     """Premiums counted as federal medical expenses, from the inputs alone."""
-    premium = values["premium"] + _increases(unit, role, values, variant)[0]
+    premium = values["premium"] + _increases(unit, role, values, mode, variant)[0]
     if values["premium_source"] == "direct" and premium != 0:
         return premium
     part_b = values["part_b"] if values["premium_source"] == "medicare" else 0.0
     return (0.0 if values["premium_source"] == "direct" else premium) + part_b
 
 
-def _situation(units, year):
+def _situation(units, year, mode):
     people, groups = {}, {"tax_units": {}, "households": {}, "marital_units": {}}
-    expected_premium, increase, roles, supplied, unit_supplied = [], [], [], [], []
+    expected_premium, increase, roles = [], [], []
     for variant in VARIANTS:
         for i, unit in enumerate(units):
             tag = f"{variant}_{i}"
@@ -249,29 +252,25 @@ def _situation(units, year):
             unit_increase = 0.0
             for j, (role, values) in enumerate(_entries(unit)):
                 name = f"{tag}_{role}_{j}"
-                people[name] = _person_inputs(unit, role, values, variant)
+                people[name] = _person_inputs(unit, role, values, mode, variant)
                 members.append(name)
-                expected_premium.append(_expected_premium(unit, role, values, variant))
-                roles.append(role)
-                supplied.append(
-                    np.nan
-                    if values["supplied_deduction"] is None
-                    else values["supplied_deduction"]
+                expected_premium.append(
+                    _expected_premium(unit, role, values, mode, variant)
                 )
+                roles.append(role)
                 if role == "dependent":
                     groups["marital_units"][f"{tag}_single_{j}"] = {"members": [name]}
                 else:
                     couple.append(name)
-                unit_increase += sum(_increases(unit, role, values, "raised"))
+                unit_increase += sum(_increases(unit, role, values, mode, "raised"))
             increase.append(unit_increase)
             groups["marital_units"][f"{tag}_couple"] = {"members": couple}
             tax_unit = {"members": members}
-            if unit["supplied_unit_deduction"] is not None:
+            if mode == "unit":
                 tax_unit["self_employed_health_insurance_ald"] = {
                     year: unit["supplied_unit_deduction"]
                 }
             groups["tax_units"][f"{tag}_tax_unit"] = tax_unit
-            unit_supplied.append(unit["supplied_unit_deduction"] is not None)
             groups["households"][f"{tag}_household"] = {
                 "members": members,
                 # Keyed by year: a bare value is not applied to the run year.
@@ -286,8 +285,6 @@ def _situation(units, year):
         np.array(expected_premium),
         np.array(increase),
         np.array(roles),
-        np.array(supplied),
-        np.array(unit_supplied),
     )
 
 
@@ -312,10 +309,8 @@ UNIT_VARIABLES = [
 ]
 
 
-def _run(units, year):
-    situation, expected_premium, increase, roles, supplied, unit_supplied = _situation(
-        units, year
-    )
+def _run(units, year, mode):
+    situation, expected_premium, increase, roles = _situation(units, year, mode)
     sim = Simulation(situation=situation)
     out = {
         name: np.asarray(sim.calculate(name, year), dtype=float)
@@ -327,8 +322,6 @@ def _run(units, year):
     out["expected_premium"] = expected_premium
     out["increase"] = increase
     out["role"] = roles
-    out["supplied"] = supplied
-    out["unit_supplied"] = unit_supplied
     return out
 
 
@@ -336,8 +329,8 @@ def _unit_sum(run, values):
     return np.bincount(run["unit"], weights=values, minlength=len(run["mt_agi_joint"]))
 
 
-def _check(units, year):
-    run = _run(units, year)
+def _check(units, year, mode):
+    run = _run(units, year, mode)
     n = len(units)
     base, raised, no_pre_tax = (slice(k * n, (k + 1) * n) for k in range(3))
     role = run["role"]
@@ -366,10 +359,23 @@ def _check(units, year):
 
     # 2. Premium conservation against closed forms.
     np.testing.assert_allclose(premium, run["expected_premium"], atol=TOLERANCE)
-    supplied = ~np.isnan(run["supplied"])
-    np.testing.assert_allclose(
-        own_deduction[supplied], run["supplied"][supplied], atol=TOLERANCE
-    )
+    if mode == "person":
+        supplied = np.array(
+            [
+                v["supplied_deduction"]
+                for _ in VARIANTS
+                for unit in units
+                for _, v in _entries(unit)
+            ]
+        )
+        np.testing.assert_allclose(own_deduction, supplied, atol=TOLERANCE)
+    if mode == "unit":
+        supplied_unit = np.array(
+            [unit["supplied_unit_deduction"] for _ in VARIANTS for unit in units]
+        )
+        np.testing.assert_allclose(
+            run["self_employed_health_insurance_ald"], supplied_unit, atol=TOLERANCE
+        )
     np.testing.assert_allclose(
         line_2 + line_3,
         np.maximum(run["expected_premium"] + long_term_care - own_deduction, 0),
@@ -430,10 +436,11 @@ def _check(units, year):
     )
 
     # 7. Single filers with person-level deductions: both variants agree.
-    single = (run["filing_status"] == "SINGLE") & ~run["unit_supplied"]
-    np.testing.assert_allclose(
-        deduction[single], _unit_sum(run, indiv)[single], atol=TOLERANCE
-    )
+    if mode != "unit":
+        single = run["filing_status"] == "SINGLE"
+        np.testing.assert_allclose(
+            deduction[single], _unit_sum(run, indiv)[single], atol=TOLERANCE
+        )
     return run, floored, full
 
 
@@ -448,23 +455,30 @@ SETTINGS = dict(
 
 
 @settings(**SETTINGS)
-@given(st.sampled_from(YEARS), st.lists(tax_units(), min_size=5, max_size=20))
-def test_mt_medical_premium_deduction_invariants(year, units):
-    _check(units, year)
+@given(
+    st.sampled_from(YEARS),
+    st.sampled_from(MODES),
+    st.lists(tax_units(), min_size=5, max_size=20),
+)
+def test_mt_medical_premium_deduction_invariants(year, mode, units):
+    _check(units, year, mode)
 
 
-@pytest.mark.parametrize("year", YEARS)
-def test_seeded_population(year):
-    result = _check(_seeded_units(), year)
+# Each state year takes the deduction a different way; 2024 checks the federal
+# branch.
+SEEDED_CASES = [(2021, "derived"), (2022, "person"), (2023, "unit"), (2024, "unit")]
+
+
+@pytest.mark.parametrize("year,mode", SEEDED_CASES)
+def test_seeded_population(year, mode):
+    result = _check(_seeded_units(), year, mode)
     if result is None:
         return
     run, floored, full = result
     # Non-vacuity: some returns deduct premiums while line 1 is below the
     # floor, where flooring premiums with other expenses would cut the
-    # deduction; some deduct line 1 too; some people's deduction exceeds
-    # their medical premiums and reduces line 3; some returns carry only a
-    # return-level deduction that reduces lines 2 and 3; and there are single
-    # and joint returns.
+    # deduction; some deduct line 1 too; there are single and joint returns;
+    # and each mode's deduction reduces lines 2 and 3 somewhere.
     agi_floor = FORM_FLOOR * run["mt_agi_joint"]
     total = _unit_sum(
         run,
@@ -473,30 +487,22 @@ def test_seeded_population(year):
     )
     assert np.any((full > 0) & (total < agi_floor))
     assert np.any((full > 0) & (floored > 0))
-    deduction = run["self_employed_health_insurance_ald_person"]
-    long_term_care = run["long_term_health_insurance_premiums"]
-    line_3 = run["mt_eligible_long_term_care_insurance_premiums"]
-    assert np.any(
-        (deduction > run["medical_expense_health_insurance_premiums"])
-        & (line_3 < long_term_care - 1)
-    )
-    filer = run["role"] != "dependent"
-    gross = _unit_sum(
-        run,
-        filer
-        * (
-            run["medical_expense_health_insurance_premiums"]
-            + run["long_term_health_insurance_premiums"]
-        ),
-    )
-    dependent_part = _unit_sum(
-        run,
-        ~filer
-        * (
-            run["mt_eligible_medical_insurance_premiums"]
-            + run["mt_eligible_long_term_care_insurance_premiums"]
-        ),
-    )
-    assert np.any(run["unit_supplied"] & (full - dependent_part < gross - 1))
     assert np.any(run["filing_status"] == "SINGLE")
     assert np.any(run["filing_status"] == "JOINT")
+    deduction = run["self_employed_health_insurance_ald_person"]
+    premiums = run["medical_expense_health_insurance_premiums"]
+    long_term_care = run["long_term_health_insurance_premiums"]
+    line_2 = run["mt_eligible_medical_insurance_premiums"]
+    line_3 = run["mt_eligible_long_term_care_insurance_premiums"]
+    if mode == "derived":
+        # A deduction derived from self-employment income reduces line 2.
+        assert np.any((deduction > 0) & (line_2 < premiums - 1))
+    if mode == "person":
+        # A deduction above the medical premiums reduces line 3.
+        assert np.any((deduction > premiums) & (line_3 < long_term_care - 1))
+    if mode == "unit":
+        # A return-level deduction reduces the filers' lines 2 and 3.
+        filer = run["role"] != "dependent"
+        gross = _unit_sum(run, filer * (premiums + long_term_care))
+        dependent_part = _unit_sum(run, ~filer * (line_2 + line_3))
+        assert np.any(full - dependent_part < gross - 1)
