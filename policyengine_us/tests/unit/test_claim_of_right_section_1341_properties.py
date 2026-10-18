@@ -284,7 +284,10 @@ def test_north_carolina_follows_the_federal_method(results, year):
         r["nc_claim_of_right_deduction"],
         np.where(credit_applies, 0, r["nc_deduction_if_deduction"]),
     )
-    assert np.all(r["nc_deduction_if_credit"] == 0)
+    np.testing.assert_allclose(
+        r["nc_deduction_if_credit"],
+        np.where(eligible(), 0, r["nc_deduction_if_deduction"]),
+    )
     np.testing.assert_allclose(
         r["nc_claim_of_right_payment"], np.where(credit_applies, NC_INCREASE, 0)
     )
