@@ -488,7 +488,8 @@ SEEDED_CASES = [(2021, "derived"), (2022, "person"), (2023, "unit"), (2024, "uni
 
 @pytest.mark.parametrize("year,mode", SEEDED_CASES)
 def test_seeded_population(year, mode):
-    result = _check(_seeded_units(), year, mode)
+    units = _seeded_units()
+    result = _check(units, year, mode)
     if result is None:
         return
     run, floored, full = result
