@@ -21,9 +21,10 @@ IRC 26 liability cap), P the same credit on the pre-OBBBA rate schedule
 4. The federal potential credit equals a reference written from IRC 21(a)(2)
    (and, from 2026, the Act's amended schedule) times the relevant expenses.
 5. 0 <= k <= K.
-6. The Act's effective date that the pre-OBBBA mirrors key on (P.L. 119-21
-   sec. 70405(b)) is the first year the baseline section 21 parameters depart
-   from the frozen pre-OBBBA schedule.
+6. Over 2022 to 2035, the baseline section 21 parameters depart from the
+   frozen pre-OBBBA schedule in exactly the years from the Act's effective date
+   (P.L. 119-21 sec. 70405(b)) that the pre-OBBBA mirrors key on. 2021 is
+   excluded: its American Rescue Plan Act rates also differ from the snapshot.
 
 The conformity parameter as a reform lever (Kentucky reads P when it is false
 and the Act changes section 21) is covered in ky_cdcc.yaml, where a parameter
