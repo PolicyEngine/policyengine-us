@@ -1,0 +1,162 @@
+- name: Case 1, a single client with a disability benefit.
+  # 9 CCR 2503-5 3.549(A)(2): $300/month of SSDI less the $20 disregard is
+  # 280/month, or 3,360/year. SSI counts the same 280.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        social_security_disability: 3_600
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi_countable_income: 3_360
+    co_state_supplement_own_countable_income: 3_360
+
+- name: Case 2, a single SSI-only client with earnings gets no share of the unearned disregard.
+  # $500/month of earnings and no unearned income other than SSI. SSI applies
+  # the $20 general exclusion to earnings: (500 - 20 - 65) / 2 = 207.50.
+  # 3.549(A)(2)(c)(2) gives an SSI-only client no unearned disregard, and the
+  # client's gross unearned income, SSI included, is not under $20, so none
+  # reaches earnings (3.549(A)(2)(f)): (500 - 65) / 2 = 217.50/month, or
+  # 2,610/year.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        employment_income: 6_000
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi_countable_income: 2_490
+    co_state_supplement_own_countable_income: 2_610
+
+- name: Case 3, the unused disregard does not reach earnings when SSI brings unearned income to $20.
+  # $5/month of interest and $200/month of earnings. The $20 disregard covers
+  # the $5 of interest (3.549(A)(2)(c)); gross unearned income including SSI
+  # is far above $20, so nothing reaches earnings (3.549(A)(2)(f)):
+  # (200 - 65) / 2 = 67.50/month, or 810/year. SSI moves the unused $15 to
+  # earnings: (200 - 65 - 15) / 2 = 60, or 720/year.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        interest_income: 60
+        employment_income: 2_400
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi_countable_income: 720
+    co_state_supplement_own_countable_income: 810
+
+- name: Case 4, the unused disregard reaches earnings when gross unearned income is under $20.
+  # $10/month of interest, $200/month of earnings and no SSI payment. The $20
+  # disregard covers the $10 of interest and the other $10 reduces earnings
+  # (3.549(A)(2)(f)): (200 - 65 - 10) / 2 = 62.50/month. Axiom's companion
+  # test client_income_disregards_and_grant gives the same 62.50. The client
+  # reports SSI receipt, so is an AND-CS client.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 40
+        is_ssi_disabled: true
+        receives_ssi: true
+        interest_income: 120
+        employment_income: 2_400
+        ssi: 0
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_state_supplement_own_countable_income: 62.5
+
+- name: Case 5, a married client gets half of the $20 disregard.
+  # The client has $300/month of SSDI; the spouse is not disabled and has no
+  # income. 3.549(A)(2)(c)(1) splits the $20 between the spouses:
+  # 300 - 10 = 290/month, or 3,480/year. SSI, with no income to deem from the
+  # spouse, applies the whole $20: 280/month.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        social_security_disability: 3_600
+        is_tax_unit_head: true
+      spouse:
+        age: 42
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi_countable_income: [3_360, 0]
+    co_state_supplement_own_countable_income: [3_480, 0]
+
+- name: Case 6, a single client receiving outside shelter support counts the presumed maximum value.
+  # In-kind support and maintenance is SSI's presumed maximum value,
+  # 994 / 3 + 20 = 351.33/month (20 CFR 416.1140), which 3.520.79(B)(6)
+  # charges to AND-CS as well. Less the $20 disregard: 331.33/month, or
+  # 3,976/year, as for SSI.
+  absolute_error_margin: 0.1
+  period: 2026
+  input:
+    people:
+      person:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_receives_outside_shelter_support: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi_countable_income: 3_976
+    co_state_supplement_own_countable_income: 3_976
+
+- name: Case 7, a disabled student's earnings count in full.
+  # A disabled full-time student aged 19 earns $500/month. SSI excludes it
+  # under 20 CFR 416.1112(c)(3). 3.520.786 limits exempt income to the items
+  # it lists, which do not include that exclusion, so 3.549(A)(1) counts
+  # (500 - 65) / 2 = 217.50/month, or 2,610/year.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 19
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_full_time_student: true
+        employment_income: 6_000
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi_countable_income: 0
+    co_state_supplement_own_countable_income: 2_610

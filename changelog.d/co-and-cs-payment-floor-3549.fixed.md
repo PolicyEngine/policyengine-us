@@ -1,0 +1,1 @@
+Apply Colorado's $13 AND-CS payment floor from January 2026, and count income for every AND-CS client under 9 CCR 2503-5 3.549: no unearned disregard for SSI-only clients, spousal and parental deeming without SSI's threshold, and the exemption for spouses and parents on SSI, Old Age Pension or Medicaid.
