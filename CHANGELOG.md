@@ -1,3 +1,31 @@
+## [2.49.7] - 2026-10-18
+
+### Fixed
+
+- Count the property tax billed to other household members as rent, at 15%, for a Montana elderly homeowner/renter credit claimant whose tax unit is billed none (ARM 42.4.302(2)(b)).
+
+
+## [2.49.6] - 2026-10-18
+
+### Fixed
+
+- Make household net income and state income tax use each state's own final income tax: drop the Wisconsin and New Jersey overrides in `state_income_tax`, add the Vermont child care contribution, Colorado alternative minimum tax and contributed Michigan surtax to state tax before refundable credits, and apply Mississippi's nonrefundable credits there.
+
+
+## [2.49.5] - 2026-10-18
+
+### Fixed
+
+- Apply Virginia's rules for a filer who can be claimed as a dependent: the standard deduction is limited to the filers' earned income (Va. Code 58.1-322.03(1)(b)), personal exemptions follow those allowable federally (also under the dependent exemption reform), and the EITC alternatives are barred (58.1-339.8(B)(1)); the aged and blind exemption now goes only to aged or blind filers, while a blind or aged dependent still bars the low-income credit (58.1-339.8(D)(4)).
+
+
+## [2.49.4] - 2026-10-16
+
+### Fixed
+
+- Apply Oregon, Maine and Hawaii rules for a filer who can be claimed as a dependent: Maine's personal exemption counts only filers who may not be claimed (1040ME line 13), and Maine's dependent exemption credit, expanded childless EITC and 2021 relief rebate, Oregon's Kids Credit, disabled child exemption, higher EITC rate for a dependent under three and working family household and dependent care credit child (with its expenses and column), and Hawaii's age-65 exemption and child care credit qualifying individuals and expenses follow the dependent taxpayer rules; Oregon's working family credit now counts a disabled spouse under either head/spouse label.
+
+
 ## [2.49.3] - 2026-10-16
 
 ### Fixed
