@@ -212,3 +212,22 @@
     # Form 740 instructions: federal "Qualifying Widow(er)" filers use Single.
     ky_filing_status: SINGLE
     ky_tuition_tax_credit_eligible: true
+
+- name: A supplied federal joint status with no spouse in the tax unit uses Kentucky joint filing.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head]
+        state_code: KY
+  output:
+    # A joint federal return is one return for the couple, as ky_files_separately also treats it.
+    ky_filing_status: JOINT
+    ky_tuition_tax_credit_eligible: true
