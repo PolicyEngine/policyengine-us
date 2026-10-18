@@ -125,7 +125,7 @@
     # Line 24 = max(4_800, 3_000), not 4_800 + 3_000.
     mt_elderly_homeowner_or_renter_credit_gross_rent: [4_800, 0]
 
-- name: Case 6, a home in a dependent's name counts as rent.
+- name: Case 6, a dependent's bill stays on line 23, not rent.
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -147,10 +147,10 @@
         members: [person1, person2]
         state_code: MT
   output:
-    # The dependent is not the claimant, so their bill "can qualify as rent
-    # only": line 23 = 0 and line 24 = 2_000.
-    mt_elderly_homeowner_or_renter_credit_property_tax_billed: 0
-    mt_elderly_homeowner_or_renter_credit_gross_rent: 2_000
+    # The tax unit is billed, through the dependent, so ARM 42.4.302(2)(b)
+    # does not apply: line 23 = 2_000 and line 24 = 0.
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: 2_000
+    mt_elderly_homeowner_or_renter_credit_gross_rent: 0
 
 - name: Case 7, a home co-owned by two other members counts the whole bill.
   period: 2024
@@ -317,7 +317,32 @@
         members: [person1, person2]
         state_code: MT
   output:
-    # The home is in the claimant's name too, so ARM 42.4.302(2)(b) does not
-    # apply: the tax unit's bills, 500 + 2_000, are line 23, and line 24 is 0.
+    # The tax unit is billed, so ARM 42.4.302(2)(b) does not apply: the tax
+    # unit's bills, 500 + 2_000, are line 23, and line 24 is 0.
     mt_elderly_homeowner_or_renter_credit_property_tax_billed: 2_500
     mt_elderly_homeowner_or_renter_credit_gross_rent: 0
+
+- name: Case 13, a dependent pays the rent and no one in the household is billed.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        rent: 0
+        is_tax_unit_dependent: false
+      person2:
+        age: 50
+        rent: 6_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Line 24 counts the tax unit's rent, a dependent's included: 6_000.
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: 0
+    mt_elderly_homeowner_or_renter_credit_gross_rent: 6_000

@@ -39,7 +39,7 @@
     # A joint return makes one claim: line 23 = 1_200 + 800.
     mt_elderly_homeowner_or_renter_credit_property_tax_billed: 2_000
 
-- name: Case 3, a home in a dependent's name is not billed to the claimant.
+- name: Case 3, a dependent's bill counts as the tax unit's.
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -59,9 +59,9 @@
         members: [person1, person2]
         state_code: MT
   output:
-    # The property is "in a name other than the claimant", so its tax "can
-    # qualify as rent only" (ARM 42.4.302(2)(b)): line 23 = 0.
-    mt_elderly_homeowner_or_renter_credit_property_tax_billed: 0
+    # real_estate_taxes is an expense amount, not a record of title, so a
+    # dependent's bill stays on the claimant's line 23.
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: 2_000
 
 - name: Case 4, each tax unit counts only the bill in its own name.
   period: 2024
@@ -124,6 +124,5 @@
         members: [person1, person2]
         state_code: MT
   output:
-    # The claimant is billed, so the home is in the claimant's name and the
-    # tax unit's bills are line 23: 500 + 2_000.
+    # The tax unit's bills are line 23: 500 + 2_000.
     mt_elderly_homeowner_or_renter_credit_property_tax_billed: 2_500

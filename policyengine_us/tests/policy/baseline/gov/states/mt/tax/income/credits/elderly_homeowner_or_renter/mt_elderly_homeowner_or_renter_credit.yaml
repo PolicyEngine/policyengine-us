@@ -1306,15 +1306,22 @@
         age: 80
         taxable_pension_income: 14_000
         rent: 0
+        ssi: 0
       person2:
         age: 45
         taxable_interest_income: 6_000
         rent: 0
         real_estate_taxes: 4_000
+        ssi: 0
     tax_units:
       tax_unit1:
         members: [person1]
       tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
         members: [person2]
     households:
       household:
@@ -1348,15 +1355,22 @@
         age: 80
         taxable_pension_income: 14_000
         rent: 2_400
+        ssi: 0
       person2:
         age: 45
         taxable_interest_income: 6_000
         rent: 0
         real_estate_taxes: 4_000
+        ssi: 0
     tax_units:
       tax_unit1:
         members: [person1]
       tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
         members: [person2]
     households:
       household:
@@ -1378,15 +1392,22 @@
         age: 80
         taxable_pension_income: 14_000
         rent: 6_000
+        ssi: 0
       person2:
         age: 45
         taxable_interest_income: 6_000
         rent: 0
         real_estate_taxes: 4_000
+        ssi: 0
     tax_units:
       tax_unit1:
         members: [person1]
       tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
         members: [person2]
     households:
       household:
@@ -1408,22 +1429,30 @@
         age: 66
         taxable_pension_income: 10_000
         rent: 0
+        ssi: 0
       person2:
         age: 70
         taxable_pension_income: 10_000
         rent: 0
         real_estate_taxes: 2_000
+        ssi: 0
     tax_units:
       tax_unit1:
         members: [person1]
       tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
         members: [person2]
     households:
       household:
         members: [person1, person2]
         state_name: MT
   output:
-    # Line 18 = 20_000; line 20 = 7_400; line 21 = 0.035; line 22 = 259.
+    # SSI is pinned at 0 to isolate the credit's arithmetic. Line 18 =
+    # 20_000; line 20 = 7_400; line 21 = 0.035; line 22 = 259.
     # person1 (home in person2's name): line 24 = 2_000; line 25 = 300;
     # line 27 = 300 - 259 = 41.
     # person2: line 23 = 2_000; line 27 = 2_000 - 259 = 1_741; line 28 =
@@ -1433,7 +1462,7 @@
     mt_elderly_homeowner_or_renter_credit_selected_claimant: [false, true]
     mt_elderly_homeowner_or_renter_credit: [0, 1_150]
 
-- name: 2024 Schedule 2EC, a home in a dependent's name counts as the claimant's rent, not property tax billed
+- name: 2024 Schedule 2EC, a dependent's bill stays on the claimant's line 23
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -1443,27 +1472,34 @@
         taxable_pension_income: 14_000
         rent: 0
         is_tax_unit_dependent: false
+        ssi: 0
       person2:
         age: 50
         rent: 0
         is_tax_unit_dependent: true
         real_estate_taxes: 4_000
+        ssi: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
     households:
       household:
         members: [person1, person2]
         state_name: MT
   output:
-    # Line 18 = 14_000; line 20 = 1_400; line 21 = 0 (under 2_000); line
-    # 22 = 0. The home is in the dependent's name, not the claimant's: line
-    # 23 = 0; line 24 = 4_000; line 25 = 600; line 27 = 600; line 30 = 600.
-    # Counting the dependent's bill on line 23 would give 4_000, capped at
-    # 1_150.
-    mt_elderly_homeowner_or_renter_credit_property_tax_billed: 0
-    mt_elderly_homeowner_or_renter_credit_gross_rent: 4_000
-    mt_elderly_homeowner_or_renter_credit: [600, 0]
+    # real_estate_taxes does not show whose name is on the title, so the
+    # tax unit's bill, the dependent's included, is line 23 and ARM
+    # 42.4.302(2)(b) does not apply. Line 18 = 14_000; line 20 = 1_400;
+    # line 21 = 0; line 22 = 0. Line 23 = 4_000; line 24 = 0; line 27 =
+    # 4_000; line 28 = 1_150 cap; line 30 = 1_150.
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: 4_000
+    mt_elderly_homeowner_or_renter_credit_gross_rent: 0
+    mt_elderly_homeowner_or_renter_credit: [1_150, 0]
 
 - name: 2024 Schedule 2EC, a home co-owned with a dependent keeps both bills on line 23
   period: 2024
@@ -1476,24 +1512,65 @@
         rent: 0
         is_tax_unit_dependent: false
         real_estate_taxes: 500
+        ssi: 0
       person2:
         age: 50
         rent: 0
         is_tax_unit_dependent: true
         real_estate_taxes: 2_000
+        ssi: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
     households:
       household:
         members: [person1, person2]
         state_name: MT
   output:
-    # The claimant is billed too, so the home is in the claimant's name and
-    # ARM 42.4.302(2)(b) does not apply. Line 18 = 14_000; line 20 = 1_400;
-    # line 21 = 0; line 22 = 0. Line 23 = 500 + 2_000 = 2_500; line 24 = 0;
-    # line 27 = 2_500; line 28 = 1_150 cap; line 30 = 1_150, as before
-    # ARM 42.4.302(2)(b) was modeled.
+    # Line 18 = 14_000; line 20 = 1_400; line 21 = 0; line 22 = 0. Line 23
+    # = 500 + 2_000 = 2_500; line 24 = 0; line 27 = 2_500; line 28 = 1_150
+    # cap; line 30 = 1_150.
     mt_elderly_homeowner_or_renter_credit_property_tax_billed: 2_500
     mt_elderly_homeowner_or_renter_credit_gross_rent: 0
     mt_elderly_homeowner_or_renter_credit: [1_150, 0]
+
+- name: 2024 Schedule 2EC, a dependent pays the rent and no one in the household is billed
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        taxable_pension_income: 14_000
+        rent: 0
+        is_tax_unit_dependent: false
+        ssi: 0
+      person2:
+        age: 50
+        rent: 6_000
+        is_tax_unit_dependent: true
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Line 18 = 14_000; line 20 = 1_400; line 21 = 0; line 22 = 0. Line 23
+    # = 0. Line 24 = the tax unit's rent, the dependent's included, 6_000,
+    # against a household bill of 0; line 25 = 900; line 27 = 900; line 30
+    # = 900.
+    mt_elderly_homeowner_or_renter_credit_gross_rent: 6_000
+    mt_elderly_homeowner_or_renter_credit: [900, 0]

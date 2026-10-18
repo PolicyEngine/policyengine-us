@@ -19,8 +19,8 @@ A reference written here from the schedule's lines is compared with the
 model for random Montana households of one to three tax units (single or
 joint, any mix of ages, pension, interest, Social Security, property tax and
 rent; no earned income, so no refundable credit enters line 8). The
-generator has no dependents, so the household's other members are its other
-tax units; the YAML tests cover a home in a dependent's name:
+generator has no dependents; the YAML tests cover a dependent's bill and
+rent:
 
 1. Each tax unit's credit before the limit matches the reference.
 2. The household's credit is the largest of its tax units' credits, so it
@@ -32,7 +32,12 @@ tax units; the YAML tests cover a home in a dependent's name:
 5. Reversing the order of the tax units in a household does not change the
    household's credit.
 
-A second test raises the property tax billed to one tax unit and checks:
+A second test raises the property tax billed to one tax unit and checks the
+two properties below. They hold with household income fixed, as it is here:
+no one has earned income or other deductions, so a larger bill changes no
+refundable credit. In general a larger property tax deduction can change a
+refundable credit and so gross household income (line 8), which moves every
+tax unit's line 22.
 
 6. No other tax unit's credit before the limit falls, and neither does that
    tax unit's own credit if it was already billed property tax. (A tax unit

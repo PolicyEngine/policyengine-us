@@ -15,8 +15,7 @@ class mt_elderly_homeowner_or_renter_credit_gross_rent(Variable):
         "https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0400/0150-0300-0230-0400.html",
         # ARM 42.4.302(2)(b): property taxes billed may be used "as rent if
         # the property occupied by the claimant is in a name other than the
-        # claimant"; (3)(a) and (3)(c)(v): two measures of housing cost for
-        # one period count "either ... or ..., but not both"
+        # claimant"
         "https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-42.4.302",
         # ARM 42.4.302(5) before its 2017 restructuring, in force from
         # 8/20/2004: "Property taxes billed are allowable as rent if the
@@ -34,19 +33,20 @@ class mt_elderly_homeowner_or_renter_credit_gross_rent(Variable):
     def formula(tax_unit, period, parameters):
         # Schedule 2EC line 24: "the rent that you paid".
         rent = add(tax_unit, period, ["rent"])
-        # The model treats a tax unit billed no property tax as living in a
-        # home in another household member's name, a dependent's included.
+        # The model treats a tax unit billed no property tax, dependents
+        # included, as living in a home in another household member's name.
         # Its property tax "can qualify as rent only" (2025 instructions,
         # line 23; ARM 42.4.302(2)(b)): it goes on line 24, not line 23, so
-        # line 25 counts 15% of it. With the claimant billed nothing, "the
+        # line 25 counts 15% of it. With the tax unit billed nothing, "the
         # property taxes billed for that property" are the household's whole
         # property tax.
-        # The claimant "may use" the bill as rent: a choice between two
-        # measures of what it costs to occupy one home, not an addition to
-        # the rent paid. The rule's facility provisions likewise let a
-        # claimant report one housing cost or another for a period, "but not
-        # both" (ARM 42.4.302(3)(a), (3)(c)(v)). So line 24 is the larger of
-        # the rent paid and the bill.
+        # The rule says the claimant "may use" the bill. The model reads that
+        # as a choice between two measures of what it costs to occupy one
+        # home, not an addition to the rent paid, and takes the larger. Using
+        # the bill only when no rent is paid, since gross rent is rent
+        # "actually paid" (§ 15-30-2337(5)), is another defensible reading;
+        # the two differ only when a claimant pays a household member less
+        # rent than that member's bill.
         # Owners outside the household, such as a landlord, are not visible
         # here, and real_estate_taxes is not limited to the residence and
         # one acre.

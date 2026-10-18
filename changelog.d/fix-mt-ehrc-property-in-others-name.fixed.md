@@ -1,1 +1,1 @@
-Count the property tax billed for a Montana elderly homeowner/renter credit claimant's home that is wholly in another household member's name, a dependent's included, as rent (ARM 42.4.302(2)(b)).
+Count the property tax billed to other household members as rent, at 15%, for a Montana elderly homeowner/renter credit claimant whose tax unit is billed none (ARM 42.4.302(2)(b)).

@@ -22,17 +22,15 @@ class mt_elderly_homeowner_or_renter_credit_property_tax_billed(Variable):
         "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=46",
     )
 
-    def formula(tax_unit, period, parameters):
-        # Schedule 2EC line 23 is "the property tax you were billed". A joint
-        # return makes one claim, so the claimant is the head and spouse.
-        # When either is billed property tax, the home is in the claimant's
-        # name and the tax unit's bills count here, including a dependent
-        # co-owner's. When neither is, the home is in a name other than the
-        # claimant's, a dependent's included, and its property tax "can
-        # qualify as rent only" (ARM 42.4.302(2)(b)): line 23 is 0 and
-        # mt_elderly_homeowner_or_renter_credit_gross_rent counts it.
-        person = tax_unit.members
-        property_tax = person("real_estate_taxes", period)
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        claimant_billed = tax_unit.sum(property_tax * head_or_spouse) > 0
-        return where(claimant_billed, tax_unit.sum(property_tax), 0)
+    # Schedule 2EC line 23 is "the property tax you were billed". The
+    # model counts the real_estate_taxes of everyone in the tax unit,
+    # dependents included. real_estate_taxes is an expense amount, not a
+    # record of whose name is on the title: the microdata mostly put a
+    # household's bill on its reference person, who can be a tax unit
+    # dependent. So it cannot show a home wholly in a dependent's name,
+    # and a dependent's bill stays the claimant's.
+    # When no one in the tax unit is billed, the home is treated as in
+    # another household member's name, whose property tax "can qualify
+    # as rent only" (ARM 42.4.302(2)(b)); see
+    # mt_elderly_homeowner_or_renter_credit_gross_rent.
+    adds = ["real_estate_taxes"]
