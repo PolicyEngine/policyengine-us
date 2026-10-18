@@ -13,7 +13,10 @@ class mt_eligible_long_term_care_insurance_premiums(Variable):
         "person deducted through the self-employed health insurance "
         "deduction. That deduction is applied first to the medical insurance "
         "premiums on line 2 and the remainder to these premiums; lines 2 and "
-        "3 are both deducted in full, so the order does not change the total."
+        "3 are both deducted in full, so the order does not change the total. "
+        "This per-person amount serves separate returns and dependents; a "
+        "joint return nets the return's deduction in "
+        "mt_premium_deduction_joint."
     )
     reference = (
         "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7",

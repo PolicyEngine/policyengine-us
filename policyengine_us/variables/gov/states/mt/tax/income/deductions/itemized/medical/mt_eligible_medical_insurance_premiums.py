@@ -16,7 +16,10 @@ class mt_eligible_medical_insurance_premiums(Variable):
         "return, so those premiums were not paid by the filer. Pre-tax "
         "premiums are a separate input that never enters "
         "medical_expense_health_insurance_premiums. Premium inputs use payer "
-        "attribution: each person reports the premiums that person paid."
+        "attribution: each person reports the premiums that person paid. "
+        "This per-person amount serves separate returns and dependents; a "
+        "joint return nets the return's deduction in "
+        "mt_premium_deduction_joint."
     )
     reference = (
         "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7",

@@ -1,0 +1,135 @@
+- name: A self-employed deduction supplied only for the return is netted from the filers' premiums
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        health_insurance_premiums: 6_000
+      person2:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        self_employed_health_insurance_ald: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Line 2: 6,000 - 2,000 deducted in Montana AGI = 4,000.
+    mt_premium_deduction_joint: 4_000
+
+- name: A return's self-employed deduction covering long-term care premiums removes them from line 3
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        long_term_health_insurance_premiums: 400
+    tax_units:
+      tax_unit:
+        members: [person1]
+        self_employed_health_insurance_ald: 400
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_premium_deduction_joint: 0
+
+- name: The return's deduction left after medical premiums reduces either spouse's long-term care premiums
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        health_insurance_premiums: 2_000
+      person2:
+        is_tax_unit_spouse: true
+        long_term_health_insurance_premiums: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        self_employed_health_insurance_ald: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Line 2: 2,000 - 2,000 = 0. Line 3: 1,500 - (3,000 - 2,000) = 500.
+    itemized_medical_expenses_excluded_premiums: 2_000
+    mt_premium_deduction_joint: 500
+
+- name: Each spouse's own deduction is netted once across the return
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        health_insurance_premiums: 6_000
+        self_employed_health_insurance_ald_person: 1_000
+      person2:
+        is_tax_unit_spouse: true
+        health_insurance_premiums: 3_000
+        self_employed_health_insurance_ald_person: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    self_employed_health_insurance_ald: 3_000
+    # (6,000 + 3,000) - (1,000 + 2,000) = 6,000.
+    mt_premium_deduction_joint: 6_000
+
+- name: A dependent's own deduction is netted from the dependent's premiums only
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        health_insurance_premiums: 3_000
+      person2:
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_000
+        long_term_health_insurance_premiums: 300
+        self_employed_health_insurance_ald_person: 1_200
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # The dependent's deduction is on the dependent's own return, so it is
+    # not part of the return's deduction and does not reduce the head's
+    # 3,000. The dependent's line 2 is 1,000 - 1,000 = 0 and line 3 is
+    # 300 - (1,200 - 1,000) = 100.
+    self_employed_health_insurance_ald: 0
+    mt_premium_deduction_joint: 3_100
+
+- name: Outside Montana the amount is zero
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        health_insurance_premiums: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    mt_premium_deduction_joint: 0

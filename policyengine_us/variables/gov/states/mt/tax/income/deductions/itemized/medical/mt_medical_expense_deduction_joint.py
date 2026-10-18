@@ -33,14 +33,7 @@ class mt_medical_expense_deduction_joint(Variable):
             floored_expense = max_(0, expense - floor * montana_agi)
             # Lines 2 and 3: medical and long-term care insurance premiums not
             # deducted elsewhere, in full.
-            premiums = add(
-                tax_unit,
-                period,
-                [
-                    "mt_eligible_medical_insurance_premiums",
-                    "mt_eligible_long_term_care_insurance_premiums",
-                ],
-            )
+            premiums = tax_unit("mt_premium_deduction_joint", period)
             deduction = floored_expense + premiums
         else:
             # From 2024, Form 2 line 2 takes federal itemized deductions
