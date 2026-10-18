@@ -29,11 +29,14 @@ class itemized_medical_expenses(Variable):
         "The exclusion is bounded to filer-paid premiums; beneficiary-attributed "
         "inputs with an ALD exceeding that pool are inconsistent with this contract "
         "and cannot establish conservation of the supplied ALD. A supplied value "
-        "bypasses this formula and is used as given: no self-employed exclusion is "
-        "applied to it (itemized_medical_expenses_applied_exclusion is 0), and "
-        "states that start from medical costs paid take it as that amount. If a "
-        "supplied value includes long-term care premiums, as Schedule A line 1 "
-        "can, report them in itemized_medical_expenses_long_term_care_premiums."
+        "bypasses this formula and is used as given. By default it is taken as "
+        "medical costs paid before any self-employed exclusion "
+        "(itemized_medical_expenses_applied_exclusion is 0). If it is a Schedule "
+        "A line 1 amount that already leaves out premiums taken as the "
+        "self-employed health insurance deduction, also supply that amount as "
+        "itemized_medical_expenses_applied_exclusion. If it includes long-term "
+        "care premiums, report them in "
+        "itemized_medical_expenses_long_term_care_premiums."
     )
 
     def formula(tax_unit, period, parameters):
