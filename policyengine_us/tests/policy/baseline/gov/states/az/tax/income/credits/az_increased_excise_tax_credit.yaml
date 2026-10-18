@@ -119,12 +119,14 @@
 # file a return or a dependent"), up to $100, but only "for a taxpayer who is
 # not claimed as a dependent by any other taxpayer". The Form 140 line 56
 # worksheet counts the filers and the dependents "provided that person(s)
-# qualifies as a dependent for federal purposes", and the instructions let a
-# joint filer claim the credit but not for a spouse who is barred. So a filer
-# who can be claimed is not counted, and a return on which either filer can
-# be claimed counts no dependents (IRC 152(b)(1)). Income is zero.
+# qualifies as a dependent for federal purposes". The instructions' example
+# lets a joint filer claim the credit but not for an imprisoned spouse;
+# applying that analogy here, a filer actually claimed by another taxpayer
+# is not counted. A return on which either filer can be claimed counts no
+# dependents (IRC 152(b)(1)), unless the would-be claimant is not required
+# to file and files only for a refund (Publication 501). Income is zero.
 
-- name: 2025 single filer who can be claimed as a dependent gets no excise credit
+- name: 2025 single filer who is actually claimed as a dependent gets no excise credit
   period: 2025
   input:
     people:
@@ -142,7 +144,7 @@
   output:
     az_increased_excise_tax_credit: 0
 
-- name: 2025 single filer who cannot be claimed gets the excise credit for the filer
+- name: 2025 single filer who is not actually claimed gets the excise credit for the filer
   period: 2025
   input:
     people:
@@ -160,7 +162,7 @@
     # $25 x 1.
     az_increased_excise_tax_credit: 25
 
-- name: 2025 joint return with one claimable spouse gets the excise credit only for the other spouse (the claimable spouse is the head)
+- name: 2025 joint return with one spouse actually claimed gets the excise credit only for the other spouse (the actually claimed spouse is the head)
   period: 2025
   input:
     people:
@@ -185,7 +187,7 @@
     # $25 x 1.
     az_increased_excise_tax_credit: 25
 
-- name: 2025 joint return with one claimable spouse gets the excise credit only for the other spouse (the claimable spouse is the spouse)
+- name: 2025 joint return with one spouse actually claimed gets the excise credit only for the other spouse (the actually claimed spouse is the spouse)
   period: 2025
   input:
     people:
@@ -210,7 +212,7 @@
     # $25 x 1.
     az_increased_excise_tax_credit: 25
 
-- name: 2025 joint return with both spouses claimable gets no excise credit
+- name: 2025 joint return with both spouses actually claimed gets no excise credit
   period: 2025
   input:
     people:
@@ -231,7 +233,7 @@
   output:
     az_increased_excise_tax_credit: 0
 
-- name: 2025 joint return with neither spouse claimable gets the excise credit for both spouses
+- name: 2025 joint return with neither spouse actually claimed gets the excise credit for both spouses
   period: 2025
   input:
     people:
@@ -251,7 +253,7 @@
     # $25 x 2.
     az_increased_excise_tax_credit: 50
 
-- name: 2025 joint return with one claimable spouse with a child gets the excise credit only for the other spouse (the claimable spouse is the head)
+- name: 2025 joint return with a child and one spouse actually claimed gets the excise credit only for the other spouse (the actually claimed spouse is the head)
   period: 2025
   input:
     people:
@@ -278,7 +280,7 @@
     # $25 x 1; the child is not counted.
     az_increased_excise_tax_credit: 25
 
-- name: 2025 joint return with one claimable spouse with a child gets the excise credit only for the other spouse (the claimable spouse is the spouse)
+- name: 2025 joint return with a child and one spouse actually claimed gets the excise credit only for the other spouse (the actually claimed spouse is the spouse)
   period: 2025
   input:
     people:
@@ -305,7 +307,7 @@
     # $25 x 1; the child is not counted.
     az_increased_excise_tax_credit: 25
 
-- name: 2025 joint return with both spouses claimable with a child gets no excise credit
+- name: 2025 joint return with a child and both spouses actually claimed gets no excise credit
   period: 2025
   input:
     people:
@@ -328,7 +330,7 @@
   output:
     az_increased_excise_tax_credit: 0
 
-- name: 2025 joint return with neither spouse claimable with a child gets the excise credit for both spouses and the child
+- name: 2025 joint return with a child and neither spouse actually claimed gets the excise credit for both spouses and the child
   period: 2025
   input:
     people:
@@ -350,7 +352,7 @@
     # $25 x 3.
     az_increased_excise_tax_credit: 75
 
-- name: 2025 joint return with one claimable spouse and a tax unit size input counts only the filers (the claimable spouse is the head)
+- name: 2025 joint return with one spouse actually claimed and a tax unit size input counts only the filers (the actually claimed spouse is the head)
   period: 2025
   input:
     people:
@@ -373,11 +375,12 @@
         members: [person_a, person_b]
         state_code: AZ
   output:
-    # $25 for the spouse who cannot be claimed. A tax unit size of 4 does not say who the
-    # other two are; a return with a claimable filer counts no dependents.
+    # $25 for the spouse not actually claimed. A tax unit size of 4 does not
+    # say who the other two are; absent the filing exception, a return with
+    # a claimable filer counts no dependents.
     az_increased_excise_tax_credit: 25
 
-- name: 2025 joint return with one claimable spouse and a tax unit size input counts only the filers (the claimable spouse is the spouse)
+- name: 2025 joint return with one spouse actually claimed and a tax unit size input counts only the filers (the actually claimed spouse is the spouse)
   period: 2025
   input:
     people:
@@ -400,8 +403,9 @@
         members: [person_b, person_a]
         state_code: AZ
   output:
-    # $25 for the spouse who cannot be claimed. A tax unit size of 4 does not say who the
-    # other two are; a return with a claimable filer counts no dependents.
+    # $25 for the spouse not actually claimed. A tax unit size of 4 does not
+    # say who the other two are; absent the filing exception, a return with
+    # a claimable filer counts no dependents.
     az_increased_excise_tax_credit: 25
 
 - name: 2025 single filer who can be claimed but is not claimed gets the excise credit
@@ -445,5 +449,5 @@
         state_code: AZ
   output:
     # The filer counts ($25), but the child is not a federal dependent of a
-    # claimable filer (IRC 152(b)(1)).
+    # claimable filer absent the filing exception (IRC 152(b)(1)).
     az_increased_excise_tax_credit: 25
