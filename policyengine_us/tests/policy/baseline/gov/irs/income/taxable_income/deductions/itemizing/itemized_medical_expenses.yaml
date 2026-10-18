@@ -171,3 +171,167 @@
     standard_deduction: 15_750
     # 58,000 - 15,750.
     taxable_income: 42_250
+
+# Long-term care insurance premiums.
+#
+# 26 U.S.C. 213(d)(1)(D) counts premiums for a qualified long-term care
+# insurance contract as medical care, but 213(d)(10) limits them by the
+# insured person's age at the end of the year. 2025 limits (Rev. Proc. 2024-40,
+# section 3.28): 40 or less $480, 41-50 $900, 51-60 $1,800, 61-70 $4,810,
+# over 70 $6,020. 26 U.S.C. 162(l)(2)(C) lets the same eligible premiums into
+# the self-employed health insurance deduction, and 162(l)(3) keeps that part
+# off Schedule A. medicare_enrolled is false so no modeled Part B premium
+# enters these examples.
+
+- name: Long-term care premiums count up to the limit for the insured person's age.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 72
+    medicare_enrolled: false
+    employment_income: 50_000
+    long_term_health_insurance_premiums: 8_000
+    other_medical_expenses: 10_000
+  output:
+    eligible_long_term_care_premiums: 6_020
+    itemized_medical_expenses_long_term_care_premiums: 6_020
+    # 10,000 + 6,020.
+    itemized_medical_expenses: 16_020
+    # 16,020 - 7.5% of 50,000.
+    medical_expense_deduction: 12_270
+
+- name: A dependent's contract is limited by the dependent's age, not the payer's.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 80_000
+        is_tax_unit_head: true
+      parent:
+        age: 80
+        medicare_enrolled: false
+        is_tax_unit_dependent: true
+        # Recorded on the insured person, whoever in the tax unit paid it.
+        long_term_health_insurance_premiums: 7_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+  output:
+    eligible_long_term_care_premiums: [0, 6_020]
+    itemized_medical_expenses: 6_020
+    # 6,020 - 7.5% of 80,000.
+    medical_expense_deduction: 20
+
+- name: Each spouse's contract has its own limit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 66
+        medicare_enrolled: false
+        is_tax_unit_head: true
+        long_term_health_insurance_premiums: 5_000
+      spouse:
+        age: 58
+        is_tax_unit_spouse: true
+        long_term_health_insurance_premiums: 2_500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+  output:
+    # 61-70: 4,810. 51-60: 1,800.
+    eligible_long_term_care_premiums: [4_810, 1_800]
+    itemized_medical_expenses: 6_610
+
+- name: Premiums taken as the self-employed health insurance deduction are not on Schedule A.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 55
+    is_self_employed: true
+    self_employment_income: 50_000
+    health_insurance_premiums: 3_000
+    long_term_health_insurance_premiums: 2_000
+    other_medical_expenses: 500
+  output:
+    eligible_long_term_care_premiums: 1_800
+    # Form 7206 line 2.
+    self_employed_long_term_care_premiums: 1_800
+    # Line 3: 3,000 + 1,800, under the 50,000 limit.
+    self_employed_health_insurance_ald: 4_800
+    itemized_medical_expenses_excluded_premiums: 3_000
+    itemized_medical_expenses_excluded_long_term_care_premiums: 1_800
+    itemized_medical_expenses_applied_exclusion: 4_800
+    itemized_medical_expenses_long_term_care_premiums: 0
+    itemized_medical_expenses: 500
+
+- name: Eligible premiums the earnings limit keeps out of the deduction stay on Schedule A.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 55
+    is_self_employed: true
+    self_employment_income: 4_000
+    health_insurance_premiums: 3_000
+    long_term_health_insurance_premiums: 2_000
+  output:
+    # min(4,000, 3,000 + 1,800).
+    self_employed_health_insurance_ald: 4_000
+    # The deduction is taken from medical premiums first: 3,000, then 1,000
+    # of the 1,800 eligible long-term care premiums.
+    itemized_medical_expenses_excluded_premiums: 3_000
+    itemized_medical_expenses_excluded_long_term_care_premiums: 1_000
+    itemized_medical_expenses_applied_exclusion: 4_000
+    itemized_medical_expenses_long_term_care_premiums: 800
+    itemized_medical_expenses: 800
+
+- name: A supplied deduction cannot exclude more long-term care premiums than are eligible.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        health_insurance_premiums: 1_000
+        long_term_health_insurance_premiums: 3_000
+        other_medical_expenses: 2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        self_employed_health_insurance_ald: 2_500
+  output:
+    eligible_long_term_care_premiums: 900
+    itemized_medical_expenses_excluded_premiums: 1_000
+    # min(900, 2,500 - 1,000).
+    itemized_medical_expenses_excluded_long_term_care_premiums: 900
+    itemized_medical_expenses_long_term_care_premiums: 0
+    # The other expenses are untouched.
+    itemized_medical_expenses: 2_000
+
+- name: A supplied subtotal holds no computed long-term care premiums.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 75
+    medicare_enrolled: false
+    long_term_health_insurance_premiums: 3_000
+    itemized_medical_expenses: 5_000
+  output:
+    itemized_medical_expenses: 5_000
+    itemized_medical_expenses_long_term_care_premiums: 0
+    itemized_medical_expenses_applied_exclusion: 0
+
+- name: Supplying the long-term care premiums sets the amount the computed subtotal counts.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 75
+    medicare_enrolled: false
+    other_medical_expenses: 2_000
+    itemized_medical_expenses_long_term_care_premiums: 1_000
+  output:
+    itemized_medical_expenses: 3_000

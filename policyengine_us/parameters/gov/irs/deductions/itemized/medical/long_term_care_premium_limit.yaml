@@ -1,0 +1,177 @@
+description: The IRS counts premiums for a qualified long-term care insurance contract as medical care up to this amount for each insured person, based on that person's age at the end of the year.
+# Each threshold is the top of an age band: "40 or less", "more than 40 but
+# not more than 50", and so on. Look ages up with right=True so an age equal
+# to a threshold stays in the lower band.
+brackets:
+  - threshold:
+      values:
+        2013-01-01: -.inf
+    amount:
+      values:
+        2013-01-01: 360
+        2014-01-01: 370
+        2015-01-01: 380
+        2016-01-01: 390
+        2017-01-01: 410
+        2018-01-01: 420
+        2019-01-01: 420
+        2020-01-01: 430
+        2021-01-01: 450
+        2022-01-01: 450
+        2023-01-01: 480
+        2024-01-01: 470
+        2025-01-01: 480
+        2026-01-01: 500
+      metadata:
+        uprating:
+          parameter: gov.bls.cpi.cpi_u_medical_care
+          rounding:
+            type: nearest
+            interval: 10
+  - threshold:
+      values:
+        2013-01-01: 40
+    amount:
+      values:
+        2013-01-01: 680
+        2014-01-01: 700
+        2015-01-01: 710
+        2016-01-01: 730
+        2017-01-01: 770
+        2018-01-01: 780
+        2019-01-01: 790
+        2020-01-01: 810
+        2021-01-01: 850
+        2022-01-01: 850
+        2023-01-01: 890
+        2024-01-01: 880
+        2025-01-01: 900
+        2026-01-01: 930
+      metadata:
+        uprating:
+          parameter: gov.bls.cpi.cpi_u_medical_care
+          rounding:
+            type: nearest
+            interval: 10
+  - threshold:
+      values:
+        2013-01-01: 50
+    amount:
+      values:
+        2013-01-01: 1_360
+        2014-01-01: 1_400
+        2015-01-01: 1_430
+        2016-01-01: 1_460
+        2017-01-01: 1_530
+        2018-01-01: 1_560
+        2019-01-01: 1_580
+        2020-01-01: 1_630
+        2021-01-01: 1_690
+        2022-01-01: 1_690
+        2023-01-01: 1_790
+        2024-01-01: 1_760
+        2025-01-01: 1_800
+        2026-01-01: 1_860
+      metadata:
+        uprating:
+          parameter: gov.bls.cpi.cpi_u_medical_care
+          rounding:
+            type: nearest
+            interval: 10
+  - threshold:
+      values:
+        2013-01-01: 60
+    amount:
+      values:
+        2013-01-01: 3_640
+        2014-01-01: 3_720
+        2015-01-01: 3_800
+        2016-01-01: 3_900
+        2017-01-01: 4_090
+        2018-01-01: 4_160
+        2019-01-01: 4_220
+        2020-01-01: 4_350
+        2021-01-01: 4_520
+        2022-01-01: 4_510
+        2023-01-01: 4_770
+        2024-01-01: 4_710
+        2025-01-01: 4_810
+        2026-01-01: 4_960
+      metadata:
+        uprating:
+          parameter: gov.bls.cpi.cpi_u_medical_care
+          rounding:
+            type: nearest
+            interval: 10
+  - threshold:
+      values:
+        2013-01-01: 70
+    amount:
+      values:
+        2013-01-01: 4_550
+        2014-01-01: 4_660
+        2015-01-01: 4_750
+        2016-01-01: 4_870
+        2017-01-01: 5_110
+        2018-01-01: 5_200
+        2019-01-01: 5_270
+        2020-01-01: 5_430
+        2021-01-01: 5_640
+        2022-01-01: 5_640
+        2023-01-01: 5_960
+        2024-01-01: 5_880
+        2025-01-01: 6_020
+        2026-01-01: 6_200
+      metadata:
+        uprating:
+          parameter: gov.bls.cpi.cpi_u_medical_care
+          rounding:
+            type: nearest
+            interval: 10
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  period: year
+  label: Eligible long-term care premium limit
+  # 26 U.S.C. 213(d)(10)(B) indexes these amounts by the medical care
+  # component of the chained CPI-U for August of the preceding year,
+  # rounding each increase to the nearest $10. Neither CBO nor CMS projects
+  # that index, so years after the last published values use CBO's
+  # projection of the CPI-U medical care component, by calendar year, as a
+  # proxy (as long_term_health_insurance_premiums does).
+  reference:
+    - title: 26 U.S. Code § 213(d)(10) - Eligible long-term care premiums
+      href: https://www.law.cornell.edu/uscode/text/26/213#d_10
+    - title: Rev. Proc. 2012-41, section 3.11 (2013)
+      href: https://www.irs.gov/irb/2012-45_IRB#RP-2012-41
+    - title: Rev. Proc. 2013-35, section 3.24 (2014)
+      href: https://www.irs.gov/pub/irs-drop/rp-13-35.pdf#page=16
+    - title: Rev. Proc. 2014-61, section 3.25 (2015)
+      href: https://www.irs.gov/pub/irs-drop/rp-14-61.pdf#page=16
+    - title: Rev. Proc. 2015-53, section 3.25 (2016)
+      href: https://www.irs.gov/pub/irs-drop/rp-15-53.pdf#page=17
+    - title: Rev. Proc. 2016-55, section 3.26 (2017)
+      href: https://www.irs.gov/pub/irs-drop/rp-16-55.pdf#page=19
+    - title: Rev. Proc. 2017-58, section 3.26 (2018)
+      href: https://www.irs.gov/pub/irs-drop/rp-17-58.pdf#page=17
+    - title: Publication 502 (2018), Long-Term Care (2018 amounts after Rev. Proc. 2018-18)
+      href: https://www.irs.gov/pub/irs-prior/p502--2018.pdf#page=11
+    - title: Rev. Proc. 2018-57, section 3.28 (2019)
+      href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=19
+    - title: Rev. Proc. 2019-44, section 3.28 (2020)
+      href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=16
+    - title: Rev. Proc. 2020-45, section 3.28 (2021)
+      href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=17
+    - title: Rev. Proc. 2021-45, section 3.28 (2022)
+      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=17
+    - title: Rev. Proc. 2022-38, section 3.28 (2023)
+      href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=17
+    - title: Rev. Proc. 2023-34, section 3.28 (2024)
+      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=16
+    - title: Rev. Proc. 2024-40, section 3.28 (2025)
+      href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=15
+    - title: Rev. Proc. 2025-32, section 3.27 (2026)
+      href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=22
+    - title: 2022 Instructions for Schedule A (Form 1040), line 1 (age at the end of the year)
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=2
