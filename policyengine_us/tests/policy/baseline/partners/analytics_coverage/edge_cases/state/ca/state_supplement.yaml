@@ -1,6 +1,6 @@
 # CA SSI State Supplementary Payment (SSP) partner edge cases.
-# 2026 payment standards (2025-01-01 params): aged/disabled single $1,206.94,
-# married (both aged/disabled) $2,057.83; food allowance single $128.87,
+# 2026 payment standards (2026-01-01 params): aged/disabled single $1,233.94,
+# married (both aged/disabled) $2,098.83; food allowance single $128.87,
 # married $257.74 (applies when living arrangements do not allow food
 # preparation, the model default). 2026 SSI FBR: $994 single, $1,491 couple.
 # SSP = payment standard - SSI - SSI countable income.
@@ -41,9 +41,9 @@
   output:
     spm_units:
       spm_unit:
-        # Standard: 1,206.94 + 128.87 food = 1,335.81; SSI = 994 FBR (no income).
-        # SSP: (1,335.81 - 994) x 12 = 341.81 x 12 = 4,101.72.
-        ca_state_supplement: 4_101.72
+        # Standard: 1,233.94 + 128.87 food = 1,362.81; SSI = 994 FBR (no income).
+        # SSP: (1,362.81 - 994) x 12 = 368.81 x 12 = 4,425.72.
+        ca_state_supplement: 4_425.72
 - name: ca_state_supplement_aged_couple_no_income (ca)
   period: 2026
   absolute_error_margin: 0.1
@@ -91,9 +91,9 @@
   output:
     spm_units:
       spm_unit:
-        # Both aged: married standard 2,057.83 + married food 257.74 = 2,315.57;
-        # SSI couple FBR 1,491. SSP: (2,315.57 - 1,491) x 12 = 824.57 x 12 = 9,894.84.
-        ca_state_supplement: 9_894.84
+        # Both aged: married standard 2,098.83 + married food 257.74 = 2,356.57;
+        # SSI couple FBR 1,491. SSP: (2,356.57 - 1,491) x 12 = 865.57 x 12 = 10,386.84.
+        ca_state_supplement: 10_386.84
 - name: ca_state_supplement_aged_single_earnings_partial (ca)
   period: 2026
   absolute_error_margin: 0.1
@@ -133,8 +133,8 @@
       spm_unit:
         # $2,200/mo earned: SSI countable = (2,200 - 20 - 65) / 2 = 1,057.50
         # > 994 FBR -> federal SSI = 0, but SSP standard is higher:
-        # SSP: (1,335.81 - 0 - 1,057.50) x 12 = 278.31 x 12 = 3,339.72.
-        ca_state_supplement: 3_339.72
+        # SSP: (1,362.81 - 0 - 1,057.50) x 12 = 305.31 x 12 = 3,663.72.
+        ca_state_supplement: 3_663.72
 - name: ca_state_supplement_resources_above_limit_ineligible (ca)
   period: 2026
   absolute_error_margin: 0.1

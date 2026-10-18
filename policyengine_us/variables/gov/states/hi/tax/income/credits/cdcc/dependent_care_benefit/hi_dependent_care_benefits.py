@@ -12,14 +12,25 @@ class hi_dependent_care_benefits(Variable):
         "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=46",
         "https://files.hawaii.gov/tax/forms/2022/schx_i.pdf#page=1",
         "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=28",
+        "https://files.hawaii.gov/tax/forms/2021/schx_i.pdf#page=2",
+        "https://data.capitol.hawaii.gov/sessions/sessionlaws/Years/SLH2021/SLH2021_Act89.pdf#page=1",
     )
 
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
         ).gov.states.hi.tax.income.credits.cdcc.dependent_care_benefits
+        # Line 11 is the IRC section 129(a)(2)(A) cap as Hawaii adopts it.
+        # For 2021 Hawaii followed the IRC as amended as of December 31, 2020
+        # (Act 89, SLH 2021), before ARPA section 9632 raised the federal cap
+        # to $10,500 ($5,250) for 2021, so the 2021 Schedule X line 11 still
+        # reads $5,000 ($2,500).
+        if period.start.year == 2021:
+            instant_str = "2020-01-01"
+        else:
+            instant_str = period
         p_irs = parameters(
-            period
+            instant_str
         ).gov.irs.gross_income.dependent_care_assistance_programs
         # Schedule X PART II:
         # line 2:
@@ -28,10 +39,18 @@ class hi_dependent_care_benefits(Variable):
         # line 6: qualified expenses cover care for any qualifying
         # individual under HRS 235-55.6(b)(1), including a dependent or
         # spouse incapable of self-care, so adult care expenses count.
-        childcare_expenses = tax_unit("tax_unit_childcare_expenses", period)
+        # A return on which a filer can be claimed as a dependent has no
+        # dependent qualifying individual (hi_cdcc_qualifying_individual), so
+        # its childcare expenses do not count.
+        dependent_filer = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
+        childcare_expenses = where(
+            dependent_filer, 0, tax_unit("tax_unit_childcare_expenses", period)
+        )
         person = tax_unit.members
         care_expenses = person("care_expenses", period)
-        qualifying_person = person("is_cdcc_eligible", period)
+        qualifying_person = person("hi_cdcc_qualifying_individual", period)
         qualifying_care_expenses = tax_unit.sum(care_expenses * qualifying_person)
         qualified_expense_amount = childcare_expenses + qualifying_care_expenses
         # line 7 = min(line 5, line 6) = min(line 2, line 6):
@@ -60,7 +79,9 @@ class hi_dependent_care_benefits(Variable):
         # line 15 excluded_benefit = 0 since we ignore line 12
         # line 16 Taxable Benefit is ignored, since we never use it
         # line 17:
-        expenses_amount = p.expense_floor.calc(tax_unit("count_cdcc_eligible", period))
+        expenses_amount = p.expense_floor.calc(
+            tax_unit("hi_cdcc_qualifying_individuals", period)
+        )
         # line 18 = line 14 + line 15 = line 14
         # line 19 = line 17 - line 18 = line 17 - line 14
         net_expenses = max_(0, expenses_amount - deductible_benefit)
