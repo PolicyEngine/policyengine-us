@@ -1,3 +1,24 @@
+## [2.49.4] - 2026-10-16
+
+### Fixed
+
+- Apply Oregon, Maine and Hawaii rules for a filer who can be claimed as a dependent: Maine's personal exemption counts only filers who may not be claimed (1040ME line 13), and Maine's dependent exemption credit, expanded childless EITC and 2021 relief rebate, Oregon's Kids Credit, disabled child exemption, higher EITC rate for a dependent under three and working family household and dependent care credit child (with its expenses and column), and Hawaii's age-65 exemption and child care credit qualifying individuals and expenses follow the dependent taxpayer rules; Oregon's working family credit now counts a disabled spouse under either head/spouse label.
+
+
+## [2.49.3] - 2026-10-16
+
+### Fixed
+
+- Count passive estate and trust income (Schedule E Part III line 34a column (d) less line 34b column (c)) in the passive basket of the EITC investment income test, as Publication 596 Worksheet 1 lines 11-13 do, through a new passive_estate_income input: the passive subset of estate_income, which defaults to zero.
+
+
+## [2.49.2] - 2026-10-16
+
+### Fixed
+
+- Apply New York's rules for a filer who can be claimed as a dependent: no New York State or New York City household credit, school tax credit, real property tax credit, dependent exemptions (also under the dependent exemption and working families tax credit reforms), dependents' college tuition, under-4 New York City child care expenses, New York City income tax elimination credit or 2026 child and dependent care credit when the return's filers do not qualify (Tax Law 606, 616 and 1310), no own college tuition or 2023 inflation refund for a filer who is claimed, and the New York City school tax fixed amount at the individual rate when only one spouse qualifies; the 2026 child and dependent care credit now bars a claimable spouse under either head/spouse label.
+
+
 ## [2.49.1] - 2026-10-16
 
 ### Fixed
