@@ -18,10 +18,13 @@ class wi_itemized_deduction_credit_potential(Variable):
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
-        # Wis. Stat. 71.07(5)(a)7 leaves miscellaneous itemized deductions
-        # out of the credit whether or not the two percent floor applies to
-        # them, and Schedule 1 has no line for other itemized deductions, so
-        # the federal claim of right repayment deduction does not count.
+        # Follow Form 1 Schedule 1, lines 1-4: medical expenses, interest,
+        # gifts to charity and casualty losses, with no line for this deduction.
+        # Wis. Stat. 71.07(5)(a)6 excludes repayments used for the state's
+        # claim of right credit, and paragraph 7 excludes miscellaneous
+        # itemized deductions (section 1341 is not one under IRC 67(b)(9)).
+        # The statute is unclear for repayments not used for that credit;
+        # Wisconsin's separate repayment relief is not modeled.
         wi_itmded = tax_unit("itemized_deductions_less_salt", period) - tax_unit(
             "claim_of_right_deduction", period
         )
