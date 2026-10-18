@@ -9,14 +9,15 @@ class mt_premium_deduction_joint(Variable):
     documentation = (
         "Itemized Deductions Schedule lines 2 and 3 for a single-column "
         "return (2021-2023): medical and long-term care insurance premiums "
-        "deducted in full. The return's self-employed health insurance "
-        "deduction (Schedule 1, line 17) was taken in Montana AGI for "
-        "premiums the head and spouse paid, so it is netted from their "
-        "premiums once: first from medical insurance premiums, as on federal "
-        "Schedule A, then from long-term care premiums. A supplied tax-unit "
-        "deduction is honored. A dependent's deduction belongs on the "
-        "dependent's own return and is netted from that dependent's premiums. "
-        "Premium inputs use payer attribution."
+        "deducted in full, except premiums already deducted. The "
+        "self-employed health insurance deduction reported for the return "
+        "(Schedule 1, line 17, for premiums the head and spouse paid) is "
+        "netted from their premiums once: first from medical insurance "
+        "premiums, by the same bounded exclusion the computed federal "
+        "Schedule A subtotal uses, then from long-term care premiums. A "
+        "deduction supplied for the return is honored. A dependent's "
+        "deduction belongs on the dependent's own return and is netted from "
+        "that dependent's premiums. Premium inputs use payer attribution."
     )
     reference = (
         "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7",
@@ -37,7 +38,8 @@ class mt_premium_deduction_joint(Variable):
             "long_term_health_insurance_premiums", tax_unit, period
         )
         deduction = max_(0, tax_unit("self_employed_health_insurance_ald", period))
-        # The same exclusion federal Schedule A applies to these premiums.
+        # The bounded exclusion the computed federal subtotal applies to these
+        # premiums: min(premiums, deduction).
         used_on_line_2 = tax_unit("itemized_medical_expenses_excluded_premiums", period)
         filer_amount = (
             premiums

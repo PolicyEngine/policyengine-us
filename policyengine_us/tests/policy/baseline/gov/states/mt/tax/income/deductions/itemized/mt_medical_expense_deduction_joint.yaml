@@ -397,3 +397,51 @@
     # Line 1: 0. Line 2: 6,000 - 2,000 = 4,000. Ignoring the supplied
     # deduction would give 6,000.
     mt_medical_expense_deduction_joint: [4_000, 0]
+
+- name: A supplied federal medical expense subtotal reaches line 1
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        itemized_medical_expenses: 10_000
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Line 1: 10,000 - 7.5% x 40,000 = 7,000.
+    mt_medical_expense_deduction_joint: [7_000, 0]
+
+- name: A supplied subtotal with premiums moves the premiums to line 2
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        health_insurance_premiums: 6_000
+        self_employed_health_insurance_ald_person: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        itemized_medical_expenses: 10_000
+        mt_agi_joint: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # The supplied subtotal is the medical expenses paid, as North Dakota and
+    # New Mexico use it; no federal exclusion was applied to it.
+    itemized_medical_expenses_applied_exclusion: 0
+    # Line 1: (10,000 - 6,000) - 7.5% x 30,000 = 1,750.
+    # Line 2: 6,000 - 1,000 = 5,000.
+    mt_medical_expense_deduction_joint: 6_750

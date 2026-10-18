@@ -22,10 +22,22 @@ class mt_medical_expense_deduction_joint(Variable):
         if p.state_specific_deduction_applies:
             tax_unit = person.tax_unit
             floor = parameters(period).gov.irs.deductions.itemized.medical.floor
-            # Itemized Deductions Schedule line 1 takes medical and dental
-            # expenses other than the insurance premiums deducted in full on
-            # lines 2 and 3.
-            expense = add(tax_unit, period, ["other_medical_expenses"])
+            # Itemized Deductions Schedule line 1 takes the medical and dental
+            # expenses allowed under the Internal Revenue Code other than the
+            # insurance premiums deducted in full on lines 2 and 3. Start
+            # from the federal subtotal, restore the self-employed premiums
+            # its formula excluded (zero for a supplied subtotal), and take
+            # out every member's premiums. For a computed subtotal this is
+            # the members' other medical expenses.
+            premiums = add(
+                tax_unit, period, ["medical_expense_health_insurance_premiums"]
+            )
+            expense = max_(
+                0,
+                tax_unit("itemized_medical_expenses", period)
+                + tax_unit("itemized_medical_expenses_applied_exclusion", period)
+                - premiums,
+            )
             # Line 1b takes Montana AGI from page 1, line 14. A joint return
             # reports that line in a single column, so the floor applies to
             # the return's pooled Montana AGI.
@@ -33,8 +45,7 @@ class mt_medical_expense_deduction_joint(Variable):
             floored_expense = max_(0, expense - floor * montana_agi)
             # Lines 2 and 3: medical and long-term care insurance premiums not
             # deducted elsewhere, in full.
-            premiums = tax_unit("mt_premium_deduction_joint", period)
-            deduction = floored_expense + premiums
+            deduction = floored_expense + tax_unit("mt_premium_deduction_joint", period)
         else:
             # From 2024, Form 2 line 2 takes federal itemized deductions
             # (Worksheet A), so the federal floor on federal AGI applies.
