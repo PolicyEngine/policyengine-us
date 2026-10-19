@@ -10,7 +10,10 @@ class claim_of_right_section_1341_eligible(Variable):
         "exceeds the section 1341(a)(3) threshold, so that tax is the "
         "lesser of the tax with a deduction for the repayment and the tax "
         "without it less the prior-year tax decrease. The threshold applies "
-        "to the total repaid on the return, not to each repayment."
+        "to repayments of income of the same class under 26 CFR "
+        "1.1341-1(a)(3), not to each repayment separately. The model sums "
+        "the head's and spouse's repayments without distinguishing income "
+        "classes; same-class aggregation is not modeled."
     )
     definition_period = YEAR
     reference = (
