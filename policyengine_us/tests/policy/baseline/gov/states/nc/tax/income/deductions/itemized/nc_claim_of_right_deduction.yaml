@@ -488,3 +488,33 @@
   output:
     claim_of_right_credit_applies: false
     nc_claim_of_right_deduction: 5_000
+
+- name: An explicit credit method bars the deduction only above the section 1341 threshold.
+  period: 2025
+  input:
+    age: [40, 40, 40, 40]
+    claim_of_right_repayment: [0, 2_999, 3_000, 3_001]
+    adjusted_gross_income: [50_000, 50_000, 50_000, 50_000]
+    claim_of_right_credit_applies: [true, true, true, true]
+    nc_claim_of_right_prior_year_tax_increase: [300, 300, 300, 300]
+    state_code: [NC, NC, NC, NC]
+  output:
+    claim_of_right_section_1341_eligible: [false, false, false, true]
+    # Ineligible repayments keep the deduction less the $1,000 AGI floor.
+    nc_claim_of_right_deduction: [0, 1_999, 2_000, 0]
+
+- name: Before 2018 an explicit credit method does not bar a small repayment deduction.
+  # Historical simulations can supply the federal method, but section
+  # 1341(a)(5) cannot apply to a repayment of $3,000 or less.
+  period: 2016
+  input:
+    age: 40
+    claim_of_right_repayment: 2_500
+    adjusted_gross_income: 50_000
+    claim_of_right_credit_applies: true
+    nc_claim_of_right_prior_year_tax_increase: 300
+    state_code: NC
+  output:
+    claim_of_right_section_1341_eligible: false
+    # No other miscellaneous expenses absorb the 2% floor: 2,500 - 1,000.
+    nc_claim_of_right_deduction: 1_500

@@ -42,7 +42,7 @@ Last, one itemizing household per state: with the credit method fixed, the
 repayment leaves every state's income tax unchanged (section 1341(b)(3)),
 except that it lowers the tax of each state listed in
 STATES_WITH_RELIEF_UNDER_THE_CREDIT whose rule is in the model; with the
-deduction method fixed it leaves Arizona's, California's, Kansas's and
+deduction method fixed it leaves Arizona's, Kansas's and
 Wisconsin's unchanged.
 """
 
@@ -82,9 +82,9 @@ STATES = [
     if state.name not in {"AA", "AE", "AP", "AS", "GU", "MP", "PR", "PW", "VI"}
 ]
 # States whose own rules leave out the federal claim of right repayment
-# deduction: A.R.S. 43-1021(9), the California Schedule CA (540) instructions
-# for Part II line 16, K.S.A. 79-32,120(a) and Wisconsin Form 1 Schedule 1.
-STATES_WITHOUT_THE_DEDUCTION = ["AZ", "CA", "KS", "WI"]
+# deduction: A.R.S. 43-1021(9), K.S.A. 79-32,120(a) and Wisconsin Form 1
+# Schedule 1. California carries the federal deduction in Schedule CA column A.
+STATES_WITHOUT_THE_DEDUCTION = ["AZ", "KS", "WI"]
 # States whose own claim of right relief applies when federal tax is computed
 # with the section 1341 credit, and the variable that carries it. Under the
 # credit method these lower the household's state tax; every other state's
@@ -309,7 +309,10 @@ def test_north_carolina_follows_the_federal_method(results, year):
         r["nc_claim_of_right_deduction"],
         np.where(credit_applies, 0, r["nc_deduction_if_deduction"]),
     )
-    assert np.all(r["nc_deduction_if_credit"] == 0)
+    np.testing.assert_allclose(
+        r["nc_deduction_if_credit"],
+        np.where(eligible(), 0, r["nc_deduction_if_deduction"]),
+    )
     np.testing.assert_allclose(
         r["nc_claim_of_right_payment"], np.where(credit_applies, NC_INCREASE, 0)
     )
