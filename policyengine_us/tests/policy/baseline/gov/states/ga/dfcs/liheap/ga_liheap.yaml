@@ -600,35 +600,44 @@
     ga_liheap_matrix_amount: [660, 560, 400, 0, 660, 660]
     ga_liheap: [660, 560, 400, 0, 660, 0]
 
-# Manual page 89 and FY2026 plan page 30: when unsubsidized rent includes all
-# utilities, the tenant pays no utility vendor and gets the lowest award in the
-# income level, even if an electric bill is also reported. Ordinary natural gas would
-# pay $660 or $560; the lowest award is min($400, $560, $710, $580, $400) = $400,
-# plus $100 in Level I. Rent is $9,600 ($800 a month).
-# Household 1: $12,000 wages, Level I: $500. Household 2: $24,000 wages, Level II: $400.
-- name: Case 17, rent including all utilities keeps the lowest award when an electric bill is reported.
+# Manual page 89: row 2, "Utility costs (heat and electric) included in rent
+# (non-subsidized)", is "Direct pay to Applicant (999)"; row 3, "Heat costs included in
+# rent and applicant is billed directly for electric (non-subsidized)", is "Paid to
+# electric vendor because gas usage is indeterminate". The $1,200 electric bill shows
+# electric is not in the rent, so the household takes row 3 although
+# tenant_pays_utilities is false, the same rule eligibility Case 9 applies to a
+# subsidized renter (page 57: ineligible only if it "cannot verify an energy burden").
+# The award is the FY2026 matrix step 2 amount for the main heating fuel, not the plan
+# page 30 lowest award. Rent is $9,600 ($800 a month); the size 1 Level I cutoff is
+# $13,589.
+# Household 1: $12,000 wages, Level I natural gas: $560 + $100 = $660.
+# Household 2: $24,000 wages, Level II natural gas: $560.
+# Household 3: UNSPECIFIED fuel, $12,000 wages: eligible, but step 2 has no amount for an
+# unspecified main fuel, so $0, as in Case 16, household 4. Without the electric bill the
+# all-utilities route would pay $500 (Case 14).
+- name: Case 17, a reported electric bill takes the electric vendor route when rent is flagged as including all utilities.
   period: 2026
   input:
-    state_code: [GA, GA]
-    age: [40, 40]
-    immigration_status: [CITIZEN, CITIZEN]
-    employment_income: [12_000, 24_000]
-    ssi: [0, 0]
-    ga_tanf: [0, 0]
-    rent: [9_600, 9_600]
-    heating_type: [NATURAL_GAS, NATURAL_GAS]
-    heat_expense_included_in_rent: [true, true]
-    tenant_pays_utilities: [false, false]
-    receives_housing_assistance: [false, false]
-    is_in_public_housing: [false, false]
-    gas_expense: [0, 0]
-    pre_subsidy_electricity_expense: [1_200, 1_200]
+    state_code: [GA, GA, GA]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [12_000, 24_000, 12_000]
+    ssi: [0, 0, 0]
+    ga_tanf: [0, 0, 0]
+    rent: [9_600, 9_600, 9_600]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, UNSPECIFIED]
+    heat_expense_included_in_rent: [true, true, true]
+    tenant_pays_utilities: [false, false, false]
+    receives_housing_assistance: [false, false, false]
+    is_in_public_housing: [false, false, false]
+    gas_expense: [0, 0, 0]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200]
   output:
-    ga_liheap_income: [12_000, 24_000]
-    heating_expense: [0, 0]
-    ga_liheap_eligible: [true, true]
-    ga_liheap_matrix_amount: [500, 400]
-    ga_liheap: [500, 400]
+    ga_liheap_income: [12_000, 24_000, 12_000]
+    heating_expense: [0, 0, 0]
+    ga_liheap_eligible: [true, true, true]
+    ga_liheap_matrix_amount: [660, 560, 0]
+    ga_liheap: [660, 560, 0]
 
 # Manual section 1200.7 (page 66) counts lottery winnings. Countable income is
 # $10,000 wages + $2,000 gambling winnings = $12,000. That is at or below the size 1
@@ -704,8 +713,9 @@
 
 # Manual section 1200.7 (page 67) and FY2026 plan item 1.9 (page 6) count
 # unemployment compensation. The adult earned $12,000 before a layoff and drew
-# Georgia's maximum weekly benefit, $365, for the maximum of 14 weeks:
+# Georgia's maximum weekly benefit, $365, up to the 14 x WBA maximum benefit amount:
 # 14 x $365 = $5,110 (USDOL Significant Provisions of State UI Laws, January 2026,
+# https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/January2026.pdf#page=2,
 # Georgia row: the weekly benefit is 1/42 of wages in the two highest base-period
 # quarters, maximum $365; the maximum benefit is the "Lesser of 14 x WBA or 1/4 BPW").
 # The $365 maximum needs $15,330 in those two quarters ($365 x 42), about a $30,700
@@ -742,9 +752,10 @@
     ga_liheap: 400
 
 # 42 U.S.C. 8624(b)(2)(B) bars excluding a household on income below 110% of the
-# poverty guideline. Four adults earn Georgia median annual wages (BLS OEWS May 2025):
-# two cashiers at $29,070 and two fast food and counter workers at $26,920, so
-# countable income is 2 x $29,070 + 2 x $26,920 = $58,140 + $53,840 = $111,980.
+# poverty guideline. Four adults earn Georgia median annual wages (BLS OEWS May 2025,
+# https://data.bls.gov/oes/#/area/1300000/2025): two cashiers at $29,070 and two fast
+# food and counter workers at $26,920, so countable income is 2 x $29,070 + 2 x
+# $26,920 = $58,140 + $53,840 = $111,980.
 # The 13 children have no income, so the household size is 17.
 # Printed-method limit: floor($66,441 x 1.65 = $109,627.65) = $109,627, where
 # $66,441 = floor($110,736 x 0.6); the income exceeds it.
@@ -754,8 +765,8 @@
 # $111,980 is below $114,015, so the household stays eligible.
 # $111,980 is above the size 16 Level I cutoff of $42,336, so Level II natural gas
 # pays $560.
-# Size 16 is not tested: its FY2026 floor exceeds the printed limit by only $331
-# ($107,634 to $107,965).
+# Size 16 sits in a $331 window ($107,634 to $107,965); eligibility Cases 10 and 11
+# pin it at the exact floor with income entered directly.
 - name: Case 22, the federal poverty floor keeps a large household above the state median income limit eligible.
   period: 2026
   input:

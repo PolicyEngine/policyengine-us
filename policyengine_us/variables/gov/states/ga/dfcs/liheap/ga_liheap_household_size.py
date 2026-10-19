@@ -10,6 +10,7 @@ class ga_liheap_household_size(Variable):
     reference = (
         # PDF pages 51-52, 62
         "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=51",
+        # PAMMS chapter 100, export dated 2026-10-16.
         "https://pamms.dhs.ga.gov/dfcs/_exports/liheap.pdf#page=4",
         "https://dfcs.georgia.gov/services/low-income-home-energy-assistance-program-liheap",
     )

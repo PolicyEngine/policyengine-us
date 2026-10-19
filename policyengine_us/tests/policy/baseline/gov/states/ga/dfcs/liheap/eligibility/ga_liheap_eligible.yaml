@@ -202,3 +202,99 @@
   output:
     ga_liheap_eligible: [true, false]
     ga_liheap: [660, 0]
+
+# Threshold edge at the federal poverty floor, FY2026. Income is entered directly to pin
+# the boundary; it is not a household estimate. 42 U.S.C. 8624(b)(2)(B) protects income
+# "less than 110 percent" of the poverty level, and FY2026 uses the 2025 guidelines
+# (LIHEAP IM 2025-02, Attachment 2: "mandatory use in FY26").
+# Size 16: the FY2026 matrix prints a $107,634 limit. Floor: 1.1 x ($15,650 + 15 x
+# $5,500) = 1.1 x $98,150 = $107,965 (the IM table: $83,765 + 4 x $6,050). In float64
+# 1.1 x 98,150 is 107,965.00000000001, so the floor is rounded to the cent.
+# $107,634 is at the inclusive limit: eligible. $107,964.99 is below the floor: eligible.
+# $107,965 equals the floor and is not less than it: ineligible. $107,966: ineligible.
+# Size 17: limit floor($66,441 x 1.65 = $109,627.65) = $109,627; floor 1.1 x ($15,650 +
+# 16 x $5,500) = $114,015. $115,000 exceeds both: ineligible. With the 2026 guidelines
+# (no lag) the floor would be 1.1 x ($15,960 + 16 x $5,680) = $117,524 and $115,000
+# would qualify.
+- name: Case 10, threshold edge at the FY2026 federal poverty floor with the lagged guideline.
+  period: 2026
+  input:
+    state_code: [GA, GA, GA, GA, GA]
+    ga_liheap_household_size: [16, 16, 16, 16, 17]
+    ga_liheap_income: [107_634, 107_964.99, 107_965, 107_966, 115_000]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200]
+  output:
+    ga_liheap_income_limit: [107_634, 107_634, 107_634, 107_634, 109_627]
+    ga_liheap_eligible: [true, true, false, false, false]
+
+# Threshold edge at the federal poverty floor, FY2025. Income is entered directly to pin
+# the boundary. FY2025 uses the 2024 guidelines (LIHEAP IM 2024-02, Attachment 2:
+# "mandatory use in FY25 LIHEAP").
+# Size 16: the FY2025 matrix prints a $102,926 limit. Floor: 1.1 x ($15,060 + 15 x
+# $5,380) = 1.1 x $95,760 = $105,336 (the IM table: $81,664 + 4 x $5,918).
+# $104,000 is above the limit and below the floor: eligible. $105,335.99: eligible.
+# $105,336 equals the floor: ineligible. $106,000: ineligible; with the 2025 guidelines
+# (no lag) the floor would be 1.1 x $98,150 = $107,965 and $106,000 would qualify.
+- name: Case 11, threshold edge at the FY2025 federal poverty floor with the 2024 guidelines.
+  period: 2025
+  input:
+    state_code: [GA, GA, GA, GA]
+    ga_liheap_household_size: [16, 16, 16, 16]
+    ga_liheap_income: [104_000, 105_335.99, 105_336, 106_000]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200]
+  output:
+    ga_liheap_income_limit: [102_926, 102_926, 102_926, 102_926]
+    ga_liheap_eligible: [true, true, false, false]
+
+# The federal poverty floor uses Georgia's household size. Manual 1100.4 (page 51):
+# "Count income of all undocumented adults. Do not include the undocumented adults in
+# the household size." This is the ga_liheap.yaml Case 22 household with person4
+# undocumented: 17 SPM members, Georgia size 16. Wages are Georgia OEWS May 2025
+# medians (two cashiers at $29,070, two fast food and counter workers at $26,920), all
+# counted: 2 x $29,070 + 2 x $26,920 = $111,980.
+# FY2026 size 16: limit $107,634 (matrix); floor 1.1 x $98,150 = $107,965.
+# $111,980 exceeds both, so the household is ineligible. At the SPM size of 17 the floor
+# would be 1.1 x $103,650 = $114,015 and the household would qualify.
+- name: Case 12, the federal poverty floor uses the Georgia household size rather than the SPM unit size.
+  period: 2026
+  input:
+    people:
+      person1: {age: 45, immigration_status: CITIZEN, employment_income: 29_070, ssi: 0}
+      person2: {age: 43, immigration_status: CITIZEN, employment_income: 29_070, ssi: 0}
+      person3: {age: 41, immigration_status: CITIZEN, employment_income: 26_920, ssi: 0}
+      person4: {age: 39, immigration_status: UNDOCUMENTED, employment_income: 26_920, ssi: 0}
+      person5: {age: 17, immigration_status: CITIZEN, ssi: 0}
+      person6: {age: 16, immigration_status: CITIZEN, ssi: 0}
+      person7: {age: 15, immigration_status: CITIZEN, ssi: 0}
+      person8: {age: 14, immigration_status: CITIZEN, ssi: 0}
+      person9: {age: 13, immigration_status: CITIZEN, ssi: 0}
+      person10: {age: 12, immigration_status: CITIZEN, ssi: 0}
+      person11: {age: 11, immigration_status: CITIZEN, ssi: 0}
+      person12: {age: 10, immigration_status: CITIZEN, ssi: 0}
+      person13: {age: 9, immigration_status: CITIZEN, ssi: 0}
+      person14: {age: 7, immigration_status: CITIZEN, ssi: 0}
+      person15: {age: 5, immigration_status: CITIZEN, ssi: 0}
+      person16: {age: 3, immigration_status: CITIZEN, ssi: 0}
+      person17: {age: 1, immigration_status: CITIZEN, ssi: 0}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8,
+          person9, person10, person11, person12, person13, person14, person15, person16,
+          person17]
+        ga_tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_800
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8,
+          person9, person10, person11, person12, person13, person14, person15, person16,
+          person17]
+        state_code: GA
+  output:
+    spm_unit_size: 17
+    ga_liheap_household_size: 16
+    ga_liheap_income: 111_980
+    ga_liheap_income_limit: 107_634
+    ga_liheap_eligible: false

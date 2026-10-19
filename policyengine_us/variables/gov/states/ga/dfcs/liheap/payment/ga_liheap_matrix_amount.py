@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.states.ga.dfcs.liheap.eligibility._ga_liheap_housing import (
     ga_liheap_has_direct_payment_route,
+    ga_liheap_has_electric_vendor_route,
 )
 
 
@@ -13,6 +14,7 @@ class ga_liheap_matrix_amount(Variable):
     defined_for = StateCode.GA
     reference = (
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/GA_BenefitMatrix_Heat-Cool_2026.pdf",
+        "https://liheapch.acf.gov/docs/2025/benefits-matricies/GA_BenefitMatrix_2025.pdf",
         "https://liheapch.acf.gov/docs/2026/state-plans/GA_Plan_2026.pdf#page=30",
         "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=89",
         "https://liheapch.acf.gov/docs/2024/benefits-matricies/GA_BenefitMatrix_2024.pdf",
@@ -49,12 +51,16 @@ class ga_liheap_matrix_amount(Variable):
         # Applicant payments use the lowest award in the income level (plan page 30).
         # The uplift is the same for every fuel, so the lowest Level II amount plus
         # the uplift is the lowest Level I amount.
-        # Heat-in-rent renters billed directly for electric, subsidized or not, are
-        # paid to the electric vendor (manual pages 4 and 89). The FY2024 matrix note
-        # says "The main fuel type is not always where the benefit is applied", so
-        # they keep the step 2 amount for their main heating fuel and an unspecified
-        # fuel pays 0.
-        direct_payment = ga_liheap_has_direct_payment_route(spm_unit, period)
+        # Heat-in-rent renters billed directly for electric are paid to the electric
+        # vendor (manual pages 4, 57 and 89), subsidized or not and whatever
+        # tenant_pays_utilities says, so that route takes precedence over the
+        # all-utilities direct payment. The FY2024 matrix note says "The main fuel
+        # type is not always where the benefit is applied", so they keep the step 2
+        # amount for their main heating fuel and an unspecified fuel pays 0.
+        electric_vendor = ga_liheap_has_electric_vendor_route(spm_unit, period)
+        direct_payment = (
+            ga_liheap_has_direct_payment_route(spm_unit, period) & ~electric_vendor
+        )
         base = where(
             direct_payment & (heating_type != fuel.NONE),
             np.minimum.reduce(base_amounts),
