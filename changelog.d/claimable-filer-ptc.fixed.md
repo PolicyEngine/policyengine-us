@@ -5,3 +5,5 @@ Preserve supplied benchmark premiums, NY dependent predicates and Medicaid MAGI;
 Count enrolled nonpayers in Washington Cascade Care Savings Group 2 before applying the household premium cap.
 
 Complete partially inferred joint ACA filers without an adult age cutoff, and use the completed set for tax-family membership and MAGI additions.
+
+Honor supplied ACA family-tier child predicates for nonpayers in their supplied month while retaining uncapped calculated classifications in other months.

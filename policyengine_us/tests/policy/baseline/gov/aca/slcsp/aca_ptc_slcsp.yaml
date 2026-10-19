@@ -669,3 +669,157 @@
     is_aca_marketplace_enrollee: [true, true, true, true, true]
     slcsp: 4713.8
     aca_ptc_slcsp: 4483.7
+- name: r4 NY supplied family-tier child classification applies to an enrolled nonpayer
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        monthly_age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_aca_marketplace_enrollee: {2025: true}
+        is_aca_family_tier_dependent_child: false
+      spouse:
+        age: 40
+        monthly_age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_aca_marketplace_enrollee: {2025: true}
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_aca_family_tier_dependent_child: false
+      oldest_child:
+        age: 20
+        monthly_age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_aca_marketplace_enrollee: {2025: true}
+        is_aca_family_tier_dependent_child: true
+      second_child:
+        age: 19
+        monthly_age: 19
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_aca_marketplace_enrollee: {2025: true}
+        is_aca_family_tier_dependent_child: true
+      third_child:
+        age: 18
+        monthly_age: 18
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_aca_marketplace_enrollee: {2025: true}
+        is_aca_family_tier_dependent_child: true
+      youngest_child:
+        age: 10
+        monthly_age: 10
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_aca_marketplace_enrollee: {2025: true}
+        is_aca_family_tier_dependent_child: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse, oldest_child, second_child, third_child, youngest_child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, oldest_child, second_child, third_child, youngest_child]
+        state_code: NY
+        state_code_str: NY
+        slcsp_age_0: 500
+  output:
+    # The fourth enrolled child pays no marginal age-rated premium. The
+    # supplied false classification still counts that enrollee as an adult
+    # when pricing the independent head's coverage family: 500 * 2.85.
+    pays_aca_premium: [true, true, true, true, true, false]
+    is_aca_tax_family_member: [true, false, true, true, true, true]
+    aca_ptc_slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+    aca_ptc_slcsp_family_tier_multiplier: 2.85
+    aca_ptc_slcsp: 1425
+
+- name: r4 NY supplied family-tier child classification applies only in its supplied month
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        monthly_age: {2025-01: 40, 2025-02: 40}
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_aca_marketplace_enrollee: {2025: true}
+        is_aca_family_tier_dependent_child: {2025-01: false}
+      spouse:
+        age: 40
+        monthly_age: {2025-01: 40, 2025-02: 40}
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_aca_marketplace_enrollee: {2025: true}
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_aca_family_tier_dependent_child: {2025-01: false}
+      oldest_child:
+        age: 20
+        monthly_age: {2025-01: 20, 2025-02: 20}
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_aca_marketplace_enrollee: {2025: true}
+        is_aca_family_tier_dependent_child: {2025-01: true}
+      second_child:
+        age: 19
+        monthly_age: {2025-01: 19, 2025-02: 19}
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_aca_marketplace_enrollee: {2025: true}
+        is_aca_family_tier_dependent_child: {2025-01: true}
+      third_child:
+        age: 18
+        monthly_age: {2025-01: 18, 2025-02: 18}
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_aca_marketplace_enrollee: {2025: true}
+        is_aca_family_tier_dependent_child: {2025-01: true}
+      youngest_child:
+        age: 10
+        monthly_age: {2025-01: 10, 2025-02: 10}
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_aca_marketplace_enrollee: {2025: true}
+        is_aca_family_tier_dependent_child: {2025-01: false}
+    tax_units:
+      tax_unit:
+        members: [head, spouse, oldest_child, second_child, third_child, youngest_child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, oldest_child, second_child, third_child, youngest_child]
+        state_code: NY
+        state_code_str: NY
+        slcsp_age_0: {2025-01: 500, 2025-02: 500}
+  output:
+    pays_aca_premium: [true, true, true, true, true, false]
+    is_aca_tax_family_member: [true, false, true, true, true, true]
+    # January honors the supplied false predicate. In February the public
+    # predicate is calculated, so the nonpayer uses the raw child condition.
+    aca_ptc_slcsp_family_tier_category:
+      2025-01: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+      2025-02: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
+    aca_ptc_slcsp_family_tier_multiplier:
+      2025-01: 2.85
+      2025-02: 1.7
+    aca_ptc_slcsp:
+      2025-01: 1425
+      2025-02: 850

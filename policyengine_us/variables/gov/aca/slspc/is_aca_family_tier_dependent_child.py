@@ -18,13 +18,17 @@ def family_tier_child_condition(person, period, parameters):
 def family_tier_child_condition_for_enrollee(person, period, parameters):
     """Preserve supplied child classifications when repricing enrollees.
 
-    The public predicate includes premium payment. Use its supplied or
-    calculated value for payers, and apply the uncapped child condition to
-    enrolled children who add no age-rated premium to the whole policy.
+    The public predicate includes premium payment. A supplied predicate
+    takes precedence for every enrollee in that month, including nonpayers.
+    Otherwise use the calculated predicate for payers and the uncapped child
+    condition for enrolled children who add no age-rated premium to the policy.
     """
+    name = "is_aca_family_tier_dependent_child"
+    if has_input_for_period(person.simulation, name, period):
+        return person(name, period)
     return where(
         person("pays_aca_premium", period.this_year),
-        person("is_aca_family_tier_dependent_child", period),
+        person(name, period),
         family_tier_child_condition(person, period, parameters),
     )
 
