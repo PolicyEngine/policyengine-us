@@ -191,6 +191,7 @@
         age: 40
         is_aca_ptc_eligible: false
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -429,6 +430,7 @@
         age: 40
         is_aca_ptc_eligible: false
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -460,10 +462,12 @@
         age: 45
         is_aca_ptc_eligible: false
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: true
       person2:
         age: 43
         is_aca_ptc_eligible: false
         pays_aca_premium: false
+        is_aca_marketplace_enrollee: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -612,6 +616,7 @@
         age: 40
         is_aca_ptc_eligible: false
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -821,6 +826,7 @@
         age: 40
         is_aca_ptc_eligible: false
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: true
     tax_units:
       tax_unit:
         members: [person1]
