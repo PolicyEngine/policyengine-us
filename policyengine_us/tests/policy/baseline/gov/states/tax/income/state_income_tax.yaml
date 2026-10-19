@@ -35,3 +35,69 @@
   output:
     nj_income_tax: 0
     state_income_tax: 0
+
+- name: Vermont state income tax includes the child care contribution on self-employment income.
+  # 2024 Form IN-111: line 20 (income tax after credits) + line 21 (child
+  # care contribution) + line 22 (use tax) = line 23 (total Vermont taxes);
+  # refundable credits follow on line 26c.
+  # Child Care Contribution Worksheet: Schedule SE line 6 x 0.5 x 0.0011.
+  # https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2024.pdf#page=12
+  # Schedule SE line 6 = 100,000 x 0.9235 = 92,350; contribution =
+  # 92,350 x 0.5 x 0.0011 = 50.79; total = 1,000 + 50.79 - 200 = 850.79.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    self_employment_income: 100_000
+    vt_income_tax_before_refundable_credits: 1_000
+    vt_refundable_credits: 200
+  output:
+    vt_child_care_contributions: 50.79
+    vt_income_tax: 850.79
+    state_income_tax: 850.79
+
+- name: Mississippi state income tax subtracts nonrefundable credits.
+  # 2025 Mississippi resident instructions: head of family exemption $8,000,
+  # $1,500 per dependent, standard deduction $3,400; tax is 4.4% of taxable
+  # income over $10,000 (line 17). Credits on lines 18 and 19 reduce it.
+  # https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100251%202.pdf#page=8
+  # Taxable income = 30,000 - 3,400 - 8,000 - 3,000 = 15,600;
+  # tax = 0.044 x 5,600 = 246.40; less a credit of 159 = 87.40.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+      child1:
+        age: 3
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        ms_cdcc: 159
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MS
+  output:
+    ms_income_tax_before_credits_unit: 246.40
+    ms_income_tax_before_refundable_credits: 87.40
+    ms_income_tax: 87.40
+    state_income_tax: 87.40
+
+- name: Colorado state income tax includes the alternative minimum tax.
+  # 2025 Form DR 0104: line 13 (tax) + line 14 (alternative minimum tax) +
+  # line 15 = line 16, before the refundable credits on line 31.
+  # https://tax.colorado.gov/sites/tax/files/documents/Book104_2025.pdf#page=11
+  period: 2025
+  input:
+    state_code: CO
+    co_income_tax_before_refundable_credits: 4_000
+    co_amt: 500
+    co_refundable_credits: 100
+  output:
+    co_income_tax: 4_400
+    state_income_tax: 4_400
