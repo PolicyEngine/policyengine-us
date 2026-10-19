@@ -14,8 +14,10 @@ class medicaid_person_is_required_to_file(Variable):
         "https://www.irs.gov/publications/p501",
         "https://www.irs.gov/pub/irs-prior/p501--2025.pdf#page=4",
         # Form 1040 instructions: line 1a is Form(s) W-2, box 1 (PDF page 23),
-        # which leaves out elective deferrals (page 25).
-        # PDF pages 23, 25
+        # which leaves out elective deferrals (page 25); the Standard
+        # Deduction Worksheet for Dependents' earned income subtracts Schedule
+        # 1, line 15 (page 35).
+        # PDF pages 23, 25, 35
         "https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=23",
     )
 
@@ -23,18 +25,20 @@ class medicaid_person_is_required_to_file(Variable):
         standard = parameters(period).gov.irs.deductions.standard
         filing_requirement = parameters(period).gov.irs.income.filing_requirement
         gross_income = person("medicaid_irs_gross_income", period)
-        # Earned income is wages as reported in Form W-2 box 1, which leave
-        # out elective deferrals, plus business and farm income: the gross
-        # income sources the IRS dependent worksheet counts as earned. A
-        # business or farm loss reduces it.
-        earned_income_sources = filing_requirement.dependent.earned_income_sources
-        earned_income = add(person, period, earned_income_sources)
+        # Earned income is figured as on the IRS dependent worksheet, which
+        # sets the limited standard deduction the gross income test compares
+        # against: W-2 box 1 wages (which leave out elective deferrals) plus
+        # business and farm income, minus the deductible part of
+        # self-employment tax, and not below zero.
+        earned_income = max_(
+            person("standard_deduction_worksheet_earned_income_person", period), 0
+        )
         # Unearned income is gross income other than earned income (IRS Pub.
         # 501, Table 2). Gross income counts each source's positive amount, so
         # subtract those sources' positive amounts: a business loss does not
         # turn other income into unearned income.
         earned_gross_income = 0
-        for source in earned_income_sources:
+        for source in filing_requirement.dependent.earned_income_sources:
             earned_gross_income += max_(0, person(source, period))
         unearned_income = max_(0, gross_income - earned_gross_income)
 

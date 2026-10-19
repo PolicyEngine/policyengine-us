@@ -157,3 +157,26 @@
         members: [head, spouse, child]
   output:
     standard_deduction_worksheet_earned_income: 13_000
+
+- name: On a joint return one spouse's business loss offsets the other spouse's wages before the zero floor
+  # $5,000 of wages less the spouse's $3,000 loss is $2,000.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: true
+      spouse:
+        age: 30
+        self_employment_income: -3_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    standard_deduction_worksheet_earned_income: 2_000

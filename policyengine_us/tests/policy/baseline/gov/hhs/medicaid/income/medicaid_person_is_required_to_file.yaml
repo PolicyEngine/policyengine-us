@@ -201,10 +201,12 @@
 
 - name: Case 12, farm income is earned income, not unearned income.
   # The Form 1040 dependent worksheet counts Schedule 1 line 6 (farm income)
-  # as earned income. $2,000 of farm income is not unearned income over
-  # $1,350, and gross income of $2,000 is not more than $2,000 + $450. The
-  # section 6017 self-employment tax filing rule is not part of the section
-  # 6012(a)(1) test that 42 CFR 435.603(d)(2) uses.
+  # as earned income, net of the deductible part of self-employment tax
+  # (line 15): $2,000 - $2,000 x 0.9235 x 15.3% / 2 = $1,858.70. $2,000 of
+  # farm income is not unearned income over $1,350, and gross income of
+  # $2,000 is not more than $1,858.70 + $450 = $2,308.70. The section 6017
+  # self-employment tax filing rule is not part of the section 6012(a)(1)
+  # test that 42 CFR 435.603(d)(2) uses.
   period: 2025
   input:
     people:
@@ -216,3 +218,35 @@
         members: [person1]
   output:
     medicaid_person_is_required_to_file: false
+
+- name: Case 13, farm income counts net of the deductible part of self-employment tax.
+  # Worksheet earned income is $15,000 - $15,000 x 0.9235 x 15.3% / 2 =
+  # $13,940.28, so the limit is $13,940.28 + $450 = $14,390.28, below the
+  # $15,750 single amount. Gross income of $15,000 is more than that, so the
+  # dependent must file, as the federal test finds for the same filer.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        farm_operations_income: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: true
+
+- name: Case 14, self-employment income counts net of the deductible part of self-employment tax.
+  # Same arithmetic as Case 13 for $15,000 of Schedule C income: the limit
+  # is $14,390.28 and gross income of $15,000 is more than that.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        self_employment_income: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: true

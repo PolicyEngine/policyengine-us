@@ -6,7 +6,8 @@ elective deferrals (2025 Form 1040 instructions, PDF pages 23, 25 and 35).
 `standard_deduction_worksheet_earned_income` is that amount for the head and
 spouse; `basic_standard_deduction` (26 USC 63(c)(5)), `or_standard_deduction`
 and `hi_deductions` use it for a filer who can be claimed as a dependent, and
-`medicaid_person_is_required_to_file` reads the same earned income sources.
+`medicaid_person_is_required_to_file` uses the same per-person amount
+(`standard_deduction_worksheet_earned_income_person`).
 YAML cases pin single households; these tests check what must hold for every
 input.
 
@@ -21,7 +22,10 @@ start every batch so that each property has rows to check:
 1. Deferral invariance: a unit whose wages are W with a deferral D gets the
    same worksheet earned income, deductions, federal filing requirement and
    Medicaid filing requirement as a twin with wages max(W - D, 0) and no
-   deferral. Only W-2 box 1 wages matter.
+   deferral, as long as the Schedule 1 line 15 deduction is the same for
+   both. Deferrals are still Social Security and Medicare wages, so near the
+   Social Security wage base they change self-employment tax and line 15;
+   the drawn wages and self-employment income stay far below it.
 2. Bounds: the basic standard deduction of a unit whose head or spouse can be
    claimed is at least the section 63(c)(5)(A) amount and never more than the
    regular basic standard deduction for its filing status; for any other unit
@@ -38,6 +42,11 @@ start every batch so that each property has rows to check:
    only wages, deferrals and interest, both `tax_unit_is_required_to_file` and
    `medicaid_person_is_required_to_file` equal Publication 501 (2025), Table
    2, computed with W-2 box 1 wages as earned income.
+6. Federal and Medicaid agree (2025): for every drawn single filer who can
+   be claimed (under 65, not blind), including self-employment and farm
+   income or loss, `medicaid_person_is_required_to_file` equals
+   `tax_unit_is_required_to_file`. Both apply section 6012(a)(1) through the
+   same limited standard deduction, including its line 15 subtraction.
 """
 
 import numpy as np
@@ -309,6 +318,13 @@ def test_worksheet_properties(drawn):
                 )
             )
             assert single.any()
+            # 6. Federal and Medicaid agree for every single claimable filer.
+            all_single = ~joint & claimable
+            np.testing.assert_array_equal(
+                values["medicaid_head"][rows["base"]][all_single],
+                values["tax_unit_is_required_to_file"][rows["base"]][all_single],
+                err_msg="2025: Medicaid and federal filing tests differ",
+            )
             for variable in ("tax_unit_is_required_to_file", "medicaid_head"):
                 np.testing.assert_array_equal(
                     values[variable][rows["base"]][single],
