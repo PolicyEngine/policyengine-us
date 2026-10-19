@@ -52,16 +52,10 @@ class hi_act_115_rebate(Variable):
         independent_filers = tax_unit(
             "head_spouse_count_not_dependent_elsewhere", period
         )
-        dependent_taxpayer = tax_unit(
-            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
-        )
-        filers = add(tax_unit, period, ["is_tax_unit_head_or_spouse"])
-        dependent_filers = filers - independent_filers
-        ordinary_exemptions = max_(exemptions - dependent_filers, 0)
+        # exemptions_count applies these rules: it leaves out a claimable
+        # filer's own exemption and, unless the filing exception applies, the
+        # return's dependents.
         qualified_exemptions = where(
-            dependent_taxpayer, independent_filers, ordinary_exemptions
-        )
-        qualified_exemptions = where(
-            dependent_filer & (independent_filers == 0), 0, qualified_exemptions
+            dependent_filer & (independent_filers == 0), 0, exemptions
         )
         return amount_per_exemption * qualified_exemptions
