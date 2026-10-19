@@ -340,3 +340,75 @@
     nj_claim_of_right_offset: 5_000
     nj_gross_income: 35_000
     nj_total_income: 30_000
+
+# The different dividend and gambling amounts distinguish categories (f) and
+# (g): line 17 is $5,000 - $4,500 = $500, line 24 stays $4,000, and gross
+# income is $30,000 + $500 + $4,000 = $34,500.
+- name: Case 15, a dividend repayment offsets dividends and leaves gambling winnings untouched.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 30_000
+        dividend_income: 5_000
+        gambling_winnings: 4_000
+        claim_of_right_repayment: 4_500
+        nj_claim_of_right_repayment_category: DIVIDENDS
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NJ
+  output:
+    nj_claim_of_right_offset: 4_500
+    nj_gross_income: 34_500
+
+# Line 24 cannot go below zero: min($4,500, $4,000) = $4,000. Line 17 stays
+# $5,000, so gross income is $30,000 + $5,000 = $35,000.
+- name: Case 16, a gambling repayment is capped at gambling winnings and leaves dividends untouched.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 30_000
+        dividend_income: 5_000
+        gambling_winnings: 4_000
+        claim_of_right_repayment: 4_500
+        nj_claim_of_right_repayment_category: GAMBLING_WINNINGS
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NJ
+  output:
+    nj_claim_of_right_offset: 4_000
+    nj_gross_income: 35_000
+
+# Line 25 is floored at zero: min($2,000, $1,500) = $1,500. Wages stay
+# $30,000; mapping this repayment to wages would incorrectly offset $2,000.
+- name: Case 17, an alimony repayment is capped at alimony and leaves wages untouched.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 30_000
+        alimony_income: 1_500
+        claim_of_right_repayment: 2_000
+        nj_claim_of_right_repayment_category: ALIMONY
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NJ
+  output:
+    nj_claim_of_right_offset: 1_500
+    nj_gross_income: 30_000
