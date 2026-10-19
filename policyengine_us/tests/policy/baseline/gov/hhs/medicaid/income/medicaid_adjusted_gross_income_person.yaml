@@ -38,3 +38,229 @@
   output:
     medicaid_adjusted_gross_income_person: [59_450, 39_450, 5_000]
   absolute_error_margin: 0.01
+
+- name: Case 3, a dependent's own deductions reduce the dependent's AGI, not the head's.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 50_000
+      student:
+        age: 23
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        employment_income: 6_000
+        taxable_interest_income: 500
+        traditional_ira_contributions: 2_000
+        early_withdrawal_penalty: 100
+        educator_expense: 300
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    # Each person's own Form 1040, line 11. Parent: 50,000 - 0. Student:
+    # line 9 = 6,000 + 500 = 6,500; Schedule 1, line 11 = 300, line 18 = 100,
+    # line 20 = 2,000, line 26 = 2,400; line 11 = 4,100.
+    medicaid_adjusted_gross_income_person: [50_000, 4_100]
+
+- name: Case 4, a dependent's pre-2019 alimony reduces the dependent's own AGI.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      mother:
+        age: 72
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        taxable_private_pension_income: 4_000
+        alimony_expense: 3_000
+        divorce_year: 2010
+    tax_units:
+      tax_unit:
+        members: [filer, mother]
+    households:
+      household:
+        members: [filer, mother]
+        state_code: TX
+  output:
+    # Each person's own Form 1040 line 11. Filer: 50,000. Mother: pension
+    # 4,000 less alimony paid under a 2010 divorce (Schedule 1, line 19a)
+    # 3,000 = 1,000.
+    alimony_expense_ald_person: [0, 3_000]
+    medicaid_adjusted_gross_income_person: [50_000, 1_000]
+
+- name: Case 5, a tax-unit alimony deduction supplied as an input goes to the head.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+        alimony_expense_ald: 3_000
+    households:
+      household:
+        members: [filer]
+        state_code: TX
+  output:
+    adjusted_gross_income: 47_000
+    medicaid_adjusted_gross_income_person: 47_000
+
+- name: Case 6, a spouse's own deductions lower only that spouse's Medicaid AGI.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        employment_income: 20_000
+        traditional_ira_contributions: 5_000
+        early_withdrawal_penalty: 200
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # Head: 50,000. Spouse: 20,000 - 5,000 - 200 = 14,800. They add up to the
+    # joint AGI, 64,800.
+    adjusted_gross_income: 64_800
+    medicaid_adjusted_gross_income_person: [50_000, 14_800]
+
+- name: Case 7, a spouse's business loss lowers only that spouse's Medicaid AGI, below zero.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 30_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        self_employment_income: -20_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    adjusted_gross_income: 10_000
+    medicaid_adjusted_gross_income_person: [30_000, -20_000]
+
+- name: Case 8, savings bond interest recorded on a dependent is the filer's exclusion.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 50_000
+        is_tax_unit_head: true
+      student:
+        age: 20
+        is_full_time_student: true
+        employment_income: 20_000
+        us_bonds_for_higher_ed: 1_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    # gov.irs.ald.filer_amounts_recorded_on_dependents: the exclusion is the
+    # parent's (Form 8815), so it lowers the parent's AGI, 50,000 - 1,000,
+    # and not the student's own, 20,000.
+    adjusted_gross_income: 49_000
+    medicaid_adjusted_gross_income_person: [49_000, 20_000]
+
+- name: Case 9, a supplied spouse HSA deduction lowers only that spouse's AGI.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 60_000
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 40_000
+        health_savings_account_ald_person: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        health_savings_account_ald: 4_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # Each spouse figures their own Form 8889 deduction; the return combines
+    # the two line 13 amounts (2025 instructions, page 4).
+    # https://www.irs.gov/pub/irs-pdf/i8889.pdf#page=4
+    adjusted_gross_income: 96_000
+    above_the_line_deductions_person: [0, 4_000]
+    medicaid_adjusted_gross_income_person: [60_000, 36_000]
+
+- name: Case 10, unrecorded person HSA amounts preserve the equal filer fallback.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 60_000
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        health_savings_account_ald: 4_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # The return's 4,000 deduction is supplied without either person's
+    # amount, so the existing filer_share fallback allocates 2,000 each.
+    adjusted_gross_income: 96_000
+    above_the_line_deductions_person: [2_000, 2_000]
+    medicaid_adjusted_gross_income_person: [58_000, 38_000]

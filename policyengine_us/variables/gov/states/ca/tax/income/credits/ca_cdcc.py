@@ -6,7 +6,7 @@ class ca_cdcc(Variable):
     entity = TaxUnit
     label = "California Child and Dependent Care Expenses Credit"
     unit = USD
-    documentation = "https://www.ftb.ca.gov/forms/2020/2020-3506-instructions.html"
+    reference = "https://www.ftb.ca.gov/forms/2020/2020-3506-instructions.html"
     definition_period = YEAR
     defined_for = StateCode.CA
 

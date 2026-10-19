@@ -1,0 +1,141 @@
+description: The state uses the SSI federal benefit rate, rather than a share of the federal poverty guideline, as the Medicaid income limit for aged, blind, or disabled people who do not receive SSI, if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: Medicaid senior or disabled income limit is the SSI federal benefit rate
+  breakdown:
+  - state_code
+  reference:
+    - title: 42 CFR 435.210 - Optional eligibility for individuals who meet the income and resource requirements of the cash assistance programs
+      href: https://www.ecfr.gov/current/title-42/section-435.210
+    - title: KFF, Medicaid Financial Eligibility for Seniors and People with Disabilities - Findings from a 50-State Survey (2018), Appendix Tables 1 and 2
+      href: https://www.kff.org/report-section/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey-appendix-tables/
+    - title: KFF, Medicaid Eligibility and Enrollment Policies for Seniors and People with Disabilities (Non-MAGI) During the Unwinding (June 2024), Appendix Tables 1 and 2
+      href: https://www.kff.org/report-section/medicaid-eligibility-and-enrollment-policies-for-seniors-and-people-with-disabilities-non-magi-during-the-unwinding-appendix/
+    - title: Colorado 10 CCR 2505-10 § 8.100.1 (definition of FBR) and § 8.100.3.F.1.d
+      href: https://www.law.cornell.edu/regulations/colorado/10-CCR-2505-10-8.100_v2
+    - title: Iowa Administrative Code 441-75.1(17)
+      href: https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-75-1
+    - title: Louisiana Administrative Code 50:III.2305 - Provisional Medicaid Program
+      href: https://www.law.cornell.edu/regulations/louisiana/La-Admin-Code-tit-50-SS-III-2305
+    - title: Louisiana Medicaid State Plan, Supplement 1 to Attachment 2.6-A, page 5 (TN 14-04, effective February 9, 2014)
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/LA/LA-14-04.pdf#page=5
+    - title: Montana DPHHS Medicaid manual, ABD 008 Table of Standards - Categorically Needy Income (effective January 1, 2026)
+      href: https://dphhs.mt.gov/assets/hcsd/mamanual/ABD008.pdf#page=1
+    - title: Montana DPHHS Medicaid manual, ABD 200 Groups Covered - Overview
+      href: https://dphhs.mt.gov/assets/hcsd/mamanual/ABD200July012016.pdf#page=1
+    - title: Montana Medicaid State Plan, Attachment 3.1-F, page 7 (TN 24-0002, effective July 1, 2024)
+      href: https://www.medicaid.gov/sites/default/files/2024-05/MT-24-0002.pdf#page=10
+    - title: Ohio Administrative Code 5160:1-3-02.4 - Medicaid coverage for the categorically needy
+      href: https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-3-02.4
+    - title: Ohio Administrative Code 5160:1-3-03.5 - Medicaid application of income standards
+      href: https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-3-03.5
+    - title: Oregon Administrative Rule 461-155-0250(3) - Income and Payment Standard; OSIPM
+      href: https://ch461rules.odhs.oregon.gov/rules/461-155-0250.pdf#page=1
+    - title: Washington Administrative Code 182-512-0010(4) - SSI-related categorically needy income level
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=182-512-0010
+    - title: Washington Administrative Code 182-512-0100(2)(a) - SSI-related categorically needy medical eligibility
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=182-512-0100
+
+AK:
+  2018-01-01: false
+AL:
+  2018-01-01: false
+AR:
+  2018-01-01: false
+AZ:
+  2018-01-01: false
+CA:
+  2018-01-01: false
+CO:
+  2018-01-01: true
+CT:
+  2018-01-01: false
+DC:
+  2018-01-01: false
+DE:
+  2018-01-01: false
+FL:
+  2018-01-01: false
+GA:
+  2018-01-01: false
+HI:
+  2018-01-01: false
+IA:
+  2018-01-01: true
+ID:
+  2018-01-01: false
+IL:
+  2018-01-01: false
+IN:
+  2018-01-01: false
+KS:
+  2018-01-01: false
+KY:
+  2018-01-01: false
+LA:
+  2018-01-01: true
+MA:
+  2018-01-01: false
+MD:
+  2018-01-01: false
+ME:
+  2018-01-01: false
+MI:
+  2018-01-01: false
+MN:
+  2018-01-01: false
+MO:
+  2018-01-01: false
+MS:
+  2018-01-01: false
+MT:
+  2018-01-01: true
+NC:
+  2018-01-01: false
+ND:
+  2018-01-01: false
+NE:
+  2018-01-01: false
+NH:
+  2018-01-01: false
+NJ:
+  2018-01-01: false
+NM:
+  2018-01-01: false
+NV:
+  2018-01-01: false
+NY:
+  2018-01-01: false
+OH:
+  2018-01-01: true
+OK:
+  2018-01-01: false
+OR:
+  2018-01-01: true
+PA:
+  2018-01-01: false
+RI:
+  2018-01-01: false
+SC:
+  2018-01-01: false
+SD:
+  2018-01-01: false
+TN:
+  2018-01-01: false
+TX:
+  2018-01-01: false
+UT:
+  2018-01-01: false
+VA:
+  2018-01-01: false
+VT:
+  2018-01-01: false
+WA:
+  2018-01-01: true
+WI:
+  2018-01-01: false
+WV:
+  2018-01-01: false
+WY:
+  2018-01-01: false

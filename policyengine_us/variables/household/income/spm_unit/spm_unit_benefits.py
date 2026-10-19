@@ -22,6 +22,10 @@ class spm_unit_benefits(Variable):
             "ky_ssp",  # Kentucky benefits
             "de_ssp",  # Delaware benefits
             "fl_oss",
+            "nj_ssp",  # New Jersey benefits
+            "pa_ssp",  # Pennsylvania benefits
+            "wy_ssp",  # Wyoming benefits
+            "nc_sa",  # North Carolina benefits
             "ks_sspp",  # Kansas benefits
             "hi_oss",
             "la_oss",  # Louisiana benefits
@@ -33,6 +37,7 @@ class spm_unit_benefits(Variable):
             "mo_ssp",  # Missouri benefits
             "mn_msa",  # Minnesota benefits
             "ne_aabd",  # Nebraska benefits
+            "nv_oss",  # Nevada benefits
             # California programs.
             "ca_cvrp",  # California Clean Vehicle Rebate Project.
             # California SSI state supplement (SSP). The formula nets federal
@@ -72,7 +77,7 @@ class spm_unit_benefits(Variable):
             "wa_rca",
             "high_efficiency_electric_home_rebate",
             "residential_efficiency_electrification_rebate",
-            "unemployment_compensation",
+            "total_unemployment_compensation",
             # One-time energy relief payments.
             # Paid at the same time as the Alaska Permanent Fund Dividend,
             # which is part of IRS gross income.
