@@ -16,8 +16,10 @@ class fl_liheap_income_limit(Variable):
         "https://liheapch.acf.gov/delivery/income_eligibility.htm",
         "https://liheapch.acf.gov/docs/2025/state-plans/FL_Plan_2025.pdf#page=8",
         "https://liheapch.acf.gov/docs/2025/benefits-matricies/FL_BenefitMatrix_2025.pdf",
-        "https://www.law.cornell.edu/uscode/text/42/8624",
+        "https://www.law.cornell.edu/uscode/text/42/8624#b_2_B",
         "https://floridaliheap.com/faq",
+        # PDF pages 9, 11-12
+        "https://www.pbcgov.com/pubInf/Agenda/20260106/3E2.pdf#page=9",
     )
 
     def formula(spm_unit, period, parameters):
@@ -37,7 +39,10 @@ class fl_liheap_income_limit(Variable):
         # size. The FY2025 plan and matrix match 900.01D. The FY2026 plan
         # (page 8) and matrix use 60% of SMI for every size, and the manual
         # says to follow DEO's current benefit matrix (page 9), so FY2026
-        # follows the matrix.
+        # follows the matrix. The October 2025 subgrant contract conflicts too:
+        # G(7)d (page 12) sets 150% of the poverty guideline for every size and
+        # G(8)c (page 12) 150% of the guideline from 9 people, but G(1) (page
+        # 11) and D(10)b (page 9) defer to the Commerce payment matrix.
         # The printed FY2026 size-13 row tops out at $157,686, which is 100% of
         # SMI (103,063 x 1.53), and the portal FAQ prints $13,141 a month
         # (157,686 / 12). The matrix footnote says 60% of SMI, plan item 2.1

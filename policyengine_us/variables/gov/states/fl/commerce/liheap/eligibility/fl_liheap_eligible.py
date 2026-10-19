@@ -9,9 +9,11 @@ class fl_liheap_eligible(Variable):
     label = "Florida LIHEAP regular heating eligibility"
     defined_for = StateCode.FL
     reference = (
-        "https://www.law.cornell.edu/uscode/text/42/8624",
+        "https://www.law.cornell.edu/uscode/text/42/8624#b_2_B",
         # PDF pages 5, 8, 45
         "https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=5",
+        # PDF pages 8-9
+        "https://liheapch.acf.gov/docs/2025/state-plans/FL_Plan_2025.pdf#page=8",
         # PDF pages 4, 23, 39, 41, 43, 47-48, 50-51
         "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=4",
         # PDF pages 12-13
@@ -24,19 +26,22 @@ class fl_liheap_eligible(Variable):
         size = spm_unit("fl_liheap_household_size", period)
         income = spm_unit("fl_liheap_countable_income", period)
         # The matrices print the maximum income value in whole dollars. Manual
-        # 1200.03A (page 51) and contract G(8)a annualize 30 days of income
-        # against it; the portal instead compares one month with monthly
-        # maximums rounded to whole dollars, which differ from this annual
-        # value by at most $6 a year either way ($2,680 for one person is $5
-        # more lenient than 32,155 / 12 = 2,679.58; $3,504 for two is $1
-        # stricter).
+        # 1200.03A (page 51) and contract G(8)a (page 12) use 30 days of income
+        # annualized or the applicant's most current economic situation,
+        # "whichever is lower"; annual income stands in for both. The portal
+        # instead compares one month with monthly maximums rounded to whole
+        # dollars, which differ from this annual value by at most $6 a year
+        # either way ($2,680 for one person is $5 more lenient than
+        # 32,155 / 12 = 2,679.58; $3,504 for two is $1 stricter).
         limit = np.floor(spm_unit("fl_liheap_income_limit", period) + 0.5)
         state_group = spm_unit.household("state_group_str", period)
         guideline = fpg(size, state_group, period, parameters, year_lag=p.fpg_year_lag)
-        # 42 U.S.C. 8624(b)(2)(B), the FY2026 plan assurances (page 45) and
-        # contract G(8)e bar excluding a household on income below 110% of the
-        # poverty level; from 15 people this floor exceeds the FY2026 limit.
-        income_eligible = (income <= limit) | (income < guideline * p_hhs.fpg_floor)
+        # 42 U.S.C. 8624(b)(2)(B) bars excluding a household on income below 110%
+        # of the poverty guideline. The 60% SMI limit falls below that floor from
+        # household size 15 in FY2026 and the 2027 carry-forward. The FY2026 plan
+        # assurances (page 45) and contract G(8)e (page 13) repeat the rule.
+        floor = np.round(guideline * p_hhs.fpg_floor, 2)
+        income_eligible = (income <= limit) | (income < floor)
         categorical = spm_unit("fl_liheap_categorically_eligible", period)
         heating_expense = spm_unit("heating_expense", period)
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
