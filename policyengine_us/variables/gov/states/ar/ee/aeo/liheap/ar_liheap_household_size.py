@@ -10,13 +10,12 @@ class ar_liheap_household_size(Variable):
     documentation = (
         "Number of citizens and qualified noncitizens in the household. Other "
         "members' otherwise countable income remains included in full. The "
-        "FY2025 draft manual's composition rule is corroborated by the current "
+        "FFY 2025 manual's composition rule is corroborated by the current "
         "rights statement of a state-designated LIHEAP subgrantee."
     )
     reference = (
-        # Draft manual sections 4.4-4.4.1; not an adopted FY2026 manual.
-        # PDF pages 36-37
-        "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2025/manuals/AR_Manual%5Bdraft%5D_2025.pdf#page=36",
+        # FFY 2025 manual sections 4.4-4.4.1; no FY2026 manual was found.
+        "https://liheapch.acf.gov/docs/2025/manuals/AR_Manual_2025.pdf#page=52",
         # Current operator's rights statement, item 9; no revision date shown.
         "https://www.cscdc.net/rights-responsibilities-of-liheap-applicants/",
         # State designation of CSCDC; revised May 11, 2026.

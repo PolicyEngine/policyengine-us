@@ -1,4 +1,4 @@
-# FY2025 draft manual sections 4.4-4.4.1 (pp 36-37), corroborated by the CSCDC applicant rights statement, item 9.
+# FFY 2025 manual sections 4.4-4.4.1 (p52), corroborated by the CSCDC applicant rights statement, item 9 (https://www.cscdc.net/rights-responsibilities-of-liheap-applicants/).
 
 - name: Case 1, qualified citizens permanent residents and asylees count in the household.
   period: 2026
@@ -41,7 +41,7 @@
   output:
     ar_liheap_household_size: 3
 
-# No qualified member: size 0 (manual p36 requires at least one eligible member), so the income limit is 0; without the size mask the one-person 28_164 would apply.
+# No qualified member: size 0 (manual p52 requires at least one eligible member), so the income limit is 0; without the size mask the one-person 28_164 would apply.
 - name: Case 2, a household with no qualified member has zero eligible household size.
   period: 2026
   input:

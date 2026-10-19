@@ -1,7 +1,8 @@
 description: Arkansas uses these sources as earned income under the Low Income Home Energy Assistance Program.
-# Existing net business income approximates gross receipts; no additional
-# business-expense deduction or new gross-receipts input is modeled.
-# Active and passive partnership income cannot be separated by existing inputs.
+# Business inputs are already net of expenses, which stands in for the manual's
+# 10% operating-cost allowance on gross self-employment income (Appendix F,
+# page 166); no further business-expense deduction is modeled. Active and
+# passive partnership income cannot be separated by existing inputs.
 values:
   2024-10-01:
     - employment_income
@@ -9,7 +10,7 @@ values:
     - sstb_self_employment_income
     - farm_operations_income
     - partnership_s_corp_income
-    # Manual Appendix F (page 141) treats rental property as a self-employment
+    # Manual Appendix F (page 165) treats rental property as a self-employment
     # enterprise, so rental income, including farm rent, takes the earned
     # disregard. Plan Section 1.8 (page 5) subtracts 20% from work income only
     # and Section 1.9 (page 6) lists rental income as its own item; the manual
@@ -28,5 +29,5 @@ metadata:
       href: https://liheapch.acf.gov/docs/2025/state-plans/AR_Plan_2025.pdf#page=5
     - title: Arkansas LIHEAP Application, Section III Household Income
       href: https://www.adeq.state.ar.us/energy/assistance/pdfs/fillable_aeo-9495_liheap-long-application.pdf#page=2
-    - title: Arkansas LIHEAP draft manual FY2025, Appendix F, Rental property
-      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2025/manuals/AR_Manual%5Bdraft%5D_2025.pdf#page=141
+    - title: "Arkansas FFY 2025 LIHEAP Policy and Procedures Manual, Appendix F, Earned income, Farming, Rental property and Self-employment income #page 158-159,165-166"
+      href: https://liheapch.acf.gov/docs/2025/manuals/AR_Manual_2025.pdf#page=158

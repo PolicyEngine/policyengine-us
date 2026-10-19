@@ -30,11 +30,9 @@ class ar_liheap_eligible(Variable):
         # A direct bill or obligation counts through has_heating_expense, which
         # defaults to a positive primary-fuel bill with heat not in rent. An
         # explicit false (for example, a bill fully reimbursed through a utility
-        # allowance, plan item 2.3) is respected. Verification is not modeled.
-        direct_responsibility = has_expense
-        heating_responsibility = where(
-            heat_in_rent, rent_responsibility, direct_responsibility
-        )
+        # allowance, FY2026 plan item 2.3, page 10) is respected. Verification
+        # is not modeled.
+        heating_responsibility = where(heat_in_rent, rent_responsibility, has_expense)
         return (
             (size > 0)
             & (income <= income_limit)

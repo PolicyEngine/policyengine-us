@@ -47,3 +47,16 @@
     ar_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 9]
   output:
     ar_liheap_income_limit: [27_012, 35_328, 43_632, 51_948, 60_252, 68_568, 71_016, 87_156]
+
+# FY2026 chart: size 20 prints $15,019 and "ADD $688 FOR EACH ADDITIONAL HOUSEHOLD
+# MEMBER": size 22 = 15,019 + 2 x 688 = 16,395 a month; x 12 = 196,740.
+- name: Case 4, FY2026 second additional person adds the printed amount twice.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: AR
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+    ar_liheap_household_size: 22
+  output:
+    ar_liheap_income_limit: 196_740

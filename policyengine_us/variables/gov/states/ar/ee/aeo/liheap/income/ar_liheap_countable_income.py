@@ -15,35 +15,50 @@ class ar_liheap_countable_income(Variable):
         # FY2025 state plan sections 1.8 and 1.9.
         # PDF pages 5-7
         "https://liheapch.acf.gov/docs/2025/state-plans/AR_Plan_2025.pdf#page=5",
-        # Draft manual sections 4.7 and 4.7.2 and Appendices E-F.
-        # PDF pages 41-43, 130-144
-        "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2025/manuals/AR_Manual%5Bdraft%5D_2025.pdf#page=41",
-        # Application section III.
+        # FFY 2025 manual sections 4.7-4.7.4, the section 17.0 Full-time Student
+        # definition and Appendices E-F.
+        # PDF pages 56-59, 62-63, 141, 154-168
+        "https://liheapch.acf.gov/docs/2025/manuals/AR_Manual_2025.pdf#page=56",
+        # Application LIHEAP 9495 R 11/2025, Section III.
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/fillable_aeo-9495_liheap-long-application.pdf#page=2",
-        # FY2025 application R 01/FY2025, section III (Wayback capture).
-        "https://web.archive.org/web/20250104155015/https://www.adeq.state.ar.us/energy/assistance/pdfs/fillable_aeo-9495_liheap-long-application.pdf#page=2",
+        # FY2025 application AEO 9495 R 01/FY2025, Section III (Wayback capture).
+        "https://web.archive.org/web/20250104155015id_/https://www.adeq.state.ar.us/energy/assistance/pdfs/fillable_aeo-9495_liheap-long-application.pdf#page=2",
     )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ar.ee.aeo.liheap.income
         person = spm_unit.members
         age = person("age", period)
-        # Application Section III, in the FY2025 form (R 01/FY2025) and the
-        # current form (R 11/2025), requests work income only from members 18
-        # and older who are not full-time students, with no student age or
-        # dependency limit, so the earnings of every minor and of every
-        # full-time student at any age are excluded. Manual section 4.7.3
-        # (page 43) also exempts adult full-time students from the Zero Income
-        # Form, which fits this broad reading. The draft manual's narrower rules
-        # (page 41; Appendix F, pages 133-134) are not followed. The accepted
-        # plans leave a child's earnings unchecked.
-        counted_worker = (age >= p.earned_minimum_age) & ~person(
-            "is_full_time_student", period
+        # Both application forms (AEO 9495 R 01/FY2025 and LIHEAP 9495 R
+        # 11/2025, Section III) request work income only from members "18 and
+        # older & not a full-time student" without defining the term, so the
+        # manual's definition applies. The section 17.0 definition (page 141)
+        # and Appendix F (page 159) exclude the earnings of a full-time college
+        # student "up to age 23" (read as inclusive) who is a dependent of a
+        # household member; is_tax_unit_dependent stands for that dependency.
+        # Section 4.7 (page 56) excludes the earnings of members aged 18 in high
+        # school "unless working full time or the individual is emancipated";
+        # those exceptions are not modeled. Appendix F (page 158) excludes a
+        # child's earnings only during at least half-time school attendance;
+        # following both forms, every member under 18 has earnings excluded.
+        dependent_college_student = (
+            person("is_full_time_college_student", period)
+            & person("is_tax_unit_dependent", period)
+            & (age <= p.full_time_student_age_limit)
         )
-        # Existing net business income approximates gross receipts. Additional
-        # business/work-expense deductions and new gross inputs are deferred.
-        # Each source is floored at zero, so a loss in one source cannot
-        # offset another.
+        high_school_student = person("is_in_k12_school", period) & (
+            age <= p.high_school_student_age_limit
+        )
+        counted_worker = (
+            (age >= p.earned_minimum_age)
+            & ~dependent_college_student
+            & ~high_school_student
+        )
+        # Business inputs are already net of expenses, which stands in for the
+        # manual's 10% operating-cost allowance on gross self-employment income
+        # (Appendix F, page 166); no further business or work-expense deduction
+        # applies. Each source is floored at zero (section 4.7.4, page 63), so a
+        # loss in one source cannot offset another.
         earned_income = 0
         for source in p.sources.earned:
             earned_income = earned_income + max_(person(source, period), 0)
@@ -53,20 +68,20 @@ class ar_liheap_countable_income(Variable):
         unearned_income = 0
         for source in p.sources.unearned:
             unearned_income = unearned_income + max_(person(source, period), 0)
-        # Manual Appendix F (page 137) counts only the interest "amount over
+        # Manual Appendix F (page 162) counts only the interest "amount over
         # $200.00". The amount is monthly because unearned income is a month's
-        # receipts (page 41; Appendix E, pages 129-130, converts other
-        # frequencies to monthly). The manual does not say whose $200 it is;
-        # applying it to each recipient is a chosen reading, and a household-
-        # wide $200 would count more. Plan Section 1.9 (page 6) counts
-        # interest with no threshold.
+        # receipts (section 4.7, page 57; Appendix E, pages 154-155, converts
+        # other frequencies to monthly). The manual does not say whose $200 it
+        # is; applying it to each recipient is a chosen reading, and a
+        # household-wide $200 would count more. Plan Section 1.9 (page 6)
+        # counts interest with no threshold.
         annual_interest_disregard = p.interest_disregard * MONTHS_IN_YEAR
         countable_interest = max_(
             person("interest_income", period) - annual_interest_disregard, 0
         )
         # Plan section 1.9 counts Social Security "Excluding MediCare
-        # deduction", and manual section 4.7.2 excludes the Part B premium
-        # from Social Security and Railroad Retirement for members not
+        # deduction", and manual section 4.7.2 (page 59) excludes the Part B
+        # premium from Social Security and Railroad Retirement for members not
         # eligible for Medicaid. medicare_part_b_premium is zero when not
         # enrolled and excludes the share a Medicare Savings Program pays.
         # Other medical deductions are not modeled.
@@ -75,7 +90,7 @@ class ar_liheap_countable_income(Variable):
         )
         premium = person("medicare_part_b_premium", period)
         net_ssa_and_railroad = max_(ssa_and_railroad - premium, 0)
-        # Manual Appendix E (page 130) counts TEA once monthly; plan section
+        # Manual Appendix E (page 155) counts TEA once monthly; plan section
         # 1.9 leaves TANF unchecked. The annual tanf aggregate includes ar_tea
         # and applies take-up, so a nonrecipient's entitlement is not counted.
         tea = spm_unit("tanf", period)
@@ -87,7 +102,7 @@ class ar_liheap_countable_income(Variable):
             + spm_unit.sum(unearned_income + countable_interest + net_ssa_and_railroad)
             + tea
         )
-        # Manual page 42: round monthly countable income to the nearest whole
+        # Manual page 58: round monthly countable income to the nearest whole
         # dollar before the income limit and band tests.
         monthly_income = np.floor(annual_income / MONTHS_IN_YEAR + 0.5)
         return monthly_income * MONTHS_IN_YEAR

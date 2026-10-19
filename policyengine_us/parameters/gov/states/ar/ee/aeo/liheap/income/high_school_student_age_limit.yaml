@@ -1,0 +1,19 @@
+description: Arkansas excludes the earned income of high school students up to this age under the Low Income Home Energy Assistance Program.
+# Section 4.7 excludes the earned income of members "aged 18 and enrolled in an
+# institution of secondary education (high school)" unless working full time or
+# emancipated and applying as head of household; those exceptions are not
+# modeled. Members younger than earned_minimum_age have all earnings excluded.
+# The section 17.0 Full-time Student definition (page 141) adds that "High school
+# students over age eighteen (18) may provide proof of enrollment or report card".
+# Section 4.7 is followed, so a high school student aged 19 or older has earnings
+# counted.
+values:
+  2024-10-01: 18
+
+metadata:
+  unit: year
+  period: year
+  label: Arkansas LIHEAP high school student earned income exclusion age limit
+  reference:
+    - title: Arkansas FFY 2025 LIHEAP Policy and Procedures Manual, Section 4.7
+      href: https://liheapch.acf.gov/docs/2025/manuals/AR_Manual_2025.pdf#page=56

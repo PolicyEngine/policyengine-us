@@ -36,4 +36,9 @@ class ar_liheap_income_limit(Variable):
         # The charts add a printed amount for each person above size 20.
         extra_people = max_(size - p.max_table_size, 0)
         monthly_limit = rounded_base + extra_people * p.additional_member_amount
+        # 42 U.S.C. 8624(b)(2)(B) bars excluding a household on income below
+        # 110% of the poverty guideline. In 2025-2027 every limit stays at
+        # least 32% above that floor at every household size (the printed
+        # per-member amount above size 20 sets the narrowest margin), so no
+        # separate floor is applied.
         return where(size > 0, monthly_limit * MONTHS_IN_YEAR, 0)

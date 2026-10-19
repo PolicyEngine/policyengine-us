@@ -1,0 +1,255 @@
+# Arkansas LIHEAP regular heating assistance, end to end.
+# Sources for the expected values:
+# - FY2026 and FY2025 eligibility charts (maximum monthly countable income):
+#   https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Eligibility-Chart_2026.pdf
+#   https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Eligibility-Chart_2025.pdf
+# - FY2026 electric, natural gas and propane matrices and the FY2025 other-fuel matrix:
+#   https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2026_Electric.pdf
+#   https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2026_Natural-Gas.pdf
+#   https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2026_Propane.pdf
+#   https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2025_Other-Wood-Pellets.pdf
+# - FY2026 state plan items 1.8, 1.9 and 2.3:
+#   https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf
+# - FFY 2025 LIHEAP Policy and Procedures Manual (sections 4.4, 4.7-4.7.2, 4.8.3.2 and
+#   17.0; Appendices E-F): https://liheapch.acf.gov/docs/2025/manuals/AR_Manual_2025.pdf
+# Wages use the Arkansas minimum wage of $11.00 an hour. The 2026 SSI federal benefit
+# rate is $994 a month. The standard Medicare Part B premium is $185.00 a month in 2025.
+
+# A widow aged 70 who lives alone. Social Security pays 600 a month (7,200 a year) and
+# SSI tops it up: (994 - (600 - 20)) x 12 = 4,968, after the $20 general income
+# exclusion. Arkansas Medicaid pays an SSI recipient's Part B premium, so none is netted
+# (manual 4.7.2, p59). She heats with electricity billed in her name.
+- name: Case 1, an elderly SSI and Social Security recipient with electric heat.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        social_security: 7_200
+        ssi: 4_968
+        medicare_part_b_premium: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_500
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+        is_in_public_housing: false
+  output:
+    # The electric heating type reads the pre-subsidy electricity bill.
+    heating_expense: 1_500
+    # A direct bill with heat not in rent (plan item 2.3, p10).
+    has_heating_expense: true
+    # A citizen counts (manual 4.4, p52).
+    ar_liheap_household_size: 1
+    # Social Security 7,200 + SSI 4,968 = 12,168; MCI 1,014 (whole).
+    ar_liheap_countable_income: 12_168
+    # FY2026 chart, size 1: 2,347 x 12.
+    ar_liheap_income_limit: 28_164
+    ar_liheap_eligible: true
+    # FY2026 electric row 970-1029, column 1&2: 127.
+    ar_liheap_matrix_amount: 127
+    ar_liheap: 127
+
+# A single mother aged 31 with children aged 8 and 5 works 40 hours a week at $11.00:
+# 11 x 40 x 52 = 22,880. She receives 200 a month of child support (2,400) and no TEA.
+# Natural gas heat is billed in her name.
+- name: Case 2, a working single parent with two children and natural gas heat.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 31
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 22_880
+        child_support_received: 2_400
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 5
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ar_tea: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+        is_in_public_housing: false
+  output:
+    heating_expense: 1_100
+    has_heating_expense: true
+    ar_liheap_household_size: 3
+    # Wages less 20% (plan item 1.8): 22,880 x 0.8 = 18,304; child support counts in full
+    # (manual 4.7.1, p59): 20,704. MCI 1,725.33 rounds to 1,725 (p58): 20,700.
+    ar_liheap_countable_income: 20_700
+    # FY2026 chart, size 3: 3,792 x 12.
+    ar_liheap_income_limit: 45_504
+    ar_liheap_eligible: true
+    # FY2026 natural gas row 1690-1749, column 3&4: 124.
+    ar_liheap_matrix_amount: 124
+    ar_liheap: 124
+
+# Parents aged 48 and 46: one works 40 hours a week at $11.00 (22,880), the other 20
+# hours (11 x 20 x 52 = 11,440). Their son aged 20 is a full-time college student and
+# their dependent, working 10 hours a week (11 x 10 x 52 = 5,720); their daughter is 15.
+# They heat with propane bought in their name.
+- name: Case 3, a family of four with a dependent college student and propane heat.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 48
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 22_880
+      person2:
+        age: 46
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 11_440
+      person3:
+        age: 20
+        immigration_status: CITIZEN
+        is_full_time_college_student: true
+        is_tax_unit_dependent: true
+        ssi: 0
+        employment_income: 5_720
+      person4:
+        age: 15
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ar_tea: 0
+        heating_type: PROPANE
+        bottled_gas_expense: 1_400
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AR
+        is_in_public_housing: false
+  output:
+    heating_expense: 1_400
+    has_heating_expense: true
+    ar_liheap_household_size: 4
+    # The dependent student's 5,720 is excluded (manual p141, p159): (22,880 + 11,440)
+    # x 0.8 = 27,456; MCI 2,288 (whole). Counting it would give MCI 2,669 and the
+    # 2348-3070 row, 106.
+    ar_liheap_countable_income: 27_456
+    # FY2026 chart, size 4: 4,514 x 12.
+    ar_liheap_income_limit: 54_168
+    ar_liheap_eligible: true
+    # FY2026 propane row 2130-2347, column 3&4: 114.
+    ar_liheap_matrix_amount: 114
+    ar_liheap: 114
+
+# A tenant aged 58 works 30 hours a week at $11.00: 11 x 30 x 52 = 17,160. He rents an
+# unsubsidized apartment whose rent includes natural gas heat, so he has no separate
+# heating bill. Unsubsidized households with utilities included in rent have an energy
+# burden (FY2026 plan item 2.3, p9; manual 4.8.3.2, p64).
+- name: Case 4, an unsubsidized renter whose rent includes heat.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 58
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 17_160
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea: 0
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+        is_in_public_housing: false
+  output:
+    # No separate gas bill, and heat is in rent.
+    heating_expense: 0
+    has_heating_expense: false
+    ar_liheap_household_size: 1
+    # 17,160 x 0.8 = 13,728; MCI 1,144 (whole).
+    ar_liheap_countable_income: 13_728
+    ar_liheap_income_limit: 28_164
+    # Heat included in unsubsidized rent is an energy burden with no extra charge.
+    ar_liheap_eligible: true
+    # FY2026 natural gas row 1090-1149, column 1&2: 146.
+    ar_liheap_matrix_amount: 146
+    ar_liheap: 146
+
+# FY2025. A retired couple aged 68 and 66 with Social Security of 1,500 and 800 a month
+# (18,000 and 9,600), each net of the 2025 Part B premium of 185 a month (2,220), and
+# 3,600 of savings interest on the first spouse. They heat with purchased firewood.
+- name: Case 5, an FY2025 retired couple heating with wood.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security: 18_000
+        medicare_part_b_premium: 2_220
+        interest_income: 3_600
+      person2:
+        age: 66
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security: 9_600
+        medicare_part_b_premium: 2_220
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_tea: 0
+        heating_type: WOOD
+        wood_expense: 900
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        is_in_public_housing: false
+  output:
+    heating_expense: 900
+    has_heating_expense: true
+    ar_liheap_household_size: 2
+    # Social Security net of Part B (manual 4.7.2, p59): 15,780 + 7,380 = 23,160;
+    # interest over 200 a month (p162): 3,600 - 2,400 = 1,200; total 24,360, MCI 2,030.
+    ar_liheap_countable_income: 24_360
+    # FY2025 chart, size 2: 2,944 x 12.
+    ar_liheap_income_limit: 35_328
+    ar_liheap_eligible: true
+    # FY2025 other (wood) row 2,010-2,129, column 1&2: 68.
+    ar_liheap_matrix_amount: 68
+    ar_liheap: 68

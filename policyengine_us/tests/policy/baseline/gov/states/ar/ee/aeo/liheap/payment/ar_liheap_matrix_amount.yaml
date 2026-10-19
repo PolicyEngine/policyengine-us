@@ -463,3 +463,49 @@
     ar_liheap_countable_income: [0, 0, 0, 0]
   output:
     ar_liheap_matrix_amount: [0, 0, 242, 0]
+
+# FFY2025 Electric matrix, column 1&2: rows 1,330-1,389 (page 1) and 1,450-1,509 through
+# 1,990-2,009 (page 2) pay 95, 88, 84, 80, 78, 74, 71, 66, 62. FY2026 prints 94, 83,
+# 77, 72, 66, 60, 60, 60, 60. Annual income = row lower bound x 12.
+- name: Case 16, FY2025 electric size one cells that change in FY2026.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR, AR, AR, AR, AR, AR]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    ar_liheap_household_size: [1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ar_liheap_countable_income: [15_960, 17_400, 18_120, 18_840, 19_560, 20_280, 21_000, 22_440,
+      23_880]
+  output:
+    ar_liheap_matrix_amount: [95, 88, 84, 80, 78, 74, 71, 66, 62]
+
+# FFY2025 Natural Gas matrix: column 5&UP at rows 1,390-1,449 (page 1), 1,510, 1,570, 1,630,
+# 1,690 and 1,750 (page 2) pays 170, 156, 150, 143, 136, 128; columns 3&4 and 5&UP at
+# rows 1,870, 1,990, 2,010 and 2,130 pay 110/121, 103/114, 96/107, 89/100. FY2026 prints
+# 169, 154, 146, 138, 131, 122, 109/115, 102/107, 95/100, 88/91.
+- name: Case 17, FY2025 natural gas cells that change in FY2026.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    ar_liheap_household_size: [5, 5, 5, 5, 5, 5, 3, 5, 3, 5, 3, 5, 3, 5]
+    ar_liheap_countable_income: [16_680, 18_120, 18_840, 19_560, 20_280, 21_000, 22_440, 22_440,
+      23_880, 23_880, 24_120, 24_120, 25_560, 25_560]
+  output:
+    ar_liheap_matrix_amount: [170, 156, 150, 143, 136, 128, 110, 121, 103, 114, 96, 107, 89, 100]
+
+# FFY2025 Propane matrix p2, column 1&2: rows 1,990-2,009, 2,010-2,129 and 2,130-2,249 pay
+# 102, 95 and 88 (FY2026: 106, 100, 95). Annual income = row lower bound x 12.
+- name: Case 18, FY2025 propane size one cells that change in FY2026.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR]
+    heating_type: [PROPANE, PROPANE, PROPANE]
+    ar_liheap_household_size: [1, 1, 1]
+    ar_liheap_countable_income: [23_880, 24_120, 25_560]
+  output:
+    ar_liheap_matrix_amount: [102, 95, 88]

@@ -1,0 +1,17 @@
+description: Arkansas excludes the earned income of full-time college students who are dependents of a household member up to this age under the Low Income Home Energy Assistance Program.
+# The manual defines a full-time student as "a full-time student, up to age 23,
+# who is a dependent of a member of the household" enrolled for twelve or more
+# credit hours per semester (page 141), and Appendix F excludes the income of
+# such full-time college students (page 159). "Up to age 23" is read as
+# inclusive. Both application forms exclude full-time students from work-income
+# reporting without defining the term, so this definition applies.
+values:
+  2024-10-01: 23
+
+metadata:
+  unit: year
+  period: year
+  label: Arkansas LIHEAP full-time student earned income exclusion age limit
+  reference:
+    - title: "Arkansas FFY 2025 LIHEAP Policy and Procedures Manual, Section 17.0 Full-time Student and Appendix F, Earnings of a full-time college student #page 141,159"
+      href: https://liheapch.acf.gov/docs/2025/manuals/AR_Manual_2025.pdf#page=141
