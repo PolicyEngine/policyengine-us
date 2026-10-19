@@ -1,0 +1,25 @@
+description: Ohio counts these income sources as business income on the Schedule of Business Income.
+values:
+  2021-01-01:
+    - self_employment_income # Schedule C, line 2
+    - sstb_self_employment_income # Schedule C, line 2
+    - partnership_s_corp_income # Schedule E pass-through income, line 4
+    - farm_operations_income # Schedule F, line 6
+metadata:
+  unit: list
+  period: year
+  label: Ohio business income sources
+  reference:
+    # "Generally, income recognized by a sole proprietorship or pass-through
+    # entity is business income." Interest, dividends, capital gains, rents
+    # (including farm rent), royalties, trust income and Form 4797 gains are
+    # business income only when they arise in a trade or business, which the
+    # model cannot observe, so they are treated as nonbusiness income. Wages
+    # and guaranteed payments a pass-through pays a 20%-or-more owner
+    # (schedule line 5) are not modeled.
+    - title: R.C. 5747.01(B) and (C)
+      href: https://codes.ohio.gov/ohio-revised-code/section-5747.01
+    - title: 2024 Ohio IT 1040 Instructions, Definitions and Examples of Business and Nonbusiness Income
+      href: https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2024/it1040-booklet.pdf#page=11
+    - title: 2024 Ohio IT 1040 Instructions, Ohio Schedule of Business Income
+      href: https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2024/it1040-booklet.pdf#page=26

@@ -1,0 +1,91 @@
+# 26 U.S.C. 1(h)(1)(A)(ii)(I): "the amount of taxable income taxed at a rate
+# below 25 percent". 2025 Schedule D Tax Worksheet line 19: "Enter the smaller
+# of line 1 or: $197,300 if single or married filing separately; $394,600 if
+# married filing jointly or qualifying surviving spouse; or $197,300 if head
+# of household." Line 1 is taxable income, or for a Form 2555 filer line 3 of
+# the Foreign Earned Income Tax Worksheet.
+- name: Single, taxable income above the top of the 24 percent bracket
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 584_250
+  output:
+    taxable_income_taxed_below_25_percent: 197_300
+
+- name: Single, taxable income within the 24 percent bracket
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 150_000
+  output:
+    taxable_income_taxed_below_25_percent: 150_000
+
+- name: Joint
+  period: 2025
+  input:
+    filing_status: JOINT
+    taxable_income: 500_000
+  output:
+    taxable_income_taxed_below_25_percent: 394_600
+
+- name: Qualifying surviving spouse
+  period: 2025
+  input:
+    filing_status: SURVIVING_SPOUSE
+    taxable_income: 400_000
+  output:
+    taxable_income_taxed_below_25_percent: 394_600
+
+- name: Married filing separately
+  period: 2025
+  input:
+    filing_status: SEPARATE
+    taxable_income: 250_000
+  output:
+    taxable_income_taxed_below_25_percent: 197_300
+
+- name: Head of household
+  period: 2025
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    taxable_income: 300_000
+  output:
+    taxable_income_taxed_below_25_percent: 197_300
+
+- name: No taxable income
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 0
+  output:
+    taxable_income_taxed_below_25_percent: 0
+
+- name: A Form 2555 filer adds the excluded amount
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 150_000
+    foreign_earned_income_exclusion: 100_000
+  output:
+    # Foreign Earned Income Tax Worksheet line 3: 250,000.
+    taxable_income_taxed_below_25_percent: 197_300
+
+- name: Single, 2026
+  period: 2026
+  input:
+    filing_status: SINGLE
+    taxable_income: 300_000
+  output:
+    # Rev. Proc. 2025-32, section 4.01, Table 3: the 24 percent bracket ends
+    # at $201,775 for unmarried individuals.
+    taxable_income_taxed_below_25_percent: 201_775
+
+- name: A 25 percent fourth bracket leaves only the first three brackets
+  period: 2025
+  input:
+    gov.irs.income.bracket.rates.4: 0.25
+    filing_status: SINGLE
+    taxable_income: 584_250
+  output:
+    # The 22 percent bracket ends at $103,350.
+    taxable_income_taxed_below_25_percent: 103_350

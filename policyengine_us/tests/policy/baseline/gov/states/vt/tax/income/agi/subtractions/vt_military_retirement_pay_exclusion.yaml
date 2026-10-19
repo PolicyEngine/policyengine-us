@@ -107,3 +107,89 @@
         state_code: VT
   output:
     vt_military_retirement_pay_exclusion: 0
+
+# A dependent's income is not in the filer's federal AGI; the dependent
+# reports it on their own return, so only the head's and spouse's military
+# retirement pay counts.
+- name: A dependent child's military retirement pay is not excluded on the filer's return.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        military_retirement_pay: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: VT
+  output:
+    vt_military_retirement_pay_exclusion: 0
+
+- name: Only the head's military retirement pay counts toward the capped exclusion, not a dependent's.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 50_000
+        military_retirement_pay: 8_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        military_retirement_pay: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: VT
+  output:
+    # min(8,000 head pay, 10,000 cap); the child's 10,000 is not counted.
+    vt_military_retirement_pay_exclusion: 8_000
+
+- name: Under the 2025 income-based exemption, only the head's military retirement pay is exempt.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 50_000
+        military_retirement_pay: 6_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        military_retirement_pay: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: VT
+  output:
+    # Federal AGI 50,000 is below the 125,000 full-exemption threshold, so the
+    # head's 6,000 is fully exempt; the child's 10,000 is not counted.
+    vt_military_retirement_pay_exclusion: 6_000

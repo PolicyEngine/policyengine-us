@@ -21,3 +21,13 @@
     amt_income_less_exemptions: 400_000
   output:
     amt_lower_base_tax: 53_586
+
+- name: A Form 2555 filer's base is line 3 of the Form 6251 Foreign Earned Income Tax Worksheet
+  period: 2025
+  input:
+    filing_status: SINGLE
+    amt_income_less_exemptions: 150_000
+    foreign_earned_income_exclusion: 130_000
+  output:
+    # Line 3 = 280,000; 26% of the first 239,100.
+    amt_lower_base_tax: 62_166

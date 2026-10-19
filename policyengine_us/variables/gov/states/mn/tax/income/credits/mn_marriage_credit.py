@@ -8,8 +8,8 @@ class mn_marriage_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ma_21.pdf"
-        "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ma_22.pdf"
+        "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ma_21.pdf",
+        "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ma_22.pdf",
     )
     defined_for = StateCode.MN
 

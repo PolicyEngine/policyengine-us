@@ -7,9 +7,7 @@ class md_pension_subtraction_amount(Variable):
     label = "MD pension subtraction from AGI"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=13"
-    )
+    reference = "https://interactive.marylandtaxes.gov/Individuals/iFile_ChooseForm/PriorYearForms/Resident_Booklet_2021.pdf#page=13"
     defined_for = StateCode.MD
 
     def formula(person, period, parameters):

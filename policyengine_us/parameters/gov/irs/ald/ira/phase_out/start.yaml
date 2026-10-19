@@ -1,0 +1,117 @@
+description: The IRS begins phasing out the traditional IRA deduction at this modified adjusted gross income for contributors who actively participate in an employer retirement plan, based on filing status.
+metadata:
+  propagate_metadata_to_children: true
+  unit: currency-USD
+  period: year
+  label: IRA deduction active participant phase-out start
+  breakdown:
+    - filing_status
+  reference:
+    - title: 26 U.S. Code § 219(g)(3)(B), (8)
+      href: https://www.law.cornell.edu/uscode/text/26/219#g_3_B
+    - title: IRS Notice 2014-70 - 2015 retirement plan limits
+      href: https://www.irs.gov/irb/2014-48_IRB
+    - title: IRS Notice 2015-75 - 2016 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-15-75.pdf#page=3
+    - title: IRS Notice 2016-62 - 2017 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-16-62.pdf#page=3
+    - title: IRS Notice 2017-64 - 2018 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-17-64.pdf#page=3
+    - title: IRS Notice 2018-83 - 2019 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-18-83.pdf#page=3
+    - title: IRS Notice 2019-59 - 2020 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-19-59.pdf#page=3
+    - title: IRS Notice 2020-79 - 2021 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-20-79.pdf#page=3
+    - title: IRS Notice 2021-61 - 2022 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-21-61.pdf#page=3
+    - title: IRS Notice 2022-55 - 2023 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-22-55.pdf#page=3
+    - title: IRS Notice 2023-75 - 2024 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-23-75.pdf#page=4
+    - title: IRS Notice 2024-80 - 2025 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-24-80.pdf#page=4
+    - title: IRS Notice 2025-67 - 2026 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-25-67.pdf#page=4
+SINGLE:
+  values:
+    2015-01-01: 61_000
+    2016-01-01: 61_000
+    2017-01-01: 62_000
+    2018-01-01: 63_000
+    2019-01-01: 64_000
+    2020-01-01: 65_000
+    2021-01-01: 66_000
+    2022-01-01: 68_000
+    2023-01-01: 73_000
+    2024-01-01: 77_000
+    2025-01-01: 79_000
+    2026-01-01: 81_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 1_000
+JOINT:
+  values:
+    2015-01-01: 98_000
+    2016-01-01: 98_000
+    2017-01-01: 99_000
+    2018-01-01: 101_000
+    2019-01-01: 103_000
+    2020-01-01: 104_000
+    2021-01-01: 105_000
+    2022-01-01: 109_000
+    2023-01-01: 116_000
+    2024-01-01: 123_000
+    2025-01-01: 126_000
+    2026-01-01: 129_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 1_000
+SEPARATE:
+  2015-01-01: 0
+HEAD_OF_HOUSEHOLD:
+  values:
+    2015-01-01: 61_000
+    2016-01-01: 61_000
+    2017-01-01: 62_000
+    2018-01-01: 63_000
+    2019-01-01: 64_000
+    2020-01-01: 65_000
+    2021-01-01: 66_000
+    2022-01-01: 68_000
+    2023-01-01: 73_000
+    2024-01-01: 77_000
+    2025-01-01: 79_000
+    2026-01-01: 81_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 1_000
+SURVIVING_SPOUSE:
+  values:
+    2015-01-01: 98_000
+    2016-01-01: 98_000
+    2017-01-01: 99_000
+    2018-01-01: 101_000
+    2019-01-01: 103_000
+    2020-01-01: 104_000
+    2021-01-01: 105_000
+    2022-01-01: 109_000
+    2023-01-01: 116_000
+    2024-01-01: 123_000
+    2025-01-01: 126_000
+    2026-01-01: 129_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 1_000

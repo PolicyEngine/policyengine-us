@@ -80,3 +80,41 @@
       state_code: MI
   output: # 12697 - 10000 - 1000 - 300 = 1397 < 5000 + 400 + 100
     mi_interest_dividends_capital_gains_deduction: 1_397
+
+- name: 2025 joint filer uses the 2025 joint limit
+  period: 2025
+  input:
+    people:
+      person1:
+        taxable_interest_income: 50_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_interest_dividends_capital_gains_deduction_eligible: true
+        members: [person1, person2]
+        filing_status: JOINT
+    household:
+      members: [person1, person2]
+      state_code: MI
+  output: # 2025 MI-1040 booklet, Schedule 1 line 28: $29,376 joint limit < 50,000
+    mi_interest_dividends_capital_gains_deduction: 29_376
+
+- name: 2025 single filer uses the 2025 single limit
+  period: 2025
+  input:
+    people:
+      person1:
+        taxable_interest_income: 50_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_interest_dividends_capital_gains_deduction_eligible: true
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output: # 2025 MI-1040 booklet, Schedule 1 line 28: $14,688 single limit < 50,000
+    mi_interest_dividends_capital_gains_deduction: 14_688

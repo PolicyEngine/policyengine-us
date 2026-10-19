@@ -10,6 +10,91 @@
     dc_self_employment_loss_addition: 8_000
     dc_agi: 68_000
 
+- name: A dependent's self-employment loss does not dilute the head's addition.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        self_employment_income: -20_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        self_employment_income: -20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: DC
+  output:
+    # The dependent's loss is on their own return, so loss_ald holds only
+    # the head's $20,000. Addition: max(0, 20,000 - 12,000) = 8,000, all
+    # of it the head's.
+    dc_self_employment_loss_addition: [8_000, 0, 0]
+
+- name: A dependent's self-employment loss does not raise a head of household's addition.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        self_employment_income: -5_000
+        rental_income: -30_000
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        self_employment_income: -20_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+        state_code: DC
+  output:
+    # The head's own self-employment loss is $5,000, under the $12,000
+    # threshold. Counting the dependent's $20,000 would give
+    # min(25,000, 35,000 of business losses in loss_ald) - 12,000 = 13,000.
+    dc_self_employment_loss_addition: [0, 0]
+
+- name: Both spouses' losses share the addition; a dependent's loss is left out.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        self_employment_income: -20_000
+      spouse:
+        age: 45
+        employment_income: 50_000
+        self_employment_income: -10_000
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        self_employment_income: -15_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: DC
+  output:
+    # Addition: max(0, 30,000 - 12,000) = 18,000, split 20:10 by the
+    # spouses' own losses.
+    dc_self_employment_loss_addition: [12_000, 6_000, 0]
+
 - name: Case 3, large SE loss capped by federal 461(l).
   absolute_error_margin: 0.01
   period: 2024
@@ -109,7 +194,70 @@
         state_code: DC
   output:
     adjusted_gross_income: 80_000
-    # total IRS self-employment losses are shared evenly by head and spouse
-    adjusted_gross_income_person: [45_000, 35_000, 0]
+    # Each spouse's self-employment loss lowers their own federal AGI, as each
+    # reports their own income and deductions in Calculation J.
+    adjusted_gross_income_person: [40_000, 40_000, 0]
     dc_self_employment_loss_addition: [12_000, 6_000, 0]
-    dc_agi: [57_000, 41_000, 0]
+    dc_agi: [52_000, 46_000, 0]
+
+- name: Business and capital losses, computed.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        self_employment_income: -20_000
+        long_term_capital_gains: -5_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    # loss_ald: 20,000 business and 3,000 capital.
+    loss_ald: 23_000
+    adjusted_gross_income_person: [37_000, 40_000]
+    # 20,000 - 12,000.
+    dc_self_employment_loss_addition: [8_000, 0]
+    # Separately the head deducts 1,500 of capital loss: 3,000 - 1,500.
+    dc_separate_capital_loss_adjustment: [1_500, 0]
+    # 37,000 + 8,000 + 1,500 - 29,200.
+    dc_taxable_income_indiv: [17_300, 40_000]
+
+- name: Business and capital losses with loss_ald set directly.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        self_employment_income: -20_000
+        long_term_capital_gains: -5_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        loss_ald: 22_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    # The business loss comes first: 20,000 business and 2,000 capital, as in
+    # loss_ald_person.
+    adjusted_gross_income_person: [38_000, 40_000]
+    dc_self_employment_loss_addition: [8_000, 0]
+    # 2,000 - 1,500.
+    dc_separate_capital_loss_adjustment: [500, 0]
+    # 38,000 + 8,000 + 500 - 29,200.
+    dc_taxable_income_indiv: [17_300, 40_000]

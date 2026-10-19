@@ -8,7 +8,7 @@ class va_tanf_need_standard(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.VA
-    reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=47"
+    reference = "https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/tanfx2fview/tanf/Chapter-300---Need-and-Amount-of-Assistance.pdf#page=51"
 
     def formula(spm_unit, period, parameters):
         unit_size = spm_unit("spm_unit_size", period.this_year)

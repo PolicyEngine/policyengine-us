@@ -1,7 +1,7 @@
 description: Kansas uses these unearned income sources to determine gross household income under the Low Income Energy Assistance Program.
 values:
   2024-10-01:
-    - unemployment_compensation
+    - total_unemployment_compensation
     - strike_benefits
     # SSA benefits are counted gross, including the Medicare deduction.
     - social_security

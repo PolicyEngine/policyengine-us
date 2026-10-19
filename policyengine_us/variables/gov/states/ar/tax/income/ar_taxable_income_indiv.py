@@ -8,8 +8,8 @@ class ar_taxable_income_indiv(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf"
-        "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf"
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf",
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf",
     )
     defined_for = StateCode.AR
 

@@ -8,10 +8,10 @@ class vt_renter_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://law.justia.com/codes/vermont/2022/title-32/chapter-154/section-6066/"  # b
-        "https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf#page=35"
+        "https://law.justia.com/codes/vermont/2022/title-32/chapter-154/section-6066/",  # b
+        "https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf#page=35",
         # the formula used in this file is based on the excel sheet provided on the official Vermont government website
-        "https://tax.vermont.gov/individuals/renter-credit/calculator-and-credit-amounts"  # link for the excel sheet
+        "https://tax.vermont.gov/individuals/renter-credit/calculator-and-credit-amounts",  # link for the excel sheet
     )
     defined_for = StateCode.VT
 
@@ -28,13 +28,21 @@ class vt_renter_credit(Variable):
             county
         ]
         fmr = p.fair_market_rent[tax_unit_size][county]
-        base_credit_amount = fmr * MONTHS_IN_YEAR * p.fmr_rate
+        # The department rounds the credit amount to whole dollars, half up,
+        # before applying the income phase-out: its 2021 calculator computes
+        # ROUND(FMR * 12 * 10%, 0), and its published tables are whole dollars.
+        base_credit_amount = np.floor(fmr * MONTHS_IN_YEAR * p.fmr_rate + 0.5)
 
         # Compute what the spreadsheet calls the "percent rebate claimable"
         vt_renter_credit_income = tax_unit("vt_renter_credit_income", period)
         income_diff = partial_credit_income_limit - vt_renter_credit_income
         income_threshold_diff = partial_credit_income_limit - full_credit_income_limit
         percent_rebate_claimable = income_diff / income_threshold_diff
+        # Multiply before dividing so whole-dollar inputs preserve exact
+        # half-dollar credits instead of floating-point values just below them.
+        partial_credit_unsubsidized = (
+            income_diff * base_credit_amount / income_threshold_diff
+        )
         # If shared residence, reduce by a given fraction.
         shared_rent = tax_unit("rent_is_shared_with_another_tax_unit", period)
         shared_residence_reduction = shared_rent * p.shared_residence_reduction
@@ -62,7 +70,7 @@ class vt_renter_credit(Variable):
             [
                 base_credit_amount,
                 base_credit_subsidized,
-                percent_rebate_claimable * base_credit_amount,
+                partial_credit_unsubsidized,
                 percent_rebate_claimable * base_credit_subsidized,
             ],
             default=0,
@@ -71,4 +79,7 @@ class vt_renter_credit(Variable):
         # 6066(b)(1)); 2026 Vt. Act 169 raises this for claim year 2027 only.
         capped_credit = min_(credit_value, p.max_credit)
         unrounded = capped_credit * (1 - shared_residence_reduction)
-        return np.round(unrounded)
+        # The department calculators use ROUND(..., 0): Calculator!G16 in
+        # 2021-2022 and Calculator!G17 in 2023-2025. Credits are nonnegative,
+        # so floor(x + 0.5) matches their half-up rounding at exact ties.
+        return np.floor(unrounded + 0.5)

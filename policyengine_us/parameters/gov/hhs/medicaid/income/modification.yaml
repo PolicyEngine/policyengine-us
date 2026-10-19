@@ -1,7 +1,8 @@
 description: Income sources not included in AGI but included in Medicaid/CHIP/ACA-related MAGI.
 values:
   2010-01-01:
-    - foreign_earned_income_exclusion
+    # Form 2555 lines 45 and 50 (Form 8962 Worksheet 1-1 line 3).
+    - section_911_excluded_income
     - tax_exempt_interest_income
     - tax_exempt_social_security
 metadata:
@@ -12,3 +13,5 @@ metadata:
       href: https://www.law.cornell.edu/uscode/text/26/36B#d_2
     - title: Modified Adjusted Gross Income (MAGI)
       href: https://www.healthcare.gov/glossary/modified-adjusted-gross-income-magi
+    - title: 2024 Instructions for Form 8962, Worksheet 1-1, line 3
+      href: https://www.irs.gov/pub/irs-prior/i8962--2024.pdf#page=8

@@ -29,3 +29,50 @@
         filing_status: SINGLE
   output:
     additional_medicare_tax: 450 # (250k - 200k) * 0.9%
+
+- name: Joint return counts both spouses' wages
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 200_000
+      spouse:
+        age: 45
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+  output:
+    filing_status: JOINT
+    additional_medicare_tax: 450 # (300k - 250k) * 0.9%
+
+- name: A dependent's wages are on the dependent's own Form 8959, not the parents'
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 140_000
+      spouse:
+        age: 45
+        employment_income: 100_000
+      dependent:
+        age: 16
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      dependent_marital_unit:
+        members: [dependent]
+  output:
+    filing_status: JOINT
+    # The parents' $240,000 is under the $250,000 joint threshold; the
+    # dependent's $20,000 would otherwise add $90.
+    additional_medicare_tax: 0

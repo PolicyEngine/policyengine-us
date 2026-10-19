@@ -1,4 +1,34 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.household.expense.retirement._ira_supplied_contributions import (
+    IRA_CONTRIBUTION_VARIABLES,
+)
+
+
+def user_set_variables(sim):
+    """Names of the variables a counterfactual branch must keep.
+
+    ``sim.input_variables`` lists inputs given when the simulation was built.
+    The IRA contribution variables are also kept when the caller set them
+    later through ``set_input`` (core records those in ``_user_input_keys``):
+    ``ira_contribution_limit`` reads them as supplied, so a branch that
+    deleted them would regenerate a different IRA allocation alongside the
+    earnings bump. Other later ``set_input`` calls are not kept, because
+    model formulas also call ``set_input`` internally (the SSA revenue
+    formulas set ``tax_unit_taxable_social_security``), and a branch must
+    recompute those.
+    """
+    names = set(sim.input_variables)
+    keys = getattr(sim, "_user_input_keys", None) or ()
+    if hasattr(sim, "_get_visible_branch_names"):
+        branches = set(sim._get_visible_branch_names())
+    else:
+        branches = {getattr(sim, "branch_name", "default"), "default"}
+    names.update(
+        name
+        for name, branch, _period in keys
+        if name in IRA_CONTRIBUTION_VARIABLES and branch in branches
+    )
+    return names
 
 
 def compute_component_mtr(person, period, parameters, tax_variable, branch_prefix):
@@ -31,11 +61,12 @@ def compute_component_mtr(person, period, parameters, tax_variable, branch_prefi
     self_employment_income = person("self_employment_income", period)
     emp_self_emp_ratio = person("emp_self_emp_ratio", period)
 
+    inputs = user_set_variables(sim)
     for adult_index in range(1, 1 + adult_count):
         branch_name = f"{branch_prefix}_for_adult_{adult_index}"
         alt_sim = sim.get_branch(branch_name)
         for variable in sim.tax_benefit_system.variables:
-            if variable not in sim.input_variables or variable == "employment_income":
+            if variable not in inputs or variable == "employment_income":
                 alt_sim.delete_arrays(variable)
         mask = adult_index == adult_indexes
         alt_sim.set_input(

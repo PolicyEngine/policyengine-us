@@ -1,0 +1,23 @@
+description: The IRS disregards these deductions and exclusions when calculating modified adjusted gross income for the traditional IRA deduction phase-out.
+values:
+  2015-01-01:
+    - traditional_ira_contributions
+    - traditional_ira_deduction
+    - student_loan_interest_ald
+    - us_bonds_for_higher_ed
+    - qualified_adoption_assistance_expense
+    - capped_qualified_tuition_expenses_ald
+    - domestic_production_ald
+metadata:
+  unit: list
+  period: year
+  label: IRA deduction MAGI disregarded deductions
+  reference:
+    - title: 26 U.S. Code § 219(g)(3)(A)
+      href: https://www.law.cornell.edu/uscode/text/26/219#g_3_A
+    - title: IRS Publication 590-A (2017), Worksheet 1-1 and Appendix B
+      href: https://www.irs.gov/pub/irs-prior/p590a--2017.pdf
+    - title: IRS Publication 590-A (2020), Worksheet 1-1 and Appendix B
+      href: https://www.irs.gov/pub/irs-prior/p590a--2020.pdf
+    - title: IRS Publication 590-A, Worksheet 1-1 and Appendix B
+      href: https://www.irs.gov/publications/p590a

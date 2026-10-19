@@ -1,0 +1,28 @@
+# 26 U.S.C. 911(f)(2)(A)(i)-(ii): the gain other than qualified dividends is
+# reduced by the capital gain excess, then the qualified dividends by the rest.
+# Together they leave net capital gain equal to taxable income.
+- name: The excess reduces net capital gain to taxable income
+  period: 2025
+  input:
+    net_capital_gain: 50_000
+    section_911_capital_gain_excess: 15_750
+  output:
+    section_911_net_capital_gain: 34_250
+
+- name: No excess leaves net capital gain unchanged
+  period: 2025
+  input:
+    net_capital_gain: 50_000
+    section_911_capital_gain_excess: 0
+  output:
+    section_911_net_capital_gain: 50_000
+
+- name: From the inputs, no taxable income leaves no net capital gain
+  period: 2025
+  input:
+    foreign_earned_income_exclusion: 130_000
+    net_capital_gain: 3_000
+    taxable_income: 0
+  output:
+    section_911_capital_gain_excess: 3_000
+    section_911_net_capital_gain: 0

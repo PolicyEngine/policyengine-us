@@ -216,7 +216,7 @@
   output:
     la_income_tax: 476
 
-- name: 2026 single filer standard deduction uses prior-calendar-year CPI-U adjustment
+- name: 2026 single filer standard deduction follows RIB 26-019
   period: 2026
   input:
     state_code: LA
@@ -226,6 +226,347 @@
     la_federal_tax_deduction: 0
     la_non_refundable_credits: 0
   output:
-    la_standard_deduction: 12_835
-    la_taxable_income: 27_165
-    la_income_tax_before_refundable_credits: 814.95
+    la_standard_deduction: 12_838
+    # 40,000 - 12,838
+    la_taxable_income: 27_162
+    # 27,162 * 3%
+    la_income_tax_before_refundable_credits: 814.86
+
+# The cases below mirror the Axiom companion tests proposed in
+# TheAxiomFoundation/rulespec-us#1493, with expectations from the same
+# ground truth: LDR Revenue Information Bulletin 26-019's 2026 amounts
+# ($12,838 / $25,676 standard deduction, $12,324 retirement exemption) and
+# R.S. 47:32(A)'s 3% rate.
+# --- Standard deduction end to end from federal AGI (Axiom: *_federal_agi_50000_end_to_end_*) ---
+- name: 2026 single, federal AGI 50,000, RIB 26-019 end to end
+  period: 2026
+  input:
+    state_code: LA
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+    tax_unit_itemizes: false
+  output:
+    la_agi: 50_000
+    la_standard_deduction: 12_838
+    # 50,000 - 12,838
+    la_taxable_income: 37_162
+    # 37,162 x 0.03
+    la_income_tax_before_non_refundable_credits: 1_114.86
+
+- name: 2026 married filing separately, federal AGI 50,000, RIB 26-019 end to end
+  period: 2026
+  input:
+    state_code: LA
+    filing_status: SEPARATE
+    adjusted_gross_income: 50_000
+    tax_unit_itemizes: false
+  output:
+    la_standard_deduction: 12_838
+    la_taxable_income: 37_162
+    la_income_tax_before_non_refundable_credits: 1_114.86
+
+- name: 2026 joint, federal AGI 50,000, RIB 26-019 end to end
+  period: 2026
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+      spouse:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        adjusted_gross_income: 50_000
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [head, spouse]
+        state_code: LA
+  output:
+    la_standard_deduction: 25_676
+    # 50,000 - 25,676
+    la_taxable_income: 24_324
+    # 24,324 x 0.03
+    la_income_tax_before_non_refundable_credits: 729.72
+
+- name: 2026 head of household, federal AGI 50,000, RIB 26-019 end to end
+  period: 2026
+  input:
+    state_code: LA
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 50_000
+    tax_unit_itemizes: false
+  output:
+    la_standard_deduction: 25_676
+    la_taxable_income: 24_324
+    la_income_tax_before_non_refundable_credits: 729.72
+
+- name: 2026 surviving spouse, federal AGI 50,000, RIB 26-019 end to end
+  period: 2026
+  input:
+    state_code: LA
+    filing_status: SURVIVING_SPOUSE
+    adjusted_gross_income: 50_000
+    tax_unit_itemizes: false
+  output:
+    la_standard_deduction: 25_676
+    la_taxable_income: 24_324
+    la_income_tax_before_non_refundable_credits: 729.72
+
+# --- Boundaries (Axiom: single_federal_agi_1283{8,9}_*, joint_federal_agi_2567{6,7}_*) ---
+- name: 2026 single, federal AGI equal to the RIB 26-019 deduction
+  period: 2026
+  input:
+    state_code: LA
+    filing_status: SINGLE
+    adjusted_gross_income: 12_838
+    tax_unit_itemizes: false
+  output:
+    la_taxable_income: 0
+    la_income_tax_before_non_refundable_credits: 0
+
+- name: 2026 single, federal AGI one dollar above the RIB 26-019 deduction
+  period: 2026
+  input:
+    state_code: LA
+    filing_status: SINGLE
+    adjusted_gross_income: 12_839
+    tax_unit_itemizes: false
+  output:
+    la_taxable_income: 1
+    la_income_tax_before_non_refundable_credits: 0.03
+
+- name: 2026 joint, federal AGI 25,676 leaves nothing (2 x 12,838, not 25,000 x 1.027 = 25,675)
+  period: 2026
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+      spouse:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        adjusted_gross_income: 25_676
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [head, spouse]
+        state_code: LA
+  output:
+    la_taxable_income: 0
+    la_income_tax_before_non_refundable_credits: 0
+
+- name: 2026 joint, federal AGI one dollar above the RIB 26-019 deduction
+  period: 2026
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+      spouse:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        adjusted_gross_income: 25_677
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [head, spouse]
+        state_code: LA
+  output:
+    la_taxable_income: 1
+    la_income_tax_before_non_refundable_credits: 0.03
+
+# --- Age-65 retirement exemption, R.S. 47:44.1(A) (Axiom: age_65_* / under_65_* / joint_return_*) ---
+- name: 2026 aged head, retirement income below the RIB 26-019 amount
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 66
+        is_tax_unit_head: true
+        taxable_private_pension_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_retirement_exemption_person: 10_000
+
+- name: 2026 aged head, retirement income equal to the RIB 26-019 amount
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 66
+        is_tax_unit_head: true
+        taxable_private_pension_income: 12_324
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_retirement_exemption_person: 12_324
+
+- name: 2026 aged head, retirement income one dollar above the RIB 26-019 amount
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 66
+        is_tax_unit_head: true
+        taxable_private_pension_income: 12_325
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_retirement_exemption_person: 12_324
+
+- name: 2026 head under 65 gets no retirement exemption
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 64
+        is_tax_unit_head: true
+        taxable_private_pension_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_retirement_exemption_person: 0
+
+- name: 2026 aged head and aged spouse each have their own amount
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 66
+        is_tax_unit_head: true
+        taxable_private_pension_income: 20_000
+      person2:
+        age: 65
+        is_tax_unit_spouse: true
+        taxable_private_pension_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # min(20,000, 12,324) and min(5,000, 12,324)
+    la_retirement_exemption_person: [12_324, 5_000]
+
+# --- Retirement exemption end to end (Axiom: *_end_to_end_with_retirement_exemption*) ---
+# These set adjusted_gross_income directly, so they test the Louisiana
+# exemption and tax path, not that pensions flow into federal AGI.
+- name: 2026 aged single, federal AGI 50,000 with 20,000 private pension
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 66
+        is_tax_unit_head: true
+        taxable_private_pension_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_retirement_exemption_person: 12_324
+    la_agi_exempt_income: 12_324
+    # 50,000 - 12,324
+    la_agi: 37_676
+    # 37,676 - 12,838
+    la_taxable_income: 24_838
+    # 24,838 x 0.03
+    la_income_tax_before_non_refundable_credits: 745.14
+
+- name: 2026 aged single, exempt public pension does not use the 47:44.1 amount
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 66
+        is_tax_unit_head: true
+        taxable_public_pension_income: 30_000
+        taxable_private_pension_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_retirement_exemption_person: 5_000
+    # 30,000 public pension (sources.yaml) + 5,000 under 47:44.1
+    la_agi_exempt_income: 35_000
+    la_agi: 15_000
+    # 15,000 - 12,838
+    la_taxable_income: 2_162
+    # 2,162 x 0.03
+    la_income_tax_before_non_refundable_credits: 64.86
+
+- name: 2026 aged joint couple, federal AGI 80,000 with 20,000 and 15,000 pensions
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 66
+        is_tax_unit_head: true
+        taxable_private_pension_income: 20_000
+      person2:
+        age: 65
+        is_tax_unit_spouse: true
+        taxable_private_pension_income: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 80_000
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_retirement_exemption_person: [12_324, 12_324]
+    # 12,324 + 12,324
+    la_agi_exempt_income: 24_648
+    # 80,000 - 24,648
+    la_agi: 55_352
+    # 55,352 - 25,676
+    la_taxable_income: 29_676
+    # 29,676 x 0.03
+    la_income_tax_before_non_refundable_credits: 890.28

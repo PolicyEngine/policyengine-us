@@ -17,8 +17,10 @@ class vt_military_retirement_pay_exclusion(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.vt.tax.income.agi.retirement_income_exemption
         # Get retirement amount from military retirement system
-        tax_unit_military_retirement_pay = add(
-            tax_unit, period, ["military_retirement_pay"]
+        # Dependents' income is not in federal AGI; they report it on their
+        # own return, so only the head's and spouse's pay counts.
+        tax_unit_military_retirement_pay = tax_unit_non_dep_sum(
+            "military_retirement_pay", tax_unit, period
         )
 
         # S.51 (2025): Income-based military pension exemption
