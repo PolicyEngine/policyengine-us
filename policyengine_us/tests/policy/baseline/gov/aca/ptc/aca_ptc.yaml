@@ -1083,3 +1083,175 @@
   output:
     # 22,590 / 20,440 = 110% FPL: 0% contribution; 2 * 6,000.
     aca_ptc: 12_000
+
+- name: Review r4 joint filers ages 18 and 17 with claimable age 18, inferred roles
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      older_spouse:
+        age: 18
+        claimable_as_dependent_on_another_return: true
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+      younger_spouse:
+        age: 17
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [older_spouse, younger_spouse]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [older_spouse, younger_spouse]
+        state_code: TX
+  output:
+    # 26 CFR 1.36B-1(d)(2) includes both joint filers regardless of age;
+    # the spouse claimable on another return is outside this tax family.
+    is_aca_tax_family_member: [false, true]
+    aca_ptc: 6000
+    is_aca_filer: [true, true]
+
+- name: Review r4 joint filers ages 18 and 17 with claimable age 18, explicit-role control
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      older_spouse:
+        age: 18
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+      younger_spouse:
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [older_spouse, younger_spouse]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [older_spouse, younger_spouse]
+        state_code: TX
+  output:
+    # 26 CFR 1.36B-1(d)(2) includes both joint filers regardless of age;
+    # the spouse claimable on another return is outside this tax family.
+    is_aca_tax_family_member: [false, true]
+    aca_ptc: 6000
+    is_aca_filer: [true, true]
+
+- name: Review r4 joint filers ages 18 and 17 with claimable age 17, inferred roles
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      older_spouse:
+        age: 18
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+      younger_spouse:
+        age: 17
+        claimable_as_dependent_on_another_return: true
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [older_spouse, younger_spouse]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [older_spouse, younger_spouse]
+        state_code: TX
+  output:
+    # 26 CFR 1.36B-1(d)(2) includes both joint filers regardless of age;
+    # the spouse claimable on another return is outside this tax family.
+    is_aca_tax_family_member: [true, false]
+    aca_ptc: 6000
+    is_aca_filer: [true, true]
+
+- name: Review r4 joint filers ages 18 and 17 with claimable age 17, explicit-role control
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      older_spouse:
+        age: 18
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+      younger_spouse:
+        age: 17
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [older_spouse, younger_spouse]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [older_spouse, younger_spouse]
+        state_code: TX
+  output:
+    # 26 CFR 1.36B-1(d)(2) includes both joint filers regardless of age;
+    # the spouse claimable on another return is outside this tax family.
+    is_aca_tax_family_member: [true, false]
+    aca_ptc: 6000
+    is_aca_filer: [true, true]

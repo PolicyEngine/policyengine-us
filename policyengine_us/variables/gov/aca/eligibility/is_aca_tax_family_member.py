@@ -28,10 +28,10 @@ class is_aca_tax_family_member(Variable):
         "Dependent Taxpayer Test). No credit is allowed to someone another "
         "taxpayer can claim (IRC 36B(c)(1)(D)), so a return whose every head "
         "and spouse can be claimed has no applicable taxpayer and no family "
-        "for the credit. A tax unit with neither a head nor a spouse (role "
-        "inference makes the oldest adult the head, so a unit of minors has "
-        "none) uses is_aca_filer to identify one filer, or two on a joint "
-        "return, using age and supplied dependency hints. Explicit roles are "
+        "for the credit. is_aca_filer completes an absent or partial set "
+        "of head/spouse roles to identify one filer, or two on a joint "
+        "return, using age and supplied dependency hints without an adult-age "
+        "cutoff. Explicit roles are "
         "needed when ages cannot distinguish filers from dependents. A "
         "dependent on a return with an applicable taxpayer is a member even if "
         "another taxpayer could also claim them: this return claims them."
@@ -40,19 +40,8 @@ class is_aca_tax_family_member(Variable):
     def formula(person, period, parameters):
         filer = person("is_aca_filer", period)
         claimable = person("claimable_as_dependent_on_another_return", period)
-        has_roles = person.tax_unit.any(person("is_tax_unit_head_or_spouse", period))
-        applicable_taxpayer = where(
-            has_roles,
-            person.tax_unit("head_spouse_count_not_dependent_elsewhere", period) > 0,
-            person.tax_unit.any(filer & ~claimable),
-        )
+        applicable_taxpayer = person.tax_unit.any(filer & ~claimable)
         exception = person("dependent_claimant_filing_exception", period)
-        claims_dependents = ~where(
-            has_roles,
-            person.tax_unit(
-                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
-            ),
-            person.tax_unit.any(filer & claimable & ~exception),
-        )
+        claims_dependents = ~person.tax_unit.any(filer & claimable & ~exception)
         dependent_member = applicable_taxpayer & claims_dependents
         return where(filer, ~claimable, dependent_member)

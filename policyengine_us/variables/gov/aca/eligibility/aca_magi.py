@@ -18,9 +18,10 @@ class aca_magi(Variable):
         "medicaid_magi's AGI plus MAGI additions, without the tax-exempt "
         "interest and Social Security of the return's dependents who are "
         "outside the tax family (is_aca_tax_family_member), floored at zero "
-        "once. Those amounts are left out only on a return whose head or "
-        "spouse can be claimed elsewhere (or, in a tax unit with neither, "
-        "whose inferred filer can be); otherwise this equals medicaid_magi. "
+        "once. Those amounts are left out only on a return whose ACA "
+        "filer can be claimed elsewhere, including a filer inferred to "
+        "complete absent or partial head/spouse roles; otherwise this equals "
+        "medicaid_magi. "
         "Tax unit AGI already leaves dependents' income out."
     )
 

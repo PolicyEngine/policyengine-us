@@ -383,3 +383,32 @@
     # Both spouses' additions remain; only the excluded child's 4,000 leaves.
     medicaid_magi: 29_000
     aca_magi: 25_000
+
+- name: Review r4 partially inferred joint filers both retain their MAGI additions
+  period: 2025
+  input:
+    people:
+      older_spouse:
+        age: 18
+        claimable_as_dependent_on_another_return: true
+        tax_exempt_interest_income: 2_000
+      younger_spouse:
+        age: 17
+        tax_exempt_interest_income: 3_000
+      child:
+        age: 1
+        tax_exempt_interest_income: 4_000
+    tax_units:
+      tax_unit:
+        members: [older_spouse, younger_spouse, child]
+        filing_status: JOINT
+        adjusted_gross_income: 20_000
+    households:
+      household:
+        members: [older_spouse, younger_spouse, child]
+        state_code: TX
+  output:
+    # Completing the joint filers keeps the minor spouse's additions while
+    # the excluded child's additions leave ACA household income.
+    medicaid_magi: 29_000
+    aca_magi: 25_000

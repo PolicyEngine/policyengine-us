@@ -3,3 +3,5 @@ Apply IRC 36B(c)(1)(D) to the premium tax credit: a filer who can be claimed as 
 Preserve supplied benchmark premiums, NY dependent predicates and Medicaid MAGI; rank only enrolled children; test every insured member for shared-policy CSR eligibility; infer both minor joint filers; and allocate shared premiums by coverage month, with zero allocation for empty enrollment.
 
 Count enrolled nonpayers in Washington Cascade Care Savings Group 2 before applying the household premium cap.
+
+Complete partially inferred joint ACA filers without an adult age cutoff, and use the completed set for tax-family membership and MAGI additions.
