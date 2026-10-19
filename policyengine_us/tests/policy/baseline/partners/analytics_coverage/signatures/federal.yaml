@@ -355,6 +355,8 @@
     spm_units:
       spm_unit:
         is_snap_eligible: true
+        # Oct-Dec uses the model-uprated California limited utility allowance
+        # ($170 to $176), because FY2027 values are not in the model yet.
         # FY2026/FY2027 net $2,796/$2,781; contribution $839/$835.
         # SNAP $155/$188/month; annual 9 x 155 + 3 x 188 = $1,959.
         snap: 1959.0
@@ -1161,6 +1163,8 @@
     spm_units:
       spm_unit:
         is_snap_eligible: true
+        # Oct-Dec uses the model-uprated California phone allowance ($20 to
+        # $20.71), because FY2027 values are not in the model yet.
         # FY2026/FY2027 net $2,946/$2,936; contribution $884/$881.
         # SNAP $110/$142/month; annual 9 x 110 + 3 x 142 = $1,416.
         snap: 1416.0
@@ -1785,6 +1789,8 @@
     spm_units:
       spm_unit:
         is_snap_eligible: true
+        # Oct-Dec uses the model-uprated California limited utility allowance
+        # ($170 to $176), because FY2027 values are not in the model yet.
         # FY2026/FY2027 net $2,796/$2,781; contribution $839/$835.
         # SNAP $155/$188/month; annual 9 x 155 + 3 x 188 = $1,959.
         snap: 1959.0
