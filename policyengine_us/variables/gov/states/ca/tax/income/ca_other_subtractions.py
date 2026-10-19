@@ -8,5 +8,9 @@ class ca_other_subtractions(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.CA
-    documentation = "Other subtractions from federal adjusted gross income reported on California Schedule CA (540), Part I, Section B, Line 22."
-    reference = "https://www.ftb.ca.gov/forms/2024/2024-540-ca-instructions.html"
+    documentation = (
+        "California other subtractions from federal adjusted gross income reported on "
+        "Schedule CA (540), Part I, Section B, Line 8z (Other income, Column B), "
+        "entered as a positive amount."
+    )
+    reference = "https://www.ftb.ca.gov/forms/2025/2025-540-ca-instructions.html"

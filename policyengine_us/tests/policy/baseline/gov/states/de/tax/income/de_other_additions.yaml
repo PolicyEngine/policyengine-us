@@ -1,32 +1,32 @@
-- name: Default de_other_additions is zero
+- name: Case 1, default de_other_additions is zero
   period: 2022
   input:
     people:
-      head:
+      person1:
         employment_income: 50_000
         is_tax_unit_head: true
         is_tax_unit_dependent: false
     households:
       household:
-        members: [head]
+        members: [person1]
         state_code: DE
   output:
     de_other_additions: 0
     de_additions: 0
     de_pre_exclusions_agi: 50_000
 
-- name: de_other_additions increases de_additions and de_pre_exclusions_agi for person
+- name: Case 2, de_other_additions increases de_additions and de_pre_exclusions_agi for person
   period: 2022
   input:
     people:
-      head:
+      person1:
         employment_income: 50_000
         de_other_additions: 3_000
         is_tax_unit_head: true
         is_tax_unit_dependent: false
     households:
       household:
-        members: [head]
+        members: [person1]
         state_code: DE
   output:
     de_other_additions: 3_000

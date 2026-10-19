@@ -8,5 +8,9 @@ class de_other_additions(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.DE
-    documentation = "Other additions to federal adjusted gross income reported on Delaware Form 200-01 / 200-02, Line 3."
-    reference = "https://revenuefiles.delaware.gov/2024/PIT-RES_TY24_2024-01_Instructions.pdf#page=6"
+    documentation = (
+        "Delaware additions to federal adjusted gross income reported on "
+        "Form PIT-RES, line 3 (fiduciary adjustments, oil depletion, etc.), "
+        "entered as a positive amount."
+    )
+    reference = "https://revenuefiles.delaware.gov/2025/PITForms_Instructions/Instructions/PIT-RES_Instructions_2025-01.pdf#page=5"

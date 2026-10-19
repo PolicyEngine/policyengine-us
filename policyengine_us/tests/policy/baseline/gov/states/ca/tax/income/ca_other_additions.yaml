@@ -1,4 +1,4 @@
-- name: Default ca_other_additions is zero
+- name: Case 1, default ca_other_additions is zero
   period: 2024
   input:
     state_code: CA
@@ -8,7 +8,7 @@
     ca_additions: 0
     ca_agi: 50_000
 
-- name: ca_other_additions increases CA AGI
+- name: Case 2, ca_other_additions increases CA AGI
   period: 2024
   input:
     state_code: CA

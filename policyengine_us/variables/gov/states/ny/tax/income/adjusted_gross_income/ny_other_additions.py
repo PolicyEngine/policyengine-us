@@ -8,5 +8,9 @@ class ny_other_additions(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NY
-    documentation = "Other additions to federal adjusted gross income reported on Form IT-201, Line 23."
-    reference = "https://www.tax.ny.gov/pdf/2024/inc/it201i_2024.pdf#page=8"
+    documentation = (
+        "New York other additions to federal adjusted gross income reported on "
+        "Form IT-201, line 23 (from Form IT-225, line 9), entered as a positive amount."
+    )
+    # PDF pages 7-8
+    reference = "https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=7"

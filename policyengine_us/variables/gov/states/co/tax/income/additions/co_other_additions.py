@@ -8,7 +8,12 @@ class co_other_additions(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.CO
-    documentation = "Other additions to federal taxable income reported on Colorado Form DR 0104, Line 2."
+    documentation = (
+        "Colorado other additions to federal taxable income reported on "
+        "Form DR 0104, line 9 in 2025 (line 8 in 2024), entered as a positive amount."
+    )
     reference = (
-        "https://tax.colorado.gov/sites/tax/files/documents/DR0104_book_2024.pdf#page=9"
+        # PDF pages 9-10
+        "https://tax.colorado.gov/sites/tax/files/documents/Book104_2025.pdf#page=9",
+        "https://tax.colorado.gov/sites/tax/files/documents/DR0104_book_2024.pdf#page=10",
     )

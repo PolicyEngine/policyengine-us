@@ -1,4 +1,4 @@
-- name: Default ny_other_subtractions is zero
+- name: Case 1, default ny_other_subtractions is zero
   period: 2024
   input:
     state_code: NY
@@ -8,7 +8,7 @@
     ny_agi_subtractions: 0
     ny_agi: 50_000
 
-- name: ny_other_subtractions reduces NY AGI
+- name: Case 2, ny_other_subtractions reduces NY AGI
   period: 2024
   input:
     state_code: NY

@@ -8,5 +8,8 @@ class ny_other_subtractions(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NY
-    documentation = "Other subtractions from federal adjusted gross income reported on Form IT-201, Line 30."
-    reference = "https://www.tax.ny.gov/pdf/2024/inc/it201i_2024.pdf#page=10"
+    documentation = (
+        "New York other subtractions from federal adjusted gross income reported on "
+        "Form IT-201, line 31 (from Form IT-225, line 18), entered as a positive amount."
+    )
+    reference = "https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=10"
