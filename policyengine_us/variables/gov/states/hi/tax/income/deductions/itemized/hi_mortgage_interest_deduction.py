@@ -31,6 +31,22 @@ def _hi_qualified_loan_limit(
     return line_6 + line_7
 
 
+def _hi_deductible_share(qualified_loan_limit, total_debt):
+    """2017 IRS Publication 936, Table 1, line 11.
+
+    The qualified loan limit divided by the total debt, "rounded to three
+    places" (half up). Interest is treated as within the limits, a share of
+    one, when no balance is reported, as in the federal calculation.
+    """
+    ratio = np.divide(
+        qualified_loan_limit,
+        total_debt,
+        out=np.ones_like(total_debt),
+        where=total_debt > 0,
+    )
+    return np.floor(ratio * 1_000 + 0.5) / 1_000
+
+
 class hi_mortgage_interest_deduction(Variable):
     value_type = float
     entity = TaxUnit
@@ -85,17 +101,12 @@ class hi_mortgage_interest_deduction(Variable):
             p.home_acquisition_debt_limit[filing_status],
             p.home_equity_debt_limit[filing_status],
         )
-        # Table 1, lines 9-12. As in the federal calculation, interest is
-        # treated as within the limits when no balance is reported, and the
-        # ratio is not rounded.
+        # Lines 9 and 11. The 2025 N-11 instructions send filers to this
+        # worksheet, which rounds the ratio; the federal calculation uses the
+        # exact ratio.
         total_debt = grandfathered_debt + other_debt
-        deductible_share = np.divide(
-            qualified_loan_limit,
-            total_debt,
-            out=np.ones_like(total_debt),
-            where=total_debt > 0,
-        )
+        deductible_share = _hi_deductible_share(qualified_loan_limit, total_debt)
         # Line 10: interest before any limit, the federally deductible and
-        # non-deductible parts together.
+        # non-deductible parts together. Line 12 multiplies it by line 11.
         interest = add(tax_unit, period, ["mortgage_interest"])
         return interest * deductible_share

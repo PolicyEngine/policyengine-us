@@ -22,8 +22,12 @@ helper:
    moving a loan between 2017 and 2018 never changes the limit, while moving
    it into the grandfathered years never lowers it.
 5. Monotone: a larger balance never lowers the limit.
+6. Share: line 11, the limit over total debt "rounded to three places", lies
+   in [0, 1], within half a thousandth of the exact ratio and, for the drawn
+   balances, at or above the federal (exact) share, so Hawaii's deduction
+   stays between the federal deduction and the interest paid.
 
-These are for-all properties of the helper, which YAML cannot state. The
+These are for-all properties of the helpers, which YAML cannot state. The
 policy outcomes and interest proration are checked in
 hi_mortgage_interest_deduction.yaml.
 """
@@ -33,6 +37,7 @@ from hypothesis import given, settings
 from hypothesis import strategies as st
 
 from policyengine_us.variables.gov.states.hi.tax.income.deductions.itemized.hi_mortgage_interest_deduction import (
+    _hi_deductible_share,
     _hi_qualified_loan_limit,
 )
 from policyengine_us.variables.household.expense.tax_unit.mortgage_interest_structure import (
@@ -161,3 +166,22 @@ def test_hawaii_qualified_loan_limit_properties(first, second, status):
         bigger = list(pair)
         bigger[i] = (balance + 100_000, year)
         assert model_limit(bigger, hawaii_limits) >= limit - TOLERANCE
+
+    # 6. Share.
+    share = float(_hi_deductible_share(np.array([limit]), np.array([total]))[0])
+    assert 0 <= share <= 1
+    if total > 0:
+        assert abs(share - limit / total) <= 0.0005 + 1e-9
+        assert share >= federal_limit(pair, federal_limits) / total - 1e-9
+    else:
+        assert share == 1
+
+
+def test_hawaii_share_rounds_half_up_to_three_places():
+    limits = np.array([550_000.0, 1_100_000.0, 1_100_000.0, 0.0])
+    debt = np.array([1_760_000.0, 1_500_000.0, 1_300_000.0, 0.0])
+    # .3125 rounds up to .313; .7333 down to .733; .8462 down to .846; no
+    # balance gives one.
+    np.testing.assert_allclose(
+        _hi_deductible_share(limits, debt), [0.313, 0.733, 0.846, 1.0]
+    )
