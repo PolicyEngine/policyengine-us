@@ -90,7 +90,9 @@ class nj_claim_of_right_repayment_category(Variable):
         "received, such as unemployment compensation or Social Security "
         "benefits. OTHER is a category the model does not offset, such as "
         "prizes and awards or income from estates and trusts. Defaults to "
-        "wages, the category of TAM 2011-7's example."
+        "wages, the category of TAM 2011-7's example. A person's entire "
+        "claim_of_right_repayment takes one category; repayments in multiple "
+        "categories for the same person in one year cannot be modeled."
     )
     definition_period = YEAR
     reference = (

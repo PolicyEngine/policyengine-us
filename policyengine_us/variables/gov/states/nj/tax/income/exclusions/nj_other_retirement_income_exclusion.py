@@ -9,7 +9,7 @@ class nj_other_retirement_income_exclusion(Variable):
     documentation = "New Jersey other retirement income exclusion"
     definition_period = YEAR
     reference = (
-        "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=21",
+        "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=23",
         "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-6-15/",
     )
     defined_for = StateCode.NJ

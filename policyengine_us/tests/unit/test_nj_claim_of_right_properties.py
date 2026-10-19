@@ -12,7 +12,8 @@ or the other age (with a pension):
   category, taken from the repayer first and then the spouse; this reaches the
   pension exclusion (line 20a) and Worksheet D's earnings test (line 15);
 - no filer's offset exceeds their own income in the category;
-- New Jersey tax does not depend on the federal method, never rises with a
+- on this grid, which has no federal child and dependent care credit, New
+  Jersey tax does not depend on the federal method, never rises with a
   repayment, and never rises as it grows;
 - the category source lists cover the gross income sources and match the
   pension exclusion's sources.
