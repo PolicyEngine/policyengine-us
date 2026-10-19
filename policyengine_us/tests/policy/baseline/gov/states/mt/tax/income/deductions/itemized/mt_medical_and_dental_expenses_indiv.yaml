@@ -1,0 +1,97 @@
+- name: Spouses filing separately on the same form each take half of every dependent's expenses
+  # Two tax units with the same people label the first adult head and then
+  # spouse; the columns do not depend on the label.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      a_first:
+        age: 50
+        is_tax_unit_head: true
+      a_second:
+        age: 48
+        is_tax_unit_spouse: true
+        other_medical_expenses: 700
+      a_child1:
+        age: 17
+        is_tax_unit_dependent: true
+        other_medical_expenses: 3_000
+      a_child2:
+        age: 12
+        is_tax_unit_dependent: true
+        other_medical_expenses: 1_000
+      b_first:
+        age: 50
+        is_tax_unit_spouse: true
+      b_second:
+        age: 48
+        is_tax_unit_head: true
+        other_medical_expenses: 700
+      b_child1:
+        age: 17
+        is_tax_unit_dependent: true
+        other_medical_expenses: 3_000
+      b_child2:
+        age: 12
+        is_tax_unit_dependent: true
+        other_medical_expenses: 1_000
+    tax_units:
+      a:
+        members: [a_first, a_second, a_child1, a_child2]
+      b:
+        members: [b_second, b_first, b_child1, b_child2]
+    households:
+      a:
+        members: [a_first, a_second, a_child1, a_child2]
+        state_code: MT
+      b:
+        members: [b_second, b_first, b_child1, b_child2]
+        state_code: MT
+  output:
+    # The dependents' 4,000 is divided equally: 2,000 to each column. The
+    # columns hold 2,000 + 2,700 = 4,700, every member's expenses.
+    mt_medical_and_dental_expenses_indiv: [2_000, 2_700, 0, 0, 2_000, 2_700, 0, 0]
+
+- name: An unmarried filer's column holds the dependent's expenses
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        other_medical_expenses: 100
+      child:
+        age: 6
+        is_tax_unit_dependent: true
+        other_medical_expenses: 900
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MT
+  output:
+    mt_medical_and_dental_expenses_indiv: [1_000, 0]
+
+- name: No column amount once Montana ends separate filing on the same form
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 35
+        other_medical_expenses: 100
+      child:
+        age: 6
+        is_tax_unit_dependent: true
+        other_medical_expenses: 900
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MT
+  output:
+    mt_married_filing_separately_on_same_return_eligible: [false, false]
+    mt_medical_and_dental_expenses_indiv: [0, 0]
