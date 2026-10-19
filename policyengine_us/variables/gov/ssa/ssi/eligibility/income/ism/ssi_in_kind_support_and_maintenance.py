@@ -6,7 +6,7 @@ class ssi_in_kind_support_and_maintenance(Variable):
     entity = Person
     label = "SSI in-kind support and maintenance"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/cfr/text/20/416.1130",
         "https://www.law.cornell.edu/cfr/text/20/416.1140",

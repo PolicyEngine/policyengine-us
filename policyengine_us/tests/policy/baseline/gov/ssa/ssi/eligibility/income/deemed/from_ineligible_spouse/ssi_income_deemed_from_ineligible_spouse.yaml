@@ -224,3 +224,101 @@
         members: [person1, person2]
   output:
     ssi_income_deemed_from_ineligible_spouse: [0, 0]
+
+- name: Review r2 applies monthly spousal thresholds after a student's annual exclusion expires
+  # 20 CFR 416.1163(d), (e)(2): budget each month's allocations and cap
+  # before aggregation. Ten months at $994 and two at $911 = $11,762.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 50
+        person_id: 1
+        is_tax_unit_head: true
+        is_ssi_disabled: true
+      spouse:
+        age: 48
+        person_id: 2
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 600 * 12
+      student:
+        age: 16
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+        is_tax_unit_dependent: true
+        employment_income: 1_000 * 12
+    tax_units:
+      family:
+        members: [claimant, spouse, student]
+    marital_units:
+      parents:
+        members: [claimant, spouse]
+      student_unit:
+        members: [student]
+    households:
+      home:
+        members: [claimant, spouse, student]
+        state_code: TX
+  output:
+    people:
+      student:
+        ssi_ineligible_child_allocation: 4_700
+      claimant:
+        ssi_unearned_income_deemed_from_ineligible_spouse: 2_500
+        ssi_income_deemed_from_ineligible_spouse: 1_160
+        ssi:
+          "2026": 11_762
+          "2026-01": 994
+          "2026-10": 994
+          "2026-11": 911
+
+- name: Review r2 applies monthly spousal thresholds for wages above the student monthly exclusion
+  # Four months at $994 and eight at $911 = $11,264. The $307 child
+  # allocation in each of the first four months keeps deeming below $497.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 50
+        person_id: 1
+        is_tax_unit_head: true
+        is_ssi_disabled: true
+      spouse:
+        age: 48
+        person_id: 2
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 600 * 12
+      student:
+        age: 16
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+        is_tax_unit_dependent: true
+        employment_income: 2_600 * 12
+    tax_units:
+      family:
+        members: [claimant, spouse, student]
+    marital_units:
+      parents:
+        members: [claimant, spouse]
+      student_unit:
+        members: [student]
+    households:
+      home:
+        members: [claimant, spouse, student]
+        state_code: TX
+  output:
+    people:
+      student:
+        ssi_ineligible_child_allocation: 1_228
+      claimant:
+        ssi_unearned_income_deemed_from_ineligible_spouse: 5_972
+        ssi_income_deemed_from_ineligible_spouse: 4_640
+        ssi:
+          "2026": 11_264
+          "2026-01": 994
+          "2026-04": 994
+          "2026-05": 911

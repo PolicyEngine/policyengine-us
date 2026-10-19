@@ -6,7 +6,7 @@ class ssi_earned_income_deemed_from_ineligible_spouse(Variable):
     entity = Person
     label = "SSI earned income (deemed from ineligible spouse)"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     reference = "https://www.law.cornell.edu/cfr/text/20/416.1163"
 
     def formula(person, period, parameters):

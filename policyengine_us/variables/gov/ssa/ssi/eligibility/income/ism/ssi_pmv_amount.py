@@ -6,7 +6,7 @@ class ssi_pmv_amount(Variable):
     entity = Person
     label = "SSI presumed maximum value amount"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/cfr/text/20/416.1140",
         "https://secure.ssa.gov/poms.nsf/lnx/0500835300",
@@ -35,4 +35,4 @@ class ssi_pmv_amount(Variable):
             applicable_fbr * p.income.ism.pmv_fbr_fraction + p.income.exclusions.general
         )
         pmv_monthly = where(deeming_applies, pmv_monthly / 2, pmv_monthly)
-        return pmv_monthly * MONTHS_IN_YEAR
+        return pmv_monthly

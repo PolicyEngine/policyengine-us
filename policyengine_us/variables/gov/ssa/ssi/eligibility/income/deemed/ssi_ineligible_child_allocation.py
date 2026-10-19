@@ -11,7 +11,7 @@ class ssi_ineligible_child_allocation(Variable):
         "spouse's or parent's income before deeming it. Which claimants it "
         "applies to is decided where the allocations are summed."
     )
-    definition_period = YEAR
+    definition_period = MONTH
     reference = (
         "https://www.ecfr.gov/current/title-20/section-416.1163#p-416.1163(b)",
         "https://www.ecfr.gov/current/title-20/section-416.1161#p-416.1161(c)",
@@ -36,21 +36,17 @@ class ssi_ineligible_child_allocation(Variable):
         is_student = person("is_full_time_student", period) & (
             person("age", period) < student.age_limit
         )
-        # Annual income is spread evenly over the year. The student
-        # exclusion applies month by month until its yearly limit is used
-        # up (POMS SI 00820.510), and each month's allocation is floored at
-        # zero, so income left over in one month never reduces another's.
-        # The child's income only reduces the allocation: a net loss is no
-        # income, so it never raises the allocation above (b)(1).
-        monthly_earned = max_(0, person("ssi_earned_income", period)) / MONTHS_IN_YEAR
-        monthly_unearned = (
-            max_(0, person("ssi_unearned_income", period)) / MONTHS_IN_YEAR
-        )
-        exclusion_left = where(is_student, student.cap, 0)
-        total = np.zeros(person.count)
-        for _ in range(MONTHS_IN_YEAR):
-            exclusion = min_(min_(student.amount, monthly_earned), exclusion_left)
-            exclusion_left = exclusion_left - exclusion
-            income = monthly_earned - exclusion + monthly_unearned
-            total += max_(0, monthly_allocation - income)
-        return allocated * total
+        # Annual income is spread evenly over the year. Keep each month's
+        # allocation through downstream deductions, exclusions and benefit
+        # caps; annual reads sum the completed monthly budgets.
+        earned = max_(0, person("ssi_earned_income", period))
+        unearned = max_(0, person("ssi_unearned_income", period))
+        # The student exclusion is used consecutively from January until
+        # its annual cap is exhausted (POMS SI 00820.510). Annual income
+        # inputs imply the same monthly earnings in the preceding months.
+        monthly_exclusion = min_(student.amount, earned)
+        used = monthly_exclusion * (period.start.month - 1)
+        exclusion_left = max_(0, student.cap - used)
+        exclusion = where(is_student, min_(monthly_exclusion, exclusion_left), 0)
+        income = earned - exclusion + unearned
+        return allocated * max_(0, monthly_allocation - income)

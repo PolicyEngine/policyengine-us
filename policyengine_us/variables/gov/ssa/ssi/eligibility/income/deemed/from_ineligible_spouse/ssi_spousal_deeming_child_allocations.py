@@ -31,7 +31,7 @@ class ssi_spousal_deeming_child_allocations(Variable):
         "remain a member of (416.1167, POMS SI 01310.165)."
     )
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     reference = (
         "https://www.ecfr.gov/current/title-20/section-416.1163#p-416.1163(b)",
         "https://www.ecfr.gov/current/title-20/section-416.1160#p-416.1160(d)",

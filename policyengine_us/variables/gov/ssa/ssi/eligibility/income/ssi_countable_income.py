@@ -9,7 +9,7 @@ class ssi_countable_income(Variable):
     entity = Person
     label = "SSI countable income"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     reference = "https://www.law.cornell.edu/uscode/text/42/1382a#b"
     documentation = """
     Calculates total countable income for SSI:
@@ -61,6 +61,7 @@ class ssi_countable_income(Variable):
             total_unearned,
             parameters,
             period,
+            monthly=True,
         )
 
         # Check if couple computation applies (both eligible AND not

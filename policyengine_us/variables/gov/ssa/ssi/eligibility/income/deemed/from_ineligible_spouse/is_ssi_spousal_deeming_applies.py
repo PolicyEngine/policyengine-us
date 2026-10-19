@@ -5,7 +5,7 @@ class is_ssi_spousal_deeming_applies(Variable):
     value_type = bool
     entity = Person
     label = "SSI spousal deeming applies"
-    definition_period = YEAR
+    definition_period = MONTH
     reference = "https://www.law.cornell.edu/cfr/text/20/416.1163"
     defined_for = "is_ssi_eligible_individual"
     documentation = """
@@ -34,7 +34,7 @@ class is_ssi_spousal_deeming_applies(Variable):
 
         # Compare to FBR differential (couple rate - individual rate)
         p = parameters(period).gov.ssa.ssi.amount
-        diff = (p.couple - p.individual) * MONTHS_IN_YEAR
+        diff = p.couple - p.individual
 
         # Deeming applies when spouse's deemed income exceeds the differential
         # Note: regulation says "not more than" means ≤, so we use > for deeming

@@ -10,13 +10,13 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
     value_type = float
     entity = Person
     label = "SSI income (deemed from ineligible spouse)"
-    definition_period = YEAR
+    definition_period = MONTH
     reference = "https://www.law.cornell.edu/cfr/text/20/416.1163"
     documentation = """
     Spousal deeming: 
       1) If leftover spouse income <= (coupleFBR - indivFBR), then 0 is deemed.
       2) Otherwise, spouse's deemed = (couple combined countable) - (individual alone countable).
-         This yields 816 for 1986 Example 3 and 12000 for the 2025 test.
+      Each month is calculated before annual amounts are summed.
     """
     defined_for = "is_ssi_eligible_individual"
     unit = USD
@@ -42,7 +42,7 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
 
         # Calculate individual's countable income (alone)
         alone_countable = _apply_ssi_exclusions(
-            individual_earned, individual_unearned, parameters, period
+            individual_earned, individual_unearned, parameters, period, monthly=True
         )
 
         # Calculate couple's combined countable income
@@ -51,6 +51,7 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
             individual_unearned + spouse_unearned,
             parameters,
             period,
+            monthly=True,
         )
 
         # Deemed amount is the difference (only when deeming applies)
