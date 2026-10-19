@@ -10,7 +10,10 @@ class wa_employee_paid_leave_contribution(Variable):
         "employer collects and remits the premium, may deduct up to the "
         "employee share from wages, and may elect to pay all or any portion "
         "of it (RCW 50A.10.030(3), (7)); this is that permitted share times "
-        "state_payroll_premium_deduction_share."
+        "state_payroll_premium_deduction_share. Unlike Paid Leave Oregon, "
+        "whose employer must deduct a fixed 60 percent (ORS 657B.150(2)(b)), "
+        "the deduction itself is permissive and capped, and a deduction not "
+        "taken is the employer's (WAC 192-510-065(2))."
     )
     definition_period = YEAR
     unit = USD

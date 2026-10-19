@@ -19,7 +19,7 @@ class ma_employer_paid_leave_contribution(Variable):
     reference = (
         "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXXII/Chapter175M/Section6",
         "https://malegislature.gov/Laws/SessionLaws/Acts/2026/Chapter101",
-        "https://www.mass.gov/doc/458-cmr-2-family-and-medical-leave/download",
+        "https://www.mass.gov/doc/458-cmr-2-family-and-medical-leave/download#page=12",
     )
 
     def formula(person, period, parameters):

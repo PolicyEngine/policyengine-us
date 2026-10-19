@@ -23,10 +23,12 @@ every worker, in 2026 and 2027:
    modeled, so their employer amount is zero at any share.
 4. A larger share never lowers the employee amount or raises the employer
    amount.
-5. With employer-level wage totals equal to the worker's own wages (a
-   one-worker employer), `employer_total_additional_state_payroll_tax` equals
-   `employer_additional_state_payroll_tax`: the employer-level path and the
-   per-worker path agree at any share.
+5. With employer-level wage totals equal to the worker's own wages, capped at
+   the Social Security base where the worker's are (a one-worker employer),
+   `employer_total_additional_state_payroll_tax` equals
+   `employer_additional_state_payroll_tax` in every modeled state: the
+   employer-level path and the per-worker path agree at any share and
+   employer size.
 6. Massachusetts' 2027 swap of the family and medical deduction caps, paired
    with DFML's swap of the two rates (Acts 2026 c. 101 ss. 25, 26, 43(a)),
    leaves each worker's employee and employer amounts where they were in
@@ -45,6 +47,7 @@ from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
 
 from policyengine_us import Simulation
+from policyengine_us.system import system
 
 YEARS = (2026, 2027)
 OPTIONAL_STATES = ("CO", "DE", "MA", "ME", "MN", "NY", "VT", "WA")
@@ -64,6 +67,10 @@ OPTIONAL_EMPLOYEE_VARIABLES = (
 # Below the 2026 Social Security wage base, so every program's wage base is
 # the worker's wages in both years.
 UNCAPPED_WAGES = 184_500
+SOCIAL_SECURITY_CAP = {
+    year: system.parameters(f"{year}-01-01").gov.irs.payroll.social_security.cap
+    for year in YEARS
+}
 COPIES = 3  # drawn share a, drawn share b, input left at its default
 # The model computes in float32: compare to that precision, never past a cent.
 CENT = 0.01
@@ -94,7 +101,7 @@ def simulate(rows):
                 "employment_income": {year: wages for year in YEARS},
                 "employer_headcount": {year: headcount for year in YEARS},
                 "employer_total_taxable_earnings_for_social_security": {
-                    year: wages for year in YEARS
+                    year: min(wages, SOCIAL_SECURITY_CAP[year]) for year in YEARS
                 },
                 "employer_total_payroll_tax_gross_wages": {
                     year: wages for year in YEARS
@@ -184,7 +191,7 @@ def test_state_payroll_premium_deduction_share_invariants(rows):
             assert (optional[lower, low] <= optional[lower, high] + CENT).all()
             assert (employer[lower, low] >= employer[lower, high] - CENT).all()
         # Property 5.
-        same_path = modeled & uncapped
+        same_path = modeled
         np.testing.assert_allclose(
             employer_total[same_path], employer[same_path], **TOLERANCE
         )
@@ -199,3 +206,19 @@ def test_state_payroll_premium_deduction_share_invariants(rows):
     np.testing.assert_allclose(
         employer_by_year[2027][ma], employer_by_year[2026][ma], **TOLERANCE
     )
+
+
+def test_massachusetts_2027_swaps_deduction_caps_and_rates():
+    """Pins the four 2027 values: properties 1-6 hold whether they swap or not."""
+    p = system.parameters.gov.states.ma.tax.payroll.paid_leave
+    # 2026: 100% of the 0.18% family rate and 40% of the 0.70% medical rate.
+    assert p.family_rate("2026-01-01") == 0.0018
+    assert p.family_employee_share("2026-01-01") == 1
+    assert p.medical_rate("2026-01-01") == 0.007
+    assert p.medical_employee_share("2026-01-01") == 0.4
+    # 2027 (Acts 2026 c. 101 ss. 25-26; DFML 2027 rates): 40% of the 0.70%
+    # family rate and 100% of the 0.18% medical rate.
+    assert p.family_rate("2027-01-01") == 0.007
+    assert p.family_employee_share("2027-01-01") == 0.4
+    assert p.medical_rate("2027-01-01") == 0.0018
+    assert p.medical_employee_share("2027-01-01") == 1

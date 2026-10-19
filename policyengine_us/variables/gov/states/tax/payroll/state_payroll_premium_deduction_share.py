@@ -7,8 +7,8 @@ class state_payroll_premium_deduction_share(Variable):
     label = "State payroll premium deduction share"
     documentation = (
         "Share of the permitted employee premium deducted from wages, for "
-        "state programs whose premium the statute puts on the employer and "
-        "lets it deduct up to a share from wages. It is "
+        "state programs where the law caps the employer's deduction and "
+        "leaves the amount to the employer. It is "
         "employer_state_payroll_premium_deduction_share held between 0 and 1: "
         "an employer may not deduct more than the permitted share, and "
         "deducting less than nothing has no meaning."

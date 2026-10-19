@@ -8,9 +8,10 @@ class employer_total_additional_state_payroll_tax(Variable):
     documentation = (
         "Employer-level state payroll taxes and contributions other than "
         "state unemployment insurance, from aggregate employer inputs. For "
-        "programs whose premium the statute puts on the employer, it applies "
-        "the person's state_payroll_premium_deduction_share to the whole "
-        "payroll, as if the employer deducts the same share for everyone."
+        "programs where the law caps the employer's deduction from wages and "
+        "the employer pays what it does not deduct, it applies the person's "
+        "state_payroll_premium_deduction_share to the whole payroll, as if "
+        "the employer deducts the same share for everyone."
     )
     definition_period = YEAR
     unit = USD
@@ -21,8 +22,8 @@ class employer_total_additional_state_payroll_tax(Variable):
         ss_taxable = person(
             "employer_total_taxable_earnings_for_social_security", period
         )
-        # Programs whose premium the statute puts on the employer charge it
-        # the part of the permitted employee share it does not deduct.
+        # Where the law caps the employer's deduction from wages, the employer
+        # pays the part of the permitted employee share it does not deduct.
         deducted = person("state_payroll_premium_deduction_share", period)
         state_ui_taxable = person(
             "employer_total_taxable_earnings_for_state_unemployment_tax", period

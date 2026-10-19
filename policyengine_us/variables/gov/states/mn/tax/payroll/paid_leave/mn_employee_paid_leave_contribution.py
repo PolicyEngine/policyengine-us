@@ -7,10 +7,11 @@ class mn_employee_paid_leave_contribution(Variable):
     label = "Minnesota employee paid leave contribution"
     documentation = (
         "Employee-side Minnesota Paid Leave premium. The premium is payable "
-        "by the employer, which must pay at least half; employees pay by wage "
-        "deduction only the part the employer does not pay (Minn. Stat. "
-        "268B.14, subds. 1, 3 and 5a). This is the largest such part, half "
-        "the premium at the full rate, times "
+        "by the employer, which must pay at least half (a small employer "
+        "under subd. 5a, at least a quarter of the full rate); employees pay "
+        "by wage deduction only the part the employer does not pay (Minn. "
+        "Stat. 268B.14, subds. 1, 3 and 5a). This is the largest such part, "
+        "half the premium at the full rate, times "
         "state_payroll_premium_deduction_share. The employer premium is not "
         "modeled."
     )

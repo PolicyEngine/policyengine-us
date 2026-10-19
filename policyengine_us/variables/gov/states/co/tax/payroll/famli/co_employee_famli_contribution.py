@@ -14,8 +14,9 @@ class co_employee_famli_contribution(Variable):
     unit = USD
     defined_for = StateCode.CO
     reference = (
-        "https://olls.info/crs/crs2025-title-08.pdf",
-        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12341&fileName=7%20CCR%201107-1",
+        "https://olls.info/crs/crs2025-title-08.pdf#page=222",
+        # PDF pages 7-8
+        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12341&fileName=7%20CCR%201107-1#page=7",
     )
 
     def formula(person, period, parameters):
