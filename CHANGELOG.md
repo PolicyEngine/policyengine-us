@@ -1,3 +1,184 @@
+## [2.49.11] - 2026-10-19
+
+### Fixed
+
+- Deduct Montana's 2021–2023 medical and long-term care insurance premiums paid by the head or spouse in full on the Itemized Deductions Schedule (lines 2 and 3), net of premiums taken as the self-employed health insurance deduction, and apply the 7.5% floor only to other medical and dental expenses.
+
+
+## [2.49.10] - 2026-10-19
+
+### Fixed
+
+- Count New Mexico child income tax credit children under IRC 152(c), so a child with an ITIN qualifies, and stop halving New Mexico's 65+ medical care expense exemption for married filing separately.
+
+
+## [2.49.9] - 2026-10-19
+
+### Fixed
+
+- Kentucky's household and dependent care service credit uses the federal credit as amended by the One Big Beautiful Bill Act from 2026, when 2026 Ky. Acts ch. 161 moved Kentucky's Internal Revenue Code reference date to December 31, 2025. A new parameter records Kentucky's conformity to the Act, and the pre-OBBBA federal credit variables now equal the live credit in years the Act does not change section 21.
+
+
+## [2.49.8] - 2026-10-18
+
+### Fixed
+
+- Leave a tax unit dependent's unemployment compensation off the filers' California AGI subtractions, Rhode Island AGI additions and Wisconsin unemployment compensation subtraction, and a dependent's state tax refund off California's.
+
+
+## [2.49.7] - 2026-10-18
+
+### Fixed
+
+- Count the property tax billed to other household members as rent, at 15%, for a Montana elderly homeowner/renter credit claimant whose tax unit is billed none (ARM 42.4.302(2)(b)).
+
+
+## [2.49.6] - 2026-10-18
+
+### Fixed
+
+- Make household net income and state income tax use each state's own final income tax: drop the Wisconsin and New Jersey overrides in `state_income_tax`, add the Vermont child care contribution, Colorado alternative minimum tax and contributed Michigan surtax to state tax before refundable credits, and apply Mississippi's nonrefundable credits there.
+
+
+## [2.49.5] - 2026-10-18
+
+### Fixed
+
+- Apply Virginia's rules for a filer who can be claimed as a dependent: the standard deduction is limited to the filers' earned income (Va. Code 58.1-322.03(1)(b)), personal exemptions follow those allowable federally (also under the dependent exemption reform), and the EITC alternatives are barred (58.1-339.8(B)(1)); the aged and blind exemption now goes only to aged or blind filers, while a blind or aged dependent still bars the low-income credit (58.1-339.8(D)(4)).
+
+
+## [2.49.4] - 2026-10-16
+
+### Fixed
+
+- Apply Oregon, Maine and Hawaii rules for a filer who can be claimed as a dependent: Maine's personal exemption counts only filers who may not be claimed (1040ME line 13), and Maine's dependent exemption credit, expanded childless EITC and 2021 relief rebate, Oregon's Kids Credit, disabled child exemption, higher EITC rate for a dependent under three and working family household and dependent care credit child (with its expenses and column), and Hawaii's age-65 exemption and child care credit qualifying individuals and expenses follow the dependent taxpayer rules; Oregon's working family credit now counts a disabled spouse under either head/spouse label.
+
+
+## [2.49.3] - 2026-10-16
+
+### Fixed
+
+- Count passive estate and trust income (Schedule E Part III line 34a column (d) less line 34b column (c)) in the passive basket of the EITC investment income test, as Publication 596 Worksheet 1 lines 11-13 do, through a new passive_estate_income input: the passive subset of estate_income, which defaults to zero.
+
+
+## [2.49.2] - 2026-10-16
+
+### Fixed
+
+- Apply New York's rules for a filer who can be claimed as a dependent: no New York State or New York City household credit, school tax credit, real property tax credit, dependent exemptions (also under the dependent exemption and working families tax credit reforms), dependents' college tuition, under-4 New York City child care expenses, New York City income tax elimination credit or 2026 child and dependent care credit when the return's filers do not qualify (Tax Law 606, 616 and 1310), no own college tuition or 2023 inflation refund for a filer who is claimed, and the New York City school tax fixed amount at the individual rate when only one spouse qualifies; the 2026 child and dependent care credit now bars a claimable spouse under either head/spouse label.
+
+
+## [2.49.1] - 2026-10-16
+
+### Fixed
+
+- Apply New Mexico's rules for a filer who can be claimed as a dependent: no child income tax credit when every filer can be claimed (NMSA 7-2-18.34), no childless EITC, child care credit child or certain-dependents deduction on a return with a claimable filer, and the medical care credit, property tax rebate and centenarian exemption only for a filer who meets the age test and cannot be claimed; the medical expense credit and exemption and the childless EITC now test filers' ages, not a dependent's, and the EITC's child route also counts older qualifying children under IRC 32(c)(3) (a dependent aged 18, a student under 24 or a permanently disabled child).
+
+
+## [2.49.0] - 2026-10-16
+
+### Added
+
+- Add California Proposition 3 (2026) as a contributed reform, toggled by gov.contrib.states.ca.prop3.in_effect, that keeps the rates above 9.3% from 2031 onward.
+
+### Fixed
+
+- Encode the expiry of California's 10.3%, 11.3% and 12.3% income tax rates after tax year 2030 in all five filing-status schedules (Cal. Const. art. XIII, § 36(f)(2)-(3)).
+
+
+## [2.48.0] - 2026-10-16
+
+### Added
+
+- Add Nevada Optional State Supplementation with 2026 payment rates, living arrangements, couple and spouse-deeming calculations, and benefit and SNAP income integration.
+
+
+## [2.47.0] - 2026-10-16
+
+### Added
+
+- Add North Carolina State-County Special Assistance for 2026.
+
+
+## [2.46.0] - 2026-10-16
+
+### Added
+
+- Add Wyoming's State Supplemental Payment for residents whose sole income is SSI, verified for 2026.
+
+
+## [2.45.1] - 2026-10-16
+
+### Fixed
+
+- Apply the federal rules for a filer who can be claimed as a dependent on another return: no child tax credit, credit for other dependents or under-13 care qualifying child (or that child's care expenses) on such a return (IRC 24, 21, 152(b)(1)), no personal exemption for that filer (IRC 151(d)(2)) in the exemption count Rhode Island, Delaware, Ohio, Wisconsin, Oregon, Hawaii and New Mexico read, no recovery rebate for that filer, including under the Armed Forces exception, no tuition and fees deduction (IRC 222(c)(3)), and no education credits or student loan interest deduction on a return with a claimed filer (IRC 25A(g)(3), 221(c)).
+
+
+## [2.45.0] - 2026-10-16
+
+### Added
+
+- Add Pennsylvania optional state SSI supplements and institutional payments, verified for 2026, and count half of the supplement in Pennsylvania Property Tax/Rent Rebate income.
+
+
+## [2.44.0] - 2026-10-16
+
+### Added
+
+- Add New Jersey state supplementary payments and the ineligible-spouse variation, verified for 2026.
+
+
+## [2.43.0] - 2026-10-16
+
+### Added
+
+- Model full 5-tier charitable deduction percentage limits and coupling under IRC § 170(b) and IRS Pub 526 Worksheet 2, adding variables for organization-split cash, non-cash, and capital gain property donations, statutory ceiling parameters, post-ceiling floor support, non-itemizer cash restriction to 50% organizations per § 170(p), and California pre-TCJA 5-tier conformity and decoupling per R&TC §§ 17024.5 and 17250.1. Fixes #10189. Partially addresses #10190.
+
+
+## [2.42.14] - 2026-10-15
+
+### Fixed
+
+- Stop the second Rest shard when a CI run is cancelled; run at most 6 Baseline groups at once and start Contrib (also at most 6) once Baseline passes, so the Pull request workflow runs at most 11 jobs at a time instead of about 25; run two YAML batch subprocesses per Baseline and Contrib runner while its free memory allows, cutting their runner time by about a third; and continue YAML test batches in a fresh subprocess once one passes an 8 GB memory budget, so batches no longer need re-splitting by hand as tests grow.
+
+
+## [2.42.13] - 2026-10-14
+
+### Fixed
+
+- Project the Medicaid long-term care home equity limits with CMS's method (the September-to-September CPI-U increase rounded to 0.1%, effective each January 1) instead of stepping the agricultural limit each February 1, drop their unpublished 2027 and 2028 values, and correct the CMS bulletin citations.
+
+
+## [2.42.12] - 2026-10-14
+
+### Fixed
+
+- Document disjoint pretax and non-pretax health premium inputs, include employee-paid pretax premiums in applicable benefit and New Jersey medical deductions, exclude pretax premiums from SSI wages and North Dakota renter-refund income. Preserve Minnesota Supplemental Aid gross income for eligibility and guardian fees while applying SSI salary-reduction exclusions to countable income.
+
+
+## [2.42.11] - 2026-10-14
+
+### Fixed
+
+- The federal standard deduction and the New York, Michigan, Oregon, Virginia, Missouri, New Mexico, Maine and Hawaii rules for a filer claimed as a dependent elsewhere no longer depend on which spouse is labelled head; each follows its jurisdiction's rule for a joint return where one spouse can be claimed. New York's $3,100 dependent standard deduction now applies only to single filers; Hawaii now limits the standard deduction of a filer who can be claimed as a dependent; the federal EITC without a qualifying child now requires that no filer can be claimed as a dependent; and New Mexico's medical care credit requires a filer who is both 65 or older and not a dependent when a filer is a dependent elsewhere. Separate actual dependency claims from claimability and the nonrequired claimant filing exception, preserving dependent deduction limits while restoring EITC and lawful own-dependent counts. Exclude externally claimable children from Hawaii food/excise ordinary exemptions.
+
+
+## [2.42.10] - 2026-10-14
+
+### Fixed
+
+- Apply Hawaii refundable credits before nonrefundable credits, limiting nonrefundable credits (including the 2018-2022 Hawaii EITC) to the adjusted tax liability on Form N-11, line 34.
+
+
+## [2.42.9] - 2026-10-14
+
+### Fixed
+
+- Stop testing every filer's unearned income against $500 in the federal filing requirement (26 U.S.C. 6012): the unearned income test now applies only to a head or spouse who can be claimed as a dependent on another return, uses the section 63(c)(5)(A) amount for the year ($1,350 in 2025) plus that person's own additional standard deduction for age or blindness, and counts that person's gross income other than wages, business income and farm income (the earned income of the IRS dependent worksheet), so a self-employment loss no longer counts as unearned income.
+- Medicaid MAGI household income now nets one household member's negative MAGI-based income, such as a spouse's business loss on a joint return, against the others' income and floors only the household's total at zero (42 CFR 435.603(d)(1); Form 8962, line 3). Each person's Medicaid AGI now subtracts their own above-the-line deductions, and a self-employment loss no longer counts as unearned income in the Medicaid filing-requirement test.
+- Apply the 26 U.S.C. 6012(a)(1) federal filing requirement from 2026, when section 6012(f) expires: for a tax unit nobody can claim as a dependent, the threshold is the basic standard deduction plus the additions for age but not blindness, and gross income equal to it requires a return.
+
+
 ## [2.42.8] - 2026-10-14
 
 ### Fixed

@@ -1,3 +1,438 @@
+# Federal filing requirement for a tax unit nobody can claim as a dependent.
+#
+# 2018 to 2025, 26 U.S.C. 6012(f): no return is required of an unmarried
+# individual whose gross income "does not exceed the standard deduction
+# applicable to such individual ... under section 63", or of a couple whose
+# combined gross income does not exceed the joint standard deduction. The
+# standard deduction includes the additional standard deduction for age and
+# for blindness (section 63(c)(1) and (f)).
+#
+# From 2026, 26 U.S.C. 6012(a)(1): subsection (f) covers only taxable years
+# "before January 1, 2026", and Pub. L. 119-21 does not amend section 6012.
+# No return is required when gross income is "less than" the exemption amount
+# (zero, section 151(d)(5)) plus the basic standard deduction. Subparagraph
+# (B) raises that by one additional standard deduction for each spouse aged
+# 65 or older, "by reason of section 63(f)(1)", and not for blindness. A
+# married individual filing separately has no exception.
+# https://www.law.cornell.edu/uscode/text/26/6012
+#
+# 2026 amounts, Rev. Proc. 2025-32, sec. 4.14: basic standard deduction
+# $16,100 single, $32,200 joint and surviving spouse, $24,150 head of
+# household; additional standard deduction $1,650, or $2,050 if unmarried and
+# not a surviving spouse. https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=18
+# Chart A of the 2017 Form 1040 instructions, the last year under (a)(1), has
+# the same form: age only, and "at least".
+# https://www.irs.gov/pub/irs-prior/i1040gi--2017.pdf#page=8
+#
+# 2025 amounts, Rev. Proc. 2024-40 as amended by Pub. L. 119-21 sec. 70102:
+# $15,750 single, $31,500 joint, $23,625 head of household; additional
+# standard deduction $1,600, or $2,000 if unmarried and not a surviving spouse.
+
+- name: Case 1, 2026, single filer under 65 with gross income a dollar under $16,100.
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 40
+    taxable_interest_income: 16_099
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: Case 2, 2026, single filer under 65 with gross income of exactly $16,100.
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 40
+    taxable_interest_income: 16_100
+  output:
+    # (a)(1)(A)(i): excused only if gross income is less than $16,100.
+    tax_unit_is_required_to_file: true
+
+- name: Case 3, 2026, blind single filer under 65 with gross income of $16,100.
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 40
+    is_blind: true
+    employment_income: 16_100
+  output:
+    # Blindness does not raise the (a)(1) threshold.
+    tax_unit_is_required_to_file: true
+
+- name: Case 4, 2026, blind single filer under 65 with gross income a dollar under $16,100.
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 40
+    is_blind: true
+    employment_income: 16_099
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: Case 5, 2026, single filer aged 65 with gross income a dollar under $18,150.
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 65
+    taxable_interest_income: 18_149
+  output:
+    # $16,100 + $2,050.
+    tax_unit_is_required_to_file: false
+
+- name: Case 6, 2026, single filer aged 65 with gross income of exactly $18,150.
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 65
+    taxable_interest_income: 18_150
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: Case 7, 2026, blind single filer aged 65 gets only the age addition.
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 70
+    is_blind: true
+    taxable_interest_income: 18_150
+  output:
+    # $16,100 + $2,050 for age; nothing for blindness.
+    tax_unit_is_required_to_file: true
+
+- name: Case 8, 2026, joint return under 65 with combined gross income a dollar under $32,200.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+      person2:
+        age: 40
+        taxable_interest_income: 12_199
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    tax_unit_is_required_to_file: false
+
+- name: Case 9, 2026, joint return under 65 with combined gross income of exactly $32,200.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+      person2:
+        age: 40
+        taxable_interest_income: 12_200
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # (a)(1)(A)(iv): excused only if combined gross income is less than
+    # $32,200.
+    tax_unit_is_required_to_file: true
+
+- name: Case 10, 2026, joint return with one spouse aged 65 and gross income of $33,849.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        taxable_interest_income: 33_849
+      person2:
+        age: 60
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # $32,200 + $1,650.
+    tax_unit_is_required_to_file: false
+
+- name: Case 11, 2026, joint return with one spouse aged 65 and gross income of $33,850.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        taxable_interest_income: 33_850
+      person2:
+        age: 60
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: Case 12, 2026, joint return with both spouses aged 65 and gross income of $35,499.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_interest_income: 35_499
+      person2:
+        age: 68
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # $32,200 + 2 x $1,650.
+    tax_unit_is_required_to_file: false
+
+- name: Case 13, 2026, joint return with both spouses aged 65 and blind at $35,500.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: true
+        taxable_interest_income: 35_500
+      person2:
+        age: 68
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Two age additions only. The standard deduction is $38,800 with the two
+    # blindness additions, which (a)(1)(B) leaves out.
+    standard_deduction: 38_800
+    tax_unit_is_required_to_file: true
+
+- name: Case 14, 2026, head of household aged 65 with gross income of $26,199.
+  period: 2026
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    age: 66
+    taxable_interest_income: 26_199
+  output:
+    # $24,150 + $2,050.
+    tax_unit_is_required_to_file: false
+
+- name: Case 15, 2026, head of household aged 65 with gross income of $26,200.
+  period: 2026
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    age: 66
+    taxable_interest_income: 26_200
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: Case 16, 2026, surviving spouse aged 65 with gross income of $33,849.
+  period: 2026
+  input:
+    filing_status: SURVIVING_SPOUSE
+    age: 66
+    taxable_interest_income: 33_849
+  output:
+    # $32,200 + $1,650: a surviving spouse takes the married addition.
+    tax_unit_is_required_to_file: false
+
+- name: Case 17, 2026, surviving spouse aged 65 with gross income of $33,850.
+  period: 2026
+  input:
+    filing_status: SURVIVING_SPOUSE
+    age: 66
+    taxable_interest_income: 33_850
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: Case 18, 2026, married individual filing separately with $1 of gross income.
+  period: 2026
+  input:
+    filing_status: SEPARATE
+    age: 70
+    is_blind: true
+    taxable_interest_income: 1
+  output:
+    # The spouse files a separate return, so (a)(1)(A)(iv) does not apply,
+    # and the exemption amount is zero. Age and blindness do not matter.
+    tax_unit_is_required_to_file: true
+
+- name: Case 19, 2026, married individual filing separately with no gross income.
+  period: 2026
+  input:
+    filing_status: SEPARATE
+    age: 40
+  output:
+    # With a zero exemption amount, (a)(1)(A) read literally reaches even
+    # $0 of gross income; the IRS set $5 for 2018 to 2025. The model, as
+    # before, requires a return only for positive gross income (decision
+    # d1403).
+    tax_unit_is_required_to_file: false
+
+- name: Case 20, 2025, single filer under 65 with gross income of exactly $15,750.
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 40
+    taxable_interest_income: 15_750
+  output:
+    # (f)(1): gross income does not exceed the standard deduction. Chart A of
+    # the 2025 instructions says "at least" $15,750 (decision d1403).
+    tax_unit_is_required_to_file: false
+
+- name: Case 21, 2025, single filer under 65 with gross income of $15,751.
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 40
+    taxable_interest_income: 15_751
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: Case 22, 2025, blind single filer under 65 with gross income of $17,750.
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 40
+    is_blind: true
+    employment_income: 17_750
+  output:
+    # (f)(1): the standard deduction is $15,750 + $2,000 for blindness.
+    # Chart A of the 2025 instructions lists only age (decision d1403).
+    tax_unit_is_required_to_file: false
+
+- name: Case 23, 2025, blind single filer under 65 with gross income of $17,751.
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 40
+    is_blind: true
+    employment_income: 17_751
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: Case 24, 2025, joint return with both spouses aged 65 and blind at $37,900.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: true
+        taxable_interest_income: 37_900
+      person2:
+        age: 68
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # (f)(2)(A): $31,500 + 4 x $1,600.
+    tax_unit_is_required_to_file: false
+
+- name: Case 25, 2025, joint return with both spouses aged 65 and blind at $37,901.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: true
+        taxable_interest_income: 37_901
+      person2:
+        age: 68
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: Case 26, 2025, married individual filing separately with $1 of gross income.
+  period: 2025
+  input:
+    filing_status: SEPARATE
+    age: 70
+    is_blind: true
+    taxable_interest_income: 1
+  output:
+    # (f) excuses only unmarried individuals and joint filers.
+    tax_unit_is_required_to_file: true
+
+- name: Case 27, 2025, married individual filing separately with no gross income.
+  period: 2025
+  input:
+    filing_status: SEPARATE
+    age: 40
+  output:
+    tax_unit_is_required_to_file: false
+
+# A tax unit whose head or spouse can be claimed as a dependent keeps the
+# standard deduction test from 2026 too: (a)(1)(C)(i)(II), "total gross income
+# in excess of the standard deduction", which is what Chart B applies.
+# Whether the (A) threshold, which leaves out blindness and requires a return
+# at equality, also binds these filers is decision d1395. These cases pin the
+# model's reading until it is ruled.
+
+- name: Case 28, 2026, blind single filer who can be claimed keeps the blindness addition.
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 19
+    is_blind: true
+    claimed_as_dependent_on_another_return: true
+    employment_income: 17_000
+  output:
+    # Limited standard deduction min($16,100, $17,000 + $450) + $2,050 =
+    # $18,150, over gross income. Nobody can claim the filer in Case 3.
+    standard_deduction: 18_150
+    tax_unit_is_required_to_file: false
+
+- name: Case 29, 2026, joint return whose spouse can be claimed, at exactly the joint amount.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 32_200
+      person2:
+        age: 40
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Gross income does not exceed the $32,200 standard deduction. Compare
+    # Case 9, where nobody can be claimed.
+    tax_unit_is_required_to_file: false
+
 # 26 U.S.C. 6012(c): for the filing requirement, gross income is computed
 # without regard to the section 911 exclusion. With Form 2555 leaf inputs,
 # that is Form 2555 line 43 (the line 36 housing exclusion plus the line 42
@@ -118,3 +553,23 @@
   output:
     # $10,000 of gross income, under $15,750, and none of it is unearned.
     tax_unit_is_required_to_file: false
+
+- name: Gross section 911 exclusion reaches the 2026 age-only threshold for a blind filer
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 40
+    is_blind: true
+    employment_income: 10_000
+    foreign_housing_exclusion: 6_100
+    foreign_earned_income_exclusion_allocable_deductions: 6_100
+  output:
+    # Line 2c = max(0, $6,100 - $6,100) = $0; line 43 = $6,100.
+    foreign_earned_income_exclusion: 0
+    foreign_earned_income_exclusion_gross: 6_100
+    # Section 6012(c): $10,000 + $6,100 = $16,100 of filing gross income.
+    # Section 6012(a)(1): $16,100 >= $16,100 basic + $0 age addition.
+    # Blindness does not raise the filing threshold; the standard deduction
+    # is $16,100 + $2,050 = $18,150 and would not require a return under (f).
+    standard_deduction: 18_150
+    tax_unit_is_required_to_file: true
