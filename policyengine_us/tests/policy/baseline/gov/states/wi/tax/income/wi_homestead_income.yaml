@@ -96,8 +96,8 @@
     # Two Schedule C businesses (2023 instructions, page 16, Example 1):
     # Schedule 1 line 3 = 5,000 - 5,000 = 0, and Schedule 4 line 2 adds back
     # the 5,000 loss without netting. Household income = 0 + 5,000 = 5,000.
-    # loss_ald deducts the loss of total_self_employment_income (0 here), so
-    # the add-back follows that total and household income is the same.
+    # loss_ald deducts each category's loss on its own, so AGI is 0 and the
+    # add-back is the 5,000 non-SSTB loss.
     wi_homestead_income: 5_000
 
 - name: "2025 single filer who can be claimed as a dependent: no Wisconsin homestead $500 dependent deduction"

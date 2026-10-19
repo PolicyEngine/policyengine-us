@@ -1,0 +1,13 @@
+description: North Carolina limits the claim of right repayment deduction to repayments of amounts included in adjusted gross income, as modified for North Carolina, in the earlier year, if this is true.
+values:
+  2014-01-01: false
+  2026-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: North Carolina claim of right repayment deduction uses North Carolina modified income
+  reference:
+    - title: N.C. Gen. Stat. § 105-153.5(a)(2)d
+      href: https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_105/GS_105-153.5.html
+    - title: "S.L. 2026-31, Section 1.8.(a) and (b) (effective for taxable years beginning on or after January 1, 2026) #page 5-6"
+      href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/PDF/2025-2026/SL2026-31.pdf#page=5

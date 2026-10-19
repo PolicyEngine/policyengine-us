@@ -8,31 +8,51 @@ class nm_medical_expense_credit(Variable):
     definition_period = YEAR
     reference = (
         "https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503776/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgDswgGwBKADTJspQhACKiQrgCe0AOSapEQmFwJlqjdt37DIAMp5SAIQ0AlAKIAZZwDUAggDkAws5SpGAARtCk7BISQA",
+        # PDF pages 2, 9
         "https://realfile.tax.newmexico.gov/2025pit-rc-ins.pdf#page=2",
     )
     defined_for = StateCode.NM
+
+    documentation = (
+        "Senior medical credit based on gross unreimbursed costs paid, preserving "
+        "premiums deducted through the federal self-employed health insurance ALD. "
+        "The exclusion applied to the federal medical amount is restored: by "
+        "the federal formula, or as supplied with a caller's subtotal in "
+        "itemized_medical_expenses_applied_exclusion. A caller-supplied "
+        "subtotal without that amount is used unchanged even with components. "
+        "This assumes qualifying costs were funded from income included in AGI. "
+        "Premium inputs use payer attribution: each person reports premiums that "
+        "person paid, including family coverage regardless of whom it covers. "
+    )
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         pcredits = parameters(period).gov.states.nm.tax.income.credits
         p = pcredits.unreimbursed_medical_care_expense
         age = person("age", period)
-        medical_expense = tax_unit("itemized_medical_expenses", period)
-        aged = age >= p.age_eligibility
-        expense_eligible = medical_expense >= p.min_expenses
-        # NMSA 7-2-18.13(A) allows the credit to a taxpayer "who is sixty-five
-        # years of age or older and who is not a dependent of another
-        # taxpayer", and the PIT-RC instructions let a spouse who is not a
-        # dependent claim it when the other spouse is. So when a filer is a
-        # dependent elsewhere, a filer who is not must be 65 or older.
-        filer = person("is_tax_unit_head_or_spouse", period)
-        claimed = person("claimable_as_dependent_on_another_return", period)
-        independent_aged_filer = tax_unit.any(filer & ~claimed & aged)
-        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
-        age_eligible = where(
-            dependent_filer, independent_aged_filer, tax_unit.any(aged)
+        # Restore premiums excluded from the federal subtotal (computed, or
+        # supplied with a caller's subtotal).
+        medical_expense = add(
+            tax_unit,
+            period,
+            [
+                "itemized_medical_expenses",
+                "itemized_medical_expenses_applied_exclusion",
+            ],
         )
-        eligible = age_eligible & expense_eligible
+        expense_eligible = medical_expense >= p.min_expenses
+        # NMSA 7-2-18.13(A) allows the credit to "a taxpayer ... who is
+        # sixty-five years of age or older and who is not a dependent of
+        # another taxpayer", so both tests apply to the same filer: a
+        # dependent aged 65 or older does not qualify the return (PIT-RC line
+        # 23: "If you or your spouse are 65 years of age or older"), and on a
+        # joint return a spouse who is not a dependent may still qualify
+        # ("If you are a dependent with a spouse who was not a dependent of
+        # another taxpayer, your spouse may still qualify").
+        filer = person("is_tax_unit_head_or_spouse", period)
+        claimable = person("claimable_as_dependent_on_another_return", period)
+        qualifying_filer = filer & (age >= p.age_eligibility) & ~claimable
+        eligible = tax_unit.any(qualifying_filer) & expense_eligible
         # exemption is halved for married filing separately
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE

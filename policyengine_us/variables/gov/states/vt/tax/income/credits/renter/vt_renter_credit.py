@@ -34,13 +34,21 @@ class vt_renter_credit(Variable):
             county
         ]
         fmr = p.fair_market_rent[exemptions][county]
-        base_credit_amount = fmr * MONTHS_IN_YEAR * p.fmr_rate
+        # The department rounds the credit amount to whole dollars, half up,
+        # before applying the income phase-out: its 2021 calculator computes
+        # ROUND(FMR * 12 * 10%, 0), and its published tables are whole dollars.
+        base_credit_amount = np.floor(fmr * MONTHS_IN_YEAR * p.fmr_rate + 0.5)
 
         # Compute what the spreadsheet calls the "percent rebate claimable"
         vt_renter_credit_income = tax_unit("vt_renter_credit_income", period)
         income_diff = partial_credit_income_limit - vt_renter_credit_income
         income_threshold_diff = partial_credit_income_limit - full_credit_income_limit
         percent_rebate_claimable = income_diff / income_threshold_diff
+        # Multiply before dividing so whole-dollar inputs preserve exact
+        # half-dollar credits instead of floating-point values just below them.
+        partial_credit_unsubsidized = (
+            income_diff * base_credit_amount / income_threshold_diff
+        )
         # If shared residence, reduce by a given fraction.
         shared_rent = tax_unit("rent_is_shared_with_another_tax_unit", period)
         shared_residence_reduction = shared_rent * p.shared_residence_reduction
@@ -68,7 +76,7 @@ class vt_renter_credit(Variable):
             [
                 base_credit_amount,
                 base_credit_subsidized,
-                percent_rebate_claimable * base_credit_amount,
+                partial_credit_unsubsidized,
                 percent_rebate_claimable * base_credit_subsidized,
             ],
             default=0,
@@ -85,4 +93,7 @@ class vt_renter_credit(Variable):
         filer = person("is_tax_unit_head_or_spouse", period)
         claimed = person("claimed_as_dependent_on_another_return", period)
         claimant_eligible = tax_unit.any(filer & ~claimed)
-        return claimant_eligible * np.round(unrounded)
+        # The department calculators use ROUND(..., 0): Calculator!G16 in
+        # 2021-2022 and Calculator!G17 in 2023-2025. Credits are nonnegative,
+        # so floor(x + 0.5) matches their half-up rounding at exact ties.
+        return claimant_eligible * np.floor(unrounded + 0.5)

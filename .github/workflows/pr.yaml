@@ -166,11 +166,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SELECTIVE_TEST_MAX_TARGETS: 25
-      # 100 (was 250): selective runs pack every matched yaml into ONE
-      # policyengine-core subprocess, and ~250 yaml files retained ~15 GB
-      # and OOM'd the 16 GB runner on run 28698452678. When the limit is
-      # exceeded run_selective_tests.py safely narrows to directly changed
-      # test files (or skips, deferring to the full suite jobs).
+      # Keep Quick Feedback's total scope bounded. Selected locations run
+      # sequentially, with contrib/reform folders split one file per process
+      # like the Full Suite CRFB shard. Above this limit, the runner narrows
+      # to directly changed files (or defers to the full suite jobs).
       SELECTIVE_TEST_MAX_FILES: 100
       PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
     steps:
@@ -274,9 +273,13 @@ jobs:
         run: bash ./update_itemization.sh
       - name: Run Household API Partners YAML tests
         run: uv run --no-sync make test-yaml-no-structural-other-partners
+  # Contrib starts once Baseline passes, on the same 6 lanes, so most PRs see
+  # their Baseline result first. A Baseline failure skips Contrib, and
+  # re-running the failed Baseline group then runs Contrib for the first time:
+  # no finished Contrib work is repeated.
   Contrib:
     name: Contrib tests
-    needs: ReleaseLock
+    needs: [ReleaseLock, Baseline]
     uses: ./.github/workflows/contrib-tests.yaml
   PythonTests:
     name: Python tests
