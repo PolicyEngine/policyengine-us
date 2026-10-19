@@ -8,8 +8,10 @@ values:
     - alimony_expense
     # Manual Section III.H, page 21, deducts "All Medicare expenses, including
     # prescriptions." FY2026 plan Section 1.9, page 6, counts Social Security
-    # "Including MediCare deduction", which DHS's draft FFY2027 plan summary glosses
-    # as "meaning the Medicare amount deducted is not counted", so the sources agree.
+    # "Including MediCare deduction". Only DHS's draft FFY2027 plan summary
+    # glosses this, as "meaning the Medicare amount deducted is not counted";
+    # read that way, the plan agrees with the manual. The draft is cited until
+    # DHS posts the final FFY2027 summary.
     # The Part B premium is the only Medicare expense with an input; prescription
     # and other Medicare costs are not deducted.
     - medicare_part_b_premium

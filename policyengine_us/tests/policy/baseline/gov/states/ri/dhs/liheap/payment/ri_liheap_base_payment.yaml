@@ -154,3 +154,25 @@
     ri_liheap_income_band: [1, 1, 1]
   output:
     ri_liheap_base_payment: [861, 582, 743]
+
+# Row G is the direct grant to an unsubsidized heat-in-rent household with no separate
+# electric bill. Subsidized renters with no utility burden are ineligible (manual II.B,
+# page 6), so a subsidized heat-in-rent household with no electric bill gets no row G
+# grant under either subsidy flag: 0 and 0. The same unsubsidized household reads the
+# row G Natural Gas cell, 400, with no enhancement because no utility account receives
+# the grant.
+- name: Case 10, subsidized heat-in-rent households without an electric bill get no direct grant.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    ri_liheap_household_size: [1, 1, 1]
+    ri_liheap_income_band: [1, 1, 1]
+    heat_expense_included_in_rent: [true, true, true]
+    gas_expense: [0, 0, 0]
+    pre_subsidy_electricity_expense: [0, 0, 0]
+    receives_housing_assistance: [true, false, false]
+    is_in_public_housing: [false, true, false]
+  output:
+    ri_liheap_base_payment: [0, 0, 400]

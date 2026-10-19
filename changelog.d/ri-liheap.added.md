@@ -1,1 +1,0 @@
-Add Rhode Island LIHEAP regular heating assistance, income and heating eligibility, including heat-in-rent grants and the qualifying utility enhancement. Earlier years backfill the researched FY2026 schedule as unverified estimates.

@@ -12,9 +12,11 @@ class ri_liheap_base_payment(Variable):
         "and the state enhancement when the grant reaches a qualifying gas "
         "or electric utility account. For heat in rent, a reported separate "
         "electric bill selects the secondary-electric route; otherwise the "
-        "grant is paid directly, except that electric heat gets none because "
-        "row G's Electric cell is blank. Utility-provider and account ownership "
-        "requirements are assumed satisfied. Final eligibility is separate."
+        "row G grant for the household's fuel column is paid directly. Row G's "
+        "Electric cell is blank, so electric heat gets none, and coal, solar "
+        "and unspecified fuels read the Other cell. Utility-provider and "
+        "account ownership requirements are assumed satisfied. Final "
+        "eligibility is separate."
     )
     defined_for = StateCode.RI
     reference = (
@@ -51,8 +53,13 @@ class ri_liheap_base_payment(Variable):
             | (fuel == fuels.PROPANE)
             | (fuel == fuels.WOOD)
         )
+        fuel_columns = [
+            deliverable,
+            fuel == fuels.NATURAL_GAS,
+            fuel == fuels.ELECTRICITY,
+        ]
         amount = select(
-            [deliverable, fuel == fuels.NATURAL_GAS, fuel == fuels.ELECTRICITY],
+            fuel_columns,
             [
                 p.amount.deliverables[band],
                 p.amount.natural_gas[band],
@@ -60,8 +67,8 @@ class ri_liheap_base_payment(Variable):
             ],
             # NONE means no heating. The Other column is blank in rows A-F, so OTHER,
             # COAL and SOLAR (the landlord form has no coal or solar box) receive no
-            # primary amount; UNSPECIFIED receives none because heating_type is a
-            # required input.
+            # primary amount, and UNSPECIFIED receives none because heating_type is a
+            # required input. Heat in rent replaces this amount with rows G-I below.
             default=0,
         )
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
@@ -70,12 +77,17 @@ class ri_liheap_base_payment(Variable):
         secondary_electric_payment = where(
             subsidized, hir.subsidized_secondary_electric, hir.secondary_electric
         )
-        # Rows H-I apply to the secondary electric account. Row G is the direct grant
-        # when there is no separate electric bill to credit; it prints $400 under
-        # Deliverables, Natural Gas and Other but leaves the Electric cell blank, so
-        # electric heat receives no row G grant. Subsidized tenants without a utility
-        # burden are ineligible.
-        direct_payment = where(subsidized | (fuel == fuels.ELECTRICITY), 0, hir.direct)
+        # Rows H-I go to the separate electric account whatever the fuel. Row G is
+        # the direct grant when there is no separate electric bill to credit, read
+        # from the household's fuel column; OTHER, COAL, SOLAR and UNSPECIFIED (heat
+        # in rent with an unknown fuel) read the Other cell, and the blank Electric
+        # cell is 0. Subsidized tenants without a utility burden are ineligible.
+        direct_amount = select(
+            fuel_columns,
+            [hir.direct.deliverables, hir.direct.natural_gas, hir.direct.electricity],
+            default=hir.direct.other,
+        )
+        direct_payment = where(subsidized, 0, direct_amount)
         heat_in_rent_payment = where(
             separate_electric_bill, secondary_electric_payment, direct_payment
         )

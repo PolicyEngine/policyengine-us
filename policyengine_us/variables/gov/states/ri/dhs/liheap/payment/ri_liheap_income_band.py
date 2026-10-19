@@ -11,7 +11,7 @@ class ri_liheap_income_band(Variable):
     reference = "https://liheapch.acf.gov/docs/2026/benefits-matricies/RI_BenefitMatrix_2026.pdf"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ri.dhs.liheap.payment
+        p = parameters(period).gov.states.ri.dhs.liheap
         size = spm_unit("ri_liheap_household_size", period)
         state_group = spm_unit.household("state_group_str", period)
         guideline = fpg(
@@ -19,7 +19,7 @@ class ri_liheap_income_band(Variable):
         )
         income = spm_unit("ri_liheap_income", period)
         band = np.ones_like(size, dtype=int)
-        for rate in p.fpg_rates:
+        for rate in p.payment.fpg_rates:
             threshold = np.floor(guideline * rate + 0.5)
             band = band + (income > threshold)
         # Use the published percentage labels. The size-two 125% table cell

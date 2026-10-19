@@ -5,8 +5,12 @@ description: Rhode Island uses these sources as unearned income under the Low In
 # SSI is the federal benefit; a separate RI state supplement is not modeled.
 # disability_benefits approximates employment-related TDI/TCI receipts.
 # VA education and Aid and Attendance exclusions cannot be separated from
-# the broad veterans input. Jury duty, royalties, foster receipts and legal
-# settlements also lack sufficiently specific existing inputs.
+# the broad veterans input. Strike pay and VA benefits are counted under FY2026
+# plan Section 1.9 (page 6) and the DHS FY2026 plan summary (page 1). Payments
+# from mortgages or sales contracts, AmeriCorp living allowances, jury duty pay,
+# royalties, foster care receipts and legal settlements lack specific existing
+# inputs and are not counted; contract income counts only when reported as
+# wages or self-employment income.
 values:
   2025-10-01:
     - total_unemployment_compensation
@@ -50,5 +54,7 @@ metadata:
       href: https://ripuc.ri.gov/eventsactions/docket/4290-DHS-DR-PUC%203-6%20attachment%20LIHEAP%20Manual%202020%20-%20Final.pdf#page=14
     - title: "Rhode Island FY2026 State Plan, Sections 1.8 and 1.9 #page 5-7"
       href: https://liheapch.acf.gov/docs/2026/state-plans/RI_Plan_2026.pdf#page=5
-    - title: Rhode Island FY2026 Application Instructions, Proof of Income
+    - title: Rhode Island FY2026 LIHEAP Application Instructions, Appendix H (May 2025), Proof of Income
       href: https://dhs.ri.gov/media/9671/download?language=en#page=2
+    - title: Rhode Island DHS Summary of the FFY2026 LIHEAP State Plan, Section 1, Program Components
+      href: https://dhs.ri.gov/media/9371/download?language=en#page=1

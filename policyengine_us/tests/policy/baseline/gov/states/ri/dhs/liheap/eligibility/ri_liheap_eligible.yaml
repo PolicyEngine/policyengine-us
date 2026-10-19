@@ -62,3 +62,28 @@
     ri_liheap_income: 0
     ri_liheap_income_limit: 0
     ri_liheap_eligible: false
+
+# Threshold edge for the federal floor, 42 U.S.C. 8624(b)(2)(B): income "less than
+# 110 percent of the poverty level" cannot be excluded. Size and income are forced
+# because the floor binds only from 23 qualified members in 2026. The 60% SMI limit
+# is floor(floor(0.6 x 135,424) x 1.83) = floor(81,254 x 1.83) = floor(148,694.82)
+# = 148,694, where 1.83 = 0.52 + 5 x 0.16 + 17 x 0.03. The floor uses the 2025
+# guideline (one-year lag): 15,650 + 22 x 5,500 = 136,650, and 1.1 x 136,650 =
+# 150,315.00. All three incomes exceed the limit; 150,314.99 is below the floor
+# (eligible) and 150,315 and 150,315.01 are not. A zero-year lag (2026 guideline,
+# 1.1 x 140,920 = 155,012) would make 150,315 eligible, and a two-year lag (2024
+# guideline, 1.1 x 133,420 = 146,762) would make 150,314.99 ineligible.
+- name: Case 4, threshold edge at the federal 110 percent poverty floor for twenty three members.
+  period: 2026
+  input:
+    state_code: [RI, RI, RI]
+    ri_liheap_household_size: [23, 23, 23]
+    ri_liheap_income: [150_314.99, 150_315, 150_315.01]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200]
+    heat_expense_included_in_rent: [false, false, false]
+    receives_housing_assistance: [false, false, false]
+    is_in_public_housing: [false, false, false]
+  output:
+    ri_liheap_income_limit: [148_694, 148_694, 148_694]
+    ri_liheap_eligible: [true, false, false]

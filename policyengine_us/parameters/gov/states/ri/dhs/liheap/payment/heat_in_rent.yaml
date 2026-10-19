@@ -1,10 +1,18 @@
 description: Rhode Island provides these regular heating grants for heat-in-rent households under the Low Income Home Energy Assistance Program.
 # Row G (direct) prints $400 under Deliverables, Natural Gas and Other and leaves
-# the Electric cell blank, so electric heat receives no direct grant. Rows H and I
-# print one amount each and go to the household's separate electric account.
+# the Electric cell blank, so its electricity value is 0. Unlisted fuels (coal,
+# solar) and an unknown fuel read the Other cell. Rows H and I print one amount
+# each and go to the household's separate electric account whatever the fuel.
 
 direct:
-  2025-10-01: 400
+  deliverables:
+    2025-10-01: 400
+  natural_gas:
+    2025-10-01: 400
+  electricity:
+    2025-10-01: 0
+  other:
+    2025-10-01: 400
 secondary_electric:
   2025-10-01: 80
 subsidized_secondary_electric:

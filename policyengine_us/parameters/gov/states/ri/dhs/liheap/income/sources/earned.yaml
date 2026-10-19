@@ -1,8 +1,10 @@
 description: Rhode Island uses these sources as earned income under the Low Income Home Energy Assistance Program.
-# Existing net business income is used without an additional 40% deduction.
-# The manual (Section III.H, page 20) deducts 40% of gross self-employment
-# receipts, and DHS's FY2026 plan summary (page 1) lists "Self-employment
-# income (60%)". Gross business receipts and business-expense inputs remain deferred.
+# Manual Section III.H (page 20) deducts 40% of gross self-employment receipts,
+# and DHS's FY2026 plan summary (page 1) lists "Self-employment income (60%)".
+# The model has only net business income and counts it in full, as Kansas LIHEAP
+# does; this equals 60% of receipts only when expenses are 40% of receipts, and
+# otherwise over- or understates countable income by receipts x (0.4 - expense
+# ratio). No gross-receipts or business-expense input is added.
 # Active versus passive partnership receipts are not separately identifiable.
 values:
   2025-10-01:
@@ -21,7 +23,7 @@ metadata:
       href: https://ripuc.ri.gov/eventsactions/docket/4290-DHS-DR-PUC%203-6%20attachment%20LIHEAP%20Manual%202020%20-%20Final.pdf#page=14
     - title: "Rhode Island FY2026 State Plan, Sections 1.8 and 1.9 #page 5-7"
       href: https://liheapch.acf.gov/docs/2026/state-plans/RI_Plan_2026.pdf#page=5
-    - title: Rhode Island FY2026 Application Instructions, Proof of Income
+    - title: Rhode Island FY2026 LIHEAP Application Instructions, Appendix H (May 2025), Proof of Income
       href: https://dhs.ri.gov/media/9671/download?language=en#page=2
-    - title: Rhode Island DHS Summary of the FFY2026 LIHEAP State Plan, Countable Income
+    - title: Rhode Island DHS Summary of the FFY2026 LIHEAP State Plan, Section 1, Program Components
       href: https://dhs.ri.gov/media/9371/download?language=en#page=1

@@ -35,10 +35,13 @@ class ri_liheap_income(Variable):
             "is_full_time_student", period
         )
         counted_person = (age >= p.minimum_income_age) & ~exempt_student
-        # Existing net business receipts approximate the gross-receipts rule.
-        # No additional 40% business deduction or new expense input is used.
-        # Each source is floored at zero, so a loss in one source cannot
-        # offset another.
+        # Manual III.H (page 20) counts self-employment at 60% of gross receipts
+        # (a 40% deduction). The model has only net business income and counts it
+        # in full, as ks_liheap_countable_earned_income does; this matches the
+        # manual only when expenses are 40% of receipts, overstates countable
+        # income when expenses are lower and understates it when they are higher.
+        # No gross-receipts or business-expense input is added. Each source is
+        # floored at zero, so a loss in one source cannot offset another.
         earnings = 0
         for source in p.sources.earned:
             earnings = earnings + max_(person(source, period), 0)
