@@ -52,9 +52,10 @@ class wa_cascade_care_savings_member_eligible(Variable):
         # PMPM methodology defines Group 2 as QHP-eligible residents "not
         # eligible for APTC Federal subsidies but eligible for CCS", and
         # Policy Section 4(2) does not list being claimable among its
-        # exclusions. pays_aca_premium already excludes undocumented people,
-        # so Groups 2 and 3 do not overlap.
-        group_2 = person("pays_aca_premium", period) & ~person(
+        # exclusions. Enrollment includes covered children who add no marginal
+        # premium, and excludes undocumented people, so Groups 2 and 3 do not
+        # overlap. Count enrollees before the cap (Policy Section 5(1)(c)-(d)).
+        group_2 = person("is_aca_marketplace_enrollee", period) & ~person(
             "is_aca_tax_family_member", period
         )
         return group_1 | group_2 | group_3

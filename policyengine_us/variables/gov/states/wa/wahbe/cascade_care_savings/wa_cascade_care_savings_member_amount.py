@@ -60,7 +60,9 @@ class wa_cascade_care_savings_member_amount(Variable):
         group_3 = undocumented & ~apple_health_expansion & ~apple_health_kids & ~group_1
         # Group 2: QHP-eligible enrollees outside the federal tax family, who
         # have no federal subsidy (see wa_cascade_care_savings_member_eligible).
-        group_2 = person("pays_aca_premium", period) & ~person(
+        # Count eligible enrollees before the household cap, including a
+        # covered child who adds no marginal premium (Policy Section 5(1)(c)).
+        group_2 = person("is_aca_marketplace_enrollee", period) & ~person(
             "is_aca_tax_family_member", period
         )
         with_subsidy = where(group_1, p.amount.with_federal_subsidy, 0)

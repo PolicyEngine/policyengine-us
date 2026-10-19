@@ -912,3 +912,58 @@
   output:
     # Both spouses are Group 2: 2 * 12 * 250 = 6,000, below the cap of 12,000.
     wa_cascade_care_savings: 6000
+
+- name: Review r4 WA Group 2 includes an enrolled spouse with no marginal premium
+  period: 2026
+  absolute_error_margin: 0.02
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_aca_marketplace_enrollee: true
+      spouse:
+        age: 19
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_aca_marketplace_enrollee: true
+      child1:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_aca_marketplace_enrollee: true
+      child2:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_aca_marketplace_enrollee: true
+      child3:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_aca_marketplace_enrollee: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2, child3]
+        filing_status: JOINT
+        tax_unit_is_filer: true
+        aca_magi: 80_000
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3]
+        state_code: WA
+        slcsp_age_0: 6_000
+  output:
+    pays_aca_premium: [true, false, true, true, true]
+    is_aca_tax_family_member: [true, false, true, true, true]
+    wa_cascade_care_savings_member_eligible: [true, true, true, true, true]
+    wa_cascade_care_savings_member_amount: [660, 3_000, 660, 660, 660]
+    # Four Group 1 enrollees plus the Group 2 spouse: 4 * 660 + 3,000.
+    # The household residual premium cap of 6,693.12 does not bind.
+    wa_cascade_care_savings: 5_640
