@@ -31,5 +31,5 @@ class tx_ssi_state_supplement(Variable):
         # the $30 standard, so the allowance less both is the same amount.
         p = parameters(period).gov.states.tx.hhsc.ssi_state_supplement
         pna = p.personal_needs_allowance
-        federal_reduced = parameters(period).gov.ssa.ssi.amount.institutional.individual
+        federal_reduced = parameters(period).gov.ssa.ssi.amount.medical_facility
         return max_(pna - federal_reduced, 0)
