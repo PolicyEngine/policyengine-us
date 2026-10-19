@@ -194,3 +194,166 @@
     tax_units: {tax_unit: {members: [parent], filing_status: SINGLE}}
     households: {household: {members: [parent], state_name: WV}}
   output: {wv_personal_exemption: 500}
+
+- name: WI repeal - single filer claimed - baseline
+  period: 2025
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: false
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_name: WI}}
+  output:
+    exemptions_count: 0
+    wi_base_exemption: 0
+
+- name: WI repeal - single filer claimed - reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_name: WI}}
+  output:
+    exemptions_count: 0
+    wi_base_exemption: 0
+
+- name: WI repeal - both joint filers claimed - baseline
+  period: 2025
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: false
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+      spouse:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units: {tax_unit: {members: [head, spouse], filing_status: JOINT}}
+    households: {household: {members: [head, spouse], state_name: WI}}
+  output:
+    exemptions_count: 0
+    wi_base_exemption: 0
+
+- name: WI repeal - both joint filers claimed - reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+      spouse:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units: {tax_unit: {members: [head, spouse], filing_status: JOINT}}
+    households: {household: {members: [head, spouse], state_name: WI}}
+  output:
+    exemptions_count: 0
+    wi_base_exemption: 0
+
+- name: RI repeal - single filer claimed - baseline
+  period: 2025
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: false
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_name: RI}}
+  output:
+    exemptions_count: 0
+    ri_exemptions: 0
+
+- name: RI repeal - single filer claimed - reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_name: RI}}
+  output:
+    exemptions_count: 0
+    ri_exemptions: 0
+
+- name: WI repeal - single filer unclaimed but claimable - baseline
+  period: 2025
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: false
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_name: WI}}
+  output:
+    exemptions_count: 0
+    wi_base_exemption: 0
+
+- name: WI repeal - single filer unclaimed but claimable - reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_name: WI}}
+  output:
+    exemptions_count: 0
+    wi_base_exemption: 0
+
+- name: RI repeal - single filer unclaimed but claimable - baseline
+  period: 2025
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: false
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_name: RI}}
+  output:
+    exemptions_count: 0
+    ri_exemptions: 0
+
+- name: RI repeal - single filer unclaimed but claimable - reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      head:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units: {tax_unit: {members: [head], filing_status: SINGLE}}
+    households: {household: {members: [head], state_name: RI}}
+  output:
+    exemptions_count: 0
+    ri_exemptions: 0
