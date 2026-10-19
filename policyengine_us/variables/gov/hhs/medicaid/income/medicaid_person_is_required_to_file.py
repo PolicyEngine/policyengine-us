@@ -3,13 +3,6 @@ from policyengine_us.variables.household.demographic.tax_unit.filing_status impo
     FilingStatus,
 )
 
-# The wage and self-employment sources in gov.irs.gross_income.sources.
-EARNED_GROSS_INCOME_SOURCES = [
-    "irs_employment_income",
-    "self_employment_income",
-    "sstb_self_employment_income",
-]
-
 
 class medicaid_person_is_required_to_file(Variable):
     value_type = bool
@@ -20,19 +13,28 @@ class medicaid_person_is_required_to_file(Variable):
         "https://www.law.cornell.edu/cfr/text/42/435.603#d_2",
         "https://www.irs.gov/publications/p501",
         "https://www.irs.gov/pub/irs-prior/p501--2025.pdf#page=4",
+        # Form 1040 instructions: line 1a is Form(s) W-2, box 1 (PDF page 23),
+        # which leaves out elective deferrals (page 25).
+        # PDF pages 23, 25
+        "https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=23",
     )
 
     def formula(person, period, parameters):
         standard = parameters(period).gov.irs.deductions.standard
         filing_requirement = parameters(period).gov.irs.income.filing_requirement
         gross_income = person("medicaid_irs_gross_income", period)
-        earned_income = person("earned_income", period)
-        # Unearned income is gross income other than wages and self-employment
-        # earnings (IRS Pub. 501, Table 2). Gross income counts each source's
-        # positive amount, so subtract those sources' positive amounts: a
-        # business loss does not turn other income into unearned income.
+        # Earned income is wages as reported in Form W-2 box 1, which leave
+        # out elective deferrals, plus business and farm income: the gross
+        # income sources the IRS dependent worksheet counts as earned. A
+        # business or farm loss reduces it.
+        earned_income_sources = filing_requirement.dependent.earned_income_sources
+        earned_income = add(person, period, earned_income_sources)
+        # Unearned income is gross income other than earned income (IRS Pub.
+        # 501, Table 2). Gross income counts each source's positive amount, so
+        # subtract those sources' positive amounts: a business loss does not
+        # turn other income into unearned income.
         earned_gross_income = 0
-        for source in EARNED_GROSS_INCOME_SOURCES:
+        for source in earned_income_sources:
             earned_gross_income += max_(0, person(source, period))
         unearned_income = max_(0, gross_income - earned_gross_income)
 

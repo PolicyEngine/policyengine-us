@@ -1,7 +1,8 @@
-description: The Internal Revenue Service counts these gross income sources as earned income when it tests the unearned income of a filer who can be claimed as a dependent; every other gross income source is unearned income.
+description: The Internal Revenue Service counts these gross income sources as earned income of a filer who can be claimed as a dependent, both for the standard deduction worksheet for dependents and for the unearned income filing test; every other gross income source is unearned income.
 values:
   2010-01-01:
-    # Form 1040 line 1z (wages).
+    # Form 1040 line 1z (wages). Line 1a is the total of Form(s) W-2, box 1,
+    # which leaves out elective deferrals.
     - irs_employment_income
     # Schedule 1 line 3 (business income, Schedule C).
     - self_employment_income
@@ -11,14 +12,18 @@ values:
 metadata:
   unit: list
   period: year
-  label: IRS earned income sources for the dependent unearned income filing test
+  label: IRS earned income sources for filers who can be claimed as dependents
   reference:
     - title: 26 U.S. Code § 6012(a)(1)(C)(i)(I) and (f)(2)(D) - income other than earned income
       href: https://www.law.cornell.edu/uscode/text/26/6012
-    # "Generally, your earned income is the total of the amount(s) you
-    # reported on Form 1040 or 1040-SR, line 1z, and Schedule 1, lines 3, 6,
-    # 8r, 8t, and 8u minus the amount, if any, on Schedule 1, line 15."
-    # Schedule 1 line 5 (rents, royalties, partnerships, S corporations and
-    # trusts) is not on the list.
-    - title: 2025 Form 1040 instructions, Standard Deduction Worksheet for Dependents
-      href: https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=35
+    - title: 26 U.S. Code § 63(c)(5) - limitation on basic standard deduction in the case of certain dependents
+      href: https://www.law.cornell.edu/uscode/text/26/63#c_5
+    # Line 1a is the total of Form(s) W-2, box 1 (page 23); an elective
+    # deferral "isn't included as income in box 1 of your Form W-2" (page
+    # 25). Worksheet footnote (page 35): "Generally, your earned income is
+    # the total of the amount(s) you reported on Form 1040 or 1040-SR, line
+    # 1z, and Schedule 1, lines 3, 6, 8r, 8t, and 8u minus the amount, if
+    # any, on Schedule 1, line 15." Schedule 1 line 5 (rents, royalties,
+    # partnerships, S corporations and trusts) is not on the list.
+    - title: "2025 Form 1040 instructions, line 1a and Standard Deduction Worksheet for Dependents #page 23,25,35"
+      href: https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=23

@@ -1,0 +1,1 @@
+Use Form W-2 box 1 wages, which leave out elective deferrals, and farm income as earned income in the federal, Oregon and Hawaii standard deduction worksheets for dependents and in the Medicaid dependent filing test.

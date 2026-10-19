@@ -25,12 +25,10 @@ class basic_standard_deduction(Variable):
         # can be claimed.
         dependent_elsewhere = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
         standard_deduction = p.amount[filing_status]
-        # Worksheet earned income: wages and self-employment income minus the
-        # deductible part of self-employment tax (Schedule 1, line 15).
-        worksheet_earned_income = max_(
-            tax_unit("tax_unit_earned_income", period)
-            - tax_unit("self_employment_tax_ald", period),
-            0,
+        # Worksheet earned income: W-2 box 1 wages, business and farm income,
+        # minus the deductible part of self-employment tax.
+        worksheet_earned_income = tax_unit(
+            "standard_deduction_worksheet_earned_income", period
         )
         standard_deduction_if_dependent = min_(
             standard_deduction,

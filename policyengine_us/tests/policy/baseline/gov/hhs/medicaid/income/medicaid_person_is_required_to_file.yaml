@@ -145,3 +145,74 @@
         members: [person1]
   output:
     medicaid_person_is_required_to_file: true
+
+- name: Case 9, a dependent's earned income is W-2 box 1 wages, after a 401(k) deferral.
+  # Form 1040 instructions (2025): line 1a is W-2 box 1, which leaves out
+  # the $6,000 elective deferral. Earned income is $4,000, so the Pub. 501
+  # (2025), Table 2 limit is the larger of $1,350 or $4,000 + $450 = $4,450.
+  # Gross income, $4,000 of wages and $600 of interest, is more than $4,450,
+  # so the dependent must file.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        employment_income: 10_000
+        traditional_401k_contributions: 6_000
+        taxable_interest_income: 600
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: true
+
+- name: Case 10, the same box 1 wages without a deferral give the same answer.
+  # Control for Case 9: $4,000 of wages and $600 of interest; $4,600 is more
+  # than $4,000 + $450 = $4,450.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        employment_income: 4_000
+        taxable_interest_income: 600
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: true
+
+- name: Case 11, wages over the regular amount before a deferral but not after it do not require a return.
+  # Box 1 wages are $17,000 - $3,000 = $14,000, not more than the $15,750
+  # single amount (Table 2, test 2), and gross income of $14,000 is not more
+  # than $14,000 + $450 = $14,450 (test 3).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        employment_income: 17_000
+        traditional_401k_contributions: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: false
+
+- name: Case 12, farm income is earned income, not unearned income.
+  # The Form 1040 dependent worksheet counts Schedule 1 line 6 (farm income)
+  # as earned income. $2,000 of farm income is not unearned income over
+  # $1,350, and gross income of $2,000 is not more than $2,000 + $450. The
+  # section 6017 self-employment tax filing rule is not part of the section
+  # 6012(a)(1) test that 42 CFR 435.603(d)(2) uses.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        farm_operations_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: false
