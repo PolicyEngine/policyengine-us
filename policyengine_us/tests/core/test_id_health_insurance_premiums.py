@@ -231,11 +231,16 @@ def test_actual_medical_deduction_is_scoped_to_period_and_branch():
     strict=True,
     reason=(
         "policyengine-core<3.32.27 retains deleted input provenance and "
-        "misclassifies a federal medical deduction recalculated before the "
-        "Idaho helper as supplied; fixed by policyengine-core#561."
+        "misclassifies a federal itemized total recalculated before the "
+        "Idaho formula as supplied; fixed by policyengine-core#561."
     ),
 )
-def test_deleted_medical_input_recalculated_federal_first():
+def test_deleted_itemized_input_recalculated_federal_first():
+    # From derived inputs Idaho's claimant worksheet equals the federal medical
+    # deduction, so a deleted federal medical input cannot change any Idaho
+    # amount. Idaho's itemized total still tells a supplied federal total,
+    # used as given, from a derived one, whose medical component it replaces
+    # with an explicit Idaho claimant deduction.
     year = 2025
     simulation = Simulation(
         tax_benefit_system=SYSTEM,
@@ -249,10 +254,6 @@ def test_deleted_medical_input_recalculated_federal_first():
                 "dependent": {
                     "age": {year: 20},
                     "is_tax_unit_dependent": {year: True},
-                    # Other costs, which the federal subtotal counts for every
-                    # member and Idaho's claimant worksheet leaves out, keep
-                    # the two amounts apart. A dependent's own premiums would
-                    # not: neither counts them.
                     "other_medical_expenses": {year: 500},
                 },
             },
@@ -260,8 +261,10 @@ def test_deleted_medical_input_recalculated_federal_first():
                 "tax_unit": {
                     "members": ["head", "dependent"],
                     "adjusted_gross_income": {year: 30_000},
-                    "standard_deduction": {year: 15_750},
-                    "id_itemized_deductions": {year: 20_000},
+                    "interest_deduction": {year: 20_000},
+                    "salt_deduction": {year: 0},
+                    "id_salt_deduction": {year: 0},
+                    "id_health_insurance_premiums_medical_deduction": {year: 250},
                 }
             },
             "households": {
@@ -272,14 +275,187 @@ def test_deleted_medical_input_recalculated_federal_first():
             },
         },
     )
-    simulation.set_input("medical_expense_deduction", year, np.array([3_000]))
-    simulation.delete_arrays("medical_expense_deduction", year)
+    simulation.set_input("itemized_taxable_income_deductions", year, np.array([30_000]))
+    simulation.delete_arrays("itemized_taxable_income_deductions", year)
 
-    # Federal first: 3,000 + 500 - 30,000 * 7.5% = 1,250.
-    assert simulation.calculate("medical_expense_deduction", year).tolist() == [1_250]
-    # Idaho excludes the dependent's costs: medical overlap is
-    # 3,000 - 30,000 * 7.5% = 750, leaving 3,000 - 750 = 2,250.
-    # Core's provenance defect before 3.32.27 uses 1,250 and returns 1,750.
+    # Federal first: 20,000 interest + (3,000 + 500 - 30,000 * 7.5%) medical
+    # = 21,250.
     assert simulation.calculate(
-        "id_health_insurance_premiums_subtraction", year
-    ).tolist() == [2_250]
+        "itemized_taxable_income_deductions", year
+    ).tolist() == [21_250]
+    # Idaho replaces the 1,250 federal medical deduction with the explicit 250:
+    # 21,250 - 1,000 = 20,250. Core's provenance defect before 3.32.27 takes the
+    # recalculated total as supplied and keeps 21,250.
+    assert simulation.calculate("id_itemized_deductions", year).tolist() == [20_250]
+
+
+# Form 39R worksheet lines 1-6 take the medical expenses claimed on federal
+# Schedule A, which counts bills the filers paid for dependents. Premium inputs
+# sit on the payer and other medical expenses on the person cared for, so the
+# claimant worksheet counts the filers' premiums and every member's other
+# costs. Each drawn return runs in one vectorized simulation per year with
+# these variants:
+VARIANTS = (
+    "drawn",
+    # every member's other costs recorded on the head;
+    "bills_on_head",
+    # every member's other costs recorded on one dependent;
+    "bills_on_dependent",
+    # one dependent's other costs raised;
+    "dependent_bills_raised",
+    # every dependent's own premiums set to 0.
+    "no_dependent_premiums",
+)
+# The drawn high incomes reach the 2026 itemized limitation (IRC 68).
+CLAIMANT_YEARS = (2025, 2026)
+IDAHO_OUTPUTS = (
+    "id_health_insurance_premiums_medical_deduction",
+    "id_qualified_health_insurance_premiums",
+    "id_itemized_deductions",
+    "id_itemizes",
+    "id_health_insurance_premiums_subtraction",
+    "id_deductions",
+)
+CENT = 0.01
+
+
+@st.composite
+def claimant_returns(draw):
+    filers = draw(st.sampled_from([1, 2]))
+    dependents = draw(st.integers(1, 2))
+    members = filers + dependents
+    return {
+        "filers": filers,
+        "premiums": [draw(st.integers(0, 20_000)) for _ in range(members)],
+        "other": [draw(st.integers(0, 40_000)) for _ in range(members)],
+        "agi": draw(st.integers(0, 150_000) | st.integers(600_000, 900_000)),
+        "interest": draw(st.integers(0, 40_000)),
+        "standard": draw(st.integers(0, 35_000)),
+        "above_line": draw(st.integers(0, 25_000)),
+        "receiver": filers + draw(st.integers(0, dependents - 1)),
+        "raise": draw(st.integers(1, 10_000)),
+    }
+
+
+def _claimant_inputs(case, variant):
+    premiums = list(case["premiums"])
+    other = list(case["other"])
+    if variant == "bills_on_head":
+        other = [sum(other)] + [0] * (len(other) - 1)
+    elif variant == "bills_on_dependent":
+        moved = [0] * len(other)
+        moved[case["receiver"]] = sum(other)
+        other = moved
+    elif variant == "dependent_bills_raised":
+        other[case["receiver"]] += case["raise"]
+    elif variant == "no_dependent_premiums":
+        premiums[case["filers"] :] = [0] * (len(premiums) - case["filers"])
+    return premiums, other
+
+
+def _claimant_simulation(cases, year):
+    people, tax_units, households, rows = {}, {}, {}, []
+    for index, case in enumerate(cases):
+        for variant in VARIANTS:
+            unit = f"case_{index}_{variant}"
+            premiums, other = _claimant_inputs(case, variant)
+            members = [f"{unit}_{member}" for member in range(len(premiums))]
+            for member, person in enumerate(members):
+                filer = member < case["filers"]
+                people[person] = {
+                    "age": {year: 40 if filer else 10},
+                    "is_tax_unit_head": {year: member == 0},
+                    "is_tax_unit_spouse": {year: member == 1 and filer},
+                    "is_tax_unit_dependent": {year: not filer},
+                    "health_insurance_premiums": {year: premiums[member]},
+                    "other_medical_expenses": {year: other[member]},
+                }
+            tax_units[unit] = {
+                "members": members,
+                "adjusted_gross_income": {year: case["agi"]},
+                "self_employed_health_insurance_ald": {year: case["above_line"]},
+                "interest_deduction": {year: case["interest"]},
+                "salt_deduction": {year: 0},
+                "id_salt_deduction": {year: 0},
+                # Supplied to keep the model graph small: neither depends on
+                # medical expenses.
+                "standard_deduction": {year: case["standard"]},
+                "taxable_income_before_itemized_deductions": {year: case["agi"]},
+            }
+            households[unit] = {"members": members, "state_code": {year: "ID"}}
+            rows.append((index, variant))
+    simulation = Simulation(
+        tax_benefit_system=SYSTEM,
+        situation={
+            "people": people,
+            "tax_units": tax_units,
+            "households": households,
+        },
+    )
+    return simulation, rows
+
+
+@settings(max_examples=8, deadline=None, derandomize=True)
+@given(cases=st.lists(claimant_returns(), min_size=2, max_size=3))
+def test_claimant_worksheet_counts_bills_paid_for_dependents(cases):
+    for year in CLAIMANT_YEARS:
+        simulation, rows = _claimant_simulation(cases, year)
+        floor = SYSTEM.parameters(year).gov.irs.deductions.itemized.medical.floor
+        values = {
+            # id_itemizes compares as 0 or 1.
+            variable: dict(
+                zip(rows, simulation.calculate(variable, year).astype(float))
+            )
+            for variable in IDAHO_OUTPUTS
+            + ("medical_expense_deduction", "itemized_taxable_income_deductions")
+        }
+        for index, case in enumerate(cases):
+
+            def value(variable, variant="drawn"):
+                return values[variable][(index, variant)]
+
+            worksheet = value("id_health_insurance_premiums_medical_deduction")
+            # 1. Differential: an independent oracle, the federal Schedule A
+            # deduction, and Idaho's worksheet agree.
+            filer_premiums = sum(case["premiums"][: case["filers"]])
+            oracle = max(
+                0,
+                max(0, filer_premiums - case["above_line"])
+                + sum(case["other"])
+                - floor * max(0, case["agi"]),
+            )
+            assert worksheet == pytest.approx(oracle, abs=CENT), case
+            assert value("medical_expense_deduction") == pytest.approx(
+                worksheet, abs=CENT
+            ), case
+            # 2. Idaho's medical correction leaves a derived federal itemized
+            # total unchanged: the two medical deductions agree.
+            assert value("id_itemized_deductions") == pytest.approx(
+                value("itemized_taxable_income_deductions"), abs=CENT
+            ), case
+            # 3. Relocation: whose input records a bill changes no Idaho
+            # amount, and neither do a dependent's own premiums.
+            for variant in (
+                "bills_on_head",
+                "bills_on_dependent",
+                "no_dependent_premiums",
+            ):
+                for variable in IDAHO_OUTPUTS:
+                    assert value(variable, variant) == pytest.approx(
+                        value(variable), abs=CENT
+                    ), (variable, variant, case)
+            # 4. Monotonicity: more bills for a dependent never lower the
+            # worksheet.
+            assert (
+                value(
+                    "id_health_insurance_premiums_medical_deduction",
+                    "dependent_bills_raised",
+                )
+                >= worksheet - CENT
+            ), case
+            # 5. Bounds: the subtraction stays within the qualified premiums.
+            assert (
+                -CENT
+                <= value("id_health_insurance_premiums_subtraction")
+                <= value("id_qualified_health_insurance_premiums") + CENT
+            ), case

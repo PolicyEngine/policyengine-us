@@ -55,6 +55,66 @@
     id_health_insurance_premiums_subtraction: 2_250
     id_taxable_income: 7_000
 
+- name: A bill the parent paid counts the same on the parent's input or the child's
+  # Other medical expenses sit on the person cared for, so unit a records the
+  # child's 3,000 bill on the parent and unit b on the child. Schedule A
+  # counts both, and Form 39R worksheet lines 3-6 take the Schedule A amounts.
+  # Medical deduction: 1,000 + 3,000 - 7.5% of 30,000 = 1,750.
+  # Itemized: 20,000 + 1,750 = 21,750; it beats standard 15,750 + 1,000.
+  # Subtraction: 1,000 - min(1,000, 1,750) = 0.
+  # Taxable income: 30,000 - 21,750 - 0 = 8,250.
+  # Leaving out the child's bill would take 1,750 off unit b's itemized
+  # deductions and restore its 1,000 subtraction: taxable income 9,000.
+  period: 2025
+  input:
+    people:
+      a_parent:
+        age: 40
+        health_insurance_premiums: 1_000
+        other_medical_expenses: 3_000
+        is_tax_unit_head: true
+      a_child:
+        age: 10
+        is_tax_unit_dependent: true
+      b_parent:
+        age: 40
+        health_insurance_premiums: 1_000
+        is_tax_unit_head: true
+      b_child:
+        age: 10
+        other_medical_expenses: 3_000
+        is_tax_unit_dependent: true
+    tax_units:
+      a:
+        members: [a_parent, a_child]
+        adjusted_gross_income: 30_000
+        interest_deduction: 20_000
+        salt_deduction: 0
+        id_salt_deduction: 0
+        standard_deduction: 15_750
+      b:
+        members: [b_parent, b_child]
+        adjusted_gross_income: 30_000
+        interest_deduction: 20_000
+        salt_deduction: 0
+        id_salt_deduction: 0
+        standard_deduction: 15_750
+    households:
+      a:
+        members: [a_parent, a_child]
+        state_code: ID
+      b:
+        members: [b_parent, b_child]
+        state_code: ID
+  output:
+    medical_expense_deduction: [1_750, 1_750]
+    id_health_insurance_premiums_medical_deduction: [1_750, 1_750]
+    itemized_taxable_income_deductions: [21_750, 21_750]
+    id_itemized_deductions: [21_750, 21_750]
+    id_itemizes: [true, true]
+    id_health_insurance_premiums_subtraction: [0, 0]
+    id_taxable_income: [8_250, 8_250]
+
 - name: Corrected Idaho medical costs also reduce the 2026 itemized limitation
   # P.L. 119-21 sec. 70111: $70,000 * (1 - 2/37) = $66,216.21622.
   # Subtracting $500 from the already-limited federal total would be too low.
@@ -91,6 +151,44 @@
     id_itemized_deductions: 66_216.21622
     id_itemizes: true
     id_health_insurance_premiums_subtraction: 60_000
+
+- name: A dependent's bills stay in the 2026 limited Idaho itemized total
+  # Medical deduction: 40,000 + the child's 30,000 - 7.5% of 800,000 = 10,000.
+  # P.L. 119-21 sec. 70111: (30,000 + 10,000) * (1 - 2/37) = 37,837.83784.
+  # Leaving out the child's bills would take the 10,000 off before the
+  # limitation and give 28,378.37838.
+  # Subtraction: 40,000 - min(40,000, 10,000) = 30,000.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        health_insurance_premiums: 40_000
+        is_tax_unit_head: true
+      child:
+        age: 10
+        other_medical_expenses: 30_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SINGLE
+        adjusted_gross_income: 800_000
+        interest_deduction: 30_000
+        salt_deduction: 0
+        id_salt_deduction: 0
+    households:
+      household:
+        members: [head, child]
+        state_code: ID
+  output:
+    medical_expense_deduction: 10_000
+    id_health_insurance_premiums_medical_deduction: 10_000
+    itemized_taxable_income_deductions: 37_837.83784
+    id_itemized_deductions: 37_837.83784
+    id_itemizes: true
+    id_health_insurance_premiums_subtraction: 30_000
 
 - name: Idaho does not add back the federal foreign tax credit when it is claimed as a credit
   period: 2025

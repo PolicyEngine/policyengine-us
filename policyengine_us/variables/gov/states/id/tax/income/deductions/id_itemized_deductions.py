@@ -43,8 +43,10 @@ class id_itemized_deductions(Variable):
         )
         medical_adjustment = federal_medical - claimant_medical
 
-        # Correct the medical component of derived itemized totals as well as
-        # premium overlap, so dependent-paid costs do not remain deducted here.
+        # Use the claimant's medical deduction in derived itemized totals, as
+        # the premium overlap does. From derived inputs it equals the federal
+        # deduction; they differ only when a caller supplies an Idaho amount
+        # or an intermediate federal one.
         limitation_adjustment = 0
         p = parameters(period).gov.irs.deductions.itemized.limitation
         if p.applies and p.obbb.applies:
