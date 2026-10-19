@@ -202,3 +202,22 @@
         state_code: WV
   output:
     wv_taxable_income: 28_000
+
+# Schedule M line 42 requires more than $3,000: one dollar above qualifies.
+- name: Case 11, a repayment of $3,001 qualifies in full.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 3_001
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WV
+  output:
+    wv_claim_of_right_subtraction: 3_001
+    wv_subtractions: 3_001
