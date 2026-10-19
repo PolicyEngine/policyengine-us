@@ -38,12 +38,12 @@
     # 42 U.S.C. 8624(b)(2)(B) bars excluding a household on income below 110%
     # of the poverty guideline. FY2026 uses the 2025 guidelines (LIHEAP IM
     # 2025-02): 15,650 + 5,500 x 33 = 197,150 for 34 people, and 110% is
-    # 216,865. The 60% SMI limit for 34 people is 215,077.70.
+    # 216,865. The 60% SMI limit for 34 people is 215,077.68.
     # Household 1 is below the 60% SMI limit: eligible.
     # Household 2 is one cent below the floor: eligible.
     # Household 3 is exactly at the floor, which is not below 110%: not eligible.
     # Household 4 is above the floor: not eligible.
-    # Household 5 has 33 people, whose 212,090.50 limit exceeds the 210,815
+    # Household 5 has 33 people, whose 212,090.49 limit exceeds the 210,815
     # floor (110% of 191,650), so the limit still applies: not eligible.
     ma_liheap_income_eligible: [true, true, false, false, false]
 
@@ -67,5 +67,5 @@
   output:
     # LIHEAP IM 2024-02 makes the 2024 guidelines mandatory in FY2025:
     # 110% x (15,060 + 5,380 x 31) = 200,024 for 32 people, above the
-    # 198,676.81 FY2025 60% SMI limit.
+    # 198,676.80 FY2025 60% SMI limit.
     ma_liheap_income_eligible: [true, false]

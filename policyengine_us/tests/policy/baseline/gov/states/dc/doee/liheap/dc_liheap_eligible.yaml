@@ -33,7 +33,7 @@
     # Household 2 is one cent below the floor: eligible.
     # Household 3 is exactly at the floor, which is not below 110%: not eligible.
     # Household 4 is above the floor: not eligible.
-    # Household 5 has 35 people, whose 209,795.88 limit exceeds the 208,274
+    # Household 5 has 35 people, whose 209,795.87 limit exceeds the 208,274
     # floor (110% of 189,340), so the limit still applies: not eligible.
     dc_liheap_eligible: [true, true, false, false, false]
 
@@ -56,5 +56,5 @@
     irs_gross_income: [212_244.99, 212_245]
   output:
     # 110% x (13,590 + 4,720 x 38) = 212,245 for 39 people, above the
-    # 210,731.61 FY2023 60% SMI limit.
+    # 210,731.60 FY2023 60% SMI limit.
     dc_liheap_eligible: [true, false]

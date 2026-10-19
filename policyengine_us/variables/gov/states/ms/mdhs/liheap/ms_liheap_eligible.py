@@ -13,6 +13,8 @@ class ms_liheap_eligible(Variable):
         "https://www.sos.ms.gov/adminsearch/ACCode/00000693c.pdf#page=22",
         # Section 2.3, explanations of policies (page 9).
         "https://liheapch.acf.gov/docs/2026/state-plans/MS_Plan_2026.pdf#page=9",
+        # Assurance (2), the 110% poverty floor (page 44).
+        "https://liheapch.acf.gov/docs/2026/state-plans/MS_Plan_2026.pdf#page=44",
         "https://www.law.cornell.edu/uscode/text/42/8624",
     )
 
@@ -21,9 +23,12 @@ class ms_liheap_eligible(Variable):
         size = spm_unit("ms_liheap_household_size", period)
         income = spm_unit("ms_liheap_income", period)
         limit = spm_unit("ms_liheap_income_limit", period)
-        # 42 U.S.C. 8624(b)(2)(B) bars excluding a household on income below 110%
-        # of the poverty guideline. The 60% SMI limit falls below that floor from
-        # household size 11 in FY2026 and FY2027.
+        # 42 U.S.C. 8624(b)(2)(B), repeated in FY2026 plan assurance (2) (page 44),
+        # bars excluding a household on income below 110% of the poverty
+        # guideline. The Rule 6.1 C limit and its printed 60% SMI table (manual
+        # PDF pages 22 and 58) fall below that floor at sizes 11 to 20 in FY2026
+        # (75,593 against 77,715 at size 11), and the modeled limit does so from
+        # size 11 in FY2026 and FY2027.
         p_hhs = parameters(period).gov.hhs.liheap
         state_group = spm_unit.household("state_group_str", period)
         guideline = fpg(size, state_group, period, parameters, year_lag=p.fpg_year_lag)
