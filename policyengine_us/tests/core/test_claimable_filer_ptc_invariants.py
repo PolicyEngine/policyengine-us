@@ -416,5 +416,10 @@ def test_claimable_filer_ptc_seeded_population(year):
         + _ptc_cases(STATES)
         + _review_r2_cases()
     )
+    # Explicit inputs apply simulation-wide, so the review cases' claimability
+    # inputs would otherwise default the legacy fixtures to false.
+    units = [
+        {**unit, "claimable": unit.get("claimable", unit["claimed"])} for unit in units
+    ]
     check_swap(units, year, OUTPUTS, require_coverage=True)
     check_monotone(units, year, require_removal=True)

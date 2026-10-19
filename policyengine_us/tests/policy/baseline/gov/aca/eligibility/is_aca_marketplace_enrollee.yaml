@@ -52,7 +52,8 @@
       tax_unit:
         members: [person_a, person_b, child, child2, child3, child4]
         filing_status: JOINT
-        aca_magi: 40_000
+        # Above the six-person poverty line so the coverage gap does not bind.
+        aca_magi: 50_000
         tax_unit_is_filer: true
     households:
       household:
