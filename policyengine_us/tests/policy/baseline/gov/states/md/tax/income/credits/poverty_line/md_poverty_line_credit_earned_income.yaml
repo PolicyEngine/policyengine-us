@@ -563,3 +563,82 @@
     md_poverty_line_credit_earned_income: 0
     is_eligible_md_poverty_line_credit: false
     md_poverty_line_credit_potential: 0
+
+- name: 2025 pretax contributions reduce poverty credit earnings when the claimable spouse is the head
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 16_000
+        pre_tax_contributions: 2_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        md_income_tax_before_credits: 1_000
+        md_married_or_has_child_non_refundable_eitc: 0
+        md_local_income_tax_before_credits: 1_000
+        md_local_eitc: 0
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MD
+        county_str: BALTIMORE_CITY_MD
+  output:
+    # Tax-General 10-709 imports IRC 32(c)(2): taxable wages, not gross pay.
+    # $16,000 - $2,000 = $14,000, below the one-exemption $15,650 threshold.
+    # With tax limits held above the credit: 5% x $14,000 = $700 state;
+    # Baltimore City's 3.2% x $14,000 = $448 local.
+    adjusted_gross_income: 14_000
+    eitc_earned_income: 14_000
+    md_poverty_line_credit_earned_income: 14_000
+    md_poverty_line_credit_income_level: 15_650
+    is_eligible_md_poverty_line_credit: true
+    md_poverty_line_credit_potential: 700
+    md_local_poverty_line_credit: 448
+
+- name: 2025 pretax contributions reduce poverty credit earnings when the claimable spouse is the spouse
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 16_000
+        pre_tax_contributions: 2_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        md_income_tax_before_credits: 1_000
+        md_married_or_has_child_non_refundable_eitc: 0
+        md_local_income_tax_before_credits: 1_000
+        md_local_eitc: 0
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: MD
+        county_str: BALTIMORE_CITY_MD
+  output:
+    # Same taxable wages, threshold and credits with the filer labels swapped.
+    adjusted_gross_income: 14_000
+    eitc_earned_income: 14_000
+    md_poverty_line_credit_earned_income: 14_000
+    md_poverty_line_credit_income_level: 15_650
+    is_eligible_md_poverty_line_credit: true
+    md_poverty_line_credit_potential: 700
+    md_local_poverty_line_credit: 448

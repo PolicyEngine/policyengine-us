@@ -31,9 +31,11 @@ class md_poverty_line_credit_earned_income(Variable):
         # the credit, on that spouse's own earned income.
         person = tax_unit.members
         filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
-        # The same sources as eitc_earned_income, per person.
+        # Keep these person-level sources aligned with eitc_earned_income.
+        # IRC 32(c)(2) wages use irs_employment_income, already net of pretax
+        # payroll contributions; do not deduct those contributions again.
         sources = [
-            "employment_income",
+            "irs_employment_income",
             "self_employment_income",
             "sstb_self_employment_income",
             "farm_operations_income",
