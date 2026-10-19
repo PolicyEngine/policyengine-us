@@ -20,13 +20,15 @@ class ny_cdcc(Variable):
             # 2026-01-01: qualifying expenses times the applicable percentage,
             # less $20 per whole $1,000 of New York AGI above $750,000.
             # (c-2)(2)(A) excludes a taxpayer who is another's dependent and,
-            # through IRC 21(e)(4), a married taxpayer filing separately.
+            # through IRC 21(e)(4), a married taxpayer filing separately. A
+            # joint return is one taxpayer, so either spouse being a dependent
+            # bars it.
             expenses = tax_unit("ny_cdcc_qualifying_expenses", period)
             rate = tax_unit("ny_cdcc_applicable_percentage", period)
             excess = max_(tax_unit("ny_agi", period) - p.reduction.threshold, 0)
             reduction = p.reduction.amount * np.floor(excess / p.reduction.increment)
             eligible = tax_unit("cdcc_filing_status_eligible", period) & ~tax_unit(
-                "head_is_dependent_elsewhere", period
+                "head_or_spouse_is_dependent_elsewhere", period
             )
             return eligible * max_(expenses * rate - reduction, 0)
         # Tax Law 606(c), for taxable years beginning before 2026.

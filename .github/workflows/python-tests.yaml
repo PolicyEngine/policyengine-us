@@ -66,7 +66,9 @@ jobs:
             rest-variables-resources.txt
   Rest:
     needs: [RestPython]
-    if: ${{ always() }}
+    # Runs after a shard-1 failure but stops when the run is cancelled.
+    # always() kept this runner alive after cancellation.
+    if: ${{ !cancelled() }}
     name: Full Suite - Rest (Python + variables)
     runs-on: ubuntu-latest
     # Historical group times: 32-46 minutes plus setup.
