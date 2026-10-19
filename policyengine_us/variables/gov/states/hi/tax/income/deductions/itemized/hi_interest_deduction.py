@@ -7,7 +7,6 @@ class hi_interest_deduction(Variable):
     label = "Hawaii interest deduction"
     unit = USD
     reference = (
-        # PDF pages 17, 32
         "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=17",
         "https://files.hawaii.gov/tax/news/announce/ann21-01.pdf",
     )
