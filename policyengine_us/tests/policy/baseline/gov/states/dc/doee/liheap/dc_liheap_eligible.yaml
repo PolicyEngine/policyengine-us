@@ -17,3 +17,44 @@
     state_code: DC
   output: 
     dc_liheap_eligible: false
+
+- name: Case 3, federal 110% poverty floor above the 60% state median income limit at size 36.
+  period: 2024
+  input:
+    state_code: [DC, DC, DC, DC, DC]
+    spm_unit_size: [36, 36, 36, 36, 35]
+    irs_gross_income: [212_000, 213_927.99, 213_928, 213_929, 210_000]
+  output:
+    # 42 U.S.C. 8624(b)(2)(B) bars excluding a household on income below 110%
+    # of the poverty guideline. FY2024 uses the 2023 guidelines (LIHEAP IM
+    # 2023-01): 14,580 + 5,140 x 35 = 194,480 for 36 people, and 110% is
+    # 213,928. The 60% SMI limit for 36 people is 212,669.78.
+    # Household 1 is below the 60% SMI limit: eligible.
+    # Household 2 is one cent below the floor: eligible.
+    # Household 3 is exactly at the floor, which is not below 110%: not eligible.
+    # Household 4 is above the floor: not eligible.
+    # Household 5 has 35 people, whose 209,795.88 limit exceeds the 208,274
+    # floor (110% of 189,340), so the limit still applies: not eligible.
+    dc_liheap_eligible: [true, true, false, false, false]
+
+- name: Case 4, the floor uses the poverty guidelines from the year before the model year.
+  period: 2024
+  input:
+    state_code: DC
+    spm_unit_size: 36
+    irs_gross_income: 215_000
+  output:
+    # FY2024 uses the 2023 guidelines, so the floor is 213,928. The 2024
+    # guidelines would give 110% x (15,060 + 5,380 x 35) = 223,696.
+    dc_liheap_eligible: false
+
+- name: Case 5, FY2023 uses the 2022 poverty guidelines for the floor.
+  period: 2023
+  input:
+    state_code: [DC, DC]
+    spm_unit_size: [39, 39]
+    irs_gross_income: [212_244.99, 212_245]
+  output:
+    # 110% x (13,590 + 4,720 x 38) = 212,245 for 39 people, above the
+    # 210,731.61 FY2023 60% SMI limit.
+    dc_liheap_eligible: [true, false]
