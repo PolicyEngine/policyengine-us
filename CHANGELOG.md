@@ -1,3 +1,29 @@
+## [2.49.14] - 2026-10-19
+
+### Fixed
+
+- Use the not seasonally adjusted CPI-W (BLS CWUR0000SA0, the series SSA uses for cost-of-living adjustments) for January 2024 through June 2026, where seasonally adjusted values had replaced it, and re-anchor the CPI-W projections on the not seasonally adjusted June 2026 ratio to CPI-U.
+
+
+## [2.49.13] - 2026-10-19
+
+### Changed
+
+- Update Social Security and SSI parameters for the 2027 cost-of-living adjustment: the 2027 SSA CPI-W uprating index, SSI federal payment amounts, the SSI student earned income exclusion, the contribution and benefit base, and the 2025 national average wage index that sets the 2027 wage-indexed amounts.
+
+### Fixed
+
+- Remove the SNAP net income test from California's broad-based categorical eligibility (CalFresh Modified Categorical Eligibility) for households with and without elderly or disabled members, per CDSS ACLs 12-62, 13-32, 14-56 and 15-42.
+  Apply California's zero-allotment participation screen to SNAP households of three or more while preserving Modified Categorical Eligibility's net-income waiver and smaller households' minimum allotments.
+
+
+## [2.49.12] - 2026-10-19
+
+### Fixed
+
+- Pay the Colorado AND-CS, Texas SSI facility and New Mexico residential care supplements to SSI recipients, so both members of an SSI couple qualify instead of only the one labelled the eligible individual. Colorado AND-CS now counts each spouse's own income (9 CCR 2503-5 3.549), and Texas keeps a facility resident whose countable income equals the $30 reduced standard.
+
+
 ## [2.49.11] - 2026-10-19
 
 ### Fixed
