@@ -390,3 +390,48 @@
         state_code_str: CA
   output:
     slcsp_family_tier_category: INDIVIDUAL_AGE_RATED
+
+- name: r3 supplied family-tier child predicates preserve the category and extra-adult premium
+  period: 2025-01
+  input:
+    people:
+      head:
+        age: 40
+        monthly_age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_aca_marketplace_enrollee: {2025: true}
+        pays_aca_premium: true
+      spouse:
+        age: 40
+        monthly_age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_aca_marketplace_enrollee: {2025: true}
+        pays_aca_premium: true
+      dependent:
+        age: 25
+        monthly_age: 25
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_aca_marketplace_enrollee: {2025: true}
+        pays_aca_premium: true
+        is_aca_family_tier_dependent_child: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: NY
+        state_code_str: NY
+        slcsp_age_0: 500
+  output:
+    slcsp_family_tier_category: TWO_ADULTS
+    slcsp_family_tier_multiplier: 3
+    slcsp: 1500
+    aca_ptc_slcsp: 1500

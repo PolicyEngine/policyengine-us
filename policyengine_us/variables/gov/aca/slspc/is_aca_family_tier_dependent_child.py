@@ -1,7 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.aca.slspc.is_aca_ny_age_29_dependent_child import (
-    ny_age_29_child_condition,
-)
 
 
 def family_tier_child_condition(person, period, parameters):
@@ -14,7 +11,21 @@ def family_tier_child_condition(person, period, parameters):
     return (
         under_child_only_age
         | (is_tax_dependent & under_age_threshold)
-        | ny_age_29_child_condition(person, period, parameters)
+        | person("is_aca_ny_age_29_dependent_child", period)
+    )
+
+
+def family_tier_child_condition_for_enrollee(person, period, parameters):
+    """Preserve supplied child classifications when repricing enrollees.
+
+    The public predicate includes premium payment. Use its supplied or
+    calculated value for payers, and apply the uncapped child condition to
+    enrolled children who add no age-rated premium to the whole policy.
+    """
+    return where(
+        person("pays_aca_premium", period.this_year),
+        person("is_aca_family_tier_dependent_child", period),
+        family_tier_child_condition(person, period, parameters),
     )
 
 

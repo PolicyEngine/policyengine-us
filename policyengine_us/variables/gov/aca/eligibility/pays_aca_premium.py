@@ -25,13 +25,13 @@ class pays_aca_premium(Variable):
         "income (policyengine-us #9472). A reader that wants the status and "
         "coverage conditions without that assumption should not reuse this "
         "variable. It is is_aca_marketplace_enrollee restricted to people "
-        "charged an age-rated premium: adults, and the three oldest children "
-        "in the tax unit."
+        "charged an age-rated premium: adults, and the three oldest "
+        "enrolled children in the tax unit."
     )
 
     def formula(person, period, parameters):
         # An enrollee pays an age-rated premium unless they are a child
-        # beyond the three oldest (45 CFR 147.102(c)(1)).
+        # beyond the three oldest covered children (45 CFR 147.102(c)(1)).
         enrollee = person("is_aca_marketplace_enrollee", period)
         p = parameters(period).gov.aca
         is_aca_adult = person("age", period) > p.slcsp.max_child_age

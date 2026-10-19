@@ -20,12 +20,10 @@ def benchmark_premium(tax_unit, period, parameters, group, enrolled):
     p = parameters(period).gov.aca
     age = person("age", period.this_year)
     is_child = age <= p.slcsp.max_child_age
-    child_rank = person.get_rank(tax_unit, -age, condition=group & is_child)
+    child_rank = person.get_rank(tax_unit, -age, condition=group & enrolled & is_child)
     charged = group & enrolled & (~is_child | (child_rank < p.max_child_count))
-    base = person.household("slcsp_age_0", period)
-    multiplier = person("slcsp_age_curve_multiplier", period)
-    age_curve_applies = tax_unit("slcsp_age_curve_applies", period)
-    age_curve = tax_unit.sum(charged * base * multiplier) * age_curve_applies
+    amount = person("slcsp_age_curve_amount_person_uncapped", period)
+    age_curve = tax_unit.sum(charged * amount)
     tier_enrolled = group & enrolled
     category = family_tier_category(tax_unit, period, parameters, tier_enrolled)
     tier_multiplier = family_tier_multiplier(

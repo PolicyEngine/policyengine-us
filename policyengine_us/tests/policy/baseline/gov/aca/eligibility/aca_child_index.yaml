@@ -4,18 +4,50 @@
     people:
       person1:
         age: 40
+        is_aca_marketplace_enrollee: true
       person2:
         age: 39
+        is_aca_marketplace_enrollee: true
       person3:
         age: 14
+        is_aca_marketplace_enrollee: true
       person4:
         age: 13
+        is_aca_marketplace_enrollee: true
       person5:
         age: 12
+        is_aca_marketplace_enrollee: true
       person6:
         age: 12
+        is_aca_marketplace_enrollee: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
   output:
     aca_child_index: [99, 99, 1, 2, 3, 4]
+
+- name: r3 only covered children take ACA child-premium ranking slots
+  period: 2025
+  input:
+    people:
+      adult:
+        age: 30
+        is_aca_marketplace_enrollee: true
+      child_17:
+        age: 17
+        is_aca_marketplace_enrollee: false
+      child_16:
+        age: 16
+        is_aca_marketplace_enrollee: false
+      child_15:
+        age: 15
+        is_aca_marketplace_enrollee: false
+      child_10:
+        age: 10
+        is_aca_marketplace_enrollee: true
+    tax_units:
+      tax_unit:
+        members: [adult, child_17, child_16, child_15, child_10]
+  output:
+    aca_child_index: [99, 99, 99, 99, 1]
+    pays_aca_premium: [true, false, false, false, true]

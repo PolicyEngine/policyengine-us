@@ -1,9 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.aca.slspc.is_aca_family_tier_dependent_child import (
-    family_tier_child_condition,
-)
-from policyengine_us.variables.gov.aca.slspc.is_aca_ny_age_29_dependent_child import (
-    ny_age_29_child_condition,
+    family_tier_child_condition_for_enrollee,
 )
 from policyengine_us.variables.gov.aca.slspc.slcsp_family_tier_category import (
     FamilyTierCategory,
@@ -52,10 +49,12 @@ def family_tier_multiplier(tax_unit, period, parameters, family_category, enroll
     )
 
     person = tax_unit.members
-    dependent_child = enrolled & family_tier_child_condition(person, period, parameters)
+    dependent_child = enrolled & family_tier_child_condition_for_enrollee(
+        person, period, parameters
+    )
     adult_count = tax_unit.sum(enrolled & ~dependent_child)
     extra_adults = max_(adult_count - 2, 0)
-    age_29_child = enrolled & ny_age_29_child_condition(person, period, parameters)
+    age_29_child = enrolled & person("is_aca_ny_age_29_dependent_child", period)
     age_29_multiplier = where(
         tax_unit.any(age_29_child),
         parameters(period).gov.aca.ny_age_29_dependent_child_tier_multiplier,
