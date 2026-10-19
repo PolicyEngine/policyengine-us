@@ -27,6 +27,27 @@ class employer_headcount(Variable):
     default_value = 100
 
 
+class employer_state_payroll_premium_deduction_share(Variable):
+    value_type = float
+    entity = Person
+    label = "Employer state payroll premium deduction share"
+    documentation = (
+        "Share of the largest employee premium the law lets the employer "
+        "deduct from wages that the employer actually deducts, for state "
+        "programs whose premium the statute puts on the employer: Colorado "
+        "FAMLI, Delaware Paid Leave, Maine and Massachusetts Paid Family and "
+        "Medical Leave, Minnesota Paid Leave, New York Paid Family Leave and "
+        "Disability Benefits, the Vermont Child Care Contribution and "
+        "Washington Paid Family and Medical Leave. 1, the default, deducts "
+        "the full permitted share; 0 means the employer pays the whole "
+        "premium. The employer pays any part it does not deduct. Values "
+        "outside 0 to 1 are treated as the nearer bound."
+    )
+    unit = "/1"
+    definition_period = YEAR
+    default_value = 1
+
+
 class employer_quarterly_payroll_expense_override(Variable):
     value_type = float
     entity = Person

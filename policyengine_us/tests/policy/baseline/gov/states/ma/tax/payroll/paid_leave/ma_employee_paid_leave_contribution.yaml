@@ -61,3 +61,48 @@
     ma_employer_paid_leave_contribution: 0
     # The employee share does not depend on employer size.
     ma_employee_paid_leave_contribution: 276.00
+
+- name: Massachusetts PFML 2026 keeps the 100% family and 40% medical deduction caps.
+  period: 2026
+  input:
+    employment_income: 100_000
+    state_code: MA
+  output:
+    # Acts 2026 c. 101 swaps the caps from 2027 (s. 43(a); DFML). Applying the
+    # swap to 2026 rates would give 40% * 0.18% + 0.70% = 0.772%, or 772.
+    # 0.18% + 40% * 0.70% = 0.46%; 0.46% * 100,000 = 460.
+    ma_employee_paid_leave_contribution: 460
+    # 60% * 0.70% * 100,000 = 420.
+    ma_employer_paid_leave_contribution: 420
+
+- name: Massachusetts PFML 2027 swaps the caps and the rates, leaving the employee share at 0.46%.
+  period: 2027
+  input:
+    employment_income: 100_000
+    state_code: MA
+  output:
+    # 40% * 0.70% family + 100% * 0.18% medical = 0.28% + 0.18% = 0.46%.
+    ma_employee_paid_leave_contribution: 460
+    # 60% * 0.70% family = 0.42%; nothing of medical.
+    ma_employer_paid_leave_contribution: 420
+
+- name: Massachusetts PFML 2027 small employer remits only the 0.46% it may deduct.
+  period: 2027
+  input:
+    employment_income: 100_000
+    employer_headcount: 24
+    state_code: MA
+  output:
+    ma_employee_paid_leave_contribution: 460
+    ma_employer_paid_leave_contribution: 0
+
+- name: Massachusetts PFML 2027 employer pays the part of the employee share it does not deduct.
+  period: 2027
+  input:
+    employment_income: 100_000
+    employer_state_payroll_premium_deduction_share: 0.5
+    state_code: MA
+  output:
+    ma_employee_paid_leave_contribution: 230
+    # 420 + 230 = 650.
+    ma_employer_paid_leave_contribution: 650
