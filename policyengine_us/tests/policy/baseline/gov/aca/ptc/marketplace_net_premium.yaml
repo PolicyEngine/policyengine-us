@@ -47,6 +47,8 @@
   period: 2026
   input:
     pays_aca_premium: true
+    # Observed premium payment and coverage are separate inputs.
+    is_aca_marketplace_enrollee: true
     selected_marketplace_plan_category: BRONZE
     slcsp: 10_000
     lcbp: 5_000
