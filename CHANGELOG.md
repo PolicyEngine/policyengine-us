@@ -1,3 +1,10 @@
+## [2.49.10] - 2026-10-19
+
+### Fixed
+
+- Count New Mexico child income tax credit children under IRC 152(c), so a child with an ITIN qualifies, and stop halving New Mexico's 65+ medical care expense exemption for married filing separately.
+
+
 ## [2.49.9] - 2026-10-19
 
 ### Fixed
