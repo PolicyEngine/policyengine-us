@@ -10,6 +10,10 @@ values:
     # "Social Security Benefits" (page 20). The plan checks "Including
     # MediCare deduction", so the benefit is counted gross.
     - social_security
+    # "Special Assistance (SA)" (page 20): facility SA, SA In-Home and SA for
+    # the Certain Disabled. SA-5400 II also counts the SA In-Home payment for
+    # Energy Programs.
+    - nc_sa
     # "General Assistance (GA)" (page 9); plan "General Assistance benefits".
     - general_assistance
     # "Pensions" (page 16); plan "Retirement / pension benefits".
@@ -22,7 +26,7 @@ values:
     # "Veterans" (page 25); plan "Veterans Administration (VA) benefits".
     - veterans_benefits
     # "Unemployment" (page 24); plan "Unemployment insurance".
-    - unemployment_compensation
+    - total_unemployment_compensation
     # "Worker's Compensation" (page 26) and "Disability Payments" (page 6).
     # The plan leaves "Insurance payments made directly to the insured"
     # unchecked; the model follows the manual.
@@ -53,3 +57,5 @@ metadata:
       href: https://policies.ncdhhs.gov/wp-content/uploads/fns-300-sources-of-income.pdf#page=1
     - title: North Carolina FY2026 state plan, item 1.9 countable income checklist, pages 6-7
       href: https://liheapch.acf.gov/docs/2026/state-plans/NC_Plan_2026.pdf#page=6
+    - title: North Carolina Special Assistance In-Home Program Manual, SA-5400 II
+      href: https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-In-Home-Program-Manual-Rev-June-2026.pdf#page=47

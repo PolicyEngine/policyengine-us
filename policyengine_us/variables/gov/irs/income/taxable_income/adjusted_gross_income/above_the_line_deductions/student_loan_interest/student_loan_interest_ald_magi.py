@@ -30,11 +30,11 @@ class student_loan_interest_ald_magi(Variable):
         if "taxable_unemployment_compensation" in gross_income_sources:
             # MAGI is determined without regard to section 85(c), so all
             # unemployment compensation counts, including any amount 85(c)
-            # excluded for 2020. Reading the untaxed amount also avoids a
-            # cycle: taxable unemployment compensation depends on AGI, which
-            # includes this deduction.
+            # excluded for 2020. Reading the total (reported or modeled)
+            # amount also avoids a cycle: taxable unemployment compensation
+            # depends on AGI, which includes this deduction.
             gross_income_sources.remove("taxable_unemployment_compensation")
-            gross_income_sources.append("unemployment_compensation")
+            gross_income_sources.append("total_unemployment_compensation")
         total_gross_income = 0
         for source in gross_income_sources:
             total_gross_income += not_dependent * max_(0, add(person, period, [source]))
