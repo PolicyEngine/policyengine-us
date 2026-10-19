@@ -1,0 +1,138 @@
+# Source: POMS SI NY01415.025.
+- name: Case 1, independent individual is code B.
+  period: 2026-01
+  input:
+    state_code: NJ
+    age: 65
+  output:
+    nj_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
+
+- name: Case 2, couple with only an ineligible spouse is code C.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 65
+      person2:
+        age: 63
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # person2 is under 65 and not blind or disabled; no one else lives there.
+    nj_ssp_living_arrangement: [LIVING_ONLY_WITH_INELIGIBLE_SPOUSE, LIVING_ONLY_WITH_INELIGIBLE_SPOUSE]
+
+- name: Case 3, certified congregate care is code A.
+  period: 2026-01
+  input:
+    state_code: NJ
+    age: 65
+    nj_ssp_care_setting: CONGREGATE_CARE
+  output:
+    nj_ssp_living_arrangement: CONGREGATE_CARE
+
+- name: Case 4, certified residential health care is code I.
+  period: 2026-01
+  input:
+    state_code: NJ
+    age: 65
+    nj_ssp_care_setting: RESIDENTIAL_HEALTH_CARE
+  output:
+    nj_ssp_living_arrangement: RESIDENTIAL_HEALTH_CARE
+
+- name: Case 5, household of another is code D.
+  period: 2026-01
+  input:
+    state_code: NJ
+    age: 65
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+  output:
+    nj_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
+
+- name: Case 6, Medicaid institution is code G.
+  period: 2026-01
+  input:
+    state_code: NJ
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    nj_ssp_living_arrangement: MEDICAID_INSTITUTION
+
+- name: Case 7, excluded setting is code Z with no supplement.
+  period: 2026-01
+  input:
+    state_code: NJ
+    age: 65
+    nj_ssp_care_setting: EXCLUDED
+  output:
+    nj_ssp_living_arrangement: NONE
+
+- name: Case 8, medical institution without Medicaid majority is code Z.
+  period: 2026-01
+  input:
+    state_code: NJ
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+  output:
+    nj_ssp_living_arrangement: NONE
+
+- name: Case 9, Medicaid institution takes precedence over congregate care.
+  period: 2026-01
+  input:
+    state_code: NJ
+    age: 65
+    nj_ssp_care_setting: CONGREGATE_CARE
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    # The Medicaid institution branch is checked before certified care.
+    nj_ssp_living_arrangement: MEDICAID_INSTITUTION
+
+- name: Case 10, excluded setting takes precedence over a Medicaid institution.
+  period: 2026-01
+  input:
+    state_code: NJ
+    age: 65
+    nj_ssp_care_setting: EXCLUDED
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    # The excluded setting branch is checked first.
+    nj_ssp_living_arrangement: NONE
+
+- name: Case 11, code C ends when a child shares the household.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 65
+      person2:
+        age: 63
+      person3:
+        age: 12
+        is_tax_unit_dependent: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+      child:
+        members: [person3]
+    tax_units:
+      unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    # Three household members against a two-person marital unit.
+    nj_ssp_living_arrangement: [LIVING_ALONE_OR_WITH_OTHERS, LIVING_ALONE_OR_WITH_OTHERS, LIVING_ALONE_OR_WITH_OTHERS]

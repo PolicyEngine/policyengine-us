@@ -571,6 +571,105 @@ def extend_la_cpi_u_indexed_amounts(parameters: ParameterNode, end_year: int) ->
         )
 
 
+def get_cms_cpi_u_percentage_increase(cpi: ParameterNode, year: int) -> float:
+    """The CPI-U percentage increase CMS applies to ``year``'s home equity limits.
+
+    42 USC 1396p(f)(1)(C) increases the Medicaid long-term care home equity
+    limits "from year to year based on the percentage increase in the consumer
+    price index for all urban consumers ... rounded to the nearest $1,000".
+    CMS's annual SSI and spousal impoverishment bulletins report a "CPI
+    Increase" for each year to one decimal place: 1.7% for 2020, 1.4% for
+    2021, 5.4% for 2022, 2.4% for 2025 and 3.0% for 2026. Each is the
+    September-to-September change in the not seasonally adjusted CPI-U ending
+    the September before the year, rounded to one decimal place. CMS applies
+    the rounded percentage: $893,000 x 1.014 = $905,502 became the published
+    2021 maximum of $906,000, where the unrounded 1.371% would give $905,000.
+    A fall in the index is not an increase, so the percentage is never
+    negative.
+
+    ``cpi`` is the ``gov.bls.cpi`` node. The published Septembers in
+    ``cpi_u_nsa_september`` are used when both are available. Otherwise both
+    Septembers come from the model's CPI-U series (seasonally adjusted from
+    January 2024) through ``get_projected_cpi_u_for_month``, so the two are
+    never mixed.
+    """
+    september = cpi.cpi_u_nsa_september
+    published = {int(value.instant_str[:4]) for value in september.values_list}
+    if {year - 2, year - 1} <= published:
+        current = september(f"{year - 1}-09-01")
+        prior = september(f"{year - 2}-09-01")
+    else:
+        current = get_projected_cpi_u_for_month(cpi.cpi_u, instant(f"{year - 1}-09-01"))
+        prior = get_projected_cpi_u_for_month(cpi.cpi_u, instant(f"{year - 2}-09-01"))
+    change = 100 * (Decimal(repr(current)) / Decimal(repr(prior)) - 1)
+    percentage = change.quantize(Decimal("0.1"), rounding=ROUND_HALF_UP)
+    return float(max(percentage, 0))
+
+
+def adjust_home_equity_limit_for_inflation(
+    prior_amount: float, percentage: float
+) -> float:
+    """Apply a 42 USC 1396p(f)(1)(C) increase, rounded to the nearest $1,000."""
+    adjusted = Decimal(str(prior_amount)) * (100 + Decimal(str(percentage))) / 100
+    thousands = (adjusted / 1_000).quantize(Decimal(1), rounding=ROUND_HALF_UP)
+    return float(thousands * 1_000)
+
+
+# P.L. 119-21 section 71108(c): the $1,000,000 cap on non-agricultural homes
+# applies beginning January 1, 2028.
+HOME_EQUITY_NON_AGRICULTURAL_CAP_START_YEAR = 2028
+
+
+def extend_medicaid_home_equity_limits(
+    parameters: ParameterNode, end_year: int
+) -> None:
+    """Project the CPI-indexed Medicaid long-term care home equity limits.
+
+    Each year after the last CMS-published value, the agricultural home
+    equity limit becomes the prior year's limit increased by that year's
+    CPI-U percentage (see ``get_cms_cpi_u_percentage_increase``), rounded to
+    the nearest $1,000, effective January 1. Before P.L. 119-21 section 71108
+    caps other homes at $1,000,000 beginning in 2028, the agricultural and
+    non-agricultural limits are the same indexed maximum, so each year before
+    the cap with no non-agricultural value in the YAML takes the agricultural
+    projection. Amounts encoded in the YAML take precedence for their own
+    years.
+
+    Like the other projections in this module, the values are fixed when the
+    parameter tree is built.
+    """
+    home_equity = parameters.gov.hhs.medicaid.eligibility.long_term_care.home_equity
+    cpi = parameters.gov.bls.cpi
+    agricultural = home_equity.agricultural_limit
+    first_projected_year = 1 + max(
+        int(value.instant_str[:4]) for value in agricultural.values_list
+    )
+    for year in range(first_projected_year, end_year + 1):
+        agricultural.update(
+            period=f"year:{year}-01-01:1",
+            value=adjust_home_equity_limit_for_inflation(
+                agricultural(f"{year - 1}-01-01"),
+                get_cms_cpi_u_percentage_increase(cpi, year),
+            ),
+        )
+    agricultural.update(
+        start=instant(f"{end_year}-01-01"),
+        value=agricultural(f"{end_year}-01-01"),
+    )
+    non_agricultural = home_equity.limit
+    encoded_years = {
+        int(value.instant_str[:4]) for value in non_agricultural.values_list
+    }
+    for year in range(
+        min(encoded_years) + 1, HOME_EQUITY_NON_AGRICULTURAL_CAP_START_YEAR
+    ):
+        if year not in encoded_years:
+            non_agricultural.update(
+                period=f"year:{year}-01-01:1",
+                value=agricultural(f"{year}-01-01"),
+            )
+
+
 def extend_wa_millionaires_standard_deduction(
     parameters: ParameterNode,
     end_year: int,
@@ -937,6 +1036,17 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         period_day=1,
     )
 
+    # CPI-U medical care (calendar-year values, last CBO projection year
+    # 2036). Long-term care insurance premium inputs use this as their
+    # uprater.
+    extend_parameter_values(
+        parameters.gov.bls.cpi.cpi_u_medical_care,
+        last_projected_year=2036,
+        end_year=END_YEAR,
+        period_month=1,
+        period_day=1,
+    )
+
     # Washington's millionaires tax deduction uses an odd-year October
     # adjustment schedule. Must run after the CPI-W extension above so the
     # determination dates are available through the projection horizon.
@@ -955,21 +1065,45 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
     )
 
     # CMS per-capita out-of-pocket medical spending (January values, last
-    # projection year 2035). Health expense inputs use this as their uprater.
+    # projection year 2034). Health expense inputs use this as their uprater.
+    # Each year from 2035 to 2100 grows at CMS's 2033-2034 rate, and later
+    # years hold the 2100 value.
     extend_parameter_values(
         parameters.calibration.gov.hhs.cms.moop_per_capita,
-        last_projected_year=2035,
+        last_projected_year=2034,
         end_year=END_YEAR,
         period_month=1,
         period_day=1,
     )
 
     # CMS employer-sponsored insurance premium per enrollee (January values,
-    # last projection year 2034). Employer and pre-tax employee premium
-    # inputs use this as their uprater.
+    # last projection year 2034). Employer and employee premium inputs use
+    # this as their uprater.
     extend_parameter_values(
         parameters.calibration.gov.hhs.cms.esi_premium_per_enrollee,
         last_projected_year=2034,
+        end_year=END_YEAR,
+        period_month=1,
+        period_day=1,
+    )
+
+    # CMS direct purchase insurance premium per enrollee (January values, last
+    # projection year 2034). Premiums for plans bought directly use this as
+    # their uprater.
+    extend_parameter_values(
+        parameters.calibration.gov.hhs.cms.direct_purchase_premium_per_enrollee,
+        last_projected_year=2034,
+        end_year=END_YEAR,
+        period_month=1,
+        period_day=1,
+    )
+
+    # Medicare Part B standard monthly premium (January values, last Trustees
+    # projection year 2035). Reported Part B premium inputs use this as their
+    # uprater.
+    extend_parameter_values(
+        parameters.calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee,
+        last_projected_year=2035,
         end_year=END_YEAR,
         period_month=1,
         period_day=1,
@@ -1035,6 +1169,9 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
     # prior calendar year's CPI-U increase. Must run after the CPI-U extension
     # above so projected Decembers are available.
     extend_la_cpi_u_indexed_amounts(parameters, end_year=END_YEAR)
+
+    # Medicaid long-term care home equity limits, CMS's rounded CPI-U method
+    extend_medicaid_home_equity_limits(parameters, end_year=END_YEAR)
 
     # The limits on a dependent's standard deduction follow 26 U.S.C.
     # 63(c)(4)'s chained CPI-U schedule, computed from the statutory 1987 and
