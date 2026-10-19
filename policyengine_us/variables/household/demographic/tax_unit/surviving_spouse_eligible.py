@@ -16,17 +16,18 @@ class surviving_spouse_eligible(Variable):
         "152(b)(1), (b)(2) and (d)(1)(B). The qualifying relative gross "
         "income test of 152(d)(1)(B) does not apply, so an adult child with "
         "gross income at or above the exemption amount still qualifies the "
-        "filer. Each dependent's parent_1_id and parent_2_id (natural, "
-        "adoptive or step parents) decide the relationship where they "
-        "settle it. A dependent is the head's child when either id names the "
-        "head. A dependent is not when two different parents are named and "
-        "neither is the head, when an id names another household member, or "
-        "when the head's own parent ids name the dependent as the head's "
-        "parent or grandparent. Otherwise, including when both ids are "
-        "unknown (0), a dependent counts as the head's child unless marked "
-        "as a parent or grandparent of the filer or as unrelated to the "
-        "filer. Without parent ids the model cannot tell a child from a "
-        "sibling, niece, nephew or grandchild."
+        "filer. A dependent is the head's child when their parent_1_id or "
+        "parent_2_id (natural, adoptive or step parents) names the tax unit "
+        "head. Because a parent id of 0 is unknown and a person can have more "
+        "parents than the two ids hold, naming other parents does not rule a "
+        "dependent out. The ids rule a dependent out only when they show "
+        "another relationship to the head: the head's parent or grandparent, "
+        "a sibling (a shared parent id), a grandchild (the dependent's parent "
+        "names the head) or a niece or nephew (the dependent's parent shares "
+        "a parent id with the head). Otherwise a dependent counts as the "
+        "head's child unless marked as a parent or grandparent of the filer "
+        "or as unrelated to the filer. Without such ids the model cannot tell "
+        "a child from a sibling, niece, nephew or grandchild."
     )
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/2#a_1_B",
@@ -46,35 +47,61 @@ class surviving_spouse_eligible(Variable):
         is_dependent = person("is_tax_unit_dependent", period)
 
         # IRC 2(a)(1)(B)(i) limits the dependent to a son, stepson, daughter
-        # or stepdaughter of the filer.
+        # or stepdaughter of the filer. Each person's parents, as rows: both
+        # id slots resolved among household members and among tax unit
+        # members, -1 when unresolved.
+        rows = np.arange(person.count)
+        parent_rows = [
+            *co_resident_parent_indices(person, period),
+            *tax_unit_parent_indices(person, period),
+        ]
+        parent_ids = [person("parent_1_id", period), person("parent_2_id", period)]
+
+        def parents_of(of):
+            safe = np.maximum(of, 0)
+            return [where(of >= 0, parent[safe], -1) for parent in parent_rows]
+
+        def ids_of(of):
+            safe = np.maximum(of, 0)
+            return [where(of >= 0, ids[safe], 0) for ids in parent_ids]
+
+        def shares_id(ids, other_ids):
+            shared = np.zeros(person.count, dtype=bool)
+            for a in ids:
+                for b in other_ids:
+                    shared |= (a != 0) & (a == b)
+            return shared
+
+        # Row of the head of each person's tax unit.
         unit = person.tax_unit.reference_entity.members_entity_id
+        head_by_unit = np.full(tax_unit.count, -1)
+        head_by_unit[unit[is_head]] = rows[is_head]
+        head = head_by_unit[unit]
+        head_parents = parents_of(head)
+        head_ids = ids_of(head)
 
-        def is_unit_head(row):
-            safe = np.maximum(row, 0)
-            return (row >= 0) & is_head[safe] & (unit[safe] == unit)
+        names_head = np.zeros(person.count, dtype=bool)
+        is_head_grandchild = np.zeros(person.count, dtype=bool)
+        is_head_niece_or_nephew = np.zeros(person.count, dtype=bool)
+        for parent in parent_rows:
+            names_head |= (head >= 0) & (parent == head)
+            for grandparent in parents_of(parent):
+                is_head_grandchild |= (head >= 0) & (grandparent == head)
+            is_head_niece_or_nephew |= (parent >= 0) & shares_id(
+                ids_of(parent), head_ids
+            )
+        is_head_ancestor = np.zeros(person.count, dtype=bool)
+        for parent in head_parents:
+            is_head_ancestor |= parent == rows
+            for grandparent in parents_of(parent):
+                is_head_ancestor |= grandparent == rows
+        is_head_sibling = shares_id(parent_ids, head_ids)
 
-        unit_parents = tax_unit_parent_indices(person, period)
-        names_head = is_unit_head(unit_parents[0]) | is_unit_head(unit_parents[1])
-        names_other_member = np.zeros(person.count, dtype=bool)
-        for parent in co_resident_parent_indices(person, period):
-            names_other_member |= (parent >= 0) & ~is_unit_head(parent)
-        parent_1 = person("parent_1_id", period)
-        parent_2 = person("parent_2_id", period)
-        names_two_parents = (parent_1 != 0) & (parent_2 != 0) & (parent_1 != parent_2)
-        # The head's own ids can name a dependent as the head's parent, and
-        # that parent's ids as the head's grandparent.
-        ancestor_of_head = np.zeros(person.count, dtype=bool)
-        generation = is_head
-        for _ in range(2):
-            rows = np.concatenate([slot[generation] for slot in unit_parents])
-            rows = rows[rows >= 0]
-            ancestor_of_head[rows] = True
-            generation = np.zeros(person.count, dtype=bool)
-            generation[rows] = True
         not_child = (
-            names_two_parents
-            | names_other_member
-            | ancestor_of_head
+            is_head_ancestor
+            | is_head_sibling
+            | is_head_grandchild
+            | is_head_niece_or_nephew
             | person("is_parent_of_filer_or_spouse", period)
             | person("is_grandparent_of_filer_or_spouse", period)
             | ~person("is_related_to_head_or_spouse", period)

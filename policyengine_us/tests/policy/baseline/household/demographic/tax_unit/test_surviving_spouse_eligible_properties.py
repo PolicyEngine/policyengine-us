@@ -1,13 +1,14 @@
 """Exhaustive property checks for surviving spouse filing status.
 
-The YAML cases check named households. These tests check properties that
-must hold for every combination on the grid below, which YAML cannot state:
-eligibility never changes with the dependent's income (units grouped by
-everything but income), matches an independent reference rule written from
-the grid's relationship labels, and differs from the previous rule (read from
+The relationship examples live in surviving_spouse_eligible.yaml and
+filing_status.yaml. These tests check invariants over every combination on
+the grid below, which named YAML cases cannot state: eligibility never
+changes with the dependent's income (units grouped by everything but
+income), matches a reference rule written from the grid's relationship
+labels, and differs from the previous rule (read from
 tax_unit_child_dependents) only for children who fail the gross income test.
-Every combination is its own tax unit in one vectorized simulation built on
-the shared model.
+Every combination is its own tax unit in one vectorized simulation on the
+shared model, so mixed populations are exercised too.
 
 IRC 2(a)(1)(B) requires a dependent son, stepson, daughter or stepdaughter,
 with dependency determined without regard to IRC 152(b)(1), (b)(2) and
@@ -31,8 +32,9 @@ MARRIED = [False, True]
 AGES = [10, 29, 88]
 INCOMES = [0, 3_000, EXEMPTION_AMOUNT - 1, EXEMPTION_AMOUNT, 6_238, 50_000]
 DISABLED = [False, True]
-# How the dependent's relationship to the head is described. A parent id of
-# 0 is unknown.
+# How the dependent's relationship to the head is described, and whether it
+# makes the dependent the head's child. A parent id of 0 is unknown. "Other"
+# is a relative who lives in the household and files in their own tax unit.
 RELATIONSHIPS = {
     # No parent ids and no relationship flags.
     "unmarked": True,
@@ -44,15 +46,23 @@ RELATIONSHIPS = {
     "names_head": True,
     # The dependent's first id names an absent parent; the second is unknown.
     "names_absent_parent_only": True,
-    # The dependent's ids name two absent parents.
-    "names_two_absent_parents": False,
-    # The dependent's first id names another (unrelated) tax unit member.
-    "names_other_member": False,
+    # Two absent parents named: the head can still be a step parent.
+    "names_two_absent_parents": True,
+    # The dependent names the other, who has no ids: the head can still be
+    # the second parent.
+    "names_other": True,
     # The head's own id names an absent parent; the dependent has no ids.
     "head_has_ids": True,
-    # The head's own id names the dependent as the head's parent.
+    # The head's own id names the dependent.
     "named_as_head_parent": False,
+    # The head and the dependent name the same absent parent.
+    "shares_parent_with_head": False,
+    # The dependent names the other, whose id names the head.
+    "parent_names_head": False,
+    # The dependent names the other, who shares an absent parent with the head.
+    "parent_shares_parent_with_head": False,
 }
+NEEDS_OTHER = {"names_other", "parent_names_head", "parent_shares_parent_with_head"}
 
 UNITS = [
     dict(
@@ -77,10 +87,11 @@ ABSENT_ID = 10_000_000
 
 def _situation():
     year = str(PERIOD)
-    people, tax_units, marital_units = {}, {}, {}
+    people, tax_units, marital_units, households = {}, {}, {}, {}
     for i, unit in enumerate(UNITS):
         head, spouse, dependent, other = (f"{r}_{i}" for r in ("h", "s", "d", "o"))
         head_id, spouse_id, dependent_id, other_id = (4 * i + k for k in (1, 2, 3, 4))
+        absent_id, second_absent_id = ABSENT_ID + 2 * i, ABSENT_ID + 2 * i + 1
         members = [head]
         people[head] = {
             "person_id": {year: head_id},
@@ -98,63 +109,68 @@ def _situation():
                 "is_tax_unit_spouse": {year: True},
             }
         marital_units[f"m_{i}"] = {"members": members[:]}
-        relationship = unit["relationship"]
-        if relationship is not None:
-            members.append(dependent)
-            parent_ids = {
-                "names_head": (head_id, 0),
-                "names_absent_parent_only": (ABSENT_ID + 2 * i, 0),
-                "names_two_absent_parents": (ABSENT_ID + 2 * i, ABSENT_ID + 2 * i + 1),
-                "names_other_member": (other_id, 0),
-            }.get(relationship, (0, 0))
-            people[dependent] = {
-                "person_id": {year: dependent_id},
-                "parent_1_id": {year: parent_ids[0]},
-                "parent_2_id": {year: parent_ids[1]},
-                "age": {year: unit["age"]},
-                "is_tax_unit_head": {year: False},
-                "is_tax_unit_spouse": {year: False},
-                "is_tax_unit_dependent": {year: True},
-                "employment_income": {year: unit["income"]},
-                "is_permanently_and_totally_disabled": {year: unit["disabled"]},
-                "is_parent_of_filer_or_spouse": {year: relationship == "parent"},
-                "is_grandparent_of_filer_or_spouse": {
-                    year: relationship == "grandparent"
-                },
-                "is_related_to_head_or_spouse": {year: relationship != "unrelated"},
-            }
-            marital_units[f"dm_{i}"] = {"members": [dependent]}
-            if relationship == "head_has_ids":
-                people[head]["parent_1_id"] = {year: ABSENT_ID + 2 * i}
-            if relationship == "named_as_head_parent":
-                people[head]["parent_1_id"] = {year: dependent_id}
-            if relationship == "names_other_member":
-                # The dependent's parent, also a dependent of the head but
-                # marked unrelated, so never the head's child.
-                members.append(other)
-                people[other] = {
-                    "person_id": {year: other_id},
-                    "age": {year: 40},
-                    "is_tax_unit_head": {year: False},
-                    "is_tax_unit_spouse": {year: False},
-                    "is_tax_unit_dependent": {year: True},
-                    "is_related_to_head_or_spouse": {year: False},
-                }
-                marital_units[f"om_{i}"] = {"members": [other]}
         tax_units[f"t_{i}"] = {"members": members}
-
-    def groups():
-        return {
-            name: {"members": unit["members"][:]} for name, unit in tax_units.items()
+        households[f"g_{i}"] = {"members": members[:]}
+        relationship = unit["relationship"]
+        if relationship is None:
+            continue
+        members.append(dependent)
+        households[f"g_{i}"]["members"].append(dependent)
+        parent_ids = {
+            "names_head": (head_id, 0),
+            "names_absent_parent_only": (absent_id, 0),
+            "names_two_absent_parents": (absent_id, second_absent_id),
+            "shares_parent_with_head": (absent_id, 0),
+        }.get(relationship, (other_id, 0) if relationship in NEEDS_OTHER else (0, 0))
+        people[dependent] = {
+            "person_id": {year: dependent_id},
+            "parent_1_id": {year: parent_ids[0]},
+            "parent_2_id": {year: parent_ids[1]},
+            "age": {year: unit["age"]},
+            "is_tax_unit_head": {year: False},
+            "is_tax_unit_spouse": {year: False},
+            "is_tax_unit_dependent": {year: True},
+            "employment_income": {year: unit["income"]},
+            "is_permanently_and_totally_disabled": {year: unit["disabled"]},
+            "is_parent_of_filer_or_spouse": {year: relationship == "parent"},
+            "is_grandparent_of_filer_or_spouse": {year: relationship == "grandparent"},
+            "is_related_to_head_or_spouse": {year: relationship != "unrelated"},
         }
+        marital_units[f"dm_{i}"] = {"members": [dependent]}
+        head_parent_id = {
+            "head_has_ids": absent_id,
+            "named_as_head_parent": dependent_id,
+            "shares_parent_with_head": absent_id,
+            "parent_shares_parent_with_head": absent_id,
+        }.get(relationship)
+        if head_parent_id is not None:
+            people[head]["parent_1_id"] = {year: head_parent_id}
+        if relationship in NEEDS_OTHER:
+            other_parent_id = {
+                "parent_names_head": head_id,
+                "parent_shares_parent_with_head": absent_id,
+            }.get(relationship, 0)
+            people[other] = {
+                "person_id": {year: other_id},
+                "parent_1_id": {year: other_parent_id},
+                "age": {year: 40},
+                "is_tax_unit_head": {year: True},
+                "is_tax_unit_spouse": {year: False},
+            }
+            marital_units[f"om_{i}"] = {"members": [other]}
+            tax_units[f"ot_{i}"] = {"members": [other]}
+            households[f"g_{i}"]["members"].append(other)
+
+    def copy(groups):
+        return {name: {"members": g["members"][:]} for name, g in groups.items()}
 
     return {
         "people": people,
         "tax_units": tax_units,
         "marital_units": marital_units,
-        "spm_units": groups(),
-        "families": groups(),
-        "households": groups(),
+        "spm_units": copy(households),
+        "families": copy(households),
+        "households": households,
     }
 
 
@@ -165,14 +181,16 @@ def _field(name, default):
 @pytest.fixture(scope="module")
 def grid():
     sim = Simulation(situation=_situation())
+    position = {name: i for i, name in enumerate(sim.populations["tax_unit"].ids)}
+    order = [position[f"t_{i}"] for i in range(len(UNITS))]
 
     def calc(variable):
-        return np.asarray(sim.calculate(variable, PERIOD))
+        return np.asarray(sim.calculate(variable, PERIOD))[order]
 
     return {
         "eligible": calc("surviving_spouse_eligible"),
         "hoh": calc("head_of_household_eligible"),
-        "filing_status": sim.calculate("filing_status", PERIOD).decode_to_str(),
+        "filing_status": sim.calculate("filing_status", PERIOD).decode_to_str()[order],
         "child_dependents": calc("tax_unit_child_dependents"),
         "surviving": _field("surviving", False),
         "married": _field("married", False),
