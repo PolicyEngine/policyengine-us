@@ -126,7 +126,8 @@
   input:
     people:
       person1:
-        age: 66
+        # Age 62 is below the SSI aged threshold, so the model imputes no SSI.
+        age: 62
         railroad_benefits: 35_000
     spm_units:
       spm_unit:
