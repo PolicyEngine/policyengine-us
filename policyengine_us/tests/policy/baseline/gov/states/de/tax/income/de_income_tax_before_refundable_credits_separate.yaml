@@ -220,3 +220,103 @@
         state_code: DE
   output:
     de_income_tax_before_refundable_credits_separate: 0
+
+# Review r1: $0.015625 swap difference from scoring credits at float64.
+- name: High-income credit routing uses downstream precision with older spouse as
+    head
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      older:
+        age: 60
+        employment_income: 1015250
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      younger:
+        age: 45
+        employment_income: 1015250
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      child:
+        age: 10
+        pre_subsidy_childcare_expenses: 190.2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+        - older
+        - younger
+        - child
+    marital_units:
+      couple:
+        members:
+        - older
+        - younger
+      child_unit:
+        members:
+        - child
+    households:
+      household:
+        members:
+        - older
+        - younger
+        - child
+        state_code: DE
+  output:
+    de_income_tax_before_refundable_credits_separate: 131091.96875
+    state_income_tax_before_refundable_credits: 131091.96875
+    state_income_tax: 131091.96875
+- name: High-income credit routing uses downstream precision with younger spouse as
+    head
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      older:
+        age: 60
+        employment_income: 1015250
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      younger:
+        age: 45
+        employment_income: 1015250
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      child:
+        age: 10
+        pre_subsidy_childcare_expenses: 190.2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+        - older
+        - younger
+        - child
+    marital_units:
+      couple:
+        members:
+        - older
+        - younger
+      child_unit:
+        members:
+        - child
+    households:
+      household:
+        members:
+        - older
+        - younger
+        - child
+        state_code: DE
+  output:
+    de_income_tax_before_refundable_credits_separate: 131091.96875
+    state_income_tax_before_refundable_credits: 131091.96875
+    state_income_tax: 131091.96875

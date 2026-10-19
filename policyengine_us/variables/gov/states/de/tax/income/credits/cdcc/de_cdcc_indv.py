@@ -18,9 +18,9 @@ class de_cdcc_indv(Variable):
         # the tax imposed on the spouse with the lower taxable
         # income reported on Line 23."  Locked to the lower-income
         # spouse's column under combined separate filing.
-        # With equal taxable incomes either spouse has the lower income; the
-        # column is then chosen with the other column credits to minimise tax
-        # (see de_combined_separate_credit_choices).
+        # The model permits either column on equal taxable incomes. This
+        # unresolved tie-election reading is documented with the authority
+        # search in de_combined_separate_credit_choices (rulespec-us#1607).
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
         _, cdcc_head, _ = de_combined_separate_credit_choices(

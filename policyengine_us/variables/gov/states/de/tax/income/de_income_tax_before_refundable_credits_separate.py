@@ -31,10 +31,10 @@ class de_income_tax_before_refundable_credits_separate(Variable):
         spouse_line33 = tax_unit.sum(is_spouse * line33)
 
         # The EITC "may only be applied against the tax imposed on the spouse
-        # with the higher taxable income reported on Line 23". With equal
-        # taxable incomes either column qualifies, and the column is chosen
-        # with the other column credits to minimise tax (see
-        # de_combined_separate_credit_choices).
+        # with the higher taxable income reported on Line 23". Retain that
+        # instruction-prose comparison, including the model's tie election.
+        # The statute and actual PIT-RSS worksheet instead compare remaining
+        # tax; see the authority conflict in de_combined_separate_credit_choices.
         _, _, head_higher = de_combined_separate_credit_choices(
             tax_unit, period, parameters
         )

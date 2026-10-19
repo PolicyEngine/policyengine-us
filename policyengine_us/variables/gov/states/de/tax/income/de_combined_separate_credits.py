@@ -14,11 +14,12 @@ def de_combined_separate_credit_choices(tax_unit, period, parameters):
     - which column takes the non-refundable EITC, which "may only be applied
       against the tax imposed on the spouse with the higher taxable income
       reported on Line 23" (Line 34).
-    With equal Line 23 incomes either column qualifies for Line 31 and Line 34.
-    The dependent split, and the Line 31 and Line 34 columns where both
-    qualify, are chosen together to minimise the two columns' tax after the
-    EITC. Each column keeps its own $110 personal credit, if the filer cannot
-    be claimed as a dependent elsewhere, and its aged credit.
+    The model permits either column on equal Line 23 incomes; this is an
+    unresolved tie-election reading, not an explicit rule in the instructions.
+    The dependent split and credit recipients are chosen together to minimise
+    the two columns' tax after the EITC. Each column keeps its own $110 personal
+    credit, if the filer cannot be claimed as a dependent elsewhere, and its
+    aged credit.
     The search treats the spouses alike, so the minimum does not depend on
     which spouse is labelled head.
 
@@ -47,15 +48,32 @@ def de_combined_separate_credit_choices(tax_unit, period, parameters):
     own_units = tax_unit("head_spouse_count_not_dependent_elsewhere", period)
     dep_units = max_(tax_unit("exemptions_count", period) - own_units, 0)
 
-    # Columns allowed for each credit; both on equal Line 23 incomes.
+    # Retained methodology choices for review by Max:
+    # - Neither 30 Del. C. 1114(b) nor the instructions establish a CDCC tie
+    #   election; the model allows either tied column (rulespec-us#1607).
+    # - PIT-RES p.10 routes EITC by taxable income, but 1117(b) and the actual
+    #   PIT-RSS Schedule II line 12 compare tax remaining before EITC.
+    # https://delcode.delaware.gov/title30/c011/sc02/index.html#1114
+    # https://delcode.delaware.gov/title30/c011/sc02/index.html#1117
+    # https://revenuefiles.delaware.gov/2025/PITForms_Instructions/Instructions/PIT-RES_Instructions_2025-01.pdf#page=10
+    # https://revenuefiles.delaware.gov/2025/PITForms_Instructions/PIT-RSS_2025-01_PaperInteractiveIPM.pdf#page=1
     head_may_take_cdcc = head_taxable <= spouse_taxable
     spouse_may_take_cdcc = spouse_taxable <= head_taxable
     head_may_take_eitc = head_taxable >= spouse_taxable
     spouse_may_take_eitc = spouse_taxable >= head_taxable
 
-    # Among choices with equal tax the first found is kept. The search tries
-    # main's earlier tie routing first (dependent care credit to the spouse,
-    # EITC to the head). That only matters when the columns are identical.
+    def line33(tax, own, aged, dependent_units, care_credit):
+        # Match the stored float32 personal credit, then the float32 credit
+        # addition and Line 33 subtraction in the downstream person formulas.
+        # Scoring unrounded credits can select different final taxes after a
+        # label swap. Aggregating each stored column promotes it to float64.
+        personal = (own + dependent_units * credit_per).astype(np.float32)
+        credits = personal + aged.astype(np.float32) + care_credit
+        tax = tax.astype(np.float32)
+        return (tax - min_(credits, tax)).astype(np.float64)
+
+    # Keep the first choice only when the downstream tax is exactly equal.
+    # Allocations may differ on ties, but their final liabilities must agree.
     best_tax = np.full_like(head_tax, np.inf)
     best_n = np.zeros_like(head_tax)
     best_cdcc_head = np.zeros_like(head_tax, dtype=bool)
@@ -68,19 +86,21 @@ def de_combined_separate_credit_choices(tax_unit, period, parameters):
                     & where(cdcc_head, head_may_take_cdcc, spouse_may_take_cdcc)
                     & where(eitc_head, head_may_take_eitc, spouse_may_take_eitc)
                 )
-                head_credits = head_own + head_aged + n * credit_per + cdcc_head * cdcc
-                spouse_credits = (
-                    spouse_own
-                    + spouse_aged
-                    + (dep_units - n) * credit_per
-                    + (not cdcc_head) * cdcc
+                head_line33 = line33(head_tax, head_own, head_aged, n, cdcc_head * cdcc)
+                spouse_line33 = line33(
+                    spouse_tax,
+                    spouse_own,
+                    spouse_aged,
+                    dep_units - n,
+                    (not cdcc_head) * cdcc,
                 )
-                # Line 33: each column's tax after its credits, at least zero.
-                head_line33 = max_(head_tax - head_credits, 0)
-                spouse_line33 = max_(spouse_tax - spouse_credits, 0)
-                eitc_column = head_line33 if eitc_head else spouse_line33
-                total = head_line33 + spouse_line33 - min_(eitc, eitc_column)
-                better = allowed & (total < best_tax - 1e-6)
+                head_eitc = min_(eitc, head_line33) if eitc_head else 0
+                spouse_eitc = min_(eitc, spouse_line33) if not eitc_head else 0
+                total = (
+                    max_(head_line33 - head_eitc, 0)
+                    + max_(spouse_line33 - spouse_eitc, 0)
+                ).astype(np.float32)
+                better = allowed & (total < best_tax)
                 best_tax = where(better, total, best_tax)
                 best_n = where(better, n, best_n)
                 best_cdcc_head = where(better, cdcc_head, best_cdcc_head)

@@ -224,6 +224,16 @@ def _review_cases():
             "adults": [adult(100_000.0), adult(30_000.0)],
             "dependents": [dependent],
         },
+        # Review r1 of #9981: float64 credit-choice scores hid a float32
+        # difference in the downstream columns at high incomes.
+        {
+            "state": "DE",
+            "adults": [
+                {"age": 60, "employment_income": 1_015_250.0},
+                {"age": 45, "employment_income": 1_015_250.0},
+            ],
+            "dependents": [{"age": 10, "pre_subsidy_childcare_expenses": 190.20}],
+        },
     ]
 
 
