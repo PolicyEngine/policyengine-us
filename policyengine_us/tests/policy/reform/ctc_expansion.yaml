@@ -41,3 +41,20 @@
   output:
     # 10,000 - 2,500 = 9,500 | 9,500 * 0.3 = 2,250
     refundable_ctc: 2_250
+
+- name: Section 911 exclusion still denies the refundable credit under the reform
+  period: 2024
+  reforms: policyengine_us.reforms.congress.wyden_smith.ctc_expansion.ctc_expansion
+  input:
+    gov.contrib.congress.wyden_smith.per_child_actc_phase_in: True
+    gov.contrib.congress.wyden_smith.actc_lookback: True
+    tax_unit_earned_income: 8_000
+    tax_unit_earned_income_last_year: 10_000
+    ctc_qualifying_children: 2
+    ctc: 4_000
+    ctc_refundable_maximum: 3_200  # $1,600 * 2
+    foreign_earned_income_exclusion: 20_000
+  output:
+    # The bill amends section 24(h); section 24(d)(3) still applies.
+    # Without the exclusion this filer would get $2,250 (case above).
+    refundable_ctc: 0

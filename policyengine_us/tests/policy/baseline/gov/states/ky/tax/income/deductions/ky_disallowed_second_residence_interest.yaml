@@ -55,18 +55,17 @@
     # 50,000 * 750,000 / 1,000,000 = 37,500.
     ky_disallowed_second_residence_interest: 0
 
-- name: Kentucky treats legacy structured interest as principal-residence interest
+- name: Kentucky distinguishes principal-residence interest from second-residence interest
   period: 2026
   absolute_error_margin: 0.01
   input:
     state_code: KY
     filing_status: SINGLE
     adjusted_gross_income: 50_000
-    first_home_mortgage_interest: 8_000
+    home_mortgage_interest: 8_000
     second_residence_mortgage_interest: 4_000
   output:
-    # No person-level principal-residence interest, so the structured 8,000
-    # stands in for it: 8,000 + 4,000.
+    # The fully deductible pool includes both residences: 8,000 + 4,000.
     home_mortgage_interest_tax_unit: 12_000
     ky_disallowed_second_residence_interest: 4_000
 
@@ -85,23 +84,23 @@
     deductible_mortgage_insurance_premiums: 1_080
     ky_disallowed_second_residence_interest: 270
 
-- name: Kentucky disallows second-residence points beside legacy structured interest
+- name: Kentucky disallows second-residence points beside principal-residence interest
   period: 2026
   absolute_error_margin: 0.01
   input:
     state_code: KY
     filing_status: SINGLE
     adjusted_gross_income: 50_000
-    first_home_mortgage_interest: 8_000
+    home_mortgage_interest: 8_000
     second_residence_mortgage_points: 400
   output:
-    # The structured 8,000 stands in for principal-residence interest, and
-    # the second residence's 400 of points join the fully deductible pool.
+    # The second residence's 400 of points join the fully deductible pool
+    # but exceed the principal residence's 8,000 of interest.
     home_mortgage_interest_tax_unit: 8_000
     deductible_mortgage_interest_tax_unit: 8_400
     ky_disallowed_second_residence_interest: 400
 
-- name: Kentucky counts legacy structured interest toward the principal-residence cap
+- name: Kentucky counts principal-residence interest toward the principal-residence cap
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -112,13 +111,11 @@
     first_home_mortgage_origination_year: 2020
     second_home_mortgage_balance: 500_000
     second_home_mortgage_origination_year: 2020
-    first_home_mortgage_interest: 8_000
+    home_mortgage_interest: 8_000
     second_residence_mortgage_interest: 4_000
   output:
-    # Federal: (8,000 + 4,000) * 750,000 / 1,500,000 = 6,000. The structured
-    # 8,000 counts as principal-residence interest, so the 6,000 is within
-    # the cap and nothing is disallowed. (Were it not counted, Kentucky would
-    # disallow min(4,000, 6,000) = 4,000.)
+    # Federal: (8,000 + 4,000) * 750,000 / 1,500,000 = 6,000, below the
+    # principal residence's 8,000, so nothing is disallowed.
     home_mortgage_interest_tax_unit: 12_000
     deductible_mortgage_interest_tax_unit: 6_000
     ky_disallowed_second_residence_interest: 0

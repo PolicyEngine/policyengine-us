@@ -9,13 +9,14 @@ class id_deductions(Variable):
     definition_period = YEAR
     reference = (
         "https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3022/",  # (j)
-        "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-01-2023.pdf#page=8",
+        "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=10",
     )
     defined_for = StateCode.ID
 
     def formula(tax_unit, period, parameters):
         itm_ded = tax_unit("id_itemized_deductions", period)
         std_ded = tax_unit("standard_deduction", period)
-        # Idaho qualified business income and federal Schedule 1-A deductions
-        # are modeled separately.
-        return max_(itm_ded, std_ded)
+        itemizes = tax_unit("id_itemizes", period)
+        # The election accounts for the associated health premium subtraction.
+        # Qualified business income and Schedule 1-A deductions are separate.
+        return where(itemizes, itm_ded, std_ded)

@@ -94,3 +94,62 @@
     state_code: MN
   output:
     mn_social_security_subtraction: 25_500
+
+# 2026 amounts from the Minnesota DOR Tax Year 2026 Inflation-Adjusted Amounts,
+# 290.0132 Subd. 26 (page 2): simplified subtraction phase-out thresholds of
+# $110,780 (joint) and $86,410 (single), and an alternate subtraction maximum of
+# $5,840 (joint) reduced by 20% of provisional income over $88,630, both "Not Indexed".
+- name: MN social security subtraction 2026 joint alternate maximum is not indexed
+  period: 2026
+  input:
+    filing_status: JOINT
+    taxable_social_security: 30_000
+    adjusted_gross_income: 200_000
+    state_code: MN
+  output:
+    # AGI is $89,220 over $110,780, so the simplified subtraction is reduced by
+    # 23 x 10% (capped at 100%) to $0. Provisional income is $0, so the
+    # alternate subtraction is the unreduced $5,840 maximum.
+    mn_social_security_subtraction: 5_840
+
+- name: MN social security subtraction 2027 joint alternate maximum stays at $5,840
+  period: 2027
+  input:
+    filing_status: JOINT
+    taxable_social_security: 30_000
+    adjusted_gross_income: 500_000
+    state_code: MN
+  output:
+    # Subd. 26(j) indexes only the simplified phase-out thresholds.
+    mn_social_security_subtraction: 5_840
+
+- name: MN social security subtraction 2026 joint alternate subtraction phase-out
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: JOINT
+    social_security: 100_000
+    taxable_social_security: 85_000
+    irs_gross_income: 150_000
+    adjusted_gross_income: 150_000
+    state_code: MN
+  output:
+    # Simplified: AGI is $39,220 over $110,780, so 10 x 10% = 100% reduction, $0.
+    # Provisional income = (150,000 - 85,000) + 50% x 100,000 = 115,000.
+    # Alternate = 5,840 - 20% x (115,000 - 88,630) = 5,840 - 5,274 = 566.
+    mn_social_security_subtraction: 566
+
+- name: MN social security subtraction 2026 single at the simplified phase-out threshold
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: SINGLE
+    social_security: 40_000
+    taxable_social_security: 20_000
+    irs_gross_income: 86_410
+    adjusted_gross_income: 86_410
+    state_code: MN
+  output:
+    # AGI equals the $86,410 threshold, so the simplified subtraction is not
+    # reduced and the full $20,000 of taxable benefits is subtracted.
+    mn_social_security_subtraction: 20_000

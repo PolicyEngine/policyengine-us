@@ -219,7 +219,11 @@
   output:
     # The model does not know whose account it is, so the head takes it, as
     # on a joint return with one income column. The head's Mississippi AGI
-    # cannot go below zero, so 2,000 of the deduction goes unused here; with
-    # health_savings_account_ald_person on the spouse it would all be used.
+    # column goes negative (1,000 - 3,000 = -2,000). On a joint return the
+    # tax computation combines a negative column with the other one (Form
+    # 80-100 line 17, #9885), so the whole deduction is used.
     ms_health_savings_account_adjustment: [3_000, 0]
-    ms_agi: [0, 50_000]
+    ms_agi: [-2_000, 50_000]
+    # Combined: 1,000 + 33,400 - 3,000 = 31,400 of taxable income in Column A;
+    # (31,400 - 10,000) x 4.4% = 941.60.
+    ms_income_tax_before_credits_unit: 941.6

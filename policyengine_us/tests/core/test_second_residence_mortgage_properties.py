@@ -196,9 +196,6 @@ def results():
                     name: annual(value)
                     for name, value in _balances(draws, scenario, i).items()
                 },
-                # Keep the deprecated structured interest out of every pool.
-                "first_home_mortgage_interest": annual(0.0),
-                "second_home_mortgage_interest": annual(0.0),
             }
             households[f"h{unit_index}"] = {
                 "members": members,

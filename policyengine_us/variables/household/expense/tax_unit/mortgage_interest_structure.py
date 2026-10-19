@@ -1,29 +1,48 @@
 from policyengine_us.model_api import *
 
 
-def _mortgage_balance_cap(
-    origination_year, pre_tcja_cap, post_tcja_cap, pre_tcja_origination_year
+def _debt_by_vintage(
+    balances,
+    origination_years,
+    grandfathered_origination_year,
+    pre_tcja_origination_year,
 ):
-    # An origination year of 0 means no mortgage; treat as post-TCJA so the
-    # lower cap applies (harmless because the balance will also be 0).
-    return where(
-        (origination_year > 0) & (origination_year <= pre_tcja_origination_year),
-        pre_tcja_cap,
-        post_tcja_cap,
+    """Sum loan balances into IRS Publication 936 Table 1 lines 1, 2 and 7.
+
+    Returns grandfathered debt (incurred on or before October 13, 1987), other
+    debt incurred on or before December 15, 2017, and later debt. Only the
+    calendar year is known, so each cutoff year counts as the older vintage.
+    An origination year of 0 or less is unknown and counts as later debt.
+    """
+    grandfathered_debt = pre_tcja_debt = post_tcja_debt = 0
+    for balance, year in zip(balances, origination_years):
+        grandfathered = (year > 0) & (year <= grandfathered_origination_year)
+        pre_tcja = (year > grandfathered_origination_year) & (
+            year <= pre_tcja_origination_year
+        )
+        grandfathered_debt = grandfathered_debt + where(grandfathered, balance, 0)
+        pre_tcja_debt = pre_tcja_debt + where(pre_tcja, balance, 0)
+        post_tcja_debt = post_tcja_debt + where(grandfathered | pre_tcja, 0, balance)
+    return grandfathered_debt, pre_tcja_debt, post_tcja_debt
+
+
+def _qualified_loan_limit(
+    grandfathered_debt, pre_tcja_debt, post_tcja_debt, pre_tcja_cap, post_tcja_cap
+):
+    """IRS Publication 936 Table 1, lines 3-6 and 8-11.
+
+    Grandfathered debt has no dollar limit, but it reduces the limit for other
+    debt (26 U.S.C. 163(h)(3)(D)). Debt incurred on or before December 15,
+    2017 keeps the $1,000,000 limit, and reduces the $750,000 limit for later
+    debt (26 U.S.C. 163(h)(3)(F)). The result never depends on which slot a
+    loan is in.
+    """
+    # Lines 3-6.
+    line_6 = min_(
+        max_(grandfathered_debt, pre_tcja_cap), grandfathered_debt + pre_tcja_debt
     )
-
-
-def _limited_mortgage_balance(first_balance, second_balance, first_cap, second_cap):
-    # Under §163(h)(3)(F), pre-TCJA debt keeps the $1M cap and post-TCJA debt
-    # gets max(0, $750K − pre_TCJA_debt).  This is equivalent to computing the
-    # combined deductible balance as:
-    #   min(larger_cap, max(larger_balance, smaller_cap))
-    # where "larger/smaller" refer to the balance sizes (not vintages).
-    first_is_smaller = first_balance < second_balance
-    smaller_cap = where(first_is_smaller, first_cap, second_cap)
-    larger_cap = where(first_is_smaller, second_cap, first_cap)
-    larger_balance = max_(first_balance, second_balance)
-    return min_(larger_cap, max_(larger_balance, smaller_cap))
+    # Lines 8-11.
+    return min_(max_(line_6, post_tcja_cap), line_6 + post_tcja_debt)
 
 
 class first_home_mortgage_balance(Variable):
@@ -52,36 +71,14 @@ class second_home_mortgage_balance(Variable):
     )
 
 
-class first_home_mortgage_interest(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "First home mortgage interest"
-    unit = USD
-    definition_period = YEAR
-    default_value = 0
-    documentation = (
-        "DEPRECATED (issue #9275): use the person-level home_mortgage_interest "
-        "input instead; the deduction only ever uses the first+second sum, and "
-        "this input is read only when no person-level interest is reported. "
-        "Kept temporarily so existing datasets that supply it keep working; "
-        "removal is scheduled once certified microdata stops exporting it."
-    )
-
-
-class second_home_mortgage_interest(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Second home mortgage interest"
-    unit = USD
-    definition_period = YEAR
-    default_value = 0
-    documentation = (
-        "DEPRECATED (issue #9275): use the person-level home_mortgage_interest "
-        "input instead; the deduction only ever uses the first+second sum, and "
-        "this input is read only when no person-level interest is reported. "
-        "Kept temporarily so existing datasets that supply it keep working; "
-        "removal is scheduled once certified microdata stops exporting it."
-    )
+_ORIGINATION_YEAR_CONVENTION = (
+    "The federal debt limits treat 1987 as on or before October 13, 1987 and "
+    "2017 as on or before December 15, 2017. A refinancing that still counts as "
+    "grandfathered debt takes the original debt's year: up to the principal "
+    "refinanced, and only for the original term or, for a balloon loan, the "
+    "first refinancing's term up to 30 years (26 U.S.C. 163(h)(3)(D)(iii)-(iv)). "
+    "Enter 0 if unknown."
+)
 
 
 class first_home_mortgage_origination_year(Variable):
@@ -90,7 +87,10 @@ class first_home_mortgage_origination_year(Variable):
     label = "First home mortgage origination year"
     definition_period = YEAR
     default_value = 0
-    documentation = "Calendar year when the first home acquisition mortgage originated."
+    documentation = (
+        "Calendar year when the first home acquisition mortgage originated. "
+        + _ORIGINATION_YEAR_CONVENTION
+    )
 
 
 class second_home_mortgage_origination_year(Variable):
@@ -100,7 +100,8 @@ class second_home_mortgage_origination_year(Variable):
     definition_period = YEAR
     default_value = 0
     documentation = (
-        "Calendar year when the second home acquisition mortgage originated."
+        "Calendar year when the second home acquisition mortgage originated. "
+        + _ORIGINATION_YEAR_CONVENTION
     )
 
 
@@ -111,35 +112,13 @@ class home_mortgage_interest_tax_unit(Variable):
     unit = USD
     definition_period = YEAR
     documentation = (
-        "Total home mortgage interest on the principal and second residences. "
-        "The person-level home_mortgage_interest and "
-        "second_residence_mortgage_interest inputs are canonical. The "
-        "deprecated structured first/second interest inputs stand in for "
-        "principal-residence interest when no person-level "
-        "home_mortgage_interest is reported (existing datasets still supply "
-        "them — see issue #9275)."
+        "Total home mortgage interest on the principal and second residences, "
+        "summed from the person-level home_mortgage_interest and "
+        "second_residence_mortgage_interest inputs. The per-mortgage balances "
+        "and origination years remain tax-unit inputs because the "
+        "acquisition-debt caps need them per loan."
     )
-
-    def formula(tax_unit, period, parameters):
-        principal_residence_interest = add(tax_unit, period, ["home_mortgage_interest"])
-        structured_interest = add(
-            tax_unit,
-            period,
-            ["first_home_mortgage_interest", "second_home_mortgage_interest"],
-        )
-        second_residence_interest = add(
-            tax_unit, period, ["second_residence_mortgage_interest"]
-        )
-        # The structured inputs record loans, not residences, so they stand in
-        # for principal-residence interest only.
-        return (
-            where(
-                principal_residence_interest > 0,
-                principal_residence_interest,
-                structured_interest,
-            )
-            + second_residence_interest
-        )
+    adds = ["home_mortgage_interest", "second_residence_mortgage_interest"]
 
 
 class deductible_mortgage_interest_tax_unit(Variable):
@@ -149,15 +128,19 @@ class deductible_mortgage_interest_tax_unit(Variable):
     unit = USD
     definition_period = YEAR
     documentation = (
-        "Federal deductible home mortgage interest and points (Schedule A "
-        "lines 8a through 8c) after applying the statutory acquisition-debt "
-        "caps to up to two mortgages. Points take the same deductible share "
-        "as interest (Publication 936, Table 1, line 13 instructions)."
+        "Federal deductible mortgage interest and points after applying the "
+        "statutory acquisition-debt caps to up to two mortgages. Grandfathered "
+        "debt, incurred on or before October 13, 1987, has no dollar limit but "
+        "reduces the limits for other debt; debt incurred on or before "
+        "December 15, 2017 keeps the $1,000,000 limit and reduces the $750,000 "
+        "limit for later debt (IRS Publication 936, Table 1). Points take the "
+        "same deductible share as interest (Table 1, line 13 instructions)."
     )
-    reference = [
-        "https://www.law.cornell.edu/uscode/text/26/163",
-        "https://www.irs.gov/pub/irs-pdf/p936.pdf#page=16",
-    ]
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/163#h_3",
+        # PDF pages 13-14
+        "https://www.irs.gov/pub/irs-prior/p936--2025.pdf#page=13",
+    )
 
     def formula(tax_unit, period, parameters):
         first_balance = tax_unit("first_home_mortgage_balance", period)
@@ -165,8 +148,6 @@ class deductible_mortgage_interest_tax_unit(Variable):
         first_year = tax_unit("first_home_mortgage_origination_year", period)
         second_year = tax_unit("second_home_mortgage_origination_year", period)
         total_balance = first_balance + second_balance
-        # Falls back to reported person-level interest when the structured
-        # first/second inputs are absent.
         total_interest = tax_unit("home_mortgage_interest_tax_unit", period)
         points = add(
             tax_unit,
@@ -176,24 +157,18 @@ class deductible_mortgage_interest_tax_unit(Variable):
 
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.irs.deductions.itemized.interest.mortgage
-        pre_tcja_cap = p.pre_tcja_cap[filing_status]
-        post_tcja_cap = p.cap[filing_status]
-        pre_tcja_origination_year = p.pre_tcja_origination_year
-
-        first_cap = _mortgage_balance_cap(
-            first_year,
-            pre_tcja_cap,
-            post_tcja_cap,
-            pre_tcja_origination_year,
+        grandfathered_debt, pre_tcja_debt, post_tcja_debt = _debt_by_vintage(
+            [first_balance, second_balance],
+            [first_year, second_year],
+            p.grandfathered_origination_year,
+            p.pre_tcja_origination_year,
         )
-        second_cap = _mortgage_balance_cap(
-            second_year,
-            pre_tcja_cap,
-            post_tcja_cap,
-            pre_tcja_origination_year,
-        )
-        limited_balance = _limited_mortgage_balance(
-            first_balance, second_balance, first_cap, second_cap
+        limited_balance = _qualified_loan_limit(
+            grandfathered_debt,
+            pre_tcja_debt,
+            post_tcja_debt,
+            p.pre_tcja_cap[filing_status],
+            p.cap[filing_status],
         )
 
         # When no acquisition-debt balance is provided, assume the mortgage is

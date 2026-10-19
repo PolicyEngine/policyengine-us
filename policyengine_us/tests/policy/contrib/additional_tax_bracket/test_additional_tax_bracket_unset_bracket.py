@@ -456,8 +456,8 @@ def calculate(variables, year, reforms=None):
     changes, or under the baseline when ``reforms`` is None.
 
     A reformed simulation runs on its own clone of the loaded default system.
-    This file also runs inside the contrib YAML batch, whose memory is
-    budgeted, so collect each simulation before building the next.
+    Collect each simulation before building the next to keep memory bounded
+    in the dedicated contrib Python step.
     """
     sim = Simulation(
         tax_benefit_system=baseline_system,
@@ -563,8 +563,8 @@ SHAPES_8 = {status: shape[1] for status, shape in THRESHOLD_SHAPES.items()}
 
 
 # Each example runs two simulations, each on its own clone of the default
-# system, and the file runs in two CI steps, so the generated examples are
-# few; the schedule properties above take 300 examples each.
+# system, so the generated examples are few; the schedule properties above
+# take 300 examples each.
 @hypothesis.settings(
     max_examples=3,
     deadline=None,

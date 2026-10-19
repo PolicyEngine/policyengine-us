@@ -1,0 +1,172 @@
+# A tax-unit dependent's income is not in the filer's federal AGI; the
+# dependent reports it on their own return. MCL 206.30(1)(e) and (q) subtract
+# amounts only "to the extent included in adjusted gross income".
+
+- name: A dependent child's military retirement pay is not subtracted from the filer's income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+      child:
+        age: 10
+        military_retirement_pay: 10_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MI
+  output:
+    adjusted_gross_income: 50_000
+    mi_subtractions: 0
+    # 50,000 AGI - 0 subtractions - 2 exemptions x 5,800
+    mi_taxable_income: 38_400
+
+- name: Only the head's and spouse's military retirement pay is subtracted, not a dependent's.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 50_000
+        military_retirement_pay: 8_000
+      spouse:
+        age: 43
+        military_retirement_pay: 5_000
+      child:
+        age: 12
+        military_retirement_pay: 10_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      couple:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MI
+  output:
+    # 8,000 (head) + 5,000 (spouse); the child's 10,000 is excluded.
+    mi_subtractions: 13_000
+
+- name: A dependent's state tax refund and military service pay are not subtracted from the filer's income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        salt_refund_income: 500
+      child:
+        age: 17
+        salt_refund_income: 1_000
+        military_service_income: 2_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MI
+  output:
+    # Only the head's 500 refund is in AGI and subtracted.
+    adjusted_gross_income: 50_500
+    mi_subtractions: 500
+
+- name: A filer born in 1955 gets the expanded retirement deduction on their own pension only, with no subtraction for a dependent's military retirement pay.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 50_000
+        taxable_public_pension_income: 20_000
+      child:
+        age: 16
+        taxable_public_pension_income: 10_000
+        military_retirement_pay: 10_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MI
+  output:
+    # The child's pension and military retirement pay are not in AGI.
+    adjusted_gross_income: 70_000
+    # Born 1955: eligible for the expanded deduction (born 1946 to 1966 in 2025).
+    # min(20,000 head pension, 65,897 x 0.75 = 49,422.75) = 20,000
+    mi_expanded_retirement_benefits_deduction: 20_000
+    # Tier 3 standard deduction: max(20,000 - 2 x 5,800 = 8,400, 20,000 expanded)
+    mi_standard_deduction: 20_000
+    # The expanded amount is claimed through the standard deduction.
+    mi_pension_benefit: 0
+    mi_subtractions: 20_000
+    # 70,000 - 20,000 - 11,600
+    mi_taxable_income: 38_400
+
+- name: A filer born in 1955 whose own pension exceeds the expanded retirement deduction cap gets the capped amount, with no subtraction for a dependent's retirement income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 50_000
+        taxable_public_pension_income: 60_000
+      child:
+        age: 16
+        taxable_public_pension_income: 10_000
+        military_retirement_pay: 10_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MI
+  output:
+    adjusted_gross_income: 110_000
+    # min(60,000 head pension, 65,897 x 0.75 = 49,422.75) = 49,422.75
+    mi_expanded_retirement_benefits_deduction: 49_422.75
+    mi_standard_deduction: 49_422.75
+    mi_pension_benefit: 0
+    mi_subtractions: 49_422.75
+    # 110,000 - 49,422.75 - 11,600
+    mi_taxable_income: 48_977.25

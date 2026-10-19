@@ -34,6 +34,116 @@
   output:
     base_part_a_premium: 0
 
+# Amounts for 2015-2020 come from each year's Federal Register Part A premium
+# notice.
+- name: 2015 Part A reduced premium for 30-39 quarters.
+  period: 2015
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 35
+  output:
+    base_part_a_premium: 2_688  # $224 * 12 months
+
+- name: 2015 Part A full premium for fewer than 30 quarters.
+  period: 2015
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 20
+  output:
+    base_part_a_premium: 4_884  # $407 * 12 months
+
+- name: 2016 Part A reduced premium for 30-39 quarters.
+  period: 2016
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 35
+  output:
+    base_part_a_premium: 2_712  # $226 * 12 months
+
+- name: 2016 Part A full premium for fewer than 30 quarters.
+  period: 2016
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 20
+  output:
+    base_part_a_premium: 4_932  # $411 * 12 months
+
+- name: 2017 Part A reduced premium for 30-39 quarters.
+  period: 2017
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 35
+  output:
+    base_part_a_premium: 2_724  # $227 * 12 months
+
+- name: 2017 Part A full premium for fewer than 30 quarters.
+  period: 2017
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 20
+  output:
+    base_part_a_premium: 4_956  # $413 * 12 months
+
+- name: 2018 Part A reduced premium for 30-39 quarters.
+  period: 2018
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 35
+  output:
+    base_part_a_premium: 2_784  # $232 * 12 months
+
+- name: 2018 Part A full premium for fewer than 30 quarters.
+  period: 2018
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 20
+  output:
+    base_part_a_premium: 5_064  # $422 * 12 months
+
+- name: 2019 Part A reduced premium for 30-39 quarters.
+  period: 2019
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 35
+  output:
+    base_part_a_premium: 2_880  # $240 * 12 months
+
+- name: 2019 Part A full premium for fewer than 30 quarters.
+  period: 2019
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 20
+  output:
+    base_part_a_premium: 5_244  # $437 * 12 months
+
+- name: 2020 Part A reduced premium for 30-39 quarters.
+  period: 2020
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 35
+  output:
+    base_part_a_premium: 3_024  # $252 * 12 months
+
+- name: 2020 Part A full premium for fewer than 30 quarters.
+  period: 2020
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 20
+  output:
+    base_part_a_premium: 5_496  # $458 * 12 months
+
 - name: unit test 5 - reduced premium in 2022
   period: 2022
   input:

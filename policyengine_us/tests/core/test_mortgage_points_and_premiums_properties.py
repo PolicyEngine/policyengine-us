@@ -1,6 +1,6 @@
 """Vectorized mortgage invariants that household YAML examples cannot express.
 
-One module fixture builds one Simulation for 360 tax units in 2021, 2025 and
+One module fixture builds one Simulation for 300 tax units in 2021, 2025 and
 2026. Seeded draws and paired tax units exercise conservation, bounds,
 interest/points transfers, an independent integer-cents Schedule A worksheet,
 AGI monotonicity and compatibility with zero or omitted new inputs. Paired
@@ -24,7 +24,7 @@ from policyengine_us.variables.household.expense.tax_unit.mortgage_interest_stru
 N = 60
 YEARS = (2021, 2025, 2026)
 STATUSES = ("SINGLE", "JOINT", "SEPARATE", "HEAD_OF_HOUSEHOLD", "SURVIVING_SPOUSE")
-SCENARIOS = ("base", "moved", "richer", "zero", "omitted", "legacy")
+SCENARIOS = ("base", "moved", "richer", "zero", "omitted")
 PERSON_INPUTS = (
     "home_mortgage_interest",
     "home_mortgage_points",
@@ -141,14 +141,12 @@ def mortgage_results():
                             value = total * fraction
                         elif name == "home_mortgage_points":
                             value = total * (1 - fraction)
-                    if scenario in ("zero", "omitted", "legacy") and name in (
+                    if scenario in ("zero", "omitted") and name in (
                         "home_mortgage_points",
                         "mortgage_insurance_premiums",
                     ):
                         if scenario == "omitted":
                             continue
-                        value = 0.0
-                    if scenario == "legacy" and name == "home_mortgage_interest":
                         value = 0.0
                     person[name] = annual(value)
                 people[person_id] = person
@@ -177,14 +175,7 @@ def mortgage_results():
                         "second_home_mortgage_origination_year",
                     )
                 },
-                # The transfer property must not trigger the legacy fallback.
-                "first_home_mortgage_interest": annual(0.0),
-                "second_home_mortgage_interest": annual(0.0),
             }
-            if scenario == "legacy":
-                interest = draws["home_mortgage_interest"][i].sum()
-                unit["first_home_mortgage_interest"] = annual(float(interest * 0.6))
-                unit["second_home_mortgage_interest"] = annual(float(interest * 0.4))
             tax_units[f"t{unit_index}"] = unit
             households[f"h{unit_index}"] = {"members": members}
 
@@ -341,7 +332,7 @@ def test_zero_new_inputs_preserve_the_previous_computation(mortgage_results):
             np.testing.assert_array_equal(
                 values[name][persons["zero"]], values[name][persons["omitted"]]
             )
-        for scenario in ("zero", "omitted", "legacy"):
+        for scenario in ("zero", "omitted"):
             index = units[scenario]
             person_index = persons[scenario]
             interest = values["home_mortgage_interest_tax_unit"][index]

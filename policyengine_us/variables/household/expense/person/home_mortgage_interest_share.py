@@ -7,9 +7,12 @@ class home_mortgage_interest_share(Variable):
     label = "Share of tax-unit home mortgage interest"
     definition_period = YEAR
     documentation = (
-        "Allocates tax-unit mortgage interest and points across filers using "
-        "reported person-level home mortgage interest and points on both "
-        "residences when available, otherwise evenly across head and spouse."
+        "Allocates the tax unit's mortgage interest and points (and their "
+        "deductible and non-deductible parts) to the filers: in proportion "
+        "to the head's and spouse's own reported interest and points on both "
+        "residences, or evenly between them when only other members (such "
+        "as dependents) report them. Shares sum to one across head and "
+        "spouse, so the person amounts add back to the tax-unit totals."
     )
 
     def formula(person, period, parameters):
