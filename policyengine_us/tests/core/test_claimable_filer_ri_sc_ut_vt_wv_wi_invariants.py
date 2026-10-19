@@ -111,7 +111,7 @@ def _identities(sim, year):
         assert not _calc(sim, name, year)[every_filer_claimed].any(), (
             f"{name} in {year} is positive when every filer is claimed"
         )
-    state = np.asarray(sim.calculate("state_code_str", year, map_to="tax_unit"))
+    state = np.asarray(sim.populations["tax_unit"].household("state_code_str", year))
     wv_none = (state == "WV") & (_calc(sim, "exemptions_count", year) == 0)
     np.testing.assert_array_equal(
         _calc(sim, "wv_personal_exemption", year)[wv_none], 500

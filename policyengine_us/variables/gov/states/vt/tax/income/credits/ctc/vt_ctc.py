@@ -23,7 +23,7 @@ class vt_ctc(Variable):
         age = person("age", period)
         p = parameters(period).gov.states.vt.tax.income.credits.ctc
         dependent = person("is_tax_unit_dependent", period)
-        filer_is_dependent = tax_unit(
+        filer_is_dependent = person.tax_unit(
             "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         eligible = (age <= p.age_limit) & dependent & ~filer_is_dependent

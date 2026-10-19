@@ -20,7 +20,11 @@ class vt_renter_credit(Variable):
         p = parameters(period).gov.states.vt.tax.income.credits.renter
         # get tax unit size and county.
         tax_unit_size = tax_unit("tax_unit_size", period)
-        county = tax_unit.household("county", period)
+        county = tax_unit.household("county_str", period)
+        # defined_for masks results after evaluation, so every row needs a
+        # valid Vermont county while indexing the state-only parameter tables.
+        in_vt = tax_unit.household("state_code_str", period) == "VT"
+        county = where(in_vt, county, "ADDISON_COUNTY_VT")
         # 32 V.S.A. 6066(b)(2): the fair market rent is for "a number of
         # bedrooms equal to the number of personal exemptions" under
         # 5811(21)(C), which allows none for a filer who can be claimed as a

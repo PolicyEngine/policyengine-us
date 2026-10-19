@@ -23,7 +23,7 @@ class ut_at_home_parent_credit_potential(Variable):
         # (or, if joint, either spouse) can be claimed as a dependent has no
         # dependents, unless the would-be claimant meets the filing exception
         # (Publication 501).
-        filer_is_dependent = tax_unit(
+        filer_is_dependent = person.tax_unit(
             "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         qualifying_child = (age < p.max_child_age) & is_dependent & ~filer_is_dependent

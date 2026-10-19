@@ -23,7 +23,7 @@ class ri_child_tax_rebate(Variable):
         # return. Under IRC 152(b)(1) a return on which the filer (or, if
         # joint, either spouse) can be claimed as a dependent has none, unless
         # the would-be claimant meets the filing exception (Publication 501).
-        filer_is_dependent = tax_unit(
+        filer_is_dependent = person.tax_unit(
             "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         eligible_child = age_eligibility & dependent & ~filer_is_dependent
