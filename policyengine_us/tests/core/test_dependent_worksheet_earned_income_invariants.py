@@ -15,9 +15,11 @@ input.
 Hypothesis (any mix of claimability, wages, 401(k) deferrals, self-employment
 and farm income or loss, and interest, in Oregon, Hawaii or Texas) and runs
 each batch, with four variants of every unit, as one simulation for 2025 and
-2026. Three fixed units, the review's case (a claimed single filer with
-$10,000 of wages, a $6,000 deferral and $600 of interest) in each state,
-start every batch so that each property has rows to check:
+2026. Four fixed units start every batch so that each property has rows to
+check: the review's case (a claimed single filer with $10,000 of wages, a
+$6,000 deferral and $600 of interest) in each state, and a claimed single
+filer with $901 of farm profit and $450 of interest, whose filing
+requirement turns on the line 15 subtraction alone (property 6):
 
 1. Deferral invariance: a unit whose wages are W with a deferral D gets the
    same worksheet earned income, deductions, federal filing requirement and
@@ -175,6 +177,15 @@ FIXED_UNITS = [
         "adults": [adult(True, 10_000, 6_000, 0, 0, 600)],
     }
     for state in STATES
+] + [
+    # Line 15 is $901 x 0.9235 x 15.3% / 2 = $63.65, so the limit is the
+    # $1,350 floor and gross income of $1,351 requires a return. Without the
+    # subtraction the limit would be $1,351 and no return would be required.
+    {
+        "filing_status": "SINGLE",
+        "state": "TX",
+        "adults": [adult(True, 0, 0, 0, 901, 450)],
+    }
 ]
 
 
