@@ -11,6 +11,9 @@ class itemized_medical_expenses(Variable):
         "https://www.law.cornell.edu/uscode/text/26/213",
         "https://www.law.cornell.edu/uscode/text/26/162#l_3",
         "https://www.irs.gov/instructions/i1040sca",
+        # CPS ASEC wording of the premium and medical care questions, PDF
+        # pages 2-3.
+        "https://www.census.gov/content/dam/Census/library/working-papers/2015/demo/Medical-Out-of-pocket-Expenses-CPSASEC-2013-2014.pdf#page=2",
     ]
     documentation = (
         "Medical expenses counted before applying the itemized medical "
@@ -20,12 +23,18 @@ class itemized_medical_expenses(Variable):
         "medical care; qualified long-term care services; and insurance "
         "premiums covering medical care. Current modeling uses health "
         "insurance premiums and other medical expenses, excluding general "
-        "over-the-counter health expenses. Premiums deducted through the "
-        "filer's self-employed health insurance deduction are excluded under "
-        "IRC Section 162(l)(3) before the medical expense floor is applied. "
+        "over-the-counter health expenses. IRC Section 213(a) allows expenses "
+        "the taxpayer paid for the taxpayer, the spouse and dependents. "
         "Premium inputs use payer attribution: each person reports premiums "
         "that person paid, including the full cost of family coverage regardless "
         "of whom it covers. A parent-paid dependent policy belongs on the parent. "
+        "So only the head's and spouse's premiums count; a dependent's own "
+        "premium payments are not the filers' expenses. Other medical expenses "
+        "are recorded on the person cared for, including amounts other "
+        "household members paid on that person's behalf, so every member's "
+        "count. Premiums deducted through the filer's self-employed health "
+        "insurance deduction are excluded under IRC Section 162(l)(3) before "
+        "the medical expense floor is applied. "
         "The exclusion is bounded to filer-paid premiums; beneficiary-attributed "
         "inputs with an ALD exceeding that pool are inconsistent with this contract "
         "and cannot establish conservation of the supplied ALD. A supplied value "
@@ -43,12 +52,21 @@ class itemized_medical_expenses(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        premiums = add(tax_unit, period, ["medical_expense_health_insurance_premiums"])
+        # IRC 213(a) counts what the head and spouse paid. Premium inputs sit
+        # on the payer, so take only their premiums, which include coverage
+        # they bought for dependents; a dependent's own payments are not the
+        # filers' expenses.
+        premiums = tax_unit_non_dep_sum(
+            "medical_expense_health_insurance_premiums", tax_unit, period
+        )
         # The federal ALD covers the head and spouse; dependents take their
         # own SE deductions on their own returns. Bound the exclusion to the
         # corresponding filer premiums, leaving other medical costs intact.
         excluded_premiums = tax_unit(
             "itemized_medical_expenses_excluded_premiums", period
         )
+        # Other medical expenses sit on the person cared for, including
+        # amounts household members paid on a dependent's behalf, so count
+        # every member's.
         other_expenses = add(tax_unit, period, ["other_medical_expenses"])
         return premiums - excluded_premiums + other_expenses
