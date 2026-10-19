@@ -25,6 +25,7 @@ class nc_claim_of_right_payment(Variable):
     defined_for = StateCode.NC
 
     def formula(tax_unit, period, parameters):
+        eligible = tax_unit("claim_of_right_section_1341_eligible", period)
         credit_applies = tax_unit("claim_of_right_credit_applies", period)
         prior_year_tax_increase = tax_unit(
             "nc_claim_of_right_prior_year_tax_increase", period
@@ -33,4 +34,4 @@ class nc_claim_of_right_payment(Variable):
         # the item was deductible, is zero: under section 1341(a)(5) the
         # repayment is not deducted federally (section 1341(b)(3)), and
         # G.S. 105-153.5(a)(2)d allows no North Carolina deduction for it.
-        return where(credit_applies, prior_year_tax_increase, 0)
+        return where(eligible & credit_applies, prior_year_tax_increase, 0)

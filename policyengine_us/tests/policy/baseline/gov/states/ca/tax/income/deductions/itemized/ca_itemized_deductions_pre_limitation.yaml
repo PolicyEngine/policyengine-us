@@ -414,9 +414,9 @@
     # not added to it.
     ca_itemized_deductions_pre_limitation: 4_900
 
-- name: The federal claim of right repayment deduction does not carry over.
-  # 2025 Schedule CA (540) instructions, Part II line 16: California allows
-  # its own deduction or credit, and neither for income it did not tax.
+- name: The federal claim of right repayment deduction carries over by default.
+  # 2025 Schedule CA (540) instructions, Part II line 16: column A allows
+  # the federal deduction to remain when California also uses the deduction.
   period: 2025
   input:
     state_code: CA
@@ -424,4 +424,4 @@
     claim_of_right_deduction: 5_000
   output:
     itemized_deductions_less_salt: 11_000
-    ca_itemized_deductions_pre_limitation: 6_000
+    ca_itemized_deductions_pre_limitation: 11_000

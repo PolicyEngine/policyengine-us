@@ -68,5 +68,6 @@ class nc_claim_of_right_deduction(Variable):
         # No deduction when federal tax for the year of repayment is
         # computed under section 1341(a)(5); G.S. 105-266.2 instead treats
         # the prior-year North Carolina tax on the item as a payment.
+        eligible = tax_unit("claim_of_right_section_1341_eligible", period)
         credit_applies = tax_unit("claim_of_right_credit_applies", period)
-        return where(credit_applies, 0, deduction)
+        return where(eligible & credit_applies, 0, deduction)
