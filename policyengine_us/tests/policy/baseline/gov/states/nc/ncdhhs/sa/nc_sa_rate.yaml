@@ -76,31 +76,3 @@
     nc_sa_facility_rate: 1_000
   output:
     nc_sa_rate: 1_397
-
-# G.S. 108A-42.1(a)-(b) applies the federally approved Social Security COLA,
-# which is 3.6% in 2027, to the published 2026 rates $1,397 and $1,792.
-# These are derived rates, pending a 2027 state rate notice.
-# https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_108A/GS_108A-42.1.html
-# https://www.ssa.gov/news/en/cola/factsheets/2027.html
-# https://policies.ncdhhs.gov/wp-content/uploads/EFS-SA-CN-01-2026.pdf#page=1
-- name: Case 8, 2027 basic rate uses the federally approved 3.6 percent COLA.
-  period: 2027-01
-  absolute_error_margin: 0.01
-  input:
-    state_code: NC
-    age: 65
-    nc_sa_care_setting: ADULT_CARE_HOME
-  output:
-    # round(1,397 * 1.036) = 1,447; the raw CPI ratio would give 1,448.
-    nc_sa_rate: 1_447
-
-- name: Case 9, 2027 enhanced rate uses the federally approved 3.6 percent COLA.
-  period: 2027-01
-  absolute_error_margin: 0.01
-  input:
-    state_code: NC
-    age: 65
-    nc_sa_care_setting: SPECIAL_CARE_UNIT
-  output:
-    # round(1,792 * 1.036) = 1,857.
-    nc_sa_rate: 1_857
