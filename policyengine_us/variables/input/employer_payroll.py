@@ -45,8 +45,9 @@ class employer_state_payroll_premium_deduction_share(Variable):
         "Leave. 1, the default, deducts the full permitted share; 0 deducts "
         "nothing. The employer pays any part it does not deduct, which the "
         "employer-side variables carry except in New York, whose employer "
-        "cost is not modeled. The federal treatment of that "
-        "payment as the employee's wages (Rev. Rul. 2025-4) is not modeled. "
+        "cost is not modeled. For the state paid family and medical leave "
+        "funds, the federal treatment of that payment as the employee's wages "
+        "(Rev. Rul. 2025-4; Notice 2026-6) is not modeled. "
         "Values outside 0 to 1 are treated as the nearer bound."
     )
     unit = "/1"

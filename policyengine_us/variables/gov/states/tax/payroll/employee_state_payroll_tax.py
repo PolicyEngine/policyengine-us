@@ -45,9 +45,11 @@ class employee_state_payroll_tax(Variable):
         "employer cost is not modeled. Not modeled: an employer's "
         "election to pay a required employee contribution as a benefit (Paid "
         "Leave Oregon, ORS 657B.150(5)) or voluntary payment of other "
-        "mandatory contributions, and the federal treatment of an employer's "
-        "payment of an employee share as the employee's wages (Rev. Rul. "
-        "2025-4)."
+        "mandatory contributions, and, for the state paid family and medical "
+        "leave funds (Colorado, Delaware, Maine, Massachusetts, Minnesota and "
+        "Washington), the federal treatment of an employer's payment of the "
+        "employee share as the employee's wages (Rev. Rul. 2025-4; Notice "
+        "2026-6)."
     )
     definition_period = YEAR
     unit = USD
