@@ -212,3 +212,16 @@
     itemized_medical_expenses_applied_exclusion: 1_000
     # 40,000 - 3,000 - (5,500 + 1,000) = 30,500.
     nd_renters_refund_income: 30_500
+
+- name: North Dakota restores the exclusion supplied with a net Schedule A subtotal
+  period: 2025
+  input:
+    state_code: ND
+    employment_income: 30_000
+    # Schedule A line 1 of 10,000 leaves out 6,400 of premiums (6,000
+    # medical, 400 long-term care) taken as the self-employed deduction.
+    itemized_medical_expenses: 10_000
+    itemized_medical_expenses_applied_exclusion: 6_400
+  output:
+    # Medical costs paid: 10,000 + 6,400 = 16,400.
+    nd_renters_refund_income: 13_600
