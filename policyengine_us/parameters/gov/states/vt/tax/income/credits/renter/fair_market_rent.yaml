@@ -79,6 +79,14 @@ metadata:
 # following the state-average rule in 6061(7)(C). This is the averaging convention
 # that reproduces the department's unrounded 2025 rents. These zero-bedroom
 # values are calculated from HUD schedules rather than department credit tables.
+# The unrounded 12-area method is used in every year. It differs from the
+# existing 1-4 bedroom reconstructions in 2021 and 2024 (whole-dollar rounding)
+# and 2022 (Addison excluded). Applying those alternatives to zero bedrooms
+# gives full-year credits of $883 either way in 2021, $919 versus $918 in 2022,
+# and $1,172 versus $1,171 in 2024 (this method first); 2023 and 2025 agree.
+# A 14-county average instead weights the Burlington area three times and
+# gives a 2025 zero-bedroom credit of $1,273 versus this method's $1,209.
+# Section 6061(7)(C) does not specify averaging weights or intermediate rounding.
 0:
   ADDISON_COUNTY_VT:
     2021-01-01: 751
