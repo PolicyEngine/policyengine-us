@@ -10,7 +10,7 @@ class medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse(
     value_type = float
     entity = Person
     label = "Medicaid optional senior or disabled income deemed from ineligible spouse"
-    definition_period = YEAR
+    definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/cfr/text/20/416.1163",
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-015-00/0805-015-05/",
@@ -54,21 +54,27 @@ class medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse(
         has_ineligible_spouse = marital_unit.sum(ineligible_spouse) > 0
         deeming_applies = deeming_applies | (is_mo & has_ineligible_spouse)
 
-        alone_countable = _apply_medicaid_optional_senior_or_disabled_exclusions(
-            individual_earned,
-            individual_unearned,
-            state,
-            p.individual[state],
-            parameters,
-            period,
+        alone_countable = (
+            _apply_medicaid_optional_senior_or_disabled_exclusions(
+                individual_earned * MONTHS_IN_YEAR,
+                individual_unearned * MONTHS_IN_YEAR,
+                state,
+                p.individual[state],
+                parameters,
+                period,
+            )
+            / MONTHS_IN_YEAR
         )
-        couple_countable = _apply_medicaid_optional_senior_or_disabled_exclusions(
-            individual_earned + spouse_earned,
-            individual_unearned + spouse_unearned,
-            state,
-            p.couple[state],
-            parameters,
-            period,
+        couple_countable = (
+            _apply_medicaid_optional_senior_or_disabled_exclusions(
+                (individual_earned + spouse_earned) * MONTHS_IN_YEAR,
+                (individual_unearned + spouse_unearned) * MONTHS_IN_YEAR,
+                state,
+                p.couple[state],
+                parameters,
+                period,
+            )
+            / MONTHS_IN_YEAR
         )
 
         deemed_amount = max_(0, couple_countable - alone_countable)

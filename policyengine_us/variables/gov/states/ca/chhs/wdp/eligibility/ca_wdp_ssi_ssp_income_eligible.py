@@ -2,6 +2,9 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
+from policyengine_us.variables.gov.states.ca.chhs.wdp.eligibility._ca_wdp_annual_spousal_deeming import (
+    ca_wdp_annual_spousal_deeming_applies,
+)
 
 
 class ca_wdp_ssi_ssp_income_eligible(Variable):
@@ -36,9 +39,9 @@ class ca_wdp_ssi_ssp_income_eligible(Variable):
         p = parameters(
             period.first_month
         ).gov.states.ca.cdss.state_supplement.payment_standard
-        uses_couple_standard = person("ssi_claim_is_joint", period) | person(
-            "is_ssi_spousal_deeming_applies", period
-        )
+        uses_couple_standard = person(
+            "ssi_claim_is_joint", period
+        ) | ca_wdp_annual_spousal_deeming_applies(person, period, parameters)
         monthly_standard = where(
             uses_couple_standard,
             p.aged_or_disabled.amount.married,

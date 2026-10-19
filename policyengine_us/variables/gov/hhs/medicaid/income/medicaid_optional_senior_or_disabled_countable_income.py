@@ -9,7 +9,7 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
     entity = Person
     label = "Countable income for Medicaid's optional senior or disabled pathway"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396a#m",
         "https://www.kff.org/medicaid/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey/",
@@ -49,13 +49,16 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
             p.couple[state],
             p.individual[state],
         )
-        personal_countable = _apply_medicaid_optional_senior_or_disabled_exclusions(
-            earned_income,
-            total_unearned_income,
-            state,
-            income_disregard,
-            parameters,
-            period,
+        personal_countable = (
+            _apply_medicaid_optional_senior_or_disabled_exclusions(
+                earned_income * MONTHS_IN_YEAR,
+                total_unearned_income * MONTHS_IN_YEAR,
+                state,
+                income_disregard,
+                parameters,
+                period,
+            )
+            / MONTHS_IN_YEAR
         )
 
         spousal_deemed = person(
