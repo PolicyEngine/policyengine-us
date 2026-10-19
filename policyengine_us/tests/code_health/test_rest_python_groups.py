@@ -385,19 +385,22 @@ def test_original_rest_check_aggregates_all_shards_without_hiding_failure(workfl
     summary = jobs["Rest"]
     assert summary["name"] == "Full Suite - Rest (Python + variables)"
     assert summary["needs"] == ["RestPython"]
-    assert "always()" in summary["if"]
+    # Shard 2 still runs after a shard-1 failure, but a cancelled run stops
+    # it: a job-level always() kept it running after cancellation.
+    assert "always()" not in summary["if"]
     assert "strategy" not in summary
     assert summary["timeout-minutes"] == 90
     assert not summary.get("continue-on-error", False)
     assert not jobs["RestPython"].get("continue-on-error", False)
     if workflow.name == "push.yaml":
         assert " ".join(summary["if"].split()) == (
-            "always() && (github.repository == 'PolicyEngine/policyengine-us') "
+            "!cancelled() && (needs.RestPython.result != 'skipped') "
+            "&& (github.repository == 'PolicyEngine/policyengine-us') "
             "&& (github.event.head_commit.message == 'Update PolicyEngine US')"
         )
         assert {"RestPython", "Rest"} <= set(jobs["Publish"]["needs"])
     else:
-        assert summary["if"] in ("always()", "${{ always() }}")
+        assert summary["if"] == "${{ !cancelled() }}"
     (step,) = [
         candidate
         for candidate in summary["steps"]

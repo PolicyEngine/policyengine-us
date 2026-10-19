@@ -15,16 +15,25 @@ class nd_renters_refund_income(Variable):
 
     documentation = (
         "Renter refund income after unreimbursed medical costs actually paid. "
-        "The paid-cost base restores self-employed premiums only when the "
-        "federal formula excluded them. Caller-supplied subtotals remain "
-        "unchanged, including when components are supplied. Premium inputs use payer "
+        "The paid-cost base restores the self-employed premiums excluded from "
+        "the federal subtotal: by the federal formula, or as supplied with a "
+        "caller's subtotal in itemized_medical_expenses_applied_exclusion. A "
+        "caller-supplied subtotal without that amount is used unchanged, "
+        "including when components are supplied. Premium inputs use payer "
         "attribution: each person reports premiums that person paid, including "
         "family coverage regardless of whom it covers."
     )
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.nd.tax.property.renters_refund
-        # Restore only premiums excluded from a computed federal subtotal.
+        # NDCC 57-02-08.1(5)(c) excludes income excluded by federal or state
+        # law. market_income includes wages before payroll deductions, so
+        # subtract the separate pretax premium input once from this base.
+        # These premiums are disjoint from itemized_medical_expenses,
+        # whose medical definition follows state income tax law.
+        excluded_premiums = add(tax_unit, period, ["pre_tax_health_insurance_premiums"])
+        # Restore premiums excluded from the federal subtotal (computed, or
+        # supplied with a caller's subtotal).
         medical_expenses = add(
             tax_unit,
             period,
@@ -34,6 +43,8 @@ class nd_renters_refund_income(Variable):
             ],
         )
         return max_(
-            add(tax_unit, period, p.income_sources) - medical_expenses,
+            add(tax_unit, period, p.income_sources)
+            - excluded_premiums
+            - medical_expenses,
             0,
         )

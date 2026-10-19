@@ -51,3 +51,88 @@
     nm_deduction_for_certain_dependents_eligible: true
   output:
     nm_deduction_for_certain_dependents: 16_000
+
+
+- name: 2025 joint return with one claimable spouse has no dependents to deduct (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+      child_2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1, child_2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child_1, child_2]
+        state_code: NM
+  output:
+    # IRC 152(b)(1): such a return has no dependents (NMSA 7-2-39 defines
+    # dependent by IRC 152).
+    nm_deduction_for_certain_dependents: 0
+
+- name: 2025 joint return with one claimable spouse has no dependents to deduct (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+      child_2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child_1, child_2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child_1, child_2]
+        state_code: NM
+  output:
+    # IRC 152(b)(1): such a return has no dependents (NMSA 7-2-39 defines
+    # dependent by IRC 152).
+    nm_deduction_for_certain_dependents: 0
+
+- name: 2025 joint return with neither spouse claimable deducts all but one dependent
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+      person_b:
+        age: 30
+      child_1:
+        age: 5
+      child_2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1, child_2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child_1, child_2]
+        state_code: NM
+  output:
+    # $4,000 x (2 - 1).
+    nm_deduction_for_certain_dependents: 4_000
