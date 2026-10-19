@@ -151,3 +151,46 @@
   output:
     # Baseline keeps the dependent add: 7,600 + 1 x 1,000 + 6,800 = 15,400.
     ma_income_tax_exemption_threshold: 15_400
+
+- name: WV dependent exemption repeal - claimed filer with a child keeps the zero-exemption amount
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      parent:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child], filing_status: SINGLE}}
+    households: {household: {members: [parent, child], state_name: WV}}
+  output: {wv_personal_exemption: 500}
+
+- name: WV dependent exemption repeal - claimed childless filer keeps the zero-exemption amount
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      parent:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units: {tax_unit: {members: [parent], filing_status: SINGLE}}
+    households: {household: {members: [parent], state_name: WV}}
+  output: {wv_personal_exemption: 500}
+
+- name: WV dependent exemption repeal - unclaimed but claimable childless filer keeps the zero-exemption amount
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      parent:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units: {tax_unit: {members: [parent], filing_status: SINGLE}}
+    households: {household: {members: [parent], state_name: WV}}
+  output: {wv_personal_exemption: 500}

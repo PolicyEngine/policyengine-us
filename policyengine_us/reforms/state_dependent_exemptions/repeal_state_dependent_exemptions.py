@@ -215,9 +215,13 @@ def create_repeal_state_dependent_exemptions() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.states.wv.tax.income.exemptions
-            tax_unit_size = tax_unit("head_spouse_count", period)
+            # Repealing dependent exemptions does not restore a claimable
+            # filer's own exemption. Retain IT-140's $500 zero-count amount.
+            own_exemptions = tax_unit(
+                "head_spouse_count_not_dependent_elsewhere", period
+            )
             return where(
-                tax_unit_size == 0, p.base_personal, p.personal * tax_unit_size
+                own_exemptions == 0, p.base_personal, p.personal * own_exemptions
             )
 
     class ca_exemptions(Variable):

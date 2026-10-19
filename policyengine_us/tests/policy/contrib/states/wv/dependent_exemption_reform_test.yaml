@@ -136,3 +136,80 @@
   # exemption from $6,000 to $2,000 ($4,000 of taxable income added), raising WV
   # income tax from 1,787.10 to 1,964.70 (about +177.60).
   output: {wv_income_tax: 1964.70}
+
+# The dependent taxpayer test masks both reform and older-dependent paths.
+
+- name: WV dependent exemption reform - claimed filer cannot claim a child at default parameters
+  period: 2025
+  reforms: policyengine_us.reforms.states.wv.dependent_exemption.wv_dependent_exemption_reform.wv_dependent_exemption_reform
+  input:
+    gov.contrib.states.wv.dependent_exemption.in_effect: true
+    people:
+      parent:
+        age: 40
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child], filing_status: SINGLE}}
+    households: {household: {members: [parent, child], state_name: WV}}
+  output:
+    wv_personal_exemption: 500
+    wv_eligible_dependents_count: 0
+    wv_older_dependents_count: 0
+
+- name: WV dependent exemption reform - unclaimed but claimable filer cannot claim a child
+  period: 2025
+  reforms: policyengine_us.reforms.states.wv.dependent_exemption.wv_dependent_exemption_reform.wv_dependent_exemption_reform
+  input:
+    gov.contrib.states.wv.dependent_exemption.in_effect: true
+    people:
+      parent:
+        age: 40
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child], filing_status: SINGLE}}
+    households: {household: {members: [parent, child], state_name: WV}}
+  output:
+    wv_personal_exemption: 500
+    wv_eligible_dependents_count: 0
+    wv_older_dependents_count: 0
+
+- name: WV dependent exemption reform - claimable filer cannot recover an older dependent exemption
+  period: 2025
+  reforms: policyengine_us.reforms.states.wv.dependent_exemption.wv_dependent_exemption_reform.wv_dependent_exemption_reform
+  input:
+    gov.contrib.states.wv.dependent_exemption.in_effect: true
+    gov.contrib.states.wv.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.wv.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent:
+        age: 40
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+      child: {age: 20, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child], filing_status: SINGLE}}
+    households: {household: {members: [parent, child], state_name: WV}}
+  output:
+    wv_personal_exemption: 500
+    wv_eligible_dependents_count: 0
+    wv_older_dependents_count: 0
+
+- name: WV dependent exemption reform - filing exception permits the child exemption without an own exemption
+  period: 2025
+  reforms: policyengine_us.reforms.states.wv.dependent_exemption.wv_dependent_exemption_reform.wv_dependent_exemption_reform
+  input:
+    gov.contrib.states.wv.dependent_exemption.in_effect: true
+    people:
+      parent:
+        age: 40
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: true
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child], filing_status: SINGLE}}
+    households: {household: {members: [parent, child], state_name: WV}}
+  output:
+    wv_personal_exemption: 2_000
+    wv_eligible_dependents_count: 1
+    wv_older_dependents_count: 0

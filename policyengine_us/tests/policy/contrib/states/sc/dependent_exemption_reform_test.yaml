@@ -89,3 +89,67 @@
     households: {household: {members: [parent, child1], state_name: SC}}
   # Dependent one year under the limit (12 < 13) is re-priced to the reform amount (0).
   output: {sc_dependent_exemption: 0}
+
+# IRC 152(b)(1) applies inside the reform as well as in the baseline.
+- name: SC dependent exemption reform - claimed filer cannot claim a child at default parameters
+  period: 2025
+  reforms: policyengine_us.reforms.states.sc.dependent_exemption.sc_dependent_exemption_reform.sc_dependent_exemption_reform
+  input:
+    gov.contrib.states.sc.dependent_exemption.in_effect: true
+    people:
+      parent:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child], filing_status: SINGLE}}
+    households: {household: {members: [parent, child], state_name: SC}}
+  output: {sc_dependent_exemption: 0}
+
+- name: SC dependent exemption reform - unclaimed but claimable filer cannot claim a child
+  period: 2025
+  reforms: policyengine_us.reforms.states.sc.dependent_exemption.sc_dependent_exemption_reform.sc_dependent_exemption_reform
+  input:
+    gov.contrib.states.sc.dependent_exemption.in_effect: true
+    people:
+      parent:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child], filing_status: SINGLE}}
+    households: {household: {members: [parent, child], state_name: SC}}
+  output: {sc_dependent_exemption: 0}
+
+- name: SC dependent exemption reform - claimable filer cannot recover an older dependent exemption
+  period: 2025
+  reforms: policyengine_us.reforms.states.sc.dependent_exemption.sc_dependent_exemption_reform.sc_dependent_exemption_reform
+  input:
+    gov.contrib.states.sc.dependent_exemption.in_effect: true
+    gov.contrib.states.sc.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.sc.dependent_exemption.age_limit.threshold: 13
+    people:
+      parent:
+        age: 40
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+      child: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child], filing_status: SINGLE}}
+    households: {household: {members: [parent, child], state_name: SC}}
+  output: {sc_dependent_exemption: 0}
+
+- name: SC dependent exemption reform - filing exception permits the child exemption
+  period: 2025
+  reforms: policyengine_us.reforms.states.sc.dependent_exemption.sc_dependent_exemption_reform.sc_dependent_exemption_reform
+  input:
+    gov.contrib.states.sc.dependent_exemption.in_effect: true
+    people:
+      parent:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: true
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child], filing_status: SINGLE}}
+    households: {household: {members: [parent, child], state_name: SC}}
+  output: {sc_dependent_exemption: 4_930}
