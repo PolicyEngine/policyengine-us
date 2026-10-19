@@ -34,8 +34,8 @@ class al_liheap_base_payment(Variable):
         size = spm_unit("al_liheap_household_size", period)
         additional_people = clip(size - 1, 0, p.maximum_payment_household_size - 1)
         # Cross-state rows have band zero before defined_for masks the result;
-        # keep the eager lookup within the published three bands.
-        band = clip(spm_unit("al_liheap_income_band", period), 1, 3)
+        # raise it to band 1 so the eager lookup stays within the breakdown.
+        band = max_(spm_unit("al_liheap_income_band", period), 1)
         amount = (
             base
             - p.income_band_reduction[band]

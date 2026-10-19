@@ -23,11 +23,8 @@ class al_liheap(Variable):
         # an observed annual allowance can be supplied directly.
         allowance = spm_unit.household("hud_utility_allowance", period) / MONTHS_IN_YEAR
         regular_payment = max_(base - allowance, 0)
-        # The plan pays the $100 IIJA supplement "if funding is available".
-        # The FY2026 award (2601ALLIEI, $1,359,705, roughly 13,600 supplements
-        # across heating and cooling) can run out during the season; the model
-        # assumes it does not, so population totals overstate funded awards.
-        # The draft FY2027 plan drops the supplement, which ends after FY2026.
+        # The plan pays the IIJA supplement "if funding is available"; the model
+        # assumes the FY2026 award does not run out (see the supplement parameter).
         # Interpret the plan's "receives a Heating benefit" as requiring a
         # positive regular payment after the HUD adjustment. The plan does
         # not expressly address a regular payment reduced to zero.

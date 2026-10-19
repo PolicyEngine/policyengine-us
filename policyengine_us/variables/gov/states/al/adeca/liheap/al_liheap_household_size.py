@@ -7,8 +7,8 @@ class al_liheap_household_size(Variable):
     definition_period = YEAR
     label = "Alabama LIHEAP household size"
     defined_for = StateCode.AL
-    # PDF pages 7, 13, 22
-    reference = "https://adeca.alabama.gov/wp-content/uploads/FY-2026-LIHEAP-Manual-1.pdf#page=7"
+    # PDF pages 6-7, 13, 22
+    reference = "https://adeca.alabama.gov/wp-content/uploads/FY-2026-LIHEAP-Manual-1.pdf#page=6"
 
     # Nonqualified members' income counts, but they do not increase size.
     # The SPM unit approximates the economic unit buying energy together.

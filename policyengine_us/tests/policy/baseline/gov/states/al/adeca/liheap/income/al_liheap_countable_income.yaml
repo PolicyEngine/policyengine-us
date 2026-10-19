@@ -1,6 +1,6 @@
 # Source: ADECA FY2026 LIHEAP Policy Manual and its Appendix D Payment Assistance Chart.
 
-# Manual pp17–18: 12000 + 6000 + 600 + 2400 + 1800 = 22800; no additional business deduction.
+# Manual pp17-18: 12,000 + 6,000 + 600 + 2,400 + 1,800 = 22,800; no additional business deduction.
 - name: Case 1, adult wages and existing net business sources are counted.
   period: 2026
   absolute_error_margin: 0.01
@@ -168,7 +168,7 @@
   output:
     al_liheap_countable_income: 4_800
 
-# Manual pp18–19 excludes SNAP, capital gains and utility allowances; allowance deduction is a benefit rule.
+# Manual pp18-19 excludes SNAP, capital gains and utility allowances; allowance deduction is a benefit rule.
 - name: Case 6, capital gains SNAP and HUD allowances do not become income.
   period: 2026
   absolute_error_margin: 0.01
@@ -261,8 +261,6 @@
         state_code: AL
   output:
     al_liheap_countable_income: 15_000
-
-
 
 # Manual p22 mixed-status example: the nonqualified parent's $500 monthly income counts in full,
 # but only the two citizen children determine size. The current propane matrix gives $510.
@@ -535,10 +533,13 @@
     al_liheap: 490
 
 # Plan item 1.9 (p6) checks "Including MediCare deduction", so Social Security counts gross.
-# The 2026 standard Part B premium is 202.90 x 12 = 2,434.80, but countable income stays
-# 20,000, not 20,000 - 2,434.80 = 17,565.20. 20,000 / 12 = 1,666.67 is above the size-one
-# band 2 top of 1,305 and at most the 1,956 limit, so band 3. Natural gas: 480 - 120 = 360,
-# plus the $100 IIJA supplement, is 460.
+# person1, a 70-year-old widow raising her 10-year-old grandchild, receives the average
+# nondisabled widow(er) benefit, 1,935.32 a month in September 2026 (SSA Monthly Statistical
+# Snapshot, Table 2): 1,935.32 x 12 = 23,223.84. The 2026 standard Part B premium is
+# 202.90 x 12 = 2,434.80, but countable income stays 23,223.84, or 1,935.32 a month: above
+# the size-two band 2 top of 1,763 and at most the 2,644 limit, so band 3. Natural gas:
+# 490 - 120 = 370, plus the $100 IIJA supplement, is 470. Netting the premium would give
+# 20,789.04, or 1,732.42 a month, band 2 and 490 - 30 + 100 = 560.
 - name: Case 16, Social Security counts gross of the Medicare Part B premium.
   period: 2026
   absolute_error_margin: 0.01
@@ -548,33 +549,38 @@
         age: 70
         immigration_status: CITIZEN
         ssi: 0
-        social_security_retirement: 20_000
+        social_security_survivors: 23_223.84
         medicare_part_b_premium: 2_434.8
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        ssi: 0
     spm_units:
       spm_unit:
-        members: [person1]
+        members: [person1, person2]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         al_tanf: 0
     households:
       household:
-        members: [person1]
+        members: [person1, person2]
         state_code: AL
         hud_utility_allowance: 0
   output:
-    al_liheap_countable_income: 20_000
+    al_liheap_countable_income: 23_223.84
     al_liheap_income_band: 3
-    al_liheap: 460
+    al_liheap: 470
 
 # Manual 5.5.1 (pp17-18) counts "Unemployment compensation". With none reported, the
 # modeled Alabama UI counts. Base period: full-time work at the $7.25 federal minimum wage
 # (29 U.S.C. 206(a)(1)(C); Alabama has none) is 520 x 7.25 = 3,770 a quarter, 15,080 a year.
 # Weekly benefit (Code of Ala. 25-4-72(b)): (3,770 + 3,770) / 52 = 145, under the $275
 # maximum. The January 2026 rate of 2.7% gives 14 weeks (25-4-74); the maximum benefit is
-# min(14 x 145 = 2,030, 0.25 x 15,080 = 3,770) = 2,030. After the one waiting week, 15 weeks
-# unemployed pay 14 x 145 = 2,030. Wages for the other 37 weeks: 37 x 40 x 7.25 = 10,730.
-# Countable income: 10,730 + 2,030 = 12,760, or 1,063.33 a month, in the size-one band 2
-# ($653-$1,305). Electricity: 440 - 30 = 410, plus the $100 IIJA supplement, is 510.
+# min(14 x 145 = 2,030, 0.25 x 15,080 = 3,770) = 2,030. A 26-week spell pays
+# min(26 - 1 waiting week, 14) = 14 weeks: 14 x 145 = 2,030. Full-time wages for the other
+# 26 weeks: 26 x 40 x 7.25 = 7,540. Countable income: 7,540 + 2,030 = 9,570, or 797.50 a
+# month, in the size-one band 2 ($653-$1,305). Electricity: 440 - 30 = 410, plus the $100
+# IIJA supplement, is 510. Leaving out the UI would give 628.33 a month, band 1 and 540.
 - name: Case 17, modeled Alabama unemployment insurance counts as unearned income.
   period: 2026
   absolute_error_margin: 0.01
@@ -584,12 +590,12 @@
         age: 40
         immigration_status: CITIZEN
         ssi: 0
-        employment_income: 10_730
+        employment_income: 7_540
         al_ui_base_period_wages: 15_080
         al_ui_high_quarter_wages: 3_770
         al_ui_second_high_quarter_wages: 3_770
         al_ui_quarters_with_wages: 4
-        weeks_unemployed: 15
+        weeks_unemployed: 26
     spm_units:
       spm_unit:
         members: [person1]
@@ -605,14 +611,15 @@
     al_ui: 2_030
     # No reported unemployment compensation, so the total falls back to modeled al_ui.
     total_unemployment_compensation: 2_030
-    al_liheap_countable_income: 12_760
+    al_liheap_countable_income: 9_570
     al_liheap_income_band: 2
     al_liheap: 510
 
 # Manual pp17-19: each listed unearned source is set to 100 times its position in the
 # list, so 100 x (1 + 2 + ... + 20) = 100 x 210 = 21,000, with no earnings or gambling.
-# A nonzero reported amount overrides modeled UI. ssi and al_ssp are MONTH-defined, so
-# their annual inputs are split across months and summed back.
+# The reported unemployment compensation of 100 passes through; no al_ui inputs are set.
+# ssi and al_ssp are MONTH-defined, so their annual inputs are split across months and
+# summed back.
 - name: Case 18, every listed unearned source counts.
   period: 2026
   absolute_error_margin: 0.01
