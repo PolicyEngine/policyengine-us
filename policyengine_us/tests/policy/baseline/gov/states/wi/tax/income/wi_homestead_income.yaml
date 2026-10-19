@@ -100,6 +100,7 @@
     # add-back is the 5,000 non-SSTB loss.
     wi_homestead_income: 5_000
 
+# Hold TANF at zero to isolate the $500 dependent deduction on wage income.
 - name: "2025 single filer who can be claimed as a dependent: no Wisconsin homestead $500 dependent deduction"
   period: 2025
   input:
@@ -111,6 +112,10 @@
         claimed_as_dependent_on_another_return: true
       child:
         age: 4
+    spm_units:
+      spm_unit:
+        members: [filer, child]
+        tanf: 0
     tax_units:
       tax_unit:
         members: [filer, child]
@@ -144,6 +149,10 @@
         is_tax_unit_spouse: true
       child:
         age: 4
+    spm_units:
+      spm_unit:
+        members: [person_a, person_b, child]
+        tanf: 0
     tax_units:
       tax_unit:
         members: [person_a, person_b, child]
@@ -176,6 +185,10 @@
         is_tax_unit_spouse: true
       child:
         age: 4
+    spm_units:
+      spm_unit:
+        members: [person_b, person_a, child]
+        tanf: 0
     tax_units:
       tax_unit:
         members: [person_b, person_a, child]
@@ -208,6 +221,10 @@
         is_tax_unit_spouse: true
       child:
         age: 4
+    spm_units:
+      spm_unit:
+        members: [person_a, person_b, child]
+        tanf: 0
     tax_units:
       tax_unit:
         members: [person_a, person_b, child]
@@ -238,6 +255,10 @@
         is_tax_unit_spouse: true
       child:
         age: 4
+    spm_units:
+      spm_unit:
+        members: [person_a, person_b, child]
+        tanf: 0
     tax_units:
       tax_unit:
         members: [person_a, person_b, child]
