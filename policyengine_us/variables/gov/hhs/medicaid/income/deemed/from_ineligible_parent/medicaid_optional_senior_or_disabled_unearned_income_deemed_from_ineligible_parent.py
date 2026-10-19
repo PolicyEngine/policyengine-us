@@ -22,6 +22,8 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
         "https://www.law.cornell.edu/cfr/text/20/416.1165",
         "https://www.law.cornell.edu/uscode/text/42/1396b#v",
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-020-00/0805-020-15/",
+        "https://www.emhandbooks.wisconsin.gov/meh-ebd/policy_files/1/1.1.htm#1.1.3.3",
+        "https://www.emhandbooks.wisconsin.gov/meh-ebd/policy_files/15/15.1.htm#15.1.2",
     )
 
     def formula(person, period, parameters):
@@ -72,12 +74,16 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
             np.isin(state, ("FL", "LA", "NY", "VA", "WI"))
             & person("is_ssi_aged_blind_disabled", period)
         )
-        # Wisconsin includes dependent 18-year-olds, rather than all
-        # adult students below 19. Dependency uses the existing tax-unit
-        # role proxy, as elsewhere in the model.
-        allocation_child &= (
-            (state != "WI") | (age < 18) | person("is_tax_unit_dependent", period)
+        # MEH 1.1.3.3 and 15.1.2 define dependent 18-year-olds through
+        # full-time secondary school or equivalent-level training, not
+        # tax dependency. Enrollment proxies expected completion before
+        # 19: the model has no completion-date or remaining-credit input.
+        dependent_18_year_old = (
+            (age == 18)
+            & person("is_in_secondary_school", period.this_year)
+            & person("is_full_time_student", period.this_year)
         )
+        allocation_child &= (state != "WI") | (age < 18) | dependent_18_year_old
         allocations = (
             person("ssi_ineligible_child_allocation", period) * allocation_child
         )
