@@ -497,3 +497,173 @@
         state_code: TX
   output:
     is_aca_tax_family_member: [true, true]
+
+# Ages alone cannot distinguish equally old filers from dependents;
+# the explicit-role cases document how callers resolve that ambiguity.
+- name: Review r3 minor joint filers ages 17 and 16, order ['a', 'b']
+  period: 2025
+  input:
+    people:
+      a:
+        age: 17
+        claimable_as_dependent_on_another_return: true
+      b:
+        age: 16
+    tax_units:
+      tax_unit:
+        members: &id001
+        - a
+        - b
+        filing_status: JOINT
+    households:
+      household:
+        members: *id001
+        state_code: TX
+  output:
+    is_aca_tax_family_member:
+    - false
+    - true
+- name: Review r3 minor joint filers ages 17 and 17, order ['a', 'b']
+  period: 2025
+  input:
+    people:
+      a:
+        age: 17
+        claimable_as_dependent_on_another_return: true
+      b:
+        age: 17
+    tax_units:
+      tax_unit:
+        members: &id002
+        - a
+        - b
+        filing_status: JOINT
+    households:
+      household:
+        members: *id002
+        state_code: TX
+  output:
+    is_aca_tax_family_member:
+    - false
+    - true
+- name: Review r3 minor joint filers ages 17 and 17, order ['b', 'a']
+  period: 2025
+  input:
+    people:
+      b:
+        age: 17
+      a:
+        age: 17
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: &id003
+        - b
+        - a
+        filing_status: JOINT
+    households:
+      household:
+        members: *id003
+        state_code: TX
+  output:
+    is_aca_tax_family_member:
+    - true
+    - false
+- name: Review r3 equal-age minor filers and dependent with explicit roles, order
+    ['a', 'b', 'dependent']
+  period: 2025
+  input:
+    people:
+      a:
+        age: 17
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      b:
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      dependent:
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: &id004
+        - a
+        - b
+        - dependent
+        filing_status: JOINT
+    households:
+      household:
+        members: *id004
+        state_code: TX
+  output:
+    is_aca_tax_family_member:
+    - false
+    - true
+    - false
+- name: Review r3 equal-age minor filers and dependent with explicit roles, order
+    ['b', 'a', 'dependent']
+  period: 2025
+  input:
+    people:
+      b:
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      a:
+        age: 17
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      dependent:
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: &id005
+        - b
+        - a
+        - dependent
+        filing_status: JOINT
+    households:
+      household:
+        members: *id005
+        state_code: TX
+  output:
+    is_aca_tax_family_member:
+    - true
+    - false
+    - false
+- name: Review r3 minor joint filer inference respects supplied dependency hints
+  period: 2025
+  input:
+    people:
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+      a:
+        age: 16
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: true
+      b:
+        age: 15
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: &id006
+        - dependent
+        - a
+        - b
+        filing_status: JOINT
+    households:
+      household:
+        members: *id006
+        state_code: TX
+  output:
+    is_aca_tax_family_member:
+    - false
+    - false
+    - true

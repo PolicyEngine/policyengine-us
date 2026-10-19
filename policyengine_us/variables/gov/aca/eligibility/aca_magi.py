@@ -20,18 +20,18 @@ class aca_magi(Variable):
         "outside the tax family (is_aca_tax_family_member), floored at zero "
         "once. Those amounts are left out only on a return whose head or "
         "spouse can be claimed elsewhere (or, in a tax unit with neither, "
-        "whose oldest member can be); otherwise this equals medicaid_magi. "
+        "whose inferred filer can be); otherwise this equals medicaid_magi. "
         "Tax unit AGI already leaves dependents' income out."
     )
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        filer = person("is_tax_unit_head_or_spouse", period)
-        has_filer = person.tax_unit.any(filer)
-        age = person("age", period)
-        oldest = person.get_rank(tax_unit, -age) == 0
-        files_return = where(has_filer, filer, oldest)
+        files_return = person("is_aca_filer", period)
         outside_family = ~files_return & ~person("is_aca_tax_family_member", period)
+        needs_exclusion = tax_unit.any(outside_family)
+        medicaid_magi = tax_unit("medicaid_magi", period)
+        if not needs_exclusion.any():
+            return medicaid_magi
         excluded = tax_unit.sum(
             outside_family
             * (
@@ -45,4 +45,10 @@ class aca_magi(Variable):
         unfloored = tax_unit("adjusted_gross_income", period) + add(
             tax_unit, period, additions
         )
-        return max_(0, unfloored - excluded)
+        # Keep supplied Medicaid MAGI when no dependent is excluded. Only
+        # reconstruct the unfloored amount when removing family income.
+        return where(
+            needs_exclusion,
+            max_(0, unfloored - excluded),
+            medicaid_magi,
+        )
