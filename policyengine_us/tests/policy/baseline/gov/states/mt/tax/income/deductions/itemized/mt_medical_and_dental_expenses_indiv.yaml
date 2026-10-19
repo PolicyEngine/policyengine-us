@@ -95,3 +95,30 @@
   output:
     mt_married_filing_separately_on_same_return_eligible: [false, false]
     mt_medical_and_dental_expenses_indiv: [0, 0]
+
+- name: A member who is neither spouse nor a tax unit dependent is divided too
+  # The joint return's line 1 counts every member's other medical expenses,
+  # so the columns divide every member other than the head and spouse.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+      relative:
+        age: 70
+        is_tax_unit_dependent: false
+        other_medical_expenses: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, relative]
+    households:
+      household:
+        members: [head, spouse, relative]
+        state_code: MT
+  output:
+    mt_medical_and_dental_expenses_indiv: [500, 500, 0]
