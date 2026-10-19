@@ -228,3 +228,91 @@
     itemized_medical_expenses_applied_exclusion: 6_400
   output:
     nm_medical_expense_exemption: 3_000
+
+# Expenses a dependent paid. PIT-ADJ line 18 applies "if you or your spouse
+# are 65 years of age or older, and you paid unreimbursed and uncompensated
+# medical care expenses of $28,000 or more" for "any combination of you, your
+# spouse, or your dependents" (2025 PIT-ADJ instructions, PDF page 5). Two tax
+# units with the same people label the senior head and then spouse.
+- name: New Mexico's exemption does not count a dependent's own premiums toward $28,000
+  period: 2025
+  input:
+    people:
+      a_senior:
+        age: 70
+        is_tax_unit_head: true
+        other_medical_expenses: 27_500
+      a_partner:
+        age: 60
+        is_tax_unit_spouse: true
+      a_son:
+        age: 35
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_200
+      b_senior:
+        age: 70
+        is_tax_unit_spouse: true
+        other_medical_expenses: 27_500
+      b_partner:
+        age: 60
+        is_tax_unit_head: true
+      b_son:
+        age: 35
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_200
+    tax_units:
+      a:
+        members: [a_senior, a_partner, a_son]
+      b:
+        members: [b_partner, b_senior, b_son]
+    households:
+      a:
+        members: [a_senior, a_partner, a_son]
+        state_code: NM
+      b:
+        members: [b_partner, b_senior, b_son]
+        state_code: NM
+  output:
+    # The filers paid 27,500; with the son's own 1,200 it would be 28,700.
+    nm_medical_expense_exemption: [0, 0]
+
+- name: New Mexico's exemption counts a policy the filers bought for a dependent
+  period: 2025
+  input:
+    people:
+      a_senior:
+        age: 70
+        is_tax_unit_head: true
+        other_medical_expenses: 27_500
+      a_partner:
+        age: 60
+        is_tax_unit_spouse: true
+        health_insurance_premiums: 1_200
+      a_son:
+        age: 35
+        is_tax_unit_dependent: true
+      b_senior:
+        age: 70
+        is_tax_unit_spouse: true
+        other_medical_expenses: 27_500
+      b_partner:
+        age: 60
+        is_tax_unit_head: true
+        health_insurance_premiums: 1_200
+      b_son:
+        age: 35
+        is_tax_unit_dependent: true
+    tax_units:
+      a:
+        members: [a_senior, a_partner, a_son]
+      b:
+        members: [b_partner, b_senior, b_son]
+    households:
+      a:
+        members: [a_senior, a_partner, a_son]
+        state_code: NM
+      b:
+        members: [b_partner, b_senior, b_son]
+        state_code: NM
+  output:
+    nm_medical_expense_exemption: [3_000, 3_000]

@@ -45,9 +45,11 @@
         members: [head, dependent]
         state_code: ID
   output:
-    medical_expense_deduction: 1_250
+    # The federal deduction also leaves out the dependent's own 500
+    # (IRC 213(a)): 3,000 - 7.5% of 30,000.
+    medical_expense_deduction: 750
     id_health_insurance_premiums_medical_deduction: 750
-    itemized_taxable_income_deductions: 21_250
+    itemized_taxable_income_deductions: 20_750
     id_itemized_deductions: 20_750
     id_itemizes: true
     id_health_insurance_premiums_subtraction: 2_250
@@ -81,9 +83,11 @@
         members: [head, dependent]
         state_code: ID
   output:
-    medical_expense_deduction: 40_500
+    # The federal deduction also leaves out the dependent's own 500
+    # (IRC 213(a)), so it equals the claimant deduction.
+    medical_expense_deduction: 40_000
     id_health_insurance_premiums_medical_deduction: 40_000
-    itemized_taxable_income_deductions: 66_689.18919
+    itemized_taxable_income_deductions: 66_216.21622
     id_itemized_deductions: 66_216.21622
     id_itemizes: true
     id_health_insurance_premiums_subtraction: 60_000
@@ -103,7 +107,7 @@
 
 - name: A supplied final federal itemized total already excludes dependent-paid medical costs
   # The actual $20,000 Schedule A total includes claimant medical expenses;
-  # subtracting the derived federal medical overstatement again is incorrect.
+  # Idaho uses it as given, with no further medical adjustment.
   period: 2025
   input:
     people:
@@ -127,7 +131,9 @@
         members: [head, dependent]
         state_code: ID
   output:
-    medical_expense_deduction: 1_250
+    # The federal deduction also leaves out the dependent's own 500
+    # (IRC 213(a)): 3,000 - 7.5% of 30,000.
+    medical_expense_deduction: 750
     id_health_insurance_premiums_medical_deduction: 750
     id_itemized_deductions: 20_000
     id_itemizes: true
@@ -163,7 +169,9 @@
         members: [head, dependent]
         state_code: ID
   output:
-    medical_expense_deduction: 40_500
+    # The federal deduction also leaves out the dependent's own 500
+    # (IRC 213(a)), so it equals the claimant deduction.
+    medical_expense_deduction: 40_000
     id_health_insurance_premiums_medical_deduction: 40_000
     itemized_taxable_income_deductions: 66_216.21622
     id_itemized_deductions: 66_216.21622

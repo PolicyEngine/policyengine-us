@@ -171,3 +171,196 @@
     standard_deduction: 15_750
     # 58,000 - 15,750.
     taxable_income: 42_250
+
+# Premiums a dependent pays.
+#
+# IRC 213(a) allows "the expenses paid during the taxable year, not
+# compensated for by insurance or otherwise, for medical care of the
+# taxpayer, his spouse, or a dependent". Premium inputs sit on the person who
+# paid them: a parent-paid policy covering a dependent is the parent's input
+# and counts, while premiums a dependent paid are the dependent's own and do
+# not. Other medical expenses sit on the person cared for, including amounts
+# the parents paid on the dependent's behalf (the CPS ASEC medical care
+# question), so the dependent's count.
+#
+# Each case has two tax units with the same people and inputs: the first
+# labels the earner as head, the second as spouse. The results must match.
+
+- name: A dependent's own premium payments are not the filers' medical expenses.
+  period: 2025
+  input:
+    people:
+      a_earner:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 8_000
+      a_partner:
+        age: 45
+        is_tax_unit_spouse: true
+      a_student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_200
+        other_medical_expenses: 800
+      b_earner:
+        age: 45
+        is_tax_unit_spouse: true
+        employment_income: 8_000
+      b_partner:
+        age: 45
+        is_tax_unit_head: true
+      b_student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_200
+        other_medical_expenses: 800
+    tax_units:
+      a:
+        members: [a_earner, a_partner, a_student]
+      b:
+        members: [b_partner, b_earner, b_student]
+    households:
+      a:
+        members: [a_earner, a_partner, a_student]
+      b:
+        members: [b_partner, b_earner, b_student]
+  output:
+    medical_expense_health_insurance_premiums: [0, 0, 1_200, 0, 0, 1_200]
+    adjusted_gross_income: [8_000, 8_000]
+    # The student's 800 of medical bills; counting the student's own 1,200
+    # of premiums would give 2,000.
+    itemized_medical_expenses: [800, 800]
+    # 800 - 7.5% of 8,000.
+    medical_expense_deduction: [200, 200]
+
+- name: Coverage a filer buys for a dependent counts in full.
+  period: 2025
+  input:
+    people:
+      a_earner:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 8_000
+      a_partner:
+        age: 45
+        is_tax_unit_spouse: true
+        # The partner pays the 1,200 policy that covers the student.
+        health_insurance_premiums: 1_200
+      a_student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        other_medical_expenses: 800
+      b_earner:
+        age: 45
+        is_tax_unit_spouse: true
+        employment_income: 8_000
+      b_partner:
+        age: 45
+        is_tax_unit_head: true
+        health_insurance_premiums: 1_200
+      b_student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        other_medical_expenses: 800
+    tax_units:
+      a:
+        members: [a_earner, a_partner, a_student]
+      b:
+        members: [b_partner, b_earner, b_student]
+    households:
+      a:
+        members: [a_earner, a_partner, a_student]
+      b:
+        members: [b_partner, b_earner, b_student]
+  output:
+    # 1,200 + 800.
+    itemized_medical_expenses: [2_000, 2_000]
+    # 2,000 - 7.5% of 8,000.
+    medical_expense_deduction: [1_400, 1_400]
+
+- name: The filers' self-employed deduction never reaches a dependent's own premiums.
+  period: 2025
+  input:
+    people:
+      a_earner:
+        age: 45
+        is_tax_unit_head: true
+        health_insurance_premiums: 3_000
+        other_medical_expenses: 2_500
+      a_partner:
+        age: 45
+        is_tax_unit_spouse: true
+      a_student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_200
+        other_medical_expenses: 500
+      b_earner:
+        age: 45
+        is_tax_unit_spouse: true
+        health_insurance_premiums: 3_000
+        other_medical_expenses: 2_500
+      b_partner:
+        age: 45
+        is_tax_unit_head: true
+      b_student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_200
+        other_medical_expenses: 500
+    tax_units:
+      a:
+        members: [a_earner, a_partner, a_student]
+        self_employed_health_insurance_ald: 2_000
+        adjusted_gross_income: 40_000
+      b:
+        members: [b_partner, b_earner, b_student]
+        self_employed_health_insurance_ald: 2_000
+        adjusted_gross_income: 40_000
+    households:
+      a:
+        members: [a_earner, a_partner, a_student]
+      b:
+        members: [b_partner, b_earner, b_student]
+  output:
+    itemized_medical_expenses_excluded_premiums: [2_000, 2_000]
+    # (3,000 - 2,000) + 2,500 + 500; the student's 1,200 is not counted.
+    itemized_medical_expenses: [4_000, 4_000]
+    # 4,000 - 7.5% of 40,000.
+    medical_expense_deduction: [1_000, 1_000]
+
+- name: A single parent does not count a dependent's own Medicare premiums.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 30_000
+        other_medical_expenses: 1_000
+      relative:
+        # A disabled adult relative claimed as a dependent, whose Part B
+        # premiums are withheld from their own benefits.
+        age: 30
+        is_tax_unit_dependent: true
+        medicare_enrolled: true
+        medicare_part_b_premium: 2_220
+        other_medical_expenses: 3_000
+    tax_units:
+      tax_unit:
+        members: [parent, relative]
+    households:
+      household:
+        members: [parent, relative]
+  output:
+    medical_expense_health_insurance_premiums: [0, 2_220]
+    # 1,000 + 3,000 of bills; the relative's 2,220 of Part B premiums are not
+    # the parent's payment.
+    itemized_medical_expenses: 4_000
+    # 4,000 - 7.5% of 30,000.
+    medical_expense_deduction: 1_750

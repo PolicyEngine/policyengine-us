@@ -20,7 +20,7 @@
   output:
     nj_medical_expense_deduction: 1_000
 
-- name: New Jersey preserves dependent premiums when the filer's deduction exceeds reported filer premiums
+- name: New Jersey leaves out a dependent's own premiums when the filer's deduction exceeds the filer's premiums
   period: 2025
   input:
     people:
@@ -43,8 +43,11 @@
         members: [parent, child]
         state_code: NJ
   output:
-    itemized_medical_expenses: 800
-    nj_medical_expense_deduction: 1_800
+    # The parent's 300 were deducted as self-employed; the child's own 500 is
+    # not an expense the parent paid. Other expenses: 100 + 200.
+    itemized_medical_expenses: 300
+    # Separate SE deduction 1,000 + 300.
+    nj_medical_expense_deduction: 1_300
 
 - name: Partial out of pocket expenses deductable
   period: 2022
@@ -175,7 +178,7 @@
     # Only the 500 of other expenses remains subject to the 800 floor.
     nj_medical_expense_deduction: 1_000
 
-- name: New Jersey cannot subtract one dependent's deduction from another dependent's premiums
+- name: New Jersey keeps a dependent's separate deduction but not another dependent's own premiums
   period: 2025
   input:
     people:
@@ -200,12 +203,13 @@
         state_code: NJ
   output:
     dependents_self_employed_health_insurance_ald: 1_000
-    itemized_medical_expenses: 1_000
-    # C.54A:3-3(c)(3) excludes separately deducted amounts, not another
-    # person's paid premiums: min(1,000, 0) + min(0, 1,000) = 0 excluded.
-    # Separate SE deduction 1,000 + general medical premiums 1,000 = 2,000.
+    # Dependent B's own 1,000 is not an expense the parent paid, so line 1
+    # is 0 and nothing remains for dependent A's deduction to consume.
+    itemized_medical_expenses: 0
+    # Separate SE deduction 1,000, which New Jersey counts with dependent A's
+    # income.
     # https://pub.njleg.gov/bills/9899/PL99/222_.HTM
-    nj_medical_expense_deduction: 2_000
+    nj_medical_expense_deduction: 1_000
 
 - name: New Jersey combines pretax premiums with separately deducted SE premiums
   period: 2025
@@ -224,3 +228,58 @@
     nj_agi: 40_000
     # 1,000 + (5,500 + 3,000 - 0.02 * 40,000) = 8,700.
     nj_medical_expense_deduction: 8_700
+
+- name: New Jersey leaves out a dependent's own premiums, after-tax or through payroll
+  # Line 31: "unreimbursed medical expenses you paid during the year for
+  # yourself, your spouse or domestic partner, and any dependents you claim"
+  # (2025 NJ-1040 instructions, PDF page 25). Two tax units with the same
+  # people label the earner head and then spouse.
+  period: 2025
+  input:
+    people:
+      a_earner:
+        age: 45
+        is_tax_unit_head: true
+        other_medical_expenses: 3_000
+        pre_tax_health_insurance_premiums: 400
+      a_partner:
+        age: 45
+        is_tax_unit_spouse: true
+      a_student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_200
+        pre_tax_health_insurance_premiums: 500
+      b_earner:
+        age: 45
+        is_tax_unit_spouse: true
+        other_medical_expenses: 3_000
+        pre_tax_health_insurance_premiums: 400
+      b_partner:
+        age: 45
+        is_tax_unit_head: true
+      b_student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_200
+        pre_tax_health_insurance_premiums: 500
+    tax_units:
+      a:
+        members: [a_earner, a_partner, a_student]
+        nj_agi: 50_000
+      b:
+        members: [b_partner, b_earner, b_student]
+        nj_agi: 50_000
+    households:
+      a:
+        members: [a_earner, a_partner, a_student]
+        state_code: NJ
+      b:
+        members: [b_partner, b_earner, b_student]
+        state_code: NJ
+  output:
+    # 3,000 + the filer's 400 of payroll premiums - 2% of 50,000. Counting
+    # the student's 1,200 and 500 would give 4,100.
+    nj_medical_expense_deduction: [2_400, 2_400]

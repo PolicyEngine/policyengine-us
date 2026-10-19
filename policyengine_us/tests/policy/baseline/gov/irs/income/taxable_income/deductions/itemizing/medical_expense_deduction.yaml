@@ -120,7 +120,7 @@
     itemized_medical_expenses: [5_500, 5_500, 6_500]
     medical_expense_deduction: [3_250, 3_250, 4_250]
 
-- name: A filer SE deduction cannot consume premiums attributed to a dependent.
+- name: A filer SE deduction above the filer's premiums leaves the other medical expenses.
   period: 2025
   input:
     people:
@@ -139,8 +139,12 @@
         self_employed_health_insurance_ald: 1_000
         adjusted_gross_income: 0
   output:
-    itemized_medical_expenses: 800
-    medical_expense_deduction: 800
+    # The parent's 300 of premiums were deducted on Schedule 1 (IRC
+    # 162(l)(3)), and the child's 500 are the child's own payment, not an
+    # expense the parent paid (IRC 213(a)). The 100 + 200 of other medical
+    # expenses remain.
+    itemized_medical_expenses: 300
+    medical_expense_deduction: 300
 
 - name: Parent-paid family coverage is attributed entirely to the parent.
   period: 2025
@@ -181,11 +185,11 @@
         self_employed_health_insurance_ald: 800
         adjusted_gross_income: 0
   output:
-    # The exclusion is min(800 ALD, 300 filer-paid premiums) = 300, leaving
-    # the dependent's 500. Attributed premium uses are 300 + 500 = 800.
-    # Supplying an 800 parent ALD with only 300 parent-paid premiums violates
-    # the payer contract; adding the full supplied ALD to Schedule A gives
-    # 1,300 and is not a conservation guarantee for these inconsistent inputs.
-    # A parent who actually paid all 800 must use the preceding input pattern.
-    itemized_medical_expenses: 500
-    medical_expense_deduction: 500
+    # The exclusion is min(800 ALD, 300 filer-paid premiums) = 300. Under the
+    # payer contract the child's 500 is the child's own payment, which is not
+    # the parent's medical expense (IRC 213(a)), so nothing is left. Supplying
+    # an 800 parent ALD with only 300 parent-paid premiums violates that
+    # contract; a parent who actually paid all 800 must use the preceding
+    # input pattern, which gives the same 0.
+    itemized_medical_expenses: 0
+    medical_expense_deduction: 0

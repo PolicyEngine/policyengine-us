@@ -225,3 +225,80 @@
   output:
     # Medical costs paid: 10,000 + 6,400 = 16,400.
     nd_renters_refund_income: 13_600
+
+# Expenses a dependent paid. NDCC 57-02-08.1(5)(c) excludes from income
+# "medical expenses paid during the year by the applicant or the applicant's
+# dependent". The federal subtotal counts only the filers' premiums, so the
+# dependent's own payments are added back. Two tax units with the same people
+# label the earner head and then spouse.
+- name: North Dakota takes out premiums a dependent paid as well as the filers' costs
+  period: 2025
+  input:
+    people:
+      a_earner:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 30_000
+        other_medical_expenses: 500
+      a_partner:
+        age: 45
+        is_tax_unit_spouse: true
+      a_student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_200
+      b_earner:
+        age: 45
+        is_tax_unit_spouse: true
+        employment_income: 30_000
+        other_medical_expenses: 500
+      b_partner:
+        age: 45
+        is_tax_unit_head: true
+      b_student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_200
+    tax_units:
+      a:
+        members: [a_earner, a_partner, a_student]
+      b:
+        members: [b_partner, b_earner, b_student]
+    households:
+      a:
+        members: [a_earner, a_partner, a_student]
+        state_code: ND
+      b:
+        members: [b_partner, b_earner, b_student]
+        state_code: ND
+  output:
+    itemized_medical_expenses: [500, 500]
+    # 30,000 - (500 + the student's 1,200).
+    nd_renters_refund_income: [28_300, 28_300]
+
+- name: North Dakota adds a dependent's premiums to a supplied Schedule A subtotal
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 30_000
+      student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_200
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+        # Schedule A line 1 covers only what the parent paid.
+        itemized_medical_expenses: 500
+    households:
+      household:
+        members: [parent, student]
+        state_code: ND
+  output:
+    # 30,000 - (500 + the student's 1,200).
+    nd_renters_refund_income: 28_300

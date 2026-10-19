@@ -6,11 +6,14 @@ subsets, direct/decomposed premium inputs, spouses, dependents and separate
 tax units.
 Premium inputs use payer attribution: a person's inputs include all premiums
 that person paid, including family coverage regardless of who is covered.
+Schedule A counts what the head and spouse paid (IRC 213(a)), so a
+dependent's own premiums never enter it.
 The federal conservation properties generate deductions within the filers'
 paid premiums; beneficiary-assigned inputs cannot establish that invariant.
 The independent accounting invariant is that Schedule A's premium base plus
-the self-employed health insurance deduction never exceeds premiums paid.
-Non-premium medical expenses must remain available in full before the floor.
+the self-employed health insurance deduction never exceeds the premiums the
+filers paid. Every member's non-premium medical expenses must remain
+available in full before the floor.
 
 Examples use small vectorized simulations and a shared read-only reference
 system. Supplied and computed subtotal scenarios use separate simulations to
@@ -129,11 +132,11 @@ def _simulation(members, reference_system, deductions=None):
 
 
 def _assert_conservation(members, simulation):
-    paid = np.array([sum(person["premiums"] for person in unit) for unit in members])
-    other = np.array([sum(person["other"] for person in unit) for unit in members])
-    dependent_premiums = np.array(
-        [sum(person["premiums"] for person in unit[2:]) for unit in members]
+    # Positions 0 and 1 are the head and spouse; position 2 is a dependent.
+    filer_paid = np.array(
+        [sum(person["premiums"] for person in unit[:2]) for unit in members]
     )
+    other = np.array([sum(person["other"] for person in unit) for unit in members])
     medical_base = simulation.calculate("itemized_medical_expenses", PERIOD)
     se_deduction = simulation.calculate("self_employed_health_insurance_ald", PERIOD)
     schedule_a_premium_use = medical_base - other
@@ -141,11 +144,11 @@ def _assert_conservation(members, simulation):
     # Neither the SE deduction nor a different filing unit can consume the
     # non-premium expenses. Check the bound separately from conservation.
     assert (schedule_a_premium_use >= 0).all()
-    assert (schedule_a_premium_use >= dependent_premiums).all()
-    assert (schedule_a_premium_use + se_deduction <= paid).all()
-    # All premiums here are otherwise eligible: unused premiums remain in
-    # Schedule A's base, even when earnings cap the SE deduction.
-    np.testing.assert_array_equal(schedule_a_premium_use + se_deduction, paid)
+    assert (schedule_a_premium_use + se_deduction <= filer_paid).all()
+    # All the filers' premiums here are otherwise eligible: unused premiums
+    # remain in Schedule A's base, even when earnings cap the SE deduction.
+    # A dependent's own premiums are in neither.
+    np.testing.assert_array_equal(schedule_a_premium_use + se_deduction, filer_paid)
 
 
 EXAMPLE_UNITS = [
@@ -219,7 +222,11 @@ def nj_dependent_expenses(draw):
 
 
 nj_units = st.lists(
-    st.lists(nj_dependent_expenses(), min_size=2, max_size=4),
+    st.tuples(
+        # The parent's own premiums, then the dependents.
+        st.integers(0, 25_000),
+        st.lists(nj_dependent_expenses(), min_size=2, max_size=4),
+    ),
     min_size=2,
     max_size=4,
 )
@@ -227,10 +234,14 @@ nj_units = st.lists(
 
 def _nj_simulation(members, reference_system):
     people, tax_units, households, marital_units = {}, {}, {}, {}
-    for unit_index, unit in enumerate(members):
+    for unit_index, (parent_premiums, unit) in enumerate(members):
         parent = f"parent_{unit_index}"
         names = [parent]
-        people[parent] = {"age": {PERIOD: 40}}
+        people[parent] = {
+            "age": {PERIOD: 40},
+            "medicare_enrolled": {PERIOD: False},
+            "health_insurance_premiums": {PERIOD: parent_premiums},
+        }
         marital_units[f"parent_marital_unit_{unit_index}"] = {"members": [parent]}
         for person_index, person in enumerate(unit):
             name = f"dependent_{unit_index}_{person_index}"
@@ -272,47 +283,43 @@ def _nj_simulation(members, reference_system):
 @settings(max_examples=12, deadline=None, derandomize=True)
 @example(
     members=[
-        [
-            dict(premiums=0, other=0, deduction=1_000),
-            dict(premiums=1_000, other=0, deduction=0),
-        ],
-        [
-            dict(premiums=300, other=200, deduction=800),
-            dict(premiums=500, other=100, deduction=0),
-        ],
+        (
+            0,
+            [
+                dict(premiums=0, other=0, deduction=1_000),
+                dict(premiums=1_000, other=0, deduction=0),
+            ],
+        ),
+        (
+            300,
+            [
+                dict(premiums=300, other=200, deduction=800),
+                dict(premiums=500, other=100, deduction=0),
+            ],
+        ),
     ]
 )
 @given(members=nj_units)
-def test_nj_excludes_each_dependents_deduction_only_from_their_own_premiums(
+def test_nj_counts_the_filers_premiums_and_each_dependents_own_deduction(
     reference_system, members
 ):
     simulation = _nj_simulation(members, reference_system)
-    paid = np.array([sum(person["premiums"] for person in unit) for unit in members])
-    other = np.array([sum(person["other"] for person in unit) for unit in members])
+    parent_paid = np.array([parent_premiums for parent_premiums, _ in members])
+    other = np.array([sum(person["other"] for person in unit) for _, unit in members])
     deductions = np.array(
-        [sum(person["deduction"] for person in unit) for unit in members]
+        [sum(person["deduction"] for person in unit) for _, unit in members]
     )
-    person_exclusions = [
-        [min(person["deduction"], person["premiums"]) for person in unit]
-        for unit in members
-    ]
-    for unit, exclusions in zip(members, person_exclusions):
-        assert all(
-            0 <= exclusion <= person["premiums"]
-            for person, exclusion in zip(unit, exclusions)
-        )
-    excluded = np.array([sum(exclusions) for exclusions in person_exclusions])
     nj_deduction = simulation.calculate("nj_medical_expense_deduction", PERIOD)
-    actual_exclusion = paid + other + deductions - nj_deduction
 
-    # C.54A:3-3(c)(3) excludes only amounts separately deducted. Each person's
-    # exclusion is bounded before summation, so no ALD can consume a different
-    # person's premiums. This property also covers ALDs above own paid costs.
+    # Worksheet F line 1 counts expenses the filers paid for themselves and
+    # their dependents: the parent's premiums and every member's other costs.
+    # A dependent's own premiums never enter it, whatever that dependent
+    # deducted, so no deduction can consume another person's premiums. Line 5
+    # keeps each dependent's separate SE deduction, since New Jersey counts
+    # the dependent's income (C.54A:3-3(c)(3); 2025 NJ-1040 instructions,
+    # line 31).
     # https://pub.njleg.gov/bills/9899/PL99/222_.HTM
-    assert (actual_exclusion >= 0).all()
-    assert (actual_exclusion <= excluded).all()
-    np.testing.assert_array_equal(actual_exclusion, excluded)
-    np.testing.assert_array_equal(nj_deduction, paid + other + deductions - excluded)
+    np.testing.assert_array_equal(nj_deduction, parent_paid + other + deductions)
 
 
 # Flat strategies keep generation small while varying independent caller
@@ -373,8 +380,8 @@ def _state_simulation(cases, reference_system, with_se_deduction):
         "nm_medical_expense_exemption": [],
     }
     accounting = {
-        "main_base": [],
-        "gross": [],
+        "filer_base": [],
+        "filer_gross": [],
         "other": [],
         "filer_premiums": [],
         "excluded": [],
@@ -388,14 +395,20 @@ def _state_simulation(cases, reference_system, with_se_deduction):
         other = [0 if subtotal_only else case["other"][i] for i in person_indices]
         deduction = case["deduction"] if with_se_deduction else 0
         filer_premiums = premiums[0] + (premiums[1] if joint else 0)
+        # Person 2, always present, is the dependent.
+        dependent_premiums = premiums[-1]
         excluded = min(filer_premiums, max(0, deduction))
-        gross = sum(premiums) + sum(other)
+        # What the filers paid: their premiums and every member's other costs.
+        filer_gross = filer_premiums + sum(other)
         supplied = case["subtotal_mode"] != "derived"
         # Caller subtotals are independent of their component inputs and SE
-        # deduction. The oracle preserves the supplied amount exactly as main
-        # does; only the computed path restores an applied federal exclusion.
-        main_base = case["subtotal"] if supplied else gross
-        senior_eligible = case["age"] >= 65 and main_base >= 28_000
+        # deduction. The oracle uses a supplied amount exactly; only the
+        # computed path restores an applied federal exclusion.
+        filer_base = case["subtotal"] if supplied else filer_gross
+        # NDCC 57-02-08.1(5)(c) also takes out what the dependent paid, which
+        # a Schedule A amount never includes.
+        nd_base = filer_base + dependent_premiums
+        senior_eligible = case["age"] >= 65 and filer_base >= 28_000
         denominator = 2 if case["filing_status"] == "SEPARATE" else 1
 
         for state in ("ND", "NM"):
@@ -445,17 +458,17 @@ def _state_simulation(cases, reference_system, with_se_deduction):
                 tax_unit["itemized_medical_expenses"] = {PERIOD: case["subtotal"]}
             tax_units[unit_name] = tax_unit
             households[unit_name] = {"members": names, "state_code": {PERIOD: state}}
-            accounting["main_base"].append(main_base)
-            accounting["gross"].append(gross)
+            accounting["filer_base"].append(filer_base)
+            accounting["filer_gross"].append(filer_gross)
             accounting["other"].append(sum(other))
             accounting["filer_premiums"].append(filer_premiums)
             accounting["excluded"].append(excluded)
             accounting["applied_exclusion"].append(0 if supplied else excluded)
-            # This independent accounting oracle reproduces main's state
-            # outputs from its paid-cost base rather than reading this head's
-            # medical subtotal or excluded-premium calculations as expectations.
+            # This independent accounting oracle derives the state outputs
+            # from the paid-cost bases rather than reading the model's
+            # medical subtotal or excluded-premium calculations.
             expectations["nd_renters_refund_income"].append(
-                max(0, case["income"] - main_base) if state == "ND" else 0
+                max(0, case["income"] - nd_base) if state == "ND" else 0
             )
             expectations["nm_medical_expense_credit"].append(
                 2_800 / denominator
@@ -499,7 +512,7 @@ def _assert_state_outputs(cases, reference_system, with_se_deduction):
             applied_exclusion, accounting["applied_exclusion"]
         )
         np.testing.assert_array_equal(
-            medical_base + applied_exclusion, accounting["main_base"]
+            medical_base + applied_exclusion, accounting["filer_base"]
         )
         if not supplied:
             excluded = simulation.calculate(
@@ -509,7 +522,9 @@ def _assert_state_outputs(cases, reference_system, with_se_deduction):
             # capped premium exclusion is restored. These bounds deliberately
             # do not constrain an independent caller-supplied subtotal.
             np.testing.assert_array_equal(excluded, accounting["excluded"])
-            np.testing.assert_array_equal(medical_base + excluded, accounting["gross"])
+            np.testing.assert_array_equal(
+                medical_base + excluded, accounting["filer_gross"]
+            )
             assert (excluded >= 0).all()
             assert (excluded <= np.array(accounting["filer_premiums"])).all()
             assert (medical_base >= np.array(accounting["other"])).all()
@@ -536,7 +551,7 @@ def _assert_state_outputs(cases, reference_system, with_se_deduction):
     ]
 )
 @given(cases=state_units)
-def test_state_paid_cost_bases_match_main_without_se_deduction(reference_system, cases):
+def test_state_paid_cost_bases_without_se_deduction(reference_system, cases):
     _assert_state_outputs(cases, reference_system, with_se_deduction=False)
 
 
@@ -565,7 +580,5 @@ def test_state_paid_cost_bases_match_main_without_se_deduction(reference_system,
     ]
 )
 @given(cases=state_units)
-def test_state_paid_cost_bases_preserve_main_inputs_with_se_deduction(
-    reference_system, cases
-):
+def test_state_paid_cost_bases_with_se_deduction(reference_system, cases):
     _assert_state_outputs(cases, reference_system, with_se_deduction=True)

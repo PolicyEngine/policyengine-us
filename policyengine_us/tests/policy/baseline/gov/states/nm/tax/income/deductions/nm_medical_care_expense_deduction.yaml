@@ -397,3 +397,57 @@
     filing_status: HEAD_OF_HOUSEHOLD
   output:
     nm_medical_care_expense_deduction: 0
+
+# A dependent's own premium payments. PIT-1 line 16 allows "medical care
+# expenses paid during the tax year for you, your spouse, or a dependent"
+# (2022 PIT-1 instructions, PDF page 31); a dependent's own payments are not
+# the filers'. Two tax units with the same people label the earner head and
+# then spouse; the results must match.
+- name: New Mexico's deduction leaves out a dependent's own premium payments
+  period: 2024
+  input:
+    people:
+      a_earner:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 20_000
+        other_medical_expenses: 1_000
+      a_partner:
+        age: 45
+        is_tax_unit_spouse: true
+      a_student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_200
+      b_earner:
+        age: 45
+        is_tax_unit_spouse: true
+        employment_income: 20_000
+        other_medical_expenses: 1_000
+      b_partner:
+        age: 45
+        is_tax_unit_head: true
+      b_student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_200
+    tax_units:
+      a:
+        members: [a_earner, a_partner, a_student]
+      b:
+        members: [b_partner, b_earner, b_student]
+    households:
+      a:
+        members: [a_earner, a_partner, a_student]
+        state_code: NM
+      b:
+        members: [b_partner, b_earner, b_student]
+        state_code: NM
+  output:
+    filing_status: [JOINT, JOINT]
+    itemized_medical_expenses: [1_000, 1_000]
+    # 25% of 1,000 for joint AGI not over 30,000. Counting the student's
+    # 1,200 of premiums would give 25% of 2,200 = 550.
+    nm_medical_care_expense_deduction: [250, 250]
