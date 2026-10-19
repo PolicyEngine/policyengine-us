@@ -29,6 +29,8 @@
         is_ssi_disabled: true
       sibling:
         age: 14
+        # Isolate pretax premiums from the student earned-income exclusion.
+        is_in_k12_school: false
         employment_income: 2_400
         pre_tax_health_insurance_premiums: 1_200
       parent:
