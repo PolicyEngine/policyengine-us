@@ -61,7 +61,11 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.deeming.ineligible_child_age_limit
         allocation_child = np.ones(person.count, dtype=bool)
         for state_code in age_limits._children:
-            allocation_child &= (state != state_code) | (age < age_limits[state_code])
+            # State breakdown expansion fills omitted states with zero.
+            # Only a positive, sourced ceiling overrides the shared scope.
+            age_limit = age_limits[state_code]
+            if age_limit > 0:
+                allocation_child &= (state != state_code) | (age < age_limit)
         # These states define allocation children as nonblind and
         # nondisabled, independently of Medicaid immigration eligibility.
         allocation_child &= ~(
