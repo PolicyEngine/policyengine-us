@@ -1,0 +1,1 @@
+Count dependents' other medical expenses in Montana's 2021-2023 separate-filing medical deduction, dividing them equally between spouses filing separately on the same form; an unmarried filer's column holds all of them.
