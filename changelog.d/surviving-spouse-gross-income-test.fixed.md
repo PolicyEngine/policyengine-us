@@ -1,0 +1,1 @@
+Stop applying the qualifying relative gross income test to surviving spouse filing status, which IRC 2(a)(1)(B) disregards, and count only a dependent son, daughter or stepchild: one whose parent id names the filer, or, in a household without parent ids, one not marked as the filer's parent, grandparent or an unrelated person.

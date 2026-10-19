@@ -2,7 +2,7 @@
   period: 2022
   input:
     people:
-      head: 
+      head:
         is_surviving_spouse: true
     tax_units:
       tax_unit:
@@ -14,14 +14,343 @@
   period: 2022
   input:
     people:
-      head: 
+      head:
         is_tax_unit_head: true
         is_surviving_spouse: true
-      child: {}
+      child:
+        age: 10
     tax_units:
       tax_unit:
         members: [head, child]
-        tax_unit_child_dependents: 1
         tax_unit_married: false
   output:
     surviving_spouse_eligible: true
+
+# IRC 2(a)(1)(B) determines the son or daughter's dependency "without regard
+# to subsections (b)(1), (b)(2), and (d)(1)(B)" of section 152. The 2025 Form
+# 1040 instructions (page 15) apply this as a child the filer "could claim as a
+# dependent except that ... the child had gross income of $5,200 or more".
+- name: Adult dependent child with gross income above the exemption amount still qualifies.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+      adult_child:
+        age: 29
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        # Above the $5,200 2025 qualifying relative gross income limit.
+        employment_income: 6_238
+    tax_units:
+      tax_unit:
+        members: [head, adult_child]
+  output:
+    dependent_gross_income: [0, 6_238]
+    is_qualifying_relative_dependent: [false, false]
+    surviving_spouse_eligible: true
+
+- name: Traced household, adult dependent child with $6,238 of disability benefits qualifies.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+      adult_child:
+        age: 29
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        disability_benefits: 6_238
+    tax_units:
+      tax_unit:
+        members: [head, adult_child]
+  output:
+    surviving_spouse_eligible: true
+
+- name: Adult dependent child with gross income at the exemption amount qualifies.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+      adult_child:
+        age: 29
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 5_200
+    tax_units:
+      tax_unit:
+        members: [head, adult_child]
+  output:
+    surviving_spouse_eligible: true
+
+- name: Adult dependent child with gross income below the exemption amount qualifies.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+      adult_child:
+        age: 29
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, adult_child]
+  output:
+    is_qualifying_relative_dependent: [false, true]
+    surviving_spouse_eligible: true
+
+- name: Permanently disabled adult child with high income qualifies.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+      adult_child:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_permanently_and_totally_disabled: true
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, adult_child]
+  output:
+    surviving_spouse_eligible: true
+
+# IRC 2(a)(1)(B)(i) requires a son, stepson, daughter or stepdaughter. A
+# dependent parent is a qualifying relative under IRC 152(d)(2)(C), but not a
+# child, so the filer does not qualify.
+- name: Dependent parent of the filer with income below the exemption amount does not qualify.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+      parent:
+        age: 88
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_parent_of_filer_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+  output:
+    is_qualifying_relative_dependent: [false, true]
+    surviving_spouse_eligible: false
+
+- name: Dependent grandparent of the filer does not qualify.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+      grandparent:
+        age: 92
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_grandparent_of_filer_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, grandparent]
+  output:
+    surviving_spouse_eligible: false
+
+- name: Unrelated dependent member of the household does not qualify.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+      household_member:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_related_to_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [head, household_member]
+  output:
+    surviving_spouse_eligible: false
+
+- name: Dependent parent plus an adult child with high income qualifies through the child.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+      parent:
+        age: 88
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_parent_of_filer_or_spouse: true
+      adult_child:
+        age: 29
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [head, parent, adult_child]
+  output:
+    surviving_spouse_eligible: true
+
+- name: Remarried surviving spouse with a dependent child does not qualify.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+      spouse:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+  output:
+    surviving_spouse_eligible: false
+
+- name: Filer who is not a surviving spouse does not qualify with an adult child.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        is_surviving_spouse: false
+      adult_child:
+        age: 29
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 6_238
+    tax_units:
+      tax_unit:
+        members: [head, adult_child]
+  output:
+    surviving_spouse_eligible: false
+
+# Parent ids (natural, adoptive or step) identify the filer's own children.
+- name: Adult dependent whose parent id names the widowed head qualifies regardless of income.
+  period: 2025
+  input:
+    people:
+      head:
+        person_id: 1
+        age: 67
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+      adult_child:
+        person_id: 2
+        parent_1_id: 1
+        age: 29
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [head, adult_child]
+    households:
+      household:
+        members: [head, adult_child]
+  output:
+    surviving_spouse_eligible: true
+
+- name: Dependent grandchild whose parent id names another household member does not qualify.
+  period: 2025
+  input:
+    people:
+      head:
+        person_id: 1
+        age: 60
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+      mother:
+        person_id: 2
+        parent_1_id: 1
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      grandchild:
+        person_id: 3
+        parent_1_id: 2
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      head_unit:
+        members: [head, grandchild]
+      mother_unit:
+        members: [mother]
+    households:
+      household:
+        members: [head, mother, grandchild]
+  output:
+    surviving_spouse_eligible: [false, false]
+
+- name: Dependent parent without parent ids in a household with ids does not qualify.
+  period: 2025
+  input:
+    people:
+      head:
+        person_id: 1
+        # The head's own parent id names the dependent mother.
+        parent_1_id: 2
+        age: 67
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+      mother:
+        person_id: 2
+        age: 90
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        taxable_pension_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, mother]
+    households:
+      household:
+        members: [head, mother]
+  output:
+    surviving_spouse_eligible: false

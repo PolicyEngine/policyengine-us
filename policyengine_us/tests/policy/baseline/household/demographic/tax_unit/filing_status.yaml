@@ -251,3 +251,85 @@
   output:
     # Each parent has 5,100 of taxable benefits, not below 4,400.
     filing_status: SINGLE
+
+- name: Widowed parent of a 29-year-old dependent with $6,238 of income files as surviving spouse.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 67
+        is_surviving_spouse: true
+        is_tax_unit_head: true
+      adult_child:
+        age: 29
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        # IRC 2(a)(1)(B) disregards the IRC 152(d)(1)(B) gross income test,
+        # so income above the $5,200 limit does not matter.
+        employment_income: 6_238
+    tax_units:
+      tax_unit:
+        members: [head, adult_child]
+    households:
+      household:
+        members: [head, adult_child]
+  output:
+    filing_status: SURVIVING_SPOUSE
+    basic_standard_deduction: 31_500
+
+- name: Widowed filer with a dependent parent files as head of household, not surviving spouse.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 67
+        is_surviving_spouse: true
+        is_tax_unit_head: true
+      parent:
+        age: 88
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_parent_of_filer_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
+
+- name: Widowed grandparent of a dependent grandchild files as head of household, not surviving spouse.
+  period: 2025
+  input:
+    people:
+      head:
+        person_id: 1
+        age: 60
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+      mother:
+        person_id: 2
+        parent_1_id: 1
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      grandchild:
+        person_id: 3
+        parent_1_id: 2
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      head_unit:
+        members: [head, grandchild]
+      mother_unit:
+        members: [mother]
+    households:
+      household:
+        members: [head, mother, grandchild]
+  output:
+    filing_status: [HEAD_OF_HOUSEHOLD, SINGLE]
