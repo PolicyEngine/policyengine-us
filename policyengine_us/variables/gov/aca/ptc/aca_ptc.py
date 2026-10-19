@@ -19,12 +19,9 @@ class aca_ptc(Variable):
         return 0
 
     def formula_2018(tax_unit, period, parameters):
-        # The benchmark for the coverage family (26 CFR 1.36B-3(f)), which
-        # leaves out an enrollee who can be claimed on another return.
-        plan_cost = tax_unit("aca_ptc_slcsp", period)
-        income = tax_unit("aca_magi", period)
-        applicable_figure = tax_unit("aca_required_contribution_percentage", period)
-        # IRC § 36B(a) conditions the PTC on filing a return (Form 8962).
-        # Gate on tax_unit_is_filer so non-filers receive $0.
-        is_filer = tax_unit("tax_unit_is_filer", period)
-        return max_(0, plan_cost - income * applicable_figure) * is_filer
+        # IRC § 36B(a) conditions the PTC on filing a return (Form 8962), so
+        # a tax unit that neither files nor takes up the credit receives $0.
+        # Taking up the credit means filing to claim or reconcile it.
+        credit = tax_unit("aca_ptc_before_filing_gate", period)
+        files = tax_unit("files_return_for_aca_ptc", period)
+        return credit * files

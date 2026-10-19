@@ -47,5 +47,5 @@ class ca_premium_subsidy_eligible(Variable):
         # federal gate already leaves such a person out of the tax family
         # (26 U.S.C. 36B(c)(1)(D)), and Program Design (c)(2) requires every
         # federal APTC eligibility requirement.
-        is_filer = tax_unit("tax_unit_is_filer", period)
+        is_filer = tax_unit("files_return_for_aca_ptc", period)
         return in_effect & aptc_eligible & income_eligible & is_filer

@@ -1,0 +1,210 @@
+# PolicyBench snapshot scenarios 039 and 110, tax year 2026.
+# Generic estate income does not establish the separately reported QBI
+# qualification in Form 1041 Schedule K-1 box 14 code I.
+
+- name: PolicyBench scenario 039 excludes unspecified estate income from QBI
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 61
+        employment_income: 0.0
+        bank_account_assets: 16000.0
+        employer_sponsored_insurance_premiums: 3589.27587890625
+        estate_income: 25950.0
+        has_esi: true
+        health_insurance_premiums_without_medicare_part_b: 4800.0
+        is_disabled: true
+        is_surviving_spouse: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        other_health_insurance_premiums: 4800.0
+        other_medical_expenses: 200.0
+        self_employment_income: -6260.029296875
+        social_security_retirement: 36105.0
+        taxable_ira_distributions: 26800.0
+        taxable_private_pension_income: 2030.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+    marital_units:
+      marital_unit_1:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        first_home_mortgage_balance: 47500.0
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members: [head]
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        household_vehicles_value: 5184.11767578125
+        state_code: VA
+  output:
+    income_tax_before_refundable_credits: 8596.03
+
+- name: PolicyBench scenario 110 excludes unspecified estate income from QBI
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 51
+        employment_income: 100000.0
+        bank_account_assets: 762650.0
+        charitable_cash_donations: 387.4705810546875
+        charitable_non_cash_donations: 700.0
+        employer_sponsored_insurance_premiums: 6889.27587890625
+        estate_income: 6322.94140625
+        has_esi: true
+        health_insurance_premiums_without_medicare_part_b: 1500.0
+        home_mortgage_interest: 7566.0
+        hourly_wage: 40.06395721435547
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        long_term_capital_gains: 30851.765625
+        non_qualified_dividend_income: 5662.11767578125
+        other_health_insurance_premiums: 1500.0
+        other_medical_expenses: 300.0
+        over_the_counter_health_expenses: 500.0
+        qualified_dividend_income: 10032.0
+        real_estate_taxes: 2262.441162109375
+        roth_401k_contributions_desired: 749.0999755859375
+        roth_ira_contributions_desired: 307.64801025390625
+        short_term_capital_gains: 18.0
+        stock_assets: 3285294.0
+        tax_exempt_interest_income: 954.0
+        taxable_interest_income: 21301.0
+        traditional_401k_contributions_desired: 4244.89990234375
+        traditional_ira_contributions_desired: 198.3520050048828
+        unreimbursed_business_employee_expenses: 8730.1328125
+        weekly_hours_worked_before_lsr: 50.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+    marital_units:
+      marital_unit_1:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        first_home_mortgage_balance: 273000.0
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members: [head]
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        household_vehicles_value: 14630.0
+        state_code: OH
+  output:
+    # With the IRA 219(g) phase-out as well, the two-cause cell lands on its
+    # PolicyBench target.
+    income_tax_before_refundable_credits: 25747.77
+
+- name: Unspecified estate income is taxable but does not qualify as QBI
+  period: 2026
+  input:
+    estate_income: 10000
+    employment_income: 40000
+  output:
+    estate_income_would_be_qualified: false
+    irs_gross_income: 50000
+    qualified_business_income: 0
+    qualified_business_income_deduction: 0
+
+- name: Explicitly qualified estate business income remains QBI
+  period: 2026
+  input:
+    estate_income: 10000
+    estate_income_would_be_qualified: true
+    employment_income: 40000
+  output:
+    irs_gross_income: 50000
+    qualified_business_income: 10000
+    qualified_business_income_deduction: 2000
+
+- name: Explicitly nonqualified estate income remains taxable
+  period: 2026
+  input:
+    estate_income: 10000
+    estate_income_would_be_qualified: false
+    employment_income: 40000
+  output:
+    irs_gross_income: 50000
+    qualified_business_income: 0
+    qualified_business_income_deduction: 0
+
+- name: Differential invariant - nonqualified estate income leaves both QBI categories unchanged
+  period: 2026
+  input:
+    people:
+      no_estate:
+        partnership_s_corp_income: 10000
+        sstb_self_employment_income: 30000
+        estate_income: 0
+        self_employment_tax_ald_person: 1000
+        self_employed_health_insurance_ald_person: 0
+        self_employed_pension_contribution_ald_person: 0
+      omitted_positive:
+        partnership_s_corp_income: 10000
+        sstb_self_employment_income: 30000
+        estate_income: 20000
+        self_employment_tax_ald_person: 1000
+        self_employed_health_insurance_ald_person: 0
+        self_employed_pension_contribution_ald_person: 0
+      omitted_negative:
+        partnership_s_corp_income: 10000
+        sstb_self_employment_income: 30000
+        estate_income: -20000
+        self_employment_tax_ald_person: 1000
+        self_employed_health_insurance_ald_person: 0
+        self_employed_pension_contribution_ald_person: 0
+      false_positive:
+        partnership_s_corp_income: 10000
+        sstb_self_employment_income: 30000
+        estate_income: 20000
+        self_employment_tax_ald_person: 1000
+        self_employed_health_insurance_ald_person: 0
+        self_employed_pension_contribution_ald_person: 0
+        estate_income_would_be_qualified: false
+      false_negative:
+        partnership_s_corp_income: 10000
+        sstb_self_employment_income: 30000
+        estate_income: -20000
+        self_employment_tax_ald_person: 1000
+        self_employed_health_insurance_ald_person: 0
+        self_employed_pension_contribution_ald_person: 0
+        estate_income_would_be_qualified: false
+  output:
+    qualified_business_income:
+    - 9750
+    - 9750
+    - 9750
+    - 9750
+    - 9750
+    sstb_qualified_business_income:
+    - 29250
+    - 29250
+    - 29250
+    - 29250
+    - 29250

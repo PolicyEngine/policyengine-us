@@ -1,0 +1,22 @@
+description: North Carolina provides this amount as the maximum monthly enhanced rate for special care units and in-home recipients with Alzheimer's disease or dementia under the State-County Special Assistance program.
+values:
+  2026-01-01: 1_792
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: North Carolina SA enhanced rate
+  # G.S. 108A-42.1(b) adjusts the rate each January 1 by the Social Security
+  # cost-of-living adjustment; the published rate replaces the projection.
+  uprating:
+    parameter: gov.ssa.uprating
+    rounding:
+      type: nearest
+      interval: 1
+  reference:
+    - title: North Carolina General Statutes § 108A-42.1(b)
+      href: https://www.ncleg.gov/EnactedLegislation/Statutes/PDF/BySection/Chapter_108A/GS_108A-42.1.pdf
+    - title: "North Carolina Special Assistance Manual SA-3220 II.B and VIII #page 205,219"
+      href: https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=205
+    - title: North Carolina Change Notice EFS-SA-CN-01-2026 I
+      href: https://policies.ncdhhs.gov/wp-content/uploads/EFS-SA-CN-01-2026.pdf#page=1

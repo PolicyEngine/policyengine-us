@@ -2,7 +2,7 @@
 # Formula (COMAR 14.35.21.04B): the benchmark SLCSP premium remaining after the
 # federal APTC, less the Maryland target contribution (md_pct * income), floored
 # at 0, and 0 for non-filers:
-#   where(tax_unit_is_filer,
+#   where(files_return_for_aca_ptc,
 #         max_(0, max_(0, slcsp - aca_ptc) - md_pct * max_(aca_magi, 0)),
 #         0)
 # gated on md_premium_assistance_eligible (in effect, MD, APTC-eligible, <=400% FPL).
@@ -302,8 +302,11 @@
 
 # ---- Edge cases ----
 
-- name: Case 12, zero MAGI -> 0 subsidy (gap = 0 * pct).
-  # Eligible (0 <= 400% FPL) but aca_magi 0 zeroes the contribution gap.
+- name: Case 12, zero MAGI -> the whole premium balance after APTC, 2_500.
+  # COMAR .04B: max(0, (6_000 - 3_500) - md_pct * 0) = 2_500. (This case
+  # expected 0 under the older (federal - md) * income reading; on main it
+  # passed only because the unit, with no gross income, computed as a
+  # non-filer.)
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -319,16 +322,21 @@
         aca_required_contribution_percentage: 0.0419
         slcsp: 6_000
         aca_ptc: 3_500
+        tax_unit_is_filer: true
     households:
       household:
         members: [person1]
         state_code: MD
   output:
-    md_premium_assistance: 0
+    md_premium_assistance: 2_500
 
-- name: Case 13, federal applicable % below MD target % -> negative gap floored to 0.
-  # At 250% FPL md target = 6.22%; federal supplied at 5.00% < md target ->
-  # gap = max(0, 39_125 * (0.05 - 0.0622)) = max(0, negative) = 0.
+- name: Case 13, a federal applicable % below the MD target does not enter the formula -> 66.43.
+  # COMAR .04B uses the premium balance after APTC, not the federal
+  # percentage: at 250% FPL md target = 6.22%, so
+  # max(0, (6_000 - 3_500) - 0.0622 * 39_125) = 2_500 - 2_433.575 = 66.425.
+  # (This case expected 0 under the older (federal - md) * income reading; on
+  # main it passed only because the unit, with no gross income, computed as a
+  # non-filer.)
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -344,12 +352,13 @@
         aca_required_contribution_percentage: 0.05
         slcsp: 6_000
         aca_ptc: 3_500
+        tax_unit_is_filer: true
     households:
       household:
         members: [person1]
         state_code: MD
   output:
-    md_premium_assistance: 0
+    md_premium_assistance: 66.425
 
 - name: Case 14, aca_ptc exactly equals slcsp -> premium cap 0 -> subsidy 0.
   # Uncapped gap positive, but slcsp - aca_ptc = 6_000 - 6_000 = 0 caps to 0.
@@ -723,6 +732,87 @@
         state_code: VA
   output:
     md_premium_assistance: [868.57, 0]  # MD unit derived > 0, VA unit masked to 0 by defined_for
+
+- name: Case 1b, a unit that takes up the federal credit but would not otherwise file -> 2500.
+  # Case 1's inputs with tax_unit_is_filer false and take-up true: it files to
+  # claim or reconcile the federal credit (26 CFR 1.6011-8(a)), so the filing
+  # gate passes and the subsidy is max(0, 6_000 - 3_500) - 0 = 2_500.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 23_475
+        aca_magi_fraction: 1.50
+        aca_required_contribution_percentage: 0.0419
+        slcsp: 6_000
+        aca_ptc: 3_500
+        tax_unit_is_filer: false
+        takes_up_aca_if_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance: 2_500
+
+- name: Case 1c, a non-filer that takes up coverage with a zero federal credit -> 0.
+  # The federal contribution (9.96% of $60,000 = $5,976) exceeds the $5,500
+  # benchmark, so there is no federal credit and no reason to file
+  # (COMAR 14.35.21.03A(1) requires a tax filer's household). Filer twin: 1d.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 60_000
+        aca_magi_fraction: 3.83
+        aca_required_contribution_percentage: 0.0996
+        slcsp: 5_500
+        tax_unit_is_filer: false
+        takes_up_aca_if_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance: 0
+
+- name: Case 1d, the same unit filing for another reason -> 89.50.
+  # md_pct at 383% FPL = 0.0798 + 0.83 * (0.0923 - 0.0798) = 0.090175;
+  # max(0, max(0, 5_500 - 0) - 0.090175 * 60_000) = 5_500 - 5_410.50 = 89.50.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 60_000
+        aca_magi_fraction: 3.83
+        aca_required_contribution_percentage: 0.0996
+        slcsp: 5_500
+        tax_unit_is_filer: true
+        takes_up_aca_if_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance: 89.5
 
 - name: 2026 MD joint return with one claimable spouse (the claimable spouse is the head)
   period: 2026
