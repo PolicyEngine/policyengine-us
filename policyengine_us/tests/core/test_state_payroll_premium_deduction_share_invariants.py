@@ -89,7 +89,8 @@ MN_TAXABLE_WAGE_BASE = {
 # parameter files: 0.88% in 2026 and 2027 (subd. 7); employer minimum 50%
 # (subd. 3); small employers 75% of the rate with an employer minimum of 25%
 # of the full rate (subd. 5a(b)), if 30 or fewer employees and an average
-# quarterly wage of at most $27,745.88 (subd. 5a(a)).
+# quarterly wage of at most $27,745.88 (subd. 5a(a); DEED's 2026 designation:
+# 150% of the $73,989 statewide average annual wage, per quarter).
 MN_RATE = 0.0088
 MN_SMALL_MAX_HEADCOUNT = 30
 MN_SMALL_MAX_AVERAGE_QUARTERLY_WAGE = 27_745.88
@@ -102,9 +103,11 @@ share = st.one_of(
     st.sampled_from([0.0, 0.25, 0.5, 1.0, -0.5, 1.5]),
     st.floats(-0.5, 1.5, allow_nan=False),
 )
+# Whole cents, as DEED states wages: the model holds the input in float32,
+# which can't tell sub-cent amounts around the limit apart.
 average_quarterly_wage = st.one_of(
     st.sampled_from([0.0, 27_745.88, 27_745.89, 40_000.0]),
-    st.floats(0, 60_000, allow_nan=False),
+    st.integers(0, 6_000_000).map(lambda cents: cents / 100),
 )
 workers = st.tuples(
     st.sampled_from(OPTIONAL_STATES + MANDATORY_STATES + ("TX",)),

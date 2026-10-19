@@ -607,18 +607,29 @@ def test_small_employer_thresholds_zero_employer_paid_leave_share(
     assert calculate(sim, variable) == 0
 
 
-def test_minnesota_paid_leave_shares_follow_the_parameters():
-    # The employee portion is derived from the rate and the employer minimums,
-    # so a reform of either reaches both sides, and a small employer minimum
-    # above the small employer premium leaves employees nothing ("the
-    # remaining portion, if any", Minn. Stat. 268B.14, subd. 5a(b)(2)).
+@pytest.mark.parametrize(
+    ("small_employer_minimum", "small_employee", "small_employer"),
+    [
+        # A small employer minimum above the 75% small employer premium
+        # leaves employees nothing ("the remaining portion, if any").
+        pytest.param(0.8, 0, 750, id="employee-floor"),
+        # A negative minimum can't make employees pay more than the premium.
+        pytest.param(-0.1, 750, 0, id="employee-cap"),
+    ],
+)
+def test_minnesota_paid_leave_shares_follow_the_parameters(
+    small_employer_minimum: float, small_employee: float, small_employer: float
+):
+    # The employee portion is derived from the rate and the employer minimums
+    # (Minn. Stat. 268B.14, subds. 3 and 5a(b)), so a reform of either reaches
+    # both sides.
     paid_leave = "gov.states.mn.tax.payroll.paid_leave"
     reform = Reform.from_dict(
         {
             f"{paid_leave}.rate": {"2026-01-01.2026-12-31": 0.01},
             f"{paid_leave}.employer_minimum_share": {"2026-01-01.2026-12-31": 0.6},
             f"{paid_leave}.small_employer.employer_minimum_share": {
-                "2026-01-01.2026-12-31": 0.8
+                "2026-01-01.2026-12-31": small_employer_minimum
             },
         },
         country_id="us",
@@ -647,15 +658,14 @@ def test_minnesota_paid_leave_shares_follow_the_parameters():
         },
     )
 
-    # Large: 1% premium, 40% of it deductible. Small: 75% * 1% premium, of
-    # which the employer must pay 80% * 1%, more than the whole premium.
+    # Large: 1% premium, 40% of it deductible. Small: 75% * 1% premium.
     assert sim.calculate("mn_paid_leave_premium", PERIOD) == pytest.approx([1_000, 750])
     assert sim.calculate(
         "mn_employee_paid_leave_contribution", PERIOD
-    ) == pytest.approx([400, 0])
+    ) == pytest.approx([400, small_employee])
     assert sim.calculate(
         "mn_employer_paid_leave_contribution", PERIOD
-    ) == pytest.approx([600, 750])
+    ) == pytest.approx([600, small_employer])
 
 
 @pytest.mark.parametrize(

@@ -21,9 +21,17 @@ class mn_paid_leave_permitted_employee_rate(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mn.tax.payroll.paid_leave
         small = person("mn_paid_leave_small_employer", period)
-        employee_share_of_full_rate = where(
+        premium_share_of_full_rate = where(small, p.small_employer.rate_share, 1)
+        employer_minimum_share_of_full_rate = where(
             small,
-            p.small_employer.rate_share - p.small_employer.employer_minimum_share,
-            1 - p.employer_minimum_share,
+            p.small_employer.employer_minimum_share,
+            p.employer_minimum_share,
         )
-        return p.rate * max_(employee_share_of_full_rate, 0)
+        # Employees pay the remaining portion, if any, which is never more
+        # than the premium itself.
+        employee_share_of_full_rate = clip(
+            premium_share_of_full_rate - employer_minimum_share_of_full_rate,
+            0,
+            premium_share_of_full_rate,
+        )
+        return p.rate * employee_share_of_full_rate
