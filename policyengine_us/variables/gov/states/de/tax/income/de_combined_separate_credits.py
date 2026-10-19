@@ -17,7 +17,8 @@ def de_combined_separate_credit_choices(tax_unit, period, parameters):
     With equal Line 23 incomes either column qualifies for Line 31 and Line 34.
     The dependent split, and the Line 31 and Line 34 columns where both
     qualify, are chosen together to minimise the two columns' tax after the
-    EITC. Each column keeps its own $110 personal credit and aged credit.
+    EITC. Each column keeps its own $110 personal credit, if the filer cannot
+    be claimed as a dependent elsewhere, and its aged credit.
     The search treats the spouses alike, so the minimum does not depend on
     which spouse is labelled head.
 
@@ -41,7 +42,10 @@ def de_combined_separate_credit_choices(tax_unit, period, parameters):
     head_taxable, spouse_taxable = column(person("de_taxable_income_indv", period))
     cdcc = tax_unit("de_cdcc", period)
     eitc = tax_unit("de_non_refundable_eitc", period)
-    dep_units = max_(tax_unit("exemptions_count", period) - 2, 0)
+    head_own = where(tax_unit("head_is_dependent_elsewhere", period), 0, credit_per)
+    spouse_own = where(tax_unit("spouse_is_dependent_elsewhere", period), 0, credit_per)
+    own_units = tax_unit("head_spouse_count_not_dependent_elsewhere", period)
+    dep_units = max_(tax_unit("exemptions_count", period) - own_units, 0)
 
     # Columns allowed for each credit; both on equal Line 23 incomes.
     head_may_take_cdcc = head_taxable <= spouse_taxable
@@ -64,11 +68,9 @@ def de_combined_separate_credit_choices(tax_unit, period, parameters):
                     & where(cdcc_head, head_may_take_cdcc, spouse_may_take_cdcc)
                     & where(eitc_head, head_may_take_eitc, spouse_may_take_eitc)
                 )
-                head_credits = (
-                    credit_per + head_aged + n * credit_per + cdcc_head * cdcc
-                )
+                head_credits = head_own + head_aged + n * credit_per + cdcc_head * cdcc
                 spouse_credits = (
-                    credit_per
+                    spouse_own
                     + spouse_aged
                     + (dep_units - n) * credit_per
                     + (not cdcc_head) * cdcc

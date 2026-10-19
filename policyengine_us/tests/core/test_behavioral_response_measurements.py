@@ -3,6 +3,7 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
+import policyengine_us.variables.gov.simulation.behavioral_response_measurements as measurements_module
 import policyengine_us.variables.gov.simulation.capital_gains_responses as capital_gains_module
 import policyengine_us.variables.gov.simulation.labor_supply_response.income_elasticity_lsr as income_lsr_module
 import policyengine_us.variables.gov.simulation.labor_supply_response.labor_supply_behavioral_response as labor_supply_module
@@ -11,6 +12,7 @@ import policyengine_us.variables.gov.simulation.labor_supply_response.sstb_self_
 import policyengine_us.variables.gov.simulation.labor_supply_response.substitution_elasticity_lsr as substitution_lsr_module
 from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
     BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH,
+    BEHAVIORAL_RESPONSE_CACHE_ATTR,
     BEHAVIORAL_RESPONSE_INPUT_VARIABLES,
     BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH,
     NEUTRALIZED_BEHAVIORAL_RESPONSE_VARIABLES,
@@ -100,7 +102,7 @@ class FakeSimulation:
         if name not in self.branches:
             if name == BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH:
                 self.branches[name] = self.measurement_branch
-            elif name == "baseline":
+            elif name == BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH:
                 self.branches[name] = self.baseline_branch
             else:
                 raise AssertionError(f"Unexpected branch lookup: {name}")
@@ -133,6 +135,8 @@ def make_parameters(
     income_change_bound=0.3,
     wage_change_bound=0.4,
     capital_gains_elasticity=-0.62,
+    capital_gains_semi_elasticity=0.0,
+    capital_gains_net_of_tax_elasticity=0.0,
     lsr_income_elasticity=-0.05,
     lsr_substitution_elasticity=0.25,
 ):
@@ -150,14 +154,16 @@ def make_parameters(
                     ),
                 ),
                 capital_gains_responses=SimpleNamespace(
-                    elasticity=capital_gains_elasticity
+                    elasticity=capital_gains_elasticity,
+                    semi_elasticity=capital_gains_semi_elasticity,
+                    net_of_tax_elasticity=capital_gains_net_of_tax_elasticity,
                 ),
             )
         )
     )
 
 
-def test_behavioral_response_measurements_use_one_neutralized_pass():
+def test_behavioral_response_measurements_use_one_neutralized_pass(monkeypatch):
     period = 2026
     reform_measurement = FakeBranch(
         FakePopulation(
@@ -173,13 +179,21 @@ def test_behavioral_response_measurements_use_one_neutralized_pass():
             capital_gains_mtr=np.array([0.15, 0.2]),
         )
     )
-    baseline_parent = FakeBranch(
-        child_branches={
-            BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH: baseline_measurement
-        }
-    )
-    simulation = FakeSimulation(reform_measurement, baseline_parent)
+    simulation = FakeSimulation(reform_measurement, baseline_measurement)
     person = FakePerson(simulation)
+    # The baseline branch's construction needs a real simulation; it is
+    # tested in test_behavioral_response_measurement_copies.py.
+    built_from = []
+
+    def baseline_measurement_branch(simulation):
+        built_from.append(simulation)
+        return simulation.get_branch(BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH)
+
+    monkeypatch.setattr(
+        measurements_module,
+        "_baseline_measurement_branch",
+        baseline_measurement_branch,
+    )
 
     measurements = get_behavioral_response_measurements(person, period)
 
@@ -187,13 +201,12 @@ def test_behavioral_response_measurements_use_one_neutralized_pass():
     assert np.array_equal(
         measurements["baseline_capital_gains_mtr"], np.array([0.15, 0.2])
     )
+    # Both measurement branches are branches of the measured simulation.
     assert simulation.get_branch_calls == [
         (BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH, True),
-        ("baseline", False),
+        (BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH, False),
     ]
-    assert baseline_parent.get_branch_calls == [
-        (BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH, True)
-    ]
+    assert built_from == [simulation]
     for branch in (reform_measurement, baseline_measurement):
         assert branch.tax_benefit_system.neutralized_variables == list(
             NEUTRALIZED_BEHAVIORAL_RESPONSE_VARIABLES
@@ -201,20 +214,40 @@ def test_behavioral_response_measurements_use_one_neutralized_pass():
         assert [call[0] for call in branch.input_calls] == list(
             BEHAVIORAL_RESPONSE_INPUT_VARIABLES
         )
+    assert (
+        baseline_measurement.tax_benefit_system.parameters.simulation
+        is reform_measurement.tax_benefit_system.parameters.simulation
+    )
 
     assert simulation.macro_cache_read is False
     assert simulation.macro_cache_write is False
-    assert BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH not in simulation.branches
-    assert (
-        BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH not in baseline_parent.branches
-    )
+    assert simulation.branches == {}
 
     cached = get_behavioral_response_measurements(person, period)
     assert cached is measurements
-    assert simulation.get_branch_calls == [
-        (BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH, True),
-        ("baseline", False),
-    ]
+    assert simulation.__dict__[BEHAVIORAL_RESPONSE_CACHE_ATTR] == {"2026": measurements}
+    assert len(simulation.get_branch_calls) == 2
+
+
+def test_behavioral_response_measurement_branches_are_removed_on_failure(
+    monkeypatch,
+):
+    simulation = FakeSimulation(FakeBranch(), FakeBranch())
+    person = FakePerson(simulation)
+
+    def failing_baseline_measurement_branch(simulation):
+        simulation.get_branch(BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH)
+        raise RuntimeError("baseline measurement failed")
+
+    monkeypatch.setattr(
+        measurements_module,
+        "_baseline_measurement_branch",
+        failing_baseline_measurement_branch,
+    )
+    with pytest.raises(RuntimeError, match="baseline measurement failed"):
+        get_behavioral_response_measurements(person, 2026)
+    assert simulation.branches == {}
+    assert simulation.__dict__[BEHAVIORAL_RESPONSE_CACHE_ATTR] == {}
 
 
 def test_measurement_helper_calculations_clip_expected_values():
@@ -597,3 +630,62 @@ def test_capital_gains_channel_is_live_end_to_end():
     # A 10pp statutory rate increase must show through the measured MTRs.
     assert reform_mtr[0] - baseline_mtr[0] == pytest.approx(0.10, abs=0.02)
     assert response[0] < -1_000
+
+    # With only the elasticity set, the response is the formula main had
+    # before the semi-elasticity and net-of-tax forms were added (75cdd801),
+    # bit pattern for bit pattern: both rates floored at 0.001, the log
+    # change times the person's elasticity, exp of that minus 1, times gains.
+    elasticity = simulation.calculate("capital_gains_elasticity", year)
+    log_change = np.log(np.maximum(measurements["reform_capital_gains_mtr"], 0.001))
+    log_change -= np.log(np.maximum(measurements["baseline_capital_gains_mtr"], 0.001))
+    main_response = simulation.calculate(
+        "long_term_capital_gains_before_response", year
+    ) * (np.exp(elasticity * log_change) - 1)
+    assert response.dtype == main_response.dtype == np.float32
+    assert np.array_equal(response.view(np.uint32), main_response.view(np.uint32))
+
+
+def test_semi_elasticity_capital_gains_response_end_to_end_from_a_zero_rate():
+    """The semi-elasticity form through the model, from a 0% baseline rate.
+
+    A Texas filer whose $30,000 of gains sit in the 0% bracket faces a new 10%
+    rate there. The semi-elasticity response depends only on the change in the
+    measured rate, so it is about 29% at 3.4, where the log-rate form's 0.001
+    floor would remove about 96% (test_capital_gains_response_forms.py covers
+    the forms' arithmetic without a simulation).
+    """
+    from policyengine_us import Simulation
+
+    year = "2026"
+    gains = 30_000
+    situation = {
+        "people": {"p": {"age": {year: 50}, "long_term_capital_gains": {year: gains}}},
+        "tax_units": {"tu": {"members": ["p"]}},
+        "families": {"f": {"members": ["p"]}},
+        "spm_units": {"s": {"members": ["p"]}},
+        "households": {"h": {"members": ["p"], "state_name": {year: "TX"}}},
+    }
+    reform = {
+        "gov.irs.capital_gains.rates.1": {"2026-01-01.2026-12-31": 0.10},
+        "gov.simulation.capital_gains_responses.semi_elasticity": {
+            "2026-01-01.2026-12-31": 3.4
+        },
+    }
+
+    simulation = Simulation(
+        situation=situation, reform=reform, spm={"geography_kind": "national"}
+    )
+    response = simulation.calculate("capital_gains_behavioral_response", year)[0]
+    measurements = simulation._behavioral_response_measurements[year]
+    baseline_rate = float(measurements["baseline_capital_gains_mtr"][0])
+    reform_rate = float(measurements["reform_capital_gains_mtr"][0])
+
+    assert baseline_rate == 0
+    assert reform_rate == pytest.approx(0.10, abs=1e-6)
+    assert response == pytest.approx(
+        gains * np.expm1(-3.4 * (reform_rate - baseline_rate)), rel=1e-5
+    )
+    assert response / gains == pytest.approx(-0.288, abs=0.001)
+    assert simulation.calculate("long_term_capital_gains", year)[0] == pytest.approx(
+        gains + response, rel=1e-6
+    )

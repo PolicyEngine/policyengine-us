@@ -26,10 +26,19 @@ class de_personal_credit_indv(Variable):
         credit_per = p.personal_credits.personal
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
-        dep_units = max_(person.tax_unit("exemptions_count", period) - 2, 0)
+        # A filer who can be claimed has no own federal exemption (IRC
+        # 151(d)(2)), hence no own $110 credit under 30 Del. C. 1110(b)(1).
+        head_own = where(
+            person.tax_unit("head_is_dependent_elsewhere", period), 0, credit_per
+        )
+        spouse_own = where(
+            person.tax_unit("spouse_is_dependent_elsewhere", period), 0, credit_per
+        )
+        own_units = person.tax_unit("head_spouse_count_not_dependent_elsewhere", period)
+        dep_units = max_(person.tax_unit("exemptions_count", period) - own_units, 0)
         head_dep, _, _ = de_combined_separate_credit_choices(
             person.tax_unit, period, parameters
         )
-        head_alloc = credit_per + head_dep * credit_per
-        spouse_alloc = credit_per + (dep_units - head_dep) * credit_per
+        head_alloc = head_own + head_dep * credit_per
+        spouse_alloc = spouse_own + (dep_units - head_dep) * credit_per
         return where(is_head, head_alloc, where(is_spouse, spouse_alloc, 0))
