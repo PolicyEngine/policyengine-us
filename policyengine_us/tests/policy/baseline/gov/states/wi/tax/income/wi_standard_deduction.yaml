@@ -298,3 +298,58 @@
   output:
     # 2023 Form 1 worksheet: max($1,250, $3,000 + $400) = $3,400.
     wi_standard_deduction: 3400
+
+
+- name: Wisconsin dependent deduction uses wages included in Wisconsin income after pretax retirement contributions
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        is_full_time_student: true
+        employment_income: 10_000
+        traditional_401k_contributions: 5_000
+        taxable_interest_income: 10_000
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    spm_units:
+      spm_unit:
+        members: [filer]
+        tanf: 0
+    households:
+      household:
+        members: [filer]
+        state_code: WI
+  output:
+    # 2025 Form 1 dependent worksheet: WI-included earnings $5,000 + $450.
+    irs_employment_income: 5_000
+    wi_agi: 15_000
+    wi_standard_deduction: 5_450
+    wi_taxable_income: 9_550
+
+- name: Wisconsin caps an unclaimed but claimable filer's standard deduction
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 1_000
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [filer]
+    spm_units:
+      spm_unit:
+        members: [filer]
+        tanf: 0
+    households:
+      household:
+        members: [filer]
+        state_code: WI
+  output:
+    # Claimability, regardless of whether anyone actually claims the filer.
+    wi_standard_deduction: 1_450

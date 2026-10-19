@@ -40,7 +40,20 @@ def wi_dependent_standard_deduction_limit(tax_unit, period, parameters):
     # joint return) can be claimed", using the return's earned income.
     # Returns infinity when no filer can be claimed.
     p = parameters(period).gov.irs.deductions.standard.dependent
-    earned_income = max_(tax_unit("tax_unit_earned_income", period), 0)
+    # Worksheet line 1 uses earnings included in Wisconsin income: wages
+    # after pretax payroll deductions, plus net self-employment income.
+    # Non-W-2 scholarship/grant income is excluded from these sources.
+    earned_income = add(
+        tax_unit.members,
+        period,
+        [
+            "irs_employment_income",
+            "self_employment_income",
+            "sstb_self_employment_income",
+        ],
+    )
+    is_filer = ~tax_unit.members("is_tax_unit_dependent", period)
+    earned_income = max_(tax_unit.sum(earned_income * is_filer), 0)
     limit = max_(p.amount, earned_income + p.additional_earned_income)
     filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
     return where(filer_is_dependent, limit, np.inf)
@@ -58,10 +71,8 @@ class wi_standard_deduction(Variable):
         "https://www.revenue.wi.gov/TaxForms2022/2022-Form1f.pdf",
         "https://www.revenue.wi.gov/TaxForms2022/2022-Form1-Inst.pdf",
         "https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2023/0002_individual_income_tax_informational_paper_2.pdf",
-        # Standard Deduction Table (keyed to WI income, line 7) and the statute, corroborating the phaseout:
-        "https://www.revenue.wi.gov/TaxForms2025/2025-Form1-inst.pdf#page=35",
         "https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/22",
-        # Standard Deduction Worksheet for Dependents
+        # Dependent worksheet and standard deduction table, PDF pages 15, 35-37
         "https://www.revenue.wi.gov/TaxForms2025/2025-Form1-Inst.pdf#page=15",
     )
     defined_for = StateCode.WI
