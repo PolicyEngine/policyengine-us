@@ -51,10 +51,29 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
         )
 
         state = person.household("state_code_str", period)
-        # DSS 0805.020.15 step 1 allows Missouri allocations only for
-        # children under 18 who are not applying for MA. In particular,
-        # SSI's adult-student allocation must not enter Missouri's budget.
-        allocation_child = where(state == "MO", person("is_child", period), True)
+        # State allocation definitions can be narrower than SSI's adult
+        # student definition. Apply each sourced ceiling before deducting
+        # the shared allocation amount; other states retain their existing
+        # shared allocation behavior.
+        age = person("age", period.this_year)
+        age_limits = parameters(
+            period
+        ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.deeming.ineligible_child_age_limit
+        allocation_child = np.ones(person.count, dtype=bool)
+        for state_code in age_limits._children:
+            allocation_child &= (state != state_code) | (age < age_limits[state_code])
+        # These states define allocation children as nonblind and
+        # nondisabled, independently of Medicaid immigration eligibility.
+        allocation_child &= ~(
+            np.isin(state, ("FL", "LA", "NY", "VA", "WI"))
+            & person("is_ssi_aged_blind_disabled", period)
+        )
+        # Wisconsin includes dependent 18-year-olds, rather than all
+        # adult students below 19. Dependency uses the existing tax-unit
+        # role proxy, as elsewhere in the model.
+        allocation_child &= (
+            (state != "WI") | (age < 18) | person("is_tax_unit_dependent", period)
+        )
         allocations = (
             person("ssi_ineligible_child_allocation", period) * allocation_child
         )
