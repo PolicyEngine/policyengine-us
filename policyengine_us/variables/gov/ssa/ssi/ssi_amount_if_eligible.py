@@ -26,7 +26,7 @@ class ssi_amount_if_eligible(Variable):
         # SSI-eligible. ssi_claim_is_joint remains true for state SSPs.
 
         couple_computation = person("ssi_couple_computation_applies", period)
-        deeming_applies = person("is_ssi_spousal_deeming_applies", period)
+        deeming_applies = person("is_ssi_spousal_deeming_applies_monthly", period)
 
         individual_or_deeming_amount = where(
             deeming_applies,

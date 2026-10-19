@@ -40,7 +40,7 @@ class ssi_spousal_deeming_child_allocations(Variable):
     )
 
     def formula(person, period, parameters):
-        allocation = person("ssi_ineligible_child_allocation", period)
+        allocation = person("ssi_ineligible_child_allocation_monthly", period)
         # 416.1160(d): 'your natural child or adopted child, or the natural
         # or adopted child of your spouse ... who lives in the same household
         # with you'. Its other clause, the child 'of your parent or of your

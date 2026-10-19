@@ -23,9 +23,9 @@ class mn_msa_gross_income(Variable):
             [
                 "ssi_earned_income",
                 "ssi_unearned_income",
-                "ssi_earned_income_deemed_from_ineligible_spouse",
-                "ssi_unearned_income_deemed_from_ineligible_spouse",
-                "ssi_unearned_income_deemed_from_ineligible_parent",
+                "ssi_earned_income_deemed_from_ineligible_spouse_monthly",
+                "ssi_unearned_income_deemed_from_ineligible_spouse_monthly",
+                "ssi_unearned_income_deemed_from_ineligible_parent_monthly",
             ],
         )
         # MSA gross income is measured before deductions and disregards.

@@ -44,13 +44,13 @@ class msp_countable_income(Variable):
             earned_income - blind_or_disabled_working_student_exclusion,
             0,
         )
-        deeming_applies = person("is_ssi_spousal_deeming_applies", period)
+        deeming_applies = person("is_ssi_spousal_deeming_applies_monthly", period)
 
         spouse_earned_income = person(
-            "ssi_earned_income_deemed_from_ineligible_spouse", period
+            "ssi_earned_income_deemed_from_ineligible_spouse_monthly", period
         )
         spouse_unearned_income = person(
-            "ssi_unearned_income_deemed_from_ineligible_spouse", period
+            "ssi_unearned_income_deemed_from_ineligible_spouse_monthly", period
         )
         personal_countable_income = _apply_ssi_exclusions(
             personal_earned_income,

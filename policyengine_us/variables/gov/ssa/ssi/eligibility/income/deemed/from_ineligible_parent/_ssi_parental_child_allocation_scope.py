@@ -75,7 +75,7 @@ def ssi_parental_child_allocation_total(person, period, recipients, allocations=
     )
     linked = has_parent_ids(person, period)
     if allocations is None:
-        allocations = person("ssi_ineligible_child_allocation", period)
+        allocations = person("ssi_ineligible_child_allocation_monthly", period)
     total = np.zeros(person.count)
     for child in household_member_indices(person):
         safe = np.maximum(child, 0)

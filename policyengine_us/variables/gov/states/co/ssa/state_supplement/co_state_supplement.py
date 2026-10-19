@@ -9,7 +9,7 @@ class co_state_supplement(Variable):
     defined_for = "co_state_supplement_eligible"
 
     def formula(person, period, parameters):
-        income = person("ssi_countable_income", period)
+        income = person("ssi_countable_income_monthly", period)
         ssi = person("ssi", period)
         total_countable_income = ssi + income
         p = parameters(period).gov.states.co.ssa.state_supplement
