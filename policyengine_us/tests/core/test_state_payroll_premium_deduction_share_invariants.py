@@ -126,10 +126,18 @@ def by_copy(simulation, variable, year):
 )
 @given(
     st.lists(workers, min_size=4, max_size=30).map(
-        # One worker in each optional state at a share strictly between 0 and
-        # 1, so every program's properties compare positive amounts.
+        # Every optional state gets a worker at a large employer below every
+        # wage base, and one at a 9-employee employer (below the CO, MA, ME
+        # and WA size thresholds; DE does not cover it) above every wage base
+        # and New York's PFL maximum; Delaware also gets a 12-employee
+        # employer (parental leave only). Shares lie strictly between 0 and 1
+        # or above 1, so each program's properties compare positive amounts,
+        # small-employer rules and capped amounts.
         lambda rows: (
-            [(state, 60_000, 100, 0.5, 0.0) for state in OPTIONAL_STATES] + rows
+            [(state, 60_000, 100, 0.5, 0.0) for state in OPTIONAL_STATES]
+            + [(state, 250_000, 9, 0.3, 1.2) for state in OPTIONAL_STATES]
+            + [("DE", 250_000, 12, 0.3, 1.2)]
+            + rows
         )
     )
 )
