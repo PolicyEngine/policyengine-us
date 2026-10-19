@@ -138,3 +138,30 @@
     state_code: TX
   output:
     tx_ssi_state_supplement_eligible: false
+
+- name: Case 12, countable income equal to the $30 reduced standard in its first full year.
+  # 42 USC 1382(e)(1)(B) has paid $30/month since July 1, 1988 (Pub. L.
+  # 100-203 section 9119). $360/year = $30/month.
+  period: 1989
+  input:
+    is_ssi_eligible: true
+    ssi_countable_income: 360
+    is_in_medicaid_facility: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    state_code: TX
+  output:
+    tx_ssi_state_supplement_eligible: true
+
+- name: Case 13, countable income above the $30 reduced standard in its first full year.
+  # $372/year = $31/month.
+  period: 1989
+  input:
+    is_ssi_eligible: true
+    ssi_countable_income: 372
+    is_in_medicaid_facility: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    state_code: TX
+  output:
+    tx_ssi_state_supplement_eligible: false
