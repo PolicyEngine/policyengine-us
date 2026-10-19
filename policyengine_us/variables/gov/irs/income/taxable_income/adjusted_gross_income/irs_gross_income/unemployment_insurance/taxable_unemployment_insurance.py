@@ -22,7 +22,7 @@ class taxable_unemployment_compensation(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.irs.unemployment_compensation.exemption
-        received = person("unemployment_compensation", period)
+        received = person("total_unemployment_compensation", period)
         # IRC 85(c)(1) tests the adjusted gross income of the return the
         # compensation is on. Members who are not dependents are on the tax
         # unit's return, as in irs_gross_income.

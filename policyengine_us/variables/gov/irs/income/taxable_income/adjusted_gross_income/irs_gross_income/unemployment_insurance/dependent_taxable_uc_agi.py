@@ -39,7 +39,7 @@ class dependent_taxable_uc_agi(Variable):
         income, deductions = dependent_income_and_deductions(person, period, parameters)
         # IRC 85(c)(2)(B): without regard to section 85, so without the
         # compensation (worksheet line 2 leaves out Schedule 1, line 7).
-        income -= max_(0, person("unemployment_compensation", period))
+        income -= max_(0, person("total_unemployment_compensation", period))
         # IRC 85(c)(2)(A): after section 86 (worksheet line 1 includes Form
         # 1040, line 6b).
         income += person("dependent_taxable_social_security", period)
