@@ -7,10 +7,15 @@ class hi_interest_deduction(Variable):
     label = "Hawaii interest deduction"
     unit = USD
     reference = (
+        # PDF pages 17, 32
         "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=17",
-        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=32",  # total itemized deduction worksheet
+        "https://files.hawaii.gov/tax/news/announce/ann21-01.pdf",
     )
     definition_period = YEAR
     defined_for = StateCode.HI
 
-    adds = ["investment_interest_expense", "mortgage_interest"]
+    adds = [
+        "investment_interest_expense",
+        "mortgage_interest",
+        "hi_deductible_mortgage_insurance_premiums",
+    ]
