@@ -167,6 +167,33 @@
   output:
     ks_fstc: 0
 
+- name: 2022 joint return with both spouses claimable gets no food sales tax credit (older spouse is the spouse)
+  period: 2022
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 60
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: KS
+  output:
+    ks_fstc: 0
+
 - name: 2022 joint return with no claimable spouse gets the food sales tax credit for both spouses
   period: 2022
   input:
@@ -188,6 +215,32 @@
     households:
       household:
         members: [person_a, person_b]
+        state_code: KS
+  output:
+    # 2 x $125 = $250.
+    ks_fstc: 250
+
+- name: 2022 joint return with no claimable spouse gets the food sales tax credit for both spouses (older spouse is the spouse)
+  period: 2022
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 60
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
         state_code: KS
   output:
     # 2 x $125 = $250.
@@ -296,6 +349,33 @@
   output:
     ks_fstc: 250
 
+- name: 2024 joint return with both spouses claimable keeps the food sales tax credit for both spouses (older spouse is the spouse)
+  period: 2024
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 60
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: KS
+  output:
+    ks_fstc: 250
+
 - name: 2024 joint return with no claimable spouse gets the food sales tax credit for both spouses
   period: 2024
   input:
@@ -317,6 +397,31 @@
     households:
       household:
         members: [person_a, person_b]
+        state_code: KS
+  output:
+    ks_fstc: 250
+
+- name: 2024 joint return with no claimable spouse gets the food sales tax credit for both spouses (older spouse is the spouse)
+  period: 2024
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 60
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
         state_code: KS
   output:
     ks_fstc: 250

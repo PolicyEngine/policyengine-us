@@ -10,6 +10,7 @@ class ia_exemption_credit(Variable):
     reference = (
         "https://revenue.iowa.gov/sites/default/files/2021-12/IA6251%2841131%29.pdf",
         "https://revenue.iowa.gov/sites/default/files/2023-01/IA6251%2841131%29.pdf",
+        # PDF pages 39-40
         "https://www.legis.iowa.gov/docs/code/2026/422.pdf#page=39",
         # 2025 IA 1040 instructions, Personal and dependent credits.
         "https://revenue.iowa.gov/media/4435/download?inline#page=8",
