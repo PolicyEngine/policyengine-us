@@ -1,0 +1,229 @@
+# IC 6-3-1-3.5(a)(22) and the 2025 IT-40 instructions, deduction 630 (PDF
+# page 23): a repayment of income included in Indiana AGI in an earlier year,
+# of any amount, whichever federal method applies.
+
+# The original $73 unemployment deduction minus $58 refigured without the
+# repayment leaves $15 excluded: $345 - ($73 - $58) = $330.
+- name: Case 1, 2025 IT-40 Example 1, $345 repayment less the $15 decrease in the earlier unemployment deduction.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 345
+        in_claim_of_right_repayment_excluded_from_income: 15
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: IN
+  output:
+    claim_of_right_section_1341_eligible: false
+    in_claim_of_right_deduction: 330
+
+- name: Case 2, 2025 IT-40 Example 2, $3,400 repaid with the federal credit.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 3_400
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_credit_applies: true
+    households:
+      household:
+        members: [head]
+        state_code: IN
+  output:
+    in_claim_of_right_deduction: 3_400
+
+- name: Case 3, repaid Social Security that Indiana never taxed gives no deduction.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        claim_of_right_repayment: 4_000
+        in_claim_of_right_repayment_excluded_from_income: 4_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: IN
+  output:
+    in_claim_of_right_deduction: 0
+
+- name: Case 4, the federal deduction method with the standard deduction still gets the Indiana deduction.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_credit_applies: false
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [head]
+        state_code: IN
+  output:
+    in_claim_of_right_deduction: 10_000
+
+- name: Case 5, a joint return deducts both spouses' repayments but not a dependent's.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 300
+      spouse:
+        age: 40
+        claim_of_right_repayment: 3_000
+        in_claim_of_right_repayment_excluded_from_income: 500
+      child:
+        age: 17
+        claim_of_right_repayment: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: IN
+  output:
+    in_claim_of_right_deduction: 2_800
+
+- name: Case 6, outside Indiana.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: OH
+  output:
+    in_claim_of_right_deduction: 0
+
+# Wages $40,000, repays $345 (Example 1 without an unemployment deduction).
+# IT-40: Indiana AGI $40,000 - $345 deduction - $1,000 exemption = $38,655;
+# state tax at 3% = $1,159.65.
+- name: Case 7, the deduction lowers Indiana AGI and state tax.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        claim_of_right_repayment: 345
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: IN
+  output:
+    in_claim_of_right_deduction: 345
+    in_deductions: 345
+    in_agi: 38_655
+    in_agi_tax: 1_159.65
+
+# Wages $40,000, repays $10,000: Indiana AGI $40,000 - $10,000 - $1,000 =
+# $29,000; tax at 3% = $870, whichever federal method applies.
+
+- name: Case 8, Indiana tax is $870 under the federal credit method.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_credit_applies: true
+    households:
+      household:
+        members: [head]
+        state_code: IN
+  output:
+    in_agi_tax: 870
+
+- name: Case 9, Indiana tax is $870 under the federal deduction method on a return that itemizes.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_credit_applies: false
+        tax_unit_itemizes: true
+    households:
+      household:
+        members: [head]
+        state_code: IN
+  output:
+    in_agi_tax: 870
+
+- name: Case 10, Indiana tax is $870 under the federal deduction method on a return taking the standard deduction.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_credit_applies: false
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [head]
+        state_code: IN
+  output:
+    in_agi_tax: 870
+
+- name: Case 11, the same amount entered as an existing other deduction gives the same Indiana tax.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        in_other_deductions: 10_000
+    households:
+      household:
+        members: [head]
+        state_code: IN
+  output:
+    in_agi_tax: 870

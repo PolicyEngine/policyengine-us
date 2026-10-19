@@ -1,11 +1,15 @@
 """Formula branches that calculate one period, under overridden inputs.
 
 A policyengine-core branch starts from every array its parent has cached when
-the branch is created and never sees the parent's later calculations, and
-``set_input`` on the branch stores the new value without clearing anything
-that was calculated from the old one. A branch therefore answers any variable
-its parent had already calculated with the parent's value, whatever the
-branch's inputs say. A branch kept from another period also answers this
+the branch is created and never sees the parent's later calculations. Before
+policyengine-core 3.33, ``set_input`` on the branch stored the new value
+without clearing anything that was calculated from the old one, so a branch
+answered any variable its parent had already calculated with the parent's
+value, whatever the branch's inputs said. From 3.33 it drops the values stored
+after the overridden variable was first stored anywhere in the simulation,
+which can include a choice the caller wants the branch to keep; pass such a
+choice as an input (as ``get_itemization_branch`` does for the claim of right
+method). A branch kept from another period also answers this
 period from a copy taken before any of this period was calculated, unlike the
 branch a simulation calculating only this period would create, so a later
 year came out differently when an earlier year had been calculated first.
@@ -23,8 +27,15 @@ calculates:
   formula branches while its parent is still calculating the variable the
   branch overrides. Otherwise the branch drops every array it copied except
   inputs, each for the periods it was set for, and calculates the rest
-  itself.
+  itself. A parent value equal to the override is not enough: the parent's
+  cache can predate a later change to another input.
 - A branch reused within its period with different inputs is created again.
+- A caller can ask the branch never to keep the parent's calculated values
+  (``inherit_calculated=False``). The parent can hold a value that depends on
+  the overridden variable although it has no value for that variable yet:
+  one it calculated in another branch, which chose the overridden variable
+  for itself. The branches that fix the claim of right method (26 U.S.C.
+  1341) start from inputs for that reason.
 
 ``get_branch_for_period`` is the same with no inputs, for branches that
 change the tax-benefit system rather than inputs: the caller swaps the system
@@ -139,11 +150,14 @@ def get_override_branch(
     name: str,
     period: Period,
     inputs: Dict[str, Override],
+    inherit_calculated: bool = True,
 ) -> Simulation:
     """Return ``simulation``'s branch ``name`` for ``period``, with ``inputs`` set.
 
     ``inputs`` maps each overridden variable to its value for ``period``, or
-    to a ``(period, value)`` pair for another period (e.g. a month).
+    to a ``(period, value)`` pair for another period (e.g. a month). With
+    ``inherit_calculated=False`` a new branch keeps only inputs, whether or
+    not the parent has calculated an overridden variable.
     """
     period = to_period(period)
     overrides = list(_overrides(period, inputs))
@@ -167,7 +181,7 @@ def get_override_branch(
         )
         branch = simulation.get_branch(name)
         branch.branch_period = period
-        if parent_knows_override:
+        if parent_knows_override or not inherit_calculated:
             drop_inherited_values(branch)
         for variable, input_period, value in overrides:
             branch.set_input(variable, input_period, value)

@@ -1,0 +1,29 @@
+- name: California carries the federal deduction for Publication 525 Example 40.
+  # IRS Publication 525 (2025), Example 40, as a California resident.
+  # https://www.irs.gov/pub/irs-prior/p525--2025.pdf#page=37
+  # Schedule CA (540), Part II line 16, retains the federal deduction in
+  # column A when California also deducts the repayment.
+  # https://www.ftb.ca.gov/forms/2025/2025-540-ca-instructions.html
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 65_700
+        charitable_cash_donations: 15_750
+        claim_of_right_repayment: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_prior_year_tax_decrease: 568
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    ca_income_tax: 1_078.89
+    claim_of_right_credit_applies: false
+    claim_of_right_deduction: 5_000
+    ca_itemized_deductions_pre_limitation: 20_750
+    ca_taxable_income: 44_950
