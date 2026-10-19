@@ -231,11 +231,16 @@ def test_actual_medical_deduction_is_scoped_to_period_and_branch():
     strict=True,
     reason=(
         "policyengine-core<3.32.27 retains deleted input provenance and "
-        "misclassifies a federal medical deduction recalculated before the "
-        "Idaho helper as supplied; fixed by policyengine-core#561."
+        "misclassifies a federal itemized total recalculated before the "
+        "Idaho formula as supplied; fixed by policyengine-core#561."
     ),
 )
-def test_deleted_medical_input_recalculated_federal_first():
+def test_deleted_itemized_input_recalculated_federal_first():
+    # From derived inputs Idaho's claimant worksheet equals the federal medical
+    # deduction, so a deleted federal medical input cannot change any Idaho
+    # amount. Idaho's itemized total still tells a supplied federal total,
+    # used as given, from a derived one, whose medical component it replaces
+    # with an explicit Idaho claimant deduction.
     year = 2025
     simulation = Simulation(
         tax_benefit_system=SYSTEM,
@@ -249,8 +254,6 @@ def test_deleted_medical_input_recalculated_federal_first():
                 "dependent": {
                     "age": {year: 20},
                     "is_tax_unit_dependent": {year: True},
-                    # The federal subtotal and Idaho's claimant worksheet
-                    # both count a dependent's other costs.
                     "other_medical_expenses": {year: 500},
                 },
             },
@@ -258,12 +261,10 @@ def test_deleted_medical_input_recalculated_federal_first():
                 "tax_unit": {
                     "members": ["head", "dependent"],
                     "adjusted_gross_income": {year: 30_000},
-                    "standard_deduction": {year: 15_750},
-                    "id_itemized_deductions": {year: 20_000},
-                    # From derived inputs the claimant worksheet equals the
-                    # federal deduction. A supplied Idaho premium amount below
-                    # the 3,000 Schedule A premiums keeps the two apart.
-                    "id_qualified_health_insurance_premiums": {year: 2_000},
+                    "interest_deduction": {year: 20_000},
+                    "salt_deduction": {year: 0},
+                    "id_salt_deduction": {year: 0},
+                    "id_health_insurance_premiums_medical_deduction": {year: 250},
                 }
             },
             "households": {
@@ -274,17 +275,18 @@ def test_deleted_medical_input_recalculated_federal_first():
             },
         },
     )
-    simulation.set_input("medical_expense_deduction", year, np.array([3_000]))
-    simulation.delete_arrays("medical_expense_deduction", year)
+    simulation.set_input("itemized_taxable_income_deductions", year, np.array([30_000]))
+    simulation.delete_arrays("itemized_taxable_income_deductions", year)
 
-    # Federal first: 3,000 + 500 - 30,000 * 7.5% = 1,250.
-    assert simulation.calculate("medical_expense_deduction", year).tolist() == [1_250]
-    # Idaho's claimant overlap is 2,000 + 500 - 30,000 * 7.5% = 250, leaving
-    # 2,000 - 250 = 1,750. Core's provenance defect before 3.32.27 uses the
-    # 1,250 federal deduction and returns 2,000 - 1,250 = 750.
+    # Federal first: 20,000 interest + (3,000 + 500 - 30,000 * 7.5%) medical
+    # = 21,250.
     assert simulation.calculate(
-        "id_health_insurance_premiums_subtraction", year
-    ).tolist() == [1_750]
+        "itemized_taxable_income_deductions", year
+    ).tolist() == [21_250]
+    # Idaho replaces the 1,250 federal medical deduction with the explicit 250:
+    # 21,250 - 1,000 = 20,250. Core's provenance defect before 3.32.27 takes the
+    # recalculated total as supplied and keeps 21,250.
+    assert simulation.calculate("id_itemized_deductions", year).tolist() == [20_250]
 
 
 # Form 39R worksheet lines 1-6 take the medical expenses claimed on federal
