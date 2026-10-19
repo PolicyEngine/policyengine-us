@@ -330,6 +330,7 @@ def claimant_returns(draw):
         "other": [draw(st.integers(0, 40_000)) for _ in range(members)],
         "agi": draw(st.integers(0, 150_000) | st.integers(600_000, 900_000)),
         "interest": draw(st.integers(0, 40_000)),
+        "standard": draw(st.integers(0, 35_000)),
         "above_line": draw(st.integers(0, 25_000)),
         "receiver": filers + draw(st.integers(0, dependents - 1)),
         "raise": draw(st.integers(1, 10_000)),
@@ -376,6 +377,10 @@ def _claimant_simulation(cases, year):
                 "interest_deduction": {year: case["interest"]},
                 "salt_deduction": {year: 0},
                 "id_salt_deduction": {year: 0},
+                # Supplied to keep the model graph small: neither depends on
+                # medical expenses.
+                "standard_deduction": {year: case["standard"]},
+                "taxable_income_before_itemized_deductions": {year: case["agi"]},
             }
             households[unit] = {"members": members, "state_code": {year: "ID"}}
             rows.append((index, variant))
