@@ -62,7 +62,9 @@
         adjusted_gross_income: 290_000
         state_and_local_sales_or_income_tax: 1_000
   output:
-    salt_deduction: 8_000
+    # 26 USC 164(b)(6)(B), (7)(B): (40,000 - 30% x 40,000) / 2 = 14,000.
+    salt_cap: 14_000
+    salt_deduction: 11_000
 
 - name: Fully phased out, floor applies
   period: 2026
