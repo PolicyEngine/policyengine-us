@@ -5,6 +5,9 @@ from policyengine_us.variables.gov.hhs.medicaid.income._apply_medicaid_optional_
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income.deemed.from_ineligible_parent._ssi_parental_child_allocation_scope import (
+    ssi_parental_child_allocation_total,
+)
 
 
 class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent(
@@ -14,12 +17,19 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
     entity = Person
     label = "Medicaid optional senior or disabled unearned income deemed from ineligible parent"
     unit = USD
-    definition_period = YEAR
-    reference = "https://www.law.cornell.edu/cfr/text/20/416.1165"
+    definition_period = MONTH
+    reference = (
+        "https://www.law.cornell.edu/cfr/text/20/416.1165",
+        "https://www.law.cornell.edu/uscode/text/42/1396b#v",
+    )
 
     def formula(person, period, parameters):
-        eligible_child = person("is_ssi_aged_blind_disabled", period) & person(
-            "is_child", period
+        # Medicaid's own immigration rules include eligible groups who do
+        # not qualify for SSI, including state-covered noncitizen children.
+        eligible_child = (
+            person("is_ssi_aged_blind_disabled", period)
+            & person("is_child", period)
+            & person("is_medicaid_immigration_status_eligible", period)
         )
         ineligible_parent = person("is_ssi_ineligible_parent", period)
         tax_unit = person.tax_unit
@@ -39,8 +49,8 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
             person("ssi_unearned_income", period) * ineligible_parent
         )
 
-        child_allocations = eligible_child * add(
-            tax_unit, period, ["ssi_ineligible_child_allocation"]
+        child_allocations = eligible_child * ssi_parental_child_allocation_total(
+            person, period, eligible_child
         )
         parental_allocations = eligible_child * add(
             tax_unit, period, ["ssi_ineligible_parent_allocation"]
@@ -70,15 +80,17 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
                 parameters,
                 period,
                 general_exclusion=general_disregard,
+                monthly=True,
             ),
             _apply_medicaid_optional_senior_or_disabled_exclusions(
-                parental_earned_income,
-                parental_unearned_income,
+                parental_earned_income * MONTHS_IN_YEAR,
+                parental_unearned_income * MONTHS_IN_YEAR,
                 state,
                 general_disregard,
                 parameters,
                 period,
-            ),
+            )
+            / MONTHS_IN_YEAR,
         )
         net_parental_deemed_income = max_(
             0, net_parental_deemed_income - parental_allocations
@@ -88,4 +100,4 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
         income = np.zeros_like(count_eligible_children, dtype=float)
         mask = count_eligible_children > 0
         income[mask] = net_parental_deemed_income[mask] / count_eligible_children[mask]
-        return income
+        return where(eligible_child, income, 0)

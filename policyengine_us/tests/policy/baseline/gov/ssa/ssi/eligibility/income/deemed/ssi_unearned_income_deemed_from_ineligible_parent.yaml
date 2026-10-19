@@ -1,0 +1,154 @@
+- name: Review r2 excludes a permanently absent adult student's allocation from parental deeming
+  # 20 CFR 416.1165(b): allocations cover ineligible children in the household.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        person_id: 1
+        is_tax_unit_head: true
+        ssi_unearned_income: 24_000
+      claimant:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      student:
+        age: 20
+        person_id: 3
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_full_time_college_student: true
+    tax_units:
+      family:
+        members: [parent, claimant, student]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      claimant_unit:
+        members: [claimant]
+      student_unit:
+        members: [student]
+    households:
+      home:
+        members: [parent, claimant]
+        state_code: TX
+      away:
+        members: [student]
+        state_code: TX
+  output:
+    people:
+      claimant:
+        # 24,000 - 240 general exclusion - 11,928 parent allocation.
+        ssi_unearned_income_deemed_from_ineligible_parent: 11_832
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11_832
+        # 11,928 - (11,832 - 240 own general exclusion).
+        ssi: 336
+      student:
+        ssi_ineligible_child_allocation: 5_964
+
+- name: Review r2 excludes an immigration-ineligible sibling from the SSI parental recipient divisor
+  # 20 CFR 416.1165(e)(2): divide the remainder among eligible children only.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        person_id: 1
+        is_tax_unit_head: true
+        ssi_unearned_income: 24_000
+      claimant:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      sibling:
+        age: 12
+        person_id: 3
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: UNDOCUMENTED
+    tax_units:
+      family:
+        members: [parent, claimant, sibling]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      claimant_unit:
+        members: [claimant]
+      sibling_unit:
+        members: [sibling]
+    households:
+      home:
+        members: [parent, claimant, sibling]
+        state_code: TX
+  output:
+    people:
+      claimant:
+        # 24,000 - 5,964 sibling allocation - 240 - 11,928 = 5,868.
+        ssi_unearned_income_deemed_from_ineligible_parent: 5_868
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5_868
+        ssi: 6_300
+      sibling:
+        is_ssi_ineligible_child: true
+        ssi_ineligible_child_allocation: 5_964
+        ssi_unearned_income_deemed_from_ineligible_parent: 0
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 0
+
+- name: Review r2 Medicaid uses California's broader immigration eligibility independently of SSI
+  # California covers undocumented minors. Both are Medicaid recipients, so
+  # neither receives an ineligible-child allocation in Medicaid's own pool.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        person_id: 1
+        is_tax_unit_head: true
+        ssi_unearned_income: 24_000
+      claimant:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      sibling:
+        age: 12
+        person_id: 3
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: UNDOCUMENTED
+    tax_units:
+      family:
+        members: [parent, claimant, sibling]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      claimant_unit:
+        members: [claimant]
+      sibling_unit:
+        members: [sibling]
+    households:
+      home:
+        members: [parent, claimant, sibling]
+        state_code: CA
+  output:
+    people:
+      claimant:
+        ssi_unearned_income_deemed_from_ineligible_parent: 5_868
+        # (24,000 - 230 * 12 - 11,928 parent allocation) / 2.
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 4_656
+      sibling:
+        is_medicaid_immigration_status_eligible: true
+        ssi_unearned_income_deemed_from_ineligible_parent: 0
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 4_656

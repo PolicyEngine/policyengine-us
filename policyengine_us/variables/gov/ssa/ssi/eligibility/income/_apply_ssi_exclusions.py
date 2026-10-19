@@ -7,6 +7,7 @@ def _apply_ssi_exclusions(
     parameters: ParameterNode,
     period: Period,
     general_exclusion: ArrayLike = None,
+    monthly: bool = False,
 ) -> ArrayLike:
     """
     Applies standard SSI income exclusions to convert total earned/unearned income
@@ -15,12 +16,12 @@ def _apply_ssi_exclusions(
       2) Subtract $65 'earned' exclusion from any remaining earned income.
       3) Exclude 50% of the remainder of earned income.
 
-    All amounts are stored as annual but exclusions are monthly amounts, so we convert
-    from annual -> monthly, apply monthly exclusions, then go back to annual.
+    By default inputs and outputs are annual. Monthly callers pass monthly=True
+    so exclusions apply to that month before annual aggregation.
     """
-    # Convert from annual to monthly
-    earned_monthly = earned_income / MONTHS_IN_YEAR
-    unearned_monthly = unearned_income / MONTHS_IN_YEAR
+    factor = 1 if monthly else MONTHS_IN_YEAR
+    earned_monthly = earned_income / factor
+    unearned_monthly = unearned_income / factor
 
     p = parameters(period).gov.ssa.ssi.income.exclusions
     general_exclusion = p.general if general_exclusion is None else general_exclusion
@@ -39,5 +40,4 @@ def _apply_ssi_exclusions(
     # So the fraction that remains is (1 - earned_share).
     countable_earned = earned_after_flat * (1.0 - p.earned_share)
 
-    # Convert back to annual
-    return (countable_unearned + countable_earned) * MONTHS_IN_YEAR
+    return (countable_unearned + countable_earned) * factor
