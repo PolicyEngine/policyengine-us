@@ -4,7 +4,7 @@
     filing_status: JOINT
     head_is_dependent_elsewhere: true
     spouse_is_dependent_elsewhere: true
-    head_or_spouse_is_dependent_elsewhere: true
+    head_or_spouse_is_dependent_elsewhere_without_filing_exception: true
     tax_unit_count_dependents: 0
     state_code: VT
   output:
@@ -16,7 +16,7 @@
     filing_status: JOINT
     head_is_dependent_elsewhere: true
     spouse_is_dependent_elsewhere: true
-    head_or_spouse_is_dependent_elsewhere: true
+    head_or_spouse_is_dependent_elsewhere_without_filing_exception: true
     tax_unit_count_dependents: 2
     state_code: VT
   output:
@@ -29,7 +29,7 @@
     filing_status: JOINT
     head_is_dependent_elsewhere: true
     spouse_is_dependent_elsewhere: false
-    head_or_spouse_is_dependent_elsewhere: true
+    head_or_spouse_is_dependent_elsewhere_without_filing_exception: true
     tax_unit_count_dependents: 0
     state_code: VT
   output:
@@ -41,7 +41,7 @@
     filing_status: JOINT
     head_is_dependent_elsewhere: true
     spouse_is_dependent_elsewhere: false
-    head_or_spouse_is_dependent_elsewhere: true
+    head_or_spouse_is_dependent_elsewhere_without_filing_exception: true
     tax_unit_count_dependents: 2
     state_code: VT
   output:
@@ -75,7 +75,7 @@
   input:
     filing_status: SINGLE
     head_is_dependent_elsewhere: true
-    head_or_spouse_is_dependent_elsewhere: true
+    head_or_spouse_is_dependent_elsewhere_without_filing_exception: true
     tax_unit_count_dependents: 0
     state_code: VT
   output:
@@ -86,7 +86,7 @@
   input:
     filing_status: SINGLE
     head_is_dependent_elsewhere: true
-    head_or_spouse_is_dependent_elsewhere: true
+    head_or_spouse_is_dependent_elsewhere_without_filing_exception: true
     tax_unit_count_dependents: 2
     state_code: VT
   output:
