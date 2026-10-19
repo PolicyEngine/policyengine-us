@@ -8,7 +8,11 @@
 #   grandfathered debt (1987 or earlier): no dollar limit
 #   other debt from 2017 or earlier: $1,000,000 ($500,000 separate)
 #   debt from 2018 or later: $750,000 ($375,000 separate)
-# Deductible interest = interest x qualified loan limit / total debt.
+# Deductible interest = interest x qualified loan limit / total debt. The
+# expectations follow PolicyEngine's federal calculation, which uses the exact
+# ratio; Table 1 line 14 rounds it to three places, which moves some amounts
+# by up to 0.05% of the interest (for example $26,680 rather than $26,666.67
+# for the 2016 case below).
 
 - name: Interest on debt above the federal limit is not deductible
   period: 2025
@@ -126,11 +130,9 @@
     people:
       head:
         age: 45
-        employment_income: 150_000
         home_mortgage_interest: 30_000
       spouse:
         age: 45
-        employment_income: 50_000
         home_mortgage_interest: 10_000
     tax_units:
       tax_unit:
@@ -149,3 +151,5 @@
     # each spouse's interest.
     deductible_mortgage_interest: [15_000, 5_000]
     al_interest_deduction: 20_000
+    # No other itemized deduction applies.
+    al_itemized_deductions: 20_000

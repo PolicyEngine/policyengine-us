@@ -10,9 +10,11 @@
 #   line 11 = line 8 / (G + A), "rounded to three places"
 #   line 12 = interest x line 11
 # The 2025 N-11 instructions (line 21c) send filers to this worksheet.
-# Limits are halved for married filing separately. The federal deduction uses
-# the $750,000 limit for debt from 2018 or later, no home equity debt and the
-# exact ratio.
+# Limits are halved for married filing separately. PolicyEngine's federal
+# deduction uses the $750,000 limit for debt from 2018 or later, no home
+# equity debt and the exact ratio (its worksheet rounds too). Interest paid
+# (line 10) is the federally deductible and non-deductible parts together; a
+# deduction supplied directly has already been limited and passes through.
 
 - name: Hawaii allows interest on $1,000,000 of acquisition debt plus $100,000 of home equity debt
   period: 2025
@@ -236,3 +238,30 @@
   output:
     # round($1,100,000 / $1,300,000, 3) = .846; .846 x $65,000.
     hi_mortgage_interest_deduction: 54_990
+
+- name: Line 11 is rounded from the exact ratio
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    home_mortgage_interest: 40_000
+    first_home_mortgage_balance: 1_128_784
+    first_home_mortgage_origination_year: 2020
+  output:
+    # $1,100,000 / $1,128,784 = .97449999, which rounds to .974 (single
+    # precision would give .9745 and round up); .974 x $40,000.
+    hi_mortgage_interest_deduction: 38_960
+
+- name: A deduction supplied directly is not limited a second time
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    deductible_mortgage_interest: 20_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    # The supplied $20,000 is already after the federal limit and no gross
+    # interest is reported, so Hawaii keeps it rather than taking .733 of it.
+    hi_mortgage_interest_deduction: 20_000

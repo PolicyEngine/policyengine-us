@@ -37,7 +37,10 @@
 # so the 26 U.S.C. 163(h)(3) acquisition-debt limits apply: $750,000
 # ($375,000 separate) for debt from 2018 or later, $1,000,000 ($500,000) for
 # other debt from 2017 or earlier, and no dollar limit for grandfathered debt
-# from 1987 or earlier (IRS Publication 936 (2025), Table 1).
+# from 1987 or earlier (IRS Publication 936 (2025), Table 1). The expectations
+# follow PolicyEngine's federal calculation, which uses the exact ratio; Table
+# 1 line 14 rounds it to three places (for example $8,007 rather than $8,000
+# for the mixed-vintage case below).
 
 - name: Interest on debt above the federal limit is excluded
   period: 2025

@@ -36,15 +36,31 @@ def _hi_deductible_share(qualified_loan_limit, total_debt):
 
     The qualified loan limit divided by the total debt, "rounded to three
     places" (half up). Interest is treated as within the limits, a share of
-    one, when no balance is reported, as in the federal calculation.
+    one, when no balance is reported, as in the federal calculation. The
+    ratio is computed in double precision: in single precision a ratio just
+    below a half-thousandth, such as $1,100,000 / $1,128,784 = .97449999,
+    rounds the wrong way.
     """
-    ratio = np.divide(
-        qualified_loan_limit,
-        total_debt,
-        out=np.ones_like(total_debt),
-        where=total_debt > 0,
-    )
+    limit = np.asarray(qualified_loan_limit, dtype=np.float64)
+    debt = np.asarray(total_debt, dtype=np.float64)
+    ratio = np.divide(limit, debt, out=np.ones_like(debt), where=debt > 0)
     return np.floor(ratio * 1_000 + 0.5) / 1_000
+
+
+def _hi_allowed_interest(deductible, non_deductible, deductible_share):
+    """Table 1, line 12: interest paid (line 10) times line 11.
+
+    Interest paid is the federally deductible and non-deductible parts
+    together. When federal law disallows none of it, Hawaii's limits, which
+    are never lower than the federal ones, disallow none either; keeping the
+    federal amount then also passes through a deduction supplied directly,
+    which the federal limits have already reduced, rather than reducing it
+    again. For the same reason the result is never below the federal amount,
+    which the worksheet's rounding could otherwise undercut by a fraction of
+    a percent.
+    """
+    hawaii = (deductible + non_deductible) * deductible_share
+    return where(non_deductible > 0, max_(hawaii, deductible), deductible)
 
 
 class hi_mortgage_interest_deduction(Variable):
@@ -76,8 +92,8 @@ class hi_mortgage_interest_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         balances = [
-            tax_unit("first_home_mortgage_balance", period),
-            tax_unit("second_home_mortgage_balance", period),
+            tax_unit("first_home_mortgage_balance", period).astype(np.float64),
+            tax_unit("second_home_mortgage_balance", period).astype(np.float64),
         ]
         origination_years = [
             tax_unit("first_home_mortgage_origination_year", period),
@@ -102,11 +118,13 @@ class hi_mortgage_interest_deduction(Variable):
             p.home_equity_debt_limit[filing_status],
         )
         # Lines 9 and 11. The 2025 N-11 instructions send filers to this
-        # worksheet, which rounds the ratio; the federal calculation uses the
-        # exact ratio.
+        # worksheet, which rounds the ratio; PolicyEngine's federal
+        # calculation uses the exact ratio.
         total_debt = grandfathered_debt + other_debt
         deductible_share = _hi_deductible_share(qualified_loan_limit, total_debt)
-        # Line 10: interest before any limit, the federally deductible and
-        # non-deductible parts together. Line 12 multiplies it by line 11.
-        interest = add(tax_unit, period, ["mortgage_interest"])
-        return interest * deductible_share
+        # Lines 10 and 12.
+        return _hi_allowed_interest(
+            add(tax_unit, period, ["deductible_mortgage_interest"]),
+            add(tax_unit, period, ["non_deductible_mortgage_interest"]),
+            deductible_share,
+        )

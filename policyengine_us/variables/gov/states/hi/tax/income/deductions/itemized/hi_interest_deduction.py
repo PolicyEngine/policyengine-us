@@ -7,8 +7,9 @@ class hi_interest_deduction(Variable):
     label = "Hawaii interest deduction"
     unit = USD
     reference = (
+        # 2022 N-11 instructions, line 21c and the total itemized deduction
+        # worksheet, PDF pages 17, 32
         "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=17",
-        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=32",  # total itemized deduction worksheet
     )
     definition_period = YEAR
     defined_for = StateCode.HI

@@ -24,8 +24,13 @@ helper:
 5. Monotone: a larger balance never lowers the limit.
 6. Share: line 11, the limit over total debt "rounded to three places", lies
    in [0, 1], within half a thousandth of the exact ratio and, for the drawn
-   balances, at or above the federal (exact) share, so Hawaii's deduction
-   stays between the federal deduction and the interest paid.
+   balances, at or above the federal (exact) share. It is the same whether
+   the balances arrive in single precision, as in a simulation, or double.
+7. Line 12: the Hawaii deduction lies between the federal deduction and the
+   interest paid, equals the federal deduction when federal law disallows
+   nothing (so a deduction supplied directly is not limited again), and
+   otherwise equals interest paid times line 11 unless that would fall below
+   the federal amount.
 
 These are for-all properties of the helpers, which YAML cannot state. The
 policy outcomes and interest proration are checked in
@@ -37,6 +42,7 @@ from hypothesis import given, settings
 from hypothesis import strategies as st
 
 from policyengine_us.variables.gov.states.hi.tax.income.deductions.itemized.hi_mortgage_interest_deduction import (
+    _hi_allowed_interest,
     _hi_deductible_share,
     _hi_qualified_loan_limit,
 )
@@ -175,6 +181,34 @@ def test_hawaii_qualified_loan_limit_properties(first, second, status):
         assert share >= federal_limit(pair, federal_limits) / total - 1e-9
     else:
         assert share == 1
+    single = _hi_deductible_share(
+        np.array([limit], dtype=np.float32), np.array([total], dtype=np.float32)
+    )
+    assert float(single[0]) == share
+
+
+amounts = st.one_of(st.just(0.0), st.floats(0, 500_000, allow_nan=False))
+
+
+@settings(**SETTINGS)
+@given(
+    deductible=amounts,
+    non_deductible=amounts,
+    share=st.one_of(st.sampled_from((0.0, 0.5, 0.733, 1.0)), st.floats(0, 1)),
+)
+def test_hawaii_allowed_interest_properties(deductible, non_deductible, share):
+    allowed = float(
+        _hi_allowed_interest(
+            np.array([deductible]), np.array([non_deductible]), np.array([share])
+        )[0]
+    )
+    paid = deductible + non_deductible
+    # 7. Line 12.
+    assert deductible - TOLERANCE <= allowed <= paid + TOLERANCE
+    if non_deductible == 0:
+        assert allowed == deductible
+    else:
+        assert abs(allowed - max(paid * share, deductible)) <= TOLERANCE
 
 
 def test_hawaii_share_rounds_half_up_to_three_places():
@@ -185,3 +219,9 @@ def test_hawaii_share_rounds_half_up_to_three_places():
     np.testing.assert_allclose(
         _hi_deductible_share(limits, debt), [0.313, 0.733, 0.846, 1.0]
     )
+    # .97449999 rounds down, in single precision too.
+    near_tie = _hi_deductible_share(
+        np.array([1_100_000], dtype=np.float32),
+        np.array([1_128_784], dtype=np.float32),
+    )
+    np.testing.assert_array_equal(near_tie, [0.974])
