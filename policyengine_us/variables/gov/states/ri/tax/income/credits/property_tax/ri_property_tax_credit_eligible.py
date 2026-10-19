@@ -16,8 +16,8 @@ class ri_property_tax_credit_eligible(Variable):
         p = parameters(period).gov.states.ri.tax.income.credits.property_tax
         person = tax_unit.members
         # R.I. Gen. Laws 44-33-3: the claimant is a homeowner or renter aged
-        # 65 or older or disabled, and "does not include any person claimed as
-        # a dependent by any taxpayer". Members of a household choose who
+        # 65 or older or disabled, and "shall not mean or include any person
+        # claimed as a dependent by any taxpayer". Members of a household choose who
         # claims, so either spouse may be the claimant, but the age or
         # disability and the dependency test belong to the same person.
         filer = person("is_tax_unit_head_or_spouse", period)

@@ -338,3 +338,30 @@
   output:
     # One child aged 4: min(1, 3) x $250.
     ri_child_tax_rebate: 250
+
+# Publication 501 claimant filing exception restores the valid dependent.
+
+- name: 2021 claimable but unclaimed filer whose claimant meets the filing exception keeps the Rhode Island
+    child rebate
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 8000
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: RI
+  output:
+    ri_child_tax_rebate: 250

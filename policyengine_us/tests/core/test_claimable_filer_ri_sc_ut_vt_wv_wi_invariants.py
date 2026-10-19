@@ -38,6 +38,7 @@ from policyengine_us.tests.core.test_dependent_elsewhere_head_spouse_swap_invari
     _seeded_couples,
     adults,
     dependents,
+    money,
 )
 
 STATES = ["RI", "SC", "UT", "VT", "WV", "WI"]
@@ -74,12 +75,26 @@ OUTPUTS = MONOTONE + [
 
 
 @st.composite
+def adults_with_retirement_income(draw):
+    # Exercise the positive Wisconsin retirement-exclusion path as well as
+    # earnings-only returns, without changing the other states' generators.
+    return {
+        **draw(adults()),
+        "taxable_pension_income": draw(money(40_000)),
+        "taxable_ira_distributions": draw(money(20_000)),
+    }
+
+
+@st.composite
 def couples(draw):
     claimable = draw(st.sampled_from(CLAIM_PATTERNS))
     claimed = tuple(can and draw(st.booleans()) for can in claimable)
     return {
         "state": draw(st.sampled_from(STATES)),
-        "adults": [draw(adults()), draw(adults())],
+        "adults": [
+            draw(adults_with_retirement_income()),
+            draw(adults_with_retirement_income()),
+        ],
         "dependents": draw(st.lists(dependents(), max_size=2)),
         "claimed": claimed,
         "claimable": claimable,
@@ -132,5 +147,15 @@ def test_ri_sc_ut_vt_wv_wi_claimable_filer_rules_are_label_free(year, units):
 @pytest.mark.parametrize("year", YEARS)
 def test_ri_sc_ut_vt_wv_wi_claimable_filer_rules_seeded_population(year):
     units = _seeded_couples(STATES, per_state=2) + _crafted_cases(STATES)
+    rng = np.random.default_rng(20261019)
+    for unit in units:
+        unit["adults"] = [
+            {
+                **adult,
+                "taxable_pension_income": float(rng.choice([0, 8_000, 30_000])),
+                "taxable_ira_distributions": float(rng.choice([0, 4_000, 12_000])),
+            }
+            for adult in unit["adults"]
+        ]
     check_swap(units, year, OUTPUTS, _identities)
     check_monotone(units, year, MONOTONE, _identities)

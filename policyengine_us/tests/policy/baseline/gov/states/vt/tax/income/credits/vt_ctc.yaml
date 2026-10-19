@@ -85,6 +85,7 @@
     vt_ctc: 500
 
 # S.51 (2025) tests for expanded age eligibility
+
 - name: S.51 - CTC includes 6-year-olds starting 2025
   period: 2025
   input:
@@ -319,3 +320,30 @@
   output:
     # 5830f counts qualifying children under IRC 152(c), who are dependents.
     vt_ctc: 0
+
+# IRC 152(b)(1) does not bar dependents under the claimant filing exception.
+
+- name: 2025 claimable but unclaimed filer whose claimant meets the filing exception keeps the Vermont
+    child tax credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 2000
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: true
+      child:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: VT
+  output:
+    vt_ctc: 1000

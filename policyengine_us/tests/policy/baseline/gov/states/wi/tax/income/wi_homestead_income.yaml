@@ -101,6 +101,7 @@
     wi_homestead_income: 5_000
 
 # Hold TANF at zero to isolate the $500 dependent deduction on wage income.
+
 - name: "2025 single filer who can be claimed as a dependent: no Wisconsin homestead $500 dependent deduction"
   period: 2025
   input:
@@ -271,3 +272,33 @@
     # $10,000 - $500 = $9,500; ($1,000 - $1,440 x 8.785%) x 80% = $698.7968.
     wi_homestead_income: 9500
     wi_homestead_credit: 698.7968
+
+# $10,000 income less the restored $500 dependent deduction.
+
+- name: 2025 claimant filing exception preserves the Wisconsin homestead dependent deduction
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 10000
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: WI
+    spm_units:
+      spm_unit:
+        members: [filer, child]
+        tanf: 0
+  output:
+    wi_homestead_income: 9500

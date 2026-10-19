@@ -134,3 +134,86 @@
     # One child under 1 x $100 x one parent earning $3,000 or less
     # (the other parent earns $4,000); AGI $6,000 is under $50,000.
     ut_at_home_parent_credit_potential: 100
+
+- name: '2025 joint return with both spouses claimable: no Utah at-home parent credit (head and spouse
+    labels swapped)'
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 2000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      person_b:
+        age: 24
+        employment_income: 4000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      newborn:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, newborn]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, newborn]
+        state_code: UT
+  output:
+    ut_at_home_parent_credit_potential: 0
+
+- name: '2025 joint return with neither spouse claimable (control): Utah at-home parent credit (head and
+    spouse labels swapped)'
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 2000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      person_b:
+        age: 24
+        employment_income: 4000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      newborn:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, newborn]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, newborn]
+        state_code: UT
+  output:
+    ut_at_home_parent_credit_potential: 100
+
+- name: 2025 claimable but unclaimed filer whose claimant meets the filing exception keeps the Utah at-home
+    parent credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 2000
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: true
+      child:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: UT
+  output:
+    ut_at_home_parent_credit_potential: 100

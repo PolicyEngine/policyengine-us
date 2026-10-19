@@ -20,8 +20,9 @@ class wi_childcare_expense_subtraction(Variable):
         # definition, which covers childcare plus care for a disabled adult
         # qualifying individual (care_expenses).
         # Only childcare for a qualifying individual counts (IRC
-        # 21(b)(2)(A)(ii)): a return whose filer can be claimed has no
-        # qualifying child under 13 (152(b)(1)), so its childcare drops out.
+        # 21(b)(2)(A)(ii)): outside the claimant filing exception, a return
+        # whose filer can be claimed has no qualifying child under 13
+        # (152(b)(1)), unless the child is incapable of self-care.
         childcare = tax_unit("cdcc_qualifying_childcare_expenses", period)
         adult_care = add(tax_unit, period, ["care_expenses"])
         uncapped_expenses = childcare + adult_care
