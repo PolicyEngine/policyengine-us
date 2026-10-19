@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class claim_of_right_prior_year_tax_decrease(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Prior-year tax decrease from excluding repaid claim of right income"
+    label = (
+        "Federal prior-year tax decrease from excluding repaid claim of right income"
+    )
     unit = USD
     documentation = (
         "Decrease in the filers' federal income tax under chapter 1 of the "
