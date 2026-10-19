@@ -81,3 +81,116 @@
     immigration_status: UNDOCUMENTED
   output:
     is_ssi_ineligible_child: true
+
+- name: Review r2 a married student remains married while her husband lives elsewhere
+  # 20 CFR 416.1856(b) and 416.1806(a)(1): legal marriage does not require
+  # co-residence, although spousal deeming does.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        person_id: 1
+        is_tax_unit_head: true
+      spouse:
+        age: 60
+        person_id: 2
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 600 * 12
+      daughter:
+        age: 20
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+        is_tax_unit_spouse: true
+        is_full_time_college_student: true
+      husband:
+        age: 22
+        person_id: 4
+        is_tax_unit_head: true
+    tax_units:
+      parents:
+        members: [claimant, spouse]
+      daughter_couple:
+        members: [daughter, husband]
+    marital_units:
+      parents:
+        members: [claimant, spouse]
+      daughter_unit:
+        members: [daughter]
+      husband_unit:
+        members: [husband]
+    households:
+      home:
+        members: [claimant, spouse, daughter]
+        state_code: TX
+      away:
+        members: [husband]
+        state_code: TX
+  output:
+    people:
+      daughter:
+        is_ssi_ineligible_child: false
+        ssi_ineligible_child_allocation: 0
+      claimant:
+        ssi: 10_932
+
+- name: Review r2 a 21-year-old student was not an ineligible child before June 2008
+  # POMS SI 01310.115 A.3: before June 16, 2008 the deeming age limit was 21.
+  # The general SSI child definition keeps its separate student age limit.
+  period: 1986
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        person_id: 1
+        is_tax_unit_head: true
+      spouse:
+        age: 60
+        person_id: 2
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 252 * 12
+      student:
+        age: 21
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+        is_tax_unit_dependent: true
+        is_full_time_college_student: true
+    tax_units:
+      family:
+        members: [claimant, spouse, student]
+    marital_units:
+      parents:
+        members: [claimant, spouse]
+      student_unit:
+        members: [student]
+    households:
+      home:
+        members: [claimant, spouse, student]
+        state_code: TX
+  output:
+    people:
+      student:
+        is_ssi_ineligible_child: false
+        ssi_ineligible_child_allocation: 0
+      claimant:
+        ssi: 3_264
+
+- name: Review r2 the deeming student age limit is under 21 in May 2008
+  period: 2008-05
+  input:
+    age: 21
+    is_full_time_college_student: true
+  output:
+    is_ssi_ineligible_child: false
+
+- name: Review r2 the deeming student age limit is under 22 in July 2008
+  period: 2008-07
+  input:
+    age: 21
+    is_full_time_college_student: true
+  output:
+    is_ssi_ineligible_child: true
