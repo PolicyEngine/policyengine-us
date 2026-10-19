@@ -1140,3 +1140,477 @@
     mt_elderly_homeowner_or_renter_credit_pre_one_claimant: [50, 410]
     mt_elderly_homeowner_or_renter_credit_selected_claimant: [false, true]
     mt_elderly_homeowner_or_renter_credit: [0, 410]
+
+- name: 2024 Schedule 2EC, a household member's netted capital loss does not raise the credit
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        real_estate_taxes: 2_000
+      person2:
+        age: 30
+        long_term_capital_gains: 10_000
+        short_term_capital_gains: -4_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Line 5 = 20_000; line 17 = 10_000 (the gain without the loss); line
+    # 18 = 30_000; line 20 = 17_400; line 22 = 17_400 x 0.05 = 870; line 27 =
+    # 2_000 - 870 = 1_130; line 29 = 100%; line 30 = 1_130. Netting the loss
+    # would give line 18 = 26_000, line 22 = 670 and the 1_150 cap.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [870, 0]
+    mt_elderly_homeowner_or_renter_credit: [1_130, 0]
+
+- name: 2024 Schedule 2EC, a capital loss netted between spouses on a joint return is added back once
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        long_term_capital_gains: 10_000
+        real_estate_taxes: 2_000
+      person2:
+        age: 68
+        short_term_capital_gains: -4_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Federal AGI 20_000 + 10_000 - 4_000 = 26_000; the 4_000 loss is added
+    # back once. Line 18 = 30_000; line 22 = 870; line 30 = 1_130.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [870, 0]
+    mt_elderly_homeowner_or_renter_credit: [1_130, 0]
+
+- name: 2024 Schedule 2EC, a minor filing alone in the household counts once
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        real_estate_taxes: 2_000
+        is_tax_unit_dependent: false
+      person2:
+        age: 16
+        employment_income: 10_000
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Line 18 = 20_000 + 10_000 = 30_000; line 30 = 1_130. Counting the
+    # minor's wages twice would give 40_000, line 22 = 1_370 and a credit of
+    # (2_000 - 1_370) x 30% = 189.
+    mt_elderly_homeowner_or_renter_credit: [1_130, 0]
+
+- name: 2024 Schedule 2EC, a capital loss carryover does not raise the credit
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        long_term_capital_gains: 6_000
+        long_term_capital_loss_carryover: 4_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # Line 5 = 20_000; line 7 = the year's 10_000 gain; line 18 = 30_000;
+    # line 22 = 870; line 30 = 1_130. Counting the 6_000 net would give line
+    # 18 = 26_000, line 22 = 670 and the 1_150 cap.
+    mt_elderly_homeowner_or_renter_credit: 1_130
+
+- name: 2024 Schedule 2EC, a carryover against a net loss supplied directly adds no gain
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 30_000
+        capital_gains: -5_000
+        long_term_capital_loss_carryover: 5_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # Line 18 = 30_000; line 22 = 17_400 x 0.05 = 870; line 30 = 1_130.
+    # Counting the carryover as a gain would give 35_000 and 880 x 40% = 352.
+    mt_elderly_homeowner_or_renter_credit: 1_130
+
+- name: 2024 Schedule 2EC, a dependent's gain counts when another person's capital_gains is supplied
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        capital_gains: 0
+        real_estate_taxes: 2_000
+      person2:
+        age: 16
+        long_term_capital_gains: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Line 18 = 20_000 + 10_000 = 30_000; line 22 = 870; line 30 = 1_130.
+    mt_elderly_homeowner_or_renter_credit: [1_130, 0]
+
+- name: 2024 Schedule 2EC, a parent living in an adult child's home claims the child's property tax as rent
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        taxable_pension_income: 14_000
+        rent: 0
+        ssi: 0
+      person2:
+        age: 45
+        taxable_interest_income: 6_000
+        rent: 0
+        real_estate_taxes: 4_000
+        ssi: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # The home is in the child's name. "If the property occupied by you is
+    # in a name other than your own, the property taxes billed for that
+    # property can qualify as rent only" (2025 instructions, line 23; ARM
+    # 42.4.302(2)(b)).
+    # Line 18 = 14_000 + 6_000 = 20_000; line 20 = 20_000 - 12_600 = 7_400;
+    # line 21 = 0.035; line 22 = 259.
+    # Parent: line 23 = 0; line 24 = 4_000 (the child's bill, as rent);
+    # line 25 = 600; line 26 = 600; line 27 = 600 - 259 = 341; line 28 =
+    # 341; line 29 = 100% (under 35_000); line 30 = 341. Before this rule
+    # the parent's line 24 was 0 and the credit 0.
+    # The child is 45, so not a claimant (§ 15-30-2338(1)(a)).
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [259, 0]
+    mt_elderly_homeowner_or_renter_credit_gross_rent: [4_000, 0]
+    mt_elderly_homeowner_or_renter_credit_pre_one_claimant: [341, 0]
+    mt_elderly_homeowner_or_renter_credit_selected_claimant: [true, false]
+    mt_elderly_homeowner_or_renter_credit: [341, 0]
+    mt_refundable_credits: [341, 0]
+
+- name: 2024 Schedule 2EC, a parent who pays the child less rent than the child's bill counts the bill
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        taxable_pension_income: 14_000
+        rent: 2_400
+        ssi: 0
+      person2:
+        age: 45
+        taxable_interest_income: 6_000
+        rent: 0
+        real_estate_taxes: 4_000
+        ssi: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Line 22 = 259 as above. Line 24 = the larger of the rent paid
+    # (2_400) and the child's bill (4_000) = 4_000; line 25 = 600; line 27 =
+    # 341. Counting rent paid alone would give 360 - 259 = 101.
+    mt_elderly_homeowner_or_renter_credit_gross_rent: [4_000, 0]
+    mt_elderly_homeowner_or_renter_credit: [341, 0]
+
+- name: 2024 Schedule 2EC, a parent who pays the child more rent than the child's bill counts the rent, not both
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        taxable_pension_income: 14_000
+        rent: 6_000
+        ssi: 0
+      person2:
+        age: 45
+        taxable_interest_income: 6_000
+        rent: 0
+        real_estate_taxes: 4_000
+        ssi: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Line 22 = 259. Line 24 = max(6_000, 4_000) = 6_000; line 25 = 900;
+    # line 27 = 900 - 259 = 641. Adding the bill to the rent (10_000) would
+    # give 1_500 - 259 = 1_241, capped at 1_150.
+    mt_elderly_homeowner_or_renter_credit_gross_rent: [6_000, 0]
+    mt_elderly_homeowner_or_renter_credit: [641, 0]
+
+- name: 2024 Schedule 2EC, two elderly siblings and one owns; the owner's larger credit is the one claim
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 10_000
+        rent: 0
+        ssi: 0
+      person2:
+        age: 70
+        taxable_pension_income: 10_000
+        rent: 0
+        real_estate_taxes: 2_000
+        ssi: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # SSI is pinned at 0 to isolate the credit's arithmetic. Line 18 =
+    # 20_000; line 20 = 7_400; line 21 = 0.035; line 22 = 259.
+    # person1 (home in person2's name): line 24 = 2_000; line 25 = 300;
+    # line 27 = 300 - 259 = 41.
+    # person2: line 23 = 2_000; line 27 = 2_000 - 259 = 1_741; line 28 =
+    # 1_150 cap.
+    # One claimant per household (§ 15-30-2341(1)): person2 claims 1_150.
+    mt_elderly_homeowner_or_renter_credit_pre_one_claimant: [41, 1_150]
+    mt_elderly_homeowner_or_renter_credit_selected_claimant: [false, true]
+    mt_elderly_homeowner_or_renter_credit: [0, 1_150]
+
+- name: 2024 Schedule 2EC, a dependent's bill stays on the claimant's line 23
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        taxable_pension_income: 14_000
+        rent: 0
+        is_tax_unit_dependent: false
+        ssi: 0
+      person2:
+        age: 50
+        rent: 0
+        is_tax_unit_dependent: true
+        real_estate_taxes: 4_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # real_estate_taxes does not show whose name is on the title, so the
+    # tax unit's bill, the dependent's included, is line 23 and ARM
+    # 42.4.302(2)(b) does not apply. Line 18 = 14_000; line 20 = 1_400;
+    # line 21 = 0; line 22 = 0. Line 23 = 4_000; line 24 = 0; line 27 =
+    # 4_000; line 28 = 1_150 cap; line 30 = 1_150.
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: 4_000
+    mt_elderly_homeowner_or_renter_credit_gross_rent: 0
+    mt_elderly_homeowner_or_renter_credit: [1_150, 0]
+
+- name: 2024 Schedule 2EC, a home co-owned with a dependent keeps both bills on line 23
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        taxable_pension_income: 14_000
+        rent: 0
+        is_tax_unit_dependent: false
+        real_estate_taxes: 500
+        ssi: 0
+      person2:
+        age: 50
+        rent: 0
+        is_tax_unit_dependent: true
+        real_estate_taxes: 2_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Line 18 = 14_000; line 20 = 1_400; line 21 = 0; line 22 = 0. Line 23
+    # = 500 + 2_000 = 2_500; line 24 = 0; line 27 = 2_500; line 28 = 1_150
+    # cap; line 30 = 1_150.
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: 2_500
+    mt_elderly_homeowner_or_renter_credit_gross_rent: 0
+    mt_elderly_homeowner_or_renter_credit: [1_150, 0]
+
+- name: 2024 Schedule 2EC, a dependent pays the rent and no one in the household is billed
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        taxable_pension_income: 14_000
+        rent: 0
+        is_tax_unit_dependent: false
+        ssi: 0
+      person2:
+        age: 50
+        rent: 6_000
+        is_tax_unit_dependent: true
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Line 18 = 14_000; line 20 = 1_400; line 21 = 0; line 22 = 0. Line 23
+    # = 0. Line 24 = the tax unit's rent, the dependent's included, 6_000,
+    # against a household bill of 0; line 25 = 900; line 27 = 900; line 30
+    # = 900.
+    mt_elderly_homeowner_or_renter_credit_gross_rent: 6_000
+    mt_elderly_homeowner_or_renter_credit: [900, 0]
+
+- name: 2024 Schedule 2EC, a parent in the home of a child's joint return billed through the spouse
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        taxable_pension_income: 14_000
+        rent: 0
+        ssi: 0
+      person2:
+        age: 45
+        rent: 0
+        ssi: 0
+      person3:
+        age: 43
+        rent: 0
+        real_estate_taxes: 4_000
+        ssi: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_name: MT
+  output:
+    # Line 18 = 14_000; line 20 = 1_400; line 21 = 0; line 22 = 0. Parent:
+    # line 23 = 0; line 24 = the household's bill, 4_000, held by the
+    # child's spouse; line 25 = 600; line 27 = 600; line 30 = 600.
+    mt_elderly_homeowner_or_renter_credit_gross_rent: [4_000, 0]
+    mt_elderly_homeowner_or_renter_credit: [600, 0, 0]

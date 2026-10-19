@@ -108,6 +108,44 @@
   output:
     medicaid_person_is_required_to_file: false
 
+- name: Case 7, a self-employment loss does not count as unearned income.
+  # IRS Pub. 501 (2025), p. 4, Table 2: unearned income is interest,
+  # dividends, capital gain distributions, pensions and the like; earned
+  # income is wages and pay for work. Here unearned income is the 100 of
+  # interest, not 100 less the 5,000 loss, so it is not more than 1,350, and
+  # gross income, 100, is not more than 1,350. The dependent is not required
+  # to file.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        self_employment_income: -5_000
+        taxable_interest_income: 100
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: false
+
+- name: Case 8, wages deferred to a 401(k) plan do not hide unearned income.
+  # Box 1 wages leave out the 2,000 deferral, so gross income is 8,000 of
+  # wages and 1,500 of interest. Unearned income, 1,500, is more than 1,350
+  # (Pub. 501 (2025), Table 2), so the dependent must file.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        employment_income: 10_000
+        traditional_401k_contributions: 2_000
+        taxable_interest_income: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: true
+
 - name: A dependent's disability pension before minimum retirement age is earned income for the filing threshold.
   period: 2024
   input:
@@ -133,3 +171,28 @@
     # 10,000 is under it and the dependent need not file. The parent's
     # 25,000 of wages is over the 14,600 single amount.
     medicaid_person_is_required_to_file: [true, false]
+
+# Positive-source gross income preserves the loss/deferral rules even
+# when a disability pension is also earned income (Pub. 501, Table 2).
+- name: Earned disability with a business loss does not become unearned Medicaid filing income
+  period: 2024
+  input:
+    age: 20
+    disability_benefits: 1300
+    disability_benefits_before_minimum_retirement_age: 1300
+    self_employment_income: -2000
+  output:
+    medicaid_irs_gross_income: 1300
+    medicaid_person_is_required_to_file: false
+- name: Deferred wages do not hide unearned income alongside earned disability benefits
+  period: 2024
+  input:
+    age: 20
+    employment_income: 3000
+    traditional_401k_contributions: 2000
+    disability_benefits: 3000
+    disability_benefits_before_minimum_retirement_age: 3000
+    taxable_interest_income: 1500
+  output:
+    medicaid_irs_gross_income: 5500
+    medicaid_person_is_required_to_file: true

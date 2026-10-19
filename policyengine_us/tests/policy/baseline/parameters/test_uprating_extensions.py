@@ -162,6 +162,45 @@ def test_cms_esi_premium_per_enrollee_holds_last_projected_growth_rate():
     assert parameter("2150-01-01") == parameter("2100-01-01")
 
 
+def test_cms_direct_purchase_premium_per_enrollee_holds_last_projected_growth_rate():
+    """Directly bought premium inputs keep growing after CMS's 2034
+    projection, at the 2033-2034 growth rate."""
+    parameter = PARAMETERS.calibration.gov.hhs.cms.direct_purchase_premium_per_enrollee
+    last_growth = parameter("2034-01-01") / parameter("2033-01-01")
+
+    assert parameter("2034-01-01") == 9_589
+    for year in [2035, 2036, 2050, 2100]:
+        growth = parameter(f"{year}-01-01") / parameter(f"{year - 1}-01-01")
+        assert growth == pytest.approx(last_growth, rel=1e-12)
+    assert parameter("2150-01-01") == parameter("2100-01-01")
+
+
+def test_medicare_part_b_premium_holds_last_projected_growth_rate():
+    """Reported Part B premium inputs keep growing after the Trustees' 2035
+    projection, at the 2034-2035 growth rate."""
+    parameter = PARAMETERS.calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee
+    last_growth = parameter("2035-01-01") / parameter("2034-01-01")
+
+    assert parameter("2035-01-01") == 360.6
+    for year in [2036, 2037, 2050, 2100]:
+        growth = parameter(f"{year}-01-01") / parameter(f"{year - 1}-01-01")
+        assert growth == pytest.approx(last_growth, rel=1e-12)
+    assert parameter("2150-01-01") == parameter("2100-01-01")
+
+
+def test_cpi_u_medical_care_holds_last_projected_growth_rate():
+    """Long-term care premium inputs keep growing after CBO's 2036
+    projection, at the 2035-2036 growth rate."""
+    parameter = PARAMETERS.gov.bls.cpi.cpi_u_medical_care
+    last_growth = parameter("2036-01-01") / parameter("2035-01-01")
+
+    assert parameter("2036-01-01") == 813.07
+    for year in [2037, 2038, 2050, 2100]:
+        growth = parameter(f"{year}-01-01") / parameter(f"{year - 1}-01-01")
+        assert growth == pytest.approx(last_growth, rel=1e-12)
+    assert parameter("2150-01-01") == parameter("2100-01-01")
+
+
 def test_soi_income_upraters_extend_without_trustees_reform():
     """SOI income upraters should inherit baseline long-run CBO extensions."""
     soi = PARAMETERS.calibration.gov.irs.soi
