@@ -1,6 +1,9 @@
 description: North Carolina provides this amount as the maximum monthly enhanced rate for special care units and in-home recipients with Alzheimer's disease or dementia under the State-County Special Assistance program.
 values:
   2026-01-01: 1_792
+  # G.S. 108A-42.1(b): use the federally approved 3.6% COLA,
+  # rather than the unrounded CPI-W index ratio, for 2027.
+  2027-01-01: 1_857
 
 metadata:
   unit: currency-USD
@@ -20,3 +23,5 @@ metadata:
       href: https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=205
     - title: North Carolina Change Notice EFS-SA-CN-01-2026 I
       href: https://policies.ncdhhs.gov/wp-content/uploads/EFS-SA-CN-01-2026.pdf#page=1
+    - title: Social Security Administration 2027 COLA Fact Sheet
+      href: https://www.ssa.gov/news/en/cola/factsheets/2027.html
