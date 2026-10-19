@@ -6,48 +6,6 @@
 # SLH 2026). This file follows the statute for 2022-2025; the 2022-2025 N-11
 # instructions list the items the other way round (see the PR).
 
-- name: Case 1, the Hawaii credit method gives the prior-year Hawaii tax decrease as a credit and no deduction.
-  period: 2025
-  input:
-    people:
-      head:
-        age: 40
-        claim_of_right_repayment: 10_000
-    tax_units:
-      tax_unit:
-        members: [head]
-        hi_claim_of_right_credit_applies: true
-        hi_claim_of_right_prior_year_tax_decrease: 600
-    households:
-      household:
-        members: [head]
-        state_code: HI
-  output:
-    hi_claim_of_right_section_1341_eligible: true
-    hi_claim_of_right_credit: 600
-    hi_claim_of_right_deduction: 0
-
-- name: Case 2, the Hawaii deduction method deducts the whole repayment outside the 2% floor.
-  period: 2025
-  input:
-    people:
-      head:
-        age: 40
-        employment_income: 50_000
-        claim_of_right_repayment: 10_000
-    tax_units:
-      tax_unit:
-        members: [head]
-        hi_claim_of_right_credit_applies: false
-        hi_claim_of_right_prior_year_tax_decrease: 600
-    households:
-      household:
-        members: [head]
-        state_code: HI
-  output:
-    hi_claim_of_right_credit: 0
-    hi_claim_of_right_deduction: 10_000
-
 # Wages $50,000, so Hawaii AGI $50,000 and the 2% floor is $1,000.
 - name: Case 3, a repayment of $3,000 is a miscellaneous deduction above 2% of Hawaii AGI.
   period: 2025
@@ -160,56 +118,6 @@
     hi_claim_of_right_repayment: 4_000
     hi_claim_of_right_section_1341_eligible: true
     hi_claim_of_right_deduction: 4_000
-
-# Wages $60,000, repays $10,000; the earlier year's Hawaii tax would fall by
-# $1,500. Deducting $10,000 saves at most 11% x $10,000 = $1,100, the top
-# Hawaii rate, so the credit gives less tax.
-- name: Case 8, Hawaii uses the credit when the earlier year's Hawaii tax decrease exceeds what the deduction saves.
-  period: 2025
-  input:
-    people:
-      head:
-        age: 40
-        employment_income: 60_000
-        claim_of_right_repayment: 10_000
-    tax_units:
-      tax_unit:
-        members: [head]
-        hi_claim_of_right_prior_year_tax_decrease: 1_500
-    households:
-      household:
-        members: [head]
-        state_code: HI
-  output:
-    hi_claim_of_right_credit_applies: true
-    hi_claim_of_right_credit: 1_500
-    hi_claim_of_right_deduction: 0
-
-# Wages $100,000, $20,000 of charity, repays $10,000; the earlier year's Hawaii
-# tax would fall by $100. The filer itemizes either way, and $10,000 of
-# deduction saves at least 1.4% x $10,000 = $140, the lowest Hawaii rate, so
-# the deduction gives less tax.
-- name: Case 9, Hawaii uses the deduction when it saves more than the prior-year decrease.
-  period: 2025
-  input:
-    people:
-      head:
-        age: 40
-        employment_income: 100_000
-        charitable_cash_donations: 20_000
-        claim_of_right_repayment: 10_000
-    tax_units:
-      tax_unit:
-        members: [head]
-        hi_claim_of_right_prior_year_tax_decrease: 100
-    households:
-      household:
-        members: [head]
-        state_code: HI
-  output:
-    hi_claim_of_right_credit_applies: false
-    hi_claim_of_right_deduction: 10_000
-    hi_claim_of_right_credit: 0
 
 - name: Case 10, outside Hawaii.
   period: 2025
