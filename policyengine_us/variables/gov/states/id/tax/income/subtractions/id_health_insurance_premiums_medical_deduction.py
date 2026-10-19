@@ -13,11 +13,20 @@ class id_health_insurance_premiums_medical_deduction(Variable):
         # PDF pages 48-49 (Form 39R, line 18 and worksheet lines 1-8).
         "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=48",
         "https://www.irs.gov/instructions/i1040sca",
+        # CPS ASEC wording of the premium and medical care questions, PDF
+        # pages 2-3.
+        "https://www.census.gov/content/dam/Census/library/working-papers/2015/demo/Medical-Out-of-pocket-Expenses-CPSASEC-2013-2014.pdf#page=2",
     )
     documentation = (
         "Medical deduction used to allocate the claimant's health premium "
-        "overlap. Only costs paid by the head and spouse enter the medical "
-        "floor calculation, including their payments covering dependents. "
+        "overlap. Form 39R worksheet lines 1-6 take the medical expenses "
+        "claimed on federal Schedule A, which include bills the claimant paid "
+        "for dependents. Premium inputs sit on the payer, so only the head's "
+        "and spouse's premiums count, including coverage they bought for "
+        "dependents; a dependent's own premium payments do not. Other medical "
+        "expenses sit on the person cared for, including amounts other "
+        "household members paid on that person's behalf, so every member's "
+        "count. "
         "Premium inputs already exclude pretax payroll premiums; premiums "
         "deducted on Schedule 1 are removed first. The "
         "actual federal medical deduction limits the derived result. A "
@@ -44,13 +53,18 @@ class id_health_insurance_premiums_medical_deduction(Variable):
         federal_medical = max_(0, tax_unit("medical_expense_deduction", period))
         if supplied_medical:
             return federal_medical
+        # Qualified premiums are the head's and spouse's own payments.
         premiums = tax_unit("id_qualified_health_insurance_premiums", period)
+        # Form 39R lines 3-6 take the Schedule A bills, which include those
+        # the claimant paid for dependents. Other medical expenses sit on the
+        # person cared for, so a dependent's are the filers' payments.
         other_medical = tax_unit_non_dep_add(
-            tax_unit, period, ["other_medical_expenses"]
+            tax_unit,
+            period,
+            ["other_medical_expenses"],
+            include_dependents=["other_medical_expenses"],
         )
         p = parameters(period).gov.irs.deductions.itemized.medical
         medical_floor = p.floor * tax_unit("positive_agi", period)
-        # Form 39R lines 1-6 use costs claimed on this return, not payments
-        # independently made by dependents and aggregated by the federal model.
         claimant_medical = max_(0, premiums + other_medical - medical_floor)
         return min_(federal_medical, claimant_medical)

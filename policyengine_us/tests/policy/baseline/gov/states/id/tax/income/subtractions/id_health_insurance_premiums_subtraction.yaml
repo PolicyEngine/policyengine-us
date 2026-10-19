@@ -282,8 +282,16 @@
     id_itemizes: true
     id_health_insurance_premiums_subtraction: 2_000
 
-- name: Claimant medical overlap includes spouse expenses and excludes dependent expenses
-  # Claimants paid $5,000 premiums + $2,000 other costs; the floor is $6,000.
+- name: Claimant medical overlap counts bills for a dependent but not the dependent's own premiums
+  # 2025 Form 39R worksheet, PDF page 49, lines 1-8: lines 1-6 take the
+  # Schedule A amounts, and Schedule A line 1 counts bills the filers paid for
+  # dependents. Other medical expenses sit on the person cared for.
+  # Premiums: the filers' 3,000 + 2,000 = 5,000; the dependent's own 500 is
+  # not theirs. Other costs: 1,000 + 1,000 + the dependent's 2,000 = 4,000.
+  # Medical deduction: 5,000 + 4,000 - 7.5% of 80,000 = 3,000.
+  # Subtraction: 5,000 - min(5,000, 3,000) = 2,000. Leaving out the
+  # dependent's bills would give 4,000.
+  # Itemized route 40,000 + 2,000 = 42,000 beats standard 31,500 + 5,000.
   period: 2025
   input:
     people:
@@ -300,7 +308,7 @@
       dependent:
         age: 20
         health_insurance_premiums: 500
-        other_medical_expenses: 4_000
+        other_medical_expenses: 2_000
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
@@ -313,12 +321,48 @@
         members: [head, spouse, dependent]
         state_code: ID
   output:
-    # Federal: the filers' 5,000 of premiums and every member's 6,000 of
-    # other costs, less the 6,000 floor; not the dependent's own 500.
-    medical_expense_deduction: 5_000
-    id_health_insurance_premiums_medical_deduction: 1_000
+    medical_expense_deduction: 3_000
+    id_qualified_health_insurance_premiums: 5_000
+    id_health_insurance_premiums_medical_deduction: 3_000
     id_itemizes: true
-    id_health_insurance_premiums_subtraction: 4_000
+    id_health_insurance_premiums_subtraction: 2_000
+
+- name: A bill a parent paid for a dependent's care enters the claimant worksheet
+  # Schedule A line 1 counts "medical and dental bills you paid ... for ...
+  # All dependents you claim on your return" (2025 instructions), and Form
+  # 39R worksheet lines 3-6 take those Schedule A amounts.
+  # Medical deduction: 3,000 + 1,500 - 7.5% of 30,000 = 2,250.
+  # Subtraction: 3,000 - min(3,000, 2,250) = 750. Leaving out the child's
+  # bills would give a 750 deduction and a 2,250 subtraction.
+  # Itemized route 20,000 + 750 = 20,750 beats standard 15,750 + 3,000.
+  # Taxable income: 30,000 - 20,000 - 750 = 9,250.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        health_insurance_premiums: 3_000
+        is_tax_unit_head: true
+      child:
+        age: 10
+        other_medical_expenses: 1_500
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        adjusted_gross_income: 30_000
+        standard_deduction: 15_750
+        id_itemized_deductions: 20_000
+    households:
+      household:
+        members: [head, child]
+        state_code: ID
+  output:
+    medical_expense_deduction: 2_250
+    id_health_insurance_premiums_medical_deduction: 2_250
+    id_itemizes: true
+    id_health_insurance_premiums_subtraction: 750
+    id_taxable_income: 9_250
 
 - name: Derived claimant medical overlap uses premiums excluding pretax payroll payments
   # Pretax payroll premiums are separate; remove only the Schedule 1 amount.
