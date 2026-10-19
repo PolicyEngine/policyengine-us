@@ -1,0 +1,176 @@
+# HRS 235-2.4(j)(3) (235-2.4(i)(3) from 2026, Act 35, SLH 2026) makes IRC
+# 163(h)(3)(F) inoperative, so Hawaii keeps the pre-TCJA limits for debt
+# incurred at any time (2018 N-11 instructions, PDF page 19; 2025, PDF page
+# 17). IRS Publication 936 (2017), Table 1 (PDF page 11):
+#   G = grandfathered debt, 1987 or earlier (line 1); A = other debt (line 2)
+#   line 6 = min(max(G, $1,000,000), G + A)
+#   line 7 = min(G + A - line 6, $100,000): debt above the acquisition limit
+#            may qualify as home equity debt (Figure A, note 3, PDF page 3)
+#   line 8 = line 6 + line 7 (qualified loan limit)
+#   deductible interest = interest x line 8 / (G + A)
+# Limits are halved for married filing separately. The federal deduction uses
+# the $750,000 limit for debt from 2018 or later and no home equity debt.
+
+- name: Hawaii allows interest on $1,000,000 of acquisition debt plus $100,000 of home equity debt
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    home_mortgage_interest: 40_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    # Federal: $40,000 x $750,000 / $1,500,000 = $20,000.
+    deductible_mortgage_interest: 20_000
+    # Hawaii: $40,000 x ($1,000,000 + $100,000) / $1,500,000. Before the fix
+    # Hawaii allowed all $40,000.
+    hi_mortgage_interest_deduction: 29_333.33
+    hi_interest_deduction: 29_333.33
+
+- name: Debt between the federal and Hawaii limits is fully deductible in Hawaii
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    home_mortgage_interest: 36_000
+    first_home_mortgage_balance: 900_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    # Federal: $36,000 x $750,000 / $900,000 = $30,000.
+    deductible_mortgage_interest: 30_000
+    hi_mortgage_interest_deduction: 36_000
+
+- name: Up to $100,000 above the acquisition limit counts as home equity debt
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: JOINT
+    home_mortgage_interest: 42_000
+    first_home_mortgage_balance: 1_050_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    # Line 6 = $1,000,000; line 7 = min($50,000, $100,000); line 8 equals
+    # the whole balance.
+    hi_mortgage_interest_deduction: 42_000
+
+- name: Interest on debt within both limits is fully deductible
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    home_mortgage_interest: 24_000
+    first_home_mortgage_balance: 600_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    deductible_mortgage_interest: 24_000
+    hi_mortgage_interest_deduction: 24_000
+
+- name: Interest is fully deductible when no balance is reported
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    home_mortgage_interest: 40_000
+  output:
+    hi_mortgage_interest_deduction: 40_000
+
+- name: Grandfathered debt above $1,000,000 is fully deductible
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: JOINT
+    home_mortgage_interest: 40_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 1986
+  output:
+    hi_mortgage_interest_deduction: 40_000
+
+- name: Grandfathered debt uses up the acquisition limit but not the home equity limit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    filing_status: JOINT
+    home_mortgage_interest: 40_000
+    first_home_mortgage_balance: 1_200_000
+    first_home_mortgage_origination_year: 1985
+    second_home_mortgage_balance: 300_000
+    second_home_mortgage_origination_year: 2020
+  output:
+    # Federal: qualified loan limit $1,200,000; $40,000 x 1.2 / 1.5.
+    deductible_mortgage_interest_tax_unit: 32_000
+    # Hawaii: line 6 = $1,200,000; line 7 = min($300,000, $100,000);
+    # $40,000 x $1,300,000 / $1,500,000.
+    hi_mortgage_interest_deduction: 34_666.67
+
+- name: Married filing separately uses the $500,000 and $50,000 limits
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    filing_status: SEPARATE
+    home_mortgage_interest: 40_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    # Federal: $40,000 x $375,000 / $1,500,000 = $10,000.
+    deductible_mortgage_interest: 10_000
+    # Hawaii: $40,000 x ($500,000 + $50,000) / $1,500,000.
+    hi_mortgage_interest_deduction: 14_666.67
+
+- name: Hawaii keeps its limits in 2026 under Act 35
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    home_mortgage_interest: 40_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    deductible_mortgage_interest: 20_000
+    hi_mortgage_interest_deduction: 29_333.33
+
+- name: The interest deduction adds investment interest to Hawaii's mortgage interest
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    home_mortgage_interest: 40_000
+    investment_interest_expense: 2_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    hi_interest_deduction: 31_333.33
+
+- name: Spouses' interest is limited together
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 150_000
+        home_mortgage_interest: 30_000
+      spouse:
+        age: 45
+        employment_income: 50_000
+        home_mortgage_interest: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        first_home_mortgage_balance: 1_500_000
+        first_home_mortgage_origination_year: 2020
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    deductible_mortgage_interest: [15_000, 5_000]
+    # $40,000 x $1,100,000 / $1,500,000.
+    hi_mortgage_interest_deduction: 29_333.33

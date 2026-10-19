@@ -5,7 +5,7 @@
   period: 2024
   input:
     filing_status: JOINT
-    mortgage_interest: 9_000
+    home_mortgage_interest: 9_000
     real_estate_taxes: 4_000
     state_code: NC
   output:
@@ -15,7 +15,7 @@
   period: 2024
   input:
     filing_status: SEPARATE
-    mortgage_interest: 9_000
+    home_mortgage_interest: 9_000
     real_estate_taxes: 11_000
     state_code: NC
   output:
@@ -26,7 +26,91 @@
   period: 2024
   input:
     filing_status: SINGLE
-    mortgage_interest: 25_000
+    home_mortgage_interest: 25_000
     state_code: NC
   output:
     nc_mortgage_and_property_tax_before_limitation: 25_000
+
+# Line 1 is "the amount allowed as a deduction for interest paid or accrued
+# during the taxable year under section 163(h) of the Code with respect to any
+# qualified residence" (G.S. 105-153.5(a)(2)b; 2025 Form D-401, PDF page 20),
+# so the 26 U.S.C. 163(h)(3) acquisition-debt limits apply: $750,000
+# ($375,000 separate) for debt from 2018 or later, $1,000,000 ($500,000) for
+# other debt from 2017 or earlier, and no dollar limit for grandfathered debt
+# from 1987 or earlier (IRS Publication 936 (2025), Table 1).
+
+- name: Interest on debt above the federal limit is excluded
+  period: 2025
+  input:
+    state_code: NC
+    filing_status: SINGLE
+    home_mortgage_interest: 40_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    # $40,000 x $750,000 / $1,500,000 = $20,000. Before the fix line 1 was
+    # all $40,000.
+    deductible_mortgage_interest: 20_000
+    nc_mortgage_and_property_tax_before_limitation: 20_000
+
+- name: Interest on debt within the federal limit is fully counted
+  period: 2025
+  input:
+    state_code: NC
+    filing_status: SINGLE
+    home_mortgage_interest: 24_000
+    real_estate_taxes: 3_000
+    first_home_mortgage_balance: 600_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    nc_mortgage_and_property_tax_before_limitation: 27_000
+
+- name: Grandfathered debt above $1,000,000 is fully counted
+  period: 2025
+  input:
+    state_code: NC
+    filing_status: JOINT
+    home_mortgage_interest: 15_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 1986
+  output:
+    nc_mortgage_and_property_tax_before_limitation: 15_000
+
+- name: Earlier debt of $750,000 or more leaves no room under the later limit
+  period: 2025
+  input:
+    state_code: NC
+    filing_status: JOINT
+    home_mortgage_interest: 17_000
+    first_home_mortgage_balance: 900_000
+    first_home_mortgage_origination_year: 2020
+    second_home_mortgage_balance: 800_000
+    second_home_mortgage_origination_year: 2016
+  output:
+    # Qualified loan limit = $800,000; $17,000 x $800,000 / $1,700,000.
+    nc_mortgage_and_property_tax_before_limitation: 8_000
+
+- name: Married filing separately uses the $375,000 limit
+  period: 2025
+  input:
+    state_code: NC
+    filing_status: SEPARATE
+    home_mortgage_interest: 24_000
+    first_home_mortgage_balance: 600_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    # $24,000 x $375,000 / $600,000.
+    nc_mortgage_and_property_tax_before_limitation: 15_000
+
+- name: The July 5, 2025 Code keeps the $750,000 limit in 2026
+  period: 2026
+  input:
+    state_code: NC
+    filing_status: SINGLE
+    home_mortgage_interest: 40_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    # S.L. 2026-31 section 12(a) adopts the Code as of July 5, 2025, which
+    # includes P.L. 119-21 section 70108's permanent $750,000 limit.
+    nc_mortgage_and_property_tax_before_limitation: 20_000
