@@ -333,3 +333,30 @@
         members: [head, mother, grandchild]
   output:
     filing_status: [HEAD_OF_HOUSEHOLD, SINGLE]
+
+- name: Widow whose own parent id is set still files as surviving spouse with a dependent child without ids.
+  period: 2025
+  input:
+    people:
+      head:
+        person_id: 1
+        parent_1_id: 90
+        age: 67
+        is_surviving_spouse: true
+        is_tax_unit_head: true
+      adult_child:
+        person_id: 2
+        age: 29
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, adult_child]
+    households:
+      household:
+        members: [head, adult_child]
+  output:
+    filing_status: SURVIVING_SPOUSE
+    basic_standard_deduction: 31_500

@@ -354,3 +354,209 @@
         members: [head, mother]
   output:
     surviving_spouse_eligible: false
+
+# A parent id of 0 is unknown, not evidence that the filer is not the parent.
+- name: Head's own parent id does not stop a dependent child without ids from qualifying.
+  period: 2025
+  input:
+    people:
+      head:
+        person_id: 1
+        # Names the head's absent parent.
+        parent_1_id: 90
+        age: 67
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+      adult_child:
+        person_id: 2
+        age: 29
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, adult_child]
+    households:
+      household:
+        members: [head, adult_child]
+  output:
+    surviving_spouse_eligible: true
+
+- name: Housemate's parent id in another tax unit does not stop a dependent child without ids from qualifying.
+  period: 2025
+  input:
+    people:
+      head:
+        person_id: 1
+        age: 67
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+      adult_child:
+        person_id: 2
+        age: 29
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 3_000
+      housemate:
+        person_id: 3
+        parent_1_id: 90
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      head_unit:
+        members: [head, adult_child]
+      housemate_unit:
+        members: [housemate]
+    households:
+      household:
+        members: [head, adult_child, housemate]
+  output:
+    surviving_spouse_eligible: [true, false]
+
+- name: Dependent child naming only the deceased parent, with the other id unknown, qualifies.
+  period: 2025
+  input:
+    people:
+      head:
+        person_id: 1
+        age: 67
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+      adult_child:
+        person_id: 2
+        # The deceased spouse, who resolves to no household member.
+        parent_1_id: 91
+        age: 29
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [head, adult_child]
+    households:
+      household:
+        members: [head, adult_child]
+  output:
+    surviving_spouse_eligible: true
+
+- name: Dependent child whose second parent id names the head qualifies.
+  period: 2025
+  input:
+    people:
+      head:
+        person_id: 1
+        age: 67
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+      adult_child:
+        person_id: 2
+        parent_1_id: 91
+        parent_2_id: 1
+        age: 29
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [head, adult_child]
+    households:
+      household:
+        members: [head, adult_child]
+  output:
+    surviving_spouse_eligible: true
+
+- name: Dependent whose two parent ids name other people does not qualify.
+  period: 2025
+  input:
+    people:
+      head:
+        person_id: 1
+        age: 67
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+      nephew:
+        person_id: 2
+        parent_1_id: 91
+        parent_2_id: 92
+        age: 15
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, nephew]
+    households:
+      household:
+        members: [head, nephew]
+  output:
+    surviving_spouse_eligible: false
+
+- name: Dependent sibling who shares a co-resident parent with the head does not qualify.
+  period: 2025
+  input:
+    people:
+      head:
+        person_id: 1
+        parent_1_id: 3
+        age: 45
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+      sibling:
+        person_id: 2
+        parent_1_id: 3
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      mother:
+        person_id: 3
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      head_unit:
+        members: [head, sibling]
+      mother_unit:
+        members: [mother]
+    households:
+      household:
+        members: [head, sibling, mother]
+  output:
+    surviving_spouse_eligible: [false, false]
+
+- name: Dependent parent and grandparent named through the head's own parent ids do not qualify.
+  period: 2025
+  input:
+    people:
+      head:
+        person_id: 1
+        parent_1_id: 2
+        age: 50
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+      mother:
+        person_id: 2
+        parent_1_id: 3
+        age: 75
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      grandmother:
+        person_id: 3
+        age: 95
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, mother, grandmother]
+    households:
+      household:
+        members: [head, mother, grandmother]
+  output:
+    surviving_spouse_eligible: false
