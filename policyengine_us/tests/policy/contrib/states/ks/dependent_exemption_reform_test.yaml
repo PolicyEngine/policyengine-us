@@ -133,3 +133,99 @@
     tax_units: {tax_unit: {members: [person_b, person_a, child], filing_status: JOINT}}
     households: {household: {members: [person_b, person_a, child], state_name: KS}}
   output: {ks_exemptions: 18_320}
+
+- name: KS dependent exemption reform - actually claimed filer with filing exception and child stays at zero with amount zero
+  period: 2022
+  reforms: policyengine_us.reforms.states.ks.dependent_exemption.ks_dependent_exemption_reform.ks_dependent_exemption_reform
+  input:
+    gov.contrib.states.ks.dependent_exemption.in_effect: true
+    gov.contrib.states.ks.dependent_exemption.amount: 0
+    people:
+      parent:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_name: KS
+  output:
+    # The filing exception preserves federal dependents, but an actual claim
+    # still makes Total Kansas exemptions zero in the consolidated regime.
+    # Before the actual-claim gate: (0 - 1) * $2,250 + 1 * $0 = -$2,250.
+    ks_exemptions: 0
+    head_or_spouse_is_dependent_elsewhere_without_filing_exception: false
+    ks_count_exemptions: 0
+    ks_eligible_dependents_count: 0
+
+- name: KS dependent exemption reform - actually claimed filer with filing exception and child stays at zero with amount 4,000 dollars
+  period: 2022
+  reforms: policyengine_us.reforms.states.ks.dependent_exemption.ks_dependent_exemption_reform.ks_dependent_exemption_reform
+  input:
+    gov.contrib.states.ks.dependent_exemption.in_effect: true
+    gov.contrib.states.ks.dependent_exemption.amount: 4_000
+    people:
+      parent:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_name: KS
+  output:
+    # The filing exception preserves federal dependents, but an actual claim
+    # still makes Total Kansas exemptions zero in the consolidated regime.
+    # Before the actual-claim gate: (0 - 1) * $2,250 + 1 * $4,000 = $1,750.
+    ks_exemptions: 0
+    head_or_spouse_is_dependent_elsewhere_without_filing_exception: false
+    ks_count_exemptions: 0
+    ks_eligible_dependents_count: 0
+
+- name: KS dependent exemption reform - 2024 actually claimed filer with filing exception retains repriced child exemption
+  period: 2024
+  reforms: policyengine_us.reforms.states.ks.dependent_exemption.ks_dependent_exemption_reform.ks_dependent_exemption_reform
+  input:
+    gov.contrib.states.ks.dependent_exemption.in_effect: true
+    gov.contrib.states.ks.dependent_exemption.amount: 4_000
+    people:
+      parent:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_name: KS
+  output:
+    # The 2024+ federal-entitlement reading retains the child despite the
+    # actual claim: $9,160 + $4,000 = $13,160 ($11,480 at the baseline rate).
+    ks_exemptions: 13_160
+    ks_eligible_dependents_count: 1

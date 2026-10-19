@@ -114,9 +114,7 @@ def couples(draw):
         "dependents": draw(st.lists(dependents(), max_size=2)),
         "claimed": claimed,
         "claimable": claimable,
-        "exception": tuple(
-            not is_claimed and draw(st.booleans()) for is_claimed in claimed
-        ),
+        "exception": (draw(st.booleans()), draw(st.booleans())),
     }
 
 
@@ -186,6 +184,20 @@ def test_ia_ks_ky_la_md_claimable_filer_rules_are_label_free(year, units):
 @pytest.mark.parametrize("year", YEARS)
 def test_ia_ks_ky_la_md_claimable_filer_rules_seeded_population(year):
     units = _seeded_couples(STATES, per_state=3) + _crafted_cases(STATES)
+    # Guarantee an actual claim together with the claimant filing exception;
+    # the Kansas contrib YAML separately checks the consolidated-regime count.
+    units.append(
+        {
+            "state": "KS",
+            "adults": [
+                {"age": 20, "employment_income": 500},
+                {"age": 30, "employment_income": 500},
+            ],
+            "dependents": [{"age": 5}],
+            "claimed": (True, False),
+            "exception": (True, False),
+        }
+    )
     check_swap(units, year, OUTPUTS, _identities)
     check_monotone(units, year, MONOTONE, _identities)
 
