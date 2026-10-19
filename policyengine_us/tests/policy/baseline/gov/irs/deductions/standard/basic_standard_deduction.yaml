@@ -379,3 +379,35 @@
   output:
     basic_standard_deduction: 13238.06
   absolute_error_margin: 0.01
+
+- name: H2, the dependent worksheet combines earned disability with self-employment income net of deductible tax
+  # 2024 Form 1040 Standard Deduction Worksheet for Dependents: line 1h
+  # includes only the $5,000 before minimum retirement age. Schedule 1
+  # line 15 is $6,000 x 0.9235 x 15.3% / 2 = $423.89. Worksheet line 1 is
+  # $6,000 + $5,000 - $423.89 = $10,576.11, plus $450 = $11,026.11.
+  # The remaining $2,000 of taxable disability is unearned.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        claimed_as_dependent_on_another_return: true
+        self_employment_income: 6_000
+        disability_benefits: 7_000
+        disability_benefits_before_minimum_retirement_age: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+  output:
+    taxable_disability_benefits: 7_000
+    earned_disability_benefits: 5_000
+    irs_gross_income: 13_000
+    self_employment_tax_ald: 423.89
+    basic_standard_deduction: 11_026.11
+    standard_deduction: 11_026.11
+    tax_unit_is_required_to_file: true

@@ -196,3 +196,41 @@
   output:
     medicaid_irs_gross_income: 5500
     medicaid_person_is_required_to_file: true
+
+- name: H3a, deferred wages and partially earned disability preserve the Medicaid unearned filing test
+  # Pub. 501 (2025), Table 2: positive gross wages are $4,000 - $2,500 =
+  # $1,500. Gross income $6,500 less $1,500 wages and $3,500 earned
+  # disability leaves $1,500 unearned, over $1,350. Using wages before
+  # deferrals to net earned income would incorrectly remove this excess.
+  period: 2025
+  input:
+    age: 20
+    employment_income: 4_000
+    traditional_401k_contributions: 2_500
+    disability_benefits: 5_000
+    disability_benefits_before_minimum_retirement_age: 3_500
+  output:
+    irs_employment_income: 1_500
+    taxable_disability_benefits: 5_000
+    earned_disability_benefits: 3_500
+    medicaid_irs_gross_income: 6_500
+    medicaid_person_is_required_to_file: true
+
+- name: H3b, deferred wages and fully earned disability do not require Medicaid filing
+  # All $5,000 is line 1h pay, leaving no unearned income. The dependent
+  # deduction used for this test is $4,000 + $5,000 + $450 = $9,450,
+  # above gross income $6,500. P3-4's wage-deferral worksheet treatment
+  # is pre-existing and reserved for a separate change.
+  period: 2025
+  input:
+    age: 20
+    employment_income: 4_000
+    traditional_401k_contributions: 2_500
+    disability_benefits: 5_000
+    disability_benefits_before_minimum_retirement_age: 5_000
+  output:
+    irs_employment_income: 1_500
+    taxable_disability_benefits: 5_000
+    earned_disability_benefits: 5_000
+    medicaid_irs_gross_income: 6_500
+    medicaid_person_is_required_to_file: false

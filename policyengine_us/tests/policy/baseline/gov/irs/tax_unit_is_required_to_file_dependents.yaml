@@ -689,3 +689,77 @@
     basic_standard_deduction: 10450
     standard_deduction: 12500
     tax_unit_is_required_to_file: false
+
+- name: H1, a claimable spouse's unearned disability is not reduced by the other spouse's earned disability
+  # Pub. 501 (2025), Table 2 applies the unearned test to the claimable
+  # spouse's own income. The head's $2,500 of line 1h pay cannot offset the
+  # spouse's $1,500 of unearned disability, which exceeds $1,350. Gross
+  # income $5,000 is below the $3,950 + $1,600 blindness deduction.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_blind: true
+        claimed_as_dependent_on_another_return: false
+        disability_benefits: 2_500
+        disability_benefits_before_minimum_retirement_age: 2_500
+      spouse:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+        employment_income: 1_000
+        disability_benefits: 1_500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    irs_gross_income: [2_500, 2_500]
+    earned_disability_benefits: [2_500, 0]
+    basic_standard_deduction: 3_950
+    standard_deduction: 5_550
+    tax_unit_is_required_to_file: true
+
+- name: H1b, a claimable spouse's own line 1h disability is earned for the filing test
+  # With the spouse's $1,500 also reported on line 1h, neither spouse has
+  # unearned income. Joint worksheet earned income is $5,000, giving a
+  # $5,450 basic deduction and $7,050 with the head's blindness addition.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_blind: true
+        claimed_as_dependent_on_another_return: false
+        disability_benefits: 2_500
+        disability_benefits_before_minimum_retirement_age: 2_500
+      spouse:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+        employment_income: 1_000
+        disability_benefits: 1_500
+        disability_benefits_before_minimum_retirement_age: 1_500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    irs_gross_income: [2_500, 2_500]
+    earned_disability_benefits: [2_500, 1_500]
+    basic_standard_deduction: 5_450
+    standard_deduction: 7_050
+    tax_unit_is_required_to_file: false
