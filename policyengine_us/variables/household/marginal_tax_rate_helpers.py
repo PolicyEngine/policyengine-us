@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.period_branch import drop_inherited_values
 from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
     NEUTRALIZED_BEHAVIORAL_RESPONSE_VARIABLES,
     PRE_RESPONSE_INPUTS,
@@ -84,6 +85,9 @@ def create_perturbed_branch(simulation, period, branch_name, increments):
     for variable in variables:
         if variable not in input_variables:
             branch.delete_arrays(variable)
+    # A variable can be supplied in one period and calculated in another.
+    # Keep only its actual input keys, rather than its other-period caches.
+    drop_inherited_values(branch)
     for variable, response in responses.items():
         branch.set_input(variable, period, response)
     for variable, increment in increments.items():

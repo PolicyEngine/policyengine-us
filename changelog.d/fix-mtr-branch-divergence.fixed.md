@@ -5,3 +5,4 @@ Restoring a rebuilt baseline's policy also rebinds its holders, removes reform-o
 Behavioral-response measurements also neutralize hours responses, avoiding recursion when capital gains are queried before labor supply with both elasticities enabled.
 
 Inputs explicitly set after construction, including identification inputs on a measuring branch, now remain inputs in its raised branch. This prevents earnings raises from restoring child or ACA premium tax credits denied in the base simulation, and also preserves branch inputs in health-inclusive rates and behavioral-response measurements.
+- Recompute calculated values when the same variable is explicitly supplied in another period, preserving the supplied branch inputs.

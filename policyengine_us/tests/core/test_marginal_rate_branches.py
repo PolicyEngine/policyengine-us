@@ -402,6 +402,62 @@ def test_rates_keep_identification_inputs_set_on_the_measuring_branch(
         simulation.branches.pop(branch.branch_name)
 
 
+def test_raised_branch_recomputes_ira_cache_from_another_input_period(
+    branch_input_simulation,
+):
+    """A supplied next-year IRA amount must not freeze this year's allocation.
+
+    With $1,000 of compensation and equal desired contributions, each IRA
+    receives $500. A $1,000 earnings raise increases each generated amount
+    to $1,000, while the explicitly supplied $2,000 Roth contribution for
+    the following year stays fixed. Reuse the read-only model through two
+    isolated branches; only the IRA allocation needs calculating.
+    """
+    simulation = branch_input_simulation
+    name = f"ira_input_period_{next(BRANCH_NAMES)}"
+    parent = simulation.get_branch(name)
+    fresh = simulation.get_branch(f"{name}_fresh")
+
+    def set_current_inputs(branch, earnings):
+        branch.set_input("employment_income_before_lsr", YEAR, [earnings, 0, 0])
+        for variable in (
+            "traditional_ira_contributions_desired",
+            "roth_ira_contributions_desired",
+        ):
+            branch.set_input(variable, YEAR, [5_000, 0, 0])
+
+    try:
+        set_current_inputs(parent, 1_000)
+        np.testing.assert_array_equal(
+            parent.calculate("roth_ira_contributions", YEAR), [500, 0, 0]
+        )
+        parent.set_input("roth_ira_contributions", YEAR + 1, [2_000, 0, 0])
+
+        set_current_inputs(fresh, 2_000)
+        fresh.set_input("roth_ira_contributions", YEAR + 1, [2_000, 0, 0])
+        raised = create_perturbed_branch(
+            parent,
+            make_period(YEAR),
+            f"{name}_raised",
+            {"employment_income": np.array([DELTA, 0, 0])},
+        )
+
+        for variable in ("roth_ira_contributions", "traditional_ira_contributions"):
+            expected = fresh.calculate(variable, YEAR)
+            np.testing.assert_array_equal(expected, [1_000, 0, 0])
+            np.testing.assert_array_equal(raised.calculate(variable, YEAR), expected)
+        for branch in (parent, raised, fresh):
+            np.testing.assert_array_equal(
+                branch.get_array("roth_ira_contributions", YEAR + 1), [2_000, 0, 0]
+            )
+        np.testing.assert_array_equal(
+            parent.get_array("roth_ira_contributions", YEAR), [500, 0, 0]
+        )
+    finally:
+        simulation.branches.pop(name)
+        simulation.branches.pop(fresh.branch_name)
+
+
 @settings(
     max_examples=8,
     derandomize=True,
