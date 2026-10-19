@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_core.periods import period as make_period
 from policyengine_us.tools.period_branch import drop_inherited_values
 from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
     NEUTRALIZED_BEHAVIORAL_RESPONSE_VARIABLES,
@@ -10,7 +11,7 @@ from policyengine_us.variables.household.expense.retirement._ira_supplied_contri
 )
 
 
-def user_set_variables(sim):
+def user_set_variables(sim, period=None):
     """Names of the variables a counterfactual branch must keep.
 
     ``sim.input_variables`` lists construction inputs and explicit later inputs
@@ -22,6 +23,10 @@ def user_set_variables(sim):
     earnings bump. Other Core-recorded keys are not added here: formulas also call
     ``holder.set_input`` internally (the SSA revenue formulas set
     ``tax_unit_taxable_social_security``), and a branch must recompute those.
+
+    With ``period``, only inputs supplied for that period count (eternal
+    inputs apply in every period). Without it, return names across all input
+    periods so cache cleanup can preserve other-year inputs too.
     """
     names = set(sim.input_variables)
     keys = getattr(sim, "_user_input_keys", None) or ()
@@ -34,7 +39,19 @@ def user_set_variables(sim):
         for name, branch, _period in keys
         if name in IRA_CONTRIBUTION_VARIABLES and branch in branches
     )
-    return names
+    if period is None:
+        return names
+    period = make_period(period)
+    return {
+        name
+        for name, branch, input_period in keys
+        if name in names
+        and branch in branches
+        and (
+            input_period == period
+            or sim.tax_benefit_system.variables[name].definition_period == ETERNITY
+        )
+    }
 
 
 # Behavioral responses to a reform, which each aggregate in
@@ -75,6 +92,7 @@ def create_perturbed_branch(simulation, period, branch_name, increments):
     # US wrappers also register explicit set_input calls after construction,
     # including identification and other inputs set on the measuring branch.
     input_variables = user_set_variables(simulation)
+    period_input_variables = user_set_variables(simulation, period)
     variables = simulation.tax_benefit_system.variables
     responses = {
         variable: simulation.person(variable, period)
@@ -85,13 +103,13 @@ def create_perturbed_branch(simulation, period, branch_name, increments):
     for variable in variables:
         if variable not in input_variables:
             branch.delete_arrays(variable)
-    # A variable can be supplied in one period and calculated in another.
-    # Keep only its actual input keys, rather than its other-period caches.
+    # The name filter above must retain inputs for every supplied period.
+    # Keep only their actual input keys, rather than other-period caches.
     drop_inherited_values(branch)
     for variable, response in responses.items():
         branch.set_input(variable, period, response)
     for variable, increment in increments.items():
-        if variable not in input_variables:
+        if variable not in period_input_variables:
             variable = PRE_RESPONSE_INPUTS.get(variable, variable)
         value = simulation.calculate(variable, period) + increment
         # The branch still holds the base values cached for the months of

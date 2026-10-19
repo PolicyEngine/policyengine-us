@@ -326,6 +326,82 @@ BRANCH_NAMES = count()
 
 
 @pytest.fixture(scope="module")
+def aggregate_input_period_references():
+    """Read-only Ohio references for raises to pre-response and aggregate wages."""
+    base_situation = situation([OHIO_WORKS_FIRST_PARENT])
+    simulation = Simulation(situation=base_situation)
+    base = float(simulation.calculate("household_net_income", YEAR)[0])
+    raised_situation = copy.deepcopy(base_situation)
+    raised_situation["people"]["h0_parent"]["employment_income"] = {YEAR: 7_000}
+    raised = Simulation(situation=raised_situation)
+    aggregate_raised = Simulation(situation=base_situation)
+    aggregate_raised.set_input("employment_income", YEAR, [7_000, 0, 0])
+    references = {}
+    for input_year, reference in ((YEAR + 1, raised), (YEAR, aggregate_raised)):
+        references[input_year] = (
+            1
+            - (float(reference.calculate("household_net_income", YEAR)[0]) - base)
+            / DELTA,
+            reference.calculate("tanf", YEAR)[0],
+        )
+    return simulation, references
+
+
+@pytest.mark.parametrize("input_year", [YEAR + 1, YEAR])
+def test_aggregate_input_only_changes_the_perturbation_target_in_its_period(
+    aggregate_input_period_references, input_year
+):
+    """Next year's aggregate input cannot hide this year's raise from TANF.
+
+    An aggregate supplied for the measured year must still be raised directly.
+    Both cases preserve their supplied input and leave the source unchanged.
+    """
+    simulation, references = aggregate_input_period_references
+    branch = simulation.get_branch(f"aggregate_input_{input_year}")
+    supplied = [10_000 if input_year != YEAR else 6_000, 0, 0]
+    branch.set_input("employment_income", input_year, supplied)
+    try:
+        rate = branch.calculate("marginal_tax_rate", YEAR)
+        raised = create_perturbed_branch(
+            branch,
+            make_period(YEAR),
+            "aggregate_input_raised",
+            {"employment_income": np.array([DELTA, 0, 0])},
+        )
+        tanf = raised.calculate("tanf", YEAR)[0]
+        expected_rate, expected_tanf = references[input_year]
+        print(
+            f"input_year={input_year}: rate={rate[0]:.9f}, TANF={tanf:.2f}; "
+            f"fresh rate={expected_rate:.9f}, TANF={expected_tanf:.2f}"
+        )
+        assert rate[0] == pytest.approx(expected_rate, abs=TOLERANCE)
+        np.testing.assert_array_equal(rate[1:], [0, 0])
+        assert tanf == pytest.approx(expected_tanf, abs=0.01)
+        np.testing.assert_array_equal(
+            raised.calculate("employment_income_before_lsr", YEAR),
+            [6_000 if input_year == YEAR else 7_000, 0, 0],
+        )
+        np.testing.assert_array_equal(
+            raised.calculate("employment_income", YEAR), [7_000, 0, 0]
+        )
+        np.testing.assert_array_equal(
+            branch.get_array("employment_income", input_year), supplied
+        )
+        if input_year != YEAR:
+            np.testing.assert_array_equal(
+                raised.get_array("employment_income", input_year), supplied
+            )
+        for unchanged in (simulation, branch):
+            np.testing.assert_array_equal(
+                unchanged.get_array("employment_income_before_lsr", YEAR),
+                [6_000, 0, 0],
+            )
+        assert "employment_income" not in simulation.input_variables
+    finally:
+        simulation.branches.pop(branch.branch_name)
+
+
+@pytest.fixture(scope="module")
 def branch_input_simulation():
     """A read-only source model; each case mutates only its own branches."""
     return Simulation(

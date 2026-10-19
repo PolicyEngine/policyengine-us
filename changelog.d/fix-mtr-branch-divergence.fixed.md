@@ -6,3 +6,4 @@ Behavioral-response measurements also neutralize hours responses, avoiding recur
 
 Inputs explicitly set after construction, including identification inputs on a measuring branch, now remain inputs in its raised branch. This prevents earnings raises from restoring child or ACA premium tax credits denied in the base simulation, and also preserves branch inputs in health-inclusive rates and behavioral-response measurements.
 - Recompute calculated values when the same variable is explicitly supplied in another period, preserving the supplied branch inputs.
+- Choose aggregate versus pre-response earnings inputs for the period being measured, so a future-year aggregate input cannot change the current year's marginal rate or hide its earnings raise from TANF.
