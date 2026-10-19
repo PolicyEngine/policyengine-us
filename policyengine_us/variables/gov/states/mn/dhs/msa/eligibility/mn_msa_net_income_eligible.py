@@ -11,6 +11,7 @@ class mn_msa_net_income_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.MN
     reference = (
+        "https://www.revisor.mn.gov/statutes/cite/256D.435",
         "https://www.revisor.mn.gov/statutes/cite/256D.44",
         "https://www.dhs.state.mn.us/main/groups/county_access/documents/pub/mndhs-073585.pdf#page=2",
     )
@@ -26,6 +27,8 @@ class mn_msa_net_income_eligible(Variable):
         # (federal SSI already consumed the $65 + 1/2 earned disregards).
         # Non-SSI track recipients get the standard $20 + $65 + 1/2
         # disregards on actual earned and unearned income.
+        # Section 256D.435 Subd. 4a adopts SSI income exclusions, including
+        # the salary-reduction premium exclusion already in ssi_earned_income.
         # FLA-D recipients are exempt from the $20 disregard so the formula
         # collapses to FBR + unearned vs PNA.
         arrangement = person("mn_msa_payment_category", period)

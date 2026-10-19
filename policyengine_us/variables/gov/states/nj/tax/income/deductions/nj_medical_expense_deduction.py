@@ -20,6 +20,8 @@ class nj_medical_expense_deduction(Variable):
     )
     reference = (
         "https://pub.njleg.gov/bills/9899/PL99/222_.HTM",
+        "https://www.nj.gov/treasury/taxation/njit13.shtml",
+        "https://www.nj.gov/treasury/taxation/pdf/pubs/tb/tb39r.pdf#page=1",
         "https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=25",
     )
 
@@ -44,8 +46,14 @@ class nj_medical_expense_deduction(Variable):
             person("self_employed_health_insurance_ald_excluded_premiums", period)
             * person("is_tax_unit_dependent", period)
         )
+        # New Jersey includes salary-reduction cafeteria-plan premiums in
+        # taxable wages (TB-39(R)), so these employee-paid premiums also
+        # qualify for the medical expense deduction. The separate payroll
+        # input is disjoint from the after-tax premium inputs.
         medical_expenses = (
-            tax_unit("itemized_medical_expenses", period) - excluded_dependent_premiums
+            tax_unit("itemized_medical_expenses", period)
+            - excluded_dependent_premiums
+            + add(tax_unit, period, ["pre_tax_health_insurance_premiums"])
         )
         agi = tax_unit("nj_agi", period)
         floor = p.rate * agi
