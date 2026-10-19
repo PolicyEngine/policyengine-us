@@ -182,15 +182,21 @@
 - name: Review r2 the deeming student age limit is under 21 in May 2008
   period: 2008-05
   input:
-    age: 21
-    is_full_time_college_student: true
+    # Demographic inputs are annual; do not date them after January 1.
+    age:
+      2008: 21
+    is_full_time_college_student:
+      2008: true
   output:
     is_ssi_ineligible_child: false
 
 - name: Review r2 the deeming student age limit is under 22 in July 2008
   period: 2008-07
   input:
-    age: 21
-    is_full_time_college_student: true
+    # Demographic inputs are annual; do not date them after January 1.
+    age:
+      2008: 21
+    is_full_time_college_student:
+      2008: true
   output:
     is_ssi_ineligible_child: true
