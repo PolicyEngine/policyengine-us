@@ -8,6 +8,10 @@ class wi_homestead_eligible(Variable):
     definition_period = YEAR
     reference = (
         "https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2021/0013_homestead_tax_credit_informational_paper_13.pdf#page=7",
+        # Minimum age (71.53(2)(c)) and claimant qualification paths
+        # (71.54(1)(dm)-(gm)).
+        "https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/53/2/c",
+        "https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/54",
         # PDF pages 4, 10: the claimant must be 18 or older and 62 or older,
         # disabled or have earned income; either spouse may be the claimant.
         "https://www.revenue.wi.gov/TaxForms2024/2024-ScheduleH-inst.pdf#page=4",

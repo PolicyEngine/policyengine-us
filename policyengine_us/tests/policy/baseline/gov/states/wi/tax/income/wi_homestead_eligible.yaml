@@ -96,9 +96,9 @@
   output:
     wi_homestead_eligible: false
 
-# The claimant or the claimant's spouse must have earned income (2024
-# Schedule H instructions, page 10); unemployment compensation is not earned
-# income (page 7), and a dependent's wages do not qualify the claimant.
+# The claimant must have their own earned income; either spouse may be the
+# claimant (2024 Schedule H instructions, page 10). Unemployment compensation
+# is not earned income (page 7), and a dependent's wages do not qualify them.
 
 - name: Case 8, a dependent's wages do not meet the claimant's earned income test.
   period: 2024
@@ -143,7 +143,7 @@
 
 # Either spouse can be the claimant, who must be 18 or older and 62 or older,
 # disabled or have their own earned income (2024 Schedule H instructions,
-# pages 4 and 10; Wis. Stat. 71.52(1g)).
+# pages 4 and 10; Wis. Stat. 71.53(2)(c), 71.54(1)(dm)-(gm)).
 
 - name: Case 10, one spouse's wages qualify even when the other has a larger self-employment loss.
   period: 2024
