@@ -37,3 +37,100 @@
     filing_status: JOINT
   output:
     eitc_eligible: true
+
+# 26 U.S.C. 32(c)(1)(C): "The term 'eligible individual' does not include any
+# individual who claims the benefits of section 911 (relating to citizens or
+# residents living abroad) for the taxable year."
+- name: Section 911 claimant is not eligible.
+  period: 2025
+  input:
+    eitc_investment_income_eligible: true
+    eitc_demographic_eligible: true
+    filer_meets_eitc_identification_requirements: true
+    filing_status: JOINT
+    foreign_earned_income_exclusion: 1
+  output:
+    eitc_eligible: false
+
+- name: Without a section 911 exclusion the same filer is eligible.
+  period: 2025
+  input:
+    eitc_investment_income_eligible: true
+    eitc_demographic_eligible: true
+    filer_meets_eitc_identification_requirements: true
+    filing_status: JOINT
+    foreign_earned_income_exclusion: 0
+  output:
+    eitc_eligible: true
+
+- name: Section 911 claimant is not eligible in 2021 either.
+  period: 2021
+  input:
+    # Unlike the CTC bar, section 32(c)(1)(C) has no 2021 exception.
+    eitc_investment_income_eligible: true
+    eitc_demographic_eligible: true
+    filer_meets_eitc_identification_requirements: true
+    filing_status: SINGLE
+    foreign_earned_income_exclusion: 30_000
+  output:
+    eitc_eligible: false
+
+# Section 32(c)(1)(C) also denies the EITC for the housing exclusion under
+# section 911(a)(2), including leaf elections with zero derived aggregates.
+- name: A housing-only leaf election is ineligible when deductions cancel both aggregates.
+  period: 2025
+  input:
+    eitc_investment_income_eligible: true
+    eitc_demographic_eligible: true
+    filer_meets_eitc_identification_requirements: true
+    filing_status: JOINT
+    foreign_earned_income_exclusion_amount: 0
+    foreign_housing_exclusion: 5_000
+    foreign_earned_income_exclusion_allocable_deductions: 5_000
+  output:
+    foreign_earned_income_exclusion_amount: 0
+    foreign_earned_income_exclusion: 0
+    section_911_excluded_income: 0
+    eitc_eligible: false
+
+- name: A housing-only election is ineligible with an explicit zero stacking override.
+  period: 2025
+  input:
+    eitc_investment_income_eligible: true
+    eitc_demographic_eligible: true
+    filer_meets_eitc_identification_requirements: true
+    filing_status: JOINT
+    foreign_earned_income_exclusion_amount: 0
+    foreign_housing_exclusion: 5_000
+    foreign_earned_income_exclusion: 0
+  output:
+    foreign_earned_income_exclusion_amount: 0
+    foreign_earned_income_exclusion: 0
+    eitc_eligible: false
+
+- name: An earned-income leaf election is ineligible when deductions cancel both aggregates.
+  period: 2025
+  input:
+    eitc_investment_income_eligible: true
+    eitc_demographic_eligible: true
+    filer_meets_eitc_identification_requirements: true
+    filing_status: JOINT
+    foreign_earned_income_exclusion_amount: 5_000
+    foreign_earned_income_exclusion_allocable_deductions: 5_000
+  output:
+    foreign_earned_income_exclusion: 0
+    section_911_excluded_income: 0
+    eitc_eligible: false
+
+- name: A positive section 911 MAGI amount is ineligible with zero stacking.
+  period: 2025
+  input:
+    eitc_investment_income_eligible: true
+    eitc_demographic_eligible: true
+    filer_meets_eitc_identification_requirements: true
+    filing_status: JOINT
+    foreign_earned_income_exclusion: 0
+    section_911_excluded_income: 5_000
+  output:
+    foreign_earned_income_exclusion: 0
+    eitc_eligible: false

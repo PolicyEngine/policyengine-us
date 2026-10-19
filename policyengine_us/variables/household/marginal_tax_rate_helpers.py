@@ -4,6 +4,38 @@ from policyengine_us.variables.gov.simulation.behavioral_response_measurements i
     PRE_RESPONSE_INPUTS,
 )
 
+from policyengine_us.variables.household.expense.retirement._ira_supplied_contributions import (
+    IRA_CONTRIBUTION_VARIABLES,
+)
+
+
+def user_set_variables(sim):
+    """Names of the variables a counterfactual branch must keep.
+
+    ``sim.input_variables`` lists construction inputs and explicit later inputs
+    registered by the US wrappers.
+    The IRA contribution variables are also kept when the caller set them
+    later through ``set_input`` (core records those in ``_user_input_keys``):
+    ``ira_contribution_limit`` reads them as supplied, so a branch that
+    deleted them would regenerate a different IRA allocation alongside the
+    earnings bump. Other Core-recorded keys are not added here: formulas also call
+    ``holder.set_input`` internally (the SSA revenue formulas set
+    ``tax_unit_taxable_social_security``), and a branch must recompute those.
+    """
+    names = set(sim.input_variables)
+    keys = getattr(sim, "_user_input_keys", None) or ()
+    if hasattr(sim, "_get_visible_branch_names"):
+        branches = set(sim._get_visible_branch_names())
+    else:
+        branches = {getattr(sim, "branch_name", "default"), "default"}
+    names.update(
+        name
+        for name, branch, _period in keys
+        if name in IRA_CONTRIBUTION_VARIABLES and branch in branches
+    )
+    return names
+
+
 # Behavioral responses to a reform, which each aggregate in
 # PRE_RESPONSE_INPUTS adds to its pre-response input. A perturbed branch holds
 # them at their values in the simulation.
@@ -41,7 +73,7 @@ def create_perturbed_branch(simulation, period, branch_name, increments):
     """
     # US wrappers also register explicit set_input calls after construction,
     # including identification and other inputs set on the measuring branch.
-    input_variables = set(simulation.input_variables)
+    input_variables = user_set_variables(simulation)
     variables = simulation.tax_benefit_system.variables
     responses = {
         variable: simulation.person(variable, period)

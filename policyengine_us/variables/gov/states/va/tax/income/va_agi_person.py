@@ -22,9 +22,20 @@ class va_agi_person(Variable):
         # taxable income, so the couple should not qualify for the adjustment.
         person_subtractions = person("va_subtractions_person", period)
         # Additions are only defined at the tax-unit level, so prorate them by
-        # federal AGI share.
+        # federal AGI share. A spouse with negative federal AGI gets no share,
+        # so neither share is negative or more than the whole.
         additions = person.tax_unit("va_additions", period)
-        total_federal_agi = person.tax_unit.sum(person_fagi)
-        prorate = where(total_federal_agi > 0, person_fagi / total_federal_agi, 0)
+        positive_fagi = max_(person_fagi, 0)
+        total_federal_agi = person.tax_unit.sum(positive_fagi)
+        prorate = where(
+            total_federal_agi > 0,
+            np.divide(
+                positive_fagi,
+                total_federal_agi,
+                out=np.zeros_like(total_federal_agi, dtype=float),
+                where=total_federal_agi > 0,
+            ),
+            0,
+        )
         person_additions = additions * prorate
         return person_fagi + person_additions - person_subtractions

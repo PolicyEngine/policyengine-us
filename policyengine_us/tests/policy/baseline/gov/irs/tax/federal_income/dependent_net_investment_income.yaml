@@ -401,3 +401,15 @@
     net_investment_income: 6_000
     # 3.8% x 6,000
     net_investment_income_tax: 228
+
+- name: A supplied net capital gains amount is net investment income
+  period: 2025
+  input:
+    employment_income: 300_000
+    net_capital_gains: 100_000
+    state_code: TX
+  output:
+    # Form 8960 line 5a: the filer's Form 1040 line 7a, 100,000.
+    filer_loss_limited_net_capital_gains: 100_000
+    net_investment_income: 100_000
+

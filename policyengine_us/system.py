@@ -38,6 +38,8 @@ from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
 from .tools.default_uprating import add_default_uprating
+from .tools.period_branch import delete_input_values
+from .tools.section_911 import validate_section_911_batch_inputs
 from .tools.per_capita_uprating import (
     add_per_capita_parameters_for_parameter_uprating,
     add_per_capita_uprating,
@@ -197,7 +199,7 @@ def _move_inputs_to_pre_response_variables(simulation):
         for known_period in holder.get_known_periods():
             array = holder.get_array(known_period)
             simulation.set_input(pre_response, known_period, array)
-            holder.delete_arrays(known_period)
+            delete_input_values(holder, known_period)
 
 
 def _sync_input_variables(simulation):
@@ -319,6 +321,10 @@ class Simulation(SPMSimulationMixin, CoreSimulation):
         )
         args, kwargs = self._prepare_spm_system(
             args, kwargs, kwargs.pop("spm", None), start_instant
+        )
+        validate_section_911_batch_inputs(
+            kwargs.get("situation"),
+            kwargs.get("default_input_period") or self.default_input_period,
         )
         super().__init__(*args, **kwargs)
 
