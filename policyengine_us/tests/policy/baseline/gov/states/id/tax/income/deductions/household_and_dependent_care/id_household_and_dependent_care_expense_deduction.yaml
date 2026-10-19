@@ -398,3 +398,45 @@
     # IRC 21(b)(1)(B) determines dependency without regard
     # to IRC 152(b)(1): min(1,000, 12,000, 10,000).
     id_household_and_dependent_care_expense_deduction: 1_000
+
+
+# IRC 21(b)(2) counts care for a qualifying individual only. The adult
+# qualifies under 21(b)(1)(B), but does not make the child's daycare eligible.
+- name: Claimable student with child-only daycare and disabled adult care deducts only adult care
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        is_full_time_student: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: true
+        employment_income: 20_000
+      child:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 10_000
+      disabled_adult:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+        care_expenses: 1_000
+    tax_units:
+      tax_unit:
+        members: [filer, child, disabled_adult]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, child, disabled_adult]
+        state_code: ID
+  output:
+    count_cdcc_eligible: 1
+    tax_unit_childcare_expenses: 10_000
+    cdcc_qualifying_childcare_expenses: 0
+    id_household_and_dependent_care_expense_deduction: 1_000

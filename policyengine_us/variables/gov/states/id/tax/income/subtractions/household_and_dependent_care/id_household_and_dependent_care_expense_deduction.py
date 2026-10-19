@@ -12,7 +12,8 @@ class id_household_and_dependent_care_expense_deduction(Variable):
         # Idaho Code 63-3022D: for an individual who maintains a household that
         # includes one or more qualifying individuals under IRC 21(b)(1).
         "https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3022D/",
-        "https://www.law.cornell.edu/uscode/text/26/21#b_1",
+        "https://www.law.cornell.edu/uscode/text/26/21#b",
+        "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=44",
     )
 
     def formula(tax_unit, period, parameters):
@@ -21,8 +22,10 @@ class id_household_and_dependent_care_expense_deduction(Variable):
         ).gov.states.id.tax.income.deductions.dependent_care_expenses
         # Idaho Code §63-3022D adopts the IRC §21(b)(2) employment-related
         # expense definition, which covers childcare plus care for a disabled
-        # adult qualifying individual (care_expenses).
-        childcare = tax_unit("tax_unit_childcare_expenses", period)
+        # adult qualifying individual (care_expenses). A qualifying adult
+        # does not make child-only daycare a qualifying expense when the
+        # child fails the dependent-taxpayer test.
+        childcare = tax_unit("cdcc_qualifying_childcare_expenses", period)
         adult_care = add(tax_unit, period, ["care_expenses"])
         expenses = childcare + adult_care
         # In 2023 Idaho implemented an increased cap independent of the number of children
