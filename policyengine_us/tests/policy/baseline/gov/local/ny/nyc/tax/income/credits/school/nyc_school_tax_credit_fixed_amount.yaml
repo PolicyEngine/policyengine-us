@@ -27,3 +27,125 @@
     filing_status: SINGLE
   output:
     nyc_school_tax_credit_fixed_amount: 0
+
+
+- name: 2025 single filer who can be claimed as a dependent gets no school tax credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 13100
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: NY
+        in_nyc: true
+  output:
+    # IT-201 line 69.
+    nyc_school_tax_credit_fixed_amount: 0
+
+- name: 2025 joint return with one claimable spouse gets the eligible spouse's amount (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 13025
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        employment_income: 13025
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NY
+        in_nyc: true
+  output:
+    # Form NYC-210: "credit amount of the eligible spouse".
+    nyc_school_tax_credit_fixed_amount: 63
+
+- name: 2025 joint return with one claimable spouse gets the eligible spouse's amount (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        employment_income: 13025
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 22
+        employment_income: 13025
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_school_tax_credit_fixed_amount: 63
+
+- name: 2025 joint return with both spouses claimable gets no school tax credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 13025
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 13025
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_school_tax_credit_fixed_amount: 0
+
+- name: 2025 joint return with neither spouse claimable gets the joint amount
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 13025
+      person_b:
+        age: 22
+        employment_income: 13025
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_school_tax_credit_fixed_amount: 125
