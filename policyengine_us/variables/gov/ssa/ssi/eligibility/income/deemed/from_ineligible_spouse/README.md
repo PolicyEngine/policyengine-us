@@ -73,3 +73,5 @@ Integration tests verify the full SSI benefit calculation pipeline and can be fo
 - Households with various income combinations
 
 Integration tests are particularly important for SSI spousal deeming as they validate the correct application of the regulation's multi-step process in a full benefit calculation context.
+
+Monthly policy assertions and consumers must use the `*_monthly` variables. The existing annual public variables aggregate those monthly budgets; Core divides an annual variable by 12 when it is requested for a month, so that request is an annual average rather than the month’s budget.
