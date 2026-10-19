@@ -63,6 +63,64 @@
   output:
     nd_renters_refund_income: 12_000
 
+- name: Case 4, after-tax premiums reduce renter refund income as medical expenses.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 40_000
+    health_insurance_premiums: 6_000
+    pre_tax_health_insurance_premiums: 0
+  output:
+    market_income: 40_000
+    itemized_medical_expenses: 6_000
+    nd_renters_refund_income: 34_000
+
+- name: Case 5, mixed premiums reduce renter refund income once through each disjoint route.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 40_000
+    health_insurance_premiums: 3_000
+    pre_tax_health_insurance_premiums: 3_000
+  output:
+    market_income: 40_000
+    irs_employment_income: 37_000
+    itemized_medical_expenses: 3_000
+    nd_renters_refund_income: 34_000
+
+- name: Case 6, pretax premiums reduce renter refund income as excluded wage income.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 40_000
+    health_insurance_premiums: 0
+    pre_tax_health_insurance_premiums: 6_000
+  output:
+    market_income: 40_000
+    irs_employment_income: 34_000
+    itemized_medical_expenses: 0
+    nd_renters_refund_income: 34_000
+
+- name: Case 7, employer-paid premiums do not reduce renter refund income.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 40_000
+    health_insurance_premiums: 0
+    pre_tax_health_insurance_premiums: 0
+    employer_sponsored_insurance_premiums: 6_000
+  output:
+    market_income: 40_000
+    nd_renters_refund_income: 40_000
+
 - name: North Dakota renter refund deducts medical expenses actually paid from gross income
   period: 2025
   input:
@@ -136,3 +194,34 @@
   output:
     itemized_medical_expenses_applied_exclusion: 0
     nd_renters_refund_income: 30_000
+
+- name: North Dakota combines the pretax income exclusion with paid SE medical costs
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 10_000
+    self_employment_income: 30_000
+    health_insurance_premiums: 6_000
+    pre_tax_health_insurance_premiums: 3_000
+    other_medical_expenses: 500
+    self_employed_health_insurance_ald: 1_000
+  output:
+    itemized_medical_expenses: 5_500
+    itemized_medical_expenses_applied_exclusion: 1_000
+    # 40,000 - 3,000 - (5,500 + 1,000) = 30,500.
+    nd_renters_refund_income: 30_500
+
+- name: North Dakota restores the exclusion supplied with a net Schedule A subtotal
+  period: 2025
+  input:
+    state_code: ND
+    employment_income: 30_000
+    # Schedule A line 1 of 10,000 leaves out 6,400 of premiums (6,000
+    # medical, 400 long-term care) taken as the self-employed deduction.
+    itemized_medical_expenses: 10_000
+    itemized_medical_expenses_applied_exclusion: 6_400
+  output:
+    # Medical costs paid: 10,000 + 6,400 = 16,400.
+    nd_renters_refund_income: 13_600

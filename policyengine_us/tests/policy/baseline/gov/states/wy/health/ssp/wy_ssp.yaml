@@ -1,0 +1,201 @@
+# Wyoming EOM M1804: $20 monthly, with SSI as the sole income source.
+- name: Case 1, aged recipient with only SSI.
+  period: 2026-01
+  input:
+    state_code: WY
+    age: 65
+  output:
+    ssi: 994
+    wy_ssp: 20
+
+- name: Case 2, income excluded from federal SSI still defeats the sole income rule.
+  period: 2026-01
+  input:
+    state_code: WY
+    age: 65
+    # $1,500 in savings, under the $2,000 SSI resource limit, earning the FDIC
+    # national savings rate of 0.37% (September 2026): $1,500 * 0.0037 = $5.55.
+    bank_account_assets: 1_500
+    taxable_interest_income: 5.55
+  output:
+    # $5.55 / 12 = $0.4625 interest a month, all absorbed by the $20 general
+    # exclusion: countable income $0, so $994 - $0 = $994.
+    ssi: 994
+    # $0.4625 > $0 is other income in the month, so the sole income rule fails.
+    wy_ssp: 0
+
+- name: Case 3, part-time earnings still defeat the sole income rule.
+  period: 2026-01
+  input:
+    state_code: WY
+    age: 65
+    # 10 hours a week at the Wyoming retail salesperson median wage of $16.50
+    # (BLS OEWS May 2025): $16.50 * 10 * 52 = $8,580 a year.
+    employment_income: 8_580
+  output:
+    # $8,580 / 12 = $715 a month; ($715 - $20 - $65) * 0.5 = $315 countable;
+    # $994 - $315 = $679.
+    ssi: 679
+    # $715 of wages is other income in the month, so the sole income rule fails.
+    wy_ssp: 0
+
+- name: Case 4, no SSI receipt.
+  period: 2026-01
+  input:
+    state_code: WY
+    age: 65
+    takes_up_ssi_if_eligible: false
+  output:
+    wy_ssp: 0
+
+- name: Case 5, outside Wyoming.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 65
+  output:
+    wy_ssp: 0
+
+- name: Case 6, institutional SSI also qualifies.
+  period: 2026-01
+  input:
+    state_code: WY
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    ssi: 30
+    wy_ssp: 20
+
+- name: Case 7, losses cannot offset other income for sole source eligibility.
+  period: 2026-01
+  input:
+    state_code: WY
+    age: 65
+    self_employment_income: -12_000
+    social_security_retirement: 120
+  output:
+    wy_ssp: 0
+
+- name: Case 8, a disabled child living with working parents may qualify.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        own_children_in_household: 1
+        # Full-time work at the Wyoming median annual wage (BLS OEWS May 2025).
+        employment_income: 50_270
+      person2:
+        age: 38
+        own_children_in_household: 1
+      person3:
+        age: 12
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WY
+  output:
+    # Parents: $50,270 / 12 = $4,189.17 a month; ($4,189.17 - $20 - $65) * 0.5
+    # = $2,052.08; less the two-parent allocation of $1,491 = $561.08 deemed.
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 561.08]
+    # Child: $561.08 - $20 general exclusion = $541.08 countable;
+    # $994 - $541.08 = $452.92. The parents are not aged, blind or disabled.
+    ssi: [0, 0, 452.92]
+    # The sole income rule reads only the child's own sources, which are $0;
+    # deemed parental income is not one of them.
+    wy_ssp: [0, 0, 20]
+
+- name: Case 9, annual total includes twelve payments.
+  period: 2026
+  input:
+    state_code: WY
+    age: 65
+  output:
+    wy_ssp: 240
+
+- name: Case 10, a self-employment loss alone is not other income.
+  period: 2026-01
+  input:
+    state_code: WY
+    age: 65
+    self_employment_income: -12_000
+  output:
+    # SSI floors earned income at $0: countable income $0, so $994 - $0 = $994.
+    ssi: 994
+    # -$12,000 / 12 = -$1,000 a month is not above $0, so no source is other
+    # income: $20.
+    wy_ssp: 20
+
+- name: Case 11, reported SSI receipt qualifies when modeled SSI is zero.
+  period: 2026-01
+  input:
+    state_code: WY
+    age: 40
+    receives_ssi: true
+  output:
+    # No disability input, so the model finds no aged, blind or disabled
+    # status and computes $0 SSI.
+    ssi: 0
+    # Reported receipt meets the SSI condition and there is no other income: $20.
+    wy_ssp: 20
+
+- name: Case 12, in an eligible couple only the spouse with other income loses the supplement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 67
+        # $100 a month of Social Security retirement: $100 * 12 = $1,200 a year.
+        social_security_retirement: 1_200
+      person2:
+        age: 66
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Couple: $100 - $20 general exclusion = $80 countable;
+    # ($1,491 - $80) / 2 = $705.50 each.
+    ssi: [705.5, 705.5]
+    # person1 has $100 of own income; person2's own sources are $0, so the
+    # spouse's income does not count against person2: $20.
+    wy_ssp: [0, 20]
+
+- name: Case 13, income deemed from an ineligible spouse does not defeat the sole income rule.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 67
+      person2:
+        age: 45
+        # 14 hours a week at the Wyoming retail salesperson median wage of
+        # $16.50 (BLS OEWS May 2025): $16.50 * 14 * 52 = $12,012 a year.
+        employment_income: 12_012
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # $12,012 / 12 = $1,001 a month of spouse wages, above the $497 difference
+    # between the couple and individual rates, so deeming applies:
+    # ($1,001 - $20 - $65) * 0.5 = $458 deemed; $1,491 - $458 = $1,033,
+    # capped at the $994 individual rate. person2 is not aged, blind or disabled.
+    ssi: [994, 0]
+    # person1's own sources are $0; deemed spouse income is not one of them: $20.
+    wy_ssp: [20, 0]

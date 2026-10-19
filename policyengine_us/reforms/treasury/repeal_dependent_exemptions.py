@@ -13,7 +13,15 @@ def create_repeal_dependent_exemptions() -> Reform:
         def formula(tax_unit, period, parameters):
             total_unit_size = tax_unit("tax_unit_size", period)
             dependents = tax_unit("tax_unit_dependents", period)
-            return total_unit_size - dependents
+            # Only the filers' own exemptions remain; a filer who can be
+            # claimed as a dependent has none (IRC 151(d)(2)).
+            dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+            independent_filers = tax_unit(
+                "head_spouse_count_not_dependent_elsewhere", period
+            )
+            return where(
+                dependent_filer, independent_filers, total_unit_size - dependents
+            )
 
     class reform(Reform):
         def apply(self):
