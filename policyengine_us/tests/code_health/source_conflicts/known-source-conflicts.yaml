@@ -777,3 +777,316 @@ entries:
     amount: '22.40'
     currency: USD
     period: month
+- id: claim-of-right-deduction-floor
+  jurisdiction: us-hi
+  program: income-tax
+  question: From 2022 through 2025, which claim of right repayments fall under Hawaii's 2% floor on miscellaneous
+    itemized deductions? The statute keeps a section 1341 repayment over $3,000 outside the floor and one of $3,000
+    or less inside it. The Form N-11 instructions list them the other way round.
+  texts:
+  - corpus_citation_path: us-hi/statute/235-2.4
+    excerpt: Section 67 (with respect to the 2-percent floor on miscellaneous itemized deductions) of the Internal
+      Revenue Code shall be operative for purposes of this chapter, except that the suspension in section 67(g)
+      shall not be operative for purposes of this chapter.
+  - corpus_citation_path: us/statute/26/67/b/9
+    excerpt: the deduction under section 1341 (relating to computation of tax where taxpayer restores substantial
+      amount held under claim of right),
+  pending_texts:
+  - citation: 2025 Form N-11 instructions, p. 19 (Worksheet A-6, Other Expenses and Expenses NOT Subject to the
+      2% Limit)
+    kind: instructions
+    url: https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=19
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 73da6d2fac6da9a3632204dd15577f7db158fe99
+      path: policyengine_us/tests/code_health/source_conflicts/sources/us-hi/n11-instructions-2025-p19.txt
+      sha256: 9e806165b035da92b1a533b12ee8a1899deae007e404f62067b39fba04501296
+    excerpt: Deduction for repayment of amounts under a claim of right over $3,000. See Repayments in the 2017 federal
+      Publication 525
+  - citation: 2025 Form N-11 instructions, p. 19 (Expenses NOT Subject to the 2% Limit)
+    kind: instructions
+    url: https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=19
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 73da6d2fac6da9a3632204dd15577f7db158fe99
+      path: policyengine_us/tests/code_health/source_conflicts/sources/us-hi/n11-instructions-2025-p19.txt
+      sha256: 9e806165b035da92b1a533b12ee8a1899deae007e404f62067b39fba04501296
+    excerpt: Deduction for repayment of amounts under a claim of right of $3,000 or less.
+  - citation: 2022 Form N-11 instructions, p. 19
+    kind: instructions
+    url: https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=19
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 73da6d2fac6da9a3632204dd15577f7db158fe99
+      path: policyengine_us/tests/code_health/source_conflicts/sources/us-hi/n11-instructions-2022-p19.txt
+      sha256: d49a31bc696484a3c756360b129c94f9b34a5463cc2821937c5cacace9ddc6e1
+    excerpt: Deduction for repayment of amounts under a claim of right over $3,000. See Repayments in the 2017 federal
+      Publication 525
+  reading: Section 67(b)(9), operative through HRS 235-2.4(b), keeps a section 1341 deduction (a repayment over
+    $3,000) outside the 2% floor; a repayment of $3,000 or less is a miscellaneous itemized deduction above 2% of
+    Hawaii AGI.
+  alternatives:
+  - id: n11-instruction-lists
+    reading: Follow the 2022-2025 N-11 lists, which put the over-$3,000 repayment among expenses subject to the
+      2% floor and the $3,000-or-less repayment among expenses not subject to it.
+    effect: A $10,000 repayment by a filer with $50,000 of Hawaii AGI deducts $9,000 instead of $10,000; a $3,000
+      repayment deducts $3,000 instead of $2,000.
+  basis: Section 1341 became operative in Hawaii for taxable years beginning after December 31, 2021 (Act 56, SLH
+    2023), so section 67(b)(9)'s exception for the section 1341 deduction applies through HRS 235-2.4(b). The N-11
+    lists match the federal Schedule A categories transposed, and no Hawaii statute or rule adopts them.
+  status: open
+  outcome: computed
+  years:
+    from: 2022
+    to: 2025
+    type: tax
+  implementations:
+  - repo: PolicyEngine/policyengine-us
+    commit: b565542902dfb0f0003ec001ff639be8f4bc1aa4
+    path: policyengine_us/variables/gov/states/hi/tax/income/claim_of_right/hi_claim_of_right_deduction.py
+    follows: reading
+    adopts: reading
+    basis: PolicyEngine-US follows the statute when it conflicts with forms or instructions.
+    ruling:
+      by: PolicyEngine
+      date: '2026-10-19'
+      record: https://github.com/PolicyEngine/policyengine-us/pull/10287
+    cites_entry: false
+  tests:
+  - repo: PolicyEngine/policyengine-us
+    commit: b565542902dfb0f0003ec001ff639be8f4bc1aa4
+    path: policyengine_us/tests/policy/baseline/gov/states/hi/tax/income/claim_of_right/hi_claim_of_right_credit_applies.yaml
+    name: Case 2, the Hawaii deduction method deducts the whole repayment outside the 2% floor.
+    pins:
+    - reading
+  - repo: PolicyEngine/policyengine-us
+    commit: b565542902dfb0f0003ec001ff639be8f4bc1aa4
+    path: policyengine_us/tests/policy/baseline/gov/states/hi/tax/income/claim_of_right/hi_claim_of_right_deduction.yaml
+    name: Case 3, a repayment of $3,000 is a miscellaneous deduction above 2% of Hawaii AGI.
+    pins:
+    - reading
+  money_case:
+    description: 'A 2025 single filer with $50,000 of wages (Hawaii AGI $50,000) repays $10,000 and takes the deduction
+      method: the statute reading deducts $10,000, the N-11 lists $9,000. This is the difference in deduction, not
+      tax; the tax difference is that times the filer''s Hawaii marginal rate.'
+    amount: '1000.00'
+    currency: USD
+    period: year
+- id: claim-of-right-federal-claim-condition
+  jurisdiction: us-oh
+  program: income-tax
+  question: Does Ohio's deduction for repaying income reported in a prior year (R.C. 5747.01(A)(12)) need only to
+    be allowable, as the statute says, or must the federal return also have claimed the section 1341 credit or a
+    Schedule A deduction for the repayment, as the IT 1040 instructions require?
+  texts: []
+  pending_texts:
+  - citation: R.C. 5747.01(A)(12)
+    kind: statute
+    url: https://codes.ohio.gov/ohio-revised-code/section-5747.01
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 73da6d2fac6da9a3632204dd15577f7db158fe99
+      path: policyengine_us/tests/code_health/source_conflicts/sources/us-oh/rc-5747.01.html
+      sha256: 9981a8f73a9c4a1301620fe6cd3df4ecee4de11bacf120caf545a6814ffef276
+    excerpt: 'Deduct any portion of the deduction described in section 1341(a)(2) of the Internal Revenue Code,
+      for repaying previously reported income received under a claim of right, that meets both of the following
+      requirements:'
+  - citation: R.C. 5747.01(A)(12)(a)
+    kind: statute
+    url: https://codes.ohio.gov/ohio-revised-code/section-5747.01
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 73da6d2fac6da9a3632204dd15577f7db158fe99
+      path: policyengine_us/tests/code_health/source_conflicts/sources/us-oh/rc-5747.01.html
+      sha256: 9981a8f73a9c4a1301620fe6cd3df4ecee4de11bacf120caf545a6814ffef276
+    excerpt: It is allowable for repayment of an item that was included in the taxpayer's adjusted gross income
+      for a prior taxable year
+  - citation: 2025 Ohio IT 1040 instructions, Schedule of Adjustments line 29, p. 23
+    kind: instructions
+    url: https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2025/it1040-booklet.pdf#page=23
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 73da6d2fac6da9a3632204dd15577f7db158fe99
+      path: policyengine_us/tests/code_health/source_conflicts/sources/us-oh/it1040-instructions-2025-p23.txt
+      sha256: 6d058019308712a1c0c20809ac21ed9a32009e546ee042242f0113ab894811a2
+    excerpt: In the current tax year, you claimed either (i) an itemized deduction on your federal Schedule A for
+      the amount repaid OR (ii) a tax credit on your federal 1040 based upon the amount repaid.
+  reading: Deduct the repayment whenever (A)(12) allows it (an item included in a prior year's Ohio AGI that did
+    not qualify for the resident or nonresident credit and does not otherwise reduce AGI), whether or not the federal
+    return claimed relief for it.
+  alternatives:
+  - id: it1040-federal-claim
+    reading: Deduct only when the federal return claimed the section 1341 credit or itemized the repayment on Schedule
+      A, as every IT 1040 edition from 2021 (line 23) to 2025 (line 29) instructs.
+    effect: An eligible repayment over $3,000 on a return that takes the federal standard deduction and whose section
+      1341 methods tie gets no Ohio deduction.
+  basis: The statute conditions the deduction on its being allowable, not on a federal claim; the federal-claim
+    condition appears only in the department's instructions, and no Ohio rule adopts it.
+  status: open
+  outcome: computed
+  years:
+    from: 2021
+    to: 2025
+    type: tax
+  implementations:
+  - repo: PolicyEngine/policyengine-us
+    commit: 0f4d73237d0753cd80d772b2cb581ac44368feed
+    path: policyengine_us/variables/gov/states/oh/tax/income/deductions/claim_of_right/oh_claim_of_right_deduction.py
+    follows: it1040-federal-claim
+    adopts: reading
+    basis: PolicyEngine-US follows the statute when it conflicts with forms or instructions; the pull request still
+      applies the instructions' condition and is to change.
+    ruling:
+      by: PolicyEngine
+      date: '2026-10-19'
+      record: https://github.com/PolicyEngine/policyengine-us/pull/10287
+    cites_entry: false
+  tests:
+  - repo: PolicyEngine/policyengine-us
+    commit: 0f4d73237d0753cd80d772b2cb581ac44368feed
+    path: policyengine_us/tests/policy/baseline/gov/states/oh/tax/income/deductions/oh_claim_of_right_deduction.yaml
+    name: Case 4, the deduction method with the federal standard deduction deducts nothing.
+    pins:
+    - it1040-federal-claim
+  money_case:
+    description: 'A 2025 single filer repays $10,000 of wages taxed in an earlier year, takes the federal standard
+      deduction, and the section 1341 methods tie: the statute reading deducts $10,000 from Ohio AGI, the instructions
+      $0. This is the difference in deduction, worth up to $275 of Ohio tax at the 2.75% rate.'
+    amount: '10000.00'
+    currency: USD
+    period: year
+- id: claim-of-right-deduction-floor
+  jurisdiction: us-ar
+  program: income-tax
+  question: Does Arkansas's deduction for restoring more than $3,000 held under a claim of right (Ark. Code 26-51-457)
+    count toward the 2% floor on miscellaneous itemized deductions, whose list of exceptions does not name it, or
+    sit outside the floor as the Department of Finance and Administration treats the volunteer firefighter deduction
+    enacted in the same session?
+  texts: []
+  pending_texts:
+  - citation: Act 1284 of 2013, section 1 (Ark. Code 26-51-457(a))
+    kind: statute
+    url: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2013R%2FPublic%2F&file=1284.pdf&ddBienniumSession=2013%2F2013R
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 73da6d2fac6da9a3632204dd15577f7db158fe99
+      path: policyengine_us/tests/code_health/source_conflicts/sources/us-ar/act-1284-2013.txt
+      sha256: 204ebea7f4b244c1c24975da0c00747fd6e7d7f7f56171f85a3ea9c064a702d4
+    excerpt: Title 26 U.S.C. § 1341(a)(1)-(3) and (b)(2), as they existed on January 1, 2013, regarding the computation
+      of income tax when a taxpayer restores a substantial amount held under a claim of right, is adopted for purposes
+      of computing income tax liability under this chapter.
+  - citation: Act 382 of 1987, section 28(a) (now Ark. Code 26-51-437)
+    kind: statute
+    url: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F1987R%2FPublic%2F&file=382.pdf&ddBienniumSession=1987%2F1987R#page=9
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 73da6d2fac6da9a3632204dd15577f7db158fe99
+      path: policyengine_us/tests/code_health/source_conflicts/sources/us-ar/act-382-1987-p9.txt
+      sha256: 87cf3f82736130bbfe305d7664f690b5ac90a412888a9d6c3b7bec64cdcfe12e
+    excerpt: the miscellaneous itemized deductions for any taxable year shall be allowed only to the extent that
+      the aggregate of such deductions exceeds two percent (2%) of adjusted gross income.
+  - citation: 2014 Form AR3, lines 26 and 28
+    kind: form
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/AR3_2014_RE.pdf#page=1
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 73da6d2fac6da9a3632204dd15577f7db158fe99
+      path: policyengine_us/tests/code_health/source_conflicts/sources/us-ar/ar3-2014.txt
+      sha256: 411d4b1a366f9e6b0f35a119482af4fd161833f5a5defdd961e5a4d208e2fc41
+    excerpt: 'TOTAL MISCELLANEOUS DEDUCTIONS NOT SUBJECT TO THE 2% AGI LIMITATION: (Add lines 26 and 27)'
+  reading: Count the claim of right deduction among miscellaneous itemized deductions, so only the part above 2%
+    of Arkansas AGI is deducted.
+  alternatives:
+  - id: dfa-firefighter-analog
+    reading: Deduct it in full outside the floor, as the department's forms treat the volunteer firefighter deduction
+      (AR3 line 26, totaled with lines not subject to the 2% limitation), which the same 2013 session enacted without
+      an express exception either.
+    effect: A filer with $60,000 of wages who repays $10,000 deducts $10,000 instead of $8,800.
+  - id: character-of-repayment
+    reading: Place the deduction by the character of the repayment, outside the floor when deductible as a loss
+      (the 26-51-437(b) exception for losses) and inside it when deductible as an employee expense.
+    effect: Needs an input the model does not have; for a repayment deductible as a loss it equals the dfa-firefighter-analog
+      reading.
+  basis: The statute's list of exceptions to the floor does not include the claim of right deduction, and where
+    the legislature meant to exempt a deduction it said so (Act 708 of 1991). No department form, instruction or
+    rule names the claim of right deduction; the firefighter treatment is practice for a different deduction.
+  status: open
+  outcome: computed
+  years:
+    from: 2013
+    type: tax
+  implementations:
+  - repo: PolicyEngine/policyengine-us
+    commit: 446e0e1aef78045f3e4ce2f875605ea5e2434db0
+    path: policyengine_us/parameters/gov/states/ar/tax/income/deductions/itemized/misc/sources.yaml
+    follows: reading
+    adopts: reading
+    basis: PolicyEngine-US follows the statute when it conflicts with agency practice.
+    ruling:
+      by: PolicyEngine
+      date: '2026-10-19'
+      record: https://github.com/PolicyEngine/policyengine-us/pull/10287
+    cites_entry: false
+  tests:
+  - repo: PolicyEngine/policyengine-us
+    commit: 446e0e1aef78045f3e4ce2f875605ea5e2434db0
+    path: policyengine_us/tests/policy/baseline/gov/states/ar/tax/income/deductions/itemized/claim_of_right/ar_claim_of_right_deduction.yaml
+    name: Case 9, the deduction counts toward the 2% floor and makes the return itemize.
+    pins:
+    - reading
+  money_case:
+    description: 'A filer with $60,000 of wages repays $10,000: the statute reading deducts $8,800 (above 2% of
+      AGI), the firefighter analogy $10,000, about $47 of Arkansas tax at 3.9%.'
+    amount: '47.00'
+    currency: USD
+    period: year
+- id: oap-interest-and-dividends
+  jurisdiction: us-co
+  program: old-age-pension
+  question: For Colorado's Old Age Pension, are interest and dividends countable unearned income under 3.520.785(B)(10),
+    or exempt under 3.520.786(K), which exempts the unearned income SSA excludes, including interest and dividends
+    on countable resources?
+  texts:
+  - corpus_citation_path: us-co/regulation/9-ccr-2503-5/3.520.785
+    excerpt: 10. Dividends and interest received on financial accounts, savings bonds, leases, etc.
+  - corpus_citation_path: us-co/regulation/9-ccr-2503-5/3.520.786
+    excerpt: K. Unearned income as defined in the Social Security Program Operations Manual System (POMS), Section
+      SI 00830.099 Guide to Unearned Income Exclusions
+  - corpus_citation_path: us-co/regulation/9-ccr-2503-5/3.520.781
+    excerpt: C. Certain income shall be exempt and shall not be considered as countable income, in part or in whole,
+      as outlined in Section 3.520.786.
+  reading: Exempt interest and dividends on countable resources, because 3.520.781(C) makes the 3.520.786 exemptions
+    govern countable income and 3.520.786(K) incorporates SSA's exclusions (20 CFR 416.1124).
+  alternatives:
+  - id: countable-unearned-income
+    reading: Count interest and dividends as unearned income under 3.520.785(B)(10).
+    effect: A client's interest and dividends reduce the pension, after the unearned income disregard.
+  basis: The two sections of the same rule disagree; 3.520.781(C) says exempt income is not countable, so the exemption
+    in 3.520.786(K) controls the listing in 3.520.785(B)(10).
+  status: open
+  outcome: computed
+  years:
+    from: 2026
+    type: calendar
+  implementations:
+  - repo: PolicyEngine/policyengine-us
+    commit: 9697377898aa6324967ddbdc4691c88ca34137de
+    path: policyengine_us/parameters/gov/states/co/ssa/oap/income/sources/unearned.yaml
+    follows: reading
+    adopts: reading
+    basis: Follows 3.520.781(C), under which the 3.520.786 exemptions decide what is countable.
+    cites_entry: false
+  tests:
+  - repo: PolicyEngine/policyengine-us
+    commit: 9697377898aa6324967ddbdc4691c88ca34137de
+    path: policyengine_us/tests/policy/baseline/gov/states/co/ssa/oap/co_oap_own_countable_income.yaml
+    name: Case 12, interest and dividends on countable resources are exempt.
+    pins:
+    - reading
+  money_case:
+    description: A 2026 client with $360 of interest and $240 of dividends a year ($50 a month) has no countable
+      income from them under the exempt reading; under 3.520.785(B)(10) the $50 a month is countable unearned income
+      before the unearned income disregard.
+    amount: '50.00'
+    currency: USD
+    period: month

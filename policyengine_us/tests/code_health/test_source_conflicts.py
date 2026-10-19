@@ -26,6 +26,11 @@ branch. Invariants, checked on every run:
    say", "in practice", "discrepancy", ...) in files with no marker may not
    grow, file by file. Register the conflict and mark the line, or explain
    in review why the comment is not one, and update KNOWN_UNMARKED.
+5. Backlog: ``source_conflicts/candidates.yaml`` lists every known conflict
+   not yet registered. Each candidate has a well-formed, unique global id that
+   is not yet in the register (registering one removes it from the backlog),
+   valid kinds and states, https links, and code paths that exist here; its
+   text is public (no decision-queue ids, local paths or email addresses).
 
 rulespec-us's own daily ``verify`` checks the other half at pinned commits:
 that each listed file and test exists and that ``cites_entry`` is true.
@@ -45,6 +50,7 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 FOLDER = Path(__file__).resolve().parent / "source_conflicts"
 REGISTER = FOLDER / "known-source-conflicts.yaml"
 PIN = FOLDER / "pin.yaml"
+CANDIDATES = FOLDER / "candidates.yaml"
 THIS_REPO = "PolicyEngine/policyengine-us"
 SCANNED = (
     "policyengine_us/variables",
@@ -312,3 +318,116 @@ def test_marker_pattern():
         "# Source conflict us-hi:x see the register",
     ):
         assert ATTEMPT_RE.match(bad) and not MARKER_RE.fullmatch(bad), bad
+
+
+# ---------------------------------------------------------------------------
+# The backlog of known conflicts not yet registered
+
+SOURCE_KINDS = {
+    "statute",
+    "regulation",
+    "rulemaking",
+    "form",
+    "instructions",
+    "worksheet",
+    "manual",
+    "guidance",
+    "policy",
+    "plan",
+    "calculator",
+    "agency-practice",
+}
+FOLLOWS = {"statute", "conflicting-source", "gap-fill", "not-modelled", "unknown"}
+STATES = {"ruled", "open", "unreviewed"}
+YEAR_TYPES = {"calendar", "tax", "federal-fiscal", "state-fiscal", "program"}
+PRIVATE = (
+    (re.compile(r"\bd[0-9]{3,5}\b"), "a decision-queue id"),
+    (re.compile(r"\blocal_[0-9a-f]{8}"), "a session id"),
+    (re.compile(r"(?:/Users/|/home/|/private/tmp|(?<![\w.])~/)"), "a local path"),
+    (re.compile(r"[\w.+-]+@[\w-]+\.[A-Za-z][\w.-]*"), "an email address"),
+)
+
+
+def _candidates():
+    return yaml.safe_load(CANDIDATES.read_text(encoding="utf-8"))["candidates"]
+
+
+def _strings(value, label):
+    if isinstance(value, str):
+        yield label, value
+    elif isinstance(value, dict):
+        for key, item in value.items():
+            yield from _strings(item, f"{label}.{key}")
+    elif isinstance(value, list):
+        for index, item in enumerate(value):
+            yield from _strings(item, f"{label}[{index}]")
+
+
+def test_candidates_have_unique_well_formed_ids():
+    ids = [item["id"] for item in _candidates()]
+    assert all(re.fullmatch(GLOBAL_ID, global_id) for global_id in ids), ids
+    duplicated = sorted(
+        global_id for global_id, count in Counter(ids).items() if count > 1
+    )
+    assert not duplicated, duplicated
+
+
+def test_candidates_are_not_yet_registered():
+    _, entries = _load()
+    registered = sorted(set(entries) & {item["id"] for item in _candidates()})
+    assert not registered, (
+        f"These are registered now; delete them from candidates.yaml: {registered}"
+    )
+
+
+def test_candidate_fields():
+    problems = []
+    for item in _candidates():
+        label = item.get("id")
+        for key in ("id", "program", "question", "sources", "pe_us", "state"):
+            if key not in item:
+                problems.append(f"{label}: {key} is required")
+        if item.get("state") not in STATES:
+            problems.append(f"{label}: state must be one of {sorted(STATES)}")
+        pe_us = item.get("pe_us") or {}
+        if pe_us.get("follows") not in FOLLOWS:
+            problems.append(f"{label}: pe_us.follows must be one of {sorted(FOLLOWS)}")
+        years = item.get("years")
+        if years is not None and (
+            not isinstance(years, dict) or years.get("type") not in YEAR_TYPES
+        ):
+            problems.append(
+                f"{label}: years needs from, optional to, and a type in {sorted(YEAR_TYPES)}"
+            )
+        sources = item.get("sources") or []
+        if len(sources) < 2:
+            problems.append(f"{label}: a conflict needs at least two sources")
+        for source in sources:
+            if source.get("kind") not in SOURCE_KINDS:
+                problems.append(
+                    f"{label}: source kind {source.get('kind')!r} is not one of {sorted(SOURCE_KINDS)}"
+                )
+            url = source.get("url")
+            if url is not None and not str(url).startswith("https://"):
+                problems.append(f"{label}: source url must be https or null: {url}")
+        for path in pe_us.get("code") or []:
+            if not (REPO_ROOT / path).is_file():
+                problems.append(f"{label}: code path {path} does not exist here")
+        for pr in pe_us.get("prs") or []:
+            if not re.fullmatch(
+                r"https://github\.com/PolicyEngine/policyengine-us/pull/[0-9]+", pr
+            ):
+                problems.append(
+                    f"{label}: prs must be PolicyEngine/policyengine-us pull request URLs: {pr}"
+                )
+    assert not problems, "\n".join(problems)
+
+
+def test_candidates_are_public():
+    problems = [
+        f"{label} contains {what}"
+        for label, text in _strings(_candidates(), "candidates")
+        for pattern, what in PRIVATE
+        if pattern.search(text)
+    ]
+    assert not problems, "\n".join(problems)

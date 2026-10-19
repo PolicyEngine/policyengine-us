@@ -1,0 +1,13 @@
+# Known conflicts between a statute and a regulation, form, instructions,
+# manual, guidance, calculator or agency practice that are not yet entries in
+# the shared register (rulespec-us known-source-conflicts.yaml). Each moves to
+# the register once its sources are captured and its excerpts verified; delete
+# it here in the same change. test_source_conflicts.py checks this file.
+#
+# pe_us.follows: statute | conflicting-source (against the statute; the
+# 2026-10-19 rule calls for a model change) | gap-fill (the statute is silent
+# and the code follows the form) | not-modelled | unknown.
+# state: ruled (PolicyEngine has picked) | open (asked, not yet decided) |
+# unreviewed.
+version: 1
+candidates: []
