@@ -232,6 +232,34 @@
   output:
     ga_surplus_tax_rebate: 500
 
+- name: 2021 joint return with both spouses claimed and only the head earning income keeps the surplus tax rebate
+  period: 2021
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_a:
+        age: 30
+        taxable_interest_income: 1_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        ga_income_tax_before_non_refundable_credits: 600
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: GA
+  output:
+    ga_surplus_tax_rebate: 500
+
 - name: 2021 joint return with neither spouse claimable, surplus tax rebate only through a spouse who qualifies when the claimed filer had no earned income
   period: 2021
   input:

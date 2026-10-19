@@ -8,7 +8,6 @@ class ga_surplus_tax_rebate(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.legis.ga.gov/api/legislation/document/20232024/217823",
         "https://www.legis.ga.gov/api/legislation/document/20232024/217823#page=2",
     )
     defined_for = StateCode.GA

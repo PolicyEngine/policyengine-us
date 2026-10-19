@@ -18,12 +18,16 @@ class ga_ctc_eligible_child(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ga.tax.income.credits.ctc
         age = person("age", period)
-        # Georgia gives "qualifying child" the meaning of IRC 24(c) only, so
-        # it is not limited to children for whom the federal credit is
-        # allowed (IRC 24(a), 152(b)(1)): a filer who can be claimed as a
-        # dependent keeps it for their own qualifying child. O.C.G.A.
-        # 48-7-29.27 has its own one-claimant rule, and the Department's
-        # guidance adds no dependency requirement.
+        # For the dependency question, Georgia's incorporation of IRC 24(c)
+        # is modeled without the federal credit's IRC 24(a), 152(b)(1) bar:
+        # a filer who can be claimed as a dependent keeps the credit for
+        # their own qualifying child. O.C.G.A. 48-7-29.27 has its own
+        # one-claimant rule, and the Department's guidance adds no dependency
+        # requirement. Separately, the inherited identification helper
+        # retains IRC 24(h)(7)'s SSN restriction, so an otherwise qualifying
+        # resident child under six with an ITIN receives no credit. Whether
+        # HB 136's 24(c) incorporation permits that separate restriction
+        # remains an open reading.
         p_federal = parameters(period).gov.irs.credits.ctc
         ctc_eligible_child = (
             person("is_tax_unit_dependent", period)
