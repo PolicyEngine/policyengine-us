@@ -5,10 +5,12 @@ MCA 15-30-2337(9)(a) counts federal adjusted gross income "plus all
 nontaxable income", and (4) counts "all income received by all individuals
 of a household". 2024 Schedule 2EC line 14 counts "the total of unemployment
 compensation received during the year"; the 2014-2023 instructions list
-disability benefits. The model leaves employment disability benefits out of
-federal AGI, and in 2020 IRC 85(c) excluded up to 10_200 of unemployment
-compensation from it. Federal AGI counts the taxable part of a filer's
-compensation and a dependent's own gross income all of a dependent's.
+disability benefits. These fixtures specify fully nontaxable employment
+disability benefits; taxable benefits already enter federal AGI or a
+dependent's own gross income. In 2020 IRC 85(c) excluded up to 10_200 of
+unemployment compensation from federal AGI. Federal AGI counts the taxable
+part of a filer's compensation and a dependent's own gross income all of a
+dependent's.
 
 For a claimant aged 66 (taxable pension, unemployment compensation,
 disability benefits, property tax) living with one other adult (unemployment
@@ -125,6 +127,7 @@ def build_situation():
             "taxable_pension_income": every_year(c["pension"]),
             "unemployment_compensation": every_year(c["claimant_uc"]),
             "disability_benefits": every_year(c["claimant_disability"]),
+            "tax_exempt_disability_benefits": every_year(c["claimant_disability"]),
             "real_estate_taxes": every_year(PROPERTY_TAX),
             "ssi": every_year(0),
             "is_tax_unit_dependent": every_year(False),
@@ -136,6 +139,7 @@ def build_situation():
             "is_full_time_student": every_year(arrangement == "dependent"),
             "unemployment_compensation": every_year(c["member_uc"]),
             "disability_benefits": every_year(c["member_disability"]),
+            "tax_exempt_disability_benefits": every_year(c["member_disability"]),
             "ssi": every_year(0),
             "is_tax_unit_dependent": every_year(arrangement == "dependent"),
         }
