@@ -1,6 +1,8 @@
-# FY2026 matrix, page 1; application EA-297, page 2; manual pages 30-32.
-# heating_expense is read as unpaid charges in the claim window. Wood, coal and
-# kerosene are paid in full (manual page 31); heat in rent assumes seven months.
+# FY2026 matrix, page 1; FY2026 plan item 9.1, page 22; application EA-297,
+# pages 2 and 4; manual pages 30-32. heating_expense is read as unpaid charges in
+# the claim window. Wood and coal are paid in full to the household (plan item
+# 9.1; rule 67:15:01:40; manual page 31); kerosene is paid to the supplier and
+# capped at unpaid charges like fuel oil. Heat in rent assumes seven months.
 - name: Case 1, vendor fuels pay the smaller of the schedule and qualifying unpaid seasonal charges.
   period: 2026
   absolute_error_margin: 0.001
@@ -9,7 +11,7 @@
     age: [40, 40, 40, 40, 40, 40, 40, 40]
     immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
     heating_type: [NATURAL_GAS, NATURAL_GAS, ELECTRICITY, ELECTRICITY, PROPANE, PROPANE, FUEL_OIL, FUEL_OIL]
-    heating_expense: [500, 2000, 500, 2000, 500, 3000, 500, 4000]
+    heating_expense: [500, 2_000, 500, 2_000, 500, 3_000, 500, 4_000]
     employment_income: [0, 0, 0, 0, 0, 0, 0, 0]
     ssi: [0, 0, 0, 0, 0, 0, 0, 0]
     tanf: [0, 0, 0, 0, 0, 0, 0, 0]
@@ -19,8 +21,12 @@
       CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD]
   output:
     sd_liheap_eligible: [true, true, true, true, true, true, true, true]
-    sd_liheap: [500, 880, 500, 1331, 500, 2499, 500, 2858]
-- name: Case 2, wood coal and kerosene pay the full schedule directly to the household.
+    sd_liheap: [500, 880, 500, 1_331, 500, 2_499, 500, 2_858]
+# Region 1 tier 1. Coal & Wood $742 goes to the household in full on a $1 bill
+# (plan item 9.1; rule 67:15:01:40; manual page 31). Kerosene takes the Fuel Oil
+# cell, $2,858, but is paid to the supplier against unpaid charges (plan item
+# 9.1; rule 67:15:01:43.01): min($2,858, $1) = $1.
+- name: Case 2, wood and coal pay the full schedule to the household while kerosene is capped at unpaid charges.
   period: 2026
   absolute_error_margin: 0.001
   input:
@@ -36,7 +42,7 @@
       2026-01: [0, 0, 0]
     county_str: [CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD]
   output:
-    sd_liheap: [742, 742, 2858]
+    sd_liheap: [742, 742, 1]
 - name: Case 3, income changes the payment tier and final eligibility gates the award.
   period: 2026
   absolute_error_margin: 0.001
@@ -45,8 +51,8 @@
     age: [40, 40, 40, 40]
     immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    heating_expense: [2000, 2000, 2000, 0]
-    employment_income: [20000, 31300, 31300.01, 0]
+    heating_expense: [2_000, 2_000, 2_000, 0]
+    employment_income: [20_000, 31_300, 31_300.01, 0]
     ssi: [0, 0, 0, 0]
     tanf: [0, 0, 0, 0]
     snap:
@@ -69,7 +75,7 @@
     snap:
       2026-01: [0, 0, 0, 0, 0]
     heat_expense_included_in_rent: [true, true, true, true, true]
-    rent: [1200, 6000, 6000, 0, 1200]
+    rent: [1_200, 6_000, 6_000, 0, 1_200]
     county_str: [CUSTER_COUNTY_SD, CUSTER_COUNTY_SD, HARDING_COUNTY_SD, CUSTER_COUNTY_SD, CUSTER_COUNTY_SD]
   output:
     sd_liheap: [210, 800, 850, 0, 0]
@@ -81,7 +87,7 @@
     age: [40, 40, 40]
     immigration_status: [CITIZEN, CITIZEN, CITIZEN]
     heating_type: [SOLAR, OTHER, UNSPECIFIED]
-    heating_expense: [2000, 2000, 2000]
+    heating_expense: [2_000, 2_000, 2_000]
     employment_income: [0, 0, 0]
     ssi: [0, 0, 0]
     tanf: [0, 0, 0]
@@ -165,7 +171,7 @@
 # $13,590 = $27,180; Mid 125% x $13,590 / 4 = $4,246.875, rounded half up to
 # $4,247 x 4 = $16,988. Tier 1: propane $1,666, fuel oil and kerosene $1,905,
 # electricity $1,210; $20,000 of wages is tier 2: propane $1,499. Vendor fuels
-# pay min(cell, $3,000); kerosene pays its cell in full.
+# pay min(cell, $3,000), kerosene included: min($1,905, $3,000) = $1,905.
 - name: Case 8, 2023 direct payments use the FY2022 and FY2023 matrix amounts.
   period: 2023
   absolute_error_margin: 0.01
@@ -329,3 +335,31 @@
     sd_liheap_income_threshold: 26_436
     sd_liheap_eligible: true
     sd_liheap: 792
+
+# Rule 67:15:01:18(17) excludes only "Cash gifts for recurring occasions such as
+# birthdays and Christmas"; manual page 25 counts monthly cash gifts and
+# application EA-297 page 5 lists "Money from Family or Friends" as gross income.
+# $27,000 of wages + $6,000 of regular help ($500 a month) = $33,000, above the
+# $31,300 size 1 limit ($7,825 x 4), so no award. Without the help, $27,000
+# would be eligible in tier 2 (above the $19,564 Mid): Custer County (region 1)
+# gas min($792, $2,000) = $792.
+- name: Case 14, regular cash help from family counts toward the income limit and ends eligibility.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD]
+    age: [40]
+    immigration_status: [CITIZEN]
+    heating_type: [NATURAL_GAS]
+    heating_expense: [2_000]
+    employment_income: [27_000]
+    financial_assistance: [6_000]
+    ssi: [0]
+    tanf: [0]
+    snap:
+      2026-01: [0]
+    county_str: [CUSTER_COUNTY_SD]
+  output:
+    sd_liheap_countable_income: [33_000]
+    sd_liheap_eligible: [false]
+    sd_liheap: [0]

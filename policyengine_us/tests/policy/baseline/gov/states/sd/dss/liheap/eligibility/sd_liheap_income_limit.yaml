@@ -12,7 +12,8 @@
       NATURAL_GAS, NATURAL_GAS]
     sd_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   output:
-    sd_liheap_income_limit: [31300, 42300, 53300, 64300, 75300, 86300, 90056, 92056, 94056, 97724]
+    sd_liheap_income_limit: [31_300, 42_300, 53_300, 64_300, 75_300, 86_300, 90_056, 92_056, 94_056,
+      97_724]
 
 # FY2024 matrix pages 1-5 print three-month maxima for sizes 1-15; each is multiplied
 # by 4. Size 1 is 200% of the 2023 guideline, sizes 2-8 the 60% state median income
@@ -26,8 +27,8 @@
       NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     sd_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
   output:
-    sd_liheap_income_limit: [29160, 39308, 48560, 57808, 67056, 76308, 78040, 79776, 83548, 91260, 98968, 106680,
-      114388, 122100, 129808]
+    sd_liheap_income_limit: [29_160, 39_308, 48_560, 57_808, 67_056, 76_308, 78_040, 79_776, 83_548,
+      91_260, 98_968, 106_680, 114_388, 122_100, 129_808]
 
 # DSS prints no limit above size 10, so sizes 11-15 follow the rule: 150% of the
 # 2025 guideline ($70,650, $76,150, $81,650, $87,150, $92,650) is $105,975,
@@ -40,7 +41,7 @@
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     sd_liheap_household_size: [11, 12, 13, 14, 15]
   output:
-    sd_liheap_income_limit: [105972, 114224, 122472, 130724, 138972]
+    sd_liheap_income_limit: [105_972, 114_224, 122_472, 130_724, 138_972]
 
 # A household size of 0 (no citizen or eligible alien) and another state get
 # no limit; size 1 uses $7,825 x 4 = $31,300.
@@ -52,7 +53,7 @@
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     sd_liheap_household_size: [0, 1, 1]
   output:
-    sd_liheap_income_limit: [0, 0, 31300]
+    sd_liheap_income_limit: [0, 0, 31_300]
 
 # 2024-2025 published table (DSS page archived January 14, 2025), quarterly
 # $7,530, $10,220, $12,910, $15,858, $18,396, $20,933, $21,409, $21,884,

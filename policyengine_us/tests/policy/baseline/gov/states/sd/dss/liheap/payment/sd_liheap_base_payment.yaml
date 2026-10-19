@@ -14,13 +14,13 @@
       NATURAL_GAS, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE]
     sd_liheap_region: [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3,
       4, 1, 2, 3, 4, 1, 2, 3, 4]
-    sd_liheap_countable_income: [0, 0, 0, 0, 20000, 20000, 20000, 20000, 0, 0, 0, 0, 20000, 20000, 20000, 20000, 0,
-      0, 0, 0, 20000, 20000, 20000, 20000, 0, 0, 0, 0, 20000, 20000, 20000, 20000, 0, 0, 0, 0, 20000, 20000, 20000,
-      20000]
+    sd_liheap_countable_income: [0, 0, 0, 0, 20_000, 20_000, 20_000, 20_000, 0, 0, 0, 0, 20_000, 20_000,
+      20_000, 20_000, 0, 0, 0, 0, 20_000, 20_000, 20_000, 20_000, 0, 0, 0, 0, 20_000, 20_000, 20_000, 20_000,
+      0, 0, 0, 0, 20_000, 20_000, 20_000, 20_000]
   output:
-    sd_liheap_base_payment: [742, 770, 812, 854, 668, 694, 730, 768, 1331, 1410, 1516, 1626, 1198, 1270, 1369, 1461,
-      2858, 3018, 3236, 3437, 2573, 2715, 2910, 3093, 880, 938, 1007, 1058, 792, 844, 907, 953, 2499, 2658, 2834,
-      3066, 2249, 2394, 2552, 2762]
+    sd_liheap_base_payment: [742, 770, 812, 854, 668, 694, 730, 768, 1_331, 1_410, 1_516, 1_626, 1_198,
+      1_270, 1_369, 1_461, 2_858, 3_018, 3_236, 3_437, 2_573, 2_715, 2_910, 3_093, 880, 938, 1_007, 1_058,
+      792, 844, 907, 953, 2_499, 2_658, 2_834, 3_066, 2_249, 2_394, 2_552, 2_762]
 
 # The FY2026 matrix prints one Coal & Wood row. Application EA-297 (page 4) lists one
 # Fuel Oil/Kerosene category, so kerosene uses the Fuel Oil row.
@@ -31,9 +31,9 @@
     state_code: [SD, SD, SD, SD, SD, SD, SD, SD]
     heating_type: [WOOD, COAL, FUEL_OIL, KEROSENE, WOOD, COAL, FUEL_OIL, KEROSENE]
     sd_liheap_region: [1, 1, 2, 2, 3, 3, 4, 4]
-    sd_liheap_countable_income: [0, 0, 0, 0, 20000, 20000, 20000, 20000]
+    sd_liheap_countable_income: [0, 0, 0, 0, 20_000, 20_000, 20_000, 20_000]
   output:
-    sd_liheap_base_payment: [742, 742, 3018, 3018, 730, 730, 3093, 3093]
+    sd_liheap_base_payment: [742, 742, 3_018, 3_018, 730, 730, 3_093, 3_093]
 
 # FY2024 matrix: the size 1 three-month Mid of $4,556 gives $18,224 a year (not the
 # annual column's $18,225); size 2's $6,163 gives $24,652 (not $24,650). Income at
@@ -46,9 +46,9 @@
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     sd_liheap_region: [1, 1, 1, 1, 1]
     sd_liheap_household_size: [1, 1, 2, 2, 2]
-    sd_liheap_countable_income: [18224, 18224.01, 24650, 24652, 24652.01]
+    sd_liheap_countable_income: [18_224, 18_224.01, 24_650, 24_652, 24_652.01]
   output:
-    sd_liheap_income_threshold: [18224, 18224, 24652, 24652, 24652]
+    sd_liheap_income_threshold: [18_224, 18_224, 24_652, 24_652, 24_652]
     sd_liheap_base_payment: [880, 792, 880, 880, 792]
 
 # FY2026 size 1 Mid: $4,891 x 4 = $19,564. Region 3 electricity pays $1,516 in
@@ -60,14 +60,15 @@
     state_code: [SD, SD, SD]
     heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY]
     sd_liheap_region: [3, 3, 3]
-    sd_liheap_countable_income: [19563.99, 19564, 19564.01]
+    sd_liheap_countable_income: [19_563.99, 19_564, 19_564.01]
   output:
-    sd_liheap_base_payment: [1516, 1516, 1369]
+    sd_liheap_base_payment: [1_516, 1_516, 1_369]
 
-# No matrix price exists for an unknown region (0 or 5) or for NONE, SOLAR,
-# OTHER or UNSPECIFIED fuel, and another state gets nothing. These zeros are
-# coverage gaps, not denials.
-- name: Case 5, unknown regions unpriced fuels and other states return component placeholders.
+# No matrix price exists for an unknown region (0 or 5) or for SOLAR, OTHER or
+# UNSPECIFIED fuel; those zeros are coverage gaps, not denials. NONE means no
+# heat, which sd_liheap_eligible denies (rules 67:15:01:06 and 67:15:01:09
+# require a heating expense), and another state is outside the program.
+- name: Case 5, unknown regions, unpriced fuels, no heat and another state return a zero base payment.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -103,12 +104,12 @@
         members: [adult1]
         heating_type: NATURAL_GAS
         sd_liheap_region: 1
-        sd_liheap_countable_income: 20000
+        sd_liheap_countable_income: 20_000
       unit2:
         members: [adult2, child]
         heating_type: NATURAL_GAS
         sd_liheap_region: 1
-        sd_liheap_countable_income: 20000
+        sd_liheap_countable_income: 20_000
     households:
       household1:
         members: [adult1]
@@ -117,7 +118,7 @@
         members: [adult2, child]
         state_code: SD
   output:
-    sd_liheap_income_threshold: [19564, 26436]
+    sd_liheap_income_threshold: [19_564, 26_436]
     sd_liheap_base_payment: [792, 880]
 
 # FY2022 and FY2023 matrices print the same cells. 2023 size 1 Mid: 125% x 2022

@@ -13,8 +13,8 @@
       NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     sd_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
   output:
-    sd_liheap_income_threshold: [18224, 24652, 31076, 37500, 43924, 50352, 56776, 63200, 69624, 76052, 82476, 88900,
-      95324, 101752, 108176]
+    sd_liheap_income_threshold: [18_224, 24_652, 31_076, 37_500, 43_924, 50_352, 56_776, 63_200, 69_624,
+      76_052, 82_476, 88_900, 95_324, 101_752, 108_176]
 
 # The FY2026 matrix names Mid without printing it, so the FY2024 rule carries
 # forward: 125% of the 2025 guideline ($15,650, $21,150, $59,650, $65,150, $92,650)
@@ -28,7 +28,7 @@
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     sd_liheap_household_size: [1, 2, 9, 10, 15]
   output:
-    sd_liheap_income_threshold: [19564, 26436, 74564, 81436, 115812]
+    sd_liheap_income_threshold: [19_564, 26_436, 74_564, 81_436, 115_812]
 
 # A household size of 0 and another state get no threshold; size 1 Mid is
 # $4,891 x 4 = $19,564.
@@ -40,4 +40,4 @@
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     sd_liheap_household_size: [0, 1, 1]
   output:
-    sd_liheap_income_threshold: [0, 0, 19564]
+    sd_liheap_income_threshold: [0, 0, 19_564]

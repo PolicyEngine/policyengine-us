@@ -42,7 +42,7 @@ class sd_liheap_base_payment(Variable):
             default=0,
         )
         # sd_liheap applies eligibility and caps vendor fuels at heating_expense,
-        # read as unpaid seasonal vendor charges. An unknown region or a fuel
-        # without a matrix row returns zero as a coverage gap, not a denial; the
-        # default for UNSPECIFIED fuel is tracked in #9754.
+        # read as unpaid seasonal vendor charges. An unknown region or SOLAR, OTHER
+        # or UNSPECIFIED fuel returns zero as a coverage gap, not a denial (NONE
+        # fails sd_liheap_eligible); the UNSPECIFIED default is tracked in #9754.
         return where(supported_region, amount, 0)

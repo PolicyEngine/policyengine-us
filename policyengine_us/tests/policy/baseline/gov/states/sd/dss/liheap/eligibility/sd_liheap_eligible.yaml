@@ -8,34 +8,36 @@
     age: [40, 40, 40]
     immigration_status: [CITIZEN, CITIZEN, CITIZEN]
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    heating_expense: [2000, 2000, 2000]
-    employment_income: [0, 31300, 31300.01]
+    heating_expense: [2_000, 2_000, 2_000]
+    employment_income: [0, 31_300, 31_300.01]
     ssi: [0, 0, 0]
     tanf: [0, 0, 0]
     snap:
       2026-01: [0, 0, 0]
   output:
-    sd_liheap_countable_income: [0, 31300, 31300.01]
-    sd_liheap_income_limit: [31300, 31300, 31300]
+    sd_liheap_countable_income: [0, 31_300, 31_300.01]
+    sd_liheap_income_limit: [31_300, 31_300, 31_300]
     sd_liheap_eligible: [true, true, false]
 - name: Case 2, heating responsibility permits positive tenant rent without a separate bill.
   period: 2026
-  absolute_error_margin: 0.001
   input:
     state_code: [SD, SD, SD, SD, SD]
     age: [40, 40, 40, 40, 40]
     immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NONE]
-    heating_expense: [100, 0, 0, 0, 1000]
+    heating_expense: [100, 0, 0, 0, 1_000]
     employment_income: [0, 0, 0, 0, 0]
     ssi: [0, 0, 0, 0, 0]
     tanf: [0, 0, 0, 0, 0]
     snap:
       2026-01: [0, 0, 0, 0, 0]
     heat_expense_included_in_rent: [false, false, true, true, false]
-    rent: [0, 0, 1200, 0, 0]
+    rent: [0, 0, 1_200, 0, 0]
   output:
     sd_liheap_eligible: [true, false, true, false, false]
+# Aurora County is region 2: natural gas tier 1 pays min($938, $2,000) = $938 to
+# each household with a counted member and no income (at or below the $19,564
+# Mid). The undocumented adult alone has no counted member, so no award.
 - name: Case 3, ordinary LIEAP uses federal qualification without SNAP-specific immigrant bars.
   period: 2026
   absolute_error_margin: 0.001
@@ -44,14 +46,16 @@
     age: [40, 40, 40, 40]
     immigration_status: [CITIZEN, LEGAL_PERMANENT_RESIDENT, REFUGEE, UNDOCUMENTED]
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    heating_expense: [2000, 2000, 2000, 2000]
+    heating_expense: [2_000, 2_000, 2_000, 2_000]
     employment_income: [0, 0, 0, 0]
     ssi: [0, 0, 0, 0]
     tanf: [0, 0, 0, 0]
     snap:
       2026-01: [0, 0, 0, 0]
+    county_str: [AURORA_COUNTY_SD, AURORA_COUNTY_SD, AURORA_COUNTY_SD, AURORA_COUNTY_SD]
   output:
     sd_liheap_eligible: [true, true, true, false]
+    sd_liheap: [938, 938, 938, 0]
 - name: Case 4, categorical income eligibility requires every household member to receive SNAP.
   period: 2026
   absolute_error_margin: 0.001
@@ -60,7 +64,7 @@
       adult1:
         age: 40
         immigration_status: CITIZEN
-        employment_income: 100000
+        employment_income: 100_000
         ssi: 0
       child1:
         age: 10
@@ -69,7 +73,7 @@
       adult2:
         age: 40
         immigration_status: CITIZEN
-        employment_income: 100000
+        employment_income: 100_000
         ssi: 0
       child2:
         age: 10
@@ -79,7 +83,7 @@
       unit1:
         members: &id001 [adult1, child1]
         heating_type: NATURAL_GAS
-        heating_expense: 2000
+        heating_expense: 2_000
         tanf: 0
         snap:
           2026-01: 100
@@ -88,7 +92,7 @@
       unit2:
         members: &id002 [adult2, child2]
         heating_type: NATURAL_GAS
-        heating_expense: 2000
+        heating_expense: 2_000
         tanf: 0
         snap:
           2026-01: 100
@@ -102,7 +106,7 @@
         members: *id002
         state_code: SD
   output:
-    sd_liheap_countable_income: [100000, 100000]
+    sd_liheap_countable_income: [100_000, 100_000]
     sd_liheap_eligible: [true, false]
 # Manual physical page 9: mixed households are eligible, and only citizens and
 # eligible aliens count as members. Size 1 (the child): limit $31,300, Mid
@@ -125,7 +129,7 @@
       unit:
         members: [adult, child]
         heating_type: NATURAL_GAS
-        heating_expense: 2000
+        heating_expense: 2_000
         tanf: 0
         snap:
           2026-01: 0
@@ -147,7 +151,7 @@
     age: [40]
     immigration_status: [CITIZEN]
     heating_type: [NATURAL_GAS]
-    heating_expense: [2000]
+    heating_expense: [2_000]
     employment_income: [0]
     ssi: [0]
     tanf: [0]

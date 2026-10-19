@@ -366,8 +366,9 @@
   output:
     sd_liheap_countable_income: 0
 
-# FY2026 plan pp5,10 counts railroad retirement. DSS publishes a one-person
-# three-month maximum of $7,825, annualized to $31,300; no final award is asserted.
+# FY2026 plan pages 5 and 10 process railroad retirement as counted fixed income.
+# DSS publishes a one-person three-month maximum of $7,825, annualized to
+# $31,300; no final award is asserted.
 - name: Case 12, railroad retirement counts without pension or Social Security receipts.
   period: 2026
   absolute_error_margin: 0.01
@@ -664,9 +665,12 @@
     sd_liheap_countable_income: 20_000
 
 # Application EA-297 page 5 lists Worker's Compensation as gross income. SDCL
-# 62-4-3 pays 66 2/3% of weekly earnings: 2/3 x $900 = $600 a week, within the
-# DLR $554-$1,108 range for July 2025-June 2026. 12 weeks of wages at $900 =
-# $10,800, plus 26 weeks of benefits at $600 = $15,600, totals $26,400.
+# 62-4-3 (https://sdlegislature.gov/Statutes/62-4-3) pays 66 2/3% of weekly
+# earnings: 2/3 x $900 = $600 a week, within the DLR $554-$1,108 weekly range for
+# July 2025-June 2026
+# (https://dlr.sd.gov/workers_compensation/documents/weekly_rates_historical.pdf#page=2).
+# 12 weeks of wages at $900 = $10,800, plus 26 weeks of benefits at $600 =
+# $15,600, totals $26,400.
 - name: Case 22, workers' compensation counts as unearned income alongside wages.
   period: 2026
   absolute_error_margin: 0.01
@@ -694,10 +698,15 @@
     sd_liheap_countable_income: 26_400
 
 # Plan section 1.9 (page 6) checks "Unemployment insurance" and manual page 28
-# says "All UI payments received are countable." South Dakota pays 1/26 of the
-# high-quarter wages a week (DLR benefit page, $28-$575 a week): $800 a week x
-# 13 weeks = $10,400 / 26 = $400. 26 weeks of wages ($20,800) and 16 weeks of
-# benefits ($6,400) = $27,200.
+# says "All UI payments received are countable." SDCL 61-6-2
+# (https://sdlegislature.gov/Statutes/61-6-2) pays one twenty-sixth of the
+# high-quarter wages a week, within the DLR range of $28-$575
+# (https://dlr.sd.gov/ra/publications/rabenefits_eligibility_factsheet_ENG.pdf#page=2):
+# $800 a week x 13 weeks = $10,400 / 26 = $400. 26 weeks of wages ($20,800) and
+# 16 weeks of benefits ($6,400) = $27,200. The benefit enters as
+# modeled_state_unemployment_compensation with no reported amount, so the case
+# fails if the source list reads the raw unemployment_compensation ($20,800)
+# instead of total_unemployment_compensation ($27,200).
 - name: Case 23, unemployment insurance counts alongside wages earned before a layoff.
   period: 2026
   absolute_error_margin: 0.01
@@ -709,7 +718,8 @@
         is_in_secondary_school: false
         ssi: 0
         employment_income: 20_800
-        unemployment_compensation: 6_400
+        unemployment_compensation: 0
+        modeled_state_unemployment_compensation: 6_400
     spm_units:
       spm_unit:
         members: [person1]

@@ -39,7 +39,8 @@ class sd_liheap_income_limit(Variable):
         # 2.1, sets 60% of state median income for sizes 4-9:
         # https://liheapch.acf.gov/docs/2026/state-plans/SD_Plan_2026.pdf#page=9
         # Applied to the $111,183 FY2026 state median income, that rate gives
-        # three-month limits of $16,677, $19,345 and $22,014 (our derivation).
+        # three-month limits of $16,677, $19,345 and $22,013 under the model's
+        # flooring (our derivation).
         # The DSS 2025-2026 published limits cited above are $16,075, $18,825
         # and $21,575 (200% of the 2025 poverty guideline). The model follows DSS.
         # The FY2027 draft plan (status "Saved"), section 2.1, lists 60% of state
