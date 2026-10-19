@@ -3,3 +3,5 @@ Apply the Rhode Island, South Carolina, Utah, Vermont, West Virginia and Wiscons
 Preserve claimable-filer rules in the contributed South Carolina, Vermont and West Virginia dependent exemption reforms and the state dependent exemption repeal.
 
 Exclude pretax payroll deductions from Wisconsin dependent standard deduction earnings on both tax paths.
+
+Use HUD zero-bedroom rents for zero-exemption Vermont renters in every stored fair market rent year (2021–2025).

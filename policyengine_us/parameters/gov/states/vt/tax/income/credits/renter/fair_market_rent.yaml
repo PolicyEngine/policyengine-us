@@ -1,12 +1,12 @@
-description: Vermont sets these fair market rent amounts, based on the county and household size.
+description: Vermont sets these fair market rent amounts, based on the county and the number of bedrooms allowed by personal exemptions.
 metadata:
   propagate_metadata_to_children: true
   unit: currency-USD
   period: month
   breakdown:
-  - list(range(1,9))
+  - list(range(0,9))
   breakdown_labels:
-  - Household size
+  - Bedrooms (personal exemptions)
   label: Vermont fair market rent amount
   reference:
     # The values are derived from the renter credit computation tables which represent 10% of the
@@ -43,9 +43,19 @@ metadata:
     href: https://www.huduser.gov/portal/datasets/fmr/fmr2022/FY22_FMRs.xlsx
   - title: HUD FY2021 Fair Market Rents
     href: https://www.huduser.gov/portal/datasets/fmr/fmr2021/FY21_4050_FMRs_rev.xlsx
+  - title: "HUD FY2021 Final Fair Market Rent Schedule #page 48-49"
+    href: https://www.huduser.gov/portal/datasets/fmr/fmr2021/FY2021-ScheduleB.pdf#page=48
+  - title: "HUD FY2022 Fair Market Rent Schedule #page 48-50"
+    href: https://www.huduser.gov/portal/datasets/fmr/fmr2022/FY2022_FMR_Schedule.pdf#page=48
+  - title: "HUD FY2023 Fair Market Rent Schedule #page 49-50"
+    href: https://www.huduser.gov/portal/datasets/fmr/fmr2023/FY2023_FMR_Schedule.pdf#page=49
+  - title: "HUD FY2024 Fair Market Rent Schedule #page 51-52"
+    href: https://www.huduser.gov/portal/datasets/fmr/fmr2024/FY2024_FMR_Schedule.pdf#page=51
+  - title: "HUD FY2025 Fair Market Rent Schedule #page 51-52"
+    href: https://www.huduser.gov/portal/datasets/fmr/fmr2025/FY2025_FMR_Schedule.pdf#page=51
 # Each county's value is HUD's fair market rent for the fiscal year that includes
 # June 30 of the taxable year (FY2025 for 2025), for the county's HUD area, with
-# household size n using the min(n, 4)-bedroom rent. Chittenden's 2,083 is the
+# exemption count n using the min(n, 4)-bedroom rent. Chittenden's 2,083 is the
 # rent at which 10% x 12 reaches the $2,500 maximum the department applies to
 # the credit amount (2,500 / 1.2 = 2,083.33).
 #
@@ -64,6 +74,96 @@ metadata:
 # - 2023 reconstruction: the average with the Burlington four-bedroom rent
 #   (2,170) held to 2,083.33 (all 12 unadjusted give 1,913, not the published 1,904).
 # - 2025: the unrounded average (1,057.75 x 1.2 = 1,269.3, published 1,269).
+# Zero-bedroom rents below are the published HUD 0 BR amounts. Franklin and
+# Grand Isle use the unrounded arithmetic mean of all 12 Vermont HUD FMR areas,
+# following the state-average rule in 6061(7)(C). This is the averaging convention
+# that reproduces the department's unrounded 2025 rents. These zero-bedroom
+# values are calculated from HUD schedules rather than department credit tables.
+0:
+  ADDISON_COUNTY_VT:
+    2021-01-01: 751
+    2022-01-01: 779
+    2023-01-01: 842
+    2024-01-01: 1_017
+    2025-01-01: 1_096
+  BENNINGTON_COUNTY_VT:
+    2021-01-01: 710
+    2022-01-01: 763
+    2023-01-01: 849
+    2024-01-01: 936
+    2025-01-01: 936
+  CALEDONIA_COUNTY_VT:
+    2021-01-01: 708
+    2022-01-01: 741
+    2023-01-01: 810
+    2024-01-01: 899
+    2025-01-01: 905
+  CHITTENDEN_COUNTY_VT:
+    2021-01-01: 1_091
+    2022-01-01: 1_033
+    2023-01-01: 1_139
+    2024-01-01: 1_341
+    2025-01-01: 1_380
+  ESSEX_COUNTY_VT:
+    2021-01-01: 560
+    2022-01-01: 585
+    2023-01-01: 730
+    2024-01-01: 812
+    2025-01-01: 823
+  FRANKLIN_COUNTY_VT:
+    2021-01-01: 736.0833333333334
+    2022-01-01: 766
+    2023-01-01: 849.0833333333334
+    2024-01-01: 976.3333333333334
+    2025-01-01: 1_007.6666666666666
+  GRAND_ISLE_COUNTY_VT:
+    2021-01-01: 736.0833333333334
+    2022-01-01: 766
+    2023-01-01: 849.0833333333334
+    2024-01-01: 976.3333333333334
+    2025-01-01: 1_007.6666666666666
+  LAMOILLE_COUNTY_VT:
+    2021-01-01: 788
+    2022-01-01: 801
+    2023-01-01: 874
+    2024-01-01: 913
+    2025-01-01: 883
+  ORANGE_COUNTY_VT:
+    2021-01-01: 740
+    2022-01-01: 787
+    2023-01-01: 852
+    2024-01-01: 976
+    2025-01-01: 1_013
+  ORLEANS_COUNTY_VT:
+    2021-01-01: 592
+    2022-01-01: 638
+    2023-01-01: 706
+    2024-01-01: 831
+    2025-01-01: 845
+  RUTLAND_COUNTY_VT:
+    2021-01-01: 764
+    2022-01-01: 814
+    2023-01-01: 904
+    2024-01-01: 991
+    2025-01-01: 992
+  WASHINGTON_COUNTY_VT:
+    2021-01-01: 717
+    2022-01-01: 760
+    2023-01-01: 839
+    2024-01-01: 985
+    2025-01-01: 1_075
+  WINDHAM_COUNTY_VT:
+    2021-01-01: 697
+    2022-01-01: 734
+    2023-01-01: 803
+    2024-01-01: 976
+    2025-01-01: 1_020
+  WINDSOR_COUNTY_VT:
+    2021-01-01: 715
+    2022-01-01: 757
+    2023-01-01: 841
+    2024-01-01: 1_039
+    2025-01-01: 1_124
 1:
   ADDISON_COUNTY_VT:
     2021-01-01: 846

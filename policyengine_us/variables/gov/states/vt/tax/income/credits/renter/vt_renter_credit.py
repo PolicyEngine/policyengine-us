@@ -29,7 +29,7 @@ class vt_renter_credit(Variable):
         # bedrooms equal to the number of personal exemptions" under
         # 5811(21)(C), which allows none for a filer who can be claimed as a
         # dependent and no dependents on a return where either filer can be.
-        exemptions = clip(tax_unit("exemptions_count", period), 1, 8)
+        exemptions = clip(tax_unit("exemptions_count", period), 0, 8)
         # locate the values by family size and county
         full_credit_income_limit = p.income_limit_ami.thirty_percent[tax_unit_size][
             county
