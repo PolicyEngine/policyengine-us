@@ -11,4 +11,3 @@ Wire military retirement pay and military retirement pay survivors to federal gr
 - Fix New Jersey 529 deduction income eligibility test to evaluate NJ gross income (`nj_agi`) rather than federal AGI.
 - Restrict subtractions and eligibility income calculations in DC, IN, PA, and WI to tax unit filers to prevent dependent income leakage, leaving out dependents' military amounts, PA dependents' alimony and tax-exempt interest, and WI dependents' state and local tax refunds.
 - Update variable docstrings and references referencing IRC § 61(a)(10) and IRS Pubs 525/575.
-
