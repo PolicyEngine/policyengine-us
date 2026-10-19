@@ -34,7 +34,7 @@ class ssi_ineligible_child_allocation(Variable):
         # disabled (POMS SI 01320.185). No $20 or $65 exclusion applies.
         student = p.income.exclusions.blind_or_disabled_working_student
         is_student = person("is_full_time_student", period) & (
-            person("age", period) < student.age_limit
+            person("age", period.this_year) < student.age_limit
         )
         # Annual income is spread evenly over the year. Keep each month's
         # allocation through downstream deductions, exclusions and benefit
