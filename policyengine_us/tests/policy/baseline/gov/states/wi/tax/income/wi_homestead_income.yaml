@@ -290,3 +290,164 @@
   output:
     adjusted_gross_income: 6_000
     wi_homestead_income: 17_000
+
+# Negative Social Security represents required repayments of nontaxable
+# benefits included in household income on a prior homestead claim.
+# Wis. Stat. 71.52(6):
+# https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/52/6
+# 2024 Schedule H instructions, page 12, Repaid amounts:
+# https://www.revenue.wi.gov/TaxForms2024/2024-ScheduleH-inst.pdf#page=12
+
+- name: Case 12, qualifying Social Security repayments reduce a single claimant's household income.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        taxable_pension_income: 6_000
+        social_security_retirement: -1_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    # The repayment is not taxable income: 6,000 - 1,000 = 5,000.
+    adjusted_gross_income: 6_000
+    wi_homestead_income: 5_000
+
+- name: Case 13, spouses' qualifying Social Security repayments can produce negative net benefits.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        taxable_pension_income: 6_000
+        social_security_retirement: 1_000
+        ssi: 0
+      person2:
+        age: 64
+        is_tax_unit_spouse: true
+        social_security_retirement: -2_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Combine spouses before applying the repayment: 6,000 + 1,000 - 2,000.
+    adjusted_gross_income: 6_000
+    wi_homestead_income: 5_000
+
+- name: Case 14, qualifying repayments are counted once when spouses' net benefits remain positive.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        taxable_pension_income: 6_000
+        social_security_retirement: -1_000
+        ssi: 0
+      person2:
+        age: 64
+        is_tax_unit_spouse: true
+        social_security_retirement: 4_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # The combined 3,000 of benefits is nontaxable: 6,000 - 1,000 + 4,000.
+    adjusted_gross_income: 6_000
+    wi_homestead_income: 9_000
+
+- name: Case 15, spouses' qualifying repayment treatment is unchanged when their roles are swapped.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_spouse: true
+        taxable_pension_income: 6_000
+        social_security_retirement: -1_000
+        ssi: 0
+      person2:
+        age: 64
+        is_tax_unit_head: true
+        social_security_retirement: 4_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    adjusted_gross_income: 6_000
+    wi_homestead_income: 9_000
+
+- name: Case 16, a dependent's Social Security does not offset the claimant's qualifying repayment.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        taxable_pension_income: 6_000
+        social_security_retirement: -1_000
+        ssi: 0
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        social_security_survivors: 3_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Leave out the child's benefits: 6,000 - 1,000 - 500 = 4,500.
+    adjusted_gross_income: 6_000
+    wi_homestead_income: 4_500
