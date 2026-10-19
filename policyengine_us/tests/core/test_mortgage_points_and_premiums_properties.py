@@ -17,8 +17,8 @@ import pytest
 
 from policyengine_us import Simulation
 from policyengine_us.variables.household.expense.tax_unit.mortgage_interest_structure import (
-    _limited_mortgage_balance,
-    _mortgage_balance_cap,
+    _debt_by_vintage,
+    _qualified_loan_limit,
 )
 
 N = 60
@@ -102,8 +102,12 @@ def _draw():
         "raised_agi_cents": agi_cents + rng.integers(1, 2_000_001, N),
         "first_home_mortgage_balance": first,
         "second_home_mortgage_balance": second,
-        "first_home_mortgage_origination_year": rng.choice((2010, 2016, 2020), N),
-        "second_home_mortgage_origination_year": rng.choice((2010, 2016, 2020), N),
+        "first_home_mortgage_origination_year": rng.choice(
+            (0, 1986, 1987, 1988, 2010, 2016, 2017, 2018, 2020), N
+        ),
+        "second_home_mortgage_origination_year": rng.choice(
+            (0, 1986, 1987, 1988, 2010, 2016, 2017, 2018, 2020), N
+        ),
         "transfer_fraction": transfer_fraction,
     }
 
@@ -189,25 +193,25 @@ def mortgage_results():
             values = simulation.calculate(name, str(year)).copy()
             values.flags.writeable = False
             results[year][name] = values
-        # Reuse only the unchanged pre-input balance helpers to reconstruct
-        # the previous mortgage computation, with no points or premium term.
+        # Use current main's vintage-based debt limits to reconstruct the
+        # mortgage computation without points or premiums.
         p = simulation.tax_benefit_system.parameters(
             f"{year}-01-01"
         ).gov.irs.deductions.itemized.interest.mortgage
         pre_cap = p.pre_tcja_cap[draws["filing_status"]]
         post_cap = p.cap[draws["filing_status"]]
-        caps = [
-            _mortgage_balance_cap(
-                draws[f"{position}_home_mortgage_origination_year"],
-                pre_cap,
-                post_cap,
-                p.pre_tcja_origination_year,
-            )
-            for position in ("first", "second")
-        ]
         first = draws["first_home_mortgage_balance"]
         second = draws["second_home_mortgage_balance"]
-        limited = _limited_mortgage_balance(first, second, *caps)
+        debt = _debt_by_vintage(
+            [first, second],
+            [
+                draws["first_home_mortgage_origination_year"],
+                draws["second_home_mortgage_origination_year"],
+            ],
+            p.grandfathered_origination_year,
+            p.pre_tcja_origination_year,
+        )
+        limited = _qualified_loan_limit(*debt, pre_cap, post_cap)
         share = np.minimum(
             1,
             np.divide(
@@ -215,7 +219,7 @@ def mortgage_results():
             ),
         )
         share.flags.writeable = False
-        results[year]["legacy_deductible_share"] = share
+        results[year]["baseline_deductible_share"] = share
     # Do not retain the Simulation, its mutable caches or its policy tree.
     return draws, results, unit_indices, person_indices, np.array(person_to_unit)
 
@@ -349,7 +353,7 @@ def test_zero_new_inputs_preserve_the_previous_computation(mortgage_results):
             _close(values["home_mortgage_interest_share"][person_index], allocation)
             deductible = values["deductible_mortgage_interest_tax_unit"][index]
             nondeductible = values["non_deductible_mortgage_interest_tax_unit"][index]
-            _close(deductible, interest * values["legacy_deductible_share"])
+            _close(deductible, interest * values["baseline_deductible_share"])
             _close(deductible + nondeductible, interest)
             _close(
                 values["deductible_mortgage_interest"][person_index],
