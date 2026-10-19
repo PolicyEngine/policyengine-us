@@ -238,6 +238,41 @@ candidates:
   state: open
   note: 'A decision was requested; the statute-first rule requires separate spouse reductions and floors after confirming
     the adopted rule''s scope. Code not yet on main: ar_casualty_loss_deduction_indiv, ar_casualty_loss_deduction_joint.'
+- id: us-ar:claim-of-right-deduction-floor
+  program: income-tax
+  years:
+    from: 2013
+    type: tax
+  question: Does Arkansas's deduction for restoring more than $3,000 held under a claim of right (Ark. Code 26-51-457)
+    count toward the 2% floor on miscellaneous itemized deductions, whose list of exceptions does not name it, or
+    sit outside the floor as the Department of Finance and Administration treats the volunteer firefighter deduction
+    enacted in the same session?
+  sources:
+  - kind: statute
+    citation: Act 1284 of 2013, section 1 (Ark. Code 26-51-457(a))
+    url: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2013R%2FPublic%2F&file=1284.pdf&ddBienniumSession=2013%2F2013R
+  - kind: statute
+    citation: Act 382 of 1987, section 28(a) (now Ark. Code 26-51-437)
+    url: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F1987R%2FPublic%2F&file=382.pdf&ddBienniumSession=1987%2F1987R#page=9
+  - kind: form
+    citation: 2014 Form AR3, lines 26 and 28
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/AR3_2014_RE.pdf#page=1
+  readings:
+    statute: Count the claim of right deduction among miscellaneous itemized deductions, so only the part above
+      2% of Arkansas AGI is deducted.
+    other: Deduct it in full outside the floor, as the department's forms treat the volunteer firefighter deduction
+      (AR3 line 26, totaled with lines not subject to the 2% limitation), which the same 2013 session enacted without
+      an express exception either.
+  example: 'A filer with $60,000 of wages repays $10,000: the statute reading deducts $8,800 (above 2% of AGI),
+    the firefighter analogy $10,000, about $47 of Arkansas tax at 3.9%.'
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10203
+  state: ruled
+  note: Verified entry drafted in TheAxiomFoundation/rulespec-us#1825; it registers once its source captures are
+    on main.
 - id: us-ar:claim-of-right-itemizer-requirement
   program: income-tax
   years:
@@ -1041,6 +1076,39 @@ candidates:
   state: open
   note: 'PE-US follows the regulation; verify the guide''s applicability, earlier coverage from 2020, and the requested
     source choice. Code not yet on main: co_oap, co_oap_countable_income.'
+- id: us-co:oap-interest-and-dividends
+  program: old-age-pension
+  years:
+    from: 2026
+    type: calendar
+  question: For Colorado's Old Age Pension, are interest and dividends countable unearned income under 3.520.785(B)(10),
+    or exempt under 3.520.786(K), which exempts the unearned income SSA excludes, including interest and dividends
+    on countable resources?
+  sources:
+  - kind: regulation
+    citation: us-co/regulation/9-ccr-2503-5/3.520.785
+    url: null
+  - kind: regulation
+    citation: us-co/regulation/9-ccr-2503-5/3.520.786
+    url: null
+  - kind: regulation
+    citation: us-co/regulation/9-ccr-2503-5/3.520.781
+    url: null
+  readings:
+    statute: Exempt interest and dividends on countable resources, because 3.520.781(C) makes the 3.520.786 exemptions
+      govern countable income and 3.520.786(K) incorporates SSA's exclusions (20 CFR 416.1124).
+    other: Count interest and dividends as unearned income under 3.520.785(B)(10).
+  example: A 2026 client with $360 of interest and $240 of dividends a year ($50 a month) has no countable income
+    from them under the exempt reading; under 3.520.785(B)(10) the $50 a month is countable unearned income before
+    the unearned income disregard.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10176
+  state: ruled
+  note: Verified entry drafted in TheAxiomFoundation/rulespec-us#1825; it registers once its source captures are
+    on main.
 - id: us-co:premium-assistance-ptc-recipients
   program: health-insurance-premium-assistance
   years:
@@ -1494,6 +1562,49 @@ candidates:
   note: 'Ruled in October 2026 under the statute-first rule; N-364 first exists for 2025, so earlier claiming procedures
     need separate verification. Code not yet on main: gov/states/hi/tax/income/claim_of_right/hi_claim_of_right.yaml,
     hi_claim_of_right_deduction.'
+- id: us-hi:claim-of-right-deduction-floor
+  program: income-tax
+  years:
+    from: 2022
+    to: 2025
+    type: tax
+  question: From 2022 through 2025, which claim of right repayments fall under Hawaii's 2% floor on miscellaneous
+    itemized deductions? The statute keeps a section 1341 repayment over $3,000 outside the floor and one of $3,000
+    or less inside it. The Form N-11 instructions list them the other way round.
+  sources:
+  - kind: statute
+    citation: us-hi/statute/235-2.4
+    url: null
+  - kind: statute
+    citation: us/statute/26/67/b/9
+    url: null
+  - kind: instructions
+    citation: 2025 Form N-11 instructions, p. 19 (Worksheet A-6, Other Expenses and Expenses NOT Subject to the
+      2% Limit)
+    url: https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=19
+  - kind: instructions
+    citation: 2025 Form N-11 instructions, p. 19 (Expenses NOT Subject to the 2% Limit)
+    url: https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=19
+  - kind: instructions
+    citation: 2022 Form N-11 instructions, p. 19
+    url: https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=19
+  readings:
+    statute: Section 67(b)(9), operative through HRS 235-2.4(b), keeps a section 1341 deduction (a repayment over
+      $3,000) outside the 2% floor; a repayment of $3,000 or less is a miscellaneous itemized deduction above 2%
+      of Hawaii AGI.
+    other: Follow the 2022-2025 N-11 lists, which put the over-$3,000 repayment among expenses subject to the 2%
+      floor and the $3,000-or-less repayment among expenses not subject to it.
+  example: 'A 2025 single filer with $50,000 of wages (Hawaii AGI $50,000) repays $10,000 and takes the deduction
+    method: the statute reading deducts $10,000, the N-11 lists $9,000. This is the difference in deduction, not
+    tax; the tax difference is that times the filer''s Hawaii marginal rate.'
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10200
+  state: ruled
+  note: Verified entry drafted in TheAxiomFoundation/rulespec-us#1825; it registers once its source captures are
+    on main.
 - id: us-hi:joint-return-claimable-spouse-exemption
   program: income-tax
   years:
@@ -1723,6 +1834,36 @@ candidates:
   state: ruled
   note: 'Ruled statute-first in October 2026; establish the rebate''s dependency input and resolve mixed-spouse
     allocation separately. Code not yet on main: il_income_tax_rebate_eligible.'
+- id: us-il:ctc-qualifying-child-of-a-claimable-filer
+  program: income-tax
+  years:
+    from: 2024
+    to: 2025
+    type: tax
+  question: For 2024 and 2025, may a filer who can be claimed as a dependent take Illinois's child tax credit for
+    their own qualifying child? The statute uses the IRC section 152 qualifying child; the Schedule IL-E/EITC instructions
+    require a child that is the filer's dependent.
+  sources:
+  - kind: statute
+    citation: us-il/statute/35/5/244-current/block-1
+    url: null
+  - kind: instructions
+    citation: 2025 Schedule IL-E/EITC instructions, p. 1
+    url: https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/currentyear/individual/il-1040-schedule-il-e-eic-instr.pdf#page=1
+  readings:
+    statute: Use the section 152 qualifying child, so a filer who can be claimed as a dependent keeps the credit
+      for their own qualifying child.
+    other: Require a child that is the filer's dependent, so a filer who can be claimed as a dependent, who can
+      have no dependents of their own (IRC 152(b)(1)), gets no credit.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/il/tax/income/credits/il_ctc.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10049
+  state: ruled
+  note: Verified entry drafted in TheAxiomFoundation/rulespec-us#1825; it registers once its source captures are
+    on main.
 - id: us-il:joint-childless-eitc-dependency-skip
   program: income-tax
   years:
@@ -1918,6 +2059,36 @@ candidates:
   state: ruled
   note: Ruled statute-first in October 2026; the rule requires replacing the whole-return actual-claim treatment
     with per-person claimability.
+- id: us-ks:dependent-exemption-of-a-claimed-filer
+  program: income-tax
+  years:
+    from: 2024
+    type: tax
+  question: From 2024, does a filer who is claimed on another return keep Kansas's dependent exemption for a dependent
+    they are entitled to deduct federally (as when the claimant files only for a refund), or must they enter zero
+    dependents as the K-40 instructions say?
+  sources:
+  - kind: statute
+    citation: us-ks/statute/79-32-121b
+    url: null
+  - kind: instructions
+    citation: 2024 Form K-40 instructions, p. 6
+    url: https://www.ksrevenue.gov/pdf/ip24.pdf#page=6
+  readings:
+    statute: Allow the exemption for each dependent the filer is entitled to deduct federally, which includes a
+      filer whose claimant files only to claim a refund.
+    other: A filer claimed on another return enters zero dependents.
+  example: A 2024 single filer, actually claimed by someone who files only for a refund, with one eligible child,
+    has exemptions of $11,480 under the statute reading and $9,160 under the instructions.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ks/tax/income/exemptions/ks_exemptions.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10045
+  state: ruled
+  note: Verified entry drafted in TheAxiomFoundation/rulespec-us#1825; it registers once its source captures are
+    on main.
 - id: us-ks:food-sales-credit-exemption-count
   program: income-tax
   years:
@@ -2624,6 +2795,36 @@ candidates:
   state: ruled
   note: 'Ruled statute-first in October 2026; the rule requires replacing claimability with the statutory actual-claim
     exclusion. Code not yet on main: is_eligible_md_poverty_line_credit.'
+- id: us-md:poverty-credit-earned-income-losses
+  program: income-tax
+  years:
+    from: 2025
+    type: tax
+  question: Does Maryland's state poverty level credit (5% of earned income) take earned income as IRC 32(c)(2)
+    defines it, net of a self-employment or farm loss, or as Form 502 Worksheet 18B line 2 computes it, leaving
+    the loss out?
+  sources:
+  - kind: statute
+    citation: us/statute/26/32/c/2
+    url: null
+  - kind: worksheet
+    citation: 2025 Maryland resident tax booklet, State Poverty Level Credit Worksheet (18B), line 2, p. 23
+    url: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=23
+  readings:
+    statute: Use IRC 32(c)(2) earned income, which nets a self-employment or farm loss against wages and is figured
+      after the section 164(f) deduction; the credit is floored at zero.
+    other: Add wages and self-employment profit, leaving out any farm or business loss, as Worksheet 18B line 2
+      instructs.
+  example: 'A 2024 single filer with $5,000 of wages, a $10,000 farm loss and $20,000 of interest: the statute reading
+    gives no poverty level credit; Worksheet 18B line 2 counts the $5,000 of wages alone, for a $250 credit.'
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/md/tax/income/credits/poverty_line/md_poverty_line_credit_potential.py
+    prs: []
+  state: ruled
+  note: Verified entry drafted in TheAxiomFoundation/rulespec-us#1825; it registers once its source captures are
+    on main.
 - id: us-md:poverty-threshold-exemption-count
   program: income-tax
   years:
@@ -3956,6 +4157,42 @@ candidates:
   state: ruled
   note: 'Ruled in October 2026 to retain the credit under the statute; verify the instructions'' return-level interpretation.
     Code not yet on main: ny_real_property_tax_credit.'
+- id: us-oh:claim-of-right-federal-claim-condition
+  program: income-tax
+  years:
+    from: 2021
+    to: 2025
+    type: tax
+  question: Does Ohio's deduction for repaying income reported in a prior year (R.C. 5747.01(A)(12)) need only to
+    be allowable, as the statute says, or must the federal return also have claimed the section 1341 credit or a
+    Schedule A deduction for the repayment, as the IT 1040 instructions require?
+  sources:
+  - kind: statute
+    citation: R.C. 5747.01(A)(12)
+    url: https://codes.ohio.gov/ohio-revised-code/section-5747.01
+  - kind: statute
+    citation: R.C. 5747.01(A)(12)(a)
+    url: https://codes.ohio.gov/ohio-revised-code/section-5747.01
+  - kind: instructions
+    citation: 2025 Ohio IT 1040 instructions, Schedule of Adjustments line 29, p. 23
+    url: https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2025/it1040-booklet.pdf#page=23
+  readings:
+    statute: Deduct the repayment whenever (A)(12) allows it (an item included in a prior year's Ohio AGI that did
+      not qualify for the resident or nonresident credit and does not otherwise reduce AGI), whether or not the
+      federal return claimed relief for it.
+    other: Deduct only when the federal return claimed the section 1341 credit or itemized the repayment on Schedule
+      A, as every IT 1040 edition from 2021 (line 23) to 2025 (line 29) instructs.
+  example: 'A 2025 single filer repays $10,000 of wages taxed in an earlier year, takes the federal standard deduction,
+    and the section 1341 methods tie: the statute reading deducts $10,000 from Ohio AGI, the instructions $0. This
+    is the difference in deduction, worth up to $275 of Ohio tax at the 2.75% rate.'
+  pe_us:
+    follows: conflicting-source
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10195
+  state: ruled
+  note: Verified entry drafted in TheAxiomFoundation/rulespec-us#1825; it registers once its source captures are
+    on main.
 - id: us-oh:heap-awards-above-150-percent-poverty
   program: liheap
   years:
