@@ -43,3 +43,62 @@
     #   7. public housing is subsidized housing, so heat included in rent is
     #      again "No", ineligible.
     or_liheap_eligible: [false, true, false, true, true, false, false]
+
+- name: Case 2, federal 110% poverty floor above the 60% state median income limit at size 20.
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR, OR]
+    spm_unit_size: [20, 20, 20, 20, 19]
+    or_liheap_countable_income: [128_441, 132_164.99, 132_165, 132_166, 126_227]
+    heat_expense_included_in_rent: [true, true, true, true, true]
+  output:
+    # 42 U.S.C. 8624(b)(2)(B) bars excluding a household on income below 110%
+    # of the poverty guideline. PY2026 uses the 2025 guidelines (LIHEAP IM
+    # 2025-02): 15,650 + 5,500 x 19 = 120,150 for 20 people, and 110% is
+    # 132,165. The 60% SMI limit for 20 people is 128,441 (federal size
+    # factors; the manual's table stops at 12 on page 77).
+    #   1. at the 60% SMI limit: eligible;
+    #   2. one cent below the floor: eligible;
+    #   3. exactly at the floor, which is not below 110%: ineligible;
+    #   4. above the floor: ineligible;
+    #   5. 19 people, whose 126,226 limit exceeds the 126,115 floor (110% of
+    #      114,650), so the limit still applies: ineligible.
+    or_liheap_eligible: [true, true, false, false, false]
+
+- name: Case 3, the floor uses the poverty guidelines from the year before the model year.
+  period: 2026
+  input:
+    state_code: OR
+    spm_unit_size: 20
+    or_liheap_countable_income: 134_000
+    heat_expense_included_in_rent: true
+  output:
+    # PY2026 uses the 2025 guidelines, so the floor is 132,165. The 2026
+    # guidelines would give 110% x (15,960 + 5,680 x 19) = 136,268.
+    or_liheap_eligible: false
+
+- name: Case 4, PY2025 uses the 2024 poverty guidelines for the floor.
+  period: 2025
+  input:
+    state_code: [OR, OR]
+    spm_unit_size: [19, 19]
+    or_liheap_countable_income: [123_089.99, 123_090]
+    heat_expense_included_in_rent: [true, true]
+  output:
+    # LIHEAP IM 2024-02 makes the 2024 guidelines mandatory in FY2025:
+    # 110% x (15,060 + 5,380 x 18) = 123,090 for 19 people, above the 121,051
+    # PY2025 60% SMI limit.
+    or_liheap_eligible: [true, false]
+
+- name: Case 5, PY2027 uses the 2026 poverty guidelines for the floor.
+  period: 2027
+  input:
+    state_code: [OR, OR]
+    spm_unit_size: [20, 20]
+    or_liheap_countable_income: [136_267.99, 136_268]
+    heat_expense_included_in_rent: [true, true]
+  output:
+    # LIHEAP IM 2026-01 makes the 2026 guidelines mandatory in FY2027:
+    # 110% x (15,960 + 5,680 x 19) = 136,268 for 20 people, above the 134,937
+    # PY2027 60% SMI limit.
+    or_liheap_eligible: [true, false]
