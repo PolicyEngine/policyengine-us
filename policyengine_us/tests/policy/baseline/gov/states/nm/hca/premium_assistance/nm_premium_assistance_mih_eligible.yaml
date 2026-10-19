@@ -275,7 +275,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         is_basic_health_program_eligible: false
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         claimable_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
@@ -286,7 +286,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         is_basic_health_program_eligible: false
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: false
         is_tax_unit_spouse: true
     tax_units:
@@ -299,6 +299,8 @@
       household:
         members: [person_a, person_b]
         state_code: NM
+        # Annual base: each adult has a 6,000 premium.
+        slcsp_age_0: 6000
   output:
     # 70,000 / 15,650 = 447% FPL; 6,000 - 0.085 * 70,000 = 50.
     aca_magi_fraction: 4.47
@@ -317,7 +319,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         is_basic_health_program_eligible: false
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_a:
@@ -327,7 +329,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         is_basic_health_program_eligible: false
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         claimable_as_dependent_on_another_return: true
         is_tax_unit_head: false
         is_tax_unit_spouse: true
@@ -341,6 +343,8 @@
       household:
         members: [person_b, person_a]
         state_code: NM
+        # Annual base: each adult has a 6,000 premium.
+        slcsp_age_0: 6000
   output:
     aca_magi_fraction: 4.47
     nm_premium_assistance_mih_eligible: true

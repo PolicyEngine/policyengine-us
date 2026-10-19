@@ -87,7 +87,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         claimable_as_dependent_on_another_return: true
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
@@ -96,7 +96,7 @@
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: false
         is_tax_unit_spouse: true
     tax_units:
@@ -110,6 +110,8 @@
       household:
         members: [person_a, person_b]
         state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
   output:
     # min(6,000, 4,500); before, the cap was the whole 9,000 premium.
     aca_ptc: 6000
@@ -126,7 +128,7 @@
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_a:
@@ -136,7 +138,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         claimable_as_dependent_on_another_return: true
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: false
         is_tax_unit_spouse: true
     tax_units:
@@ -150,6 +152,8 @@
       household:
         members: [person_b, person_a]
         state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
   output:
     aca_ptc: 6000
     used_aca_ptc: 4500

@@ -856,7 +856,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         is_basic_health_program_eligible: false
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         claimable_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
@@ -867,7 +867,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         is_basic_health_program_eligible: false
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: false
         is_tax_unit_spouse: true
     tax_units:
@@ -880,6 +880,8 @@
       household:
         members: [person_a, person_b]
         state_code: CO
+        # Annual base: each adult has a 6,000 premium.
+        slcsp_age_0: 6000
   output:
     # 20,000 / 15,650 = 127% FPL, 2.1%: contribution 420, aca_ptc 5,580.
     # min(12 * 80, 6,000 - 5,580) = 420; the whole-enrollment benchmark
@@ -899,7 +901,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         is_basic_health_program_eligible: false
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_a:
@@ -909,7 +911,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         is_basic_health_program_eligible: false
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         claimable_as_dependent_on_another_return: true
         is_tax_unit_head: false
         is_tax_unit_spouse: true
@@ -923,6 +925,8 @@
       household:
         members: [person_b, person_a]
         state_code: CO
+        # Annual base: each adult has a 6,000 premium.
+        slcsp_age_0: 6000
   output:
     aca_ptc: 5580
     co_premium_assistance: 420

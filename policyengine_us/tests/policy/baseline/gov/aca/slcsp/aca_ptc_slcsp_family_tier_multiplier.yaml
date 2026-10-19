@@ -6,6 +6,7 @@
         age: 30
         monthly_age: 30
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
         claimable_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
@@ -13,12 +14,14 @@
         age: 30
         monthly_age: 30
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
         is_tax_unit_head: false
         is_tax_unit_spouse: true
       child:
         age: 5
         monthly_age: 5
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
     tax_units:
       tax_unit:
         members: [person_a, person_b, child]
@@ -42,12 +45,14 @@
         age: 30
         monthly_age: 30
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_a:
         age: 30
         monthly_age: 30
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
         claimable_as_dependent_on_another_return: true
         is_tax_unit_head: false
         is_tax_unit_spouse: true
@@ -55,6 +60,7 @@
         age: 5
         monthly_age: 5
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
     tax_units:
       tax_unit:
         members: [person_b, person_a, child]
@@ -78,6 +84,7 @@
         age: 30
         monthly_age: 30
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
         claimable_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
@@ -85,6 +92,7 @@
         age: 30
         monthly_age: 30
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
         claimable_as_dependent_on_another_return: true
         is_tax_unit_head: false
         is_tax_unit_spouse: true
@@ -92,6 +100,7 @@
         age: 5
         monthly_age: 5
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
     tax_units:
       tax_unit:
         members: [person_a, person_b, child]
@@ -114,6 +123,7 @@
         age: 30
         monthly_age: 30
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
         claimable_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
@@ -121,12 +131,14 @@
         age: 30
         monthly_age: 30
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
         is_tax_unit_head: false
         is_tax_unit_spouse: true
       child:
         age: 5
         monthly_age: 5
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
     tax_units:
       tax_unit:
         members: [person_a, person_b, child]
@@ -150,12 +162,14 @@
         age: 30
         monthly_age: 30
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_a:
         age: 30
         monthly_age: 30
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
         claimable_as_dependent_on_another_return: true
         is_tax_unit_head: false
         is_tax_unit_spouse: true
@@ -163,6 +177,7 @@
         age: 5
         monthly_age: 5
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
     tax_units:
       tax_unit:
         members: [person_b, person_a, child]
@@ -186,6 +201,7 @@
         age: 30
         monthly_age: 30
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
         claimable_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
@@ -193,6 +209,7 @@
         age: 30
         monthly_age: 30
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
         claimable_as_dependent_on_another_return: true
         is_tax_unit_head: false
         is_tax_unit_spouse: true
@@ -200,6 +217,7 @@
         age: 5
         monthly_age: 5
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
     tax_units:
       tax_unit:
         members: [person_a, person_b, child]

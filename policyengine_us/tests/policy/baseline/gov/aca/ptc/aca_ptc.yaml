@@ -289,7 +289,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         claimable_as_dependent_on_another_return: true
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
@@ -298,7 +298,7 @@
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: false
         is_tax_unit_spouse: true
     tax_units:
@@ -311,6 +311,8 @@
       household:
         members: [person_a, person_b]
         state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
   output:
     # 150% FPL for one, 0% contribution: 6,000 - 0
     aca_tax_family_size: 1
@@ -328,7 +330,7 @@
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_a:
@@ -338,7 +340,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         claimable_as_dependent_on_another_return: true
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: false
         is_tax_unit_spouse: true
     tax_units:
@@ -351,6 +353,8 @@
       household:
         members: [person_b, person_a]
         state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
   output:
     aca_tax_family_size: 1
     aca_ptc_slcsp: 6000
@@ -469,7 +473,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         claimable_as_dependent_on_another_return: true
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
@@ -478,7 +482,7 @@
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: false
         is_tax_unit_spouse: true
     tax_units:
@@ -491,6 +495,8 @@
       household:
         members: [person_a, person_b]
         state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
   output:
     # 150% FPL for one, 4.19% contribution: 6,000 - 0.0419 * 23,475
     aca_tax_family_size: 1
@@ -508,7 +514,7 @@
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_a:
@@ -518,7 +524,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         claimable_as_dependent_on_another_return: true
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: false
         is_tax_unit_spouse: true
     tax_units:
@@ -531,6 +537,8 @@
       household:
         members: [person_b, person_a]
         state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
   output:
     aca_tax_family_size: 1
     aca_ptc_slcsp: 6000
@@ -649,7 +657,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         claimable_as_dependent_on_another_return: true
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
@@ -658,7 +666,7 @@
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: false
         is_tax_unit_spouse: true
     tax_units:
@@ -671,6 +679,8 @@
       household:
         members: [person_a, person_b]
         state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
   output:
     # 18,000 / 15,060 = 119% FPL for a family of one: 0% contribution.
     aca_ptc: 6000
@@ -686,7 +696,7 @@
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_a:
@@ -696,7 +706,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         claimable_as_dependent_on_another_return: true
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: false
         is_tax_unit_spouse: true
     tax_units:
@@ -709,6 +719,8 @@
       household:
         members: [person_b, person_a]
         state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
   output:
     aca_ptc: 6000
 
@@ -760,7 +772,7 @@
         is_medicare_eligible: false
         claimable_as_dependent_on_another_return: true
         employment_income: 10_000
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
@@ -770,7 +782,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         employment_income: 10_000
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: false
         is_tax_unit_spouse: true
       child:
@@ -780,7 +792,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         tax_exempt_interest_income: 20_000
-        slcsp_age_curve_amount_person: 3000
+        slcsp_age_curve_multiplier: 0.5
     tax_units:
       tax_unit:
         members: [person_a, person_b, child]
@@ -790,6 +802,8 @@
       household:
         members: [person_a, person_b, child]
         state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
   output:
     # 20,000 / 15,060 = 132% FPL: 0% contribution; benchmark 6,000 (child out).
     aca_magi: 20_000
@@ -808,7 +822,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         employment_income: 10_000
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_a:
@@ -819,7 +833,7 @@
         is_medicare_eligible: false
         claimable_as_dependent_on_another_return: true
         employment_income: 10_000
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: false
         is_tax_unit_spouse: true
       child:
@@ -829,7 +843,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         tax_exempt_interest_income: 20_000
-        slcsp_age_curve_amount_person: 3000
+        slcsp_age_curve_multiplier: 0.5
     tax_units:
       tax_unit:
         members: [person_b, person_a, child]
@@ -839,6 +853,8 @@
       household:
         members: [person_b, person_a, child]
         state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
   output:
     aca_magi: 20_000
     aca_magi_fraction: 1.32
@@ -857,7 +873,7 @@
         is_medicare_eligible: false
         claimable_as_dependent_on_another_return: true
         dependent_claimant_filing_exception: true
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
@@ -866,7 +882,7 @@
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: false
         is_tax_unit_spouse: true
       child:
@@ -875,7 +891,7 @@
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
-        slcsp_age_curve_amount_person: 3000
+        slcsp_age_curve_multiplier: 0.5
     tax_units:
       tax_unit:
         members: [person_a, person_b, child]
@@ -886,6 +902,8 @@
       household:
         members: [person_a, person_b, child]
         state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
   output:
     # 30,000 / 20,440 = 146% FPL: 0% contribution; benchmark 6,000 + 3,000.
     aca_tax_family_size: 2
@@ -903,7 +921,7 @@
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_a:
@@ -914,7 +932,7 @@
         is_medicare_eligible: false
         claimable_as_dependent_on_another_return: true
         dependent_claimant_filing_exception: true
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: false
         is_tax_unit_spouse: true
       child:
@@ -923,7 +941,7 @@
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
-        slcsp_age_curve_amount_person: 3000
+        slcsp_age_curve_multiplier: 0.5
     tax_units:
       tax_unit:
         members: [person_b, person_a, child]
@@ -934,6 +952,8 @@
       household:
         members: [person_b, person_a, child]
         state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
   output:
     aca_tax_family_size: 2
     aca_ptc_slcsp: 9000

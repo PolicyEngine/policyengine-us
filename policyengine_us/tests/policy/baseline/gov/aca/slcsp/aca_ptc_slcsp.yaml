@@ -9,7 +9,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         claimable_as_dependent_on_another_return: true
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
@@ -18,7 +18,7 @@
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: false
         is_tax_unit_spouse: true
       child:
@@ -27,7 +27,7 @@
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
-        slcsp_age_curve_amount_person: 3000
+        slcsp_age_curve_multiplier: 0.5
     tax_units:
       tax_unit:
         members: [person_a, person_b, child]
@@ -37,6 +37,8 @@
       household:
         members: [person_a, person_b, child]
         state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
   output:
     # 26 CFR 1.36B-3(f): the benchmark offered to the coverage family;
     # slcsp still counts every enrollee.
@@ -53,7 +55,7 @@
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_a:
@@ -63,7 +65,7 @@
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
         claimable_as_dependent_on_another_return: true
-        slcsp_age_curve_amount_person: 6000
+        slcsp_age_curve_multiplier: 1
         is_tax_unit_head: false
         is_tax_unit_spouse: true
       child:
@@ -72,7 +74,7 @@
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
-        slcsp_age_curve_amount_person: 3000
+        slcsp_age_curve_multiplier: 0.5
     tax_units:
       tax_unit:
         members: [person_b, person_a, child]
@@ -82,6 +84,8 @@
       household:
         members: [person_b, person_a, child]
         state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
   output:
     slcsp: 15_000
     aca_ptc_slcsp: 6000
@@ -232,6 +236,7 @@
         age: 30
         monthly_age: 30
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
         claimable_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
@@ -239,12 +244,14 @@
         age: 30
         monthly_age: 30
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
         is_tax_unit_head: false
         is_tax_unit_spouse: true
       child:
         age: 5
         monthly_age: 5
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
     tax_units:
       tax_unit:
         members: [person_a, person_b, child]
@@ -269,12 +276,14 @@
         age: 30
         monthly_age: 30
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_a:
         age: 30
         monthly_age: 30
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
         claimable_as_dependent_on_another_return: true
         is_tax_unit_head: false
         is_tax_unit_spouse: true
@@ -282,6 +291,7 @@
         age: 5
         monthly_age: 5
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
     tax_units:
       tax_unit:
         members: [person_b, person_a, child]
@@ -306,6 +316,7 @@
         age: 30
         monthly_age: 30
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
         claimable_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
@@ -313,12 +324,14 @@
         age: 30
         monthly_age: 30
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
         is_tax_unit_head: false
         is_tax_unit_spouse: true
       child:
         age: 5
         monthly_age: 5
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
     tax_units:
       tax_unit:
         members: [person_a, person_b, child]
@@ -343,12 +356,14 @@
         age: 30
         monthly_age: 30
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_a:
         age: 30
         monthly_age: 30
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
         claimable_as_dependent_on_another_return: true
         is_tax_unit_head: false
         is_tax_unit_spouse: true
@@ -356,6 +371,7 @@
         age: 5
         monthly_age: 5
         pays_aca_premium: true
+        is_aca_marketplace_enrollee: {2025: true}
     tax_units:
       tax_unit:
         members: [person_b, person_a, child]
