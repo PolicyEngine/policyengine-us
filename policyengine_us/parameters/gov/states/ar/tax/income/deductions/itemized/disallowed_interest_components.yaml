@@ -1,0 +1,14 @@
+description: Arkansas excludes these federal interest components from itemized deductions under its fixed January 1, 2017, Internal Revenue Code conformity.
+values:
+  1900-01-01: []
+  2017-01-01:
+    - deductible_mortgage_insurance_premiums
+metadata:
+  unit: list
+  period: year
+  label: Arkansas disallowed federal interest components
+  reference:
+    - title: Arkansas Act 155 of 2017, section 19, amending Arkansas Code 26-51-415
+      href: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2017R%2FPublic%2F&file=155.pdf&ddBienniumSession=2017%2F2017R#page=9
+    - title: 2021 Arkansas Individual Income Tax Instructions, AR3 interest expense
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/2021_AR1000F_and_AR1000NR_Instructions.pdf#page=20

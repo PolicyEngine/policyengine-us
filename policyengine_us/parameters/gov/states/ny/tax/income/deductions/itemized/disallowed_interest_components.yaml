@@ -1,0 +1,14 @@
+description: New York excludes these federal interest components from its itemized deduction.
+values:
+  1900-01-01: []
+  2021-01-01:
+    - deductible_mortgage_insurance_premiums
+metadata:
+  unit: list
+  period: year
+  label: New York disallowed federal interest components
+  reference:
+    - title: 2021 Instructions for Form IT-196, Interest you paid
+      href: https://www.tax.ny.gov/pdf/2021/inc/it196i_2021.pdf#page=2
+    - title: New York 2020 forms corrections, 2018 and 2019 IT-196 mortgage insurance deductions
+      href: https://www.tax.ny.gov/forms/updates/forms_updates_2020.htm
