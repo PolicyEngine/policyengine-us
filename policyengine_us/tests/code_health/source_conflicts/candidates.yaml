@@ -2624,36 +2624,6 @@ candidates:
   state: ruled
   note: 'Ruled statute-first in October 2026; the rule requires replacing claimability with the statutory actual-claim
     exclusion. Code not yet on main: is_eligible_md_poverty_line_credit.'
-- id: us-md:poverty-level-credit-earned-income
-  program: income-tax
-  years:
-    from: 2021
-    type: tax
-  question: Do Maryland poverty-level credits net self-employment losses and apply IRC 164(f) under IRC 32(c)(2),
-    or follow Worksheet 18B's contrary treatment?
-  sources:
-  - kind: statute
-    citation: Md. Code, Tax-General § 10-709(a)(3)(ii), (c)(2), (d)(2); § 10-107; IRC § 32(c)(2)
-    url: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-709&enactments=false
-  - kind: worksheet
-    citation: 2024 Maryland Resident Booklet, Form 502 Worksheet 18B line 2
-    url: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2024/Resident-Booklet.pdf#page=22
-  readings:
-    statute: Net self-employment losses against wages and apply the federal earned-income definition, including
-      IRC 164(f).
-    other: Exclude farm and business losses and omit the IRC 164(f) adjustment.
-  example: With $5,000 wages, a $10,000 self-employment loss and $20,000 interest, credit is $0 and tax $401.13
-    under the statute versus credit $250 and tax $151.13 under the worksheet.
-  pe_us:
-    follows: statute
-    code:
-    - policyengine_us/variables/gov/states/md/tax/income/credits/poverty_line/md_poverty_line_credit_potential.py
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/9632
-  state: ruled
-  note: 'The statute-following change was approved in October 2026; verify annual worksheet applicability and both
-    the loss and self-employment-adjustment departures. Code not yet on main: md_poverty_line_credit, md_local_poverty_line_credit,
-    eitc_earned_income.'
 - id: us-md:poverty-threshold-exemption-count
   program: income-tax
   years:
