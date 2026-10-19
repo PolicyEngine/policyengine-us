@@ -77,6 +77,27 @@ Every policy change here must also be correct in [rulespec-us](https://github.co
 - An `encoded-correct` claim names the module and a companion case in its `.test.yaml` that exercises the same situation as your YAML test.
 - Use `queued` only when the signed encoder is blocked; record the blocker in the issue. Each billed encoder run requires separate approval. Label `queued` issues `pe-parity`. Reuse your YAML test's external expected values as the companion tests; don't copy values computed by policyengine-us.
 
+## Source conflicts
+
+When a statute conflicts with a regulation, form, instructions, manual or stated agency practice, PolicyEngine US follows the statute. Forms and instructions fill gaps where the statute is silent. Every such choice is recorded in the register that PolicyEngine shares with Axiom: `known-source-conflicts.yaml` in [rulespec-us](https://github.com/TheAxiomFoundation/rulespec-us). Its fields are defined in that repository's `tools/README.md`, under "Source-conflict register". A PR that takes such a reading, or finds one already in the code, does three things:
+
+1. **Add or update the entry in rulespec-us.**
+   - Give each source's text and its kind (statute, regulation, form, instructions, manual, guidance, agency practice, ...).
+   - Give the alternatives, each with an id, and the years.
+   - Add an implementation for each file here: `repo: PolicyEngine/policyengine-us`, a commit, the path, `follows` (what the code does), and `adopts` with a `basis` (the reading it intends, and why).
+   - Add the YAML test cases that pin each reading, by commit, path and case name.
+   - Describe correspondence with an agency in `unpublished_sources`. Never quote it or name the person.
+2. **Mark the deciding line** in the variable or parameter file: `# Source conflict <jurisdiction>:<id>`, for example `# Source conflict us-hi:claim-of-right-deduction-floor`.
+3. **Refresh the pinned copy** once the entry is on rulespec-us `main`: `python scripts/update_source_conflicts.py --commit <rulespec-us commit>`.
+
+`policyengine_us/tests/code_health/test_source_conflicts.py` fails in three cases:
+
+- a marker names an entry that isn't in the pinned copy, or whose entry doesn't list the file;
+- a registered file has lost its marker;
+- a file gains a comment that reads like a conflict between sources ("the instructions say", "in practice", "discrepancy", ...) but has no marker.
+
+A model that departs from the statute with no official source behind it is a bug, not a source conflict. Fix it, or open an issue.
+
 ## Repo-specific anti-patterns
 
 - Branching on upstream (`git push upstream <branch>`) is preferred when you have write access, but fork PRs are fine here: PR CI needs no repository secrets (the only one, `CODECOV_TOKEN`, uploads with `fail_ci_if_error: false`, and codecov passes tokenless) and downloads no gated data, so fork PRs run the full suite green.
