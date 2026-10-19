@@ -397,3 +397,66 @@
         state_code: UT
   output:
     ut_ctc: 500
+# Utah Code 59-10-1047 counts a child "with respect to whom the claimant is allowed
+# to claim a tax credit under Section 24", and the Tax Commission requires a child
+# who "qualifies for the federal child tax credit under IRC 24". From 2025 the
+# federal credit is not allowed for any child of a filer without an SSN (IRC
+# 24(h)(7)(A)(i)), so the Utah credit is zero (issue #9403).
+- name: Head of household without an SSN and 1 child gets no Utah CTC in 2026
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        ssn_card_type: OTHER_NON_CITIZEN
+        tax_exempt_interest_income: 0
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        ut_total_income: 1000
+        filing_status: HEAD_OF_HOUSEHOLD
+        ut_income_tax_before_non_refundable_credits: 1000000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: UT
+  output:
+    ctc_qualifying_children: 0
+    ut_ctc: 0
+- name: Head of household with an SSN and 1 child gets the Utah CTC in 2026
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        ssn_card_type: CITIZEN
+        tax_exempt_interest_income: 0
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        ut_total_income: 1000
+        filing_status: HEAD_OF_HOUSEHOLD
+        ut_income_tax_before_non_refundable_credits: 1000000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: UT
+  output:
+    ctc_qualifying_children: 1
+    ut_ctc: 1000

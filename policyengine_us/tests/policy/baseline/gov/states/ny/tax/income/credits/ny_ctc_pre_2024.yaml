@@ -97,3 +97,49 @@
   output:
     ny_ctc: 330
     ny_ctc_pre_2024: 330
+
+# Tax Law 606(c-1) uses section 24 as it existed before Public Law 115-97, which
+# requires the filer's identification number (IRC 24(e)), and the IT-213
+# instructions require "a valid Social Security number (SSN) or IRS individual
+# taxpayer identification number (ITIN)" for the filer (issue #9403).
+- name: Parent with an ITIN and a four-year-old child gets the credit in 2023
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 25_000
+        ssn_card_type: NONE
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_pre_2024: 330
+
+- name: Parent without any TIN and a four-year-old child gets no credit in 2023
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 25_000
+        ssn_card_type: NONE
+        has_tin: false
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_pre_2024_eligible: false
+    ny_ctc_pre_2024: 0

@@ -5,31 +5,33 @@ class ctc_qualifying_child(Variable):
     value_type = bool
     entity = Person
     label = "CTC-qualifying child"
-    documentation = "Child qualifies for the Child Tax Credit"
+    documentation = (
+        "Child qualifies for the Child Tax Credit, including the filer "
+        "identification requirements"
+    )
     definition_period = YEAR
     defined_for = "is_tax_unit_dependent"
     reference = (
-        # Subsections (a) and (c).
         "https://www.law.cornell.edu/uscode/text/26/24#c",
-        "https://www.law.cornell.edu/uscode/text/26/152#b_1",
-        # Publication 501, Dependent Taxpayer Test.
-        "https://www.irs.gov/pub/irs-prior/p501--2025.pdf#page=11",
+        "https://www.law.cornell.edu/uscode/text/26/24#e_2",
+        "https://www.law.cornell.edu/uscode/text/26/24#h_7",
+        # 2025 Instructions for Schedule 8812, SSN Required Before the Due
+        # Date of Your Return To Claim the CTC and ACTC.
+        "https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=1",
     )
 
     def formula(person, period, parameters):
-        age = person("age", period)
-        p = parameters(period).gov.irs.credits.ctc
-        age_limit = p.amount.base.thresholds[-1]
-        age_eligible = age < age_limit
-        meets_identification_requirements = person(
-            "meets_ctc_child_identification_requirements", period
+        qualifying_child = person(
+            "ctc_qualifying_child_ignoring_filer_identification", period
         )
-        # IRC 24(a) allows the credit only for a qualifying child for whom the
-        # taxpayer is allowed a deduction under section 151. Under IRC
-        # 152(b)(1) a taxpayer who can be claimed as a dependent is treated as
-        # having no dependents, and on a joint return neither spouse may be
-        # claimable (Publication 501, Dependent Taxpayer Test).
-        filer_is_dependent = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        # IRC 24(h)(7)(A) allows no credit "with respect to any qualifying
+        # child" unless the return includes the taxpayer's social security
+        # number (on a joint return, at least one spouse's), and IRC 24(e)(2)
+        # allows no credit if the taxpayer's identification number was issued
+        # after the due date. A child whose filer fails these tests is not
+        # counted; IRC 24(h)(4)(C) moves the child to the credit for other
+        # dependents.
+        filer_meets_identification_requirements = person.tax_unit(
+            "filer_meets_child_ctc_identification_requirements", period
         )
-        return age_eligible & meets_identification_requirements & ~filer_is_dependent
+        return qualifying_child & filer_meets_identification_requirements
