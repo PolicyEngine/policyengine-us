@@ -8,23 +8,25 @@ Vermont Child Care Contribution and Washington PFML.
 permitted employee share the employer deducts (default 1); the employer pays
 the rest. Hypothesis draws workers in those states, in states whose
 contributions are mandatory withholding, and in a state with neither, with any
-wages, employer size and share, and runs each worker three times in one
-simulation: with two drawn shares and with the input left at its default. For
-every worker, in 2026 and 2027:
+wages, employer size, share and (for Minnesota's small employer test) employer
+average wage, and runs each worker three times in one simulation: with two
+drawn shares and with the input left at its default. For every worker, in 2026
+and 2027:
 
 1. The employee amount of the optional programs is the clipped share times the
    amount at the default, so the default is the full permitted share and a
    share outside 0 to 1 acts as the nearer bound.
 2. The mandatory components of `employee_state_payroll_tax` do not depend on
    the share.
-3. Where the employer side is modeled (CO, DE, MA, ME, VT, WA), employee plus
-   employer premium does not depend on the share: the employer pays exactly
-   what it does not deduct. Minnesota and New York employer costs are not
-   modeled, so their employer amount is zero at any share.
+3. Where the employer side is modeled (CO, DE, MA, ME, MN, VT, WA), employee
+   plus employer premium does not depend on the share: the employer pays
+   exactly what it does not deduct. The New York employer cost is not
+   modeled, so its employer amount is zero at any share.
 4. A larger share never lowers the employee amount or raises the employer
    amount.
 5. With employer-level wage totals equal to the worker's own wages, capped at
-   the Social Security base where the worker's are (a one-worker employer),
+   the Social Security base where the worker's are and at Minnesota's rounded
+   base for Minnesota (a one-worker employer),
    `employer_total_additional_state_payroll_tax` equals
    `employer_additional_state_payroll_tax` in every modeled state: the
    employer-level path and the per-worker path agree at any share and
@@ -33,6 +35,13 @@ every worker, in 2026 and 2027:
    with DFML's swap of the two rates (Acts 2026 c. 101 ss. 25, 26, 43(a)),
    leaves each worker's employee and employer amounts where they were in
    2026, for wages under both years' wage bases.
+7. Minnesota matches the statute computed independently here: the premium is
+   0.88% of taxable wages, or 0.66% for a small employer (30 or fewer
+   employees and an average quarterly wage of at most $27,745.88); employee
+   plus employer amounts equal it at any share; and the employer pays its
+   minimum (half the premium, or 0.22% of wages for a small employer) plus
+   the part of the rest it does not deduct (Minn. Stat. 268B.14, subds. 1,
+   3 and 5a).
 
 Amounts are compared to float32 precision, within a cent.
 
@@ -52,7 +61,7 @@ from policyengine_us.system import system
 YEARS = (2026, 2027)
 OPTIONAL_STATES = ("CO", "DE", "MA", "ME", "MN", "NY", "VT", "WA")
 MANDATORY_STATES = ("CA", "CT", "NJ", "OR", "PA", "RI")
-EMPLOYER_MODELED_STATES = ("CO", "DE", "MA", "ME", "VT", "WA")
+EMPLOYER_MODELED_STATES = ("CO", "DE", "MA", "ME", "MN", "VT", "WA")
 OPTIONAL_EMPLOYEE_VARIABLES = (
     "co_employee_famli_contribution",
     "de_employee_paid_leave_contribution",
@@ -71,6 +80,19 @@ SOCIAL_SECURITY_CAP = {
     year: system.parameters(f"{year}-01-01").gov.irs.payroll.social_security.cap
     for year in YEARS
 }
+# Minn. Stat. 268B.01, subd. 43: the Social Security base rounded to the
+# nearest $1,000.
+MN_TAXABLE_WAGE_BASE = {
+    year: 1_000 * np.floor(SOCIAL_SECURITY_CAP[year] / 1_000 + 0.5) for year in YEARS
+}
+# Minnesota Paid Leave, from the statute and DEED, independent of the
+# parameter files: 0.88% in 2026 and 2027 (subd. 7); employer minimum 50%
+# (subd. 3); small employers 75% of the rate with an employer minimum of 25%
+# of the full rate (subd. 5a(b)), if 30 or fewer employees and an average
+# quarterly wage of at most $27,745.88 (subd. 5a(a)).
+MN_RATE = 0.0088
+MN_SMALL_MAX_HEADCOUNT = 30
+MN_SMALL_MAX_AVERAGE_QUARTERLY_WAGE = 27_745.88
 COPIES = 3  # drawn share a, drawn share b, input left at its default
 # The model computes in float32: compare to that precision, never past a cent.
 CENT = 0.01
@@ -80,12 +102,17 @@ share = st.one_of(
     st.sampled_from([0.0, 0.25, 0.5, 1.0, -0.5, 1.5]),
     st.floats(-0.5, 1.5, allow_nan=False),
 )
+average_quarterly_wage = st.one_of(
+    st.sampled_from([0.0, 27_745.88, 27_745.89, 40_000.0]),
+    st.floats(0, 60_000, allow_nan=False),
+)
 workers = st.tuples(
     st.sampled_from(OPTIONAL_STATES + MANDATORY_STATES + ("TX",)),
     st.integers(0, 300_000),  # employment_income
-    st.sampled_from([1, 9, 10, 14, 15, 20, 24, 25, 49, 50, 100]),
+    st.sampled_from([1, 9, 10, 14, 15, 20, 24, 25, 30, 31, 49, 50, 100]),
     share,
     share,
+    average_quarterly_wage,  # Minnesota small employer test only
 )
 
 
@@ -93,7 +120,7 @@ def simulate(rows):
     people, households = {}, {}
     groups = {"tax_units": {}, "spm_units": {}, "families": {}, "marital_units": {}}
     index = 0
-    for state, wages, headcount, share_a, share_b in rows:
+    for state, wages, headcount, share_a, share_b, average_wage in rows:
         for share_value in (share_a, share_b, None):
             person = f"person_{index}"
             people[person] = {
@@ -102,6 +129,12 @@ def simulate(rows):
                 "employer_headcount": {year: headcount for year in YEARS},
                 "employer_total_taxable_earnings_for_social_security": {
                     year: min(wages, SOCIAL_SECURITY_CAP[year]) for year in YEARS
+                },
+                "employer_total_mn_paid_leave_taxable_wages": {
+                    year: min(wages, MN_TAXABLE_WAGE_BASE[year]) for year in YEARS
+                },
+                "mn_paid_leave_employer_average_quarterly_wage": {
+                    year: average_wage for year in YEARS
                 },
                 "employer_total_payroll_tax_gross_wages": {
                     year: wages for year in YEARS
@@ -135,15 +168,23 @@ def by_copy(simulation, variable, year):
     st.lists(workers, min_size=4, max_size=30).map(
         # Every optional state gets a worker at a large employer below every
         # wage base, and one at a 9-employee employer (below the CO, MA, ME
-        # and WA size thresholds; DE does not cover it) above every wage base
-        # and New York's PFL maximum; Delaware also gets a 12-employee
-        # employer (parental leave only). Shares lie strictly between 0 and 1
-        # or above 1, so each program's properties compare positive amounts,
-        # small-employer rules and capped amounts.
+        # and WA size thresholds; DE does not cover it; a Minnesota small
+        # employer) above every wage base and New York's PFL maximum;
+        # Delaware also gets a 12-employee employer (parental leave only).
+        # Minnesota also gets employers at 30 and 31 employees and one of 10
+        # employees whose average wage fails the small employer test. Shares
+        # lie strictly between 0 and 1 or above 1, so each program's
+        # properties compare positive amounts, small-employer rules and
+        # capped amounts.
         lambda rows: (
-            [(state, 60_000, 100, 0.5, 0.0) for state in OPTIONAL_STATES]
-            + [(state, 250_000, 9, 0.3, 1.2) for state in OPTIONAL_STATES]
-            + [("DE", 250_000, 12, 0.3, 1.2)]
+            [(state, 60_000, 100, 0.5, 0.0, 0.0) for state in OPTIONAL_STATES]
+            + [(state, 250_000, 9, 0.3, 1.2, 0.0) for state in OPTIONAL_STATES]
+            + [("DE", 250_000, 12, 0.3, 1.2, 0.0)]
+            + [
+                ("MN", 60_000, 30, 0.5, 0.0, 27_745.88),
+                ("MN", 60_000, 31, 0.5, 0.0, 0.0),
+                ("MN", 60_000, 10, 0.5, 0.0, 27_745.89),
+            ]
             + rows
         )
     )
@@ -152,9 +193,16 @@ def test_state_payroll_premium_deduction_share_invariants(rows):
     simulation = simulate(rows)
     states = np.array([row[0] for row in rows])
     wages = np.array([row[1] for row in rows])
+    headcounts = np.array([row[2] for row in rows])
     shares = np.clip(np.array([[row[3], row[4], 1.0] for row in rows]), 0, 1)
+    average_wages = np.array([row[5] for row in rows])
     modeled = np.isin(states, EMPLOYER_MODELED_STATES)
-    unmodeled = np.isin(states, ("MN", "NY"))
+    unmodeled = states == "NY"
+    mn = states == "MN"
+    mn_small = (headcounts <= MN_SMALL_MAX_HEADCOUNT) & (
+        average_wages <= MN_SMALL_MAX_AVERAGE_QUARTERLY_WAGE
+    )
+    assert mn_small[mn].any() and (~mn_small[mn]).any()
     uncapped = wages <= UNCAPPED_WAGES
     optional_by_year = {}
     employer_by_year = {}
@@ -194,6 +242,29 @@ def test_state_payroll_premium_deduction_share_invariants(rows):
         same_path = modeled
         np.testing.assert_allclose(
             employer_total[same_path], employer[same_path], **TOLERANCE
+        )
+        # Property 7.
+        mn_wages = np.minimum(np.maximum(wages, 0), MN_TAXABLE_WAGE_BASE[year])
+        mn_premium = MN_RATE * np.where(mn_small, 0.75, 1) * mn_wages
+        mn_minimum = np.where(mn_small, 0.25 * MN_RATE * mn_wages, 0.5 * mn_premium)
+        mn_employee = by_copy(simulation, "mn_employee_paid_leave_contribution", year)
+        mn_employer = by_copy(simulation, "mn_employer_paid_leave_contribution", year)
+        np.testing.assert_allclose(
+            by_copy(simulation, "mn_paid_leave_premium", year)[mn],
+            mn_premium[mn][:, None] * np.ones((1, COPIES)),
+            **TOLERANCE,
+        )
+        np.testing.assert_allclose(
+            (mn_employee + mn_employer)[mn],
+            mn_premium[mn][:, None] * np.ones((1, COPIES)),
+            **TOLERANCE,
+        )
+        np.testing.assert_allclose(
+            mn_employer[mn],
+            (mn_minimum[:, None] + (1 - shares) * (mn_premium - mn_minimum)[:, None])[
+                mn
+            ],
+            **TOLERANCE,
         )
         optional_by_year[year] = optional
         employer_by_year[year] = employer

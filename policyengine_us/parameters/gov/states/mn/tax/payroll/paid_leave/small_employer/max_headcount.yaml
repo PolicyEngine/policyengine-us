@@ -1,0 +1,12 @@
+description: Minnesota limits the Paid Leave small employer premium rate to employers with at most this many employees.
+values:
+  0000-01-01: 0
+  2026-01-01: 30
+
+metadata:
+  period: year
+  unit: person
+  label: Minnesota Paid Leave small employer maximum employees
+  reference:
+    - title: Minnesota Statutes Section 268B.14, subdivisions 5a(a)(1) and 5b
+      href: https://www.revisor.mn.gov/statutes/cite/268B.14

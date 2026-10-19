@@ -79,6 +79,9 @@ def calculate(sim: Simulation, variable: str) -> float:
             "ME", "employer_total_me_paid_leave_taxable_wages", 4_000, id="ME"
         ),
         pytest.param(
+            "MN", "employer_total_mn_paid_leave_taxable_wages", 4_000, id="MN"
+        ),
+        pytest.param(
             "OR", "employer_total_or_paid_leave_taxable_wages", 4_000, id="OR"
         ),
         pytest.param(
@@ -131,6 +134,7 @@ def make_employer_total_simulation(
     employer_total_dc_paid_leave_taxable_wages: float = WAGES,
     employer_total_ma_paid_leave_taxable_wages: float = WAGES,
     employer_total_me_paid_leave_taxable_wages: float = WAGES,
+    employer_total_mn_paid_leave_taxable_wages: float = WAGES,
     employer_total_or_paid_leave_taxable_wages: float = WAGES,
     employer_total_vt_child_care_contribution_wages: float = WAGES,
     employer_total_wa_paid_leave_taxable_wages: float = WAGES,
@@ -181,6 +185,9 @@ def make_employer_total_simulation(
                     },
                     "employer_total_me_paid_leave_taxable_wages": {
                         PERIOD: employer_total_me_paid_leave_taxable_wages
+                    },
+                    "employer_total_mn_paid_leave_taxable_wages": {
+                        PERIOD: employer_total_mn_paid_leave_taxable_wages
                     },
                     "employer_total_or_paid_leave_taxable_wages": {
                         PERIOD: employer_total_or_paid_leave_taxable_wages
@@ -509,6 +516,14 @@ def test_employee_payroll_tax_zero_when_payroll_tax_abolished():
             id="ME",
         ),
         pytest.param(
+            "MN",
+            {
+                "mn_employer_paid_leave_contribution": 440,
+                "mn_employer_additional_state_payroll_tax": 440,
+            },
+            id="MN",
+        ),
+        pytest.param(
             "OR",
             {
                 "or_employer_paid_leave_contribution": 400,
@@ -637,6 +652,7 @@ def test_small_employer_thresholds_zero_employer_paid_leave_share(
             {
                 "mn_paid_leave_taxable_wages": 7_000,
                 "mn_employee_paid_leave_contribution": 30.8,
+                "mn_employer_paid_leave_contribution": 30.8,
             },
             id="MN",
         ),
@@ -962,6 +978,7 @@ def test_new_york_mctmt_employer_tax(
         pytest.param("DE", 100, WAGES, 9_000, 400, id="DE"),
         pytest.param("MA", 100, WAGES, 9_000, 420, id="MA"),
         pytest.param("ME", 100, WAGES, 9_000, 500, id="ME"),
+        pytest.param("MN", 100, WAGES, 9_000, 440, id="MN"),
         pytest.param("OR", 100, WAGES, 9_000, 400, id="OR"),
         pytest.param("RI", 100, WAGES, 29_200, 61.32, id="RI"),
         pytest.param("VT", 100, WAGES, 9_000, 330, id="VT"),
@@ -996,6 +1013,7 @@ def test_employer_total_additional_state_payroll_tax(
         pytest.param("DE", 20, id="DE"),
         pytest.param("MA", 29.4, id="MA"),
         pytest.param("ME", 35, id="ME"),
+        pytest.param("MN", 30.8, id="MN"),
         pytest.param("OR", 28, id="OR"),
         pytest.param("RI", 8.4, id="RI"),
         pytest.param("VT", 13.2, id="VT"),
@@ -1014,6 +1032,7 @@ def test_employer_total_additional_state_payroll_tax_uses_state_specific_wage_ba
         employer_total_dc_paid_leave_taxable_wages=7_000,
         employer_total_ma_paid_leave_taxable_wages=7_000,
         employer_total_me_paid_leave_taxable_wages=7_000,
+        employer_total_mn_paid_leave_taxable_wages=7_000,
         employer_total_or_paid_leave_taxable_wages=7_000,
         employer_total_vt_child_care_contribution_wages=4_000,
         employer_total_wa_paid_leave_taxable_wages=7_000,

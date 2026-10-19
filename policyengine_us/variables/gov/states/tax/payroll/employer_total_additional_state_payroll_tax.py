@@ -96,6 +96,14 @@ class employer_total_additional_state_payroll_tax(Variable):
             + (1 - deducted) * me_p.employee_rate * me_wages
         )
 
+        # The premium and permitted employee rates depend on the small
+        # employer test (Minn. Stat. 268B.14, subd. 5a), which reads the same
+        # employer inputs as the per-worker path.
+        mn = (
+            person("mn_paid_leave_premium_rate", period)
+            - deducted * person("mn_paid_leave_permitted_employee_rate", period)
+        ) * person("employer_total_mn_paid_leave_taxable_wages", period)
+
         or_p = parameters(period).gov.states["or"].tax.payroll.paid_leave
         or_tax = where(
             headcount >= or_p.employer_headcount_threshold,
@@ -135,11 +143,12 @@ class employer_total_additional_state_payroll_tax(Variable):
                 state_code == StateCode.DE,
                 state_code == StateCode.MA,
                 state_code == StateCode.ME,
+                state_code == StateCode.MN,
                 state_code == StateCode.OR,
                 state_code == StateCode.RI,
                 state_code == StateCode.VT,
                 state_code == StateCode.WA,
             ],
-            [ca, co, dc, de, ma, me, or_tax, ri, vt, wa],
+            [ca, co, dc, de, ma, me, mn, or_tax, ri, vt, wa],
             default=0,
         )

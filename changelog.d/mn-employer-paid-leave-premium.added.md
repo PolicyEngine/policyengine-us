@@ -1,0 +1,1 @@
+Model the Minnesota Paid Leave employer premium, including the small employer rate (Minn. Stat. 268B.14), and include it in employer payroll taxes. The Minnesota `employee_rate` parameter is replaced by `rate` and `employer_minimum_share`.

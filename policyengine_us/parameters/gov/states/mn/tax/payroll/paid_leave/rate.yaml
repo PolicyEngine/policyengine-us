@@ -1,0 +1,18 @@
+description: Minnesota charges this Paid Leave premium rate on taxable wages for an employer participating in both the family and medical benefit programs.
+values:
+  0000-01-01: 0
+  # Statutory 0.7% (subd. 6), adjusted by the commissioner under subd. 7.
+  2026-01-01: 0.0088
+  2027-01-01: 0.0088
+
+metadata:
+  period: year
+  unit: /1
+  label: Minnesota Paid Leave premium rate
+  reference:
+    - title: Minnesota Statutes Section 268B.14, subdivisions 1, 6 and 7
+      href: https://www.revisor.mn.gov/statutes/cite/268B.14
+    - title: Minnesota DEED confirms Paid Leave premium rate
+      href: https://mn.gov/deed/newscenter/press-releases/?id=1045-670064
+    - title: Minnesota Paid Leave, Premium rate and contributions ("For 2026 and 2027, the Paid Leave premium rate is 0.88%")
+      href: https://pl.mn.gov/resources/calculators/premium-rate-and-contributions

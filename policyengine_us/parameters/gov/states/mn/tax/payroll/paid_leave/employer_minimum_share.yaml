@@ -1,0 +1,14 @@
+description: Minnesota requires employers to pay at least this share of the Paid Leave premium; employees pay the remaining portion, if any, through a wage deduction.
+values:
+  0000-01-01: 0
+  2026-01-01: 0.5
+
+metadata:
+  period: year
+  unit: /1
+  label: Minnesota Paid Leave employer minimum premium share
+  reference:
+    - title: Minnesota Statutes Section 268B.14, subdivision 3
+      href: https://www.revisor.mn.gov/statutes/cite/268B.14
+    - title: Minnesota Paid Leave, Premium rate and contributions ("employers can collect up to 0.44% from employees")
+      href: https://pl.mn.gov/resources/calculators/premium-rate-and-contributions

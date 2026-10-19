@@ -1,0 +1,14 @@
+description: Minnesota limits the Paid Leave small employer premium rate to employers whose average quarterly wage is at most this amount, 150 percent of the state's average wage in covered employment for the basis period.
+values:
+  0000-01-01: 0
+  # Basis period October 2024 to September 2025, for 2026 premiums.
+  2026-01-01: 27_745.88
+
+metadata:
+  unit: currency-USD
+  label: Minnesota Paid Leave small employer maximum average quarterly wage
+  reference:
+    - title: Minnesota Statutes Section 268B.14, subdivisions 5a(a)(2), 5b(a) and 5c
+      href: https://www.revisor.mn.gov/statutes/cite/268B.14
+    - title: Minnesota Paid Leave, Premium rate and contributions ("150% of the statewide average wage, currently $27,745.88 per quarter")
+      href: https://pl.mn.gov/resources/calculators/premium-rate-and-contributions
