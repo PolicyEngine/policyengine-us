@@ -95,7 +95,6 @@
 # Regression for issue #8817: the Line 16 subtraction must reduce WI income
 # BEFORE the standard-deduction phaseout, so a large exclusion recovers
 # standard deduction that the pre-subtraction income had phased out.
-
 - name: E2E - Joint 67+ with retirement income above the standard-deduction phaseout
   absolute_error_margin: 1
   period: 2025
@@ -132,7 +131,6 @@
 # Below the single phaseout start ($19,550, 2025) the standard deduction is at
 # its max for both full and exclusion-reduced income, so the extra deduction the
 # fix unlocks is $0 (no regression vs. a plain taxinc - line16 subtraction).
-
 - name: Exclusion path - below phaseout start, extra standard deduction is zero (no regression)
   absolute_error_margin: 0.01
   period: 2025
@@ -152,7 +150,6 @@
 
 # Fully phased-out top end (age 85, very high income): SD = $0 for both full and
 # reduced income, so extra_SD = 0 and the exclusion is a plain subtraction.
-
 - name: Exclusion path - fully phased-out top end, extra standard deduction is zero
   absolute_error_margin: 0.01
   period: 2025
@@ -173,7 +170,6 @@
 # Partial-unlock boundary: full income ($140k) is past the single full-phaseout
 # point (SD_full = 0) while reduced income ($116k) lands INSIDE the phaseout, so
 # the fix unlocks a positive partial deduction.
-
 - name: Exclusion path - partial unlock (full income past phaseout end, reduced income inside it)
   absolute_error_margin: 1
   period: 2025
@@ -194,7 +190,6 @@
 
 # Joint with only ONE spouse age 67+: the exclusion uses the per-person single
 # cap ($24,000), NOT the $48,000 both-eligible joint pool.
-
 - name: Exclusion path - joint with one spouse 67+, uses the $24,000 per-person cap
   absolute_error_margin: 0.01
   period: 2025
