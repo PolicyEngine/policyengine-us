@@ -9,9 +9,11 @@ class in_claim_of_right_repayment_excluded_from_income(Variable):
     documentation = (
         "Part of claim_of_right_repayment that was not included in Indiana "
         "adjusted gross income in the earlier year it was received, such as "
-        "repaid Social Security benefits, or the extra Indiana unemployment "
-        "compensation deduction the earlier return would have had without the "
-        "repaid amount. Indiana's repayment deduction excludes it."
+        "repaid Social Security benefits, or the part of the earlier year's "
+        "Indiana unemployment compensation deduction that the repaid amount "
+        "produced: the deduction claimed minus the deduction refigured without "
+        "the repaid amount (IT-40 deduction 630, Example 1: $73 - $58 = $15). "
+        "Indiana's repayment deduction excludes it."
     )
     definition_period = YEAR
     reference = (

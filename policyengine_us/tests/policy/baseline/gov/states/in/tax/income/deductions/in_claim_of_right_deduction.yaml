@@ -2,7 +2,9 @@
 # page 23): a repayment of income included in Indiana AGI in an earlier year,
 # of any amount, whichever federal method applies.
 
-- name: Case 1, 2025 IT-40 Example 1, $345 of repaid unemployment less the $15 smaller earlier deduction.
+# The original $73 unemployment deduction minus $58 refigured without the
+# repayment leaves $15 excluded: $345 - ($73 - $58) = $330.
+- name: Case 1, 2025 IT-40 Example 1, $345 repayment less the $15 decrease in the earlier unemployment deduction.
   period: 2025
   input:
     people:

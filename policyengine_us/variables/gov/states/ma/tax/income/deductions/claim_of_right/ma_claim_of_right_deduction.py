@@ -16,6 +16,9 @@ class ma_claim_of_right_deduction(Variable):
     reference = (
         # M.G.L. c. 62, s. 3(B)(a)(14)
         "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section3",
+        # DOR explicitly allows the deduction without regard to the amount paid.
+        "https://www.mass.gov/info-details/differences-between-ma-and-federal-tax-law-for-personal-income",
+        "https://www.mass.gov/technical-information-release/tir-06-4-deduction-for-income-upon-which-taxes-have-been-paid-under-a-claim-of-right",
         # 2025 Form 1 instructions, Schedule Y line 14
         "https://taxsim.nber.org/historical_state_tax_forms/MA/2025/ma-dor-2025-inc-form-1-inst.pdf#page=21",
         "https://taxsim.nber.org/historical_state_tax_forms/MA/2025/ma-dor-2025-inc-sch-y.pdf",
