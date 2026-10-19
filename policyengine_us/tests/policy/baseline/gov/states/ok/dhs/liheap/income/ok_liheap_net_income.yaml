@@ -106,6 +106,8 @@
 
 # Register pp. 580-581 permit age 60+ or disabled person costs. 30,000 - 2,880 worker allowance - 2,400 elder medical
 # - 1,200 medical of the SSDI recipient = 23,520. Age 59 nondisabled medical 3,600 is not deductible.
+# The SSDI receipt (is_usda_disabled), not the is_disabled flag at person3, qualifies the 39-year-old; no Oklahoma
+# LIHEAP variable reads is_disabled.
 - name: Case 4, FY2027 medical deduction follows each elderly or disabled person separately.
   period: 2027
   absolute_error_margin: 0.01

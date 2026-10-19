@@ -269,6 +269,7 @@
     ssi: [0, 0]
     social_security: [21_360, 21_360]
     medicare_part_b_premium: [2_434.80, 0]
+    medicare_enrolled: [true, true]
     heating_type: [NATURAL_GAS, NATURAL_GAS]
     gas_expense: [1_200, 1_200]
     ok_tanf: [0, 0]
@@ -370,6 +371,7 @@
         ssi: 0
         social_security: 0
         medicare_part_b_premium: 2_434.80
+        medicare_enrolled: true
         pension_income: 9_000
     spm_units:
       spm_unit:
@@ -407,6 +409,7 @@
         ssi: 0
         social_security: 12_000
         medicare_part_b_premium: 2_434.80
+        medicare_enrolled: true
         health_insurance_premiums_without_medicare_part_b: 1_800
     spm_units:
       spm_unit:
@@ -457,3 +460,59 @@
     ok_liheap_eligible: [true, true]
     ok_liheap_net_income: [18_360, 16_680]
     ok_liheap: [235, 235]
+
+# OAC 340:20-1-11(c)(1) and 340:50-5-4(a)(2): only a qualifying benefit makes a member under 60 eligible for the medical
+# deduction. Person 1 receives $750 a month of SSDI (9,000 a year; SSA pays 90% of average indexed monthly earnings up
+# to the 2026 first bend point of 1,286, so a worker averaging about 834 receives 750). Gross 750 a month <= 1,696 (2026
+# size 1 limit). is_usda_disabled: net 9,000 - 1,200 medical = 7,800 (650 a month), row $401-$700 -> 265. Person 2 has
+# the same 9,000 from employer long-term disability insurance (disability_benefits), which 340:50-5-4 does not list: no
+# medical deduction, net 9,000 (750 a month), row $701 and up -> 235.
+- name: Case 14, Social Security disability receipt moves the award up a row while private disability income does not.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OK, OK]
+    age: [50, 50]
+    immigration_status: [CITIZEN, CITIZEN]
+    ssi: [0, 0]
+    social_security_disability: [9_000, 0]
+    disability_benefits: [0, 9_000]
+    other_medical_expenses: [1_200, 1_200]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200]
+    ok_tanf: [0, 0]
+    ok_child_care_subsidies: [0, 0]
+    ok_ccs_copay: [0, 0]
+  output:
+    is_usda_disabled: [true, false]
+    ok_liheap_gross_income: [9_000, 9_000]
+    ok_liheap_eligible: [true, true]
+    ok_liheap_income_deductions: [1_200, 0]
+    ok_liheap_net_income: [7_800, 9_000]
+    ok_liheap: [265, 235]
+
+# Appendix C-7-A has no column for directly billed SOLAR (grid-tied; heating_expense reads the electricity bill) or
+# OTHER (other_heating_fuel_expense) fuels; solar is not an approved main energy source (OAC 340:20-1-10(b)(1)). Both
+# stay eligible with a $0 award, a documented coverage limit (default fuel: issue 9754). Each row: wages 12,000 (1,000 a
+# month <= 1,696), net 12,000 - 2,880 = 9,120 (760 a month), row $701 and up. Natural gas control -> 235.
+- name: Case 15, directly billed solar and other fuels are eligible but receive no award.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OK, OK, OK]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    ssi: [0, 0, 0]
+    employment_income: [12_000, 12_000, 12_000]
+    heating_type: [SOLAR, OTHER, NATURAL_GAS]
+    pre_subsidy_electricity_expense: [1_200, 0, 0]
+    other_heating_fuel_expense: [0, 1_200, 0]
+    gas_expense: [0, 0, 1_200]
+    ok_tanf: [0, 0, 0]
+    ok_child_care_subsidies: [0, 0, 0]
+    ok_ccs_copay: [0, 0, 0]
+  output:
+    ok_liheap_eligible: [true, true, true]
+    ok_liheap_net_income: [9_120, 9_120, 9_120]
+    ok_liheap_matrix_amount: [0, 0, 235]
+    ok_liheap: [0, 0, 235]

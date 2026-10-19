@@ -12,6 +12,9 @@ class ok_liheap_income_limit(Variable):
     reference = (
         "https://oklahoma.gov/okdhs/newsroom/2024/december/comm12172024.html",
         "https://oklahoma.gov/okdhs/newsroom/2026/january/comm01062026.html",
+        # Appendix C-7, 10/1/2024, 10/1/2025 and 10/1/2026 editions.
+        "https://web.archive.org/web/20241207141659id_/https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-7.pdf",
+        "https://web.archive.org/web/20260509201726id_/https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-7.pdf",
         "https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-7.pdf",
     )
 

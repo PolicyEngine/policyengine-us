@@ -16,10 +16,12 @@ values:
     - strike_benefits
     # OAC 340:20-1-11(a) counts "All gross earned and unearned income", and
     # 340:20-1-11(c) requires the gross income standard to be met "before
-    # allowing applicable income deductions", which include "Medicare premiums"
-    # (340:50-7-31(a)(3)(A)(vi)). Plan item 1.9 (FY2025-FY2027, PDF page 6)
-    # checks "Excluding MediCare deduction" for SSA benefits; the regulation
-    # governs, and the plan narrative (FY2026, PDF page 7) also uses gross income.
+    # allowing applicable income deductions". The model reads the (c)(1)
+    # medical deduction with SNAP's list, which names "Medicare premiums"
+    # (340:50-7-31(a)(3)(A)(vi), applied by analogy). Plan item 1.9
+    # (FY2025-FY2027, PDF page 6) checks "Excluding MediCare deduction" for SSA
+    # benefits; the regulation governs, and the plan narrative (FY2026, PDF
+    # page 7) also uses gross income.
     - social_security
     - ssi
     # Military retirement pay is a separate input from the pension inputs that
@@ -51,7 +53,11 @@ metadata:
   reference:
     - title: "OAC 340:20-1-11(a)-(b), September 2025 permanent adoption #page 576-578"
       href: https://oklahoma.gov/content/dam/ok/en/omma/content/rulemaking-process/rules/Register_Volume-42_Issue-20.pdf#page=576
-    - title: OAC 340:50-7-22 and 340:50-7-29(c), incorporated SNAP income exclusions and inclusions
+    - title: OAC 340:20-1-11 as amended effective 9-15-26; 340:50-7-22, incorporated SNAP income exclusions; 340:50-7-29(c) and 340:50-7-31(a)(3)(A), SNAP rules applied by analogy
       href: https://prod-ok-administrativerules.tecuity.com/api/BlobStorageGetFile?storageContainer=TitleHtml&name=Title_340.html
+    - title: Oklahoma FY2025 State Plan, Section 1.9
+      href: https://liheapch.acf.gov/docs/2025/state-plans/OK_Plan_2025.pdf#page=6
     - title: "Oklahoma FY2026 State Plan, Section 1.9 and income narrative #page 6-7"
       href: https://liheapch.acf.gov/docs/2026/state-plans/OK_Plan_2026.pdf#page=6
+    - title: Oklahoma FY2027 State Plan, Section 1.9
+      href: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/okdhs-pdf-library/adult-and-family-services/DETAILED%20MODEL%20PLAN%2010_01_2026.pdf#page=6

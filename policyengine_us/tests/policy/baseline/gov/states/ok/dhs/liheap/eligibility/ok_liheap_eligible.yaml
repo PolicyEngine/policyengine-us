@@ -2,7 +2,7 @@
 
 # OAC 340:20-1-10(h)(2), 340:20-1-11(a); C-7 size 1 limit $1,729/mo (20,748/yr), inclusive. Monthly gross rounds half up:
 # 20,748/12 = 1,729.00 -> eligible; 20,753/12 = 1,729.42 -> 1,729, eligible; 20,754/12 = 1,729.50 -> 1,730 > 1,729, ineligible.
-# The ordinary program has no asset test.
+# No asset test: plan item 2.3 answers No, and the 9-15-26 OAC has no resource rule.
 - name: Case 1, the gross ceiling compares monthly income rounded to the nearest dollar and assets do not change it.
   period: 2027
   input:
@@ -71,3 +71,21 @@
     ssi: [0, 0, 0]
   output:
     ok_liheap_eligible: [false, false, false]
+
+# FY2026 runs under the 9-15-25 text, which kept a liquid-resource limit "per OKDHS Appendix C-7" (340:20-1-11(e)), but
+# the 10/1/2025 C-7 prints no resource level and plan item 2.3 answers No to an assets test. Gross 18,000 / 12 = 1,500
+# <= 1,696 (size 1) -> eligible with $1,000,000 or $0 in a bank account.
+- name: Case 5, the FY2026 gross ceiling applies without an asset test.
+  period: 2026
+  input:
+    state_code: [OK, OK]
+    age: [40, 40]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    immigration_status: [CITIZEN, CITIZEN]
+    ok_liheap_gross_income: [18_000, 18_000]
+    has_heating_expense: [true, true]
+    bank_account_assets: [1_000_000, 0]
+    ssi: [0, 0]
+  output:
+    ok_liheap_income_limit: [20_352, 20_352]
+    ok_liheap_eligible: [true, true]

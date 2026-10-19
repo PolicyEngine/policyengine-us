@@ -9,8 +9,19 @@ class ok_liheap_eligible(Variable):
     defined_for = StateCode.OK
     # OAC 340:20-1-10(c)-(h), 340:20-1-11(a), 340:20-1-19(d): eligible size,
     # gross income including deemed contributions, and heating responsibility.
+    # No asset test is applied. The 9-15-25 adoption kept 340:20-1-10(h)(2)
+    # ("gross income and resource standards") and 340:20-1-11(e), which caps
+    # liquid resources "per OKDHS Appendix C-7" (Register PDF pages 576 and
+    # 581), but the 10/1/2024 and 10/1/2025 C-7 editions print no resource
+    # level, plan item 2.3 answers No to an assets test (FY2025 and FY2026,
+    # PDF page 9), and the FY2026 plan says "Oklahoma does not use resources"
+    # (PDF page 14). The 9-15-26 amendment removed both provisions.
     reference = (
         "https://prod-ok-administrativerules.tecuity.com/api/BlobStorageGetFile?storageContainer=TitleHtml&name=Title_340.html",
+        # PDF pages 576, 581
+        "https://oklahoma.gov/content/dam/ok/en/omma/content/rulemaking-process/rules/Register_Volume-42_Issue-20.pdf#page=576",
+        "https://liheapch.acf.gov/docs/2025/state-plans/OK_Plan_2025.pdf#page=9",
+        # PDF pages 9, 14
         "https://liheapch.acf.gov/docs/2026/state-plans/OK_Plan_2026.pdf#page=9",
     )
 

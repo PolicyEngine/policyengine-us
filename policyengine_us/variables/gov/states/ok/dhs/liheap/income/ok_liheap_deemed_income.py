@@ -12,9 +12,9 @@ class ok_liheap_deemed_income(Variable):
         # OAC 340:20-1-11(a)(4): contribution after personal deductions and
         # need enters eligible members' income before the gross test.
         "https://prod-ok-administrativerules.tecuity.com/api/BlobStorageGetFile?storageContainer=TitleHtml&name=Title_340.html",
-        # Schedule IX-A and IX-B.
+        # Appendix C-1, 7/1/2026 edition, Schedules IX-A and IX-B.
         # PDF pages 4-5
-        "https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-1.pdf#page=4",
+        "https://web.archive.org/web/20260903155011id_/https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-1.pdf#page=4",
     )
 
     def formula(tax_unit, period, parameters):
