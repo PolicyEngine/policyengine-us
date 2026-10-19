@@ -1,3 +1,10 @@
+## [2.49.12] - 2026-10-19
+
+### Fixed
+
+- Pay the Colorado AND-CS, Texas SSI facility and New Mexico residential care supplements to SSI recipients, so both members of an SSI couple qualify instead of only the one labelled the eligible individual. Colorado AND-CS now counts each spouse's own income (9 CCR 2503-5 3.549), and Texas keeps a facility resident whose countable income equals the $30 reduced standard.
+
+
 ## [2.49.11] - 2026-10-19
 
 ### Fixed
