@@ -12,27 +12,6 @@ class is_aca_ptc_eligible(Variable):
     )
 
     def formula(person, period, parameters):
-        fstatus = person.tax_unit("filing_status", period)
-        separate = fstatus == fstatus.possible_values.SEPARATE
-
-        # determine income eligibility for ACA PTC
-        p = parameters(period).gov.aca
-        magi_frac = person.tax_unit("aca_magi_fraction", period)
-        standard_income_eligible = p.ptc_income_eligibility.calc(magi_frac)
-        below_fpl_exception = person.tax_unit(
-            "aca_ptc_below_fpl_immigration_exception", period
-        )
-        is_income_eligible = standard_income_eligible | below_fpl_exception
-
-        # No credit is allowed to someone another taxpayer can claim (26
-        # U.S.C. 36B(c)(1)(D)); they are not an applicable taxpayer (26 CFR
-        # 1.36B-2(b)(3)) and are outside the tax family, along with the
-        # dependents of a return that has such a filer (IRC 152(b)(1)).
-        tax_family_member = person("is_aca_tax_family_member", period)
-
-        return (
-            person("pays_aca_premium", period)
-            & tax_family_member
-            & ~separate
-            & is_income_eligible
+        return person("pays_aca_premium", period) & person(
+            "is_aca_ptc_eligible_before_premium", period
         )

@@ -27,8 +27,9 @@ cases:
    the inputs, not from the model's family variables); used credit <=
    coverage-family premium <= selected premium; no family member means no
    credit and no coverage-family premium; cost-sharing reductions only when
-   every enrollee is eligible for the credit; and on a return with a head or
-   spouse where neither can be claimed, `aca_ptc_slcsp` = `slcsp`,
+   every enrollee meets the credit's conditions before premium payment; and
+   on a return with a head or spouse where neither can be claimed,
+   `aca_ptc_slcsp` = `slcsp`,
    `aca_magi` = `medicaid_magi`, `aca_tax_family_size` = `tax_unit_size` and
    `aca_fpg` = `tax_unit_fpg` for the prior year (these simulations supply no
    prior-year size, so the two sizes agree). A unit with neither a head nor a
@@ -205,6 +206,32 @@ def _with_dependent_income(units):
     return out
 
 
+def _review_r3_cases():
+    # The 19-year-old spouse is an enrolled fourth ACA child, so pays no
+    # marginal premium. Claimability excludes that spouse from substantive
+    # PTC eligibility and blocks CSR. Ordinary fourth children remain
+    # substantively eligible despite also paying no marginal premium.
+    independent = {"age": 40, "employment_income": 50_000.0}
+    student = {"age": 20, "is_full_time_student": True}
+    return [
+        {
+            "state": "TX",
+            "adults": [independent, {"age": 19}],
+            "dependents": [student, student, student],
+            "claimed": (False, False),
+            "claimable": (False, True),
+            "exception": (False, True),
+        },
+        {
+            "state": "TX",
+            "adults": [independent, {"age": 30}],
+            "dependents": [student, student, student, {"age": 19}],
+            "claimed": (False, False),
+            "claimable": (False, False),
+        },
+    ]
+
+
 def _tax_unit_sum(sim, name, year):
     return np.asarray(sim.calculate(name, year, map_to="tax_unit"), dtype=float)
 
@@ -222,7 +249,9 @@ def _enrollment_signature(sim, year):
     # Which members are enrolled, as one number per tax unit, so variants
     # can be compared person by person rather than by count.
     position = np.asarray(sim.populations["tax_unit"].members_position)
-    enrolled = np.asarray(sim.calculate("pays_aca_premium", year), dtype=float)
+    enrolled = np.asarray(
+        sim.calculate("is_aca_marketplace_enrollee", year), dtype=float
+    )
     return _tax_unit_sum_array(sim, enrolled * 2.0**position)
 
 
@@ -294,8 +323,12 @@ def _identities(sim, year):
     assert (used <= family_premium + TOLERANCE).all()
     assert (family_premium <= premium + TOLERANCE).all()
     csr = _calc(sim, "marketplace_csr_eligible", year) > 0
-    enrolled = np.asarray(sim.calculate("pays_aca_premium", year))
-    ineligible_enrollees = _tax_unit_sum_array(sim, enrolled & ~eligible)
+    enrolled = np.asarray(sim.calculate("is_aca_marketplace_enrollee", year))
+    substantive_eligible = np.asarray(
+        sim.calculate("is_aca_ptc_eligible_before_premium", year)
+    )
+    assert not (substantive_eligible & ~member).any()
+    ineligible_enrollees = _tax_unit_sum_array(sim, enrolled & ~substantive_eligible)
     assert not (csr & (ineligible_enrollees > 0)).any()
     assert not _calc(sim, "aca_ptc", year)[size == 0].any()
     assert not family_premium[size == 0].any()
@@ -415,6 +448,7 @@ def test_claimable_filer_ptc_seeded_population(year):
         + _crafted_cases(STATES, review_case_only=True)
         + _ptc_cases(STATES)
         + _review_r2_cases()
+        + _review_r3_cases()
     )
     # Explicit inputs apply simulation-wide, so the review cases' claimability
     # inputs would otherwise default the legacy fixtures to false.

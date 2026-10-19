@@ -19,8 +19,16 @@ class marketplace_csr_eligible(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         receives_aca = tax_unit.sum(person("person_receives_aca", period)) > 0
-        enrollee = person("pays_aca_premium", period)
-        ptc_eligible = person("is_aca_ptc_eligible", period)
+        enrollee = person("is_aca_marketplace_enrollee", period)
+        # The rating cap can leave an insured child with no marginal
+        # premium. Check that enrollee's substantive conditions as though
+        # separately insured, as required by 45 CFR 155.305(g)(3).
+        # Preserve supplied PTC eligibility for those who do pay a premium.
+        ptc_eligible = where(
+            person("pays_aca_premium", period),
+            person("is_aca_ptc_eligible", period),
+            person("is_aca_ptc_eligible_before_premium", period),
+        )
         every_enrollee_eligible = ~tax_unit.any(enrollee & ~ptc_eligible)
         category = tax_unit("selected_marketplace_plan_category", period)
         silver_selected = category == category.possible_values.SILVER
