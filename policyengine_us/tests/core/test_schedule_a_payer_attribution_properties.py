@@ -14,7 +14,7 @@ these variants in one vectorized simulation per year:
 
 - the drawn return;
 - the same return with part of one filer's premiums moved to a dependent;
-- that return with the premiums moved back;
+- the premiums moved back, which repeats the drawn inputs in another row;
 - the drawn return with the head and spouse labels exchanged;
 - the drawn return with every dependent's premiums set to 0.
 
@@ -29,7 +29,9 @@ Invariants, for every drawn return:
    Montana's 2021-2023 joint medical deduction do not depend on a
    dependent's own premiums.
 3. Payer move: moving premiums from a filer to a dependent never raises any of
-   those amounts, and moving them back restores each to the cent.
+   those amounts. The moved-back row has the drawn inputs, so it checks only
+   that each return's result depends on its own inputs (determinism, no
+   leakage between rows): it restores each amount to the cent.
 4. Labels: exchanging the head and spouse labels changes none of them, nor
    North Dakota's renter refund income.
 5. North Dakota: NDCC 57-02-08.1(5)(c) takes out medical expenses paid by the
@@ -38,7 +40,8 @@ Invariants, for every drawn return:
    income less every member's premiums and other medical expenses.
 
 YAML covers the legal examples; these properties check the payer rule across
-generated returns and every reader at once.
+generated returns for the readers named above, not every reader of the
+subtotal.
 """
 
 import numpy as np
@@ -183,8 +186,8 @@ def _assert_filer_amounts(cases, year):
                 np.testing.assert_allclose(
                     values[(*key, "no_dependent_premiums")], drawn, atol=CENT
                 )
-                # 3. Moving premiums to a dependent never raises the amount,
-                # and moving them back restores it.
+                # 3. Moving premiums to a dependent never raises the amount;
+                # the moved-back row repeats the drawn inputs (determinism).
                 assert values[(*key, "moved")] <= drawn + CENT, (variable, case)
                 np.testing.assert_allclose(
                     values[(*key, "moved_back")], drawn, atol=CENT

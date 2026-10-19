@@ -451,3 +451,51 @@
     # 25% of 1,000 for joint AGI not over 30,000. Counting the student's
     # 1,200 of premiums would give 25% of 2,200 = 550.
     nm_medical_care_expense_deduction: [250, 250]
+
+- name: New Mexico's deduction counts a policy the filers bought for a dependent
+  period: 2024
+  input:
+    people:
+      a_earner:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 20_000
+        other_medical_expenses: 1_000
+      a_partner:
+        age: 45
+        is_tax_unit_spouse: true
+        # The partner pays the student's 1,200 policy.
+        health_insurance_premiums: 1_200
+      a_student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+      b_earner:
+        age: 45
+        is_tax_unit_spouse: true
+        employment_income: 20_000
+        other_medical_expenses: 1_000
+      b_partner:
+        age: 45
+        is_tax_unit_head: true
+        health_insurance_premiums: 1_200
+      b_student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+    tax_units:
+      a:
+        members: [a_earner, a_partner, a_student]
+      b:
+        members: [b_partner, b_earner, b_student]
+    households:
+      a:
+        members: [a_earner, a_partner, a_student]
+        state_code: NM
+      b:
+        members: [b_partner, b_earner, b_student]
+        state_code: NM
+  output:
+    itemized_medical_expenses: [2_200, 2_200]
+    # 25% of 2,200 for joint AGI not over 30,000.
+    nm_medical_care_expense_deduction: [550, 550]
