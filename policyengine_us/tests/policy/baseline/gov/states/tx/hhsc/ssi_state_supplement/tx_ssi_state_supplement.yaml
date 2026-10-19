@@ -307,3 +307,34 @@
   output:
     # IL 2023-45: $45 from January 2024.
     tx_ssi_state_supplement: 45
+
+- name: Case 28, facility resident with a pension and earnings gets the full supplement.
+  # $30/month pension less the $20 general exclusion is $10 of countable
+  # unearned income; $100/month of earnings less the $65 earned income
+  # exclusion, halved, is $17.50. Countable income is $27.50, so SSI pays
+  # $30 - $27.50 = $2.50/month. The supplement does not depend on income.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 80
+        pension_income: 360
+        employment_income: 1_200
+        is_in_medicaid_facility: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    ssi_countable_income: 330
+    ssi: 30
+    tx_ssi_state_supplement_eligible: true
+    tx_ssi_state_supplement: 540
