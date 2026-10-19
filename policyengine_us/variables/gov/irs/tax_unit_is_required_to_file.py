@@ -9,13 +9,26 @@ class tax_unit_is_required_to_file(Variable):
     documentation = """
     Whether this tax unit is legally required to file a federal income tax
     return under IRC § 6012, based on gross income thresholds and filing
-    status. Under § 6012(c), gross income includes amounts excluded under
-    § 911: Form 2555 line 43 when Form 2555 leaf inputs are supplied,
-    otherwise the legacy foreign_earned_income_exclusion amount.
+    status. For 2018 to 2025, section 6012(f) compares gross income with the
+    standard deduction. In other years, section 6012(a)(1) compares it with
+    the basic standard deduction plus the additions for age, but not
+    blindness, and gross income equal to that amount requires a return. A
+    tax unit whose head or spouse can be claimed as a dependent keeps the
+    standard deduction test in every year. Under section 6012(c), both
+    tests count gross section 911 exclusions: Form 2555 line 43 when leaf
+    inputs are supplied, otherwise the nonnegative legacy
+    foreign_earned_income_exclusion amount.
     """
     definition_period = YEAR
     reference = (
+        # Section 6012(f) for 2018 to 2025, and 6012(a)(1)(A) and (B) in other
+        # years.
         "https://www.law.cornell.edu/uscode/text/26/6012",
+        # Chart A of the Form 1040 instructions for 2017, the last year
+        # section 6012(a)(1) governed.
+        "https://www.irs.gov/pub/irs-prior/i1040gi--2017.pdf#page=8",
+        # Separate filers with a zero exemption amount, and the IRS's $5.
+        "https://www.taxpayeradvocate.irs.gov/news/nta-blog/ntablog-irs-publication-error-may-have-caused-certain-married-taxpayers-filing-separately-to-fail-to-file-required-tax-returns/2019/12/",
         # A filer who can be claimed as a dependent: section 6012(a)(1)(C)(i)
         # and (f)(2)(D) (the section above), the section 63(c)(5) limited
         # standard deduction, and Publication 501, Table 2 (Chart B of the
@@ -33,7 +46,8 @@ class tax_unit_is_required_to_file(Variable):
 
     def formula(tax_unit, period, parameters):
         # Section 6012(c): for the filing requirement, gross income is
-        # computed without regard to the section 911 exclusion. That is the
+        # computed without regard to the section 911 exclusion in every year,
+        # including the section 6012(a)(1) threshold from 2026. That is the
         # gross exclusion on Form 2555 line 43, not the worksheet line 2c
         # stacking amount, which is net of line 44 and worksheet line 2b and
         # includes the line 50 housing deduction.
@@ -41,20 +55,67 @@ class tax_unit_is_required_to_file(Variable):
         gross_income = add(tax_unit, period, ["irs_gross_income"]) + (
             section_911_exclusion
         )
-        p = parameters(period).gov.irs.income.exemption
-        exemption_amount = 0 if p.suspended else p.amount
+        p = parameters(period).gov.irs
+        exemption_amount = (
+            0 if p.income.exemption.suspended else p.income.exemption.amount
+        )
+        filing_status = tax_unit("filing_status", period)
+        separate = filing_status == filing_status.possible_values.SEPARATE
+        head_can_be_claimed = tax_unit("head_is_dependent_elsewhere", period)
+        spouse_can_be_claimed = tax_unit("spouse_is_dependent_elsewhere", period)
 
-        # (a)(1)(A), (a)(1)(B)
-        filing_status = tax_unit("filing_status", period).decode_to_str()
-        separate = filing_status == "SEPARATE"
-        standard_deduction = tax_unit("standard_deduction", period)
+        # Section 6012(f), for 2018 to 2025: no return is required when gross
+        # income does not exceed the standard deduction, which includes the
+        # additional standard deduction for age and for blindness. A married
+        # individual filing separately must file with any gross income.
         threshold = where(
             separate,
             exemption_amount,
-            standard_deduction + exemption_amount,
+            tax_unit("standard_deduction", period) + exemption_amount,
+        )
+        income_over_standard_deduction = gross_income > threshold
+
+        # Section 6012(a)(1)(A) and (B), from 2026 (and before 2018): no return
+        # is required when gross income is less than the exemption amount for
+        # each spouse plus the basic standard deduction, raised by one
+        # additional standard deduction for each spouse aged 65 or older
+        # (section 63(f)(1)). Blindness does not raise it, and gross income
+        # equal to it requires a return. The WFTCA contributed reform's bonus
+        # guaranteed deduction is an increase to the basic standard deduction
+        # (zero unless that reform is on).
+        #
+        # A married individual filing separately has no exception. With an
+        # exemption amount of zero, (A) read literally reaches even an
+        # individual with no gross income; the National Taxpayer Advocate read
+        # the 2018 to 2025 rule that way, and the IRS set $5 as relief. As for
+        # 2018 to 2025, the model requires a return only for positive gross
+        # income (decision d1403).
+        aged_count = tax_unit("aged_head", period).astype(int) + tax_unit(
+            "aged_spouse", period
+        ).astype(int)
+        basic_threshold = (
+            exemption_amount * tax_unit("head_spouse_count", period)
+            + tax_unit("basic_standard_deduction", period)
+            + tax_unit("bonus_guaranteed_deduction", period)
+            + aged_count * p.deductions.standard.aged_or_blind.amount[filing_status]
+        )
+        income_at_least_basic_threshold = (gross_income > 0) & (
+            gross_income >= where(separate, exemption_amount, basic_threshold)
         )
 
-        income_over_exemption_amount = gross_income > threshold
+        # A tax unit whose head or spouse can be claimed as a dependent keeps
+        # the standard deduction test in every year. From 2026 it is
+        # (a)(1)(C)(i)(II), and it is what Chart B applies under (a)(1); the
+        # (A) threshold, which leaves out blindness and requires a return at
+        # equality, is not applied to these filers (decision d1395).
+        if p.income.filing_requirement.standard_deduction_rule.applies:
+            income_over_threshold = income_over_standard_deduction
+        else:
+            income_over_threshold = where(
+                head_can_be_claimed | spouse_can_be_claimed,
+                income_over_standard_deduction,
+                income_at_least_basic_threshold,
+            )
 
         # A filer who can be claimed as a dependent on another return (an
         # individual described in section 63(c)(5)) must also file when their
@@ -75,8 +136,6 @@ class tax_unit_is_required_to_file(Variable):
         # is Table 2's gross income test, and earned income over the regular
         # amount plus the additional standard deduction always meets it.
         person = tax_unit.members
-        head_can_be_claimed = tax_unit("head_is_dependent_elsewhere", period)
-        spouse_can_be_claimed = tax_unit("spouse_is_dependent_elsewhere", period)
         can_be_claimed = (
             person("is_tax_unit_head", period) & tax_unit.project(head_can_be_claimed)
         ) | (
@@ -94,12 +153,12 @@ class tax_unit_is_required_to_file(Variable):
         for source in parameters(period).gov.irs.gross_income.sources:
             if source not in earned_income_sources:
                 unearned_income += max_(0, add(person, period, [source]))
-        p_standard = parameters(period).gov.irs.deductions.standard
+        p_standard = p.deductions.standard
         aged_or_blind_count = person("is_irs_aged", period).astype(int) + person(
             "is_blind", period
         ).astype(int)
         additional_standard_deduction = aged_or_blind_count * tax_unit.project(
-            p_standard.aged_or_blind.amount[tax_unit("filing_status", period)]
+            p_standard.aged_or_blind.amount[filing_status]
         )
         unearned_income_threshold = (
             p_standard.dependent.amount + additional_standard_deduction
@@ -108,4 +167,4 @@ class tax_unit_is_required_to_file(Variable):
             can_be_claimed & (unearned_income > unearned_income_threshold)
         )
 
-        return income_over_exemption_amount | unearned_income_over_threshold
+        return income_over_threshold | unearned_income_over_threshold
