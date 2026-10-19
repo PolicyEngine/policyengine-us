@@ -72,3 +72,29 @@
     filing_status: SINGLE
   output:
     charitable_deduction_for_non_itemizers: 0
+
+- name: 2021 non-itemizer giving cash to non-50% org gets zero deduction under § 170(p)
+  period: 2021
+  input:
+    charitable_cash_donations_non_50_pct_orgs: 400
+    filing_status: SINGLE
+  output:
+    charitable_deduction_for_non_itemizers: 0
+
+- name: 2021 non-itemizer giving cash to 50% org gets deduction under § 170(p)
+  period: 2021
+  input:
+    charitable_cash_donations_50_pct_orgs: 400
+    filing_status: SINGLE
+  output:
+    charitable_deduction_for_non_itemizers: 300
+
+- name: 2021 non-itemizer mix of 50% and non-50% org cash
+  period: 2021
+  input:
+    charitable_cash_donations: 400
+    charitable_cash_donations_non_50_pct_orgs: 300
+    filing_status: SINGLE
+  output:
+    # 400 total - 300 non-50% = 100 to 50% orgs; min(100, 300 cap) = 100
+    charitable_deduction_for_non_itemizers: 100

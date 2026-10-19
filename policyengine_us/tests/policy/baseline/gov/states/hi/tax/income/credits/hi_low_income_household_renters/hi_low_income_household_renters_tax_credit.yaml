@@ -166,3 +166,129 @@
         state_code: HI
   output:
     hi_tax_credit_for_low_income_household_renters: 150
+
+# Schedule X counts only people who cannot be claimed as a dependent by another
+# taxpayer, so a child in the household who can be claimed elsewhere adds no
+# exemption.
+- name: Joint return with a child who can be claimed elsewhere counts the two filers
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+        adjusted_gross_income: 4000
+        hi_tax_credit_for_low_income_household_renters_eligible: true
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: HI
+  output:
+    hi_tax_credit_for_low_income_household_renters: 100
+
+- name: Joint return with a child who cannot be claimed elsewhere counts the child
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+        adjusted_gross_income: 4000
+        hi_tax_credit_for_low_income_household_renters_eligible: true
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: HI
+  output:
+    hi_tax_credit_for_low_income_household_renters: 150
+
+- name: Joint return within the filing exception with a child who can be claimed elsewhere counts only the other spouse (the claimable spouse is the head)
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+        adjusted_gross_income: 4000
+        hi_tax_credit_for_low_income_household_renters_eligible: true
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: HI
+  output:
+    hi_tax_credit_for_low_income_household_renters: 50
+
+- name: Joint return within the filing exception with a child who can be claimed elsewhere counts only the other spouse (the claimable spouse is the spouse)
+  period: 2021
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child_1]
+        filing_status: JOINT
+        adjusted_gross_income: 4000
+        hi_tax_credit_for_low_income_household_renters_eligible: true
+    households:
+      household:
+        members: [person_b, person_a, child_1]
+        state_code: HI
+  output:
+    hi_tax_credit_for_low_income_household_renters: 50
