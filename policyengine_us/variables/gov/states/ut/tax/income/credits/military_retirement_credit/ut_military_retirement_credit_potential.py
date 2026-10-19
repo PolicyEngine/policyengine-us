@@ -17,10 +17,8 @@ class ut_military_retirement_credit_potential(Variable):
         military_retirement_pay = tax_unit_non_dep_add(
             tax_unit,
             period,
-            [
-                "military_retirement_pay",
-                "military_retirement_pay_survivors",
-            ],
+            ["military_retirement_income"],
         )
+
         p = parameters(period).gov.states.ut.tax.income.credits.military_retirement
         return military_retirement_pay * p.rate

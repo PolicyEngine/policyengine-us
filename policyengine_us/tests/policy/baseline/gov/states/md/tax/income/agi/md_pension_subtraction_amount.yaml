@@ -86,3 +86,18 @@
     # Military subtraction is $20,000; excess is $20,000 which feeds pension subtraction
     md_military_retirement_subtraction_amount: 20_000
     md_pension_subtraction_amount: 20_000
+
+- name: Filer aged 66 measures excess military pay against age-55 military cap under § 10-209(d)(1)
+  period: 2025
+  input:
+    state_code: MD
+    is_tax_unit_dependent: false
+    age: 66
+    is_disabled: false
+    military_retirement_pay: 40_000
+    social_security: 0
+  output:
+    # Military subtraction is $20,000; excess is $20,000 which feeds pension subtraction
+    md_military_retirement_subtraction_amount: 20_000
+    md_pension_subtraction_amount: 20_000
+

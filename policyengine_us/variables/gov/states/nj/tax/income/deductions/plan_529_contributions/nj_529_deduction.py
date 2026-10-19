@@ -18,8 +18,9 @@ class nj_529_deduction(Variable):
             period
         ).gov.states.nj.tax.income.deductions.plan_529_contributions
         # Check NJ gross income limit (NJ-1040 line 29)
-        nj_gross_income = person.tax_unit("nj_agi", period)
-        income_eligible = nj_gross_income <= p.income_limit
+        nj_agi = person.tax_unit("nj_agi", period)
+        income_eligible = nj_agi <= p.income_limit
+
         # Get the TaxUnit-level deduction cap
         total_contributions = person.tax_unit("investment_in_529_plan", period)
         unit_deduction = min_(total_contributions, p.cap)

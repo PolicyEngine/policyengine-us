@@ -12,12 +12,5 @@ class ar_military_retirement_income_person(Variable):
 
     def formula(person, period, parameters):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        military_retirement_pay = add(
-            person,
-            period,
-            [
-                "military_retirement_pay",
-                "military_retirement_pay_survivors",
-            ],
-        )
-        return military_retirement_pay * head_or_spouse
+        military_retirement = person("military_retirement_income", period)
+        return military_retirement * head_or_spouse

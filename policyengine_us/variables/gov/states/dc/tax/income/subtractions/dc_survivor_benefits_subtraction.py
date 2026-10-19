@@ -14,11 +14,7 @@ class dc_survivor_benefits_subtraction(Variable):
     defined_for = StateCode.DC
 
     def formula(person, period, parameters):
-        p = (
-            parameters(period)
-            .gov.states["dc"]
-            .tax.income.subtractions.survivor_benefits
-        )
+        p = parameters(period).gov.states.dc.tax.income.subtractions.survivor_benefits
         # Dependents' income is not in federal AGI; they report it on their
         # own return.
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)

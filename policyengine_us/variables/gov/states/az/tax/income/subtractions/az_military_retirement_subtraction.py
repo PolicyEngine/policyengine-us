@@ -18,11 +18,7 @@ class az_military_retirement_subtraction(Variable):
         p = parameters(period).gov.states.az.tax.income.subtractions.military_retirement
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        military_retirement_pay = add(
-            person,
-            period,
-            ["military_retirement_pay", "military_retirement_pay_survivors"],
-        )
-        eligible_military_pay = military_retirement_pay * head_or_spouse
+        military_retirement_income = person("military_retirement_income", period)
+        eligible_military_pay = military_retirement_income * head_or_spouse
         capped_military_pay = min_(eligible_military_pay, p.max_amount)
         return tax_unit.sum(capped_military_pay)

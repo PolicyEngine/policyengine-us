@@ -61,7 +61,7 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(Variable
 
         # If a filer is recieving military retirement pay, the calculation includes the smaller of
         # the tier one or tier three deduction amount
-        # Worksheet 3.2 counts only military retirement pay on the filer's Schedule 1, line 11,
+        # Worksheet 3.2 counts only military retirement income on the filer's Schedule 1, line 11,
         # which excludes a dependent's pay (not in the filer's AGI).
         military_pay = person("military_retirement_income", period) * is_head_or_spouse
         military_retirement_pay_received = tax_unit.sum(military_pay) > 0

@@ -37,9 +37,14 @@ class nc_military_retirement_deduction(Variable):
         # inputs. Otherwise the combined flag cannot establish own-pay
         # eligibility, which needs the recipient's service or medical record.
         own_pay_eligible = eligible & (~survivor | own_record_eligible)
+        # The fallback to `eligible` when `survivor_pay == 0` is retained for backward
+        # compatibility with legacy callers and tests where
+        # `nc_military_retirement_deduction_eligible` is set directly without populating
+        # the recipient's underlying service records (`years_in_military` or
+        # `is_permanently_disabled_veteran`).
         military_pay_eligible = where(survivor_pay > 0, own_pay_eligible, eligible)
-        # When survivor_pay is 0, eligible applies to military_retirement_pay directly.
         # Mixed own and survivor pay must be split between the two income inputs.
+
         qualifying_pay = (
             person("military_retirement_pay", period) * military_pay_eligible
             + survivor_pay * survivor * eligible

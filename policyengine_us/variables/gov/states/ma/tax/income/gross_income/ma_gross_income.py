@@ -29,12 +29,13 @@ class ma_gross_income(Variable):
         foreign_earned_income = tax_unit(
             "ma_foreign_earned_income_exclusion_addback", period
         )
-        # Exclude Social Security, state/local tax refunds, and contributory
-        # public pensions.
-        # Under M.G.L. c. 62 § 2(a)(2)(E), contributory pensions from the US,
-        # Massachusetts, or reciprocal states are excluded from MA gross income.
-        # Noncontributory or non-reciprocal public pensions are not exempt.
-        # PolicyEngine treats taxable_public_pension_income as exempt public pensions.
+        # Exclude Social Security, state/local tax refunds, contributory
+        # public pensions, and military retirement pay.
+        # Under M.G.L. c. 62 § 2(a)(2)(E) and TIR 08-16, pensions from the US
+        # (including military retirement pay), Massachusetts, or reciprocal states
+        # are excluded from MA gross income.
+        # PolicyEngine treats taxable_public_pension_income and military_retirement_income
+        # as exempt public pensions.
         # c.62 s.2(a)(2) deducts these items from the filer's federal gross
         # income. Dependents' income is not in it (irs_gross_income excludes
         # it; they report it on their own return), so deduct only the head's

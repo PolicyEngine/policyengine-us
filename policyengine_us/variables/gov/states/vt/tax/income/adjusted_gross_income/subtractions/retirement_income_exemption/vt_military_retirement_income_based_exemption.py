@@ -23,10 +23,7 @@ class vt_military_retirement_income_based_exemption(Variable):
         tax_unit_military_retirement_pay = tax_unit_non_dep_add(
             tax_unit,
             period,
-            [
-                "military_retirement_pay",
-                "military_retirement_pay_survivors",
-            ],
+            ["military_retirement_income"],
         )
 
         agi = tax_unit("adjusted_gross_income", period)

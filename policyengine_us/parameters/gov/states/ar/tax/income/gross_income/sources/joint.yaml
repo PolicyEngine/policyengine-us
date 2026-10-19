@@ -15,8 +15,7 @@ values:
     - ar_taxable_capital_gains_joint # Line 14
     - taxable_ira_distributions # Line 16, or Lines 17A/17B after age 59 1/2
     - taxable_roth_conversions # Line 16, or Lines 17A/17B after age 59 1/2
-    - military_retirement_pay # Line 17A/17B
-    - military_retirement_pay_survivors # Line 17A/17B
+    - military_retirement_income # Line 17A/17B
     - taxable_pension_income # Line 17A/17B
     - disability_benefits # Line 17A/17B
     - rental_income # Line 18
@@ -42,8 +41,7 @@ values:
     - ar_taxable_capital_gains_joint # Line 14
     - taxable_ira_distributions # Line 16, or Lines 18A/18B after age 59 1/2
     - taxable_roth_conversions # Line 16, or Lines 18A/18B after age 59 1/2
-    - military_retirement_pay # Line 17 (Lines 17A/17B on the 2018 form)
-    - military_retirement_pay_survivors # Line 17
+    - military_retirement_income # Line 17 (Lines 17A/17B on the 2018 form)
     - taxable_pension_income # Line 18A/18B
     - disability_benefits # Line 18A/18B
     - rental_income # Line 19
@@ -63,8 +61,7 @@ values:
     - ar_taxable_capital_gains_joint # Line 14
     - taxable_ira_distributions # Line 16, or Lines 18A/18B after age 59 1/2
     - taxable_roth_conversions # Line 16, or Lines 18A/18B after age 59 1/2
-    - military_retirement_pay # Line 17
-    - military_retirement_pay_survivors # Line 17
+    - military_retirement_income # Line 17
     - taxable_pension_income # Line 18A/18B
     - disability_benefits # Line 18A/18B
     - rental_income # Line 19
@@ -83,8 +80,8 @@ values:
     - ar_taxable_capital_gains_joint # Line 14
     - taxable_ira_distributions # Line 16, or Lines 18A/18B after age 59 1/2
     - taxable_roth_conversions # Line 16, or Lines 18A/18B after age 59 1/2
-    - military_retirement_pay # Line 17
-    - military_retirement_pay_survivors # Line 17
+    - military_retirement_income # Line 17
+
     - taxable_pension_income # Line 18A/18B
     - taxable_401k_distributions # Line 18A/18B
     - taxable_403b_distributions # Line 18A/18B

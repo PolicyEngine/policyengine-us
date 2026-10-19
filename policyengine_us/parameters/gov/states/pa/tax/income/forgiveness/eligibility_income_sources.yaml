@@ -5,11 +5,11 @@ values:
     - alimony_income
     - tax_exempt_interest_income
     # non-taxable dividends and gains
-    # insurance proceeds and inheritances
+    # insurance proceeds and inheritances (Schedule SP line 4, includes survivor annuities)
+    - military_retirement_pay_survivors
     # gifts awards and prizes
     # non-PA income
     # nontaxable military income (military pension benefits excluded per PA-40 SP)
-    - military_retirement_pay_survivors
     # gain excluded from the sale of a residence
     # nontaxable education assistance
     # cash received for personal use outside your home

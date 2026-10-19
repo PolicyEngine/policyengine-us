@@ -15,11 +15,9 @@ class ut_military_retirement_credit_eligible(Variable):
         military_retirement_pay = tax_unit_non_dep_add(
             tax_unit,
             period,
-            [
-                "military_retirement_pay",
-                "military_retirement_pay_survivors",
-            ],
+            ["military_retirement_income"],
         )
+
         has_military_retirement_pay = military_retirement_pay > 0
         # Cannot claim if claiming the retirement credit (code 18)
         claims_retirement_credit = tax_unit("ut_claims_retirement_credit", period)

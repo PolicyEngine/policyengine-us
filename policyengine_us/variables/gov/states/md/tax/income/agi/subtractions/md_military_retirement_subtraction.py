@@ -17,11 +17,4 @@ class md_military_retirement_subtraction(Variable):
         "https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=12",
     )
 
-    def formula(tax_unit, period, parameters):
-        person = tax_unit.members
-        # § 10-207(a) subtracts amounts only to the extent included in federal
-        # AGI. Dependents' income is not in federal AGI; they report it on
-        # their own return (Form 502 filing status 6, dependent taxpayer).
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        person_subtraction = person("md_military_retirement_subtraction_amount", period)
-        return tax_unit.sum(person_subtraction * head_or_spouse)
+    adds = ["md_military_retirement_subtraction_amount"]

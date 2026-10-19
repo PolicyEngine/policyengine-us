@@ -31,7 +31,7 @@ class mi_standard_deduction_tier_three(Variable):
         person = tax_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # Line 2: enter military retirement pay and survivor benefits
-        military_retirement_pay = person("military_retirement_income", period)
+        military_retirement_income = person("military_retirement_income", period)
         # Line 3: enter military service income or taxable social security
         taxable_ss = person("taxable_social_security", period)
         military_service_income = person("military_service_income", period)
@@ -43,7 +43,7 @@ class mi_standard_deduction_tier_three(Variable):
         mi_personal_exemptions = tax_unit("mi_personal_exemptions", period)
         # Line 5: add lines 2 through 4
         total_person_reductions = tax_unit.sum(
-            is_head_or_spouse * (military_retirement_pay + larger_ss_or_military_pay)
+            is_head_or_spouse * (military_retirement_income + larger_ss_or_military_pay)
         )
         total_reductions = total_person_reductions + mi_personal_exemptions
         # Line 6: subtract line 5 from line 1
