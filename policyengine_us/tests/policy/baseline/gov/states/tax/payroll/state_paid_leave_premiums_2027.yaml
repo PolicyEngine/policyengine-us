@@ -1,0 +1,161 @@
+# 2027 state paid leave premiums. Each expected value applies the published
+# 2027 rate to wages, capped at the 2027 Social Security contribution and
+# benefit base of $192,300 where the program uses it. The default employer
+# headcount is 100, so every size-based employer share applies.
+
+# Colorado: 7 CCR 1107-1 s. 1.4 (1)(A), as adopted effective January 1, 2027,
+# sets the 2027 premium at 0.86% of wages, of which an employer may deduct up
+# to half (C.R.S. 8-13.3-507 (5)).
+- name: Colorado FAMLI premium is 0.88% of wages in 2026, split evenly.
+  period: 2026
+  input:
+    employment_income: 50_000
+    state_code: CO
+  output:
+    # 50,000 * 0.44% = 220
+    co_employee_famli_contribution: 220
+    co_employer_famli_contribution: 220
+
+- name: Colorado FAMLI premium falls to 0.86% of wages in 2027, split evenly.
+  period: 2027
+  input:
+    employment_income: 50_000
+    state_code: CO
+  output:
+    # 50,000 * 0.43% = 215
+    co_employee_famli_contribution: 215
+    co_employer_famli_contribution: 215
+    co_employee_state_payroll_tax: 215
+
+- name: Colorado FAMLI premiums stop at the 2027 Social Security wage base.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 250_000
+    state_code: CO
+  output:
+    co_famli_taxable_wages: 192_300
+    # 192,300 * 0.43% = 826.89
+    co_employee_famli_contribution: 826.89
+    co_employer_famli_contribution: 826.89
+
+# Washington: ESD's October 16, 2026 release sets the 2027 Paid Leave premium
+# at 1.2% of wages, 70.7% from employees and 29.3% from employers with 50 or
+# more employees. The Pension Funding Council kept WA Cares at 0.58% of wages,
+# which has no wage cap (RCW 50B.04.080).
+- name: Washington Paid Leave premium is 1.13% in 2026, 71.43% from employees.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: WA
+  output:
+    # 50,000 * 1.13% * 71.43% = 403.5795
+    wa_employee_paid_leave_contribution: 403.5795
+    # 50,000 * 1.13% * 28.57% = 161.4205
+    wa_employer_paid_leave_contribution: 161.4205
+
+- name: Washington Paid Leave premium rises to 1.2% in 2027, 70.7% from employees.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: WA
+  output:
+    # 50,000 * 1.2% * 70.7% = 424.20
+    wa_employee_paid_leave_contribution: 424.20
+    # 50,000 * 1.2% * 29.3% = 175.80
+    wa_employer_paid_leave_contribution: 175.80
+    # 50,000 * 0.58% = 290
+    wa_employee_long_term_care_contribution: 290
+    # 424.20 + 290 = 714.20
+    wa_employee_state_payroll_tax: 714.20
+
+- name: Washington Paid Leave premiums stop at the 2027 Social Security wage base, WA Cares does not.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 250_000
+    state_code: WA
+  output:
+    wa_paid_leave_taxable_wages: 192_300
+    # 192,300 * 1.2% * 70.7% = 1,631.4732
+    wa_employee_paid_leave_contribution: 1_631.4732
+    # 192,300 * 1.2% * 29.3% = 676.1268
+    wa_employer_paid_leave_contribution: 676.1268
+    # 250,000 * 0.58% = 1,450
+    wa_employee_long_term_care_contribution: 1_450
+
+# Delaware: 19 DE Admin. Code 1401 s. 6.6 renews the 2025-2026 rates of
+# 19 Del. C. 3705 (b) unless the regulation is modified, and it has not been
+# for 2027: medical 0.4%, family caregiving 0.08% and parental 0.32%, 0.8% in
+# all for an employer with 25 or more employees, half deductible from wages.
+- name: Delaware Paid Leave contributions stay at 0.8% of wages in 2027.
+  period: 2027
+  input:
+    employment_income: 50_000
+    state_code: DE
+  output:
+    de_paid_leave_contribution_rate: 0.008
+    # 50,000 * 0.8% * 50% = 200
+    de_employee_paid_leave_contribution: 200
+    de_employer_paid_leave_contribution: 200
+
+# Maine: the joint premium is 1% of wages for calendar years 2025-2027 (Maine
+# DOL employer FAQ, question 4; 26 M.R.S. 850-F (3)(A)); the department first
+# sets the rate for 2028 (850-F (3)(B)).
+- name: Maine paid leave premium stays at 1% of wages in 2027, split evenly.
+  period: 2027
+  input:
+    employment_income: 50_000
+    state_code: ME
+  output:
+    # 50,000 * 0.5% = 250
+    me_employee_paid_leave_contribution: 250
+    me_employer_paid_leave_contribution: 250
+
+# Connecticut: the CT Paid Leave Authority board voted on September 10, 2026 to
+# keep the 0.5% employee contribution, capped at the Social Security
+# contribution and benefit base (C.G.S. 31-49g (b)(1)).
+- name: Connecticut Paid Leave contribution stays at 0.5% of wages in 2027.
+  period: 2027
+  input:
+    employment_income: 50_000
+    state_code: CT
+  output:
+    # 50,000 * 0.5% = 250
+    ct_employee_paid_leave_contribution: 250
+
+- name: Connecticut Paid Leave contribution stops at the 2027 Social Security wage base.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 250_000
+    state_code: CT
+  output:
+    # 192,300 * 0.5% = 961.50
+    ct_employee_paid_leave_contribution: 961.50
+
+# Minnesota: DEED keeps the 2027 premium at 0.88% of covered wages, of which an
+# employer may collect up to 0.44% from employees (DEED, July 31, 2026). Taxable
+# wages stop at the Social Security wage base rounded to the nearest $1,000
+# (Minn. Stat. 268B.01): $192,300 rounds to $192,000.
+- name: Minnesota Paid Leave employee premium stays at 0.44% of wages in 2027.
+  period: 2027
+  input:
+    employment_income: 50_000
+    state_code: MN
+  output:
+    # 50,000 * 0.44% = 220
+    mn_employee_paid_leave_contribution: 220
+
+- name: Minnesota Paid Leave premiums stop at $192,000 of wages in 2027.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 250_000
+    state_code: MN
+  output:
+    mn_paid_leave_taxable_wages: 192_000
+    # 192,000 * 0.44% = 844.80
+    mn_employee_paid_leave_contribution: 844.80
