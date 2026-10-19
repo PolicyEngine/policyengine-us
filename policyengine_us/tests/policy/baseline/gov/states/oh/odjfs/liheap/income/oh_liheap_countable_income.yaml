@@ -54,7 +54,7 @@
   output:
     oh_liheap_countable_income: 9_000
 
-# Guidelines p74 explicitly lists IRA withdrawals, estate/trust settlements, lottery, interest, dividends and capital gain; current plan includes lump sums. Existing source inputs are disjoint.
+# Guidelines p74 explicitly lists IRA withdrawals, estate/trust settlements, lottery, interest, dividends and capital gain; the FY2026 plan (item 1.9, p6) includes lump sums. Existing source inputs are disjoint.
 - name: Case 3, withdrawals estate receipts lottery winnings gains interest and dividends count.
   period: 2026
   absolute_error_margin: 0.01
@@ -236,7 +236,7 @@
   output:
     oh_liheap_countable_income: 14_400
 
-# Current FY2026 application physical p7 and Guidelines p74 deduct child support paid. 30,000 - 3,600 = 26,400, below the one-person ceiling of 27,387.
+# The 2025-2026 application (p7) and Guidelines p74 deduct child support paid. 30,000 - 3,600 = 26,400, below the one-person ceiling of 27,387.
 - name: Case 9, child support paid changes an otherwise over limit household to eligible.
   period: 2026
   input:
@@ -473,8 +473,6 @@
   absolute_error_margin: 0.01
   input:
     state_code: [OH, OH, OH, OH, OH]
-    county: [FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH,
-      FRANKLIN_COUNTY_OH]
     age: [40, 40, 58, 40, 40]
     immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
     is_tax_unit_dependent: [false, false, false, false, false]
@@ -512,7 +510,6 @@
       household:
         members: [person1]
         state_code: OH
-        county: FRANKLIN_COUNTY_OH
   output:
     oh_liheap_countable_income: 21_440
 
@@ -539,6 +536,56 @@
       household:
         members: [person1]
         state_code: OH
-        county: FRANKLIN_COUNTY_OH
   output:
     oh_liheap_countable_income: 25_097.32
+
+# Guidelines Appendix XI (p56): "Non-taxable Health Care Spending Accounts are allowable
+# deductions from income". Full-time at Ohio's 2026 $11.00 minimum wage: 11 x 2,080 =
+# 22,880. The worker defers 1,700 to an HSA, the 2026 minimum self-only HDHP deductible
+# (Rev. Proc. 2025-19): 22,880 - 1,700 = 21,180.
+- name: Case 20, a health savings account payroll deferral is deducted as a health care spending account.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 22_880
+        health_savings_account_payroll_contributions: 1_700
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 21_180
+
+# The deduction list starts July 1, 2025 and backfills earlier seasons. Model year 2025
+# (July 2024-May 2025) with the 2025 standard Part B premium (CMS), 185.00 x 12 = 2,220:
+# 28,000 Social Security - 2,220 = 25,780.
+- name: Case 21, the Medicare Part B premium is deducted in model year 2025, before the deduction list's July 2025 start.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        social_security: 28_000
+        medicare_part_b_premium: 2_220
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 25_780

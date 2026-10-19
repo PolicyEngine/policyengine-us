@@ -9,13 +9,13 @@ class oh_liheap_countable_income(Variable):
     label = "Ohio HEAP annual countable household income"
     defined_for = StateCode.OH
     reference = (
-        # Sections E-2.2-2.3 and Appendices XII and XXIII.
-        # PDF pages 7-8, 57, 73-74
+        # Sections E-2.2-2.3 and Appendices XI, XII and XXIII.
+        # PDF pages 7-8, 56-57, 73-75
         "https://irp.cdn-website.com/aa88b0b1/files/uploaded/2022-24%20ATTACHMENT%202022-2023%20EAP%20Guidelines%20%281%29.pdf#page=7",
-        # Current income-source checklist.
-        # PDF pages 5-6
+        # FY2026 plan section 1.9 income-source checklist.
+        # PDF pages 5-7
         "https://dam.assets.ohio.gov/image/upload/v1769700600/development.ohio.gov/individual/energyassistance/DETAILED_MODEL_PLAN_LIHEAP__10_01_2025.pdf#page=5",
-        # Current application deductions and excluded VA disabilities.
+        # 2025-2026 application Household Deductions Section; VA disabilities excluded.
         "https://www.clevelandohio.gov/sites/clevelandohio/files/aging/Home%20repair%20Applications/2025-2026_HEAP_application_B_W.pdf#page=7",
     )
 
@@ -44,13 +44,17 @@ class oh_liheap_countable_income(Variable):
         # inputs represent the 12-month option; a separate favorable 30-day
         # comparison and whole-dollar document processing are not modeled.
         # Existing estate/financial inputs cannot capture all principal payouts,
-        # nonretirement investment draws, royalties, or legal settlements.
+        # nonretirement investment draws, royalties, or legal settlements, and
+        # no input holds Utility Assistance income (Appendix XXIII, page 73).
         # Guidelines Appendix XXIII (page 74) and the application (page 7)
         # deduct child support paid and health, dental, vision, prescription
         # plan, and Medicare premiums, including premiums withheld before tax
         # (Appendix XII, page 57); the FY2026 plan (page 6) counts Social
-        # Security "Excluding MediCare deduction". The premium inputs are
-        # disjoint, so no premium is deducted twice. Spenddown, disability
-        # premium, and legal-fee deductions have no input.
+        # Security "Excluding MediCare deduction". Non-taxable Health Care
+        # Spending Accounts (Appendix XI, page 56) use the HSA payroll input,
+        # which holds employee deferrals only; no input holds health FSA
+        # deferrals. The deduction inputs are disjoint, so nothing is deducted
+        # twice. Spenddown, disability premium, legal-fee, and work-expense
+        # reimbursement deductions (Appendix XXIII, pages 74-75) have no input.
         deductions = add(spm_unit, period, p.deductions)
         return max_(spm_unit.sum(counted) - deductions, 0)

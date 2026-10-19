@@ -5,8 +5,9 @@ description: Ohio sets this payment reduction per federal poverty percentage poi
 # method and winter cost to draft cover percentages. No current formula
 # sheet or interior award table verifies those assumptions. For 2026,
 # (31% - 28.5%) / 100 x $950 = 0.2375, fitted to the FY2026 matrix range (see
-# the intercept); it carries into 2027 and later without extending verified
-# coverage.
+# the intercept). Any minimum credit from about 28.2% to 29.1% fits that range,
+# so the fitted slope could lie anywhere from about 0.18 to 0.27. The 2026
+# value carries into 2027 and later without extending verified coverage.
 values:
   2021-01-01: 0.9813
   2023-01-01: 1.33
@@ -26,5 +27,5 @@ metadata:
       href: https://liheapch.acf.gov/docs/2025/benefits-matricies/OH_BenefitMatrix_2025.pdf#page=1
     - title: Ohio 2025 DRAFT LIHEAP Benefit Matrix
       href: https://liheapch.acf.gov/docs/2026/benefits-matricies/OH_BenefitMatrix_2026.pdf#page=1
-    - title: Ohio FY2027 HEAP State Plan draft (July 2026), sections 2.5-2.6
-      href: https://dam.assets.ohio.gov/image/upload/v1783702985/jfs.ohio.gov/Energy%20and%20Community%20Assistance/2026-2027_Draft_HEAP_State_Plan.pdf#page=9
+    - title: Ohio FY2027 LIHEAP State Plan, revision 1, items 2.5-2.6 (attached FY2026 matrix; 2026 value)
+      href: https://dam.assets.ohio.gov/image/upload/jfs.ohio.gov/Energy%20and%20Community%20Assistance/DETAILED_MODEL_PLAN_LIHEAP__10_01_2026.pdf#page=10

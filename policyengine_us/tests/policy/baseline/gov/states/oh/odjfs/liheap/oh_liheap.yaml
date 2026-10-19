@@ -1,7 +1,7 @@
 # Final 2021 workbook (also used for 2022) and final 2023 workbook: page 1 factors,
 # page 8 counties, pages 9-11 formula/tables, pages 16 and 20 terminal 150+ rows.
 # 2024-2025 use coefficients estimated from draft covers; 2026 uses coefficients
-# fitted to the FY2026 matrix range ($31-$546) in the FY2027 draft plan, carried
+# fitted to the FY2026 matrix range ($31-$546) in the accepted FY2027 plan, carried
 # to 2027. PIPP enrollment/reduction remains unmodeled. Every case gives
 # heating_type. Case 11 uses the explicit .5523 gas factor: printed amounts are
 # 334 and 579 instead.
@@ -222,8 +222,8 @@
     heating_expense: [1]
   output:
     oh_liheap: [283]
-# 15,960 / 2026 FPG 15,960 = 100%: 306.375 - 23.75 = 282.625 -> 283. The FY2027 draft
-# plan estimates FY2027 at the FY2026 range.
+# 15,960 / 2026 FPG 15,960 = 100%: 306.375 - 23.75 = 282.625 -> 283. The FY2027 plan
+# estimates FY2027 at the FY2026 range.
 - name: Case 7, the 2027 estimate carries the 2026 coefficients forward with the lagged 2026 poverty guideline.
   period: 2027
   input:
@@ -637,3 +637,70 @@
     oh_liheap_income_limit: [119_633, 119_633]
     oh_liheap_eligible: [true, false]
     oh_liheap: [283, 0]
+
+# Threshold edge: 42 U.S.C. 8624(b)(2)(B) protects income "less than 110 percent" of the
+# guideline. Size 17 (set directly) in 2026: limit floor(68,755 x 1.65) = floor(113,445.75)
+# = 113,445; lagged 2025 guideline 15,650 + 16 x 5,500 = 103,650; floor
+# round(1.1 x 103,650, 2) = 114,015 (the unrounded float product is 114,015.00000000001).
+# 114,014.99 is 109.99999% of the guideline: 306.375 - 0.2375 x 109.99999 = 280.25 -> 280
+# propane. Exactly 114,015 is not below the floor and fails; it would pass against the
+# unlagged 2026 guideline's floor, 1.1 x (15,960 + 16 x 5,680) = 117,524.
+- name: Case 26, threshold edge one cent below and at the federal 110 percent floor for a seventeen member household in 2026.
+  period: 2026
+  input:
+    state_code: [OH, OH]
+    county: [FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_tax_unit_dependent: [false, false]
+    ssi: [0, 0]
+    oh_liheap_household_size: [17, 17]
+    employment_income: [114_014.99, 114_015]
+    heating_type: [PROPANE, PROPANE]
+    heating_expense: [1_200, 1_200]
+  output:
+    oh_liheap_income_limit: [113_445, 113_445]
+    oh_liheap_eligible: [true, false]
+    oh_liheap: [280, 0]
+
+# Countable Case 18's worker earns 22,880 (Ohio's 2026 $11.00 minimum wage x 2,080 hours)
+# and heats with gas in Franklin County; lagged 2025 guideline 15,650. No deduction:
+# 146.1981%, 306.375 - 0.2375 x 146.1981 = 271.6530 x 0.724 = 196.68 -> 197. The 1,440 KFF
+# average single-coverage premium withheld before tax counts 21,440, 136.9968%: 273.8383 x
+# 0.724 = 198.26 -> 198. Countable Case 20's 1,700 HSA deferral counts 21,180, 135.3355%:
+# 274.2328 x 0.724 = 198.54 -> 199.
+- name: Case 27, a pretax health premium and a health savings account deferral lower the poverty percentage and raise the award.
+  period: 2026
+  input:
+    state_code: [OH, OH, OH]
+    county: [FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    is_tax_unit_dependent: [false, false, false]
+    ssi: [0, 0, 0]
+    employment_income: [22_880, 22_880, 22_880]
+    pre_tax_health_insurance_premiums: [0, 1_440, 0]
+    health_savings_account_payroll_contributions: [0, 0, 1_700]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [1_200, 1_200, 1_200]
+  output:
+    oh_liheap_countable_income: [22_880, 21_440, 21_180]
+    oh_liheap: [197, 198, 199]
+
+# The accepted FY2027 plan (items 2.5-2.6, page 10) prints the FY2026 matrix maximum, $546:
+# a northern Ashtabula household with a member 60 or older and no income is at the 50%
+# floor: (306.375 - 0.2375 x 50) x 1 propane x 1.06 x 1.75 = 294.5 x 1.855 = 546.30 -> 546.
+- name: Case 28, the 2026 estimate reproduces the 546 dollar maximum that the FY2027 plan prints.
+  period: 2026
+  input:
+    state_code: [OH]
+    county: [ASHTABULA_COUNTY_OH]
+    age: [60]
+    immigration_status: [CITIZEN]
+    is_tax_unit_dependent: [false]
+    ssi: [0]
+    employment_income: [0]
+    heating_type: [PROPANE]
+    heating_expense: [1_200]
+  output:
+    oh_liheap: [546]

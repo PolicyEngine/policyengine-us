@@ -8,8 +8,8 @@ class oh_liheap_household_size(Variable):
     label = "Ohio HEAP household size"
     defined_for = StateCode.OH
     # Sections E-2.1 and E-2.8.
-    # PDF pages 7, 10
-    reference = "https://irp.cdn-website.com/aa88b0b1/files/uploaded/2022-24%20ATTACHMENT%202022-2023%20EAP%20Guidelines%20%281%29.pdf#page=7"
+    # PDF pages 6-7, 10
+    reference = "https://irp.cdn-website.com/aa88b0b1/files/uploaded/2022-24%20ATTACHMENT%202022-2023%20EAP%20Guidelines%20%281%29.pdf#page=6"
 
     # Nonqualified members are excluded from size, but their income counts.
     # SPM membership approximates the energy economic unit. Custody, temporary

@@ -21,8 +21,8 @@ class oh_liheap(Variable):
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/OH_BenefitMatrix_2026.pdf#page=1",
         # January 2025 customer FAQ: 75% PIPP reduction, not currently modeled.
         "https://wofb.org/wp-content/uploads/2025/01/ATTACHMENT-2025-5-HEAP-FAQ-for-Customers.pdf#page=1",
-        # FY2027 draft plan items 2.5-2.6: FY2026 matrix range.
-        "https://dam.assets.ohio.gov/image/upload/v1783702985/jfs.ohio.gov/Energy%20and%20Community%20Assistance/2026-2027_Draft_HEAP_State_Plan.pdf#page=9",
+        # FY2027 plan, revision 1, items 2.5-2.6: FY2026 matrix range.
+        "https://dam.assets.ohio.gov/image/upload/jfs.ohio.gov/Energy%20and%20Community%20Assistance/DETAILED_MODEL_PLAN_LIHEAP__10_01_2026.pdf#page=10",
         # Sections E-1, E-2, E-2.10 and E-4: income, disability and heating facts.
         # PDF pages 5-6, 10-12
         "https://irp.cdn-website.com/aa88b0b1/files/uploaded/2022-24%20ATTACHMENT%202022-2023%20EAP%20Guidelines%20%281%29.pdf#page=5",
@@ -48,8 +48,8 @@ class oh_liheap(Variable):
         # Final 2021 and 2023 regional tables label their terminal row 150+;
         # eligibility can extend to 175%, but payments stop decreasing at 150%.
         # Later coefficients are estimates: 2024-2025 from the draft covers and
-        # 2026 from the FY2026 matrix range in the FY2027 draft plan; the 2026
-        # estimate carries into 2027 and later without verification.
+        # 2026 from the FY2026 matrix range in the accepted FY2027 plan; the
+        # 2026 estimate carries into 2027 and later without verification.
         # Annual income approximates the favorable 30-day/12-month comparison.
         # Guidelines still follow the requested year and state lag.
         base = max_(
@@ -103,9 +103,10 @@ class oh_liheap(Variable):
         # to the state's alphabetically first county, Adams, a southern county,
         # so the estimate uses the 6% southern reduction.
         # The workbooks print four-decimal coefficients. With the printed 2021
-        # slope and fuel ratios, 36 printed 2021 cells (every fuel) differ by $1,
-        # and with the printed 2023 gas ratio, 19 printed 2023 gas and
-        # electricity cells do. Final half-up rounding matches the other printed
+        # slope and fuel ratios, 36 of the 2,424 printed 2021 non-PIPP cells,
+        # spread across every fuel group, differ by $1; with the printed 2023
+        # gas ratio, 19 of the 2,424 printed 2023 non-PIPP cells, all gas and
+        # electricity, do. Final half-up rounding matches the other printed
         # fuel calculations; do not round a component before the regional and
         # targeted adjustments.
         return np.floor(base * fuel_ratio * regional_factor * multiplier + 0.5)
