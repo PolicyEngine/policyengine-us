@@ -1521,3 +1521,112 @@
         medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
       minor_nonstudent_student:
         ssi_ineligible_child_allocation: 5964
+
+# Original review r4 witnesses: K-12 evidence without is_in_secondary_school.
+- name: WI legal dependent 18-year-old high-school senior, tax dependent True
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        person_id: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      claimant:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      student:
+        age: 18
+        person_id: 3
+        parent_1_id: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+        is_in_k12_school: true
+        is_full_time_college_student: false
+        ssi_earned_income: 9000
+    tax_units:
+      family:
+        members: [parent, claimant, student]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      claimant_unit:
+        members: [claimant]
+      student_unit:
+        members: [student]
+    households:
+      home:
+        members: [parent, claimant, student]
+        state_code: WI
+  output:
+    ssi_ineligible_child_allocation: [0, 0, 5964]
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [0, 5868, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 5868, 0]
+
+- name: WI legal dependent 18-year-old high-school senior, tax dependent False
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        person_id: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      claimant:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      student:
+        age: 18
+        person_id: 3
+        parent_1_id: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_full_time_student: true
+        is_household_head: false
+        is_in_k12_school: true
+        is_full_time_college_student: false
+        ssi_earned_income: 9000
+    tax_units:
+      family:
+        members: [parent, claimant]
+      student_family:
+        members: [student]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      claimant_unit:
+        members: [claimant]
+      student_unit:
+        members: [student]
+    households:
+      home:
+        members: [parent, claimant, student]
+        state_code: WI
+  output:
+    ssi_ineligible_child_allocation: [0, 0, 5964]
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [0, 5868, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 5868, 0]

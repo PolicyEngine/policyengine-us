@@ -78,9 +78,14 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
         # full-time secondary school or equivalent-level training, not
         # tax dependency. Enrollment proxies expected completion before
         # 19: the model has no completion-date or remaining-credit input.
+        # At age 18, explicit K-12 enrollment is also secondary-school
+        # evidence; the age gate excludes younger pupils from this extension.
         dependent_18_year_old = (
             (age == 18)
-            & person("is_in_secondary_school", period.this_year)
+            & (
+                person("is_in_secondary_school", period.this_year)
+                | person("is_in_k12_school", period.this_year)
+            )
             & person("is_full_time_student", period.this_year)
         )
         allocation_child &= (state != "WI") | (age < 18) | dependent_18_year_old
