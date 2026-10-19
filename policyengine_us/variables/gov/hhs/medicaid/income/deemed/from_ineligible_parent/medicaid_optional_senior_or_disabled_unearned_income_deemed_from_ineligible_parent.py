@@ -21,6 +21,7 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
     reference = (
         "https://www.law.cornell.edu/cfr/text/20/416.1165",
         "https://www.law.cornell.edu/uscode/text/42/1396b#v",
+        "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-020-00/0805-020-15/",
     )
 
     def formula(person, period, parameters):
@@ -49,8 +50,16 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
             person("ssi_unearned_income", period) * ineligible_parent
         )
 
+        state = person.household("state_code_str", period)
+        # DSS 0805.020.15 step 1 allows Missouri allocations only for
+        # children under 18 who are not applying for MA. In particular,
+        # SSI's adult-student allocation must not enter Missouri's budget.
+        allocation_child = where(state == "MO", person("is_child", period), True)
+        allocations = (
+            person("ssi_ineligible_child_allocation", period) * allocation_child
+        )
         child_allocations = eligible_child * ssi_parental_child_allocation_total(
-            person, period, eligible_child
+            person, period, eligible_child, allocations
         )
         parental_allocations = eligible_child * add(
             tax_unit, period, ["ssi_ineligible_parent_allocation"]
@@ -63,7 +72,6 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
             0, parental_earned_income - remaining_child_allocations
         )
 
-        state = person.household("state_code_str", period)
         general_disregard = parameters(
             period
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.disregard.individual[

@@ -49,7 +49,7 @@ def _allocation_parent_rows(person, period, first, second):
     return np.column_stack(rows)
 
 
-def ssi_parental_child_allocation_total(person, period, recipients):
+def ssi_parental_child_allocation_total(person, period, recipients, allocations=None):
     """Allocations for relevant children who live with this recipient.
 
     20 CFR 416.1165(b) limits allocations to ineligible children in the
@@ -57,6 +57,9 @@ def ssi_parental_child_allocation_total(person, period, recipients):
     and parents' spouses; the unlinked-parent tax-unit proxy applies only
     where the parent-link contract permits it. A recipient never receives
     an allocation from the same pool of income they share.
+
+    Medicaid callers can supply allocations after applying their state's
+    child definition, while retaining the same relationship scope.
     """
     first, second = co_resident_parent_indices(person, period)
     parents = _allocation_parent_rows(person, period, first, second)
@@ -71,7 +74,8 @@ def ssi_parental_child_allocation_total(person, period, recipients):
         present & unlinked[safe_relatives], axis=1
     )
     linked = has_parent_ids(person, period)
-    allocation = person("ssi_ineligible_child_allocation", period)
+    if allocations is None:
+        allocations = person("ssi_ineligible_child_allocation", period)
     total = np.zeros(person.count)
     for child in household_member_indices(person):
         safe = np.maximum(child, 0)
@@ -94,5 +98,5 @@ def ssi_parental_child_allocation_total(person, period, recipients):
             & ~recipients[safe]
             & np.where(linked[safe], named, presumed)
         )
-        total += np.where(counts, allocation[safe], 0)
+        total += np.where(counts, allocations[safe], 0)
     return total

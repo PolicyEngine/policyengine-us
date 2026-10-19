@@ -131,3 +131,49 @@
     # the parents' living allowance (1,491 x 12 = 17,892, the couple SSI
     # federal benefit rate) -> 19,098, split equally -> 9,549 each.
     medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [9_549, 9_549, 0, 0]
+
+- name: Missouri does not allocate to a co-resident adult student.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        person_id: 1
+        is_tax_unit_head: true
+        is_parent: true
+        ssi_unearned_income: 24_000
+      claimant:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      student:
+        age: 20
+        person_id: 3
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+    tax_units:
+      family:
+        members: [parent, claimant, student]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      claimant_unit:
+        members: [claimant]
+      student_unit:
+        members: [student]
+    households:
+      home:
+        members: [parent, claimant, student]
+        state_code: MO
+  output:
+    # DSS 0805.020.15 step 1 restricts allocations to children under 18:
+    # https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-020-00/0805-020-15/
+    # SSI still allocates for this student, but Missouri must not deduct it.
+    ssi_ineligible_child_allocation: [0, 0, 5_964]
+    # ($2,000 - $20 - $994) * 12 = $11,832, not $5,868.
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [0, 11_832, 0]
