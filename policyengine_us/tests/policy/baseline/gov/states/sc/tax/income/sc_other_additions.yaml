@@ -12,3 +12,13 @@
     sc_other_additions: 1_200
   output:
     sc_additions: 1_200
+
+- name: Case 3, sc_other_additions still raises taxable income from 2026
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: SC
+    employment_income: 60_000
+    sc_other_additions: 5_000
+  output:
+    sc_taxable_income: 55_450

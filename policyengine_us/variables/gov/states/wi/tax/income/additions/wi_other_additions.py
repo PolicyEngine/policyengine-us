@@ -10,7 +10,9 @@ class wi_other_additions(Variable):
     defined_for = StateCode.WI
     documentation = (
         "Wisconsin other additions to federal adjusted gross income reported on "
-        "Schedule AD (Other additions to income), entered as a positive amount, "
+        "Schedule AD, Line 32 (Other additions to income), entered as a positive amount, "
         "excluding additions PolicyEngine calculates separately."
     )
-    reference = "https://www.revenue.wi.gov/TaxForms2024/2024-ScheduleAD-Inst.pdf"
+    reference = (
+        "https://www.revenue.wi.gov/TaxForms2024/2024-ScheduleAD-Inst.pdf#page=7"
+    )

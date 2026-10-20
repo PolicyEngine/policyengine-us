@@ -9,8 +9,8 @@ class nc_other_subtractions(Variable):
     definition_period = YEAR
     defined_for = StateCode.NC
     documentation = (
-        "North Carolina other deductions/subtractions from federal adjusted gross income "
-        "reported on Form D-400 Schedule S, Part B (Other deductions from federal adjusted gross "
-        "income), entered as a positive amount, excluding subtractions PolicyEngine calculates separately."
+        "North Carolina deductions/subtractions from federal adjusted gross income "
+        "reported on Form D-400 Schedule S, Part B, Line 41 (Total deductions), "
+        "entered as a positive amount, excluding subtractions PolicyEngine calculates separately."
     )
     reference = "https://www.ncdor.gov/2025-d-401-individual-income-tax-instructions/open#page=18"

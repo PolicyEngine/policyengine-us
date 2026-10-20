@@ -10,7 +10,7 @@ class dc_other_subtractions(Variable):
     defined_for = StateCode.DC
     documentation = (
         "District of Columbia other subtractions from federal adjusted gross income "
-        "reported on Form D-40, Schedule I, Calculation B, Line 14 (Other subtractions), "
+        "reported on Form D-40, Schedule I, Calculation B, Line 13 (Other), "
         "entered as a positive amount. Do not include Social Security, unemployment compensation, "
         "disability exclusions, U.S. government interest, or state/local income tax refunds, "
         "which PolicyEngine computes separately."

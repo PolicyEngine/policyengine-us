@@ -13,4 +13,4 @@ class va_other_subtractions(Variable):
         "Schedule ADJ, Line 6b (Other subtractions), entered as a positive amount, "
         "excluding subtractions PolicyEngine calculates separately."
     )
-    reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2024-760-instructions.pdf#page=24"
+    reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2024-760-instructions.pdf#page=25"

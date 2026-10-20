@@ -14,8 +14,11 @@ class va_subtractions_person(Variable):
         # Virginia's "Worksheet for Determining Separate Virginia Adjusted Gross
         # Income" (Form 760 instructions, STEP 2) attributes each subtraction to
         # the spouse who received the income. This sums the same person-level
-        # subtractions list that drives the tax-unit total (va_subtractions), so
-        # the per-person amounts sum to it exactly.
+        # subtractions list that drives the tax-unit total (va_subtractions).
+        # Tax-unit other subtractions are prorated by each spouse's share of
+        # federal AGI; the per-person amounts sum to the tax-unit total unless
+        # no member has positive federal AGI (in which case the tax-unit keeps
+        # the subtraction, but nobody gets a share).
         p = parameters(period).gov.states.va.tax.income.subtractions
         person_subtractions = add(person, period, p.subtractions)
         # Prorate tax-unit other subtractions across spouses by federal AGI share.

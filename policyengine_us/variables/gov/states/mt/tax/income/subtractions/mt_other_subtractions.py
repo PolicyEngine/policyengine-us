@@ -9,9 +9,9 @@ class mt_other_subtractions(Variable):
     definition_period = YEAR
     defined_for = StateCode.MT
     documentation = (
-        "Montana other subtractions reported on Form 2, Subtractions Schedule, "
-        "line 23 (Other subtractions), entered as a positive amount. "
+        "Montana other subtractions reported on Form 2, Schedule I, "
+        "Line 21 (Other subtractions; line 23 in 2024), entered as a positive amount. "
         "Do not include interest exemptions, tuition subtractions, old age/disability exclusions, "
         "federal deductions, or state tax refunds, which PolicyEngine computes separately."
     )
-    reference = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=21"
+    reference = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=27"

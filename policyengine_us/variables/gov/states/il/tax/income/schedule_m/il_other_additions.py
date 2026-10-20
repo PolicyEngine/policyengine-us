@@ -9,7 +9,8 @@ class il_other_additions(Variable):
     definition_period = YEAR
     defined_for = StateCode.IL
     documentation = (
-        "Illinois other additions to federal adjusted gross income reported on "
-        "Schedule M, Line 10 (Other additions), entered as a positive amount."
+        "Illinois additions to federal adjusted gross income reported on "
+        "Schedule M, Lines 1-11 (total on line 12), entered as a positive amount. "
+        "PolicyEngine models none of these additions separately."
     )
-    reference = "https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/currentyear/individual/il-1040-instr.pdf#page=7"
+    reference = "https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/currentyear/individual/il-1040-schedule-m.pdf#page=1"

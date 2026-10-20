@@ -13,4 +13,4 @@ class ne_other_subtractions(Variable):
         "reported on Form 1040N, Schedule I, Part B, entered as a positive amount, "
         "excluding subtractions PolicyEngine calculates separately."
     )
-    reference = "https://revenue.nebraska.gov/sites/default/files/doc/tax-forms/2025/f_Individual_Income_Tax_Booklet.pdf#page=26"
+    reference = "https://revenue.nebraska.gov/sites/default/files/doc/tax-forms/2025/f_Individual_Income_Tax_Booklet.pdf#page=24"

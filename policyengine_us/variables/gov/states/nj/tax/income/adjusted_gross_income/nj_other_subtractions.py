@@ -9,8 +9,8 @@ class nj_other_subtractions(Variable):
     definition_period = YEAR
     defined_for = StateCode.NJ
     documentation = (
-        "New Jersey other subtractions from federal adjusted gross income reported on "
-        "Form NJ-1040, entered as a positive amount. Do not include U.S. government "
-        "obligation interest, which PolicyEngine computes separately."
+        "Amounts PolicyEngine includes in New Jersey gross income that are exempt from "
+        "New Jersey tax (Form NJ-1040 has no subtractions line), entered as a positive amount. "
+        "Do not include U.S. government obligation interest, which PolicyEngine excludes separately."
     )
     reference = "https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf"

@@ -10,10 +10,10 @@ class ky_other_subtractions(Variable):
     defined_for = StateCode.KY
     documentation = (
         "Kentucky other subtractions from federal adjusted gross income reported on "
-        "Schedule M, Part II, Line 18 (Other subtractions), entered as a positive amount. "
+        "Schedule M, Part II, Line 14 (Other subtractions), entered as a positive amount. "
         "Do not include state tax refunds, U.S. government interest, pension exclusions, "
         "Social Security, or military pay, which PolicyEngine computes separately."
     )
     reference = (
-        "https://revenue.ky.gov/Forms/740%20instructions%20packet%20(2024).pdf#page=27"
+        "https://revenue.ky.gov/Forms/740%20instructions%20packet%20(2024).pdf#page=29"
     )

@@ -15,4 +15,4 @@ class hi_other_subtractions(Variable):
         "U.S. government interest, or student loan interest deductions, "
         "which PolicyEngine computes separately."
     )
-    reference = "https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=13"
+    reference = "https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=14"

@@ -13,6 +13,9 @@ class az_other_subtractions(Variable):
         "Form 140, Line 36 (Other Subtractions), entered as a positive amount. "
         "Do not include U.S. government interest, public pensions, capital gains, "
         "military pay/retirement, Social Security, 529/ABLE contributions, "
-        "adoption expenses, or federal Schedule 1-A deductions, which PolicyEngine computes separately."
+        "adoption expenses, federal Schedule 1-A deductions, the Arizona Families Tax Rebate "
+        "(line 36 item U, reported on az_families_tax_rebate_subtraction_reported), "
+        "or from 2026 the dependent care expense and 530A distribution subtractions, "
+        "which PolicyEngine computes separately."
     )
-    reference = "https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140i.pdf#page=17"
+    reference = "https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140i.pdf#page=16"

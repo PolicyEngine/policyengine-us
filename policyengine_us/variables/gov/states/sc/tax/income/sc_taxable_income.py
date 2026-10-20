@@ -18,11 +18,13 @@ class sc_taxable_income(Variable):
         subtractions = tax_unit("sc_subtractions", period)
 
         if p.in_effect:
-            # H4216: Start from AGI (SC ignores federal std/itemized deductions)
-            # Additions are not needed since they correct for federal deductions
-            # that are no longer relevant when starting from AGI
+            # H.4216: start from federal AGI; the SCIAD replaces the federal
+            # standard and itemized deductions. The additions that reverse
+            # deductions taken after AGI (state tax, QBI, OBBBA) no longer
+            # apply, but other additions to income (SC1040 line e) still do.
             agi = tax_unit("adjusted_gross_income", period)
-            return max_(0, agi - subtractions)
+            other_additions = tax_unit("sc_other_additions", period)
+            return max_(0, agi + other_additions - subtractions)
         else:
             # Traditional calculation from federal taxable income
             taxable_income = tax_unit("taxable_income", period)

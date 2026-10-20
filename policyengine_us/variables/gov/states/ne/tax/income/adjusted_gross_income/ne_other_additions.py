@@ -12,4 +12,4 @@ class ne_other_additions(Variable):
         "Nebraska other adjustments increasing federal adjusted gross income "
         "reported on Form 1040N, Schedule I, Part A, entered as a positive amount."
     )
-    reference = "https://revenue.nebraska.gov/sites/default/files/doc/tax-forms/2025/f_Individual_Income_Tax_Booklet.pdf#page=26"
+    reference = "https://revenue.nebraska.gov/sites/default/files/doc/tax-forms/2025/f_Individual_Income_Tax_Booklet.pdf#page=23"

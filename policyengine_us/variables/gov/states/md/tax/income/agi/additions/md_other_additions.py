@@ -12,4 +12,4 @@ class md_other_additions(Variable):
         "Maryland other additions to federal adjusted gross income reported on "
         "Form 502, Line 5 (Other additions), entered as a positive amount."
     )
-    reference = "https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=9"
+    reference = "https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=14"

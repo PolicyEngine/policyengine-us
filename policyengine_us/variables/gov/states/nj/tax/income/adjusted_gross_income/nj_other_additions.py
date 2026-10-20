@@ -9,7 +9,9 @@ class nj_other_additions(Variable):
     definition_period = YEAR
     defined_for = StateCode.NJ
     documentation = (
-        "New Jersey other additions to gross income reported on Form NJ-1040, "
-        "line 26 (Other), entered as a positive amount."
+        "Income taxable in New Jersey that belongs on Form NJ-1040 lines 15-26 "
+        "(not lines 16b or 20b) and that PolicyEngine does not otherwise include "
+        "in New Jersey gross income, entered as a positive amount. Do not include "
+        "miscellaneous income or estate and trust income, which PolicyEngine already reports on line 26."
     )
-    reference = "https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf"
+    reference = "https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=21"

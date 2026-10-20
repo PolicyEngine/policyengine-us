@@ -15,4 +15,4 @@ class ct_other_subtractions(Variable):
         "military retirement pay, pension/annuity subtractions, or state tax refunds, "
         "which PolicyEngine computes separately."
     )
-    reference = "https://portal.ct.gov/-/media/drs/forms/2025/income/2025-ct-1040-instructions_1225.pdf#page=9"
+    reference = "https://portal.ct.gov/-/media/drs/forms/2025/income/2025-ct-1040-instructions_1225.pdf#page=10"

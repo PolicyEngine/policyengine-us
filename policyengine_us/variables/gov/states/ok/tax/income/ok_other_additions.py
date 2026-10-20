@@ -10,6 +10,6 @@ class ok_other_additions(Variable):
     defined_for = StateCode.OK
     documentation = (
         "Oklahoma other additions to federal adjusted gross income reported on "
-        "Schedule 511-B (Other additions), entered as a positive amount."
+        "Form 511, Schedule 511-B, Line 9 (Other additions), entered as a positive amount."
     )
-    reference = "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf#page=16"
+    reference = "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf#page=21"

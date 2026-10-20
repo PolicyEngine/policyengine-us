@@ -9,7 +9,8 @@ class oh_other_additions(Variable):
     definition_period = YEAR
     defined_for = StateCode.OH
     documentation = (
-        "Ohio other additions reported on Ohio Schedule of Adjustments, "
-        "line 10 (Other additions), entered as a positive amount."
+        "Ohio Schedule of Adjustments additions (lines 1-11) not otherwise modeled, "
+        "entered as a positive amount. Do not include the bonus depreciation add-back "
+        "on line 9 (oh_bonus_depreciation_add_back), which PolicyEngine computes separately."
     )
     reference = "https://dam.assets.ohio.gov/image/upload/v1767095693/tax.ohio.gov/forms/ohio_individual/individual/2025/it1040-booklet.pdf#page=19"

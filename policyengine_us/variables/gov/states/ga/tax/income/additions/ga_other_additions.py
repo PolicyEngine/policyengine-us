@@ -10,6 +10,6 @@ class ga_other_additions(Variable):
     defined_for = StateCode.GA
     documentation = (
         "Georgia other additions to federal adjusted gross income reported on "
-        "Form 500, Schedule 1, Line 3 (Other additions), entered as a positive amount."
+        "Form 500, Schedule 1, Line 5 (Other), entered as a positive amount."
     )
-    reference = "https://dor.georgia.gov/document/document/2025-it-511-individual-income-tax-booklet/download#page=21"
+    reference = "https://dor.georgia.gov/document/document/2025-it-511-individual-income-tax-booklet/download#page=20"

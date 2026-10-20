@@ -10,6 +10,6 @@ class mo_other_additions(Variable):
     defined_for = StateCode.MO
     documentation = (
         "Missouri other additions to federal adjusted gross income reported on "
-        "Form MO-A, Part 1, Line 6 (Other additions), entered as a positive amount."
+        "Form MO-A, Part 1, Line 2 ('Other' box), entered as a positive amount."
     )
-    reference = "https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=12"
+    reference = "https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=13"

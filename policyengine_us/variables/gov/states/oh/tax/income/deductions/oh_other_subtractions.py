@@ -9,8 +9,8 @@ class oh_other_subtractions(Variable):
     definition_period = YEAR
     defined_for = StateCode.OH
     documentation = (
-        "Ohio other deductions reported on Ohio Schedule of Adjustments, "
-        "line 38 (Other deductions), entered as a positive amount. Do not include "
+        "Ohio Schedule of Adjustments deductions (lines 13-46; lines 13-45 in 2024) "
+        "not otherwise modeled, entered as a positive amount. Do not include "
         "Social Security, military retirement, 529 deductions, Pell grants, educator "
         "expenses, disability benefits, medical expenses, U.S. government interest, "
         "state tax refunds, business income deductions, or capital gain deductions, "

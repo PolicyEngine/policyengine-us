@@ -10,7 +10,7 @@ class ks_other_additions(Variable):
     defined_for = StateCode.KS
     documentation = (
         "Kansas other additions to federal adjusted gross income reported on "
-        "Schedule S, Part A (Other additions to federal adjusted gross income), "
+        "Schedule S, Part A, Line A8 (Other additions to federal adjusted gross income), "
         "entered as a positive amount."
     )
-    reference = "https://www.ksrevenue.gov/pdf/ip25.pdf#page=8"
+    reference = "https://www.ksrevenue.gov/pdf/ip25.pdf#page=11"

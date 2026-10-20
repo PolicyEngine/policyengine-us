@@ -10,7 +10,7 @@ class ky_other_additions(Variable):
     defined_for = StateCode.KY
     documentation = (
         "Kentucky other additions to federal adjusted gross income reported on "
-        "Schedule M, Part I, Line 6 (Other additions), entered as a positive amount."
+        "Schedule M, Part I, Line 5 (Other additions), entered as a positive amount."
     )
     reference = (
         "https://revenue.ky.gov/Forms/740%20instructions%20packet%20(2024).pdf#page=27"

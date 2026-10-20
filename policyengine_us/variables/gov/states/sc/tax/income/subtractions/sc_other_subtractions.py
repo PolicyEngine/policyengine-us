@@ -9,8 +9,8 @@ class sc_other_subtractions(Variable):
     definition_period = YEAR
     defined_for = StateCode.SC
     documentation = (
-        "South Carolina other subtractions from federal taxable income reported on "
-        "Form SC1040, Line 4 (Other subtractions), entered as a positive amount, "
+        "South Carolina other subtractions from income reported on "
+        "Form SC1040, Line v (Other subtractions), entered as a positive amount, "
         "excluding subtractions PolicyEngine calculates separately."
     )
-    reference = "https://dor.sc.gov/sites/dor/files/forms/SC1040Instr_2025.pdf#page=8"
+    reference = "https://dor.sc.gov/sites/dor/files/forms/SC1040Instr_2025.pdf#page=14"

@@ -12,4 +12,4 @@ class wv_other_additions(Variable):
         "West Virginia other additions to federal adjusted gross income reported on "
         "Schedule M, entered as a positive amount, excluding additions PolicyEngine calculates separately."
     )
-    reference = "https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=5"
+    reference = "https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=6"

@@ -9,7 +9,7 @@ class mt_other_additions(Variable):
     definition_period = YEAR
     defined_for = StateCode.MT
     documentation = (
-        "Montana other additions reported on Form 2, Additions Schedule, "
-        "line 11 (Other additions), entered as a positive amount."
+        "Montana other additions reported on Form 2, Schedule I, "
+        "Line 6 (Other additions), entered as a positive amount."
     )
-    reference = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=21"
+    reference = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=23"
