@@ -22,7 +22,9 @@ class id_ctc_qualifying_children(Variable):
         # does not require the federal credit to be allowed, so a child whose
         # filer fails the federal identification requirements of IRC 24(e)(2)
         # or 24(h)(7)(A)(i) still counts. The Form 40 instructions list only
-        # "Your qualifying child" and "Age 16 or under".
+        # "Your qualifying child" and "Age 16 or under". The model still
+        # applies the federal child social security number rule (IRC
+        # 24(h)(7)(A)(ii)) and the IRC 152(b)(1) dependent-filer rule here.
         qualifying_child = person(
             "ctc_qualifying_child_ignoring_filer_identification", period
         )

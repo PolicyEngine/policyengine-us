@@ -17,7 +17,7 @@ class ctc_qualifying_child(Variable):
         "https://www.law.cornell.edu/uscode/text/26/24#h_7",
         # 2025 Instructions for Schedule 8812, SSN Required Before the Due
         # Date of Your Return To Claim the CTC and ACTC.
-        "https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=1",
+        "https://www.irs.gov/pub/irs-prior/i1040s8--2025.pdf#page=1",
     )
 
     def formula(person, period, parameters):
@@ -29,8 +29,9 @@ class ctc_qualifying_child(Variable):
         # number (on a joint return, at least one spouse's), and IRC 24(e)(2)
         # allows no credit if the taxpayer's identification number was issued
         # after the due date. A child whose filer fails these tests is not
-        # counted; IRC 24(h)(4)(C) moves the child to the credit for other
-        # dependents.
+        # counted. After a paragraph (7) denial, IRC 24(h)(4)(C) moves the
+        # child to the credit for other dependents; a 24(e)(2) failure denies
+        # that credit too (see ctc_adult_individual_maximum).
         filer_meets_identification_requirements = person.tax_unit(
             "filer_meets_child_ctc_identification_requirements", period
         )

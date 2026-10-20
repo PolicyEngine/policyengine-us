@@ -21,7 +21,7 @@ class me_fairness_credit_qualifying_children(Variable):
         # 2025 Instructions for Schedule 8812, TIN Required by Due Date of
         # Your Return To Claim the ODC, and Credit for Other Dependents.
         # PDF pages 1-2.
-        "https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=1",
+        "https://www.irs.gov/pub/irs-prior/i1040s8--2025.pdf#page=1",
     )
 
     def formula(tax_unit, period, parameters):

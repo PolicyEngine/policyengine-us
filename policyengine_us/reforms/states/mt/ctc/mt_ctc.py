@@ -13,6 +13,37 @@ def create_mt_ctc() -> Reform:
     - Phase-out by filing status (same as newborn credit)
     """
 
+    class mt_ctc_qualifying_child(Variable):
+        value_type = bool
+        entity = Person
+        label = "Montana Child Tax Credit qualifying child"
+        definition_period = YEAR
+        defined_for = StateCode.MT
+
+        def formula(person, period, parameters):
+            # Children who qualify for a federal section 24 credit (0-16),
+            # plus 17-year-old dependents. As in HB268, a child whose filer
+            # fails the federal filer SSN rule gets the credit for other
+            # dependents (IRC 24(h)(4)(C)), so both groups need only a filer
+            # SSN or ITIN (IRC 24(e)(2)).
+            age = person("age", period)
+            is_ctc_child = person(
+                "ctc_qualifying_child_ignoring_filer_identification", period
+            )
+            is_17_dependent = (age == 17) & person("is_tax_unit_dependent", period)
+            filer_has_tin = person.tax_unit(
+                "filer_meets_ctc_identification_requirements", period
+            )
+            return (is_ctc_child | is_17_dependent) & filer_has_tin
+
+    class mt_ctc_qualifying_children(Variable):
+        value_type = int
+        entity = TaxUnit
+        label = "Montana Child Tax Credit qualifying children"
+        definition_period = YEAR
+        defined_for = StateCode.MT
+        adds = ["mt_ctc_qualifying_child"]
+
     class mt_ctc(Variable):
         value_type = float
         entity = Person
@@ -25,10 +56,7 @@ def create_mt_ctc() -> Reform:
             eligible = person.tax_unit("mt_ctc_eligible", period)
             p = parameters(period).gov.contrib.states.mt.ctc
             age = person("age", period)
-            # Include ctc_qualifying_child (0-16) plus 17-year-old dependents
-            is_ctc_child = person("ctc_qualifying_child", period)
-            is_17_dependent = (age == 17) & person("is_tax_unit_dependent", period)
-            is_qualifying = is_ctc_child | is_17_dependent
+            is_qualifying = person("mt_ctc_qualifying_child", period)
             # Calculate credit amount based on age brackets
             child_credit = p.amount.calc(age) * is_qualifying
             credit_amount = person.tax_unit.sum(child_credit)
@@ -55,13 +83,7 @@ def create_mt_ctc() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.mt.ctc
             # Must have at least one qualifying child (0-17)
-            has_ctc_child = tax_unit("ctc_qualifying_children", period) > 0
-            person = tax_unit.members
-            age = person("age", period)
-            has_17_dependent = tax_unit.any(
-                (age == 17) & person("is_tax_unit_dependent", period)
-            )
-            has_qualifying_child = has_ctc_child | has_17_dependent
+            has_qualifying_child = tax_unit("mt_ctc_qualifying_children", period) > 0
             # Earned income requirement is optional
             earned_income_required = p.earned_income_requirement.in_effect
             earned_income = tax_unit("tax_unit_earned_income", period)
@@ -83,6 +105,8 @@ def create_mt_ctc() -> Reform:
 
     class reform(Reform):
         def apply(self):
+            self.update_variable(mt_ctc_qualifying_child)
+            self.update_variable(mt_ctc_qualifying_children)
             self.update_variable(mt_ctc)
             self.update_variable(mt_ctc_eligible)
             self.modify_parameters(modify_parameters)

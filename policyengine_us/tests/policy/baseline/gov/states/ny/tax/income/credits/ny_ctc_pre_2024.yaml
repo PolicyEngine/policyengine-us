@@ -102,7 +102,7 @@
 # requires the filer's identification number (IRC 24(e)), and the IT-213
 # instructions require "a valid Social Security number (SSN) or IRS individual
 # taxpayer identification number (ITIN)" for the filer (issue #9403).
-- name: Parent with an ITIN and a four-year-old child gets the credit in 2023
+- name: Case 5, parent with an ITIN and a four-year-old child gets the credit in 2023
   period: 2023
   input:
     people:
@@ -122,7 +122,7 @@
   output:
     ny_ctc_pre_2024: 330
 
-- name: Parent without any TIN and a four-year-old child gets no credit in 2023
+- name: Case 6, parent without any TIN and a four-year-old child gets no credit in 2023
   period: 2023
   input:
     people:

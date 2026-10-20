@@ -7,11 +7,11 @@
     people:
       person1:
         age: 35
-        ctc_qualifying_child: false
+        ctc_qualifying_child_ignoring_filer_identification: false
         tax_exempt_interest_income: 0
       person2:
         age: 3
-        ctc_qualifying_child: true
+        ctc_qualifying_child_ignoring_filer_identification: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -39,11 +39,11 @@
     people:
       person1:
         age: 35
-        ctc_qualifying_child: false
+        ctc_qualifying_child_ignoring_filer_identification: false
         tax_exempt_interest_income: 0
       person2:
         age: 3
-        ctc_qualifying_child: true
+        ctc_qualifying_child_ignoring_filer_identification: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -67,11 +67,11 @@
     people:
       person1:
         age: 35
-        ctc_qualifying_child: false
+        ctc_qualifying_child_ignoring_filer_identification: false
         tax_exempt_interest_income: 0
       person2:
         age: 4
-        ctc_qualifying_child: true
+        ctc_qualifying_child_ignoring_filer_identification: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -97,14 +97,14 @@
     people:
       person1:
         age: 40
-        ctc_qualifying_child: false
+        ctc_qualifying_child_ignoring_filer_identification: false
         tax_exempt_interest_income: 0
       person2:
         age: 38
-        ctc_qualifying_child: false
+        ctc_qualifying_child_ignoring_filer_identification: false
       person3:
         age: 3
-        ctc_qualifying_child: true
+        ctc_qualifying_child_ignoring_filer_identification: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -129,14 +129,14 @@
     people:
       person1:
         age: 40
-        ctc_qualifying_child: false
+        ctc_qualifying_child_ignoring_filer_identification: false
         tax_exempt_interest_income: 0
       person2:
         age: 38
-        ctc_qualifying_child: false
+        ctc_qualifying_child_ignoring_filer_identification: false
       person3:
         age: 3
-        ctc_qualifying_child: true
+        ctc_qualifying_child_ignoring_filer_identification: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -160,11 +160,11 @@
     people:
       person1:
         age: 35
-        ctc_qualifying_child: false
+        ctc_qualifying_child_ignoring_filer_identification: false
         tax_exempt_interest_income: 0
       person2:
         age: 3
-        ctc_qualifying_child: true
+        ctc_qualifying_child_ignoring_filer_identification: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -188,11 +188,11 @@
     people:
       person1:
         age: 35
-        ctc_qualifying_child: false
+        ctc_qualifying_child_ignoring_filer_identification: false
         tax_exempt_interest_income: 0
       person2:
         age: 3
-        ctc_qualifying_child: true
+        ctc_qualifying_child_ignoring_filer_identification: true
     tax_units:
       tax_unit:
         members: [person1, person2]

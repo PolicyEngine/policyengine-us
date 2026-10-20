@@ -103,7 +103,7 @@
     gov.contrib.states.mt.ctc.earned_income_requirement.in_effect: true
     tax_unit_earned_income: 1
     adjusted_gross_income: 1
-    ctc_qualifying_children: 1
+    mt_ctc_qualifying_children: 1
     state_code: MT
   output:
     mt_ctc_eligible: true
@@ -116,7 +116,7 @@
     gov.contrib.states.mt.ctc.earned_income_requirement.in_effect: true
     tax_unit_earned_income: 0
     adjusted_gross_income: 50_000
-    ctc_qualifying_children: 1
+    mt_ctc_qualifying_children: 1
     state_code: MT
   output:
     mt_ctc_eligible: false
@@ -129,7 +129,7 @@
     gov.contrib.states.mt.ctc.earned_income_requirement.in_effect: false
     tax_unit_earned_income: 0
     adjusted_gross_income: 50_000
-    ctc_qualifying_children: 1
+    mt_ctc_qualifying_children: 1
     state_code: MT
   output:
     mt_ctc_eligible: true
@@ -290,7 +290,7 @@
     gov.contrib.states.mt.ctc.in_effect: true
     tax_unit_earned_income: 50_000
     adjusted_gross_income: 50_000
-    ctc_qualifying_children: 0
+    mt_ctc_qualifying_children: 0
     state_code: MT
   output:
     mt_ctc_eligible: false
