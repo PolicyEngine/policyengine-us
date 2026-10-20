@@ -603,10 +603,12 @@
 # Manual page 89: row 2, "Utility costs (heat and electric) included in rent
 # (non-subsidized)", is "Direct pay to Applicant (999)"; row 3, "Heat costs included in
 # rent and applicant is billed directly for electric (non-subsidized)", is "Paid to
-# electric vendor because gas usage is indeterminate". The $1,200 electric bill shows
-# electric is not in the rent, so the household takes row 3 although
-# tenant_pays_utilities is false, the same rule eligibility Case 9 applies to a
-# subsidized renter (page 57: ineligible only if it "cannot verify an energy burden").
+# electric vendor because gas usage is indeterminate". Page 57 (1100.14) limits the
+# unsubsidized all-in-rent class to rent that "includes utilities with no separate bill
+# for heating/cooling costs". The $1,200 electric bill is such a separate bill, so the
+# household takes row 3 although tenant_pays_utilities is false, the same rule
+# eligibility Case 9 applies to a subsidized renter (page 57: ineligible only if it
+# "cannot verify an energy burden").
 # The award is the FY2026 matrix step 2 amount for the main heating fuel, not the plan
 # page 30 lowest award. Rent is $9,600 ($800 a month); the size 1 Level I cutoff is
 # $13,589.
@@ -753,9 +755,10 @@
 
 # 42 U.S.C. 8624(b)(2)(B) bars excluding a household on income below 110% of the
 # poverty guideline. Four adults earn Georgia median annual wages (BLS OEWS May 2025,
-# https://data.bls.gov/oes/#/area/1300000/2025): two cashiers at $29,070 and two fast
-# food and counter workers at $26,920, so countable income is 2 x $29,070 + 2 x
-# $26,920 = $58,140 + $53,840 = $111,980.
+# https://data.bls.gov/oes/#/area/1300000/2025): two cashiers at $29,070 (series
+# OEUS130000000000041201113) and two fast food and counter workers at $26,920 (series
+# OEUS130000000000035302313), so countable income is 2 x $29,070 + 2 x $26,920 =
+# $58,140 + $53,840 = $111,980.
 # The 13 children have no income, so the household size is 17.
 # Printed-method limit: floor($66,441 x 1.65 = $109,627.65) = $109,627, where
 # $66,441 = floor($110,736 x 0.6); the income exceeds it.
@@ -765,8 +768,10 @@
 # $111,980 is below $114,015, so the household stays eligible.
 # $111,980 is above the size 16 Level I cutoff of $42,336, so Level II natural gas
 # pays $560.
-# Size 16 sits in a $331 window ($107,634 to $107,965); eligibility Cases 10 and 11
-# pin it at the exact floor with income entered directly.
+# At size 16 the floor admits income above the printed limit in a $331 window in
+# FY2026 ($107,634 to $107,965) and a $2,410 window in FY2025 ($102,926 to $105,336);
+# eligibility Cases 10 and 11 pin each window at the exact floor with income entered
+# directly.
 - name: Case 22, the federal poverty floor keeps a large household above the state median income limit eligible.
   period: 2026
   input:
@@ -810,3 +815,83 @@
     ga_liheap_matrix_amount: 560
     ga_liheap_eligible: true
     ga_liheap: 560
+
+# Manual page 57 (1100.14) limits the unsubsidized all-in-rent class to rent that
+# "includes utilities with no separate bill for heating/cooling costs", and page 89,
+# row 1, pays an applicant who "pays a vendor directly for utilities" to the vendor. A
+# $1,200 a year ($100 a month) bill for the main heating fuel is such a separate bill:
+# it establishes the energy burden and takes the vendor payment, the FY2026 matrix
+# step 2 amount for the main heating fuel, although tenant_pays_utilities is false.
+# The award is the same with or without a housing subsidy. Unsubsidized rent is $9,600
+# ($800 a month); the subsidized tenant share is $3,000 ($250 a month). The size 1
+# limit is $34,549 and the Level I cutoff $13,589.
+# Household 1: unsubsidized, natural gas, $12,000 wages, Level I: $560 + $100 = $660.
+# Household 2: subsidized, natural gas, $12,000 wages, Level I: $660.
+# Household 3: unsubsidized, natural gas, $24,000 wages, Level II: $560.
+# Household 4: unsubsidized, fuel oil, $12,000 wages, Level I: $710 + $100 = $810.
+# Household 5: unsubsidized, propane, $12,000 wages, Level I: $580 + $100 = $680.
+# Without the fuel bill, households 1, 4 and 5 would take the direct payment at $500
+# and household 3 at $400 (Cases 9 and 14).
+- name: Case 23, a primary fuel bill takes the vendor route when rent is flagged as including all utilities.
+  period: 2026
+  input:
+    state_code: [GA, GA, GA, GA, GA]
+    age: [40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [12_000, 12_000, 24_000, 12_000, 12_000]
+    ssi: [0, 0, 0, 0, 0]
+    ga_tanf: [0, 0, 0, 0, 0]
+    rent: [9_600, 3_000, 9_600, 9_600, 9_600]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, FUEL_OIL, PROPANE]
+    heat_expense_included_in_rent: [true, true, true, true, true]
+    tenant_pays_utilities: [false, false, false, false, false]
+    receives_housing_assistance: [false, true, false, false, false]
+    is_in_public_housing: [false, false, false, false, false]
+    gas_expense: [1_200, 1_200, 1_200, 0, 0]
+    fuel_oil_expense: [0, 0, 0, 1_200, 0]
+    bottled_gas_expense: [0, 0, 0, 0, 1_200]
+    pre_subsidy_electricity_expense: [0, 0, 0, 0, 0]
+  output:
+    ga_liheap_income: [12_000, 12_000, 24_000, 12_000, 12_000]
+    heating_expense: [1_200, 1_200, 1_200, 1_200, 1_200]
+    ga_liheap_eligible: [true, true, true, true, true]
+    ga_liheap_matrix_amount: [660, 660, 560, 810, 680]
+    ga_liheap: [660, 660, 560, 810, 680]
+
+# FY2026 matrix step 2 prices electricity, natural gas, fuel oil, propane and wood
+# only. The direct payment to an unsubsidized renter whose rent "includes utilities
+# with no separate bill for heating/cooling costs" (manual page 57; page 89, row 2) is
+# the plan page 30 lowest award and does not depend on the fuel. A separate bill takes
+# a vendor payment at the main heating fuel's step 2 amount, and the matrix has none
+# for kerosene, so the model returns $0, an incomplete estimate rather than an
+# ineligibility finding. Each household is one adult with $12,000 of wages, kerosene
+# heat in rent and unsubsidized rent of $9,600 ($800 a month). The size 1 limit is
+# $34,549 and the Level I cutoff $13,589, so all four are eligible.
+# Household 1: no separate bill: lowest Level II award min($400, $560, $710, $580,
+# $400) = $400, plus $100 in Level I: $500.
+# Household 2: a $1,200 kerosene bill (fuel_oil_expense, which heating_expense reads
+# for kerosene) with tenant_pays_utilities false: $0.
+# Household 3: the same bill with tenant_pays_utilities true: $0.
+# Household 4: a $1,200 electric bill (page 89, row 3, the electric-vendor route): $0.
+- name: Case 24, an unpriced main fuel receives the lowest award only with no separate bill.
+  period: 2026
+  input:
+    state_code: [GA, GA, GA, GA]
+    age: [40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [12_000, 12_000, 12_000, 12_000]
+    ssi: [0, 0, 0, 0]
+    ga_tanf: [0, 0, 0, 0]
+    rent: [9_600, 9_600, 9_600, 9_600]
+    heating_type: [KEROSENE, KEROSENE, KEROSENE, KEROSENE]
+    heat_expense_included_in_rent: [true, true, true, true]
+    tenant_pays_utilities: [false, false, true, false]
+    receives_housing_assistance: [false, false, false, false]
+    is_in_public_housing: [false, false, false, false]
+    fuel_oil_expense: [0, 1_200, 1_200, 0]
+    pre_subsidy_electricity_expense: [0, 0, 0, 1_200]
+  output:
+    heating_expense: [0, 1_200, 1_200, 0]
+    ga_liheap_eligible: [true, true, true, true]
+    ga_liheap_matrix_amount: [500, 0, 0, 0]
+    ga_liheap: [500, 0, 0, 0]

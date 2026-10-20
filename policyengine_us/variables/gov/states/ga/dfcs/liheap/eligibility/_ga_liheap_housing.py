@@ -5,11 +5,14 @@ def ga_liheap_has_direct_payment_route(spm_unit, period):
     """Identify unsubsidized rent that includes all utilities.
 
     Georgia's manual energy-burden table (physical page 89) permits payment
-    directly to these renters. The rental agreement is assumed verified. A
-    renter who also reports an electric bill is paid on the electric-vendor
-    route instead (page 89, third row); ga_liheap_matrix_amount applies that
-    precedence.
-    https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=89
+    directly to these renters. The rental agreement is assumed verified. Page
+    57 (1100.14) limits this class to rent that "includes utilities with no
+    separate bill for heating/cooling costs", so a renter who also reports an
+    electric bill (page 89, third row) or a bill for the main heating fuel
+    (first row) is paid to the vendor instead; ga_liheap_matrix_amount applies
+    that precedence.
+    Manual pages 57 and 89:
+    https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=57
     """
     return (
         spm_unit("heat_expense_included_in_rent", period)
@@ -33,14 +36,16 @@ def ga_liheap_has_electric_vendor_route(spm_unit, period):
     tenant_pays_utilities: a positive electric bill is the utility-bill
     documentation. Page 82's ineligibility when "the rent includes utilities"
     is read as rent covering every utility, which a separate electric bill
-    rules out. The same reading applies to unsubsidized renters, so this
-    route takes precedence over the all-utilities direct payment, which keeps
-    renters with no separate bill. The FY2024 matrix note ("The main fuel
-    type is not always where the benefit is applied") pays the main-fuel
-    amount when the benefit goes to the electric bill. The FY2025 and FY2026
-    matrices keep the asterisk on "main heating fuel type*" but print no
-    note, so the FY2024 note is carried forward. The pre-subsidy bill matches
-    heating_expense and avoids the program-dependent subsidies in
+    rules out. For unsubsidized renters page 57 says so directly: the
+    all-in-rent class is rent that "includes utilities with no separate bill
+    for heating/cooling costs". This route, like a bill for the main heating
+    fuel, therefore takes precedence over the all-utilities direct payment,
+    which keeps renters with no separate bill. The FY2024 matrix note ("The
+    main fuel type is not always where the benefit is applied") pays the
+    main-fuel amount when the benefit goes to the electric bill. The FY2025
+    and FY2026 matrices keep the asterisk on "main heating fuel type*" but
+    print no note, so the FY2024 note is carried forward. The pre-subsidy bill
+    matches heating_expense and avoids the program-dependent subsidies in
     electricity_expense.
     Manual pages 4, 57, 82 and 89:
     https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=4

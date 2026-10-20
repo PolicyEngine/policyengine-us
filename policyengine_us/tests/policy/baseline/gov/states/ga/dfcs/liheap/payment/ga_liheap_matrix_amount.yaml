@@ -113,3 +113,32 @@
     ga_liheap_income: [42_336, 42_336.01, 42_336]
   output:
     ga_liheap_matrix_amount: [660, 560, 660]
+
+# Manual page 57 (1100.14) limits the direct applicant payment to rent that "includes
+# utilities with no separate bill for heating/cooling costs". Each household is size 1
+# with $13,589 of income, the inclusive FY2026 Level I top, and has heat in
+# unsubsidized rent of $12,000 with tenant_pays_utilities false: the Case 5 element 1
+# household, which receives the $500 lowest award with no separate bill.
+# Element 1: natural gas with a $1,200 electric bill (page 89, row 3): Level I natural
+# gas, $560 + $100 = $660.
+# Element 2: natural gas with a $1,200 gas bill (page 89, row 1): $660.
+# Element 3: kerosene with a $1,200 kerosene bill (fuel_oil_expense): step 2 has no
+# kerosene amount, so $0.
+- name: Case 8, a separate electric or main fuel bill overrides the direct rental payment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [GA, GA, GA]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, KEROSENE]
+    ga_liheap_household_size: [1, 1, 1]
+    ga_liheap_income: [13_589, 13_589, 13_589]
+    rent: [12_000, 12_000, 12_000]
+    heat_expense_included_in_rent: [true, true, true]
+    tenant_pays_utilities: [false, false, false]
+    receives_housing_assistance: [false, false, false]
+    is_in_public_housing: [false, false, false]
+    pre_subsidy_electricity_expense: [1_200, 0, 0]
+    gas_expense: [0, 1_200, 0]
+    fuel_oil_expense: [0, 0, 1_200]
+  output:
+    ga_liheap_matrix_amount: [660, 660, 0]

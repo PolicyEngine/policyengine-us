@@ -16,7 +16,8 @@ class ga_liheap_matrix_amount(Variable):
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/GA_BenefitMatrix_Heat-Cool_2026.pdf",
         "https://liheapch.acf.gov/docs/2025/benefits-matricies/GA_BenefitMatrix_2025.pdf",
         "https://liheapch.acf.gov/docs/2026/state-plans/GA_Plan_2026.pdf#page=30",
-        "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=89",
+        # PDF pages 4, 57, 89
+        "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=4",
         "https://liheapch.acf.gov/docs/2024/benefits-matricies/GA_BenefitMatrix_2024.pdf",
     )
 
@@ -51,15 +52,20 @@ class ga_liheap_matrix_amount(Variable):
         # Applicant payments use the lowest award in the income level (plan page 30).
         # The uplift is the same for every fuel, so the lowest Level II amount plus
         # the uplift is the lowest Level I amount.
-        # Heat-in-rent renters billed directly for electric are paid to the electric
-        # vendor (manual pages 4, 57 and 89), subsidized or not and whatever
-        # tenant_pays_utilities says, so that route takes precedence over the
-        # all-utilities direct payment. The FY2024 matrix note says "The main fuel
-        # type is not always where the benefit is applied", so they keep the step 2
-        # amount for their main heating fuel and an unspecified fuel pays 0.
+        # Only rent that "includes utilities with no separate bill for heating/cooling
+        # costs" (manual page 57) takes that direct payment (page 89, row 2). A
+        # separate electric bill (row 3: "Paid to electric vendor because gas usage is
+        # indeterminate") or main heating fuel bill (row 1: "Paid to vendor") takes a
+        # vendor payment instead, subsidized or not (page 4) and whatever
+        # tenant_pays_utilities says. The FY2024 matrix note says "The main fuel type
+        # is not always where the benefit is applied", so vendor payments use the step
+        # 2 amount for the main heating fuel.
         electric_vendor = ga_liheap_has_electric_vendor_route(spm_unit, period)
+        main_fuel_bill = spm_unit("heating_expense", period) > 0
         direct_payment = (
-            ga_liheap_has_direct_payment_route(spm_unit, period) & ~electric_vendor
+            ga_liheap_has_direct_payment_route(spm_unit, period)
+            & ~electric_vendor
+            & ~main_fuel_bill
         )
         base = where(
             direct_payment & (heating_type != fuel.NONE),
@@ -67,8 +73,11 @@ class ga_liheap_matrix_amount(Variable):
             base,
         )
         # This is an ungated schedule amount with no cap at the reported bill.
-        # Ordinary vendor payments for unpriced kerosene, coal, solar, other,
-        # and unspecified fuels return an incomplete zero estimate; this is
-        # not a legal ineligibility finding. The unspecified default is
-        # tracked in #9754.
+        # Step 2 prices no kerosene, coal, solar, other or unspecified main fuel, so
+        # vendor payments for them return an incomplete zero estimate, not a legal
+        # ineligibility finding. The direct payment does not depend on the fuel, so an
+        # unsubsidized renter whose rent includes all utilities and who has one of these
+        # fuels gets the lowest award ($500 in FY2026 Level I) with no separate bill and
+        # $0 once it reports an electric or main heating fuel bill. The unspecified
+        # default is tracked in #9754.
         return where(base > 0, base + lower_income * p.lower_income_uplift, 0)
