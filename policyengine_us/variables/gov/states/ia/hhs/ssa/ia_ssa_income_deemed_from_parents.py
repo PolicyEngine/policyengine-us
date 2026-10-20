@@ -16,6 +16,8 @@ class ia_ssa_income_deemed_from_parents(Variable):
         "https://hhs.iowa.gov/media/3987/download?inline=#page=46",
         # 441 IAC 177.2(1)"g"(1)
         "https://www.legis.iowa.gov/docs/iac/chapter/441.177.pdf#page=2",
+        # 441 IAC 177.4(1)"g"(1) (IAC 2/5/25)
+        "https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.177.pdf#page=2",
     )
 
     def formula(person, period, parameters):
@@ -53,6 +55,13 @@ class ia_ssa_income_deemed_from_parents(Variable):
         # and 441 IAC 177 are silent on this case.
         allowance = where(parent_count > 1, ssi.amount.couple, ssi.amount.individual)
         pool_count = int(np.max(pool, initial=-1)) + 1
+        # NOTE: 441 IAC 177.4(1)"g"(1)2 (IAC 2/5/25; 177.2(1)"g"(1)2 from
+        # October 1, 2026) disregards "The amount of the basic supplemental
+        # security income standard for a dependent for each ineligible child in
+        # the home". 6-B pp.47-49 allow a "maximum of $497 per child" and
+        # "Subtract any income of the dependent from the maximum deduction"
+        # (E family: $347 per child). The model follows the manual
+        # (ia_ssa_income_deemed_from_parents.yaml Case 3).
         # Each ineligible child of the same parents adds the SSI dependent
         # standard less that child's own income.
         sibling_allowance = np.bincount(

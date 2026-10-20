@@ -18,14 +18,18 @@ class ia_ssa_category(Variable):
     definition_period = MONTH
     possible_values = IASSACategory
     default_value = IASSACategory.REGULAR
-    # PDF pages 5-6, 20, 24, 30, 41, 59, 76
+    # PDF pages 5-6, 20, 24, 30, 40-41, 57-61, 76
     reference = "https://hhs.iowa.gov/media/3987/download?inline=#page=5"
     documentation = """
     Special categories require agency certification of the dependency or care
     arrangement, benefit pursuit, and procedural eligibility. DEPENDENT_PERSON
     requires a selected co-resident relative who is ineligible for SSI/FIP,
     satisfies the marital restrictions and does not deem income to the client.
-    Select it for both members of an eligible SSI couple sharing one dependent.
-    For residential care reflect separate SSI claims after the entry month.
+    For an eligible SSI couple sharing one dependent, certifying either member
+    applies the couple level. Certification also covers the dependent's own
+    resources, which 441 IAC 51.5(2) counts with the recipient's; the model
+    tests only the recipient's and spouse's resources.
+    For residential care, set ia_ssa_care_initial_partial_month in the month
+    of entry; a married resident is budgeted alone from the next month.
     NONE also excludes the blind allowance; otherwise it may accompany care.
     """

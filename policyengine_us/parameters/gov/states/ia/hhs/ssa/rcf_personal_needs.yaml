@@ -6,11 +6,23 @@ metadata:
   unit: currency-USD
   period: month
   label: Iowa SSA residential care personal needs allowance
-  # NOTE: 441 IAC 52.1 adjusts assistance standards each January 1 for the SSA
-  # cost-of-living adjustment but publishes no method, so this value stays at
-  # its 2026 level until a later schedule is added.
+  # Iowa Code 249.9A(1): the department "shall increase the personal needs
+  # allowance for residents of residential care facilities by the same
+  # percentage and at the same time as federal supplemental security income and
+  # federal social security benefits are increased due to a recognized increase
+  # in the cost of living". Rounding to the nearest dollar is inferred from
+  # General Letters 6-B-45, 6-B-46 and 6-B-47 ($123, $126 and $130 for
+  # 2024-2026: 123 * 1.025 = 126.08 and 126 * 1.028 = 129.53). The published
+  # allowance replaces the projection.
+  uprating:
+    parameter: gov.ssa.uprating
+    rounding:
+      type: nearest
+      interval: 1
   reference:
     - title: Iowa HHS Employees' Manual 6-B (revised May 22, 2026), Personal Needs Allowance (RCF)
       href: https://hhs.iowa.gov/media/3987/download?inline=#page=62
     - title: 441 IAC 52.1 and 52.1(3)"a"(2)
       href: https://www.legis.iowa.gov/docs/iac/chapter/441.52.pdf#page=1
+    - title: Iowa Code 249.9A(1)
+      href: https://www.legis.iowa.gov/docs/code/249.pdf#page=4

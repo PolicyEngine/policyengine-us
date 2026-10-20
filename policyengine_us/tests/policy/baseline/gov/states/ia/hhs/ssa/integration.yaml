@@ -16,6 +16,9 @@
         members: [person1, person2]
         state_code: IA
   output:
+    # SSI couple rate 1,491, split 745.50 each; only the blind spouse gets 22.
+    ssi: [745.5, 745.5]
+    ia_ssa_federal: [22, 0]
     ia_ssa: [22, 0]
 
 - name: Case 2, two blind spouses.
@@ -37,6 +40,9 @@
         members: [person1, person2]
         state_code: IA
   output:
+    # SSI couple rate 1,491, split 745.50 each; each blind spouse gets 22.
+    ssi: [745.5, 745.5]
+    ia_ssa_federal: [22, 22]
     ia_ssa: [22, 22]
 
 - name: Case 3, dependent-person grant is once per eligible couple.
@@ -58,6 +64,9 @@
         members: [person1, person2]
         state_code: IA
   output:
+    # Group income 1,491 < 2,009, so the couple's 518 is split 259 each.
+    ssi: [745.5, 745.5]
+    ia_ssa_federal: [259, 259]
     ia_ssa: [259, 259]
 
 - name: Case 4, mixed blind dependent-person couple follows state manual.
@@ -80,6 +89,9 @@
         members: [person1, person2]
         state_code: IA
   output:
+    # Couple level 518 + 22 = 540 (6-B p.26 $2,031 - $1,491), split 270 each.
+    ssi: [745.5, 745.5]
+    ia_ssa_federal: [270, 270]
     ia_ssa: [270, 270]
 
 - name: Case 5, family-life home eligible couple.
@@ -101,6 +113,10 @@
         members: [person1, person2]
         state_code: IA
   output:
+    # Couple amount 2 * 1,156 - 1,491 - 20 = 801, split 400.50 each; the
+    # SSI-only couple shares one 20 top-up.
+    ssi: [745.5, 745.5]
+    ia_ssa_federal: [400.5, 400.5]
     ia_ssa: [410.5, 410.5]
 
 - name: Case 6, in-home care counts ineligible spouse income.
@@ -123,6 +139,9 @@
         members: [person1, person2]
         state_code: IA
   output:
+    # SSI deems the spouse's 1,700: 1,700 - 20 = 1,680 > 1,491, so SSI is 0.
+    # Care income 1,700; participation 1,700 - 1,491 = 209; 400 - 209 = 191.
+    ssi: [0, 0]
     ia_ssa: [191, 0]
 
 - name: Case 7, in-home couple gets only one earnings disregard.
@@ -148,6 +167,12 @@
         members: [person1, person2]
         state_code: IA
   output:
+    # SSI: (3,000 - 20 - 65) / 2 = 1,457.50 < 1,491, so 33.50, or 16.75 each.
+    # Care income (3,000 - 65) / 2 + 33.50 = 1,501; participation
+    # 1,501 - 1,491 = 10; (800 - 10) / 2 = 395.
+    ssi: [16.75, 16.75]
+    ia_ssa_care_countable_income: [1_501, 1_501]
+    ia_ssa_ihhrc_participation: [10, 10]
     ia_ssa: [395, 395]
 
 - name: Case 8, annual blind allowance in SNAP income and benefit totals.
@@ -211,3 +236,66 @@
     ia_ssa_care_countable_income: [772, 772]
     ia_ssa_federal: [409, 409]
     ia_ssa: [419, 419]
+
+- name: Case 11, certifying one spouse gives the couple the dependent-person level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        ia_ssa_category: DEPENDENT_PERSON
+      person2:
+        # No category entered, so person2 defaults to REGULAR.
+        age: 65
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # 441 IAC 52.1(2)"b" sets one standard for the "Aged or disabled client,
+    # eligible spouse, and a dependent relative", so certifying either spouse
+    # applies the couple level.
+    # SSI couple rate 1,491, split 745.50 each. Group income 1,491 + 0 is
+    # below the 1,491 + 518 = 2,009 standard, so the couple's 518 supplement
+    # is split 259 each (as in Case 3, where both spouses are certified).
+    ssi: [745.5, 745.5]
+    ia_ssa_federal: [259, 259]
+    ia_ssa: [259, 259]
+
+- name: Case 12, a dependent-person spouse and an in-home care spouse share the couple level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        ia_ssa_category: DEPENDENT_PERSON
+      person2:
+        age: 65
+        ia_ssa_category: IN_HOME_CARE
+        # Within the $480.55 monthly ceiling for one person (6-B p.41).
+        ia_ssa_ihhrc_monthly_cost: 400
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # SSI couple rate 1,491, split 745.50 each. Certifying person1 applies the
+    # couple dependent-person level whatever person2's category (441 IAC
+    # 52.1(2)"b"): group income 1,491 is below 2,009, so the 518 supplement
+    # is split 259 each.
+    ssi: [745.5, 745.5]
+    ia_ssa_federal: [259, 259]
+    # In-home care: couple income 1,491 less the 1,491 couple maintenance
+    # allowance leaves participation 0, so the 400 cost is paid in full.
+    ia_ssa_ihhrc_participation: [0, 0]
+    ia_ssa_ihhrc_amount: [0, 400]
+    # 259 + 0 and 259 + 400.
+    ia_ssa: [259, 659]

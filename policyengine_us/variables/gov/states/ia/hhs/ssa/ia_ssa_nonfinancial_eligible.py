@@ -9,7 +9,9 @@ class ia_ssa_nonfinancial_eligible(Variable):
     defined_for = StateCode.IA
     reference = (
         # Iowa Code 249.3
-        "https://www.legis.iowa.gov/docs/code/249.pdf#page=1",
+        "https://www.legis.iowa.gov/docs/code/249.pdf#page=2",
+        # 441 IAC 51.2 and 51.7(2); PDF pages 1-2
+        "https://www.legis.iowa.gov/docs/iac/chapter/441.51.pdf#page=1",
         # PDF pages 6, 8, 10-12
         "https://hhs.iowa.gov/media/3987/download?inline=#page=6",
     )
@@ -30,6 +32,14 @@ class ia_ssa_nonfinancial_eligible(Variable):
         # "an applicant must meet disability standards other than the inability
         # to engage in substantial gainful activity") is not modeled, because
         # is_ssi_disabled excludes people working above the SGA level.
+        # NOTE: Iowa Code 249.3(4)(a) limits the SMME supplement to a person
+        # "Sixty-five years of age or older" or "Disabled as defined by 42
+        # U.S.C. §1382c(a)(3)". 441 IAC 51.7(2) requires "all eligibility
+        # requirements for supplemental security income benefits other than
+        # limits on substantial gainful activity and income", and 6-B p.76
+        # starts from "the SSI eligibility requirements", which include
+        # blindness (p.10). The model follows 51.7(2) and the manual, so a
+        # blind person under 65 can receive SMME (ia_ssa.yaml Case 87).
         return (
             person("is_ssi_aged_blind_disabled", period.this_year)
             & (citizen | immigrant)

@@ -13,8 +13,8 @@ class ia_ssa_resources_deemed_from_parents(Variable):
     unit = USD
     defined_for = StateCode.IA
     reference = (
-        # PDF pages 12, 46-47
-        "https://hhs.iowa.gov/media/3987/download?inline=#page=12",
+        # PDF pages 9, 12, 46-47
+        "https://hhs.iowa.gov/media/3987/download?inline=#page=9",
         "https://www.ecfr.gov/current/title-20/section-416.1202#p-416.1202(b)",
         "https://www.ecfr.gov/current/title-20/section-416.1856",
         "https://secure.ssa.gov/poms.nsf/lnx/0501330200",
@@ -33,8 +33,15 @@ class ia_ssa_resources_deemed_from_parents(Variable):
     # among the children of the same deemors who receive SSI or would
     # otherwise receive in-home health-related care, removing any child whose
     # own resources plus the share exceed the limit (SI 01330.200 and .280).
-    # Certified deeming exceptions and other state-only sibling eligibility
-    # are not modeled.
+    # 6-B p.9: "For an SSI recipient, accept the Social Security
+    # Administration's determination of SSI eligibility as verification that
+    # income, resources, and age, blindness or disability requirements have
+    # been met." The child test is is_ssi_resource_deeming_child, which
+    # applies SSA's exclusions (the 416.1202(b)(2) home-care exception, a
+    # medical treatment facility, a married or household-head minor). Iowa
+    # therefore deems only where SSA would, and in-home care children are
+    # deemed "in the same manner as SSI policy" (6-B p.46; ia_ssa.yaml Cases 80
+    # and 83). Other state-only sibling eligibility is not modeled.
 
     def formula(person, period, parameters):
         limit = parameters(period).gov.ssa.ssi.eligibility.resources.limit
@@ -45,11 +52,7 @@ class ia_ssa_resources_deemed_from_parents(Variable):
         )
         allowance = where(parent_count > 1, limit.couple, limit.individual)
         excess = max_(parental_resources - allowance, 0)
-        child = (
-            person("is_child", period.this_year)
-            & (person.marital_unit.nb_persons() == 1)
-            & ~person("is_household_head", period.this_year)
-        )
+        child = person("is_ssi_resource_deeming_child", period)
         ihhrc = person("ia_ssa_nonfinancial_eligible", period) & (
             person("ia_ssa_ihhrc_amount", period) > 0
         )

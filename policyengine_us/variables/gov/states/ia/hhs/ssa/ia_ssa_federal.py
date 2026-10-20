@@ -11,8 +11,10 @@ class ia_ssa_federal(Variable):
     definition_period = MONTH
     unit = USD
     reference = (
-        # 441 IAC 52.1(1), (2) and (4)
+        # 441 IAC 52.1(1), (2) and (4); PDF pages 1-2
         "https://www.legis.iowa.gov/docs/iac/chapter/441.52.pdf#page=1",
+        # 441 IAC 51.5(1)
+        "https://www.legis.iowa.gov/docs/iac/chapter/441.51.pdf#page=2",
         # PDF pages 20, 24-28, 30, 34-35
         "https://hhs.iowa.gov/media/3987/download?inline=#page=20",
         "https://secure.ssa.gov/poms.nsf/lnx/0501415058#f",
@@ -53,11 +55,13 @@ class ia_ssa_federal(Variable):
         # less than $518 per month") and 441 IAC 51.5(1) ("must be less than
         # the amount established by the department") exclude it. The model
         # follows 51.5(1) and p.25 (ia_ssa.yaml Case 6).
-        dp = (
-            (category == c.DEPENDENT_PERSON)
-            & (dependent < p.dependent_amount)
-            & (group_income < need)
-        )
+        # The dependent-person standards are couple standards (441 IAC
+        # 52.1(2)"b", "d" and "e"), so certifying either spouse of an eligible
+        # couple applies the couple level (integration.yaml Cases 11-12),
+        # whatever the other spouse's category.
+        certified = category == c.DEPENDENT_PERSON
+        certified = where(joint, person.marital_unit.any(certified), certified)
+        dp = certified & (dependent < p.dependent_amount) & (group_income < need)
         # 6-B: the family-life home standard is "$1,156", and the maximum
         # supplement is "$162 ($1,156 - $994 SSI standard)". SSA pays at most
         # $142 because it applies the $20 general exclusion. The couple amount
@@ -73,6 +77,19 @@ class ia_ssa_federal(Variable):
         family_life_couple = 2 * family_life_need - ssi.amount.couple - general
         federal_la = person("ssi_federal_living_arrangement", period)
         medical = federal_la == federal_la.possible_values.MEDICAL_TREATMENT_FACILITY
+        # NOTE: 441 IAC 52.1(4) sets $22 as "The standard for a blind recipient
+        # not receiving another type of state supplementary assistance". 6-B
+        # Blind Supplement p.20 excludes the blind supplement "when determining
+        # eligibility for other SSA programs the person may be receiving
+        # simultaneously. For example, the blind supplement is not countable
+        # income to determine client participation or eligibility for the RCF
+        # supplement", and p.42 says "Do not count the $22 special blind
+        # allowance when determining client participation" for in-home care.
+        # POMS SI 01415.058 F.1 code A pays a blind recipient "who does not live
+        # in any other State living arrangement variation", the SSA-coded
+        # dependent-person and family-life home rows, whose levels include the
+        # $22. The model follows the manual and POMS and pays the $22 with
+        # residential care and in-home care (ia_ssa.yaml Cases 16 and 27).
         individual_rate = (
             dp * p.dependent_amount
             + flh * family_life_individual

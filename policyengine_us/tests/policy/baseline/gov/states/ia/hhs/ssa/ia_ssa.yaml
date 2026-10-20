@@ -21,7 +21,7 @@
   output:
     ia_ssa: 22
 
-- name: Case 3, blind state-only income gap.
+- name: Case 3, the Social Security Administration pays the blind supplement without federal SSI.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -32,6 +32,7 @@
     is_blind: true
     social_security_retirement: 12_240
   output:
+    # SSI: 1,020 - 20 = 1,000 > 994, so SSI is 0; 994 + 22 - 1,000 = 16.
     ia_ssa: 16
 
 - name: Case 4, dependent-person supplement.
@@ -150,7 +151,7 @@
   output:
     ia_ssa: 142
 
-- name: Case 13, state-only family-life payment.
+- name: Case 13, the Social Security Administration pays the family-life home supplement without federal SSI.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -161,6 +162,8 @@
     ia_ssa_category: FAMILY_LIFE_HOME
     social_security_retirement: 13_200
   output:
+    # SSI: 1,100 - 20 = 1,080 > 994, so SSI is 0. Care income 1,100 is below
+    # 1,156, so SSA pays 142 - (1,080 - 994) = 56.
     ia_ssa: 56
 
 - name: Case 14, RCF actual January cost less participation.
@@ -187,6 +190,7 @@
     ia_ssa_category: RESIDENTIAL_CARE
     ia_ssa_rcf_daily_rate: 38.47
   output:
+    # February 2026 has 28 days: 38.47 * 28 = 1,077.16; 1,077.16 - 864 = 213.16.
     ia_ssa: 213.16
 
 - name: Case 16, blind RCF resident also gets blind supplement.
@@ -244,7 +248,7 @@
   output:
     ia_ssa: 328.57
 
-- name: Case 20, RCF requires a facility rate.
+- name: Case 20, RCF without a facility rate is paid at the maximum daily rate.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -254,7 +258,10 @@
       2026: 65
     ia_ssa_category: RESIDENTIAL_CARE
   output:
-    ia_ssa: 0
+    # 441 IAC 52.1(3): payment "will be based on the maximum per diem rate".
+    # 38.47 * 31 = 1,192.57; SSI 994, participation 994 - 130 = 864;
+    # 1,192.57 - 864 = 328.57.
+    ia_ssa: 328.57
 
 - name: Case 21, in-home care at approved cost.
   period: 2026-01
@@ -338,9 +345,10 @@
     ia_ssa_ihhrc_monthly_cost: 400
     social_security_retirement: 16_800
     ia_ssa_care_partial_month_days: 16
-    ia_ssa_ihhrc_initial_partial_month: true
+    ia_ssa_care_initial_partial_month: true
   output:
-    ia_ssa: 206.4516129032258
+    # No participation in the first partial month: 400 * 16 / 31 = 206.45.
+    ia_ssa: 206.45
 
 - name: Case 27, blind allowance coexists with in-home care.
   period: 2026-01
@@ -914,16 +922,20 @@
       child1:
         members: [person2]
     families:
-      family:
-        members: [person1, person2]
+      parent_family:
+        members: [person1]
+      child_family:
+        members: [person2]
     tax_units:
       parent1:
         members: [person1]
       child1:
         members: [person2]
     spm_units:
-      unit:
-        members: [person1, person2]
+      parent_unit:
+        members: [person1]
+      child_unit:
+        members: [person2]
     households:
       parent_home:
         members: [person1]
@@ -949,7 +961,7 @@
         ia_ssa_category: IN_HOME_CARE
         ia_ssa_ihhrc_monthly_cost: 400
         ia_ssa_care_partial_month_days: 16
-        ia_ssa_ihhrc_initial_partial_month: true
+        ia_ssa_care_initial_partial_month: true
       person2:
         age:
           2026: 65
@@ -995,7 +1007,8 @@
           2026: 65
         ia_ssa_category: RESIDENTIAL_CARE
         ia_ssa_rcf_daily_rate: 38.47
-        # Entry on January 7: the day of entry through January 31.
+        # Discharged January 26: January 1 through 25; the day of discharge is
+        # not paid (441 IAC 52.1(3)"b").
         ia_ssa_care_partial_month_days: 25
       person2:
         age:
@@ -1042,12 +1055,12 @@
       2026-02: 400
     ia_ssa_care_partial_month_days:
       2026-01: 16
-    ia_ssa_ihhrc_initial_partial_month:
+    ia_ssa_care_initial_partial_month:
       2026-01: true
   output:
     # January: no participation; 400 * 16 / 31 = 206.45.
     # February: participation 1,400 - 994 = 406 is at least the 400 cost.
-    ia_ssa_ihhrc_initial_partial_month:
+    ia_ssa_care_initial_partial_month:
       2026-01: true
       2026-02: false
     ia_ssa_care_partial_month_days:
@@ -1150,7 +1163,7 @@
   output:
     ia_ssa: 22
 
-- name: Case 52, 2027 residential care participation uses the 2027 SSI rate.
+- name: Case 52, 2027 residential care participation uses the 2027 SSI rate and personal needs allowance.
   period: 2027-01
   absolute_error_margin: 0.01
   input:
@@ -1161,8 +1174,11 @@
     ia_ssa_category: RESIDENTIAL_CARE
     ia_ssa_rcf_daily_rate: 38.47
   output:
-    # SSI 1,029; participation 1,029 - 130 = 899; 38.47 * 31 = 1,192.57 - 899 = 293.57.
-    ia_ssa: 293.57
+    # Iowa Code 249.9A(1) raises the personal needs allowance by the SSI
+    # cost-of-living percentage: 130 * 328.746 / 317.265 = 134.70, rounded to
+    # 135. SSI 1,029; participation 1,029 - 135 = 894; the 2026 maximum rate is
+    # carried forward: 38.47 * 31 = 1,192.57 - 894 = 298.57.
+    ia_ssa: 298.57
 
 - name: Case 53, 2027 family-life home standard follows the SSI rate.
   period: 2027-01
@@ -1190,7 +1206,10 @@
     ia_ssa_category: FAMILY_LIFE_HOME
     ia_ssa_care_countable_income: 1_191
   output:
-    # Income must be below the 1,029 + 162 = 1,191 standard.
+    # 6-B p.34: countable income "must not be more than" the standard,
+    # 1,029 + 162 = 1,191. The model admits only income below it; with real
+    # income at the standard, SSA's payment is 142 - (1,171 - 1,029) = 0
+    # either way.
     ia_ssa_federal: 0
 
 - name: Case 55, negative self-employment income does not inflate the residential care payment.
@@ -1285,7 +1304,1091 @@
   output:
     # SSI countable income 1,500 - 20 = 1,480 exceeds 994, so SSI is 0.
     # Iowa: 1,500 - 500 one-third exclusion = 1,000; participation 1,000 - 994 = 6.
+    # Federal SSI does not yet apply 20 CFR 416.1124(c)(11) (issue 10242). Once
+    # it does, SSI is 994 - (1,000 - 20) = 14, participation
+    # 1,000 + 14 - 994 = 20 and ia_ssa 380.
     ssi: [0, 0]
     ia_ssa_care_countable_income: [0, 1_000]
     ia_ssa_ihhrc_participation: [0, 6]
     ia_ssa: [0, 394]
+
+# 441 IAC 51.7(6) and 6-B Income (SMME) p.77: income "must exceed 120 percent
+# of the federal poverty level". Case 59 is an aged couple with Social Security
+# of $1,700 a month each; Cases 60-61 bracket the two-person threshold of
+# 1.2 * (15,960 + 5,680) / 12 = 2,164.
+- name: Case 59, an SMME couple's combined income is compared with the two-person guideline.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 70
+        social_security_retirement:
+          2026: 20_400
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 70
+        social_security_retirement:
+          2026: 20_400
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # Both spouses are aged, so SSI budgets them as a couple:
+    # 1,700 + 1,700 - 20 = 3,380 > 1,491, so SSI is 0, and SSI countable
+    # income is 3,380 / 2 = 1,690 each.
+    # SMME income combines the couple: 1,690 + 1,690 = 3,380 > 2,164, so each
+    # covered spouse gets $1. (Half the couple's income, 1,690, would fail.)
+    ssi_couple_computation_applies: [true, true]
+    ssi_countable_income: [1_690, 1_690]
+    ssi: [0, 0]
+    ia_ssa_smme_countable_income: [3_380, 3_380]
+    ia_ssa_federal: [0, 0]
+    ia_ssa: [1, 1]
+
+- name: Case 60, an SMME couple just above the two-person guideline with one spouse covered.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 70
+        # Boundary income: $1,093 a month each puts the couple $2 above the
+        # 2,164 threshold.
+        social_security_retirement:
+          2026: 13_116
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 70
+        social_security_retirement:
+          2026: 13_116
+        ia_ssa_category: SMME
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # SSI: 1,093 + 1,093 - 20 = 2,166 > 1,491, so SSI is 0; 2,166 / 2 = 1,083
+    # each. SMME income 1,083 + 1,083 = 2,166 > 2,164.
+    # Only person1 has the Medicaid and Part B coverage, so only person1 is
+    # paid. Each spouse's own 1,093 - 20 = 1,073 is below the one-person
+    # 1,596, so this case pins the combined reading.
+    ssi_countable_income: [1_083, 1_083]
+    ssi: [0, 0]
+    ia_ssa_smme_countable_income: [2_166, 2_166]
+    ia_ssa: [1, 0]
+
+- name: Case 61, an SMME couple just below the two-person guideline.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 70
+        # Boundary income: $1,091 a month each puts the couple $2 below the
+        # 2,164 threshold.
+        social_security_retirement:
+          2026: 13_092
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 70
+        social_security_retirement:
+          2026: 13_092
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # SSI: 1,091 + 1,091 - 20 = 2,162 > 1,491, so SSI is 0; 2,162 / 2 = 1,081
+    # each. SMME income 1,081 + 1,081 = 2,162 does not exceed 2,164.
+    ssi_countable_income: [1_081, 1_081]
+    ssi: [0, 0]
+    ia_ssa_smme_countable_income: [2_162, 2_162]
+    ia_ssa: [0, 0]
+
+# 441 IAC 177.2(1)"f"(3) and 6-B Home Maintenance Allowance (IHHRC) p.43,
+# example 2: "Mr. B receives $1,400 in social security benefits; the child
+# receives $125."
+- name: Case 62, manual IHHRC example deducts the dependent allowance less the child's income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 65
+        social_security_retirement:
+          2026: 16_800
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+      person2:
+        age:
+          2026: 10
+        social_security_dependents:
+          2026: 1_500
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # SSI: 1,400 - 20 = 1,380 > 994, so SSI is 0. The child is not aged,
+    # blind or disabled.
+    # Dependent allowance: 497 (1,491 - 994) - 125 = 372.
+    # Participation: 1,400 - 994 - 372 = 34 (6-B p.43); 400 - 34 = 366.
+    ssi: [0, 0]
+    ssi_ineligible_child_allocation: [0, 372]
+    ia_ssa_care_countable_income: [1_400, 125]
+    ia_ssa_ihhrc_participation: [34, 0]
+    ia_ssa: [366, 0]
+
+# 6-B Client Participation for Adults (IHHRC) p.42: "The household consists
+# of the recipient, the recipient's spouse, and two children. The spouse has
+# earned income of $4,500."
+- name: Case 63, manual IHHRC example with a working spouse and two children has no participation.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 40
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+      person2:
+        age:
+          2026: 40
+        employment_income:
+          2026: 54_000
+      person3:
+        age:
+          2026: 8
+      person4:
+        age:
+          2026: 5
+    marital_units:
+      couple:
+        members: [person1, person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: IA
+  output:
+    # SSI deems the spouse's 4,500 less 2 * 497 for the children, 3,506, which
+    # is above 497. (3,506 - 20 - 65) / 2 = 1,710.50 > 1,491, so SSI is 0.
+    # Care income: (4,500 - 65) / 2 = 2,217.50, the spouse's own earnings
+    # under the same exclusions.
+    # Participation: 2,217.50 - 1,491 = 726.50; 726.50 - 994 < 0, so 0
+    # (6-B p.42), and the full 400 cost is paid.
+    ssi: [0, 0, 0, 0]
+    ssi_ineligible_child_allocation: [0, 0, 497, 497]
+    ia_ssa_care_countable_income: [2_217.5, 2_217.5, 0, 0]
+    ia_ssa_ihhrc_participation: [0, 0, 0, 0]
+    ia_ssa: [400, 0, 0, 0]
+
+# 441 IAC 52.1(3)"a"(6) and 6-B First-Month Client Participation p.63: "deduct
+# the SSI benefit rate for one person from the client's countable income".
+- name: Case 64, a resident entering from home keeps income up to the SSI individual rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 65
+    social_security_retirement:
+      2026: 16_800
+    ia_ssa_category: RESIDENTIAL_CARE
+    # Entry on January 7: the day of entry through January 31.
+    ia_ssa_care_partial_month_days: 25
+    ia_ssa_care_initial_partial_month: true
+  output:
+    # SSI: 1,400 - 20 = 1,380 > 994, so SSI is 0.
+    # Participation: 1,400 - 130 - 994 = 276.
+    # No facility rate is entered, so the 38.47 maximum applies:
+    # 38.47 * 25 = 961.75; 961.75 - 276 = 685.75.
+    ssi: 0
+    ia_ssa_care_countable_income: 1_400
+    ia_ssa: 685.75
+
+# 441 IAC 52.1(3)"a"(6) and 6-B p.64: "If the client had a spouse living in
+# the home in the partial month before entry, deduct the SSI benefit rate for a
+# married couple".
+- name: Case 65, a resident entering from a home shared with a spouse keeps income up to the SSI couple rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 70
+        social_security_retirement:
+          2026: 20_400
+        ia_ssa_category: RESIDENTIAL_CARE
+        # Entry on January 7: the day of entry through January 31.
+        ia_ssa_care_partial_month_days: 25
+        ia_ssa_care_initial_partial_month: true
+      person2:
+        age:
+          2026: 60
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # The spouse is not aged, blind or disabled and has no income, so there is
+    # no couple computation and nothing is deemed.
+    # SSI: 1,700 - 20 = 1,680 > 994, so SSI is 0.
+    # Participation: 1,700 - 130 - 1,491 = 79; 38.47 * 25 = 961.75;
+    # 961.75 - 79 = 882.75. Without the entry-month flag,
+    # 1,700 - 130 = 1,570 covers the 961.75 and nothing is paid.
+    ssi_couple_computation_applies: [false, false]
+    ssi: [0, 0]
+    ia_ssa_care_countable_income: [1_700, 0]
+    ia_ssa: [882.75, 0]
+
+# 441 IAC 51.5(2) and 6-B Resources p.12: "$3,000 for a married couple living
+# together"; "When the applicant is living with a spouse, count the spouse's
+# resources."
+- name: Case 66, an in-home care couple within the couple resource limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 65
+        ssi_countable_resources:
+          2026: 2_500
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+      person2:
+        age:
+          2026: 50
+        ssi_countable_resources:
+          2026: 400
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # Resources: 2,500 + 400 = 2,900 <= 3,000, so person1 is eligible; the
+    # spouse is not aged, blind or disabled.
+    # SSI is 994 (20 CFR 416.1205 also counts the spouse's resources against
+    # 3,000). Care income 994 - 1,491 < 0, so participation is 0 and the 400
+    # cost is paid.
+    ssi: [994, 0]
+    ia_ssa_eligible: [true, false]
+    ia_ssa_ihhrc_participation: [0, 0]
+    ia_ssa: [400, 0]
+
+- name: Case 67, an in-home care couple over the couple resource limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 65
+        ssi_countable_resources:
+          2026: 2_500
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+      person2:
+        age:
+          2026: 50
+        ssi_countable_resources:
+          2026: 600
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # Resources: 2,500 + 600 = 3,100 > 3,000, so neither SSI nor the Iowa
+    # supplement is payable.
+    ssi: [0, 0]
+    ia_ssa_eligible: [false, false]
+    ia_ssa: [0, 0]
+
+- name: Case 68, RCF with an entered facility rate below the maximum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 65
+    ia_ssa_category: RESIDENTIAL_CARE
+    ia_ssa_rcf_daily_rate: 35
+  output:
+    # A lower facility rate is used as entered: 35 * 31 = 1,085;
+    # SSI 994, participation 994 - 130 = 864; 1,085 - 864 = 221.
+    ia_ssa: 221
+
+# 6-B Resource and Income Guidelines for Married Couples pp.60-61 and Client
+# Participation pp.68-71: spouses who received SSI are a couple in the month
+# one enters a residential care facility and individuals from the month after.
+- name: Case 69, manual example where a resident whose spouse stays home is budgeted alone after the entry month.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        # 6-B p.69 Mr. K: Social Security of $175 a month.
+        social_security_retirement: 2_100
+        ia_ssa_category:
+          2026-03: RESIDENTIAL_CARE
+          2026-04: RESIDENTIAL_CARE
+        # 6-B gives only the month; entry is taken as March 10, so March 10
+        # through 31 are covered.
+        ia_ssa_care_partial_month_days:
+          2026-03: 22
+        ia_ssa_care_initial_partial_month:
+          2026-03: true
+      person2:
+        age: 70
+        # Mrs. K: Social Security of $100 a month.
+        social_security_retirement: 1_200
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # March: SSI couple 1,491 - (275 - 20) = 1,236. Care income
+    # (275 + 1,236) / 2 = 755.50 each; entry deduction 1,491 / 2 = 745.50;
+    # participation max(755.50 - 130 - 745.50, 0) = 0 (6-B p.69: "$ 0 Client
+    # participation for month of entry"); 38.47 * 22 = 846.34.
+    # April: Mr. K's SSI as an individual is 994 - (175 - 20) = 839; care
+    # income 175 + 839 = 1,014; participation 1,014 - 130 = 884 (6-B p.70);
+    # 38.47 * 30 = 1,154.10 - 884 = 270.10.
+    ia_ssa_rcf_couple_budget:
+      2026-03: [true, false]
+      2026-04: [false, false]
+    ia_ssa:
+      2026-03: [846.34, 0]
+      2026-04: [270.1, 0]
+
+# 441 IAC 51.4(3) and 6-B Spouses Sharing a Room p.61: "After the month of
+# entry, treat the spouses as individuals when determining eligibility and
+# client participation."
+- name: Case 70, spouses sharing a room are budgeted as individuals after the entry month.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 70
+        # Reviewer example: Social Security of $1,500 a month.
+        social_security_retirement:
+          2026: 18_000
+        ia_ssa_category: RESIDENTIAL_CARE
+      person2:
+        age:
+          2026: 70
+        # Reviewer example: Social Security of $500 a month.
+        social_security_retirement:
+          2026: 6_000
+        ia_ssa_category: RESIDENTIAL_CARE
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # January is not the month of entry, so each spouse is budgeted alone.
+    # person1: own SSI 1,500 - 20 = 1,480 > 994, so 0; participation
+    # 1,500 - 130 = 1,370 covers 38.47 * 31 = 1,192.57.
+    # person2: own SSI 994 - (500 - 20) = 514; care income 500 + 514 = 1,014;
+    # participation 884; 1,192.57 - 884 = 308.57.
+    ia_ssa_care_countable_income: [1_500, 1_014]
+    ia_ssa: [0, 308.57]
+
+# 441 IAC 51.4(3): "Partners in a marriage who both enter the same room of the
+# residential care facility in the same month will be income eligible for the
+# initial month when their combined income ... is less than twice the amount of
+# allowed income for one person".
+- name: Case 71, spouses entering the same room in the same month are budgeted as a couple.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 70
+        # Reviewer example: Social Security of $1,500 a month.
+        social_security_retirement:
+          2026: 18_000
+        ia_ssa_category: RESIDENTIAL_CARE
+        # Both spouses enter on January 10: January 10 through 31.
+        ia_ssa_care_partial_month_days: 22
+        ia_ssa_care_initial_partial_month: true
+      person2:
+        age:
+          2026: 70
+        # Reviewer example: Social Security of $500 a month.
+        social_security_retirement:
+          2026: 6_000
+        ia_ssa_category: RESIDENTIAL_CARE
+        ia_ssa_care_partial_month_days: 22
+        ia_ssa_care_initial_partial_month: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # Neither spouse receives SSI, but both enter this month, so the couple is
+    # budgeted together. SSI couple: 2,000 - 20 = 1,980 > 1,491, so no SSI.
+    # Care income 2,000 / 2 = 1,000 each; entry deduction 1,491 / 2 = 745.50;
+    # participation 1,000 - 130 - 745.50 = 124.50 each;
+    # 38.47 * 22 = 846.34; 846.34 - 124.50 = 721.84.
+    ia_ssa_rcf_couple_budget: [true, true]
+    ia_ssa_care_countable_income: [1_000, 1_000]
+    ia_ssa: [721.84, 721.84]
+
+# 6-B p.60: "When neither spouse is receiving SSI before the entry of one or
+# both into an RCF, treat the spouses separately beginning in the month of
+# entry"; p.61: the resident "must now apply for and accept SSI benefits".
+- name: Case 72, manual example where spouses without SSI are budgeted separately from the entry month.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        # 6-B p.68 Mr. B: Social Security of $890 a month.
+        social_security_retirement: 10_680
+        ia_ssa_category:
+          2026-05: RESIDENTIAL_CARE
+          2026-06: RESIDENTIAL_CARE
+        # 6-B gives only the month; entry is taken as May 12, so May 12
+        # through 31 are covered.
+        ia_ssa_care_partial_month_days:
+          2026-05: 20
+        ia_ssa_care_initial_partial_month:
+          2026-05: true
+      person2:
+        age: 70
+        # Mrs. B: Social Security of $870 a month.
+        social_security_retirement: 10_440
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # May: the couple's SSI income 1,760 - 20 = 1,740 > 1,491, so no SSI and
+    # no couple budget. Care income 890; entry deduction 1,491 (spouse at
+    # home); participation max(890 - 130 - 1,491, 0) = 0; 38.47 * 20 = 769.40.
+    # June: SSI as an individual 994 - (890 - 20) = 124; care income 1,014;
+    # participation 884; 38.47 * 30 = 1,154.10 - 884 = 270.10.
+    ia_ssa_rcf_couple_budget:
+      2026-05: [false, false]
+      2026-06: [false, false]
+    ia_ssa:
+      2026-05: [769.4, 0]
+      2026-06: [270.1, 0]
+
+- name: Case 73, manual example of an SSI resident with an ineligible working spouse after the entry month.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        # 6-B p.67 Mr. A: Social Security of $200 a month.
+        social_security_retirement: 2_400
+        ia_ssa_category:
+          2026-06: RESIDENTIAL_CARE
+          2026-07: RESIDENTIAL_CARE
+        # 6-B gives only the month; entry is taken as June 15, so June 15
+        # through 30 are covered.
+        ia_ssa_care_partial_month_days:
+          2026-06: 16
+        ia_ssa_care_initial_partial_month:
+          2026-06: true
+        # 6-B p.68: "Diversion for Mrs. A (994 - 457.50 ...)".
+        ia_ssa_care_additional_deductions:
+          2026-07: 536.5
+      person2:
+        age: 60
+        # Mrs. A: earnings of $1,000 a month.
+        employment_income: 12_000
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # June: SSI with spousal deeming 1,491 - 647.50 = 843.50 (6-B p.67). Mrs. A
+    # is not aged, blind or disabled, so there is no couple budget. Care income
+    # 200 + 843.50 = 1,043.50; entry deduction 1,491 (spouse at home);
+    # participation max(1,043.50 - 130 - 1,491, 0) = 0, as on p.67;
+    # 38.47 * 16 = 615.52. First-month deemed spouse income is not modeled.
+    # July: SSI as an individual 994 - (200 - 20) = 814 (6-B p.68); care
+    # income 1,014; participation 1,014 - 130 - 536.50 = 347.50 (6-B p.68);
+    # 38.47 * 31 = 1,192.57 - 347.50 = 845.07.
+    ssi:
+      2026-06: [843.5, 0]
+    ia_ssa:
+      2026-06: [615.52, 0]
+      2026-07: [845.07, 0]
+
+# 6-B Resources p.12: "When the applicant is not living with the spouse, do not
+# count the spouse's resources."
+- name: Case 74, a resident's resources are tested alone after the entry month.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 70
+        # $2,500 of resources, the reviewer's figure in Cases 66-67.
+        ssi_countable_resources:
+          2026: 2_500
+        ia_ssa_category: RESIDENTIAL_CARE
+      person2:
+        age:
+          2026: 70
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # January is not the month of entry, so person1's own 2,500 is tested
+    # against the 2,000 individual limit and fails. person2, at home, owns
+    # nothing and passes either way: tested alone under p.12, or pooled, as
+    # the model still pools a spouse in an ordinary arrangement (2,500 within
+    # the 3,000 couple limit) because federal SSI keeps the couple.
+    ia_ssa_eligible: [false, true]
+    ia_ssa: [0, 0]
+
+# 441 IAC 52.1(3)"a"(1) deducts "impairment-related work expenses, as defined
+# by SSI plus $65 plus one-half of any remaining earned income"; 6-B p.65 Mr. L
+# has earnings of $333 and expenses of $100.
+- name: Case 75, a resident without SSI enters impairment-related work expenses at one-half.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 65
+    # Mr. L's $700 of Social Security would qualify him for SSI, so $1,100 a
+    # month is used for a resident who receives none.
+    social_security_retirement:
+      2026: 13_200
+    # Mr. L: earned income of $333 a month.
+    employment_income:
+      2026: 3_996
+    ia_ssa_category: RESIDENTIAL_CARE
+    # One-half of Mr. L's $100 of impairment-related work expenses.
+    ia_ssa_care_additional_deductions: 50
+  output:
+    # SSI: (1,100 - 20) + (333 - 65) / 2 = 1,214 > 994, so SSI is 0.
+    # Rule: 1,100 + (333 - 100 - 65) / 2 = 1,184; 1,184 - 130 = 1,054.
+    # Model: care income 1,100 + 134 = 1,234; 1,234 - 130 - 50 = 1,054.
+    # 1,192.57 - 1,054 = 138.57.
+    ssi: 0
+    ia_ssa_care_countable_income: 1_234
+    ia_ssa: 138.57
+
+# 20 CFR 416.1124(c)(22) excludes "Interest and dividend income from a
+# countable resource"; Manual 8-E Dividends p.23 and Interest Income p.36.
+- name: Case 76, a resident's interest is excluded from care income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 65
+    # Reviewer example: $5 a month of interest on savings.
+    interest_income:
+      2026: 60
+    ia_ssa_category: RESIDENTIAL_CARE
+  output:
+    # SSI: the $20 general exclusion covers the $5, so SSI is 994. Care income
+    # 0 + 994 = 994; participation 864; 1,192.57 - 864 = 328.57.
+    ssi: 994
+    ia_ssa_care_countable_income: 994
+    ia_ssa: 328.57
+
+# 6-B Making the Family-Life Home Payment p.35: "For a recipient who has only
+# SSI and no other income (and hence no $20 to disregard), an additional $20
+# payment is necessary".
+- name: Case 77, a family-life home resident whose only other income is interest gets the 20 dollar payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 65
+    # Reviewer example: $5 a month of interest on savings.
+    interest_income:
+      2026: 60
+    ia_ssa_category: FAMILY_LIFE_HOME
+  output:
+    # Interest is excluded under 416.1124(c)(22), so only SSI is received:
+    # SSA pays 142 and the state pays 20.
+    ssi: 994
+    ia_ssa_federal: 142
+    ia_ssa: 162
+
+- name: Case 78, a family-life home resident with 10 dollars of Social Security gets no 20 dollar payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 65
+    # Reviewer example: $10 a month of other income.
+    social_security_retirement:
+      2026: 120
+    ia_ssa_category: FAMILY_LIFE_HOME
+  output:
+    # SSI 994 (the $20 exclusion covers the $10). Care income 10 + 994 = 1,004
+    # is below 1,156, so SSA pays 142; other income rules out the state's $20.
+    ssi: 994
+    ia_ssa_care_countable_income: 1_004
+    ia_ssa_federal: 142
+    ia_ssa: 142
+
+- name: Case 79, without marital units an in-home care parent is not paired with an adult child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 70
+        # Reviewer example: Social Security of $800 a month and a $400 cost.
+        social_security_retirement:
+          2026: 9_600
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+      person2:
+        # A variant of the reviewer's adult child: a 22-year-old full-time
+        # student earning $1,000 a month.
+        age:
+          2026: 22
+        is_full_time_student:
+          2026: true
+        employment_income:
+          2026: 12_000
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # The child is the parent's tax dependent, so SSI's spouse test does not
+    # pair them and the parent gets the individual allowance. The child is
+    # not under 18, so there is no dependent-child allowance.
+    # SSI 994 - (800 - 20) = 214; care income 800 + 214 = 1,014;
+    # participation 1,014 - 994 = 20; 400 - 20 = 380.
+    ia_ssa_has_spouse: [false, false]
+    ssi: [214, 0]
+    ia_ssa_ihhrc_participation: [20, 0]
+    ia_ssa: [380, 0]
+
+# 6-B Deeming Parents' Resources p.47 Child B: "$ 5,500 Parent's resources -
+# 3,000 Exempt $ 2,500 Deemed to Child B".
+- name: Case 80, without marital units parental resources are still deemed to an in-home care child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 40
+        person_id:
+          2026: 1
+        bank_account_assets:
+          2026: 5_500
+      person2:
+        age:
+          2026: 40
+        person_id:
+          2026: 2
+      person3:
+        age:
+          2026: 10
+        person_id:
+          2026: 3
+        parent_1_id:
+          2026: 1
+        parent_2_id:
+          2026: 2
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: IA
+  output:
+    # The three people share one default marital unit, which is not a couple.
+    # The parent links give two parents, so the allowance is 3,000:
+    # 5,500 - 3,000 = 2,500 deemed to the child exceeds 2,000.
+    ia_ssa_resources_deemed_from_parents: [0, 0, 2_500]
+    ia_ssa: [0, 0, 0]
+
+# SI 02001.005 and SI 02001.010: SSA drops digits beyond the third decimal,
+# rounds up to the cent and pays at least $1.
+- name: Case 81, a blind supplement of 50 cents is paid at the 1 dollar minimum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 65
+    is_blind:
+      2026: true
+    # Reviewer example: Social Security of $1,035.50 a month.
+    social_security_retirement:
+      2026: 12_426
+  output:
+    # 1,035.50 - 20 = 1,015.50 > 994, so SSI is 0; 994 + 22 - 1,015.50 = 0.50.
+    ssi: 0
+    ia_ssa_federal: 1
+    ia_ssa: 1
+
+- name: Case 82, a blind supplement is rounded up to the cent.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 65
+    is_blind:
+      2026: true
+    # Reviewer boundary income: 1,030.445 a month.
+    social_security_retirement:
+      2026: 12_365.34
+  output:
+    # 1,030.445 - 20 = 1,010.445; 1,016 - 1,010.445 = 5.555, rounded up to 5.56.
+    ia_ssa_federal: 5.56
+    ia_ssa: 5.56
+
+# 6-B Verification p.9: "For an SSI recipient, accept the Social Security
+# Administration's determination of SSI eligibility as verification that
+# income, resources, and age, blindness or disability requirements have been
+# met." 20 CFR 416.1202(b)(2) waives parental resource deeming for some
+# children in Medicaid home care.
+- name: Case 83, a blind SSI child exempt from parental resource deeming keeps the blind supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 40
+        person_id:
+          2026: 1
+        # Reviewer example: two parents with $6,000.
+        bank_account_assets:
+          2026: 6_000
+      person2:
+        age:
+          2026: 40
+        person_id:
+          2026: 2
+      person3:
+        age:
+          2026: 10
+        person_id:
+          2026: 3
+        parent_1_id:
+          2026: 1
+        parent_2_id:
+          2026: 2
+        is_blind:
+          2026: true
+        ssi_resource_deeming_waiver: true
+    marital_units:
+      parents:
+        members: [person1, person2]
+      child:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: IA
+  output:
+    # SSA deems nothing under the waiver and pays 994; Iowa accepts it, so the
+    # child's resources are 0 and the 22 blind supplement is paid.
+    is_ssi_resource_deeming_child: [false, false, false]
+    ssi: [0, 0, 994]
+    ia_ssa_resources_deemed_from_parents: [0, 0, 0]
+    ia_ssa: [0, 0, 22]
+
+# 441 IAC 51.4(3): income eligible when income "is less than 31 times the
+# maximum per diem rate".
+- name: Case 84, residential care participation equal to the month's cost pays nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 65
+    # Boundary income: 1,322.57 a month, where participation equals the cost.
+    social_security_retirement:
+      2026: 15_870.84
+    ia_ssa_category: RESIDENTIAL_CARE
+  output:
+    # Participation 1,322.57 - 130 = 1,192.57 = 38.47 * 31, so nothing is paid.
+    ssi: 0
+    ia_ssa: 0
+
+# 6-B Income (DP) p.25: group income "must be less than the applicable
+# assistance standard", 994 + 518 = 1,512 for one person.
+- name: Case 85, dependent-person group income one cent below the standard pays the 1 dollar minimum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 65
+    # Reviewer boundary income: 1,531.99 a month.
+    social_security_retirement:
+      2026: 18_383.88
+    ia_ssa_category: DEPENDENT_PERSON
+  output:
+    # 1,531.99 - 20 = 1,511.99 < 1,512; 518 - (1,511.99 - 994) = 0.01, paid at $1.
+    ssi: 0
+    ia_ssa_federal: 1
+    ia_ssa: 1
+
+- name: Case 86, dependent-person group income at the standard is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 65
+    # Reviewer boundary income: 1,532 a month.
+    social_security_retirement:
+      2026: 18_384
+    ia_ssa_category: DEPENDENT_PERSON
+  output:
+    # 1,532 - 20 = 1,512 is not less than 1,512.
+    ia_ssa_federal: 0
+    ia_ssa: 0
+
+# Iowa Code 249.3(4)(a) names a person 65 or older or disabled; 441 IAC 51.7(2)
+# requires "all eligibility requirements for supplemental security income
+# benefits other than limits on substantial gainful activity and income", which
+# include blindness (6-B pp.10, 76). The model follows 51.7(2).
+- name: Case 87, a blind SMME applicant under 65 qualifies under 441 IAC 51.7(2).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 50
+    is_blind:
+      2026: true
+    # SSDI of $2,020 a month, above the blind SSI limit and 120 percent of
+    # poverty.
+    social_security_disability:
+      2026: 24_240
+    ia_ssa_category: SMME
+    ia_ssa_smme_coverage_eligible: true
+  output:
+    # SSI countable income 2,020 - 20 = 2,000 exceeds both 994 and the blind
+    # limit of 1,016, so SSI and the blind supplement are 0. SMME income 2,000
+    # exceeds 1.2 * 15,960 / 12 = 1,596.
+    ssi: 0
+    ia_ssa_federal: 0
+    ia_ssa_smme_countable_income: 2_000
+    ia_ssa: 1

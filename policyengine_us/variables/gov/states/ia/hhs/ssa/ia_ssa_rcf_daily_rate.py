@@ -7,5 +7,10 @@ class ia_ssa_rcf_daily_rate(Variable):
     label = "Iowa SSA approved residential care daily rate"
     definition_period = MONTH
     unit = USD
-    reference = "https://hhs.iowa.gov/media/3987/download?inline=#page=72"
-    documentation = "The per diem rate the department established for the facility; the model caps it at the maximum cost-related rate. Leave at 0 when no rate is approved. An entry carries into later months until it is changed."
+    default_value = 0
+    reference = (
+        # 441 IAC 52.1(3)
+        "https://www.legis.iowa.gov/docs/iac/chapter/441.52.pdf#page=1",
+        "https://hhs.iowa.gov/media/3987/download?inline=#page=72",
+    )
+    documentation = "A per diem rate below the maximum that the department established for the facility. Leave at 0 to pay the maximum per diem rate, as 441 IAC 52.1(3) provides from July 1, 2017; an entry above the maximum is capped. An entry carries into later months until it is changed."
