@@ -57,6 +57,7 @@ MONOTONE = [
     "ct_property_tax_credit_eligible",
     "ct_child_tax_rebate",
     "il_dependent_exemption",
+    "il_personal_exemption",
     "il_eitc",
     "il_ctc",
     "il_income_tax_rebate",

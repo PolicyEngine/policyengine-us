@@ -1,335 +1,679 @@
-- name: 2024 Joint household, neither claimable elsewhere, base income less than $5,600
+- name: 2024 Joint household, neither claimed elsewhere, base income less than $5,550
   period: 2024
   input:
-    filing_status: JOINT
-    head_is_dependent_elsewhere: false
-    spouse_is_dependent_elsewhere: false
-    il_base_income: 2_000 # Less than $2,800 personal exemption.
-    state_code: IL
+    people:
+      head:
+        age: 30
+        claimable_as_dependent_on_another_return: false
+        claimed_as_dependent_on_another_return: false
+      spouse:
+        age: 29
+        claimable_as_dependent_on_another_return: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        il_base_income: 2_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IL
   output:
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
 
-- name: 2024 Joint household, neither claimable elsewhere, base income greater than $5,600
+- name: 2024 Joint household, neither claimed elsewhere, base income greater than $5,550
   period: 2024
   input:
-    filing_status: JOINT
-    head_is_dependent_elsewhere: false
-    spouse_is_dependent_elsewhere: false
-    il_base_income: 6_000 # More than $2,800 personal exemption.
-    state_code: IL
+    people:
+      head:
+        age: 30
+        claimable_as_dependent_on_another_return: false
+        claimed_as_dependent_on_another_return: false
+      spouse:
+        age: 29
+        claimable_as_dependent_on_another_return: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        il_base_income: 6_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IL
   output:
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
 
-- name: 2024 Single household, claimable elsewhere, base income less than $2,800
+- name: 2024 Single household, claimed elsewhere, base income less than $2,775
   period: 2024
   input:
+    age: 30
     filing_status: SINGLE
-    head_is_dependent_elsewhere: true
-    il_base_income: 2_000 # Less than $2,800 personal exemption.
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: true
+    il_base_income: 2_000
     state_code: IL
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
 
-- name: 2024 Single household, claimable elsewhere, base income greater than $2,800
+- name: 2024 Single household, claimed elsewhere, base income greater than $2,775
   period: 2024
   input:
+    age: 30
     filing_status: SINGLE
-    head_is_dependent_elsewhere: true
-    il_base_income: 6_000 # More than $2,800 personal exemption.
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: true
+    il_base_income: 6_000
     state_code: IL
   output:
     il_personal_exemption_eligibility_status: NOT_ELIGIBLE
 
-- name: 2024 Single household, not claimable elsewhere, base income less than $2,800
+- name: 2024 Single household, not claimed elsewhere, base income less than $2,775
   period: 2024
   input:
+    age: 30
     filing_status: SINGLE
-    head_is_dependent_elsewhere: false
-    il_base_income: 2_000 # Less than $2,800 personal exemption.
+    claimable_as_dependent_on_another_return: false
+    claimed_as_dependent_on_another_return: false
+    il_base_income: 2_000
     state_code: IL
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
 
-- name: 2024 Single household, not claimable elsewhere, base income greater than $2,800
+- name: 2024 Single household, not claimed elsewhere, base income greater than $2,775
   period: 2024
   input:
+    age: 30
     filing_status: SINGLE
-    head_is_dependent_elsewhere: false
-    il_base_income: 6_000  # More than $2,800 personal exemption.
+    claimable_as_dependent_on_another_return: false
+    claimed_as_dependent_on_another_return: false
+    il_base_income: 6_000
     state_code: IL
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
 
-- name: 2024 Joint household, both claimable elsewhere, base income less than $5,600
+- name: 2024 Joint household, both claimed elsewhere, base income less than $5,550
   period: 2024
   input:
-    filing_status: JOINT
-    head_is_dependent_elsewhere: true
-    spouse_is_dependent_elsewhere: true
-    il_base_income: 2_000 # Less than $2,800 personal exemption.
-    state_code: IL
+    people:
+      head:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+      spouse:
+        age: 29
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        il_base_income: 2_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IL
   output:
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
 
-- name: 2024 Joint household, both claimable elsewhere, base income greater than $5,600
+- name: 2024 Joint household, both claimed elsewhere, base income greater than $5,550
   period: 2024
   input:
-    filing_status: JOINT
-    head_is_dependent_elsewhere: true
-    spouse_is_dependent_elsewhere: true
-    il_base_income: 6_000 # More than $2,800 personal exemption.
-    state_code: IL
+    people:
+      head:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+      spouse:
+        age: 29
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        il_base_income: 6_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IL
+  output:
+    il_personal_exemption_eligibility_status: NOT_ELIGIBLE
+
+- name: 2024 Joint household, one claimed elsewhere, base income less than $2,775
+  period: 2024
+  input:
+    people:
+      head:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+      spouse:
+        age: 29
+        claimable_as_dependent_on_another_return: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        il_base_income: 2_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IL
+  output:
+    il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
+
+- name: 2024 Joint household, one claimed elsewhere, base income greater than $2,775
+  period: 2024
+  input:
+    people:
+      head:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+      spouse:
+        age: 29
+        claimable_as_dependent_on_another_return: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        il_base_income: 6_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IL
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
 
-- name: 2024 Joint household, one claimable elsewhere, base income less than $2,800
+- name: 2024 Joint household, neither claimed elsewhere, base income less than $5,550
   period: 2024
   input:
-    filing_status: JOINT
-    head_is_dependent_elsewhere: true
-    spouse_is_dependent_elsewhere: false
-    il_base_income: 2_000 # Less than $2,800 personal exemption.
-    state_code: IL
+    people:
+      head:
+        age: 30
+        claimable_as_dependent_on_another_return: false
+        claimed_as_dependent_on_another_return: false
+      spouse:
+        age: 29
+        claimable_as_dependent_on_another_return: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        il_base_income: 2_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IL
   output:
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
 
-- name: 2024 Joint household, one claimable elsewhere, base income greater than $2,800
+- name: 2024 Joint household, neither claimed elsewhere, base income greater than $5,550
   period: 2024
   input:
-    filing_status: JOINT
-    head_is_dependent_elsewhere: true
-    spouse_is_dependent_elsewhere: false
-    il_base_income: 6_000 # More than $2,800 personal exemption.
-    state_code: IL
-  output:
-    il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
-
-- name: 2024 Joint household, neither claimable elsewhere, base income less than $5,600
-  period: 2024
-  input:
-    filing_status: JOINT
-    head_is_dependent_elsewhere: false
-    spouse_is_dependent_elsewhere: false
-    il_base_income: 2_000 # Less than $2,800 personal exemption.
-    state_code: IL
-  output:
-    il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
-
-- name: 2024 Joint household, neither claimable elsewhere, base income greater than $5,600
-  period: 2024
-  input:
-    filing_status: JOINT
-    head_is_dependent_elsewhere: false
-    spouse_is_dependent_elsewhere: false
-    il_base_income: 6_000 # More than $2,800 personal exemption.
-    state_code: IL
+    people:
+      head:
+        age: 30
+        claimable_as_dependent_on_another_return: false
+        claimed_as_dependent_on_another_return: false
+      spouse:
+        age: 29
+        claimable_as_dependent_on_another_return: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        il_base_income: 6_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IL
   output:
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
 
-- name: 2024 Single household, claimable elsewhere, base income less than $2,800
+- name: 2024 Single household, claimed elsewhere, base income less than $2,775
   period: 2024
   input:
+    age: 30
     filing_status: SINGLE
-    head_is_dependent_elsewhere: true
-    il_base_income: 2_000 # Less than $2,800 personal exemption.
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: true
+    il_base_income: 2_000
     state_code: IL
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
 
-- name: 2024 Single household, claimable elsewhere, base income greater than $2,800
+- name: 2024 Single household, claimed elsewhere, base income greater than $2,775
   period: 2024
   input:
+    age: 30
     filing_status: SINGLE
-    head_is_dependent_elsewhere: true
-    il_base_income: 6_000 # More than $2,800 personal exemption.
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: true
+    il_base_income: 6_000
     state_code: IL
   output:
     il_personal_exemption_eligibility_status: NOT_ELIGIBLE
 
-- name: 2024 Single household, not claimable elsewhere, base income less than $2,800
+- name: 2024 Single household, not claimed elsewhere, base income less than $2,775
   period: 2024
   input:
+    age: 30
     filing_status: SINGLE
-    head_is_dependent_elsewhere: false
-    il_base_income: 2_000 # Less than $2,800 personal exemption.
+    claimable_as_dependent_on_another_return: false
+    claimed_as_dependent_on_another_return: false
+    il_base_income: 2_000
     state_code: IL
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
 
-- name: Single household, not claimable elsewhere, base income greater than $2,800
+- name: Single household, not claimed elsewhere, base income greater than $2,775
   period: 2024
   input:
+    age: 30
     filing_status: SINGLE
-    head_is_dependent_elsewhere: false
-    il_base_income: 6_000  # More than $2,800 personal exemption.
+    claimable_as_dependent_on_another_return: false
+    claimed_as_dependent_on_another_return: false
+    il_base_income: 6_000
     state_code: IL
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
 
-- name: Joint household, neither claimable elsewhere, base income less than $4,750
+- name: Joint household, neither claimed elsewhere, base income less than $4,750
   period: 2021
   input:
-    filing_status: JOINT
-    head_is_dependent_elsewhere: false
-    spouse_is_dependent_elsewhere: false
-    il_base_income: 2_000 # Less than $2,375 personal exemption.
-    state_code: IL
+    people:
+      head:
+        age: 30
+        claimable_as_dependent_on_another_return: false
+        claimed_as_dependent_on_another_return: false
+      spouse:
+        age: 29
+        claimable_as_dependent_on_another_return: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        il_base_income: 2_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IL
   output:
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
 
-- name: Joint household, neither claimable elsewhere, base income greater than $4,750
+- name: Joint household, neither claimed elsewhere, base income greater than $4,750
   period: 2021
   input:
-    filing_status: JOINT
-    head_is_dependent_elsewhere: false
-    spouse_is_dependent_elsewhere: false
-    il_base_income: 5_000 # More than $2,375 personal exemption.
-    state_code: IL
+    people:
+      head:
+        age: 30
+        claimable_as_dependent_on_another_return: false
+        claimed_as_dependent_on_another_return: false
+      spouse:
+        age: 29
+        claimable_as_dependent_on_another_return: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        il_base_income: 5_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IL
   output:
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
 
-- name: Single household, claimable elsewhere, base income less than $2,375
+- name: Single household, claimed elsewhere, base income less than $2,375
   period: 2021
   input:
+    age: 30
     filing_status: SINGLE
-    head_is_dependent_elsewhere: true
-    il_base_income: 2_000 # Less than $2,375 personal exemption.
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: true
+    il_base_income: 2_000
     state_code: IL
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
 
-- name: Single household, claimable elsewhere, base income greater than $2,375
+- name: Single household, claimed elsewhere, base income greater than $2,375
   period: 2021
   input:
+    age: 30
     filing_status: SINGLE
-    head_is_dependent_elsewhere: true
-    il_base_income: 5_000 # More than $2,375 personal exemption.
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: true
+    il_base_income: 5_000
     state_code: IL
   output:
     il_personal_exemption_eligibility_status: NOT_ELIGIBLE
 
-- name: Single household, not claimable elsewhere, base income less than $2,375
+- name: Single household, not claimed elsewhere, base income less than $2,375
   period: 2021
   input:
+    age: 30
     filing_status: SINGLE
-    head_is_dependent_elsewhere: false
-    il_base_income: 2_000 # Less than $2,375 personal exemption.
+    claimable_as_dependent_on_another_return: false
+    claimed_as_dependent_on_another_return: false
+    il_base_income: 2_000
     state_code: IL
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
 
-- name: Single household, not claimable elsewhere, base income greater than $2,375
+- name: Single household, not claimed elsewhere, base income greater than $2,375
   period: 2021
   input:
+    age: 30
     filing_status: SINGLE
-    head_is_dependent_elsewhere: false
-    il_base_income: 5_000  # More than $2,375 personal exemption.
+    claimable_as_dependent_on_another_return: false
+    claimed_as_dependent_on_another_return: false
+    il_base_income: 5_000
     state_code: IL
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
 
-- name: Joint household, both claimable elsewhere, base income less than $4,750
+- name: Joint household, both claimed elsewhere, base income less than $4,750
   period: 2021
   input:
-    filing_status: JOINT
-    head_is_dependent_elsewhere: true
-    spouse_is_dependent_elsewhere: true
-    il_base_income: 2_000 # Less than $2,375 personal exemption.
-    state_code: IL
+    people:
+      head:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+      spouse:
+        age: 29
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        il_base_income: 2_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IL
   output:
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
 
-- name: Joint household, both claimable elsewhere, base income greater than $4,750
+- name: Joint household, both claimed elsewhere, base income greater than $4,750
   period: 2021
   input:
-    filing_status: JOINT
-    head_is_dependent_elsewhere: true
-    spouse_is_dependent_elsewhere: true
-    il_base_income: 5_000 # More than $2,375 personal exemption.
-    state_code: IL
+    people:
+      head:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+      spouse:
+        age: 29
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        il_base_income: 5_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IL
+  output:
+    il_personal_exemption_eligibility_status: NOT_ELIGIBLE
+
+- name: Joint household, one claimed elsewhere, base income less than $2,375
+  period: 2021
+  input:
+    people:
+      head:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+      spouse:
+        age: 29
+        claimable_as_dependent_on_another_return: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        il_base_income: 2_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IL
+  output:
+    il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
+
+- name: Joint household, one claimed elsewhere, base income greater than $2,375
+  period: 2021
+  input:
+    people:
+      head:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+      spouse:
+        age: 29
+        claimable_as_dependent_on_another_return: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        il_base_income: 5_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IL
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
 
-- name: Joint household, one claimable elsewhere, base income less than $2,375
+- name: Joint household, neither claimed elsewhere, base income less than $4,750
   period: 2021
   input:
-    filing_status: JOINT
-    head_is_dependent_elsewhere: true
-    spouse_is_dependent_elsewhere: false
-    il_base_income: 2_000 # Less than $2,375 personal exemption.
-    state_code: IL
+    people:
+      head:
+        age: 30
+        claimable_as_dependent_on_another_return: false
+        claimed_as_dependent_on_another_return: false
+      spouse:
+        age: 29
+        claimable_as_dependent_on_another_return: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        il_base_income: 2_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IL
   output:
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
 
-- name: Joint household, one claimable elsewhere, base income greater than $2,375
+- name: Joint household, neither claimed elsewhere, base income greater than $4,750
   period: 2021
   input:
-    filing_status: JOINT
-    head_is_dependent_elsewhere: true
-    spouse_is_dependent_elsewhere: false
-    il_base_income: 5_000 # More than $2,375 personal exemption.
-    state_code: IL
-  output:
-    il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
-
-- name: Joint household, neither claimable elsewhere, base income less than $4,750
-  period: 2021
-  input:
-    filing_status: JOINT
-    head_is_dependent_elsewhere: false
-    spouse_is_dependent_elsewhere: false
-    il_base_income: 2_000 # Less than $2,375 personal exemption.
-    state_code: IL
-  output:
-    il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
-
-- name: Joint household, neither claimable elsewhere, base income greater than $4,750
-  period: 2021
-  input:
-    filing_status: JOINT
-    head_is_dependent_elsewhere: false
-    spouse_is_dependent_elsewhere: false
-    il_base_income: 5_000 # More than $2,375 personal exemption.
-    state_code: IL
+    people:
+      head:
+        age: 30
+        claimable_as_dependent_on_another_return: false
+        claimed_as_dependent_on_another_return: false
+      spouse:
+        age: 29
+        claimable_as_dependent_on_another_return: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        il_base_income: 5_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IL
   output:
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
 
-- name: Single household, claimable elsewhere, base income less than $2,375
+- name: Single household, claimed elsewhere, base income less than $2,375
   period: 2021
   input:
+    age: 30
     filing_status: SINGLE
-    head_is_dependent_elsewhere: true
-    il_base_income: 2_000 # Less than $2,375 personal exemption.
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: true
+    il_base_income: 2_000
     state_code: IL
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
 
-- name: Single household, claimable elsewhere, base income greater than $2,375
+- name: Single household, claimed elsewhere, base income greater than $2,375
   period: 2021
   input:
+    age: 30
     filing_status: SINGLE
-    head_is_dependent_elsewhere: true
-    il_base_income: 5_000 # More than $2,375 personal exemption.
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: true
+    il_base_income: 5_000
     state_code: IL
   output:
     il_personal_exemption_eligibility_status: NOT_ELIGIBLE
 
-- name: Single household, not claimable elsewhere, base income less than $2,375
+- name: Single household, not claimed elsewhere, base income less than $2,375
   period: 2021
   input:
+    age: 30
     filing_status: SINGLE
-    head_is_dependent_elsewhere: false
-    il_base_income: 2_000 # Less than $2,375 personal exemption.
+    claimable_as_dependent_on_another_return: false
+    claimed_as_dependent_on_another_return: false
+    il_base_income: 2_000
     state_code: IL
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
 
-- name: Single household, not claimable elsewhere, base income greater than $2,375
+- name: Single household, not claimed elsewhere, base income greater than $2,375
   period: 2021
   input:
+    age: 30
     filing_status: SINGLE
-    head_is_dependent_elsewhere: false
-    il_base_income: 5_000  # More than $2,375 personal exemption.
+    claimable_as_dependent_on_another_return: false
+    claimed_as_dependent_on_another_return: false
+    il_base_income: 5_000
     state_code: IL
+  output:
+    il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
+
+- name: Claimability alone does not exclude a single filer from the 2025 exemption
+  period: 2025
+  input:
+    age: 30
+    state_code: IL
+    filing_status: SINGLE
+    il_base_income: 10_000
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: false
+  output:
+    il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
+
+- name: An actual claim excludes a single filer only above the basic amount
+  period: 2025
+  input:
+    age: 30
+    state_code: IL
+    filing_status: SINGLE
+    il_base_income: [2_849, 2_850, 2_851]
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: true
+  output:
+    il_personal_exemption_eligibility_status:
+      - PARTIALLY_ELIGIBLE
+      - PARTIALLY_ELIGIBLE
+      - NOT_ELIGIBLE
+
+- name: Joint exemption eligibility counts actual claims symmetrically for the head and spouse
+  period: 2025
+  input:
+    people:
+      claimed_head:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+      unclaimed_spouse:
+        age: 29
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+      unclaimed_head:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+      claimed_spouse:
+        age: 29
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+      neither_claimed_head:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+      neither_claimed_spouse:
+        age: 29
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      head_claimed:
+        members: [claimed_head, unclaimed_spouse]
+        filing_status: JOINT
+        il_base_income: 10_000
+      spouse_claimed:
+        members: [unclaimed_head, claimed_spouse]
+        filing_status: JOINT
+        il_base_income: 10_000
+      neither_claimed:
+        members: [neither_claimed_head, neither_claimed_spouse]
+        filing_status: JOINT
+        il_base_income: 10_000
+    households:
+      household:
+        members: [claimed_head, unclaimed_spouse, unclaimed_head, claimed_spouse, neither_claimed_head, neither_claimed_spouse]
+        state_code: IL
+  output:
+    tax_units:
+      head_claimed:
+        il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
+      spouse_claimed:
+        il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
+      neither_claimed:
+        il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
+
+- name: An actual claim of a child does not exclude the unclaimed filer's exemption
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 10
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+        il_base_income: 10_000
+    households:
+      household:
+        members: [filer, child]
+        state_code: IL
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
