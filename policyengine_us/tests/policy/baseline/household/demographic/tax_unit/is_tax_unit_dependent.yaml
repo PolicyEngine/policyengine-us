@@ -1,0 +1,137 @@
+# Explicit dependency preserves adult dependents despite default spouse inference.
+# Eligibility and state amounts are independently specified in the sources below.
+# 35 ILCS 5/204(b)(6), (c): $2,425 per dependent in 2023.
+# https://www.ilga.gov/Documents/legislation/ilcs/documents/003500050K204.htm
+- name: Illinois keeps an explicitly claimed nonstudent dependent at age 18.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 50000
+      child:
+        age: 18
+        is_full_time_student: false
+        is_tax_unit_dependent: true
+    tax_units:
+      unit:
+        members: [parent, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: IL
+  output:
+    is_tax_unit_head: [true, false]
+    is_tax_unit_spouse: [false, false]
+    is_tax_unit_dependent: [false, true]
+    is_qualifying_child_dependent: [false, true]
+    tax_unit_dependents: 1
+    il_dependent_exemption: 2425
+
+# 2023 California Form 540, lines 7 and 10: $144 personal + $446 dependent.
+# https://www.ftb.ca.gov/forms/2023/2023-540-booklet.pdf#page=40
+- name: California keeps an explicitly claimed full-time student at age 23.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 50000
+      child:
+        age: 23
+        employment_income: 5000
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+    tax_units:
+      unit:
+        members: [parent, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    is_tax_unit_spouse: [false, false]
+    is_qualifying_child_dependent: [false, true]
+    tax_unit_dependents: 1
+    # Single personal credit $144 + dependent credit $446.
+    ca_exemptions: 590
+
+# 2023 Utah Code 59-10-1018: $1,941 exemption component per dependent.
+# https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1018_2023050320230503.pdf#page=1
+- name: Utah keeps an explicitly claimed zero-income qualifying relative at age 23.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 60000
+      child:
+        age: 23
+        is_full_time_student: false
+        is_tax_unit_dependent: true
+    tax_units:
+      unit:
+        members: [parent, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: UT
+  output:
+    is_tax_unit_spouse: [false, false]
+    is_qualifying_child_dependent: [false, false]
+    is_qualifying_relative_dependent: [false, true]
+    tax_unit_dependents: 1
+    ut_personal_exemption: 1941
+
+# 2023 New York IT-201 instructions, line 36: $1,000 per dependent.
+# https://www.tax.ny.gov/forms/html-instructions/2023/it/it201i-2023.htm#step-5
+- name: New York includes an adult qualifying relative in its dependent exemption.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 60000
+      child:
+        age: 23
+        is_full_time_student: false
+        is_tax_unit_dependent: true
+    tax_units:
+      unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    tax_unit_child_dependents: 1
+    ny_exemptions: 1000
+
+# Arizona Revised Statutes 43-1073.01(B)(2): $25 per dependent age 17 or older.
+# https://www.azleg.gov/ars/43/01073-01.htm
+- name: Arizona expressly gives the other-dependent tier to an 18-year-old.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 60000
+      child:
+        age: 18
+        is_full_time_student: false
+        is_tax_unit_dependent: true
+    tax_units:
+      unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [parent, child]
+        state_code: AZ
+  output:
+    tax_unit_dependents: 1
+    az_dependent_tax_credit_potential: 25
