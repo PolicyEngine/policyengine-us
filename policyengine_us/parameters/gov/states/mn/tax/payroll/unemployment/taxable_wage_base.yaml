@@ -1,15 +1,27 @@
 description: Employer-side unemployment insurance taxable wage base for Minnesota.
 values:
+  # Legacy fallback before the cited DEED history begins in 2014.
   0000-01-01: 42_000
+  2014-01-01: 29_000
+  2015-01-01: 30_000
+  2016-01-01: 31_000
+  2017-01-01: 32_000
+  2018-01-01: 32_000
+  2019-01-01: 34_000
+  2020-01-01: 35_000
+  2021-01-01: 35_000
+  2022-01-01: 38_000
+  2023-01-01: 40_000
+  2024-01-01: 42_000
+  2025-01-01: 43_000
+  2026-01-01: 44_000
 
 metadata:
   period: year
   unit: currency-USD
   label: Minnesota unemployment taxable wage base
   reference:
-    - title: Minnesota Statutes Section 268.035
-      href: https://www.revisor.mn.gov/statutes/cite/268.035
-    - title: Minnesota unemployment tax rates
-      href: https://www.uimn.org/employers/wages-taxes/tax-rates/index.jsp
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=33
+    - title: Minnesota Statutes Section 268.035, subdivision 24
+      href: https://www.revisor.mn.gov/statutes/cite/268.035#stat.268.035.24
+    - title: Minnesota DEED unemployment tax rates, History of tax rate factors (2014-2026)
+      href: https://www.uimn.org/employers/wages-taxes/tax-rates/index.jsp#toggle-4
