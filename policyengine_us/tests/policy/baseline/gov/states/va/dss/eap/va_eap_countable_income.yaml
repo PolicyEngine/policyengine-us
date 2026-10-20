@@ -377,3 +377,44 @@
     # month (47,256 a year); the rating makes the member disabled:
     # 47,256 - 600 = 46,656.
     va_eap_countable_income: 46_656
+
+- name: Case 18, military retired pay counts as unearned retirement income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 55
+        military_retirement_pay: 18_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # Retirement benefits are gross unearned income; no deduction under 60.
+    va_eap_countable_income: 18_000
+
+- name: Case 19, a surviving spouse's military annuity and Social Security survivor benefits both count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 62
+        military_retirement_pay_survivors: 9_600
+        social_security_survivors: 12_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # 9,600 + 12,000 - 600 elderly deduction = 21,000.
+    va_eap_countable_income: 21_000

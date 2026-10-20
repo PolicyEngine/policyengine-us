@@ -185,3 +185,32 @@
     va_eap_points: 74
     # 74 x 4.531665 = 335.34321.
     va_eap: 335.34
+
+- name: Case 8, military retiree in Fairfax County with natural gas heat receives 344.41.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 55
+        military_retirement_pay: 18_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [head]
+        state_code: VA
+        county: FAIRFAX_COUNTY_VA
+  output:
+    va_eap_countable_income: 18_000
+    va_eap_eligible: true
+    # floor(100 x 18,000 / 23,472) = 76 -> 8.
+    va_eap_income_points: 8
+    # 9 + 8 + 16 + 0 + 43 = 76.
+    va_eap_points: 76
+    # 76 x 4.531665 = 344.40654.
+    va_eap: 344.41
