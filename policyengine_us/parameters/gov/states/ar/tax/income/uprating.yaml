@@ -1,0 +1,13 @@
+description: Arkansas uses this index to adjust its income tax bracket boundaries for annual increases in the Consumer Price Index for All Urban Consumers, capped at three percent.
+values:
+  # Neutral history supports zero and infinite bounds defined before 2026.
+  2014-01-01: 1
+  # The published 2026 statutory tables anchor subsequent projections.
+  2026-01-01: 1
+metadata:
+  unit: /1
+  label: Arkansas income tax uprating index
+  economy: false
+  reference:
+  - title: A.C.A. § 26-51-201(d)(2), Act 1459 of 2013, § 2 (CPI-U average for twelve months ending August 31, positive increase capped at three percent)
+    href: https://arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2013%2FPublic%2F&file=1459.pdf&ddBienniumSession=2013%2F2013R#page=3

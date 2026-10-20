@@ -27,7 +27,7 @@ independent transcription of each year's source:
   row's start is skipped.
 - 2026: Act 1 of 2026 (1st Extraordinary Session), A.C.A. 26-51-201(a)(4).
 - 2027-2035: Act 1 of 2026's tables with every bracket bound indexed from
-  2026 by PolicyEngine's uprating index and rounded to the nearest $100.
+  2026 by Arkansas's capped CPI-U index and rounded to the nearest $100.
 
 Invariants:
 - reduction.yaml rows carry strictly increasing finite thresholds, with every
@@ -66,7 +66,7 @@ from policyengine_us.variables.gov.states.ar.tax.income.ar_income_tax_helpers im
 )
 
 P = system.parameters.gov.states.ar.tax.income.rates.main
-UPRATING = system.parameters.gov.irs.uprating
+UPRATING = system.parameters.gov.states.ar.tax.income.uprating
 PUBLISHED_YEARS = range(2021, 2026)
 SOURCE_YEARS = range(2021, 2036)
 LONG_RUN_YEARS = [2050, 2075, 2100]
