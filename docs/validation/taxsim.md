@@ -201,7 +201,23 @@ The table below is loaded from the results the dashboard publishes, so it always
 Each test compares PolicyEngine with TAXSIM for one record at a time, separately for federal income tax and state income tax. A cell in the table is the share of records that pass.
 
 - **Within 1% of income** (the dashboard's default view): the two amounts differ by less than 1% of the record's gross income. Gross income here is wages, self-employment income, interest, dividends, other property income, non-property income, pensions and unemployment compensation, plus short- and long-term capital gains when positive and 85% of Social Security benefits. Records with zero or negative gross income use the \$15 test instead.
-- **Within 1%, net of rebates** (state only): the same test applied to state income tax plus one-time state rebates on both sides. It is meant to remove a timing difference: TAXSIM counts a rebate in the year it is paid and PolicyEngine in the tax year it relates to. It is not exact, because TAXSIM also reports some rebates that its state tax does not reflect (Virginia's in 2022 and 2025, for example), so this column can be lower than the plain 1% column.
+- **Within 1%, net of rebates** (state only): the same test applied to state income tax plus one-time state rebates on both sides. It is meant to remove a timing difference: TAXSIM counts a rebate in the year it is paid and PolicyEngine in the tax year it relates to. It is not exact, because TAXSIM also reports some rebates that its state tax does not reflect (Virginia's in 2022 and 2025, for example), so this column can be lower than the plain 1% column. See [state rebate attribution and the pre-rebate comparison output](state-rebates.md) for the model's reconciliation contract.
 - **Within \$15**: the two amounts differ by \$15 or less.
 
 These rules are implemented in `match_flags` in [`scripts/refresh_dashboard.py`](https://github.com/PolicyEngine/policyengine-taxsim/blob/main/scripts/refresh_dashboard.py). Each year's published summary records the commit and script hash that produced it.
+
+## Constructing comparison inputs
+
+Supply `is_tax_unit_dependent` for dependents or complete `tax_unit_role_input`
+roles for all members. Tax-unit membership and a `filing_status` input alone do
+not prevent an adult member from being inferred as a spouse.
+
+For California, `tax_exempt_interest_income` has no issuer-state split by
+itself. The default treats it all as California-source for the state addback.
+Supply the other-state portion as `ca_out_of_state_municipal_bond_interest`
+on each person, and include that portion in `tax_exempt_interest_income` too.
+The new input defaults to zero and does not change federal AGI.
+
+Alaska residence automatically calculates the regular PFD and any energy relief,
+even when other income is supplied. See [Alaska PFD comparisons](alaska-pfd.md)
+for per-person overrides and the separate 2022 taxable and energy components.

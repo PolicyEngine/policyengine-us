@@ -1,0 +1,30 @@
+description: >-
+  Registry of state tax effects restored for the pre-rebate comparison output.
+  Each effect follows its canonical dated credit list and calculated amount;
+  registry membership alone does not imply a payment in every year. Existing
+  historical backdating is preserved, not corrected by this comparison output.
+  Colorado's residual TABOR sales refund and Massachusetts premium pay are in
+  scope. Ordinary recurring credits remain in liability.
+values:
+  0000-01-01:
+    - az_income_tax_rebate_adjustment
+    - co_income_tax_rebate_adjustment
+    - ct_income_tax_rebate_adjustment
+    - de_income_tax_rebate_adjustment
+    - ga_income_tax_rebate_adjustment
+    - hi_income_tax_rebate_adjustment
+    - id_income_tax_rebate_adjustment
+    - il_income_tax_rebate_adjustment
+    - in_income_tax_rebate_adjustment
+    - ma_income_tax_rebate_adjustment
+    - me_income_tax_rebate_adjustment
+    - mt_income_tax_rebate_adjustment
+    - nm_income_tax_rebate_adjustment
+    - ny_income_tax_rebate_adjustment
+    - ri_income_tax_rebate_adjustment
+    - sc_income_tax_rebate_adjustment
+    - va_income_tax_rebate_adjustment
+metadata:
+  unit: list
+  period: year
+  label: State income tax rebate adjustments

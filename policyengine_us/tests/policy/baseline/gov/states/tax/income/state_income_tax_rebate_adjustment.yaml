@@ -1,0 +1,396 @@
+# Test the comparison registry and actual inclusion, not statutory rebate amounts.
+- name: Arizona families rebate
+  period: 2021
+  input:
+    state_code: AZ
+    az_families_tax_rebate: 250
+  output:
+    state_income_tax_rebate_adjustment: 250
+
+- name: Colorado residual TABOR and Cash Back
+  period: 2021
+  input:
+    state_code: CO
+    co_sales_tax_refund: 56
+    co_tabor_cash_back: 750
+  output:
+    state_income_tax_rebate_adjustment: 806
+
+- name: Connecticut child rebate
+  period: 2021
+  input:
+    state_code: CT
+    ct_child_tax_rebate: 500
+  output:
+    state_income_tax_rebate_adjustment: 500
+
+- name: Delaware relief rebate
+  period: 2020
+  input:
+    state_code: DE
+    de_relief_rebate: 300
+  output:
+    state_income_tax_rebate_adjustment: 300
+
+- name: Georgia refundable surplus rebate
+  period: 2021
+  input:
+    state_code: GA
+    ga_surplus_tax_rebate: 250
+  output:
+    state_income_tax_rebate_adjustment: 250
+
+- name: Hawaii Act 115 rebate
+  period: 2021
+  input:
+    state_code: HI
+    hi_act_115_rebate: 300
+  output:
+    state_income_tax_rebate_adjustment: 300
+
+- name: Idaho two included rebates
+  period: 2020
+  input:
+    state_code: ID
+    id_2022_rebate: 75
+    id_special_season_rebate: 300
+  output:
+    state_income_tax_rebate_adjustment: 375
+
+- name: Illinois income and property rebates
+  period: 2021
+  input:
+    state_code: IL
+    il_income_tax_rebate: 50
+    il_property_tax_rebate: 300
+  output:
+    state_income_tax_rebate_adjustment: 350
+
+- name: Indiana automatic refund
+  period: 2020
+  input:
+    state_code: IN
+    in_automatic_refund_rebate: 325
+  output:
+    state_income_tax_rebate_adjustment: 325
+
+- name: Maine relief rebate
+  period: 2021
+  input:
+    state_code: ME
+    me_relief_rebate: 850
+  output:
+    state_income_tax_rebate_adjustment: 850
+
+- name: Maine newer affordability payment
+  period: 2025
+  input:
+    state_code: ME
+    me_affordability_payment: 300
+  output:
+    state_income_tax_rebate_adjustment: 300
+
+- name: New Mexico three rebates
+  period: 2021
+  input:
+    state_code: NM
+    nm_2021_income_rebate: 250
+    nm_additional_2021_income_rebate: 500
+    nm_supplemental_2021_income_rebate: 500
+  output:
+    state_income_tax_rebate_adjustment: 1250
+
+- name: New York inflation refund
+  period: 2023
+  input:
+    state_code: NY
+    ny_inflation_refund_credit: 200
+  output:
+    state_income_tax_rebate_adjustment: 200
+
+- name: Rhode Island child rebate
+  period: 2021
+  input:
+    state_code: RI
+    ri_child_tax_rebate: 250
+  output:
+    state_income_tax_rebate_adjustment: 250
+
+- name: Virginia final floor after spouse adjustment
+  period: 2021
+  input:
+    state_code: VA
+    va_income_tax_before_non_refundable_credits: 120
+    va_non_refundable_eitc: 20
+    va_spouse_tax_adjustment: 30
+    va_rebate: 250
+  output:
+    state_income_tax_rebate_adjustment: 70
+
+- name: Virginia other credits exhaust liability
+  period: 2022
+  input:
+    state_code: VA
+    va_income_tax_before_non_refundable_credits: 100
+    va_non_refundable_eitc: 120
+    va_spouse_tax_adjustment: 0
+    va_rebate: 200
+  output:
+    state_income_tax_rebate_adjustment: 0
+
+- name: Virginia rebate fully applied
+  period: 2024
+  input:
+    state_code: VA
+    va_income_tax_before_non_refundable_credits: 1000
+    va_non_refundable_eitc: 100
+    va_spouse_tax_adjustment: 50
+    va_rebate: 200
+  output:
+    state_income_tax_rebate_adjustment: 200
+
+- name: Virginia inactive rebate list
+  period: 2023
+  input:
+    state_code: VA
+    va_rebate: 200
+  output:
+    state_income_tax_rebate_adjustment: 0
+
+- name: South Carolina rebate limited to residual tax after ordinary credits
+  period: 2021
+  input:
+    state_code: SC
+    sc_income_tax_before_non_refundable_credits: 500
+    sc_cdcc: 100
+    sc_eitc: 0
+    sc_two_wage_earner_credit: 0
+    sc_refundable_credits: 50
+  output:
+    state_income_tax_rebate_adjustment: 350
+
+- name: South Carolina raw override capped by nonrefundable aggregation
+  period: 2021
+  input:
+    state_code: SC
+    sc_income_tax_before_non_refundable_credits: 100
+    sc_cdcc: 80
+    sc_eitc: 0
+    sc_two_wage_earner_credit: 0
+    sc_2022_rebate: 800
+  output:
+    state_income_tax_rebate_adjustment: 20
+
+- name: South Carolina rebate outside inclusion year
+  period: 2022
+  input:
+    state_code: SC
+    sc_2022_rebate: 800
+  output:
+    state_income_tax_rebate_adjustment: 0
+
+- name: Colorado sales refund remains without Cash Back in 2022
+  period: 2022
+  input:
+    state_code: CO
+    co_sales_tax_refund: 234
+  output:
+    state_income_tax_rebate_adjustment: 234
+
+- name: Colorado amount gate zeroes refund in 2026
+  period: 2026
+  input:
+    state_code: CO
+    age: 40
+    adjusted_gross_income: 100000
+  output:
+    state_income_tax_rebate_adjustment: 0
+
+- name: Montana amount gate zeroes rebate after 2021
+  period: 2022
+  input:
+    state_code: MT
+  output:
+    state_income_tax_rebate_adjustment: 0
+
+- name: State without registered rebate
+  period: 2021
+  input:
+    state_code: FL
+  output:
+    state_income_tax_rebate_adjustment: 0
+
+- name: Existing historical Illinois backdating is reconciled
+  period: 2020
+  input:
+    state_code: IL
+    il_income_tax_rebate: 50
+    il_property_tax_rebate: 300
+  output:
+    state_income_tax_rebate_adjustment: 350
+
+- name: AZ positive raw amounts excluded by dated credit list
+  period: 2022
+  input:
+    state_code: AZ
+    az_families_tax_rebate: 250
+  output:
+    state_income_tax_rebate_adjustment: 0
+
+- name: HI positive raw amounts excluded by dated credit list
+  period: 2022
+  input:
+    state_code: HI
+    hi_act_115_rebate: 300
+  output:
+    state_income_tax_rebate_adjustment: 0
+
+- name: IL positive raw amounts excluded by dated credit list
+  period: 2022
+  input:
+    state_code: IL
+    il_income_tax_rebate: 50
+    il_property_tax_rebate: 300
+  output:
+    state_income_tax_rebate_adjustment: 0
+
+- name: NM positive raw amounts excluded by dated credit list
+  period: 2022
+  input:
+    state_code: NM
+    nm_2021_income_rebate: 250
+    nm_additional_2021_income_rebate: 500
+    nm_supplemental_2021_income_rebate: 500
+  output:
+    state_income_tax_rebate_adjustment: 0
+
+- name: ID positive raw amounts excluded by dated credit list
+  period: 2022
+  input:
+    state_code: ID
+    id_2022_rebate: 75
+    id_special_season_rebate: 300
+  output:
+    state_income_tax_rebate_adjustment: 0
+
+- name: DE positive raw amounts excluded by dated credit list
+  period: 2022
+  input:
+    state_code: DE
+    de_relief_rebate: 300
+  output:
+    state_income_tax_rebate_adjustment: 0
+
+- name: IN positive raw amounts excluded by dated credit list
+  period: 2022
+  input:
+    state_code: IN
+    in_automatic_refund_rebate: 325
+  output:
+    state_income_tax_rebate_adjustment: 0
+
+- name: Massachusetts person premium pay and 62F refund aggregate to each tax unit
+  period: 2021
+  input:
+    people:
+      head:
+        ma_covid_19_essential_employee_premium_pay_program: 500
+      spouse:
+        ma_covid_19_essential_employee_premium_pay_program: 500
+      other:
+        ma_covid_19_essential_employee_premium_pay_program: 500
+    tax_units:
+      first:
+        members: [head, spouse]
+        ma_taxpayer_refund_rebate: 100
+      second:
+        members: [other]
+        ma_taxpayer_refund_rebate: 200
+    households:
+      household:
+        members: [head, spouse, other]
+        state_code: MA
+  output:
+    state_income_tax_rebate_adjustment: [1100, 700]
+
+- name: Massachusetts positive standalone 62F is not included after 2021
+  period: 2022
+  input:
+    state_code: MA
+    ma_taxpayer_refund_rebate: 100
+  output:
+    state_income_tax_rebate_adjustment: 0
+
+- name: Montana individual rebates sum within the return
+  period: 2021
+  input:
+    people:
+      head:
+        mt_income_tax_rebate: 1250
+      spouse:
+        mt_income_tax_rebate: 750
+    tax_units:
+      unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    state_income_tax_rebate_adjustment: 2000
+
+- name: Massachusetts premium pay without 62F before 2021
+  period: 2020
+  input:
+    state_code: MA
+    ma_covid_19_essential_employee_premium_pay_program: 500
+    ma_taxpayer_refund_rebate: 100
+  output:
+    state_income_tax_rebate_adjustment: 500
+
+- name: Maine positive raw affordability payment excluded after its credit-list year
+  period: 2026
+  input:
+    state_code: ME
+    me_affordability_payment: 300
+  output:
+    state_income_tax_rebate_adjustment: 0
+
+- name: Mixed-state households restore only their own rebates
+  period: 2021
+  input:
+    people:
+      colorado:
+        ma_covid_19_essential_employee_premium_pay_program: 500
+      massachusetts:
+        ma_covid_19_essential_employee_premium_pay_program: 500
+      florida:
+        ma_covid_19_essential_employee_premium_pay_program: 500
+    tax_units:
+      co_unit:
+        members: [colorado]
+        co_sales_tax_refund: 56
+        co_tabor_cash_back: 750
+        ma_taxpayer_refund_rebate: 100
+      ma_unit:
+        members: [massachusetts]
+        co_sales_tax_refund: 56
+        co_tabor_cash_back: 750
+        ma_taxpayer_refund_rebate: 100
+      fl_unit:
+        members: [florida]
+        co_sales_tax_refund: 56
+        co_tabor_cash_back: 750
+        ma_taxpayer_refund_rebate: 100
+    households:
+      co_household:
+        members: [colorado]
+        state_code: CO
+      ma_household:
+        members: [massachusetts]
+        state_code: MA
+      fl_household:
+        members: [florida]
+        state_code: FL
+  output:
+    state_income_tax_rebate_adjustment: [806, 600, 0]
