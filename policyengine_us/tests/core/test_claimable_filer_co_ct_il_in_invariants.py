@@ -3,10 +3,11 @@ claimed as a dependent.
 
 A return on which the filer, or on a joint return either spouse, can be claimed
 as a dependent without the filing exception has no dependents (IRC 152(b)(1)),
-so it gets no state dependent exemption or child-based deduction and no
-Colorado child credit, and a childless filer who can be claimed gets no state
-EITC through the ITIN or age extensions (IRC 32(c)(1)(A)(ii)(III)). Indiana
-keeps each filer's own $1,000
+so it gets no state dependent exemption or child-based deduction, and a
+childless filer who can be claimed gets no state EITC through the ITIN or age
+extensions (IRC 32(c)(1)(A)(ii)(III)). Colorado's child credit before 2024 also
+requires allowable dependents; from 2024 its child and family credits follow
+IRC 152(c) qualifying-child status. Indiana keeps each filer's own $1,000
 exemption; Illinois' child tax credit follows the IRC 152 qualifying child.
 
 For couples drawn by Hypothesis and a seeded population in these states, with
@@ -19,9 +20,10 @@ actual claims, and the filing exception:
    MONOTONE (amounts not capped by a tax liability that the claim can raise).
 3. Identities: when
    `head_or_spouse_is_dependent_elsewhere_without_filing_exception` is true,
-   the return has no Illinois dependent exemption, Colorado child tax credit
-   or Indiana additional exemption, and its Indiana base exemptions are
-   $1,000 per filer. Otherwise Illinois and Indiana also count the dependents.
+   the return has no Illinois dependent exemption or Indiana additional
+   exemption, and its Indiana base exemptions are $1,000 per filer. Colorado's
+   child tax credit is also zero before 2024; from 2024 qualifying children
+   remain eligible. Otherwise Illinois and Indiana also count the dependents.
    Illinois rebate eligibility follows actual claims, even when both spouses
    are claimable.
 
@@ -118,11 +120,13 @@ def _identities(units):
         # Each unit is simulated as consecutive copies (labellings or claim
         # patterns), in the order of the units.
         state = np.repeat(states, len(blocked_filer) // len(units))
-        for name in (
+        dependent_outputs = (
             "il_dependent_exemption",
-            "co_ctc",
             "in_additional_exemptions",
-        ):
+        )
+        if year < 2024:
+            dependent_outputs += ("co_ctc",)
+        for name in dependent_outputs:
             assert not _calc(sim, name, year)[blocked_filer].any(), (
                 f"{name} in {year} is positive on a return with a claimable "
                 "filer without the filing exception"

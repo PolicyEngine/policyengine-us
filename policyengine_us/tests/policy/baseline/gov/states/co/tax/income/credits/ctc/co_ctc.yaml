@@ -433,7 +433,7 @@
     co_ctc: 600
 
 
-- name: 2025 single filer who can be claimed as a dependent, no Colorado child tax credit
+- name: 2025 single filer who can be claimed as a dependent, keeps the Colorado child tax credit
   period: 2025
   input:
     people:
@@ -453,13 +453,11 @@
         members: [filer, child]
         state_code: CO
   output:
-    # The child must meet the federal child tax credit's requirements,
-    # so be the taxpayer's dependent; a return with a claimable filer has
-    # no dependents (IRC 152(b)(1)).
-    co_ctc: 0
-    co_ctc_eligible_children_count: 0
+    # IRC 152(c) qualifying-child status survives filer claimability.
+    co_ctc: 1_200
+    co_ctc_eligible_children_count: 1
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent, no Colorado child tax credit (the claimable spouse is the head)
+- name: 2025 joint return with one spouse who can be claimed as a dependent, keeps the Colorado child tax credit (the claimable spouse is the head)
   period: 2025
   input:
     people:
@@ -485,10 +483,10 @@
         members: [person_a, person_b, child]
         state_code: CO
   output:
-    co_ctc: 0
-    co_ctc_eligible_children_count: 0
+    co_ctc: 1_200
+    co_ctc_eligible_children_count: 1
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent, no Colorado child tax credit (the claimable spouse is the spouse)
+- name: 2025 joint return with one spouse who can be claimed as a dependent, keeps the Colorado child tax credit (the claimable spouse is the spouse)
   period: 2025
   input:
     people:
@@ -514,10 +512,10 @@
         members: [person_b, person_a, child]
         state_code: CO
   output:
-    co_ctc: 0
-    co_ctc_eligible_children_count: 0
+    co_ctc: 1_200
+    co_ctc_eligible_children_count: 1
 
-- name: 2025 joint return with both spouses claimable as dependents, no Colorado child tax credit
+- name: 2025 joint return with both spouses claimable as dependents, keeps the Colorado child tax credit
   period: 2025
   input:
     people:
@@ -544,8 +542,8 @@
         members: [person_a, person_b, child]
         state_code: CO
   output:
-    co_ctc: 0
-    co_ctc_eligible_children_count: 0
+    co_ctc: 1_200
+    co_ctc_eligible_children_count: 1
 
 - name: 2025 joint return with neither spouse claimable gets the Colorado child tax credit
   period: 2025
@@ -738,3 +736,28 @@
         state_code: CO
   output:
     co_ctc: 1_200
+
+- name: 2024 claimable but unclaimed filer keeps child and family credits for an age-four qualifying child
+  period: 2024
+  input:
+    people:
+      filer:
+        age: 25
+        employment_income: 10_000
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, child]
+        state_code: CO
+  output:
+    co_ctc: 1_200
+    co_ctc_eligible_children_count: 1
+    co_family_affordability_credit: [0, 3_200]

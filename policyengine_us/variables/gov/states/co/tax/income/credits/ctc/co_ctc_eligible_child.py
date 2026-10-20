@@ -8,21 +8,10 @@ class co_ctc_eligible_child(Variable):
     definition_period = YEAR
     reference = (
         "https://leg.colorado.gov/sites/default/files/2023a_1112_signed.pdf#page=4",
-        # Income Tax Topics: Child Tax Credit (January 2026): "the child
-        # generally must meet the requirements for the federal child tax
-        # credit".
-        "https://tax.colorado.gov/sites/tax/files/documents/ITT_Child_Tax_Credit_Jan_2026.pdf#page=2",
-        "https://www.law.cornell.edu/uscode/text/26/152#b_1",
+        "https://www.law.cornell.edu/uscode/text/26/152#c",
     )
     defined_for = StateCode.CO
 
-    def formula(person, period, parameters):
-        p = parameters(period).gov.states.co.tax.income.credits.ctc
-        child = add(person, period, p.eligible_child) > 0
-        # The child must be one the taxpayer claims as a dependent. A return on
-        # which the filer (or, if joint, either spouse) can be claimed as a
-        # dependent has no dependents (IRC 152(b)(1)).
-        filer_is_dependent = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
-        )
-        return child & ~filer_is_dependent
+    # From 2024, the statute uses IRC 152(c) qualifying-child status,
+    # which is retained when the filer can be claimed elsewhere.
+    adds = "gov.states.co.tax.income.credits.ctc.eligible_child"

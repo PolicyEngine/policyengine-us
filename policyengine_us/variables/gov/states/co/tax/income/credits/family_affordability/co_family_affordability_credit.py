@@ -10,25 +10,16 @@ class co_family_affordability_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://leg.colorado.gov/bills/hb24-1311",
-        # Income Tax Topics: Family Affordability Tax Credit (January 2026).
-        "https://tax.colorado.gov/sites/tax/files/documents/ITT_Family_Affordability_Tax_Credit_Jan_2026.pdf#page=1",
-        "https://www.law.cornell.edu/uscode/text/26/152#b_1",
+        "https://leg.colorado.gov/sites/default/files/2024a_1311_signed.pdf#page=3",
+        "https://www.law.cornell.edu/uscode/text/26/152#c",
     )
     defined_for = StateCode.CO
 
     def formula(person, period, parameters):
         age = person("age", period)
-        # The child must meet the federal child tax credit's dependent
-        # requirement; a return on which the filer (or, if joint, either
-        # spouse) can be claimed as a dependent has no dependents (IRC
-        # 152(b)(1)).
-        filer_is_dependent = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
-        )
-        dependent = (
-            person("is_qualifying_child_dependent", period) & ~filer_is_dependent
-        )
+        # The statute uses IRC 152(c) qualifying-child status, which is
+        # retained when the filer can be claimed elsewhere.
+        dependent = person("is_qualifying_child_dependent", period)
         p = parameters(period).gov.states.co.tax.income.credits.family_affordability
         base_amount = p.amount * dependent
         agi = person.tax_unit("adjusted_gross_income", period)
