@@ -485,7 +485,8 @@
     nc_sa: 0
 
 # G.S. 108A-42.1 adjusts the rates each January 1 by the Social Security
-# cost-of-living adjustment. The 2027 rate and FBR are projections.
+# cost-of-living adjustment. The 2027 rate is uprated until North Carolina
+# publishes it; the 2027 FBR is the SSA amount announced with the 3.6% COLA.
 # https://www.ncleg.gov/EnactedLegislation/Statutes/PDF/BySection/Chapter_108A/GS_108A-42.1.pdf
 - name: Case 37, basic facility rate follows the cost-of-living adjustment in 2027.
   period: 2027-01
@@ -495,13 +496,13 @@
     age: 65
     nc_sa_care_setting: ADULT_CARE_HOME
   output:
-    # 1,397 uprated by the projected Social Security index and rounded to the
-    # dollar.
-    nc_sa_rate: 1_436
-    # Projected FBR.
-    ssi: 1_021.83
-    # 1,436 + 70 - 1,021.83 = 484.17 -> 484.
-    nc_sa: 484
+    # 1,397 uprated by the Social Security index (2027 CPI-W 328.746 / 2026
+    # 317.265 = 1.036187) and rounded to the dollar: 1,447.55 -> 1,448.
+    nc_sa_rate: 1_448
+    # 2027 SSI federal benefit rate.
+    ssi: 1_029
+    # 1,448 + 70 - 1,029 = 489.
+    nc_sa: 489
 
 # An applicant "ineligible for SSI solely due to being over income for SSI"
 # qualifies without applying for SSI (SA-3100 I, II.A.6): "If the a/b

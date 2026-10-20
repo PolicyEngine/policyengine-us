@@ -1,3 +1,66 @@
+## [2.50.1] - 2026-10-20
+
+### Fixed
+
+- Wire military retirement pay and military retirement pay survivors to federal gross income (`irs_gross_income`), person `market_income`, household `market_income_sources`, SNAP unearned income, and SSI unearned income. Add new person-level `military_retirement_income` variable summing retiree and survivor pay. Update state tax calculations and exclusions across all affected states to conform with federal AGI inclusion and statutory state treatment:
+  - State military retirement and survivor subtractions added or updated in AR, AZ, CA, CO, CT, DC, DE, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, ND, NE, NJ, NM, NY, OH, OK, OR, PA, RI, UT, VA, VT, WI, WV.
+  - Fix Georgia double-counting under O.C.G.A. § 48-7-27(a)(5)(E) and Rule 560-7-4-.02(3).
+  - Model California 2025–2029 military retirement and SBP exclusion under R&TC §§ 17132.9–17132.10.
+  - Model Indiana military retirement deduction under IC 6-3-2-4.
+  - Model DC survivor benefits exclusion for age 62+ under D.C. Code § 47-1803.02(a)(2)(N)(ii).
+  - Update Michigan retirement worksheets to account for military survivor benefits.
+  - Fix Pennsylvania Schedule SP eligibility income by excluding military retirement pensions while retaining survivor benefits per PA-40 SP instructions.
+  - Add military retirement and survivor pay back to total income for Massachusetts Senior Circuit Breaker credit under M.G.L. c. 62 § 6(k)(1).
+  - Prevent Maryland pension subtraction double-counting under § 10-209(d)(1) by measuring excess military income against the person's actual capped military subtraction under § 10-207(q).
+  - Fix New Jersey 529 deduction income eligibility test to evaluate NJ gross income (`nj_agi`) rather than federal AGI.
+  - Restrict subtractions and eligibility income calculations in DC, IN, PA, and WI to tax unit filers to prevent dependent income leakage, leaving out dependents' military amounts, PA dependents' alimony and tax-exempt interest, and WI dependents' state and local tax refunds.
+  - Update variable docstrings and references referencing IRC § 61(a)(10) and IRS Pubs 525/575.
+
+
+## [2.50.0] - 2026-10-20
+
+### Added
+
+- Added `ca_other_additions`, `ca_other_subtractions`, `ny_other_additions`, `ny_other_subtractions`, `de_other_additions`, `de_other_subtractions`, `co_other_additions`, and `co_other_subtractions` to support custom state income additions and subtractions for CA, NY, DE, and CO.
+
+### Fixed
+
+- Count the taxable part of employment disability benefits in federal gross income (IRC 105(a)), with a new tax_exempt_disability_benefits input for benefits from plans the recipient paid for (IRC 104(a)(3)); count disability pensions received before minimum retirement age as earned income when entered; limit state disability subtractions to the taxable part; exclude disability benefits from Pennsylvania taxable compensation; and add the Wisconsin, New York, Iowa and Indiana disability income exclusions for people retired on permanent and total disability. Count only nontaxable disability benefits as an addition to federal AGI for Montana's elderly homeowner or renter credit.
+
+
+## [2.49.15] - 2026-10-19
+
+### Fixed
+
+- Apply the federal 110% poverty guideline floor to District of Columbia, Massachusetts, Mississippi, New Jersey and Oregon LIHEAP income eligibility.
+
+
+## [2.49.14] - 2026-10-19
+
+### Fixed
+
+- Use the not seasonally adjusted CPI-W (BLS CWUR0000SA0, the series SSA uses for cost-of-living adjustments) for January 2024 through June 2026, where seasonally adjusted values had replaced it, and re-anchor the CPI-W projections on the not seasonally adjusted June 2026 ratio to CPI-U.
+
+
+## [2.49.13] - 2026-10-19
+
+### Changed
+
+- Update Social Security and SSI parameters for the 2027 cost-of-living adjustment: the 2027 SSA CPI-W uprating index, SSI federal payment amounts, the SSI student earned income exclusion, the contribution and benefit base, and the 2025 national average wage index that sets the 2027 wage-indexed amounts.
+
+### Fixed
+
+- Remove the SNAP net income test from California's broad-based categorical eligibility (CalFresh Modified Categorical Eligibility) for households with and without elderly or disabled members, per CDSS ACLs 12-62, 13-32, 14-56 and 15-42.
+  Apply California's zero-allotment participation screen to SNAP households of three or more while preserving Modified Categorical Eligibility's net-income waiver and smaller households' minimum allotments.
+
+
+## [2.49.12] - 2026-10-19
+
+### Fixed
+
+- Pay the Colorado AND-CS, Texas SSI facility and New Mexico residential care supplements to SSI recipients, so both members of an SSI couple qualify instead of only the one labelled the eligible individual. Colorado AND-CS now counts each spouse's own income (9 CCR 2503-5 3.549), and Texas keeps a facility resident whose countable income equals the $30 reduced standard.
+
+
 ## [2.49.11] - 2026-10-19
 
 ### Fixed
