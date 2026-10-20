@@ -149,8 +149,9 @@
 
 # Same inputs as the breakfast-tier case: categorical eligibility makes lunch
 # free in UT, NH and AR. Without it, UT lunch is free (lunch-only coverage),
-# NH lunch is reduced price, and AR lunch at 300% of FPG is paid.
-- name: Categorical eligibility makes lunch free in Utah, New Hampshire and Arkansas in 2026.
+# NH lunch is reduced price, and AR lunch at 300% of FPG is paid. So only NH
+# and AR lunch changes; the breakfast-tier case tests UT.
+- name: Categorical eligibility makes lunch free in New Hampshire and Arkansas in 2026, while Utah lunch is free with or without it.
   period: 2026
   input:
     state_code: [UT, NH, AR, UT, NH, AR]
@@ -161,6 +162,9 @@
 
 # Same inputs: at exactly 130% of FPG lunch is free in NH and UT; just above
 # it NH lunch is reduced price and UT lunch stays free (lunch-only coverage).
+# Only NH tests the inclusive 130% limit here: UT lunch would be free at 1.3
+# through its lunch-only coverage even with a REDUCED tier. The
+# breakfast-tier case tests UT.
 - name: Lunch is free at exactly 130% of FPG in New Hampshire and Utah, and just above it only in Utah, in 2026.
   period: 2026
   input:

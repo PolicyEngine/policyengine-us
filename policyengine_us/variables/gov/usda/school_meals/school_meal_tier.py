@@ -41,9 +41,7 @@ class school_meal_tier(Variable):
         free_income_limit = max_(
             p_income_limit.FREE, p.state_free_income_limit[state]
         ).astype(fpg_ratio.dtype)
-        reduced_income_limit = np.asarray(p_income_limit.REDUCED).astype(
-            fpg_ratio.dtype
-        )
+        reduced_income_limit = np.asarray(p_income_limit.REDUCED, dtype=fpg_ratio.dtype)
         # Categorical eligibility provides free school meals.
         categorical_eligibility = spm_unit(
             "meets_school_meal_categorical_eligibility", period

@@ -162,8 +162,10 @@
   output:
     school_meal_tier: [REDUCED, REDUCED, REDUCED, FREE, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
 
-# NJ (2020-07-19) and NM (2020-07-01) start after January 1, 2020.
-- name: Only the District of Columbia covers the reduced-price copay in 2020.
+# NJ (2020-07-19) and NM (2020-07-01) start after January 1, 2020. Outside
+# this matrix, OR, VT, MN, NY, ME and CO also cover both copays in 2020 (see
+# the Oregon and pre-universal cases below).
+- name: Only the District of Columbia covers the reduced-price copay in 2020 among the jurisdictions in this matrix.
   period: 2020
   input:
     state_code: [AR, AZ, CT, DC, DE, GA, HI, LA, MD, NE, NJ, NM, OH, PA, RI, SC, SD, TX, WA, VA, FL]
@@ -283,8 +285,10 @@
     school_meal_tier: [FREE, REDUCED, REDUCED, FREE, FREE, REDUCED, FREE, FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, FREE, REDUCED, FREE, REDUCED, REDUCED, REDUCED, REDUCED]
 
 # Oregon Laws 2015, c. 718: reduced-price lunch at no charge from SY 2015-16
-# (2015-07-01), so calendar 2015 reads no coverage and 2016 reads coverage.
-- name: Oregon did not cover the reduced-price copay in 2015.
+# (2015-07-01), so calendar 2015 reads breakfast-only coverage (Oregon Laws
+# 2009, c. 885; state_covers_reduced_price_copay_breakfast_only) and the tier
+# for both meals stays REDUCED; 2016 reads coverage of both meals.
+- name: Oregon did not cover both reduced-price copays in 2015.
   period: 2015
   input:
     state_code: OR
@@ -900,6 +904,27 @@
   output:
     school_meal_tier: [FREE, FREE, FREE, FREE, FREE]
 
+# NY's Aid to Localities act funds the reduced-price copay one school year at
+# a time. The SY 2020-21 and SY 2021-22 entries (2020-07-01 and 2021-07-01)
+# are read on January 1, 2021 and January 1, 2022.
+- name: New York covers reduced-price students in 2021.
+  period: 2021
+  input:
+    state_code: NY
+    school_meal_fpg_ratio: 1.8
+    meets_school_meal_categorical_eligibility: false
+  output:
+    school_meal_tier: FREE
+
+- name: New York covers reduced-price students in 2022.
+  period: 2022
+  input:
+    state_code: NY
+    school_meal_fpg_ratio: 1.8
+    meets_school_meal_categorical_eligibility: false
+  output:
+    school_meal_tier: FREE
+
 # CO and MN universal meals start 2023-07-01, so 300% of FPG is still
 # PAID there in 2023 while 180% is FREE through copay coverage. ME and VT
 # are universal by then.
@@ -911,6 +936,16 @@
     meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false]
   output:
     school_meal_tier: [FREE, FREE, FREE, FREE, FREE, PAID, PAID]
+
+# NY's SY 2023-24 entry (2023-07-01) is read on January 1, 2024.
+- name: New York covers reduced-price students in 2024.
+  period: 2024
+  input:
+    state_code: NY
+    school_meal_fpg_ratio: 1.8
+    meets_school_meal_categorical_eligibility: false
+  output:
+    school_meal_tier: FREE
 
 # NY's last reduced-price appropriation funds SY 2024-25; universal
 # meals (Education Law section 915-a) start 2025-07-01.
@@ -935,3 +970,49 @@
     state_has_universal_free_school_meals: [true, false]
   output:
     school_meal_tier: [FREE, REDUCED]
+
+# Universal free meal dates at the tier level, at 300% of FPG (above every
+# income limit) with no categorical eligibility, asserting all three tiers as
+# the override case above does. 180% shows copay coverage for contrast.
+# ME universal meals start 2021-07-01, so calendar 2022 is universal. PA's
+# universal free breakfast (2022-10-01) and CT's SMART universal meals
+# (2022-07-01) start after January 1, 2022, and neither state covers the
+# reduced-price copay yet, so both are PAID.
+- name: Maine universal free meals make both meals free at 300% of FPG in 2022, before Pennsylvania and Connecticut add theirs.
+  period: 2022
+  input:
+    state_code: [ME, PA, CT]
+    school_meal_fpg_ratio: [3, 3, 3]
+    meets_school_meal_categorical_eligibility: [false, false, false]
+  output:
+    school_meal_tier: [FREE, PAID, PAID]
+    school_meal_breakfast_tier: [FREE, PAID, PAID]
+    school_meal_lunch_tier: [FREE, PAID, PAID]
+
+# CT's SMART universal meals end 2023-06-30. STABLE (SY 2023-24) gives
+# universal free breakfast and covers the reduced-price copay, so at 300% only
+# breakfast is FREE, and at 180% both meals are FREE.
+- name: Connecticut has universal free breakfast but no universal free meals in 2024.
+  period: 2024
+  input:
+    state_code: [CT, CT]
+    school_meal_fpg_ratio: [3, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false]
+  output:
+    school_meal_tier: [PAID, FREE]
+    school_meal_breakfast_tier: [FREE, FREE]
+    school_meal_lunch_tier: [PAID, FREE]
+
+# MI universal meals end 2027-10-01 (no enacted allocation after FY2026-27).
+# Michigan has no copay coverage or income limit, so 300% is PAID and 180% is
+# REDUCED for both meals.
+- name: Michigan returns to the federal tiers in 2028 after universal free meals end.
+  period: 2028
+  input:
+    state_code: [MI, MI]
+    school_meal_fpg_ratio: [3, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false]
+  output:
+    school_meal_tier: [PAID, REDUCED]
+    school_meal_breakfast_tier: [PAID, REDUCED]
+    school_meal_lunch_tier: [PAID, REDUCED]

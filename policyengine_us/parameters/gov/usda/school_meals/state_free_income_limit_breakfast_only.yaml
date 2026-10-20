@@ -4,12 +4,16 @@ description: States provide free breakfast, but not free lunch, to students with
 # (state_free_income_limit); the two are never both above zero for the same
 # state and date. school_meal_breakfast_tier gives free breakfast at or below
 # this limit wherever it is above 0.
+# The limit applies "at or below", so a value here assumes the state also
+# makes breakfast free in the reduced-price band (New Jersey does, N.J.S.A.
+# 18A:33-14a(a)(2)); a breakfast-only band starting above 185 percent in a
+# state without that coverage would need a lower bound.
 # Assume enrollment at a covered school; each state's conditions are noted
 # beside its entry. Budget-funded limits end at their enacted funding end;
 # standing statutes carry forward.
 metadata:
   propagate_metadata_to_children: true
-  label: State free school breakfast income limit (breakfast only) as a share of the poverty guideline
+  label: State breakfast-only free school meal income limit as a share of the poverty guideline
   period: year
   unit: /1
   breakdown:

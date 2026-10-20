@@ -19,7 +19,7 @@ class state_has_universal_free_school_breakfast(Variable):
         "https://arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2025R%2FPublic%2FACT123.pdf#page=2",
         "https://legis.delaware.gov/SessionLaws/Chapter/GetPdfDocument?fileAttachmentId=650776#page=1",
         "https://legis.delaware.gov/SessionLaws/Chapter/GetPdfDocument?fileAttachmentId=650671#page=29",
-        "https://www.scstatehouse.gov/sess126_2025-2026/appropriations2026/tap1b.htm",
+        "https://www.scstatehouse.gov/sess126_2025-2026/appropriations2026/tap1b.htm#s1",
         # PDF pages 1, 7-8
         "https://portal.ct.gov/-/media/sde/nutrition/nslp/memos/om2023/om18-23.pdf#page=1",
         # PDF pages 1, 4

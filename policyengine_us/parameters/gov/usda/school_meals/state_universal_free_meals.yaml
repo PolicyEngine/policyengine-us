@@ -45,7 +45,7 @@ CO:
   # state_covers_reduced_price_copay_breakfast_only). Not modeled: school food
   # authorities opt in and give annual notice of participation, and must
   # maximize federal reimbursement, including the community eligibility
-  # provision for schools that qualify.
+  # provision for schools that qualify; only public schools are covered.
   2023-07-01:
     value: true
     metadata:
@@ -58,19 +58,20 @@ CT:
   0000-01-01: false
   # SMART funds (SY 2022-23): school food authorities that opted in had to
   # serve breakfast and lunch at no cost to all students at their non-CEP
-  # sites, first until each authority's allocation ran out (P.A. 22-118) and
-  # then from March 1, 2023 to the end of the school year (SMART 2.0,
-  # P.A. 23-1). The Connecticut State Department of Education called the
-  # funds transitional, not "universal free meals". Not modeled: opt-in;
-  # authorities whose first allocation ran out before March 1, 2023 could
-  # charge households again until then; new sponsors and authorities that ran
-  # the regular NSLP in SY 2021-22 were ineligible. Universal breakfast in
-  # SY 2023-24 and SY 2026-27 is in state_universal_free_breakfast.
+  # sites, first until each authority's allocation ran out, which happened
+  # between November 2022 and February 2023 (P.A. 22-118), and then from
+  # March 1, 2023 to the end of the school year (SMART 2.0, P.A. 23-1). The
+  # Connecticut State Department of Education called the funds transitional,
+  # not "universal free meals". Not modeled: opt-in; authorities whose first
+  # allocation ran out before March 1, 2023 could charge households again
+  # until then; new sponsors and authorities that ran the regular NSLP in
+  # SY 2021-22 were ineligible. Universal breakfast in SY 2023-24 and
+  # SY 2026-27 is in state_universal_free_breakfast.
   2022-07-01:
     value: true
     metadata:
       reference:
-        - title: "Connecticut CSDE Operational Memorandum 14-22 (P.A. 22-118, SMART funds, SY 2022-23) #page 1,4,7,9"
+        - title: "Connecticut CSDE Operational Memorandum 14-22 (P.A. 22-118, SMART funds, SY 2022-23) #page 1-2,4,7,9,12"
           href: https://portal.ct.gov/-/media/sde/nutrition/nslp/memos/om2022/om14-22.pdf#page=1
         - title: "Connecticut CSDE Operational Memorandum 06-23 (P.A. 23-1, SMART funds 2.0, March 1 to June 30, 2023) #page 1,6,8"
           href: https://portal.ct.gov/-/media/sde/nutrition/nslp/memos/om2023/om06-23.pdf#page=1
@@ -147,7 +148,10 @@ ME:
   # (state_covers_reduced_price_copay and
   # state_covers_reduced_price_copay_breakfast_only). Not modeled: private
   # schools approved for tuition are covered only when at least 60% of their
-  # students are publicly funded (P.L. 2021, c. 759, Part D).
+  # students are publicly funded (P.L. 2021, c. 759, Part D), and since
+  # P.L. 2025, c. 388, Part C only publicly funded students are covered and
+  # state funding requires a school to maximize federal reimbursement,
+  # including the community eligibility provision if eligible (§ 6602-A).
   2021-07-01:
     value: true
     metadata:

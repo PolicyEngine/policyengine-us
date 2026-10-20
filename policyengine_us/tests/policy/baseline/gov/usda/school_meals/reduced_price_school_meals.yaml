@@ -93,7 +93,8 @@
   output:
     reduced_price_school_meals: 523.80
 
-# Same rates and inputs as the 2022 free_school_meals case.
+# Same rates and inputs as the 2022 Washington and North Carolina case in
+# free_school_meals.yaml.
 # WA: both meals FREE, so no reduced-price meal: 0.
 # NC: lunch REDUCED: (3.26 - 0.35) * 180 = 2.91 * 180 = 523.80.
 - name: No reduced-price value in Washington, and reduced-price lunch in North Carolina, in 2022.
@@ -191,6 +192,30 @@
     is_in_k12_school: true
   output:
     reduced_price_school_meals: 0
+
+# Calendar 2028 rates (CPI-U projections; see school_meal_daily_subsidy.yaml):
+# breakfast (SBP) REDUCED 2.28, PAID 0.42; lunch (NSLP) REDUCED 4.44,
+# PAID 0.45. The same New Jersey inputs as the 2028 free_school_meals case,
+# plus FL at 180% of FPG as a reduced-price contrast.
+# NJ at 200% of FPG: breakfast FREE (breakfast-only limit), lunch PAID.
+#   no reduced-price meal: 0 (a REDUCED lunch would give
+#   (4.44 - 0.45) * 180 = 718.20).
+# NJ at 180% of FPG: breakfast FREE, lunch FREE.
+#   no reduced-price meal: 0.
+# NJ at 225% and FL at 200% of FPG: breakfast PAID, lunch PAID.
+#   no reduced-price meal: 0.
+# FL at 180% of FPG: breakfast REDUCED, lunch REDUCED.
+#   (2.28 - 0.42 + 4.44 - 0.45) * 180 = 5.85 * 180 = 1,053.00.
+- name: No reduced-price value with New Jersey's breakfast-only income limit in 2028.
+  period: 2028
+  absolute_error_margin: 0.01
+  input:
+    state_code: [NJ, NJ, NJ, FL, FL]
+    school_meal_fpg_ratio: [2.0, 1.8, 2.25, 2.0, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false]
+    is_in_k12_school: [true, true, true, true, true]
+  output:
+    reduced_price_school_meals: [0, 0, 0, 0, 1_053.00]
 
 # Edge case: the same Alaska and Hawaii inputs as the free_school_meals case.
 # Calendar 2027, one K-12 child, 180 school days. Reduced-price value is the

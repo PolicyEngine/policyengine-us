@@ -457,6 +457,75 @@
     free_school_meals: 1_078.20
     reduced_price_school_meals: 0
 
+# New Jersey keeps its 224% limit for both meals through FY2027 (the FY2027
+# appropriation, from 2026-07-01), so on January 1, 2027 a household at 200%
+# of FPG still gets both meals free. Calendar 2027 uses a projected
+# guideline, so the ratio is set directly. Calendar 2027 rates (SY 2026-27):
+# SBP FREE 2.54, PAID 0.42; NSLP FREE 4.76, PAID 0.45.
+- name: New Jersey household at 200% of FPG still gets free breakfast and lunch in 2027.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        school_meal_fpg_ratio: 2
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    school_meal_tier: FREE
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: FREE
+    school_meal_daily_subsidy: 7.30  # SBP FREE 2.54 + NSLP FREE 4.76 (SY 2026-27 rates)
+    school_meal_paid_daily_subsidy: 0.87  # NSLP 0.45 + SBP 0.42
+    # 180 * (7.30 - 0.87) = 1,157.40
+    school_meal_net_subsidy: 1_157.40
+    free_school_meals: 1_157.40
+    reduced_price_school_meals: 0
+
+# New Jersey's breakfast-only income limit (N.J.S.A. 18A:33-14a(a)(3), 224%
+# of FPG from 2027-07-01) after its limit for both meals ends (2027-06-30).
+# Calendar 2028 uses a projected guideline, so the ratio is set directly. At
+# 200% of FPG the tier for both meals is PAID, breakfast is FREE and lunch is
+# PAID. Calendar 2028 rates are CPI-U projections (see
+# school_meal_daily_subsidy.yaml): SBP FREE 2.58, PAID 0.42; NSLP PAID 0.45.
+- name: New Jersey household at 200% of FPG gets free breakfast and pays for lunch in 2028.
+  period: 2028
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        school_meal_fpg_ratio: 2
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    school_meal_tier: PAID
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: PAID
+    school_meal_daily_subsidy: 3.03  # SBP FREE 2.58 + NSLP PAID 0.45
+    school_meal_paid_daily_subsidy: 0.87  # NSLP 0.45 + SBP 0.42
+    # 180 * (3.03 - 0.87) = 388.80
+    school_meal_net_subsidy: 388.80
+    free_school_meals: 388.80
+    reduced_price_school_meals: 0
+
 # Edge cases: a large family with mixed meal tiers, and households in the
 # non-contiguous state groups.
 

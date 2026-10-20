@@ -1,6 +1,7 @@
 # school_meal_breakfast_tier starts from school_meal_tier (the tier for both
 # meals) and adds the breakfast-only state policies: universal free
-# breakfast and coverage of only the reduced-price breakfast copay. Annual
+# breakfast, coverage of only the reduced-price breakfast copay, and a
+# breakfast-only free-meal income limit (New Jersey from 2027-07-01). Annual
 # periods read parameters on January 1, so a start or end between July 1 and
 # December 31 first changes the next calendar year.
 
@@ -241,8 +242,9 @@
 # FREE, so both meals are free even where a state covers only one meal: UT
 # (lunch only) and NH (breakfast only) at 180% of FPG, and AR (universal free
 # breakfast) at 300% of FPG. The last three repeat the inputs without
-# categorical eligibility for contrast.
-- name: Categorical eligibility makes breakfast free in Utah, New Hampshire and Arkansas in 2026.
+# categorical eligibility for contrast: only UT breakfast changes, since NH
+# and AR breakfast is free either way. The lunch-tier case tests NH and AR.
+- name: Categorical eligibility makes breakfast free in Utah in 2026, while New Hampshire and Arkansas breakfast is free with or without it.
   period: 2026
   input:
     state_code: [UT, NH, AR, UT, NH, AR]
@@ -255,7 +257,9 @@
 # At exactly 130% of FPG the tier for both meals is FREE, so breakfast is free
 # in NH (breakfast-only coverage) and UT (lunch-only coverage). Just above
 # (1.3001) the tier is REDUCED: NH breakfast stays free, UT breakfast is
-# reduced price.
+# reduced price. Only UT tests the inclusive 130% limit here: NH breakfast
+# would be free at 1.3 through its breakfast-only coverage even with a
+# REDUCED tier. The lunch-tier case tests NH.
 - name: Breakfast is free at exactly 130% of FPG in New Hampshire and Utah, and just above it only in New Hampshire, in 2026.
   period: 2026
   input:
@@ -268,8 +272,9 @@
 # Reduced-price breakfast coverage before lunch was added, at 180% of FPG with
 # no categorical eligibility. Breakfast only: MN from 2003-07-01, CO from
 # 2007-07-01, ME from 2008-06-30 and VT by 2010-04-28. NY covers neither meal
-# before 2019-07-01. Calendar 2011 is the first year the tiers can be tested
-# (the federal income limits start 2011-01-01) and VT's first calendar year.
+# before 2019-07-01. Calendar 2011 is the first year a computed tier can be
+# tested (the federal income limits start 2011-01-01) and VT's first calendar
+# year; the tier-input cases below cover the earlier years.
 - name: Colorado, Minnesota, Maine and Vermont cover the reduced-price breakfast copay in 2011.
   period: 2011
   input:
@@ -294,7 +299,8 @@
 # Oregon covered only the reduced-price breakfast copay from SY 2009-10
 # (Oregon Laws 2009, c. 885) until lunch was added on 2015-07-01; its 300%
 # limit starts 2021-07-01. At 180% of FPG the tier for both meals is REDUCED
-# in 2011 (the first testable year) and 2015, and breakfast is FREE.
+# in 2011 (the first year a computed tier can be tested) and 2015, and
+# breakfast is FREE.
 - name: Oregon covers only the reduced-price breakfast copay in 2011.
   period: 2011
   input:
@@ -315,6 +321,141 @@
     school_meal_tier: REDUCED
     school_meal_breakfast_tier: FREE
 
+# First years of breakfast-only copay coverage, before the federal income
+# limits start (2011-01-01). A REDUCED school_meal_tier input replaces the
+# computed tier, which needs those limits, so breakfast is FREE only while the
+# breakfast-only flag is true on January 1. Every case lists MN, WA, CO, ME,
+# OR and VT at 180% of FPG, in the order of their starts: MN 2003-07-01, WA
+# 2006-07-01, CO 2007-07-01, ME 2008-06-30, OR 2009-08-04 and VT 2010-04-28
+# (VT's first FREE year is the 2011 case above).
+- name: Minnesota does not yet cover the reduced-price breakfast copay in 2003.
+  period: 2003
+  input:
+    state_code: [MN, WA, CO, ME, OR, VT]
+    school_meal_tier: [REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+  output:
+    school_meal_breakfast_tier: [REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+
+- name: Minnesota covers the reduced-price breakfast copay from 2004.
+  period: 2004
+  input:
+    state_code: [MN, WA, CO, ME, OR, VT]
+    school_meal_tier: [REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+  output:
+    school_meal_breakfast_tier: [FREE, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+
+- name: Washington does not yet cover the reduced-price breakfast copay in 2006.
+  period: 2006
+  input:
+    state_code: [MN, WA, CO, ME, OR, VT]
+    school_meal_tier: [REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+  output:
+    school_meal_breakfast_tier: [FREE, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+
+- name: Washington covers the reduced-price breakfast copay from 2007.
+  period: 2007
+  input:
+    state_code: [MN, WA, CO, ME, OR, VT]
+    school_meal_tier: [REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+  output:
+    school_meal_breakfast_tier: [FREE, FREE, REDUCED, REDUCED, REDUCED, REDUCED]
+
+- name: Colorado covers the reduced-price breakfast copay from 2008.
+  period: 2008
+  input:
+    state_code: [MN, WA, CO, ME, OR, VT]
+    school_meal_tier: [REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+  output:
+    school_meal_breakfast_tier: [FREE, FREE, FREE, REDUCED, REDUCED, REDUCED]
+
+- name: Maine covers the reduced-price breakfast copay from 2009.
+  period: 2009
+  input:
+    state_code: [MN, WA, CO, ME, OR, VT]
+    school_meal_tier: [REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+  output:
+    school_meal_breakfast_tier: [FREE, FREE, FREE, FREE, REDUCED, REDUCED]
+
+- name: Oregon covers the reduced-price breakfast copay from 2010, before Vermont.
+  period: 2010
+  input:
+    state_code: [MN, WA, CO, ME, OR, VT]
+    school_meal_tier: [REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+  output:
+    school_meal_breakfast_tier: [FREE, FREE, FREE, FREE, FREE, REDUCED]
+
+# Ends of breakfast-only copay coverage when lunch was added: VT 2013-07-01,
+# MN 2014-07-01, OR 2015-07-01, ME 2019-07-01 and CO 2019-08-02 (WA's runs to
+# 2021-06-30). From each end both meals are in
+# state_covers_reduced_price_copay, which a computed tier already reflects,
+# so a REDUCED tier input isolates the breakfast-only flag: breakfast is FREE
+# only while it is true. Every case lists VT, MN, OR, CO, ME and WA at 180% of
+# FPG.
+- name: Vermont's breakfast-only copay coverage ends before 2014.
+  period: 2014
+  input:
+    state_code: [VT, MN, OR, CO, ME, WA]
+    school_meal_tier: [REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+  output:
+    school_meal_breakfast_tier: [REDUCED, FREE, FREE, FREE, FREE, FREE]
+
+- name: Minnesota's breakfast-only copay coverage ends before 2015.
+  period: 2015
+  input:
+    state_code: [VT, MN, OR, CO, ME, WA]
+    school_meal_tier: [REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+  output:
+    school_meal_breakfast_tier: [REDUCED, REDUCED, FREE, FREE, FREE, FREE]
+
+- name: Oregon's breakfast-only copay coverage ends before 2016.
+  period: 2016
+  input:
+    state_code: [VT, MN, OR, CO, ME, WA]
+    school_meal_tier: [REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+  output:
+    school_meal_breakfast_tier: [REDUCED, REDUCED, REDUCED, FREE, FREE, FREE]
+
+- name: Colorado's and Maine's breakfast-only copay coverage ends before 2020, while Washington's continues.
+  period: 2020
+  input:
+    state_code: [VT, MN, OR, CO, ME, WA]
+    school_meal_tier: [REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+  output:
+    school_meal_breakfast_tier: [REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, FREE]
+
+- name: Washington's breakfast-only copay coverage ends before 2022.
+  period: 2022
+  input:
+    state_code: [VT, MN, OR, CO, ME, WA]
+    school_meal_tier: [REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+  output:
+    school_meal_breakfast_tier: [REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+
+# New Jersey's breakfast-only income limit starts 2027-07-01, so on
+# January 1, 2027 it is still 0 (the 2.24 limit for both meals applies
+# through school_meal_tier). With a PAID or REDUCED tier input at 200% of
+# FPG, breakfast keeps the input tier in 2027.
+- name: New Jersey's breakfast-only income limit does not yet apply to an input tier in 2027.
+  period: 2027
+  input:
+    state_code: [NJ, NJ]
+    school_meal_tier: [PAID, REDUCED]
+    school_meal_fpg_ratio: [2.0, 2.0]
+  output:
+    school_meal_breakfast_tier: [PAID, REDUCED]
+
 # NJ: from 2027-07-01 only the breakfast limit (N.J.S.A. 18A:33-14a(a)(3),
 # 224%) remains. 1.8 is FREE through reduced-price copay coverage; 2.0 and
 # exactly 2.24 are FREE through the breakfast-only limit; 2.25 is above it.
@@ -328,9 +469,9 @@
   output:
     school_meal_breakfast_tier: [FREE, FREE, FREE, PAID, PAID]
 
-# The breakfast-only income limit applies with a tier input too, but only
-# where a state sets one: NJ at 200% of FPG is FREE (limit 2.24) and at 250%
-# PAID; FL (no limit) keeps the PAID input tier.
+# The breakfast-only income limit applies with a tier input too: NJ at 200%
+# of FPG is FREE (limit 2.24) and at 250% PAID. FL (no limit) keeps the PAID
+# input tier at 200%; the next case covers ratios at or below 0.
 - name: New Jersey's breakfast-only income limit applies to a paid input tier in 2028, but no limit applies in Florida.
   period: 2028
   input:
@@ -339,3 +480,35 @@
     school_meal_fpg_ratio: [2.0, 2.5, 2.0]
   output:
     school_meal_breakfast_tier: [FREE, PAID, PAID]
+
+# Guard on the breakfast-only income limit: a limit of 0 means no limit, so a
+# ratio at or below 0 (zero or negative income) must not make breakfast free.
+# A school_meal_tier input keeps the ratio from setting the tier, so only the
+# guard decides. FL and NC have no breakfast-only limit, so their PAID and
+# REDUCED inputs are unchanged at ratios 0 and -1. New Jersey's limit (2.24
+# from 2027-07-01) is above 0, so ratios 0 and -1 are within it.
+- name: A breakfast-only income limit of 0 does not make breakfast free at zero or negative income in 2028.
+  period: 2028
+  input:
+    state_code: [FL, FL, NC, NJ, NJ]
+    school_meal_tier: [PAID, REDUCED, PAID, PAID, REDUCED]
+    school_meal_fpg_ratio: [0, -1, 0, 0, -1]
+  output:
+    school_meal_breakfast_tier: [PAID, REDUCED, PAID, FREE, FREE]
+
+# New Jersey in 2028 within 0.0001 of its cutoffs, no categorical
+# eligibility. The limit for both meals is 0, so the tier is FREE up to 185%
+# (reduced-price copay coverage) and PAID above it. Breakfast is FREE up to
+# the breakfast-only limit, 2.24: 2.2399 and 2.24 are FREE and 2.2401 is
+# PAID. At 1.85 both meals are FREE; at 1.8501 breakfast is FREE through the
+# breakfast-only limit while the tier and lunch are PAID.
+- name: New Jersey ratios at and just above 185% and just below, at and just above its 224% breakfast-only limit in 2028.
+  period: 2028
+  input:
+    state_code: [NJ, NJ, NJ, NJ, NJ]
+    school_meal_fpg_ratio: [1.85, 1.8501, 2.2399, 2.24, 2.2401]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false]
+  output:
+    school_meal_tier: [FREE, PAID, PAID, PAID, PAID]
+    school_meal_breakfast_tier: [FREE, FREE, FREE, FREE, PAID]
+    school_meal_lunch_tier: [FREE, PAID, PAID, PAID, PAID]

@@ -104,9 +104,10 @@ programs:
         notes: Breakfast-only copay coverage from SY2007-08 (Start Smart Nutrition Program); both meals from SY2019-20, when the Child Nutrition School Lunch Protection Program reached grade 12 (grade-limited lunch coverage before then is not modeled); superseded by universal meals from SY2023-24.
         reference: SB 07-059 (C.R.S. § 22-82.7-104); HB 19-1171 (C.R.S. § 22-82.9-105)
       - state: CO
-        status: complete
+        status: partial
         name: Colorado Healthy School Meals for All
         effective: 2023-07-01
+        notes: School food authorities opt in (C.R.S. § 22-82.9-204(2)). Partial because the model treats the program as covering every student.
         reference: HB 22-1414 / Proposition FF (2022); C.R.S. § 22-82.9-201 et seq.
       - state: CT
         status: partial
@@ -174,10 +175,10 @@ programs:
         effective: 2021-07-01
         reference: LD 221 / P.L. 2021, c. 398, Part OOOO (approved July 1, 2021); 20-A M.R.S. § 6602(1)(H)-(I)
       - state: MI
-        status: complete
+        status: partial
         name: Michigan School Meals
         effective: 2023-07-01
-        notes: Universal free meals funded by annual School Aid Act § 30d allocations; ends September 30, 2027 with the last enacted allocation (2026 PA 25).
+        notes: Universal free meals funded by annual School Aid Act § 30d allocations; ends September 30, 2027 with the last enacted allocation (2026 PA 25). Partial because participating entities opt in, and the model treats the program as covering every student.
         reference: PA 103 of 2023 (SB 0173); MCL 388.1630d; 2026 PA 25, § 30d
       - state: MN
         status: complete

@@ -24,8 +24,8 @@ class school_meal_breakfast_tier(Variable):
         "https://www.ncleg.gov/EnactedLegislation/SessionLaws/HTML/2011-2012/SL2011-342.html",
         "https://gc.nh.gov/rsa/html/XV/189/189-11-a.htm",
         "https://mgaleg.maryland.gov/2026RS/Statute_Web/ged/7-602.pdf#page=2",
-        # PDF pages 1005-1006
-        "https://www.lbb.texas.gov/Documents/GAA/General_Appropriations_Act_2024_2025.pdf#page=1005",
+        # PDF pages 702, 1005-1006
+        "https://www.lbb.texas.gov/Documents/GAA/General_Appropriations_Act_2024_2025.pdf#page=702",
         "https://lawfilesext.leg.wa.gov/biennium/2005-06/Pdf/Bills/Session%20Laws/Senate/6386-S.SL.pdf#page=212",
         "https://lawfilesext.leg.wa.gov/biennium/2021-22/Pdf/Bills/Session%20Laws/Senate/5092-S.SL.pdf#page=997",
         # PDF pages 2-4
@@ -34,7 +34,7 @@ class school_meal_breakfast_tier(Variable):
         "https://lldc.mainelegislature.org/Open/Laws/2007/2007_PL_c539.pdf#page=2",
         "https://www.revisor.mn.gov/laws/2003/1/Session+Law/Chapter/9/",
         "https://www.oregonlegislature.gov/bills_laws/lawsstatutes/2009orLaw0885.html",
-        # PDF pages 4-5
+        # PDF pages 4-6
         "https://legislature.vermont.gov/Documents/2010/Docs/ACTS/ACT087/ACT087%20As%20Enacted.pdf#page=4",
         "https://pub.njleg.state.nj.us/Bills/2022/AL23/336_.HTM",
     )

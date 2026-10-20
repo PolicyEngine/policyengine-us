@@ -210,6 +210,28 @@
   output:
     free_school_meals: 381.60
 
+# Calendar 2028 rates (CPI-U projections; see school_meal_daily_subsidy.yaml):
+# breakfast (SBP) FREE 2.58, PAID 0.42; lunch (NSLP) FREE 4.85, PAID 0.45.
+# New Jersey's income limit for both meals (224%) ends 2027-07-01 and its
+# breakfast-only limit (224%, N.J.S.A. 18A:33-14a(a)(3)) starts then.
+# NJ at 200% of FPG: breakfast FREE (breakfast-only limit), lunch PAID (the
+#   tier for both meals is PAID: no limit for both meals, above 185%).
+#   breakfast (2.58 - 0.42) * 180 = 388.80; lunch value 0.45 - 0.45 = 0.
+# NJ at 180% of FPG: breakfast FREE, lunch FREE (reduced-price copay coverage).
+#   (2.58 - 0.42 + 4.85 - 0.45) * 180 = 6.56 * 180 = 1,180.80.
+# NJ at 225% and FL at 200% of FPG: breakfast PAID, lunch PAID.
+#   no free meal: 0.
+- name: New Jersey's breakfast-only income limit counts breakfast, but not the paid lunch, as free in 2028.
+  period: 2028
+  absolute_error_margin: 0.01
+  input:
+    state_code: [NJ, NJ, NJ, FL]
+    school_meal_fpg_ratio: [2.0, 1.8, 2.25, 2.0]
+    meets_school_meal_categorical_eligibility: [false, false, false, false]
+    is_in_k12_school: [true, true, true, true]
+  output:
+    free_school_meals: [388.80, 1_180.80, 0, 0]
+
 # Edge case: the per-meal split uses each state group's own rates. Calendar
 # 2027, one K-12 child, 180 school days. Each meal's value is its rate above
 # the paid rate:

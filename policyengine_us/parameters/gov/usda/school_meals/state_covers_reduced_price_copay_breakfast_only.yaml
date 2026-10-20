@@ -7,7 +7,7 @@ description: States provide breakfast, but not lunch, at no cost to students eli
 # standing statutes carry forward.
 # Federal nationwide waivers made all school meals free through June 30, 2022.
 # The model does not represent them, so values dated before July 1, 2022 show
-# state effects that families did not see.
+# state effects in calendar 2021 and 2022 that families did not see.
 metadata:
   propagate_metadata_to_children: true
   label: State covers reduced-price school breakfast copays only
@@ -114,7 +114,8 @@ ME:
   # FY2009. Lunch was added from SY 2019-20, when both meals are in
   # state_covers_reduced_price_copay. Not modeled: public schools only until
   # 2022, when private schools approved for tuition with at least 60 percent
-  # publicly funded students were added.
+  # publicly funded students were added; secondary schools limited to grades
+  # 9 to 12 are exempt (20-A M.R.S. § 6602(2)(A)).
   2008-06-30:
     value: true
     metadata:
@@ -304,7 +305,7 @@ VT:
     value: true
     metadata:
       reference:
-        - title: "Vermont Act 87 of 2010 (H.408), Sec. 4, 16 V.S.A. § 1264(c) #page 4-5"
+        - title: "Vermont Act 87 of 2010 (H.408), Secs. 4, 6, 16 V.S.A. § 1264(c) #page 4-6"
           href: https://legislature.vermont.gov/Documents/2010/Docs/ACTS/ACT087/ACT087%20As%20Enacted.pdf#page=4
   2013-07-01:
     value: false
@@ -319,12 +320,12 @@ WA:
   # through FY2021, and lunch copays for kindergarten through grade 3 only
   # from FY2008. From SY 2021-22 both meals are free
   # (state_covers_reduced_price_copay). Not modeled: the grade-limited lunch
-  # coverage.
+  # coverage; public schools only.
   2006-07-01:
     value: true
     metadata:
       reference:
-        - title: Washington ESSB 6386 (2006 c 372) § 512, amending 2005 c 518 § 513(5)(a)
+        - title: Washington ESSB 6386 (2006 c 372) § 512, amending 2005 c 518 § 513(4)(a) (renumbered (5)(a))
           href: https://lawfilesext.leg.wa.gov/biennium/2005-06/Pdf/Bills/Session%20Laws/Senate/6386-S.SL.pdf#page=212
         - title: "Washington SSB 5883 (2017 3rd sp.s. c 1) § 506(1) #page 211-212"
           href: https://lawfilesext.leg.wa.gov/biennium/2017-18/Pdf/Bills/Session%20Laws/Senate/5883-S.SL.pdf#page=211
