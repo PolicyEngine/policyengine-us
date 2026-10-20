@@ -11,6 +11,7 @@ values:
     - in_nol
     - in_unemployment_compensation_deduction
     - in_other_deductions
+    - in_disability_retirement_deduction # IC 6-3-2-9 (code 602)
     - in_civil_service_annuity_deduction
 
   2023-01-01:
@@ -34,6 +35,8 @@ values:
     - in_unemployment_compensation_deduction
     # IC 6-3-2
     - in_other_deductions
+    # IC 6-3-2-9 (code 602)
+    - in_disability_retirement_deduction
     # IC 6-3-2-4 (b)
     - military_basic_pay
     # IC 6-3-2-3.7
@@ -60,6 +63,8 @@ values:
     - in_unemployment_compensation_deduction
     # IC 6-3-2
     - in_other_deductions
+    # IC 6-3-2-9 (code 602)
+    - in_disability_retirement_deduction
     # IC 6-3-2-4 (b)
     - military_basic_pay
     # IC 6-3-2-28
@@ -88,6 +93,8 @@ values:
     - in_unemployment_compensation_deduction
     # IC 6-3-2
     - in_other_deductions
+    # IC 6-3-2-9 (code 602)
+    - in_disability_retirement_deduction
     # IC 6-3-2-4 (b)
     - military_basic_pay
     # IC 6-3-2-28
@@ -122,6 +129,8 @@ values:
     - in_unemployment_compensation_deduction
     # IC 6-3-2
     - in_other_deductions
+    # IC 6-3-2-9 (code 602)
+    - in_disability_retirement_deduction
     # IC 6-3-2-4 (b)
     - military_basic_pay
     # IC 6-3-2-28
