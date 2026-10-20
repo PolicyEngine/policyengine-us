@@ -1,0 +1,1 @@
+Count Michigan household resources' Social Security, SSI and railroad retirement benefits, and deduct health insurance premiums, only for the claimant and spouse (MCL 206.508(3) and 206.510), so a dependent's own benefits and premiums no longer change the homestead property tax and home heating credits.
