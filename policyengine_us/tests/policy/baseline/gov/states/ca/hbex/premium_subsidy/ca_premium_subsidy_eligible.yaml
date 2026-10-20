@@ -5,14 +5,20 @@
 # married-filing-separately exclusion, and the federal required-contribution
 # income test), the tax unit is an applicable return filer, and ACA MAGI is at
 # or above the 100% FPL floor and at or below the FPL limit (1.65 in PY2026,
-# 1.99 in PY2027). is_aca_ptc_eligible and aca_magi_fraction are supplied
-# directly so the gate logic is tested in isolation from the premium-data lookup.
-#   fpl_floor = 1.0, fpl_limit = 1.65 (PY2026)
+# under 2.00 in PY2027; see fpl_limit_inclusive). Program Design (d)(7) applies
+# these limits to the exact ratio of nonnegative ACA MAGI to prior-year FPG,
+# not to the truncated aca_magi_fraction (FTB 3849 Table 1-2 likewise decides
+# band edges on the exact percentage). Supplied-income cases pin prior-year FPG
+# to $10,000 and set aca_magi to the target ratio; is_aca_ptc_eligible is
+# supplied so the gate logic is tested in isolation from the premium-data
+# lookup. Income-derived cases use the actual prior-year one-person FPG
+# ($15,650 for PY2026, $15,960 for PY2027).
+#   fpl_floor = 1.0; fpl_limit = 1.65 inclusive (PY2026), 2.0 exclusive (PY2027)
 
 # ---- Income-band boundaries ----
 
 - name: Case 1, just below the 100% FPL floor (0.99) is ineligible.
-  # aca_magi_fraction 0.99 < fpl_floor 1.0 -> income test fails.
+  # Exact ratio 9_900 / 10_000 = 0.99 < fpl_floor 1.0 -> income test fails.
   period: 2026
   input:
     people:
@@ -22,7 +28,10 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 0.99
+        aca_magi: 9_900
+        tax_unit_fpg:
+          2025: 10_000
+        tax_unit_is_filer: true
     households:
       household:
         members: [person1]
@@ -31,7 +40,7 @@
     ca_premium_subsidy_eligible: false
 
 - name: Case 2, exactly at the 100% FPL floor (1.0) is eligible.
-  # aca_magi_fraction 1.0 >= fpl_floor 1.0 and <= fpl_limit 1.65.
+  # Exact ratio 1.0 >= fpl_floor 1.0 and <= fpl_limit 1.65.
   period: 2026
   input:
     people:
@@ -41,7 +50,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.00
+        aca_magi: 10_000
+        tax_unit_fpg:
+          2025: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -60,7 +71,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.40
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2025: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -70,7 +83,7 @@
     ca_premium_subsidy_eligible: true
 
 - name: Case 4, exactly at the 165% FPL limit (1.65) is eligible.
-  # aca_magi_fraction 1.65 <= fpl_limit 1.65 (at the limit, not above).
+  # Exact ratio 1.65 <= fpl_limit 1.65 (PY2026: "at or below 165 percent").
   period: 2026
   input:
     people:
@@ -80,7 +93,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.65
+        aca_magi: 16_500
+        tax_unit_fpg:
+          2025: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -90,7 +105,7 @@
     ca_premium_subsidy_eligible: true
 
 - name: Case 5, just above the 165% FPL limit (1.66) is ineligible.
-  # aca_magi_fraction 1.66 > fpl_limit 1.65 -> above the band (federal APTC only).
+  # Exact ratio 1.66 > fpl_limit 1.65 -> above the band (federal APTC only).
   period: 2026
   input:
     people:
@@ -100,12 +115,112 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.66
+        aca_magi: 16_600
+        tax_unit_fpg:
+          2025: 10_000
+        tax_unit_is_filer: true
     households:
       household:
         members: [person1]
         state_code: CA
   output:
+    ca_premium_subsidy_eligible: false
+
+# ---- PY2026 165% limit from derived income (exact ratio, not truncation) ----
+
+- name: Case 4b, PY2026 income of exactly 165% of FPL is eligible.
+  # $25,822.50 / 2025 one-person FPG $15,650 = 165.000%, which is "at or below
+  # 165 percent" (Program Design (d)(7)).
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 25_822.50
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi: 25_822.50
+    aca_magi_fraction: 1.65
+    ca_premium_subsidy_eligible: true
+
+- name: Case 5b, PY2026 income of 165.003% of FPL is ineligible though it truncates to 1.65.
+  # $25,823 / $15,650 = 165.0032%. aca_magi_fraction truncates to 1.65, but the
+  # limit applies to the exact ratio, which is above 165 percent.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 25_823
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi: 25_823
+    aca_magi_fraction: 1.65
+    ca_premium_subsidy_eligible: false
+
+- name: Case 5c, PY2026 income of 165.994% of FPL is ineligible though it truncates to 1.65.
+  # $25,978 / $15,650 = 165.9936%, the highest whole-dollar income that
+  # truncates to 1.65. Before the exact-ratio gate this case was eligible.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 25_978
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi: 25_978
+    aca_magi_fraction: 1.65
+    ca_premium_subsidy_eligible: false
+
+- name: Case 5d, PY2026 income of 166.000% of FPL is ineligible.
+  # $25,979 / $15,650 = 166.0000%; the truncated fraction is 1.66 as well.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 25_979
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi: 25_979
+    aca_magi_fraction: 1.66
     ca_premium_subsidy_eligible: false
 
 # ---- Federal APTC gate ----
@@ -122,7 +237,10 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.40
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2025: 10_000
+        tax_unit_is_filer: true
     households:
       household:
         members: [person1]
@@ -144,7 +262,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        aca_magi_fraction: 1.40
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2025: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -166,7 +286,10 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.40
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2025: 10_000
+        tax_unit_is_filer: true
     households:
       household:
         members: [person1]
@@ -187,7 +310,10 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.40
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2024: 10_000
+        tax_unit_is_filer: true
     households:
       household:
         members: [person1]
@@ -206,7 +332,10 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.40
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2027: 10_000
+        tax_unit_is_filer: true
     households:
       household:
         members: [person1]
@@ -225,7 +354,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.40
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2026: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -236,8 +367,8 @@
 
 # ---- Zero-income edge ----
 
-- name: Case 12, zero-income household (aca_magi_fraction 0) is ineligible.
-  # aca_magi_fraction 0 < fpl_floor 1.0 -> income test fails. A tax unit with no
+- name: Case 12, zero-income household (0% FPL) is ineligible.
+  # Exact ratio 0 < fpl_floor 1.0 -> income test fails. A tax unit with no
   # income (0% FPL) sits below the CA 100% floor and receives federal APTC only,
   # even with an APTC-eligible member. Confirms the fraction-0 edge is on the
   # ineligible side of the floor rather than a spurious pass-through.
@@ -250,7 +381,10 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 0
+        aca_magi: 0
+        tax_unit_fpg:
+          2025: 10_000
+        tax_unit_is_filer: true
     households:
       household:
         members: [person1]
@@ -261,7 +395,7 @@
 # ---- Applicable return filer gate (Program Design (d)(7)) ----
 
 - name: Case 13, non-filer in-band CA unit is ineligible.
-  # aca_magi_fraction 1.40 in [1.0,1.65] and APTC-eligible, but the tax unit is
+  # Exact ratio 1.40 in [1.0,1.65] and APTC-eligible, but the tax unit is
   # not an applicable return filer, so ca_premium_subsidy_eligible is false.
   # GC 100810(a)(6) requires filing a California return; a non-filer forms no
   # claiming unit.
@@ -274,7 +408,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.40
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2025: 10_000
         tax_unit_is_filer: false
         # Nor does it take up the federal credit, so it files no return to claim it.
         takes_up_aca_if_eligible: false
@@ -297,7 +433,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.40
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2025: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -326,7 +464,9 @@
       tax_unit:
         members: [person1, person2]
         filing_status: SEPARATE
-        aca_magi_fraction: 1.40
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2025: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -351,7 +491,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.40
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2025: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -360,11 +502,11 @@
   output:
     ca_premium_subsidy_eligible: false
 
-# ---- PY2027 FPL-limit edge (limit raised to 1.99) ----
+# ---- PY2027 FPL-limit edge (under 200%) ----
 
-- name: Case 17, PY2027 at 199% FPL (1.99) is eligible (limit raised to 1.99).
-  # PY2027 fpl_limit 1.99: 1.99 <= 1.99 -> in-band. Confirms the widened
-  # PY2027 band admits units up to 199% FPL.
+- name: Case 17, PY2027 at 199% FPL (1.99) is eligible (limit under 200%).
+  # PY2027 Program Design (d)(7): "under 200 percent". 1.99 < 2.0 -> in-band.
+  # Confirms the widened PY2027 band admits units up to 199% FPL.
   period: 2027
   input:
     people:
@@ -374,7 +516,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.99
+        aca_magi: 19_900
+        tax_unit_fpg:
+          2026: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -383,9 +527,9 @@
   output:
     ca_premium_subsidy_eligible: true
 
-- name: Case 18, PY2027 at 200% FPL (2.00) is ineligible (just above the 1.99 limit).
-  # PY2027 fpl_limit 1.99: 2.00 > 1.99 -> above the band. Pairs with Case 17 to
-  # bracket the PY2027 upper edge.
+- name: Case 18, PY2027 at exactly 200% FPL (2.00) is ineligible (strict limit).
+  # PY2027 fpl_limit 2.0 with fpl_limit_inclusive false: 2.00 is not under 2.0.
+  # Pairs with Case 17 to bracket the PY2027 upper edge.
   period: 2027
   input:
     people:
@@ -395,7 +539,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.00
+        aca_magi: 20_000
+        tax_unit_fpg:
+          2026: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -403,6 +549,104 @@
         state_code: CA
   output:
     ca_premium_subsidy_eligible: false
+
+- name: Case 17a, PY2027 at 199.5% FPL (1.995) is eligible.
+  # Exact ratio 19_950 / 10_000 = 1.995 < 2.0. A limit of 1.99 on the exact
+  # ratio would wrongly exclude incomes between 199% and 200% of FPL.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 19_950
+        tax_unit_fpg:
+          2026: 10_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: true
+
+# ---- PY2027 200% limit from derived income ----
+
+- name: Case 17b, PY2027 income of 199.994% of FPL is eligible.
+  # $31,919 / 2026 one-person FPG $15,960 = 199.9937%, which is "under 200
+  # percent" (2027 Program Design (d)(7)).
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 31_919
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi: 31_919
+    aca_magi_fraction: 1.99
+    ca_premium_subsidy_eligible: true
+
+- name: Case 18b, PY2027 income of exactly 200% of FPL is ineligible.
+  # $31,920 / $15,960 = 200.000%, which is not "under 200 percent".
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 31_920
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi: 31_920
+    aca_magi_fraction: 2.00
+    ca_premium_subsidy_eligible: false
+
+- name: Case 18c, PY2027 income of 165.006% of FPL is eligible (165% is the PY2026 limit only).
+  # $26,335 / $15,960 = 165.0063%. Ineligible under the PY2026 limit, but
+  # inside the PY2027 band, which runs to under 200%.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 26_335
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi: 26_335
+    aca_magi_fraction: 1.65
+    ca_premium_subsidy_eligible: true
+
+# ---- Filing via federal credit take-up ----
 
 - name: Case 13b, an in-band CA unit that takes up the federal credit files and is eligible.
   # Case 13 with take-up true and a positive federal credit ($6,000 benchmark

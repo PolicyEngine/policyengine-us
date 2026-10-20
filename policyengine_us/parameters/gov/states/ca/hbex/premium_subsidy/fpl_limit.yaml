@@ -1,9 +1,11 @@
 description: California limits income eligibility to this share of the federal poverty line under the California Premium Subsidy program.
 values:
+  # PY2026 Program Design (d)(7): "at or below 165 percent" (inclusive).
   2026-01-01: 1.65
   # PY2027 Program Design V4 (adopted Board Res. 2026-22) extends eligibility to
-  # "under 200%" FPL; with 2-decimal FPL-percentage truncation, <= 1.99 == "<200%".
-  2027-01-01: 1.99
+  # "under 200 percent" (strict; see fpl_limit_inclusive). The limit applies
+  # to the exact income-to-FPL ratio, not the truncated aca_magi_fraction.
+  2027-01-01: 2.0
 
 metadata:
   unit: /1

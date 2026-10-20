@@ -1,0 +1,18 @@
+description: California uses this rule to treat the income eligibility limit as inclusive under the California Premium Subsidy program.
+values:
+  # PY2026 Program Design (d)(7): "at or below 165 percent".
+  2026-01-01: true
+  # PY2027 Program Design V4 (d)(7): "under 200 percent".
+  2027-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: California Premium Subsidy income limit inclusive
+  reference:
+    - title: 2026 California Premium Subsidy Program Design, subdiv. (d)(7)
+      href: https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=2
+    - title: 2027 California Premium Subsidy Program Design V4, subdiv. (d)(7)
+      href: https://board.coveredca.com/meetings/2026/May%2021,%202026/CoveredCA_2027_Premium_Subsidy_Program_Design_V4_05-19-26.pdf#page=2
+    - title: Covered California Board Resolution 2026-22
+      href: https://board.coveredca.com/meetings/2026/June%2018,%202026/2026-22.pdf
