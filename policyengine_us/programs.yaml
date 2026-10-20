@@ -808,7 +808,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AL, DC, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OK, OR, SD, RI, TX
+    coverage: AL, DC, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX
     state_implementations:
       - state: AL
         status: partial
@@ -818,6 +818,13 @@ programs:
         parameter_prefix: gov.states.al.adeca.liheap
         verified_years: "2026"
         notes: FY2026 regular heating with the HUD allowance deduction and the funded IIJA supplement. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: OH
+        status: partial
+        name: Ohio HEAP
+        full_name: Ohio Home Energy Assistance Program
+        variable: oh_liheap
+        parameter_prefix: gov.states.oh.odjfs.liheap
+        notes: Regular heating only, without the PIPP reduction; crisis, cooling and weatherization assistance are out of scope. Payment coefficients after 2023 are estimates from workbook covers and published benefit ranges, so no full benefit year is verified.
       - state: OK
         status: partial
         name: Oklahoma LIHEAP
