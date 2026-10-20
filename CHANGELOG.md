@@ -1,3 +1,18 @@
+## [2.52.0] - 2026-10-20
+
+### Added
+
+- Add New York State Supplement Program for 2026.
+- Add Oklahoma State Supplemental Payment for 2026.
+- Add Rhode Island optional state SSI supplements and institutional payments, verified for 2026.
+- Add South Dakota State Supplemental Payment for 2026.
+- Add Virginia Auxiliary Grant for 2026.
+
+### Fixed
+
+- Apply Colorado's $189 Old Age Pension payment floor from January 2026, and count OAP income under 9 CCR 2503-5 3.533 and 3.534 for every client, so clients aged 60 to 64 who are not SSI-eligible no longer receive the full grant regardless of income.
+
+
 ## [2.51.0] - 2026-10-20
 
 ### Added
