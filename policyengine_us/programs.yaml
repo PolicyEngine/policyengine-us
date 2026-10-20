@@ -808,7 +808,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AL, DC, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OR, TX
+    coverage: AL, DC, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OK, OR, TX
     state_implementations:
       - state: AL
         status: partial
@@ -818,6 +818,14 @@ programs:
         parameter_prefix: gov.states.al.adeca.liheap
         verified_years: "2026"
         notes: FY2026 regular heating with the HUD allowance deduction and the funded IIJA supplement. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: OK
+        status: partial
+        name: Oklahoma LIHEAP
+        full_name: Oklahoma Low Income Home Energy Assistance Program
+        variable: ok_liheap
+        parameter_prefix: gov.states.ok.dhs.liheap
+        verified_years: "2025-2027"
+        notes: FY2025-FY2027 regular winter heating only, using the Appendix C-7-A payment matrix. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: DC
         status: complete
         name: DC LIHEAP
