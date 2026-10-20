@@ -6,12 +6,16 @@
 #   final:     [0,   0.0391]
 # Bands (initial -> final over the FPL band):
 #   100-150% FPL: 0%              (flat)
-#   150-165% FPL: 3.19% -> 3.91%  (interpolated linearly)
-# The percentage depends only on aca_magi_fraction; every expected value is
-# hand-computed inline. The variable itself has no income-band cap (out-of-band
+#   above 150-165% FPL: 3.19% -> 3.91%  (interpolated linearly)
+# The exact nonnegative MAGI / prior-year FPG ratio selects the band; the
+# truncated aca_magi_fraction determines the rate within it. Supplied-fraction
+# cases normalize prior-year FPG to $10,000 and supply consistent MAGI to
+# isolate interpolation, including fractional percentages that a derived
+# aca_magi_fraction would truncate. Every expected value is hand-computed
+# inline. The variable itself has no income-band cap (out-of-band
 # clamping to the nearest bracket rate is fine; the ca_premium_subsidy_eligible
-# gate zeroes the subsidy outside 100-165% FPL), so this file checks the raw
-# interpolation, including clamps at 0.99 and 1.66.
+# gate separately determines eligibility). This file
+# checks raw interpolation, including clamps at 0.99 and 1.66.
 
 # ---- Knot points ----
 
@@ -28,6 +32,9 @@
     tax_units:
       tax_unit:
         members: [person1]
+        aca_magi: 10_000
+        tax_unit_fpg:
+          2025: 10_000
         aca_magi_fraction: 1.00
     households:
       household:
@@ -51,6 +58,9 @@
     tax_units:
       tax_unit:
         members: [person1]
+        aca_magi: 15_000
+        tax_unit_fpg:
+          2025: 10_000
         aca_magi_fraction: 1.50
     households:
       household:
@@ -72,6 +82,9 @@
     tax_units:
       tax_unit:
         members: [person1]
+        aca_magi: 16_500
+        tax_unit_fpg:
+          2025: 10_000
         aca_magi_fraction: 1.65
     households:
       household:
@@ -94,6 +107,9 @@
     tax_units:
       tax_unit:
         members: [person1]
+        aca_magi: 12_500
+        tax_unit_fpg:
+          2025: 10_000
         aca_magi_fraction: 1.25
     households:
       household:
@@ -115,6 +131,9 @@
     tax_units:
       tax_unit:
         members: [person1]
+        aca_magi: 15_750
+        tax_unit_fpg:
+          2025: 10_000
         aca_magi_fraction: 1.575
     households:
       household:
@@ -136,6 +155,9 @@
     tax_units:
       tax_unit:
         members: [person1]
+        aca_magi: 16_000
+        tax_unit_fpg:
+          2025: 10_000
         aca_magi_fraction: 1.60
     households:
       household:
@@ -159,6 +181,9 @@
     tax_units:
       tax_unit:
         members: [person1]
+        aca_magi: 15_100
+        tax_unit_fpg:
+          2025: 10_000
         aca_magi_fraction: 1.51
     households:
       household:
@@ -179,6 +204,9 @@
     tax_units:
       tax_unit:
         members: [person1]
+        aca_magi: 14_900
+        tax_unit_fpg:
+          2025: 10_000
         aca_magi_fraction: 1.49
     households:
       household:
@@ -201,6 +229,9 @@
     tax_units:
       tax_unit:
         members: [person1]
+        aca_magi: 9_900
+        tax_unit_fpg:
+          2025: 10_000
         aca_magi_fraction: 0.99
     households:
       household:
@@ -224,6 +255,9 @@
     tax_units:
       tax_unit:
         members: [person1]
+        aca_magi: 16_600
+        tax_unit_fpg:
+          2025: 10_000
         aca_magi_fraction: 1.66
     households:
       household:
@@ -233,7 +267,8 @@
     ca_premium_subsidy_applicable_percentage: 0.0391
 
 - name: Case 11, negative FPL fraction clamps to the first bracket -> 0.00%.
-  # searchsorted([1.0,1.5,1.65], -0.5, "left") = 0, -1 = -1, clipped to bracket 0.
+  # Negative MAGI is floored at 0 for the exact ratio; searchsorted(..., 0,
+  # "left") = 0, -1 = -1, clipped to bracket 0.
   # position (-0.5-1.0)/0.5 = -3 clipped to 0; initial 0 -> 0. Guards against a
   # negative aca_magi_fraction producing a spurious rate.
   period: 2026
@@ -246,6 +281,9 @@
     tax_units:
       tax_unit:
         members: [person1]
+        aca_magi: -5_000
+        tax_unit_fpg:
+          2025: 10_000
         aca_magi_fraction: -0.50
     households:
       household:
@@ -271,6 +309,9 @@
     tax_units:
       tax_unit:
         members: [person1]
+        aca_magi: 15_750
+        tax_unit_fpg:
+          2026: 10_000
         aca_magi_fraction: 1.575
     households:
       household:
@@ -296,6 +337,9 @@
     tax_units:
       tax_unit:
         members: [person1]
+        aca_magi: 16_500
+        tax_unit_fpg:
+          2026: 10_000
         aca_magi_fraction: 1.65
     households:
       household:
@@ -317,6 +361,9 @@
     tax_units:
       tax_unit:
         members: [person1]
+        aca_magi: 18_250
+        tax_unit_fpg:
+          2026: 10_000
         aca_magi_fraction: 1.825
     households:
       household:
@@ -339,6 +386,9 @@
     tax_units:
       tax_unit:
         members: [person1]
+        aca_magi: 19_900
+        tax_unit_fpg:
+          2026: 10_000
         aca_magi_fraction: 1.99
     households:
       household:
@@ -362,6 +412,9 @@
     tax_units:
       tax_unit:
         members: [person1]
+        aca_magi: 15_050
+        tax_unit_fpg:
+          2025: 10_000
         aca_magi_fraction: 1.505
     households:
       household:
@@ -370,19 +423,43 @@
   output:
     ca_premium_subsidy_applicable_percentage: 0.03214
 
-- name: Case 2c, income at 150.6% of FPL truncates to 150% and pays 0%.
-  # The Program Design is silent on rounding; aca_magi_fraction drops the
-  # fraction of a percentage point, as Form 8962 Worksheet 2 does ("drop any
-  # numbers after the decimal point"), a gap-fill. 2025 FPG for one person is
-  # $15,650; $23,569 / $15,650 = 1.506, which truncates to 1.50 (rate 0) but
-  # would round to 1.51 (rate 0.03238).
+# ---- Derived fractions around the exact 150% and truncated 151% boundaries ----
+
+- name: Case 2c, income at 150.6% of FPL pays 3.19% despite truncating to 150%.
+  # The adopted Design (d)(4) puts exact income above 150% in the paying band.
+  # FTB 3849 (2020/2021), Table 1-2, decides "above" on the exact percentage
+  # before truncating for the rate lookup. $23,569 / 2025 one-person FPG
+  # $15,650 = 150.6006% selects the upper band; the truncated 1.50 fraction
+  # gives its starting rate 0.0319, for a $751.85 annual contribution.
   period: 2026
-  absolute_error_margin: 0.0001
+  absolute_error_margin: 0.000001
   input:
     people:
       person1:
         age: 40
-        employment_income: 23_569
+        employment_income:
+          2026: 23_569
+        is_aca_ptc_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi_fraction: 1.50
+    ca_premium_subsidy_applicable_percentage: 0.0319
+
+- name: Case 2d, PY2026 raw income $23,475, exactly 150% remains in the 0% band.
+  # $23,475 / 2025 one-person FPG $15,650 = 150.0000%.
+  # Exact income selects the band; the derived fraction 1.50 determines
+  # the rate 0, for an annual contribution of $0.00.
+  period: 2026
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income:
+          2026: 23_475
         is_aca_ptc_eligible: true
     households:
       household:
@@ -391,3 +468,171 @@
   output:
     aca_magi_fraction: 1.50
     ca_premium_subsidy_applicable_percentage: 0
+
+- name: Case 2e, PY2026 raw income $23,477, just above 150% enters the paying band.
+  # $23,477 / 2025 one-person FPG $15,650 = 150.0128%.
+  # Exact income selects the band; the derived fraction 1.50 determines
+  # the rate 0.0319, for an annual contribution of $748.92.
+  period: 2026
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income:
+          2026: 23_477
+        is_aca_ptc_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi_fraction: 1.50
+    ca_premium_subsidy_applicable_percentage: 0.0319
+
+- name: Case 2f, PY2026 raw income $23,630, just below 151% keeps the starting rate.
+  # $23,630 / 2025 one-person FPG $15,650 = 150.9904%.
+  # Exact income selects the band; the derived fraction 1.50 determines
+  # the rate 0.0319, for an annual contribution of $753.80.
+  period: 2026
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income:
+          2026: 23_630
+        is_aca_ptc_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi_fraction: 1.50
+    ca_premium_subsidy_applicable_percentage: 0.0319
+
+- name: Case 2g, PY2026 raw income $23,632, just above 151% uses the next truncated percentage.
+  # $23,632 / 2025 one-person FPG $15,650 = 151.0032%.
+  # Exact income selects the band; the derived fraction 1.51 determines
+  # the rate 0.03238, for an annual contribution of $765.20.
+  period: 2026
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income:
+          2026: 23_632
+        is_aca_ptc_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi_fraction: 1.51
+    ca_premium_subsidy_applicable_percentage: 0.03238
+
+- name: Case 16a, PY2027 raw income $23,940, exactly 150% remains in the 0% band.
+  # $23,940 / 2026 one-person FPG $15,960 = 150.0000%.
+  # Exact income selects the band; the derived fraction 1.50 determines
+  # the rate 0, for an annual contribution of $0.00.
+  period: 2027
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income:
+          2027: 23_940
+        is_aca_ptc_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi_fraction: 1.50
+    ca_premium_subsidy_applicable_percentage: 0
+
+- name: Case 16b, PY2027 raw income $23,942, just above 150% enters the paying band.
+  # $23,942 / 2026 one-person FPG $15,960 = 150.0125%.
+  # Exact income selects the band; the derived fraction 1.50 determines
+  # the rate 0.0269, for an annual contribution of $644.04.
+  period: 2027
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income:
+          2027: 23_942
+        is_aca_ptc_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi_fraction: 1.50
+    ca_premium_subsidy_applicable_percentage: 0.0269
+
+- name: Case 16c, PY2027 raw income $24,036, 150.6% pays the starting rate despite truncating to 150%.
+  # $24,036 / 2026 one-person FPG $15,960 = 150.6015%.
+  # Exact income selects the band; the derived fraction 1.50 determines
+  # the rate 0.0269, for an annual contribution of $646.57.
+  period: 2027
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income:
+          2027: 24_036
+        is_aca_ptc_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi_fraction: 1.50
+    ca_premium_subsidy_applicable_percentage: 0.0269
+
+- name: Case 16d, PY2027 raw income $24,099, just below 151% keeps the starting rate.
+  # $24,099 / 2026 one-person FPG $15,960 = 150.9962%.
+  # Exact income selects the band; the derived fraction 1.50 determines
+  # the rate 0.0269, for an annual contribution of $648.26.
+  period: 2027
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income:
+          2027: 24_099
+        is_aca_ptc_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi_fraction: 1.50
+    ca_premium_subsidy_applicable_percentage: 0.0269
+
+- name: Case 16e, PY2027 raw income $24,100, just above 151% uses the next truncated percentage.
+  # $24,100 / 2026 one-person FPG $15,960 = 151.0025%.
+  # Exact income selects the band; the derived fraction 1.51 determines
+  # the rate 0.02738, for an annual contribution of $659.86.
+  period: 2027
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income:
+          2027: 24_100
+        is_aca_ptc_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi_fraction: 1.51
+    ca_premium_subsidy_applicable_percentage: 0.02738

@@ -7,10 +7,13 @@
 #
 # To keep expected values exactly hand-verifiable and independent of the
 # rating-area premium lookup, aca_magi, aca_magi_fraction, slcsp (annual),
-# aca_ptc and is_aca_ptc_eligible are supplied directly, and each scenario
-# asserts the intermediate values so a reviewer can follow the arithmetic:
+# aca_ptc and is_aca_ptc_eligible are supplied directly. Prior-year FPG is
+# pinned to a synthetic $15,000 for the supplied single-person scenarios;
+# Scenario 4 uses the actual 2025 four-person $32,150. Each asserts intermediate
+# values so a reviewer can follow the arithmetic:
 #   eligible = in_effect & any(is_aca_ptc_eligible) & 1.0 <= magi_frac <= 1.65
-#   pct      = CA schedule keyed on aca_magi_fraction
+#   pct      = exact nonnegative MAGI / prior-year FPG selects the CA band;
+#              aca_magi_fraction determines the rate within that band
 #              (100-150%: 0%; above 150-165%: 3.19% -> 3.91% linear)
 #   amount   = max(0, slcsp_annual - aca_ptc - pct * max(aca_magi, 0))
 #   result   = where(eligible, amount, 0)
@@ -29,6 +32,8 @@
     tax_units:
       tax_unit:
         members: [person1]
+        tax_unit_fpg:
+          2025: 15_000
         aca_magi: 18_750
         aca_magi_fraction: 1.25
         slcsp: 6_000
@@ -57,6 +62,8 @@
     tax_units:
       tax_unit:
         members: [person1]
+        tax_unit_fpg:
+          2025: 15_000
         aca_magi: 22_500
         aca_magi_fraction: 1.50
         slcsp: 6_000
@@ -84,6 +91,8 @@
     tax_units:
       tax_unit:
         members: [person1]
+        tax_unit_fpg:
+          2025: 15_000
         aca_magi: 23_625
         aca_magi_fraction: 1.575
         slcsp: 7_500
@@ -99,8 +108,10 @@
     ca_premium_subsidy: 3_461.31
 
 - name: Scenario 4, family of four at 165% FPL (top of the ramp, pct 3.91%).
-  # ages 45/43/15/13; magi_frac 1.65 -> pct 0.0391. income 51_500.
-  # amount = max(0, 18_000 - 9_000 - 0.0391*51_500) = 18_000 - 9_000 - 2_013.65 = 6_986.35.
+  # ages 45/43/15/13; magi_frac 1.65 -> pct 0.0391. income 53_047.50
+  # equals 165% of 2025 four-person FPG $32,150.
+  # amount = max(0, 18_000 - 9_000 - 0.0391*53_047.50)
+  # = 18_000 - 9_000 - 2_074.15725 = 6_925.84.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -120,7 +131,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
-        aca_magi: 51_500
+        tax_unit_fpg:
+          2025: 32_150
+        aca_magi: 53_047.50
         aca_magi_fraction: 1.65
         slcsp: 18_000
         aca_ptc: 9_000
@@ -132,7 +145,7 @@
   output:
     ca_premium_subsidy_eligible: true
     ca_premium_subsidy_applicable_percentage: 0.0391
-    ca_premium_subsidy: 6_986.35
+    ca_premium_subsidy: 6_925.84
 
 - name: Scenario 5, single age 40 at 160% FPL where APTC covers the residual -> $0.
   # magi_frac 1.60 -> pct 0.0319 + (2/3)*0.0072 = 0.0367. income 24_000.
@@ -149,6 +162,8 @@
     tax_units:
       tax_unit:
         members: [person1]
+        tax_unit_fpg:
+          2025: 15_000
         aca_magi: 24_000
         aca_magi_fraction: 1.60
         slcsp: 3_000
@@ -176,6 +191,8 @@
     tax_units:
       tax_unit:
         members: [person1]
+        tax_unit_fpg:
+          2025: 15_000
         aca_magi: 21_000
         aca_magi_fraction: 1.40
         slcsp: 6_000
@@ -202,6 +219,8 @@
     tax_units:
       tax_unit:
         members: [person1]
+        tax_unit_fpg:
+          2024: 15_000
         aca_magi: 21_000
         aca_magi_fraction: 1.40
         slcsp: 6_000

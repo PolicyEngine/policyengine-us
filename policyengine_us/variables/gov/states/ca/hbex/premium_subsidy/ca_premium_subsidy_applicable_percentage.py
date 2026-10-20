@@ -13,30 +13,32 @@ class ca_premium_subsidy_applicable_percentage(Variable):
         # benchmark second lowest cost silver plan, bracket-interpolated
         # linearly within each federal poverty line band.
         "https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=2",
-        "https://hbex.coveredca.com/stakeholders/PDFs/2026-02_StatePremiumSub_PolicyExplainer-Final.pdf#page=2",
+        "https://board.coveredca.com/meetings/2026/May%2021,%202026/CoveredCA_2027_Premium_Subsidy_Program_Design_V4_05-19-26.pdf#page=2",
+        "https://www.ftb.ca.gov/forms/2020/2020-3849-instructions.pdf#page=6",
+        "https://www.ftb.ca.gov/forms/2021/2021-3849-instructions.pdf#page=6",
+        "https://www.irs.gov/pub/irs-pdf/i8962.pdf#page=9",
     )
 
     def formula(tax_unit, period, parameters):
         magi_frac = tax_unit("aca_magi_fraction", period)
+        magi = max_(tax_unit("aca_magi", period), 0)
+        exact_magi_frac = magi / tax_unit("tax_unit_fpg", period.last_year)
         p = parameters(period).gov.states.ca.hbex.premium_subsidy.applicable_percentage
 
         thresholds = np.array(p.threshold)
         initial_rates = np.array(p.initial)
         final_rates = np.array(p.final)
 
-        # Find which bracket each tax unit falls into. The adopted Program
-        # Design (Gov. Code 100800(c) delegates the design to the Board) runs
-        # its bands "up to" each threshold and "Above" the previous one, so a
-        # fraction equal to a threshold belongs to the lower band: exactly
-        # 150% FPL pays 0% in 2026. The Policy Explainer's "150% - At or Below
-        # 165%" band puts 150% in the upper band; the model follows the
-        # adopted design. searchsorted with side="left" returns the index of
-        # the first threshold at or above magi_frac; subtract 1 to get the
-        # bracket index, clamped to the valid range. Rate arrays are one
-        # shorter than thresholds (federal/NM convention), so bracket_idx is
-        # always a valid left edge and bracket_idx + 1 a valid right edge.
+        # The Board-adopted Designs (d)(4), operative under Gov. Code
+        # 100800(c), put exactly 150% in the 0% band and income above 150%
+        # in the paying band. Use the exact ratio to select the band.
+        # For rounding, predecessor FTB 3849 Table 1-2 (2020/2021) tests
+        # "above" on exact income before truncating for the rate lookup.
+        # Form 8962 Worksheet 2 line 4 likewise checks "more than" before
+        # truncation. side="left" keeps an exact threshold in the lower
+        # band; clipping keeps both bracket endpoints in the rate arrays.
         bracket_idx = clip(
-            np.searchsorted(thresholds, magi_frac, side="left") - 1,
+            np.searchsorted(thresholds, exact_magi_frac, side="left") - 1,
             0,
             len(initial_rates) - 1,
         )
@@ -44,6 +46,8 @@ class ca_premium_subsidy_applicable_percentage(Variable):
         bracket_start = thresholds[bracket_idx]
         bracket_end = thresholds[bracket_idx + 1]
 
+        # Retain the truncated fraction within the band: 150.6% uses the
+        # 150% lookup row of the upper band (3.19% in 2026, 2.69% in 2027).
         position = clip(
             (magi_frac - bracket_start) / (bracket_end - bracket_start), 0, 1
         )
