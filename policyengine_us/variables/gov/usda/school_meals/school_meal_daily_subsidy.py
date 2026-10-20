@@ -12,6 +12,10 @@ class school_meal_daily_subsidy(Variable):
         "Program rate at the breakfast tier plus the National School Lunch "
         "Program rate at the lunch tier."
     )
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/42/1773#e_1_A",
+        "https://www.govinfo.gov/content/pkg/FR-2026-07-16/pdf/2026-14252.pdf#page=3",
+    )
 
     def formula(spm_unit, period, parameters):
         # Get state group and per-meal tiers for SPM unit.

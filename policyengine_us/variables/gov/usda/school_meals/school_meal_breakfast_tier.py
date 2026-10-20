@@ -14,8 +14,9 @@ class school_meal_breakfast_tier(Variable):
     documentation = (
         "School meal tier for breakfast. It starts from school_meal_tier, the "
         "tier for both meals, and gives the FREE tier to all students in "
-        "states with universal free breakfast and to reduced-price students "
-        "in states that cover only the reduced-price breakfast copay."
+        "states with universal free breakfast, to reduced-price students in "
+        "states that cover only the reduced-price breakfast copay, and to "
+        "students at or below a state's breakfast-only free-meal income limit."
     )
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1773#e_1_A",
@@ -25,7 +26,17 @@ class school_meal_breakfast_tier(Variable):
         "https://mgaleg.maryland.gov/2026RS/Statute_Web/ged/7-602.pdf#page=2",
         # PDF pages 1005-1006
         "https://www.lbb.texas.gov/Documents/GAA/General_Appropriations_Act_2024_2025.pdf#page=1005",
+        "https://lawfilesext.leg.wa.gov/biennium/2005-06/Pdf/Bills/Session%20Laws/Senate/6386-S.SL.pdf#page=212",
         "https://lawfilesext.leg.wa.gov/biennium/2021-22/Pdf/Bills/Session%20Laws/Senate/5092-S.SL.pdf#page=997",
+        # PDF pages 2-4
+        "https://leg.colorado.gov/sites/default/files/images/olls/2007a_sl_229.pdf#page=2",
+        # PDF pages 2, 175
+        "https://lldc.mainelegislature.org/Open/Laws/2007/2007_PL_c539.pdf#page=2",
+        "https://www.revisor.mn.gov/laws/2003/1/Session+Law/Chapter/9/",
+        "https://www.oregonlegislature.gov/bills_laws/lawsstatutes/2009orLaw0885.html",
+        # PDF pages 4-5
+        "https://legislature.vermont.gov/Documents/2010/Docs/ACTS/ACT087/ACT087%20As%20Enacted.pdf#page=4",
+        "https://pub.njleg.state.nj.us/Bills/2022/AL23/336_.HTM",
     )
 
     def formula(spm_unit, period, parameters):
@@ -40,12 +51,25 @@ class school_meal_breakfast_tier(Variable):
         state_covers_reduced_copay = p.state_covers_reduced_price_copay_breakfast_only[
             state
         ].astype(bool)
+        # Some states set a free-breakfast income limit above their limit for
+        # both meals (0 means none). Apply it only where it is set, so a
+        # school_meal_tier input still reaches breakfast unchanged elsewhere,
+        # and cast it to the ratio's float32 precision, as school_meal_tier
+        # does, so a ratio exactly at the limit passes.
+        fpg_ratio = spm_unit("school_meal_fpg_ratio", period)
+        breakfast_income_limit = p.state_free_income_limit_breakfast_only[state].astype(
+            fpg_ratio.dtype
+        )
+        breakfast_income_eligible = (breakfast_income_limit > 0) & (
+            fpg_ratio <= breakfast_income_limit
+        )
         reduced = tier == tier.possible_values.REDUCED
         return select(
             [
                 (tier == tier.possible_values.FREE)
                 | universal_free_breakfast
-                | (reduced & state_covers_reduced_copay),
+                | (reduced & state_covers_reduced_copay)
+                | breakfast_income_eligible,
                 reduced,
             ],
             [SchoolMealTier.FREE, SchoolMealTier.REDUCED],

@@ -1,6 +1,7 @@
 # Universal free breakfast by state, read on January 1. Every case lists AR,
 # DE, DC, PA, CT, SC and FL.
-# DC: D.C. Law 18-209, from 2010-08-01. PA: 24 P.S. 13-1337.1(c.2), from
+# DC: D.C. Law 18-209, from 2010-08-01. PA: the Governor's Universal Free
+# Breakfast Program from 2022-10-01, then 24 P.S. 13-1337.1(c.2) from
 # 2023-07-01. AR (Act 123 of 2025) and DE (85 Del. Laws c. 110 and c. 65,
 # section 33): from 2025-07-01. CT: STABLE (2023-07-01 to 2024-06-30) and
 # RISE (2026-07-01 to 2027-06-30). SC: Proviso 1.103(B), 2026-07-01 to
@@ -20,14 +21,23 @@
   output:
     state_has_universal_free_school_breakfast: [false, false, true, false, false, false, false]
 
-- name: Only the District of Columbia has universal free breakfast in 2023.
-  period: 2023
+# PA's Universal Free Breakfast Program starts 2022-10-01, after the
+# January 1, 2022 reading.
+- name: Only the District of Columbia has universal free breakfast in 2022.
+  period: 2022
   input:
     state_code: [AR, DE, DC, PA, CT, SC, FL]
   output:
     state_has_universal_free_school_breakfast: [false, false, true, false, false, false, false]
 
-- name: Pennsylvania and Connecticut add universal free breakfast in 2024.
+- name: The District of Columbia and Pennsylvania have universal free breakfast in 2023.
+  period: 2023
+  input:
+    state_code: [AR, DE, DC, PA, CT, SC, FL]
+  output:
+    state_has_universal_free_school_breakfast: [false, false, true, true, false, false, false]
+
+- name: Connecticut adds universal free breakfast in 2024.
   period: 2024
   input:
     state_code: [AR, DE, DC, PA, CT, SC, FL]

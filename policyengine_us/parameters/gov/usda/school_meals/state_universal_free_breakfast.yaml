@@ -14,8 +14,8 @@ metadata:
   breakdown:
     - state_code
   reference:
-    - title: 42 U.S. Code § 1773 - School breakfast program
-      href: https://www.law.cornell.edu/uscode/text/42/1773
+    - title: 42 U.S. Code § 1773(e)(1)(A) - School breakfast program (breakfasts free or at a reduced price on the same terms as lunches)
+      href: https://www.law.cornell.edu/uscode/text/42/1773#e_1_A
 AA:
   0000-01-01: false
 AE:
@@ -49,14 +49,16 @@ CT:
   0000-01-01: false
   # STABLE (SY 2023-24) and RISE (SY 2026-27) funded free breakfast for all
   # students at participating schools. STAR (SY 2024-25) covered reduced-price
-  # copays only, and SY 2025-26 had no state funding. Not modeled: STABLE and
-  # RISE were school food authority opt-in programs (RISE all sites or none)
-  # that excluded community eligibility provision schools.
+  # copays only, and SY 2025-26 had no state funding. In SY 2022-23, SMART
+  # funds made breakfast and lunch free to all students
+  # (state_universal_free_meals). Not modeled: STABLE and RISE were school food
+  # authority opt-in programs (RISE all sites or none) that excluded community
+  # eligibility provision schools.
   2023-07-01:
     value: true
     metadata:
       reference:
-        - title: "Connecticut CSDE Operational Memorandum 18-23 (P.A. 23-204, STABLE funds, SY 2023-24) #page 1,7"
+        - title: "Connecticut CSDE Operational Memorandum 18-23 (P.A. 23-204, STABLE funds, SY 2023-24) #page 1,7-8"
           href: https://portal.ct.gov/-/media/sde/nutrition/nslp/memos/om2023/om18-23.pdf#page=1
   2024-07-01:
     value: false
@@ -169,10 +171,20 @@ OR:
   0000-01-01: false
 PA:
   0000-01-01: false
-  # Funded from SY 2023-24 and codified by Act 33 on December 13, 2023. Not
-  # modeled: reimbursement is "to the extent funds are available". The
-  # universal breakfast reported for October 2022 to June 2023 is unverified
-  # and not encoded.
+  # From October 1, 2022 through SY 2022-23, the Governor's Universal Free
+  # Breakfast Program, an executive program with no statute, paid for every
+  # student's breakfast from $21.5 million of prior-year School Food Services
+  # appropriation funds. The FY2023-24 budget funded it from SY 2023-24, and
+  # Act 33 codified it on December 13, 2023. Not modeled: reimbursement is
+  # "to the extent funds are available".
+  2022-10-01:
+    value: true
+    metadata:
+      reference:
+        - title: "Pennsylvania Governor's Office news release, September 9, 2022 (Universal Free Breakfast Program, October 1, 2022 through SY 2022-23; archived copy)"
+          href: https://web.archive.org/web/20220917043427/https://www.governor.pa.gov/newsroom/gov-wolf-announces-universal-free-breakfast-program-for-1-7-million-pennsylvania-school-children/
+        - title: "Pennsylvania 2023-24 Executive Budget, universal free breakfast and School Food Services (2022-23 available, including the recommended supplemental) #page 37,350,352"
+          href: https://www.pa.gov/content/dam/copapwp-pagov/en/budget/documents/publications-and-reports/commonwealthbudget/past-budgets-to-2021-22/2023-24-budget-documents/budget%20book%202023-24%20web%20v.5.04182023.pdf#page=37
   2023-07-01:
     value: true
     metadata:
@@ -193,23 +205,23 @@ SC:
   # free one breakfast a day at no cost in SY 2026-27. Not modeled: the
   # breakfast is provided "upon his or her request"; the South Carolina
   # Department of Education limits it to schools outside the community
-  # eligibility provision; and the roughly $2,780,000 cap ($2.12 a meal) is far
-  # below statewide demand.
+  # eligibility provision; and the roughly $2,780,000 appropriation at $2.12 a
+  # meal pays for about 1.31 million breakfasts statewide.
   2026-07-01:
     value: true
     metadata:
       reference:
         - title: South Carolina FY2026-27 Appropriations Act, Part IB, Proviso 1.103(B)
-          href: https://www.scstatehouse.gov/sess126_2025-2026/appropriations2026/tap1b.htm
+          href: https://www.scstatehouse.gov/sess126_2025-2026/appropriations2026/tap1b.htm#s1
         - title: South Carolina Department of Education memo, Proviso 1.103 of the FY2026-27 General Appropriations Act (September 9, 2026)
-          href: https://www.ed.sc.gov/newsroom/school-district-memoranda-archive/proviso-1103-of-the-fiscal-year-fy-2026-2027-general-appropriations-act/proviso-1103-of-the-fiscal-year-fy-2026-2027-general-appropriations-act-memo/#page=1
+          href: https://www.ed.sc.gov/newsroom/school-district-memoranda-archive/proviso-1103-of-the-fiscal-year-fy-2026-2027-general-appropriations-act/proviso-1103-of-the-fiscal-year-fy-2026-2027-general-appropriations-act-memo/
   # The FY2026-27 proviso is the last one enacted.
   2027-07-01:
     value: false
     metadata:
       reference:
         - title: South Carolina FY2026-27 Appropriations Act, Part IB, Proviso 1.103(B)
-          href: https://www.scstatehouse.gov/sess126_2025-2026/appropriations2026/tap1b.htm
+          href: https://www.scstatehouse.gov/sess126_2025-2026/appropriations2026/tap1b.htm#s1
 SD:
   0000-01-01: false
 TN:

@@ -119,28 +119,28 @@ TX:
   0000-01-01: false
 UT:
   0000-01-01: false
-  # Local education agencies (LEAs) in the National School Lunch Program must
-  # serve lunch at no charge to K-12 students eligible for reduced-price meals;
-  # breakfast is not covered. H.B. 100 appropriated no money. The 2026 General
-  # Session appropriated $2,500,000 one-time to reimburse LEAs "for three
-  # years". Which fiscal years is unverified (FY2026-28 or FY2027-29), so
-  # coverage ends after FY2028, the last year covered under either reading.
-  # Not modeled: if appropriations fall short, LEAs are reimbursed pro rata
-  # and may ask parents to cover the remaining cost.
+  # Utah Code § 53F-2-423, enacted by H.B. 100 as § 53F-2-422 and renumbered,
+  # requires local education agencies (LEAs) in the National School Lunch
+  # Program to serve lunch at no charge to K-12 students eligible for
+  # reduced-price meals; breakfast is not covered. The section has no repeal
+  # date, so coverage carries forward. Reimbursement is subject to
+  # appropriations: $2,516,900 one-time for FY2026 (2025 S.B. 3, Item 356)
+  # and the same for FY2027 (2026 S.B. 2, Item 12), a third of the Governor's
+  # three-year $7,550,700 request. Not modeled: if appropriations fall short,
+  # LEAs are reimbursed pro rata and may ask parents to cover the remaining
+  # cost.
   2025-07-01:
     value: true
     metadata:
       reference:
-        - title: "Utah H.B. 100 (2025), Utah Code § 53F-2-423 #page 2-3"
+        - title: "Utah H.B. 100 (2025), Laws of Utah 2025, ch. 203, enacting § 53F-2-422 (codified as § 53F-2-423) #page 2-3"
           href: https://le.utah.gov/Session/2025/bills/enrolled/HB0100.pdf#page=2
-        - title: Utah Code § 53F-2-423
+        - title: Utah Code § 53F-2-423(1)(b), (2), (3)(a)(i), (7)
           href: https://le.utah.gov/xcode/Title53F/Chapter2/C53F-2-S423_2025070120250507.html
-  2028-07-01:
-    value: false
-    metadata:
-      reference:
-        - title: Utah Office of the Legislative Fiscal Analyst, 2026 General Session Budget Summary (Reduced-Price School Lunch)
-          href: https://le.utah.gov/interim/2026/pdf/00002079.pdf#page=9
+        - title: "Utah S.B. 3 (2025), Appropriations Adjustments, Section 2 (FY2026) and Item 356 #page 31,93"
+          href: https://le.utah.gov/Session/2025/bills/enrolled/SB0003.pdf#page=31
+        - title: "Utah S.B. 2 (2026), Public Education Budget Amendments, Section 14 (FY2027) and Item 12 #page 33-34"
+          href: https://le.utah.gov/Session/2026/bills/enrolled/SB0002.pdf#page=33
 VA:
   0000-01-01: false
 VI:

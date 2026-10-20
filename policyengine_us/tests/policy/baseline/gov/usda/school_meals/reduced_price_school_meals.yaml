@@ -93,6 +93,20 @@
   output:
     reduced_price_school_meals: 523.80
 
+# Same rates and inputs as the 2022 free_school_meals case.
+# WA: both meals FREE, so no reduced-price meal: 0.
+# NC: lunch REDUCED: (3.26 - 0.35) * 180 = 2.91 * 180 = 523.80.
+- name: No reduced-price value in Washington, and reduced-price lunch in North Carolina, in 2022.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: [WA, NC]
+    school_meal_fpg_ratio: [1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false]
+    is_in_k12_school: [true, true]
+  output:
+    reduced_price_school_meals: [0, 523.80]
+
 # Calendar 2023 rates: breakfast (SBP) FREE 2.11, REDUCED 1.81,
 # PAID 0.35; lunch (NSLP) FREE 3.93, REDUCED 3.53, PAID 0.37.
 # DC at 300% of FPG: breakfast FREE, lunch PAID.

@@ -203,9 +203,10 @@
 # (2,080 hours * $15 = $31,200) unless noted; children age 5-17 are in K-12;
 # no categorical eligibility. Annual periods read parameters on January 1.
 
-# Arizona covers the reduced-price copay for both meals (state funds; first in
-# force on 2023-01-01). 2026 guideline for two people: 15,960 + 5,680 =
-# 21,640; 31,200 / 21,640 = 1.4418, in the reduced-price band.
+# Arizona covers the reduced-price copay for both meals (federal ESSER funds
+# from 2023-01-01, state appropriations from 2024-07-01). 2026 guideline for
+# two people: 15,960 + 5,680 = 21,640; 31,200 / 21,640 = 1.4418, in the
+# reduced-price band.
 - name: Arizona household in the reduced-price income band gets free breakfast and lunch in 2026.
   period: 2026
   absolute_error_margin: 0.01
@@ -589,3 +590,110 @@
     school_meal_net_subsidy: 3_373.20
     free_school_meals: 0
     reduced_price_school_meals: 3_373.20
+
+# Pennsylvania offers free breakfast to all students and covers the
+# reduced-price copay for both meals (24 P.S. 13-1337.1(c.2), from
+# 2023-07-01). 2026 guideline for two people: 15,960 + 5,680 = 21,640;
+# 1.85 * 21,640 = 40,034, exactly at the federal reduced-price limit, so the
+# copay coverage makes both meals free.
+- name: Pennsylvania household exactly at 185% of FPG gets free breakfast and lunch in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 40_034
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    school_meal_countable_income: 40_034
+    spm_unit_fpg: 21_640
+    school_meal_fpg_ratio: 1.85
+    state_has_universal_free_school_breakfast: true
+    school_meal_tier: FREE
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: FREE
+    school_meal_daily_subsidy: 7.06  # SBP FREE 2.46 + NSLP FREE 4.60
+    school_meal_paid_daily_subsidy: 0.84  # NSLP 0.44 + SBP 0.40
+    # 180 * (7.06 - 0.84) = 1,119.60
+    school_meal_net_subsidy: 1_119.60
+    free_school_meals: 1_119.60
+    reduced_price_school_meals: 0
+
+# One dollar above: 40,035 / 21,640 = 1.85005, above 185%, so the tier for
+# both meals is PAID. Universal breakfast keeps breakfast free; lunch is paid.
+- name: Pennsylvania household one dollar above 185% of FPG gets only free breakfast in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 40_035
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    school_meal_countable_income: 40_035
+    spm_unit_fpg: 21_640
+    state_has_universal_free_school_breakfast: true
+    school_meal_tier: PAID
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: PAID
+    school_meal_daily_subsidy: 2.90  # SBP FREE 2.46 + NSLP PAID 0.44
+    school_meal_paid_daily_subsidy: 0.84  # NSLP 0.44 + SBP 0.40
+    # 180 * (2.90 - 0.84) = 370.80
+    school_meal_net_subsidy: 370.80
+    free_school_meals: 370.80
+    reduced_price_school_meals: 0
+
+# Utah covers only the reduced-price lunch copay (Utah Code 53F-2-423), but
+# categorical eligibility (for example SNAP receipt) makes the tier for both
+# meals FREE, so breakfast is free as well. Same household as the Utah case
+# above: 31,200 / 21,640 = 1.4418. Breakfast moves from reduced price
+# (316.80) to free, adding (2.46 - 2.16) * 180 = 54.00 to the net subsidy.
+- name: Categorically eligible Utah household in the reduced-price income band gets free breakfast and lunch in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 31_200
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_school_meal_categorical_eligibility: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    school_meal_fpg_ratio: 1.4418
+    school_meal_tier: FREE
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: FREE
+    school_meal_daily_subsidy: 7.06  # SBP FREE 2.46 + NSLP FREE 4.60
+    school_meal_paid_daily_subsidy: 0.84  # NSLP 0.44 + SBP 0.40
+    # 180 * (7.06 - 0.84) = 1,119.60
+    school_meal_net_subsidy: 1_119.60
+    free_school_meals: 1_119.60
+    reduced_price_school_meals: 0

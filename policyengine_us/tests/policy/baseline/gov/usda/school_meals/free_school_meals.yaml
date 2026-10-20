@@ -93,6 +93,23 @@
   output:
     free_school_meals: 295.20
 
+# Calendar 2022 rates: breakfast (SBP) FREE 1.97, REDUCED 1.67, PAID 0.33;
+# lunch (NSLP) FREE 3.66, REDUCED 3.26, PAID 0.35.
+# WA at 180% of FPG: both meals FREE (both covered from 2021-07-01).
+#   (1.97 - 0.33 + 3.66 - 0.35) * 180 = 4.95 * 180 = 891.00.
+# NC at 180% of FPG: breakfast FREE, lunch REDUCED (breakfast only again from
+# 2021-07-01). breakfast (1.97 - 0.33) * 180 = 295.20.
+- name: Both meals count as free in Washington, and only breakfast in North Carolina, in 2022.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: [WA, NC]
+    school_meal_fpg_ratio: [1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false]
+    is_in_k12_school: [true, true]
+  output:
+    free_school_meals: [891.00, 295.20]
+
 # Calendar 2023 rates: breakfast (SBP) FREE 2.11, REDUCED 1.81,
 # PAID 0.35; lunch (NSLP) FREE 3.93, REDUCED 3.53, PAID 0.37.
 # DC at 300% of FPG: breakfast FREE, lunch PAID.
@@ -107,6 +124,21 @@
     is_in_k12_school: true
   output:
     free_school_meals: 316.80
+
+# Calendar 2023 rates: breakfast (SBP) FREE 2.11, PAID 0.35; lunch (NSLP)
+# FREE 3.93, PAID 0.37. MD at 180% of FPG: both meals FREE from FY2023,
+# after breakfast-only coverage in FY2022.
+#   (2.11 - 0.35 + 3.93 - 0.37) * 180 = 5.32 * 180 = 957.60.
+- name: Both meals count as free in Maryland in 2023, after its breakfast-only year.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: MD
+    school_meal_fpg_ratio: 1.8
+    meets_school_meal_categorical_eligibility: false
+    is_in_k12_school: true
+  output:
+    free_school_meals: 957.60
 
 # Calendar 2024 rates: breakfast (SBP) FREE 2.28, REDUCED 1.98,
 # PAID 0.38; lunch (NSLP) FREE 4.25, REDUCED 3.85, PAID 0.40.

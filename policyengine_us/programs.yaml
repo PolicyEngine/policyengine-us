@@ -83,15 +83,15 @@ programs:
       - state: AR
         status: complete
         name: Arkansas reduced-price meal copay coverage and free breakfast
-        effective: 2023-07-01
+        effective: 2023-08-01
         notes: Both-meal copay coverage for K-12 public school students from SY2023-24; free breakfast for every public school student from SY2025-26.
-        reference: Act 656 of 2023 (SB 477); Act 123 of 2025 (SB 59); A.C.A. § 6-18-722
+        reference: Act 656 of 2023 (SB 477); Ark. Att'y Gen. Op. No. 2023-031; Act 123 of 2025 (SB 59); A.C.A. § 6-18-722
       - state: AZ
         status: complete
         name: Arizona reduced-price meal copay coverage
         effective: 2023-01-01
         notes: Both-meal copay coverage from January 2023 through SY2026-27, paid from one-time federal ESSER money and then one-time state appropriations; it ends June 30, 2027 with the last enacted appropriation.
-        reference: ADE HNS 10-2022; HB 2897 (2024 General Appropriations Act); HB 2947 (2025 General Appropriations Act); ADE HNS 07-2025; ADE HNS 08-2026
+        reference: ADE HNS 10-2022; Laws 2024, ch. 209 (HB 2897); ADE HNS 06-2024; Laws 2025, ch. 233 (SB 1735); ADE HNS 07-2025; Laws 2026, ch. 126 (SB 1847); ADE HNS 08-2026
       - state: CA
         status: complete
         name: California universal meals
@@ -99,9 +99,21 @@ programs:
         reference: AB 130 (2021); Cal. Educ. Code § 49501.5
       - state: CO
         status: complete
+        name: Colorado reduced-price meal copay coverage
+        effective: 2007-07-01
+        notes: Breakfast-only copay coverage from SY2007-08 (Start Smart Nutrition Program); both meals from SY2019-20, when the Child Nutrition School Lunch Protection Program reached grade 12 (grade-limited lunch coverage before then is not modeled); superseded by universal meals from SY2023-24.
+        reference: SB 07-059 (C.R.S. § 22-82.7-104); HB 19-1171 (C.R.S. § 22-82.9-105)
+      - state: CO
+        status: complete
         name: Colorado Healthy School Meals for All
         effective: 2023-07-01
         reference: HB 22-1414 / Proposition FF (2022); C.R.S. § 22-82.9-201 et seq.
+      - state: CT
+        status: partial
+        name: Connecticut SMART funds universal meals
+        effective: 2022-07-01
+        notes: SY2022-23 only. School food authorities that opted in served breakfast and lunch free to all students until their first allocation ran out and again from March 1, 2023. Partial because the model treats this opt-in, funding-limited program as covering every student for the whole year.
+        reference: P.A. 22-118 § 10 (CSDE OM 14-22); P.A. 23-1 § 1 (CSDE OM 06-23)
       - state: CT
         status: partial
         name: Connecticut reduced-price meal copay coverage and free breakfast
@@ -125,7 +137,7 @@ programs:
         name: Georgia reduced-price meal copay coverage
         effective: 2024-07-01
         notes: Both-meal copay coverage funded in the FY2025 through FY2027 budgets; it ends June 30, 2027 with the last enacted budget. SY2023-24 coverage is unverified and not modeled.
-        reference: FY2025 budget (House Budget and Research Office policy brief, July 2024); HB 68 (FY2026), item 155.4; HB 974 (FY2027), program 24.13
+        reference: HB 916 (FY2025, Act 709), program 24.13, line 1871; HB 68 (FY2026), item 155.4; HB 974 (FY2027), program 24.13
       - state: HI
         status: complete
         name: Hawaii reduced-price meal copay coverage and expanded free meals
@@ -136,8 +148,8 @@ programs:
         status: complete
         name: Louisiana reduced-price meal copay coverage
         effective: 2023-07-01
-        notes: Both-meal copay coverage for K-12 students from SY2023-24, contingent on appropriation.
-        reference: Act 305 of 2023 (HB 282); La. R.S. 17:192(B)(3)
+        notes: Both-meal copay coverage for K-12 students from SY2023-24, effective July 1, 2023 with the HB 1 (Act 447) appropriation; not limited to public schools.
+        reference: Act 305 of 2023 (HB 282); Act 447 of 2023 (HB 1); La. R.S. 17:192(B)(3)
       - state: MA
         status: complete
         name: Massachusetts universal meals
@@ -152,19 +164,32 @@ programs:
         reference: Md. Code, Educ. § 7-602(e)
       - state: ME
         status: complete
+        name: Maine reduced-price meal copay coverage
+        effective: 2008-06-30
+        notes: Breakfast-only copay coverage at public schools from SY2008-09; both meals from SY2019-20; superseded by universal meals.
+        reference: P.L. 2007, c. 539, Part IIII; P.L. 2019, c. 343, Part NNNN; 20-A M.R.S. § 6602(1)(B), (D)
+      - state: ME
+        status: complete
         name: Maine School Meals for All
-        effective: 2022-07-01
-        reference: LD 1679 / PL 2021 c.719 (enacted May 2022); 20-A M.R.S. § 6602
+        effective: 2021-07-01
+        reference: LD 221 / P.L. 2021, c. 398, Part OOOO (approved July 1, 2021); 20-A M.R.S. § 6602(1)(H)-(I)
       - state: MI
         status: complete
         name: Michigan School Meals
         effective: 2023-07-01
-        reference: PA 103 of 2023 (SB 0173); MCL 388.1630d
+        notes: Universal free meals funded by annual School Aid Act § 30d allocations; ends September 30, 2027 with the last enacted allocation (2026 PA 25).
+        reference: PA 103 of 2023 (SB 0173); MCL 388.1630d; 2026 PA 25, § 30d
+      - state: MN
+        status: complete
+        name: Minnesota reduced-price meal copay coverage
+        effective: 2003-07-01
+        notes: Breakfast-only copay coverage at schools receiving state breakfast aid from SY2003-04; both meals from SY2014-15; superseded by universal meals from SY2023-24.
+        reference: Laws 2003, 1st Sp., c. 9, art. 5, § 6; Laws 2014, c. 312, art. 19, §§ 1-4; Minn. Stat. §§ 124D.111, subd. 4, 124D.1158, subd. 4
       - state: MN
         status: complete
         name: Minnesota Free School Meals for Kids
         effective: 2023-07-01
-        reference: HF 5 (2023); Minn. Stat. § 124D.111
+        reference: Laws 2023, c. 18 (HF 5); Minn. Stat. § 124D.111, subd. 1c
       - state: NC
         status: complete
         name: North Carolina reduced-price meal copay coverage
@@ -193,8 +218,8 @@ programs:
         status: complete
         name: New Jersey reduced-price meal copay coverage and expanded free meals
         effective: 2020-07-19
-        notes: Both-meal copay coverage at public schools from July 2020; free meals up to 199% of the federal poverty level from September 1, 2023 and 224% from SY2024-25, excluding CEP sites; nonpublic schools added January 16, 2024.
-        reference: P.L.2019, c.445 (N.J.S.A. 18A:33-21.1); P.L.2022, c.104; P.L.2023, c.336
+        notes: Both-meal copay coverage at public schools from July 2020; free meals up to 199% of the federal poverty level from September 1, 2023 and 224% from SY2024-25, excluding CEP sites; after SY2024-25 free lunch above 185% rests on annual Working Class Families State Supplement appropriations through June 30, 2027, while free breakfast up to 224% is standing law; nonpublic schools added January 16, 2024.
+        reference: P.L.2019, c.445 (N.J.S.A. 18A:33-21.1); P.L.2022, c.104; P.L.2023, c.336; P.L.2025, c.74; P.L.2026, c.27
       - state: NM
         status: complete
         name: New Mexico reduced-price meal copay coverage
@@ -214,6 +239,12 @@ programs:
         reference: Interim Finance Committee approval of State ARPA funds (June 21, 2022); Nevada Department of Agriculture Food and Nutrition Board reports (August 31, 2023; June 4, 2024)
       - state: NY
         status: complete
+        name: New York reduced-price meal copay coverage
+        effective: 2019-07-01
+        notes: Both-meal copay coverage from SY2019-20 through SY2024-25, funded by annual Aid to Localities appropriations; superseded by universal meals (Education Law § 915-a) from SY2025-26.
+        reference: Laws of 2019-2024, ch. 53 (Aid to Localities), Education Department, student cost of reduced price meals; NYSED 2019-2020 Adult/Student Selling Prices
+      - state: NY
+        status: complete
         name: New York Universal Free School Meals
         effective: 2025-07-01
         reference: Chapter 56 of the Laws of 2025 (S3006C/A3006C, FY26 ELFA Article VII); NY Education Law § 915-a
@@ -226,15 +257,15 @@ programs:
       - state: OR
         status: complete
         name: Oregon reduced-price meal coverage and expanded free meals
-        effective: 2015-07-01
-        notes: Reduced-price lunch free from SY2015-16 (reduced-price breakfast was already free); free meals up to 300% of the federal poverty guidelines at public schools outside CEP from SY2021-22.
-        reference: Oregon Laws 2015, c. 718; Oregon Laws 2021, c. 119 (HB 2536); ORS 327.531, 327.535(6)
+        effective: 2009-08-04
+        notes: Reduced-price breakfast free from SY2009-10 and lunch from SY2015-16; free meals up to 300% of the federal poverty guidelines at public schools outside CEP from SY2021-22.
+        reference: Oregon Laws 2009, c. 885, §§ 49-50; Oregon Laws 2015, c. 718; Oregon Laws 2021, c. 119 (HB 2536); ORS 327.531, 327.535
       - state: PA
         status: complete
         name: Pennsylvania universal free breakfast and reduced-price lunch coverage
-        effective: 2023-07-01
-        notes: Free breakfast for all students and free lunch for reduced-price students from SY2023-24, to the extent funds are available.
-        reference: Act 33 of 2023; 24 P.S. § 13-1337.1(c.2)
+        effective: 2022-10-01
+        notes: Free breakfast for all students from October 1, 2022 (the Governor's Universal Free Breakfast Program for SY2022-23, then the FY2023-24 budget and Act 33) and free lunch for reduced-price students from SY2023-24, to the extent funds are available.
+        reference: Governor's news release, September 9, 2022; Act 33 of 2023; 24 P.S. § 13-1337.1(c.2)
       - state: RI
         status: complete
         name: Rhode Island reduced-price meal copay coverage
@@ -263,20 +294,26 @@ programs:
         status: partial
         name: Utah reduced-price lunch coverage
         effective: 2025-07-01
-        notes: Lunch only, for K-12 students at LEAs in the National School Lunch Program, through June 30, 2028 (one-time funding). Partial because LEAs are reimbursed pro rata if funds fall short and may ask parents to cover the remaining cost.
-        reference: H.B. 100 (2025); Utah Code § 53F-2-423
+        notes: Lunch only, for K-12 students at LEAs in the National School Lunch Program, under a standing statute. Partial because reimbursement depends on appropriations (one-time money for FY2026 and FY2027 so far); LEAs are reimbursed pro rata if funds fall short and may ask parents to cover the remaining cost.
+        reference: H.B. 100 (2025); Utah Code § 53F-2-423; S.B. 3 (2025), Item 356; S.B. 2 (2026), Item 12
+      - state: VT
+        status: complete
+        name: Vermont reduced-price meal copay coverage
+        effective: 2010-04-28
+        notes: Breakfast-only copay coverage in force by 2010 (earlier start unverified); both meals from July 1, 2013; superseded by universal meals from SY2022-23.
+        reference: Act 87 of 2010 (H.408); Act 50 of 2013 (H.530), Sec. E.501.2; 16 V.S.A. § 1264(c)
       - state: VT
         status: complete
         name: Vermont Universal School Meals
         effective: 2022-07-01
         notes: Universal under Act 151 in SY2022-23 and permanently under Act 64 from SY2023-24.
-        reference: Act 151 of 2022 (S.100); Act 64 / H.165 (2023); 16 V.S.A. § 4017
+        reference: Act 151 of 2022 (S.100); Act 64 / H.165 (2023); 16 V.S.A. §§ 1264(a)(1)(B), 4017
       - state: WA
         status: complete
         name: Washington reduced-price meal copay coverage
-        effective: 2019-07-01
-        notes: Breakfast-only copay coverage from FY2020; both meals from SY2021-22 (lunch by statute, breakfast by budget proviso through June 30, 2027); lunch only from July 1, 2027.
-        reference: RCW 28A.235.160(7); ESSB 5092 (2021 c 334), §§ 508, 1505; ESSB 5167 (2025 c 424), §§ 508, 1506
+        effective: 2006-07-01
+        notes: Breakfast-only copay coverage from FY2007 (2006 supplemental budget) through FY2021 (K-3 lunch coverage from FY2008 is not modeled); both meals from SY2021-22 (lunch by statute, breakfast by budget proviso through June 30, 2027); lunch only from July 1, 2027.
+        reference: ESSB 6386 (2006 c 372), § 512; RCW 28A.235.160(7); ESSB 5092 (2021 c 334), §§ 508, 1505; ESSB 5167 (2025 c 424), §§ 508, 1506
 
   - id: summer_ebt
     name: Summer EBT

@@ -36,6 +36,27 @@ CA:
   0000-01-01: false
 CO:
   0000-01-01: false
+  # The Start Smart Nutrition Program has paid the reduced-price breakfast
+  # charge in every grade since SY 2007-08. Reduced-price lunch was free only
+  # in lower grades until SY 2019-20 (kindergarten through grade 2 from
+  # SY 2008-09, grade 5 from SY 2014-15, and grade 8 in SY 2018-19 where the
+  # school food authority opted in); from then both meals are in
+  # state_covers_reduced_price_copay. Not modeled: the grade-limited lunch
+  # coverage; public schools and facility schools only; CEP sites excluded.
+  2007-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: "Colorado SB 07-059, Session Laws 2007, ch. 229, §§ 2-3 #page 2-4"
+          href: https://leg.colorado.gov/sites/default/files/images/olls/2007a_sl_229.pdf#page=2
+        - title: C.R.S. § 22-82.7-104(1)
+          href: https://leg.colorado.gov/sites/default/files/images/olls/crs2024-title-22.pdf#page=1324
+  2019-08-02:
+    value: false
+    metadata:
+      reference:
+        - title: "Colorado HB 19-1171, Session Laws 2019, ch. 148, §§ 1-2, 4 #page 1-2"
+          href: https://leg.colorado.gov/laws/session-laws/HB19-1171/148/download#page=1
 CT:
   0000-01-01: false
 DC:
@@ -86,10 +107,51 @@ MD:
           href: https://mgaleg.maryland.gov/2026RS/Statute_Web/ged/7-602.pdf#page=2
 ME:
   0000-01-01: false
+  # 20-A M.R.S. § 6602(1)(B): a public school that serves breakfast must serve
+  # it at no cost to students eligible for free or reduced-price meals, and the
+  # State pays the reduced-price difference. P.L. 2007, c. 539 is not an
+  # emergency act and took effect June 30, 2008; it was first funded for
+  # FY2009. Lunch was added from SY 2019-20, when both meals are in
+  # state_covers_reduced_price_copay. Not modeled: public schools only until
+  # 2022, when private schools approved for tuition with at least 60 percent
+  # publicly funded students were added.
+  2008-06-30:
+    value: true
+    metadata:
+      reference:
+        - title: "Maine P.L. 2007, c. 539 (LD 2289), Part IIII, §§ 1, 4, and the volume title page (general effective date of non-emergency laws, June 30, 2008) #page 2,175"
+          href: https://lldc.mainelegislature.org/Open/Laws/2007/2007_PL_c539.pdf#page=2
+  2019-07-01:
+    value: false
+    metadata:
+      reference:
+        - title: Maine P.L. 2019, c. 343 (LD 1001), Part NNNN, § 1
+          href: https://lldc.mainelegislature.org/Open/Laws/2019/2019_PL_c343.pdf#page=297
 MI:
   0000-01-01: false
 MN:
   0000-01-01: false
+  # A school that receives state breakfast aid must serve breakfast without
+  # charge to students who qualify for reduced-price meals; the State pays 30
+  # cents per reduced-price breakfast. The 2003 act has appropriation items and
+  # sets no other date for this section, so it took effect July 1, 2003 (Minn.
+  # Stat. § 645.02). Lunch became free for these students from SY 2014-15, when
+  # both meals are in state_covers_reduced_price_copay. Not modeled: schools
+  # that do not take state breakfast aid.
+  2003-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Minnesota Laws 2003, First Special Session chapter 9, article 5, section 6 (Minn. Stat. § 124D.1158, subds. 3-4)
+          href: https://www.revisor.mn.gov/laws/2003/1/Session+Law/Chapter/9/
+        - title: Minn. Stat. § 645.02
+          href: https://www.revisor.mn.gov/statutes/cite/645.02
+  2014-07-01:
+    value: false
+    metadata:
+      reference:
+        - title: Minnesota Laws 2014, chapter 312, article 19, section 2 (effective for fiscal year 2015)
+          href: https://www.revisor.mn.gov/laws/2014/0/Session+Law/Chapter/312/
 MO:
   0000-01-01: false
 MP:
@@ -123,6 +185,10 @@ NC:
       reference:
         - title: North Carolina S.L. 2011-342 § 1 (breakfast)
           href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/HTML/2011-2012/SL2011-342.html
+        - title: North Carolina S.L. 2020-80 § 2.3.(b) (lunch funded for the 2020-2021 school year only)
+          href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/PDF/2019-2020/SL2020-80.pdf#page=14
+        - title: "North Carolina S.L. 2021-180 (Current Operations Appropriations Act of 2021), Part VII and § 43.2 (no reduced-price lunch provision) #page 53-110,626"
+          href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/PDF/2021-2022/SL2021-180.pdf#page=53
   2022-07-01:
     value: false
     metadata:
@@ -130,6 +196,11 @@ NC:
         - title: North Carolina S.L. 2022-74 § 7.3 (lunch, 2022-2023 school year)
           href: https://www.ncleg.gov/EnactedLegislation/SessionLaws/PDF/2021-2022/SL2022-74.pdf#page=28
 ND:
+  # The Department of Public Instruction paid a $0.30 "State Reduced"
+  # breakfast reimbursement in at least SY 2020-21 through SY 2022-23, but no
+  # statute, appropriation or rule barring the charge was found, so it is
+  # unverified and not encoded. From July 1, 2023 these students are covered
+  # through state_free_income_limit.
   0000-01-01: false
 NE:
   0000-01-01: false
@@ -139,13 +210,16 @@ NH:
   # reduced-price breakfast, which equals the 30-cent charge, and the
   # Department of Education requests biennial appropriations so that
   # reduced-price students are offered breakfast at no cost. Lunch is not
-  # covered. Not modeled: schools opt in by application.
+  # covered. Not modeled: schools opt in by application and must have an
+  # approved wellness policy and serve breakfasts that meet USDA criteria.
   2019-07-01:
     value: true
     metadata:
       reference:
         - title: New Hampshire RSA 189:11-a, VII(b)
           href: https://gc.nh.gov/rsa/html/XV/189/189-11-a.htm
+        - title: New Hampshire Laws 2019, ch. 301 (SB 82), §§ 2-3 (27-cent reduced-price breakfast payment, effective July 1, 2019)
+          href: https://gc.nh.gov/legislation/2019/SB0082.html
 NJ:
   0000-01-01: false
 NM:
@@ -160,6 +234,24 @@ OK:
   0000-01-01: false
 OR:
   0000-01-01: false
+  # Oregon Laws 2009, c. 885, § 49 (ORS 327.535) requires a school district
+  # that offers breakfast at a school site to offer it at no charge to students
+  # eligible for free or reduced-price lunches. The act took effect August 4,
+  # 2009 (emergency clause) and first applied to SY 2009-10. Lunch was added
+  # from SY 2015-16, when both meals are in state_covers_reduced_price_copay.
+  # Not modeled: public schools only.
+  2009-08-04:
+    value: true
+    metadata:
+      reference:
+        - title: Oregon Laws 2009, c. 885 (HB 3199), §§ 49-50, 52 (ORS 327.535(4), reduced-price breakfast at no charge from SY 2009-10)
+          href: https://www.oregonlegislature.gov/bills_laws/lawsstatutes/2009orLaw0885.html
+  2015-07-01:
+    value: false
+    metadata:
+      reference:
+        - title: Oregon Laws 2015, c. 718, §§ 1-2 (reduced-price lunch at no charge from SY 2015-16)
+          href: https://www.oregonlegislature.gov/bills_laws/lawsstatutes/2015orlaw0718.pdf#page=1
 PA:
   0000-01-01: false
 PR:
@@ -185,8 +277,8 @@ TX:
     value: true
     metadata:
       reference:
-        - title: "Texas General Appropriations Act 2024-25, Art. IX § 17.19(b) #page 1005-1006"
-          href: https://www.lbb.texas.gov/Documents/GAA/General_Appropriations_Act_2024_2025.pdf#page=1005
+        - title: "Texas General Appropriations Act 2024-25, Art. VI, Department of Agriculture rider 32(b), and Art. IX § 17.19(b) #page 702,1005-1006"
+          href: https://www.lbb.texas.gov/Documents/GAA/General_Appropriations_Act_2024_2025.pdf#page=702
   2025-09-01:
     value: false
     metadata:
@@ -201,17 +293,41 @@ VI:
   0000-01-01: false
 VT:
   0000-01-01: false
-WA:
-  0000-01-01: false
-  # The 2019-21 operating budget listed eliminating breakfast copays for all
-  # eligible public school students, and lunch copays for kindergarten through
-  # grade 3 only, as allowable uses. From SY 2021-22 both meals are free
-  # (state_covers_reduced_price_copay). Not modeled: the grade-limited lunch
-  # coverage. Coverage before FY2020 is unverified.
-  2019-07-01:
+  # 16 V.S.A. § 1264(c) makes the State responsible for the student share of
+  # reduced-price breakfasts. The clause was already in force when Act 87 of
+  # 2010 redesignated it as subsection (c); its first year is unverified (the
+  # section history lists 2003, No. 22, § 1). Any date before January 1, 2011
+  # gives the same results, because the federal income limits start then.
+  # Lunch was added from July 1, 2013, when both meals are in
+  # state_covers_reduced_price_copay.
+  2010-04-28:
     value: true
     metadata:
       reference:
+        - title: "Vermont Act 87 of 2010 (H.408), Sec. 4, 16 V.S.A. § 1264(c) #page 4-5"
+          href: https://legislature.vermont.gov/Documents/2010/Docs/ACTS/ACT087/ACT087%20As%20Enacted.pdf#page=4
+  2013-07-01:
+    value: false
+    metadata:
+      reference:
+        - title: Vermont Act 50 of 2013 (H.530), Sec. E.501.2
+          href: https://legislature.vermont.gov/Documents/2014/Docs/ACTS/ACT050/ACT050%20As%20Enacted.pdf#page=201
+WA:
+  0000-01-01: false
+  # Operating budgets funded eliminating breakfast copays for students
+  # eligible for reduced-price meals from FY2007 (the 2006 supplemental)
+  # through FY2021, and lunch copays for kindergarten through grade 3 only
+  # from FY2008. From SY 2021-22 both meals are free
+  # (state_covers_reduced_price_copay). Not modeled: the grade-limited lunch
+  # coverage.
+  2006-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Washington ESSB 6386 (2006 c 372) § 512, amending 2005 c 518 § 513(5)(a)
+          href: https://lawfilesext.leg.wa.gov/biennium/2005-06/Pdf/Bills/Session%20Laws/Senate/6386-S.SL.pdf#page=212
+        - title: "Washington SSB 5883 (2017 3rd sp.s. c 1) § 506(1) #page 211-212"
+          href: https://lawfilesext.leg.wa.gov/biennium/2017-18/Pdf/Bills/Session%20Laws/Senate/5883-S.SL.pdf#page=211
         - title: Washington ESSB 5092 (2021 c 334) § 1505, amending 2019 c 415 § 508(1)(a)
           href: https://lawfilesext.leg.wa.gov/biennium/2021-22/Pdf/Bills/Session%20Laws/Senate/5092-S.SL.pdf#page=997
   2021-07-01:

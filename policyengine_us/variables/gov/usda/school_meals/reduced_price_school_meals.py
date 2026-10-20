@@ -12,6 +12,9 @@ class reduced_price_school_meals(Variable):
         "policy makes only breakfast or only lunch free, the other meal's "
         "value stays here."
     )
+    reference = (
+        "https://www.govinfo.gov/content/pkg/FR-2026-07-16/pdf/2026-14252.pdf#page=3",
+    )
 
     def formula(spm_unit, period, parameters):
         # Split the net subsidy by each meal's value above the paid rate, so

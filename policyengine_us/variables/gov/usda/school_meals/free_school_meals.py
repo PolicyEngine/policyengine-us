@@ -13,6 +13,9 @@ class free_school_meals(Variable):
         "cover only breakfast or only lunch. This is not a count of federally "
         "certified free-meal students or an estimate of state spending."
     )
+    reference = (
+        "https://www.govinfo.gov/content/pkg/FR-2026-07-16/pdf/2026-14252.pdf#page=3",
+    )
 
     def formula(spm_unit, period, parameters):
         # Split the net subsidy by each meal's value above the paid rate, so
