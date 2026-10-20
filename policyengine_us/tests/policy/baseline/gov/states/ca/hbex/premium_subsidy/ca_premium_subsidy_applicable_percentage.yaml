@@ -370,18 +370,19 @@
   output:
     ca_premium_subsidy_applicable_percentage: 0.03214
 
-- name: Case 2c, income at 150.5% of FPL truncates to 150% and pays 0%.
+- name: Case 2c, income at 150.6% of FPL truncates to 150% and pays 0%.
   # The Program Design is silent on rounding; aca_magi_fraction drops the
   # fraction of a percentage point, as Form 8962 Worksheet 2 does ("drop any
   # numbers after the decimal point"), a gap-fill. 2025 FPG for one person is
-  # $15,650; 1.505 x 15,650 = 23,553.25, so $23,553 of wages is 150.49% -> 1.50.
+  # $15,650; $23,569 / $15,650 = 1.506, which truncates to 1.50 (rate 0) but
+  # would round to 1.51 (rate 0.03238).
   period: 2026
   absolute_error_margin: 0.0001
   input:
     people:
       person1:
         age: 40
-        employment_income: 23_553
+        employment_income: 23_569
         is_aca_ptc_eligible: true
     households:
       household:
