@@ -40,10 +40,9 @@ def _synthetic_indexing(parameters, cpi_u_factor, chained_factor):
 def _indexing_reform(cpi_u_factor, chained_factor):
     class reform(Reform):
         def apply(self):
-            self.modify_parameters(
-                lambda parameters: _synthetic_indexing(
-                    parameters, cpi_u_factor, chained_factor
-                )
+            # Core clones parameters before apply, so mutate that owned tree.
+            self.parameters = _synthetic_indexing(
+                self.parameters, cpi_u_factor, chained_factor
             )
 
     return reform
