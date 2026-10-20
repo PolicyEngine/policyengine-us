@@ -17,6 +17,22 @@ class va_subtractions_person(Variable):
         # subtractions list that drives the tax-unit total (va_subtractions), so
         # the per-person amounts sum to it exactly.
         p = parameters(period).gov.states.va.tax.income.subtractions
-        total_subtractions = add(person, period, p.subtractions)
+        person_subtractions = add(person, period, p.subtractions)
+        # Prorate tax-unit other subtractions across spouses by federal AGI share.
+        person_fagi = person("adjusted_gross_income_person", period)
+        positive_fagi = max_(person_fagi, 0)
+        total_federal_agi = person.tax_unit.sum(positive_fagi)
+        prorate = where(
+            total_federal_agi > 0,
+            np.divide(
+                positive_fagi,
+                total_federal_agi,
+                out=np.zeros_like(total_federal_agi, dtype=float),
+                where=total_federal_agi > 0,
+            ),
+            0,
+        )
+        other_sub = person.tax_unit("va_other_subtractions", period) * prorate
+        total_subtractions = person_subtractions + other_sub
         # Prevent negative subtractions from acting as additions.
         return max_(0, total_subtractions)

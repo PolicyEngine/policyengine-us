@@ -1,0 +1,14 @@
+- name: Case 1, default sc_other_additions is zero
+  period: 2024
+  input:
+    state_code: SC
+  output:
+    sc_other_additions: 0.0
+
+- name: Case 2, sc_other_additions flows into sc_additions
+  period: 2024
+  input:
+    state_code: SC
+    sc_other_additions: 1_200
+  output:
+    sc_additions: 1_200
