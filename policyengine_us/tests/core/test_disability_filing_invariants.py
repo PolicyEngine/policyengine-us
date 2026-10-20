@@ -74,7 +74,8 @@ def filers(draw):
         is_blind=draw(st.booleans()),
         claimed_as_dependent_on_another_return=draw(st.booleans()),
         employment_income=wages,
-        traditional_401k_contributions=draw(st.integers(0, wages)),
+        # The 2024 elective-deferral limit is the smallest across YEARS.
+        traditional_401k_contributions=draw(st.integers(0, min(wages, 23_000))),
         self_employment_income=draw(
             st.one_of(st.just(0), st.integers(-10_000, 30_000))
         ),
