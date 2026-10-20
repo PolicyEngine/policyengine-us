@@ -1,3 +1,14 @@
+## [2.50.0] - 2026-10-20
+
+### Added
+
+- Added `ca_other_additions`, `ca_other_subtractions`, `ny_other_additions`, `ny_other_subtractions`, `de_other_additions`, `de_other_subtractions`, `co_other_additions`, and `co_other_subtractions` to support custom state income additions and subtractions for CA, NY, DE, and CO.
+
+### Fixed
+
+- Count the taxable part of employment disability benefits in federal gross income (IRC 105(a)), with a new tax_exempt_disability_benefits input for benefits from plans the recipient paid for (IRC 104(a)(3)); count disability pensions received before minimum retirement age as earned income when entered; limit state disability subtractions to the taxable part; exclude disability benefits from Pennsylvania taxable compensation; and add the Wisconsin, New York, Iowa and Indiana disability income exclusions for people retired on permanent and total disability. Count only nontaxable disability benefits as an addition to federal AGI for Montana's elderly homeowner or renter credit.
+
+
 ## [2.49.15] - 2026-10-19
 
 ### Fixed
