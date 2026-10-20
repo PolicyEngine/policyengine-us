@@ -22,9 +22,15 @@
         members: [person1, person2]
         state_code: OH
   output:
+    oh_rss_eligible: [true, true]
+    # SSI couple rate 1,491 / 2 = 745.50 each.
+    ssi: [745.5, 745.5]
+    # RSS pools the couple's SSI: 1,491 / 2 = 745.50 each.
+    oh_rss_countable_income: [745.5, 745.5]
+    # (2 x 1,800 - 1,491) / 2 = 1,054.50 each.
     oh_rss: [1_054.5, 1_054.5]
 
-- name: Case 2, one spouse in approved care.
+- name: Case 2, one spouse in approved care, both in the same RSS home.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -35,6 +41,7 @@
         medicaid_enrolled: true
       person2:
         age: 65
+        medicaid_enrolled: true
     marital_units:
       couple:
         members: [person1, person2]
@@ -46,6 +53,12 @@
         members: [person1, person2]
         state_code: OH
   output:
+    oh_rss_eligible: [true, false]
+    # Both spouses are aged, so SSI pays the couple rate: 1,491 / 2 = 745.50.
+    ssi: [745.5, 745.5]
+    # 5160:1-5-01(E)(3) uses the individual standard: own SSI 745.50 only.
+    oh_rss_countable_income: [745.5, 745.5]
+    # 1,800 - 745.50 = 1,054.50; person2 has no level of care.
     oh_rss: [1_054.5, 0]
 
 - name: Case 3, ineligible spouse income is not deemed.
@@ -59,6 +72,7 @@
         medicaid_enrolled: true
       person2:
         age: 40
+        medicaid_enrolled: false
         # BLS OEWS May 2025, Ohio all-occupations median annual wage.
         employment_income: 49_380
     marital_units:
@@ -110,6 +124,9 @@
         members: [person1, person2]
         state_code: OH
   output:
+    # 2,000 + 1,000 = 3,000 <= 3,000 couple limit; SSI 1,491 / 2 = 745.50.
+    ssi: [745.5, 745.5]
+    # (2 x 1,800 - 1,491) / 2 = 1,054.50 each.
     oh_rss: [1_054.5, 1_054.5]
 
 - name: Case 5, combined excess resources.
@@ -138,6 +155,8 @@
         members: [person1, person2]
         state_code: OH
   output:
+    # 2,000 + 1,001 = 3,001 > 3,000 couple limit for both SSI and RSS.
+    ssi: [0, 0]
     oh_rss: [0, 0]
 
 - name: Case 6, annual benefits and SNAP income.
@@ -148,10 +167,17 @@
     age: 65
     oh_rss_certified: true
     medicaid_enrolled: true
+    takes_up_snap_if_eligible: false
   output:
+    # 994 x 12 = 11,928.
+    ssi: 11_928
+    # (1,800 - 994) x 12 = 9,672.
     oh_rss: 9_672
     household_state_benefits: 9_672
+    # SSI 11,928 + RSS 9,672 = 21,600.
     snap_unearned_income: 21_600
+    # SSI 11,928 + RSS 9,672 = 21,600, with SNAP take-up off.
+    spm_unit_benefits: 21_600
     # HUD income excludes RSS (see oh_rss): SSI 994 * 12 = 11_928.
     hud_unearned_income: 11_928
 
@@ -166,8 +192,10 @@
     oh_rss_certified: true
     medicaid_enrolled:
       2026: true
-    oh_rss_days_of_placement: 15
+    oh_rss_partial_month_days: 15
   output:
+    # 1,800 - SSI 994 = 806; 806 / 30 days = 26.8667, rounded up to 26.87;
+    # 26.87 x 15 days = 403.05.
     oh_rss: 403.05
 
 - name: Case 8, couple income pooled with one general exclusion.
@@ -179,12 +207,16 @@
         age: 70
         oh_rss_certified: true
         medicaid_enrolled: true
-        social_security_retirement: 12_000
+        # SSA Monthly Statistical Snapshot, August 2026, Table 2: average
+        # retired-worker benefit $2,087.52; 2,087.52 x 12 = 25,050.24.
+        social_security_retirement: 25_050.24
       person2:
         age: 70
         oh_rss_certified: true
         medicaid_enrolled: true
-        social_security_retirement: 12_000
+        # Same table: average benefit for a retired worker's spouse $986.70;
+        # 986.70 x 12 = 11,840.40.
+        social_security_dependents: 11_840.4
     marital_units:
       couple:
         members: [person1, person2]
@@ -197,15 +229,15 @@
         state_code: OH
   output:
     oh_rss_eligible: [true, true]
-    # SSI couple computation: (1,000 + 1,000 - 20) / 2 = 990 each.
-    ssi_countable_income: [990, 990]
-    # 1,491 / 2 = 745.50 - 990 < 0.
+    # SSI couple computation: (2,087.52 + 986.70 - 20) / 2 = 1,527.11 each.
+    ssi_countable_income: [1_527.11, 1_527.11]
+    # 1,491 / 2 = 745.50 - 1,527.11 < 0.
     ssi: [0, 0]
-    # RSS pools the couple's income: (2,000 - 20) / 2 = 990 each (not
-    # 1,000 - 20 = 980 with a separate exclusion per spouse); SSI adds 0.
-    oh_rss_countable_income: [990, 990]
-    # 1,600 fee + 200 allowance - 990 = 810 each.
-    oh_rss: [810, 810]
+    # RSS pools the couple's income: (3,074.22 - 20) / 2 = 1,527.11 each (not
+    # 2,067.52 and 966.70 with a separate exclusion per spouse); SSI adds 0.
+    oh_rss_countable_income: [1_527.11, 1_527.11]
+    # 1,600 fee + 200 allowance - 1,527.11 = 272.89 each.
+    oh_rss: [272.89, 272.89]
 
 - name: Case 9, partial month with a whole-cent daily amount.
   period: 2026-04
@@ -218,16 +250,144 @@
     oh_rss_certified: true
     medicaid_enrolled:
       2026: true
-    # $1,578.50 a month, chosen so the daily amount is a whole cent.
-    social_security_retirement:
-      2026: 18_942
-    oh_rss_days_of_placement: 15
+    # Set directly so the daily amount is a whole cent.
+    oh_rss_countable_income: 1_558.5
+    oh_rss_partial_month_days: 15
   output:
     oh_rss_eligible: true
-    # 18,942 / 12 = 1,578.50; 1,578.50 - 20 = 1,558.50; 994 - 1,558.50 < 0.
-    ssi: 0
-    # 1,558.50 + SSI 0.
-    oh_rss_countable_income: 1_558.5
     # 1,800 - 1,558.50 = 241.50; 241.50 / 30 days = 8.05 exactly (no
     # float round-up to 8.06); 8.05 x 15 days = 120.75.
     oh_rss: 120.75
+
+- name: Case 10, partial-month days entered for one spouse leave the other spouse's month full.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 65
+        oh_rss_certified: true
+        medicaid_enrolled:
+          2026: true
+        # Moved into the RSS home on April 16: April 16 through 30.
+        oh_rss_partial_month_days: 15
+      person2:
+        age:
+          2026: 65
+        oh_rss_certified: true
+        medicaid_enrolled:
+          2026: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: OH
+  output:
+    oh_rss_partial_month_days: [15, 0]
+    oh_rss_eligible: [true, true]
+    # SSI couple rate 1,491 / 2 = 745.50 each.
+    ssi: [745.5, 745.5]
+    oh_rss_countable_income: [745.5, 745.5]
+    # (2 x 1,800 - 1,491) / 2 = 1,054.50; person1: 1,054.50 / 30 days =
+    # 35.15 x 15 days = 527.25; person2 was in the home all month.
+    oh_rss: [527.25, 1_054.5]
+
+- name: Case 11, partial-month days entered for one month leave the next month full.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    age: 65
+    medicaid_enrolled: true
+    oh_rss_certified:
+      2026-03: false
+      2026-04: true
+      2026-05: true
+    oh_rss_partial_month_days:
+      2026-04: 15
+  output:
+    oh_rss_partial_month_days:
+      2026-04: 15
+      2026-05: 0
+    # March: no placement yet. April: 806 / 30 days = 26.8667, rounded up to
+    # 26.87; 26.87 x 15 days = 403.05. May is a full month: 1,800 - 994 = 806.
+    oh_rss:
+      2026-03: 0
+      2026-04: 403.05
+      2026-05: 806
+
+- name: Case 12, spouses in different RSS homes entered as separate marital units.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        oh_rss_certified: true
+        medicaid_enrolled: true
+      person2:
+        age: 65
+        oh_rss_certified: true
+        medicaid_enrolled: true
+    marital_units:
+      m1:
+        members: [person1]
+      m2:
+        members: [person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # Each spouse is budgeted as an individual: SSI 994 each.
+    ssi: [994, 994]
+    oh_rss_eligible: [true, true]
+    oh_rss_countable_income: [994, 994]
+    # 1,800 - 994 = 806 each.
+    oh_rss: [806, 806]
+
+# NOTE: 5160:1-5-01(E)(3) applies the individual standard when only one spouse
+# has a level of care, so the model tests person1's own resources against
+# $2,000. 5160:1-3-05.1(B)(9)(b) and 5160:1-3-05.20(E)(1)-(2) would instead
+# combine the couple's 3,100 against $3,000 and pay 0.
+- name: Case 13, one eligible spouse tested on own resources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        oh_rss_certified: true
+        medicaid_enrolled: true
+        ssi_countable_resources: 1_500
+      person2:
+        age: 65
+        medicaid_enrolled: true
+        ssi_countable_resources: 1_600
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_rss_eligible: [true, false]
+    # SSI combines the couple's resources: 1,500 + 1,600 = 3,100 > 3,000.
+    ssi: [0, 0]
+    oh_rss_countable_income: [0, 0]
+    # Person1's own 1,500 <= 2,000; 1,600 + 200 - 0 = 1,800.
+    oh_rss: [1_800, 0]

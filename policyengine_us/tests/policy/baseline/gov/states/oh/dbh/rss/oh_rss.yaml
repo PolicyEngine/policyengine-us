@@ -7,6 +7,10 @@
     oh_rss_certified: true
     medicaid_enrolled: true
   output:
+    # No other income: SSI pays the 994 federal benefit rate.
+    ssi: 994
+    oh_rss_countable_income: 994
+    # 1,600 fee + 200 allowance - SSI 994 = 806.
     oh_rss: 806
 
 - name: Case 2, non SSI Social Security.
@@ -17,11 +21,17 @@
     age: 65
     oh_rss_certified: true
     medicaid_enrolled: true
-    social_security_retirement: 18_000
+    # SSA Monthly Statistical Snapshot, August 2026, Table 2: average
+    # disabled-worker benefit $1,635.90; 1,635.90 x 12 = 19,630.80.
+    social_security_disability: 19_630.8
   output:
-    oh_rss: 320
+    # 1,635.90 - 20 = 1,615.90 > 994, so no SSI.
+    ssi: 0
+    oh_rss_countable_income: 1_615.9
+    # 1,800 - 1,615.90 = 184.10.
+    oh_rss: 184.1
 
-- name: Case 3, income exactly at threshold.
+- name: Case 3, countable income exactly at the income standard.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -29,11 +39,13 @@
     age: 65
     oh_rss_certified: true
     medicaid_enrolled: true
-    social_security_retirement: 21_840
+    oh_rss_countable_income: 1_800
   output:
+    oh_rss_eligible: true
+    # 5160:1-5-01(E)(4)(b): income equal to the 1,800 standard is ineligible.
     oh_rss: 0
 
-- name: Case 4, income just below threshold.
+- name: Case 4, countable income one dollar below the income standard.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -41,8 +53,9 @@
     age: 65
     oh_rss_certified: true
     medicaid_enrolled: true
-    social_security_retirement: 21_828
+    oh_rss_countable_income: 1_799
   output:
+    # 1,800 - 1,799 = 1.
     oh_rss: 1
 
 - name: Case 5, income above threshold.
@@ -53,8 +66,14 @@
     age: 65
     oh_rss_certified: true
     medicaid_enrolled: true
-    social_security_retirement: 24_000
+    # SSA Monthly Statistical Snapshot, August 2026, Table 2: average
+    # retired-worker benefit $2,087.52; 2,087.52 x 12 = 25,050.24.
+    social_security_retirement: 25_050.24
   output:
+    # 2,087.52 - 20 = 2,067.52 > 994, so no SSI.
+    ssi: 0
+    oh_rss_countable_income: 2_067.52
+    # 2,067.52 > 1,800 standard.
     oh_rss: 0
 
 - name: Case 6, earned income exclusion.
@@ -65,8 +84,17 @@
     age: 65
     oh_rss_certified: true
     medicaid_enrolled: true
-    employment_income: 2_220
+    # Ohio minimum wage $11.00 (US DOL state minimum wage table) x 5 hours
+    # x 52 weeks = 2,860.
+    employment_income: 2_860
   output:
+    # 2,860 / 12 = 238.33; (238.33 - 20 - 65) / 2 = 76.67.
+    ssi_countable_income: 76.67
+    # 994 - 76.67 = 917.33.
+    ssi: 917.33
+    # Same exclusions: 76.67 + SSI 917.33 = 994.
+    oh_rss_countable_income: 994
+    # 1,800 - 994 = 806.
     oh_rss: 806
 
 - name: Case 7, no care certification.
@@ -101,6 +129,7 @@
     medicaid_enrolled: true
     meets_ssi_disability_criteria: true
   output:
+    # Below the minimum age of 18 (5122-36-02(A)(1)).
     oh_rss: 0
 
 - name: Case 10, age eighteen disabled.
@@ -113,6 +142,7 @@
     medicaid_enrolled: true
     meets_ssi_disability_criteria: true
   output:
+    # 1,600 + 200 - SSI 994 = 806.
     oh_rss: 806
 
 - name: Case 11, not aged blind or disabled.
@@ -136,6 +166,7 @@
     medicaid_enrolled: true
     ssi_countable_resources: 2_000
   output:
+    # 2,000 <= 2,000 individual limit; 1,800 - SSI 994 = 806.
     oh_rss: 806
 
 - name: Case 13, excess resources.
@@ -148,6 +179,7 @@
     medicaid_enrolled: true
     ssi_countable_resources: 2_001
   output:
+    # 2,001 > 2,000 individual limit.
     oh_rss: 0
 
 - name: Case 14, out of state.
@@ -169,11 +201,12 @@
     age: 65
     oh_rss_certified: true
     medicaid_enrolled: true
-    oh_rss_days_of_placement: 16
+    oh_rss_partial_month_days: 16
   output:
+    # 806 / 31 days = 26.00 a day; 26.00 x 16 days = 416.
     oh_rss: 416
 
-- name: Case 16, zero days of placement.
+- name: Case 16, zero partial-month days pays the full month.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -181,9 +214,10 @@
     age: 65
     oh_rss_certified: true
     medicaid_enrolled: true
-    oh_rss_days_of_placement: 0
+    oh_rss_partial_month_days: 0
   output:
-    oh_rss: 0
+    # 0 means a full month: 1,600 + 200 - SSI 994 = 806.
+    oh_rss: 806
 
 - name: Case 17, interest and dividends excluded from RSS income.
   period: 2026-01
@@ -204,7 +238,8 @@
     qualified_dividend_income: 12
   output:
     oh_rss_eligible: true
-    # SSI counts interest and dividends: 1,636 + 48 / 12 + 12 / 12 = 1,641.
+    # PolicyEngine's federal SSI counts interest and dividends (#10079):
+    # 1,636 + 48 / 12 + 12 / 12 = 1,641.
     ssi_unearned_income: 1_641
     # 1,641 - 20 = 1,621.
     ssi_countable_income: 1_621
@@ -244,3 +279,34 @@
     # 1,800 - 1,161 = 639. Without the exclusion, (715 - 65) / 2 = 325 more
     # would count and pay 314.
     oh_rss: 639
+
+- name: Case 19, Medicaid enrollment computed by the model.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    age: 65
+    oh_rss_certified: true
+  output:
+    # An aged SSI recipient qualifies for Ohio Medicaid with no input.
+    medicaid_enrolled: true
+    oh_rss_eligible: true
+    ssi: 994
+    # 1,600 + 200 - SSI 994 = 806.
+    oh_rss: 806
+
+# 5122-36-05 sets the fee and allowance with no cost-of-living adjustment, so
+# the 2027 SSI increase lowers RSS by the same amount.
+- name: Case 20, fixed RSS income standard with the 2027 SSI rate.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    age: 65
+    oh_rss_certified: true
+    medicaid_enrolled: true
+  output:
+    # 2027 SSI federal benefit rate.
+    ssi: 1_029
+    # 1,600 + 200 - SSI 1,029 = 771.
+    oh_rss: 771
