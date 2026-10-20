@@ -46,7 +46,7 @@
         state_code: WV
   output:
     # W. Va. Code 11-21-16 and IRC 151(d)(2): no exemption for a filer who
-    # can be claimed; a return with no exemptions takes $500 instead.
+    # can be claimed; section 11-21-16(d) grants that individual $500.
     wv_personal_exemption: 500
 
 - name: "2025 joint return with one claimable spouse: West Virginia personal exemption counts only exemptions that may be claimed (the claimable spouse is the head)"
@@ -73,8 +73,8 @@
         members: [person_a, person_b]
         state_code: WV
   output:
-    # One exemption for the spouse who cannot be claimed: $2,000.
-    wv_personal_exemption: 2000
+    # $2,000 for the nonclaimable spouse plus the claimable filer's $500.
+    wv_personal_exemption: 2500
 
 - name: "2025 joint return with one claimable spouse: West Virginia personal exemption counts only exemptions that may be claimed (the claimable spouse is the spouse)"
   period: 2025
@@ -100,7 +100,7 @@
         members: [person_b, person_a]
         state_code: WV
   output:
-    wv_personal_exemption: 2000
+    wv_personal_exemption: 2500
 
 - name: "2025 joint return with both spouses claimable: West Virginia personal exemption counts only exemptions that may be claimed"
   period: 2025
@@ -127,8 +127,8 @@
         members: [person_a, person_b]
         state_code: WV
   output:
-    # No exemptions on the return: the $500 fallback, once per return.
-    wv_personal_exemption: 500
+    # Section 11-21-16(d) grants each claimable spouse a $500 allowance.
+    wv_personal_exemption: 1000
 
 - name: "2025 joint return with neither spouse claimable: West Virginia personal exemption counts only exemptions that may be claimed"
   period: 2025
@@ -263,3 +263,116 @@
   output:
     # No own exemption; one dependent exemption x $2,000, so no $500.
     wv_personal_exemption: 2000
+
+- name: WV statutory individual allowance - single claimable filer
+  period: 2025
+  input:
+    people:
+      filer:
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members:
+        - filer
+        filing_status: SINGLE
+        wv_agi: 30000
+        wv_low_income_earned_income_exclusion: 0
+    households:
+      household:
+        members:
+        - filer
+        state_code: WV
+  output:
+    wv_personal_exemption: 500
+    wv_taxable_income: 29500
+
+- name: WV statutory individual allowance - claimable head and nonclaimable spouse
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: true
+      spouse:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        - spouse
+        filing_status: JOINT
+        wv_agi: 30000
+        wv_low_income_earned_income_exclusion: 0
+    households:
+      household:
+        members:
+        - head
+        - spouse
+        state_code: WV
+  output:
+    wv_personal_exemption: 2500
+    wv_taxable_income: 27500
+
+- name: WV statutory individual allowance - two claimable spouses
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: true
+      spouse:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        - spouse
+        filing_status: JOINT
+        wv_agi: 30000
+        wv_low_income_earned_income_exclusion: 0
+    households:
+      household:
+        members:
+        - head
+        - spouse
+        state_code: WV
+  output:
+    wv_personal_exemption: 1000
+    wv_taxable_income: 29000
+
+- name: WV statutory individual allowance - nonclaimable head and claimable spouse
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      spouse:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        - spouse
+        filing_status: JOINT
+        wv_agi: 30000
+        wv_low_income_earned_income_exclusion: 0
+    households:
+      household:
+        members:
+        - head
+        - spouse
+        state_code: WV
+  output:
+    wv_personal_exemption: 2500
+    wv_taxable_income: 27500

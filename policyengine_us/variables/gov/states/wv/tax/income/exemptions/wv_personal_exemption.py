@@ -17,12 +17,24 @@ class wv_personal_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.wv.tax.income.exemptions
-        # W. Va. Code 11-21-16 allows $2,000 per federal exemption. The IT-140
-        # instructions allow none for a filer who "can be claimed as a
-        # dependent on another person's return" and add: "You cannot claim
-        # any dependents if you can be claimed as a dependent" (IRC 151(d)(2),
-        # 152(b)(1)). 11-21-16(d) gives an individual whose federal exemption
-        # is zero under 151(d)(2) a single $500 exemption; the form applies it
-        # once per return: "If box e is zero, enter $500 on line 6".
+        # Section 11-21-16(d) grants each claimable individual $500.
+        # Limit this correction to units without dependent members: applying
+        # the single-exemption limit with dependents requires attribution.
+        person = tax_unit.members
+        claimable_filers = tax_unit.sum(
+            person("is_tax_unit_head_or_spouse", period)
+            & person("claimable_as_dependent_on_another_return", period)
+        )
+        own_exemptions = tax_unit("head_spouse_count_not_dependent_elsewhere", period)
+        filer_allowances = (
+            p.personal * own_exemptions + p.base_personal * claimable_filers
+        )
+        childless_claimable = (tax_unit("tax_unit_dependents", period) == 0) & (
+            claimable_filers > 0
+        )
+        # Preserve the existing dependent allocation pending resolution.
         exemptions = tax_unit("exemptions_count", period)
-        return where(exemptions == 0, p.base_personal, p.personal * exemptions)
+        ordinary_amount = where(
+            exemptions == 0, p.base_personal, p.personal * exemptions
+        )
+        return where(childless_claimable, filer_allowances, ordinary_amount)

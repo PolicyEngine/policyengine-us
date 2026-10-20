@@ -297,3 +297,128 @@
     wv_personal_exemption: 500
     wv_eligible_dependents_count: 0
     wv_older_dependents_count: 0
+
+- name: WV statutory individual allowance - single claimable filer
+  period: 2025
+  reforms: policyengine_us.reforms.states.wv.dependent_exemption.wv_dependent_exemption_reform.wv_dependent_exemption_reform
+  input:
+    gov.contrib.states.wv.dependent_exemption.in_effect: true
+    gov.contrib.states.wv.dependent_exemption.amount: 0
+    people:
+      filer:
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members:
+        - filer
+        filing_status: SINGLE
+        wv_agi: 30000
+        wv_low_income_earned_income_exclusion: 0
+    households:
+      household:
+        members:
+        - filer
+        state_code: WV
+  output:
+    wv_personal_exemption: 500
+    wv_taxable_income: 29500
+
+- name: WV statutory individual allowance - claimable head and nonclaimable spouse
+  period: 2025
+  reforms: policyengine_us.reforms.states.wv.dependent_exemption.wv_dependent_exemption_reform.wv_dependent_exemption_reform
+  input:
+    gov.contrib.states.wv.dependent_exemption.in_effect: true
+    gov.contrib.states.wv.dependent_exemption.amount: 0
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: true
+      spouse:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        - spouse
+        filing_status: JOINT
+        wv_agi: 30000
+        wv_low_income_earned_income_exclusion: 0
+    households:
+      household:
+        members:
+        - head
+        - spouse
+        state_code: WV
+  output:
+    wv_personal_exemption: 2500
+    wv_taxable_income: 27500
+
+- name: WV statutory individual allowance - two claimable spouses
+  period: 2025
+  reforms: policyengine_us.reforms.states.wv.dependent_exemption.wv_dependent_exemption_reform.wv_dependent_exemption_reform
+  input:
+    gov.contrib.states.wv.dependent_exemption.in_effect: true
+    gov.contrib.states.wv.dependent_exemption.amount: 0
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: true
+      spouse:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        - spouse
+        filing_status: JOINT
+        wv_agi: 30000
+        wv_low_income_earned_income_exclusion: 0
+    households:
+      household:
+        members:
+        - head
+        - spouse
+        state_code: WV
+  output:
+    wv_personal_exemption: 1000
+    wv_taxable_income: 29000
+
+- name: WV statutory individual allowance - nonclaimable head and claimable spouse
+  period: 2025
+  reforms: policyengine_us.reforms.states.wv.dependent_exemption.wv_dependent_exemption_reform.wv_dependent_exemption_reform
+  input:
+    gov.contrib.states.wv.dependent_exemption.in_effect: true
+    gov.contrib.states.wv.dependent_exemption.amount: 0
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      spouse:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        - spouse
+        filing_status: JOINT
+        wv_agi: 30000
+        wv_low_income_earned_income_exclusion: 0
+    households:
+      household:
+        members:
+        - head
+        - spouse
+        state_code: WV
+  output:
+    wv_personal_exemption: 2500
+    wv_taxable_income: 27500

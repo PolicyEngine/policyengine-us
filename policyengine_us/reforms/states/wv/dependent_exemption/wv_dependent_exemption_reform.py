@@ -73,8 +73,7 @@ def create_wv_dependent_exemption() -> Reform:
         def formula(tax_unit, period, parameters):
             p_base = parameters(period).gov.states.wv.tax.income.exemptions
 
-            # Claimable filers have no own exemption, even when the filing
-            # exception permits them to claim a dependent.
+            # Count ordinary own exemptions separately from dependent eligibility.
             own_exemptions = tax_unit(
                 "head_spouse_count_not_dependent_elsewhere", period
             )
@@ -85,14 +84,27 @@ def create_wv_dependent_exemption() -> Reform:
             # Add separated dependent exemption.
             dependent_exemption_amount = tax_unit("wv_dependent_exemption", period)
 
-            # IT-140 line 6 grants $500 once when there are no exemptions.
-            # Test the exemption count, independent of the reform's amount.
+            # Section 11-21-16(d) gives each claimable filer $500 in units
+            # without dependent members. Preserve existing allocation otherwise.
+            person = tax_unit.members
+            claimable_filers = tax_unit.sum(
+                person("is_tax_unit_head_or_spouse", period)
+                & person("claimable_as_dependent_on_another_return", period)
+            )
+            filer_allowances = (
+                p_base.personal * own_exemptions
+                + p_base.base_personal * claimable_filers
+            )
+            childless_claimable = (tax_unit("tax_unit_dependents", period) == 0) & (
+                claimable_filers > 0
+            )
             exemptions = tax_unit("exemptions_count", period)
-            return where(
+            ordinary_amount = where(
                 exemptions == 0,
                 p_base.base_personal,
                 personal_amount + dependent_exemption_amount,
             )
+            return where(childless_claimable, filer_allowances, ordinary_amount)
 
     class reform(Reform):
         def apply(self):

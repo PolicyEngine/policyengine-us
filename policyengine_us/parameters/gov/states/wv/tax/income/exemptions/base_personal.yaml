@@ -1,12 +1,14 @@
-description: West Virginia provides an income tax exemption of this value for tax units with no exemptions claimed.
+description: West Virginia provides this personal income tax exemption for each individual who is claimable as a dependent on another return.
 values:
   1987-01-01: 500
 
 metadata:
   period: year
   unit: currency-USD
-  label: West Virginia personal exemption
+  label: West Virginia claimable filer personal exemption
   reference:
+  - title: 1988 West Virginia H.B. 4472, enacted personal exemptions, pages 9-10
+    href: https://code.wvlegislature.gov/signed_bills/1988/1988-RS-HB4472-SUB%20ENR_signed.pdf#page=9
   - title: West Virginia Personal Income Tax Forms And Instructions 2025
     href: https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=26
   - title: West Virginia Personal Income Tax Forms And Instructions 2024

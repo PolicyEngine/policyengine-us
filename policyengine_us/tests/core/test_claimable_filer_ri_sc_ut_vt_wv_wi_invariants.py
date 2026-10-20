@@ -18,8 +18,9 @@ exception drawn per spouse) and a seeded population in these states:
    exemption goes away.
 3. Identities: the dependent-based amounts are zero on a return where the
    Dependent Taxpayer Test applies; a return whose every filer is actually
-   claimed gets no RI relief or VT renter credit; and a West Virginia return
-   with no exemptions gets the single $500.
+   claimed gets no RI relief or VT renter credit; and a childless West
+   Virginia return gets $500 per claimable filer and $2,000 per other filer.
+   Dependent-present West Virginia allocation retains the existing behavior.
 """
 
 import numpy as np
@@ -127,7 +128,18 @@ def _identities(sim, year):
             f"{name} in {year} is positive when every filer is claimed"
         )
     state = np.asarray(sim.populations["tax_unit"].household("state_code_str", year))
-    wv_none = (state == "WV") & (_calc(sim, "exemptions_count", year) == 0)
+    dependent_count = _calc(sim, "tax_unit_dependents", year)
+    wv_childless = (state == "WV") & (dependent_count == 0)
+    own = _calc(sim, "head_spouse_count_not_dependent_elsewhere", year)
+    np.testing.assert_array_equal(
+        _calc(sim, "wv_personal_exemption", year)[wv_childless],
+        (2_000 * own + 500 * (filers - own))[wv_childless],
+    )
+    wv_none = (
+        (state == "WV")
+        & (dependent_count > 0)
+        & (_calc(sim, "exemptions_count", year) == 0)
+    )
     np.testing.assert_array_equal(
         _calc(sim, "wv_personal_exemption", year)[wv_none], 500
     )
