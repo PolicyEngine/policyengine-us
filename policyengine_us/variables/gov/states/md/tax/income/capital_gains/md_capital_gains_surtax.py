@@ -8,11 +8,11 @@ class md_capital_gains_surtax(Variable):
     definition_period = YEAR
     unit = USD
     documentation = (
-        "The additional 2% tax on net capital gain included in Maryland "
+        "The additional tax on net capital gain included in Maryland "
         "adjusted gross income, less the gain from excepted assets, for a "
-        "filer with federal adjusted gross income over $350,000. Form 502 "
+        "filer with federal adjusted gross income over the threshold. Form 502 "
         "line 21b: Form 502CG line 9 (line 1 less line 8, not below zero) "
-        "times 2%."
+        "times the additional tax rate."
     )
     reference = [
         dict(
@@ -28,8 +28,12 @@ class md_capital_gains_surtax(Variable):
             href="https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/forms/2025/502cg.pdf#page=1",
         ),
         dict(
-            title="2025 Maryland Resident Income Tax Instructions, lines 20a and 21b",
+            title="2025 Maryland Resident Income Tax Instructions, line 20a",
             href="https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=21",
+        ),
+        dict(
+            title="2025 Maryland Resident Income Tax Instructions, line 21b",
+            href="https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=22",
         ),
     ]
     defined_for = "md_capital_gains_surtax_applies"
@@ -39,7 +43,7 @@ class md_capital_gains_surtax(Variable):
         # Form 502CG line 1: net capital gain included in Maryland AGI.
         net_capital_gain = tax_unit("md_net_capital_gain", period)
         # Line 8: the part from excepted assets (lines 2 through 7).
-        excepted = tax_unit("md_capital_gains_surtax_excepted_gain", period)
+        excepted = max_(0, tax_unit("md_capital_gains_surtax_excepted_gain", period))
         # Line 9, carried to Form 502 line 20a.
         subject_to_surtax = max_(0, net_capital_gain - excepted)
         return subject_to_surtax * p.surtax_rate

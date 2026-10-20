@@ -11,12 +11,15 @@ class md_net_capital_gain(Variable):
         "Revenue Code, 26 U.S.C. 1222(11): the excess of the net long-term "
         "capital gain over the net short-term capital loss. This is the "
         "amount included in Maryland adjusted gross income that Md. Code, "
-        "Tax-General 10-105(a)(3)(i)2 taxes at an additional 2%, before the "
+        "Tax-General 10-105(a)(3)(i)2 subjects to the additional tax, before the "
         "excepted assets of (a)(3)(ii). Form 502CG line 1. A net short-term "
         "capital gain is not part of it, and neither are qualified dividends, "
         "which section 1(h)(11) adds only for section 1(h). Only the head's "
         "and spouse's gains count; a tax unit dependent's gains are on the "
-        "dependent's own return."
+        "dependent's own return. This follows the statute and Technical "
+        "Bulletin 58 section I rather than the Form 502 line 1c figure "
+        "specified by the Form 502CG instructions, which also counts a net "
+        "short-term capital gain."
     )
     definition_period = YEAR
     reference = [

@@ -11,7 +11,7 @@ class md_capital_gains_surtax_excepted_gain(Variable):
     documentation = (
         "Net capital gain included in md_net_capital_gain that comes from the "
         "sale or exchange of an asset Md. Code, Tax-General 10-105(a)(3)(ii) "
-        "excepts from the additional 2% tax: a primary residence sold for "
+        "excepts from the additional tax: a primary residence sold for "
         "less than $1,500,000; assets held in a 401(k), 403(b), 457(b), IRA, "
         "Roth IRA or other retirement savings plan; cattle, horses or "
         "breeding livestock held more than 12 months by a taxpayer with more "
@@ -19,7 +19,8 @@ class md_capital_gains_surtax_excepted_gain(Variable):
         "conservation, agricultural or forest preservation easement; "
         "property used in a trade or business whose cost is deductible under "
         "IRC 179; and affordable housing owned by a nonprofit. Form 502CG "
-        "line 8, the sum of lines 2 through 7. Zero unless entered."
+        "line 8, the sum of lines 2 through 7. Zero unless entered; negative "
+        "amounts are treated as zero when calculating the surtax."
     )
     definition_period = YEAR
     reference = [
@@ -28,8 +29,16 @@ class md_capital_gains_surtax_excepted_gain(Variable):
             href="https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-105&enactments=false",
         ),
         dict(
-            title="Maryland Comptroller Technical Bulletin No. 58 (Dec. 29, 2025), sections II and III.A",
+            title="Maryland Comptroller Technical Bulletin No. 58 (Dec. 29, 2025), section II",
             href="https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/legal-publications/technical-bulletins/tb-58.pdf#page=1",
+        ),
+        dict(
+            title="Maryland Comptroller Technical Bulletin No. 58 (Dec. 29, 2025), section II, exceptions A through F",
+            href="https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/legal-publications/technical-bulletins/tb-58.pdf#page=2",
+        ),
+        dict(
+            title="Maryland Comptroller Technical Bulletin No. 58 (Dec. 29, 2025), section III.A example",
+            href="https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/legal-publications/technical-bulletins/tb-58.pdf#page=3",
         ),
         dict(
             title="2025 Maryland Form 502CG, lines 2 through 8",

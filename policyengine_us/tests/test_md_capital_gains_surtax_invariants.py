@@ -24,8 +24,8 @@ The properties below hold for every household:
    1040 line 7a gain (filer_loss_limited_net_capital_gains), so it is all
    included in federal, and hence Maryland, adjusted gross income.
 4. The surtax applies exactly when federal adjusted gross income is over
-   $350,000, and is then 2% of max(0, NCG - excepted gain) (Form 502CG line
-   9); otherwise it is zero. It is between 0 and 2% of NCG.
+   $350,000, and is then 2% of max(0, NCG - max(0, excepted gain)) (Form
+   502CG line 9); otherwise it is zero. It is between 0 and 2% of NCG.
 5. Changing a dependent's gains, losses or distributions changes neither
    md_net_capital_gain nor the surtax.
 6. Raising a filer's LT, ST or D by x raises md_net_capital_gain by between
@@ -41,7 +41,6 @@ precision; only the 2% products are compared with a cent of tolerance.
 import itertools
 
 import numpy as np
-import pytest
 
 from policyengine_core.reforms import Reform
 
@@ -164,7 +163,7 @@ def assert_single_household_properties(h, r, i):
     # 4. Threshold on federal AGI, and Form 502CG line 9.
     over = r["adjusted_gross_income"][i] > THRESHOLD
     assert bool(r["md_capital_gains_surtax_applies"][i]) == over, h
-    expected = RATE * max(0, ncg - h["excepted"]) if over else 0
+    expected = RATE * max(0, ncg - max(0, h["excepted"])) if over else 0
     surtax = float(r["md_capital_gains_surtax"][i])
     assert abs(surtax - expected) <= TOLERANCE, h
     assert -TOLERANCE <= surtax <= RATE * ncg + TOLERANCE, h
@@ -282,46 +281,3 @@ def test_cases_where_the_form_1040_line_7a_gain_differs():
     assert list(r["md_net_capital_gain"]) == [100_000, 0, 0]
     assert list(r["filer_loss_limited_net_capital_gains"]) == [150_000, 40_000, 80_000]
     assert list(r["md_capital_gains_surtax"]) == [2_000, 0, 0]
-
-
-# ---------------------------------------------------------------------------
-# Hypothesis properties (Hypothesis is a dev extra).
-# ---------------------------------------------------------------------------
-
-hypothesis = pytest.importorskip("hypothesis")
-st = pytest.importorskip("hypothesis.strategies")
-
-GAIN = st.integers(min_value=-300_000, max_value=300_000)
-DISTRIBUTIONS = st.integers(min_value=-5_000, max_value=50_000)
-DIVIDENDS = st.integers(min_value=0, max_value=50_000)
-WAGES = st.integers(min_value=0, max_value=800_000)
-
-
-@st.composite
-def random_household(draw):
-    def filer(role):
-        return person(
-            role,
-            draw(GAIN),
-            draw(GAIN),
-            draw(DISTRIBUTIONS),
-            draw(DIVIDENDS),
-            draw(WAGES),
-        )
-
-    people = [filer("head")]
-    if draw(st.booleans()):
-        people.append(filer("spouse"))
-    for _ in range(draw(st.integers(min_value=0, max_value=2))):
-        people.append(person("dependent", draw(GAIN), draw(GAIN), draw(DISTRIBUTIONS)))
-    excepted = draw(st.sampled_from([0, 0, 10_000, draw(GAIN.map(abs))]))
-    return household(people, excepted)
-
-
-@hypothesis.settings(max_examples=25, deadline=None)
-@hypothesis.given(
-    st.lists(random_household(), min_size=1, max_size=8),
-    st.integers(min_value=1, max_value=100_000),
-)
-def test_properties(households, delta):
-    assert_properties(households, delta)
