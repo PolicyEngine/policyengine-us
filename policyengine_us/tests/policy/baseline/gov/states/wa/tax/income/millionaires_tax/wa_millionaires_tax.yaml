@@ -245,7 +245,7 @@
 
 - name: Case 22, sub-box charitable donation inputs reduce taxable income.
   period: 2028
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     state_code: WA
     adjusted_gross_income: 2_000_000
