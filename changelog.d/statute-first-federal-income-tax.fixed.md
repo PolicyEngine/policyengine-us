@@ -1,0 +1,1 @@
+Follow the statute where IRS forms differ: the refundable child tax credit bar applies only to a section 911 exclusion (not the housing deduction alone), and a claimable spouse aged 65 or blind on a 2018-2025 joint return must file with income other than earned income over the section 63(c)(5)(A) amount.
