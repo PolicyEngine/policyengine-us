@@ -91,7 +91,7 @@
 - name: Minnesota UI caps each employee's 2025 wages at 43,000.
   period: 2025
   input:
-    state_code: MN
+    state_code: [MN, MN, MN, MN]
     payroll_tax_gross_wages: [0, 42_000, 43_000, 44_000]
   output:
     taxable_earnings_for_state_unemployment_tax: [0, 42_000, 43_000, 43_000]
@@ -100,7 +100,7 @@
 - name: Minnesota UI caps each employee's 2026 wages at 44,000.
   period: 2026
   input:
-    state_code: MN
+    state_code: [MN, MN, MN, MN]
     payroll_tax_gross_wages: [0, 43_000, 44_000, 45_000]
   output:
     taxable_earnings_for_state_unemployment_tax: [0, 43_000, 44_000, 44_000]
