@@ -13,6 +13,9 @@
 # test growth, and --workers 1 everywhere except the partners target
 # (its largest batch measured 2.5 GB, so two-wide stays trivially safe).
 BATCH := python policyengine_us/tests/test_batched.py
+# CI's Baseline and Contrib jobs set POLICYENGINE_BATCH_WORKERS=2, which
+# overrides --workers below: test_batched.py then runs two batch subprocesses
+# per runner while its memory allows. Local runs keep the counts given here.
 TESTS := policyengine_us/tests
 # Run SPM construction/isolation tests in their own process on the existing
 # Microsimulation CI runner, before the dataset tests. Rest excludes these
@@ -197,8 +200,9 @@ test-yaml-variables:
 	$(BATCH) $(TESTS)/variables --batches 1
 test-yaml-no-structural-states:
 	# Release model/parameter caches between states. The former NY/OH/OK
-	# group peaked at 15.1 GB; keep one subprocess at a time on each of
-	# the existing four CI runners. Root-level state tests remain included.
+	# group peaked at 15.1 GB; keep one subprocess at a time here. CI's four
+	# runners run up to two while memory allows (POLICYENGINE_BATCH_WORKERS).
+	# Root-level state tests remain included.
 	$(BATCH) $(TESTS)/policy/baseline/gov/states --mode per-subdir --workers 1
 test-yaml-no-structural-other:
 	$(BATCH) $(TESTS)/policy/baseline --batches 2 --exclude states
@@ -212,8 +216,9 @@ test-yaml-no-structural-other-irs:
 	$(BATCH) $(TESTS)/policy/baseline/gov/irs --mode per-subdir --workers 1
 test-yaml-no-structural-other-household:
 	# 4 batches (was 2), --workers 1: a 2-batch half of this folder (incl.
-	# the weights/MTR files) peaked 11.8 GB on CI run 28698452678. Quarter
-	# batches keep each subprocess <= ~6 GB.
+	# the weights/MTR files) peaked 11.8 GB on CI run 28698452678, and by
+	# October 2026 the last quarter batch reached 15.1 GB. test_batched.py's
+	# memory budget now continues a batch in a fresh subprocess past ~8 GB.
 	$(BATCH) $(TESTS)/policy/baseline/household --batches 4 --workers 1
 test-yaml-no-structural-other-contrib:
 	# ubi_center is microsim-heavy → per-file, one ~4 GB peak at a time.
@@ -234,8 +239,9 @@ test-yaml-reform:
 	# ~8 GB file runs solo with ~8 GB spare); new reform files auto-route.
 	$(BATCH) $(TESTS)/policy/reform --mode per-file --workers 1
 test-yaml-no-structural-other-hhs:
-	# hhs (~2.7 GB peak) rides along with the baseline-contrib runner,
-	# which has spare headroom.
+	# hhs rides along with the baseline-contrib runner. As one process it
+	# peaked at 15.1 GB (CI run 38656284185); test_batched.py's memory budget
+	# continues it in a fresh subprocess past ~8 GB.
 	$(BATCH) $(TESTS)/policy/baseline/gov/hhs --batches 1
 # baseline contrib + gov/hhs share one CI runner. policy/reform no longer
 # rides along: its per-file peaks (~5.5-8 GB) plus this pair filled a job
