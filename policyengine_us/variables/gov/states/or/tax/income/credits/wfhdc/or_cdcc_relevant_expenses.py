@@ -16,8 +16,10 @@ class or_cdcc_relevant_expenses(Variable):
 
         # ORS 315.264(1)(a) covers expenses of a type allowable under IRC
         # §21: childcare plus care for a disabled adult qualifying
-        # individual (care_expenses).
-        childcare = tax_unit("tax_unit_childcare_expenses", period)
+        # individual (care_expenses). The federal rule leaves out childcare
+        # for a child who is not a qualifying individual because a filer can
+        # be claimed as a dependent.
+        childcare = tax_unit("cdcc_qualifying_childcare_expenses", period)
         adult_care = add(tax_unit, period, ["care_expenses"])
         expenses = childcare + adult_care
         # First, cap based on the number of eligible care receivers

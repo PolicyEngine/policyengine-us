@@ -66,15 +66,13 @@ values:
     # (9)(a) counts all nontaxable income; a government-funded pilot is also
     # "any other government assistance" (Schedule 2EC line 16).
     - gi_cash_assistance
-    # Disability benefits from employment other than workers' compensation
-    # (2014-2023 instructions: "Disability benefits including, but not
-    # limited to, veteran's disability, SSI payments, and workers'
-    # compensation"; from 2024, Schedule 2EC line 1 for taxable sick pay and
-    # disability pay reported as wages, line 5 for a disability pension after
-    # minimum retirement age (IRS Pub. 525), otherwise line 15). The model
-    # leaves them out of federal AGI (irs_gross_income) and
-    # dependent_gross_income, so all of them count here, once.
-    - disability_benefits
+    # Only nontaxable employment disability benefits are added here. The
+    # taxable part is already in federal AGI or a dependent's own gross
+    # income. The 2014-2023 instructions list disability benefits among
+    # other income; from 2024, Schedule 2EC uses line 1 for taxable pay
+    # reported as wages, line 5 for a disability pension after minimum
+    # retirement age, and line 15 for nontaxable disability benefits.
+    - tax_exempt_disability_benefits
     # Unemployment compensation that neither federal AGI nor a dependent's
     # own gross income counts, such as the 2020 IRC 85(c) exclusion (2020
     # line 8, "all items of income ... not reported on lines 1 through 7";
@@ -102,7 +100,7 @@ values:
     - tanf_person
     - workers_compensation
     - gi_cash_assistance
-    - disability_benefits
+    - tax_exempt_disability_benefits
     - mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback
     - mt_refundable_credits_before_renter_credit
     - mt_elderly_homeowner_or_renter_credit_received
@@ -124,14 +122,17 @@ values:
     - tanf_person
     - workers_compensation
     - gi_cash_assistance
-    - disability_benefits
+    - tax_exempt_disability_benefits
     - mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback
     - mt_refundable_credits_before_renter_credit
     - mt_elderly_homeowner_or_renter_credit_received
     - mt_elderly_homeowner_or_renter_credit_federal_refundable_credits
     - mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received
-# Social Security under § 15-30-2337(9)(a)(viii) is added separately in
-# mt_elderly_homeowner_or_renter_credit_gross_household_income.py because the
-# untaxed portion is computed as social_security - taxable_social_security.
+# mt_elderly_homeowner_or_renter_credit_gross_household_income.py adds three
+# items separately: a tax unit dependent's own gross income (their income is
+# on their own return, not in adjusted_gross_income_person); the untaxed
+# portion of Social Security under § 15-30-2337(9)(a)(viii), computed as
+# social_security less the taxable part already counted; and the losses
+# deducted in federal AGI.
 # This year's elderly homeowner/renter credit is excluded to avoid a circular
 # reference; the credit received during the year counts instead.

@@ -177,3 +177,36 @@
     disability_benefits: 1_400
   output:
     nj_liheap_countable_income_person: 10_500
+
+- name: Case 7, modeled New Jersey unemployment insurance counts as unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    age: 40
+    social_security: 0
+    ssi: 0
+    # Average weekly wage = 10,000 / 20 = 500; weekly benefit rate =
+    # floor(0.6 * 500) = 300; weeks = min(26 claimed, 20 base weeks) = 20;
+    # nj_unemployment_insurance = 300 * 20 = 6,000.
+    nj_unemployment_insurance_base_period_weeks: 20
+    nj_unemployment_insurance_base_period_wages: 10_000
+    nj_unemployment_insurance_weeks_claimed: 26
+  output:
+    nj_unemployment_insurance: 6_000
+    # No reported UC, so total UC falls back to the modeled NJ UI.
+    total_unemployment_compensation: 6_000
+    nj_liheap_countable_income_person: 6_000
+
+- name: Case 8, reported unemployment compensation counts as unearned income, as the control for modeled UI.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    age: 40
+    social_security: 0
+    ssi: 0
+    unemployment_compensation: 6_000
+  output:
+    total_unemployment_compensation: 6_000
+    nj_liheap_countable_income_person: 6_000
