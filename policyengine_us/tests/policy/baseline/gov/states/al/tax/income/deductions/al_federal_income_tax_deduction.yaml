@@ -77,7 +77,7 @@
   # no non-refundable add-backs.
   # Hand arithmetic:
   #   federal_tax = 100; niit = 200
-  #   Part I  = max(100 - eitc(200) - full_AOC(200) - refundable_ctc(0), 0) = 0
+  #   Part I  = max(100 - eitc(200) - refundable_AOC(80) - refundable_ctc(0), 0) = 0
   #   regular_tax_basis = 100 - 200 = -100
   #   line_6  = max(-100, 0) = 0                      <- floor before NIIT
   #   refundable_AOC = 0.4 * 200 = 80
@@ -112,14 +112,14 @@
   #
   # Hand arithmetic (all direct inputs):
   #   federal_tax = income_tax_before_refundable_credits = 5,000; NIIT = 0
-  #   Part I  = max(5,000 - eitc(0) - full_AOC(2,500) - refundable_ctc(0), 0)
-  #           = 2,500
+  #   Part I  = max(5,000 - eitc(0) - refundable_AOC(1,000) - refundable_ctc(0), 0)
+  #           = 4,000
   #   regular_tax_basis = 5,000 - 0 = 5,000
   #   line_6  = max(5,000 + 0 + 0 - 0 - 0, 0) = 5,000
   #   refundable_AOC = 0.4 * 2,500 = 1,000
   #   Part II = max(5,000 + NIIT(0) - eitc(0) - refundable_ctc(0)
   #                 - refundable_AOC(1,000), 0) = 4,000
-  #   deduction = max(Part I 2,500, Part II 4,000) = 4,000
+  #   deduction = max(Part I 4,000, Part II 4,000) = 4,000
   # Regression guard: the pre-fix code subtracted the full $2,500 AOC in Part II,
   # giving Part II = max(5,000 - 2,500, 0) = 2,500 and a deduction of 2,500.
   absolute_error_margin: 0.01
@@ -286,3 +286,92 @@
     dependent_care_assistance_exclusion: 9_000
     cdcc: 3_500
     al_federal_income_tax_deduction: 4_390
+
+- name: Alabama subtracts payment credits and only refundable AOC
+  # Ala. Admin. Code r. 810-3-15-.20(1)(d)2 requires all payment credits.
+  # Federal tax already reflects the nonrefundable $1,500 of the total AOC.
+  # max(5,000 - 1,000 refundable AOC - 1,500 claim credit - 1,000 net PTC, 0).
+  period: 2025
+  input:
+    state_code: AL
+    income_tax_before_refundable_credits: 5_000
+    eitc: 0
+    american_opportunity_credit: 2_500
+    refundable_american_opportunity_credit: 1_000
+    refundable_ctc: 0
+    claim_of_right_credit: 1_500
+    net_premium_tax_credit: 1_000
+    al_other_federal_payment_credits: 0
+  output:
+    al_federal_income_tax_deduction: 1_500
+
+- name: Alabama payment credits cannot make the deduction negative
+  period: 2025
+  input:
+    state_code: AL
+    income_tax_before_refundable_credits: 1_000
+    eitc: 0
+    refundable_american_opportunity_credit: 0
+    refundable_ctc: 0
+    claim_of_right_credit: 1_500
+    net_premium_tax_credit: 0
+    al_other_federal_payment_credits: 0
+  output:
+    al_federal_income_tax_deduction: 0
+
+- name: Alabama 2021 alternative subtracts claim credit and net PTC
+  # Childless $50,000 filer has no recomputed CTC, CDCC, or EITC.
+  # Both alternatives equal max(5,000 - 1,500 - 1,000, 0).
+  period: 2021
+  input:
+    state_code: AL
+    age: 40
+    employment_income: 50_000
+    income_tax_before_refundable_credits: 5_000
+    net_investment_income_tax: 0
+    ctc: 0
+    refundable_ctc: 0
+    cdcc: 0
+    eitc: 0
+    refundable_american_opportunity_credit: 0
+    claim_of_right_credit: 1_500
+    net_premium_tax_credit: 1_000
+    al_other_federal_payment_credits: 0
+  output:
+    al_federal_income_tax_deduction: 2_500
+
+- name: Alabama subtracts residual federal payment credits
+  # The residual input covers credits not otherwise named in the list.
+  period: 2025
+  input:
+    state_code: AL
+    income_tax_before_refundable_credits: 5_000
+    eitc: 0
+    refundable_american_opportunity_credit: 0
+    refundable_ctc: 0
+    claim_of_right_credit: 0
+    net_premium_tax_credit: 0
+    al_other_federal_payment_credits: 750
+  output:
+    al_federal_income_tax_deduction: 4_250
+
+- name: Alabama 2021 alternative floors the deduction after all payment credits
+  # The line-6 floor protects NIIT before payment credits are subtracted.
+  # Both alternatives must still subtract the residual credits and floor at 0.
+  period: 2021
+  input:
+    state_code: AL
+    age: 40
+    employment_income: 50_000
+    income_tax_before_refundable_credits: 0
+    net_investment_income_tax: 1_900
+    ctc: 0
+    refundable_ctc: 0
+    cdcc: 0
+    eitc: 0
+    refundable_american_opportunity_credit: 0
+    claim_of_right_credit: 500
+    net_premium_tax_credit: 500
+    al_other_federal_payment_credits: 1_000
+  output:
+    al_federal_income_tax_deduction: 0

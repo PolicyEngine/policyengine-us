@@ -113,9 +113,9 @@
     # 50% x 8,750
     or_federal_tax_liability_subtraction: 4_375
 
-- name: The section 1341 credit does not reduce the federal tax liability subtraction
-  # 2025 Publication OR-17, federal tax worksheet: Form 1040 line 22 less the
-  # American Opportunity, refundable adoption and premium tax credits only.
+- name: The section 1341 credit reduces the federal tax liability subtraction
+  # ORS 316.680(1)(b) and 316.685(1) allow federal taxes accrued and
+  # expressly disregard EITC. Section 1341 relief reduces accrued tax.
   period: 2025
   input:
     state_code: OR
@@ -126,4 +126,4 @@
     eitc: 0
     claim_of_right_credit: 1_500
   output:
-    or_federal_tax_liability_subtraction: 4_000
+    or_federal_tax_liability_subtraction: 2_500

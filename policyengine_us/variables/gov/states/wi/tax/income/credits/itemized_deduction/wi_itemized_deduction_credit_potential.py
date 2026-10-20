@@ -18,16 +18,11 @@ class wi_itemized_deduction_credit_potential(Variable):
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
-        # Follow Form 1 Schedule 1, lines 1-4: medical expenses, interest,
-        # gifts to charity and casualty losses, with no line for this deduction.
-        # Wis. Stat. 71.07(5)(a)6 excludes repayments used for the state's
-        # claim of right credit, and paragraph 7 excludes miscellaneous
-        # itemized deductions (section 1341 is not one under IRC 67(b)(9)).
-        # The statute is unclear for repayments not used for that credit;
-        # Wisconsin's separate repayment relief is not modeled.
-        wi_itmded = tax_unit("itemized_deductions_less_salt", period) - tax_unit(
-            "claim_of_right_deduction", period
-        )
+        # Wis. Stat. 71.07(5)(a)6 excludes repayments only when used for the
+        # separate Wisconsin claim of right credit, which is not modeled.
+        # Section 1341 deductions are not miscellaneous deductions under
+        # IRC 67(b)(9), so paragraph 7 does not exclude them either.
+        wi_itmded = tax_unit("itemized_deductions_less_salt", period)
         wi_stdded = tax_unit("wi_standard_deduction", period)
         excess_itmded = max_(0, wi_itmded - wi_stdded)
         p = parameters(period).gov.states.wi.tax.income

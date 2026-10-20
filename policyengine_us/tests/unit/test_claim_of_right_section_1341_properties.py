@@ -38,10 +38,10 @@ applies and otherwise is what it is with the deduction method fixed; and that
 its payment is the prior-year increase when the credit method applies and zero
 otherwise.
 
-Last, one itemizing household per state: with the credit method fixed, the
-repayment leaves every state's income tax unchanged in the model (no state
-input is supplied), and with the deduction method fixed it leaves Arizona's,
-Kansas's and Wisconsin's unchanged.
+Last, one itemizing household per state: the credit method reduces the federal
+tax deductible in Alabama, Missouri and Oregon, so their state taxes can rise.
+Other states' taxes stay unchanged for this household (no state input is
+supplied). The deduction method leaves Arizona's and Kansas's taxes unchanged.
 """
 
 import gc
@@ -80,9 +80,9 @@ STATES = [
     if state.name not in {"AA", "AE", "AP", "AS", "GU", "MP", "PR", "PW", "VI"}
 ]
 # States whose own rules leave out the federal claim of right repayment
-# deduction: A.R.S. 43-1021(9), K.S.A. 79-32,120(a) and Wisconsin Form 1
-# Schedule 1. California carries the federal deduction in Schedule CA column A.
-STATES_WITHOUT_THE_DEDUCTION = ["AZ", "KS", "WI"]
+# deduction: A.R.S. 43-1021(9) and K.S.A. 79-32,120(a).
+# California carries the federal deduction in Schedule CA column A.
+STATES_WITHOUT_THE_DEDUCTION = ["AZ", "KS"]
 BRANCHES = [
     "income_tax_if_claiming_claim_of_right_deduction",
     "income_tax_if_claiming_claim_of_right_credit",
@@ -329,7 +329,20 @@ def test_states_under_each_federal_method():
     year = YEARS[0]
     without_repayment = state_income_tax(year, 0)
     with_credit = state_income_tax(year, 10_000, method=True)
-    np.testing.assert_allclose(with_credit, without_repayment, atol=TOLERANCE)
+    federal_tax_deduction_states = np.isin(STATES, ["AL", "MO", "OR"])
+    np.testing.assert_allclose(
+        with_credit[~federal_tax_deduction_states],
+        without_repayment[~federal_tax_deduction_states],
+        atol=TOLERANCE,
+    )
+    assert np.all(
+        with_credit[federal_tax_deduction_states]
+        >= without_repayment[federal_tax_deduction_states] - TOLERANCE
+    )
+    assert np.any(
+        with_credit[federal_tax_deduction_states]
+        > without_repayment[federal_tax_deduction_states] + TOLERANCE
+    )
     with_deduction = state_income_tax(year, 10_000, method=False)
     assert np.any(np.abs(with_deduction - without_repayment) > 1), (
         "the deduction should reach the states that follow federal itemized deductions"
