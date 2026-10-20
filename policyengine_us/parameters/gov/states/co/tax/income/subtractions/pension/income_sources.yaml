@@ -9,7 +9,7 @@ values:
     - taxable_sep_distributions
     - keogh_distributions
     - taxable_roth_conversions
-    - disability_benefits
+    - taxable_disability_benefits
   # In 2022 the taxable social security is calculated separately.
   2022-01-01:
     - taxable_pension_income
@@ -19,7 +19,7 @@ values:
     - taxable_sep_distributions
     - keogh_distributions
     - taxable_roth_conversions
-    - disability_benefits
+    - taxable_disability_benefits
 metadata:
   period: year
   unit: list

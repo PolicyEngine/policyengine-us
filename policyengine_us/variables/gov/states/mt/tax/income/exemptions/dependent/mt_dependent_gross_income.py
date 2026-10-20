@@ -37,7 +37,7 @@ class mt_dependent_gross_income(Variable):
         sources = parameters(period).gov.irs.gross_income.sources
         unemployment_compensation_counted = (
             "taxable_unemployment_compensation" in sources
-        ) * max_(0, person("unemployment_compensation", period))
+        ) * max_(0, person("total_unemployment_compensation", period))
         # dependent_gross_income is zero for the head and spouse.
         is_dependent = ~person("is_tax_unit_head_or_spouse", period)
         return federal_gross_income - is_dependent * unemployment_compensation_counted

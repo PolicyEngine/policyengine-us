@@ -2,7 +2,7 @@ description: South Carolina subtracts these sources from federal taxable income 
 values:
   2021-01-01:
     - salt_refund_income
-    - disability_benefits #include tax disability benefits
+    - taxable_disability_benefits
     - sc_net_capital_gain_deduction
     - sc_529_plan_deduction
     - us_govt_interest
@@ -23,7 +23,7 @@ values:
   # H.4216 adds the SCIAD starting 2026
   2026-01-01:
     - salt_refund_income
-    - disability_benefits
+    - taxable_disability_benefits
     - sc_net_capital_gain_deduction
     - sc_529_plan_deduction
     - us_govt_interest

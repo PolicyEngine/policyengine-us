@@ -40,7 +40,7 @@ class mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback(Va
         # not dependents), and a dependent's own gross income counts all of a
         # dependent's (dependent_gross_income counts people who are not the
         # head or spouse, without the IRC 85(c) exclusion). Add the rest.
-        received = max_(0, person("unemployment_compensation", period))
+        received = max_(0, person("total_unemployment_compensation", period))
         is_dependent = person("is_tax_unit_dependent", period)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         taxable = max_(0, person("taxable_unemployment_compensation", period))
