@@ -93,22 +93,22 @@ through state credits, rather than a second direct household benefit payment.
 | Connecticut child: `ct_child_tax_rebate` | 2021 only | R; paid in 2022, based on the 2021 return. Amount and child-cap gates are zero outside 2021. Full take-up is assumed; 2021 residence proxies for domicile at application. |
 | Rhode Island child: `ri_child_tax_rebate` | 2021 only | R; paid in 2022, based on the 2021 return. The amount is zero outside 2021. |
 | Hawaii Act 115: `hi_act_115_rebate` | 2015–2021; intended eligibility year 2021 | R; paid in 2022, based on the 2021 return. The list removes it in 2022; missing earlier guards allow pre-2021 contributions. |
-| Maine $850 relief: `me_relief_rebate` | 2021 only | R; paid in 2022, based on the 2021 return. The amount is zero outside 2021. |
+| Maine \$850 relief: `me_relief_rebate` | 2021 only | R; paid in 2022, based on the 2021 return. The amount is zero outside 2021. |
 | Massachusetts Chapter 62F: `ma_taxpayer_refund_rebate` | 2021 only | R; paid in 2022, based on 2021 liability. The rate persists in standalone calculations, but the dated list includes it only in 2021. |
 | Montana HB 192: `mt_income_tax_rebate` | 2021 only | R; person amounts are added directly by `mt_refundable_credits`. Paid in 2023, based on 2021 liability. The amount is zero outside 2021 and capped once per return. |
-| South Carolina: `sc_2022_rebate` | 2021 only | N; paid in 2022, based on the 2021 return. Capped at $800 and residual liability; the amount is zero outside 2021. |
-| Massachusetts premium pay: `ma_covid_19_essential_employee_premium_pay_program` | 2015–2021; intended eligibility years 2020 and 2021 | R; person amounts for two modeled $500 rounds paid in 2022. Missing earlier guards allow pre-2020 contributions. The variable remains listed later, with a zero amount from 2022. |
-| Maine affordability: `me_affordability_payment` | 2025 only | R; $300 per eligible head or spouse, based on the 2025 return. Both dated inclusion and amount gates end in 2026. The payment is legally a direct payment; this model exposes it through refundable credits. |
-| Delaware relief: `de_relief_rebate` | 2020 only | R; $300 per modeled head or spouse, based on the 2020 eligibility return and paid in 2022. Both dated inclusion and amount gates restrict it to 2020. |
+| South Carolina: `sc_2022_rebate` | 2021 only | N; paid in 2022, based on the 2021 return. Capped at \$800 and residual liability; the amount is zero outside 2021. |
+| Massachusetts premium pay: `ma_covid_19_essential_employee_premium_pay_program` | 2015–2021; intended eligibility years 2020 and 2021 | R; person amounts for two modeled \$500 rounds paid in 2022. Missing earlier guards allow pre-2020 contributions. The variable remains listed later, with a zero amount from 2022. |
+| Maine affordability: `me_affordability_payment` | 2025 only | R; \$300 per eligible head or spouse, based on the 2025 return. Both dated inclusion and amount gates end in 2026. The payment is legally a direct payment; this model exposes it through refundable credits. |
+| Delaware relief: `de_relief_rebate` | 2020 only | R; \$300 per modeled head or spouse, based on the 2020 eligibility return and paid in 2022. Both dated inclusion and amount gates restrict it to 2020. |
 | Idaho: `id_2022_rebate`, `id_special_season_rebate` | 2020 only in the current model | R; the 2020 list includes both; the 2021 list removes them. Their standalone amount/rate formulas persist. This inventory records current model attribution without revising the mapping of these named rebates to return years. |
-| Indiana automatic refund: `in_automatic_refund_rebate` | 2020 only | R; modeled $125 plus $200 per head or spouse, based on the 2020 eligibility return and paid in 2022. Both dated inclusion and amount gates restrict it to 2020. The separate $200 credit for certain Social Security recipients on the 2022 return is outside this modeled component. |
+| Indiana automatic refund: `in_automatic_refund_rebate` | 2020 only | R; modeled \$125 plus \$200 per head or spouse, based on the 2020 eligibility return and paid in 2022. Both dated inclusion and amount gates restrict it to 2020. The separate \$200 credit for certain Social Security recipients on the 2022 return is outside this modeled component. |
 
 The Maine affordability, Delaware, Idaho, and Indiana rows supplement the
 original comparison inventory. For Maine, the model assumes full-year residence
 and does not model the return-filing deadline; recipient-level dependent
 disqualifications still apply. For Massachusetts premium pay, this inventory
-describes the two modeled $500 rounds and does not claim coverage of the later
-$250 round.
+describes the two modeled \$500 rounds and does not claim coverage of the later
+\$250 round.
 
 ## Historical and future coverage limits
 

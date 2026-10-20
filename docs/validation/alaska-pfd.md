@@ -41,14 +41,14 @@ households:
 ```
 
 With only the two payment inputs removed, this person's calculated 2022 regular
-PFD is $2,622, energy relief is $662, and federal AGI is $52,622. With both inputs
-set to zero as above, federal AGI is $50,000.
+PFD is \$2,622, energy relief is \$662, and federal AGI is \$52,622. With both inputs
+set to zero as above, federal AGI is \$50,000.
 
 ## The 2022 regular dividend and energy relief split
 
-Alaska paid $3,284 in total: $2,621.81 of regular PFD and $662.19 of supplemental
-energy relief. PolicyEngine rounds these 2022 components to $2,622 and $662,
-respectively. Putting the full $3,284 in `ak_permanent_fund_dividend` would mix
+Alaska paid \$3,284 in total: \$2,621.81 of regular PFD and \$662.19 of supplemental
+energy relief. PolicyEngine rounds these 2022 components to \$2,622 and \$662,
+respectively. Putting the full \$3,284 in `ak_permanent_fund_dividend` would mix
 the components and increase the modeled taxable amount. The split is described
 in [Alaska DOR's February 17, 2023
 release](https://dor.alaska.gov/docs/default-source/press-releases/2023_02_17-dor-response-to-irs-guidance-on-2022-pfd.pdf#page=1).
