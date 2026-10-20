@@ -1,16 +1,17 @@
 """Hypothesis coverage of Schedule M's person-level subtraction limits.
 
 The 2025 IT-140 Schedule M line 47, boxes (c) and (d), first caps the income
-remaining after lines 35-46 at $8,000, then subtracts the person's own
-lines 29-34 modifications. These properties exercise combinations that the
-worked YAML examples do not enumerate, using the real model and independent
+remaining after the modified income receipts on lines 35-46 at $8,000, then
+subtracts the person's own lines 29-34 modifications. These properties
+exercise combinations that the worked YAML examples do not enumerate,
+using the real model and independent
 conservation and spouse-isolation checks.
 
-The form interpretation includes line 39's deductible 529 contribution in
-the excluded Schedule M amounts: it removes income already deducted on that
-line from the remainder in box (c), although a contribution is not an income
-receipt. Compatibility with the old formula therefore means no excluded
-Schedule M amounts, including no deductible 529 contribution.
+Only income receipts enter the excluded Schedule M amounts. Section
+11-21-12a independently authorizes the line 39 contribution deduction in
+addition to the section 11-21-12(c) modifications. Contributions are outside the income-conservation property below; their
+independence from the senior modification is covered by the variable YAML
+tests.
 
 Fresh two- or four-person simulations reuse the package's reference model;
 they do not share simulation caches, mutate parameters, or load datasets.
@@ -33,7 +34,6 @@ MODIFICATION_SOURCES = (
 EXCLUDED_SOURCES = (
     "military_service_income",
     "salt_refund_income",
-    "investment_in_529_plan_indv",
 )
 
 AGIS = st.integers(min_value=-20_000, max_value=60_000)
@@ -44,7 +44,7 @@ PERSON = st.tuples(AGIS, MODIFICATIONS, EXCLUSIONS)
 COUPLE = st.tuples(PERSON, PERSON)
 PROPERTY_SETTINGS = settings(max_examples=50, deadline=None, derandomize=True)
 ZERO_MODIFICATIONS = (0, 0, 0, 0)
-ZERO_EXCLUSIONS = (0, 0, 0)
+ZERO_EXCLUSIONS = (0, 0)
 LOW_INCOME_COUPLE = (
     (6_000, ZERO_MODIFICATIONS, ZERO_EXCLUSIONS),
     (6_000, ZERO_MODIFICATIONS, ZERO_EXCLUSIONS),
@@ -118,19 +118,13 @@ def test_without_excluded_amounts_matches_previous_formula(agis, modifications):
 @given(couple=COUPLE)
 @example(
     couple=(
-        (6_000, ZERO_MODIFICATIONS, (0, 2_000, 0)),
+        (6_000, ZERO_MODIFICATIONS, (0, 2_000)),
         (6_000, ZERO_MODIFICATIONS, ZERO_EXCLUSIONS),
     )
 )
 @example(
     couple=(
-        (6_000, ZERO_MODIFICATIONS, (2_000, 0, 0)),
-        (6_000, ZERO_MODIFICATIONS, ZERO_EXCLUSIONS),
-    )
-)
-@example(
-    couple=(
-        (6_000, ZERO_MODIFICATIONS, (0, 0, 2_000)),
+        (6_000, ZERO_MODIFICATIONS, (2_000, 0)),
         (6_000, ZERO_MODIFICATIONS, ZERO_EXCLUSIONS),
     )
 )
@@ -138,8 +132,9 @@ def test_senior_and_other_subtractions_do_not_exceed_income_or_other_subtraction
     couple,
 ):
     deduction = _simulation(couple).calculate(DEDUCTION, YEAR)
-    # Sum each person's independently supplied lines 29-46 amounts, without
-    # using the deduction formula or its intermediate calculated totals.
+    # Sum each person's independently supplied modified income receipts,
+    # without using the deduction formula or its intermediate totals.
+    # A 529 contribution is a payment, so it does not enter this bound.
     subtractions = np.array(
         [
             sum(modifications) + sum(exclusions)
@@ -161,8 +156,6 @@ def test_senior_and_other_subtractions_do_not_exceed_income_or_other_subtraction
 @example(couple=LOW_INCOME_COUPLE, changed_person=1, source_index=0, increase=2_000)
 @example(couple=LOW_INCOME_COUPLE, changed_person=0, source_index=1, increase=2_000)
 @example(couple=LOW_INCOME_COUPLE, changed_person=1, source_index=1, increase=2_000)
-@example(couple=LOW_INCOME_COUPLE, changed_person=0, source_index=2, increase=2_000)
-@example(couple=LOW_INCOME_COUPLE, changed_person=1, source_index=2, increase=2_000)
 def test_changing_one_spouses_excluded_amount_preserves_the_others_modification(
     couple, changed_person, source_index, increase
 ):

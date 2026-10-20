@@ -247,3 +247,248 @@
   output:
     cdcc: 200
     ky_cdcc_potential: 40
+
+# Kentucky's December 31, 2018 IRC reference excludes ARPA's 2021 expansion.
+# 2021 Ky. Acts ch. 31, section 1 (KRS 141.010(21)(b)), PDF page 3:
+# https://apps.legislature.ky.gov/law/acts/21RS/documents/0031.pdf#page=3
+# Form 2441-K pages 1-3 confirms the conformed cap, rate, benefits, and
+# federal liability limit before Kentucky's 20% match:
+# https://revenue.ky.gov/Forms/2441-K-2021.pdf#page=1
+
+- name: 2021 Kentucky retains the pre-ARPA expense cap and rate
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+    cdcc_filing_status_eligible: true
+    capped_count_cdcc_eligible: 2
+    cdcc_qualifying_childcare_expenses: 10_000
+    care_expenses: 0
+    min_head_spouse_earned: 50_000
+    dependent_care_employer_benefits: 0
+    cdcc_credit_limit: 5_000
+  output:
+    # 20% match x 20% rate x $6,000 conformed expense cap.
+    ky_cdcc_potential: 240
+    # The federal ARPA calculation continues to use 50% of $10,000.
+    cdcc: 5_000
+
+- name: 2021 Kentucky does not import federal CDCC refundability
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: SINGLE
+    adjusted_gross_income: 10_000
+    cdcc_filing_status_eligible: true
+    capped_count_cdcc_eligible: 1
+    cdcc_qualifying_childcare_expenses: 3_000
+    care_expenses: 0
+    min_head_spouse_earned: 10_000
+    dependent_care_employer_benefits: 0
+    cdcc_credit_limit: 0
+  output:
+    # Kentucky matches min(35% x $3,000, $0), while federal ARPA is refundable.
+    ky_cdcc_potential: 0
+    cdcc: 1_500
+
+- name: 2021 Kentucky retains credit after ARPA's high-income phaseout
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: SINGLE
+    adjusted_gross_income: 450_000
+    cdcc_filing_status_eligible: true
+    capped_count_cdcc_eligible: 1
+    cdcc_qualifying_childcare_expenses: 3_000
+    care_expenses: 0
+    min_head_spouse_earned: 450_000
+    dependent_care_employer_benefits: 0
+    cdcc_credit_limit: 100_000
+  output:
+    # The conformed 20% rate has no second phaseout: 20% x 20% x $3,000.
+    ky_cdcc_potential: 120
+    cdcc: 0
+
+- name: 2021 Kentucky applies the federal liability limit before its match
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+    cdcc_filing_status_eligible: true
+    capped_count_cdcc_eligible: 2
+    cdcc_qualifying_childcare_expenses: 6_000
+    min_head_spouse_earned: 50_000
+    cdcc_credit_limit: 500
+  output:
+    # 20% x min(20% x $6,000, $500).
+    ky_cdcc_potential: 100
+
+- name: 2021 Kentucky retains the pre-ARPA dependent-care benefit exclusion cap
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: JOINT
+    adjusted_gross_income: 50_000
+    cdcc_filing_status_eligible: true
+    capped_count_cdcc_eligible: 2
+    cdcc_qualifying_childcare_expenses: 10_000
+    min_head_spouse_earned: 25_000
+    dependent_care_employer_benefits: 6_000
+    cdcc_credit_limit: 5_000
+  output:
+    # Exclusion=min($6,000,$5,000)=$5,000; remaining cap=$1,000.
+    # 20% match x 20% rate x min($10,000-$5,000,$6,000-$5,000).
+    ky_cdcc_potential: 40
+
+- name: 2021 Kentucky excludes reimbursed expenses below the remaining cap
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+    cdcc_filing_status_eligible: true
+    capped_count_cdcc_eligible: 2
+    cdcc_qualifying_childcare_expenses: 3_000
+    min_head_spouse_earned: 50_000
+    dependent_care_employer_benefits: 1_000
+    cdcc_credit_limit: 5_000
+  output:
+    # Expenses=$3,000-$1,000=$2,000, below the $5,000 remaining cap.
+    ky_cdcc_potential: 80
+
+- name: 2021 Kentucky limits the benefit exclusion to earned income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: JOINT
+    adjusted_gross_income: 10_000
+    cdcc_filing_status_eligible: true
+    capped_count_cdcc_eligible: 1
+    cdcc_qualifying_childcare_expenses: 3_000
+    min_head_spouse_earned: 2_000
+    dependent_care_employer_benefits: 5_000
+    cdcc_credit_limit: 5_000
+  output:
+    # Exclusion=min($5,000,$5,000,$2,000,$3,000)=$2,000.
+    # 20% match x 35% rate x min($3,000-$2,000,$3,000-$2,000,$2,000).
+    ky_cdcc_potential: 70
+
+- name: 2021 Kentucky caps expenses at the lesser of the spouses' earnings
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: JOINT
+    adjusted_gross_income: 50_000
+    cdcc_filing_status_eligible: true
+    capped_count_cdcc_eligible: 2
+    cdcc_qualifying_childcare_expenses: 6_000
+    min_head_spouse_earned: 1_000
+    cdcc_credit_limit: 5_000
+  output:
+    ky_cdcc_potential: 40
+
+- name: 2021 Kentucky excludes separate filers not treated as unmarried
+  period: 2021
+  input:
+    state_code: KY
+    filing_status: SEPARATE
+    cdcc_treated_as_unmarried: false
+    adjusted_gross_income: 50_000
+    capped_count_cdcc_eligible: 2
+    cdcc_qualifying_childcare_expenses: 6_000
+    min_head_spouse_earned: 50_000
+    dependent_care_employer_benefits: 1_000
+    cdcc_credit_limit: 5_000
+  output:
+    ky_cdcc_potential: 0
+
+- name: 2021 Kentucky uses the unmarried benefit cap for a qualifying separate filer
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: SEPARATE
+    cdcc_treated_as_unmarried: true
+    adjusted_gross_income: 50_000
+    capped_count_cdcc_eligible: 2
+    cdcc_qualifying_childcare_expenses: 8_000
+    min_head_spouse_earned: 50_000
+    dependent_care_employer_benefits: 4_000
+    cdcc_credit_limit: 5_000
+  output:
+    # The full $4,000 is excluded, leaving a $2,000 creditable expense cap.
+    ky_cdcc_potential: 80
+
+- name: 2021 Kentucky includes care expenses for a qualifying adult
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+    cdcc_filing_status_eligible: true
+    capped_count_cdcc_eligible: 1
+    cdcc_qualifying_childcare_expenses: 0
+    care_expenses: 3_000
+    min_head_spouse_earned: 50_000
+    cdcc_credit_limit: 5_000
+  output:
+    ky_cdcc_potential: 120
+
+- name: 2021 Kentucky applies each started two-thousand-dollar rate increment
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: SINGLE
+    adjusted_gross_income: [15_000, 15_001, 17_000, 17_001, 43_000, 43_001]
+    cdcc_filing_status_eligible: true
+    capped_count_cdcc_eligible: 1
+    cdcc_qualifying_childcare_expenses: 3_000
+    min_head_spouse_earned: 50_000
+    cdcc_credit_limit: 5_000
+  output:
+    # 20% match x $3,000 x [35%,34%,34%,33%,21%,20%].
+    ky_cdcc_potential: [210, 204, 204, 198, 126, 120]
+
+- name: 2020 Kentucky preserves the federal credit computation
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+    cdcc_filing_status_eligible: true
+    capped_count_cdcc_eligible: 2
+    cdcc_qualifying_childcare_expenses: 10_000
+    min_head_spouse_earned: 50_000
+    cdcc_credit_limit: 5_000
+  output:
+    cdcc: 1_200
+    ky_cdcc_potential: 240
+
+- name: 2022 Kentucky preserves the federal credit computation
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+    cdcc_filing_status_eligible: true
+    capped_count_cdcc_eligible: 2
+    cdcc_qualifying_childcare_expenses: 10_000
+    min_head_spouse_earned: 50_000
+    cdcc_credit_limit: 5_000
+  output:
+    cdcc: 1_200
+    ky_cdcc_potential: 240

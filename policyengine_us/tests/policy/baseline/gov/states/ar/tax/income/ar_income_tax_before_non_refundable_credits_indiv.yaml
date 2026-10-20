@@ -797,3 +797,40 @@
   output:
     # "For $50,000 and over" (p.6): 50,000 x 7% - 949.24 = 2,550.76
     ar_income_tax_before_non_refundable_credits_indiv: 2_550.76
+
+# A.C.A. § 26-51-201(d)(2), Act 1459 of 2013, § 2, PDF page 3:
+# https://arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2013%2FPublic%2F&file=1459.pdf&ddBienniumSession=2013%2F2013R#page=3
+# These complete synthetic windows test the indexing rule, not an actual
+# 2027 coefficient: the October 2025 CPI observation was not published.
+- name: Arkansas caps synthetic four percent CPI-U growth at three percent
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.tests.fixtures.ar_indexing.ar_cpi_four_percent_chained_one_percent
+  input:
+    state_code: AR
+    ar_taxable_income_indiv: 150_000
+  output:
+    # $4,700 * 1.03 rounds to $4,800; $96 + $145,200 * 3.7%.
+    ar_income_tax_before_non_refundable_credits_indiv: 5_468.40
+
+- name: Arkansas uses synthetic CPI-U growth rather than chained growth
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.tests.fixtures.ar_indexing.ar_cpi_one_percent_chained_four_percent
+  input:
+    state_code: AR
+    ar_taxable_income_indiv: 150_000
+  output:
+    # $4,700 * 1.01 rounds to $4,700; $94 + $145,300 * 3.7%.
+    ar_income_tax_before_non_refundable_credits_indiv: 5_470.10
+
+- name: Arkansas does not lower boundaries after a synthetic CPI-U decrease
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.tests.fixtures.ar_indexing.ar_cpi_minus_one_percent_chained_four_percent
+  input:
+    state_code: AR
+    ar_taxable_income_indiv: 150_000
+  output:
+    # Negative CPI-U growth leaves the $4,700 boundary unchanged.
+    ar_income_tax_before_non_refundable_credits_indiv: 5_470.10
