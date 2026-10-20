@@ -25,37 +25,38 @@ class ny_household_credit_potential(Variable):
         # Use `right=True` to reflect "over...but not over".
         amount_if_single = p.single.calc(agi, right=True)
         single_amount = single * amount_if_single
-        # All others are based on AGI & size.
-        # In the case of married filing separate, based on the combined AGI and size.
-        size = add(
-            tax_unit,
-            period,
-            ["tax_unit_size", "spouse_separate_tax_unit_size"],
-        )
+        # All others are based on AGI and the number of exemptions. Tax Law
+        # 606(b)(2)(B) and (3)(B) count "the number of exemptions for which
+        # the taxpayer (or in the case of a husband and wife, taxpayers) is
+        # entitled to a deduction" for federal purposes, which leaves out a
+        # filer whom another taxpayer can claim (exemptions_count). A married
+        # couple filing separately uses the couple's combined AGI and
+        # exemptions; the model has no record of the other spouse's
+        # claimability, so the spouse's separate unit counts at its size.
         separate = filing_status == filing_statuses.SEPARATE
-        joint = filing_status == filing_statuses.JOINT
-        # Tax Law 606(b)(2)(B) and (3)(B) count "the number of exemptions for
-        # which the taxpayer (or in the case of a husband and wife, taxpayers)
-        # is entitled to a deduction" for federal purposes. On a joint return
-        # that excludes a spouse whom another taxpayer can claim
-        # (exemptions_count). Other statuses keep the tax unit size.
-        size = where(joint, tax_unit("exemptions_count", period), size)
+        size = tax_unit("exemptions_count", period) + tax_unit(
+            "spouse_separate_tax_unit_size", period
+        )
         non_single_base = p.non_single.base.calc(agi, right=True)
         non_single_additional = p.non_single.additional.calc(agi, right=True)
-        total_amount_if_not_single = non_single_base + non_single_additional * max_(
-            size - 1, 0
+        # The statute adds the additional amount for each exemption beyond one.
+        # With no exemptions (both spouses of a refund-only joint return can
+        # be claimed) that is one less than none, so the base is reduced;
+        # the credit is not negative.
+        total_amount_if_not_single = max_(
+            non_single_base + non_single_additional * (size - 1), 0
         )
         amount_if_not_single = np.ceil(
             total_amount_if_not_single / where(separate, 2, 1)
         )
         non_single_amount = amount_if_not_single * ~single
-        # Tax Law 606(b)(3)(B) excludes, among unmarried individuals, one for
-        # whom a deduction under IRC 151(c) "is allowable to another
-        # taxpayer"; a married couple is a household in its own right, and its
-        # credit counts only the exemptions the couple is entitled to. IT-201
-        # line 40 says "If you marked the Yes box at item C ... you do not
-        # qualify for this credit", which denies a joint return with one
-        # claimable spouse; the model follows the statute and keeps the
-        # exclusion for other returns.
+        # Tax Law 606(b)(3)(B) defines a household as a husband and wife, a
+        # head of household, a surviving spouse, or an unmarried individual
+        # for whom a deduction under IRC 151(c) is not "allowable to another
+        # taxpayer". Only a single filer is excluded for being claimable; the
+        # other households count only the exemptions they are entitled to.
+        # IT-201 line 40 says "If you marked the Yes box at item C ... you do
+        # not qualify for this credit" for every return; the model follows the
+        # statute.
         dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
-        return where(dependent_filer & ~joint, 0, single_amount + non_single_amount)
+        return where(dependent_filer & single, 0, single_amount + non_single_amount)

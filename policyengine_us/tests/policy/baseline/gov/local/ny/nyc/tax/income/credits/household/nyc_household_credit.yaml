@@ -352,3 +352,50 @@
   output:
     # $30 x 2.
     nyc_household_credit: 60
+
+# Tax Law 1310(d): only an unmarried individual is excluded for being
+# claimable; other households count the exemptions they are entitled to.
+- name: 2025 separate filer who can be claimed has no exemption for the NYC credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person_a]
+        state_code: NY
+        in_nyc: true
+  output:
+    # The separate amount per exemption times zero exemptions.
+    nyc_household_credit: 0
+
+- name: 2025 joint return where both spouses can be claimed has no exemptions for the NYC credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_household_credit: 0
