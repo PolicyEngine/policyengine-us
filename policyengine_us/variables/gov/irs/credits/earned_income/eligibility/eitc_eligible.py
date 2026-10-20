@@ -11,6 +11,8 @@ class eitc_eligible(Variable):
         "https://www.law.cornell.edu/uscode/text/26/32#c_1_A",
         # No EITC for an individual who claims the benefits of section 911.
         "https://www.law.cornell.edu/uscode/text/26/32#c_1_C",
+        # Former section 32(c)(1)(F), struck from 2021.
+        "https://www.govinfo.gov/content/pkg/USCODE-2015-title26/html/USCODE-2015-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec32.htm",
     )
 
     def formula(tax_unit, period, parameters):
@@ -31,6 +33,20 @@ class eitc_eligible(Variable):
             & filers_has_ssn
             & ~claims_section_911
         )
+        # Former section 32(c)(1)(F), through 2020: "No credit shall be
+        # allowed under this section to any eligible individual who has one or
+        # more qualifying children if no qualifying child of such individual
+        # is taken into account under subsection (b) by reason of paragraph
+        # (3)(D)", the identification requirement. The 2018-2020 Form 1040
+        # instructions instead send such a filer to the credit without a
+        # qualifying child; the model follows the statute.
+        if eitc.eligibility.qualifying_child_without_identification_bar:
+            person = tax_unit.members
+            has_qualifying_child = tax_unit.any(
+                person("is_eitc_qualifying_child", period)
+            )
+            no_child_counted = tax_unit("eitc_child_count", period) == 0
+            eligible = eligible & ~(has_qualifying_child & no_child_counted)
         # This parameter is true if separate filers are eligible.
         if eitc.eligibility.separate_filer:
             return eligible

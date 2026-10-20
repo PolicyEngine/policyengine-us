@@ -134,3 +134,83 @@
   output:
     foreign_earned_income_exclusion: 0
     eitc_eligible: false
+
+# Former 26 U.S.C. 32(c)(1)(F), through 2020: "No credit shall be allowed
+# under this section to any eligible individual who has one or more qualifying
+# children if no qualifying child of such individual is taken into account
+# under subsection (b) by reason of paragraph (3)(D)." The 2018-2020 Form 1040
+# instructions send such a filer to the credit without a qualifying child; the
+# model follows the statute. ARPA section 9622 struck the bar from 2021.
+- name: 2020 filer whose only qualifying child lacks an SSN gets no EITC
+  period: 2020
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 6_000
+        ssn_card_type: CITIZEN
+      child:
+        age: 5
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    eitc_child_count: 0
+    eitc_eligible: false
+    # The instructions' route would give the childless credit:
+    # min(7.65% x $6,000, $538) = $459.
+    eitc: 0
+
+- name: 2021 the same filer can claim the credit without a qualifying child
+  period: 2021
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 6_000
+        ssn_card_type: CITIZEN
+      child:
+        age: 5
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    eitc_child_count: 0
+    eitc_eligible: true
+
+- name: 2020 filer with one child with an SSN and one without keeps the credit
+  period: 2020
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 6_000
+        ssn_card_type: CITIZEN
+      child1:
+        age: 5
+        ssn_card_type: CITIZEN
+      child2:
+        age: 3
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    eitc_child_count: 1
+    eitc_eligible: true
