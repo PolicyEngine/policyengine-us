@@ -190,7 +190,7 @@
         members: [head, spouse]
         state_code: VA
   output:
-    # SSI under section 1619(a): couple rate 1,491 x 12 = 17,892 minus
+    # SSI with earnings below SGA: couple rate 1,491 x 12 = 17,892 minus
     # (34,000 - 240 - 780) / 2 = 16,490 leaves 1,402, or 701 each.
     # 34,000 + 1,402 - 2 x 600 (both disabled) = 34,202 > 31,716, but every
     # member receives SSI.
