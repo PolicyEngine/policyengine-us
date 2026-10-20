@@ -9,9 +9,17 @@ values:
     - us_govt_interest
     - salt_refund_income
     - military_retirement_income
+    # Sick pay and disability benefits other than regular wages, including
+    # third-party insurer payments, and disability distributions (61 Pa.
+    # Code 101.6(c)(1)). Regular sick leave pay is in employment income.
+    - taxable_disability_benefits
 metadata:
   unit: currency-USD
   label: PA nontaxable income sources
   reference:
     - title: 2021 Pennsylvania PIT Return Instructions (PA-40 IN) 
       href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2021/2021_pa-40in.pdf#page=8
+    - title: 61 Pa. Code § 101.6(c)(1) - Compensation excludes periodic sickness and disability payments other than regular wages
+      href: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/061/chapter101/s101.6.html
+    - title: "2024 Pennsylvania PIT Return Instructions (PA-40 IN), nontaxable sick pay and disability benefits and Code 3 disability distributions #page 8,13"
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2024/2024_pa-40in.pdf#page=8
