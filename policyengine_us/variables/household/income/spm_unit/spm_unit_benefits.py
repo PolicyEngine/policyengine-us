@@ -31,6 +31,7 @@ class spm_unit_benefits(Variable):
             "ny_ssp",  # New York benefits
             "ri_ssp",  # Rhode Island benefits
             "sd_ssp",  # South Dakota benefits
+            "va_ag",  # Virginia benefits
             "ks_sspp",  # Kansas benefits
             "hi_oss",
             "la_oss",  # Louisiana benefits
