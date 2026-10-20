@@ -808,7 +808,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AL, DC, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OK, OR, RI, TX
+    coverage: AL, DC, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OK, OR, SD, RI, TX
     state_implementations:
       - state: AL
         status: partial
@@ -939,6 +939,13 @@ programs:
         parameter_prefix: gov.states.or.ohcs.liheap
         verified_years: "2025-2027"
         notes: PY2025-PY2027 regular heating only, with the two county regions, five fuel columns and the roomer half payment. Crisis, cooling, Fuel Payment, equipment and OEAP assistance are out of scope.
+      - state: SD
+        status: partial
+        name: South Dakota LIEAP
+        full_name: South Dakota Low Income Energy Assistance Program
+        variable: sd_liheap
+        parameter_prefix: gov.states.sd.dss.liheap
+        notes: FY2024-FY2026 regular heating only; mixed-status income is counted in full and FY2026 Mid thresholds are inferred, so no year is verified. Crisis, cooling and weatherization are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP
