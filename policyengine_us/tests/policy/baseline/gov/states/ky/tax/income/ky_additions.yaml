@@ -22,7 +22,7 @@
     ky_additions: 300
     ky_agi: 40_000
 
-- name: Case 2, 2020 joint federal non-itemizers add back half of the deduction each.
+- name: Case 2, 2020 joint federal non-itemizers add back each spouse's own part of the deduction.
   period: 2020
   input:
     people:
@@ -41,9 +41,11 @@
         members: [person1, person2]
         state_code: KY
   output:
-    # Federal person AGI deducts half of the $300 from each spouse.
-    adjusted_gross_income_person: [49_850, 29_850]
-    ky_additions: [150, 150]
+    # The $300 deduction is person1's: only person1 gave. Federal person AGI
+    # deducts it from person1 (charitable_contributions_ald_person).
+    charitable_contributions_ald_person: [300, 0]
+    adjusted_gross_income_person: [49_700, 30_000]
+    ky_additions: [300, 0]
     ky_agi: [50_000, 30_000]
 
 - name: Case 3, 2021 deduction for non-itemizers is below the line, so nothing is added back.

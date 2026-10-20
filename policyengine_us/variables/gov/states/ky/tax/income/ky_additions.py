@@ -21,11 +21,6 @@ class ky_additions(Variable):
 
     def formula(person, period, parameters):
         # The 2020 federal charitable deduction for non-itemizers is added
-        # back in the share of it that adjusted_gross_income_person (and so
-        # ky_federal_agi) deducts from each filer: half each on a joint
-        # return.
-        filing_status = person.tax_unit("filing_status", period)
-        share = person("is_tax_unit_head_or_spouse", period) * where(
-            filing_status == filing_status.possible_values.JOINT, 0.5, 1.0
-        )
-        return share * person.tax_unit("charitable_contributions_ald", period)
+        # back in the part of it that adjusted_gross_income_person (and so
+        # ky_federal_agi) deducts from each filer.
+        return person("charitable_contributions_ald_person", period)

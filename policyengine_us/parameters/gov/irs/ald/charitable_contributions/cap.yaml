@@ -17,9 +17,10 @@ metadata:
     # below-the-line 26 U.S.C. 170(p).
     - title: "Pub. L. 116-260, div. EE, sec. 212 (Consolidated Appropriations Act, 2021) #page 1888-1889"
       href: https://www.congress.gov/116/plaws/publ260/PLAW-116publ260.pdf#page=1888
-    # Form 1040 line 10b: $300 if single, head of household or qualifying
-    # widow(er), $300 if married filing jointly, $150 if married filing
-    # separately.
+    # Form 1040 line 10b allows $300 a return. The instructions' $150 for
+    # married filing separately has no basis in 62(a)(22) or 62(f), which
+    # cap the deduction at $300 for every eligible individual, so the
+    # statute governs (PolicyEngine statute-first rule, 2026-10-19).
     - title: 2020 Instructions for Form 1040, line 10b
       href: https://www.irs.gov/pub/irs-prior/i1040gi--2020.pdf#page=30
 
@@ -33,7 +34,7 @@ JOINT:
   2021-01-01: 0
 SEPARATE:
   2000-01-01: 0
-  2020-01-01: 150
+  2020-01-01: 300
   2021-01-01: 0
 HEAD_OF_HOUSEHOLD:
   2000-01-01: 0

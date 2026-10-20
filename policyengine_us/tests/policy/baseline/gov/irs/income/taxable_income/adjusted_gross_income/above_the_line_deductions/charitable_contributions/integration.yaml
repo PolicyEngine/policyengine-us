@@ -1,5 +1,7 @@
 # Worked from the 2020 Form 1040 (lines 9, 10a-10c, 11, 12 and 15) and its
-# instructions: line 10b (file page 30), the 2020 Tax Rate Schedules (file
+# instructions: line 10b (file page 30; the cap is $300 for every return, as
+# 26 U.S.C. 62(a)(22) reads, not the instructions' $150 for married filing
+# separately), the 2020 Tax Rate Schedules (file
 # page 111), the Standard Deduction Chart for People Born Before January 2,
 # 1956 (file page 33), the Social Security Benefits Worksheet (file page 31,
 # line 6 subtracts line 10b) and the Unemployment Compensation Exclusion
@@ -69,7 +71,7 @@
     # Schedule Y-1: 1,975 + 12% x (54,900 - 19,750).
     income_tax_main_rates: 6_193
 
-- name: Case 3, 2020 married filing separately deducts $150.
+- name: Case 3, 2020 married filing separately deducts $300, as the statute reads.
   period: 2020
   input:
     people:
@@ -86,14 +88,16 @@
         members: [person1]
         state_code: NH
   output:
-    charitable_contributions_ald: 150
-    # Line 11: 50,000 - 150.
-    adjusted_gross_income: 49_850
+    # 62(a)(22): not to exceed $300; the instructions' $150 has no basis in
+    # the statute.
+    charitable_contributions_ald: 300
+    # Line 11: 50,000 - 300.
+    adjusted_gross_income: 49_700
     standard_deduction: 12_400
-    # Line 15: 49,850 - 12,400.
-    taxable_income: 37_450
-    # Schedule Y-2: 987.50 + 12% x (37,450 - 9,875).
-    income_tax_main_rates: 4_296.5
+    # Line 15: 49,700 - 12,400.
+    taxable_income: 37_300
+    # Schedule Y-2: 987.50 + 12% x (37,300 - 9,875).
+    income_tax_main_rates: 4_278.5
 
 - name: Case 4, 2020 itemizer deducts the gifts on Schedule A only, once.
   period: 2020
@@ -259,3 +263,77 @@
     taxable_income_deductions: 12_850
     # Line 15: 40,000 - 12,850.
     taxable_income: 27_150
+
+- name: Case 10, 2020 dependent's own gifts are not on the parent's return.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+      person2:
+        age: 16
+        charitable_cash_donations: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # 62(a)(22) counts contributions "made by an eligible individual"; the
+    # child's gifts belong on the child's own return.
+    charitable_contributions_ald: 0
+    adjusted_gross_income: 40_000
+
+- name: Case 11, 2020 line 10b lowers the income that limits the tuition and fees deduction.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 80_050
+        charitable_cash_donations: 300
+        qualified_tuition_expenses: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    charitable_contributions_ald: 300
+    # 2020 Pub. 970 Worksheet 6-1: line 1 = 80,050, line 2 includes line 10b
+    # (300), MAGI = 79,750, over $65,000 but not over $80,000 for a single
+    # filer, so the deduction is limited to $2,000 (Form 8917 line 5).
+    capped_qualified_tuition_expenses_ald: 2_000
+    # Line 11: 80,050 - 300 - 2,000.
+    adjusted_gross_income: 77_750
+
+- name: Case 12, 2020 choice without branching weighs line 10b with the standard deduction.
+  period: 2020
+  input:
+    gov.simulation.branch_to_determine_itemization: false
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        deductible_mortgage_interest: 12_300
+        charitable_cash_donations: 300
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    # Case 5 without branching (as CI runs YAML tests): Schedule A 12,600 is
+    # less than the 12,400 standard deduction plus the 300 that not
+    # itemizing takes off AGI.
+    tax_unit_itemizes: false
+    charitable_contributions_ald: 300
+    adjusted_gross_income: 59_700
+    taxable_income: 47_300

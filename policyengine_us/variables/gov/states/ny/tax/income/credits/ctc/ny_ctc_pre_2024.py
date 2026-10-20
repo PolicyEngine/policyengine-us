@@ -21,7 +21,7 @@ class ny_ctc_pre_2024(Variable):
         p = parameters(period).gov.states.ny.tax.income.credits.ctc
         person = tax_unit.members
         age = person("age", period)
-        agi = tax_unit("adjusted_gross_income", period)
+        agi = tax_unit("ny_recomputed_federal_agi", period)
 
         # Original CTC rules (pre-2025 and post-2027)
         if not p.pre_tcja:

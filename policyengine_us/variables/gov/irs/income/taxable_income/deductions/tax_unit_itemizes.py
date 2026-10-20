@@ -31,11 +31,21 @@ class tax_unit_itemizes(Variable):
             # ceiling) and any standard deduction that phases out with it.
             # Each comes from the branch that makes that choice (the ones
             # that also give the tax liabilities compared below).
-            itemized_deductions = choice_branch(tax_unit, period, True).calculate(
+            itemizing = choice_branch(tax_unit, period, True)
+            not_itemizing = choice_branch(tax_unit, period, False)
+            itemized_deductions = itemizing.calculate(
                 "itemized_taxable_income_deductions", period
             )
-            standard_deduction = choice_branch(tax_unit, period, False).calculate(
-                "standard_deduction", period
+            # Not itemizing also lowers adjusted gross income (line 10b, and
+            # what follows from it, such as taxable Social Security), so the
+            # deductions compared are everything each choice takes from
+            # gross income: the standard deduction counts with that
+            # reduction.
+            agi_reduction = itemizing.calculate(
+                "adjusted_gross_income", period
+            ) - not_itemizing.calculate("adjusted_gross_income", period)
+            standard_deduction = (
+                not_itemizing.calculate("standard_deduction", period) + agi_reduction
             )
         elif limitation.applies and limitation.obbb.applies:
             standard_deduction = tax_unit("standard_deduction", period)

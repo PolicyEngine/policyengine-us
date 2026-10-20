@@ -1,7 +1,9 @@
-# 26 U.S.C. 62(a)(22) and 62(f) (CARES Act sec. 2204), 2020 only. Caps from
-# the 2020 Instructions for Form 1040, line 10b: $300 if single, head of
-# household or qualifying widow(er), $300 if married filing jointly, $150 if
-# married filing separately.
+# 26 U.S.C. 62(a)(22) and 62(f) (CARES Act sec. 2204), 2020 only: "the
+# amount (not to exceed $300) of qualified charitable contributions made by
+# an eligible individual". $300 for every return, as the 2020 Instructions
+# for Form 1040, line 10b, give for single, head of household, qualifying
+# widow(er) and joint filers. The instructions' $150 for married filing
+# separately has no basis in the statute, which governs.
 
 - name: Case 1, 2020 non-itemizer below the cap deducts all cash gifts.
   period: 2020
@@ -39,14 +41,14 @@
   output:
     charitable_contributions_ald: 300
 
-- name: Case 5, 2020 married filing separately is capped at $150.
+- name: Case 5, 2020 married filing separately is capped at $300, as the statute reads.
   period: 2020
   input:
     charitable_cash_donations: 400
     filing_status: SEPARATE
     tax_unit_itemizes: false
   output:
-    charitable_contributions_ald: 150
+    charitable_contributions_ald: 300
 
 - name: Case 6, 2020 head of household is capped at $300.
   period: 2020
@@ -103,3 +105,14 @@
   output:
     charitable_contributions_ald: 0
     charitable_deduction_for_non_itemizers: 300
+
+- name: Case 12, gifts to organizations that are not 170(b)(1)(A) organizations do not qualify (62(f)(2)(C)).
+  period: 2020
+  input:
+    charitable_cash_donations: 500
+    charitable_cash_donations_non_50_pct_orgs: 400
+    filing_status: SINGLE
+    tax_unit_itemizes: false
+  output:
+    # 500 - 400 = 100 of cash to 170(b)(1)(A) organizations.
+    charitable_contributions_ald: 100

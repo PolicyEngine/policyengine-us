@@ -2,17 +2,19 @@
 
 26 U.S.C. 62(a)(22) (CARES Act sec. 2204) lets an individual who does not
 itemize deduct up to $300 of cash charitable contributions in arriving at
-adjusted gross income for taxable years beginning in 2020 only. The 2020
-Instructions for Form 1040, line 10b, cap it at $300 for a joint return and
-$150 for married filing separately. Because adjusted gross income then depends
-on the itemization choice, tax_unit_itemizes compares the deductions of the
-branches that itemize and that do not.
+adjusted gross income for taxable years beginning in 2020 only. The statute
+caps it at $300 for every return; the 2020 Instructions for Form 1040, line
+10b, also give $300 for a joint return, and their $150 for married filing
+separately has no basis in the statute, which governs. Because adjusted gross
+income then depends on the itemization choice, tax_unit_itemizes compares the
+deductions of the branches that itemize and that do not.
 
 Invariants, for every household, written from the statute and the form rather
 than read from the model's parameters:
 
-1. Bounds and eligibility: the deduction is min(cash gifts, cap) for a unit
-   that does not itemize and zero for one that does, and zero in 2021.
+1. Bounds and eligibility: the deduction is min(the head's and spouse's cash
+   gifts, $300) for a unit that does not itemize and zero for one that does,
+   and zero in 2021. A dependent's gifts are on the dependent's own return.
 2. Adjusted gross income is gross income less the above-the-line deductions,
    which include the charitable deduction (2020 Form 1040 lines 9, 10c, 11).
 3. No gift is deducted twice: itemized deductions are exactly the Schedule A
@@ -20,8 +22,12 @@ than read from the model's parameters:
 4. Consistency of the choice: the income tax of the simulation equals the tax
    of the branch for the choice it makes, which is the lower of the two
    (differential: main simulation against the branch that recomputes it).
-5. Decoupled states add it back (California, New York) and Massachusetts
-   Part B income leaves it in (TIR 20-9, B(6)).
+5. Decoupled states add it back (California; New York's recomputed federal
+   AGI, IT-201 line 19a) and Massachusetts Part B income leaves it in (TIR
+   20-9, B(6)).
+6. Without branching (as CI runs YAML tests), the choice still leaves the
+   lower taxable income of the two branches: in 2020 the comparison counts
+   what not itemizing takes off adjusted gross income.
 """
 
 import numpy as np
@@ -29,18 +35,15 @@ import pytest
 from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
 
+from policyengine_core.periods import instant
+from policyengine_core.reforms import Reform
+
 from policyengine_us import Simulation
 
 TOLERANCE = 0.01  # dollars
 
-# 2020 Instructions for Form 1040, line 10b.
-CAP_2020 = {
-    "SINGLE": 300,
-    "JOINT": 300,
-    "SEPARATE": 150,
-    "HEAD_OF_HOUSEHOLD": 300,
-    "SURVIVING_SPOUSE": 300,
-}
+# 26 U.S.C. 62(a)(22): "not to exceed $300", for every return.
+CAP_2020 = 300
 SCHEDULE_A = [
     "charitable_deduction",
     "interest_deduction",
@@ -65,6 +68,7 @@ def tax_units(draw):
         "noncash": draw(money(5_000)),
         "mortgage": draw(money(30_000)),
         "medical": draw(money(20_000)),
+        "child_cash": draw(money(1_000)),
     }
 
 
@@ -83,8 +87,24 @@ def _seeded_units(n=60, seed=20261012):
             "noncash": some(5_000, 0.3),
             "mortgage": some(30_000, 0.5),
             "medical": some(20_000, 0.3),
+            "child_cash": some(1_000, 0.3),
         }
         for _ in range(n)
+    ] + [
+        # Single New Hampshire filers (no state or local tax deduction) whose
+        # Schedule A is the $12,400 standard deduction plus k, with $300 of
+        # gifts: itemizing pays only when k > 300.
+        {
+            "filing": "single",
+            "state": "NH",
+            "wages": 60_000.0,
+            "cash": 300.0,
+            "noncash": 0.0,
+            "mortgage": 12_400.0 - 300 + k,
+            "medical": 0.0,
+            "child_cash": 0.0,
+        }
+        for k in [-400, -200, -100, 0, 100, 299, 301, 400]
     ]
 
 
@@ -106,7 +126,10 @@ def _situation(units, year):
             people[f"spouse_{i}"] = {"age": {year: 43}}
             members.append(f"spouse_{i}")
         if u["filing"] == "hoh":
-            people[f"child_{i}"] = {"age": {year: 8}}
+            people[f"child_{i}"] = {
+                "age": {year: 15},
+                "charitable_cash_donations": {year: u["child_cash"]},
+            }
             members.append(f"child_{i}")
         groups["marital_units"][f"couple_{i}"] = {
             "members": [m for m in members if not m.startswith("child")]
@@ -124,7 +147,19 @@ def _situation(units, year):
     return {"people": people, **groups}
 
 
-def _check(units, year):
+def _no_branching(parameters):
+    parameters.gov.simulation.branch_to_determine_itemization.update(
+        start=instant("2000-01-01"), stop=instant("2039-12-31"), value=False
+    )
+    return parameters
+
+
+class NoBranching(Reform):
+    def apply(self):
+        self.modify_parameters(_no_branching)
+
+
+def _check(units, year, without_branching=False):
     sim = Simulation(situation=_situation(units, year))
 
     def calc(variable):
@@ -138,8 +173,7 @@ def _check(units, year):
 
     # 1. Bounds and eligibility.
     if year == 2020:
-        cap = np.array([CAP_2020[f] for f in filing], dtype=float)
-        expected = np.where(itemizes, 0, np.minimum(cash, cap))
+        expected = np.where(itemizes, 0, np.minimum(cash, CAP_2020))
     else:
         expected = np.zeros_like(cash)
     np.testing.assert_allclose(ald, expected, atol=TOLERANCE)
@@ -171,18 +205,34 @@ def _check(units, year):
     np.testing.assert_allclose(
         calc("ca_additions")[in_state("CA")], ald[in_state("CA")]
     )
+    ny = in_state("NY")
     np.testing.assert_allclose(
-        calc("ny_additions")[in_state("NY")], ald[in_state("NY")]
+        calc("ny_recomputed_federal_agi")[ny], (agi + ald)[ny], atol=1
     )
     # Massachusetts does not adopt 62(a)(22) (TIR 20-9, B(6)): Part B AGI is
     # the wages.
     ma = in_state("MA")
     np.testing.assert_allclose(calc("ma_part_b_agi")[ma], wages[ma], atol=1)
 
+    # 6. Without branching, the choice leaves the lower taxable income. (In
+    # 2021 the comparison ignores the 170(p) deduction, a separate issue.)
+    if without_branching:
+        plain = Simulation(situation=_situation(units, year), reform=NoBranching)
+        taxable_income = np.asarray(plain.calculate("taxable_income", year))
+        branch_incomes = [
+            np.asarray(plain.branches[name].calculate("taxable_income", year))
+            for name in ("itemizing", "not_itemizing")
+        ]
+        assert (taxable_income <= np.minimum(*branch_incomes) + 1).all()
 
-@pytest.mark.parametrize("year", [2020, 2021])
-def test_seeded_population(year):
-    _check(_seeded_units(), year)
+
+def test_seeded_population_2020():
+    # The seeded population includes households at the itemization margin.
+    _check(_seeded_units(), 2020, without_branching=True)
+
+
+def test_seeded_population_2021():
+    _check(_seeded_units(), 2021)
 
 
 @settings(
