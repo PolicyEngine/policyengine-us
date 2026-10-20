@@ -15,6 +15,8 @@ values:
     # Iowa Health Insurance Deduction
     # Iowa capital gains deduction
     - ia_529_plan_subtraction
+    # Schedule 1 line 19b, code h (IA 2440)
+    - ia_disability_income_exclusion
   2024-01-01: # military_retirement_pay added in 2024.
     # Line 1B
     - us_govt_interest
@@ -32,6 +34,8 @@ values:
     # Iowa Health Insurance Deduction
     # Iowa capital gains deduction
     - ia_529_plan_subtraction
+    # Schedule 1 line 19b, code h (IA 2440)
+    - ia_disability_income_exclusion
 
 metadata:
   unit: list
@@ -42,5 +46,7 @@ metadata:
     href: https://revenue.iowa.gov/media/2746/download?inline
   - title: Iowa income tax law, 422.7 
     href: https://www.legis.iowa.gov/docs/code/422.7.pdf
+  - title: 2024 IA 2440 Iowa Disability Income Exclusion
+    href: https://revenue.iowa.gov/media/4096/download?inline=#page=1
   - title: 2024 IA1040 Iowa Income Tax Return Instruction
     href: https://revenue.iowa.gov/media/4152/download?inline#page=61

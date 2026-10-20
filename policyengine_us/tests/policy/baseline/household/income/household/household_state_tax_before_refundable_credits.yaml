@@ -1,0 +1,243 @@
+# Wisconsin retirees who claim the Schedule SB Line 16 retirement income
+# subtraction owe the tax on the reduced income. For 2025 they may not claim
+# any credit on Form 1 lines 13-20 and 30-35. The household totals must
+# carry the tax and credits of the return the filer elects.
+#
+# Expected values come from the 2025 Wisconsin Form 1 instructions:
+# https://www.revenue.wi.gov/TaxForms2025/2025-Form1-inst.pdf
+#   Standard Deduction Table, pages 35-37 (keyed to line 7, Wisconsin income).
+#   Tax Table, pages 38-43 (keyed to line 11, taxable income).
+#   Line 10 exemptions, page 15: $700 per filer plus $250 if 65 or older.
+# and the 2025 Schedule SB instructions, Line 16 (up to $24,000 per filer
+# aged 67 or older, $48,000 on a joint return when both are):
+# https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleSB-Inst.pdf#page=7
+#
+# Social Security is not taxed by Wisconsin, and 30% of a net long-term
+# capital gain is excluded, so line 7 below is pension + 70% of the gain.
+
+- name: Wisconsin retiree, $20,250 pension, claims the exclusion and owes no tax
+  # With credits: line 7 = $20,250 + $3,500 = $23,750; standard deduction
+  #   $13,056; taxable income $23,750 - $13,056 - $950 = $9,744; tax $341.
+  # With the exclusion: line 16 = $20,250; line 7 = $3,500; tax $0.
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_private_pension_income: 20_250
+        social_security_retirement: 24_000
+        long_term_capital_gains: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_income_tax_before_credits: 341
+    wi_retirement_income_exclusion_elected: true
+    wi_income_tax: 0
+    state_income_tax: 0
+    household_state_tax_before_refundable_credits: 0
+    household_refundable_state_tax_credits: 0
+
+- name: Wisconsin retiree, $40,250 pension, claims the exclusion and owes $184
+  # With credits: line 7 = $43,750; standard deduction $10,656; taxable
+  #   income $43,750 - $10,656 - $950 = $32,144; tax $1,282.
+  # With the exclusion: line 16 = $24,000; line 7 = $19,750; standard
+  #   deduction $13,536; taxable income $5,264; tax $184.
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_private_pension_income: 40_250
+        social_security_retirement: 24_000
+        long_term_capital_gains: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_income_tax_before_credits: 1_282
+    wi_retirement_income_exclusion_elected: true
+    wi_income_tax: 184
+    state_income_tax: 184
+    household_state_tax_before_refundable_credits: 184
+    household_refundable_state_tax_credits: 0
+
+- name: Wisconsin retiree, $59,250 pension, claims the exclusion and owes $1,036
+  # With credits: line 7 = $62,750; standard deduction $8,376; taxable
+  #   income $62,750 - $8,376 - $950 = $53,424; tax $2,246.
+  # With the exclusion: line 16 = $24,000; line 7 = $38,750; standard
+  #   deduction $11,256; taxable income $26,544; tax $1,036.
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_private_pension_income: 59_250
+        social_security_retirement: 24_000
+        long_term_capital_gains: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_retirement_income_exclusion_elected: true
+    wi_income_tax: 1_036
+    state_income_tax: 1_036
+    household_state_tax_before_refundable_credits: 1_036
+    household_refundable_state_tax_credits: 0
+
+- name: Wisconsin couple both aged 68 claim the $48,000 exclusion and owe no tax
+  # With credits: line 7 = $70,250; standard deduction $16,795; exemptions
+  #   $1,900; taxable income $51,555; tax $2,092.
+  # With the exclusion: line 16 = $48,000; line 7 = $22,250; standard
+  #   deduction $25,110; taxable income $0; tax $0.
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_private_pension_income: 40_250
+      person2:
+        age: 68
+        taxable_private_pension_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_income_tax_before_credits: 2_092
+    wi_retirement_income_exclusion_elected: true
+    wi_income_tax: 0
+    state_income_tax: 0
+    household_state_tax_before_refundable_credits: 0
+    household_refundable_state_tax_credits: 0
+
+- name: Wisconsin retiree who rents claims the exclusion and forgoes the school property tax credit
+  # With credits: line 7 = $41,250; standard deduction $10,956; taxable
+  #   income $29,344; tax $1,159, less a renter's school property tax credit
+  #   of at most $300 (line 16a), so at least $859.
+  # With the exclusion: line 7 = $17,250; standard deduction $13,560;
+  #   taxable income $2,740; tax $96, with no credit.
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_private_pension_income: 41_250
+        rent: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_retirement_income_exclusion_elected: true
+    wi_income_tax: 96
+    state_income_tax: 96
+    household_state_tax_before_refundable_credits: 96
+    household_refundable_state_tax_credits: 0
+
+- name: Wisconsin filer aged 66 cannot claim the exclusion
+  # Line 7 = $41,250; standard deduction $10,956; taxable income $29,344;
+  # tax $1,159.
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_private_pension_income: 41_250
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_retirement_income_exclusion_elected: false
+    wi_income_tax: 1_159
+    state_income_tax: 1_159
+    household_state_tax_before_refundable_credits: 1_159
+    household_refundable_state_tax_credits: 0
+
+- name: Vermont household state tax includes the child care contribution on self-employment income
+  # 2024 Form IN-111 line 21, Child Care Contribution Worksheet: Schedule SE
+  # line 6 x 0.5 x 0.0011 = 100,000 x 0.9235 x 0.5 x 0.0011 = 50.79, added
+  # to income tax after credits (line 20) before refundable credits (26c).
+  # https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2024.pdf#page=12
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    self_employment_income: 100_000
+    vt_income_tax_before_refundable_credits: 1_000
+    vt_refundable_credits: 200
+  output:
+    household_state_tax_before_refundable_credits: 1_050.79
+    household_refundable_state_tax_credits: 200
+
+- name: Mississippi household state tax subtracts nonrefundable credits
+  # 2025 Mississippi resident instructions: head of family exemption $8,000,
+  # $1,500 per dependent, standard deduction $3,400; tax is 4.4% of taxable
+  # income over $10,000 (line 17). Credits on lines 18 and 19 reduce it.
+  # https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100251%202.pdf#page=8
+  # Taxable income = 30,000 - 3,400 - 8,000 - 3,000 = 15,600;
+  # tax = 0.044 x 5,600 = 246.40; less a credit of 159 = 87.40.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+      child1:
+        age: 3
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        ms_cdcc: 159
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MS
+  output:
+    household_state_tax_before_refundable_credits: 87.40
+    household_refundable_state_tax_credits: 0
+
+- name: Colorado household state tax includes the alternative minimum tax
+  # 2025 Form DR 0104: line 13 (tax) + line 14 (alternative minimum tax) +
+  # line 15 = line 16, before the refundable credits on line 31.
+  # https://tax.colorado.gov/sites/tax/files/documents/Book104_2025.pdf#page=11
+  period: 2025
+  input:
+    state_code: CO
+    co_income_tax_before_refundable_credits: 4_000
+    co_amt: 500
+    co_refundable_credits: 100
+  output:
+    household_state_tax_before_refundable_credits: 4_500
+    household_refundable_state_tax_credits: 100
