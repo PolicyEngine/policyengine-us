@@ -1159,7 +1159,9 @@ programs:
           Models the 2026 Department of Workforce Services supplement, paid
           quarterly to SSI recipients and over-income applicants other than
           single individuals living alone, and the $15 monthly payment to SSI
-          recipients in Medicaid-funded medical institutions.
+          recipients in Medicaid-funded medical institutions. The over-income
+          path has no take-up, so microsimulation pays far more people than
+          the program reaches.
 
   - id: social_security
     name: Social Security

@@ -42,6 +42,10 @@ class ut_dws_ssp(Variable):
         another_household = (
             arrangement == SSIFederalLivingArrangement.ANOTHER_PERSONS_HOUSEHOLD
         )
+        # NOTE: Each spouse's half follows that spouse's own living
+        # arrangement, as SSI's couple rate does. Household-of-another inputs
+        # set for only one spouse give a total that matches neither published
+        # couple amount.
         couple_amount = where(
             another_household, p.couple.another_household, p.couple.own_household
         )
