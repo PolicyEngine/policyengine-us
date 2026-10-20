@@ -1,0 +1,1 @@
+Fixed Wisconsin's itemized deduction credit counting the federal non-itemizer charitable allowance in addition to the same charitable gifts in 2020-2021, and excluded miscellaneous deductions from the credit base.
