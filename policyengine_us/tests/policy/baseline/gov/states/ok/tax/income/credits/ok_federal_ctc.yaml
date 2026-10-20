@@ -22,6 +22,42 @@
     income_tax_capped_non_refundable_credits: 1_000
     ok_federal_ctc: 500
 
+- name: In 2021 Oklahoma counts the child refund and only usable ODC after ARPA phaseout.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 90_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child, other_dependent]
+        filing_status: SINGLE
+        # Isolate a binding federal tax limit while deriving the CTC split.
+        income_tax_before_credits: 300
+    households:
+      household:
+        members: [parent, child, other_dependent]
+        state_code: OK
+  output:
+    ctc_arpa_phase_out: 750
+    ctc_phase_out: 0
+    ctc: 3_350
+    refundable_ctc: 2_850
+    non_refundable_ctc: 500
+    income_tax_capped_non_refundable_credits: 300
+    ctc_value: 3_150
+    # Refundable child credit plus 300 of the 500 nonrefundable ODC.
+    ok_federal_ctc: 3_150
+
 - name: A credit on Credit Limit Worksheet A, line 2, is applied before the CTC when credits exceed tax.
   period: 2025
   input:
