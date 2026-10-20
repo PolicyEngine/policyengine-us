@@ -10,6 +10,10 @@ class nh_ssp_assistance_group_size(Variable):
     entity = Person
     label = "New Hampshire adult category assistance group size"
     definition_period = MONTH
+    # Core runs nh_ssp and nh_ssp_countable_income for everyone once anyone
+    # qualifies, so people outside New Hampshire still need a valid
+    # standard_disregard key.
+    default_value = 1
     defined_for = StateCode.NH
     reference = "https://gc.nh.gov/rules/state_agencies/he-w600.html"
 

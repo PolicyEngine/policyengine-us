@@ -51,7 +51,12 @@ class nh_ssp_eligible(Variable):
         # 1622(b)(2) instead makes a permanent resident credited with 40
         # qualifying quarters (8 USC 1645) "eligible for any State public
         # benefits", and He-W 616.02 does not address it. The model follows
-        # the federal statute. The quarters come from
+        # 8 USC 1622(b)(2). AAM 305.13 may instead rest on 8 USC 1624, which
+        # lets a State restrict aliens' eligibility for "programs of general
+        # cash public assistance" if no more restrictive than comparable
+        # Federal programs; SSI bars these residents for the 5 years (8 USC
+        # 1613(a)). Whether the adult categories are general cash public
+        # assistance is unsettled. The quarters come from
         # snap_alien_qualifying_quarters, the same legal count, which defaults
         # to 0, so the exception applies only when quarters are supplied.
         immigration = person("immigration_status", period.this_year)
