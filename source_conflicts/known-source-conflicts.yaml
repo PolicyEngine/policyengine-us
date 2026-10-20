@@ -17,8 +17,10 @@
 # without an entry here (an unregistered open one is listed as a warning).
 # tools/source_conflicts.py verify (the source-conflicts workflow) checks
 # every excerpt verbatim: texts against the pinned corpus release,
-# pending_texts against their pinned snapshots. Field reference:
-# tools/README.md, "Source-conflict register".
+# pending_texts against their pinned snapshots. tools/pin_runner.py (its
+# pinned-tests job) runs every pinned test at its pinned commit, which must be
+# on its repository's default branch. Field reference: tools/README.md,
+# "Source-conflict register".
 #
 # The register is public: no people's names, decision-queue ids, session
 # ids, local paths or email addresses. ruling.by is an organisation and
@@ -90,6 +92,7 @@ entries:
     amount: '1.00'
     currency: USD
     period: year
+    computed_by: test_negative_nese_reading_changes_final_deduction_by_one_dollar
 - id: oasdi-ret-grace-simultaneous-rib-dib
   jurisdiction: us
   program: social-security
@@ -173,6 +176,7 @@ entries:
     amount: '4200.00'
     currency: USD
     period: year
+    computed_by: test_simultaneous_dib_rib_source_readings_change_4200_dollars
 - id: oasdi-ret-own-work-age-exemptions
   jurisdiction: us
   program: social-security
@@ -244,6 +248,7 @@ entries:
     amount: '600.00'
     currency: USD
     period: year
+    computed_by: test_optional_act_age_exemptions_are_an_explicit_600_dollar_reading
 - id: oasdi-ret-deemed-entitlement-basis
   jurisdiction: us
   program: social-security
@@ -277,10 +282,9 @@ entries:
   alternatives:
   - reading: 'POMS RS 02501.140: deem an unmarried spouse or child receiving benefits on another record
       entitled.'
-    effect: The number holder's excess would also be charged against that recipient's benefit ($200 in
-      the invented case).
+    effect: The number holder's excess would also be charged against that recipient's benefit.
   - reading: 'Act 203(b)(1): deem a married ordinary adult child entitled, not only a disabled one.'
-    effect: The same $200 would be charged in the married ordinary-child version of the case.
+    effect: The excess would also be charged against a married ordinary deemed child's benefit.
   basis: The Act and the CFR both require marriage to the number holder; POMS's wording is broader, and
     the CFR's child basis is disability. No amount is computed for a case only the broader wording would
     reach.
@@ -309,13 +313,6 @@ entries:
     name: test_deemed_ordinary_child_requires_explicit_adult_age_facts
     pins:
     - reading
-  money_case:
-    description: 'Number holder at $400 with a $600 excess and a $200 deemed recipient: the married disabled-child
-      benchmark charges the recipient''s full $200 January benefit; the broader readings would charge
-      the same $200 to a recipient the Act and CFR leave untouched.'
-    amount: '200.00'
-    currency: USD
-    period: month
 - id: oasdi-survivor-fra-1911-births
   jurisdiction: us
   program: social-security
@@ -376,11 +373,12 @@ entries:
     - reading
     - alternatives[0]
   money_case:
-    description: 'A widow born January 2, 1911 claiming in January 1973 on a $1,000 PIA: $829 under FRA
-      65, $1,000 under FRA 62.'
+    description: 'A widow born January 2, 1911 claiming in January 1973 on a $1,000 PIA, 36 of 60 reduction
+      months: $829 under FRA 65, $1,000 (unreduced) under FRA 62.'
     amount: '171.00'
     currency: USD
     period: month
+    computed_by: test_historic_survivor_fra_conflict_is_refused
 - id: oasdi-arf-widow-child-in-care-credits
   jurisdiction: us
   program: social-security
@@ -441,10 +439,11 @@ entries:
     - alternatives[1]
   money_case:
     description: 'Widow at 64, FRA 67, $1,000 PIA, six child-in-care months never raised to the mother''s
-      rate: $898.20 crediting them, $877.80 not.'
+      rate: $898.20 crediting them (30 reduction months of 84), $877.80 not (36).'
     amount: '20.40'
     currency: USD
     period: month
+    computed_by: test_widow_nonbinding_child_care_readings_are_explicit
 - id: oasdi-arf-spouse-reentitlement-credits
   jurisdiction: us
   program: social-security
@@ -505,147 +504,7 @@ entries:
     amount: '2.70'
     currency: USD
     period: month
-- id: oasdi-dual-entitlement-zero-after-age-reduction
-  jurisdiction: us
-  program: social-security
-  question: When dual entitlement reduces a spouse's benefit to zero only after auxiliary age reduction,
-    is the spouse disregarded in redistributing the family maximum, or does the age-reduction amount still
-    count?
-  texts: []
-  pending_texts:
-  - citation: POMS GN 02603.045A
-    url: https://secure.ssa.gov/poms.nsf/lnx/0202603045
-    snapshot:
-      repo: PolicyEngine/microcosm-dynamics
-      commit: 383a59df5dc72a04a8af4dc74b115e9f8eae721d
-      path: tests/data/track_b/gross_benefit_sources/poms_gn_02603_045.html
-      sha256: 99d515b4e1e635e91c489bb65f4d59f15c2d8e2a6935275f83b4b3030681549e
-    excerpt: The benefit payable to the dually entitled person is the amount before any applicable reduction
-      for age
-  - citation: POMS GN 02603.050A.2
-    url: https://secure.ssa.gov/poms.nsf/lnx/0202603050
-    snapshot:
-      repo: PolicyEngine/microcosm-dynamics
-      commit: 383a59df5dc72a04a8af4dc74b115e9f8eae721d
-      path: tests/data/track_b/gross_benefit_sources/poms_gn_02603_050.html
-      sha256: 4b151ca0a071fb5cb42393b541d1e0bb0459e5734923988e132efa43f6c322d0
-    excerpt: If dual entitlement reduces a beneficiary's rate to $0.00 (technically entitled)
-  - citation: POMS GN 02603.050C
-    url: https://secure.ssa.gov/poms.nsf/lnx/0202603050
-    snapshot:
-      repo: PolicyEngine/microcosm-dynamics
-      commit: 383a59df5dc72a04a8af4dc74b115e9f8eae721d
-      path: tests/data/track_b/gross_benefit_sources/poms_gn_02603_050.html
-      sha256: 4b151ca0a071fb5cb42393b541d1e0bb0459e5734923988e132efa43f6c322d0
-    excerpt: Age reduction amount for all workers or deductees
-  reading: Refuse the family (parisi_redistribution_ambiguous) and count it; zero reached before age reduction
-    is computed.
-  alternatives:
-  - reading: 'GN 02603.050A.2: disregard the zeroed spouse.'
-    effect: Children $125 each; record total $750.
-  - reading: 'GN 02603.050C: keep the spouse''s $20.90 age-reduction term.'
-    effect: Children $114.50 each; record total $729.
-  - reading: 'GN 02603.045A alone: count the before-age amount less the own benefit ($19.30).'
-    effect: Children $115.30 each; record total $730.60.
-  basis: The sections give three different counted amounts; the layer refuses rather than select the highest
-    payment.
-  status: ruled
-  ruling:
-    by: Axiom Foundation
-    date: '2026-10-12'
-    record: https://github.com/TheAxiomFoundation/rulespec-us/pull/1710#issuecomment-6126429754
-  outcome: refused
-  implementations:
-  - repo: PolicyEngine/microcosm-dynamics
-    commit: 383a59df5dc72a04a8af4dc74b115e9f8eae721d
-    path: src/populace_dynamics/track_b/gross_benefits.py
-    follows: reading
-    cites_entry: false
-  tests:
-  - repo: PolicyEngine/microcosm-dynamics
-    commit: 383a59df5dc72a04a8af4dc74b115e9f8eae721d
-    path: tests/test_track_b_gross_benefits_parisi.py
-    name: test_method_b_zero_only_after_age_is_refused_and_kept_in_denominator
-    pins:
-    - reading
-    - alternatives[0]
-    - alternatives[1]
-    - alternatives[2]
-  money_case:
-    description: 'Method-B spouse, PIA $500, maximum $750, own RIB $64, 36 reduction months, two children:
-      record totals $750, $729 or $730.60 depending on the reading.'
-    amount: '21.00'
-    currency: USD
-    period: month
-- id: oasdi-parent-entitlement-count-interval
-  jurisdiction: us
-  program: social-security
-  question: With two potential parents on a survivor record, when one parent's own retirement benefit
-    lies between the two-parent and one-parent original benefits, is that parent entitled, and at which
-    rate is the other paid?
-  texts: []
-  pending_texts:
-  - citation: POMS RS 00209.001
-    url: https://secure.ssa.gov/poms.nsf/lnx/0300209001
-    snapshot:
-      repo: PolicyEngine/microcosm-dynamics
-      commit: 383a59df5dc72a04a8af4dc74b115e9f8eae721d
-      path: tests/data/track_b/gross_benefit_sources/poms_rs_00209_001.html
-      sha256: 1655746c729459a578d09e2653ce2b5b58069119fa5efd9fdbf2e6437d024bb7
-    excerpt: not be entitled to retirement insurance benefit (RIB) equal to or exceeding the amount of
-      the parent's original benefit (One parent = 82 1/2%; Two parents = 75%);
-  - citation: POMS RS 00209.015
-    url: https://secure.ssa.gov/poms.nsf/lnx/0300209015
-    snapshot:
-      repo: PolicyEngine/microcosm-dynamics
-      commit: 383a59df5dc72a04a8af4dc74b115e9f8eae721d
-      path: tests/data/track_b/gross_benefit_sources/poms_rs_00209_015.html
-      sha256: f2892dcc142f79e773d701b5c10b0583cf05990cbd391e12a0e57c1c06855c07
-    excerpt: One parent entitled
-  - citation: POMS RS 00209.015
-    url: https://secure.ssa.gov/poms.nsf/lnx/0300209015
-    snapshot:
-      repo: PolicyEngine/microcosm-dynamics
-      commit: 383a59df5dc72a04a8af4dc74b115e9f8eae721d
-      path: tests/data/track_b/gross_benefit_sources/poms_rs_00209_015.html
-      sha256: f2892dcc142f79e773d701b5c10b0583cf05990cbd391e12a0e57c1c06855c07
-    excerpt: Two parents entitled
-  reading: Refuse the family (parent_benefit) when the own benefit falls in that interval and both parents
-    are potential entitlements; count the refusal.
-  alternatives:
-  - reading: 'Count two parents first: the first parent''s own benefit exceeds the two-parent rate, so
-      only the other is entitled, at the one-parent rate.'
-    effect: The other parent is paid $825 in the invented case.
-  - reading: 'Test eligibility at the one-parent rate first: both count, and the other is paid at the
-      two-parent rate.'
-    effect: The other parent is paid $750 in the invented case.
-  basis: The entitlement test depends on the parent count and the count depends on entitlement; the sources
-    fix no order.
-  status: ruled
-  ruling:
-    by: Axiom Foundation
-    date: '2026-10-12'
-    record: https://github.com/TheAxiomFoundation/rulespec-us/pull/1710#issuecomment-6126429754
-  outcome: refused
-  implementations:
-  - repo: PolicyEngine/microcosm-dynamics
-    commit: 383a59df5dc72a04a8af4dc74b115e9f8eae721d
-    path: src/populace_dynamics/track_b/gross_benefits.py
-    follows: reading
-    cites_entry: false
-  tests:
-  - repo: PolicyEngine/microcosm-dynamics
-    commit: 383a59df5dc72a04a8af4dc74b115e9f8eae721d
-    path: tests/test_track_b_gross_benefits_parents_ieds.py
-    name: test_two_potential_parents_refuse_the_own_rib_entitlement_cycle
-    pins:
-    - reading
-  money_case:
-    description: 'PIA $1,000, maximum $1,750, two potential parents, one with an own RIB of $780: the
-      other parent gets $825 or $750.'
-    amount: '75.00'
-    currency: USD
-    period: month
+    computed_by: test_spouse_reentitlement_counterfactual_readings_keep_named_refusal
 - id: oasdi-family-maximum-saving-clause
   jurisdiction: us
   program: social-security
@@ -687,42 +546,3 @@ entries:
     date: '2026-10-12'
     record: https://github.com/TheAxiomFoundation/rulespec-us/pull/1710#issuecomment-6126429754
   outcome: computed
-  implementations:
-  - repo: PolicyEngine/microcosm-dynamics
-    commit: 383a59df5dc72a04a8af4dc74b115e9f8eae721d
-    path: src/populace_dynamics/track_b/gross_benefits.py
-    follows: alternatives[0]
-    cites_entry: false
-  tests:
-  - repo: PolicyEngine/microcosm-dynamics
-    commit: 383a59df5dc72a04a8af4dc74b115e9f8eae721d
-    path: tests/test_track_b_gross_benefits.py
-    name: test_savings_clause_protects_every_later_month_not_just_the_next
-    pins:
-    - alternatives[0]
-  - repo: PolicyEngine/microcosm-dynamics
-    commit: 383a59df5dc72a04a8af4dc74b115e9f8eae721d
-    path: tests/test_track_b_gross_benefits.py
-    name: test_known_over_refusal_a_beneficiary_leaves_in_a_cola_month
-    pins:
-    - alternatives[0]
-  - repo: PolicyEngine/microcosm-dynamics
-    commit: 383a59df5dc72a04a8af4dc74b115e9f8eae721d
-    path: tests/test_track_b_gross_benefits_properties.py
-    name: test_savings_clause_guard_along_month_paths
-    pins:
-    - alternatives[0]
-  - repo: PolicyEngine/microcosm-dynamics
-    commit: 383a59df5dc72a04a8af4dc74b115e9f8eae721d
-    path: tests/test_track_b_gross_benefits_properties.py
-    name: test_a_reduced_joiner_after_a_cola_is_refused_iff_the_total_falls
-    pins:
-    - alternatives[0]
-  money_case:
-    description: November total $1,500.00; the PIA rises for December (a COLA), so November is the protected
-      month; in January an age-reduced spouse joins and the total falls to $1,477.60. SSA's reading pays
-      January at $1,477.60; the literal reading raises January to November's $1,500.00 (the reference
-      refuses that month instead of computing the raise).
-    amount: '22.40'
-    currency: USD
-    period: month
