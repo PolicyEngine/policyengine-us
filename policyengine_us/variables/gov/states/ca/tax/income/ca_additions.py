@@ -17,5 +17,6 @@ class ca_additions(Variable):
     adds = [
         "ca_hsa_addition",
         "ca_educator_expense_addition",
+        "ca_other_additions",
         "charitable_contributions_ald",
     ]

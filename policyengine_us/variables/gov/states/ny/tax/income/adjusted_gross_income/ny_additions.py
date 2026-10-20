@@ -17,4 +17,4 @@ class ny_additions(Variable):
     )
     defined_for = StateCode.NY
 
-    adds = ["charitable_contributions_ald"]
+    adds = ["ny_other_additions", "charitable_contributions_ald"]

@@ -136,11 +136,17 @@ def test_social_security_benefit_inputs_use_gross_benefit_uprater():
 
 
 def test_cms_moop_per_capita_extends_to_2100():
-    """Health expense input upraters should not flatten after 2035."""
+    """Health expense input upraters keep growing after CMS's 2034
+    projection, at the 2033-2034 growth rate, then hold the 2100 value."""
     parameter = PARAMETERS.calibration.gov.hhs.cms.moop_per_capita
+    last_growth = parameter("2034-01-01") / parameter("2033-01-01")
 
-    assert parameter("2036-01-01") > parameter("2035-01-01")
-    assert parameter("2100-01-01") > parameter("2036-01-01")
+    assert parameter("2034-01-01") == 2_512
+    assert last_growth == pytest.approx(2_512 / 2_412, rel=1e-12)
+    for year in [2035, 2036, 2050, 2100]:
+        growth = parameter(f"{year}-01-01") / parameter(f"{year - 1}-01-01")
+        assert growth == pytest.approx(last_growth, rel=1e-12)
+    assert parameter("2150-01-01") == parameter("2100-01-01")
 
 
 def test_cms_esi_premium_per_enrollee_holds_last_projected_growth_rate():
@@ -151,6 +157,45 @@ def test_cms_esi_premium_per_enrollee_holds_last_projected_growth_rate():
 
     assert parameter("2034-01-01") == 13_124
     for year in [2035, 2036, 2050, 2100]:
+        growth = parameter(f"{year}-01-01") / parameter(f"{year - 1}-01-01")
+        assert growth == pytest.approx(last_growth, rel=1e-12)
+    assert parameter("2150-01-01") == parameter("2100-01-01")
+
+
+def test_cms_direct_purchase_premium_per_enrollee_holds_last_projected_growth_rate():
+    """Directly bought premium inputs keep growing after CMS's 2034
+    projection, at the 2033-2034 growth rate."""
+    parameter = PARAMETERS.calibration.gov.hhs.cms.direct_purchase_premium_per_enrollee
+    last_growth = parameter("2034-01-01") / parameter("2033-01-01")
+
+    assert parameter("2034-01-01") == 9_589
+    for year in [2035, 2036, 2050, 2100]:
+        growth = parameter(f"{year}-01-01") / parameter(f"{year - 1}-01-01")
+        assert growth == pytest.approx(last_growth, rel=1e-12)
+    assert parameter("2150-01-01") == parameter("2100-01-01")
+
+
+def test_medicare_part_b_premium_holds_last_projected_growth_rate():
+    """Reported Part B premium inputs keep growing after the Trustees' 2035
+    projection, at the 2034-2035 growth rate."""
+    parameter = PARAMETERS.calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee
+    last_growth = parameter("2035-01-01") / parameter("2034-01-01")
+
+    assert parameter("2035-01-01") == 360.6
+    for year in [2036, 2037, 2050, 2100]:
+        growth = parameter(f"{year}-01-01") / parameter(f"{year - 1}-01-01")
+        assert growth == pytest.approx(last_growth, rel=1e-12)
+    assert parameter("2150-01-01") == parameter("2100-01-01")
+
+
+def test_cpi_u_medical_care_holds_last_projected_growth_rate():
+    """Long-term care premium inputs keep growing after CBO's 2036
+    projection, at the 2035-2036 growth rate."""
+    parameter = PARAMETERS.gov.bls.cpi.cpi_u_medical_care
+    last_growth = parameter("2036-01-01") / parameter("2035-01-01")
+
+    assert parameter("2036-01-01") == 813.07
+    for year in [2037, 2038, 2050, 2100]:
         growth = parameter(f"{year}-01-01") / parameter(f"{year - 1}-01-01")
         assert growth == pytest.approx(last_growth, rel=1e-12)
     assert parameter("2150-01-01") == parameter("2100-01-01")
@@ -292,6 +337,13 @@ def test_social_security_payroll_cap_formula_matches_known_values():
     assert expected_2026_cap == 184_500
     assert expected_2026_cap == payroll_cap("2026-01-01")
 
+    expected_2027_cap = round_social_security_payroll_cap(
+        payroll_cap("1994-01-01") * nawi("2025-01-01") / nawi("1992-01-01")
+    )
+
+    assert expected_2027_cap == 192_300
+    assert expected_2027_cap == payroll_cap("2027-01-01")
+
 
 def test_social_security_parameters_include_latest_official_2026_values():
     """Test announced 2026 SSA values before forecasts resume."""
@@ -322,6 +374,42 @@ def test_social_security_parameters_include_latest_official_2026_values():
     pia = parameters.gov.ssa.social_security.pia.formula_factors("2026-01-01")
     assert pia.thresholds[1] == 1_286
     assert pia.thresholds[2] == 7_749
+
+
+def test_social_security_parameters_include_latest_official_2027_values():
+    """Test announced 2027 SSA values, including those the extension derives from NAWI."""
+    parameters = PARAMETERS
+    ssa = parameters.gov.ssa
+    social_security = ssa.social_security
+
+    # 3.6% COLA: 2026Q3 CPI-W average over the 2025Q3 average.
+    assert ssa.uprating("2027-01-01") == 328.746
+    assert round(ssa.uprating("2027-01-01") / ssa.uprating("2026-01-01") - 1, 3) == (
+        0.036
+    )
+    assert ssa.ssi.amount.individual("2027-01-01") == 1_029
+    assert ssa.ssi.amount.couple("2027-01-01") == 1_544
+    student = ssa.ssi.income.exclusions.blind_or_disabled_working_student
+    assert student.amount("2027-01-01") == 2_500
+    assert student.cap("2027-01-01") == 10_080
+
+    assert parameters.gov.irs.payroll.social_security.cap("2027-01-01") == 192_300
+    assert social_security.wage_base("2027-01-01") == 192_300
+    assert social_security.quarters_of_coverage_threshold("2027-01-01") == 1_970
+    assert social_security.earnings_test.exempt_amount_under_fra("2027-01-01") == (
+        25_560
+    )
+    assert social_security.earnings_test.exempt_amount_year_of_fra("2027-01-01") == (
+        67_920
+    )
+    assert ssa.sga.non_blind("2027-01-01") == 1_770
+    assert ssa.sga.blind("2027-01-01") == 2_950
+
+    # SSA's published 2025 AWI sets the 2027 PIA bend points.
+    assert ssa.nawi("2025-01-01") == 72_800.33
+    pia = social_security.pia.formula_factors("2027-01-01")
+    assert pia.thresholds[1] == 1_340
+    assert pia.thresholds[2] == 8_077
 
 
 def test_social_security_wage_indexed_parameters_follow_statutory_rounding():
