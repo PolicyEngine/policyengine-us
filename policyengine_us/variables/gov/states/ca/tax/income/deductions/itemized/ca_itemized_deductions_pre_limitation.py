@@ -38,12 +38,16 @@ class ca_itemized_deductions_pre_limitation(Variable):
         ]
         deductions += [
             "ca_investment_interest_expense_deduction",
+            "ca_mortgage_interest_deduction",
             "real_estate_taxes",
             "ca_charitable_deduction",
             "ca_misc_deduction",
             "ca_casualty_loss_deduction",
         ]
-        # Federal investment interest is nested in interest_deduction.
+        # Federal investment and mortgage interest are nested in
+        # interest_deduction; California replaces both (Schedule CA lines 8-9).
         return add(tax_unit, period, deductions) - add(
-            tax_unit, period, ["investment_interest_expense"]
+            tax_unit,
+            period,
+            ["investment_interest_expense", "deductible_mortgage_interest"],
         )

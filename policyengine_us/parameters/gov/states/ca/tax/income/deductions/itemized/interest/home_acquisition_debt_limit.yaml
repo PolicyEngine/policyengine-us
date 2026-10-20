@@ -1,0 +1,29 @@
+description: California limits the home acquisition debt on which mortgage interest is deductible to this amount, based on filing status.
+SINGLE:
+  2018-01-01: 1_000_000
+JOINT:
+  2018-01-01: 1_000_000
+HEAD_OF_HOUSEHOLD:
+  2018-01-01: 1_000_000
+SEPARATE:
+  2018-01-01: 500_000
+SURVIVING_SPOUSE:
+  2018-01-01: 1_000_000
+metadata:
+  propagate_metadata_to_children: true
+  breakdown:
+    - filing_status
+  unit: currency-USD
+  period: year
+  label: California home acquisition debt limit
+  reference:
+    # California does not apply the TCJA limit in IRC 163(h)(3)(F), so the
+    # pre-TCJA limit in IRC 163(h)(3)(B)(ii) applies whenever the debt arose.
+    - title: California Revenue and Taxation Code Section 17225(b)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17225
+    - title: SB 711 (2025) conformity chart, RTC 17225(b)
+      href: https://srev.senate.ca.gov/media/71#page=14
+    - title: 2025 Schedule CA (540) Instructions, Part II line 8
+      href: https://www.ftb.ca.gov/forms/2025/2025-540-ca-instructions.html
+    - title: 2017 IRS Publication 936, Home acquisition debt limit
+      href: https://www.irs.gov/pub/irs-prior/p936--2017.pdf#page=9

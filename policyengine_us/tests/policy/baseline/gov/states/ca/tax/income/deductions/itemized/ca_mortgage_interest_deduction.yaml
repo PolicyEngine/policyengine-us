@@ -1,0 +1,246 @@
+- name: Case 1, a post-TCJA mortgage under $750,000 is fully deductible in both.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        home_mortgage_interest: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        first_home_mortgage_balance: 600_000
+        first_home_mortgage_origination_year: 2020
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    deductible_mortgage_interest_tax_unit: 30_000
+    ca_mortgage_interest_deduction: 30_000
+
+- name: Case 2, a post-TCJA mortgage between $750,000 and $1 million is fully deductible in California.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        home_mortgage_interest: 45_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        first_home_mortgage_balance: 900_000
+        first_home_mortgage_origination_year: 2020
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # Federal: $750,000 / $900,000 * $45,000 = $37,500.
+    deductible_mortgage_interest_tax_unit: 37_500
+    ca_mortgage_interest_deduction: 45_000
+
+- name: Case 3, debt between $1 million and $1.1 million is fully deductible as acquisition plus home equity debt.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        home_mortgage_interest: 52_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        first_home_mortgage_balance: 1_050_000
+        first_home_mortgage_origination_year: 2024
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # Federal: $750,000 / $1,050,000 * $52,500 = $37,500.
+    deductible_mortgage_interest_tax_unit: 37_500
+    # 2017 Pub. 936 Table 1: line 6 $1,000,000, line 7 $50,000, line 8 $1,050,000.
+    ca_mortgage_interest_deduction: 52_500
+
+- name: Case 4, a post-TCJA mortgage over $1.1 million uses the $1.1 million qualified loan limit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        home_mortgage_interest: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        first_home_mortgage_balance: 1_500_000
+        first_home_mortgage_origination_year: 2020
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # Federal: $750,000 / $1,500,000 * $60,000 = $30,000.
+    deductible_mortgage_interest_tax_unit: 30_000
+    # Line 8: $1,000,000 + $100,000. Line 11: round($1,100,000 / $1,500,000, 3) = 0.733.
+    # 0.733 * $60,000 = $43,980.
+    ca_mortgage_interest_deduction: 43_980
+
+- name: Case 5, a pre-TCJA mortgage over $1.1 million also gets California's home equity allowance.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        home_mortgage_interest: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        first_home_mortgage_balance: 1_500_000
+        first_home_mortgage_origination_year: 2015
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # Federal: $1,000,000 / $1,500,000 * $60,000 = $40,000.
+    deductible_mortgage_interest_tax_unit: 40_000
+    ca_mortgage_interest_deduction: 43_980
+
+- name: Case 6, married filing separately uses the $500,000 and $50,000 limits.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        home_mortgage_interest: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        first_home_mortgage_balance: 600_000
+        first_home_mortgage_origination_year: 2019
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # Federal: $375,000 / $600,000 * $30,000 = $18,750.
+    deductible_mortgage_interest_tax_unit: 18_750
+    # round($550,000 / $600,000, 3) = 0.917. 0.917 * $30,000 = $27,510.
+    ca_mortgage_interest_deduction: 27_510
+
+- name: Case 7, joint filers with two mortgages apply the limits to the combined balance.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        home_mortgage_interest: 40_000
+      person2:
+        age: 45
+        home_mortgage_interest: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        first_home_mortgage_balance: 800_000
+        first_home_mortgage_origination_year: 2017
+        second_home_mortgage_balance: 500_000
+        second_home_mortgage_origination_year: 2020
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Federal: $800,000 / $1,300,000 * $65,000 = $40,000.
+    deductible_mortgage_interest_tax_unit: 40_000
+    # round($1,100,000 / $1,300,000, 3) = 0.846. 0.846 * $65,000 = $54,990.
+    ca_mortgage_interest_deduction: 54_990
+
+- name: Case 8, grandfathered debt over the limits stays fully deductible.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        home_mortgage_interest: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        first_home_mortgage_balance: 1_500_000
+        first_home_mortgage_origination_year: 1986
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    deductible_mortgage_interest_tax_unit: 60_000
+    # Lines 4-6: the larger of $1,500,000 and $1,000,000, capped at $1,500,000.
+    ca_mortgage_interest_deduction: 60_000
+
+- name: Case 9, interest with no reported balance is fully deductible.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        home_mortgage_interest: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_mortgage_interest_deduction: 20_000
+
+- name: Case 10, a directly supplied federal deduction carries over when no gross interest is reported.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        deductible_mortgage_interest: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_mortgage_interest_deduction: 12_000
+
+- name: Case 11, California itemized deductions replace the federal mortgage interest.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        home_mortgage_interest: 60_000
+        real_estate_taxes: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        first_home_mortgage_balance: 1_500_000
+        first_home_mortgage_origination_year: 2020
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    interest_deduction: 30_000
+    # $43,980 mortgage interest + $10,000 real estate taxes.
+    ca_itemized_deductions_pre_limitation: 53_980
