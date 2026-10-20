@@ -45,11 +45,22 @@ values:
     - mi_ssp_person
     - mn_msa_person
     - mo_ssp
+    - mt_ssp
+    - nc_sa
     - ne_aabd
+    - nj_ssp
     - nm_ssi_state_supplement
+    - nv_oss
+    - ny_ssp
+    - ok_ssp
+    - pa_ssp
+    - ri_ssp
     - sc_ssi_state_supplement
+    - sd_ssp
     - tx_ssi_state_supplement
+    - va_ag
     - wa_ssp
+    - wy_ssp
     # Not listed: OAR 461-145-0410(7)(c)(D) excludes Oregon's modeled OSIP
     # special need payments (or_ssp) from SNAP income as reimbursements. Its
     # nursing facility payment goes to institution residents, who are not SNAP
@@ -67,6 +78,7 @@ values:
     - social_security
     - survivor_benefits
     - retirement_distributions
+    - military_retirement_income
     # Assume all rental income meets this criteria (rest is earned):
     # "gross income minus the cost of doing business derived from rental
     #  property in which a household member is not actively engaged in the

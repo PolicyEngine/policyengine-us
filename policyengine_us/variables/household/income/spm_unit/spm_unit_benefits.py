@@ -22,6 +22,16 @@ class spm_unit_benefits(Variable):
             "ky_ssp",  # Kentucky benefits
             "de_ssp",  # Delaware benefits
             "fl_oss",
+            "nj_ssp",  # New Jersey benefits
+            "pa_ssp",  # Pennsylvania benefits
+            "wy_ssp",  # Wyoming benefits
+            "nc_sa",  # North Carolina benefits
+            "mt_ssp",  # Montana benefits
+            "ok_ssp",  # Oklahoma benefits
+            "ny_ssp",  # New York benefits
+            "ri_ssp",  # Rhode Island benefits
+            "sd_ssp",  # South Dakota benefits
+            "va_ag",  # Virginia benefits
             "or_ssp",  # Oregon benefits
             "ks_sspp",  # Kansas benefits
             "hi_oss",
@@ -34,6 +44,7 @@ class spm_unit_benefits(Variable):
             "mo_ssp",  # Missouri benefits
             "mn_msa",  # Minnesota benefits
             "ne_aabd",  # Nebraska benefits
+            "nv_oss",  # Nevada benefits
             # California programs.
             "ca_cvrp",  # California Clean Vehicle Rebate Project.
             # California SSI state supplement (SSP). The formula nets federal

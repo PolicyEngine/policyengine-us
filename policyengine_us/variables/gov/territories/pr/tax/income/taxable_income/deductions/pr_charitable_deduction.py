@@ -14,10 +14,6 @@ class pr_charitable_deduction(Variable):
         p = parameters(
             period
         ).gov.territories.pr.tax.income.taxable_income.deductions.charity
-        charitable_contributions = add(
-            tax_unit,
-            period,
-            ["charitable_cash_donations", "charitable_non_cash_donations"],
-        )
+        charitable_contributions = add(tax_unit, period, ["total_charitable_donations"])
         charity_floor = p.floor * tax_unit("pr_agi", period)
         return min_(charitable_contributions, charity_floor)

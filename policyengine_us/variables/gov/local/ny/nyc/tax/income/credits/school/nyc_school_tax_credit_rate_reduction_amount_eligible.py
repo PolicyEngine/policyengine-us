@@ -25,4 +25,9 @@ class nyc_school_tax_credit_rate_reduction_amount_eligible(Variable):
         # it not applicable above their top bracket.
         nyc_taxable_income = tax_unit("nyc_taxable_income", period)
         taxable_income_eligible = nyc_taxable_income <= p.taxable_income_limit
-        return income_eligible & taxable_income_eligible
+        # A filer who can be claimed as a dependent does not qualify (IT-201
+        # line 69a); a spouse who cannot be claimed still does.
+        independent_filers = tax_unit(
+            "head_spouse_count_not_dependent_elsewhere", period
+        )
+        return income_eligible & taxable_income_eligible & (independent_filers > 0)
