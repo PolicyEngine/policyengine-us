@@ -26,7 +26,11 @@ class medicaid_person_is_required_to_file(Variable):
         standard = parameters(period).gov.irs.deductions.standard
         filing_requirement = parameters(period).gov.irs.income.filing_requirement
         gross_income = person("medicaid_irs_gross_income", period)
-        earned_income = person("earned_income", period)
+        # Disability pensions reported as wages before minimum retirement
+        # age are earned income.
+        earned_income = add(
+            person, period, ["earned_income", "earned_disability_benefits"]
+        )
         # Unearned income is gross income other than wages and self-employment
         # earnings (IRS Pub. 501, Table 2). Gross income counts each source's
         # positive amount, so subtract those sources' positive amounts: a
@@ -34,6 +38,7 @@ class medicaid_person_is_required_to_file(Variable):
         earned_gross_income = 0
         for source in EARNED_GROSS_INCOME_SOURCES:
             earned_gross_income += max_(0, person(source, period))
+        earned_gross_income += person("earned_disability_benefits", period)
         unearned_income = max_(0, gross_income - earned_gross_income)
 
         married = person.marital_unit.nb_persons() == 2

@@ -49,6 +49,8 @@ EXPECTED = {
     # Wage-replacement benefits.
     "workers_compensation": EMPLOYMENT,
     "disability_benefits": EMPLOYMENT,
+    "tax_exempt_disability_benefits": EMPLOYMENT,
+    "disability_benefits_before_minimum_retirement_age": EMPLOYMENT,
     "self_employed_pension_contributions_desired": SELF_EMPLOYMENT,
     # Components of capital gains.
     "long_term_capital_gains_on_collectibles": CAPITAL_GAINS,
