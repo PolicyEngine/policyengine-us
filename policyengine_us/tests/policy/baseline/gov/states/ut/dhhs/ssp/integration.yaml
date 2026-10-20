@@ -6,12 +6,16 @@
     medicaid_enrolled: true
     ssi_lives_in_medical_treatment_facility: true
     ssi_medicaid_pays_majority_of_care: true
+    # SNAP take-up off keeps projected SNAP out of spm_unit_benefits.
+    takes_up_snap_if_eligible: false
   output:
     ut_ssp: 180
     snap_unearned_income: 540
     household_state_benefits: 180
     # HUD income excludes the supplement (see ut_ssp): SSI 30 * 12 = 360.
     hud_unearned_income: 360
+    # SSI 30 * 12 = 360 + Utah SSP 15 * 12 = 180 = 540 (SNAP take-up off).
+    spm_unit_benefits: 540
 
 - name: Case 2, endogenous Medicaid enrollment counts the supplement in SNAP income without a dependency cycle.
   period: 2026-01
@@ -24,3 +28,152 @@
     ut_ssp: 15
     # $30 SSI + $15 supplement = $45 for the month.
     snap_unearned_income: 45
+
+- name: Case 3, 2027 facility resident with endogenous Medicaid keeps the fixed supplement.
+  period: 2027-01
+  input:
+    state_code: UT
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    # The federal $30 medical treatment facility rate has no COLA.
+    ssi: 30
+    # Medicaid work requirements apply from 2027, so enrollment comes from the
+    # cycle-breaking Medicaid branch; the $15 supplement is not indexed.
+    ut_ssp: 15
+    # $30 SSI + $15 supplement = $45 for the month.
+    snap_unearned_income: 45
+
+- name: Case 4, DWS supplement enters state benefit and HUD totals but not SNAP income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 72
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person2:
+        age: 45
+        # Utah minimum wage (the federal $7.25, Utah Code 34-40-103) full time:
+        # 7.25 * 2,080 = 15,080.
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # One-third reduction: 994 * 2 / 3 * 12 = 7,952.
+    ssi: [7_952, 0]
+    # Single person in the household of another: 3.91 * 12 = 46.92.
+    ut_dws_ssp: [46.92, 0]
+    ut_dhhs_ssp: [0, 0]
+    ut_ssp: [46.92, 0]
+    household_state_benefits: 46.92
+    # Utah exempts the DWS supplement from SNAP income (DWS Manual 425-11):
+    # SSI only.
+    snap_unearned_income: 7_952
+    # SSI 7,952 + DWS supplement 46.92 = 7,998.92.
+    hud_unearned_income: [7_998.92, 0]
+
+- name: Case 5, 2027 couple in the household of another keeps the 2026 DWS amount.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person3:
+        age: 45
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    # 2027 couple rate 1,544 / 2 * 2 / 3 = 514.67 each.
+    ssi: [514.67, 514.67, 0]
+    # DWS publishes no indexing rule, so the 2026 $12.19 carries forward:
+    # 12.19 / 2 = 6.095 each.
+    ut_dws_ssp: [6.095, 6.095, 0]
+    ut_ssp: [6.095, 6.095, 0]
+    # SSI 514.67 * 2 = 1,029.33; the DWS supplement is exempt.
+    snap_unearned_income: 1_029.33
+
+- name: Case 6, over-income DWS recipient counts Social Security but not the supplement for SNAP.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 72
+        # SSA 2026 COLA fact sheet: average retired-worker benefit $2,071 a
+        # month, 2,071 * 12 = 24,852.
+        social_security_retirement: 24_852
+      person2:
+        age: 45
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Countable income 2,071 - 20 = 2,051 > $994: no SSI.
+    ssi: [0, 0]
+    # Meets SSI criteria other than income and lives with others:
+    # 3.91 * 12 = 46.92.
+    ut_ssp: [46.92, 0]
+    household_state_benefits: 46.92
+    # Social Security 24,852; the DWS supplement is exempt.
+    snap_unearned_income: 24_852
+    # Social Security 24,852 + DWS supplement 46.92 = 24,898.92.
+    hud_unearned_income: [24_898.92, 0]

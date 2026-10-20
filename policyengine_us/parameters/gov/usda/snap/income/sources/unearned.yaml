@@ -53,7 +53,10 @@ values:
     - pa_ssp
     - sc_ssi_state_supplement
     - tx_ssi_state_supplement
-    - ut_ssp
+    # Utah exempts its Department of Workforce Services supplement
+    # (ut_dws_ssp) from SNAP income (DWS Eligibility Manual 425-11).
+    # The model follows that exemption, which cites no 273.9(c) exclusion.
+    - ut_dhhs_ssp
     - wa_ssp
     - wy_ssp
     # Listed elsewhere: ca_state_supplement is an SPM unit variable with no

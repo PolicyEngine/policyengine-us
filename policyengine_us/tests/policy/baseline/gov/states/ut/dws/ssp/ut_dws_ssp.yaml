@@ -1,0 +1,266 @@
+# Utah DWS Eligibility Manual 205-10 (effective January 1, 2026): $3.91 a
+# month for a single person, $12.19 for a couple in the household of another
+# and $5.75 for a couple living alone or with others in their own household.
+# Each spouse receives half of a couple amount.
+- name: Case 1, single SSI recipient living with others in their own household.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+      person2:
+        age: 45
+        # Utah minimum wage (the federal $7.25, Utah Code 34-40-103) full time:
+        # 7.25 * 2,080 = 15,080.
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ssi: [994, 0]
+    # Single person who does not live alone: $3.91.
+    ut_dws_ssp: [3.91, 0]
+
+- name: Case 2, single SSI recipient in the household of another.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person2:
+        age: 45
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # One-third reduction: 994 * 2 / 3 = 662.67.
+    ssi: [662.67, 0]
+    # A single person receives $3.91 in any arrangement other than alone.
+    ut_dws_ssp: [3.91, 0]
+
+- name: Case 3, SSI couple living alone splits the own-household couple amount.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Couple rate $1,491 / 2 = $745.50 each with no income.
+    ssi: [745.5, 745.5]
+    # $5.75 / 2 = $2.875 each; the couple receives $5.75.
+    ut_dws_ssp: [2.875, 2.875]
+
+- name: Case 4, SSI couple in the household of another splits the higher couple amount.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person3:
+        age: 45
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    # One-third reduction: 1,491 / 2 * 2 / 3 = 497 each.
+    ssi: [497, 497, 0]
+    # $12.19 / 2 = $6.095 each; the couple receives $12.19.
+    ut_dws_ssp: [6.095, 6.095, 0]
+
+- name: Case 5, SSI couple living with a grandson in their own household.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+      person3:
+        age: 22
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    ssi: [745.5, 745.5, 0]
+    # Couple with others in their own household: $5.75 / 2 = $2.875 each.
+    ut_dws_ssp: [2.875, 2.875, 0]
+
+- name: Case 6, SSI recipient whose working spouse is not aged, blind or disabled receives the single amount.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+      person2:
+        age: 60
+        is_tax_unit_spouse: true
+        employment_income: 15_080
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # person2 is not aged, blind or disabled, so person1 is an individual
+    # recipient who lives with a spouse: $3.91; person2 receives nothing.
+    ut_dws_ssp_eligible: [true, false]
+    ut_dws_ssp: [3.91, 0]
+
+- name: Case 7, aged couple over the SSI income limit splits the own-household couple amount.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        # SSA 2026 COLA fact sheet: average aged couple benefit $3,208 a
+        # month, with person1 at the $2,071 average retired-worker benefit:
+        # 2,071 * 12 = 24,852 and (3,208 - 2,071) * 12 = 13,644.
+        social_security_retirement: 24_852
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        social_security_retirement: 13_644
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Countable income 3,208 - 20 = 3,188 > $1,491 couple rate: no SSI.
+    ssi: [0, 0]
+    # Both spouses meet SSI criteria other than income: $5.75 / 2 each.
+    ut_dws_ssp: [2.875, 2.875]
+
+- name: Case 8, year total for a single recipient in the household of another.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 72
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person2:
+        age: 45
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # $3.91 * 12 = $46.92, paid in four quarterly installments of $11.73.
+    ut_dws_ssp: [46.92, 0]

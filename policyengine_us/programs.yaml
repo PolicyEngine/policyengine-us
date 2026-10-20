@@ -1149,13 +1149,17 @@ programs:
         notes: Models 2026 basic and enhanced facility and in-home payments, including lower contracted
           rates and first-month proration. Open/shut and discharge payments are not modeled.
       - state: UT
-        status: complete
+        status: partial
         name: Utah SSP
         full_name: Utah State Supplemental Payment
         variable: ut_ssp
         parameter_prefix: gov.states.ut.dhhs.ssp
         verified_years: "2026"
-        notes: Models the 2026 $15 monthly payment to SSI recipients in Medicaid-funded medical institutions. Utah's former federally administered optional supplement is not modeled.
+        notes: >-
+          Models the 2026 Department of Workforce Services supplement, paid
+          quarterly to SSI recipients and over-income applicants other than
+          single individuals living alone, and the $15 monthly payment to SSI
+          recipients in Medicaid-funded medical institutions.
 
   - id: social_security
     name: Social Security

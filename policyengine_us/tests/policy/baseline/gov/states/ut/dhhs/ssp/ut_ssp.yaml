@@ -22,7 +22,7 @@
     ssi: 1
   output:
     # $1 SSI >= $1 minimum federal SSI payment, so the $15 payment applies.
-    ut_ssp_eligible: true
+    ut_dhhs_ssp_eligible: true
     ut_ssp: 15
 
 - name: Case 3, institutional SSI below one dollar does not qualify.
@@ -36,7 +36,7 @@
     ssi: 0.50
   output:
     # $0.50 SSI < $1 minimum federal SSI payment and no reported receipt.
-    ut_ssp_eligible: false
+    ut_dhhs_ssp_eligible: false
     ut_ssp: 0
 
 - name: Case 4, Medicaid approval is required.
@@ -196,3 +196,101 @@
     ssi: [30, 994]
     # Only person1 lives in a medical treatment facility: [$15, $0].
     ut_ssp: [15, 0]
+
+- name: Case 14, Medicaid facility spouse receives the DHHS payment and the spouse at home with a son receives the DWS supplement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 80
+        is_tax_unit_head: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 78
+        is_tax_unit_spouse: true
+      person3:
+        age: 50
+        # Utah minimum wage (the federal $7.25, Utah Code 34-40-103) full time:
+        # 7.25 * 2,080 = 15,080.
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    # One spouse in a facility: separate computation, $30 and $994.
+    ssi: [30, 994, 0]
+    # person1: $30 SSI >= $1 in a Medicaid facility: $15.
+    ut_dhhs_ssp: [15, 0, 0]
+    # person2 is a single individual living with person3: $3.91.
+    ut_dws_ssp: [0, 3.91, 0]
+    ut_ssp: [15, 3.91, 0]
+
+- name: Case 15, Utah recipient is paid beside a Massachusetts recipient in the same simulation.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+      person2:
+        age: 45
+        employment_income: 15_080
+      person3:
+        age: 72
+      person4:
+        age: 45
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+      tax_unit4:
+        members: [person4]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+      marital_unit4:
+        members: [person4]
+    families:
+      family1:
+        members: [person1, person2]
+      family2:
+        members: [person3, person4]
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+      spm_unit2:
+        members: [person3, person4]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: UT
+      household2:
+        members: [person3, person4]
+        state_code: MA
+  output:
+    ssi: [994, 0, 994, 0]
+    # Only the Utah recipient, who lives with others, receives $3.91.
+    ut_dws_ssp_eligible: [true, false, false, false]
+    ut_ssp: [3.91, 0, 0, 0]
