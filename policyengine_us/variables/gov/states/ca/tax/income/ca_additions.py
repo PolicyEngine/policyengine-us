@@ -13,4 +13,5 @@ class ca_additions(Variable):
         "ca_hsa_addition",
         "ca_educator_expense_addition",
         "ca_other_additions",
+        "ca_out_of_state_municipal_bond_interest",
     ]

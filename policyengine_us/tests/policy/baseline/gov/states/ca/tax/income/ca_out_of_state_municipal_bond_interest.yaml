@@ -1,0 +1,107 @@
+# FTB Publication 1001: 2023 page 7 and 2025 page 8, Non-California bonds.
+# CA AGI equals federal AGI plus the interest from other states' bonds.
+- name: California bonds have no addback without an out-of-state amount in 2023
+  period: 2023
+  input:
+    state_code: CA
+    age: 40
+    employment_income: 100_000
+    tax_exempt_interest_income: 50_000
+  output:
+    ca_out_of_state_municipal_bond_interest: 0
+    adjusted_gross_income: 100_000
+    ca_additions: 0
+    ca_agi: 100_000
+
+- name: Mixed holdings add only the out-of-state share in 2023
+  period: 2023
+  input:
+    state_code: CA
+    age: 40
+    employment_income: 100_000
+    tax_exempt_interest_income: 50_000
+    ca_out_of_state_municipal_bond_interest: 12_500
+  output:
+    adjusted_gross_income: 100_000
+    ca_additions: 12_500
+    ca_agi: 112_500
+
+- name: All other-state municipal bond interest is added back in 2023
+  period: 2023
+  input:
+    state_code: CA
+    age: 40
+    employment_income: 100_000
+    tax_exempt_interest_income: 50_000
+    ca_out_of_state_municipal_bond_interest: 50_000
+  output:
+    adjusted_gross_income: 100_000
+    ca_additions: 50_000
+    ca_agi: 150_000
+
+- name: California bonds have no addback with an explicit zero in 2025
+  period: 2025
+  input:
+    state_code: CA
+    age: 40
+    employment_income: 100_000
+    tax_exempt_interest_income: 50_000
+    ca_out_of_state_municipal_bond_interest: 0
+  output:
+    adjusted_gross_income: 100_000
+    ca_additions: 0
+    ca_agi: 100_000
+
+- name: Mixed holdings add only the out-of-state share in 2025
+  period: 2025
+  input:
+    state_code: CA
+    age: 40
+    employment_income: 100_000
+    tax_exempt_interest_income: 50_000
+    ca_out_of_state_municipal_bond_interest: 12_500
+  output:
+    adjusted_gross_income: 100_000
+    ca_additions: 12_500
+    ca_agi: 112_500
+
+- name: All other-state municipal bond interest is added back in 2025
+  period: 2025
+  input:
+    state_code: CA
+    age: 40
+    employment_income: 100_000
+    tax_exempt_interest_income: 50_000
+    ca_out_of_state_municipal_bond_interest: 50_000
+  output:
+    adjusted_gross_income: 100_000
+    ca_additions: 50_000
+    ca_agi: 150_000
+
+- name: Tax unit sums each member's out-of-state interest alongside other additions
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        tax_exempt_interest_income: 20_000
+        ca_out_of_state_municipal_bond_interest: 5_000
+      spouse:
+        age: 40
+        employment_income: 40_000
+        tax_exempt_interest_income: 30_000
+        ca_out_of_state_municipal_bond_interest: 7_500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        ca_other_additions: 1_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CA
+  output:
+    adjusted_gross_income: 100_000
+    ca_additions: 13_500
+    ca_agi: 113_500
