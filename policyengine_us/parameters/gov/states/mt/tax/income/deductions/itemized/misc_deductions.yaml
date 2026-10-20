@@ -8,10 +8,8 @@ values:
     - casualty_loss_deduction
     # Form 2 itemized deductions line 18 follows federal Schedule A line 16.
     - mt_claim_of_right_deduction
-  # From 2024 Form 2 line 2 takes the federal itemized deductions (Worksheet A
-  # line 1: Form 1040 line 12), which include Schedule A line 16.
-  2024-01-01:
-    - mt_claim_of_right_deduction
+  # From 2024 mt_federal_deductions takes the full federal deduction.
+  2024-01-01: []
 
 metadata:
   unit: list

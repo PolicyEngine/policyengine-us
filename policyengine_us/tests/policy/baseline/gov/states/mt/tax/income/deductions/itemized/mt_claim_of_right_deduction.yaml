@@ -83,10 +83,11 @@
         state_code: MT
   output:
     mt_claim_of_right_deduction: 5_000
-    mt_misc_deductions: 5_000
+    # From 2024 the full federal aggregate carries the deduction.
+    mt_misc_deductions: 0
 
-- name: Case 5, the 2025 deduction reaches Montana itemized deductions.
-  period: 2025
+- name: Case 5, the 2023 deduction reaches every Montana itemized aggregate once.
+  period: 2023
   input:
     people:
       person1:
@@ -100,13 +101,480 @@
       tax_unit:
         members: [person1]
         claim_of_right_deduction: 5_000
-        charitable_deduction: 0
+        charitable_deduction: 10_000
         mt_child_dependent_care_expense_deduction_joint: 0
         mt_federal_income_tax_deduction_unit: 0
+        mt_federal_income_tax_deduction_for_federal_itemization: 0
     households:
       household:
         members: [person1]
         state_code: MT
   output:
-    # Interest 0 + charity 0 + miscellaneous 5,000 + medical 0 + SALT 0.
-    mt_itemized_deductions_joint: 5_000
+    # Charity 10,000 + nonfloor repayment 5,000, each counted once.
+    mt_claim_of_right_deduction: 5_000
+    mt_misc_deductions: 5_000
+    mt_itemized_deductions_joint: 15_000
+    mt_itemized_deductions_for_federal_itemization_joint: 15_000
+
+- name: A partial positive federal deduction is allocated exactly once to its payers.
+  period: 2023
+  input:
+    people:
+      head:
+        claim_of_right_repayment: 4_000
+      spouse:
+        claim_of_right_repayment: 2_000
+    tax_units:
+      unit:
+        members: [head, spouse]
+        claim_of_right_deduction: 3_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    mt_claim_of_right_deduction: [2_000, 1_000]
+
+- name: The 2017 miscellaneous floor uses Montana AGI rather than federal AGI.
+  period: 2017
+  input:
+    state_code: MT
+    claim_of_right_repayment: 3_000
+    mt_agi_joint: 40_000
+    adjusted_gross_income: 50_000
+    unreimbursed_business_employee_expenses: 0
+    tax_preparation_fees: 0
+  output:
+    mt_misc_deductions_subject_to_floor_joint: 2_200
+
+- name: The 2017 floor applies once to the combined raw expense pool.
+  period: 2017
+  input:
+    state_code: MT
+    claim_of_right_repayment: 2_000
+    mt_agi_joint: 40_000
+    unreimbursed_business_employee_expenses: 1_000
+    tax_preparation_fees: 300
+    misc_deduction: 999
+    claim_of_right_deduction: 0
+    charitable_deduction: 10_000
+    investment_interest_expense: 0
+    deductible_mortgage_interest: 0
+    mt_medical_expense_deduction_joint: 0
+    mt_salt_deduction: 0
+    casualty_loss_deduction: 400
+    mt_child_dependent_care_expense_deduction_joint: 0
+    mt_federal_income_tax_deduction_unit: 0
+    mt_federal_income_tax_deduction_for_federal_itemization: 0
+  output:
+    # 2,000 + 1,000 + 300 - 2% * 40,000 = 2,500; federal misc is unused.
+    mt_misc_deductions_subject_to_floor_joint: 2_500
+    mt_misc_deductions: 400
+    mt_itemized_deductions_joint: 12_900
+    mt_itemized_deductions_for_federal_itemization_joint: 12_900
+
+- name: Same-class spouse repayments are aggregated before the 2017 threshold test.
+  period: 2017
+  input:
+    people:
+      head:
+        claim_of_right_repayment: 2_000
+        mt_claim_of_right_repayment_income_class: 1
+      spouse:
+        claim_of_right_repayment: 2_000
+        mt_claim_of_right_repayment_income_class: 1
+    tax_units:
+      unit:
+        members: [head, spouse]
+        mt_agi_joint: 60_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # The same income class totals 4,000, so neither repayment is in this pool.
+    mt_misc_claim_of_right_repayment: [0, 0]
+    mt_misc_deductions_subject_to_floor_joint: 0
+
+- name: Distinct income classes have separate 2017 thresholds and separate Montana floors.
+  period: 2017
+  input:
+    people:
+      head:
+        claim_of_right_repayment: 2_000
+        mt_claim_of_right_repayment_income_class: 1
+        mt_agi_indiv: 40_000
+        mt_married_filing_separately_on_same_return_eligible: true
+        casualty_loss_deduction: 0
+        mt_child_dependent_care_expense_deduction: 0
+        mt_medical_expense_deduction_indiv: 0
+        mt_salt_deduction: 0
+        mt_federal_income_tax_deduction_indiv: 0
+        mt_federal_income_tax_deduction_for_federal_itemization_indiv: 0
+        deductible_mortgage_interest: 0
+        investment_interest_expense: 0
+      spouse:
+        claim_of_right_repayment: 2_000
+        mt_claim_of_right_repayment_income_class: 2
+        mt_agi_indiv: 20_000
+        mt_married_filing_separately_on_same_return_eligible: true
+        casualty_loss_deduction: 0
+        mt_child_dependent_care_expense_deduction: 0
+        mt_medical_expense_deduction_indiv: 0
+        mt_salt_deduction: 0
+        mt_federal_income_tax_deduction_indiv: 0
+        mt_federal_income_tax_deduction_for_federal_itemization_indiv: 0
+        deductible_mortgage_interest: 0
+        investment_interest_expense: 0
+    tax_units:
+      unit:
+        members: [head, spouse]
+        mt_agi_joint: 60_000
+        charitable_deduction: 10_000
+        # Preserve the federal aggregate approximation while testing the
+        # Montana classification, without calculating pre-2018 federal tax.
+        claim_of_right_deduction: 4_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    mt_misc_claim_of_right_repayment: [2_000, 2_000]
+    mt_claim_of_right_deduction: [0, 0]
+    mt_misc_deductions: [0, 0]
+    mt_misc_deductions_subject_to_floor_joint: 2_800
+    mt_misc_deductions_subject_to_floor_indiv: [1_200, 1_600]
+    mt_itemized_deductions_indiv: [6_200, 6_600]
+    mt_itemized_deductions_for_federal_itemization_indiv: [6_200, 6_600]
+
+- name: The 2017 floor pool excludes dependents and uses both spouses raw expenses.
+  period: 2017
+  input:
+    people:
+      head:
+        unreimbursed_business_employee_expenses: 1_000
+        tax_preparation_fees: 200
+      spouse:
+        unreimbursed_business_employee_expenses: 1_500
+        tax_preparation_fees: 300
+      dependent:
+        is_tax_unit_dependent: true
+        claim_of_right_repayment: 2_000
+        unreimbursed_business_employee_expenses: 9_000
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+        mt_agi_joint: 60_000
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: MT
+  output:
+    mt_misc_deductions_subject_to_floor_joint: 1_800
+
+- name: The 2017 miscellaneous floor cannot produce a negative deduction.
+  period: 2017
+  input:
+    state_code: MT
+    claim_of_right_repayment: 500
+    mt_agi_joint: 40_000
+  output:
+    mt_misc_deductions_subject_to_floor_joint: 0
+
+- name: The historical pool is explicitly outside the modeled pre-2017 scope.
+  period: 2016
+  input:
+    state_code: MT
+    claim_of_right_repayment: 3_000
+    mt_agi_joint: 40_000
+  output:
+    mt_misc_deductions_subject_to_floor_joint: 0
+
+- name: The historical floor pool is suspended from 2018.
+  period: 2018
+  input:
+    state_code: MT
+    claim_of_right_repayment: 3_000
+    mt_agi_joint: 40_000
+    unreimbursed_business_employee_expenses: 1_000
+    tax_preparation_fees: 300
+  output:
+    mt_misc_deductions_subject_to_floor_joint: 0
+
+- name: The 2024 state-income-tax ceiling uses the full federal itemized amount.
+  period: 2024
+  input:
+    state_code: MT
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 20_000
+    standard_deduction: 14_600
+    salt_deduction: 6_000
+    state_withheld_income_tax: 6_000
+    local_income_tax: 0
+    state_sales_tax: 0
+    local_sales_tax: 0
+    real_estate_taxes: 0
+  output:
+    mt_state_income_tax_itemized_add_back: 5_400
+    mt_federal_deductions: 14_600
+
+- name: Federal repayment deduction remains in the 2024 taxable-income base once.
+  period: 2024
+  input:
+    state_code: MT
+    claim_of_right_repayment: 5_000
+    claim_of_right_deduction: 5_000
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 20_000
+    standard_deduction: 14_600
+    salt_deduction: 0
+    state_withheld_income_tax: 0
+    adjusted_gross_income: 50_000
+    mt_additions: 0
+    mt_subtractions: 0
+    # Legacy reconstructed deductions no longer determine the result.
+    mt_standard_deduction_joint: 25_000
+    mt_itemized_deductions_joint: 30_000
+  output:
+    mt_federal_deductions: 20_000
+    mt_taxable_income_joint: 30_000
+
+- name: The 2024 federal standard-deduction election is preserved.
+  period: 2024
+  input:
+    state_code: MT
+    tax_unit_itemizes: false
+    itemized_taxable_income_deductions: 20_000
+    standard_deduction: 14_600
+    salt_deduction: 6_000
+    state_withheld_income_tax: 6_000
+  output:
+    mt_state_income_tax_itemized_add_back: 0
+    mt_federal_deductions: 14_600
+
+- name: Capped SALT is reduced by local income and property taxes before the addback.
+  period: 2025
+  input:
+    state_code: MT
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 30_000
+    standard_deduction: 15_750
+    salt_deduction: 10_000
+    state_withheld_income_tax: 8_000
+    local_income_tax: 1_000
+    real_estate_taxes: 5_000
+    mt_federal_itemized_personal_property_taxes: 2_000
+    state_sales_tax: 0
+    local_sales_tax: 0
+  output:
+    # 10,000 - 1,000 - 5,000 - 2,000 = 2,000 of deducted state income tax.
+    mt_state_income_tax_itemized_add_back: 2_000
+    mt_federal_deductions: 28_000
+
+- name: The 2024 addback is zero when sales tax was deducted instead of income tax.
+  period: 2024
+  input:
+    state_code: MT
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 20_000
+    standard_deduction: 14_600
+    salt_deduction: 8_000
+    state_withheld_income_tax: 6_000
+    local_income_tax: 0
+    state_sales_tax: 8_000
+    local_sales_tax: 0
+  output:
+    mt_state_income_tax_itemized_add_back: 0
+    mt_federal_deductions: 20_000
+
+- name: The 2024 addback ceiling uses allowed deductions after federal limitations.
+  period: 2024
+  input:
+    state_code: MT
+    tax_unit_itemizes: true
+    total_itemized_taxable_income_deductions: 20_000
+    itemized_taxable_income_deductions: 18_000
+    standard_deduction: 14_600
+    salt_deduction: 6_000
+    state_withheld_income_tax: 6_000
+  output:
+    mt_state_income_tax_itemized_add_back: 3_400
+    mt_federal_deductions: 14_600
+
+- name: The 2024 ceiling is zero when elected federal itemized deductions are below standard.
+  period: 2024
+  input:
+    state_code: MT
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 10_000
+    standard_deduction: 14_600
+    salt_deduction: 6_000
+    state_withheld_income_tax: 6_000
+  output:
+    mt_state_income_tax_itemized_add_back: 0
+    mt_federal_deductions: 10_000
+
+- name: The federal-income-tax deduction still ends in 2024.
+  period: 2024
+  input:
+    state_code: MT
+    income_tax_before_refundable_credits: 5_000
+  output:
+    mt_federal_income_tax_deduction_unit: 0
+
+- name: Business-level state-tax additions remain outside the itemized ceiling.
+  period: 2024
+  input:
+    state_code: MT
+    adjusted_gross_income: 50_000
+    mt_additions: 1_000
+    mt_subtractions: 0
+    tax_unit_itemizes: false
+    itemized_taxable_income_deductions: 20_000
+    standard_deduction: 14_600
+    salt_deduction: 6_000
+    state_withheld_income_tax: 6_000
+  output:
+    mt_state_income_tax_itemized_add_back: 0
+    mt_federal_deductions: 14_600
+    mt_taxable_income_joint: 36_400
+
+- name: Federal taxable-income floor precedes Montana additions from 2024.
+  period: 2024
+  input:
+    state_code: MT
+    adjusted_gross_income: 10_000
+    mt_additions: 6_000
+    mt_subtractions: 0
+    tax_unit_itemizes: false
+    itemized_taxable_income_deductions: 0
+    standard_deduction: 14_600
+  output:
+    mt_federal_deductions: 14_600
+    mt_taxable_income_joint: 6_000
+
+- name: The state-income-tax addback is applied after the federal zero floor.
+  period: 2024
+  input:
+    state_code: MT
+    adjusted_gross_income: 10_000
+    mt_additions: 0
+    mt_subtractions: 0
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 20_000
+    standard_deduction: 14_600
+    salt_deduction: 6_000
+    state_withheld_income_tax: 6_000
+  output:
+    mt_state_income_tax_itemized_add_back: 5_400
+    mt_federal_deductions: 14_600
+    mt_taxable_income_joint: 5_400
+
+- name: Small and large income classes enter separate Montana pools once in 2017.
+  period: 2017
+  input:
+    people:
+      head:
+        claim_of_right_repayment: 2_000
+        mt_claim_of_right_repayment_income_class: 1
+        casualty_loss_deduction: 0
+      spouse:
+        claim_of_right_repayment: 5_000
+        mt_claim_of_right_repayment_income_class: 2
+        casualty_loss_deduction: 0
+    tax_units:
+      unit:
+        members: [head, spouse]
+        claim_of_right_deduction: 7_000
+        mt_agi_joint: 60_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    mt_misc_claim_of_right_repayment: [2_000, 0]
+    mt_claim_of_right_deduction: [0, 5_000]
+    mt_misc_deductions: [0, 5_000]
+    mt_misc_deductions_subject_to_floor_joint: 800
+
+- name: Wagering losses are included in the 2024 full federal itemized amount and ceiling.
+  period: 2024
+  input:
+    state_code: MT
+    adjusted_gross_income: 50_000
+    mt_additions: 0
+    mt_subtractions: 0
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 16_000
+    wagering_losses_deduction: 4_000
+    standard_deduction: 14_600
+    salt_deduction: 6_000
+    state_withheld_income_tax: 6_000
+  output:
+    # The full itemized amount is 20,000, so the ceiling is 5,400.
+    mt_state_income_tax_itemized_add_back: 5_400
+    mt_federal_deductions: 14_600
+    mt_taxable_income_joint: 35_400
+
+- name: Non-itemizer charitable deductions carry through the 2026 federal base.
+  period: 2026
+  input:
+    state_code: MT
+    adjusted_gross_income: 50_000
+    mt_additions: 0
+    mt_subtractions: 0
+    tax_unit_itemizes: false
+    standard_deduction: 16_100
+    charitable_deduction_for_non_itemizers: 1_000
+    qualified_business_income_deduction: 2_000
+  output:
+    # QBI is not part of the Montana deduction.
+    mt_state_income_tax_itemized_add_back: 0
+    mt_federal_deductions: 17_100
+    mt_taxable_income_joint: 32_900
+
+- name: Montana adds QBI back to the federal taxable-income base in 2024.
+  period: 2024
+  input:
+    state_code: MT
+    adjusted_gross_income: 50_000
+    mt_additions: 0
+    mt_subtractions: 0
+    tax_unit_itemizes: false
+    standard_deduction: 14_600
+    qualified_business_income_deduction: 4_000
+  output:
+    mt_federal_deductions: 14_600
+    mt_taxable_income_joint: 35_400
+
+- name: Schedule 1-A enters the federal floor before Montana additions and is deducted once.
+  period: 2025
+  input:
+    state_code: MT
+    adjusted_gross_income: 20_000
+    mt_additions: 3_000
+    mt_subtractions: 6_000
+    tax_unit_itemizes: false
+    standard_deduction: 15_750
+    qualified_business_income_deduction: 0
+    tip_income_deduction: 6_000
+    overtime_income_deduction: 0
+    additional_senior_deduction: 0
+    auto_loan_interest_deduction: 0
+  output:
+    taxable_income: 0
+    mt_federal_obbba_subtraction: 6_000
+    mt_federal_deductions: 15_750
+    mt_taxable_income_joint: 3_000
+
+- name: The statutory QBI addback follows the federal zero floor.
+  period: 2025
+  input:
+    state_code: MT
+    taxable_income: 0
+    qualified_business_income_deduction: 500
+    mt_additions: 0
+    mt_subtractions: 0
+    mt_federal_obbba_subtraction: 0
+  output:
+    mt_taxable_income_joint: 500

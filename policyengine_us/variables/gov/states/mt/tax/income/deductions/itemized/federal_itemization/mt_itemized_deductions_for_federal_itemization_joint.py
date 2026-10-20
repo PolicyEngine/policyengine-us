@@ -33,6 +33,7 @@ class mt_itemized_deductions_for_federal_itemization_joint(Variable):
             period,
             [
                 "mt_misc_deductions",
+                "mt_misc_deductions_subject_to_floor_joint",
                 "mt_child_dependent_care_expense_deduction_joint",
                 "mt_medical_expense_deduction_joint",
                 "mt_salt_deduction",
