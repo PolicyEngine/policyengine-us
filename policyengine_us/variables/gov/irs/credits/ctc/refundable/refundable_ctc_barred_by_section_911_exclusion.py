@@ -30,7 +30,8 @@ class refundable_ctc_barred_by_section_911_exclusion(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.credits.ctc.refundable
         excludes_section_911 = excludes_amount_under_section_911(tax_unit, period)
-        # Section 24(i)(1)(A) (2021) switched off all of subsection (d),
+        # Former section 24(i)(1)(A) (2021, added by ARPA section 9611)
+        # switched off all of subsection (d),
         # including this bar, for filers whose principal place of abode was in
         # the United States for more than half the year and for bona fide
         # residents of Puerto Rico. The model assumes every filer meets that
