@@ -1,0 +1,56 @@
+- name: Long-term care premiums qualify in full without the federal age-based limit
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    long_term_health_insurance_premiums: 3_000
+    state_code: MT
+  output:
+    # Montana line 3 deducts the premiums without the federal age-based
+    # limit on eligible long-term care premiums (26 U.S.C. 213(d)(10)).
+    mt_eligible_long_term_care_insurance_premiums: 3_000
+
+- name: Long-term care premiums taken as the self-employed health insurance deduction do not qualify
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    long_term_health_insurance_premiums: 400
+    self_employed_health_insurance_ald_person: 400
+    state_code: MT
+  output:
+    mt_eligible_long_term_care_insurance_premiums: 0
+
+- name: The deduction applies first to medical premiums, then to long-term care premiums
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    health_insurance_premiums: 2_000
+    long_term_health_insurance_premiums: 1_500
+    self_employed_health_insurance_ald_person: 3_000
+    state_code: MT
+  output:
+    # 3,000 - 2,000 used on line 2 leaves 1,000 for line 3: 1,500 - 1,000.
+    self_employed_health_insurance_ald_excluded_premiums: 2_000
+    mt_eligible_medical_insurance_premiums: 0
+    mt_eligible_long_term_care_insurance_premiums: 500
+
+- name: A deduction smaller than the medical premiums leaves long-term care premiums in full
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    health_insurance_premiums: 5_000
+    long_term_health_insurance_premiums: 1_500
+    self_employed_health_insurance_ald_person: 3_000
+    state_code: MT
+  output:
+    mt_eligible_medical_insurance_premiums: 2_000
+    mt_eligible_long_term_care_insurance_premiums: 1_500
+
+- name: Outside Montana the amount is zero
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    long_term_health_insurance_premiums: 1_000
+    state_code: ID
+  output:
+    mt_eligible_long_term_care_insurance_premiums: 0
