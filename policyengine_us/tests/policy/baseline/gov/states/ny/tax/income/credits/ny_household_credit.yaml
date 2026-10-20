@@ -254,3 +254,28 @@
   output:
     # No exemptions: $60 base + $15 x (0 - 1) = $45.
     ny_household_credit_potential: 45
+
+- name: 2025 head of household who can be claimed counts the dependent's exemption
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 22
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        # The would-be claimant need not file, so the parent may still claim
+        # the child (Publication 501, Dependent Taxpayer Test).
+        head_or_spouse_is_dependent_elsewhere_without_filing_exception: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # One exemption: $60 base + $15 x (1 - 1).
+    ny_household_credit_potential: 60

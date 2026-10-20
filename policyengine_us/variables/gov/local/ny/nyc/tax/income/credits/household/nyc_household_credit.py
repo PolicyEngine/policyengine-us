@@ -35,6 +35,20 @@ class nyc_household_credit(Variable):
         dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
         single = filing_status == filing_statuses.SINGLE
         exemptions = tax_unit("exemptions_count", period)
+        # A husband and wife filing separately are one household: 1310(d)
+        # aggregates "their federal adjusted gross incomes ... irrespective
+        # of whether joint or separate city income tax returns are filed",
+        # and each spouse gets "one-half the credit otherwise allowed his or
+        # her household" (IT-201 Table 6: AGI and dependents "from both
+        # returns", plus one for each spouse). The model has no record of the
+        # other spouse's return, so it is assumed alike, as for New York
+        # State: its AGI and its unit's size are added.
+        separate_agi = federal_agi + tax_unit(
+            "spouse_separate_adjusted_gross_income", period
+        )
+        separate_exemptions = exemptions + tax_unit(
+            "spouse_separate_tax_unit_size", period
+        )
         amount = select(
             [
                 filing_status == filing_statuses.SINGLE,
@@ -43,9 +57,10 @@ class nyc_household_credit(Variable):
             [
                 # Single filers get a flat amount.
                 p.flat_amount.calc(federal_agi, right=True),
-                # Separate filers get an amount for each exemption, varying
-                # with AGI.
-                p.separate_per_dependent.calc(federal_agi, right=True) * exemptions,
+                # Separate filers get half the household amount for each of the
+                # couple's exemptions, varying with the couple's AGI.
+                p.separate_per_dependent.calc(separate_agi, right=True)
+                * separate_exemptions,
             ],
             # Joint, head of household, and surviving spouse filers have a different
             # amount per exemption, varying with AGI.

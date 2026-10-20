@@ -186,52 +186,81 @@
   output:
     nyc_household_credit: 0
 
-- name: Separate filers making $15k or less get $15 per tax unit dependent (size=2).
+# Tax Law 1310(d) and IT-201 Table 6: a married couple filing separately is
+# one household, keyed on federal AGI and dependents "from both returns" plus
+# one for each spouse, and each spouse gets half the household amount.
+- name: Separate filers with household AGI of $15k or less get $15 per exemption of the couple.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 7_500
+    spouse_separate_adjusted_gross_income: 7_500
+    filing_status: SEPARATE
+    tax_unit_size: 2
+    spouse_separate_tax_unit_size: 2
+  output:
+    # Household AGI $15,000; 2 + 2 exemptions x $15.
+    nyc_household_credit: 60
+
+- name: Separate filers with household AGI of $18k get $8 per exemption of the couple.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 9_000
+    spouse_separate_adjusted_gross_income: 9_000
+    filing_status: SEPARATE
+    tax_unit_size: 4
+    spouse_separate_tax_unit_size: 4
+  output:
+    # Household AGI $18,000; 4 + 4 exemptions x $8.
+    nyc_household_credit: 64
+
+- name: Separate filers with household AGI of $21k get $5 per exemption of the couple.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 10_500
+    spouse_separate_adjusted_gross_income: 10_500
+    filing_status: SEPARATE
+    tax_unit_size: 6
+    spouse_separate_tax_unit_size: 6
+  output:
+    # Household AGI $21,000; 6 + 6 exemptions x $5.
+    nyc_household_credit: 60
+
+- name: Separate filers with household AGI over $22.5k get no credit.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 11_251
+    spouse_separate_adjusted_gross_income: 11_251
+    filing_status: SEPARATE
+    tax_unit_size: 4
+    spouse_separate_tax_unit_size: 4
+  output:
+    nyc_household_credit: 0
+
+- name: A separate filer's own AGI alone does not set the bracket.
   period: 2022
   absolute_error_margin: 0
   input:
     state_code: NY
     in_nyc: true
     adjusted_gross_income: 15_000
+    spouse_separate_adjusted_gross_income: 15_000
     filing_status: SEPARATE
     tax_unit_size: 2
+    spouse_separate_tax_unit_size: 2
   output:
-    nyc_household_credit: 30
-
-- name: Separate filers making $18k get $8 per tax unit dependent (size=4).
-  period: 2022
-  absolute_error_margin: 3 # Table has some rounding.
-  input:
-    state_code: NY
-    in_nyc: true
-    adjusted_gross_income: 18_000
-    filing_status: SEPARATE
-    tax_unit_size: 4
-  output:
-    nyc_household_credit: 32
-
-- name: Separate filers making $21k get $5 per tax unit dependent.
-  period: 2022
-  absolute_error_margin: 3 # Table has some rounding.
-  input:
-    state_code: NY
-    in_nyc: true
-    adjusted_gross_income: 21_000
-    filing_status: SEPARATE
-    tax_unit_size: 6
-  output:
-    nyc_household_credit: 30
-
-- name: Separate filers making over $22.5k gets no credit.
-  period: 2022
-  absolute_error_margin: 0
-  input:
-    state_code: NY
-    in_nyc: true
-    adjusted_gross_income: 22_501
-    filing_status: SEPARATE
-    tax_unit_size: 4
-  output:
+    # Household AGI $30,000 is over $22,500.
     nyc_household_credit: 0
 
 
@@ -355,7 +384,7 @@
 
 # Tax Law 1310(d): only an unmarried individual is excluded for being
 # claimable; other households count the exemptions they are entitled to.
-- name: 2025 separate filer who can be claimed has no exemption for the NYC credit
+- name: 2025 separate filer who can be claimed gets half the household credit for the spouse's exemption
   period: 2025
   input:
     people:
@@ -373,8 +402,10 @@
         state_code: NY
         in_nyc: true
   output:
-    # The separate amount per exemption times zero exemptions.
-    nyc_household_credit: 0
+    # Household AGI $10,000 (the spouse's return is assumed alike); the
+    # couple's exemptions: 0 for the claimable filer plus 1 for the spouse.
+    # $15 x 1.
+    nyc_household_credit: 15
 
 - name: 2025 joint return where both spouses can be claimed has no exemptions for the NYC credit
   period: 2025
@@ -399,3 +430,29 @@
         in_nyc: true
   output:
     nyc_household_credit: 0
+
+- name: 2025 head of household who can be claimed counts the dependent's exemption
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 22
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        # The would-be claimant need not file, so the parent may still claim
+        # the child (Publication 501, Dependent Taxpayer Test).
+        head_or_spouse_is_dependent_elsewhere_without_filing_exception: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+        in_nyc: true
+  output:
+    # One exemption (the child); $30 x 1.
+    nyc_household_credit: 30
