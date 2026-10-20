@@ -74,6 +74,7 @@ values:
   2022-01-01: 63_795.13 # NAWI(Y-2) for CBB(2024)
   2023-01-01: 66_621.80 # NAWI(Y-2) for CBB(2025)
   2024-01-01: 69_846.57 # NAWI(Y-2) for CBB(2026)
+  2025-01-01: 72_800.33 # NAWI(Y-2) for CBB(2027); published 2026-10-14
   # Back out NAWI from CBO's forecast of the payroll tax cap, in
   # parameters/gov/irs/payroll/social_security/cap.yaml
   # The formula to derive NAWI(Y-2) from CBB(Y) is:
@@ -82,8 +83,6 @@ values:
   # CBB(Y) is the Contribution and Benefit Base (payroll tax cap) for year Y.
   # NAWI(Y-2) is the National Average Wage Index for year Y-2.
 
-  # For 2025 NAWI, derived from CBO CBB(2027) = 192_600: 192_600 * (22_935.42 / 60_600)
-  2025-01-01: 72_891.30
   # For 2026 NAWI, derived from CBO CBB(2028) = 198_600: 198_600 * (22_935.42 / 60_600)
   2026-01-01: 75_168.61
   # For 2027 NAWI, derived from CBO CBB(2029) = 206_400: 206_400 * (22_935.42 / 60_600)
@@ -115,3 +114,5 @@ metadata:
   reference:
     - title: Social Security National Average Wage Index
       href: https://www.ssa.gov/oact/cola/AWI.html#Series
+    - title: 2027 Cost-of-Living Adjustment (COLA) Fact Sheet
+      href: https://www.ssa.gov/news/en/cola/factsheets/2027.html
