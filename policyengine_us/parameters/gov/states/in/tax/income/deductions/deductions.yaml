@@ -13,6 +13,7 @@ values:
     - in_other_deductions
     - in_disability_retirement_deduction # IC 6-3-2-9 (code 602)
     - in_civil_service_annuity_deduction
+    - in_military_retirement_deduction
 
   2023-01-01:
     # IC 6-3-2-6
@@ -41,6 +42,8 @@ values:
     - military_basic_pay
     # IC 6-3-2-3.7
     - in_civil_service_annuity_deduction
+    # IC 6-3-2-4(a)
+    - in_military_retirement_deduction
 
   2024-01-01:
     # IC 6-3-2-6
@@ -71,6 +74,8 @@ values:
     - in_healthcare_sharing_deduction
     # IC 6-3-2-3.7
     - in_civil_service_annuity_deduction
+    # IC 6-3-2-4(a)
+    - in_military_retirement_deduction
 
   2026-01-01:
     # IC 6-3-2-6
@@ -107,6 +112,8 @@ values:
     - in_auto_loan_interest_deduction
     # IC 6-3-2-3.7
     - in_civil_service_annuity_deduction
+    # IC 6-3-2-4(a)
+    - in_military_retirement_deduction
 
   2027-01-01:
     # IC 6-3-2-6
@@ -137,6 +144,8 @@ values:
     - in_healthcare_sharing_deduction
     # IC 6-3-2-3.7
     - in_civil_service_annuity_deduction
+    # IC 6-3-2-4(a)
+    - in_military_retirement_deduction
 
 metadata:
   unit: list
