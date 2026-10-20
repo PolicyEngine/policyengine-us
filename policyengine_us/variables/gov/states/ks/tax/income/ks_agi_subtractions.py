@@ -27,16 +27,22 @@ class ks_agi_subtractions(Variable):
             "salt_refund_income", tax_unit, period
         )
         # K.S.A. § 79-32,117(c)(ii), (vii)–(ix) / Form K-40 Schedule S Line A13
-        # Proxy note: Kansas exempts KPERS, Kansas police/firemen, Kansas judges, and federal
-        # civil service/military pensions; out-of-state public pensions are not exempt.
-        # PolicyEngine models this by subtracting taxable_public_pension_income as an in-state proxy.
-        taxable_public_pension_income = tax_unit_non_dep_sum(
-            "taxable_public_pension_income", tax_unit, period
+        # Kansas exempts KPERS, Kansas police/firemen, Kansas judges, federal civil service,
+        # military retirement pay, and military survivor benefits (10 U.S.C. 1450).
+        # Out-of-state public pensions are not exempt. PolicyEngine models this by subtracting
+        # taxable_public_pension_income as an in-state proxy, plus military retirement pay and survivors.
+        public_and_military_pension = tax_unit_non_dep_add(
+            tax_unit,
+            period,
+            [
+                "taxable_public_pension_income",
+                "military_retirement_income",
+            ],
         )
         return (
             oasdi_subtraction
             + us_govt_interest
             + plan_529
             + salt_refund_income
-            + taxable_public_pension_income
+            + public_and_military_pension
         )

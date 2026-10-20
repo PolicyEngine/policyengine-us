@@ -233,3 +233,119 @@
     tax_unit_size: 4
   output:
     nyc_household_credit: 0
+
+
+- name: 2025 single filer who can be claimed as a dependent gets no NYC household credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 10000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: NY
+        in_nyc: true
+  output:
+    # Tax Law 1310(d); IT-201 line 48.
+    nyc_household_credit: 0
+
+- name: 2025 single filer who cannot be claimed gets the NYC household credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 10000
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_household_credit: 15
+
+- name: 2025 joint return with one claimable spouse gets no NYC household credit (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 5000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        employment_income: 5000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_household_credit: 0
+
+- name: 2025 joint return with one claimable spouse gets no NYC household credit (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 22
+        employment_income: 5000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_household_credit: 0
+
+- name: 2025 joint return with neither spouse claimable gets the NYC household credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 5000
+      person_b:
+        age: 22
+        employment_income: 5000
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NY
+        in_nyc: true
+  output:
+    # $30 x 2.
+    nyc_household_credit: 60
