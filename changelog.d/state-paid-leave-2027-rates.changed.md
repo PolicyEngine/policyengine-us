@@ -1,1 +1,0 @@
-Update 2027 state paid leave premiums: Colorado FAMLI 0.86%, Washington Paid Leave 1.2% with a 29.3% employer share, New York Paid Family Leave 0.452% with a $451.81 cap, and the New Jersey TDI and FLI worker wage base of $177,100; cite the sources confirming unchanged 2027 rates for Delaware, Maine, Connecticut and WA Cares.
