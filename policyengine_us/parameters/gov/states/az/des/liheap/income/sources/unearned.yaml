@@ -14,6 +14,9 @@ values:
     - social_security
     - ssi
     - pension_income
+    # Section VI.A.6.e.ii.B "retirement income": military retirement pay and
+    # survivor benefit payments.
+    - military_retirement_income
     # retirement_distributions already sums taxable and tax-exempt IRA, 401(k),
     # SEP, 403(b) and Keogh distributions.
     - retirement_distributions

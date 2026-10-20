@@ -235,3 +235,49 @@
     # counts.
     az_liheap_countable_unearned_income: 24_000
     az_liheap_countable_income: 24_000
+
+- name: Case 10, military retirement pay is counted as retirement income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 48
+        military_retirement_pay: 26_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Policy p. 8 VI.A.6.e.ii.B counts "retirement income"; a 20-year
+    # military retiree's 2,200 a month pension counts in full.
+    az_liheap_countable_unearned_income: 26_400
+    az_liheap_countable_income: 26_400
+
+- name: Case 11, military survivor benefit payments are counted as retirement income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 55
+        military_retirement_pay_survivors: 14_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_500
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Survivor Benefit Plan annuity of 1,200 a month is retirement income
+    # under VI.A.6.e.ii.B.
+    az_liheap_countable_unearned_income: 14_400
+    az_liheap_countable_income: 14_400
