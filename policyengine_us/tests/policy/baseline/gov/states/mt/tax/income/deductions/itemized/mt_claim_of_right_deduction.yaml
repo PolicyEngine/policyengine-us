@@ -205,7 +205,6 @@
         mt_claim_of_right_repayment_income_class: 1
         mt_agi_indiv: 40_000
         mt_married_filing_separately_on_same_return_eligible: true
-        casualty_loss_deduction: 0
         mt_child_dependent_care_expense_deduction: 0
         mt_medical_expense_deduction_indiv: 0
         mt_salt_deduction: 0
@@ -218,7 +217,6 @@
         mt_claim_of_right_repayment_income_class: 2
         mt_agi_indiv: 20_000
         mt_married_filing_separately_on_same_return_eligible: true
-        casualty_loss_deduction: 0
         mt_child_dependent_care_expense_deduction: 0
         mt_medical_expense_deduction_indiv: 0
         mt_salt_deduction: 0
@@ -229,6 +227,7 @@
     tax_units:
       unit:
         members: [head, spouse]
+        casualty_loss_deduction: 0
         mt_agi_joint: 60_000
         charitable_deduction: 10_000
         # Preserve the federal aggregate approximation while testing the
@@ -237,6 +236,7 @@
     households:
       household:
         members: [head, spouse]
+        casualty_loss_deduction: 0
         state_code: MT
   output:
     mt_misc_claim_of_right_repayment: [2_000, 2_000]
@@ -477,19 +477,19 @@
       head:
         claim_of_right_repayment: 2_000
         mt_claim_of_right_repayment_income_class: 1
-        casualty_loss_deduction: 0
       spouse:
         claim_of_right_repayment: 5_000
         mt_claim_of_right_repayment_income_class: 2
-        casualty_loss_deduction: 0
     tax_units:
       unit:
         members: [head, spouse]
+        casualty_loss_deduction: 0
         claim_of_right_deduction: 7_000
         mt_agi_joint: 60_000
     households:
       household:
         members: [head, spouse]
+        casualty_loss_deduction: 0
         state_code: MT
   output:
     mt_misc_claim_of_right_repayment: [2_000, 0]
