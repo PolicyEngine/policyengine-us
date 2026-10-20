@@ -100,7 +100,8 @@ def load_known_dead_url_prefixes(data_dir: Path = DATA_DIR) -> tuple:
 
 # (dead URL prefix, date verified dead, where its content lives now)
 KNOWN_DEAD_URL_PREFIXES = load_known_dead_url_prefixes()
-SCANNED_ROOTS = (REPO, REPO.parent / "docs")
+# source_conflicts/ holds the shared register, its backlog and source captures.
+SCANNED_ROOTS = (REPO, REPO.parent / "docs", REPO.parent / "source_conflicts")
 SCANNED_SUFFIXES = {".ipynb", ".md", ".py", ".yaml", ".yml"}
 THIS_FILE = Path(__file__).resolve()
 

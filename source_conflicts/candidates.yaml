@@ -2051,14 +2051,15 @@ candidates:
   example: A 2023 joint return with one claimed spouse receives $2,250 versus $0; a claimable but unclaimed single
     filer receives $0 versus $2,250.
   pe_us:
-    follows: conflicting-source
+    follows: unknown
     code:
     - policyengine_us/variables/gov/states/ks/tax/income/exemptions/ks_count_exemptions.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10045
   state: ruled
-  note: Ruled statute-first in October 2026; the rule requires replacing the whole-return actual-claim treatment
-    with per-person claimability.
+  note: 'Current behaviour unresolved: at this head ks_count_exemptions returns adults plus dependents and ks_exemptions
+    adds no dependency gate, so a joint return with one claimed spouse keeps two exemptions; check against the statute
+    and the K-40 rule before classifying.'
 - id: us-ks:dependent-exemption-of-a-claimed-filer
   program: income-tax
   years:
@@ -4474,6 +4475,12 @@ candidates:
   - kind: worksheet
     citation: 2025 OR-17 federal tax subtraction worksheet, PDF pp.71-72 (also 2017, 2018 and 2021)
     url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=71
+  - kind: statute
+    citation: ORS 316.680, 316.685
+    url: null
+  - kind: worksheet
+    citation: OR-17 federal tax worksheet
+    url: null
   readings:
     statute: The statute refers to federal income taxes accrued; the input does not resolve the section 1341 credit's
       treatment.
@@ -4488,28 +4495,6 @@ candidates:
   state: ruled
   note: 'Ruled in October 2026 to follow the worksheet; establish the statutory treatment before determining whether
     a model change is required. Code not yet on main: or_federal_tax_liability_subtraction.'
-- id: us-or:federal-tax-deduction-section-1341-credit
-  program: income-tax
-  question: Does Oregon's federal tax deduction subtract the section 1341 credit under the statutory reading, or
-    omit that subtraction as the worksheet does?
-  sources:
-  - kind: statute
-    citation: ORS 316.680, 316.685
-    url: null
-  - kind: worksheet
-    citation: OR-17 federal tax worksheet
-    url: null
-  readings:
-    statute: Federal tax after credits subtracts the section 1341 credit.
-    other: The worksheet does not subtract that credit from deductible federal tax.
-  pe_us:
-    follows: conflicting-source
-    code: []
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/10038
-  state: ruled
-  note: The worksheet reading was ruled in October 2026; the later statute-first rule requires a model change after
-    verifying the statutory reading and applicable years.
 - id: us-or:liheap-final-payment-band-bound
   program: liheap
   years:
@@ -4710,7 +4695,8 @@ candidates:
   years:
     from: 2023
     type: tax
-  question: Do Puerto Rico's statutory EITC maximum amounts or Schedule CT's reported child-based maximums govern?
+  question: Do Schedule CT's EITC maxima ($1,656, $3,864, $6,072 and $7,173 for 2023) depart from the statutory
+    amounts once those are inflation-adjusted under section 1052.01(i)?
   sources:
   - kind: statute
     citation: P.R. Laws tit. 13, § 30211(1)-(6)
@@ -4718,11 +4704,14 @@ candidates:
   - kind: instructions
     citation: Schedule CT Individual, Earned Income Credit, 2023 (instructions), page 2
     url: https://hacienda.pr.gov/sites/default/files/schedule_ct_rev._jul_5_23_informative_-_instructions.pdf#page=2
+  - kind: guidance
+    citation: Hacienda Boletín Informativo de Rentas Internas 23-05
+    url: https://hacienda.pr.gov/publicaciones/boletin-informativo-de-rentas-internas-num-23-05-bi-ri-23-05
   readings:
     statute: The input reports that statutory maximums differ, but does not supply the statutory figures.
     other: Schedule CT uses maximums of $1,656, $3,864, $6,072 and $7,173 for zero, one, two and three or more children.
   pe_us:
-    follows: conflicting-source
+    follows: unknown
     code:
     - policyengine_us/parameters/gov/territories/pr/tax/income/credits/earned_income/max_amount.yaml
     - policyengine_us/parameters/gov/territories/pr/tax/income/credits/earned_income/phase_in_rate.yaml
@@ -4731,8 +4720,8 @@ candidates:
     - policyengine_us/parameters/gov/territories/pr/tax/income/credits/earned_income/phase_out/threshold/single.yaml
     prs: []
   state: unreviewed
-  note: Confirm statutory amounts and applicable years, then replace conflicting form-based values as the statute-first
-    rule requires; distinguish any permitted rate gap-fills.
+  note: The bulletin publishes the listed 2023 maxima as the statutory inflation adjustment, so this may not be
+    a conflict; check for any discrepancy left after indexing, or drop the item.
 - id: us-pr:eitc-minimum-age-gap-fill
   program: income-tax
   years:
@@ -5062,7 +5051,7 @@ candidates:
     url: https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-382-109
   - kind: manual
     citation: HHSC FPP Policy Manual, Definition of Income (Rev. 24-2)
-    url: https://www.hhs.texas.gov/sites/default/files/documents/fpppm-9000-definitions-of-income.pdf#page=1
+    url: https://fhb.hhs.texas.gov/sites/default/files/documents/fpppm-9000-definitions-of-income.pdf#page=1
   readings:
     statute: No statute supplied; the regulation exempts these income sources.
     other: The manual describes them as countable.
@@ -5470,6 +5459,12 @@ candidates:
   - kind: form
     citation: 2025 Form 1, Schedule 1 (PDF p. 4)
     url: https://www.revenue.wi.gov/TaxForms2025/2025-Form1.pdf#page=4
+  - kind: statute
+    citation: Wis. Stat. 71.07(5)(a)6
+    url: null
+  - kind: worksheet
+    citation: WI Form 1 Schedule 1
+    url: null
   readings:
     statute: The repayment could count because it is not miscellaneous under section 67(b)(9), and the separate
       repayment exclusion applies when Wisconsin's own credit is used.
@@ -5483,28 +5478,6 @@ candidates:
   state: ruled
   note: An October 2026 ruling followed the worksheet; the statute-first rule requires including the repayment deduction
     if the statutory reading is confirmed.
-- id: us-wi:itemized-credit-section-1341-repayments
-  program: income-tax
-  question: Does Wisconsin's itemized deduction credit include section 1341 repayments under the statutory reading
-    or exclude them as Schedule 1 does?
-  sources:
-  - kind: statute
-    citation: Wis. Stat. 71.07(5)(a)6
-    url: null
-  - kind: worksheet
-    citation: WI Form 1 Schedule 1
-    url: null
-  readings:
-    statute: Repayments remain in the itemized deduction credit base.
-    other: The worksheet leaves the section 1341 deduction out of that base.
-  pe_us:
-    follows: conflicting-source
-    code: []
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/10038
-  state: ruled
-  note: The worksheet reading was ruled in October 2026; the later statute-first rule requires a model change after
-    verifying the statutory reading and applicable years.
 - id: us-wi:shares-home-value-and-vehicle-asset-tests
   program: child-care-assistance
   years:
@@ -5833,33 +5806,6 @@ candidates:
   state: ruled
   note: 'Ruled October 2026; the statute-first rule now requires changing the whole-return bar; verify the education-credit
     page anchor because the supplied URL is for student loan interest. Code not yet on main: student_loan_interest_ald_eligible.'
-- id: us:eitc-table-versus-continuous-formula
-  program: income-tax
-  years:
-    from: 2025
-    to: 2025
-    type: tax
-  question: Should EITC amounts follow the IRS lookup-table bands or the continuous section 32 formula?
-  sources:
-  - kind: statute
-    citation: IRC 32
-    url: https://www.law.cornell.edu/uscode/text/26/32#c_2
-  - kind: instructions
-    citation: IRS EIC table (Pub. 596 / 1040 instructions)
-    url: https://www.irs.gov/publications/p596
-  readings:
-    statute: Continuous formula.
-    other: Table amounts.
-  example: The supplied one-child cases give table amounts of $2,729 and $4,060 versus continuous-formula amounts
-    of $2,720 and $4,064.33.
-  pe_us:
-    follows: statute
-    code: []
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/10030
-  state: open
-  note: 'Verify the table''s statutory authority and dollar processing before deciding whether these differences
-    require a model change. Code not yet on main: eitc.'
 - id: us:eitc-trust-royalties-investment-income
   program: income-tax
   years:

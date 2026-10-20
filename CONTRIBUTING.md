@@ -79,22 +79,25 @@ Every policy change here must also be correct in [rulespec-us](https://github.co
 
 ## Source conflicts
 
-When a statute conflicts with a regulation, form, instructions, manual or stated agency practice, PolicyEngine US follows the statute. Forms and instructions fill gaps where the statute is silent. Every such choice is recorded in the register that PolicyEngine shares with Axiom: `known-source-conflicts.yaml` in [rulespec-us](https://github.com/TheAxiomFoundation/rulespec-us). Its fields are defined in that repository's `tools/README.md`, under "Source-conflict register". A PR that takes such a reading, or finds one already in the code, does three things:
+When a statute conflicts with a regulation, form, instructions, manual or stated agency practice, PolicyEngine US's rule is to follow the statute. Forms and instructions fill gaps where the statute is silent. Every such conflict is recorded in the register that PolicyEngine shares with Axiom: `known-source-conflicts.yaml` in [rulespec-us](https://github.com/TheAxiomFoundation/rulespec-us). Its fields are defined in that repository's `tools/README.md`, under "Source-conflict register". A PR that takes such a reading, or finds one already in the code, does three things:
 
 1. **Add or update the entry in rulespec-us.**
    - Give each source's text and its kind (statute, regulation, form, instructions, manual, guidance, agency practice, ...).
    - Give the alternatives, each with an id, and the years.
    - Add an implementation for each file here: `repo: PolicyEngine/policyengine-us`, a commit, the path, `follows` (what the code does), and `adopts` with a `basis` (the reading it intends, and why).
-   - Add the YAML test cases that pin each reading, by commit, path and case name.
+   - Add the YAML test cases that pin each reading, by commit, path and case name. Pin only commits on `main`: the register records shipped code. An open PR goes under `proposed` until it merges.
    - Describe correspondence with an agency in `unpublished_sources`. Never quote it or name the person.
 2. **Mark the deciding line** in the variable or parameter file: `# Source conflict <jurisdiction>:<id>`, for example `# Source conflict us-hi:claim-of-right-deduction-floor`.
-3. **Refresh the pinned copy** once the entry is on rulespec-us `main`: `python scripts/update_source_conflicts.py --commit <rulespec-us commit>`.
+3. **Refresh the pinned copy** once the entry is on rulespec-us `main`: `python scripts/update_source_conflicts.py --commit <rulespec-us commit>`. Delete the item from `source_conflicts/candidates.yaml` if it was there.
 
-`policyengine_us/tests/code_health/test_source_conflicts.py` fails in three cases:
+`policyengine_us/tests/code_health/test_source_conflicts.py` checks structure, not whether the code follows a statute. It fails when:
 
+- the vendored register (`source_conflicts/known-source-conflicts.yaml`) differs from its pin (`source_conflicts/pin.yaml`: rulespec-us commit and sha256);
+- a comment that starts like a marker, in any spacing or case, is not exactly `# Source conflict <jurisdiction>:<id>` alone on its own line;
 - a marker names an entry that isn't in the pinned copy, or whose entry doesn't list the file;
-- a registered file has lost its marker;
-- a file gains a comment that reads like a conflict between sources ("the instructions say", "in practice", "discrepancy", ...) but has no marker.
+- an implementation the register marks `cites_entry: true` is missing here or has lost its marker;
+- the count of comments that read like a conflict between sources ("the instructions say", "in practice", "discrepancy", "Source conflict:", ...) changes in a file without a marker. A new file or a higher count means register and mark the conflict, or reword the comment; a lower count means lower `KNOWN_UNMARKED`. A file with any valid marker is exempt, so the count doesn't prove every conflict in it is marked;
+- a backlog item (`source_conflicts/candidates.yaml`) is malformed, already registered, cites a path outside the repository, or contains a decision-queue id, a session id, a local path or an email address anywhere in the file, comments included.
 
 A model that departs from the statute with no official source behind it is a bug, not a source conflict. Fix it, or open an issue.
 

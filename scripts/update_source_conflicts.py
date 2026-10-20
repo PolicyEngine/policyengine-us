@@ -4,7 +4,7 @@ PolicyEngine-US and Axiom keep one register of places where a statute
 conflicts with a regulation, form, instructions, manual or agency practice:
 ``known-source-conflicts.yaml`` in TheAxiomFoundation/rulespec-us. This
 script copies it, byte for byte, from one commit into
-``policyengine_us/tests/code_health/source_conflicts/`` and records that
+``source_conflicts/`` (at the repository root) and records that
 commit and the file's sha256 in ``pin.yaml``. The code-health test
 ``test_source_conflicts.py`` reads only the vendored copy, so CI never
 depends on a moving branch.
@@ -29,13 +29,7 @@ import yaml
 
 REPO = "TheAxiomFoundation/rulespec-us"
 REGISTER = "known-source-conflicts.yaml"
-FOLDER = (
-    Path(__file__).resolve().parent.parent
-    / "policyengine_us"
-    / "tests"
-    / "code_health"
-    / "source_conflicts"
-)
+FOLDER = Path(__file__).resolve().parent.parent / "source_conflicts"
 VENDORED = FOLDER / REGISTER
 PIN = FOLDER / "pin.yaml"
 COMMIT_RE = re.compile(r"[0-9a-f]{40}")

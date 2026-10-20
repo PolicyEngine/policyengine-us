@@ -11,35 +11,44 @@ choice says so at the deciding line:
     # Source conflict us-hi:claim-of-right-deduction-floor
 
 This test reads a vendored copy of the register, pinned by commit and sha256
-(``source_conflicts/pin.yaml``; refresh it with
+(``source_conflicts/pin.yaml`` at the repository root; refresh it with
 ``scripts/update_source_conflicts.py``), so CI never depends on a moving
-branch. Invariants, checked on every run:
+branch. Comments are read syntax-aware: Python comment tokens, and YAML
+comments outside quoted and block scalars. Invariants, checked on every run:
 
 1. The vendored copy is byte-identical to what its pin names (sha256), and
    the pin names rulespec-us at a full commit.
-2. Every marker in policyengine_us/{variables,parameters,reforms} is well
-   formed and names a registered entry, and that entry lists the marker's
-   file as a PolicyEngine/policyengine-us implementation.
-3. Every PolicyEngine/policyengine-us implementation the register says cites
-   its entry (``cites_entry: true``) exists here and still carries the marker.
+2. Every comment in policyengine_us/{variables,parameters,reforms} that
+   starts like a marker ("# Source conflict ...", any spacing or case) is a
+   well-formed marker on its own comment line, names a registered entry, and
+   that entry lists the marker's file as a PolicyEngine/policyengine-us
+   implementation.
+3. Every PolicyEngine/policyengine-us implementation that the register says
+   cites its entry (``cites_entry: true``) exists here and still carries its
+   marker.
 4. Ratchet: comments that read like a source conflict ("the instructions
    say", "in practice", "discrepancy", ...) in files with no marker may not
-   grow, file by file. Register the conflict and mark the line, or explain
-   in review why the comment is not one, and update KNOWN_UNMARKED.
+   change in number, file by file. A file with any valid marker is exempt, so
+   the ratchet does not prove every conflict or deciding line in it is marked.
 5. Backlog: ``source_conflicts/candidates.yaml`` lists every known conflict
    not yet registered. Each candidate has a well-formed, unique global id that
    is not yet in the register (registering one removes it from the backlog),
-   valid kinds and states, https links, and code paths that exist here; its
-   text is public (no decision-queue ids, local paths or email addresses).
+   valid kinds, states and years, https links, and code paths inside this
+   repository that exist; the file's raw text, comments and keys included, is
+   public (no decision-queue ids, session ids, local paths or email addresses).
 
-rulespec-us's own daily ``verify`` checks the other half at pinned commits:
-that each listed file and test exists and that ``cites_entry`` is true.
+These are structural checks: they tie markers, the register and the backlog
+together; they do not judge whether code follows a statute. rulespec-us's own
+``verify`` checks the other half at pinned commits: that each listed file and
+test exists and that ``cites_entry`` is true.
 """
 
 from __future__ import annotations
 
 import hashlib
+import io
 import re
+import tokenize
 from collections import Counter
 from pathlib import Path
 
@@ -47,7 +56,7 @@ import pytest
 import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-FOLDER = Path(__file__).resolve().parent / "source_conflicts"
+FOLDER = REPO_ROOT / "source_conflicts"
 REGISTER = FOLDER / "known-source-conflicts.yaml"
 PIN = FOLDER / "pin.yaml"
 CANDIDATES = FOLDER / "candidates.yaml"
@@ -59,10 +68,12 @@ SCANNED = (
 )
 
 GLOBAL_ID = r"[a-z]{2}(?:-[a-z0-9]+)*:[a-z0-9]+(?:-[a-z0-9]+)*"
-MARKER_RE = re.compile(rf"#\s*Source conflict ({GLOBAL_ID})\s*$")
-# A comment that starts like a marker; prose such as "Source conflict: the
-# plan says ..." is not one, and counts toward the ratchet below instead.
-ATTEMPT_RE = re.compile(r"#\s*source conflict\s+[^:\s]", re.IGNORECASE)
+# The one spelling of a marker, alone on its comment line.
+MARKER_RE = re.compile(rf"# Source conflict ({GLOBAL_ID})")
+# A comment that starts like a marker, in any case or spacing; prose such as
+# "Source conflict: the plan says ..." is not one, and counts toward the
+# ratchet below instead.
+ATTEMPT_RE = re.compile(r"#\s*source\s+conflict(?![\w:])(?!\s*:)", re.IGNORECASE)
 
 # Comment lines that read like a disagreement between sources.
 CONFLICT_COMMENT_RE = re.compile(
@@ -146,13 +157,59 @@ def _relative(path: Path) -> str:
     return path.relative_to(REPO_ROOT).as_posix()
 
 
-def _comment_lines(path: Path):
-    for number, line in enumerate(
-        path.read_text(encoding="utf-8", errors="replace").splitlines(), 1
-    ):
-        stripped = line.strip()
-        if stripped.startswith("#"):
-            yield number, stripped
+def _python_comments(text: str):
+    """(line, comment, inline) for each comment token; inline means code
+    precedes it on its line. Strings that look like comments are not tokens."""
+
+    lines = text.splitlines()
+    try:
+        for token in tokenize.generate_tokens(io.StringIO(text).readline):
+            if token.type == tokenize.COMMENT:
+                row, col = token.start
+                inline = bool(lines[row - 1][:col].strip())
+                yield row, token.string.strip(), inline
+    except (tokenize.TokenError, SyntaxError, IndentationError):
+        return
+
+
+BLOCK_SCALAR_RE = re.compile(
+    r"^(\s*)(?:-\s+)?(?:[^#\s][^#]*:\s+)?[|>][-+0-9]*\s*(?:#.*)?$"
+)
+
+
+def _yaml_comments(text: str):
+    """(line, comment, inline) for each YAML comment outside quoted and block
+    scalars (a `#` starts a comment at a line's start or after whitespace)."""
+
+    block_indent = None
+    for number, line in enumerate(text.splitlines(), 1):
+        indent = len(line) - len(line.lstrip())
+        if block_indent is not None:
+            if not line.strip() or indent > block_indent:
+                continue  # inside a | or > block scalar
+            block_indent = None
+        if line.lstrip().startswith("#"):
+            yield number, line.strip(), False
+            continue
+        quote = None
+        for index, char in enumerate(line):
+            if quote:
+                if char == quote:
+                    quote = None
+            elif char in "'\"" and (index == 0 or line[index - 1] in " :[{,-"):
+                quote = char
+            elif char == "#" and index > 0 and line[index - 1] in " \t":
+                yield number, line[index:].strip(), True
+                break
+        if BLOCK_SCALAR_RE.match(line):
+            block_indent = indent
+
+
+def _comments(path: Path):
+    text = path.read_text(encoding="utf-8", errors="replace")
+    if path.suffix == ".py":
+        return list(_python_comments(text))
+    return list(_yaml_comments(text))
 
 
 def _load():
@@ -175,11 +232,11 @@ def _markers():
     found = []  # (global id, relative path, line number)
     malformed = []
     for path in _code_files():
-        for number, comment in _comment_lines(path):
+        for number, comment, inline in _comments(path):
             if not ATTEMPT_RE.match(comment):
                 continue
             match = MARKER_RE.fullmatch(comment)
-            if match is None:
+            if match is None or inline:
                 malformed.append(f"{_relative(path)}:{number}: {comment}")
             else:
                 found.append((match.group(1), _relative(path), number))
@@ -208,7 +265,8 @@ def test_markers_are_well_formed():
     _, malformed = _markers()
     assert not malformed, (
         "Write a source-conflict marker exactly as `# Source conflict <jurisdiction>:<id>`, "
-        "alone on its comment line:\n" + "\n".join(malformed)
+        "with single spaces, alone on its own comment line (not after code):\n"
+        + "\n".join(malformed)
     )
 
 
@@ -254,10 +312,13 @@ def test_registered_implementations_carry_their_marker():
 def _unmarked_conflict_comments() -> Counter:
     counts: Counter = Counter()
     for path in _code_files():
-        lines = list(_comment_lines(path))
-        if any(MARKER_RE.fullmatch(comment) for _, comment in lines):
+        comments = _comments(path)
+        if any(
+            MARKER_RE.fullmatch(comment) and not inline
+            for _, comment, inline in comments
+        ):
             continue
-        for _, comment in lines:
+        for _, comment, _ in comments:
             if CONFLICT_COMMENT_RE.search(comment):
                 counts[_relative(path)] += 1
     return counts
@@ -309,15 +370,77 @@ def test_conflict_comment_pattern(comment, matches):
 
 def test_marker_pattern():
     assert MARKER_RE.fullmatch("# Source conflict us-hi:claim-of-right-deduction-floor")
-    assert MARKER_RE.fullmatch("#Source conflict us:oasdi-family-maximum-saving-clause")
     assert not ATTEMPT_RE.match("# Source conflict: the plan and the manual disagree")
+    assert not ATTEMPT_RE.match("# Source conflicts are registered in rulespec-us")
     for bad in (
         "# Source conflict us-hi",
         "# Source conflict US-HI:x",
         "# Source conflict us-hi:Bad_Id",
         "# Source conflict us-hi:x see the register",
+        "# Source  conflict us-hi:missing",
+        "# Source\tconflict us-hi:missing",
+        "#Source conflict us-hi:missing",
+        "# source conflict us-hi:missing",
     ):
         assert ATTEMPT_RE.match(bad) and not MARKER_RE.fullmatch(bad), bad
+
+
+def test_comments_are_read_syntax_aware():
+    python = (
+        'DOC = """\n# Source conflict us-hi:inside-a-string\n"""\n'
+        "x = 1  # Source conflict us-hi:inline\n"
+        "# Source conflict us-hi:own-line\n"
+    )
+    assert [(n, c, i) for n, c, i in _python_comments(python)] == [
+        (4, "# Source conflict us-hi:inline", True),
+        (5, "# Source conflict us-hi:own-line", False),
+    ]
+    yaml_text = (
+        "description: |\n"
+        "  # Source conflict us-hi:inside-a-block-scalar\n"
+        "  more text\n"
+        "values:\n"
+        "  2024-01-01: 1 # Source conflict us-hi:inline\n"
+        "  title: 'a # not a comment'\n"
+        "# Source conflict us-hi:own-line\n"
+    )
+    assert [(n, c, i) for n, c, i in _yaml_comments(yaml_text)] == [
+        (5, "# Source conflict us-hi:inline", True),
+        (7, "# Source conflict us-hi:own-line", False),
+    ]
+
+
+@pytest.mark.parametrize(
+    ("years", "ok"),
+    [
+        ({"from": 2022, "to": 2025, "type": "tax"}, True),
+        ({"from": 2024, "type": "calendar"}, True),
+        ({"type": "tax"}, False),
+        ({"from": "2022", "type": "tax"}, False),
+        ({"from": 2025, "to": 2022, "type": "tax"}, False),
+        ({"from": 2025, "type": "program"}, False),
+        ({"from": 2025, "type": "tax", "until": 2026}, False),
+        ("2022-2025", False),
+    ],
+)
+def test_year_rules(years, ok):
+    assert (_year_problems(years) == []) == ok
+
+
+@pytest.mark.parametrize(
+    ("path", "ok"),
+    [
+        ("policyengine_us/tests/code_health/test_source_conflicts.py", True),
+        ("/etc/passwd", False),
+        ("../outside.py", False),
+        ("policyengine_us/../../outside.py", False),
+        ("policyengine_us/no_such_file.py", False),
+        ("", False),
+        (None, False),
+    ],
+)
+def test_code_paths_must_be_files_in_this_repository(path, ok):
+    assert _inside_repository(path) == ok
 
 
 # ---------------------------------------------------------------------------
@@ -393,12 +516,8 @@ def test_candidate_fields():
         if pe_us.get("follows") not in FOLLOWS:
             problems.append(f"{label}: pe_us.follows must be one of {sorted(FOLLOWS)}")
         years = item.get("years")
-        if years is not None and (
-            not isinstance(years, dict) or years.get("type") not in YEAR_TYPES
-        ):
-            problems.append(
-                f"{label}: years needs from, optional to, and a type in {sorted(YEAR_TYPES)}"
-            )
+        if years is not None:
+            problems.extend(f"{label}: {problem}" for problem in _year_problems(years))
         sources = item.get("sources") or []
         if len(sources) < 2:
             problems.append(f"{label}: a conflict needs at least two sources")
@@ -411,8 +530,10 @@ def test_candidate_fields():
             if url is not None and not str(url).startswith("https://"):
                 problems.append(f"{label}: source url must be https or null: {url}")
         for path in pe_us.get("code") or []:
-            if not (REPO_ROOT / path).is_file():
-                problems.append(f"{label}: code path {path} does not exist here")
+            if not _inside_repository(path):
+                problems.append(
+                    f"{label}: code path {path!r} must be a relative path to a file in this repository"
+                )
         for pr in pe_us.get("prs") or []:
             if not re.fullmatch(
                 r"https://github\.com/PolicyEngine/policyengine-us/pull/[0-9]+", pr
@@ -423,11 +544,49 @@ def test_candidate_fields():
     assert not problems, "\n".join(problems)
 
 
+def _year_problems(years) -> list[str]:
+    if not isinstance(years, dict):
+        return [
+            "years must be a mapping of from, optional to, type and (for program) note"
+        ]
+    problems = []
+    start, end = years.get("from"), years.get("to")
+    if type(start) is not int:
+        problems.append("years.from must be a whole year")
+    if "to" in years and type(end) is not int:
+        problems.append("years.to must be a whole year")
+    if type(start) is int and type(end) is int and end < start:
+        problems.append(f"years.to ({end}) is before years.from ({start})")
+    if years.get("type") not in YEAR_TYPES:
+        problems.append(f"years.type must be one of {sorted(YEAR_TYPES)}")
+    if years.get("type") == "program" and not years.get("note"):
+        problems.append("years.note must say what the program year is")
+    unknown = set(years) - {"from", "to", "type", "note"}
+    if unknown:
+        problems.append(f"years has unknown keys {sorted(unknown)}")
+    return problems
+
+
+def _inside_repository(path) -> bool:
+    if (
+        not isinstance(path, str)
+        or not path
+        or Path(path).is_absolute()
+        or ".." in Path(path).parts
+    ):
+        return False
+    target = (REPO_ROOT / path).resolve()
+    return target.is_relative_to(REPO_ROOT) and target.is_file()
+
+
 def test_candidates_are_public():
+    # The raw text, so comments and mapping keys are covered too.
     problems = [
-        f"{label} contains {what}"
-        for label, text in _strings(_candidates(), "candidates")
+        f"candidates.yaml:{number} contains {what}"
+        for number, line in enumerate(
+            CANDIDATES.read_text(encoding="utf-8").splitlines(), 1
+        )
         for pattern, what in PRIVATE
-        if pattern.search(text)
+        if pattern.search(line)
     ]
     assert not problems, "\n".join(problems)
