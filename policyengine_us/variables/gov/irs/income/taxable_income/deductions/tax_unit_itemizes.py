@@ -18,14 +18,10 @@ class tax_unit_itemizes(Variable):
             # qualified business income deduction, which depends on the
             # itemization choice, so they come from the branch that itemizes
             # (the one that also gives tax_liability_if_itemizing).
-            # Calculated before branching, so the branch inherits it.
+            # Calculated before branching, so the branch inherits it when no
+            # one repays claim of right income above $3,000.
             tax_unit("total_itemized_taxable_income_deductions", period)
-            itemizing_branch = get_override_branch(
-                tax_unit.simulation,
-                "itemizing",
-                period,
-                {"tax_unit_itemizes": np.ones((tax_unit.count,), dtype=bool)},
-            )
+            itemizing_branch = get_itemization_branch(tax_unit, period, itemizes=True)
             itemized_deductions = itemizing_branch.calculate(
                 "itemized_taxable_income_deductions", period
             )

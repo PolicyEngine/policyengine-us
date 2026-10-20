@@ -23,41 +23,35 @@ def create_nc_cdcc() -> Reform:
         unit = USD
         definition_period = YEAR
         defined_for = StateCode.NC
+        # Baseline computes this via `adds`; replacing it with a
+        # formula requires clearing the inherited computation mode
+        # (the core engine rejects `formula` + `adds`/`subtracts`).
+        adds = None
+        subtracts = None
 
         def formula(tax_unit, period, parameters):
+            # Preserve the baseline refundable credits and ADD the new
+            # CDCC (see #8775). Baseline nc_income_tax subtracts
+            # nc_refundable_credits and excludes nc_use_tax, which
+            # state_use_tax already counts, so no override of it is needed.
+            baseline_credits = parameters(
+                period
+            ).gov.states.nc.tax.income.credits.refundable
+            total = add(tax_unit, period, list(baseline_credits)) + tax_unit(
+                "nc_cdcc", period
+            )
             # Stack with nc_eitc when the NC EITC contrib reform is also
             # active, so enabling both NC contrib credits sums rather than
             # overwrites.
-            total = tax_unit("nc_cdcc", period)
             variables = tax_unit.simulation.tax_benefit_system.variables
             if "nc_eitc" in variables:
                 total = total + tax_unit("nc_eitc", period)
             return total
 
-    class nc_income_tax(Variable):
-        value_type = float
-        entity = TaxUnit
-        label = "North Carolina income tax"
-        unit = USD
-        definition_period = YEAR
-        defined_for = StateCode.NC
-
-        def formula(tax_unit, period, parameters):
-            tax_before_credits = add(
-                tax_unit, period, ["nc_income_tax_before_credits", "nc_use_tax"]
-            )
-            non_refundable_credits = tax_unit("nc_non_refundable_credits", period)
-            tax_before_refundable = max_(0, tax_before_credits - non_refundable_credits)
-
-            refundable_credits = tax_unit("nc_refundable_credits", period)
-
-            return tax_before_refundable - refundable_credits
-
     class reform(Reform):
         def apply(self):
             self.update_variable(nc_cdcc)
             self.update_variable(nc_refundable_credits)
-            self.update_variable(nc_income_tax)
 
     return reform
 
