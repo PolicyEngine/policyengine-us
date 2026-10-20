@@ -5,10 +5,13 @@ MCA 15-30-2337(9)(a) counts federal adjusted gross income "plus all
 nontaxable income", and (4) counts "all income received by all individuals
 of a household". 2024 Schedule 2EC line 14 counts "the total of unemployment
 compensation received during the year"; the 2014-2023 instructions list
-disability benefits. The model leaves employment disability benefits out of
-federal AGI, and in 2020 IRC 85(c) excluded up to 10_200 of unemployment
-compensation from it. Federal AGI counts the taxable part of a filer's
-compensation and a dependent's own gross income all of a dependent's.
+disability benefits. The original grid specifies fully nontaxable employment
+disability benefits. Additional cases split benefits between taxable and
+exempt amounts, exercising federal AGI and a dependent's own gross income.
+In 2020 IRC 85(c) excluded up to 10_200 of
+unemployment compensation from federal AGI. Federal AGI counts the taxable
+part of a filer's compensation and a dependent's own gross income all of a
+dependent's.
 
 For a claimant aged 66 (taxable pension, unemployment compensation,
 disability benefits, property tax) living with one other adult (unemployment
@@ -31,6 +34,9 @@ limit, and income under and over the 150_000 cutoff:
    Table), lies between zero and the cap, and is zero at 45_000 or more.
 3. More unemployment compensation or disability benefits never raise the
    credit while the refundable credits stay the same.
+4. Holding total disability benefits fixed, fully taxable, half-exempt and
+   fully exempt benefits produce the same household income and credit in
+   every arrangement, with unchanged refundable credits.
 
 The YAML cases pin worked examples from each year's form. This test adds
 what they cannot: every arrangement and year at once against a reference
@@ -110,6 +116,23 @@ CASES = [
         MEMBER_DISABILITY,
     )
 ]
+# Keep the full original grid, and vary the taxable/exempt split in 18
+# additional households. These low-income cases retain the same refundable
+# credits across splits, include both sides of the 2020 UC exclusion, and
+# exercise claimant AGI, another filer's AGI and dependent gross income.
+SPLIT_BASE_CASES = [
+    c
+    for c in CASES
+    if c["pension"] == 12_000
+    and c["claimant_uc"] == 6_000
+    and c["member_uc"] == 12_000
+    and c["claimant_disability"] + c["member_disability"] > 0
+]
+SPLIT_CASES = [
+    dict(c, exempt_fraction=fraction)
+    for c, fraction in itertools.product(SPLIT_BASE_CASES, (0, 0.5))
+]
+ALL_CASES = CASES + SPLIT_CASES
 
 
 def build_situation():
@@ -117,14 +140,18 @@ def build_situation():
         return {year: value for year in YEARS}
 
     people, tax_units, marital_units, households = {}, {}, {}, {}
-    for i, c in enumerate(CASES):
+    for i, c in enumerate(ALL_CASES):
         claimant, member = f"claimant_{i}", f"member_{i}"
         arrangement = c["arrangement"]
+        exempt_fraction = c.get("exempt_fraction", 1)
         people[claimant] = {
             "age": every_year(66),
             "taxable_pension_income": every_year(c["pension"]),
             "unemployment_compensation": every_year(c["claimant_uc"]),
             "disability_benefits": every_year(c["claimant_disability"]),
+            "tax_exempt_disability_benefits": every_year(
+                c["claimant_disability"] * exempt_fraction
+            ),
             "real_estate_taxes": every_year(PROPERTY_TAX),
             "ssi": every_year(0),
             "is_tax_unit_dependent": every_year(False),
@@ -136,6 +163,9 @@ def build_situation():
             "is_full_time_student": every_year(arrangement == "dependent"),
             "unemployment_compensation": every_year(c["member_uc"]),
             "disability_benefits": every_year(c["member_disability"]),
+            "tax_exempt_disability_benefits": every_year(
+                c["member_disability"] * exempt_fraction
+            ),
             "ssi": every_year(0),
             "is_tax_unit_dependent": every_year(arrangement == "dependent"),
         }
@@ -214,7 +244,7 @@ def tolerance(amount):
 @pytest.mark.parametrize("year", YEARS)
 def test_each_amount_counts_once(results, year):
     r = results[year]
-    for i, c in enumerate(CASES):
+    for i, c in enumerate(ALL_CASES):
         expected = (
             c["pension"]
             + c["claimant_uc"]
@@ -231,7 +261,7 @@ def test_each_amount_counts_once(results, year):
 @pytest.mark.parametrize("year", YEARS)
 def test_credit_follows_the_schedule(results, year):
     r = results[year]
-    for i, c in enumerate(CASES):
+    for i, c in enumerate(ALL_CASES):
         ghi = float(r["gross_household_income"][i])
         credit = float(r["credit"][i])
         tol = tolerance(ghi)
@@ -267,6 +297,22 @@ def test_more_income_never_raises_the_credit(results, year):
             tol = tolerance(r["gross_household_income"][j])
             assert r["credit"][j] <= r["credit"][i] + tol, (year, c, key)
     assert compared > 0
+
+
+@pytest.mark.parametrize("year", YEARS)
+def test_disability_taxability_does_not_change_the_credit(results, year):
+    r = results[year]
+    index = {tuple(sorted(c.items())): i for i, c in enumerate(ALL_CASES)}
+    for c in SPLIT_BASE_CASES:
+        exempt_index = index[tuple(sorted(c.items()))]
+        for exempt_fraction in (0, 0.5):
+            split = dict(c, exempt_fraction=exempt_fraction)
+            split_index = index[tuple(sorted(split.items()))]
+            for variable in ("refundable_credits", "gross_household_income", "credit"):
+                expected = r[variable][exempt_index]
+                assert r[variable][split_index] == pytest.approx(
+                    expected, abs=tolerance(expected)
+                ), (year, split, variable)
 
 
 def test_worked_example(results):
