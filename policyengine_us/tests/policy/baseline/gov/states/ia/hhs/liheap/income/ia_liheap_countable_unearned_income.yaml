@@ -213,3 +213,25 @@
     # Appendix C p. 110, Railroad Retirement: RRB-1099 box 5 and RRB-1099-R
     # box 7 are counted as income; 24,000.
     ia_liheap_countable_unearned_income: 24_000
+
+- name: Case 10, military retirement pay is counted as a pension.
+  period: 2026
+  input:
+    people:
+      person1:
+        # Age 48 is below the SSI aged threshold, so the model imputes no SSI.
+        age: 48
+        military_retirement_pay: 26_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Appendix C pp. 109 and 111, Pensions and Retirement Income: a 20-year
+    # military retiree's 2,200 a month pension counts; 26,400.
+    ia_liheap_countable_unearned_income: 26_400

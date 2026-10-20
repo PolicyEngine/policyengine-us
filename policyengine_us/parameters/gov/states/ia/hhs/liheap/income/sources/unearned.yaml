@@ -19,6 +19,9 @@ values:
     # ssi is a monthly variable; add() sums the twelve months.
     - ssi
     - pension_income
+    # Appendix C Pensions and Retirement Income rows: military retirement pay
+    # and survivor benefit payments are pension income.
+    - military_retirement_income
     # Appendix C IRA and Retirement rows: regular distributions count;
     # irregular withdrawals are not separable from the model inputs.
     # retirement_distributions already includes taxable_ira_distributions

@@ -11,6 +11,8 @@ values:
     - social_security
     - ssi
     - pension_income
+    # Military retirement pay and survivor benefit payments are pensions.
+    - military_retirement_income
     # Appendix C defines Pensions as assistance "paid at regular intervals ...
     # in consideration of past services, age" and labels Form RRB-1099-R
     # "Annuities or Pensions by the Railroad Retirement Board", so railroad

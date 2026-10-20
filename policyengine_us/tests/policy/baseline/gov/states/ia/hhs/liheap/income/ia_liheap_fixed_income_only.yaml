@@ -375,3 +375,50 @@
     # and no other source.
     ia_liheap_countable_income: 30_000
     ia_liheap_fixed_income_only: true
+
+- name: Case 16, military retirement pay alone is fixed income only.
+  period: 2026
+  input:
+    people:
+      person1:
+        # Age 48 is below the SSI aged threshold, so the model imputes no SSI.
+        age: 48
+        military_retirement_pay: 26_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # A military pension is one of the "pensions" in the Definitions' fixed
+    # income list (p. 81): fixed 26,400 > 0 and no other source.
+    ia_liheap_countable_income: 26_400
+    ia_liheap_fixed_income_only: true
+
+- name: Case 17, military survivor benefit payments alone are fixed income only.
+  period: 2026
+  input:
+    people:
+      person1:
+        # Age 60 is below the SSI aged threshold, so the model imputes no SSI.
+        age: 60
+        military_retirement_pay_survivors: 14_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_400
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # A Survivor Benefit Plan annuity of 1,200 a month is a pension paid in
+    # consideration of past service (Appendix C p. 109): fixed 14,400 > 0 and
+    # no other source.
+    ia_liheap_countable_income: 14_400
+    ia_liheap_fixed_income_only: true
