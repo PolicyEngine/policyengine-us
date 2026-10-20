@@ -57,10 +57,14 @@ class nyc_household_credit(Variable):
             [
                 # Single filers get a flat amount.
                 p.flat_amount.calc(federal_agi, right=True),
-                # Separate filers get half the household amount for each of the
-                # couple's exemptions, varying with the couple's AGI.
-                p.separate_per_dependent.calc(separate_agi, right=True)
-                * separate_exemptions,
+                # Separate filers get "one-half the credit otherwise allowed his
+                # or her household": the married amount per exemption at the
+                # couple's AGI, times the couple's exemptions, halved. IT-201
+                # Table 6 instead rounds a per-exemption half amount, which can
+                # differ by a dollar or more; the model follows the statute.
+                p.other_per_dependent.calc(separate_agi, right=True)
+                * separate_exemptions
+                / 2,
             ],
             # Joint, head of household, and surviving spouse filers have a different
             # amount per exemption, varying with AGI.

@@ -189,7 +189,7 @@
 # Tax Law 1310(d) and IT-201 Table 6: a married couple filing separately is
 # one household, keyed on federal AGI and dependents "from both returns" plus
 # one for each spouse, and each spouse gets half the household amount.
-- name: Separate filers with household AGI of $15k or less get $15 per exemption of the couple.
+- name: Separate filers with household AGI of $15k or less get half of $30 per exemption of the couple.
   period: 2022
   absolute_error_margin: 0
   input:
@@ -201,10 +201,10 @@
     tax_unit_size: 2
     spouse_separate_tax_unit_size: 2
   output:
-    # Household AGI $15,000; 2 + 2 exemptions x $15.
+    # Household AGI $15,000: $30 x (2 + 2) = $120, halved.
     nyc_household_credit: 60
 
-- name: Separate filers with household AGI of $18k get $8 per exemption of the couple.
+- name: Separate filers with household AGI of $18k get half of $15 per exemption of the couple.
   period: 2022
   absolute_error_margin: 0
   input:
@@ -216,10 +216,13 @@
     tax_unit_size: 4
     spouse_separate_tax_unit_size: 4
   output:
-    # Household AGI $18,000; 4 + 4 exemptions x $8.
-    nyc_household_credit: 64
+    # Household AGI $18,000: the married amount is $15 per exemption, so the
+    # household credit is $15 x 8 = $120 and each spouse gets half, $60.
+    # IT-201 Table 6 rounds the half amount to $8 per exemption ($53 + $8 =
+    # $61 with its over-seven note); the model follows Tax Law 1310(d).
+    nyc_household_credit: 60
 
-- name: Separate filers with household AGI of $21k get $5 per exemption of the couple.
+- name: Separate filers with household AGI of $21k get half of $10 per exemption of the couple.
   period: 2022
   absolute_error_margin: 0
   input:
@@ -231,7 +234,7 @@
     tax_unit_size: 6
     spouse_separate_tax_unit_size: 6
   output:
-    # Household AGI $21,000; 6 + 6 exemptions x $5.
+    # Household AGI $21,000: $10 x (6 + 6) = $120, halved.
     nyc_household_credit: 60
 
 - name: Separate filers with household AGI over $22.5k get no credit.
