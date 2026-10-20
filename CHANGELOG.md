@@ -1,3 +1,50 @@
+## [2.53.1] - 2026-10-20
+
+### Fixed
+
+- Set the New York itemized deduction for NY AGI over $1 million to 50% (25% over $10 million) of the charitable deduction under Tax Law § 615(g). Fixes #10190.
+
+
+## [2.53.0] - 2026-10-20
+
+### Added
+
+- Add Alabama LIHEAP regular heating eligibility and payments, applying the HUD allowance before the supplement and requiring a positive remaining regular grant.
+
+
+## [2.52.0] - 2026-10-20
+
+### Added
+
+- Add New York State Supplement Program for 2026.
+- Add Oklahoma State Supplemental Payment for 2026.
+- Add Rhode Island optional state SSI supplements and institutional payments, verified for 2026.
+- Add South Dakota State Supplemental Payment for 2026.
+- Add Virginia Auxiliary Grant for 2026.
+
+### Fixed
+
+- Apply Colorado's $189 Old Age Pension payment floor from January 2026, and count OAP income under 9 CCR 2503-5 3.533 and 3.534 for every client, so clients aged 60 to 64 who are not SSI-eligible no longer receive the full grant regardless of income.
+
+
+## [2.51.0] - 2026-10-20
+
+### Added
+
+- Add Montana optional State Supplementary Payments with income phaseout, couple and deeming calculations, verified for 2026, and count them in Montana elderly homeowner or renter credit gross household income.
+
+### Fixed
+
+- Stop subtracting the self-employment and Additional Medicare tax a second time from the 2021-2022 Iowa federal tax deduction; subtract the added-back Schedule 2 taxes that the federal tax does include (IA 1040 line 28).
+
+
+## [2.50.2] - 2026-10-20
+
+### Changed
+
+- Update 2027 state paid leave premiums: Colorado FAMLI 0.86%, Washington Paid Leave 1.2% with a 29.3% employer share, New York Paid Family Leave 0.452% with a $451.81 cap, and the New Jersey TDI and FLI worker wage base of $177,100; cite the sources confirming unchanged 2027 rates for Delaware, Maine, Connecticut and WA Cares.
+
+
 ## [2.50.1] - 2026-10-20
 
 ### Fixed
