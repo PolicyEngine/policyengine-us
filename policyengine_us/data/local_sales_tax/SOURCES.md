@@ -173,19 +173,18 @@ same row counts on a cached build. Older unaudited v2 caches are ignored.
   list and logs municipalities with no coded unit, including Montgomery;
   these uncoded and county-remainder limits remain.
 
-## Mississippi methodology awaiting a ruling
+## Mississippi methodology (Max's ruling d1590)
 
 The [2025 IRS selector (PDF p. 18)](https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=18)
-names Tupelo and Jackson without an other-locality row. The existing
-documented Jackson-table proxy is retained pending Max's methodology
-decision. For an $85,000 single filer with an entered 8% combined rate,
-the 7% state component leaves 1 percentage point local: the proxy gives
-Table C's $179 × 1 = $179.
+lists "City of Jackson only" (Table C) and "City of Tupelo only" (Table A),
+with no other-locality row. Under Max's ruling d1590 (reading B), other
+Mississippi localities have no table: `local_sales_tax_table` is `NONE`,
+worksheet line 2 is zero, and line 6 uses the ratio method
+([PDF pp. 4–5](https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=4)).
+Jackson and Tupelo retain their named tables.
 
-The alternative reading applies the absent-local-table instruction
-([PDF pp. 4–5](https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=4))
-to other Mississippi localities, giving line 2 = 0 and the ratio method:
-$1,243 × 1 / 7 = $177.57. That implementation would need an absent-table
-signal and ratio routing as well as removing Mississippi from the default
-table lists. No interpretation is selected here. Without an entered rate,
-both readings give $0 because this build has no Mississippi locality rates.
+For an $85,000 single filer with an entered 8% combined rate, the 7% state
+component leaves 1 percentage point local. Outside Jackson and Tupelo,
+line 6 is $1,243 × 1 / 7 = $177.57, replacing the $179 Jackson-table proxy.
+Without an entered rate, the local amount remains $0 because this build
+has no Mississippi locality rates.

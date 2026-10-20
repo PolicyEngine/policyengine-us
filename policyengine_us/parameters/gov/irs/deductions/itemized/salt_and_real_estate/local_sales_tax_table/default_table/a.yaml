@@ -16,19 +16,15 @@ metadata:
 # imposes a local sales tax" or "... or any other locality that imposes a
 # local sales tax". Residents of the localities the IRS names in other rows
 # use those rows' tables (the county and place lists).
-# Mississippi has no such row, only "City of Jackson only" and "City of
-# Tupelo only". PolicyEngine uses the City of Jackson table: Table A in
-# 2022 and 2023, Table C in 2024 and 2025.
+# Mississippi has no other-locality row; see none.yaml.
 values:
   2022-01-01:
     - CO
     - IL
-    - MS
     - UT
   2023-01-01:
     - CO
     - IL
-    - MS
     - UT
   2024-01-01:
     - CO

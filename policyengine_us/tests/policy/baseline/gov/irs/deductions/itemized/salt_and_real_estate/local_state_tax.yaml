@@ -282,3 +282,65 @@
   output:
     state_sales_tax: 766
     local_sales_tax: 64.36
+
+- name: Mississippi uses the ratio outside Jackson and Tupelo
+  # Max's ruling d1590; 2025 Instructions for Schedule A PDF pp. 4-5, 14, 18:
+  # https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=18
+  # Only Jackson and Tupelo have tables. At $85,000/family 1, line 1 = 1,243.
+  # Other/unknown localities: line 2 = 0; line 6 = 1,243 x 1 / 7 = 177.57.
+  # Jackson: Table C, 179 x 1 = 179. Tupelo: Table A, 120 x 1 = 120.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      other:
+        age: 40
+        employment_income: 85_000
+      unknown:
+        age: 40
+        employment_income: 85_000
+      jackson:
+        age: 40
+        employment_income: 85_000
+      tupelo:
+        age: 40
+        employment_income: 85_000
+      no_rate:
+        age: 40
+        employment_income: 85_000
+      zero_rate:
+        age: 40
+        employment_income: 85_000
+    households:
+      other:
+        members: [other]
+        state_code: MS
+        county_fips: "28049"
+        place_fips: "14420"
+        combined_sales_tax_rate: 0.08
+      unknown:
+        members: [unknown]
+        state_code: MS
+        local_sales_tax_rate: 0.01
+      jackson:
+        members: [jackson]
+        state_code: MS
+        place_fips: "36000"
+        combined_sales_tax_rate: 0.08
+      tupelo:
+        members: [tupelo]
+        state_code: MS
+        place_fips: "74840"
+        combined_sales_tax_rate: 0.08
+      no_rate:
+        members: [no_rate]
+        state_code: MS
+        place_fips: "14420"
+      zero_rate:
+        members: [zero_rate]
+        state_code: MS
+        local_sales_tax_rate: 0
+  output:
+    local_sales_tax_table: [NONE, NONE, C, A, NONE, NONE]
+    state_sales_tax: [1_243, 1_243, 1_243, 1_243, 1_243, 1_243]
+    local_sales_tax: [177.57, 177.57, 179, 120, 0, 0]

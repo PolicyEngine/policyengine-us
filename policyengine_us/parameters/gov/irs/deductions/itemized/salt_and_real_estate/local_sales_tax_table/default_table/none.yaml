@@ -1,0 +1,19 @@
+description: Residents of these states have no Optional Local Sales Tax Table unless the IRS selector names their locality.
+metadata:
+  unit: list
+  period: year
+  label: States without a default Optional Local Sales Tax Table
+  reference:
+    - title: 2022 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=17
+    - title: 2023 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=17
+    - title: 2024 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=16
+    - title: 2025 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=18
+# Mississippi lists only Jackson and Tupelo. Other localities enter zero on
+# worksheet line 2 and use the ratio method (Max's ruling d1590).
+values:
+  2022-01-01:
+    - MS

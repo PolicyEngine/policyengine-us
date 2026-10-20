@@ -7,6 +7,7 @@ class LocalSalesTaxTable(Enum):
     B = "Local Table B"
     C = "Local Table C"
     D = "Local Table D"
+    NONE = "No local table"
 
 
 class local_sales_tax_table(Variable):
@@ -20,7 +21,8 @@ class local_sales_tax_table(Variable):
         "The IRS Optional Local Sales Tax Table for the household's locality, from "
         "the IRS table selector: the table of the household's city if the selector "
         "names it, else of its county, else the state's table for other localities "
-        "that impose a local sales tax. Cities and counties are read from "
+        "that impose a local sales tax. NONE signals an absent table, including "
+        "Mississippi outside Jackson and Tupelo. Cities and counties are read from "
         "place_fips and county_fips, with the same block, explicit county, "
         "city-flag and principal-county fallbacks as combined_sales_tax_rate."
     )
@@ -48,10 +50,14 @@ class local_sales_tax_table(Variable):
             LocalSalesTaxTable.D,
         ]
         letters = ["a", "b", "c", "d"]
+        default_letters = letters + ["none"]
         return select(
             [np.isin(place_geoid, p.place[letter]) for letter in letters]
             + [np.isin(county_fips, p.county[letter]) for letter in letters]
-            + [np.isin(state_code, p.default_table[letter]) for letter in letters],
-            tables * 3,
+            + [
+                np.isin(state_code, p.default_table[letter])
+                for letter in default_letters
+            ],
+            tables * 3 + [LocalSalesTaxTable.NONE],
             default=LocalSalesTaxTable.A,
         )
