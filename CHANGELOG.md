@@ -1,3 +1,10 @@
+## [2.53.1] - 2026-10-20
+
+### Fixed
+
+- Set the New York itemized deduction for NY AGI over $1 million to 50% (25% over $10 million) of the charitable deduction under Tax Law § 615(g). Fixes #10190.
+
+
 ## [2.53.0] - 2026-10-20
 
 ### Added
