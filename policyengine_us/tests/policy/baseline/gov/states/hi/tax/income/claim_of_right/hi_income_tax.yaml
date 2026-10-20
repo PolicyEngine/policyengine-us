@@ -1,0 +1,168 @@
+# HRS 235-91.5 requires refundable credits before nonrefundable credits.
+# In 2022 the Hawaii EITC is nonrefundable, so claim-of-right relief can
+# displace it. These households receive no TANF. Form N-11 lines 27, 33-36 and N-364's lesser-tax comparison:
+# https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=60
+# https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=21
+# https://files.hawaii.gov/tax/forms/2025/n364_i.pdf
+
+- name: 2022 head of household at 22500 owes no Hawaii tax without a repayment
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 22_500
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [head, child]
+        tanf: 0
+    households:
+      household:
+        members: [head, child]
+        state_code: HI
+  output:
+    # Tax 728 less food/excise credit 110 leaves only 618 for the EITC.
+    hi_income_tax: 0
+    hi_income_tax_before_non_refundable_credits: 728
+    hi_food_excise_credit: 110
+    hi_eitc_potential: 670.85
+    hi_eitc: 618
+
+- name: 2022 repayment at 22500 gives zero relief and ties keep the deduction
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 22_500
+        claim_of_right_repayment: 10_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        hi_claim_of_right_prior_year_tax_decrease: 600
+    spm_units:
+      spm_unit:
+        members: [head, child]
+        tanf: 0
+    households:
+      household:
+        members: [head, child]
+        state_code: HI
+  output:
+    # Both methods end at zero, matching the no-repayment case above.
+    hi_income_tax: 0
+    hi_income_tax_if_claiming_claim_of_right_credit: 0
+    hi_income_tax_if_claiming_claim_of_right_deduction: 0
+    hi_claim_of_right_credit_applies: false
+    hi_claim_of_right_deduction: 10_000
+    hi_claim_of_right_credit: 0
+
+- name: 2022 fixed credit at 22500 displaces the nonrefundable EITC
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 22_500
+        claim_of_right_repayment: 10_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        hi_claim_of_right_credit_applies: true
+        hi_claim_of_right_prior_year_tax_decrease: 600
+    spm_units:
+      spm_unit:
+        members: [head, child]
+        tanf: 0
+    households:
+      household:
+        members: [head, child]
+        state_code: HI
+  output:
+    # Line 34 = 728 - (110 + 600) = 18, the cap on the EITC.
+    hi_income_tax: 0
+    hi_income_tax_before_non_refundable_credits: 728
+    hi_refundable_credits: 710
+    hi_eitc_potential: 670.85
+    hi_eitc: 18
+    hi_non_refundable_credits: 18
+    hi_claim_of_right_credit: 600
+    hi_claim_of_right_deduction: 0
+
+- name: 2022 credit at 15000 refunds the excess after displacing the EITC
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 15_000
+        claim_of_right_repayment: 10_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        hi_claim_of_right_prior_year_tax_decrease: 600
+    spm_units:
+      spm_unit:
+        members: [head, child]
+        tanf: 0
+    households:
+      household:
+        members: [head, child]
+        state_code: HI
+  output:
+    # Line 34 = 292.10 - (140 + 600) = -447.90; no EITC can be used.
+    hi_income_tax: -447.90
+    hi_income_tax_before_non_refundable_credits: 292.10
+    hi_refundable_credits: 740
+    hi_eitc: 0
+    hi_claim_of_right_credit_applies: true
+    hi_claim_of_right_credit: 600
+    hi_claim_of_right_deduction: 0
+
+# Section 1341(b)(1), as operative in Hawaii: the prior-year decrease in
+# excess of current tax is refunded. No other Hawaii credit enters this case.
+- name: 2025 claim of right credit refunds its excess over Hawaii tax
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        hi_claim_of_right_prior_year_tax_decrease: 3_000
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    # Tax without the deduction 1,570.21 less the 3,000 decrease.
+    hi_income_tax: -1_429.79
+    hi_income_tax_before_non_refundable_credits: 1_570.21
+    hi_refundable_credits: 3_000
+    hi_non_refundable_credits: 0
+    hi_claim_of_right_credit_applies: true
+    hi_claim_of_right_credit: 3_000
+    hi_claim_of_right_deduction: 0
