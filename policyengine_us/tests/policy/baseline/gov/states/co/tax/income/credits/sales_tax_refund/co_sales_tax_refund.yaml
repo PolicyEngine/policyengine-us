@@ -661,3 +661,46 @@
       2025: [50, 19, 0, 0]
       2026: [0, 0, 0, 0]
       2027: [50, 19, 0, 0]
+
+# Historical guard regression.
+# 1 CCR 201-2, Rule 39-22-2003(1)(a), PDF p195: no refund in 2016-2020.
+# https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=1+CCR+201-2&ruleVersionId=11214#page=195
+# No refund means $0, not the backdated 2021 table's $56 for single $100k MAGI.
+- name: Colorado sales tax refund is unavailable in 2020
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    state_code: CO
+    age: 40
+    filing_status: SINGLE
+    co_modified_agi: 100_000
+    co_income_tax_before_refundable_credits: 1_000
+    co_amt: 0
+    co_cdcc: 0
+    co_low_income_cdcc: 0
+    co_eitc: 0
+  output:
+    co_sales_tax_refund: 0
+    co_tabor_cash_back: 0
+    co_refundable_credits: 0
+    co_income_tax: 1_000
+
+# Rule 39-22-2003(1)(a), cited above, excludes the full 2016-2020 interval.
+- name: Colorado sales tax refund is unavailable from the first excluded year
+  period: 2016
+  absolute_error_margin: 0
+  input:
+    state_code: CO
+    age: 40
+    filing_status: SINGLE
+    co_modified_agi: 100_000
+    co_income_tax_before_refundable_credits: 1_000
+    co_amt: 0
+    co_cdcc: 0
+    co_low_income_cdcc: 0
+    co_eitc: 0
+  output:
+    co_sales_tax_refund: 0
+    co_tabor_cash_back: 0
+    co_refundable_credits: 0
+    co_income_tax: 1_000

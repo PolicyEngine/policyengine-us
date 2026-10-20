@@ -1,4 +1,8 @@
-description: Colorado accounts for these income sources for the modified adjusted gross income.
+description: >-
+  Colorado accounts for these income sources for the modified adjusted gross income. The
+  refund is attributed to the modeled eligibility tax year, even when the return and
+  payment occur later. This is the residual sales tax refund mechanism, separate from
+  Colorado Cash Back; in_effect controls whether the refund is available.
 values:
   1999-01-01:
     - adjusted_gross_income

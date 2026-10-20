@@ -1,4 +1,8 @@
-description: Virginia provides an individual income tax rebate of this amount, based on filing status.
+description: >-
+  Virginia provides an individual income tax rebate of this amount, based on filing
+  status. PolicyEngine attributes each rebate to the return year that determines it:
+  2021 for the 2022 payment, 2022 for the 2023 payment, and 2024 for the 2025 payment.
+  The rebate is zero in other years.
 metadata:
   propagate_metadata_to_children: true
   label: Virginia rebate amount
@@ -26,30 +30,35 @@ metadata:
 #   period 2024 -> the HB1600 TY2024 rebate (based on the 2024 return)
 # 2023 and 2025 carry no rebate, so the amount is zeroed in those years.
 JOINT:
+  2020-01-01: 0
   2021-01-01: 500
   2022-01-01: 400
   2023-01-01: 0
   2024-01-01: 400
   2025-01-01: 0
 SINGLE:
+  2020-01-01: 0
   2021-01-01: 250
   2022-01-01: 200
   2023-01-01: 0
   2024-01-01: 200
   2025-01-01: 0
 SEPARATE:
+  2020-01-01: 0
   2021-01-01: 250
   2022-01-01: 200
   2023-01-01: 0
   2024-01-01: 200
   2025-01-01: 0
 HEAD_OF_HOUSEHOLD:
+  2020-01-01: 0
   2021-01-01: 250
   2022-01-01: 200
   2023-01-01: 0
   2024-01-01: 200
   2025-01-01: 0
 SURVIVING_SPOUSE:
+  2020-01-01: 0
   2021-01-01: 250
   2022-01-01: 200
   2023-01-01: 0

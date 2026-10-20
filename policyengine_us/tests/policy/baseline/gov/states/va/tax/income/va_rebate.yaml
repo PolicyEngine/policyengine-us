@@ -65,3 +65,73 @@
     state_code: VA
   output:
     va_rebate: 0
+
+# Historical guard regression.
+# HB30 (2022 special session), chapter budget, Item 3-5.22(A): the rebate is
+# measured from tax liability for taxable year 2021, not a 2020 entitlement.
+# https://budget.lis.virginia.gov/item/2022/2/HB30/Chapter/3/3-5.22/
+# Hand calculation: rebate $0, other nonrefundable credits $0, spouse adjustment
+# $0; tax before refundable credits max($1,000 - $0 - $0, 0) = $1,000.
+# Refundable credits $0; final income tax $1,000.
+- name: Virginia rebate for the 2021 return does not reduce 2020 tax
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    state_code: VA
+    filing_status: SINGLE
+    va_income_tax_before_non_refundable_credits: 1_000
+    va_non_refundable_eitc: 0
+    va_spouse_tax_adjustment: 0
+    va_refundable_eitc: 0
+  output:
+    va_rebate: 0
+    va_non_refundable_credits: 0
+    va_income_tax_before_refundable_credits: 1_000
+    va_refundable_credits: 0
+    va_income_tax: 1_000
+
+# The pre-program zero must backdate to 2015 for every filing-status branch.
+- name: Virginia rebates are zero in 2015 for every filing status
+  period: 2015
+  absolute_error_margin: 0
+  input:
+    people:
+      single: {}
+      joint: {}
+      separate: {}
+      head_of_household: {}
+      surviving_spouse: {}
+    tax_units:
+      single_unit:
+        members: [single]
+        filing_status: SINGLE
+      joint_unit:
+        members: [joint]
+        filing_status: JOINT
+      separate_unit:
+        members: [separate]
+        filing_status: SEPARATE
+      head_of_household_unit:
+        members: [head_of_household]
+        filing_status: HEAD_OF_HOUSEHOLD
+      surviving_spouse_unit:
+        members: [surviving_spouse]
+        filing_status: SURVIVING_SPOUSE
+    households:
+      single_household:
+        members: [single]
+        state_code: VA
+      joint_household:
+        members: [joint]
+        state_code: VA
+      separate_household:
+        members: [separate]
+        state_code: VA
+      head_of_household_household:
+        members: [head_of_household]
+        state_code: VA
+      surviving_spouse_household:
+        members: [surviving_spouse]
+        state_code: VA
+  output:
+    va_rebate: [0, 0, 0, 0, 0]
