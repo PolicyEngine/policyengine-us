@@ -31,12 +31,17 @@ class eitc_relevant_investment_income(Variable):
         "defaults to zero; nonpassive estate and trust income (Schedule E "
         "Part III columns (e) and (f), such as Schedule K-1 (Form 1041) box 5 "
         "annuities and income in respect of a decedent) is not on lines 11 "
-        "and 12."
+        "and 12. Box 5 royalties not derived in the ordinary course of a trade "
+        "or business (estate_royalty_income) are their own basket under 26 USC "
+        "32(i)(2)(C), net of their allocable deductions and floored at zero. "
+        "Worksheet 1 line 8 takes royalties only from Schedule E line 23b, so "
+        "it leaves these out; the model follows the statute."
     )
     unit = USD
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/32#i_2",
+        "https://www.law.cornell.edu/uscode/text/26/662#b",
         "https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=7",
         "https://www.irs.gov/pub/irs-prior/f8814--2025.pdf#page=1",
         "https://www.irs.gov/pub/irs-prior/i8814--2025.pdf#page=4",
@@ -114,4 +119,19 @@ class eitc_relevant_investment_income(Variable):
         ) - tax_unit_non_dep_add(
             tax_unit, period, ["eitc_passive_income_also_in_earned_income"]
         )
-        return portfolio_income + max_(0, capital_gains) + max_(0, passive_income)
+        # Section 32(i)(2)(C): rents and royalties not derived in the ordinary
+        # course of a trade or business, net of their allocable deductions, in
+        # a basket of their own. A beneficiary's box 5 royalties keep that
+        # character (section 662(b)) and are nonpassive, so they are not in
+        # the passive basket. Worksheet 1 line 8 takes royalties only from
+        # Schedule E line 23b, leaving these out; the model follows the
+        # statute.
+        nonbusiness_royalties = tax_unit_non_dep_add(
+            tax_unit, period, ["estate_royalty_income"]
+        )
+        return (
+            portfolio_income
+            + max_(0, capital_gains)
+            + max_(0, nonbusiness_royalties)
+            + max_(0, passive_income)
+        )
