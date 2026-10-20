@@ -149,7 +149,8 @@
 # read parameters on January 1, so coverage that starts or ends between July 1
 # and December 31 first changes the next calendar year. Every case lists:
 # AR, AZ, CT, DC, DE, GA, HI, LA, MD, NE, NJ, NM, OH, PA, RI, SC, SD, TX, WA,
-# VA (intentionally not covered) and FL (no coverage).
+# VA and FL. GA (left out for now) and VA are intentionally not covered, and
+# FL has no coverage.
 # Calendar 2010 cannot be tested: the federal income limits start 2011-01-01.
 
 # DC: D.C. Law 18-209, Title II applies from 2010-08-01.
@@ -209,7 +210,7 @@
     school_meal_tier: [REDUCED, FREE, FREE, FREE, REDUCED, REDUCED, REDUCED, REDUCED, FREE, REDUCED, FREE, FREE, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, FREE, REDUCED, REDUCED]
 
 # AR from 2023-08-01; LA and PA from 2023-07-01; OH from 2023-10-03; CT
-# STABLE for SY 2023-24. DE, GA, RI and SC start 2024-07-01.
+# STABLE for SY 2023-24. DE, RI and SC start 2024-07-01.
 - name: Arkansas, Connecticut, Louisiana, Ohio and Pennsylvania cover the reduced-price copay from 2024.
   period: 2024
   input:
@@ -219,16 +220,16 @@
   output:
     school_meal_tier: [FREE, FREE, FREE, FREE, REDUCED, REDUCED, REDUCED, FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, REDUCED, REDUCED, REDUCED, REDUCED, FREE, REDUCED, REDUCED]
 
-# DE, GA, RI and SC from 2024-07-01; CT STAR for SY 2024-25.
+# DE, RI and SC from 2024-07-01; CT STAR for SY 2024-25.
 # HI (2025-07-01) and TX (2025-09-01) start later in 2025.
-- name: Delaware, Georgia, Rhode Island and South Carolina cover the reduced-price copay from 2025.
+- name: Delaware, Rhode Island and South Carolina cover the reduced-price copay from 2025.
   period: 2025
   input:
     state_code: [AR, AZ, CT, DC, DE, GA, HI, LA, MD, NE, NJ, NM, OH, PA, RI, SC, SD, TX, WA, VA, FL]
     school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
     meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
   output:
-    school_meal_tier: [FREE, FREE, FREE, FREE, FREE, FREE, REDUCED, FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, FREE, FREE, REDUCED, REDUCED, FREE, REDUCED, REDUCED]
+    school_meal_tier: [FREE, FREE, FREE, FREE, FREE, REDUCED, REDUCED, FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, FREE, FREE, REDUCED, REDUCED, FREE, REDUCED, REDUCED]
 
 # HI: Act 139, SLH 2025; TX: GAA 2026-27 riders 29 and 31. CT had no state
 # funding in SY 2025-26. NE and SD start 2026-07-01.
@@ -239,19 +240,19 @@
     school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
     meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
   output:
-    school_meal_tier: [FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, FREE, FREE, REDUCED, FREE, FREE, REDUCED, REDUCED]
+    school_meal_tier: [FREE, FREE, REDUCED, FREE, FREE, REDUCED, FREE, FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, FREE, FREE, REDUCED, FREE, FREE, REDUCED, REDUCED]
 
 # CT RISE (SY 2026-27), NE LB966 and SD HB 1082 start 2026-07-01.
-- name: All 19 covered jurisdictions in this matrix give the free tier in 2027, while Virginia and Florida do not.
+- name: All 18 covered jurisdictions in this matrix give the free tier in 2027, while Georgia, Virginia and Florida do not.
   period: 2027
   input:
     state_code: [AR, AZ, CT, DC, DE, GA, HI, LA, MD, NE, NJ, NM, OH, PA, RI, SC, SD, TX, WA, VA, FL]
     school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
     meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
   output:
-    school_meal_tier: [FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, REDUCED, REDUCED]
+    school_meal_tier: [FREE, FREE, FREE, FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, REDUCED, REDUCED]
 
-# Enacted funding ends 2027-07-01 for AZ, CT, GA and SC, and 2027-09-01
+# Enacted funding ends 2027-07-01 for AZ, CT and SC, and 2027-09-01
 # for TX. WA's breakfast copay proviso ends 2027-06-30, so WA covers only
 # lunch from 2027-07-01 (see school_meal_lunch_tier) and its tier for both
 # meals is REDUCED.
@@ -853,7 +854,7 @@
 # Both meals from: VT 2013-07-01 (Act 50 of 2013), MN 2014-07-01 (Laws 2014,
 # c. 312, art. 19), NY 2019-07-01 (Aid to Localities appropriations), ME
 # 2019-07-01 (P.L. 2019, c. 343), CO 2019-08-02 (HB 19-1171). Universal meals
-# from: ME 2021-07-01, VT 2022-07-01, CO and MN 2023-07-01, NY 2025-07-01.
+# from: ME and VT 2022-07-01, CO and MN 2023-07-01, NY 2025-07-01.
 - name: None of these states covers both reduced-price copays in 2013.
   period: 2013
   input:
@@ -974,20 +975,33 @@
 # Universal free meal dates at the tier level, at 300% of FPG (above every
 # income limit) with no categorical eligibility, asserting all three tiers as
 # the override case above does. 180% shows copay coverage for contrast.
-# ME universal meals start 2021-07-01, so calendar 2022 is universal. PA's
+# ME universal meals (2022-07-01, when the program took effect), PA's
 # universal free breakfast (2022-10-01) and CT's SMART universal meals
-# (2022-07-01) start after January 1, 2022, and neither state covers the
-# reduced-price copay yet, so both are PAID.
-- name: Maine universal free meals make both meals free at 300% of FPG in 2022, before Pennsylvania and Connecticut add theirs.
+# (2022-07-01) all start after January 1, 2022, so all three are PAID.
+- name: Maine, Pennsylvania and Connecticut have no universal free meals or breakfast at 300% of FPG in 2022.
   period: 2022
   input:
     state_code: [ME, PA, CT]
     school_meal_fpg_ratio: [3, 3, 3]
     meets_school_meal_categorical_eligibility: [false, false, false]
   output:
-    school_meal_tier: [FREE, PAID, PAID]
-    school_meal_breakfast_tier: [FREE, PAID, PAID]
-    school_meal_lunch_tier: [FREE, PAID, PAID]
+    school_meal_tier: [PAID, PAID, PAID]
+    school_meal_breakfast_tier: [PAID, PAID, PAID]
+    school_meal_lunch_tier: [PAID, PAID, PAID]
+
+# Read on January 1, 2023: ME and CT have universal free meals, so both
+# meals are FREE. PA has only universal free breakfast, so its tier for both
+# meals and its lunch stay PAID.
+- name: Maine and Connecticut universal free meals and Pennsylvania universal free breakfast apply at 300% of FPG in 2023.
+  period: 2023
+  input:
+    state_code: [ME, PA, CT]
+    school_meal_fpg_ratio: [3, 3, 3]
+    meets_school_meal_categorical_eligibility: [false, false, false]
+  output:
+    school_meal_tier: [FREE, PAID, FREE]
+    school_meal_breakfast_tier: [FREE, FREE, FREE]
+    school_meal_lunch_tier: [FREE, PAID, FREE]
 
 # CT's SMART universal meals end 2023-06-30. STABLE (SY 2023-24) gives
 # universal free breakfast and covers the reduced-price copay, so at 300% only

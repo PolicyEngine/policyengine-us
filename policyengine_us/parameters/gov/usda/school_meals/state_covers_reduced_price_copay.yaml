@@ -1,6 +1,6 @@
 description: States provide breakfast and lunch at no cost to students eligible for reduced-price meals under the National School Lunch Program and School Breakfast Program if this is true.
 # Every jurisdiction with a true entry below is verified against the cited law.
-# Virginia is intentionally false (see its entry). North Dakota students in the
+# Georgia and Virginia are intentionally false (see their entries). North Dakota students in the
 # reduced-price band are covered through state_free_income_limit from July 1,
 # 2023 to June 30, 2027, and Oregon students in that band are also covered
 # through it from July 1, 2021. Coverage of only one meal is in
@@ -208,39 +208,13 @@ DE:
 FL:
   0000-01-01: false
 GA:
+  # Georgia stays false for now, by reviewer decision. It has no statute and
+  # funds reduced-price breakfast and lunch at no charge only through annual
+  # budget items: FY2025 (HB 916, Act 709, program 24.13, line 1871,
+  # https://opb.georgia.gov/document/appropriations-bills/hb-916-fy-2025-appropriations-bill/download#page=66),
+  # FY2026 (HB 68, item 155.4) and FY2027 (HB 974, program 24.13). Encoding
+  # them would cover 2024-07-01 to 2027-06-30.
   0000-01-01: false
-  # No statute: state funds in each annual budget. Federal funding for
-  # SY 2023-24 (a State Board action) is unverified and not encoded. The FY2027
-  # budget (HB 974) carries the FY2026 Nutrition program base, which includes
-  # item 155.4, into program 24.13 with no line deleting it, so coverage
-  # continues through FY2027 and ends with that last enacted budget.
-  2024-07-01:
-    value: true
-    metadata:
-      reference:
-        - title: Georgia FY2025 General Appropriations Act (HB 916, Act 709), program 24.13 (Nutrition), line 1871
-          href: https://opb.georgia.gov/document/appropriations-bills/hb-916-fy-2025-appropriations-bill/download#page=66
-        - title: Georgia House Budget and Research Office, School Nutrition Funding policy brief (July 2024; FY2025 budget)
-          href: https://www.legis.ga.gov/api/document/docs/default-source/house-budget-and-research-office-document-library/newsandhighlights/2024/2024_policy_brief_school_nutrition_funding.pdf?sfvrsn=34d9c7cc_2#page=1
-  2025-07-01:
-    value: true
-    metadata:
-      reference:
-        - title: Georgia FY2026 General Appropriations Act (HB 68), item 155.4
-          href: https://www.legis.ga.gov/api/document/docs/default-source/senate-budget-office-document-library/appropriations/2026/general/cc-bill_hb-68-fy26g_final.pdf?sfvrsn=f03de74b_2#page=102
-  2026-07-01:
-    value: true
-    metadata:
-      reference:
-        - title: Georgia FY2027 General Appropriations Act (HB 974), program 24.13 (Nutrition), lines 1958-1965
-          href: https://www.legis.ga.gov/api/document/docs/default-source/house-budget-and-research-office-document-library/2027-fiscal-year/fy_2027_bill_conf_cmte_(hb_974).pdf#page=60
-  # FY2027, the last enacted budget, ends June 30, 2027.
-  2027-07-01:
-    value: false
-    metadata:
-      reference:
-        - title: Georgia FY2027 General Appropriations Act (HB 974), program 24.13 (Nutrition), lines 1958-1965
-          href: https://www.legis.ga.gov/api/document/docs/default-source/house-budget-and-research-office-document-library/2027-fiscal-year/fy_2027_bill_conf_cmte_(hb_974).pdf#page=60
 GU:
   0000-01-01: false
 HI:

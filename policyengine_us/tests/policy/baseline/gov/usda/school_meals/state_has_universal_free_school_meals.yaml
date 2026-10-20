@@ -198,16 +198,16 @@
   output:
     state_has_universal_free_school_meals: false
 
-# Annual periods read January 1. CA (AB 130) starts 2022-07-01, so calendar
-# 2022 is not yet universal. ME's 20-A M.R.S. section 6602(1)(H)-(I) took
-# effect 2021-07-01 (P.L. 2021, c. 398, Part OOOO), so calendar 2022 is
-# universal.
-- name: California universal free meals are not yet in force in 2022, while Maine's are.
+# Annual periods read January 1. CA (AB 130) starts 2022-07-01, and ME's
+# program (P.L. 2021, c. 398, Part OOOO, approved July 1, 2021) took effect
+# with SY 2022-23, its first funded year, so calendar 2022 is universal in
+# neither state.
+- name: California and Maine universal free meals are not yet in force in 2022.
   period: 2022
   input:
     state_code: [CA, ME]
   output:
-    state_has_universal_free_school_meals: [false, true]
+    state_has_universal_free_school_meals: [false, false]
 
 # CO (HB 22-1414), MI (PA 103 of 2023), MN (Laws 2023, c. 18) and NM (SB 4)
 # start 2023-07-01, after the January 1, 2023 reading.

@@ -142,9 +142,11 @@ MD:
 ME:
   0000-01-01: false
   # P.L. 2021, c. 398, Part OOOO (LD 221), an emergency act approved July 1,
-  # 2021, enacted 20-A M.R.S. § 6602(1)(H)-(I) with no later start date.
-  # Federal waivers already made SY 2021-22 meals free, so the act funded the
-  # state share from SY 2022-23. Reduced-price students were covered earlier
+  # 2021, enacted 20-A M.R.S. § 6602(1)(H)-(I). The program took effect with
+  # SY 2022-23, the first year the state funded it (Sec. OOOO-8 funds students
+  # ineligible for free or reduced-price meals "during the 2022-2023 school
+  # year"; the FY 2021-22 allocation is $0), because federal waivers already
+  # made SY 2021-22 meals free. Reduced-price students were covered earlier
   # (state_covers_reduced_price_copay and
   # state_covers_reduced_price_copay_breakfast_only). Not modeled: private
   # schools approved for tuition are covered only when at least 60% of their
@@ -152,7 +154,7 @@ ME:
   # P.L. 2025, c. 388, Part C only publicly funded students are covered and
   # state funding requires a school to maximize federal reimbursement,
   # including the community eligibility provision if eligible (§ 6602-A).
-  2021-07-01:
+  2022-07-01:
     value: true
     metadata:
       reference:
