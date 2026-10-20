@@ -53,7 +53,7 @@ class co_oap_deemed_income(Variable):
         year = period.this_year
         tanf_age = parameters(period).gov.hhs.tanf.cash.eligibility.age_limit
         age_limit = where(
-            person("is_in_secondary_school", period),
+            person("is_in_secondary_school", year),
             tanf_age.student,
             tanf_age.non_student,
         )

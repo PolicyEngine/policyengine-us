@@ -123,8 +123,8 @@
     co_oap_own_countable_income: 1_410
 
 - name: Case 7, SSI brings gross unearned income above $20, so nothing reaches earnings.
-  # $5/month of interest and $200/month of earnings. The disregard covers the
-  # $5 of interest; gross unearned income including SSI is far above $20, so
+  # $5/month of pension and $200/month of earnings. The disregard covers the
+  # $5 of pension; gross unearned income including SSI is far above $20, so
   # nothing reaches earnings (3.533(A)(2)(f)): (200 - 65) / 2 = 67.50/month,
   # or 810/year. SSI moves the unused $15 to earnings:
   # (200 - 65 - 15) / 2 = 60, or 720/year.
@@ -133,7 +133,7 @@
     people:
       person:
         age: 70
-        interest_income: 60
+        pension_income: 60
         employment_income: 2_400
     households:
       household:
@@ -267,3 +267,15 @@
   output:
     co_oap_own_countable_income: 11_760
     co_oap: 2_268
+
+- name: Case 15, reported SSI receipt prevents an earnings spillover even when modeled SSI is zero.
+  # Reported receipt also identifies an SSI-only client under
+  # 3.533(A)(2)(c)(2): (500 - 65) / 2 = 217.50/month, or 2,610/year.
+  period: 2026
+  input:
+    state_code: CO
+    ssi: 0
+    receives_ssi: true
+    employment_income: 6_000
+  output:
+    co_oap_own_countable_income: 2_610

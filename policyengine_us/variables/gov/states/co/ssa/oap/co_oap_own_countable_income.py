@@ -26,7 +26,7 @@ class co_oap_own_countable_income(Variable):
         # Monthly amounts in cents, SSI as SSA pays it (see _precision.py).
         earned = cents(person("ssi_earned_income", period))
         ssi = ssi_paid(person("ssi", period))
-        receives_ssi = ssi > 0
+        receives_ssi = (ssi > 0) | person("receives_ssi", period)
         unearned = person("co_oap_unearned_income", period) + person(
             "co_oap_in_kind_support_and_maintenance", period
         )
