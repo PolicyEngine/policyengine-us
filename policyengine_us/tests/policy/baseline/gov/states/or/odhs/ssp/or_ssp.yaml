@@ -540,3 +540,63 @@
     or_ssp:
       2026-01: 11.354838709677419
       2026-02: 22
+
+- name: Case 35, salary-reduction health premiums are not earned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 40
+    or_ssp_category: DISABILITY_INTERIM
+    # Reviewer's example: $1,000 a month of wages, $100 of it paid as
+    # health premiums through a cafeteria plan by salary reduction.
+    employment_income: 12_000
+    pre_tax_health_insurance_premiums: 1_200
+  output:
+    ssi: 0
+    # OAR 461-145-0120(5)(b) counts only cafeteria plan benefits taken as
+    # cash: 1,000 - 100 = 900, and 994 - 900 = 94.
+    or_ssp_countable_income: 900
+    or_ssp: 94
+
+- name: Case 36, a self-employment loss offsets wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 40
+    or_ssp_category: DISABILITY_INTERIM
+    # OPEN (DHS 2818) Example 1: $650 a month of wages and a documented
+    # $1,000 net loss last year from a side business.
+    employment_income: 7_800
+    self_employment_income: -1_000
+  output:
+    ssi: 0
+    # OAR 461-150-0095(2): 650 - 1,000 / 12 = 566.67, and 994 - 566.67 = 427.33.
+    or_ssp_countable_income: 566.67
+    or_ssp: 427.33
+
+- name: Case 37, a self-employment loss does not offset unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 40
+    or_ssp_category: DISABILITY_INTERIM
+    # A documented $1,000 net loss last year and no wages.
+    self_employment_income: -1_000
+    # VA compensation for a 10% rating, $180.42 a month from December 2025.
+    veterans_benefits: 2_165.04
+  output:
+    ssi: 0
+    # OAR 461-150-0095(2) excludes the loss only from other earned income,
+    # so earned income is 0 and countable income is 180.42:
+    # 994 - 180.42 = 813.58.
+    or_ssp_countable_income: 180.42
+    or_ssp: 813.58
