@@ -1180,6 +1180,18 @@ programs:
         notes: Models 2026 living alone, living with others and congregate care supplements with
           downstate premiums, plus the medical facility personal needs allowance. Grandfathered
           mandatory payments are not modeled.
+      - state: RI
+        status: partial
+        name: Rhode Island SSP
+        full_name: Rhode Island State Supplementary Payment
+        variable: ri_ssp
+        parameter_prefix: gov.states.ri.dhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models 2026 optional living-arrangement supplements and Title XIX
+          facility personal-needs payments. Mandatory grandfathered payments,
+          facility subsidies and the statutory supportive residential-care
+          category are not modeled.
 
   - id: social_security
     name: Social Security
