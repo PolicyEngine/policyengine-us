@@ -30,6 +30,7 @@ OUTPUTS = (
     "amt_base_tax",
     "alternative_minimum_tax",
 )
+YEARS = tuple(range(2018, 2031))
 
 
 class PreviousChildAmtFormulas(Reform):
@@ -142,61 +143,85 @@ def situation(cases, year):
     return {"people": people, "tax_units": tax_units, "households": households}
 
 
-case_strategy = st.fixed_dictionaries(
+def multi_year_situation(extra_cases):
+    """Merge annual inputs while keeping each cohort's membership fixed."""
+    inputs = {"people": {}, "tax_units": {}, "households": {}}
+    for year_index, year in enumerate(YEARS):
+        cases = [
+            *boundary_cases(year),
+            *(
+                {
+                    "status": case["status"],
+                    "age": case["age"],
+                    "student": case["student"],
+                    **case["finances"][year_index],
+                }
+                for case in extra_cases
+            ),
+        ]
+        for entity_type, entities in situation(cases, year).items():
+            for entity_id, fields in entities.items():
+                merged = inputs[entity_type].setdefault(entity_id, {})
+                for variable, value in fields.items():
+                    if variable == "members":
+                        assert merged.setdefault(variable, value) == value
+                    else:
+                        merged.setdefault(variable, {}).update(value)
+    return inputs
+
+
+financial_strategy = st.fixed_dictionaries(
     {
-        "status": st.sampled_from(STATUSES),
-        "age": st.integers(17, 40),
-        "student": st.booleans(),
         "amt_income": st.integers(0, 3_000_000),
         "deductions": st.integers(0, 100_000),
         "regular_tax": st.integers(0, 1_000_000),
     }
 )
-
-
-@hypothesis.settings(max_examples=8, deadline=None, derandomize=True)
-@hypothesis.given(
-    year=st.integers(2018, 2030),
-    extra_cases=st.lists(case_strategy, max_size=8),
+case_strategy = st.fixed_dictionaries(
+    {
+        "status": st.sampled_from(STATUSES),
+        "age": st.integers(17, 40),
+        "student": st.booleans(),
+        "finances": st.lists(
+            financial_strategy, min_size=len(YEARS), max_size=len(YEARS)
+        ),
+    }
 )
-@hypothesis.example(year=2018, extra_cases=[])
-@hypothesis.example(year=2019, extra_cases=[])
-@hypothesis.example(year=2020, extra_cases=[])
-@hypothesis.example(year=2021, extra_cases=[])
-@hypothesis.example(year=2022, extra_cases=[])
-@hypothesis.example(year=2023, extra_cases=[])
-@hypothesis.example(year=2024, extra_cases=[])
-@hypothesis.example(year=2025, extra_cases=[])
-@hypothesis.example(year=2026, extra_cases=[])
-def test_post_2017_amt_is_unchanged(previous_system, year, extra_cases):
-    cases = [*boundary_cases(year), *extra_cases]
-    inputs = situation(cases, year)
+
+
+@hypothesis.settings(max_examples=3, deadline=None, derandomize=True)
+@hypothesis.given(
+    extra_cases=st.lists(case_strategy, min_size=1, max_size=4),
+)
+def test_post_2017_amt_is_unchanged(previous_system, extra_cases):
+    inputs = multi_year_situation(extra_cases)
     current = Simulation(tax_benefit_system=system, situation=inputs)
     previous = Simulation(tax_benefit_system=previous_system, situation=inputs)
 
-    for variable in OUTPUTS:
-        np.testing.assert_array_equal(
-            current.calculate(variable, year),
-            previous.calculate(variable, year),
-            err_msg=f"{variable} changed in {year}",
-        )
+    for year in YEARS:
+        for variable in OUTPUTS:
+            np.testing.assert_array_equal(
+                current.calculate(variable, year),
+                previous.calculate(variable, year),
+                err_msg=f"{variable} changed in {year}",
+            )
 
-    # Confirm the joint-return fix actually changes eligibility in this vector,
-    # while the statutory post-2017 switch keeps all AMT outputs identical.
-    eligibility_changed = current.calculate(
-        "amt_kiddie_tax_applies", year
-    ) != previous.calculate("amt_kiddie_tax_applies", year)
-    assert eligibility_changed.any()
-    filing_status = current.calculate("filing_status", year)
-    assert np.all(filing_status.decode_to_str()[eligibility_changed] == "JOINT")
+        # Confirm the joint-return fix actually changes eligibility in this
+        # vector, while the statutory switch keeps post-2017 AMT identical.
+        eligibility_changed = current.calculate(
+            "amt_kiddie_tax_applies", year
+        ) != previous.calculate("amt_kiddie_tax_applies", year)
+        assert eligibility_changed.any()
+        filing_status = current.calculate("filing_status", year)
+        assert np.all(filing_status.decode_to_str()[eligibility_changed] == "JOINT")
 
-    exemption = current.calculate("amt_exemption", year)
-    base_exemption = system.parameters(str(year)).gov.irs.income.amt.exemption.amount[
-        filing_status
-    ]
-    assert np.any(exemption == base_exemption)
-    assert np.any((exemption > 0) & (exemption < base_exemption))
-    assert np.any(exemption == 0)
-    amt = current.calculate("alternative_minimum_tax", year)
-    assert np.any(amt == 0)
-    assert np.any(amt > 0)
+        exemption = current.calculate("amt_exemption", year)
+        base_exemption = system.parameters(
+            str(year)
+        ).gov.irs.income.amt.exemption.amount[filing_status]
+        assert np.any(exemption == base_exemption)
+        assert np.any((exemption > 0) & (exemption < base_exemption))
+        assert np.any(exemption == 0)
+        amt = current.calculate("alternative_minimum_tax", year)
+        assert np.any(amt == 0)
+        assert np.any(amt > 0)
