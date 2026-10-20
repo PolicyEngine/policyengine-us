@@ -13,7 +13,9 @@ class estate_income(Variable):
         "interest, dividends, and capital gains a beneficiary receives from an "
         "estate or trust belong in those separate inputs. Positive amounts "
         "enter federal gross income under IRC § 61(a)(14); losses are deducted "
-        "through loss_ald."
+        "through loss_ald. The passive part (Schedule E Part III column (d) "
+        "less column (c)), which the EITC investment income test counts, is "
+        "the separate passive_estate_income input."
     )
     definition_period = YEAR
     reference = (

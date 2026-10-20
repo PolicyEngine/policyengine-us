@@ -54,3 +54,99 @@
     is_tax_unit_spouse: false
   output:
     is_cdcc_eligible: true
+
+- name: 2025 child under 13 is not a qualifying person when the single filer can be claimed as a dependent
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # Publication 503: "Your qualifying child who is your dependent and who
+    # was under age 13"; IRC 152(b)(1).
+    is_cdcc_eligible: [false, false]
+
+- name: 2025 joint return with one claimable spouse has no under-13 qualifying person (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+  output:
+    is_cdcc_eligible: [false, false, false]
+
+- name: 2025 joint return with one claimable spouse has no under-13 qualifying person (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: TX
+  output:
+    is_cdcc_eligible: [false, false, false]
+
+- name: 2025 disabled person still qualifies when the filer can be claimed as a dependent
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+      relative:
+        age: 60
+        is_incapable_of_self_care: true
+    tax_units:
+      tax_unit:
+        members: [filer, relative]
+    households:
+      household:
+        members: [filer, relative]
+        state_code: TX
+  output:
+    # IRC 21(b)(1)(B) determines dependency "without regard to subsections
+    # (b)(1), (b)(2), and (d)(1)(B)" of section 152; Publication 503 item
+    # 3(b)(iii).
+    is_cdcc_eligible: [false, true]
