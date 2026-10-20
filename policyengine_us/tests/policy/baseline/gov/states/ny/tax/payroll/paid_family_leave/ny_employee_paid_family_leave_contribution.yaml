@@ -41,3 +41,25 @@
   output:
     # 0.388% * 100,000 = 388.00, capped at 354.53.
     ny_employee_paid_family_leave_contribution: 354.53
+
+- name: New York Paid Family Leave 2027 contribution is 0.452% of wages.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 60_000
+    state_code: NY
+  output:
+    # 0.452% * 60,000 = 271.20, below the 2027 cap of 451.81.
+    ny_employee_paid_family_leave_contribution: 271.20
+    # 271.20 + 31.20 Disability Benefits = 302.40.
+    ny_employee_state_payroll_tax: 302.40
+    employee_state_payroll_tax: 302.40
+
+- name: New York Paid Family Leave 2027 contribution stops at the 451.81 annual maximum.
+  period: 2027
+  input:
+    employment_income: 100_000
+    state_code: NY
+  output:
+    # 0.452% * 100,000 = 452.00, capped at 451.81.
+    ny_employee_paid_family_leave_contribution: 451.81
