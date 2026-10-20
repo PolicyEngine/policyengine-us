@@ -273,7 +273,7 @@
   output:
     nyc_household_credit: 15
 
-- name: 2025 joint return with one claimable spouse gets no NYC household credit (the claimable spouse is the head)
+- name: 2025 joint return with one claimable spouse counts the other spouse's exemption for the NYC credit (the claimable spouse is the head)
   period: 2025
   input:
     people:
@@ -298,9 +298,12 @@
         state_code: NY
         in_nyc: true
   output:
-    nyc_household_credit: 0
+    # Tax Law 1310(d) counts the exemptions the couple is entitled to: one.
+    # $30 x 1. IT-201 line 48 would deny the credit; the model follows the
+    # statute.
+    nyc_household_credit: 30
 
-- name: 2025 joint return with one claimable spouse gets no NYC household credit (the claimable spouse is the spouse)
+- name: 2025 joint return with one claimable spouse counts the other spouse's exemption for the NYC credit (the claimable spouse is the spouse)
   period: 2025
   input:
     people:
@@ -325,7 +328,7 @@
         state_code: NY
         in_nyc: true
   output:
-    nyc_household_credit: 0
+    nyc_household_credit: 30
 
 - name: 2025 joint return with neither spouse claimable gets the NYC household credit
   period: 2025

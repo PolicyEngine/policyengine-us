@@ -182,7 +182,7 @@ def _crafted_units():
         unit([adult(25), adult(20)], [dependent(22, student=True)]),
         # The only 65+ person is a dependent parent.
         unit([adult(40)], [elderly_parent], expenses=30_000.0),
-        # A 65+ filer with exactly $28,000 of expenses.
+        # A 65+ filer with exactly $28,000 of expenses (not over $28,000).
         unit([adult(70)], [], expenses=28_000.0),
     ]
 
@@ -268,7 +268,8 @@ def _reference_exemption(unit):
     if unit["state"] != "NM":
         return 0
     filer_65 = any(a["age"] >= 65 for a in unit["adults"])
-    return EXEMPTION * (filer_65 and unit["medical_expenses"] >= MIN_EXPENSES)
+    # NMSA 7-2-5.9(A): expenses that "exceed" $28,000.
+    return EXEMPTION * (filer_65 and unit["medical_expenses"] > MIN_EXPENSES)
 
 
 def _describe(unit):
@@ -336,7 +337,7 @@ def _assert_coverage(drawn_units, credit, exemption):
             u["state"] == "NM"
             and all(a["age"] < 65 for a in u["adults"])
             and any(d["age"] >= 65 for d in u["dependents"])
-            and u["medical_expenses"] >= MIN_EXPENSES
+            and u["medical_expenses"] > MIN_EXPENSES
             for u in drawn_units
         ]
     )

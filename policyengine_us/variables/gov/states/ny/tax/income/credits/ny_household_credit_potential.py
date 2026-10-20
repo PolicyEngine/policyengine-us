@@ -33,19 +33,29 @@ class ny_household_credit_potential(Variable):
             ["tax_unit_size", "spouse_separate_tax_unit_size"],
         )
         separate = filing_status == filing_statuses.SEPARATE
+        joint = filing_status == filing_statuses.JOINT
+        # Tax Law 606(b)(2)(B) and (3)(B) count "the number of exemptions for
+        # which the taxpayer (or in the case of a husband and wife, taxpayers)
+        # is entitled to a deduction" for federal purposes. On a joint return
+        # that excludes a spouse whom another taxpayer can claim
+        # (exemptions_count). Other statuses keep the tax unit size.
+        size = where(joint, tax_unit("exemptions_count", period), size)
         non_single_base = p.non_single.base.calc(agi, right=True)
         non_single_additional = p.non_single.additional.calc(agi, right=True)
-        total_amount_if_not_single = non_single_base + non_single_additional * (
-            size - 1
+        total_amount_if_not_single = non_single_base + non_single_additional * max_(
+            size - 1, 0
         )
         amount_if_not_single = np.ceil(
             total_amount_if_not_single / where(separate, 2, 1)
         )
         non_single_amount = amount_if_not_single * ~single
-        # Tax Law 606(b)(3)(B) excludes an individual for whom a deduction
-        # under IRC 151(c) "is allowable to another taxpayer", and IT-201 line
-        # 40 says "If you marked the Yes box at item C ... you do not qualify
-        # for this credit". Item C is one box per return; this formula reads
-        # it as marked when either spouse of a joint return can be claimed.
+        # Tax Law 606(b)(3)(B) excludes, among unmarried individuals, one for
+        # whom a deduction under IRC 151(c) "is allowable to another
+        # taxpayer"; a married couple is a household in its own right, and its
+        # credit counts only the exemptions the couple is entitled to. IT-201
+        # line 40 says "If you marked the Yes box at item C ... you do not
+        # qualify for this credit", which denies a joint return with one
+        # claimable spouse; the model follows the statute and keeps the
+        # exclusion for other returns.
         dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
-        return where(dependent_filer, 0, single_amount + non_single_amount)
+        return where(dependent_filer & ~joint, 0, single_amount + non_single_amount)

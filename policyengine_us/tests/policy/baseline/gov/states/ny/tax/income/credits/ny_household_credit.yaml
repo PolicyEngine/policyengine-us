@@ -127,7 +127,7 @@
   output:
     ny_household_credit_potential: 45
 
-- name: 2025 joint return with one claimable spouse gets no household credit (the claimable spouse is the head)
+- name: 2025 joint return with one claimable spouse counts the other spouse's exemption (the claimable spouse is the head)
   period: 2025
   input:
     people:
@@ -151,10 +151,13 @@
         members: [person_a, person_b]
         state_code: NY
   output:
-    # Item C is one box per return; either spouse marks it.
-    ny_household_credit_potential: 0
+    # Tax Law 606(b) counts the exemptions the couple is entitled to: one,
+    # for the spouse who cannot be claimed. $60 base at $10,000 of AGI plus
+    # $15 x (1 - 1). IT-201 line 40 would deny the credit because item C is
+    # marked; the model follows the statute.
+    ny_household_credit_potential: 60
 
-- name: 2025 joint return with one claimable spouse gets no household credit (the claimable spouse is the spouse)
+- name: 2025 joint return with one claimable spouse counts the other spouse's exemption (the claimable spouse is the spouse)
   period: 2025
   input:
     people:
@@ -178,7 +181,7 @@
         members: [person_b, person_a]
         state_code: NY
   output:
-    ny_household_credit_potential: 0
+    ny_household_credit_potential: 60
 
 - name: 2025 joint return with neither spouse claimable gets the household credit
   period: 2025
