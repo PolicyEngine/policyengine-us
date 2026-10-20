@@ -30,12 +30,12 @@ class mn_paid_leave_small_employer(Variable):
         headcount = person("employer_headcount", period)
         average_wage = person("mn_paid_leave_employer_average_quarterly_wage", period)
         quarterly_state_average = p.state_average_annual_wage / 4
-        # DEED states the limit and compares wages in whole cents. Comparing
-        # cents also keeps a float32 input of exactly the limit within it.
-        max_average_wage_cents = np.round(
-            100 * p.max_average_wage_ratio * quarterly_state_average
+        # DEED states the limit to the cent ($27,745.88 for 2026).
+        max_average_wage = np.round(
+            p.max_average_wage_ratio * quarterly_state_average, 2
         )
-        average_wage_cents = np.round(100 * average_wage)
+        # Inputs are held in float32: compare at that precision, so an input
+        # of exactly the published limit meets it.
         return (headcount <= p.max_headcount) & (
-            average_wage_cents <= max_average_wage_cents
+            average_wage <= np.float32(max_average_wage)
         )

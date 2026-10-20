@@ -126,6 +126,17 @@
     mn_paid_leave_premium: 880
     mn_employer_paid_leave_contribution: 440
 
+- name: An average quarterly wage a fraction of a cent above the limit fails the wage test.
+  period: 2026
+  input:
+    employment_income: 100_000
+    employer_headcount: 10
+    mn_paid_leave_employer_average_quarterly_wage: 27_745.885
+    state_code: MN
+  output:
+    mn_paid_leave_small_employer: false
+    mn_paid_leave_premium: 880
+
 - name: Wages above the rounded Social Security base are capped at 185,000.
   period: 2026
   input:
@@ -209,6 +220,17 @@
     mn_employee_paid_leave_contribution: 0
     mn_employer_paid_leave_contribution: 0
     mn_employer_additional_state_payroll_tax: 0
+
+- name: Years before the 2015 parameter backdating still compute.
+  period: 2014
+  input:
+    employment_income: 100_000
+    employer_headcount: 9
+    state_code: MN
+  output:
+    mn_paid_leave_premium: 0
+    mn_employer_paid_leave_contribution: 0
+    employer_additional_state_payroll_tax: 0
 
 - name: Workers outside Minnesota owe no Minnesota premium.
   period: 2026
