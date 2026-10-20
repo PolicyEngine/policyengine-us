@@ -495,3 +495,53 @@
     has_qualifying_non_marketplace_health_coverage_at_interview: [true]
     pays_aca_premium: [false]
     is_aca_ptc_eligible: [false]
+
+- name: Exactly 400% of the 2025 poverty guideline is eligible in 2026
+  # 26 U.S.C. 36B(c)(1)(A): income that "does not exceed 400 percent" of the
+  # poverty line; 4 x $15,650 = $62,600.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 62_600
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    aca_ptc_income_eligible: true
+    is_aca_ptc_eligible: [true]
+
+- name: Income 400.003% of the 2025 poverty guideline is ineligible in 2026
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 62_600.47
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    aca_ptc_income_eligible: false
+    is_aca_ptc_eligible: [false]
