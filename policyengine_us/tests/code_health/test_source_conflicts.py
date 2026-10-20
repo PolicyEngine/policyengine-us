@@ -14,12 +14,15 @@ This test reads a vendored copy of the register, pinned by commit and sha256
 (``source_conflicts/pin.yaml`` at the repository root; refresh it with
 ``scripts/update_source_conflicts.py``), so CI never depends on a moving
 branch. Comments are read syntax-aware: Python comment tokens, and YAML
-comments outside quoted and block scalars. Invariants, checked on every run:
+comments exactly as PyYAML's own scanner skips them. A file whose comments
+cannot be read (it doesn't tokenize or parse) fails the guard. Invariants,
+checked on every run:
 
 1. The vendored copy is byte-identical to what its pin names (sha256), and
    the pin names rulespec-us at a full commit.
 2. Every comment in policyengine_us/{variables,parameters,reforms} that
-   starts like a marker ("# Source conflict ...", any spacing or case) is a
+   starts like a marker ("# Source conflict ...", in any case, with any
+   number of #s and any separator or none between the words) is a
    well-formed marker on its own comment line, names a registered entry, and
    that entry lists the marker's file as a PolicyEngine/policyengine-us
    implementation.
@@ -33,9 +36,11 @@ comments outside quoted and block scalars. Invariants, checked on every run:
 5. Backlog: ``source_conflicts/candidates.yaml`` lists every known conflict
    not yet registered. Each candidate has a well-formed, unique global id that
    is not yet in the register (registering one removes it from the backlog),
-   valid kinds, states and years, https links, and code paths inside this
-   repository that exist; the file's raw text, comments and keys included, is
-   public (no decision-queue ids, session ids, local paths or email addresses).
+   valid kinds, states and years, https links, and code paths that are files
+   git tracks here (no absolute path, no `..`, no hidden component such as
+   .git or .github). The file is public: its raw text (comments and keys
+   included) and every parsed value and key (escapes, binary, sets) carry no
+   decision-queue ids, session ids, local paths or email addresses.
 
 These are structural checks: they tie markers, the register and the backlog
 together; they do not judge whether code follows a statute. rulespec-us's own
@@ -73,14 +78,15 @@ GLOBAL_ID = r"[a-z]{2}(?:-[a-z0-9]+)*:[a-z0-9]+(?:-[a-z0-9]+)*"
 # The one spelling of a marker, alone on its comment line.
 MARKER_RE = re.compile(rf"# Source conflict ({GLOBAL_ID})")
 # A comment that starts like a marker: "source conflict" in any case, with
-# any number of #s, and spaces, hyphens, underscores or nothing between the
-# words; either followed by something shaped like a global id (after an
+# any number of #s, and any separator (space, hyphen, underscore, dash, dot,
+# zero-width space) or none between the words; either followed by something
+# shaped like a global id (after an
 # optional colon, and with "conflicts" too) or not followed by a colon or a
 # letter. Prose such as "Source conflict: the plan says ..." or "Source
 # conflicts are registered ..." is not one, and counts toward the ratchet.
 ATTEMPT_RE = re.compile(
     r"""(?ix)
-    \#+\s*source[\s_-]*conflict
+    \#+\s*source[\W_]*conflict
     (?: s?\s*:?\s*[a-z]{2}(?:-[a-z0-9]+)*:[a-z0-9]   # an id, however introduced
       | (?![\w:])(?!\s*:)                           # or no prose after it
     )
@@ -169,105 +175,113 @@ def _relative(path: Path) -> str:
     return path.relative_to(REPO_ROOT).as_posix()
 
 
+class Unscannable(Exception):
+    """A scanned file whose comments cannot be read; the guard fails closed."""
+
+
 def _python_comments(text: str):
     """(line, comment, inline) for each comment token; inline means code
     precedes it on its line. Strings that look like comments are not tokens."""
 
+    found = []
     try:
         for token in tokenize.generate_tokens(io.StringIO(text).readline):
             if token.type == tokenize.COMMENT:
                 row, col = token.start
                 # The token's own physical line: str.splitlines() would also
                 # break on form feeds and Unicode separators and shift rows.
-                yield row, token.string.strip(), bool(token.line[:col].strip())
-    except (tokenize.TokenError, SyntaxError, IndentationError):
-        return
+                found.append(
+                    (row, token.string.strip(), bool(token.line[:col].strip()))
+                )
+    except (tokenize.TokenError, SyntaxError, IndentationError) as error:
+        raise Unscannable(f"cannot tokenize: {error}") from error
+    return found
 
 
-BLOCK_SCALAR_RE = re.compile(
-    r"^(\s*)(?:-\s+)?(?:[^#\s][^#]*:\s+)?[|>][-+0-9]*\s*(?:#.*)?$"
-)
-
-
-# PyYAML's line breaks (YAML 1.1).
+# PyYAML's line breaks (YAML 1.1), as its reader counts lines.
 YAML_LINE_BREAK_RE = re.compile("\r\n|[\r\n\x85\u2028\u2029]")
 
 
-def _opens_value(line: str, index: int, in_flow: bool = False) -> bool:
-    """Whether a quote or bracket at `index` starts a value: after
-    indentation, `: ` or a `- ` item, or inside a flow collection after `[`,
-    `{` or `,`; not in the middle of a plain scalar such as `The '90s rule`
-    or `(strikes "and ...")`."""
+class _CommentRecorder(yaml.BaseLoader):
+    """PyYAML's own scanner, noting where it skips each comment, so the guard
+    sees exactly the comments YAML does. The overrides repeat PyYAML 6's
+    methods with one added `_note()`."""
 
-    before = line[:index].rstrip()
-    if not before:
-        return True
-    if before[-1] in "[{,":
-        return in_flow
-    if index == len(before):  # nothing but the indicator itself before the quote
-        return False
-    if before[-1] == ":":
-        return True
-    return before[-1] == "-" and (len(before) == 1 or before[-2] in " \t")
+    def __init__(self, stream):
+        super().__init__(stream)
+        self.comment_starts = []
+
+    def _note(self):
+        if self.peek() == "#":
+            self.comment_starts.append((self.line, self.column))
+
+    def scan_to_next_token(self):
+        if self.index == 0 and self.peek() == "\ufeff":
+            self.forward()
+        found = False
+        while not found:
+            while self.peek() == " ":
+                self.forward()
+            self._note()
+            if self.peek() == "#":
+                while self.peek() not in "\0\r\n\x85\u2028\u2029":
+                    self.forward()
+            if self.scan_line_break():
+                if not self.flow_level:
+                    self.allow_simple_key = True
+            else:
+                found = True
+
+    def scan_block_scalar_ignored_line(self, start_mark):
+        while self.peek() == " ":
+            self.forward()
+        self._note()
+        return super().scan_block_scalar_ignored_line(start_mark)
+
+    def scan_directive_ignored_line(self, start_mark):
+        while self.peek() == " ":
+            self.forward()
+        self._note()
+        return super().scan_directive_ignored_line(start_mark)
 
 
 def _yaml_comments(text: str):
-    """(line, comment, inline) for each YAML comment outside quoted and block
-    scalars (a `#` starts a comment at a line's start or after whitespace).
-    Quoted scalars may span lines and use '' and \\" escapes."""
+    """(line, comment, inline) for each comment PyYAML's scanner skips."""
 
-    return _yaml_scan(text)[0]
+    text = text.removeprefix("\ufeff")
+    loader = _CommentRecorder(text)
+    try:
+        while loader.check_event():  # the parser, so malformed YAML fails closed
+            loader.get_event()
+    except yaml.YAMLError as error:
+        raise Unscannable(f"cannot scan YAML: {error}") from error
+    finally:
+        loader.dispose()
+    lines = YAML_LINE_BREAK_RE.split(text)
+    return [
+        (row + 1, lines[row][col:].strip(), bool(lines[row][:col].strip()))
+        for row, col in loader.comment_starts
+    ]
 
 
-def _yaml_scan(text: str):
-    """(comments, open quote at the end of the text or None)."""
+@functools.lru_cache(maxsize=None)
+def _cached_comments(path: Path):
+    """The file's comments, or the Unscannable error (scanned once a run)."""
 
-    comments = []
-    block_indent = None
-    quote = None  # an open quoted scalar, carried across lines
-    flow = 0  # depth of open [ ] and { } collections, carried across lines
-    for number, line in enumerate(YAML_LINE_BREAK_RE.split(text), 1):
-        indent = len(line) - len(line.lstrip())
-        if quote is None and not flow and block_indent is not None:
-            if not line.strip() or indent > block_indent:
-                continue  # inside a | or > block scalar
-            block_indent = None
-        if quote is None and line.lstrip().startswith("#"):
-            comments.append((number, line.strip(), False))
-            continue
-        index = 0
-        while index < len(line):
-            char = line[index]
-            if quote == "'":
-                if char == "'" and line[index + 1 : index + 2] == "'":
-                    index += 1  # '' is an escaped quote
-                elif char == "'":
-                    quote = None
-            elif quote == '"':
-                if char == "\\":
-                    index += 1  # skip the escaped character
-                elif char == '"':
-                    quote = None
-            elif char in "'\"" and _opens_value(line, index, flow > 0):
-                quote = char
-            elif char in "[{" and _opens_value(line, index, flow > 0):
-                flow += 1
-            elif char in "]}" and flow:
-                flow -= 1
-            elif char == "#" and index > 0 and line[index - 1] in " \t":
-                comments.append((number, line[index:].strip(), True))
-                break
-            index += 1
-        if quote is None and not flow and BLOCK_SCALAR_RE.match(line):
-            block_indent = indent
-    return comments, quote
+    text = path.read_text(encoding="utf-8-sig", errors="replace")
+    try:
+        return list(
+            _python_comments(text) if path.suffix == ".py" else _yaml_comments(text)
+        )
+    except Unscannable as error:
+        return error
 
 
 def _comments(path: Path):
-    text = path.read_text(encoding="utf-8", errors="replace")
-    if path.suffix == ".py":
-        return list(_python_comments(text))
-    return list(_yaml_comments(text))
+    found = _cached_comments(path)
+    if isinstance(found, Unscannable):
+        raise found
+    return found
 
 
 def _load():
@@ -302,7 +316,12 @@ def _markers():
     found = []  # (global id, relative path, line number)
     malformed = []
     for path in _code_files():
-        for number, comment, inline in _comments(path):
+        try:
+            comments = _comments(path)
+        except Unscannable as error:
+            malformed.append(f"{_relative(path)}: {error}")
+            continue
+        for number, comment, inline in comments:
             kind = _classify(comment, inline)
             if kind == "malformed":
                 malformed.append(f"{_relative(path)}:{number}: {comment}")
@@ -380,7 +399,10 @@ def test_registered_implementations_carry_their_marker():
 def _unmarked_conflict_comments() -> Counter:
     counts: Counter = Counter()
     for path in _code_files():
-        comments = _comments(path)
+        try:
+            comments = _comments(path)
+        except Unscannable:
+            continue  # test_markers_are_well_formed reports it
         if any(
             MARKER_RE.fullmatch(comment) and not inline
             for _, comment, inline in comments
@@ -461,6 +483,10 @@ def test_marker_pattern():
         "# Source conflicts us-hi:missing",
         "## Source conflict us-hi:missing",
         "# Source conflict: us-hi:missing",
+        # Review of 1b816488 (P3-7): any separator between the words.
+        "# Source\u2014conflict us-hi:missing",
+        "# Source.conflict us-hi:missing",
+        "# Source\u200bconflict us-hi:missing",
     ):
         assert ATTEMPT_RE.match(bad) and not MARKER_RE.fullmatch(bad), bad
 
@@ -540,21 +566,93 @@ def test_comments_are_read_syntax_aware():
         # A bracket inside a plain scalar opens no flow collection either.
         ("title: see [a, 'b # c'] # real\n", [(1, "# c'] # real", True)]),
         ("values: [\n  'a # b',\n  c] # real\n", [(3, "# real", True)]),
+        # Review of 1b816488 (P3-1): comments a hand-written scanner missed.
+        (
+            "key: 'a'# Source conflict us-hi:x\n",
+            [(1, "# Source conflict us-hi:x", True)],
+        ),
+        (
+            'key: "a"# Source conflict us-hi:x\n',
+            [(1, "# Source conflict us-hi:x", True)],
+        ),
+        (
+            "key: [1]# Source conflict us-hi:x\n",
+            [(1, "# Source conflict us-hi:x", True)],
+        ),
+        (
+            "key: {a: 1}# Source conflict us-hi:x\n",
+            [(1, "# Source conflict us-hi:x", True)],
+        ),
+        (
+            "key: [1,# Source conflict us-hi:x\n  2]\n",
+            [(1, "# Source conflict us-hi:x", True)],
+        ),
+        (
+            "key: [# Source conflict us-hi:x\n  1]\n",
+            [(1, "# Source conflict us-hi:x", True)],
+        ),
+        (
+            "key: |\n    text\n  # Source conflict us-hi:x\nother: 1\n",
+            [(3, "# Source conflict us-hi:x", False)],
+        ),
+        (
+            "key: !!str |\n  'tis\nother: 1 # Source conflict us-hi:x\nz: it's\n",
+            [(3, "# Source conflict us-hi:x", True)],
+        ),
+        (
+            "description: The rule\n  'tis odd # Source conflict us-hi:x\nlabel: Hawaii's rule\n",
+            [(2, "# Source conflict us-hi:x", True)],
+        ),
+        (
+            "\ufeff# Source conflict us-hi:x\nkey: 1\n",
+            [(1, "# Source conflict us-hi:x", False)],
+        ),
+        # A comment on a block scalar's header line.
+        (
+            "key: |  # Source conflict us-hi:x\n  text\n",
+            [(1, "# Source conflict us-hi:x", True)],
+        ),
+        # Quoted text after a tag, an anchor or a complex key is not a comment.
+        ("key: !!str 'a # Source conflict us-hi:x'\n", []),
+        ('key: &a "a # Source conflict us-hi:x"\n', []),
+        ("? 'a # Source conflict us-hi:x'\n: 1\n", []),
     ],
 )
 def test_yaml_quotes(text, comments):
     assert _yaml_comments(text) == comments
-    assert _yaml_scan(text)[1] is None
     # Each found comment is one YAML ignores: cutting it leaves the same value.
     lines = text.split("\n")
     for number, comment, _ in comments:
         lines[number - 1] = lines[number - 1][: lines[number - 1].rindex(comment)]
-    assert yaml.safe_load("\n".join(lines)) == yaml.safe_load(text)
+    load = lambda text: yaml.load(text.removeprefix("\ufeff"), Loader=yaml.BaseLoader)  # noqa: E731
+    assert load("\n".join(lines)) == load(text)
 
 
-def test_yaml_scan_reports_an_unclosed_quote():
-    assert _yaml_scan('note: "still open\n')[1] == '"'
-    assert _yaml_scan("note: 'still open\n")[1] == "'"
+def test_an_unscannable_file_is_reported_as_malformed(monkeypatch):
+    path = REPO_ROOT / "policyengine_us" / "variables" / "example.py"
+    monkeypatch.setitem(globals(), "_code_files", lambda: iter([path]))
+
+    def unreadable(_):
+        raise Unscannable("cannot tokenize: example")
+
+    monkeypatch.setitem(globals(), "_comments", unreadable)
+    assert _markers()[1] == [
+        "policyengine_us/variables/example.py: cannot tokenize: example"
+    ]
+
+
+def test_unscannable_files_fail_closed():
+    # Review of 1b816488 (P3-2): a file whose comments cannot be read must
+    # fail the guard, not pass with no comments.
+    for text in ('note: "never closed\n', "key: [1, 2\n", "a: b: c\n"):
+        with pytest.raises(Unscannable):
+            _yaml_comments(text)
+    for text in (
+        'NOTE = "a\x0bb"\n\x0b\nx = 1  # Source conflict us-hi:probe\n',
+        "def f(:\n    pass\n",
+    ):
+        with pytest.raises(Unscannable):
+            _python_comments(text)
 
 
 def test_python_rows_survive_unusual_line_separators():
@@ -564,18 +662,6 @@ def test_python_rows_survive_unusual_line_separators():
     assert list(_python_comments(text)) == [(3, "# Source conflict us-hi:inline", True)]
 
 
-def test_every_scanned_yaml_file_ends_outside_a_quoted_scalar():
-    # A quote the scanner wrongly thinks is open would hide every later comment.
-    unclosed = [
-        _relative(path)
-        for path in _code_files()
-        if path.suffix == ".yaml"
-        and _yaml_scan(path.read_text(encoding="utf-8", errors="replace"))[1]
-        is not None
-    ]
-    assert not unclosed, unclosed
-
-
 @pytest.mark.parametrize(
     ("years", "ok"),
     [
@@ -583,6 +669,7 @@ def test_every_scanned_yaml_file_ends_outside_a_quoted_scalar():
         ({"from": 2024, "type": "calendar"}, True),
         ({"type": "tax"}, False),
         ({"from": "2022", "type": "tax"}, False),
+        ({"from": 2022, "to": "2025", "type": "tax"}, False),
         ({"from": 2025, "to": 2022, "type": "tax"}, False),
         ({"from": 2025, "type": "program"}, False),
         ({"from": 2025, "type": "tax", "until": 2026}, False),
@@ -640,9 +727,27 @@ FOLLOWS = {"statute", "conflicting-source", "gap-fill", "not-modelled", "unknown
 STATES = {"ruled", "open", "unreviewed"}
 YEAR_TYPES = {"calendar", "tax", "federal-fiscal", "state-fiscal", "program"}
 PRIVATE = (
-    (re.compile(r"\bd[0-9]{3,6}\b", re.IGNORECASE), "a decision-queue id"),
+    # Not inside a longer token of letters or digits; an underscore join
+    # (queue_d1234, d1234_ruling) still counts.
+    (
+        re.compile(r"(?<![a-z0-9])d[0-9]{3,6}(?![0-9])", re.IGNORECASE),
+        "a decision-queue id",
+    ),
     (re.compile(r"\blocal_[0-9a-f]{8}", re.IGNORECASE), "a session id"),
-    (re.compile(r"(?:/Users/|/home/|/private/tmp|(?<![\w.])~/)"), "a local path"),
+    (
+        # A bare UUID; one inside a URL path (/files/<uuid>/x.pdf) is public.
+        re.compile(
+            r"(?<![\w/=-])[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(?![\w/-])",
+            re.IGNORECASE,
+        ),
+        "a session id",
+    ),
+    (
+        re.compile(
+            r"(?:/Users/|/home/|/private/|/tmp/|/var/folders/|\$HOME/|(?<![\w.])~/)"
+        ),
+        "a local path",
+    ),
     (re.compile(r"[\w.+-]+@[\w-]+\.[A-Za-z][\w.-]*"), "an email address"),
 )
 
@@ -652,15 +757,18 @@ def _candidates():
 
 
 def _strings(value, label):
-    """Every string in a parsed YAML value, mapping keys included."""
+    """Every string in a parsed YAML value: mapping keys, bytes (`!!binary`),
+    and the members of lists, tuples and sets (`!!set`, `!!pairs`, `!!omap`)."""
 
     if isinstance(value, str):
         yield label, value
+    elif isinstance(value, bytes):
+        yield label, value.decode("utf-8", "replace")
     elif isinstance(value, dict):
         for key, item in value.items():
-            yield f"{label} (key)", str(key)
+            yield from _strings(key, f"{label} (key)")
             yield from _strings(item, f"{label}.{key}")
-    elif isinstance(value, list):
+    elif isinstance(value, (list, tuple, set, frozenset)):
         for index, item in enumerate(value):
             yield from _strings(item, f"{label}[{index}]")
 
@@ -816,7 +924,26 @@ def test_candidates_are_public():
         ("note: /Users/someone/file\n", True),
         ("note: ~/reviews/file\n", True),
         ("note: write to someone@example.org\n", True),
+        # Review of 1b816488 (P3-3).
+        ("note: queue_d1234\n", True),
+        ("note: d1234_ruling\n", True),
+        ("example: !!binary ZDEyMzQ=\n", True),
+        ('example: !!set {"\\x641234": null}\n', True),
+        ('example: !!pairs [{"\\x641234": x}]\n', True),
+        ('example: !!omap [{a: "\\x641234"}]\n', True),
+        ("note: /tmp/review/x\n", True),
+        ("note: /var/folders/ab/x\n", True),
+        ("note: /private/var/x\n", True),
+        ("note: $HOME/reviews/x\n", True),
+        ("note: 3f2a9c1e-1b2c-4d5e-8f90-123456789abc\n", True),
+        ('note: {"\\x641234": x}\n', True),
+        ('note: ["\\x641234"]\n', True),
+        (
+            "url: https://example.gov/files/0558a902-6362-47ca-8e3b-7cca3bc69b9d/a.pdf\n",
+            False,
+        ),
         ("note: commit 3fd12345 and d12\n", False),
+        ("note: Form D-400 and section 1d1234a\n", False),
         ("url: https://example.org/d1234567\n", False),
         ("note: Form D-400\n", False),
     ],

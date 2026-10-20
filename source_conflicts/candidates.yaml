@@ -382,7 +382,7 @@ candidates:
     citation: AR1000F booklet note above the table, 2024 and 2025
     url: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=30
   readings:
-    statute: The input records the statute as silent and supplies no statutory formula above the table.
+    statute: 'Recorded as silent: no statutory formula above the table has been identified.'
     other: The bracket card applies its formula to exact income; the booklet adds the top rate to the last row's
       tax, producing less tax.
   example: The booklet shortcut is $1.60 below the card formula in 2024 and $1.70 below it in 2025.
@@ -1823,7 +1823,7 @@ candidates:
     url: https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2021/individual/il-1040-instr.pdf#page=6
   readings:
     statute: The exclusion turns on whether the filer was actually claimed.
-    other: The return input turns on whether another taxpayer can claim the filer or spouse.
+    other: On the return, it turns on whether another taxpayer can claim the filer or spouse.
   example: The 2021 joint-return case with AGI $0 and one claimed spouse reports $100, $50 or $0 under alternative
     mixed-spouse readings; no official guidance establishes those allocation alternatives.
   pe_us:
@@ -2027,8 +2027,8 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9709
   state: unreviewed
-  note: 'PE-US uses $37; obtain exact citations and establish concurrent applicability in 2026, since the input
-    flags this as unconfirmed. Code not yet on main: IN RCAP parameters.'
+  note: 'PE-US uses $37; obtain exact citations and establish concurrent applicability in 2026, which is unconfirmed.
+    Code not yet on main: IN RCAP parameters.'
 - id: us-ks:2021-2023-exemptions-dependent-filer
   program: income-tax
   years:
@@ -2166,7 +2166,7 @@ candidates:
     statute: The regulatory reading treats the rent as unearned income without the required management hours, with
       losses floored at zero.
     other: Kansas treats it as earned self-employment income with the 20% deduction and loss offset.
-  example: For $6,000 farm rent alone, the input reports SNAP of $298 on main versus $210 in the PR.
+  example: For $6,000 farm rent alone, SNAP is reported as $298 on main versus $210 in the PR (not re-computed here).
   pe_us:
     follows: unknown
     code: []
@@ -3406,8 +3406,8 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9180
   state: unreviewed
-  note: 'Confirm the documented maintainer choice''s date and obtain the 2023 form URL; the input says the 2024-2025
-    forms agree with the statute. Code not yet on main: mo_wftc_eligible, gov/states/mo/tax/income/credits/wftc/investment_income_limit.yaml.'
+  note: 'Confirm the documented maintainer choice''s date and obtain the 2023 form URL; the 2024-2025 forms are
+    reported to agree with the statute. Code not yet on main: mo_wftc_eligible, gov/states/mo/tax/income/credits/wftc/investment_income_limit.yaml.'
 - id: us-ms:liheap-110-percent-poverty-floor
   program: liheap
   years:
@@ -3467,31 +3467,6 @@ candidates:
   state: unreviewed
   note: PE-US follows the manual from October 1, 2025; verify the checklist's meaning and the manual's administrative-code
     status.
-- id: us-mt:disability-income-exclusion-cap
-  program: income-tax
-  years:
-    from: 2021
-    type: tax
-  question: Does Montana's disability-income exclusion have the instructions' $5,200 cap when the cited administrative
-    rule states none?
-  sources:
-  - kind: regulation
-    citation: Mont. Admin. R. 42.15.217(1)(a)
-    url: https://rules.mt.gov/gateway/RuleNo.asp?RN=42%2E15%2E217
-  - kind: instructions
-    citation: 2022 Montana Form 2 instructions, page 31, line 32
-    url: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=31
-  readings:
-    statute: The cited rule states no cap; the authorizing statute is not supplied.
-    other: Cap the exclusion at $5,200 per individual.
-  pe_us:
-    follows: gap-fill
-    code:
-    - policyengine_us/parameters/gov/states/mt/tax/income/subtractions/disability_income/cap.yaml
-    prs: []
-  state: unreviewed
-  note: Obtain the statute and verify whether the instruction-only cap permissibly fills a silence, including effective
-    years.
 - id: us-mt:elderly-credit-homestead-costs
   program: income-tax
   years:
@@ -4394,7 +4369,7 @@ candidates:
     citation: 7 CFR 273.4(a)(6) (eCFR text)
     url: https://www.ecfr.gov/current/title-7/section-273.4
   readings:
-    statute: The narrowed list excludes refugees and asylees as described in the input.
+    statute: The narrowed list is reported to exclude refugees and asylees.
     other: The regulation text retains those categories.
   example: The supplied refugee example is eligible in 2025 but not in 2027.
   pe_us:
@@ -4476,8 +4451,7 @@ candidates:
     citation: 2025 OR-17 federal tax subtraction worksheet, PDF pp.71-72 (also 2017, 2018 and 2021)
     url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=71
   readings:
-    statute: The statute refers to federal income taxes accrued; the input does not resolve the section 1341 credit's
-      treatment.
+    statute: The statute refers to federal income taxes accrued; how it treats the section 1341 credit is unresolved.
     other: The prose says credits except EITC reduce the subtraction, but the worksheet does not subtract the section
       1341 credit.
   pe_us:
@@ -4541,8 +4515,8 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9971
   state: unreviewed
-  note: 'PE-US follows the handbook; obtain the plan link and effective versions. The code identifier is inferred
-    in the input. Code not yet on main: pa_liheap_countable_income.'
+  note: 'PE-US follows the handbook; obtain the plan link and effective versions. The code identifier is inferred,
+    not confirmed. Code not yet on main: pa_liheap_countable_income.'
 - id: us-pa:liheap-railroad-retirement-medicare-premium
   program: liheap
   years:
@@ -4568,8 +4542,8 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9971
   state: unreviewed
-  note: 'PE-US follows the handbook; obtain section links and effective versions. The code identifier is inferred
-    in the input. Code not yet on main: pa_liheap_countable_income.'
+  note: 'PE-US follows the handbook; obtain section links and effective versions. The code identifier is inferred,
+    not confirmed. Code not yet on main: pa_liheap_countable_income.'
 - id: us-pa:liheap-supplement-child-age
   program: liheap
   years:
@@ -5817,8 +5791,8 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10137
   state: open
-  note: 'The input explicitly queues this decision; code comments citing it do not establish a completed ruling
-    or its date. Code not yet on main: tax_unit_is_required_to_file.'
+  note: 'This decision is still open; code comments citing it do not establish a completed ruling or its date. Code
+    not yet on main: tax_unit_is_required_to_file.'
 - id: us:filing-claimable-married-separate
   program: income-tax
   years:
@@ -5874,7 +5848,7 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10137
   state: open
   note: 'The statute-first rule requires removing the extra amounts from this statutory test; separate 2026 issues
-    lack same-year instructions in the input. Code not yet on main: tax_unit_is_required_to_file.'
+    lack same-year instructions. Code not yet on main: tax_unit_is_required_to_file.'
 - id: us:hsa-limit-indexing-windows
   program: income-tax
   years:
@@ -5890,8 +5864,8 @@ candidates:
     citation: IRS-published HSA limits (Rev. Procs. for 2019-2027)
     url: null
   readings:
-    statute: The supplied literal March-window method matches 7 of 16 published 2019-2026 limits; its precise scope
-      is inconsistently described in the input.
+    statute: The literal March-window method matches 7 of 16 published 2019-2026 limits; its precise scope is not
+      settled.
     other: Mixed March and August windows match all 18 published 2019-2027 limits.
   example: The method projected 2027 limits of $4,500 and $9,000 before those amounts were published.
   pe_us:
@@ -5921,8 +5895,7 @@ candidates:
   readings:
     statute: Section 163(h)(3) does not specify rounding of the deductible-interest ratio.
     other: Publication 936 Table 1 line 14 rounds the ratio to three decimal places.
-  example: The input's 2016 joint example gives $26,666.67 using the exact ratio versus $26,680 using the rounded
-    ratio.
+  example: A 2016 joint example gives $26,666.67 using the exact ratio versus $26,680 using the rounded ratio.
   pe_us:
     follows: unknown
     code: []
@@ -6026,7 +5999,7 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10077
   state: open
   note: 'The statute-first rule requires revising the regulatory default if the cross-reference reading is confirmed;
-    resolve the requested ruling and the input''s inconsistent cap-direction wording. Code not yet on main: section_199a_net_capital_gain,
+    resolve the requested ruling and which direction the cap runs. Code not yet on main: section_199a_net_capital_gain,
     qualified_business_income_deduction.'
 - id: us:recovery-rebate-joint-claimable-spouse
   program: recovery-rebate-credit
@@ -6085,7 +6058,7 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10137
   state: open
   note: 'PE-US requires positive gross income, matching neither official reading; the statute-first rule requires
-    a model change, and the input supplies no completed ruling date. Code not yet on main: tax_unit_is_required_to_file.'
+    a model change, and no completed ruling date is recorded. Code not yet on main: tax_unit_is_required_to_file.'
 - id: us:snap-bbce-income-chart-rounding
   program: snap
   years:
@@ -6193,7 +6166,7 @@ candidates:
     citation: USDA FY2027 SNAP COLA memorandum (Aug 21, 2026), p. 5
     url: https://www.usda.gov/sites/default/files/guidance-documents/fna.snap-cola2027.pdf
   readings:
-    statute: The input inconsistently attributes both bases to section 2017(a), so its statutory reading is unresolved.
+    statute: Both bases have been attributed to section 2017(a), so the statutory reading is unresolved.
     other: The regulation uses the one-person maximum; the described USDA practice uses unrounded thrifty food plan
       cost.
   example: FY2023 gives $22 from the rounded maximum versus USDA's $23; FY2027 gives $24 versus USDA's $25.
@@ -6205,8 +6178,8 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/9162
     - https://github.com/PolicyEngine/policyengine-us/pull/9623
   state: unreviewed
-  note: 'Resolve the statutory base and year-specific model behavior; the input reports the rounded method in FY2023
-    and a guidance adjustment in FY2027, with no intervening-year conflict established. Code not yet on main: snap_min_allotment.'
+  note: 'Resolve the statutory base and year-specific model behavior; the rounded method is reported for FY2023
+    and a guidance adjustment for FY2027, with no intervening-year conflict established. Code not yet on main: snap_min_allotment.'
 - id: us:snap-waiting-period-age-based-ssi
   program: snap
   years:
