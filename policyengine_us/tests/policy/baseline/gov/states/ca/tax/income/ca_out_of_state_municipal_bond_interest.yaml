@@ -105,3 +105,33 @@
     adjusted_gross_income: 100_000
     ca_additions: 13_500
     ca_agi: 113_500
+
+# FTB 3803 instructions, sections A and C: reporting a child's interest on
+# the parent's California return requires an election. None is supplied here.
+# https://www.ftb.ca.gov/forms/2025/2025-3803-instructions.html
+- name: A dependent's own interest does not enter the parent's California AGI
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 100_000
+        tax_exempt_interest_income: 50_000
+        ca_out_of_state_municipal_bond_interest: 12_500
+      child:
+        age: 18
+        is_tax_unit_dependent: true
+        tax_exempt_interest_income: 10_000
+        ca_out_of_state_municipal_bond_interest: 7_500
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    adjusted_gross_income: 100_000
+    ca_additions: 12_500
+    ca_agi: 112_500

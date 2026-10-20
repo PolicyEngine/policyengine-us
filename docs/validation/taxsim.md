@@ -216,7 +216,9 @@ For California, `tax_exempt_interest_income` has no issuer-state split by
 itself. The default treats it all as California-source for the state addback.
 Supply the other-state portion as `ca_out_of_state_municipal_bond_interest`
 on each person, and include that portion in `tax_exempt_interest_income` too.
-The new input defaults to zero and does not change federal AGI.
+Only nondependent members' amounts enter the filer's California AGI; a parent
+election to report a dependent's interest is not inferred. The new input
+defaults to zero and does not change federal AGI.
 
 Alaska residence automatically calculates the regular PFD and any energy relief,
 even when other income is supplied. See [Alaska PFD comparisons](alaska-pfd.md)

@@ -9,9 +9,17 @@ class ca_additions(Variable):
     definition_period = YEAR
     reference = "https://www.ftb.ca.gov/forms/2021/2021-540.pdf"
     defined_for = StateCode.CA
-    adds = [
-        "ca_hsa_addition",
-        "ca_educator_expense_addition",
-        "ca_other_additions",
-        "ca_out_of_state_municipal_bond_interest",
-    ]
+
+    def formula(tax_unit, period, parameters):
+        # Personal interest belongs on the member's own return. The existing
+        # tax-unit additions already describe this return and remain intact.
+        return tax_unit_non_dep_add(
+            tax_unit,
+            period,
+            [
+                "ca_hsa_addition",
+                "ca_educator_expense_addition",
+                "ca_other_additions",
+                "ca_out_of_state_municipal_bond_interest",
+            ],
+        )
