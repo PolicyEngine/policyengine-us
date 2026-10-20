@@ -117,14 +117,11 @@
         employment_income: 60_000
         years_in_military: 20
         military_retirement_pay: 20_000
-        # Military pension descriptors do not add themselves to federal AGI.
-        taxable_public_pension_income: 20_000
       person2:
         # A civilian spouse receiving Survivor Benefit Plan payments as the
         # beneficiary of a former spouse who retired after 20 years.
         age: 48
         military_retirement_pay: 10_000
-        taxable_public_pension_income: 10_000
         nc_military_retirement_survivor_eligible: true
     tax_units:
       tax_unit:
@@ -153,7 +150,6 @@
     # The deceased member met the service test, but the recipient does not.
     military_retirement_pay_survivors: 10_000
     nc_military_retirement_survivor_eligible: true
-    taxable_public_pension_income: 30_000
     state_code: NC
   output:
     adjusted_gross_income: 30_000
@@ -165,7 +161,6 @@
     age: 50
     military_retirement_pay: 20_000
     military_retirement_pay_survivors: 10_000
-    taxable_public_pension_income: 30_000
     # The caller supplies own-pay eligibility instead of service inputs.
     nc_military_retirement_deduction_eligible: true
     nc_military_retirement_survivor_eligible: false
@@ -181,14 +176,12 @@
       person1:
         age: 50
         military_retirement_pay: 20_000
-        taxable_public_pension_income: 20_000
         nc_military_retirement_deduction_eligible: true
       person2:
         age: 48
         years_in_military: 20
         military_retirement_pay: 10_000
         military_retirement_pay_survivors: 5_000
-        taxable_public_pension_income: 15_000
         # The head opens the unit's gate, but the spouse's explicit false
         # input must not be overridden by recomputing their service test.
         nc_military_retirement_deduction_eligible: false
@@ -290,14 +283,12 @@
         age: 50
         years_in_military: 20
         military_retirement_pay: 20_000
-        taxable_public_pension_income: 20_000
         # Supplying the spouse's eligibility makes this variable an input
         # for every member, so also supply the qualifying head's value.
         nc_military_retirement_deduction_eligible: true
       person2:
         age: 48
         military_retirement_pay_survivors: 5_000
-        taxable_public_pension_income: 5_000
         # The head opens the unit's gate, but the spouse's explicit false
         # must also exclude separately recorded survivor benefits.
         nc_military_retirement_deduction_eligible: false

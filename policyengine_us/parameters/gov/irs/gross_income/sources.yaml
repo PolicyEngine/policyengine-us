@@ -43,6 +43,9 @@ values:
     - taxable_alimony_income
     # Taxable state and local income tax refunds (Schedule 1 line 1 / IRC § 111).
     - salt_refund_income
+    # Military retirement pay and survivor benefit plan payments (IRC § 61, Form 1040 line 5b).
+    - military_retirement_income
+
 
 metadata:
   unit: list
