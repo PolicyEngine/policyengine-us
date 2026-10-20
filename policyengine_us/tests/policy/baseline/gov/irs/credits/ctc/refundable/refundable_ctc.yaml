@@ -206,3 +206,118 @@
     section_911_excluded_income: 0
     # Without the section 911 bar, the same phase-in gives a $3,400 refund.
     refundable_ctc: 0
+
+# Proposed additions to:
+# policyengine_us/tests/policy/baseline/gov/irs/credits/ctc/refundable/refundable_ctc.yaml
+# Sources: 2021 IRC 24(i)(1)(B), 24(i)(4)(C)-(D), and Schedule 8812
+# https://www.govinfo.gov/content/pkg/USCODE-2021-title26/pdf/USCODE-2021-title26-subtitleA.pdf#page=57
+# https://www.govinfo.gov/content/pkg/USCODE-2021-title26/pdf/USCODE-2021-title26-subtitleA.pdf#page=58
+# https://www.irs.gov/pub/irs-prior/f1040s8--2021.pdf#page=1
+- name: ARPA phaseout cannot make other-dependent credit refundable in 2021
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 170_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child, other_dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [parent, child, other_dependent]
+        state_code: TX
+  output:
+    adjusted_gross_income: 170_000
+    # min(50 * ceil((170,000 - 112,500) / 1,000), 1,600, 4,375).
+    ctc_arpa_phase_out: 1_600
+    ctc_phase_out: 0
+    # Schedule 8812 lines 5 + 7 = (3,600 - 1,600) + 500.
+    ctc: 2_500
+    # Lines 14a = 500; 14b = 2,500 - 500 = 2,000.
+    refundable_ctc: 2_000
+    # Before the section 26(a) tax limit (not binding in this household).
+    non_refundable_ctc: 500
+    ctc_value: 2_500
+
+- name: Other-dependent credit remains nonrefundable after the child portion phases out in 2021
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 240_001
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child, other_dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [parent, child, other_dependent]
+        state_code: TX
+  output:
+    ctc_arpa_phase_out: 1_600
+    # 50 * ceil((240,001 - 200,000) / 1,000) = 2,050.
+    ctc_phase_out: 2_050
+    ctc: 450
+    # max(3,600 - 1,600 - 2,050, 0) = 0.
+    refundable_ctc: 0
+    non_refundable_ctc: 450
+    ctc_value: 450
+
+# This interaction proves the split affects total federal tax, not only labels.
+# 2021 IRC 25D(c), Form 5695 lines 6b/14/15 and its Credit Limit Worksheet:
+# https://www.govinfo.gov/content/pkg/USCODE-2021-title26/pdf/USCODE-2021-title26-subtitleA.pdf#page=81
+# https://www.irs.gov/pub/irs-prior/f5695--2021.pdf#page=1
+# https://www.irs.gov/pub/irs-prior/i5695--2021.pdf#page=4
+- name: Nonrefundable ODC reduces solar credit capacity before the 2021 child refund
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 170_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child, other_dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+        solar_electric_property_expenditures: 150_000
+    households:
+      household:
+        members: [parent, child, other_dependent]
+        state_code: TX
+  output:
+    income_tax_before_credits: 28_857
+    residential_clean_energy_credit_potential: 39_000
+    # 28,857 - 500 ODC; refundable child credit is in a different subpart.
+    residential_clean_energy_credit_credit_limit: 28_357
+    residential_clean_energy_credit: 28_357
+    refundable_ctc: 2_000
+    non_refundable_ctc: 500
+    ctc_value: 2_500
+    income_tax: -2_000
