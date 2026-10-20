@@ -1,0 +1,1 @@
+Decide Washington Cascade Care Savings eligibility on the exact ratio of ACA MAGI to the prior-year poverty guideline instead of the truncated `aca_magi_fraction`, so incomes from 250.003% to 250.994% of the poverty line are no longer eligible (PY2026 and PY2027 Cascade Care Savings Policy, Section 4(1)(c): "Has income up to 250% of the Federal Poverty Level").
