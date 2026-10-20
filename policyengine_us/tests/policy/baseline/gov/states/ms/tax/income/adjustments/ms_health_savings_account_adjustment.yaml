@@ -23,7 +23,7 @@
     ms_agi_adjustments: 1_500
     ms_agi: 38_500
 
-- name: A joint return without per-person amounts attributes the deduction once, to the head
+- name: A joint return without per-person amounts attributes the deduction once, half to each spouse
   period: 2025
   input:
     people:
@@ -42,10 +42,11 @@
         members: [head, spouse]
         state_code: MS
   output:
-    ms_health_savings_account_adjustment: [3_000, 0]
-    ms_agi_adjustments: [3_000, 0]
-    # 40,000 - 3,000 and 30,000: the spouse's income is not reduced again.
-    ms_agi: [37_000, 30_000]
+    # The account holder is unknown, so each spouse takes half, whichever is
+    # labelled head; the deduction is still taken once.
+    ms_health_savings_account_adjustment: [1_500, 1_500]
+    ms_agi_adjustments: [1_500, 1_500]
+    ms_agi: [38_500, 28_500]
 
 - name: The spouse whose account it is takes the deduction
   period: 2025
@@ -143,11 +144,13 @@
         members: [head, spouse, child]
         state_code: MS
   output:
-    ms_health_savings_account_adjustment: [3_000, 0, 0]
-    ms_agi_adjustments: [3_000, 0, 0]
-    # The child's 5,000 reaches the head's Mississippi AGI in full:
-    # 40,000 - 3,000 + 5,000.
-    ms_agi: [42_000, 30_000, 0]
+    # The filers' 3,000 is split between the spouses; the child's own
+    # account is left out.
+    ms_health_savings_account_adjustment: [1_500, 1_500, 0]
+    ms_agi_adjustments: [1_500, 1_500, 0]
+    # The child's 5,000 reaches the Mississippi AGI of the spouse with the
+    # greater income in full: 40,000 - 1,500 + 5,000.
+    ms_agi: [43_500, 28_500, 0]
 
 - name: A married person filing a separate federal return takes their own deduction
   period: 2025
@@ -198,7 +201,7 @@
     # 4.4% above $10,000: 21,700 x 0.044 and 8,700 x 0.044.
     ms_income_tax_before_credits_indiv: [954.8, 382.8]
 
-- name: Without per-person amounts the head takes the deduction, even above the head's own income
+- name: Without per-person amounts each spouse takes half, even above one spouse's own income
   period: 2025
   input:
     people:
@@ -217,13 +220,39 @@
         members: [head, spouse]
         state_code: MS
   output:
-    # The model does not know whose account it is, so the head takes it, as
-    # on a joint return with one income column. The head's Mississippi AGI
-    # column goes negative (1,000 - 3,000 = -2,000). On a joint return the
-    # tax computation combines a negative column with the other one (Form
-    # 80-100 line 17, #9885), so the whole deduction is used.
-    ms_health_savings_account_adjustment: [3_000, 0]
-    ms_agi: [-2_000, 50_000]
+    # The model does not know whose account it is, so each spouse takes
+    # half, whichever is labelled head. The head's Mississippi AGI column
+    # goes negative (1,000 - 1,500 = -500). On a joint return the tax
+    # computation combines a negative column with the other one (Form 80-100
+    # line 17, #9885), so the whole deduction is used.
+    ms_health_savings_account_adjustment: [1_500, 1_500]
+    ms_agi: [-500, 48_500]
     # Combined: 1,000 + 33,400 - 3,000 = 31,400 of taxable income in Column A;
     # (31,400 - 10,000) x 4.4% = 941.60.
     ms_income_tax_before_credits_unit: 941.6
+
+- name: Without per-person amounts the split is the same when the head and spouse labels are exchanged
+  period: 2025
+  input:
+    people:
+      first:
+        age: 40
+        employment_income: 40_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      second:
+        age: 40
+        employment_income: 30_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [first, second]
+        health_savings_account_ald: 3_000
+    households:
+      household:
+        members: [first, second]
+        state_code: MS
+  output:
+    ms_health_savings_account_adjustment: [1_500, 1_500]
+    ms_agi: [38_500, 28_500]

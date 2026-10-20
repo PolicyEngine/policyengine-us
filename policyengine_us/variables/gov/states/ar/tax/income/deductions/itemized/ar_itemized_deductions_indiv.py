@@ -26,6 +26,6 @@ class ar_itemized_deductions_indiv(Variable):
         # Round prorate to the nearest percent and then divide by 100
         prorate = np.round(prorate * 100) / 100
 
-        # Dependents should always return 0 as their AGI is always
-        # attributed to the head of the tax unit in ar_agi
+        # Dependents should always return 0 as ar_agi_indiv puts their
+        # income on a spouse's column
         return unit_deds * prorate
