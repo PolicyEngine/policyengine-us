@@ -41,8 +41,10 @@ def de_combined_separate_credit_choices(tax_unit, period, parameters):
     )
     head_aged, spouse_aged = column(person("de_aged_personal_credit_indv", period))
     head_taxable, spouse_taxable = column(person("de_taxable_income_indv", period))
-    cdcc = tax_unit("de_cdcc", period)
-    eitc = tax_unit("de_non_refundable_eitc", period)
+    # The separate columns apply their own limits; pooled applied credits
+    # have already been capped against the joint-return computation.
+    cdcc = tax_unit("de_cdcc_potential", period)
+    eitc = tax_unit("de_non_refundable_eitc_potential", period)
     head_own = where(tax_unit("head_is_dependent_elsewhere", period), 0, credit_per)
     spouse_own = where(tax_unit("spouse_is_dependent_elsewhere", period), 0, credit_per)
     own_units = tax_unit("head_spouse_count_not_dependent_elsewhere", period)

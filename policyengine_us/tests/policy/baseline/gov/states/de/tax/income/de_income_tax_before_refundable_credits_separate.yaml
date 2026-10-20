@@ -108,8 +108,8 @@
       tax_unit:
         members: [younger, older]
         exemptions_count: 3
-        de_cdcc: 13.5
-        de_non_refundable_eitc: 250
+        de_cdcc_potential: 13.5
+        de_non_refundable_eitc_potential: 250
     households:
       household:
         members: [younger, older]
@@ -144,8 +144,8 @@
       tax_unit:
         members: [younger, older]
         exemptions_count: 3
-        de_cdcc: 13.5
-        de_non_refundable_eitc: 250
+        de_cdcc_potential: 13.5
+        de_non_refundable_eitc_potential: 250
     households:
       household:
         members: [younger, older]
@@ -176,8 +176,8 @@
       tax_unit:
         members: [younger, older]
         exemptions_count: 3
-        de_cdcc: 0
-        de_non_refundable_eitc: 200
+        de_cdcc_potential: 0
+        de_non_refundable_eitc_potential: 200
     households:
       household:
         members: [younger, older]
@@ -212,8 +212,8 @@
       tax_unit:
         members: [younger, older]
         exemptions_count: 3
-        de_cdcc: 0
-        de_non_refundable_eitc: 200
+        de_cdcc_potential: 0
+        de_non_refundable_eitc_potential: 200
     households:
       household:
         members: [younger, older]
@@ -271,6 +271,7 @@
     de_income_tax_before_refundable_credits_separate: 131091.96875
     state_income_tax_before_refundable_credits: 131091.96875
     state_income_tax: 131091.96875
+
 - name: High-income credit routing uses downstream precision with younger spouse as
     head
   period: 2025
@@ -320,3 +321,90 @@
     de_income_tax_before_refundable_credits_separate: 131091.96875
     state_income_tax_before_refundable_credits: 131091.96875
     state_income_tax: 131091.96875
+
+# PIT-RES applies credits against each combined separate column's own tax.
+# https://revenuefiles.delaware.gov/2025/PITForms_Instructions/Instructions/PIT-RES_Instructions_2025-01.pdf#page=10
+# Joint AGI offsets the spouse's loss: 20,000 - 10,000 - 6,500 = 3,500
+# taxable income; (3,500 - 2,000) * 2.2% = 33, exhausted by personal credits.
+# Separate AGI clips the loss at zero: 20,000 - 3,250 gives 16,750 taxable
+# income and 585 tax; 585 - 110 own credit - 50 EITC potential = 425.
+# The joint path's applied EITC is zero.
+- name: Combined separate EITC uses its own tax limit when spouse has a loss
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      earner:
+        age: 45
+        de_pre_exclusions_agi: 20_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      loss_spouse:
+        age: 45
+        de_pre_exclusions_agi: -10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [earner, loss_spouse]
+        filing_status: JOINT
+        exemptions_count: 2
+        de_tax_unit_itemizes: false
+        de_cdcc_potential: 0
+        de_non_refundable_eitc_potential: 50
+    marital_units:
+      couple:
+        members: [earner, loss_spouse]
+    households:
+      household:
+        members: [earner, loss_spouse]
+        state_code: DE
+  output:
+    de_income_tax_before_non_refundable_credits_unit: 33
+    de_personal_credit: 33
+    de_non_refundable_eitc: 0
+    de_taxable_income_indv: [16_750, 0]
+    de_income_tax_after_non_refundable_credits_indv: [475, 0]
+    de_income_tax_before_refundable_credits_separate: 425
+
+- name: Combined separate EITC uses its own tax limit when loss spouse is head
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      earner:
+        age: 45
+        de_pre_exclusions_agi: 20_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      loss_spouse:
+        age: 45
+        de_pre_exclusions_agi: -10_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [earner, loss_spouse]
+        filing_status: JOINT
+        exemptions_count: 2
+        de_tax_unit_itemizes: false
+        de_cdcc_potential: 0
+        de_non_refundable_eitc_potential: 50
+    marital_units:
+      couple:
+        members: [earner, loss_spouse]
+    households:
+      household:
+        members: [earner, loss_spouse]
+        state_code: DE
+  output:
+    de_income_tax_before_non_refundable_credits_unit: 33
+    de_personal_credit: 33
+    de_non_refundable_eitc: 0
+    de_taxable_income_indv: [16_750, 0]
+    de_income_tax_after_non_refundable_credits_indv: [475, 0]
+    de_income_tax_before_refundable_credits_separate: 425

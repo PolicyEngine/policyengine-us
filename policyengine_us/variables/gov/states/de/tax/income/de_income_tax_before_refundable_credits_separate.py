@@ -39,7 +39,7 @@ class de_income_tax_before_refundable_credits_separate(Variable):
             tax_unit, period, parameters
         )
 
-        eitc = tax_unit("de_non_refundable_eitc", period)
+        eitc = tax_unit("de_non_refundable_eitc_potential", period)
         head_eitc = where(head_higher, min_(eitc, head_line33), 0)
         spouse_eitc = where(~head_higher, min_(eitc, spouse_line33), 0)
 

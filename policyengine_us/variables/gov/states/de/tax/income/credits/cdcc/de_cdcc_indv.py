@@ -27,4 +27,5 @@ class de_cdcc_indv(Variable):
             person.tax_unit, period, parameters
         )
         takes = (is_head & cdcc_head) | (is_spouse & ~cdcc_head)
-        return takes * person.tax_unit("de_cdcc", period)
+        # Line 33 caps this pre-ordering amount at the recipient column's tax.
+        return takes * person.tax_unit("de_cdcc_potential", period)

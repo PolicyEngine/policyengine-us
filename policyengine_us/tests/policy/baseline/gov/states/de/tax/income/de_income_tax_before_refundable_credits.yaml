@@ -34,7 +34,7 @@
       tax_unit:
         members: [person1, person2]
         de_files_separately: true
-        de_non_refundable_eitc: 100
+        de_non_refundable_eitc_potential: 100
     households:
       household:
         members: [person1, person2]
@@ -60,7 +60,7 @@
       tax_unit:
         members: [person1, person2]
         de_files_separately: true
-        de_non_refundable_eitc: 200
+        de_non_refundable_eitc_potential: 200
     households:
       household:
         members: [person1, person2]
@@ -86,7 +86,7 @@
       tax_unit:
         members: [person1, person2]
         de_files_separately: true
-        de_non_refundable_eitc: 1_000
+        de_non_refundable_eitc_potential: 1_000
     households:
       household:
         members: [person1, person2]
@@ -113,7 +113,7 @@
       tax_unit:
         members: [person1, person2]
         de_files_separately: true
-        de_non_refundable_eitc: 100
+        de_non_refundable_eitc_potential: 100
     households:
       household:
         members: [person1, person2]
