@@ -1,5 +1,5 @@
-# Regression test for #8775: the NC EITC reform's nc_income_tax override must
-# mirror baseline (nc_income_tax_before_credits minus credits) and must NOT add
+# Regression test for #8775: under the NC EITC reform, nc_income_tax must
+# match baseline (nc_income_tax_before_credits minus credits) and must NOT add
 # nc_use_tax. Use tax is already counted at the household level via
 # state_use_tax; adding it here would raise tax for every NC filer (even with
 # no EITC) and double-count it.
