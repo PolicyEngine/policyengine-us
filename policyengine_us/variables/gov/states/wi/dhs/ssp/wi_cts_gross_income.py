@@ -12,7 +12,7 @@ class wi_cts_gross_income(Variable):
     documentation = "All child support is excluded. Income sources outside the SSI cash-income sources are not counted. SSI recipients are excluded from the filing unit."
 
     def formula(person, period, parameters):
-        return max_(person("ssi_earned_income", period), 0) + max_(
+        return person("wi_cts_gross_earned_income", period) + max_(
             person("ssi_unearned_income", period)
             - person("child_support_received", period),
             0,

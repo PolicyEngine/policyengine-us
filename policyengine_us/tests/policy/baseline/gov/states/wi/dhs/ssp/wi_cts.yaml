@@ -2187,3 +2187,109 @@
     # net 67.08 + 600 - 67.08 = 600 > 550. An uncapped $200 would give
     # 467.08 and pay 440.
     wi_cts: [0, 0, 0]
+
+- name: Case 54, Pre-tax health premiums still count as CTS wages, so a co-parent earning 700 is not needy.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        person_id: 1
+        ssi: 994
+      person2:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        social_security_survivors: 2_400
+      person3:
+        age: 8
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 20
+      person4:
+        age: 40
+        person_id: 20
+        # Reviewer's boundary example: Handbook Buening Example 2 with wages in
+        # place of unemployment insurance; 700 a month, 100 of it pre-tax
+        # health premiums.
+        employment_income: 8_400
+        pre_tax_health_insurance_premiums: 1_200
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
+      child1:
+        members: [person3]
+      other:
+        members: [person4]
+    families:
+      unit:
+        members: [person1, person2, person3, person4]
+    households:
+      home:
+        members: [person1, person2, person3, person4]
+        state_code: WI
+        county: DANE_COUNTY_WI
+  output:
+    wi_cts_gross_earned_income: [0, 0, 0, 700]
+    wi_cts_gross_income: [0, 200, 0, 700]
+    wi_cts_net_income: [0, 200, 0, 610]
+    # Tim and Dan: gross 700 <= 1,018 but net 700 - 90 = 610 > 550, so they
+    # are not needy and leave the unit. Jill alone: 200 <= 576 and 200 <= 311.
+    # Netting the premiums (600 - 90 = 510) would keep them in: 710 > 647, 0.
+    wi_cts: [275, 0, 0, 0]
+    wi_ssp: [358.78, 0, 0, 0]
+
+- name: Case 55, Pre-tax health premiums still count as CTS wages, so a needy co-parent earning 600 keeps the group over the net limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        person_id: 1
+        ssi: 994
+      person2:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        social_security_survivors: 2_400
+      person3:
+        age: 8
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 20
+      person4:
+        age: 40
+        person_id: 20
+        # Reviewer's boundary example: as Case 54 with 600 a month of wages.
+        employment_income: 7_200
+        pre_tax_health_insurance_premiums: 1_200
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
+      child1:
+        members: [person3]
+      other:
+        members: [person4]
+    families:
+      unit:
+        members: [person1, person2, person3, person4]
+    households:
+      home:
+        members: [person1, person2, person3, person4]
+        state_code: WI
+        county: DANE_COUNTY_WI
+  output:
+    wi_cts_gross_earned_income: [0, 0, 0, 600]
+    wi_cts_gross_income: [0, 200, 0, 600]
+    wi_cts_net_income: [0, 200, 0, 510]
+    # Tim and Dan: 600 - 90 = 510 <= 550, so they are needy and stay. Group
+    # of 3: gross 800 <= 1,197 but net 510 + 200 = 710 > 647. Netting the
+    # premiums (410 + 200 = 610 <= 647) would pay 275.
+    wi_cts: [0, 0, 0, 0]
+    wi_ssp: [83.78, 0, 0, 0]

@@ -11,7 +11,7 @@ class wi_cts_countable_earned_income(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.wi.dhs.ssp.cts
-        earned = max_(person("ssi_earned_income", period), 0)
+        earned = person("wi_cts_gross_earned_income", period)
         continuing_minor = (
             person("age", period.this_year) < p.minor_age_limit
         ) & person("wi_cts_received_recently", period)
