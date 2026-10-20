@@ -33,26 +33,34 @@ class ar_liheap_countable_income(Variable):
         # 11/2025, Section III) request work income only from members "18 and
         # older & not a full-time student" without defining the term, so the
         # manual's definition applies. The section 17.0 definition (page 141)
-        # and Appendix F (page 159) exclude the earnings of a full-time college
-        # student "up to age 23" (read as inclusive) who is a dependent of a
-        # household member; is_tax_unit_dependent stands for that dependency.
-        # Section 4.7 (page 56) excludes the earnings of members aged 18 in high
-        # school "unless working full time or the individual is emancipated";
-        # those exceptions are not modeled. Appendix F (page 158) excludes a
-        # child's earnings only during at least half-time school attendance;
-        # following both forms, every member under 18 has earnings excluded.
-        dependent_college_student = (
-            person("is_full_time_college_student", period)
+        # covers a full-time student "up to age 23" (read as inclusive) who is
+        # a dependent of a household member: a college student enrolled for
+        # twelve or more credit hours (also Appendix F, page 159) or a high
+        # school student over 18. is_tax_unit_dependent stands for that
+        # dependency; without supplied tax-unit roles or that input, age-ordered
+        # inference can make a single parent's adult student the spouse (issue
+        # 9868). Section 4.7 (page 56) excludes the earnings of members aged 18
+        # in high school, dependent or not, "unless working full time or the
+        # individual is emancipated and applying as the head of household";
+        # those exceptions are not modeled. is_in_k12_school is imputed only
+        # through age 17, so a high school student 18 or older is captured via
+        # is_in_secondary_school. Appendix F (page 158) excludes a child's
+        # earnings only during at least half-time school attendance; following
+        # both forms, every member under 18 has earnings excluded.
+        in_high_school = person("is_in_secondary_school", period) | person(
+            "is_in_k12_school", period
+        )
+        full_time_student = (
+            person("is_full_time_college_student", period) | in_high_school
+        )
+        dependent_student = (
+            full_time_student
             & person("is_tax_unit_dependent", period)
             & (age <= p.full_time_student_age_limit)
         )
-        high_school_student = person("is_in_k12_school", period) & (
-            age <= p.high_school_student_age_limit
-        )
+        high_school_student = in_high_school & (age <= p.high_school_student_age_limit)
         counted_worker = (
-            (age >= p.earned_minimum_age)
-            & ~dependent_college_student
-            & ~high_school_student
+            (age >= p.earned_minimum_age) & ~dependent_student & ~high_school_student
         )
         # Business inputs are already net of expenses, which stands in for the
         # manual's 10% operating-cost allowance on gross self-employment income

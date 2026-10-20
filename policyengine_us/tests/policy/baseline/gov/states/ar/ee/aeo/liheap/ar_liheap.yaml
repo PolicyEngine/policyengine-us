@@ -10,18 +10,15 @@
         age: 40
         immigration_status: UNDOCUMENTED
         ssi: 0
-        is_full_time_student: false
         employment_income: 6_000
       person2:
         age: 12
         immigration_status: CITIZEN
         ssi: 0
-        is_full_time_student: false
       person3:
         age: 8
         immigration_status: CITIZEN
         ssi: 0
-        is_full_time_student: false
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -50,7 +47,6 @@
     age: [40, 40]
     immigration_status: [CITIZEN, CITIZEN]
     ssi: [0, 0]
-    is_full_time_student: [false, false]
     employment_income: [0, 0]
     heating_type: [NATURAL_GAS, NATURAL_GAS]
     heating_expense: [1_200, 1_200]
@@ -66,27 +62,22 @@
         age: 40
         immigration_status: CITIZEN
         ssi: 0
-        is_full_time_student: false
       person2:
         age: 39
         immigration_status: CITIZEN
         ssi: 0
-        is_full_time_student: false
       person3:
         age: 12
         immigration_status: CITIZEN
         ssi: 0
-        is_full_time_student: false
       person4:
         age: 8
         immigration_status: CITIZEN
         ssi: 0
-        is_full_time_student: false
       person5:
         age: 4
         immigration_status: CITIZEN
         ssi: 0
-        is_full_time_student: false
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5]
@@ -108,7 +99,6 @@
     age: [40, 40, 40]
     immigration_status: [CITIZEN, CITIZEN, CITIZEN]
     ssi: [0, 0, 0]
-    is_full_time_student: [false, false, false]
     employment_income: [0, 0, 0]
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     heating_expense: [0, 0, 10]
@@ -124,7 +114,6 @@
     age: [40, 40]
     immigration_status: [CITIZEN, CITIZEN]
     ssi: [0, 0]
-    is_full_time_student: [false, false]
     employment_income: [0, 0]
     heating_type: [NATURAL_GAS, NATURAL_GAS]
     heating_expense: [10, 10]
@@ -140,7 +129,6 @@
       person1:
         age: 45
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 21_000
     spm_units:
@@ -170,7 +158,6 @@
       person1:
         age: 32
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 34_500
       person2:
@@ -208,13 +195,11 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 50_000
       person2:
         age: 38
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 38_500
       person3:
@@ -264,7 +249,6 @@
       person1:
         age: 67
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         social_security: 26_400
         medicare_part_b_premium: 2_220
@@ -295,7 +279,6 @@
       person1:
         age: 70
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         social_security: 29_400
         medicare_part_b_premium: 2_434.8
@@ -328,7 +311,6 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 36_000
         farm_rent_income: -1_000
@@ -360,7 +342,6 @@
     age: [60, 60]
     immigration_status: [CITIZEN, CITIZEN]
     ssi: [0, 0]
-    is_full_time_student: [false, false]
     heating_type: [NATURAL_GAS, NATURAL_GAS]
     gas_expense: [900, 900]
     ar_tea: [0, 0]
@@ -383,7 +364,6 @@
     age: [30, 30]
     immigration_status: [CITIZEN, CITIZEN]
     ssi: [0, 0]
-    is_full_time_student: [false, false]
     heating_type: [ELECTRICITY, ELECTRICITY]
     pre_subsidy_electricity_expense: [1_800, 1_800]
     ar_tea: [0, 0]
@@ -405,27 +385,22 @@
         age: 40
         immigration_status: CITIZEN
         ssi: 0
-        is_full_time_student: false
       person2:
         age: 39
         immigration_status: CITIZEN
         ssi: 0
-        is_full_time_student: false
       person3:
         age: 12
         immigration_status: CITIZEN
         ssi: 0
-        is_full_time_student: false
       person4:
         age: 8
         immigration_status: CITIZEN
         ssi: 0
-        is_full_time_student: false
       person5:
         age: 4
         immigration_status: CITIZEN
         ssi: 0
-        is_full_time_student: false
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5]
@@ -456,7 +431,6 @@
       person1:
         age: 62
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         pension_income: 12_000
         interest_income: 3_000
@@ -488,7 +462,6 @@
       person1:
         age: 58
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         rental_income: 30_000
     spm_units:
@@ -509,9 +482,9 @@
     ar_liheap_matrix_amount: 79
     ar_liheap: 79
 
-# Current application section III excludes under-18 earnings. At 18,
-# wages 48_000 less 20% = 38_400 exceed the two-person FY2026 limit 36_840.
-# The published natural-gas matrix awards 308 at zero income for size two.
+# Current application section III excludes under-18 earnings whether or not the member
+# attends school, so countable income is 0. The FY2026 natural gas matrix awards 308 at
+# zero income for size two (limit 3_070 x 12 = 36_840).
 - name: Case 17, age 17 nonstudent earnings determine the final heating award.
   period: 2026
   input:
@@ -523,7 +496,7 @@
       person2:
         age: 17
         immigration_status: CITIZEN
-        is_full_time_student: false
+        is_in_k12_school: false
         employment_income: 48_000
         ssi: 0
     spm_units:
@@ -542,9 +515,9 @@
     ar_liheap_eligible: true
     ar_liheap: 308
 
-# Current application section III excludes under-18 earnings. At 18,
-# wages 48_000 less 20% = 38_400 exceed the two-person FY2026 limit 36_840.
-# The published natural-gas matrix awards 308 at zero income for size two.
+# At 18, a member who is not in high school (manual section 4.7, p56) or college
+# reports work income: wages 48_000 x 0.8 = 38_400 exceed the two-person FY2026 limit
+# 36_840, so no grant is paid.
 - name: Case 18, age 18 nonstudent earnings determine the final heating award.
   period: 2026
   input:
@@ -556,7 +529,8 @@
       person2:
         age: 18
         immigration_status: CITIZEN
-        is_full_time_student: false
+        is_in_k12_school: false
+        is_in_secondary_school: false
         employment_income: 48_000
         ssi: 0
     spm_units:
@@ -598,3 +572,28 @@
     ar_liheap_income_limit: [28_164, 28_164, 28_164, 28_164]
     ar_liheap_eligible: [false, false, false, false]
     ar_liheap: [0, 0, 0, 0]
+
+# No AEO matrix prices solar or unspecified heat. Case 15's retiree: pension 12_000 plus
+# interest above the $200 monthly disregard (3_000 - 2_400 = 600) = 12_600, MCI 1_050,
+# within the FY2026 one-person limit 2_347 (28_164). Solar heat billed on the electric
+# account (heat not in rent) and unspecified heat included in unsubsidized rent are
+# heating burdens, so both households are eligible, but the grant is 0 (documented
+# limitation; issue 9754 tracks the default fuel).
+- name: Case 20, solar and unspecified heat households are eligible but receive no grant.
+  period: 2026
+  input:
+    state_code: [AR, AR]
+    age: [62, 62]
+    immigration_status: [CITIZEN, CITIZEN]
+    ssi: [0, 0]
+    ar_tea: [0, 0]
+    pension_income: [12_000, 12_000]
+    interest_income: [3_000, 3_000]
+    heating_type: [SOLAR, UNSPECIFIED]
+    pre_subsidy_electricity_expense: [1_800, 0]
+    heat_expense_included_in_rent: [false, true]
+  output:
+    ar_liheap_countable_income: [12_600, 12_600]
+    ar_liheap_eligible: [true, true]
+    ar_liheap_matrix_amount: [0, 0]
+    ar_liheap: [0, 0]

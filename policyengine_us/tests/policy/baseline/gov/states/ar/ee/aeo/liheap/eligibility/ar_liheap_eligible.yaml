@@ -7,7 +7,6 @@
     age: [40, 40]
     immigration_status: [CITIZEN, CITIZEN]
     ssi: [0, 0]
-    is_full_time_student: [false, false]
     employment_income: [0, 0]
     heating_type: [NATURAL_GAS, NATURAL_GAS]
     heating_expense: [1_200, 1_200]
@@ -23,7 +22,6 @@
     age: [40, 40, 40, 40, 40]
     immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
     ssi: [0, 0, 0, 0, 0]
-    is_full_time_student: [false, false, false, false, false]
     employment_income: [0, 0, 0, 0, 0]
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     heating_expense: [0, 0, 120, 0, 120]
@@ -41,7 +39,6 @@
     age: [40, 40]
     immigration_status: [CITIZEN, CITIZEN]
     ssi: [0, 0]
-    is_full_time_student: [false, false]
     employment_income: [0, 0]
     heating_type: [NATURAL_GAS, NATURAL_GAS]
     heating_expense: [0, 0]
@@ -57,7 +54,6 @@
     age: [40, 40]
     immigration_status: [CITIZEN, UNDOCUMENTED]
     ssi: [0, 0]
-    is_full_time_student: [false, false]
     employment_income: [0, 0]
     heating_type: [NONE, NATURAL_GAS]
     heating_expense: [1_200, 1_200]
@@ -74,14 +70,12 @@
       person1:
         age: 70
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 4_968
         social_security: 7_200
         medicare_part_b_premium: 0
       person2:
         age: 45
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 40_000
     spm_units:
@@ -126,7 +120,6 @@
     age: [40, 40]
     immigration_status: [CITIZEN, CITIZEN]
     ssi: [0, 0]
-    is_full_time_student: [false, false]
     employment_income: [11_440, 11_440]
     ar_tea: [0, 0]
     heating_type: [NATURAL_GAS, NATURAL_GAS]

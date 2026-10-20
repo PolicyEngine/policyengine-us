@@ -9,7 +9,6 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 15_000
     spm_units:
@@ -38,7 +37,6 @@
       person1:
         age: 22
         immigration_status: CITIZEN
-        is_full_time_student: true
         is_full_time_college_student: true
         is_tax_unit_dependent: false
         ssi: 0
@@ -72,12 +70,11 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
       person2:
         age: 17
         immigration_status: CITIZEN
-        is_full_time_student: false
+        is_in_k12_school: false
         ssi: 2_400
         employment_income: 15_000
         self_employment_income: 3_000
@@ -104,12 +101,10 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
       person2:
         age: 18
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 15_000
     spm_units:
@@ -135,7 +130,6 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 10_000
         self_employment_income: 5_000
@@ -164,7 +158,6 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 12_000
         self_employment_income: -6_000
@@ -197,7 +190,6 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 12_000
         rental_income: 2_400
@@ -206,7 +198,6 @@
       person2:
         age: 8
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 2_400
     spm_units:
       spm_unit:
@@ -231,7 +222,6 @@
       person1:
         age: 70
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         social_security: 29_400
         medicare_part_b_premium: 2_434.8
@@ -258,14 +248,12 @@
       person1:
         age: 70
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         social_security: 18_000
         medicare_part_b_premium: 2_434.8
       person2:
         age: 68
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         railroad_benefits: 15_600
         medicare_part_b_premium: 2_434.8
@@ -292,7 +280,6 @@
       person1:
         age: 66
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         social_security: 1_200
         medicare_part_b_premium: 2_434.8
@@ -320,7 +307,6 @@
     state_code: [AR, AR, AR, AR]
     age: [55, 45, 60, 62]
     immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
-    is_full_time_student: [false, false, false, false]
     ssi: [0, 0, 0, 0]
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
     gas_expense: [900, 900, 900, 900]
@@ -342,7 +328,6 @@
       person1:
         age: 26
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
       person2:
         age: 6
@@ -374,7 +359,6 @@
       person1:
         age: 26
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
       person2:
         age: 6
@@ -411,7 +395,6 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 36_000
         farm_rent_income: -1_000
@@ -445,7 +428,6 @@
     state_code: [AR, AR]
     age: [30, 30]
     immigration_status: [CITIZEN, CITIZEN]
-    is_full_time_student: [false, false]
     ssi: [0, 0]
     heating_type: [ELECTRICITY, ELECTRICITY]
     pre_subsidy_electricity_expense: [1_800, 1_800]
@@ -464,7 +446,6 @@
     state_code: [AR, AR]
     age: [62, 62]
     immigration_status: [CITIZEN, CITIZEN]
-    is_full_time_student: [false, false]
     ssi: [0, 0]
     ar_tea: [0, 0]
     interest_income: [2_400, 3_000]
@@ -483,14 +464,12 @@
       person1:
         age: 66
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         pension_income: 12_000
         interest_income: 2_400
       person2:
         age: 64
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         interest_income: 2_400
     spm_units:
@@ -515,7 +494,6 @@
     state_code: [AR, AR]
     age: [58, 58]
     immigration_status: [CITIZEN, CITIZEN]
-    is_full_time_student: [false, false]
     ssi: [0, 0]
     ar_tea: [0, 0]
     rental_income: [15_000, 15_000]
@@ -534,12 +512,11 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
       person2:
         age: 17
         immigration_status: CITIZEN
-        is_full_time_student: true
+        is_in_k12_school: true
         ssi: 2_400
         employment_income: 6_000
         self_employment_income: 1_200
@@ -565,12 +542,11 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
       person2:
         age: 17
         immigration_status: CITIZEN
-        is_full_time_student: false
+        is_in_k12_school: false
         is_part_time_college_student: true
         ssi: 2_400
         employment_income: 6_000
@@ -597,13 +573,11 @@
       person1:
         age: 50
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 24_000
       person2:
         age: 22
         immigration_status: CITIZEN
-        is_full_time_student: true
         is_full_time_college_student: true
         is_tax_unit_dependent: true
         ssi: 0
@@ -629,13 +603,11 @@
       person1:
         age: 50
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 24_000
       person2:
         age: 23
         immigration_status: CITIZEN
-        is_full_time_student: true
         is_full_time_college_student: true
         is_tax_unit_dependent: true
         ssi: 0
@@ -661,13 +633,11 @@
       person1:
         age: 50
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 24_000
       person2:
         age: 24
         immigration_status: CITIZEN
-        is_full_time_student: true
         is_full_time_college_student: true
         is_tax_unit_dependent: true
         ssi: 0
@@ -697,14 +667,12 @@
       person1:
         age: 45
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 22_880
       person2:
         age: 18
         immigration_status: CITIZEN
         is_in_k12_school: true
-        is_full_time_student: true
         ssi: 0
         employment_income: 6_864
     spm_units:
@@ -732,14 +700,12 @@
       person1:
         age: 45
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 22_880
       person2:
         age: 18
         immigration_status: CITIZEN
         is_in_k12_school: false
-        is_full_time_student: false
         ssi: 0
         employment_income: 6_864
     spm_units:
@@ -773,7 +739,6 @@
     state_code: [AR, AR, AR, AR, AR]
     age: [45, 50, 58, 60, 35]
     immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
-    is_full_time_student: [false, false, false, false, false]
     ssi: [0, 0, 0, 0, 0]
     ar_tea: [0, 0, 0, 0, 0]
     unemployment_compensation: [5_412, 0, 0, 0, 0]
@@ -785,12 +750,13 @@
   output:
     ar_liheap_countable_income: [5_412, 3_000, 1_200, 6_624, 1_800]
 
-# Manual section 4.7 (p56) excludes the earnings of high school students aged 18
-# (high_school_student_age_limit); the p141 sentence on high school students over 18 is
-# not applied. This 19-year-old dependent is still enrolled in high school and is not a
-# college student, so the wages count: (22_880 + 6_864) x 0.8 = 23_795.20; MCI 1_982.93
-# rounds to 1_983; x12 = 23_796. Case 24 excludes the same wages at 18.
-- name: Case 27, a nineteen year old high school student has work counted.
+# The manual's full-time student definition (p141) covers "High school students over
+# age eighteen (18)" up to age 23 who are dependents of a household member, so this
+# 19-year-old dependent still in high school has wages excluded like a dependent
+# full-time college student. Parent 22_880 x 0.8 = 18_304; MCI 1_525.33 rounds to
+# 1_525; x12 = 18_300. Case 30 counts the same wages for a 19-year-old high school
+# student who is not a dependent.
+- name: Case 27, a dependent nineteen year old high school student has work excluded.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -803,7 +769,7 @@
       person2:
         age: 19
         immigration_status: CITIZEN
-        is_in_k12_school: true
+        is_in_secondary_school: true
         is_tax_unit_dependent: true
         ssi: 0
         employment_income: 6_864
@@ -816,7 +782,7 @@
         members: [person1, person2]
         state_code: AR
   output:
-    ar_liheap_countable_income: 23_796
+    ar_liheap_countable_income: 18_300
 
 # The manual's full-time student definition requires twelve or more credit hours (p141,
 # p159). A dependent part-time college student aged 20 reports work income: (24_000 +
@@ -849,3 +815,172 @@
         state_code: AR
   output:
     ar_liheap_countable_income: 24_000
+
+# Case 24's household with the repo's input for an 18-year-old still in high school,
+# is_in_secondary_school, and no is_in_k12_school (imputed only through age 17).
+# Section 4.7 (p56) excludes the senior's 6_864: 22_880 x 0.8 = 18_304; MCI 1_525.33
+# rounds to 1_525; x12 = 18_300. Counting the wages would give 23_796.
+- name: Case 29, an eighteen year old in secondary school has work excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 22_880
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+        is_in_secondary_school: true
+        ssi: 0
+        employment_income: 6_864
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 18_300
+
+# Case 27's household, but the adult does not claim the 19-year-old high school
+# student, who forms his own tax unit and is not a dependent. Section 4.7 (p56)
+# excludes only an 18-year-old's high school earnings, and the p141 definition covers
+# dependents, so his wages count: (22_880 + 6_864) x 0.8 = 23_795.20; MCI 1_982.93
+# rounds to 1_983; x12 = 23_796.
+- name: Case 30, a nineteen year old high school student who is not a dependent has work counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 22_880
+      person2:
+        age: 19
+        immigration_status: CITIZEN
+        is_in_secondary_school: true
+        ssi: 0
+        employment_income: 6_864
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 23_796
+
+# Case 21's household with supplied tax-unit roles and no is_tax_unit_dependent input:
+# the DEPENDENT role makes the 22-year-old full-time college student a dependent
+# (p141, p159), so the 6_000 is excluded; parent 24_000 x 0.8 = 19_200; MCI 1_600.
+- name: Case 31, supplied tax unit roles make a college student a dependent.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: CITIZEN
+        tax_unit_role_input: HEAD
+        ssi: 0
+        employment_income: 24_000
+      person2:
+        age: 22
+        immigration_status: CITIZEN
+        is_full_time_college_student: true
+        tax_unit_role_input: DEPENDENT
+        ssi: 0
+        employment_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 19_200
+
+# A married couple aged 22 and 21, both full-time college students working 20 hours a
+# week at the $11.00 Arkansas minimum wage: 11 x 20 x 52 = 11_440 each. The head and
+# spouse are not dependents of a household member (p141, p159), so both report work
+# income: (11_440 + 11_440) x 0.8 = 18_304; MCI 1_525.33 rounds to 1_525; x12 = 18_300.
+# Excluding the spouse would give 9_156.
+- name: Case 32, a married couple of full time college students has work counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 22
+        immigration_status: CITIZEN
+        is_full_time_college_student: true
+        tax_unit_role_input: HEAD
+        ssi: 0
+        employment_income: 11_440
+      person2:
+        age: 21
+        immigration_status: CITIZEN
+        is_full_time_college_student: true
+        tax_unit_role_input: SPOUSE
+        ssi: 0
+        employment_income: 11_440
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 18_300
+
+# An 18-year-old full-time college student who lives alone and is no one's dependent.
+# The p141 definition requires a dependent, and section 4.7 (p56) covers high school,
+# so the wages count: 20 hours x 52 weeks x $11.00 Arkansas minimum wage = 11_440;
+# x 0.8 = 9_152; MCI 762.67 rounds to 763; x12 = 9_156.
+- name: Case 33, an independent eighteen year old college student has work counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 18
+        immigration_status: CITIZEN
+        is_full_time_college_student: true
+        ssi: 0
+        employment_income: 11_440
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 9_156

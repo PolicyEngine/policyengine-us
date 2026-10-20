@@ -10,8 +10,8 @@
 #   https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2025_Other-Wood-Pellets.pdf
 # - FY2026 state plan items 1.8, 1.9 and 2.3:
 #   https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf
-# - FFY 2025 LIHEAP Policy and Procedures Manual (sections 4.4, 4.7-4.7.2, 4.8.3.2 and
-#   17.0; Appendices E-F): https://liheapch.acf.gov/docs/2025/manuals/AR_Manual_2025.pdf
+# - FFY 2025 LIHEAP Policy and Procedures Manual (sections 4.4, 4.7-4.7.2, 4.8.3-4.8.3.2
+#   and 17.0; Appendices E-F): https://liheapch.acf.gov/docs/2025/manuals/AR_Manual_2025.pdf
 # Wages use the Arkansas minimum wage of $11.00 an hour. The 2026 SSI federal benefit
 # rate is $994 a month. The standard Medicare Part B premium is $185.00 a month in 2025.
 
@@ -169,7 +169,7 @@
 # A tenant aged 58 works 30 hours a week at $11.00: 11 x 30 x 52 = 17,160. He rents an
 # unsubsidized apartment whose rent includes natural gas heat, so he has no separate
 # heating bill. Unsubsidized households with utilities included in rent have an energy
-# burden (FY2026 plan item 2.3, p9; manual 4.8.3.2, p64).
+# burden (FY2026 plan item 2.3, p9; manual 4.8.3, p63, and 4.8.3.2, p64).
 - name: Case 4, an unsubsidized renter whose rent includes heat.
   period: 2026
   absolute_error_margin: 0.01

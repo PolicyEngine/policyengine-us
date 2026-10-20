@@ -12,7 +12,9 @@ description: Arkansas uses these sources as unearned income under the Low Income
 # payments (page 160), HUD utility payments (page 161; Appendix E, page 155;
 # the application's "Housing Utility Assistance Payment"), inheritance and jury
 # duty pay (page 162), royalties (page 166) and Trade Adjustment Assistance
-# (page 168).
+# (page 168). Appendix F also excludes irregular income that does not exceed
+# $90 in a three-month period (page 162); annual inputs cannot identify such
+# receipts, so they are counted.
 values:
   2024-10-01:
     - total_unemployment_compensation
@@ -60,5 +62,5 @@ metadata:
       href: https://liheapch.acf.gov/docs/2025/state-plans/AR_Plan_2025.pdf#page=5
     - title: "Arkansas FFY 2025 LIHEAP Policy and Procedures Manual, Appendices E and F #page 155-163,165-168"
       href: https://liheapch.acf.gov/docs/2025/manuals/AR_Manual_2025.pdf#page=155
-    - title: Arkansas LIHEAP Application, Section III Household Income
+    - title: Arkansas LIHEAP Application LIHEAP 9495 R 11/2025, Section III Household Income
       href: https://www.adeq.state.ar.us/energy/assistance/pdfs/fillable_aeo-9495_liheap-long-application.pdf#page=2

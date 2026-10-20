@@ -1,10 +1,15 @@
-description: Arkansas excludes the earned income of full-time college students who are dependents of a household member up to this age under the Low Income Home Energy Assistance Program.
+description: Arkansas excludes the earned income of full-time students who are this age or younger and are dependents of a household member under the Low Income Home Energy Assistance Program.
 # The manual defines a full-time student as "a full-time student, up to age 23,
 # who is a dependent of a member of the household" enrolled for twelve or more
-# credit hours per semester (page 141), and Appendix F excludes the income of
-# such full-time college students (page 159). "Up to age 23" is read as
-# inclusive. Both application forms exclude full-time students from work-income
-# reporting without defining the term, so this definition applies.
+# credit hours per semester, and adds that "High school students over age
+# eighteen (18) may provide proof of enrollment or report card" (page 141).
+# Appendix F excludes the income of such full-time college students (page 159).
+# The limit applies to dependent college students and dependent high school
+# students. "Up to age 23" is read as inclusive, which matches the federal
+# student-dependent test that "listed as dependents" (page 159) points to: a
+# student who has not attained the age of 24 (26 U.S.C. 152(c)(3)(A)(ii)). Both
+# application forms exclude full-time students from work-income reporting
+# without defining the term, so this definition applies.
 values:
   2024-10-01: 23
 
