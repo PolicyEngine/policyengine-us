@@ -17,8 +17,8 @@ class wi_ssp_countable_for_hud(Variable):
     )
 
     def formula(person, period, parameters):
-        # Source conflict: SSI-E Handbook 4.1.1 counts SSI-E; 24 CFR 5.609(b)(19)
-        # governs.
+        # HUD annual income follows 24 CFR 5.609(b)(19), which excludes this
+        # SSI-E, although SSI-E Handbook 4.1.1 lists SSI-E as countable.
         # HUD person with disabilities (42 U.S.C. 1437a(b)(3)(E)), as in
         # is_hud_elderly_disabled_family, plus blindness.
         disabled = (
