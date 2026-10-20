@@ -6,14 +6,14 @@ module and run without Hypothesis.
 
 import pytest
 
+hypothesis = pytest.importorskip("hypothesis")
+st = pytest.importorskip("hypothesis.strategies")
+
 from policyengine_us.tests.test_md_capital_gains_surtax_invariants import (
     assert_properties,
     household,
     person,
 )
-
-hypothesis = pytest.importorskip("hypothesis")
-st = pytest.importorskip("hypothesis.strategies")
 
 GAIN = st.integers(min_value=-300_000, max_value=300_000)
 DISTRIBUTIONS = st.integers(min_value=-5_000, max_value=50_000)
