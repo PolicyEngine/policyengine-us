@@ -1,6 +1,8 @@
-description: Minnesota compares a small employer's average wage with this state average annual wage in covered employment, which the Department of Employment and Economic Development calculates for the Paid Leave basis period.
+description: Minnesota compares a small employer's average wage with this statewide average annual wage in covered employment, which the Department of Employment and Economic Development calculates each year and applies to the Paid Leave basis period.
 values:
-  0000-01-01: 0
+  # The zero rate keeps the program off before 2026; earlier years read this
+  # value only under a reform that sets an earlier rate.
+  0000-01-01: 73_989
   # Statewide average annual wage for 2025 ("$73,989 per year"), applied to
   # 2026 premiums, whose basis period is October 2024 to September 2025.
   2026-01-01: 73_989

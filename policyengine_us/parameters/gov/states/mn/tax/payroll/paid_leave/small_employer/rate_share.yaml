@@ -1,6 +1,8 @@
 description: Minnesota charges small employers this share of the full Paid Leave premium rate.
 values:
-  0000-01-01: 0
+  # The zero rate keeps the program off before 2026; earlier years read this
+  # value only under a reform that sets an earlier rate.
+  0000-01-01: 0.75
   2026-01-01: 0.75
 
 metadata:

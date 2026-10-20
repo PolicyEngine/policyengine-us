@@ -1,6 +1,8 @@
 description: Minnesota limits the Paid Leave small employer premium rate to employers whose average wage is at most this multiple of the state's average wage in covered employment for the basis period.
 values:
-  0000-01-01: 0
+  # The zero rate keeps the program off before 2026; earlier years read this
+  # value only under a reform that sets an earlier rate.
+  0000-01-01: 1.5
   2026-01-01: 1.5
 
 metadata:
