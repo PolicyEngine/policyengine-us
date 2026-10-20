@@ -1156,6 +1156,18 @@ programs:
         verified_years: '2026'
         notes: Models 2026 basic and enhanced facility and in-home payments, including lower contracted
           rates and first-month proration. Open/shut and discharge payments are not modeled.
+      - state: MT
+        status: partial
+        name: Montana SSP
+        full_name: Montana State Supplementary Payment
+        variable: mt_ssp
+        parameter_prefix: gov.states.mt.dphhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models 2026 Montana optional supplements for state-certified
+          personal care, group home, foster care and transitional living
+          placements. Mandatory grandfathered supplementation and out-of-state
+          custody placements are not modeled.
 
   - id: social_security
     name: Social Security
