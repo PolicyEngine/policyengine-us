@@ -205,3 +205,113 @@
   output:
     # Line 3: -5,000 <= 31,503 -> 0; line C -> No -> continue.
     nyc_income_tax_elimination_credit_eligible: true
+
+# Line A asks for a dependent under IRC 151(c). A return on which a filer (or,
+# if joint, either spouse) can be claimed has no dependents (IRC 152(b)(1)).
+- name: Case 15, a joint return with one claimable spouse has no dependent and is ineligible (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      person_c:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, person_c]
+        filing_status: JOINT
+        adjusted_gross_income: 1000
+        eitc_relevant_investment_income: 0
+    households:
+      household:
+        members: [person_a, person_b, person_c]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_income_tax_elimination_credit_eligible: false
+
+- name: Case 15, a joint return with one claimable spouse has no dependent and is ineligible (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      person_c:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, person_c]
+        filing_status: JOINT
+        adjusted_gross_income: 1000
+        eitc_relevant_investment_income: 0
+    households:
+      household:
+        members: [person_b, person_a, person_c]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_income_tax_elimination_credit_eligible: false
+
+- name: Case 16, the same joint return with nobody claimable is eligible
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      person_c:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, person_c]
+        filing_status: JOINT
+        adjusted_gross_income: 1000
+        eitc_relevant_investment_income: 0
+    households:
+      household:
+        members: [person_a, person_b, person_c]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_income_tax_elimination_credit_eligible: true
+
+- name: Case 17, a claimable single filer with a child is ineligible
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 19
+        claimed_as_dependent_on_another_return: true
+      person_c:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_a, person_c]
+        adjusted_gross_income: 1000
+        eitc_relevant_investment_income: 0
+    households:
+      household:
+        members: [person_a, person_c]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_income_tax_elimination_credit_eligible: false
