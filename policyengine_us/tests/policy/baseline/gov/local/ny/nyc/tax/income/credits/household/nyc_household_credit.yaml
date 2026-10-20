@@ -407,7 +407,7 @@
   output:
     # Household AGI $10,000 (the spouse's return is assumed alike); the
     # couple's exemptions: 0 for the claimable filer plus 1 for the spouse.
-    # $15 x 1.
+    # $30 x 1, halved.
     nyc_household_credit: 15
 
 - name: 2025 joint return where both spouses can be claimed has no exemptions for the NYC credit
