@@ -126,7 +126,54 @@
   output:
     ca_premium_subsidy_eligible: false
 
-# ---- PY2026 165% limit from derived income (exact ratio, not truncation) ----
+# ---- PY2026 limits from derived income (exact ratio, not truncation) ----
+
+- name: Case 1b, PY2026 income of 99.994% of FPL is ineligible.
+  # $15,649 / 2025 one-person FPG $15,650 = 99.9936%, below "at or above 100
+  # percent" (Program Design (d)(7)).
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_649
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi: 15_649
+    aca_magi_fraction: 0.99
+    ca_premium_subsidy_eligible: false
+
+- name: Case 2b, PY2026 income of exactly 100% of FPL is eligible.
+  # $15,650 / $15,650 = 100.000%, "at or above 100 percent".
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_650
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi: 15_650
+    aca_magi_fraction: 1.00
+    ca_premium_subsidy_eligible: true
 
 - name: Case 4b, PY2026 income of exactly 165% of FPL is eligible.
   # $25,822.50 / 2025 one-person FPG $15,650 = 165.000%, which is "at or below

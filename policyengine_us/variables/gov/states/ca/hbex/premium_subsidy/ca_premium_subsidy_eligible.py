@@ -10,8 +10,8 @@ class ca_premium_subsidy_eligible(Variable):
     reference = (
         # 2026 Program Design (Final): eligibility bands and the applicable
         # return filer definition at Program Design (d)(7).
+        # PDF pages 1-2
         "https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=1",
-        "https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=2",
         # 2027 Program Design V4, (d)(7): "under 200 percent".
         "https://board.coveredca.com/meetings/2026/May%2021,%202026/CoveredCA_2027_Premium_Subsidy_Program_Design_V4_05-19-26.pdf#page=2",
         # FTB 3849 Table 1-2 (predecessor program): exact percentage decides
