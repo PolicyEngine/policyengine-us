@@ -1,8 +1,12 @@
 # Unit tests for Maryland Premium Assistance eligibility.
 # Eligible when: program in effect (PY2026-2027), household in MD, at least one
-# tax-unit member is federal-APTC-eligible, and ACA MAGI <= 400% FPL.
-# is_aca_ptc_eligible and aca_magi_fraction are provided directly so the gate
-# logic is tested in isolation from the premium-data lookup.
+# tax-unit member is federal-APTC-eligible, and ACA MAGI <= 400% FPL ("No state
+# subsidy above 400% FPL"; PY2027 "400% FPL or below"), on the exact ratio of
+# ACA MAGI to the prior-year guideline, not the truncated aca_magi_fraction.
+# is_aca_ptc_eligible is provided directly so the gate logic is tested in
+# isolation from the premium-data lookup. Supplied-income cases pin the
+# prior-year guideline to $10,000; income-derived cases use the actual 2025
+# one-person guideline, $15,650.
 
 - name: Case 1, MD APTC-eligible unit at 250% FPL in 2026 is eligible.
   period: 2026
@@ -14,7 +18,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -32,7 +38,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 4.01
+        aca_magi: 40_100
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -50,7 +58,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 4.00
+        aca_magi: 40_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -68,7 +78,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -86,7 +98,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -104,7 +118,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2024: 10_000
     households:
       household:
         members: [person1]
@@ -122,7 +138,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2027: 10_000
     households:
       household:
         members: [person1]
@@ -143,7 +161,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        aca_magi_fraction: 3.00
+        aca_magi: 30_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1, person2]
@@ -164,7 +184,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 0
+        aca_magi: 0
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -182,7 +204,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 3.99
+        aca_magi: 39_900
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -202,7 +226,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2026: 10_000
     households:
       household:
         members: [person1]
@@ -256,3 +282,106 @@
         state_code: MD
   output:
     md_premium_assistance_eligible: false  # derived aca_magi_fraction > 4.00 cap
+
+- name: Case 14, $62,599 (399.994% of the 2025 guideline) is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 62_599
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    aca_magi_fraction: 3.99
+    md_premium_assistance_eligible: true
+
+- name: Case 15, $62,600 (exactly 400%) is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 62_600
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    aca_magi_fraction: 4.00
+    md_premium_assistance_eligible: true
+
+- name: Case 16, $62,600.47 (400.003%) is ineligible though truncated to 4.00.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 62_600.47
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    aca_magi_fraction: 4.00
+    md_premium_assistance_eligible: false
+
+- name: Case 17, $62,755.56 (400.994%) is ineligible though truncated to 4.00.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 62_755.56
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    aca_magi_fraction: 4.00
+    md_premium_assistance_eligible: false
+
+- name: Case 18, with the federal credit extended above 400%, 400.003% is still ineligible.
+  # A reform that keeps the premium tax credit above 400% FPL makes
+  # is_aca_ptc_eligible true at $62,600.47, so the Maryland ceiling alone decides.
+  period: 2026
+  input:
+    gov.aca.ptc_income_eligibility[2].amount: true
+    people:
+      person1:
+        age: 40
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 62_600.47
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    is_aca_ptc_eligible: [true]
+    md_premium_assistance_eligible: false
