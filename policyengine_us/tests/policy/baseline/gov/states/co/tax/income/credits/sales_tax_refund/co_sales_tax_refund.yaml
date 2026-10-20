@@ -666,6 +666,8 @@
 # 1 CCR 201-2, Rule 39-22-2003(1)(a), PDF p195: no refund in 2016-2020.
 # https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=1+CCR+201-2&ruleVersionId=11214#page=195
 # No refund means $0, not the backdated 2021 table's $56 for single $100k MAGI.
+# Age 40 qualifies independently of liability. Supply the other eligibility
+# branch directly so this historical guard test does not compute federal tax.
 - name: Colorado sales tax refund is unavailable in 2020
   period: 2020
   absolute_error_margin: 0
@@ -674,6 +676,7 @@
     age: 40
     filing_status: SINGLE
     co_modified_agi: 100_000
+    co_income_tax_before_non_refundable_credits: 0
     co_income_tax_before_refundable_credits: 1_000
     co_amt: 0
     co_cdcc: 0
@@ -694,6 +697,7 @@
     age: 40
     filing_status: SINGLE
     co_modified_agi: 100_000
+    co_income_tax_before_non_refundable_credits: 0
     co_income_tax_before_refundable_credits: 1_000
     co_amt: 0
     co_cdcc: 0
