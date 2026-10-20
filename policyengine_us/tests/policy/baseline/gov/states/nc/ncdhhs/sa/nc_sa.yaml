@@ -1,0 +1,564 @@
+- name: Case 1, basic facility with full SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+  output:
+    nc_sa: 473
+
+- name: Case 2, enhanced special care unit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: SPECIAL_CARE_UNIT
+  output:
+    nc_sa: 868
+
+- name: Case 3, basic in home.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: IN_HOME
+  output:
+    nc_sa: 473
+
+- name: Case 4, enhanced in home.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: IN_HOME_ENHANCED
+  output:
+    nc_sa: 868
+
+- name: Case 5, income above federal SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    social_security_retirement: 15_600
+  output:
+    nc_sa: 187
+
+- name: Case 6, SSI and other income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    social_security_retirement: 12_000
+  output:
+    nc_sa: 473
+
+- name: Case 7, earned income with SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    employment_income: 7_200
+  output:
+    nc_sa: 473
+
+- name: Case 8, basic half dollar rounds up.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_countable_income: 1_466.5
+  output:
+    nc_sa: 1
+
+- name: Case 9, basic forty nine cents rounds down.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_countable_income: 1_466.51
+  output:
+    nc_sa: 0
+
+- name: Case 10, enhanced half dollar rounds up.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: SPECIAL_CARE_UNIT
+    nc_sa_countable_income: 1_861.5
+  output:
+    nc_sa: 1
+
+- name: Case 11, enhanced forty nine cents rounds down.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: SPECIAL_CARE_UNIT
+    nc_sa_countable_income: 1_861.51
+  output:
+    nc_sa: 0
+
+- name: Case 12, lower contracted facility rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_facility_rate: 1_000
+  output:
+    nc_sa: 76
+
+- name: Case 13, no qualifying care setting.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: NONE
+  output:
+    nc_sa: 0
+
+- name: Case 14, out of state.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+  output:
+    nc_sa: 0
+
+- name: Case 15, disabled child is not eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 17
+    nc_sa_care_setting: ADULT_CARE_HOME
+    meets_ssi_disability_criteria: true
+  output:
+    nc_sa: 0
+
+- name: Case 16, blind child in certified specialized center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 17
+    nc_sa_care_setting: ADULT_CARE_HOME
+    is_blind: true
+  output:
+    nc_sa: 473
+
+- name: Case 17, blind child cannot receive in home program.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 17
+    nc_sa_care_setting: IN_HOME
+    is_blind: true
+  output:
+    nc_sa: 0
+
+- name: Case 18, adult disabled applicant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 18
+    nc_sa_care_setting: ADULT_CARE_HOME
+    meets_ssi_disability_criteria: true
+  output:
+    nc_sa: 473
+
+- name: Case 19, not aged blind disabled.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 64
+    nc_sa_care_setting: ADULT_CARE_HOME
+  output:
+    nc_sa: 0
+
+- name: Case 20, resource boundary.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    ssi_countable_resources: 2_000
+  output:
+    nc_sa: 473
+
+- name: Case 21, excess resources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    ssi_countable_resources: 2_001
+  output:
+    nc_sa: 0
+
+- name: Case 22, first month twenty seven days ignores income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_partial_month_days: 27
+    social_security_retirement: 15_600
+  output:
+    nc_sa: 1_287
+
+- name: Case 23, first month twenty days in home.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: IN_HOME
+    nc_sa_partial_month_days: 20
+  output:
+    nc_sa: 971
+
+- name: Case 24, first month fourteen days enhanced in home.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: IN_HOME_ENHANCED
+    nc_sa_partial_month_days: 14
+  output:
+    nc_sa: 879
+
+# A lower rate or partial-month days entered for one resident leave the other
+# resident, an unrelated adult, on the published rate and a full month.
+- name: Case 25, contracted rate and partial month entered for one of two residents.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        nc_sa_care_setting: ADULT_CARE_HOME
+        nc_sa_facility_rate: 1_000
+        nc_sa_partial_month_days: 15
+      person2:
+        age: 72
+        nc_sa_care_setting: ADULT_CARE_HOME
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    nc_sa_rate: [1_000, 1_397]
+    # person1: 1,000 / 31 = 32.26; 32.26 * 15 + 70 = 553.90 -> 554.
+    # person2: SSI 994; 1,397 + 70 - 994 = 473.
+    nc_sa: [554, 473]
+
+- name: Case 26, SSI opt out.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    takes_up_ssi_if_eligible: false
+  output:
+    nc_sa: 0
+
+# SA-3220 II.E, III.C and IV.A: an applicant whose full-month payment rounds to
+# $0 is ineligible, including in a prorated first month.
+# Cases 29-32 enter TCMI directly at the last eligible cent and at the cutoff.
+# https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=207
+- name: Case 27, income-ineligible basic entrant receives no partial-month grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    social_security_retirement: 36_000
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_partial_month_days: 15
+  output:
+    nc_sa: 0
+
+- name: Case 28, income-ineligible basic entrant receives no full-month grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    social_security_retirement: 36_000
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_partial_month_days: 31
+  output:
+    nc_sa: 0
+
+- name: Case 29, basic last eligible cent retains the partial-month grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_countable_income: 1_466.5
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_partial_month_days: 15
+  output:
+    # TCMI 1,466.50 is below the 1,466.51 basic cutoff.
+    nc_sa_eligible: true
+    # Per diem 1,397 / 31 = 45.0645 -> 45.06; 45.06 * 15 + 70 = 745.90 -> 746.
+    nc_sa: 746
+
+- name: Case 30, basic exact exclusive income limit prevents partial payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_countable_income: 1_466.51
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_partial_month_days: 15
+  output:
+    # TCMI 1,466.51 or more is ineligible for the basic rate.
+    nc_sa_eligible: false
+    nc_sa: 0
+
+- name: Case 31, enhanced last eligible cent retains the partial-month grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_countable_income: 1_861.5
+    nc_sa_care_setting: SPECIAL_CARE_UNIT
+    nc_sa_partial_month_days: 15
+  output:
+    # TCMI 1,861.50 is below the 1,861.51 enhanced cutoff.
+    nc_sa_eligible: true
+    # Per diem 1,792 / 31 = 57.8065 -> 57.81; 57.81 * 15 + 70 = 937.15 -> 937.
+    nc_sa: 937
+
+- name: Case 32, enhanced exact exclusive income limit prevents partial payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_countable_income: 1_861.51
+    nc_sa_care_setting: SPECIAL_CARE_UNIT
+    nc_sa_partial_month_days: 15
+  output:
+    # TCMI 1,861.51 or more is ineligible for the enhanced rate.
+    nc_sa_eligible: false
+    nc_sa: 0
+
+# SA-3200 I: "The budget unit is always one", so a non-SSI applicant's own
+# resources are tested against $2,000; SSI's $3,000 couple test does not apply.
+# https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=61
+- name: Case 33, married non-SSI in-home applicant is tested on own resources and income only.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        social_security_retirement: 13_200
+        bank_account_assets: 1_800
+        nc_sa_care_setting: IN_HOME
+      person2:
+        age: 72
+        social_security_retirement: 10_800
+        bank_account_assets: 1_800
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    # Joint SSI claim: resources 1,800 + 1,800 = 3,600 > 3,000, and income
+    # 1,100 + 900 - 20 = 1,980 > 1,491, so neither spouse receives SSI.
+    ssi: [0, 0]
+    # Own income only: 1,100 - 20 = 1,080 and 900 - 20 = 880.
+    nc_sa_countable_income: [1_080, 880]
+    # person1: aged, citizen, own resources 1,800 <= 2,000, TCMI 1,080 < 1,466.51.
+    # person2 has no approved care setting.
+    nc_sa_eligible: [true, false]
+    # 1,397 + 70 - 1,080 = 387.
+    nc_sa: [387, 0]
+
+# SA-3220 II.A and IV.A: a lower facility rate replaces the basic rate in
+# the per diem, and initial-month income is not deducted.
+# PDF pages 204, 209-210
+# https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=204
+- name: Case 34, lower contracted facility rate in a fifteen-day initial month.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_facility_rate: 1_000
+    nc_sa_partial_month_days: 15
+  output:
+    # SSI 994; at the contracted rate 1,000 + 70 - 994 = 76 >= 1, so the
+    # applicant is eligible.
+    nc_sa_eligible: true
+    # Per diem 1,000 / 31 = 32.2581 -> 32.26; 32.26 * 15 + 70 = 553.90 -> 554.
+    nc_sa: 554
+
+# SA-3220 II.A: with a lower contracted rate, "the actual rate charged to the
+# recipient ... is used in the calculations addressed in this chapter",
+# including III.C's eligibility test. Social Security of $1,300 a month gives
+# TCMI 1,300 - 20 = 1,280, above the 1,070 maintenance amount at a $1,000 rate.
+# PDF pages 204, 209
+# https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=204
+- name: Case 35, income above the lower contracted maintenance amount prevents a partial-month payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_facility_rate: 1_000
+    nc_sa_partial_month_days: 15
+    social_security_retirement: 15_600
+  output:
+    nc_sa_countable_income: 1_280
+    # 1,000 + 70 - 1,280 < 0.
+    nc_sa_full_month_amount: 0
+    nc_sa_eligible: false
+    nc_sa: 0
+
+- name: Case 36, income above the lower contracted maintenance amount in a full month.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_facility_rate: 1_000
+    social_security_retirement: 15_600
+  output:
+    nc_sa_full_month_amount: 0
+    nc_sa_eligible: false
+    nc_sa: 0
+
+# G.S. 108A-42.1 adjusts the rates each January 1 by the Social Security
+# cost-of-living adjustment. The 2027 rate is uprated until North Carolina
+# publishes it; the 2027 FBR is the SSA amount announced with the 3.6% COLA.
+# https://www.ncleg.gov/EnactedLegislation/Statutes/PDF/BySection/Chapter_108A/GS_108A-42.1.pdf
+- name: Case 37, basic facility rate follows the cost-of-living adjustment in 2027.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+  output:
+    # 1,397 uprated by the Social Security index (2027 CPI-W 328.746 / 2026
+    # 317.265 = 1.036187) and rounded to the dollar: 1,447.55 -> 1,448.
+    nc_sa_rate: 1_448
+    # 2027 SSI federal benefit rate.
+    ssi: 1_029
+    # 1,448 + 70 - 1,029 = 489.
+    nc_sa: 489
+
+# An applicant "ineligible for SSI solely due to being over income for SSI"
+# qualifies without applying for SSI (SA-3100 I, II.A.6): "If the a/b
+# currently has income at or above the FBR, a referral to SSA to apply for SSI
+# is not required" (SA-3210 V.A.4).
+# https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=191
+- name: Case 38, applicant over income for SSI does not need SSI take-up.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    social_security_retirement: 15_600
+    takes_up_ssi_if_eligible: false
+  output:
+    # 1,300 - 20 = 1,280 > 994, so no SSI.
+    ssi: 0
+    nc_sa_eligible: true
+    # 1,397 + 70 - 1,280 = 187.
+    nc_sa: 187
+
+# SA-3220 IV.A rounds the per diem to the cent and the total to the dollar,
+# with half a dollar rounding up (III.A.4).
+# https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=209
+- name: Case 39, partial month at a lower contracted rate ending in exactly fifty cents rounds up.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_facility_rate:
+      2026-04: 1_059
+    nc_sa_partial_month_days:
+      2026-04: 25
+  output:
+    # 1,059 / 30 = 35.30; 35.30 * 25 + 70 = 952.50 -> 953.
+    nc_sa:
+      2026-04: 953
+
+- name: Case 40, partial-month days entered for one month leave the next month full.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 70
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_partial_month_days:
+      2026-01: 15
+  output:
+    nc_sa_partial_month_days:
+      2026-01: 15
+      2026-02: 0
+    # January: 1,397 / 31 = 45.06; 45.06 * 15 + 70 = 745.90 -> 746.
+    # February is a full month: 1,397 + 70 - SSI 994 = 473.
+    nc_sa:
+      2026-01: 746
+      2026-02: 473

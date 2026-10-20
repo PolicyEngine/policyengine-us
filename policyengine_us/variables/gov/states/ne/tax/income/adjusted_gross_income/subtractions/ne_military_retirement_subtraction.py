@@ -23,7 +23,11 @@ class ne_military_retirement_subtraction(Variable):
         person = tax_unit.members
         age = person("age", period)
         age_eligible = age >= p.age_threshold
-        military_retirement_benefit = person("military_retirement_pay", period)
+        military_retirement_pay = person("military_retirement_pay", period)
+        survivor_pay = (
+            person("military_retirement_pay_survivors", period) * p.survivors_eligible
+        )
+        military_retirement_benefit = military_retirement_pay + survivor_pay
         # Dependents' income is not in federal AGI; they report it on their
         # own return.
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)

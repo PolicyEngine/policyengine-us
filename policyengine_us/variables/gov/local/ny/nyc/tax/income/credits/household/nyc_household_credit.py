@@ -25,7 +25,11 @@ class nyc_household_credit(Variable):
 
         filing_statuses = filing_status.possible_values
 
-        return select(
+        # Tax Law 1310(d) excludes an individual whom another taxpayer can
+        # claim as a dependent; IT-201 line 48: "If you marked the Yes box at
+        # item C ... you do not qualify for this credit".
+        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        amount = select(
             [
                 filing_status == filing_statuses.SINGLE,
                 filing_status == filing_statuses.SEPARATE,
@@ -41,3 +45,4 @@ class nyc_household_credit(Variable):
             # amount per person, varying with AGI.
             default=p.other_per_dependent.calc(federal_agi, right=True) * tax_unit_size,
         )
+        return where(dependent_filer, 0, amount)
