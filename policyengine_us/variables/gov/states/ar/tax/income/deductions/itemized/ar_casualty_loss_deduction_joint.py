@@ -29,5 +29,7 @@ class ar_casualty_loss_deduction_joint(Variable):
         # ar_agi_joint moves the dependent's net income to the head.
         loss = tax_unit_non_dep_add(tax_unit, period, ["casualty_loss"])
         loss_after_exclusion = max_(0, loss - p.exclusion)
-        agi = add(tax_unit, period, ["ar_agi_joint"])
+        # A spouse's loss can make the joint AGI total negative; floor it at
+        # zero so a negative AGI cannot enlarge the deduction.
+        agi = max_(add(tax_unit, period, ["ar_agi_joint"]), 0)
         return max_(0, loss_after_exclusion - p.income_floor * agi)

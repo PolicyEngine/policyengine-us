@@ -188,3 +188,17 @@
   output:
     medicare_part_b_premium: [0, 2_434.8, 0]
     in_eap_income: [12_000, 24_000, 12_000]
+
+- name: Case 10, reported unemployment compensation counts as income.
+  # The source list reads total_unemployment_compensation. Indiana has no
+  # modeled unemployment insurance program, so the total is the reported
+  # amount and this control shows reported UC still counts.
+  period: 2026
+  input:
+    state_code: IN
+    age: 40
+    unemployment_compensation: 6_000
+    ssi: 0
+  output:
+    total_unemployment_compensation: 6_000
+    in_eap_income: 6_000
