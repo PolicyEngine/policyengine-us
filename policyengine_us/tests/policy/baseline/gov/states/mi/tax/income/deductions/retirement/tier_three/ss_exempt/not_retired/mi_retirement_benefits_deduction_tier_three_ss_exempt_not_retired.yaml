@@ -295,3 +295,25 @@
   output:
     mi_retirement_benefits_deduction_tier_three_eligible: false
     mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 0
+
+- name: 2022 single filer with tier 3 not retired deduction limited to tier 1 due to military survivor pay
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 40_000
+        military_retirement_pay_survivors: 1_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_retirement_benefits_deduction_tier_three_eligible: true
+        mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_people: 1
+        mi_retirement_benefits_deduction_tier_one_amount: 10_000
+        mi_expanded_retirement_benefits_deduction: 0
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output: # min(min(15000, 10000), 40000) = 10000
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 10_000
