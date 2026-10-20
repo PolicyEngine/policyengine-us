@@ -24,7 +24,12 @@ class nh_ssp_countable_income(Variable):
         essential = size > 1 + couple
         eligible = person("nh_ssp_eligible", period)
         both_applicants = eligible & spouse_value(eligible, spouse, False)
-        earned = max_(person("ssi_earned_income", period), 0)
+        # NOTE: He-W 654.02(c)(1) and 601.04(m) count wages "prior to payroll
+        # deductions", and He-W 600 excludes no cafeteria-plan salary reduction,
+        # so pre-tax health premiums stay in the state's wage count. Federal SSI
+        # excludes them (POMS SI 00820.102 C.2), and the ssi term keeps that.
+        sources = parameters(period).gov.ssa.ssi.income.sources.earned
+        earned = max_(add(person, period, sources), 0)
         expenses = max_(person("nh_ssp_employment_expenses", period), 0)
         # With a nonapplicant spouse, combine earnings before the applicant's
         # category disregard under He-W 654.02(d)-(e).
@@ -53,6 +58,8 @@ class nh_ssp_countable_income(Variable):
             "ssi", period
         )
         # Blind children use the parental allocation in He-W 652.03(f)-(g).
+        # NOTE: that term uses SSI's earned income, so the parents' pre-tax
+        # health premiums are excluded there; 652.03(f)(2) names no such exclusion.
         unearned = unearned + person(
             "ssi_unearned_income_deemed_from_ineligible_parent", period
         )

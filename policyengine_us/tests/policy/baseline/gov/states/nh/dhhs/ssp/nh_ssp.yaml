@@ -1020,3 +1020,57 @@
     # 2 < 5 years, not exempt, and 39 < 40 quarters: ineligible.
     nh_ssp_eligible: false
     nh_ssp: 0
+
+- name: Case 60, pre-tax health premiums still count as New Hampshire wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 40
+    is_blind: true
+    # $1,000 a month, about 14 hours a week at the New Hampshire cashier
+    # median of $16.27 (BLS OEWS May 2025).
+    employment_income: 12_000
+    # $100 a month for self-only coverage through a cafeteria plan, below the
+    # 2025 average worker contribution of $1,440 (KFF Employer Health
+    # Benefits Survey).
+    pre_tax_health_insurance_premiums: 1_200
+  output:
+    # SSI excludes the premiums (POMS SI 00820.102 C.2): 1,000 - 100 = 900;
+    # 994 - (900 - 20 - 65) * 0.5 = 994 - 407.50 = 586.50.
+    ssi: 586.5
+    # He-W 601.04(m) counts the 1,000 before payroll deductions. He-W
+    # 654.15(b): (1,000 - 85) * 0.5 = 457.50; 457.50 + 586.50 - 13 = 1,031.
+    nh_ssp_countable_income: 1_031
+    # 1,031 is above the 1,008 standard (994 + 27 - 13): no grant.
+    nh_ssp: 0
+
+- name: Case 61, a nonapplicant spouse's pre-tax health premiums still count as New Hampshire wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+      person2:
+        age: 40
+        # As in Case 50: 20 hours a week at $16.27, $16,920.80 a year.
+        employment_income: 16_920.8
+        # $100 a month through a cafeteria plan, as in Case 60.
+        pre_tax_health_insurance_premiums: 1_200
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # SSI deems the spouse's wages net of premiums: 1,410.07 - 100 = 1,310.07;
+    # (1,310.07 - 20 - 65) * 0.5 = 612.53; 1,491 - 612.53 = 878.47.
+    ssi: [878.47, 0]
+    nh_ssp_eligible: [true, false]
+    # He-W 654.02(e)(1) combines gross earnings: (1,410.07 - 85) * 0.5 = 662.53;
+    # 662.53 + 878.47 - 20 = 1,521, above the 1,492 two-person standard.
+    nh_ssp: [0, 0]
