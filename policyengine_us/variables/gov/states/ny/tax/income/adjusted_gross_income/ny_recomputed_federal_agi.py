@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-def get_ny_recomputed_branch(tax_unit, period, keep_federal_tax=False):
+def get_ny_recomputed_branch(tax_unit, period, keep_reported_tax_and_eitc=False):
     """
     The branch whose federal adjusted gross income is New York's recomputed
     federal AGI (Form IT-201 line 19a), or None when the two are equal for
@@ -15,11 +15,13 @@ def get_ny_recomputed_branch(tax_unit, period, keep_federal_tax=False):
     19a and keeps each unit's federal itemization choice. The deduction is
     zero in the branch, which already counts it in adjusted gross income.
 
-    With ``keep_federal_tax``, the branch also keeps income tax before
-    credits (Form 1040 line 18), which IT-213 Worksheet A takes as reported.
-    The EITC does not need it, and New York City's EITC must not read it:
-    New York City income tax enters the federal deduction for state and
-    local taxes.
+    With ``keep_reported_tax_and_eitc``, for the Empire State child credit,
+    the branch also keeps income tax before credits (Form 1040 line 18,
+    which IT-213 Worksheet A takes as reported) and the federal earned income
+    credit (which Schedule 8812 lines 12-13, carried by IT-213 Worksheet C
+    line 7, take as reported). The New York and New York City EITC branch
+    does not read the tax: New York City income tax enters the federal
+    deduction for state and local taxes.
     """
     deduction = tax_unit("charitable_contributions_ald", period)
     if not deduction.any():
@@ -30,11 +32,12 @@ def get_ny_recomputed_branch(tax_unit, period, keep_federal_tax=False):
         "tax_unit_itemizes": tax_unit("tax_unit_itemizes", period),
     }
     name = "ny_recomputed_federal_agi"
-    if keep_federal_tax:
+    if keep_reported_tax_and_eitc:
         overrides["income_tax_before_credits"] = tax_unit(
             "income_tax_before_credits", period
         )
-        name = "ny_recomputed_federal_agi_with_federal_tax"
+        overrides["eitc"] = tax_unit("eitc", period)
+        name = "ny_recomputed_federal_agi_for_child_credit"
     return get_override_branch(tax_unit.simulation, name, period, overrides)
 
 

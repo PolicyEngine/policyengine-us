@@ -183,3 +183,40 @@
     # part. 33% x 408 = 134.64 (Sol review r3).
     income_tax_before_credits: 408
     ny_ctc_pre_2024: 134.64
+
+- name: 2020 Empire State child credit carries the federal EITC as reported
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        employment_income: 3_000
+        taxable_pension_income: 52_925
+        charitable_cash_donations: 300
+      person2:
+        age: 67
+      person3:
+        age: 10
+      person4:
+        age: 10
+      person5:
+        age: 10
+      person6:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: NY
+  output:
+    adjusted_gross_income: 55_625
+    ny_recomputed_federal_agi: 55_925
+    income_tax_before_credits: 2_992
+    # IT-213 Worksheet C line 7 carries federal Schedule 8812 line 13 as
+    # reported: the federal EITC as reported exceeds the $229.50 of payroll
+    # taxes, so the refundable part is zero, and the credit is 33% of the
+    # $2,992 of tax the nonrefundable part is limited to (Sol review r4).
+    ny_ctc_pre_2024: 987.36

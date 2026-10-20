@@ -42,7 +42,7 @@ class ny_ctc_pre_2024(Variable):
             # federal AGI (IT-201 line 19a), so the branch starts from the
             # one where federal AGI is line 19a when they differ.
             recomputed = get_ny_recomputed_branch(
-                tax_unit, period, keep_federal_tax=True
+                tax_unit, period, keep_reported_tax_and_eitc=True
             )
             simulation = tax_unit.simulation if recomputed is None else recomputed
             pre_tcja_ctc = get_branch_for_period(simulation, "pre_tcja_ctc", period)
