@@ -245,15 +245,21 @@ def get_hsa_cola_denominator(parameters: ParameterNode) -> float:
     """Denominator of the 26 U.S.C. 223(g)(1) cost-of-living adjustment.
 
     The CPI for 1997, the base year 223(g)(1)(B)(i) substitutes for calendar
-    year 2016, averaged over the 12 months ending March 31 as 223(g)(1)
-    applies 1(f)(4), times the 1(f)(3)(B) ratio of the C-CPI-U to the CPI for
-    calendar year 2016. That ratio keeps its 12 months ending August 31, as
-    for every other 1(f)(3) amount; see ``get_hsa_cola``.
+    year 2016, times the 1(f)(3)(B) ratio of the C-CPI-U to the CPI for
+    calendar year 2016, with every index averaged over the 12 months ending
+    March 31. 223(g)(1) applies 1(f)(4) "by substituting 'March 31' for
+    'August 31'" throughout the paragraph, which puts both CPI observations
+    on March windows. The C-CPI-U observations follow the same March
+    schedule: 223(g)(1) requires the limits to be published by June 1 of the
+    preceding year, before an August window of that year could close, and
+    the 2016 ratio is taken over the same windows as the indexes it converts
+    between. See ``get_hsa_cola`` for how this compares with the published
+    limits.
     """
     cpi = parameters.gov.bls.cpi
-    ratio_2016 = get_average_for_12_months_ending_august(
+    ratio_2016 = get_average_for_12_months_ending_march(
         cpi.c_cpi_u, 2016
-    ) / get_average_for_12_months_ending_august(cpi.cpi_u, 2016)
+    ) / get_average_for_12_months_ending_march(cpi.cpi_u, 2016)
     return (
         get_average_for_12_months_ending_march(
             cpi.cpi_u, HSA_CONTRIBUTION_LIMIT_BASE_YEAR
@@ -273,12 +279,15 @@ def get_hsa_cola(
     1(f)(4) applied by substituting March 31 for August 31: the percentage
     (if any) by which the C-CPI-U for the calendar year before ``tax_year``,
     averaged over the 12 months ending March 31, exceeds
-    ``get_hsa_cola_denominator``. These windows reproduce every self-only and
-    family limit the IRS published for 2019 through 2027, and Rev. Proc.
-    2018-18's limits for 2018, from the BLS series in ``gov.bls.cpi``
-    (``tests/core/test_hsa_contribution_limits.py``). Taking the 2016 ratio
-    over the 12 months ending March 31 as well misses 3 of the 18 values for
-    2019 to 2027. ``denominator`` lets a caller computing many years pass it
+    ``get_hsa_cola_denominator``. From the BLS series in ``gov.bls.cpi``
+    these windows reproduce 15 of the 18 self-only and family limits the IRS
+    published for 2019 through 2027, and Rev. Proc. 2018-18's limits for
+    2018. The 2019 and 2023 family limits and the 2025 self-only limit come
+    out $50 lower than published. Taking the 2016 ratio over the 12 months
+    ending August 31 instead, as for the other 1(f)(3) amounts, reproduces
+    all 18 (``tests/core/test_hsa_contribution_limits.py``). The published
+    limits are encoded for their own years, so this only sets the
+    projections. ``denominator`` lets a caller computing many years pass it
     once.
     """
     if denominator is None:
