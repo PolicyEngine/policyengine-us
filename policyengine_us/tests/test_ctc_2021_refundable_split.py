@@ -100,7 +100,7 @@ def test_2021_schedule_8812_partition_before_tax_limit(split_grid):
     non_refundable = simulation.calculate("non_refundable_ctc", 2021)
     child_after_reductions = np.maximum(r["child"] - r["first"] - r["ordinary"], 0)
 
-    # Schedule 8812 line 14a excludes ODC and applies both reductions. Identity
+    # Schedule 8812 line 14b excludes ODC and applies both reductions. Identity
     # alone would miss the old bug: its refundable and non-refundable amounts
     # added up correctly while some ODC was incorrectly refundable.
     np.testing.assert_allclose(total[baseline], r["total"][baseline])
