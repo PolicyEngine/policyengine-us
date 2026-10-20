@@ -213,7 +213,9 @@ class _CommentRecorder(yaml.BaseLoader):
 
     def _note(self):
         if self.peek() == "#":
-            self.comment_starts.append((self.line, self.column))
+            # The absolute index, not the column: the reader does not advance
+            # its column over U+FEFF, so columns drift after an embedded BOM.
+            self.comment_starts.append((self.line, self.index))
 
     def scan_to_next_token(self):
         if self.index == 0 and self.peek() == "\ufeff":
@@ -257,11 +259,15 @@ def _yaml_comments(text: str):
         raise Unscannable(f"cannot scan YAML: {error}") from error
     finally:
         loader.dispose()
-    lines = YAML_LINE_BREAK_RE.split(text)
-    return [
-        (row + 1, lines[row][col:].strip(), bool(lines[row][:col].strip()))
-        for row, col in loader.comment_starts
-    ]
+    found = []
+    for row, index in loader.comment_starts:
+        start = max(
+            (m.end() for m in YAML_LINE_BREAK_RE.finditer(text, 0, index)), default=0
+        )
+        end = YAML_LINE_BREAK_RE.search(text, index)
+        comment = text[index : end.start() if end else len(text)].strip()
+        found.append((row + 1, comment, bool(text[start:index].strip("\ufeff \t"))))
+    return found
 
 
 @functools.lru_cache(maxsize=None)
@@ -607,6 +613,14 @@ def test_comments_are_read_syntax_aware():
             "\ufeff# Source conflict us-hi:x\nkey: 1\n",
             [(1, "# Source conflict us-hi:x", False)],
         ),
+        # Review of c5b524bd (R4-1): BOMs inside the text do not shift the comment.
+        (
+            '# Source conflict us-hi:registered\nkey: "a\ufeff\ufeffb" # Source conflict us-hi:missing\n',
+            [
+                (1, "# Source conflict us-hi:registered", False),
+                (2, "# Source conflict us-hi:missing", True),
+            ],
+        ),
         # A comment on a block scalar's header line.
         (
             "key: |  # Source conflict us-hi:x\n  text\n",
@@ -639,6 +653,24 @@ def test_an_unscannable_file_is_reported_as_malformed(monkeypatch):
     assert _markers()[1] == [
         "policyengine_us/variables/example.py: cannot tokenize: example"
     ]
+
+
+def test_an_unscannable_real_file_fails_the_guard(tmp_path, monkeypatch):
+    # Review of c5b524bd (R4-2): the real read, cache and error hand-off,
+    # _cached_comments -> _comments -> _markers, on an actual file.
+    broken = tmp_path / "policyengine_us" / "parameters" / "broken.yaml"
+    broken.parent.mkdir(parents=True)
+    broken.write_text('note: "never closed\n')
+    monkeypatch.setitem(globals(), "REPO_ROOT", tmp_path)
+    monkeypatch.setitem(globals(), "_code_files", lambda: iter([broken]))
+    try:
+        malformed = _markers()[1]
+    finally:
+        _cached_comments.cache_clear()
+    assert len(malformed) == 1
+    assert malformed[0].startswith(
+        "policyengine_us/parameters/broken.yaml: cannot scan YAML"
+    )
 
 
 def test_unscannable_files_fail_closed():
