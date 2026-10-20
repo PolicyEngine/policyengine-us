@@ -1,17 +1,6 @@
 from policyengine_us.model_api import *
 
 
-def choice_branch(tax_unit, period, itemizes):
-    """The branch of the simulation in which every tax unit itemizes, or
-    every tax unit does not."""
-    return get_override_branch(
-        tax_unit.simulation,
-        "itemizing" if itemizes else "not_itemizing",
-        period,
-        {"tax_unit_itemizes": np.full(tax_unit.count, itemizes, dtype=bool)},
-    )
-
-
 class tax_unit_itemizes(Variable):
     value_type = bool
     entity = TaxUnit
@@ -31,8 +20,8 @@ class tax_unit_itemizes(Variable):
             # ceiling) and any standard deduction that phases out with it.
             # Each comes from the branch that makes that choice (the ones
             # that also give the tax liabilities compared below).
-            itemizing = choice_branch(tax_unit, period, True)
-            not_itemizing = choice_branch(tax_unit, period, False)
+            itemizing = get_itemization_branch(tax_unit, period, itemizes=True)
+            not_itemizing = get_itemization_branch(tax_unit, period, itemizes=False)
             itemized_deductions = itemizing.calculate(
                 "itemized_taxable_income_deductions", period
             )
@@ -56,9 +45,9 @@ class tax_unit_itemizes(Variable):
             # (the one that also gives tax_liability_if_itemizing).
             # Calculated before branching, so the branch inherits it.
             tax_unit("total_itemized_taxable_income_deductions", period)
-            itemized_deductions = choice_branch(tax_unit, period, True).calculate(
-                "itemized_taxable_income_deductions", period
-            )
+            itemized_deductions = get_itemization_branch(
+                tax_unit, period, itemizes=True
+            ).calculate("itemized_taxable_income_deductions", period)
         else:
             standard_deduction = tax_unit("standard_deduction", period)
             itemized_deductions = tax_unit("itemized_taxable_income_deductions", period)
