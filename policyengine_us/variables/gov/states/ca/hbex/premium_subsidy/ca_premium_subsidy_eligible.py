@@ -47,7 +47,10 @@ class ca_premium_subsidy_eligible(Variable):
         # would admit incomes above 165%. FTB 3849 Table 1-2 (2020) likewise
         # decides band edges on the exact percentage.
         magi = max_(tax_unit("aca_magi", period), 0)
-        exact_magi_frac = magi / tax_unit("tax_unit_fpg", period.last_year)
+        fpg = tax_unit("tax_unit_fpg", period.last_year)
+        # Divide in float64: a float32 quotient can round a ratio just above
+        # a limit down onto it.
+        exact_magi_frac = magi.astype(np.float64) / fpg
         below_limit = where(
             p.fpl_limit_inclusive,
             exact_magi_frac <= p.fpl_limit,
