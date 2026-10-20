@@ -36,9 +36,11 @@ It can therefore be negative. Neither output changes canonical
 
 The [rebate registry](https://github.com/PolicyEngine/policyengine-us/blob/main/policyengine_us/parameters/gov/states/household/state_income_tax_rebate_adjustments.yaml)
 identifies the state effects within the comparison's scope. A registry entry
-does not establish a payment in every year: each state effect checks the
-state's dated credit list and the calculated amounts, including formula dates
-and amount gates. For example, a positive raw `il_income_tax_rebate` after 2021
+does not establish a payment in every year. State effects follow canonical
+credit aggregation and calculated amounts, including dated credit lists,
+formula dates, and amount gates. Montana's rebate is added directly by
+`mt_refundable_credits`, rather than through its credit list. For example,
+a positive raw `il_income_tax_rebate` after 2021
 is excluded from Illinois's refundable-credit list and contributes zero to the
 adjustment. Amounts that are zero contribute zero even if a dated list retains
 the variable.

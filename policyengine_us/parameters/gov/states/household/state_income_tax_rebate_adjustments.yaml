@@ -1,7 +1,8 @@
 description: >-
   Registry of state tax effects restored for the pre-rebate comparison output.
-  Each effect follows its canonical dated credit list and calculated amount;
-  registry membership alone does not imply a payment in every year. Existing
+  Each effect follows canonical credit aggregation and calculated amounts;
+  dated credit lists and amount gates determine inclusion. Registry membership
+  alone does not imply a payment in every year. Existing
   historical backdating is preserved, not corrected by this comparison output.
   Colorado's residual TABOR sales refund and Massachusetts premium pay are in
   scope. Ordinary recurring credits remain in liability.
