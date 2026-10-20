@@ -146,7 +146,58 @@
   output:
     mt_ssp: [0, 0]
 
-- name: Case 7, annual benefit and SNAP income aggregation.
+- name: Case 7, annual benefit in the benefit and income aggregates.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    # Keeps projected SNAP out of spm_unit_benefits.
+    takes_up_snap_if_eligible: false
+  output:
+    # 94 x 12 = 1,128 Montana; 994 x 12 = 11,928 federal SSI.
+    mt_ssp: 1_128
+    household_state_benefits: 1_128
+    # 11,928 + 1,128 = 13,056.
+    spm_unit_benefits: 13_056
+    snap_unearned_income: 13_056
+    hud_unearned_income: 13_056
+
+- name: Case 8, spouses in separate marital units after one enters a certified home.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+      person2:
+        age: 65
+    # From the month after they stop living together, SSA treats the spouses
+    # as individuals (20 CFR 416.1801(c); SI 00501.154).
+    marital_units:
+      person1_marital_unit:
+        members: [person1]
+      person2_marital_unit:
+        members: [person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    ssi_countable_income: [0, 0]
+    # Each spouse receives the 994 individual federal benefit rate.
+    ssi_amount_if_eligible: [994, 994]
+    ssi: [994, 994]
+    # person1: the 94 individual personal care, group or community home level.
+    # person2: no certified placement (POMS SI 01415.058 H.1 code Z), so 0.
+    mt_ssp: [94, 0]
+
+- name: Case 9, elderly homeowner or renter credit income counts the supplement.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -154,7 +205,10 @@
     age: 65
     mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
   output:
+    # 994 x 12 = 11,928 federal SSI.
+    ssi: 11_928
+    # 94 x 12 = 1,128 Montana supplement.
     mt_ssp: 1_128
-    household_state_benefits: 1_128
-    snap_unearned_income: 13_056
-    hud_unearned_income: 13_056
+    # MCA 15-30-2337(9)(a)(vi) counts cash public assistance and relief:
+    # 11,928 + 1,128 = 13,056.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 13_056
