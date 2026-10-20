@@ -40,6 +40,6 @@ class standard_deduction_worksheet_earned_income_person(Variable):
         earned_income = add(person, period, p.earned_income_sources)
         # Form 1040 line 1h disability pensions are part of line 1z, but
         # are modeled separately from irs_employment_income.
-        earned_income += person("earned_disability_benefits", period)
+        earned_income = earned_income + person("earned_disability_benefits", period)
         # Schedule 1, line 15: the deductible part of self-employment tax.
         return earned_income - person("self_employment_tax_ald_person", period)
