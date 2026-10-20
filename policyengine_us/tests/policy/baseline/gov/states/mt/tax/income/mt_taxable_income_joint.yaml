@@ -77,7 +77,8 @@
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT
-        taxable_income: 40_000
+        adjusted_gross_income: 50_000
+        taxable_income_deductions: 10_000
     households:
       household:
         members: [person1, person2]
@@ -103,7 +104,8 @@
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT
-        taxable_income: 50_000
+        adjusted_gross_income: 60_000
+        taxable_income_deductions: 10_000
     households:
       household:
         members: [person1, person2]
@@ -129,7 +131,8 @@
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT
-        taxable_income: 45_000
+        adjusted_gross_income: 55_000
+        taxable_income_deductions: 10_000
     households:
       household:
         members: [person1, person2]
@@ -155,7 +158,8 @@
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT
-        taxable_income: 65_000
+        adjusted_gross_income: 75_000
+        taxable_income_deductions: 10_000
     households:
       household:
         members: [person1, person2]
@@ -181,7 +185,8 @@
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT
-        taxable_income: 0
+        adjusted_gross_income: 5_000
+        taxable_income_deductions: 10_000
     households:
       household:
         members: [person1, person2]
@@ -207,7 +212,8 @@
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT
-        taxable_income: 35_000
+        adjusted_gross_income: 45_000
+        taxable_income_deductions: 10_000
     households:
       household:
         members: [person1, person2]

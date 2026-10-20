@@ -13,6 +13,8 @@ class mt_taxable_income_joint(Variable):
         "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=16",
         # MCA 15-30-2120(1), (2)(i)-(j): federal taxable income base and addbacks.
         "https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0200/0150-0300-0210-0200.html",
+        "https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0010/0150-0300-0210-0010.html",
+        "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=15",
     )
 
     def formula(person, period, parameters):
@@ -40,13 +42,19 @@ class mt_taxable_income_joint(Variable):
         return is_head * max_(0, total_agi - deductions - exemptions)
 
     def formula_2024(person, period, parameters):
-        # MCA 15-30-2120 starts with federal taxable income, including its
-        # zero floor, then adds back QBI under subsection (2)(i) and deducted
-        # state income tax under subsection (2)(j).
+        # MCA 15-30-2101(7) incorporates the subtraction-based IRC 63 base.
+        # Worksheet A adjusts the deduction before Form 2 line 3's zero floor,
+        # so deductions exceeding AGI can absorb the state-income-tax addback.
         tax_unit = person.tax_unit
-        federal_base = tax_unit("taxable_income", period)
+        federal_base = (
+            tax_unit("adjusted_gross_income", period)
+            - tax_unit("exemptions", period)
+            - tax_unit("taxable_income_deductions", period)
+        )
         qbi_add_back = tax_unit("qualified_business_income_deduction", period)
         state_tax_add_back = tax_unit("mt_state_income_tax_itemized_add_back", period)
+        federal_base = max_(0, federal_base + qbi_add_back + state_tax_add_back)
+        # Form 2 applies Montana additions and subtractions after line 3.
         on_return = person("is_tax_unit_head_or_spouse", period)
         additions = tax_unit.sum(person("mt_additions", period) * on_return)
         subtractions = tax_unit.sum(person("mt_subtractions", period) * on_return)
@@ -60,5 +68,5 @@ class mt_taxable_income_joint(Variable):
         is_head = person("is_tax_unit_head", period)
         return is_head * max_(
             0,
-            federal_base + qbi_add_back + state_tax_add_back + additions - subtractions,
+            federal_base + additions - subtractions,
         )

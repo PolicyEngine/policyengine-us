@@ -452,7 +452,7 @@
     mt_federal_deductions: 14_600
     mt_taxable_income_joint: 6_000
 
-- name: The state-income-tax addback is applied after the federal zero floor.
+- name: Excess deductions absorb the state-income-tax addback before the zero floor.
   period: 2024
   input:
     state_code: MT
@@ -467,7 +467,26 @@
   output:
     mt_state_income_tax_itemized_add_back: 5_400
     mt_federal_deductions: 14_600
-    mt_taxable_income_joint: 5_400
+    # max(10,000 - 20,000 + 5,400, 0) = 0.
+    mt_taxable_income_joint: 0
+
+- name: State-income-tax addback ordering is unchanged when the federal floor does not bind.
+  period: 2024
+  input:
+    state_code: MT
+    adjusted_gross_income: 50_000
+    mt_additions: 0
+    mt_subtractions: 0
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 20_000
+    standard_deduction: 14_600
+    salt_deduction: 6_000
+    state_withheld_income_tax: 6_000
+  output:
+    mt_state_income_tax_itemized_add_back: 5_400
+    mt_federal_deductions: 14_600
+    # Both orderings give 50,000 - 20,000 + 5,400 = 35,400.
+    mt_taxable_income_joint: 35_400
 
 - name: Small and large income classes enter separate Montana pools once in 2017.
   period: 2017
@@ -565,14 +584,17 @@
     mt_federal_deductions: 15_750
     mt_taxable_income_joint: 3_000
 
-- name: The statutory QBI addback follows the federal zero floor.
+- name: QBI is excluded from the Montana deduction before the zero floor.
   period: 2025
   input:
     state_code: MT
-    taxable_income: 0
+    adjusted_gross_income: 10_000
+    tax_unit_itemizes: false
+    standard_deduction: 15_750
     qualified_business_income_deduction: 500
     mt_additions: 0
     mt_subtractions: 0
     mt_federal_obbba_subtraction: 0
   output:
-    mt_taxable_income_joint: 500
+    taxable_income: 0
+    mt_taxable_income_joint: 0
