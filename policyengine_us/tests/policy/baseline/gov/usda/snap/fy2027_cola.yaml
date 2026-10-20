@@ -90,6 +90,15 @@
     # FY2026 table.
     snap_max_allotment: [4884, 6228, 7581, 5567, 6418, 4856]
 
+- name: The FY2026 cap applies from October 2025
+  period: 2025-10
+  input:
+    snap_region_str:
+      2025: [CONTIGUOUS_US]
+    snap_unit_size: [18]
+  output:
+    snap_max_allotment: [3_777]
+
 - name: The FY2026 cap does not reach September 2025
   period: 2025-09
   input:
