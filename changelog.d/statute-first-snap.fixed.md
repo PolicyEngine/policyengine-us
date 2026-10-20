@@ -1,0 +1,1 @@
+Follow the statute where USDA or state practice differs: the amended ABAWD rules apply in Alaska and Hawaii from 2025-07-04 rather than the states' announced 2025-11-01, and the cap on the additional allotment for households of 9 or more applies from FY2026.

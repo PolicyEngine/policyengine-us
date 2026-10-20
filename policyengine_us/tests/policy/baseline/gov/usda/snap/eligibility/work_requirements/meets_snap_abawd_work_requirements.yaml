@@ -883,7 +883,12 @@
   output:
     meets_snap_abawd_work_requirements: true
 
-- name: Case 57, Anchorage age 57 exempt before AK adoption (pre-HR1 55+ still applies).
+- name: Case 57, Anchorage age 57 is subject in October 2025 (HR1's age limit applies from 2025-07-04).
+  # Section 10102 extended the time limit to adults through age 64 from
+  # enactment, and Anchorage is not a waived area, so a 57-year-old working
+  # one hour a week does not meet the requirement. Alaska's announced
+  # 2025-11-01 date had no good-faith exemption behind it; its retained
+  # 56-64 age exemption starts with the window on 2025-11-01.
   period: 2025-10
   absolute_error_margin: 0.1
   input:
@@ -898,7 +903,7 @@
     county_fips:
       2025: "02020"
   output:
-    meets_snap_abawd_work_requirements: true
+    meets_snap_abawd_work_requirements: false
 
 - name: Case 58, non-Anchorage waived borough healthy adult exempt via the area waiver during the window.
   period: 2026-01

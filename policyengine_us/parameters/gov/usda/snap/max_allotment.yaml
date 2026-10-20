@@ -954,24 +954,39 @@ additional:
     2026-10-01: 289
 
 cap:
-  description: The USDA caps the maximum SNAP allotment at this published amount, which binds for households of 18 or more under baseline values; the cap is a fixed dollar amount, so reforms that raise the main or additional allotments do not raise it and can make it bind for smaller households.
+  description: The USDA caps the maximum SNAP allotment at this amount, which binds for households of 18 or more under baseline values; the cap is a fixed dollar amount, so reforms that raise the main or additional allotments do not raise it and can make it bind for smaller households.
   metadata:
     label: SNAP maximum allotment cap
     breakdown:
       - snap_region
+  # 7 U.S.C. 2012(u)(2)(I), as amended by P.L. 119-21 section 10101, caps
+  # the additional percentage for households of 9 or more at 200 percent
+  # of the maximum 4-person allotment from FY2026. USDA's FY2026 table
+  # listed only the per-person increment, so the FY2026 caps are computed
+  # from its published amounts: the 8-person maximum plus twice the
+  # 4-person maximum (contiguous states: $1,789 + 2 x $994). USDA's FY2027
+  # caps, computed from unrounded amounts, match that formula in four
+  # regions and exceed it by $1 in Alaska urban, Alaska rural 2 and Guam.
   CONTIGUOUS_US:
+    2025-10-01: 3_777
     2026-10-01: 3_887
   AK_URBAN:
+    2025-10-01: 4_884
     2026-10-01: 4_965
   AK_RURAL_1:
+    2025-10-01: 6_228
     2026-10-01: 6_331
   AK_RURAL_2:
+    2025-10-01: 7_581
     2026-10-01: 7_705
   GU:
+    2025-10-01: 5_567
     2026-10-01: 5_729
   HI:
+    2025-10-01: 6_418
     2026-10-01: 6_289
   VI:
+    2025-10-01: 4_856
     2026-10-01: 4_997
 
 metadata:
@@ -1019,6 +1034,12 @@ metadata:
     # Effective 2025-10-01.
     - title: SNAP FY2026 Cost-of-Living Adjustments
       href: https://www.fns.usda.gov/snap/allotment/cola/fy26
+    - title: SNAP FY2026 Maximum Allotments and Deductions (8-person and 4-person amounts for the FY2026 caps)
+      href: https://fna-bwbufwdzbabpezgc.z01.azurefd.us/sites/default/files/resource-files/snap-fy26maximumAllotments-deductions.pdf#page=1
+    - title: 7 U.S.C. 2012(u)(2)(I) (cap on the additional percentage for households of 9 or more)
+      href: https://www.law.cornell.edu/uscode/text/7/2012#u_2_I
+    - title: Public Law 119-21, section 10101 (household adjustments)
+      href: https://www.govinfo.gov/content/pkg/PLAW-119publ21/pdf/PLAW-119publ21.pdf#page=11
     - title: SNAP FY2027 Cost-of-Living Adjustments
       href: https://www.fns.usda.gov/snap/allotment/cola/fy27
     - title: SNAP FY2027 Cost-of-Living Adjustments memo (48 States and D.C., Guam, Virgin Islands)

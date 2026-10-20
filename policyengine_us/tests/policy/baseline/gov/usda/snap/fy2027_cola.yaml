@@ -65,16 +65,40 @@
   output:
     snap_max_allotment: [394, 723, 1039, 1315, 1565, 1880, 2078, 2367, 2656, 4968, 4997, 4997]
 
-- name: FY2026 large-household allotment follows USDA's published table, which set no 18+ cap
+- name: FY2026 large-household allotment is capped under the amended statute
   period: 2026-09
   input:
     snap_region_str:
       2026: [CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US]
     snap_unit_size: [17, 18, 30]
   output:
-    # USDA's FY2026 table listed the $1,789 eight-person maximum plus $218 per
-    # additional person, with no 18+ row; the cap first appears in FY2027.
-    snap_max_allotment: [3751, 3969, 6585]
+    # 7 U.S.C. 2012(u)(2)(I) caps the additional percentage at 200 percent
+    # of the 4-person maximum from FY2026: $1,789 + 2 x $994 = $3,777.
+    # USDA's FY2026 table listed $218 per additional person with no cap,
+    # which would give $3,969 and $6,585; the model follows the statute.
+    # 17 members: $1,789 + 9 x $218 = $3,751, under the cap.
+    snap_max_allotment: [3751, 3777, 3777]
+
+- name: FY2026 caps in the other regions
+  period: 2026-09
+  input:
+    snap_region_str:
+      2026: [AK_URBAN, AK_RURAL_1, AK_RURAL_2, GU, HI, VI]
+    snap_unit_size: [30, 30, 30, 30, 30, 30]
+  output:
+    # The 8-person maximum plus twice the 4-person maximum, from USDA's
+    # FY2026 table.
+    snap_max_allotment: [4884, 6228, 7581, 5567, 6418, 4856]
+
+- name: The FY2026 cap does not reach September 2025
+  period: 2025-09
+  input:
+    snap_region_str:
+      2025: [CONTIGUOUS_US]
+    snap_unit_size: [30]
+  output:
+    # FY2025: $1,756 + 22 x $220, with no cap.
+    snap_max_allotment: [6_596]
 
 - name: FY2027 published minimum allotments in every region
   period: 2026-10
