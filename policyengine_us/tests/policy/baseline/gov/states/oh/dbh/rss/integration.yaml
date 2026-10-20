@@ -391,3 +391,68 @@
     oh_rss_countable_income: [0, 0]
     # Person1's own 1,500 <= 2,000; 1,600 + 200 - 0 = 1,800.
     oh_rss: [1_800, 0]
+
+- name: Case 14, one eligible spouse with Medicaid computed by the model and combined resources above the couple limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        oh_rss_certified: true
+        ssi_countable_resources: 1_500
+      person2:
+        age: 65
+        ssi_countable_resources: 1_600
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # Case 13 without the Medicaid input. Medicaid and SSI combine the
+    # couple's resources (5160:1-3-05.20(E)(1)): 3,100 > 3,000, so person1
+    # meets neither Medicaid path.
+    ssi: [0, 0]
+    oh_rss_eligible: [false, false]
+    oh_rss: [0, 0]
+
+- name: Case 15, one eligible spouse compared with the RSS income standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        oh_rss_certified: true
+        meets_ssi_disability_criteria: true
+        # $1,200 a month in Social Security disability benefits.
+        social_security_disability: 14_400
+      person2:
+        age: 58
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # Person2 is not aged, blind or disabled and has no income to deem:
+    # 1,200 - 20 = 1,180 > 994, so no SSI.
+    ssi: [0, 0]
+    # Person1 meets SSI's other criteria, so the Medicaid condition is met
+    # without an input.
+    oh_rss_eligible: [true, false]
+    oh_rss_countable_income: [1_180, 0]
+    # 5160:1-5-01(E)(3) points to the $994 individual standard; the model uses
+    # the RSS standard: 1,800 - 1,180 = 620.
+    oh_rss: [620, 0]

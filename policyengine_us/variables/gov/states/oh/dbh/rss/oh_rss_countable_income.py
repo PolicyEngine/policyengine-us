@@ -63,5 +63,8 @@ class oh_rss_countable_income(Variable):
         # publishes only the RSS income standard of 5160:1-5-01(B)(2), so the
         # model compares pooled countable income with twice the RSS income
         # standard, which pays each spouse the RSS income standard less half
-        # the pooled income.
+        # the pooled income. When only one spouse qualifies, (E)(3) uses "the
+        # appropriate individual income standard as defined in rule
+        # 5160:1-3-03.5", the SSI individual rate. The model compares that
+        # spouse's own countable income with the RSS income standard instead.
         return where(couple, countable / 2, countable)

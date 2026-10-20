@@ -37,7 +37,10 @@ class oh_rss(Variable):
         # individual standard, so the model tests own resources against
         # $2,000. Source conflict: 5160:1-3-05.1(B)(9)(b) and
         # 5160:1-3-05.20(E)(1)-(2) would combine the couple's resources against
-        # $3,000. The model follows the RSS rule.
+        # $3,000. The model follows the RSS rule. The reading decides the
+        # result only when medicaid_enrolled is entered: computed Medicaid and
+        # the SSI resource test both combine the couple's resources, so a
+        # couple above $3,000 fails the Medicaid condition.
         resources = person("ssi_countable_resources", period.this_year)
         resources = where(couple, person.marital_unit.sum(resources), resources)
         limit = where(couple, limits.couple, limits.individual)
@@ -51,9 +54,10 @@ class oh_rss(Variable):
         prorate = (days > 0) & (days < period.days)
         # A first month that starts after the first day is prorated: the daily
         # amount and the prorated total are each rounded up to the next whole
-        # cent (5160:1-5-01(G)(5)-(6)).
+        # cent (5160:1-5-01(G)(5)-(6)). Countable income is stored in float32,
+        # so the daily amount allows a thousandth of a cent before rounding up.
         daily_payment = (
-            np.ceil(payment.astype(np.float64) / period.days * 100 - 1e-8) / 100
+            np.ceil(payment.astype(np.float64) / period.days * 100 - 1e-3) / 100
         )
         partial = np.ceil(daily_payment * days * 100 - 1e-8) / 100
         return (resources <= limit) * where(prorate, partial, payment)

@@ -310,3 +310,40 @@
     ssi: 1_029
     # 1,600 + 200 - SSI 1,029 = 771.
     oh_rss: 771
+
+# 42 CFR 435.232 (SPA 15-015, Attachment 2.2-A): Ohio covers people who receive
+# only a state supplement and would be eligible for SSI except for income.
+- name: Case 21, non SSI Social Security with Medicaid computed by the model.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    age: 65
+    oh_rss_certified: true
+    # Case 2's average disabled-worker benefit, with no Medicaid input.
+    social_security_disability: 19_630.8
+  output:
+    # 1,635.90 - 20 = 1,615.90 > 994, so no SSI; SSI's other criteria are met.
+    ssi: 0
+    oh_rss_eligible: true
+    # 1,800 - 1,615.90 = 184.10.
+    oh_rss: 184.1
+
+- name: Case 22, partial first month with a whole-cent daily amount from monthly income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    age: 65
+    oh_rss_certified: true
+    medicaid_enrolled: true
+    # 17,249.52 / 12 = 1,437.46 a month, a payment that divides into whole
+    # cents a day.
+    social_security_retirement: 17_249.52
+    oh_rss_partial_month_days: 16
+  output:
+    # 1,437.46 - 20 = 1,417.46 > 994, so no SSI.
+    oh_rss_countable_income: 1_417.46
+    # 1,800 - 1,417.46 = 382.54; 382.54 / 31 = 12.34 a day exactly;
+    # 12.34 x 16 days = 197.44.
+    oh_rss: 197.44
