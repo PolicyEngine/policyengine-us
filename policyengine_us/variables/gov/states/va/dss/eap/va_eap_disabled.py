@@ -6,7 +6,7 @@ class va_eap_disabled(Variable):
     entity = Person
     definition_period = YEAR
     label = "Disabled under Virginia EAP"
-    documentation = "Person with a disability, a Social Security disability benefit, or SSI received on the basis of disability. Railroad Retirement disability, 100% Veterans Administration disability and Medicaid certification of permanent and total disability are covered only through is_disabled."
+    documentation = "Person with a disability, a Social Security disability benefit, SSI received on the basis of disability, or a 100% service-connected Veterans Administration disability. Railroad Retirement disability and Medicaid certification of permanent and total disability are covered only through is_disabled."
     reference = (
         # PDF pages 31, 52
         "https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=31",
@@ -23,4 +23,12 @@ class va_eap_disabled(Variable):
         social_security_disability = person("social_security_disability", period) > 0
         receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
         ssi_disabled = receives_ssi & person("is_ssi_disabled", period)
-        return person("is_disabled", period) | social_security_disability | ssi_disabled
+        full_va_disability = person(
+            "is_fully_disabled_service_connected_veteran", period
+        )
+        return (
+            person("is_disabled", period)
+            | social_security_disability
+            | ssi_disabled
+            | full_va_disability
+        )

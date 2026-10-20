@@ -30,6 +30,9 @@ values:
     - farm_rent_income
     - alimony_income
     - child_support_received
+    # Manual C.5.a.4.c names "cash contributions" as unearned income, so
+    # recurring cash help from outside the household counts.
+    - financial_assistance
     # Exemption 23 (VA Aid and Attendance) cannot be separated from other
     # veterans' benefits and is counted.
     - veterans_benefits
@@ -37,10 +40,11 @@ values:
     - ordinary_dividend_income
     - workers_compensation
     - disability_benefits
-    # Exempt or without an input: non-recurring one-time income such as gifts,
-    # lottery winnings or insurance payments (exemption 19), loans, tax
-    # refunds, scholarships, SNAP, WIC, foster care payments, utility or
-    # rental allowances and the other exemptions.
+    # Exemption 19 excludes only non-recurring one-time income such as a
+    # one-time gift, so financial_assistance should hold recurring
+    # contributions only. Loans, tax refunds, scholarships, SNAP, WIC, foster
+    # care payments, utility or rental allowances and the other exemptions are
+    # not counted.
 
 metadata:
   unit: list

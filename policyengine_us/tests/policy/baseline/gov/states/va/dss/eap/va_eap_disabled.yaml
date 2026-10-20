@@ -167,3 +167,23 @@
         state_code: MD
   output:
     va_eap_disabled: false
+
+- name: Case 10, a fully disabled service-connected veteran qualifies without the disability flag.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 55
+        veterans_benefits: 23_800
+        is_fully_disabled_service_connected_veteran: true
+        is_disabled: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_disabled: true

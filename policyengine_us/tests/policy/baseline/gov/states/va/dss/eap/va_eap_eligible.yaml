@@ -431,3 +431,25 @@
         state_code: MD
   output:
     va_eap_eligible: false
+
+- name: Case 23, cash help from a relative pushes a one-person household over the limit.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+        financial_assistance: 4_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # 20,000 + 4,000 = 24,000 > 23,472.
+    va_eap_income_eligible: false
+    va_eap_eligible: false

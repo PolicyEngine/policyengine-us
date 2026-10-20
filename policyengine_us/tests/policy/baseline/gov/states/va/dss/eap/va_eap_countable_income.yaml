@@ -333,3 +333,47 @@
         state_code: MD
   output:
     va_eap_countable_income: 0
+
+- name: Case 16, recurring cash help from a relative outside the household counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+        financial_assistance: 4_000
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # Manual C.5.a.4 counts contributions: 20,000 + 4,000 = 24,000.
+    va_eap_countable_income: 24_000
+
+- name: Case 17, a fully disabled service-connected veteran receives the disability deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        veterans_benefits: 47_256
+        is_fully_disabled_service_connected_veteran: true
+        is_disabled: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # 2026 100 percent VA compensation for a veteran alone is about 3,938 a
+    # month (47,256 a year); the rating makes the member disabled:
+    # 47,256 - 600 = 46,656.
+    va_eap_countable_income: 46_656
