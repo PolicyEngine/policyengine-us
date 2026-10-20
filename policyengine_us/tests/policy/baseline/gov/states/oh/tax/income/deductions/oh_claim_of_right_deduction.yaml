@@ -1,0 +1,181 @@
+# R.C. 5747.01(A)(12) and the 2025 IT 1040 instructions, Schedule of
+# Adjustments line 29: deduct a repayment of income included in Ohio AGI in a
+# prior year, except income that qualified for the Ohio resident or
+# nonresident credit, when (per the instructions) the federal return claims an
+# itemized deduction or a credit for it.
+
+- name: Case 1, the federal credit method deducts the repayment.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_credit_applies: true
+    households:
+      household:
+        members: [head]
+        state_code: OH
+  output:
+    oh_claim_of_right_deduction: 10_000
+
+- name: Case 2, income that qualified for an Ohio credit or stayed out of Ohio AGI when received is not deducted.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 10_000
+        oh_claim_of_right_repayment_not_deductible: 4_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_credit_applies: true
+    households:
+      household:
+        members: [head]
+        state_code: OH
+  output:
+    oh_claim_of_right_deduction: 6_000
+
+- name: Case 3, the federal deduction method on an itemized return deducts the repayment.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_credit_applies: false
+        tax_unit_itemizes: true
+    households:
+      household:
+        members: [head]
+        state_code: OH
+  output:
+    oh_claim_of_right_deduction: 10_000
+
+- name: Case 4, the deduction method with the federal standard deduction deducts nothing.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_credit_applies: false
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [head]
+        state_code: OH
+  output:
+    oh_claim_of_right_deduction: 0
+
+- name: Case 5, each spouse deducts their own repayment; a dependent's belongs on their own return.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 2_000
+      spouse:
+        age: 40
+        claim_of_right_repayment: 2_500
+        oh_claim_of_right_repayment_not_deductible: 3_000
+      child:
+        age: 17
+        claim_of_right_repayment: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        claim_of_right_credit_applies: true
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: OH
+  output:
+    oh_claim_of_right_deduction: [2_000, 0, 0]
+
+- name: Case 6, outside Ohio.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_credit_applies: true
+    households:
+      household:
+        members: [head]
+        state_code: IL
+  output:
+    oh_claim_of_right_deduction: 0
+
+# Wages $40,000, standard deduction, repays $10,000; the earlier year's federal
+# tax would fall by $2,200, so federal tax uses the credit ($471.50 against
+# $2,671.50). Ohio AGI $40,000 - $10,000 = $30,000; modified AGI under $40,001
+# gives a $2,400 exemption, so Ohio taxable income is $27,600.
+- name: Case 7, a standard-deduction filer whose federal tax uses the credit.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_prior_year_tax_decrease: 2_200
+    households:
+      household:
+        members: [head]
+        state_code: OH
+  output:
+    claim_of_right_credit_applies: true
+    oh_claim_of_right_deduction: 10_000
+    oh_agi: 30_000
+    oh_taxable_income: 27_600
+
+# Joint return: head wages $100,000; spouse wages $3,500, of which the spouse
+# repays $3,100; earlier-year federal decrease $500, so federal tax uses the
+# credit. The deduction leaves the spouse $400 of Ohio AGI. The joint filing
+# credit needs $500 of qualifying income for each spouse, and "Amounts deducted
+# on the Ohio Schedule of Adjustments are not included in Ohio AGI, and thus
+# are not 'qualifying income'" (2025 instructions, line 12, PDF p. 29). So the
+# couple loses the credit and Ohio tax rises.
+- name: Case 8, the deduction can take a spouse below the joint filing credit's $500 test.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 100_000
+      spouse:
+        age: 40
+        employment_income: 3_500
+        claim_of_right_repayment: 3_100
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        claim_of_right_prior_year_tax_decrease: 500
+    households:
+      household:
+        members: [head, spouse]
+        state_code: OH
+  output:
+    claim_of_right_credit_applies: true
+    oh_claim_of_right_deduction: [0, 3_100]
+    oh_joint_filing_credit_qualifying_income: [100_000, 400]
+    oh_joint_filing_credit: 0
