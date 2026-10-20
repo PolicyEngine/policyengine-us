@@ -33,7 +33,7 @@
         members: [older, younger, child]
         state_code: DE
   output:
-    # Equal Line 23 taxable incomes, so either column can take the EITC.
+    # EITC goes to the column with greater tax remaining after other credits.
     # The dependent's $110 goes to the older spouse's column, which also has
     # the aged credit, and the EITC reduces the other column:
     # 255 + (475 - 419.32) = 310.68. Giving the dependent credit to the
@@ -408,3 +408,158 @@
     de_taxable_income_indv: [16_750, 0]
     de_income_tax_after_non_refundable_credits_indv: [475, 0]
     de_income_tax_before_refundable_credits_separate: 425
+
+# 30 Del. C. 1117(b) and PIT-RSS Schedule II line 12 compare tax remaining
+# after other credits, not taxable income. Supplied gross taxes isolate routing.
+# https://delcode.delaware.gov/title30/c011/sc02/index.html#1117
+# https://revenuefiles.delaware.gov/2025/PITForms_Instructions/PIT-RSS_2025-01_PaperInteractiveIPM.pdf#page=1
+# Older spouse: max(213 - 110 own - 110 aged, 0) = 0.
+# Younger spouse: 174 - 110 = 64; 64 - 48.80 EITC = 15.20.
+# With tied taxable incomes: 213 - 110 = 103; 103 - 48.80 = 54.20.
+- name: Lower taxable income sends EITC to the younger spouse
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      older:
+        age: 60
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        de_taxable_income_indv: 8_750
+        de_income_tax_before_non_refundable_credits_indv: 213
+      younger:
+        age: 45
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        de_taxable_income_indv: 7750
+        de_income_tax_before_non_refundable_credits_indv: 174
+    tax_units:
+      tax_unit:
+        members: [older, younger]
+        filing_status: JOINT
+        exemptions_count: 2
+        de_cdcc_potential: 0
+        de_non_refundable_eitc_potential: 48.8
+    marital_units:
+      couple:
+        members: [older, younger]
+    households:
+      household:
+        members: [older, younger]
+        state_code: DE
+  output:
+    de_income_tax_after_non_refundable_credits_indv: [0, 64]
+    de_income_tax_before_refundable_credits_separate: 15.2
+
+- name: Lower taxable income sends EITC to the younger head
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      older:
+        age: 60
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        de_taxable_income_indv: 8_750
+        de_income_tax_before_non_refundable_credits_indv: 213
+      younger:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        de_taxable_income_indv: 7750
+        de_income_tax_before_non_refundable_credits_indv: 174
+    tax_units:
+      tax_unit:
+        members: [older, younger]
+        filing_status: JOINT
+        exemptions_count: 2
+        de_cdcc_potential: 0
+        de_non_refundable_eitc_potential: 48.8
+    marital_units:
+      couple:
+        members: [older, younger]
+    households:
+      household:
+        members: [older, younger]
+        state_code: DE
+  output:
+    de_income_tax_after_non_refundable_credits_indv: [0, 64]
+    de_income_tax_before_refundable_credits_separate: 15.2
+
+- name: Tied taxable incomes sends EITC to the younger spouse
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      older:
+        age: 60
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        de_taxable_income_indv: 8_750
+        de_income_tax_before_non_refundable_credits_indv: 213
+      younger:
+        age: 45
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        de_taxable_income_indv: 8750
+        de_income_tax_before_non_refundable_credits_indv: 213
+    tax_units:
+      tax_unit:
+        members: [older, younger]
+        filing_status: JOINT
+        exemptions_count: 2
+        de_cdcc_potential: 0
+        de_non_refundable_eitc_potential: 48.8
+    marital_units:
+      couple:
+        members: [older, younger]
+    households:
+      household:
+        members: [older, younger]
+        state_code: DE
+  output:
+    de_income_tax_after_non_refundable_credits_indv: [0, 103]
+    de_income_tax_before_refundable_credits_separate: 54.2
+
+- name: Tied taxable incomes sends EITC to the younger head
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      older:
+        age: 60
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        de_taxable_income_indv: 8_750
+        de_income_tax_before_non_refundable_credits_indv: 213
+      younger:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        de_taxable_income_indv: 8750
+        de_income_tax_before_non_refundable_credits_indv: 213
+    tax_units:
+      tax_unit:
+        members: [older, younger]
+        filing_status: JOINT
+        exemptions_count: 2
+        de_cdcc_potential: 0
+        de_non_refundable_eitc_potential: 48.8
+    marital_units:
+      couple:
+        members: [older, younger]
+    households:
+      household:
+        members: [older, younger]
+        state_code: DE
+  output:
+    de_income_tax_after_non_refundable_credits_indv: [0, 103]
+    de_income_tax_before_refundable_credits_separate: 54.2

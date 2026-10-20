@@ -11,11 +11,13 @@ def de_combined_separate_credit_choices(tax_unit, period, parameters):
     - which column takes the dependent care credit, which "may only be
       applied against the tax imposed on the spouse with the lower taxable
       income reported on Line 23" (Line 31);
-    - which column takes the non-refundable EITC, which "may only be applied
-      against the tax imposed on the spouse with the higher taxable income
-      reported on Line 23" (Line 34).
-    The model permits either column on equal Line 23 incomes; this is an
-    unresolved tie-election reading, not an explicit rule in the instructions.
+    - which column takes the non-refundable EITC: 30 Del. C. 1117(b) and
+      PIT-RSS Schedule II Line 12 select the spouse with greater tax remaining
+      after other credits. Compare those balances within each allocation.
+    The model permits either CDCC column on equal Line 23 incomes; this
+    tie-election reading is retained by Max (d1684), rather than established
+    explicitly in the instructions. Equal remaining taxes permit either EITC
+    recipient.
     The dependent split and credit recipients are chosen together to minimise
     the two columns' tax after the EITC. Each column keeps its own $110 personal
     credit, if the filer cannot be claimed as a dependent elsewhere, and its
@@ -50,19 +52,15 @@ def de_combined_separate_credit_choices(tax_unit, period, parameters):
     own_units = tax_unit("head_spouse_count_not_dependent_elsewhere", period)
     dep_units = max_(tax_unit("exemptions_count", period) - own_units, 0)
 
-    # Retained methodology choices for review by Max:
-    # - Neither 30 Del. C. 1114(b) nor the instructions establish a CDCC tie
-    #   election; the model allows either tied column (rulespec-us#1607).
-    # - PIT-RES p.10 routes EITC by taxable income, but 1117(b) and the actual
-    #   PIT-RSS Schedule II line 12 compare tax remaining before EITC.
+    # Max (d1684) retains the CDCC tie election (rulespec-us#1607) and selects
+    # the statutory EITC rule: 1117(b) and PIT-RSS Schedule II line 12 compare
+    # tax remaining before EITC, after each candidate's other credits.
     # https://delcode.delaware.gov/title30/c011/sc02/index.html#1114
     # https://delcode.delaware.gov/title30/c011/sc02/index.html#1117
     # https://revenuefiles.delaware.gov/2025/PITForms_Instructions/Instructions/PIT-RES_Instructions_2025-01.pdf#page=10
     # https://revenuefiles.delaware.gov/2025/PITForms_Instructions/PIT-RSS_2025-01_PaperInteractiveIPM.pdf#page=1
     head_may_take_cdcc = head_taxable <= spouse_taxable
     spouse_may_take_cdcc = spouse_taxable <= head_taxable
-    head_may_take_eitc = head_taxable >= spouse_taxable
-    spouse_may_take_eitc = spouse_taxable >= head_taxable
 
     def line33(tax, own, aged, dependent_units, care_credit):
         # Match the stored float32 personal credit, then the float32 credit
@@ -83,11 +81,6 @@ def de_combined_separate_credit_choices(tax_unit, period, parameters):
     for n in range(int(dep_units.max(initial=0)) + 1):
         for cdcc_head in (False, True):
             for eitc_head in (True, False):
-                allowed = (
-                    (n <= dep_units)
-                    & where(cdcc_head, head_may_take_cdcc, spouse_may_take_cdcc)
-                    & where(eitc_head, head_may_take_eitc, spouse_may_take_eitc)
-                )
                 head_line33 = line33(head_tax, head_own, head_aged, n, cdcc_head * cdcc)
                 spouse_line33 = line33(
                     spouse_tax,
@@ -95,6 +88,15 @@ def de_combined_separate_credit_choices(tax_unit, period, parameters):
                     spouse_aged,
                     dep_units - n,
                     (not cdcc_head) * cdcc,
+                )
+                allowed = (
+                    (n <= dep_units)
+                    & where(cdcc_head, head_may_take_cdcc, spouse_may_take_cdcc)
+                    & where(
+                        eitc_head,
+                        head_line33 >= spouse_line33,
+                        spouse_line33 >= head_line33,
+                    )
                 )
                 head_eitc = min_(eitc, head_line33) if eitc_head else 0
                 spouse_eitc = min_(eitc, spouse_line33) if not eitc_head else 0

@@ -18,7 +18,7 @@
   output:
     de_income_tax_before_refundable_credits: 0
 
-- name: FS4 path - EITC to higher-income spouse
+- name: FS4 path - EITC to higher-remaining-tax spouse
   period: 2025
   input:
     people:
@@ -40,11 +40,11 @@
         members: [person1, person2]
         state_code: DE
   output:
-    # Spouse has higher taxable income; gets all $100 EITC
+    # Spouse has higher remaining tax; gets all $100 EITC
     # Head line33: $200, Spouse line33: $800 - $100 = $700
     de_income_tax_before_refundable_credits: 900
 
-- name: FS4 path - EITC capped at higher-income column tax
+- name: FS4 path - EITC capped at higher-remaining-tax column tax
   period: 2025
   input:
     people:
@@ -66,11 +66,11 @@
         members: [person1, person2]
         state_code: DE
   output:
-    # Head has higher taxable income; gets all $200 EITC (capped at $500)
+    # Head has higher remaining tax; gets all $200 EITC (capped at $500)
     # Head: $500 - $200 = $300, Spouse: $30 (no EITC)
     de_income_tax_before_refundable_credits: 330
 
-- name: FS4 path - EITC exceeds higher-income column tax (waste)
+- name: FS4 path - EITC exceeds higher-remaining-tax column tax (waste)
   period: 2025
   input:
     people:
@@ -92,12 +92,12 @@
         members: [person1, person2]
         state_code: DE
   output:
-    # Head has higher taxable income; EITC ($1000) capped at head $200
+    # Head has higher remaining tax; EITC ($1000) capped at head $200
     # Excess $800 wasted (NOT redistributed to spouse).
     # Head: $200 - $200 = $0, Spouse: $100 (no EITC)
     de_income_tax_before_refundable_credits: 100
 
-- name: FS4 path - tied taxable incomes route EITC to head
+- name: FS4 path - tied remaining taxes permit EITC in either column
   period: 2025
   input:
     people:
@@ -119,6 +119,6 @@
         members: [person1, person2]
         state_code: DE
   output:
-    # On tie, head is treated as higher-income; gets all $100 EITC
+    # On a remaining-tax tie, either column can take the credit; gets all $100 EITC
     # Head: $500 - $100 = $400, Spouse: $500
     de_income_tax_before_refundable_credits: 900
