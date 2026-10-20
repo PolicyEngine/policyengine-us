@@ -35,9 +35,9 @@ class oh_rss(Variable):
         couple = person.marital_unit.sum(eligible) == 2
         # NOTE: When only one spouse qualifies, 5160:1-5-01(E)(3) applies the
         # individual standard, so the model tests own resources against
-        # $2,000. Source conflict: 5160:1-3-05.1(B)(9)(b) and
-        # 5160:1-3-05.20(E)(1)-(2) would combine the couple's resources against
-        # $3,000. The model follows the RSS rule. The reading decides the
+        # $2,000. Ohio's Medicaid resource rules, 5160:1-3-05.1(B)(9)(b) and
+        # 5160:1-3-05.20(E)(1)-(2), would instead combine the couple's resources
+        # against $3,000. The model follows the RSS rule. The reading decides the
         # result only when medicaid_enrolled is entered: computed Medicaid and
         # the SSI resource test both combine the couple's resources, so a
         # couple above $3,000 fails the Medicaid condition.
