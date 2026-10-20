@@ -305,12 +305,6 @@
       tupelo:
         age: 40
         employment_income: 85_000
-      no_rate:
-        age: 40
-        employment_income: 85_000
-      zero_rate:
-        age: 40
-        employment_income: 85_000
     tax_units:
       other:
         members: [other]
@@ -320,10 +314,6 @@
         members: [jackson]
       tupelo:
         members: [tupelo]
-      no_rate:
-        members: [no_rate]
-      zero_rate:
-        members: [zero_rate]
     households:
       other:
         members: [other]
@@ -334,7 +324,7 @@
       unknown:
         members: [unknown]
         state_code: MS
-        local_sales_tax_rate: 0.01
+        combined_sales_tax_rate: 0.08
       jackson:
         members: [jackson]
         state_code: MS
@@ -345,15 +335,48 @@
         state_code: MS
         place_fips: "74840"
         combined_sales_tax_rate: 0.08
-      no_rate:
-        members: [no_rate]
+  output:
+    local_sales_tax_table: [NONE, NONE, C, A]
+    state_sales_tax: [1_243, 1_243, 1_243, 1_243]
+    local_sales_tax: [177.57, 177.57, 179, 120]
+
+- name: Mississippi absent-table ratio accepts an entered local rate including zero
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      positive_rate:
+        age: 40
+        employment_income: 85_000
+      zero_rate:
+        age: 40
+        employment_income: 85_000
+    tax_units:
+      positive_rate:
+        members: [positive_rate]
+      zero_rate:
+        members: [zero_rate]
+    households:
+      positive_rate:
+        members: [positive_rate]
         state_code: MS
-        place_fips: "14420"
+        local_sales_tax_rate: 0.01
       zero_rate:
         members: [zero_rate]
         state_code: MS
         local_sales_tax_rate: 0
   output:
-    local_sales_tax_table: [NONE, NONE, C, A, NONE, NONE]
-    state_sales_tax: [1_243, 1_243, 1_243, 1_243, 1_243, 1_243]
-    local_sales_tax: [177.57, 177.57, 179, 120, 0, 0]
+    local_sales_tax_table: [NONE, NONE]
+    state_sales_tax: [1_243, 1_243]
+    local_sales_tax: [177.57, 0]
+
+- name: Mississippi still has no local amount without an entered rate
+  period: 2025
+  input:
+    state_code: MS
+    place_fips: "14420"
+    employment_income: 85_000
+  output:
+    local_sales_tax_table: NONE
+    state_sales_tax: 1_243
+    local_sales_tax: 0
