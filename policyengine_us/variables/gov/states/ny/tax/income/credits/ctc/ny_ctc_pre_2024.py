@@ -41,7 +41,9 @@ class ny_ctc_pre_2024(Variable):
             # IT-213 Worksheet A computes the federal credit with recomputed
             # federal AGI (IT-201 line 19a), so the branch starts from the
             # one where federal AGI is line 19a when they differ.
-            recomputed = get_ny_recomputed_branch(tax_unit, period)
+            recomputed = get_ny_recomputed_branch(
+                tax_unit, period, keep_federal_tax=True
+            )
             simulation = tax_unit.simulation if recomputed is None else recomputed
             pre_tcja_ctc = get_branch_for_period(simulation, "pre_tcja_ctc", period)
             pre_tcja_ctc.tax_benefit_system = get_pre_tcja_ctc_tbs(
