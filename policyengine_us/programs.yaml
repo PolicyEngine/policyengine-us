@@ -1160,6 +1160,16 @@ programs:
           personal care, group home, foster care and transitional living
           placements. Mandatory grandfathered supplementation and out-of-state
           custody placements are not modeled.
+      - state: OK
+        status: partial
+        name: Oklahoma SSP
+        full_name: Oklahoma State Supplemental Payment
+        variable: ok_ssp
+        parameter_prefix: gov.states.ok.dhs.ssp
+        verified_years: '2026'
+        notes: Models the 2026 community supplement for individuals, couples and individuals with
+          an ineligible spouse. Essential spouses, persons in a TANF case and grandfathered
+          institutional payments are not modeled.
 
   - id: social_security
     name: Social Security

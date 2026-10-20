@@ -27,6 +27,7 @@ class spm_unit_benefits(Variable):
             "wy_ssp",  # Wyoming benefits
             "nc_sa",  # North Carolina benefits
             "mt_ssp",  # Montana benefits
+            "ok_ssp",  # Oklahoma benefits
             "ks_sspp",  # Kansas benefits
             "hi_oss",
             "la_oss",  # Louisiana benefits
