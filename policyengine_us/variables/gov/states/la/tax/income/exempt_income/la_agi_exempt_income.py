@@ -10,13 +10,18 @@ class la_agi_exempt_income(Variable):
     reference = (
         "https://dam.ldr.la.gov/taxforms/IT540i(2021)%20Instructions.pdf#page=9",
         "https://dam.ldr.la.gov/taxforms/IT-540-WEB-2021-F.pdf#page=8",
+        "https://dam.ldr.la.gov/taxforms/IT540i%20WEB(2025)D11.pdf#page=7",  # Schedule E
+        "https://www.legis.la.gov/legis/Law.aspx?d=101760",  # R.S. 47:293(9)(a)
     )
     definition_period = YEAR
 
     # Functions as subtractions.
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.la.tax.income.exempt_income
-        total_exempt_income = add(tax_unit, period, p.sources)
+        # Schedule E subtracts exempt income included in federal AGI.
+        # Dependents' income is not in federal AGI; they report it on their
+        # own return, so only the head's and spouse's amounts count.
+        total_exempt_income = tax_unit_non_dep_add(tax_unit, period, p.sources)
         if p.reduction.in_effect:
             # Option 1 is to reduce the exempt income by a marginal rate
             reduced_exempt_income = p.reduction.rate.calc(total_exempt_income)

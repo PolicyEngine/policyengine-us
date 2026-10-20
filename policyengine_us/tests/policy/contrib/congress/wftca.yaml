@@ -15,3 +15,26 @@
     filing_status: JOINT
   output:
     bonus_guaranteed_deduction: 0
+
+- name: WFTCA bonus raises the 2026 filing threshold for a single filer
+  period: 2026
+  input:
+    gov.contrib.congress.wftca.bonus_guaranteed_deduction.amount.SINGLE: 2_000
+    filing_status: SINGLE
+    age: 40
+    taxable_interest_income: 18_099
+  output:
+    # Section 6012(a)(1)(A)(i): $16,100 basic standard deduction plus the
+    # $2,000 increase to it; $18,099 is less than $18,100.
+    bonus_guaranteed_deduction: 2_000
+    tax_unit_is_required_to_file: false
+
+- name: WFTCA bonus, 2026 single filer at the raised filing threshold
+  period: 2026
+  input:
+    gov.contrib.congress.wftca.bonus_guaranteed_deduction.amount.SINGLE: 2_000
+    filing_status: SINGLE
+    age: 40
+    taxable_interest_income: 18_100
+  output:
+    tax_unit_is_required_to_file: true

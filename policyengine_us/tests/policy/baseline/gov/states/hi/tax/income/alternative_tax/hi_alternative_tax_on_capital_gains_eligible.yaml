@@ -2,7 +2,7 @@
   period: 2021
   input:
     state_code: HI
-    net_capital_gain: 1_000
+    hi_capital_gain_for_alternative_tax: 1_000
   output:
     hi_alternative_tax_on_capital_gains_eligible: true
 
@@ -10,6 +10,14 @@
   period: 2021
   input:
     state_code: HI
-    net_capital_gain: 0
+    hi_capital_gain_for_alternative_tax: 0
+  output:
+    hi_alternative_tax_on_capital_gains_eligible: false
+
+- name: Qualified dividends alone do not make the filer eligible
+  period: 2022
+  input:
+    state_code: HI
+    qualified_dividend_income: 5_000
   output:
     hi_alternative_tax_on_capital_gains_eligible: false

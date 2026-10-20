@@ -89,7 +89,7 @@ programs:
         status: complete
         name: Colorado Healthy School Meals for All
         effective: 2023-07-01
-        reference: HB 22-1414 / Proposition FF (2022); C.R.S. § 22-82.9-101 et seq.
+        reference: HB 22-1414 / Proposition FF (2022); C.R.S. § 22-82.9-201 et seq.
       - state: MA
         status: complete
         name: Massachusetts universal meals
@@ -104,17 +104,23 @@ programs:
         status: complete
         name: Michigan School Meals
         effective: 2023-07-01
-        reference: PA 103 of 2023 (SB 0173); MCL 388.1631aa
+        reference: PA 103 of 2023 (SB 0173); MCL 388.1630d
       - state: MN
         status: complete
         name: Minnesota Free School Meals for Kids
         effective: 2023-07-01
         reference: HF 5 (2023); Minn. Stat. § 124D.111
+      - state: NC
+        status: complete
+        name: North Carolina reduced-price meal copay coverage
+        effective: 2020-07-01
+        notes: Both-meal copay coverage in SY2020-21 and from SY2022-23 onward; the SY2021-22 state provision covers breakfast only. Assumes a covered school participating in both meal programs.
+        reference: G.S. 115C-264(a1) (S.L. 2025-89 § 2A.8); S.L. 2023-134 § 7.58; S.L. 2022-74 § 7.3; S.L. 2020-80 § 2.3.(b); S.L. 2011-342 § 1
       - state: NM
         status: complete
         name: New Mexico Healthy Universal School Meals
         effective: 2023-07-01
-        reference: SB 4 (2023), Chapter 30; N.M. Stat. § 22-13D-3
+        reference: SB 4 (2023), Chapter 30, § 3; N.M. Stat. § 22-13C-4(A)
       - state: NY
         status: complete
         name: New York Universal Free School Meals
@@ -802,8 +808,16 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: DC, Riverside County, MA, IL, IN, KS, KY, MS, NC, NE, TX
+    coverage: AL, DC, Riverside County, MA, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OR, TX
     state_implementations:
+      - state: AL
+        status: partial
+        name: Alabama LIHEAP
+        full_name: Alabama Low Income Home Energy Assistance Program
+        variable: al_liheap
+        parameter_prefix: gov.states.al.adeca.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating with the HUD allowance deduction and the funded IIJA supplement. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: DC
         status: complete
         name: DC LIHEAP
@@ -846,6 +860,14 @@ programs:
         parameter_prefix: gov.states.ky.dcbs.liheap
         verified_years: "2025-2026"
         notes: FY2025-FY2026 regular heating only, from the published benefit workbooks. Crisis and cooling assistance are out of scope.
+      - state: MD
+        status: partial
+        name: Maryland MEAP
+        full_name: Maryland Energy Assistance Program
+        variable: md_meap
+        parameter_prefix: gov.states.md.dhs.meap
+        verified_years: "2025-2027"
+        notes: FY25-FY27 regular heating only, with the fuel tables, the Garrett County multiplier and the subsidized and nominal levels. The SNAP nominal payment, cooling, EUSP, arrearage, crisis and equipment benefits are out of scope.
       - state: MS
         status: partial
         name: Mississippi LIHEAP
@@ -870,6 +892,30 @@ programs:
         parameter_prefix: gov.states.ne.dhhs.liheap
         verified_years: "2026"
         notes: FY2026 regular heating only, with the single-family and multifamily schedules and the earned-income disregard. Crisis, cooling and weatherization assistance are out of scope.
+      - state: NJ
+        status: partial
+        name: New Jersey LIHEAP
+        full_name: New Jersey Low Income Home Energy Assistance Program
+        variable: nj_liheap
+        parameter_prefix: gov.states.nj.dca.liheap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular heating only, covering eligibility, countable income and the benefit grid, including the one renters cell that changes in FY2027; the program is not modeled before FY2022. Crisis, cooling and equipment assistance are out of scope.
+      - state: NY
+        status: partial
+        name: New York HEAP
+        full_name: New York Home Energy Assistance Program
+        variable: ny_heap
+        parameter_prefix: gov.states.ny.otda.heap
+        verified_years: "2024-2026"
+        notes: FY2024-FY2026 regular heating only, with the fuel base amounts, the Tier I and vulnerable supplements and the heat-included levels. Crisis, cooling, HERR and clean-and-tune assistance are out of scope.
+      - state: OR
+        status: partial
+        name: Oregon LIHEAP
+        full_name: Oregon Low Income Home Energy Assistance Program
+        variable: or_liheap
+        parameter_prefix: gov.states.or.ohcs.liheap
+        verified_years: "2025-2027"
+        notes: PY2025-PY2027 regular heating only, with the two county regions, five fuel columns and the roomer half payment. Crisis, cooling, Fuel Payment, equipment and OEAP assistance are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP
@@ -915,6 +961,9 @@ programs:
         name: California SSP
         full_name: California State Supplementary Payment
         variable: ca_state_supplement
+        parameter_prefix: gov.states.ca.cdss.state_supplement
+        verified_years: "2025-2026"
+        notes: Payment standards verified for independent living, no cooking facilities, blind and disabled minor categories. Facility and household-of-another arrangements are not verified (issue 7892).
       - state: CT
         status: complete
         name: Connecticut SSP
@@ -1031,6 +1080,18 @@ programs:
         name: New Mexico SSI supplement
         full_name: New Mexico SSI state supplement
         variable: nm_ssi_state_supplement
+      - state: NV
+        status: partial
+        name: Nevada OSS
+        full_name: Nevada Optional State Supplementation
+        variable: nv_oss
+        parameter_prefix: gov.states.nv.dwss.oss
+        verified_years: "2026"
+        notes: >-
+          Models 2026 optional supplementation for independent living, another
+          person's household and state-certified domiciliary care, including
+          couples and spouse deeming. Mandatory minimum-income protection for
+          December 1973 conversions is not modeled.
       - state: SC
         status: complete
         name: South Carolina SSI supplement
@@ -1052,6 +1113,113 @@ programs:
           tracks. Unmodeled paths: grandfathered medically-needy-in-medical-
           institution recipients per WAC 388-478-0055(2)(b); DDA-determined /
           PVL track per (2)(f); and foster child in BRS per (2)(g).
+      - state: NJ
+        status: partial
+        name: New Jersey SSP
+        full_name: New Jersey State Supplementary Payment
+        variable: nj_ssp
+        parameter_prefix: gov.states.nj.njdhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models 2026 New Jersey optional supplement rates by living
+          arrangement, including the ineligible-spouse variation. Mandatory
+          grandfathered supplementation is not modeled.
+      - state: PA
+        status: partial
+        name: Pennsylvania SSP
+        full_name: Pennsylvania State Supplementary Payment
+        variable: pa_ssp
+        parameter_prefix: gov.states.pa.dhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models 2026 optional supplements for independent living, the
+          household of another and certified domiciliary and personal care
+          homes, plus the institutional Supplement for Personal Needs.
+          Mandatory grandfathered and essential-person supplements and
+          ancillary facility subsidies are not modeled.
+      - state: WY
+        status: partial
+        name: Wyoming SSP
+        full_name: Wyoming State Supplemental Payment
+        variable: wy_ssp
+        parameter_prefix: gov.states.wy.health.ssp
+        verified_years: "2026"
+        notes: >-
+          Models the 2026 flat payment for Wyoming residents who receive SSI
+          and have no other income.
+      - state: NC
+        status: partial
+        name: North Carolina SA
+        full_name: North Carolina State-County Special Assistance
+        variable: nc_sa
+        parameter_prefix: gov.states.nc.ncdhhs.sa
+        verified_years: '2026'
+        notes: Models 2026 basic and enhanced facility and in-home payments, including lower contracted
+          rates and first-month proration. Open/shut and discharge payments are not modeled.
+      - state: MT
+        status: partial
+        name: Montana SSP
+        full_name: Montana State Supplementary Payment
+        variable: mt_ssp
+        parameter_prefix: gov.states.mt.dphhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models 2026 Montana optional supplements for state-certified
+          personal care, group home, foster care and transitional living
+          placements. Mandatory grandfathered supplementation and out-of-state
+          custody placements are not modeled.
+      - state: OK
+        status: partial
+        name: Oklahoma SSP
+        full_name: Oklahoma State Supplemental Payment
+        variable: ok_ssp
+        parameter_prefix: gov.states.ok.dhs.ssp
+        verified_years: '2026'
+        notes: Models the 2026 community supplement for individuals, couples and individuals with
+          an ineligible spouse. Essential spouses, persons in a TANF case and grandfathered
+          institutional payments are not modeled.
+      - state: NY
+        status: partial
+        name: New York SSP
+        full_name: New York State Supplement Program
+        variable: ny_ssp
+        parameter_prefix: gov.states.ny.otda.ssp
+        verified_years: '2026'
+        notes: Models 2026 living alone, living with others and congregate care supplements with
+          downstate premiums, plus the medical facility personal needs allowance. Grandfathered
+          mandatory payments are not modeled.
+      - state: RI
+        status: partial
+        name: Rhode Island SSP
+        full_name: Rhode Island State Supplementary Payment
+        variable: ri_ssp
+        parameter_prefix: gov.states.ri.dhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models 2026 optional living-arrangement supplements and Title XIX
+          facility personal-needs payments. Mandatory grandfathered payments,
+          facility subsidies and the statutory supportive residential-care
+          category are not modeled.
+      - state: SD
+        status: partial
+        name: South Dakota SSP
+        full_name: South Dakota State Supplemental Payment
+        variable: sd_ssp
+        parameter_prefix: gov.states.sd.dss.ssp
+        verified_years: "2026"
+        notes: Models 2026 independent living and certified nonwaiver assisted living/adult foster
+          care supplements. Out-of-state placements, historical mandatory supplements and claim
+          administration are not modeled.
+      - state: VA
+        status: partial
+        name: Virginia Auxiliary Grant
+        full_name: Virginia Auxiliary Grant
+        variable: va_ag
+        parameter_prefix: gov.states.va.dars.ag
+        verified_years: '2026'
+        notes: Models 2026 locality rates and SSI and non-SSI budgets for certified assisted living,
+          adult foster care and supportive housing residents. Conditional resource benefits and
+          historical grandfathering are not modeled.
 
   - id: social_security
     name: Social Security
@@ -1815,7 +1983,7 @@ programs:
     variable: nyc_income_tax
     parameter_prefix: gov.local.ny.nyc.tax.income
     verified_start_year: 2022
-    notes: Local income tax for NYC residents
+    notes: Local income tax for NYC residents, including the household credit, NYC earned income credit, NYC child and dependent care credit, school tax credit, and, from 2025, the income tax elimination credit (Tax Law § 1310(h)); the unincorporated business tax credit is an input
 
   - id: philadelphia_wage_tax
     name: Philadelphia wage tax

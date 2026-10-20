@@ -45,3 +45,53 @@
         qualified_business_income_deduction: 0
   output:
     qualified_business_income_deduction_person: [0, 0]
+
+- name: A deduction from the 199A(i) minimum alone goes to the filer with the income
+  period: 2026
+  input:
+    people:
+      filer:
+        age: 40
+        qualified_business_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+        taxable_income_less_qbid: 300_000
+        adjusted_net_capital_gain: 0
+    households:
+      household:
+        members: [filer]
+        state_code: TX
+  output:
+    # Above the 276,750 end of the phase-in range with no W-2 wages or
+    # property, the wage limit leaves no per-person amount; the 400 minimum
+    # still applies to the 5,000 of QBI.
+    qbid_amount: 0
+    qualified_business_income_deduction: 400
+    qualified_business_income_deduction_person: 400
+
+- name: A deduction from the 199A(i) minimum alone is shared by the spouses' QBI
+  period: 2026
+  input:
+    people:
+      head:
+        age: 45
+        qualified_business_income: 3_000
+      spouse:
+        age: 45
+        qualified_business_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        taxable_income_less_qbid: 600_000
+        adjusted_net_capital_gain: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    qualified_business_income_deduction: 400
+    # 400 shared 3:1.
+    qualified_business_income_deduction_person: [300, 100]
