@@ -72,3 +72,37 @@
     wi_retirement_income_exclusion_elected: true
     household_state_tax_before_refundable_credits: 3_000
     household_refundable_state_tax_credits: 300
+
+- name: North Carolina refundable payment reaches a household with two tax units
+  # Structural case under G.S. 105-266.2: tax units owe -430 and 800.
+  # Household tax before refundable credits includes 30 of use tax:
+  # (70 + 800 + 30) - 500 = (-430 + 800) + 30 = 400.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 50
+      adult_child:
+        age: 25
+    tax_units:
+      parent_return:
+        members: [parent]
+        nc_income_tax_before_credits: 100
+        nc_non_refundable_credits: 30
+        nc_claim_of_right_payment: 500
+        state_use_tax: 20
+      child_return:
+        members: [adult_child]
+        nc_income_tax_before_credits: 1000
+        nc_non_refundable_credits: 200
+        nc_claim_of_right_payment: 0
+        state_use_tax: 10
+    households:
+      household:
+        members: [parent, adult_child]
+        state_code: NC
+  output:
+    nc_income_tax: [-430, 800]
+    state_income_tax: [-430, 800]
+    household_state_tax_before_refundable_credits: 900
+    household_refundable_state_tax_credits: 500
