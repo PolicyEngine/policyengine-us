@@ -1,7 +1,7 @@
 description: Minnesota limits the Paid Leave small employer premium rate to employers with at most this many employees.
 values:
-  # The zero rate keeps the program off before 2026; earlier years read this
-  # value only under a reform that sets an earlier rate.
+  # Earlier years read the 2026 value; the zero rate keeps every amount at 0
+  # before 2026 unless a reform sets an earlier rate.
   0000-01-01: 30
   2026-01-01: 30
 

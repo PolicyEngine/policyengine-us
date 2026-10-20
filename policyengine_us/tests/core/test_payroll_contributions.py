@@ -668,6 +668,48 @@ def test_minnesota_paid_leave_shares_follow_the_parameters(
     ) == pytest.approx([600, small_employer])
 
 
+def test_minnesota_small_employer_wage_limit_rounds_half_up():
+    # 150% * $73,991 / 4 = $27,746.625, which rounds half up to $27,746.63
+    # (half to even would give $27,746.62).
+    reform = Reform.from_dict(
+        {
+            "gov.states.mn.tax.payroll.paid_leave.small_employer.state_average_annual_wage": {
+                "2026-01-01.2026-12-31": 73_991
+            },
+        },
+        country_id="us",
+    )
+    people = {
+        name: {
+            "age": {PERIOD: 30},
+            "employment_income": {PERIOD: WAGES},
+            "employer_headcount": {PERIOD: 10},
+            "mn_paid_leave_employer_average_quarterly_wage": {PERIOD: average_wage},
+        }
+        for name, average_wage in (("at_limit", 27_746.63), ("above", 27_746.64))
+    }
+    sim = Simulation(
+        tax_benefit_system=CountryTaxBenefitSystem(reform=(reform,)),
+        situation={
+            "people": people,
+            "households": {
+                "household": {"members": list(people), "state_code": {PERIOD: "MN"}}
+            },
+            "tax_units": {"tax_unit": {"members": list(people)}},
+            "spm_units": {"spm_unit": {"members": list(people)}},
+            "families": {"family": {"members": list(people)}},
+            "marital_units": {
+                f"{name}_marital_unit": {"members": [name]} for name in people
+            },
+        },
+    )
+
+    assert sim.calculate("mn_paid_leave_small_employer", PERIOD).tolist() == [
+        True,
+        False,
+    ]
+
+
 @pytest.mark.parametrize(
     ("state_code", "expected"),
     [
