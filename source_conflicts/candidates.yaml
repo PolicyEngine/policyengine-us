@@ -4475,12 +4475,6 @@ candidates:
   - kind: worksheet
     citation: 2025 OR-17 federal tax subtraction worksheet, PDF pp.71-72 (also 2017, 2018 and 2021)
     url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=71
-  - kind: statute
-    citation: ORS 316.680, 316.685
-    url: null
-  - kind: worksheet
-    citation: OR-17 federal tax worksheet
-    url: null
   readings:
     statute: The statute refers to federal income taxes accrued; the input does not resolve the section 1341 credit's
       treatment.
@@ -4690,38 +4684,6 @@ candidates:
   state: open
   note: 'PE-US follows Schedule SP''s gap-fill; reconcile it with the guide''s single-claimant category. Code not
     yet on main: pa_tax_forgiveness_eligible_share, pa_tax_forgiveness_amount.'
-- id: us-pr:eitc-maximum-credit-schedule
-  program: income-tax
-  years:
-    from: 2023
-    type: tax
-  question: Do Schedule CT's EITC maxima ($1,656, $3,864, $6,072 and $7,173 for 2023) depart from the statutory
-    amounts once those are inflation-adjusted under section 1052.01(i)?
-  sources:
-  - kind: statute
-    citation: P.R. Laws tit. 13, § 30211(1)-(6)
-    url: https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1007/subchapter-b/30211/
-  - kind: instructions
-    citation: Schedule CT Individual, Earned Income Credit, 2023 (instructions), page 2
-    url: https://hacienda.pr.gov/sites/default/files/schedule_ct_rev._jul_5_23_informative_-_instructions.pdf#page=2
-  - kind: guidance
-    citation: Hacienda Boletín Informativo de Rentas Internas 23-05
-    url: https://hacienda.pr.gov/publicaciones/boletin-informativo-de-rentas-internas-num-23-05-bi-ri-23-05
-  readings:
-    statute: The input reports that statutory maximums differ, but does not supply the statutory figures.
-    other: Schedule CT uses maximums of $1,656, $3,864, $6,072 and $7,173 for zero, one, two and three or more children.
-  pe_us:
-    follows: unknown
-    code:
-    - policyengine_us/parameters/gov/territories/pr/tax/income/credits/earned_income/max_amount.yaml
-    - policyengine_us/parameters/gov/territories/pr/tax/income/credits/earned_income/phase_in_rate.yaml
-    - policyengine_us/parameters/gov/territories/pr/tax/income/credits/earned_income/phase_out/rate.yaml
-    - policyengine_us/parameters/gov/territories/pr/tax/income/credits/earned_income/phase_out/threshold/joint.yaml
-    - policyengine_us/parameters/gov/territories/pr/tax/income/credits/earned_income/phase_out/threshold/single.yaml
-    prs: []
-  state: unreviewed
-  note: The bulletin publishes the listed 2023 maxima as the statutory inflation adjustment, so this may not be
-    a conflict; check for any discrepancy left after indexing, or drop the item.
 - id: us-pr:eitc-minimum-age-gap-fill
   program: income-tax
   years:
@@ -5459,12 +5421,6 @@ candidates:
   - kind: form
     citation: 2025 Form 1, Schedule 1 (PDF p. 4)
     url: https://www.revenue.wi.gov/TaxForms2025/2025-Form1.pdf#page=4
-  - kind: statute
-    citation: Wis. Stat. 71.07(5)(a)6
-    url: null
-  - kind: worksheet
-    citation: WI Form 1 Schedule 1
-    url: null
   readings:
     statute: The repayment could count because it is not miscellaneous under section 67(b)(9), and the separate
       repayment exclusion applies when Wisconsin's own credit is used.

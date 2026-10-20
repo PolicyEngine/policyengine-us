@@ -39,5 +39,5 @@ yet: `known-source-conflicts.yaml` in
 [TheAxiomFoundation/rulespec-us](https://github.com/TheAxiomFoundation/rulespec-us).
 For each conflict it gives what each source says, a worked example, the
 reading this model takes and why, and the code and tests that implement it.
-The code marks the deciding line with `# Source conflict <id>`. See
+The code marks the deciding line with `# Source conflict <jurisdiction>:<id>`. See
 [CONTRIBUTING.md](CONTRIBUTING.md#source-conflicts).

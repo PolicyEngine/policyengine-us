@@ -93,11 +93,11 @@ When a statute conflicts with a regulation, form, instructions, manual or stated
 `policyengine_us/tests/code_health/test_source_conflicts.py` checks structure, not whether the code follows a statute. It fails when:
 
 - the vendored register (`source_conflicts/known-source-conflicts.yaml`) differs from its pin (`source_conflicts/pin.yaml`: rulespec-us commit and sha256);
-- a comment that starts like a marker, in any spacing or case, is not exactly `# Source conflict <jurisdiction>:<id>` alone on its own line;
+- a comment that starts like a marker is not exactly `# Source conflict <jurisdiction>:<id>` alone on its own line. A comment starts like one when it has one or more `#`, then "source conflict" in any case, with spaces, a hyphen, an underscore or nothing between the words, followed either by something shaped like a global id (after an optional colon, or after "conflicts") or by neither a colon nor a letter;
 - a marker names an entry that isn't in the pinned copy, or whose entry doesn't list the file;
 - an implementation the register marks `cites_entry: true` is missing here or has lost its marker;
 - the count of comments that read like a conflict between sources ("the instructions say", "in practice", "discrepancy", "Source conflict:", ...) changes in a file without a marker. A new file or a higher count means register and mark the conflict, or reword the comment; a lower count means lower `KNOWN_UNMARKED`. A file with any valid marker is exempt, so the count doesn't prove every conflict in it is marked;
-- a backlog item (`source_conflicts/candidates.yaml`) is malformed, already registered, cites a path outside the repository, or contains a decision-queue id, a session id, a local path or an email address anywhere in the file, comments included.
+- a backlog item (`source_conflicts/candidates.yaml`) is malformed, already registered, cites a code path that isn't a file git tracks here, or contains a decision-queue id, a session id, a local path or an email address anywhere in the file: in its raw text, comments and keys included, and in every parsed value.
 
 A model that departs from the statute with no official source behind it is a bug, not a source conflict. Fix it, or open an issue.
 
