@@ -32,8 +32,9 @@ formulas that read the table:
 - local_sales_tax is zero in the ten jurisdictions whose residents the
   worksheet sends to -0- on line 6. One percentage point above the state rate
   (line 3 = 1), it is the Optional Local Sales Tax Table amount in the
-  worksheet's line-2 states and state_sales_tax divided by the heading rate
-  (in points) in the other states with a state table
+  worksheet's line-2 states where a local table is selected, and
+  state_sales_tax divided by the heading rate (in points) in other localities
+  with a state table
   (test_local_sales_tax_worksheet.py tests the worksheet in full).
 - state_and_local_sales_or_income_tax is the larger of the income tax (state
   withholding plus local income tax) and the sales tax (state plus local).
@@ -332,14 +333,19 @@ def test_local_sales_tax_one_point_above_the_state_rate(year):
     local_amount = simulation.calculate("local_sales_tax", year)
     local_tables = salt.local_sales_tax_table.tax(f"{year}-01-01")
     table = simulation.calculate("local_sales_tax_table", year).decode_to_str()
+    has_table = table != "NONE"
     table_amount = np.array(
         [
             local_tables[str(letter)][str(min(size, 6))][str(bracket)]
+            if letter != "NONE"
+            else 0
             for letter, size, bracket in zip(table, sizes, brackets)
         ]
     )
     no_local = np.isin(states, NO_LOCAL_SALES_TAX)
-    uses_table = np.isin(states, salt.local_sales_tax_table.states(f"{year}-01-01"))
+    uses_table = (
+        np.isin(states, salt.local_sales_tax_table.states(f"{year}-01-01")) & has_table
+    )
     ratio = ~no_local & ~uses_table
     assert (local_amount[no_local] == 0).all()
     np.testing.assert_allclose(
