@@ -1,6 +1,6 @@
 """Historical rebate guards must preserve the main eligibility-year schedules.
 
-These snapshots come from main at 645fcd3e5208e3559499802f3f1a5578ce2820d3.
+These snapshots come from main at ce9377ee80157a17eb730fa1b8550b4d433c696c.
 They compare every amount branch and scale threshold with the fully constructed
 model, including parameter backdating. Keeping the baseline here makes the
 differential test independent of Git history in shallow CI checkouts.

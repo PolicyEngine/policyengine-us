@@ -2,11 +2,19 @@
 # not the calendar year the check is paid:
 #   2021 -> 2022 rebate ($250/$500), 2022 -> 2023 rebate ($200/$400),
 #   2024 -> HB1600 TY2024 rebate ($200/$400); 2023 and 2025 carry no rebate.
+# Each act allows the refund only "up to the amount of such individual's tax
+# liability after the application of any deductions, subtractions, or credits
+# to which the individual is entitled pursuant to Chapter 3" (HB30 Item
+# 3-5.22; HB6001 Item 3-5.28 B; HB1600 Item 258 GG.3). The refundable Virginia
+# EIC is a Chapter 3 credit (Va. Code 58.1-339.8 B 3). The cases below give
+# the one-person unit $1,000 of tax, more than the $300 low-income credit it
+# qualifies for plus the largest rebate, so they receive the full amount.
 - name: 2022 rebate booked to the 2021 return (single)
   period: 2021
   input:
     filing_status: SINGLE
     state_code: VA
+    va_income_tax_before_non_refundable_credits: 1_000
   output:
     va_rebate: 250
 
@@ -15,6 +23,7 @@
   input:
     filing_status: JOINT
     state_code: VA
+    va_income_tax_before_non_refundable_credits: 1_000
   output:
     va_rebate: 500
 
@@ -23,6 +32,7 @@
   input:
     filing_status: SINGLE
     state_code: VA
+    va_income_tax_before_non_refundable_credits: 1_000
   output:
     va_rebate: 200
 
@@ -31,6 +41,7 @@
   input:
     filing_status: JOINT
     state_code: VA
+    va_income_tax_before_non_refundable_credits: 1_000
   output:
     va_rebate: 400
 
@@ -39,6 +50,7 @@
   input:
     filing_status: JOINT
     state_code: VA
+    va_income_tax_before_non_refundable_credits: 1_000
   output:
     va_rebate: 0
 
@@ -47,6 +59,7 @@
   input:
     filing_status: SINGLE
     state_code: VA
+    va_income_tax_before_non_refundable_credits: 1_000
   output:
     va_rebate: 200
 
@@ -55,6 +68,7 @@
   input:
     filing_status: JOINT
     state_code: VA
+    va_income_tax_before_non_refundable_credits: 1_000
   output:
     va_rebate: 400
 
@@ -63,8 +77,231 @@
   input:
     filing_status: JOINT
     state_code: VA
+    va_income_tax_before_non_refundable_credits: 1_000
   output:
     va_rebate: 0
+
+- name: 2021 rebate limited to the tax liability
+  period: 2021
+  input:
+    filing_status: SINGLE
+    state_code: VA
+    va_income_tax_before_non_refundable_credits: 100
+    va_non_refundable_eitc: 0
+  output:
+    # min(250, 100) = 100
+    va_rebate: 100
+
+- name: Rebate limited to the tax left after the Spouse Tax Adjustment and non-refundable EIC
+  period: 2022
+  input:
+    filing_status: JOINT
+    state_code: VA
+    va_income_tax_before_non_refundable_credits: 600
+    va_spouse_tax_adjustment: 100
+    va_non_refundable_eitc: 150
+    va_refundable_credits: 0
+  output:
+    # Form 760 Line 18 = 600 - 100 = 500; less Line 23 (150) = 350.
+    # min(400, 350) = 350
+    va_rebate: 350
+
+- name: Rebate limited to the tax left after the refundable EIC
+  period: 2024
+  input:
+    filing_status: JOINT
+    state_code: VA
+    va_income_tax_before_non_refundable_credits: 1_000
+    va_spouse_tax_adjustment: 0
+    va_non_refundable_eitc: 0
+    va_refundable_credits: 700
+  output:
+    # min(400, 1,000 - 700) = 300
+    va_rebate: 300
+
+- name: No rebate when the refundable EIC exceeds the tax
+  period: 2024
+  input:
+    filing_status: SINGLE
+    state_code: VA
+    va_income_tax_before_non_refundable_credits: 300
+    va_spouse_tax_adjustment: 0
+    va_non_refundable_eitc: 0
+    va_refundable_credits: 500
+  output:
+    # 300 - 500 < 0, so the tax liability is 0 and the rebate is 0.
+    va_rebate: 0
+
+- name: 2024 joint return whose refundable EIC exceeds the tax gets no rebate
+  # Rebate stacked on the refundable EIC: PolicyEngine/policyengine-taxsim#1443.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 35_000
+      spouse:
+        age: 40
+      child1:
+        age: 5
+      child2:
+        age: 7
+      child3:
+        age: 9
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2, child3]
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3]
+        state_code: VA
+  output:
+    # 2024 Form 760: VAGI 35,000 - standard deduction 17,000
+    #   - exemptions 5 x 930 = 4,650 -> Line 15 taxable income 13,350.
+    # Line 16 tax: 2% x 3,000 + 3% x 2,000 + 5% x 8,350 = 537.50.
+    # Line 17 STA 0 (only one spouse has income); Line 18 = 537.50.
+    # Federal EITC (Rev. Proc. 2023-34, three children: 7,830 maximum,
+    #   joint phase-out from 29,640 at 21.06%):
+    #   7,830 - 0.2106 x (35,000 - 29,640) = 6,701.18.
+    # Schedule ADJ: Line 13 low-income credit 5 x 300 = 1,500 (family VAGI
+    #   35,000 <= 36,580 poverty guideline for 5); Line 15 = 20% x 6,701.18
+    #   = 1,340.24; Line 16a = 1,500, limited to Line 18 = 537.50 (tax 0);
+    #   Line 16b refundable = 15% x 6,701.18 = 1,005.18 (tax -467.68).
+    #   The refundable credit benefits the filer most.
+    # Rebate: tax liability 537.50 - 1,005.18 < 0, so the rebate is 0.
+    # va_income_tax = 537.50 - 1,005.18 = -467.68.
+    va_claims_refundable_eitc: true
+    va_refundable_eitc: 1_005.18
+    va_rebate: 0
+    va_income_tax: -467.68
+
+- name: 2022 joint return whose refundable EIC exceeds the tax gets no rebate
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 35_000
+      spouse:
+        age: 40
+      child1:
+        age: 5
+      child2:
+        age: 7
+      child3:
+        age: 9
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2, child3]
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3]
+        state_code: VA
+  output:
+    # 2022 Form 760: VAGI 35,000 - standard deduction 16,000
+    #   - exemptions 5 x 930 = 4,650 -> Line 15 taxable income 14,350.
+    # Line 16 tax: 2% x 3,000 + 3% x 2,000 + 5% x 9,350 = 587.50.
+    # Line 17 STA 0; Line 18 = 587.50.
+    # Federal EITC (Rev. Proc. 2021-45, three children: 6,935 maximum,
+    #   joint phase-out from 26,260 at 21.06%):
+    #   6,935 - 0.2106 x (35,000 - 26,260) = 5,094.36.
+    # Schedule ADJ: no low-income credit (family VAGI 35,000 > 32,470
+    #   poverty guideline for 5); Line 16a = 20% x 5,094.36 = 1,018.87,
+    #   limited to Line 18 = 587.50 (tax 0); Line 16b refundable
+    #   = 15% x 5,094.36 = 764.15 (tax -176.65), which benefits the filer most.
+    # Rebate: tax liability 587.50 - 764.15 < 0, so the rebate is 0.
+    # va_income_tax = 587.50 - 764.15 = -176.65.
+    va_claims_refundable_eitc: true
+    va_refundable_eitc: 764.15
+    va_rebate: 0
+    va_income_tax: -176.65
+
+- name: 2024 joint return claiming a refundable EIC smaller than the tax
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 24_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        va_claims_refundable_eitc: true
+    households:
+      household:
+        members: [head, spouse]
+        state_code: VA
+  output:
+    # 2024 Form 760: VAGI 24,000 - standard deduction 17,000
+    #   - exemptions 2 x 930 = 1,860 -> Line 15 taxable income 5,140.
+    # Line 16 tax: 2% x 3,000 + 3% x 2,000 + 5% x 140 = 127.
+    # Line 17 STA 0; Line 18 = 127.
+    # Federal EITC (Rev. Proc. 2023-34, no children: 632 maximum, joint
+    #   phase-out from 17,250 at 7.65%): 632 - 0.0765 x 6,750 = 115.625.
+    # Line 16b refundable EIC = 15% x 115.625 = 17.34.
+    # Rebate: min(400, 127 - 17.34) = 109.66.
+    # va_income_tax = 127 - 109.66 - 17.34 = 0.
+    va_refundable_eitc: 17.34
+    va_rebate: 109.66
+    va_income_tax: 0
+
+- name: 2024 joint return with a small EIC does not stack the rebate on the refundable EIC
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 24_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: VA
+  output:
+    # Same return as above, Line 18 = 127, federal EITC 115.625.
+    # Non-refundable route: Line 23 = min(20% x 115.625 = 23.13, 127);
+    #   rebate min(400, 127 - 23.13) = 103.88; tax 0.
+    # Refundable route: Line 23 = 17.34; rebate min(400, 127 - 17.34)
+    #   = 109.66; tax 0.
+    # Both routes leave a tax of 0, so the credit and rebate together never
+    # exceed the 127 tax liability.
+    va_income_tax: 0
+
+- name: 2024 single return with no EIC gets the full rebate
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # 2024 Form 760: VAGI 50,000 - standard deduction 8,500 - exemption 930
+    #   -> Line 15 taxable income 40,570.
+    # Line 16 tax: 60 + 60 + 600 + 5.75% x 23,570 = 2,075.28.
+    # No federal EITC (no children, income above the 18,591 phase-out end).
+    # Rebate: min(200, 2,075.28) = 200.
+    # va_income_tax = 2,075.28 - 200 = 1,875.28.
+    eitc: 0
+    va_rebate: 200
+    va_income_tax: 1_875.28
 
 # Historical guard regression.
 # HB30 (2022 special session), chapter budget, Item 3-5.22(A): the rebate is
