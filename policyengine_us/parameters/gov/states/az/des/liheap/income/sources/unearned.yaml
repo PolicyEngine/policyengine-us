@@ -6,7 +6,7 @@ description: Arizona uses these person-level unearned income sources to determin
 # (az_tanf) is a household benefit and is added in az_liheap_countable_income.
 values:
   2025-08-25:
-    - unemployment_compensation
+    - total_unemployment_compensation
     - strike_benefits
     # Section VII.A.1.c.ii.D note: Medicare premiums "should be subtracted when
     # determining gross income". Social Security is counted gross here; the

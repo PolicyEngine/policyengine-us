@@ -71,6 +71,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5]
+        az_tanf: 0
         heating_type: NATURAL_GAS
         pre_subsidy_electricity_expense: 2_400
         gas_expense: 700
@@ -134,6 +135,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6]
+        az_tanf: 0
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 3_000
     households:
@@ -176,6 +178,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        az_tanf: 0
         heating_type: NATURAL_GAS
         pre_subsidy_electricity_expense: 3_600
         gas_expense: 900
@@ -268,6 +271,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
+        az_tanf: 0
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 4_800
     households:
@@ -365,6 +369,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
+        az_tanf: 0
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 2_400
     households:
