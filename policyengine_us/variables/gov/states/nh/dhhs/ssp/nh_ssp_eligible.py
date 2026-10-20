@@ -46,8 +46,8 @@ class nh_ssp_eligible(Variable):
         # the waiting period since entry has elapsed, which also covers entry
         # before August 22, 1996. AAM 305.11 exempts the listed statuses, as
         # 8 USC 1622(b)(1) requires.
-        # NOTE: source conflict. AAM 305.13 keeps "lawfully admitted permanent
-        # residents regardless of work history" out for the 5 years. 8 USC
+        # NOTE: AAM 305.13 keeps "lawfully admitted permanent residents
+        # regardless of work history" out for the 5 years. 8 USC
         # 1622(b)(2) instead makes a permanent resident credited with 40
         # qualifying quarters (8 USC 1645) "eligible for any State public
         # benefits", and He-W 616.02 does not address it. The model follows
