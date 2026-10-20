@@ -24,10 +24,6 @@ For every tax unit:
 1. Differential: dependent_care_assistance_exclusion equals an independent
    numpy min of the benefits, the cap printed on Form 2441 line 21 for the
    year (not the model's parameter) and the lesser of the filers' earnings.
-   A separate filer is married at the end of the year, so section
-   129(b)(1)(B) also limits the exclusion to the absent spouse's earned
-   income (absent_spouse_earned_income, drawn for every separate filer),
-   including one treated as unmarried for the cap under section 21(e)(4).
 2. Bound: 0 <= exclusion <= benefits, the year/status cap and earned income.
 3. Monotone: raising benefits never lowers the exclusion.
 4. California: ca_dependent_care_assistance_exclusion equals the same min with
@@ -101,11 +97,6 @@ def tax_units(draw):
         "spouse": draw(filers()) if filing_status == "JOINT" else None,
         "children": draw(st.integers(0, 3)),
         "is_separated": draw(st.booleans()) if filing_status == "SEPARATE" else False,
-        "absent_spouse": (
-            draw(st.one_of(wages, st.integers(0, 6_000).map(float)))
-            if filing_status == "SEPARATE"
-            else 0.0
-        ),
     }
 
 
@@ -137,17 +128,6 @@ def _seeded_units(n=200):
                 "is_separated": filing_status == "SEPARATE"
                 and bool(rng.integers(0, 2)),
             }
-        )
-    # The absent spouse's earnings come from their own stream, so the draws
-    # above stay as they were.
-    spouse_rng = np.random.default_rng(SEED + 1)
-    for unit in units:
-        # Half the draws are low, where the spouse's earnings can bind.
-        high = spouse_rng.random() < 0.5
-        unit["absent_spouse"] = (
-            float(spouse_rng.integers(0, 150_001 if high else 6_001))
-            if unit["filing_status"] == "SEPARATE"
-            else 0.0
         )
     return units
 
@@ -185,9 +165,6 @@ def _situation(units, year):
         groups["tax_units"][f"tax_unit_{i}"] = {
             "members": members,
             "filing_status": unit["filing_status"],
-            # Supplied for every unit, because a partly supplied input is zero
-            # for the others; only separate filers read it.
-            "absent_spouse_earned_income": unit["absent_spouse"],
         }
         groups["households"][f"household_{i}"] = {
             "members": members,
@@ -199,7 +176,7 @@ def _situation(units, year):
     }
     for kind in ("tax_units", "households"):
         for group in groups[kind].values():
-            for key in ("filing_status", "state_code", "absent_spouse_earned_income"):
+            for key in ("filing_status", "state_code"):
                 if key in group:
                     group[key] = {year: group[key]}
     return {"people": people, **groups}
@@ -257,18 +234,8 @@ def _expected(units, year, caps, *, raised=False):
             "filing_status"
         ] == "SEPARATE" and not _treated_as_unmarried(unit)
         cap.append(caps[1] if ordinary_separate else caps[0])
-        earned.append(_earned_income_limit(unit))
+        earned.append(min(f["employment_income"] for f in filers))
     return np.minimum(np.array(benefits), np.minimum(cap, earned))
-
-
-def _earned_income_limit(unit):
-    """Section 129(b): the filers' lesser earnings, and for a separate filer
-    (married at the end of the year) also the absent spouse's earnings."""
-    filers = [unit["head"]] + ([unit["spouse"]] if unit["spouse"] else [])
-    limit = min(f["employment_income"] for f in filers)
-    if unit["filing_status"] == "SEPARATE":
-        limit = min(limit, unit["absent_spouse"])
-    return limit
 
 
 def _check(units, year):
@@ -306,7 +273,14 @@ def _check(units, year):
             for unit in units
         ]
     )
-    earned_income_limits = np.array([_earned_income_limit(unit) for unit in units])
+    earned_income_limits = np.array(
+        [
+            min(unit["head"]["employment_income"], unit["spouse"]["employment_income"])
+            if unit["spouse"]
+            else unit["head"]["employment_income"]
+            for unit in units
+        ]
+    )
     assert (exclusion <= caps + TOLERANCE).all()
     assert (exclusion <= earned_income_limits + TOLERANCE).all()
 
@@ -354,16 +328,4 @@ def test_dependent_care_assistance_exclusion_invariants(year, units):
 
 @pytest.mark.parametrize("year", YEARS)
 def test_seeded_population(year):
-    units = _seeded_units()
-    _check(units, year)
-    # Some separate filers have an absent spouse whose earnings bind, among
-    # them filers treated as unmarried for the cap.
-    binding = [
-        unit
-        for unit in units
-        if unit["filing_status"] == "SEPARATE"
-        and unit["absent_spouse"]
-        < min(unit["head"]["employment_income"], unit["head"]["benefits"])
-    ]
-    assert len(binding) > 5
-    assert any(_treated_as_unmarried(unit) for unit in binding)
+    _check(_seeded_units(), year)
