@@ -24,7 +24,8 @@ class ok_military_retirement_exclusion(Variable):
             period
         ).gov.states.ok.tax.income.agi.subtractions.military_retirement
         person = tax_unit.members
-        military_retirement_benefits = person("military_retirement_pay", period)
+        military_retirement_benefits = person("military_retirement_income", period)
+
         adjust_military_retirement_amount = military_retirement_benefits * p.rate
         capped_exclusion_amount = max_(p.floor, adjust_military_retirement_amount)
         # Dependents' income is not in federal AGI; they report it on their

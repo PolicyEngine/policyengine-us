@@ -1,7 +1,8 @@
 """Each dollar input follows the series closest to what it measures: its own
 national series, the income source it is part of, prices for consumption
-expenses and debts, CMS per-capita spending for health costs and CMS premiums
-per enrollee for employer plan premiums."""
+expenses and debts, CMS per-capita out-of-pocket spending for health costs,
+premiums per enrollee, or the prices that index them, for health insurance
+premiums, and the statutory limit for capped contributions."""
 
 from pathlib import Path
 
@@ -20,8 +21,14 @@ UNEMPLOYMENT = per_capita_path("calibration.gov.irs.soi.unemployment_compensatio
 DEFAULT = per_capita_path("calibration.gov.cbo.income_by_source.adjusted_gross_income")
 CMS = "calibration.gov.hhs.cms.moop_per_capita"
 ESI = "calibration.gov.hhs.cms.esi_premium_per_enrollee"
+DIRECT_PURCHASE = "calibration.gov.hhs.cms.direct_purchase_premium_per_enrollee"
 CPI_U = "gov.bls.cpi.cpi_u"
+MEDICAL_CPI = "gov.bls.cpi.cpi_u_medical_care"
+PART_B = "calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee"
 COLA = "gov.ssa.uprating"
+HSA_FAMILY_LIMIT = (
+    "gov.irs.gross_income.health_savings_account_contributions.limit.family"
+)
 
 EXPECTED = {
     # Pay, and amounts set as a share of pay.
@@ -42,6 +49,8 @@ EXPECTED = {
     # Wage-replacement benefits.
     "workers_compensation": EMPLOYMENT,
     "disability_benefits": EMPLOYMENT,
+    "tax_exempt_disability_benefits": EMPLOYMENT,
+    "disability_benefits_before_minimum_retirement_age": EMPLOYMENT,
     "self_employed_pension_contributions_desired": SELF_EMPLOYMENT,
     # Components of capital gains.
     "long_term_capital_gains_on_collectibles": CAPITAL_GAINS,
@@ -60,18 +69,31 @@ EXPECTED = {
     "alimony_income": ALIMONY,
     "alimony_expense": ALIMONY,
     "unemployment_compensation": UNEMPLOYMENT,
-    # Health costs.
-    "health_insurance_premiums": CMS,
-    # Employer plan premiums: the employer's share and the employee's pre-tax
-    # share.
+    # Health costs paid out of pocket.
+    "other_medical_expenses": CMS,
+    "over_the_counter_health_expenses": CMS,
+    # Premiums for employer plans: the employer's share, the employee's
+    # pre-tax share, and the premiums people report, most of them paid by
+    # people with employer coverage.
     "employer_sponsored_insurance_premiums": ESI,
     "pre_tax_health_insurance_premiums": ESI,
+    "health_insurance_premiums_without_medicare_part_b": ESI,
+    "other_health_insurance_premiums": ESI,
+    # Premiums for plans bought directly.
+    "health_insurance_premiums": DIRECT_PURCHASE,
+    # Long-term care insurance premiums, whose deductible limits follow
+    # medical care prices.
+    "long_term_health_insurance_premiums": MEDICAL_CPI,
+    # Medicare Part B premiums.
+    "medicare_part_b_premiums_reported": PART_B,
+    # Contributions under a cap that 26 U.S.C. 223(g) indexes to chained
+    # CPI-U.
+    "health_savings_account_payroll_contributions": HSA_FAMILY_LIMIT,
     # Benefits adjusted by the Social Security cost-of-living index.
     "veterans_benefits": COLA,
     # Consumption expenses, and the interest on debts, follow prices. The
-    # structured first and second mortgage inputs stay on the default: two are
-    # deprecated (issue #9275) and the file's formulas are outside the
-    # selective coverage job.
+    # per-mortgage balance and origination-year inputs stay on the default:
+    # the file's formulas are outside the selective coverage job.
     "pre_subsidy_rent": CPI_U,
     "pre_subsidy_care_expenses": CPI_U,
     "spm_unit_pre_subsidy_childcare_expenses": CPI_U,

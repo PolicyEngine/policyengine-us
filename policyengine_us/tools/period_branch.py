@@ -61,9 +61,8 @@ def _input_keys(branch: Simulation) -> Set[Tuple[str, str, Period]]:
     """The (variable, branch name, period) keys ``branch`` reads as inputs.
 
     policyengine-core records each key that ``set_input`` stores, whether
-    from the dataset, the situation or a branch, in one set shared by a
-    simulation and all its branches. ``branch`` reads its own keys and its
-    ancestors'.
+    from the dataset, the situation or a branch. ``branch`` reads its own
+    keys and its ancestors'.
     """
     visible_branches = set(branch._get_visible_branch_names())
     return {
@@ -71,6 +70,36 @@ def _input_keys(branch: Simulation) -> Set[Tuple[str, str, Period]]:
         for key in getattr(branch, "_user_input_keys", set())
         if key[1] in visible_branches
     }
+
+
+def delete_input_values(holder, period=None, branch_name="default") -> None:
+    """Delete arrays and forget the inputs whose storage no longer exists.
+
+    Core 3.32.8 keeps deleted inputs in its replay record, making a later
+    formula result at that key look like supplied input. Forget the missing
+    slots before a clone can inherit that stale classification.
+    """
+    holder.delete_arrays(period, branch_name)
+    simulation = holder.simulation
+    input_keys = getattr(simulation, "_user_input_keys", None)
+    if input_keys is None:
+        return
+    eternal_period = to_period(ETERNITY)
+
+    def still_stored(key):
+        name, input_branch, input_period = key
+        if name != holder.variable.name:
+            return True
+        storage_period = (
+            eternal_period if holder._memory_storage.is_eternal else input_period
+        )
+        return f"{input_branch}:{storage_period}" in holder._memory_storage._arrays or (
+            holder._disk_storage is not None
+            and f"{input_branch}_{storage_period}" in holder._disk_storage._files
+        )
+
+    # Older core clones share this set; leave the source's record untouched.
+    simulation._user_input_keys = {key for key in input_keys if still_stored(key)}
 
 
 def has_input(simulation: Simulation, variable: str, period: Period) -> bool:

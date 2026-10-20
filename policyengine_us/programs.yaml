@@ -808,8 +808,16 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: DC, Riverside County, MA, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OR, TX
+    coverage: AL, DC, Riverside County, MA, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OR, TX
     state_implementations:
+      - state: AL
+        status: partial
+        name: Alabama LIHEAP
+        full_name: Alabama Low Income Home Energy Assistance Program
+        variable: al_liheap
+        parameter_prefix: gov.states.al.adeca.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating with the HUD allowance deduction and the funded IIJA supplement. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: DC
         status: complete
         name: DC LIHEAP
@@ -953,6 +961,9 @@ programs:
         name: California SSP
         full_name: California State Supplementary Payment
         variable: ca_state_supplement
+        parameter_prefix: gov.states.ca.cdss.state_supplement
+        verified_years: "2025-2026"
+        notes: Payment standards verified for independent living, no cooking facilities, blind and disabled minor categories. Facility and household-of-another arrangements are not verified (issue 7892).
       - state: CT
         status: complete
         name: Connecticut SSP
@@ -1069,6 +1080,18 @@ programs:
         name: New Mexico SSI supplement
         full_name: New Mexico SSI state supplement
         variable: nm_ssi_state_supplement
+      - state: NV
+        status: partial
+        name: Nevada OSS
+        full_name: Nevada Optional State Supplementation
+        variable: nv_oss
+        parameter_prefix: gov.states.nv.dwss.oss
+        verified_years: "2026"
+        notes: >-
+          Models 2026 optional supplementation for independent living, another
+          person's household and state-certified domiciliary care, including
+          couples and spouse deeming. Mandatory minimum-income protection for
+          December 1973 conversions is not modeled.
       - state: SC
         status: complete
         name: South Carolina SSI supplement
@@ -1090,6 +1113,113 @@ programs:
           tracks. Unmodeled paths: grandfathered medically-needy-in-medical-
           institution recipients per WAC 388-478-0055(2)(b); DDA-determined /
           PVL track per (2)(f); and foster child in BRS per (2)(g).
+      - state: NJ
+        status: partial
+        name: New Jersey SSP
+        full_name: New Jersey State Supplementary Payment
+        variable: nj_ssp
+        parameter_prefix: gov.states.nj.njdhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models 2026 New Jersey optional supplement rates by living
+          arrangement, including the ineligible-spouse variation. Mandatory
+          grandfathered supplementation is not modeled.
+      - state: PA
+        status: partial
+        name: Pennsylvania SSP
+        full_name: Pennsylvania State Supplementary Payment
+        variable: pa_ssp
+        parameter_prefix: gov.states.pa.dhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models 2026 optional supplements for independent living, the
+          household of another and certified domiciliary and personal care
+          homes, plus the institutional Supplement for Personal Needs.
+          Mandatory grandfathered and essential-person supplements and
+          ancillary facility subsidies are not modeled.
+      - state: WY
+        status: partial
+        name: Wyoming SSP
+        full_name: Wyoming State Supplemental Payment
+        variable: wy_ssp
+        parameter_prefix: gov.states.wy.health.ssp
+        verified_years: "2026"
+        notes: >-
+          Models the 2026 flat payment for Wyoming residents who receive SSI
+          and have no other income.
+      - state: NC
+        status: partial
+        name: North Carolina SA
+        full_name: North Carolina State-County Special Assistance
+        variable: nc_sa
+        parameter_prefix: gov.states.nc.ncdhhs.sa
+        verified_years: '2026'
+        notes: Models 2026 basic and enhanced facility and in-home payments, including lower contracted
+          rates and first-month proration. Open/shut and discharge payments are not modeled.
+      - state: MT
+        status: partial
+        name: Montana SSP
+        full_name: Montana State Supplementary Payment
+        variable: mt_ssp
+        parameter_prefix: gov.states.mt.dphhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models 2026 Montana optional supplements for state-certified
+          personal care, group home, foster care and transitional living
+          placements. Mandatory grandfathered supplementation and out-of-state
+          custody placements are not modeled.
+      - state: OK
+        status: partial
+        name: Oklahoma SSP
+        full_name: Oklahoma State Supplemental Payment
+        variable: ok_ssp
+        parameter_prefix: gov.states.ok.dhs.ssp
+        verified_years: '2026'
+        notes: Models the 2026 community supplement for individuals, couples and individuals with
+          an ineligible spouse. Essential spouses, persons in a TANF case and grandfathered
+          institutional payments are not modeled.
+      - state: NY
+        status: partial
+        name: New York SSP
+        full_name: New York State Supplement Program
+        variable: ny_ssp
+        parameter_prefix: gov.states.ny.otda.ssp
+        verified_years: '2026'
+        notes: Models 2026 living alone, living with others and congregate care supplements with
+          downstate premiums, plus the medical facility personal needs allowance. Grandfathered
+          mandatory payments are not modeled.
+      - state: RI
+        status: partial
+        name: Rhode Island SSP
+        full_name: Rhode Island State Supplementary Payment
+        variable: ri_ssp
+        parameter_prefix: gov.states.ri.dhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models 2026 optional living-arrangement supplements and Title XIX
+          facility personal-needs payments. Mandatory grandfathered payments,
+          facility subsidies and the statutory supportive residential-care
+          category are not modeled.
+      - state: SD
+        status: partial
+        name: South Dakota SSP
+        full_name: South Dakota State Supplemental Payment
+        variable: sd_ssp
+        parameter_prefix: gov.states.sd.dss.ssp
+        verified_years: "2026"
+        notes: Models 2026 independent living and certified nonwaiver assisted living/adult foster
+          care supplements. Out-of-state placements, historical mandatory supplements and claim
+          administration are not modeled.
+      - state: VA
+        status: partial
+        name: Virginia Auxiliary Grant
+        full_name: Virginia Auxiliary Grant
+        variable: va_ag
+        parameter_prefix: gov.states.va.dars.ag
+        verified_years: '2026'
+        notes: Models 2026 locality rates and SSI and non-SSI budgets for certified assisted living,
+          adult foster care and supportive housing residents. Conditional resource benefits and
+          historical grandfathering are not modeled.
 
   - id: social_security
     name: Social Security
