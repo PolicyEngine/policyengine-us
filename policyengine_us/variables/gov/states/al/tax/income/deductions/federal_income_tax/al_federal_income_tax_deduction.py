@@ -34,6 +34,8 @@ class al_federal_income_tax_deduction(Variable):
         # The regulation subtracts all federal payment credits, including net
         # PTC and section 1341 relief. Non-refundable credits already reduced
         # federal_tax, so the AOC entry includes only its refundable portion.
+        # The corrected list starts in 2021; the earlier list is preserved
+        # pending verification of pre-2021 worksheets.
         part_i = max_(federal_tax - add(tax_unit, period, p.credits), 0)
 
         # Part II (Act 2022-37) applies only to tax year 2021, the one year the
