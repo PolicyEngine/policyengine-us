@@ -8,6 +8,11 @@ limit and reduces the $1,000,000 acquisition-debt limit ($500,000 married
 filing separately); up to $100,000 ($50,000) of debt above that limit counts
 as home equity debt (Figure A, note 3, PDF page 3).
 
+The law does not prescribe allocation rounding. PE uses the N-11 / 2017
+Publication 936 worksheet as a gap-fill and separately applies a federal
+deduction floor as its chosen approximation. The floor is a PE safeguard,
+not part of worksheet line 12.
+
 Hypothesis draws pairs of loans around every cutoff and limit and checks
 _hi_qualified_loan_limit against two independent restatements, one line by
 line from Table 1 and one in the statute's order, and against the federal
@@ -15,8 +20,8 @@ helper:
 
 1. Differential: the helper equals both restatements.
 2. Bounds: grandfathered debt <= Hawaii limit <= total debt, and the Hawaii
-   limit is at least the federal limit for the same loans, so Hawaii never
-   allows less interest than federal law and never more than was paid.
+   limit is at least the federal limit for the same loans. PE's chosen
+   approximation separately preserves the federal deduction floor below.
 3. Order: swapping the two loans never changes the limit.
 4. Vintage: Hawaii has one limit for debt incurred after October 13, 1987, so
    moving a loan between 2017 and 2018 never changes the limit, while moving
@@ -26,10 +31,10 @@ helper:
    in [0, 1], within half a thousandth of the exact ratio and, for the drawn
    balances, at or above the federal (exact) share. It is the same whether
    the balances arrive in single precision, as in a simulation, or double.
-7. Line 12: the Hawaii deduction lies between the federal deduction and the
-   interest paid, equals the federal deduction when federal law disallows
+7. PE safeguard: the Hawaii deduction lies between the federal deduction and
+   the interest paid, equals the federal deduction when federal law disallows
    nothing (so a deduction supplied directly is not limited again), and
-   otherwise equals interest paid times line 11 unless that would fall below
+   otherwise equals worksheet interest paid times line 11, floored by PE at
    the federal amount.
 
 These are for-all properties of the helpers, which YAML cannot state. The
@@ -203,7 +208,7 @@ def test_hawaii_allowed_interest_properties(deductible, non_deductible, share):
         )[0]
     )
     paid = deductible + non_deductible
-    # 7. Line 12.
+    # 7. PE federal-floor safeguard.
     assert deductible - TOLERANCE <= allowed <= paid + TOLERANCE
     if non_deductible == 0:
         assert allowed == deductible

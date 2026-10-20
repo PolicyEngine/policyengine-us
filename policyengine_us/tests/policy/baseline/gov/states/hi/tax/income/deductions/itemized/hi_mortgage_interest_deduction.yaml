@@ -9,7 +9,9 @@
 #   line 8 = line 6 + line 7 (qualified loan limit)
 #   line 11 = line 8 / (G + A), "rounded to three places"
 #   line 12 = interest x line 11
-# The 2025 N-11 instructions (line 21c) send filers to this worksheet.
+# The 2025 N-11 instructions (line 21c) send filers to this worksheet, which
+# fills the law's allocation-rounding gap. PE separately floors the result
+# at its federal deduction as a safeguard; that floor is not worksheet line 12.
 # Limits are halved for married filing separately. PolicyEngine's federal
 # deduction uses the $750,000 limit for debt from 2018 or later, no home
 # equity debt and the exact ratio (its worksheet rounds too). Interest paid
@@ -252,6 +254,27 @@
     # $1,100,000 / $1,128,784 = .97449999, which rounds to .974 (single
     # precision would give .9745 and round up); .974 x $40,000.
     hi_mortgage_interest_deduction: 38_960
+
+- name: PE's federal floor binds when worksheet rounding would allow less than federal
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    home_mortgage_interest: 40_000
+    first_home_mortgage_balance: 497_550_016
+    first_home_mortgage_origination_year: 1986
+    second_home_mortgage_balance: 2_449_984
+    second_home_mortgage_origination_year: 2020
+  output:
+    # Total debt is $500,000,000; the federal limit is $497,550,016.
+    # $40,000 x $497,550,016 / $500,000,000 = $39,804.00128.
+    deductible_mortgage_interest: 39_804
+    # Hawaii's limit is $497,650,016: line 11 rounds .995300032 to .995,
+    # so worksheet line 12 gives $39,800. PE's separate floor keeps the
+    # federal amount, about $39,804, instead.
+    hi_mortgage_interest_deduction: 39_804
+    hi_interest_deduction: 39_804
 
 - name: A deduction supplied directly is not limited a second time
   period: 2025

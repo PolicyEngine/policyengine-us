@@ -34,9 +34,10 @@ def _hi_qualified_loan_limit(
 def _hi_deductible_share(qualified_loan_limit, total_debt):
     """2017 IRS Publication 936, Table 1, line 11.
 
-    The qualified loan limit divided by the total debt, "rounded to three
-    places" (half up). Interest is treated as within the limits, a share of
-    one, when no balance is reported, as in the federal calculation. The
+    The worksheet specifies the qualified loan limit divided by total debt,
+    "rounded to three places"; PE uses half-up rounding at ties. Interest is
+    treated as within the limits, a share of one, when no balance is
+    reported, as in the federal calculation. The
     ratio is computed in double precision: in single precision a ratio just
     below a half-thousandth, such as $1,100,000 / $1,128,784 = .97449999,
     rounds the wrong way.
@@ -48,16 +49,20 @@ def _hi_deductible_share(qualified_loan_limit, total_debt):
 
 
 def _hi_allowed_interest(deductible, non_deductible, deductible_share):
-    """Table 1, line 12: interest paid (line 10) times line 11.
+    """N-11 / Publication 936 worksheet with a PE federal-floor safeguard.
 
-    Interest paid is the federally deductible and non-deductible parts
-    together. When federal law disallows none of it, Hawaii's limits, which
-    are never lower than the federal ones, disallow none either; keeping the
-    federal amount then also passes through a deduction supplied directly,
-    which the federal limits have already reduced, rather than reducing it
-    again. For the same reason the result is never below the federal amount,
-    which the worksheet's rounding could otherwise undercut by a fraction of
-    a percent.
+    The law does not prescribe allocation rounding, so the N-11 / 2017
+    Publication 936 worksheet supplies a gap-fill: line 11 rounds the share
+    to three places, and line 12 multiplies interest paid by that share.
+    Interest paid (line 10) is the federally deductible and non-deductible
+    parts together.
+
+    PE separately floors that worksheet result at its federal deduction.
+    This safeguard is PE's chosen approximation, not worksheet line 12; it
+    prevents rounded Hawaii interest from falling below PE's unrounded
+    federal calculation. When federal law disallows none of the interest,
+    keeping the federal amount also passes through a deduction supplied
+    directly, which the federal limits have already reduced.
     """
     hawaii = (deductible + non_deductible) * deductible_share
     return where(non_deductible > 0, max_(hawaii, deductible), deductible)
@@ -75,17 +80,31 @@ class hi_mortgage_interest_deduction(Variable):
         "incurred: interest on up to $1,000,000 of home acquisition debt plus "
         "$100,000 of home equity debt ($500,000 and $50,000 for married "
         "filing separately), rather than the federal $750,000 limit for debt "
-        "incurred after December 15, 2017."
+        "incurred after December 15, 2017. The N-11 / Publication 936 "
+        "worksheet fills the law's allocation-rounding gap; PE separately "
+        "preserves its federal deduction as a safeguard."
     )
     reference = (
-        # HRS 235-2.4(j)(3)
-        "https://data.capitol.hawaii.gov/hrscurrent/Vol04_Ch0201-0257/HRS0235/HRS_0235-0002_0004.htm",
+        # HRS 235-2.4(j)(3), 235-2.5(b) and 235-3(a): retained limits,
+        # authority to adopt Treasury regulations and conformity of forms.
+        # PDF pages 11, 16-17.
+        "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=11",
         # Act 35, SLH 2026, HRS 235-2.4(i)(3)
-        "https://data.capitol.hawaii.gov/sessions/session2026/bills/HB2329_CD1_.pdf#page=20",
+        "https://data.capitol.hawaii.gov/sessions/session2026/bills/GM1135_.PDF#page=21",
+        # HAR 18-235-2.3(a)(3) adopts federal regulations through January 1,
+        # 1979, before the 1987 temporary mortgage-interest regulation.
+        "https://files.hawaii.gov/tax/legal/har/har_235.pdf#page=15",
+        # Treasury Regulation 1.163-10T(c)-(g): alternative allocation
+        # methods without prescribed decimal rounding. PDF pages 3-4, 6.
+        "https://www.govinfo.gov/content/pkg/CFR-2025-title26-vol3/pdf/CFR-2025-title26-vol3-sec1-163-10T.pdf#page=3",
+        # CCA 201201017 (nonprecedential): reasonable allocation methods
+        # and approximations under the later debt limits.
+        "https://www.irs.gov/pub/irs-wd/1201017.pdf#page=5",
         # 2025 N-11 instructions, line 21c
         "https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=17",
         # 2017 Publication 936, Figure A note 3 (PDF page 3), home equity debt
-        # limit (PDF page 10) and Table 1 (PDF page 11)
+        # limit (PDF page 10) and Table 1 (PDF page 11, including the
+        # three-place rounding and multiplication, without PE's floor).
         "https://www.irs.gov/pub/irs-prior/p936--2017.pdf#page=3",
     )
     defined_for = StateCode.HI
@@ -118,11 +137,11 @@ class hi_mortgage_interest_deduction(Variable):
             p.home_equity_debt_limit[filing_status],
         )
         # Lines 9 and 11. The 2025 N-11 instructions send filers to this
-        # worksheet, which rounds the ratio; PolicyEngine's federal
-        # calculation uses the exact ratio.
+        # worksheet, which supplies the rounding gap-fill; PolicyEngine's
+        # federal calculation uses the unrounded ratio.
         total_debt = grandfathered_debt + other_debt
         deductible_share = _hi_deductible_share(qualified_loan_limit, total_debt)
-        # Lines 10 and 12.
+        # Worksheet lines 10 and 12, with PE's separate federal-floor safeguard.
         return _hi_allowed_interest(
             add(tax_unit, period, ["deductible_mortgage_interest"]),
             add(tax_unit, period, ["non_deductible_mortgage_interest"]),
