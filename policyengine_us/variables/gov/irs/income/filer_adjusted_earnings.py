@@ -28,8 +28,9 @@ class filer_adjusted_earnings(Variable):
         excluded_wages = person("employment_income", period) - person(
             "irs_employment_income", period
         )
-        adjusted = max_(
-            0, person("earned_income", period) - excluded_wages - adjustment
-        )
+        # Disability pensions reported as wages before minimum retirement
+        # age are earned income (Pub. 596).
+        earnings = add(person, period, ["earned_income", "earned_disability_benefits"])
+        adjusted = max_(0, earnings - excluded_wages - adjustment)
         is_dependent = person("is_tax_unit_dependent", period)
         return tax_unit.sum(adjusted * ~is_dependent)

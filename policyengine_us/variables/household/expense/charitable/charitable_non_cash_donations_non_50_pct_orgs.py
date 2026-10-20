@@ -9,9 +9,10 @@ class charitable_non_cash_donations_non_50_pct_orgs(Variable):
     documentation = (
         "Non-cash charitable donations to organizations other than "
         "50-percent limit organizations described in "
-        "26 USC 170(b)(1)(A), such as private non-operating "
-        "foundations. These are subject to a lower AGI ceiling "
-        "than donations to 50-percent limit organizations."
+        "26 U.S. Code § 170(b)(1)(A), such as private non-operating "
+        "foundations. Contributions 'for the use of' an organization "
+        "also belong in this non-50% input (IRS Pub 526 Worksheet 2, line 5). "
+        "These are subject to a 30% AGI ceiling under 26 U.S. Code § 170(b)(1)(B)."
     )
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/170#b_1_B"

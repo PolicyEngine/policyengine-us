@@ -89,12 +89,8 @@ def create_ga_sb520() -> Reform:
 
             sb520_active = p_sb520.in_effect
 
-            person = tax_unit.members
-            age = person("age", period)
-            ctc_eligible_child = person("ctc_qualifying_child", period)
-            # SB 520 preserves baseline GA CTC age threshold (under 6)
-            ga_child_age_eligible = age < p.age_threshold
-            eligible_children = tax_unit.sum(ctc_eligible_child & ga_child_age_eligible)
+            # SB 520 preserves the baseline GA CTC child test (under 6)
+            eligible_children = add(tax_unit, period, ["ga_ctc_eligible_child"])
 
             sb520_amount = p_sb520.credits.ctc.amount
             baseline_amount = p.amount
