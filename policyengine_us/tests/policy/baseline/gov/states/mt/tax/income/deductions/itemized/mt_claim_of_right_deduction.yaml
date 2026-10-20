@@ -236,7 +236,6 @@
     households:
       household:
         members: [head, spouse]
-        casualty_loss_deduction: 0
         state_code: MT
   output:
     mt_misc_claim_of_right_repayment: [2_000, 2_000]
@@ -489,7 +488,6 @@
     households:
       household:
         members: [head, spouse]
-        casualty_loss_deduction: 0
         state_code: MT
   output:
     mt_misc_claim_of_right_repayment: [2_000, 0]
