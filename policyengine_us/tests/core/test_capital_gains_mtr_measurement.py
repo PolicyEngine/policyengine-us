@@ -27,14 +27,20 @@ Invariants, for 2026:
 3. Differential. The rate measured in a branch equals the finite difference
    between new simulations of the same households, across states, filing
    statuses, wages and gains, including households that give a
-   ``capital_gains`` total as an input, at construction or later. The new
-   simulations use the same rise, so this checks the branch, not the size of
-   the rise.
-4. Order. Requesting the capital gains response before the labor supply
-   response gives both the values they have when requested the other way.
+   ``capital_gains`` total as an input at construction. A total set after
+   construction gives the rate of a household that gave the same total at
+   construction. The new simulations use the same rise, so this checks the
+   branch, not the size of the rise.
+4. Order. With both elasticities set, requesting the capital gains response
+   before the labor supply response gives the same measurements and both
+   responses as the other order (shown for four Texas filers).
 5. Rise. The rise in gains is at least $1,000, is $1,000 for households under
    $1 million, and survives float32 rounding to within 1.2e-4 of itself. This
    one is checked on the function alone.
+6. Revenue peak. Under the semi-elasticity form with beta = 1/0.30, a Texas
+   filer with $20 million of gains pays the most federal income tax at the
+   top rate r where r + 3.8% = (1 - $545,500 / A) / beta, A being what they
+   realize at r: about 25.2%, below the 30% a single-rate model gives.
 
 The filers in 1 and 2 have 0.1% of their gains, or $1,000 if more, added to
 them, so a rate is exact only where that rise stays inside one bracket; the
@@ -277,7 +283,9 @@ def test_rate_follows_the_top_capital_gains_rate(top_rate):
     )
 
 
-@pytest.mark.parametrize("top_rate", [0.28, 0.4])
+# The order test below covers a 28% top rate through the measurement
+# branches; this covers 40%, above the top ordinary rate.
+@pytest.mark.parametrize("top_rate", [0.4])
 def test_measured_rate_change_is_the_statutory_change(top_rate):
     simulation = simulate(
         texas_single_filers(TOP_BRACKET_GAINS), reform=top_rate_reform(top_rate)
@@ -393,17 +401,23 @@ def test_rate_keeps_a_capital_gains_total_set_after_construction():
     )
 
 
-def test_responses_do_not_depend_on_which_is_requested_first():
+def test_responses_and_measured_rates_do_not_depend_on_request_order():
     # Requested first, the capital gains response measures in branches made
     # outside the labor supply response's re-entry guard, so a program there
-    # that reads hours (Texas child care does) used to calculate the
-    # labor supply response, and its measurements, again: a CycleError.
-    # Taxable income of $93,900, so the last gains are taxed at 15%.
-    situation = [("TX", [(60_000, 50_000)])]
+    # that reads hours (Texas child care does) used to calculate the labor
+    # supply response, and its measurements, again: a CycleError.
+    households = [
+        # Taxable income of $93,900, so the last gains are taxed at 15%:
+        # raising that rate moves this filer's realizations, and labor supply
+        # through the income effect.
+        ("TX", [(60_000, 50_000)]),
+        # Top-bracket filers, whose rate follows the top rate.
+        *texas_single_filers(TOP_BRACKET_GAINS),
+    ]
+    top_rate = 0.28
     reform = {
-        # Raises the rate on these gains, and so the response to it, and
-        # lowers net income, and so labor supply through the income effect.
         "gov.irs.capital_gains.rates.2": {REFORM_PERIOD: 0.2},
+        **top_rate_reform(top_rate),
         "gov.simulation.capital_gains_responses.elasticity": {REFORM_PERIOD: -0.7},
         "gov.simulation.labor_supply_responses.elasticities.income": {
             REFORM_PERIOD: -0.05
@@ -416,22 +430,51 @@ def test_responses_do_not_depend_on_which_is_requested_first():
         "capital_gains_behavioral_response",
         "labor_supply_behavioral_response",
     ]
-    values = {}
+    values, measurements = {}, {}
     for order in (responses, responses[::-1]):
-        simulation = simulate(situation, reform=reform)
+        simulation = simulate(households, reform=reform)
         values[order[0]] = {
             response: simulation.calculate(response, YEAR) for response in order
         }
+        measurements[order[0]] = simulation._behavioral_response_measurements[YEAR]
 
-    capital_gains_first, labor_supply_first = values.values()
-    for response in responses:
-        assert capital_gains_first[response][0] != 0, response
+    # Through the measurement branches, the rates move as the statute does.
+    # The raised 15% rate is below the top bracket, so it moves only the
+    # first filer's rate; 28% is short of the AMT and ordinary-rate limits.
+    capital_gains_first = measurements[responses[0]]
+    baseline_rate = capital_gains_first["baseline_capital_gains_mtr"]
+    reform_rate = capital_gains_first["reform_capital_gains_mtr"]
+    top_baseline = CAPITAL_GAINS_RATES[2] + NIIT.rate
+    np.testing.assert_allclose(
+        baseline_rate,
+        [CAPITAL_GAINS_RATES[1]] + [top_baseline] * len(TOP_BRACKET_GAINS),
+        rtol=0,
+        atol=RATE_RESOLUTION,
+    )
+    np.testing.assert_allclose(
+        reform_rate - baseline_rate,
+        [0.2 - CAPITAL_GAINS_RATES[1]]
+        + [
+            top_bracket_rate(gains, top_rate) - CAPITAL_GAINS_RATES[2]
+            for gains in TOP_BRACKET_GAINS
+        ],
+        rtol=0,
+        atol=2 * RATE_RESOLUTION,
+    )
+    # Either order gives the same measurements and responses.
+    for key, value in capital_gains_first.items():
         np.testing.assert_allclose(
-            capital_gains_first[response],
-            labor_supply_first[response],
+            value, measurements[responses[1]][key], rtol=1e-6, err_msg=key
+        )
+    for response in responses:
+        np.testing.assert_allclose(
+            values[responses[0]][response],
+            values[responses[1]][response],
             rtol=1e-6,
             err_msg=response,
         )
+    assert (values[responses[0]]["capital_gains_behavioral_response"] < 0).all()
+    assert values[responses[0]]["labor_supply_behavioral_response"][0] != 0
 
 
 FLOAT32_AMOUNT = st.floats(-(2.0**36), 2.0**36, width=32)
@@ -452,3 +495,86 @@ def test_rise_survives_float32_rounding(net_income, gains):
     # Rounding the raised gains moves them by at most half of 2 ** -23 of
     # their size, and the rise is at least 0.1% of the gains.
     assert abs(stored_rise - rise) <= 1.2e-4 * rise
+
+
+SEMI_ELASTICITY = "gov.simulation.capital_gains_responses.semi_elasticity"
+REVENUE_SEMI_ELASTICITY = 1 / 0.3
+REVENUE_GAINS = 20_000_000
+# Taxable income at which the top capital gains rate starts.
+TOP_RATE_START = IRS.capital_gains.thresholds["2"]["SINGLE"]
+
+
+def realizations_at(top_rate):
+    """Gains a top-bracket filer realizes under the semi-elasticity form."""
+    return REVENUE_GAINS * np.exp(
+        -REVENUE_SEMI_ELASTICITY * (top_rate - CAPITAL_GAINS_RATES[2])
+    )
+
+
+def income_tax_on(realizations, top_rate):
+    """Federal income tax of a single filer with only these long-term gains.
+
+    The 15% bracket, the top rate on the rest and the net investment income
+    tax. The top rate applies from ``TOP_RATE_START`` of gains, not of taxable
+    income, because this filer also owes alternative minimum tax, which
+    taxes the standard deduction at the top rate. That holds up to a top rate
+    of about 28.4% with $20 million of gains, above the rates tested here,
+    where the alternative minimum tax's flat 26% and 28% computation becomes
+    the smaller.
+    """
+    return (
+        CAPITAL_GAINS_RATES[1] * (TWENTY_PERCENT_START - FIFTEEN_PERCENT_START)
+        + top_rate * (realizations - TOP_RATE_START)
+        + NIIT.rate * (realizations - NIIT.threshold["SINGLE"])
+    )
+
+
+def revenue_maximizing_top_rate():
+    """Top rate at which ``income_tax_on(realizations_at(r), r)`` peaks.
+
+    Its derivative in r is A - T - b * A * (r + n), for realizations A,
+    ``TOP_RATE_START`` T, semi-elasticity b and net investment income tax
+    rate n, so the peak is where r + n = (1 - T / A) / b. A falls as r rises,
+    so the derivative has one root.
+    """
+    low, high = CAPITAL_GAINS_RATES[2], TOP_ORDINARY_RATE
+    for _ in range(60):
+        top_rate = (low + high) / 2
+        realizations = realizations_at(top_rate)
+        slope = (
+            realizations
+            - TOP_RATE_START
+            - REVENUE_SEMI_ELASTICITY * realizations * (top_rate + NIIT.rate)
+        )
+        low, high = (top_rate, high) if slope > 0 else (low, top_rate)
+    return top_rate
+
+
+def test_federal_income_tax_peaks_at_the_revenue_maximizing_top_rate():
+    peak = revenue_maximizing_top_rate()
+    # 1 / semi-elasticity is 30%. The net investment income tax takes 3.8
+    # points of it and the gains taxed below the top rate about 1 more.
+    assert peak == pytest.approx(0.252, abs=0.0005)
+
+    income_tax = []
+    for top_rate in (peak - 0.025, peak, peak + 0.025):
+        simulation = simulate(
+            texas_single_filers([REVENUE_GAINS]),
+            reform={
+                **top_rate_reform(top_rate),
+                SEMI_ELASTICITY: {REFORM_PERIOD: REVENUE_SEMI_ELASTICITY},
+            },
+        )
+        realizations = simulation.calculate("long_term_capital_gains", YEAR)[0]
+        income_tax.append(simulation.calculate("income_tax", YEAR)[0])
+
+        # The response sees the statutory change in the rate.
+        assert realizations == pytest.approx(
+            realizations_at(top_rate),
+            rel=REVENUE_SEMI_ELASTICITY * 2 * RATE_RESOLUTION,
+        )
+        assert income_tax[-1] == pytest.approx(
+            income_tax_on(realizations, top_rate), abs=25
+        )
+
+    assert income_tax[1] > max(income_tax[0], income_tax[2])
