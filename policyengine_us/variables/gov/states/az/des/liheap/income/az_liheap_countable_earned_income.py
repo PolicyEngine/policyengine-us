@@ -14,10 +14,9 @@ class az_liheap_countable_earned_income(Variable):
     )
     unit = USD
     reference = (
-        # Sections VI.A.6.d.ii and VI.A.6.e.ii.A and E (pages 8-9) and Section
-        # VII.A.1.c.ii.A-B (page 13).
+        # PDF pages 8-9, 13
         "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=8",
-        # Section 1.9 (pages 6-7).
+        # PDF pages 6-7
         "https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=6",
     )
     defined_for = StateCode.AZ

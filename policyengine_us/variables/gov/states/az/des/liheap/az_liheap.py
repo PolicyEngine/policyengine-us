@@ -21,11 +21,10 @@ class az_liheap(Variable):
     defined_for = "az_liheap_eligible"
     reference = (
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/AZ_BenefitMatrix_Heating_2026.pdf#page=1",
-        # Section 1.2 (page 4) and Section 2.6 (page 10).
-        "https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=10",
-        # Sections VI.B.1 (page 10), VII.B.1.a (page 29), VII.B.3.b.iii
-        # (pages 33-34) and VII.B.4.b (page 34).
-        "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=29",
+        # PDF pages 4, 10
+        "https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=4",
+        # PDF pages 10, 29-30, 33-34
+        "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=10",
         "https://des.az.gov/liheap",
     )
 

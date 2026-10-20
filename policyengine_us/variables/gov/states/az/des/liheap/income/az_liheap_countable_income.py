@@ -14,11 +14,10 @@ class az_liheap_countable_income(Variable):
     )
     unit = USD
     reference = (
-        # Gross Income definition (page 4), Section VI.A.6.e (pages 8-9),
-        # Section VII.A.1.c.v (page 14) and Section VII.B.1.c (page 31).
-        "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=14",
-        # Sections 1.8 and 1.9 (pages 5-7).
-        "https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=6",
+        # PDF pages 4, 8-9, 14, 31
+        "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=4",
+        # PDF pages 5-7
+        "https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=5",
     )
     defined_for = StateCode.AZ
 

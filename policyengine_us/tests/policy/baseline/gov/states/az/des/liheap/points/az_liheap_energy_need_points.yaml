@@ -7,7 +7,9 @@
 # and over; A veteran; A person with a disability",
 # https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=10).
 # Disability (policy p. 4): an ADA impairment, or categorically a recipient of
-# Title II (SSDI) or Title XVI (SSI) benefits. 2026 SSI rate 994 x 12 =
+# Title II or XVI benefits "or other State-administered disability benefits",
+# read as disability benefits: SSDI, or SSI paid on the basis of blindness or
+# disability (aged-only SSI does not qualify). 2026 SSI rate 994 x 12 =
 # 11,928. Base household: a 40-year-old earning 30,000 with electric heat.
 
 - name: Case 1, a working-age adult with no need factor has 0 points.
@@ -97,13 +99,14 @@
   output:
     az_liheap_energy_need_points: 1
 
-- name: Case 5, an SSI recipient is categorically disabled and adds 1 point.
+- name: Case 5, an SSI recipient paid on the basis of disability is categorically disabled and adds 1 point.
   period: 2026
   input:
     people:
       person1:
         age: 40
         is_disabled: false
+        is_ssi_disabled: true
         ssi: 11_928
     spm_units:
       spm_unit:
@@ -117,7 +120,8 @@
         members: [person1]
         state_code: AZ
   output:
-    # Policy p. 4: a Title XVI recipient meets the disability definition.
+    # Policy p. 4: a recipient of Title XVI disability benefits meets the
+    # disability definition: elderly 0 + disabled 1 = 1.
     az_liheap_energy_need_points: 1
 
 - name: Case 6, an SSDI recipient is categorically disabled and adds 1 point.
@@ -325,3 +329,54 @@
   output:
     # Points attach to categories, not persons: elderly + disabled + veteran.
     az_liheap_energy_need_points: 3
+
+- name: Case 14, an aged SSI recipient without a disability gets the elderly point only.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        is_disabled: false
+        is_blind: false
+        ssi: 11_928
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_600
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Aged 70 >= 60: elderly 1. SSI paid on the basis of age alone is not a
+    # disability benefit under policy p. 4, and there is no impairment or
+    # SSDI: disabled 0. Total 1 + 0 = 1.
+    az_liheap_energy_need_points: 1
+
+- name: Case 15, a blind SSI recipient aged 40 is categorically disabled and adds 1 point.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: false
+        is_blind: true
+        ssi: 11_928
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_600
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # SSI paid on the basis of blindness is a Title XVI disability benefit
+    # (policy p. 4): disabled 1; aged 40, so elderly 0. Total 0 + 1 = 1.
+    az_liheap_energy_need_points: 1

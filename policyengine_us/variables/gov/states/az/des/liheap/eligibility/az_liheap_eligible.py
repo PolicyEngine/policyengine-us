@@ -15,10 +15,8 @@ class az_liheap_eligible(Variable):
         "have no inputs and are not modeled."
     )
     reference = (
-        # Household definition (page 4), Sections VI.A.1-6 (pages 6-8) and
-        # Section VII.B.3.a.ii.B (page 32).
-        "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=6",
-        # Sections 2.1-2.3 (page 9).
+        # PDF pages 4, 6-8, 32
+        "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=4",
         "https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=9",
     )
     defined_for = StateCode.AZ

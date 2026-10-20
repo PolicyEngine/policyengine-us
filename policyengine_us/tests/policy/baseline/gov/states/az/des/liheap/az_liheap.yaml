@@ -350,3 +350,35 @@
         state_code: NM
   output:
     az_liheap: 0
+
+- name: Case 14, a railroad retiree's annuity puts a single person over the limit and pays nothing.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        railroad_benefits: 40_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Railroad Retirement is "retirement income" (policy p. 8 VI.A.6.e.ii.B):
+    # countable income 40,000.
+    az_liheap_countable_income: 40_000
+    # Appendix A size 1: 2,807 x 12 = 33,684.
+    az_liheap_income_limit: 33_684
+    # 40,000 > 33,684.
+    az_liheap_income_eligible: false
+    # No SNAP or Cash Assistance.
+    az_liheap_categorically_eligible: false
+    az_liheap_eligible: false
+    az_liheap: 0

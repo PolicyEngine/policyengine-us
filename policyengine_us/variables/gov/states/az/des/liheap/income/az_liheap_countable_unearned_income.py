@@ -15,10 +15,9 @@ class az_liheap_countable_unearned_income(Variable):
     )
     unit = USD
     reference = (
-        # Sections VI.A.6.d.ii and VI.A.6.e.ii.B-E (pages 8-9) and Section
-        # VII.A.1.c.ii.C-F (pages 13-14).
-        "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=8",
-        # Section 1.9 (pages 6-7).
+        # PDF pages 4, 8-9, 13-14
+        "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=4",
+        # PDF pages 6-7
         "https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=6",
     )
     defined_for = StateCode.AZ
@@ -31,7 +30,8 @@ class az_liheap_countable_unearned_income(Variable):
         # Revision 13, Section VI.A.6.e.ii.E: "Income from Household members
         # under the age of 18 is not considered Countable Income." Revision 15
         # narrows this to "Earned income from Household members under the age
-        # of 18", so a child's SSI, survivor benefits or child support count
-        # from March 23, 2026.
+        # of 18". Counting a child's unearned income from March 23, 2026 is an
+        # inference from that narrowing; Section VI.A.6.d.ii still counts the
+        # income of members aged 18 and older.
         counted = (age >= p.adult_age) | p.child_unearned_income_counted
         return where(counted, unearned, 0)

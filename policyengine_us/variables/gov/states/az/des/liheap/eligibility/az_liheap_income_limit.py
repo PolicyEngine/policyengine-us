@@ -16,9 +16,8 @@ class az_liheap_income_limit(Variable):
         "monthly dollars."
     )
     reference = (
-        # Section VI.A.6.c.i (page 8) and Appendix A (page 37).
-        "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=37",
-        # Section 2.1 (page 9).
+        # PDF pages 8, 37
+        "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=8",
         "https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=9",
         "https://liheapch.acf.gov/profiles/povertytables/FY2026/azsmi.htm",
         "https://liheapch.acf.gov/profiles/povertytables/FY2026/popstate.htm",

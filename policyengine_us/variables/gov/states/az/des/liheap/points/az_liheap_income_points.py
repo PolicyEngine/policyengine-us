@@ -15,7 +15,6 @@ class az_liheap_income_points(Variable):
     reference = (
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/AZ_BenefitMatrix_Heating_2026.pdf#page=1",
         "https://des.az.gov/liheap",
-        # Section VI.B.1 (page 10).
         "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=10",
     )
     defined_for = StateCode.AZ

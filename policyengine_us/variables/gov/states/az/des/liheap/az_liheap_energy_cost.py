@@ -10,7 +10,7 @@ class az_liheap_energy_cost(Variable):
     documentation = "Annual electricity, gas and portable fuel bills entering the energy burden, the worksheet's 'Electric + Gas + Portable Fuel = Total Monthly Cost' taken over the year. Water for evaporative cooling, sewer, trash and phone bills are excluded."
     reference = (
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/AZ_BenefitMatrix_Heating_2026.pdf#page=1",
-        # Energy Utility and Portable Fuel definitions (pages 4-5).
+        # PDF pages 4-5
         "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=4",
     )
     defined_for = StateCode.AZ

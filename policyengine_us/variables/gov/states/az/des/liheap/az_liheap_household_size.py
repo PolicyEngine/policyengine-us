@@ -8,9 +8,8 @@ class az_liheap_household_size(Variable):
     label = "Arizona LIHEAP household size"
     documentation = "Number of household members who are U.S. citizens or qualified noncitizens. Other members are not counted in household size, although the income of every adult member counts toward household income."
     reference = (
-        # Eligible Household Member and Mixed-Status Household definitions
-        # (pages 4-5) and Section VI.A.6.d.i (page 8).
-        "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=8",
+        # PDF pages 4-5, 8
+        "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=4",
     )
     defined_for = StateCode.AZ
 

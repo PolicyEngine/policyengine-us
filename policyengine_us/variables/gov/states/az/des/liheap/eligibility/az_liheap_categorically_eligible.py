@@ -8,10 +8,8 @@ class az_liheap_categorically_eligible(Variable):
     label = "Arizona LIHEAP categorically eligible"
     documentation = "A household member receives DES Cash Assistance (TANF) or Nutrition Assistance (SNAP), which satisfies the income requirement; all other eligibility criteria still apply."
     reference = (
-        # Categorical Eligibility definition (pages 3-4) and Section VI.A.6.a-b
-        # (page 7).
-        "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=7",
-        # Sections 1.4 and 1.4a (page 5).
+        # PDF pages 3-4, 7
+        "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=3",
         "https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=5",
     )
     defined_for = StateCode.AZ

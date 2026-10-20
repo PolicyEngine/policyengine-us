@@ -1,8 +1,9 @@
 # Arizona LIHEAP countable unearned income per person. Gross unearned income
-# of every member aged 18 or older counts: SSA, SSI, retirement, unemployment
-# insurance, alimony, child support, rental income, interest, dividends,
-# general assistance and VA benefits (DES LIHEAP Policy rev. 13 eff.
-# 2025-08-25, pp. 8-9 VI.A.6.e,
+# of every member aged 18 or older counts: SSA, SSI, retirement (including
+# Railroad Retirement), unemployment insurance, alimony, child support, rental
+# income, interest, dividends, general assistance, VA benefits, employment
+# disability insurance and workers' compensation (DES LIHEAP Policy rev. 13
+# eff. 2025-08-25, pp. 8-9 VI.A.6.e,
 # https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=8;
 # FY2026 plan 1.9,
 # https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=6).
@@ -161,3 +162,76 @@
     az_liheap_countable_unearned_income: [0, 16_728]
     # 30,000 + 16,728 = 46,728.
     az_liheap_countable_income: 46_728
+
+- name: Case 7, a Railroad Retirement annuity is counted as retirement income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 68
+        railroad_benefits: 30_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_500
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Policy p. 8 VI.A.6.e.ii.B "retirement income", p. 14 "retirement
+    # benefits"; plan 1.9 "Retirement / pension benefits" checked: 30,000.
+    az_liheap_countable_unearned_income: 30_000
+    az_liheap_countable_income: 30_000
+
+- name: Case 8, long-term disability insurance paid to the insured worker is counted.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 52
+        disability_benefits: 27_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        pre_subsidy_electricity_expense: 1_400
+        gas_expense: 500
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Plan 1.9 "Insurance payments made directly to the insured" checked;
+    # policy p. 4 Gross Income is all income before taxes and deductions.
+    # 60% of a 45,000 salary = 27,000 counts.
+    az_liheap_countable_unearned_income: 27_000
+    az_liheap_countable_income: 27_000
+
+- name: Case 9, workers' compensation of an injured worker is counted.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        workers_compensation: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_700
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Policy p. 4 Gross Income and p. 8 VI.A.6.e.ii.D "Consistent income
+    # received from other sources"; two-thirds of 36,000 prior wages = 24,000
+    # counts.
+    az_liheap_countable_unearned_income: 24_000
+    az_liheap_countable_income: 24_000
