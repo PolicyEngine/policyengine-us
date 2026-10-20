@@ -5,6 +5,13 @@ class va_rebate(Variable):
     value_type = float
     entity = TaxUnit
     label = "Virginia rebate"
+    documentation = (
+        "Virginia one-time rebates are attributed to the return year that determines "
+        "eligibility and amount: 2021 for the 2022 payment, 2022 for the 2023 "
+        "payment, and 2024 for the 2025 payment. The rebate enters "
+        "va_non_refundable_credits in those eligibility years and is limited by "
+        "available tax liability. It is zero in other years."
+    )
     unit = USD
     definition_period = YEAR
     reference = (

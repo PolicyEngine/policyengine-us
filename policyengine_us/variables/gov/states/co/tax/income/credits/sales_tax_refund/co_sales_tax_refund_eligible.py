@@ -5,6 +5,12 @@ class co_sales_tax_refund_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Eligible for the Colorado sales tax refund"
+    documentation = (
+        "Tax-unit eligibility for Colorado's residual TABOR sales tax refund in the "
+        "modeled eligibility tax year. Returns and payments may occur later. "
+        "Eligibility does not establish a nonzero payment; co_sales_tax_refund also "
+        "applies the year's amount and in_effect parameter."
+    )
     definition_period = YEAR
     reference = "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=23"
     defined_for = StateCode.CO

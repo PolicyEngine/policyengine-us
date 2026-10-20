@@ -5,6 +5,12 @@ class ga_surplus_tax_rebate(Variable):
     value_type = float
     entity = TaxUnit
     label = "Georgia surplus tax rebate"
+    documentation = (
+        "One-time Georgia surplus refund modeled from the 2021 liability under "
+        "O.C.G.A. 48-7-20.2. PolicyEngine attributes it to eligibility tax year 2021 "
+        "through ga_refundable_credits. The amount is capped at income tax before "
+        "credits and is zero outside 2021."
+    )
     unit = USD
     definition_period = YEAR
     reference = (
