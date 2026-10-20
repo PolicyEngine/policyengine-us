@@ -13,8 +13,9 @@ class ia_liheap_income_limit(Variable):
         "member in FY26."
     )
     reference = (
-        # Section 5.10 (page 18) and Appendix B (page 89).
-        "https://hhs.iowa.gov/media/17262/download?inline#page=89",
+        # Section 5.10 and Appendix B.
+        # PDF pages 18, 89
+        "https://hhs.iowa.gov/media/17262/download?inline#page=18",
         # Section 2.1 note: the threshold is 200% FPG; 150.00% is a form
         # artifact.
         "https://liheapch.acf.gov/docs/2026/state-plans/IA_Plan_2026.pdf#page=9",

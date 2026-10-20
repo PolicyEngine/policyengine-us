@@ -17,9 +17,9 @@ class ia_liheap_has_energy_burden(Variable):
         "by anyone' case of Appendix D are not identified by existing inputs."
     )
     reference = (
-        # Section 5.41-5.42 (pages 20-21), Section 5.50 (page 22) and Appendix
-        # D, Energy Burden Table (pages 122-123).
-        "https://hhs.iowa.gov/media/17262/download?inline#page=122",
+        # Sections 5.41-5.42 and 5.50, and Appendix D, Energy Burden Table.
+        # PDF pages 20-22, 122-123
+        "https://hhs.iowa.gov/media/17262/download?inline#page=20",
         # Section 2.3, subsidized housing and utilities-in-rent policies.
         "https://liheapch.acf.gov/docs/2026/state-plans/IA_Plan_2026.pdf#page=8",
     )

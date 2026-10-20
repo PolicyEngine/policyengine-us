@@ -14,7 +14,8 @@ class ia_liheap_income_eligible(Variable):
         "qualifies."
     )
     reference = (
-        # Section 5.10 (page 18) and Appendix I (page 137).
+        # Section 5.10 and Appendix I.
+        # PDF pages 18, 137
         "https://hhs.iowa.gov/media/17262/download?inline#page=18",
     )
     defined_for = StateCode.IA

@@ -15,9 +15,9 @@ class ia_liheap_countable_income(Variable):
         "verification period the household elects under Section 6.10."
     )
     reference = (
-        # Section 6.10 (page 24), Section 6.20 (page 26), Section 7.30 (page
-        # 34) and Appendix C Child Support notes (pages 92-93).
-        "https://hhs.iowa.gov/media/17262/download?inline#page=92",
+        # Sections 6.10, 6.20 and 7.30, and Appendix C Child Support notes.
+        # PDF pages 24, 26, 34, 92-93
+        "https://hhs.iowa.gov/media/17262/download?inline#page=24",
     )
     defined_for = StateCode.IA
 

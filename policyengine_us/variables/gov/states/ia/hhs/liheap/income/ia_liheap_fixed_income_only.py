@@ -7,10 +7,13 @@ class ia_liheap_fixed_income_only(Variable):
     definition_period = YEAR
     label = "Iowa LIHEAP household has fixed income only"
     documentation = (
-        "Whether every recorded income source of the household, across all "
-        "members regardless of age, is Social Security, SSI, veterans' benefits "
-        "or pensions. Definitions, Fixed Income Household: 'Only mark \"fixed "
-        "income\" when that is the ONLY source(s) of income.' Under-18 income "
+        "Whether the household has a fixed income source (Social Security, SSI, "
+        "pensions including railroad retirement, or veterans' benefits) and no "
+        "other recorded income source, across all members regardless of age. "
+        'Definitions, Fixed Income Household: \'Only mark "fixed income" when '
+        "that is the ONLY source(s) of income.' Recorded sources include the "
+        "countable earned and unearned sources and two that Iowa does not count "
+        "but calls not fixed: child support received and FIP. Under-18 income "
         "is excluded from the countable amount, but a minor's Social Security "
         "still identifies the household's income source: Appendix C records "
         "such payments at $0.00 'to capture source of income for AE fixed "
@@ -19,28 +22,41 @@ class ia_liheap_fixed_income_only(Variable):
         "with no recorded income source is not fixed income only."
     )
     reference = (
-        # Definitions, Fixed Income Household (page 81); Section 4.40 item 3a
-        # (page 14); Appendix C Social Security Benefits margin note (page 114);
-        # Appendix I, Fixed Income Only (no other sources of income) (page 137);
-        # Appendix C notes that alimony, variable annuities and child support
-        # are not fixed income (pages 90-92).
-        "https://hhs.iowa.gov/media/17262/download?inline#page=81",
+        # Section 4.40 item 3a; Definitions, Fixed Income Household; Appendix C
+        # notes that alimony, variable annuities, child support and FIP are
+        # not fixed income, Pensions and Railroad Retirement rows and Social
+        # Security Benefits margin note; Appendix I, Fixed Income Only (no
+        # other sources of income).
+        # PDF pages 14, 81, 90-92, 98, 109-110, 114, 137
+        "https://hhs.iowa.gov/media/17262/download?inline#page=14",
     )
     defined_for = StateCode.IA
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ia.hhs.liheap.income
+        p = parameters(period).gov.states.ia.hhs.liheap.income.sources
         person = spm_unit.members
-        # Every recorded source of every member counts toward the test, with
-        # no age gate; earned sources are floored per source as in the
-        # countable amount.
+        # Definitions, Fixed Income Household (page 81): SSA, SSI, SSDI,
+        # veterans' benefits and pensions. Section 4.40(3)(a) (page 14) and
+        # Appendix C (page 114): a minor's Social Security still identifies a
+        # fixed source, so no age gate applies here.
+        fixed = add(spm_unit, period, p.fixed)
+        # Every other recorded source of every member defeats the factor:
+        # Appendix I reads "Fixed Income Only (no other sources of income)"
+        # (page 137) and the Definitions say "Only mark 'fixed income' when
+        # that is the ONLY source(s) of income" (page 81), which the formula
+        # follows for FY2026. The FY27 manual and Program Notice 27-01
+        # (effective October 1, 2026) reword the factor to "no other countable
+        # sources of income"; that change is not modeled because only FY2026
+        # is verified. Earned sources are floored per source as in the
+        # countable amount. Appendix C adds that child support (page 92) and
+        # FIP (page 98) are not fixed income although neither is counted.
         earned = 0
-        for source in p.sources.earned:
+        for source in p.earned:
             earned = earned + max_(person(source, period), 0)
-        unearned = add(person, period, p.sources.unearned)
-        recorded = spm_unit.sum(earned + unearned)
-        # sources/fixed.yaml lists the fixed sources in the same relative order
-        # as sources/unearned.yaml, so the two sums are bit-identical when every
-        # other source is zero.
-        fixed = spm_unit.sum(add(person, period, p.sources.fixed))
-        return (fixed > 0) & (fixed == recorded)
+        other_unearned = [source for source in p.unearned if source not in p.fixed]
+        non_fixed = (
+            spm_unit.sum(earned)
+            + add(spm_unit, period, other_unearned)
+            + add(spm_unit, period, p.other_recorded)
+        )
+        return (fixed > 0) & (non_fixed == 0)

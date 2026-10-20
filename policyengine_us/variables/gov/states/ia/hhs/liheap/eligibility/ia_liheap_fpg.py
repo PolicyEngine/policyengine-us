@@ -16,7 +16,7 @@ class ia_liheap_fpg(Variable):
         "Zero when no member counts toward household size."
     )
     reference = (
-        # Appendix B, Poverty Guidelines (page 89).
+        # Appendix B, Poverty Guidelines.
         "https://hhs.iowa.gov/media/17262/download?inline#page=89",
         "https://hhs.iowa.gov/programs/programs-and-services/liheap",
     )

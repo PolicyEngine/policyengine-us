@@ -13,7 +13,8 @@
 # limit = 2 x guideline: 31,300 (1) / 42,300 (2) / 53,300 (3) / 64,300 (4).
 # Poverty points by income / guideline: <= 0.75 -> 8, <= 1.00 -> 6,
 # <= 1.25 -> 5, <= 2.00 -> 4. Benefit = 40 x points clipped to [80, 800];
-# propane and fuel oil households receive the flat 800.
+# propane and fuel oil households receive the flat 800, and kerosene follows
+# fuel oil by inference.
 
 - name: Case 1, retiree on Social Security in a detached gas-heated house.
   period: 2026
@@ -261,7 +262,7 @@
     ia_liheap_eligible: false
     ia_liheap: 0
 
-- name: Case 7, disabled grandparent raising a preschooler in a kerosene-heated house reaches the 18-point maximum.
+- name: Case 7, disabled grandparent raising a preschooler in a kerosene-heated house reaches the 18-point maximum and receives the flat 800.
   period: 2026
   input:
     people:
@@ -288,9 +289,12 @@
     # 15,000 Social Security; 1,250 a month exceeds the SSI federal benefit
     # rate, so no SSI is added.
     ia_liheap_countable_income: 15_000
+    # Computed FIP is 0: 1,250 a month of Social Security exceeds the 361
+    # two-person payment standard, so no other source is recorded.
     ia_liheap_fixed_income_only: true
     ia_liheap_eligible: true
-    # Kerosene takes the fuel-oil category by inference.
+    # Kerosene takes the fuel-oil category by inference (section 12.20 p. 47
+    # lists kerosene as a deliverable fuel).
     ia_liheap_fuel_category: FUEL_OIL
     # 15,000 / 21,150 = 0.7092 -> 71 percent -> 0 to 75 band
     ia_liheap_poverty_points: 8
@@ -299,8 +303,8 @@
     ia_liheap_fuel_points: 5
     # 8 + 5 + 5, the largest total the matrix allows
     ia_liheap_points: 18
-    # 40 x 18 = 720, below the 800 cap; kerosene does not take the flat 800
-    ia_liheap: 720
+    # 40 x 18 = 720, raised to the flat 800 because kerosene follows fuel oil
+    ia_liheap: 800
 
 - name: Case 8, Section 8 tenant with heat in rent, large savings and an electric account has negative points and receives the 80 minimum.
   period: 2026

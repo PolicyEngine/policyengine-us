@@ -16,13 +16,14 @@ class ia_liheap_eligible(Variable):
         "the automatically eligible verification waiver are not modeled."
     )
     reference = (
-        # Section 5.10 Eligibility Criteria and 5.30 Who Can Apply (page 18),
-        # Section 5.50 Energy Burden (page 22), Section 7.30 (page 34) and
-        # Appendix D (pages 122-123).
+        # Section 5.10 Eligibility Criteria, 5.30 Who Can Apply, 5.50 Energy
+        # Burden and 7.30, and Appendix D.
+        # PDF pages 18, 22, 34, 122-123
         "https://hhs.iowa.gov/media/17262/download?inline#page=18",
         # Sections 1.4-1.7 (no categorical eligibility) and 2.3 (no assets
-        # test), pages 5 and 8.
-        "https://liheapch.acf.gov/docs/2026/state-plans/IA_Plan_2026.pdf#page=8",
+        # test).
+        # PDF pages 5, 8
+        "https://liheapch.acf.gov/docs/2026/state-plans/IA_Plan_2026.pdf#page=5",
     )
     defined_for = StateCode.IA
 

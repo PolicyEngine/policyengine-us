@@ -16,8 +16,9 @@ class ia_liheap_poverty_points(Variable):
         "household with no counted member has no guideline and scores zero."
     )
     reference = (
-        # Appendix I item 1, Poverty Level (page 137) and Appendix B (page 89).
-        "https://hhs.iowa.gov/media/17262/download?inline#page=137",
+        # Appendix B and Appendix I item 1, Poverty Level.
+        # PDF pages 89, 137
+        "https://hhs.iowa.gov/media/17262/download?inline#page=89",
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/IA_BenefitMatrix_Heat-Crisis_2026.pdf#page=1",
     )
     defined_for = StateCode.IA

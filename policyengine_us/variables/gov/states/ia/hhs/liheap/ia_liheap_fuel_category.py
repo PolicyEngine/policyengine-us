@@ -25,10 +25,10 @@ class ia_liheap_fuel_category(Variable):
         "published points."
     )
     reference = (
-        # Appendix I item 3, Fuel/Energy Type (page 137); Section 12.00 and
-        # 12.20 vendor fuel lists (pages 46-47); Definitions, Primary Heating
-        # Fuel Type (page 84).
-        "https://hhs.iowa.gov/media/17262/download?inline#page=137",
+        # Section 12.00 and 12.20 vendor fuel lists; Definitions, Primary
+        # Heating Fuel Type; Appendix I item 3, Fuel/Energy Type.
+        # PDF pages 46-47, 84, 137
+        "https://hhs.iowa.gov/media/17262/download?inline#page=46",
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/IA_BenefitMatrix_Heat-Crisis_2026.pdf#page=1",
     )
     defined_for = StateCode.IA
@@ -42,9 +42,9 @@ class ia_liheap_fuel_category(Variable):
         # Appendix I prints points for "Fuel Oil" but none for kerosene.
         # Section 12.20 groups "LP, heating oil, wood, kerosene, and corn" as
         # deliverable fuels, and heating_expense already pairs kerosene with
-        # fuel oil, so kerosene takes the fuel oil points. This is an
-        # inference, not an express rule; the flat deliverable fuel benefit in
-        # ia_liheap still applies only to liquid propane and fuel oil.
+        # fuel oil, so kerosene takes the fuel oil category. This is an
+        # inference, not an express rule; the category drives both the fuel
+        # points and the flat deliverable fuel benefit in ia_liheap.
         fuel_oil = (heating_type == types.FUEL_OIL) | (heating_type == types.KEROSENE)
         # Appendix I: "Solid Fuel (Wood/Coal/Corn)". The model has no corn
         # heating type.

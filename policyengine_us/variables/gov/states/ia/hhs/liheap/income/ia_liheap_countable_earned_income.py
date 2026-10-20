@@ -18,12 +18,13 @@ class ia_liheap_countable_earned_income(Variable):
         "represented. All income of members under 18 is excluded."
     )
     reference = (
-        # Section 6.00 (page 24), Section 6.20 (page 26), Appendix C Employment
-        # Income (page 97), Farm Income (page 98), Income Earned by HH Members
-        # under the age of 18 (page 102), Military Pay (page 108) and
-        # Self-Employment Income (page 113).
-        "https://hhs.iowa.gov/media/17262/download?inline#page=113",
-        # Sections 1.8-1.9, pages 5-6.
+        # Sections 6.00 and 6.20; Appendix C Employment Income, Farm Income,
+        # Income Earned by HH Members under the age of 18, Military Pay and
+        # Self-Employment Income.
+        # PDF pages 24, 26, 97-98, 102, 108, 113
+        "https://hhs.iowa.gov/media/17262/download?inline#page=24",
+        # Sections 1.8-1.9.
+        # PDF pages 5-6
         "https://liheapch.acf.gov/docs/2026/state-plans/IA_Plan_2026.pdf#page=5",
     )
     defined_for = StateCode.IA
@@ -45,7 +46,6 @@ class ia_liheap_countable_earned_income(Variable):
         # 102) says earnings of under-18 members who "work full-time" are "NOT
         # included as income" and the FFY2026 plan leaves "Earned income of a
         # child under the age of 18" unchecked. The model follows Section 6.20,
-        # Appendix C and the plan: all under-18 income is excluded (user
-        # decision of 2026-10-04); the Section 6.00 wording is a recorded
-        # conflict.
+        # Appendix C and plan Section 1.9: all under-18 income is excluded; the
+        # Section 6.00 wording is a recorded conflict.
         return where(age >= p.countable_min_age, earned, 0)

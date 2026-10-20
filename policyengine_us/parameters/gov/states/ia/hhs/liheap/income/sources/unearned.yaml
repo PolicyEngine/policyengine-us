@@ -11,9 +11,10 @@ values:
     # Appendix C Social Security Benefits (SSA, SSI, SSDI): "Count the net
     # amount as income (gross minus benefits repaid to SSA)" and the amount
     # "paid by check or direct deposit"; the plan checks "Excluding MediCare
-    # deduction". The model counts social_security gross: netting the Medicare
-    # Part B premium (the model has medicare_part_b_premium) is deferred under
-    # coordinator ruling D6 for minimal code, and SSA repayments have no input.
+    # deduction". The model counts social_security gross as a documented
+    # approximation: netting the Medicare Part B premium (the model has
+    # medicare_part_b_premium) is deferred, as in Kansas, and SSA repayments
+    # have no input.
     - social_security
     # ssi is a monthly variable; add() sums the twelve months.
     - ssi
@@ -26,8 +27,8 @@ values:
     - retirement_distributions
     # Appendix C Railroad Retirement: counted; "Tax Statement Form RRB-1099
     # ... Count box #5 as income" and "RRB-1099-R ... Count box #7 as income".
-    # Not a fixed income source: the Definitions list names only SSA, SSI,
-    # SSDI, veterans' benefits and pensions.
+    # Railroad retirement annuities are pensions for the fixed income factor
+    # (see sources/fixed.yaml).
     - railroad_benefits
     # Appendix C Unemployment: counted; the limited-duration annualization
     # rule of the Definitions (Annualized Income, page 79) is not modeled.
@@ -60,7 +61,7 @@ metadata:
   period: year
   label: Iowa LIHEAP countable unearned income sources
   reference:
-    - title: Iowa LIHEAP FY26 Policy and Procedures Manual, Appendix C Income Guidelines (Alimony, Annuities, Disability Insurance, Dividends, Gambling, Interest, IRA, Pensions, Railroad Retirement, Rental Income, Retirement, Social Security Benefits, Strike Benefits, Unemployment, Veterans Benefits and Workers Compensation rows), pages 90-121 (Railroad Retirement page 110, Social Security Benefits page 114), and Section 6.10, page 25
-      href: https://hhs.iowa.gov/media/17262/download?inline#page=114
-    - title: Iowa LIHEAP FFY2026 Detailed Model Plan, Section 1.9 (countable income sources), page 6
+    - title: "Iowa LIHEAP FY26 Policy and Procedures Manual, Section 6.10 Eligibility Period to Qualify for Assistance and Appendix C Income Source Guide (Alimony, Annuities, Disability Insurance, Dividends, Gambling, Interest, IRA, Pensions, Railroad Retirement, Rental Income, Retirement, Social Security Benefits, Strike Benefits, Unemployment, Veterans Benefits and Workers Compensation rows) #page 25,90-91,94-96,99,103,109-111,114-115,117-119,121"
+      href: https://hhs.iowa.gov/media/17262/download?inline#page=25
+    - title: Iowa LIHEAP FFY2026 Detailed Model Plan, Section 1.9 (countable income sources)
       href: https://liheapch.acf.gov/docs/2026/state-plans/IA_Plan_2026.pdf#page=6

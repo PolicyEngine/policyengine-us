@@ -16,11 +16,11 @@ class ia_liheap_targeting_points(Variable):
         "is_disabled; savings are approximated by bank, stock and bond assets."
     )
     reference = (
-        # Appendix I item 2, Targeting Factors (page 137); Definitions, Disabled
-        # and Elderly (page 80), Fixed Income Household (page 81), Subsidized
-        # Housing (pages 84-85) and Young Child (page 85); Section 4.40 item 4
-        # savings description (page 14).
-        "https://hhs.iowa.gov/media/17262/download?inline#page=137",
+        # Section 4.40 item 4 savings description; Definitions, Disabled,
+        # Elderly, Fixed Income Household, Subsidized Housing and Young Child;
+        # Appendix I item 2, Targeting Factors.
+        # PDF pages 14, 80-81, 84-85, 137
+        "https://hhs.iowa.gov/media/17262/download?inline#page=14",
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/IA_BenefitMatrix_Heat-Crisis_2026.pdf#page=1",
         # Section 2.4: the matrix "awards additional benefit amounts for
         # households with members that are elderly, disabled, and/or have

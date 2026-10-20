@@ -11,10 +11,12 @@
 # https://hhs.iowa.gov/media/16690/download?inline#page=48
 # FFY2026 plan section 2.6 p. 9 ($80 minimum, $800 maximum):
 # https://liheapch.acf.gov/docs/2026/state-plans/IA_Plan_2026.pdf#page=9
-# Modeling: 800 for PROPANE and FUEL_OIL (not KEROSENE, which the flat rule
-# does not name); otherwise clip(40 x points, 80, 800). The largest total a
-# non-deliverable household can reach is 8 + 5 + 5 = 18 points (720), so the
-# 800 cap binds only through the flat amount.
+# Modeling: 800 for the PROPANE and FUEL_OIL fuel categories, with KEROSENE
+# following fuel oil by inference (Appendix I item 3 and the award rule both
+# say "Fuel Oil", and section 12.20 p. 47 lists kerosene as a deliverable
+# fuel); otherwise clip(40 x points, 80, 800). The largest total any other
+# household can reach is 8 + 5 + 4 = 17 points (680), so the 800 cap binds
+# only through the flat amount.
 
 - name: Case 1, retiree on Social Security in a detached gas-heated house receives 480.
   period: 2026
@@ -121,7 +123,7 @@
     ia_liheap_points: 10
     ia_liheap: 800
 
-- name: Case 5, the same household heating with kerosene receives the matrix 400.
+- name: Case 5, the same household heating with kerosene receives the flat 800.
   period: 2026
   input:
     people:
@@ -139,10 +141,11 @@
         members: [person1]
         state_code: IA
   output:
-    # Kerosene takes the fuel-oil 5 points but the flat 800 names only liquid
-    # propane and fuel oil: 4 + 1 + 5 = 10 points x 40 = 400.
+    # Kerosene follows fuel oil for both the 5 fuel points and the flat 800
+    # (an inference; section 12.20 p. 47 lists kerosene as a deliverable fuel):
+    # 4 + 1 + 5 = 10 points x 40 = 400, raised to 800.
     ia_liheap_points: 10
-    ia_liheap: 400
+    ia_liheap: 800
 
 - name: Case 6, retiree heating with fuel oil receives the flat 800.
   period: 2026
@@ -166,7 +169,7 @@
     # 3; fuel oil 5; 12 points x 40 = 480, raised to 800.
     ia_liheap: 800
 
-- name: Case 7, the maximum 18 matrix points pay 720, below the 800 cap.
+- name: Case 7, the maximum 18 matrix points with kerosene heat pay the flat 800.
   period: 2026
   input:
     people:
@@ -188,9 +191,12 @@
         state_code: IA
   output:
     # 15,000 / 21,150 = 0.7092 -> 8; fixed income +1, elderly +1, disabled +1,
-    # young child +1, detached +1 = 5; kerosene 5; 18 points x 40 = 720.
+    # young child +1, detached +1 = 5; kerosene 5; 18 points x 40 = 720,
+    # raised to the flat 800 because kerosene follows fuel oil. Computed FIP is
+    # 0 (1,250 a month of Social Security exceeds the 361 two-person payment
+    # standard), so the household stays fixed income only.
     ia_liheap_points: 18
-    ia_liheap: 720
+    ia_liheap: 800
 
 - name: Case 8, income over 200 percent of poverty receives nothing.
   period: 2026
@@ -358,3 +364,36 @@
     # 1 point x 40 = 40 -> 80 minimum.
     ia_liheap_points: 1
     ia_liheap: 80
+
+- name: Case 15, grandparent on Social Security with a grandchild receiving child support gets no fixed-income point and receives 480.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 63
+        social_security: 18_000
+      person2:
+        age: 8
+        child_support_received: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ia_liheap_dwelling_type: DETACHED
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Child support received is not counted (Appendix C p. 92): countable
+    # 18,000. 18,000 / 21,150 = 0.8511 -> 86 percent -> 6 poverty points.
+    # Child support "is not considered a fixed income source" (p. 92), so the
+    # fixed income point is lost: elderly +1, detached +1 = 2. Natural gas 4.
+    # 6 + 2 + 4 = 12 points x 40 = 480 (13 points and 520 with the point).
+    ia_liheap_countable_income: 18_000
+    ia_liheap_fixed_income_only: false
+    ia_liheap_poverty_points: 6
+    ia_liheap_targeting_points: 2
+    ia_liheap_points: 12
+    ia_liheap: 480

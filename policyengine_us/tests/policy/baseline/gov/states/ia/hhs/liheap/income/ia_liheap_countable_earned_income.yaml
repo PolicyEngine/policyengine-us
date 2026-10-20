@@ -11,8 +11,9 @@
 # https://liheapch.acf.gov/docs/2026/state-plans/IA_Plan_2026.pdf#page=5
 # Modeling: the model's net self-employment and farm inputs are floored at zero
 # per source so a loss cannot offset other income (Kansas pattern). All income
-# of members under 18 is excluded (user decision; section 6.00 p. 24 is in
-# conflict and is recorded on the variable).
+# of members under 18 is excluded, following section 6.20, Appendix C p. 102
+# and plan section 1.9 (section 6.00 p. 24 is in conflict and is recorded on
+# the variable).
 
 - name: Case 1, adult wages are counted in full.
   period: 2026

@@ -19,9 +19,9 @@ class ia_liheap_household_size(Variable):
         "members and students away from home are not identified."
     )
     reference = (
-        # Section 7.00 (page 31) and Section 7.30 (page 34); Definitions,
-        # Household/Customer (page 82).
-        "https://hhs.iowa.gov/media/17262/download?inline#page=34",
+        # Sections 7.00 and 7.30; Definitions, Household/Customer.
+        # PDF pages 31, 34, 82
+        "https://hhs.iowa.gov/media/17262/download?inline#page=31",
     )
     defined_for = StateCode.IA
 

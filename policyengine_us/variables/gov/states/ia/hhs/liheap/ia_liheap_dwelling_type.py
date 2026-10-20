@@ -27,10 +27,10 @@ class ia_liheap_dwelling_type(Variable):
         "treated as DETACHED by inference. Defaults to DETACHED."
     )
     reference = (
-        # Appendix I matrix (page 137); Definitions, Attached Household (page
-        # 79), Detached Household/Single Family Home (page 80) and
-        # Mobile/Manufactured Home (page 82).
-        "https://hhs.iowa.gov/media/17262/download?inline#page=137",
+        # Definitions, Attached Household, Detached Household/Single Family
+        # Home and Mobile/Manufactured Home; Appendix I matrix.
+        # PDF pages 79-80, 82, 137
+        "https://hhs.iowa.gov/media/17262/download?inline#page=79",
         # Section 2.5, dwelling type checked as a benefit variable.
         "https://liheapch.acf.gov/docs/2026/state-plans/IA_Plan_2026.pdf#page=9",
     )

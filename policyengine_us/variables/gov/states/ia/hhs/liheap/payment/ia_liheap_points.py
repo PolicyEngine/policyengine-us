@@ -12,10 +12,10 @@ class ia_liheap_points(Variable):
         "applies."
     )
     reference = (
-        # Appendix I, Award Calculation (page 137) and Section 11.00 (page 42):
-        # "the amount of payment determined by the total number of matrix
-        # points".
-        "https://hhs.iowa.gov/media/17262/download?inline#page=137",
+        # Section 11.00, "the amount of payment determined by the total number
+        # of matrix points", and Appendix I, Award Calculation.
+        # PDF pages 42, 137
+        "https://hhs.iowa.gov/media/17262/download?inline#page=42",
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/IA_BenefitMatrix_Heat-Crisis_2026.pdf#page=1",
     )
     defined_for = StateCode.IA

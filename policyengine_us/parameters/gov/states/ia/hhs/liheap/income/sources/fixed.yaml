@@ -6,14 +6,16 @@ description: Iowa treats these income sources as fixed income for the fixed-inco
 # Pension, VA Non-Service-Connected Disability Pension, and pensions. Only mark
 # 'fixed income' when that is the ONLY source(s) of income." Appendix C notes
 # that child support, alimony and variable annuities are not fixed income.
-# Keep this list in the same relative order as sources/unearned.yaml: the
-# fixed-income-only test compares two sums, and the same order keeps them
-# bit-identical when every other source is zero.
 values:
   2025-10-01:
     - social_security
     - ssi
     - pension_income
+    # Appendix C defines Pensions as assistance "paid at regular intervals ...
+    # in consideration of past services, age" and labels Form RRB-1099-R
+    # "Annuities or Pensions by the Railroad Retirement Board", so railroad
+    # retirement annuities are pensions in the Definitions' fixed income list.
+    - railroad_benefits
     - veterans_benefits
 
 metadata:
@@ -21,5 +23,5 @@ metadata:
   period: year
   label: Iowa LIHEAP fixed income sources
   reference:
-    - title: Iowa LIHEAP FY26 Policy and Procedures Manual, Definitions, Fixed Income Household, page 81, and Appendix I Payment Matrix, Fixed Income Only targeting factor, page 137
+    - title: "Iowa LIHEAP FY26 Policy and Procedures Manual, Definitions, Fixed Income Household, Appendix C Pensions and Railroad Retirement rows, and Appendix I Payment Matrix, Fixed Income Only targeting factor #page 81,109-110,137"
       href: https://hhs.iowa.gov/media/17262/download?inline#page=81
