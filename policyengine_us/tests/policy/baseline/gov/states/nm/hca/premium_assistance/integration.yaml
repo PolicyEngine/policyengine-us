@@ -35,6 +35,9 @@
         members: [person1]
         tax_unit_is_filer: true
         aca_magi: 22_500
+        # The case's arithmetic assumes a $15,000 prior-year guideline.
+        tax_unit_fpg:
+          2025: 15_000
         aca_magi_fraction: 1.50
         slcsp: 6_000
         aca_ptc: 3_500
@@ -128,6 +131,9 @@
         members: [person1, person2, person3, person4]
         tax_unit_is_filer: true
         aca_magi: 93_900
+        # The case's arithmetic assumes a $31,300 prior-year guideline.
+        tax_unit_fpg:
+          2025: 31_300
         aca_magi_fraction: 3.00
         slcsp: 18_000
         aca_ptc: 8_000
@@ -240,7 +246,7 @@
       tax_unit:
         members: [person1]
         tax_unit_is_filer: true
-        aca_magi: 39_125
+        aca_magi: 37_650  # 250% of the 2024 one-person guideline ($15,060)
         aca_magi_fraction: 2.50
         slcsp: 6_000
         aca_ptc: 2_500
@@ -269,6 +275,9 @@
         members: [person1]
         tax_unit_is_filer: true
         aca_magi: 39_000
+        # The case's arithmetic assumes a $15,600 prior-year guideline.
+        tax_unit_fpg:
+          2025: 15_600
         aca_magi_fraction: 2.50
         slcsp: 0
         aca_ptc: 0
@@ -298,6 +307,9 @@
         members: [person1]
         tax_unit_is_filer: true
         aca_magi: 39_125
+        # Pinned to the 2025 guideline so the inputs match the PY2026 Scenario 3.
+        tax_unit_fpg:
+          2026: 15_650
         aca_magi_fraction: 2.50
         slcsp: 6_000
         aca_ptc: 2_500
@@ -314,10 +326,11 @@
 - name: Scenario 11, MIH couple with one premium-payer (base gate vs MIH gate).
   # No member is is_aca_ptc_eligible -> base band fails. person1 pays_aca_premium
   # so tax_unit.any(pays_aca_premium) is true and filing is joint (not separate)
-  # -> MIH eligible. magi_frac 4.20 > 4.0.
+  # -> MIH eligible. 420% of the 2025 two-person guideline ($21,150) is 88_830;
+  # ratio 4.20 > 4.0.
   # target% schedule clamps to the top band -> 0.085 (unused in MIH; MIH uses the
-  # flat 0.085 mih.rate). amount = max(0, 12_000 - 0 - 0.085*66_000)
-  # = 12_000 - 5_610 = 6_390.
+  # flat 0.085 mih.rate). amount = max(0, 12_000 - 0 - 0.085*88_830)
+  # = 12_000 - 7_550.55 = 4_449.45.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -335,7 +348,7 @@
         members: [person1, person2]
         filing_status: JOINT
         tax_unit_is_filer: true
-        aca_magi: 66_000
+        aca_magi: 88_830
         aca_magi_fraction: 4.20
         slcsp: 12_000
         aca_ptc: 0
@@ -347,7 +360,7 @@
     nm_premium_assistance_eligible: false
     nm_premium_assistance_mih_eligible: true
     nm_premium_assistance_target_contribution_percentage: 0.085
-    nm_premium_assistance: 6_390
+    nm_premium_assistance: 4_449.45
 
 # ---- Derived-from-raw-income scenario ----
 # Unlike every scenario above, this one does NOT inject aca_magi,
@@ -438,7 +451,8 @@
     nm_premium_assistance: 2_600
 
 - name: Scenario 14, exactly 200% FPL in 2027 -> gross-up NOT applied (strict <).
-  # magi_frac 2.00 is NOT < 2.0 in PY2027, so the gross-up is off and the plain
+  # 200% of the 2026 one-person guideline ($15,960), the prior year for 2027, is
+  # 31_920. The ratio 2.00 is NOT < 2.0 in PY2027, so the gross-up is off and the plain
   # benchmark applies. amount = 6_000 - 4_000 = 2_000. Same inputs as Scenario 13
   # except the year; the 600 drop is exactly the withdrawn 10% gross-up.
   period: 2027
@@ -452,7 +466,7 @@
       tax_unit:
         members: [person1]
         tax_unit_is_filer: true
-        aca_magi: 31_300
+        aca_magi: 31_920
         aca_magi_fraction: 2.00
         slcsp: 6_000
         aca_ptc: 4_000
