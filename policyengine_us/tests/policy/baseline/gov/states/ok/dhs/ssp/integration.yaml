@@ -513,7 +513,7 @@
     ok_ssp_countable_income: [1_491, 1_491]
     ok_ssp: [40, 40]
 
-- name: Case 18, ineligible spouse standard follows the projected 2027 SSI cost-of-living adjustment.
+- name: Case 18, ineligible spouse standard follows the 2027 SSI cost-of-living adjustment.
   period: 2027-01
   absolute_error_margin: 0.01
   input:
@@ -534,7 +534,40 @@
         members: [person1, person2]
         state_code: OK
   output:
-    # The Case 3 household in 2027: the projected couple FBR (about 1_532.75)
-    # leaves partial SSI, so combined income is about 1_532.75. The uprated
-    # 1_575 standard keeps the 40 maximum; a frozen 1_532 would pay 0.
+    # The Case 3 household in 2027: the couple FBR of 1_544 leaves partial
+    # SSI (1_544 - 1_520 = 24), so combined income is 1_544. The uprated
+    # 1_587 standard (1_532 x 328.746 / 317.265) keeps the 40 maximum;
+    # a frozen 1_532 would pay 0.
     ok_ssp: [40, 0]
+
+- name: Case 19, a working ineligible spouse's pre-tax health premiums count as Oklahoma wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 63
+        employment_income: 19_200
+        pre_tax_health_insurance_premiums: 1_200
+    marital_units:
+      couple:
+        members: [person1, person2]
+    families:
+      family:
+        members: [person1, person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # Federal deeming excludes the premiums (POMS SI 00820.102):
+    # (19_200 - 1_200) / 12 = 1_500; (1_500 - 85) / 2 = 707.50;
+    # SSI 1_491 - 707.50 = 783.50.
+    ssi: [783.5, 0]
+    ok_ssp_eligible: [true, false]
+    # 317:35-5-42(b)(9)(A): 19_200 / 12 = 1_600; (1_600 - 85) / 2 = 757.50;
+    # 757.50 + 783.50 = 1_541, not below the 1_532 ineligible spouse standard.
+    ok_ssp_countable_income: [1_541, 1_541]
+    ok_ssp: [0, 0]

@@ -225,7 +225,7 @@
     # defined_for ok_ssp_eligible, so 0.
     ok_ssp: 0
 
-- name: Case 21, pre-tax health premiums are not counted as wages.
+- name: Case 21, pre-tax health premiums still count as Oklahoma wages.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -236,10 +236,12 @@
     employment_income: 15_080
     pre_tax_health_insurance_premiums: 1_200
   output:
-    # Federal: (15_080 - 1_200) / 12 = 1_156.67; (1_156.67 - 85) / 2 = 535.83;
+    # Federal SSI excludes the premiums (POMS SI 00820.102):
+    # (15_080 - 1_200) / 12 = 1_156.67; (1_156.67 - 85) / 2 = 535.83;
     # SSI 994 - 535.83 = 458.17.
     ssi: 458.17
-    # 317:35-5-42(i): wages net of premiums round to 1_157;
-    # (1_157 - 85) / 2 = 536 + 458.17 = 994.17; min(1_034 - 994.17, 40) = 39.83.
-    ok_ssp_own_countable_income: 994.17
-    ok_ssp: 39.83
+    # 317:35-5-42(b)(9)(A) counts wages before cafeteria plans are
+    # subtracted: 15_080 / 12 = 1_256.67 rounds to 1_257 under (i);
+    # (1_257 - 85) / 2 = 586 + 458.17 = 1_044.17, not below 1_034, so 0.
+    ok_ssp_own_countable_income: 1_044.17
+    ok_ssp: 0

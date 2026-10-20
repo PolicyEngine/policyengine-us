@@ -8,15 +8,13 @@ def ok_ssp_income(person, period, parameters, *, combined):
     p = parameters(period).gov.states.ok.dhs.ssp
     ssi = parameters(period).gov.ssa.ssi
     # 317:35-5-42(i) rounds each monthly source before applying exclusions.
+    # NOTE: 317:35-5-42(b)(9)(A) counts wages "before deductions, such as
+    # ... cafeteria plans are subtracted", so pre-tax health premiums stay in
+    # the state's wage count. Federal SSI excludes them (POMS SI 00820.102),
+    # and the ssi term below keeps that treatment.
     earned = 0
     for source in ssi.income.sources.earned:
-        amount = max_(person(source, period), 0)
-        if source == "employment_income":
-            # As in ssi_earned_income, salary-reduction health premiums are
-            # not wages (POMS SI 00820.102).
-            premiums = max_(person("pre_tax_health_insurance_premiums", period), 0)
-            amount = amount - min_(amount, premiums)
-        earned = earned + np.floor(amount + 0.5)
+        earned = earned + np.floor(max_(person(source, period), 0) + 0.5)
     unearned = 0
     for source in ssi.income.sources.unearned:
         if source not in p.excluded_unearned_sources:
@@ -34,6 +32,8 @@ def ok_ssp_income(person, period, parameters, *, combined):
     # NOTE: the deemed parental income uses the federal ineligible-child
     # allocation (couple FBR minus individual FBR, 497 in 2026); Appendix C-1
     # Schedule VIII.C lists 498, so a sibling's allocation can be $1 lower.
+    # It also uses SSI's earned income, which excludes the parents' pre-tax
+    # health premiums that 317:35-5-42(b)(9)(A) counts as wages.
     unearned = unearned + person(
         "ssi_unearned_income_deemed_from_ineligible_parent", period
     )
@@ -71,7 +71,10 @@ def ok_ssp_income(person, period, parameters, *, combined):
         unearned = max_(unearned - allocation, 0)
         earned = person.marital_unit.sum(earned)
         unearned = person.marital_unit.sum(unearned)
-        # 317:35-5-42(l)(2) excludes an ineligible spouse's SSI.
+        # 317:35-5-42(l)(2) excludes an ineligible spouse's SSI. Its exclusion
+        # of "any income that was counted or excluded in figuring the amount
+        # of that payment" is not modeled; the spouse's other income stays
+        # counted.
         benefit = person.marital_unit.sum(benefit * eligible)
         # 317:35-5-42(b)(8)(A) counts the one-third value once, for the
         # individual or the eligible couple, never for an ineligible spouse.
