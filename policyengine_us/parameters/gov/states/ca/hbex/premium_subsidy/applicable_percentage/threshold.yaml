@@ -6,6 +6,8 @@ values:
   # "150% - At or Below 165%"; the model follows the adopted design. With
   # the FPL fraction truncated to whole percentages (aca_magi_fraction,
   # Form 8962 line 5), incomes from 150% to under 151% of FPL count as 150%.
+  # The design is silent on rounding; the truncation is the federal form's
+  # gap-fill.
   2026-01-01:
     - 1
     - 1.5

@@ -16,7 +16,7 @@
 # ---- Knot points ----
 
 - name: Case 1, exactly 100% FPL -> 0.00% (start of the flat 100-150% band).
-  # searchsorted([1.0,1.5,1.65], 1.00, "right") = 1, -1 -> bracket 0 [1.0,1.5].
+  # searchsorted([1.0,1.5,1.65], 1.00, "left") = 0, -1 = -1, clipped to bracket 0 [1.0,1.5].
   # initial 0, final 0 -> 0 regardless of position.
   period: 2026
   absolute_error_margin: 0.0001
@@ -60,7 +60,7 @@
     ca_premium_subsidy_applicable_percentage: 0
 
 - name: Case 3, exactly 165% FPL -> 3.91% (top of the ramp).
-  # searchsorted([1.0,1.5,1.65], 1.65, "right") = 3, -1 = 2, clipped to bracket 1.
+  # searchsorted([1.0,1.5,1.65], 1.65, "left") = 2, -1 = 1 -> bracket 1 at position 1.
   # bracket_start 1.5, bracket_end 1.65, position (1.65-1.5)/0.15 = 1 -> final 0.0391.
   period: 2026
   absolute_error_margin: 0.0001
@@ -188,7 +188,7 @@
     ca_premium_subsidy_applicable_percentage: 0
 
 - name: Case 9, below the 100% floor (0.99) clamps to the first bracket -> 0.00%.
-  # searchsorted([1.0,1.5,1.65], 0.99, "right") = 0, -1 = -1, clipped to bracket 0.
+  # searchsorted([1.0,1.5,1.65], 0.99, "left") = 0, -1 = -1, clipped to bracket 0.
   # bracket 0 [1.0,1.5]: position (0.99-1.0)/0.5 = -0.02 clipped to 0; initial 0 -> 0.
   # The eligible gate (fpl_floor 1.0) separately zeroes the subsidy here.
   period: 2026
@@ -210,7 +210,7 @@
     ca_premium_subsidy_applicable_percentage: 0
 
 - name: Case 10, above the 165% cap (1.66) clamps to the top bracket rate -> 3.91%.
-  # searchsorted([1.0,1.5,1.65], 1.66, "right") = 3, -1 = 2, clipped to bracket 1.
+  # searchsorted([1.0,1.5,1.65], 1.66, "left") = 3, -1 = 2, clipped to bracket 1.
   # position (1.66-1.5)/0.15 = 1.067 clipped to 1 -> final 0.0391. The eligible
   # gate (fpl_limit 1.65) separately zeroes the subsidy above the band, so this
   # confirms the schedule variable itself does not extrapolate past 3.91%.
@@ -233,7 +233,7 @@
     ca_premium_subsidy_applicable_percentage: 0.0391
 
 - name: Case 11, negative FPL fraction clamps to the first bracket -> 0.00%.
-  # searchsorted([1.0,1.5,1.65], -0.5, "right") = 0, -1 = -1, clipped to bracket 0.
+  # searchsorted([1.0,1.5,1.65], -0.5, "left") = 0, -1 = -1, clipped to bracket 0.
   # position (-0.5-1.0)/0.5 = -3 clipped to 0; initial 0 -> 0. Guards against a
   # negative aca_magi_fraction producing a spurious rate.
   period: 2026
@@ -281,10 +281,11 @@
 
 # ---- PY2027 new 165-200% FPL tier ----
 
-- name: Case 13, PY2027 exactly 165% FPL -> 3.41% (start of the new 165-200% tier).
-  # PY2027 thresholds [1,1.5,1.65,2.0]. searchsorted(..., 1.65, "right") = 3,
-  # -1 = 2 -> bracket 2 [1.65,2.0], position 0 -> initial rate 0.0341. The 165%
-  # knot now takes the NEW tier's initial rate (2026 had 0.0391 at this point).
+- name: Case 13, PY2027 exactly 165% FPL -> 3.41% from either adjacent tier.
+  # PY2027 thresholds [1,1.5,1.65,2.0]. searchsorted(..., 1.65, "left") = 2,
+  # -1 = 1 -> bracket 1 [1.5,1.65] at position 1 -> its final rate 0.0341,
+  # which equals the 165-200% tier's initial rate, so the rate is continuous
+  # at 165% (2026 had 0.0391 at this point).
   period: 2027
   absolute_error_margin: 0.0001
   input:
@@ -346,10 +347,11 @@
   output:
     ca_premium_subsidy_applicable_percentage: 0.050517  # model computes 0.05051714
 
-- name: Case 2b, 151% FPL starts the 150-165% ramp.
-  # searchsorted([1.0,1.5,1.65], 1.51, "left") = 2, -1 -> bracket 1 [1.5,1.65].
-  # position (1.51-1.50)/0.15 = 0.0667 -> 0.0319 + 0.0667 x (0.0391 - 0.0319)
-  # = 0.03238.
+- name: Case 2b, a supplied fraction of 1.505 interpolates on the fraction given.
+  # searchsorted([1.0,1.5,1.65], 1.505, "left") = 2, -1 -> bracket 1 [1.5,1.65].
+  # position (1.505-1.50)/0.15 = 0.0333 -> 0.0319 + 0.0333 x (0.0391 - 0.0319)
+  # = 0.03214. (A fraction computed from income is truncated to whole
+  # percentages first; see the next case.)
   period: 2026
   absolute_error_margin: 0.0001
   input:
@@ -360,10 +362,31 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.51
+        aca_magi_fraction: 1.505
     households:
       household:
         members: [person1]
         state_code: CA
   output:
-    ca_premium_subsidy_applicable_percentage: 0.03238
+    ca_premium_subsidy_applicable_percentage: 0.03214
+
+- name: Case 2c, income at 150.5% of FPL truncates to 150% and pays 0%.
+  # The Program Design is silent on rounding; aca_magi_fraction drops the
+  # fraction of a percentage point, as Form 8962 Worksheet 2 does ("drop any
+  # numbers after the decimal point"), a gap-fill. 2025 FPG for one person is
+  # $15,650; 1.505 x 15,650 = 23,553.25, so $23,553 of wages is 150.49% -> 1.50.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 23_553
+        is_aca_ptc_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi_fraction: 1.50
+    ca_premium_subsidy_applicable_percentage: 0
