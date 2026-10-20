@@ -157,3 +157,32 @@
     # The child's 10,000 public pension, 4,000 tax-exempt pension and 3,000
     # Social Security are not the taxpayer's income and are not re-added.
     ma_scb_total_income: 52_600
+
+- name: Military retirement pay is re-added to SCB total income under § 6(k)(1).
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        military_retirement_pay: 30_000
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        ssi: 0
+        ma_state_supplement: 0
+    tax_units:
+      tax_unit:
+        members: [head]
+    spm_units:
+      spm_unit:
+        tanf: 0
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MA
+  output:
+    # 30,000 pay is excluded from ma_gross_income (0), but re-added under § 6(k)(1);
+    # reduced by 700 aged exemption = 29,300.
+    ma_gross_income: 0
+    ma_scb_total_income: 29_300

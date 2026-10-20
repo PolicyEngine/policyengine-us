@@ -46,6 +46,16 @@
   output:
     mn_amt_taxable_income: 200_000
 
+- name: MN AMT taxable income subtracts military pension subtraction
+  period: 2024
+  input:
+    state_code: MN
+    adjusted_gross_income: 200_000
+    military_retirement_pay: 50_000
+  output:
+    mn_military_pension_subtraction: 50_000
+    mn_amt_taxable_income: 200_000 - 50_000
+
 - name: MN AMT taxable income adds back the 2020 federal charitable deduction for non-itemizers
   period: 2020
   input:

@@ -39,6 +39,7 @@ class mn_amt_taxable_income(Variable):
             "us_govt_interest",
             "mn_charity_subtraction",
             "mn_social_security_subtraction",
+            "mn_military_pension_subtraction",
         ]
         amt_subs = add(tax_unit, period, AMT_SUBTRACTIONS)
         return fagi + charitable_addition - some_itm_deds - amt_subs
