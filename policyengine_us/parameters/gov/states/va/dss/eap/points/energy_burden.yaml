@@ -1,0 +1,22 @@
+description: Virginia awards this many benefit points for energy burden under the Energy Assistance Program.
+# PLACEHOLDER: this value is a PolicyEngine placeholder set pending VDSS
+# publication, not a published figure. The energy burden is the average fuel
+# cost for the household's fuel type from the annual vendor survey divided by
+# household income, scored 0-19% 0 points, 20-29% 5, 30-39% 8, 40-49% 10,
+# 50-69% 13, 70-79% 18, 80-89% 20, 90-94% 24 and 95-100% 25. The average fuel
+# costs and the income period are not published, so the 50%-69% band value of
+# 13 points applies to every eligible household.
+values:
+  2022-10-01: 13
+
+metadata:
+  unit: /1
+  period: year
+  label: Virginia EAP energy burden points placeholder
+  reference:
+    - title: LIHEAP Clearinghouse Virginia FY2026 benefit matrix, Appendix B (01/03, Transmittal 03-1), energy burden
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/VA_BenefitMatrix_2026.pdf#page=7
+    - title: Virginia Energy Assistance Manual, Volume IX, Chapter D, Appendix B (01/03, Transmittal 03-1), energy burden
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=66
+    - title: 22VAC40-680-10 Definitions ("Energy burden")
+      href: https://law.lis.virginia.gov/admincodefull/title22/agency40/chapter680/

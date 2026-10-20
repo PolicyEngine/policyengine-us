@@ -1,0 +1,15 @@
+description: Virginia treats household members at or above this age as elderly for the medical deduction and vulnerability points under the Energy Assistance Program.
+values:
+  2003-01-01: 60
+
+metadata:
+  unit: year
+  period: year
+  label: Virginia EAP elderly age threshold
+  reference:
+    - title: "Virginia Energy Assistance Manual, Volume IX, Chapter B.6.c Income Disregard/Medical Deduction and Chapter D.5 Benefit Determinations #page 31,52"
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=31
+    - title: LIHEAP Clearinghouse Virginia FY2026 benefit matrix, Appendix B (01/03, vulnerability "Elderly (60 and over)")
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/VA_BenefitMatrix_2026.pdf#page=7
+    - title: 22VAC40-680-10 Definitions ("Elderly person")
+      href: https://law.lis.virginia.gov/admincodefull/title22/agency40/chapter680/
