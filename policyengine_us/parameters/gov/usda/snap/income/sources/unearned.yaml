@@ -45,12 +45,23 @@ values:
     - mi_ssp_person
     - mn_msa_person
     - mo_ssp
+    - mt_ssp
+    - nc_sa
     - ne_aabd
+    - nj_ssp
     - nm_ssi_state_supplement
+    - nv_oss
+    - ny_ssp
+    - ok_ssp
+    - pa_ssp
+    - ri_ssp
     - sc_ssi_state_supplement
+    - sd_ssp
     - tx_ssi_state_supplement
+    - va_ag
     - wa_ssp
     - wi_ssp_countable_for_snap
+    - wy_ssp
     # Listed elsewhere: ca_state_supplement is an SPM unit variable with no
     # person-level counterpart. policyengine-core projects a group value onto
     # every member, so listing it here would count it once per person in the
@@ -64,6 +75,7 @@ values:
     - social_security
     - survivor_benefits
     - retirement_distributions
+    - military_retirement_income
     # Assume all rental income meets this criteria (rest is earned):
     # "gross income minus the cost of doing business derived from rental
     #  property in which a household member is not actively engaged in the
