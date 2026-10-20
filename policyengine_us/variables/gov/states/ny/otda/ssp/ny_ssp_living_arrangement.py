@@ -37,8 +37,9 @@ class ny_ssp_living_arrangement(Variable):
     Residents of medical facilities where Medicaid pays more than half the
     cost default to a residential health care facility (nursing home). Set
     this variable for every member of the household only for the separate-food,
-    room-and-board, homemaker, family care resident or aide cases that
-    18 NYCRR 398-4.5(a)(1) counts as living alone.
+    room-and-board, homemaker or aide cases that 18 NYCRR 398-4.5(a)(1) counts
+    as living alone. A family care resident counts through their own
+    ny_ssp_care_setting.
     """
 
     def formula(person, period, parameters):
@@ -54,12 +55,18 @@ class ny_ssp_living_arrangement(Variable):
         other = federal == SSIFederalLivingArrangement.ANOTHER_PERSONS_HOUSEHOLD
         joint = person("ssi_couple_computation_applies", period)
         # 18 NYCRR 398-4.5(a) defines living alone by the private household.
-        # Foster children do not end it ((a)(1)(vi), (a)(2)(ii)), and a member
-        # living in a medical facility is not part of the household.
-        household_member = ~person("is_in_foster_care", period) & ~in_facility
-        alone = person.household.sum(household_member) == where(
-            joint, person.marital_unit.sum(household_member), 1
+        # Foster children ((a)(1)(vi), (a)(2)(ii)), family care residents
+        # ((a)(1)(viii)) and members living in a facility or another care
+        # setting do not end it. The count leaves out the person themselves,
+        # so their own foster status does not matter.
+        housemate = (
+            ~person("is_in_foster_care", period)
+            & ~in_facility
+            & (care == NYSSPCareSetting.NONE)
         )
+        housemates = person.household.sum(housemate) - housemate
+        spouse = person.marital_unit.sum(housemate) - housemate
+        alone = housemates == where(joint, spouse, 0)
         minor = person("ny_ssp_is_minor", period.this_year)
         return select(
             [

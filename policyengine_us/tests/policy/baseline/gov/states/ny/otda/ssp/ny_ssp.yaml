@@ -526,7 +526,7 @@
     # $25 allowance in the nursing home; 87 living alone at home.
     ny_ssp: [25, 87]
 
-- name: Case 40, deeming claimant in a nursing home receives no state payment.
+- name: Case 40, nursing home resident with an ineligible spouse at home receives the personal needs allowance.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -538,22 +538,29 @@
       person2:
         age: 63
         social_security_retirement: 12_000
+    # 20 CFR 416.1160(a)(1) deems an ineligible spouse's income only in the
+    # same household, and 416.1167(a)(2) keeps a facility resident in it only
+    # while a 416.212 benefit is paid. Separate marital units keep the federal
+    # model from deeming to a resident on the reduced benefit.
     marital_units:
-      couple:
-        members: [person1, person2]
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
     households:
       household:
         members: [person1, person2]
         state_code: NY
   output:
     ny_ssp_living_arrangement: [RESIDENTIAL_HEALTH_CARE_FACILITY, LIVING_ALONE]
-    # Social Services Law 209(1)(d) bars a state payment in a Medicaid-majority
-    # facility, and the deemed income rules out the personal needs allowance
-    # (18 NYCRR 398-3.2(d)).
-    ny_ssp: [0, 0]
+    ssi: [30, 0]
+    # No countable income besides the $30 SSI: the $25 allowance
+    # (18 NYCRR 398-3.2(d), 398-3.4). The spouse is not aged, blind or disabled.
+    ny_ssp: [25, 0]
 
 - name: Case 41, spouse at home is living alone while the other spouse is in a facility Medicaid does not mostly pay for.
   period: 2026-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -570,6 +577,13 @@
         state_code: NY
   output:
     ny_ssp_living_arrangement: [NONE, LIVING_ALONE]
+    # Known limitation: with one marital unit the federal model still computes
+    # the spouses as a couple, and the shared helper averages the members'
+    # couple rates, (0 + 104) / 4 = 26, instead of the 87 for an individual
+    # living alone (18 NYCRR 398-2.1(l)). Enter spouses who live apart as
+    # separate marital units (Case 45). The resident receives nothing.
+    ssi: [745.5, 745.5]
+    ny_ssp: [0, 26]
 
 - name: Case 42, household member in a medical facility does not end living alone.
   period: 2026-01
@@ -588,3 +602,140 @@
   output:
     ny_ssp_living_arrangement: [LIVING_ALONE, NONE]
     ny_ssp: [87, 0]
+
+- name: Case 43, foster youth living with one foster parent lives with others.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 19
+        meets_ssi_disability_criteria: true
+        is_full_time_student: false
+        is_in_foster_care: true
+      person2:
+        age: 45
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # 18 NYCRR 398-4.5(b)(1): the youth shares the foster home. The foster
+    # parent lives with only a foster child ((a)(1)(vi)).
+    ny_ssp_living_arrangement: [LIVING_WITH_OTHERS, LIVING_ALONE]
+    ny_ssp: [23, 0]
+
+- name: Case 44, foster youth living by themselves lives alone.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    age: 19
+    meets_ssi_disability_criteria: true
+    is_full_time_student: false
+    is_in_foster_care: true
+  output:
+    # A private household of one SSP-eligible individual (18 NYCRR 398-4.5(a)).
+    ny_ssp_living_arrangement: LIVING_ALONE
+    ny_ssp: 87
+
+- name: Case 45, spouse in an excluded setting entered as a separate marital unit leaves the other spouse living alone.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ny_ssp_care_setting: EXCLUDED
+      person2:
+        age: 70
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # A spouse in an excluded setting is not part of the private household
+    # (18 NYCRR 398-4.5(a)), and spouses living apart are not an eligible
+    # couple (398-2.1(l)).
+    ny_ssp_living_arrangement: [NONE, LIVING_ALONE]
+    ny_ssp: [0, 87]
+
+- name: Case 46, state only payment in another person's household.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    age: 65
+    social_security_retirement: 8_400
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+  output:
+    # $700 a month less the $20 exclusion is 680, above the reduced federal
+    # benefit rate of 994 x 2/3 = 662.67, so SSI is 0.
+    ssi_countable_income: 680
+    ssi: 0
+    # Standard of need 662.67 + 23 = 685.67, so 685.67 - 680 = 5.67.
+    ny_ssp: 5.67
+
+- name: Case 47, state only payment for a couple living alone.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 19_200
+      person2:
+        age: 70
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_ssp_living_arrangement: [LIVING_ALONE, LIVING_ALONE]
+    # $1,600 a month less the $20 exclusion is 1,580 for the couple, above
+    # the 1,491 couple federal benefit rate, so SSI is 0.
+    ssi: [0, 0]
+    # Couple standard of need 1,491 + 104 = 1,595: (1,595 - 1,580) / 2 = 7.50
+    # each.
+    ny_ssp: [7.5, 7.5]
+
+- name: Case 48, claimant living with only a family care resident lives alone.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 40
+        meets_ssi_disability_criteria: true
+        ny_ssp_care_setting: FAMILY_CARE
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # 18 NYCRR 398-4.5(a)(1)(viii): living with only a family care resident
+    # counts as living alone. The resident gets the family care rate.
+    ny_ssp_living_arrangement: [LIVING_ALONE, FAMILY_CARE]
+    ny_ssp: [87, 228.48]
