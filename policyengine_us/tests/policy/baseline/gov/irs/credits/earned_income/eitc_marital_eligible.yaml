@@ -1,0 +1,85 @@
+# IRC 32(d), as amended by ARPA section 9623, first applies to 2021.
+- name: Joint filers do not need a child or separation facts before 2021
+  period: 2020
+  input:
+    filing_status: JOINT
+    is_eitc_qualifying_child: false
+    eitc_demographic_eligible: true
+    eitc_investment_income_eligible: true
+    filer_meets_eitc_identification_requirements: true
+  output:
+    eitc_marital_eligible: true
+    eitc_eligible: true
+
+- name: Joint filers do not need a child or separation facts after 2021
+  period: 2025
+  input:
+    filing_status: JOINT
+    is_eitc_qualifying_child: false
+    eitc_demographic_eligible: true
+    eitc_investment_income_eligible: true
+    filer_meets_eitc_identification_requirements: true
+  output:
+    eitc_marital_eligible: true
+    eitc_eligible: true
+
+- name: Single filers do not need a child or separation facts
+  period: 2025
+  input:
+    filing_status: SINGLE
+    is_eitc_qualifying_child: false
+  output:
+    eitc_marital_eligible: true
+
+- name: MFS with a child and separation facts was ineligible in 2020
+  period: 2020
+  input:
+    filing_status: SEPARATE
+    is_eitc_qualifying_child: true
+    eitc_spouses_lived_apart_last_six_months: true
+    eitc_legal_separation_and_apart_at_year_end: true
+  output:
+    eitc_marital_eligible: false
+
+- name: MFS with a resident child first qualifies under the six-month route in 2021
+  period: 2021
+  input:
+    filing_status: SEPARATE
+    is_eitc_qualifying_child: true
+    eitc_child_lived_with_taxpayer_more_than_half_year: true
+    eitc_spouses_lived_apart_last_six_months: true
+    eitc_legal_separation_and_apart_at_year_end: false
+  output:
+    eitc_marital_eligible: true
+
+- name: MFS with a resident child first qualifies under the legal-instrument route in 2021
+  period: 2021
+  input:
+    filing_status: SEPARATE
+    is_eitc_qualifying_child: true
+    eitc_child_lived_with_taxpayer_more_than_half_year: true
+    eitc_spouses_lived_apart_last_six_months: false
+    eitc_legal_separation_and_apart_at_year_end: true
+  output:
+    eitc_marital_eligible: true
+
+- name: A residence fact cannot replace the qualifying-child requirement
+  period: 2025
+  input:
+    filing_status: SEPARATE
+    is_eitc_qualifying_child: false
+    eitc_child_lived_with_taxpayer_more_than_half_year: true
+    eitc_spouses_lived_apart_last_six_months: true
+    eitc_legal_separation_and_apart_at_year_end: true
+  output:
+    eitc_marital_eligible: false
+
+- name: General separation indicators do not establish either statutory route
+  period: 2025
+  input:
+    filing_status: SEPARATE
+    is_eitc_qualifying_child: true
+    is_separated: true
+    cohabitating_spouses: false
+  output:
+    eitc_marital_eligible: false
