@@ -28,8 +28,8 @@ class medicaid_person_is_required_to_file(Variable):
         # Earned income is figured as on the IRS dependent worksheet, which
         # sets the limited standard deduction the gross income test compares
         # against: W-2 box 1 wages (which leave out elective deferrals) plus
-        # business and farm income, minus the deductible part of
-        # self-employment tax, and not below zero.
+        # earned disability benefits and business and farm income, minus
+        # deductible self-employment tax, and not below zero.
         earned_income = max_(
             person("standard_deduction_worksheet_earned_income_person", period), 0
         )
@@ -40,6 +40,7 @@ class medicaid_person_is_required_to_file(Variable):
         earned_gross_income = 0
         for source in filing_requirement.dependent.earned_income_sources:
             earned_gross_income += max_(0, person(source, period))
+        earned_gross_income += person("earned_disability_benefits", period)
         unearned_income = max_(0, gross_income - earned_gross_income)
 
         married = person.marital_unit.nb_persons() == 2

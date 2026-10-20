@@ -9,7 +9,8 @@ class standard_deduction_worksheet_earned_income(Variable):
     documentation = (
         "Earned income of the head and spouse on the Standard Deduction "
         "Worksheet for Dependents: wages from Form W-2 box 1, which leave out "
-        "elective deferrals, plus business and farm income, minus the "
+        "elective deferrals, plus earned disability benefits and business "
+        "and farm income, minus the "
         "deductible part of self-employment tax, and not below zero."
     )
     definition_period = YEAR

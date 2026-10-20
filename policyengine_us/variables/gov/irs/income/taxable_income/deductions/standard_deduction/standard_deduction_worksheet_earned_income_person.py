@@ -11,7 +11,8 @@ class standard_deduction_worksheet_earned_income_person(Variable):
     documentation = (
         "A person's earned income on the Standard Deduction Worksheet for "
         "Dependents: wages from Form W-2 box 1, which leave out elective "
-        "deferrals, plus business and farm income, minus the deductible part "
+        "deferrals, plus disability pensions reported as wages before minimum "
+        "retirement age and business and farm income, minus the deductible part "
         "of their self-employment tax. Not floored at zero, so that on a "
         "joint return one spouse's loss offsets the other's earnings."
     )
@@ -37,5 +38,8 @@ class standard_deduction_worksheet_earned_income_person(Variable):
         # deferrals and other pretax payroll deductions) and Schedule 1 lines
         # 3 and 6. A business or farm loss reduces the total.
         earned_income = add(person, period, p.earned_income_sources)
+        # Form 1040 line 1h disability pensions are part of line 1z, but
+        # are modeled separately from irs_employment_income.
+        earned_income += person("earned_disability_benefits", period)
         # Schedule 1, line 15: the deductible part of self-employment tax.
         return earned_income - person("self_employment_tax_ald_person", period)
