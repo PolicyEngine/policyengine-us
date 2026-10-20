@@ -1,10 +1,16 @@
-description: Iowa uses this amount as its maximum residential care daily rate.
+description: Iowa limits the residential care facility daily rate to this amount under the State Supplementary Assistance program.
 values:
   2026-01-01: 38.47
 
 metadata:
   unit: currency-USD
+  period: day
   label: Iowa SSA maximum residential care daily rate
+  # NOTE: 441 IAC 52.1 adjusts assistance standards each January 1 for the SSA
+  # cost-of-living adjustment but publishes no method, so this value stays at
+  # its 2026 level until a later schedule is added.
   reference:
-    - title: Iowa HHS Employees Manual 6-B, 2026
-      href: https://hhs.iowa.gov/media/3987/download?inline=
+    - title: Iowa HHS Employees' Manual 6-B (revised May 22, 2026), Billing and Payments (RCF)
+      href: https://hhs.iowa.gov/media/3987/download?inline=#page=72
+    - title: "441 IAC 52.1 and 52.1(3) #page 1-2"
+      href: https://www.legis.iowa.gov/docs/iac/chapter/441.52.pdf#page=1

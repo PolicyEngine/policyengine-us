@@ -150,16 +150,21 @@
   output:
     ia_ssa: [395, 395]
 
-- name: Case 8, annual blind allowance and SNAP income.
+- name: Case 8, annual blind allowance in SNAP income and benefit totals.
   period: 2026
   absolute_error_margin: 0.01
   input:
     age: 65
     state_code: IA
     is_blind: true
+    # SNAP take-up is off so the benefit total isolates SSI and Iowa SSA.
+    takes_up_snap_if_eligible: false
   output:
+    # 22 * 12 = 264; SSI 994 * 12 = 11,928; 11,928 + 264 = 12,192.
     ia_ssa: 264
     snap_unearned_income: 12_192
+    household_state_benefits: 264
+    spm_unit_benefits: 12_192
 
 - name: Case 9, Iowa in-home reimbursement is excluded while blind cash is counted.
   period: 2026
@@ -171,6 +176,38 @@
     ia_ssa_category: IN_HOME_CARE
     ia_ssa_ihhrc_monthly_cost: 4_800
   output:
+    # (400 + 22) * 12 = 5,064; only the blind 22 * 12 = 264 is countable.
     ia_ssa: 5_064
+    ia_ssa_countable_for_snap: 264
+    ia_ssa_countable_for_hud: 264
     snap_unearned_income: 12_192
     hud_unearned_income: 12_192
+
+- name: Case 10, 2027 family-life home couple amount follows the SSI rates.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        ia_ssa_category: FAMILY_LIFE_HOME
+      person2:
+        age: 65
+        ia_ssa_category: FAMILY_LIFE_HOME
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # The 2027 SSI couple rate of 1,544 is split 772 each, which is each
+    # spouse's care income.
+    # Standard 1,029 + 162 = 1,191; couple amount 2 * 1,191 - 1,544 - 20 = 818,
+    # split 409 each (801 and 400.50 in 2026).
+    # The SSI-only couple shares one 20 top-up: 409 + 10 = 419.
+    ssi: [772, 772]
+    ia_ssa_care_countable_income: [772, 772]
+    ia_ssa_federal: [409, 409]
+    ia_ssa: [419, 419]
