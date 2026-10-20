@@ -8,7 +8,8 @@ examples:
   and § 26-51-424(b) (26 U.S.C. § 165(h) as in effect on January 1, 2009);
 - they are non-negative, never exceed the expenses or the loss after the
   exclusion, rise with expenses or losses, and fall with Arkansas AGI;
-- the joint and separate variants agree on the same inputs;
+- the joint and separate variants agree for a single filer;
+- separate spouses apply their casualty reduction and AGI floor individually;
 - they do not depend on the year across the federal TCJA suspension;
 - a dependent's casualty loss never changes the filer's casualty deduction;
 - before 2018, the Arkansas miscellaneous deduction equals the federal one
@@ -71,7 +72,7 @@ def misc_reference(expenses, agi):
 
 def casualty_reference(loss, agi, year):
     after_exclusion = np.maximum(0, loss - casualty_exclusion(year))
-    return np.maximum(0, after_exclusion - CASUALTY_FLOOR * agi)
+    return np.maximum(0, after_exclusion - CASUALTY_FLOOR * np.maximum(agi, 0))
 
 
 def assert_monotone(values, amount, agi):
@@ -200,3 +201,75 @@ def test_casualty_loss_deduction_ignores_dependents_losses(year):
     # Guard against a vacuous pass: some dependents have losses that would
     # raise the deduction if they were counted.
     assert max(DEPENDENT_LOSSES) > 0 and expected.max() > 0
+
+
+SPOUSE_INPUTS = [
+    (0, -10_000),
+    (0, 0),
+    (0, 50_000),
+    (50, 10_000),
+    (5_100, 50_000),
+    (8_000, 20_000),
+    (12_000, 30_000),
+    (250_000, 1_000_000),
+]
+
+
+@pytest.mark.parametrize("year", [2017, 2025])
+def test_separate_spouses_apply_individual_casualty_limits(year):
+    """Separate filers each apply § 165(h)'s limits before AR3 proration.
+
+    Cover unequal losses and AGIs, a spouse without a loss (including with
+    negative AGI), losses below their own floor, and invariance to dependent
+    losses. Joint filers keep one exclusion and the combined AGI floor under
+    § 165(h)(5)(B).
+    """
+    grid = list(itertools.product(SPOUSE_INPUTS, SPOUSE_INPUTS, DEPENDENT_LOSSES))
+    situation = {"people": {}, "tax_units": {}, "households": {}}
+    for i, (head_inputs, spouse_inputs, dependent_loss) in enumerate(grid):
+        head, spouse, dependent = f"h{i}", f"s{i}", f"d{i}"
+        for person, (loss, agi), is_head, is_spouse in (
+            (head, head_inputs, True, False),
+            (spouse, spouse_inputs, False, True),
+            (dependent, (dependent_loss, 0), False, False),
+        ):
+            situation["people"][person] = {
+                "age": {year: 10 if person == dependent else 40},
+                "is_tax_unit_head": {year: is_head},
+                "is_tax_unit_spouse": {year: is_spouse},
+                "is_tax_unit_dependent": {year: person == dependent},
+                "casualty_loss": {year: loss},
+                "ar_agi_joint": {year: agi},
+                "ar_agi_indiv": {year: agi},
+            }
+        situation["tax_units"][f"t{i}"] = {
+            "members": [head, spouse, dependent],
+            "filing_status": {year: "JOINT"},
+        }
+        situation["households"][f"hh{i}"] = {
+            "members": [head, spouse, dependent],
+            "state_code": {year: "AR"},
+        }
+
+    head_loss = np.array([g[0][0] for g in grid], dtype=float)
+    head_agi = np.array([g[0][1] for g in grid], dtype=float)
+    spouse_loss = np.array([g[1][0] for g in grid], dtype=float)
+    spouse_agi = np.array([g[1][1] for g in grid], dtype=float)
+    expected = casualty_reference(head_loss, head_agi, year) + casualty_reference(
+        spouse_loss, spouse_agi, year
+    )
+    sim = Simulation(situation=situation)
+    separate = sim.calculate("ar_casualty_loss_deduction_indiv", year)
+    joint = sim.calculate("ar_casualty_loss_deduction_joint", year)
+    np.testing.assert_allclose(separate, expected)
+    np.testing.assert_allclose(
+        joint,
+        casualty_reference(head_loss + spouse_loss, head_agi + spouse_agi, year),
+    )
+    assert np.all(separate >= 0)
+    assert np.all(separate <= head_loss + spouse_loss)
+    # Each group differs only in dependent loss, so all results must agree.
+    dependent_results = separate.reshape(-1, len(DEPENDENT_LOSSES))
+    assert np.all(dependent_results == dependent_results[:, :1])
+    # Guard against a vacuous pass: the grid distinguishes the two methods.
+    assert np.any(separate > joint) and np.any(separate < joint)
