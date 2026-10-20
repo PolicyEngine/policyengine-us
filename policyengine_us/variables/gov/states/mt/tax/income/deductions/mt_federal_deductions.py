@@ -28,8 +28,9 @@ class mt_federal_deductions(Variable):
         non_itemizer_charity = tax_unit(
             "charitable_deduction_for_non_itemizers", period
         )
-        # QBI is added back by Montana law. Schedule 1-A deductions already
-        # enter through mt_federal_obbba_subtraction, so neither is counted here.
+        # This display isolates standard/itemized deductions. The taxable-
+        # income formula reads the actual federal base, adds QBI back, and
+        # keeps Schedule 1-A deductions in that base without deducting them twice.
         federal_deduction = where(itemizes, itemized, standard + non_itemizer_charity)
         add_back = tax_unit("mt_state_income_tax_itemized_add_back", period)
         return max_(0, federal_deduction - add_back)

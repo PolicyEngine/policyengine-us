@@ -305,6 +305,24 @@
   output:
     al_federal_income_tax_deduction: 1_500
 
+- name: Alabama preserves its legacy federal deduction credit list before 2021
+  # Pre-2021 worksheets remain unverified. Preserve the existing subtraction
+  # of total AOC and omission of the newly named payment credits in 2020.
+  # max(5,000 - 2,500 total AOC, 0) = 2,500.
+  period: 2020
+  input:
+    state_code: AL
+    income_tax_before_refundable_credits: 5_000
+    eitc: 0
+    american_opportunity_credit: 2_500
+    refundable_american_opportunity_credit: 1_000
+    refundable_ctc: 0
+    claim_of_right_credit: 1_500
+    net_premium_tax_credit: 1_000
+    al_other_federal_payment_credits: 750
+  output:
+    al_federal_income_tax_deduction: 2_500
+
 - name: Alabama payment credits cannot make the deduction negative
   period: 2025
   input:

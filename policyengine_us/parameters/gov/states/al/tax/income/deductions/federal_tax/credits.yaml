@@ -1,5 +1,12 @@
 description: Alabama subtracts the following credits for the federal tax deduction.
 values:
+  # Preserve the model's historical list until pre-2021 sources are verified.
+  # An explicit date prevents the system's automatic 2015 backdating from
+  # extending the verified 2021 correction to earlier years.
+  2015-01-01:
+    - eitc
+    - american_opportunity_credit
+    - refundable_ctc
   2021-01-01:
     - eitc
     - refundable_american_opportunity_credit
