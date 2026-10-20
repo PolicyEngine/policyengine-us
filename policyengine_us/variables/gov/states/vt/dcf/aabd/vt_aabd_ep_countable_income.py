@@ -7,10 +7,14 @@ class vt_aabd_ep_countable_income(Variable):
     label = "Vermont Essential Person assistance-group countable income"
     definition_period = MONTH
     unit = USD
-    # PDF pages 48-51
-    reference = "https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2700-AABD.pdf#page=48"
+    reference = (
+        # PDF pages 42, 48-51
+        "https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2700-AABD.pdf#page=42",
+        "https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2200-Reach-Up.pdf#page=70",
+    )
     documentation = """
-    Income of the marital unit's household members under rule 2786 plus
+    Income of the marital unit's household members under rule 2786, with
+    earnings counted before payroll deductions (Reach Up rule 2251(a)), plus
     vt_aabd_ep_additional_countable_income.
     NOTE: Reach Up income sources or exclusions without an SSI input are not
     modeled.
@@ -18,7 +22,8 @@ class vt_aabd_ep_countable_income(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.vt.dcf.aabd.ep
-        exclusions = parameters(period).gov.ssa.ssi.income.exclusions
+        ssi_income = parameters(period).gov.ssa.ssi.income
+        exclusions = ssi_income.exclusions
         abd = person("is_ssi_aged_blind_disabled", period.this_year)
         arrangement = person("vt_aabd_living_arrangement", period)
         la = arrangement.possible_values
@@ -27,9 +32,14 @@ class vt_aabd_ep_countable_income(Variable):
         in_household = (arrangement == la.INDEPENDENT) | (
             arrangement == la.HOUSEHOLD_OF_ANOTHER
         )
-        earned = in_household * max_(
-            person("ssi_earned_income", period) - p.employment_expense, 0
-        )
+        # Rule 2786 applies the Reach Up income rules, and Reach Up rule
+        # 2251(a) counts earnings "prior to any voluntary or involuntary
+        # deductions including ... insurance".
+        # NOTE: SSI excludes salary-reduction health premiums from wages (POMS
+        # SI 00820.102 C.2), so this sums SSI's earned sources rather than
+        # reading ssi_earned_income; the ssi term below keeps SSA's treatment.
+        gross_earned = add(person, period, ssi_income.sources.earned)
+        earned = in_household * max_(gross_earned - p.employment_expense, 0)
         abd_earned = person.marital_unit.sum(earned * abd)
         other_earned = person.marital_unit.sum(earned * ~abd)
         # NOTE: Rule 2786 withholds the $20 exclusion from VA pension only; with

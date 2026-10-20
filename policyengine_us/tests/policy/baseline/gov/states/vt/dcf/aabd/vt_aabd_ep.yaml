@@ -498,3 +498,97 @@
     # 994 + AABD 55.68 = 1,049.68 against the 1,596.80 individual maximum.
     vt_aabd_ep_countable_income: [1_049.68, 1_049.68]
     vt_aabd_ep: [0, 547]
+
+- name: Case 24, Pre-tax health premiums stay in an ineligible spouse's earnings.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        vt_aabd_ep_level: FULL
+      person2:
+        age: 40
+        # Reviewer's example: integration Case 10's $500 a month of wages, with
+        # $100 a month of health premiums paid by salary reduction.
+        employment_income: 6_000
+        pre_tax_health_insurance_premiums: 1_200
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # SSI wages 500 - 100 premiums = 400 do not exceed the 1,491 - 994 = 497
+    # FBR difference, so nothing is deemed and SSI is the 994 FBR.
+    ssi: [994, 0]
+    # Reach Up rule 2251(a) counts wages before insurance deductions:
+    # 500 - 90 employment expense - 20 general = 390, with no half-earnings
+    # exclusion, + SSI 994 + AABD 55.68 = 1,439.68.
+    vt_aabd_ep_countable_income: [1_439.68, 1_439.68]
+    # floor(1,596.80 - 1,439.68) = floor(157.12) = 157, as in integration Case 10.
+    vt_aabd_ep: [157, 0]
+
+- name: Case 25, Pre-tax health premiums stay in an aged worker's earnings.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        vt_aabd_ep_level: FULL
+        # Reviewer's example: $1,000 a month of wages, with $100 a month of
+        # health premiums paid by salary reduction.
+        employment_income: 12_000
+        pre_tax_health_insurance_premiums: 1_200
+      person2:
+        age: 60
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # SSI excludes the premiums (POMS SI 00820.102 C.2):
+    # (1,000 - 100 - 20 - 65) / 2 = 407.50, and 994 - 407.50 = 586.50.
+    ssi: [586.5, 0]
+    vt_aabd_federal: [55.68, 0]
+    # Reach Up rule 2251(a) keeps them: (1,000 - 90 - 20 - 65) / 2 = 412.50,
+    # + SSI 586.50 + AABD 55.68 = 1,054.68.
+    vt_aabd_ep_countable_income: [1_054.68, 1_054.68]
+    # floor(1,596.80 - 1,054.68) = floor(542.12) = 542.
+    vt_aabd_ep: [542, 0]
+
+- name: Case 26, A spouse in a Medicaid facility does not pass the resource test for the spouse at home.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 70
+        vt_aabd_ep_level: FULL
+        # Same scaled low earner Social Security benefit as Case 13: $1,305.42 a month.
+        social_security_retirement: 15_665
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # $30 facility rate; at home, 1,305.42 - 20 = 1,285.42 > 994, so no SSI.
+    ssi: [30, 0]
+    # Rule 2782 limits the group to members of the same household, so the
+    # facility spouse's SSI does not pass rule 2785's test for the spouse at
+    # home, who has no state resource determination.
+    vt_aabd_ep_resources_eligible: [false, false]
+    vt_aabd_ep: [0, 0]

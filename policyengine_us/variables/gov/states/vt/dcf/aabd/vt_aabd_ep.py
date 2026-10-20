@@ -22,7 +22,8 @@ class vt_aabd_ep(Variable):
         other = arrangement == la.HOUSEHOLD_OF_ANOTHER
         spouse = person("vt_aabd_ep_is_spouse", period)
         valid_level = (level != levels.NONE) & ~(spouse & (level == levels.PARTIAL_34))
-        # vt_aabd_ep_resources_eligible already tests the whole marital unit.
+        # vt_aabd_ep_resources_eligible already tests the marital unit's
+        # household members.
         abd_eligible = (
             person("is_ssi_aged_blind_disabled", period.this_year)
             & (independent | (other & spouse))
