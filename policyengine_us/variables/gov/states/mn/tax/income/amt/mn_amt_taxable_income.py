@@ -15,6 +15,9 @@ class mn_amt_taxable_income(Variable):
         # 2020 Schedule M1MT instructions, line 4: includes Schedule M1NC
         # line 6, the federal charitable deduction for non-itemizers.
         "https://www.revenue.state.mn.us/sites/default/files/2023-02/m1mt_20.pdf#page=2",
+        # Laws 2023, ch. 1, sec. 22(c)(2) and (d)(2): the addition applies
+        # to alternative minimum taxable income.
+        "https://www.revisor.mn.gov/laws/2023/0/Session+Law/Chapter/1/",
     )
     defined_for = StateCode.MN
 

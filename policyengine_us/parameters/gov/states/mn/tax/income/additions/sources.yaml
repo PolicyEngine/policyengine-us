@@ -1,7 +1,8 @@
 description: Minnesota adds these variables to federal adjusted gross income when computing its taxable income.
 values:
   # 2020 Schedule M1NC line 6 adds back the federal charitable deduction for
-  # non-itemizers (CARES Act sec. 2204), through Form M1M line 16.
+  # non-itemizers (CARES Act sec. 2204), through Form M1M line 16: Laws 2023,
+  # ch. 1, sec. 22(c)(2), effective retroactively for 2020.
   2020-01-01:
     - form_4972_lumpsum_distributions
     - charitable_contributions_ald
@@ -15,6 +16,8 @@ metadata:
   reference:
   - title: 2020 Minnesota Schedule M1NC, Federal Adjustments
     href: https://www.revenue.state.mn.us/sites/default/files/2024-02/m1nc_20.pdf#page=1
+  - title: Laws of Minnesota 2023, chapter 1, section 22 (temporary additions and subtractions)
+    href: https://www.revisor.mn.gov/laws/2023/0/Session+Law/Chapter/1/
   - title: 2021 Minnesota Schedule M1M, Income Additions and Subtractions, Page 3
     href: https://www.taxformfinder.org/forms/2021/2021-minnesota-form-m1m.pdf#page=3
   - title: 2022 Minnesota Schedule M1M, Income Additions and Subtractions, Page 3
