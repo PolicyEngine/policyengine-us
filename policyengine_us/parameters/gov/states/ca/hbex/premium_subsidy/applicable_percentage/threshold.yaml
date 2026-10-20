@@ -1,9 +1,11 @@
 description: California sets the federal poverty line thresholds for the applicable percentage brackets under the California Premium Subsidy program.
 values:
-  # 150% is untiered in the Program Design prose but sits in the 3.19% band:
-  # the Explainer labels the band "150% - At or Below 165%", and under
-  # 26 CFR 1.36B-3(g)(2) FPL-percentage truncation to 2 decimals collapses
-  # [150%, 151%) to 1.50, so 150% takes the 150-165% bracket rate.
+  # The adopted Program Design runs its bands "100% up to 150%" (0%) and
+  # "Above 150% up to 165%", so a fraction equal to a threshold takes the
+  # lower band: 150% pays 0%. The Policy Explainer labels the upper band
+  # "150% - At or Below 165%"; the model follows the adopted design. With
+  # the FPL fraction truncated to whole percentages (aca_magi_fraction,
+  # Form 8962 line 5), incomes from 150% to under 151% of FPL count as 150%.
   2026-01-01:
     - 1
     - 1.5

@@ -24,13 +24,19 @@ class ca_premium_subsidy_applicable_percentage(Variable):
         initial_rates = np.array(p.initial)
         final_rates = np.array(p.final)
 
-        # Find which bracket each tax unit falls into. searchsorted returns
-        # the index where magi_frac would be inserted; subtract 1 to get the
+        # Find which bracket each tax unit falls into. The adopted Program
+        # Design (Gov. Code 100800(c) delegates the design to the Board) runs
+        # its bands "up to" each threshold and "Above" the previous one, so a
+        # fraction equal to a threshold belongs to the lower band: exactly
+        # 150% FPL pays 0% in 2026. The Policy Explainer's "150% - At or Below
+        # 165%" band puts 150% in the upper band; the model follows the
+        # adopted design. searchsorted with side="left" returns the index of
+        # the first threshold at or above magi_frac; subtract 1 to get the
         # bracket index, clamped to the valid range. Rate arrays are one
         # shorter than thresholds (federal/NM convention), so bracket_idx is
         # always a valid left edge and bracket_idx + 1 a valid right edge.
         bracket_idx = clip(
-            np.searchsorted(thresholds, magi_frac, side="right") - 1,
+            np.searchsorted(thresholds, magi_frac, side="left") - 1,
             0,
             len(initial_rates) - 1,
         )

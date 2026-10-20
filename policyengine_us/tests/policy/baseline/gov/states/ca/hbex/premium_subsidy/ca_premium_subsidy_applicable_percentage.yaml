@@ -36,9 +36,11 @@
   output:
     ca_premium_subsidy_applicable_percentage: 0
 
-- name: Case 2, exactly 150% FPL -> 3.19% (start of the 150-165% ramp).
-  # searchsorted([1.0,1.5,1.65], 1.50, "right") = 2, -1 -> bracket 1 [1.5,1.65].
-  # position (1.50-1.50)/0.15 = 0 -> initial rate 0.0319.
+- name: Case 2, exactly 150% FPL -> 0% (the adopted design's "up to 150%" band).
+  # The 2026 Program Design's bands are "100% up to 150%" (0%) and "Above 150%
+  # up to 165%"; the Policy Explainer's "150% - At or Below 165%" would give
+  # 3.19%. The model follows the adopted design.
+  # searchsorted([1.0,1.5,1.65], 1.50, "left") = 1, -1 -> bracket 0 [1.0,1.5].
   period: 2026
   absolute_error_margin: 0.0001
   input:
@@ -55,7 +57,7 @@
         members: [person1]
         state_code: CA
   output:
-    ca_premium_subsidy_applicable_percentage: 0.0319
+    ca_premium_subsidy_applicable_percentage: 0
 
 - name: Case 3, exactly 165% FPL -> 3.91% (top of the ramp).
   # searchsorted([1.0,1.5,1.65], 1.65, "right") = 3, -1 = 2, clipped to bracket 1.
@@ -343,3 +345,25 @@
         state_code: CA
   output:
     ca_premium_subsidy_applicable_percentage: 0.050517  # model computes 0.05051714
+
+- name: Case 2b, 151% FPL starts the 150-165% ramp.
+  # searchsorted([1.0,1.5,1.65], 1.51, "left") = 2, -1 -> bracket 1 [1.5,1.65].
+  # position (1.51-1.50)/0.15 = 0.0667 -> 0.0319 + 0.0667 x (0.0391 - 0.0319)
+  # = 0.03238.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.51
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0.03238

@@ -11,7 +11,7 @@
 # asserts the intermediate values so a reviewer can follow the arithmetic:
 #   eligible = in_effect & any(is_aca_ptc_eligible) & 1.0 <= magi_frac <= 1.65
 #   pct      = CA schedule keyed on aca_magi_fraction
-#              (100-150%: 0%; 150-165%: 3.19% -> 3.91% linear)
+#              (100-150%: 0%; above 150-165%: 3.19% -> 3.91% linear)
 #   amount   = max(0, slcsp_annual - aca_ptc - pct * max(aca_magi, 0))
 #   result   = where(eligible, amount, 0)
 
@@ -43,9 +43,10 @@
     ca_premium_subsidy_applicable_percentage: 0
     ca_premium_subsidy: 2_200
 
-- name: Scenario 2, single age 40 exactly at 150% FPL (knot, pct jumps to 3.19%).
-  # magi_frac 1.50 -> bracket [1.5,1.65] start -> pct 0.0319. income 22_500.
-  # amount = max(0, 6_000 - 3_000 - 0.0319*22_500) = 6_000 - 3_000 - 717.75 = 2_282.25.
+- name: Scenario 2, single age 40 exactly at 150% FPL (top of the 0% band).
+  # The adopted 2026 Program Design puts 150% in its "up to 150%" band, so
+  # pct 0 (the Policy Explainer's band would give 3.19% and $2,282.25).
+  # amount = max(0, 6_000 - 3_000 - 0*22_500) = 3_000.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -67,8 +68,8 @@
         state_code: CA
   output:
     ca_premium_subsidy_eligible: true
-    ca_premium_subsidy_applicable_percentage: 0.0319
-    ca_premium_subsidy: 2_282.25
+    ca_premium_subsidy_applicable_percentage: 0
+    ca_premium_subsidy: 3_000
 
 - name: Scenario 3, single age 55 at 157.5% FPL (midpoint of the 150-165% ramp).
   # magi_frac 1.575 -> pct 0.0319 + 0.5*0.0072 = 0.0355. income 23_625.
