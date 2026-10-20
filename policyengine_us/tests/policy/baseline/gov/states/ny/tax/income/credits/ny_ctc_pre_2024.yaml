@@ -97,3 +97,32 @@
   output:
     ny_ctc: 330
     ny_ctc_pre_2024: 330
+
+- name: 2020 Empire State child credit recomputes the federal credit with line 19a
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 110_100
+        charitable_cash_donations: 300
+      person2:
+        age: 40
+      person3:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    # Federal AGI 110,100 - 300 = 109,800; IT-201 line 19a adds the 300 back.
+    adjusted_gross_income: 109_800
+    ny_recomputed_federal_agi: 110_100
+    # IT-213 Worksheet A (2020 instructions, file page 2) with line 19a:
+    # 110,100 is over the $110,000 joint threshold; the excess rounds up to
+    # $1,000, so 5% = $50 off the $1,000 credit; 33% x 950 = 313.50.
+    ny_ctc_pre_2024: 313.5

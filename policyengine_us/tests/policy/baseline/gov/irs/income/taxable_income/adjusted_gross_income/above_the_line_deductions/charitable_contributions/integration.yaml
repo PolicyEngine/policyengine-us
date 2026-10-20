@@ -337,3 +337,57 @@
     charitable_contributions_ald: 300
     adjusted_gross_income: 59_700
     taxable_income: 47_300
+
+- name: Case 13, 2020 choice without branching counts wagering losses with Schedule A.
+  period: 2020
+  input:
+    gov.simulation.branch_to_determine_itemization: false
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        gambling_winnings: 1_000
+        gambling_losses: 1_000
+        deductible_mortgage_interest: 12_300
+        charitable_cash_donations: 300
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    # Itemizing takes 12,300 + 300 + 1,000 of wagering losses (Schedule A
+    # line 16) from income; not itemizing takes 12,400 + 300 (line 10b).
+    # 13,600 > 12,700, so the unit itemizes.
+    tax_unit_itemizes: true
+    wagering_losses_deduction: 1_000
+    charitable_contributions_ald: 0
+
+- name: Case 14, 2020 choice without branching counts the QBI deduction each choice allows.
+  period: 2020
+  input:
+    gov.simulation.branch_to_determine_itemization: false
+    people:
+      person1:
+        age: 40
+        employment_income: 126_000
+        partnership_s_corp_income: 1_000_000
+        sstb_self_employment_income: -950_000
+        w2_wages_from_qualified_business: 500_000
+        deductible_mortgage_interest: 12_300
+        charitable_cash_donations: 300
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    # The SSTB loss phases in with taxable income, so the QBI deduction is
+    # $10,380 when itemizing and $10,000 when not (Sol review r2). Itemizing
+    # leaves taxable income $153,020 against $153,300 without.
+    tax_unit_itemizes: true
+    taxable_income: 153_020

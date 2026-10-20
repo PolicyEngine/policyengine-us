@@ -22,19 +22,23 @@ class tax_unit_itemizes(Variable):
             # that also give the tax liabilities compared below).
             itemizing = get_itemization_branch(tax_unit, period, itemizes=True)
             not_itemizing = get_itemization_branch(tax_unit, period, itemizes=False)
-            itemized_deductions = itemizing.calculate(
-                "itemized_taxable_income_deductions", period
-            )
-            # Not itemizing also lowers adjusted gross income (line 10b, and
-            # what follows from it, such as taxable Social Security), so the
-            # deductions compared are everything each choice takes from
-            # gross income: the standard deduction counts with that
-            # reduction.
+            # The deductions compared are everything each choice takes from
+            # gross income: every deduction from adjusted gross income on
+            # that side (with the qualified business income deduction and,
+            # for an itemizer, wagering losses), and, for not itemizing, the
+            # lower adjusted gross income (line 10b and what follows from it,
+            # such as taxable Social Security).
             agi_reduction = itemizing.calculate(
                 "adjusted_gross_income", period
             ) - not_itemizing.calculate("adjusted_gross_income", period)
+            itemized_deductions = itemizing.calculate(
+                "taxable_income_deductions_if_itemizing", period
+            )
             standard_deduction = (
-                not_itemizing.calculate("standard_deduction", period) + agi_reduction
+                not_itemizing.calculate(
+                    "taxable_income_deductions_if_not_itemizing", period
+                )
+                + agi_reduction
             )
         elif limitation.applies and limitation.obbb.applies:
             standard_deduction = tax_unit("standard_deduction", period)
