@@ -129,3 +129,26 @@
         state_code: AR
   output:
     ar_agi_indiv: [1_150, 1_150, 0]
+
+- name: Only taxable disability benefits enter Arkansas gross income on line 18.
+  period: 2024
+  input:
+    people:
+      person1:
+        irs_employment_income: 30_000
+        disability_benefits: 10_000
+        tax_exempt_disability_benefits: 7_000
+        age: 50
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    # 30,000 + (10,000 - 7,000) = 33,000.
+    ar_gross_income_indiv: 33_000
+    # The 3,000 is under the 6,000 cap and exempt in full.
+    ar_capped_retirement_or_disability_benefits_exemption_person: 3_000
+    ar_agi_indiv: 30_000
