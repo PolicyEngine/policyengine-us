@@ -311,6 +311,19 @@
       zero_rate:
         age: 40
         employment_income: 85_000
+    tax_units:
+      other:
+        members: [other]
+      unknown:
+        members: [unknown]
+      jackson:
+        members: [jackson]
+      tupelo:
+        members: [tupelo]
+      no_rate:
+        members: [no_rate]
+      zero_rate:
+        members: [zero_rate]
     households:
       other:
         members: [other]
