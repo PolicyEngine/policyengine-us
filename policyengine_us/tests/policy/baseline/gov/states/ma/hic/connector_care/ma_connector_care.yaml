@@ -2,24 +2,31 @@
 #
 # ma_connector_care (TaxUnit, YEAR, USD, defined_for StateCode.MA):
 #   n_members         = count of ma_connector_care_member_eligible (= is_aca_ptc_eligible)
-#   per_person_month  = enrollee_premium.calc(aca_magi_fraction)   # single_amount bracket
+#   ratio             = max(aca_magi, 0) / tax_unit_fpg(prior year)  # exact, not truncated
+#   per_person_month  = enrollee_premium.calc(ratio, right=True)   # single_amount bracket
 #   contribution      = MONTHS_IN_YEAR (12) * per_person_month * n_members
 #   slcsp_annual      = add(tax_unit, period, ["slcsp"])           # MONTH var summed to year
 #   subsidy           = max(0, slcsp_annual - aca_ptc - contribution)
 #   amount            = where(ma_connector_care_eligible, subsidy, 0)
 #
-# All of slcsp / aca_ptc / aca_magi_fraction / is_aca_ptc_eligible are supplied
-# directly so each expected value is hand-verifiable. slcsp is a MONTH variable;
+# slcsp / aca_ptc / is_aca_ptc_eligible are supplied directly, and income is
+# aca_magi against a prior-year tax_unit_fpg pinned to $10,000, so each expected
+# value is hand-verifiable. Income-derived cases at the end use the actual 2025
+# one-person guideline, $15,650. slcsp is a MONTH variable;
 # supplying it at the YEAR period sets the annual total, so the values below are
 # annual SLCSP.
 #
-# Per-person monthly enrollee premium bracket (single_amount, lower-exclusive):
-#   [1.0, 1.5001)  -> $0     (Plan Type 2A)
-#   [1.5001, 2.0001) -> $53  (Plan Type 2B)
-#   [2.0001, 2.5001) -> $103 (Plan Type 3A)
-#   [2.5001, 3.0001) -> $152 (Plan Type 3B)
-#   [3.0001, ...)  -> $235   (Plan Type 3C)
-# So at EXACTLY 150%/200%/250%/300% FPL the household is still in the LOWER band.
+# Per-person monthly enrollee premium bracket (single_amount, evaluated
+# right-closed; 956 CMR 12.04(3)(b): "at or below 150%", "over 150% and not over
+# 200%", ...):
+#   [1.0, 1.5]  -> $0     (Plan Type 2A)
+#   (1.5, 2.0]  -> $53    (Plan Type 2B)
+#   (2.0, 2.5]  -> $103   (Plan Type 3A)
+#   (2.5, 3.0]  -> $152   (Plan Type 3B)
+#   (3.0, 4.0]  -> $235   (Plan Type 3C)
+# So at EXACTLY 150%/200%/250%/300% FPL the household is still in the LOWER band,
+# and any income above an edge is in the higher band, even below the next whole
+# percentage point.
 
 # --- Each band exercised with a positive residual, single member (n=1) ---
 
@@ -35,7 +42,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.4
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 6_000
         aca_ptc: 5_500
     households:
@@ -57,7 +66,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.75
+        aca_magi: 17_500
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 7_200
         aca_ptc: 5_000
     households:
@@ -79,7 +90,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.25
+        aca_magi: 22_500
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 9_000
         aca_ptc: 5_000
     households:
@@ -101,7 +114,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.75
+        aca_magi: 27_500
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 9_000
         aca_ptc: 4_000
     households:
@@ -123,7 +138,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 3.5
+        aca_magi: 35_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 8_000
         aca_ptc: 4_000
     households:
@@ -149,7 +166,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.5
+        aca_magi: 15_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 12_000
         aca_ptc: 0
     households:
@@ -171,7 +190,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.51
+        aca_magi: 15_100
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 12_000
         aca_ptc: 0
     households:
@@ -193,7 +214,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.0
+        aca_magi: 20_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 12_000
         aca_ptc: 0
     households:
@@ -215,7 +238,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.01
+        aca_magi: 20_100
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 12_000
         aca_ptc: 0
     households:
@@ -237,7 +262,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.5
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 12_000
         aca_ptc: 0
     households:
@@ -259,7 +286,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.51
+        aca_magi: 25_100
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 12_000
         aca_ptc: 0
     households:
@@ -281,7 +310,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 3.0
+        aca_magi: 30_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 12_000
         aca_ptc: 0
     households:
@@ -303,7 +334,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 3.01
+        aca_magi: 30_100
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 12_000
         aca_ptc: 0
     households:
@@ -331,7 +364,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        aca_magi_fraction: 1.75
+        aca_magi: 17_500
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 7_200
         aca_ptc: 5_000
     households:
@@ -357,7 +392,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        aca_magi_fraction: 2.25
+        aca_magi: 22_500
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 9_000
         aca_ptc: 5_000
     households:
@@ -380,7 +417,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 3.5
+        aca_magi: 35_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 5_000
         aca_ptc: 3_000
     households:
@@ -402,7 +441,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.0
+        aca_magi: 20_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 9_000
         aca_ptc: 0
     households:
@@ -424,7 +465,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.4
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 6_000
         aca_ptc: 0
     households:
@@ -446,7 +489,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.4
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2024: 10_000
         slcsp: 6_000
         aca_ptc: 0
     households:
@@ -472,7 +517,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.4
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 0
         aca_ptc: 0
     households:
@@ -497,7 +544,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.75
+        aca_magi: 17_500
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 5_636
         aca_ptc: 5_000
     households:
@@ -533,7 +582,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5]
-        aca_magi_fraction: 3.5
+        aca_magi: 35_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 20_000
         aca_ptc: 0
     households:
@@ -557,7 +608,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.0
+        aca_magi: 10_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 6_000
         aca_ptc: 5_500
     households:
@@ -566,3 +619,210 @@
         state_code: MA
   output:
     ma_connector_care: 500
+
+- name: Case 24, 150% of the 2025 guideline ($23,475) is Plan Type 2A ($0/mo).
+  # contribution = 12*0*1 = 0. subsidy = 9_000 - 5_000 - 0 = 4_000.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 23_475
+        slcsp: 9_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    aca_magi_fraction: 1.50
+    ma_connector_care: 4_000
+
+- name: Case 25, 150.003% of the 2025 guideline ($23,475.47) is Plan Type 2B ($53/mo).
+  # contribution = 12*53*1 = 636. subsidy = 9_000 - 5_000 - 636 = 3_364.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 23_475.47
+        slcsp: 9_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    aca_magi_fraction: 1.50
+    ma_connector_care: 3_364
+
+- name: Case 26, 150.994% of the 2025 guideline ($23,630.56) is Plan Type 2B ($53/mo).
+  # contribution = 12*53*1 = 636. subsidy = 9_000 - 5_000 - 636 = 3_364.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 23_630.56
+        slcsp: 9_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    aca_magi_fraction: 1.50
+    ma_connector_care: 3_364
+
+- name: Case 27, 200% of the 2025 guideline ($31,300) is Plan Type 2B ($53/mo).
+  # contribution = 12*53*1 = 636. subsidy = 9_000 - 5_000 - 636 = 3_364.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 31_300
+        slcsp: 9_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    aca_magi_fraction: 2.00
+    ma_connector_care: 3_364
+
+- name: Case 28, 200.003% of the 2025 guideline ($31,300.47) is Plan Type 3A ($103/mo).
+  # contribution = 12*103*1 = 1_236. subsidy = 9_000 - 5_000 - 1_236 = 2_764.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 31_300.47
+        slcsp: 9_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    aca_magi_fraction: 2.00
+    ma_connector_care: 2_764
+
+- name: Case 29, 250% of the 2025 guideline ($39,125) is Plan Type 3A ($103/mo).
+  # contribution = 12*103*1 = 1_236. subsidy = 9_000 - 5_000 - 1_236 = 2_764.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        slcsp: 9_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    aca_magi_fraction: 2.50
+    ma_connector_care: 2_764
+
+- name: Case 30, 250.003% of the 2025 guideline ($39,125.47) is Plan Type 3B ($152/mo).
+  # contribution = 12*152*1 = 1_824. subsidy = 9_000 - 5_000 - 1_824 = 2_176.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125.47
+        slcsp: 9_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    aca_magi_fraction: 2.50
+    ma_connector_care: 2_176
+
+- name: Case 31, 300% of the 2025 guideline ($46,950) is Plan Type 3B ($152/mo).
+  # contribution = 12*152*1 = 1_824. subsidy = 9_000 - 5_000 - 1_824 = 2_176.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 46_950
+        slcsp: 9_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    aca_magi_fraction: 3.00
+    ma_connector_care: 2_176
+
+- name: Case 32, 300.003% of the 2025 guideline ($46,950.47) is Plan Type 3C ($235/mo).
+  # contribution = 12*235*1 = 2_820. subsidy = 9_000 - 5_000 - 2_820 = 1_180.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 46_950.47
+        slcsp: 9_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    aca_magi_fraction: 3.00
+    ma_connector_care: 1_180
