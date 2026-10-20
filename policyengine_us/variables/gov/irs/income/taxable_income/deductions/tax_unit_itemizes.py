@@ -41,7 +41,11 @@ class tax_unit_itemizes(Variable):
                 + agi_reduction
             )
         elif limitation.applies and limitation.obbb.applies:
-            standard_deduction = tax_unit("standard_deduction", period)
+            standard_deduction = add(
+                tax_unit,
+                period,
+                ["standard_deduction", "charitable_deduction_for_non_itemizers"],
+            )
             # The itemized deductions the unit would claim if it itemized.
             # The P.L. 119-21 section 68 limitation nets them of the
             # qualified business income deduction, which depends on the
@@ -53,7 +57,11 @@ class tax_unit_itemizes(Variable):
                 tax_unit, period, itemizes=True
             ).calculate("itemized_taxable_income_deductions", period)
         else:
-            standard_deduction = tax_unit("standard_deduction", period)
+            standard_deduction = add(
+                tax_unit,
+                period,
+                ["standard_deduction", "charitable_deduction_for_non_itemizers"],
+            )
             itemized_deductions = tax_unit("itemized_taxable_income_deductions", period)
         if parameters(period).gov.simulation.branch_to_determine_itemization:
             # determine federal itemization behavior by comparing tax liability

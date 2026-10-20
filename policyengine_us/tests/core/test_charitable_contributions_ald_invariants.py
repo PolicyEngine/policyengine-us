@@ -214,8 +214,7 @@ def _check(units, year, without_branching=False):
     ma = in_state("MA")
     np.testing.assert_allclose(calc("ma_part_b_agi")[ma], wages[ma], atol=1)
 
-    # 6. Without branching, the choice leaves the lower taxable income. (In
-    # 2021 the comparison ignores the 170(p) deduction, a separate issue.)
+    # 6. Without branching, the choice leaves the lower taxable income.
     if without_branching:
         plain = Simulation(situation=_situation(units, year), reform=NoBranching)
         taxable_income = np.asarray(plain.calculate("taxable_income", year))
