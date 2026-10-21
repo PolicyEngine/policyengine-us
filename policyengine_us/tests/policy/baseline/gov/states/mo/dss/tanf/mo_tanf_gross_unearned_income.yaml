@@ -82,7 +82,7 @@
     mo_tanf_gross_unearned_income: 200.0
     mo_tanf_assistance_unit_size: 2
     mo_tanf_eligible: true
-    mo_tanf: 34.08628
+    mo_tanf: 34
 
 - name: Unemployment remains countable
   period: 2026-01
@@ -112,7 +112,7 @@
     mo_tanf_gross_unearned_income: 200.0
     mo_tanf_assistance_unit_size: 2
     mo_tanf_eligible: true
-    mo_tanf: 34.08628
+    mo_tanf: 34
 
 - name: Mixed workers compensation and unemployment are counted once
   period: 2026-01
@@ -142,7 +142,7 @@
     mo_tanf_gross_unearned_income: 200.0
     mo_tanf_assistance_unit_size: 2
     mo_tanf_eligible: true
-    mo_tanf: 34.08628
+    mo_tanf: 34
 
 - name: No income receives the maximum grant
   period: 2026-01
@@ -172,7 +172,7 @@
     mo_tanf_gross_unearned_income: 0.0
     mo_tanf_assistance_unit_size: 2
     mo_tanf_eligible: true
-    mo_tanf: 234.08628
+    mo_tanf: 234
 
 - name: Workers compensation above the payment standard makes the unit ineligible
   period: 2026-01
@@ -235,7 +235,7 @@
     mo_tanf_is_assistance_unit_member: [true, true, false]
     mo_tanf_gross_unearned_income: 50
     mo_tanf_assistance_unit_size: 2
-    mo_tanf: 184.08628
+    mo_tanf: 184
 
 - name: Workers compensation of an SSI recipient does not count
   period: 2026-01
@@ -264,7 +264,7 @@
     mo_tanf_is_assistance_unit_member: [false, true]
     mo_tanf_gross_unearned_income: 0
     mo_tanf_assistance_unit_size: 1
-    mo_tanf: 135.68718
+    mo_tanf: 135
 
 - name: Taxable and tax-exempt interest are excluded from Missouri TANF income
   period: 2026-01
@@ -295,7 +295,7 @@
     mo_tanf_gross_unearned_income: 0
     mo_tanf_countable_income: 0
     mo_tanf_eligible: true
-    mo_tanf: 234.08628
+    mo_tanf: 234
 
 - name: Interest is excluded while dividends and workers compensation count
   period: 2026-01
@@ -329,7 +329,7 @@
     mo_tanf_gross_unearned_income: 200
     mo_tanf_countable_income: 200
     mo_tanf_eligible: true
-    mo_tanf: 34.08628
+    mo_tanf: 34
 
 - name: Disability payments and strike benefits count alongside workers compensation
   period: 2026-01

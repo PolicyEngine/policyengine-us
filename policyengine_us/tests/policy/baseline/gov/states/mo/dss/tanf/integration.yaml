@@ -29,7 +29,7 @@
     mo_tanf_income_eligible: true
     mo_tanf_resources_eligible: true
     mo_tanf_eligible: true
-    mo_tanf: 234.086
+    mo_tanf: 234
 
 - name: Family of 3 with earned income below maximum
   period: 2024
@@ -90,9 +90,9 @@
     mo_tanf_income_eligible: true
     mo_tanf_eligible: true
     # Monthly: $250 earned - ($90 + $30 + $130 / 3) deductions leaves
-    # $86.67 countable; $292.09 - $86.67 = $205.42 benefit; * 12 =
-    # $2,465.08.
-    mo_tanf: 2_465.08
+    # $86.67 countable; $292.09 - $86.67 = $205.42, lowered to $205
+    # (13 CSR 40-2.310(14)); * 12 = $2,460.
+    mo_tanf: 2_460
 
 - name: Family of 3 income at exact 185% limit
   period: 2024
@@ -145,7 +145,7 @@
   output:
     mo_tanf_resources_eligible: true
     mo_tanf_eligible: true
-    mo_tanf: 2_809.035
+    mo_tanf: 2_808
 
 - name: Family with resources exceeding $1000 limit
   period: 2024
@@ -248,7 +248,7 @@
     mo_tanf_percentage_of_need_test: true
     mo_tanf_income_eligible: true
     mo_tanf_eligible: true
-    mo_tanf: 1_052.724
+    mo_tanf: 1_044
 
 - name: Benefit calculation
   period: 2024
@@ -275,7 +275,7 @@
     mo_tanf_standard_of_need: 8_136
     mo_tanf_maximum_benefit: 2_809.035
     mo_tanf_eligible: true
-    mo_tanf: 2_809.035
+    mo_tanf: 2_808
 
 - name: A 19-year-old non-student household member is excluded from the unit
   period: 2024-01
@@ -307,7 +307,7 @@
     mo_tanf_assistance_unit_size: 2
     mo_tanf_standard_of_need: 678
     mo_tanf_maximum_benefit: 234.086
-    mo_tanf: 234.086
+    mo_tanf: 234
 
 - name: Pregnancy alone does not create eligibility without a dependent child
   period: 2024-01
@@ -357,7 +357,7 @@
     mo_tanf_gross_earned_income: 0
     mo_tanf_gross_income_eligible: true
     mo_tanf_eligible: true
-    mo_tanf: 234.086
+    mo_tanf: 234
 
 - name: Student teen parent's earnings do not affect the grant
   period: 2024-01
@@ -386,7 +386,7 @@
     # who is a full-time secondary-school student.
     mo_tanf_gross_earned_income: 0
     mo_tanf_eligible: true
-    mo_tanf: 234.086
+    mo_tanf: 234
 
 - name: An SSI-recipient parent is excluded from needs and income
   period: 2024-01
@@ -420,7 +420,7 @@
     mo_tanf_countable_income: 0
     mo_tanf_maximum_benefit: 135.687
     mo_tanf_eligible: true
-    mo_tanf: 135.687
+    mo_tanf: 135
 
 - name: A family whose only child receives SSI gets a caretaker-only grant
   period: 2024-01
@@ -451,7 +451,7 @@
     # parent").
     mo_tanf_assistance_unit_size: 1
     mo_tanf_eligible: true
-    mo_tanf: 135.69
+    mo_tanf: 135
 
 - name: An SSI child's own savings do not disqualify the caretaker-only unit
   period: 2024-01
@@ -484,7 +484,7 @@
     mo_tanf_resources_eligible: true
     mo_tanf_assistance_unit_size: 1
     mo_tanf_eligible: true
-    mo_tanf: 135.69
+    mo_tanf: 135
 
 - name: A family whose child and caretaker both receive SSI has no payable unit
   period: 2024-01
@@ -543,7 +543,7 @@
     # size-2 payment level while the SSI child is excluded.
     mo_tanf_assistance_unit_size: 2
     mo_tanf_eligible: true
-    mo_tanf: 234.09
+    mo_tanf: 234
 
 - name: An SSI child with an eligible sibling stays out of the unit
   period: 2024-01
@@ -576,7 +576,7 @@
     # (13 CSR 40-2.310(1)(F); DSS Manual 0210.005.10).
     mo_tanf_assistance_unit_size: 2
     mo_tanf_eligible: true
-    mo_tanf: 234.09
+    mo_tanf: 234
 
 - name: A caretaker's own assets can still fail the resource test
   period: 2024-01
@@ -636,12 +636,13 @@
   output:
     # Per earner: $90 + $30 + ($200 - $120) / 3 = $146.67; x2 = $293.33
     # (13 CSR 40-2.310(9)(A) applies the disregards to each participant).
-    # Countable: $400 - $293.33 = $106.67; benefit: $292.09 - $106.67.
+    # Countable: $400 - $293.33 = $106.67; benefit: $292.09 - $106.67
+    # = $185.42, lowered to $185.
     mo_tanf_gross_earned_income: 400
     mo_tanf_earned_income_deductions: 293.33
     mo_tanf_countable_income: 106.67
     mo_tanf_eligible: true
-    mo_tanf: 185.42
+    mo_tanf: 185
 
 - name: Two enrolled earners end to end
   period: 2024-01
@@ -677,7 +678,7 @@
     mo_tanf_earned_income_deductions: 400
     mo_tanf_countable_income: 0
     mo_tanf_eligible: true
-    mo_tanf: 292.09
+    mo_tanf: 292
 
 - name: A self-employment loss does not offset another earner's income
   period: 2024-01
@@ -708,11 +709,12 @@
     # The loss earner's -$300 deduction cancels their -$300 gross, so
     # countable income equals the wage earner's own result: $480 - $240
     # = $240 (13 CSR 40-2.310(9)(A) applies the disregards per
-    # participant; no cross-earner loss offset). Benefit: $292.09 - $240.
+    # participant; no cross-earner loss offset). Benefit: $292.09 - $240
+    # = $52.09, lowered to $52.
     mo_tanf_gross_earned_income: 180
     mo_tanf_earned_income_deductions: -60
     mo_tanf_countable_income: 240
-    mo_tanf: 52.09
+    mo_tanf: 52
 
 - name: A self-employment loss does not offset an enrolled earner's income
   period: 2024-01
@@ -745,4 +747,4 @@
     # work exemption = $410; the loss earner's -$300 cancels their own
     # gross, leaving countable income $480 - $410 = $70.
     mo_tanf_countable_income: 70
-    mo_tanf: 222.09
+    mo_tanf: 222

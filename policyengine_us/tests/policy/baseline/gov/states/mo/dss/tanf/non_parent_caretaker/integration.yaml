@@ -1,8 +1,10 @@
 # Missouri TANF non-parent caretaker relative (NPCR) rules: 13 CSR 40-2.300(5)(D),
 # 13 CSR 40-2.310(3) and (8)(B)1.C, and DSS Manual 0210.005.05, 0210.005.10,
 # 0210.005.15, 0210.005.35, 0210.005.40 and 0210.010.10.
-# Standard of need: size 1 $393, size 2 $678, size 3 $846. Payment is 34.526%
-# of the standard: size 1 $135.687, size 2 $234.086, size 3 $292.090.
+# Standard of need: size 1 $393, size 2 $678, size 3 $846. The maximum is
+# 34.526% of the standard (size 1 $135.687, size 2 $234.086, size 3
+# $292.090), and 13 CSR 40-2.310(14) lowers the payment to the whole
+# dollar: size 1 $135, size 2 $234, size 3 $292.
 
 - name: Grandparent with no spouse and $100 unemployment is left out because inclusion lowers the grant
   period: 2026-01
@@ -30,18 +32,18 @@
         state_code: MO
   output:
     # No spouse in the home, so the NPCR is needy without a budget
-    # (DSS Manual 0210.005.35). Included: 292.090 - 100 = 192.090.
-    # Excluded: the two children alone get 234.086. DSS Manual 0210.005.15
+    # (DSS Manual 0210.005.35). Included: 292.090 - 100 = 192.090, paid as 192.
+    # Excluded: the two children alone get 234. DSS Manual 0210.005.15
     # forbids an optional inclusion that reduces the grant.
     mo_tanf_non_parent_caretaker: [true, false, false]
     mo_tanf_non_parent_caretaker_needy: true
-    mo_tanf_if_non_parent_caretaker_included: 192.090
-    mo_tanf_if_non_parent_caretaker_excluded: 234.086
+    mo_tanf_if_non_parent_caretaker_included: 192
+    mo_tanf_if_non_parent_caretaker_excluded: 234
     mo_tanf_non_parent_caretaker_included: false
     mo_tanf_is_assistance_unit_member: [false, true, true]
     mo_tanf_assistance_unit_size: 2
     mo_tanf_gross_unearned_income: 0
-    mo_tanf: 234.086
+    mo_tanf: 234
 
 - name: The same household without the non-parent input keeps the grandparent as a caretaker
   period: 2026-01
@@ -70,7 +72,7 @@
     mo_tanf_non_parent_caretaker: [false, false, false]
     mo_tanf_non_parent_caretaker_needy: false
     mo_tanf_assistance_unit_size: 3
-    mo_tanf: 192.090
+    mo_tanf: 192
 
 - name: Grandparent with $700 unemployment and a $0 spouse is not needy and is excluded
   period: 2026-01
@@ -112,7 +114,7 @@
     mo_tanf_is_assistance_unit_member: [false, false, true, true]
     mo_tanf_assistance_unit_size: 2
     mo_tanf_eligible: true
-    mo_tanf: 234.086
+    mo_tanf: 234
 
 - name: The same household without the non-parent input stays ineligible at size four
   period: 2026-01
@@ -169,12 +171,12 @@
         state_code: MO
   output:
     mo_tanf_non_parent_caretaker_needy: true
-    mo_tanf_if_non_parent_caretaker_included: 292.090
-    mo_tanf_if_non_parent_caretaker_excluded: 234.086
+    mo_tanf_if_non_parent_caretaker_included: 292
+    mo_tanf_if_non_parent_caretaker_excluded: 234
     mo_tanf_non_parent_caretaker_included: true
     mo_tanf_is_assistance_unit_member: [true, true, true]
     mo_tanf_assistance_unit_size: 3
-    mo_tanf: 292.090
+    mo_tanf: 292
 
 - name: A needy grandparent who opts out is excluded even though inclusion would raise the grant
   period: 2026-01
@@ -206,7 +208,7 @@
     mo_tanf_non_parent_caretaker_needy: true
     mo_tanf_non_parent_caretaker_included: false
     mo_tanf_assistance_unit_size: 2
-    mo_tanf: 234.086
+    mo_tanf: 234
 
 - name: Grandparent with a $0 spouse is needy through the budget and is included
   period: 2026-01
@@ -241,7 +243,7 @@
     mo_tanf_non_parent_caretaker_included: true
     mo_tanf_is_assistance_unit_member: [true, false, true, true]
     mo_tanf_assistance_unit_size: 3
-    mo_tanf: 292.090
+    mo_tanf: 292
 
 - name: A spouse with $700 of income makes the grandparent not needy
   period: 2026-01
@@ -274,7 +276,7 @@
     mo_tanf_non_parent_caretaker_countable_income: 700
     mo_tanf_non_parent_caretaker_needy: false
     mo_tanf_assistance_unit_size: 2
-    mo_tanf: 234.086
+    mo_tanf: 234
 
 - name: The same spouse on SSI makes the grandparent needy without a budget
   period: 2026-01
@@ -312,7 +314,7 @@
     mo_tanf_non_parent_caretaker_included: true
     mo_tanf_is_assistance_unit_member: [true, false, true, true]
     mo_tanf_assistance_unit_size: 3
-    mo_tanf: 292.090
+    mo_tanf: 292
 
 - name: When the head receives SSI the spouse is the caretaker relative and is needy
   period: 2026-01
@@ -347,7 +349,7 @@
     mo_tanf_non_parent_caretaker_included: true
     mo_tanf_is_assistance_unit_member: [false, true, true]
     mo_tanf_assistance_unit_size: 2
-    mo_tanf: 234.086
+    mo_tanf: 234
 
 - name: A grandparent with $800 and no spouse is needy but excluded because inclusion makes the unit ineligible
   period: 2026-01
@@ -381,7 +383,7 @@
     mo_tanf_if_non_parent_caretaker_included: 0
     mo_tanf_non_parent_caretaker_included: false
     mo_tanf_assistance_unit_size: 2
-    mo_tanf: 234.086
+    mo_tanf: 234
 
 - name: A needy grandparent whose only grandchild receives SSI receives a caretaker-only grant
   period: 2026-01
@@ -411,7 +413,7 @@
     mo_tanf_non_parent_caretaker_included: true
     mo_tanf_is_assistance_unit_member: [true, false]
     mo_tanf_assistance_unit_size: 1
-    mo_tanf: 135.687
+    mo_tanf: 135
 
 - name: A grandparent is not a non-parent caretaker when the grandchild's adult mother lives in the home
   period: 2026-01
@@ -448,7 +450,7 @@
     mo_tanf_non_parent_caretaker_needy: false
     mo_tanf_is_assistance_unit_member: [false, true, true]
     mo_tanf_assistance_unit_size: 2
-    mo_tanf: 234.086
+    mo_tanf: 234
 
 - name: A mother who is herself a dependent child does not block her aunt as caretaker relative
   period: 2026-01
@@ -481,7 +483,7 @@
     mo_tanf_non_parent_caretaker: [true, false, false]
     mo_tanf_non_parent_caretaker_included: true
     mo_tanf_assistance_unit_size: 3
-    mo_tanf: 292.090
+    mo_tanf: 292
 
 - name: A stepparent marked by mistake as a non-parent is still excluded when the parent is in the home
   period: 2026-01
@@ -538,8 +540,8 @@
         members: [grandparent, grandchild1, grandchild2]
         state_code: MO
   output:
-    # 12 months of the children-only grant: 12 x 234.086.
-    mo_tanf: 2_809.04
+    # 12 months of the children-only grant: 12 x 234.
+    mo_tanf: 2_808
 
 - name: An excluded caretaker's resources do not count
   period: 2026-01
@@ -573,4 +575,4 @@
     mo_tanf_non_parent_caretaker_included: false
     mo_tanf_countable_resources: 0
     mo_tanf_resources_eligible: true
-    mo_tanf: 234.086
+    mo_tanf: 234

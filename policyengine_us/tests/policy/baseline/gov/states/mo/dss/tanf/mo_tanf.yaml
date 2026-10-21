@@ -16,7 +16,9 @@
     mo_tanf_standard_of_need: 846
     mo_tanf_countable_income: 0
   output:
-    mo_tanf: 292.09
+    # 846 x 0.34526 = 292.08996, lowered to the whole dollar under
+    # 13 CSR 40-2.310(14).
+    mo_tanf: 292
 
 - name: Eligible household with countable income receives reduced benefit
   period: 2024-01
@@ -26,7 +28,8 @@
     mo_tanf_standard_of_need: 846
     mo_tanf_countable_income: 100
   output:
-    mo_tanf: 192.09
+    # 292.08996 - 100 = 192.08996, lowered to 192.
+    mo_tanf: 192
 
 - name: Benefit below $10 minimum threshold is not paid
   period: 2024-01
@@ -36,7 +39,7 @@
     mo_tanf_standard_of_need: 846
     mo_tanf_countable_income: 285
   output:
-    # $292.09 - $285 = $7.09, but minimum payment is $10
+    # $292.08996 - $285 = $7.08996, lowered to $7, below the $10 minimum.
     mo_tanf: 0
 
 - name: Benefit of $10
@@ -47,7 +50,8 @@
     mo_tanf_standard_of_need: 846
     mo_tanf_countable_income: 282
   output:
-    mo_tanf: 10.09
+    # $292.08996 - $282 = $10.08996, lowered to $10.
+    mo_tanf: 10
 
 - name: Countable income exceeds maximum benefit results in zero
   period: 2024-01
@@ -58,3 +62,47 @@
     mo_tanf_countable_income: 300
   output:
     mo_tanf: 0
+
+- name: A size-two zero-income grant is lowered to whole dollars.
+  period: 2026-01
+  input:
+    state_code: MO
+    mo_tanf_eligible: true
+    mo_tanf_standard_of_need: 678
+    mo_tanf_countable_income: 0
+  output:
+    # 678 x 0.34526 = 234.08628; 13 CSR 40-2.310(14) lowers it to 234.
+    mo_tanf: 234
+
+- name: A payable grant just above ten dollars is lowered to ten.
+  period: 2026-01
+  input:
+    state_code: MO
+    mo_tanf_eligible: true
+    mo_tanf_standard_of_need: 678
+    mo_tanf_countable_income: 223.25
+  output:
+    # 234.08628 - 223.25 = 10.83628, lowered to 10.
+    mo_tanf: 10
+
+- name: A grant below ten dollars remains unpaid.
+  period: 2026-01
+  input:
+    state_code: MO
+    mo_tanf_eligible: true
+    mo_tanf_standard_of_need: 678
+    mo_tanf_countable_income: 224.10
+  output:
+    # 234.08628 - 224.10 = 9.98628, lowered to 9, below the $10 minimum.
+    mo_tanf: 0
+
+- name: A grant of exactly ten dollars is paid.
+  period: 2026-01
+  input:
+    state_code: MO
+    mo_tanf_eligible: true
+    mo_tanf_maximum_benefit: 234
+    mo_tanf_countable_income: 224
+  output:
+    # 234 - 224 = 10, not less than the $10 minimum.
+    mo_tanf: 10

@@ -74,7 +74,7 @@
     mo_tanf_non_parent_caretaker_needy: true
     mo_tanf_non_parent_caretaker_included: true
     mo_tanf_assistance_unit_size: 2
-    mo_tanf: 234.086
+    mo_tanf: 234
 
 - name: A non-parent caretaker who receives SSI is never the caretaker relative
   period: 2026-01
@@ -101,7 +101,7 @@
     mo_tanf_non_parent_caretaker: [false, false]
     mo_tanf_non_parent_caretaker_needy: false
     mo_tanf_is_assistance_unit_member: [false, true]
-    mo_tanf: 135.687
+    mo_tanf: 135
 
 - name: A parent on SSI in the home still excludes a non-parent caretaker
   period: 2026-01
@@ -198,7 +198,7 @@
     mo_tanf_non_parent_caretaker: [true, false, false]
     mo_tanf_non_parent_caretaker_included: true
     mo_tanf_assistance_unit_size: 2
-    mo_tanf: 234.086
+    mo_tanf: 234
 
 - name: Without the override the default rules out a great-grandparent too old to be the child's parent
   period: 2026-01
@@ -233,5 +233,5 @@
     mo_tanf_non_parent_caretaker: [true, false, false]
     mo_tanf_non_parent_caretaker_included: true
     mo_tanf_assistance_unit_size: 2
-    mo_tanf: 234.086
+    mo_tanf: 234
 
