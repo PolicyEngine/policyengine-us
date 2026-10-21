@@ -6,6 +6,10 @@ Follow the repository guidance in `CLAUDE.md` for commands, style, changelog ent
 
 Follow [Test design and CI cost](CLAUDE.md#test-design-and-ci-cost) before adding or expanding tests. Use variable-named YAML tests for policy calculations; reserve Python tests for behavior YAML cannot exercise. Preserve Core/data compatibility and isolation coverage, avoid repeated full-model construction, and do not add CI runners or parallel heavy processes without explicit authorization. Document the purpose and measured cost of new simulation-heavy Python tests in the PR.
 
+## Statutes against forms, instructions and agency practice
+
+When a statute conflicts with a regulation, form, instructions, manual or stated agency practice, follow the statute; forms and instructions fill gaps where the statute is silent. Register the choice and mark the code as [CONTRIBUTING.md](CONTRIBUTING.md#source-conflicts) describes. Never leave it only in a comment or a PR body.
+
 ## Partner API contract tests
 
 Files under `policyengine_us/tests/policy/baseline/partners/**` are API partner contract tests.

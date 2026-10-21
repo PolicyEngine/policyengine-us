@@ -1,0 +1,310 @@
+# 2021 Schedule A instructions, Mortgage Insurance Premiums Deduction
+# Worksheet, lines 1-7: round positive excess AGI up to the next $1,000
+# ($500 if married filing separately), divide by $10,000 ($5,000), cap the
+# reduction at 100%, and subtract that share of qualified premiums.
+# https://www.irs.gov/pub/irs-prior/i1040sca--2021.pdf#page=10
+# Pub. 936 (2021), Table 1, line 13 instructions apply this AGI worksheet
+# to premiums, without multiplying them by the qualified-loan-limit share.
+# https://www.irs.gov/pub/irs-prior/p936--2021.pdf#page=14
+
+- name: Qualified premiums are deductible in 2021
+  period: 2021
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 90_000
+    mortgage_insurance_premiums: 1_000
+  output:
+    # Worksheet line 2 ($90,000) <= line 3 ($100,000): deduct line 1 in full.
+    deductible_mortgage_insurance_premiums: 1_000
+
+- name: Qualified premiums are not deductible in 2022
+  period: 2022
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 90_000
+    mortgage_insurance_premiums: 1_000
+  output:
+    # 26 USC 163(h)(3)(E)(iv) disallows premiums paid after 2021: $0.
+    deductible_mortgage_insurance_premiums: 0
+
+- name: Qualified premiums are not deductible in 2023
+  period: 2023
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 90_000
+    mortgage_insurance_premiums: 1_000
+  output:
+    # 26 USC 163(h)(3)(E)(iv) disallows premiums paid after 2021: $0.
+    deductible_mortgage_insurance_premiums: 0
+
+- name: Qualified premiums are not deductible in 2024
+  period: 2024
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 90_000
+    mortgage_insurance_premiums: 1_000
+  output:
+    # 26 USC 163(h)(3)(E)(iv) disallows premiums paid after 2021: $0.
+    deductible_mortgage_insurance_premiums: 0
+
+- name: Qualified premiums are excluded from the interest deduction in 2025
+  period: 2025
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 90_000
+    home_mortgage_interest: 12_000
+    mortgage_insurance_premiums: 1_000
+  output:
+    # Premium deduction is suspended; $12,000 uncapped interest + $0 premiums.
+    deductible_mortgage_insurance_premiums: 0
+    interest_deduction: 12_000
+
+- name: Qualified premiums return and enter the interest deduction in 2026
+  period: 2026
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 90_000
+    home_mortgage_interest: 12_000
+    mortgage_insurance_premiums: 1_000
+  output:
+    # P.L. 119-21 sec. 70108 restores the deduction. AGI is below $100,000,
+    # so $1,000 premiums are deductible; $12,000 interest + $1,000 = $13,000.
+    deductible_mortgage_insurance_premiums: 1_000
+    interest_deduction: 13_000
+
+- name: Single filer at the premium phase-out threshold
+  period: 2026
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    mortgage_insurance_premiums: 1_000
+  output:
+    # Worksheet line 2 equals line 3: line 1 ($1,000) is fully deductible.
+    deductible_mortgage_insurance_premiums: 1_000
+
+- name: Single filer one cent above the premium phase-out threshold
+  period: 2026
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000.01
+    mortgage_insurance_premiums: 1_000
+  output:
+    # Line 4 rounds $0.01 up to $1,000; line 5 = $1,000 / $10,000 = 0.1.
+    # Lines 6-7: $1,000 - $1,000 * 0.1 = $900.
+    deductible_mortgage_insurance_premiums: 900
+
+- name: Single filer one dollar above the premium phase-out threshold
+  period: 2026
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 100_001
+    mortgage_insurance_premiums: 1_000
+  output:
+    # Line 4 rounds $1 up to $1,000; $1,000 - $1,000 * 0.1 = $900.
+    deductible_mortgage_insurance_premiums: 900
+
+- name: Single filer at the first complete premium phase-out increment
+  period: 2026
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 101_000
+    mortgage_insurance_premiums: 1_000
+  output:
+    # Line 4 is exactly $1,000; $1,000 - $1,000 * ($1,000 / $10,000) = $900.
+    deductible_mortgage_insurance_premiums: 900
+
+- name: Single filer one dollar into the second premium phase-out increment
+  period: 2026
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 101_001
+    mortgage_insurance_premiums: 1_000
+  output:
+    # Line 4 rounds $1,001 to $2,000; $1,000 - $1,000 * 0.2 = $800.
+    deductible_mortgage_insurance_premiums: 800
+
+- name: Single filer at the last partly deductible premium boundary
+  period: 2026
+  # Float32 subtraction of a 90% reduction leaves a small rounding residual.
+  absolute_error_margin: 0.001
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 109_000
+    mortgage_insurance_premiums: 1_000
+  output:
+    # Line 4 = $9,000; line 5 = 0.9; $1,000 - $1,000 * 0.9 = $100.
+    deductible_mortgage_insurance_premiums: 100
+
+- name: Single filer one cent beyond the last deductible premium boundary
+  period: 2026
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 109_000.01
+    mortgage_insurance_premiums: 1_000
+  output:
+    # Line 4 rounds $9,000.01 to $10,000; line 5 = 1; $1,000 - $1,000 = $0.
+    deductible_mortgage_insurance_premiums: 0
+
+- name: Single filer well beyond the premium phase-out range
+  period: 2026
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 150_000
+    mortgage_insurance_premiums: 1_000
+  output:
+    # Line 4 = $50,000; line 5 is capped at 1; $1,000 - $1,000 = $0.
+    deductible_mortgage_insurance_premiums: 0
+
+- name: Separate filer at the premium phase-out threshold
+  period: 2026
+  input:
+    filing_status: SEPARATE
+    adjusted_gross_income: 50_000
+    mortgage_insurance_premiums: 1_000
+  output:
+    # Worksheet line 2 equals the MFS line 3 ($50,000): deduct $1,000 in full.
+    deductible_mortgage_insurance_premiums: 1_000
+
+- name: Separate filer one dollar above the premium phase-out threshold
+  period: 2026
+  input:
+    filing_status: SEPARATE
+    adjusted_gross_income: 50_001
+    mortgage_insurance_premiums: 1_000
+  output:
+    # Line 4 rounds $1 to $500; line 5 = $500 / $5,000 = 0.1.
+    # Lines 6-7: $1,000 - $1,000 * 0.1 = $900.
+    deductible_mortgage_insurance_premiums: 900
+
+- name: Separate filer at the last partly deductible premium boundary
+  period: 2026
+  # Float32 subtraction of a 90% reduction leaves a small rounding residual.
+  absolute_error_margin: 0.001
+  input:
+    filing_status: SEPARATE
+    adjusted_gross_income: 54_500
+    mortgage_insurance_premiums: 1_000
+  output:
+    # Line 4 = $4,500; line 5 = $4,500 / $5,000 = 0.9; deduction = $100.
+    deductible_mortgage_insurance_premiums: 100
+
+- name: Separate filer one dollar beyond the last deductible premium boundary
+  period: 2026
+  input:
+    filing_status: SEPARATE
+    adjusted_gross_income: 54_501
+    mortgage_insurance_premiums: 1_000
+  output:
+    # Line 4 rounds $4,501 to $5,000; line 5 = 1; $1,000 - $1,000 = $0.
+    deductible_mortgage_insurance_premiums: 0
+
+- name: Joint filers use the single premium phase-out schedule
+  period: 2026
+  input:
+    filing_status: JOINT
+    adjusted_gross_income: 101_001
+    mortgage_insurance_premiums: 1_000
+  output:
+    # Start $100,000, increment $1,000: round $1,001 to $2,000.
+    # $1,000 - $1,000 * ($2,000 / $10,000) = $800.
+    deductible_mortgage_insurance_premiums: 800
+
+- name: Head of household uses the single premium phase-out schedule
+  period: 2026
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 101_001
+    mortgage_insurance_premiums: 1_000
+  output:
+    # Start $100,000, increment $1,000: round $1,001 to $2,000.
+    # $1,000 - $1,000 * ($2,000 / $10,000) = $800.
+    deductible_mortgage_insurance_premiums: 800
+
+- name: Surviving spouse uses the single premium phase-out schedule
+  period: 2026
+  input:
+    filing_status: SURVIVING_SPOUSE
+    adjusted_gross_income: 101_001
+    mortgage_insurance_premiums: 1_000
+  output:
+    # Start $100,000, increment $1,000: round $1,001 to $2,000.
+    # $1,000 - $1,000 * ($2,000 / $10,000) = $800.
+    deductible_mortgage_insurance_premiums: 800
+
+- name: Acquisition-debt cap does not prorate qualified premiums
+  period: 2021
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 90_000
+    home_mortgage_interest: 40_000
+    mortgage_insurance_premiums: 2_000
+    first_home_mortgage_balance: 1_000_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    # Pub. 936 Table 1: line 14 = $750,000 / $1,000,000 = 0.75;
+    # line 15 interest = $40,000 * 0.75 = $30,000.
+    # The separate premium instructions use only AGI: $2,000 in full.
+    # Total interest deduction = $30,000 + $2,000 = $32,000.
+    deductible_mortgage_interest_tax_unit: 30_000
+    deductible_mortgage_insurance_premiums: 2_000
+    interest_deduction: 32_000
+
+- name: Both spouses premiums enter the joint deduction before the phase-out
+  period: 2026
+  input:
+    people:
+      head:
+        mortgage_insurance_premiums: 1_000
+        is_tax_unit_head: true
+      spouse:
+        mortgage_insurance_premiums: 1_500
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        adjusted_gross_income: 101_001
+  output:
+    # Worksheet line 1 = $1,000 + $1,500 = $2,500; line 4 = $2,000.
+    # Lines 5-7: $2,500 - $2,500 * 0.2 = $2,000.
+    deductible_mortgage_insurance_premiums: 2_000
+    interest_deduction: 2_000
+
+- name: Mortgage points and premiums flow into itemized deductions and taxable income in 2026
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 90_000
+        home_mortgage_interest: 40_000
+        home_mortgage_points: 4_000
+        mortgage_insurance_premiums: 2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+        tax_unit_itemizes: true
+        state_sales_tax: 0
+        first_home_mortgage_balance: 1_000_000
+        first_home_mortgage_origination_year: 2020
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # Pub. 936 Table 1 line 14 = $750,000 / $1,000,000 = 0.75.
+    # Interest is $40,000 * 0.75 = $30,000; deductible points are
+    # $4,000 * 0.75 = $3,000, for a combined mortgage deduction of $33,000.
+    # AGI $90,000 is below the $100,000 premium phase-out start, so add all
+    # $2,000 premiums: interest and total itemized deductions are $35,000.
+    # No other deductions, exemptions or itemized reduction apply;
+    # taxable income = $90,000 - $35,000 = $55,000.
+    adjusted_gross_income: 90_000
+    mortgage_interest: 44_000
+    deductible_mortgage_interest_tax_unit: 33_000
+    deductible_mortgage_insurance_premiums: 2_000
+    interest_deduction: 35_000
+    itemized_taxable_income_deductions: 35_000
+    taxable_income_deductions: 35_000
+    taxable_income: 55_000

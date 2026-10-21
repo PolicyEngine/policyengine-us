@@ -1,0 +1,15 @@
+description: Minnesota excludes these federal interest components from its itemized deductions.
+values:
+  1900-01-01: []
+  # Section 290.0122 expressly excludes premiums from 2019.
+  2019-01-01:
+    - deductible_mortgage_insurance_premiums
+metadata:
+  unit: list
+  period: year
+  label: Minnesota disallowed federal interest components
+  reference:
+    - title: Minnesota Statutes 290.0122, subdivision 5(3)
+      href: https://www.revisor.mn.gov/statutes/cite/290.0122#stat.290.0122.5
+    - title: Minnesota 2019 First Special Session Laws, chapter 6, article 1, section 16
+      href: https://www.revisor.mn.gov/laws/2019/1/Session+Law/Chapter/6/
