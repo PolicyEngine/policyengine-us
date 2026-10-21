@@ -1,17 +1,17 @@
 description: Colorado counts these unearned income sources before separately rounding Social Security and SSI under the Low-income Energy Assistance Program.
 # Social Security and SSI are separately truncated per recipient monthly.
-# Colorado TANF is added once at SPM-unit level. Survivor benefits exclude
+# Take-up-gated TANF is added once at SPM-unit level. Survivor benefits exclude
 # SSA survivors; pension totals already include their public/private parts.
 # Retirement distributions aggregate IRA, 401(k), SEP, 403(b), and Keogh.
 # Generic gifts are limited to financial_assistance; irregular receipts,
 # GI educational benefits and source-specific exclusions lack exact inputs.
 values:
-  2025-11-01: ["rental_income", "farm_rent_income", "interest_income", "dividend_income", "unemployment_compensation", "strike_benefits", "pension_income", "retirement_distributions", "survivor_benefits", "disability_benefits", "workers_compensation", "veterans_benefits", "general_assistance", "co_oap", "alimony_income", "child_support_received", "financial_assistance", "gambling_winnings"]
+  2025-11-01: ["rental_income", "farm_rent_income", "interest_income", "dividend_income", "total_unemployment_compensation", "strike_benefits", "pension_income", "military_retirement_pay", "retirement_distributions", "survivor_benefits", "disability_benefits", "workers_compensation", "veterans_benefits", "general_assistance", "co_oap", "alimony_income", "child_support_received", "financial_assistance", "gambling_winnings"]
 
 metadata:
   unit: list
   period: year
   label: Colorado LEAP unearned income sources
   reference:
-    - title: Colorado 2025–26 LEAP Training Operations Manual
-      href: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=46,47
+    - title: "Colorado 2025–26 LEAP Training Operations Manual #page 46-48"
+      href: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=46

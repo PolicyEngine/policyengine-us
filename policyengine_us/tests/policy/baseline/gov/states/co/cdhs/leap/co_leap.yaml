@@ -1,7 +1,7 @@
 # Source-derived FY 2026 Colorado regular heating checks.
-# Benefit methodology and rates, PDF pages1-2,5-6: https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heat-Crisis_2026.pdf#page=1,2,5,6
-# Current statewide reduction and calculation order, PDF pages92-95: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=92,93,94,95
-# Eligibility, PDF pages5,8: https://liheapch.acf.gov/docs/2026/state-plans/CO_Plan_2026.pdf#page=5,8
+# Benefit methodology and rates, PDF pages1-2,5-6: https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heat-Crisis_2026.pdf#page=1
+# Current statewide reduction and calculation order, PDF pages92-95: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=92
+# Eligibility, PDF pages5,8: https://liheapch.acf.gov/docs/2026/state-plans/CO_Plan_2026.pdf#page=5
 
 # Zero bill is ineligible. For positive costs clip(cost,200,1000): 1 and 199.99 receive 200;600 receives 600;1,000.01 and 5,000 receive 1,000. No expense cap removes the minimum.
 - name: "Case 1, positive direct heating awards retain the minimum maximum and actual cost proxy."
@@ -339,3 +339,405 @@
     co_leap_income_limit: 43_284
     co_leap_eligible: false
     co_leap: 0
+
+
+# Military retirement is separate from pension_income. Rental losses cannot
+# reduce the gross pension receipt. Both exceed the one-person 43,284 ceiling.
+- name: Case 12, military retirement and pension receipts prevent excess awards.
+  period: 2026
+  input:
+    state_code: [CO, CO]
+    age: [55, 55]
+    is_citizen_or_legal_immigrant: [true, true]
+    ssi: [0, 0]
+    co_oap: [0, 0]
+    co_tanf: [0, 0]
+    military_retirement_pay: [50_000, 0]
+    taxable_pension_income: [0, 44_000]
+    rental_income: [0, -10_000]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_000, 1_000]
+  output:
+    co_leap_countable_income_person: [50_000, 44_000]
+    co_leap_countable_income: [50_000, 44_000]
+    co_leap_income_limit: [43_284, 43_284]
+    co_leap_eligible: [false, false]
+    co_leap: [0, 0]
+
+# The family's potential Colorado Works entitlement is not a received benefit
+# when TANF take-up is false. Its zero counted income gives no contribution.
+- name: Case 13, a TANF nonparticipant retains the zero-income heating award.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person2:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        takes_up_tanf_if_eligible: false
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    tanf: 0
+    co_leap_household_size: 2
+    co_leap_countable_income: 0
+    co_leap_income_contribution_rate: 0
+    co_leap_eligible: true
+    co_leap: 1_000
+
+# Two actual 25-member sharing households retain the ordinary state size cap15
+# and income ceiling132,360. The 2025 FPG for25 is15,650+24*5,500=147,650;
+# its cent-rounded110% protection ends strictly below162,415. At150,000income,
+# the20%contribution applies and the1,000heatingbill produces800. Exact162,415
+# is not protected. Members are actual qualified nonfoster people, not a size
+# override; the state cap does not replace their legal sharing-household size.
+# Manual pages4-5: size15 monthly125%upper=5,641+7*573=9,652;
+#175%upper=7,898+7*802=13,512. Thus12,500/month requires20%, not30%.
+- name: Case 14, actual large households retain strict federal income protection.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+        employment_income: 150_000
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person6:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person7:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person8:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person9:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person10:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person11:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person12:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person13:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person14:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person15:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person16:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person17:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person18:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person19:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person20:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person21:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person22:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person23:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person24:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person25:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person26:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+        employment_income: 162_415
+      person27:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person28:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person29:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person30:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person31:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person32:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person33:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person34:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person35:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person36:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person37:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person38:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person39:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person40:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person41:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person42:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person43:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person44:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person45:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person46:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person47:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person48:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person49:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+      person50:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        co_oap: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+      spm_unit2:
+        members: [person26, person27, person28, person29, person30, person31, person32, person33, person34, person35, person36, person37, person38, person39, person40, person41, person42, person43, person44, person45, person46, person47, person48, person49, person50]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    tax_units:
+      tax_unit1: {members: [person1]}
+      tax_unit2: {members: [person2]}
+      tax_unit3: {members: [person3]}
+      tax_unit4: {members: [person4]}
+      tax_unit5: {members: [person5]}
+      tax_unit6: {members: [person6]}
+      tax_unit7: {members: [person7]}
+      tax_unit8: {members: [person8]}
+      tax_unit9: {members: [person9]}
+      tax_unit10: {members: [person10]}
+      tax_unit11: {members: [person11]}
+      tax_unit12: {members: [person12]}
+      tax_unit13: {members: [person13]}
+      tax_unit14: {members: [person14]}
+      tax_unit15: {members: [person15]}
+      tax_unit16: {members: [person16]}
+      tax_unit17: {members: [person17]}
+      tax_unit18: {members: [person18]}
+      tax_unit19: {members: [person19]}
+      tax_unit20: {members: [person20]}
+      tax_unit21: {members: [person21]}
+      tax_unit22: {members: [person22]}
+      tax_unit23: {members: [person23]}
+      tax_unit24: {members: [person24]}
+      tax_unit25: {members: [person25]}
+      tax_unit26: {members: [person26]}
+      tax_unit27: {members: [person27]}
+      tax_unit28: {members: [person28]}
+      tax_unit29: {members: [person29]}
+      tax_unit30: {members: [person30]}
+      tax_unit31: {members: [person31]}
+      tax_unit32: {members: [person32]}
+      tax_unit33: {members: [person33]}
+      tax_unit34: {members: [person34]}
+      tax_unit35: {members: [person35]}
+      tax_unit36: {members: [person36]}
+      tax_unit37: {members: [person37]}
+      tax_unit38: {members: [person38]}
+      tax_unit39: {members: [person39]}
+      tax_unit40: {members: [person40]}
+      tax_unit41: {members: [person41]}
+      tax_unit42: {members: [person42]}
+      tax_unit43: {members: [person43]}
+      tax_unit44: {members: [person44]}
+      tax_unit45: {members: [person45]}
+      tax_unit46: {members: [person46]}
+      tax_unit47: {members: [person47]}
+      tax_unit48: {members: [person48]}
+      tax_unit49: {members: [person49]}
+      tax_unit50: {members: [person50]}
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25]
+        state_code: CO
+      household2:
+        members: [person26, person27, person28, person29, person30, person31, person32, person33, person34, person35, person36, person37, person38, person39, person40, person41, person42, person43, person44, person45, person46, person47, person48, person49, person50]
+        state_code: CO
+  output:
+    co_leap_household_size: [15, 15]
+    co_leap_countable_income: [150_000, 162_415]
+    co_leap_income_limit: [132_360, 132_360]
+    co_leap_income_contribution_rate: [0.2, 0.3]
+    co_leap_eligible: [true, false]
+    co_leap: [800, 0]

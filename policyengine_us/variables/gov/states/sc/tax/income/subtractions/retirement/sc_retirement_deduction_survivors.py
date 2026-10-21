@@ -26,8 +26,13 @@ class sc_retirement_deduction_survivors(Variable):
         retirement_deduction_available = max_(
             max_deduction_allowed - military_retirement_pay_survivors, 0
         )
-        # line 4
-        retirement_income_survivors = person("pension_survivors", period)
+        # line 4: only the head's and spouse's survivor benefits are in the
+        # filer's federal AGI; a dependent reports their own on their own
+        # return.
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        retirement_income_survivors = (
+            person("pension_survivors", period) * head_or_spouse
+        )
         # In 2021, South Carolina subtracts the survivors retirement deduction from the military retirement deduction
         # In 2022, it does not
         cap = (

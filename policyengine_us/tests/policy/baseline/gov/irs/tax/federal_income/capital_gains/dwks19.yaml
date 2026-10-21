@@ -1,0 +1,120 @@
+# The Schedule D Tax Worksheet amount taxed at ordinary rates (line 21 of the
+# 2025 worksheet). A Form 2555 filer enters line 3 of the Foreign Earned
+# Income Tax Worksheet on line 1 and refigures line 10 for any capital gain
+# excess.
+- name: Ordinary income without an exclusion
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 140_000
+    long_term_capital_gains: 30_000
+    foreign_earned_income_exclusion: 0
+  output:
+    dwks19: 110_000
+
+- name: An exclusion adds to the ordinary income
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 140_000
+    long_term_capital_gains: 30_000
+    foreign_earned_income_exclusion: 100_000
+  output:
+    dwks19: 210_000
+
+- name: A capital gain excess leaves the excluded amount as ordinary income
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 34_250
+    long_term_capital_gains: 50_000
+    foreign_earned_income_exclusion: 100_000
+  output:
+    dwks19: 100_000
+
+# With 28 percent rate gain or unrecaptured section 1250 gain, line 21 is the
+# larger of line 18 (line 1 less line 10) or line 20 (the smaller of line 14
+# or line 19), where line 19 is the smaller of line 1 or the top of the 24
+# percent bracket ($197,300 single, $394,600 joint in 2025), the taxable
+# income taxed at a rate below 25 percent (26 U.S.C. 1(h)(1)(A)(ii)(I)).
+- name: Unrecaptured section 1250 gain, line 19 caps line 14
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 584_250
+    long_term_capital_gains: 400_000
+    unrecaptured_section_1250_gain: 100_000
+  output:
+    # Lines 9 and 10: 400,000. Line 11: 100,000. Line 12: 100,000. Line 13:
+    # 300,000. Line 14: 284,250. Line 18: 184,250. Line 19: 197,300. Line
+    # 20: 197,300. Line 21: 197,300.
+    dwks14: 284_250
+    dwks19: 197_300
+
+- name: Unrecaptured section 1250 gain, line 18 above line 20
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 700_000
+    long_term_capital_gains: 400_000
+    unrecaptured_section_1250_gain: 100_000
+  output:
+    # Line 13: 300,000. Line 14: 400,000. Line 18: 300,000. Line 20:
+    # 197,300. Line 21: 300,000.
+    dwks19: 300_000
+
+- name: 28 percent rate and unrecaptured gain, line 14 within line 19
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 414_250
+    long_term_capital_gains: 400_000
+    long_term_capital_gains_on_collectibles: 80_000
+    unrecaptured_section_1250_gain: 50_000
+  output:
+    # Line 10: 400,000. Line 11: 130,000. Line 13: 270,000. Line 14:
+    # 144,250. Line 18: 14,250. Line 19: 197,300. Line 20: 144,250. Line
+    # 21: 144,250.
+    dwks19: 144_250
+
+- name: Joint filer with unrecaptured section 1250 gain
+  period: 2025
+  input:
+    filing_status: JOINT
+    taxable_income: 900_000
+    long_term_capital_gains: 600_000
+    unrecaptured_section_1250_gain: 200_000
+  output:
+    # Line 13: 400,000. Line 14: 500,000. Line 18: 300,000. Line 19:
+    # 394,600. Line 20: 394,600. Line 21: 394,600.
+    dwks19: 394_600
+
+- name: A Form 2555 filer with unrecaptured section 1250 gain
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 200_000
+    long_term_capital_gains: 150_000
+    unrecaptured_section_1250_gain: 50_000
+    foreign_earned_income_exclusion: 100_000
+  output:
+    # Line 1: 300,000 (Foreign Earned Income Tax Worksheet line 3). No
+    # capital gain excess. Line 10: 150,000. Line 13: 100,000. Line 14:
+    # 200,000. Line 18: 150,000. Line 19: 197,300. Line 21: 197,300.
+    dwks19: 197_300
+
+- name: A Form 2555 filer with a capital gain excess and unrecaptured gain
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 34_250
+    long_term_capital_gains: 50_000
+    unrecaptured_section_1250_gain: 20_000
+    foreign_earned_income_exclusion: 100_000
+  output:
+    # Capital gain excess: 50,000 - 34,250 = 15,750. Second worksheet: line
+    # 9 = 34,250, line 10 = 34,250; Schedule D line 19 = 20,000 - 15,750 =
+    # 4,250, so line 12 = 4,250 and line 13 = 30,000. Line 1: 134,250. Line
+    # 14: 104,250. Line 18: 100,000. Line 19: 134,250. Line 20: 104,250.
+    # Line 21: 104,250.
+    dwks19: 104_250

@@ -199,4 +199,21 @@
     mi_expanded_retirement_benefits_deduction: 20_000
     mi_pension_benefit: 20_000
 
-
+- name: 2023 single filer with expanded retirement deduction reduced by military survivor pay
+  period: 2023
+  input:
+    people:
+      person1:
+        taxable_pension_income: 20_000
+        military_retirement_pay_survivors: 1_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_expanded_retirement_benefits_deduction_eligible: true
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output: # min(0.25 * (61518 - 1000), 20000)
+    mi_expanded_retirement_benefits_deduction: 15_129.5

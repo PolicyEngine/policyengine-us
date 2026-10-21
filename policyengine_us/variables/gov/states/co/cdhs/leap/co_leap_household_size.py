@@ -7,7 +7,10 @@ class co_leap_household_size(Variable):
     definition_period = YEAR
     label = "Colorado LEAP eligible household size"
     defined_for = StateCode.CO
-    reference = "https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=29,51,55"
+    # PDF pages 29,51,55
+    reference = (
+        "https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=29"
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.co.cdhs.leap.eligibility

@@ -9,16 +9,23 @@ class ia_fedtax_deduction(Variable):
     definition_period = YEAR
     reference = (
         "https://revenue.iowa.gov/sites/default/files/2022-01/IA1040%2841-001%29.pdf",
-        "https://revenue.iowa.gov/sites/default/files/2023-01/2021%20Expanded%20Instructions_010323.pdf#page=41",
+        "https://revenue.iowa.gov/media/2650/download?inline#page=40",
+        "https://revenue.iowa.gov/media/2650/download?inline#page=41",
         "https://revenue.iowa.gov/sites/default/files/2023-01/2022IA1040%2841001%29.pdf",
-        "https://revenue.iowa.gov/sites/default/files/2023-03/2022%20Expanded%20Instructions_022023.pdf#page=41",
+        "https://revenue.iowa.gov/media/2721/download?inline#page=40",
+        "https://revenue.iowa.gov/media/2721/download?inline#page=41",
     )
     defined_for = StateCode.IA
 
     def formula(person, period, parameters):
-        # Iowa allows a deduction of federal income taxes from Iowa net
-        # income, but federal payroll taxes (FICA and SECA and Additional
-        # Medicare) cannot be used to reduced Iowa net income.
+        # Iowa deducts the federal tax paid (IA 1040 line 31) and adds back
+        # on line 28 the federal 1040 Schedule 2 taxes those payments also
+        # covered, among them self-employment tax (line 4), additional Social
+        # Security and Medicare tax (line 7), additional tax on IRAs and other
+        # tax-favored accounts (line 8), Additional Medicare tax (line 11) and
+        # other additional taxes (line 18); the net investment income tax
+        # (line 12) is not added back. With payments equal to the liability,
+        # the deduction is the federal income tax without the added-back taxes.
         ustax = person.tax_unit("income_tax_before_refundable_credits", period)
         # correct ustax amount for flaw in CTC refundable/nonrefundable split
         ctc = parameters(period).gov.irs.credits.ctc
@@ -27,10 +34,19 @@ class ia_fedtax_deduction(Variable):
             us_tax = ustax + person.tax_unit("non_refundable_ctc", period)
         else:
             us_tax = ustax
-        # remove SECA and Additional Medicare taxes
-        amtax = person.tax_unit("additional_medicare_tax", period)
-        setax = add(person.tax_unit, period, ["self_employment_tax"])
-        agg_tax = max_(0.0, us_tax - amtax - setax)
+        # income_tax_before_refundable_credits never includes the
+        # self-employment or Additional Medicare tax, so only the added-back
+        # Schedule 2 taxes it does include are removed.
+        added_back = add(
+            person.tax_unit,
+            period,
+            [
+                "unreported_payroll_tax",
+                "qualified_retirement_penalty",
+                "recapture_of_investment_credit",
+            ],
+        )
+        agg_tax = max_(0.0, us_tax - added_back)
         # project agg_tax to head and spouse in net_tax variable
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)

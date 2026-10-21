@@ -77,7 +77,12 @@
         members: [person1, person2, person3]
         state_fips: 51  # VA
   output:  # expected results from patched TAXSIM35 2024-03-01 version
-    va_income_tax: 1_969.48
+    # TAXSIM35 gives 1_969.48 with a $3,000 child care deduction, the amount
+    # in the original 2021 Form 760 instructions. 2022 Va. Acts ch. 3 then
+    # applied the ARPA $8,000 limit to 2021 (revised code 101 instructions),
+    # so the deduction is min($10,000, $8,000, $38,010) = $8,000 and the tax is
+    # 720 + 5.75% x (49_020 - 4_500 - 2_790 - 8_000 - 17_000) = 1_681.98.
+    va_income_tax: 1_681.98
 
 - name: Tax unit with taxsimid 5034 in k21.its.csv and k21.ots.csv
   absolute_error_margin: 1

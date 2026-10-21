@@ -2,7 +2,9 @@
 
 Issue #9613: a 2015 or 2016 household with a member aged 65 or older raised
 ParameterNotFoundError because the IRMAA MAGI read 2013 or 2014 income, before
-the first year the parameters are backdated to.
+the first year the parameters are backdated to. With inputs only for the
+benefit year, the IRMAA MAGI is that year's MAGI deflated to two years
+earlier; with inputs for 2013 or 2014, only the provided income counts.
 """
 
 import pytest
@@ -62,7 +64,7 @@ def test_first_modeled_year_is_the_backdating_floor():
 @pytest.mark.parametrize("year", UNMODELED_LAG_YEARS)
 @pytest.mark.parametrize("filing_status", FILING_STATUSES)
 @pytest.mark.parametrize("employment_income", INCOMES)
-def test_magi_is_zero_when_lag_precedes_the_model(
+def test_benefit_year_income_stands_in_when_lag_precedes_the_model(
     year, filing_status, employment_income
 ):
     sim = senior_household(
@@ -74,13 +76,24 @@ def test_magi_is_zero_when_lag_precedes_the_model(
         },
         tax_unit_inputs={"filing_status": {year: filing_status}},
     )
-    assert sim.calculate("medicare_irmaa_magi_two_years_prior", year)[0] == 0
-    # With a zero MAGI, no IRMAA is added to the base Part B premium and no
-    # Part D surcharge applies.
+    index = SYSTEM.parameters.calibration.gov.cbo.income_by_source.adjusted_gross_income_per_capita
+    # The index starts in 2015 and is held at that value for 2013 and 2014.
+    deflator = index(f"{FIRST_MODELED_YEAR}-01-01") / index(f"{year}-01-01")
+    benefit_year_magi = sim.calculate("medicare_irmaa_tax_year_magi", year)[0]
+    magi = sim.calculate("medicare_irmaa_magi_two_years_prior", year)[0]
+    assert magi == pytest.approx(benefit_year_magi * deflator, rel=1e-6)
+    # The brackets apply to that MAGI: the Part B premium adds the IRMAA
+    # amount to the base premium, and Part D charges its surcharge.
+    p = SYSTEM.parameters(f"{year}-01-01").gov.hhs.medicare
+    scale = filing_status.lower()
     gross = sim.calculate("gross_medicare_part_b_premium", year)[0]
     base = sim.calculate("base_part_b_premium", year)[0]
-    assert gross == pytest.approx(base)
-    assert sim.calculate("income_adjusted_part_d_premium_surcharge", year)[0] == 0
+    assert gross == pytest.approx(
+        base + 12 * getattr(p.part_b.irmaa, scale).calc(magi), abs=0.01
+    )
+    assert sim.calculate("income_adjusted_part_d_premium_surcharge", year)[
+        0
+    ] == pytest.approx(12 * getattr(p.part_d.irmaa, scale).calc(magi), abs=0.01)
 
 
 @pytest.mark.parametrize("year", MODELED_LAG_YEARS)

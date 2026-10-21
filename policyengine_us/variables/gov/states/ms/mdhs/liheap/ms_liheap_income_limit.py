@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.hhs_smi import liheap_smi_limit
 
 
 class ms_liheap_income_limit(Variable):
@@ -18,16 +19,6 @@ class ms_liheap_income_limit(Variable):
         p = parameters(period).gov.states.ms.mdhs.liheap
         size = spm_unit("ms_liheap_household_size", period)
         state = spm_unit.household("state_code_str", period)
-        federal = parameters(period).gov.hhs.smi
-        # The published FY2026 limits truncate the four-person 60% SMI amount
-        # first, then the household-adjusted amount. This reproduces all 20 rows;
-        # it is a reconciled numerical pattern, not an explicit rounding rule.
-        four_person_limit = np.floor(federal.amount[state] * p.income_limit)
-        adjustment = federal.household_size_adjustment
-        threshold = federal.additional_person_threshold
-        size_share = (
-            adjustment.first_person
-            + adjustment.second_to_sixth_person * clip(size - 1, 0, threshold - 1)
-            + adjustment.additional_person * max_(size - threshold, 0)
-        )
-        return where(size > 0, np.floor(four_person_limit * size_share), 0)
+        # The HHS floor order reproduces all 20 published FY2026 rows.
+        limit = liheap_smi_limit(size, state, p.income_limit, period, parameters)
+        return where(size > 0, limit, 0)

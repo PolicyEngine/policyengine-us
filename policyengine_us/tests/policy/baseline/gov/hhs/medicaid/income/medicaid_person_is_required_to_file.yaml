@@ -107,3 +107,130 @@
         members: [person1]
   output:
     medicaid_person_is_required_to_file: false
+
+- name: Case 7, a self-employment loss does not count as unearned income.
+  # IRS Pub. 501 (2025), p. 4, Table 2: unearned income is interest,
+  # dividends, capital gain distributions, pensions and the like; earned
+  # income is wages and pay for work. Here unearned income is the 100 of
+  # interest, not 100 less the 5,000 loss, so it is not more than 1,350, and
+  # gross income, 100, is not more than 1,350. The dependent is not required
+  # to file.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        self_employment_income: -5_000
+        taxable_interest_income: 100
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: false
+
+- name: Case 8, wages deferred to a 401(k) plan do not hide unearned income.
+  # Box 1 wages leave out the 2,000 deferral, so gross income is 8,000 of
+  # wages and 1,500 of interest. Unearned income, 1,500, is more than 1,350
+  # (Pub. 501 (2025), Table 2), so the dependent must file.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        employment_income: 10_000
+        traditional_401k_contributions: 2_000
+        taxable_interest_income: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: true
+
+- name: A dependent's disability pension before minimum retirement age is earned income for the filing threshold.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 25_000
+      child:
+        age: 20
+        is_tax_unit_dependent: true
+        disability_benefits: 10_000
+        disability_benefits_before_minimum_retirement_age: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    # Earned income 10,000 and no unearned income. Dependent standard
+    # deduction: max(1,300, 10,000 + 450) = 10,450, so gross income of
+    # 10,000 is under it and the dependent need not file. The parent's
+    # 25,000 of wages is over the 14,600 single amount.
+    medicaid_person_is_required_to_file: [true, false]
+
+# Positive-source gross income preserves the loss/deferral rules even
+# when a disability pension is also earned income (Pub. 501, Table 2).
+- name: Earned disability with a business loss does not become unearned Medicaid filing income
+  period: 2024
+  input:
+    age: 20
+    disability_benefits: 1300
+    disability_benefits_before_minimum_retirement_age: 1300
+    self_employment_income: -2000
+  output:
+    medicaid_irs_gross_income: 1300
+    medicaid_person_is_required_to_file: false
+- name: Deferred wages do not hide unearned income alongside earned disability benefits
+  period: 2024
+  input:
+    age: 20
+    employment_income: 3000
+    traditional_401k_contributions: 2000
+    disability_benefits: 3000
+    disability_benefits_before_minimum_retirement_age: 3000
+    taxable_interest_income: 1500
+  output:
+    medicaid_irs_gross_income: 5500
+    medicaid_person_is_required_to_file: true
+
+- name: H3a, deferred wages and partially earned disability preserve the Medicaid unearned filing test
+  # Pub. 501 (2025), Table 2: positive gross wages are $4,000 - $2,500 =
+  # $1,500. Gross income $6,500 less $1,500 wages and $3,500 earned
+  # disability leaves $1,500 unearned, over $1,350. Using wages before
+  # deferrals to net earned income would incorrectly remove this excess.
+  period: 2025
+  input:
+    age: 20
+    employment_income: 4_000
+    traditional_401k_contributions: 2_500
+    disability_benefits: 5_000
+    disability_benefits_before_minimum_retirement_age: 3_500
+  output:
+    irs_employment_income: 1_500
+    taxable_disability_benefits: 5_000
+    earned_disability_benefits: 3_500
+    medicaid_irs_gross_income: 6_500
+    medicaid_person_is_required_to_file: true
+
+- name: H3b, deferred wages and fully earned disability do not require Medicaid filing
+  # All $5,000 is line 1h pay, leaving no unearned income. The dependent
+  # deduction used for this test is $4,000 + $5,000 + $450 = $9,450,
+  # above gross income $6,500. P3-4's wage-deferral worksheet treatment
+  # is pre-existing and reserved for a separate change.
+  period: 2025
+  input:
+    age: 20
+    employment_income: 4_000
+    traditional_401k_contributions: 2_500
+    disability_benefits: 5_000
+    disability_benefits_before_minimum_retirement_age: 5_000
+  output:
+    irs_employment_income: 1_500
+    taxable_disability_benefits: 5_000
+    earned_disability_benefits: 5_000
+    medicaid_irs_gross_income: 6_500
+    medicaid_person_is_required_to_file: false

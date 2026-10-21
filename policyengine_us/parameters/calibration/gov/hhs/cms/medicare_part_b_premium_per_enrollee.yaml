@@ -1,0 +1,45 @@
+description: The Centers for Medicare and Medicaid Services (CMS) sets, and the Medicare Trustees project, this standard monthly Medicare Part B premium per enrollee.
+metadata:
+  unit: currency-USD
+  period: month
+  label: Medicare Part B standard monthly premium per enrollee
+  reference:
+  # Table III.C2, "Standard Part B Monthly Premium Rates, Actuarial Rates, and
+  # Premium Rates as a Percentage of Part B Cost" (file pages 89-90), for
+  # 2013-2026; Table V.E2, "SMI Cost-Sharing and Premium Amounts" (file page
+  # 213), intermediate estimates for 2027-2035. Report transmitted
+  # 2026-06-09, retrieved 2026-10-11, sha256
+  # ffa56b9137006872300b0346149eae1613d09a172b6ba118aad48e66dfc48fa8.
+  - title: "2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Tables III.C2 and V.E2 #page 89-90,213"
+    href: https://www.cms.gov/oact/tr/2026#page=89
+  - title: 2026 Medicare Parts A & B Premiums and Deductibles
+    href: https://www.cms.gov/newsroom/fact-sheets/2026-medicare-parts-b-premiums-deductibles
+values:
+  # Historical.
+  2013-01-01: 104.9
+  2014-01-01: 104.9
+  2015-01-01: 104.9
+  2016-01-01: 121.8
+  2017-01-01: 134
+  2018-01-01: 134
+  2019-01-01: 135.5
+  2020-01-01: 144.6
+  2021-01-01: 148.5
+  2022-01-01: 170.1
+  2023-01-01: 164.9
+  2024-01-01: 174.7
+  2025-01-01: 185
+  2026-01-01: 202.9
+  # Trustees' intermediate estimates.
+  2027-01-01: 209.5
+  2028-01-01: 224.5
+  2029-01-01: 238.5
+  2030-01-01: 255.5
+  2031-01-01: 272.1
+  2032-01-01: 290.2
+  2033-01-01: 313.6
+  2034-01-01: 338.5
+  2035-01-01: 360.6
+  # 2036 to 2100 grow at the 2034-2035 rate (360.6 / 338.5, 6.5% a year) and
+  # later years hold the 2100 value; see set_all_uprating_parameters in
+  # uprating_extensions.py.

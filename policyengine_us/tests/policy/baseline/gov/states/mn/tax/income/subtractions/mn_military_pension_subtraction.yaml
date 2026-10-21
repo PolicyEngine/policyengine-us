@@ -31,3 +31,80 @@
     state_code: MN
   output:
     mn_military_pension_subtraction: 0
+
+# Minn. Stat. 290.0132, subd. 21 allows the subtraction only "to the extent
+# included in federal adjusted gross income". Dependents' income is excluded
+# from federal AGI (irs_gross_income); they report it on their own return.
+- name: A dependent child's military retirement pay does not count toward the head's subtraction.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      child:
+        age: 10
+        military_retirement_pay: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MN
+  output:
+    mn_military_pension_subtraction: 0
+
+# Head 12,000 of retirement pay + spouse 3,000 of survivor benefits = 15,000.
+# The child's 10,000 of retirement pay and 2,000 of survivor benefits do not
+# count.
+- name: Only the head's and spouse's military retirement pay count when a dependent also has some.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        military_retirement_pay: 12_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      spouse:
+        age: 68
+        military_retirement_pay_survivors: 3_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      child:
+        age: 16
+        military_retirement_pay: 10_000
+        military_retirement_pay_survivors: 2_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MN
+  output:
+    mn_military_pension_subtraction: 15_000

@@ -14,7 +14,7 @@
     wi_income_tax_before_credits: 350
     wi_non_refundable_credits: 0
     wi_retirement_income_exclusion_tax: 70
-    wi_refundable_credits: 0
+    wi_earned_income_credit: 0
     wi_retirement_income_subtraction: 0
   output:
     wi_income_tax: 70
@@ -35,7 +35,7 @@
     wi_income_tax_before_credits: 350
     wi_non_refundable_credits: 0
     wi_retirement_income_exclusion_tax: 280
-    wi_refundable_credits: 300
+    wi_earned_income_credit: 300
     wi_retirement_income_subtraction: 0
   output:
     wi_income_tax: 50
@@ -52,7 +52,7 @@
     wi_taxable_income: 10_000
     wi_income_tax_before_credits: 350
     wi_non_refundable_credits: 0
-    wi_refundable_credits: 0
+    wi_earned_income_credit: 0
     wi_retirement_income_subtraction: 0
   output:
     wi_income_tax: 350

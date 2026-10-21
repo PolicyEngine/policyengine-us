@@ -8,7 +8,8 @@ class co_leap_heating_cost(Variable):
     unit = USD
     label = "Colorado LEAP estimated heating cost"
     defined_for = StateCode.CO
-    reference = "https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heat-Crisis_2026.pdf#page=1,2,6"
+    # PDF pages 1-2,6
+    reference = "https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heat-Crisis_2026.pdf#page=1"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.co.cdhs.leap.payment

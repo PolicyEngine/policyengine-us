@@ -8,8 +8,8 @@ class ca_oc_general_relief_countable_income_person(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = "in_oc"
-    # Sections 70.2.o through 70.2.q (pp. 4-5).
-    reference = "https://www.ssa.ocgov.com/sites/ssa/files/2025-03/Income.pdf#page=4"
+    # Sections 70.2.a(1), .o(4), and .p(1): PDF pages 1, 4.
+    reference = "https://www.ssa.ocgov.com/sites/ssa/files/2025-03/Income.pdf#page=1"
 
     def formula(person, period, parameters):
         # NOTE: Section 70.2.p also allows mandatory federal/state income tax
@@ -24,11 +24,15 @@ class ca_oc_general_relief_countable_income_person(Variable):
                 "ca_oc_general_relief_gross_unearned_income",
             ],
         )
+        # Section 70.2.o(4) and .p(1) allow medical insurance payments;
+        # 70.2.a(1) counts earnings diverted to a third party as gross income.
+        # Employee pretax premiums therefore remain deductible here.
         deductions = add(
             person,
             period,
             [
                 "health_insurance_premiums",
+                "pre_tax_health_insurance_premiums",
                 "child_support_expense",
                 "alimony_expense",
             ],

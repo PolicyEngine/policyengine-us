@@ -6,7 +6,9 @@ class md_hundred_year_subtraction_eligible(Variable):
     entity = Person
     label = "Eligible for the Maryland hundred year subtraction"
     definition_period = YEAR
-    reference = "https://trackbill.com/bill/maryland-house-bill-186-income-tax-subtraction-modification-for-centenarians/2173534/"
+    reference = (
+        "https://mgaleg.maryland.gov/mgawebsite/Legislation/Details/hb0186?ys=2022RS"
+    )
     defined_for = StateCode.MD
 
     def formula(person, period, parameters):

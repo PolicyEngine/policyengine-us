@@ -198,3 +198,25 @@
     # 50_000 wages + 10_000 Roth conversion = 60_000
     nj_gross_income: 60_000
     nj_income_tax: 1_767.25
+
+- name: NJ gross income includes income derived through estates or trusts
+  period: 2025
+  input:
+    employment_income: 50_000
+    estate_income: 8_000
+    state_code: NJ
+  output:
+    # N.J.S. 54A:5-1(h), reported on NJ-1040 line 26: 50,000 + 8,000.
+    nj_gross_income: 58_000
+
+- name: NJ same category rule - an estate or trust loss does not offset partnership income
+  period: 2025
+  input:
+    employment_income: 50_000
+    partnership_s_corp_income: 3_000
+    estate_income: -8_000
+    state_code: NJ
+  output:
+    # N.J.S. 54A:5-2: the category (h) net loss is disregarded, so
+    # 50,000 + 3,000 + max(-8,000, 0) = 53,000.
+    nj_gross_income: 53_000

@@ -62,10 +62,13 @@
         members: [person1, person2]
         state_code: IL
   output:
-    # person1 (disabled): gets exemptions
-    # person2 (not disabled/blind): uses gross income (no exemptions)
-    # Combined countable $6,323 > limit $6,168.75 → NOT eligible
-    il_hbwd_countable_income: 6_323
+    # person1 (disabled): gets exemptions, deducting only their own withholding
+    #   IL withholding: (54,000 - 2,850) x 0.0495 / 12 = 210.99
+    #   Social Security tax: 4,500 x 0.062 = 279
+    #   4,500 - 210.99 - 279 - 25 (flat) - 50 (20 + 0.5 x 60) = 3,935.01
+    # person2 (not disabled/blind): uses gross income (no exemptions) = 2,500
+    # Combined countable $6,435.01 > limit $6,168.75 → NOT eligible
+    il_hbwd_countable_income: 6_435.01
     il_hbwd_income_eligible: [false, false]
     il_hbwd_eligible: [false, false]
     il_hbwd_person: [0, 0]
@@ -290,3 +293,39 @@
     # Combined countable should be just under limit
     il_hbwd_income_eligible: [true, true]
     il_hbwd_eligible: [true, false]  # person2 not disabled/blind
+
+# Test 13: Married couple - both disabled - each deducts only their own withholding
+- name: Case 13, married couple both disabled with equal wages.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        employment_income: 25_200  # $2,100/month * 12
+      person2:
+        age: 40
+        is_disabled: true
+        employment_income: 25_200  # $2,100/month * 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # IL withholding: (25,200 - 2,850) x 0.0495 / 12 = 92.19 each
+    # Social Security tax: 2,100 x 0.062 = 130.20 each
+    # Exemption: 92.19 + 130.20 = 222.39 each, not the couple's 184.39 withholding + 130.20
+    il_aabd_expense_exemption_person: [222.39, 222.39]
+    # 2,100 - 222.39 - 25 (flat) - 50 (20 + 0.5 x 60) = 1,802.61
+    il_hbwd_countable_earned_income: [1_802.61, 1_802.61]
+    il_hbwd_countable_income: 3_605.21

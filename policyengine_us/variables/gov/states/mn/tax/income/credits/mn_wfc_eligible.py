@@ -7,8 +7,8 @@ class mn_wfc_eligible(Variable):
     label = "Minnesota working family credit eligibilty status"
     definition_period = YEAR
     reference = (
-        "https://www.revisor.mn.gov/statutes/2021/cite/290.0671"
-        "https://www.revisor.mn.gov/statutes/cite/290.0671"
+        "https://www.revisor.mn.gov/statutes/2021/cite/290.0671",
+        "https://www.revisor.mn.gov/statutes/cite/290.0671",
     )
     defined_for = StateCode.MN
 

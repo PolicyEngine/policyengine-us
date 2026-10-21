@@ -9,7 +9,10 @@ class co_leap_income_contribution_rate(Variable):
     unit = "/1"
     label = "Colorado LEAP household income contribution rate"
     defined_for = StateCode.CO
-    reference = "https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=4,5,93"
+    # PDF pages 4-5,93
+    reference = (
+        "https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=4"
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.co.cdhs.leap

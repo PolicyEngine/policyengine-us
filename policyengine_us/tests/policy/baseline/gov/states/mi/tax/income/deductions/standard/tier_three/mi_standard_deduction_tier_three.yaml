@@ -157,3 +157,26 @@
       state_code: MI
   output:
     mi_standard_deduction_tier_three: 4_790
+
+- name: 2022 single filer with tier 3 standard deduction reduced by military retirement and survivor pay
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 1_000
+        military_retirement_pay_survivors: 500
+        military_service_income: 500
+        taxable_social_security: 100
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_standard_deduction_tier_three_eligible: true
+        mi_personal_exemptions: 2_000
+        mi_expanded_retirement_benefits_deduction: 0
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output: # 20000 - (1000 + 500) - (500 > 100) - 2000 = 16000
+    mi_standard_deduction_tier_three: 16_000

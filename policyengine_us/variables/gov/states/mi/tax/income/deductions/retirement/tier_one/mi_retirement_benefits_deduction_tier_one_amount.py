@@ -8,10 +8,10 @@ class mi_retirement_benefits_deduction_tier_one_amount(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "http://legislature.mi.gov/doc.aspx?mcl-206-30",  # (1)(f)
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=17",
-        "https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/4884.pdf#page=2",
+        "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-30",  # (1)(f)
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/BOOK_MI-1040.pdf#page=17",
+        "https://web.archive.org/web/20250202214915/https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/4884.pdf#page=2",
     )
     defined_for = StateCode.MI
 
@@ -32,7 +32,7 @@ class mi_retirement_benefits_deduction_tier_one_amount(Variable):
         # Line 10
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         military_retirement_pay = (
-            person("military_retirement_pay", period) * is_head_or_spouse
+            person("military_retirement_income", period) * is_head_or_spouse
         )
 
         total_military_retirement_pay = tax_unit.sum(military_retirement_pay)

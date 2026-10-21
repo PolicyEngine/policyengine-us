@@ -50,3 +50,79 @@
     state_code: ID
   output:
     id_ctc: 0
+
+# 2021 Idaho Form 40 instructions, Line 25 Idaho Child Tax Credit Worksheet:
+# the child must "Be age 16 or under as of December 31, 2021". The federal
+# age-17 rule for 2021 is in IRC 24(i)(1), not 24(c).
+- name: Child aged 16 qualifies in 2021
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 40
+      child1:
+        age: 16
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: ID
+  output:
+    id_ctc: 205
+
+- name: Child aged 17 does not qualify in 2021
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 40
+      child1:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: ID
+  output:
+    id_ctc: 0
+
+- name: Six children with the oldest aged 17 in 2021
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 40
+      child1:
+        age: 17
+        is_tax_unit_dependent: true
+      child2:
+        age: 15
+        is_tax_unit_dependent: true
+      child3:
+        age: 13
+        is_tax_unit_dependent: true
+      child4:
+        age: 11
+        is_tax_unit_dependent: true
+      child5:
+        age: 10
+        is_tax_unit_dependent: true
+      child6:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3, child4, child5, child6]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4, child5, child6]
+        state_code: ID
+  output:
+    # 5 children under 17 * $205
+    id_ctc: 1025

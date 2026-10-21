@@ -9,8 +9,8 @@ class va_ccsp_copay(Variable):
     definition_period = MONTH
     defined_for = StateCode.VA
     reference = (
-        "https://doe.virginia.gov/home/showpublisheddocument/56270#page=69",
-        "https://doe.virginia.gov/home/showpublisheddocument/56270#page=143",
+        "https://ris.dls.virginia.gov/uploads/22VAC40/dibr/VDOE%20Child%20Care%20Program%20Guidance%20Manual%205.3.2023-20240822104447.pdf#page=63",
+        "https://ris.dls.virginia.gov/uploads/22VAC40/dibr/VDOE%20Child%20Care%20Program%20Guidance%20Manual%205.3.2023-20240822104447.pdf#page=137",
     )
 
     def formula(spm_unit, period, parameters):

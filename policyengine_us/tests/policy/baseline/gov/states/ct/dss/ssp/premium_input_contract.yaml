@@ -1,0 +1,88 @@
+# Salary-reduction premiums are excluded from inherited SSI earned income:
+# https://secure.ssa.gov/poms.nsf/lnx/0500820102 (SI 00820.102C.2).
+# CT earned and unearned disregard rules: UPM 5030.10 and 5030.15;
+# https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/ct.html
+# Current disregard and need amounts:
+# https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/fact-sheets-and-issue-briefs/fact-sheets/dss-program-standards-chart-effective-010126.pdf
+
+- name: Connecticut SSP applies its earned disregard after the inherited pretax exclusion
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        employment_income: 7_200
+        pre_tax_health_insurance_premiums: 1_200
+        rent: 12_000
+    marital_units:
+      marital_unit:
+        members: [person]
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: CT
+  output:
+    ssi_earned_income: 500  # $600 - $100.
+    ssi: 786.50  # $994 - ($500 - $20 - $65)/2.
+    ct_ssp_gross_income: 1_286.50  # $500 SSI wages + $786.50 SSI.
+    ct_ssp_earned_income_disregard: 282.50  # $65 + ($500 - $65)/2.
+    ct_ssp_unearned_income_disregard: 562
+    # ($786.50 - $562) + ($500 - $282.50) = $442.
+    ct_ssp_countable_income: 442
+    ct_ssp_need_standard: 597.35  # $400 shelter + $197.35 personal needs.
+    ct_ssp_income_eligible: true
+    ct_ssp_eligible_person: true
+    ct_ssp_person: 155.35  # $597.35 - $442.
+    ct_ssp: 155.35
+
+- name: Connecticut SSP blind earned disregard uses earnings after the pretax exclusion
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 50
+        is_blind: true
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        employment_income: 3_600
+        pre_tax_health_insurance_premiums: 1_200
+        ct_ssp_lives_with_others: true
+        ct_ssp_has_therapeutic_diet: true
+        rent: 6_000
+    marital_units:
+      marital_unit:
+        members: [person]
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: CT
+  output:
+    ssi_earned_income: 200  # $300 - $100.
+    ssi: 936.50  # $994 - ($200 - $20 - $65)/2.
+    ct_ssp_gross_income: 1_136.50  # $200 SSI wages + $936.50 SSI.
+    ct_ssp_earned_income_disregard: 142.50  # $85 + ($200 - $85)/2.
+    ct_ssp_unearned_income_disregard: 629.90
+    # ($936.50 - $629.90) + ($200 - $142.50) = $364.10.
+    ct_ssp_countable_income: 364.10
+    # $200 shelter + $197.35 personal needs + $36.20 therapeutic diet.
+    ct_ssp_need_standard: 433.55
+    ct_ssp_income_eligible: true
+    ct_ssp_eligible_person: true
+    ct_ssp_person: 69.45  # $433.55 - $364.10.
+    ct_ssp: 69.45

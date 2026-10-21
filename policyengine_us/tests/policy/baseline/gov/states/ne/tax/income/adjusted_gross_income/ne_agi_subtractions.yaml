@@ -1,0 +1,148 @@
+- name: Dependent child's public pension does not reduce the filer's Nebraska AGI
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      child:
+        age: 10
+        taxable_public_pension_income: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: NE
+  output:
+    # Federal AGI is the head's 50,000 of wages; the child's pension is on the
+    # child's own return, so Nebraska has nothing to subtract.
+    adjusted_gross_income: 50_000
+    ne_agi_subtractions: 0
+    ne_agi: 50_000
+
+- name: Dependent child's military retirement pay does not reduce the filer's Nebraska AGI
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      child:
+        age: 10
+        military_retirement_pay: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: NE
+  output:
+    adjusted_gross_income: 50_000
+    ne_military_retirement_subtraction: 0
+    ne_agi_subtractions: 0
+    ne_agi: 50_000
+
+- name: Dependent child's state income tax refund does not reduce the filer's Nebraska AGI
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      child:
+        age: 16
+        salt_refund_income: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: NE
+  output:
+    adjusted_gross_income: 50_000
+    ne_agi_subtractions: 0
+    ne_agi: 50_000
+
+- name: Only the head's and spouse's public pensions and state tax refunds are subtracted
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        taxable_public_pension_income: 20_000
+        salt_refund_income: 1_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      spouse:
+        age: 65
+        taxable_public_pension_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      child:
+        age: 16
+        taxable_public_pension_income: 10_000
+        salt_refund_income: 2_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        us_govt_interest: 3_000
+    marital_units:
+      couple_marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: NE
+  output:
+    # Head's pension 20,000 + spouse's pension 5,000 + head's refund 1,000
+    # + tax-unit US government interest 3,000. The child's 10,000 pension and
+    # 2,000 refund are not in the couple's federal AGI.
+    ne_agi_subtractions: 29_000

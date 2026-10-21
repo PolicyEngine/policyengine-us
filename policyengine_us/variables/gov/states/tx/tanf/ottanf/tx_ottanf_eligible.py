@@ -7,7 +7,7 @@ class tx_ottanf_eligible(Variable):
     label = "Eligible for Texas One-Time TANF (OTTANF)"
     definition_period = MONTH
     reference = (
-        "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-2421-eligibility-criteria",
+        "https://fhb.hhs.texas.gov/handbooks/texas-works-handbook/a-2420-eligibility-requirements#A2421",
         "https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-372-801",
     )
     defined_for = StateCode.TX

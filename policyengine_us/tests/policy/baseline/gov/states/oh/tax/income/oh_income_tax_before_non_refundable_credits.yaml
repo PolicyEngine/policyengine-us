@@ -20,3 +20,53 @@
     # + 2.765 of (44_250 - 25_000) = 532.26
     # + 3.226% of (64_500 - 44_250) = 653.27
     oh_income_tax_before_non_refundable_credits: 1_531.69
+
+- name: 2025 income below the $100,000 bracket uses the $342.00 base
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    oh_taxable_income: 88_100
+    state_code: OH
+  output:
+    # ORC 5747.02(A)(3)(b): $342.00 + 2.75% x (88,100 - 26,050)
+    oh_income_tax_before_non_refundable_credits: 2_048.38
+
+- name: 2025 income of exactly $100,000 stays in the lower bracket
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    oh_taxable_income: 100_000
+    state_code: OH
+  output:
+    # $342.00 + 2.75% x 73,950 = 2,375.625
+    oh_income_tax_before_non_refundable_credits: 2_375.625
+
+- name: 2025 income just over $100,000 uses the $2,394.32 statutory base
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    oh_taxable_income: 100_001
+    state_code: OH
+  output:
+    # $2,394.32 + 3.125% x 1
+    oh_income_tax_before_non_refundable_credits: 2_394.35125
+
+- name: 2025 income in the top bracket uses the $2,394.32 statutory base
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    oh_taxable_income: 128_100
+    state_code: OH
+  output:
+    # $2,394.32 + 3.125% x 28,100 = 3,272.445
+    oh_income_tax_before_non_refundable_credits: 3_272.445
+
+- name: 2024 top bracket has no base step
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    oh_taxable_income: 128_100
+    state_code: OH
+  output:
+    # ORC 5747.02 (2024): $2,394.32 + 3.5% x 28,100 = 3,377.82
+    oh_income_tax_before_non_refundable_credits: 3_377.82

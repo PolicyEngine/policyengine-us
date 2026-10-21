@@ -1,5 +1,5 @@
 # Source-derived FY 2026 Colorado regular heating checks.
-# Income and exemptions, PDF pages6-7,46-51,55-57: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=6,7,46,47,48,49,50,51,55,56,57
+# Income and exemptions, PDF pages6-7,46-51,55-57: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=6
 
 # Adult gross wages 1,000 + net nonfarm 2,000 + SSTB 3,000 + farm 4,000 + partnership 5,000 + S-corp 6,000 =21,000. No second business-expense deduction.
 - name: "Case 1, adult wages and independent business streams count once."
@@ -35,7 +35,8 @@
     co_leap_countable_income: 21_000
 
 # Rent 3,000 + interest 150 + dividends 300 + UI 400 + strike 500 + pension 3,000 + non-SSA survivors 600 + disability 700 + workers 800 + VA 900 + GA 100 + OAP 200 + alimony 300 + child support 400 + family help 500 + retirement distributions 1,300 =13150.
-# Pension survivor 900 and military 800 classify portions already reported within the 3,000 pension; they are not extra receipts.
+# Pension-survivor detail classifies the 3,000 pension. Military retirement pay
+# is a separate 800 receipt, so count 13,150 + 800 = 13,950.
 - name: "Case 2, unearned sources and retirement aggregates count without pension classification duplication."
   period: 2026
   absolute_error_margin: 0.01
@@ -80,8 +81,8 @@
         members: ["person1"]
         state_code: "CO"
   output:
-    co_leap_countable_income_person: 13_150
-    co_leap_countable_income: 13_150
+    co_leap_countable_income_person: 13_950
+    co_leap_countable_income: 13_950
 
 # Annual SSA survivors 12,011.88 =1,000.99/month; annual SSI 2,411.88 =200.99/month. Drop cents separately: (1,000+200)*12 =14,400. SSA survivors already enter the SSA aggregate.
 - name: "Case 3, Social Security and SSI cents are discarded separately per monthly receipt."
@@ -350,3 +351,22 @@
         state_code: CO
   output:
     co_leap_countable_income_person: [2_400, 1_200, 0]
+
+
+# Contract control: Colorado has no modeled state UI implementation yet. Supply
+# the existing modeled aggregate to test the shared fallback, not a new income
+# input or an assumed Colorado weekly benefit. Reported UI takes precedence.
+- name: Case 11, modeled unemployment fallback and reported precedence count once.
+  period: 2026
+  input:
+    state_code: [CO, CO]
+    age: [35, 35]
+    ssi: [0, 0]
+    co_oap: [0, 0]
+    co_tanf: [0, 0]
+    unemployment_compensation: [0, 400]
+    modeled_state_unemployment_compensation: [1_200, 1_200]
+  output:
+    total_unemployment_compensation: [1_200, 400]
+    co_leap_countable_income_person: [1_200, 400]
+    co_leap_countable_income: [1_200, 400]

@@ -8,16 +8,19 @@ class ky_subtractions(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=53498"
-        "https://revenue.ky.gov/Forms/Schedule%20M%202022.pdf#page=1"
-        "https://revenue.ky.gov/Forms/740%20Packet%20Instructions%205-9-23.pdf#page=23"
-        "https://revenue.ky.gov/Forms/Schedule%20M-2021.pdf#page=1"
-        "https://taxsim.nber.org/historical_state_tax_forms/KY/2021/Form%20740%20Packet%20Instructions-2021.pdf#page=27"
+        "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=53498",
+        "https://revenue.ky.gov/Forms/Schedule%20M%202022.pdf#page=1",
+        "https://revenue.ky.gov/Forms/740%20Packet%20Instructions%205-9-23.pdf#page=23",
+        "https://revenue.ky.gov/Forms/Schedule%20M-2021.pdf#page=1",
+        "https://taxsim.nber.org/historical_state_tax_forms/KY/2021/Form%20740%20Packet%20Instructions-2021.pdf#page=27",
     )
     defined_for = StateCode.KY
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ky.tax.income
         total_subtractions = add(person, period, p.subtractions)
+        # Dependents' income is not in federal AGI; they report it, and
+        # claim these subtractions, on their own Kentucky return.
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # Prevent negative subtractions from acting as additions
-        return max_(0, total_subtractions)
+        return head_or_spouse * max_(0, total_subtractions)

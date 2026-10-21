@@ -9,7 +9,7 @@ class wa_eceap_income_eligible(Variable):
     defined_for = StateCode.WA
     reference = (
         "https://app.leg.wa.gov/RCW/default.aspx?cite=43.216.505",
-        "https://www.dcyf.wa.gov/sites/default/files/pdf/eceap/ECEAP-Federal-Poverty-Level-Chart.pdf",
+        "https://web.archive.org/web/20250527155545/https://www.dcyf.wa.gov/sites/default/files/pdf/eceap/ECEAP-Federal-Poverty-Level-Chart.pdf",
         "https://www.dcyf.wa.gov/sites/default/files/pdf/eceap/State-Median-Income-Chart.pdf",
     )
 

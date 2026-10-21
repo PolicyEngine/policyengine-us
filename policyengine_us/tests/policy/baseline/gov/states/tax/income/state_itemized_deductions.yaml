@@ -11,6 +11,22 @@
   output:
     state_itemized_deductions: 0
 
+- name: Federal itemized deduction states inherit the self-employed premium exclusion
+  period: 2025
+  input:
+    state_code: [GA, ND, SC, UT]
+    adjusted_gross_income: [30_000, 30_000, 30_000, 30_000]
+    health_insurance_premiums: [6_000, 6_000, 6_000, 6_000]
+    self_employed_health_insurance_ald: [1_000, 1_000, 1_000, 1_000]
+    other_medical_expenses: [500, 500, 500, 500]
+    salt_deduction: [0, 0, 0, 0]
+    charitable_deduction: [0, 0, 0, 0]
+    interest_deduction: [0, 0, 0, 0]
+    casualty_loss_deduction: [0, 0, 0, 0]
+  output:
+    medical_expense_deduction: [3_250, 3_250, 3_250, 3_250]
+    state_itemized_deductions: [3_250, 3_250, 3_250, 3_250]
+
 - name: Federal itemized deductions adopted for Georgia
   period: 2023
   input:

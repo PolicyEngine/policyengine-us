@@ -1,0 +1,50 @@
+description: The IRS begins phasing out the traditional IRA deduction at this modified adjusted gross income for a joint filer who is not an active participant in an employer retirement plan and whose spouse is an active participant.
+values:
+  2015-01-01: 183_000
+  2016-01-01: 184_000
+  2017-01-01: 186_000
+  2018-01-01: 189_000
+  2019-01-01: 193_000
+  2020-01-01: 196_000
+  2021-01-01: 198_000
+  2022-01-01: 204_000
+  2023-01-01: 218_000
+  2024-01-01: 230_000
+  2025-01-01: 236_000
+  2026-01-01: 242_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: IRA deduction spouse active participant phase-out start
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 1_000
+  reference:
+    - title: 26 U.S. Code § 219(g)(7)(A), (8)
+      href: https://www.law.cornell.edu/uscode/text/26/219#g_7_A
+    - title: IRS Notice 2014-70 - 2015 retirement plan limits
+      href: https://www.irs.gov/irb/2014-48_IRB
+    - title: IRS Notice 2015-75 - 2016 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-15-75.pdf#page=3
+    - title: IRS Notice 2016-62 - 2017 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-16-62.pdf#page=3
+    - title: IRS Notice 2017-64 - 2018 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-17-64.pdf#page=3
+    - title: IRS Notice 2018-83 - 2019 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-18-83.pdf#page=3
+    - title: IRS Notice 2019-59 - 2020 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-19-59.pdf#page=3
+    - title: IRS Notice 2020-79 - 2021 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-20-79.pdf#page=3
+    - title: IRS Notice 2021-61 - 2022 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-21-61.pdf#page=3
+    - title: IRS Notice 2022-55 - 2023 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-22-55.pdf#page=3
+    - title: IRS Notice 2023-75 - 2024 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-23-75.pdf#page=4
+    - title: IRS Notice 2024-80 - 2025 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-24-80.pdf#page=4
+    - title: IRS Notice 2025-67 - 2026 retirement plan limits
+      href: https://www.irs.gov/pub/irs-drop/n-25-67.pdf#page=4

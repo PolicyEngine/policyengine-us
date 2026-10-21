@@ -1,0 +1,32 @@
+# Form D-400 Schedule A line 3: home mortgage interest (line 1) plus real
+# estate property taxes (line 2), G.S. 105-153.5(a)(2)b.
+
+- name: Mortgage interest plus real estate taxes within the federal cap
+  period: 2024
+  input:
+    filing_status: JOINT
+    mortgage_interest: 9_000
+    real_estate_taxes: 4_000
+    state_code: NC
+  output:
+    nc_mortgage_and_property_tax_before_limitation: 13_000
+
+- name: Real estate taxes above the federal cap count only up to the cap
+  period: 2024
+  input:
+    filing_status: SEPARATE
+    mortgage_interest: 9_000
+    real_estate_taxes: 11_000
+    state_code: NC
+  output:
+    # Section 164 allows $5,000 of these taxes on a separate return.
+    nc_mortgage_and_property_tax_before_limitation: 14_000
+
+- name: The amount before limitation is not capped at $20,000
+  period: 2024
+  input:
+    filing_status: SINGLE
+    mortgage_interest: 25_000
+    state_code: NC
+  output:
+    nc_mortgage_and_property_tax_before_limitation: 25_000

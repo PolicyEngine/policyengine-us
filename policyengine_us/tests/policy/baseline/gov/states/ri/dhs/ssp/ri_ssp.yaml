@@ -1,0 +1,380 @@
+# RI: 218-RICR-20-00-5; R.I. Gen. Laws § 40-6-27; POMS SI 01415.058 and SI BOS01415.012.
+- name: Case 1, independent living.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 65
+  output:
+    ri_ssp: 39.92
+
+- name: Case 2, living in household of another.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 65
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+  output:
+    ri_ssp: 51.92
+
+- name: Case 3, certified residential care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 65
+    ri_ssp_certified_residential_care: true
+  output:
+    ri_ssp: 332
+
+- name: Case 4, medical institution.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    ri_ssp: 45
+
+- name: Case 5, SSI exhausted but state payment remains.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 65
+    social_security_retirement: 12_360
+  output:
+    ri_ssp: 23.92
+
+- name: Case 6, state administered payment below a dollar.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: RI
+    age: 65
+    social_security_retirement: 12_642
+  output:
+    # Countable income: 12_642 / 12 = 1_053.50 - 20 = 1_033.50
+    # Excess over the FBR: 1_033.50 - 994 = 39.50
+    # Category A: 39.92 - 39.50 = 0.42; the state pays no $1 minimum.
+    ri_ssp: 0.42
+
+- name: Case 7, combined income cutoff.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: RI
+    age: 65
+    social_security_retirement: 18_000
+  output:
+    # Countable income: 18_000 / 12 = 1_500 - 20 = 1_480
+    # 1_480 exceeds the combined standard of 994 + 39.92 = 1_033.92.
+    ri_ssp: 0
+
+- name: Case 8, excess resources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 65
+    ssi_countable_resources: 2_001
+  output:
+    ri_ssp: 0
+
+- name: Case 9, not aged blind or disabled.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 30
+  output:
+    ri_ssp: 0
+
+- name: Case 10, nonresident.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    age: 65
+  output:
+    ri_ssp: 0
+
+- name: Case 11, declines required SSI application.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 65
+    takes_up_ssi_if_eligible: false
+  output:
+    ri_ssp: 0
+
+- name: Case 12, institutional state only payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    social_security_retirement: 720
+  output:
+    ri_ssp: 35
+
+- name: Case 13, married couple in assisted living with a joint claim.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        ri_ssp_certified_residential_care: true
+      person2:
+        age: 72
+        ri_ssp_certified_residential_care: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Category D is for adult individuals only, so the couple is paid as
+    # Category A: couple rate 79.38 / 2 = 39.69 each, state administered.
+    ri_ssp: [39.69, 39.69]
+
+- name: Case 14, couple with only one spouse in certified care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+      person2:
+        age: 72
+        ri_ssp_certified_residential_care: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # person1 is in the own household category; person2's certified care
+    # falls back to Category A in an eligible couple.
+    # Couple rate: (79.38 / 2 + 79.38 / 2) / 2 = 39.69 each.
+    ri_ssp: [39.69, 39.69]
+
+- name: Case 15, disabled child with the certified care input.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 16
+    is_disabled: true
+    meets_ssi_disability_criteria: true
+    ri_ssp_certified_residential_care: true
+  output:
+    # Category D does not apply to children, so the Category A individual
+    # rate applies, paid by the state: 39.92.
+    ri_ssp: 39.92
+
+- name: Case 16, state-only assisted living payment below a dollar.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: RI
+    age: 80
+    social_security_retirement: 16_146
+    ri_ssp_certified_residential_care: true
+  output:
+    # Countable income: 16_146 / 12 = 1_345.50 - 20 = 1_325.50
+    # Excess over the FBR: 1_325.50 - 994 = 331.50, so no federal SSI.
+    ssi: 0
+    # 218-RICR-20-00-5 Sections 5.1.1.A.1 and 5.2.B.3: DHS pays the
+    # state-only supplement, 332 - 331.50 = 0.50, with no $1 minimum.
+    ri_ssp: 0.5
+
+- name: Case 17, reported SSI recipient's Category D payment is federally administered.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: RI
+    age: 80
+    social_security_retirement: 16_146
+    receives_ssi: true
+    ri_ssp_certified_residential_care: true
+  output:
+    # SSA pays Category D to SSI recipients and raises 0.50 to $1
+    # (20 CFR 416.2020(c)).
+    ri_ssp: 1
+
+- name: Case 18, married couple in a Title XIX facility.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 78
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # 20 CFR 416.414(b)(2): 60 / 2 = 30 each.
+    ssi: [30, 30]
+    # R.I. Gen. Laws § 40-6-27(a)(3) pays each individual 45; couple 90 / 2.
+    ri_ssp: [45, 45]
+
+- name: Case 19, own household with an ineligible spouse receiving Social Security.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+      person2:
+        age: 63
+        # $1,000 a month.
+        social_security_retirement: 12_000
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # 1_000 is above the 497 deeming threshold; 1_000 - 20 = 980 deemed.
+    ssi_countable_income: [980, 0]
+    # Federal: the lesser of 994 and 1_491 - 980 = 511.
+    ssi: [511, 0]
+    # State: the lesser of 39.92 and the couple rate 79.38 with no excess
+    # over the couple FBR (POMS SI 01320.430 D.2.c, D.3.b).
+    ri_ssp: [39.92, 0]
+
+- name: Case 20, own household with an ineligible spouse whose income exhausts both payments.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+      person2:
+        age: 63
+        # $2,000 a month.
+        social_security_retirement: 24_000
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ssi_countable_income: [1_980, 0]
+    ssi: [0, 0]
+    # max(79.38, 39.92) - (1_980 - 1_491) < 0 (20 CFR 416.2025(b)(3)).
+    ri_ssp: [0, 0]
+
+- name: Case 21, mixed household-of-another and own-household inputs for a couple average the two rates.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person2:
+        age: 70
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_ssp_living_arrangement: [HOUSEHOLD_OF_ANOTHER, INDEPENDENT]
+    # A couple living together shares one federal living arrangement (20 CFR
+    # 416.1131(a)-(b)), so this mix does not arise in Rhode Island. The case
+    # pins only the POMS SI 02005.030 G.1 averaging:
+    # (97.30 / 2 + 79.38 / 2) / 2 = 44.17 each.
+    ri_ssp: [44.17, 44.17]
+
+- name: Case 22, certified care for one of two unrelated recipients leaves the other's category.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 80
+        ri_ssp_certified_residential_care: true
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    spm_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    families:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    households:
+      home1:
+        members: [person1]
+        state_code: RI
+      home2:
+        members: [person2]
+        state_code: RI
+  output:
+    ri_ssp_living_arrangement: [INDEPENDENT, RESIDENTIAL_CARE]
+    ri_ssp: [39.92, 332]
