@@ -18,7 +18,7 @@ class ga_liheap_household_size(Variable):
     # Lawful immigrants count in the size (manual 101.2 page 3, 1100.3 page
     # 50, 1100.5 a page 51); undocumented members do not (1100.4 page 51: "Do
     # not include the undocumented adults in the household size"). The manual
-    # conflicts with itself: 1100.14 (page 57) lists "Applicants where ALL
+    # gives two other answers: 1100.14 (page 57) lists "Applicants where ALL
     # household members are non-U.S. citizens" as ineligible, and the glossary
     # (page 76) counts non-citizen members' income "but do not include in the
     # household size". This follows the specific eligibility sections.
