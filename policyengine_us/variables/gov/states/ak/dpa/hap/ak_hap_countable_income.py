@@ -61,12 +61,12 @@ class ak_hap_countable_income(Variable):
         # routes are unavailable, so no ATAP pass-through cap is imputed.
         # Gross SSA includes Medicare withholding. No general medical, care,
         # support-paid or earned-income deduction is authorized by these rules.
-        # ATAP is an SPM-unit benefit: count its annual flow exactly once.
+        # Count the takeup-sensitive ATAP receipt once per SPM unit.
         total = (
             countable_earned
             + unearned
             + rental
             + countable_gifts
-            + spm_unit("ak_atap", period)
+            + spm_unit("tanf", period)
         )
         return max_(total, 0)

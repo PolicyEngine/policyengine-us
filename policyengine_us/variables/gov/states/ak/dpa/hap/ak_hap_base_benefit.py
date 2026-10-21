@@ -55,7 +55,11 @@ class ak_hap_base_benefit(Variable):
             default=0,
         )
         dwelling = spm_unit("ak_hap_dwelling_type", period)
-        factor = spm_unit("ak_hap_income_factor", period)
+        # Restore the table's decimal tenths after float32 storage so exact
+        # half points retain the manual's half-up rounding below.
+        factor = np.round(
+            spm_unit("ak_hap_income_factor", period).astype(np.float64), 1
+        )
         person = spm_unit.members
         age = person("age", period)
         # Existing disability status approximates the manual's documented
