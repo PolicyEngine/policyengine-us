@@ -35,12 +35,17 @@ class medicaid_enrolled_for_ssi_state_supplement(Variable):
         # age/blindness/disability independently of SNAP/TANF. Keep all other
         # Medicaid conditions, take-up and supplied inputs in a private branch.
         branch_name = f"{simulation.branch_name}_ssi_state_supplement_medicaid_{period}"
-        branch = simulation.get_branch(branch_name)
         try:
-            branch.set_input(
-                "medicaid_community_engagement_pass_through_eligible",
-                period.first_month,
-                np.zeros(person.count, dtype=bool),
+            branch = get_override_branch(
+                simulation,
+                branch_name,
+                period,
+                {
+                    "medicaid_community_engagement_pass_through_eligible": (
+                        period.first_month,
+                        np.zeros(person.count, dtype=bool),
+                    )
+                },
             )
             return branch.calculate("medicaid_enrolled", period)
         finally:

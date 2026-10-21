@@ -10,8 +10,9 @@ class oh_educator_expense_deduction_person(Variable):
     default_value = 0
     defined_for = StateCode.OH
     # ORC § 5747.01(A)(31): Ohio allows a deduction ONLY for educator
-    # expenses in EXCESS of the federal IRC § 62(a)(2)(D) cap (currently
-    # $300). The federal-cap portion is already deducted via federal AGI;
+    # expenses in EXCESS of the federal IRC § 62(a)(2)(D) cap
+    # (gov.irs.ald.educator_expense.cap). The federal-cap portion is already
+    # deducted via federal AGI (educator_expense_ald);
     # adding the federal `educator_expense` here would double-count. This
     # stub variable therefore replaces (not supplements) the federal
     # educator deduction in oh/.../deductions.yaml. It remains an explicit

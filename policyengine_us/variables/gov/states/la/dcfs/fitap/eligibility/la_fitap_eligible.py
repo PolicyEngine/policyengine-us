@@ -7,8 +7,8 @@ class la_fitap_eligible(Variable):
     label = "Louisiana FITAP eligible"
     definition_period = MONTH
     reference = (
-        "https://www.doa.la.gov/media/tp3lmkyg/67.pdf#page=37",
-        "https://www.doa.la.gov/media/tp3lmkyg/67.pdf#page=38",
+        "https://web.archive.org/web/20260125030953/https://www.doa.la.gov/media/tp3lmkyg/67.pdf#page=37",
+        "https://web.archive.org/web/20260125030953/https://www.doa.la.gov/media/tp3lmkyg/67.pdf#page=38",
     )
     defined_for = StateCode.LA
 

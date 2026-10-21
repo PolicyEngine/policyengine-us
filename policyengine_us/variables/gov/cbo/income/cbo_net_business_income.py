@@ -7,10 +7,7 @@ class cbo_net_business_income(Variable):
     label = "CBO net business income"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.cbo.gov/system/files/2026-02/"
-        "51138-2026-02-Revenue-Projections.xlsx"
-    )
+    reference = "https://www.cbo.gov/system/files/2026-02/51138-2026-02-Revenue.xlsx"
     adds = [
         "self_employment_income",
         "tax_unit_partnership_s_corp_income",

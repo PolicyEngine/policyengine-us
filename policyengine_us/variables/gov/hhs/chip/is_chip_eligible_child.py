@@ -38,10 +38,7 @@ class is_chip_eligible_child(Variable):
         state_has_chip = income_limit > 0
 
         # Check immigration status eligibility
-        istatus = person("immigration_status", period)
-        undocumented = istatus == istatus.possible_values.UNDOCUMENTED
-        daca = istatus == istatus.possible_values.DACA
-        immigration_eligible = ~(undocumented | daca)
+        immigration_eligible = person("is_chip_immigration_status_eligible", period)
 
         # Check income eligibility
         # CHIP is for children who make too much for Medicaid but below CHIP limits

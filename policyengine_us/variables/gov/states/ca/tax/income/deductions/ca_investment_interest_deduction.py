@@ -7,8 +7,8 @@ class ca_investment_interest_deduction(Variable):
     label = "California investment interest deduction"
     unit = USD
     reference = (
-        "https://www.ftb.ca.gov/forms/2021/2021-3526.pdf"
-        "https://law.justia.com/codes/california/2022/code-rtc/division-2/part-11/chapter-7/article-1/section-24344/"
+        "https://www.ftb.ca.gov/forms/2021/2021-3526.pdf",
+        "https://law.justia.com/codes/california/2022/code-rtc/division-2/part-11/chapter-7/article-1/section-24344/",
     )
     definition_period = YEAR
     defined_for = StateCode.CA

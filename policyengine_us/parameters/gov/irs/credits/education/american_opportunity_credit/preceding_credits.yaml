@@ -1,13 +1,31 @@
 description: Non-refundable tax credits which precede the American Opportunity Credit.
 values:
+  # Form 8863's Credit Limit Worksheet subtracts Schedule 3 lines 1 (foreign
+  # tax credit), 2 (child and dependent care credit), 6d (elderly or disabled
+  # credit) and 6l (Form 8978, not modeled).
   2013-01-01:
-    - foreign_tax_credit 
+    - foreign_tax_credit
     - cdcc
+    - elderly_disabled_credit
+  # The Child and Dependent Care Credit was refundable for 2021 only.
+  2021-01-01:
+    - foreign_tax_credit
+    - elderly_disabled_credit
+  2022-01-01:
+    - foreign_tax_credit
+    - cdcc
+    - elderly_disabled_credit
 
 metadata:
   unit: list
   period: year
   label: Non-refundable tax credits preceding the American Opportunity Credit
   reference:
-    - title: IRS Schedule 3, Additional Credits and Payments
-      href: https://www.irs.gov/pub/irs-pdf/f1040s3.pdf
+    - title: 2025 Instructions for Form 8863, Credit Limit Worksheet, line 5
+      href: https://www.irs.gov/pub/irs-pdf/i8863.pdf#page=8
+    - title: 2021 Instructions for Form 8863, Credit Limit Worksheet, line 5
+      href: https://www.irs.gov/pub/irs-prior/i8863--2021.pdf#page=7
+    - title: 2013 Instructions for Form 8863, Credit Limit Worksheet, line 5
+      href: https://www.irs.gov/pub/irs-prior/i8863--2013.pdf#page=6
+    - title: 26 U.S. Code § 21(g) - Special rules for 2021
+      href: https://www.law.cornell.edu/uscode/text/26/21#g
