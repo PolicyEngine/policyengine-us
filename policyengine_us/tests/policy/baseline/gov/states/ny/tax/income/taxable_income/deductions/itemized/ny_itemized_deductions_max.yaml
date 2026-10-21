@@ -1,0 +1,63 @@
+
+- name: NY excludes mortgage insurance premiums in 2021.
+  period: 2021
+  input:
+    state_code: NY
+    adjusted_gross_income: 80_000
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 2_000
+    interest_deduction: 12_000
+    ny_itemized_deductions_max: 10_000
+
+- name: NY excludes mortgage insurance premiums in 2022.
+  period: 2022
+  input:
+    state_code: NY
+    adjusted_gross_income: 80_000
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 0
+    interest_deduction: 10_000
+    ny_itemized_deductions_max: 10_000
+
+- name: NY excludes mortgage insurance premiums in 2026.
+  period: 2026
+  input:
+    state_code: NY
+    adjusted_gross_income: 80_000
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 2_000
+    interest_deduction: 12_000
+    ny_itemized_deductions_max: 10_000
+
+- name: New York allows mortgage insurance premiums before the 2021 nonconformity.
+  period: 2020
+  input:
+    state_code: NY
+    adjusted_gross_income: 80_000
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 2_000
+  output:
+    deductible_mortgage_insurance_premiums: 2_000
+    ny_itemized_deductions_max: 12_000
+
+- name: NY excludes only the federally deductible premium after its AGI phase-out.
+  period: 2021
+  input:
+    state_code: NY
+    adjusted_gross_income: 101_000
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 1_800
+    interest_deduction: 11_800
+    ny_itemized_deductions_max: 10_000

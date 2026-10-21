@@ -1,0 +1,84 @@
+- name: Hawaii includes qualified premiums on both residences in 2020
+  period: 2020
+  input:
+    state_code: HI
+    adjusted_gross_income: 80_000
+    hi_agi: 80_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 2_000
+    hi_interest_deduction: 2_000
+
+- name: Hawaii phases out premiums using Hawaii AGI rather than federal AGI
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    adjusted_gross_income: 80_000
+    hi_agi: 100_001
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    # Hawaii AGI exceeds $100,000 by a fraction of a $1,000 increment.
+    deductible_mortgage_insurance_premiums: 2_000
+    hi_interest_deduction: 1_800
+
+- name: Hawaii separate filer has no phase-out at exactly 50000 of Hawaii AGI
+  period: 2020
+  input:
+    state_code: HI
+    filing_status: SEPARATE
+    adjusted_gross_income: 60_000
+    hi_agi: 50_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 0
+    hi_interest_deduction: 2_000
+
+- name: Hawaii separate filer phase-out begins with the first dollar above 50000
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    filing_status: SEPARATE
+    adjusted_gross_income: 40_000
+    hi_agi: 50_001
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 2_000
+    hi_interest_deduction: 1_800
+
+- name: Hawaii adopted the federal extension through 2021
+  period: 2021
+  input:
+    state_code: HI
+    hi_agi: 80_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    hi_interest_deduction: 2_000
+
+- name: Hawaii premium deduction expired after 2021
+  period: 2022
+  input:
+    state_code: HI
+    hi_agi: 80_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    hi_interest_deduction: 0
+
+- name: Hawaii does not adopt the federal subsection that restores premiums in 2026
+  period: 2026
+  input:
+    state_code: HI
+    adjusted_gross_income: 80_000
+    hi_agi: 80_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 2_000
+    hi_interest_deduction: 0

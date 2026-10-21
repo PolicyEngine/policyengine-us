@@ -1,0 +1,17 @@
+description: Kentucky limits the qualified residence interest deduction to the principal residence if this is true.
+values:
+  # Before HB 757, KRS 141.019(2) ended at paragraph (i) and had no qualified residence interest limit.
+  2018-01-01: false
+  # HB 757 (2026 Ky. Acts ch. 161) sec. 7, as amended by HB 869 (ch. 198) sec. 48, adds KRS 141.019(2)(j) for taxable years beginning on or after January 1, 2026.
+  2026-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Kentucky qualified residence interest limited to the principal residence
+  reference:
+    - title: KRS 141.019(2)(j), net income of taxpayers other than corporations
+      href: https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=57914#page=4
+    - title: 2026 Ky. Acts ch. 161 (HB 757), sec. 7, KRS 141.019(2)(j)
+      href: https://apps.legislature.ky.gov/law/acts/26RS/documents/0161.pdf#page=13
+    - title: 2026 Ky. Acts ch. 198 (HB 869), sec. 48, amending HB 757 sec. 7
+      href: https://apps.legislature.ky.gov/law/acts/26RS/documents/0198.pdf#page=74
