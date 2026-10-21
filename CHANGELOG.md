@@ -1,3 +1,10 @@
+## [2.55.1] - 2026-10-21
+
+### Fixed
+
+- Count the FL and SD LIHEAP comments that merged before the source-conflict guard in its ratchet baseline, so the guard passes on main.
+
+
 ## [2.55.0] - 2026-10-21
 
 ### Added
