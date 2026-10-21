@@ -188,7 +188,9 @@ ACT_1_LADDER = [(94_700 + 100 * k, 290 - 10 * k) for k in range(29)] + [(97_600,
 
 def nearest_100(amount):
     # 26-51-201(d)(1): "rounding to the nearest one hundred dollars ($100)".
-    return np.floor(amount / 100 + 0.5) * 100
+    # Preserve Core's existing ties-to-even convention for exact $50 ties;
+    # the statute does not specify a tie-breaking rule.
+    return round(amount / 100) * 100
 
 
 def indexed_act_1_of_2026_tax(year, ti):
