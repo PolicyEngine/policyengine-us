@@ -6,7 +6,7 @@ class ssi_in_kind_support_and_maintenance(Variable):
     entity = Person
     label = "SSI in-kind support and maintenance"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/cfr/text/20/416.1130",
         "https://www.law.cornell.edu/cfr/text/20/416.1140",
@@ -14,7 +14,7 @@ class ssi_in_kind_support_and_maintenance(Variable):
 
     def formula(person, period, parameters):
         # ISM is counted as unearned income for own-household recipients
-        # who receive shelter (or food, pre-10/2024) support.
+        # who receive shelter support (or food, before September 30, 2024).
         # The PMV rule caps ISM at the presumed maximum value.
         # If the recipient provides an actual shelter value (rebuttal),
         # ISM is the lesser of the actual value and the PMV.

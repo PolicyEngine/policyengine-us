@@ -196,8 +196,8 @@
         is_disabled: true
         meets_ssi_disability_criteria: true
         ssi_receives_outside_shelter_support: true
-        # Actual annual shelter value $1,200 ($100/month electric bill)
-        ssi_shelter_support_value: 1_200
+        # Actual monthly shelter value $100 (electric bill)
+        ssi_shelter_support_value: 100
     spm_units:
       spm_unit:
         members: [person1]
@@ -207,9 +207,8 @@
   output:
     ssi_federal_living_arrangement: OWN_HOUSEHOLD
     ssi_pmv_applies: true
-    # PMV annual = 342.33 * 12 = 4,108
-    # Actual = 1,200 < PMV → use actual
-    # ISM monthly = 1,200 / 12 = 100
+    # PMV monthly = 342.33
+    # Actual = 100 < PMV → use actual
     ssi_in_kind_support_and_maintenance: 100
     # Countable = (100 - 20) = 80 (after $20 general exclusion)
     ssi_countable_income: 80
@@ -244,6 +243,126 @@
     # uncapped = 943 - 314.33 = 628.67
     uncapped_ssi: 628.67
     ssi: 628.67
+
+- name: Case 9b, food-only support in October 2024 no longer triggers PMV.
+  period: 2024-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_receives_food_from_others: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    # Food stopped counting as ISM on September 30, 2024 (89 FR 21199).
+    # Before this change the 2024 exclusion waited until January 2025.
+    ssi_pmv_applies: false
+    ssi_in_kind_support_and_maintenance: 0
+    ssi_countable_income: 0
+    uncapped_ssi: 943
+    ssi: 943
+
+- name: Case 9c, food-only support in September 2024 still triggers PMV.
+  period: 2024-09
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_receives_food_from_others: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # Food received from September 1 to 29 still counts; the PMV is not
+    # prorated by day.
+    ssi_pmv_applies: true
+    ssi_in_kind_support_and_maintenance: 334.33
+    ssi_countable_income: 314.33
+    ssi: 628.67
+
+- name: Case 9d, September 2024 food received only on or after September 30 does not trigger PMV.
+  period: 2024-09
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_receives_food_from_others: true
+        ssi_food_from_others_only_on_or_after_food_exclusion: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    ssi_pmv_applies: false
+    ssi_in_kind_support_and_maintenance: 0
+    ssi_countable_income: 0
+    ssi: 943
+
+- name: Case 9e, the September 30 flag does not affect a month after the exclusion starts.
+  period: 2024-08
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_receives_food_from_others: true
+        ssi_food_from_others_only_on_or_after_food_exclusion: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # August 2024 ends before September 30, so its food counts.
+    ssi_pmv_applies: true
+    ssi_in_kind_support_and_maintenance: 334.33
+
+- name: Case 9f, a year of food-only support counts ISM for January through September 2024.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_receives_food_from_others: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # 9 x ($943 / 3 + $20) = 9 x 334.333 = 3,009; before this change the
+    # model counted all 12 months ($4,012).
+    ssi_in_kind_support_and_maintenance: 3_009
+    # 9 x 314.333 = 2,829
+    ssi_countable_income: 2_829
+    # 9 x 628.667 + 3 x 943 = 5,658 + 2,829 = 8,487
+    ssi: 8_487
 
 - name: Case 10, food-only support after 9/30/2024 does not trigger PMV.
   period: 2025-01
@@ -355,8 +474,8 @@
         is_disabled: true
         meets_ssi_disability_criteria: true
         ssi_receives_outside_shelter_support: true
-        # Actual annual shelter value $6,000 exceeds PMV ($4,108)
-        ssi_shelter_support_value: 6_000
+        # Actual monthly shelter value $500 exceeds PMV ($342.33)
+        ssi_shelter_support_value: 500
     spm_units:
       spm_unit:
         members: [person1]
@@ -366,8 +485,8 @@
   output:
     ssi_federal_living_arrangement: OWN_HOUSEHOLD
     ssi_pmv_applies: true
-    # PMV annual = 342.33 * 12 = 4,108
-    # Actual = 6,000 > PMV → capped at PMV
+    # PMV monthly = 342.33
+    # Actual = 500 > PMV → capped at PMV
     # ISM monthly = 342.33 (PMV, not 500)
     ssi_in_kind_support_and_maintenance: 342.33
     # Countable = 342.33 - 20 = 322.33

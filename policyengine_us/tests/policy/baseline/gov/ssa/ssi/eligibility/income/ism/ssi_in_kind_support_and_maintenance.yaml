@@ -69,3 +69,63 @@
         ssi_medicaid_pays_majority_of_care: true
   output:
     ssi_in_kind_support_and_maintenance: 0
+
+- name: Case 6, food-only support does not trigger PMV in October 2024.
+  period: 2024-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ssi_federal_living_arrangement: OWN_HOUSEHOLD
+        ssi_receives_food_from_others: true
+        ssi_receives_outside_shelter_support: false
+        ssi_receives_shelter_from_others_in_household: false
+  output:
+    # Food stopped counting as ISM on September 30, 2024 (89 FR 21199).
+    ssi_pmv_applies: false
+    ssi_in_kind_support_and_maintenance: 0
+
+- name: Case 7, food-only support triggers PMV before the exclusion.
+  period: 2024-08
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ssi_federal_living_arrangement: OWN_HOUSEHOLD
+        ssi_receives_food_from_others: true
+        ssi_receives_outside_shelter_support: false
+        ssi_receives_shelter_from_others_in_household: false
+        ssi_pmv_amount: 334.33
+  output:
+    # $943 / 3 + $20 = $334.33 monthly PMV (20 CFR 416.1140(a)(1)).
+    ssi_pmv_applies: true
+    ssi_in_kind_support_and_maintenance: 334.33
+
+- name: Case 8, shelter support continues to trigger PMV after the exclusion.
+  period: 2024-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ssi_federal_living_arrangement: OWN_HOUSEHOLD
+        ssi_receives_food_from_others: false
+        ssi_receives_outside_shelter_support: true
+        ssi_receives_shelter_from_others_in_household: false
+        ssi_pmv_amount: 334.33
+  output:
+    ssi_pmv_applies: true
+    ssi_in_kind_support_and_maintenance: 334.33
+
+- name: Case 9, monthly PMV amount for an individual in 2024.
+  period: 2024-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+  output:
+    # $943 / 3 + $20, a monthly amount.
+    ssi_pmv_amount: 334.33
