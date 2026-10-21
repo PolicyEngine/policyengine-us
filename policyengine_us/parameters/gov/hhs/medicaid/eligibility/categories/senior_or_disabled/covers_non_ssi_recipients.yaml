@@ -1,0 +1,157 @@
+description: The state covers aged, blind, or disabled people who do not receive SSI as categorically needy under the Medicaid optional senior or disabled pathway, if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: Medicaid senior or disabled pathway covers people who do not receive SSI
+  breakdown:
+  - state_code
+  reference:
+    - title: 42 CFR 435.210 - Optional eligibility for individuals who meet the income and resource requirements of the cash assistance programs
+      href: https://www.ecfr.gov/current/title-42/section-435.210
+    - title: 42 U.S. Code § 1396a(m) - Poverty-level aged and disabled group
+      href: https://www.law.cornell.edu/uscode/text/42/1396a#m
+    - title: KFF, Medicaid Eligibility and Enrollment Policies for Seniors and People with Disabilities (Non-MAGI) During the Unwinding (June 2024), Appendix Table 1
+      href: https://www.kff.org/report-section/medicaid-eligibility-and-enrollment-policies-for-seniors-and-people-with-disabilities-non-magi-during-the-unwinding-appendix/
+    - title: Ala. Admin. Code r. 560-X-25-.03(1) - Coverage Groups
+      href: https://www.law.cornell.edu/regulations/alabama/Ala-Admin-Code-r-560-X-25-.03
+    - title: Delaware Social Services Manual 17100 - SSI Beneficiaries
+      href: https://archive.regulations.delaware.gov/AdminCode/title16/Department%20of%20Health%20and%20Social%20Services/Division%20of%20Social%20Services/Delaware%20Social%20Services%20Manual/17000.shtml
+    - title: Georgia Medicaid Policy Manual 2101 - ABD Medicaid Classes of Assistance Overview
+      href: https://pamms.dhs.ga.gov/dfcs/medicaid/2101/
+    - title: Georgia Medicaid Policy Manual 2111 - Supplemental Security Income (SSI) Medicaid
+      href: https://pamms.dhs.ga.gov/dfcs/medicaid/2111/
+    - title: "Kansas Medicaid State Plan Amendment KS-25-0019 (effective July 1, 2025), Aged, Blind and Disabled eligibility groups #page 22-23"
+      href: https://www.medicaid.gov/medicaid/spa/downloads/KS-25-0019.pdf#page=22
+    - title: 907 KAR 20:005 Sections 1(1) and 9(3) - Medicaid technical eligibility requirements not related to a modified adjusted gross income standard or former foster care individuals
+      href: https://apps.legislature.ky.gov/law/kar/titles/907/020/005/
+    - title: "Maryland Department of Health, Guide to Maryland Medical Assistance Coverage Groups (April 2025), S02 and S98 #page 12,14-15"
+      href: https://health.maryland.gov/mmcp/Coverage%20Groups/coverage-group-guide.pdf#page=12
+    - title: Miss. Code Ann. § 43-13-115(11), as reprinted in 2024 House Bill 464 (introduced)
+      href: https://billstatus.ls.state.ms.us/documents/2024/pdf/HB/0400-0499/HB0464IN.pdf#page=5
+    - title: Mississippi Division of Medicaid Eligibility Policy and Procedures Manual, Appendix A-4-c - Inactive Categories of Eligibility
+      href: https://medicaid.ms.gov/wp-content/uploads/2016/12/Appendix-A-4.pdf#page=3
+    - title: "Mississippi Division of Medicaid Eligibility Policy and Procedures Manual, Section 101.02 (December 2016) #page 5,11"
+      href: https://medicaid.ms.gov/wp-content/uploads/2016/12/Section-101.02.pdf#page=5
+    - title: "Nevada Medicaid Assistance Manual B-300 - MAABD Medical Categories (March 2025), B-315, B-320 and B-340 #page 6-7,14"
+      href: https://dwss.nv.gov/uploadedFiles/dwssnvgov/content/Medical/B-300%20MAABD%20MEDICAL%20CATEGORIES%20Mar%2017.pdf#page=6
+    - title: 8.200.400.10(C)(1) NMAC - Supplemental security income (SSI) related medicaid
+      href: https://www.srca.nm.gov/parts/title08/08.200.0400.html
+    - title: S.D. Admin. R. 67:46:01:02(2) - Eligibility requirements
+      href: https://sdlegislature.gov/Rules/Administrative/67:46:01:02
+    - title: Tenn. Comp. R. & Regs. 1200-13-20-.08(1) - Supplementary Security Income (SSI) cash recipients
+      href: https://publications.tnsosfiles.com/rules/1200/1200-13/1200-13-20.20260423.pdf#page=73
+    - title: Texas Medicaid for the Elderly and People with Disabilities Handbook A-2000 - Mandatory Coverage Groups
+      href: https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/a-2000-mandatory-coverage-groups
+    - title: Texas Medicaid for the Elderly and People with Disabilities Handbook A-3000 - Optional Coverage Groups
+      href: https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/a-3000-optional-coverage-groups
+    - title: Wyo. Admin. Rules 048.0037.18 § 8(a) - Aged, Blind or Disabled Eligibility (effective May 23, 2025)
+      href: https://health.wyo.gov/wp-content/uploads/2025/12/Chapter-18-1.pdf#page=8
+    - title: Wyoming Medicaid Eligibility Online Manual M1005 - SSI and SSI Related
+      href: https://ecom.wyo.gov/m1000-aged-blind-or-disabled-program/m1005-ssi-and-ssi-related
+    - title: West Virginia Income Maintenance Manual 23.11.4 - SSI-Related/Non-Cash Assistance
+      href: https://bfa.wv.gov/media/40005/download?inline#page=1889
+
+AK:
+  2018-01-01: true
+AL:
+  2018-01-01: false
+AR:
+  2018-01-01: true
+AZ:
+  2018-01-01: true
+CA:
+  2018-01-01: true
+CO:
+  2018-01-01: true
+CT:
+  2018-01-01: true
+DC:
+  2018-01-01: true
+DE:
+  2018-01-01: false
+FL:
+  2018-01-01: true
+GA:
+  2018-01-01: false
+HI:
+  2018-01-01: true
+IA:
+  2018-01-01: true
+ID:
+  2018-01-01: true
+IL:
+  2018-01-01: true
+IN:
+  2018-01-01: true
+KS:
+  2018-01-01: false
+KY:
+  2018-01-01: false
+LA:
+  2018-01-01: true
+MA:
+  2018-01-01: true
+MD:
+  2018-01-01: false
+ME:
+  2018-01-01: true
+MI:
+  2018-01-01: true
+MN:
+  2018-01-01: true
+MO:
+  2018-01-01: true
+MS:
+  # The poverty-level aged and disabled group ended December 31, 2005.
+  2006-01-01: false
+MT:
+  2018-01-01: true
+NC:
+  2018-01-01: true
+ND:
+  2018-01-01: true
+NE:
+  2018-01-01: true
+NH:
+  2018-01-01: true
+NJ:
+  2018-01-01: true
+NM:
+  2018-01-01: false
+NV:
+  2018-01-01: false
+NY:
+  2018-01-01: true
+OH:
+  2018-01-01: true
+OK:
+  2018-01-01: true
+OR:
+  2018-01-01: true
+PA:
+  2018-01-01: true
+RI:
+  2018-01-01: true
+SC:
+  2018-01-01: true
+SD:
+  2018-01-01: false
+TN:
+  2018-01-01: false
+TX:
+  2018-01-01: false
+UT:
+  2018-01-01: true
+VA:
+  2018-01-01: true
+VT:
+  2018-01-01: true
+WA:
+  2018-01-01: true
+WI:
+  2018-01-01: true
+WV:
+  # SSI-Related/Non-Cash Assistance covers people under the SSI payment level.
+  2018-01-01: true
+WY:
+  2018-01-01: false
