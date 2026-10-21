@@ -40,7 +40,9 @@ class ut_heat_countable_income(Variable):
         # not reconstruct HEAT expenses or isolate disallowed prior-period
         # losses. Current reported losses enter the household total; rental
         # losses do not. No business expense or insurance is deducted twice.
-        unearned = max_(add(person, period, p.unearned_income_sources), 0)
+        unearned = sum(
+            max_(person(source, period), 0) for source in p.unearned_income_sources
+        )
         gross = spm_unit.sum(
             where(excluded_child, 0, wages + business + rental + unearned)
         )
@@ -62,6 +64,7 @@ class ut_heat_countable_income(Variable):
         )
         medical = spm_unit.sum(
             max_(reported_premiums, 0)
+            + max_(person("pre_tax_health_insurance_premiums", period), 0)
             + max_(person("other_medical_expenses", period), 0)
         )
         support_paid = add(

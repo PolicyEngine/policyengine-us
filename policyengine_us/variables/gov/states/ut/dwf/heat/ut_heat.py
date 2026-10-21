@@ -13,27 +13,37 @@ class ut_heat(Variable):
         "https://jobs.utah.gov/infosource/heatpolicy/Policy/600_Payment_Calculation/603_Energy_Burden.htm",
         "https://jobs.utah.gov/infosource/heatpolicy/Policy/Obsolete_Policy/Obsolete_600/Obsolete_604_(3_1_25_to_9_30_26)_Target_Groups.htm",
         "https://jobs.utah.gov/infosource/heatpolicy/Policy/600_Payment_Calculation/605_Propane_or_Fuel_Oil.htm",
-        "https://liheapch.acf.gov/docs/2026/state-plans/UT_Plan_2026.pdf#page=8,9",
+        # PDF pages 8-9.
+        "https://liheapch.acf.gov/docs/2026/state-plans/UT_Plan_2026.pdf#page=8",
     )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ut.dwf.heat.benefit
-        income = (
-            spm_unit("ut_heat_countable_income", period).astype(float) / MONTHS_IN_YEAR
-        )
+        annual_income = spm_unit("ut_heat_countable_income", period)
+        income = annual_income.astype(float) / MONTHS_IN_YEAR
         poverty = np.ceil(
             spm_unit("ut_heat_fpg", period).astype(float) / MONTHS_IN_YEAR
         )
-        poverty_percentage = np.divide(
-            income / p.rounding_increment,
-            poverty,
-            out=np.zeros_like(income),
-            where=poverty > 0,
+        lower_poverty_percentage = np.floor(
+            np.divide(
+                income / p.rounding_increment,
+                poverty,
+                out=np.zeros_like(income),
+                where=poverty > 0,
+            )
         )
+        # Compare integer percentage boundaries at stored annual-income precision.
+        poverty_boundary = (
+            lower_poverty_percentage * poverty * p.rounding_increment * MONTHS_IN_YEAR
+        ).astype(annual_income.dtype)
         # Sections 602/603 require numeric rounding, not merely the stale
         # XLSX's zero-decimal display. Percentage-point size is the policy's
         # rounding increment; 0.5 implements nearest-whole, ties upward.
-        income_points = p.income_component - np.ceil(poverty_percentage)
+        income_points = (
+            p.income_component
+            - lower_poverty_percentage
+            - (annual_income > poverty_boundary)
+        )
         standard = spm_unit("ut_heat_energy_cost_standard", period) / MONTHS_IN_YEAR
         burden_percentage = np.divide(
             standard / p.rounding_increment,

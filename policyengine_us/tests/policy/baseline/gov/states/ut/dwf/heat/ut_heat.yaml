@@ -1336,3 +1336,185 @@
   output:
     ut_heat_countable_income: 18_360
     ut_heat: 424
+
+# Section 402 counts UI payments. The state UI formula gives 764 per week for
+# 14 weeks: 10,696 + 15,000 wages = 25,696, above the 23,940 income limit.
+- name: "Case 44, modeled unemployment compensation counts toward heating eligibility."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 15_000
+        ut_ui_base_period_wages: 40_000
+        ut_ui_high_quarter_wages: 20_000
+        ut_ui_quarters_with_wages: 4
+        ut_ui_weeks_unemployed: 20
+        ut_ui_gross_weekly_earnings: 0
+        ut_ui_weekly_hours_worked: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        heat_expense_included_in_rent: false
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household1:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ui: 10_696
+    total_unemployment_compensation: 10_696
+    ut_heat_countable_income: 25_696
+    ut_heat_income_limit: 23_940
+    ut_heat: 0
+
+# Sections 402/404 distinguish unearned receipts from current net business losses.
+# Estate loss: 15,000 + 12,000 = 27,000, above the 23,940 limit.
+# Current business loss: 15,000 + 12,000 - 12,000 = 15,000;
+# monthly income 1,250 gives 250 - ceil(100 * 1,250 / 1,330) + 170 = 326.
+- name: "Case 45, estate losses cannot erase pensions while current business losses remain counted."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 15_000
+        pension_income: 12_000
+        estate_income: -12_000
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 15_000
+        pension_income: 12_000
+        self_employment_income: -12_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        heat_expense_included_in_rent: false
+        ut_heat_dwelling_type: HOUSE
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        heat_expense_included_in_rent: false
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household1:
+        members: [person1]
+        state_code: UT
+      household2:
+        members: [person2]
+        state_code: UT
+  output:
+    ut_heat_countable_income: [27_000, 15_000]
+    ut_heat: [0, 326]
+
+# Section 407 permits household-paid, unreimbursed medical premiums. Pretax
+# payroll premiums are disjoint from the alternative nonpretax aggregate/components.
+# 24,000 - 1,200 = 22,800; monthly 1,900: 250 - 143 + 110 = 217.
+# 24,000 - 1,200 pretax - 1,200 aggregate = 21,600; 250 - 136 + 120 = 234.
+- name: "Case 46, pretax premiums are deducted once alongside reported nonpretax premiums."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 24_000
+        pre_tax_health_insurance_premiums: 1_200
+        health_insurance_premiums: 0
+        health_insurance_premiums_without_medicare_part_b: 0
+        medicare_part_b_premiums_reported: 0
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 24_000
+        pre_tax_health_insurance_premiums: 1_200
+        health_insurance_premiums: 1_200
+        health_insurance_premiums_without_medicare_part_b: 1_200
+        medicare_part_b_premiums_reported: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        heat_expense_included_in_rent: false
+        ut_heat_dwelling_type: HOUSE
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        heat_expense_included_in_rent: false
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household1:
+        members: [person1]
+        state_code: UT
+      household2:
+        members: [person2]
+        state_code: UT
+  output:
+    ut_heat_countable_income: [22_800, 21_600]
+    ut_heat: [217, 234]
+
+# Section 602 rounds poverty percentages upward. Annual 319.20 is exactly
+# 2% of 15,960; cents below/equal/above give ceilings 2, 2, 3. Section 603's
+# burden component is capped at 250, giving awards 498, 498, 497.
+- name: "Case 47, exact poverty percentages and neighboring cents retain their correct ceilings."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 319.19
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 319.20
+      person3:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 319.21
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        heat_expense_included_in_rent: false
+        ut_heat_dwelling_type: HOUSE
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        heat_expense_included_in_rent: false
+        ut_heat_dwelling_type: HOUSE
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        heat_expense_included_in_rent: false
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household1:
+        members: [person1]
+        state_code: UT
+      household2:
+        members: [person2]
+        state_code: UT
+      household3:
+        members: [person3]
+        state_code: UT
+  output:
+    ut_heat_countable_income: [319.19, 319.20, 319.21]
+    ut_heat: [498, 498, 497]
