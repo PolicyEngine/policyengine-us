@@ -8,3 +8,4 @@ class pre_subsidy_electricity_expense(Variable):
     unit = USD
     definition_period = YEAR
     uprating = "gov.bls.cpi.cpi_u"
+    documentation = "Annual electricity expense for the SPM unit before utility assistance."
