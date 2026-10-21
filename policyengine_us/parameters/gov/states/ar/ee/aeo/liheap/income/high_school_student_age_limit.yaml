@@ -6,9 +6,11 @@ description: Arkansas excludes the earned income of high school students who are
 # whether or not the student is a dependent. Members younger than
 # earned_minimum_age have all earnings excluded. The section 17.0 Full-time
 # Student definition (page 141) also covers "High school students over age
-# eighteen (18)" who are dependents of a household member, so their earnings
-# are excluded through full_time_student_age_limit; a high school student older
-# than this age who is not a dependent has earnings counted.
+# eighteen (18)". Read within the definition's "up to age 23, who is a
+# dependent" terms, that sentence covers dependent high school students up to
+# age 23, whose earnings are excluded through full_time_student_age_limit; a
+# high school student older than this age who is not a dependent has earnings
+# counted.
 values:
   2024-10-01: 18
 

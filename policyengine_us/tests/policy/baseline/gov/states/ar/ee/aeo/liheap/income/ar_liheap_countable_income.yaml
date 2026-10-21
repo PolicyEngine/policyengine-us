@@ -751,11 +751,11 @@
     ar_liheap_countable_income: [5_412, 3_000, 1_200, 6_624, 1_800]
 
 # The manual's full-time student definition (p141) covers "High school students over
-# age eighteen (18)" up to age 23 who are dependents of a household member, so this
-# 19-year-old dependent still in high school has wages excluded like a dependent
-# full-time college student. Parent 22_880 x 0.8 = 18_304; MCI 1_525.33 rounds to
-# 1_525; x12 = 18_300. Case 30 counts the same wages for a 19-year-old high school
-# student who is not a dependent.
+# age eighteen (18)", read within the definition's "up to age 23, who is a dependent"
+# terms, so this 19-year-old dependent still in high school has wages excluded like a
+# dependent full-time college student. Parent 22_880 x 0.8 = 18_304; MCI 1_525.33
+# rounds to 1_525; x12 = 18_300. Case 30 counts the same wages for a 19-year-old high
+# school student who is not a dependent.
 - name: Case 27, a dependent nineteen year old high school student has work excluded.
   period: 2026
   absolute_error_margin: 0.01
@@ -817,7 +817,8 @@
     ar_liheap_countable_income: 24_000
 
 # Case 24's household with the repo's input for an 18-year-old still in high school,
-# is_in_secondary_school, and no is_in_k12_school (imputed only through age 17).
+# is_in_secondary_school, and no is_in_k12_school (imputed only through age 17). The
+# senior forms his own tax unit, so he is not a dependent and only section 4.7 applies.
 # Section 4.7 (p56) excludes the senior's 6_864: 22_880 x 0.8 = 18_304; MCI 1_525.33
 # rounds to 1_525; x12 = 18_300. Counting the wages would give 23_796.
 - name: Case 29, an eighteen year old in secondary school has work excluded.
@@ -836,6 +837,11 @@
         is_in_secondary_school: true
         ssi: 0
         employment_income: 6_864
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
     spm_units:
       spm_unit:
         members: [person1, person2]

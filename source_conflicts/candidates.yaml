@@ -420,12 +420,17 @@ candidates:
     the clearinghouse matrix.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/electricity.yaml
+    - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/fuel_oil.yaml
+    - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/natural_gas.yaml
+    - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/other.yaml
+    - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/propane.yaml
+    - policyengine_us/variables/gov/states/ar/ee/aeo/liheap/payment/ar_liheap_matrix_amount.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9973
   state: unreviewed
-  note: 'PE-US follows AEO''s matrix; verify the clearinghouse document''s effective year and possible mislabeling.
-    Code not yet on main: ar_liheap benefit parameters.'
+  note: 'PE-US follows AEO''s matrix; verify the clearinghouse document''s effective year and possible mislabeling.'
 - id: us-ar:liheap-gambling-and-capital-gains
   program: liheap
   years:
@@ -437,25 +442,24 @@ candidates:
   sources:
   - kind: guidance
     citation: FY2026 LIHEAP State Plan §1.9, page 7
-    url: https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf#page=5
+    url: https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf#page=7
   - kind: manual
-    citation: Arkansas LIHEAP manual page 138
-    url: null
-  - kind: manual
-    citation: Draft manual Appendix F pp.132 and 135
-    url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2025/manuals/AR_Manual%5Bdraft%5D_2025.pdf#page=36
+    citation: FFY 2025 LIHEAP Policy and Procedures Manual, Appendix F capital gains, gaming or gambling winnings and
+      nonrecurring lump-sum rows, pp. 157, 160 and 163
+    url: https://liheapch.acf.gov/docs/2025/manuals/AR_Manual_2025.pdf#page=157
   readings:
     statute: No statute is supplied; the plan counts lottery winnings as the only one-time lump sum and the manual
       excludes nonrecurring lump sums.
     other: Appendix F counts all gaming and gambling winnings and positive capital gains.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/income/sources/unearned.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9973
   state: unreviewed
-  note: 'PE-US follows Appendix F; verify final operative text and whether specific inclusions override the general
-    exclusion. Code not yet on main: ar_liheap countable income.'
+  note: 'PE-US follows Appendix F; verify whether its specific inclusions override the general exclusion of nonrecurring
+    lump sums.'
 - id: us-ar:liheap-minor-and-student-earnings
   program: liheap
   years:
@@ -463,28 +467,36 @@ candidates:
     to: 2026
     type: federal-fiscal
   question: Are all minors' and full-time students' earnings excluded or only the narrower student categories specified
-    by the manuals?
+    by the manual?
   sources:
   - kind: form
     citation: AEO 9495 application §III, R 01/FY2025 and R 11/2025
     url: https://www.adeq.state.ar.us/energy/assistance/pdfs/fillable_aeo-9495_liheap-long-application.pdf#page=2
   - kind: manual
-    citation: FY2025 draft and FFY2025 LIHEAP manuals; draft pp.133-134 and final pp.56, 141, 158-159
-    url: https://liheapch.acf.gov/docs/2025/manuals/AR_Manual_2025.pdf#page=12
+    citation: FFY 2025 LIHEAP Policy and Procedures Manual, section 4.7, section 17.0 Full-time Student and Appendix
+      F, pp. 56, 141 and 158-159
+    url: https://liheapch.acf.gov/docs/2025/manuals/AR_Manual_2025.pdf#page=56
   readings:
     statute: No statute is supplied; the application requests work income only from adults who are not full-time
       students.
-    other: The manuals condition exclusions on attendance, dependency, age and other student circumstances.
-  example: A 35-year-old full-time graduate student with $40,000 wages has $0 countable income and a $308 gas grant
-    in FY2026; the same nonstudent receives $0.
+    other: The manual conditions exclusions on attendance, dependency, age and other student circumstances.
+  example: In FY2026, a 35-year-old full-time graduate student with $40,000 of wages has countable income of $32,004
+    (monthly $2,667, above the $2,347 one-person limit) and receives $0 with gas heat, the same as a nonstudent; excluding
+    the student's wages under the forms' full-time student carve-out alone would give $0 countable income and a $308 gas grant.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/income/earned_minimum_age.yaml
+    - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/income/full_time_student_age_limit.yaml
+    - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/income/high_school_student_age_limit.yaml
+    - policyengine_us/variables/gov/states/ar/ee/aeo/liheap/income/ar_liheap_countable_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9973
   state: unreviewed
-  note: 'PE-US follows the forms; verify that omitted questions constitute an exclusion rather than a separate reporting
-    process. Code not yet on main: ar_liheap countable income.'
+  note: 'PE-US follows the manual''s page 141 Full-time Student definition (dependents up to age 23: college students
+    at 12 or more credit hours, or high school students over 18), section 4.7 for 18-year-olds in high school, and
+    the forms for members under 18; verify that the forms'' omitted questions for members under 18 are an exclusion
+    rather than a separate reporting process.'
 - id: us-ar:liheap-workers-compensation-and-tea
   program: liheap
   years:
@@ -496,10 +508,10 @@ candidates:
   sources:
   - kind: guidance
     citation: FY2026 LIHEAP State Plan §1.9
-    url: https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf#page=5
+    url: https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf#page=6
   - kind: manual
-    citation: Draft manual Appendices E-F pp.130 and 144
-    url: null
+    citation: FFY 2025 LIHEAP Policy and Procedures Manual, Appendices E and F, pp. 155 and 168
+    url: https://liheapch.acf.gov/docs/2025/manuals/AR_Manual_2025.pdf#page=155
   - kind: form
     citation: AEO 9495 application R 11/2025, page 2
     url: https://www.adeq.state.ar.us/energy/assistance/pdfs/fillable_aeo-9495_liheap-long-application.pdf#page=2
@@ -510,12 +522,13 @@ candidates:
     TEA in FY2026.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/income/sources/unearned.yaml
+    - policyengine_us/variables/gov/states/ar/ee/aeo/liheap/income/ar_liheap_countable_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9973
   state: unreviewed
-  note: 'PE-US counts both sources; verify final manual adoption and the plan''s categories. Code not yet on main:
-    ar_liheap countable income.'
+  note: 'PE-US counts both sources; verify that the FFY 2025 manual still governs FY2026 and the plan''s categories.'
 - id: us-ar:snap-child-support-deduction
   program: snap
   years:
