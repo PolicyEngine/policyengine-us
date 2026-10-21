@@ -1,11 +1,11 @@
 """Properties of the Medicaid income standard for aged, blind, and disabled
 people who do not receive SSI, in states that set it at the SSI rate.
 
-Seven states set that standard at the SSI federal benefit rate, a monthly
+Eight states set that standard at the SSI federal benefit rate, a monthly
 dollar amount for an individual or a couple, not a share of the poverty
 guideline. They are flagged in the parameter
 `gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.limit.uses_ssi_federal_benefit_rate`.
-Six of them have not elected the poverty-level group of 42 U.S.C. 1396a(m)
+Seven of them have not elected the poverty-level group of 42 U.S.C. 1396a(m)
 (Montana's state plan marks the group of 42 CFR 435.210 instead); Louisiana
 has elected that group and pegs its level to the same rate. Montana's manual
 (ABD 008) is the model case: its standards "are the benefit amounts paid by
@@ -18,13 +18,13 @@ categorically needy eligible".
 The states' rules differ on income exactly at the standard. Oregon's
 excludes it: an individual "must have adjusted income (see OAR
 461-001-0000) below the standard in this section" (OAR 461-155-0250(3)).
-The other six include it. Oregon is flagged in
+The other seven include it. Oregon is flagged in
 `gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.limit.requires_income_below_limit`.
 
 The state sets and comparisons below are written from those rules, not
 read from the parameters, so the first two tests check the parameters
 against them. Each later test evaluates a grid of households in one
-vectorized simulation and checks, for every one of the seven states and
+vectorized simulation and checks, for every one of the eight states and
 every year from 2018 to 2026:
 
 - the limit equals twelve times the rate SSA published for that year, for an
@@ -71,11 +71,11 @@ STATES = [
 ]
 # States whose own rules set the standard at the SSI rate (cited in
 # uses_ssi_federal_benefit_rate.yaml).
-SSI_RATE_STATES = sorted(["CO", "IA", "LA", "MT", "OH", "OR", "WA"])
+SSI_RATE_STATES = sorted(["CO", "IA", "LA", "MT", "OH", "OR", "WA", "WV"])
 # States whose rules require income below the standard rather than at or
 # below it. Oregon: "must have adjusted income (see OAR 461-001-0000) below
 # the standard in this section" (OAR 461-155-0250(3); every version since
-# 1-01-14 says "below", in section (4) until April 2017). The other six
+# 1-01-14 says "below", in section (4) until April 2017). The other seven
 # include the standard: Montana "equal to or less than these income
 # standards" (ABD 008); Louisiana "income equal to or less than the federal
 # benefit rate (FBR)" (LAC 50:III.2305(B)); Ohio "countable income ... which
@@ -86,7 +86,11 @@ SSI_RATE_STATES = sorted(["CO", "IA", "LA", "MT", "OH", "OR", "WA"])
 # and SSI covers income "at a rate of not more than" the benefit rate (42
 # U.S.C. 1382(a)(1)(A) and (2)(A)): "If the CI is equal to or less than the
 # FBR ... the individual, based on income, is eligible" (POMS SI
-# 02005.001.C.3).
+# 02005.001.C.3); West Virginia's group (IMM § 23.11.4, "under" the SSI
+# Maximum Payment level) applies the § 4.14 method, whose Step 5 reads "If
+# the net countable monthly income is equal to or less than the appropriate
+# SSI Maximum Payment Level, the assistance group (AG) is eligible" (IMM
+# § 4.14.3).
 BELOW_ONLY_STATES = ["OR"]
 # Annual dollars around the standard: far below, one month's dollar below,
 # exactly at, one dollar above, and well above.
