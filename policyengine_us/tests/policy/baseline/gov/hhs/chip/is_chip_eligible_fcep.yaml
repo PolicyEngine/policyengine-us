@@ -448,7 +448,7 @@
     is_chip_fcep_eligible_person: true
     chip_category: PREGNANT_FCEP
 
-- name: The California MCAP insurance exclusion does not reach Texas FCEP
+- name: Texas FCEP excludes a pregnant applicant with employer coverage (42 CFR 457.310(b)(2))
   period: 2025
   input:
     people:
@@ -468,7 +468,7 @@
         - head
         state_code: TX
   output:
-    is_chip_fcep_eligible_person: true
+    is_chip_fcep_eligible_person: false
 
 # FCEP covers the unborn child regardless of the parent's immigration status.
 # https://www.medicaid.gov/chip/chip-eligibility-enrollment
