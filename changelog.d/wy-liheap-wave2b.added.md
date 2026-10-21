@@ -1,1 +1,1 @@
-Add Wyoming regular LIEAP heating benefits with income and household eligibility, published fuel standards, expense caps, and documented modeling assumptions for income bands, mixed-status households, income exclusions, and veterans benefits.
+Add Wyoming LIEAP (wy_lieap): FY2026 regular heating benefit from the published fuel cost standards with the 60% state median income test.
