@@ -7,7 +7,8 @@ class nh_fap_countable_income(Variable):
     definition_period = YEAR
     unit = USD
     label = "New Hampshire FAP countable income"
-    reference = "https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=13, 14, 15, 16, 17, 23, 25, 26, 27, 28, 29, 34, 35, 36"
+    # PDF pages 13-17,23,25-29,34-36.
+    reference = "https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=13"
     defined_for = StateCode.NH
 
     def formula(spm_unit, period, parameters):

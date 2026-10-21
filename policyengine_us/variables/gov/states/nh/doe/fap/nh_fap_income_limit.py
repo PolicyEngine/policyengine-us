@@ -8,7 +8,8 @@ class nh_fap_income_limit(Variable):
     definition_period = YEAR
     unit = USD
     label = "New Hampshire FAP income limit"
-    reference = "https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=17, 74"
+    # PDF pages 17,74.
+    reference = "https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=17"
     defined_for = StateCode.NH
 
     def formula(spm_unit, period, parameters):
