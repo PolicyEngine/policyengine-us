@@ -39,7 +39,7 @@ class ia_ssa(Variable):
         # specifically for each facility" of up to $38.47, or "A flat per diem
         # rate ... $17.86 beginning February 1, 2004". The model follows the
         # rule and pays the maximum rate unless a lower facility rate is
-        # entered (ia_ssa.yaml Cases 19, 20 and 68).
+        # entered (ia_ssa.yaml Cases 14, 15 and 56).
         entered_rate = max_(person("ia_ssa_rcf_daily_rate", period), 0)
         rate = where(
             entered_rate > 0,
@@ -59,7 +59,7 @@ class ia_ssa(Variable):
         # "keep enough of the first month's income to meet maintenance or
         # living expenses from the previous living arrangement, but do not
         # disregard an amount that is over the SSI standard". The model follows
-        # the rule's fixed amount (ia_ssa.yaml Cases 64-65).
+        # the rule's fixed amount (ia_ssa.yaml Cases 52-53).
         has_spouse = person("ia_ssa_has_spouse", period)
         entry = where(has_spouse, federal.amount.couple, federal.amount.individual)
         entry = where(
@@ -80,7 +80,7 @@ class ia_ssa(Variable):
         sources = federal.income.sources
         # Interest and dividends are excluded from income as in
         # ia_ssa_care_countable_income (20 CFR 416.1124(c)(22)), so they are
-        # not other income here (ia_ssa.yaml Case 77).
+        # not other income here (ia_ssa.yaml Case 63).
         excluded = p.excluded_unearned_sources
         has_other_income = np.zeros(person.count, dtype=bool)
         for source in list(sources.earned) + list(sources.unearned):
@@ -108,17 +108,18 @@ class ia_ssa(Variable):
             + (size - 1) * fpg.additional_person.CONTIGUOUS_US
         ) / MONTHS_IN_YEAR
         # NOTE: Iowa Code 249.3(4)(g) requires "income of at least one hundred
-        # twenty percent of the federal poverty level", in a subsection that
-        # opens "At the discretion of the department". 441 IAC 51.7(6) says
+        # twenty percent of the federal poverty level". 441 IAC 51.7(6) says
         # income "must exceed 120 percent of the federal poverty level", and
         # 6-B Income (SMME) p.77 says it "also exceeds 120% of the federal
-        # poverty level". The model follows 51.7(6) and the manual, so income
-        # of exactly 120% does not qualify (ia_ssa.yaml Cases 56-57).
+        # poverty level". Where a statute and a rule or manual disagree, the
+        # model follows the statute (the statute-first rule in CONTRIBUTING.md), so
+        # income of exactly 120% qualifies and one cent less does not
+        # (ia_ssa.yaml Cases 44-45).
         smme = (
             person("ia_ssa_smme_coverage_eligible", period)
             & (
                 person("ia_ssa_smme_countable_income", period)
-                > p.smme_minimum_fpg_rate * poverty
+                >= p.smme_minimum_fpg_rate * poverty
             )
             & (federally_paid == 0)
         )

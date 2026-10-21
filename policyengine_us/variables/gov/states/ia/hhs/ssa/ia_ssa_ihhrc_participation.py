@@ -45,7 +45,7 @@ class ia_ssa_ihhrc_participation(Variable):
         # the dependent ... to the dependent's needs before making this
         # disregard", as 6-B p.43 does ("Subtract a dependent's income"; Mr. B,
         # 1,400 - 994 - 372 = 34). The model follows the rule and p.43
-        # (ia_ssa.yaml Case 62).
+        # (ia_ssa.yaml Case 50).
         head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         dependents = head_or_spouse * person.tax_unit.sum(
             person("ssi_ineligible_child_allocation", period)

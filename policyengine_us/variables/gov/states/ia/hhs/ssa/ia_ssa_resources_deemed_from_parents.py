@@ -39,9 +39,11 @@ class ia_ssa_resources_deemed_from_parents(Variable):
     # been met." The child test is is_ssi_resource_deeming_child, which
     # applies SSA's exclusions (the 416.1202(b)(2) home-care exception, a
     # medical treatment facility, a married or household-head minor). Iowa
-    # therefore deems only where SSA would, and in-home care children are
-    # deemed "in the same manner as SSI policy" (6-B p.46; ia_ssa.yaml Cases 80
-    # and 83). Other state-only sibling eligibility is not modeled.
+    # therefore deems only where SSA would (ia_ssa.yaml Case 68), and in-home
+    # care children are deemed "in the same manner as SSI policy" (6-B p.46;
+    # ia_ssa_resources_deemed_from_parents.yaml Case 7; without marital units,
+    # ia_ssa.yaml Case 75). Other state-only
+    # sibling eligibility is not modeled.
 
     def formula(person, period, parameters):
         limit = parameters(period).gov.ssa.ssi.eligibility.resources.limit

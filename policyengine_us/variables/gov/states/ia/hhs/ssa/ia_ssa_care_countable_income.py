@@ -39,7 +39,7 @@ class ia_ssa_care_countable_income(Variable):
         # earned income" (6-B p.65, Mr. L). Neither federal SSI nor this
         # variable models those expenses (issue 3669). For a resident without
         # SSI, entering one-half of them in ia_ssa_care_additional_deductions
-        # reproduces the rule (ia_ssa.yaml Case 75). For an SSI recipient,
+        # reproduces the rule (ia_ssa.yaml Case 62). For an SSI recipient,
         # SSA's payment rises by the same one-half, so care income does not
         # change (6-B p.59).
         earned = max_(
@@ -51,7 +51,8 @@ class ia_ssa_care_countable_income(Variable):
         # from a countable resource", as Manual 8-E Dividends and Interest
         # Income do. Federal SSI still counts them (issue 10079), so the
         # sources in excluded_unearned_sources are dropped here and from the
-        # family-life home $20 test in ia_ssa (ia_ssa.yaml Cases 76-77).
+        # family-life home $20 test in ia_ssa (ia_ssa.yaml Case 74 for
+        # residential care income and Case 63 for the $20 test).
         # Remove the list once issue 10079 is fixed, or they are excluded
         # twice. SMME income (ia_ssa_smme_countable_income) and the SSA-paid
         # amounts (ia_ssa_federal) use SSI countable income, so they count
@@ -86,7 +87,7 @@ class ia_ssa_care_countable_income(Variable):
         # resident who does not take up SSI. Federal SSI has no input for
         # spouses who live apart and keeps the couple or deemed amount, so the
         # SSI individual amount is computed here from the resident's own income
-        # (ia_ssa.yaml Cases 69-73).
+        # (ia_ssa.yaml Cases 57, 58, 60 and 73).
         individual_ssi = max_(
             ssi.amount.individual
             - _apply_ssi_exclusions(

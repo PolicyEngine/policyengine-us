@@ -54,7 +54,7 @@ class ia_ssa_federal(Variable):
         # exactly $518. 6-B p.25 ("The dependent must have countable income of
         # less than $518 per month") and 441 IAC 51.5(1) ("must be less than
         # the amount established by the department") exclude it. The model
-        # follows 51.5(1) and p.25 (ia_ssa.yaml Case 6).
+        # follows 51.5(1) and p.25 (ia_ssa.yaml Case 3).
         # The dependent-person standards are couple standards (441 IAC
         # 52.1(2)"b", "d" and "e"), so certifying either spouse of an eligible
         # couple applies the couple level (integration.yaml Cases 11-12),
@@ -89,7 +89,8 @@ class ia_ssa_federal(Variable):
         # in any other State living arrangement variation", the SSA-coded
         # dependent-person and family-life home rows, whose levels include the
         # $22. The model follows the manual and POMS and pays the $22 with
-        # residential care and in-home care (ia_ssa.yaml Cases 16 and 27).
+        # residential care (ia_ssa.yaml Case 11) and in-home care
+        # (integration.yaml Case 9).
         individual_rate = (
             dp * p.dependent_amount
             + flh * family_life_individual

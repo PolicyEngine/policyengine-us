@@ -38,10 +38,17 @@ class ia_ssa_nonfinancial_eligible(Variable):
         # requirements for supplemental security income benefits other than
         # limits on substantial gainful activity and income", and 6-B p.76
         # starts from "the SSI eligibility requirements", which include
-        # blindness (p.10). The model follows 51.7(2) and the manual, so a
-        # blind person under 65 can receive SMME (ia_ssa.yaml Case 87).
+        # blindness (p.10). Where a statute and a rule or manual disagree, the
+        # model follows the statute (the statute-first rule in CONTRIBUTING.md), so a
+        # blind person under 65 who is not disabled gets no SMME, while one who
+        # is disabled does (ia_ssa.yaml Cases 72 and 76).
+        aged_blind_disabled = person("is_ssi_aged_blind_disabled", period.this_year)
+        aged_or_disabled = person("is_ssi_aged", period.this_year) | person(
+            "is_ssi_disabled", period.this_year
+        )
+        smme = category == category.possible_values.SMME
         return (
-            person("is_ssi_aged_blind_disabled", period.this_year)
+            where(smme, aged_or_disabled, aged_blind_disabled)
             & (citizen | immigrant)
             & (category != category.possible_values.NONE)
             & ~person("is_incarcerated", period)

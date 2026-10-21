@@ -24,9 +24,9 @@ class ia_ssa_rcf_couple_budget(Variable):
         # makes "Partners in a marriage who both enter the same room of the
         # residential care facility in the same month" a couple for "the
         # initial month"; spouses who both enter in the same month are taken
-        # to share a room (ia_ssa.yaml Cases 69, 71 and 72). A resident with an
-        # ineligible spouse is budgeted alone; SSI's first-month deemed income
-        # from that spouse (6-B p.60) is not modeled.
+        # to share a room (ia_ssa.yaml Cases 57, 59 and 60). A resident with an
+        # ineligible spouse is budgeted alone (ia_ssa.yaml Case 73); SSI's
+        # first-month deemed income from that spouse (6-B p.60) is not modeled.
         # NOTE: A spouse who enters after the other spouse's month of entry
         # also gets the couple budget when either spouse received SSI, while
         # the spouse already in the facility stays on the individual budget. 51.4(3) covers spouses who "both

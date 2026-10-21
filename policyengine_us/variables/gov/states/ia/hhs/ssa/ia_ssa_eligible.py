@@ -32,7 +32,7 @@ class ia_ssa_eligible(Variable):
         # the spouse, do not count the spouse's resources." A residential care
         # resident lives apart from the spouse after the month of entry (6-B
         # p.60), so only the couple-budget entry month pools resources
-        # (ia_ssa.yaml Case 74).
+        # (ia_ssa.yaml Case 61).
         # NOTE: The spouse who stays at home still pools resources with the
         # resident after the month of entry, though p.12 would test that
         # spouse alone. Federal SSI in the model has no input for spouses who
