@@ -586,20 +586,41 @@
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
 
-- name: An actual claim excludes a single filer only above the basic amount
+- name: An actual claim permits one exemption below the basic amount
   period: 2025
   input:
-    age: [30, 30, 30]
+    age: 30
     state_code: IL
     filing_status: SINGLE
-    il_base_income: [2_849, 2_850, 2_851]
+    il_base_income: 2_849
     claimable_as_dependent_on_another_return: true
     claimed_as_dependent_on_another_return: true
   output:
-    il_personal_exemption_eligibility_status:
-      - PARTIALLY_ELIGIBLE
-      - PARTIALLY_ELIGIBLE
-      - NOT_ELIGIBLE
+    il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
+
+- name: An actual claim permits one exemption at the basic amount
+  period: 2025
+  input:
+    age: 30
+    state_code: IL
+    filing_status: SINGLE
+    il_base_income: 2_850
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: true
+  output:
+    il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
+
+- name: An actual claim excludes a single filer above the basic amount
+  period: 2025
+  input:
+    age: 30
+    state_code: IL
+    filing_status: SINGLE
+    il_base_income: 2_851
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: true
+  output:
+    il_personal_exemption_eligibility_status: NOT_ELIGIBLE
 
 - name: Joint exemption eligibility counts actual claims symmetrically for the head and spouse
   period: 2025
