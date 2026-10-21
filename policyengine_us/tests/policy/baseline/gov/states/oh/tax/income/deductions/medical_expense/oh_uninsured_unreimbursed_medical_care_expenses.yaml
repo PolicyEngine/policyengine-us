@@ -27,3 +27,174 @@
     employer_contribution_to_health_insurance_premiums_category: "ALL"
   output:
     oh_uninsured_unreimbursed_medical_care_expenses: 0
+
+# Worksheet line 1 (2025 instructions, p. 41): premiums paid while "not
+# eligible for Medicare or an employer-paid health care plan through your or
+# your spouse's employer", R.C. 5747.01(A)(10)(a).
+
+- name: Premiums reported as non-Medicare premiums count on line 1
+  # Microdata and most household inputs report premiums through
+  # health_insurance_premiums_without_medicare_part_b, not the direct input.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        health_insurance_premiums_without_medicare_part_b: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_uninsured_unreimbursed_medical_care_expenses: 6_000
+
+- name: The spouse's employer plan moves the head's private premiums off line 1
+  # Ohio FAQ Q9: a taxpayer who declines the spouse's employer plan and buys
+  # private insurance enters those premiums on line 3.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        health_insurance_premiums_without_medicare_part_b: 4_000
+      spouse:
+        age: 38
+        has_esi: true
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: OH
+  output:
+    oh_uninsured_unreimbursed_medical_care_expenses: [0, 0]
+    oh_insured_unreimbursed_medical_care_expense_amount: [4_000, 0]
+    # Line 8 = 4,000 - 0.075 * 50,000 = 250.
+    oh_unreimbursed_medical_care_expense_deduction: 250
+
+- name: A dependent's premiums follow the filer's employer plan
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        has_esi: true
+        employment_income: 50_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        health_insurance_premiums_without_medicare_part_b: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: OH
+  output:
+    oh_uninsured_unreimbursed_medical_care_expenses: [0, 0]
+    oh_insured_unreimbursed_medical_care_expense_amount: [0, 1_000]
+
+- name: A dependent's own employer coverage does not bar the filer's line 1
+  # The bar is a plan "maintained by any employer of the taxpayer or of the
+  # taxpayer's spouse"; a dependent's employer is neither.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 50_000
+        health_insurance_premiums_without_medicare_part_b: 3_000
+      child:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        has_esi: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: OH
+  output:
+    oh_uninsured_unreimbursed_medical_care_expenses: [3_000, 0]
+
+- name: An offer of employer coverage the filer declined still bars line 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        offered_aca_disqualifying_esi: true
+        health_insurance_premiums_without_medicare_part_b: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_uninsured_unreimbursed_medical_care_expenses: 0
+    oh_insured_unreimbursed_medical_care_expense_amount: 5_000
+
+- name: Only the Medicare-eligible spouse's premiums leave line 1
+  period: 2025
+  input:
+    people:
+      head:
+        age: 66
+        is_medicare_eligible: true
+        health_insurance_premiums: 2_000
+      spouse:
+        age: 60
+        is_medicare_eligible: false
+        health_insurance_premiums_without_medicare_part_b: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: OH
+  output:
+    oh_uninsured_unreimbursed_medical_care_expenses: [0, 3_000]
+    oh_insured_unreimbursed_medical_care_expense_amount: [2_000, 0]
+
+- name: Line 1 is reduced by the federal self-employed health insurance deduction
+  # Worksheet line 1 note: "You must reduce the amount you enter on this line
+  # by your federal self-employed health insurance deduction".
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_self_employed: true
+        self_employment_income: 3_000
+        health_insurance_premiums: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # min(3,000 of earnings, 5,000 of premiums).
+    self_employed_health_insurance_ald: 3_000
+    # 5,000 - 3,000.
+    oh_uninsured_unreimbursed_medical_care_expenses: 2_000

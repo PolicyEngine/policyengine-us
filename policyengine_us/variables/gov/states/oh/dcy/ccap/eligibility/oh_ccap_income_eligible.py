@@ -9,7 +9,7 @@ class oh_ccap_income_eligible(Variable):
     defined_for = StateCode.OH
     reference = (
         "https://dam.assets.ohio.gov/image/upload/childrenandyouth.ohio.gov/For%20Partners/Rules%20and%20Resources/2025/PL_21.pdf#page=2",
-        "https://codes.ohio.gov/ohio-administrative-code/rule-5180:2-16-03",
+        "https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5180/2/16/5180$2-16-03_20220227.pdf",
         "https://codes.ohio.gov/ohio-administrative-code/rule-5180:6-1-02",
     )
 

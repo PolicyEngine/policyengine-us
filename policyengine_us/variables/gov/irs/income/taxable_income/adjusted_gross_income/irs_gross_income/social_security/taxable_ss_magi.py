@@ -14,19 +14,17 @@ class taxable_ss_magi(Variable):
         irs = parameters(period).gov.irs
         gross_income_sources = irs.gross_income.sources
         ss_magi = irs.social_security.taxability.income
+        # Total UI stands in for taxable UI. Reforms which drop the UI
+        # variable from gross income drop it from SS-related MAGI too.
         income_sources_without_ss = [
-            income_source
+            (
+                "total_unemployment_compensation"
+                if income_source == "taxable_unemployment_compensation"
+                else income_source
+            )
             for income_source in gross_income_sources
-            if income_source
-            not in [
-                "taxable_social_security",
-                "taxable_unemployment_compensation",
-            ]
+            if income_source != "taxable_social_security"
         ]
-        if "taxable_unemployment_compensation" in gross_income_sources:
-            # Reforms which drop the UI variable from gross income should
-            # trigger SS-related MAGI to drop it too.
-            income_sources_without_ss.append("unemployment_compensation")
         income_sources_without_ss.append("tax_exempt_interest_income")
         gross_income = 0
         person = tax_unit.members
@@ -35,6 +33,10 @@ class taxable_ss_magi(Variable):
             # Add positive values only - losses are deducted later.
             gross_income += not_dependent * max_(0, add(person, period, [source]))
         gross_income = tax_unit.sum(gross_income)
+        # IRC 86(b)(2)(A): determined without regard to section 911. Income
+        # inputs are net of the section 911 amounts; add them back in full
+        # (Form 2555 lines 45 and 50).
+        gross_income += tax_unit("section_911_excluded_income", period)
         above_the_line_deductions = irs.ald.deductions
         revoked_deductions = ss_magi.revoked_deductions
         deductions = [
@@ -42,5 +44,11 @@ class taxable_ss_magi(Variable):
             for deduction in above_the_line_deductions
             if deduction not in revoked_deductions
         ]
-        total_deductions = add(tax_unit, period, deductions)
+        # A tax unit dependent's deductions are on their own return.
+        total_deductions = tax_unit_non_dep_add(
+            tax_unit,
+            period,
+            deductions,
+            include_dependents=irs.ald.filer_amounts_recorded_on_dependents,
+        )
         return max_(0, gross_income - total_deductions)

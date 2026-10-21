@@ -22,5 +22,6 @@ class nj_gross_income(Variable):
         total = total + max_(add(person, period, cats.category_b), 0)
         total = total + max_(add(person, period, cats.category_c), 0)
         total = total + max_(add(person, period, cats.category_d), 0)
+        total = total + max_(add(person, period, cats.category_h), 0)
         total = total + max_(add(person, period, cats.category_k_p), 0)
         return total

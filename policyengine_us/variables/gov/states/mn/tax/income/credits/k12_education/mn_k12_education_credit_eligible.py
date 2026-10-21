@@ -8,7 +8,7 @@ class mn_k12_education_credit_eligible(Variable):
     definition_period = YEAR
     reference = (
         "https://www.revisor.mn.gov/statutes/cite/290.0674",
-        "https://www.revenue.state.mn.us/sites/default/files/2025-12/m1ed-25.pdf",
+        "https://www.revenue.state.mn.us/sites/default/files/2026-07/m1ed-25.pdf",
     )
     defined_for = StateCode.MN
 

@@ -8,8 +8,8 @@ class la_itemized_deductions(Variable):
     unit = USD
     definition_period = YEAR
     reference = [
-        "https://revenue.louisiana.gov/TaxForms/IT540iWEB(2022)D1.pdf#page=2",  # 2022 line 8B-line 8C
-        "https://revenue.louisiana.gov/TaxForms/IT540i(2021)%20Instructions.pdf#page=3",  # 2021 line 8A-line 8C
+        "https://dam.ldr.la.gov/taxforms/IT540iWEB(2022)D1.pdf#page=2",  # 2022 line 8B-line 8C
+        "https://dam.ldr.la.gov/taxforms/IT540i(2021)%20Instructions.pdf#page=3",  # 2021 line 8A-line 8C
         "https://www.legis.la.gov/Legis/Law.aspx?d=101760",  # (3)
     ]
     defined_for = StateCode.LA
