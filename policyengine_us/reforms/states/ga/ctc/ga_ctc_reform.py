@@ -33,12 +33,7 @@ def create_ga_ctc() -> Reform:
             unused_credit = max_(potential - non_refundable, 0)
             # Cap the refund at amount per eligible child (same child count as
             # ga_ctc_potential: qualifying children under the age threshold).
-            baseline = parameters(period).gov.states.ga.tax.income.credits.ctc
-            person = tax_unit.members
-            age = person("age", period)
-            ctc_eligible_child = person("ctc_qualifying_child", period)
-            ga_child_age_eligible = age < baseline.age_threshold
-            eligible_children = tax_unit.sum(ctc_eligible_child & ga_child_age_eligible)
+            eligible_children = add(tax_unit, period, ["ga_ctc_eligible_child"])
             refund_limit = p.refundable.amount * eligible_children
             refundable_credit = min_(unused_credit, refund_limit)
             # Only pay the refund in periods where the reform is in effect. The

@@ -1,0 +1,20 @@
+- name: Case 1, default ny_other_additions is zero
+  period: 2024
+  input:
+    state_code: NY
+    employment_income: 50_000
+  output:
+    ny_other_additions: 0
+    ny_additions: 0
+    ny_agi: 50_000
+
+- name: Case 2, ny_other_additions increases NY AGI
+  period: 2024
+  input:
+    state_code: NY
+    employment_income: 50_000
+    ny_other_additions: 1_500
+  output:
+    ny_other_additions: 1_500
+    ny_additions: 1_500
+    ny_agi: 51_500

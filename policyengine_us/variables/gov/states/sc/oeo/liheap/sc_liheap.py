@@ -10,7 +10,8 @@ class sc_liheap(Variable):
     definition_period = YEAR
     defined_for = StateCode.SC
     reference = (
-        "https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8,9",
+        # PDF pages 8-9
+        "https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8",
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/SC_BenefitMatrix_2026.pdf#page=2",
     )
 
@@ -27,7 +28,7 @@ class sc_liheap(Variable):
         person = spm_unit.members
         age = person("age", period)
         elderly = spm_unit.any(age >= p.ages.elderly_min)
-        child = spm_unit.any(age <= p.ages.child_max)
+        child = spm_unit.any(np.floor(age) <= p.ages.child_max)
         disabled = spm_unit.any(person("is_disabled", period))
         veteran = spm_unit.any(person("is_veteran", period))
         # The plan measures home-energy utilities; aggregate existing energy

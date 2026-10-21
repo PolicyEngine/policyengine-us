@@ -256,7 +256,6 @@
     eitc_maximum: 7_152
     ny_eitc: 1_006.46
 
-
 - name: 2025 test with two dependents, one older child and one younger 
   period: 2025
   absolute_error_margin: 1
@@ -318,3 +317,30 @@
         state_code: NY
   output:
     ny_exemptions: 1_000
+
+# As in the baseline, a return on which a filer can be claimed as a dependent has
+# no dependents (Tax Law 616(a), IRC 152(b)(1)).
+- name: Claimable single person, one older child - reform keeps no dependent exemption
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    people:
+      person1:
+        age: 40
+        is_tax_unit_dependent: false
+        employment_income: 20_000
+        claimed_as_dependent_on_another_return: true
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_exemptions: 0

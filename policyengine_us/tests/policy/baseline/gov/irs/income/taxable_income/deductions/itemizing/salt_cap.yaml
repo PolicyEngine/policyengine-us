@@ -1,0 +1,177 @@
+# 26 USC 164(b)(6)(B) and (7), as amended by P.L. 119-21 sec. 70120, and the
+# 2025 Schedule A State and Local Tax Deduction Worksheet. A separate filer
+# phases down the full applicable limitation amount (line 1, $40,000 in 2025)
+# by 30% of modified AGI over half the threshold (line 5, $250,000), floors it
+# at $10,000 (line 9), and then deducts half of it (line 10).
+
+- name: Separate filer halves the cap after the phase-down
+  period: 2025
+  input:
+    people:
+      person1:
+        real_estate_taxes: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 300_000
+        state_and_local_sales_or_income_tax: 0
+  output:
+    # (40,000 - 30% x (300,000 - 250,000)) / 2 = (40,000 - 15,000) / 2.
+    salt_cap: 12_500
+    salt_deduction: 12_500
+
+- name: Separate filer above the old floor point but below the statutory one
+  period: 2025
+  input:
+    people:
+      person1:
+        real_estate_taxes: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 340_000
+        state_and_local_sales_or_income_tax: 0
+  output:
+    # (40,000 - 30% x 90,000) / 2 = 6,500. The $10,000 floor (line 9) first
+    # binds at $350,000 modified AGI, so a separate filer's $5,000 does too.
+    salt_cap: 6_500
+    salt_deduction: 6_500
+
+- name: Separate filer 2026 cap above the floor
+  period: 2026
+  input:
+    people:
+      person1:
+        real_estate_taxes: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 320_000
+        state_and_local_sales_or_income_tax: 0
+  output:
+    # (40,400 - 30% x (320,000 - 252,500)) / 2 = (40,400 - 20,250) / 2.
+    salt_cap: 10_075
+    salt_deduction: 10_075
+
+- name: Separate filer reaches the floor at the statutory kink
+  period: 2025
+  input:
+    people:
+      person1:
+        real_estate_taxes: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 350_000
+        state_and_local_sales_or_income_tax: 0
+  output:
+    # max(40,000 - 30% x 100,000, 10,000) / 2 = 10,000 / 2.
+    salt_cap: 5_000
+    salt_deduction: 5_000
+
+- name: Separate filer above the kink keeps half the floor
+  period: 2025
+  input:
+    people:
+      person1:
+        real_estate_taxes: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 400_000
+        state_and_local_sales_or_income_tax: 0
+  output:
+    # max(40,000 - 30% x 150,000, 10,000) / 2 = 10,000 / 2.
+    salt_cap: 5_000
+    salt_deduction: 5_000
+
+- name: Separate filer below the halved threshold keeps half the cap
+  period: 2025
+  input:
+    people:
+      person1:
+        real_estate_taxes: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 250_000
+        state_and_local_sales_or_income_tax: 0
+  output:
+    salt_cap: 20_000
+    salt_deduction: 20_000
+
+- name: Joint filer phase-down is unchanged
+  period: 2025
+  input:
+    people:
+      person1:
+        real_estate_taxes: 50_000
+      person2:
+        real_estate_taxes: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 550_000
+        state_and_local_sales_or_income_tax: 0
+  output:
+    # 40,000 - 30% x (550,000 - 500,000).
+    salt_cap: 25_000
+    salt_deduction: 25_000
+
+- name: Single filer phase-down is unchanged
+  period: 2026
+  input:
+    people:
+      person1:
+        real_estate_taxes: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 555_000
+        state_and_local_sales_or_income_tax: 0
+  output:
+    # 40,400 - 30% x (555,000 - 505,000).
+    salt_cap: 25_400
+    salt_deduction: 25_400
+
+- name: Head of household floor is unchanged
+  period: 2025
+  input:
+    people:
+      person1:
+        real_estate_taxes: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 700_000
+        state_and_local_sales_or_income_tax: 0
+  output:
+    # max(40,000 - 30% x 200,000, 10,000).
+    salt_cap: 10_000
+    salt_deduction: 10_000
+
+- name: Separate filer after the phase-down expires
+  period: 2030
+  input:
+    people:
+      person1:
+        real_estate_taxes: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 300_000
+        state_and_local_sales_or_income_tax: 0
+  output:
+    # 164(b)(7)(A)(iv): $10,000 with no phase-down; half for a separate filer.
+    salt_cap: 5_000
+    salt_deduction: 5_000

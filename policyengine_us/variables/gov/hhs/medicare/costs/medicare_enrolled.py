@@ -7,6 +7,6 @@ class medicare_enrolled(Variable):
     label = "Medicare enrolled"
     documentation = "Whether the person is enrolled in Medicare (Part A and/or Part B)"
     definition_period = YEAR
-    reference = "https://www.cms.gov/medicare"
+    reference = "https://www.cms.gov/about-cms/what-we-do/medicare"
     defined_for = "is_medicare_eligible"
     adds = ["takes_up_medicare_if_eligible"]

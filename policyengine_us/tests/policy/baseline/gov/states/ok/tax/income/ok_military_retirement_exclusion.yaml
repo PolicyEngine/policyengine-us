@@ -36,3 +36,116 @@
   output:
     ok_military_retirement_exclusion: 8_000 + 11_000
     
+
+# A tax-unit dependent's income is not in the filer's federal AGI (the
+# dependent files their own return; 2025 Form 511 Packet, page 5, Chart B),
+# so only the head's and spouse's military retirement is excluded.
+- name: A dependent child's military retirement pay is not excluded from the parent's income.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 50_000
+      child:
+        is_tax_unit_dependent: true
+        age: 10
+        military_retirement_pay: 10_000
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: OK
+  output:
+    # Head: no military retirement = $0
+    # Child: dependent, income not in federal AGI = $0
+    ok_military_retirement_exclusion: 0
+
+- name: Only the head's and spouse's military retirement is excluded in 2026.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 60
+        military_retirement_pay: 8_000
+      spouse:
+        is_tax_unit_spouse: true
+        age: 58
+        military_retirement_pay: 11_000
+      child:
+        is_tax_unit_dependent: true
+        age: 16
+        military_retirement_pay: 10_000
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      parents_marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: OK
+  output:
+    # 100% exclusion from 2022: head $8,000 + spouse $11,000
+    # Child: dependent = $0
+    ok_military_retirement_exclusion: 8_000 + 11_000
+
+- name: In 2021, the per-person floor and rate apply to the head and spouse only.
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 60
+        military_retirement_pay: 8_000
+      spouse:
+        is_tax_unit_spouse: true
+        age: 58
+        military_retirement_pay: 20_000
+      child:
+        is_tax_unit_dependent: true
+        age: 16
+        military_retirement_pay: 11_000
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      parents_marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: OK
+  output:
+    # 2021: exclusion is the greater of 75% of benefits or $10,000,
+    # not to exceed benefits.
+    # Head: min($8,000, max($10,000, $6,000)) = $8,000
+    # Spouse: min($20,000, max($10,000, $15,000)) = $15,000
+    # Child: dependent = $0 (would otherwise be $10,000)
+    ok_military_retirement_exclusion: 8_000 + 15_000

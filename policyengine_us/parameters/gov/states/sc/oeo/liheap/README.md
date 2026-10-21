@@ -22,14 +22,20 @@ categorical income bypass or asset test in the adopted LIHEAP plan.
 Income uses the accepted plan's checked categories. Minor earnings are excluded;
 minor unearned income is counted because adult verification requirements are
 not an express income exclusion. Monthly SSI aggregates once over the year.
-Pension and Social Security aggregates include their components; recurring
+Pension and Social Security aggregates include their components; military
+retirement pay is separate and enters once. The cross-state military-survivor
+aggregate migration remains deferred. Recurring
 IRA/401k receipts enter through the separate retirement_distributions aggregate.
 Annual inputs cannot distinguish excluded one-time retirement lump sums. Private
 survivor receipts and farm rent are separate. Net business inputs receive no
-second deduction. Cash from friends/relatives uses financial_assistance. Legal
+second deduction. Received unearned sources are floored separately per person,
+so a rental loss cannot cancel a positive pension or another receipt. UI uses
+the shared reported-or-modeled unemployment amount. Cash from friends/relatives
+uses financial_assistance. Legal
 settlements lack an exact input. TANF, general assistance, interest/dividends,
 strike, insurance, one-time lump sums and foster payments are not counted under
-the current checklist. Medicare adjustments are deferred. Application-month
+the current checklist. Social Security remains gross, including Medicare, as
+the accepted plan specifies; no Medicare deduction is applied. Application-month
 income timing and work-study embedded in wages remain input limitations.
 
 The annual income ceiling reuses requested-year federal SMI. Rounding the
@@ -38,6 +44,11 @@ eight current agency annual limits, including sizes seven and eight. That order
 is inferred from published amounts, not an explicit legal rounding direction.
 The inconsistent one-person monthly figure is not used. The 30% supplement
 boundary uses the plan percentage without rounding the income ratio.
+A separate income gate preserves the strict federal 110% FPG protection using
+the same actual qualified household size and prior-year guidelines. The state
+SMI ceiling remains unchanged; exact 110% income has no federal protection.
+Young-child supplements use completed age, retaining age-five children until
+their sixth birthday.
 
 Energy burden uses the sum of existing electric, gas and fuel bills. Water,
 sewer, trash and telephone are excluded from home-energy cost. This reuses

@@ -1,0 +1,18 @@
+- name: South Carolina subtracts the disability benefits included in federal taxable income.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 50
+        disability_benefits: 30_000
+        tax_exempt_disability_benefits: 12_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: SC
+  output:
+    # 30,000 - 12,000 = 18,000.
+    sc_subtractions: 18_000

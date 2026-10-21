@@ -160,3 +160,16 @@
   output:
     tip_income_deduction_occupation_requirement_met: false
     tip_income_deduction: 0
+
+- name: Income excluded under section 911 counts toward the phase-out
+  period: 2025
+  input:
+    tip_income_deduction_ssn_requirement_met: true
+    treasury_tipped_occupation_code: 102
+    tip_income: 10_000
+    adjusted_gross_income: 140_000
+    foreign_earned_income_exclusion: 20_000
+    filing_status: SINGLE
+  output:
+    # 26 U.S.C. 224(b)(2)(B): modified AGI 160,000; (160,000 - 150,000) x 10%.
+    tip_income_deduction: 9_000

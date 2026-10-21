@@ -8,8 +8,8 @@ class co_state_addback(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2021.pdf#page=5"
-        "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=5"
+        "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2021.pdf#page=5",
+        "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=5",
     )
     defined_for = StateCode.CO
 

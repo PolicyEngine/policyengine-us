@@ -1,0 +1,79 @@
+# RIGL 44-30-12(b)(6) adds back the unemployment compensation excluded from
+# the filers' federal AGI under IRC 85(c) for 2020. Federal AGI leaves out a
+# tax unit dependent's income, which the dependent reports on their own
+# return, so a dependent's excluded compensation is not added to the filers'
+# RI AGI.
+
+- name: Case 1, a dependent's excluded 2020 unemployment compensation is not added to the filer's RI AGI.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        unemployment_compensation: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # The child's 10,000 is under the 10,200 exclusion on the child's own
+    # federal return.
+    tax_exempt_unemployment_compensation: [0, 10_000]
+    adjusted_gross_income: 40_000
+    ri_additions: 0
+    ri_agi: 40_000
+
+- name: Case 2, the head's excluded unemployment compensation is added back; the dependent's is not.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+        tax_exempt_unemployment_compensation: 8_000
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        tax_exempt_unemployment_compensation: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_additions: 8_000
+
+- name: Case 3, a married couple's excluded unemployment compensation is added back for each spouse.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        tax_exempt_unemployment_compensation: 6_000
+      person2:
+        age: 38
+        tax_exempt_unemployment_compensation: 4_000
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    ri_additions: 10_000

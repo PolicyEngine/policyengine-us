@@ -14,18 +14,42 @@
   output:
     la_standard_deduction: 25_000
 
-- name: 2026 single filer uses prior-calendar-year CPI-U adjustment
+- name: 2026 single filer gets the RIB 26-019 amount, 12,500 x 1.027 rounded
   period: 2026
   input:
     state_code: LA
     filing_status: SINGLE
   output:
-    la_standard_deduction: 12_835
+    la_standard_deduction: 12_838
 
-- name: 2026 head of household filer gets twice the single amount
+- name: 2026 married filing separately filer gets the single amount
+  period: 2026
+  input:
+    state_code: LA
+    filing_status: SEPARATE
+  output:
+    la_standard_deduction: 12_838
+
+- name: 2026 head of household filer gets twice the rounded single amount
   period: 2026
   input:
     state_code: LA
     filing_status: HEAD_OF_HOUSEHOLD
   output:
-    la_standard_deduction: 25_670
+    la_standard_deduction: 25_676
+
+- name: 2026 joint filer gets twice the rounded single amount, not 25,000 x 1.027
+  period: 2026
+  input:
+    state_code: LA
+    filing_status: JOINT
+  output:
+    la_standard_deduction: 25_676
+
+- name: 2026 surviving spouse gets twice the rounded single amount
+  period: 2026
+  input:
+    state_code: LA
+    filing_status: SURVIVING_SPOUSE
+  output:
+    la_standard_deduction: 25_676

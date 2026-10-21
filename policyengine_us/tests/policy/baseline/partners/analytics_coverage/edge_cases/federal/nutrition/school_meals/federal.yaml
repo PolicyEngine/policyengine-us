@@ -1,15 +1,35 @@
 # School meals (NSLP + SBP) federal edge cases.
-# Tier thresholds (gov/usda/school_meals/income/limit): FREE <= 130% FPG,
-# REDUCED <= 185% FPG, else PAID; categorical routes (7 CFR 245.2) and state
-# universal-meals policies force FREE.
+# Each child attends a school participating in both meal programs. The model
+# assigns one combined tier and values one breakfast plus one lunch per school
+# day; it does not model the school's menu prices or actual family cash savings.
+# Annual tests retain calendar-year FPG thresholds and January 1 rate lookup.
 # 2026 FPG (3-person, contiguous US) = 15,960 + 2 x 5,680 = 27,320.
-#   130% = 35,516; 185% = 50,542.
-# 2026 daily subsidies (CONTIGUOUS_US, 2025-01-01 published rates CPI-uprated
-# by ~1.0134): FREE = (4.60 + 2.46) x 1.0134 = 7.15;
-# REDUCED = (4.20 + 2.16) x 1.0134 = 6.45; PAID = (0.46 + 0.40) x 1.0134 = 0.87.
+#   FREE <= 130% = 35,516; REDUCED <= 185% = 50,542; otherwise PAID,
+#   unless categorical eligibility or state coverage makes both meals free.
+# Calendar 2026 uses the published SY 2025-26 rates in force on January 1:
+# NSLP (<60% free/reduced) plus SBP (non-severe-need), with no CPI adjustment.
+#   FREE = 4.60 + 2.46 = 7.06;
+#   REDUCED = 4.20 + 2.16 = 6.36; PAID = 0.44 + 0.40 = 0.84.
+# Annual net benefits subtract the PAID subsidy and use one child x 180 days.
+# Published base rates (pages 3, 4):
+# https://www.govinfo.gov/content/pkg/FR-2025-07-24/pdf/2025-13879.pdf
+# 2025 uses July 2024 base rates (page 4):
+# https://www.govinfo.gov/content/pkg/FR-2024-07-10/pdf/2024-15175.pdf
+# Use MO for federal reduced-price scenarios: TX covers breakfast copays and,
+# from September 2025, lunch copays. That TX coverage is not yet modeled.
+# https://squaremeals.org/Programs/School-Breakfast-Program/Reduced-Price-School-Meals-Now-Free
+# These MO fixtures assume a participating school without CEP or another
+# schoolwide subsidy. District sources match the January 1 school year:
+# Rockwood's SY 2025-26 free/reduced policy (Ellisville 63011, calendar 2026):
+# https://www.rsdmo.org/news/article/~board/rsd/post/free-and-reduced-meal-applications-available-for-2025-2026-school-year
+# Mount Vernon's SY 2024-25 meal program/prices (65712, calendar 2025):
+# https://www.mtvernon.k12.mo.us/apps/news/article/1943811
+# These dated sources establish the district/program context, not exact
+# historical reduced-price charges. Expected benefits use the federal
+# reimbursement differences above, not district menu prices or cash savings.
 - name: school_meals_free_tier_just_below_130pct (federal)
   period: 2026
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -58,17 +78,23 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
         # 35,500 / 27,320 = 129.9% <= 130% -> FREE on the income route
         # (SNAP also fires here via TX BBCE, so FREE is dual-caused; the
         # income-only boundary is pinned by the MO SNAP-blocked cases below).
-        # FREE = (NSLP 4.60 + SBP 2.46) uprated = 7.15.
-        school_meal_daily_subsidy: 7.15
+        # FREE = (NSLP 4.60 + SBP 2.46) = 7.06.
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0  # FREE
+        school_meal_net_subsidy: 1119.60
+        free_school_meals: 1119.60
+        reduced_price_school_meals: 0.00
 - name: school_meals_free_tier_exactly_at_130pct_snap_blocked (federal)
   period: 2026
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -103,8 +129,8 @@
       household:
         members: [head, spouse, child1]
         state_code: MO
-        zip_code: '64106'
-        county_str: JACKSON_COUNTY_MO
+        zip_code: '63011'
+        county_str: ST_LOUIS_COUNTY_MO
     spm_units:
       spm_unit:
         members: [head, spouse, child1]
@@ -121,17 +147,25 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
+        meets_school_meal_categorical_eligibility: false
+        state_has_universal_free_school_meals: false
         # 35,516 / 27,320 = exactly 1.30; the tier formula uses <=, so
         # at-threshold resolves to FREE. SNAP = 0 (assets over limit,
         # no BBCE in MO), so this pins the pure income route inclusively.
-        # FREE = (NSLP 4.60 + SBP 2.46) uprated = 7.15.
-        school_meal_daily_subsidy: 7.15
+        # FREE = (NSLP 4.60 + SBP 2.46) = 7.06.
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0  # FREE
+        school_meal_net_subsidy: 1119.60
+        free_school_meals: 1119.60
+        reduced_price_school_meals: 0.00
 - name: school_meals_reduced_tier_onset_just_above_130pct_snap_blocked (federal)
   period: 2026
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -165,8 +199,8 @@
       household:
         members: [head, spouse, child1]
         state_code: MO
-        zip_code: '64106'
-        county_str: JACKSON_COUNTY_MO
+        zip_code: '63011'
+        county_str: ST_LOUIS_COUNTY_MO
     spm_units:
       spm_unit:
         members: [head, spouse, child1]
@@ -183,15 +217,23 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
+        meets_school_meal_categorical_eligibility: false
+        state_has_universal_free_school_meals: false
         # 35,700 / 27,320 = 130.7% > 130% and <= 185% -> REDUCED; SNAP = 0.
-        # REDUCED = (NSLP 4.20 + SBP 2.16) uprated = 6.45.
-        school_meal_daily_subsidy: 6.45
+        # REDUCED = (NSLP 4.20 + SBP 2.16) = 6.36.
+        school_meal_daily_subsidy: 6.36
         school_meal_tier: 1  # REDUCED
+        school_meal_net_subsidy: 993.60
+        free_school_meals: 0.00
+        reduced_price_school_meals: 993.60
 - name: school_meals_categorical_free_via_snap_just_above_130pct (federal)
   period: 2026
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -240,17 +282,24 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
+        meets_school_meal_categorical_eligibility: true
         # 35,600 / 27,320 = 130.3% > 130% on income, but the household
         # receives SNAP (TX BBCE gross limit 165% FPG; snap ~ 1,687/yr),
         # and SNAP receipt confers free meals categorically (7 CFR 245.2).
-        # FREE = (NSLP 4.60 + SBP 2.46) uprated = 7.15.
-        school_meal_daily_subsidy: 7.15
+        # FREE = (NSLP 4.60 + SBP 2.46) = 7.06.
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0  # FREE
+        school_meal_net_subsidy: 1119.60
+        free_school_meals: 1119.60
+        reduced_price_school_meals: 0.00
 - name: school_meals_reduced_tier_exactly_at_185pct (federal)
   period: 2026
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -280,9 +329,9 @@
     households:
       household:
         members: [head, spouse, child1]
-        state_code: TX
-        zip_code: '75201'
-        county_str: DALLAS_COUNTY_TX
+        state_code: MO
+        zip_code: '63011'
+        county_str: ST_LOUIS_COUNTY_MO
     spm_units:
       spm_unit:
         members: [head, spouse, child1]
@@ -299,16 +348,24 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
+        meets_school_meal_categorical_eligibility: false
+        state_has_universal_free_school_meals: false
         # 50,542 / 27,320 = exactly 1.85; the formula uses <=, so
         # at-threshold resolves to REDUCED (not PAID). SNAP/TANF = 0 at
-        # this income. REDUCED = (NSLP 4.20 + SBP 2.16) uprated = 6.45.
-        school_meal_daily_subsidy: 6.45
+        # this income. REDUCED = (NSLP 4.20 + SBP 2.16) = 6.36.
+        school_meal_daily_subsidy: 6.36
         school_meal_tier: 1  # REDUCED
+        school_meal_net_subsidy: 993.60
+        free_school_meals: 0.00
+        reduced_price_school_meals: 993.60
 - name: school_meals_paid_tier_just_above_185pct (federal)
   period: 2026
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -338,9 +395,9 @@
     households:
       household:
         members: [head, spouse, child1]
-        state_code: TX
-        zip_code: '75201'
-        county_str: DALLAS_COUNTY_TX
+        state_code: MO
+        zip_code: '63011'
+        county_str: ST_LOUIS_COUNTY_MO
     spm_units:
       spm_unit:
         members: [head, spouse, child1]
@@ -357,16 +414,24 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
+        meets_school_meal_categorical_eligibility: false
+        state_has_universal_free_school_meals: false
         # 50,700 / 27,320 = 185.6% > 185% -> PAID (income-route ineligible
         # boundary; PAID still carries the small federal reimbursement).
-        # PAID = (NSLP 0.46 + SBP 0.40) uprated = 0.87.
-        school_meal_daily_subsidy: 0.87
+        # PAID = (NSLP 0.44 + SBP 0.40) = 0.84.
+        school_meal_daily_subsidy: 0.84
         school_meal_tier: 2  # PAID
+        school_meal_net_subsidy: 0.00
+        free_school_meals: 0.00
+        reduced_price_school_meals: 0.00
 - name: school_meals_countable_income_direct_input_reduced (federal)
   period: 2026
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -396,14 +461,14 @@
     households:
       household:
         members: [head, spouse, child1]
-        state_code: TX
-        zip_code: '75201'
-        county_str: DALLAS_COUNTY_TX
+        state_code: MO
+        zip_code: '63011'
+        county_str: ST_LOUIS_COUNTY_MO
     spm_units:
       spm_unit:
         members: [head, spouse, child1]
-        # Partners send this aggregate directly; it must override the
-        # income derived from employment (60,000 would otherwise be PAID).
+        # The partner-supplied aggregate must override income calculated from
+        # individual inputs: $60,000 of wages would otherwise yield PAID.
         school_meal_countable_income: 50_500
     tax_units:
       tax_unit:
@@ -418,16 +483,24 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
-        # Direct input wins: 50,500 / 27,320 = 184.8% <= 185% -> REDUCED,
-        # even though employment income alone (60,000 = 219.6%) implies PAID.
-        # REDUCED = (NSLP 4.20 + SBP 2.16) uprated = 6.45.
-        school_meal_daily_subsidy: 6.45
+        meets_school_meal_categorical_eligibility: false
+        state_has_universal_free_school_meals: false
+        # 50,500 / 27,320 = 184.8% <= 185% -> REDUCED because the
+        # reported aggregate overrides the $60,000 derived from wages.
+        # REDUCED = (NSLP 4.20 + SBP 2.16) = 6.36.
+        school_meal_daily_subsidy: 6.36
         school_meal_tier: 1  # REDUCED
+        school_meal_net_subsidy: 993.60
+        free_school_meals: 0.00
+        reduced_price_school_meals: 993.60
 - name: school_meals_categorical_free_via_homeless_above_185pct (federal)
   period: 2026
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -477,16 +550,23 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
+        meets_school_meal_categorical_eligibility: true
         # 60,000 / 27,320 = 219.6% FPG (PAID on income), but homelessness is
         # a categorical free-meal route (7 CFR 245.2), overriding income.
-        # FREE = (NSLP 4.60 + SBP 2.46) uprated = 7.15.
-        school_meal_daily_subsidy: 7.15
+        # FREE = (NSLP 4.60 + SBP 2.46) = 7.06.
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0  # FREE
-- name: school_meals_negative_self_employment_income_free (federal)
+        school_meal_net_subsidy: 1119.60
+        free_school_meals: 1119.60
+        reduced_price_school_meals: 0.00
+- name: school_meals_low_wages_with_business_loss_free (federal)
   period: 2026
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -536,18 +616,22 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
-        # Self-employment losses offset wages in the countable-income sources
-        # (7 CFR 273.9(b)): 20,000 - 25,000 = -5,000 earnings; TANF (~5,016,
-        # itself a countable source) brings the total to ~16, so the FPG
-        # ratio is ~0 -> FREE; SNAP/TANF receipt also confers FREE
-        # categorically. FREE = (NSLP 4.60 + SBP 2.46) uprated = 7.15.
-        school_meal_daily_subsidy: 7.15
+        # A family with $20,000 wages and a business loss qualifies for free
+        # meals even without offsetting wages by the loss. This case checks
+        # its FREE outcome, not the treatment of losses in countable income.
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0  # FREE
+        school_meal_net_subsidy: 1119.60
+        free_school_meals: 1119.60
+        reduced_price_school_meals: 0.00
 - name: school_meals_2025_reduced_tier_just_below_185pct (federal)
   period: 2025
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -577,9 +661,9 @@
     households:
       household:
         members: [head, spouse, child1]
-        state_code: TX
-        zip_code: '75201'
-        county_str: DALLAS_COUNTY_TX
+        state_code: MO
+        zip_code: '65712'
+        county_str: LAWRENCE_COUNTY_MO
     spm_units:
       spm_unit:
         members: [head, spouse, child1]
@@ -596,16 +680,24 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
+        meets_school_meal_categorical_eligibility: false
+        state_has_universal_free_school_meals: false
         # 2025 FPG(3) = 15,650 + 2 x 5,500 = 26,650; 185% = 49,302.50.
-        # 49,200 / 26,650 = 184.6% -> REDUCED. 2025 uses published rates
-        # (no uprating): REDUCED = NSLP 4.20 + SBP 2.16 = 6.36.
-        school_meal_daily_subsidy: 6.36
+        # 49,200 / 26,650 = 184.6% -> REDUCED. 2025 reads the SY 2024-25
+        # rates in force on January 1: REDUCED = NSLP 4.03 + SBP 2.07 = 6.10.
+        school_meal_daily_subsidy: 6.10
         school_meal_tier: 1  # REDUCED
+        school_meal_net_subsidy: 952.20
+        free_school_meals: 0.00
+        reduced_price_school_meals: 952.20
 - name: school_meals_2025_paid_tier_just_above_185pct (federal)
   period: 2025
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -635,9 +727,9 @@
     households:
       household:
         members: [head, spouse, child1]
-        state_code: TX
-        zip_code: '75201'
-        county_str: DALLAS_COUNTY_TX
+        state_code: MO
+        zip_code: '65712'
+        county_str: LAWRENCE_COUNTY_MO
     spm_units:
       spm_unit:
         members: [head, spouse, child1]
@@ -654,15 +746,23 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
-        # 49,400 / 26,650 = 185.4% > 185% -> PAID. 2025 published rates:
-        # PAID = NSLP 0.46 + SBP 0.40 = 0.86.
-        school_meal_daily_subsidy: 0.86
+        meets_school_meal_categorical_eligibility: false
+        state_has_universal_free_school_meals: false
+        # 49,400 / 26,650 = 185.4% > 185% -> PAID. 2025 reads the SY 2024-25
+        # rates in force on January 1: PAID = NSLP 0.42 + SBP 0.39 = 0.81.
+        school_meal_daily_subsidy: 0.81
         school_meal_tier: 2  # PAID
+        school_meal_net_subsidy: 0.00
+        free_school_meals: 0.00
+        reduced_price_school_meals: 0.00
 - name: school_meals_ak_free_tier_higher_reimbursement (federal)
   period: 2026
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -711,11 +811,18 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
         # AK uses its own FPG and reimbursement schedule: AK FPG(3) =
         # 19,950 + 2 x 7,100 = 34,150; 40,000 / 34,150 = 117.1% <= 130%
-        # -> FREE. AK FREE = (NSLP 7.45 + SBP 3.95) x 1.0134 uprating
-        # = 11.40 x 1.0235 = 11.67 (vs 7.15 in the contiguous US).
-        school_meal_daily_subsidy: 11.67
+        # -> FREE. The July 2025 rates remain in force on January 1, 2026:
+        # AK FREE = NSLP 7.45 + SBP 3.95 = 11.40 (vs 7.06 contiguous US).
+        # Net annual value = (11.40 - 1.33) x 180 = 1,812.60.
+        school_meal_daily_subsidy: 11.40
         school_meal_tier: 0  # FREE
+        school_meal_net_subsidy: 1812.60
+        free_school_meals: 1812.60
+        reduced_price_school_meals: 0.00

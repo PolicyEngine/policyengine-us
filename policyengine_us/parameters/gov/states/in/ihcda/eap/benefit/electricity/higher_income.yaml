@@ -1,0 +1,13 @@
+description: Indiana provides this regular electric supplement in the highest income band or when electricity is included in rent under the Energy Assistance Program.
+values:
+  2025-10-01: 50
+metadata:
+  unit: currency-USD
+  period: year
+  label: Indiana EAP higher income electric payment
+  reference:
+    # Page 72 holds the electricity-in-rent rule and page 73 the 45% to 60% chart.
+    - title: Indiana PY2026 EAP Intake and Operations Manual, Section 8.7, pages 72-73
+      href: https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=72
+    - title: Indiana PY2025-26 EAP Benefit Matrix, page 1
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/IN_BenefitMatrix_Heat-Crisis_2026.pdf#page=1

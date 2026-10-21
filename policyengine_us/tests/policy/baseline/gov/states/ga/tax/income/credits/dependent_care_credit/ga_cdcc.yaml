@@ -22,3 +22,36 @@
     ga_income_tax_before_non_refundable_credits: 1000000
   output:
     ga_cdcc: 0
+
+- name: Georgia's 2021 credit follows the increased federal dependent care exclusion
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 60_000
+        dependent_care_employer_benefits: 9_000
+      parent2:
+        age: 38
+        employment_income: 40_000
+      child1:
+        age: 5
+      child2:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 20_000
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: GA
+  output:
+    dependent_care_assistance_exclusion: 9_000
+    # Federal Form 2441: min(16_000 - 9_000, 20_000 - 9_000) * 50% = 3_500.
+    cdcc: 3_500
+    # 2021 IND-CR 202 lines 1-3: 3_500 federal credit * 30% = 1_050.
+    # https://dor.georgia.gov/document/booklet/2021-it-511-individual-income-tax-booklet/download#page=38
+    ga_cdcc_potential: 1_050

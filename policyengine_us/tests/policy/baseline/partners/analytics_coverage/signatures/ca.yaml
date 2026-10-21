@@ -560,11 +560,13 @@
         ca_tanf: 0.0
         ca_tanf_eligible: false
         is_lifeline_eligible: true
-        is_snap_eligible: false
+        is_snap_eligible: true
         la_general_relief: 0.0
         la_general_relief_eligible: false
         lifeline: 228.0
-        snap: 0.0
+        # FY2026/FY2027 net $2,977/$2,971; contribution $894/$892.
+        # SNAP $100/$131/month; annual 9 x 100 + 3 x 131 = $1,293.
+        snap: 1293.0
     people:
       head:
         ca_ala_general_assistance_eligible_person: false
@@ -936,11 +938,13 @@
         ca_tanf: 0.0
         ca_tanf_eligible: false
         is_lifeline_eligible: true
-        is_snap_eligible: false
+        is_snap_eligible: true
         la_general_relief: 0.0
         la_general_relief_eligible: false
         lifeline: 228.0
-        snap: 0.0
+        # FY2026/FY2027 net $2,977/$2,971; contribution $894/$892.
+        # SNAP $100/$131/month; annual 9 x 100 + 3 x 131 = $1,293.
+        snap: 1293.0
     people:
       head:
         ca_ala_general_assistance_eligible_person: false
@@ -1124,7 +1128,7 @@
         la_general_relief: 0.0
         la_general_relief_eligible: false
         lifeline: 228.0
-        snap: 7956.0
+        snap: 7722.0
     people:
       head:
         ca_ala_general_assistance_eligible_person: false
@@ -1706,7 +1710,7 @@
         la_general_relief: 0.0
         la_general_relief_eligible: false
         lifeline: 228.0
-        snap: 7956.0
+        snap: 7722.0
     people:
       head:
         ca_ala_general_assistance_eligible_person: false
@@ -1907,7 +1911,11 @@
         la_general_relief: 0.0
         la_general_relief_eligible: false
         lifeline: 228.0
-        snap: 3729.0
+        # Oct-Dec uses the model-uprated California phone allowance ($20 to
+        # $20.71), because FY2027 values are not in the model yet.
+        # FY2026/FY2027 net $2,946/$2,936; contribution $884/$881.
+        # SNAP $110/$142/month; annual 9 x 110 + 3 x 142 = $1,416.
+        snap: 1416.0
     people:
       head:
         ca_ala_general_assistance_eligible_person: false
@@ -2092,7 +2100,7 @@
         la_general_relief: 0.0
         la_general_relief_eligible: false
         lifeline: 228.0
-        snap: 7956.0
+        snap: 7722.0
     people:
       head:
         ca_ala_general_assistance_eligible_person: false
@@ -2291,11 +2299,13 @@
         ca_tanf_eligible: false
         housing_assistance: 0.0
         is_lifeline_eligible: true
-        is_snap_eligible: false
+        is_snap_eligible: true
         la_general_relief: 0.0
         la_general_relief_eligible: false
         lifeline: 228.0
-        snap: 0.0
+        # FY2026/FY2027 net $2,977/$2,971; contribution $894/$892.
+        # SNAP $100/$131/month; annual 9 x 100 + 3 x 131 = $1,293.
+        snap: 1293.0
     people:
       head:
         ca_ala_general_assistance_eligible_person: false
@@ -2486,7 +2496,7 @@
         la_general_relief: 0.0
         la_general_relief_eligible: false
         lifeline: 228.0
-        snap: 7956.0
+        snap: 7722.0
     people:
       head:
         ca_ala_general_assistance_eligible_person: false
@@ -2678,7 +2688,11 @@
         la_general_relief: 0.0
         la_general_relief_eligible: false
         lifeline: 228.0
-        snap: 3729.0
+        # Oct-Dec uses the model-uprated California phone allowance ($20 to
+        # $20.71), because FY2027 values are not in the model yet.
+        # FY2026/FY2027 net $2,946/$2,936; contribution $884/$881.
+        # SNAP $110/$142/month; annual 9 x 110 + 3 x 142 = $1,416.
+        snap: 1416.0
     people:
       head:
         ca_ala_general_assistance_eligible_person: false
@@ -2878,7 +2892,11 @@
         la_general_relief: 0.0
         la_general_relief_eligible: false
         lifeline: 228.0
-        snap: 3729.0
+        # Oct-Dec uses the model-uprated California phone allowance ($20 to
+        # $20.71), because FY2027 values are not in the model yet.
+        # FY2026/FY2027 net $2,946/$2,936; contribution $884/$881.
+        # SNAP $110/$142/month; annual 9 x 110 + 3 x 142 = $1,416.
+        snap: 1416.0
     people:
       head:
         ca_ala_general_assistance_eligible_person: false
@@ -3258,11 +3276,13 @@
         ca_tanf: 0.0
         ca_tanf_eligible: false
         is_lifeline_eligible: true
-        is_snap_eligible: false
+        is_snap_eligible: true
         la_general_relief: 0.0
         la_general_relief_eligible: false
         lifeline: 228.0
-        snap: 0.0
+        # FY2026/FY2027 net $2,977/$2,971; contribution $894/$892.
+        # SNAP $100/$131/month; annual 9 x 100 + 3 x 131 = $1,293.
+        snap: 1293.0
     people:
       head:
         ca_ala_general_assistance_eligible_person: false
@@ -3450,7 +3470,7 @@
         la_general_relief: 0.0
         la_general_relief_eligible: false
         lifeline: 228.0
-        snap: 7956.0
+        snap: 7722.0
     people:
       head:
         ca_ala_general_assistance_eligible_person: false
@@ -4599,11 +4619,13 @@
         ca_tanf: 0.0
         ca_tanf_eligible: false
         is_lifeline_eligible: true
-        is_snap_eligible: false
+        is_snap_eligible: true
         la_general_relief: 0.0
         la_general_relief_eligible: false
         lifeline: 228.0
-        snap: 0.0
+        # FY2026/FY2027 net $2,977/$2,971; contribution $894/$892.
+        # SNAP $100/$131/month; annual 9 x 100 + 3 x 131 = $1,293.
+        snap: 1293.0
     people:
       head:
         ca_ala_general_assistance_eligible_person: false
@@ -4799,7 +4821,11 @@
         la_general_relief: 0.0
         la_general_relief_eligible: false
         lifeline: 228.0
-        snap: 3729.0
+        # Oct-Dec uses the model-uprated California phone allowance ($20 to
+        # $20.71), because FY2027 values are not in the model yet.
+        # FY2026/FY2027 net $2,946/$2,936; contribution $884/$881.
+        # SNAP $110/$142/month; annual 9 x 110 + 3 x 142 = $1,416.
+        snap: 1416.0
     people:
       head:
         ca_ala_general_assistance_eligible_person: false
@@ -4993,11 +5019,13 @@
         ca_tanf: 0.0
         ca_tanf_eligible: false
         is_lifeline_eligible: true
-        is_snap_eligible: false
+        is_snap_eligible: true
         la_general_relief: 0.0
         la_general_relief_eligible: false
         lifeline: 228.0
-        snap: 0.0
+        # FY2026/FY2027 net $2,977/$2,971; contribution $894/$892.
+        # SNAP $100/$131/month; annual 9 x 100 + 3 x 131 = $1,293.
+        snap: 1293.0
     people:
       head:
         ca_ala_general_assistance_eligible_person: false

@@ -1,0 +1,13 @@
+description: Indiana sets this minimum age for an applicant and for counting a household member's income under the Energy Assistance Program.
+# Section 4.4 lets a person apply from this age. Section 6 counts income from this
+# age, subject to the Section 6.2 student exclusions; Social Security benefits paid
+# for younger members also count.
+values:
+  2025-10-01: 18
+metadata:
+  unit: year
+  period: year
+  label: Indiana EAP adult age
+  reference:
+    - title: Indiana PY2026 EAP Intake and Operations Manual, Sections 4.4 (page 29), 6 (page 47) and 6.2 (pages 57-58)
+      href: https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=47

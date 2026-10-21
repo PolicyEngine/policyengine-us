@@ -1,10 +1,11 @@
-# Massachusetts universal free school meals (Ch. 28 of the Acts of 2023,
-# effective 2023-07-01): all students receive the FREE tier regardless of
-# household income. Same household is PAID (0.87) under federal-only rules
-# (see federal.yaml paid-tier case).
+# Massachusetts universal school meals (Ch. 28 of the Acts of 2023).
+# https://malegislature.gov/Laws/SessionLaws/Acts/2023/Chapter28
+# Assume a public school participating in both meal programs and the state
+# program. Calendar 2026 uses published SY 2025-26 reimbursement rates;
+# see federal.yaml for the sources and annual-period assumptions.
 - name: school_meals_universal_free_meals_above_185pct (ma)
   period: 2026
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -53,10 +54,20 @@
       mu_child1:
         members: [child1]
   output:
+    people:
+      child1:
+        is_in_k12_school: true
     spm_units:
       spm_unit:
-        # 50,700 / 27,320 = 185.6% FPG (> 185%, PAID on income), but MA's
-        # universal-meals policy forces FREE.
-        # FREE = (NSLP 4.60 + SBP 2.46) uprated to 2026 = 7.15.
-        school_meal_daily_subsidy: 7.15
+        # 50,700 / 27,320 = 185.6% FPG: above the federal reduced-price
+        # threshold, with no categorical route. State coverage makes both
+        # meals free at the child's participating public school.
+        meets_school_meal_categorical_eligibility: false
+        state_has_universal_free_school_meals: true
+        school_meal_countable_income: 50_700
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0  # FREE
+        # (Combined FREE - PAID) x one enrolled child x 180 modeled days.
+        school_meal_net_subsidy: 1119.60
+        free_school_meals: 1119.60
+        reduced_price_school_meals: 0

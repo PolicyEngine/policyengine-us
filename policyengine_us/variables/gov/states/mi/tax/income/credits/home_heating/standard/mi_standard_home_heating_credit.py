@@ -8,7 +8,7 @@ class mi_standard_home_heating_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.michigan.gov/taxes/iit/accordion/credits/table-a-2022-home-heating-credit-mi-1040cr-7-standard-allowance",
+        "https://web.archive.org/web/20230926141111/https://www.michigan.gov/taxes/iit/accordion/credits/table-a-2022-home-heating-credit-mi-1040cr-7-standard-allowance",
         "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-527a",
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040CR-7-Book.pdf#page=10",
     )

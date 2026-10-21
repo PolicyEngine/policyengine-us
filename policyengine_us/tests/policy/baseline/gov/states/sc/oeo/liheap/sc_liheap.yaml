@@ -1,5 +1,5 @@
 # Accepted FY 2026 plan: regular heating base 200 and seven supplements, cap 850.
-# https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8,9
+# https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8
 # Matrix used only for named fuels; its conflicting income/burden rules are not used.
 # https://liheapch.acf.gov/docs/2026/benefits-matricies/SC_BenefitMatrix_2026.pdf#page=2
 # Agency's explicit LIHEAP household rule counts all income but qualified size.
@@ -990,3 +990,347 @@
   output:
     sc_liheap_countable_income: 12000
     sc_liheap: 450
+
+
+# Military retirement is a separate receipt; a rental loss cannot cancel a
+#33,000 pension. The last two rows are existing-aggregate UI controls because
+#there is no SC state UI model. Reported UI replaces the fallback, never adds
+#to it. Every row exceeds the one-person31,993 ordinary income ceiling.
+- name: Case 14, distinct received income prevents excess regular awards.
+  period: 2026
+  input:
+    state_code: [SC, SC, SC, SC]
+    age: [55, 55, 35, 35]
+    is_citizen_or_legal_immigrant: [true, true, true, true]
+    ssi: [0, 0, 0, 0]
+    military_retirement_pay: [40_000, 0, 0, 0]
+    is_veteran: [true, false, false, false]
+    taxable_pension_income: [0, 33_000, 0, 0]
+    rental_income: [0, -10_000, 0, 0]
+    unemployment_compensation: [0, 0, 0, 45_000]
+    modeled_state_unemployment_compensation: [0, 0, 40_000, 40_000]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000]
+  output:
+    sc_liheap_countable_income: [40_000, 33_000, 40_000, 45_000]
+    sc_liheap_income_limit: [31_993, 31_993, 31_993, 31_993]
+    sc_liheap_eligible: [false, false, false, false]
+    sc_liheap: [0, 0, 0, 0]
+
+# Agefiveandunder includes5.5 until the sixthbirthday. With two qualified
+#members,30,000income is above30%SMI but below the41,837 ceiling. Electric
+#1,000 is below20%burden and has no fuel supplement:200base+50child=250;
+#the same household at age6 receives200.
+- name: Case 15, the young-child supplement lasts until the sixth birthday.
+  period: 2026
+  input:
+    people:
+      person1: {age: 35, employment_income: 30_000, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person2: {age: 5.5, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person3: {age: 35, employment_income: 30_000, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person4: {age: 6, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+    tax_units:
+      tax_unit1: {members: [person1, person2]}
+      tax_unit2: {members: [person3, person4]}
+    households:
+      household1: {members: [person1, person2], state_code: SC}
+      household2: {members: [person3, person4], state_code: SC}
+  output:
+    sc_liheap_household_size: [2, 2]
+    sc_liheap_countable_income: [30_000, 30_000]
+    sc_liheap_income_limit: [41_837, 41_837]
+    sc_liheap_eligible: [true, true]
+    sc_liheap: [250, 200]
+
+# Actualqualifiedsize25uses2025FPG15,650+24*5,500=147,650;
+#strict110%floor162,415 protects150,000income above ordinarySMI116,282.
+#No vulnerable member, veteran, fuel or burden supplement applies, and income
+#exceeds30%SMI: base200 reaches the final award. Exact162,415 is unprotected.
+- name: Case 16, large households retain strict federal income protection.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 150_000
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person6:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person7:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person8:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person9:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person10:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person11:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person12:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person13:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person14:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person15:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person16:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person17:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person18:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person19:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person20:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person21:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person22:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person23:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person24:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person25:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person26:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 162_415
+      person27:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person28:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person29:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person30:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person31:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person32:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person33:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person34:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person35:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person36:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person37:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person38:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person39:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person40:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person41:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person42:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person43:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person44:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person45:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person46:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person47:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person48:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person49:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person50:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit2:
+        members: [person26, person27, person28, person29, person30, person31, person32, person33, person34, person35, person36, person37, person38, person39, person40, person41, person42, person43, person44, person45, person46, person47, person48, person49, person50]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+    tax_units:
+      tax_unit1: {members: [person1]}
+      tax_unit2: {members: [person2]}
+      tax_unit3: {members: [person3]}
+      tax_unit4: {members: [person4]}
+      tax_unit5: {members: [person5]}
+      tax_unit6: {members: [person6]}
+      tax_unit7: {members: [person7]}
+      tax_unit8: {members: [person8]}
+      tax_unit9: {members: [person9]}
+      tax_unit10: {members: [person10]}
+      tax_unit11: {members: [person11]}
+      tax_unit12: {members: [person12]}
+      tax_unit13: {members: [person13]}
+      tax_unit14: {members: [person14]}
+      tax_unit15: {members: [person15]}
+      tax_unit16: {members: [person16]}
+      tax_unit17: {members: [person17]}
+      tax_unit18: {members: [person18]}
+      tax_unit19: {members: [person19]}
+      tax_unit20: {members: [person20]}
+      tax_unit21: {members: [person21]}
+      tax_unit22: {members: [person22]}
+      tax_unit23: {members: [person23]}
+      tax_unit24: {members: [person24]}
+      tax_unit25: {members: [person25]}
+      tax_unit26: {members: [person26]}
+      tax_unit27: {members: [person27]}
+      tax_unit28: {members: [person28]}
+      tax_unit29: {members: [person29]}
+      tax_unit30: {members: [person30]}
+      tax_unit31: {members: [person31]}
+      tax_unit32: {members: [person32]}
+      tax_unit33: {members: [person33]}
+      tax_unit34: {members: [person34]}
+      tax_unit35: {members: [person35]}
+      tax_unit36: {members: [person36]}
+      tax_unit37: {members: [person37]}
+      tax_unit38: {members: [person38]}
+      tax_unit39: {members: [person39]}
+      tax_unit40: {members: [person40]}
+      tax_unit41: {members: [person41]}
+      tax_unit42: {members: [person42]}
+      tax_unit43: {members: [person43]}
+      tax_unit44: {members: [person44]}
+      tax_unit45: {members: [person45]}
+      tax_unit46: {members: [person46]}
+      tax_unit47: {members: [person47]}
+      tax_unit48: {members: [person48]}
+      tax_unit49: {members: [person49]}
+      tax_unit50: {members: [person50]}
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25]
+        state_code: SC
+      household2:
+        members: [person26, person27, person28, person29, person30, person31, person32, person33, person34, person35, person36, person37, person38, person39, person40, person41, person42, person43, person44, person45, person46, person47, person48, person49, person50]
+        state_code: SC
+  output:
+    sc_liheap_household_size: [25, 25]
+    sc_liheap_countable_income: [150_000, 162_415]
+    sc_liheap_income_limit: [116_282, 116_282]
+    sc_liheap_eligible: [true, false]
+    sc_liheap: [200, 0]

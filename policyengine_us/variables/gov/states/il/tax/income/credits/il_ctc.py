@@ -7,7 +7,7 @@ class il_ctc(Variable):
     label = "Illinois Child Tax Credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.ilga.gov/legislation/fulltext.asp?DocName=&SessionId=112&GA=103&DocTypeId=HB&DocNum=4917&GAID=17&LegID=152789&SpecSess=&Session="
+    reference = "https://www.ilga.gov/Documents/legislation/103/HB/10300HB4917.htm"
     defined_for = StateCode.IL
 
     def formula(tax_unit, period, parameters):

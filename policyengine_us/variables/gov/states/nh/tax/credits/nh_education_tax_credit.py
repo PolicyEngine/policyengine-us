@@ -12,11 +12,5 @@ class nh_education_tax_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.nh.tax.credits.education
-
-        # Get Rate for donation
-        donation = add(
-            tax_unit,
-            period,
-            ["charitable_cash_donations", "charitable_non_cash_donations"],
-        )
+        donation = add(tax_unit, period, ["total_charitable_donations"])
         return p.rate.calc(donation)

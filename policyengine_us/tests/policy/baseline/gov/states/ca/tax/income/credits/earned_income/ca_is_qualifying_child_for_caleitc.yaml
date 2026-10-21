@@ -61,3 +61,24 @@
         state_code: CA
   output:
     ca_is_qualifying_child_for_caleitc: false
+
+- name: Disabled parent dependent is not a CalEITC qualifying child.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+      disabled_parent:
+        age: 75
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: true
+        is_parent_of_filer_or_spouse: true
+    households:
+      household:
+        members: [head, disabled_parent]
+        state_code: CA
+  output:
+    # IRC 152(c)(2), which the RTC 17052 qualifying-child definition follows.
+    ca_is_qualifying_child_for_caleitc: [false, false]

@@ -8,9 +8,9 @@ class tuition_and_fees_deduction_eligible(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.irs.gov/pub/irs-pdf/f8917.pdf#page=2"
+        "https://www.irs.gov/pub/irs-pdf/f8917.pdf#page=2",
         # Law was repealed in 2021
-        "https://irc.bloombergtax.com/public/uscode/doc/irc/section_222"
+        "https://irc.bloombergtax.com/public/uscode/doc/irc/section_222",
     )
 
     def formula(tax_unit, period, parameters):
@@ -27,4 +27,9 @@ class tuition_and_fees_deduction_eligible(Variable):
                 "lifetime_learning_credit_potential",
             ],
         )
-        return ~separate & (aoc_llc == 0)
+        # IRC 222(c)(3): no deduction to an individual for whom a section 151
+        # deduction "may be allowed to another taxpayer". Without this, a
+        # filer barred from the education credits for that reason would
+        # become eligible here.
+        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        return ~separate & (aoc_llc == 0) & ~dependent_filer

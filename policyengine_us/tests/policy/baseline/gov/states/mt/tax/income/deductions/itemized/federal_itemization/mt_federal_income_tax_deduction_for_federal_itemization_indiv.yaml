@@ -1,39 +1,46 @@
-- name: Deductions split evenly 
-  period: 2021
-  input:
-    people:
-      person1:
-        mt_agi_indiv: 500
-      person2:
-        mt_agi_indiv: 500
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        mt_federal_income_tax_deduction_for_federal_itemization: 3_000
-        state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
-    households:
-      household:
-        members: [person1, person2]
-        state_code: MT
-  output:
-    mt_federal_income_tax_deduction_for_federal_itemization_indiv: [1_500, 1_500]
+# 2022 Form 2 instructions, Itemized Deductions Schedule, line 4 (PDF p. 33):
+# withholding is reported by the spouse who earned the income, and each
+# spouse filing separately is limited to 5,000.
 
-- name: Deductions capped at max amount individually
+- name: Each spouse deducts their own withholding estimate
   period: 2021
   input:
     people:
       person1:
-        mt_agi_indiv: 100
+        mt_withheld_income_tax: 3_000
+        adjusted_gross_income_person: 50_000
       person2:
-        mt_agi_indiv: 900
+        mt_withheld_income_tax: 1_000
+        adjusted_gross_income_person: 50_000
     tax_units:
       tax_unit:
         members: [person1, person2]
-        mt_federal_income_tax_deduction_for_federal_itemization: 10_000
         state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
     households:
       household:
         members: [person1, person2]
         state_code: MT
   output:
-    mt_federal_income_tax_deduction_for_federal_itemization_indiv: [1_000, 5_000]
+    # Prorating the couple's 4_000 by Montana AGI would give 2_000 / 2_000.
+    mt_federal_income_tax_deduction_for_federal_itemization_indiv: [3_000, 1_000]
+
+- name: Each spouse is capped at 5,000 on their own amount
+  period: 2021
+  input:
+    people:
+      person1:
+        mt_withheld_income_tax: 7_000
+        adjusted_gross_income_person: 60_000
+      person2:
+        mt_withheld_income_tax: 1_000
+        adjusted_gross_income_person: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_federal_income_tax_deduction_for_federal_itemization_indiv: [5_000, 1_000]

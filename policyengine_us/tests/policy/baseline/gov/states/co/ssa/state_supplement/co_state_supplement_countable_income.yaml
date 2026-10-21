@@ -1,0 +1,75 @@
+- name: Case 1, outside an SSI couple computation, countable income is SSI countable income.
+  period: 2026
+  input:
+    ssi_countable_income: 3_000
+    state_code: CO
+  output:
+    co_state_supplement_countable_income: 3_000
+
+- name: Case 2, spouses of a joint SSI claim each count their own income.
+  # 9 CCR 2503-5 3.549(A)(2): own unearned income other than SSI, less the
+  # client's half of the $20 disregard. Pensions of $400 and $200 a month give 390 and 190
+  # a month, or 4,680 and 2,280 a year. Federal SSI would give each half of
+  # the pooled 580, or 290 a month.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        pension_income: 4_800
+        is_tax_unit_head: true
+      spouse:
+        age: 52
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        pension_income: 2_400
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi_countable_income: [3_480, 3_480]
+    co_state_supplement_countable_income: [4_680, 2_280]
+
+- name: Case 3, an SSI recipient's earnings get no share of the unearned income disregard.
+  # The spouse has $5/month of interest and $200/month of earnings. Their $10
+  # share of the $20 disregard covers the $5 of interest (3.549(A)(2)(c)). Their
+  # gross unearned income, SSI included, is not under $20, so nothing reaches
+  # earned income (3.549(A)(2)(f)): (200 - 65) / 2 = 67.50 a month, or 810 a
+  # year.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_head: true
+      spouse:
+        age: 52
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        interest_income: 60
+        employment_income: 2_400
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_state_supplement_countable_income: [0, 810]

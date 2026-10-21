@@ -39,3 +39,60 @@
     state_code: WI
   output:
     wi_unemployment_compensation_subtraction: 0
+
+# Worksheet line 1 takes the unemployment compensation from line 7 of the
+# filers' federal Schedule 1 (2024 Schedule SB instructions, line 3). Federal
+# AGI leaves out a tax unit dependent's compensation, which the dependent
+# reports on their own return.
+
+- name: Case 5, a dependent's unemployment compensation is not subtracted from the filer's income.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 15_000
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        unemployment_compensation: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    taxable_unemployment_compensation: [0, 10_000]
+    adjusted_gross_income: 15_000
+    wi_unemployment_compensation_subtraction: 0
+    wi_agi: 15_000
+
+- name: Case 6, the head's unemployment compensation goes through the worksheet; the dependent's does not.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 12_000
+        unemployment_compensation: 2_000
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        unemployment_compensation: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Worksheet: line 1 = 2,000; line 2 (federal AGI) = 14,000; line 3 =
+    # 12,000 (box D); line 7 = 14,000 - 12,000 = 2,000; line 8 = 1,000;
+    # line 9 = min(2,000, 1,000) = 1,000; line 10 = 2,000 - 1,000 = 1,000.
+    adjusted_gross_income: 14_000
+    wi_unemployment_compensation_subtraction: 1_000

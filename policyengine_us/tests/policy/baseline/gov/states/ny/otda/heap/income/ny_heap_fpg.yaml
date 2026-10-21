@@ -1,0 +1,15 @@
+# The 2025-2026 HEAP Monthly Income Eligibility Guidelines (Clearinghouse
+# benefit matrix) reproduce from the poverty guideline of the year before the
+# program year, so the model lags the guideline by one year.
+# https://liheapch.acf.gov/docs/2026/benefits-matricies/NY_BenefitMatrix_2026.docx
+
+- name: Case 1, backfilled estimates use the guideline one year before the requested period.
+  period: 2022
+  input:
+    heating_type: NATURAL_GAS
+    state_code: NY
+    ny_heap_household_size: 2
+  output:
+    # 2021 HHS poverty guideline for two: 12,880 + 4,540 = 17,420. This checks
+    # the lag mechanics, not verified historical New York policy coverage.
+    ny_heap_fpg: 17_420

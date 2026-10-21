@@ -8,8 +8,8 @@ class or_exemption_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2021.pdf#page=17"
-        "https://www.oregonlegislature.gov/bills_laws/ors/ors316.html"  # Subsection 316.085
+        "https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2021.pdf#page=17",
+        "https://www.oregonlegislature.gov/bills_laws/ors/ors316.html",  # Subsection 316.085
     )
     defined_for = StateCode.OR
 

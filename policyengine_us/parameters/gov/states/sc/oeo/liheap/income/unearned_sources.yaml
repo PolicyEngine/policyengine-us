@@ -1,10 +1,11 @@
 description: South Carolina counts these unearned income sources under the Low Income Home Energy Assistance Program.
 values:
   2025-10-01:
-    - unemployment_compensation
+    - total_unemployment_compensation
     - social_security
     - ssi
     - pension_income
+    - military_retirement_pay
     # Ongoing IRA/401k receipts are separate from pension_income.
     # Annual inputs cannot identify excluded one-time retirement lump sums.
     - retirement_distributions

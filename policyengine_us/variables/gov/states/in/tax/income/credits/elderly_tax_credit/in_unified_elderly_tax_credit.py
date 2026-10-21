@@ -8,8 +8,8 @@ class in_unified_elderly_tax_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://iga.in.gov/laws/2021/ic/titles/6#6-3-3-9"
-        "https://iga.in.gov/laws/2022/ic/titles/6#6-3-3-9"
+        "https://iga.in.gov/laws/2021/ic/titles/6#6-3-3-9",
+        "https://iga.in.gov/laws/2022/ic/titles/6#6-3-3-9",
     )
     defined_for = StateCode.IN
 

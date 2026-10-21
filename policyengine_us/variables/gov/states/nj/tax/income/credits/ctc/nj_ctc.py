@@ -8,10 +8,10 @@ class nj_ctc(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-17-1/"
-        "https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf#page=44"
-        "https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2022/1040i.pdf#page=44"
-        "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=46"
+        "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-17-1/",
+        "https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf#page=44",
+        "https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2022/1040i.pdf#page=44",
+        "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=46",
     )
     defined_for = "nj_ctc_eligible"
 

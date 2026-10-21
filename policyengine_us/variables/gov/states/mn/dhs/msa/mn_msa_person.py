@@ -12,6 +12,7 @@ class mn_msa_person(Variable):
     definition_period = MONTH
     defined_for = "mn_msa_eligible_person"
     reference = (
+        "https://www.revisor.mn.gov/statutes/cite/256D.435",
         "https://www.revisor.mn.gov/statutes/cite/256D.44",
         "https://www.house.mn.gov/hrd/pubs/pap_MSA.pdf#page=2",
         "https://www.dhs.state.mn.us/main/groups/county_access/documents/pub/mndhs-073585.pdf#page=4",
@@ -24,6 +25,8 @@ class mn_msa_person(Variable):
         # mn_msa_net_income_eligible). Keep the two formulas in sync when
         # changing income treatment.
         # MSA inherits federal SSI's $20 / $65 / 1/2 disregards (CM 0018.18).
+        # Section 256D.435 Subd. 4a also adopts SSI income exclusions;
+        # ssi_earned_income already excludes salary-reduction premiums.
         # The SSI track substitutes the federal SSI FBR for the recipient's
         # post-disregard SSI payment so MSA tops up against the FBR rather
         # than the federal payment. FLA-D recipients are exempt from the $20

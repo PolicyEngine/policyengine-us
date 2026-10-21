@@ -18,3 +18,101 @@
     state_code: VA
   output:
     va_child_dependent_care_expense_deduction: 3_000
+
+# 2022 Va. Acts ch. 3 (HB 971) conformed Virginia to the IRC as of December
+# 31, 2021 for 2021 returns. The revised 2021 Form 760 code 101 deducts the
+# Form 2441 amount "up to $8,000 for one dependent and $16,000 for two or
+# more", which Form 2441 reduces by benefits excluded under the 2021 $10,500
+# IRC section 129 cap (lines 21, 25 and 27-31).
+- name: 2021 deduction uses the ARPA limit less the $10,500-capped exclusion
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        dependent_care_employer_benefits: 9_000
+      person2:
+        age: 38
+        employment_income: 40_000
+      person3:
+        age: 5
+      person4:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: VA
+  output:
+    # min($9,000 benefits, $10,500 cap, $40,000 lesser earnings) = $9,000.
+    dependent_care_assistance_exclusion: 9_000
+    # $16,000 two-person limit - $9,000 = $7,000 (Form 2441 line 29).
+    va_child_dependent_care_deduction_cdcc_limit: 7_000
+    # min($20,000, $7,000, $40,000) = $7,000.
+    va_child_dependent_care_expense_deduction: 7_000
+
+- name: 2021 one-child deduction with benefits between $5,000 and $10,500
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        dependent_care_employer_benefits: 6_000
+      person2:
+        age: 38
+        employment_income: 40_000
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    dependent_care_assistance_exclusion: 6_000
+    # $8,000 - $6,000 = $2,000.
+    va_child_dependent_care_deduction_cdcc_limit: 2_000
+    va_child_dependent_care_expense_deduction: 2_000
+
+- name: 2022 deduction returns to the $3,000 limit and $5,000 cap
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        dependent_care_employer_benefits: 9_000
+      person2:
+        age: 38
+        employment_income: 40_000
+      person3:
+        age: 5
+      person4:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: VA
+  output:
+    # min($9,000, $5,000, $40,000) = $5,000; $6,000 - $5,000 = $1,000.
+    dependent_care_assistance_exclusion: 5_000
+    va_child_dependent_care_deduction_cdcc_limit: 1_000
+    va_child_dependent_care_expense_deduction: 1_000

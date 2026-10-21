@@ -8,9 +8,9 @@ class wi_itemized_deduction_credit_potential(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revenue.wi.gov/TaxForms2021/2021-Form1f.pdf#page=4"
-        "https://www.revenue.wi.gov/TaxForms2022/2022-Form1f.pdf#page=4"
-        "https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2023/0002_individual_income_tax_informational_paper_2.pdf#page=19"
+        "https://www.revenue.wi.gov/TaxForms2021/2021-Form1f.pdf#page=4",
+        "https://www.revenue.wi.gov/TaxForms2022/2022-Form1f.pdf#page=4",
+        "https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2023/0002_individual_income_tax_informational_paper_2.pdf#page=19",
     )
     defined_for = StateCode.WI
 

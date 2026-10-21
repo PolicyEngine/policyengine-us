@@ -3,7 +3,7 @@
   input:
     state_code: NM
     filing_status: JOINT
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     nm_additional_2021_income_rebate: 1_000
 
@@ -12,7 +12,7 @@
   input:
     state_code: NM
     filing_status: SINGLE
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     nm_additional_2021_income_rebate: 500
 
@@ -21,7 +21,7 @@
   input:
     state_code: NM
     filing_status: SEPARATE
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     nm_additional_2021_income_rebate: 500
 
@@ -30,7 +30,7 @@
   input:
     state_code: NM
     filing_status: SURVIVING_SPOUSE
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     nm_additional_2021_income_rebate: 1_000
 
@@ -39,7 +39,7 @@
   input:
     state_code: NM
     filing_status: HEAD_OF_HOUSEHOLD
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     nm_additional_2021_income_rebate: 1_000
 
@@ -48,6 +48,83 @@
   input:
     state_code: NM
     filing_status: SEPARATE
-    head_is_dependent_elsewhere: true
+    claimed_as_dependent_on_another_return: true
+  output:
+    nm_additional_2021_income_rebate: 0
+
+- name: Joint return where only one spouse is a dependent of another taxpayer (the claimable spouse is the head)
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+  output:
+    # A spouse who is not a dependent may still qualify (PIT-RC instructions).
+    nm_additional_2021_income_rebate: 1_000
+
+- name: Joint return where only one spouse is a dependent of another taxpayer (the claimable spouse is the spouse)
+  period: 2021
+  input:
+    people:
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NM
+  output:
+    # A spouse who is not a dependent may still qualify (PIT-RC instructions).
+    nm_additional_2021_income_rebate: 1_000
+
+- name: Joint return where both spouses are a dependent of another taxpayer
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
   output:
     nm_additional_2021_income_rebate: 0

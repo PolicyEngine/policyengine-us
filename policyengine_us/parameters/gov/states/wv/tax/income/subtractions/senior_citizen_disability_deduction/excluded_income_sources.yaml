@@ -1,0 +1,28 @@
+description: West Virginia excludes these person-level Schedule M amounts from the income base for the senior citizen or disability modification before applying the cap.
+
+values:
+  # The equivalent income exclusion is verified from the 2014 form.
+  # Preserve unverified earlier direct-variable calculations.
+  1986-01-01: []
+  2014-01-01:
+    # Line numbers below are from the 2025 form.
+    - military_service_income # Line 36
+    - salt_refund_income # Line 38
+    # Line 39 is a contribution deduction, not an income receipt. Its amount
+    # removes income within the form's excluded range. Use the contributor's
+    # own amount rather than projecting the tax-unit 529 deduction to spouses.
+    - investment_in_529_plan_indv # Line 39
+
+metadata:
+  unit: list
+  period: year
+  label: West Virginia senior citizen or disability modification income exclusions
+  reference:
+    - title: "West Virginia Personal Income Tax Forms and Instructions 2025, Schedule M line 47 #page 5-6,29-30"
+      href: https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=5
+    - title: "West Virginia Personal Income Tax Forms and Instructions 2024, Schedule M line 49 #page 5-6,29"
+      href: https://tax.wv.gov/Documents/PIT/2024/it140.PersonalIncomeTaxFormsAndInstructions.2024.pdf#page=5
+    - title: West Virginia Personal Income Tax Forms and Instructions 2018, Schedule M lines 46-47
+      href: https://tax.wv.gov/Documents/TaxForms/2018/it140.booklet.pdf#page=5
+    - title: West Virginia Personal Income Tax Forms and Instructions 2014, Schedule M line 52
+      href: https://tax.wv.gov/Documents/TaxForms/2014/it140.booklet.pdf#page=9

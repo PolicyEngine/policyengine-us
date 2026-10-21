@@ -127,3 +127,224 @@
     is_full_time_student: true
   output:
     eitc_demographic_eligible: false
+
+- name: 2025 childless single filer who can be claimed as a dependent is ineligible
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+  output:
+    # IRC 32(c)(1)(A)(ii)(III).
+    eitc_demographic_eligible: false
+
+- name: 2025 childless joint return where one spouse can be claimed is ineligible (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    # Publication 596 (2025, p.18): "neither you nor your spouse can be claimed as a
+    # dependent by another person if you claim the EIC on your joint return."
+    eitc_demographic_eligible: false
+
+- name: 2025 childless joint return where one spouse can be claimed is ineligible (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: CA
+  output:
+    # Publication 596 (2025, p.18): "neither you nor your spouse can be claimed as a
+    # dependent by another person if you claim the EIC on your joint return."
+    eitc_demographic_eligible: false
+
+- name: 2025 joint return with a child where one spouse can be claimed (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: CA
+  output:
+    # The dependent condition in IRC 32(c)(1)(A)(ii)(III) applies only without a
+    # qualifying child.
+    eitc_demographic_eligible: true
+
+- name: 2025 joint return with a child where one spouse can be claimed (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child_1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child_1]
+        state_code: CA
+  output:
+    # The dependent condition in IRC 32(c)(1)(A)(ii)(III) applies only without a
+    # qualifying child.
+    eitc_demographic_eligible: true
+
+- name: 2025 claimable childless filer qualifies when nonrequired parent files only for a withholding refund
+  period: 2025
+  input:
+    people:
+      head:
+        age: 26
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    # Pub. 596 PDF p.18: nonrequired parent files only for a refund of income tax
+    # withheld. Pub. 501 PDF p.24: claimability still limits the standard deduction.
+    eitc_demographic_eligible: true
+    basic_standard_deduction: 2_450
+
+- name: 2025 claimable childless filer qualifies when nonrequired parent files no return
+  period: 2025
+  input:
+    people:
+      head:
+        age: 26
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    # Pub. 596 PDF p.18 also covers a nonrequired claimant who files no return.
+    # The exception changes EITC, while Pub. 501 PDF p.24 still limits deductions.
+    eitc_demographic_eligible: true
+    basic_standard_deduction: 2_450
+
+- name: 2025 unclaimed childless filer remains ineligible when claimable by a parent required to file
+  period: 2025
+  input:
+    people:
+      head:
+        age: 26
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: false
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    # Pub. 596 PDF p.18 Example 2: choosing not to claim the filer is insufficient.
+    eitc_demographic_eligible: false
+    basic_standard_deduction: 2_450
+
+- name: 2025 unclaimed childless filer remains ineligible when parent files for refundable credits
+  period: 2025
+  input:
+    people:
+      head:
+        age: 26
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: false
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    # Pub. 596 PDF pp.18-19: filing for a credit is not filing solely for a refund
+    # of withholding or estimated payments, even if no return was required.
+    eitc_demographic_eligible: false
+    basic_standard_deduction: 2_450

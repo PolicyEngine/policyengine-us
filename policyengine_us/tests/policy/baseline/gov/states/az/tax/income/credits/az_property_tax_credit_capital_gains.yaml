@@ -1,0 +1,57 @@
+# Form 140PTC Part 1 line D, for one household member: "combine gains and
+# losses from the sale or exchange of property. If the result is a gain, enter
+# the gain. If the result is a loss, enter the amount of the loss up to a
+# maximum of ($1,500)." (2021-2025 instructions, page 4;
+# A.A.C. R15-2C-502(C)(3); ITR 12-1 item (7).)
+
+- name: A net gain is entered in full
+  period: 2025
+  input:
+    state_code: AZ
+    long_term_capital_gains: 3_000
+    short_term_capital_gains: -500
+  output:
+    # 3,000 - 500 = 2,500.
+    az_property_tax_credit_capital_gains: 2_500
+
+- name: A net loss within the limit is entered in full
+  period: 2025
+  input:
+    state_code: AZ
+    long_term_capital_gains: -1_000
+  output:
+    az_property_tax_credit_capital_gains: -1_000
+
+- name: A net loss equal to the limit is entered in full
+  period: 2025
+  input:
+    state_code: AZ
+    short_term_capital_gains: -1_500
+  output:
+    az_property_tax_credit_capital_gains: -1_500
+
+- name: A net loss over the limit is entered as the limit
+  period: 2025
+  input:
+    state_code: AZ
+    long_term_capital_gains: 2_000
+    short_term_capital_gains: -6_000
+  output:
+    # 2,000 - 6,000 = (4,000), limited to (1,500).
+    az_property_tax_credit_capital_gains: -1_500
+
+- name: The limit applies in 2021
+  period: 2021
+  input:
+    state_code: AZ
+    long_term_capital_gains: -3_000
+  output:
+    az_property_tax_credit_capital_gains: -1_500
+
+- name: Not computed outside Arizona
+  period: 2025
+  input:
+    state_code: CA
+    long_term_capital_gains: -3_000
+  output:
+    az_property_tax_credit_capital_gains: 0

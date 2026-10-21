@@ -1,0 +1,48 @@
+# Form N-11, line 34: line 27 (tax) minus line 33 (total refundable credits).
+# https://files.hawaii.gov/tax/forms/2022/n11_i.pdf#page=3
+# https://files.hawaii.gov/tax/forms/2025/n11_i.pdf#page=3
+
+- name: Tax less refundable credits
+  period: 2022
+  input:
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 1_000
+    hi_refundable_credits: 500
+  output:
+    # Line 34 = 1,000 - 500.
+    hi_adjusted_tax_liability: 500
+
+- name: Negative when refundable credits exceed tax
+  period: 2025
+  input:
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 300
+    hi_refundable_credits: 500
+  output:
+    # Line 34 = 300 - 500; the form allows a negative amount.
+    hi_adjusted_tax_liability: -200
+
+- name: The 2021 Act 115 refund is not a credit on the return
+  period: 2021
+  # Act 115 refunds were issued by the department to 2021 Form N-11 filers;
+  # they are not among lines 28 to 32.
+  # https://files.hawaii.gov/tax/news/announce/ann22-03.pdf#page=2
+  input:
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 1_000
+    hi_refundable_credits: 410
+    hi_act_115_rebate: 300
+  output:
+    # Line 33 = 410 - 300 = 110; line 34 = 1,000 - 110.
+    hi_adjusted_tax_liability: 890
+
+- name: The Act 115 refund is not subtracted in years it is not paid
+  period: 2022
+  input:
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 1_000
+    hi_refundable_credits: 410
+    hi_act_115_rebate: 300
+  output:
+    # The refund is not in the 2022 refundable list: line 34 = 1,000 - 410.
+    hi_adjusted_tax_liability: 590
