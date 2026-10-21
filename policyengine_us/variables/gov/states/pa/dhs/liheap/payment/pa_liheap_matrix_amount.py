@@ -16,7 +16,7 @@ class pa_liheap_matrix_amount(Variable):
         # PDF pages 1-469
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/PA_BenefitMatrix_2026.pdf#page=1",
         "https://www.humanservices.dhs.pa.gov/liheap_benefit_table/",
-        # Section 601.41, benefit amounts.
+        # Section 601.41; PDF pages 38-39
         "https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf#page=38",
     )
 

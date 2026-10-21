@@ -9,8 +9,9 @@ class pa_liheap_income(Variable):
     label = "Pennsylvania LIHEAP annual countable household income"
     defined_for = StateCode.PA
     reference = (
-        # Sections 601.81-601.84, physical pages 49-54 and 46-51 respectively.
+        # Sections 601.81-601.84; PDF pages 49-54
         "https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=49",
+        # PDF pages 46-51
         "https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf#page=46",
         # Section 1.9 checks "Excluding MediCare deduction" in FY2026 and FY2025.
         "https://liheapch.acf.gov/docs/2026/state-plans/PA_Plan_2026.pdf#page=6",
