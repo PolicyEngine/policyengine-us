@@ -6,6 +6,8 @@
 #
 # hi_ccap_countable_income is MONTH-defined. YEAR-defined sources are entered
 # annually (auto-divided to monthly); SSI is MONTH-defined and entered monthly.
+# Earnings are entered as employment_income_before_lsr, the input Hawaii TANF
+# reads, so the TANF grant CCAP counts from 2021-08-06 sees the same earnings.
 
 - name: Case 1, employment income is counted.
   period: 2025-01
@@ -14,7 +16,7 @@
     people:
       person1:
         age: 30
-        employment_income: 24_000  # 2,000/month
+        employment_income_before_lsr: 24_000  # 2,000/month
     spm_units:
       spm_unit:
         members: [person1]
@@ -68,7 +70,7 @@
     people:
       person1:
         age: 40
-        employment_income: 24_000  # 2,000/month
+        employment_income_before_lsr: 24_000  # 2,000/month
         ssi: 500  # 500/month
         social_security_retirement: 12_000  # 1,000/month
     spm_units:
@@ -113,10 +115,10 @@
     people:
       person1:
         age: 30
-        employment_income: 24_000  # parent, 2,000/month (counted)
+        employment_income_before_lsr: 24_000  # parent, 2,000/month (counted)
       person2:
         age: 16  # minor (< 18)
-        employment_income: 12_000  # 1,000/month, excluded as minor student
+        employment_income_before_lsr: 12_000  # 1,000/month, excluded as minor student
         is_full_time_student: true
     spm_units:
       spm_unit:
@@ -136,10 +138,10 @@
     people:
       person1:
         age: 30
-        employment_income: 24_000  # parent, 2,000/month
+        employment_income_before_lsr: 24_000  # parent, 2,000/month
       person2:
         age: 16  # minor but not a student -> earnings counted
-        employment_income: 12_000  # 1,000/month
+        employment_income_before_lsr: 12_000  # 1,000/month
         is_full_time_student: false
     spm_units:
       spm_unit:
@@ -159,10 +161,10 @@
     people:
       person1:
         age: 30
-        employment_income: 24_000  # parent, 2,000/month
+        employment_income_before_lsr: 24_000  # parent, 2,000/month
       person2:
         age: 20  # adult (>= 18); exclusion is minors only
-        employment_income: 12_000  # 1,000/month, counted
+        employment_income_before_lsr: 12_000  # 1,000/month, counted
         is_full_time_student: true
     spm_units:
       spm_unit:
@@ -176,13 +178,13 @@
     hi_ccap_countable_income: 3_000
 
 - name: Case 9, Hawaii TANF payments are counted from August 6, 2021.
-  period: 2025-04
+  period: 2025-01
   absolute_error_margin: 0.01
   input:
     people:
       parent:
         age: 30
-        employment_income: 12_000  # 1,000/month
+        employment_income_before_lsr: 12_000  # 1,000/month
       child:
         age: 5
     spm_units:
@@ -199,13 +201,13 @@
     hi_ccap_countable_income: 1_100
 
 - name: Case 10, TANF the family does not take up is not counted.
-  period: 2025-04
+  period: 2025-01
   absolute_error_margin: 0.01
   input:
     people:
       parent:
         age: 30
-        employment_income: 12_000
+        employment_income_before_lsr: 12_000
       child:
         age: 5
     spm_units:
@@ -222,13 +224,13 @@
     hi_ccap_countable_income: 1_000
 
 - name: Case 11, Hawaii TANF is not added before the August 6, 2021 rules.
-  period: 2021-07
+  period: 2021-01
   absolute_error_margin: 0.01
   input:
     people:
       parent:
         age: 30
-        employment_income: 12_000
+        employment_income_before_lsr: 12_000
       child:
         age: 5
     spm_units:
@@ -251,7 +253,7 @@
     people:
       parent:
         age: 30
-        employment_income: 18_000  # 1,500/month
+        employment_income_before_lsr: 18_000  # 1,500/month
         weekly_hours_worked_before_lsr: 40
       child:
         age: 5

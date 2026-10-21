@@ -12,7 +12,7 @@
     people:
       person1:
         age: 30
-        employment_income: 56_000  # 4,666.67/mo, FPG ratio 2.30+ -> 9%
+        employment_income_before_lsr: 56_000  # 4,666.67/mo, FPG ratio 2.30+ -> 9%
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -41,7 +41,7 @@
     people:
       person1:
         age: 30
-        employment_income: 40_800  # 3,400/mo, FPG ratio 1.68 -> 5%
+        employment_income_before_lsr: 40_800  # 3,400/mo, FPG ratio 1.68 -> 5%
         immigration_status: CITIZEN
       person2:
         age: 1  # < 36 months -> INFANT_TODDLER rate
@@ -70,7 +70,7 @@
     people:
       person1:
         age: 30
-        employment_income: 12_000  # 1,000/mo, FPG ratio 0.49 -> 0%
+        employment_income_before_lsr: 12_000  # 1,000/mo, FPG ratio 0.49 -> 0%
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -101,7 +101,7 @@
     people:
       person1:
         age: 25
-        employment_income: 43_584  # 3,632/mo
+        employment_income_before_lsr: 43_584  # 3,632/mo
         immigration_status: CITIZEN
     tax_units:
       tax_unit:
@@ -130,7 +130,7 @@
     people:
       person1:
         age: 30
-        employment_income: 56_000  # 4,666.67/mo, far above 230% FPG -> 9%
+        employment_income_before_lsr: 56_000  # 4,666.67/mo, far above 230% FPG -> 9%
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -159,7 +159,7 @@
     people:
       person1:
         age: 30
-        employment_income: 56_000  # 4,666.67/mo, far above 230% FPG -> 9%
+        employment_income_before_lsr: 56_000  # 4,666.67/mo, far above 230% FPG -> 9%
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -193,7 +193,7 @@
     people:
       person1:
         age: 30
-        employment_income: 56_000  # 4,666.67/mo, FPG ratio 2.79 -> 9%
+        employment_income_before_lsr: 56_000  # 4,666.67/mo, FPG ratio 2.79 -> 9%
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -235,7 +235,7 @@
     people:
       person1:
         age: 30
-        employment_income: 66_000  # 5,500/mo, FPG ratio 2.61 -> 9%
+        employment_income_before_lsr: 66_000  # 5,500/mo, FPG ratio 2.61 -> 9%
         immigration_status: CITIZEN
       person2:
         age: 1  # < 36 months -> INFANT_TODDLER rate
@@ -271,7 +271,7 @@
     people:
       person1:
         age: 30
-        employment_income: 66_000  # 5,500/mo, FPG ratio 2.49 -> 9%
+        employment_income_before_lsr: 66_000  # 5,500/mo, FPG ratio 2.49 -> 9%
         immigration_status: CITIZEN
       person2:
         age: 1  # < 36 months -> INFANT_TODDLER rate
@@ -301,13 +301,13 @@
     hi_ccap_copay: 495
 
 - name: Counted Hawaii TANF payments can move a family out of the zero co-payment band.
-  period: 2025-04
+  period: 2025-01
   absolute_error_margin: 0.001
   input:
     people:
       parent:
         age: 30
-        employment_income: 30_000  # 2,500/month
+        employment_income_before_lsr: 30_000  # 2,500/month
       spouse:
         age: 30
         is_disabled: true
