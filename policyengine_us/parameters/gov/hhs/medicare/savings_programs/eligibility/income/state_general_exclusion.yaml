@@ -1,0 +1,25 @@
+description: States exclude this amount of monthly income, in place of the Supplemental Security Income general income exclusion, under the Medicare Savings Programs.
+metadata:
+  unit: currency-USD
+  period: month
+  label: MSP state general income exclusion
+  breakdown:
+    - state_code
+  reference:
+    - title: Illinois Department of Human Services Policy Manual PM 06-12-01-c - Income Exemption
+      href: https://www.dhs.state.il.us/page.aspx?item=14179
+    - title: Illinois Department of Human Services Policy Manual PM 15-04-03-a - Income Disregard
+      href: https://www.dhs.state.il.us/page.aspx?item=16387
+    - title: 89 Illinois Administrative Code 120.335(a)(1) - Exempt Income
+      href: https://www.ilga.gov/ftp/JCAR/AdminCode/089/089001200H03350R.html
+    - title: 23 Mississippi Code of Rules 104-1.1(C)(2)(b) - Income Rules
+      href: https://www.law.cornell.edu/regulations/mississippi/23-Miss-Code-R-SS-104-1-1
+    - title: Mississippi Division of Medicaid Eligibility Manual, pages 5400-5401, Countable Income (revised July 1, 1999)
+      href: https://web.archive.org/web/20140514175849/https://www.medicaid.ms.gov/wp-content/uploads/2014/03/Pages-5400-5401-Countable-Income.pdf#page=2
+
+IL:
+  0000-01-01: 0
+  1997-03-01: 25
+MS:
+  0000-01-01: 0
+  1999-07-01: 50
