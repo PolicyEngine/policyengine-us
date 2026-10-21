@@ -24,7 +24,8 @@ class ca_fera_eligible(Variable):
         # residences and sub-metered tenants; bars master-metered customers
         # without sub-metering. Page 2, Special Condition 3 (certification):
         # other qualifying applicants in individually metered units.
-        "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_E-FERA.pdf#page=1, 2",
+        "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_E-FERA.pdf#page=1",
+        "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_E-FERA.pdf#page=2",
     )
     defined_for = StateCode.CA
 

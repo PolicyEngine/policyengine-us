@@ -4,9 +4,10 @@ Fixes #
 
 ## Test plan
 
-- [ ] YAML tests whose expected values come from an external source (statute, official form or worksheet, official calculator)
+- [ ] For policy changes: YAML tests whose expected values come from an external source (statute, official form or worksheet, official calculator); otherwise mark not applicable.
+- [ ] If this PR takes a reading where a statute and a regulation, form, instructions, manual or agency practice disagree: a source-conflict register entry and a `# Source conflict <jurisdiction>:<id>` marker (CONTRIBUTING.md#source-conflicts); otherwise mark not applicable.
 - [ ] `make format`
 - [ ] Changelog fragment in `changelog.d/`
 
-<!-- Required for any change to policy (programs, parameters, eligibility, bug fixes). See CONTRIBUTING.md#axiom-parity. Keep exactly one option. -->
+<!-- Required for any change to policy (programs, parameters, eligibility, bug fixes). See CONTRIBUTING.md#axiom-parity. Keep one standard option below, or use axiom: needed if you are an external contributor who cannot complete the Axiom work; a maintainer will follow up. -->
 axiom: <legal id> encoded-correct | <rulespec-us PR> encoded | <rulespec-us issue> queued | n/a: <reason>

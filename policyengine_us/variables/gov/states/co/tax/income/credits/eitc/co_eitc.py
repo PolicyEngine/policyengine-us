@@ -14,8 +14,8 @@ class co_eitc(Variable):
         "https://leg.colorado.gov/sites/default/files/te19_colorado_earned_income_tax_credit.pdf",
         # C.R.S. 39-22-123.5 pays a percentage of the federal IRC 32 credit.
         "https://leg.colorado.gov/sites/default/files/images/olls/crs2023-title-39.pdf",
-        # IRC 152(c)(3)(B) waives the qualifying-child age test for permanently and totally disabled individuals.
-        "https://www.law.cornell.edu/uscode/text/26/152#c_3_B",
+        # IRC 32(c)(3)(A) applies the IRC 152(c) qualifying-child definition.
+        "https://www.law.cornell.edu/uscode/text/26/32#c_3_A",
     )
     defined_for = StateCode.CO
 
@@ -32,14 +32,9 @@ class co_eitc(Variable):
         filer_has_federal_identification = (
             tax_unit.sum(is_head_or_spouse & ~federal_identification) == 0
         )
-        # IRC 152(c)(3)(B) waives the age test for a permanently and totally
-        # disabled dependent, matching the federal eitc_child_count.
-        is_disabled_dependent = person("is_tax_unit_dependent", period) & person(
-            "is_permanently_and_totally_disabled", period
-        )
-        qualifying_child_with_tin = (
-            person("is_qualifying_child_dependent", period) | is_disabled_dependent
-        ) & has_tin
+        # Same qualifying-child test as the federal eitc_child_count, with an
+        # ITIN accepted in place of a Social Security number.
+        qualifying_child_with_tin = person("is_eitc_qualifying_child", period) & has_tin
         child_count_with_tin = tax_unit.sum(qualifying_child_with_tin)
         federal_eitc_parameters = parameters(period).gov.irs.credits.eitc
         student = person("is_full_time_student", period)

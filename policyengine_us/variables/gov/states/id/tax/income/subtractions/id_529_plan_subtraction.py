@@ -9,7 +9,7 @@ class id_529_plan_subtraction(Variable):
     definition_period = YEAR
     reference = (
         "https://tax.idaho.gov/taxes/income-tax/individual-income/popular-credits-and-deductions/ideal-college-savings-program/",
-        "https://www.idsaves.org/home/features-and-benefits/tax-benefits.html",
+        "https://www.idsaves.org/tax-benefits/",
     )
     defined_for = StateCode.ID
 
