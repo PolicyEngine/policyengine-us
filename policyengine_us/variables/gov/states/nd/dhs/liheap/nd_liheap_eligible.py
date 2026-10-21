@@ -17,7 +17,9 @@ class nd_liheap_eligible(Variable):
         heating_type = spm_unit("heating_type", period)
         types = heating_type.possible_values
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
-        subsidized = spm_unit("receives_housing_assistance", period)
+        subsidized = spm_unit(
+            "receives_housing_assistance", period
+        ) | spm_unit.household("is_in_public_housing", period)
         responsibility = heat_in_rent | (spm_unit("heating_expense", period) > 0)
         # Residence is approximated by state/SPMUnit membership. Institutional,
         # transient-residence and tribal election/duplicate-aid facts are not

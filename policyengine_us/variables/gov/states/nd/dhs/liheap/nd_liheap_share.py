@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.hhs.hhs_smi import smi
+from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 
 
 class nd_liheap_share(Variable):
@@ -10,6 +11,8 @@ class nd_liheap_share(Variable):
     reference = (
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/ND_BenefitMatrix_2026.xlsx",
         "https://www.nd.gov/dhs/policymanuals/415/415_30_10.htm",
+        "https://www.nd.gov/dhs/policymanuals/415/415_30_05.htm",
+        "https://www.law.cornell.edu/uscode/text/42/8624#b_2_B",
     )
     defined_for = StateCode.ND
 
@@ -38,4 +41,10 @@ class nd_liheap_share(Variable):
             p.shares,
             default=0,
         )
+        state_group = spm_unit.household("state_group_str", period)
+        guideline = fpg(size, state_group, period, parameters, year_lag=p.fpg_year_lag)
+        floor_rate = parameters(period).gov.hhs.liheap.fpg_floor
+        federal_floor = np.round(guideline * floor_rate, 2)
+        # Federal protection gives an otherwise excluded household the minimum share.
+        share = where((share == 0) & (income < federal_floor), p.shares[-1], share)
         return where(size > 0, share, 0)

@@ -24,7 +24,7 @@ class nd_liheap_countable_income(Variable):
             [
                 "nd_liheap_countable_earned_income",
                 "nd_liheap_countable_unearned_income",
-                "nd_tanf",
+                "tanf",
             ],
         )
         person = spm_unit.members
@@ -41,7 +41,10 @@ class nd_liheap_countable_income(Variable):
             )
             + max_(person("medicare_part_b_premiums_reported", period), 0),
         )
-        deductions = spm_unit.sum(max_(reported_premiums, 0)) + add(
+        deductions = spm_unit.sum(
+            max_(reported_premiums, 0)
+            + max_(person("pre_tax_health_insurance_premiums", period), 0)
+        ) + add(
             spm_unit,
             period,
             [

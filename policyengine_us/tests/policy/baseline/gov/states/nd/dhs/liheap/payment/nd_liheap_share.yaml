@@ -1,4 +1,5 @@
 # All 28 household sizes from the original FY2026 matrix.
+# The strict federal income floor overrides top-band next dollars at sizes 21-28.
 # Size and income are intentional component inputs; end-to-end cases are separate.
 # https://liheapch.acf.gov/docs/2026/benefits-matricies/ND_BenefitMatrix_2026.xlsx
 - name: Case 1, all 140 published upper boundaries and next dollars in distinct households.
@@ -3578,7 +3579,7 @@
     - 0.65
     - 0.45
     - 0.45
-    - 0
+    - 0.45
     - 1
     - 0.95
     - 0.95
@@ -3588,7 +3589,7 @@
     - 0.65
     - 0.45
     - 0.45
-    - 0
+    - 0.45
     - 1
     - 0.95
     - 0.95
@@ -3598,7 +3599,7 @@
     - 0.65
     - 0.45
     - 0.45
-    - 0
+    - 0.45
     - 1
     - 0.95
     - 0.95
@@ -3608,7 +3609,7 @@
     - 0.65
     - 0.45
     - 0.45
-    - 0
+    - 0.45
     - 1
     - 0.95
     - 0.95
@@ -3618,7 +3619,7 @@
     - 0.65
     - 0.45
     - 0.45
-    - 0
+    - 0.45
     - 1
     - 0.95
     - 0.95
@@ -3628,7 +3629,7 @@
     - 0.65
     - 0.45
     - 0.45
-    - 0
+    - 0.45
     - 1
     - 0.95
     - 0.95
@@ -3638,7 +3639,7 @@
     - 0.65
     - 0.45
     - 0.45
-    - 0
+    - 0.45
     - 1
     - 0.95
     - 0.95
@@ -3648,7 +3649,7 @@
     - 0.65
     - 0.45
     - 0.45
-    - 0
+    - 0.45
 - name: Case 2, zero income receives the full share.
   period: 2026
   input:
