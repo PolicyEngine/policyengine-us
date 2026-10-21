@@ -1,7 +1,8 @@
 # Tests MN CCAP countable income = gross income (earned + unearned sources)
 # minus allowable deductions, floored at zero (Minn. Rules 3400.0170 subp. 4/6a;
 # manual sections 6.6 and 6.18). The variable is monthly; annual income inputs
-# divide by 12.
+# divide by 12. RSDI counts only above the federal maximum SSI payment (Minn.
+# Stat. 256P.06, subd. 3(2)(xvi)).
 - name: Case 1, earnings only.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -31,8 +32,10 @@
         members: [person1]
         state_code: MN
   output:
-    # (24,000 + 6,000 + 1,200) / 12 = 2,600 per month.
-    mn_ccap_countable_income: 2_600
+    # RSDI counts only above the 2026 federal maximum SSI payment of
+    # 994 * 12 = 11,928 (Minn. Stat. 256P.06, subd. 3(2)(xvi)), so the 6,000
+    # RSDI counts as 0. (24,000 + 0 + 1,200) / 12 = 2,100 per month.
+    mn_ccap_countable_income: 2_100
 
 - name: Case 3, income reduced by allowable deductions.
   period: 2026-01
@@ -112,8 +115,10 @@
         members: [person1]
         state_code: MN
   output:
-    # (12,000 + 6,000 + 3,600 + 2,400) / 12 = 24,000 / 12 = 2,000 per month.
-    mn_ccap_countable_income: 2_000
+    # RSDI counts above the 2026 federal maximum SSI payment:
+    # 12,000 - 994 * 12 = 12,000 - 11,928 = 72.
+    # (72 + 6,000 + 3,600 + 2,400) / 12 = 12,072 / 12 = 1,006 per month.
+    mn_ccap_countable_income: 1_006
 
 - name: Case 8, a child's earned income is not counted.
   period: 2026-01
@@ -214,3 +219,32 @@
     # The allowed cross-business offset still works: max(20,000 - 8,000, 0) =
     # 12,000 net self-employment. 12,000 / 12 = 1,000 per month.
     mn_ccap_countable_income: 1_000
+
+- name: Case 13, each member's RSDI counts only above the federal maximum SSI payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        social_security_disability: 18_000  # 1,500/month
+      person2:
+        age: 38
+        employment_income: 24_000  # 2,000/month
+        social_security_survivors: 6_000  # 500/month
+      person3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # Minn. Stat. 256P.06, subd. 3(2)(xvi), 2026 federal maximum SSI payment
+    # of 994 * 12 = 11,928 per recipient:
+    # person1 RSDI: 18,000 - 11,928 = 6,072.
+    # person2 RSDI: max(6,000 - 11,928, 0) = 0.
+    # (6,072 + 0 + 24,000) / 12 = 30,072 / 12 = 2,506 per month.
+    mn_ccap_countable_income: 2_506

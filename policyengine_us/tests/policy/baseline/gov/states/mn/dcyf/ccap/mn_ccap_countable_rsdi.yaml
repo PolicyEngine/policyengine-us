@@ -1,0 +1,104 @@
+# Tests MN CCAP countable RSDI: Minn. Stat. 256P.06, subd. 3(2)(xvi) counts
+# only the Retirement, Survivors, and Disability Insurance amount that exceeds
+# the monthly federal maximum SSI payment. Federal maximum SSI payment for an
+# individual (SSA): $967/month in 2025 (11,604/year), $994/month in 2026
+# (11,928/year).
+- name: Case 1, RSDI below the federal maximum SSI payment is not counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        social_security_retirement: 9_600  # 800/month
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # max(9,600 - 11,928, 0) = 0.
+    mn_ccap_countable_rsdi: 0
+
+- name: Case 2, RSDI above the federal maximum SSI payment counts the excess.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        social_security_disability: 18_000  # 1,500/month
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # 18,000 - 11,928 = 6,072.
+    mn_ccap_countable_rsdi: 6_072
+
+- name: Case 3, RSDI equal to the federal maximum SSI payment is not counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        social_security_retirement: 11_928  # 994/month
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # 11,928 - 11,928 = 0.
+    mn_ccap_countable_rsdi: 0
+
+- name: Case 4, one person's RSDI components are combined before the offset.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        social_security_retirement: 6_000  # 500/month
+        social_security_survivors: 9_000  # 750/month
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # (6,000 + 9,000) - 11,928 = 3,072.
+    mn_ccap_countable_rsdi: 3_072
+
+- name: Case 5, each recipient's RSDI is offset separately.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        social_security_disability: 18_000  # 1,500/month
+      person2:
+        age: 38
+        social_security_disability: 6_000  # 500/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # person1: 18,000 - 11,928 = 6,072.
+    # person2: max(6,000 - 11,928, 0) = 0; the unused offset does not carry
+    # over to person1.
+    mn_ccap_countable_rsdi: [6_072, 0]
+
+- name: Case 6, the 2025 federal maximum SSI payment applies in 2025.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        social_security_retirement: 15_000  # 1,250/month
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # 15,000 - 967 * 12 = 15,000 - 11,604 = 3,396.
+    mn_ccap_countable_rsdi: 3_396

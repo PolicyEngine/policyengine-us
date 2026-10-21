@@ -1,0 +1,18 @@
+description: Minnesota counts these Retirement, Survivors, and Disability Insurance sources under the Child Care Assistance Program, to the extent they exceed the federal maximum Supplemental Security Income payment.
+values:
+  2025-01-01:
+    # Listed as components rather than the social_security umbrella, which also
+    # adds social_security_dependents.
+    - social_security_retirement
+    - social_security_survivors
+    - social_security_disability
+
+metadata:
+  unit: list
+  period: year
+  label: Minnesota CCAP Retirement, Survivors, and Disability Insurance sources
+  reference:
+    - title: Minn. Stat. 256P.06, subd. 3(2)(xvi) (RSDI above the federal maximum SSI payment)
+      href: https://www.revisor.mn.gov/statutes/cite/256P.06
+    - title: Minnesota CCAP Policy Manual, section 6.6 (Earned/Unearned Income)
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&RevisionSelectionMethod=LatestReleased&dDocName=CCAP_0606
