@@ -8,3 +8,5 @@ class nc_additions(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NC
+
+    adds = ["nc_other_additions"]

@@ -1,0 +1,20 @@
+- name: Case 1, default ct_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: CT
+    employment_income: 50_000
+  output:
+    ct_other_subtractions: 0
+    ct_agi_subtractions: 0
+    ct_taxable_income: 50_000
+
+- name: Case 2, ct_other_subtractions reduces CT taxable income
+  period: 2024
+  input:
+    state_code: CT
+    employment_income: 50_000
+    ct_other_subtractions: 2_000
+  output:
+    ct_other_subtractions: 2_000
+    ct_agi_subtractions: 2_000
+    ct_taxable_income: 48_000
