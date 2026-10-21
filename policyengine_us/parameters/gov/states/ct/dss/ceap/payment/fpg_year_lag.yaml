@@ -1,4 +1,6 @@
-description: Connecticut uses federal poverty guidelines from this many years before the benefit fiscal year under the Connecticut Energy Assistance Program.
+description: Connecticut uses federal poverty guidelines from this many years before the benefit fiscal year for payment bands and the federal income floor under the Connecticut Energy Assistance Program.
+# The FY2026 matrix uses 2025 guidelines and FY2027 uses 2026 guidelines,
+# matching HHS's mandatory fiscal-year timing for both bands and the floor.
 values:
   2025-10-01: 1
 
@@ -9,5 +11,9 @@ metadata:
   reference:
     - title: Connecticut FY2026 LIHEAP Benefit Matrix
       href: https://liheapch.acf.gov/docs/2026/benefits-matricies/CT_BenefitMatrix_Heat-Crisis_2026.pdf
-    - title: Connecticut approved FY2027 LIHEAP Allocation Plan, Sections VIII-IX
-      href: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=10,11
+    - title: "Connecticut approved FY2027 LIHEAP Allocation Plan, Sections VIII-IX #page 10-11"
+      href: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=10
+    - title: LIHEAP IM 2025-02, Attachment 2, poverty guidelines for mandatory use in FY26
+      href: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_FPGSte-Table_Att2.pdf#page=1
+    - title: LIHEAP IM 2026-01, poverty guidelines for optional use in FY26 and mandatory use in FY27
+      href: https://acf.gov/ocs/policy-guidance/liheap-im2026-01-federal-poverty-guidelines-fpg-and-state-median-income-smi

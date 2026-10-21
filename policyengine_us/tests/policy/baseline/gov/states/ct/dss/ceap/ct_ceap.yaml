@@ -1,7 +1,11 @@
 # REQ-001-011. Independent end-to-end source scenarios; no CEAP intermediates supplied as inputs.
 # Sources:
 # - https://liheapch.acf.gov/docs/2026/benefits-matricies/CT_BenefitMatrix_Heat-Crisis_2026.pdf
-# - https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5,6,7,9,10,11,15
+# PDF pages 5-7
+# - https://liheapch.acf.gov/docs/2026/state-plans/CT_Plan_2026.pdf#page=5
+# PDF pages 5-7,9-11,15
+# - https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5
+# - https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
 # REQ-007/008/011: published basic or rental amount; direct annual expense 1,000 exceeds schedule.
 - name: Case 1, FY2026 level 1 direct heating grant.
   period: 2026
@@ -26,7 +30,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -65,7 +69,7 @@
         heat_expense_included_in_rent: true
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -104,7 +108,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -143,7 +147,7 @@
         heat_expense_included_in_rent: true
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -182,7 +186,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -221,7 +225,7 @@
         heat_expense_included_in_rent: true
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -260,7 +264,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2027': 0
-        ct_tfa:
+        tanf:
           '2027': 0
         ct_ssp:
           '2027': 0
@@ -299,7 +303,7 @@
         heat_expense_included_in_rent: true
         snap:
           '2027': 0
-        ct_tfa:
+        tanf:
           '2027': 0
         ct_ssp:
           '2027': 0
@@ -338,7 +342,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2027': 0
-        ct_tfa:
+        tanf:
           '2027': 0
         ct_ssp:
           '2027': 0
@@ -377,7 +381,7 @@
         heat_expense_included_in_rent: true
         snap:
           '2027': 0
-        ct_tfa:
+        tanf:
           '2027': 0
         ct_ssp:
           '2027': 0
@@ -416,7 +420,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2027': 0
-        ct_tfa:
+        tanf:
           '2027': 0
         ct_ssp:
           '2027': 0
@@ -455,7 +459,7 @@
         heat_expense_included_in_rent: true
         snap:
           '2027': 0
-        ct_tfa:
+        tanf:
           '2027': 0
         ct_ssp:
           '2027': 0
@@ -493,7 +497,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -527,7 +531,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2027': 0
-        ct_tfa:
+        tanf:
           '2027': 0
         ct_ssp:
           '2027': 0
@@ -561,7 +565,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -595,7 +599,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -638,7 +642,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -681,7 +685,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -724,7 +728,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -758,7 +762,7 @@
         heat_expense_included_in_rent: true
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -793,7 +797,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -827,7 +831,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -861,7 +865,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -895,7 +899,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -930,7 +934,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -965,7 +969,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -1000,7 +1004,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -1035,7 +1039,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 120
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -1073,7 +1077,7 @@
         heat_expense_included_in_rent: true
         snap:
           '2026': 120
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -1087,7 +1091,7 @@
     ct_ceap: 0
 
 # REQ-006/007: positive receipt represents application receipt; above-limit income still sets Level 3, with vulnerability where applicable.
-- name: Case 30, ct_tfa receipt bypasses income ceiling but retains level three.
+- name: Case 30, TFA receipt bypasses income ceiling but retains level three.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -1119,7 +1123,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 120
         ct_ssp:
           '2026': 0
@@ -1134,7 +1138,7 @@
     ct_ceap: 295
 
 # REQ-006/008: rental aid keeps the 60% SMI ceiling; separate 20.01 SNAP nominal payment is outside scope.
-- name: Case 31, ct_tfa does not bypass rental income ceiling.
+- name: Case 31, TFA does not bypass rental income ceiling.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -1166,7 +1170,7 @@
         heat_expense_included_in_rent: true
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 120
         ct_ssp:
           '2026': 0
@@ -1203,7 +1207,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -1241,7 +1245,7 @@
         heat_expense_included_in_rent: true
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -1278,7 +1282,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 120
@@ -1316,7 +1320,7 @@
         heat_expense_included_in_rent: true
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 120
@@ -1362,7 +1366,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -1409,7 +1413,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -1454,7 +1458,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -1509,7 +1513,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -1520,7 +1524,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -1531,7 +1535,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -1587,7 +1591,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -1604,7 +1608,8 @@
 
 # Independent review C1/C3 examples: FY2026 matrix categorical footnote and
 # allocation plan household exclusion, physical pages 5-7. All receipts computed.
-# - https://www.cga.ct.gov/app/related/20250616_2025%20Block%20Grants%20and%20Waiver%20Applications/FFY%202026%20LIHEAP%20Allocation%20Plan.pdf#page=5,6,7
+# PDF pages 5-7
+# - https://www.cga.ct.gov/app/related/20250616_2025%20Block%20Grants%20and%20Waiver%20Applications/FFY%202026%20LIHEAP%20Allocation%20Plan.pdf#page=5
 # C1: 10 * 13,600 = 136,000 > floor(91,854 * 1.47) = 135,025;
 # categorical level 3 basic 295 + vulnerable 50 = 345 (not FPG level 2).
 # C3: foster SSI/SSP excluded; remaining member income 100,000 > 47,764.
@@ -2188,3 +2193,507 @@
         state_code: CT
   output:
     ct_ceap: 0
+
+- name: Case 44, actual large households retain the ordinary tier through the strict federal floor.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Threshold edges: 2025 FPG for 30 = 15_650 + 29 x 5_500 = 175_150;
+  # 110% rounded = 192_665. Shared SMI = floor(floor(153_091 x 0.6)
+  # x (1.32 + 24 x 0.03)) = floor(91_854 x 2.04) = 187_382.
+  # All four exceed SMI. The first two pass only through the floor and stay
+  # Level 1: income <= 125% FPG = 218_937.50. No member is vulnerable.
+  # Pay min(595, 1_000) = 595; at and above 192_665, pay zero.
+  # Household size, income, eligibility and payment are all calculated.
+  input:
+    people:
+      person1: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0, employment_income: 190_000}
+      person2: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person3: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person4: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person5: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person6: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person7: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person8: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person9: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person10: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person11: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person12: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person13: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person14: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person15: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person16: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person17: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person18: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person19: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person20: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person21: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person22: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person23: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person24: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person25: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person26: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person27: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person28: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person29: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person30: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person31: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0, employment_income: 192_664.99}
+      person32: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person33: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person34: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person35: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person36: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person37: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person38: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person39: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person40: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person41: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person42: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person43: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person44: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person45: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person46: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person47: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person48: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person49: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person50: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person51: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person52: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person53: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person54: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person55: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person56: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person57: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person58: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person59: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person60: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person61: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0, employment_income: 192_665}
+      person62: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person63: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person64: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person65: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person66: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person67: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person68: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person69: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person70: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person71: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person72: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person73: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person74: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person75: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person76: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person77: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person78: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person79: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person80: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person81: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person82: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person83: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person84: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person85: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person86: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person87: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person88: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person89: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person90: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person91: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0, employment_income: 192_665.01}
+      person92: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person93: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person94: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person95: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person96: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person97: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person98: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person99: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person100: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person101: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person102: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person103: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person104: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person105: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person106: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person107: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person108: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person109: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person110: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person111: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person112: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person113: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person114: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person115: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person116: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person117: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person118: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person119: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person120: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25, person26, person27, person28, person29, person30]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap: 0
+        tanf: 0
+        ct_ssp: 0
+      spm_unit2:
+        members: [person31, person32, person33, person34, person35, person36, person37, person38, person39, person40, person41, person42, person43, person44, person45, person46, person47, person48, person49, person50, person51, person52, person53, person54, person55, person56, person57, person58, person59, person60]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap: 0
+        tanf: 0
+        ct_ssp: 0
+      spm_unit3:
+        members: [person61, person62, person63, person64, person65, person66, person67, person68, person69, person70, person71, person72, person73, person74, person75, person76, person77, person78, person79, person80, person81, person82, person83, person84, person85, person86, person87, person88, person89, person90]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap: 0
+        tanf: 0
+        ct_ssp: 0
+      spm_unit4:
+        members: [person91, person92, person93, person94, person95, person96, person97, person98, person99, person100, person101, person102, person103, person104, person105, person106, person107, person108, person109, person110, person111, person112, person113, person114, person115, person116, person117, person118, person119, person120]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap: 0
+        tanf: 0
+        ct_ssp: 0
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25, person26, person27, person28, person29, person30]
+        state_code: CT
+      household2:
+        members: [person31, person32, person33, person34, person35, person36, person37, person38, person39, person40, person41, person42, person43, person44, person45, person46, person47, person48, person49, person50, person51, person52, person53, person54, person55, person56, person57, person58, person59, person60]
+        state_code: CT
+      household3:
+        members: [person61, person62, person63, person64, person65, person66, person67, person68, person69, person70, person71, person72, person73, person74, person75, person76, person77, person78, person79, person80, person81, person82, person83, person84, person85, person86, person87, person88, person89, person90]
+        state_code: CT
+      household4:
+        members: [person91, person92, person93, person94, person95, person96, person97, person98, person99, person100, person101, person102, person103, person104, person105, person106, person107, person108, person109, person110, person111, person112, person113, person114, person115, person116, person117, person118, person119, person120]
+        state_code: CT
+  output:
+    ct_ceap_household_size: [30, 30, 30, 30]
+    ct_ceap_countable_income: [190_000, 192_664.99, 192_665, 192_665.01]
+    ct_ceap_income_limit: [187_382, 187_382, 187_382, 187_382]
+    ct_ceap_categorically_eligible: [false, false, false, false]
+    ct_ceap_benefit_level: [1, 1, 1, 1]
+    ct_ceap_eligible: [true, true, false, false]
+    ct_ceap: [595, 595, 0, 0]
+
+- name: Case 45, military retirement pay counts outside ordinary pension income.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Pensions are counted by the FY2026 plan and FY2027 income definition.
+  # 60_000 military pay, or 30_000 pension + 30_000 military, both count as
+  # 60_000, above the one-person 47_764 limit. Neither receives a grant.
+  input:
+    people:
+      person1: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0, military_retirement_pay: 60_000}
+      person2: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0, pension_income: 30_000, military_retirement_pay: 30_000}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap: 0
+        tanf: 0
+        ct_ssp: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap: 0
+        tanf: 0
+        ct_ssp: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CT
+      household2:
+        members: [person2]
+        state_code: CT
+  output:
+    ct_ceap_countable_income: [60_000, 60_000]
+    ct_ceap_eligible: [false, false]
+    ct_ceap: [0, 0]
+
+- name: Case 46, each Social Security receipt is net of its paid Part B premium and floored.
+  period: 2026
+  absolute_error_margin: 0.01
+  # FY2026 plan page 6 selects SSA excluding Medicare deductions.
+  # 49_000 gross SSA - 2_400 explicitly supplied paid Part B = 46_600,
+  # below 47_764 and above 200% FPG (31_300): Level 3 plus age-68
+  # supplement gives min(295 + 50, 1_000) = 345.
+  # Second member: max(1_000 SSA - 2_400 Part B, 0) + 5_000 pension
+  # = 5_000, Level 1, min(595 + 50, 1_000) = 645. Excess premiums
+  # cannot deduct a different income source.
+  input:
+    people:
+      person1: {age: 68, immigration_status: CITIZEN, is_disabled: false, ssi: 0, social_security_retirement: 49_000, medicare_enrolled: true, medicare_part_b_premium: 2_400}
+      person2: {age: 68, immigration_status: CITIZEN, is_disabled: false, ssi: 0, social_security_retirement: 1_000, pension_income: 5_000, medicare_enrolled: true, medicare_part_b_premium: 2_400}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap: 0
+        tanf: 0
+        ct_ssp: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap: 0
+        tanf: 0
+        ct_ssp: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CT
+      household2:
+        members: [person2]
+        state_code: CT
+  output:
+    ct_ceap_countable_income: [46_600, 5_000]
+    ct_ceap_benefit_level: [3, 1]
+    ct_ceap_eligible: [true, true]
+    ct_ceap: [345, 645]
+
+- name: Case 47, rental losses cannot cancel pension receipts within or across members.
+  period: 2026
+  absolute_error_margin: 0.01
+  # The source counts gross rental receipts. Existing rental inputs stand
+  # in for nonnegative gross receipts, so a negative input contributes zero.
+  # Each household counts 49_000 pension, above its qualified-size-one
+  # 47_764 ceiling. The second rental owner is excluded from size, while
+  # their countable receipts would remain included. Both grants are zero.
+  input:
+    people:
+      person1: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0, pension_income: 49_000, rental_income: -10_000}
+      person2: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0, pension_income: 49_000}
+      person3: {age: 40, immigration_status: UNDOCUMENTED, is_disabled: false, ssi: 0, rental_income: -10_000}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap: 0
+        tanf: 0
+        ct_ssp: 0
+      spm_unit2:
+        members: [person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap: 0
+        tanf: 0
+        ct_ssp: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CT
+      household2:
+        members: [person2, person3]
+        state_code: CT
+  output:
+    ct_ceap_household_size: [1, 1]
+    ct_ceap_countable_income: [49_000, 49_000]
+    ct_ceap_eligible: [false, false]
+    ct_ceap: [0, 0]
+
+- name: Case 48, a supplied TFA entitlement requires actual take-up for categorical receipt.
+  period: 2026
+  absolute_error_margin: 0.01
+  # The supplied 6_000 TFA entitlement isolates take-up, rather than testing
+  # TFA entitlement rules. Nonparticipation makes tanf zero and gives no
+  # categorical bypass. A participant receives 6_000 and is categorical.
+  # TFA remains excluded from CEAP income: both count 100_000 wages.
+  # The participant above SMI keeps the sourced Level 3 award of 295.
+  input:
+    people:
+      person1: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0, employment_income: 100_000}
+      person2: {age: 10, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person3: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0, employment_income: 100_000}
+      person4: {age: 10, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap: 0
+        ct_ssp: 0
+        ct_tfa: 6_000
+        takes_up_tanf_if_eligible: false
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap: 0
+        ct_ssp: 0
+        ct_tfa: 6_000
+        takes_up_tanf_if_eligible: true
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: CT
+      household2:
+        members: [person3, person4]
+        state_code: CT
+  output:
+    tanf: [0, 6_000]
+    ct_ceap_countable_income: [100_000, 100_000]
+    ct_ceap_categorically_eligible: [false, true]
+    ct_ceap_benefit_level: [3, 3]
+    ct_ceap_eligible: [false, true]
+    ct_ceap: [0, 295]
+
+- name: Case 49, unemployment fallback and reported override reach the final heating grant.
+  period: 2026
+  absolute_error_margin: 0.01
+  # The existing modeled-UI input isolates the shared fallback contract.
+  # 45_000 wages + 6_000 modeled UI (reported zero) = 51_000, above
+  # 47_764. Reported 1_200 overrides modeled 6_000, giving 46_200:
+  # Level 3, nonvulnerable, min(295, 1_000) = 295.
+  input:
+    people:
+      person1: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0, employment_income: 45_000, unemployment_compensation: 0, modeled_state_unemployment_compensation: 6_000}
+      person2: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0, employment_income: 45_000, unemployment_compensation: 1_200, modeled_state_unemployment_compensation: 6_000}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap: 0
+        tanf: 0
+        ct_ssp: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap: 0
+        tanf: 0
+        ct_ssp: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CT
+      household2:
+        members: [person2]
+        state_code: CT
+  output:
+    total_unemployment_compensation: [6_000, 1_200]
+    ct_ceap_countable_income: [51_000, 46_200]
+    ct_ceap_eligible: [false, true]
+    ct_ceap: [0, 295]
+
+- name: Case 50, FY2027 federal floor uses the lagged guideline and adopted heating schedule.
+  period: 2027
+  absolute_error_margin: 0.01
+  # Threshold edges: 2026 FPG for 30 = 15_960 + 29 x 5_680 = 180_680;
+  # 110% = 198_748. The shared SMI limit is floor(93_681 x 2.04) =
+  # 191_109. Below the floor, income is below 125% FPG (225_850), so
+  # the adopted FY2027 Level 1 amount pays min(655, 1_000) = 655.
+  # Income exactly at the federal floor is not protected.
+  input:
+    people:
+      person1: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0, employment_income: 198_747.99}
+      person2: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person3: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person4: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person5: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person6: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person7: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person8: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person9: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person10: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person11: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person12: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person13: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person14: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person15: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person16: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person17: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person18: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person19: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person20: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person21: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person22: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person23: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person24: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person25: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person26: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person27: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person28: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person29: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person30: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person31: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0, employment_income: 198_748}
+      person32: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person33: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person34: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person35: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person36: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person37: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person38: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person39: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person40: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person41: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person42: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person43: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person44: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person45: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person46: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person47: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person48: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person49: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person50: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person51: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person52: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person53: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person54: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person55: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person56: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person57: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person58: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person59: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+      person60: {age: 40, immigration_status: CITIZEN, is_disabled: false, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25, person26, person27, person28, person29, person30]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap: 0
+        tanf: 0
+        ct_ssp: 0
+      spm_unit2:
+        members: [person31, person32, person33, person34, person35, person36, person37, person38, person39, person40, person41, person42, person43, person44, person45, person46, person47, person48, person49, person50, person51, person52, person53, person54, person55, person56, person57, person58, person59, person60]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        snap: 0
+        tanf: 0
+        ct_ssp: 0
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25, person26, person27, person28, person29, person30]
+        state_code: CT
+      household2:
+        members: [person31, person32, person33, person34, person35, person36, person37, person38, person39, person40, person41, person42, person43, person44, person45, person46, person47, person48, person49, person50, person51, person52, person53, person54, person55, person56, person57, person58, person59, person60]
+        state_code: CT
+  output:
+    ct_ceap_household_size: [30, 30]
+    ct_ceap_countable_income: [198_747.99, 198_748]
+    ct_ceap_income_limit: [191_109, 191_109]
+    ct_ceap_benefit_level: [1, 1]
+    ct_ceap_eligible: [true, false]
+    ct_ceap: [655, 0]

@@ -141,3 +141,25 @@
     # Adjusted monthly: 5,000 - 587 = 4,413
     # Annual: 4,413 * 12 = 52,956
     pa_ccw_adjusted_income: 52_956
+
+- name: Pretax and after-tax premiums both count toward the medical deduction.
+  period: 2026
+  input:
+    state_code: PA
+    employment_income: 36_000
+    health_insurance_premiums: 2_400
+    pre_tax_health_insurance_premiums: 3_600
+  output:
+    pa_ccw_medical_expenses: 6_000
+    # Gross wages 36,000 less premiums 6,000 above the 3,600 threshold.
+    pa_ccw_adjusted_income: 33_600
+
+- name: Moving all premiums to pretax payroll leaves the medical deduction unchanged.
+  period: 2026
+  input:
+    state_code: PA
+    employment_income: 36_000
+    pre_tax_health_insurance_premiums: 6_000
+  output:
+    pa_ccw_medical_expenses: 6_000
+    pa_ccw_adjusted_income: 33_600

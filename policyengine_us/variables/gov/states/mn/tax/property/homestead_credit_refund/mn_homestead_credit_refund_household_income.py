@@ -33,7 +33,7 @@ class mn_homestead_credit_refund_household_income(Variable):
 
         people = tax_unit.members
         is_dependent = people("is_tax_unit_dependent", period) | people(
-            "claimed_as_dependent_on_another_return", period
+            "claimable_as_dependent_on_another_return", period
         )
         social_security = people("social_security", period)
         taxable_social_security = people("taxable_social_security", period)
@@ -41,7 +41,10 @@ class mn_homestead_credit_refund_household_income(Variable):
             max_(0, social_security - taxable_social_security) * ~is_dependent
         )
 
-        retirement_contributions = add(
+        # Line 1 is the filer's federal AGI, which leaves out tax unit
+        # dependents, so the retirement add-backs, contributions and
+        # compensation count the head and spouse only.
+        retirement_contributions = tax_unit_non_dep_add(
             tax_unit,
             period,
             [
@@ -54,17 +57,23 @@ class mn_homestead_credit_refund_household_income(Variable):
                 "self_employed_pension_contributions",
             ],
         )
-        retirement_additions = add(
+        # M1PR line 3 adds back "your deductions for your qualified retirement
+        # plan contributions from lines 16 and 20 of federal Schedule 1", so
+        # the IRA term is the federal deduction (Schedule 1 line 20), not total
+        # traditional contributions: nondeductible contributions never left
+        # federal AGI. 2025 M1PR instructions, PDF page 7:
+        # https://www.taxformfinder.org/forms/2025/2025-minnesota-form-m1pr-instructions.pdf#page=7
+        retirement_additions = tax_unit_non_dep_add(
             tax_unit,
             period,
             [
                 "traditional_401k_contributions",
                 "traditional_403b_contributions",
-                "traditional_ira_contributions",
+                "traditional_ira_deduction",
                 "self_employed_pension_contributions",
             ],
         )
-        compensation = add(
+        compensation = tax_unit_non_dep_add(
             tax_unit, period, ["employment_income", "self_employment_income"]
         )
         retirement_subtraction = min_(

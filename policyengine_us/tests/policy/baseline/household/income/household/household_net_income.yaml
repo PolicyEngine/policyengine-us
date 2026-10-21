@@ -131,3 +131,32 @@
     household_health_costs: 0
   output:
     household_net_income: 29_000
+
+- name: Household net income of a Wisconsin retiree reflects the retirement income exclusion.
+  # 2025 Wisconsin Form 1 instructions, Standard Deduction Table (page 35)
+  # and Tax Table (page 38), with exemptions of $700 + $250:
+  #   with credits, line 7 = $41,250; standard deduction $10,956; taxable
+  #   income $29,344; tax $1,159.
+  #   with the Schedule SB Line 16 exclusion of $24,000, line 7 = $17,250;
+  #   standard deduction $13,560; taxable income $2,740; tax $96.
+  # https://www.revenue.wi.gov/TaxForms2025/2025-Form1-inst.pdf#page=35
+  # Federal income tax is set to zero to isolate the state tax:
+  # $41,250 - $96 = $41,154.
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_private_pension_income: 41_250
+    tax_units:
+      tax_unit:
+        members: [person1]
+        income_tax_before_refundable_credits: 0
+        income_tax_refundable_credits: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    household_net_income: 41_154

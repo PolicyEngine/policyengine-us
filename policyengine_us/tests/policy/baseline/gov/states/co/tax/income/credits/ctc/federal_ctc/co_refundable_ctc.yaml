@@ -127,3 +127,36 @@
     eitc: 1_000
   output:
     co_refundable_ctc: 9_500
+
+# 1 CCR 201-2, Rule 39-22-129(1): the Colorado credit is a percentage of the
+# allowed federal credit, so the section 24(d)(3) bar on section 911 filers
+# carries over to the refundable part Colorado replicates.
+- name: Section 911 filer gets no refundable part from social security taxes
+  period: 2022
+  input:
+    state_code: CO
+    co_non_refundable_ctc: 0
+    co_federal_ctc_maximum: 6_000
+    co_ctc_eligible_children_count: 3
+    tax_unit_earned_income: 1_000
+    ctc_social_security_tax: 76.5
+    eitc: 0
+    foreign_earned_income_exclusion: 30_000
+  output:
+    co_refundable_ctc: 0
+
+- name: The same filer without a section 911 exclusion gets the social security tax excess
+  period: 2022
+  input:
+    state_code: CO
+    co_non_refundable_ctc: 0
+    co_federal_ctc_maximum: 6_000
+    co_ctc_eligible_children_count: 3
+    tax_unit_earned_income: 1_000
+    ctc_social_security_tax: 76.5
+    eitc: 0
+    foreign_earned_income_exclusion: 0
+  output:
+    # Earnings are under the $2,500 threshold, so line 19 is the $76.50 of
+    # social security taxes less the EITC; line 20 = min($4,500, $76.50).
+    co_refundable_ctc: 76.5

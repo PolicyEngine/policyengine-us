@@ -1,7 +1,9 @@
 # REQ-006. P26 physical p5; A26/A27 IV and IX direct-vendor exception.
 # Sources:
-# - https://liheapch.acf.gov/docs/2026/state-plans/CT_Plan_2026.pdf#page=5,6,7
-# - https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5,6,7,9,10,11,15
+# PDF pages 5-7
+# - https://liheapch.acf.gov/docs/2026/state-plans/CT_Plan_2026.pdf#page=5
+# PDF pages 5-7,9-11,15
+# - https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5
 # REQ-006: direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
 - name: Case 1, snap receipt with direct heating.
   period: 2026
@@ -24,7 +26,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 120
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -57,7 +59,7 @@
         heat_expense_included_in_rent: true
         snap:
           '2026': 120
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -69,7 +71,7 @@
     ct_ceap_categorically_eligible: false
 
 # REQ-006: direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
-- name: Case 3, ct_tfa receipt with direct heating.
+- name: Case 3, TFA receipt with direct heating.
   period: 2026
   input:
     people:
@@ -99,7 +101,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 120
         ct_ssp:
           '2026': 0
@@ -111,7 +113,7 @@
     ct_ceap_categorically_eligible: true
 
 # REQ-006: direct-vendor receipt bypasses the income ceiling; rental assistance keeps its income test.
-- name: Case 4, ct_tfa receipt with heat included in rent.
+- name: Case 4, TFA receipt with heat included in rent.
   period: 2026
   input:
     people:
@@ -141,7 +143,7 @@
         heat_expense_included_in_rent: true
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 120
         ct_ssp:
           '2026': 0
@@ -174,7 +176,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -207,7 +209,7 @@
         heat_expense_included_in_rent: true
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -240,7 +242,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 120
@@ -273,7 +275,7 @@
         heat_expense_included_in_rent: true
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 120
@@ -306,7 +308,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -340,7 +342,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0

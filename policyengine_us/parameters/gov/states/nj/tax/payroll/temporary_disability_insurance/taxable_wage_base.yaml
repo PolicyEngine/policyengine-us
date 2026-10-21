@@ -1,14 +1,21 @@
 description: Taxable wage base for New Jersey TDI and FLI employee contributions.
 values:
   0000-01-01: 0
+  2024-01-01: 161_400
+  2025-01-01: 165_400
   2026-01-01: 171_100
+  2027-01-01: 177_100
 
 metadata:
   period: year
   unit: currency-USD
   label: New Jersey TDI and FLI taxable wage base
   reference:
-    - title: New Jersey Unemployment Compensation Law R.S. 43:21-7
-      href: https://www.nj.gov/labor/myunemployment/assets/pdfs/UI_statute.pdf#page=46
+    - title: New Jersey Unemployment Compensation Law R.S. 43:21-7 (b)(4)
+      href: https://www.nj.gov/labor/myunemployment/assets/pdfs/UI_statute.pdf#page=47
     - title: New Jersey Temporary Disability and Family Leave Insurance information for employers
       href: https://www.nj.gov/labor/myleavebenefits/employer/index.shtml
+    - title: New Jersey Department of Labor and Workforce Development, Employer rate information (worker contribution rates and taxable wage bases by calendar year)
+      href: https://www.nj.gov/labor/ea/employer-services/rate-info/
+    - title: New Jersey Register, 58 N.J.R. 1978(a) (September 8, 2026), proposed N.J.A.C. 12:15-1.3 (b) setting the 2027 State Disability Benefits Fund wage base at $177,100
+      href: https://www.nj.gov/labor/assets/PDFs/Legal%20Notices/Notices%20of%20Proposal/58%20N.J.R.%201978_a_.pdf#page=5

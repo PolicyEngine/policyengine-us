@@ -1,5 +1,8 @@
 from policyengine_us.model_api import *
-from policyengine_us.tools.pinned_tbs import get_pre_tcja_ctc_tbs
+from policyengine_us.tools.pinned_tbs import (
+    CREDIT_DEPENDENT_VARIABLES,
+    get_pre_tcja_ctc_tbs,
+)
 
 
 class ny_ctc_pre_2024_eligible(Variable):
@@ -34,7 +37,9 @@ class ny_ctc_pre_2024_eligible(Variable):
             )
             # Delete all arrays from pre-TCJA CTC branch.
             for variable in pre_tcja_ctc.tax_benefit_system.variables:
-                if "ctc" in variable:
+                if "ctc" in variable or any(
+                    name in variable for name in CREDIT_DEPENDENT_VARIABLES
+                ):
                     pre_tcja_ctc.delete_arrays(variable)
             qualifies_for_federal_ctc = pre_tcja_ctc.person(
                 "ctc_qualifying_child", period

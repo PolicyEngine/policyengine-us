@@ -13,6 +13,7 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396a#m",
+        "https://www.ecfr.gov/current/title-42/section-435.210",
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-015-00/0805-015-45-income-maximum/",
         "https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=1",
     )
@@ -43,8 +44,16 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
         # Missouri publishes monthly dollar standards (Appendix J), each the
         # percentage of the monthly guideline rounded up to the next dollar.
         mo_monthly_limit = np.ceil(limit_pct * unit_fpg / MONTHS_IN_YEAR)
-        return where(
-            is_mo,
-            mo_monthly_limit * MONTHS_IN_YEAR,
-            limit_pct * unit_fpg,
+        # Some states test aged, blind, and disabled people who do not
+        # receive SSI against the SSI federal benefit rate itself, a monthly
+        # dollar amount for an individual or a couple, rather than a share of
+        # the poverty guideline (the group of 42 CFR 435.210; Louisiana pegs
+        # its 42 U.S.C. 1396a(m) level to the same rate).
+        ssi = parameters(period).gov.ssa.ssi.amount
+        ssi_rate = where(is_couple, ssi.couple, ssi.individual) * MONTHS_IN_YEAR
+        uses_ssi_rate = p.income.limit.uses_ssi_federal_benefit_rate[state].astype(bool)
+        return select(
+            [is_mo, uses_ssi_rate],
+            [mo_monthly_limit * MONTHS_IN_YEAR, ssi_rate],
+            default=limit_pct * unit_fpg,
         )

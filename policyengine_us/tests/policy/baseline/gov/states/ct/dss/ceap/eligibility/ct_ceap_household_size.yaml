@@ -1,7 +1,9 @@
 # REQ-001. A26/A27 III and V.J-K; qualified membership and represented foster exclusion.
 # Sources:
-# - https://www.cga.ct.gov/app/related/20250616_2025%20Block%20Grants%20and%20Waiver%20Applications/FFY%202026%20LIHEAP%20Allocation%20Plan.pdf#page=5,9
-# - https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5,6,7,9,10,11,15
+# PDF pages 5,9
+# - https://www.cga.ct.gov/app/related/20250616_2025%20Block%20Grants%20and%20Waiver%20Applications/FFY%202026%20LIHEAP%20Allocation%20Plan.pdf#page=5
+# PDF pages 5-7,9-11,15
+# - https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5
 # REQ-001: count qualified members, excluding represented foster members.
 - name: Case 1, citizen and qualified noncitizens count.
   period: 2026
@@ -42,7 +44,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -84,7 +86,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -126,7 +128,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -168,7 +170,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -264,7 +266,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0

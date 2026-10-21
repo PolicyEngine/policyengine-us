@@ -1,0 +1,35 @@
+# 26 U.S.C. 911(f)(1)(A)(i); 2025 Form 1040 instructions, Foreign Earned Income
+# Tax Worksheet—Line 16, lines 1 to 3.
+- name: Line 3 is taxable income plus the excluded amount
+  period: 2025
+  input:
+    taxable_income: 36_375 # line 1
+    foreign_earned_income_exclusion: 40_000 # line 2c
+  output:
+    taxable_income_plus_section_911_exclusion: 76_375 # line 3
+
+- name: No exclusion leaves taxable income unchanged
+  period: 2025
+  input:
+    taxable_income: 36_375
+    foreign_earned_income_exclusion: 0
+  output:
+    taxable_income_plus_section_911_exclusion: 36_375
+
+- name: Line 2c is not less than zero
+  period: 2025
+  input:
+    taxable_income: 36_375
+    foreign_earned_income_exclusion: -5_000
+  output:
+    taxable_income_plus_section_911_exclusion: 36_375
+
+- name: With no taxable income line 3 is the excluded amount
+  period: 2025
+  input:
+    taxable_income: 0
+    foreign_earned_income_exclusion: 130_000
+  output:
+    # Form 6251 line 20 uses this amount when neither capital gains worksheet
+    # was completed for the regular tax.
+    taxable_income_plus_section_911_exclusion: 130_000

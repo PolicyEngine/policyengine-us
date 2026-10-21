@@ -286,8 +286,8 @@ def read_only_cache(monkeypatch):
             value.flags.writeable = False
         return value
 
-    def read_only_put(self, value, period, branch_name="default"):
-        return put(self, read_only(value), period, branch_name)
+    def read_only_put(self, value, *args, **kwargs):
+        return put(self, read_only(value), *args, **kwargs)
 
     def read_only_get(self, period, branch_name="default"):
         return read_only(get(self, period, branch_name))

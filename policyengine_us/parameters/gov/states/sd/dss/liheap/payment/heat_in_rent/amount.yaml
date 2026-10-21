@@ -1,0 +1,19 @@
+description: South Dakota provides no more than this heat-in-rent payment by heating region under the Low Income Energy Assistance Program.
+1:
+  2025-10-01: 800
+2:
+  2025-10-01: 800
+3:
+  2025-10-01: 850
+4:
+  2025-10-01: 850
+metadata:
+  unit: currency-USD
+  period: year
+  label: South Dakota LIEAP heat-in-rent maximum by region
+  breakdown:
+    - range(1, 5)
+  propagate_metadata_to_children: true
+  reference:
+    - title: South Dakota FY2026 LIHEAP Benefit Matrix, Heat in Rent Cases
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/SD_BenefitMatrix_2026.pdf

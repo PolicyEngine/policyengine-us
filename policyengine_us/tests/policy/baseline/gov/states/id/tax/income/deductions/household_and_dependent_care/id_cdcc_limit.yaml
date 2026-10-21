@@ -6,10 +6,12 @@
   output:
     id_cdcc_limit: 3_000
 
-- name: Federal cdcc limit is not applied in 2021
+# The Idaho State Tax Commission's instruction changes for 2021 returns set
+# Form 39R Line 6 worksheet line 2 to $8,000 ($16,000), following H.B. 472.
+- name: ARPA's $8,000 one-person limit applies in 2021
   period: 2021
   input:
     capped_count_cdcc_eligible: 1
     state_code: ID
   output:
-    id_cdcc_limit: 3_000
+    id_cdcc_limit: 8_000

@@ -1,0 +1,31 @@
+description: California limits the employer-provided dependent care assistance excluded from gross income to this amount, based on filing status, when computing the base of the child and dependent care expenses credit.
+SINGLE:
+  2015-01-01: 5_000
+JOINT:
+  2015-01-01: 5_000
+SEPARATE:
+  2015-01-01: 2_500
+HEAD_OF_HOUSEHOLD:
+  2015-01-01: 5_000
+SURVIVING_SPOUSE:
+  2015-01-01: 5_000
+metadata:
+  propagate_metadata_to_children: true
+  breakdown: filing_status
+  unit: currency-USD
+  period: year
+  label: California dependent care assistance exclusion cap
+  reference:
+    # California applies IRC section 129 as of its specified date (January 1,
+    # 2015 for 2015-2024 and January 1, 2025 from 2025), so it adopted neither
+    # the 2021 increase to $10,500 nor the 2026 increase to $7,500.
+    - title: 2021 FTB 3506, Part IV, line 22
+      href: https://www.ftb.ca.gov/forms/2021/2021-3506.pdf#page=2
+    - title: FTB Summary of Federal Income Tax Changes, Public Law 117-2, section 9632 (California conforms? No)
+      href: https://www.ftb.ca.gov/about-ftb/data-reports-plans/Summary-of-Federal-Income-Tax-Changes/index.html#PL-117-2-9632
+    - title: FTB Summary of Federal Income Tax Changes, Public Law 119-21, section 70404 (California conforms? No)
+      href: https://www.ftb.ca.gov/about-ftb/data-reports-plans/Summary-of-Federal-Income-Tax-Changes/index.html#PL-119-21-70404
+    - title: California Revenue and Taxation Code § 17131
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17131
+    - title: California Revenue and Taxation Code § 17024.5(a)(1)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17024.5

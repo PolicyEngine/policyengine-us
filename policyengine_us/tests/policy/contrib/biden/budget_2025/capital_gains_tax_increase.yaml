@@ -1,0 +1,59 @@
+# 26 U.S.C. 1(h)(1)(F) taxes at 28 percent only the taxable income left after
+# the regular rate amount, the adjusted net capital gain and the unrecaptured
+# section 1250 gain. 2025, single, $200,000 of wages and $400,000 of
+# long-term gain, $100,000 of it collectibles gain, below the reform's $1
+# million income threshold: taxable income $584,250; the regular rate amount
+# is $197,300; the adjusted net capital gain $300,000 is taxed at 15 percent
+# ($45,000); the 28 percent amount is $584,250 - $197,300 - $300,000 =
+# $86,950 ($24,346), not all $100,000.
+- name: Reform active, collectibles gain partly taxed at the regular rates
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.biden.budget_2025.capital_gains_tax_increase.capital_gains_tax_increase
+  input:
+    gov.contrib.biden.budget_2025.capital_gains.active: true
+    people:
+      head:
+        age: 45
+        employment_income: 200_000
+        long_term_capital_gains: 400_000
+        long_term_capital_gains_on_collectibles: 100_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    taxable_income: 584_250
+    capital_gains_tax: 69_346
+
+# 26 U.S.C. 1(h)(1), "shall not exceed": as in the baseline, the regular tax
+# is at most the tax on all taxable income at the regular rates. 2025,
+# single, $64,100 of wages and $125 of long-term gain: taxable income
+# $48,475, of which $48,350 is ordinary income (tax $5,563.50). The gain
+# lies above the $48,350 0% amount and is taxed at 15% ($18.75), but the tax
+# on all $48,475 is $5,578.50, so the capital gains tax is $15.
+- name: Reform active, the regular tax is limited to the tax on all taxable income
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.biden.budget_2025.capital_gains_tax_increase.capital_gains_tax_increase
+  input:
+    gov.contrib.biden.budget_2025.capital_gains.active: true
+    people:
+      head:
+        age: 45
+        employment_income: 64_100
+        long_term_capital_gains: 125
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    taxable_income: 48_475
+    income_tax_main_rates: 5_563.50
+    capital_gains_tax: 15

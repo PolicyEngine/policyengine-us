@@ -20,9 +20,13 @@ class mo_tanf_if_non_parent_caretaker_included(Variable):
         needy = spm_unit("mo_tanf_non_parent_caretaker_needy", period)
         simulation = spm_unit.simulation
         branch_name = f"{simulation.branch_name}_mo_tanf_npcr_included_{period}"
-        branch = simulation.get_branch(branch_name)
         try:
-            branch.set_input("mo_tanf_non_parent_caretaker_included", period, needy)
+            branch = get_override_branch(
+                simulation,
+                branch_name,
+                period,
+                {"mo_tanf_non_parent_caretaker_included": needy},
+            )
             return branch.calculate("mo_tanf", period)
         finally:
             # A branch clones cached arrays; drop it once the grant is read.

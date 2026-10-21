@@ -1,0 +1,157 @@
+# California Proposition 3 (2026) keeps the 10.3%, 11.3% and 12.3% rates after 2030.
+#
+# The `reforms:` key applies the bypass instance of the reform (`ca_prop3`), which restores
+# the rates for 2031-2100 whatever gov.contrib.states.ca.prop3.in_effect says, so these cases
+# do not set the toggle. The app path, which reads the dated toggle, is tested in
+# test_ca_prop3_reform.py. The reform-off controls are the 2030 and 2031 cases in
+# baseline/gov/states/ca/tax/income/ca_income_tax_before_credits.yaml.
+#
+# Expected values apply the 2031 thresholds by hand: the FTB 2025 schedules uprated by
+# f = 196.85 / 172.797. The baseline single and separate 2031 tax is
+# 3,201.97f + .093 x (income - 72,724f); Prop 3 adds .01 x (income - t) above each of
+# t = 371,479f, 445,771f and 742,953f. Head of household uses 3,616.45f, 98,990f and
+# t = 505,208f, 606,251f and 1,010,417f. Joint and surviving spouse tax is twice the single
+# tax on half the income (RTC § 17045).
+
+- name: Prop 3 keeps the higher rates for a single filer with $1 million in 2031
+  period: 2031
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.prop3.ca_prop3
+  input:
+    ca_taxable_income: 1_000_000
+    filing_status: SINGLE
+    state_code: CA
+  output:
+    # Baseline 2031 is 88,942.90; Prop 3 adds 1% on 84,633.30, 2% on 338,549.15 and 3% on 153,629.41.
+    ca_income_tax_before_credits: 101_169.10
+
+- name: Prop 3 keeps the higher rates for a separate filer with $1 million in 2031
+  period: 2031
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.prop3.ca_prop3
+  input:
+    ca_taxable_income: 1_000_000
+    filing_status: SEPARATE
+    state_code: CA
+  output:
+    # Same schedule as single: 88,942.90 + 12,226.20.
+    ca_income_tax_before_credits: 101_169.10
+
+- name: Prop 3 keeps the higher rates for joint filers with $2 million in 2031
+  period: 2031
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.prop3.ca_prop3
+  input:
+    ca_taxable_income: 2_000_000
+    filing_status: JOINT
+    state_code: CA
+  output:
+    # 2 x 101,169.10, the single tax on $1 million.
+    ca_income_tax_before_credits: 202_338.20
+
+- name: Prop 3 keeps the higher rates for a surviving spouse with $2 million in 2031
+  period: 2031
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.prop3.ca_prop3
+  input:
+    ca_taxable_income: 2_000_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: CA
+  output:
+    # Treated as a joint return: 2 x 101,169.10.
+    ca_income_tax_before_credits: 202_338.20
+
+- name: Prop 3 keeps the higher rates for a head of household with $1.5 million in 2031
+  period: 2031
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.prop3.ca_prop3
+  input:
+    ca_taxable_income: 1_500_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: CA
+  output:
+    # Baseline 133,132.32 + .01 x (1,500,000 - 575,531.95) + .01 x (1,500,000 - 690,639.94)
+    # + .01 x (1,500,000 - 1,151,065.04) = 153,959.95.
+    ca_income_tax_before_credits: 153_959.95
+
+- name: Prop 3 applies only the 10.3% rate inside the first surcharge bracket in 2031
+  period: 2031
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.prop3.ca_prop3
+  input:
+    ca_taxable_income: 450_000
+    filing_status: SINGLE
+    state_code: CA
+  output:
+    # Baseline 37,792.90 + .01 x (450,000 - 423,188.14) = 38,061.02.
+    ca_income_tax_before_credits: 38_061.02
+
+- name: Prop 3 applies the 10.3% and 11.3% rates inside the second surcharge bracket in 2031
+  period: 2031
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.prop3.ca_prop3
+  input:
+    ca_taxable_income: 600_000
+    filing_status: SINGLE
+    state_code: CA
+  output:
+    # Baseline 51,742.90 + .01 x (600,000 - 423,188.14) + .01 x (600,000 - 507,821.44) = 54,432.81.
+    ca_income_tax_before_credits: 54_432.81
+
+- name: Prop 3 does not change tax below the 10.3% threshold in 2031
+  period: 2031
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.prop3.ca_prop3
+  input:
+    ca_taxable_income: 300_000
+    filing_status: SINGLE
+    state_code: CA
+  output:
+    # 3,201.97f + .093 x (300,000 - 72,724f), the same as the baseline.
+    ca_income_tax_before_credits: 23_842.90
+
+- name: Prop 3 does not change 2030 tax, when the higher rates already apply
+  period: 2030
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.prop3.ca_prop3
+  input:
+    ca_taxable_income: 1_000_000
+    filing_status: SINGLE
+    state_code: CA
+  output:
+    # Same as the 2030 baseline case.
+    ca_income_tax_before_credits: 101_596.07
+
+- name: Prop 3 removes the AMT that the 2031 rate expiry exposes
+  period: 2031
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.prop3.ca_prop3
+  input:
+    ca_taxable_income: 1_000_000
+    filing_status: SINGLE
+    state_code: CA
+    ca_amti: 1_400_000
+    ca_amt_exemption: 0
+    ca_non_refundable_credits: 0
+  output:
+    # Tentative minimum tax .07 x 1,400,000 = 98,000 is below the 101,169.10 regular tax,
+    # so AMT is 0 (the baseline AMT is 9,057.10; see alternative_minimum_tax/ca_amt.yaml).
+    ca_income_tax_before_credits: 101_169.10
+    ca_amt: 0
+    ca_income_tax_before_refundable_credits: 101_169.10
+
+- name: Prop 3 regular tax and the 1% mental health services tax stack for a single filer with $2 million in 2031
+  period: 2031
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.prop3.ca_prop3
+  input:
+    ca_taxable_income: 2_000_000
+    filing_status: SINGLE
+    state_code: CA
+    ca_non_refundable_credits: 0
+    ca_amt: 0
+  output:
+    # Regular tax 181,942.90 + .01 x (2,000,000 - 423,188.14) + .01 x (2,000,000 - 507,821.44)
+    # + .01 x (2,000,000 - 846,370.59) = 224,169.10, plus MHST .01 x 1,000,000 = 10,000.
+    ca_income_tax_before_credits: 224_169.10
+    ca_income_tax_before_refundable_credits: 234_169.10

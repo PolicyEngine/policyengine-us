@@ -14,7 +14,7 @@ class me_affordability_payment(Variable):
         "payment from a Special Revenue Fund rather than a refundable tax "
         "credit. PolicyEngine folds the payment into Maine's refundable "
         "credit aggregation to surface it in tax-unit-level outputs. "
-        "Sec. T-1, sub-§1(C)(3) excludes individuals claimed as a "
+        "Sec. T-1, sub-§1(C)(3) excludes individuals who may be claimed as a "
         "dependent on another taxpayer's return, evaluated per recipient."
     )
 
@@ -24,6 +24,6 @@ class me_affordability_payment(Variable):
         is_recipient = person("is_tax_unit_head", period) | person(
             "is_tax_unit_spouse", period
         )
-        dependent_elsewhere = person("claimed_as_dependent_on_another_return", period)
+        dependent_elsewhere = person("claimable_as_dependent_on_another_return", period)
         eligible_recipients = tax_unit.sum(is_recipient & ~dependent_elsewhere)
         return eligible_recipients * p.amount

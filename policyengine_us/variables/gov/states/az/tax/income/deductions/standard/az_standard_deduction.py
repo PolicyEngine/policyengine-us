@@ -6,7 +6,7 @@ class az_standard_deduction(Variable):
     entity = TaxUnit
     label = "Arizona standard deduction"
     unit = USD
-    documentation = "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01041.htm"
+    reference = "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01041.htm"
     definition_period = YEAR
     defined_for = StateCode.AZ
 

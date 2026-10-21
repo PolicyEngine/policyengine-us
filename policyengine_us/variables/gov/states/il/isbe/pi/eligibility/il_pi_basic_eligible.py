@@ -6,7 +6,7 @@ class il_pi_basic_eligible(Variable):
     entity = Person
     label = "Meets basic eligibility for Illinois PI (age and income)"
     definition_period = YEAR
-    reference = "https://www.isbe.net/Pages/Birth-to-Age-3-Years.aspx"
+    reference = "https://idec.illinois.gov/forproviders/prevention-initiative.html"
     defined_for = StateCode.IL
 
     def formula(person, period, parameters):

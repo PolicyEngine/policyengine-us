@@ -1,7 +1,8 @@
 # REQ-001/005/006/008/009. State, membership, income and heating responsibility.
 # Sources:
 # - https://liheapch.acf.gov/docs/2026/benefits-matricies/CT_BenefitMatrix_Heat-Crisis_2026.pdf
-# - https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5,6,7,9,10,11,15
+# PDF pages 5-7,9-11,15
+# - https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5
 # REQ-005: published one-person SMI ceiling is inclusive.
 - name: Case 1, FY2026 income at ceiling eligible.
   period: 2026
@@ -25,7 +26,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -59,7 +60,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -93,7 +94,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2027': 0
-        ct_tfa:
+        tanf:
           '2027': 0
         ct_ssp:
           '2027': 0
@@ -127,7 +128,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2027': 0
-        ct_tfa:
+        tanf:
           '2027': 0
         ct_ssp:
           '2027': 0
@@ -160,7 +161,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -193,7 +194,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -226,7 +227,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -259,7 +260,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -292,7 +293,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -325,7 +326,7 @@
         heat_expense_included_in_rent: true
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -358,7 +359,7 @@
         heat_expense_included_in_rent: true
         snap:
           '2026': 0
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -391,7 +392,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 120
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0
@@ -424,7 +425,7 @@
         heat_expense_included_in_rent: false
         snap:
           '2026': 120
-        ct_tfa:
+        tanf:
           '2026': 0
         ct_ssp:
           '2026': 0

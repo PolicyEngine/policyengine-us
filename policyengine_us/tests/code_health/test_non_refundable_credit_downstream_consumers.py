@@ -78,7 +78,6 @@ REVIEWED_APPLIED_CREDIT_EXTERNAL_REFERENCES = {
     "va_non_refundable_eitc": {
         "variables/gov/states/va/tax/income/credits/eitc/refundability_calculation/va_income_tax_if_claiming_non_refundable_eitc.py",
         "variables/gov/states/va/tax/income/credits/eitc/va_eitc.py",
-        "variables/gov/states/va/tax/income/credits/eitc/va_eitc_person.py",
     },
 }
 

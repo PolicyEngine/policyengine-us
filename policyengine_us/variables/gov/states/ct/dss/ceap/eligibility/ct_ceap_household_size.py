@@ -7,7 +7,8 @@ class ct_ceap_household_size(Variable):
     label = "Connecticut CEAP household size"
     definition_period = YEAR
     defined_for = StateCode.CT
-    reference = "https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5,9"
+    # PDF pages 5,9
+    reference = "https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5"
     # The SPM unit approximates the common energy household. Boarders and other
     # institutional residents need additional household-construction facts.
 

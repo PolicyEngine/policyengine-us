@@ -7,7 +7,8 @@ class ct_ceap_categorically_eligible(Variable):
     label = "Categorically eligible for Connecticut CEAP"
     definition_period = YEAR
     defined_for = StateCode.CT
-    reference = "https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=6,7,11"
+    # PDF pages 6-7,11
+    reference = "https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=6"
 
     def formula(spm_unit, period, parameters):
         # Positive annual receipt approximates receipt at application.
@@ -22,6 +23,6 @@ class ct_ceap_categorically_eligible(Variable):
             ~member * person("ct_ssp_person", period, options=[ADD])
         )
         ssp = max_(spm_unit("ct_ssp", period, options=[ADD]) - excluded_ssp, 0)
-        receipt = add(spm_unit, period, ["snap", "ct_tfa"]) + ssi + ssp > 0
+        receipt = add(spm_unit, period, ["snap", "tanf"]) + ssi + ssp > 0
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
         return receipt & ~heat_in_rent

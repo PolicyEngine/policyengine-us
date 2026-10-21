@@ -1,8 +1,23 @@
 description: Non-refundable tax credits which precede the Lifetime Learning Credit.
 values:
+  # Form 8863's Credit Limit Worksheet limits the non-refundable American
+  # opportunity and lifetime learning credits together (lines 1 to 3) to tax
+  # less Schedule 3 lines 1, 2, 6d and 6l. Applying the American opportunity
+  # credit first gives the same total.
   2013-01-01:
-    - foreign_tax_credit 
+    - foreign_tax_credit
     - cdcc
+    - elderly_disabled_credit
+    - non_refundable_american_opportunity_credit
+  # The Child and Dependent Care Credit was refundable for 2021 only.
+  2021-01-01:
+    - foreign_tax_credit
+    - elderly_disabled_credit
+    - non_refundable_american_opportunity_credit
+  2022-01-01:
+    - foreign_tax_credit
+    - cdcc
+    - elderly_disabled_credit
     - non_refundable_american_opportunity_credit
 
 metadata:
@@ -10,5 +25,11 @@ metadata:
   period: year
   label: Non-refundable tax credits preceding the Lifetime Learning Credit
   reference:
-    - title: IRS Schedule 3, Additional Credits and Payments
-      href: https://www.irs.gov/pub/irs-pdf/f1040s3.pdf
+    - title: 2025 Instructions for Form 8863, Credit Limit Worksheet, lines 1 to 7
+      href: https://www.irs.gov/pub/irs-pdf/i8863.pdf#page=8
+    - title: 2021 Instructions for Form 8863, Credit Limit Worksheet, lines 1 to 7
+      href: https://www.irs.gov/pub/irs-prior/i8863--2021.pdf#page=7
+    - title: 2013 Instructions for Form 8863, Credit Limit Worksheet, lines 1 to 7
+      href: https://www.irs.gov/pub/irs-prior/i8863--2013.pdf#page=6
+    - title: 26 U.S. Code § 21(g) - Special rules for 2021
+      href: https://www.law.cornell.edu/uscode/text/26/21#g

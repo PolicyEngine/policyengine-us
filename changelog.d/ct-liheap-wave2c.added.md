@@ -1,1 +1,1 @@
-Add Connecticut Energy Assistance Program basic and rental heating assistance for fiscal years 2026 and 2027.
+Add Connecticut Energy Assistance Program basic and rental heating assistance for fiscal years 2026 and 2027, including federal income protection, military pensions, Social Security net of Part B premiums and receipt-based benefits.

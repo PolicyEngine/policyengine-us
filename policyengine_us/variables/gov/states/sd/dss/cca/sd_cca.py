@@ -8,9 +8,7 @@ class sd_cca(Variable):
     label = "South Dakota Child Care Assistance benefit amount"
     definition_period = MONTH
     defined_for = "sd_cca_eligible"
-    reference = (
-        "https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=21"
-    )
+    reference = "https://web.archive.org/web/20251031171652/https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=21"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.sd.dss.cca.rates

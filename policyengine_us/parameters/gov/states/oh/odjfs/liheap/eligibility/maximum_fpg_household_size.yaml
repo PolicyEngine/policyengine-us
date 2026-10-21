@@ -1,0 +1,45 @@
+description: Ohio uses the federal poverty guideline income limit through this household size before switching to state median income under the Home Energy Assistance Program.
+# The 2022-2023 Guidelines apply 175% FPG to every household size; the FY2023
+# plan's section 2.1 lists 60% SMI for all sizes, but the Guidelines govern.
+# The July 2023-May 2024 application prints 175% FPG limits through size eight
+# and adds $8,995 per added member, so that season keeps the all-sizes rule.
+# From size 8, those 2022-2023 and 2023-2024 limits exceed the 42 U.S.C.
+# 8624(b)(2)(B) ceiling, the greater of 150% FPG and 60% SMI (size 8: $81,602.50
+# against $77,540 and $88,480 against $82,886); these unclaimed years keep the
+# printed limits.
+# The 2024-2025 application prints FPG limits through size seven, and the
+# FY2025 plan's section 2.1 puts size eight on 60% SMI. The 2025-2026
+# application applies 175% FPG to households up to eight members.
+# For 2026-2027, JFS 00330 (page 1) applies 175% FPG to "households up to seven
+# members" and 60% SMI to "households over seven members", as does the
+# Consumers' Counsel sheet; the accepted FY2027 plan's item 2.1 (page 9) lists
+# household size 9 for 60% SMI (its July 2026 draft listed 8). The application
+# governs.
+values:
+  2022-07-01: .inf
+  2024-07-01: 7
+  2025-07-01: 8
+  2026-07-01: 7
+metadata:
+  unit: person
+  period: year
+  label: Ohio HEAP maximum household size for poverty guideline limit
+  reference:
+    - title: Ohio 2022-2023 Energy Assistance Programs Guidelines, section E-2.2
+      href: https://irp.cdn-website.com/aa88b0b1/files/uploaded/2022-24%20ATTACHMENT%202022-2023%20EAP%20Guidelines%20%281%29.pdf#page=7
+    - title: Ohio FY2023 LIHEAP State Plan, section 2.1
+      href: https://liheapch.acf.gov/docs/2023/state-plans/OH_Plan_2023.pdf#page=8
+    - title: Ohio Energy Assistance Programs Application, July 2023-May 2024
+      href: https://dam.assets.ohio.gov/image/upload/development.ohio.gov/individual/energyassistance/2023-2024-Heap-Application-ES-BW.pdf#page=1
+    - title: Ohio Energy Assistance Programs Application, July 2024-May 2025
+      href: https://clevelandohio.gov/sites/clevelandohio/files/aging/2024-2025_HEAP_application_B_W_1.pdf#page=1
+    - title: Ohio FY2025 LIHEAP State Plan, section 2.1
+      href: https://liheapch.acf.gov/docs/2025/state-plans/OH_Plan_2025.pdf#page=8
+    - title: Ohio Energy Assistance Programs Application, July 2025-May 2026
+      href: https://www.clevelandohio.gov/sites/clevelandohio/files/aging/Home%20repair%20Applications/2025-2026_HEAP_application_B_W.pdf#page=1
+    - title: Ohio JFS 00330 Energy Assistance Programs Application, July 2026-May 2027
+      href: https://www.lccaa.net/wp-content/uploads/2026/07/2026-2027-EAP-Application-7-2026.pdf#page=1
+    - title: Ohio FY2027 LIHEAP State Plan, revision 1, item 2.1
+      href: https://dam.assets.ohio.gov/image/upload/jfs.ohio.gov/Energy%20and%20Community%20Assistance/DETAILED_MODEL_PLAN_LIHEAP__10_01_2026.pdf#page=9
+    - title: 42 U.S.C. 8624(b)(2)(B)
+      href: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B

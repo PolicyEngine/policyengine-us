@@ -25,3 +25,14 @@
   output:
     mt_disability_income_exclusion_person: 5_000
 
+
+- name: Eligible person's exclusion is limited to taxable disability income.
+  period: 2022
+  input:
+    disability_benefits: 5_000
+    tax_exempt_disability_benefits: 2_000
+    mt_disability_income_exclusion_eligible_person: true
+    state_code: MT
+  output:
+    # 5,000 - 2,000 = 3,000, under the 5,200 cap.
+    mt_disability_income_exclusion_person: 3_000

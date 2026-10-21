@@ -8,7 +8,8 @@ class ct_ceap(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "ct_ceap_eligible"
-    reference = "https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=6,10,11,15"
+    # PDF pages 6,10-11,15
+    reference = "https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=6"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ct.dss.ceap.payment

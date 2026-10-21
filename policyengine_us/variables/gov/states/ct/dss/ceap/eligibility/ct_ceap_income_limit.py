@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.hhs_smi import smi
+from policyengine_us.variables.gov.hhs.hhs_smi import liheap_smi_limit
 
 
 class ct_ceap_income_limit(Variable):
@@ -18,9 +18,13 @@ class ct_ceap_income_limit(Variable):
         size = spm_unit("ct_ceap_household_size", period)
         state = spm_unit.household("state_code_str", period)
         p = parameters(period)
-        base = p.gov.hhs.smi.amount[state]
-        factor = smi(size, state, period, parameters) / base
         # This order reproduces every published FY2026/FY2027 size 1-8 limit;
         # the source prints the amounts but does not specify the rounding order.
-        amount = np.floor(base * p.gov.states.ct.dss.ceap.eligibility.smi_rate)
-        return where(size > 0, np.floor(amount * factor), 0)
+        amount = liheap_smi_limit(
+            size,
+            state,
+            p.gov.states.ct.dss.ceap.eligibility.smi_rate,
+            period,
+            parameters,
+        )
+        return where(size > 0, amount, 0)

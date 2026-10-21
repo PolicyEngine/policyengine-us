@@ -30,3 +30,58 @@
     de_income_tax_before_non_refundable_credits_unit: 1000000
   output:
     de_personal_credit: 0
+
+
+- name: 2025 joint return with one claimable spouse gets one personal credit (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: DE
+  output:
+    # Federal exemptions: the other spouse only; IRC 152(b)(1) leaves no
+    # dependents.
+    de_personal_credit_potential: 110
+
+- name: 2025 joint return with one claimable spouse gets one personal credit (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: DE
+  output:
+    de_personal_credit_potential: 110

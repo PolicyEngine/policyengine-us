@@ -7,7 +7,7 @@ class meets_snap_categorical_eligibility(Variable):
     label = "SNAP categorical eligibility"
     documentation = "Whether this SPM unit is eligible for SNAP benefits via participation in other programs"
     definition_period = MONTH
-    reference = "https://fns-prod.azureedge.net/sites/default/files/resource-files/fna-2008-amended-through-pl-116-94.pdf#page=11"
+    reference = "https://www.govinfo.gov/content/pkg/USCODE-2019-title7/html/USCODE-2019-title7-chap51-sec2014.htm"
 
     def formula(spm_unit, period, parameters):
         programs = parameters(period).gov.usda.snap.categorical_eligibility

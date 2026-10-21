@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.section_911 import elects_section_911_exclusion
 
 
 class nj_childless_eitc_age_eligible(Variable):
@@ -7,7 +8,11 @@ class nj_childless_eitc_age_eligible(Variable):
     label = "New Jersey Eligible for EITC"
     definition_period = YEAR
     reference = (
-        "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-7/"
+        "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-7/",
+        # P.L. 2021, c.130, section 1a(4): the filer "shall meet all
+        # qualifications, except for the minimum or maximum age, for the
+        # federal earned income tax credit".
+        "https://pub.njleg.state.nj.us/Bills/2020/PL21/130_.HTM",
     )
     defined_for = StateCode.NJ
 
@@ -27,9 +32,14 @@ class nj_childless_eitc_age_eligible(Variable):
         age = person("age", period)
         age_eligible = age >= p.eligibility.age.min
 
+        # Section 32(c)(1)(C): a filer who claims the benefits of section 911
+        # fails a federal qualification other than age.
+        claims_section_911 = elects_section_911_exclusion(tax_unit, period)
+
         return (
             ~separate
             & no_qualifying_children
             & tax_unit.any(age_eligible)
             & tax_unit("nj_eitc_income_eligible", period)
+            & ~claims_section_911
         )

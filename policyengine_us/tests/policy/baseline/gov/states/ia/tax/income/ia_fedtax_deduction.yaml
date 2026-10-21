@@ -1,4 +1,9 @@
-- name: IA federal income tax deduction unit test 1
+# IA 1040 line 28 (2021 and 2022 Expanded Instructions, PDF page 40) adds back
+# self-employment and Additional Medicare tax because the line 31 payments
+# covered them. income_tax_before_refundable_credits excludes both taxes, so
+# they are not subtracted again: the whole 21,200 is deducted, 75% / 25% by
+# net income.
+- name: Self-employment and Additional Medicare tax are not subtracted again
   absolute_error_margin: 0.01
   period: 2021
   input:
@@ -26,9 +31,10 @@
         state_code: IA
   output:
     self_employment_tax: [200, 0, 0]
-    ia_fedtax_deduction: [15_000, 5_000, 0]
+    ia_fedtax_deduction: [15_900, 5_300, 0]
 
-- name: IA federal income tax deduction unit test 2
+# 2022: 22,700 deducted, 80% / 20% by net income.
+- name: Self-employment and Additional Medicare tax are not subtracted again in 2022
   absolute_error_margin: 0.01
   period: 2022
   input:
@@ -55,4 +61,59 @@
         members: [person1, person2, person3]
         state_code: IA
   output:
-    ia_fedtax_deduction: [16_000, 4_000, 0]
+    ia_fedtax_deduction: [18_160, 4_540, 0]
+
+# Line 28 also adds back additional Social Security and Medicare tax (Schedule
+# 2, line 7), additional tax on IRAs (line 8) and other additional taxes
+# (line 18), which income_tax_before_refundable_credits does include:
+# 6,000 - 300 - 200 - 100 = 5,400.
+- name: Schedule 2 taxes included in the federal tax are added back
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        ia_net_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        income_tax_before_refundable_credits: 6_000
+        unreported_payroll_tax: 300
+        qualified_retirement_penalty: 200
+        recapture_of_investment_credit: 100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_fedtax_deduction: [5_400]
+
+# taxsim #1436, taxsimid 1: joint, self-employment income 200,000 and spouse
+# wages 150,000. Federal AGI 338,468.25 (350,000 less half the 23,063.50
+# self-employment tax); taxable income 338,468.25 - 25,100 - 37,693.65 QBI
+# deduction = 275,674.60; 2021 joint tax 1,990 + 7,338 + 20,174 +
+# 24% x (275,674.60 - 172,750) = 54,203.90, deducted in full and divided by
+# Iowa net income 188,468.25 / 150,000.
+- name: Iowa deducts the whole federal income tax of a self-employed couple
+  absolute_error_margin: 0.05
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+        self_employment_income: 200_000
+      spouse:
+        age: 40
+        employment_income: 150_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IA
+  output:
+    income_tax_before_refundable_credits: 54_203.90
+    ia_fedtax_deduction: [30_182.19, 24_021.71]

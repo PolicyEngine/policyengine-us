@@ -1,0 +1,23 @@
+description: Rhode Island provides this regular primary heating payment by income band for households using delivered fuels under the Low Income Home Energy Assistance Program.
+
+1:
+  2025-10-01: 861
+2:
+  2025-10-01: 805
+3:
+  2025-10-01: 752
+4:
+  2025-10-01: 704
+5:
+  2025-10-01: 657
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Rhode Island LIHEAP delivered fuels primary heating payment
+  breakdown:
+    - range(1, 6)
+  propagate_metadata_to_children: true
+  reference:
+    - title: Rhode Island FY2026 Grant Amounts, primary heating rows A-F
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/RI_BenefitMatrix_2026.pdf
