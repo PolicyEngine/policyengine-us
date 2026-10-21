@@ -7,7 +7,7 @@ class ne_refundable_ctc_eligible_child(Variable):
     label = "Nebraska refundable Child Tax Credit eligible child"
     definition_period = YEAR
     reference = (
-        "https://nebraskalegislature.gov/laws/statutes.php?statute=77-7202"
+        "https://nebraskalegislature.gov/laws/statutes.php?statute=77-7202",
         "https://revenue.nebraska.gov/businesses/child-care-tax-credit-act",
     )
     defined_for = StateCode.NE

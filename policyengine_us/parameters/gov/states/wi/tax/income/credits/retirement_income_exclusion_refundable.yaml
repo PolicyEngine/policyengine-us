@@ -1,0 +1,20 @@
+description: Wisconsin allows these refundable credits when the retirement income exclusion is elected.
+metadata:
+  unit: list
+  period: year
+  label: Wisconsin refundable credits allowed with the retirement income exclusion
+  reference:
+    - title: 2025 Wisconsin Schedule SB instructions
+      href: https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleSB-Inst.pdf#page=7
+    - title: 2025 Wisconsin Act 174, section 7
+      href: https://docs.legis.wisconsin.gov/2025/related/acts/174.pdf#page=2
+    - title: Wis. Stat. 71.05(6)(b)54m.d
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/6/b/54m/d
+    - title: Wis. Stat. 71.54
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/54
+values:
+  2021-01-01: []
+  # Act 174, effective April 4, 2026, limits the prohibition to section 71.07
+  # credits. Homestead is under section 71.54; earned income is under 71.07.
+  2026-01-01:
+    - wi_homestead_credit

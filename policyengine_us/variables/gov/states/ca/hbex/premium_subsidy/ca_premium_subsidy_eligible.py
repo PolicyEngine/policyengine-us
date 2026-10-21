@@ -44,5 +44,5 @@ class ca_premium_subsidy_eligible(Variable):
         # immigration exception that the applicable-return-filer definition
         # excludes. Dependents claimed by another filer do not form separate
         # claiming units in the model, so the dependent exclusion is structural.
-        is_filer = tax_unit("tax_unit_is_filer", period)
+        is_filer = tax_unit("files_return_for_aca_ptc", period)
         return in_effect & aptc_eligible & income_eligible & is_filer

@@ -7,15 +7,22 @@ metadata:
   breakdown:
   - filing_status
   reference:
-  - title: Delaware Code Title 30, Section 1106(b)
+  # $1,000 per individual; spouses filing a joint return subtract up to $2,000
+  # of their combined contributions. Delaware has no surviving spouse status:
+  # a widow(er) files as Filing Status 1.
+  - title: 30 Del. C. § 1106(b)(11)
     href: https://delcode.delaware.gov/title30/c011/sc02/index.html
-  - title: DE529 Education Savings Plan
-    href: https://treasurer.delaware.gov/education-savings-plan/
+  - title: 2023 Delaware PIT-RES Instructions, Line 8b
+    href: https://revenuefiles.delaware.gov/2023/PIT-RES_TY23_2023-01_Instructions.pdf#page=7
+  - title: 2024 Delaware PIT-RES Instructions, Line 8b
+    href: https://revenuefiles.delaware.gov/2024/PIT_2024_Forms/PIT_Instructions/PIT-RES_TY24_2024-01_Instructions.pdf#page=7
+  - title: 2024 Delaware PIT-RES, Filing Status
+    href: https://revenuefiles.delaware.gov/2024/PIT_2024_Forms/PIT-RES_2024-01_PaperInteractive.pdf#page=1
 
 JOINT:
   2022-01-01: 2_000
 SURVIVING_SPOUSE:
-  2022-01-01: 2_000
+  2022-01-01: 1_000
 SINGLE:
   2022-01-01: 1_000
 HEAD_OF_HOUSEHOLD:

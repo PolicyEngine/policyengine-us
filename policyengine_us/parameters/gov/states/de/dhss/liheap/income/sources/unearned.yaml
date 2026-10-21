@@ -1,13 +1,14 @@
 description: Delaware counts these individual unearned income sources under the Low Income Home Energy Assistance Program.
 values:
   2025-10-01:
-    - unemployment_compensation
+    - total_unemployment_compensation
     # The Social Security aggregate includes its survivor-benefit component.
     - social_security
     - ssi
     # Taxable/exempt pension components are already in pension_income.
-    # pension_survivors and military pensions are classifications, not additions.
+    # pension_survivors classifies pension_income; military pay is separate.
     - pension_income
+    - military_retirement_pay
     # Ongoing IRA/401k distributions are separate from pension_income.
     # Existing annual inputs do not identify an excluded one-time lump sum.
     - retirement_distributions
@@ -19,13 +20,13 @@ values:
     - dividend_income
     - veterans_benefits
     - workers_compensation
-    # State TANF is added once at SPMUnit level, not once per person.
+    # Take-up-gated TANF is added once at SPMUnit level, not once per person.
     # Royalties are represented only to the extent included in rental_income.
-    # Actual Medicare/pension health withholding deductions are deferred.
+    # Part B nets Social Security; pension-health withholding lacks attribution.
 metadata:
   unit: list
   period: year
   label: Delaware LIHEAP unearned income sources
   reference:
-    - title: Delaware FY2026 LIHEAP State Plan, section 1.9, pages 6-7
+    - title: "Delaware FY2026 LIHEAP State Plan, section 1.9 #page 6-7"
       href: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=6

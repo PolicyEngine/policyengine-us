@@ -34,3 +34,79 @@
   output:
     ny_pension_exclusion: 20_000  # Capped at $20,000 for private pension
     ny_agi_subtractions: 50_000  # 30,000 public + 20,000 private exclusion
+
+- name: A dependent child's public pension is not subtracted from the filer's NY AGI
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      child:
+        age: 10
+        taxable_public_pension_income: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: NY
+  output:
+    # The child's pension is not in the filer's federal AGI (the child reports
+    # it on their own return), so Tax Law 612(c)(3) does not subtract it.
+    ny_agi_subtractions: 0
+    # Federal AGI 50,000 (wages) - 0 subtractions.
+    ny_agi: 50_000
+
+- name: The head's and spouse's public pensions are subtracted but not a dependent's
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 50_000
+        taxable_public_pension_income: 30_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      spouse:
+        age: 66
+        taxable_public_pension_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      child:
+        age: 16
+        taxable_public_pension_income: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: NY
+  output:
+    # 30,000 (head) + 5,000 (spouse); the child's 10,000 is not counted.
+    ny_agi_subtractions: 35_000

@@ -1,0 +1,233 @@
+# Sources for the expected values in this file:
+# - FY2026 Benefit Matrix (one page; four fuel panels, each with the columns
+#   "All Other (19) counties" and "Warren & Sussex Counties"):
+#   https://nj.gov/dca/dhcr/offices/docs/FY2026%20Benefit%20Matrix.pdf
+# - FFY 2026 fact sheet, monthly income limits on page 2:
+#   https://nj.gov/dca/dhcr/offices/docs/FY2026%20USFHEA%20Factsheet%20-%20English.pdf#page=2
+# - FY2026 LIHEAP Handbook, sections 2.2 (page 6), 2.3.A and 2.3.C (page 7),
+#   2.3.F (page 9) and 3.2.F (page 12):
+#   https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=6
+# Model amounts are annual: the monthly limit and the rounded monthly income
+# are each multiplied by 12.
+
+# Sussex County household: an undocumented parent with low wages and a citizen
+# child, heating with fuel oil they buy themselves (about $2,000 a year). No
+# WFNJ/TANF or SSI is received.
+- name: Case 1, mixed-status household counts the nonqualified parent's income above the disregard.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 18_000
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+      person2:
+        age: 5
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+        county: SUSSEX_COUNTY_NJ
+  output:
+    # The household pays for its own heating (section 2.2, page 6).
+    has_heating_expense: true
+    # The nonqualified parent is excluded from the household size, leaving the
+    # child (section 2.2.5, page 6).
+    nj_liheap_household_size: 1
+    # Only the parent's income above $500 a month counts (section 2.2.5,
+    # page 6): 18_000 - 500 * 12 = 12_000. The child has no income.
+    nj_liheap_countable_income_person: [12_000, 0]
+    # 12_000 / 12 = 1,000 a month, already a whole dollar.
+    nj_liheap_countable_income: 12_000
+    # One person: $4,167 a month (fact sheet, page 2); 4,167 * 12 = 50_004.
+    nj_liheap_income_limit: 50_004
+    # $1,000 a month is in the printed row "$0 - $1000". Band 1 covers the
+    # first two printed rows, which pay the same amounts.
+    nj_liheap_income_band: 1
+    # Sussex is in the "Warren & Sussex Counties" column.
+    nj_liheap_region: 2
+    # 1,000 does not exceed 4,167 (section 2.3.A, page 7).
+    nj_liheap_eligible: true
+    # Deliverables panel (fuel oil), "Warren & Sussex Counties", row
+    # "$0 - $1000", column "1 to 4": $961.
+    nj_liheap: 961
+
+# Newark (Essex County) renter: one adult working part time whose heat is
+# included in an unsubsidized rent, with no fuel bill of their own. The
+# building's fuel is not known to the tenant, so heating_type is UNSPECIFIED;
+# the Renters panel does not depend on the fuel. No WFNJ/TANF or SSI is
+# received.
+- name: Case 2, unsubsidized renter with heat included in rent receives the renters panel.
+  period: 2026
+  input:
+    state_code: NJ
+    county: ESSEX_COUNTY_NJ
+    age: 40
+    employment_income: 12_000
+    ssi: 0
+    tanf: 0
+    heating_type: UNSPECIFIED
+    heat_expense_included_in_rent: true
+  output:
+    # No heating bill in the household's own name; heat is paid through rent.
+    has_heating_expense: false
+    nj_liheap_household_size: 1
+    # Wages count in full (section 2.3.C, page 7).
+    nj_liheap_countable_income_person: 12_000
+    # 12_000 / 12 = 1,000 a month, already a whole dollar.
+    nj_liheap_countable_income: 12_000
+    # One person: $4,167 a month (fact sheet, page 2); 4,167 * 12 = 50_004.
+    nj_liheap_income_limit: 50_004
+    # $1,000 a month is in the printed row "$0 - $1000".
+    nj_liheap_income_band: 1
+    # Essex is in the "All Other (19) counties" column.
+    nj_liheap_region: 1
+    # Heat included in rent qualifies when the rent is not subsidized
+    # (section 2.2, page 6), and 1,000 does not exceed 4,167.
+    nj_liheap_eligible: true
+    # Heat included in rent is its own fuel type (section 3.2.F.2, page 12).
+    # Renters panel, "All Other (19) counties", row "$0 - $1000", column
+    # "1 to 4": $234.
+    nj_liheap: 234
+
+# Bergen County couple, both working full time, heating with natural gas billed
+# in their own name (about $1,400 a year). No WFNJ/TANF or SSI is received.
+- name: Case 3, working couple above the two-person income limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 45_000
+        ssi: 0
+      person2:
+        age: 36
+        employment_income: 36_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+        county: BERGEN_COUNTY_NJ
+  output:
+    # The household pays for its own heating (section 2.2, page 6).
+    has_heating_expense: true
+    # Both members are citizens.
+    nj_liheap_household_size: 2
+    # Wages count in full (section 2.3.C, page 7).
+    nj_liheap_countable_income_person: [45_000, 36_000]
+    # 45_000 + 36_000 = 81_000; 81_000 / 12 = 6,750 a month, a whole dollar.
+    nj_liheap_countable_income: 81_000
+    # Two people: $5,449 a month (fact sheet, page 2); 5,449 * 12 = 65_388.
+    nj_liheap_income_limit: 65_388
+    # Bergen is in the "All Other (19) counties" column.
+    nj_liheap_region: 1
+    # 6,750 exceeds 5,449, so the household is not income eligible (section
+    # 2.3.A, page 7, and section 2.2, page 6, ineligible households item 4).
+    nj_liheap_eligible: false
+    # No payment for an ineligible household.
+    nj_liheap: 0
+
+# Middlesex County family of five: two working parents and three school-age
+# children, heating with natural gas billed in their own name (about $1,600 a
+# year). No WFNJ/TANF or SSI is received.
+- name: Case 4, family of five uses the five-person limit and the 5 to 8 size column.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 41
+        employment_income: 52_000
+        ssi: 0
+      person2:
+        age: 39
+        employment_income: 34_000
+        ssi: 0
+      person3:
+        age: 14
+        ssi: 0
+      person4:
+        age: 10
+        ssi: 0
+      person5:
+        age: 6
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_600
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: NJ
+        county: MIDDLESEX_COUNTY_NJ
+  output:
+    # The household pays for its own heating (section 2.2, page 6).
+    has_heating_expense: true
+    # All five members are citizens.
+    nj_liheap_household_size: 5
+    # Wages count in full (section 2.3.C, page 7); the children have no income.
+    nj_liheap_countable_income_person: [52_000, 34_000, 0, 0, 0]
+    # 52_000 + 34_000 = 86_000; 86_000 / 12 = 7,166.67, rounded to the nearest
+    # dollar = 7,167 a month (section 2.3.F, page 9); 7,167 * 12 = 86_004.
+    nj_liheap_countable_income: 86_004
+    # Five people: $9,296 a month (fact sheet, page 2); 9,296 * 12 = 111_552.
+    nj_liheap_income_limit: 111_552
+    # $7,167 a month is in the printed row "$6440 - $8886", which is band 3.
+    nj_liheap_income_band: 3
+    # Middlesex is in the "All Other (19) counties" column.
+    nj_liheap_region: 1
+    # 7,167 does not exceed 9,296 (section 2.3.A, page 7). The same income
+    # would exceed the three-person limit of $6,732.
+    nj_liheap_eligible: true
+    # Gas panel, "All Other (19) counties", row "$6440 - $8886", column
+    # "5 to 8": $373.
+    nj_liheap: 373
+
+# Two Hudson County retirees aged 70 living alone, each with $4,200 a month of
+# Social Security ($50,400 a year) and natural gas billed in their own name
+# (about $1,200 a year). The first pays a Medicare Part B premium of about
+# $2,435 a year; the second has it paid by a Medicare Savings Program.
+- name: Case 5, Social Security counts net of the Medicare Part B premium the person pays.
+  period: 2026
+  input:
+    state_code: [NJ, NJ]
+    county: [HUDSON_COUNTY_NJ, HUDSON_COUNTY_NJ]
+    age: [70, 70]
+    social_security: [50_400, 50_400]
+    medicare_part_b_premium: [2_435, 0]
+    ssi: [0, 0]
+    tanf: [0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200]
+  output:
+    # Handbook section 2.3.F.7(a) (page 10) deducts the Part B premium from
+    # gross Social Security: 50_400 - 2_435 = 47_965. The second retiree pays
+    # no premium, so 50_400 counts.
+    nj_liheap_countable_income_person: [47_965, 50_400]
+    # 47_965 / 12 = 3,997.08 -> 3,997 a month (section 2.3.F, page 9);
+    # 3,997 * 12 = 47_964. 50_400 / 12 = 4,200, a whole dollar.
+    nj_liheap_countable_income: [47_964, 50_400]
+    # One person: $4,167 a month (fact sheet, page 2); 4,167 * 12 = 50_004.
+    nj_liheap_income_limit: [50_004, 50_004]
+    # 3,997 does not exceed 4,167; 4,200 does (section 2.3.A, page 7).
+    nj_liheap_eligible: [true, false]
+    # Gas panel, "All Other (19) counties", row "$2001 - $6439", column
+    # "1 to 4": $334.
+    nj_liheap: [334, 0]

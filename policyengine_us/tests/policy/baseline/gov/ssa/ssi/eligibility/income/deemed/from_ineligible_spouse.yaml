@@ -57,3 +57,39 @@
     ssi_countable_income: [1_776, 0] # 148 * 12
 
 # Example 4 skipped as it relates to sponsored aliens.
+
+- name: Spousal deeming excludes spouse and child's qualified pretax premiums before allocations.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      recipient:
+        age: 70
+        is_tax_unit_head: true
+      spouse:
+        age: 60
+        is_tax_unit_spouse: true
+        employment_income: 24_000
+        pre_tax_health_insurance_premiums: 2_400
+      child:
+        age: 14
+        employment_income: 2_400
+        pre_tax_health_insurance_premiums: 1_200
+    tax_units:
+      tax_unit:
+        members: [recipient, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [recipient, spouse]
+  output:
+    # POMS SI 00820.102C.2: spouse wages 21,600; child wages 1,200.
+    # 20 CFR 416.1163(b): child allocation = (1,450 - 967) * 12
+    # - 1,200 = 4,596; spouse's remaining wages = 21,600 - 4,596 = 17,004.
+    # Under (d)(2), 17,004 > 5,796 and couple exclusions apply:
+    # (17,004 - 20 * 12 - 65 * 12) / 2 = 7,992.
+    ssi_earned_income: [0, 21_600, 1_200]
+    ssi_ineligible_child_allocation: [0, 0, 4_596]
+    ssi_earned_income_deemed_from_ineligible_spouse: [17_004, 0, 0]
+    is_ssi_spousal_deeming_applies: [true, false, false]
+    ssi_income_deemed_from_ineligible_spouse: [7_992, 0, 0]
+    ssi_countable_income: [7_992, 0, 0]

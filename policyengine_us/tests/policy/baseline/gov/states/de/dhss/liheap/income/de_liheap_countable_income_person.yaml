@@ -1,7 +1,7 @@
 # Delaware FY2026 regular heating. Independent source-derived expectations.
 # Sources:
-# - https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=5,6,7,9,10
-# - https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=35,36,40,41,42
+# - https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=5
+# - https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=35
 
 # REQ-005: 1,000+2,000+3,000+4,000+5,000+6,000+7,000=28,000. Historical section 418 classifies property rent as earned.
 - name: Case 1, adult earned sources including rents count.
@@ -526,3 +526,23 @@
         state_code: DE
   output:
     de_liheap_countable_income_person: 500
+
+
+# Existing-aggregate UI control tests fallback without inventing a Delaware UI
+# formula. A supplied Part B amount can offset only this person's SSA, never
+# their separate pension when the premium exceeds SSA.
+- name: Case 13, UI receipts and Social Security premium attribution remain distinct.
+  period: 2026
+  input:
+    state_code: [DE, DE, DE]
+    age: [35, 35, 68]
+    ssi: [0, 0, 0]
+    de_tanf: [0, 0, 0]
+    unemployment_compensation: [0, 400, 0]
+    modeled_state_unemployment_compensation: [1_200, 1_200, 0]
+    social_security: [0, 0, 1_200]
+    taxable_pension_income: [0, 0, 1_000]
+    medicare_part_b_premium: [0, 0, 2_400]
+  output:
+    total_unemployment_compensation: [1_200, 400, 0]
+    de_liheap_countable_income_person: [1_200, 400, 1_000]

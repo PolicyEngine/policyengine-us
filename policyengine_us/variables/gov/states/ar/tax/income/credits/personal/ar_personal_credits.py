@@ -11,9 +11,9 @@ class ar_personal_credits(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.dfa.arkansas.gov/wp-content/uploads/2021_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf"
-        "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf#page=1"
-        "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=12"
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2021_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf",
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf#page=1",
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=12",
     )
     defined_for = StateCode.AR
 

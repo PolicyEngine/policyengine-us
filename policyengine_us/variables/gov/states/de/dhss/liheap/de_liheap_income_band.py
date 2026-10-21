@@ -7,7 +7,7 @@ class de_liheap_income_band(Variable):
     definition_period = YEAR
     label = "Delaware LIHEAP income band"
     defined_for = StateCode.DE
-    reference = "https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heating_2026.pdf#page=1"
+    reference = "https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heating_2026.pdf"
 
     def formula(spm_unit, period, parameters):
         rates = parameters(

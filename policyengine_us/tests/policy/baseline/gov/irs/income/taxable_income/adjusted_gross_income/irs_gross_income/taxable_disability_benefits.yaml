@@ -1,0 +1,168 @@
+# IRS Pub. 525 (2024), page 18, Sickness and Injury Benefits and Disability
+# Pensions: benefits from an accident or health plan paid for by the employer
+# are income; if the employee paid the entire cost, none is; if both paid,
+# only the part due to the employer's payments is (IRC 104(a)(3), 105(a)).
+
+- name: Benefits from a plan the employer paid for are gross income.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 45
+        disability_benefits: 24_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+  output:
+    taxable_disability_benefits: 24_000
+    irs_gross_income: 24_000
+    adjusted_gross_income: 24_000
+
+- name: Benefits from a plan the employee paid the entire cost of are excluded.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 45
+        disability_benefits: 24_000
+        tax_exempt_disability_benefits: 24_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+  output:
+    taxable_disability_benefits: 0
+    irs_gross_income: 0
+    adjusted_gross_income: 0
+
+- name: When both paid for the plan, only the part due to the employer's payments is income.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 45
+        # The employee's after-tax premiums bought 8,000 of the 20,000.
+        disability_benefits: 20_000
+        tax_exempt_disability_benefits: 8_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+  output:
+    # 20,000 - 8,000 = 12,000.
+    taxable_disability_benefits: 12_000
+    irs_gross_income: 12_000
+    adjusted_gross_income: 12_000
+
+- name: An exempt part larger than the benefits leaves nothing taxable.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 45
+        disability_benefits: 5_000
+        tax_exempt_disability_benefits: 7_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+  output:
+    taxable_disability_benefits: 0
+    irs_gross_income: 0
+
+- name: Each spouse's taxable part counts on a joint return.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        disability_benefits: 18_000
+      spouse:
+        age: 48
+        is_tax_unit_spouse: true
+        disability_benefits: 10_000
+        tax_exempt_disability_benefits: 10_000
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    taxable_disability_benefits: [18_000, 0]
+    irs_gross_income: [18_000, 30_000]
+    # 18,000 + 30,000 = 48,000.
+    adjusted_gross_income: 48_000
+
+- name: Income tax on a single filer's employer-paid disability pension.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 45
+        disability_benefits: 30_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+  output:
+    adjusted_gross_income: 30_000
+    # 30,000 - 14,600 standard deduction = 15,400.
+    taxable_income: 15_400
+    # 10% x 11,600 + 12% x (15,400 - 11,600) = 1,160 + 456 = 1,616.
+    income_tax_before_credits: 1_616
+
+- name: Taxable disability benefits count toward provisional income for Social Security.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 60
+        social_security_disability: 20_000
+        disability_benefits: 20_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+  output:
+    # Provisional income = 20,000 + 0.5 x 20,000 = 30,000, between the
+    # 25,000 base and the 34,000 adjusted base for a single filer.
+    # Taxable benefits = min(0.5 x 20,000, 0.5 x (30,000 - 25,000)) = 2,500.
+    tax_unit_taxable_social_security: 2_500
+    # 20,000 + 2,500 = 22,500.
+    adjusted_gross_income: 22_500
+
+- name: Tax-exempt disability benefits do not count toward provisional income.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 60
+        social_security_disability: 20_000
+        disability_benefits: 20_000
+        tax_exempt_disability_benefits: 20_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+  output:
+    # Provisional income = 0.5 x 20,000 = 10,000 < 25,000.
+    tax_unit_taxable_social_security: 0
+    adjusted_gross_income: 0

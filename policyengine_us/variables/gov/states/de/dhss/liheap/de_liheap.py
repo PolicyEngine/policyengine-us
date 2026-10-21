@@ -9,7 +9,7 @@ class de_liheap(Variable):
     label = "Delaware LIHEAP regular heating assistance"
     defined_for = "de_liheap_eligible"
     reference = (
-        "https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heating_2026.pdf#page=1",
+        "https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heating_2026.pdf",
         "https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=9",
     )
 

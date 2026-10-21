@@ -1,0 +1,30 @@
+description: Michigan subtracts the following federal above-the-line deductions, the U.S. Schedule 1 adjustments to income, from household resources.
+values:
+  # MI-1040CR line 30: "Enter total adjustments from your U.S. Form 1040,
+  # Schedule 1." Each entry is a Schedule 1 Part II line. Federal
+  # above-the-line deductions that are not Part II adjustments stay off this
+  # list: loss_ald (business, rental and capital losses, which are income
+  # items) and the exclusions from gross income under IRC 135, 137, 931 and
+  # 933 (us_bonds_for_higher_ed, qualified_adoption_assistance_expense,
+  # specified_possession_income and puerto_rico_income).
+  2021-01-01:
+    - educator_expense_ald # line 11, capped per eligible educator
+    - health_savings_account_ald # line 13
+    - self_employment_tax_ald # line 15
+    - self_employed_pension_contribution_ald # line 16
+    - self_employed_health_insurance_ald # line 17
+    - early_withdrawal_penalty # line 18
+    - alimony_expense_ald # line 19a
+    - traditional_ira_deduction # line 20, the deductible amount
+    - student_loan_interest_ald # line 21
+metadata:
+  unit: list
+  period: year
+  label: Michigan household resources adjustments
+  reference:
+  - title: Michigan 2024 Individual Income Tax Instructions, MI-1040CR line 30
+    href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/MI-1040-Instructions.pdf#page=33
+  - title: Michigan 2025 Individual Income Tax Instructions, MI-1040CR line 30
+    href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=32
+  - title: 2025 Schedule 1 (Form 1040), Part II, Adjustments to Income
+    href: https://www.irs.gov/pub/irs-prior/f1040s1--2025.pdf#page=2

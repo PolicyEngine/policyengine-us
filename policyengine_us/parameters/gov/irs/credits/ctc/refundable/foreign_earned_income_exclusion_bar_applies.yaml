@@ -1,0 +1,18 @@
+description: The IRS denies the refundable Child Tax Credit to filers who elect to exclude any amount from gross income under section 911 (the foreign earned income and housing exclusions) if this is true. It has no effect when the credit is fully refundable (2021).
+values:
+  2013-01-01: false
+  2015-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Refundable Child Tax Credit denied to section 911 exclusion filers
+  reference:
+    - title: 26 U.S. Code § 24(d)(3)
+      href: https://www.law.cornell.edu/uscode/text/26/24#d_3
+    # Section 807 of the Trade Preferences Extension Act of 2015 added this
+    # rule as section 24(d)(5) for taxable years beginning after 2014; Pub. L.
+    # 115-141 redesignated it as paragraph (3) in 2018.
+    - title: Public Law 114-27, § 807
+      href: https://www.govinfo.gov/content/pkg/PLAW-114publ27/pdf/PLAW-114publ27.pdf#page=58
+    - title: 2025 Instructions for Schedule 8812, Part II-A
+      href: https://www.irs.gov/pub/irs-prior/i1040s8--2025.pdf#page=3

@@ -9,7 +9,7 @@ class de_liheap_income_limit(Variable):
     unit = USD
     label = "Delaware LIHEAP annual income limit"
     defined_for = StateCode.DE
-    reference = "https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heating_2026.pdf#page=1"
+    reference = "https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heating_2026.pdf"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.de.dhss.liheap.eligibility

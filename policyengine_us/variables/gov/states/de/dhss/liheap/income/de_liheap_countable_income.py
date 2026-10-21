@@ -13,7 +13,7 @@ class de_liheap_countable_income(Variable):
     def formula(spm_unit, period, parameters):
         # Keep income of members excluded from qualified household size.
         # Annual flows approximate the application's assessment period.
-        income = add(spm_unit, period, ["de_liheap_countable_income_person", "de_tanf"])
+        income = add(spm_unit, period, ["de_liheap_countable_income_person", "tanf"])
         # This existing annual tax estimate approximates payroll withholding;
         # it does not observe actual withheld tax. It already includes the DE
         # employee paid-leave contribution through employee_payroll_tax.

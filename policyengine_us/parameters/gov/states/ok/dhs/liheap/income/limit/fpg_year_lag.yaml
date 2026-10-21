@@ -1,0 +1,37 @@
+description: Oklahoma uses the federal poverty guideline from this many years before the heating benefit year under the Low Income Home Energy Assistance Program.
+# HHS makes each January's poverty guidelines mandatory for LIHEAP from the
+# next October 1 (LIHEAP IM 2024-02, IM 2025-02 and IM 2026-01), so FY2025
+# uses the 2024 guidelines, FY2026 the 2025 and FY2027 the 2026. Plan item
+# 2.1 names only the "HHS Poverty Guidelines"; the printed Appendix C-7
+# limits confirm the mandatory year. FY2025: 1.3 x 15,060 / 12 = 1,631.50,
+# rounded up to the printed $1,632 (the 2025 guideline would give $1,696).
+# FY2026: 1.3 x 15,650 / 12 = 1,695.42 -> $1,696. FY2027:
+# 1.3 x 15,960 / 12 = 1,729.00 -> $1,729.
+values:
+  2024-10-01: 1
+
+metadata:
+  unit: year
+  period: year
+  label: Oklahoma LIHEAP federal poverty guideline year lag
+  reference:
+    - title: Oklahoma FY2025 State Plan, Section 2.1
+      href: https://liheapch.acf.gov/docs/2025/state-plans/OK_Plan_2025.pdf#page=9
+    - title: Oklahoma FY2025 Winter Heating application announcement
+      href: https://oklahoma.gov/okdhs/newsroom/2024/december/comm12172024.html
+    - title: Oklahoma FY2026 State Plan, Section 2.1
+      href: https://liheapch.acf.gov/docs/2026/state-plans/OK_Plan_2026.pdf#page=9
+    - title: Oklahoma FY2026 Winter Heating application announcement
+      href: https://oklahoma.gov/okdhs/newsroom/2026/january/comm01062026.html
+    - title: OKDHS Appendix C-7, 10/1/2024 edition
+      href: https://web.archive.org/web/20241207141659id_/https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-7.pdf
+    - title: OKDHS Appendix C-7, 10/1/2025 edition
+      href: https://web.archive.org/web/20260509201726id_/https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-7.pdf
+    - title: OKDHS Appendix C-7, 10/1/2026 edition
+      href: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-7.pdf
+    - title: LIHEAP IM 2024-02, Attachment 2, poverty guidelines for mandatory use in FY25
+      href: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM%202024-02_Att2FPGTables_States.pdf#page=1
+    - title: LIHEAP IM 2025-02, Attachment 2, poverty guidelines for mandatory use in FY26
+      href: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_FPGSte-Table_Att2.pdf#page=1
+    - title: LIHEAP IM 2026-01, poverty guidelines for optional use in FY26 and mandatory use in FY27
+      href: https://acf.gov/ocs/policy-guidance/liheap-im2026-01-federal-poverty-guidelines-fpg-and-state-median-income-smi

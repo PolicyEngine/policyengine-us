@@ -1,0 +1,21 @@
+description: Kentucky counts these earned income sources under the Low Income Home Energy Assistance Program.
+values:
+  2024-10-01:
+    - employment_income
+    # Net business and farm income are counted without another business
+    # deduction.
+    - self_employment_income
+    - sstb_self_employment_income
+    - partnership_s_corp_income
+    - farm_operations_income
+metadata:
+  unit: list
+  period: year
+  label: Kentucky LIHEAP earned income sources
+  reference:
+    - title: Kentucky FY2026 state plan, Section 1.9, page 5 (wages, self-employment income and contract income)
+      href: https://liheapch.acf.gov/docs/2026/state-plans/KY_Plan_2026.pdf#page=5
+    - title: Kentucky FY2025 state plan, Section 1.9, page 5
+      href: https://liheapch.acf.gov/docs/2025/state-plans/KY_Plan_2025.pdf#page=5
+    - title: 921 KAR 4:116 Section 1(8)
+      href: https://apps.legislature.ky.gov/law/kar/titles/921/004/116/

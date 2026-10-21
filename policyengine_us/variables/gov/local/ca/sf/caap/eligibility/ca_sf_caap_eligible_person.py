@@ -15,7 +15,7 @@ class ca_sf_caap_eligible_person(Variable):
         # Spouse Applying For/On Aid": the bar keys on RECEIVING SSI or CAPI,
         # and the remaining applicant draws the one-person grant against their
         # own income.
-        "https://www.sfhsa.org/sites/default/files/media/document/2026-06/manual_caap_eligibility_6_9_2026_v2.pdf#page=152",
+        "https://www.sfhsa.org/sites/default/files/media/document/2026-07/manual_caap_eligibility_7_6_2026.pdf#page=152",
     )
 
     def formula(person, period, parameters):

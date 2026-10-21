@@ -200,7 +200,7 @@
     mo_tanf_assistance_unit_size: 2
     mo_tanf: 234.086
 
-- name: Without the override the same count of own children excludes the grandparent
+- name: Without the override the default rules out a great-grandparent too old to be the child's parent
   period: 2026-01
   input:
     people:
@@ -225,8 +225,13 @@
         members: [grandparent, great_grandparent, grandchild]
         state_code: MO
   output:
-    # mo_tanf_is_parent_of_dependent_child defaults to is_parent, which
-    # cannot tell whose parent she is.
-    mo_tanf_is_parent_of_dependent_child: [false, true, false]
-    mo_tanf_non_parent_caretaker: [false, false, false]
+    # own_children_in_household cannot tell whose parent she is, but the
+    # default also requires being 12 to 50 years older than a dependent
+    # child, and 80 - 8 = 72. So no parent is in the home and the
+    # grandparent is the caretaker relative, as with the override above.
+    mo_tanf_is_parent_of_dependent_child: [false, false, false]
+    mo_tanf_non_parent_caretaker: [true, false, false]
+    mo_tanf_non_parent_caretaker_included: true
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf: 234.086
 

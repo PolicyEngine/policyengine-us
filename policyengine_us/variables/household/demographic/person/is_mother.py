@@ -8,11 +8,8 @@ class is_mother(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        # In the absence of relationship identifiers, check one of two
-        # conditions:
-        # 1. The person is female and has some children in their own household
-        #    (provided in the CPS).
-        # 2. Breastfeeding (user-input).
+        # is_parent combines the child count with co-resident parent links.
+        # Breastfeeding independently identifies a mother.
         female = person("is_female", period)
         has_children = person("is_parent", period)
         breastfeeding = person("is_breastfeeding", period)

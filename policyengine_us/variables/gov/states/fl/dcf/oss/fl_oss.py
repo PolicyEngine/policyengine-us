@@ -10,7 +10,7 @@ class fl_oss(Variable):
     defined_for = "fl_oss_eligible"
     reference = (
         "https://www.flrules.org/gateway/RuleNo.asp?title=PUBLIC%20ASSISTANCE&ID=65A-2.036",
-        "https://www.myflfamilies.com/sites/default/files/2025-05/Appendix%20A-12%20-%20State%20Funded%20Programs%20Eligibility%20Standards.pdf",
+        "https://web.archive.org/web/20251030232040/https://www.myflfamilies.com/sites/default/files/2025-05/Appendix%20A-12%20-%20State%20Funded%20Programs%20Eligibility%20Standards.pdf",
         "https://ffic.myflfamilies.com/manual/2600.pdf",
     )
     documentation = """

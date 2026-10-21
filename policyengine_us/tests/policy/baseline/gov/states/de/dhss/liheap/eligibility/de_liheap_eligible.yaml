@@ -1,8 +1,8 @@
 # Delaware FY2026 regular heating. Independent source-derived expectations.
 # Sources:
-# - https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heating_2026.pdf#page=1
-# - https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=5,6,7,9,10
-# - https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=35,36,40,41,42
+# - https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heating_2026.pdf
+# - https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=5
+# - https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=35
 
 # REQ-004: first12 rows at published60% SMI ceiling; next12 one dollar above. No categorical income bypass.
 - name: Case 1, all twelve published limits are inclusive and next dollar is ineligible.
@@ -81,7 +81,7 @@
     de_liheap_eligible: false
 
 # REQ-003/004/009/011: membership, heating responsibility and housing gates; no asset test.
-- name: Case 6, solar direct fuel has no sourced matrix column.
+- name: Case 6, solar heating responsibility does not invent a matrix price.
   period: 2026
   input:
     state_code: DE
@@ -92,7 +92,7 @@
     de_liheap_income_limit: 39_342
     pre_subsidy_electricity_expense: 1_000
   output:
-    de_liheap_eligible: false
+    de_liheap_eligible: true
 
 # REQ-003/004/009/011: membership, heating responsibility and housing gates; no asset test.
 - name: Case 7, ordinary heat in rent with unknown building fuel.

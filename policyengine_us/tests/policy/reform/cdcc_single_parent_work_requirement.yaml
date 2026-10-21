@@ -152,3 +152,60 @@
     min_head_spouse_earned: 0
     # Reform: min($8,000, $3,000, max($0, $60,000)) = min($8,000, $3,000, $60,000) = $3,000
     cdcc_relevant_expenses: 3_000
+
+# The reform changes the earnings test only. Childcare for the child of a filer
+# who can be claimed as a dependent still does not count (IRC 21(b)(2)(A)(ii)).
+- name: Reform keeps out childcare for the child of a filer who can be claimed
+  period: 2024
+  reforms: policyengine_us.reforms.cdcc.cdcc_single_parent_work_requirement.cdcc_single_parent_work_requirement
+  input:
+    people:
+      adult1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 50_000
+        claimable_as_dependent_on_another_return: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+      relative:
+        age: 40
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+    tax_units:
+      tax_unit:
+        members: [adult1, child, relative]
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [adult1, child, relative]
+        state_code: TX
+  output:
+    cdcc_relevant_expenses: 0
+
+- name: Reform counts the childcare when the filer cannot be claimed
+  period: 2024
+  reforms: policyengine_us.reforms.cdcc.cdcc_single_parent_work_requirement.cdcc_single_parent_work_requirement
+  input:
+    people:
+      adult1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 50_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+      relative:
+        age: 40
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+    tax_units:
+      tax_unit:
+        members: [adult1, child, relative]
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [adult1, child, relative]
+        state_code: TX
+  output:
+    cdcc_relevant_expenses: 3_000

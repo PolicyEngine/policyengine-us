@@ -1,35 +1,554 @@
-- name: Countable Income
+- name: Case 1, countable income other than SSI reduces the grant.
+  # 9 CCR 2503-5 3.533(B): 952 - 100 = 852/month, or 10,224/year.
   period: 2023
   input:
     co_oap_eligible: true
-    ssi_countable_income: 1_000
+    co_oap_countable_income: 1_200
     ssi: 0
   output:
-    co_oap: 10_424
+    co_oap: 10_224
 
-- name: Has some SSI
+- name: Case 2, SSI reduces the grant.
+  # 3.533(A)(2)(d) adds SSI back to countable income: 952 - 200 = 752/month,
+  # or 9,024/year.
   period: 2023
   input:
     co_oap_eligible: true
-    ssi_countable_income: 0
-    ssi: 2_000
+    co_oap_countable_income: 0
+    ssi: 2_400
   output:
-    co_oap: 9_424
+    co_oap: 9_024
 
-- name: More total income than grant standard
+- name: Case 3, total countable income above the grant standard.
   period: 2023
   input:
     co_oap_eligible: true
-    ssi_countable_income: 6_000
+    co_oap_countable_income: 6_000
     ssi: 6_000
   output:
     co_oap: 0
 
-- name: 2026 grant standard
+- name: Case 4, 2026 grant standard.
   period: 2026
   input:
     co_oap_eligible: true
-    ssi_countable_income: 0
+    co_oap_countable_income: 0
     ssi: 0
   output:
     co_oap: 12_384
+
+- name: Case 5, the 2026 payment floor raises a grant below $189.
+  # SSI of $994/month: 1,032 - 994 = 38, raised to the $189 payment floor
+  # standard (3.530(C)) by a state supplementary payment (3.532(B), 3.533(B)).
+  # 189 x 12 = 2,268.
+  period: 2026
+  input:
+    co_oap_eligible: true
+    co_oap_countable_income: 0
+    ssi: 11_928
+  output:
+    co_oap: 2_268
+
+- name: Case 6, a grant at the floor is unchanged.
+  # 1,032 - 843 = 189/month.
+  period: 2026
+  input:
+    co_oap_eligible: true
+    co_oap_countable_income: 10_116
+    ssi: 0
+  output:
+    co_oap: 2_268
+
+- name: Case 7, a grant above the floor is unchanged.
+  # 1,032 - 800 = 232/month, or 2,784/year.
+  period: 2026
+  input:
+    co_oap_eligible: true
+    co_oap_countable_income: 9_600
+    ssi: 0
+  output:
+    co_oap: 2_784
+
+- name: Case 8, a grant of a fraction of a dollar is raised to the floor.
+  # 1,032 - 1,031.50 = 0.50/month, raised to 189.
+  period: 2026
+  input:
+    co_oap_eligible: true
+    co_oap_countable_income: 12_378
+    ssi: 0
+  output:
+    co_oap: 2_268
+
+- name: Case 9, income equal to the grant standard gets no floor.
+  # 3.533: a client whose total countable income equals or exceeds the grant
+  # standard is denied or discontinued (also 3.520.781(A)), so there is no
+  # grant to raise.
+  period: 2026
+  input:
+    co_oap_eligible: true
+    co_oap_countable_income: 6_000
+    ssi: 6_384
+  output:
+    co_oap: 0
+
+- name: Case 10, income above the grant standard gets no floor.
+  period: 2026
+  input:
+    co_oap_eligible: true
+    co_oap_countable_income: 13_200
+    ssi: 0
+  output:
+    co_oap: 0
+
+- name: Case 11, there was no payment floor in 2025.
+  # 1,005 - 1,000 = 5/month, or 60/year. Colorado met the pass-along
+  # requirement by total expenditures until the 2026 rule.
+  period: 2025
+  input:
+    co_oap_eligible: true
+    co_oap_countable_income: 12_000
+    ssi: 0
+  output:
+    co_oap: 60
+
+- name: Case 12, the floor applies month by month.
+  # January-June: 1,032 - 1,000 = 32, raised to 189. July-December: income of
+  # 1,100 exceeds the standard, so nothing is paid. 6 x 189 = 1,134.
+  period: 2026
+  input:
+    co_oap_eligible: true
+    ssi: 0
+    co_oap_countable_income:
+      2026-01: 1_000
+      2026-02: 1_000
+      2026-03: 1_000
+      2026-04: 1_000
+      2026-05: 1_000
+      2026-06: 1_000
+      2026-07: 1_100
+      2026-08: 1_100
+      2026-09: 1_100
+      2026-10: 1_100
+      2026-11: 1_100
+      2026-12: 1_100
+  output:
+    co_oap: 1_134
+
+- name: Case 13, an ineligible person gets nothing.
+  period: 2026
+  input:
+    co_oap_eligible: false
+    co_oap_countable_income: 0
+    ssi: 0
+  output:
+    co_oap: 0
+
+- name: Case 14, a 62-year-old's pension reduces OAP.
+  # Not aged, blind or disabled, so ssi_countable_income is 0. 3.533(A)(2):
+  # 2,500/month of pension less the $20 disregard is 2,480, above the $1,032
+  # standard.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        pension_income: 30_000
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi_countable_income: 0
+    co_oap_countable_income: 29_760
+    co_oap: 0
+
+- name: Case 15, a 62-year-old's earnings reduce OAP.
+  # 3.533(A)(1), (A)(2)(f): 5,000/month of earnings, no unearned income, so
+  # the whole $20 disregard reaches earnings: (5,000 - 65 - 20) / 2 = 2,457.50.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        employment_income: 60_000
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap_countable_income: 29_490
+    co_oap: 0
+
+- name: Case 16, a 62-year-old with earnings just under the standard gets the floor.
+  # (2,080 - 65 - 20) / 2 = 997.50; 1,032 - 997.50 = 34.50, raised to 189.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        employment_income: 24_960
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap_countable_income: 11_970
+    co_oap: 2_268
+
+- name: Case 17, early Social Security retirement benefits below the floor threshold.
+  # 900/month less the $20 disregard is 880; 1,032 - 880 = 152, raised to 189.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        social_security_retirement: 10_800
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap_countable_income: 10_560
+    co_oap: 2_268
+
+- name: Case 18, early Social Security retirement benefits above the floor threshold.
+  # 800 - 20 = 780; 1,032 - 780 = 252/month, or 3,024/year.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        social_security_retirement: 9_600
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap: 3_024
+
+- name: Case 19, the same benefits in 2025, before the floor.
+  # 1,005 - 880 = 125/month, or 1,500/year.
+  period: 2025
+  input:
+    people:
+      person:
+        age: 62
+        social_security_retirement: 10_800
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap: 1_500
+
+- name: Case 20, an SSI recipient with no other income gets the floor.
+  # SSI pays 994/month; 1,032 - 994 = 38, raised to 189.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 70
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi: 11_928
+    co_oap_countable_income: 0
+    co_oap: 2_268
+
+- name: Case 21, each member of an SSI couple is a client.
+  # SSI pays each spouse 745.50/month (half the $1,491 couple rate). Each is
+  # exempt from the other's deeming as an SSI recipient (3.534(C)):
+  # 1,032 - 745.50 = 286.50/month, or 3,438/year, above the floor.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+      spouse:
+        age: 68
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [8_946, 8_946]
+    co_oap_deemed_income: [0, 0]
+    co_oap: [3_438, 3_438]
+
+- name: Case 22, a working spouse's deemed earnings leave a grant below the floor.
+  # The client is 62 with no income. The spouse, 50, earns $2,000/month and
+  # does not take up Medicaid. 3.534(A): (2,000 - 65) / 2 = 967.50 deemed;
+  # 1,032 - 967.50 = 64.50, raised to 189.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        employment_income: 24_000
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_oap_deemed_income: [11_610, 0]
+    co_oap: [2_268, 0]
+
+- name: Case 23, a spouse's pension above the grant standard is deemed.
+  # Both are 62. The spouse's $1,500/month pension: own countable income
+  # 1,500 - 10 = 1,490 exceeds the OAP limit, so it is deemed (3.534(B)):
+  # 1,500 - 1,032 = 468. The client: 1,032 - 468 = 564/month, or 6,768/year.
+  # The client has no income and is an OAP client within the limit, so
+  # nothing is deemed to the spouse, whose own income makes them ineligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 62
+        pension_income: 18_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_oap_deeming_exempt: [true, false]
+    co_oap_deemed_income: [5_616, 0]
+    co_oap: [6_768, 0]
+
+- name: Case 24, income equal to the standard in cents gets no floor.
+  # $65.40/month of earnings and $1,051.80/month of pension: (65.40 - 65) / 2
+  # = 0.20 plus 1,051.80 - 20 = 1,031.80 is exactly 1,032. 3.533: denied.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        employment_income: 784.80
+        pension_income: 12_621.60
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap: 0
+
+- name: Case 25, income one cent under the standard gets the floor.
+  # As Case 24 with $1,051.79/month of pension: total 1,031.99, a grant of
+  # 0.01 raised to 189.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        employment_income: 784.80
+        pension_income: 12_621.48
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap: 2_268
+
+- name: Case 26, a half-cent grant is a grant.
+  # $65.09/month of earnings and $1,051.95/month of pension:
+  # (65.09 - 65) / 2 + 1,051.95 - 20 = 1,031.995, below the standard, so the
+  # grant of 0.005 is raised to the floor.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        employment_income: 781.08
+        pension_income: 12_623.40
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap: 2_268
+
+- name: Case 27, payments drop cents when SSI does not reduce the grant.
+  # $516.50/month of pension: 516.50 - 20 = 496.50; 1,032 - 496.50 = 535.50,
+  # paid as 535 (3.581(E)), or 6,420/year. Case 21 keeps the cents of a grant
+  # reduced by SSI.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        pension_income: 6_198
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap_own_countable_income: 5_958
+    co_oap: 6_420
+
+- name: Case 28, monthly income is recorded in cents.
+  # $12,623.99/year of rent averages to $1,051.9992/month (3.520.781(G)), a
+  # monthly income of $1,052.00 in cents. Less the $20 disregard that is
+  # 1,032, equal to the standard: denied (3.533).
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        rental_income: 12_623.99
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap: 0
+
+- name: Case 29, a grant from income recorded in cents drops its cents.
+  # $6,192.01/year of rent is $516.00/month in cents: 516 - 20 = 496;
+  # 1,032 - 496 = 536/month, or 6,432/year.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        rental_income: 6_192.01
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap: 6_432
+
+- name: Case 30, a monthly average just under a cent boundary is recorded in cents.
+  # $12,623.96/year of rent averages to $1,051.9967/month, $1,052.00 in
+  # cents. Less $20 that equals the standard: denied, as in Case 28.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        rental_income: 12_623.96
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap: 0
+
+- name: Case 31, a monthly average just over a cent boundary is recorded in cents.
+  # $6,192.04/year of rent averages to $516.0033/month, $516.00 in cents:
+  # the grant is 536/month, or 6,432/year, as in Case 29.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        rental_income: 6_192.04
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap: 6_432
+
+- name: Case 32, SSI counts as SSA pays it, a fractional cent raised.
+  # Both are 65. The client earns $1,291/month and the spouse $100.03/month.
+  # The model computes SSI of $418.9925/month each; SSA raises a fractional
+  # cent to the next cent (POMS SI 02001.010), paying $419.00. The client's
+  # only unearned income is SSI, so (1,291 - 65) / 2 = 613, and 613 + 419 =
+  # 1,032 equals the standard: denied. The spouse is on SSI within the limit
+  # ((100.03 - 65) / 2 + 419 = 436.515), so nothing is deemed either way;
+  # the spouse's grant, 1,032 - 436.515 = 595.485, is reduced by SSI, so it
+  # keeps its cents and is paid to the cent: 595.49, or 7,145.88/year.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 65
+        employment_income: 15_492
+        is_tax_unit_head: true
+      spouse:
+        age: 65
+        employment_income: 1_200.36
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [5_027.91, 5_027.91]
+    co_oap: [0, 7_145.88]
+
+- name: Case 33, float residue just under the standard is no grant.
+  # 12,383.9988 / 12 = 1,031.9999, the residue of an income of 1,032.
+  period: 2026
+  input:
+    co_oap_eligible: true
+    co_oap_countable_income: 12_383.9988
+    ssi: 0
+  output:
+    co_oap: 0
+
+- name: Case 34, a half-cent grant from countable income is a grant.
+  # 12,383.94 / 12 = 1,031.995 leaves a grant of 0.005, raised to 189.
+  period: 2026
+  input:
+    co_oap_eligible: true
+    co_oap_countable_income: 12_383.94
+    ssi: 0
+  output:
+    co_oap: 2_268
+
+- name: Case 35, a monthly average of exactly half a cent rounds up.
+  # $9,000.06/year of rent averages to $750.005/month, $750.01 in cents
+  # (half a cent rounded up). 750.01 - 20 = 730.01; 1,032 - 730.01 = 301.99,
+  # paid as 301 (3.581(E)), or 3,612/year.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        rental_income: 9_000.06
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap_own_countable_income: 8_760.12
+    co_oap: 3_612

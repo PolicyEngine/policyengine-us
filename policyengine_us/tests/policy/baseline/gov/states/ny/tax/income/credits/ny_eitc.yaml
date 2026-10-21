@@ -74,13 +74,13 @@
   output:
     ny_eitc: 0
 
-- name: 2021 childless filer age 30 gets reduced NY EITC (pre-ARPA max $538)
-  # Pre-ARPA 2020 childless EITC: phase-in 7.65%, max $538,
-  # phase-out start $8,790, phase-out rate 7.65%
-  # At $10K: phased_in = min(10000 * 0.0765, 538) = $538
-  # reduction = (10000 - 8790) * 0.0765 = $92.57
-  # federal_base = $538 - $92.57 = $445.44
-  # NY match: 30% * $445.44 = $133.63
+- name: 2021 childless filer age 30 gets reduced NY EITC (pre-ARPA max $543)
+  # Pre-ARPA 2021 childless EITC (Rev. Proc. 2020-45 section 3.07):
+  # phase-in 7.65%, max $543, phase-out start $8,880, phase-out rate 7.65%
+  # At $10K: phased_in = min(10000 * 0.0765, 543) = $543
+  # reduction = (10000 - 8880) * 0.0765 = $85.68
+  # federal_base = $543 - $85.68 = $457.32
+  # NY match: 30% * $457.32 = $137.20
   # minus household credit (capped at income tax)
   period: 2021
   absolute_error_margin: 5
@@ -100,7 +100,8 @@
         members: [person]
         state_code: NY
   output:
-    ny_eitc: 89
+    # 137.20 less the $45 household credit (table 1, 7,000-20,000)
+    ny_eitc: 92.20
 
 - name: 2021 filer with child still gets NY EITC (ARPA unchanged for 1+ children)
   period: 2021
@@ -123,5 +124,78 @@
         members: [parent, child]
         state_code: NY
   output:
-    # Should be non-zero — ARPA didn't change amounts for filers with children
-    ny_eitc: 968
+    # ARPA didn't change amounts for filers with children, so the 2021
+    # amounts apply: 3,618 - 15.98% x (20,000 - 19,520) = 3,541.30; 30% =
+    # 1,062.39; less the $75 household credit = 987.39
+    ny_eitc: 987.39
+
+# TY2021: NY decoupled from IRC changes after March 1, 2020 (ARPA), not from
+# the 2021 inflation adjustments. Rev. Proc. 2020-45 section 3.07: one child
+# $3,618 maximum, phase-out from $19,520 at 15.98%; two children $5,980,
+# 21.06%; no children $543, phase-out from $8,880 at 7.65%. The NY credit is
+# 30% of that federal credit less the household credit.
+- name: 2021 head of household, one child, wages $24,000
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 24_000
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: NY
+  output:
+    # 3,618 - 15.98% x (24,000 - 19,520) = 2,902.10; 30% = 870.63; less the
+    # $60 household credit (table 2, 22,000-25,000, two persons) = 810.63
+    ny_eitc: 810.63
+
+- name: 2021 head of household, two children, wages $35,000
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 35_000
+      child1:
+        age: 10
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: NY
+  output:
+    # 5,980 - 21.06% x (35,000 - 19,520) = 2,719.91; 30% = 815.97 (no
+    # household credit above $32,000)
+    ny_eitc: 815.97
+
+- name: 2021 single, no children, wages $12,000
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 12_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # 543 - 7.65% x (12,000 - 8,880) = 304.32; 30% = 91.30; less the $45
+    # household credit (table 1, 7,000-20,000) = 46.30
+    ny_eitc: 46.30

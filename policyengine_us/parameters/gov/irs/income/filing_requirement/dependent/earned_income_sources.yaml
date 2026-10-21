@@ -1,0 +1,24 @@
+description: The Internal Revenue Service counts these gross income sources as earned income when it tests the unearned income of a filer who can be claimed as a dependent; every other gross income source is unearned income.
+values:
+  2010-01-01:
+    # Form 1040 line 1z (wages).
+    - irs_employment_income
+    # Schedule 1 line 3 (business income, Schedule C).
+    - self_employment_income
+    - sstb_self_employment_income
+    # Schedule 1 line 6 (farm income, Schedule F).
+    - farm_operations_income
+metadata:
+  unit: list
+  period: year
+  label: IRS earned income sources for the dependent unearned income filing test
+  reference:
+    - title: 26 U.S. Code § 6012(a)(1)(C)(i)(I) and (f)(2)(D) - income other than earned income
+      href: https://www.law.cornell.edu/uscode/text/26/6012
+    # "Generally, your earned income is the total of the amount(s) you
+    # reported on Form 1040 or 1040-SR, line 1z, and Schedule 1, lines 3, 6,
+    # 8r, 8t, and 8u minus the amount, if any, on Schedule 1, line 15."
+    # Schedule 1 line 5 (rents, royalties, partnerships, S corporations and
+    # trusts) is not on the list.
+    - title: 2025 Form 1040 instructions, Standard Deduction Worksheet for Dependents
+      href: https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=35

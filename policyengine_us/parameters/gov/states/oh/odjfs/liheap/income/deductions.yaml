@@ -1,0 +1,24 @@
+description: Ohio deducts these expenses from countable income under the Home Energy Assistance Program.
+# The premium inputs are disjoint (payroll premiums are only in the pretax
+# input), so each premium is deducted once. Non-taxable Health Care Spending
+# Accounts (Guidelines Appendix XI) use the HSA payroll input, which holds
+# employee deferrals only: a partial proxy, since no input holds health
+# flexible spending account deferrals.
+values:
+  2025-07-01:
+    - child_support_expense
+    - health_insurance_premiums_without_medicare_part_b
+    - pre_tax_health_insurance_premiums
+    - health_savings_account_payroll_contributions
+    - medicare_part_b_premium
+metadata:
+  unit: list
+  period: year
+  label: Ohio HEAP income deductions
+  reference:
+    - title: "Ohio 2022-2023 Energy Assistance Programs Guidelines, Appendices XI, XII and XXIII #page 56-57,74"
+      href: https://irp.cdn-website.com/aa88b0b1/files/uploaded/2022-24%20ATTACHMENT%202022-2023%20EAP%20Guidelines%20%281%29.pdf#page=56
+    - title: Ohio FY2026 LIHEAP State Plan, revision 2, section 1.9 (Social Security excluding the Medicare deduction)
+      href: https://dam.assets.ohio.gov/image/upload/v1769700600/development.ohio.gov/individual/energyassistance/DETAILED_MODEL_PLAN_LIHEAP__10_01_2025.pdf#page=6
+    - title: Ohio Energy Assistance Programs Application, July 2025-May 2026, Household Deductions Section
+      href: https://www.clevelandohio.gov/sites/clevelandohio/files/aging/Home%20repair%20Applications/2025-2026_HEAP_application_B_W.pdf#page=7
