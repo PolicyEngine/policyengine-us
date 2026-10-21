@@ -1,0 +1,48 @@
+description: Idaho uses these estimated heating-season costs by fuel and heating area under the Low Income Home Energy Assistance Program.
+
+# User-approved assumption: use the PY2007 estimated nine-month heating costs.
+# We have not confirmed that this table is still current for FY2026.
+# The FY2026 anchor records this modeling assumption, not a verified update.
+# Preserve the published amounts without inflation or a twelve-month uplift.
+# Provider groups are not distinguished. Electricity uses Idaho Power &
+# Southern Utilities; natural gas uses the complete Intermountain Gas column.
+# The old rent-cost column and old benefit percentages are not used.
+oil_or_propane:
+  1:
+    2025-10-01: 1_625
+  2:
+    2025-10-01: 1_845
+  3:
+    2025-10-01: 2_145
+natural_gas:
+  1:
+    2025-10-01: 977
+  2:
+    2025-10-01: 1_100
+  3:
+    2025-10-01: 1_207
+electricity:
+  1:
+    2025-10-01: 1_335
+  2:
+    2025-10-01: 1_455
+  3:
+    2025-10-01: 1_605
+coal_or_wood:
+  1:
+    2025-10-01: 1_200
+  2:
+    2025-10-01: 1_600
+  3:
+    2025-10-01: 1_800
+
+metadata:
+  propagate_metadata_to_children: true
+  unit: currency-USD
+  period: year
+  label: Idaho LIHEAP estimated nine-month heating costs
+  reference:
+    - title: Historical Idaho LIHEAP Intake Manual, Appendix C, average heating-cost matrix
+      href: https://web.archive.org/web/20170127123014id_/http://www.healthandwelfare.idaho.gov/Portals/_Rainbow/Manuals/LIHEAP/Appendices/c_htgcost_matrix_PY07.pdf#page=1
+    - title: Historical Idaho LIHEAP Intake Manual, Heating Cost Estimation, PY2007 nine-month matrix
+      href: https://web.archive.org/web/20080512165351id_/http://www.healthandwelfare.idaho.gov:80/Portals/_Rainbow/Manuals/LIHEAP/Benefit_Calculation/Heating_Cost_Estimation.htm

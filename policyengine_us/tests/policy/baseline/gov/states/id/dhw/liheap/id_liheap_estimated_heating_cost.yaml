@@ -1,0 +1,66 @@
+# Historical Idaho LIHEAP Intake Manual, Appendix C, physical page 1.
+# https://web.archive.org/web/20170127123014id_/http://www.healthandwelfare.idaho.gov/Portals/_Rainbow/Manuals/LIHEAP/Appendices/c_htgcost_matrix_PY07.pdf#page=1
+# PY2007 estimated nine-month costs are used provisionally by user approval;
+# their current FY2026 applicability is unconfirmed. No inflation or 12/9 scaling.
+# Electricity uses Idaho Power & Southern Utilities. Natural gas uses the
+# Intermountain column as a modeling simplification, without a provider input.
+
+- name: Case 1, six supported fuels use the historical costs in all three areas.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [ID, ID, ID, ID, ID, ID, ID, ID, ID,
+                 ID, ID, ID, ID, ID, ID, ID, ID, ID]
+    county: [ADA_COUNTY_ID, BANNOCK_COUNTY_ID, BEAR_LAKE_COUNTY_ID,
+             ADA_COUNTY_ID, BANNOCK_COUNTY_ID, BEAR_LAKE_COUNTY_ID,
+             ADA_COUNTY_ID, BANNOCK_COUNTY_ID, BEAR_LAKE_COUNTY_ID,
+             ADA_COUNTY_ID, BANNOCK_COUNTY_ID, BEAR_LAKE_COUNTY_ID,
+             ADA_COUNTY_ID, BANNOCK_COUNTY_ID, BEAR_LAKE_COUNTY_ID,
+             ADA_COUNTY_ID, BANNOCK_COUNTY_ID, BEAR_LAKE_COUNTY_ID]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY,
+                   NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+                   FUEL_OIL, FUEL_OIL, FUEL_OIL,
+                   PROPANE, PROPANE, PROPANE,
+                   WOOD, WOOD, WOOD,
+                   COAL, COAL, COAL]
+  output:
+    id_liheap_estimated_heating_cost: [1_335, 1_455, 1_605,
+                                      977, 1_100, 1_207,
+                                      1_625, 1_845, 2_145,
+                                      1_625, 1_845, 2_145,
+                                      1_200, 1_600, 1_800,
+                                      1_200, 1_600, 1_800]
+
+- name: Case 2, unknown areas and unsupported fuels have no modeled cost.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Zero denotes an unmodeled cost, not a legal eligibility determination.
+  input:
+    state_code: [ID, ID, ID, ID, ID, ID, ID]
+    county: [UNKNOWN, BAKER_COUNTY_OR, ADA_COUNTY_ID, ADA_COUNTY_ID,
+             ADA_COUNTY_ID, ADA_COUNTY_ID, ADA_COUNTY_ID]
+    heating_type: [ELECTRICITY, ELECTRICITY, UNSPECIFIED, NONE,
+                   OTHER, SOLAR, KEROSENE]
+  output:
+    id_liheap_estimated_heating_cost: [0, 0, 0, 0, 0, 0, 0]
+
+- name: Case 3, omitted county uses the shared Ada fallback and its electric cost.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ID
+    heating_type: ELECTRICITY
+  output:
+    county_str: ADA_COUNTY_ID
+    id_liheap_estimated_heating_cost: 1_335
+
+- name: Case 4, mixed-state households isolate Idaho estimated heating costs.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [ID, OR, ID, OR]
+    county: [BEAR_LAKE_COUNTY_ID, BEAR_LAKE_COUNTY_ID,
+             ADA_COUNTY_ID, BAKER_COUNTY_OR]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, COAL, ELECTRICITY]
+  output:
+    id_liheap_estimated_heating_cost: [1_207, 0, 1_200, 0]

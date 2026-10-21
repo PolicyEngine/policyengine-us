@@ -1,7 +1,8 @@
 # Idaho regular heating components
 
 The FY2026 components calculate qualified household size, countable income,
-income limits, modeled financial eligibility and the heating area. The ordinary
+income limits, modeled financial eligibility, heating area and estimated heating
+cost. The ordinary
 income test is inclusive. A household with a SNAP recipient during the October-September
 program year, or a current SSI recipient, is categorically income eligible.
 Income still determines the eventual award. Any household member can establish
@@ -37,8 +38,9 @@ distinguished for now; the Avista & Northern Utilities and Rocky Mountain Power
 columns are omitted. This is an explicit modeling simplification, not a claim
 that providers pay identical benefits. No utility-provider input is added.
 The table contains the base amounts before the vulnerable-household supplement.
-It is not yet connected to a household award because current estimated heating
-costs are missing and existing inputs do not identify every heating-cost obligation. Provider/company and
+The approved historical cost table is now available as a derived component.
+These components are not yet connected to a final household award, and existing
+inputs do not identify every heating-cost obligation. Provider/company and
 administering-agency distinctions are outside this implementation scope.
 
 The user approved continuing the recovered 44-county heating-area map on
@@ -72,10 +74,27 @@ The [historical 2011 rule, section 204.03](https://adminrules.idaho.gov/rules/20
 explicitly included 11% in high. This is an approved modeling convention;
 the current source omission remains documented.
 
-Final eligibility and awards remain incomplete. The current estimated annual
-heating-cost chart has not been established, and the PY2007 costs are excluded.
-Actual household bills do not replace the state's estimated costs. The
-exactly-11-percent boundary is resolved by the approved convention above.
+The user approved using the PY2007 heating-cost table on October 20, 2026.
+**We have not confirmed that it is still current for FY2026.** The parameter
+comments and `id_liheap_estimated_heating_cost` preserve that limitation. The
+source estimates nine months of heating costs; its nominal amounts are used
+directly, without inflation or a twelve-month uplift. The FY2026 date anchor
+records this approved modeling assumption. It does not establish a policy update.
+The old Appendix C benefit percentages are not adopted.
+
+Electric costs use the same Idaho Power & Southern Utilities assumption as the
+existing electric-benefit parameter. Natural gas uses Intermountain Gas as one
+representative column because it contains nonzero values in all three areas;
+this is a documented implementation simplification rather than a provider
+selector. Oil/propane and coal/wood retain their shared source rows. The old
+rent-cost column is not used: FY2025 has a flat no-obligation benefit and
+FY2026 excludes that category. Unknown areas and unsupported fuels return zero
+modeled estimated cost, not a finding of legal ineligibility or zero actual
+heating expenses.
+
+Final eligibility and awards remain incomplete. Actual household bills do not
+replace the assumed state cost table. The exactly-11-percent boundary is
+resolved by the approved convention above.
 
 The accepted [FY2025 plan](https://liheapch.acf.gov/docs/2025/state-plans/ID_Plan_2025.pdf#page=9)
 establishes the earlier $75 minimum for households without a specific heating
