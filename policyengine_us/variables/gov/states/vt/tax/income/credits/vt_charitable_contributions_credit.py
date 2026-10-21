@@ -14,10 +14,6 @@ class vt_charitable_contribution_credit(Variable):
     defined_for = StateCode.VT
 
     def formula(tax_unit, period, parameters):
-        charitable_contributions = add(
-            tax_unit,
-            period,
-            ["charitable_cash_donations", "charitable_non_cash_donations"],
-        )
+        charitable_contributions = add(tax_unit, period, ["total_charitable_donations"])
         p = parameters(period).gov.states.vt.tax.income.credits
         return p.charitable.calc(charitable_contributions)
