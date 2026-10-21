@@ -182,19 +182,25 @@
   output:
     pa_liheap_matrix_amount: [552, 0, 0, 660]
 
-# Dated FY2026 matrix pages 2 and 7 give 602 for size 11 at 5,000 and 200 for size 1 at 22,999.99. Handbook 638.3 lower-income multipliers and the 200 minimum imply 200 at higher income for covered sizes. Size 0 has no qualified member; size 12 remains an unverified component placeholder. This ungated lookup does not assert legal income eligibility.
-- name: Case 10, unsupported sizes remain placeholders while higher income retains the minimum.
+# Size 0 has no qualified member. Handbook 638.3 sizes run 1-20 and the
+# printed tables stop at 11 (602 at 5,000, matrix page 2). At 5,000-5,999 the
+# multiplier is 1.0 and the FY2026 region 4 electricity base is 552.10, so
+# size 12 pays 552.10 + 5 * 11 = 607.10 -> 607 and size 20 pays
+# 552.10 + 5 * 19 = 647.10 -> 647. Size 21 uses size 20. Dated matrix page 7
+# gives 200 at 22,999.99; every higher income keeps the 200 minimum.
+- name: Case 10, sizes 12 to 20 continue the per-member amount and higher income keeps the minimum.
   period: 2026
   absolute_error_margin: 0.01
   input:
-    state_code: [PA, PA, PA, PA, PA, PA]
-    county: [ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA]
-    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
-    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
-    pa_liheap_household_size: [0, 11, 12, 1, 1, 1]
-    pa_liheap_benefit_income: [5_000, 5_000, 5_000, 22_999.99, 23_000, 100_000]
+    state_code: [PA, PA, PA, PA, PA, PA, PA]
+    county: [ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA, ADAMS_COUNTY_PA,
+      ADAMS_COUNTY_PA]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    pa_liheap_household_size: [0, 12, 20, 21, 1, 1, 1]
+    pa_liheap_benefit_income: [5_000, 5_000, 5_000, 5_000, 22_999.99, 23_000, 100_000]
   output:
-    pa_liheap_matrix_amount: [0, 602, 0, 200, 200, 200]
+    pa_liheap_matrix_amount: [0, 607, 647, 647, 200, 200, 200]
 
 # Dated FY2026 matrix page 2 prices electricity at 552. Handbook 638.3 fuel codes 701-708 have no solar code; a grid-tied solar home pays an electricity bill, so SOLAR takes the electric row (552).
 # UNSPECIFIED returns an unverified component placeholder; NONE has no heating. No final award or legal eligibility conclusion is asserted.
@@ -324,3 +330,20 @@
     pa_liheap_benefit_income: [5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 10_000]
   output:
     pa_liheap_matrix_amount: [489, 579, 490, 490, 756, 469, 791, 489, 704, 350, 758, 237]
+
+# Current lookup, county 01 (Adams), fuel 1 (Electric), 4,000-4,999: size 3
+# prints 738 and size 7 prints 763. The multiplier is 1.25 and the FY2027
+# region 4 electricity base is 580: 1.25 * (580 + 5 * 2) = 737.50 and
+# 1.25 * (580 + 5 * 6) = 762.50. Both round half up; rounding half to even
+# would give 762 for size 7.
+- name: Case 19, payments round half up to whole dollars.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA]
+    county: [ADAMS_COUNTY_PA, ADAMS_COUNTY_PA]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    pa_liheap_household_size: [3, 7]
+    pa_liheap_benefit_income: [4_000, 4_000]
+  output:
+    pa_liheap_matrix_amount: [738, 763]

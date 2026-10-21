@@ -37,5 +37,6 @@ class pa_liheap_supplement(Variable):
         # Annual eligibility approximates actual prior Cash-grant receipt.
         # Existing inputs do not identify application-date age or address
         # changes after payment; assume the household retains its residence.
-        # Do not condition receipt on the separately unverified matrix bounds.
+        # Receipt does not depend on whether the heating payment table prices
+        # the household's county or fuel.
         return eligible * vulnerable * p.amount
