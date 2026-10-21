@@ -1,0 +1,15 @@
+description: PolicyEngine assigns this annual health coverage value to children under California's County Children's Health Initiative Program, using the broader Title 21 child cost estimate as a proxy.
+values:
+  # Model years use the estimate for the state fiscal year ending in that year.
+  # These dates identify the model's valuation years, not a policy effective date.
+  # FY2025-26, CY Page 34: annual dollars per Title 21 eligible child.
+  2026-01-01: 4_128
+  # FY2026-27, BY Page 34: annual dollars per Title 21 eligible child.
+  2027-01-01: 4_637
+metadata:
+  unit: currency-USD
+  period: year
+  label: California CCHIP annual child health coverage value
+  reference:
+    - title: "DHCS November 2025 Medi-Cal Local Assistance Estimate, Title 21 annual cost per eligible for FY2025-26 and FY2026-27 #page 66,106"
+      href: https://www.dhcs.ca.gov/hm/wp-content/uploads/2026/05/N25-Medi-Cal-Local-Assistance-Estimate.pdf#page=66

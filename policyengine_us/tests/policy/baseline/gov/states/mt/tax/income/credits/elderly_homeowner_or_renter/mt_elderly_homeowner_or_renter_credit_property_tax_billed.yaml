@@ -1,0 +1,150 @@
+- name: Case 1, a single owner's property tax billed.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Schedule 2EC line 23.
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: 2_000
+
+- name: Case 2, a joint couple's bills are one claimant's.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 1_200
+      person2:
+        age: 66
+        real_estate_taxes: 800
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # A joint return makes one claim: line 23 = 1_200 + 800.
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: 2_000
+
+- name: Case 3, a dependent's bill counts as the tax unit's.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        is_tax_unit_dependent: false
+      person2:
+        age: 50
+        is_tax_unit_dependent: true
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # real_estate_taxes is an expense amount, not a record of title, so a
+    # dependent's bill stays on the claimant's line 23.
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: 2_000
+
+- name: Case 4, each tax unit counts only the bill in its own name.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+      person2:
+        age: 45
+        real_estate_taxes: 3_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: [0, 3_000]
+
+- name: Case 5, outside Montana.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: 0
+
+- name: Case 6, a home co-owned with a dependent counts both bills.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        is_tax_unit_dependent: false
+        real_estate_taxes: 500
+      person2:
+        age: 50
+        is_tax_unit_dependent: true
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # The tax unit's bills are line 23: 500 + 2_000.
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: 2_500
+
+- name: Case 7, fractional bills are summed exactly.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 1_200.50
+      person2:
+        age: 66
+        real_estate_taxes: 799.25
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # 1_200.50 + 799.25.
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: 1_999.75

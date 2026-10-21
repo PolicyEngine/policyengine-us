@@ -7,7 +7,7 @@ class il_pfae_has_highest_priority_factor(Variable):
     label = "Has highest priority selection factor for Illinois PFAE"
     definition_period = YEAR
     reference = (
-        "https://www.isbe.net/pages/preschool-for-all.aspx",
+        "https://idec.illinois.gov/forproviders/preschool-for-all.html",
         "https://www.isbe.net/Documents/pdg-eg-grant-enrollment-form.pdf#page=2",
     )
     defined_for = StateCode.IL

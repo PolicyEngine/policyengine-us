@@ -8,9 +8,10 @@ class or_standard_deduction(Variable):
     unit = USD
     definition_period = YEAR
     documentation = "Oregon standard deduction, including bonus for aged or blind and special rules for filers who are claimable as dependents."
-    reference = (  # TODO: update
+    reference = (
         "https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2021.pdf#page=18",
-        "https://www.oregonlegislature.gov/bills_laws/ors/ors316.html",  # Subsection 316.695 (7)
+        "https://www.oregonlegislature.gov/bills_laws/ors/ors316.html",  # ORS 316.695(7)-(8)
+        "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=96",
     )
     defined_for = StateCode.OR
 
@@ -19,13 +20,23 @@ class or_standard_deduction(Variable):
         # Core deduction based on filing status.
         filing_status = tax_unit("filing_status", period)
         initial_core_deduction = p.amount[filing_status]
-        # Replace if claimable as a dependent.
-        earned_income = tax_unit("tax_unit_earned_income", period)
+        # Replace if claimable as a dependent. Earned income is figured as in
+        # the federal worksheet, net of the deductible part of self-employment
+        # tax (Schedule 1, line 15).
+        earned_income = max_(
+            tax_unit("tax_unit_earned_income", period)
+            - tax_unit("self_employment_tax_ald", period),
+            0,
+        )
         claimable_dep_floor = p.claimable_as_dependent.min
         claimable_dep_earned_amount = (
             earned_income + p.claimable_as_dependent.earned_income_addition
         )
-        dependent_elsewhere = tax_unit("head_is_dependent_elsewhere", period)
+        # ORS 316.695(8) limits the deduction as IRC 63(c)(5) does, so a joint
+        # return uses the couple's earned income and the joint amount when
+        # either spouse can be claimed (Publication OR-17, "Standard deduction
+        # worksheet for married filing jointly (MFJ) dependents").
+        dependent_elsewhere = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
         # Set floor and ceiling around earned income plus additional amount.
         floored_claimable_dep_amount = max_(
             claimable_dep_earned_amount, claimable_dep_floor

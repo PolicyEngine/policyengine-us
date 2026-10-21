@@ -360,3 +360,17 @@
     medicaid_income_level: [3, 3, 3]
     is_medicaid_eligible: [false, false, false]
     ca_cchip_eligible: [false, false, true]
+
+- name: Case 20, recent permanent resident child inside the five-year bar is eligible through California's lawfully residing election.
+  period: 2025
+  input:
+    age: 8
+    state_code: CA
+    county_str: SANTA_CLARA_COUNTY_CA
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    is_medicaid_eligible: false
+    medicaid_income_level: 3
+  output:
+    is_chip_immigration_status_eligible: true
+    ca_cchip_eligible: true

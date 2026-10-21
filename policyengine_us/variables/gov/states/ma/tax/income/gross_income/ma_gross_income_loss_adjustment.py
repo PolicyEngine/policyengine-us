@@ -13,21 +13,27 @@ class ma_gross_income_loss_adjustment(Variable):
     def formula(tax_unit, period, parameters):
         # MA Form 1 allows losses on lines 6a, 6b, and 7 to offset
         # other 5.0% income. irs_gross_income floors each source at
-        # zero, so this variable captures the losses that were dropped.
+        # zero for each person, so this variable captures the losses that
+        # were dropped, person by person: one spouse's loss offsets the
+        # other spouse's income on the joint return.
         # Line 10 instruction: "Be sure to subtract any losses
         # in lines 6 or 7."
-        # Line 6a: Business/profession loss (Schedule C)
-        se_income = add(tax_unit, period, ["total_self_employment_income"])
-        # Line 6b: Farm loss (Schedule F)
-        farm = add(tax_unit, period, ["farm_operations_income"])
-        # Line 7: Rental, partnership, S-corp, farm rent losses
-        rental = add(tax_unit, period, ["rental_income"])
-        partnership = add(tax_unit, period, ["partnership_s_corp_income"])
-        farm_rent = add(tax_unit, period, ["farm_rent_income"])
-        return (
-            min_(se_income, 0)
-            + min_(farm, 0)
-            + min_(rental, 0)
-            + min_(partnership, 0)
-            + min_(farm_rent, 0)
-        )
+        # irs_gross_income leaves out tax unit dependents, whose items are
+        # on their own returns, so their losses are left out here too.
+        person = tax_unit.members
+        not_dependent = ~person("is_tax_unit_dependent", period)
+        sources = [
+            # Line 6a: Business/profession loss (Schedule C)
+            "self_employment_income",
+            "sstb_self_employment_income",
+            # Line 6b: Farm loss (Schedule F)
+            "farm_operations_income",
+            # Line 7: Rental, partnership, S-corp, farm rent losses
+            "rental_income",
+            "partnership_s_corp_income",
+            "farm_rent_income",
+        ]
+        losses = 0
+        for source in sources:
+            losses += tax_unit.sum(not_dependent * min_(person(source, period), 0))
+        return losses

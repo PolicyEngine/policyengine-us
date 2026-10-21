@@ -22,8 +22,8 @@ class ny_ui(Variable):
     defined_for = "ny_ui_monetarily_eligible"
 
     def formula(person, period, parameters):
-        # ny_ui is deliberately not yet wired into any income aggregate; any
-        # eventual wiring must not double-count with unemployment_compensation.
+        # ny_ui feeds income flows through modeled_state_unemployment_compensation;
+        # total_unemployment_compensation uses it only when no UI is reported.
         p = parameters(period).gov.states.ny.dol.unemployment_insurance.benefit
         weekly_benefit_rate = person("ny_ui_weekly_benefit_rate", period)
         weekly_payable = person("ny_ui_weekly_payable", period)

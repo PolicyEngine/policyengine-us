@@ -1,0 +1,94 @@
+- name: Case 1, published annual 60% of state median income limits at the boundary.
+  period: 2026
+  input:
+    state_code: [IN, IN, IN, IN, IN, IN, IN, IN, IN, IN]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    social_security: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    receives_ssi: [false, false, false, false, false, false, false, false, false, false]
+    receives_medicaid: [false, false, false, false, false, false, false, false, false, false]
+    rent: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    in_eap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    in_eap_income: [33_556, 43_882, 54_207, 64_533, 74_857, 85_183, 87_119, 89_055, 90_991, 92_927]
+    heating_type: [UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED,
+      UNSPECIFIED, UNSPECIFIED, UNSPECIFIED]
+  output:
+    in_eap_eligible: [true, true, true, true, true, true, true, true, true, true]
+- name: Case 2, published annual 60% of state median income limits one dollar above.
+  period: 2026
+  input:
+    state_code: [IN, IN, IN, IN, IN, IN, IN, IN, IN, IN]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    social_security: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    receives_ssi: [false, false, false, false, false, false, false, false, false, false]
+    receives_medicaid: [false, false, false, false, false, false, false, false, false, false]
+    rent: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    in_eap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    in_eap_income: [33_557, 43_883, 54_208, 64_534, 74_858, 85_184, 87_120, 89_056, 90_992, 92_928]
+    heating_type: [UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED,
+      UNSPECIFIED, UNSPECIFIED, UNSPECIFIED]
+  output:
+    in_eap_eligible: [false, false, false, false, false, false, false, false, false, false]
+- name: Case 3, federal household adjustment extends to households larger than the printed chart.
+  period: 2026
+  input:
+    state_code: [IN, IN]
+    age: [40, 40]
+    ssi: [0, 0]
+    social_security: [0, 0]
+    receives_ssi: [false, false]
+    receives_medicaid: [false, false]
+    rent: [0, 0]
+    in_eap_household_size: [11, 11]
+    in_eap_income: [94_863, 94_864]
+    heating_type: [UNSPECIFIED, UNSPECIFIED]
+  output:
+    in_eap_eligible: [true, false]
+- name: Case 4, household eligibility requires an adult and an eligible member independently of a utility bill.
+  period: 2026
+  input:
+    state_code: [IN, IN, IN]
+    age: [17, 18, 18]
+    ssi: [0, 0, 0]
+    social_security: [0, 0, 0]
+    receives_ssi: [false, false, false]
+    receives_medicaid: [false, false, false]
+    rent: [0, 0, 0]
+    immigration_status: [CITIZEN, CITIZEN, UNDOCUMENTED]
+    in_eap_income: [0, 0, 0]
+    heating_type: [UNSPECIFIED, UNSPECIFIED, UNSPECIFIED]
+  output:
+    in_eap_eligible: [false, true, false]
+
+- name: Case 5, farm operations income puts a farm couple over the income limit.
+  # Section 6.1 (pages 51-52) defines self-employment to include farming (Schedule F).
+  # Income: $58,000 farm operations + $16,640 wages ($16.00 x 1,040 hours) = $74,640.
+  # Size 2 SMI: floor($107,555 x 0.68) = $73,137; 60% limit floor($43,882.20) = $43,882.
+  # $74,640 > $43,882, so the household is ineligible and receives $0. The wages alone
+  # ($16,640) would be within the limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 52
+        farm_operations_income: 58_000
+      person2:
+        age: 50
+        employment_income: 16_640
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: PROPANE
+        bottled_gas_expense: 2_400
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_eap_household_size: 2
+    in_eap_smi: 73_137
+    in_eap_income: 74_640
+    in_eap_eligible: false
+    in_eap: 0

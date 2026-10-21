@@ -10,7 +10,7 @@ class pa_tax_deductions(Variable):
     label = "PA deductions against taxable income"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.revenue.pa.gov/FormsandPublications/FormsforIndividuals/PIT/Documents/2021/2021_pa-40in.pdf#page=20"
+    reference = "https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2021/2021_pa-40in.pdf#page=20"
     defined_for = StateCode.PA
 
     adds = ["pa_529_plan_deduction"]

@@ -1,0 +1,64 @@
+# A dependent's income is not in the filer's federal AGI; the dependent
+# reports it on their own return. So West Virginia subtracts only the head's
+# and spouse's military retirement pay, military service pay and state tax
+# refunds.
+- name: A dependent child's military retirement pay is not subtracted from the filer's income.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        military_retirement_pay: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: WV
+  output:
+    wv_subtractions: 0
+
+- name: Only the head's and spouse's person-level subtractions count, not a dependent's.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 50_000
+        military_retirement_pay: 5_000
+        salt_refund_income: 1_000
+      spouse:
+        age: 45
+        military_service_income: 2_000
+      child:
+        age: 16
+        is_tax_unit_dependent: true
+        military_retirement_pay: 10_000
+        military_service_income: 3_000
+        salt_refund_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: WV
+  output:
+    # 5,000 head military retirement + 1,000 head refund + 2,000 spouse
+    # military service pay; the child's 15,000 is excluded.
+    wv_subtractions: 8_000

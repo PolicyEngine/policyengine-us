@@ -1,5 +1,5 @@
 # Historical (2017-2019) New Mexico SSI state supplement amount.
-# The optional state supplement for an SSI-eligible adult residing in a
+# The optional state supplement for an SSI recipient adult residing in a
 # licensed adult residential care home has been a flat $100.00/month
 # ($1,200/year) continuously since July 2004 through at least 2025 (verified
 # against the SSA annual "State Assistance Programs for SSI Recipients" reports
@@ -22,7 +22,7 @@
     people:
       person1:
         age: 65
-        is_ssi_eligible_individual: true
+        ssi: 9_000
         is_in_adult_residential_care: true
     households:
       household:
@@ -40,7 +40,7 @@
     people:
       person1:
         age: 65
-        is_ssi_eligible_individual: true
+        ssi: 9_000
         is_in_adult_residential_care: true
     households:
       household:
@@ -58,7 +58,7 @@
     people:
       person1:
         age: 65
-        is_ssi_eligible_individual: true
+        ssi: 9_000
         is_in_adult_residential_care: true
     households:
       household:

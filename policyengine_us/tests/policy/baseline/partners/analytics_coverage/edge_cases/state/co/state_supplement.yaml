@@ -74,16 +74,14 @@
         co_family_affordability_credit: 0.0
         # Each member of the SSI couple receives 1,491 / 2 = 745.50/mo SSI;
         # supplement = (994 - 745.50) x 12 = 248.50 x 12 = 2,982/yr.
-        # The model pays it only to the SSI "eligible individual" (the head):
-        # co_state_supplement_eligible checks is_ssi_eligible_individual,
-        # which is false for the designated "eligible spouse".
         co_state_supplement: 2_982.0
         co_oap: 0.0
       spouse:
         co_family_affordability_credit: 0.0
-        # The tax-unit spouse is the SSI "eligible spouse", not an "eligible
-        # individual", so the current model pays them no AND-CS supplement.
-        co_state_supplement: 0.0
+        # The tax-unit spouse also receives SSI, and 9 CCR 2503-5 3.548(A)
+        # calculates AND-CS for each client individually, so the spouse
+        # receives the same 2,982/yr.
+        co_state_supplement: 2_982.0
         co_oap: 0.0
 - name: co_state_supplement_single_disabled_fully_offset_by_ssi (co)
   period: 2026
@@ -195,5 +193,5 @@
         # Age 60 exits the AND-CS 0-59 age range (demographic-route zero)...
         co_state_supplement: 0.0
         # ...and enters OAP: disabled -> SSI 994 x 12 = 11,928;
-        # OAP = 12,384 - 11,928 = 456.
-        co_oap: 456.0
+        # 9 CCR 2503-5 §3.530(C): $189/month floor -> $2,268/year.
+        co_oap: 2_268.0

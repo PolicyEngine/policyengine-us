@@ -184,3 +184,97 @@
     state_code: MI
   output:
     mi_home_heating_credit: 0
+
+# Ruling d1143 (2026-10-09): follow MI-1040CR lines 18 and 21.
+# 2025 MI-1040 book, PDF page 28 (printed page 32):
+# https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=28
+# Line 18 excludes a dependent adult's pension; line 21 includes their SSI.
+- name: Dependent adult pension lowers Michigan tax through SSI (d1143)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head_without_pension:
+        age: 40
+        employment_income: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        takes_up_ssi_if_eligible: false
+      dependent_without_pension:
+        age: 75
+        is_tax_unit_head: false
+        is_tax_unit_dependent: true
+        taxable_private_pension_income: 0
+        takes_up_ssi_if_eligible: true
+      head_with_pension:
+        age: 40
+        employment_income: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        takes_up_ssi_if_eligible: false
+      dependent_with_pension:
+        age: 75
+        is_tax_unit_head: false
+        is_tax_unit_dependent: true
+        taxable_private_pension_income: 2_400
+        takes_up_ssi_if_eligible: true
+    marital_units:
+      head_without_pension:
+        members: [head_without_pension]
+      dependent_without_pension:
+        members: [dependent_without_pension]
+      head_with_pension:
+        members: [head_with_pension]
+      dependent_with_pension:
+        members: [dependent_with_pension]
+    tax_units:
+      without_pension:
+        members: [head_without_pension, dependent_without_pension]
+        heating_expenses: 0
+        mi_home_heating_credit_heat_included_in_rent: false
+        mi_eitc: 0
+        mi_homestead_property_tax_credit: 0
+      with_pension:
+        members: [head_with_pension, dependent_with_pension]
+        heating_expenses: 0
+        mi_home_heating_credit_heat_included_in_rent: false
+        mi_eitc: 0
+        mi_homestead_property_tax_credit: 0
+    spm_units:
+      without_pension:
+        members: [head_without_pension, dependent_without_pension]
+        tanf: 0
+      with_pension:
+        members: [head_with_pension, dependent_with_pension]
+        tanf: 0
+    families:
+      without_pension:
+        members: [head_without_pension, dependent_without_pension]
+      with_pension:
+        members: [head_with_pension, dependent_with_pension]
+    households:
+      without_pension:
+        members: [head_without_pension, dependent_without_pension]
+        state_code: MI
+      with_pension:
+        members: [head_with_pension, dependent_with_pension]
+        state_code: MI
+  output:
+    # Annual SSI: 12 * $967 = $11,604. Countable annual pension:
+    # $2,400 - 12 * $20 general exclusion = $2,160; $11,604 - $2,160 = $9,444.
+    ssi: [0, 11_604, 0, 9_444]
+    # Claimant wages + dependent SSI; the dependent's pension is excluded.
+    mi_household_resources: [21_604, 19_444]
+    adjusted_gross_income: [10_000, 10_000]
+    mi_pension_benefit: [0, 0]
+    mi_subtractions: [0, 0]
+    mi_taxable_income: [0, 0]
+    mi_income_tax_before_refundable_credits: [0, 0]
+    # Two exemptions: $815 - 3.5% * household resources.
+    mi_standard_home_heating_credit: [58.86, 134.46]
+    # Apply the 2025 60% funding factor: $58.86 * .60; $134.46 * .60.
+    mi_home_heating_credit: [35.316, 80.676]
+    # Only the heating credit changes: tax falls by $45.36,
+    # equal to $2,160 * 3.5% * 60% = $80.676 - $35.316.
+    mi_income_tax: [-35.316, -80.676]
+    state_income_tax: [-35.316, -80.676]

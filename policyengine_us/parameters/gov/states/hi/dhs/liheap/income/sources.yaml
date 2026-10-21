@@ -6,15 +6,15 @@ values:
     - sstb_self_employment_income
     - farm_operations_income
     - partnership_s_corp_income
-    - unemployment_compensation
+    - total_unemployment_compensation
     - strike_benefits
     - social_security
     - ssi
     - pension_income
+    - military_retirement_pay
     - retirement_distributions
     - survivor_benefits
     - general_assistance
-    - hi_tanf
     - rental_income
     - farm_rent_income
     - alimony_income
@@ -29,7 +29,7 @@ values:
     - financial_assistance
     - gambling_winnings
 # Pension, Social Security and retirement-distribution components enter once.
-# State TANF is a household amount; SSI and TANF are aggregated from MONTH.
+# TANF is added once at household level; monthly SSI is annualized by aggregation.
 # No minor-earnings exclusion applies. Missing receipt categories are documented
 # in the accompanying README and are not treated as policy exclusions.
 metadata:
@@ -37,5 +37,5 @@ metadata:
   period: year
   label: Hawaii LIHEAP countable income sources
   reference:
-    - title: Hawaii FY2026 LIHEAP State Plan, countable income
-      href: https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=6,7
+    - title: "Hawaii FY2026 LIHEAP State Plan, countable income #page 6-7"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=6

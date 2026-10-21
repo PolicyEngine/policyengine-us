@@ -10,7 +10,8 @@ class hi_liheap_points(Variable):
     defined_for = StateCode.HI
     reference = (
         "https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=10",
-        "https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=2,3",
+        # PDF pages 2-3
+        "https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=2",
         "https://humanservices.hawaii.gov/wp-content/uploads/2019/07/Policies-and-Procedures-2020.pdf#page=8",
     )
 
@@ -53,7 +54,7 @@ class hi_liheap_points(Variable):
         vulnerable = spm_unit.any(
             qualified
             & (
-                (age <= ages.child_max_age)
+                (np.floor(age) <= ages.child_max_age)
                 | (age >= ages.elderly_min_age)
                 | (person("is_disabled", period) & (age >= ages.adult_min_age))
             )

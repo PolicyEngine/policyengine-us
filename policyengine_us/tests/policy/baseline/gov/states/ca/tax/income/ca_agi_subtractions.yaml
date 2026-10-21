@@ -1,0 +1,92 @@
+# Schedule CA (540) column B subtracts amounts from column A, which holds the
+# amounts on the filers' own federal return (2024 Schedule CA (540)
+# instructions, "Column A - Federal Amounts"). Federal AGI leaves out a tax
+# unit dependent's income, which the dependent reports on their own return,
+# so only the head's and spouse's amounts are subtracted.
+
+- name: Case 1, a dependent's unemployment compensation is not subtracted from the filers' CA AGI.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 90_000
+      person2:
+        age: 43
+        employment_income: 20_000
+      person3:
+        age: 17
+        is_tax_unit_dependent: true
+        unemployment_compensation: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    # The child's compensation is taxable on the child's own federal return.
+    taxable_unemployment_compensation: [0, 0, 10_000]
+    adjusted_gross_income: 110_000
+    ca_agi_subtractions: 0
+    ca_agi: 110_000
+
+- name: Case 2, the head's unemployment compensation is subtracted; the dependent's is not.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 90_000
+        unemployment_compensation: 8_000
+      person2:
+        age: 43
+        employment_income: 20_000
+      person3:
+        age: 17
+        is_tax_unit_dependent: true
+        unemployment_compensation: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    # Federal AGI: 90,000 + 20,000 wages + the head's 8,000 compensation
+    # (federal Schedule 1, line 7).
+    adjusted_gross_income: 118_000
+    # Schedule CA (540), section B, line 7, column B: 8,000.
+    ca_agi_subtractions: 8_000
+    ca_agi: 110_000
+
+- name: Case 3, a dependent's state tax refund is not subtracted from the filer's CA AGI.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        salt_refund_income: 600
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        salt_refund_income: 400
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    adjusted_gross_income: 50_600
+    # Schedule CA (540), section B, line 1, column B: the head's 600 only.
+    ca_agi_subtractions: 600
+    ca_agi: 50_000

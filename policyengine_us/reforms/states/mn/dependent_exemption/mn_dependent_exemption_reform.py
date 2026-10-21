@@ -12,7 +12,7 @@ def create_mn_dependent_exemption() -> Reform:
         definition_period = YEAR
         reference = (
             "https://www.revisor.mn.gov/statutes/cite/290.0121",
-            "https://www.revenue.state.mn.us/sites/default/files/2025-11/m1-inst-25_0.pdf#page=14",
+            "https://www.revenue.state.mn.us/sites/default/files/2026-07/m1-inst-25.pdf#page=14",
         )
         defined_for = StateCode.MN
 

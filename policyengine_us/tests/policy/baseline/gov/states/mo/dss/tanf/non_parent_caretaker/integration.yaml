@@ -441,13 +441,14 @@
     # DSS Manual 0210.005.10 excludes "A legal guardian or NPCR if a
     # biological or adoptive parent is in the home." The mother is an adult,
     # not a cash-eligible child, so the grandparent cannot be included.
-    # Known underpayment, not changed here: under 0210.005.05 the mother is
-    # the caretaker payee and belongs in the unit, but the existing rule
-    # leaves out adults claimed as tax dependents, so the unit is the child
-    # alone.
+    # Under 0210.005.05 the mother is the caretaker payee and a member even
+    # though the grandparent claims her as a tax dependent, so the unit is
+    # the mother and child (size 2), not the child alone (size 1, $135.687).
     mo_tanf_non_parent_caretaker: [false, false, false]
     mo_tanf_non_parent_caretaker_needy: false
-    mo_tanf_is_assistance_unit_member: [false, false, true]
+    mo_tanf_is_assistance_unit_member: [false, true, true]
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf: 234.086
 
 - name: A mother who is herself a dependent child does not block her aunt as caretaker relative
   period: 2026-01

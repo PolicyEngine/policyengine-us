@@ -1,0 +1,19 @@
+description: North Carolina counts these rental income sources as earned income under the Low Income Energy Assistance Program.
+values:
+  2025-10-01:
+    # Section 300.09 B.3 gives rental income the earned income deduction.
+    - rental_income
+    # Farm rent (Form 4835) is not named in the manual. It is rent from
+    # property the person owns, so it is treated as rental income.
+    - farm_rent_income
+metadata:
+  unit: list
+  period: year
+  label: North Carolina LIEAP rental income sources
+  reference:
+    - title: North Carolina Energy Programs Manual, Section 300.09 B.3 (page 12)
+      href: https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=12
+    - title: North Carolina Food and Nutrition Services Manual, FNS 300.02 sources of income chart, Rental Income, pages 17-18
+      href: https://policies.ncdhhs.gov/wp-content/uploads/fns-300-sources-of-income.pdf#page=17
+    - title: North Carolina FY2026 state plan, item 1.9 countable income checklist, page 6
+      href: https://liheapch.acf.gov/docs/2026/state-plans/NC_Plan_2026.pdf#page=6

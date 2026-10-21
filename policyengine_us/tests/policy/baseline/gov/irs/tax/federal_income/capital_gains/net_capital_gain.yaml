@@ -12,3 +12,461 @@
         members: [person1]
   output:
     net_capital_gain: 10_500
+
+# 26 U.S.C. 1222(11): net capital gain is the net long-term capital gain over
+# the net short-term capital loss, Schedule D lines 15 and 7 of the 2025
+# Schedule D. Section 1(h)(11)(A) adds qualified dividend income. These are
+# amounts on the head and spouse's return. A tax unit dependent's gains,
+# losses and dividends are on the dependent's own return (2025 Form 8814, line
+# 4), as in adjusted gross income.
+
+- name: A dependent's long-term gain is not on the head's Schedule D
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        long_term_capital_gains: 10_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # Schedule D line 15 = 10,000 (the head's), line 16 = 10,000.
+    net_capital_gain: 10_000
+    adjusted_net_capital_gain: 10_000
+    dwks09: 10_000
+    dwks10: 10_000
+    has_qdiv_or_ltcg: true
+    # The child's gain is not in gross income either: 60,000 + 10,000.
+    adjusted_gross_income: 70_000
+    # Head of household: 70,000 - 23,625 standard deduction.
+    taxable_income: 46_375
+    # Ordinary income 36,375: 10% x 17,000 + 12% x 19,375 = 1,700 + 2,325.
+    # The 10,000 gain is below the 64,750 zero-rate maximum, so 0% on it.
+    # Counting the child's gain too (30,000) gave 1,637.50.
+    income_tax_before_credits: 4_025
+
+- name: A dependent's long-term gain, filing single
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        long_term_capital_gains: 10_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    net_capital_gain: 10_000
+    # 70,000 - 15,750 standard deduction.
+    taxable_income: 54_250
+    # Ordinary income 44,250: 10% x 11,925 + 12% x 32,325 = 1,192.50 +
+    # 3,879. Of the 10,000 gain, 48,350 - 44,250 = 4,100 is at 0% and 5,900
+    # at 15% (885). Counting the child's gain too (30,000) gave 3,556.50.
+    income_tax_before_credits: 5_956.5
+
+- name: A dependent's short-term loss does not reduce the head's net capital gain
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        long_term_capital_gains: 10_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        short_term_capital_gains: -8_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # The head's Schedule D line 7 is 0 and line 15 is 10,000.
+    net_capital_gain: 10_000
+    dwks09: 10_000
+    adjusted_gross_income: 10_000
+
+- name: Spouses' gains and losses net, and a dependent's stay off the return
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        long_term_capital_gains: 10_000
+      spouse:
+        age: 40
+        short_term_capital_gains: -4_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 20_000
+        short_term_capital_gains: -1_000
+        non_sch_d_capital_gains: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    # Joint Schedule D: line 7 = (4,000), line 15 = 10,000, line 16 = 6,000.
+    # 1222(11): 10,000 - 4,000.
+    net_capital_gain: 6_000
+    dwks09: 6_000
+    adjusted_gross_income: 6_000
+
+- name: A dependent's qualified dividends are not on the head's return
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 150_000
+        long_term_capital_gains: 10_000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        qualified_dividend_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # Form 1040 line 3a is the head's: 0.
+    dividend_income_reduced_by_investment_income: 0
+    net_capital_gain: 10_000
+    adjusted_net_capital_gain: 10_000
+    adjusted_gross_income: 160_000
+    # Head of household: 160,000 - 23,625 = 136,375; ordinary income 126,375:
+    # 1,700 + 12% x 47,850 + 22% x 38,500 + 24% x 23,025 = 1,700 + 5,742 +
+    # 8,470 + 5,526; the 10,000 gain at 15% (1,500). Counting the child's
+    # dividends too taxed 20,000 of the head's income at 15% rather than 24%
+    # (21,138).
+    income_tax_before_credits: 22_938
+
+- name: A dependent's qualified dividends alone do not call for the worksheet
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        qualified_dividend_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # No qualified dividends on Form 1040 line 3a and no Schedule D.
+    has_qdiv_or_ltcg: false
+    net_capital_gain: 0
+
+- name: A dependent's investment income election is on the dependent's own Form 4952
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        long_term_capital_gains: 10_000
+        qualified_dividend_income: 2_000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        investment_income_elected_form_4952: 500
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # The head elects nothing: 10,000 + 2,000.
+    net_capital_gain: 12_000
+
+- name: A negative distributions input counts as zero in net capital gain
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 100_000
+        long_term_capital_gains: 10_000
+        non_sch_d_capital_gains: -2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # Form 1099-DIV box 2a, total capital gain distributions, is not
+    # negative. Schedule D line 13 = 0, line 15 = 10,000, as in AGI.
+    adjusted_gross_income: 110_000
+    net_capital_gain: 10_000
+    dwks09: 10_000
+    # Taxable income 110,000 - 15,750 = 94,250; ordinary income 84,250:
+    # 1,192.50 + 12% x 36,550 + 22% x 35,775 = 1,192.50 + 4,386 + 7,870.50;
+    # the 10,000 gain at 15% (1,500). With the input subtracted (8,000) it
+    # was 15,089.
+    income_tax_before_credits: 14_949
+
+- name: Supplied adult dependent roles keep capital income off the parent's return
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 50
+        tax_unit_role_input: HEAD
+        employment_income: 150_000
+        long_term_capital_gains: 10_000
+      student:
+        age: 20
+        is_full_time_student: true
+        tax_unit_role_input: DEPENDENT
+        long_term_capital_gains: 20_000
+        short_term_capital_gains: -5_000
+        non_sch_d_capital_gains: 9_000
+        qualified_dividend_income: 5_000
+        collectibles_gain_or_loss: 5_000
+        investment_income_elected_form_4952: 3_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      student_unit:
+        members: [student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    is_tax_unit_dependent: [false, true]
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 160_000
+    net_capital_gain: 10_000
+    dwks09: 10_000
+    dwks10: 10_000
+    dividend_income_reduced_by_investment_income: 0
+    capital_gains_28_percent_rate_gain: 0
+    capital_gains_tax: 1_500
+    # The same filer income and HOH tax calculation as the child-dividends case.
+    regular_tax_before_credits: 22_938
+
+
+- name: A dependent's very large gain cannot round a dollar off the filer's Schedule D
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+        long_term_capital_gains: 977
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 16_776_240
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # The float32 all-member aggregate rounds 16,777,217 to 16,777,216.
+    # Subtracting the child's 16,776,240 would give 976, rather than 977.
+    # Schedule D line 16 and Form 1040 line 7a use the filer's own gain.
+    filer_loss_limited_net_capital_gains: 977
+    net_capital_gain: 977
+    dwks09: 977
+    dwks10: 977
+    adjusted_gross_income: 20_977
+
+- name: Each spouse's distributions are floored before they enter the shared Schedule D
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        long_term_capital_gains: 6_000
+        non_sch_d_capital_gains: -2_000
+      spouse:
+        age: 34
+        is_tax_unit_spouse: true
+        short_term_capital_gains: -3_000
+        non_sch_d_capital_gains: 1_500
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 10_000
+        non_sch_d_capital_gains: 9_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      couple:
+        members: [head, spouse]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    # Line 13 is max(0, -2,000) + max(0, 1,500) = 1,500, with no child
+    # distributions. Line 15 is 7,500; line 7 is -3,000; line 16 is 4,500.
+    filing_status: JOINT
+    filer_loss_limited_net_capital_gains: 4_500
+    net_capital_gain: 4_500
+    dwks09: 4_500
+    dwks10: 4_500
+
+- name: A supplied aggregate still excludes the dependent in Form 1040 line 7a
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        long_term_capital_gains: 6_000
+        short_term_capital_gains: -1_000
+        non_sch_d_capital_gains: 1_500
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 10_000
+        short_term_capital_gains: -2_000
+        non_sch_d_capital_gains: 9_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        net_capital_gains: 15_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # The supplied 15,000 covers all members. Remove the child's 8,000 and
+    # add the head's 1,500 distributions: Schedule D line 16 is 8,500.
+    filer_loss_limited_net_capital_gains: 8_500
+    # Preserve the documented aggregate/component split: line 15 is 7,500,
+    # so worksheet line 9 is min(7,500, 8,500), while the statutory amount
+    # uses component-derived lines 15 and 7: 7,500 - 1,000 = 6,500.
+    dwks09: 7_500
+    dwks10: 7_500
+    net_capital_gain: 6_500
+
+
+- name: A large supplied aggregate keeps the dollar in its component adjustment
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        long_term_capital_gains: -1
+    tax_units:
+      tax_unit:
+        members: [head]
+        net_capital_gains: 16_777_216
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # The aggregate is supplied, rather than the component-derived -1.
+    # Reconciling through a float32 difference from -1 rounds 16,777,217
+    # down by a dollar. Read the differing supplied aggregate directly.
+    filer_loss_limited_net_capital_gains: 16_777_216
+    # The component-derived line 15 remains a loss, so the preexisting
+    # aggregate/component split gives no statutory gain or worksheet gain.
+    net_capital_gain: 0
+    dwks09: 0
+    dwks10: 0
+
+- name: A supplied aggregate removes a large dependent gain without borrowing its rounding error
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        long_term_capital_gains: 977
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 16_776_240
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        net_capital_gains: 20_000_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # The supplied all-member gain is 20,000,000. Removing the child's
+    # own 16,776,240 gives 3,223,760. A residual against the rounded
+    # computed aggregate (16,777,216) incorrectly adds a dollar to this.
+    filer_loss_limited_net_capital_gains: 3_223_760
+    # Component-derived line 15 remains 977, so the preexisting
+    # aggregate/component split gives that gain to the worksheet and
+    # statutory net-capital-gain calculation.
+    net_capital_gain: 977
+    dwks09: 977
+    dwks10: 977
+
+- name: A supplied capital gain survives a much larger filer component
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        long_term_capital_gains: 1_152_921_504_606_846_976
+    tax_units:
+      tax_unit:
+        members: [head]
+        net_capital_gains: 1
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # The component gain is 2**60, exactly representable in float32.
+    # Even a float64 residual of 1 - 2**60 loses the supplied dollar when
+    # added back to the component gain. No dependent gains need removal.
+    filer_loss_limited_net_capital_gains: 1

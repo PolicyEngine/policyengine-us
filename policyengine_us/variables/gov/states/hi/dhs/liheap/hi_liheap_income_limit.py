@@ -10,7 +10,7 @@ class hi_liheap_income_limit(Variable):
     unit = USD
     defined_for = StateCode.HI
     reference = (
-        "https://www.hcapweb.org/wp-content/uploads/2026/04/H-HEAP-2026-Income-Eligibility.pdf#page=1",
+        "https://www.hcapweb.org/wp-content/uploads/2026/04/H-HEAP-2026-Income-Eligibility.pdf",
     )
 
     def formula(spm_unit, period, parameters):

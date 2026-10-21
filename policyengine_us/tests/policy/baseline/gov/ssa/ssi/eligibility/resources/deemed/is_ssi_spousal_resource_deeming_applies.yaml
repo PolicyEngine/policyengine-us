@@ -1,0 +1,494 @@
+# 20 CFR 416.1202(a): an eligible individual living with an ineligible spouse.
+# https://www.ecfr.gov/current/title-20/section-416.1202
+# The resource rule is independent of the income deeming threshold.
+
+# 20 CFR 416.1202(a): resources are deemed independently of an income threshold.
+- name: ABD claimant with an ineligible spouse applies resource deeming without income
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_spouse: true
+        ssi_countable_resources:
+          '2026': 0
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      family_couple_0:
+        members: [claimant, spouse]
+    households:
+      family:
+        members: [claimant, spouse]
+  output:
+    is_ssi_spousal_resource_deeming_applies: [true, false]
+
+# 20 CFR 416.1202(a): the spouse must be ineligible; joint claims retain the couple test.
+- name: Both ABD spouses jointly claiming do not apply ineligible spouse resource deeming
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_spouse: true
+        ssi_countable_resources:
+          '2026': 0
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      family_couple_0:
+        members: [claimant, spouse]
+    households:
+      family:
+        members: [claimant, spouse]
+  output:
+    is_ssi_spousal_resource_deeming_applies: [false, false]
+
+# 20 CFR 416.1202(c): an eligible individual must be aged, blind, or disabled.
+- name: Neither spouse ABD does not apply resource deeming
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_spouse: true
+        ssi_countable_resources:
+          '2026': 0
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      family_couple_0:
+        members: [claimant, spouse]
+    households:
+      family:
+        members: [claimant, spouse]
+  output:
+    is_ssi_spousal_resource_deeming_applies: [false, false]
+
+# 20 CFR 416.1202(a): the other adult must be the claimant spouse.
+- name: An unrelated adult in a tax unit is not an ineligible spouse
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      adult:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 0
+    tax_units:
+      family:
+        members: [claimant, adult]
+    marital_units:
+      family_claimant:
+        members: [claimant]
+      family_adult:
+        members: [adult]
+    households:
+      family:
+        members: [claimant, adult]
+  output:
+    is_ssi_spousal_resource_deeming_applies: [false, false]
+
+# 20 CFR 416.1202(a): the spouses must be living together.
+- name: Spouses living in separate households do not deem resources
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_spouse: true
+        ssi_countable_resources:
+          '2026': 0
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      family_couple_0:
+        members: [claimant, spouse]
+    households:
+      first:
+        members: [claimant]
+      second:
+        members: [spouse]
+  output:
+    is_ssi_spousal_resource_deeming_applies: [false, false]
+
+# Keep SSI tax head/spouse roles: an omitted marital unit is not evidence
+# that a parent and adult dependent are spouses under 416.1202(a).
+- name: Omitted marital units do not make a tax head parent an adult dependent spouse
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_household_head: false
+        ssi_countable_resources:
+          '2026': 5000
+        is_parent: true
+      adult_child:
+        age: 25
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_household_head: false
+        ssi_countable_resources:
+          '2026': 0
+    tax_units:
+      family:
+        members:
+        - parent
+        - adult_child
+    households:
+      home:
+        members:
+        - parent
+        - adult_child
+  output:
+    is_ssi_spousal_resource_deeming_applies:
+    - false
+    - false
+    ssi_resources_deemed_from_ineligible_spouse:
+    - 0
+    - 0
+    meets_ssi_resource_test:
+    - false
+    - true
+
+# 416.1160 and 416.1205(a): a married claimant who is a tax dependent still
+# lives with an ineligible spouse; tax roles do not decide marriage.
+- name: Married dependents in a parent's tax unit deem the ineligible spouse's resources
+  period: 2026-01
+  input:
+    people:
+      mother:
+        age: 55
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        ssi_countable_resources:
+          '2026': 0
+      claimant:
+        age: 25
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 25
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 3001
+    tax_units:
+      family:
+        members: [mother, claimant, spouse]
+    marital_units:
+      mother_unit:
+        members: [mother]
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [mother, claimant, spouse]
+  output:
+    is_ssi_spousal_resource_deeming_applies: [false, true, false]
+    ssi_resources_deemed_from_ineligible_spouse: [0, 3001, 0]
+    meets_ssi_resource_test: [true, false, false]
+
+# A co-resident head of another tax unit in their own marital unit is not a
+# spouse (416.1160), whatever they own.
+- name: A co-resident adult in their own marital unit is not a spouse
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 70
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 2500
+      son:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+    tax_units:
+      claimant_unit:
+        members: [claimant]
+      son_unit:
+        members: [son]
+    marital_units:
+      claimant_unit:
+        members: [claimant]
+      son_unit:
+        members: [son]
+    households:
+      home:
+        members: [claimant, son]
+  output:
+    is_ssi_spousal_resource_deeming_applies: [false, false]
+    ssi_resources_deemed_from_ineligible_spouse: [0, 0]
+    meets_ssi_resource_test: [false, true]
+
+# A two-person marital unit is a married, cohabiting couple whether or not
+# they file together; 416.1205(a) applies the couple limit to their combined
+# resources.
+- name: Spouses filing separately in one marital unit count each other's resources
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 70
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 68
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 3001
+    tax_units:
+      claimant_unit:
+        members: [claimant]
+      spouse_unit:
+        members: [spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+  output:
+    is_ssi_spousal_resource_deeming_applies: [true, false]
+    ssi_resources_deemed_from_ineligible_spouse: [3001, 0]
+    meets_ssi_resource_test: [false, false]
+
+# Two aged, blind or disabled spouses who are both tax dependents do not
+# claim jointly in the model, but 416.1205(b) still tests a couple's
+# combined resources against the couple limit: 0 + 3,001 > 3,000.
+- name: Disabled married dependents count each other's resources
+  period: 2026-01
+  input:
+    people:
+      mother:
+        age: 55
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        ssi_countable_resources:
+          '2026': 0
+      claimant:
+        age: 25
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 25
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 3001
+    tax_units:
+      family:
+        members: [mother, claimant, spouse]
+    marital_units:
+      mother_unit:
+        members: [mother]
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [mother, claimant, spouse]
+  output:
+    is_ssi_spousal_resource_deeming_applies: [false, true, true]
+    ssi_resources_deemed_from_ineligible_spouse: [0, 3001, 0]
+    meets_ssi_resource_test: [true, false, false]
+
+# Explicit marital units stand whatever tax roles the model infers: with
+# roles omitted the model may treat one spouse as the mother's tax spouse and
+# the other as her dependent, but 416.1205(b) still combines the couple's
+# resources: 0 + 3,001 > 3,000.
+- name: Married adults in a parent's tax unit with roles omitted count each other's resources
+  period: 2026-01
+  input:
+    people:
+      mother:
+        age: 55
+        is_ssi_aged_blind_disabled: false
+        ssi_countable_resources:
+          '2026': 0
+      claimant:
+        age: 25
+        is_ssi_aged_blind_disabled: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 25
+        is_ssi_aged_blind_disabled: true
+        ssi_countable_resources:
+          '2026': 3001
+    tax_units:
+      family:
+        members: [mother, claimant, spouse]
+    marital_units:
+      mother_unit:
+        members: [mother]
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [mother, claimant, spouse]
+  output:
+    ssi_resources_deemed_from_ineligible_spouse: [0, 3001, 0]
+    meets_ssi_resource_test: [true, false, false]
+
+# 416.1202(a)(2) excludes retroactive military payments of an ineligible
+# spouse; an aged, blind or disabled spouse is tested as part of a couple
+# (416.1205(b)) with the exclusions an eligible individual gets. Here each
+# spouse's 2,000 of countable resources stays countable: 4,000 > 3,000.
+- name: An eligible spouse's resources count without ineligible-spouse exclusions
+  period: 2026-01
+  input:
+    people:
+      mother:
+        age: 55
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      claimant:
+        age: 30
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 2000
+        ssi_resource_deeming_excluded_military_resources: 2000
+      spouse:
+        age: 30
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 2000
+        ssi_resource_deeming_excluded_military_resources: 2000
+    tax_units:
+      family:
+        members: [mother, claimant, spouse]
+    marital_units:
+      mother_unit:
+        members: [mother]
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [mother, claimant, spouse]
+  output:
+    ssi_resources_deemed_from_ineligible_spouse: [0, 2000, 2000]
+    meets_ssi_resource_test: [true, false, false]
+
+# A spouse who fails SSI's citizenship or qualified-noncitizen condition is
+# 'not eligible for SSI benefits' (416.1160), so keeps the ineligible-spouse
+# exclusion of retroactive military pay (416.1202(a)(2)): 3,001 - 2,000 =
+# 1,001 counted, and the claimant passes the 3,000 couple limit.
+- name: An immigration-ineligible disabled spouse keeps ineligible-spouse exclusions
+  period: 2026-01
+  input:
+    people:
+      mother:
+        age: 55
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      claimant:
+        age: 30
+        is_ssi_aged_blind_disabled: true
+        immigration_status: CITIZEN
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 30
+        is_ssi_aged_blind_disabled: true
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 3001
+        ssi_resource_deeming_excluded_military_resources: 2000
+    tax_units:
+      family:
+        members: [mother, claimant, spouse]
+    marital_units:
+      mother_unit:
+        members: [mother]
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [mother, claimant, spouse]
+  output:
+    ssi_resources_deemed_from_ineligible_spouse: [0, 1001, 0]
+    meets_ssi_resource_test: [true, true, false]
+

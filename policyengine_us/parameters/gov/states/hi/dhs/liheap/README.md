@@ -17,8 +17,12 @@ Historical household rules are corroborated by the current application.
 Annual income and electric expenses approximate the prior-month assessment.
 Existing net business inputs need no second deduction. Pension, Social Security
 and retirement-distribution aggregates are counted once, with separate private
-survivor receipts. Monthly SSI and state TANF are annualized; TANF enters once
-per household. No Medicare adjustment is added. Cash gifts from friends or relatives enter through financial_assistance, and
+survivor receipts. Monthly SSI is annualized; take-up-gated TANF enters once per household.
+Received sources are floored separately for each person, so a source or another
+member's loss cannot cancel positive receipts. Military retirement pay is separate
+from the pension and retirement-account aggregates and is counted once. UI uses
+reported compensation or the shared modeled-state fallback. Social Security is
+gross, including Medicare premiums, as selected in the accepted plan. Cash gifts from friends or relatives enter through financial_assistance, and
 lottery/gambling winnings enter through gambling_winnings. Mortgage principal
 receipts, jury compensation, settlements, foster/adoption payments and community
 service stipends lack separately identified inputs. Wage-embedded work-study,
@@ -45,7 +49,8 @@ identify every qualifying exception. The statewide private-award value per point
 also remains unavailable; a federal allocation or average award cannot replace
 the final EC funds remaining after flat awards divided by private-household points.
 
-Private dwelling points follow the adopted plan's age-five-inclusive language.
+Private dwelling points include children through age five, ending at the sixth
+birthday, as stated in the adopted plan.
 Disability counts for adults. Burden uses electric expenses even for gas aid,
 consistent with the historical manual and current application. Positive expense
 at zero income is treated as high burden, but zero expense does not earn that
@@ -55,7 +60,8 @@ Points are before eligibility and housing dispatch, and are not a benefit.
 The flat schedule likewise does not assert that its recipient meets eligibility.
 Photovoltaic net consumption cannot be inferred from solar heating type.
 
-Parameters are verified for FY2026 only after tests. Earlier backfilled results
+These components and tables are researched for FY2026; the incomplete state has
+no fully verified policy year. Earlier backfilled results
 are unverified historical estimates. FY2027 sources are proposed, not adopted.
 Crisis, cooling, weatherization and equipment are outside this work.
 

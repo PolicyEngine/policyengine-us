@@ -1,0 +1,74 @@
+- name: Wisconsin retiree keeps the homestead credit when it beats the retirement income exclusion
+  # 2025 Form 1 instructions (https://www.revenue.wi.gov/TaxForms2025/2025-Form1-inst.pdf):
+  #   line 7 = $16,313; standard deduction $13,560 (page 35); exemptions
+  #   $950; taxable income $1,803; tax $65 (page 38). The renter's school
+  #   property tax credit (line 16a) exceeds $65, so net tax is $0.
+  # 2025 Schedule H instructions (https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleH-inst.pdf):
+  #   household income $16,313 -> Table A (page 25) gives $722; rent
+  #   constituting property taxes is capped at $1,460; $1,460 - $722 = $738
+  #   -> Table B (page 26) gives a credit of $588.
+  # Claiming the Schedule SB Line 16 subtraction for 2025 would bar the
+  # homestead credit (Schedule H instructions, page 4, Step 2 question h)
+  # and leave a tax of $0, so the filer keeps the credits: $0 - $588 = -$588.
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_private_pension_income: 16_313
+        rent: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_homestead_credit: 588
+    wi_retirement_income_exclusion_elected: false
+    wi_income_tax: -588
+    state_income_tax: -588
+    household_state_tax_before_refundable_credits: 0
+    household_refundable_state_tax_credits: 588
+
+- name: Wisconsin filer who elects the retirement income exclusion for 2025 has no refundable state credits
+  # 2025 Schedule SB instructions, page 7, Line 16: no credit on Form 1 lines
+  # 13-20 and 30-35. Tax with credits = max(0, 5,000 - 500) - (200 + 300) =
+  # 4,000, above the exclusion tax of 3,000.
+  period: 2025
+  input:
+    state_code: WI
+    wi_income_tax_before_credits: 5_000
+    wi_non_refundable_credits: 500
+    wi_earned_income_credit: 200
+    wi_homestead_credit: 300
+    wi_retirement_income_exclusion_amount: 24_000
+    wi_retirement_income_exclusion_tax: 3_000
+    state_use_tax: 0
+  output:
+    wi_retirement_income_exclusion_elected: true
+    household_state_tax_before_refundable_credits: 3_000
+    household_refundable_state_tax_credits: 0
+
+- name: Wisconsin filer who elects the retirement income exclusion for 2026 keeps the homestead credit
+  # 2025 Wisconsin Act 174, section 7, bars only credits under section 71.07;
+  # the homestead credit is under section 71.54 and the earned income credit
+  # is under 71.07. Tax with credits = max(0, 5,000 - 500) - (200 + 300) =
+  # 4,000; tax with the exclusion = 3,000 - 300 = 2,700.
+  # https://docs.legis.wisconsin.gov/2025/related/acts/174.pdf#page=2
+  period: 2026
+  input:
+    state_code: WI
+    wi_income_tax_before_credits: 5_000
+    wi_non_refundable_credits: 500
+    wi_earned_income_credit: 200
+    wi_homestead_credit: 300
+    wi_retirement_income_exclusion_amount: 24_000
+    wi_retirement_income_exclusion_tax: 3_000
+    state_use_tax: 0
+  output:
+    wi_retirement_income_exclusion_elected: true
+    household_state_tax_before_refundable_credits: 3_000
+    household_refundable_state_tax_credits: 300

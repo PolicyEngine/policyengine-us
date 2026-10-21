@@ -1,7 +1,7 @@
-# Accepted FY2026 plan establishes the five categories and child age <=5.
+# Accepted FY2026 plan establishes the five categories and child through age five.
 # https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=10
 # Matrix verifies point bands, size/island points and actual total income.
-# https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=2,3
+# https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=2
 # Historical manual section 2.10 specifies electric cost even for gas requests.
 # https://humanservices.hawaii.gov/wp-content/uploads/2019/07/Policies-and-Procedures-2020.pdf#page=8
 # These points are before eligibility; no final award or value per point is tested.
@@ -330,7 +330,7 @@
 - name: Case 4, child elderly and disabled-adult age boundaries.
   period: 2026
   # At two members and income 20_000, base = income two + size one + Oahu one.
-  # Accepted plan p10 gives one extra for age <=5, age >=60 or disabled adult.
+  # Accepted plan p10 gives one extra through age five, age >=60 or disabled adult.
   # Age five follows the accepted plan despite the matrix under-five wording.
   input:
     people:
@@ -876,3 +876,63 @@
   output:
     hi_liheap_countable_income: 12_000
     hi_liheap_points: 5
+
+# Plan physical10: agefiveandunder includes5.5. Income20_000 / two-person FPG24_320 gives2; size1+Oahu1+child1=5, dropping to4 at6. Electric1_200 is below30%burden.
+- name: Case 12, a child remains age five until the sixth birthday.
+  period: 2_026
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person2:
+        age: 5.5
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_disabled: false
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person4:
+        age: 6
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_disabled: false
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        - person2
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 1_200
+        hi_tanf: 0
+      spm_unit2:
+        members:
+        - person3
+        - person4
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 1_200
+        hi_tanf: 0
+    households:
+      household1:
+        members:
+        - person1
+        - person2
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members:
+        - person3
+        - person4
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_points:
+    - 5
+    - 4

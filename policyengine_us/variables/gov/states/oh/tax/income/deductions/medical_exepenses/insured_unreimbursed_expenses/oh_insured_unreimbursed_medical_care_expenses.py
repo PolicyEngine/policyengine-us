@@ -8,9 +8,9 @@ class oh_insured_unreimbursed_medical_care_expenses(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=18",  # Line 36
-        "https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=27",
-        "https://codes.ohio.gov/ohio-revised-code/section-5747.01",  # R.C. 5747.01(10)
+        "https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=18",  # Line 36
+        "https://dam.assets.ohio.gov/image/upload/v1767095693/tax.ohio.gov/forms/ohio_individual/individual/2025/it1040-booklet.pdf#page=41",  # Worksheet
+        "https://codes.ohio.gov/ohio-revised-code/section-5747.01",  # R.C. 5747.01(A)(10)(b)
     )
     defined_for = StateCode.OH
 
@@ -21,8 +21,8 @@ class oh_insured_unreimbursed_medical_care_expenses(Variable):
             period,
             ["oh_insured_unreimbursed_medical_care_expense_amount"],
         )
-        # Line 6
-        federal_agi = tax_unit("adjusted_gross_income", period)
+        # Line 6: federal AGI, entered as zero if less than zero.
+        federal_agi = max_(tax_unit("adjusted_gross_income", period), 0)
 
         # Can deduct medical expenses in excess of 7.5% of federal AGI.
         # Line 7

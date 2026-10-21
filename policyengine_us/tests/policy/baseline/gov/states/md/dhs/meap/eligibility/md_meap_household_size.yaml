@@ -1,0 +1,93 @@
+# Sources for the expected values in this file:
+# - OHEP Operations Manual (May 2025), page 108: "Children under 18 are always
+#   counted in the household, regardless of citizenship status"; ineligible adults
+#   "are not counted in the household number but their income is included"; and
+#   "the household must have at least one eligible member":
+#   https://dhs.maryland.gov/documents/OHEP/OHEP-Operations-Manual.pdf#page=108
+# - COMAR 07.03.21.04C(1), which would not count any nonqualified member (the model
+#   follows the manual, the operating rule):
+#   https://regs.maryland.gov/us/md/exec/comar/07.03.21.04
+
+# Four two-person households, each with a gas bill, no income and no SNAP, TCA or
+# SSI:
+# - citizen parent and undocumented child: both count, size 2, eligible;
+# - undocumented parent and citizen child: only the child counts, size 1, eligible
+#   because the child is a qualified member;
+# - undocumented parent and undocumented child: the child counts, size 1, but no
+#   member is eligible, so the household is not;
+# - two undocumented adults: neither counts, size 0, not eligible.
+- name: Case 1, children under 18 count regardless of status and nonqualified adults do not.
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 40
+        ssi: 0
+      child1:
+        age: 5
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+      parent2:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+      child2:
+        age: 5
+        ssi: 0
+      parent3:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+      child3:
+        age: 5
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+      adult4a:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+      adult4b:
+        age: 38
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [parent1, child1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_150
+        snap: 0
+        tanf: 0
+      spm_unit2:
+        members: [parent2, child2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_150
+        snap: 0
+        tanf: 0
+      spm_unit3:
+        members: [parent3, child3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_150
+        snap: 0
+        tanf: 0
+      spm_unit4:
+        members: [adult4a, adult4b]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_150
+        snap: 0
+        tanf: 0
+    households:
+      household1:
+        members: [parent1, child1]
+        state_code: MD
+      household2:
+        members: [parent2, child2]
+        state_code: MD
+      household3:
+        members: [parent3, child3]
+        state_code: MD
+      household4:
+        members: [adult4a, adult4b]
+        state_code: MD
+  output:
+    md_meap_household_size: [2, 1, 1, 0]
+    md_meap_eligible: [true, true, false, false]

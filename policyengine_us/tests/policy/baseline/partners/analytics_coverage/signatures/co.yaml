@@ -1,3 +1,6 @@
+# School-meal daily subsidy is the combined breakfast/lunch valuation per
+# enrolled child. Calendar 2026 uses published SY 2025-26 rates: $4.60 + $2.46;
+# see edge_cases/federal/nutrition/school_meals/federal.yaml for sources.
 # Signature-fidelity fix (2026-07-04): state_code added on each household per
 # analytics (every MFB state-output request sends the state_code enum);
 # employment_income / self_employment_income / capital_gains converted to the
@@ -212,7 +215,7 @@
       spm_unit:
         co_tanf: 8136.0
         lifeline: 111.0
-        school_meal_daily_subsidy: 7.15
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0
         snap: 12015.0
 - name: signature_16 (13 reqs, +8 dupes)
@@ -410,7 +413,7 @@
       spm_unit:
         co_tanf: 8136.0
         lifeline: 111.0
-        school_meal_daily_subsidy: 7.15
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0
 - name: signature_26 (9 reqs)
   period: 2026
@@ -611,7 +614,7 @@
       spm_unit:
         co_tanf: 8136.0
         lifeline: 111.0
-        school_meal_daily_subsidy: 7.15
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0
         snap: 12015.0
 - name: signature_92 (3 reqs, +1 dupes)
@@ -898,7 +901,7 @@
       spm_unit:
         co_tanf: 8136.0
         lifeline: 111.0
-        school_meal_daily_subsidy: 7.15
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0
         snap: 12015.0
 - name: signature_124 (2 reqs, +1 dupes)
@@ -1100,5 +1103,5 @@
       spm_unit:
         co_tanf: 8136.0
         lifeline: 111.0
-        school_meal_daily_subsidy: 7.15
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0

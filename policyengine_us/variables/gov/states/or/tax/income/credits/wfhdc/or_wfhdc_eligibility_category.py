@@ -29,6 +29,16 @@ class or_wfhdc_eligibility_category(Variable):
         # Get the age of the youngest qualifying child.
         person = tax_unit.members
         age = person("age", period)
+        # ORS 315.264(2) uses the youngest qualifying individual. A child of
+        # a return on which a filer can be claimed as a dependent is not one,
+        # so that child does not set the column.
+        p_wfhdc = parameters(period).gov.states["or"].tax.income.credits.wfhdc
+        excluded_child = (
+            person("is_tax_unit_dependent", period)
+            & (age <= p_wfhdc.child_age_limit)
+            & ~person("or_wfhdc_qualifying_individual", period)
+        )
+        age = where(excluded_child, np.inf, age)
         min_age = tax_unit.min(age)
 
         # Determine if the youngest qualifying individual is disabled.

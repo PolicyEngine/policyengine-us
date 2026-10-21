@@ -8,20 +8,29 @@ class qualified_business_income_deduction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
+        "https://www.law.cornell.edu/uscode/text/26/199A#a",
         "https://www.law.cornell.edu/uscode/text/26/199A#b_1",
         "https://www.irs.gov/pub/irs-prior/p535--2018.pdf",
+        "https://www.irs.gov/pub/irs-prior/f8995--2025.pdf",
+        "https://www.irs.gov/pub/irs-prior/i8995--2025.pdf#page=4",
     )
 
     def formula(tax_unit, period, parameters):
-        # compute sum of QBID amounts for each person in TaxUnit following
-        # logic in 2018 IRS Publication 535, Worksheet 12-A, line 16
+        # compute sum of QBID amounts for the head and spouse following
+        # logic in 2018 IRS Publication 535, Worksheet 12-A, line 16. The
+        # deduction is the taxpayer's, from their own (and, on a joint
+        # return, their spouse's) qualified business income; a tax unit
+        # dependent with business income takes their deduction on their
+        # own return.
         person = tax_unit.members
+        filer = ~person("is_tax_unit_dependent", period)
         qbid_amt = person("qbid_amount", period)
-        uncapped_qbid = tax_unit.sum(qbid_amt)
-        # apply taxinc cap at the TaxUnit level following logic
-        # in 2018 IRS Publication 535, Worksheet 12-A, lines 32-37
+        uncapped_qbid = tax_unit.sum(qbid_amt * filer)
+        # apply taxinc cap at the TaxUnit level following 26 U.S.C.
+        # 199A(a)(2): 20 percent of taxable income over net capital gain
+        # (2025 Form 8995 lines 11-14, Form 8995-A lines 33-36)
         taxinc_less_qbid = tax_unit("taxable_income_less_qbid", period)
-        netcg_qdiv = tax_unit("adjusted_net_capital_gain", period)
+        netcg_qdiv = tax_unit("section_199a_net_capital_gain", period)
         p = parameters(period).gov.irs.deductions.qbi
         taxinc_cap = p.max.rate * max_(0, taxinc_less_qbid - netcg_qdiv)
         pre_floor_qbid = min_(uncapped_qbid, taxinc_cap)
@@ -42,7 +51,7 @@ class qualified_business_income_deduction(Variable):
                 legacy_sstb, qbi, 0
             )
             total_qbi = tax_unit.sum(
-                non_sstb + sstb * tax_unit.project(applicable_rate)
+                (non_sstb + sstb * tax_unit.project(applicable_rate)) * filer
             )
             floor = p.deduction_floor.amount.calc(total_qbi)
             return max_(pre_floor_qbid, floor)

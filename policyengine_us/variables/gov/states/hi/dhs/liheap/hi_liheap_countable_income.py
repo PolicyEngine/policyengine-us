@@ -9,13 +9,14 @@ class hi_liheap_countable_income(Variable):
     unit = USD
     defined_for = StateCode.HI
     reference = (
-        "https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=6,7",
+        # PDF pages 6-7
+        "https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=6",
     )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.hi.dhs.liheap.income
-        # Annual flows approximate annualized prior-month income. All members'
-        # income counts, including minor earnings and nonqualified members.
-        # add() annualizes monthly SSI and adds household TANF only once.
-        # Net business inputs require no second business-expense deduction.
-        return max_(add(spm_unit, period, p.sources), 0)
+        # Annual flows approximate prior-month receipts. Minor and nonqualified
+        # members' income counts; source losses cannot offset other receipts.
+        person = spm_unit.members
+        income = sum(max_(add(person, period, [source]), 0) for source in p.sources)
+        return spm_unit.sum(income) + max_(spm_unit("tanf", period), 0)

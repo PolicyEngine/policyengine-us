@@ -1,0 +1,80 @@
+# Manual physical page 9: "Only citizens and eligible aliens are counted as
+# actual HH members"; page 18: ineligible aliens are not in the household count.
+
+# Two citizens and a lawful permanent resident (a qualified noncitizen) = 3.
+- name: Case 1, citizens and qualified noncitizens all count.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+      person2:
+        age: 33
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+      person3:
+        age: 6
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+  output:
+    sd_liheap_household_size: 3
+
+# Citizen adult + citizen child = 2; the undocumented adult is not counted.
+- name: Case 2, an undocumented adult is excluded from the household count.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+      person2:
+        age: 33
+        immigration_status: UNDOCUMENTED
+      person3:
+        age: 6
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+  output:
+    sd_liheap_household_size: 2
+
+# Neither undocumented adult is counted, so the size is 0.
+- name: Case 3, a household with no citizen or qualified noncitizen has size zero.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 33
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_liheap_household_size: 0
+
+# Defined for South Dakota only.
+- name: Case 4, another state has no South Dakota household size.
+  period: 2026
+  input:
+    state_code: [ND]
+    immigration_status: [CITIZEN]
+  output:
+    sd_liheap_household_size: [0]

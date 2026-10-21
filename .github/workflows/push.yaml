@@ -10,6 +10,8 @@ jobs:
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
     runs-on: ubuntu-latest
+    # Oct 6-8: 29 runs, max 0.4 min.
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
       - name: Set up Python
@@ -25,6 +27,8 @@ jobs:
   ReleaseLockTests:
     name: Release lock guard tests
     runs-on: ubuntu-latest
+    # Oct 6-8: 104 successful runs, max 1.4 min; one hung run failed at 45 min.
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
       - name: Set up Python
@@ -42,6 +46,8 @@ jobs:
   Lint:
     needs: ReleaseLock
     runs-on: ubuntu-latest
+    # Oct 6-8: 28 runs, max 0.7 min.
+    timeout-minutes: 10
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
@@ -62,30 +68,63 @@ jobs:
       (github.repository == 'PolicyEngine/policyengine-us')
       && !(github.event.head_commit.message == 'Update PolicyEngine US')
     runs-on: ubuntu-latest
+    # Oct 6-8: successful runs max 4.5 min, any run max 12 min.
+    timeout-minutes: 20
     steps:
+      # When several PRs merge before this job gets a runner, only the newest
+      # merge can push a version bump: the others would commit on a stale
+      # parent and fail on push. The newest merge's job consumes every pending
+      # changelog fragment (towncrier builds all of changelog.d), so an older
+      # job has nothing left to do. It skips only when GitHub's compare API
+      # says main is strictly ahead of this commit (status "ahead": this
+      # commit is an ancestor of main and main has more). Any other answer
+      # (identical, behind, diverged) or a failed lookup runs versioning as
+      # before, so a stale read can never suppress the newest merge's bump.
+      - name: Skip if main already contains this commit and more
+        id: head
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! status=$(gh api "repos/${GITHUB_REPOSITORY}/compare/${GITHUB_SHA}...main" --jq .status); then
+            echo "::warning::Could not compare this commit with main; running versioning anyway."
+            status=unknown
+          fi
+          if [ "$status" = "ahead" ]; then
+            echo "current=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Versioning superseded::main already contains ${GITHUB_SHA} and newer commits. The versioning job for main's newest merge bumps the version once with every pending changelog fragment, including this commit's. If that job fails, re-run it."
+          else
+            echo "current=true" >> "$GITHUB_OUTPUT"
+          fi
       - name: Generate GitHub App token
+        if: steps.head.outputs.current == 'true'
         id: app-token
         uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
       - uses: actions/checkout@v6
+        if: steps.head.outputs.current == 'true'
         with:
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token }}
       - name: Install uv
+        if: steps.head.outputs.current == 'true'
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
       - name: Set up Python
+        if: steps.head.outputs.current == 'true'
         uses: actions/setup-python@v6
         with:
           python-version: 3.14
       - name: Check committed registry lock before bump
+        if: steps.head.outputs.current == 'true'
         run: python .github/release_lock.py --committed
       - name: Bump version once
+        if: steps.head.outputs.current == 'true'
         run: python .github/bump_version.py
       - name: Build changelog with isolated registry tooling
+        if: steps.head.outputs.current == 'true'
         run: |
           python - <<'PYTHON'
           import os
@@ -113,8 +152,10 @@ jobs:
           )
           PYTHON
       - name: Refresh and check release version in registry lock
+        if: steps.head.outputs.current == 'true'
         run: python .github/release_lock.py --refresh
       - name: Update changelog
+        if: steps.head.outputs.current == 'true'
         uses: EndBug/add-and-commit@v10
         with:
           add: "pyproject.toml uv.lock CHANGELOG.md changelog.d"
@@ -134,12 +175,20 @@ jobs:
     env:
       PYTHONUNBUFFERED: 1
       PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
+      # Two batch subprocesses per runner while its memory allows (see
+      # test_batched.py): 32% fewer runner-minutes, same cases, no shutdowns.
+      POLICYENGINE_BATCH_WORKERS: 2
     strategy:
       fail-fast: false
+      # At most 6 Baseline groups run at once; GitHub starts the next group on a
+      # fresh runner as each finishes, so the lanes balance from real durations.
+      max-parallel: 6
       matrix:
         include:
-          # One state per subprocess; retain four runners and one worker each.
-          # The former NY/OH/OK process peaked at 15.1 GB (run 36930199045).
+          # One state per batch subprocess, over four runners. The job's
+          # POLICYENGINE_BATCH_WORKERS overrides --workers 1, and runner memory
+          # decides whether two run at once. The former NY/OH/OK process peaked
+          # at 15.1 GB (run 36930199045).
           - group: states-shard-1
             cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 1/4
           - group: states-shard-2
@@ -214,7 +263,8 @@ jobs:
       - name: Run Household API Partners YAML tests
         run: uv run --no-sync make test-yaml-no-structural-other-partners
   Contrib:
-    needs: ReleaseLock
+    # Waits for Baseline and skips if it fails, as in pr.yaml.
+    needs: [ReleaseLock, Baseline]
     name: Full Suite - Contrib (${{ matrix.group }})
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -224,8 +274,14 @@ jobs:
     env:
       PYTHONUNBUFFERED: 1
       PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
+      # Two batch subprocesses per runner while its memory allows (see
+      # test_batched.py): 32% fewer runner-minutes, same cases, no shutdowns.
+      POLICYENGINE_BATCH_WORKERS: 2
     strategy:
       fail-fast: false
+      # Contrib starts after Baseline finishes, so its 6 lanes take the place of
+      # Baseline's 6.
+      max-parallel: 6
       matrix:
         include:
           - group: states-shard-1
@@ -269,17 +325,23 @@ jobs:
       - name: Run Contrib Python tests
         if: ${{ matrix.group == 'other-shard-1' }}
         run: uv run --no-sync make test-policy-contrib-python
-  Rest:
+  RestPython:
     needs: ReleaseLock
-    name: Full Suite - Rest (Python + variables)
+    name: Full Suite - Rest (Python, shard-1 + variables)
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # Historical group times, including variables: 33-46 minutes plus setup.
+    timeout-minutes: 90
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
     env:
       PYTHONUNBUFFERED: 1
-      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
+      OMP_NUM_THREADS: 4
+      OPENBLAS_NUM_THREADS: 4
+      MKL_NUM_THREADS: 4
+      VECLIB_MAXIMUM_THREADS: 4
+      NUMEXPR_NUM_THREADS: 4
+      OMP_WAIT_POLICY: PASSIVE
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -298,34 +360,102 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      # Run sequentially on this runner; process exit releases the SPM heap
-      # before collecting the remaining Python files.
-      - name: Run SPM Python tests
-        env:
-          PYTEST_ADDOPTS: "--durations=0 -v --junitxml=rest-python-spm.xml -p no:unraisableexception -p no:threadexception"
-        run: /usr/bin/time -v -o rest-python-spm-resources.txt uv run --no-sync make test-other-python-spm
+      # Each group remains a separate, sequential process on its runner.
+      # SPM simulation/API contracts stay in the Microsimulation job.
       - name: Run remaining Python tests
-        if: always()
+        if: ${{ !cancelled() }}
         env:
-          PYTEST_ADDOPTS: "--durations=0 -v --junitxml=rest-python-other.xml -p no:unraisableexception -p no:threadexception"
-        run: /usr/bin/time -v -o rest-python-other-resources.txt uv run --no-sync make test-other-python-rest
-      - name: Run tests/variables YAML tests
-        if: always()
-        env:
-          PYTEST_ADDOPTS: "--durations=0 --junitxml=rest-variables.xml -p no:unraisableexception -p no:threadexception"
-        run: /usr/bin/time -v -o rest-variables-resources.txt uv run --no-sync make test-yaml-variables
-      - name: Upload Rest timing and memory reports
+          PYTEST_ADDOPTS: "--durations=0 -v -p no:unraisableexception -p no:threadexception"
+        run: uv run --no-sync make test-other-python-rest REST_PYTHON_SHARD=1 REST_REPORT_DIR=.
+      - name: Upload Rest Python timing and memory reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: rest-test-timings
+          name: rest-python-test-timings-shard-1
           path: |
-            rest-python-spm.xml
-            rest-python-other.xml
+            rest-python-*.xml
+            rest-python-*-resources.txt
+      - name: Run tests/variables YAML tests
+        if: ${{ !cancelled() }}
+        env:
+          PYTEST_ADDOPTS: "--durations=0 --junitxml=rest-variables.xml -p no:unraisableexception -p no:threadexception"
+        run: /usr/bin/time -v -o rest-variables-resources.txt uv run --no-sync make test-yaml-variables
+      - name: Upload Rest variables timing and memory reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rest-variables-test-timings
+          path: |
             rest-variables.xml
-            rest-python-spm-resources.txt
-            rest-python-other-resources.txt
             rest-variables-resources.txt
+  Rest:
+    needs: [RestPython]
+    name: Full Suite - Rest (Python + variables)
+    runs-on: ubuntu-latest
+    # Historical group times: 32-46 minutes plus setup.
+    # This runner also retains the legacy summary check, keeping PRs at 27 runners.
+    timeout-minutes: 90
+    # Runs after a shard-1 failure, but not when shard 1 was skipped (a failed
+    # release lock) or the run is cancelled. always() kept this runner alive
+    # after cancellation.
+    if: |
+      !cancelled()
+      && (needs.RestPython.result != 'skipped')
+      && (github.repository == 'PolicyEngine/policyengine-us')
+      && (github.event.head_commit.message == 'Update PolicyEngine US')
+    env:
+      PYTHONUNBUFFERED: 1
+      OMP_NUM_THREADS: 4
+      OPENBLAS_NUM_THREADS: 4
+      MKL_NUM_THREADS: 4
+      VECLIB_MAXIMUM_THREADS: 4
+      NUMEXPR_NUM_THREADS: 4
+      OMP_WAIT_POLICY: PASSIVE
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.14
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
+      - name: Install dependencies
+        run: uv sync --locked --extra dev
+      - name: Turn off default branching
+        shell: bash
+        run: bash ./update_itemization.sh
+      # Each group remains a separate, sequential process on its runner.
+      # SPM simulation/API contracts stay in the Microsimulation job.
+      - name: Run remaining Python tests
+        id: python_tests
+        if: ${{ !cancelled() }}
+        env:
+          PYTEST_ADDOPTS: "--durations=0 -v -p no:unraisableexception -p no:threadexception"
+        run: uv run --no-sync make test-other-python-rest REST_PYTHON_SHARD=2 REST_REPORT_DIR=.
+      - name: Upload Rest Python timing and memory reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rest-python-test-timings-shard-2
+          path: |
+            rest-python-*.xml
+            rest-python-*-resources.txt
+      - name: Check all Rest jobs succeeded
+        if: always()
+        shell: bash
+        env:
+          PYTHON_RESULT: ${{ needs.RestPython.result }}
+          SHARD_RESULT: ${{ steps.python_tests.outcome }}
+        run: |
+          if [[ "$PYTHON_RESULT" != "success" || "$SHARD_RESULT" != "success" ]]; then
+            echo "::error::Rest shards did not all succeed: shard-1=$PYTHON_RESULT, shard-2=$SHARD_RESULT"
+            exit 1
+          fi
   Microsimulation:
     needs: ReleaseLock
     name: Full Suite - Microsimulation
@@ -355,17 +485,41 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      # Split out of the Rest job: the combined single-process pytest run
-      # was OOM-killed at ~94% on run 28698452678 once microsimulation
-      # peaks stacked on the accumulated python-test RSS.
+      # Keep simulation/API and dataset compatibility on this existing runner.
+      # Use separate, sequential processes: combining these suites in one
+      # pytest process previously accumulated enough memory to kill the runner.
+      - name: Run SPM Python tests
+        env:
+          PYTEST_ADDOPTS: "--durations=0 -v --junitxml=simulation-spm.xml -p no:unraisableexception -p no:threadexception"
+        run: /usr/bin/time -v -o simulation-spm-resources.txt uv run --no-sync make test-other-python-spm
       - name: Run microsimulation tests
-        run: uv run --no-sync make test-microsimulation
+        # Continue after failures, but stop when the workflow is cancelled.
+        if: ${{ !cancelled() }}
+        env:
+          PYTEST_ADDOPTS: "--durations=0 -v --junitxml=simulation-microsimulation.xml -p no:unraisableexception -p no:threadexception"
+        run: /usr/bin/time -v -o simulation-microsimulation-resources.txt uv run --no-sync make test-microsimulation
+      - name: Upload simulation timing and memory reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: simulation-test-timings
+          path: |
+            simulation-*.xml
+            simulation-*-resources.txt
   Publish:
     runs-on: ubuntu-24.04
+    # Oct 6-8: 25 runs, max 1.3 min.
+    timeout-minutes: 20
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
-    needs: [ReleaseLock, ReleaseLockTests, Baseline, HouseholdAPIPartners, Contrib, Rest, Microsimulation]
+    needs: [ReleaseLock, ReleaseLockTests, Baseline, HouseholdAPIPartners, Contrib, RestPython, Rest, Microsimulation]
+    # PyPI trusted publishing: PyPI accepts uploads only from this workflow in
+    # the pypi environment, which is limited to main. No stored PyPI token.
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -388,6 +542,4 @@ jobs:
       - name: Publish a Python distribution to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          user: __token__
-          password: ${{ secrets.PYPI }}
           skip-existing: true

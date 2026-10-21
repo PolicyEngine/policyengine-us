@@ -1,1 +1,1 @@
-Add Hawaii LIHEAP regular-heating income, household and benefit-schedule components; final awards remain incomplete pending the statewide value per point and eligibility details.
+Add Hawaii LIHEAP regular-heating income, household and benefit-schedule components with receipt-based income and age-five vulnerability; final awards remain incomplete pending the statewide value per point and eligibility details.

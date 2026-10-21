@@ -5,7 +5,7 @@ values:
     - nd_ltcg_subtraction  # long-term capital gains
     - nd_qdiv_subtraction  # qualified dividends
     - taxable_social_security
-    - military_retirement_pay
+    - military_retirement_income
     - nd_529_deduction
     - nd_stillborn_subtraction
 
@@ -14,7 +14,7 @@ values:
     - nd_ltcg_subtraction  # long-term capital gains
     - nd_qdiv_subtraction  # qualified dividends
     - taxable_social_security
-    - military_retirement_pay
+    - military_retirement_income
     - nd_529_deduction
     - nd_stillborn_subtraction
 
@@ -23,10 +23,11 @@ values:
     - nd_ltcg_subtraction  # long-term capital gains
     - nd_qdiv_subtraction  # qualified dividends
     - taxable_social_security
-    - military_retirement_pay
+    - military_retirement_income
     - military_service_income  # military pay exclusion
     - nd_529_deduction
     - nd_stillborn_subtraction
+
 
 metadata:
   unit: list

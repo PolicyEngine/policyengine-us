@@ -8,10 +8,13 @@ class medical_expense_health_insurance_premiums(Variable):
     unit = USD
     definition_period = YEAR
     documentation = (
-        "Person-level health insurance premiums counted by statutory medical "
-        "expense definitions. Uses a direct premium input when supplied; "
-        "otherwise combines reported non-Medicare premiums with modeled "
-        "Medicare Part B premiums."
+        "Person-level non-pretax health insurance premiums for medical expense "
+        "definitions. Uses a nonzero direct health_insurance_premiums input; "
+        "otherwise combines non-Medicare premiums with modeled Medicare Part B "
+        "premiums for enrollees. Excludes the disjoint "
+        "pre_tax_health_insurance_premiums input. Consumers whose rules count "
+        "pretax payroll payments add that separate input once; tax deductions "
+        "that exclude them use this aggregate alone."
     )
 
     def formula(person, period, parameters):

@@ -1,9 +1,9 @@
 # Accepted FY2026 plan checks gross income, minor earnings, gifts and lump sums.
-# https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=6,7
+# https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=6
 # Historical manual section 2.2 retains nonqualified members' income.
 # https://humanservices.hawaii.gov/wp-content/uploads/2019/07/Policies-and-Procedures-2020.pdf#page=6
 # Draft FY2026 detailed manual elaborates disability and noncash exclusions.
-# https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=66,67
+# https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=66
 # Annual receipts approximate annualized prior-month income; SSI/TANF use months.
 
 - name: Case 1, nonqualified adults and minor earnings all count.
@@ -335,3 +335,193 @@
         county: LOS_ANGELES_COUNTY_CA
   output:
     hi_liheap_countable_income: [0, 1_500, 0]
+
+# Gross receipts: military60_000 and wages30_000 each exceed150% of one-person FPG26_985; size+Oahu=2 points. UI18_000 yields income1+size1+region1=3. TANF controls test receipt gating separately from entitlement.
+- name: Case 9, military retirement and rental losses preserve gross receipts and points.
+  period: 2_026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        military_retirement_pay: 60_000
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+        rental_income: -30_000
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 1_200
+        hi_tanf: 0
+      spm_unit2:
+        members:
+        - person2
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 1_200
+        hi_tanf: 0
+    households:
+      household1:
+        members:
+        - person1
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members:
+        - person2
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_countable_income:
+    - 60_000
+    - 30_000
+    hi_liheap_points:
+    - 2
+    - 2
+- name: Case 10, reported UI overrides modeled receipt and negative UI does not offset wages.
+  period: 2_026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+        unemployment_compensation: 0
+        modeled_state_unemployment_compensation: 6_000
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+        unemployment_compensation: 1_200
+        modeled_state_unemployment_compensation: 6_000
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+        unemployment_compensation: -100
+        modeled_state_unemployment_compensation: 6_000
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 1_200
+        hi_tanf: 0
+      spm_unit2:
+        members:
+        - person2
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 1_200
+        hi_tanf: 0
+      spm_unit3:
+        members:
+        - person3
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 1_200
+        hi_tanf: 0
+    households:
+      household1:
+        members:
+        - person1
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members:
+        - person2
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household3:
+        members:
+        - person3
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    total_unemployment_compensation:
+    - 6_000
+    - 1_200
+    - -100
+    hi_liheap_countable_income:
+    - 18_000
+    - 13_200
+    - 12_000
+    hi_liheap_points:
+    - 3
+    - 4
+    - 4
+- name: Case 11, TANF enters once only when the household takes it up.
+  period: 2_026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 6_000
+      person2:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 6_000
+      person4:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        - person2
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 1_200
+        hi_tanf: 6_000
+        takes_up_tanf_if_eligible: true
+      spm_unit2:
+        members:
+        - person3
+        - person4
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 1_200
+        hi_tanf: 6_000
+        takes_up_tanf_if_eligible: false
+    households:
+      household1:
+        members:
+        - person1
+        - person2
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members:
+        - person3
+        - person4
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    tanf:
+    - 6_000
+    - 0
+    hi_liheap_countable_income:
+    - 12_000
+    - 6_000
