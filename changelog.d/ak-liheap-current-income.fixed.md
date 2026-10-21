@@ -1,1 +1,1 @@
-Count received TANF, total unemployment compensation and ordinary military retirement in Alaska HAP, and preserve published decimal income factors when rounding heating points.
+Count received TANF, total unemployment compensation and ordinary military retirement in Alaska HAP, preserve published decimal income factors when rounding heating points, and recognize explicit public housing in the heating and utility-allowance rules.

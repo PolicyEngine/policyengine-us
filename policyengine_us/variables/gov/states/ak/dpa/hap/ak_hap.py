@@ -40,8 +40,11 @@ class ak_hap(Variable):
         # its zero default cannot establish absence. Housing step-down
         # exceptions are unobserved, as are the base formula's tribal,
         # residency and unresolved geography limitations.
+        subsidized = spm_unit(
+            "receives_housing_assistance", period
+        ) | spm_unit.household("is_in_public_housing", period)
         utility_adjustment = (
-            spm_unit("receives_housing_assistance", period)
+            subsidized
             & ~spm_unit("heat_expense_included_in_rent", period)
             & (spm_unit.household("hud_utility_allowance", period) > 0)
         )

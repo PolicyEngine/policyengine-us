@@ -803,3 +803,120 @@
     - 700
     - 700
     - 525
+
+- name: Explicit public housing controls included heat and reported utility allowance
+  period: 2027
+  input:
+    people:
+      person0:
+        age: 40
+        immigration_status: CITIZEN
+        pre_subsidy_rent: 12000
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        pre_subsidy_rent: 12000
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        pre_subsidy_rent: 12000
+      person3:
+        age: 40
+        immigration_status: CITIZEN
+        pre_subsidy_rent: 12000
+    tax_units:
+      tax_unit0:
+        members:
+        - person0
+      tax_unit1:
+        members:
+        - person1
+      tax_unit2:
+        members:
+        - person2
+      tax_unit3:
+        members:
+        - person3
+    spm_units:
+      spm_unit0:
+        members:
+        - person0
+        heating_type: FUEL_OIL
+        heat_expense_included_in_rent: true
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+      spm_unit2:
+        members:
+        - person2
+        heating_type: FUEL_OIL
+        heat_expense_included_in_rent: false
+        fuel_oil_expense: 3000
+      spm_unit3:
+        members:
+        - person3
+        heating_type: FUEL_OIL
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: true
+        fuel_oil_expense: 3000
+    households:
+      home0:
+        members:
+        - person0
+        state_code: AK
+        place_fips: '24230'
+        is_in_public_housing: true
+      home1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+        is_in_public_housing: true
+      home2:
+        members:
+        - person2
+        state_code: AK
+        place_fips: '24230'
+        is_in_public_housing: true
+        hud_utility_allowance: 1200
+      home3:
+        members:
+        - person3
+        state_code: AK
+        place_fips: '24230'
+        is_in_public_housing: true
+        hud_utility_allowance: 1200
+  output:
+    is_in_public_housing:
+    - true
+    - true
+    - true
+    - true
+    receives_housing_assistance:
+    - false
+    - true
+    - false
+    - true
+    housing_assistance:
+    - 0
+    - 0
+    - 0
+    - 0
+    ak_hap_countable_income:
+    - 0
+    - 0
+    - 0
+    - 0
+    ak_hap_base_benefit:
+    - 0
+    - 0
+    - 1750
+    - 1750
+    ak_hap:
+    - 0
+    - 0
+    - 875
+    - 875

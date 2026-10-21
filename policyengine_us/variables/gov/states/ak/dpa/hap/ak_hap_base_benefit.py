@@ -10,6 +10,7 @@ class ak_hap_base_benefit(Variable):
     reference = (
         "http://dpaweb.hss.state.ak.us/manuals/HAP/3004/3004-5_grant_computation.htm",
         "http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm",
+        "http://dpaweb.hss.state.ak.us/manuals/HAP/3007/3007-1_subsidized_heat_and_application_processing.htm",
         "http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm",
         "https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001",
         "https://cchrc.org/wp-content/uploads/media/Consumer_Guide_Home_Heating.pdf#page=23",
@@ -75,7 +76,9 @@ class ak_hap_base_benefit(Variable):
         points = community_points * p.dwelling_factor[dwelling] * factor
         points = points + vulnerable * p.vulnerability_points
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
-        subsidized = spm_unit("receives_housing_assistance", period)
+        subsidized = spm_unit(
+            "receives_housing_assistance", period
+        ) | spm_unit.household("is_in_public_housing", period)
         # Full annual rent satisfies the expense test for nonsubsidized
         # heat-in-rent households. Pre-subsidy rent avoids benefit feedback.
         expense = where(
