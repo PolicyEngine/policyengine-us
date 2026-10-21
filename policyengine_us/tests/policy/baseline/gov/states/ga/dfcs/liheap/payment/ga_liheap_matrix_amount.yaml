@@ -114,11 +114,12 @@
   output:
     ga_liheap_matrix_amount: [660, 560, 660]
 
-# Manual page 57 (1100.14) limits the direct applicant payment to rent that "includes
-# utilities with no separate bill for heating/cooling costs". Each household is size 1
-# with $13,589 of income, the inclusive FY2026 Level I top, and has heat in
-# unsubsidized rent of $12,000 with tenant_pays_utilities false: the Case 5 element 1
-# household, which receives the $500 lowest award with no separate bill.
+# Manual page 57 (1100.14) limits the unsubsidized all-in-rent class to rent that
+# "includes utilities with no separate bill for heating/cooling costs". Each household
+# is size 1 with $13,589 of income, the inclusive FY2026 Level I top, and has heat in
+# unsubsidized rent of $12,000 with tenant_pays_utilities false. Without a separate
+# bill, elements 1 and 2 are the Case 5 element 1 household, and all three would
+# receive the $500 lowest award, which does not depend on the fuel.
 # Element 1: natural gas with a $1,200 electric bill (page 89, row 3): Level I natural
 # gas, $560 + $100 = $660.
 # Element 2: natural gas with a $1,200 gas bill (page 89, row 1): $660.
