@@ -1,3 +1,19 @@
+## [2.54.0] - 2026-10-21
+
+### Added
+
+- Add Florida LIHEAP regular heating assistance.
+- Add a partial Ohio HEAP model for household composition, income, eligibility and regular heating payments, applying the federal 110% poverty guideline floor (`gov.hhs.liheap.fpg_floor`), with sourced historical payment caps and explicitly estimated later awards.
+- Add Oklahoma LIHEAP regular heating assistance, including qualified household size, income deeming, heating responsibility, and published payment schedules, with documented input limitations.
+- Add South Dakota LIEAP regular heating assistance with FY2024-FY2026 income limits, county heating regions, direct and heat-in-rent payments, and mixed-status households.
+- Add a code-health guard tying source-conflict markers to the source-conflict register shared with Axiom (statute governs; forms fill gaps).
+- Add Rhode Island LIHEAP regular heating assistance, income and heating eligibility with the federal 110% poverty floor, including heat-in-rent grants and the qualifying utility enhancement. Earlier years backfill the researched FY2026 schedule as unverified estimates.
+
+### Fixed
+
+- Limit the Virginia rebate to the tax liability after all other credits, including the refundable Virginia EITC.
+
+
 ## [2.53.1] - 2026-10-20
 
 ### Fixed
