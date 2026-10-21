@@ -32,12 +32,15 @@ candidates:
   example: In August 2025, the model applies the changes in Texas but not Alaska.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ak/dpa/snap/work_requirements/abawd/hr1_in_effect.yaml
+    - policyengine_us/variables/gov/usda/snap/eligibility/work_requirements/is_snap_abawd_hr1_in_effect.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/8861
   state: unreviewed
-  note: 'The statute-first rule requires changing the delayed model date unless waiver authority permits the delay;
-    verify that authority. Code not yet on main: is_snap_abawd_hr1_in_effect, gov.states.ak.dpa.snap.work_requirements.abawd.hr1_in_effect.'
+  note: PE-US follows Alaska's November 1, 2025 adoption date (hr1_in_effect.yaml, read by is_snap_abawd_hr1_in_effect.py);
+    the parameter's comment cites the waiver authority in 7 U.S.C. 2015(o)(4)(A)(ii) and 2015(o)(7). The statute-first
+    rule requires changing the delayed date unless that authority permits the delay; verify it.
 - id: us-al:federal-tax-deduction-credit-list
   program: income-tax
   years:
@@ -81,10 +84,10 @@ candidates:
   sources:
   - kind: statute
     citation: Code of Ala. §40-18-25(b)
-    url: null
+    url: https://alison.legislature.state.al.us/code-of-alabama?section=40-18-25
   - kind: regulation
     citation: Ala. Admin. Code r. 810-3-25-.11
-    url: null
+    url: https://admincode.legislature.state.al.us/administrative-code/810-3-25
   - kind: instructions
     citation: 2025 Alabama Form 40 booklet p.24, citing r. 810-3-25-.05(8)(b)
     url: https://www.revenue.alabama.gov/wp-content/uploads/2026/01/25f40bk.pdf#page=24
@@ -95,12 +98,15 @@ candidates:
       1, 2005.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/al/tax/income/agi/gross_income_sources.yaml
+    - policyengine_us/variables/gov/states/al/tax/income/al_agi.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10060
   state: unreviewed
-  note: 'Obtain direct statutory and current-rule citations and identify booklet editions repeating the obsolete
-    restriction. Code not yet on main: gov.states.al.tax.income.agi.gross_income_sources.'
+  note: 'PE-US follows the statute and current rule: estate_income counts signed in Alabama gross income, so a beneficiary''s
+    loss passes through (gross_income_sources.yaml, read by al_agi.py). estate_income does not separate trusts from
+    estates. Identify booklet editions repeating the obsolete restriction.'
 - id: us-al:liheap-insurance-payments
   program: liheap
   years:
@@ -121,12 +127,15 @@ candidates:
     other: The plan leaves insurance payments made directly to the insured unchecked.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/al/adeca/liheap/income/sources/unearned.yaml
+    - policyengine_us/variables/gov/states/al/adeca/liheap/income/al_liheap_countable_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9967
   state: unreviewed
-  note: 'PE-US follows the manual; verify which modeled payments fall within the plan''s category. Code not yet
-    on main: al_liheap.'
+  note: The unearned income list cites manual sections 5.5-5.5.2 and has no insurance or annuity input of its own;
+    it counts pension_income, disability_benefits and workers_compensation (income/sources/unearned.yaml, al_liheap_countable_income.py).
+    Verify which modeled payments fall within the plan's category.
 - id: us-al:liheap-lump-sums-and-refunds
   program: liheap
   years:
@@ -147,12 +156,15 @@ candidates:
     other: The plan lists one-time lump sums including rebates, credits, lottery winnings and refund deposits.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/al/adeca/liheap/income/al_liheap_countable_income.py
+    - policyengine_us/parameters/gov/states/al/adeca/liheap/income/sources/unearned.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9967
   state: unreviewed
-  note: 'PE-US follows the manual; verify the lump-sum categories and gross-versus-net treatment. Code not yet on
-    main: al_liheap.'
+  note: 'PE-US follows the manual: gambling winnings count net of losses (al_liheap_countable_income.py), and the
+    unearned income list has no refund, rebate or other lump-sum input (income/sources/unearned.yaml). Verify the
+    lump-sum categories and gross-versus-net treatment.'
 - id: us-al:medicaid-parent-dependent-child-age
   program: medicaid
   years:
@@ -177,8 +189,9 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9213
   state: unreviewed
-  note: 'PE-US follows the administrative code; verify overlapping effective dates and any conflict before the cited
-    2023 code. Code not yet on main: dependent_child/age_limit.yaml.'
+  note: 'PE-US follows the administrative code: Alabama''s age limit is 19 from 2014 with no student condition,
+    and the file''s comment records the S25 conflict (age_limit.yaml). Verify overlapping effective dates and any
+    conflict before the cited 2023 code, since the model applies 19 from 2014.'
 - id: us-ar:casualty-loss-aggregate-agi-floor
   program: income-tax
   years:
@@ -202,12 +215,17 @@ candidates:
     other: The booklet says each loss must exceed 10% of AGI.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ar/tax/income/deductions/itemized/casualty_loss/income_floor.yaml
+    - policyengine_us/variables/gov/states/ar/tax/income/deductions/itemized/ar_casualty_loss_deduction_indiv.py
+    - policyengine_us/variables/gov/states/ar/tax/income/deductions/itemized/ar_casualty_loss_deduction_joint.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9625
   state: unreviewed
-  note: 'The merged PR follows the statute and form; obtain the booklet citation and verify editions. Code not yet
-    on main: ar_casualty_loss_deduction_joint, ar_casualty_loss_deduction_indiv.'
+  note: 'PE-US follows the statute and form: one 10% floor applies to the tax unit''s combined losses after the
+    exclusion (ar_casualty_loss_deduction_indiv.py, ar_casualty_loss_deduction_joint.py, casualty_loss/income_floor.yaml).
+    The floor cites the AR3 line 18 instructions for 2015-2025; verify which editions require each loss to exceed
+    10% of AGI.'
 - id: us-ar:casualty-loss-status-four-spouse-floors
   program: income-tax
   years:
@@ -351,12 +369,14 @@ candidates:
       as clarifying existing law.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/ar/tax/income/deductions/itemized/ar_gambling_loss_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9636
   state: ruled
-  note: 'The earlier ruling is undated and followed guidance; the October 2026 statute-first rule requires changing
-    the pre-2015 model treatment. Code not yet on main: ar_gambling_loss_deduction.'
+  note: 'PE-US follows DFA''s guidance: ar_gambling_loss_deduction has no 2015 start date, and its 2014 test deducts
+    losses up to winnings (ar_gambling_loss_deduction.py). The earlier ruling is undated and followed guidance;
+    the October 2026 statute-first rule requires changing the pre-2015 model treatment.'
 - id: us-ar:income-tax-above-table-formula
   program: income-tax
   years:
@@ -390,13 +410,15 @@ candidates:
     follows: gap-fill
     code:
     - policyengine_us/parameters/gov/states/ar/tax/income/rates/main/tax_table/threshold.yaml
+    - policyengine_us/variables/gov/states/ar/tax/income/ar_income_tax_helpers.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9611
     - https://github.com/PolicyEngine/policyengine-us/pull/9624
     - https://github.com/PolicyEngine/policyengine-us/pull/9696
   state: unreviewed
-  note: 'PE-US follows the bracket card''s gap-fill; verify each year''s publications and resolve the differing
-    supplied 2025 page references. Code not yet on main: ar_regular_income_tax, ar_main_income_tax, gov.states.ar.tax.income.rates.main.tax_table.threshold.'
+  note: PE-US follows the bracket card's formula at and above the table threshold, and the threshold's comment records
+    the conflict with the booklet note (tax_table/threshold.yaml, ar_income_tax_helpers.py). Verify each year's
+    publications and resolve the differing supplied 2025 page references.
 - id: us-ar:liheap-fy2025-benefit-matrix
   program: liheap
   years:
@@ -650,13 +672,15 @@ candidates:
     follows: unknown
     code:
     - policyengine_us/parameters/gov/states/ca/cpuc/income_sources.yaml
+    - policyengine_us/variables/gov/states/ca/cpuc/ca_cpuc_countable_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9464
     - https://github.com/PolicyEngine/policyengine-us/pull/9467
   state: unreviewed
-  note: 'Current PE-US evidence excludes housing subsidies; the decision''s exclusion starts 2014-08-14, while FERA
-    coverage and earlier conflicting form editions need verification. Code not yet on main: gov.states.ca.cpuc.income_sources,
-    ca_care_eligible, CPUC countable income sources parameter.'
+  note: 'PE-US follows D.14-08-030 and PG&E''s stated practice: housing assistance leaves the countable income list
+    from 2015, and the list''s comment rests FERA coverage on PG&E''s June 5, 2026 reply brief, not on the decision
+    (income_sources.yaml, ca_cpuc_countable_income.py). #9464, which would have counted housing subsidies, closed
+    unmerged. Verify FERA coverage and earlier conflicting form editions.'
 - id: us-ca:itemized-limit-casualty-exclusion
   program: income-tax
   years:
@@ -676,12 +700,16 @@ candidates:
     other: The literal worksheet reference excludes the federal casualty amount, recorded as zero from 2018.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ca/tax/income/deductions/itemized/limit/excluded_deductions.yaml
+    - policyengine_us/variables/gov/states/ca/tax/income/deductions/itemized/ca_casualty_loss_deduction.py
+    - policyengine_us/variables/gov/states/ca/tax/income/deductions/itemized/ca_itemized_deductions.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10068
   state: unreviewed
-  note: 'The merged PR follows the statute; verify worksheet editions and affected years. Code not yet on main:
-    gov.states.ca.tax.income.deductions.itemized.limit.excluded_deductions, ca_casualty_loss_deduction.'
+  note: 'PE-US follows the statute: California''s own casualty deduction is excluded from the high-AGI limitation
+    (limit/excluded_deductions.yaml, read by ca_itemized_deductions.py). The exclusion list starts in 2021, while
+    the candidate runs from 2018; verify worksheet editions and affected years.'
 - id: us-ca:itemized-limit-investment-interest-exclusion
   program: income-tax
   question: Does the itemized-deduction limitation exclude California investment interest or the federal Schedule
@@ -810,11 +838,14 @@ candidates:
     follows: unknown
     code:
     - policyengine_us/variables/gov/local/ca/scc/ga/eligibility/ca_scc_general_assistance_countable_vehicle_value.py
+    - policyengine_us/parameters/gov/local/ca/scc/general_assistance/personal_property/vehicle_value_limit.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9072
   state: unreviewed
-  note: 'PE-US follows the handbook; verify the form revision and overlapping effective period. Code not yet on
-    main: ca_scc_general_assistance_countable_vehicle_value.'
+  note: 'PE-US follows the handbook: a vehicle worth exactly $4,650 is exempt (ca_scc_general_assistance_countable_vehicle_value.py).
+    The limit''s comment cites GA-62 rev. 11/25 and says the county publishes no dated history, so the April 2016
+    start follows the personal property limit (vehicle_value_limit.yaml). Verify the form revision and overlapping
+    effective period.'
 - id: us-ca:snap-child-support-exclusion
   program: snap
   years:
@@ -883,10 +914,10 @@ candidates:
     url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200
   - kind: manual
     citation: SSA POMS SI 01415.058 §B
-    url: null
+    url: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415058#b2b
   - kind: guidance
     citation: CDSS 2026 May Revision
-    url: null
+    url: https://cdss.ca.gov/Portals/9/Additional-Resources/Fiscal-and-Financial-Information/LOcal-Assistance-Estimates/2026-27/Revisions/2026-may-revision-reference-documents.pdf#page=26
   - kind: guidance
     citation: CDSS ACIN I-59-25
     url: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACINs/2025/I-59_25.pdf
@@ -895,7 +926,7 @@ candidates:
     url: https://cdss.ca.gov/Portals/13/SHD/ParaRegIndex/SSI%20Monthly%20Payment%20Amounts%202026.pdf
   - kind: guidance
     citation: SSA pamphlet EN-05-11125
-    url: null
+    url: https://www.ssa.gov/pubs/EN-05-11125.pdf#page=2
   readings:
     statute: The per-recipient amount gives twice the $1,626.07 individual rate, or $3,252.14 for a couple.
     other: The CDSS monthly table and SSA pamphlet print $3,239.14.
@@ -907,8 +938,9 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9709
   state: unreviewed
-  note: 'Verify the per-recipient calculation and document the inconsistent 2026 summary tables. Code not yet on
-    main: gov.states.ca.cdss.state_supplement.payment_standard.allowance.out_of_home_care.'
+  note: 'PE-US follows the statute: the 2026 allowance is $1,153.31, from a $3,252.14 couple standard, twice the
+    $1,626.07 individual rate (allowance/out_of_home_care.yaml), and the file''s comment lists the sources on each
+    side. Verify the per-recipient calculation and document the inconsistent 2026 summary tables.'
 - id: us-co:claim-of-right-subtraction-practice
   program: income-tax
   years:
@@ -1070,12 +1102,15 @@ candidates:
     other: The guide requires gross income below the maximum grant standard at initial application.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/co/ssa/oap/co_oap.py
+    - policyengine_us/variables/gov/states/co/ssa/oap/co_oap_own_countable_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10176
   state: open
-  note: 'PE-US follows the regulation; verify the guide''s applicability, earlier coverage from 2020, and the requested
-    source choice. Code not yet on main: co_oap, co_oap_countable_income.'
+  note: 'PE-US follows the regulation: each month it compares total countable income after the 3.533 disregards
+    with the grant standard, and has no separate gross-income test at initial application (co_oap.py, co_oap_own_countable_income.py).
+    Verify the guide''s applicability, earlier coverage from 2020, and the requested source choice.'
 - id: us-co:oap-interest-and-dividends
   program: old-age-pension
   years:
@@ -1103,12 +1138,16 @@ candidates:
     the unearned income disregard.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/co/ssa/oap/income/sources/unearned.yaml
+    - policyengine_us/variables/gov/states/co/ssa/oap/co_oap_unearned_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10176
   state: ruled
-  note: Verified entry drafted in TheAxiomFoundation/rulespec-us#1825; it registers once its source captures are
-    on main.
+  note: 'PE-US follows the exempt reading: interest and dividends are not in the unearned income list, whose comment
+    cites 3.520.786(K) and 20 CFR 416.1124(c)(22) (income/sources/unearned.yaml, read by co_oap_unearned_income.py).
+    Verified entry drafted in TheAxiomFoundation/rulespec-us#1825; it registers once its source captures are on
+    main.'
 - id: us-co:premium-assistance-ptc-recipients
   program: health-insurance-premium-assistance
   years:
@@ -1150,10 +1189,10 @@ candidates:
     url: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04#(f)(1)(D)(ii)
   - kind: statute
     citation: ARPA §9622 heading
-    url: null
+    url: https://www.congress.gov/117/plaws/publ2/PLAW-117publ2.pdf#page=151
   - kind: instructions
     citation: 2021 D-40 booklet, New for 2021 note, PDF p.3
-    url: null
+    url: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=3
   readings:
     statute: The DC provision read alone retains qualifying-child classification and matches the self-only federal
       credit actually allowed.
@@ -1163,12 +1202,16 @@ candidates:
   pe_us:
     follows: unknown
     code:
+    - policyengine_us/parameters/gov/states/dc/tax/income/credits/eitc/qualifying_child_tin_required.yaml
     - policyengine_us/variables/gov/states/dc/tax/income/credits/eitc/dc_eitc_has_qualifying_child.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9643
   state: ruled
-  note: 'The October 2026 ruling chose the childless schedule; verify ARPA''s effect before identifying a statutory
-    departure and establish any pre-2021 conflict separately. Code not yet on main: gov.states.dc.tax.income.credits.eitc.qualifying_child_tin_required.'
+  note: PE-US applies the childless schedule in every year from 2015 when no qualifying child has an SSN or ITIN
+    (qualifying_child_tin_required.yaml, read by dc_eitc_has_qualifying_child.py). The parameter's comment says
+    no DC source settles years before 2023 and that setting it to false applies the DC-law reading. The October
+    2026 ruling chose the childless schedule; verify ARPA's effect before identifying a statutory departure and
+    establish any pre-2021 conflict separately.
 - id: us-dc:schedule-h-claimable-unclaimed-claimant
   program: property-tax-credit
   question: Does the statutory dependent-claimant bar apply to a claimable but unclaimed filer or only to a filer
@@ -1212,12 +1255,16 @@ candidates:
     other: AGI must be strictly below the relevant limit.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/de/tax/income/subtractions/de_529_plan_subtraction.py
+    - policyengine_us/variables/gov/states/de/tax/income/subtractions/de_529_plan_subtraction_joint.py
+    - policyengine_us/parameters/gov/states/de/tax/income/subtractions/plan_529/agi_limit.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9878
   state: unreviewed
-  note: 'Verify instruction coverage from 2022 onward and the statutory anchor; the supplied variable name is inferred
-    from a test filename. Code not yet on main: de_529_plan_subtraction.'
+  note: 'PE-US follows the statute: a filer whose federal AGI equals the limit keeps the subtraction, and the limit''s
+    comment reads the statute as barring only AGI "greater than" the limit (de_529_plan_subtraction.py, de_529_plan_subtraction_joint.py,
+    plan_529/agi_limit.yaml). Verify instruction coverage from 2022 onward.'
 - id: us-de:eitc-combined-separate-spouse-routing
   program: income-tax
   years:
@@ -1270,13 +1317,17 @@ candidates:
     other: The worksheet accepts spouses aged at least 60 or totally and permanently disabled.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/de/tax/income/subtractions/exclusions/de_elderly_or_disabled_income_exclusion_joint.py
+    - policyengine_us/variables/gov/states/de/tax/income/subtractions/exclusions/de_elderly_or_disabled_income_exclusion_eligible_person.py
+    - policyengine_us/parameters/gov/states/de/tax/income/subtractions/exclusions/elderly_or_disabled/eligibility/age_threshold.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9858
   state: unreviewed
-  note: 'The statute-first rule requires replacing age-60 eligibility if the literal boundary is confirmed; verify
-    individual-return scope and intervening editions. Code not yet on main: de_elderly_or_disabled_income_exclusion_joint,
-    de_elderly_or_disabled_income_exclusion_indiv.'
+  note: 'PE-US follows the worksheet: a filer or spouse aged exactly 60 qualifies (age at least age_threshold),
+    on joint returns (de_elderly_or_disabled_income_exclusion_joint.py) and on other returns (de_elderly_or_disabled_income_exclusion_eligible_person.py).
+    The statute-first rule requires replacing age-60 eligibility if the literal boundary is confirmed; verify individual-return
+    scope and intervening editions.'
 - id: us-de:snap-child-support-exclusion
   program: snap
   years:
@@ -1516,13 +1567,17 @@ candidates:
   pe_us:
     follows: conflicting-source
     code:
+    - policyengine_us/variables/gov/states/hi/tax/income/credits/cdcc/hi_cdcc_eligible.py
     - policyengine_us/variables/gov/states/hi/tax/income/credits/cdcc/hi_cdcc_qualifying_individual.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10089
   state: ruled
-  note: 'An October 2026 ruling confirmed the instructions; the later statute-first rule requires changing the bar
-    if the literal statutory reading is confirmed, with earlier instruction years still to verify. Code not yet
-    on main: hi_cdcc_eligible.'
+  note: 'PE-US follows the instructions: hi_cdcc_eligible bars a return on which every filer can be claimed, and
+    hi_cdcc_qualifying_individual gives a return with a claimable filer no dependent qualifying individual outside
+    the filing exception, citing HRS 235-55.6(b)(1) and IRC 152(b)(1); a filer who cannot be claimed may still claim
+    for an incapacitated claimable spouse. An October 2026 ruling confirmed the instructions; the later statute-first
+    rule requires changing the bar if the literal statutory reading is confirmed, with earlier instruction years
+    still to verify.'
 - id: us-hi:claim-of-right-credit-agi-addback
   program: income-tax
   years:
@@ -1625,13 +1680,17 @@ candidates:
   example: The other spouse retains $1,144 under the statute versus $0 under the joint-return instruction reading.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/irs/income/taxable_income/exemptions/exemptions_count.py
+    - policyengine_us/variables/gov/states/hi/tax/income/exemptions/hi_regular_exemptions.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10087
     - https://github.com/PolicyEngine/policyengine-us/pull/10089
   state: ruled
-  note: 'The October 2026 ruling confirmed the per-individual reading; obtain the instruction URL and confirm the
-    joint-return application. Code not yet on main: exemptions_count, hi_regular_exemptions.'
+  note: 'PE-US follows the per-individual statute: exemptions_count leaves out only the filer who can be claimed,
+    so the other spouse keeps a regular exemption, and hi_regular_exemptions adds the age exemption only for filers
+    who cannot be claimed (exemptions_count.py, hi_regular_exemptions.py). The October 2026 ruling confirmed the
+    per-individual reading; obtain the instruction URL and confirm the joint-return application.'
 - id: us-hi:joint-return-one-disabled-spouse-exemptions
   program: income-tax
   years:
@@ -1660,14 +1719,17 @@ candidates:
     reading.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/hi/tax/income/exemptions/hi_disabled_exemptions.py
+    - policyengine_us/variables/gov/states/hi/tax/income/exemptions/hi_exemptions.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10087
     - https://github.com/PolicyEngine/policyengine-us/pull/10089
   state: ruled
-  note: 'The October 2026 ruling retained the regulation and instruction reading; verify the statute and whether
-    the guidance describes only the disabled spouse''s exemption. Code not yet on main: hi_disabled_exemptions,
-    hi_regular_exemptions.'
+  note: 'PE-US follows the regulation and instructions: each spouse takes the larger of the $7,000 disabled exemption
+    and their own regular and age exemptions, so the non-disabled spouse keeps theirs (hi_disabled_exemptions.py,
+    compared with hi_regular_exemptions in hi_exemptions.py). The October 2026 ruling retained the regulation and
+    instruction reading; verify the statute and whether the guidance describes only the disabled spouse''s exemption.'
 - id: us-hi:snap-abawd-implementation-date
   program: snap
   years:
@@ -1689,12 +1751,15 @@ candidates:
   example: In August 2025, the model applies the changes in Texas but not Hawaii.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/hi/dhs/snap/work_requirements/abawd/hr1_in_effect.yaml
+    - policyengine_us/variables/gov/usda/snap/eligibility/work_requirements/is_snap_abawd_hr1_in_effect.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/8861
   state: unreviewed
-  note: 'The statute-first rule requires changing the delayed model date unless waiver authority permits the delay;
-    verify that authority. Code not yet on main: is_snap_abawd_hr1_in_effect, gov.states.hi.dhs.snap.work_requirements.abawd.hr1_in_effect.'
+  note: PE-US follows Hawaii's November 1, 2025 implementation date (hr1_in_effect.yaml, read by is_snap_abawd_hr1_in_effect.py);
+    the parameter's comment cites the waiver authority in 7 U.S.C. 2015(o)(4)(A)(ii) and 2015(o)(7). The statute-first
+    rule requires changing the delayed date unless that authority permits the delay; verify it.
 - id: us-hi:snap-child-support-deduction
   program: snap
   years:
@@ -5621,12 +5686,17 @@ candidates:
     other: The instructions bar a Form 2555 filer even when the form claims only the housing deduction.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/tools/section_911.py
+    - policyengine_us/variables/gov/irs/credits/ctc/refundable/refundable_ctc_barred_by_section_911_exclusion.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10022
   state: unreviewed
-  note: 'The statute-first rule requires revising the deduction-only ACTC bar; verify that interpretation separately
-    from EITC, whose statutory wording differs. Code not yet on main: elects_section_911_exclusion.'
+  note: 'PE-US follows the instructions: elects_section_911_exclusion treats a filer who claims only the section
+    911(c)(4) housing deduction as electing section 911, so refundable_ctc_barred_by_section_911_exclusion denies
+    the additional child tax credit, and the helper''s docstring says this case rests on the IRS instructions, not
+    the statute (tools/section_911.py). The statute-first rule requires revising the deduction-only ACTC bar; verify
+    that interpretation separately from EITC, whose statutory wording differs.'
 - id: us:claim-of-right-same-class-aggregation
   program: income-tax
   years:
@@ -5675,12 +5745,17 @@ candidates:
     other: A separate filer considered unmarried enters their own earned income.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/variables/gov/irs/credits/cdcc/dependent_care_assistance_exclusion.py
+    - policyengine_us/variables/gov/irs/credits/cdcc/min_head_spouse_earned.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9949
   state: unreviewed
-  note: 'The statute-first rule requires revising the form-based earned-income limit; verify whether the marital-status
-    cross-reference extends beyond section 129(a)(2). Code not yet on main: min_head_spouse_earned, dependent_care_assistance_exclusion.'
+  note: 'PE-US follows the Form 2441 instructions: min_head_spouse_earned uses the filer''s own earned income on
+    any return that is not joint, so a separate filer treated as unmarried is limited by their own earnings, and
+    that filer takes the unmarried dollar cap (dependent_care_assistance_exclusion.py, min_head_spouse_earned.py).
+    The statute-first rule requires revising the form-based earned-income limit; verify whether the marital-status
+    cross-reference extends beyond section 129(a)(2).'
 - id: us:dependent-deduction-worksheet-earned-income
   program: income-tax
   years:
@@ -5731,11 +5806,14 @@ candidates:
     follows: conflicting-source
     code:
     - policyengine_us/variables/gov/irs/credits/education/is_barred_from_education_credits_by_dependency.py
+    - policyengine_us/variables/gov/irs/income/taxable_income/adjusted_gross_income/above_the_line_deductions/student_loan_interest/student_loan_interest_ald_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10087
   state: ruled
-  note: 'Ruled October 2026; the statute-first rule now requires changing the whole-return bar; verify the education-credit
-    page anchor because the supplied URL is for student loan interest. Code not yet on main: student_loan_interest_ald_eligible.'
+  note: 'PE-US follows the Form 1040 instructions: a claimed head or spouse bars the whole joint return from the
+    education credits and the student loan interest deduction (is_barred_from_education_credits_by_dependency.py,
+    student_loan_interest_ald_eligible.py). Ruled October 2026; the statute-first rule now requires changing the
+    whole-return bar; verify the education-credit page anchor because the supplied URL is for student loan interest.'
 - id: us:eitc-trust-royalties-investment-income
   program: income-tax
   years:
@@ -5755,12 +5833,16 @@ candidates:
     other: Only Schedule E Part I royalties enter line 8.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/variables/gov/irs/credits/earned_income/eitc_relevant_investment_income.py
+    - policyengine_us/variables/household/income/person/estate/passive_estate_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10194
   state: unreviewed
-  note: 'The statute-first rule requires including qualifying Part III royalties; obtain the worksheet version and
-    verify the omitted income basket. Code not yet on main: eitc_relevant_investment_income.'
+  note: 'PE-US follows the worksheet: the passive basket counts passive_estate_income, Schedule E Part III column
+    (d), and leaves out the box 5 royalties, annuities and income in respect of a decedent that go in nonpassive
+    column (f) (eitc_relevant_investment_income.py, passive_estate_income.py). The statute-first rule requires including
+    qualifying Part III royalties; obtain the worksheet version and verify the omitted income basket.'
 - id: us:filing-chart-a-blindness-and-equality
   program: income-tax
   years:
@@ -5788,11 +5870,14 @@ candidates:
     follows: statute
     code:
     - policyengine_us/variables/gov/irs/tax_unit_is_required_to_file.py
+    - policyengine_us/parameters/gov/irs/income/filing_requirement/standard_deduction_rule/applies.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10137
   state: open
-  note: 'This decision is still open; code comments citing it do not establish a completed ruling or its date. Code
-    not yet on main: tax_unit_is_required_to_file.'
+  note: 'PE-US follows the statute for 2018 to 2025: a return is required only when gross income exceeds the full
+    standard deduction, blindness included (tax_unit_is_required_to_file.py, standard_deduction_rule/applies.yaml).
+    From 2026 it applies section 6012(a)(1), which counts age but not blindness and requires a return at equality.
+    This decision is still open; code comments citing it do not establish a completed ruling or its date.'
 - id: us:filing-claimable-married-separate
   program: income-tax
   years:
@@ -5812,12 +5897,14 @@ candidates:
     other: A return is required only if the spouse itemizes or one of the dollar tests is met.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/irs/tax_unit_is_required_to_file.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10135
   state: open
-  note: 'Verify the married-dependent Chart B conditions and applicable years; the decision remains open. Code not
-    yet on main: tax_unit_is_required_to_file.'
+  note: 'PE-US follows the statute: a married individual filing separately, claimable or not, must file with any
+    positive gross income, since the separate threshold is the exemption amount, zero while it is suspended (tax_unit_is_required_to_file.py).
+    Verify the married-dependent Chart B conditions and applicable years; the decision remains open.'
 - id: us:filing-claimable-spouse-unearned-income-additions
   program: income-tax
   years:
@@ -5847,8 +5934,11 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10135
     - https://github.com/PolicyEngine/policyengine-us/pull/10137
   state: open
-  note: 'The statute-first rule requires removing the extra amounts from this statutory test; separate 2026 issues
-    same-year instructions for the separate 2026 issues are not cited here. Code not yet on main: tax_unit_is_required_to_file.'
+  note: 'PE-US follows Chart B and Publication 501 Table 2: the unearned income threshold for a filer who can be
+    claimed is the section 63(c)(5)(A) amount plus their own additional standard deduction for age or blindness,
+    on joint returns too, and the comment records that section 6012(f)(2)(D) names the 63(c)(5)(A) amount alone
+    (tax_unit_is_required_to_file.py). The statute-first rule requires removing the extra amounts from this statutory
+    test.'
 - id: us:hsa-limit-indexing-windows
   program: income-tax
   years:
@@ -5870,13 +5960,19 @@ candidates:
   example: The method projected 2027 limits of $4,500 and $9,000 before those amounts were published.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/parameters/uprating_extensions.py
+    - policyengine_us/parameters/gov/irs/gross_income/health_savings_account_contributions/limit/self_only.yaml
+    - policyengine_us/parameters/gov/irs/gross_income/health_savings_account_contributions/limit/family.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10097
   state: unreviewed
-  note: 'The statute-first rule requires changing conflicting projections; verify the statutory window substitution
-    first, and preserve the distinction from published limits fixed through 2027. Code not yet on main: extend_hsa_contribution_limits,
-    get_hsa_cola.'
+  note: 'PE-US follows IRS practice: projections after the published limits use 12-month windows ending March 31,
+    except the 2016 C-CPI-U-to-CPI ratio, which keeps the window ending August 31, and the docstring says these
+    windows reproduce every published 2019-2027 limit (get_hsa_cola and extend_hsa_contribution_limits in uprating_extensions.py,
+    limit/self_only.yaml, limit/family.yaml). The statute-first rule requires changing conflicting projections;
+    verify the statutory window substitution first, and preserve the distinction from published limits fixed through
+    2027.'
 - id: us:mortgage-interest-limit-ratio-rounding
   program: income-tax
   years:
@@ -5953,11 +6049,14 @@ candidates:
     follows: conflicting-source
     code:
     - policyengine_us/variables/household/income/person/estate/estate_income_niit_magi_adjustment.py
+    - policyengine_us/variables/gov/irs/tax/federal_income/niit_magi.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9633
   state: open
-  note: 'The statute-first rule requires revising the extra MAGI adjustment; verify whether CFC or PFIC regulatory
-    authority reconciles the instructions with section 1411(d). Code not yet on main: niit_magi, net_investment_income_tax.'
+  note: 'PE-US follows the Form 8960 instructions: niit_magi adds the filers'' estate_income_niit_magi_adjustment,
+    by default the positive part of the code H amount, to AGI as well as the section 911 addition (niit_magi.py,
+    estate_income_niit_magi_adjustment.py). The statute-first rule requires revising the extra MAGI adjustment;
+    verify whether CFC or PFIC regulatory authority reconciles the instructions with section 1411(d).'
 - id: us:qbid-net-capital-gain-investment-election
   program: income-tax
   years:
@@ -5993,14 +6092,18 @@ candidates:
     is $8,000 versus a legacy $12,000 result.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/variables/gov/irs/income/taxable_income/deductions/qualified_business_income_deduction/section_199a_net_capital_gain.py
+    - policyengine_us/variables/gov/irs/income/taxable_income/deductions/qualified_business_income_deduction/qualified_business_income_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9886
     - https://github.com/PolicyEngine/policyengine-us/pull/10077
   state: open
-  note: 'The statute-first rule requires revising the regulatory default if the cross-reference reading is confirmed;
-    resolve the requested ruling and which direction the cap runs. Code not yet on main: section_199a_net_capital_gain,
-    qualified_business_income_deduction.'
+  note: 'PE-US follows the regulation, preamble and form: section_199a_net_capital_gain is net capital gain plus
+    qualified dividends, not reduced by a Form 4952 investment income election, and the QBI income limit subtracts
+    it (section_199a_net_capital_gain.py, qualified_business_income_deduction.py). The statute-first rule requires
+    revising the regulatory default if the cross-reference reading is confirmed; resolve the requested ruling and
+    which direction the cap runs.'
 - id: us:recovery-rebate-joint-claimable-spouse
   program: recovery-rebate-credit
   years:
@@ -6057,8 +6160,9 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10137
   state: open
-  note: 'PE-US requires positive gross income, matching neither official reading; the statute-first rule requires
-    a model change, and no completed ruling date is recorded. Code not yet on main: tax_unit_is_required_to_file.'
+  note: PE-US requires a separate filer to file only with positive gross income, matching neither the literal statute,
+    which reaches a separate filer with none, nor the IRS's $5 relief (tax_unit_is_required_to_file.py). The statute-first
+    rule requires a model change, and no completed ruling date is recorded.
 - id: us:snap-bbce-income-chart-rounding
   program: snap
   years:
@@ -6080,13 +6184,16 @@ candidates:
   example: California, Colorado, DC and Arizona publish $2,610 where the exact percentage gives $2,608.33.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/hhs/tanf/non_cash/tanf_non_cash_gross_income_limit.py
+    - policyengine_us/variables/gov/hhs/tanf/non_cash/meets_tanf_non_cash_gross_income_test.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9243
   state: unreviewed
-  note: 'This is a disputed gap-fill; PE-US uses exact percentages rather than the published charts, so neither
-    statutory adherence nor following the charts is established. Code not yet on main: tanf_non_cash_gross_income_limit,
-    meets_tanf_non_cash_gross_income_test.'
+  note: PE-US uses the exact percentage of the poverty guideline, not any state chart's rounding, and the comment
+    notes that where a chart rounds up, a household between the two limits is ineligible here though the chart admits
+    it (tanf_non_cash_gross_income_limit.py, meets_tanf_non_cash_gross_income_test.py). This is a disputed gap-fill,
+    so neither statutory adherence nor following the charts is established.
 - id: us:snap-conditional-entrant-waiting-period
   program: snap
   years:
@@ -6113,12 +6220,14 @@ candidates:
     follows: unknown
     code:
     - policyengine_us/parameters/gov/usda/snap/eligibility/waiting_period/subject_immigration_statuses.yaml
+    - policyengine_us/variables/gov/usda/snap/eligibility/waiting_period/meets_snap_qualified_alien_waiting_period.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9661
   state: unreviewed
-  note: 'PE-US follows the regulation; verify battered-alien scope and the competing page anchors; the supplied
-    period is 2003-04-01 through 2025-07-03, and conditional entry ended in 1980. Code not yet on main: gov.usda.snap.eligibility.waiting_period.subject_immigration_statuses,
-    meets_snap_qualified_alien_waiting_period.'
+  note: 'PE-US follows the regulation: conditional entrants are on the five-year clock from April 2003, the list''s
+    comment records the FNS memo''s conflicting label, and battered aliens have no immigration status value (waiting_period/subject_immigration_statuses.yaml,
+    meets_snap_qualified_alien_waiting_period.py). Verify battered-alien scope and the competing page anchors; the
+    supplied period is 2003-04-01 through 2025-07-03, and conditional entry ended in 1980.'
 - id: us:snap-large-household-cap-effective-date
   program: snap
   years:
@@ -6141,12 +6250,16 @@ candidates:
     48 states and DC.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/variables/gov/usda/snap/snap_max_allotment.py
+    - policyengine_us/parameters/gov/usda/snap/max_allotment.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9623
   state: open
-  note: 'The statute-first rule requires revising the model''s delayed cap; verify the FY2026 table and the October
-    1, 2025 effective date. Code not yet on main: snap_max_allotment, max_allotment.yaml cap.'
+  note: 'PE-US follows the published tables: the 18-plus cap applies from October 1, 2026, and the formula''s comment
+    says USDA dates the provision to October 2025 but its FY2026 table listed only a per-person increment (snap_max_allotment.py,
+    gov/usda/snap/max_allotment.yaml). The statute-first rule requires revising the model''s delayed cap; verify
+    the FY2026 table and the October 1, 2025 effective date.'
 - id: us:snap-minimum-allotment-rounding-base
   program: snap
   years:
@@ -6173,13 +6286,17 @@ candidates:
   pe_us:
     follows: unknown
     code:
+    - policyengine_us/variables/gov/usda/snap/snap_min_allotment.py
     - policyengine_us/parameters/gov/usda/snap/min_allotment/published_adjustment.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9162
     - https://github.com/PolicyEngine/policyengine-us/pull/9623
   state: unreviewed
-  note: 'Resolve the statutory base and year-specific model behavior; the rounded method is reported for FY2023
-    and a guidance adjustment for FY2027, with no intervening-year conflict established. Code not yet on main: snap_min_allotment.'
+  note: 'PE-US rounds 8% of the rounded-down one-person maximum, as the regulation does, and adds a published adjustment
+    where USDA''s figure, computed from the unrounded cost, differs: $1 in the 48 states and DC for FY2027 only
+    (snap_min_allotment.py, min_allotment/published_adjustment.yaml). Resolve the statutory base and year-specific
+    model behavior; the rounded method is reported for FY2023 and a guidance adjustment for FY2027, with no intervening-year
+    conflict established.'
 - id: us:snap-waiting-period-age-based-ssi
   program: snap
   years:
@@ -6204,13 +6321,17 @@ candidates:
     five years.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/variables/gov/usda/snap/eligibility/waiting_period/is_snap_alien_waiting_period_exempt.py
+    - policyengine_us/variables/gov/usda/is_usda_disabled.py
+    - policyengine_us/parameters/gov/usda/disabled_programs.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9661
   state: unreviewed
-  note: 'The statute-first rule requires revising the any-SSI exemption if the narrower reading holds; first check
-    the cross-referenced disability definition and the preamble''s scope. Code not yet on main: is_snap_alien_waiting_period_exempt,
-    is_usda_disabled.'
+  note: 'PE-US exempts anyone receiving SSI on any basis: is_snap_alien_waiting_period_exempt reads is_usda_disabled,
+    which counts any SSI receipt among the benefits in gov.usda.disabled_programs (is_snap_alien_waiting_period_exempt.py,
+    is_usda_disabled.py, disabled_programs.yaml). The statute-first rule requires revising the any-SSI exemption
+    if the narrower reading holds; first check the cross-referenced disability definition and the preamble''s scope.'
 - id: us:ssi-spousal-deeming-child-scope
   program: ssi
   years:
