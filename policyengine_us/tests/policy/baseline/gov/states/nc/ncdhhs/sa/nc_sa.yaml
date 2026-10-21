@@ -561,3 +561,32 @@
     nc_sa:
       2026-01: 746
       2026-02: 473
+
+# SA-3220 III.C: the payment is the maintenance amount less TCMI, rounded to
+# the dollar with half a dollar rounding up; under $1 is ineligible. The 2027
+# basic maintenance amount is 1,447 + 70 = 1,517, so the cutoff is 1,516.51.
+- name: Case 41, basic half dollar in 2027 rounds up to one dollar.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_countable_income: 1_516.5
+  output:
+    nc_sa_eligible: true
+    # 1,517 - 1,516.50 = 0.50 -> 1.
+    nc_sa: 1
+
+- name: Case 42, basic 2027 cutoff makes the applicant ineligible.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_countable_income: 1_516.51
+  output:
+    # 1,517 - 1,516.51 = 0.49 -> 0, under the $1 minimum.
+    nc_sa_eligible: false
+    nc_sa: 0
