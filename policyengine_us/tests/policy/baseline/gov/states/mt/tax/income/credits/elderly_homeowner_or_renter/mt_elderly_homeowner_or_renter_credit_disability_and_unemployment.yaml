@@ -188,6 +188,8 @@
         unemployment_compensation: 9_000
         real_estate_taxes: 1_500
         ssi: 0
+        # Economic Impact Payments received during 2020.
+        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 1_800
     tax_units:
       tax_unit:
         members: [person1]
@@ -198,7 +200,8 @@
   output:
     # IRC 85(c) excludes the 9_000 from 2020 federal AGI (AGI without it is
     # 16_000, under 150_000). Line 1 federal AGI 16_000; line 7 refundable
-    # credits received, the 2020 recovery rebate credit 1_200 + 600 = 1_800;
+    # credits received, the 2020 Economic Impact Payments 1_200 + 600 =
+    # 1_800;
     # line 8 other income not listed above, the excluded 9_000; line 10 =
     # 26_800.
     adjusted_gross_income_person: 16_000

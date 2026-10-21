@@ -40,6 +40,11 @@ class mt_elderly_homeowner_or_renter_credit_gross_rent(Variable):
         # line 25 counts 15% of it. With the tax unit billed nothing, "the
         # property taxes billed for that property" are the household's whole
         # property tax.
+        # The rule lets an eligible claimant use the bill. The claimant must
+        # still have occupied the home as an owner, renter, or lessee (MCA
+        # 15-30-2338(1)(c)), which another member's bill does not show;
+        # mt_elderly_homeowner_or_renter_credit_eligible applies that test,
+        # and the credit is computed only for eligible claimants.
         # The rule says the claimant "may use" the bill. The model reads that
         # as a choice between two measures of what it costs to occupy one
         # home, not an addition to the rent paid, and takes the larger. Using

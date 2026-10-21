@@ -19,7 +19,9 @@ values:
     - mt_interest_exemption_person
     - mt_tuition_subtraction_person
     - mt_old_age_subtraction
-    - mt_disability_income_exclusion_person
+    # 2021 Mont. Laws ch. 503 (SB 399) section 65 repealed 15-30-2110, MCA,
+    # and with it the disability income exclusion, for tax years beginning
+    # after December 31, 2023 (section 70(1)).
     - salt_refund_income # MCA 15-30-2120 / Form 2 Subtractions Schedule
   2025-01-01:
     # Section 15-30-2120 starts from federal taxable income, so federal
@@ -29,7 +31,6 @@ values:
     - mt_interest_exemption_person
     - mt_tuition_subtraction_person
     - mt_old_age_subtraction
-    - mt_disability_income_exclusion_person
     # TODO: Remove this subtraction starting in 2029 because the federal
     # Schedule 1-A deductions expire after 2028.
     - mt_federal_obbba_subtraction
@@ -49,3 +50,7 @@ metadata:
       href: https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0100/0150-0300-0210-0100.html
     - title: 2025 Montana Form 2 Instructions
       href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=21
+    - title: "2021 Montana Session Laws, chapter 503 (SB 399), section 65 (repealer) and section 70 (effective dates) #page 68,70"
+      href: https://archive.legmt.gov/content/Publications/sales/2021SessionLaws_V3_ERRATA-VERSION.pdf#page=68
+    - title: 2024 Montana Form 2 instructions, repealed deductions
+      href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=5
