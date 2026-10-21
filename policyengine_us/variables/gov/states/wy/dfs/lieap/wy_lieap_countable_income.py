@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 
 
 class wy_lieap_countable_income(Variable):
@@ -53,15 +52,11 @@ class wy_lieap_countable_income(Variable):
         countable_gifts = where(
             gifts > p.gift_monthly_threshold * MONTHS_IN_YEAR, gifts, 0
         )
-        size = spm_unit("wy_lieap_household_size", period)
-        state_group = spm_unit.household("state_group_str", period)
-        guideline = fpg(
-            max_(size, 1), state_group, period, parameters, year_lag=p.fpg_year_lag
-        )
+        guideline = spm_unit("wy_lieap_fpg", period)
         # Approved approximation: total VA income, one exclusion per SPM unit.
         # Do not apply a separate allowance to each veteran, spouse or dependent.
         veterans = spm_unit.sum(max_(person("veterans_benefits", period), 0))
-        veterans_exclusion = where(size > 0, guideline * p.veterans_fpg_rate, 0)
+        veterans_exclusion = guideline * p.veterans_fpg_rate
         countable_veterans = max_(veterans - veterans_exclusion, 0)
         return (
             spm_unit.sum(earned + unearned + countable_interest + countable_gifts)

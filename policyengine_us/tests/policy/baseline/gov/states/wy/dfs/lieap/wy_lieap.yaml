@@ -2303,3 +2303,498 @@
     # .86, 1.00 ceilings to actual wages, then the $2,640 oil standard
     # and the workbook's rounded 10 percent holdback.
     wy_lieap: [1782, 1663, 1544, 1426, 1307, 1188, 1069, 950, 832, 713, 594, 475, 356, 238, 0]
+
+# 42 USC 8624(b)(2)(B): income LESS THAN 110% of the 2025 guideline is
+# protected. Native SMI limit 113688; 110% * (15650 + 16 * 5500) = 114015.
+# The approved effective-limit ratio gives the protected oil household .10:
+# 2640 * .10 - round_half_up(264 * .10) = 238, below its 3000 cost.
+# Each economic household consists of adult relatives with separate tax units.
+- name: Federal income protection applies below the floor and preserves strict equality controls.
+  period: 2026
+  input:
+    people:
+      household_0_adult_0:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 113900
+      household_0_adult_1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_0_adult_2:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_0_adult_3:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_0_adult_4:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_0_adult_5:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_0_adult_6:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_0_adult_7:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_0_adult_8:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_0_adult_9:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_0_adult_10:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_0_adult_11:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_0_adult_12:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_0_adult_13:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_0_adult_14:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_0_adult_15:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_0_adult_16:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_1_adult_0:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 114015
+      household_1_adult_1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_1_adult_2:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_1_adult_3:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_1_adult_4:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_1_adult_5:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_1_adult_6:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_1_adult_7:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_1_adult_8:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_1_adult_9:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_1_adult_10:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_1_adult_11:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_1_adult_12:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_1_adult_13:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_1_adult_14:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_1_adult_15:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_1_adult_16:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_2_adult_0:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 114016
+      household_2_adult_1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_2_adult_2:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_2_adult_3:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_2_adult_4:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_2_adult_5:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_2_adult_6:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_2_adult_7:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_2_adult_8:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_2_adult_9:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_2_adult_10:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_2_adult_11:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_2_adult_12:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_2_adult_13:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_2_adult_14:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_2_adult_15:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      household_2_adult_16:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+    tax_units:
+      tax_0_0:
+        members:
+        - household_0_adult_0
+      tax_0_1:
+        members:
+        - household_0_adult_1
+      tax_0_2:
+        members:
+        - household_0_adult_2
+      tax_0_3:
+        members:
+        - household_0_adult_3
+      tax_0_4:
+        members:
+        - household_0_adult_4
+      tax_0_5:
+        members:
+        - household_0_adult_5
+      tax_0_6:
+        members:
+        - household_0_adult_6
+      tax_0_7:
+        members:
+        - household_0_adult_7
+      tax_0_8:
+        members:
+        - household_0_adult_8
+      tax_0_9:
+        members:
+        - household_0_adult_9
+      tax_0_10:
+        members:
+        - household_0_adult_10
+      tax_0_11:
+        members:
+        - household_0_adult_11
+      tax_0_12:
+        members:
+        - household_0_adult_12
+      tax_0_13:
+        members:
+        - household_0_adult_13
+      tax_0_14:
+        members:
+        - household_0_adult_14
+      tax_0_15:
+        members:
+        - household_0_adult_15
+      tax_0_16:
+        members:
+        - household_0_adult_16
+      tax_1_0:
+        members:
+        - household_1_adult_0
+      tax_1_1:
+        members:
+        - household_1_adult_1
+      tax_1_2:
+        members:
+        - household_1_adult_2
+      tax_1_3:
+        members:
+        - household_1_adult_3
+      tax_1_4:
+        members:
+        - household_1_adult_4
+      tax_1_5:
+        members:
+        - household_1_adult_5
+      tax_1_6:
+        members:
+        - household_1_adult_6
+      tax_1_7:
+        members:
+        - household_1_adult_7
+      tax_1_8:
+        members:
+        - household_1_adult_8
+      tax_1_9:
+        members:
+        - household_1_adult_9
+      tax_1_10:
+        members:
+        - household_1_adult_10
+      tax_1_11:
+        members:
+        - household_1_adult_11
+      tax_1_12:
+        members:
+        - household_1_adult_12
+      tax_1_13:
+        members:
+        - household_1_adult_13
+      tax_1_14:
+        members:
+        - household_1_adult_14
+      tax_1_15:
+        members:
+        - household_1_adult_15
+      tax_1_16:
+        members:
+        - household_1_adult_16
+      tax_2_0:
+        members:
+        - household_2_adult_0
+      tax_2_1:
+        members:
+        - household_2_adult_1
+      tax_2_2:
+        members:
+        - household_2_adult_2
+      tax_2_3:
+        members:
+        - household_2_adult_3
+      tax_2_4:
+        members:
+        - household_2_adult_4
+      tax_2_5:
+        members:
+        - household_2_adult_5
+      tax_2_6:
+        members:
+        - household_2_adult_6
+      tax_2_7:
+        members:
+        - household_2_adult_7
+      tax_2_8:
+        members:
+        - household_2_adult_8
+      tax_2_9:
+        members:
+        - household_2_adult_9
+      tax_2_10:
+        members:
+        - household_2_adult_10
+      tax_2_11:
+        members:
+        - household_2_adult_11
+      tax_2_12:
+        members:
+        - household_2_adult_12
+      tax_2_13:
+        members:
+        - household_2_adult_13
+      tax_2_14:
+        members:
+        - household_2_adult_14
+      tax_2_15:
+        members:
+        - household_2_adult_15
+      tax_2_16:
+        members:
+        - household_2_adult_16
+    spm_units:
+      unit_0:
+        members: &id001
+        - household_0_adult_0
+        - household_0_adult_1
+        - household_0_adult_2
+        - household_0_adult_3
+        - household_0_adult_4
+        - household_0_adult_5
+        - household_0_adult_6
+        - household_0_adult_7
+        - household_0_adult_8
+        - household_0_adult_9
+        - household_0_adult_10
+        - household_0_adult_11
+        - household_0_adult_12
+        - household_0_adult_13
+        - household_0_adult_14
+        - household_0_adult_15
+        - household_0_adult_16
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3000
+      unit_1:
+        members: &id002
+        - household_1_adult_0
+        - household_1_adult_1
+        - household_1_adult_2
+        - household_1_adult_3
+        - household_1_adult_4
+        - household_1_adult_5
+        - household_1_adult_6
+        - household_1_adult_7
+        - household_1_adult_8
+        - household_1_adult_9
+        - household_1_adult_10
+        - household_1_adult_11
+        - household_1_adult_12
+        - household_1_adult_13
+        - household_1_adult_14
+        - household_1_adult_15
+        - household_1_adult_16
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3000
+      unit_2:
+        members: &id003
+        - household_2_adult_0
+        - household_2_adult_1
+        - household_2_adult_2
+        - household_2_adult_3
+        - household_2_adult_4
+        - household_2_adult_5
+        - household_2_adult_6
+        - household_2_adult_7
+        - household_2_adult_8
+        - household_2_adult_9
+        - household_2_adult_10
+        - household_2_adult_11
+        - household_2_adult_12
+        - household_2_adult_13
+        - household_2_adult_14
+        - household_2_adult_15
+        - household_2_adult_16
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3000
+    households:
+      home_0:
+        members: *id001
+        state_code: WY
+      home_1:
+        members: *id002
+        state_code: WY
+      home_2:
+        members: *id003
+        state_code: WY
+  output:
+    wy_lieap_household_size:
+    - 17
+    - 17
+    - 17
+    wy_lieap_fpg:
+    - 103650
+    - 103650
+    - 103650
+    wy_lieap_income_limit:
+    - 113688
+    - 113688
+    - 113688
+    wy_lieap_countable_income:
+    - 113900
+    - 114015
+    - 114016
+    wy_lieap_eligible:
+    - true
+    - false
+    - false
+    wy_lieap:
+    - 238
+    - 0
+    - 0
+
+# Rules chapter 1, sections 3(nn) and 8(a)(i): nonexempt ordinary DoD
+# retirement counts separately from pension and VA. 36000 exceeds 35829.
+- name: Ordinary military retirement is counted separately from the veterans exclusion.
+  period: 2026
+  input:
+    state_code: WY
+    age: 40
+    immigration_status: CITIZEN
+    is_veteran: true
+    years_in_military: 20
+    military_retirement_pay: 36000
+    pension_income: 0
+    veterans_benefits: 0
+    ssi: 0
+    heating_type: FUEL_OIL
+    fuel_oil_expense: 3000
+  output:
+    military_retirement_income: 36000
+    pension_income: 0
+    veterans_benefits: 0
+    wy_lieap_countable_income: 36000
+    wy_lieap_income_limit: 35829
+    wy_lieap_eligible: false
+    wy_lieap: 0

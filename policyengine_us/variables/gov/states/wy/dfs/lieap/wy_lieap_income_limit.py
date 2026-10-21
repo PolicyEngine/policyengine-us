@@ -7,7 +7,7 @@ class wy_lieap_income_limit(Variable):
     entity = SPMUnit
     definition_period = YEAR
     unit = USD
-    label = "Wyoming LIEAP income limit"
+    label = "Wyoming LIEAP state median income limit"
     reference = (
         "https://liheapch.acf.gov/profiles/povertytables/FY2026/wysmi.htm",
         "https://dfs.wyo.gov/wp-content/uploads/2026/09/2026-0924-LIEAP-About-handout.pdf#page=1",

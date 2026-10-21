@@ -14,12 +14,15 @@ class wy_lieap(Variable):
         "mixed-status households use qualified-member size, all otherwise countable "
         "income and no additional proration. Renters use the same schedule. "
         "Zero may indicate an unsupported fuel or missing eligible heating cost. "
+        "Federal-floor households use the approved income-to-effective-limit "
+        "ratio convention; their exact agency payment method is unverified. "
         "Years outside FY2026 are unverified estimates, including backfilled years."
     )
     reference = (
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/WY_BenefitMatrix_2026.xlsx",
         # Chapter 1, sections 10(d)-(e) and 13(b)(i), physical page 16.
         "https://rules.wyo.gov/Search.aspx?mode=7",
+        "https://www.law.cornell.edu/uscode/text/42/8624#b_2_B",
     )
     defined_for = "wy_lieap_eligible"
 
@@ -27,6 +30,10 @@ class wy_lieap(Variable):
         p = parameters(period).gov.states.wy.dfs.lieap.payment
         income = max_(spm_unit("wy_lieap_countable_income", period), 0)
         limit = spm_unit("wy_lieap_income_limit", period)
+        floor_rate = parameters(period).gov.hhs.liheap.fpg_floor
+        guideline = spm_unit("wy_lieap_fpg", period).astype(np.float64)
+        federal_floor = np.round(guideline * floor_rate, 2)
+        limit = max_(limit, federal_floor)
         # Express each inclusive ceiling at the stored income precision.
         scale = p.entitlement_fraction
         ceilings = [
