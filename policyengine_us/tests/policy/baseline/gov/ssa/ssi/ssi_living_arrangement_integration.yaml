@@ -250,9 +250,14 @@
   input:
     people:
       person1:
-        age: 40
-        is_disabled: true
-        meets_ssi_disability_criteria: true
+        # Year-defined inputs are keyed to the calendar year so that a
+        # non-January test month still reads them.
+        age:
+          2024: 40
+        is_disabled:
+          2024: true
+        meets_ssi_disability_criteria:
+          2024: true
         ssi_receives_food_from_others: true
     spm_units:
       spm_unit:
@@ -276,9 +281,14 @@
   input:
     people:
       person1:
-        age: 40
-        is_disabled: true
-        meets_ssi_disability_criteria: true
+        # Year-defined inputs are keyed to the calendar year so that a
+        # non-January test month still reads them.
+        age:
+          2024: 40
+        is_disabled:
+          2024: true
+        meets_ssi_disability_criteria:
+          2024: true
         ssi_receives_food_from_others: true
     spm_units:
       spm_unit:
@@ -300,9 +310,14 @@
   input:
     people:
       person1:
-        age: 40
-        is_disabled: true
-        meets_ssi_disability_criteria: true
+        # Year-defined inputs are keyed to the calendar year so that a
+        # non-January test month still reads them.
+        age:
+          2024: 40
+        is_disabled:
+          2024: true
+        meets_ssi_disability_criteria:
+          2024: true
         ssi_receives_food_from_others: true
         ssi_food_from_others_only_on_or_after_food_exclusion: true
     spm_units:
@@ -323,9 +338,14 @@
   input:
     people:
       person1:
-        age: 40
-        is_disabled: true
-        meets_ssi_disability_criteria: true
+        # Year-defined inputs are keyed to the calendar year so that a
+        # non-January test month still reads them.
+        age:
+          2024: 40
+        is_disabled:
+          2024: true
+        meets_ssi_disability_criteria:
+          2024: true
         ssi_receives_food_from_others: true
         ssi_food_from_others_only_on_or_after_food_exclusion: true
     spm_units:
