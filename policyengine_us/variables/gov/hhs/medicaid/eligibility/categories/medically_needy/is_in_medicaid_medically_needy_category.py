@@ -14,7 +14,10 @@ class is_in_medicaid_medically_needy_category(Variable):
         ).gov.hhs.medicaid.eligibility.categories.medically_needy.categories
         aged_threshold = parameters(period).gov.ssa.ssi.eligibility.aged_threshold
         is_child = any_(person, period, mn_categories.child.child_categories)
-        is_disabled = person("is_ssi_disabled", period)
+        # The disabled flag follows KFF's "people with disabilities", which
+        # includes blind people; federal rules list blind (42 CFR 435.322)
+        # and disabled (42 CFR 435.324) as parallel medically needy groups.
+        is_blind_or_disabled = any_(person, period, ["is_blind", "is_ssi_disabled"])
         is_senior = person("age", period) >= aged_threshold
         is_pregnant = person("is_pregnant_for_medicaid_nfc", period)
         is_parent = person("is_parent_for_medicaid_nfc", period)
@@ -30,7 +33,7 @@ class is_in_medicaid_medically_needy_category(Variable):
         category_covered = [parameter[state] > 0 for parameter in categories]
         in_category = [
             is_child,
-            is_disabled,
+            is_blind_or_disabled,
             is_parent,
             is_pregnant,
             is_senior,

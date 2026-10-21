@@ -23,12 +23,14 @@ class is_medically_needy_for_medicaid(Variable):
         personal_income = person("ssi_countable_income", period)
         medical_expenses = person("medicaid_medically_needy_medical_expenses", period)
         personal_assets = person("ssi_countable_resources", period)
-        tax_unit = person.tax_unit
-        income = tax_unit.sum(personal_income - medical_expenses)
-        assets = tax_unit.sum(personal_assets)
+        # SSI financial responsibility rules (42 CFR 435.602): the unit is
+        # the individual or the married couple, not the tax filing unit.
+        marital_unit = person.marital_unit
+        income = marital_unit.sum(personal_income - medical_expenses)
+        assets = marital_unit.sum(personal_assets)
         ma = parameters(period).gov.hhs.medicaid
         mn = ma.eligibility.categories.medically_needy
-        is_joint = person.tax_unit("tax_unit_is_joint", period)
+        is_joint = marital_unit.nb_persons() == 2
         state = person.household("state_code_str", period)
         income_limit = MONTHS_IN_YEAR * where(
             is_joint,
