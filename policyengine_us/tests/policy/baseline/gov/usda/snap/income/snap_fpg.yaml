@@ -19,3 +19,42 @@
   output:
     spm_unit_fpg: 13590 + 4720 * 2
     snap_fpg: (12880 + 4540 * 2) / 12 * 9 + (13590 + 4720 * 2) / 12 * 3
+
+- name: Guam uses the contiguous-state SNAP poverty guideline in FY 2027
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {}
+      person2: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap_unit_size: 2
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GU
+  output:
+    # 7 CFR 273.9(a)(1)(i), (a)(2)(i): ($15,960 + $5,680) / 12.
+    snap_fpg: 1_803.33
+
+- name: The Virgin Islands use the contiguous-state SNAP poverty guideline in FY 2027
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VI
+  output:
+    # ($15,960 + 2 x $5,680) / 12.
+    snap_fpg: 2_276.67

@@ -272,3 +272,81 @@
         state_code: HI
   output:
     meets_snap_net_income_test: true
+
+- name: Guam two-person household passes the FY 2027 net income test
+  period: 2026-10
+  input:
+    people:
+      person1: {}
+      person2: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap_unit_size: 2
+        # 7 CFR 273.9(a)(2)(i): Guam uses the poverty guidelines for the 48
+        # contiguous States. FY 2027 uses the 2026 guidelines ($15,960 +
+        # $5,680 = $21,640 for two people); $21,640 / 12 = $1,803.33,
+        # rounded up to $1,804.
+        snap_net_income: 365
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GU
+  output:
+    meets_snap_net_income_test: true
+
+- name: Virgin Islands two-person household at the FY 2027 net limit passes
+  period: 2026-10
+  input:
+    people:
+      person1: {}
+      person2: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap_unit_size: 2
+        snap_net_income: 1_804
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VI
+  output:
+    meets_snap_net_income_test: true
+
+- name: Virgin Islands two-person household just above the FY 2027 net limit fails
+  period: 2026-10
+  input:
+    people:
+      person1: {}
+      person2: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap_unit_size: 2
+        snap_net_income: 1_805
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VI
+  output:
+    meets_snap_net_income_test: false
+
+- name: Nine-person Virgin Islands household at the FY 2027 net limit passes
+  period: 2026-10
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 9
+        # The contiguous-state eight-person standard of $4,644 plus the
+        # separately rounded $474 increment gives $5,118
+        # (7 CFR 273.9(a)(2)(i), (a)(3)(ii)).
+        snap_net_income: 5_118
+    households:
+      household:
+        members: [person1]
+        state_code: VI
+  output:
+    meets_snap_net_income_test: true

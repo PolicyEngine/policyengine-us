@@ -222,3 +222,87 @@
         state_code: PA
   output:
     meets_snap_gross_income_test: true
+
+- name: Guam two-person household passes the FY 2027 gross income test
+  period: 2026-10
+  input:
+    people:
+      person1: {}
+      person2: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap_unit_size: 2
+        has_snap_elderly_disabled_member: false
+        # 7 CFR 273.9(a)(1)(i): Guam uses 130% of the poverty guidelines
+        # for the 48 contiguous States. FY 2027 uses the 2026 guidelines
+        # ($15,960 + $5,680 = $21,640 for two people); 130% x $21,640 / 12
+        # = $2,344.33, rounded up to $2,345.
+        snap_gross_test_income: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GU
+  output:
+    meets_snap_gross_income_test: true
+
+- name: Virgin Islands two-person household at the FY 2027 gross limit passes
+  period: 2026-10
+  input:
+    people:
+      person1: {}
+      person2: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap_unit_size: 2
+        has_snap_elderly_disabled_member: false
+        # $2,345 is the two-person contiguous-state gross limit, which the
+        # Virgin Islands also use (7 CFR 273.9(a)(1)(i)).
+        snap_gross_test_income: 2_345
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VI
+  output:
+    meets_snap_gross_income_test: true
+
+- name: Virgin Islands two-person household just above the FY 2027 gross limit fails
+  period: 2026-10
+  input:
+    people:
+      person1: {}
+      person2: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap_unit_size: 2
+        has_snap_elderly_disabled_member: false
+        snap_gross_test_income: 2_346
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VI
+  output:
+    meets_snap_gross_income_test: false
+
+- name: Ten-person Guam household at the FY 2027 gross limit passes
+  period: 2026-10
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 10
+        has_snap_elderly_disabled_member: false
+        # Guam uses the contiguous-state standard and its separately rounded
+        # increment: $6,037 for eight people plus 2 x $616 gives $7,269
+        # (7 CFR 273.9(a)(1)(i), (a)(3)(i)).
+        snap_gross_test_income: 7_269
+    households:
+      household:
+        members: [person1]
+        state_code: GU
+  output:
+    meets_snap_gross_income_test: true
