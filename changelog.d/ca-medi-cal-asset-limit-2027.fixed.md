@@ -1,0 +1,1 @@
+California's non-MAGI Medi-Cal asset limit falls to $21,000 for one person and $31,000 for a couple on July 1, 2027 (SB 164), for the aged, blind and disabled, medically needy, and Medicare Savings Program pathways.

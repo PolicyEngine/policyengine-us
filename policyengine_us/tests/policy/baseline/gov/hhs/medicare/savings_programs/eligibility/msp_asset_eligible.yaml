@@ -162,3 +162,48 @@
     # Combined 18,000 is at Minnesota's 18,000 couple limit and above the
     # federal 14,910.
     msp_asset_eligible: [true, true]
+
+- name: Case 12, California's MSP individual asset limit falls to 21,000 in July 2027.
+  period: 2027
+  input:
+    age: 67
+    bank_account_assets: 21_001
+    spm_unit_is_married: false
+    state_code: CA
+  output:
+    # 21,001 is under 130,000 in June and over 21,000 from July; the federal
+    # limit is lower than both.
+    msp_asset_eligible:
+      2027-06: true
+      2027-07: false
+
+- name: Case 13, California's MSP couple asset limit falls to 31,000 in July 2027.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 70
+        bank_account_assets: 15_500
+      person2:
+        age: 68
+        bank_account_assets: 15_501
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Combined 31,001 is under 195,000 in June and over 31,000 from July; the
+    # federal couple limit is lower than both.
+    msp_asset_eligible:
+      2027-06: [true, true]
+      2027-07: [false, false]

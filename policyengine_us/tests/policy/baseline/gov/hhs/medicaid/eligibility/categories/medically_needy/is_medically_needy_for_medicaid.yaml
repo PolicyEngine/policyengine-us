@@ -162,3 +162,57 @@
     # Limit 1.38 x 15,960 = 22,024.80. 25,000 - 5,000 = 20,000; assets 30,000 are under 33,038.
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
+
+- name: Case 10, California senior with assets above the July 2027 limit is ineligible in 2028.
+  period: 2028
+  input:
+    age: 70
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_ssi_recipient_for_medicaid: false
+    ssi_countable_income: 9_000
+    medicaid_medically_needy_medical_expenses: 2_000
+    ssi_countable_resources: 21_001
+    state_code: CA
+  output:
+    # Limit 600 x 12 = 7,200. 9,000 - 2,000 = 7,000 is under it, but assets
+    # of 21,001 are over the 21,000 limit that applies from July 2027.
+    is_in_medicaid_medically_needy_category: true
+    is_medically_needy_for_medicaid: false
+
+- name: Case 11, California senior couple with assets above the July 2027 couple limit is ineligible in 2028.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 72
+        is_adult_for_medicaid: false
+        is_optional_senior_or_disabled_for_medicaid: false
+        is_ssi_recipient_for_medicaid: false
+        ssi_countable_income: 9_000
+        medicaid_medically_needy_medical_expenses: 4_000
+        ssi_countable_resources: 15_500
+      person2:
+        age: 70
+        is_adult_for_medicaid: false
+        is_optional_senior_or_disabled_for_medicaid: false
+        is_ssi_recipient_for_medicaid: false
+        ssi_countable_income: 9_000
+        medicaid_medically_needy_medical_expenses: 4_000
+        ssi_countable_resources: 15_501
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Limit 934 x 12 = 11,208. (9,000 - 4,000) x 2 = 10,000 is under it, but
+    # combined assets of 31,001 are over the 31,000 couple limit.
+    is_in_medicaid_medically_needy_category: [true, true]
+    is_medically_needy_for_medicaid: [false, false]
