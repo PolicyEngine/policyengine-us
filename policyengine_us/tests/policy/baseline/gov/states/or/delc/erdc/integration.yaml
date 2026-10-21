@@ -52,13 +52,13 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        or_erdc_countable_income: 3_692
+        or_erdc_countable_income: 3_699
     households:
       household:
         members: [parent, child]
         state_code: OR
   output:
-    or_erdc_countable_income: 3_692
+    or_erdc_countable_income: 3_699
     or_erdc_income_eligible: false
     or_erdc_eligible: false
     or_erdc: 0
