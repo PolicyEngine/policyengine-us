@@ -1,6 +1,8 @@
 description: Employer-side unemployment insurance taxable wage base for Minnesota.
 values:
-  # Legacy fallback before the cited DEED history begins in 2014.
+  # Unverified placeholder ($42,000 is DEED's 2024 figure). No modeled year reads it:
+  # FIRST_MODELED_YEAR is 2015, and the 2014 entry covers every later year. It keeps
+  # the parameter defined before 2014, so state selection never reads None.
   0000-01-01: 42_000
   2014-01-01: 29_000
   2015-01-01: 30_000
