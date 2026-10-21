@@ -1996,12 +1996,16 @@ candidates:
     under the current base.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/in/tax/income/credits/earned_income_credit/in_eitc.py
+    - policyengine_us/variables/gov/states/in/tax/income/credits/earned_income_credit/in_eitc_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/8902
   state: unreviewed
-  note: 'The statute-first rule requires changing the amount base if frozen conformity is verified; eligibility
-    already uses the frozen snapshot. Code not yet on main: in_eitc, in_eitc_eligible.'
+  note: 'PE-US follows Schedule IN-EIC: under static conformity in_eitc multiplies the current-year federal credit
+    by the match rate, and its comment argues the post-2023 federal changes are inflation indexing only (in_eitc.py).
+    in_eitc_eligible tests the frozen snapshot, January 1, 2023 through 2025 and January 1, 2026 from 2026. The
+    statute-first rule requires changing the amount base if frozen conformity is verified.'
 - id: us-in:rcap-unlicensed-facility-per-diem
   program: ssi-state-supplement
   years:
@@ -2016,19 +2020,23 @@ candidates:
     url: null
   - kind: manual
     citation: FSSA guide (2017)
-    url: null
+    url: https://www.in.gov/fssa/ddars/files/RCAP-Provider-Guide.pdf
   readings:
     statute: The rule gives $27 daily.
     other: The guide gives $37 daily.
   example: $27 versus $37 daily.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/in/fssa/ssp/rcap/per_diem/unlicensed.yaml
+    - policyengine_us/variables/gov/states/in/fssa/ssp/in_ssp_rcap.py
     prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/9709
+    - https://github.com/PolicyEngine/policyengine-us/pull/7887
   state: unreviewed
-  note: 'PE-US uses $37; obtain exact citations and establish concurrent applicability in 2026, which is unconfirmed.
-    Code not yet on main: IN RCAP parameters.'
+  note: 'PE-US uses $37 from July 1, 2008 and $27 before, citing 455 IAC 1-3-3 and the September 2017 FSSA RCAP
+    Provider Guide (rcap/per_diem/unlicensed.yaml, in_ssp_rcap.py). That code came from #7887; #9709, which this
+    entry named before, changed only California''s standards. Obtain the exact in-force rule text and establish
+    concurrent applicability in 2026, which is unconfirmed.'
 - id: us-ks:2021-2023-exemptions-dependent-filer
   program: income-tax
   years:
@@ -2145,8 +2153,9 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9213
   state: unreviewed
-  note: 'PE-US follows the manual; verify applicable versions of the state-plan/manual conflict, for which no statute
-    is supplied. Code not yet on main: dependent_child/age_limit.yaml.'
+  note: 'PE-US follows the manual: Kansas''s age limit is 19 from 2014 and its student option is off, and the age-limit
+    comment records the S25 student-option election (age_limit.yaml, student_option.yaml). Verify applicable versions
+    of the state-plan/manual conflict, for which no statute is supplied.'
 - id: us-ks:snap-crop-share-farm-rent-classification
   program: snap
   years:
@@ -2169,12 +2178,16 @@ candidates:
   example: For $6,000 farm rent alone, SNAP is reported as $298 on main versus $210 in the PR (not re-computed here).
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/usda/snap/income/snap_farm_rent_income.py
+    - policyengine_us/parameters/gov/usda/snap/income/sources/unearned.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9671
   state: unreviewed
-  note: 'The described implementation follows the federal regulation; verify the Kansas memo and its reported federal
-    clearance, and identify the underlying statutory rule. Code not yet on main: snap_farm_rent_income, gov.usda.snap.income.sources.unearned.'
+  note: 'PE-US follows the federal regulation in every state, Kansas included: Form 4835 farm rent of a landowner
+    who does not materially participate counts as unearned income, with losses floored at zero (snap_farm_rent_income.py,
+    income/sources/unearned.yaml). Verify the Kansas memo and its reported federal clearance, and identify the underlying
+    statutory rule; the formula cites 7 U.S.C. 2014(d)(9) for the loss rule.'
 - id: us-ky:claim-of-right-deduction-under-federal-credit
   program: income-tax
   years:
@@ -2221,7 +2234,7 @@ candidates:
   sources:
   - kind: regulation
     citation: 921 KAR 2:016
-    url: null
+    url: https://apps.legislature.ky.gov/law/kar/titles/921/002/016/
   - kind: manual
     citation: DCBS Operation Manual Volume III, MS 2820, OMTL-682, revised 11/1/25
     url: https://chfs.ky.gov/agencies/dcbs/dfs/Documents/OMVOLIII.pdf
@@ -2231,12 +2244,44 @@ candidates:
   example: A household of one receives $242 under the manual rather than the regulation's 2023 schedule.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ky/dcbs/ktap/benefit/payment_maximum.yaml
+    - policyengine_us/variables/gov/states/ky/dcbs/ktap/benefit/ky_ktap_payment_maximum.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/8942
   state: unreviewed
-  note: PE-US follows the manual from November 1, 2025; determine the governing source in this regulation/manual
-    conflict.
+  note: PE-US follows the manual from November 1, 2025 ($242 to $627 for sizes 1 through 7 or more), and the parameter's
+    comment records that 921 KAR 2:016 still shows the 2023 schedule (benefit/payment_maximum.yaml, ky_ktap_payment_maximum.py).
+    Determine the governing source in this regulation/manual conflict.
+- id: us-ky:ktap-payment-scale-household-size
+  program: tanf
+  years:
+    from: 2025
+    type: program
+    note: program year as the program defines it
+  question: Is Kentucky's K-TAP maximum payment scale indexed by the number of eligible persons, as the operations
+    manual says, or by the number of children, as the KY FACES web app labels it?
+  sources:
+  - kind: manual
+    citation: DCBS Division of Family Support Operation Manual Volume III, MS 2820 (OMTL-682, revised 11/1/25),
+      Maximum Payment Scale
+    url: https://www.chfs.ky.gov/agencies/dcbs/dfs/Documents/OMVOLIII.pdf
+  - kind: agency-practice
+    citation: KY FACES, Kentucky Transitional Assistance Program (KTAP) page
+    url: https://prd.webapps.chfs.ky.gov/kyfaces/Kinship/KTAP
+  readings:
+    statute: No statute supplied; the manual's Maximum Payment Scale runs by Number of Eligible Persons.
+    other: KY FACES shows the same dollar amounts with the axis labeled Number of Children.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/parameters/gov/states/ky/dcbs/ktap/benefit/payment_maximum.yaml
+    - policyengine_us/variables/gov/states/ky/dcbs/ktap/benefit/ky_ktap_payment_maximum.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/8942
+  state: unreviewed
+  note: 'PE-US follows the manual: the scale is keyed to assistance unit size, and the parameter''s comment records
+    the web app''s Number of Children label (benefit/payment_maximum.yaml). Confirm which count the agency applies.'
 - id: us-ky:liheap-subsidized-income-points
   program: liheap
   years:
@@ -2340,12 +2385,17 @@ candidates:
     using annual averages; separate joint adjustment gives $25,675 versus $25,676.
   pe_us:
     follows: gap-fill
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/la/tax/income/deductions/standard/amount.yaml
+    - policyengine_us/parameters/gov/states/la/tax/income/exempt_income/retirement/cap.yaml
+    - policyengine_us/parameters/uprating_extensions.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9791
   state: unreviewed
-  note: 'Verify that the bulletin permissibly fills the indexing and rounding gaps for both provisions. Code not
-    yet on main: extend_la_cpi_u_indexed_amounts, la_standard_deduction, la_retirement_exemption_person.'
+  note: 'PE-US follows the bulletin''s gap-fill: 2026 uses RIB 26-019''s amounts, and later years apply BLS''s December-over-December
+    CPI-U change rounded to one decimal and double the rounded single deduction for joint, head of household and
+    surviving spouse filers (standard/amount.yaml, retirement/cap.yaml, extend_la_cpi_u_indexed_amounts in uprating_extensions.py).
+    Verify that the bulletin permissibly fills the indexing and rounding gaps for both provisions.'
 - id: us-la:school-readiness-incapable-child
   program: income-tax
   years:
@@ -2418,11 +2468,14 @@ candidates:
     follows: statute
     code:
     - policyengine_us/parameters/gov/states/ma/tax/income/credits/senior_circuit_breaker/income/disallowed_deductions.yaml
+    - policyengine_us/variables/gov/states/ma/tax/income/credits/senior_circuit_breaker/ma_scb_total_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9250
   state: unreviewed
-  note: 'Verify the guidance''s years; the earliest year comes from the parameter, and the demonstrated opposing
-    guidance concerns SNAP. Code not yet on main: ma_scb_total_income.'
+  note: 'PE-US follows the statute''s item 2: SNAP and WIC are left out of the add-backs, and the list''s comment
+    records DOR''s contrary guidance (income/disallowed_deductions.yaml, read by ma_scb_total_income.py). Verify
+    the guidance''s years; the earliest year comes from the parameter, and the demonstrated opposing guidance concerns
+    SNAP.'
 - id: us-ma:claim-of-right-federal-deduction-eligibility
   program: income-tax
   years:
@@ -2475,11 +2528,14 @@ candidates:
     follows: unknown
     code:
     - policyengine_us/parameters/gov/states/ma/hic/connector_care/fpl_floor.yaml
+    - policyengine_us/parameters/gov/states/ma/hic/connector_care/fpl_limit.yaml
+    - policyengine_us/variables/gov/states/ma/hic/connector_care/ma_connector_care_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9240
   state: unreviewed
-  note: 'PE-US follows the Overview and leaves the sub-100% band unmodelled; reconcile the narrower coverage with
-    the regulation. Code not yet on main: ma_connector_care_eligible, gov.states.ma.hic.connector_care.fpl_limit.'
+  note: 'PE-US follows the Overview for 2026: income must be from 100% to 400% FPL, and the floor''s and limit''s
+    comments record the regulation''s Plan Type 1 and 3D bands, which are left unmodelled (fpl_floor.yaml, fpl_limit.yaml,
+    ma_connector_care_eligible.py). Reconcile the narrower coverage with the regulation.'
 - id: us-ma:pfml-cap-swap-effective-date
   program: paid-family-medical-leave
   years:
@@ -2618,12 +2674,46 @@ candidates:
   example: $1,078 under the multiplier versus $1,210 under the matrix.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/md/dhs/meap/md_meap.py
+    - policyengine_us/parameters/gov/states/md/dhs/meap/payment/garrett_multiplier.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9746
   state: unreviewed
-  note: 'PE-US follows the multiplier; verify its FY27 applicability and clarify the printed cell. Code not yet
-    on main: md_meap Garrett supplement.'
+  note: 'PE-US follows the plan''s multiplier: Garrett County pays 1.1 times the statewide amount, rounded half
+    up, so oil Level 4 is $1,078, and the documentation records the FY27 table''s $1,210 in that one cell (md_meap.py,
+    payment/garrett_multiplier.yaml). Verify its FY27 applicability and clarify the printed cell.'
+- id: us-md:meap-income-limit-plan-percentages
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Do Maryland MEAP's FY2026 income limits for sizes 1-10 follow the published annual 200% FPG amounts
+    or the state plan's equivalent SMI percentages and additional-member line?
+  sources:
+  - kind: guidance
+    citation: OHEP Income Guidelines FY2026 (updated July 9, 2025)
+    url: https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/Income-Guidelines-FY2026-Updated-7.9.2025.pdf
+  - kind: plan
+    citation: FY2026 LIHEAP State Plan, income eligibility, page 9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/MD_Plan_2026.pdf#page=9
+  readings:
+    statute: No statute supplied; the published guidelines give annual amounts at 200% FPG for sizes 1-10.
+    other: The plan states truncated equivalent SMI percentages and an additional-member line inconsistent with
+      them.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/md/dhs/meap/eligibility/md_meap_income_limit.py
+    - policyengine_us/parameters/gov/states/md/dhs/meap/eligibility/fpg_rate.yaml
+    - policyengine_us/parameters/gov/states/md/dhs/meap/eligibility/smi_min_size.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/9746
+  state: unreviewed
+  note: PE-US follows the published 200% FPG amounts for sizes 1-10 and uses 60% SMI from size 11, and the documentation
+    records the plan's truncated percentages and inconsistent additional-member line (md_meap_income_limit.py, eligibility/fpg_rate.yaml,
+    eligibility/smi_min_size.yaml). Verify the plan's figures and whether they change any household's eligibility.
 - id: us-md:meap-interest-dividends
   program: liheap
   years:
@@ -2648,12 +2738,15 @@ candidates:
     other: The plan leaves interest, dividends or royalties unchecked.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/md/dhs/meap/income/sources/unearned.yaml
+    - policyengine_us/variables/gov/states/md/dhs/meap/income/md_meap_countable_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9746
   state: unreviewed
-  note: 'PE-US follows COMAR and the manual; verify the unchecked category''s meaning and reconcile the plan. Code
-    not yet on main: md_meap countable income.'
+  note: 'PE-US follows COMAR and the manual: interest and dividends are countable unearned income, and the documentation
+    records that the plan leaves them unchecked (income/sources/unearned.yaml, md_meap_countable_income.py). Verify
+    the unchecked category''s meaning and reconcile the plan.'
 - id: us-md:meap-lump-sums-americorps
   program: liheap
   years:
@@ -2678,12 +2771,15 @@ candidates:
     other: The manual and plan checklists count them.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/md/dhs/meap/income/md_meap_countable_income.py
+    - policyengine_us/parameters/gov/states/md/dhs/meap/income/sources/unearned.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9746
   state: unreviewed
-  note: 'PE-US follows COMAR; obtain exact checklist provisions and applicable versions. Code not yet on main: md_meap
-    countable income.'
+  note: 'PE-US follows COMAR: nonrecurring lump sums and AmeriCorps/VISTA payments are not countable, and the documentation
+    says the manual and plan count them (md_meap_countable_income.py, income/sources/unearned.yaml). Obtain exact
+    checklist provisions and applicable versions.'
 - id: us-md:meap-nonqualified-child-household-size
   program: liheap
   years:
@@ -2707,12 +2803,14 @@ candidates:
     and PE-US.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/md/dhs/meap/eligibility/md_meap_household_size.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9746
   state: unreviewed
-  note: 'PE-US follows the manual; determine the governing source and verify the supplied page anchor. Code not
-    yet on main: md_meap household size.'
+  note: 'PE-US follows the manual: children under 18 count in household size whatever their immigration status,
+    while ineligible adults do not (md_meap_household_size.py). Determine the governing source and verify the supplied
+    page anchor.'
 - id: us-md:meap-strike-pay
   program: liheap
   years:
@@ -2737,12 +2835,15 @@ candidates:
     other: The manual excludes those funds.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/md/dhs/meap/income/sources/unearned.yaml
+    - policyengine_us/variables/gov/states/md/dhs/meap/income/md_meap_countable_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9746
   state: unreviewed
-  note: 'PE-US follows COMAR; verify the conflicting manual provision and applicable versions. Code not yet on main:
-    md_meap countable income.'
+  note: 'PE-US follows COMAR: strike_benefits count, assumed not employee-funded, and the documentation records
+    that manual Attachment B excludes funds without employee contributions (income/sources/unearned.yaml, md_meap_countable_income.py).
+    Verify the conflicting manual provision and applicable versions.'
 - id: us-md:pension-exclusion-maximum
   program: income-tax
   years:
@@ -2886,11 +2987,14 @@ candidates:
     code:
     - policyengine_us/parameters/gov/states/md/mhbe/premium_assistance/target_contribution_percentage/final.yaml
     - policyengine_us/parameters/gov/states/md/mhbe/premium_assistance/target_contribution_percentage/initial.yaml
+    - policyengine_us/variables/gov/states/md/mhbe/premium_assistance/md_premium_assistance_target_contribution_percentage.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9218
   state: unreviewed
-  note: 'PE-US follows Board design and the MIA exhibit; verify the suspected briefing error and 2027 applicability.
-    Code not yet on main: md_premium_assistance_target_contribution_percentage.'
+  note: 'PE-US follows the Board design and the MIA exhibit: the 150-200% band ends, and the 200-250% band starts,
+    at 2.00%, and the comment records that the briefing prints 1.00% at that boundary twice (target_contribution_percentage/initial.yaml
+    and final.yaml, read by md_premium_assistance_target_contribution_percentage.py). Verify the suspected briefing
+    error and 2027 applicability.'
 - id: us-md:snap-child-support-deduction
   program: snap
   years:
@@ -2964,11 +3068,15 @@ candidates:
     follows: gap-fill
     code:
     - policyengine_us/variables/gov/states/me/tax/income/credits/fairness/property_tax_fairness_credit/me_property_tax_fairness_credit_utilities_in_rent_amount.py
+    - policyengine_us/variables/gov/states/me/tax/income/credits/fairness/property_tax_fairness_credit/me_property_tax_fairness_credit_countable_rent.py
+    - policyengine_us/parameters/gov/states/me/tax/income/credits/fairness/property_tax/rate/utilities_share_of_rent.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9267
   state: unreviewed
-  note: 'Verify the form-only estimate and effective years; the statute-first rule permits gap-filling. Code not
-    yet on main: me_property_tax_fairness_credit_countable_rent, gov.states.me.tax.income.credits.fairness.property_tax.rate.utilities_share_of_rent.'
+  note: 'PE-US fills the gap with the form''s estimate: when rent includes utilities of unknown cost it subtracts
+    15% of rent, from 2014, and the rate''s comment says the statute has no unknown-amount estimate (me_property_tax_fairness_credit_countable_rent.py,
+    rate/utilities_share_of_rent.yaml). Verify the form-only estimate and effective years; the statute-first rule
+    permits gap-filling.'
 - id: us-me:sales-tax-fairness-credit-mixed-joint-return
   program: income-tax
   years:
@@ -2988,12 +3096,15 @@ candidates:
     other: The dependent note under the Single column supports allowing the joint credit unless every filer is claimable.
   pe_us:
     follows: gap-fill
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/me/tax/income/credits/fairness/sales_tax_fairness_credit/me_sales_tax_fairness_credit_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10024
   state: ruled
-  note: 'Ruled in October 2026; verify the mixed-joint interpretation and annual coverage because the supplied form
-    is for 2025. Code not yet on main: me_sales_tax_fairness_credit_eligible.'
+  note: 'PE-US follows the schedule''s reading: a joint return qualifies unless every filer can be claimed, and
+    the comment says neither 5213-A(6)(C) nor subsection 2 settles the mixed case (me_sales_tax_fairness_credit_eligible.py).
+    Ruled in October 2026; verify the mixed-joint interpretation and annual coverage because the supplied form is
+    for 2025.'
 - id: us-me:tanf-incapacitated-adult-care-deduction
   program: tanf
   years:
@@ -3004,8 +3115,8 @@ candidates:
     statute is described as child-only?
   sources:
   - kind: statute
-    citation: Maine TANF statute (citation not given in source; described as child-only)
-    url: null
+    citation: 22 M.R.S. §3762(3)(B)(7-D) (described as child-only)
+    url: https://www.mainelegislature.org/legis/statutes/22/title22sec3762.html
   - kind: regulation
     citation: 10-144 CMR ch. 331, Ch. IV § B(2)(b)
     url: https://www.law.cornell.edu/regulations/maine/C-M-R-10-144-ch-331-IV
@@ -3016,12 +3127,14 @@ candidates:
     administrative rule.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/me/dhhs/tanf/income/deductions/me_tanf_child_care_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/8982
   state: unreviewed
-  note: 'Find the statute citation; if its child-only scope is verified, the statute-first rule requires removing
-    the adult-care deduction. Code not yet on main: Maine TANF dependent care deduction variable (name not given).'
+  note: 'PE-US follows the rule: the deduction also covers each incapacitated adult needing care, at the $175 tier
+    (me_tanf_child_care_deduction.py). The formula cites 22 M.R.S. §3762(3)(B)(7-D) for the per-child amounts; if
+    that statute''s child-only scope is verified, the statute-first rule requires removing the adult-care deduction.'
 - id: us-mi:claim-of-right-credit-amount-and-threshold
   program: income-tax
   years:
@@ -3070,12 +3183,18 @@ candidates:
     to $19,444, and heating credit from $35.316 to $80.676.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/mi/tax/income/mi_household_resources.py
+    - policyengine_us/parameters/gov/states/mi/tax/income/household_resources_all_members.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9796
   state: ruled
-  note: 'Ruled in October 2026 to follow the form; the later statute-first rule requires a model change after distinguishing
-    dependents'' own income from amounts received for others. Code not yet on main: mi_household_resources, gov.states.mi.tax.income.household_resources_all_members.'
+  note: 'Partly changed by #9796: PE-US now counts only the claimant''s and spouse''s own income, as the statute
+    does, except the sources on MI-1040CR lines 21, 22 and 27 (Social Security, SSI, railroad benefits, child support,
+    TANF and general assistance), which it counts for every member as amounts received for others, as the form does
+    (mi_household_resources.py, household_resources_all_members.yaml). Ruled in October 2026 to follow the form;
+    the statute-first rule still requires deciding whether a dependent''s own benefits on those lines are received
+    for others.'
 - id: us-mi:household-resources-premium-double-deduction
   program: homestead-credit
   years:
@@ -3234,13 +3353,18 @@ candidates:
   pe_us:
     follows: gap-fill
     code:
+    - policyengine_us/variables/gov/hhs/medicaid/income/medicaid_income_level.py
+    - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/medicaid_optional_senior_or_disabled_income_limit.py
     - policyengine_us/variables/gov/states/mo/dss/mhf/mo_mhf_parent_income_limit.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9297
     - https://github.com/PolicyEngine/policyengine-us/pull/9379
   state: unreviewed
-  note: 'Verify the rounding gap-fill; the separate January-versus-April timing difference is a model approximation.
-    Code not yet on main: medicaid_income_level, medicaid_optional_senior_or_disabled_income_limit.'
+  note: 'PE-US fills the gap with the manual''s convention: medicaid_income_eligible (medicaid_income_level.py)
+    rounds each monthly MAGI Medicaid and CHIP limit up to the next whole dollar and admits income at or below it,
+    in every state as an approximation. Missouri''s MHABD limits round up the same way (medicaid_optional_senior_or_disabled_income_limit.py),
+    and its MHF parent limit uses the published schedule (mo_mhf_parent_income_limit.py). Verify the rounding gap-fill;
+    the separate January-versus-April timing difference is a model approximation.'
 - id: us-mo:negative-federal-agi-combined-return
   program: income-tax
   years:
@@ -3297,8 +3421,9 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9214
   state: unreviewed
-  note: 'The statute-first rule requires nearest-dollar rounding; verify other chart years before extending beyond
-    2025. Code not yet on main: mo_property_tax_credit.'
+  note: 'PE-US follows the DOR charts: the formula reproduces the published charts, which its comment says round
+    the credit down and the phase-out up, although the statute says the nearest whole dollar (mo_property_tax_credit.py).
+    The statute-first rule requires nearest-dollar rounding; verify other chart years before extending beyond 2025.'
 - id: us-mo:sab-personal-standard-rounding
   program: supplemental-aid-to-the-blind
   question: Is SAB's earnings standard exactly 10% under the manual or the rounded-up value in the regulation's
@@ -3366,12 +3491,15 @@ candidates:
   example: Two student parents with one toddler may make only one claim under Missouri's manual from 2025.
   pe_us:
     follows: gap-fill
-    code: []
+    code:
+    - policyengine_us/parameters/gov/usda/snap/student/child_care_claim_cap/per_household.yaml
+    - policyengine_us/variables/gov/usda/snap/eligibility/student/meets_snap_parent_exception.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9380
   state: unreviewed
-  note: 'Verify whether the manual permissibly fills the federal silence; PE-US applies the cap only in Missouri.
-    Code not yet on main: meets_snap_parent_exception, gov/usda/snap/student/child_care_claim_cap/per_household.yaml.'
+  note: PE-US applies Missouri's one-adult-per-household cap from 2025, a start date the parameter's comment calls
+    a modeling choice, and keeps the uncapped federal reading in other states (child_care_claim_cap/per_household.yaml,
+    meets_snap_parent_exception.py). Verify whether the manual permissibly fills the federal silence.
 - id: us-mo:wftc-investment-income-boundary
   program: income-tax
   years:
@@ -3403,11 +3531,14 @@ candidates:
     follows: statute
     code:
     - policyengine_us/variables/gov/states/mo/tax/income/credits/mo_wftc_eligible.py
+    - policyengine_us/parameters/gov/states/mo/tax/income/credits/wftc/investment_income_limit.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9180
   state: unreviewed
-  note: 'Confirm the documented maintainer choice''s date and obtain the 2023 form URL; the 2024-2025 forms are
-    reported to agree with the statute. Code not yet on main: mo_wftc_eligible, gov/states/mo/tax/income/credits/wftc/investment_income_limit.yaml.'
+  note: 'PE-US follows the statute in every year: investment income equal to the limit keeps eligibility, and the
+    comment records the 2023 form''s "equal to or greater than" wording and says the 2024 and 2025 forms use "greater
+    than" (mo_wftc_eligible.py, wftc/investment_income_limit.yaml). Confirm the documented maintainer choice''s
+    date and obtain the 2023 form URL.'
 - id: us-ms:liheap-110-percent-poverty-floor
   program: liheap
   years:
@@ -3433,14 +3564,17 @@ candidates:
   example: In FY2026, a household of 11 with $77,000 exceeds the $75,593 manual limit but falls below the $77,715
     floor; the proposed statutory model awards $650 for propane.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ms/mdhs/liheap/ms_liheap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/ms/mdhs/liheap/fpg_year_lag.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10279
   state: unreviewed
-  note: 'The statute-first rule requires applying the floor in main; the open PR proposes this change, while main
-    uses the manual limit alone. Code not yet on main: ms_liheap eligibility formula, gov.hhs.liheap.fpg_floor,
-    fpg_year_lag.'
+  note: 'Changed by #10279: PE-US now follows the statute. A household with income below 110% of the prior year''s
+    poverty guideline is income-eligible even above the manual''s 60% SMI limit, which the comment finds below that
+    floor from size 11 in FY2026 and FY2027 (ms_liheap_eligible.py, gov/hhs/liheap/fpg_floor.yaml, ms/mdhs/liheap/fpg_year_lag.yaml).'
 - id: us-ms:liheap-unearned-income-sources
   program: liheap
   years:
@@ -3488,14 +3622,19 @@ candidates:
     credit of $460 under the form versus $1,150 under the homestead reading.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_property_tax_billed.py
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_gross_rent.py
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_pre_one_claimant.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9900
     - https://github.com/PolicyEngine/policyengine-us/pull/9945
   state: open
-  note: 'A source-choice decision remains open; the statute-first rule requires changing claimant-only costs if
-    the whole-homestead reading is confirmed. Code not yet on main: mt_elderly_homeowner_or_renter_credit_pre_one_claimant,
-    mt_elderly_homeowner_or_renter_credit_property_tax_billed, mt_elderly_homeowner_or_renter_credit_gross_rent.'
+  note: 'PE-US follows the form: the claimant counts the property tax billed to their own tax unit and the rent
+    it paid; only when no one in the tax unit is billed does the household''s property tax count, as rent (mt_elderly_homeowner_or_renter_credit_property_tax_billed.py,
+    mt_elderly_homeowner_or_renter_credit_gross_rent.py, mt_elderly_homeowner_or_renter_credit_pre_one_claimant.py).
+    A source-choice decision remains open; the statute-first rule requires changing claimant-only costs if the whole-homestead
+    reading is confirmed.'
 - id: us-mt:elderly-credit-nonloss-agi-adjustments
   program: elderly-homeowner-renter-credit
   years:
@@ -3516,11 +3655,16 @@ candidates:
     other: Sum income categories without non-loss deductions.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_gross_household_income.py
+    - policyengine_us/parameters/gov/states/mt/tax/income/credits/elderly_homeowner_or_renter/gross_income_sources.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9915
   state: unreviewed
-  note: 'Identify the omitted adjustments and verify applicability in both years. Code not yet on main: mt_elderly_homeowner_or_renter_credit_gross_household_income.'
+  note: 'PE-US follows the statute: gross household income starts from each member''s federal AGI, which keeps the
+    non-loss adjustments, and adds back only the business and capital losses (mt_elderly_homeowner_or_renter_credit_gross_household_income.py,
+    elderly_homeowner_or_renter/gross_income_sources.yaml). Identify the omitted adjustments and verify applicability
+    in both years.'
 - id: us-mt:elderly-credit-refundable-credit-timing
   program: elderly-homeowner-renter-credit
   years:
@@ -3541,12 +3685,17 @@ candidates:
     other: The schedule directs use of amounts reported on the current Form 2.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.py
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_received.py
+    - policyengine_us/parameters/gov/states/mt/tax/income/credits/elderly_homeowner_or_renter/gross_income_sources.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9915
   state: unreviewed
-  note: 'PE-US uses current-return credits as a proxy; resolve the regulation/form timing difference, noting that
-    the 2024 caption uses received amounts. Code not yet on main: mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.'
+  note: PE-US uses the current return's federal and other Montana refundable credits as a proxy for credits received,
+    while the elderly credit itself enters as an input for the amount received during the year (mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.py,
+    mt_elderly_homeowner_or_renter_credit_received.py, elderly_homeowner_or_renter/gross_income_sources.yaml). Resolve
+    the regulation/form timing difference, noting that the 2024 caption uses received amounts.
 - id: us-mt:elderly-credit-rent-free-occupants
   program: income-tax
   years:
@@ -3571,12 +3720,16 @@ candidates:
     tax receives a 2024 credit of $341 versus $0 before.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_gross_rent.py
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_property_tax_billed.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9945
   state: open
-  note: 'The source-choice question remains open; the statute-first rule requires a model change if the regulation
-    expands rather than interprets statutory eligibility. Code not yet on main: mt_elderly_homeowner_or_renter_credit_gross_rent.'
+  note: 'PE-US follows the regulation and instructions: when no one in the claimant''s tax unit is billed property
+    tax, the household''s property tax counts as rent, taking the larger of that and rent paid, so a rent-free occupant
+    can qualify (mt_elderly_homeowner_or_renter_credit_gross_rent.py). The source-choice question remains open;
+    the statute-first rule requires a model change if the regulation expands rather than interprets statutory eligibility.'
 - id: us-mt:medical-floor-agi-base
   program: income-tax
   years:
@@ -3598,12 +3751,17 @@ candidates:
   example: A 2021 couple's medical deduction changes from $3,250 to $4,000.
   pe_us:
     follows: gap-fill
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/mt/tax/income/deductions/itemized/medical/mt_medical_expense_deduction_joint.py
+    - policyengine_us/parameters/gov/states/mt/tax/income/deductions/itemized/state_specific_deduction_applies.yaml
+    - policyengine_us/variables/gov/states/mt/tax/income/deductions/standard/mt_standard_deduction_joint.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9903
   state: unreviewed
-  note: 'Verify the incorporated federal provision against the form''s AGI choice; negative-AGI clipping is a separate
-    model convention. Code not yet on main: mt_medical_expense_deduction_joint, mt_standard_deduction_joint.'
+  note: 'PE-US fills the gap with the form: through 2023 the joint medical floor applies to the return''s pooled
+    Montana AGI (Itemized Deductions Schedule line 1b), and from 2024 the federal floor on federal AGI applies (mt_medical_expense_deduction_joint.py,
+    itemized/state_specific_deduction_applies.yaml); the joint standard deduction also uses pooled Montana AGI (mt_standard_deduction_joint.py).
+    Verify the incorporated federal provision against the form''s AGI choice.'
 - id: us-nc:lieap-gross-versus-net-income
   program: liheap
   years:
