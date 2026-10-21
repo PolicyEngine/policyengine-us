@@ -15,6 +15,7 @@ class msp_countable_income(Variable):
         "https://www.law.cornell.edu/cfr/text/20/416.1163",
         "https://secure.ssa.gov/apps10/poms.nsf/lnx/0501715010",
         "https://www.medicare.gov/basics/costs/help/medicare-savings-programs",
+        "https://www.law.cornell.edu/uscode/text/42/1396a#r_2",
     )
     documentation = """
     MSP countable income uses SSI methodology per 42 U.S.C. 1396d(p)(1)(B),
@@ -29,6 +30,10 @@ class msp_countable_income(Variable):
     exclusions are applied, and the $20 exclusion is taken once on the combined
     income. The combined countable income is then compared against the couple FPL
     in the eligibility variables (is_qmb_eligible, is_slmb_eligible, is_qi_eligible).
+
+    Under 42 U.S.C. 1396a(r)(2) a state may exclude more than the $20 SSI
+    general income exclusion; Illinois and Mississippi use their larger
+    exclusion in its place.
     """
 
     def formula(person, period, parameters):
@@ -46,6 +51,12 @@ class msp_countable_income(Variable):
             0,
         )
         deeming_applies = person("is_ssi_spousal_deeming_applies", year)
+        state = person.household("state_code_str", period)
+        p = parameters(period).gov.hhs.medicare.savings_programs.eligibility.income
+        ssi_exclusions = parameters(period).gov.ssa.ssi.income.exclusions
+        general_exclusion = max_(
+            ssi_exclusions.general, p.state_general_exclusion[state]
+        )
 
         spouse_earned_income = person(
             "ssi_earned_income_deemed_from_ineligible_spouse", year
@@ -58,6 +69,7 @@ class msp_countable_income(Variable):
             unearned_income,
             parameters,
             year,
+            general_exclusion=general_exclusion,
         )
 
         couple_countable = _apply_ssi_exclusions(
@@ -69,6 +81,7 @@ class msp_countable_income(Variable):
             person.marital_unit.sum(unearned_income),
             parameters,
             year,
+            general_exclusion=general_exclusion,
         )
 
         deemed_countable = _apply_ssi_exclusions(
@@ -76,6 +89,7 @@ class msp_countable_income(Variable):
             unearned_income + spouse_unearned_income,
             parameters,
             year,
+            general_exclusion=general_exclusion,
         )
 
         single_countable = where(

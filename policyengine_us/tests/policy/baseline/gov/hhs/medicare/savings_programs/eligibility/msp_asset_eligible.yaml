@@ -103,3 +103,62 @@
     state_code: MA
   output:
     msp_asset_eligible: true
+
+- name: Case 8, Washington has no MSP asset test from 2023.
+  period: 2023-01
+  input:
+    age: 67
+    bank_account_assets: 100_000
+    spm_unit_is_married: false
+    state_code: WA
+  output:
+    msp_asset_eligible: true
+
+- name: Case 9, California's reinstated 2026 MSP asset limit admits assets at the limit.
+  period: 2026-01
+  input:
+    age: 67
+    bank_account_assets: 130_000
+    spm_unit_is_married: false
+    state_code: CA
+  output:
+    msp_asset_eligible: true
+
+- name: Case 10, California's reinstated 2026 MSP asset limit rejects assets above it.
+  period: 2026-01
+  input:
+    age: 67
+    bank_account_assets: 130_001
+    spm_unit_is_married: false
+    state_code: CA
+  output:
+    msp_asset_eligible: false
+
+- name: Case 11, Minnesota's couple asset limit is above the federal limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        bank_account_assets: 9_000
+      person2:
+        age: 68
+        bank_account_assets: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Combined 18,000 is at Minnesota's 18,000 couple limit and above the
+    # federal 14,910.
+    msp_asset_eligible: [true, true]
