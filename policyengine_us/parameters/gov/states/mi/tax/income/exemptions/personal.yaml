@@ -9,6 +9,7 @@ values:
   2023-01-01: 5_400
   2024-01-01: 5_600
   2025-01-01: 5_800
+  2026-01-01: 5_900
 
 metadata:
   period: year
@@ -16,8 +17,9 @@ metadata:
   uprating:
     parameter: gov.irs.uprating
     rounding:
+      # MCL 206.30(2): "rounded to the nearest $100.00 increment".
       type: nearest
-      interval: 50
+      interval: 100
   label: Michigan exemption base amount
   reference:
   # Legal code specified $3,700.
@@ -36,4 +38,8 @@ metadata:
     href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/MI-1040-Instructions.pdf#page=13
   - title: Michigan 2025 Income Tax Withholding Guide (Form 446)
     href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/SUW/TY2025/446_Withholding-Guide_2025.pdf#page=2
+  - title: Michigan 2026 Income Tax Withholding Guide (Form 446), Personal Exemption Amount
+    href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/SUW/TY2026/446_Withholding-Guide_2026.pdf#page=1
+  - title: Michigan Treasury, Withholding Tax Information by Calendar Year (2026 personal exemption)
+    href: https://www.michigan.gov/taxes/business-taxes/withholding/calendar-year-tax-information
 

@@ -12,5 +12,5 @@ class va_disability_income_subtraction_person(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.va.tax.income.subtractions.disability_income
-        subtractable = min_(person("disability_benefits", period), p.amount)
+        subtractable = min_(person("taxable_disability_benefits", period), p.amount)
         return subtractable * person("is_tax_unit_head_or_spouse", period)

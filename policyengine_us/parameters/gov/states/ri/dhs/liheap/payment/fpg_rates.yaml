@@ -1,0 +1,18 @@
+description: Rhode Island sets payment band boundaries at these shares of the federal poverty guideline under the Low Income Home Energy Assistance Program.
+# Thresholds are rounded half up to annual dollars and are upper-inclusive.
+# The size-two 125% cell prints 31,725, repeating its 150% value. The labeled
+# 125% rule instead gives 26,438; use the rule rather than that table anomaly.
+values:
+  2025-10-01:
+    - 0.75
+    - 1
+    - 1.25
+    - 1.5
+
+metadata:
+  unit: list
+  period: year
+  label: Rhode Island LIHEAP payment federal poverty guideline rates
+  reference:
+    - title: Rhode Island FY2026 Grant Amounts and Income Eligibility Matrix
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/RI_BenefitMatrix_2026.pdf

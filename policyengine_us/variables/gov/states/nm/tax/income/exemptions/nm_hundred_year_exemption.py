@@ -14,8 +14,15 @@ class nm_hundred_year_exemption(Variable):
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
         p = parameters(period).gov.states.nm.tax.income.exemptions.hundred_year
-        head_eligible = age_head >= p.age_eligibility
-        spouse_eligible = age_spouse >= p.age_eligibility
+        # NMSA 7-2-5.7 exempts an individual 100 or older "who is not a
+        # dependent of another individual", so each spouse qualifies on their
+        # own.
+        head_eligible = (age_head >= p.age_eligibility) & ~tax_unit(
+            "head_is_dependent_elsewhere", period
+        )
+        spouse_eligible = (age_spouse >= p.age_eligibility) & ~tax_unit(
+            "spouse_is_dependent_elsewhere", period
+        )
         filing_status = tax_unit("filing_status", period)
         joint = filing_status == filing_status.possible_values.JOINT
         # Halve the exemption if only one of head and spouse is eligible of a joint filer.

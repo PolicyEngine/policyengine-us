@@ -14,8 +14,11 @@ class mn_public_pension_subtraction(Variable):
     defined_for = StateCode.MN
 
     def formula(tax_unit, period, parameters):
-        taxable_public_pension_income = add(
-            tax_unit, period, ["taxable_public_pension_income"]
+        # Only pension payments included in federal AGI qualify, which
+        # excludes dependents' income; dependents report it on their own
+        # return.
+        taxable_public_pension_income = tax_unit_non_dep_sum(
+            "taxable_public_pension_income", tax_unit, period
         )
         p = parameters(period).gov.states.mn.tax.income.subtractions.pension_income
         filing_status = tax_unit("filing_status", period)

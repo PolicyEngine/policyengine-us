@@ -1,0 +1,30 @@
+description: Michigan counts these household resources sources for every tax unit member, not only the claimant and spouse, as amounts the claimant receives for others in the household.
+values:
+  2021-01-01:
+    # MI-1040CR line 21: Social Security, SSI and railroad retirement
+    # benefits, including "amounts received for minor children or other
+    # dependent adults who live with you".
+    - social_security
+    - ssi
+    - railroad_benefits
+    # MI-1040CR line 22: "child support and all payments received as a foster
+    # parent".
+    - child_support_received
+    # MI-1040CR line 27: "the total payments made to your household by MDHHS
+    # and all other public assistance payments". A Family Independence
+    # Program grant covers the children in the case.
+    - tanf
+    - general_assistance
+metadata:
+  unit: list
+  period: year
+  label: Michigan household resources sources counted for every member
+  reference:
+    - title: MCL 206.508(3) and (4), household and total household resources
+      href: https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-508
+    - title: Michigan 2025 Individual Income Tax Instructions, MI-1040CR lines 21, 22 and 27
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=32
+    - title: Michigan 2024 Home Heating Credit Instructions, MI-1040CR-7 lines 26, 27 and 32
+      href: https://web.archive.org/web/20250202150154/https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/BOOK_MI-1040CR-7.pdf#page=8
+    - title: Michigan 2025 Home Heating Credit Instructions, MI-1040CR-7 lines 24, 25 and 30
+      href: https://web.archive.org/web/20260218211009/https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040CR-7-Book.pdf?rev=e4ba4fedc63942e48442037517312d4a&hash=AF396E577B1932DF55BFD7F22D7EF06A#page=9

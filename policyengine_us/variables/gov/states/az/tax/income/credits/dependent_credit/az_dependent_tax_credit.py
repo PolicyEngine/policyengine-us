@@ -9,7 +9,7 @@ class az_dependent_tax_credit(Variable):
     entity = TaxUnit
     label = "Arizona dependent tax credit"
     unit = USD
-    documentation = "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01073-01.htm"
+    reference = "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01073-01.htm"
     definition_period = YEAR
     defined_for = StateCode.AZ
 
