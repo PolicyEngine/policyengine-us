@@ -8,37 +8,30 @@ class hi_tanf_dependent_care_deduction(Variable):
     unit = USD
     definition_period = MONTH
     reference = (
+        # HAR 17-676-54.1(c)(4) and (d)(4), PDF pages 36-37
+        "https://humanservices.hawaii.gov/wp-content/uploads/2019/03/HAR-17-676-INCOME.pdf#page=36",
         "https://humanservices.hawaii.gov/wp-content/uploads/2024/12/Hawaii_TANF_State_Plan_Signed_Certified-Eff_20231001.pdf#page=20",
     )
     defined_for = StateCode.HI
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.hi.dhs.tanf.deductions.dependent_care
-
-        # Per State Plan section 10.2.1(D), the deduction covers the cost
-        # of care for a disabled adult household member; care of children
-        # also flows through the same per-person caps.
-        childcare_expenses = spm_unit("childcare_expenses", period)
-        adult_care_expenses = add(spm_unit, period, ["care_expenses"])
-
-        # Count children and disabled adults in the unit for the per-person cap
+        # HAR 17-676-54.1(c)(4) and (d)(4) deduct "the actual cost for the
+        # care of each incapacitated adult living in the same household and
+        # receiving financial assistance", up to $175 a month if the
+        # applicant is employed full time or $165 if less than full time.
+        # The rule covers incapacitated adults only; child care costs are
+        # not deducted here.
         person = spm_unit.members
-        is_child = person("is_child", period.this_year)
         is_adult = ~person("is_child", period.this_year)
-        is_disabled_adult = is_adult & person("is_disabled", period.this_year)
-        num_care_recipients = spm_unit.sum(is_child | is_disabled_adult)
-
-        # Determine rate based on MAX of adult hours
-        # If either parent works full-time, use full-time rate
+        care_cost = is_adult * person(
+            "hi_tanf_qualifying_incapacitated_adult_care_expenses", period
+        )
+        # The cap follows the working applicant's employment: full time is
+        # 32 or more hours a week (HAR 17-676-2). When several adults work,
+        # the applicant is treated as full time if any of them is.
         hours = person("weekly_hours_worked_before_lsr", period.this_year)
-        # Only consider adult hours (children get 0)
-        adult_hours = where(is_adult, hours, 0)
-        max_adult_hours = spm_unit.max(adult_hours)
-
-        # Full-time = 32+ hours/week
-        # Rate is $175 (full-time) or $165 (part-time) per person
-        rate = p.amount.calc(max_adult_hours)
-        max_deduction = num_care_recipients * rate
-
-        # Deduct actual cost up to max per care recipient
-        return min_(childcare_expenses + adult_care_expenses, max_deduction)
+        max_adult_hours = spm_unit.max(where(is_adult, hours, 0))
+        cap = spm_unit.project(p.amount.calc(max_adult_hours))
+        # Each adult's cost is capped separately.
+        return spm_unit.sum(min_(care_cost, cap))

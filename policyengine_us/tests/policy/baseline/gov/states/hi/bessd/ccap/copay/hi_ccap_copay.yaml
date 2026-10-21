@@ -299,3 +299,39 @@
     hi_ccap_maximum_monthly_rate: [0, 1_733, 795]
     hi_ccap_copay_rate: 0.09
     hi_ccap_copay: 495
+
+- name: Counted Hawaii TANF payments can move a family out of the zero co-payment band.
+  period: 2025-04
+  absolute_error_margin: 0.001
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000  # 2,500/month
+      spouse:
+        age: 30
+        is_disabled: true
+      child:
+        age: 5
+        hi_ccap_maximum_monthly_rate: 1_000
+    spm_units:
+      unit:
+        members: [parent, spouse, child]
+        hi_tanf: 153.64  # monthly
+        spm_unit_fpg: 30_650
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+        hi_ccap_eligible: true
+    households:
+      household:
+        members: [parent, spouse, child]
+        state_code: HI
+  output:
+    # Countable income = $2,500 + $153.64 Hawaii TANF = $2,653.64
+    # (HAR 17-798.3-10(b)(11)). Monthly FPG = $30,650 / 12 = $2,554.17, so
+    # income is about 103.9% of FPG: the 1% band. Without the TANF income,
+    # $2,500 is under 100% of FPG and the co-payment is zero.
+    hi_ccap_countable_income: 2_653.64
+    hi_ccap_copay_rate: 0.01
+    hi_ccap_copay: 26.5364
+    # min($6,000 / 12, $1,000) - $26.5364 = $473.4636
+    hi_ccap: 473.4636
