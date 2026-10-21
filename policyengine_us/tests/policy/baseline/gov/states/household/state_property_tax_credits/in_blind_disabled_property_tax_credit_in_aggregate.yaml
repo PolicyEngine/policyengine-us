@@ -21,6 +21,11 @@
         adjusted_gross_income:
           2024: 30_000
           2026: 30_000
+        in_supplemental_homestead_credit_eligible: true
+        # Homestead liability after the over-65 and blind/disabled credits,
+        # which DLGF's order of operations applies first (June 18, 2025 FAQ,
+        # questions 29 and 33): 2,000 - 150 - 125 = 1,725.
+        in_homestead_property_tax_liability: 1_725
     households:
       household:
         members: [person1]
@@ -28,12 +33,12 @@
   output:
     # A disabled senior homeowner qualifies for all three SEA 1 credits, which
     # stack in the umbrella: over-65 $150 (senior, 2024 AGI 30,000 under the
-    # limit, homeowner) + blind/disabled $125 + supplemental homestead $200
-    # (10% of 2,000, capped at $300) = $475.
+    # limit, homeowner) + blind/disabled $125 + supplemental homestead $172.50
+    # (10% of 1,725, capped at $300) = $447.50.
     in_over_65_property_tax_credit: 150
     in_blind_disabled_property_tax_credit: 125
-    in_supplemental_homestead_credit: 200
-    taxsim_state_property_tax_credit: 475
+    in_supplemental_homestead_credit: 172.5
+    taxsim_state_property_tax_credit: 447.5
 
 - name: 2025 umbrella excludes the blind/disabled credit
   period: 2025

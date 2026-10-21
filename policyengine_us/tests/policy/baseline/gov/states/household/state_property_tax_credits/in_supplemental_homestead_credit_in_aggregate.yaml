@@ -21,16 +21,21 @@
         adjusted_gross_income:
           2024: 30_000
           2026: 30_000
+        in_supplemental_homestead_credit_eligible: true
+        # Homestead liability after the $150 over-65 credit, which DLGF's
+        # order of operations applies first (June 18, 2025 FAQ, questions 29
+        # and 33): 2,000 - 150 = 1,850.
+        in_homestead_property_tax_liability: 1_850
     households:
       household:
         members: [person1]
         state_code: IN
   output:
-    # Supplemental: 10% of 2,000 = 200. Over-65: $150 (senior, 2024 AGI 30,000
-    # under the limit, homeowner). Umbrella = 350.
-    in_supplemental_homestead_credit: 200
+    # Supplemental: 10% of 1,850 = 185. Over-65: $150 (senior, 2024 AGI 30,000
+    # under the limit, homeowner). Umbrella = 335.
+    in_supplemental_homestead_credit: 185
     in_over_65_property_tax_credit: 150
-    taxsim_state_property_tax_credit: 350
+    taxsim_state_property_tax_credit: 335
 
 - name: 2025 umbrella excludes the supplemental homestead credit
   period: 2025
