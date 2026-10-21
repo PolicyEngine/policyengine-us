@@ -967,7 +967,7 @@ programs:
         variable: nd_liheap
         parameter_prefix: gov.states.nd.dhs.liheap
         verified_years: "2026"
-        notes: FY2026 regular heating only, using published income bands through size 28 and heat-in-rent payments. Larger-household rounding, application-month income, policy-specific business expenses, tribal routing, and unknown renter fuel remain approximations or unsupported inputs. Earlier-year backfills are unverified historical estimates; crisis, cooling, weatherization, and equipment assistance are out of scope.
+        notes: FY2026 regular heating, including heat-in-rent payments. Crisis, cooling, weatherization and equipment assistance are out of scope.
 
   # --- SSA programs ---
   - id: ssi
