@@ -216,6 +216,8 @@
         age: 63
         employment_income: 20_892.60
         real_estate_taxes: 863.08
+        # The third Economic Impact Payment, received during 2021.
+        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 1_400
     tax_units:
       tax_unit:
         members: [person1]
@@ -227,13 +229,14 @@
     # (863.08 - (gross_hh - 6,300) x 0.05) x 1.0, capped at $1,000.
     # 2021 instructions, line 7: "Refundable credits include the federal and
     # Montana Earned Income Tax Credit, the federal Child Tax Credits,
-    # Economic Impact Payments". Federal EITC (ARPA, no qualifying child)
-    # 1_502 - 15.3% x (20_892.60 - 11_610) = 81.76; Montana EITC 3% = 2.45;
-    # Economic Impact Payment 1_400. Line 10 = 20_892.60 + 1_484.21 =
-    # 22_376.81; line 12 = 16_076.81; line 14 = 803.84; line 19 = 863.08 -
-    # 803.84 = 59.24. The earlier expected value, 133.33, counted only the
-    # Montana EITC.
-    mt_elderly_homeowner_or_renter_credit: 59.24
+    # Economic Impact Payments". Received in 2021: the 1_400 Economic Impact
+    # Payment. The 2021 federal EITC (ARPA, no qualifying child), 1_502 -
+    # 15.3% x (20_892.60 - 11_610) = 81.76, is paid in 2022, so it is not;
+    # the Montana EITC on the 2021 return, 3% = 2.45, counts as the model's
+    # Montana refundable credits. Line 10 = 20_892.60 + 1_400 + 2.45 =
+    # 22_295.05; line 12 = 15_995.05; line 14 = 799.75; line 19 = 863.08 -
+    # 799.75 = 63.33.
+    mt_elderly_homeowner_or_renter_credit: 63.33
 
 - name: MT EHRC uses the $12,600 exclusion from 2022 (HB 191)
   period: 2022
