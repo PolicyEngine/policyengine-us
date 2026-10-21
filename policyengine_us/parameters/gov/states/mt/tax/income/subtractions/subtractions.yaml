@@ -13,6 +13,9 @@ values:
     - mt_unemployment_compensation_subtraction
     - salt_refund_income # Form 2 Subtractions Schedule
   2024-01-01:
+    # MCA 15-30-2120(3)(n) allows exempting up to 50% of military retirement pay
+    # (capped at MT earned income, (3)(n)(i)) and up to 50% of military survivor
+    # benefits regardless of other income ((3)(n)(ii), Form WMRE); not yet modeled.
     - mt_interest_exemption_person
     - mt_tuition_subtraction_person
     - mt_old_age_subtraction

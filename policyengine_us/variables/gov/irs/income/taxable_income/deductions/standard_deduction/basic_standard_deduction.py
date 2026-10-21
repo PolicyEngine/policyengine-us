@@ -29,6 +29,9 @@ class basic_standard_deduction(Variable):
         # deductible part of self-employment tax (Schedule 1, line 15).
         worksheet_earned_income = max_(
             tax_unit("tax_unit_earned_income", period)
+            # Disability pensions reported on Form 1040 line 1h count
+            # as earned income on the worksheet (line 1z).
+            + tax_unit_non_dep_sum("earned_disability_benefits", tax_unit, period)
             - tax_unit("self_employment_tax_ald", period),
             0,
         )
