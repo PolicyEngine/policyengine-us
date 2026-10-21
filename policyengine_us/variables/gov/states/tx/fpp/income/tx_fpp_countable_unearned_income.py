@@ -9,7 +9,7 @@ class tx_fpp_countable_unearned_income(Variable):
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-382-109",
-        "https://www.hhs.texas.gov/sites/default/files/documents/fpppm-9000-definitions-of-income.pdf#page=2",
+        "https://fhb.hhs.texas.gov/sites/default/files/documents/fpppm-9000-definitions-of-income.pdf#page=2",
     )
     defined_for = StateCode.TX
 

@@ -1,0 +1,40 @@
+description: Maryland provides this annual regular heating payment for oil or kerosene by benefit level under the Maryland Energy Assistance Program.
+1:
+  2024-07-01: 750
+  2025-07-01: 1_100
+  2026-07-01: 1_225
+2:
+  2024-07-01: 600
+  2025-07-01: 990
+  2026-07-01: 1_160
+3:
+  2024-07-01: 525
+  2025-07-01: 880
+  2026-07-01: 1_080
+4:
+  2024-07-01: 450
+  2025-07-01: 770
+  2026-07-01: 980
+5:
+  2024-07-01: 375
+  2025-07-01: 650
+  2026-07-01: 795
+6:
+  2024-07-01: 102
+  2025-07-01: 225
+  2026-07-01: 550
+7:
+  2024-07-01: 25
+metadata:
+  unit: currency-USD
+  period: year
+  label: Maryland MEAP oil heating payments
+  breakdown:
+  - range(1, 8)
+  reference:
+  - title: FY2025 MEAP Benefit Matrix
+    href: https://liheapch.acf.gov/docs/2025/benefits-matricies/MD_BenefitMatrix_2025.pdf
+  - title: FY26 MEAP Benefit Matrix
+    href: https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/FY26-MEAP-Benefit-Matrix-2-1-1.pdf
+  - title: FY27 MEAP Benefit Matrices, statewide table, PDF page 1
+    href: https://dhs.maryland.gov/documents/OHEP/FY27-MEAP-Benefit-Matrices.pdf#page=1

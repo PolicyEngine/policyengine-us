@@ -1,0 +1,114 @@
+# Dead reference URLs retired in the northeast_ca batch of the 2026-09-30 audit.
+# Each prefix failed a GET request (404/410, a soft 404, a dead host or a
+# persistent server error) on the date given; see the PR for evidence.
+# See test_known_dead_reference_urls.py for the format.
+
+[[dead]]
+prefix = "https://dcf.vermont.gov/benefits/ccfap/act76-faqs"
+verified = "2026-10-01"
+replacement = "https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/Act76/ACT-76-FAQs.pdf"
+
+[[dead]]
+prefix = "https://dol.ny.gov/system/files/documents/2025/01/p832-how-your-weekly-ui-benefits-are-calculated-1-25.pdf"
+verified = "2026-10-01"
+replacement = "https://dol.ny.gov/system/files/documents/2025/02/p832s-how-your-weekly-ui-benefits-are-calculated-1-25es-us.pdf"
+
+[[dead]]
+prefix = "https://ehsd.org/wp-content/uploads/2024/08/GA-Brochure_ENGLISH_July2024_FA_Digital.pdf"
+verified = "2026-10-01"
+replacement = "https://ehsd.org/wp-content/uploads/2025/05/GA-Brochure_ENGLISH_Apr2025_FA_Digital.pdf"
+
+[[dead]]
+prefix = "https://hhsaprogramguides.sandiegocounty.gov/CalWORKS/44-300/CalWORKs_Payment_Standards/G_CalWORKs_Payment_Standards.pdf"
+verified = "2026-10-01"
+replacement = "https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2023/23-74.pdf"
+
+[[dead]]
+prefix = "https://info.healthconnect.vermont.gov/sites/hcexchange/files/documents/2026-Eligibility-Income-Thresholds-for-QHP-Subsidies.pdf"
+verified = "2026-10-01"
+replacement = "https://info.healthconnect.vermont.gov/sites/vhc/files/documents/2026-Eligibility-Income-Thresholds-for-QHP-Subsidies.pdf"
+
+[[dead]]
+prefix = "https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP0892&item=3&session=131"
+verified = "2026-10-01"
+replacement = "https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP0592&item=6&snum=131"
+
+[[dead]]
+prefix = "https://portal.ct.gov/-/media/DRS/Forms/2024/Income/CT-1040-Instructions_1224.pdf"
+verified = "2026-10-01"
+replacement = "https://portal.ct.gov/-/media/drs/forms/2024/income/2024-ct-1040-instructions_1224.pdf"
+
+[[dead]]
+prefix = "https://portal.ct.gov/dss/archived-folder/health-programs-overview/husky-b"
+verified = "2026-10-01"
+replacement = "https://portal.ct.gov/dss/knowledge-base/articles/healthcare-coverage/husky-b"
+
+[[dead]]
+prefix = "https://sfmohcd.org/sites/default/files/Documents/MOH/BMR%20Ownership/2022%20AMI-IncomeLimits.pdf"
+verified = "2026-10-01"
+replacement = "https://api.sf.gov/documents/48907/2022_AMI-IncomeLimits.pdf"
+
+[[dead]]
+prefix = "https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/09Income/Potential_Inc_Res.htm"
+verified = "2026-10-01"
+replacement = "https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/09Income/Potential_Income_Resources.htm"
+
+[[dead]]
+prefix = "https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/09Income/Verification_Income.htm"
+verified = "2026-10-01"
+replacement = "https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/09Income/Verification_of_Income.htm"
+
+[[dead]]
+prefix = "https://tax.vermont.gov/document/2023-renter-credit-website-calculator"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20250526044955/https://tax.vermont.gov/document/2023-renter-credit-website-calculator"
+
+[[dead]]
+prefix = "https://tax.vermont.gov/document/2024-renter-credit-website-calculator"
+verified = "2026-10-01"
+replacement = "https://tax.vermont.gov/sites/tax/files/documents/2024%20Renter%20Credit%20Website%20Calculator.xlsx"
+
+[[dead]]
+prefix = "https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2023.pdf"
+verified = "2026-10-01"
+replacement = "https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2023.pdf"
+
+[[dead]]
+prefix = "https://www.alamedacountysocialservices.org/acssa-assets/PDF/GA-Policies/GA-Regulations.pdf"
+verified = "2026-10-01"
+replacement = "https://socialservices.alamedacountyca.gov/acssa-assets/PDF/GA-Policies/GA-Regulations.pdf"
+
+[[dead]]
+prefix = "https://www.cga.ct.gov/2022/act/pa/pdf/2022PA-00118-R00SB-00005-PA.pdf"
+verified = "2026-10-01"
+replacement = "https://www.cga.ct.gov/2022/ACT/PA/PDF/2022PA-00118-R00HB-05506-PA.PDF"
+
+[[dead]]
+prefix = "https://www.cga.ct.gov/2023/act/pa/pdf/2023PA-00031-R00HB-06680-PA.pdf"
+verified = "2026-10-01"
+replacement = "https://www.cga.ct.gov/2023/ACT/PA/PDF/2023PA-00031-R00HB-06733-PA.PDF"
+
+[[dead]]
+prefix = "https://www.ctoec.org/care-4-kids/c4k-policies/"
+verified = "2026-10-01"
+replacement = "https://www.ctoec.org/care-4-kids-regulations/"
+
+[[dead]]
+prefix = "https://www.ctoec.org/care-4-kids/c4k-providers/c4k-rates/"
+verified = "2026-10-01"
+replacement = "https://www.ctoec.org/care-4-kids-regulations/"
+
+[[dead]]
+prefix = "https://www.sfhsa.org/sites/default/files/media/document/2023-01/form_wfc_ty22_eng_code41.pdf"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20240630043054/https://www.sfhsa.org/sites/default/files/media/document/2023-01/form_wfc_ty22_eng_code41.pdf"
+
+[[dead]]
+prefix = "https://www.sfhsa.org/sites/default/files/media/document/2024-01/form_wfc_english_1.26.24.pdf"
+verified = "2026-10-01"
+replacement = "https://www.sf.gov/news--san-francisco-launches-free-tax-preparation-assistance-and-local-tax-credit-program-and"
+
+[[dead]]
+prefix = "https://www.sfhsa.org/sites/default/files/media/document/2026-06/manual_caap_eligibility_6_9_2026_v2.pdf"
+verified = "2026-10-01"
+replacement = "https://www.sfhsa.org/sites/default/files/media/document/2026-07/manual_caap_eligibility_7_6_2026.pdf"

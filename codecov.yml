@@ -1,0 +1,15 @@
+# Coverage is uploaded only by the PR workflow's Quick Feedback job, which runs
+# the tests selected for the files a PR changes (run_selective_tests.py
+# --coverage; .coveragerc counts */variables/* only). No job uploads coverage
+# from main. Reports can therefore cover different selections of tests and
+# source files, so project percentages are not reliably comparable between a
+# PR and its base. Report the project status without failing it; keep the
+# patch status, which measures the PR's own changed lines, as the gate.
+coverage:
+  status:
+    project:
+      default:
+        informational: true
+    patch:
+      default:
+        target: auto

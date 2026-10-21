@@ -1,0 +1,14 @@
+description: The District of Columbia accepts an individual taxpayer identification number for the filer, spouse and qualifying children under its earned income tax credit if this is true.
+values:
+  2015-01-01: false
+  # (f)(1)(D)(ii) applies to taxable years beginning after December 31, 2022.
+  2023-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: DC EITC ITIN eligibility
+  reference:
+    - title: Code of the District of Columbia § 47–1806.04 (f)(1)(D)(ii)
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04#(f)(1)(D)(ii)
+    - title: D.C. Law 24-167, Fiscal Year 2023 Budget Support Act of 2022, § 7012
+      href: https://code.dccouncil.gov/us/dc/council/laws/24-167

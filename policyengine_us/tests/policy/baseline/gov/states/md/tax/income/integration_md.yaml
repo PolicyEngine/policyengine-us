@@ -95,7 +95,7 @@
         state_code: MD
   output:  # expected results from hand calculations using 2021 MD Form 502
     # https://www.marylandtaxes.gov/forms/21_forms/502.pdf#page=2
-    # https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=18
+    # https://interactive.marylandtaxes.gov/Individuals/iFile_ChooseForm/PriorYearForms/Resident_Booklet_2021.pdf#page=18
     md_agi: 200_000
     md_deductions: 34_000  # PEUS 0.213.3 code generates 24_000
     md_taxable_income: 200_000 - 34_000  # code generates 200_000 - 24_000

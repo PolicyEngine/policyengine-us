@@ -15,7 +15,7 @@ class ss_aime(Variable):
     )
     unit = USD
     reference = (
-        "https://www.ssa.gov/OACT/COLA/aime.html",
+        "https://www.ssa.gov/OACT/COLA/Benefits.html#aime",
         "https://www.law.cornell.edu/uscode/text/42/415#b",
     )
 

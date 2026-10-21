@@ -7,5 +7,8 @@ class is_executive_administrative_professional(Variable):
     label = (
         "is employed in a bona fide executive, administrative, or professional capacity"
     )
-    reference = "https://www.law.cornell.edu/uscode/text/29/213 ; https://www.congress.gov/crs-product/IF12480"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/29/213",
+        "https://www.congress.gov/crs-product/IF12480",
+    )
     definition_period = YEAR

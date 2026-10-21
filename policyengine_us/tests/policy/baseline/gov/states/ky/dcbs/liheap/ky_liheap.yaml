@@ -1,0 +1,116 @@
+# Sources: Kentucky FY2026 state plan, regular heating benefit workbook, and fact sheet.
+- name: Case 1, published fuel amounts for one-person households.
+  period: 2026
+  input:
+    state_code: [KY, KY, KY, KY, KY, KY]
+    ky_liheap_eligible: [true, true, true, true, true, true]
+    spm_unit_size: [1, 1, 1, 1, 1, 1]
+    heating_type: [ELECTRICITY, NATURAL_GAS, PROPANE, COAL, WOOD, FUEL_OIL]
+    ky_liheap_income: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    receives_housing_assistance: [false, false, false, false, false, false]
+  output:
+    ky_liheap: [184, 134, 167, 117, 100, 150]
+- name: Case 2, two-person coal exception and the five-person points cap.
+  period: 2026
+  input:
+    state_code: [KY, KY, KY, KY, KY, KY]
+    ky_liheap_eligible: [true, true, true, true, true, true]
+    spm_unit_size: [2, 4, 5, 6, 7, 8]
+    heating_type: [COAL, COAL, COAL, COAL, COAL, COAL]
+    ky_liheap_income: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    receives_housing_assistance: [false, false, false, false, false, false]
+  output:
+    ky_liheap: [117, 167, 184, 184, 184, 184]
+- name: Case 3, the subsidized matrix increases across income bands.
+  period: 2026
+  input:
+    state_code: [KY, KY, KY, KY]
+    ky_liheap_eligible: [true, true, true, true]
+    spm_unit_size: [1, 1, 1, 1]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    ky_liheap_income: [0.0, 11_748.12, 15_660.12, 19_572.12]
+    receives_housing_assistance: [true, true, true, true]
+  output:
+    ky_liheap: [41, 45, 51, 56]
+- name: Case 4, the unsubsidized matrix decreases across income bands.
+  period: 2026
+  input:
+    state_code: [KY, KY, KY, KY]
+    ky_liheap_eligible: [true, true, true, true]
+    spm_unit_size: [1, 1, 1, 1]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    ky_liheap_income: [0.0, 11_748.12, 15_660.12, 19_572.12]
+    receives_housing_assistance: [false, false, false, false]
+  output:
+    ky_liheap: [184, 167, 150, 134]
+- name: Case 5, closed upper income bands use rounded monthly boundaries.
+  period: 2026
+  input:
+    state_code: [KY, KY, KY, KY, KY, KY]
+    ky_liheap_eligible: [true, true, true, true, true, true]
+    spm_unit_size: [1, 1, 1, 1, 1, 1]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    ky_liheap_income: [11_748, 11_748.12, 15_660, 15_660.12, 19_572, 19_572.12]
+  output:
+    ky_liheap: [184, 167, 167, 150, 150, 134]
+- name: Case 6, kerosene matches oil; unspecified and unsupported fuels have no schedule.
+  period: 2026
+  input:
+    state_code: [KY, KY, KY, KY, KY]
+    ky_liheap_eligible: [true, true, true, true, true]
+    spm_unit_size: [1, 1, 1, 1, 1]
+    ky_liheap_income: [0, 0, 0, 0, 0]
+    heating_type: [KEROSENE, OTHER, SOLAR, NONE, UNSPECIFIED]
+  output:
+    ky_liheap: [150, 0, 0, 0, 0]
+- name: Case 7, subsidized cells where 30 percent of the unsubsidized amount is a whole dollar.
+  period: 2026
+  input:
+    state_code: [KY, KY, KY, KY]
+    ky_liheap_eligible: [true, true, true, true]
+    spm_unit_size: [1, 2, 5, 5]
+    heating_type: [WOOD, NATURAL_GAS, ELECTRICITY, ELECTRICITY]
+    # Monthly income: 900, 1_200, 2_000 and 4_300.
+    ky_liheap_income: [10_800, 14_400, 24_000, 51_600]
+    receives_housing_assistance: [true, true, false, false]
+    is_in_public_housing: [false, false, true, true]
+  output:
+    # Each published subsidized cell is 30% of an unsubsidized cell, rounded
+    # up. These four have a whole-dollar product, so rounding must not add a
+    # dollar.
+    # Household 1: one person, wood, 0-75% (900 <= 979).
+    # 1 + 1 + 1 = 3 points; ceil(3 * 16.66 = 49.98) = 50; 50 * 0.3 = 15.
+    # Workbook subsidized cell = 15; unsubsidized one-person, 126.01-150%,
+    # wood cell = 50.
+    # Household 2: two people, natural gas, 0-75% (1_200 <= 1_322).
+    # 2 + 1 + 3 = 6 points; ceil(6 * 16.66 = 99.96) = 100; 100 * 0.3 = 30.
+    # Workbook subsidized cell = 30; unsubsidized two-person, 126.01-150%,
+    # natural gas cell = 100.
+    # Household 3: five people, electricity, 0-75% (2_000 <= 2_354).
+    # 5 + 1 + 6 = 12 points; ceil(12 * 16.66 = 199.92) = 200; 200 * 0.3 = 60.
+    # Workbook subsidized cell = 60; unsubsidized five-person, 126.01-150%,
+    # electricity cell = 200.
+    # Household 4: five people, electricity, 126.01-150% (4_300 > 3_922).
+    # 5 + 4 + 6 = 15 points; ceil(15 * 16.66 = 249.9) = 250; 250 * 0.3 = 75.
+    # Workbook subsidized cell = 75; unsubsidized five-person, 0-75%,
+    # electricity cell = 250.
+    ky_liheap: [15, 30, 60, 75]
+- name: Case 8, the coal adjustment ends at three people and carries into the subsidized schedule.
+  period: 2026
+  input:
+    state_code: [KY, KY]
+    ky_liheap_eligible: [true, true]
+    spm_unit_size: [3, 2]
+    heating_type: [COAL, COAL]
+    ky_liheap_income: [0, 0]
+    receives_housing_assistance: [false, true]
+  output:
+    # Household 1: three people, coal, 0-75%, unsubsidized.
+    # 3 (size) + 4 (income) + 2 (coal) + 0 (adjustment) = 9 points;
+    # ceil(9 * 16.66 = 149.94) = 150, the workbook cell (rev benefit income
+    # range H15).
+    # Household 2: two people, coal, 0-75%, subsidized.
+    # 2 (size) + 1 (income) + 2 (coal) - 1 (two-person coal adjustment) = 4
+    # points; ceil(4 * 16.66 = 66.64) = 67; ceil(67 * 0.3 = 20.1) = 21, the
+    # workbook cell (rev benefit income range H57).
+    ky_liheap: [150, 21]

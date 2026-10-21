@@ -10,7 +10,7 @@ class ca_scc_general_assistance_earned_income_deductions(Variable):
     defined_for = "is_tax_unit_head_or_spouse"
     reference = (
         "https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/01Policy/Policy.htm",
-        "https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/09Income/Verification_Income.htm",
+        "https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/09Income/Verification_of_Income.htm",
     )
 
     def formula(person, period, parameters):

@@ -33,14 +33,11 @@ class ca_cchip_eligible(Variable):
         # age 19", the federal CHIP definition of a child.
         age = person("age", period)
         age_eligible = age < parameters(period).gov.hhs.chip.child.max_age
-        istatus = person("immigration_status", period)
-        undocumented = istatus == istatus.possible_values.UNDOCUMENTED
-        # California elected the CHIPRA section 214 lawfully residing option for
-        # children (state plan section 4.1-LR). CMS SHO #12-002 excludes DACA
-        # from that option, and SHO #26-001 leaves the option intact under the
-        # October 2026 federal funding limits.
-        daca = istatus == istatus.possible_values.DACA
-        immigration_eligible = ~(undocumented | daca)
+        # WIC § 15853(a)(1) applies Title XXI immigration rules. California
+        # elected the CHIPRA section 214 lawfully residing option for children
+        # (state plan section 4.1-LR), which CMS SHO #12-002 closes to DACA
+        # recipients and SHO #26-001 leaves intact after October 2026.
+        immigration_eligible = person("is_chip_immigration_status_eligible", period)
         # WIC § 15853(a)(1)(A)-(B): the child must not qualify for the optional
         # targeted low-income children group or no-cost Medi-Cal. The Medi-Cal
         # exclusion is a complete floor: WIC § 14007.8 state-funded Medi-Cal
