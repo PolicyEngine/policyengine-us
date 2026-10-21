@@ -1,3 +1,10 @@
+## [2.56.1] - 2026-10-21
+
+### Fixed
+
+- Keep a claimable filer's own exemptions under the Hawaii and Virginia dependent-exemption repeal: the contributed repeal no longer gives a filer whom another taxpayer can claim the regular, aged or personal exemption that the baseline denies (HRS 235-54(a); Va. Code 58.1-322.03(2)(a)).
+
+
 ## [2.56.0] - 2026-10-21
 
 ### Added
