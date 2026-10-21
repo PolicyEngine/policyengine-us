@@ -589,7 +589,7 @@
 - name: An actual claim excludes a single filer only above the basic amount
   period: 2025
   input:
-    age: 30
+    age: [30, 30, 30]
     state_code: IL
     filing_status: SINGLE
     il_base_income: [2_849, 2_850, 2_851]

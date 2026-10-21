@@ -77,7 +77,7 @@
 - name: An actually claimed single filer retains one basic amount through the base-income boundary
   period: 2025
   input:
-    age: 30
+    age: [30, 30, 30]
     state_code: IL
     filing_status: SINGLE
     il_base_income: [2_849, 2_850, 2_851]
@@ -89,7 +89,7 @@
 - name: The separate AGI gate still limits total exemptions for claimable but unclaimed filers
   period: 2025
   input:
-    age: 30
+    age: [30, 30]
     state_code: IL
     filing_status: SINGLE
     il_base_income: 10_000
