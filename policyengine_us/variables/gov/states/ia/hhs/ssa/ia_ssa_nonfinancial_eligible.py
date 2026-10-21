@@ -27,11 +27,12 @@ class ia_ssa_nonfinancial_eligible(Variable):
         pursues_ssi = person("takes_up_ssi_if_eligible", period.this_year) | (
             person("uncapped_ssi", period) <= 0
         )
-        # NOTE: The SMME exception for a disabled person engaged in substantial
-        # gainful activity (Iowa Code 249.3(4)(a)(2); 441 IAC 51.7(2); 6-B p.10:
-        # "an applicant must meet disability standards other than the inability
-        # to engage in substantial gainful activity") is not modeled, because
-        # is_ssi_disabled excludes people working above the SGA level.
+        # SMME disability excludes the substantial gainful activity screen:
+        # Iowa Code 249.3(4)(a)(2) says SGA "shall not preclude a determination
+        # of disability", 441 IAC 51.7(2) excepts "limits on substantial gainful
+        # activity", and 6-B p.10 requires "disability standards other than the
+        # inability to engage in substantial gainful activity". So SMME reads
+        # meets_ssi_disability_criteria rather than is_ssi_disabled (Case 77).
         # NOTE: Iowa Code 249.3(4)(a) limits the SMME supplement to a person
         # "Sixty-five years of age or older" or "Disabled as defined by 42
         # U.S.C. §1382c(a)(3)". 441 IAC 51.7(2) requires "all eligibility
@@ -44,7 +45,7 @@ class ia_ssa_nonfinancial_eligible(Variable):
         # is disabled does (ia_ssa.yaml Cases 72 and 76).
         aged_blind_disabled = person("is_ssi_aged_blind_disabled", period.this_year)
         aged_or_disabled = person("is_ssi_aged", period.this_year) | person(
-            "is_ssi_disabled", period.this_year
+            "meets_ssi_disability_criteria", period.this_year
         )
         smme = category == category.possible_values.SMME
         return (

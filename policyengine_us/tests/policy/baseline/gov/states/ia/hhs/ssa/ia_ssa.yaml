@@ -1879,8 +1879,9 @@
           2026: IA
   output:
     # The child is the parent's tax dependent, so SSI's spouse test does not
-    # pair them and the parent gets the individual allowance. The child is
-    # not under 18, so there is no dependent-child allowance.
+    # pair them and the parent gets the individual allowance. SSI's child
+    # test reaches students only while under 22, so there is no
+    # dependent-child allowance.
     # SSI 994 - (800 - 20) = 214; care income 800 + 214 = 1,014;
     # participation 1,014 - 994 = 20; 400 - 20 = 380.
     ia_ssa_has_spouse: [false, false]
@@ -2225,4 +2226,32 @@
     ssi: 0
     ia_ssa_federal: 0
     ia_ssa_smme_countable_income: 2_000
+    ia_ssa: 1
+
+- name: Case 77, a disabled SMME applicant working above the SGA level still qualifies.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 50
+    meets_ssi_disability_criteria:
+      2026: true
+    # Reviewer example: SSDI of $900 and wages of $2,000 a month, above the
+    # 2026 SGA level of $1,690.
+    social_security_disability:
+      2026: 10_800
+    employment_income:
+      2026: 24_000
+    ia_ssa_category: SMME
+    ia_ssa_smme_coverage_eligible: true
+  output:
+    # SGA bars SSI disability, but Iowa Code 249.3(4)(a)(2) says it "shall not
+    # preclude a determination of disability" for SMME. SMME income
+    # (900 - 20) + (2,000 - 65) / 2 = 1,847.50 is at least 1,596.
+    ssi_engaged_in_sga: true
+    is_ssi_disabled: false
+    ssi: 0
+    ia_ssa_smme_countable_income: 1_847.5
     ia_ssa: 1
