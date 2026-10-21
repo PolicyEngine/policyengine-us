@@ -30,9 +30,9 @@
     nyc_taxable_income: 441_000
     nyc_school_tax_credit_fixed_amount_eligible: false
     nyc_school_tax_credit_rate_reduction_amount_eligible: true
-    # 0.171% x 12,000 + 0.228% x (441,000 - 12,000) = 20.52 + 978.12
-    nyc_school_tax_credit_rate_reduction_amount: 998.64
-    nyc_school_tax_credit: 998.64
+    # § 606(ggg)(4-b)(C): $21 + 0.228% x (441,000 - 12,000) = 21 + 978.12.
+    nyc_school_tax_credit_rate_reduction_amount: 999.12
+    nyc_school_tax_credit: 999.12
 
 - name: Income just over $500,000 denies the rate reduction amount although city taxable income is under $500,000.
   period: 2025
@@ -83,9 +83,9 @@
     # deduction = 272,000.
     nyc_taxable_income: 272_000
     nyc_school_tax_credit_fixed_amount: 63
-    # 20.52 + 0.228% x (272,000 - 12,000) = 20.52 + 592.80
-    nyc_school_tax_credit_rate_reduction_amount: 613.32
-    nyc_school_tax_credit: 676.32
+    # § 606(ggg)(4-b)(C): $21 + 0.228% x (272,000 - 12,000) = 21 + 592.80.
+    nyc_school_tax_credit_rate_reduction_amount: 613.80
+    nyc_school_tax_credit: 676.80
 
 - name: City taxable income over $500,000 denies the rate reduction amount although income is under $500,000.
   period: 2025
@@ -144,6 +144,6 @@
     nyc_taxable_income: 482_950
     nyc_school_tax_credit_fixed_amount_eligible: false
     nyc_school_tax_credit_rate_reduction_amount_eligible: true
-    # 0.171% x 21,600 + 0.228% x (482,950 - 21,600) = 36.936 + 1,051.878
-    nyc_school_tax_credit_rate_reduction_amount: 1_088.81
-    nyc_school_tax_credit: 1_088.81
+    # § 606(ggg)(4-b)(A): $37 + 0.228% x (482,950 - 21,600) = 37 + 1,051.878.
+    nyc_school_tax_credit_rate_reduction_amount: 1_088.878
+    nyc_school_tax_credit: 1_088.878
