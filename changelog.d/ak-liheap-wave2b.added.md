@@ -1,1 +1,1 @@
-Add Alaska HAP household size, countable income and income ceiling components for the FY2027 regular heating rules.
+Add Alaska Heating Assistance Program (ak_hap): FY2027 regular heating benefit from community fuel points, dwelling and income factors up to 150% of the Alaska poverty guideline, with the operating manual's shared-household and utility-allowance adjustments.

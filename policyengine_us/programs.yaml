@@ -967,7 +967,7 @@ programs:
         variable: ak_hap
         parameter_prefix: gov.states.ak.dpa.hap
         verified_years: "2027"
-        notes: FY2027 regular heating assistance uses the operating manual's equal eligible-household shares and final-dollar utility-allowance reduction, despite conflicting regulatory text. SPM units approximate economic households; wood and coal default to purchased fuel. Alaska utility allowances must be supplied. Some community mappings, tribal and residency facts, owner/room-renter arrangements and housing step-down exceptions remain unmodeled. Earlier-year results are unverified historical estimates; crisis and equipment assistance are out of scope.
+        notes: FY2027 regular heating, following the operating manual's shared-household and utility-allowance adjustments where the regulation differs. Crisis, cooling, weatherization and equipment assistance are out of scope.
 
   # --- SSA programs ---
   - id: ssi
