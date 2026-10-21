@@ -26,3 +26,12 @@
     tax_unit_is_joint: true
   output:
     education_credit_phase_out: 0.5
+
+- name: Income excluded under sections 911, 931 and 933 counts toward the phase-out
+  period: 2024
+  input:
+    adjusted_gross_income: 78_000
+    puerto_rico_income: 7_000
+  output:
+    # 26 U.S.C. 25A(d)(2): modified AGI 85,000; (85,000 - 80,000) / 10,000.
+    education_credit_phase_out: 0.5

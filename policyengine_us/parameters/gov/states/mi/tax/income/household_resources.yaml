@@ -1,31 +1,56 @@
 description: Michigan accounts for the following income sources as the household resources.
 values:
   2021-01-01:
+    # Each source counts for the claimant and spouse only (MCL 206.508(3)),
+    # except those in household_resources_all_members (lines 21, 22 and 27).
+    # MI-1040CR line 14, wages, including strike pay.
     - irs_employment_income
     - strike_benefits
+    # MI-1040CR line 15, interest and dividends.
     - dividend_income
     - interest_income
+    # MI-1040CR line 16, net business income: U.S. Schedule C, Form 4797
+    # Part II, Schedule E Parts II and III, and Schedule F, netted and
+    # floored at zero as a total.
     - farm_operations_income
     - total_self_employment_income
     - partnership_s_corp_income
+    - estate_income
+    - other_net_gain
+    # MI-1040CR line 17, net royalty or rent income: U.S. Schedule E Parts I,
+    # IV (REMIC income, which has no input) and V, netted and floored at zero
+    # as a total.
     - rental_income
     - farm_rent_income
+    # MI-1040CR line 18, pensions and annuities.
     - pension_income
     - retirement_benefits_from_ss_exempt_employment
-    - loss_limited_net_capital_gains
+    # MI-1040CR line 19, net capital gains and losses from the filer's U.S.
+    # Schedule D, a loss limited to $3,000 ($1,500 married filing separately).
+    - filer_loss_limited_net_capital_gains
+    # MI-1040CR line 20, alimony and other taxable income.
     - alimony_income
     - gambling_winnings
+    # MI-1040CR line 21, Social Security, SSI and railroad retirement
+    # benefits, including amounts received for dependents.
     - social_security
-    - ssi 
+    - ssi
     - railroad_benefits
+    # MI-1040CR line 22, child support.
     - child_support_received
-    - unemployment_compensation
-    # Gifts received or expenses paid on your behalf
+    # MI-1040CR line 23, unemployment compensation.
+    - total_unemployment_compensation
+    # MI-1040CR line 24, gifts received or expenses paid on your behalf.
     - miscellaneous_income
+    # MI-1040CR line 26, veterans' benefits and workers' compensation.
     - veterans_benefits
     - workers_compensation
+    # MI-1040CR line 14, long-term disability benefits.
     - disability_benefits
+    # Guaranteed income pilot payments, the recipient's own.
     - gi_cash_assistance
+    # MI-1040CR line 27, payments to the household by MDHHS and other public
+    # assistance.
     - tanf
     - general_assistance
 metadata:
@@ -34,16 +59,18 @@ metadata:
   label: Michigan household resources
   reference:
   - title: 2021 MICHIGAN Home Heating Credit Claim MI-1040CR-7, Page 2, Total Household Resources
-    href: https://www.michigan.gov/-/media/Project/Websites/taxes/2022RM/IIT/MI-1040CR7.pdf#page=2
+    href: https://web.archive.org/web/20220523121258/https://www.michigan.gov/-/media/Project/Websites/taxes/2022RM/IIT/MI-1040CR7.pdf?rev=84f72df3f8664b96903aa6b655dc34d2#page=2
   - title: 2022 MI-1040CR Tax Form
-    href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/MI-1040CR.pdf#page=1
+    href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/MI-1040CR.pdf#page=1
   - title: 2022 MI-1040 Instructions
-    href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=31
+    href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/BOOK_MI-1040.pdf#page=31
   - title: 2023 MI-1040 Individual Income Tax FORMS AND INSTRUCTIONS
-    href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2023/2023-IIT-Forms/BOOK_MI-1040.pdf#page=31
+    href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2023/BOOK_MI-1040.pdf#page=31
   - title: Michigan 2024 Individual Income Tax Instructions
     href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/MI-1040-Instructions.pdf#page=31
   - title: Michigan 2025 Individual Income Tax Instructions
     href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=31
+  - title: Michigan 2025 Individual Income Tax Instructions, Total Household Resources
+    href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=26
   - title: Michigan Compiled Laws Chapter 9 Section 206.508 - Definitions. (4)
     href: https://law.justia.com/codes/michigan/2022/chapter-206/statute-act-281-of-1967/division-281-1967-1/division-281-1967-1-9/section-206-508/

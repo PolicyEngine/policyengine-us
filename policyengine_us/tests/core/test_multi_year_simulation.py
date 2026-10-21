@@ -14,7 +14,8 @@ later year depend on the years calculated before it.
   periods. A branch copies its parent's cached arrays when it is created, so
   a branch created in 2024 answered 2025 from a copy without any of the
   parent's 2025 values, unlike the branch a 2025-only simulation creates.
-  ``get_branch_for_period`` creates them again for each period.
+  ``get_override_branch`` and ``get_branch_for_period`` create them again for
+  each period. (The CTC limit no longer uses a SALT branch.)
 
 Each test compares a simulation that calculates the base year first with a
 fresh simulation that calculates only the later year. The branch test gives
@@ -163,7 +164,7 @@ def test_formula_branches_are_created_again_for_a_later_year(year):
 
     simulation = Simulation(situation=_situation(age_every_year=True))
     _later_year_values(simulation, BASE_YEAR)
-    branches = ("itemizing", "not_itemizing", "no_salt")
+    branches = ("itemizing", "not_itemizing")
     base_year_branches = {name: simulation.branches[name] for name in branches}
 
     _assert_same(_later_year_values(simulation, year), fresh, year)
@@ -191,7 +192,7 @@ def test_later_year_matches_single_year_simulation(year):
 
     simulation = Simulation(situation=_situation())
     _later_year_values(simulation, BASE_YEAR)
-    BRANCHES = ("itemizing", "not_itemizing", "no_salt")
+    BRANCHES = ("itemizing", "not_itemizing")
     base_year_branches = {name: simulation.branches[name] for name in BRANCHES}
     # Request every month of the base year too, as monthly programs do for
     # people they cover.

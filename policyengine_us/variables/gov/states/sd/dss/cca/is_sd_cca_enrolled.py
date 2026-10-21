@@ -7,6 +7,4 @@ class is_sd_cca_enrolled(Variable):
     definition_period = MONTH
     label = "Enrolled in South Dakota CCA"
     defined_for = StateCode.SD
-    reference = (
-        "https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=21"
-    )
+    reference = "https://web.archive.org/web/20251031171652/https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=21"

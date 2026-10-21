@@ -18,5 +18,5 @@ class fl_oss_community_care_type(Variable):
     default_value = FLOSSCommunityCareType.NONE
     reference = (
         "https://www.flrules.org/gateway/RuleNo.asp?title=PUBLIC%20ASSISTANCE&ID=65A-2.032",
-        "https://www.myflfamilies.com/sites/default/files/2025-05/Appendix%20A-12%20-%20State%20Funded%20Programs%20Eligibility%20Standards.pdf",
+        "https://web.archive.org/web/20251030232040/https://www.myflfamilies.com/sites/default/files/2025-05/Appendix%20A-12%20-%20State%20Funded%20Programs%20Eligibility%20Standards.pdf",
     )

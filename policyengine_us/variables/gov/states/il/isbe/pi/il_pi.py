@@ -8,7 +8,7 @@ class il_pi(Variable):
     definition_period = YEAR
     unit = USD
     reference = (
-        "https://www.isbe.net/Pages/Birth-to-Age-3-Years.aspx",
+        "https://idec.illinois.gov/forproviders/prevention-initiative.html",
         "https://gov-pritzker-newsroom.prezly.com/gov-pritzker-announces-5150-new-preschool-seats-through-smart-start-initiative",
     )
     defined_for = "il_pi_eligible"

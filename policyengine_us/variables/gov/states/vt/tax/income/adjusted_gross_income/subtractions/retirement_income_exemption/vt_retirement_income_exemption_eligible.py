@@ -8,7 +8,7 @@ class vt_retirement_income_exemption_eligible(Variable):
     label = "Vermont retirement income exemption eligibility status"
     reference = (
         "https://legislature.vermont.gov/statutes/section/32/151/05811",  # Titl. 32 V.S.A. § 5811(21)(B)(iv)
-        "https://legislature.vermont.gov/statutes/section/32/151/05830e"  # Titl. 32 V.S.A. § 5830e
+        "https://legislature.vermont.gov/statutes/section/32/151/05830e",  # Titl. 32 V.S.A. § 5830e
         "https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf#page=3",  # Instruction for 2022 SCHEDULE IN-112 - RETIREMENT INCOME EXEMPTION WORKSHEET
         "https://tax.vermont.gov/individuals/seniors-and-retirees",  # Instruction for exemption from different retirement system
     )
@@ -23,14 +23,19 @@ class vt_retirement_income_exemption_eligible(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         p = parameters(period).gov.states.vt.tax.income.agi.retirement_income_exemption
         # One of the retirement income should be greater than 0
-        retirement_income = add(
+        # Dependents' income is not in federal AGI; they report it on their
+        # own return, so only the head's and spouse's pay counts.
+        retirement_sources = [
+            "tax_unit_taxable_social_security",
+            "military_retirement_pay",
+            "csrs_retirement_pay",
+        ]
+        if p.military_retirement.income_based_structure.in_effect:
+            retirement_sources.append("military_retirement_pay_survivors")
+        retirement_income = tax_unit_non_dep_add(
             tax_unit,
             period,
-            [
-                "tax_unit_taxable_social_security",
-                "military_retirement_pay",
-                "csrs_retirement_pay",
-            ],
+            retirement_sources,
         )
         retirement_income_qualified = retirement_income > 0
         # Determine which retirement system the filer uses, mirroring the

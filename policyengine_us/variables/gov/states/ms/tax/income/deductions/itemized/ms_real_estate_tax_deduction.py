@@ -7,7 +7,7 @@ class ms_real_estate_tax_deduction(Variable):
     label = "Mississippi real estate tax deduction"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=15"
+    reference = "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100221.pdf#page=15"
     defined_for = StateCode.MS
 
     def formula(tax_unit, period, parameters):
