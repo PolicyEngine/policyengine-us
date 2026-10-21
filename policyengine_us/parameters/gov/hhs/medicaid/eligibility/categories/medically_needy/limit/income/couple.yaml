@@ -1,4 +1,4 @@
-description: Maximum income for a couple to qualify for Medicaid under the 'medically needy' pathway.
+description: Maximum income for a couple to qualify for Medicaid under the 'medically needy' pathway. States whose limit is a share of the poverty guideline or the SSI federal benefit rate (fpg_rate, ssi_rate) are omitted here from the date that rule applies.
 metadata:
   label: Medicaid medically needy pathway for couples income limit
   breakdown:
@@ -8,6 +8,50 @@ metadata:
   reference:
     - title: "Medicaid Financial Eligibility for Seniors and People with Disabilities: Findings from a 50-State Survey | KFF"
       href: https://www.kff.org/report-section/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey-appendix-tables/
+    - title: Connecticut State Plan Amendment CT-22-0031, Medically Needy Income Level (effective July 1, 2022)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/CT-22-0031.pdf#page=7
+    - title: Connecticut State Plan Amendment CT-24-0003, Medically Needy Income Level (effective January 1, 2024)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/CT-24-0003.pdf#page=7
+    - title: Connecticut State Plan Amendment CT-24-0006, Medically Needy Income Level (effective March 1, 2024)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/CT-24-0006.pdf#page=7
+    - title: Connecticut State Plan Amendment CT-25-0013, Medically Needy Income Level (effective March 1, 2025)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/CT-25-0013.pdf#page=7
+    - title: Connecticut State Plan Amendment CT-26-0006, Medically Needy Income Level (effective March 1, 2026)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/CT-26-0006.pdf#page=7
+    - title: Connecticut DSS Program Standards Chart (effective March 1, 2026), HUSKY C Medically Needy Income Limit
+      href: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/fact-sheets-and-issue-briefs/fact-sheets/dss-program-standards-chart-effective-030126.pdf
+    - title: "District of Columbia Municipal Regulations 29-901.1, Medically Needy Income Levels (50 DCR 8467, October 10, 2003) #page 1-2"
+      href: https://dbh.dc.gov/sites/default/files/dc/sites/dmh/publication/attachments/GrievanceFinalRulemaking.pdf#page=1
+    - title: District of Columbia DHCF Non-MAGI Spend Down Notice (2023 Medically Needy Income Limit)
+      href: https://dhcf.dc.gov/sites/default/files/dc/sites/dhcf/documents/%2316%20Non%20MAGI%20Spend%20Down%20Notice.pdf#page=2
+    - title: District of Columbia DHCF Spend Down Fact Sheet (revised September 2024)
+      href: https://dhcf.dc.gov/sites/default/files/dc/sites/dhcf/service_content/attachments/Spend_Down_Fact_Sheet.pdf#page=2
+    - title: KFF, Medicaid Eligibility Levels for Older Adults and People with Disabilities (Non-MAGI) in 2026, Appendix Table 4
+      href: https://www.kff.org/medicaid/medicaid-eligibility-levels-for-older-adults-and-people-with-disabilities-non-magi-in-2026/
+    - title: New Hampshire State Plan Amendment NH-23-0029, Medically Needy Income Level (effective January 1, 2023)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/NH-23-0029.pdf#page=7
+    - title: New Hampshire State Plan Amendment NH-25-0012, Medically Needy Income Level (effective January 1, 2025)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/NH-25-0012.pdf#page=7
+    - title: New Hampshire State Plan Amendment NH-25-0019, Medically Needy Income Level (effective July 1, 2025)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/NH-25-0019.pdf#page=7
+    - title: New York DOH GIS 22 MA/11, 2023 Medicaid Levels and Other Updates
+      href: https://www.health.ny.gov/health_care/medicaid/publications/docs/gis/22ma11.pdf#page=1
+    - title: Rhode Island 210-RICR-40-00-3, Medicaid Affordable Care Coverage Groups (version effective January 1, 2020)
+      href: https://rules.sos.ri.gov/Regulations/part/210-40-00-3?reg_id=10945
+    - title: Rhode Island 210-RICR-40-00-3, section 3.2(A)(8), Medically Needy Income Limit
+      href: https://rules.sos.ri.gov/regulations/part/210-40-00-3
+    - title: Rhode Island State Plan Amendment RI-21-0004, Medically Needy Income Level (effective January 1, 2021)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/RI-21-0004.pdf#page=4
+    - title: Rhode Island State Plan Amendment RI-22-0003, Medically Needy Income Level (effective January 1, 2022)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/RI-22-0003.pdf#page=7
+    - title: Rhode Island State Plan Amendment RI-23-0005, Medically Needy Income Level (effective January 1, 2023)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/RI-23-0005.pdf#page=7
+    - title: Rhode Island State Plan Amendment RI-24-0003, Medically Needy Income Level (effective January 1, 2024)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/RI-24-0003.pdf#page=7
+    - title: Rhode Island State Plan Amendment RI-25-0003, Medically Needy Income Level (effective January 1, 2025)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/RI-25-0003.pdf#page=7
+    - title: Rhode Island State Plan Amendment RI-26-0001, Medically Needy Income Level (effective January 1, 2026)
+      href: https://www.medicaid.gov/medicaid/spa/downloads/RI-26-0001.pdf#page=7
 
 AK:
   2018-01-01: -.inf
@@ -23,8 +67,17 @@ CO:
   2018-01-01: -.inf
 CT:
   2018-01-01: 696
+  2022-07-01: 879
+  2024-01-01: 946
+  2024-03-01: 980
+  2025-03-01: 1_128
+  2026-03-01: 1_153
 DC:
   2018-01-01: 652
+  2023-01-01: 821.67
+  2024-01-01: 851.67
+  2025-01-01: 881.25
+  2026-01-01: 901.67
 DE:
   2018-01-01: -.inf
 FL:
@@ -37,8 +90,6 @@ IA:
   2018-01-01: 483
 ID:
   2018-01-01: -.inf
-IL:
-  2018-01-01: 1_372
 IN:
   2018-01-01: -.inf
 KS:
@@ -55,8 +106,6 @@ ME:
   2018-01-01: 341
 MI:
   2018-01-01: 1_372
-MN:
-  2018-01-01: 1_098
 MO:
   2018-01-01: -.inf
 MS:
@@ -65,12 +114,13 @@ MT:
   2018-01-01: 525
 NC:
   2018-01-01: 317
-ND:
-  2018-01-01: 1_139
 NE:
   2018-01-01: 392
 NH:
   2018-01-01: 675
+  2023-01-01: 1_033
+  2025-01-01: 1_066
+  2025-07-01: 1_093
 NJ:
   2018-01-01: 434
 NM:
@@ -79,6 +129,7 @@ NV:
   2018-01-01: -.inf
 NY:
   2018-01-01: 1_233
+  2022-01-01: 1_367
 OH:
   2018-01-01: -.inf
 OK:
@@ -89,6 +140,14 @@ PA:
   2018-01-01: 442
 RI:
   2018-01-01: 947
+  2019-01-01: 958
+  2020-01-01: 975
+  2021-01-01: 992
+  2022-01-01: 1_050
+  2023-01-01: 1_133
+  2024-01-01: 1_175
+  2025-01-01: 1_208
+  2026-01-01: 1_242
 SC:
   2018-01-01: -.inf
 SD:
@@ -97,14 +156,10 @@ TN:
   2018-01-01: 258
 TX:
   2018-01-01: 216
-UT:
-  2018-01-01: 1_372
 VA:
   2018-01-01: 659
 VT:
   2018-01-01: 1_041
-WA:
-  2018-01-01: 750
 WV:
   2018-01-01: 275
 WI:
