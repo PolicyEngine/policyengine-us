@@ -1,0 +1,14 @@
+- name: Case 1, default nc_other_additions is zero
+  period: 2024
+  input:
+    state_code: NC
+  output:
+    nc_other_additions: 0.0
+
+- name: Case 2, nc_other_additions flows into nc_additions
+  period: 2024
+  input:
+    state_code: NC
+    nc_other_additions: 1_200
+  output:
+    nc_additions: 1_200
