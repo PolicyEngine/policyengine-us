@@ -1775,6 +1775,68 @@ candidates:
   state: ruled
   note: 'Ruled statute-first in October 2026; the rule requires replacing the approximation using claimant inputs,
     with annual verification because the supplied statutory URL is for 2026. Code not yet on main: ia_is_tax_exempt.'
+- id: us-ia:smme-blind-under-65
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: Can a blind person under 65 who is not disabled receive Iowa's supplement for people with medical
+    expenses (SMME)?
+  sources:
+  - kind: statute
+    citation: Iowa Code 249.3(4)(a)
+    url: https://www.legis.iowa.gov/docs/code/249.pdf#page=2
+  - kind: regulation
+    citation: 441 IAC 51.7(2)
+    url: https://www.legis.iowa.gov/docs/iac/chapter/441.51.pdf#page=2
+  - kind: manual
+    citation: Iowa HHS Employees' Manual 6-B, SMME and SSI eligibility requirements
+    url: https://hhs.iowa.gov/media/3987/download?inline=#page=76
+  readings:
+    statute: Only a person "Sixty-five years of age or older" or "Disabled as defined by 42 U.S.C. §1382c(a)(3)"
+      qualifies, so blindness alone does not.
+    other: The rule requires "all eligibility requirements for supplemental security income benefits other than
+      limits on substantial gainful activity and income", which include blindness.
+  example: A blind 50-year-old with a $2,020 monthly pension and SMME coverage gets $0 under the statute and $1
+    under the rule.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/8017
+  state: ruled
+  note: 'Code not yet on main: ia_ssa_nonfinancial_eligible.'
+- id: us-ia:smme-income-at-least-120-percent
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: Does Iowa's SMME supplement require income of at least, or more than, 120 percent of the poverty
+    guideline?
+  sources:
+  - kind: statute
+    citation: Iowa Code 249.3(4)(g)
+    url: https://www.legis.iowa.gov/docs/code/249.pdf#page=2
+  - kind: regulation
+    citation: 441 IAC 51.7(6)
+    url: https://www.legis.iowa.gov/docs/iac/chapter/441.51.pdf#page=2
+  - kind: manual
+    citation: Iowa HHS Employees' Manual 6-B, Income (SMME)
+    url: https://hhs.iowa.gov/media/3987/download?inline=#page=77
+  readings:
+    statute: Income "of at least one hundred twenty percent of the federal poverty level" qualifies.
+    other: Income "must exceed 120 percent of the federal poverty level".
+  example: A single applicant with countable income of exactly $1,596 (1.2 × 15,960 / 12) gets $1 under the statute
+    and $0 under the rule.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/8017
+  state: ruled
+  note: 'Code not yet on main: ia_ssa.'
 - id: us-id:grocery-credit-claimable-spouse
   program: income-tax
   years:
