@@ -7,7 +7,7 @@ class nh_fap_heating_cost(Variable):
     definition_period = YEAR
     unit = USD
     label = "New Hampshire FAP annual heating cost using actual or estimated cost"
-    # PY2027 manual, pages 17, 18, 76, 77.
+    # PDF pages 17-18,76-77.
     reference = "https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=17"
     defined_for = StateCode.NH
 

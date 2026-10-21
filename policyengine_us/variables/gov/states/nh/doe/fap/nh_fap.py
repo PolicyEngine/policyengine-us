@@ -19,8 +19,8 @@ class nh_fap(Variable):
         "heating cost or fuel classification rather than legal ineligibility."
     )
     reference = (
-        # PY2027 manual, pages 10, 17-21, 57, 74, 76-78.
-        "https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=78",
+        # PDF pages 10,17-21,57,74,76-78.
+        "https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=10",
         # FY2026 plan, section 2.3: heat-in-rent reduction remains unquantified.
         "https://liheapch.acf.gov/docs/2026/state-plans/NH_Plan_2026.pdf#page=8",
     )

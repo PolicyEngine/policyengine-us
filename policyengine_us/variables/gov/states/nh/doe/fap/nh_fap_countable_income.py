@@ -43,13 +43,13 @@ class nh_fap_countable_income(Variable):
         interest = max_(add(spm_unit, period, ["interest_income"]), 0)
         dividends = max_(add(spm_unit, period, ["ordinary_dividend_income"]), 0)
         investment_income = max_(interest + dividends - p.investment_disregard, 0)
-        # FANF is an SPM-unit benefit and is counted once.
+        # Count received FANF once per SPM unit, respecting TANF take-up.
         income = (
             countable_earnings
             + unearned_income
             + adult_ssi
             + investment_income
-            + spm_unit("nh_fanf", period)
+            + spm_unit("tanf", period)
         )
         # Support-paid regularity and mileage reimbursements are not observed.
         support_paid = add(spm_unit, period, ["child_support_expense"])
