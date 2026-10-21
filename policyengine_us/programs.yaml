@@ -808,8 +808,39 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: DC, Riverside County, MA, IL, AZ, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OR, TX
+    coverage: AL, DC, Riverside County, MA, FL, IL, AZ, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX
     state_implementations:
+      - state: AL
+        status: partial
+        name: Alabama LIHEAP
+        full_name: Alabama Low Income Home Energy Assistance Program
+        variable: al_liheap
+        parameter_prefix: gov.states.al.adeca.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating with the HUD allowance deduction and the funded IIJA supplement. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: OH
+        status: partial
+        name: Ohio HEAP
+        full_name: Ohio Home Energy Assistance Program
+        variable: oh_liheap
+        parameter_prefix: gov.states.oh.odjfs.liheap
+        notes: Regular heating only, without the PIPP reduction; crisis, cooling and weatherization assistance are out of scope. Payment coefficients after 2023 are estimates from workbook covers and published benefit ranges, so no full benefit year is verified.
+      - state: OK
+        status: partial
+        name: Oklahoma LIHEAP
+        full_name: Oklahoma Low Income Home Energy Assistance Program
+        variable: ok_liheap
+        parameter_prefix: gov.states.ok.dhs.liheap
+        verified_years: "2025-2027"
+        notes: FY2025-FY2027 regular winter heating only, using the Appendix C-7-A payment matrix. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: RI
+        status: partial
+        name: Rhode Island LIHEAP
+        full_name: Rhode Island Low Income Home Energy Assistance Program
+        variable: ri_liheap
+        parameter_prefix: gov.states.ri.dhs.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating, including heat-in-rent grants and the $350 utility enhancement, assuming a qualifying utility account. Earlier years and FY2027 payments reuse FY2026 amounts as unverified estimates; crisis, cooling and weatherization are out of scope.
       - state: DC
         status: complete
         name: DC LIHEAP
@@ -822,6 +853,13 @@ programs:
         full_name: Massachusetts Low Income Home Energy Assistance Program
         variable: ma_liheap
         parameter_prefix: gov.states.ma.doer.liheap
+      - state: FL
+        status: partial
+        name: Florida LIHEAP
+        full_name: Florida Low Income Home Energy Assistance Program
+        variable: fl_liheap
+        parameter_prefix: gov.states.fl.commerce.liheap
+        notes: Regular heating for FY2025-FY2026; FY2026 limits use 60% of state median income for every size, departing from contract wording for large households and from the printed size-13 row. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: IL
         status: complete
         name: Illinois LIHEAP
@@ -916,6 +954,13 @@ programs:
         parameter_prefix: gov.states.or.ohcs.liheap
         verified_years: "2025-2027"
         notes: PY2025-PY2027 regular heating only, with the two county regions, five fuel columns and the roomer half payment. Crisis, cooling, Fuel Payment, equipment and OEAP assistance are out of scope.
+      - state: SD
+        status: partial
+        name: South Dakota LIEAP
+        full_name: South Dakota Low Income Energy Assistance Program
+        variable: sd_liheap
+        parameter_prefix: gov.states.sd.dss.liheap
+        notes: FY2024-FY2026 regular heating only; mixed-status income is counted in full and FY2026 Mid thresholds are inferred, so no year is verified. Crisis, cooling and weatherization are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP
@@ -1168,6 +1213,58 @@ programs:
           personal care, group home, foster care and transitional living
           placements. Mandatory grandfathered supplementation and out-of-state
           custody placements are not modeled.
+      - state: OK
+        status: partial
+        name: Oklahoma SSP
+        full_name: Oklahoma State Supplemental Payment
+        variable: ok_ssp
+        parameter_prefix: gov.states.ok.dhs.ssp
+        verified_years: '2026'
+        notes: Models the 2026 community supplement for individuals, couples and individuals with
+          an ineligible spouse. Essential spouses, persons in a TANF case and grandfathered
+          institutional payments are not modeled.
+      - state: NY
+        status: partial
+        name: New York SSP
+        full_name: New York State Supplement Program
+        variable: ny_ssp
+        parameter_prefix: gov.states.ny.otda.ssp
+        verified_years: '2026'
+        notes: Models 2026 living alone, living with others and congregate care supplements with
+          downstate premiums, plus the medical facility personal needs allowance. Grandfathered
+          mandatory payments are not modeled.
+      - state: RI
+        status: partial
+        name: Rhode Island SSP
+        full_name: Rhode Island State Supplementary Payment
+        variable: ri_ssp
+        parameter_prefix: gov.states.ri.dhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models 2026 optional living-arrangement supplements and Title XIX
+          facility personal-needs payments. Mandatory grandfathered payments,
+          facility subsidies and the statutory supportive residential-care
+          category are not modeled.
+      - state: SD
+        status: partial
+        name: South Dakota SSP
+        full_name: South Dakota State Supplemental Payment
+        variable: sd_ssp
+        parameter_prefix: gov.states.sd.dss.ssp
+        verified_years: "2026"
+        notes: Models 2026 independent living and certified nonwaiver assisted living/adult foster
+          care supplements. Out-of-state placements, historical mandatory supplements and claim
+          administration are not modeled.
+      - state: VA
+        status: partial
+        name: Virginia Auxiliary Grant
+        full_name: Virginia Auxiliary Grant
+        variable: va_ag
+        parameter_prefix: gov.states.va.dars.ag
+        verified_years: '2026'
+        notes: Models 2026 locality rates and SSI and non-SSI budgets for certified assisted living,
+          adult foster care and supportive housing residents. Conditional resource benefits and
+          historical grandfathering are not modeled.
 
   - id: social_security
     name: Social Security

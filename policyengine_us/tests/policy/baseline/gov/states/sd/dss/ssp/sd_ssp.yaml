@@ -1,0 +1,545 @@
+- name: Case 1, SSI is the only cash income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+  output:
+    sd_ssp: 15
+
+- name: Case 2, small Social Security benefit disqualifies despite an SSI payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    social_security_retirement: 6_000
+  output:
+    # 6_000 / 12 = 500 per month; SSI = 994 - (500 - 20) = 514.
+    ssi: 514
+    # Other cash income of 500 > 0 disqualifies.
+    sd_ssp: 0
+
+- name: Case 3, in-kind support does not disqualify.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    ssi_federal_living_arrangement: ANOTHER_PERSONS_HOUSEHOLD
+  output:
+    sd_ssp: 15
+
+- name: Case 4, child is not eligible for independent supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age: 17
+    is_blind: true
+  output:
+    sd_ssp: 0
+
+- name: Case 5, student is not eligible for independent supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    is_full_time_student: true
+  output:
+    sd_ssp: 0
+
+- name: Case 6, institutional resident is excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
+  output:
+    sd_ssp: 0
+
+- name: Case 7, no SSI payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    ssi: 0
+  output:
+    sd_ssp: 0
+
+- name: Case 8, nonresident.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    age:
+      2026: 65
+  output:
+    sd_ssp: 0
+
+- name: Case 9, care payment uses approved monthly care bill less income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 2_200
+  output:
+    sd_ssp: 1_206
+
+- name: Case 10, actual care bill capped at January daily reimbursement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 3_000
+  output:
+    sd_ssp: 1_397.96
+
+- name: Case 11, July retains the January daily reimbursement cap.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 3_000
+  output:
+    sd_ssp: 1_397.96
+
+- name: Case 12, February has twenty eight billable days.
+  period: 2026-02
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 3_000
+  output:
+    sd_ssp: 1_166.48
+
+- name: Case 13, state approved deductions reduce cost share.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 2_200
+    sd_ssp_care_income_deductions: 100
+  output:
+    sd_ssp: 1_306
+
+- name: Case 14, no automatic twenty dollar SSI disregard for care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 2_200
+    social_security_retirement: 24_000
+  output:
+    sd_ssp: 200
+
+- name: Case 15, excess resources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 2_200
+    ssi_countable_resources: 2_001
+  output:
+    sd_ssp: 0
+
+- name: Case 16, certified partial month without income contribution.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 1_500
+    sd_ssp_care_partial_month_days: 10
+  output:
+    # 10 < 31 days, so income is not applied;
+    # min(1_500, 10 x 77.16 = 771.60) - 0 = 771.60.
+    sd_ssp: 771.6
+
+- name: Case 17, adult foster care needs its approved cost.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    sd_ssp_care_certified: true
+    sd_ssp_care_setting: ADULT_FOSTER_CARE
+    sd_ssp_approved_care_cost: 1_500
+  output:
+    sd_ssp: 506
+
+- name: Case 18, no care payment without approved cost.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    sd_ssp_care_certified: true
+  output:
+    sd_ssp: 0
+
+- name: Case 19, care needs certified medical eligibility.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age: 40
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 2_200
+  output:
+    sd_ssp: 0
+
+- name: Case 20, SSI opt out.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    takes_up_ssi_if_eligible: false
+  output:
+    sd_ssp: 0
+
+# Service 08054 remains $77.16/day: June 30*77.16-994; July 31*77.16-994.
+# https://dhs.sd.gov/content/dam/digital/united-states/south-dakota/sdo/pdf/long-term-services-and-supports/provider-portal/fee-schedules/LTSS-Fee-Schedule-Effective-7-1-2026.pdf
+- name: Case 21, January daily cap remains in effect through June and July.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: SD
+    age: 65
+    sd_ssp_care_certified:
+      2026-06: true
+      2026-07: true
+    sd_ssp_approved_care_cost:
+      2026-06: 3_000
+      2026-07: 3_000
+  output:
+    sd_ssp:
+      2026-06: 1_320.8
+      2026-07: 1_397.96
+
+- name: Case 22, death or transfer partial month applies income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 1_800
+    sd_ssp_care_partial_month_days: 20
+    sd_ssp_care_died_or_transferred: true
+  output:
+    # min(1_800, 20 x 77.16 = 1_543.20) - SSI 994 = 549.20.
+    sd_ssp: 549.2
+
+- name: Case 23, resident over income for SSI need not take it up.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    social_security_retirement: 18_000
+    takes_up_ssi_if_eligible: false
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 2_200
+  output:
+    # 18_000 / 12 = 1_500 per month; (1_500 - 20) > 994 leaves no SSI.
+    ssi: 0
+    # min(2_200, 31 x 77.16 = 2_391.96) - 1_500 = 700.
+    sd_ssp: 700
+
+- name: Case 24, reported SSI receipt qualifies when modeled SSI is zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 50
+    receives_ssi: true
+  output:
+    # Age 50 with no modeled disability is not aged, blind or disabled.
+    ssi: 0
+    # Reported receipt meets the SSI gate; no other cash income.
+    sd_ssp: 15
+
+- name: Case 25, partial-month days of at least the month length are a full month.
+  period: 2026-02
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 3_000
+    sd_ssp_care_partial_month_days: 31
+  output:
+    # 31 is not below 28, so February is a full month and income applies;
+    # min(3_000, 28 x 77.16 = 2_160.48) - SSI 994 = 1_166.48.
+    sd_ssp: 1_166.48
+
+- name: Case 26, adult foster care partial month is uncapped and applies no income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    sd_ssp_care_certified: true
+    sd_ssp_care_setting: ADULT_FOSTER_CARE
+    sd_ssp_approved_care_cost: 1_500
+    sd_ssp_care_partial_month_days: 10
+  output:
+    # Adult foster care has no daily cap, and 10 < 31 days means no income
+    # contribution: 1_500 - 0.
+    sd_ssp: 1_500
+
+- name: Case 27, earned income and SSI both count toward the care contribution.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 45
+    meets_ssi_disability_criteria: true
+    employment_income: 3_600
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 2_200
+  output:
+    # 3_600 / 12 = 300 per month; countable (300 - 20 - 65) x 0.5 = 107.50;
+    # SSI = 994 - 107.50 = 886.50.
+    ssi: 886.5
+    # min(2_200, 2_391.96) - (300 + 886.50) = 1_013.50.
+    sd_ssp: 1_013.5
+
+- name: Case 28, care resident who is not an SSI qualified noncitizen.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    ssi_qualifying_quarters_earnings: 0
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 2_200
+  output:
+    # A permanent resident with 0 of the 40 required qualifying quarters is
+    # not an SSI qualified noncitizen, so SSI is also 0.
+    ssi: 0
+    # Fails the citizenship gate; otherwise
+    # min(2_200, 31 x 77.16 = 2_391.96) - 0 income = 2_200.
+    sd_ssp_care: 0
+    sd_ssp: 0
+
+- name: Case 29, incarcerated care resident.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    is_incarcerated: true
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 2_200
+  output:
+    # Fails the incarceration gate; otherwise, as in Case 9,
+    # min(2_200, 31 x 77.16 = 2_391.96) - SSI 994 = 1_206.
+    sd_ssp_care: 0
+    sd_ssp: 0
+
+- name: Case 30, part-time college student is excluded from the supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 24
+    meets_ssi_disability_criteria: true
+    is_part_time_college_student: true
+  output:
+    # Disabled with no other income: SSI = 994.
+    ssi: 994
+    # Part-time college enrollment is a student under the exclusion.
+    sd_ssp: 0
+
+- name: Case 31, same disabled adult who is not a student receives the supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 24
+    meets_ssi_disability_criteria: true
+  output:
+    # Disabled with no other income: SSI = 994.
+    ssi: 994
+    # Not a student and no other cash income: individual amount 15.
+    sd_ssp: 15
+
+- name: Case 32, resident whose income would qualify for SSI but who does not take it up.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    takes_up_ssi_if_eligible: false
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 2_200
+  output:
+    # ARSD 67:46:04:13(2) and 67:46:01:14: a resident who would qualify for
+    # SSI must apply for it.
+    ssi: 0
+    sd_ssp: 0
+
+- name: Case 33, waiver or private-pay assisted living resident gets no independent supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    sd_ssp_care_setting: ASSISTED_LIVING
+  output:
+    # ARSD 67:12:14:02(4): assisted living residents are not eligible.
+    ssi: 994
+    sd_ssp: 0
+
+- name: Case 34, private-pay adult foster care resident gets no independent supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    sd_ssp_care_setting: ADULT_FOSTER_CARE
+  output:
+    ssi: 994
+    sd_ssp: 0
+
+- name: Case 35, partial-month resident whose income exceeds the monthly care rate is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    # $2,500 a month.
+    social_security_retirement: 30_000
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 750
+    sd_ssp_care_partial_month_days: 10
+  output:
+    # ARSD 67:46:04:15: net income 2_500 > the monthly rate 750 x 31 / 10 =
+    # 2_325, so 67:46:06:09 never applies.
+    ssi: 0
+    sd_ssp: 0
+
+- name: Case 36, private-pay medical facility resident gets no independent supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: false
+  output:
+    # ARSD 67:12:14:02(4): institutionalized residents are not eligible.
+    ssi: 994
+    sd_ssp: 0
+
+- name: Case 37, partial-month days entered for one month leave the next month full.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: SD
+    age: 65
+    sd_ssp_care_certified:
+      2026-01: true
+      2026-02: true
+    sd_ssp_approved_care_cost:
+      2026-01: 2_200
+      2026-02: 2_200
+    sd_ssp_care_partial_month_days:
+      2026-01: 10
+  output:
+    sd_ssp_care_partial_month_days:
+      2026-01: 10
+      2026-02: 0
+    # January: min(2_200, 10 x 77.16) = 771.60 with no income applied.
+    # February is a full month: min(2_200, 28 x 77.16 = 2_160.48) - 994.
+    sd_ssp_care:
+      2026-01: 771.6
+      2026-02: 1_166.48
