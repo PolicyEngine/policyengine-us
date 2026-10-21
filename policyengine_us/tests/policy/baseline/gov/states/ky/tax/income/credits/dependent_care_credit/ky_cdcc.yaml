@@ -445,21 +445,101 @@
   output:
     ky_cdcc_potential: 120
 
-- name: 2021 Kentucky applies each started two-thousand-dollar rate increment
+- name: 2021 Kentucky rate boundary at AGI 15,000 is 35 percent
   period: 2021
   absolute_error_margin: 0.01
   input:
     state_code: KY
     filing_status: SINGLE
-    adjusted_gross_income: [15_000, 15_001, 17_000, 17_001, 43_000, 43_001]
+    adjusted_gross_income: 15_000
     cdcc_filing_status_eligible: true
     capped_count_cdcc_eligible: 1
     cdcc_qualifying_childcare_expenses: 3_000
     min_head_spouse_earned: 50_000
     cdcc_credit_limit: 5_000
   output:
-    # 20% match x $3,000 x [35%,34%,34%,33%,21%,20%].
-    ky_cdcc_potential: [210, 204, 204, 198, 126, 120]
+    # 20% Kentucky match x $3,000 expenses x 35% conformed rate.
+    ky_cdcc_potential: 210
+
+- name: 2021 Kentucky rate boundary at AGI 15,001 is 34 percent
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: SINGLE
+    adjusted_gross_income: 15_001
+    cdcc_filing_status_eligible: true
+    capped_count_cdcc_eligible: 1
+    cdcc_qualifying_childcare_expenses: 3_000
+    min_head_spouse_earned: 50_000
+    cdcc_credit_limit: 5_000
+  output:
+    # 20% Kentucky match x $3,000 expenses x 34% conformed rate.
+    ky_cdcc_potential: 204
+
+- name: 2021 Kentucky rate boundary at AGI 17,000 is 34 percent
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: SINGLE
+    adjusted_gross_income: 17_000
+    cdcc_filing_status_eligible: true
+    capped_count_cdcc_eligible: 1
+    cdcc_qualifying_childcare_expenses: 3_000
+    min_head_spouse_earned: 50_000
+    cdcc_credit_limit: 5_000
+  output:
+    # 20% Kentucky match x $3,000 expenses x 34% conformed rate.
+    ky_cdcc_potential: 204
+
+- name: 2021 Kentucky rate boundary at AGI 17,001 is 33 percent
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: SINGLE
+    adjusted_gross_income: 17_001
+    cdcc_filing_status_eligible: true
+    capped_count_cdcc_eligible: 1
+    cdcc_qualifying_childcare_expenses: 3_000
+    min_head_spouse_earned: 50_000
+    cdcc_credit_limit: 5_000
+  output:
+    # 20% Kentucky match x $3,000 expenses x 33% conformed rate.
+    ky_cdcc_potential: 198
+
+- name: 2021 Kentucky rate boundary at AGI 43,000 is 21 percent
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: SINGLE
+    adjusted_gross_income: 43_000
+    cdcc_filing_status_eligible: true
+    capped_count_cdcc_eligible: 1
+    cdcc_qualifying_childcare_expenses: 3_000
+    min_head_spouse_earned: 50_000
+    cdcc_credit_limit: 5_000
+  output:
+    # 20% Kentucky match x $3,000 expenses x 21% conformed rate.
+    ky_cdcc_potential: 126
+
+- name: 2021 Kentucky rate boundary at AGI 43,001 is 20 percent
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: SINGLE
+    adjusted_gross_income: 43_001
+    cdcc_filing_status_eligible: true
+    capped_count_cdcc_eligible: 1
+    cdcc_qualifying_childcare_expenses: 3_000
+    min_head_spouse_earned: 50_000
+    cdcc_credit_limit: 5_000
+  output:
+    # 20% Kentucky match x $3,000 expenses x 20% conformed rate.
+    ky_cdcc_potential: 120
 
 - name: 2020 Kentucky preserves the federal credit computation
   period: 2020
