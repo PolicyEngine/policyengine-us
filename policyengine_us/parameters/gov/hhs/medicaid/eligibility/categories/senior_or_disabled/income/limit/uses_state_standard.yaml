@@ -1,0 +1,134 @@
+description: The state tests the Medicaid income of aged, blind, or disabled people who do not receive SSI against a monthly dollar standard of its own, rather than a share of the federal poverty guideline, if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: Medicaid senior or disabled income limit is a state dollar standard
+  breakdown:
+  - state_code
+  reference:
+    - title: 42 CFR 435.210 - Optional eligibility for individuals who meet the income and resource requirements of the cash assistance programs
+      href: https://www.ecfr.gov/current/title-42/section-435.210
+    - title: 7 AAC 100.400(a)(17) - Applies the Adult Public Assistance income eligibility standards of 7 AAC 40.310 to Medicaid for aged and disabled people
+      href: https://www.law.cornell.edu/regulations/alaska/7-AAC-100.400
+    - title: 7 AAC 100.410(c) - Medicaid for an individual eligible for SSI or Adult Public Assistance who chooses not to receive the cash benefit
+      href: https://www.law.cornell.edu/regulations/alaska/7-AAC-100.410
+    - title: Alaska Aged, Disabled and Long Term Care Medicaid Manual 530 C - Use of the Refused Cash Medicaid subtype (from January 2020)
+      href: http://dpaweb.hss.state.ak.us/manuals/adltc/530_ssi_and_apa_related_categories/530_ssi_and_apa_related_categories.htm
+    - title: "IDAPA 16.03.05.301.01 (AABD-Medicaid without applying for SSI), 16.03.05.500 (financial need) and 16.03.05.501 (basic allowance) #page 28,39"
+      href: https://adminrules.idaho.gov/rules/current/16/160305.pdf#page=28
+    - title: "Idaho Medicaid State Plan TN 18-0002, Supplement 6 to Attachment 2.6-A, Income Limits by Living Situation #page 5-6"
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/ID/ID-18-0002.pdf#page=5
+    - title: N.H. Code Admin. R. He-W 802.04(b)(1) (categorically needy group of 42 CFR 435.210) and He-W 858.03 (adult category standard of need)
+      href: https://gc.nh.gov/rules/state_agencies/he-w800.html
+    - title: "Vermont Health Benefits Eligibility and Enrollment Rules § 8.05(b) - Individual who is SSI-eligible (income \"at or below the SSI/AABD payment level\") #page 10-11"
+      href: https://humanservices.vermont.gov/sites/ahsnew/files/documents/HBEE-Part-2-Eligibility-Standards.pdf#page=10
+    - title: Wis. Admin. Code DHS 103.04(1)(c) - SSI-related categorically needy income standard ("the maximum SSI payment including state supplement")
+      href: https://docs.legis.wisconsin.gov/code/admin_code/dhs/101/103/04/1/c
+    - title: "Wisconsin DHS Operations Memo 20-13, SSI-Related Medicaid Categorically Needy Income Limit Changes (fixed amounts from the August 2020 benefit month) #page 1-2"
+      href: https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2020-13.pdf#page=1
+
+AK:
+  2018-01-01: true
+AL:
+  2018-01-01: false
+AR:
+  2018-01-01: false
+AZ:
+  2018-01-01: false
+CA:
+  2018-01-01: false
+CO:
+  2018-01-01: false
+CT:
+  2018-01-01: false
+DC:
+  2018-01-01: false
+DE:
+  2018-01-01: false
+FL:
+  2018-01-01: false
+GA:
+  2018-01-01: false
+HI:
+  2018-01-01: false
+IA:
+  2018-01-01: false
+ID:
+  2018-01-01: true
+IL:
+  2018-01-01: false
+IN:
+  2018-01-01: false
+KS:
+  2018-01-01: false
+KY:
+  2018-01-01: false
+LA:
+  2018-01-01: false
+MA:
+  2018-01-01: false
+MD:
+  2018-01-01: false
+ME:
+  2018-01-01: false
+MI:
+  2018-01-01: false
+MN:
+  2018-01-01: false
+MO:
+  2018-01-01: false
+MS:
+  2018-01-01: false
+MT:
+  2018-01-01: false
+NC:
+  2018-01-01: false
+ND:
+  2018-01-01: false
+NE:
+  2018-01-01: false
+NH:
+  2018-01-01: true
+NJ:
+  2018-01-01: false
+NM:
+  2018-01-01: false
+NV:
+  2018-01-01: false
+NY:
+  2018-01-01: false
+OH:
+  2018-01-01: false
+OK:
+  2018-01-01: false
+OR:
+  2018-01-01: false
+PA:
+  2018-01-01: false
+RI:
+  2018-01-01: false
+SC:
+  2018-01-01: false
+SD:
+  2018-01-01: false
+TN:
+  2018-01-01: false
+TX:
+  2018-01-01: false
+UT:
+  2018-01-01: false
+VA:
+  2018-01-01: false
+VT:
+  2018-01-01: true
+WA:
+  2018-01-01: false
+# Until July 2020 Wisconsin's standard added the person's shelter costs up to a
+# cap, so the share of the poverty guideline is kept for those years.
+WI:
+  2018-01-01: false
+  2020-08-01: true
+WV:
+  2018-01-01: false
+WY:
+  2018-01-01: false

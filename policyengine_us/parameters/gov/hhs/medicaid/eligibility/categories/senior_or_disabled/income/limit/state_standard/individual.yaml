@@ -1,0 +1,72 @@
+description: The state sets this monthly amount as its Medicaid income standard for an aged, blind, or disabled individual who does not receive SSI, on top of the SSI federal benefit rate for an individual in states that add the two.
+metadata:
+  unit: currency-USD
+  period: month
+  label: Medicaid senior or disabled state income standard (individual)
+  breakdown:
+  - state_code
+  reference:
+    - title: 7 AAC 40.310(a) and (c) - Income Eligibility Standards ($1,047 for an individual and $1,551 for a couple, raised each January by the Social Security cost-of-living percentage)
+      href: https://www.law.cornell.edu/regulations/alaska/7-AAC-40.310
+    - title: Alaska DPA, Adult Public Assistance Need and Maximum Payment Standards, 2018-2021 (need standards for 2018 and 2019)
+      href: https://web.archive.org/web/20210102211125/http://dpaweb.hss.state.ak.us/POLICY/PDF/APA-Standards.pdf#page=1
+    - title: Alaska Aged, Disabled and Long Term Care Medicaid Manual, Addendum 1 - Expanded Refused Cash Income Limits, 2020-2021 (archived January 2, 2021)
+      href: https://web.archive.org/web/20210102215241/http://dpaweb.hss.state.ak.us/manuals/adltc/addenda/addendum_1.htm
+    - title: Alaska Aged, Disabled and Long Term Care Medicaid Manual, Addendum 1 - Expanded Refused Cash Income Limits, 2022-2024 (archived March 9, 2024)
+      href: https://web.archive.org/web/20240309020647/http://dpaweb.hss.state.ak.us/manuals/adltc/addenda/addendum_1.htm
+    - title: Alaska Aged, Disabled and Long Term Care Medicaid Manual, Addendum 1 - Expanded Refused Cash Income Limits, 2024-2026
+      href: http://dpaweb.hss.state.ak.us/manuals/adltc/addenda/addendum_1.htm
+    - title: Alaska Medicaid State Plan Amendment AK-26-0001, income disregard between the Adult Public Assistance standard and $1,845 (individual) or $2,732 (couple), effective January 1, 2026
+      href: https://www.medicaid.gov/medicaid/spa/downloads/AK-26-0001.pdf#page=13
+    - title: IDAPA 16.03.05.501 - Basic Allowance ($545 single and $768 couple, each raised by the dollar amount of each SSI cost-of-living increase since January 1, 2001)
+      href: https://adminrules.idaho.gov/rules/current/16/160305.pdf#page=39
+    - title: "Idaho Medicaid State Plan TN 18-0002, Supplement 6 to Attachment 2.6-A, Income Limits by Living Situation ($783 single and $1,125 couple from April 1, 2018) #page 5-6"
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/ID/ID-18-0002.pdf#page=5
+    - title: Idaho Department of Health and Welfare, Medicaid Program Income Limits, AABD Cash and AABD Medicaid (January 2026, $1,047 and $1,511 including the $20 disregard)
+      href: https://healthandwelfare.idaho.gov/medicaid-program-income-limits
+    - title: New Hampshire DHHS Supervisory Release SR 18-01, January 2018 Mass Change (standard of need $764 and $1,126; SSI $750 and $1,125)
+      href: https://www.dhhs.nh.gov/sr_htm/html/sr_18-01_dated_01_18.htm
+    - title: New Hampshire DHHS Supervisory Release SR 26-01, January 2026 Mass Change (standard of need $1,008 and $1,492; SSI $994 and $1,491)
+      href: https://www.dhhs.nh.gov/sr_htm/html/sr_26-01_dated_01_26.htm
+    - title: New Hampshire Medical Assistance Manual 601 Table A, Income Limits (SR 26-01)
+      href: https://www.dhhs.nh.gov/mam_htm/html/601_table_a_income_limits_mam.htm
+    - title: "Vermont DCF Bulletin 17-26, SSI/AABD payment levels and P-2740A (effective January 1, 2018) #page 4,11"
+      href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules-Adopted/B17-26.pdf#page=4
+    - title: Vermont DVHA, 2024 Standards Change for Healthcare, SSI/AABD Payment Maximums (effective January 1, 2024)
+      href: https://dvha.vermont.gov/sites/dvha/files/documents/2024%20Standards%20Change%20for%20Healthcare%20FINAL%20Corrected%2012.19.pdf#page=7
+    - title: "Vermont DVHA, Standards Change for Healthcare 2026, SSI/AABD payment levels and maximums (effective January 1, 2026) #page 2,7"
+      href: https://dvha.vermont.gov/sites/dvha/files/documents/Standards_Change_for_Healthcare_2026.pdf#page=2
+    - title: "Wisconsin DHS Operations Memo 20-13, SSI-Related Medicaid Categorically Needy Income Limit Changes ($866.78 and $1,307.05 from the August 2020 benefit month) #page 1-2"
+      href: https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2020-13.pdf#page=1
+    - title: Wisconsin Medicaid Eligibility Handbook 39.4 - Elderly, Blind, or Disabled Assets and Income Table and SSI Reference Values
+      href: https://www.emhandbooks.wisconsin.gov/meh-ebd/policy_files/39/39.4.htm
+    - title: Wisconsin DHS Operations Memo 26-12, State Supplementary Payment increase (effective May 1, 2026)
+      href: https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2026-12.pdf#page=2
+
+# Alaska: the 7 AAC 40.310 standard. Until 2019 it was the Adult Public
+# Assistance need standard; since January 2020 the state plan disregards
+# income between the Adult Public Assistance standard and this amount.
+AK:
+  2018-01-01: 1_393
+  2019-01-01: 1_432
+  2020-01-01: 1_455
+  2021-01-01: 1_474
+  2022-01-01: 1_561
+  2023-01-01: 1_697
+  2024-01-01: 1_751
+  2025-01-01: 1_795
+  2026-01-01: 1_845
+# Idaho: the AABD basic allowance, $33 above the SSI rate.
+ID:
+  2018-01-01: 33
+# New Hampshire: the standard of need, $14 above the SSI rate in every year from 2018.
+NH:
+  2018-01-01: 14
+# Vermont: the AABD supplement for independent living.
+VT:
+  2018-01-01: 52.04
+  2024-01-01: 55.68
+# Wisconsin: the state supplementary payment for an eligible individual.
+WI:
+  2020-08-01: 83.78
+  2026-05-01: 92.16

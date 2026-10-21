@@ -1,4 +1,4 @@
-description: Maximum countable income limit for an individual to qualify for Medicaid under the optional senior or disabled pathway, as percent of Federal Poverty Line. States whose limit is the SSI federal benefit rate are listed in uses_ssi_federal_benefit_rate and omitted here.
+description: Maximum countable income limit for an individual to qualify for Medicaid under the optional senior or disabled pathway, as percent of Federal Poverty Line. States whose limit is the SSI federal benefit rate (uses_ssi_federal_benefit_rate) or a dollar standard of their own (uses_state_standard) in every year are omitted here.
 metadata:
   unit: /1
   label: Medicaid senior or disabled income limit (individual)
@@ -17,9 +17,6 @@ metadata:
     - title: Connecticut CHOICES Benefits Quick Guide (Rev 04.04.2025)
       href: https://portal.ct.gov/ads/-/media/ads-beta/choices/choices-benefits-quick-guide.pdf?rev=3b8c59ca12224218bc4c4438649e7ac7#page=1
 
-AK:
-  2018-01-01: 0.74
-  2021-01-01: 0.83
 AL:
   2018-01-01: 0.75
 AZ:
@@ -45,9 +42,6 @@ GA:
   2018-01-01: 0.75
 HI:
   2018-01-01: 1.00
-ID:
-  2018-01-01: 0.80
-  2021-01-01: 0.78
 IL:
   2018-01-01: 1.00
 IN:
@@ -75,8 +69,6 @@ NE:
   2018-01-01: 1.00
 NV:
   2018-01-01: 0.75
-NH:
-  2018-01-01: 0.75
 NJ:
   2018-01-01: 1.00
 NM:
@@ -103,9 +95,6 @@ TX:
   2018-01-01: 0.75
 UT:
   2018-01-01: 1.00
-VT:
-  2018-01-01: 0.74
-  2021-01-01: 0.80
 VA:
   2018-01-01: 0.80
 WV:

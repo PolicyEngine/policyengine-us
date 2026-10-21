@@ -1,0 +1,1 @@
+Use state dollar standards, not shares of the poverty guideline, as the Medicaid income limit for aged, blind and disabled people who do not receive SSI in Alaska, Idaho, New Hampshire, Vermont and Wisconsin (from August 2020), and require income below Idaho's standard.
