@@ -1,0 +1,179 @@
+# Dead reference URLs retired in the midwest batch of the 2026-09-30 audit.
+# Each prefix failed a GET request (404/410, a soft 404, a dead host or a
+# persistent server error) on the date given; see the PR for evidence.
+# See test_known_dead_reference_urls.py for the format.
+
+[[dead]]
+prefix = "http://kslegislature.org/li/b2023_24/statute/079_000_0000_chapter/079_032_0000_article/079_032_0271_section/079_032_0271_k/"
+verified = "2026-10-01"
+replacement = "https://kslegislature.gov/b2023_24/laws/079_000_0000_chapter/079_032_0000_article/079_032_0271_section/079_032_0271_k/"
+
+[[dead]]
+prefix = "http://www.kslegislature.org/li/b2023_24/statute/079_000_0000_chapter/079_032_0000_article/079_032_0110_section/079_032_0110_k/"
+verified = "2026-10-01"
+replacement = "https://kslegislature.gov/li_2022/b2021_22/statute/079_000_0000_chapter/079_032_0000_article/079_032_0110_section/079_032_0110_k/"
+
+[[dead]]
+prefix = "http://www.kslegislature.org/li/b2023_24/statute/079_000_0000_chapter/079_032_0000_article/079_032_0111c_section/079_032_0111c_k/"
+verified = "2026-10-01"
+replacement = "https://kslegislature.gov/li_2022/b2021_22/statute/079_000_0000_chapter/079_032_0000_article/079_032_0111c_section/079_032_0111c_k/"
+
+[[dead]]
+prefix = "http://www.kslegislature.org/li/b2023_24/statute/079_000_0000_chapter/079_032_0000_article/079_032_0119_section/079_032_0119_k/"
+verified = "2026-10-01"
+replacement = "https://kslegislature.gov/li_2022/b2021_22/statute/079_000_0000_chapter/079_032_0000_article/079_032_0119_section/079_032_0119_k/"
+
+[[dead]]
+prefix = "http://www.kslegislature.org/li/b2023_24/statute/079_000_0000_chapter/079_032_0000_article/079_032_0205_section/079_032_0205_k/"
+verified = "2026-10-01"
+replacement = "https://kslegislature.gov/b2023_24/laws/079_000_0000_chapter/079_032_0000_article/079_032_0205_section/079_032_0205_k/"
+
+[[dead]]
+prefix = "http://www.kslegislature.org/li/b2023_24/statute/079_000_0000_chapter/079_032_0000_article/079_032_0271_section/079_032_0271_k/"
+verified = "2026-10-01"
+replacement = "https://kslegislature.gov/b2023_24/laws/079_000_0000_chapter/079_032_0000_article/079_032_0271_section/079_032_0271_k/"
+
+[[dead]]
+prefix = "https://content.dcf.ks.gov/ees/keesm/current/keesm5110.htm"
+verified = "2026-10-01"
+replacement = "https://content.dcf.ks.gov/ees/keesm/current/keesm5000.htm"
+
+[[dead]]
+prefix = "https://dcf.wisconsin.gov/manuals/w-2-manual/Production/07/7.4.5_Custodial_Parent_of_an_Infant_CMC_.htm"
+verified = "2026-10-01"
+replacement = "https://dcf.wisconsin.gov/manuals/w-2-manual/Production/07/7.4.3_Custodial_Parent_of_an_Infant_CMC_.htm"
+
+[[dead]]
+prefix = "https://docs.legis.wisconsin.gov/code/admin_code/dcf/101_199/101/09/3/a"
+verified = "2026-10-01"
+replacement = "https://docs.legis.wisconsin.gov/code/register/2021/790b/insert/dcf101.pdf"
+
+[[dead]]
+prefix = "https://docs.legis.wisconsin.gov/code/admin_code/dcf/101_199/101/09/3/b"
+verified = "2026-10-01"
+replacement = "https://docs.legis.wisconsin.gov/code/register/2021/790b/insert/dcf101.pdf"
+
+[[dead]]
+prefix = "https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/22/dm"
+verified = "2026-10-01"
+replacement = "https://docs.legis.wisconsin.gov/2023/statutes/statutes/71/i/05/22/dm"
+
+[[dead]]
+prefix = "https://docs.legis.wisconsin.gov/statutes/statutes/71/i/07/9/b/5"
+verified = "2026-10-01"
+replacement = "https://docs.legis.wisconsin.gov/2023/statutes/statutes/71/i/07/9/b/5"
+
+[[dead]]
+prefix = "https://iowaccrr.org/resources/files/BGP/149%20CCA%20Rates.pdf"
+verified = "2026-10-01"
+replacement = "https://hhs.iowa.gov/media/13646/download?inline"
+
+[[dead]]
+prefix = "https://revenue.iowa.gov/idr-announces-2021-interest-rates-deductions-income-tax-brackets"
+verified = "2026-10-01"
+replacement = "https://revenue.iowa.gov/media/3305/download?inline"
+
+[[dead]]
+prefix = "https://revenue.iowa.gov/idr-announces-2022-interest-rates-deductions-income-tax-brackets"
+verified = "2026-10-01"
+replacement = "https://revenue.iowa.gov/media/3379/download?inline"
+
+[[dead]]
+prefix = "https://revenue.iowa.gov/sites/default/files/2023-01/2021%20Expanded%20Instructions_010323.pdf"
+verified = "2026-10-01"
+replacement = "https://revenue.iowa.gov/media/2650/download?inline"
+
+[[dead]]
+prefix = "https://revenue.iowa.gov/sites/default/files/2023-03/2022%20Expanded%20Instructions_022023.pdf"
+verified = "2026-10-01"
+replacement = "https://revenue.iowa.gov/media/2721/download?inline"
+
+[[dead]]
+prefix = "https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2021/individual/il-1040-schedule-icr.pdf"
+verified = "2026-10-01"
+replacement = "https://taxarchive.illinois.gov/content/dam/soi/en/web/taxarchive/forms/income-tax/2021/individual/il-1040-schedule-icr.pdf"
+
+[[dead]]
+prefix = "https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2021/individual/il-1040-schedule-il-e-eic.pdf"
+verified = "2026-10-01"
+replacement = "https://taxarchive.illinois.gov/content/dam/soi/en/web/taxarchive/forms/income-tax/2021/individual/il-1040-schedule-il-e-eic.pdf"
+
+[[dead]]
+prefix = "https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2021/individual/il-1040.pdf"
+verified = "2026-10-01"
+replacement = "https://taxarchive.illinois.gov/content/dam/soi/en/web/taxarchive/forms/income-tax/2021/individual/il-1040.pdf"
+
+[[dead]]
+prefix = "https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2022/individual/il-1040-schedule-icr.pdf"
+verified = "2026-10-01"
+replacement = "https://taxarchive.illinois.gov/content/dam/soi/en/web/taxarchive/forms/income-tax/2022/individual/il-1040-schedule-icr.pdf"
+
+[[dead]]
+prefix = "https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2022/individual/il-1040-schedule-il-e-eic.pdf"
+verified = "2026-10-01"
+replacement = "https://taxarchive.illinois.gov/content/dam/soi/en/web/taxarchive/forms/income-tax/2022/individual/il-1040-schedule-il-e-eic.pdf"
+
+[[dead]]
+prefix = "https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2022/individual/il-1040.pdf"
+verified = "2026-10-01"
+replacement = "https://taxarchive.illinois.gov/content/dam/soi/en/web/taxarchive/forms/income-tax/2022/individual/il-1040.pdf"
+
+[[dead]]
+prefix = "https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2023/individual/il-1040-schedule-icr.pdf"
+verified = "2026-10-01"
+replacement = "https://taxarchive.illinois.gov/content/dam/soi/en/web/taxarchive/forms/income-tax/2023/individual/il-1040-schedule-icr.pdf"
+
+[[dead]]
+prefix = "https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2023/individual/il-1040-schedule-il-e-eic.pdf"
+verified = "2026-10-01"
+replacement = "https://taxarchive.illinois.gov/content/dam/soi/en/web/taxarchive/forms/income-tax/2023/individual/il-1040-schedule-il-e-eic.pdf"
+
+[[dead]]
+prefix = "https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2023/individual/il-1040.pdf"
+verified = "2026-10-01"
+replacement = "https://taxarchive.illinois.gov/content/dam/soi/en/web/taxarchive/forms/income-tax/2023/individual/il-1040.pdf"
+
+[[dead]]
+prefix = "https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2024/individual/il-1040-schedule-icr.pdf"
+verified = "2026-10-01"
+replacement = "https://taxarchive.illinois.gov/content/dam/soi/en/web/taxarchive/forms/income-tax/2024/individual/il-1040-schedule-icr.pdf"
+
+[[dead]]
+prefix = "https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2024/individual/il-1040-schedule-il-e-eic.pdf"
+verified = "2026-10-01"
+replacement = "https://taxarchive.illinois.gov/content/dam/soi/en/web/taxarchive/forms/income-tax/2024/individual/il-1040-schedule-il-e-eic.pdf"
+
+[[dead]]
+prefix = "https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2024/individual/il-1040.pdf"
+verified = "2026-10-01"
+replacement = "https://taxarchive.illinois.gov/content/dam/soi/en/web/taxarchive/forms/income-tax/2024/individual/il-1040.pdf"
+
+[[dead]]
+prefix = "https://tax.illinois.gov/individuals/credits/earnedincomecredit.html"
+verified = "2026-10-01"
+replacement = "https://tax.illinois.gov/programs/eitc.html"
+
+[[dead]]
+prefix = "https://www.ilga.gov/legislation/fulltext.asp?DocName=&SessionId=112&GA=103&DocTypeId=HB&DocNum=4917&GAID=17&LegID=152789&SpecSess=&Session="
+verified = "2026-10-01"
+replacement = "https://www.ilga.gov/Documents/legislation/103/HB/10300HB4917.htm"
+
+[[dead]]
+prefix = "https://www.in.gov/dcs/files/16.2%20Assistance%20for%20Unlicensed%20Relative%20Placements.pdf"
+verified = "2026-10-01"
+replacement = "https://www.in.gov/dA/e987107d4f/16.02-Assistance-for-Unlicensed-Relative-Placements-ARCHIVED-6-30-19-V4.pdf"
+
+[[dead]]
+prefix = "https://www.in.gov/dor/tax-forms/2023-individual-income-tax-forms/"
+verified = "2026-10-01"
+replacement = "https://www.in.gov/dor/tax-forms/individual/individual-prior-year/2023-individual-tax-forms/"
+
+[[dead]]
+prefix = "https://www.isbe.net/Pages/Birth-to-Age-3-Years.aspx"
+verified = "2026-10-01"
+replacement = "https://idec.illinois.gov/forproviders/prevention-initiative.html"
+
+[[dead]]
+prefix = "https://www.isbe.net/pages/preschool-for-all.aspx"
+verified = "2026-10-01"
+replacement = "https://idec.illinois.gov/forproviders/preschool-for-all.html"

@@ -7,6 +7,4 @@ class la_quality_rating_of_child_care_facility(Variable):
     label = "Quality rating of child care facility for the Louisiana school readiness tax credit"
     definition_period = YEAR
     defined_for = StateCode.LA
-    reference = (
-        "https://www.revenue.louisiana.gov/IndividualIncomeTax/SchoolReadinessTaxCredit"
-    )
+    reference = "https://revenue.louisiana.gov/individuals/general-resources/school-readiness-credit/"

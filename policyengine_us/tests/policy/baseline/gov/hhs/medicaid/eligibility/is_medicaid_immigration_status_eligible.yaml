@@ -107,3 +107,43 @@
     is_ca_medicaid_immigration_status_eligible: false
   output:
     is_medicaid_immigration_status_eligible: false
+
+# 42 USC 1396b(v)(4): states that elected the lawfully residing option cover
+# children and pregnant individuals inside the five-year bar.
+- name: Case 15, recent permanent resident child in California is eligible through the lawfully residing option.
+  period: 2025
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    age: 10
+    state_code: CA
+  output:
+    is_medicaid_immigration_status_eligible: true
+
+- name: Case 16, recent permanent resident child in Alabama stays barred because Alabama did not elect the option.
+  period: 2025
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    age: 10
+    state_code: AL
+  output:
+    is_medicaid_immigration_status_eligible: false
+
+- name: Case 17, temporary protected status child in Texas is eligible through the lawfully residing option.
+  period: 2025
+  input:
+    immigration_status: TPS
+    age: 10
+    state_code: TX
+  output:
+    is_medicaid_immigration_status_eligible: true
+
+- name: Case 18, temporary protected status adult in Texas is not eligible.
+  period: 2025
+  input:
+    immigration_status: TPS
+    age: 30
+    state_code: TX
+  output:
+    is_medicaid_immigration_status_eligible: false

@@ -8,8 +8,8 @@ class mi_homestead_property_tax_credit_countable_property_tax(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "http://legislature.mi.gov/doc.aspx?mcl-206-520",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/MI-1040CR.pdf#page=1",
+        "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-520",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/MI-1040CR.pdf#page=1",
     )
     defined_for = StateCode.MI
 

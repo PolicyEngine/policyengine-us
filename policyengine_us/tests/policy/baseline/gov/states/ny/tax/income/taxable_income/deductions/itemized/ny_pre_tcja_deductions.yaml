@@ -78,9 +78,10 @@
     casualty_loss: 15_000
   output:
     # Charitable: 5,000
-    # Medical: 10,000 - (100,000 * 0.075) = 2,500
+    # NY Medical (Form IT-196 lines 1-4): 10,000 - (100,000 * 0.10) = 0
+    # (the federal 7.5% floor would give 2,500)
     # NY SALT: 12,000 real estate only (sales tax 3,000 added back per s.615(c)(1))
     # NY Misc: 4,000 - (100,000 * 0.02) = 2,000
     # NY Casualty: 15,000 - (100,000 * 0.10) = 5,000
-    # Total: 5,000 + 2,500 + 12,000 + 2,000 + 5,000 = 26,500
-    ny_itemized_deductions_max: 26_500
+    # Total: 5,000 + 0 + 12,000 + 2,000 + 5,000 = 24,000
+    ny_itemized_deductions_max: 24_000

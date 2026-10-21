@@ -8,9 +8,9 @@ class mi_expanded_retirement_benefits_deduction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "http://legislature.mi.gov/doc.aspx?mcl-206-30",  # (10)
-        "https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits/michigan-standard-deduction",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2023/2023-IIT-Forms/BOOK_MI-1040.pdf#page=25",
+        "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-30",  # (10)
+        "https://web.archive.org/web/20250202140014/https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits/michigan-standard-deduction",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2023/BOOK_MI-1040.pdf#page=25",
     )
     defined_for = "mi_expanded_retirement_benefits_deduction_eligible"
 
@@ -54,7 +54,7 @@ class mi_expanded_retirement_benefits_deduction(Variable):
         # Line 1
         tier_one_cap = p.tier_one.amount[filing_status]
         head_or_spouse_military_retirement_pay = (
-            person("military_retirement_pay", period) * is_head_or_spouse
+            person("military_retirement_income", period) * is_head_or_spouse
         )
         # Line 2
         total_military_retirement_pay = tax_unit.sum(

@@ -25,8 +25,15 @@ def create_reconciled_ssn_for_llc_and_aoc() -> Reform:
             is_aoc_eligible = person(
                 "is_eligible_for_american_opportunity_credit", period
             )
+            # This reform leaves the dependency rules of IRC 25A(g)(3) and
+            # 25A(f)(1)(A)(iii) in place.
+            barred_by_dependency = person(
+                "is_barred_from_education_credits_by_dependency", period
+            )
             eligible_expenses = tax_unit.sum(
-                person("qualified_tuition_expenses", period) * ~is_aoc_eligible
+                person("qualified_tuition_expenses", period)
+                * ~is_aoc_eligible
+                * ~barred_by_dependency
             )
             capped_expenses = min_(llc.expense_limit, eligible_expenses)
             maximum_amount = llc.rate * capped_expenses

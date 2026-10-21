@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.tax.federal_income.foreign_earned_income_exclusion.schedule_d_tax_worksheet_after_capital_gain_excess import (
+    schedule_d_tax_worksheet_after_capital_gain_excess,
+)
 
 
 class amt_tax_including_cg(Variable):
@@ -11,17 +14,26 @@ class amt_tax_including_cg(Variable):
     reference = "https://www.irs.gov/pub/irs-pdf/f6251.pdf"
 
     def formula(tax_unit, period, parameters):
-        # Form 6251 Part III, Line 12: AMTI minus exemption
-        reduced_income = tax_unit("amt_income_less_exemptions", period)
+        # Form 6251 Part III, Line 12: AMTI minus exemption, or for a Form
+        # 2555 filer line 3 of the Form 6251 Foreign Earned Income Tax
+        # Worksheet (26 U.S.C. 911(f)(1)(B)(i)).
+        reduced_income = tax_unit(
+            "amt_income_less_exemptions_plus_section_911_exclusion", period
+        )
+        # A Form 2555 filer figures lines 13 to 15 after reducing the gains
+        # by the AMT capital gain excess (26 U.S.C. 911(f)(2)(B)(i)).
+        worksheet = schedule_d_tax_worksheet_after_capital_gain_excess(
+            tax_unit, period, tax_unit("amt_income_less_exemptions", period)
+        )
         # Line 13: amount from QDCG Worksheet line 4 or Schedule D Tax
         # Worksheet line 13 (qualified dividends + LTCG net of unrecaptured
         # section 1250 and 28%-rate gains).
-        cg_distributions = tax_unit("dwks13", period)
+        cg_distributions = worksheet.line_13
         # Line 14: Schedule D line 19 (unrecaptured section 1250 gain).
-        section_1250_gain_worksheet = tax_unit("unrecaptured_section_1250_gain", period)
+        section_1250_gain_worksheet = worksheet.unrecaptured_section_1250_gain
         # Line 15: smaller of (Line 13 + Line 14) or Schedule D Tax Worksheet
         # line 10.
-        total_transactions_reported = tax_unit("dwks10", period)
+        total_transactions_reported = worksheet.line_10
         capped_capital_gains = min_(
             cg_distributions + section_1250_gain_worksheet,
             total_transactions_reported,
@@ -30,19 +42,25 @@ class amt_tax_including_cg(Variable):
         capped_income = min_(capped_capital_gains, reduced_income)
         # Line 17: Line 12 minus Line 16 (ordinary AMTI).
         excess_income = max_(0, reduced_income - capped_income)
-        # Line 18: apply the 26%/28% AMT bracket to Line 17.
+        # Line 18: apply the 26%/28% AMT bracket to Line 17. The 28% rate
+        # starts at half the breakpoint for married filing separately
+        # (26 U.S.C. 55(b)(1)(C)), as on Line 39.
         p = parameters(period).gov.irs
-        income_taxes_at_amt_rates = p.income.amt.brackets.calc(excess_income)
-        # Line 19: 0% LTCG bracket threshold for the filing status.
         filing_status = tax_unit("filing_status", period)
+        income_taxes_at_amt_rates = p.income.amt.brackets.calc(
+            excess_income, factor=p.income.amt.multiplier[filing_status]
+        )
+        # Line 19: 0% LTCG bracket threshold for the filing status.
         cg_bracket = p.capital_gains.thresholds["1"][filing_status]
         # Line 20: amount from QDCG Worksheet line 5 or Schedule D Tax
-        # Worksheet line 14 (as figured for the regular tax). This is the
-        # ordinary-income portion of taxable income.
-        regular_ordinary_income = tax_unit("dwks14", period)
+        # Worksheet line 14 (as figured for the regular tax): taxable income
+        # less the gains taxed at 0, 15 and 20 percent. For a Form 2555 filer
+        # it reflects the regular tax capital gain excess, not the AMT one
+        # (26 U.S.C. 911(f)(2)(B)(ii)).
+        regular_tax_income_less_gains = tax_unit("dwks14", period)
         # Line 21: Line 19 minus Line 20. Room left in the 0% bracket after
         # accounting for ordinary income already filling it.
-        reduced_cg_bracket = max_(0, cg_bracket - regular_ordinary_income)
+        reduced_cg_bracket = max_(0, cg_bracket - regular_tax_income_less_gains)
         # Line 22: smaller of Line 12 or Line 13.
         smaller_of_income_or_cg = min_(reduced_income, cg_distributions)
         # Line 23: smaller of Line 21 or Line 22. This is the amount taxed at
@@ -60,11 +78,18 @@ class amt_tax_including_cg(Variable):
         second_cg_bracket = p.capital_gains.thresholds["2"][filing_status]
         # Line 26: same as Line 21.
         # Line 27: amount from QDCG Worksheet line 5 or Schedule D Tax
-        # Worksheet line 21 (as figured for the regular tax). For the QDCG
-        # path this is the same ordinary-income value used on Line 20.
+        # Worksheet line 21 (as figured for the regular tax), the amount the
+        # regular tax taxes at the regular rates (26 U.S.C. 1(h)(1)(A)).
+        # With 28 percent rate or unrecaptured section 1250 gain, Schedule D
+        # Tax Worksheet line 21 caps line 14 at the top of the 24 percent
+        # bracket (but not below line 18), so it can be less than Line 20.
+        # Without them, it is line 14, the same as QDCG Worksheet line 5 and
+        # Line 20. For a Form 2555 filer it reflects the regular tax capital
+        # gain excess, not the AMT one.
+        regular_tax_ordinary_income = tax_unit("dwks19", period)
         # Line 28: Line 26 plus Line 27.
         first_cg_bracket_increased_by_ordinary = (
-            reduced_cg_bracket + regular_ordinary_income
+            reduced_cg_bracket + regular_tax_ordinary_income
         )
         # Line 29: Line 25 minus Line 28 (room left in the 15% bracket).
         reduced_second_cg_bracket = max_(
@@ -87,11 +112,8 @@ class amt_tax_including_cg(Variable):
         # Line 37: Line 36 times the 25% rate, only when unrecaptured section
         # 1250 gains exist (per the form's "skip lines 35-37 if line 14 is
         # zero" instruction).
-        unrecaptured_section_1250_gain = tax_unit(
-            "unrecaptured_section_1250_gain", period
-        )
         excess_tax = where(
-            unrecaptured_section_1250_gain == 0,
+            section_1250_gain_worksheet == 0,
             0,
             final_excess * p.income.amt.capital_gains.capital_gain_excess_tax_rate,
         )

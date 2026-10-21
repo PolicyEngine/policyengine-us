@@ -1,4 +1,4 @@
-description: The United States limits Medicaid eligibility to these immigration statuses.
+description: The United States limits eligibility to these immigration statuses under the Medicaid program and the Children's Health Insurance Program.
 values:
   2018-01-01:
     - CITIZEN
@@ -17,7 +17,7 @@ values:
 
 
 metadata:
-  label: Medicaid eligible immigration statuses
+  label: Medicaid and CHIP eligible immigration statuses
   period: year
   unit: list
   reference:
@@ -27,3 +27,7 @@ metadata:
       href: https://www.law.cornell.edu/uscode/text/8/1641
     - title: Health Provisions in the 2025 Federal Budget Reconciliation Bill | KFF
       href: https://www.kff.org/tracking-the-medicaid-provisions-in-the-2025-budget-bill/
+    - title: 42 U.S.C. 1397gg(e)(1)(R) - Application of the Medicaid alien eligibility limit to CHIP
+      href: https://www.law.cornell.edu/uscode/text/42/1397gg#e_1_R
+    - title: "CMS SHO #26-001, Background, footnote 3, and Overview of Section 71109 of the WFTC Legislation"
+      href: https://www.medicaid.gov/federal-policy-guidance/downloads/sho26001.pdf#page=3
