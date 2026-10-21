@@ -15,7 +15,7 @@ class dc_ccsp_age_category(Variable):
     definition_period = MONTH
     label = "DC Child Care Subsidy Program (CCSP) child age category"
     defined_for = StateCode.DC
-    reference = "http://dcrules.elaws.us/dcmr/5-a199"
+    reference = "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/Final%20Rulemaking%20for%20the%20Licensing%20of%20Child%20Development%20Facilities.pdf#page=172"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.dc.dhs.ccsp.age_category

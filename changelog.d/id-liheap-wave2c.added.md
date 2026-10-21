@@ -1,1 +1,1 @@
-Add Idaho LIHEAP countable income, qualified household size, income limits, modeled financial eligibility and the Idaho Power & Southern Utilities electric-benefit table without electric-provider distinctions; the heating benefit calculation remains incomplete.
+Add Idaho LIHEAP income, household and financial-eligibility components with net Social Security, receipt-based income and the Idaho Power & Southern Utilities electric table; the full heating award remains incomplete.

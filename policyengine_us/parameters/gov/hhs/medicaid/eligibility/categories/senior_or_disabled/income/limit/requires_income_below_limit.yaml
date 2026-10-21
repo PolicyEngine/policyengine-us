@@ -1,0 +1,133 @@
+description: The state requires countable income to be below, rather than at or below, the Medicaid income limit for aged, blind, or disabled people who do not receive SSI, if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: Medicaid senior or disabled income must be below the limit
+  breakdown:
+  - state_code
+  reference:
+    - title: Oregon Administrative Rule 461-155-0250(3) - Income and Payment Standard; OSIPM ("must have adjusted income ... below the standard")
+      href: https://ch461rules.odhs.oregon.gov/rules/461-155-0250.pdf#page=1
+    - title: Oregon Administrative Rule 461-155-0250, versions effective January 1, 2014 through January 1, 2025 (section (4) until April 2017)
+      href: https://ch461rules.odhs.oregon.gov/historical/461-155-0250_history.pdf
+    - title: Montana DPHHS Medicaid manual, ABD 008 Table of Standards - Categorically Needy Income ("equal to or less than these income standards")
+      href: https://dphhs.mt.gov/assets/hcsd/mamanual/ABD008.pdf#page=1
+    - title: Louisiana Administrative Code 50:III.2305(B) - Provisional Medicaid Program ("income equal to or less than the federal benefit rate")
+      href: https://www.law.cornell.edu/regulations/louisiana/La-Admin-Code-tit-50-SS-III-2305
+    - title: Ohio Administrative Code 5160:1-3-02.4(B)(3) - Medicaid coverage for the categorically needy ("does not exceed the income standard")
+      href: https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-3-02.4
+    - title: Washington Administrative Code 182-512-0100(2)(a) - SSI-related categorically needy medical eligibility ("at or below")
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=182-512-0100
+    - title: Colorado 10 CCR 2505-10 § 8.100.3.F.1.d (persons eligible for SSI but not receiving the money payment)
+      href: https://www.law.cornell.edu/regulations/colorado/10-CCR-2505-10-8.100_v2
+    - title: Iowa Administrative Code 441-75.1(17) (persons who meet the income guidelines of SSI but are not receiving cash assistance)
+      href: https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-75-1
+    - title: 42 U.S. Code § 1382(a)(1)(A) and (2)(A) - SSI eligible individual (income "at a rate of not more than" the benefit rate)
+      href: https://www.law.cornell.edu/uscode/text/42/1382#a
+    - title: SSA POMS SI 02005.001.C.3 - Retrospective Monthly Accounting Computation, the Federal eligibility test ("If the CI is equal to or less than the FBR ... the individual, based on income, is eligible")
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0502005001
+    - title: 42 U.S. Code § 1396a(m)(1)(B) - poverty-level aged and disabled group (income that "does not exceed" the state's standard)
+      href: https://www.law.cornell.edu/uscode/text/42/1396a#m_1_B
+
+AK:
+  2018-01-01: false
+AL:
+  2018-01-01: false
+AR:
+  2018-01-01: false
+AZ:
+  2018-01-01: false
+CA:
+  2018-01-01: false
+CO:
+  2018-01-01: false
+CT:
+  2018-01-01: false
+DC:
+  2018-01-01: false
+DE:
+  2018-01-01: false
+FL:
+  2018-01-01: false
+GA:
+  2018-01-01: false
+HI:
+  2018-01-01: false
+IA:
+  2018-01-01: false
+ID:
+  2018-01-01: false
+IL:
+  2018-01-01: false
+IN:
+  2018-01-01: false
+KS:
+  2018-01-01: false
+KY:
+  2018-01-01: false
+LA:
+  2018-01-01: false
+MA:
+  2018-01-01: false
+MD:
+  2018-01-01: false
+ME:
+  2018-01-01: false
+MI:
+  2018-01-01: false
+MN:
+  2018-01-01: false
+MO:
+  2018-01-01: false
+MS:
+  2018-01-01: false
+MT:
+  2018-01-01: false
+NC:
+  2018-01-01: false
+ND:
+  2018-01-01: false
+NE:
+  2018-01-01: false
+NH:
+  2018-01-01: false
+NJ:
+  2018-01-01: false
+NM:
+  2018-01-01: false
+NV:
+  2018-01-01: false
+NY:
+  2018-01-01: false
+OH:
+  2018-01-01: false
+OK:
+  2018-01-01: false
+OR:
+  2018-01-01: true
+PA:
+  2018-01-01: false
+RI:
+  2018-01-01: false
+SC:
+  2018-01-01: false
+SD:
+  2018-01-01: false
+TN:
+  2018-01-01: false
+TX:
+  2018-01-01: false
+UT:
+  2018-01-01: false
+VA:
+  2018-01-01: false
+VT:
+  2018-01-01: false
+WA:
+  2018-01-01: false
+WI:
+  2018-01-01: false
+WV:
+  2018-01-01: false
+WY:
+  2018-01-01: false

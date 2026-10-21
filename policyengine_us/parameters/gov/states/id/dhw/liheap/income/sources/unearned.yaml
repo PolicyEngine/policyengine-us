@@ -1,14 +1,15 @@
 description: Idaho counts these unearned income sources under the Low Income Home Energy Assistance Program.
+# Social Security is counted net of Part B separately; TANF enters once per household.
 values:
   2025-10-01:
-    - social_security
     - ssi
     - pension_income
+    - military_retirement_pay
     # Ongoing IRA/401k distributions are separate from pension_income.
     # Existing annual inputs do not identify an excluded one-time lump sum.
     - retirement_distributions
     - survivor_benefits
-    - unemployment_compensation
+    - total_unemployment_compensation
     - strike_benefits
     - rental_income
     - farm_rent_income
@@ -18,12 +19,11 @@ values:
     - estate_income
     - disability_benefits
     - workers_compensation
-    - id_tafi
 
 metadata:
   unit: list
   period: year
   label: Idaho LIHEAP countable unearned income sources
   reference:
-    - title: Idaho FY2026 LIHEAP State Plan
-      href: https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=5,6,7
+    - title: "Idaho FY2026 LIHEAP State Plan #page 5-7"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=5

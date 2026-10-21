@@ -35,7 +35,7 @@ class ny_itemized_deductions_phase_out(Variable):
 
     Worksheet line 2 (L2) = form lines 4, 14, 16a, 20, 29, 30, 37, i.e. the
     deductions NOT subject to the limitation (26 U.S.C. 68(c)):
-      - line 4  medical/dental        -> medical_expense_deduction
+      - line 4  medical/dental        -> ny_medical_expense_deduction
       - line 14 investment interest   -> investment_interest_expense
       - line 20 casualty/theft loss   -> ny_casualty_loss_deduction
       - lines 16a/29/30/37 (qualified contributions, gambling losses,
@@ -62,7 +62,7 @@ class ny_itemized_deductions_phase_out(Variable):
 
         # Worksheet line 2 (L2): deductions not subject to the limitation
         # (26 U.S.C. 68(c)) - medical, investment interest, casualty/theft.
-        medical = tax_unit("medical_expense_deduction", period)
+        medical = tax_unit("ny_medical_expense_deduction", period)
         investment_interest = add(tax_unit, period, ["investment_interest_expense"])
         casualty = tax_unit("ny_casualty_loss_deduction", period)
         l2 = medical + investment_interest + casualty

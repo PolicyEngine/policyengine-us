@@ -19,11 +19,7 @@ class wa_millionaires_tax_base_income(Variable):
         tax_exempt_interest = add(tax_unit, period, ["tax_exempt_interest_income"])
 
         p = parameters(period).gov.states.wa.tax.income.capital_gains
-        charitable_contributions = add(
-            tax_unit,
-            period,
-            ["charitable_cash_donations", "charitable_non_cash_donations"],
-        )
+        charitable_contributions = add(tax_unit, period, ["total_charitable_donations"])
         charitable_contributions_above_exemption = max_(
             0, charitable_contributions - p.deductions.charitable.exemption
         )

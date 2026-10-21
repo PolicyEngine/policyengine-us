@@ -8,7 +8,7 @@ class me_tanf_resources_eligible(Variable):
     definition_period = MONTH
     reference = (
         "https://www.mainelegislature.org/legis/statutes/22/title22sec3762.html",
-        "https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP0892&item=3&session=131",
+        "https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP0592&item=6&snum=131",
     )
     defined_for = StateCode.ME
 

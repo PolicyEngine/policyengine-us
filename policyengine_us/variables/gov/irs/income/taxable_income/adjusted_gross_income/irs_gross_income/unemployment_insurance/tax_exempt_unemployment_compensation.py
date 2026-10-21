@@ -8,5 +8,5 @@ class tax_exempt_unemployment_compensation(Variable):
     unit = USD
     definition_period = YEAR
 
-    adds = ["unemployment_compensation"]
+    adds = ["total_unemployment_compensation"]
     subtracts = ["taxable_unemployment_compensation"]

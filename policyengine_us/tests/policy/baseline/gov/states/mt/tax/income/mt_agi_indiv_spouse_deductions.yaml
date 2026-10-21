@@ -1,0 +1,291 @@
+# Montana spouses who file jointly for federal purposes and separately on the
+# same form (through 2023) each claim the items attributable to them; an item
+# not clearly attributable to one spouse is divided equally (ARM 42.15.206(1);
+# MCA 15-30-2110(6) to (8), 2021). The IRA deduction goes to the spouse who made
+# the contribution (MCA 15-30-2110(8)).
+#
+# Montana's own allocation of business and capital losses is not modeled yet:
+# the capital loss elections of ARM 42.15.206(3) (2010 MAR p. 621) and the
+# Section 461(l) limit recomputed with the single filer's threshold. Until it
+# is, the return's losses are divided equally between the spouses
+# (mt_loss_ald_reallocation), as before each spouse's own deductions were
+# attributed to them.
+
+- name: The head's IRA deduction lowers only the head's Montana AGI.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        traditional_ira_contributions: 6_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # Before: [57_000, 37_000].
+    mt_agi_indiv: [54_000, 40_000]
+
+- name: Losses are divided equally, as before, whichever spouse has them.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        long_term_capital_gains: -4_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # The federal per-spouse amounts give the $3,000 allowed loss to the head;
+    # Montana divides it equally: 60,000 - 1,500 and 40,000 - 1,500.
+    limited_capital_loss_person: [3_000, 0]
+    mt_loss_ald_reallocation: [1_500, -1_500]
+    mt_agi_indiv: [58_500, 38_500]
+    mt_applicable_ald_deductions: [1_500, 1_500]
+
+- name: Both spouses' capital losses are divided equally.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        long_term_capital_gains: -4_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+        short_term_capital_gains: -2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    limited_capital_loss_person: [2_000, 1_000]
+    mt_agi_indiv: [58_500, 38_500]
+    mt_applicable_ald_deductions: [1_500, 1_500]
+
+- name: Rental losses are divided equally.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        rental_income: -8_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+        rental_income: -2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # The $10,000 of losses, 5,000 each.
+    loss_ald_person: [8_000, 2_000]
+    mt_agi_indiv: [55_000, 35_000]
+
+- name: One spouse's capital gain and the other's loss are divided as before.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+        long_term_capital_gains: 1_000
+      spouse:
+        age: 40
+        employment_income: 10_000
+        long_term_capital_gains: -3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # The $3,000 loss deduction ($1,000 against the head's gain and the $2,000
+    # net loss) is divided equally: 11,000 - 1,500 and 10,000 - 1,500.
+    mt_agi_indiv: [9_500, 8_500]
+
+- name: A business loss over the joint Section 461(l) limit is divided equally.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 650_000
+        self_employment_income: -600_000
+      spouse:
+        age: 40
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # The joint 2023 limit allows $578,000 of the loss; each spouse takes
+    # $289,000. Head: 650,000 - 289,000. Spouse: 10,000 - 289,000, floored.
+    mt_agi_indiv: [361_000, 0]
+
+- name: A spousal IRA above the spouse's income still lowers the joint deductions' AGI.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 30_000
+      spouse:
+        age: 45
+        traditional_ira_contributions: 6_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # The spouse's own Montana AGI, -6,000, is floored at zero, but the joint
+    # return's Montana AGI is 30,000 - 6,000 = 24,000. The joint standard
+    # deduction is 20% of it, 4,800, raised to the 4,920 floor.
+    mt_agi_indiv: [30_000, 0]
+    mt_agi_joint: 24_000
+    mt_standard_deduction_joint: [4_920, 0]
+
+- name: A single filer's loss is their own.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 45
+        employment_income: 40_000
+        long_term_capital_gains: -5_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: MT
+  output:
+    # The $3,000 allowed capital loss: 40,000 - 3,000.
+    mt_loss_ald_reallocation: 0
+    mt_agi_indiv: 37_000
+
+- name: Each spouse's student loan interest and IRA deduction stay in their own column.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        student_loan_interest: 2_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+        traditional_ira_contributions: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # Joint MAGI for the student loan interest phase-out is 95,000, under the
+    # 2023 joint start of 155,000, so the full 2,000 is deducted. Splitting
+    # all deductions equally would give [3_500, 3_500] and [56_500, 36_500].
+    mt_applicable_ald_deductions: [2_000, 5_000]
+    mt_agi_indiv: [58_000, 35_000]
+
+- name: From 2024 Montana no longer divides anything between spouses.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        long_term_capital_gains: -4_000
+        traditional_ira_contributions: 6_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # Married filing separately on the same form ended after 2023, and the
+    # return starts from the couple's federal taxable income.
+    mt_married_filing_separately_on_same_return_eligible: [false, false]
+    mt_loss_ald_reallocation: [0, 0]
+    mt_applicable_ald_deductions: [0, 0]
+    mt_agi_indiv: [0, 0]
+    # The same as main, and the same when the spouse has the loss and the IRA
+    # deduction (next case).
+    mt_income_tax: 3_154.20
+
+- name: From 2024 Montana's tax does not depend on which spouse has the deductions.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+        long_term_capital_gains: -4_000
+        traditional_ira_contributions: 6_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    mt_loss_ald_reallocation: [0, 0]
+    mt_applicable_ald_deductions: [0, 0]
+    mt_income_tax: 3_154.20

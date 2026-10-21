@@ -1,0 +1,25 @@
+description: Indiana provides the regular heating award to households heating with these fuels under the Energy Assistance Program.
+# The heating_type input names each fuel. OTHER covers wood pellets, corn and
+# biofuels, which Section 8.5 lists as bulk fuels.
+# KEROSENE is left out because Section 1.1 bars EAP funds for kerosene.
+# SOLAR is left out as an assumption: neither the manual nor the matrix lists it.
+# NONE and UNSPECIFIED are left out, so an unspecified fuel receives no heating
+# award. Heat included in rent is handled in the benefit formula, not here.
+values:
+  2024-10-01:
+    - ELECTRICITY
+    - NATURAL_GAS
+    - FUEL_OIL
+    - PROPANE
+    - WOOD
+    - COAL
+    - OTHER
+metadata:
+  unit: list
+  period: year
+  label: Indiana EAP heating award fuels
+  reference:
+    - title: Indiana PY2026 EAP Intake and Operations Manual, Sections 1.1 (page 10) and 8.5 (page 71)
+      href: https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=71
+    - title: Indiana PY2024-25 EAP Benefit Matrix, page 1
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/IN_BenefitMatrix_2025.pdf#page=1

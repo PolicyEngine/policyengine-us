@@ -1,0 +1,191 @@
+# Sources: POMS SI 01415.058 H, SI DEN01415.010, and MCA 52-1-104.
+- name: Case 1, certified personal care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+  output:
+    mt_ssp: 94
+
+- name: Case 2, certified foster care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: FOSTER_CARE
+  output:
+    mt_ssp: 52.75
+
+- name: Case 3, certified transitional services.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: TRANSITIONAL_LIVING
+  output:
+    mt_ssp: 26
+
+- name: Case 4, no approved setting.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: NONE
+  output:
+    mt_ssp: 0
+
+- name: Case 5, state payment continues after federal SSI is exhausted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    social_security_retirement: 12_768
+  output:
+    ssi: 0
+    mt_ssp: 44
+
+- name: Case 6, income at combined standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    social_security_retirement: 13_296
+  output:
+    mt_ssp: 0
+
+- name: Case 7, positive payment below one dollar receives the federal minimum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    # 13,055.88 / 12 = 1,087.99 countable a month, so federal SSI is 0 and
+    # the supplement is 94 - (1,087.99 - 994) = 0.01, raised to $1.
+    ssi_countable_income: 13_055.88
+  output:
+    ssi: 0
+    mt_ssp: 1
+
+- name: Case 8, excess resources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    ssi_countable_resources: 2_001
+  output:
+    mt_ssp: 0
+
+- name: Case 9, no aged blind or disabled category.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 30
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+  output:
+    mt_ssp: 0
+
+- name: Case 10, excluded category B assisted living.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: CATEGORY_B_ASSISTED_LIVING
+  output:
+    mt_ssp: 0
+
+- name: Case 11, disabled worker above the SGA limit receives no supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 40
+    meets_ssi_disability_criteria: true
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    # Full-time work at the 2026 Montana minimum wage of $10.85 (Montana
+    # DLI): 10.85 x 40 hours x 52 weeks = 22,568 a year, 1,880.67 a month,
+    # above the 1,690 non-blind SGA limit, so the model treats this person as
+    # not disabled for SSI. A recipient who keeps SSI at this level under
+    # section 1619(a) is excluded by SI DEN01415.010 B.1, so neither path pays.
+    employment_income: 22_568
+  output:
+    ssi: 0
+    mt_ssp: 0
+
+- name: Case 12, certified resident in a Medicaid facility.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    # Federal code D pays the 30 reduced benefit. POMS SI 01415.058 H.2 pairs
+    # code D only with state code Z, so the certified rate of 94 is not paid.
+    ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
+    ssi: 30
+    mt_ssp: 0
+
+- name: Case 13, Wyoming resident.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    age: 65
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+  output:
+    mt_ssp: 0
+
+- name: Case 14, SSI application takeup required.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    takes_up_ssi_if_eligible: false
+  output:
+    mt_ssp: 0
+
+- name: Case 15, disabled adult in certified personal care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 40
+    meets_ssi_disability_criteria: true
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+  output:
+    # No income: the full 994 federal benefit rate plus the 94 individual
+    # personal care, group or community home level.
+    ssi: 994
+    mt_ssp: 94
+
+- name: Case 16, 2027 payment after the federal benefit rate increase.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+  output:
+    # The 2027 COLA raises the federal benefit rate to 1,029. The Montana
+    # level is the January 2026 value of 94 carried forward; no 2027
+    # Montana schedule has been verified.
+    ssi: 1_029
+    mt_ssp: 94

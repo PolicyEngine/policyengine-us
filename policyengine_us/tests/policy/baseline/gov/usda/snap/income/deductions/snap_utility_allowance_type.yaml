@@ -309,3 +309,56 @@
     # households, so the SUA applies before the two-utility LUA count
     # (legacy plus water) is ever reached.
     snap_utility_allowance_type: SUA
+
+- name: Michigan heat-and-eat household with two non-heating bills receives IUA because Michigan has no LUA
+  period: 2026-01
+  input:
+    age:
+      2026: 40
+    weekly_hours_worked_before_lsr:
+      2026: 30
+    state_code:
+      2026: MI
+    pre_subsidy_electricity_expense:
+      2026: 600
+    water_expense:
+      2026: 300
+  output:
+    has_snap_elderly_disabled_member: false
+    is_snap_excluded_member: false
+    snap_state_using_standard_utility_allowance: true
+    has_heating_cooling_expense: false
+    count_distinct_utility_expenses: 2
+    snap_utility_allowance_type: IUA
+    snap_utility_allowance: 300 # $181 electricity + $119 water.
+
+- name: Pennsylvania SPM units sharing a household qualify for heat-and-eat independently
+  period: 2026-01
+  input:
+    people:
+      elder:
+        age:
+          2026: 60
+        weekly_hours_worked_before_lsr:
+          2026: 30
+      adult:
+        age:
+          2026: 40
+        weekly_hours_worked_before_lsr:
+          2026: 30
+    spm_units:
+      elderly_unit:
+        members: [elder]
+      ordinary_unit:
+        members: [adult]
+    households:
+      household:
+        members: [elder, adult]
+        state_code:
+          2026: PA
+  output:
+    has_snap_elderly_disabled_member: [true, false]
+    is_snap_excluded_member: [false, false]
+    snap_state_using_standard_utility_allowance: [true, true]
+    snap_utility_allowance_type: [SUA, NONE]
+    snap_utility_allowance: [857, 0]

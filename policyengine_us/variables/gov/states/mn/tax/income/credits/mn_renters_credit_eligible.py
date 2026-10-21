@@ -9,7 +9,7 @@ class mn_renters_credit_eligible(Variable):
     reference = (
         "https://www.revisor.mn.gov/statutes/cite/290.0693",
         "https://www.revenue.state.mn.us/sites/default/files/2025-12/m1ref-25.pdf",
-        "https://www.revenue.state.mn.us/sites/default/files/2026-03/m1rent-25.pdf",
+        "https://www.revenue.state.mn.us/sites/default/files/2026-07/m1rent-25.pdf",
     )
     defined_for = StateCode.MN
 

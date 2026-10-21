@@ -276,6 +276,8 @@
         members: [person1]
         aca_magi_fraction: 1.40
         tax_unit_is_filer: false
+        # Nor does it take up the federal credit, so it files no return to claim it.
+        takes_up_aca_if_eligible: false
     households:
       household:
         members: [person1]
@@ -401,3 +403,79 @@
         state_code: CA
   output:
     ca_premium_subsidy_eligible: false
+
+- name: Case 13b, an in-band CA unit that takes up the federal credit files and is eligible.
+  # Case 13 with take-up true and a positive federal credit ($6,000 benchmark
+  # less 4.19% of $22,000 = $5,078.20): a tax unit that takes up the credit
+  # files a return to claim or reconcile it (26 CFR 1.6011-8(a)), so the
+  # filing gate passes.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.40
+        slcsp: 6_000
+        aca_magi: 22_000
+        aca_required_contribution_percentage: 0.0419
+        tax_unit_is_filer: false
+        takes_up_aca_if_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: true
+
+- name: Case 13c, an in-band CA non-filer that takes up coverage with a zero federal credit is ineligible.
+  # The federal contribution (4% of $22,000 = $880) exceeds the $500
+  # benchmark, so there is no federal credit and no reason to file. Filer twin:
+  # Case 13d.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.40
+        slcsp: 500
+        aca_magi: 22_000
+        aca_required_contribution_percentage: 0.04
+        tax_unit_is_filer: false
+        takes_up_aca_if_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: false
+
+- name: Case 13d, the same unit filing for another reason is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.40
+        slcsp: 500
+        aca_magi: 22_000
+        aca_required_contribution_percentage: 0.04
+        tax_unit_is_filer: true
+        takes_up_aca_if_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: true

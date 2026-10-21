@@ -19,9 +19,5 @@ class co_charitable_contribution_subtraction(Variable):
         p = parameters(
             period
         ).gov.states.co.tax.income.subtractions.charitable_contribution
-        charitable_contributions = add(
-            tax_unit,
-            period,
-            ["charitable_cash_donations", "charitable_non_cash_donations"],
-        )
+        charitable_contributions = add(tax_unit, period, ["total_charitable_donations"])
         return max_(charitable_contributions - p.adjustment, 0)

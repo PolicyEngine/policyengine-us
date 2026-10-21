@@ -1,0 +1,765 @@
+# Filing requirement for a filer who can be claimed as a dependent on another
+# return, and the absence of an unearned income test for everyone else.
+#
+# 26 U.S.C. 6012(a)(1)(C)(i) and (f), 26 U.S.C. 63(c)(5), and Chart A and
+# Chart B of the Form 1040 instructions (Tables 1 and 2 of Publication 501).
+# Section 6012(f) governs 2018 to 2025 and section 6012(a)(1) governs 2026.
+# For an unmarried filer who can be claimed, section 6012(f)(1) gives Chart
+# B's result. Where the statute and the charts differ (decision d1395: the
+# age and blindness addition in the 2018-2025 joint test, a dependent filing
+# separately, and in 2026 blindness and the exact dollar), the cases stay
+# clear of the difference.
+# 2025 amounts (Chart B, page 10 of
+# https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf):
+#   Single dependents, under 65 and not blind, must file if
+#     unearned income was over $1,350, or
+#     earned income was over $15,750, or
+#     gross income was more than the larger of $1,350 or earned income (up to
+#     $15,300) plus $450.
+#   65 or older or blind: $3,350, $17,750, and the larger of $3,350 or earned
+#     income (up to $15,300) plus $2,450. 65 or older and blind: $5,350,
+#     $19,750, and the larger of $5,350 or earned income plus $4,450.
+#   Married dependents, 65 or older or blind: unearned income over $2,950
+#     (section 6012(f)(2)(D): over $1,350, with no addition).
+
+# Filers nobody can claim: gross income only. The cases stay a dollar away
+# from the threshold itself, where Chart A ("at least") and section 6012(f)(1)
+# ("does not exceed the standard deduction") differ; this change does not
+# touch that comparison.
+
+- name: 2025, a single filer nobody can claim with $600 of interest need not file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 40
+    taxable_interest_income: 600
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: 2025, unearned income under the standard deduction does not require a return
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 40
+    taxable_interest_income: 15_749
+  output:
+    # Chart A: single, under 65, $15,750.
+    tax_unit_is_required_to_file: false
+
+- name: 2025, gross income over the standard deduction requires a return
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 40
+    taxable_interest_income: 15_751
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: 2025, a single filer aged 70 nobody can claim with $3,000 of interest need not file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 70
+    taxable_interest_income: 3_000
+  output:
+    # Before, the test was $500 plus the $2,000 additional standard deduction.
+    tax_unit_is_required_to_file: false
+
+- name: 2025, a self-employment loss is not unearned income
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 40
+    self_employment_income: -10_000
+  output:
+    # Before, gross income (0) less earned income (-10,000) counted as
+    # $10,000 of unearned income.
+    tax_unit_is_required_to_file: false
+
+- name: 2025, the unearned income test reads the filer, not a child in the tax unit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 10
+        taxable_interest_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # The parent has no unearned income, and gross income of $10,000 is not
+    # more than earned income plus $450. The child's interest belongs on the
+    # child's own return.
+    tax_unit_is_required_to_file: false
+
+# Single dependents, under 65 and not blind.
+
+- name: 2025, single dependent with unearned income of $1,350 need not file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    taxable_interest_income: 1_350
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: 2025, single dependent with unearned income over $1,350 must file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    taxable_interest_income: 1_351
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: 2025, single dependent with earned income of $15,750 need not file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    employment_income: 15_750
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: 2025, single dependent with earned income over $15,750 must file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    employment_income: 15_751
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: 2025, single dependent with gross income equal to earned income plus $450 need not file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    employment_income: 3_000
+    taxable_interest_income: 450
+  output:
+    # $3,450 is not more than $3,000 + $450.
+    tax_unit_is_required_to_file: false
+
+- name: 2025, single dependent with gross income over earned income plus $450 must file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    employment_income: 3_000
+    taxable_interest_income: 451
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: 2025, the earned income in the gross income test stops at $15,300
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    employment_income: 15_500
+    taxable_interest_income: 251
+  output:
+    # $15,751 is more than $15,300 + $450, though not more than
+    # $15,500 + $450.
+    tax_unit_is_required_to_file: true
+
+- name: 2025, the same income does not require a return from a filer nobody can claim
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 19
+    employment_income: 3_000
+    taxable_interest_income: 1_351
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: 2025, a self-employment loss does not add to a single dependent's unearned income
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    self_employment_income: -10_000
+    taxable_interest_income: 1_000
+  output:
+    # Unearned income is the $1,000 of interest, not gross income less the
+    # negative earned income ($11,000).
+    tax_unit_is_required_to_file: false
+
+# Single dependents, 65 or older or blind.
+
+- name: 2025, single dependent aged 65 with unearned income of $3,350 need not file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 65
+    claimed_as_dependent_on_another_return: true
+    taxable_interest_income: 3_350
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: 2025, single dependent aged 65 with unearned income over $3,350 must file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 65
+    claimed_as_dependent_on_another_return: true
+    taxable_interest_income: 3_351
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: 2025, blind single dependent under 65 with unearned income of $3,350 need not file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 30
+    is_blind: true
+    claimed_as_dependent_on_another_return: true
+    taxable_interest_income: 3_350
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: 2025, blind single dependent under 65 with unearned income over $3,350 must file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 30
+    is_blind: true
+    claimed_as_dependent_on_another_return: true
+    taxable_interest_income: 3_351
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: 2025, blind single dependent aged 65 with unearned income of $5,350 need not file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 65
+    is_blind: true
+    claimed_as_dependent_on_another_return: true
+    taxable_interest_income: 5_350
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: 2025, blind single dependent aged 65 with unearned income over $5,350 must file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 65
+    is_blind: true
+    claimed_as_dependent_on_another_return: true
+    taxable_interest_income: 5_351
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: 2025, single dependent aged 65 with earned income of $17,750 need not file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 65
+    claimed_as_dependent_on_another_return: true
+    employment_income: 17_750
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: 2025, single dependent aged 65 with earned income over $17,750 must file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 65
+    claimed_as_dependent_on_another_return: true
+    employment_income: 17_751
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: 2025, single dependent aged 65 with gross income equal to earned income plus $2,450 need not file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 65
+    claimed_as_dependent_on_another_return: true
+    employment_income: 3_000
+    taxable_interest_income: 2_450
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: 2025, single dependent aged 65 with gross income over earned income plus $2,450 must file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 65
+    claimed_as_dependent_on_another_return: true
+    employment_income: 3_000
+    taxable_interest_income: 2_451
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: 2025, blind single dependent aged 65 with earned income of $19,750 need not file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 65
+    is_blind: true
+    claimed_as_dependent_on_another_return: true
+    employment_income: 19_750
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: 2025, blind single dependent aged 65 with earned income over $19,750 must file
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 65
+    is_blind: true
+    claimed_as_dependent_on_another_return: true
+    employment_income: 19_751
+  output:
+    tax_unit_is_required_to_file: true
+
+# Joint returns: the unearned income test applies to each spouse who can be
+# claimed, with that spouse's own income and additional standard deduction.
+
+- name: 2025, joint return whose spouse can be claimed, unearned income of $1,350
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 40
+        claimed_as_dependent_on_another_return: true
+        taxable_interest_income: 1_350
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: 2025, joint return whose spouse can be claimed, unearned income over $1,350
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 40
+        claimed_as_dependent_on_another_return: true
+        taxable_interest_income: 1_351
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: 2025, the other spouse's unearned income is not the claimed spouse's
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        taxable_interest_income: 1_500
+      spouse:
+        age: 40
+        claimed_as_dependent_on_another_return: true
+        taxable_interest_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # The claimed spouse's unearned income is $1,000, not over $1,350. The
+    # couple's $2,500 would be. Gross income of $2,500 is also under the
+    # joint standard deduction, whether that is the regular $31,500 plus
+    # $1,600 or the limited $1,350 plus $1,600 that the Standard Deduction
+    # Worksheet for Dependents gives when a spouse can be claimed.
+    tax_unit_is_required_to_file: false
+
+- name: 2025, joint return whose spouse aged 65 can be claimed, unearned income over $2,950
+  # Required under both readings: over $1,350 + $1,600 (Chart B) and over
+  # $1,350 (section 6012(f)(2)(D)). At $2,950 or less they differ (d1395).
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 65
+        claimed_as_dependent_on_another_return: true
+        taxable_interest_income: 2_951
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: 2025, a claimed spouse's farm profit is earned income, not unearned income
+  # Farm income (Schedule 1 line 6) is earned income on the IRS dependent
+  # worksheet, so the unearned income test does not apply to it. Gross income
+  # of $2,000 is under the joint standard deduction, whether the regular
+  # $31,500 plus $1,600 or the limited $1,350 plus $1,600. (Section 6017
+  # separately requires a return with $400 or more of net self-employment
+  # earnings; tax_unit_is_required_to_file covers section 6012 only.)
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+      spouse:
+        age: 40
+        claimed_as_dependent_on_another_return: true
+        farm_operations_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: 2025, the head's age does not raise the claimed spouse's unearned income test
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+      spouse:
+        age: 40
+        claimed_as_dependent_on_another_return: true
+        taxable_interest_income: 1_351
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    tax_unit_is_required_to_file: true
+
+# 2024 (Chart B: $1,300, $14,600, earned income plus $450; 65 or older or
+# blind $3,250): https://www.irs.gov/pub/irs-prior/i1040gi--2024.pdf#page=10
+
+- name: 2024, single dependent with unearned income of $1,300 need not file
+  period: 2024
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    taxable_interest_income: 1_300
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: 2024, single dependent with unearned income over $1,300 must file
+  period: 2024
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    taxable_interest_income: 1_301
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: 2024, single dependent with earned income of $14,600 need not file
+  period: 2024
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    employment_income: 14_600
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: 2024, single dependent with earned income over $14,600 must file
+  period: 2024
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    employment_income: 14_601
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: 2024, single dependent aged 65 with unearned income of $3,250 need not file
+  period: 2024
+  input:
+    filing_status: SINGLE
+    age: 65
+    claimed_as_dependent_on_another_return: true
+    taxable_interest_income: 3_250
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: 2024, single dependent aged 65 with unearned income over $3,250 must file
+  period: 2024
+  input:
+    filing_status: SINGLE
+    age: 65
+    claimed_as_dependent_on_another_return: true
+    taxable_interest_income: 3_251
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: 2024, a single filer nobody can claim with $600 of interest need not file
+  period: 2024
+  input:
+    filing_status: SINGLE
+    age: 40
+    taxable_interest_income: 600
+  output:
+    tax_unit_is_required_to_file: false
+
+# 2026 (Rev. Proc. 2025-32, sec. 4.14: $1,350, $450, $16,100 and $2,050):
+# https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=18
+# Section 6012(f) ends with 2025, so section 6012(a)(1) applies. Its unearned
+# income and gross income tests for these filers, in (a)(1)(C)(i), say "in
+# excess of", as Chart B does. But a filer who meets neither is excused only
+# by (a)(1)(A)(i), whose gross income must be "less than" the basic standard
+# deduction, so on the literal text a return is due at exactly the limited
+# deduction. The 2026 instructions are not yet published, so every 2026 case
+# stays a dollar away from a threshold.
+
+- name: 2026, single dependent with unearned income under $1,350 need not file
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    taxable_interest_income: 1_349
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: 2026, single dependent with unearned income over $1,350 must file
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    taxable_interest_income: 1_351
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: 2026, single dependent with earned income under $16,100 need not file
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    employment_income: 16_099
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: 2026, single dependent with earned income over $16,100 must file
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    employment_income: 16_101
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: 2026, single dependent with gross income under earned income plus $450 need not file
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    employment_income: 3_000
+    taxable_interest_income: 449
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: 2026, single dependent with gross income over earned income plus $450 must file
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    employment_income: 3_000
+    taxable_interest_income: 451
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: 2026, single dependent aged 65 with unearned income under $3,400 need not file
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 65
+    claimed_as_dependent_on_another_return: true
+    taxable_interest_income: 3_399
+  output:
+    # $1,350 + $2,050.
+    tax_unit_is_required_to_file: false
+
+- name: 2026, single dependent aged 65 with unearned income over $3,400 must file
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 65
+    claimed_as_dependent_on_another_return: true
+    taxable_interest_income: 3_401
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: 2026, a single filer nobody can claim with $600 of interest need not file
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 40
+    taxable_interest_income: 600
+  output:
+    tax_unit_is_required_to_file: false
+
+# IRC 105(a), 63(c)(5), 6012(a)(1)(C); Form 1040 line 1h is earned
+# before minimum retirement age. Main's 2026 age-only rule still applies
+# to a filer nobody can claim.
+- name: 2024, a claimable filer with earned disability pension need not file
+  period: 2024
+  input:
+    filing_status: SINGLE
+    age: 40
+    claimed_as_dependent_on_another_return: true
+    disability_benefits: 10000
+    disability_benefits_before_minimum_retirement_age: 10000
+  output:
+    basic_standard_deduction: 10450
+    tax_unit_is_required_to_file: false
+- name: 2024, a claimable filer with unearned taxable disability benefits must file
+  period: 2024
+  input:
+    filing_status: SINGLE
+    age: 40
+    claimed_as_dependent_on_another_return: true
+    disability_benefits: 10000
+  output:
+    basic_standard_deduction: 1300
+    tax_unit_is_required_to_file: true
+- name: 2026, taxable disability reaches the age-only filing threshold for a blind nondependent
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 40
+    is_blind: true
+    disability_benefits: 16100
+  output:
+    standard_deduction: 18150
+    tax_unit_is_required_to_file: true
+- name: 2026, a blind claimable filer keeps the earned disability dependent deduction
+  period: 2026
+  input:
+    filing_status: SINGLE
+    age: 40
+    is_blind: true
+    claimed_as_dependent_on_another_return: true
+    disability_benefits: 10000
+    disability_benefits_before_minimum_retirement_age: 10000
+  output:
+    basic_standard_deduction: 10450
+    standard_deduction: 12500
+    tax_unit_is_required_to_file: false
+
+- name: H1, a claimable spouse's unearned disability is not reduced by the other spouse's earned disability
+  # Pub. 501 (2025), Table 2 applies the unearned test to the claimable
+  # spouse's own income. The head's $2,500 of line 1h pay cannot offset the
+  # spouse's $1,500 of unearned disability, which exceeds $1,350. Gross
+  # income $5,000 is below the $3,950 + $1,600 blindness deduction.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_blind: true
+        claimed_as_dependent_on_another_return: false
+        disability_benefits: 2_500
+        disability_benefits_before_minimum_retirement_age: 2_500
+      spouse:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+        employment_income: 1_000
+        disability_benefits: 1_500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    irs_gross_income: [2_500, 2_500]
+    earned_disability_benefits: [2_500, 0]
+    basic_standard_deduction: 3_950
+    standard_deduction: 5_550
+    tax_unit_is_required_to_file: true
+
+- name: H1b, a claimable spouse's own line 1h disability is earned for the filing test
+  # With the spouse's $1,500 also reported on line 1h, neither spouse has
+  # unearned income. Joint worksheet earned income is $5,000, giving a
+  # $5,450 basic deduction and $7,050 with the head's blindness addition.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_blind: true
+        claimed_as_dependent_on_another_return: false
+        disability_benefits: 2_500
+        disability_benefits_before_minimum_retirement_age: 2_500
+      spouse:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+        employment_income: 1_000
+        disability_benefits: 1_500
+        disability_benefits_before_minimum_retirement_age: 1_500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    irs_gross_income: [2_500, 2_500]
+    earned_disability_benefits: [2_500, 1_500]
+    basic_standard_deduction: 5_450
+    standard_deduction: 7_050
+    tax_unit_is_required_to_file: false

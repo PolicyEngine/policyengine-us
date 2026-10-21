@@ -39,3 +39,135 @@
   output:
     ct_agi_subtractions: 0
     # max(0, -5,000) = 0
+
+# Dependents' income is not in federal AGI (they report it on their own
+# return), so person-level subtractions count only the head's and spouse's
+# amounts. Conn. Gen. Stat. § 12-701(a)(20)(B)(iii) and (xvi) subtract state
+# tax refunds and military retirement pay only "to the extent properly
+# includable in gross income for federal income tax purposes"; Form CT-1040
+# instructions, Lines 42 and 44.
+
+- name: A dependent child's military retirement pay is not subtracted from the filer's income.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        military_retirement_pay: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_agi_subtractions: 0
+    # Federal AGI 50,000 (wages) + 0 additions - 0 subtractions.
+    ct_agi: 50_000
+
+- name: Only the head's and spouse's military retirement pay is subtracted, not a dependent's.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+        military_retirement_pay: 8_000
+      person2:
+        age: 45
+        military_retirement_pay: 6_000
+      person3:
+        age: 16
+        is_tax_unit_dependent: true
+        military_retirement_pay: 10_000
+        salt_refund_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CT
+  output:
+    # Head 8,000 + spouse 6,000; the dependent's 10,000 and 2,000 are excluded.
+    ct_agi_subtractions: 14_000
+
+- name: A dependent child's state tax refund is not subtracted, but the head's is.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        salt_refund_income: 1_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        salt_refund_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_agi_subtractions: 1_000
+    # Federal AGI 51,000 (wages + head's refund) - 1,000 subtraction.
+    ct_agi: 50_000
+
+- name: The head's pension subtraction still counts while a dependent's pension and military pay do not.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 67
+        employment_income: 40_000
+        taxable_private_pension_income: 10_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        taxable_private_pension_income: 10_000
+        military_retirement_pay: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Federal AGI 50,000 is below the 75,000 non-joint threshold, so the
+    # 2025 pension and annuity subtraction rate is 100% of the head's 10,000.
+    ct_pension_annuity_subtraction: 10_000
+    ct_agi_subtractions: 10_000
+    ct_agi: 40_000

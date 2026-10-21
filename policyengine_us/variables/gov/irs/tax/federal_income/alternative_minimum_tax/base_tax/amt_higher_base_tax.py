@@ -13,7 +13,11 @@ class amt_higher_base_tax(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.income.amt
         filing_status = tax_unit("filing_status", period)
-        reduced_income = tax_unit("amt_income_less_exemptions", period)
+        # Form 6251 line 6, or for a Form 2555 filer line 3 of the Form 6251
+        # Foreign Earned Income Tax Worksheet (26 U.S.C. 911(f)(1)(B)(i)).
+        reduced_income = tax_unit(
+            "amt_income_less_exemptions_plus_section_911_exclusion", period
+        )
         bracket_fraction = p.multiplier[filing_status]
         tax_rate_threshold = p.brackets.thresholds[-1] * bracket_fraction
         higher_rate = p.brackets.rates[1]

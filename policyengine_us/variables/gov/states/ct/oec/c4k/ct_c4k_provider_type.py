@@ -16,4 +16,4 @@ class ct_c4k_provider_type(Variable):
     definition_period = MONTH
     defined_for = StateCode.CT
     label = "Connecticut Care 4 Kids provider type"
-    reference = "https://www.ctoec.org/care-4-kids/c4k-providers/c4k-rates/"
+    reference = "https://www.ctoec.org/care-4-kids-regulations/#rates"

@@ -5,7 +5,10 @@ class is_eligible_for_fsla_overtime(Variable):
     value_type = bool
     entity = Person
     label = "is eligible for overtime pay"
-    reference = "https://www.law.cornell.edu/cfr/text/29/541.600 ; https://www.law.cornell.edu/uscode/text/29/213"
+    reference = (
+        "https://www.law.cornell.edu/cfr/text/29/541.600",
+        "https://www.law.cornell.edu/uscode/text/29/213",
+    )
     definition_period = YEAR
 
     def formula_2014(person, period, parameters):

@@ -37,3 +37,31 @@
     state_code: SC
   output:
     sc_retirement_deduction_survivors: 0
+
+# Only the head's and spouse's survivor benefits are in the filer's federal
+# AGI; a dependent reports their own on their own return.
+- name: A dependent's survivor pension is not deducted from the filer's income.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 60_000
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+        pension_survivors: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_retirement_deduction_survivors: [0, 0]

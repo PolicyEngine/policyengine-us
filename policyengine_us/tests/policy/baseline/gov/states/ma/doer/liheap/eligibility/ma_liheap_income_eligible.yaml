@@ -27,3 +27,45 @@
   output:
     ma_liheap_income_eligible: true
     # hhs_smi: 119_895
+
+- name: Case 4, federal 110% poverty floor above the 60% state median income limit at size 34.
+  period: 2026
+  input:
+    state_code: [MA, MA, MA, MA, MA]
+    spm_unit_size: [34, 34, 34, 34, 33]
+    ma_liheap_income: [215_000, 216_864.99, 216_865, 216_866, 213_000]
+  output:
+    # 42 U.S.C. 8624(b)(2)(B) bars excluding a household on income below 110%
+    # of the poverty guideline. FY2026 uses the 2025 guidelines (LIHEAP IM
+    # 2025-02): 15,650 + 5,500 x 33 = 197,150 for 34 people, and 110% is
+    # 216,865. The 60% SMI limit for 34 people is 215,077.68.
+    # Household 1 is below the 60% SMI limit: eligible.
+    # Household 2 is one cent below the floor: eligible.
+    # Household 3 is exactly at the floor, which is not below 110%: not eligible.
+    # Household 4 is above the floor: not eligible.
+    # Household 5 has 33 people, whose 212,090.49 limit exceeds the 210,815
+    # floor (110% of 191,650), so the limit still applies: not eligible.
+    ma_liheap_income_eligible: [true, true, false, false, false]
+
+- name: Case 5, the floor uses the poverty guidelines from the year before the model year.
+  period: 2026
+  input:
+    state_code: MA
+    spm_unit_size: 34
+    ma_liheap_income: 220_000
+  output:
+    # FY2026 uses the 2025 guidelines, so the floor is 216,865. The 2026
+    # guidelines would give 110% x (15,960 + 5,680 x 33) = 223,740.
+    ma_liheap_income_eligible: false
+
+- name: Case 6, FY2025 uses the 2024 poverty guidelines for the floor.
+  period: 2025
+  input:
+    state_code: [MA, MA]
+    spm_unit_size: [32, 32]
+    ma_liheap_income: [200_023.99, 200_024]
+  output:
+    # LIHEAP IM 2024-02 makes the 2024 guidelines mandatory in FY2025:
+    # 110% x (15,060 + 5,380 x 31) = 200,024 for 32 people, above the
+    # 198,676.80 FY2025 60% SMI limit.
+    ma_liheap_income_eligible: [true, false]

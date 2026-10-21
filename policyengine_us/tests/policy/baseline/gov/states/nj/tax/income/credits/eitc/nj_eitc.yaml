@@ -75,3 +75,66 @@
     nj_childless_eitc_age_eligible: true
   output:
     nj_eitc: 240
+
+# Section 911 claimants: federal EITC eligibility fails under 26 U.S.C.
+# 32(c)(1)(C), and the age exception in P.L. 2021, c.130, section 1a(4)
+# requires every other federal qualification, so New Jersey pays nothing.
+- name: Section 911 claimant within the federal age range gets no New Jersey EITC.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_earned_income_exclusion: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    eitc: 0
+    nj_eitc: 0
+
+- name: The same filer without a section 911 exclusion gets 40% of the federal EITC.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_earned_income_exclusion: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    # 7.65% of $5,000, below the $649 maximum and the phase-out.
+    eitc: 382.50
+    nj_eitc: 153
+
+- name: Section 911 claimant below the federal minimum age gets no New Jersey EITC.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 20
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_earned_income_exclusion: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_eitc: 0

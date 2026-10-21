@@ -36,3 +36,15 @@
   output:
     auto_loan_interest_deduction: 0
     taxable_income_deductions: 0
+
+- name: Income excluded under section 933 counts toward the phase-out
+  period: 2025
+  input:
+    adjusted_gross_income: 95_000
+    puerto_rico_income: 10_000
+    filing_status: SINGLE
+    qualified_passenger_vehicle_loan_interest: 5_000
+  output:
+    # 26 U.S.C. 163(h)(4)(C)(ii)(II): modified AGI 105,000; five $1,000
+    # steps over 100,000 at $200 each.
+    auto_loan_interest_deduction: 4_000

@@ -7,9 +7,7 @@ class mt_taxable_social_security(Variable):
     label = "Montana taxable social security benefits"
     defined_for = StateCode.MT
     definition_period = YEAR
-    reference = (
-        "https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf#page=6"
-    )
+    reference = "https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2021_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=6"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.social_security.amount

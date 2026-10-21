@@ -8,6 +8,6 @@ class va_tanf_gross_income(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.VA
-    reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=50"
+    reference = "https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/tanfx2fview/tanf/Chapter-300---Need-and-Amount-of-Assistance.pdf#page=54"
 
     adds = ["tanf_gross_earned_income", "tanf_gross_unearned_income"]

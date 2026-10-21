@@ -9,21 +9,29 @@ class id_liheap_countable_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.ID
     reference = (
-        "https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=5,6,7"
+        # PDF pages 5-7
+        "https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=5"
     )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.id.dhw.liheap.income
         person = spm_unit.members
-        # Annual income approximates a stable prior-month assessment. Existing
-        # net business inputs are used without another expense deduction; losses
-        # do not offset other income under this common modeling approximation.
-        earned = sum(max_(person(source, period), 0) for source in p.sources.earned)
+        # Annual flows approximate prior-month receipts. Source losses do not
+        # offset other receipts; existing net business inputs need no deduction.
+        earned = sum(
+            max_(add(person, period, [source]), 0) for source in p.sources.earned
+        )
         adult = person("age", period) >= p.earned_income_min_age
-        earned = spm_unit.sum(where(adult, earned, 0))
-        unearned = add(spm_unit, period, p.sources.unearned)
-        # Income of nonqualified members counts. The plan excludes child support,
-        # VA and general assistance. Jury duty, WIA, mortgage/royalty receipts and
-        # irregular gifts/lottery winnings over $30 in the prior month lack
-        # separately identified inputs; they are unmodeled, not legal exclusions.
-        return max_(earned + unearned, 0)
+        unearned = sum(
+            max_(add(person, period, [source]), 0) for source in p.sources.unearned
+        )
+        social_security = max_(
+            person("social_security", period)
+            - max_(person("medicare_part_b_premium", period), 0),
+            0,
+        )
+        # Nonqualified members' income counts. Child support, VA and general
+        # assistance remain excluded under the accepted plan's checklist.
+        return spm_unit.sum(
+            where(adult, earned, 0) + unearned + social_security
+        ) + max_(spm_unit("tanf", period), 0)

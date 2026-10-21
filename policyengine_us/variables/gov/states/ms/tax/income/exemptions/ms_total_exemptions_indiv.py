@@ -8,7 +8,7 @@ class ms_total_exemptions_indiv(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MS
-    reference = "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=6"
+    reference = "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100221.pdf#page=6"
 
     def formula(person, period, parameters):
         total_exemptions = person.tax_unit("ms_total_exemptions", period)

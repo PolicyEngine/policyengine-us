@@ -1,5 +1,5 @@
 # Idaho FY2026 LIHEAP plan, gross income checkboxes and other-income text (pages5-7).
-# https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=5,6,7
+# https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=5
 # IDAPA16.03.08 section202 includes income of nonqualified household members (page6).
 # https://adminrules.idaho.gov/rules/current/16/160308.pdf#page=6
 
@@ -175,3 +175,280 @@
         state_code: ID
   output:
     id_liheap_countable_income: 16_000
+
+# FY2026 one-person limit32_835. GrossSSA34_000 minus actualPartB2_400=31_600.
+# Military40_000 and pension34_000 exceed the limit. Rental losses are not deductions.
+# UI36_000 fails; reportedUI gives31_200; a negative receipt leaves30_000.
+# TANF receipt controls use the two-person limit42_938.04, with no TANF categorical bypass.
+- name: Case 11, military retirement net Social Security and rental loss affect financial
+    eligibility.
+  period: 2_026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        medicare_part_b_premium: 0
+        military_retirement_pay: 40_000
+      person2:
+        age: 68
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 34_000
+        medicare_part_b_premium: 2_400
+      person3:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        medicare_part_b_premium: 0
+        pension_income: 34_000
+        rental_income: -10_000
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        id_tafi: 0
+        snap:
+          2_025: 0
+          2_026: 0
+      spm_unit2:
+        members:
+        - person2
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        id_tafi: 0
+        snap:
+          2_025: 0
+          2_026: 0
+      spm_unit3:
+        members:
+        - person3
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        id_tafi: 0
+        snap:
+          2_025: 0
+          2_026: 0
+    households:
+      household1:
+        members:
+        - person1
+        state_code: ID
+      household2:
+        members:
+        - person2
+        state_code: ID
+      household3:
+        members:
+        - person3
+        state_code: ID
+  output:
+    id_liheap_countable_income:
+    - 40_000
+    - 31_600
+    - 34_000
+    id_liheap_income_limit:
+    - 32_835
+    - 32_835
+    - 32_835
+    id_liheap_income_eligible:
+    - false
+    - true
+    - false
+- name: Case 12, excess Medicare premiums cannot reduce another income source.
+  period: 2_026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 1_000
+        medicare_part_b_premium: 2_400
+        pension_income: 34_000
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        id_tafi: 0
+        snap:
+          2_025: 0
+          2_026: 0
+    households:
+      household1:
+        members:
+        - person1
+        state_code: ID
+  output:
+    id_liheap_countable_income: 34_000
+    id_liheap_income_eligible: false
+- name: Case 13, UI uses the receipt helper and cannot offset positive wages.
+  period: 2_026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        medicare_part_b_premium: 0
+        employment_income: 30_000
+        unemployment_compensation: 0
+        modeled_state_unemployment_compensation: 6_000
+      person2:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        medicare_part_b_premium: 0
+        employment_income: 30_000
+        unemployment_compensation: 1_200
+        modeled_state_unemployment_compensation: 6_000
+      person3:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        medicare_part_b_premium: 0
+        employment_income: 30_000
+        unemployment_compensation: -100
+        modeled_state_unemployment_compensation: 6_000
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        id_tafi: 0
+        snap:
+          2_025: 0
+          2_026: 0
+      spm_unit2:
+        members:
+        - person2
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        id_tafi: 0
+        snap:
+          2_025: 0
+          2_026: 0
+      spm_unit3:
+        members:
+        - person3
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        id_tafi: 0
+        snap:
+          2_025: 0
+          2_026: 0
+    households:
+      household1:
+        members:
+        - person1
+        state_code: ID
+      household2:
+        members:
+        - person2
+        state_code: ID
+      household3:
+        members:
+        - person3
+        state_code: ID
+  output:
+    total_unemployment_compensation:
+    - 6_000
+    - 1_200
+    - -100
+    id_liheap_countable_income:
+    - 36_000
+    - 31_200
+    - 30_000
+    id_liheap_income_eligible:
+    - false
+    - true
+    - true
+- name: Case 14, received TANF counts once without creating a categorical route.
+  period: 2_026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        medicare_part_b_premium: 0
+        employment_income: 40_000
+      person2:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        medicare_part_b_premium: 0
+      person3:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        medicare_part_b_premium: 0
+        employment_income: 40_000
+      person4:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        medicare_part_b_premium: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        - person2
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        id_tafi: 6_000
+        snap:
+          2_025: 0
+          2_026: 0
+        takes_up_tanf_if_eligible: true
+      spm_unit2:
+        members:
+        - person3
+        - person4
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        id_tafi: 6_000
+        snap:
+          2_025: 0
+          2_026: 0
+        takes_up_tanf_if_eligible: false
+    households:
+      household1:
+        members:
+        - person1
+        - person2
+        state_code: ID
+      household2:
+        members:
+        - person3
+        - person4
+        state_code: ID
+  output:
+    tanf:
+    - 6_000
+    - 0
+    id_liheap_countable_income:
+    - 46_000
+    - 40_000
+    id_liheap_income_eligible:
+    - false
+    - true

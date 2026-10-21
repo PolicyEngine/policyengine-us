@@ -1,0 +1,49 @@
+- name: Claimability alone does not create an expected Medicaid tax-dependent claim
+  period: 2025
+  input:
+    age: 18
+    is_tax_unit_head: true
+    is_tax_unit_spouse: false
+    is_tax_unit_dependent: false
+    claimed_as_dependent_on_another_return: false
+    claimable_as_dependent_on_another_return: true
+    medicaid_has_known_claiming_tax_unit: false
+    tax_unit_is_filer: true
+  output:
+    # 42 CFR 435.603(f)(1)-(2) uses expected actual claims, not claimability.
+    medicaid_is_tax_dependent: false
+    medicaid_uses_missing_claimant_fallback: false
+    medicaid_uses_non_filer_rules: false
+
+- name: An expected actual claim invokes Medicaid's dependent and missing-claimant rules
+  period: 2025
+  input:
+    age: 18
+    is_tax_unit_head: true
+    is_tax_unit_spouse: false
+    is_tax_unit_dependent: false
+    claimed_as_dependent_on_another_return: true
+    claimable_as_dependent_on_another_return: true
+    medicaid_has_known_claiming_tax_unit: false
+    tax_unit_is_filer: true
+  output:
+    medicaid_is_tax_dependent: true
+    medicaid_uses_missing_claimant_fallback: true
+    medicaid_uses_non_filer_rules: true
+
+- name: The tax filing exception leaves Medicaid's expected actual claim unchanged
+  period: 2025
+  input:
+    age: 18
+    is_tax_unit_head: true
+    is_tax_unit_spouse: false
+    is_tax_unit_dependent: false
+    claimed_as_dependent_on_another_return: true
+    claimable_as_dependent_on_another_return: true
+    dependent_claimant_filing_exception: true
+    medicaid_has_known_claiming_tax_unit: false
+    tax_unit_is_filer: true
+  output:
+    medicaid_is_tax_dependent: true
+    medicaid_uses_missing_claimant_fallback: true
+    medicaid_uses_non_filer_rules: true

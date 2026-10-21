@@ -197,3 +197,25 @@
         state_code: OR
   output:
     or_retirement_credit: 0
+
+- name: Military retirement pay and survivor benefits count toward Line 1 retirement income under ORS 316.157
+  period: 2022
+  input:
+    people:
+      person1:
+        or_retirement_credit_eligible_person: true
+        military_retirement_pay: 5_000
+        military_retirement_pay_survivors: 2_500
+        social_security: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        or_retirement_credit_household_income: 10_000
+        or_federal_pension_subtraction: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OR
+  output:
+    or_retirement_credit: 675

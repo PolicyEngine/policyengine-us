@@ -1,0 +1,16 @@
+description: New York uses these sources as earned income under the Home Energy Assistance Program.
+# Existing net business inputs are used without a further expense deduction.
+values:
+  2025-10-01:
+  - employment_income
+  - self_employment_income
+  - sstb_self_employment_income
+  - farm_operations_income
+  - partnership_s_corp_income
+metadata:
+  unit: list
+  period: year
+  label: New York HEAP earned sources
+  reference:
+  - title: HEAP Manual (edition dated 7/1/2021), Chapter 8 D.12 and D.14, PDF pages 37, 38, 42, 43
+    href: https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=37
