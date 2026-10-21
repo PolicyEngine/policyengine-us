@@ -1,0 +1,197 @@
+description: Oregon provides this annual regular heating payment for electricity by region, household size and income band under the Low Income Home Energy Assistance Program.
+1:
+  1:
+    1:
+      2024-10-01: 380
+      2025-10-09: 465
+      2026-10-01: 475
+    2:
+      2024-10-01: 295
+      2025-10-09: 360
+      2026-10-01: 370
+    3:
+      2024-10-01: 250
+      2025-10-09: 300
+      2026-10-01: 310
+    4:
+      2024-10-01: 250
+  2:
+    1:
+      2024-10-01: 595
+      2026-10-01: 600
+    2:
+      2024-10-01: 465
+    3:
+      2024-10-01: 385
+      2026-10-01: 390
+    4:
+      2024-10-01: 280
+      2025-10-09: 275
+      2026-10-01: 280
+  3:
+    1:
+      2024-10-01: 610
+      2025-10-09: 650
+      2026-10-01: 655
+    2:
+      2024-10-01: 475
+      2025-10-09: 505
+      2026-10-01: 510
+    3:
+      2024-10-01: 395
+      2025-10-09: 420
+      2026-10-01: 425
+    4:
+      2024-10-01: 285
+      2025-10-09: 300
+      2026-10-01: 305
+  4:
+    1:
+      2024-10-01: 675
+      2025-10-09: 690
+      2026-10-01: 695
+    2:
+      2024-10-01: 525
+      2025-10-09: 540
+    3:
+      2024-10-01: 440
+      2025-10-09: 450
+    4:
+      2024-10-01: 315
+      2025-10-09: 320
+  5:
+    1:
+      2024-10-01: 710
+      2025-10-09: 725
+    2:
+      2024-10-01: 555
+      2025-10-09: 565
+    3:
+      2024-10-01: 460
+      2025-10-09: 470
+    4:
+      2024-10-01: 330
+      2025-10-09: 340
+  6:
+    1:
+      2024-10-01: 750
+    2:
+      2024-10-01: 595
+      2025-10-09: 590
+    3:
+      2024-10-01: 495
+      2025-10-09: 490
+    4:
+      2024-10-01: 355
+      2025-10-09: 350
+2:
+  1:
+    1:
+      2024-10-01: 415
+      2025-10-09: 515
+      2026-10-01: 510
+    2:
+      2024-10-01: 320
+      2025-10-09: 400
+    3:
+      2024-10-01: 270
+      2025-10-09: 335
+      2026-10-01: 330
+    4:
+      2024-10-01: 250
+  2:
+    1:
+      2024-10-01: 650
+      2025-10-09: 645
+      2026-10-01: 635
+    2:
+      2024-10-01: 505
+      2026-10-01: 495
+    3:
+      2024-10-01: 420
+      2026-10-01: 415
+    4:
+      2024-10-01: 305
+      2025-10-09: 300
+      2026-10-01: 295
+  3:
+    1:
+      2024-10-01: 665
+      2025-10-09: 700
+      2026-10-01: 690
+    2:
+      2024-10-01: 515
+      2025-10-09: 545
+      2026-10-01: 535
+    3:
+      2024-10-01: 430
+      2025-10-09: 455
+      2026-10-01: 445
+    4:
+      2024-10-01: 310
+      2025-10-09: 325
+      2026-10-01: 320
+  4:
+    1:
+      2024-10-01: 740
+      2026-10-01: 730
+    2:
+      2024-10-01: 575
+      2025-10-09: 580
+      2026-10-01: 570
+    3:
+      2024-10-01: 480
+      2026-10-01: 475
+    4:
+      2024-10-01: 345
+      2026-10-01: 340
+  5:
+    1:
+      2024-10-01: 750
+    2:
+      2024-10-01: 605
+      2026-10-01: 595
+    3:
+      2024-10-01: 505
+      2026-10-01: 495
+    4:
+      2024-10-01: 360
+      2026-10-01: 355
+  6:
+    1:
+      2024-10-01: 750
+    2:
+      2024-10-01: 650
+      2025-10-09: 630
+      2026-10-01: 615
+    3:
+      2024-10-01: 540
+      2025-10-09: 525
+      2026-10-01: 515
+    4:
+      2024-10-01: 390
+      2025-10-09: 375
+      2026-10-01: 370
+metadata:
+  unit: currency-USD
+  period: year
+  label: Oregon LIHEAP electricity heating payment
+  breakdown:
+  - range(1, 3)
+  - range(1, 7)
+  - range(1, 5)
+  reference:
+  - title: PY2025 Energy Assistance Intake Operations and Policy Manual, Region 1 benefit matrix
+    href: https://www.oregon.gov/ohcs/energy-weatherization/Documents/PY25%20EA%20Operations%20%20Policy%20Manual-%20FINAL%209-27-24.pdf#page=58
+  - title: PY2025 Energy Assistance Intake Operations and Policy Manual, Region 2 benefit matrix
+    href: https://www.oregon.gov/ohcs/energy-weatherization/Documents/PY25%20EA%20Operations%20%20Policy%20Manual-%20FINAL%209-27-24.pdf#page=59
+  - title: PY2026 Energy Assistance Intake Operations and Policy Manual, corrected Region 1 benefit matrix
+    href: https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=78
+  - title: PY2026 Energy Assistance Intake Operations and Policy Manual, corrected Region 2 benefit matrix
+    href: https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=80
+  - title: OHCS 44-2025 temporary order correcting the PY2026 payment matrices, effective October 9, 2025
+    href: https://secure.sos.state.or.us/oard/viewReceiptPDF.action?filingRsn=60695
+  - title: PY2027 Energy Assistance Intake Operations and Policy Manual, Region 1 benefit matrix
+    href: https://www.oregon.gov/ohcs/energy-weatherization/Documents/manuals/09-23-2027-PY-2027-EA-Operations-Policy-Manual.pdf#page=72
+  - title: PY2027 Energy Assistance Intake Operations and Policy Manual, Region 2 benefit matrix
+    href: https://www.oregon.gov/ohcs/energy-weatherization/Documents/manuals/09-23-2027-PY-2027-EA-Operations-Policy-Manual.pdf#page=74

@@ -1,4 +1,5 @@
-# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=6,217,218
+# PDF pages 6,217-218
+# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=6
 # SNAP and CalWORKs qualify; SSI and VA alone do not.
 
 - name: Case 1, categorical status uses the two selected programs and is state guarded.
@@ -24,42 +25,42 @@
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 1_200
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit2:
         members: [person2, person3]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 1_200
+        tanf: 1_200
         ca_state_supplement: 0
       spm_unit3:
         members: [person4]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit4:
         members: [person5]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit5:
         members: [person6]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit6:
         members: [person7]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 1_200
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
     households:
       household1:

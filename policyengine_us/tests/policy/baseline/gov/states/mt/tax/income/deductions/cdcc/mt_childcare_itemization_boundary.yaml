@@ -1,0 +1,88 @@
+# 2022 Form 2441-M, lines 2-7 and separate-spouse allocation (PDF p. 1):
+# https://revenue.mt.gov/files/Forms/Child-and-Dependent-Care-Expense-Deduction-Form-2441-M/2022_Child_and_Dependent_Care_Expense_Deduction_Form_2441-M.pdf#page=1
+# Form 2, Itemized Deductions Schedule lines 8 and 14, and Standard Deduction
+# Worksheet lines 1-6 (PDF p. 7):
+# https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7
+# Instructions for Form 2 line 15 require both spouses to use the same method
+# (PDF p. 16); the model retains the standard deduction when totals tie:
+# https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=16
+
+- name: Combined-AGI care deduction leaves standard deductions at the itemization boundary
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_dependent: false
+        mt_agi_indiv: 20_000
+        home_mortgage_interest: 4_860
+      spouse:
+        age: 39
+        is_tax_unit_dependent: false
+        mt_agi_indiv: 0
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        mt_agi_indiv: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+        tax_unit_childcare_expenses: 3_000
+        income_tax_before_refundable_credits: 0
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
+  output:
+    # Care = min(3_000, 2_400) - 0.5 * (20_000 + 0 - 18_000)
+    # = 1_400; each spouse gets 700. Itemized total = 4_860 + 700 + 700
+    # = 6_260. Standard = max(20% * 20_000, 2_260) + 2_260 = 6_260.
+    # The unchanged tie rule selects standard deductions. Phasing out on
+    # each spouse's own AGI would incorrectly give 700 + 1_200 care and
+    # itemized total 6_760, crossing the choice boundary.
+    mt_child_dependent_care_expense_deduction: [700, 700, 0]
+    mt_itemized_deductions_indiv: [5_560, 700, 0]
+    mt_standard_deduction_indiv: [4_000, 2_260, 0]
+    mt_tax_unit_itemizes: false
+    mt_deductions_indiv: [4_000, 2_260, 0]
+
+- name: One more dollar of mortgage interest crosses the derived childcare itemization boundary
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_dependent: false
+        mt_agi_indiv: 20_000
+        home_mortgage_interest: 4_861
+      spouse:
+        age: 39
+        is_tax_unit_dependent: false
+        mt_agi_indiv: 0
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        mt_agi_indiv: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+        tax_unit_childcare_expenses: 3_000
+        income_tax_before_refundable_credits: 0
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
+  output:
+    # The same 1_400 care deduction gives itemized total
+    # 4_861 + 700 + 700 = 6_261, exceeding the unchanged 6_260 standard.
+    mt_child_dependent_care_expense_deduction: [700, 700, 0]
+    mt_itemized_deductions_indiv: [5_561, 700, 0]
+    mt_standard_deduction_indiv: [4_000, 2_260, 0]
+    mt_tax_unit_itemizes: true
+    mt_deductions_indiv: [5_561, 700, 0]

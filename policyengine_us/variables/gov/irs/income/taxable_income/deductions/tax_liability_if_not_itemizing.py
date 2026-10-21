@@ -11,10 +11,10 @@ class tax_liability_if_not_itemizing(Variable):
 
     def formula(tax_unit, period, parameters):
         simulation = tax_unit.simulation
-        non_itemized_branch = get_branch_for_period(simulation, "not_itemizing", period)
-        non_itemized_branch.set_input(
-            "tax_unit_itemizes",
+        non_itemized_branch = get_override_branch(
+            simulation,
+            "not_itemizing",
             period,
-            np.zeros((tax_unit.count,), dtype=bool),
+            {"tax_unit_itemizes": np.zeros((tax_unit.count,), dtype=bool)},
         )
         return non_itemized_branch.calculate("income_tax", period)

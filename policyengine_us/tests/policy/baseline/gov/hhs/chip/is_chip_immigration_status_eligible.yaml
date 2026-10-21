@@ -1,0 +1,301 @@
+# Separate CHIP covers citizens and qualified aliens who are exempt from or past
+# the five-year bar (8 USC 1611(a) and 1613). The lawfully residing option
+# reaches CHIP only where the state elected it in both CHIP and Medicaid
+# (42 USC 1397gg(e)(1)(Q)). Arizona elected neither; Texas elected it for
+# children; Colorado elected it for children and pregnant individuals.
+- name: Case 1, citizen is eligible in a state without the option.
+  period: 2025
+  input:
+    state_code: AZ
+    immigration_status: CITIZEN
+    age: 10
+  output:
+    is_chip_immigration_status_eligible: true
+
+- name: Case 2, Arizona permanent resident child becomes eligible when the five-year bar ends.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 10
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 4
+      person2:
+        age: 10
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 5
+    households:
+      household1:
+        members: [person1]
+        state_code: AZ
+      household2:
+        members: [person2]
+        state_code: AZ
+  output:
+    is_chip_immigration_status_eligible: [false, true]
+
+- name: Case 3, Texas option covers recent permanent resident children under 19 only.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 18
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 19
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    households:
+      household1:
+        members: [person1]
+        state_code: TX
+      household2:
+        members: [person2]
+        state_code: TX
+  output:
+    is_chip_immigration_status_eligible: [true, false]
+
+- name: Case 4, pregnancy option applies in Colorado but not Texas.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    households:
+      household1:
+        members: [person1]
+        state_code: CO
+      household2:
+        members: [person2]
+        state_code: TX
+  output:
+    is_chip_immigration_status_eligible: [true, false]
+
+- name: Case 5, DACA and undocumented children are excluded even where the state elected the option.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 10
+        immigration_status: DACA
+      person2:
+        age: 10
+        immigration_status: UNDOCUMENTED
+      person3:
+        age: 10
+        immigration_status: TPS
+    households:
+      household1:
+        members: [person1]
+        state_code: TX
+      household2:
+        members: [person2]
+        state_code: TX
+      household3:
+        members: [person3]
+        state_code: TX
+  output:
+    is_chip_immigration_status_eligible: [false, false, true]
+
+- name: Case 6, refugee child in Arizona remains bar-exempt in 2026 annual simulations.
+  period: 2026
+  input:
+    state_code: AZ
+    immigration_status: REFUGEE
+    age: 10
+  output:
+    is_chip_immigration_status_eligible: true
+
+# Section 71109 limits federal CHIP funding to citizens, permanent residents and
+# Cuban and Haitian entrants from October 1, 2026, except under the option.
+- name: Case 7, after section 71109 only permanent residents, Cuban and Haitian entrants and option groups remain eligible.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 10
+        immigration_status: REFUGEE
+      person2:
+        age: 10
+        immigration_status: REFUGEE
+      person3:
+        age: 10
+        immigration_status: CUBAN_HAITIAN_ENTRANT
+      person4:
+        age: 10
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+    households:
+      household1:
+        members: [person1]
+        state_code: AZ
+      household2:
+        members: [person2]
+        state_code: TX
+      household3:
+        members: [person3]
+        state_code: AZ
+      household4:
+        members: [person4]
+        state_code: AZ
+  output:
+    is_chip_immigration_status_eligible: [false, true, true, true]
+
+- name: Case 8, CHIP elections before they apply in Georgia, Kentucky and Rhode Island.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 10
+        is_pregnant: false
+        immigration_status: TPS
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: TPS
+      person3:
+        age: 30
+        is_pregnant: true
+        immigration_status: TPS
+    households:
+      household1:
+        members: [person1]
+        state_code: GA
+      household2:
+        members: [person2]
+        state_code: KY
+      household3:
+        members: [person3]
+        state_code: RI
+  output:
+    is_chip_immigration_status_eligible: [false, false, false]
+
+# Rhode Island's Medicaid and CHIP pregnancy elections took effect on October 1,
+# 2022 (SPAs RI-22-0024 and RI-22-0025), so they first apply in 2023.
+- name: Case 9, Kentucky and Rhode Island CHIP pregnancy elections apply in 2023.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: TPS
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: TPS
+      person3:
+        age: 30
+        is_pregnant: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    households:
+      household1:
+        members: [person1]
+        state_code: KY
+      household2:
+        members: [person2]
+        state_code: RI
+      household3:
+        members: [person3]
+        state_code: RI
+  output:
+    is_chip_immigration_status_eligible: [true, true, true]
+
+- name: Case 10, Georgia children and Rhode Island pregnancy CHIP elections apply in 2024.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 10
+        is_pregnant: false
+        immigration_status: TPS
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: TPS
+    households:
+      household1:
+        members: [person1]
+        state_code: GA
+      household2:
+        members: [person2]
+        state_code: RI
+  output:
+    is_chip_immigration_status_eligible: [true, true]
+
+# Illinois covered lawfully residing children in its separate CHIP until that
+# program ended for children on July 1, 2022; CMS now lists them under
+# Medicaid-expansion CHIP.
+- name: Case 11, Illinois separate CHIP election applies in 2022 annual simulations.
+  period: 2022
+  input:
+    state_code: IL
+    immigration_status: TPS
+    age: 10
+  output:
+    is_chip_immigration_status_eligible: true
+
+- name: Case 12, Illinois separate CHIP election no longer applies in 2023.
+  period: 2023
+  input:
+    state_code: IL
+    immigration_status: TPS
+    age: 10
+  output:
+    is_chip_immigration_status_eligible: false
+
+- name: Case 13, CHIP option requires the matching Medicaid election.
+  period: 2025
+  input:
+    gov.hhs.medicaid.eligibility.lawfully_residing.child.TX: false
+    state_code: TX
+    immigration_status: TPS
+    age: 10
+  output:
+    is_chip_immigration_status_eligible: false
+
+# From October 1, 2026, 42 USC 1397gg(e)(1)(R) applies the 1396b(v)(5) limit to
+# CHIP, which ends federal CHIP funding for asylees, people granted withholding
+# of deportation, parolees and conditional entrants outside the option (SHO
+# #26-001 Appendix A). Arizona elected neither option, and the default five years
+# since entry clears the bar, so only the status limit applies.
+- name: Case 14, after section 71109 asylees, withheld deportations, parolees and conditional entrants lose CHIP in Arizona.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 10
+        immigration_status: ASYLEE
+      person2:
+        age: 10
+        immigration_status: DEPORTATION_WITHHELD
+      person3:
+        age: 10
+        immigration_status: PAROLED_ONE_YEAR
+      person4:
+        age: 10
+        immigration_status: CONDITIONAL_ENTRANT
+    households:
+      household1:
+        members: [person1]
+        state_code: AZ
+      household2:
+        members: [person2]
+        state_code: AZ
+      household3:
+        members: [person3]
+        state_code: AZ
+      household4:
+        members: [person4]
+        state_code: AZ
+  output:
+    is_chip_immigration_status_eligible: [false, false, false, false]

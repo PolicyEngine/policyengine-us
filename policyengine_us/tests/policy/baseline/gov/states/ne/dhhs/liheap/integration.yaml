@@ -1,0 +1,362 @@
+# Source: Nebraska FY2026 LIHEAP Guidance, income guidelines and heating payment table (pages 1-2).
+# https://dhhs.ne.gov/Documents/Low%20Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29%20Guidance%20Document%202026.pdf#page=1
+
+- name: Case 1, wages receive the earned disregard only after gross eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        employment_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_liheap_household_size: 1
+    ne_liheap_earned_income: 18_000
+    ne_liheap_gross_income: 18_000
+    ne_liheap_fpg: 15_650
+    ne_liheap_income_eligible: true
+    ne_liheap_eligible: true
+    ne_liheap: 550
+- name: Case 2, unearned income does not receive the earned disregard.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_liheap_earned_income: 0
+    ne_liheap_gross_income: 18_000
+    ne_liheap_income_eligible: true
+    ne_liheap: 400
+- name: Case 3, business losses do not offset wages in the documented net-income approximation.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        employment_income: 10_000
+        self_employment_income: -5_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_liheap_earned_income: 10_000
+    ne_liheap_gross_income: 10_000
+    ne_liheap: 700
+- name: Case 4, existing net business income is counted without another business deduction.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        self_employment_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_liheap_earned_income: 18_000
+    ne_liheap_gross_income: 18_000
+    ne_liheap: 550
+- name: Case 5, student child earnings are excluded until age eighteen.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 17
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        is_in_k12_school: true
+        employment_income: 30_000
+      person2:
+        age: 18
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        is_in_k12_school: true
+        employment_income: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_liheap_household_size: 2
+    ne_liheap_earned_income: 10_000
+    ne_liheap_gross_income: 10_000
+    ne_liheap_fpg: 21_150
+    ne_liheap: 700
+- name: Case 6, ineligible immigrant is excluded from size and their income is prorated.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        employment_income: 10_000
+      person2:
+        age: 35
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        immigration_status: UNDOCUMENTED
+        employment_income: 10_000
+        interest_income: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_liheap_household_size: 1
+    ne_liheap_earned_income: 15_000
+    ne_liheap_gross_income: 15_500
+    ne_liheap_fpg: 15_650
+    ne_liheap_income_eligible: true
+    ne_liheap: 550
+
+- name: Case 7, multifamily heat in rent receives the full scheduled benefit with zero separate expense.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        employment_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ne_liheap_dwelling_type: MULTI_FAMILY
+        heat_expense_included_in_rent: true
+        heating_type: UNSPECIFIED
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_liheap_household_size: 1
+    ne_liheap_earned_income: 18_000
+    ne_liheap_gross_income: 18_000
+    ne_liheap_fpg: 15_650
+    ne_liheap_income_eligible: true
+    heating_expense: 0
+    ne_liheap_eligible: true
+    # Income after the 20% disregard is $14,400: multifamily Tier 2.
+    ne_liheap: 300
+
+- name: Case 8, specified service trade self-employment income above the limit is ineligible.
+  # 475 NAC 3-002.04(B)(i) (text in effect for FY2026), incorporated by
+  # 476 NAC 2-002.01, counts each source of self-employment. A self-employed
+  # bookkeeper reports net income in sstb_self_employment_income.
+  # https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/historical-chapter-pdfs/475%20NAC%203%20(09-17-2024)-202607280000.pdf#page=44
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 42
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        sstb_self_employment_income: 40_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_liheap_household_size: 1
+    ne_liheap_earned_income: 40_000
+    ne_liheap_gross_income: 40_000
+    ne_liheap_fpg: 15_650
+    # 40,000 exceeds 150% of 15,650 = 23,475. The 20% earned-income
+    # disregard applies to the payment tier only, not to this gross test.
+    ne_liheap_income_eligible: false
+    ne_liheap_eligible: false
+    ne_liheap: 0
+
+- name: Case 9, housing-assisted renter with heat in rent and no heating bill is ineligible.
+  # FY2026 state plan section 2.3 (page 9): "For subsidized housing, the
+  # household must be responsible for a portion of the heating payment to be
+  # eligible for heating."
+  # https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=9
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 31
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        employment_income: 22_000
+      person2:
+        age: 5
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        receives_housing_assistance: true
+        ne_liheap_dwelling_type: MULTI_FAMILY
+        heat_expense_included_in_rent: true
+        heating_type: UNSPECIFIED
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_liheap_household_size: 2
+    ne_liheap_earned_income: 22_000
+    ne_liheap_gross_income: 22_000
+    # 2025 guideline for two: 15,650 + 5,500 = 21,150; limit 31,725.
+    ne_liheap_fpg: 21_150
+    ne_liheap_income_eligible: true
+    heating_expense: 0
+    # No housing assistance would pay the multifamily Tier 2 amount of 300:
+    # 22,000 - 0.2 * 22,000 = 17,600; 17,600 / 21,150 = 0.832.
+    ne_liheap_eligible: false
+    ne_liheap: 0
+
+- name: Case 10, public housing tenant who pays part of the heating cost receives the multifamily payment.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 71
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        social_security_retirement: 13_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ne_liheap_dwelling_type: MULTI_FAMILY
+        heat_expense_included_in_rent: true
+        heating_type: NATURAL_GAS
+        gas_expense: 420
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+        is_in_public_housing: true
+  output:
+    ne_liheap_household_size: 1
+    ne_liheap_earned_income: 0
+    # $1,100 a month of Social Security: 1,100 * 12 = 13,200.
+    ne_liheap_gross_income: 13_200
+    ne_liheap_fpg: 15_650
+    ne_liheap_income_eligible: true
+    # A $35 monthly gas charge on top of rent: 35 * 12 = 420.
+    heating_expense: 420
+    ne_liheap_eligible: true
+    # No earned income to disregard: 13,200 / 15,650 = 0.843, multifamily Tier 2.
+    ne_liheap: 300
+
+- name: Case 11, market-rate single-family renter with heat in rent and a zero gas bill receives the single-family payment.
+  # Plan section 2.3 (page 9) also says renters with utilities included in
+  # rent must be responsible for a portion of the heating; the model treats
+  # market-rate heat-in-rent renters as responsible. 476 NAC 3-002.02 lets
+  # the Department pay such a household directly, and plan sections 1.1
+  # (page 5) and 9.1 (page 25) list them among households paid directly.
+  # https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=9
+  # https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%203%20(12-26-2020).pdf/1748#page=1
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 34
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+        employment_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ne_liheap_dwelling_type: SINGLE_FAMILY
+        heat_expense_included_in_rent: true
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_liheap_household_size: 1
+    ne_liheap_earned_income: 18_000
+    ne_liheap_gross_income: 18_000
+    ne_liheap_fpg: 15_650
+    ne_liheap_income_eligible: true
+    heating_expense: 0
+    ne_liheap_eligible: true
+    # 18,000 - 0.2 * 18,000 = 14,400; 14,400 / 15,650 = 0.920: single-family
+    # natural gas Tier 2.
+    ne_liheap: 550

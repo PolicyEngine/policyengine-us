@@ -1,16 +1,17 @@
 description: California counts these unearned income sources under the Low Income Home Energy Assistance Program.
-# SSI and state SSP are monthly and are annualized once by aggregation. Pension and retirement-distribution aggregates include their own subcomponents. Interest use, housing-directed cash aid, royalties, jury pay and unusual insurance receipts need more detail than existing inputs provide. SNAP and friends/relative cash gifts are excluded.
+# SSI and state SSP are monthly and are annualized once by aggregation. TANF counts actual take-up once per household; unemployment uses reported or modeled payments. Pension and retirement-distribution aggregates include their own subcomponents, but military retirement pay is separate. Interest use, housing-directed cash aid, royalties, jury pay and unusual insurance receipts need more detail than existing inputs provide. SNAP and friends/relative cash gifts are excluded.
 values:
   2025-10-01:
-    - unemployment_compensation
+    - total_unemployment_compensation
     - strike_benefits
     - social_security
     - ssi
     - ca_state_supplement
     - pension_income
+    - military_retirement_pay
     - retirement_distributions
     - general_assistance
-    - ca_tanf
+    - tanf
     - rental_income
     - farm_rent_income
     - alimony_income
@@ -27,5 +28,5 @@ metadata:
   period: year
   label: California LIHEAP countable unearned income sources
   reference:
-    - title: California FY2026 LIHEAP State Plan
-      href: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=7,229,230,232,234,236,237,238,239,240,243,244,245,247
+    - title: "California FY2026 LIHEAP State Plan #page 7,229-230,232,234,236-240,243-245,247"
+      href: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=7

@@ -1,0 +1,42 @@
+- name: Rhode Island 2024 TDI contribution is 1.2% of wages.
+  period: 2024
+  input:
+    employment_income: 60_000
+    state_code: RI
+  output:
+    ri_temporary_disability_insurance_taxable_wages: 60_000
+    # 1.2% * 60,000 = 720.00.
+    ri_employee_temporary_disability_insurance_contribution: 720.00
+    ri_employee_state_payroll_tax: 720.00
+    employee_state_payroll_tax: 720.00
+
+- name: Rhode Island 2024 TDI contribution stops at the 87,000 taxable wage base.
+  period: 2024
+  input:
+    employment_income: 100_000
+    state_code: RI
+  output:
+    ri_temporary_disability_insurance_taxable_wages: 87_000
+    # 1.2% * 87,000 = 1,044.00, the 2024 maximum contribution DLT announced.
+    ri_employee_temporary_disability_insurance_contribution: 1_044.00
+
+- name: Rhode Island 2025 TDI contribution is 1.3% of wages.
+  period: 2025
+  input:
+    employment_income: 60_000
+    state_code: RI
+  output:
+    # 1.3% * 60,000 = 780.00.
+    ri_employee_temporary_disability_insurance_contribution: 780.00
+    ri_employee_state_payroll_tax: 780.00
+    employee_state_payroll_tax: 780.00
+
+- name: Rhode Island 2025 TDI contribution stops at the 89,200 taxable wage base.
+  period: 2025
+  input:
+    employment_income: 100_000
+    state_code: RI
+  output:
+    ri_temporary_disability_insurance_taxable_wages: 89_200
+    # 1.3% * 89,200 = 1,159.60, the 2025 maximum contribution DLT announced.
+    ri_employee_temporary_disability_insurance_contribution: 1_159.60

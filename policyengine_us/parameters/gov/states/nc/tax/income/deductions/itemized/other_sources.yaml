@@ -1,0 +1,17 @@
+description: North Carolina adds these deductions to the capped mortgage interest and property tax deduction to compute itemized deductions.
+values:
+  2021-01-01:
+    - charitable_deduction
+    - medical_expense_deduction
+    - nc_claim_of_right_deduction
+metadata:
+  unit: list
+  period: year
+  label: North Carolina itemized deductions other than mortgage interest and property taxes
+  reference:
+    - title: N.C. Gen. Stat. § 105-153.5(a)(2)
+      href: https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_105/GS_105-153.5.html
+    - title: 2021 Form D-401 instructions, Form D-400 Schedule A lines 6 through 10
+      href: https://www.ncdor.gov/2021-d-401-individual-income-tax-instructions/open#page=20
+    - title: "2025 Form D-401 instructions, Form D-400 Schedule A lines 6 through 10 #page 20-21"
+      href: https://www.ncdor.gov/2025-d-401-individual-income-tax-instructions/open#page=20

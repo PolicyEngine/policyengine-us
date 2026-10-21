@@ -8,7 +8,8 @@ class ca_liheap_countable_earned_income(Variable):
     unit = USD
     label = "California LIHEAP countable earned income"
     defined_for = StateCode.CA
-    reference = "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=231,240,247"
+    # PDF pages 231,240,247
+    reference = "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=231"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ca.csd.liheap.income

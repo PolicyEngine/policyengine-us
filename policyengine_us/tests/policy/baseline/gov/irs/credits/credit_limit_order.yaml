@@ -1,0 +1,129 @@
+# Each non-refundable credit's limit is income tax before credits less the
+# credits its own credit limit worksheet subtracts. The worksheets order the
+# credits: foreign tax, child and dependent care, elderly or disabled,
+# education, retirement savings, energy efficient home improvement, previously
+# owned clean vehicle, new clean vehicle, Child Tax Credit, residential clean
+# energy. Expected values are worked by hand from the worksheet lines cited.
+
+- name: Schedule R subtracts only the foreign tax and child and dependent care credits.
+  period: 2025
+  input:
+    income_tax_before_credits: 3_000
+    foreign_tax_credit: 200
+    cdcc: 300
+    non_refundable_american_opportunity_credit: 1_000
+    savers_credit: 500
+    energy_efficient_home_improvement_credit: 400
+  output:
+    # 2025 Schedule R instructions, Credit Limit Worksheet: line 1 = 3,000;
+    # line 2 = Schedule 3 lines 1, 2 and 6l = 200 + 300; line 3 = 2,500.
+    elderly_disabled_credit_credit_limit: 2_500
+
+- name: Form 8863 subtracts the elderly or disabled credit.
+  period: 2025
+  input:
+    income_tax_before_credits: 3_000
+    foreign_tax_credit: 200
+    cdcc: 300
+    elderly_disabled_credit: 400
+    savers_credit: 500
+  output:
+    # 2025 Form 8863 instructions, Credit Limit Worksheet: line 5 = Schedule 3
+    # lines 1, 2, 6d and 6l = 200 + 300 + 400; line 6 = 3,000 - 900 = 2,100.
+    non_refundable_american_opportunity_credit_credit_limit: 2_100
+
+- name: Form 8863 limits the lifetime learning credit together with the American opportunity credit.
+  period: 2025
+  input:
+    income_tax_before_credits: 3_000
+    foreign_tax_credit: 200
+    cdcc: 300
+    elderly_disabled_credit: 400
+    non_refundable_american_opportunity_credit: 1_000
+  output:
+    # Credit Limit Worksheet line 6 = 2,100, of which the American
+    # opportunity credit (line 2) uses 1,000.
+    lifetime_learning_credit_credit_limit: 1_100
+
+- name: Form 8880 subtracts the elderly or disabled credit.
+  period: 2025
+  input:
+    income_tax_before_credits: 3_000
+    foreign_tax_credit: 200
+    cdcc: 300
+    elderly_disabled_credit: 400
+    non_refundable_american_opportunity_credit: 1_000
+    lifetime_learning_credit: 100
+    energy_efficient_home_improvement_credit: 600
+  output:
+    # 2025 Form 8880, Credit Limit Worksheet: line 2 = Schedule 3 lines 1
+    # through 3, 6d and 6l = 200 + 300 + 1,100 + 400; line 3 = 1,000.
+    savers_credit_credit_limit: 1_000
+
+- name: Form 5695 Part II subtracts the elderly or disabled credit.
+  period: 2025
+  input:
+    income_tax_before_credits: 3_000
+    foreign_tax_credit: 200
+    cdcc: 300
+    elderly_disabled_credit: 400
+    non_refundable_american_opportunity_credit: 1_000
+    savers_credit: 300
+    used_clean_vehicle_credit: 700
+  output:
+    # 2025 Form 5695 instructions, line 31 worksheet: line 2 = 6l + foreign
+    # tax + child and dependent care + elderly + education + retirement
+    # savings = 200 + 300 + 400 + 1,000 + 300; line 3 = 800.
+    energy_efficient_home_improvement_credit_credit_limit: 800
+
+- name: The elderly or disabled credit takes priority over the retirement savings credit.
+  period: 2025
+  input:
+    income_tax_before_credits: 1_000
+    elderly_disabled_credit_potential: 600
+    savers_credit_potential: 800
+  output:
+    # Schedule R: 1,000 - 0 = 1,000, so the full 600. Form 8880: 1,000 - 600
+    # = 400, so 400 of the 800. Before, the retirement savings credit took
+    # 800 first and left 200 for the elderly or disabled credit.
+    elderly_disabled_credit: 600
+    savers_credit: 400
+    income_tax_capped_non_refundable_credits: 1_000
+
+- name: In 2021 the refundable child and dependent care credit does not reduce later limits.
+  period: 2021
+  input:
+    income_tax_before_credits: 3_000
+    foreign_tax_credit: 200
+    cdcc: 1_000
+    elderly_disabled_credit: 400
+  output:
+    # The 2021 credit was refundable (26 U.S.C. 21(g)) and claimed on
+    # Schedule 3, line 13g, not line 2.
+    elderly_disabled_credit_credit_limit: 2_800
+    non_refundable_american_opportunity_credit_credit_limit: 2_400
+
+- name: The foreign tax credit reduces income tax before 2022.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        foreign_tax_credit_potential: 500
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # 2020 single: taxable income 50,000 - 12,400 = 37,600; tax = 10% x
+    # 9,875 + 12% x 27,725 = 4,314.50 (Form 1040, line 16). The 500 foreign
+    # tax credit (Schedule 3, line 1) is within that limit.
+    income_tax_before_credits: 4_314.5
+    foreign_tax_credit: 500
+    income_tax_capped_non_refundable_credits: 500
+    income_tax_before_refundable_credits: 3_814.5

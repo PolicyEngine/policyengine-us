@@ -1,4 +1,5 @@
-# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=229,230,231,234,235,240,243,244,245,246,247,248,249,250
+# PDF pages 229-231,234-235,240,243-250
+# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=229
 # Annual inputs approximate current-month receipts; SSI and SSP are monthly.
 # Raw premium inputs below are assumed to contain allowable medical premiums.
 
@@ -28,14 +29,14 @@
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit2:
         members: [person3, person4]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
     households:
       household1:
@@ -79,7 +80,7 @@
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
     households:
       household1:
@@ -117,7 +118,7 @@
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 2_400
+        tanf: 2_400
         ca_state_supplement: 0
     households:
       household1:
@@ -172,7 +173,7 @@
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
     households:
       household1:
@@ -227,7 +228,7 @@
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 2_400
+        tanf: 2_400
         ca_state_supplement:
           2026-01: 100
           2026-02: 100
@@ -253,8 +254,9 @@
   period: 2026
   absolute_error_margin: 0.01
   # Positive direct premium 1_200 wins over fallback 2_400; otherwise fallback
-  # applies. Raw fields are alternative representations, never added together.
-  # Medicare deductions are deferred; LTC is excluded. Two members deduct
+  # applies, plus the enrolled member's $600 Part B premium where no direct
+  # total was supplied: 24_000 - 600 = 23_400. Raw fields are alternatives.
+  # The direct total includes Medicare; LTC is excluded. Two members deduct
   # 1_200+600 from 36_000, giving 34_200.
   input:
     people:
@@ -279,14 +281,16 @@
         employment_income: 24_000
         health_insurance_premiums: 1_200
         health_insurance_premiums_without_medicare_part_b: 2_400
-        medicare_part_b_premiums_reported: 600
+        medicare_enrolled: true
+        medicare_part_b_premium: 600
         long_term_health_insurance_premiums: 3_000
       person4:
         age: 65
         is_citizen_or_legal_immigrant: true
         ssi: 0
         employment_income: 24_000
-        medicare_part_b_premiums_reported: 600
+        medicare_enrolled: true
+        medicare_part_b_premium: 600
       person5:
         age: 35
         is_citizen_or_legal_immigrant: true
@@ -305,35 +309,35 @@
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit2:
         members: [person2]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit3:
         members: [person3]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit4:
         members: [person4]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit5:
         members: [person5, person6]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
     households:
       household1:
@@ -357,7 +361,7 @@
         state_code: CA
         county: ALAMEDA_COUNTY_CA
   output:
-    ca_liheap_countable_income: [22_800, 21_600, 22_800, 24_000, 34_200]
+    ca_liheap_countable_income: [22_800, 21_600, 22_800, 23_400, 34_200]
 
 - name: Case 7, legally mandated support and allowable premiums are deducted once.
   period: 2026
@@ -392,21 +396,21 @@
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit2:
         members: [person2]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit3:
         members: [person3]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
     households:
       household1:
@@ -451,7 +455,7 @@
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 1_200
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         spm_unit_assets: 500_000
       spm_unit2:
@@ -459,7 +463,7 @@
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
     households:
       household1:

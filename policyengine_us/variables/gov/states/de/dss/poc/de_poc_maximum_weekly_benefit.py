@@ -11,7 +11,9 @@ class de_poc_maximum_weekly_benefit(Variable):
     label = "Delaware Purchase of Care maximum weekly benefit per child"
     definition_period = MONTH
     defined_for = "de_poc_eligible_child"
-    reference = ("https://dhss.delaware.gov/dss/childcr/",)
+    reference = (
+        "https://web.archive.org/web/20260614012446/https://dhss.delaware.gov/dss/childcr/",
+    )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.de.dss.poc.rates

@@ -8,7 +8,8 @@ class ca_liheap_countable_income(Variable):
     unit = USD
     label = "California LIHEAP annualized countable income"
     defined_for = StateCode.CA
-    reference = "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=7,229,230,231,232,233,234,235,236,237,238,239,240,243,244,245,246,247"
+    # PDF pages 7,229-240,243-247
+    reference = "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=7"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ca.csd.liheap.income
@@ -18,15 +19,15 @@ class ca_liheap_countable_income(Variable):
             ["ca_liheap_countable_earned_income"] + p.unearned_sources,
         )
         support_paid = add(spm_unit, period, p.support_deductions)
-        person = spm_unit.members
-        direct_premiums = person("health_insurance_premiums", period)
-        premiums_without_part_b = person(
-            "health_insurance_premiums_without_medicare_part_b", period
+        # The shared non-payroll aggregate includes Part B once. Payroll
+        # premiums are disjoint; supplied totals must exclude vision,
+        # dental, long-term care and other nonmedical charges.
+        medical_premiums = add(
+            spm_unit,
+            period,
+            [
+                "medical_expense_health_insurance_premiums",
+                "pre_tax_health_insurance_premiums",
+            ],
         )
-        # Use reported allowable non-Medicare medical premiums as a proxy.
-        # Raw inputs do not identify vision/dental or overlap with separately
-        # reported LTC/Medicare premiums; do not add those or modeled Medicare.
-        medical_premiums = where(
-            direct_premiums > 0, direct_premiums, premiums_without_part_b
-        )
-        return max_(gross - support_paid - spm_unit.sum(medical_premiums), 0)
+        return max_(gross - support_paid - medical_premiums, 0)

@@ -1,0 +1,171 @@
+- name: IRA contributions require compensation.
+  period: 2026
+  input:
+    age: 40
+    traditional_ira_contributions_desired: 1_000
+  output:
+    ira_contribution_limit: 0
+    traditional_ira_contributions: 0
+
+- name: Compensation limits combined traditional and Roth contributions proportionally.
+  period: 2026
+  input:
+    age: 40
+    employment_income: 2_000
+    traditional_ira_contributions_desired: 4_000
+    roth_ira_contributions_desired: 1_000
+  output:
+    ira_compensation: 2_000
+    ira_contribution_limit: 2_000
+    ira_contribution_scale: 0.4
+    traditional_ira_contributions: 1_600
+    roth_ira_contributions: 400
+
+- name: Compensation uses wages after payroll deductions and disregards net self-employment losses.
+  period: 2026
+  input:
+    employment_income: 3_000
+    pre_tax_contributions: 1_000
+    self_employment_income: -1_000
+  output:
+    ira_compensation: 2_000
+    ira_contribution_limit: 2_000
+
+- name: Compensation includes all modeled net self-employment sources and deducts retirement and SE tax adjustments.
+  period: 2026
+  input:
+    self_employment_income: 5_000
+    sstb_self_employment_income: 1_000
+    farm_operations_income: 2_000
+    partnership_self_employment_net_earnings: 3_000
+    self_employment_tax_ald_person: 1_000
+    self_employed_pension_contribution_ald_person: 2_000
+  output:
+    ira_compensation: 8_000
+
+- name: Taxable alimony under an earlier divorce instrument is compensation.
+  period: 2026
+  input:
+    alimony_income: 2_500
+    divorce_year: 2018
+    traditional_ira_contributions_desired: 4_000
+  output:
+    ira_compensation: 2_500
+    ira_contribution_limit: 2_500
+    traditional_ira_contributions: 2_500
+
+- name: Nontaxable alimony under a later divorce instrument is excluded from compensation.
+  period: 2026
+  input:
+    alimony_income: 2_500
+    divorce_year: 2020
+    traditional_ira_contributions_desired: 4_000
+  output:
+    ira_compensation: 0
+    ira_contribution_limit: 0
+    traditional_ira_contributions: 0
+
+- name: Pension, dividend and rental income are excluded from IRA compensation.
+  period: 2026
+  input:
+    pension_income: 50_000
+    dividend_income: 10_000
+    rental_income: 10_000
+    traditional_ira_contributions_desired: 4_000
+  output:
+    ira_compensation: 0
+    ira_contribution_limit: 0
+    traditional_ira_contributions: 0
+
+- name: Positive desired IRA contributions below one dollar retain the correct scale.
+  period: 2026
+  absolute_error_margin: 0.000001
+  input:
+    employment_income: 0.5
+    traditional_ira_contributions_desired: 0.25
+    roth_ira_contributions_desired: 0.25
+  output:
+    ira_compensation: 0.5
+    ira_contribution_limit: 0.5
+    ira_contribution_scale: 1
+    traditional_ira_contributions: 0.25
+    roth_ira_contributions: 0.25
+
+- name: Zero desired IRA contributions use a finite scale.
+  period: 2026
+  input:
+    employment_income: 5_000
+    traditional_ira_contributions_desired: 0
+    roth_ira_contributions_desired: 0
+  output:
+    ira_contribution_limit: 5_000
+    ira_contribution_scale: 1
+    traditional_ira_contributions: 0
+    roth_ira_contributions: 0
+
+- name: The lower-compensation joint spouse uses compensation remaining after the other spouse's combined IRA contributions.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+        traditional_ira_contributions_desired: 6_000
+        roth_ira_contributions_desired: 1_000
+      spouse:
+        age: 40
+        employment_income: 1_000
+        traditional_ira_contributions_desired: 7_500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        tax_unit_is_joint: true
+  output:
+    ira_contribution_limit: [7_500, 4_000]
+    traditional_ira_contributions: [6_000, 4_000]
+    roth_ira_contributions: [1_000, 0]
+
+- name: Married spouses filing separately cannot share IRA compensation.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+        traditional_ira_contributions_desired: 6_000
+        roth_ira_contributions_desired: 1_000
+      spouse:
+        age: 40
+        employment_income: 1_000
+        traditional_ira_contributions_desired: 7_500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        tax_unit_is_joint: false
+  output:
+    ira_contribution_limit: [7_500, 1_000]
+    traditional_ira_contributions: [6_000, 1_000]
+    roth_ira_contributions: [1_000, 0]
+
+- name: Dependent compensation is excluded from spousal IRA compensation sharing.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 6_000
+        traditional_ira_contributions_desired: 5_000
+      spouse:
+        age: 40
+        traditional_ira_contributions_desired: 7_500
+      child:
+        age: 17
+        employment_income: 20_000
+        traditional_ira_contributions_desired: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        tax_unit_is_joint: true
+  output:
+    ira_contribution_limit: [6_000, 1_000, 7_500]
+    traditional_ira_contributions: [5_000, 1_000, 1_000]

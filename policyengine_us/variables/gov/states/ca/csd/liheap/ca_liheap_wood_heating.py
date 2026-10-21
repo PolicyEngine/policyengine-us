@@ -10,8 +10,8 @@ class ca_liheap_wood_heating(Variable):
         "California LIHEAP ordinary wood heating component with approved delivery cost"
     )
     defined_for = "ca_liheap_basic_eligible"
-    # The ordinary WPO cap is on page 10; wood quantities and pricing on page 188.
-    reference = "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=188"
+    # PDF pages 10,188
+    reference = "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=10"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ca.csd.liheap.payment

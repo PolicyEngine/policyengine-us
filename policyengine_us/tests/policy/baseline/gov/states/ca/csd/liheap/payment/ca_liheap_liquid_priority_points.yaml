@@ -1,5 +1,9 @@
-# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=184,185,186,187,188,193,205,257,279,282,283
-# https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=191,233,234
+# PDF pages 184-188,193,205,257,279,282-283
+# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=184
+# PDF pages 191,233-234
+# https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=191
+# 2026 standard Part B premium, also in gov.hhs.medicare.part_b.base_premium:
+# https://www.cms.gov/newsroom/fact-sheets/2026-medicare-parts-b-premiums-deductibles
 # FY2026 ordinary liquid component; no discretionary vendor supplement.
 # Annual recurring income/costs represent the same application month.
 
@@ -19,28 +23,28 @@
         members: ["p1_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1440.0
       s2:
         members: ["p2_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 2160.0
       s3:
         members: ["p3_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 2592.0
       s4:
         members: ["p4_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 3600.0
     households:
@@ -65,80 +69,86 @@
     ca_liheap_energy_burden_group: [2, 2, 2, 2]
     ca_liheap_liquid_priority_points: [16, 14, 12, 10]
 
-# All rows income group1 and burden group1 give14 base points. Under3
-# gets10+5, ages3 through under6 get10, age6 gets0. Age60 adds10,
-# age70 adds10+5; fractional ages5.5 and2.5 remain in their child bands.
+# Income group 1 gives 10 points. The first six households have 10% burden
+# (1_200 / 12_000), group 1, adding 4. Under 3 adds 15, under 6 adds 10;
+# age 60 adds 10 and age 70 adds 15. Fractional ages retain their actual band.
+# The last two pay the sourced 2026 standard Part B premium: 202.90 x 12
+# = 2_434.80. This is an explicit actual-paid-cost assumption, independent
+# of unobserved MSP participation. Net income = 12_000 - 2_434.80 = 9_565.20.
+# Their burden truncates to 12.54%, group 2 (6 points); totals are
+# 10 + 6 + 10 = 26 and 10 + 6 + 15 = 31. Younger rows report zero premiums.
 - name: "Case 2, child and older adult fractional ages preserve completed-year bands."
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
-      p1_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
-      p1_2: {"age": 2.5, "is_citizen_or_legal_immigrant": true, "ssi": 0}
-      p2_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
-      p2_2: {"age": 3, "is_citizen_or_legal_immigrant": true, "ssi": 0}
-      p3_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
-      p3_2: {"age": 5.5, "is_citizen_or_legal_immigrant": true, "ssi": 0}
-      p4_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
-      p4_2: {"age": 6, "is_citizen_or_legal_immigrant": true, "ssi": 0}
-      p5_1: {"age": 59.9, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
-      p6_1: {"age": 60, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
-      p7_1: {"age": 69.9, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
-      p8_1: {"age": 70, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12000}
+      p1_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12_000, "medicare_part_b_premium": 0}
+      p1_2: {"age": 2.5, "is_citizen_or_legal_immigrant": true, "ssi": 0, "medicare_part_b_premium": 0}
+      p2_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12_000, "medicare_part_b_premium": 0}
+      p2_2: {"age": 3, "is_citizen_or_legal_immigrant": true, "ssi": 0, "medicare_part_b_premium": 0}
+      p3_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12_000, "medicare_part_b_premium": 0}
+      p3_2: {"age": 5.5, "is_citizen_or_legal_immigrant": true, "ssi": 0, "medicare_part_b_premium": 0}
+      p4_1: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12_000, "medicare_part_b_premium": 0}
+      p4_2: {"age": 6, "is_citizen_or_legal_immigrant": true, "ssi": 0, "medicare_part_b_premium": 0}
+      p5_1: {"age": 59.9, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12_000, "medicare_part_b_premium": 0}
+      p6_1: {"age": 60, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12_000, "medicare_part_b_premium": 0}
+      p7_1: {"age": 69.9, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12_000, "medicare_enrolled": true, "medicare_part_b_premium": 2_434.80}
+      p8_1: {"age": 70, "is_citizen_or_legal_immigrant": true, "ssi": 0, "employment_income": 12_000, "medicare_enrolled": true, "medicare_part_b_premium": 2_434.80}
     spm_units:
       s1:
         members: ["p1_1", "p1_2"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
       s2:
         members: ["p2_1", "p2_2"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
       s3:
         members: ["p3_1", "p3_2"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
       s4:
         members: ["p4_1", "p4_2"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
       s5:
         members: ["p5_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
       s6:
         members: ["p6_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
       s7:
         members: ["p7_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
       s8:
         members: ["p8_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
     households:
@@ -175,7 +185,10 @@
         state_code: "CA"
         county: "MADERA_COUNTY_CA"
   output:
-    ca_liheap_liquid_priority_points: [29, 24, 24, 14, 14, 24, 24, 29]
+    ca_liheap_countable_income: [12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 9_565.20, 9_565.20]
+    ca_liheap_income_group: [1, 1, 1, 1, 1, 1, 1, 1]
+    ca_liheap_energy_burden_group: [1, 1, 1, 1, 1, 1, 2, 2]
+    ca_liheap_liquid_priority_points: [29, 24, 24, 14, 14, 24, 26, 31]
 
 # Income10+burden4+young-child10+under3child5+elderly10+age70plus5
 # +disability10=54. Two elders, two young children and two disabled people
@@ -193,7 +206,7 @@
         members: ["p1_1", "p1_2", "p1_3", "p1_4"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
     households:
@@ -220,14 +233,14 @@
         members: ["p1_1", "p1_2"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
       s2:
         members: ["p2_1", "p2_2"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
     households:

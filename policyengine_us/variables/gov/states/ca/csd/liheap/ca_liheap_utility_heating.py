@@ -8,7 +8,8 @@ class ca_liheap_utility_heating(Variable):
     unit = USD
     label = "California LIHEAP regular gas or electric utility heating benefit"
     defined_for = "ca_liheap_utility_eligible"
-    reference = "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=182,183,184"
+    # PDF pages 182-184
+    reference = "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=182"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ca.csd.liheap.payment

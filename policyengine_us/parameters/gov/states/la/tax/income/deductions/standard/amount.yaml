@@ -3,15 +3,17 @@ metadata:
   period: year
   unit: currency-USD
   label: Louisiana standard deduction amount
-  uprating: gov.bls.cpi.cpi_u
+  # Years after the last value below follow R.S. 47:294(B)'s annual CPI-U
+  # adjustment, computed by extend_la_cpi_u_indexed_amounts in
+  # policyengine_us/parameters/uprating_extensions.py.
   propagate_metadata_to_children: true
   breakdown:
     - filing_status
   reference:
     - title: Louisiana Revised Statutes, RS 47:294 - Standard deduction
       href: https://www.legis.la.gov/legis/Law.aspx?d=101761
-    - title: Louisiana Register, February 20, 2026, Income Tax Withholding Tables notice
-      href: https://bese.louisiana.gov/docs/default-source/rulemaking-docket/feb-louisiana-register.pdf#page=127
+    - title: Louisiana Department of Revenue, Revenue Information Bulletin 26-019 (September 28, 2026), Inflation Adjustment to Standard Deduction and Retirement Income Exemption
+      href: https://dam.ldr.la.gov/lawspolicies/RIB%2026-019.pdf#page=1
     - title: Consumer Price Index News Release - 2025 M12 Results
       href: https://www.bls.gov/news.release/archives/cpi_01132026.htm
     - title: 2025 Louisiana Resident Income Tax Return Instructions, Line 8
@@ -19,20 +21,22 @@ metadata:
 
 SINGLE:
   2025-01-01: 12_500
-  # 2026 amount applies the December-to-December 2025 CPI-U increase:
-  # 12,500 * (324.054 / 315.605), rounded to the nearest dollar.
-  2026-01-01: 12_835
+  # RIB 26-019 applies a 2.7% CPI-U multiplier (BLS reported the December
+  # 2024 to December 2025 increase as 2.7%): 12,500 * 1.027 = 12,837.50,
+  # rounded to 12,838.
+  2026-01-01: 12_838
 SURVIVING_SPOUSE:
   2025-01-01: 25_000
-  2026-01-01: 25_670
+  2026-01-01: 25_676
 SEPARATE:
   2025-01-01: 12_500
-  2026-01-01: 12_835
-# The legal code defines the HoH and Joint amounts as 200% of the 
-# Single amount.
+  2026-01-01: 12_838
+# R.S. 47:294(A)(2) sets the head of household, joint and surviving spouse
+# amounts at 200% of the single amount; RIB 26-019 doubles the rounded
+# single amount (2 * 12,838 = 25,676, where 25,000 * 1.027 = 25,675).
 HEAD_OF_HOUSEHOLD:
   2025-01-01: 25_000
-  2026-01-01: 25_670
+  2026-01-01: 25_676
 JOINT:
   2025-01-01: 25_000
-  2026-01-01: 25_670
+  2026-01-01: 25_676

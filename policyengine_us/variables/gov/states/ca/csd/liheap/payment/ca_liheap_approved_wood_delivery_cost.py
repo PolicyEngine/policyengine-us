@@ -18,5 +18,5 @@ class ca_liheap_approved_wood_delivery_cost(Variable):
     default_value = 0
     label = "California LIHEAP approved eligible wood delivery cost"
     defined_for = StateCode.CA
-    # Quantity and pricing: page 188; approved vendor payments: pages 363-364.
+    # PDF pages 188,363-364
     reference = "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=188"

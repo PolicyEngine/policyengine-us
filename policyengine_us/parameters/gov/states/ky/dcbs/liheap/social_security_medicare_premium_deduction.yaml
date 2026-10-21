@@ -1,0 +1,15 @@
+description: Kentucky counts Social Security benefits net of the Medicare Part B premium under the Low Income Home Energy Assistance Program when this is true, and gross when it is false.
+values:
+  # FY2025 plan, Section 1.9: "Including MediCare deduction" is checked.
+  2024-10-01: false
+  # FY2026 plan, Section 1.9: "Excluding MediCare deduction" is checked.
+  2025-10-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Kentucky LIHEAP Social Security Medicare premium deduction
+  reference:
+    - title: Kentucky FY2025 state plan, Section 1.9, page 6
+      href: https://liheapch.acf.gov/docs/2025/state-plans/KY_Plan_2025.pdf#page=6
+    - title: Kentucky FY2026 state plan, Section 1.9, page 6
+      href: https://liheapch.acf.gov/docs/2026/state-plans/KY_Plan_2026.pdf#page=6

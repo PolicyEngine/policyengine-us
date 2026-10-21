@@ -9,4 +9,4 @@ class tax_unit_unemployment_compensation(Variable):
     documentation = "Combined unemployment compensation for the tax unit."
     definition_period = YEAR
 
-    adds = ["unemployment_compensation"]
+    adds = ["total_unemployment_compensation"]

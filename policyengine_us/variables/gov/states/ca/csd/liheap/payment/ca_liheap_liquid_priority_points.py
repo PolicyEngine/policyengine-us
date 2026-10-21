@@ -7,7 +7,8 @@ class ca_liheap_liquid_priority_points(Variable):
     definition_period = YEAR
     label = "California LIHEAP priority points within supported liquid heating coverage"
     defined_for = "ca_liheap_liquid_heating_covered"
-    reference = "https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=189,191,233,234"
+    # PDF pages 189,191,233-234
+    reference = "https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=189"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ca.csd.liheap.local.madera

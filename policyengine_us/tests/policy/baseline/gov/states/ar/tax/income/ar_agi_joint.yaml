@@ -19,7 +19,7 @@
   output:
     ar_agi_joint: [900, 1_800]
 
-- name: Dependent AGI gets attributed to the head, AGI capped at 0
+- name: Dependent AGI gets attributed to the head; spouse net income is not floored on a joint return
   period: 2022
   input:
     people:
@@ -43,4 +43,32 @@
         members: [person1, person2, person3]
         state_code: AR 
   output:
-    ar_agi_joint: [1_200, 0, 0]
+    # Head: 900 + dependent's 300 (dependent income floored at 0, then
+    # attributed to the head). Spouse: 100 - 200 = -100. On a joint return all
+    # income goes in Column A, so the spouse's amount offsets the head's; the
+    # tax unit total is floored at 0 only when used as a tax base.
+    ar_agi_joint: [1_200, -100, 0]
+
+- name: A spouse's business loss offsets the other spouse's income on a joint return
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_gross_income_joint: 50_000
+        ar_exemptions: 0
+        is_tax_unit_dependent: false
+        is_tax_unit_head: true
+      person2:
+        ar_gross_income_joint: -10_000
+        ar_exemptions: 0
+        is_tax_unit_dependent: false
+        is_tax_unit_head: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # AR1000F instructions: "If your filing status is Married Filing
+    # Separately on the Same Return, both Column A and Column B must be used.
+    # ... For all other filing statuses, write all income in Column A only."
+    ar_agi_joint: [50_000, -10_000]

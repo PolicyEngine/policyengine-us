@@ -7,7 +7,8 @@ class ca_liheap_utility_eligible(Variable):
     definition_period = YEAR
     label = "California LIHEAP utility heating eligibility"
     defined_for = StateCode.CA
-    reference = "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=9,182,183,184,193,202,203,205,219,279"
+    # PDF pages 9,182-184,193,202-203,205,219,279
+    reference = "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=9"
 
     def formula(spm_unit, period, parameters):
         heating_type = spm_unit("heating_type", period)

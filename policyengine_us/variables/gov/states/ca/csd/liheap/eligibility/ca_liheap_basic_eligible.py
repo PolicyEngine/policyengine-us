@@ -7,8 +7,8 @@ class ca_liheap_basic_eligible(Variable):
     definition_period = YEAR
     label = "California LIHEAP common household eligibility"
     defined_for = StateCode.CA
-    # Eligibility details: pages 9, 193, 202-203, 205, 219, and 279.
-    reference = "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=193"
+    # PDF pages 9,193,202-203,205,219,279
+    reference = "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=9"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ca.csd.liheap.eligibility

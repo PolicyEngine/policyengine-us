@@ -1,0 +1,18 @@
+description: The Bureau of Labor Statistics publishes this September value of the Consumer Price Index for All Urban Consumers, not seasonally adjusted, from which CMS takes the September-to-September percentage change it applies to the Medicaid long-term care home equity limits.
+values:
+  # BLS series CUUR0000SA0 (U.S. city average, all items, 1982-84=100).
+  2018-09-01: 252.439
+  2019-09-01: 256.759
+  2020-09-01: 260.28
+  2021-09-01: 274.31
+  2022-09-01: 296.808
+  2023-09-01: 307.789
+  2024-09-01: 315.301
+  2025-09-01: 324.8
+metadata:
+  unit: currency-USD
+  label: CPI-U, not seasonally adjusted, September
+  economy: false
+  reference:
+    - title: BLS | CPI-U, U.S. city average, all items, not seasonally adjusted (CUUR0000SA0)
+      href: https://data.bls.gov/timeseries/CUUR0000SA0

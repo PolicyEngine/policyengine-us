@@ -1,0 +1,271 @@
+# The reform gates the whole NYC school tax credit on nyc_school_credit_income,
+# which NY Tax Law § 606(ggg)(2) and RPTL § 425(4)(b)(ii) define as federal AGI
+# minus the IRA distributions included in it (IT-201 line 19 minus line 9).
+# These cases pin that reading: an IRA distribution can bring a filer under the
+# reform's filing-status income limit even when federal AGI is over it.
+# TY2025 rates (IT-201-I 2025, line 69 and 69a): fixed amount $63 single, $125
+# joint; rate reduction 0.171% of city taxable income up to $12,000 (single) or
+# $21,600 (joint), then 0.228% above it. Above the first band the form prints
+# rounded base amounts ($21 single, $37 joint) while the model carries in the
+# first band at the marginal rate (12,000 x 0.171% = $20.52; 21,600 x 0.171% =
+# $36.936), and the expected values below follow the model; that gap is #8947.
+
+- name: Case 1, single retiree whose IRA distribution puts AGI over the limit but school credit income under it.
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children.adjust_income_limit_and_min_children_by_filing_status
+  input:
+    gov.contrib.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children: true
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        taxable_ira_distributions: 200_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+        in_nyc: true
+  output:
+    adjusted_gross_income: 300_000
+    # 300,000 - 200,000 IRA distributions = 100,000 <= 250,000.
+    nyc_school_credit_income: 100_000
+    nyc_school_tax_credit_eligible: true
+    # 300,000 - 20,000 pension and annuity exclusion - 8,000 standard deduction.
+    nyc_taxable_income: 272_000
+    nyc_school_tax_credit_fixed_amount: 63
+    # 12,000 x 0.171% + (272,000 - 12,000) x 0.228% = 20.52 + 592.80.
+    nyc_school_tax_credit_rate_reduction_amount: 613.32
+    nyc_school_tax_credit: 676.32
+
+- name: Case 2, IRA distribution of a filer under 59 1/2 brings school credit income under the limit.
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children.adjust_income_limit_and_min_children_by_filing_status
+  input:
+    gov.contrib.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children: true
+    people:
+      person1:
+        age: 45
+        employment_income: 200_000
+        taxable_ira_distributions: 50_001
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+        in_nyc: true
+  output:
+    adjusted_gross_income: 250_001
+    nyc_school_credit_income: 200_000
+    nyc_school_tax_credit_eligible: true
+    # No pension and annuity exclusion under age 59 1/2: 250,001 - 8,000.
+    nyc_taxable_income: 242_001
+    nyc_school_tax_credit_fixed_amount: 63
+    # 20.52 + (242,001 - 12,000) x 0.228% = 20.52 + 524.40.
+    nyc_school_tax_credit_rate_reduction_amount: 544.92
+    nyc_school_tax_credit: 607.92
+
+- name: Case 3, wages one dollar over the limit with no IRA distribution.
+  period: 2025
+  reforms: policyengine_us.reforms.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children.adjust_income_limit_and_min_children_by_filing_status
+  input:
+    gov.contrib.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children: true
+    people:
+      person1:
+        age: 45
+        employment_income: 250_001
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_school_credit_income: 250_001
+    nyc_school_tax_credit_eligible: false
+    nyc_school_tax_credit: 0
+
+- name: Case 4, a dependent's IRA distribution is not in AGI and does not reduce income.
+  period: 2025
+  reforms: policyengine_us.reforms.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children.adjust_income_limit_and_min_children_by_filing_status
+  input:
+    gov.contrib.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children: true
+    people:
+      person1:
+        age: 45
+        employment_income: 260_000
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        taxable_ira_distributions: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+        in_nyc: true
+  output:
+    adjusted_gross_income: 260_000
+    nyc_school_credit_income: 260_000
+    nyc_school_tax_credit_eligible: false
+    nyc_school_tax_credit: 0
+
+- name: Case 5, joint retirees whose IRA distribution brings school credit income under the limit.
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children.adjust_income_limit_and_min_children_by_filing_status
+  input:
+    gov.contrib.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children: true
+    people:
+      person1:
+        age: 67
+        employment_income: 200_000
+        taxable_ira_distributions: 100_000
+      person2:
+        age: 66
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+        in_nyc: true
+  output:
+    adjusted_gross_income: 300_000
+    nyc_school_credit_income: 200_000
+    nyc_school_tax_credit_eligible: true
+    # 300,000 - 20,000 pension and annuity exclusion - 16,050 standard deduction.
+    nyc_taxable_income: 263_950
+    nyc_school_tax_credit_fixed_amount: 125
+    # 21,600 x 0.171% + (263,950 - 21,600) x 0.228% = 36.936 + 552.558.
+    nyc_school_tax_credit_rate_reduction_amount: 589.49
+    nyc_school_tax_credit: 714.49
+
+- name: Case 6, the same joint retirees fail a one-child minimum.
+  period: 2025
+  reforms: policyengine_us.reforms.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children.adjust_income_limit_and_min_children_by_filing_status
+  input:
+    gov.contrib.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children: true
+    gov.contrib.local.nyc.stc.min_children: 1
+    people:
+      person1:
+        age: 67
+        employment_income: 200_000
+        taxable_ira_distributions: 100_000
+      person2:
+        age: 66
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_school_credit_income: 200_000
+    nyc_school_tax_credit_eligible: false
+    nyc_school_tax_credit: 0
+
+- name: Case 7, with a child the joint retirees meet the one-child minimum.
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children.adjust_income_limit_and_min_children_by_filing_status
+  input:
+    gov.contrib.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children: true
+    gov.contrib.local.nyc.stc.min_children: 1
+    people:
+      person1:
+        age: 67
+        employment_income: 200_000
+        taxable_ira_distributions: 100_000
+      person2:
+        age: 66
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_school_credit_income: 200_000
+    nyc_school_tax_credit_eligible: true
+    # 263,950 - 1,000 New York dependent exemption.
+    nyc_taxable_income: 262_950
+    # 36.936 + (262,950 - 21,600) x 0.228% = 36.936 + 550.278.
+    nyc_school_tax_credit_rate_reduction_amount: 587.21
+    nyc_school_tax_credit: 712.21
+
+- name: Case 8, a filing-status limit equal to school credit income, not AGI, is met.
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children.adjust_income_limit_and_min_children_by_filing_status
+  input:
+    gov.contrib.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children: true
+    gov.contrib.local.nyc.stc.income_limit.SINGLE: 100_000
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        taxable_ira_distributions: 200_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_school_credit_income: 100_000
+    nyc_school_tax_credit_eligible: true
+    nyc_school_tax_credit: 676.32
+
+- name: Case 9, a filing-status limit one dollar under school credit income is not met.
+  period: 2025
+  reforms: policyengine_us.reforms.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children.adjust_income_limit_and_min_children_by_filing_status
+  input:
+    gov.contrib.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children: true
+    gov.contrib.local.nyc.stc.income_limit.SINGLE: 99_999
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        taxable_ira_distributions: 200_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_school_credit_income: 100_000
+    nyc_school_tax_credit_eligible: false
+    nyc_school_tax_credit: 0

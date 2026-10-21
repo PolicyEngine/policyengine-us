@@ -7,7 +7,7 @@ class ar_agi_indiv(Variable):
     label = "Arkansas adjusted gross income for each individual"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=22"
+    reference = "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=14"
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):

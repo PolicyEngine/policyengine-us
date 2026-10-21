@@ -10,7 +10,8 @@ class ca_liheap_energy_burden_group(Variable):
     )
     defined_for = StateCode.CA
     reference = (
-        "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=257,282,283",
+        # PDF pages 257,282-283
+        "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=257",
         "https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=191",
     )
 

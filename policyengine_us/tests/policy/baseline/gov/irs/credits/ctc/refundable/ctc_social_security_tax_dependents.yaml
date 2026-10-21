@@ -1,0 +1,140 @@
+# 26 U.S.C. 24(d)(1)(B)(ii) and (d)(2)(A): a taxpayer with three or more
+# qualifying children can have the refundable credit figured from the
+# taxpayer's own social security taxes less the EITC (Schedule 8812 Part II-B).
+# On a joint return the spouse's taxes count too ("If married filing jointly,
+# include your spouse's amounts with yours", line 21). A tax unit dependent's
+# payroll taxes are on the dependent's own Form W-2 and return, so they never
+# count.
+#
+# Each household has $46,000 of taxable interest, which is more than the EITC's
+# investment income limit, so the EITC is zero, and wages low enough that
+# social security taxes exceed 15% of earned income over $2,500: the
+# alternative formula decides the refund. One qualifying child, aged 16, has
+# $8,000 of wages, with $612 (7.65%) of payroll tax that must not count.
+
+- name: Head of household with three children before 2021, a working child's payroll taxes do not count
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 4_000
+        taxable_interest_income: 46_000
+      child1:
+        age: 16
+        employment_income: 8_000
+      child2:
+        age: 10
+      child3:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: TX
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
+    eitc: 0
+    # AGI $50,000 less the $18,650 standard deduction is $31,350 of taxable
+    # income: 10% of $14,100 plus 12% of $17,250.
+    income_tax_before_credits: 3_480
+    # 3 x $2,000.
+    ctc: 6_000
+    # 15% x ($4,000 - $2,500).
+    ctc_phase_in_relevant_earnings: 225
+    # The parent's 7.65% x $4,000 (lines 21 to 23); not the child's $612.
+    ctc_social_security_tax: 306
+    # Line 26: the larger of $225 and $306 - $0 EITC.
+    ctc_phase_in: 306
+    # Line 27: the smaller of line 17 ($4,200 = 3 x $1,400) and line 26.
+    refundable_ctc: 306
+
+- name: Head of household with three children after 2025, a working child's payroll taxes do not count
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 4_000
+        taxable_interest_income: 46_000
+      child1:
+        age: 16
+        employment_income: 8_000
+      child2:
+        age: 10
+      child3:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: TX
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
+    eitc: 0
+    # AGI $50,000 less the $24,150 standard deduction is $25,850 of taxable
+    # income: 10% of $17,700 plus 12% of $8,150.
+    income_tax_before_credits: 2_748
+    # 3 x $2,200.
+    ctc: 6_600
+    ctc_phase_in_relevant_earnings: 225
+    ctc_social_security_tax: 306
+    ctc_phase_in: 306
+    # The credit left after the $2,748 tax limit is $3,852, more than $306.
+    refundable_ctc: 306
+
+- name: Joint return with three children, the spouse's payroll taxes count and a working child's do not
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 1_000
+        taxable_interest_income: 46_000
+      spouse:
+        age: 40
+        employment_income: 3_000
+      child1:
+        age: 16
+        employment_income: 8_000
+      child2:
+        age: 10
+      child3:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2, child3]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child1_marital_unit:
+        members: [child1]
+      child2_marital_unit:
+        members: [child2]
+      child3_marital_unit:
+        members: [child3]
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    eitc: 0
+    # AGI $50,000 less the $24,400 standard deduction is $25,600 of taxable
+    # income: 10% of $19,400 plus 12% of $6,200.
+    income_tax_before_credits: 2_684
+    ctc: 6_000
+    # 15% x ($4,000 - $2,500).
+    ctc_phase_in_relevant_earnings: 225
+    # 7.65% x ($1,000 + $3,000). The head's own $76.50 alone would leave the
+    # earned income formula in charge.
+    ctc_social_security_tax: 306
+    ctc_phase_in: 306
+    refundable_ctc: 306

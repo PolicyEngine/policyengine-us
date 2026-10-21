@@ -7,7 +7,7 @@ class il_isbe_income_eligible(Variable):
     label = "Meets income requirements for Illinois ISBE early childhood programs"
     definition_period = YEAR
     reference = (
-        "https://www.isbe.net/pages/preschool-for-all.aspx",
+        "https://idec.illinois.gov/forproviders/preschool-for-all.html",
         "https://law.onecle.com/illinois/105ilcs5/2-3.71.html",
     )
     defined_for = StateCode.IL

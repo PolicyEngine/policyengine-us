@@ -7,7 +7,7 @@ def create_ms_dependent_exemption() -> Reform:
         value_type = float
         entity = TaxUnit
         label = "Mississippi qualified and other dependent children exemption"
-        reference = "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=5"
+        reference = "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100221.pdf#page=5"
         definition_period = YEAR
         defined_for = StateCode.MS
 

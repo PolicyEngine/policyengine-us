@@ -83,3 +83,45 @@
   output:
     # Per 2025 Form 140 Instructions: HOH standard deduction is $23,625
     az_base_standard_deduction: 23_625
+
+# 2026 tax year tests
+# A.R.S. 43-1041(A), as amended by Laws 2026, ch. 140 (HB 4168), sec. 16 and
+# made retroactive to tax year 2025 by sec. 35(A), sets $15,750 / $23,625 /
+# $31,500 "subject to subsection H". 43-1041(H) indexes those amounts "in the
+# same manner in which the federal basic standard deduction is adjusted for
+# inflation pursuant to section 63". 26 U.S.C. 63(c)(7)(B)(ii) indexes the same
+# $15,750 and $23,625 bases from 2024, and Rev. Proc. 2025-32 sec. 4.14(1) gives
+# the 2026 results: $16,100 single and separate, $24,150 head of household and
+# $32,200 joint. PolicyBench reference audit 2026-10-05, scenario_018.
+
+- name: Single filer 2026 indexed under A.R.S. 43-1041(H)
+  period: 2026
+  input:
+    state_code: AZ
+    az_filing_status: SINGLE
+  output:
+    az_base_standard_deduction: 16_100
+
+- name: Joint filer 2026 indexed under A.R.S. 43-1041(H)
+  period: 2026
+  input:
+    state_code: AZ
+    az_filing_status: JOINT
+  output:
+    az_base_standard_deduction: 32_200
+
+- name: Separate filer 2026 indexed under A.R.S. 43-1041(H)
+  period: 2026
+  input:
+    state_code: AZ
+    az_filing_status: SEPARATE
+  output:
+    az_base_standard_deduction: 16_100
+
+- name: Head of household filer 2026 indexed under A.R.S. 43-1041(H)
+  period: 2026
+  input:
+    state_code: AZ
+    az_filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    az_base_standard_deduction: 24_150

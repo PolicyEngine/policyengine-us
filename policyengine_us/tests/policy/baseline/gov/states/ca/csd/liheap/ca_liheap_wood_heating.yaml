@@ -1,5 +1,6 @@
-# California FY2026 State Plan, physical pages 10,188,193,202,203,205,363,364.
-# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=188
+# PDF pages 6-7,9-10,184,188,193,202-203,205,217-218,229,233,235-237,246-247,363-364
+# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=6
+# https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
 # The approved quote already reflects eligible quantity, form, climate, storage
 # and prioritization. These tests supply no provider, agency or cords selector.
 # One ordinary annual award is capped at $1,000; no discretionary supplement.
@@ -25,7 +26,7 @@
         heating_type: WOOD
         wood_expense: 120
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit2:
         members: [person2]
@@ -33,7 +34,7 @@
         wood_expense: 120
         ca_liheap_approved_wood_delivery_cost: 0
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit3:
         members: [person3]
@@ -41,7 +42,7 @@
         wood_expense: 120
         ca_liheap_approved_wood_delivery_cost: -25
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit4:
         members: [person4]
@@ -49,7 +50,7 @@
         wood_expense: 120
         ca_liheap_approved_wood_delivery_cost: 750.25
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit5:
         members: [person5]
@@ -57,7 +58,7 @@
         wood_expense: 120
         ca_liheap_approved_wood_delivery_cost: 999.99
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit6:
         members: [person6]
@@ -65,7 +66,7 @@
         wood_expense: 120
         ca_liheap_approved_wood_delivery_cost: 1_000
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit7:
         members: [person7]
@@ -73,7 +74,7 @@
         wood_expense: 120
         ca_liheap_approved_wood_delivery_cost: 1_400
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
     households:
       household1: {members: [person1], state_code: CA, county: FRESNO_COUNTY_CA}
@@ -105,7 +106,7 @@
         heating_type: WOOD
         ca_liheap_approved_wood_delivery_cost: 600
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit2:
         members: [person2]
@@ -113,7 +114,7 @@
         wood_expense: 1_200
         ca_liheap_approved_wood_delivery_cost: 600
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit3:
         members: [person3]
@@ -121,7 +122,7 @@
         wood_expense: 2_400
         ca_liheap_approved_wood_delivery_cost: 600
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
     households:
       household1: {members: [person1], state_code: CA, county: MADERA_COUNTY_CA}
@@ -153,14 +154,14 @@
         heating_type: WOOD
         ca_liheap_approved_wood_delivery_cost: 600
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit2:
         members: [person2]
         heating_type: WOOD
         ca_liheap_approved_wood_delivery_cost: 600
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit3:
         members: [person3]
@@ -168,7 +169,7 @@
         bottled_gas_expense: 2_040
         ca_liheap_approved_wood_delivery_cost: 600
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit4:
         members: [person4]
@@ -176,7 +177,7 @@
         pre_subsidy_electricity_expense: 2_040
         ca_liheap_approved_wood_delivery_cost: 600
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
     households:
       household1: {members: [person1], state_code: CA, county: FRESNO_COUNTY_CA}
@@ -211,35 +212,35 @@
         heating_type: WOOD
         ca_liheap_approved_wood_delivery_cost: 600
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit2:
         members: [person2, person3]
         heating_type: WOOD
         ca_liheap_approved_wood_delivery_cost: 600
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit3:
         members: [person4]
         heating_type: WOOD
         ca_liheap_approved_wood_delivery_cost: 600
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit4:
         members: [person5]
         heating_type: WOOD
         ca_liheap_approved_wood_delivery_cost: 600
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit5:
         members: [person6]
         heating_type: WOOD
         ca_liheap_approved_wood_delivery_cost: 600
         snap: 120
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
     households:
       household1: {members: [person1], state_code: CA, county: FRESNO_COUNTY_CA}
@@ -251,3 +252,327 @@
     ca_liheap_income_eligible: [false, true, true, true, true]
     ca_liheap_basic_eligible: [false, false, false, true, true]
     ca_liheap_wood_heating: [0, 0, 0, 600, 600]
+
+- name: Case 5, actual large households use the federal floor with its strict cent boundary.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Threshold edges: 2025 FPG for 25 = 15_650 + 24 x 5_500 = 147_650.
+  # The floor is round(147_650 x 1.1, 2) = 162_415, above the unchanged
+  # 145_314.48 SMI limit. Actual qualified members determine size; no size,
+  # income, eligibility or payment result is supplied as an input.
+  # Approved wood 900 pays below the floor, including above SMI, but not at it.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 150_000}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person3: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person4: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person5: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person6: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person7: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person8: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person9: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person10: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person11: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person12: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person13: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person14: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person15: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person16: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person17: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person18: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person19: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person20: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person21: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person22: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person23: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person24: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person25: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person26: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 162_414.99}
+      person27: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person28: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person29: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person30: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person31: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person32: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person33: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person34: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person35: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person36: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person37: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person38: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person39: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person40: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person41: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person42: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person43: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person44: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person45: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person46: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person47: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person48: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person49: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person50: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person51: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 162_415}
+      person52: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person53: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person54: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person55: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person56: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person57: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person58: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person59: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person60: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person61: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person62: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person63: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person64: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person65: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person66: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person67: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person68: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person69: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person70: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person71: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person72: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person73: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person74: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person75: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 900
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person26, person27, person28, person29, person30, person31, person32, person33, person34, person35, person36, person37, person38, person39, person40, person41, person42, person43, person44, person45, person46, person47, person48, person49, person50]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 900
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person51, person52, person53, person54, person55, person56, person57, person58, person59, person60, person61, person62, person63, person64, person65, person66, person67, person68, person69, person70, person71, person72, person73, person74, person75]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 900
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+      household2:
+        members: [person26, person27, person28, person29, person30, person31, person32, person33, person34, person35, person36, person37, person38, person39, person40, person41, person42, person43, person44, person45, person46, person47, person48, person49, person50]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+      household3:
+        members: [person51, person52, person53, person54, person55, person56, person57, person58, person59, person60, person61, person62, person63, person64, person65, person66, person67, person68, person69, person70, person71, person72, person73, person74, person75]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+  output:
+    ca_liheap_household_size: [25, 25, 25]
+    ca_liheap_countable_income: [150_000, 162_414.99, 162_415]
+    ca_liheap_income_limit: [145_314.48, 145_314.48, 145_314.48]
+    ca_liheap_income_eligible: [true, true, false]
+    ca_liheap_basic_eligible: [true, true, false]
+    ca_liheap_wood_heating: [900, 900, 0]
+
+- name: Case 6, military retirement is separate from ordinary pension income.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Military pensions count under the final plan at page 236. Each household
+  # has 50_000 total income, above the one-person 39_979.92 ceiling. The
+  # second has 20_000 ordinary pension + 30_000 military pay, counted once.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, military_retirement_pay: 50_000}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, pension_income: 20_000, military_retirement_pay: 30_000}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 900
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 900
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+  output:
+    ca_liheap_countable_income: [50_000, 50_000]
+    ca_liheap_income_eligible: [false, false]
+    ca_liheap_wood_heating: [0, 0]
+
+- name: Case 7, Medicare and payroll medical premiums change awards without double deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Final plan pages 233,235,246-247 deduct allowable medical premiums from
+  # total gross income. Reported components contain medical coverage only.
+  # 41_000 - 2_400 Part B = 38_600; 41_000 - 2_400 payroll = 38_600.
+  # The third direct non-payroll total 2_400 already includes the decomposed
+  # 1_200 + 1_200; add only the disjoint 600 payroll: 41_000 - 3_000 = 38_000.
+  # All are below 39_979.92; the 41_000 no-premium comparison is ineligible.
+  input:
+    people:
+      person1: {age: 68, is_citizen_or_legal_immigrant: true, ssi: 0, social_security_retirement: 41_000, medicare_enrolled: true, medicare_part_b_premium: 2_400}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 41_000, pre_tax_health_insurance_premiums: 2_400}
+      person3: {age: 68, is_citizen_or_legal_immigrant: true, ssi: 0, social_security_retirement: 41_000, health_insurance_premiums: 2_400, health_insurance_premiums_without_medicare_part_b: 1_200, medicare_enrolled: true, medicare_part_b_premium: 1_200, pre_tax_health_insurance_premiums: 600}
+      person4: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 41_000}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 900
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 900
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 900
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members: [person4]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 900
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+      household3:
+        members: [person3]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+      household4:
+        members: [person4]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+  output:
+    medical_expense_health_insurance_premiums: [2_400, 0, 2_400, 0]
+    ca_liheap_countable_income: [38_600, 38_600, 38_000, 41_000]
+    ca_liheap_income_eligible: [true, true, true, false]
+    ca_liheap_wood_heating: [900, 900, 900, 0]
+
+- name: Case 8, CalWORKs nonparticipation prevents both income counting and categorical bypass.
+  period: 2026
+  absolute_error_margin: 0.01
+  # State entitlement is supplied to isolate take-up, not to test CalWORKs
+  # entitlement rules. With takes_up_tanf_if_eligible false, the 6_000 state
+  # entitlement is not received: count 60_000 and no categorical bypass.
+  # The participant receives 6_000 once: count 66_000, bypass the ceiling,
+  # and pay the approved 900 wood cost. All other LIHEAP inputs are actual
+  # people, primary fuel and approved eligible-delivery costs.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 60_000}
+      person2: {age: 8, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person3: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 60_000}
+      person4: {age: 8, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 900
+        snap: 0
+        ca_state_supplement: 0
+        ca_tanf: 6_000
+        takes_up_tanf_if_eligible: false
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 900
+        snap: 0
+        ca_state_supplement: 0
+        ca_tanf: 6_000
+        takes_up_tanf_if_eligible: true
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+      household2:
+        members: [person3, person4]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+  output:
+    tanf: [0, 6_000]
+    ca_liheap_countable_income: [60_000, 66_000]
+    ca_liheap_categorically_eligible: [false, true]
+    ca_liheap_income_eligible: [false, true]
+    ca_liheap_wood_heating: [0, 900]
+
+- name: Case 9, shared unemployment uses modeled fallback and a reported override.
+  period: 2026
+  absolute_error_margin: 0.01
+  # The existing modeled-UI input isolates the shared fallback contract;
+  # California has no state UI formula in this model. Zero reported UI uses
+  # 6_000 modeled compensation: 35_000 + 6_000 = 41_000, over 39_979.92.
+  # Reported 1_200 overrides modeled 6_000: 35_000 + 1_200 = 36_200.
+  # The approved wood cost pays 900 only to the second household.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 35_000, unemployment_compensation: 0, modeled_state_unemployment_compensation: 6_000}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 35_000, unemployment_compensation: 1_200, modeled_state_unemployment_compensation: 6_000}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 900
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: WOOD
+        ca_liheap_approved_wood_delivery_cost: 900
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+  output:
+    total_unemployment_compensation: [6_000, 1_200]
+    ca_liheap_countable_income: [41_000, 36_200]
+    ca_liheap_income_eligible: [false, true]
+    ca_liheap_wood_heating: [0, 900]

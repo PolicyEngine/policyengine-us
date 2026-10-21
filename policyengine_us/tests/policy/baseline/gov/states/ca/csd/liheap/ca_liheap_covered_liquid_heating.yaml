@@ -1,5 +1,7 @@
-# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=184,185,186,187,188,193,205,229,234,257,279,282,283
-# https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=191,233,234
+# PDF pages 184-188,193,205,229,234,257,279,282-283
+# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=184
+# PDF pages 191,233-234
+# https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=191
 # FY2026 ordinary liquid component; no discretionary vendor supplement.
 # Annual recurring income/costs represent the same application month.
 # Conditional statewide schedule cases explicitly force only coverage, burden
@@ -24,28 +26,28 @@
         members: ["p1_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 2040
       s2:
         members: ["p2_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1800
       s3:
         members: ["p3_1"]
         heating_type: "FUEL_OIL"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         fuel_oil_expense: 4200
       s4:
         members: ["p4_1", "p4_2"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 3960
     households:
@@ -102,21 +104,21 @@
         members: ["p1_1", "p1_2", "p1_3", "p1_4", "p1_5"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 2040
       s2:
         members: ["p2_1", "p2_2", "p2_3", "p2_4", "p2_5", "p2_6"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 2040
       s3:
         members: ["p3_1", "p3_2", "p3_3", "p3_4", "p3_5", "p3_6", "p3_7"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 2040
     households:
@@ -157,28 +159,28 @@
         members: ["p1_1", "p1_2"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 2040
       s2:
         members: ["p2_1", "p2_2"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 2040
       s3:
         members: ["p3_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 2040
       s4:
         members: ["p4_1", "p4_2"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 2040
     households:
@@ -223,35 +225,35 @@
         members: ["p1_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 2040
       s2:
         members: ["p2_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 2040
       s3:
         members: ["p3_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 12000.12
       s4:
         members: ["p4_1"]
         heating_type: "WOOD"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         wood_expense: 2040
       s5:
         members: ["p5_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 2040
     households:
@@ -291,7 +293,7 @@
         members: ["p1_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 12
         pre_subsidy_electricity_expense: 2028
@@ -320,7 +322,7 @@
         members: ["p1_1", "p1_2", "p1_3", "p1_4"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
     households:
@@ -405,7 +407,7 @@
         members: ["p1_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -415,7 +417,7 @@
         members: ["p2_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -425,7 +427,7 @@
         members: ["p3_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -435,7 +437,7 @@
         members: ["p4_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -445,7 +447,7 @@
         members: ["p5_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -455,7 +457,7 @@
         members: ["p6_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -465,7 +467,7 @@
         members: ["p7_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -475,7 +477,7 @@
         members: ["p8_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -485,7 +487,7 @@
         members: ["p9_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -495,7 +497,7 @@
         members: ["p10_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -505,7 +507,7 @@
         members: ["p11_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -515,7 +517,7 @@
         members: ["p12_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -525,7 +527,7 @@
         members: ["p13_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -535,7 +537,7 @@
         members: ["p14_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -545,7 +547,7 @@
         members: ["p15_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -555,7 +557,7 @@
         members: ["p16_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -565,7 +567,7 @@
         members: ["p17_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -575,7 +577,7 @@
         members: ["p18_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -585,7 +587,7 @@
         members: ["p19_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -595,7 +597,7 @@
         members: ["p20_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -605,7 +607,7 @@
         members: ["p21_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -615,7 +617,7 @@
         members: ["p22_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -625,7 +627,7 @@
         members: ["p23_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -635,7 +637,7 @@
         members: ["p24_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -645,7 +647,7 @@
         members: ["p25_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -655,7 +657,7 @@
         members: ["p26_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -665,7 +667,7 @@
         members: ["p27_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -675,7 +677,7 @@
         members: ["p28_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -685,7 +687,7 @@
         members: ["p29_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -695,7 +697,7 @@
         members: ["p30_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -705,7 +707,7 @@
         members: ["p31_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -715,7 +717,7 @@
         members: ["p32_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -725,7 +727,7 @@
         members: ["p33_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -735,7 +737,7 @@
         members: ["p34_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -745,7 +747,7 @@
         members: ["p35_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -755,7 +757,7 @@
         members: ["p36_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -765,7 +767,7 @@
         members: ["p37_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -775,7 +777,7 @@
         members: ["p38_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -785,7 +787,7 @@
         members: ["p39_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -795,7 +797,7 @@
         members: ["p40_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -805,7 +807,7 @@
         members: ["p41_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -815,7 +817,7 @@
         members: ["p42_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -825,7 +827,7 @@
         members: ["p43_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -835,7 +837,7 @@
         members: ["p44_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -845,7 +847,7 @@
         members: ["p45_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -855,7 +857,7 @@
         members: ["p46_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -865,7 +867,7 @@
         members: ["p47_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -875,7 +877,7 @@
         members: ["p48_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -885,7 +887,7 @@
         members: ["p49_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -895,7 +897,7 @@
         members: ["p50_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -905,7 +907,7 @@
         members: ["p51_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -915,7 +917,7 @@
         members: ["p52_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -925,7 +927,7 @@
         members: ["p53_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -935,7 +937,7 @@
         members: ["p54_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -945,7 +947,7 @@
         members: ["p55_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -955,7 +957,7 @@
         members: ["p56_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -965,7 +967,7 @@
         members: ["p57_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -975,7 +977,7 @@
         members: ["p58_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1290,7 +1292,7 @@
         members: ["p1_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1300,7 +1302,7 @@
         members: ["p2_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1310,7 +1312,7 @@
         members: ["p3_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1320,7 +1322,7 @@
         members: ["p4_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1330,7 +1332,7 @@
         members: ["p5_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1340,7 +1342,7 @@
         members: ["p6_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1350,7 +1352,7 @@
         members: ["p7_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1360,7 +1362,7 @@
         members: ["p8_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1370,7 +1372,7 @@
         members: ["p9_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1380,7 +1382,7 @@
         members: ["p10_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1390,7 +1392,7 @@
         members: ["p11_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1400,7 +1402,7 @@
         members: ["p12_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1410,7 +1412,7 @@
         members: ["p13_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1420,7 +1422,7 @@
         members: ["p14_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1430,7 +1432,7 @@
         members: ["p15_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1440,7 +1442,7 @@
         members: ["p16_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1450,7 +1452,7 @@
         members: ["p17_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1460,7 +1462,7 @@
         members: ["p18_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1470,7 +1472,7 @@
         members: ["p19_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1480,7 +1482,7 @@
         members: ["p20_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1490,7 +1492,7 @@
         members: ["p21_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1500,7 +1502,7 @@
         members: ["p22_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1510,7 +1512,7 @@
         members: ["p23_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1520,7 +1522,7 @@
         members: ["p24_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1530,7 +1532,7 @@
         members: ["p25_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1540,7 +1542,7 @@
         members: ["p26_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1550,7 +1552,7 @@
         members: ["p27_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1560,7 +1562,7 @@
         members: ["p28_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1570,7 +1572,7 @@
         members: ["p29_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1580,7 +1582,7 @@
         members: ["p30_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1590,7 +1592,7 @@
         members: ["p31_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1600,7 +1602,7 @@
         members: ["p32_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1610,7 +1612,7 @@
         members: ["p33_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1620,7 +1622,7 @@
         members: ["p34_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1630,7 +1632,7 @@
         members: ["p35_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1640,7 +1642,7 @@
         members: ["p36_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1650,7 +1652,7 @@
         members: ["p37_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1660,7 +1662,7 @@
         members: ["p38_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1670,7 +1672,7 @@
         members: ["p39_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1680,7 +1682,7 @@
         members: ["p40_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1690,7 +1692,7 @@
         members: ["p41_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1700,7 +1702,7 @@
         members: ["p42_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1710,7 +1712,7 @@
         members: ["p43_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1720,7 +1722,7 @@
         members: ["p44_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1730,7 +1732,7 @@
         members: ["p45_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1740,7 +1742,7 @@
         members: ["p46_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1750,7 +1752,7 @@
         members: ["p47_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1760,7 +1762,7 @@
         members: ["p48_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1770,7 +1772,7 @@
         members: ["p49_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1780,7 +1782,7 @@
         members: ["p50_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1790,7 +1792,7 @@
         members: ["p51_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1800,7 +1802,7 @@
         members: ["p52_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1810,7 +1812,7 @@
         members: ["p53_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1820,7 +1822,7 @@
         members: ["p54_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1830,7 +1832,7 @@
         members: ["p55_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1840,7 +1842,7 @@
         members: ["p56_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1850,7 +1852,7 @@
         members: ["p57_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -1860,7 +1862,7 @@
         members: ["p58_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2175,7 +2177,7 @@
         members: ["p1_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2185,7 +2187,7 @@
         members: ["p2_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2195,7 +2197,7 @@
         members: ["p3_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2205,7 +2207,7 @@
         members: ["p4_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2215,7 +2217,7 @@
         members: ["p5_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2225,7 +2227,7 @@
         members: ["p6_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2235,7 +2237,7 @@
         members: ["p7_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2245,7 +2247,7 @@
         members: ["p8_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2255,7 +2257,7 @@
         members: ["p9_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2265,7 +2267,7 @@
         members: ["p10_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2275,7 +2277,7 @@
         members: ["p11_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2285,7 +2287,7 @@
         members: ["p12_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2295,7 +2297,7 @@
         members: ["p13_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2305,7 +2307,7 @@
         members: ["p14_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2315,7 +2317,7 @@
         members: ["p15_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2325,7 +2327,7 @@
         members: ["p16_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2335,7 +2337,7 @@
         members: ["p17_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2345,7 +2347,7 @@
         members: ["p18_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2355,7 +2357,7 @@
         members: ["p19_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2365,7 +2367,7 @@
         members: ["p20_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2375,7 +2377,7 @@
         members: ["p21_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2385,7 +2387,7 @@
         members: ["p22_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2395,7 +2397,7 @@
         members: ["p23_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2405,7 +2407,7 @@
         members: ["p24_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2415,7 +2417,7 @@
         members: ["p25_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2425,7 +2427,7 @@
         members: ["p26_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2435,7 +2437,7 @@
         members: ["p27_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2445,7 +2447,7 @@
         members: ["p28_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2455,7 +2457,7 @@
         members: ["p29_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2465,7 +2467,7 @@
         members: ["p30_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2475,7 +2477,7 @@
         members: ["p31_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2485,7 +2487,7 @@
         members: ["p32_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2495,7 +2497,7 @@
         members: ["p33_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2505,7 +2507,7 @@
         members: ["p34_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2515,7 +2517,7 @@
         members: ["p35_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2525,7 +2527,7 @@
         members: ["p36_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2535,7 +2537,7 @@
         members: ["p37_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2545,7 +2547,7 @@
         members: ["p38_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2555,7 +2557,7 @@
         members: ["p39_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2565,7 +2567,7 @@
         members: ["p40_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2575,7 +2577,7 @@
         members: ["p41_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2585,7 +2587,7 @@
         members: ["p42_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2595,7 +2597,7 @@
         members: ["p43_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2605,7 +2607,7 @@
         members: ["p44_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2615,7 +2617,7 @@
         members: ["p45_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2625,7 +2627,7 @@
         members: ["p46_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2635,7 +2637,7 @@
         members: ["p47_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2645,7 +2647,7 @@
         members: ["p48_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2655,7 +2657,7 @@
         members: ["p49_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2665,7 +2667,7 @@
         members: ["p50_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2675,7 +2677,7 @@
         members: ["p51_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2685,7 +2687,7 @@
         members: ["p52_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2695,7 +2697,7 @@
         members: ["p53_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2705,7 +2707,7 @@
         members: ["p54_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2715,7 +2717,7 @@
         members: ["p55_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2725,7 +2727,7 @@
         members: ["p56_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2735,7 +2737,7 @@
         members: ["p57_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -2745,7 +2747,7 @@
         members: ["p58_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3060,7 +3062,7 @@
         members: ["p1_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3070,7 +3072,7 @@
         members: ["p2_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3080,7 +3082,7 @@
         members: ["p3_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3090,7 +3092,7 @@
         members: ["p4_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3100,7 +3102,7 @@
         members: ["p5_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3110,7 +3112,7 @@
         members: ["p6_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3120,7 +3122,7 @@
         members: ["p7_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3130,7 +3132,7 @@
         members: ["p8_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3140,7 +3142,7 @@
         members: ["p9_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3150,7 +3152,7 @@
         members: ["p10_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3160,7 +3162,7 @@
         members: ["p11_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3170,7 +3172,7 @@
         members: ["p12_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3180,7 +3182,7 @@
         members: ["p13_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3190,7 +3192,7 @@
         members: ["p14_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3200,7 +3202,7 @@
         members: ["p15_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3210,7 +3212,7 @@
         members: ["p16_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3220,7 +3222,7 @@
         members: ["p17_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3230,7 +3232,7 @@
         members: ["p18_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3240,7 +3242,7 @@
         members: ["p19_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3250,7 +3252,7 @@
         members: ["p20_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3260,7 +3262,7 @@
         members: ["p21_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3270,7 +3272,7 @@
         members: ["p22_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3280,7 +3282,7 @@
         members: ["p23_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3290,7 +3292,7 @@
         members: ["p24_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3300,7 +3302,7 @@
         members: ["p25_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3310,7 +3312,7 @@
         members: ["p26_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3320,7 +3322,7 @@
         members: ["p27_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3330,7 +3332,7 @@
         members: ["p28_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3340,7 +3342,7 @@
         members: ["p29_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3350,7 +3352,7 @@
         members: ["p30_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3360,7 +3362,7 @@
         members: ["p31_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3370,7 +3372,7 @@
         members: ["p32_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3380,7 +3382,7 @@
         members: ["p33_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3390,7 +3392,7 @@
         members: ["p34_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3400,7 +3402,7 @@
         members: ["p35_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3410,7 +3412,7 @@
         members: ["p36_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3420,7 +3422,7 @@
         members: ["p37_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3430,7 +3432,7 @@
         members: ["p38_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3440,7 +3442,7 @@
         members: ["p39_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3450,7 +3452,7 @@
         members: ["p40_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3460,7 +3462,7 @@
         members: ["p41_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3470,7 +3472,7 @@
         members: ["p42_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3480,7 +3482,7 @@
         members: ["p43_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3490,7 +3492,7 @@
         members: ["p44_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3500,7 +3502,7 @@
         members: ["p45_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3510,7 +3512,7 @@
         members: ["p46_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3520,7 +3522,7 @@
         members: ["p47_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3530,7 +3532,7 @@
         members: ["p48_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3540,7 +3542,7 @@
         members: ["p49_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3550,7 +3552,7 @@
         members: ["p50_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3560,7 +3562,7 @@
         members: ["p51_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3570,7 +3572,7 @@
         members: ["p52_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3580,7 +3582,7 @@
         members: ["p53_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3590,7 +3592,7 @@
         members: ["p54_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3600,7 +3602,7 @@
         members: ["p55_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3610,7 +3612,7 @@
         members: ["p56_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3620,7 +3622,7 @@
         members: ["p57_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3630,7 +3632,7 @@
         members: ["p58_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3888,7 +3890,7 @@
         members: ["p1_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3898,7 +3900,7 @@
         members: ["p2_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3908,7 +3910,7 @@
         members: ["p3_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3918,7 +3920,7 @@
         members: ["p4_1"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 1200
         ca_liheap_liquid_heating_covered: true
@@ -3975,7 +3977,7 @@
         members: ["p1_1", "p1_2", "p1_3", "p1_4", "p1_5"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 8000
         ca_liheap_liquid_heating_covered: true
@@ -3985,7 +3987,7 @@
         members: ["p2_1", "p2_2", "p2_3", "p2_4", "p2_5", "p2_6"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 8000
         ca_liheap_liquid_heating_covered: true
@@ -3995,7 +3997,7 @@
         members: ["p3_1", "p3_2", "p3_3", "p3_4", "p3_5", "p3_6", "p3_7"]
         heating_type: "PROPANE"
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         bottled_gas_expense: 8000
         ca_liheap_liquid_heating_covered: true
@@ -4035,10 +4037,10 @@
       worker: {"age": 40, "is_citizen_or_legal_immigrant": true, "ssi": {"2026-01": 0, "2026-02": 0, "2026-03": 0, "2026-04": 0, "2026-05": 0, "2026-06": 0, "2026-07": 0, "2026-08": 0, "2026-09": 0, "2026-10": 0, "2026-11": 0, "2026-12": 0}, "employment_income": 6000}
       disabled_child: {"age": 7, "is_citizen_or_legal_immigrant": true, "ssi": {"2026-01": 500, "2026-02": 500, "2026-03": 500, "2026-04": 500, "2026-05": 500, "2026-06": 500, "2026-07": 500, "2026-08": 500, "2026-09": 500, "2026-10": 500, "2026-11": 500, "2026-12": 500}, "is_disabled": true}
     spm_units:
-      s1: {"members": ["elder1"], "heating_type": "PROPANE", "bottled_gas_expense": 2040, "snap": 0, "ca_tanf": 0, "ca_state_supplement": {"2026-01": 100, "2026-02": 100, "2026-03": 100, "2026-04": 100, "2026-05": 100, "2026-06": 100, "2026-07": 100, "2026-08": 100, "2026-09": 100, "2026-10": 100, "2026-11": 100, "2026-12": 100}}
-      s2: {"members": ["elder2"], "heating_type": "PROPANE", "bottled_gas_expense": 2040, "snap": 0, "ca_tanf": 0, "ca_state_supplement": {"2026-01": 0, "2026-02": 0, "2026-03": 0, "2026-04": 0, "2026-05": 0, "2026-06": 0, "2026-07": 0, "2026-08": 0, "2026-09": 0, "2026-10": 0, "2026-11": 0, "2026-12": 0}}
-      s3: {"members": ["parent", "child"], "heating_type": "PROPANE", "bottled_gas_expense": 2040, "snap": 0, "ca_tanf": 6000, "ca_state_supplement": {"2026-01": 0, "2026-02": 0, "2026-03": 0, "2026-04": 0, "2026-05": 0, "2026-06": 0, "2026-07": 0, "2026-08": 0, "2026-09": 0, "2026-10": 0, "2026-11": 0, "2026-12": 0}}
-      s4: {"members": ["worker", "disabled_child"], "heating_type": "PROPANE", "bottled_gas_expense": 2040, "snap": 0, "ca_tanf": 0, "ca_state_supplement": {"2026-01": 0, "2026-02": 0, "2026-03": 0, "2026-04": 0, "2026-05": 0, "2026-06": 0, "2026-07": 0, "2026-08": 0, "2026-09": 0, "2026-10": 0, "2026-11": 0, "2026-12": 0}}
+      s1: {"members": ["elder1"], "heating_type": "PROPANE", "bottled_gas_expense": 2040, "snap": 0, "tanf": 0, "ca_state_supplement": {"2026-01": 100, "2026-02": 100, "2026-03": 100, "2026-04": 100, "2026-05": 100, "2026-06": 100, "2026-07": 100, "2026-08": 100, "2026-09": 100, "2026-10": 100, "2026-11": 100, "2026-12": 100}}
+      s2: {"members": ["elder2"], "heating_type": "PROPANE", "bottled_gas_expense": 2040, "snap": 0, "tanf": 0, "ca_state_supplement": {"2026-01": 0, "2026-02": 0, "2026-03": 0, "2026-04": 0, "2026-05": 0, "2026-06": 0, "2026-07": 0, "2026-08": 0, "2026-09": 0, "2026-10": 0, "2026-11": 0, "2026-12": 0}}
+      s3: {"members": ["parent", "child"], "heating_type": "PROPANE", "bottled_gas_expense": 2040, "snap": 0, "tanf": 6000, "ca_state_supplement": {"2026-01": 0, "2026-02": 0, "2026-03": 0, "2026-04": 0, "2026-05": 0, "2026-06": 0, "2026-07": 0, "2026-08": 0, "2026-09": 0, "2026-10": 0, "2026-11": 0, "2026-12": 0}}
+      s4: {"members": ["worker", "disabled_child"], "heating_type": "PROPANE", "bottled_gas_expense": 2040, "snap": 0, "tanf": 0, "ca_state_supplement": {"2026-01": 0, "2026-02": 0, "2026-03": 0, "2026-04": 0, "2026-05": 0, "2026-06": 0, "2026-07": 0, "2026-08": 0, "2026-09": 0, "2026-10": 0, "2026-11": 0, "2026-12": 0}}
     households:
       h1: {"members": ["elder1"], "state_code": "CA", "county": "MADERA_COUNTY_CA"}
       h2: {"members": ["elder2"], "state_code": "CA", "county": "MADERA_COUNTY_CA"}

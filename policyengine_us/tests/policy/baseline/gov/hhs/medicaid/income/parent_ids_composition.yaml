@@ -1,0 +1,2230 @@
+# Regressions for the independent review of policyengine-us#9406.
+# Expected values come from 42 CFR 435.603(f)(3): a non-filer's household is
+# the individual and, if living with them, their spouse, their children under
+# 19 and, for an individual under 19, their parents and siblings under 19.
+# 42 CFR 435.603(b) defines parents, children and siblings to include step
+# relatives. Unless a case says otherwise, non-filer status and countable
+# member income are inputs so each case isolates household membership.
+
+- name: A teen parent's household includes her own baby as well as her parent.
+  period: 2026
+  input:
+    people:
+      grandmother:
+        person_id: 1
+        age: 40
+        own_children_in_household: 1
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 30_000
+      teen:
+        person_id: 2
+        age: 17
+        own_children_in_household: 1
+        parent_1_id: 1
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 0
+      baby:
+        person_id: 3
+        age: 1
+        parent_1_id: 2
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 0
+    tax_units:
+      grandmother_unit:
+        members: [grandmother]
+      teen_unit:
+        members: [teen]
+      baby_unit:
+        members: [baby]
+    families:
+      family:
+        members: [grandmother, teen, baby]
+    marital_units:
+      grandmother:
+        members: [grandmother]
+      teen:
+        members: [teen]
+      baby:
+        members: [baby]
+    households:
+      household:
+        members: [grandmother, teen, baby]
+        state_code: OH
+  output:
+    # Grandmother: herself and her child under 19 (the teen), not the grandchild.
+    # Teen: herself, her child (the baby) and her parent (the grandmother).
+    # Baby: itself and its parent (the teen).
+    medicaid_household_size: [2, 3, 2]
+    medicaid_household_income: [30_000, 30_000, 0]
+
+- name: Links for one family do not erase another family's parent in the same household.
+  period: 2026
+  input:
+    people:
+      parent_a:
+        person_id: 1
+        age: 35
+        own_children_in_household: 1
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 10_000
+      child_c:
+        person_id: 2
+        age: 10
+        parent_1_id: 1
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 0
+      parent_b:
+        person_id: 3
+        age: 40
+        own_children_in_household: 1
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 20_000
+      child_d:
+        person_id: 4
+        age: 8
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 0
+    tax_units:
+      a_unit:
+        members: [parent_a, child_c]
+      b_unit:
+        members: [parent_b, child_d]
+    families:
+      a_family:
+        members: [parent_a, child_c]
+      b_family:
+        members: [parent_b, child_d]
+    marital_units:
+      parent_a:
+        members: [parent_a]
+      child_c:
+        members: [child_c]
+      parent_b:
+        members: [parent_b]
+      child_d:
+        members: [child_d]
+    households:
+      household:
+        members: [parent_a, child_c, parent_b, child_d]
+        state_code: OH
+  output:
+    # B's own child count still makes B a parent though no id names B.
+    is_parent: [true, false, true, false]
+    medicaid_household_size: [2, 2, 2, 2]
+    medicaid_household_income: [10_000, 10_000, 20_000, 20_000]
+
+- name: Links for one family do not erase another family's parent even in one family group.
+  period: 2026
+  input:
+    people:
+      parent_a:
+        person_id: 1
+        age: 35
+        own_children_in_household: 1
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 10_000
+      child_c:
+        person_id: 2
+        age: 10
+        parent_1_id: 1
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 0
+      parent_b:
+        person_id: 3
+        age: 40
+        own_children_in_household: 1
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 20_000
+      child_d:
+        person_id: 4
+        age: 8
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 0
+    tax_units:
+      a_unit:
+        members: [parent_a, child_c]
+      b_unit:
+        members: [parent_b, child_d]
+    families:
+      family:
+        members: [parent_a, child_c, parent_b, child_d]
+    marital_units:
+      parent_a:
+        members: [parent_a]
+      child_c:
+        members: [child_c]
+      parent_b:
+        members: [parent_b]
+      child_d:
+        members: [child_d]
+    households:
+      household:
+        members: [parent_a, child_c, parent_b, child_d]
+        state_code: OH
+  output:
+    # A's one reported child is C, whose id names A, so A is not D's parent and
+    # C is not D's sibling. B reports a child no id names; D has no ids, so D
+    # is B's child.
+    is_parent: [true, false, true, false]
+    medicaid_household_size: [2, 2, 2, 2]
+    medicaid_household_income: [10_000, 10_000, 20_000, 20_000]
+
+- name: Another family's linked parent does not make a child without ids live with both parents.
+  period: 2026
+  input:
+    people:
+      parent_a:
+        person_id: 1
+        age: 35
+        employment_income: 10_000
+        own_children_in_household: 1
+      child_c:
+        person_id: 2
+        age: 10
+        parent_1_id: 1
+      parent_b:
+        person_id: 3
+        age: 40
+        employment_income: 20_000
+        own_children_in_household: 1
+      child_d:
+        person_id: 4
+        age: 8
+    tax_units:
+      a_unit:
+        members: [parent_a, child_c]
+        tax_unit_is_filer: true
+      b_unit:
+        members: [parent_b, child_d]
+        tax_unit_is_filer: true
+    families:
+      family:
+        members: [parent_a, child_c, parent_b, child_d]
+    marital_units:
+      parent_a:
+        members: [parent_a]
+      child_c:
+        members: [child_c]
+      parent_b:
+        members: [parent_b]
+      child_d:
+        members: [child_d]
+    households:
+      household:
+        members: [parent_a, child_c, parent_b, child_d]
+        state_code: OH
+  output:
+    # D is claimed by its only parent, B, so D uses B's tax household under
+    # 42 CFR 435.603(f)(2); A is C's parent, not D's.
+    medicaid_claimed_by_parent_in_tax_unit: [false, true, false, true]
+    medicaid_tax_dependent_exception_living_with_both_parents: [false, false, false, false]
+    medicaid_uses_non_filer_rules: [false, false, false, false]
+    medicaid_household_size: [2, 2, 2, 2]
+    medicaid_household_income: [10_000, 10_000, 20_000, 20_000]
+
+- name: California counts only the pregnancies of the applicant's own MAGI household members.
+  period: 2026
+  input:
+    people:
+      grandparent:
+        person_id: 1
+        age: 60
+        own_children_in_household: 2
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 40_000
+      mother:
+        person_id: 2
+        age: 35
+        own_children_in_household: 1
+        parent_1_id: 1
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 20_000
+      aunt:
+        person_id: 3
+        age: 30
+        is_female: true
+        current_pregnancies: 1
+        own_children_in_household: 1
+        parent_1_id: 1
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 10_000
+      child:
+        person_id: 4
+        age: 10
+        parent_1_id: 2
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 0
+      cousin:
+        person_id: 5
+        age: 2
+        parent_1_id: 3
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 0
+    tax_units:
+      grandparent_unit:
+        members: [grandparent]
+      mother_unit:
+        members: [mother, child]
+      aunt_unit:
+        members: [aunt, cousin]
+    families:
+      family:
+        members: [grandparent, mother, aunt, child, cousin]
+    marital_units:
+      grandparent:
+        members: [grandparent]
+      mother:
+        members: [mother]
+      aunt:
+        members: [aunt]
+      child:
+        members: [child]
+      cousin:
+        members: [cousin]
+    households:
+      household:
+        members: [grandparent, mother, aunt, child, cousin]
+        state_code: CA
+  output:
+    # ACWDL 20-10 adds the unborn children of pregnant members of the
+    # applicant's own MAGI household. The aunt is in her own household and
+    # her child's, not the grandparent's, the mother's or the niece's.
+    ca_medicaid_household_pregnancies: [0, 0, 1, 0, 1]
+    medicaid_household_size: [1, 2, 3, 2, 3]
+    medicaid_household_income: [40_000, 20_000, 10_000, 20_000, 10_000]
+
+- name: A childless adult non-filer excludes a child-age sibling.
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 60
+        own_children_in_household: 2
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 30_000
+      adult_child:
+        person_id: 2
+        age: 25
+        parent_1_id: 1
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 0
+      minor_child:
+        person_id: 3
+        age: 15
+        parent_1_id: 1
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 20_000
+    tax_units:
+      parent_unit:
+        members: [parent]
+      adult_child_unit:
+        members: [adult_child]
+      minor_child_unit:
+        members: [minor_child]
+    families:
+      family:
+        members: [parent, adult_child, minor_child]
+    marital_units:
+      parent:
+        members: [parent]
+      adult_child:
+        members: [adult_child]
+      minor_child:
+        members: [minor_child]
+    households:
+      household:
+        members: [parent, adult_child, minor_child]
+        state_code: OH
+  output:
+    # The 25-year-old is over the age limit, so siblings are not household
+    # members and the household is the individual alone.
+    medicaid_household_size: [2, 1, 2]
+    medicaid_household_income: [50_000, 0, 50_000]
+
+- name: A parent who claims an adult child in another household is recognized by identity.
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 55
+        employment_income: 20_000
+      adult_child:
+        person_id: 2
+        age: 26
+        parent_1_id: 1
+        is_tax_unit_spouse: false
+    tax_units:
+      unit:
+        members: [parent, adult_child]
+        tax_unit_is_filer: true
+    families:
+      parent_family:
+        members: [parent]
+      child_family:
+        members: [adult_child]
+    marital_units:
+      parent:
+        members: [parent]
+      adult_child:
+        members: [adult_child]
+    households:
+      parent_home:
+        members: [parent]
+        state_code: OH
+      child_home:
+        members: [adult_child]
+        state_code: OH
+  output:
+    # The child is claimed by a parent, so 42 CFR 435.603(f)(2)(i) does not
+    # apply and the household is the claiming parent's tax household.
+    medicaid_claimed_by_parent_in_tax_unit: [false, true]
+    medicaid_tax_dependent_exception_other_than_spouse_or_child: [false, false]
+    medicaid_uses_non_filer_rules: [false, false]
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [20_000, 20_000]
+
+- name: Step parents and step siblings count once parent ids name them.
+  period: 2026
+  input:
+    people:
+      mother:
+        person_id: 1
+        age: 38
+        own_children_in_household: 2
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 30_000
+      stepfather:
+        person_id: 2
+        age: 40
+        own_children_in_household: 2
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 20_000
+      her_child:
+        person_id: 3
+        age: 10
+        # Natural mother and stepfather.
+        parent_1_id: 1
+        parent_2_id: 2
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 0
+      his_child:
+        person_id: 4
+        age: 8
+        # Natural father and stepmother.
+        parent_1_id: 2
+        parent_2_id: 1
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 0
+    tax_units:
+      unit:
+        members: [mother, stepfather, her_child, his_child]
+        filing_status: JOINT
+    families:
+      family:
+        members: [mother, stepfather, her_child, his_child]
+    marital_units:
+      couple:
+        members: [mother, stepfather]
+      her_child:
+        members: [her_child]
+      his_child:
+        members: [his_child]
+    households:
+      household:
+        members: [mother, stepfather, her_child, his_child]
+        state_code: OH
+  output:
+    # Each spouse includes the other once, plus both children; each child
+    # includes both parents and its step sibling.
+    medicaid_household_size: [4, 4, 4, 4]
+    medicaid_household_income: [50_000, 50_000, 50_000, 50_000]
+
+- name: A married 18-year-old counts a spouse once and a parent only through links.
+  period: 2026
+  input:
+    people:
+      mother:
+        person_id: 1
+        age: 45
+        own_children_in_household: 1
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 30_000
+      wife:
+        person_id: 2
+        age: 18
+        parent_1_id: 1
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 5_000
+      husband:
+        person_id: 3
+        age: 18
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 7_000
+    tax_units:
+      mother_unit:
+        members: [mother]
+      couple_unit:
+        members: [wife, husband]
+        filing_status: JOINT
+    families:
+      family:
+        members: [mother, wife, husband]
+    marital_units:
+      mother:
+        members: [mother]
+      couple:
+        members: [wife, husband]
+    households:
+      household:
+        members: [mother, wife, husband]
+        state_code: OH
+  output:
+    # Wife: herself, her spouse and her parent. Husband: himself and his
+    # spouse; his parents do not live with him. Mother: herself and her child
+    # under 19. Nobody counts twice though both spouses are child-age.
+    medicaid_household_size: [2, 3, 2]
+    medicaid_household_income: [35_000, 42_000, 12_000]
+
+- name: Age-limit boundaries apply to siblings and to children.
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 40
+        own_children_in_household: 3
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 30_000
+      child_18:
+        person_id: 2
+        age: 18
+        parent_1_id: 1
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 1_000
+      child_19:
+        person_id: 3
+        age: 19
+        parent_1_id: 1
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 2_000
+      child_10:
+        person_id: 4
+        age: 10
+        parent_1_id: 1
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 4_000
+    tax_units:
+      parent_unit:
+        members: [parent]
+      child_18_unit:
+        members: [child_18]
+      child_19_unit:
+        members: [child_19]
+      child_10_unit:
+        members: [child_10]
+    families:
+      family:
+        members: [parent, child_18, child_19, child_10]
+    marital_units:
+      parent:
+        members: [parent]
+      child_18:
+        members: [child_18]
+      child_19:
+        members: [child_19]
+      child_10:
+        members: [child_10]
+    households:
+      household:
+        members: [parent, child_18, child_19, child_10]
+        state_code: OH
+  output:
+    # 18 is under the age limit of 19 and 19 is not, both as a child of the
+    # parent and as a sibling. The 19-year-old is an adult without children.
+    medicaid_non_filer_child_age_eligible: [false, true, false, true]
+    medicaid_household_size: [3, 3, 1, 3]
+    medicaid_household_income: [35_000, 35_000, 2_000, 35_000]
+
+# Regressions for the r2 review of the rework.
+
+- name: A married dependent living with both parents counts a spouse who files separately.
+  period: 2026
+  input:
+    people:
+      father:
+        person_id: 1
+        age: 45
+      mother:
+        person_id: 2
+        age: 44
+      teen:
+        person_id: 3
+        age: 17
+        parent_1_id: 1
+        parent_2_id: 2
+      teen_spouse:
+        person_id: 4
+        age: 18
+        employment_income: 30_000
+    tax_units:
+      father_unit:
+        members: [father, teen]
+        tax_unit_is_filer: true
+      mother_unit:
+        members: [mother]
+        tax_unit_is_filer: true
+      spouse_unit:
+        members: [teen_spouse]
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+    families:
+      family:
+        members: [father, mother, teen, teen_spouse]
+    marital_units:
+      father:
+        members: [father]
+      mother:
+        members: [mother]
+      couple:
+        members: [teen, teen_spouse]
+    households:
+      household:
+        members: [father, mother, teen, teen_spouse]
+        state_code: OH
+  output:
+    # The teen is claimed by one parent and lives with both, who file
+    # separately, so 42 CFR 435.603(f)(2)(ii) applies and (f)(3) gives the
+    # teen, the spouse and both parents. The spouse's income counts because
+    # the spouse must file.
+    medicaid_tax_dependent_exception_living_with_both_parents: [false, false, true, false]
+    medicaid_uses_non_filer_rules: [false, false, true, false]
+    medicaid_household_size: [2, 1, 4, 2]
+    medicaid_household_income: [0, 0, 30_000, 30_000]
+
+- name: A link in one household does not make its parent another household's presumed parent.
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 55
+        employment_income: 20_000
+      child:
+        person_id: 2
+        age: 10
+        parent_1_id: 1
+      nephew:
+        person_id: 3
+        age: 26
+        is_tax_unit_spouse: false
+    tax_units:
+      parent_unit:
+        members: [parent, nephew]
+        tax_unit_is_filer: true
+      child_unit:
+        members: [child]
+    families:
+      parent_family:
+        members: [parent, child]
+      nephew_family:
+        members: [nephew]
+    marital_units:
+      parent:
+        members: [parent]
+      child:
+        members: [child]
+      nephew:
+        members: [nephew]
+    households:
+      parent_home:
+        members: [parent, child]
+        state_code: OH
+      nephew_home:
+        members: [nephew]
+        state_code: OH
+  output:
+    # Nobody reports the nephew as their own child and he has no ids, so he
+    # is a dependent other than a child: 42 CFR 435.603(f)(2)(i) sends him to
+    # the non-filer rules, where he lives alone.
+    medicaid_claimed_by_parent_in_tax_unit: [false, false, false]
+    medicaid_tax_dependent_exception_other_than_spouse_or_child: [false, true, true]
+    medicaid_uses_non_filer_rules: [false, true, true]
+    medicaid_household_size: [2, 2, 1]
+    medicaid_household_income: [20_000, 20_000, 0]
+
+- name: A child claimed on a parent's return elsewhere still gets the both-parents exception.
+  period: 2026
+  input:
+    people:
+      parent_p:
+        person_id: 1
+        age: 40
+        employment_income: 20_000
+      parent_q:
+        person_id: 2
+        age: 39
+        employment_income: 30_000
+      child:
+        person_id: 3
+        age: 18
+        parent_1_id: 1
+        parent_2_id: 2
+        claimed_as_dependent_on_another_return: true
+        medicaid_claiming_tax_unit_id: 1
+    tax_units:
+      p_unit:
+        members: [parent_p]
+        tax_unit_id: 1
+        tax_unit_is_filer: true
+      q_unit:
+        members: [parent_q]
+        tax_unit_id: 2
+        tax_unit_is_filer: true
+      child_unit:
+        members: [child]
+        tax_unit_id: 3
+        tax_unit_is_filer: false
+    families:
+      family:
+        members: [parent_p, parent_q, child]
+    marital_units:
+      parent_p:
+        members: [parent_p]
+      parent_q:
+        members: [parent_q]
+      child:
+        members: [child]
+    households:
+      household:
+        members: [parent_p, parent_q, child]
+        state_code: OH
+  output:
+    # P claims the child, the child lives with both unmarried parents, so
+    # 42 CFR 435.603(f)(2)(ii) applies and (f)(3) gives the child and both
+    # parents. P's own household includes the claimed child under (f)(1).
+    medicaid_tax_dependent_exception_living_with_both_parents: [false, false, true]
+    medicaid_uses_non_filer_rules: [false, false, true]
+    medicaid_household_size: [2, 1, 3]
+    medicaid_household_income: [20_000, 30_000, 50_000]
+
+# Regressions for the r3 review of the rework.
+
+- name: Without parent ids, explicit is_parent inputs still give the both-parents exception.
+  period: 2026
+  input:
+    people:
+      parent_p:
+        age: 40
+        employment_income: 20_000
+        is_parent: true
+      parent_q:
+        age: 39
+        employment_income: 30_000
+        is_parent: true
+      child:
+        age: 10
+    tax_units:
+      p_unit:
+        members: [parent_p, child]
+        tax_unit_is_filer: true
+      q_unit:
+        members: [parent_q]
+        tax_unit_is_filer: true
+    families:
+      family:
+        members: [parent_p, parent_q, child]
+    marital_units:
+      parent_p:
+        members: [parent_p]
+      parent_q:
+        members: [parent_q]
+      child:
+        members: [child]
+    households:
+      household:
+        members: [parent_p, parent_q, child]
+        state_code: OH
+  output:
+    # The child is claimed by P and lives with both unmarried parents, so
+    # 42 CFR 435.603(f)(2)(ii) and (f)(3) give the child and both parents.
+    medicaid_tax_dependent_exception_living_with_both_parents: [false, false, true]
+    medicaid_uses_non_filer_rules: [false, false, true]
+    medicaid_household_size: [2, 1, 3]
+    medicaid_household_income: [20_000, 30_000, 50_000]
+
+- name: Without parent ids, an explicit is_parent input still marks the claiming parent.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 55
+        employment_income: 20_000
+        is_parent: true
+      adult_child:
+        age: 26
+        is_tax_unit_spouse: false
+    tax_units:
+      unit:
+        members: [parent, adult_child]
+        tax_unit_is_filer: true
+    families:
+      family:
+        members: [parent, adult_child]
+    marital_units:
+      parent:
+        members: [parent]
+      adult_child:
+        members: [adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+        state_code: OH
+  output:
+    # Claimed by a parent, so 42 CFR 435.603(f)(2) gives the claimant's
+    # household.
+    medicaid_claimed_by_parent_in_tax_unit: [false, true]
+    medicaid_uses_non_filer_rules: [false, false]
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [20_000, 20_000]
+
+- name: Siblings in a default marital unit are not spouses.
+  period: 2026
+  input:
+    people:
+      older:
+        person_id: 1
+        age: 30
+        employment_income: 2_000
+        parent_1_id: 99
+      younger:
+        person_id: 2
+        age: 25
+        employment_income: 1_000
+        parent_1_id: 99
+    tax_units:
+      older_unit:
+        members: [older]
+        tax_unit_is_filer: false
+      younger_unit:
+        members: [younger]
+        tax_unit_is_filer: false
+    households:
+      household:
+        members: [older, younger]
+        state_code: OH
+  output:
+    # Marital units are omitted, so PE puts both in one. They share a parent,
+    # so they are siblings over the age limit and each lives alone under
+    # 42 CFR 435.603(f)(3).
+    medicaid_uses_non_filer_rules: [true, true]
+    medicaid_household_size: [1, 1]
+    medicaid_household_income: [2_000, 1_000]
+
+# Regressions for the r4 review of the rework.
+
+- name: Unrelated roommates in a default marital unit are not spouses.
+  period: 2026
+  input:
+    people:
+      roommate_a:
+        person_id: 1
+        age: 25
+        employment_income: 1_000
+        parent_1_id: 99
+      roommate_b:
+        person_id: 2
+        age: 30
+        employment_income: 2_000
+        parent_1_id: 98
+    tax_units:
+      a_unit:
+        members: [roommate_a]
+        tax_unit_is_filer: false
+      b_unit:
+        members: [roommate_b]
+        tax_unit_is_filer: false
+    families:
+      a_family:
+        members: [roommate_a]
+      b_family:
+        members: [roommate_b]
+    households:
+      household:
+        members: [roommate_a, roommate_b]
+        state_code: OH
+  output:
+    # Marital units are omitted, so PE puts both in one, but they are separate
+    # families; a married couple living together is one family. Each lives
+    # alone under 42 CFR 435.603(f)(3).
+    medicaid_household_size: [1, 1]
+    medicaid_household_income: [1_000, 2_000]
+
+- name: A filer whose only child is linked elsewhere is not a dependent's presumed parent.
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 55
+        employment_income: 20_000
+        own_children_in_household: 1
+      child:
+        person_id: 2
+        age: 10
+        parent_1_id: 1
+      nephew:
+        person_id: 3
+        age: 26
+        is_tax_unit_spouse: false
+    tax_units:
+      parent_unit:
+        members: [parent, nephew]
+        tax_unit_is_filer: true
+      child_unit:
+        members: [child]
+    families:
+      parent_family:
+        members: [parent, child]
+      nephew_family:
+        members: [nephew]
+    marital_units:
+      parent:
+        members: [parent]
+      child:
+        members: [child]
+      nephew:
+        members: [nephew]
+    households:
+      parent_home:
+        members: [parent, child]
+        state_code: OH
+      nephew_home:
+        members: [nephew]
+        state_code: OH
+  output:
+    # The parent reports one own child and the child's id names them, so the
+    # nephew is a dependent other than a child even though his own household
+    # has no ids: 42 CFR 435.603(f)(2)(i) and (f)(3) give him alone. Without
+    # any ids the model would presume the parent is his parent (2/$20,000).
+    medicaid_claimed_by_parent_in_tax_unit: [false, false, false]
+    medicaid_tax_dependent_exception_other_than_spouse_or_child: [false, true, true]
+    medicaid_household_size: [2, 2, 1]
+    medicaid_household_income: [20_000, 20_000, 0]
+
+# Regression for the r5 review of the rework.
+
+- name: Spouses who are also step siblings stay spouses when the marriage is shown.
+  period: 2026
+  input:
+    people:
+      spouse_a:
+        person_id: 1
+        age: 25
+        employment_income: 1_000
+        # Natural parent 10 and step parent 11, both living elsewhere.
+        parent_1_id: 10
+        parent_2_id: 11
+      spouse_b:
+        person_id: 2
+        age: 30
+        employment_income: 2_000
+        parent_1_id: 11
+        parent_2_id: 10
+    tax_units:
+      a_unit:
+        members: [spouse_a]
+        tax_unit_is_filer: false
+        cohabitating_spouses: true
+      b_unit:
+        members: [spouse_b]
+        tax_unit_is_filer: false
+        cohabitating_spouses: true
+    families:
+      family:
+        members: [spouse_a, spouse_b]
+    marital_units:
+      couple:
+        members: [spouse_a, spouse_b]
+    households:
+      household:
+        members: [spouse_a, spouse_b]
+        state_code: CA
+  output:
+    # Each spouse includes the other under 42 CFR 435.603(f)(3)(i) and (f)(4).
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [3_000, 3_000]
+
+# Spouse branches, one case each (from the mutation check).
+
+- name: A joint return shows the marriage when marital units are omitted.
+  period: 2026
+  input:
+    people:
+      mother:
+        person_id: 1
+        age: 38
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 30_000
+      father:
+        person_id: 2
+        age: 40
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 20_000
+      child:
+        person_id: 3
+        age: 10
+        parent_1_id: 1
+        parent_2_id: 2
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 0
+    tax_units:
+      unit:
+        members: [mother, father, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [mother, father, child]
+        state_code: OH
+  output:
+    # PE puts all three in one marital unit, so only the joint return shows
+    # the marriage; each spouse includes the other and their child.
+    medicaid_household_size: [3, 3, 3]
+    medicaid_household_income: [50_000, 50_000, 50_000]
+
+- name: A two-person marital unit in one family is a marriage without a flag or joint return.
+  period: 2026
+  input:
+    people:
+      father:
+        person_id: 1
+        age: 45
+      mother:
+        person_id: 2
+        age: 44
+      teen:
+        person_id: 3
+        age: 17
+        parent_1_id: 1
+        parent_2_id: 2
+      teen_spouse:
+        person_id: 4
+        age: 18
+        employment_income: 30_000
+    tax_units:
+      father_unit:
+        members: [father, teen]
+        tax_unit_is_filer: true
+      mother_unit:
+        members: [mother]
+        tax_unit_is_filer: true
+      spouse_unit:
+        members: [teen_spouse]
+        tax_unit_is_filer: false
+    families:
+      family:
+        members: [father, mother, teen, teen_spouse]
+    marital_units:
+      father:
+        members: [father]
+      mother:
+        members: [mother]
+      couple:
+        members: [teen, teen_spouse]
+    households:
+      household:
+        members: [father, mother, teen, teen_spouse]
+        state_code: OH
+  output:
+    # As in the r2 case, but no cohabiting-spouses flag and the spouse does
+    # not file: each spouse includes the other under 42 CFR 435.603(f)(3)(i),
+    # and the teen also includes both parents.
+    medicaid_tax_dependent_exception_living_with_both_parents: [false, false, true, false]
+    medicaid_uses_non_filer_rules: [false, false, true, true]
+    medicaid_household_size: [2, 1, 4, 2]
+    medicaid_household_income: [0, 0, 30_000, 30_000]
+
+- name: A parent and adult child in a default marital unit are not spouses.
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 45
+        employment_income: 20_000
+      adult_child:
+        person_id: 2
+        age: 20
+        employment_income: 5_000
+        parent_1_id: 1
+    tax_units:
+      parent_unit:
+        members: [parent]
+        tax_unit_is_filer: false
+      child_unit:
+        members: [adult_child]
+        tax_unit_is_filer: false
+    households:
+      household:
+        members: [parent, adult_child]
+        state_code: OH
+  output:
+    # PE puts both in one marital unit and one family, but the id makes them
+    # parent and child. A 20-year-old is over the age limit, so each lives
+    # alone under 42 CFR 435.603(f)(3).
+    medicaid_uses_non_filer_rules: [true, true]
+    medicaid_household_size: [1, 1]
+    medicaid_household_income: [20_000, 5_000]
+
+# Regressions for the r6 review: a tax dependent's co-resident spouse. Under
+# 42 CFR 435.603(f)(2) a tax dependent's household is the claiming taxpayer's,
+# and (f)(4) adds a spouse the dependent lives with, even when one spouse is
+# claimed as a dependent. Household income is (d)'s sum over those members.
+
+- name: A married adult child claimed by a parent elsewhere counts the spouse they live with.
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 40
+      adult_child:
+        person_id: 2
+        age: 19
+        parent_1_id: 1
+        is_tax_unit_spouse: false
+      spouse:
+        person_id: 3
+        age: 18
+        employment_income: 30_000
+    tax_units:
+      parent_unit:
+        members: [parent, adult_child]
+        tax_unit_is_filer: true
+      spouse_unit:
+        members: [spouse]
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+    families:
+      parent_family:
+        members: [parent]
+      couple_family:
+        members: [adult_child, spouse]
+    marital_units:
+      parent:
+        members: [parent]
+      couple:
+        members: [adult_child, spouse]
+    households:
+      parent_home:
+        members: [parent]
+        state_code: OH
+      couple_home:
+        members: [adult_child, spouse]
+        state_code: OH
+  output:
+    # The id names the claiming parent, so (f)(2)(i) does not apply and the
+    # child's household is the parent's tax household (parent and child) plus
+    # the spouse under (f)(4): 3 people. The spouse must file, so the $30,000
+    # counts. The parent's household is the parent and the claimed child. The
+    # spouse's is the spouse and the child, whose income is zero.
+    medicaid_claimed_by_parent_in_tax_unit: [false, true, false]
+    medicaid_uses_non_filer_rules: [false, false, false]
+    medicaid_household_size: [2, 3, 2]
+    medicaid_household_income: [0, 30_000, 30_000]
+
+- name: California counts the pregnancy of a claimed dependent's spouse once.
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 40
+      adult_child:
+        person_id: 2
+        age: 19
+        parent_1_id: 1
+        is_tax_unit_spouse: false
+      spouse:
+        person_id: 3
+        age: 18
+        employment_income: 30_000
+        current_pregnancies: 1
+    tax_units:
+      parent_unit:
+        members: [parent, adult_child]
+        tax_unit_is_filer: true
+      spouse_unit:
+        members: [spouse]
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+    families:
+      parent_family:
+        members: [parent]
+      couple_family:
+        members: [adult_child, spouse]
+    marital_units:
+      parent:
+        members: [parent]
+      couple:
+        members: [adult_child, spouse]
+    households:
+      parent_home:
+        members: [parent]
+        state_code: CA
+      couple_home:
+        members: [adult_child, spouse]
+        state_code: CA
+  output:
+    # As above, and California (ACWDL 20-10) adds the unborn child of every
+    # pregnant member of the household. The child's household is the parent,
+    # the child, the spouse and the spouse's unborn child: 4. The spouse's is
+    # the spouse, the child and her unborn child: 3. The pregnant spouse is
+    # not in the parent's household.
+    ca_medicaid_household_pregnancies: [0, 1, 1]
+    medicaid_household_size: [2, 4, 3]
+    medicaid_household_income: [0, 30_000, 30_000]
+
+- name: A married dependent claimed by the one parent they live with counts their spouse.
+  period: 2026
+  input:
+    people:
+      father:
+        person_id: 1
+        age: 45
+        employment_income: 20_000
+      teen:
+        person_id: 2
+        age: 17
+        parent_1_id: 1
+      teen_spouse:
+        person_id: 3
+        age: 18
+        employment_income: 30_000
+    tax_units:
+      father_unit:
+        members: [father, teen]
+        tax_unit_is_filer: true
+      spouse_unit:
+        members: [teen_spouse]
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+    families:
+      family:
+        members: [father, teen, teen_spouse]
+    marital_units:
+      father:
+        members: [father]
+      couple:
+        members: [teen, teen_spouse]
+    households:
+      household:
+        members: [father, teen, teen_spouse]
+        state_code: OH
+  output:
+    # The teen lives with only the parent who claims her, so neither (f)(2)(i)
+    # nor (f)(2)(ii) applies. Her household is her father's tax household plus
+    # her spouse under (f)(4): 3 people and $20,000 + $30,000. Her father's is
+    # himself and her; her spouse's is the spouse and her.
+    medicaid_claimed_by_parent_in_tax_unit: [false, true, false]
+    medicaid_uses_non_filer_rules: [false, false, false]
+    medicaid_household_size: [2, 3, 2]
+    medicaid_household_income: [20_000, 50_000, 30_000]
+
+- name: A spouse on the same return as the married dependent counts once.
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 40
+      adult_child:
+        person_id: 2
+        age: 19
+        parent_1_id: 1
+        is_tax_unit_spouse: false
+      spouse:
+        person_id: 3
+        age: 25
+        employment_income: 4_000
+        is_tax_unit_spouse: false
+    tax_units:
+      parent_unit:
+        members: [parent, adult_child, spouse]
+        tax_unit_is_filer: true
+    families:
+      parent_family:
+        members: [parent]
+      couple_family:
+        members: [adult_child, spouse]
+    marital_units:
+      parent:
+        members: [parent]
+      couple:
+        members: [adult_child, spouse]
+    households:
+      parent_home:
+        members: [parent]
+        state_code: OH
+      couple_home:
+        members: [adult_child, spouse]
+        state_code: OH
+  output:
+    # The parent claims the child and the child's spouse. The child's
+    # household is the parent's tax household, which already holds the
+    # spouse: 3 people, not 4. The tax-household branch leaves out a claimed
+    # dependent's income when the dependent need not file, reading (d)(2)(ii)
+    # as reaching every household that is the taxpayer's; that is main's
+    # treatment, and a literal reading would count the spouse's $4,000 in the
+    # child's household. The spouse is not the parent's child, so (f)(2)(i)
+    # gives the spouse the non-filer household of the spouse and the child.
+    medicaid_claimed_by_parent_in_tax_unit: [false, true, false]
+    medicaid_uses_non_filer_rules: [false, false, true]
+    medicaid_household_size: [3, 3, 2]
+    medicaid_household_income: [0, 0, 4_000]
+
+- name: A married dependent claimed from another tax unit counts the spouse they live with.
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 40
+        employment_income: 20_000
+      adult_child:
+        person_id: 2
+        age: 19
+        parent_1_id: 1
+        claimed_as_dependent_on_another_return: true
+        medicaid_claiming_tax_unit_id: 1
+      spouse:
+        person_id: 3
+        age: 18
+        employment_income: 30_000
+    tax_units:
+      parent_unit:
+        members: [parent]
+        tax_unit_id: 1
+        tax_unit_is_filer: true
+      spouse_unit:
+        members: [spouse]
+        tax_unit_id: 2
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+      child_unit:
+        members: [adult_child]
+        tax_unit_id: 3
+        tax_unit_is_filer: false
+    families:
+      parent_family:
+        members: [parent]
+      couple_family:
+        members: [adult_child, spouse]
+    marital_units:
+      parent:
+        members: [parent]
+      couple:
+        members: [adult_child, spouse]
+    households:
+      parent_home:
+        members: [parent]
+        state_code: OH
+      couple_home:
+        members: [adult_child, spouse]
+        state_code: OH
+  output:
+    # The parent's return claims the child. The child's household is the
+    # parent's (the parent and the child) plus the spouse under (f)(4): 3
+    # people and $20,000 + $30,000.
+    medicaid_uses_non_filer_rules: [false, false, false]
+    medicaid_household_size: [2, 3, 2]
+    medicaid_household_income: [20_000, 50_000, 30_000]
+
+- name: A minor claimed by a parent's tax unit elsewhere uses the parent's household.
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 40
+        employment_income: 30_000
+      child:
+        person_id: 2
+        age: 10
+        parent_1_id: 1
+        medicaid_claiming_tax_unit_id: 1
+    tax_units:
+      parent_unit:
+        members: [parent]
+        tax_unit_id: 1
+        tax_unit_is_filer: true
+      child_unit:
+        members: [child]
+        tax_unit_id: 2
+    families:
+      parent_family:
+        members: [parent]
+      child_family:
+        members: [child]
+    marital_units:
+      parent:
+        members: [parent]
+      child:
+        members: [child]
+    households:
+      parent_home:
+        members: [parent]
+        state_code: OH
+      child_home:
+        members: [child]
+        state_code: OH
+  output:
+    # The child has no head in a unit of its own, so PE makes it that unit's
+    # dependent, but the known claiming unit is the parent's, whose head the
+    # id names. So (f)(2)(i) does not apply, and under (f)(2) the child's
+    # household is the parent's: the parent and the child, with the parent's
+    # $30,000.
+    medicaid_claimed_by_parent_in_tax_unit: [false, true]
+    medicaid_tax_dependent_exception_other_than_spouse_or_child: [false, false]
+    medicaid_uses_non_filer_rules: [false, false]
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [30_000, 30_000]
+
+- name: A minor claimed by a grandparent's tax unit uses the non-filer rules.
+  period: 2026
+  input:
+    people:
+      grandparent:
+        person_id: 1
+        age: 60
+        employment_income: 30_000
+      grandchild:
+        person_id: 2
+        age: 10
+        # Both parents live elsewhere.
+        parent_1_id: 50
+        parent_2_id: 51
+        medicaid_claiming_tax_unit_id: 1
+    tax_units:
+      grandparent_unit:
+        members: [grandparent]
+        tax_unit_id: 1
+        tax_unit_is_filer: true
+      grandchild_unit:
+        members: [grandchild]
+        tax_unit_id: 2
+    families:
+      family:
+        members: [grandparent, grandchild]
+    marital_units:
+      grandparent:
+        members: [grandparent]
+      grandchild:
+        members: [grandchild]
+    households:
+      household:
+        members: [grandparent, grandchild]
+        state_code: OH
+  output:
+    # The ids name no one in the claiming unit, so the claimant is not a
+    # parent and (f)(2)(i) applies. Under (f)(3) the grandchild lives with no
+    # parent, sibling, spouse or child: a household of one with no income.
+    # The grandparent's household is the grandparent and the claimed child.
+    medicaid_claimed_by_parent_in_tax_unit: [false, false]
+    medicaid_tax_dependent_exception_other_than_spouse_or_child: [false, true]
+    medicaid_uses_non_filer_rules: [false, true]
+    medicaid_household_size: [2, 1]
+    medicaid_household_income: [30_000, 0]
+
+- name: A minor claimed by a joint return is claimed by a parent who is the return's spouse.
+  period: 2026
+  input:
+    people:
+      stepfather:
+        person_id: 1
+        age: 45
+        employment_income: 40_000
+      mother:
+        person_id: 2
+        age: 40
+        employment_income: 20_000
+      child:
+        person_id: 3
+        age: 10
+        # The ids record only the mother, the spouse on the claiming return.
+        parent_1_id: 2
+        medicaid_claiming_tax_unit_id: 1
+    tax_units:
+      couple_unit:
+        members: [stepfather, mother]
+        tax_unit_id: 1
+        filing_status: JOINT
+        tax_unit_is_filer: true
+      child_unit:
+        members: [child]
+        tax_unit_id: 2
+    families:
+      couple_family:
+        members: [stepfather, mother]
+      child_family:
+        members: [child]
+    marital_units:
+      couple:
+        members: [stepfather, mother]
+      child:
+        members: [child]
+    households:
+      couple_home:
+        members: [stepfather, mother]
+        state_code: OH
+      child_home:
+        members: [child]
+        state_code: OH
+  output:
+    # A parent claims the child, so (f)(2)(i) does not apply, and under
+    # (f)(2) the child's household is the couple's tax household: the couple
+    # and the child, with $60,000.
+    medicaid_claimed_by_parent_in_tax_unit: [false, false, true]
+    medicaid_uses_non_filer_rules: [false, false, false]
+    medicaid_household_size: [3, 3, 3]
+    medicaid_household_income: [60_000, 60_000, 60_000]
+
+# Regressions for the r7 review: an id that names a co-resident names that
+# person, even when a claimant elsewhere has the same person_id.
+
+- name: A claimant elsewhere who shares a co-resident parent's id is not the parent.
+  period: 2026
+  input:
+    people:
+      mother:
+        person_id: 1
+        age: 35
+        employment_income: 20_000
+      child:
+        person_id: 2
+        age: 10
+        parent_1_id: 1
+        medicaid_claiming_tax_unit_id: 1
+      grandparent:
+        # Ids are distinct only within a household and a tax unit.
+        person_id: 1
+        age: 65
+        employment_income: 30_000
+    tax_units:
+      grandparent_unit:
+        members: [grandparent]
+        tax_unit_id: 1
+        tax_unit_is_filer: true
+      child_unit:
+        members: [child]
+        tax_unit_id: 2
+      mother_unit:
+        members: [mother]
+        tax_unit_id: 3
+        tax_unit_is_filer: true
+    families:
+      family:
+        members: [mother, child]
+      grandparent_family:
+        members: [grandparent]
+    marital_units:
+      mother:
+        members: [mother]
+      child:
+        members: [child]
+      grandparent:
+        members: [grandparent]
+    households:
+      home:
+        members: [mother, child]
+        state_code: OH
+      grandparent_home:
+        members: [grandparent]
+        state_code: OH
+  output:
+    # The id names the mother the child lives with, not the grandparent who
+    # claims the child, so (f)(2)(i) applies. Under (f)(3) the child's
+    # household is the child and the mother: 2 people and $20,000. The
+    # mother's is herself; the grandparent's is the grandparent and the
+    # claimed child.
+    medicaid_claimed_by_parent_in_tax_unit: [false, false, false]
+    medicaid_tax_dependent_exception_other_than_spouse_or_child: [false, true, false]
+    medicaid_uses_non_filer_rules: [false, true, false]
+    medicaid_household_size: [1, 2, 2]
+    medicaid_household_income: [20_000, 20_000, 30_000]
+
+- name: A tax unit member elsewhere who shares a co-resident parent's id is not the parent.
+  period: 2026
+  input:
+    people:
+      mother:
+        person_id: 1
+        age: 35
+        employment_income: 20_000
+      child:
+        person_id: 2
+        age: 10
+        parent_1_id: 1
+      grandparent:
+        person_id: 1
+        age: 65
+        employment_income: 30_000
+    tax_units:
+      grandparent_unit:
+        members: [grandparent, child]
+        tax_unit_is_filer: true
+      mother_unit:
+        members: [mother]
+        tax_unit_is_filer: true
+    families:
+      family:
+        members: [mother, child]
+      grandparent_family:
+        members: [grandparent]
+    marital_units:
+      mother:
+        members: [mother]
+      child:
+        members: [child]
+      grandparent:
+        members: [grandparent]
+    households:
+      home:
+        members: [mother, child]
+        state_code: OH
+      grandparent_home:
+        members: [grandparent]
+        state_code: OH
+  output:
+    # As above, with the grandparent claiming the child on the same return.
+    medicaid_claimed_by_parent_in_tax_unit: [false, false, false]
+    medicaid_tax_dependent_exception_other_than_spouse_or_child: [false, true, false]
+    medicaid_uses_non_filer_rules: [false, true, false]
+    medicaid_household_size: [1, 2, 2]
+    medicaid_household_income: [20_000, 20_000, 30_000]
+
+# Regressions for the r8 review.
+
+# r8 finding 3: under 42 CFR 435.603(f)(4) spouses who live together are in
+# each other's households whether or not they file jointly, so a filer counts
+# a co-resident spouse the tax household lacks even without the
+# cohabiting-spouses flag.
+
+- name: Separately filing spouses count each other without a cohabiting flag
+  period: 2026
+  input:
+    people:
+      parent: {person_id: 1, age: 40}
+      child:
+        person_id: 2
+        age: 19
+        parent_1_id: 1
+        is_tax_unit_spouse: false
+      spouse: {person_id: 3, age: 18, employment_income: 30_000}
+    tax_units:
+      parent_unit: {members: [parent, child], tax_unit_is_filer: true}
+      spouse_unit: {members: [spouse], tax_unit_is_filer: true}
+    families:
+      parent_family: {members: [parent]}
+      couple_family: {members: [child, spouse]}
+    marital_units:
+      parent: {members: [parent]}
+      couple: {members: [child, spouse]}
+    households:
+      parent_home: {members: [parent], state_code: OH}
+      couple_home: {members: [child, spouse], state_code: OH}
+  output:
+    # The parent's household is the parent and the claimed child: 2, $0. The
+    # child's is the parent's tax household plus the spouse under (f)(4): 3,
+    # $30,000. The spouse files alone and lives with the child, so the
+    # spouse's household is the spouse and the child: 2, $30,000.
+    medicaid_claimed_by_parent_in_tax_unit: [false, true, false]
+    medicaid_uses_non_filer_rules: [false, false, false]
+    medicaid_household_size: [2, 3, 2]
+    medicaid_household_income: [0, 30_000, 30_000]
+
+- name: California counts each separately filing spouse's pregnancy once without a flag
+  period: 2026
+  input:
+    people:
+      parent: {person_id: 1, age: 40}
+      child:
+        person_id: 2
+        age: 19
+        parent_1_id: 1
+        is_tax_unit_spouse: false
+      spouse:
+        person_id: 3
+        age: 18
+        employment_income: 30_000
+        current_pregnancies: 1
+    tax_units:
+      parent_unit: {members: [parent, child], tax_unit_is_filer: true}
+      spouse_unit: {members: [spouse], tax_unit_is_filer: true}
+    families:
+      parent_family: {members: [parent]}
+      couple_family: {members: [child, spouse]}
+    marital_units:
+      parent: {members: [parent]}
+      couple: {members: [child, spouse]}
+    households:
+      parent_home: {members: [parent], state_code: CA}
+      couple_home: {members: [child, spouse], state_code: CA}
+  output:
+    # As above, and ACWDL 20-10 adds the unborn child of each pregnant member:
+    # the child's household is 3 people plus 1 unborn child, the spouse's 2
+    # people plus 1. The pregnant spouse is not in the parent's household.
+    ca_medicaid_household_pregnancies: [0, 1, 1]
+    medicaid_household_size: [2, 4, 3]
+    medicaid_household_income: [0, 30_000, 30_000]
+
+- name: A filer's unflagged co-resident spouse joins the households of the filer's dependents
+  period: 2026
+  input:
+    people:
+      parent: {person_id: 1, age: 40, employment_income: 40_000}
+      spouse: {person_id: 2, age: 41, employment_income: 20_000}
+      child: {person_id: 3, age: 10, parent_1_id: 1}
+    tax_units:
+      parent_unit: {members: [parent, child], tax_unit_is_filer: true}
+      spouse_unit: {members: [spouse], tax_unit_is_filer: true}
+    families:
+      family: {members: [parent, spouse, child]}
+    marital_units:
+      couple: {members: [parent, spouse]}
+      child: {members: [child]}
+    households:
+      home: {members: [parent, spouse, child], state_code: OH}
+  output:
+    # No joint return or flag shows the marriage, so no step parent is
+    # inferred and the parent's return claims the child: (f)(2) gives the
+    # child the parent's household. Under (f)(4) that household includes the
+    # spouse: parent, child and spouse, $60,000. The spouse's is the spouse
+    # and the parent: 2, $60,000.
+    medicaid_claimed_by_parent_in_tax_unit: [false, false, true]
+    medicaid_tax_dependent_exception_living_with_both_parents: [false, false, false]
+    medicaid_uses_non_filer_rules: [false, false, false]
+    medicaid_household_size: [3, 2, 3]
+    medicaid_household_income: [60_000, 60_000, 60_000]
+
+- name: A filer's spouse claimed into the filer's unit counts once
+  period: 2026
+  input:
+    people:
+      filer:
+        person_id: 1
+        age: 40
+        employment_income: 40_000
+        # An absent parent, so the household has links.
+        parent_1_id: 9
+      spouse:
+        person_id: 2
+        age: 41
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+        medicaid_claiming_tax_unit_id: 1
+    tax_units:
+      filer_unit:
+        members: [filer]
+        tax_unit_id: 1
+        tax_unit_is_filer: true
+      spouse_unit:
+        members: [spouse]
+        tax_unit_id: 2
+        tax_unit_is_filer: false
+    families:
+      family: {members: [filer, spouse]}
+    marital_units:
+      couple: {members: [filer, spouse]}
+    households:
+      home: {members: [filer, spouse], state_code: OH}
+  output:
+    # The filer's return claims the spouse from the spouse's own unit, so the
+    # spouse is in the filer's tax household once: 2 people. The spouse need
+    # not file, so (d)(2)(ii) keeps the $5,000 out of the claiming taxpayer's
+    # household income.
+    medicaid_uses_non_filer_rules: [false, false]
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [40_000, 40_000]
+
+# r8 finding 6: a named parent must be the claiming return's head or spouse.
+
+- name: A dependent teen parent is not the taxpayer claiming the baby
+  period: 2026
+  input:
+    people:
+      grandparent: {person_id: 1, age: 40, employment_income: 40_000}
+      teen: {person_id: 2, age: 17, parent_1_id: 1}
+      baby: {person_id: 3, age: 1, parent_1_id: 2}
+    tax_units:
+      unit: {members: [grandparent, teen, baby], tax_unit_is_filer: true}
+    families:
+      family: {members: [grandparent, teen, baby]}
+    marital_units:
+      grandparent: {members: [grandparent]}
+      teen: {members: [teen]}
+      baby: {members: [baby]}
+    households:
+      home: {members: [grandparent, teen, baby], state_code: OH}
+  output:
+    # The grandparent claims both. The teen's id names the grandparent, the
+    # return's head, so the teen uses the grandparent's tax household: 3,
+    # $40,000. The baby's id names the teen, a dependent on that return, so
+    # no parent claims the baby and (f)(2)(i) applies. Under (f)(3) the baby's
+    # household is the baby and the teen, whose income (d)(2)(i) excludes.
+    medicaid_claimed_by_parent_in_tax_unit: [false, true, false]
+    medicaid_uses_non_filer_rules: [false, false, true]
+    medicaid_household_size: [3, 3, 2]
+    medicaid_household_income: [40_000, 40_000, 0]
+
+# r8 finding 2: 42 CFR 435.603(b) counts step parents. When ids name exactly
+# one parent the person lives with, that parent's resident spouse, shown by a
+# joint return or by a two-person marital unit with the cohabiting-spouses
+# flag, is also a parent.
+
+- name: An established resident stepparent counts when ids name natural parents
+  period: 2026
+  input:
+    people:
+      mother: {person_id: 1, age: 35, employment_income: 20_000}
+      stepfather: {person_id: 2, age: 40, employment_income: 40_000}
+      child: {person_id: 3, age: 10, parent_1_id: 1, parent_2_id: 99}
+    tax_units:
+      mother_unit:
+        members: [mother]
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+      stepfather_unit:
+        members: [stepfather, child]
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+    families:
+      family: {members: [mother, stepfather, child]}
+    marital_units:
+      couple: {members: [mother, stepfather]}
+      child: {members: [child]}
+    households:
+      home: {members: [mother, stepfather, child], state_code: OH}
+  output:
+    # The stepfather is a parent who claims the child, and the child lives
+    # with both parents, who file separately: (f)(2)(ii) applies. Under (f)(3)
+    # the child's household is the child, the mother and the stepfather: 3,
+    # $60,000. The mother's is herself and her husband: 2, $60,000. The
+    # stepfather's is his return (himself and the child) plus his wife: 3,
+    # $60,000.
+    medicaid_claimed_by_parent_in_tax_unit: [false, false, true]
+    medicaid_tax_dependent_exception_living_with_both_parents: [false, false, true]
+    medicaid_uses_non_filer_rules: [false, false, true]
+    medicaid_household_size: [2, 3, 3]
+    medicaid_household_income: [60_000, 60_000, 60_000]
+
+- name: A stepparent shown by a joint return makes step siblings and stepchildren
+  period: 2026
+  input:
+    people:
+      mother:
+        person_id: 1
+        age: 38
+        own_children_in_household: 1
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 30_000
+      stepfather:
+        person_id: 2
+        age: 40
+        own_children_in_household: 1
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 20_000
+      her_child:
+        person_id: 3
+        age: 10
+        # Her natural parents: the mother and a father who lives elsewhere.
+        parent_1_id: 1
+        parent_2_id: 98
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 0
+      his_child:
+        person_id: 4
+        age: 8
+        # His natural parents: the stepfather and a mother who lives elsewhere.
+        parent_1_id: 99
+        parent_2_id: 2
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 0
+    tax_units:
+      unit:
+        members: [mother, stepfather, her_child, his_child]
+        filing_status: JOINT
+    families:
+      family:
+        members: [mother, stepfather, her_child, his_child]
+    marital_units:
+      couple:
+        members: [mother, stepfather]
+      her_child:
+        members: [her_child]
+      his_child:
+        members: [his_child]
+    households:
+      household:
+        members: [mother, stepfather, her_child, his_child]
+        state_code: OH
+  output:
+    # As in "Step parents and step siblings count once parent ids name them",
+    # but each child's ids name only one co-resident parent. The joint return
+    # shows the marriage, so each spouse is the other's child's step parent
+    # and the children are step siblings: every household has all four.
+    medicaid_household_size: [4, 4, 4, 4]
+    medicaid_household_income: [50_000, 50_000, 50_000, 50_000]
+
+- name: A two-person marital unit without a flag or joint return infers no stepparent
+  period: 2026
+  input:
+    people:
+      mother:
+        person_id: 1
+        age: 38
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 30_000
+      partner:
+        person_id: 2
+        age: 40
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 20_000
+      child:
+        person_id: 3
+        age: 10
+        parent_1_id: 1
+        medicaid_uses_non_filer_rules: true
+        medicaid_household_income_member: 0
+    tax_units:
+      mother_unit: {members: [mother, child]}
+      partner_unit: {members: [partner]}
+    families:
+      family: {members: [mother, partner, child]}
+    marital_units:
+      couple: {members: [mother, partner]}
+      child: {members: [child]}
+    households:
+      household: {members: [mother, partner, child], state_code: OH}
+  output:
+    # The spouse rule still makes the partners each other's spouse, but no
+    # joint return or flag establishes the marriage, so the child's household
+    # is the child and the mother.
+    medicaid_household_size: [3, 2, 2]
+    medicaid_household_income: [50_000, 50_000, 30_000]
+
+# r8 finding 1: an id that names a co-resident resolves to that co-resident.
+# Person ids must be distinct across the simulation whenever a tax unit spans
+# households or a known claiming tax unit is set. These cases break that
+# contract on purpose: they pin the fallback, not anyone's legal identity.
+
+- name: Id contract fallback, a claimant elsewhere sharing a co-resident's id is not the parent
+  period: 2026
+  input:
+    people:
+      grandparent:
+        person_id: 1
+        age: 65
+        employment_income: 30_000
+      child:
+        person_id: 2
+        age: 10
+        # Meant to name the mother, who reuses the grandparent's id.
+        parent_1_id: 1
+      mother:
+        person_id: 1
+        age: 35
+        employment_income: 20_000
+    tax_units:
+      grandparent_unit:
+        members: [grandparent]
+        tax_unit_is_filer: true
+      mother_unit:
+        members: [mother, child]
+        tax_unit_is_filer: true
+    families:
+      family: {members: [grandparent, child]}
+      mother_family: {members: [mother]}
+    marital_units:
+      grandparent: {members: [grandparent]}
+      child: {members: [child]}
+      mother: {members: [mother]}
+    households:
+      home: {members: [grandparent, child], state_code: OH}
+      mother_home: {members: [mother], state_code: OH}
+  output:
+    # The mirror image of the case below. With distinct ids the mother
+    # claims the child and the child's household is hers: 2, $20,000. With
+    # the collision the id resolves to the co-resident grandparent, so the
+    # fallback treats the claimant as someone other than a parent: (f)(2)(i)
+    # and (f)(3) give the child and the grandparent, 2, $30,000.
+    medicaid_claimed_by_parent_in_tax_unit: [false, false, false]
+    medicaid_uses_non_filer_rules: [false, true, false]
+    medicaid_household_size: [1, 2, 2]
+    medicaid_household_income: [30_000, 30_000, 20_000]
+
+- name: Id contract fallback, second slot, a claimant elsewhere sharing a co-resident parent's id
+  period: 2026
+  input:
+    people:
+      mother:
+        person_id: 1
+        age: 35
+        employment_income: 20_000
+      child:
+        person_id: 2
+        age: 10
+        parent_1_id: 77
+        parent_2_id: 1
+        medicaid_claiming_tax_unit_id: 1
+      grandparent:
+        person_id: 1
+        age: 65
+        employment_income: 30_000
+    tax_units:
+      grandparent_unit:
+        members: [grandparent]
+        tax_unit_id: 1
+        tax_unit_is_filer: true
+      child_unit:
+        members: [child]
+        tax_unit_id: 2
+      mother_unit:
+        members: [mother]
+        tax_unit_id: 3
+        tax_unit_is_filer: true
+    families:
+      family: {members: [mother, child]}
+      grandparent_family: {members: [grandparent]}
+    marital_units:
+      mother: {members: [mother]}
+      child: {members: [child]}
+      grandparent: {members: [grandparent]}
+    households:
+      home: {members: [mother, child], state_code: OH}
+      grandparent_home: {members: [grandparent], state_code: OH}
+  output:
+    # "A claimant elsewhere who shares a co-resident parent's id is not the
+    # parent", with the mother in the second slot and an absent father in the
+    # first.
+    medicaid_claimed_by_parent_in_tax_unit: [false, false, false]
+    medicaid_tax_dependent_exception_other_than_spouse_or_child: [false, true, false]
+    medicaid_uses_non_filer_rules: [false, true, false]
+    medicaid_household_size: [1, 2, 2]
+    medicaid_household_income: [20_000, 20_000, 30_000]
+
+- name: Id contract fallback, second slot, a tax unit member elsewhere sharing a co-resident parent's id
+  period: 2026
+  input:
+    people:
+      mother:
+        person_id: 1
+        age: 35
+        employment_income: 20_000
+      child:
+        person_id: 2
+        age: 10
+        parent_1_id: 77
+        parent_2_id: 1
+      grandparent:
+        person_id: 1
+        age: 65
+        employment_income: 30_000
+    tax_units:
+      grandparent_unit:
+        members: [grandparent, child]
+        tax_unit_is_filer: true
+      mother_unit:
+        members: [mother]
+        tax_unit_is_filer: true
+    families:
+      family: {members: [mother, child]}
+      grandparent_family: {members: [grandparent]}
+    marital_units:
+      mother: {members: [mother]}
+      child: {members: [child]}
+      grandparent: {members: [grandparent]}
+    households:
+      home: {members: [mother, child], state_code: OH}
+      grandparent_home: {members: [grandparent], state_code: OH}
+  output:
+    # As above, with the grandparent claiming the child on the same return.
+    medicaid_claimed_by_parent_in_tax_unit: [false, false, false]
+    medicaid_tax_dependent_exception_other_than_spouse_or_child: [false, true, false]
+    medicaid_uses_non_filer_rules: [false, true, false]
+    medicaid_household_size: [1, 2, 2]
+    medicaid_household_income: [20_000, 20_000, 30_000]
+
+# Additional linked-household membership regressions from the recovery audit.
+
+- name: A grandparent inferred as the teen parent's tax spouse is not a stepparent
+  period: 2026
+  input:
+    people:
+      grandparent:
+        person_id: 1
+        age: 60
+        employment_income: 40_000
+      teen:
+        person_id: 2
+        age: 18
+        parent_1_id: 1
+      baby:
+        person_id: 3
+        age: 1
+        parent_1_id: 2
+    tax_units:
+      adult_return:
+        members: [grandparent, teen]
+        tax_unit_is_filer: true
+      baby_unit:
+        members: [baby]
+        tax_unit_is_filer: false
+    families:
+      family:
+        members: [grandparent, teen, baby]
+    marital_units:
+      grandparent:
+        members: [grandparent]
+      teen:
+        members: [teen]
+      baby:
+        members: [baby]
+    households:
+      home:
+        members: [grandparent, teen, baby]
+        state_code: OH
+  output:
+    # The default tax roles label the two adults as head and spouse, but the
+    # parent links show that they are parent and child. That role inference
+    # cannot establish a marriage or make the grandparent the baby's step
+    # parent. The baby uses non-filer rules and counts only baby plus teen.
+    medicaid_uses_non_filer_rules: [false, false, true]
+    medicaid_household_size: [2, 2, 2]
+    medicaid_household_income: [40_000, 40_000, 0]
+
+- name: A flagged separately filing spouse's income joins the filer's adult dependent household
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 40
+        employment_income: 20_000
+      child:
+        person_id: 2
+        age: 19
+        parent_1_id: 1
+        is_tax_unit_spouse: false
+      spouse:
+        person_id: 3
+        age: 40
+        employment_income: 40_000
+    tax_units:
+      parent_unit:
+        members: [parent, child]
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+      spouse_unit:
+        members: [spouse]
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+    families:
+      family: {members: [parent, child, spouse]}
+    marital_units:
+      couple: {members: [parent, spouse]}
+      child: {members: [child]}
+    households:
+      home: {members: [parent, child, spouse], state_code: OH}
+  output:
+    # The child is over the non-filer child age limit. The parent and child
+    # share the parent's tax household, including the parent's separately
+    # filing spouse. The spouse's household contains only spouse plus parent.
+    medicaid_uses_non_filer_rules: [false, false, false]
+    medicaid_household_size: [3, 3, 2]
+    medicaid_household_income: [60_000, 60_000, 60_000]
+
+- name: California propagates a flagged filer spouse's income and pregnancy to the adult dependent
+  period: 2026
+  input:
+    people:
+      parent:
+        person_id: 1
+        age: 40
+        employment_income: 20_000
+      child:
+        person_id: 2
+        age: 19
+        parent_1_id: 1
+        is_tax_unit_spouse: false
+      spouse:
+        person_id: 3
+        age: 40
+        employment_income: 40_000
+        current_pregnancies: 1
+    tax_units:
+      parent_unit:
+        members: [parent, child]
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+      spouse_unit:
+        members: [spouse]
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+    families:
+      family: {members: [parent, child, spouse]}
+    marital_units:
+      couple: {members: [parent, spouse]}
+      child: {members: [child]}
+    households:
+      home: {members: [parent, child, spouse], state_code: CA}
+  output:
+    # ACWDL 20-10 counts the pregnant spouse's unborn child in all three
+    # households; income follows those same household memberships.
+    medicaid_uses_non_filer_rules: [false, false, false]
+    ca_medicaid_household_pregnancies: [1, 1, 1]
+    medicaid_household_size: [4, 4, 3]
+    medicaid_household_income: [60_000, 60_000, 60_000]
+
+- name: A flagged filer's spouse claimed into the filer's unit counts once in California
+  period: 2026
+  input:
+    people:
+      filer:
+        person_id: 1
+        age: 40
+        employment_income: 40_000
+        parent_1_id: 9
+      spouse:
+        person_id: 2
+        age: 41
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+        medicaid_claiming_tax_unit_id: 1
+        current_pregnancies: 1
+    tax_units:
+      filer_unit:
+        members: [filer]
+        tax_unit_id: 1
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+      spouse_unit:
+        members: [spouse]
+        tax_unit_id: 2
+        tax_unit_is_filer: true
+        cohabitating_spouses: true
+    families:
+      family: {members: [filer, spouse]}
+    marital_units:
+      couple: {members: [filer, spouse]}
+    households:
+      home: {members: [filer, spouse], state_code: CA}
+  output:
+    # The external claim already includes the spouse. The flag must not add
+    # that spouse or pregnancy again. A dependent who need not file remains
+    # excluded from the taxpayer's income even when filing voluntarily.
+    medicaid_uses_non_filer_rules: [false, false]
+    ca_medicaid_household_pregnancies: [1, 1]
+    medicaid_household_size: [3, 3]
+    medicaid_household_income: [40_000, 40_000]

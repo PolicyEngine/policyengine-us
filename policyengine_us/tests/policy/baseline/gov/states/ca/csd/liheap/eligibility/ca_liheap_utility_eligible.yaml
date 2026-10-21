@@ -1,4 +1,5 @@
-# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=9,193,202,203,205,219,279
+# PDF pages 9,193,202-203,205,219,279
+# https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=9
 # This gate covers gas/electric utility heating, not unresolved regular WPO.
 
 - name: Case 1, a qualified adult applicant is required by the represented inputs.
@@ -20,35 +21,35 @@
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit2:
         members: [person2]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit3:
         members: [person3, person4]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit4:
         members: [person5, person6]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit5:
         members: [person7]
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
     households:
       household1:
@@ -98,21 +99,21 @@
         heating_type: NATURAL_GAS
         gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit2:
         members: [person2]
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit3:
         members: [person3]
         heating_type: NATURAL_GAS
         gas_expense: 0
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         pre_subsidy_electricity_expense: 1_200
       spm_unit4:
@@ -120,7 +121,7 @@
         heating_type: NATURAL_GAS
         gas_expense: 0
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         heat_expense_included_in_rent: true
       spm_unit5:
@@ -128,7 +129,7 @@
         heating_type: NATURAL_GAS
         gas_expense: 0
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         heat_expense_included_in_rent: true
         receives_housing_assistance: true
@@ -137,7 +138,7 @@
         heating_type: NATURAL_GAS
         gas_expense: 100
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         heat_expense_included_in_rent: true
         receives_housing_assistance: true
@@ -146,19 +147,19 @@
         heating_type: PROPANE
         bottled_gas_expense: 1_200
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit8:
         members: [person8]
         heating_type: NONE
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
       spm_unit9:
         members: [person9]
         heating_type: UNSPECIFIED
         snap: 0
-        ca_tanf: 0
+        tanf: 0
         ca_state_supplement: 0
         heat_expense_included_in_rent: true
     households:

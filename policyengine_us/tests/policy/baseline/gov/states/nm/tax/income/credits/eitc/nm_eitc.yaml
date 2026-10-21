@@ -30,3 +30,33 @@
     state_code: NM
   output:
     nm_eitc: 140
+
+- name: A dependent's capital gain does not remove New Mexico's working families tax credit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 22_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 50_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: NM
+  output:
+    # Federal EITC, one child: the 2025 maximum 4,328 (earnings 22,000
+    # are under the 23,350 phase-out start). NM matches 25%: 1,082.
+    # Main gives 0 for both.
+    eitc: 4_328
+    nm_eitc_eligible: true
+    nm_eitc: 1_082

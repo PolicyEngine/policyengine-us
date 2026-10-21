@@ -52,7 +52,11 @@ def create_watca() -> Reform:
         label = "Eligible for WATCA alternative maximum tax"
         definition_period = YEAR
         reference = WATCA_REFERENCES
-        documentation = "Section 1A(b): MAGI < 175% of exemption, and not claimed as dependent on another return."
+        documentation = (
+            "Section 1A(b): MAGI < 175% of exemption. Retains the reform's "
+            "modeled actual-dependent-claim restriction, which is not stated "
+            "in the cited bill's section 1A(b)(2)."
+        )
 
         def formula(tax_unit, period, parameters):
             magi = tax_unit("watca_alternative_tax_magi", period)
@@ -61,9 +65,10 @@ def create_watca() -> Reform:
             exemption_amount = p.amount[filing_status]
             income_limit = exemption_amount * p.income_limit_multiple
             income_eligible = magi < income_limit
-            head_dependent = tax_unit("head_is_dependent_elsewhere", period)
-            spouse_dependent = tax_unit("spouse_is_dependent_elsewhere", period)
-            not_dependent = ~head_dependent & ~spouse_dependent
+            person = tax_unit.members
+            claimed = person("claimed_as_dependent_on_another_return", period)
+            filer = person("is_tax_unit_head_or_spouse", period)
+            not_dependent = ~tax_unit.any(claimed & filer)
             return income_eligible & not_dependent
 
     class watca_alternative_max_tax(Variable):

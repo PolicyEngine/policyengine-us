@@ -9,7 +9,8 @@ class ca_liheap_income_limit(Variable):
     unit = USD
     label = "California LIHEAP annualized income limit"
     defined_for = StateCode.CA
-    reference = "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=9,184"
+    # PDF pages 9,184
+    reference = "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=9"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ca.csd.liheap.income

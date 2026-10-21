@@ -127,3 +127,212 @@
     ssi: 0
   output:
     co_state_supplement: 11_928
+
+- name: Case 14, both members of a disabled SSI couple receive the supplement in 2026.
+  # SSA 2026 SSI couple rate: $1,491/month, or $745.50 for each spouse of a
+  # joint claim. 9 CCR 2503-5 3.546, 3.548(A)-(B): each spouse is an AND-CS
+  # client whose grant is the $994 standard less their own countable income,
+  # which includes their SSI (3.549(A)(2)(d)): 994 - 745.50 = 248.50/month,
+  # or 2,982/year. SSA's January 2011 Colorado table pays a couple the same
+  # way: combined standard $1,398 (2 x $699), state supplement $387
+  # (1,398 - 1,011 federal couple rate).
+  absolute_error_margin: 0.1
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_head: true
+      spouse:
+        age: 52
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [8_946, 8_946]
+    co_state_supplement: [2_982, 2_982]
+
+- name: Case 15, a disabled SSI couple with equal pensions each receive the supplement.
+  # Each spouse has a $300/month pension. Federal SSI: couple unearned income
+  # 600 - 20 general exclusion = 580; couple payment 1,491 - 580 = 911, or
+  # 455.50 each. 3.549(A)(2): each client's countable unearned income is
+  # 300 - 10 (the $20 disregard split between spouses) + 455.50 SSI added back
+  # = 745.50, so each grant is 994 - 745.50 = 248.50/month, or 2,982/year.
+  absolute_error_margin: 0.1
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        pension_income: 3_600
+        is_tax_unit_head: true
+      spouse:
+        age: 52
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        pension_income: 3_600
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [5_466, 5_466]
+    co_state_supplement: [2_982, 2_982]
+
+- name: Case 16, a disabled adult above the SSI resource limit receives nothing.
+  # $3,000 of countable resources exceeds the $2,000 SSI limit, so no SSI is
+  # paid. 3.546 limits AND-CS to clients receiving SSI, and 3.547(D) ends
+  # AND-CS when SSI ends, so the grant is 0 rather than the $994 standard.
+  absolute_error_margin: 0.1
+  period: 2026
+  input:
+    people:
+      person:
+        age: 45
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_countable_resources: 3_000
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi: 0
+    co_state_supplement: 0
+
+- name: Case 17, a disabled SSI couple with unequal pensions each count their own income.
+  # Pensions of $400 and $200 a month. Federal SSI pools them: 600 - 20 = 580
+  # countable, so the couple payment is 1,491 - 580 = 911, or 455.50 each.
+  # 3.549(A)(2) counts each client's own income with the $20 disregard split
+  # between the spouses: head 400 - 10 = 390, spouse 200 - 10 = 190. Grants:
+  # head 994 - 455.50 - 390 = 148.50/month (1,782/year); spouse
+  # 994 - 455.50 - 190 = 348.50/month (4,182/year). The couple total is the
+  # same 497/month as with equal pensions.
+  absolute_error_margin: 0.1
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        pension_income: 4_800
+        is_tax_unit_head: true
+      spouse:
+        age: 52
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        pension_income: 2_400
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [5_466, 5_466]
+    co_state_supplement_countable_income: [4_680, 2_280]
+    co_state_supplement: [1_782, 4_182]
+
+- name: Case 18, a disabled SSI couple where only the head has earnings.
+  # The head earns $500/month and the spouse has no income. Federal SSI pools
+  # earnings: (500 - 20 - 65) / 2 = 207.50 countable, so the couple payment is
+  # 1,491 - 207.50 = 1,283.50, or 641.75 each. 3.549(A): the head's only
+  # unearned income is SSI, so no unearned disregard applies (3.549(A)(2)(c)),
+  # and their gross unearned income is not under $20, so none reaches earned
+  # income (3.549(A)(2)(f)); 3.549(A)(1) gives (500 - 65) / 2 = 217.50. Head
+  # grant 994 - 641.75 - 217.50 = 134.75/month (1,617/year); spouse
+  # 994 - 641.75 = 352.25/month (4,227/year).
+  absolute_error_margin: 0.1
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        employment_income: 6_000
+        is_tax_unit_head: true
+      spouse:
+        age: 52
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [7_701, 7_701]
+    co_state_supplement_countable_income: [2_610, 0]
+    co_state_supplement: [1_617, 4_227]
+
+- name: Case 19, a disabled SSI couple receiving outside shelter support.
+  # No cash income. In-kind support and maintenance for a couple is one
+  # presumed maximum value: 1,491 / 3 + 20 = 517/month (20 CFR 416.1140), so
+  # couple countable income is 517 - 20 = 497 and the couple payment is
+  # 1,491 - 497 = 994, or 497 each. Each spouse counts half the couple's
+  # in-kind support, 258.50, less their 10 share of the disregard: 248.50.
+  # Grant 994 - 497 - 248.50 = 248.50/month (2,982/year) each.
+  absolute_error_margin: 0.1
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_receives_outside_shelter_support: true
+        is_tax_unit_head: true
+      spouse:
+        age: 52
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_receives_outside_shelter_support: true
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [5_964, 5_964]
+    co_state_supplement_countable_income: [2_982, 2_982]
+    co_state_supplement: [2_982, 2_982]

@@ -8,8 +8,10 @@ class ca_liheap_liquid_heating_covered(Variable):
     label = "California LIHEAP ordinary liquid heating policy coverage, not eligibility"
     defined_for = StateCode.CA
     reference = (
-        "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=185,186,187,188",
-        "https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=191,233,234",
+        # PDF pages 185-188
+        "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=185",
+        # PDF pages 191,233-234
+        "https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=191",
     )
 
     def formula(spm_unit, period, parameters):

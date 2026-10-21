@@ -11,7 +11,7 @@ values:
     # Unearned income (countable per MS 306).
     - social_security  # MS 306.34 RSDI umbrella (Retirement, Survivors, Disability)
     - disability_benefits  # MS 306.9 Disability Insurance Benefits (employer/private disability; distinct from RSDI 306.34 and workers' comp 306.49)
-    - unemployment_compensation  # MS 306.45
+    - total_unemployment_compensation  # MS 306.45
     - workers_compensation  # MS 306.49
     - pension_income  # MS 306.29
     - military_retirement_pay  # MS 306.29 pensions; PolicyEngine records this separately from pension_income

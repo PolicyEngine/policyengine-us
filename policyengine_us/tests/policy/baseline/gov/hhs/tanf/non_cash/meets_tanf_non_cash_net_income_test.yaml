@@ -1,30 +1,37 @@
-- name: Default household meets California's BBCE net income test (100%).
+# California's Modified Categorical Eligibility (MCE) has no net income
+# test (CDSS ACL 12-62, ACL 13-32, ACL 14-56, ACL 15-42), so the cases on the
+# mechanics of the net standard use Rhode Island, whose BBCE keeps the net
+# test for both household types.
+- name: Default California household meets the BBCE net income test because MCE has none.
   period: 2022
   output:
     meets_tanf_non_cash_net_income_test: true
 
-- name: California household with net income exactly at the standard meets the net income test.
+- name: Rhode Island household with net income exactly at the standard meets the net income test.
   period: 2022
   input:
     snap_fpg: 12_000
     snap_net_income: 12_000
+    state_code: RI
   output:
     # Monthly standard is ceil(1.0 x 1,000) = 1,000; net income of 1,000
     # per month is exactly at it.
     meets_tanf_non_cash_net_income_test: true
 
-- name: California household with net income above the standard fails the net income test.
+- name: Rhode Island household with net income above the standard fails the net income test.
   period: 2022
   input:
     snap_fpg: 12_000
     snap_net_income: 12_120
+    state_code: RI
   output:
     # Net income of 1,010 per month exceeds the 1,000 standard.
     meets_tanf_non_cash_net_income_test: false
 
-- name: California household at the rounded-up whole-dollar standard meets the net income test.
+- name: Rhode Island household at the rounded-up whole-dollar standard meets the net income test.
   period: 2022
   input:
+    state_code: RI
     # Monthly poverty guideline of 2,220.83 yields a whole-dollar standard
     # of ceil(2,220.83) = 2,221, so a rounded net income of exactly 2,221
     # still passes; a raw ratio comparison (2,221 / 2,220.83 > 1) would
@@ -34,7 +41,7 @@
   output:
     meets_tanf_non_cash_net_income_test: true
 
-- name: California nine-person household at the published FY 2026 net standard meets the net income test.
+- name: Rhode Island nine-person household at the published FY 2026 net standard meets the net income test.
   period: 2026-01
   input:
     people:
@@ -50,11 +57,11 @@
     households:
       household:
         members: [person1]
-        state_code: CA
+        state_code: RI
   output:
     meets_tanf_non_cash_net_income_test: true
 
-- name: California nine-person household just above the FY 2026 net standard fails the net income test.
+- name: Rhode Island nine-person household just above the FY 2026 net standard fails the net income test.
   period: 2026-01
   input:
     people:
@@ -73,6 +80,72 @@
     households:
       household:
         members: [person1]
+        state_code: RI
+  output:
+    meets_tanf_non_cash_net_income_test: false
+
+- name: California MCE household of four above the FY 2026 net standard meets the net income test.
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 4
+        is_tanf_non_cash_hheod: false
+        # $286 above the four-person FY 2026 net standard of $2,680 (CDSS
+        # ACIN I-46-25, attachment I).
+        snap_net_income: 2_966
+    households:
+      household:
+        members: [person1]
         state_code: CA
   output:
+    # An MCE household of three or more gets the issuance-table allotment
+    # "even if the household's net income exceeds the maximum amount
+    # allowable" (CDSS ACL 12-62, example 5; ACL 14-56; ACL 15-42).
+    meets_tanf_non_cash_net_income_test: true
+
+- name: California MCE elderly or disabled household above the FY 2026 net standard meets the net income test.
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: true
+        # $486 above the one-person FY 2026 net standard of $1,305 (CDSS
+        # ACIN I-46-25, attachment I).
+        snap_net_income: 1_791
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # Elderly or disabled households at or below 200% of the poverty line
+    # are conferred MCE, and MCE households of one or two get the minimum
+    # allotment even above the net standard (CDSS ACL 13-32, note).
+    meets_tanf_non_cash_net_income_test: true
+
+- name: Rhode Island household of four above the FY 2026 net standard fails the net income test.
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 4
+        is_tanf_non_cash_hheod: false
+        snap_net_income: 2_966
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # The same household fails where the state's BBCE keeps the net test:
+    # $2,966 exceeds the four-person FY 2026 standard of $2,680.
     meets_tanf_non_cash_net_income_test: false

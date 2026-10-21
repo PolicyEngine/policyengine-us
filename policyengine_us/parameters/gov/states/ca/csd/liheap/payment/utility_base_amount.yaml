@@ -5,8 +5,8 @@ metadata:
   period: year
   label: California LIHEAP utility base benefit
   reference:
-    - title: California FY2026 LIHEAP State Plan, county utility payment matrix
-      href: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=182,183,184
+    - title: "California FY2026 LIHEAP State Plan, county utility payment matrix #page 182-184"
+      href: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=182
 # Only the 58 California counties are represented. The formula safely masks
 # counties outside this table before lookup instead of creating zero policies
 # for every other county. Provider rows repeat the same county amounts.

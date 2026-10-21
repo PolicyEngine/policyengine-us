@@ -74,3 +74,42 @@
     # Person2 own income also $12,000 earned, same exclusions => $457.50/mo.
     # Both under 100% FPL (~$1,255/mo) so person1 still qualifies for QMB.
     msp_countable_income: [457.50, 457.50]
+
+- name: MSP excludes qualified salary-reduction health premiums before SSI income exclusions.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    employment_income: 12_000
+    pre_tax_health_insurance_premiums: 2_400
+  output:
+    # 42 USC 1396d(p)(1)(B) uses SSI income methodology.
+    # POMS SI 00820.102C.2: (12,000 - 2,400) / 12 = 800 SSI wages.
+    # 20 CFR 416.1112(c)(4), (5), (7): (800 - 20 - 65) / 2 = 357.50.
+    msp_countable_income: 357.50
+
+- name: MSP combines both Medicare spouses' wages after excluding their pretax premiums.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        employment_income: 12_000
+        pre_tax_health_insurance_premiums: 2_400
+      person2:
+        age: 66
+        employment_income: 24_000
+        pre_tax_health_insurance_premiums: 3_600
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    # POMS SI 00820.102C.2 removes each spouse's salary reduction.
+    # 42 USC 1396d(p)(1)(B) and 20 CFR 416.1160(a)(1) combine the wages:
+    # (12,000 - 2,400 + 24,000 - 3,600) / 12 = 2,500 monthly.
+    # Apply the couple's exclusions once: (2,500 - 20 - 65) / 2 = 1,207.50.
+    msp_countable_income: [1_207.50, 1_207.50]

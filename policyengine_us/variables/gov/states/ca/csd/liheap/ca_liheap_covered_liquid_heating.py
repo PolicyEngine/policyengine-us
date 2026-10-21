@@ -10,9 +10,10 @@ class ca_liheap_covered_liquid_heating(Variable):
         "California LIHEAP covered ordinary liquid heating component (check coverage)"
     )
     defined_for = "ca_liheap_liquid_heating_covered"
-    # State plan pages 10 and 185-188; Madera plan pages 191 and 233-234.
     reference = (
-        "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=185",
+        # PDF pages 10,185-188
+        "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=10",
+        # PDF pages 191,233-234
         "https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=191",
     )
 
