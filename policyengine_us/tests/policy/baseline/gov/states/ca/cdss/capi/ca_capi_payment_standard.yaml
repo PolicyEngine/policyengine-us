@@ -1,0 +1,155 @@
+- name: Case 1, aged individual with cooking facilities.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # MPP 49-050.11: the SSI/SSP aged or disabled individual standard
+    # 1,233.94 less $10 = 1,223.94.
+    ca_capi_payment_standard: 1_223.94
+
+- name: Case 2, aged individual without cooking facilities in 2025.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # 2025 aged or disabled individual standard 1,206.94 + no-cooking food
+    # allowance 128.87 (WIC 12200(e)) = 1,335.81; less $10 = 1,325.81.
+    ca_capi_payment_standard: 1_325.81
+
+- name: Case 3, blind individual without cooking facilities gets no food allowance.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # Blind individual standard 1,318.32. The no-cooking allowance applies
+    # only to aged or disabled people (WIC 12200(e)), so 1,318.32 - 10 =
+    # 1,308.32.
+    ca_capi_payment_standard: 1_308.32
+
+- name: Case 4, aged noncitizen couple with cooking facilities splits the couple standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 68
+        immigration_status: UNDOCUMENTED
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # Both spouses are aged, so the SSI couple computation applies.
+    # Couple standard 2,098.83 less $20 (MPP 49-050.12) = 2,078.83; each
+    # member receives one-half (MPP 49-055.4): 1,039.415.
+    ca_capi_payment_standard: [1_039.415, 1_039.415]
+
+- name: Case 5, aged noncitizen couple without cooking facilities adds the couple food allowance.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 68
+        immigration_status: UNDOCUMENTED
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # Couple standard 2,098.83 + couple no-cooking allowance 257.74 =
+    # 2,356.57; less $20 = 2,336.57; one-half each = 1,168.285.
+    ca_capi_payment_standard: [1_168.285, 1_168.285]
+
+- name: Case 6, noncitizen couple with one blind member uses the one-blind couple standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 60
+        is_blind: true
+        immigration_status: UNDOCUMENTED
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The one-blind couple standard 2,238.44 (WIC 12200(b)) exceeds the
+    # aged couple standard 2,098.83 and applies (MPP 49-050.27). Less $20 =
+    # 2,218.44; one-half each = 1,109.22.
+    ca_capi_payment_standard: [1_109.22, 1_109.22]
+
+- name: Case 7, noncitizen spouse of an aged citizen gets half the couple standard less $10.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: CITIZEN
+      person2:
+        age: 68
+        immigration_status: UNDOCUMENTED
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The citizen receives SSI/SSP, not CAPI. MPP 49-050.13 sets the couple
+    # standard $10 below the SSI/SSP couple standard, so the CAPI member's
+    # half is 2,098.83 / 2 - 10 = 1,039.415.
+    ca_capi_payment_standard: [0, 1_039.415]

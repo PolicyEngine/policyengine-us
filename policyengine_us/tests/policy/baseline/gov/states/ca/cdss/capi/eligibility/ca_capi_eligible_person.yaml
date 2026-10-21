@@ -2,7 +2,6 @@
   period: 2023
   input:
     is_ssi_aged_blind_disabled: true
-    is_ssi_eligible_spouse: false
     immigration_status: UNDOCUMENTED
     state_code: CA
   output:
@@ -12,7 +11,6 @@
   period: 2023
   input:
     is_ssi_aged_blind_disabled: true
-    is_ssi_eligible_spouse: false
     immigration_status: CITIZEN
     state_code: CA
   output:
@@ -22,9 +20,31 @@
   period: 2023
   input:
     is_ssi_aged_blind_disabled: true
-    is_ssi_eligible_spouse: false
     immigration_status: LEGAL_PERMANENT_RESIDENT
     ssi_qualifying_quarters_earnings: 39
     state_code: CA
   output:
     ca_capi_eligible_person: true
+
+- name: Eligible couple - both spouses aged and undocumented
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 68
+        immigration_status: UNDOCUMENTED
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # person2 is the tax-unit spouse of an aged couple. Each member of an
+    # eligible couple receives CAPI (MPP 49-055.4), so the spouse is eligible
+    # too.
+    ca_capi_eligible_person: [true, true]

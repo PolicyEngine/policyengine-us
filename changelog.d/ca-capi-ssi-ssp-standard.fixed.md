@@ -1,0 +1,1 @@
+Base California CAPI on the full SSI/SSP payment standard less the monthly $10 individual or $20 couple offset, pay each eligible person (including both spouses of a noncitizen couple) on their own income, and apply spouse-to-spouse deeming.
