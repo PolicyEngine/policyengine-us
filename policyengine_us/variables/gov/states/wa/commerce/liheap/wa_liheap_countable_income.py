@@ -46,7 +46,7 @@ class wa_liheap_countable_income(Variable):
         retirement = sum(
             max_(person(source, period), 0) for source in p.retirement_sources
         )
-        unemployment = max_(person("unemployment_compensation", period), 0)
+        unemployment = max_(person("total_unemployment_compensation", period), 0)
         unearned = sum(max_(person(source, period), 0) for source in p.unearned_sources)
         personal_income = (
             earned
@@ -56,7 +56,7 @@ class wa_liheap_countable_income(Variable):
         )
         # Each SPM-level cash payment is included once, not once per member.
         # General assistance input represents other assistance, such as ABD.
-        assistance = add(spm_unit, period, ["wa_tanf", "wa_sfa"])
+        assistance = add(spm_unit, period, ["tanf", "wa_sfa"])
         support_paid = spm_unit.sum(max_(person("child_support_expense", period), 0))
         return max_(
             spm_unit.sum(personal_income) + max_(assistance, 0) - support_paid, 0

@@ -923,3 +923,72 @@
     # At the tie, 3,479.22 / 12 = 289.935 rounds to 289.94.
     # The next quotient rounds to .44, giving (1.30 - .44) * 1,000.
     wa_liheap: 860
+
+# Commerce Policy 1.1.2 counts cash actually received, not untaken entitlement.
+# No TANF: 1460.80 / 3648.10 rounds to .40; (1.30 - .40) * 1000 = 900.
+# Received TANF: 6840 / 12 / 1.36 rounds to 419.12; denominator 3228.98,
+# quotient .45, and (1.30 - .45) * 1000 = 850. SFA is a separate program.
+- name: TANF take-up changes received income once per household and the final award.
+  period: 2026
+  input:
+    people:
+      nonrecipient_parent: {age: 40, immigration_status: CITIZEN, ssi: 0}
+      nonrecipient_child: {age: 10, immigration_status: CITIZEN, ssi: 0}
+      recipient_parent: {age: 40, immigration_status: CITIZEN, ssi: 0}
+      recipient_child: {age: 10, immigration_status: CITIZEN, ssi: 0}
+    tax_units:
+      nonrecipient_family: {members: [nonrecipient_parent, nonrecipient_child]}
+      recipient_family: {members: [recipient_parent, recipient_child]}
+    spm_units:
+      nonrecipient_unit:
+        members: [nonrecipient_parent, nonrecipient_child]
+        takes_up_tanf_if_eligible: false
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1000
+      recipient_unit:
+        members: [recipient_parent, recipient_child]
+        takes_up_tanf_if_eligible: true
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1000
+    households:
+      nonrecipient_home:
+        members: [nonrecipient_parent, nonrecipient_child]
+        state_code: WA
+      recipient_home:
+        members: [recipient_parent, recipient_child]
+        state_code: WA
+  output:
+    wa_tanf: [6840, 6840]
+    tanf: [0, 6840]
+    wa_sfa: [0, 0]
+    wa_liheap_household_size: [2, 2]
+    wa_liheap_countable_income: [0, 6840]
+    wa_liheap_eligible: [true, true]
+    wa_liheap: [900, 850]
+
+# Ordinary DoD retirement is separate from pension/VA income. Apply the
+# Commerce retirement deduction: 26000 * .90 = 23400 (limit 23475).
+# Monthly income 1950 gives denominator 1698.10, quotient .86, multiplier .44.
+- name: Ordinary military retirement receives the retirement deduction before the final award.
+  period: 2026
+  input:
+    state_code: WA
+    age: 40
+    immigration_status: CITIZEN
+    is_veteran: true
+    years_in_military: 20
+    military_retirement_pay: 26000
+    pension_income: 0
+    veterans_benefits: 0
+    ssi: 0
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 1000
+  output:
+    military_retirement_income: 26000
+    pension_income: 0
+    veterans_benefits: 0
+    wa_liheap_household_size: 1
+    wa_liheap_income_limit: 23475
+    wa_liheap_countable_income: 23400
+    wa_liheap_eligible: true
+    wa_liheap: 440
