@@ -43,7 +43,14 @@ class ca_itemized_deductions_pre_limitation(Variable):
             "ca_misc_deduction",
             "ca_casualty_loss_deduction",
         ]
-        # Federal investment interest is nested in interest_deduction.
+        # Federal investment interest and mortgage insurance premiums are
+        # nested in interest_deduction. California disallows the premiums
+        # (Schedule CA line 8d), including when federal law restores them.
         return add(tax_unit, period, deductions) - add(
-            tax_unit, period, ["investment_interest_expense"]
+            tax_unit,
+            period,
+            [
+                "investment_interest_expense",
+                "deductible_mortgage_insurance_premiums",
+            ],
         )
