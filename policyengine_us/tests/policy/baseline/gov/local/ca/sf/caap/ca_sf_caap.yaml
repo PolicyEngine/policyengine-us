@@ -339,11 +339,11 @@
         spm_unit_cash_assets: 0
   output:
     # person2 is categorically CAPI-eligible (aged 68 + noncitizen + TPS is not
-    # an SSI-qualified status), but CAPI counts her pension: 2,000 - 20 =
-    # 1,980/month exceeds the 994/month payment standard, so ca_capi = 0. The
-    # receipt-based bar (ca_capi > 0) does not apply, and she stays in the
-    # CAAP budget unit (size 2, max grant 1,036), where her income fails the
-    # strict income test.
+    # an SSI-qualified status), but CAPI counts her pension: her countable
+    # pension (2,000 - 20 = 1,980/month) exceeds CAPI's payment standard, so
+    # ca_capi = 0. The receipt-based bar (ca_capi > 0) does not apply, and she
+    # stays in the CAAP budget unit (size 2, max grant 1,036), where her
+    # income fails the strict income test.
     ca_sf_caap_budget_unit_size: 2
     ca_sf_caap_countable_income: 2_000
     ca_sf_caap: 0
