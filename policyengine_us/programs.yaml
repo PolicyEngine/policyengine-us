@@ -967,7 +967,7 @@ programs:
         variable: nh_fap
         parameter_prefix: gov.states.nh.doe.fap
         verified_years: "2027"
-        notes: PY2027 regular heating only. Bedrooms alone approximate room count, and one annual $50 exclusion applies to combined interest and dividends per SPM unit. Unsubsidized heat-in-rent uses the ordinary fuel schedule without an additional reduction under an approved modeling assumption; the state's reduction is unverified and awards may be overstated. Subsidized heat-in-rent is ineligible. Unsupported fuel or heating-cost cases return zero. Earlier years are unverified historical estimates; crisis, cooling, weatherization and equipment assistance are out of scope.
+        notes: PY2027 regular heating, estimating heating cost with bedrooms as the room count; unsubsidized heat in rent receives the ordinary schedule, which may overstate awards. Crisis, cooling, weatherization and equipment assistance are out of scope.
 
   # --- SSA programs ---
   - id: ssi
