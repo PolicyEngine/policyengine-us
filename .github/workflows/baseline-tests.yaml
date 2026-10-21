@@ -50,6 +50,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Set up Python
         uses: actions/setup-python@v6
         with:

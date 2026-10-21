@@ -43,6 +43,9 @@ jobs:
         if: ${{ !cancelled() }}
         id: lint-install
         run: uv sync --locked --extra dev
+      - name: Test system certificate trust guard
+        if: ${{ !cancelled() && steps.lint-install.outcome == 'success' }}
+        run: uv run --no-sync python -m unittest discover -s .github/tests -p test_system_ca.py -v
       - name: Check formatting
         if: ${{ !cancelled() && steps.lint-install.outcome == 'success' }}
         run: uv run --no-sync ruff format --check .
@@ -118,6 +121,9 @@ jobs:
       # Load actions from the tested merge commit. Each area uses its own
       # checkout and environment; wheels still build the reviewed PR head.
       - uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Set up wheel Python
         uses: actions/setup-python@v6
         with:
@@ -131,32 +137,32 @@ jobs:
         with:
           kind: rc1
       - name: Build and retain final wheel
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         uses: ./.github/actions/candidate-wheel
         with:
           kind: final
       - name: Validate bundle metadata contract
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         uses: ./.github/actions/bundle-metadata
       # Keep running independent checks after a failure, and stop on cancel.
       # Each version resolves its own lock and installs into its own .venv.
       - name: Python 3.11
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         uses: ./.github/actions/python-compat
         with:
           python-version: "3.11"
       - name: Python 3.12
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         uses: ./.github/actions/python-compat
         with:
           python-version: "3.12"
       - name: Python 3.13
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         uses: ./.github/actions/python-compat
         with:
           python-version: "3.13"
       - name: Python 3.14
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         uses: ./.github/actions/python-compat
         with:
           python-version: "3.14"
@@ -177,6 +183,9 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 10
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Fetch base branch
         run: git fetch origin ${{ github.base_ref }} --depth=1000
       - name: Set up Python
@@ -256,6 +265,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
