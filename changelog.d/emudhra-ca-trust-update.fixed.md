@@ -1,0 +1,1 @@
+Stop trusting the compromised eMudhra intermediate certificate authorities in the locked development and CI environment: upgrade certifi to 2026.10.19 and hf-xet to 1.7.0 in uv.lock, and pin uv 0.13.4 in the workflows.

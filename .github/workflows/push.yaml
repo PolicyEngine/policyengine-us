@@ -21,7 +21,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Check committed registry lock
         run: python .github/release_lock.py --committed
   ReleaseLockTests:
@@ -38,7 +38,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Test guard without importing the country model
         env:
           RELEASE_LOCK_REAL_UV: "1"
@@ -56,7 +56,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Install dependencies
         run: uv sync --locked --extra dev
       - name: Check formatting
@@ -111,7 +111,7 @@ jobs:
         if: steps.head.outputs.current == 'true'
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Set up Python
         if: steps.head.outputs.current == 'true'
         uses: actions/setup-python@v6
@@ -221,7 +221,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
@@ -252,7 +252,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
@@ -312,7 +312,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
@@ -352,7 +352,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
@@ -421,7 +421,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
@@ -477,7 +477,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
@@ -530,7 +530,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Check committed registry lock before publication
         run: python .github/release_lock.py --committed
       - name: Install package
