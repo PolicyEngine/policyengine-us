@@ -1,0 +1,30 @@
+- name: Case 1, default ky_other_additions is zero
+  period: 2024
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_other_additions: 0
+    ky_additions: 0
+    ky_agi: 50_000
+
+- name: Case 2, ky_other_additions increases KY AGI
+  period: 2024
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+        ky_other_additions: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_other_additions: 2_000
+    ky_additions: 2_000
+    ky_agi: 52_000
