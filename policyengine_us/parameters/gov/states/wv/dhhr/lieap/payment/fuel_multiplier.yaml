@@ -1,0 +1,23 @@
+# bulk_fuel covers the source's LPG, coal, wood, fuel oil and kerosene rows.
+# These are total payment multipliers, as confirmed by the printed products;
+# do not add the base amount again. No multiplier is inferred for other fuels.
+description: West Virginia multiplies regular base payments by these heating-source factors under the Low Income Energy Assistance Program.
+electricity:
+  values:
+    2025-10-01: 1.75
+natural_gas:
+  values:
+    2025-10-01: 1.198
+bulk_fuel:
+  values:
+    2025-10-01: 1.089
+metadata:
+  propagate_metadata_to_children: true
+  unit: /1
+  period: year
+  label: West Virginia LIEAP heating-source payment multiplier
+  reference:
+    - title: "West Virginia Income Maintenance Manual, section 21.4.11.B #page 1754-1755"
+      href: https://bfa.wv.gov/media/39948/download?inline=#page=1754
+    - title: "West Virginia Income Maintenance Manual, October 2026 edition, section 21.4.11.B #page 1757-1758"
+      href: https://bfa.wv.gov/media/40005/download?inline=#page=1757

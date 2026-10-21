@@ -1,0 +1,104 @@
+# Current Income Maintenance Manual, section 21.3.1.A, physical page 1726.
+# https://bfa.wv.gov/media/40005/download?inline=#page=1726
+
+- name: Case 1, the FY2026 ceiling is inclusive with qualified and state guards.
+  period: 2026
+  # One qualified person has a $2,454 monthly ceiling, or $29,448 annually.
+  # The second row earns $2,454.01 per month. No qualified member must fail
+  # even when both countable income and the household limit are zero.
+  input:
+    state_code: [WV, WV, WV, OH]
+    age: [40, 40, 40, 40]
+    is_citizen_or_legal_immigrant: [true, true, false, true]
+    employment_income: [29_448, 29_448.12, 0, 0]
+  output:
+    wv_lieap_income_eligible: [true, false, false, false]
+
+- name: Case 2, the FY2027 ceiling remains inclusive without changing the formula.
+  period: 2027
+  # The requested-year one-person limit is $2,550 monthly, or $30,600 annually.
+  input:
+    state_code: [WV, WV]
+    age: [40, 40]
+    is_citizen_or_legal_immigrant: [true, true]
+    employment_income: [30_600, 30_600.12]
+  output:
+    wv_lieap_income_eligible: [true, false]
+
+- name: Case 3, reported SNAP TANF or SSI receipt does not bypass the ceiling.
+  period: 2026
+  # Every two-person group has $40,000 wages, above its $3,209 * 12 = $38,508
+  # ceiling. Reported receipt facts do not override the manual's income test.
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 40_000
+      person2:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 40_000
+      person4:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+      person5:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 40_000
+      person6:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        receives_ssi:
+          2026-01: true
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        receives_snap:
+          2026-01: true
+      spm_unit2:
+        members: [person3, person4]
+        receives_tanf:
+          2026-01: true
+      spm_unit3:
+        members: [person5, person6]
+    households:
+      household1: {members: [person1, person2], state_code: WV}
+      household2: {members: [person3, person4], state_code: WV}
+      household3: {members: [person5, person6], state_code: WV}
+  output:
+    wv_lieap_income_eligible: [false, false, false]
+
+- name: Case 4, nonqualified members income counts without increasing the limit.
+  period: 2026
+  # Both groups have $36,000 wages. With one qualified person, the limit is
+  # $29,448; with two qualified people, the limit is $38,508.
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 18_000
+      person2:
+        age: 40
+        is_citizen_or_legal_immigrant: false
+        employment_income: 18_000
+      person3:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 18_000
+      person4:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        employment_income: 18_000
+    spm_units:
+      spm_unit1: {members: [person1, person2]}
+      spm_unit2: {members: [person3, person4]}
+    households:
+      household1: {members: [person1, person2], state_code: WV}
+      household2: {members: [person3, person4], state_code: WV}
+  output:
+    wv_lieap_income_eligible: [false, true]

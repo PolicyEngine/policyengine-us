@@ -1,0 +1,222 @@
+# Use the first matching inclusive published upper bound with calc(right=True).
+# The user approved ordered upper bounds and continuous monthly income on
+# October 20, 2026, resolving overlapping From values and gaps between dollars.
+# Retain every printed upper bound, including irregular larger-family intervals.
+# Band 40 is the sentinel above the final published row, not another payment.
+description: West Virginia determines this zero-based payment row from monthly countable income under the Low Income Energy Assistance Program.
+brackets:
+  - threshold:
+      2025-10-01: -.inf
+    amount:
+      2025-10-01: 0
+  - threshold:
+      2025-10-01: 2_077
+      2026-10-01: 2_157
+    amount:
+      2025-10-01: 1
+  - threshold:
+      2025-10-01: 2_454
+      2026-10-01: 2_550
+    amount:
+      2025-10-01: 2
+  - threshold:
+      2025-10-01: 2_832
+      2026-10-01: 2_942
+    amount:
+      2025-10-01: 3
+  - threshold:
+      2025-10-01: 3_209
+      2026-10-01: 3_335
+    amount:
+      2025-10-01: 4
+  - threshold:
+      2025-10-01: 3_587
+      2026-10-01: 3_427
+    amount:
+      2025-10-01: 5
+  - threshold:
+      2025-10-01: 3_965
+      2026-10-01: 4_120
+    amount:
+      2025-10-01: 6
+  - threshold:
+      2025-10-01: 4_343
+      2026-10-01: 4_512
+    amount:
+      2025-10-01: 7
+  - threshold:
+      2025-10-01: 4_720
+      2026-10-01: 4_904
+    amount:
+      2025-10-01: 8
+  - threshold:
+      2025-10-01: 5_099
+      2026-10-01: 5_296
+    amount:
+      2025-10-01: 9
+  - threshold:
+      2025-10-01: 5_475
+      2026-10-01: 5_689
+    amount:
+      2025-10-01: 10
+  - threshold:
+      2025-10-01: 5_853
+      2026-10-01: 6_081
+    amount:
+      2025-10-01: 11
+  - threshold:
+      2025-10-01: 6_230
+      2026-10-01: 6_474
+    amount:
+      2025-10-01: 12
+  - threshold:
+      2025-10-01: 6_301
+      2026-10-01: 6_548
+    amount:
+      2025-10-01: 13
+  - threshold:
+      2025-10-01: 6_372
+      2026-10-01: 6_621
+    amount:
+      2025-10-01: 14
+  - threshold:
+      2025-10-01: 6_572
+      2026-10-01: 6_793
+    amount:
+      2025-10-01: 15
+  - threshold:
+      2025-10-01: 6_769
+      2026-10-01: 6_965
+    amount:
+      2025-10-01: 16
+  - threshold:
+      2025-10-01: 7_113
+      2026-10-01: 7_320
+    amount:
+      2025-10-01: 17
+  - threshold:
+      2025-10-01: 7_456
+      2026-10-01: 7_675
+    amount:
+      2025-10-01: 18
+  - threshold:
+      2025-10-01: 7_800
+      2026-10-01: 8_030
+    amount:
+      2025-10-01: 19
+  - threshold:
+      2025-10-01: 8_144
+      2026-10-01: 8_385
+    amount:
+      2025-10-01: 20
+  - threshold:
+      2025-10-01: 8_477
+      2026-10-01: 8_740
+    amount:
+      2025-10-01: 21
+  - threshold:
+      2025-10-01: 8_831
+      2026-10-01: 9_095
+    amount:
+      2025-10-01: 22
+  - threshold:
+      2025-10-01: 9_175
+      2026-10-01: 9_805
+    amount:
+      2025-10-01: 23
+  - threshold:
+      2025-10-01: 9_519
+      2026-10-01: 10_160
+    amount:
+      2025-10-01: 24
+  - threshold:
+      2025-10-01: 9_863
+      2026-10-01: 10_515
+    amount:
+      2025-10-01: 25
+  - threshold:
+      2025-10-01: 10_206
+      2026-10-01: 10_870
+    amount:
+      2025-10-01: 26
+  - threshold:
+      2025-10-01: 10_550
+      2026-10-01: 11_225
+    amount:
+      2025-10-01: 27
+  - threshold:
+      2025-10-01: 10_894
+      2026-10-01: 11_580
+    amount:
+      2025-10-01: 28
+  - threshold:
+      2025-10-01: 11_238
+      2026-10-01: 11_935
+    amount:
+      2025-10-01: 29
+  - threshold:
+      2025-10-01: 11_581
+      2026-10-01: 12_290
+    amount:
+      2025-10-01: 30
+  - threshold:
+      2025-10-01: 11_925
+      2026-10-01: 12_645
+    amount:
+      2025-10-01: 31
+  - threshold:
+      2025-10-01: 12_269
+      2026-10-01: 13_000
+    amount:
+      2025-10-01: 32
+  - threshold:
+      2025-10-01: 12_956
+      2026-10-01: 13_355
+    amount:
+      2025-10-01: 33
+  - threshold:
+      2025-10-01: 13_300
+      2026-10-01: 13_710
+    amount:
+      2025-10-01: 34
+  - threshold:
+      2025-10-01: 13_644
+      2026-10-01: 14_065
+    amount:
+      2025-10-01: 35
+  - threshold:
+      2025-10-01: 13_988
+      2026-10-01: 14_420
+    amount:
+      2025-10-01: 36
+  - threshold:
+      2025-10-01: 14_331
+      2026-10-01: 14_775
+    amount:
+      2025-10-01: 37
+  - threshold:
+      2025-10-01: 14_675
+      2026-10-01: 15_130
+    amount:
+      2025-10-01: 38
+  - threshold:
+      2025-10-01: 15_019
+      2026-10-01: 15_485
+    amount:
+      2025-10-01: 39
+  - threshold:
+      2025-10-01: 15_363
+      2026-10-01: 15_840
+    amount:
+      2025-10-01: 40
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: month
+  label: West Virginia LIEAP monthly income band index
+  reference:
+    - title: "West Virginia Income Maintenance Manual, Appendix A #page 1772-1773"
+      href: https://bfa.wv.gov/media/39948/download?inline=#page=1772
+    - title: "West Virginia Income Maintenance Manual, October 2026 edition, Appendix A #page 1775-1776"
+      href: https://bfa.wv.gov/media/40005/download?inline=#page=1775

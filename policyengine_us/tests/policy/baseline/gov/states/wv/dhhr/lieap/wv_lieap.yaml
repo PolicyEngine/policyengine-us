@@ -1,0 +1,313 @@
+# Published regular LIEAP tables and multiplication examples, not crisis caps.
+# FY2026: PDF pages 1754-1755,1772-1773
+# https://bfa.wv.gov/media/39948/download?inline=#page=1754
+# FY2027: PDF pages 1757-1758,1775-1776
+# https://bfa.wv.gov/media/40005/download?inline=#page=1757
+# User-approved convention: continuous published upper bounds, no income rounding.
+
+- name: Case 1, zero income receives each supported fuel amount without a bill cap.
+  period: 2026
+  absolute_error_margin: 0.01
+  # One qualified person has base $160: electricity * 1.75 = $280;
+  # gas * 1.198 = $191.68; the other five published fuels * 1.089 = $174.24.
+  # Unsupported fuels have no modeled award, not a legal eligibility denial.
+  input:
+    state_code: [WV, WV, WV, WV, WV, WV, WV, WV, WV, WV, WV]
+    is_citizen_or_legal_immigrant: [true, true, true, true, true, true,
+                                     true, true, true, true, true]
+    heating_type: [ELECTRICITY, NATURAL_GAS, PROPANE, FUEL_OIL, KEROSENE,
+                   WOOD, COAL, UNSPECIFIED, NONE, SOLAR, OTHER]
+    pre_subsidy_electricity_expense: [1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0]
+    gas_expense: [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    bottled_gas_expense: [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+    fuel_oil_expense: [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0]
+    wood_expense: [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+    coal_expense: [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+    other_heating_fuel_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+  output:
+    wv_lieap: [280, 191.68, 174.24, 174.24, 174.24, 174.24, 174.24,
+               0, 0, 0, 0]
+
+- name: Case 2, FY2026 upper bounds apply continuously with an inclusive ceiling.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Monthly wages: 2077, 2077.25, 2077.50, 2078, 2454 and 2454.01.
+  # Only exact 2077 uses base160; the next four use155. Last row is over limit.
+  input:
+    state_code: [WV, WV, WV, WV, WV, WV]
+    is_citizen_or_legal_immigrant: [true, true, true, true, true, true]
+    employment_income: [24_924, 24_927, 24_930, 24_936, 29_448, 29_448.12]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY,
+                   ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+  output:
+    wv_lieap: [280, 271.25, 271.25, 271.25, 271.25, 0]
+
+- name: Case 3, FY2027 uses its own upper bounds and inclusive income ceiling.
+  period: 2027
+  absolute_error_margin: 0.01
+  # Monthly wages: 2157, 2157.25, 2157.50, 2158, 2550 and 2550.01.
+  input:
+    state_code: [WV, WV, WV, WV, WV, WV]
+    is_citizen_or_legal_immigrant: [true, true, true, true, true, true]
+    employment_income: [25_884, 25_887, 25_890, 25_896, 30_600, 30_600.12]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY,
+                   ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+  output:
+    wv_lieap: [280, 271.25, 271.25, 271.25, 271.25, 0]
+
+- name: Case 4, the literal FY2027 third-person upper bound is not smoothed.
+  period: 2027
+  absolute_error_margin: 0.01
+  # Monthly3400 is within the printed3427 upper bound: base150 *1.089=163.35.
+  # Monthly3430 is in the next row: base145 *1.089=157.905, rounded157.91.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 40_800}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true}
+      person3: {age: 40, is_citizen_or_legal_immigrant: true}
+      person4: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 41_160}
+      person5: {age: 40, is_citizen_or_legal_immigrant: true}
+      person6: {age: 40, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+      spm_unit2:
+        members: [person4, person5, person6]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: WV
+      household2:
+        members: [person4, person5, person6]
+        state_code: WV
+  output:
+    wv_lieap: [163.35, 157.91]
+
+- name: Case 5, the literal FY2026 larger-family upper bound is not smoothed.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Monthly8477 uses band20/base110; monthly8480 uses band21/base105.
+  # Both are below the eleven-person8831 monthly ceiling.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 101_724}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true}
+      person3: {age: 40, is_citizen_or_legal_immigrant: true}
+      person4: {age: 40, is_citizen_or_legal_immigrant: true}
+      person5: {age: 40, is_citizen_or_legal_immigrant: true}
+      person6: {age: 40, is_citizen_or_legal_immigrant: true}
+      person7: {age: 40, is_citizen_or_legal_immigrant: true}
+      person8: {age: 40, is_citizen_or_legal_immigrant: true}
+      person9: {age: 40, is_citizen_or_legal_immigrant: true}
+      person10: {age: 40, is_citizen_or_legal_immigrant: true}
+      person11: {age: 40, is_citizen_or_legal_immigrant: true}
+      person12: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 101_760}
+      person13: {age: 40, is_citizen_or_legal_immigrant: true}
+      person14: {age: 40, is_citizen_or_legal_immigrant: true}
+      person15: {age: 40, is_citizen_or_legal_immigrant: true}
+      person16: {age: 40, is_citizen_or_legal_immigrant: true}
+      person17: {age: 40, is_citizen_or_legal_immigrant: true}
+      person18: {age: 40, is_citizen_or_legal_immigrant: true}
+      person19: {age: 40, is_citizen_or_legal_immigrant: true}
+      person20: {age: 40, is_citizen_or_legal_immigrant: true}
+      person21: {age: 40, is_citizen_or_legal_immigrant: true}
+      person22: {age: 40, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+      spm_unit2:
+        members: [person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        state_code: WV
+      household2:
+        members: [person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22]
+        state_code: WV
+  output:
+    wv_lieap: [192.5, 183.75]
+
+- name: Case 6, a reachable bulk-fuel half cent rounds up for five people.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Monthly5300 is below the five-person5475 ceiling and uses base135.
+  # The printed135 *1.089 =147.015 rounds to147.02, not147.01.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 63_600}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true}
+      person3: {age: 40, is_citizen_or_legal_immigrant: true}
+      person4: {age: 40, is_citizen_or_legal_immigrant: true}
+      person5: {age: 40, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5]
+        state_code: WV
+  output:
+    wv_lieap: 147.02
+
+- name: Case 7, twenty people reach base65 while twenty-one remains unmodeled.
+  period: 2026
+  absolute_error_margin: 0.001
+  # Twenty people at the15019 monthly ceiling use band38/base65.
+  # 65 *1.089 =70.785 rounds to70.79. Twenty-one with zero income is
+  # within the ordinary income limit but outside modeled payment-table coverage;
+  # zero for that row is not a legal ineligibility determination.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, employment_income: 180_228}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true}
+      person3: {age: 40, is_citizen_or_legal_immigrant: true}
+      person4: {age: 40, is_citizen_or_legal_immigrant: true}
+      person5: {age: 40, is_citizen_or_legal_immigrant: true}
+      person6: {age: 40, is_citizen_or_legal_immigrant: true}
+      person7: {age: 40, is_citizen_or_legal_immigrant: true}
+      person8: {age: 40, is_citizen_or_legal_immigrant: true}
+      person9: {age: 40, is_citizen_or_legal_immigrant: true}
+      person10: {age: 40, is_citizen_or_legal_immigrant: true}
+      person11: {age: 40, is_citizen_or_legal_immigrant: true}
+      person12: {age: 40, is_citizen_or_legal_immigrant: true}
+      person13: {age: 40, is_citizen_or_legal_immigrant: true}
+      person14: {age: 40, is_citizen_or_legal_immigrant: true}
+      person15: {age: 40, is_citizen_or_legal_immigrant: true}
+      person16: {age: 40, is_citizen_or_legal_immigrant: true}
+      person17: {age: 40, is_citizen_or_legal_immigrant: true}
+      person18: {age: 40, is_citizen_or_legal_immigrant: true}
+      person19: {age: 40, is_citizen_or_legal_immigrant: true}
+      person20: {age: 40, is_citizen_or_legal_immigrant: true}
+      person21: {age: 40, is_citizen_or_legal_immigrant: true}
+      person22: {age: 40, is_citizen_or_legal_immigrant: true}
+      person23: {age: 40, is_citizen_or_legal_immigrant: true}
+      person24: {age: 40, is_citizen_or_legal_immigrant: true}
+      person25: {age: 40, is_citizen_or_legal_immigrant: true}
+      person26: {age: 40, is_citizen_or_legal_immigrant: true}
+      person27: {age: 40, is_citizen_or_legal_immigrant: true}
+      person28: {age: 40, is_citizen_or_legal_immigrant: true}
+      person29: {age: 40, is_citizen_or_legal_immigrant: true}
+      person30: {age: 40, is_citizen_or_legal_immigrant: true}
+      person31: {age: 40, is_citizen_or_legal_immigrant: true}
+      person32: {age: 40, is_citizen_or_legal_immigrant: true}
+      person33: {age: 40, is_citizen_or_legal_immigrant: true}
+      person34: {age: 40, is_citizen_or_legal_immigrant: true}
+      person35: {age: 40, is_citizen_or_legal_immigrant: true}
+      person36: {age: 40, is_citizen_or_legal_immigrant: true}
+      person37: {age: 40, is_citizen_or_legal_immigrant: true}
+      person38: {age: 40, is_citizen_or_legal_immigrant: true}
+      person39: {age: 40, is_citizen_or_legal_immigrant: true}
+      person40: {age: 40, is_citizen_or_legal_immigrant: true}
+      person41: {age: 40, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+      spm_unit2:
+        members: [person21, person22, person23, person24, person25, person26, person27, person28, person29, person30, person31, person32, person33, person34, person35, person36, person37, person38, person39, person40, person41]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20]
+        state_code: WV
+      household2:
+        members: [person21, person22, person23, person24, person25, person26, person27, person28, person29, person30, person31, person32, person33, person34, person35, person36, person37, person38, person39, person40, person41]
+        state_code: WV
+  output:
+    wv_lieap: [70.79, 0]
+
+- name: Case 8, represented heating responsibility allows direct and stated costs.
+  period: 2027
+  absolute_error_margin: 0.01
+  # Rows1-2 pay direct heat, including a subsidized tenant; no bill cap applies.
+  # Row4 bundled rent has no responsibility override and remains unmodeled.
+  # Known-obligation overrides are isolated in Case9 so no input on this
+  # variable suppresses its derived default for the other units in this case.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true}
+      person3: {age: 40, is_citizen_or_legal_immigrant: true}
+      person4: {age: 40, is_citizen_or_legal_immigrant: true}
+      person5: {age: 40, is_citizen_or_legal_immigrant: true}
+      person6: {age: 40, is_citizen_or_legal_immigrant: false}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1
+      spm_unit2:
+        members: [person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        receives_housing_assistance: true
+      spm_unit3:
+        members: [person3]
+        heating_type: ELECTRICITY
+      spm_unit4:
+        members: [person4]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        receives_housing_assistance: true
+        heat_expense_included_in_rent: true
+      spm_unit5:
+        members: [person5]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+      spm_unit6:
+        members: [person6]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household1: {members: [person1], state_code: WV}
+      household2: {members: [person2], state_code: WV}
+      household3: {members: [person3], state_code: WV}
+      household4: {members: [person4], state_code: WV}
+      household5: {members: [person5], state_code: OH}
+      household6: {members: [person6], state_code: WV}
+  output:
+    wv_lieap: [280, 280, 0, 0, 0, 0]
+
+- name: Case 9, known responsibility for auxiliary and stated rent costs is supplied.
+  period: 2027
+  absolute_error_margin: 0.01
+  # The FY2027 manual expressly recognizes auxiliary electricity for self-cut
+  # wood. A separately documented heating charge in rent also qualifies.
+  # These existing responsibility facts are supplied only in this case; normal
+  # bill-based defaults remain independently exercised in Case8.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true}
+      person2: {age: 40, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: WOOD
+        wood_expense: 0
+        pre_subsidy_electricity_expense: 200
+        has_heating_expense: true
+      spm_unit2:
+        members: [person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 200
+        heat_expense_included_in_rent: true
+        has_heating_expense: true
+    households:
+      household1: {members: [person1], state_code: WV}
+      household2: {members: [person2], state_code: WV}
+  output:
+    wv_lieap: [174.24, 280]
