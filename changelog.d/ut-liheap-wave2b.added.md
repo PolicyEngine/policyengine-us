@@ -1,1 +1,1 @@
-Add Utah HEAT regular heating assistance, with household eligibility, countable income, fuel and dwelling standards, and targeted supplements verified for the March 2026 policy snapshot.
+Add Utah HEAT (ut_heat): 2026 regular heating benefit from energy-burden points and targeted supplements with the 150% federal poverty guideline income test.
