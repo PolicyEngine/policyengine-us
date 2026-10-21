@@ -93,16 +93,16 @@
   output:
     is_optional_senior_or_disabled_asset_eligible: [false, false]
 
-# Missouri's 2026 limits are 5,726 for one person and 11,452 for a couple.
-# One spouse holds more than the individual limit, but the couple's
-# combined resources are tested against the couple limit.
+# Missouri's limits from July 1, 2025 are 6,068.80 for one person and
+# 12,137.55 for a couple. One spouse holds more than the individual limit,
+# but the couple's combined resources are tested against the couple limit.
 - name: Missouri spouse over the individual limit is eligible when combined resources are under the couple limit
   period: 2026
   input:
     people:
       person1:
         age: 70
-        ssi_countable_resources: 6_000
+        ssi_countable_resources: 6_500
       person2:
         age: 68
         ssi_countable_resources: 5_000
@@ -118,7 +118,7 @@
         members: [person1, person2]
         state_code: MO
   output:
-    # 11,000 combined is under 11,452.
+    # 11,500 combined is under 12,137.55.
     is_optional_senior_or_disabled_asset_eligible: [true, true]
 
 - name: Missouri couple at the couple resource limit is ineligible
@@ -130,7 +130,7 @@
         ssi_countable_resources: 6_000
       person2:
         age: 68
-        ssi_countable_resources: 5_452
+        ssi_countable_resources: 6_137.55
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -143,5 +143,60 @@
         members: [person1, person2]
         state_code: MO
   output:
-    # 11,452 combined is not under the 11,452 couple limit.
+    # 12,137.55 combined is not under the 12,137.55 couple limit.
     is_optional_senior_or_disabled_asset_eligible: [false, false]
+
+- name: Missouri's July 2026 individual limit applies from 2027.
+  period: 2027
+  input:
+    age: 70
+    ssi_countable_resources: 6_200
+    state_code: MO
+  output:
+    # 6,200 is under the 6,220.50 limit effective July 1, 2026.
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: Arkansas uses the Medicare Savings Program individual resource limit.
+  period: 2026
+  input:
+    age: 70
+    ssi_countable_resources: 9_900
+    state_code: AR
+  output:
+    # 9,900 is under the 2026 limit of 9,950.
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: Oklahoma uses the Medicare Savings Program couple resource limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 7_450
+      person2:
+        age: 68
+        ssi_countable_resources: 7_450
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # 14,900 combined is under the 2026 couple limit of 14,910.
+    is_optional_senior_or_disabled_asset_eligible: [true, true]
+
+- name: South Carolina uses the 2025 Medicare Savings Program individual resource limit.
+  period: 2025
+  input:
+    age: 70
+    ssi_countable_resources: 9_600
+    state_code: SC
+  output:
+    # 9,600 is under the 2025 limit of 9,660.
+    is_optional_senior_or_disabled_asset_eligible: true

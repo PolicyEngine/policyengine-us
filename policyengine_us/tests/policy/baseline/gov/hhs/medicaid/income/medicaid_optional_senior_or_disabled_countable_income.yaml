@@ -105,3 +105,36 @@
     # rounding, 1,131.75 would exceed the $1,131 standard.
     medicaid_optional_senior_or_disabled_countable_income: 13_572
     is_optional_senior_or_disabled_income_eligible: true
+
+- name: California subtracts only the 20-dollar any-income deduction from December 2020.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    ssi_marital_unearned_income: 12_000
+    state_code: CA
+  output:
+    # DHCS ACWDL 20-24: (1,000 - 20) x 12 = 11,760.
+    medicaid_optional_senior_or_disabled_countable_income: 11_760
+
+- name: Connecticut subtracts its 2026 disregard from unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    ssi_marital_unearned_income: 12_000
+    state_code: CT
+  output:
+    # (1,000 - 562) x 12 = 5,256.
+    medicaid_optional_senior_or_disabled_countable_income: 5_256
+
+- name: South Carolina subtracts a 50-dollar general disregard.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    ssi_marital_unearned_income: 12_000
+    state_code: SC
+  output:
+    # (1,000 - 50) x 12 = 11,400.
+    medicaid_optional_senior_or_disabled_countable_income: 11_400

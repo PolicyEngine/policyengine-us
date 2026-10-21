@@ -1,4 +1,4 @@
-description: Asset limit (of SSI countable assets) for an individual to qualify for Medicaid under the optional senior or disabled pathway.
+description: Asset limit (of SSI countable assets) for an individual to qualify for Medicaid under the optional senior or disabled pathway. States whose limit is the Medicare Savings Program resource limit are listed in uses_msp_limit and omitted here.
 metadata:
   unit: currency-USD
   period: month
@@ -12,6 +12,18 @@ metadata:
       href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/Pages/Asset-Limit-Changes-for-Non-MAGI-Medi-Cal.aspx
     - title: "California DHCS All County Welfare Directors Letter 25-14 (reinstatement of the non-MAGI Medi-Cal asset limit)"
       href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/25-14.pdf
+    - title: Missouri DSS MO HealthNet for the Aged, Blind and Disabled Appendix J - Eligibility Standards for Non-MAGI Programs
+      href: https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=1
+    - title: Missouri Revised Statutes 208.010.2(7)
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=208.010
+    - title: 13 Missouri Code of State Regulations 40-8.020(4)
+      href: https://www.sos.mo.gov/CMSImages/AdRules/csr/current/13csr/13c40-8.pdf#page=1
+    - title: Missouri DHSS, Medicaid Spend Down Limit Changes (effective July 1, 2023)
+      href: https://health.mo.gov/care-providing/long-term-care/medicaid-spend-down-limit-changes
+    - title: Missouri DHSS, Medicaid Resource Limit/Spenddown Amount (effective July 1, 2024)
+      href: https://health.mo.gov/care-providing/long-term-care/medicaid-resource-limitspenddown-amount
+    - title: Missouri DHSS, Resource Limit/Spenddown Amount (effective July 1, 2025)
+      href: https://health.mo.gov/care-providing/long-term-care/resource-limitspenddown-amount
 
 AL:
   2015-01-01: 2_000
@@ -19,9 +31,6 @@ AK:
   2015-01-01: 2_000
 AZ:
   2015-01-01: .inf
-AR:
-  2015-01-01: 7_560
-  2024-01-01: 9_430
 CA:
   2015-01-01: 2_000
   2024-01-01: .inf
@@ -71,7 +80,10 @@ MS:
   2015-01-01: 2_000
 MO:
   2015-01-01: 3_000
-  2024-01-01: 5_726
+  2023-07-01: 5_726
+  2024-07-01: 5_909.25
+  2025-07-01: 6_068.8
+  2026-07-01: 6_220.5
 MT:
   2015-01-01: 2_000
 NE:
@@ -93,18 +105,12 @@ ND:
   2015-01-01: 3_000
 OH:
   2015-01-01: 2_000
-OK:
-  2015-01-01: 2_000
-  2024-01-01: 9_430
 OR:
   2015-01-01: 2_000
 PA:
   2015-01-01: 2_000
 RI:
   2015-01-01: 4_000
-SC:
-  2015-01-01: 7_560
-  2024-01-01: 9_430
 SD:
   2015-01-01: 2_000
 TN:

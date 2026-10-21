@@ -23,10 +23,14 @@ class is_optional_senior_or_disabled_asset_eligible(Variable):
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled
 
         #  Asset limit
-        asset_limit = where(
+        state_limit = where(
             is_couple,
             p.assets.limit.couple[state],
             p.assets.limit.individual[state],
         )
+        msp = parameters(period).gov.hhs.medicare.savings_programs.eligibility.asset
+        msp_limit = where(is_couple, msp.couple, msp.individual)
+        uses_msp_limit = p.assets.limit.uses_msp_limit[state].astype(bool)
+        asset_limit = where(uses_msp_limit, msp_limit, state_limit)
 
         return assets < asset_limit
