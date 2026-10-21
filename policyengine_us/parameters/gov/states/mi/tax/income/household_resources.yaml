@@ -2,7 +2,7 @@ description: Michigan accounts for the following income sources as the household
 values:
   2021-01-01:
     # Each source counts for the claimant and spouse only (MCL 206.508(3)),
-    # except those in household_resources_all_members (lines 21, 22 and 27).
+    # except those in household_resources_all_members (lines 22 and 27).
     # MI-1040CR line 14, wages, including strike pay.
     - irs_employment_income
     - strike_benefits
@@ -32,7 +32,8 @@ values:
     - alimony_income
     - gambling_winnings
     # MI-1040CR line 21, Social Security, SSI and railroad retirement
-    # benefits, including amounts received for dependents.
+    # benefits: the claimant's and spouse's own. A dependent's benefit is
+    # the dependent's, even when the claimant is the representative payee.
     - social_security
     - ssi
     - railroad_benefits

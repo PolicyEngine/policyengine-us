@@ -69,11 +69,22 @@ class mi_household_resources(Variable):
         # irs_gross_income. A tax-unit-level source (other_net_gain,
         # filer_loss_limited_net_capital_gains) already describes the
         # filer's return.
-        # The sources in household_resources_all_members are amounts the
-        # claimant receives for others in the household (lines 21, 22 and
-        # 27), so they are summed over every member. So is a source defined
-        # for a larger group than the tax unit, such as tanf for the SPM
-        # unit: add gives the tax unit its members' shares.
+        # That includes Social Security, SSI and railroad retirement
+        # benefits (line 21). The beneficiary receives them: a claimant who
+        # is a minor child's or dependent adult's representative payee holds
+        # the benefit for the beneficiary, who is not a person of the
+        # household. Revenue Administrative Bulletin 2015-18 also counts
+        # benefits "received by the taxpayer, the taxpayer's spouse or minor
+        # children", and the line 21 instructions include "amounts received
+        # for minor children or other dependent adults who live with you";
+        # the statute's definition of household governs both.
+        # The sources in household_resources_all_members are payments made
+        # to the claimant for the household: child support and foster care
+        # payments (line 22) and public assistance grants (line 27), whose
+        # records may sit on the child they are paid for. They are summed
+        # over every member. So is a source defined for a larger group than
+        # the tax unit, such as tanf for the SPM unit: add gives the tax unit
+        # its members' shares.
         all_members = p.household_resources_all_members
 
         business_income = 0
@@ -129,7 +140,11 @@ class mi_household_resources(Variable):
         # Line 31: "insurance premiums you paid for yourself and your
         # family". MCL 206.510(1) lets a person deduct "the amount that
         # person paid in premiums ... for that insurance plan for the
-        # person's family". A premium on any member's record is read as one
-        # the claimant or spouse paid for the family's coverage.
-        health_insurance_premiums = add(tax_unit, period, ["health_insurance_premiums"])
+        # person's family". health_insurance_premiums records the premiums
+        # each person paid, so the claimant's and spouse's amounts, which
+        # may include family coverage they bought, come off. A premium a
+        # dependent paid is not one the claimant or spouse paid.
+        health_insurance_premiums = tax_unit_non_dep_add(
+            tax_unit, period, ["health_insurance_premiums"]
+        )
         return max_(0, total - adjustments - health_insurance_premiums)
