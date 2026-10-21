@@ -13,7 +13,7 @@ class ca_cc_general_assistance_personal_property_eligible(Variable):
         # cash < $50) are listed in the GA-80 brochure but are not modeled
         # separately; we treat `personal_property` as the net countable
         # non-cash asset figure.
-        "https://ehsd.org/wp-content/uploads/2024/08/GA-Brochure_ENGLISH_July2024_FA_Digital.pdf#page=2",
+        "https://ehsd.org/wp-content/uploads/2025/05/GA-Brochure_ENGLISH_Apr2025_FA_Digital.pdf#page=2",
     )
 
     def formula(spm_unit, period, parameters):

@@ -1,7 +1,9 @@
 # YAML regression-test fixture (policyengine-us partner edge cases).
 # CO Old Age Pension (9 CCR 2503-5), 2026 parameters: age 60+, resource limit
-# 2,000 single / 3,000 couple; benefit = 1,032/month grant standard (2026, 9 CCR 2503-5 Sec. 3.530(A)) minus
-# (SSI received + SSI-countable income), annualized.
+# 2,000 single / 3,000 couple; OAP counts every client's income under §3.533.
+# Benefit = 1,032/month grant standard (§3.530(A)) minus OAP countable income,
+# annualized. From 2026, positive grants below $189/month are raised to that
+# floor (§3.530(C)).
 - name: co_oap_age_60_resources_at_2000_limit_full_grant (co)
   period: 2026
   absolute_error_margin: 0.1
@@ -57,10 +59,9 @@
         # Age 60 (below SSI aged threshold 65, not disabled -> no SSI) and no
         # income -> full grant standard: 1,032 x 12 = 12,384.
         co_oap: 12_384.0
-# Note: for non-SSI-eligible people (e.g. ages 60-64, non-disabled),
-# ssi_countable_income is zeroed by the model, so their earnings do not
-# reduce OAP; the income offset is only exercised through SSI-eligible
-# recipients (aged 65+ or disabled).
+# OAP counts earnings under 9 CCR 2503-5 §3.533 even for non-SSI-eligible
+# people (e.g. ages 60-64, non-disabled). From 2026, positive grants below
+# $189/month are raised to that floor (§3.530(C)).
 - name: co_oap_age_65_earnings_reduce_grant_partial (co)
   period: 2026
   absolute_error_margin: 0.1
@@ -116,8 +117,8 @@
         # SSI-countable earned income: (2,080/mo - 20 general - 65 earned
         # disregard) / 2 = 997.50/mo = 11,970/yr; that exceeds the 994/mo
         # SSI FBR, so SSI = 0, but it is below the 1,032/mo OAP standard.
-        # OAP = 12,384 - 11,970 = 414.
-        co_oap: 414.0
+        # 9 CCR 2503-5 §3.530(C): $189/month floor -> $2,268/year.
+        co_oap: 2_268.0
 - name: co_oap_age_60_resources_above_2000_limit_ineligible (co)
   period: 2026
   absolute_error_margin: 0.1

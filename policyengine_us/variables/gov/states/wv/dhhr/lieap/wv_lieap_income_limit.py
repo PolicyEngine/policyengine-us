@@ -11,9 +11,11 @@ class wv_lieap_income_limit(Variable):
     definition_period = YEAR
     defined_for = StateCode.WV
     reference = (
-        "https://liheapch.acf.gov/docs/2026/state-plans/WV_Plan_2026.pdf#page=9,11",
+        # PDF pages 9,11
+        "https://liheapch.acf.gov/docs/2026/state-plans/WV_Plan_2026.pdf#page=9",
         "https://bfa.wv.gov/utility-assistancelieap",
-        "https://bfa.wv.gov/media/40005/download?inline=#page=1734,1775,1776",
+        # PDF pages 1734,1775-1776
+        "https://bfa.wv.gov/media/40005/download?inline=#page=1734",
     )
 
     def formula(spm_unit, period, parameters):

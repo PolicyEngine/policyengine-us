@@ -1,0 +1,24 @@
+# Schedule S, Calculation J(a): each person's portion of federal AGI.
+
+- name: The head's IRA deduction lowers only the head's DC AGI.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        traditional_ira_contributions: 6_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    # Before: [57_000, 37_000].
+    dc_agi: [54_000, 40_000]

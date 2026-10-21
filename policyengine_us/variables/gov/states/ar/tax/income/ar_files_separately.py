@@ -9,6 +9,10 @@ class ar_files_separately(Variable):
     reference = (
         "https://www.dfa.arkansas.gov/wp-content/uploads/2023_AR1000F_and_AR1000NR_Instructions.pdf",
         "https://www.dfa.arkansas.gov/wp-content/uploads/2023_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf",
+        # Filing Status 4: "IF ONE SPOUSE HAD A TOTAL NEGATIVE INCOME, YOU
+        # MUST FILE MARRIED FILING JOINTLY."
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2024_AR1000F_and_AR1000NR_Instructions.pdf#page=12",
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=12",
     )
     defined_for = StateCode.AR
 
@@ -67,6 +71,13 @@ class ar_files_separately(Variable):
         married = (filing_status == statuses.JOINT) | (
             filing_status == statuses.SEPARATE
         )
+        # A couple must file jointly if either spouse had a total negative
+        # income. Total income (line 23) is each spouse's column of gross
+        # income less the exemptions subtracted within it, before any floor.
+        total_income = person("ar_gross_income_indiv", period) - person(
+            "ar_exemptions", period
+        )
+        negative_total_income = tax_unit.any(head_or_spouse & (total_income < 0))
         # Compare after filing-method-sensitive credits.
         separate_cheaper = (itax_indiv - credit_sep) < (itax_joint - credit_joint)
-        return married & separate_cheaper
+        return married & ~negative_total_income & separate_cheaper

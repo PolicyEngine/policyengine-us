@@ -1,10 +1,16 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.household.marginal_tax_rate_helpers import (
+    user_set_variables,
+)
 
 
 class marginal_tax_rate(Variable):
     label = "marginal tax rate"
     documentation = (
         "Fraction of marginal income gains that do not increase household net income."
+        " Simulated only where marginal_tax_rate_computed is true: for up to"
+        " simulation.marginal_tax_rate_adults adults per household, those with"
+        " the highest market income. Zero for everyone else."
     )
     entity = Person
     definition_period = YEAR
@@ -38,13 +44,11 @@ class marginal_tax_rate(Variable):
             0,
         )
 
+        inputs = user_set_variables(sim)
         for adult_index in range(1, 1 + adult_count):
             alt_sim = sim.get_branch(f"mtr_for_adult_{adult_index}")
             for variable in sim.tax_benefit_system.variables:
-                if (
-                    variable not in sim.input_variables
-                    or variable == "employment_income"
-                ):
+                if variable not in inputs or variable == "employment_income":
                     alt_sim.delete_arrays(variable)
             mask = adult_index == adult_indexes
             alt_sim.set_input(

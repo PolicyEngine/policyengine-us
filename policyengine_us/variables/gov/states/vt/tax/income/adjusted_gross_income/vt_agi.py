@@ -9,7 +9,7 @@ class vt_agi(Variable):
     definition_period = YEAR
     defined_for = StateCode.VT
     reference = (
-        "https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf (Line 3)"
+        "https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf"  # Line 3
     )
 
     adds = ["adjusted_gross_income", "vt_additions"]

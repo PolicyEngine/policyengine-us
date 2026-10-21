@@ -6,7 +6,6 @@
         age: 30
       child:
         age: 2
-        ctc_qualifying_child: true
     tax_units:
       tax_unit:
         members:
@@ -30,7 +29,6 @@
         age: 30
       child:
         age: 6
-        ctc_qualifying_child: true
     tax_units:
       tax_unit:
         members:
@@ -54,10 +52,8 @@
         age: 32
       child1:
         age: 1
-        ctc_qualifying_child: true
       child2:
         age: 5
-        ctc_qualifying_child: true
     tax_units:
       tax_unit:
         members:
@@ -83,7 +79,6 @@
         age: 30
       child:
         age: 2
-        ctc_qualifying_child: true
     tax_units:
       tax_unit:
         members:
@@ -107,7 +102,6 @@
         age: 30
       child:
         age: 2
-        ctc_qualifying_child: true
     tax_units:
       tax_unit:
         members:
@@ -123,3 +117,27 @@
         state_code: GA
   output:
     ga_non_refundable_credits: 0
+
+
+- name: 2026 GA CTC still counts the child of a filer who can be claimed as a dependent
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        ga_income_tax_before_non_refundable_credits: 10000
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    # Georgia uses the IRC 24(c) qualifying-child definition only; whether IRC
+    # 152(b)(1) reaches it is not settled, so the child test is kept.
+    ga_ctc: 250

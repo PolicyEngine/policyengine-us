@@ -11,7 +11,7 @@ class va_ccsp_daily_mrr(Variable):
     unit = USD
     label = "Virginia CCSP daily maximum reimbursable rate"
     defined_for = StateCode.VA
-    reference = "https://data.virginia.gov/dataset/general-child-care-subsidy-program-maximum-reimbursement-rates"
+    reference = "https://ris.dls.virginia.gov/uploads/22VAC40/dibr/VDOE%20Child%20Care%20Program%20Guidance%20Manual%205.3.2023-20240822104447.pdf#page=143"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.va.dss.ccsp.maximum_reimbursement_rate

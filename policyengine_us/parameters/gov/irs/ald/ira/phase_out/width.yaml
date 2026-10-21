@@ -1,0 +1,23 @@
+description: The IRS phases out the traditional IRA deduction over this modified adjusted gross income range for contributors who actively participate in an employer retirement plan, based on filing status.
+SINGLE:
+  2015-01-01: 10_000
+JOINT:
+  2015-01-01: 20_000
+SEPARATE:
+  2015-01-01: 10_000
+HEAD_OF_HOUSEHOLD:
+  2015-01-01: 10_000
+SURVIVING_SPOUSE:
+  2015-01-01: 20_000
+metadata:
+  propagate_metadata_to_children: true
+  unit: currency-USD
+  period: year
+  label: IRA deduction active participant phase-out width
+  breakdown:
+    - filing_status
+  reference:
+    - title: 26 U.S. Code § 219(g)(2)(A)(ii)
+      href: https://www.law.cornell.edu/uscode/text/26/219#g_2_A_ii
+    - title: IRS Publication 590-A, Worksheet 1-2
+      href: https://www.irs.gov/publications/p590a

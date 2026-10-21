@@ -1,15 +1,17 @@
-description: NYC limits its School Tax Credit Fixed Amount to filers with NY AGI of this amount or less.
+description: New York limits the New York City school tax credit fixed amount to filers with school tax credit income of up to this amount.
 metadata:
   unit: currency-USD
   label: NYC School Tax Credit Fixed Amount Income Limit
   reference:
-    - title: Instructions for Form IT-201, 2022
+    - title: NY Tax Law § 606(ggg)(2), (4-a)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606
+    - title: Instructions for Form IT-201, 2022, Line 69
       href: https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=25
-    - title: Instructions for Form IT-201, 2023
-      href: https://web.archive.org/web/20240317205657/https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=28
-    - title: Instructions for Form IT-201, 2024 Line 69
+    - title: Instructions for Form IT-201, 2023, Line 69
+      href: https://web.archive.org/web/20240317205657/https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=27
+    - title: Instructions for Form IT-201, 2024, Line 69
       href: https://www.tax.ny.gov/pdf/2024/inc/it201i_2024.pdf#page=20
-    - title: 2025 Form IT-201-I Instructions
-      href: https://www.tax.ny.gov/pdf/current_forms/it/it201i.pdf#page=20
+    - title: Instructions for Form IT-201, 2025, Line 69
+      href: https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=20
 values:
   2022-01-01: 250_000

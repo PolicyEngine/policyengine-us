@@ -7,3 +7,38 @@
     state_code: MD
   output:
     md_agi: 3 + 2 - 1
+
+- name: Dependent child's military retirement pay does not reduce the filer's Maryland AGI
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      child:
+        age: 10
+        military_retirement_pay: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MD
+  output:
+    # Federal AGI is the head's 50,000 of wages; no Maryland subtraction applies.
+    adjusted_gross_income: 50_000
+    md_military_retirement_subtraction: 0
+    md_agi: 50_000

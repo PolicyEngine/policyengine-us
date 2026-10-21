@@ -7,7 +7,7 @@ class il_pfae_age_eligible_child(Variable):
     label = "Child meets age requirements for Illinois PFAE"
     definition_period = YEAR
     reference = (
-        "https://www.isbe.net/pages/preschool-for-all.aspx",
+        "https://idec.illinois.gov/forproviders/preschool-for-all.html",
         "https://www.isbe.net/Documents/pdg-eg-grant-enrollment-form.pdf",
     )
     defined_for = StateCode.IL

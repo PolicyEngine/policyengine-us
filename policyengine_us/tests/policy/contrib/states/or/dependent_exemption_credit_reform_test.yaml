@@ -163,3 +163,29 @@
     or_dependent_exemption_credit: 0
     or_exemption_credit: 0
 
+# ORS 316.085(1)(b): no exemption credit for a filer whom another taxpayer can
+# claim, and such a return has no dependents (IRC 152(b)(1)), as in the baseline.
+- name: OR dependent exemption credit reform - claimable single filer with a child gets no credit
+  period: 2025
+  absolute_error_margin: 0.5
+  reforms: policyengine_us.reforms.states.oregon.dependent_exemption_credit.or_dependent_exemption_credit_reform.or_dependent_exemption_credit_reform
+  input:
+    gov.contrib.states.or.dependent_exemption_credit.in_effect: true
+    people:
+      parent:
+        age: 40
+        employment_income: 30_000
+        claimable_as_dependent_on_another_return: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_name: OR
+  output:
+    or_exemption_credit: 0

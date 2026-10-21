@@ -1,0 +1,50 @@
+# 26 U.S.C. 911(f)(2)(A)(iii) with 1(h)(6)(A): unrecaptured section 1250 gain
+# is reduced by the excess of the section 1(h)(4)(B) losses, now including the
+# capital gain excess, over the section 1(h)(4)(A) gains. Worksheet footnote,
+# modification 4: the excess is a loss on line 16 of the Unrecaptured Section
+# 1250 Gain Worksheet, whose line 17 nets it against the 28% rate gain.
+- name: An excess within the 28-percent rate gain leaves the 1250 gain alone
+  period: 2025
+  input:
+    unrecaptured_section_1250_gain: 20_000
+    capital_gains_28_percent_rate_gain: 10_000
+    section_911_capital_gain_excess: 4_000
+  output:
+    section_911_unrecaptured_section_1250_gain: 20_000
+
+- name: An excess above the 28-percent rate gain reduces the 1250 gain by the rest
+  period: 2025
+  input:
+    unrecaptured_section_1250_gain: 20_000
+    capital_gains_28_percent_rate_gain: 10_000
+    section_911_capital_gain_excess: 15_000
+  output:
+    # Worksheet line 17: 15,000 - 10,000 = 5,000. Line 18: 20,000 - 5,000.
+    section_911_unrecaptured_section_1250_gain: 15_000
+
+- name: Without 28-percent rate gain the excess comes off the 1250 gain
+  period: 2025
+  input:
+    unrecaptured_section_1250_gain: 20_000
+    capital_gains_28_percent_rate_gain: 0
+    section_911_capital_gain_excess: 15_000
+  output:
+    section_911_unrecaptured_section_1250_gain: 5_000
+
+- name: The 1250 gain is not reduced below zero
+  period: 2025
+  input:
+    unrecaptured_section_1250_gain: 20_000
+    capital_gains_28_percent_rate_gain: 10_000
+    section_911_capital_gain_excess: 40_000
+  output:
+    section_911_unrecaptured_section_1250_gain: 0
+
+- name: No excess leaves the 1250 gain unchanged
+  period: 2025
+  input:
+    unrecaptured_section_1250_gain: 20_000
+    capital_gains_28_percent_rate_gain: 10_000
+    section_911_capital_gain_excess: 0
+  output:
+    section_911_unrecaptured_section_1250_gain: 20_000

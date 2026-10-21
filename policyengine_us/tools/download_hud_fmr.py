@@ -1,6 +1,6 @@
 """Fetch county-level Fair Market Rents from the HUD User API.
 
-Requires a free API token from https://www.huduser.gov/hudapi/. Set the
+Requires a free API token from https://www.huduser.gov/portal/dataset/fmr-api.html. Set the
 token in the environment as ``HUD_API_TOKEN`` before running.
 
 Usage:
@@ -99,7 +99,7 @@ def main() -> int:
     token = os.environ.get("HUD_API_TOKEN")
     if not token:
         print(
-            "ERROR: set HUD_API_TOKEN (register at https://www.huduser.gov/hudapi/)",
+            "ERROR: set HUD_API_TOKEN (register at https://www.huduser.gov/portal/dataset/fmr-api.html)",
             file=sys.stderr,
         )
         return 2

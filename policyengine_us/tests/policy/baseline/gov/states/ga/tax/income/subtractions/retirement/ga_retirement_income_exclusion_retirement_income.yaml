@@ -36,3 +36,24 @@
     taxable_roth_conversions: 25_000
   output:
     ga_retirement_income_exclusion_retirement_income: 25_000
+
+- name: GA 2021 military retirement pay is fully included in retirement income (military exclusion starts in 2022)
+  period: 2021
+  input:
+    state_code: GA
+    is_disabled: true
+    age: 50
+    military_retirement_pay: 30_000
+  output:
+    ga_retirement_income_exclusion_retirement_income: 30_000
+
+- name: GA 2024 military retirement pay reduced by under-62 exclusion plus survivor pay
+  period: 2024
+  input:
+    state_code: GA
+    is_disabled: true
+    age: 50
+    military_retirement_pay: 40_000
+    military_retirement_pay_survivors: 5_000
+  output:
+    ga_retirement_income_exclusion_retirement_income: 27_500

@@ -58,10 +58,10 @@ values:
   2023-01-01: 160_200
   2024-01-01: 168_600
   2025-01-01: 176_100
-  # Official SSA determination.
+  # Official SSA determinations.
   2026-01-01: 184_500
+  2027-01-01: 192_300
   # CBO forecast.
-  2027-01-01: 192_600
   2028-01-01: 198_600
   2029-01-01: 206_400
   2030-01-01: 214_200
@@ -85,6 +85,8 @@ metadata:
       # Defines wages for FICA tax purposes as amounts from the benefit base.
     - title: Contribution And Benefit Base
       href: https://www.ssa.gov/oact/cola/cbb.html
+    - title: 2027 Cost-of-Living Adjustment (COLA) Fact Sheet
+      href: https://www.ssa.gov/news/en/cola/factsheets/2027.html
     - title: CBO Tax Parameters and Effective Marginal Tax Rates | Jan 2025
       # 1. Tax Parameters. Row 161.
       href: https://www.cbo.gov/system/files/2025-01/53724-2025-01-Tax-Parameters.xlsx

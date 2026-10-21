@@ -81,3 +81,23 @@
         state_code: ID
   output:
     id_military_retirement_deduction: 30_000
+
+- name: Military retirement survivor benefits for qualifying survivor aged 65 under Idaho Code § 63-3022A(1)(b)
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        military_retirement_pay_survivors: 25_000
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_military_retirement_deduction: 25_000
+

@@ -9,8 +9,8 @@ class md_dependent_care_subtraction(Variable):
     definition_period = YEAR
     reference = (
         "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-208&enactments=false",
-        "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=13",
-        "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=13",
+        "https://interactive.marylandtaxes.gov/Individuals/iFile_ChooseForm/PriorYearForms/Resident_Booklet_2021.pdf#page=13",
+        "https://interactive.marylandtaxes.gov/Individuals/iFile_ChooseForm/PriorYearForms/Resident_Booklet_2021.pdf#page=13",
     )
     defined_for = StateCode.MD
 

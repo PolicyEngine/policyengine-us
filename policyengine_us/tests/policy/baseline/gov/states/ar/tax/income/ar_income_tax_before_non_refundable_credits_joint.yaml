@@ -28,8 +28,9 @@
     ar_low_income_tax_joint: 500
     state_code: AR
   output:
-    # 104 + round((11_000 - 10_301)* 0.03)
-    ar_income_tax_before_non_refundable_credits_joint: 125
+    # 2022 Regular Income Tax Table (p.31), row $11,000-$11,100: $127 < 500.
+    # Midpoint of $11,000-$11,099 = 11,049.50; 11,049.50 x 3% - 204.97 = 126.52 -> 127
+    ar_income_tax_before_non_refundable_credits_joint: 127
 
 - name: AR income tax rates - taxable income from $14,701 to $24,300
   period: 2022
@@ -39,8 +40,9 @@
     ar_low_income_tax_joint: 500
     state_code: AR
   output:
-  # 236 + round((20_000 - 14_701)* 0.034)
-    ar_income_tax_before_non_refundable_credits_joint: 416
+    # 2022 Regular Income Tax Table (p.32), row $20,000-$20,100: $418 < 500.
+    # Midpoint 20,049.50 x 3.4% - 263.77 = 417.91 -> 418
+    ar_income_tax_before_non_refundable_credits_joint: 418
 
 - name: AR income tax rates - taxable income for income over $24,301
   period: 2022
@@ -50,8 +52,9 @@
     ar_low_income_tax_joint: 1_000
     state_code: AR
   output:
-    # 562.366 + round((25_000-24_301) * 0.049) = 596
-    ar_income_tax_before_non_refundable_credits_joint: 596
+    # 2022 Regular Income Tax Table (p.32), row $25,000-$25,100: $599 < 1,000.
+    # Midpoint 25,049.50 x 4.9% - 628.25 = 599.18 -> 599
+    ar_income_tax_before_non_refundable_credits_joint: 599
 
 - name: AR income tax rates - taxable income for income over $25,000
   period: 2023
@@ -61,7 +64,9 @@
     ar_low_income_tax_joint: 1_000
     state_code: AR
   output:
-    ar_income_tax_before_non_refundable_credits_joint: 591
+    # 2023 Regular Income Tax Table (p.32), row $25,300-$25,400: $594 < 1,000.
+    # Midpoint 25,349.50 x 4.7% - 597.35 = 594.08 -> 594
+    ar_income_tax_before_non_refundable_credits_joint: 594
 
 - name: AR income tax rates - taxable income from $15,100 to $25,000 
   period: 2023
@@ -71,8 +76,9 @@
     ar_low_income_tax_joint: 1_000
     state_code: AR
   output:
-    # 20_000 * 0.034 - 272.37 = 407.63 < 1_000
-    ar_income_tax_before_non_refundable_credits_joint: 407.63
+    # 2023 Regular Income Tax Table (p.31), row $20,000-$20,100: $409 < 1,000.
+    # Midpoint 20,049.50 x 3.4% - 272.37 = 409.31 -> 409
+    ar_income_tax_before_non_refundable_credits_joint: 409
 
 - name: AR income tax rates - taxable income from $25,000 to $89,600 
   period: 2023
@@ -82,8 +88,9 @@
     ar_low_income_tax_joint: 1_000
     state_code: AR
   output:
-    # 30_000 * 0.047 - 597.35 = 812.65 < 1_000
-    ar_income_tax_before_non_refundable_credits_joint: 812.65
+    # 2023 Regular Income Tax Table (p.32), row $30,000-$30,100: $815 < 1,000.
+    # Midpoint 30,049.50 x 4.7% - 597.35 = 814.98 -> 815
+    ar_income_tax_before_non_refundable_credits_joint: 815
 
 - name: AR income tax rates - taxable income over $100,000
   period: 2023
@@ -117,10 +124,11 @@
     ar_low_income_tax_joint: 5_000
     state_code: AR
   output:
-    # Regular: 50_000 * 0.039 - 419.96 = 1_530.04
+    # Regular: 2025 Regular Income Tax Table (p.32), row $50,000-$50,100: $1,532
+    # (midpoint 50,049.50 x 3.9% - 419.96 = 1,531.97 -> 1,532)
     # Low income cap: 5_000
-    # min(1_530.04, 5_000) = 1_530.04
-    ar_income_tax_before_non_refundable_credits_joint: 1_530.04
+    # min(1_532, 5_000) = 1_532
+    ar_income_tax_before_non_refundable_credits_joint: 1_532
 
 - name: AR 2021 MFJ with two dependents just above the low-income table cutoff uses the regular table (pe-us 9024)
   period: 2021
@@ -208,6 +216,8 @@
     ar_low_income_tax_joint: 5_000
     state_code: AR
   output:
-    # Indexed 2027 rows start at 5,800 / 11,500 / 16,500 / 27,200 (nearest $100):
-    # 5,700 x 2% + 5,000 x 3% + 10,700 x 3.4% + (50,000 - 27,200) x 3.7% = 1,471.40
-    ar_income_tax_before_non_refundable_credits_joint: 1_471.40
+    # Indexed 2027 rows start at 5,800 / 11,500 / 16,500 / 27,200 (nearest $100).
+    # Table row $50,000-$50,099, midpoint 50,049.50:
+    # 5,700 x 2% + 5,000 x 3% + 10,700 x 3.4% + (50,049.50 - 27,200) x 3.7%
+    # = 627.80 + 845.43 = 1,473.23 -> 1,473
+    ar_income_tax_before_non_refundable_credits_joint: 1_473

@@ -8,7 +8,8 @@ class mo_wftc_eligible(Variable):
     definition_period = YEAR
     reference = (
         "https://revisor.mo.gov/main/OneSection.aspx?section=143.177&bid=49978&hl=",
-        "https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=43",
+        # PDF pages 6, 43
+        "https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=6",
     )
     defined_for = StateCode.MO
 
@@ -23,10 +24,17 @@ class mo_wftc_eligible(Variable):
         # married filing separately.
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
-        # The 2024 and 2025 Form MO-WFTC checklists also stop filers
-        # claimed as a dependent on another return; the 2023 form does not.
-        excluded_dependent = p.dependent_filers_excluded & tax_unit(
-            "head_is_dependent_elsewhere", period
+        # The 2024 and 2025 Form MO-WFTC checklists also stop filers with a
+        # filing status of "claimed as a dependent"; the 2023 form does not.
+        # A couple filing a joint federal return files Form MO-1040 as
+        # married filing combined even when a spouse can be claimed (2025
+        # MO-1040 instructions, "Filing status"), so the stop never applies
+        # to a joint return.
+        joint = filing_status == filing_status.possible_values.JOINT
+        excluded_dependent = (
+            p.dependent_filers_excluded
+            & ~joint
+            & tax_unit("head_or_spouse_is_dependent_elsewhere", period)
         )
         # Form MO-WFTC applies Missouri's own investment income limit,
         # reflecting IRC Section 32(i) as of January 1, 2021 per RSMo

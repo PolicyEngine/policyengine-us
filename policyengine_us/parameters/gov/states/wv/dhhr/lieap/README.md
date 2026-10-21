@@ -30,11 +30,13 @@ Existing net business inputs receive no second 20% deduction, and business or
 estate losses do not offset other sources under this modeling approximation. This does
 not reproduce the source's gross-receipts calculation.
 
-Pension, retirement-account and non-Social-Security survivor aggregates enter
-once. Narrower military or pension-survivor tax-detail inputs are not added again
-because they can describe the same receipts. Recurring receipts should be
-represented in the corresponding broad income fields. Monthly WV WORKS is
-annualized once. Separate royalties and foster-care receipts are not identified
+Pension, military retirement pay, retirement-account and non-Social-Security
+survivor receipts each enter once through their separate existing inputs.
+Each person's represented recurring source is floored at zero before aggregation;
+rental losses cannot cancel pensions, wages or another member's receipts.
+Unemployment uses the shared reported-or-modeled receipt amount. TANF uses the
+shared take-up-gated receipt, annualizing monthly WV WORKS once at the household
+level. Separate royalties and foster-care receipts are not identified
 by existing inputs. Generic VA benefits cannot separate excluded Aid and
 Attendance, and employment cannot separate excluded work-study, CNCS or CSEP
 wages. A work-study participation flag cannot determine which wages to subtract.
@@ -43,8 +45,10 @@ identify every recurring payment, arrearage or earmarked reimbursement. These
 are input limitations, not blanket legal inclusions or exclusions. Standalone
 capital gains, life-insurance death proceeds and gambling/lottery winnings are
 treated as nonrecurring; an actual recurring installment needs a separately
-identified receipt that existing inputs do not provide. Rental inputs are
-assumed nonnegative, and Medicare deductions remain deferred.
+identified receipt that existing inputs do not provide. The operative manual's
+gross-income rule does not authorize a general Medicare premium deduction;
+RSDI is already excluded in full, so its Medicare withholding is not subtracted
+from other countable receipts.
 
 Final eligibility and benefits remain incomplete. The ordinary-ceiling and
 categorical plan wording is not fully reconciled; no income-eligibility bypass
@@ -56,5 +60,6 @@ not silently correct them or encode unmodeled eligible benefits as zero.
 
 Only the household-size, countable-income and income-limit components are verified for FY2026 and
 FY2027. Earlier backfilled results are unverified historical estimates; the whole
-program is not verified for either year. The full regular-heating goal remains open. Crisis, cooling,
+program is not verified for either year and its partial registry entry therefore
+omits `verified_years`. The full regular-heating goal remains open. Crisis, cooling,
 weatherization, equipment and the separate utility discount are out of scope.

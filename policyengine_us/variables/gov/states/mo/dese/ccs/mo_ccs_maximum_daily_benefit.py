@@ -11,7 +11,7 @@ class mo_ccs_maximum_daily_benefit(Variable):
     label = "Missouri Child Care Subsidy maximum daily benefit per child"
     definition_period = MONTH
     defined_for = "mo_ccs_eligible_child"
-    reference = "https://dese.mo.gov/sites/dese/files/media/file/2025/12/2025%20Rates%20Held%20Harmless%202.0.xlsx"
+    reference = "https://dese.mo.gov/sites/g/files/zuston521/files/media/file/2025/12/2025%20Rates%20Held%20Harmless%202.0.xlsx"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mo.dese.ccs

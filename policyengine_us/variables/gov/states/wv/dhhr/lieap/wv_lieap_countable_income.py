@@ -9,8 +9,10 @@ class wv_lieap_countable_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.WV
     reference = (
-        "https://bfa.wv.gov/media/39948/download?inline=#page=1725,1726,1727,1728",
-        "https://bfa.wv.gov/media/40005/download?inline=#page=1726,1727,1728,1729",
+        # PDF pages 1725-1728
+        "https://bfa.wv.gov/media/39948/download?inline=#page=1725",
+        # PDF pages 1726-1729
+        "https://bfa.wv.gov/media/40005/download?inline=#page=1726",
     )
 
     def formula(spm_unit, period, parameters):
@@ -19,10 +21,12 @@ class wv_lieap_countable_income(Variable):
         # Existing net business inputs receive no second expense deduction;
         # business and estate losses do not offset other income.
         net_income = sum(
-            max_(person(source, period), 0) for source in p.nonnegative_sources
+            max_(add(person, period, [source]), 0) for source in p.nonnegative_sources
         )
-        # The operative manual counts minor and nonqualified members' income,
+        # Floor each member/source before aggregation so losses cannot erase
+        # another receipt. The operative manual counts minor and nonqualified members' income,
         # TANF and general assistance. RSDI and SSI are expressly excluded.
         # Annual flows approximate recurring application-month receipts. Generic
         # VA cannot identify excluded Aid and Attendance; see README limitations.
-        return max_(spm_unit.sum(net_income) + add(spm_unit, period, p.sources), 0)
+        receipts = sum(max_(add(person, period, [source]), 0) for source in p.sources)
+        return spm_unit.sum(net_income + receipts) + max_(spm_unit("tanf", period), 0)

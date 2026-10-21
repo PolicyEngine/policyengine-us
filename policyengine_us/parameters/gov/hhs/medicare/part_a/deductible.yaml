@@ -4,10 +4,42 @@ metadata:
   period: year
   label: Medicare Part A deductible
   reference:
+    - title: 42 U.S.C. § 1395e(b)(1)
+      href: https://www.law.cornell.edu/uscode/text/42/1395e#b_1
+    - title: CY 2015 Medicare inpatient hospital deductible and coinsurance amounts (79 FR 61309)
+      href: https://www.govinfo.gov/content/pkg/FR-2014-10-10/pdf/2014-24257.pdf#page=1
+    - title: CY 2016 Medicare inpatient hospital deductible and coinsurance amounts (80 FR 70808)
+      href: https://www.govinfo.gov/content/pkg/FR-2015-11-16/pdf/2015-29207.pdf#page=1
+    - title: CY 2017 Medicare inpatient hospital deductible and coinsurance amounts (81 FR 80060)
+      href: https://www.govinfo.gov/content/pkg/FR-2016-11-15/pdf/2016-27389.pdf#page=1
+    - title: CY 2018 Medicare inpatient hospital deductible and coinsurance amounts (82 FR 55367)
+      href: https://www.govinfo.gov/content/pkg/FR-2017-11-21/pdf/2017-24913.pdf#page=1
+    - title: CY 2019 Medicare inpatient hospital deductible and coinsurance amounts (83 FR 52459)
+      href: https://www.govinfo.gov/content/pkg/FR-2018-10-17/pdf/2018-22526.pdf#page=1
+    - title: CY 2020 Medicare inpatient hospital deductible and coinsurance amounts (84 FR 61619)
+      href: https://www.govinfo.gov/content/pkg/FR-2019-11-13/pdf/2019-24441.pdf#page=1
+    - title: CY 2021 Medicare inpatient hospital deductible and coinsurance amounts (85 FR 71916)
+      href: https://www.govinfo.gov/content/pkg/FR-2020-11-12/pdf/2020-25024.pdf#page=1
+    - title: CY 2022 Medicare inpatient hospital deductible and coinsurance amounts (86 FR 64217)
+      href: https://www.govinfo.gov/content/pkg/FR-2021-11-17/pdf/2021-25051.pdf#page=1
+    - title: CY 2023 Medicare inpatient hospital deductible and coinsurance amounts (87 FR 59094)
+      href: https://www.govinfo.gov/content/pkg/FR-2022-09-29/pdf/2022-21180.pdf#page=1
     - title: 2024 Medicare Parts A & B Premiums and Deductibles
       href: https://www.cms.gov/newsroom/fact-sheets/2024-medicare-parts-b-premiums-and-deductibles
     - title: 2025 Medicare Parts A & B Premiums and Deductibles
       href: https://www.cms.gov/newsroom/fact-sheets/2025-medicare-parts-b-premiums-and-deductibles
+    - title: 2026 Medicare Parts A & B Premiums and Deductibles
+      href: https://www.cms.gov/newsroom/fact-sheets/2026-medicare-parts-b-premiums-deductibles
 values:
+  2015-01-01: 1_260
+  2016-01-01: 1_288
+  2017-01-01: 1_316
+  2018-01-01: 1_340
+  2019-01-01: 1_364
+  2020-01-01: 1_408
+  2021-01-01: 1_484
+  2022-01-01: 1_556
+  2023-01-01: 1_600
   2024-01-01: 1_632
   2025-01-01: 1_676
+  2026-01-01: 1_736

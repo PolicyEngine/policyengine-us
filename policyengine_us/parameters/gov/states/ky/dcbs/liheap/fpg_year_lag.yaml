@@ -1,0 +1,18 @@
+description: Kentucky uses the federal poverty guidelines from this many years before the heating season ending year under the Low Income Home Energy Assistance Program.
+# The fact sheet publishes the limits without naming the guideline year. The
+# lag is inferred from the amounts (1,957 = 150% of the 2025 one-person
+# guideline / 12, rounded up); each workbook's poverty table shows the same
+# one-year lag.
+values:
+  2024-10-01: 1
+metadata:
+  unit: year
+  period: year
+  label: Kentucky LIHEAP federal poverty guideline year lag
+  reference:
+    - title: Kentucky FY2025-2026 LIHEAP fact sheet, income eligibility
+      href: https://www.capky.org/wp-content/uploads/2026/01/2025-2026-LIHEAP-Fact-Sheet-V2.pdf
+    - title: Kentucky FY2026 benefit workbook, rev benefit income range worksheet, poverty guideline table
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/KY_BenefitMatrix_Heat-Cool_2026.xlsx
+    - title: Kentucky FY2025 benefit workbook, subsidy benefits worksheet, poverty guideline table
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/KY_BenefitMatrix_2025.xlsx

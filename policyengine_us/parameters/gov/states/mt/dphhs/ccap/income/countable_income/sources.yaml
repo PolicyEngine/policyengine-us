@@ -15,7 +15,7 @@ values:
     - social_security  # SS and SSDI counted; SSI excluded (social_security omits SSI)
     - pension_income  # Government pension, annuity, railroad retirement, veterans' pensions
     - retirement_distributions
-    - unemployment_compensation
+    - total_unemployment_compensation
     - workers_compensation
     - child_support_received  # Child support retained, "in excess", arrearage
     - alimony_income

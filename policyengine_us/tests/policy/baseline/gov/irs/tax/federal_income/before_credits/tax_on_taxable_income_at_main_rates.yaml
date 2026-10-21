@@ -1,0 +1,57 @@
+- name: Without dividends or gains, the tax at the main rates
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 60_000
+  output:
+    # 2025: 5,578.50 + 22% x (60,000 - 48,475).
+    tax_on_taxable_income_at_main_rates: 8_114
+    income_tax_main_rates: 8_114
+
+- name: Long-term gain is taxed at the main rates too
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 60_000
+    long_term_capital_gains: 20_000
+  output:
+    # Schedule D Tax Worksheet line 46: the tax on all of line 1. Line 44
+    # taxes only line 21, 40,000: 1,192.50 + 12% x 28,075 = 4,561.50.
+    tax_on_taxable_income_at_main_rates: 8_114
+    income_tax_main_rates: 4_561.50
+
+- name: Married filing jointly, 2026
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: JOINT
+    taxable_income: 250_000
+    qualified_dividend_income: 50_000
+  output:
+    # Rev. Proc. 2025-32, section 4.01, Table 1: 35,932 + 24% x (250,000 -
+    # 211,400).
+    tax_on_taxable_income_at_main_rates: 45_196
+
+- name: A Form 2555 filer subtracts the tax on the excluded amount
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    taxable_income: 36_375
+    long_term_capital_gains: 10_000
+    foreign_earned_income_exclusion: 40_000
+  output:
+    # Foreign Earned Income Tax Worksheet: line 3 = 76,375, taxed at
+    # 9,977.50; line 5, the tax on 40,000, is 4,460.
+    tax_on_taxable_income_at_main_rates: 5_517.50
+
+- name: No taxable income
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 0
+    long_term_capital_gains: 5_000
+  output:
+    tax_on_taxable_income_at_main_rates: 0

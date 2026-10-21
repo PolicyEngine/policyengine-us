@@ -8,8 +8,10 @@ class wv_lieap_household_size(Variable):
     definition_period = YEAR
     defined_for = StateCode.WV
     reference = (
-        "https://bfa.wv.gov/media/39948/download?inline=#page=1728,1732",
-        "https://bfa.wv.gov/media/40005/download?inline=#page=1729,1734",
+        # PDF pages 1728,1732
+        "https://bfa.wv.gov/media/39948/download?inline=#page=1728",
+        # PDF pages 1729,1734
+        "https://bfa.wv.gov/media/40005/download?inline=#page=1729",
     )
     # SPMUnit approximates the co-resident energy-sharing assistance group.
     # Prior-season benefit recipients are excluded by policy, but that receipt

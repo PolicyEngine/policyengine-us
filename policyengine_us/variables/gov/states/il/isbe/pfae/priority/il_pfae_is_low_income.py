@@ -7,7 +7,7 @@ class il_pfae_is_low_income(Variable):
     label = "Family income at or below 100% FPL (secondary priority factor)"
     definition_period = YEAR
     reference = (
-        "https://www.isbe.net/pages/preschool-for-all.aspx",
+        "https://idec.illinois.gov/forproviders/preschool-for-all.html",
         "https://www.isbe.net/Documents/pdg-eg-grant-enrollment-form.pdf#page=2",
     )
     defined_for = StateCode.IL

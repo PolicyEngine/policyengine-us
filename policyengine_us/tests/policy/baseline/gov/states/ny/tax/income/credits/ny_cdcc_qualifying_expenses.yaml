@@ -1,0 +1,134 @@
+# N.Y. Tax Law 606(c-2)(2)(D), added by L.2026, ch. 59, Part A: care expenses,
+# less amounts paid from a dependent care account, capped at $3,000 / $6,000 /
+# $7,500 / $8,500 / $9,000 for one to five or more qualifying individuals and at
+# earned income (the lesser spouse's on a joint return).
+- name: Case 1, one qualifying individual caps expenses at $3,000.
+  period: 2026
+  input:
+    state_code: NY
+    count_cdcc_eligible: 1
+    tax_unit_childcare_expenses: 9_600
+    head_earned: 100_195
+  output:
+    ny_cdcc_qualifying_expenses: 3_000
+
+- name: Case 2, three qualifying individuals use the $7,500 New York cap, not the $6,000 federal limit.
+  period: 2026
+  input:
+    state_code: NY
+    count_cdcc_eligible: 3
+    tax_unit_childcare_expenses: 12_000
+    head_earned: 50_000
+  output:
+    ny_cdcc_qualifying_expenses: 7_500
+
+- name: Case 3, four qualifying individuals with expenses exactly at the $8,500 cap.
+  period: 2026
+  input:
+    state_code: NY
+    count_cdcc_eligible: 4
+    tax_unit_childcare_expenses: 8_500
+    head_earned: 100_000
+  output:
+    ny_cdcc_qualifying_expenses: 8_500
+
+- name: Case 4, five or more qualifying individuals cap expenses at $9,000.
+  period: 2026
+  input:
+    state_code: NY
+    count_cdcc_eligible: 6
+    tax_unit_childcare_expenses: 20_000
+    head_earned: 500_000
+  output:
+    ny_cdcc_qualifying_expenses: 9_000
+
+- name: Case 5, expenses capped at earned income.
+  period: 2026
+  input:
+    state_code: NY
+    count_cdcc_eligible: 1
+    tax_unit_childcare_expenses: 3_000
+    head_earned: 2_000
+  output:
+    ny_cdcc_qualifying_expenses: 2_000
+
+- name: Case 6, no qualifying individual means no qualifying expenses.
+  period: 2026
+  input:
+    state_code: NY
+    count_cdcc_eligible: 0
+    tax_unit_childcare_expenses: 5_000
+    head_earned: 40_000
+  output:
+    ny_cdcc_qualifying_expenses: 0
+
+- name: Case 7, joint return caps expenses at the lesser spouse's earned income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+      person2:
+        age: 35
+        employment_income: 4_000
+      person3:
+        age: 3
+      person4:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_childcare_expenses: 7_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    count_cdcc_eligible: 2
+    ny_cdcc_qualifying_expenses: 4_000
+
+- name: Case 8, a joint return with a non-earning spouse has no qualifying expenses; 606(c-2) deems no earned income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000
+      person2:
+        age: 35
+        is_full_time_student: true
+      person3:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    ny_cdcc_qualifying_expenses: 0
+
+- name: Case 9, amounts paid from a dependent care account are not qualifying expenses.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+        dependent_care_employer_benefits: 2_000
+      person2:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 4_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # min(4,000 - 2,000, 3,000 cap, 50,000 earned) = 2,000
+    ny_cdcc_qualifying_expenses: 2_000

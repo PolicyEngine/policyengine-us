@@ -12,8 +12,8 @@ class la_disability_income_exemption_person(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.la.tax.income.exempt_income.disability
-        # The disability_benefits variable includes only taxable disability benefits.
-        disability_benefits = person("disability_benefits", period)
+        # Only disability income included in federal AGI can be exempted.
+        disability_benefits = person("taxable_disability_benefits", period)
         capped_disability_benefits = min_(disability_benefits, p.cap)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         total_disablity_exemption = capped_disability_benefits * is_head_or_spouse

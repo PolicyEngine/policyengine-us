@@ -2,13 +2,13 @@ description: West Virginia counts these represented recurring income sources, in
 values:
   2025-10-01:
     - employment_income
-    - unemployment_compensation
+    - total_unemployment_compensation
     - strike_benefits
     - pension_income
+    - military_retirement_pay
     - retirement_distributions
     - survivor_benefits
     - general_assistance
-    - wv_works
     - rental_income
     - farm_rent_income
     - alimony_income
@@ -20,6 +20,7 @@ values:
     - disability_benefits
     - financial_assistance
 # All members' income counts, regardless of age or immigration qualification.
+# Take-up-gated TANF is counted separately once at the household level.
 # RSDI, SSI and nonrecurring lump sums are excluded. Aggregate annual receipts
 # are treated as recurring; VA Aid and Attendance cannot be separated from
 # veterans_benefits. These input limitations are documented in the README.
@@ -28,7 +29,7 @@ metadata:
   period: year
   label: West Virginia LIEAP recurring income sources
   reference:
-    - title: West Virginia Income Maintenance Manual, Chapter 21.3.1.A
-      href: https://bfa.wv.gov/media/39948/download?inline=#page=1725,1726,1727,1728
-    - title: West Virginia Income Maintenance Manual, October 2026 edition, Chapter 21.3.1.A
-      href: https://bfa.wv.gov/media/40005/download?inline=#page=1726,1727,1728,1729
+    - title: "West Virginia Income Maintenance Manual, Chapter 21.3.1.A #page 1725-1728"
+      href: https://bfa.wv.gov/media/39948/download?inline=#page=1725
+    - title: "West Virginia Income Maintenance Manual, October 2026 edition, Chapter 21.3.1.A #page 1726-1729"
+      href: https://bfa.wv.gov/media/40005/download?inline=#page=1726

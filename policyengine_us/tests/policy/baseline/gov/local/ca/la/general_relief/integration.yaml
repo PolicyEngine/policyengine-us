@@ -39,3 +39,79 @@
     la_general_relief_eligible: true
     la_general_relief_base_amount: 2_652 # 221 monthly
     la_general_relief: 2_652
+
+- name: Adult living with a sister and her child on CalWORKs counts the grant once and receives GR
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      adult:
+        age: 25
+        immigration_status_str: CITIZEN
+      sister:
+        age: 30
+        immigration_status_str: CITIZEN
+      child:
+        age: 3
+    tax_units:
+      adult_tax_unit:
+        members: [adult]
+      sister_tax_unit:
+        members: [sister, child]
+    spm_units:
+      spm_unit:
+        members: [adult, sister, child]
+        # The sister's and child's CalWORKs grant, $150 a month.
+        tanf: 1_800
+        la_general_relief_recipient: false
+    families:
+      family:
+        members: [adult, sister, child]
+    households:
+      household:
+        members: [adult, sister, child]
+        state_code: CA
+        in_la: true
+  output:
+    la_general_relief_net_income: 1_800
+    # $150 a month is under the $221 single applicant limit.
+    la_general_relief_eligible: true
+    la_general_relief_base_amount: 2_652 # 221 monthly
+    la_general_relief: 2_652
+
+- name: Recipient's grant is not phased out by another member's CalWORKs counted per member
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      recipient:
+        age: 40
+        immigration_status_str: CITIZEN
+      other_adult:
+        age: 35
+        immigration_status_str: CITIZEN
+    tax_units:
+      recipient_tax_unit:
+        members: [recipient]
+      other_adult_tax_unit:
+        members: [other_adult]
+    spm_units:
+      spm_unit:
+        members: [recipient, other_adult]
+        # The other adult's CalWORKs grant, $200 a month.
+        tanf: 2_400
+        la_general_relief_recipient: true
+    families:
+      family:
+        members: [recipient, other_adult]
+    households:
+      household:
+        members: [recipient, other_adult]
+        state_code: CA
+        in_la: true
+  output:
+    la_general_relief_net_income: 2_400
+    la_general_relief_eligible: true
+    # $200 a month is under the $201 phase-out start, so there is no reduction.
+    la_general_relief_base_amount: 2_652 # 221 monthly
+    la_general_relief: 2_652

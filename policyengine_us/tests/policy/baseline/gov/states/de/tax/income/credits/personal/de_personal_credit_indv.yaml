@@ -71,3 +71,54 @@
   output:
     # Equal capacity: split evenly (both columns can absorb their share)
     de_personal_credit_indv: [110, 110]
+
+
+- name: 2025 spouse who can be claimed as a dependent has no personal credit (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        de_income_tax_before_non_refundable_credits_indv: 1000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        de_income_tax_before_non_refundable_credits_indv: 1000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: DE
+  output:
+    # 30 Del. C. 1110(b)(1): $110 for each personal exemption to which the
+    # individual is entitled for federal purposes; IRC 151(d)(2).
+    de_personal_credit_indv: [0, 110]
+
+- name: 2025 spouse who can be claimed as a dependent has no personal credit (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        de_income_tax_before_non_refundable_credits_indv: 1000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        de_income_tax_before_non_refundable_credits_indv: 1000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: DE
+  output:
+    de_personal_credit_indv: [110, 0]

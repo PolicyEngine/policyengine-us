@@ -1,8 +1,8 @@
 # Independent source-derived tests for annualized countable income only.
 # Earlier operative IMM, section 21.3.1.A.1-4/B/D (physical pages 1725-1728, 1732).
-# https://bfa.wv.gov/media/39948/download?inline=#page=1725,1726,1727,1728,1732
+# https://bfa.wv.gov/media/39948/download?inline=#page=1725
 # Current October 1, 2026 IMM, section 21.3.1.A.1-3/A.5/B (physical pages 1726-1729, 1734).
-# https://bfa.wv.gov/media/40005/download?inline=#page=1726,1727,1728,1729,1734
+# https://bfa.wv.gov/media/40005/download?inline=#page=1726
 # Annual flow inputs approximate steady application-month receipt; they do not
 # reconstruct application dates, pay-frequency conversions or partial months.
 # The detailed manual governs over unchecked summary-plan income categories.
@@ -584,3 +584,342 @@
         state_code: WV
   output:
     wv_lieap_countable_income: 13_000
+
+# Military pay is separate from pension_income. Rental losses cannot erase pensions or a different member's positive rent.
+# Expected [60_000, 30_000, 12_000 + 1_000] are supported countable-income outputs only.
+- name: Case 11, military retirement and positive receipts survive rental losses.
+  period: 2_026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1_1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        military_retirement_pay: 60_000
+      person2_1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        taxable_private_pension_income: 30_000
+        rental_income: -30_000
+      person3_1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        employment_income: 12_000
+        rental_income: -10_000
+      person3_2:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        rental_income: 1_000
+    spm_units:
+      spm_unit1:
+        members:
+        - person1_1
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        snap: 0
+        wv_works: 0
+      spm_unit2:
+        members:
+        - person2_1
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        snap: 0
+        wv_works: 0
+      spm_unit3:
+        members:
+        - person3_1
+        - person3_2
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        snap: 0
+        wv_works: 0
+    tax_units:
+      tax_unit1:
+        members:
+        - person1_1
+      tax_unit2:
+        members:
+        - person2_1
+      tax_unit3:
+        members:
+        - person3_1
+        - person3_2
+    households:
+      household1:
+        members:
+        - person1_1
+        state_code: WV
+      household2:
+        members:
+        - person2_1
+        state_code: WV
+      household3:
+        members:
+        - person3_1
+        - person3_2
+        state_code: WV
+  output:
+    wv_lieap_countable_income:
+    - 60_000
+    - 30_000
+    - 13_000
+
+# Reported zero falls back to modeled UI; nonzero reported values override it.
+# Negative reported UI is zero for LIEAP, retaining the 12_000 wages.
+- name: Case 12, shared unemployment receipts retain overrides and floor negative amounts.
+  period: 2_026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1_1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        employment_income: 12_000
+        unemployment_compensation: 0
+        modeled_state_unemployment_compensation: 6_000
+      person2_1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        employment_income: 12_000
+        unemployment_compensation: 1_200
+        modeled_state_unemployment_compensation: 6_000
+      person3_1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        employment_income: 12_000
+        unemployment_compensation: -100
+        modeled_state_unemployment_compensation: 6_000
+    spm_units:
+      spm_unit1:
+        members:
+        - person1_1
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        snap: 0
+        wv_works: 0
+      spm_unit2:
+        members:
+        - person2_1
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        snap: 0
+        wv_works: 0
+      spm_unit3:
+        members:
+        - person3_1
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        snap: 0
+        wv_works: 0
+    tax_units:
+      tax_unit1:
+        members:
+        - person1_1
+      tax_unit2:
+        members:
+        - person2_1
+      tax_unit3:
+        members:
+        - person3_1
+    households:
+      household1:
+        members:
+        - person1_1
+        state_code: WV
+      household2:
+        members:
+        - person2_1
+        state_code: WV
+      household3:
+        members:
+        - person3_1
+        state_code: WV
+  output:
+    total_unemployment_compensation:
+    - 6_000
+    - 1_200
+    - -100
+    wv_lieap_countable_income:
+    - 18_000
+    - 13_200
+    - 12_000
+
+# Component receipt control: the supplied annual WV WORKS 6_000 represents 500/month.
+# Generic TANF annualizes once and suppresses the benefit for the nonparticipant.
+- name: Case 13, monthly TANF receipt counts once only for participants.
+  period: 2_026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1_1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        employment_income: 6_000
+      person1_2:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+      person2_1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        employment_income: 6_000
+      person2_2:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1_1
+        - person1_2
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        snap: 0
+        wv_works: 6_000
+        takes_up_tanf_if_eligible: true
+      spm_unit2:
+        members:
+        - person2_1
+        - person2_2
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        snap: 0
+        wv_works: 6_000
+        takes_up_tanf_if_eligible: false
+    tax_units:
+      tax_unit1:
+        members:
+        - person1_1
+        - person1_2
+      tax_unit2:
+        members:
+        - person2_1
+        - person2_2
+    households:
+      household1:
+        members:
+        - person1_1
+        - person1_2
+        state_code: WV
+      household2:
+        members:
+        - person2_1
+        - person2_2
+        state_code: WV
+  output:
+    tanf:
+    - 6_000
+    - 0
+    wv_lieap_countable_income:
+    - 12_000
+    - 6_000
+
+# No WV WORKS or TANF entitlement override. A zero-income parent and child have a
+# modeled size-two payment standard of 480/month, hence 5_760 annually.
+# The eligible nonparticipant receives zero. This tests income receipt handling,
+# with no assertion about an unimplemented final LIEAP eligibility or award.
+- name: Case 14, actual modeled WV WORKS flows into income only when received.
+  period: 2_027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1_1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        employment_income_before_lsr: 0
+        is_tax_unit_head_or_spouse: true
+      person1_2:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        is_tax_unit_dependent: true
+      person2_1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        employment_income_before_lsr: 0
+        is_tax_unit_head_or_spouse: true
+      person2_2:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit1:
+        members:
+        - person1_1
+        - person1_2
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        snap: 0
+        takes_up_tanf_if_eligible: true
+      spm_unit2:
+        members:
+        - person2_1
+        - person2_2
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 0
+        snap: 0
+        takes_up_tanf_if_eligible: false
+    tax_units:
+      tax_unit1:
+        members:
+        - person1_1
+        - person1_2
+      tax_unit2:
+        members:
+        - person2_1
+        - person2_2
+    households:
+      household1:
+        members:
+        - person1_1
+        - person1_2
+        state_code: WV
+      household2:
+        members:
+        - person2_1
+        - person2_2
+        state_code: WV
+  output:
+    tanf:
+    - 5_760
+    - 0
+    wv_lieap_countable_income:
+    - 5_760
+    - 0

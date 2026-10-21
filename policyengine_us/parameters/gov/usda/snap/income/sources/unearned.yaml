@@ -45,11 +45,22 @@ values:
     - mi_ssp_person
     - mn_msa_person
     - mo_ssp
+    - mt_ssp
+    - nc_sa
     - ne_aabd
+    - nj_ssp
     - nm_ssi_state_supplement
+    - nv_oss
+    - ny_ssp
+    - ok_ssp
+    - pa_ssp
+    - ri_ssp
     - sc_ssi_state_supplement
+    - sd_ssp
     - tx_ssi_state_supplement
+    - va_ag
     - wa_ssp
+    - wy_ssp
     # Listed elsewhere: ca_state_supplement is an SPM unit variable with no
     # person-level counterpart. policyengine-core projects a group value onto
     # every member, so listing it here would count it once per person in the
@@ -57,12 +68,13 @@ values:
     # (ii)
     - pension_income # Includes annuities.
     - veterans_benefits
-    - unemployment_compensation
+    - total_unemployment_compensation
     - disability_benefits
     - workers_compensation
     - social_security
     - survivor_benefits
     - retirement_distributions
+    - military_retirement_income
     # Assume all rental income meets this criteria (rest is earned):
     # "gross income minus the cost of doing business derived from rental
     #  property in which a household member is not actively engaged in the
@@ -95,9 +107,7 @@ values:
 
 metadata:
   reference:
-    - title: 7 CFR 273.9(b)(2)
-      href: https://www.law.cornell.edu/cfr/text/7/273.9#b_2
-    - title: 7 CFR 273.9(c)(1)
-      href: https://www.law.cornell.edu/cfr/text/7/273.9#c_1
+    - title: 7 CFR 273.9(b)(2) and (c)(1)
+      href: https://www.law.cornell.edu/cfr/text/7/273.9
     - title: POMS SI 01401.001 General Information about State Supplementation
       href: https://secure.ssa.gov/poms.nsf/lnx/0501401001

@@ -17,3 +17,25 @@
     is_full_time_student: false
   output:
     savers_credit_eligible_person: false
+
+- name: Savers credit admits a claimable filer who is not actually claimed
+  period: 2025
+  input:
+    age: 26
+    is_full_time_student: false
+    is_tax_unit_head_or_spouse: true
+    claimed_as_dependent_on_another_return: false
+    claimable_as_dependent_on_another_return: true
+  output:
+    savers_credit_eligible_person: true
+
+- name: Savers credit excludes an actually claimed filer
+  period: 2025
+  input:
+    age: 26
+    is_full_time_student: false
+    is_tax_unit_head_or_spouse: true
+    claimed_as_dependent_on_another_return: true
+    claimable_as_dependent_on_another_return: true
+  output:
+    savers_credit_eligible_person: false

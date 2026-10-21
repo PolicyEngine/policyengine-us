@@ -77,8 +77,8 @@
         members: [person1, person2, person3]
   output:
     adjusted_gross_income: 90_000
-    # self-employment loss is shared evenly by the head and spouse
-    adjusted_gross_income_person: [55_000, 35_000, 0]
+    # The head's self-employment loss lowers only the head's AGI.
+    adjusted_gross_income_person: [50_000, 40_000, 0]
 
 - name: adjusted_gross_income_person unit test 4
   absolute_error_margin: 0.01

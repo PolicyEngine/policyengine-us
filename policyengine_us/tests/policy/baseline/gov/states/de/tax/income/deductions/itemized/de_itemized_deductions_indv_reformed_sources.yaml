@@ -1,0 +1,106 @@
+- name: Unmapped sources prorate by positive filer income within each tax unit
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    gov.states.de.tax.income.deductions.itemized.sources: [medical_expense_deduction]
+    people:
+      positive_head:
+        is_tax_unit_head_or_spouse: true
+        adjusted_gross_income_person: 60_000
+      positive_spouse:
+        is_tax_unit_head_or_spouse: true
+        adjusted_gross_income_person: 40_000
+      dependent:
+        is_tax_unit_head_or_spouse: false
+        is_tax_unit_dependent: true
+        adjusted_gross_income_person: 90_000
+      loss_head:
+        is_tax_unit_head_or_spouse: true
+        adjusted_gross_income_person: 45_000
+      loss_spouse:
+        is_tax_unit_head_or_spouse: true
+        adjusted_gross_income_person: -5_000
+      zero_head:
+        is_tax_unit_head_or_spouse: true
+        adjusted_gross_income_person: 0
+      zero_spouse:
+        is_tax_unit_head_or_spouse: true
+        adjusted_gross_income_person: -2_000
+    tax_units:
+      positive_unit:
+        members: [positive_head, positive_spouse, dependent]
+        medical_expense_deduction: 1_000
+      loss_unit:
+        members: [loss_head, loss_spouse]
+        medical_expense_deduction: 4_000
+      zero_unit:
+        members: [zero_head, zero_spouse]
+        medical_expense_deduction: 2_000
+    households:
+      household:
+        members: [positive_head, positive_spouse, dependent, loss_head, loss_spouse, zero_head, zero_spouse]
+        state_code: DE
+  output:
+    # No source has a known payer mapping, so allocation starts as a zero
+    # person array. Each unit's derived total is conserved: dependents get
+    # zero, losses have zero income weight, and zero-income filers split equally.
+    de_itemized_deductions_unit: [1_000, 4_000, 2_000]
+    de_itemized_deductions_indv: [600, 400, 0, 4_000, 0, 1_000, 1_000]
+
+- name: Mixed sources preserve payer allocation and prorate only the unmapped amount
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    gov.states.de.tax.income.deductions.itemized.sources: [de_capped_real_estate_tax, medical_expense_deduction]
+    people:
+      head:
+        is_tax_unit_head_or_spouse: true
+        adjusted_gross_income_person: 60_000
+      spouse:
+        is_tax_unit_head_or_spouse: true
+        adjusted_gross_income_person: 40_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        medical_expense_deduction: 1_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    # The spouse keeps the 2_000 property-tax deduction they paid. Only the
+    # unmapped 1_000 is split 60/40; prorating everything would give [1_800, 1_200].
+    de_itemized_deductions_unit: 3_000
+    de_itemized_deductions_indv: [600, 2_400]
+
+- name: Empty sources return person arrays of zeros across differently sized tax units
+  period: 2024
+  input:
+    gov.states.de.tax.income.deductions.itemized.sources: []
+    people:
+      single:
+        is_tax_unit_head_or_spouse: true
+        adjusted_gross_income_person: 30_000
+        real_estate_taxes: 3_000
+      head:
+        is_tax_unit_head_or_spouse: true
+        adjusted_gross_income_person: 60_000
+        real_estate_taxes: 2_000
+      spouse:
+        is_tax_unit_head_or_spouse: true
+        adjusted_gross_income_person: 40_000
+    tax_units:
+      single_unit:
+        members: [single]
+      couple_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [single, head, spouse]
+        state_code: DE
+  output:
+    # Raw expenses are present, but none is included in the reformed sources.
+    # The allocation loop has no iterations and still sums a person array.
+    de_itemized_deductions_unit: [0, 0]
+    de_itemized_deductions_indv: [0, 0, 0]

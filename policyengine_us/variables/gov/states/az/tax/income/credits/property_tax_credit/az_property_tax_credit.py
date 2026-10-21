@@ -7,6 +7,10 @@ class az_property_tax_credit(Variable):
     label = "Arizona Property Tax Credit"
     unit = USD
     definition_period = YEAR
+    reference = [
+        "https://www.azleg.gov/ars/43/01072.htm",  # ARS 43-1072(B)
+        "https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140PTCi.pdf#page=5",
+    ]
     defined_for = "az_property_tax_credit_eligible"
 
     def formula(tax_unit, period, parameters):
@@ -27,10 +31,18 @@ class az_property_tax_credit(Variable):
             | (household_size > 1)
         )
 
+        # Household income (Form 140PTC line J) can be negative, for example
+        # after a line D capital loss. The 2023-2025 instructions (page 5, line
+        # J note) then consider household income to be zero for the Schedule 1
+        # and 2 lookup. The 2021 and 2022 instructions have no such note; the
+        # schedules start at 0, so the same floor is applied in every year. A
+        # single-amount scale returns 0 below its first threshold, so a
+        # negative income must be floored here rather than passed to calc.
+        schedule_income = max_(income, 0)
         cap = where(
             lives_with_others,
-            p.amount.cohabitating.calc(income),
-            p.amount.living_alone.calc(income),
+            p.amount.cohabitating.calc(schedule_income),
+            p.amount.living_alone.calc(schedule_income),
         )
 
         # ARS 43-1072(B): the credit is the lesser of the table amount and

@@ -12,6 +12,13 @@ import sys
 from pathlib import Path
 from typing import Dict, List, Set
 
+if __package__:
+    from .test_batched import split_into_batches
+else:
+    # The workflow invokes this file directly; keep the parent runner from
+    # importing policyengine_us and constructing a full model of its own.
+    from test_batched import split_into_batches
+
 
 SOURCE_FILE_SUFFIXES = (".py", ".yaml", ".yml")
 TEST_INFRASTRUCTURE_FILES = ("run_selective_tests.py", "test_batched.py")
@@ -380,6 +387,22 @@ class SelectiveTestRunner:
             if file.endswith(".py") and "/tests/" not in file
         ]
 
+    def get_untested_sources(
+        self, source_files: List[str], test_paths: Set[str]
+    ) -> List[str]:
+        """Source files that map to tests, none of which are in this run.
+
+        limit_test_paths defers slow directories and narrows broad changes
+        to their directly changed tests, so some files' tests run only in
+        the full suite. Coverage of those files here would count their
+        untouched lines as uncovered.
+        """
+        return [
+            file
+            for file in source_files
+            if (mapped := self.map_files_to_tests({file})) and not mapped & test_paths
+        ]
+
     def limit_test_paths(
         self, test_paths: Set[str], changed_files: Set[str]
     ) -> Set[str]:
@@ -431,6 +454,32 @@ class SelectiveTestRunner:
         )
         return set()
 
+    @staticmethod
+    def get_test_batches(test_path: str) -> List[List[str]]:
+        """Split selected structural test folders without changing their scope."""
+        path = Path(test_path)
+        policy_tests = Path("policyengine_us/tests/policy").resolve()
+        if not path.is_dir() or not any(
+            path.resolve().is_relative_to(policy_tests / suite)
+            for suite in ("contrib", "reform")
+        ):
+            return [[test_path]]
+
+        # Reuse Full Suite's per-file YAML batches, including nested .yml files.
+        batches = split_into_batches(path, 1, mode="per-file")
+        # Core's ordinary directory collector also discovers Python tests.
+        # Keep pytest's default patterns, excluding support modules unless
+        # they were selected explicitly as a file target.
+        python_tests = sorted(
+            {
+                file
+                for pattern in ("test_*.py", "*_test.py")
+                for file in path.rglob(pattern)
+                if file.is_file()
+            }
+        )
+        return batches + [[str(file)] for file in python_tests]
+
     def run_tests(
         self,
         test_paths: Set[str],
@@ -456,8 +505,25 @@ class SelectiveTestRunner:
                 changed_py_files = self.get_changed_python_coverage_patterns(
                     changed_files
                 )
-                if changed_py_files:
-                    include_patterns = changed_py_files
+                untested = self.get_untested_sources(changed_py_files, test_paths)
+                if untested:
+                    print(
+                        f"Leaving {len(untested)} changed source file(s) out of "
+                        "coverage; their tests run only in the full suite:"
+                    )
+                    for file in sorted(untested):
+                        print(f"  - {file}")
+                tested_py_files = [
+                    file for file in changed_py_files if file not in untested
+                ]
+                if tested_py_files:
+                    include_patterns = tested_py_files
+                elif untested:
+                    print(
+                        "No changed source file is tested in this run; running "
+                        "tests without coverage."
+                    )
+                    with_coverage = False
                 else:
                     print(
                         "No changed Python source files; running tests without "
@@ -535,23 +601,22 @@ class SelectiveTestRunner:
                 "policyengine_us",
             ]
 
-        # Run each location in its own subprocess: reformed tax-benefit
-        # systems and per-case simulations accumulate for the life of a
-        # process, so a single process running every selected location can
-        # exceed runner memory even when each location alone is fine.
+        # Run locations sequentially, splitting contrib/reform folders one
+        # file per subprocess. Reform systems accumulate for the life of a
+        # process, so even one selected folder can exceed runner memory.
         # Coverage's -a flag appends results across the invocations.
         worst_returncode = 0
         for test_path in sorted(test_paths):
-            cmd = base_cmd + [test_path]
-            print(f"\nRunning command: {' '.join(cmd)}")
-            result = subprocess.run(cmd)
-            if result.returncode == PYTEST_NO_TESTS_COLLECTED:
-                # A changed file under tests/ with nothing to collect is a
-                # support module (a fixture or helper), not a failing test.
-                print(f"No tests collected in {test_path}; nothing to run there.")
-                continue
-            if result.returncode != 0:
-                worst_returncode = result.returncode
+            for batch in self.get_test_batches(test_path):
+                cmd = base_cmd + batch
+                print(f"\nRunning command: {' '.join(cmd)}")
+                result = subprocess.run(cmd)
+                if result.returncode == PYTEST_NO_TESTS_COLLECTED:
+                    # A changed support module is not a failing test.
+                    print(f"No tests collected in {batch}; nothing to run there.")
+                    continue
+                if result.returncode != 0:
+                    worst_returncode = result.returncode
 
         return worst_returncode
 

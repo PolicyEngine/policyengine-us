@@ -1,0 +1,43 @@
+# Form IT-216 Table for line 10: "– 15,000 .35", "15,000 – 17,000 .34", ...,
+# "41,000 – 43,000 .21", "43,000 – No limit .20" (over / but not over).
+- name: FAGI of 15,000 uses .35
+  period: 2024
+  input:
+    adjusted_gross_income: 15_000
+    state_code: NY
+  output:
+    ny_cdcc_federal_rate: 0.35
+
+- name: FAGI of 15,001 uses .34
+  period: 2024
+  input:
+    adjusted_gross_income: 15_001
+    state_code: NY
+  output:
+    ny_cdcc_federal_rate: 0.34
+
+- name: FAGI of 43,000 uses .21
+  period: 2024
+  input:
+    adjusted_gross_income: 43_000
+    state_code: NY
+  output:
+    ny_cdcc_federal_rate: 0.21
+
+- name: Recomputed FAGI of 43,001 uses .20
+  period: 2021
+  input:
+    adjusted_gross_income: 43_001
+    state_code: NY
+  output:
+    ny_cdcc_federal_rate: 0.2
+
+# Table for line 10 footnote: "This may be any amount up to $15,000,
+# including zero or a negative amount."
+- name: Negative FAGI uses .35
+  period: 2024
+  input:
+    adjusted_gross_income: -5_000
+    state_code: NY
+  output:
+    ny_cdcc_federal_rate: 0.35
