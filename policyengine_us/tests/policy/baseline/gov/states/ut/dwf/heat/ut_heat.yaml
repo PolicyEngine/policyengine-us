@@ -1518,3 +1518,36 @@
   output:
     ut_heat_countable_income: [319.19, 319.20, 319.21]
     ut_heat: [498, 498, 497]
+
+# Sections 401/402 count ordinary DoD retirement pay separately from pensions
+# and VA benefits. A veteran retiring after 20 years receives 36,000 per year,
+# above the one-person 23,940 income limit; no ordinary heating award is due.
+- name: "Case 48, ordinary military retirement pay counts toward heating eligibility."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_veteran: true
+        years_in_military: 20
+        military_retirement_pay: 36_000
+        pension_income: 0
+        veterans_benefits: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        heat_expense_included_in_rent: false
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household1:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_heat_countable_income: 36_000
+    ut_heat_income_limit: 23_940
+    ut_heat_eligible: false
+    ut_heat: 0

@@ -1,1 +1,1 @@
-Fix Utah HEAT income treatment and exact poverty-percentage rounding.
+Fix Utah HEAT income treatment, including military retirement pay, and exact poverty-percentage rounding.
