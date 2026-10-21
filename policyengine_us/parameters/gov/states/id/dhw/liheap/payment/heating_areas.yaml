@@ -1,0 +1,65 @@
+description: Idaho groups counties into these heating areas under the Low Income Home Energy Assistance Program.
+
+# The user approved continuing the recovered county map on October 20, 2026.
+# The FY2026 anchor is a modeling assumption, not a verified effective date.
+# Use the complete left-hand county table on page 2; the right-hand table
+# duplicates Power County and omits Elmore County.
+area_1:
+  2025-10-01:
+    - ADA_COUNTY_ID
+    - CANYON_COUNTY_ID
+    - ELMORE_COUNTY_ID
+    - GEM_COUNTY_ID
+    - GOODING_COUNTY_ID
+    - LATAH_COUNTY_ID
+    - NEZ_PERCE_COUNTY_ID
+    - OWYHEE_COUNTY_ID
+    - PAYETTE_COUNTY_ID
+    - WASHINGTON_COUNTY_ID
+area_2:
+  2025-10-01:
+    - ADAMS_COUNTY_ID
+    - BANNOCK_COUNTY_ID
+    - BENEWAH_COUNTY_ID
+    - BINGHAM_COUNTY_ID
+    - BOISE_COUNTY_ID
+    - BONNER_COUNTY_ID
+    - BOUNDARY_COUNTY_ID
+    - CASSIA_COUNTY_ID
+    - CLEARWATER_COUNTY_ID
+    - FRANKLIN_COUNTY_ID
+    - IDAHO_COUNTY_ID
+    - JEROME_COUNTY_ID
+    - KOOTENAI_COUNTY_ID
+    - LEWIS_COUNTY_ID
+    - LINCOLN_COUNTY_ID
+    - MINIDOKA_COUNTY_ID
+    - ONEIDA_COUNTY_ID
+    - POWER_COUNTY_ID
+    - SHOSHONE_COUNTY_ID
+    - TWIN_FALLS_COUNTY_ID
+area_3:
+  2025-10-01:
+    - BEAR_LAKE_COUNTY_ID
+    - BLAINE_COUNTY_ID
+    - BONNEVILLE_COUNTY_ID
+    - BUTTE_COUNTY_ID
+    - CAMAS_COUNTY_ID
+    - CARIBOU_COUNTY_ID
+    - CLARK_COUNTY_ID
+    - CUSTER_COUNTY_ID
+    - FREMONT_COUNTY_ID
+    - JEFFERSON_COUNTY_ID
+    - LEMHI_COUNTY_ID
+    - MADISON_COUNTY_ID
+    - TETON_COUNTY_ID
+    - VALLEY_COUNTY_ID
+
+metadata:
+  propagate_metadata_to_children: true
+  unit: list
+  period: year
+  label: Idaho LIHEAP heating-area counties
+  reference:
+    - title: Historical Idaho LIHEAP Intake Manual, Appendix A, county codes
+      href: https://web.archive.org/web/20170124204651id_/http://healthandwelfare.idaho.gov/portals/_rainbow/manuals/liheap/Appendices/a_codes_all.pdf#page=2

@@ -1,0 +1,20 @@
+description: Idaho provides this base benefit to households without a specific heating-cost obligation under the Low Income Home Energy Assistance Program.
+
+# FY2025 paid the minimum rent benefit before any target supplement.
+# This category became ineligible in FY2026; zero is not an unknown amount.
+# This rule does not exclude all renters or all subsidized households.
+values:
+  2024-10-01: 75
+  2025-10-01: 0
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Idaho LIHEAP base benefit without a specific heating-cost obligation
+  reference:
+    - title: FY2025 Idaho LIHEAP State Plan, sections 2.5 and 2.6
+      href: https://liheapch.acf.gov/docs/2025/state-plans/ID_Plan_2025.pdf#page=9
+    - title: Idaho PY25 Benefit Determination Chart
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/ID_BenefitMatrix_2025.pdf#page=1
+    - title: FY2026 Idaho LIHEAP State Plan, sections 2.5 and 2.6
+      href: https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=9

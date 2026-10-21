@@ -1,8 +1,8 @@
 # Idaho regular heating components
 
 The FY2026 components calculate qualified household size, countable income,
-income limits and modeled financial eligibility. The ordinary income test is
-inclusive. A household with a SNAP recipient during the October-September
+income limits, modeled financial eligibility and the heating area. The ordinary
+income test is inclusive. A household with a SNAP recipient during the October-September
 program year, or a current SSI recipient, is categorically income eligible.
 Income still determines the eventual award. Any household member can establish
 that categorical route; the model does not require every member to receive aid.
@@ -37,9 +37,31 @@ distinguished for now; the Avista & Northern Utilities and Rocky Mountain Power
 columns are omitted. This is an explicit modeling simplification, not a claim
 that providers pay identical benefits. No utility-provider input is added.
 The table contains the base amounts before the vulnerable-household supplement.
-It is not yet connected to a household award because the area and burden
-calculations remain unresolved. Provider/company and administering-agency distinctions are outside this
-implementation scope.
+It is not yet connected to a household award because current estimated heating
+costs are missing and existing inputs do not identify every heating-cost obligation. Provider/company and
+administering-agency distinctions are outside this implementation scope.
+
+The user approved continuing the recovered 44-county heating-area map on
+October 20, 2026. `id_liheap_heating_area` derives Areas I-III from the existing
+county input using the complete left-hand county table in historical Appendix A.
+The right-hand table duplicates Power County and omits Elmore County. The PDF
+has no printed effective year; its metadata says last modified October 18, 2006,
+and the archived copy was captured January 24, 2017. These dates do not establish
+FY2026 applicability. The FY2026 parameter anchor records the approved modeling
+continuation. Explicit unknown or unmatched counties return area zero; an omitted
+county retains the shared geography fallback to Ada County, Area I.
+
+The FY2025 rent column pays a $75 base amount in every area and burden band,
+before the separately determined target supplement. The accepted FY2025 plan
+assigns that minimum to households with no specific heat-cost obligation. The
+accepted FY2026 plan explicitly makes that category ineligible and the FY2026
+matrix drops its rent column. The user initially approved reusing the FY2025
+amount, then chose to follow the confirmed FY2026 rule on October 20, 2026.
+The conditional rent parameter is therefore $75 for FY2025 and zero from
+FY2026 for households without a specific heating-cost obligation. No rent
+amount is connected to household awards.
+The PY2008 subsidized-housing low-burden rule is excluded. Current housing
+responsibility rules are described below.
 
 The approved energy-burden convention is low below 6%, medium from 6% up to
 but excluding 11%, and high at 11% or greater (`burden >= 0.11`). This includes
@@ -51,11 +73,23 @@ explicitly included 11% in high. This is an approved modeling convention;
 the current source omission remains documented.
 
 Final eligibility and awards remain incomplete. The current estimated annual
-heating-cost chart and current heating-area mapping have not been established.
-The recovered historical county map and 2007 heating
-costs are not promoted to FY2026 policy, and actual household bills do not replace
-the state's estimated costs. The exactly-11-percent boundary is resolved by the
-approved convention above.
+heating-cost chart has not been established, and the PY2007 costs are excluded.
+Actual household bills do not replace the state's estimated costs. The
+exactly-11-percent boundary is resolved by the approved convention above.
+
+The accepted [FY2025 plan](https://liheapch.acf.gov/docs/2025/state-plans/ID_Plan_2025.pdf#page=9)
+establishes the earlier $75 minimum for households without a specific heating
+obligation. The accepted [FY2026 plan #page 8-9](https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=8)
+requires renters, including subsidized renters, to establish financial heating
+responsibility and excludes households with no specific heating-cost obligation.
+[IDAPA 16.03.08, sections 200.07 and 201](https://adminrules.idaho.gov/rules/current/16/160308.pdf#page=5),
+effective July 1, 2026, likewise requires direct costs or a designated rent
+portion. Applying the general fuel/area/burden matrix to otherwise eligible
+subsidized households with a heating obligation is an interpretation supported
+by these current rules. No current source specifies the old automatic low band.
+The existing heat-in-rent flag does not distinguish free bundled heat from a
+designated tenant heating charge, so it cannot determine every responsibility
+case. No new responsibility input or blanket subsidy exclusion is added.
 
 FY2026 components and the selected electric table are researched and tested; the
 incomplete state has no fully verified policy year. Earlier parameter

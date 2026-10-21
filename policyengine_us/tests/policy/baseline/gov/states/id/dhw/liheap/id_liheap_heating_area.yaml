@@ -1,0 +1,87 @@
+# Historical Idaho LIHEAP Intake Manual, Appendix A, physical page 2.
+# https://web.archive.org/web/20170124204651id_/http://healthandwelfare.idaho.gov/portals/_rainbow/manuals/liheap/Appendices/a_codes_all.pdf#page=2
+# The user approved continuing this undated map in the current draft.
+# Expected areas follow the complete left table in county-code order 1-44.
+# The right table duplicates Power and omits Elmore; Elmore is in Area I.
+
+- name: Case 1, all forty-four counties follow the recovered county table.
+  period: 2026
+  input:
+    state_code: [ID, ID, ID, ID, ID, ID, ID, ID, ID, ID, ID,
+                 ID, ID, ID, ID, ID, ID, ID, ID, ID, ID, ID,
+                 ID, ID, ID, ID, ID, ID, ID, ID, ID, ID, ID,
+                 ID, ID, ID, ID, ID, ID, ID, ID, ID, ID, ID]
+    county:
+      - ADA_COUNTY_ID
+      - ADAMS_COUNTY_ID
+      - BANNOCK_COUNTY_ID
+      - BEAR_LAKE_COUNTY_ID
+      - BENEWAH_COUNTY_ID
+      - BINGHAM_COUNTY_ID
+      - BLAINE_COUNTY_ID
+      - BOISE_COUNTY_ID
+      - BONNER_COUNTY_ID
+      - BONNEVILLE_COUNTY_ID
+      - BOUNDARY_COUNTY_ID
+      - BUTTE_COUNTY_ID
+      - CAMAS_COUNTY_ID
+      - CANYON_COUNTY_ID
+      - CARIBOU_COUNTY_ID
+      - CASSIA_COUNTY_ID
+      - CLARK_COUNTY_ID
+      - CLEARWATER_COUNTY_ID
+      - CUSTER_COUNTY_ID
+      - ELMORE_COUNTY_ID
+      - FRANKLIN_COUNTY_ID
+      - FREMONT_COUNTY_ID
+      - GEM_COUNTY_ID
+      - GOODING_COUNTY_ID
+      - IDAHO_COUNTY_ID
+      - JEFFERSON_COUNTY_ID
+      - JEROME_COUNTY_ID
+      - KOOTENAI_COUNTY_ID
+      - LATAH_COUNTY_ID
+      - LEMHI_COUNTY_ID
+      - LEWIS_COUNTY_ID
+      - LINCOLN_COUNTY_ID
+      - MADISON_COUNTY_ID
+      - MINIDOKA_COUNTY_ID
+      - NEZ_PERCE_COUNTY_ID
+      - ONEIDA_COUNTY_ID
+      - OWYHEE_COUNTY_ID
+      - PAYETTE_COUNTY_ID
+      - POWER_COUNTY_ID
+      - SHOSHONE_COUNTY_ID
+      - TETON_COUNTY_ID
+      - TWIN_FALLS_COUNTY_ID
+      - VALLEY_COUNTY_ID
+      - WASHINGTON_COUNTY_ID
+  output:
+    id_liheap_heating_area: [1, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2,
+                            3, 3, 1, 3, 2, 3, 2, 3, 1, 2, 3,
+                            1, 1, 2, 3, 2, 2, 1, 3, 2, 2, 3,
+                            2, 1, 2, 1, 1, 2, 2, 3, 2, 3, 1]
+
+- name: Case 2, unknown and out-of-state county strings remain unassigned.
+  period: 2026
+  input:
+    state_code: [ID, ID]
+    county: [UNKNOWN, BAKER_COUNTY_OR]
+  output:
+    id_liheap_heating_area: [0, 0]
+
+- name: Case 3, omitted county inherits the shared Ada County fallback.
+  period: 2026
+  input:
+    state_code: ID
+  output:
+    county_str: ADA_COUNTY_ID
+    id_liheap_heating_area: 1
+
+- name: Case 4, mixed-state households only assign an Idaho heating area.
+  period: 2026
+  input:
+    state_code: [ID, OR, OR]
+    county: [ADA_COUNTY_ID, ADA_COUNTY_ID, BAKER_COUNTY_OR]
+  output:
+    id_liheap_heating_area: [1, 0, 0]
