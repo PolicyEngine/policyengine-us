@@ -259,7 +259,6 @@
     spm_units:
       unit:
         members: [parent, child]
-        pre_subsidy_childcare_expenses: 1_800
     tax_units:
       tax_unit:
         members: [parent, child]
@@ -268,9 +267,9 @@
         members: [parent, child]
         state_code: HI
   output:
-    # Hawaii TANF: countable earnings (1,500 x 0.8 - 200) x 0.45 = 450, and
-    # the child care cost gives no deduction; 485.76 - 450 = 35.76. The
-    # grant reaches CCAP income without a circular dependency.
+    # Hawaii TANF: countable earnings (1,500 x 0.8 - 200) x 0.45 = 450, with
+    # no incapacitated adult care deduction; 485.76 - 450 = 35.76. The grant
+    # reaches CCAP income without a circular dependency.
     hi_tanf_dependent_care_deduction: 0
     hi_tanf: 35.76
     hi_ccap_countable_income: 1_535.76

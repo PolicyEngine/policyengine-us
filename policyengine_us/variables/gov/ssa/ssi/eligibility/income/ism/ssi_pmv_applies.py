@@ -25,18 +25,15 @@ class ssi_pmv_applies(Variable):
         # Food still counts in a month that starts before that date, except
         # when all of the month's food from others was received or paid for
         # on or after it. The PMV is not prorated by day.
-        p = parameters(period).gov.ssa.ssi.income.ism
-        food_counts_at_month_end = parameters(period.stop).gov.ssa.ssi.income.ism
-        exclusion_starts_this_month = (
-            p.food_counts & ~food_counts_at_month_end.food_counts
+        food_counts = bool(parameters(period).gov.ssa.ssi.income.ism.food_counts)
+        food_counts_at_month_end = bool(
+            parameters(period.stop).gov.ssa.ssi.income.ism.food_counts
         )
+        exclusion_starts_this_month = food_counts and not food_counts_at_month_end
         food_only_after_exclusion = person(
             "ssi_food_from_others_only_on_or_after_food_exclusion", period
         )
+        late_food_excluded = exclusion_starts_this_month & food_only_after_exclusion
         receives_food = person("ssi_receives_food_from_others", period)
-        receives_counted_food = (
-            receives_food
-            & p.food_counts
-            & ~(exclusion_starts_this_month & food_only_after_exclusion)
-        )
+        receives_counted_food = receives_food & food_counts & ~late_food_excluded
         return is_own_household & (receives_shelter | receives_counted_food)
