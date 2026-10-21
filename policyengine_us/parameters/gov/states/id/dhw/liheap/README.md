@@ -41,12 +41,21 @@ It is not yet connected to a household award because the area and burden
 calculations remain unresolved. Provider/company and administering-agency distinctions are outside this
 implementation scope.
 
+The approved energy-burden convention is low below 6%, medium from 6% up to
+but excluding 11%, and high at 11% or greater (`burden >= 0.11`). This includes
+exactly 11% in the high group. The user approved this interpretation on
+October 20, 2026: the [FY2026 matrix methodology](https://liheapch.acf.gov/docs/2026/benefits-matricies/ID_BenefitMatrix_Heating_2026.pdf#page=2)
+prints medium below 11% and high above 11%, leaving exactly 11% unassigned.
+The [historical 2011 rule, section 204.03](https://adminrules.idaho.gov/rules/2011/16/0414.pdf#page=8)
+explicitly included 11% in high. This is an approved modeling convention;
+the current source omission remains documented.
+
 Final eligibility and awards remain incomplete. The current estimated annual
 heating-cost chart and current heating-area mapping have not been established.
 The recovered historical county map and 2007 heating
 costs are not promoted to FY2026 policy, and actual household bills do not replace
-the state's estimated costs. The current methodology's exactly-11-percent burden
-boundary is also unresolved; a superseded rule does not settle it.
+the state's estimated costs. The exactly-11-percent boundary is resolved by the
+approved convention above.
 
 FY2026 components and the selected electric table are researched and tested; the
 incomplete state has no fully verified policy year. Earlier parameter

@@ -1,1 +1,1 @@
-Add Idaho LIHEAP income, household and financial-eligibility components with net Social Security, receipt-based income and the Idaho Power & Southern Utilities electric table; the full heating award remains incomplete.
+Add Idaho LIHEAP income, household and financial-eligibility components with net Social Security, receipt-based income and the Idaho Power & Southern Utilities electric table. Document the approved high-burden convention of 11% or greater; the full heating award remains incomplete.
