@@ -1,0 +1,31 @@
+- name: Case 1, default co_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: CO
+    taxable_income: 30_000
+  output:
+    co_other_subtractions: 0
+    co_subtractions: 0
+    co_taxable_income: 30_000
+
+- name: Case 2, co_other_subtractions reduces CO taxable income
+  period: 2024
+  input:
+    state_code: CO
+    taxable_income: 30_000
+    co_other_subtractions: 2_000
+  output:
+    co_other_subtractions: 2_000
+    co_subtractions: 2_000
+    co_taxable_income: 28_000
+
+- name: Case 3, co_other_subtractions reduces CO taxable income in 2021
+  period: 2021
+  input:
+    state_code: CO
+    taxable_income: 30_000
+    co_other_subtractions: 2_000
+  output:
+    co_other_subtractions: 2_000
+    co_subtractions: 2_000
+    co_taxable_income: 28_000

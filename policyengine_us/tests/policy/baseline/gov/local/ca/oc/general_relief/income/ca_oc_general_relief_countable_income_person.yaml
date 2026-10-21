@@ -37,3 +37,22 @@
   output:
     # Earned 1,000 x (1 - 0.2) = 800; less 100 spousal support = 700.
     ca_oc_general_relief_countable_income_person: 700
+
+- name: Pretax and after-tax premiums reduce countable gross earned income once.
+  period: 2026-01
+  input:
+    employment_income: 1_000 * 12
+    health_insurance_premiums: 40 * 12
+    pre_tax_health_insurance_premiums: 60 * 12
+    in_oc: true
+  output:
+    ca_oc_general_relief_countable_income_person: 700
+
+- name: Moving all premiums to pretax payroll leaves countable income unchanged.
+  period: 2026-01
+  input:
+    employment_income: 1_000 * 12
+    pre_tax_health_insurance_premiums: 100 * 12
+    in_oc: true
+  output:
+    ca_oc_general_relief_countable_income_person: 700

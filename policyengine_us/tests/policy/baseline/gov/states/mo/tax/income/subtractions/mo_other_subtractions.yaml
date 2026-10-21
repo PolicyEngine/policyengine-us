@@ -1,0 +1,30 @@
+- name: Case 1, default mo_other_subtractions is zero
+  period: 2024
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_other_subtractions: 0
+    mo_agi_subtractions: 0
+    mo_adjusted_gross_income: 50_000
+
+- name: Case 2, mo_other_subtractions reduces MO AGI
+  period: 2024
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+        mo_other_subtractions: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_other_subtractions: 2_000
+    mo_agi_subtractions: 2_000
+    mo_adjusted_gross_income: 48_000

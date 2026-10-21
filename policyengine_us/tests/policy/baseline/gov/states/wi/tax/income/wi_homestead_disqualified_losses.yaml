@@ -163,3 +163,25 @@
         state_code: WI
   output:
     wi_homestead_disqualified_losses: 0
+
+- name: Case 9, a non-SSTB sole proprietorship loss is not netted against SSTB sole proprietorship income.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        self_employment_income: -5_000
+        sstb_self_employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WI
+  output:
+    # 2023 Schedule H instructions, line 11j (page 16): consider each business
+    # individually and do not net a business with a gain against one with a
+    # loss (Example 1). Schedule 4, line 2 = 5,000.
+    wi_homestead_disqualified_losses: 5_000

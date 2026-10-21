@@ -15,10 +15,11 @@ values:
     - ar_taxable_capital_gains_joint # Line 14
     - taxable_ira_distributions # Line 16, or Lines 17A/17B after age 59 1/2
     - taxable_roth_conversions # Line 16, or Lines 17A/17B after age 59 1/2
-    - military_retirement_pay # Line 17A/17B
+    - military_retirement_income # Line 17A/17B
     - taxable_pension_income # Line 17A/17B
-    - disability_benefits # Line 17A/17B
+    - taxable_disability_benefits # Line 17A/17B
     - rental_income # Line 18
+    - partnership_s_corp_income # Line 18
     - estate_income # Line 18
     - farm_rent_income # Line 18, Form 4835 rent is reported on Schedule E
     - farm_operations_income # Line 19, Schedule F
@@ -40,14 +41,15 @@ values:
     - ar_taxable_capital_gains_joint # Line 14
     - taxable_ira_distributions # Line 16, or Lines 18A/18B after age 59 1/2
     - taxable_roth_conversions # Line 16, or Lines 18A/18B after age 59 1/2
-    - military_retirement_pay # Line 17 (Lines 17A/17B on the 2018 form)
+    - military_retirement_income # Line 17 (Lines 17A/17B on the 2018 form)
     - taxable_pension_income # Line 18A/18B
-    - disability_benefits # Line 18A/18B
+    - taxable_disability_benefits # Line 18A/18B
     - rental_income # Line 19
+    - partnership_s_corp_income # Line 19
     - estate_income # Line 19
     - farm_rent_income # Line 19, Form 4835 rent is reported on Schedule E
     - farm_operations_income # Line 20, Schedule F
-    - unemployment_compensation # Line 21
+    - total_unemployment_compensation # Line 21
     - gambling_winnings # Line 22, other income (Form AR-OI)
   2020-01-01:
     - irs_employment_income # Line 8
@@ -59,10 +61,11 @@ values:
     - ar_taxable_capital_gains_joint # Line 14
     - taxable_ira_distributions # Line 16, or Lines 18A/18B after age 59 1/2
     - taxable_roth_conversions # Line 16, or Lines 18A/18B after age 59 1/2
-    - military_retirement_pay # Line 17
+    - military_retirement_income # Line 17
     - taxable_pension_income # Line 18A/18B
-    - disability_benefits # Line 18A/18B
+    - taxable_disability_benefits # Line 18A/18B
     - rental_income # Line 19
+    - partnership_s_corp_income # Line 19
     - estate_income # Line 19
     - farm_rent_income # Line 19, Form 4835 rent is reported on Schedule E
     - farm_operations_income # Line 20, Schedule F
@@ -77,18 +80,20 @@ values:
     - ar_taxable_capital_gains_joint # Line 14
     - taxable_ira_distributions # Line 16, or Lines 18A/18B after age 59 1/2
     - taxable_roth_conversions # Line 16, or Lines 18A/18B after age 59 1/2
-    - military_retirement_pay # Line 17
+    - military_retirement_income # Line 17
+
     - taxable_pension_income # Line 18A/18B
     - taxable_401k_distributions # Line 18A/18B
     - taxable_403b_distributions # Line 18A/18B
     - taxable_sep_distributions # Line 18A/18B
     - keogh_distributions # Line 18A/18B
-    - disability_benefits # Line 18A/18B
+    - taxable_disability_benefits # Line 18A/18B
     - rental_income # Line 19
+    - partnership_s_corp_income # Line 19
     - estate_income # Line 19
     - farm_rent_income # Line 19, Form 4835 rent is reported on Schedule E
     - farm_operations_income # Line 20, Schedule F
-    - unemployment_compensation # Line 21
+    - total_unemployment_compensation # Line 21
     - gambling_winnings # Line 22, other income (Form AR-OI)
 
 metadata:
