@@ -13,4 +13,4 @@ class pa_tax_deductions(Variable):
     reference = "https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2021/2021_pa-40in.pdf#page=20"
     defined_for = StateCode.PA
 
-    adds = ["pa_529_plan_deduction"]
+    adds = ["pa_529_plan_deduction", "pa_other_subtractions"]

@@ -13,6 +13,7 @@ values:
     - self_employed_pension_contribution_ald # Line 9
     - us_govt_interest_person
     - taxable_public_pension_income
+    - al_other_subtractions
   2023-01-01:
   # IRA distributions prior to 1982 are not deductible.
     - traditional_ira_contributions # Line 1
@@ -24,6 +25,7 @@ values:
     - us_govt_interest_person
     - al_retirement_exemption #Schedule RS Line 10
     - taxable_public_pension_income
+    - al_other_subtractions
 
 metadata:
   unit: list

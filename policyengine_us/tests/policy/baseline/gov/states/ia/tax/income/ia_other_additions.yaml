@@ -1,0 +1,20 @@
+- name: Case 1, default ia_other_additions is zero
+  period: 2024
+  input:
+    state_code: IA
+    employment_income: 50_000
+  output:
+    ia_other_additions: 0
+    ia_gross_income: 50_000
+    ia_net_income: 50_000
+
+- name: Case 2, ia_other_additions increases IA net income
+  period: 2024
+  input:
+    state_code: IA
+    employment_income: 50_000
+    ia_other_additions: 2_000
+  output:
+    ia_other_additions: 2_000
+    ia_gross_income: 52_000
+    ia_net_income: 52_000
