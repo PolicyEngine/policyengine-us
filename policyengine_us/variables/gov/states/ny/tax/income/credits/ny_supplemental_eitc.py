@@ -20,7 +20,9 @@ class ny_supplemental_eitc(Variable):
         # New York State EIC of 606(d) after the household credit
         # reduction, not the federal EITC. The 606(d-1)(9) payment on the
         # noncustodial parent (enhanced) EIC is not modeled, as the
-        # 606(d-1) credit itself is not modeled.
+        # 606(d-1) credit itself is not modeled. The payment also requires a
+        # timely filed return (with extensions); filing dates are not
+        # modeled, so that condition is assumed met.
         p = parameters(period).gov.states.ny.tax.income.credits.eitc
         payment = tax_unit("ny_eitc", period) * p.supplemental_match
         # "no payment shall be issued if it is less than twenty-five dollars"

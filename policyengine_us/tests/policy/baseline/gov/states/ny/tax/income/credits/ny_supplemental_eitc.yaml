@@ -7,6 +7,8 @@
 # dollars."
 # The NY Tax Department states the same rule as "at least $100" of credit
 # (25% x $100 = $25).
+# The omitted sentence limits the payment to returns filed on time (with
+# extensions). Filing dates are not modeled, so the tests assume it is met.
 
 - name: 2021 payment is 25% of the New York State EIC
   # Tax Department example: line 65 of $300 x 0.25 = $75.
