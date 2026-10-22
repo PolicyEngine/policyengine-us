@@ -10,11 +10,13 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 from hypothesis import example, given, settings, strategies as st
+from policyengine_core.parameters import Parameter
 from policyengine_core.reforms import Reform
 
 from policyengine_us import Simulation
 from policyengine_us.reforms.cbo.payroll.increase_taxable_earnings_for_social_security import (
     create_increase_taxable_earnings_for_social_security,
+    create_increase_taxable_earnings_for_social_security_reform,
 )
 from policyengine_us.system import system
 from policyengine_us.variables.gov.irs.tax.payroll.social_security.employee_social_security_tax import (
@@ -82,6 +84,42 @@ def test_future_threshold_activates_with_default_start_instant():
             cap + extra_wages
         )
         assert simulation.calculate(SE_BASE, year)[0] == pytest.approx(expected_se)
+
+
+@pytest.mark.parametrize(
+    ("future_threshold", "expected_active"),
+    [(250_000, True), (np.inf, False)],
+    ids=["distant-finite-interval", "always-infinite"],
+)
+def test_factory_detects_distant_finite_threshold(future_threshold, expected_active):
+    threshold = Parameter(
+        "gov.contrib.cbo.payroll.secondary_earnings_threshold",
+        data={
+            "2024-01-01": np.inf,
+            "2036-01-01": future_threshold,
+            "2037-01-01": np.inf,
+        },
+    )
+
+    class Parameters(SimpleNamespace):
+        def __call__(self, period):
+            return _parameters(0, threshold(period))(period)
+
+    parameters = Parameters(
+        gov=SimpleNamespace(
+            contrib=SimpleNamespace(
+                cbo=SimpleNamespace(
+                    payroll=SimpleNamespace(secondary_earnings_threshold=threshold)
+                )
+            )
+        )
+    )
+    # A finite interval twelve years away still requires the override, even
+    # when the threshold is infinite both now and after that interval ends.
+    reform = create_increase_taxable_earnings_for_social_security_reform(
+        parameters, "2024-01-01"
+    )
+    assert (reform is not None) is expected_active
 
 
 @pytest.fixture(scope="module")
@@ -169,6 +207,14 @@ def test_donut_invariants(reform_variables, cases):
     assert np.all(
         reformed[WAGE_BASE] + reformed[SE_BASE] <= wages + net_self_employment + 1e-8
     )
+
+    # Combining the separately allocated wage and SE bases must recover the
+    # full policy base: all earnings except the gap between cap and threshold.
+    earnings = wages + net_self_employment
+    expected_base = np.minimum(earnings, cap) + np.maximum(
+        0, earnings - np.maximum(cap, threshold)
+    )
+    np.testing.assert_allclose(reformed[WAGE_BASE] + reformed[SE_BASE], expected_base)
 
     # Under current law taxable wages never exceed the cap, so adding the
     # zero floor preserves the old baseline SE base for every generated case.
