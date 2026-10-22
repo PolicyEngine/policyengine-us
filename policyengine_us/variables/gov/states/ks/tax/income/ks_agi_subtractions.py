@@ -45,4 +45,5 @@ class ks_agi_subtractions(Variable):
             + plan_529
             + salt_refund_income
             + public_and_military_pension
+            + tax_unit("ks_other_subtractions", period)
         )
