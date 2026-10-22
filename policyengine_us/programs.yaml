@@ -1215,6 +1215,18 @@ programs:
         notes: Models the 2026 community supplement for individuals, couples and individuals with
           an ineligible spouse. Essential spouses, persons in a TANF case and grandfathered
           institutional payments are not modeled.
+      - state: OH
+        status: partial
+        name: Ohio RSS
+        full_name: Ohio Residential State Supplement
+        variable: oh_rss
+        parameter_prefix: gov.states.oh.dbh.rss
+        verified_years: "2026"
+        notes: >-
+          Models 2026 payments for approved residential placements, including
+          first-month proration. Care certification is an input, so
+          microsimulation pays no RSS; PASS and specialized work-expense
+          exclusions are not modeled.
       - state: NY
         status: partial
         name: New York SSP
@@ -1257,18 +1269,6 @@ programs:
         notes: Models 2026 locality rates and SSI and non-SSI budgets for certified assisted living,
           adult foster care and supportive housing residents. Conditional resource benefits and
           historical grandfathering are not modeled.
-      - state: OH
-        status: partial
-        name: Ohio RSS
-        full_name: Ohio Residential State Supplement
-        variable: oh_rss
-        parameter_prefix: gov.states.oh.dbh.rss
-        verified_years: "2026"
-        notes: >-
-          Models 2026 payments for approved residential placements, including
-          first-month proration. Care certification is an input, so
-          microsimulation pays no RSS; PASS and specialized work-expense
-          exclusions are not modeled.
 
   - id: social_security
     name: Social Security

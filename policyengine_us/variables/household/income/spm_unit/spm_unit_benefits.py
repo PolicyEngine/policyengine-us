@@ -28,11 +28,11 @@ class spm_unit_benefits(Variable):
             "nc_sa",  # North Carolina benefits
             "mt_ssp",  # Montana benefits
             "ok_ssp",  # Oklahoma benefits
+            "oh_rss",  # Ohio benefits
             "ny_ssp",  # New York benefits
             "ri_ssp",  # Rhode Island benefits
             "sd_ssp",  # South Dakota benefits
             "va_ag",  # Virginia benefits
-            "oh_rss",  # Ohio benefits
             "ks_sspp",  # Kansas benefits
             "hi_oss",
             "la_oss",  # Louisiana benefits
