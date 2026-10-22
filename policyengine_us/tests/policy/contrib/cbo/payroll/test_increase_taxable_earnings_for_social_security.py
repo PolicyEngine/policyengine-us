@@ -9,7 +9,7 @@ from types import SimpleNamespace
 
 import numpy as np
 import pytest
-from hypothesis import example, given, settings, strategies as st
+from hypothesis import HealthCheck, example, given, settings, strategies as st
 from policyengine_core.parameters import Parameter
 from policyengine_core.reforms import Reform
 
@@ -64,6 +64,10 @@ def test_future_threshold_activates_with_default_start_instant():
         country_id="us",
     )
     simulation = Simulation(
+        # The parameter reform gets an isolated clone of this baseline.
+        # Reuse it to avoid loading the country a second time; Simulation
+        # still performs structural detection with its default start_instant.
+        tax_benefit_system=system,
         situation={
             "people": {
                 "person": {
@@ -84,6 +88,9 @@ def test_future_threshold_activates_with_default_start_instant():
             cap + extra_wages
         )
         assert simulation.calculate(SE_BASE, year)[0] == pytest.approx(expected_se)
+
+    baseline_payroll = system.parameters("2026-01-01").gov.contrib.cbo.payroll
+    assert np.isinf(baseline_payroll.secondary_earnings_threshold)
 
 
 @pytest.mark.parametrize(
@@ -183,7 +190,14 @@ CASE = st.tuples(
 )
 
 
-@settings(max_examples=150, deadline=None, derandomize=True)
+@settings(
+    max_examples=150,
+    deadline=None,
+    derandomize=True,
+    # The first draw scans constants from thousands of loaded policy modules.
+    # Filesystem startup cost must not reduce the generated case coverage.
+    suppress_health_check=[HealthCheck.too_slow],
+)
 @given(cases=st.lists(CASE, min_size=1, max_size=12))
 @example(
     cases=[
