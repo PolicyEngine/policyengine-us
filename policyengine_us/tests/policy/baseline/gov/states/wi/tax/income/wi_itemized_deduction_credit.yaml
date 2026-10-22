@@ -97,6 +97,28 @@
     wi_itemized_deduction_credit_potential: 500
     wi_itemized_deduction_credit: 500
 
+# Before 2020 the base formula applies: the federal charitable deduction, unchanged.
+- name: Wisconsin 2019 credit counts the federal charitable deduction
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 150_000
+        charitable_cash_donations: 10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: WI
+  output:
+    wi_standard_deduction: 0
+    wi_itemized_deduction_credit_potential: 500
+    wi_itemized_deduction_credit: 500
+
 # 2022 has no federal nonitemizer allowance, and should already pass.
 - name: Wisconsin 2022 charitable credit control
   period: 2022
