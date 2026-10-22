@@ -19,6 +19,7 @@ class spm_unit_benefits(Variable):
             "ak_ssp",
             "dc_ossp",  # DC benefits
             "id_aabd",  # Idaho benefits
+            "vt_aabd",  # Vermont benefits
             "ky_ssp",  # Kentucky benefits
             "de_ssp",  # Delaware benefits
             "fl_oss",
@@ -32,7 +33,6 @@ class spm_unit_benefits(Variable):
             "ri_ssp",  # Rhode Island benefits
             "sd_ssp",  # South Dakota benefits
             "va_ag",  # Virginia benefits
-            "vt_aabd",  # Vermont benefits
             "ks_sspp",  # Kansas benefits
             "hi_oss",
             "la_oss",  # Louisiana benefits
