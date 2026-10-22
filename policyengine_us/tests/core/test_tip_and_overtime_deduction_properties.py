@@ -9,30 +9,35 @@ lower whole number". Sections 224(f) and 225(e) allow a married individual
 either deduction only on a joint return, and the Part II and Part III cautions
 say "If married, you must file jointly to claim this deduction."
 
-Tax units share one simulation per draw. Joint returns have two spouses, so
-the combined caps and the both-spouses SSN rule apply as on the return. The
-tests check:
+Each test builds one simulation of many tax units. Joint returns have two
+spouses, so the combined caps and the both-spouses SSN rule apply as on the
+return. The tests check:
 
-1. Every random draw, evaluated under all five filing statuses, matches an
+1. Every seeded draw, evaluated under all five filing statuses, matches an
    independent restatement of Schedule 1-A lines 7-13 (tips) and 15-21
-   (overtime); married filing separately gets zero for every input.
-2. Each deduction lies between 0 and its capped qualifying amount, and the
-   capped amount less the deduction is a whole multiple of $100.
+   (overtime), with zero for married filing separately.
+2. Each deduction lies between 0 and its capped qualifying amount, and a
+   positive deduction is the capped amount less a whole multiple of $100.
+   These follow from 1, and are checked on the model's output directly so
+   that an error in the restatement cannot hide them.
 3. At every $1,000 step from each threshold to full phase-out, for each filing
-   status that may claim: one dollar below the step and the step itself differ
-   by exactly $100 (or by what is left at the last step), and the deduction is
-   the same from the step to $999 above it.
+   status that may claim: the amount is the cap less $100 per whole step (not
+   below zero), one dollar below the step it is $100 higher (or what is left
+   at the last step), and $999 above the step it is unchanged.
 4. Raising modified AGI never raises either deduction, and leaves it unchanged
-   while the count of whole $1,000 increments is unchanged (Hypothesis).
+   while the count of whole $1,000 increments over the threshold is unchanged
+   (Hypothesis, with incomes drawn around both thresholds and their steps).
+   With 3, the amount is flat across each step.
 
 Modified AGI here is adjusted gross income with no section 911, 931 or 933
-exclusions; the YAML tests cover those add-backs. AGIs are whole dollars or
-quarter dollars, which float32 holds exactly at these magnitudes.
+exclusions; the YAML tests cover the section 911 and 931 add-backs. AGIs are
+whole dollars or quarter dollars, which float32 holds exactly at these
+magnitudes.
 """
 
 import numpy as np
 import pytest
-from hypothesis import given, settings
+from hypothesis import Phase, given, settings
 from hypothesis import strategies as st
 
 from policyengine_us import Simulation
@@ -228,17 +233,41 @@ def test_each_thousand_dollar_step_reduces_by_one_hundred(reference_system):
                 assert below - at_step == drop, (status, name, k)
 
 
+thresholds = st.sampled_from([DEFAULT_THRESHOLD, THRESHOLD["JOINT"]])
 magis = st.one_of(
+    # On or next to a $1,000 step of either threshold.
+    st.tuples(
+        thresholds,
+        st.integers(min_value=0, max_value=260),
+        st.sampled_from([-1, 0, 1, 500, 999]),
+    ).map(lambda t: t[0] + INCREMENT * t[1] + t[2]),
+    # Anywhere in or near either phase-out range, in quarter dollars.
+    st.tuples(thresholds, st.integers(min_value=-8_000, max_value=1_040_000)).map(
+        lambda t: t[0] + t[1] / 4
+    ),
     st.integers(min_value=0, max_value=700_000),
-    st.integers(min_value=0, max_value=2_800_000).map(lambda quarters: quarters / 4),
 )
-amounts = st.integers(min_value=0, max_value=40_000)
+raises = st.one_of(
+    st.integers(min_value=0, max_value=999),
+    st.integers(min_value=0, max_value=4_000).map(lambda quarters: quarters / 4),
+    st.integers(min_value=0, max_value=60_000),
+)
+amounts = st.one_of(
+    st.sampled_from([12_500, 25_000]), st.integers(min_value=0, max_value=40_000)
+)
 
 
-@settings(max_examples=6, deadline=None, derandomize=True)
+# Shrinking a failure takes minutes on a simulation this size; the failing
+# example is still reported.
+@settings(
+    max_examples=6,
+    deadline=None,
+    derandomize=True,
+    phases=(Phase.explicit, Phase.reuse, Phase.generate),
+)
 @given(
     cases=st.lists(
-        st.tuples(magis, st.integers(min_value=0, max_value=60_000), amounts, amounts),
+        st.tuples(magis, raises, amounts, amounts),
         min_size=20,
         max_size=20,
     )

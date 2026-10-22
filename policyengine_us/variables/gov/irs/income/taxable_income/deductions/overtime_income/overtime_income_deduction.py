@@ -32,6 +32,7 @@ class overtime_income_deduction(Variable):
         capped_overtime_income = min_(cap, total_overtime_income)
         deduction = max_(0, capped_overtime_income - phase_out_amount)
         # 26 U.S.C. 225(e): a married individual takes the deduction only on
-        # a joint return.
+        # a joint return. Spouses considered unmarried under section 7703(b)
+        # file as head of household and keep it.
         separate = filing_status == filing_status.possible_values.SEPARATE
         return where(separate, 0, deduction)

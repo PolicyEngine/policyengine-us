@@ -35,6 +35,7 @@ class tip_income_deduction(Variable):
         capped_tip_income = min_(p.cap, total_tip_income)
         deduction = max_(0, capped_tip_income - phase_out_amount)
         # 26 U.S.C. 224(f): a married individual takes the deduction only on
-        # a joint return.
+        # a joint return. Spouses considered unmarried under section 7703(b)
+        # file as head of household and keep it.
         separate = filing_status == filing_status.possible_values.SEPARATE
         return where(separate, 0, deduction)

@@ -1,4 +1,4 @@
-description: The IRS phases out the overtime income exemption for income above this threshold, based on filing status.
+description: The IRS phases out the overtime income deduction for modified adjusted gross income above this threshold, based on filing status.
 
 metadata:
   propagate_metadata_to_children: true
@@ -6,10 +6,12 @@ metadata:
   period: year
   breakdown:
     - filing_status
-  label: Overtime income exemption phase out start
+  label: Overtime income deduction phase-out start
   reference:
-    - title: H.R.1 - One Big Beautiful Bill Act
-      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+    - title: 26 U.S.C. § 225(b)(2)(A)
+      href: https://www.law.cornell.edu/uscode/text/26/225#b_2_A
+    - title: 2025 Schedule 1-A (Form 1040), line 17
+      href: https://www.irs.gov/pub/irs-pdf/f1040s1a.pdf#page=1
 
 JOINT:
   2025-01-01: 300_000
