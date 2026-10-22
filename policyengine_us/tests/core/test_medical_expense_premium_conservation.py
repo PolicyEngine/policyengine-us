@@ -395,7 +395,10 @@ def _state_simulation(cases, reference_system, with_se_deduction):
         # deduction. The oracle preserves the supplied amount exactly as main
         # does; only the computed path restores an applied federal exclusion.
         main_base = case["subtotal"] if supplied else gross
+        # The credit (NMSA 7-2-18.13) takes expenses of $28,000 or more; the
+        # exemption (NMSA 7-2-5.9(A)) takes expenses that "exceed" $28,000.
         senior_eligible = case["age"] >= 65 and main_base >= 28_000
+        senior_exemption_eligible = case["age"] >= 65 and main_base > 28_000
         denominator = 2 if case["filing_status"] == "SEPARATE" else 1
 
         for state in ("ND", "NM"):
@@ -464,7 +467,7 @@ def _state_simulation(cases, reference_system, with_se_deduction):
             )
             # NMSA 7-2-5.9 and PIT-ADJ line 18 allow the full exemption.
             expectations["nm_medical_expense_exemption"].append(
-                3_000 if state == "NM" and senior_eligible else 0
+                3_000 if state == "NM" and senior_exemption_eligible else 0
             )
     simulation = Simulation(
         tax_benefit_system=reference_system,

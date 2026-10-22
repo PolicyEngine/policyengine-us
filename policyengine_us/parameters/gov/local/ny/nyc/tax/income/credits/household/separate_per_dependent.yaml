@@ -1,4 +1,8 @@
-description: NYC provides a household credit of this amount per dependent for separate filers.
+description: IT-201 Table 6 lists this NYC household credit amount per dependent for separate filers.
+# Not used by nyc_household_credit: Tax Law 1310(d) gives a separate filer
+# "one-half the credit otherwise allowed his or her household", which the
+# model computes from the married amounts (other_per_dependent). Table 6
+# rounds the half amount per exemption, which can differ by a dollar or more.
 metadata:
   type: single_amount
   threshold_unit: currency-USD

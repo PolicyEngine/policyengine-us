@@ -127,7 +127,7 @@
   output:
     ny_household_credit_potential: 45
 
-- name: 2025 joint return with one claimable spouse gets no household credit (the claimable spouse is the head)
+- name: 2025 joint return with one claimable spouse counts the other spouse's exemption (the claimable spouse is the head)
   period: 2025
   input:
     people:
@@ -151,10 +151,13 @@
         members: [person_a, person_b]
         state_code: NY
   output:
-    # Item C is one box per return; either spouse marks it.
-    ny_household_credit_potential: 0
+    # Tax Law 606(b) counts the exemptions the couple is entitled to: one,
+    # for the spouse who cannot be claimed. $60 base at $10,000 of AGI plus
+    # $15 x (1 - 1). IT-201 line 40 would deny the credit because item C is
+    # marked; the model follows the statute.
+    ny_household_credit_potential: 60
 
-- name: 2025 joint return with one claimable spouse gets no household credit (the claimable spouse is the spouse)
+- name: 2025 joint return with one claimable spouse counts the other spouse's exemption (the claimable spouse is the spouse)
   period: 2025
   input:
     people:
@@ -178,7 +181,7 @@
         members: [person_b, person_a]
         state_code: NY
   output:
-    ny_household_credit_potential: 0
+    ny_household_credit_potential: 60
 
 - name: 2025 joint return with neither spouse claimable gets the household credit
   period: 2025
@@ -201,3 +204,78 @@
   output:
     # $60 + $15 x (2 - 1).
     ny_household_credit_potential: 75
+
+# Tax Law 606(b)(3)(B): a husband and wife, a head of household and a
+# surviving spouse are households in their own right; only an unmarried
+# individual is excluded for being claimable. IT-201 line 40 denies every
+# return with item C marked; the model follows the statute.
+- name: 2025 separate filer who can be claimed counts the couple's exemptions
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person_a]
+        state_code: NY
+  output:
+    # Combined AGI $10,000 (the spouse's separate return is assumed alike);
+    # exemptions: 0 for the claimable filer plus 1 for the spouse's unit.
+    # $60 base + $15 x (1 - 1) = $60, halved for a separate return.
+    ny_household_credit_potential: 30
+
+- name: 2025 joint return where both spouses can be claimed reduces the base by one additional amount
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NY
+  output:
+    # No exemptions: $60 base + $15 x (0 - 1) = $45.
+    ny_household_credit_potential: 45
+
+- name: 2025 head of household who can be claimed counts the dependent's exemption
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 22
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        # The would-be claimant need not file, so the parent may still claim
+        # the child (Publication 501, Dependent Taxpayer Test).
+        head_or_spouse_is_dependent_elsewhere_without_filing_exception: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # One exemption: $60 base + $15 x (1 - 1).
+    ny_household_credit_potential: 60
