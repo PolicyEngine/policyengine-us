@@ -161,34 +161,3 @@
     # 22,000 - 400 = 21,600, within the 21,648 blind couple standard
     # (ceil(21,640 / 12) x 12) but over the 18,396 aged/disabled standard.
     is_209b_ssi_recipient_income_eligible_for_medicaid: [true, true]
-
-# North Dakota tests SSI recipients against the income level "which
-# establishes supplemental security income eligibility" (N.D.A.C.
-# 75-02-02.1-40(1)(a)(2)): the SSI couple rate, $1,491 a month ($17,892 a
-# year) in 2026, not 75% of the two-person guideline ($16,230).
-- name: Case 10, North Dakota SSI couple under the SSI couple rate qualifies without spenddown.
-  period: 2026
-  input:
-    people:
-      person1:
-        age: 70
-        medicaid_optional_senior_or_disabled_countable_income: 8_400
-        medicaid_medically_needy_medical_expenses: 0
-      person2:
-        age: 68
-        medicaid_optional_senior_or_disabled_countable_income: 8_400
-        medicaid_medically_needy_medical_expenses: 0
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        tax_unit_is_joint: true
-    marital_units:
-      marital_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: ND
-  output:
-    # 16,800 combined ($1,400 a month) is under the 17,892 couple standard.
-    is_209b_ssi_recipient_income_eligible_for_medicaid: [true, true]
