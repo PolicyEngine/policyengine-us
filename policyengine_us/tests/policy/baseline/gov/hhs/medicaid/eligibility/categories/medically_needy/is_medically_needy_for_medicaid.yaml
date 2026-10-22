@@ -50,3 +50,127 @@
     state_code: MA
   output:
     is_medically_needy_for_medicaid: false
+
+# ND 510-05-85-40 publishes $1,174 per month from April 1, 2025,
+# and $1,197 from April 1, 2026. Calendar-year calculations read the
+# standard at January 1; a rolling year beginning in April reads the update.
+- name: Case 3, North Dakota calendar 2026 retains the previous April individual standard.
+  period: 2026
+  input:
+    age: 70
+    state_code: ND
+    ssi: 0
+    receives_ssi: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    ssi_countable_income: 14_088
+  output:
+    is_medically_needy_for_medicaid: true
+
+- name: Case 4, North Dakota calendar 2026 excludes income above the previous April individual standard.
+  period: 2026
+  input:
+    age: 70
+    state_code: ND
+    ssi: 0
+    receives_ssi: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    ssi_countable_income: 14_089
+  output:
+    is_medically_needy_for_medicaid: false
+
+- name: Case 5, North Dakota individual at the April 2026 medically needy standard qualifies.
+  period: year:2026-04
+  input:
+    age: 70
+    state_code: ND
+    ssi: 0
+    receives_ssi: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    ssi_countable_income: 14_364
+  output:
+    is_medically_needy_for_medicaid: true
+
+- name: Case 6, North Dakota individual above the April 2026 medically needy standard does not qualify.
+  period: year:2026-04
+  input:
+    age: 70
+    state_code: ND
+    ssi: 0
+    receives_ssi: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    ssi_countable_income: 14_365
+  output:
+    is_medically_needy_for_medicaid: false
+
+# The April 2026 couple standard is $1,623 per month, or $19,476 annually.
+- name: Case 7, North Dakota couple at the April 2026 medically needy standard qualifies.
+  period: year:2026-04
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        receives_ssi: false
+        is_optional_senior_or_disabled_for_medicaid: false
+        ssi_countable_income: 9_738
+      person2:
+        age: 68
+        ssi: 0
+        receives_ssi: false
+        is_optional_senior_or_disabled_for_medicaid: false
+        ssi_countable_income: 9_738
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    is_medically_needy_for_medicaid: [true, true]
+
+- name: Case 8, North Dakota couple above the April 2026 medically needy standard does not qualify.
+  period: year:2026-04
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        receives_ssi: false
+        is_optional_senior_or_disabled_for_medicaid: false
+        ssi_countable_income: 9_739
+      person2:
+        age: 68
+        ssi: 0
+        receives_ssi: false
+        is_optional_senior_or_disabled_for_medicaid: false
+        ssi_countable_income: 9_738
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    is_medically_needy_for_medicaid: [false, false]
+
+- name: Case 9, North Dakota April 2026 income increase is not applied in March.
+  period: year:2026-03
+  input:
+    age: 70
+    state_code: ND
+    ssi: 0
+    receives_ssi: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    ssi_countable_income: 14_364
+  output:
+    is_medically_needy_for_medicaid: false

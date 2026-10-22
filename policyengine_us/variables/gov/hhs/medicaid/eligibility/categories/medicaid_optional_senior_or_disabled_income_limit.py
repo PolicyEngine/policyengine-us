@@ -16,6 +16,8 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
         "https://www.ecfr.gov/current/title-42/section-435.210",
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-015-00/0805-015-45-income-maximum/",
         "https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=1",
+        # PDF pages 383-385,665
+        "https://bfa.wv.gov/media/40005/download?inline#page=383",
     )
 
     def formula(person, period, parameters):
@@ -24,6 +26,14 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
         # couple living together, whatever their filing status.
         is_couple = person.marital_unit.nb_persons() == 2
         state = person.household("state_code_str", period)
+        # WV IMM 3.17.3.A uses the couple standard only when both spouses
+        # are eligible or income is deemed from an ineligible spouse.
+        is_couple = where(
+            state == "WV",
+            person("ssi_marital_both_eligible", period)
+            | person("is_ssi_spousal_deeming_applies", period),
+            is_couple,
+        )
         p = parameters(
             period
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled
