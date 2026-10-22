@@ -1,0 +1,26 @@
+description: Above-the-line amounts that belong to the filer even when they are recorded on a tax unit dependent, so they are summed over every tax unit member rather than over the head and spouse only.
+values:
+  2010-01-01:
+    # Employer adoption assistance is excluded for the adopting employee
+    # (26 USC 137(a)); households record it on the adopted child, as the Ohio
+    # adoption credit reads it.
+    - qualified_adoption_assistance_expense
+    # Savings bond interest used for education is excluded for the bond's
+    # owner, who must have been at least 24 when the bond was issued, and the
+    # expenses may be a dependent's. "A bond bought by a parent and issued in
+    # the name of his or her child under age 24 does not qualify for the
+    # exclusion by the parent or child" (Form 8815). By convention, an amount
+    # recorded on a dependent is the parent-owned bond's exclusion recorded on
+    # the student whose expenses it paid.
+    - us_bonds_for_higher_ed
+metadata:
+  unit: list
+  period: year
+  label: Above-the-line amounts summed over dependents
+  reference:
+    - title: 26 U.S. Code § 137 - Adoption assistance programs
+      href: https://www.law.cornell.edu/uscode/text/26/137
+    - title: 26 U.S. Code § 135 - Income from United States savings bonds used to pay higher education tuition and fees
+      href: https://www.law.cornell.edu/uscode/text/26/135
+    - title: Form 8815 (2025), Who Can Take the Exclusion
+      href: https://www.irs.gov/pub/irs-prior/f8815--2025.pdf#page=3

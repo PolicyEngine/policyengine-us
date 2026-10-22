@@ -46,6 +46,10 @@ ALLOWED_REMOVALS = {
     # in 2021 and 2023 only.
     ("gov/states/household/state_ctcs.yaml", "2022-01-01"): {"ny_additional_ctc"},
     ("gov/states/household/state_ctcs.yaml", "2024-01-01"): {"ny_additional_ctc"},
+    # From 2023 MN phases its working family credit down jointly with a new
+    # child tax credit (Minn. Stat. 290.0661, subd. 4); mn_wfc models only the
+    # pre-2023 working family credit formula.
+    ("gov/states/household/state_eitcs.yaml", "2023-01-01"): {"mn_wfc"},
     # VT restructured its CDCC into a single vt_cdcc in 2022.
     ("gov/states/household/state_cdccs.yaml", "2022-01-01"): {
         "vt_low_income_cdcc",

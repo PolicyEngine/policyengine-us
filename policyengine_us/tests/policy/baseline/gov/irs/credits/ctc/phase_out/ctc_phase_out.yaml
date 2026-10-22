@@ -13,3 +13,30 @@
     ctc_phase_out_threshold: 200_000 # HOH.
   output:
     ctc_phase_out: 10_000 # $200k * 5%. Gets capped at maximum.
+
+- name: Income excluded under sections 911, 931 and 933 counts toward the phase-out.
+  period: 2024
+  input:
+    adjusted_gross_income: 395_000
+    foreign_earned_income_exclusion: 6_000
+    specified_possession_income: 2_000
+    puerto_rico_income: 2_000
+    ctc_phase_out_threshold: 400_000 # Joint.
+  output:
+    # 26 U.S.C. 24(b)(1): modified AGI 405,000; 5 increments of $1,000 x $50.
+    ctc_phase_out: 250
+
+- name: The phase-out adds back Form 2555 lines 45 and 50 in full, not the stacking amount.
+  period: 2024
+  input:
+    adjusted_gross_income: 180_000
+    # Form 2555 lines 45 and 50: 25,000. The Foreign Earned Income Tax
+    # Worksheet subtracts 10,000 of disallowed itemized deductions (line 2b),
+    # leaving 15,000 (line 2c) for the rate stacking.
+    section_911_excluded_income: 25_000
+    foreign_earned_income_exclusion: 15_000
+    ctc_phase_out_threshold: 200_000 # Single.
+  output:
+    # Schedule 8812 line 2b: modified AGI 180,000 + 25,000 = 205,000;
+    # 5 increments of $1,000 x $50.
+    ctc_phase_out: 250

@@ -1,4 +1,4 @@
-description: Number of adults to simulate a marginal tax rate for, in each household.
+description: Number of adults in each household, ranked by market income, for whom the earnings marginal tax rates are simulated. Everyone else gets a marginal tax rate of zero; marginal_tax_rate_computed flags who is simulated.
 values:
   0000-01-01: 2
 metadata:

@@ -1,0 +1,67 @@
+# 2020 Form 740 instructions, Schedule M line 5: contributions claimed on
+# federal Form 1040 line 10b are added back (in ky_agi, by each filer's part).
+# https://revenue.ky.gov/Forms/740%20Instructions%20Packet%205.7.21.pdf#page=27
+
+- name: Case 1, 2020 single federal non-itemizer adds back the line 10b deduction.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+        charitable_cash_donations: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    adjusted_gross_income_person: 39_700
+    charitable_contributions_ald_person: 300
+    ky_agi: 40_000
+
+- name: Case 2, 2020 joint federal non-itemizers add back each spouse's own part of the deduction.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        charitable_cash_donations: 1_000
+      person2:
+        age: 40
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # The $300 deduction is person1's: only person1 gave. Federal person AGI
+    # deducts it from person1 (charitable_contributions_ald_person).
+    charitable_contributions_ald_person: [300, 0]
+    adjusted_gross_income_person: [49_700, 30_000]
+    ky_agi: [50_000, 30_000]
+
+- name: Case 3, 2021 deduction for non-itemizers is below the line, so nothing is added back.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+        charitable_cash_donations: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    charitable_contributions_ald_person: 0
+    ky_agi: 40_000

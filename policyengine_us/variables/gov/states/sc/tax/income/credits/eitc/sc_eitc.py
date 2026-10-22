@@ -11,7 +11,7 @@ class sc_eitc(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://dor.sc.gov/forms-site/Forms/TC60_2021.pdf",
+        "https://dor.sc.gov/sites/dor/files/forms/TC60_2021.pdf",
         "https://www.scstatehouse.gov/sess126_2025-2026/bills/4216.htm",
     )
     defined_for = StateCode.SC

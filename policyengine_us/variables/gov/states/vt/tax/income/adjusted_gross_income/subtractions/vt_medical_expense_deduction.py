@@ -7,7 +7,7 @@ class vt_medical_expense_deduction(Variable):
     definition_period = YEAR
     label = "Vermont medical expense deduction"
     reference = (
-        "https://legislature.vermont.gov/statutes/section/32/151/05811"  # Titl. 32 V.S.A. § 5811(21)(C)(iv)
+        "https://legislature.vermont.gov/statutes/section/32/151/05811",  # Titl. 32 V.S.A. § 5811(21)(C)(iv)
         "https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf#page=2",  # Instruction for 2022 SCHEDULE IN-112 - MEDICAL DEDUCTION WORKSHEET
     )
     unit = USD

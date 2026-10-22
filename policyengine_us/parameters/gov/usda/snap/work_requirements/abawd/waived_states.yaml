@@ -5,7 +5,8 @@
 # encoded here:
 # - CA: statewide, 2024-11-01 through 2025-10-31 (FNS response,
 #   Aug 12, 2024), replaced by a statewide waiver effective 2025-02-01
-#   (FNS response, Jan 15, 2025).
+#   (FNS response, Jan 15, 2025), which the May 21, 2025
+#   rescission-and-reissue letter shortened to 2026-01-31.
 # - IL: statewide, 2024-11-01 through 2025-10-31 (FNS response,
 #   Aug 19, 2024), replaced by a statewide waiver effective 2025-02-01
 #   through 2026-01-31 (FNS response, partially approving 12 of the
@@ -14,19 +15,33 @@
 #   effective 2025-02-01 through 2026-01-31, replaced the prior statewide
 #   waiver (partially approving 12 of the requested 24 months). Modeled from
 #   2024-11-01, in line with this parameter's overall modeling start date.
+#   From 2026-02-01 through 2027-01-31 Nevada holds a Mineral County
+#   waiver, encoded in waived_counties/nv.yaml.
 # - NY: statewide, 2024-03-01 through 2025-02-28 (FNS FY2024 response).
 #   Modeled from 2024-11-01, in line with this parameter's overall modeling
 #   start date. The replacement FY2025 waiver (FNS response, Oct 2, 2024)
 #   covers 61 of 62 counties from 2025-03-01, so New York is a
-#   partial-waiver state from that date (see known limitations).
-# - DC: initial districtwide waiver effective 2024-12-01 (FNS response,
-#   Apr 26, 2024, originally through 2025-11-30); a superseding districtwide
-#   waiver approved Jan 13, 2025 took effect 2025-01-01; the reinstated
-#   expiration is 2025-12-31 per Appendix A of the memorandum.
+#   partial-waiver state from that date (encoded in
+#   waived_counties/ny.yaml).
+# - NM: statewide, 2024-01-01 through 2024-12-31 (FNS FY2024 response,
+#   Sep 27, 2023). Modeled from 2024-11-01, in line with this parameter's
+#   overall modeling start date. The replacement FY2025 waiver (FNS
+#   response, Sep 18, 2024) covers 29 of 33 counties plus reservation areas
+#   from 2025-01-01, so New Mexico is a partial-waiver state from that date
+#   (encoded in waived_counties/nm.yaml).
+# - DC: districtwide since 2023-12-01 (FNS FY2024 response, Aug 25, 2023,
+#   through 2024-11-30; modeled from 2024-11-01, in line with this
+#   parameter's overall modeling start date), succeeded by a districtwide
+#   waiver effective 2024-12-01 (FNS response, Apr 26, 2024, originally
+#   through 2025-11-30); a superseding districtwide waiver approved Jan 13,
+#   2025 took effect 2025-01-01, originally through 2026-12-31. The May 21,
+#   2025 rescission-and-reissue letter set its expiration to 2025-12-31,
+#   and Appendix A of the memorandum matches it.
 #
 # In November 2025, USDA terminated waivers approved under the
 # "lack of sufficient jobs" criterion, which P.L. 119-21 (OBBBA)
-# section 10102 repealed. After Rhode Island State Council of Churches v.
+# section 10102 repealed (October 3, 2025 memorandum, effective
+# November 2, 2025). After Rhode Island State Council of Churches v.
 # Rollins (D.R.I., No. 1:25-cv-00569, TRO issued 2025-10-31), USDA's
 # February 26, 2026 status update memorandum ("Waiver of the Time Limit -
 # Status Update," published on the USDA guidance portal and linked from the
@@ -38,14 +53,19 @@
 # 2026-06-30.
 #
 # Known limitations:
-# - Twelve of the sixteen reinstated waivers were PARTIAL-state waivers per
-#   the FNS FY2025 response letters (CT: 68 towns; KY: 117 counties; MI: 80
-#   counties, 3 cities, 10 reservations; MN: 17 counties, 9 reservations;
-#   MT: 6 reservation areas; NJ: 20 counties; NM: 29 counties,
-#   18 reservations; NY: 61 counties; OR: 30 counties, 7 reservation areas;
-#   RI: 9 towns; WA: 38 counties, 1 reservation area; ND: partial per the
-#   FY2025 quarterly status reports). Sub-state coverage would require
-#   county FIPS (or sub-county) encoding and is not modeled here.
+# - Twelve of the eighteen jurisdictions in Appendix A held PARTIAL-state
+#   waivers per the FNS FY2025 response letters (CT: 68 towns; KY: 117
+#   counties; MI: 80 counties, 3 cities, 10 reservations; MN: 17 counties,
+#   9 reservations; MT: 6 reservation areas; NJ: 20 counties; NM: 29
+#   counties and reservation areas (the letter text says 18 reservations;
+#   its Table 2 lists 14); NY: 61 counties; OR: 30 counties, 7 reservation
+#   areas; RI: 9 towns; WA: 38 counties, 1 reservation area; ND: Rolette
+#   County plus the Turtle Mountain reservation). The other six (CA, DC,
+#   IL, NV, Guam, and the U.S. Virgin Islands) were statewide or
+#   territory-wide. The KY, MI, MN, ND, NJ, NM, NY, OR, and WA partial
+#   waivers are modeled at county grain in waived_counties/ (their
+#   sub-county parts are omitted); CT and RI (towns) and MT (reservations)
+#   are sub-county and not modeled.
 # - New York's classification changed mid-window: the FY 2025 Q2 status
 #   report (waivers as of 2025-01-01) lists NY among the seven STATEWIDE
 #   jurisdictions because its FY2024 statewide waiver (encoded above) ran
@@ -53,15 +73,35 @@
 #   2025-07-01) lists NY as PARTIAL under its 61-county FY2025 waiver
 #   (effective 2025-03-01 through 2026-02-28). The waiver USDA terminated
 #   and litigation reinstated through 2026-02-28 was therefore the partial
-#   61-county waiver, which is not modeled here.
-# - The CA and DC FNS approval letters run through 2027-01-31 and 2026-12-31
-#   respectively, but Appendix A of the USDA February 26, 2026 memorandum
-#   lists their reinstated expirations as 2026-01-31 and 2025-12-31; this
-#   parameter follows the memorandum, which governs post-litigation
-#   administration (CDSS implemented the time limit statewide on 2026-06-01
-#   per ACL 25-93). The DC Appendix A date of 2025-12-31 likewise differs
-#   from the Apr 26, 2024 letter's original 2025-11-30 expiration.
-# - Statewide waivers in effect before 2024-11-01 are not modeled.
+#   61-county waiver, which is modeled in waived_counties/ny.yaml.
+# - The FY 2025 Q4 status report also lists Hawaii, Massachusetts, and
+#   Virginia as partial-waiver states on 2025-07-01, although their FY2024
+#   waivers ended 2025-06-30 and FNS approved no FY2025 renewal (MA DTA
+#   Online Guide Transmittal 2025-31; VDSS SNAP Manual, "July 2025 - No
+#   exempt areas"; the FY 2026 Q1 status report lists no waiver for any of
+#   the three). Their waived_counties files therefore clear their lists from
+#   2025-07-01, and the 2025-07-03 geography that
+#   hr1_waiver_criteria.in_effect freezes excludes them.
+# - The January 2025 CA and DC approval letters ran through 2027-01-31 and
+#   2026-12-31, respectively, but FNS replaced them before P.L. 119-21 was
+#   enacted: its rescission-and-reissue letters, both signed May 21, 2025
+#   (signature date on page 2 of each), reissued them as one-year waivers
+#   ending 2026-01-31 (CA) and 2025-12-31 (DC). Appendix A of the USDA
+#   February 26, 2026 memorandum lists the same dates, so they govern
+#   current law. The shortening was a pre-enactment administrative action,
+#   not a P.L. 119-21 change. The pre-P.L. 119-21 counterfactual
+#   (hr1_waiver_criteria.in_effect false) nonetheless keeps CA and DC
+#   waived indefinitely rather than through those dates, because both
+#   waivers were in effect on 2025-07-03 and the freeze assumes every such
+#   waiver is renewed. CDSS implemented the time limit statewide on
+#   2026-06-01 per ACL 25-93. The DC date of 2025-12-31 also differs from
+#   the Apr 26, 2024 letter's original 2025-11-30 expiration, which the
+#   January 2025 approval superseded.
+# - Statewide waivers in effect before 2024-11-01 are not modeled. The DC,
+#   NY, and NM FY2024 statewide waivers are encoded only from 2024-11-01,
+#   and Delaware's FY2024 statewide waiver (FNS response, Sep 28, 2023,
+#   2023-10-01 through 2024-09-30), which ended before that date, is
+#   omitted.
 # - Guam and the U.S. Virgin Islands held territory-wide waivers but are not
 #   modeled by PolicyEngine US.
 description: The Department of Agriculture waives the Able-Bodied Adult Without Dependents (ABAWD) time limit under the Supplemental Nutrition Assistance Program statewide in these states.
@@ -69,19 +109,26 @@ description: The Department of Agriculture waives the Able-Bodied Adult Without 
 values:
   2018-01-01:
     []
+  # DC's FY2024 districtwide waiver (2023-12-01 through 2024-11-30, modeled
+  # from 2024-11-01) hands off to its FY2025 districtwide waiver on
+  # 2024-12-01 without a gap.
   2024-11-01:
     - CA
+    - DC
     - IL
+    - NM
     - NV
     - NY
-  2024-12-01:
+  # NM statewide waiver expired 2024-12-31; from 2025-01-01 New Mexico held
+  # a 29-county partial waiver, encoded in waived_counties/nm.yaml.
+  2025-01-01:
     - CA
     - DC
     - IL
     - NV
     - NY
   # NY statewide waiver expired 2025-02-28; from 2025-03-01 New York held
-  # a 61-county partial waiver, which is not modeled.
+  # a 61-county partial waiver, encoded in waived_counties/ny.yaml.
   2025-03-01:
     - CA
     - DC
@@ -109,6 +156,8 @@ metadata:
       href: https://www.fns.usda.gov/sites/default/files/resource-files/ca-abawd-response-fy2025.pdf#page=3
     - title: USDA FNS California Statewide ABAWD Waiver Response, January 15, 2025 (effective 2025-02-01)
       href: https://www.fns.usda.gov/sites/default/files/resource-files/ca-abawd-response-fy2025-b.pdf#page=3
+    - title: USDA FNS California Statewide ABAWD Waiver Response, Rescission and Reissue, May 21, 2025 (one-year waiver, effective 2025-02-01 through 2026-01-31)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ca-abawd-response-fy2025-c.pdf#page=1
     - title: USDA FNS Illinois Statewide ABAWD Waiver Response, FY 2025 (effective 2024-11-01)
       href: https://www.fns.usda.gov/sites/default/files/resource-files/il-abawd-response-fy2025.pdf#page=3
     - title: USDA FNS Illinois Statewide ABAWD Waiver Response, March 14, 2025 (effective 2025-02-01 through 2026-01-31)
@@ -119,19 +168,49 @@ metadata:
       href: https://www.fns.usda.gov/sites/default/files/resource-files/ny-abawd-response-fy2024.pdf#page=3
     - title: USDA FNS New York ABAWD Waiver Response, October 2, 2024 (61 counties, effective 2025-03-01 through 2026-02-28)
       href: https://www.fns.usda.gov/sites/default/files/resource-files/ny-abawd-response-fy2025.pdf#page=4
+    - title: USDA FNS New Mexico Statewide ABAWD Waiver Response, September 27, 2023 - requested area (throughout the State)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/nm-abawd-response-fy2024.pdf#page=2
+    - title: USDA FNS New Mexico Statewide ABAWD Waiver Response, September 27, 2023 - implementation date (2024-01-01) and expiration date (2024-12-31)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/nm-abawd-response-fy2024.pdf#page=3
+    - title: USDA FNS New Mexico ABAWD Waiver Response, September 18, 2024 (29 counties, effective 2025-01-01 through 2025-12-31)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/nm-abawd-response-fy2025.pdf#page=4
+    - title: USDA FNS District of Columbia Districtwide ABAWD Waiver Response, August 25, 2023 - requested area (throughout the District) and approval
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/dc-abawd-response-fy2024.pdf#page=2
+    - title: USDA FNS District of Columbia Districtwide ABAWD Waiver Response, August 25, 2023 - implementation date (2023-12-01) and expiration date (2024-11-30)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/dc-abawd-response-fy2024.pdf#page=3
     - title: USDA FNS District of Columbia Districtwide ABAWD Waiver Response, FY 2025 (effective 2024-12-01)
       href: https://www.fns.usda.gov/sites/default/files/resource-files/dc-abawd-response-fy2025.pdf#page=3
     - title: USDA FNS District of Columbia Districtwide ABAWD Waiver Response, January 13, 2025 (effective 2025-01-01)
       href: https://www.fns.usda.gov/sites/default/files/resource-files/dc-abawd-response-fy2025-b.pdf#page=3
+    - title: USDA FNS District of Columbia Districtwide ABAWD Waiver Response, Rescission and Reissue, May 21, 2025 (one-year waiver, effective 2025-01-01 through 2025-12-31)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/dc-abawd-response-fy2025-c.pdf#page=1
+    - title: USDA FNS California Statewide ABAWD Waiver Response, Rescission and Reissue - signature date (May 21, 2025)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ca-abawd-response-fy2025-c.pdf#page=2
+    - title: USDA FNS District of Columbia Districtwide ABAWD Waiver Response, Rescission and Reissue - signature date (May 21, 2025)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/dc-abawd-response-fy2025-c.pdf#page=2
+    - title: USDA FNS SNAP ABAWD Time Limit Waivers, 2025-2029 (letter index; dates of the CA and DC rescission-and-reissue letters)
+      href: https://www.fns.usda.gov/snap/waivers/timelimit/2025-2029
+    - title: USDA FNS Delaware Statewide ABAWD Waiver Response, September 28, 2023 - requested area (throughout the State, 2023-10-01 through 2024-09-30)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/de-abawd-response-fy2024.pdf#page=2
+    - title: USDA FNS Delaware Statewide ABAWD Waiver Response, September 28, 2023 - implementation date (2023-10-01) and expiration date (2024-09-30)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/de-abawd-response-fy2024.pdf#page=3
     - title: USDA SNAP Waiver of the Time Limit - Status Update Memorandum, February 26, 2026 (Appendix A, time limit waiver expiration dates)
       href: https://www.usda.gov/sites/default/files/guidance-documents/fna.obbb-time-limit-waivers-reinstatement.pdf#page=2
     - title: USDA Food and Nutrition Administration, SNAP Waiver of the Time Limit - Status Update (landing page for the February 26, 2026 memorandum)
       href: https://www.fns.usda.gov/snap/work-requirements/policies/waiver-reinstatement
     - title: Ballotpedia, USDA guidance in response to litigation reinstates SNAP benefits for some ABAWDs (secondary reporting of the February 26, 2026 memorandum) — where dates differ, the primary USDA memorandum governs
       href: https://news.ballotpedia.org/2026/04/02/usda-guidance-in-response-to-litigation-reinstates-snap-benefits-for-some-abawds/
-    - title: USDA FNS FY 2025 Quarter 2 ABAWD Waiver Status Report (waivers as of 2025-01-01; NY then statewide under its FY2024 waiver)
+    - title: USDA FNS FY 2025 Quarter 1 ABAWD Waiver Status Report (waivers as of 2024-10-01; NM and NY then statewide under their FY2024 waivers)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/FY25-Quarter-1-ABAWD-Waiver-Status.pdf#page=1
+    - title: USDA FNS FY 2025 Quarter 2 ABAWD Waiver Status Report (waivers as of 2025-01-01; NY then statewide under its FY2024 waiver; NM and DE partial)
       href: https://www.fns.usda.gov/sites/default/files/resource-files/FY25-Quarter-2-ABAWD-Waiver-Status-Revised.pdf#page=1
     - title: USDA FNS FY 2025 Quarter 4 ABAWD Waiver Status Report (waivers as of 2025-07-01; NY classified as a partial waiver)
       href: https://www.fns.usda.gov/sites/default/files/resource-files/FY25-Quarter-4-ABAWD-Waiver-Status.pdf#page=1
+    - title: USDA FNS FY 2026 Quarter 1 ABAWD Waiver Status Report (waivers as of 2025-10-01; no waiver for HI, MA, or VA)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/FY26-Quarter-1-ABAWD-Waiver-Status.pdf#page=1
+    - title: Massachusetts DTA Online Guide Transmittal 2025-31 - ABAWD geographic waiver expired June 30, 2025
+      href: https://eohhs.ehs.state.ma.us/DTA/PolicyOnline/olg%20docs/olgtm/2025/31.pdf#page=1
+    - title: Virginia DSS SNAP Manual (effective 2025-10-01), ABAWD waived areas - July 2025, no exempt areas
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/snap/snap-manual/Entire-Manual-eff-10012025.pdf#page=266
     - title: CDSS All County Letter No. 25-93 - CalFresh Statewide ABAWD Time Limit Implementation (June 1, 2026)
-      href: https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2025/25-93.pdf
+      href: https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2025/25-93.pdf#page=3

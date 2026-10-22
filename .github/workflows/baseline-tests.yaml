@@ -1,0 +1,72 @@
+name: Baseline tests
+on:
+  workflow_call:
+# Group the existing matrix in the Actions view without adding runners.
+# The guarded PR workflow is the only caller.
+jobs:
+  Baseline:
+    name: Full Suite - Baseline (${{ matrix.group }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      PYTHONUNBUFFERED: 1
+      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
+      # Two batch subprocesses per runner while its memory allows (see
+      # test_batched.py): 32% fewer runner-minutes, same cases, no shutdowns.
+      POLICYENGINE_BATCH_WORKERS: 2
+    strategy:
+      fail-fast: false
+      # At most 6 Baseline groups run at once; GitHub starts the next group on a
+      # fresh runner as each finishes, so the lanes balance from real durations.
+      max-parallel: 6
+      matrix:
+        include:
+          # One state per batch subprocess, over four runners. The job's
+          # POLICYENGINE_BATCH_WORKERS overrides --workers 1, and runner memory
+          # decides whether two run at once. The former NY/OH/OK process peaked
+          # at 15.1 GB (run 36930199045).
+          - group: states-shard-1
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 1/4
+          - group: states-shard-2
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 2/4
+          - group: states-shard-3
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 3/4
+          - group: states-shard-4
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 4/4
+          - group: irs
+            cmd: make test-yaml-no-structural-other-irs
+          - group: household
+            cmd: make test-yaml-no-structural-other-household
+          - group: ssa-usda
+            cmd: make test-yaml-no-structural-other-ssa-usda
+          - group: rest-a
+            cmd: make test-yaml-no-structural-other-rest-a
+          - group: rest-b
+            cmd: make test-yaml-no-structural-other-rest-b
+          - group: contrib-hhs
+            cmd: make test-yaml-contrib-hhs
+          - group: reform
+            cmd: make test-yaml-reform
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.14
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.13.4"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
+      - name: Install dependencies
+        run: uv sync --locked --extra dev
+      - name: Turn off default branching
+        shell: bash
+        run: bash ./update_itemization.sh
+      - name: Run Baseline YAML tests (${{ matrix.group }})
+        run: uv run --no-sync ${{ matrix.cmd }}

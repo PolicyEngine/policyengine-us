@@ -1,0 +1,102 @@
+- name: Subtracts the Credit Limit Worksheet A line 2 credits, but not the residential clean energy credit.
+  period: 2025
+  input:
+    income_tax_before_credits: 5_000
+    foreign_tax_credit: 100 # Schedule 3, line 1
+    cdcc: 200 # Schedule 3, line 2
+    non_refundable_american_opportunity_credit: 300 # Schedule 3, line 3
+    savers_credit: 400 # Schedule 3, line 4
+    energy_efficient_home_improvement_credit: 500 # Schedule 3, line 5b
+    elderly_disabled_credit: 600 # Schedule 3, line 6d
+    new_clean_vehicle_credit: 700 # Schedule 3, line 6f
+    used_clean_vehicle_credit: 800 # Schedule 3, line 6m
+    residential_clean_energy_credit: 900 # Schedule 3, line 5a: not subtracted.
+  output:
+    # 5,000 - (100 + 200 + 300 + 400 + 500 + 600 + 700 + 800) = 1,400
+    ctc_tax_liability_after_preceding_credits: 1_400
+
+- name: Does not fall below zero.
+  period: 2025
+  input:
+    income_tax_before_credits: 1_000
+    cdcc: 2_000
+  output:
+    ctc_tax_liability_after_preceding_credits: 0
+
+- name: The Child and Dependent Care Credit does not precede the CTC in 2021, when it was refundable.
+  period: 2021
+  input:
+    income_tax_before_credits: 3_000
+    cdcc: 1_000
+    elderly_disabled_credit: 500
+  output:
+    ctc_tax_liability_after_preceding_credits: 2_500
+
+- name: The Child and Dependent Care Credit precedes the CTC in 2020.
+  period: 2020
+  input:
+    income_tax_before_credits: 3_000
+    cdcc: 500
+    savers_credit: 200
+    residential_clean_energy_credit: 1_000
+  output:
+    ctc_tax_liability_after_preceding_credits: 2_300
+
+- name: A reform that empties the list of preceding credits leaves income tax before credits.
+  period: 2025
+  input:
+    gov.irs.credits.ctc_tax_liability_limit.preceding_credits: []
+    income_tax_before_credits: 3_000
+    cdcc: 500
+  output:
+    ctc_tax_liability_after_preceding_credits: 3_000
+
+- name: An itemizer's line 1 is the tax after the SALT deduction, which limits the non-refundable CTC.
+  # Line 1 is Form 1040 line 18 (2025 Schedule 8812 instructions, Credit Limit
+  # Worksheet A; 26 U.S.C. 26(a)), the tax on taxable income after every
+  # itemized deduction. A married couple in Texas with three children, $90,000
+  # of wages, $40,000 of mortgage interest and $15,000 of real estate tax:
+  #   itemized deductions 40,000 + 15,000 (under the $40,000 SALT cap) = 55,000
+  #   > the 31,500 standard deduction; taxable income 90,000 - 55,000 = 35,000;
+  #   tax = 10% x 23,850 + 12% x 11,150 = 3,723.
+  # Without SALT, taxable income would be 50,000 and the tax 5,523.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 90_000
+        deductible_mortgage_interest: 40_000
+        real_estate_taxes: 15_000
+      spouse:
+        age: 40
+      child1:
+        age: 4
+      child2:
+        age: 8
+      child3:
+        age: 12
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2, child3]
+        # SALT is the real estate tax alone.
+        state_sales_tax: 0
+        local_sales_tax: 0
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3]
+        state_code: TX
+  output:
+    salt_deduction: 15_000
+    tax_unit_itemizes: true
+    income_tax_before_credits: 3_723
+    # No line 2 credits.
+    ctc_tax_liability_after_preceding_credits: 3_723
+    # No residential clean energy credit, so line 5 = line 3.
+    ctc_limiting_tax_liability: 3_723
+    # Schedule 8812: CTC 3 x 2,200 = 6,600; line 14 = min(6,600, 3,723);
+    # line 27 = min(6,600 - 3,723, 3 x 1,700, 15% x (90,000 - 2,500)) = 2,877.
+    non_refundable_ctc: 3_723
+    refundable_ctc: 2_877
+    income_tax: -2_877

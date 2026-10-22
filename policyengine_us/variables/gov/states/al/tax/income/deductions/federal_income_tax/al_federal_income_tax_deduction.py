@@ -1,5 +1,9 @@
 from policyengine_us.model_api import *
-from policyengine_us.tools.pinned_tbs import get_2020_irc_tbs
+from policyengine_us.tools.pinned_tbs import (
+    CREDIT_DEPENDENT_VARIABLES,
+    IRC_2020_RECOMPUTED_VARIABLES,
+    get_2020_irc_tbs,
+)
 
 
 class al_federal_income_tax_deduction(Variable):
@@ -11,6 +15,8 @@ class al_federal_income_tax_deduction(Variable):
     reference = (
         # 2021 Alabama Form 40 booklet, Federal Income Tax Deduction Worksheet
         "https://www.revenue.alabama.gov/wp-content/uploads/2022/06/21f40abk.pdf#page=20",
+        # Act 2022-37 (HB 231), section 1.
+        "https://alison.legislature.state.al.us/files/pdf/SearchableInstruments/2022RS/PrintFiles/HB231-Enr.pdf#page=2",
         "https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2023/01/22f40abk.pdf#page=20",
     )
     defined_for = StateCode.AL
@@ -52,10 +58,19 @@ class al_federal_income_tax_deduction(Variable):
         actual_non_refundable_cdcc = tax_unit("cdcc", period) * (not cdcc_is_refundable)
 
         simulation = tax_unit.simulation
-        branch = simulation.get_branch("al_2020_irc")
+        branch = get_branch_for_period(simulation, "al_2020_irc", period)
         branch.tax_benefit_system = get_2020_irc_tbs(simulation.tax_benefit_system)
         for variable in branch.tax_benefit_system.variables:
-            if any(key in variable for key in ("ctc", "cdcc", "eitc")):
+            if any(
+                key in variable
+                for key in (
+                    "ctc",
+                    "cdcc",
+                    "eitc",
+                    *CREDIT_DEPENDENT_VARIABLES,
+                    *IRC_2020_RECOMPUTED_VARIABLES,
+                )
+            ):
                 branch.delete_arrays(variable)
         recomputed_ctc = branch.tax_unit("ctc", period)
         recomputed_refundable_ctc = branch.tax_unit("refundable_ctc", period)

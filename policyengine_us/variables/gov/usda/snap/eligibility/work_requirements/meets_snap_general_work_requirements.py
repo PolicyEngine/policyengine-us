@@ -7,8 +7,10 @@ class meets_snap_general_work_requirements(Variable):
     label = "Person is eligible for SNAP benefits via general work requirements"
     definition_period = MONTH
     documentation = (
-        "Working 30 or more hours weekly is an exemption from SNAP work "
-        "registration under 7 CFR 273.7(b)(1)(vii), not an affirmative "
+        "Working 30 or more hours weekly, or earning weekly at least the "
+        "federal minimum wage times 30 hours, is an exemption from SNAP work "
+        "registration under 7 CFR 273.7(b)(1)(vii) "
+        "(is_snap_work_registration_exempt_employed), not an affirmative "
         "requirement. Non-exempt registrants remain eligible unless they "
         "affirmatively fail to comply without good cause (refuse suitable "
         "employment, employment and training noncompliance, or voluntary "
@@ -31,10 +33,6 @@ class meets_snap_general_work_requirements(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.usda.snap.work_requirements.general
         age = person("monthly_age", period)
-        # 7 CFR 273.7(b)(1)(vii) exempts persons working 30 or more hours
-        # per week, determined monthly. Annual average weekly hours are
-        # used as a proxy since survey data lack monthly work histories.
-        weekly_hours_worked = person("weekly_hours_worked_before_lsr", period.this_year)
         # Exemptions under 7 CFR 273.7(b)(1):
         # Under 16 or 60 years of age or older are exempted
         worked_exempted_age = p.age_threshold.exempted.calc(age)
@@ -53,8 +51,9 @@ class meets_snap_general_work_requirements(Variable):
         has_incapacitated_person = person.spm_unit.any(
             person("is_incapable_of_self_care", period)
         )
-        # Work at least 30 hours a week
-        is_working = weekly_hours_worked >= p.weekly_hours_threshold
+        # Working at least 30 hours a week or earning at least the federal
+        # minimum wage times 30 hours, under 7 CFR 273.7(b)(1)(vii).
+        is_working = person("is_snap_work_registration_exempt_employed", period)
         exempted = (
             worked_exempted_age
             | is_disabled

@@ -1,0 +1,178 @@
+# Kansas LIEAP primary heating fuel category (KEESM 13410; KS LIHEAP State
+# Plan FY2026 2.5, pages 8-9; KS_BenefitMatrix_2026.pdf pages 1-4: Natural Gas,
+# Electricity, Propane, Other). Mapping from the canonical heating_type input:
+# NATURAL_GAS -> natural gas; ELECTRICITY, SOLAR -> electricity; PROPANE ->
+# propane; FUEL_OIL, KEROSENE, WOOD, COAL, OTHER, UNSPECIFIED -> other.
+# KEESM sections refer to the October 2024 and January 2026 editions:
+# https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/ and
+# https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/ (keesm<section>.htm).
+
+- name: Case 1, natural gas maps to the natural gas table.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_liheap_fuel_category: NATURAL_GAS
+
+- name: Case 2, electricity maps to the electricity table.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_liheap_fuel_category: ELECTRICITY
+
+- name: Case 3, solar maps to the electricity table.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: SOLAR
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_liheap_fuel_category: ELECTRICITY
+
+- name: Case 4, propane maps to the propane table.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_liheap_fuel_category: PROPANE
+
+- name: Case 5, fuel oil maps to the other table.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: FUEL_OIL
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_liheap_fuel_category: OTHER
+
+- name: Case 6, kerosene maps to the other table.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: KEROSENE
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_liheap_fuel_category: OTHER
+
+- name: Case 7, wood maps to the other table.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: WOOD
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_liheap_fuel_category: OTHER
+
+- name: Case 8, coal maps to the other table.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: COAL
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_liheap_fuel_category: OTHER
+
+- name: Case 9, other fuel maps to the other table.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: OTHER
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_liheap_fuel_category: OTHER
+
+- name: Case 10, unspecified heating type defaults to the other table.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # heating_type defaults to UNSPECIFIED -> other (scope decision).
+    ks_liheap_fuel_category: OTHER

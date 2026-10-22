@@ -14,5 +14,6 @@ class years_since_us_entry(Variable):
     # past the five-year bar, preserving pre-5-year-bar behavior for
     # households that do not supply this input. Refugee-like or bar-exempt
     # statuses are handled via separate parameter lists rather than this
-    # clock.
+    # clock. SNAP (7 CFR 273.4(a)(6)(iii)) reads this as cumulative years in
+    # qualified alien status since the person first obtained it.
     reference = "https://www.law.cornell.edu/uscode/text/8/1613"

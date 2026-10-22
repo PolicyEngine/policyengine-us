@@ -14,4 +14,4 @@ class de_poc_provider_type(Variable):
     definition_period = MONTH
     label = "Delaware Purchase of Care child care provider type"
     defined_for = StateCode.DE
-    reference = "https://dhss.delaware.gov/dss/childcr/"
+    reference = "https://web.archive.org/web/20260614012446/https://dhss.delaware.gov/dss/childcr/"

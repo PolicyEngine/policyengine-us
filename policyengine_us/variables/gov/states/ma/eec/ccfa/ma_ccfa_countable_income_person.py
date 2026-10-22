@@ -10,7 +10,7 @@ class ma_ccfa_countable_income_person(Variable):
     defined_for = StateCode.MA
     reference = (
         "https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=37",
-        "https://www.mass.gov/doc/interim-income-eligible-child-care-financial-assistance-program-policies-october-1-2023/download#page=12",
+        "https://web.archive.org/web/20231018152139/https://www.mass.gov/doc/interim-income-eligible-child-care-financial-assistance-program-policies-october-1-2023/download#page=12",
         "https://www.mass.gov/doc/eec-policy-advisory-field-operations-2023-4-child-care-financial-assistance/download#page=3",
     )
 
@@ -21,7 +21,7 @@ class ma_ccfa_countable_income_person(Variable):
         earned = add(person, period, p.sources.earned)
         if p.exclusions.minor_earnings_in_effect:
             minor = person("is_child", period.this_year)
-            gross -= where(minor, earned, 0)
+            gross = gross - where(minor, earned, 0)
 
         if p.only_parent_income_in_effect:
             return where(is_parent, gross, 0)

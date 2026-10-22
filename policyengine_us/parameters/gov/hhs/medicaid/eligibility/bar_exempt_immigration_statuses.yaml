@@ -1,4 +1,4 @@
-description: The United States exempts these Medicaid-qualified immigration statuses from the federal five-year bar.
+description: The United States excludes these immigration statuses from the five-year bar under the Medicaid program and the Children's Health Insurance Program.
 
 # PolicyEngine does not currently distinguish humanitarian parolee subgroups
 # from the general PAROLED_ONE_YEAR qualified-alien category, so parolees are
@@ -14,7 +14,9 @@ values:
 metadata:
   unit: list
   period: year
-  label: Medicaid five-year bar exempt immigration statuses
+  label: Medicaid and CHIP five-year bar exempt immigration statuses
   reference:
     - title: 8 USC 1613(b)(1) - Exceptions to five-year limited eligibility
       href: https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title8-section1613&num=0&edition=prelim
+    - title: "CMS SHO #26-001, Interaction between Section 71109 of the WFTC Legislation and PRWORA"
+      href: https://www.medicaid.gov/federal-policy-guidance/downloads/sho26001.pdf#page=6

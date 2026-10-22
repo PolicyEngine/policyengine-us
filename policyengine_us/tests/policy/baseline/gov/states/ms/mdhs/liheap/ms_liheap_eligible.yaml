@@ -1,0 +1,114 @@
+- name: Case 1, income at and one dollar above the one-person limit.
+  period: 2026
+  input:
+    state_code: [MS, MS]
+    age: [40, 40]
+    ms_liheap_income: [26_740, 26_741]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    heating_expense: [1_000, 1_000]
+  output:
+    # Rule 6.1 C (manual PDF page 22): income at or below the 60% state median
+    # income guideline, which is 26,740 for one person (page 58).
+    ms_liheap_eligible: [true, false]
+- name: Case 2, subsidized heat in rent, energy responsibility and applicant age.
+  period: 2026
+  input:
+    state_code: [MS, MS, MS, MS, MS]
+    age: [40, 40, 40, 40, 17]
+    ms_liheap_income: [0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    heating_expense: [0, 0, 0, 1_000, 1_000]
+    heat_expense_included_in_rent: [false, true, true, false, false]
+    receives_housing_assistance: [false, false, true, true, false]
+  output:
+    # Rule 6.1 A and D (manual PDF page 22).
+    # Household 1 has no energy bill and no heat in rent: not eligible.
+    # Household 2 has heat included in rent and no housing subsidy: eligible.
+    # Household 3 receives housing assistance and its heat is in the rent, so
+    # energy is not billed separately: not eligible.
+    # Household 4 receives housing assistance and pays its own heating bill:
+    # eligible.
+    # Household 5 has a 17-year-old as its only member: not eligible.
+    ms_liheap_eligible: [false, true, false, true, false]
+- name: Case 3, an electric bill alone establishes energy responsibility.
+  period: 2026
+  input:
+    state_code: [MS, MS]
+    age: [40, 40]
+    ms_liheap_income: [0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [0, 0]
+    pre_subsidy_electricity_expense: [900, 0]
+  output:
+    # Rule 6.1 A (manual PDF page 22): an obligation to pay an energy bill.
+    # Household 1 heats with natural gas, has no gas bill and pays an electric
+    # bill: eligible. Household 2 has no energy bill: not eligible.
+    ms_liheap_eligible: [true, false]
+- name: Case 4, public housing residents need separately billed energy.
+  period: 2026
+  input:
+    state_code: [MS, MS]
+    age: [40, 40]
+    ms_liheap_income: [0, 0]
+    heating_type: [NATURAL_GAS, UNSPECIFIED]
+    gas_expense: [720, 0]
+    heat_expense_included_in_rent: [false, true]
+    is_in_public_housing: [true, true]
+  output:
+    # Rule 6.1 A (manual PDF page 22) accepts "subsidized housing where the
+    # energy cost is billed separate from rent"; the FY2026 plan (page 9) names
+    # public or subsidized housing residents whose rent includes utilities and
+    # who are not billed separately for energy.
+    # Household 1 lives in public housing and pays its own gas bill of 60 a
+    # month: eligible.
+    # Household 2 lives in public housing with heat included in the rent and no
+    # energy bill of its own: not eligible.
+    ms_liheap_eligible: [true, false]
+- name: Case 5, federal 110% poverty floor above the 60% state median income limit at size 11.
+  period: 2026
+  input:
+    state_code: [MS, MS, MS, MS, MS]
+    age: [40, 40, 40, 40, 40]
+    ms_liheap_household_size: [11, 11, 11, 11, 10]
+    ms_liheap_income: [75_593, 77_714.99, 77_715, 77_716, 74_051]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    heating_expense: [1_000, 1_000, 1_000, 1_000, 1_000]
+  output:
+    # 42 U.S.C. 8624(b)(2)(B) bars excluding a household on income below 110%
+    # of the poverty guideline. FY2026 uses the 2025 guidelines (LIHEAP IM
+    # 2025-02): 15,650 + 5,500 x 10 = 70,650 for 11 people, and 110% is 77,715.
+    # The 60% SMI limit for 11 people is 75,593 (manual PDF page 58).
+    # Household 1 is at the 60% SMI limit: eligible.
+    # Household 2 is one cent below the floor: eligible.
+    # Household 3 is exactly at the floor, which is not below 110%: not eligible.
+    # Household 4 is above the floor: not eligible.
+    # Household 5 has 10 people, whose 74,050 limit exceeds the 71,665 floor
+    # (110% of 65,150), so the limit still applies: not eligible.
+    ms_liheap_eligible: [true, true, false, false, false]
+- name: Case 6, the floor uses the poverty guidelines from the year before the model year.
+  period: 2026
+  input:
+    state_code: MS
+    age: 40
+    ms_liheap_household_size: 11
+    ms_liheap_income: 78_000
+    heating_type: ELECTRICITY
+    heating_expense: 1_000
+  output:
+    # FY2026 uses the 2025 guidelines, so the floor is 77,715. The 2026
+    # guidelines would give 110% x (15,960 + 5,680 x 10) = 80,036.
+    ms_liheap_eligible: false
+- name: Case 7, FY2027 uses the 2026 poverty guidelines for the floor.
+  period: 2027
+  input:
+    state_code: [MS, MS]
+    age: [40, 40]
+    ms_liheap_household_size: [11, 11]
+    ms_liheap_income: [80_035.99, 80_036]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    heating_expense: [1_000, 1_000]
+  output:
+    # LIHEAP IM 2026-01 makes the 2026 guidelines mandatory in FY2027:
+    # 110% x (15,960 + 5,680 x 10) = 80,036 for 11 people, above the 79,402
+    # FY2027 60% SMI limit.
+    ms_liheap_eligible: [true, false]

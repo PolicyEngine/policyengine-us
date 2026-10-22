@@ -24,3 +24,169 @@
     state_code: ME
   output:
     me_relief_rebate: 850
+
+- name: No relief rebate before the one-time 2021 program
+  period: 2020
+  input:
+    me_relief_rebate_eligible: true
+    head_spouse_count: 2
+    state_code: ME
+  output:
+    me_relief_rebate: 0
+
+- name: No relief rebate after the one-time 2021 program
+  period: 2022
+  input:
+    me_relief_rebate_eligible: true
+    head_spouse_count: 2
+    state_code: ME
+  output:
+    me_relief_rebate: 0
+
+- name: Relief rebate does not reach Maine refundable credits or income tax in 2020
+  period: 2020
+  input:
+    me_relief_rebate_eligible: true
+    head_spouse_count: 1
+    me_refundable_child_care_credit: 0
+    me_eitc: 0
+    me_sales_tax_fairness_credit: 0
+    me_property_tax_fairness_credit: 0
+    me_income_tax_before_refundable_credits: 1_000
+    state_code: ME
+  output:
+    # 1 head x 0 amount in 2020 = 0.
+    me_relief_rebate: 0
+    # Backdated 2021 list: 0 child care + 0 eitc + 0 sales tax fairness
+    # + 0 property tax fairness + 0 relief rebate = 0.
+    me_refundable_credits: 0
+    # 1,000 before refundable credits - 0 refundable credits = 1,000.
+    me_income_tax: 1_000
+
+- name: Relief rebate reaches Maine refundable credits and income tax in 2021
+  period: 2021
+  input:
+    me_relief_rebate_eligible: true
+    head_spouse_count: 1
+    me_refundable_child_care_credit: 0
+    me_eitc: 0
+    me_sales_tax_fairness_credit: 0
+    me_property_tax_fairness_credit: 0
+    me_income_tax_before_refundable_credits: 1_000
+    state_code: ME
+  output:
+    # 1 head x 850 = 850.
+    me_relief_rebate: 850
+    # 0 child care + 0 eitc + 0 sales tax fairness + 0 property tax fairness
+    # + 850 relief rebate = 850.
+    me_refundable_credits: 850
+    # 1,000 before refundable credits - 850 refundable credits = 150.
+    me_income_tax: 150
+
+
+- name: 2021 single filer who can be claimed as a dependent gets no relief payment
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: ME
+  output:
+    # P.L. 2021, c. 635, Part L-3: a recipient "may not be claimed as a
+    # dependent on another taxpayer's return".
+    me_relief_rebate: 0
+
+- name: 2021 joint return with one claimable spouse gets one relief payment (the claimable spouse is the head)
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: ME
+  output:
+    me_relief_rebate: 850
+
+- name: 2021 joint return with one claimable spouse gets one relief payment (the claimable spouse is the spouse)
+  period: 2021
+  input:
+    people:
+      person_b:
+        age: 22
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: ME
+  output:
+    me_relief_rebate: 850
+
+- name: 2021 joint return with both spouses claimable gets no relief payment
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: ME
+  output:
+    me_relief_rebate: 0
+
+- name: 2021 joint return with neither spouse claimable gets two relief payments
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 20
+      person_b:
+        age: 22
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: ME
+  output:
+    me_relief_rebate: 1_700

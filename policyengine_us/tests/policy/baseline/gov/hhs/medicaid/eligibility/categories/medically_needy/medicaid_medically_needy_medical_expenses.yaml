@@ -1,0 +1,44 @@
+- name: SSI-based spenddown expenses do not repeat the pretax wage exclusion.
+  period: 2026
+  input:
+    health_insurance_premiums: 1_800
+    pre_tax_health_insurance_premiums: 2_400
+    other_medical_expenses: 300
+    medicare_enrolled: false
+  output:
+    medicaid_medically_needy_medical_expenses: 2_100
+
+- name: SSI-based spenddown retains decomposed non-pretax Medicare premiums.
+  period: 2026
+  input:
+    health_insurance_premiums_without_medicare_part_b: 600
+    medicare_part_b_premium: 1_200
+    medicare_enrolled: true
+    pre_tax_health_insurance_premiums: 2_400
+    other_medical_expenses: 300
+  output:
+    medicaid_medically_needy_medical_expenses: 2_100
+
+- name: Kansas spenddown does not deduct pretax premiums again from countable income.
+  period: 2026
+  input:
+    age: 65
+    is_in_medicaid_medically_needy_category: true
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    # Isolate spenddown from the separate SSI-recipient Medicaid pathway.
+    is_ssi_recipient_for_medicaid: false
+    employment_income: 27_020
+    ssi_countable_resources: 1_000
+    state_code: KS
+    health_insurance_premiums: 2_000
+    pre_tax_health_insurance_premiums: 4_000
+    medicare_enrolled: false
+  output:
+    # (27,020 - 4,000 - 12 * (20 + 65)) / 2 = 11,000.
+    is_ssi_aged_blind_disabled: true
+    ssi_earned_income: 23_020
+    ssi_countable_income: 11_000
+    medicaid_medically_needy_medical_expenses: 2_000
+    is_ssi_recipient_for_medicaid: false
+    is_medically_needy_for_medicaid: false
