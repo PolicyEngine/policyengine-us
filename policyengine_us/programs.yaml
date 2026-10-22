@@ -1269,6 +1269,20 @@ programs:
         notes: Models 2026 independent living and certified nonwaiver assisted living/adult foster
           care supplements. Out-of-state placements, historical mandatory supplements and claim
           administration are not modeled.
+      - state: UT
+        status: partial
+        name: Utah SSP
+        full_name: Utah State Supplemental Payment
+        variable: ut_ssp
+        parameter_prefix: gov.states.ut.dhhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models the 2026 Department of Workforce Services supplement, paid
+          quarterly to SSI recipients and over-income applicants other than
+          single individuals living alone, and the $15 monthly payment to SSI
+          recipients in Medicaid-funded medical institutions. The over-income
+          path has no take-up, so microsimulation pays far more people than
+          the program reaches.
       - state: VA
         status: partial
         name: Virginia Auxiliary Grant
