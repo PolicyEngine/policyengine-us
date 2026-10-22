@@ -23,6 +23,7 @@ class spm_unit_benefits(Variable):
             "de_ssp",  # Delaware benefits
             "fl_oss",
             "nj_ssp",  # New Jersey benefits
+            "nh_ssp",  # New Hampshire benefits
             "pa_ssp",  # Pennsylvania benefits
             "wy_ssp",  # Wyoming benefits
             "nc_sa",  # North Carolina benefits
@@ -32,7 +33,6 @@ class spm_unit_benefits(Variable):
             "ri_ssp",  # Rhode Island benefits
             "sd_ssp",  # South Dakota benefits
             "va_ag",  # Virginia benefits
-            "nh_ssp",  # New Hampshire benefits
             "ks_sspp",  # Kansas benefits
             "hi_oss",
             "la_oss",  # Louisiana benefits
