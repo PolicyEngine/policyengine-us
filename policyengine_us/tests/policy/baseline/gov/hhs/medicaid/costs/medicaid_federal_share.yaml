@@ -127,3 +127,50 @@
     meets_ssi_disability_criteria: true
   output:
     medicaid_federal_share: 0.9000
+
+# RIte Start/FCEP continuation for undocumented residents has no Title XIX
+# Medicaid match. Separate Title XXI HSI funding is outside this cost variable.
+# https://webserver.rilegislature.gov/Statutes/TITLE42/42-12.3/42-12.3-3.htm
+# https://www.law.cornell.edu/uscode/text/42/1396b#v
+# https://www.medicaid.gov/CHIP/Downloads/RI-22-0026.pdf#page=2
+# January 2024 uses Rhode Island's regular FY2024 FMAP of 55.01%.
+- name: Rhode Island RIte Start and FCEP continuation has no Title XIX match for undocumented residents while a Medicaid citizen retains regular FMAP.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        ri_pregnancy_coverage: FCEP
+        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+        takes_up_medicaid_if_eligible: true
+        medicaid_cost: 1_000
+      person2:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        ri_pregnancy_coverage: RITE_START
+        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+        takes_up_medicaid_if_eligible: true
+        medicaid_cost: 1_000
+      person3:
+        age: 30
+        immigration_status: CITIZEN
+        ri_pregnancy_coverage: MEDICAID
+        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+        takes_up_medicaid_if_eligible: true
+        medicaid_cost: 1_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    is_medicaid_eligible: [true, true, true]
+    medicaid_enrolled: [true, true, true]
+    medicaid_federal_share: [0, 0, 0.5501]
+    medicaid_federal_cost: [0, 0, 550.1]
