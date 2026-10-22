@@ -1,6 +1,6 @@
 - name: TOB revenue - single retiree with SS and wages
   period: 2024
-  absolute_error_margin: 100
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -15,5 +15,7 @@
       household:
         members: [person1]
   output:
-    # Actual value is around $4,240
+    # Standard deduction = $14,600 + $1,950; taxable income without SS = $33,450.
+    # Tax without SS = $1,160 + 12% * $21,850 = $3,782.
+    # Tax with $25,500 taxable SS = $1,160 + $4,266 + 22% * $11,800 = $8,022.
     tob_revenue_total: 4_240
