@@ -931,3 +931,19 @@
     state_code: TX
   output:
     meets_snap_abawd_work_requirements: false
+
+- name: Case 60, Hawaii age 57 is subject in September 2025 under the federal effective date.
+  # Hawaii's area waiver ended June 30, 2025. The amended age exception
+  # applies before the state's announced November implementation date.
+  period: 2025-09
+  input:
+    age:
+      2025: 57
+    weekly_hours_worked_before_lsr:
+      2025: 1
+    is_disabled:
+      2025: false
+    state_code:
+      2025: HI
+  output:
+    meets_snap_abawd_work_requirements: false

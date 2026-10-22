@@ -73,7 +73,8 @@
     snap_unit_size: [17, 18, 30]
   output:
     # 7 U.S.C. 2012(u)(2)(I) caps the additional percentage at 200 percent
-    # of the 4-person maximum from FY2026: $1,789 + 2 x $994 = $3,777.
+    # of the unrounded 4-person TFP cost from FY2026:
+    # $1,789 + floor(2 x $994.40) = $3,777 (USDA cost workbook, I1552).
     # USDA's FY2026 table listed $218 per additional person with no cap,
     # which would give $3,969 and $6,585; the model follows the statute.
     # 17 members: $1,789 + 9 x $218 = $3,751, under the cap.
@@ -86,9 +87,21 @@
       2026: [AK_URBAN, AK_RURAL_1, AK_RURAL_2, GU, HI, VI]
     snap_unit_size: [30, 30, 30, 30, 30, 30]
   output:
-    # The 8-person maximum plus twice the 4-person maximum, from USDA's
-    # FY2026 table.
-    snap_max_allotment: [4884, 6228, 7581, 5567, 6418, 4856]
+    # Published M8 + floor(2 * unrounded C4); FY2026 table bounds fix the
+    # floor outside Guam. Alaska urban: $2,314 + $2,571 = $4,885.
+    # Guam retains $5,567 pending an operational C4 source: the table bounds
+    # permit $5,567 or $5,568 (see max_allotment.cap's source comment).
+    snap_max_allotment: [4885, 6228, 7581, 5567, 6418, 4856]
+
+- name: FY2026 Hawaii allotment reaches the cap at 18 members
+  period: 2026-09
+  input:
+    snap_region_str:
+      2026: [HI, HI]
+    snap_unit_size: [17, 18]
+  output:
+    # 17 members: $3,040 + 9 x $371 = $6,379, below the $6,418 cap.
+    snap_max_allotment: [6379, 6418]
 
 - name: The FY2026 cap applies from October 2025
   period: 2025-10

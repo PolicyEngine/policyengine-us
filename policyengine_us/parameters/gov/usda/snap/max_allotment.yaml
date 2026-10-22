@@ -961,17 +961,32 @@ cap:
       - snap_region
   # 7 U.S.C. 2012(u)(2)(I), as amended by P.L. 119-21 section 10101, caps
   # the additional percentage for households of 9 or more at 200 percent
-  # of the maximum 4-person allotment from FY2026. USDA's FY2026 table
-  # listed only the per-person increment, so the FY2026 caps are computed
-  # from its published amounts: the 8-person maximum plus twice the
-  # 4-person maximum (contiguous states: $1,789 + 2 x $994). USDA's FY2027
-  # caps, computed from unrounded amounts, match that formula in four
-  # regions and exceed it by $1 in Alaska urban, Alaska rural 2 and Guam.
+  # of the maximum 4-person allotment. The October 1, 2025 start follows
+  # (u)(3)(C)'s annual October 1 computation and FNS's September 4, 2025
+  # implementation memo, page 2. The FY2026 table prints no cap.
+  # Use USDA's method: published M8 + floor(2 * C4), where C4 is the
+  # four-person Thrifty Food Plan cost before whole-dollar allotment rounding.
+  # The cited cost workbook's Thrifty 21-Pres sheet, I1552, reports the
+  # June 2025 contiguous C4 as $994.40: $1,789 + floor(2 * $994.40) = $3,777.
+  # Operational noncontiguous costs are absent from that workbook. Applying
+  # the statutory ratios to FY2026's published amounts bounds C4 (upper
+  # endpoints excluded); these intervals fix floor(2 * C4):
+  # AK urban: [1285.5555..., 1285.7142...) -> 2571; M8 2314 -> cap 4885.
+  # AK rural 1: [1639.2405..., 1639.4444...) -> 3278; M8 2950 -> cap 6228.
+  # AK rural 2: [1995.1048..., 1995.4545...) -> 3990; M8 3591 -> cap 7581.
+  # HI: [1689.0909..., 1689.2405...) -> 3378; M8 3040 -> cap 6418.
+  # VI: [1278.1818..., 1278.3216...) -> 2556; M8 2300 -> cap 4856.
+  # Guam's [1465.4545..., 1465.5462...) straddles $1465.50, so the floor
+  # is not fixed: its cap could be $5567 or $5568. Retain $5567 pending an
+  # operational cost source; do not infer a floor from that interval.
+  # For FY2027, workbook I1904 gives contiguous C4 $1023.20; bounds from
+  # published sizes 1-8 and the increment fix all other regions' floors.
+  # The same method reproduces all seven printed 18+ caps (memo pages 4-5).
   CONTIGUOUS_US:
     2025-10-01: 3_777
     2026-10-01: 3_887
   AK_URBAN:
-    2025-10-01: 4_884
+    2025-10-01: 4_885
     2026-10-01: 4_965
   AK_RURAL_1:
     2025-10-01: 6_228
@@ -1034,18 +1049,20 @@ metadata:
     # Effective 2025-10-01.
     - title: SNAP FY2026 Cost-of-Living Adjustments
       href: https://www.fns.usda.gov/snap/allotment/cola/fy26
-    - title: SNAP FY2026 Maximum Allotments and Deductions (8-person and 4-person amounts for the FY2026 caps)
+    - title: SNAP FY2026 Maximum Allotments and Deductions
       href: https://fna-bwbufwdzbabpezgc.z01.azurefd.us/sites/default/files/resource-files/snap-fy26maximumAllotments-deductions.pdf#page=1
-    - title: 7 U.S.C. 2012(u)(2)(I) (cap on the additional percentage for households of 9 or more)
-      href: https://www.law.cornell.edu/uscode/text/7/2012#u_2_I
+    - title: USDA Thrifty Food Plan costs, June 2021 through September 2026
+      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/usda-thriftyplan-june2021-sept2026.xlsx
+    - title: 7 U.S.C. 2012(u)(2)(I) and (u)(3)(C) (household cap and annual October 1 computation)
+      href: https://www.law.cornell.edu/uscode/text/7/2012#u
+    - title: FNS SNAP Provisions of the One Big Beautiful Bill Act of 2025, September 4, 2025
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-implementation.pdf#page=2
     - title: Public Law 119-21, section 10101 (household adjustments)
       href: https://www.govinfo.gov/content/pkg/PLAW-119publ21/pdf/PLAW-119publ21.pdf#page=11
     - title: SNAP FY2027 Cost-of-Living Adjustments
       href: https://www.fns.usda.gov/snap/allotment/cola/fy27
-    - title: SNAP FY2027 Cost-of-Living Adjustments memo (48 States and D.C., Guam, Virgin Islands)
+    - title: "SNAP FY2027 Cost-of-Living Adjustments memo #page 4-5"
       href: https://www.usda.gov/sites/default/files/guidance-documents/fna.snap-cola2027.pdf#page=4
-    - title: SNAP FY2027 Cost-of-Living Adjustments memo (Alaska, Hawaii)
-      href: https://www.usda.gov/sites/default/files/guidance-documents/fna.snap-cola2027.pdf#page=5
     # Links to all the above.
     - title: USDA Cost of Living Adjustments
       href: https://www.fns.usda.gov/snap/allotment/COLA
