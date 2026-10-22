@@ -1,0 +1,46 @@
+description: Ohio sets this payment formula intercept under the Home Energy Assistance Program.
+# The 2021 values carry through 2022; no final 2022 workbook was found.
+# The 2024 and 2025 covers give credit percentages, but no formula sheet.
+# These estimated intercepts apply the final 2023 workbook's $950 winter
+# cost and page 11 method to the cover percentages: 0.50 x 950 = 475 and
+# 0.265 x 950 = 251.75. Matching cover maxima does not verify interior awards.
+# Ohio's January 16, 2025 notice confirms the operative 2025 range $24-$441
+# and prior-year range $41-$811; it does not supply current coefficients.
+# The minimum awards include PIPP treatment, which remains unmodeled.
+# The 2026 estimate fits the FY2026 matrix range in the accepted FY2027 plan,
+# items 2.5-2.6 ($31 minimum, $546 maximum); the matrix itself is not public.
+# A 31% credit at 50% of poverty reproduces the maximum (0.31 x 950 x 1.06 x
+# 1.75 = 546.30), and 28.5% at 150% is one of the credits (28.2%-29.1%) whose
+# coal PIPP minimum, 0.19 of the regular award as in every published workbook,
+# rounds to $31 (0.285 x 950 x 0.6 x 0.19 = 30.87): 0.31 x 950 + 50 x 0.2375 =
+# 306.375. The 0.19 is 0.94 - 0.75: the 2021 final workbook's Table 2C PIPP
+# rows (page 22) take 75% of the central award from the 6%-reduced southern
+# award. The plan estimates FY2027 at the same range, so the 2026 estimate
+# carries forward.
+values:
+  2021-01-01: 593.2133
+  2023-01-01: 731.5
+  2024-01-01: 475
+  2025-01-01: 251.75
+  2026-01-01: 306.375
+metadata:
+  unit: currency-USD
+  period: year
+  label: Ohio HEAP payment intercept
+  reference:
+    - title: Ohio Department of Development IU-2025-5, January 16, 2025
+      href: https://wofb.org/wp-content/uploads/2025/01/IU-2025-5-HEAP-Customer-Benefit-Update.pdf#page=1
+    - title: "Ohio 2021 FINAL HEAP Benefit Matrix #page 11,22"
+      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/OH_BenefitMatrix_2022.pdf#page=11
+    - title: Ohio 2023 FINAL LIHEAP Benefit Matrix
+      href: https://liheapch.acf.gov/docs/2024/benefits-matricies/OH_BenefitMatrix_2024.pdf#page=11
+    - title: Ohio 2024 DRAFT LIHEAP Benefit Matrix
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/OH_BenefitMatrix_2025.pdf#page=1
+    - title: Ohio 2025 DRAFT LIHEAP Benefit Matrix
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/OH_BenefitMatrix_2026.pdf#page=1
+    - title: Ohio FY2025 LIHEAP State Plan, items 2.5-2.6 (attached FY2024 matrix; 2024 value)
+      href: https://liheapch.acf.gov/docs/2025/state-plans/OH_Plan_2025.pdf#page=9
+    - title: Ohio FY2026 LIHEAP State Plan, revision 2, items 2.5-2.6 (attached FY2025 matrix; 2025 value)
+      href: https://dam.assets.ohio.gov/image/upload/v1769700600/development.ohio.gov/individual/energyassistance/DETAILED_MODEL_PLAN_LIHEAP__10_01_2025.pdf#page=9
+    - title: Ohio FY2027 LIHEAP State Plan, revision 1, items 2.5-2.6 (attached FY2026 matrix; 2026 value)
+      href: https://dam.assets.ohio.gov/image/upload/jfs.ohio.gov/Energy%20and%20Community%20Assistance/DETAILED_MODEL_PLAN_LIHEAP__10_01_2026.pdf#page=10
