@@ -254,6 +254,31 @@
   output:
     is_pregnant_for_medicaid: true
 
+# SPAs IA-25-0018 and IA-25-0019 moved Iowa's postpartum extension from
+# January 1 to April 1, 2025. The annual variable reads January 1, so annual
+# 2025 keeps the 60-day rule and annual 2026 applies the extension.
+- name: IA postpartum coverage stays at 60 days in annual 2025, before the April 2025 extension
+  period: 2025
+  input:
+    state_code: IA
+    age: 28
+    count_days_postpartum: 90
+    medicaid_income_level: 1
+  output:
+    is_pregnant_for_medicaid_nfc: false
+    is_pregnant_for_medicaid: false
+
+- name: IA postpartum coverage extends to 12 months in 2026 under SPA IA-25-0019
+  period: 2026
+  input:
+    state_code: IA
+    age: 28
+    count_days_postpartum: 90
+    medicaid_income_level: 1
+  output:
+    is_pregnant_for_medicaid_nfc: true
+    is_pregnant_for_medicaid: true
+
 # Illinois (2021-04-12) and New Jersey (2021-10-28) extended postpartum
 # coverage through section 1115 demonstration amendments before the state
 # plan option existed. Both start after January 1, 2021, so annual 2021
