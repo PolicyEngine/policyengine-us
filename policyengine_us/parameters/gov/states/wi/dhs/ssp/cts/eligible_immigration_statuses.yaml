@@ -1,0 +1,21 @@
+description: Wisconsin limits eligibility to these immigration statuses under the Caretaker Supplement program.
+values:
+  # PAROLED_ONE_YEAR is parole under 8 USC 1182(d)(5), one of the lawful
+  # presence grounds that Handbook 3.1.4 item 2 lists.
+  2026-01-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+    - REFUGEE
+    - ASYLEE
+    - CUBAN_HAITIAN_ENTRANT
+    - DEPORTATION_WITHHELD
+    - CONDITIONAL_ENTRANT
+    - PAROLED_ONE_YEAR
+
+metadata:
+  unit: list
+  period: year
+  label: Wisconsin CTS eligible immigration statuses
+  reference:
+    - title: "Caretaker Supplement Handbook 3.1.4 #page 19-20"
+      href: https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf#page=19
