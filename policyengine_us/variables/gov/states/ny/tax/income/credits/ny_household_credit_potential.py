@@ -18,7 +18,7 @@ class ny_household_credit_potential(Variable):
         agi = add(
             tax_unit,
             period,
-            ["adjusted_gross_income", "spouse_separate_adjusted_gross_income"],
+            ["ny_recomputed_federal_agi", "spouse_separate_adjusted_gross_income"],
         )
         # Single filers: based only on AGI.
         single = filing_status == filing_statuses.SINGLE

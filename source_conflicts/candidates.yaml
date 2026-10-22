@@ -3745,6 +3745,38 @@ candidates:
     prs: []
   state: unreviewed
   note: Verify whether the still-listed ruling applies during these years despite its obsolete tax base.
+- id: us-nh:ssp-permanent-resident-forty-quarters
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: Can a lawful permanent resident credited with 40 qualifying quarters receive New Hampshire's state
+    supplement during the five years after entry?
+  sources:
+  - kind: statute
+    citation: 8 U.S.C. 1622(b)(2)
+    url: https://www.law.cornell.edu/uscode/text/8/1622
+  - kind: manual
+    citation: NH DHHS Adult Assistance Manual 305.13
+    url: https://dhhs.nh.gov/aam_htm/html/305_13_qualified_aliens_with_restricted_eligibility_based_on_date_of_entry_into_the_us_aam.htm
+  - kind: regulation
+    citation: N.H. Admin. Rules He-W 616.02
+    url: https://gc.nh.gov/rules/state_agencies/he-w600.html
+  readings:
+    statute: A permanent resident credited with 40 qualifying quarters is "eligible for any State public benefits",
+      so the five-year wait does not apply.
+    other: The manual keeps "lawfully admitted permanent residents regardless of work history" out for five years.
+  example: A permanent resident within five years of entry with 40 credited quarters is eligible under the statute
+    and ineligible under the manual; with 39 quarters both readings bar them.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10156
+  state: ruled
+  note: 'The manual may rest on 8 U.S.C. 1624, which lets a State restrict general cash public assistance; whether
+    the adult categories are that is unsettled. Code not yet on main: nh_ssp_eligible.'
 - id: us-nj:claim-of-right-same-category-offset
   program: income-tax
   years:
@@ -5640,6 +5672,31 @@ candidates:
   state: unreviewed
   note: 'The statute-first rule requires revising the deduction-only ACTC bar; verify that interpretation separately
     from EITC, whose statutory wording differs. Code not yet on main: elects_section_911_exclusion.'
+- id: us:charitable-non-itemizer-2020-separate-cap
+  program: income-tax
+  years:
+    from: 2020
+    to: 2020
+    type: tax
+  question: Is the 2020 above-the-line charitable deduction capped at $300 or $150 for a married separate filer?
+  sources:
+  - kind: statute
+    citation: Pub. L. 116-136, sec. 2204; 26 U.S.C. 62(a)(22), 62(f)
+    url: https://www.congress.gov/116/plaws/publ136/PLAW-116publ136.pdf#page=65
+  - kind: instructions
+    citation: 2020 Instructions for Form 1040, line 10b
+    url: https://www.irs.gov/pub/irs-prior/i1040gi--2020.pdf#page=30
+  readings:
+    statute: The cap is $300 for every eligible individual, with no separate-filer reduction.
+    other: The line 10b instructions limit married separate filers to $150.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/irs/ald/charitable_contributions/cap.yaml
+    - policyengine_us/variables/gov/irs/income/taxable_income/adjusted_gross_income/above_the_line_deductions/charitable_contributions/charitable_contributions_ald.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10186
+  state: ruled
 - id: us:claim-of-right-same-class-aggregation
   program: income-tax
   years:
