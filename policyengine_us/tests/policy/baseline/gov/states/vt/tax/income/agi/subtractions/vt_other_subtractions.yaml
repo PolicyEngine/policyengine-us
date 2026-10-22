@@ -1,0 +1,14 @@
+- name: Case 1, default vt_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: VT
+  output:
+    vt_other_subtractions: 0.0
+
+- name: Case 2, vt_other_subtractions flows into vt_subtractions
+  period: 2024
+  input:
+    state_code: VT
+    vt_other_subtractions: 1_300
+  output:
+    vt_subtractions: 1_300
