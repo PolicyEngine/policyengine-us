@@ -22,7 +22,7 @@ class nyc_income_tax_elimination_credit(Variable):
         # proportion to federal adjusted gross income above the threshold and
         # reaches zero at the phase-out width. Line 5 rounds the fraction to
         # the fourth decimal place.
-        agi = tax_unit("adjusted_gross_income", period)
+        agi = tax_unit("ny_recomputed_federal_agi", period)
         threshold = tax_unit(
             "nyc_income_tax_elimination_credit_income_threshold", period
         )

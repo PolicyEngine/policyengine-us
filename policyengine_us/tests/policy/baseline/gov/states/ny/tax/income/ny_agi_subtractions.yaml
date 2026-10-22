@@ -67,3 +67,15 @@
   output:
     # 1,000 (head's refund) + 500 (tax-unit U.S. government interest).
     ny_agi_subtractions: 1_500
+
+- name: Military retirement pay and survivor benefits subtracted from NY AGI under § 612(c)(3)
+  period: 2024
+  input:
+    state_code: NY
+    employment_income: 50_000
+    military_retirement_pay: 20_000
+    military_retirement_pay_survivors: 10_000
+  output:
+    adjusted_gross_income: 80_000
+    ny_agi_subtractions: 30_000
+    ny_agi: 50_000
