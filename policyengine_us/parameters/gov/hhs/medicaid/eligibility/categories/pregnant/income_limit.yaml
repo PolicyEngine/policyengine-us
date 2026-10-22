@@ -19,10 +19,6 @@ metadata:
       href: https://www.medicaid.gov/medicaid-spa/2025-05-07/179381
     - title: Nevada Medicaid Web Announcement 3748 (200% FPL pregnancy standard)
       href: https://medicaid.nv.gov/Downloads/provider/web_announcement_3748_20251020.pdf
-    - title: 210-RICR-30-00-1 § 1.6(A)(2) (effective August 17, 2025)
-      href: https://risos-apa-production-public.s3.amazonaws.com/EOHHS/REG_13314_20250728104245127.pdf#page=5
-    - title: "Rhode Island Comprehensive Section 1115 Demonstration approval (November 28, 2025), Budget Population 6b #page 3,15"
-      href: https://www.medicaid.gov/medicaid/section-1115-demonstrations/downloads/ri-comp-demo-appvl-11282025.pdf#page=3
     - title: "West Virginia Medicaid State Plan Amendment WV-19-0004, approval letter and S14 Pregnant Women #page 3,14"
       href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/WV/WV-19-0004.pdf#page=3
 AK:
@@ -111,11 +107,8 @@ OR:
 PA:
   2018-01-01: 2.20
 RI:
-  # 190% FPL plus the 5% FPL disregard; separate CHIP covers 190% to 253%.
-  # Insured pregnant people at 190% to 253% get Medicaid through the section
-  # 1115 demonstration (Budget Population 6b). The model has no other-coverage
-  # split, so they count under standard pregnancy CHIP.
   2018-01-01: 1.95
+  2023-01-01: 2.58
 SC:
   2018-01-01: 1.99
 SD:

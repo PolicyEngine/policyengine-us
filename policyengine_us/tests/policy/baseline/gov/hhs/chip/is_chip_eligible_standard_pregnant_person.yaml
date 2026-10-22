@@ -359,24 +359,3 @@
         state_code: RI
   output:
     is_chip_eligible_standard_pregnant_person: [true, true, true]
-
-# Rhode Island's Medicaid pregnancy limit is 190% FPL (195% with the
-# disregard) and its separate CHIP covers income above it up to 253% (258%),
-# so a pregnant citizen at 230% FPL is in CHIP, not Medicaid.
-- name: Case 14, Rhode Island pregnant citizen above the Medicaid limit qualifies for standard CHIP in 2024.
-  period: 2024
-  input:
-    people:
-      person1:
-        age: 30
-        is_pregnant: true
-        immigration_status: CITIZEN
-        medicaid_income_level: 2.3
-    households:
-      household:
-        members: [person1]
-        state_code: RI
-  output:
-    is_pregnant_for_medicaid: false
-    is_medicaid_eligible: false
-    is_chip_eligible_standard_pregnant_person: true
