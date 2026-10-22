@@ -1,3 +1,10 @@
+## [2.58.0] - 2026-10-22
+
+### Added
+
+- Add Oregon State Supplemental Payment for 2026.
+
+
 ## [2.57.0] - 2026-10-22
 
 ### Added
