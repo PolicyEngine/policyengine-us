@@ -8,6 +8,10 @@ metadata:
   reference:
     - title: "Medicaid Financial Eligibility for Seniors and People with Disabilities: Findings from a 50-State Survey | KFF"
       href: https://www.kff.org/report-section/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey-appendix-tables/
+    - title: 10-144 C.M.R. ch. 332, Chart 3.1 - Disregards (effective July 1, 1987)
+      href: https://www.law.cornell.edu/regulations/maine/C-M-R-10-144-ch-332-144-332-3
+    - title: 10-144 C.M.R. ch. 332, Part 7, § 7-4, Section 4.3 - Budget for Categorically Needy Medicaid Coverage
+      href: https://www.law.cornell.edu/regulations/maine/10-144-C-M-R-ch-332-SS-7-4
     - title: Connecticut Benefits Quick Guide (Revised February 15, 2023)
       href: https://portal.ct.gov/-/media/aginganddisability/agingservices/choices/quick-guide---accessible-version-21523.pdf#page=2
     - title: Connecticut Benefits Quick Guide (Revised May 6, 2024)
@@ -57,7 +61,8 @@ KY:
 LA:
   2015-01-01: 20
 ME:
-  2015-01-01: 75
+  # The $20 federal disregard plus Maine's $80 state disregard for a couple.
+  1987-07-01: 100
 MD:
   2015-01-01: 20
 MA:

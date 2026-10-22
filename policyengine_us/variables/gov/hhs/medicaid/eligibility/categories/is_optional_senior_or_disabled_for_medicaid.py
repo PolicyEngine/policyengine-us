@@ -17,7 +17,13 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
             period
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled
         covers_group = p.covers_non_ssi_recipients[state].astype(bool)
-        is_senior_or_disabled = person("is_ssi_aged_blind_disabled", period)
+        # Arkansas's group (ARSeniors) covers only aged people.
+        covers_blind_or_disabled = p.covers_blind_or_disabled[state].astype(bool)
+        is_senior_or_disabled = where(
+            covers_blind_or_disabled,
+            person("is_ssi_aged_blind_disabled", period),
+            person("is_ssi_aged", period),
+        )
         income_eligible = person(
             "is_optional_senior_or_disabled_income_eligible", period
         )

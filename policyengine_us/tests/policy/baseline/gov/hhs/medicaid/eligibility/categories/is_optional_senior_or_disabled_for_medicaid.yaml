@@ -58,3 +58,29 @@
   output:
     is_optional_senior_or_disabled_income_eligible: true
     is_optional_senior_or_disabled_for_medicaid: false
+
+# Arkansas's group (ARSeniors) covers only aged people (MS 23110). 2026:
+# Social Security of $900 a month leaves countable income of $10,560 a year
+# after the $20 a month disregard, under 80% of the poverty guideline
+# ($12,768).
+- name: Case 6, disabled Arkansan under 65 is not covered, since ARSeniors covers only aged people.
+  period: 2026
+  input:
+    age: 50
+    state_code: AR
+    meets_ssi_disability_criteria: true
+    social_security_disability: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+
+- name: Case 7, aged Arkansan with the same income is covered.
+  period: 2026
+  input:
+    age: 70
+    state_code: AR
+    social_security_retirement: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    is_optional_senior_or_disabled_for_medicaid: true
