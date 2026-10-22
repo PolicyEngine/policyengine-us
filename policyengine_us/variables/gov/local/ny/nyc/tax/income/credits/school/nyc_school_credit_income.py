@@ -20,8 +20,8 @@ class nyc_school_credit_income(Variable):
         # The credit uses income as defined in RPTL § 425(4)(b)(ii): federal
         # adjusted gross income reduced by distributions from individual
         # retirement accounts and annuities, to the extent included in
-        # federal adjusted gross income (IT-201 line 19 minus line 9; the
-        # 2020 and 2022 instructions use recomputed federal AGI, line 19a).
+        # federal adjusted gross income (IT-201 line 19 minus line 9; line 19a,
+        # recomputed federal AGI, in the 2020 and 2022 instructions).
         # Roth conversions are not identified as IRA-sourced, and individual
         # retirement annuity distributions recorded as pension income are not
         # identified separately, so both stay in income.

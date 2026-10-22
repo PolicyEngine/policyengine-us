@@ -14,4 +14,4 @@ class nc_additions(Variable):
     )
     defined_for = StateCode.NC
 
-    adds = ["charitable_contributions_ald"]
+    adds = ["nc_other_additions", "charitable_contributions_ald"]

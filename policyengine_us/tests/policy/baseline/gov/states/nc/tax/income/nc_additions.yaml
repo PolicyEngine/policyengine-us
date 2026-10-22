@@ -37,3 +37,23 @@
         state_code: NC
   output:
     nc_additions: 0
+
+- name: Case 3, 2020 charitable addback combines with other North Carolina additions.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+        charitable_cash_donations: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nc_other_additions: 700
+    households:
+      household:
+        members: [person1]
+        state_code: NC
+  output:
+    charitable_contributions_ald: 300
+    nc_additions: 1_000
