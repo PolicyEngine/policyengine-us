@@ -37,6 +37,11 @@ helper:
    otherwise equals worksheet interest paid times line 11, floored by PE at
    the federal amount.
 
+The limits are read from the Hawaii and federal parameters for every filing
+status in 2018, 2025 and 2026, so the properties hold for the values the model
+uses. A separate check ties the Hawaii parameters to the statute's dollar
+amounts.
+
 These are for-all properties of the helpers, which YAML cannot state. The
 policy outcomes and interest proration are checked in
 hi_mortgage_interest_deduction.yaml.
@@ -46,6 +51,7 @@ import numpy as np
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
+from policyengine_us.system import system
 from policyengine_us.variables.gov.states.hi.tax.income.deductions.itemized.hi_mortgage_interest_deduction import (
     _hi_allowed_interest,
     _hi_deductible_share,
@@ -58,11 +64,39 @@ from policyengine_us.variables.household.expense.tax_unit.mortgage_interest_stru
 
 GRANDFATHERED_YEAR = 1987
 PRE_TCJA_YEAR = 2017
-# Filing status -> ((Hawaii acquisition limit, Hawaii home equity limit),
-# (federal limit for debt from 2017 or earlier, federal limit for later debt)).
+FILING_STATUSES = (
+    "SINGLE",
+    "JOINT",
+    "SEPARATE",
+    "HEAD_OF_HOUSEHOLD",
+    "SURVIVING_SPOUSE",
+)
+TAX_YEARS = (2018, 2025, 2026)
+
+
+def parameter_limits(year, filing_status):
+    """((Hawaii acquisition limit, Hawaii home equity limit), (federal limit
+    for debt from 2017 or earlier, federal limit for later debt))."""
+    p = system.parameters(f"{year}-01-01")
+    hawaii = p.gov.states.hi.tax.income.deductions.itemized.interest
+    federal = p.gov.irs.deductions.itemized.interest.mortgage
+    return (
+        (
+            float(hawaii.home_acquisition_debt_limit[filing_status]),
+            float(hawaii.home_equity_debt_limit[filing_status]),
+        ),
+        (
+            float(federal.pre_tcja_cap[filing_status]),
+            float(federal.cap[filing_status]),
+        ),
+    )
+
+
+# (tax year, filing status) -> limits, read once from the parameter tree.
 LIMITS = {
-    "other": ((1_000_000, 100_000), (1_000_000, 750_000)),
-    "separate": ((500_000, 50_000), (500_000, 375_000)),
+    (year, filing_status): parameter_limits(year, filing_status)
+    for year in TAX_YEARS
+    for filing_status in FILING_STATUSES
 }
 TOLERANCE = 0.01
 
@@ -140,6 +174,17 @@ def federal_limit(loan_list, limits):
 
 
 SETTINGS = dict(max_examples=400, deadline=None, derandomize=True)
+
+
+def test_hawaii_limits_are_the_statutory_amounts():
+    # IRC 163(h)(3)(B)(ii) and (C)(ii), kept by HRS 235-2.4(j)(3): $1,000,000
+    # of acquisition debt and $100,000 of home equity debt, halved for a
+    # married individual filing a separate return.
+    for (year, filing_status), (hawaii_limits, _) in LIMITS.items():
+        expected = (
+            (500_000, 50_000) if filing_status == "SEPARATE" else (1_000_000, 100_000)
+        )
+        assert hawaii_limits == expected, (year, filing_status)
 
 
 @settings(**SETTINGS)
@@ -230,3 +275,11 @@ def test_hawaii_share_rounds_half_up_to_three_places():
         np.array([1_128_784], dtype=np.float32),
     )
     np.testing.assert_array_equal(near_tie, [0.974])
+    # The share stays 1.000 until total debt passes $1,100,000 / .9995 =
+    # $1,100,550.28, in single precision too.
+    for dtype in (np.float32, np.float64):
+        boundary = _hi_deductible_share(
+            np.full(4, 1_100_000, dtype=dtype),
+            np.array([1_100_000, 1_100_550, 1_100_551, 1_101_000], dtype=dtype),
+        )
+        np.testing.assert_array_equal(boundary, [1.0, 1.0, 0.999, 0.999])

@@ -127,6 +127,88 @@
     # $40,000 x .367.
     hi_mortgage_interest_deduction: 14_680
 
+- name: Debt exactly at Hawaii's $1,100,000 limit is fully deductible
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    home_mortgage_interest: 44_000
+    first_home_mortgage_balance: 1_100_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    # Federal: $44,000 x $750,000 / $1,100,000 = $30,000.
+    deductible_mortgage_interest: 30_000
+    # Hawaii: line 6 = $1,000,000; line 7 = min($100,000, $100,000); line 8
+    # = $1,100,000 equals line 9, so "stop here": all $44,000 is deductible.
+    hi_mortgage_interest_deduction: 44_000
+
+- name: Debt just over Hawaii's $1,100,000 limit takes the rounded share
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    home_mortgage_interest: 44_000
+    first_home_mortgage_balance: 1_101_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    # Federal: $44,000 x $750,000 / $1,101,000 = $29,972.75.
+    deductible_mortgage_interest: 29_972.75
+    # Hawaii: line 8 = $1,100,000 < line 9 = $1,101,000; line 11 =
+    # .99909 rounds to .999; $44,000 x .999. Three-place rounding keeps the
+    # share at 1.000 until total debt passes about $1,100,550 ($1,100,000 /
+    # .9995).
+    hi_mortgage_interest_deduction: 43_956
+
+- name: A separate filer's debt exactly at Hawaii's $550,000 limit is fully deductible
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    filing_status: SEPARATE
+    home_mortgage_interest: 22_000
+    first_home_mortgage_balance: 550_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    # Federal: $22,000 x $375,000 / $550,000 = $15,000.
+    deductible_mortgage_interest: 15_000
+    # Hawaii: line 6 = $500,000; line 7 = min($50,000, $50,000); line 8 =
+    # $550,000 equals line 9, so all $22,000 is deductible.
+    hi_mortgage_interest_deduction: 22_000
+
+- name: A head of household uses the $1,000,000 and $100,000 limits
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    filing_status: HEAD_OF_HOUSEHOLD
+    home_mortgage_interest: 40_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    # Federal: $40,000 x $750,000 / $1,500,000 = $20,000.
+    deductible_mortgage_interest: 20_000
+    # Hawaii: line 11 = ($1,000,000 + $100,000) / $1,500,000 = .733;
+    # $40,000 x .733.
+    hi_mortgage_interest_deduction: 29_320
+
+- name: A surviving spouse uses the $1,000,000 and $100,000 limits
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    filing_status: SURVIVING_SPOUSE
+    home_mortgage_interest: 40_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    # Federal: $40,000 x $750,000 / $1,500,000 = $20,000.
+    deductible_mortgage_interest: 20_000
+    # Hawaii: line 11 = ($1,000,000 + $100,000) / $1,500,000 = .733;
+    # $40,000 x .733.
+    hi_mortgage_interest_deduction: 29_320
+
 - name: Hawaii keeps its limits in 2026 under Act 35
   period: 2026
   absolute_error_margin: 0.01
