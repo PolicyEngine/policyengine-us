@@ -1,0 +1,14 @@
+description: Iowa begins applying the current calendar year's federal poverty guidelines to the State Supplementary Assistance SMME income test in this month.
+values:
+  2026-01-01: 4
+
+metadata:
+  unit: month
+  period: year
+  label: Iowa SSA SMME poverty guideline year start month
+  # Earlier months use the prior year's guidelines.
+  reference:
+    - title: 441 IAC 75.1, federal poverty level "revised annually on April 1"
+      href: https://www.legis.iowa.gov/docs/iac/chapter/441.75.pdf#page=2
+    - title: Iowa HHS RC-0130 (Rev. 04/26), 120% of the federal poverty level effective 4/1/26
+      href: https://hhs.iowa.gov/media/6948/download#page=2

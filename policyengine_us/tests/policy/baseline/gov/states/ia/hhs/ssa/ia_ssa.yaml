@@ -947,7 +947,8 @@
     ia_ssa_category: SMME
     ia_ssa_smme_coverage_eligible: true
   output:
-    # SMME income 2,000 - 20 = 1,980 exceeds 1.2 * 15,960 / 12 = 1,596.
+    # SMME income 2,000 - 20 = 1,980 exceeds January's 1.2 * 15,650 / 12 = 1,565
+    # (Iowa uses the 2025 guideline until April).
     ia_ssa_nonfinancial_eligible: true
     ia_ssa_smme_countable_income: 1_980
     ia_ssa: 1
@@ -1029,7 +1030,7 @@
     ia_ssa: 328.57
 
 - name: Case 44, SMME income at exactly 120 percent of poverty qualifies under Iowa Code 249.3(4)(g).
-  period: 2026-01
+  period: 2026-04
   absolute_error_margin: 0.01
   input:
     state_code:
@@ -1040,12 +1041,13 @@
     ia_ssa_smme_coverage_eligible: true
     ia_ssa_smme_countable_income: 1_596
   output:
-    # 1.2 * 15,960 / 12 = 1,596; the statute requires income "of at least"
-    # 120 percent, so 1,596 qualifies.
+    # From April, Iowa uses the 2026 guideline (441 IAC 75.1): 1.2 * 15,960 / 12
+    # = 1,596; the statute requires income "of at least" 120 percent, so 1,596
+    # qualifies.
     ia_ssa: 1
 
 - name: Case 45, SMME income one cent below 120 percent of poverty.
-  period: 2026-01
+  period: 2026-04
   absolute_error_margin: 0.01
   input:
     state_code:
@@ -1056,7 +1058,7 @@
     ia_ssa_smme_coverage_eligible: true
     ia_ssa_smme_countable_income: 1_595.99
   output:
-    # 1,595.99 is below 1.2 * 15,960 / 12 = 1,596, so no SMME.
+    # 1,595.99 is below April's 1.2 * 15,960 / 12 = 1,596, so no SMME.
     ia_ssa: 0
 
 - name: Case 46, manual example excludes one-third of a child's child support from participation.
@@ -1118,10 +1120,10 @@
 # Iowa Code 249.3(4)(g): income "of at least one hundred twenty percent of the
 # federal poverty level" (441 IAC 51.7(6) and 6-B p.77 say "exceed"; the model
 # follows the statute). Case 47 is an aged couple with Social Security of
-# $1,700 a month each; Cases 48-49 bracket the two-person threshold of
-# 1.2 * (15,960 + 5,680) / 12 = 2,164.
+# $1,700 a month each; Cases 48-49 bracket the two-person threshold from April
+# 2026 (441 IAC 75.1), 1.2 * (15,960 + 5,680) / 12 = 2,164.
 - name: Case 47, an SMME couple's combined income is compared with the two-person guideline.
-  period: 2026-01
+  period: 2026-04
   absolute_error_margin: 0.01
   input:
     people:
@@ -1167,7 +1169,7 @@
     ia_ssa: [1, 1]
 
 - name: Case 48, an SMME couple just above the two-person guideline with one spouse covered.
-  period: 2026-01
+  period: 2026-04
   absolute_error_margin: 0.01
   input:
     people:
@@ -1212,7 +1214,7 @@
     ia_ssa: [1, 0]
 
 - name: Case 49, an SMME couple just below the two-person guideline.
-  period: 2026-01
+  period: 2026-04
   absolute_error_margin: 0.01
   input:
     people:
@@ -1879,9 +1881,9 @@
           2026: IA
   output:
     # The child is the parent's tax dependent, so SSI's spouse test does not
-    # pair them and the parent gets the individual allowance. SSI's child
-    # test reaches students only while under 22, so there is no
-    # dependent-child allowance.
+    # pair them and the parent gets the individual allowance. The model's
+    # SSI child test (is_child) covers only children under 18, so the
+    # 22-year-old student gets no dependent-child allowance.
     # SSI 994 - (800 - 20) = 214; care income 800 + 214 = 1,014;
     # participation 1,014 - 994 = 20; 400 - 20 = 380.
     ia_ssa_has_spouse: [false, false]
@@ -2222,7 +2224,7 @@
     ia_ssa_smme_coverage_eligible: true
   output:
     # Disabled under 42 U.S.C. 1382c(a)(3), so 249.3(4)(a) is met. SMME income
-    # 2,020 - 20 = 2,000 exceeds 1.2 * 15,960 / 12 = 1,596.
+    # 2,020 - 20 = 2,000 exceeds January's 1.2 * 15,650 / 12 = 1,565.
     ssi: 0
     ia_ssa_federal: 0
     ia_ssa_smme_countable_income: 2_000
@@ -2249,9 +2251,312 @@
   output:
     # SGA bars SSI disability, but Iowa Code 249.3(4)(a)(2) says it "shall not
     # preclude a determination of disability" for SMME. SMME income
-    # (900 - 20) + (2,000 - 65) / 2 = 1,847.50 is at least 1,596.
+    # (900 - 20) + (2,000 - 65) / 2 = 1,847.50 is at least January's 1,565.
     ssi_engaged_in_sga: true
     is_ssi_disabled: false
     ssi: 0
     ia_ssa_smme_countable_income: 1_847.5
     ia_ssa: 1
+
+# 441 IAC 75.1 revises the federal poverty level "annually on April 1", so
+# January-March use the prior year's guideline: 1.2 * 15,650 / 12 = 1,565 for
+# one person and 1.2 * (15,650 + 5,500) / 12 = 2,115 for two (RC-0130).
+- name: Case 78, in January SMME income at the prior year's 120 percent qualifies.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 65
+    ia_ssa_category: SMME
+    ia_ssa_smme_coverage_eligible: true
+    ia_ssa_smme_countable_income: 1_565
+  output:
+    ia_ssa: 1
+
+- name: Case 79, in January SMME income one cent below the prior year's 120 percent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 65
+    ia_ssa_category: SMME
+    ia_ssa_smme_coverage_eligible: true
+    ia_ssa_smme_countable_income: 1_564.99
+  output:
+    ia_ssa: 0
+
+- name: Case 80, in January an SMME couple is compared with the prior year's two-person guideline.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 70
+        # $1,068 a month each.
+        social_security_retirement:
+          2026: 12_816
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 70
+        social_security_retirement:
+          2026: 12_816
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # 1,068 + 1,068 - 20 = 2,116 > 1,491, so no SSI. 2,116 is at least
+    # January's 2,115, though below April's 2,164.
+    ia_ssa_smme_countable_income: [2_116, 2_116]
+    ia_ssa: [1, 1]
+
+# 6-B Income (SMME) p.77 follows SSI income criteria, and 8-E p.12 processes an
+# applicant "as a one-person household" when SSI deems nothing from a spouse.
+# So the two-person guideline applies only when SMME income includes a
+# spouse's income.
+- name: Case 81, an SMME couple budgeted separately because one spouse is in a medical facility.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 70
+        social_security_retirement:
+          2026: 20_400
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 70
+        social_security_retirement:
+          2026: 20_400
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # 20 CFR 416.414(b)(3) computes the spouses separately, so each one's
+    # 1,700 - 20 = 1,680 is compared with the one-person 1,596.
+    ssi_couple_computation_applies: [false, false]
+    ia_ssa_smme_countable_income: [1_680, 1_680]
+    ia_ssa: [1, 1]
+
+- name: Case 82, an SMME applicant working above the SGA level is compared with the one-person guideline.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 50
+        meets_ssi_disability_criteria:
+          2026: true
+        # Case 77's worker: SSDI of $900 and wages of $2,000 a month.
+        social_security_disability:
+          2026: 10_800
+        employment_income:
+          2026: 24_000
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 45
+        # A spouse earning $1,000 a month.
+        employment_income:
+          2026: 12_000
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # SSI doesn't count person1, so SMME income is person1's own 1,847.50,
+    # with no spouse income, compared with the one-person 1,596. person2's own
+    # income is (1,000 - 20 - 65) / 2 = 457.50.
+    ia_ssa_smme_countable_income: [1_847.5, 457.5]
+    ia_ssa: [1, 0]
+
+- name: Case 83, SSI deems nothing from a spouse with a 497 dollar pension, so the one-person guideline applies.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 70
+        # $1,620 a month.
+        social_security_retirement:
+          2026: 19_440
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 60
+        # $497 a month, the SSI couple rate less the individual rate.
+        pension_income:
+          2026: 5_964
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # 497 is not more than 1,491 - 994 = 497, so SSI deems nothing and 8-E
+    # p.12 processes person1 "as a one-person household": 1,620 - 20 = 1,600 is
+    # at least 1,596.
+    is_ssi_spousal_deeming_applies: [false, false]
+    ia_ssa_smme_countable_income: [1_600, 477]
+    ia_ssa: [1, 0]
+
+- name: Case 84, SSI deems a spouse's 498 dollar pension, so the two-person guideline applies.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 70
+        social_security_retirement:
+          2026: 19_440
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 60
+        # $498 a month.
+        pension_income:
+          2026: 5_976
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # 498 > 497, so SSI deems the spouse's income: 1,620 + 498 - 20 = 2,098,
+    # below the two-person 2,164.
+    is_ssi_spousal_deeming_applies: [true, false]
+    ia_ssa_smme_countable_income: [2_098, 478]
+    ia_ssa: [0, 0]
+
+- name: Case 85, a residential care couple pools resources in the month of entry only.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        # Case 57's Mr. K, with resources of $2,100.
+        social_security_retirement: 2_100
+        ssi_countable_resources: 2_100
+        ia_ssa_category:
+          2026-03: RESIDENTIAL_CARE
+          2026-04: RESIDENTIAL_CARE
+        ia_ssa_care_partial_month_days:
+          2026-03: 22
+        ia_ssa_care_initial_partial_month:
+          2026-03: true
+      person2:
+        age: 70
+        social_security_retirement: 1_200
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # 6-B p.60: "treat the spouses as a couple during the month of entry", so
+    # March tests 2,100 against the $3,000 couple limit (p.12). From April the
+    # resident is tested alone, and 2,100 is over $2,000.
+    ia_ssa_rcf_couple_budget:
+      2026-03: [true, false]
+      2026-04: [false, false]
+    ia_ssa_eligible:
+      2026-03: [true, true]
+      2026-04: [false, true]
+    ia_ssa:
+      2026-03: [846.34, 0]
+      2026-04: [0, 0]
+
+- name: Case 86, residential care in January 2025 uses General Letter 6-B-46's levels.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2025: IA
+    age:
+      2025: 65
+    ia_ssa_category: RESIDENTIAL_CARE
+  output:
+    # 38.47 is the 2026 rate; GL 6-B-46 sets $37.60 a day and a $126 allowance
+    # for 2025. 37.60 * 31 = 1,165.60; SSI 967, participation 967 - 126 = 841;
+    # 1,165.60 - 841 = 324.60.
+    ia_ssa: 324.6

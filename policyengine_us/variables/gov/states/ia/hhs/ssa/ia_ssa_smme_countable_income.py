@@ -24,15 +24,13 @@ class ia_ssa_smme_countable_income(Variable):
         # 6-B Income (SMME): income "is determined according to SSI income
         # criteria". ia_ssa compares it with 120 percent of the poverty
         # guideline as Iowa Code 249.3(4)(g) sets it ("at least"; see the NOTE
-        # in ia_ssa). ia_ssa uses the guideline for
-        # the recipient and any spouse (ia_ssa_has_spouse), so an eligible
-        # couple's combined income is compared with the two-person guideline
-        # (ia_ssa.yaml Cases 47-49).
-        # NOTE: With an ineligible spouse, SSI countable income includes only
-        # the income SSI deems from that spouse, and none when the spouse's
-        # income is at or below the deeming threshold, while the guideline is
-        # still for two people. Group-specific Medicaid budgeting is not
-        # modeled.
+        # in ia_ssa). An eligible couple's combined income is compared with the
+        # two-person guideline (ia_ssa.yaml Cases 47-49). With an ineligible
+        # spouse, SSI countable income includes the income SSI deems from that
+        # spouse, and ia_ssa then uses the two-person guideline; when SSI deems
+        # nothing, 8-E p.12 says to "Process as a one-person household"
+        # (Cases 83-84).
+        # NOTE: Group-specific Medicaid budgeting is not modeled.
         income = person("ssi_countable_income", period) + person("ssi", period)
         # SSI counts income only for people it treats as aged, blind or
         # disabled, so ssi_countable_income is 0 for a disabled person working
@@ -40,7 +38,8 @@ class ia_ssa_smme_countable_income(Variable):
         # 249.3(4)(a)(2)). That person's own income gets SSI's exclusions
         # instead (ia_ssa.yaml Case 77).
         # NOTE: That person's income is not combined with a spouse's, and none
-        # is deemed from a spouse or parent.
+        # is deemed from a spouse or parent, so ia_ssa uses the one-person
+        # guideline (Case 82).
         earned = max_(person("ssi_earned_income", period), 0)
         unearned = person("ssi_unearned_income", period)
         own_income = (

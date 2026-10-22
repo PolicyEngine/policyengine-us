@@ -38,8 +38,11 @@ class ia_ssa(Variable):
         # cost-related per diem rate "established by the Department
         # specifically for each facility" of up to $38.47, or "A flat per diem
         # rate ... $17.86 beginning February 1, 2004". The model follows the
-        # rule and pays the maximum rate unless a lower facility rate is
-        # entered (ia_ssa.yaml Cases 14, 15 and 56).
+        # rule and Iowa Code 249.12(3), under which privately operated
+        # facilities "shall be reimbursed based on the maximum per diem rates
+        # established by the general assembly", and pays the maximum rate
+        # unless a lower facility rate is entered (ia_ssa.yaml Cases 14, 15
+        # and 56).
         entered_rate = max_(person("ia_ssa_rcf_daily_rate", period), 0)
         rate = where(
             entered_rate > 0,
@@ -98,11 +101,22 @@ class ia_ssa(Variable):
             / where(joint, max_(recipients, 1), 1)
         )
         # 441 IAC 51.7(6) and 6-B Income (SMME) p.77 set no family size for
-        # the poverty guideline. The model uses the recipient and any spouse,
-        # matching ia_ssa_smme_countable_income, which combines an eligible
-        # couple's income.
-        size = where(has_spouse, 2, 1)
-        fpg = parameters(period).gov.hhs.fpg
+        # the poverty guideline. 6-B p.77 determines income "according to SSI
+        # income criteria", and 8-E p.12 says to "Process as a one-person
+        # household" when SSI deems nothing from an ineligible spouse. So the
+        # guideline is for two people only when SMME income includes a
+        # spouse's income: an eligible couple's combined income, or income SSI
+        # deems from a spouse (ia_ssa.yaml Cases 47-49 and 81-84).
+        spouse_income = joint | person(
+            "is_ssi_spousal_deeming_applies", period.this_year
+        )
+        size = where(spouse_income, 2, 1)
+        # 441 IAC 75.1 revises the federal poverty level "annually on April 1",
+        # so earlier months use the prior year's guidelines (Cases 78-80).
+        year = period.start.year
+        if period.start.month < p.fpg_year_start_month:
+            year = year - 1
+        fpg = parameters(f"{year}-01-01").gov.hhs.fpg
         poverty = (
             fpg.first_person.CONTIGUOUS_US
             + (size - 1) * fpg.additional_person.CONTIGUOUS_US
