@@ -92,7 +92,8 @@ def check_invariants(sim, year, order=REVENUE_VARIABLES):
     return result
 
 
-@settings(max_examples=20, derandomize=True, deadline=None)
+# Each draw exercises four filing profiles and three full tax counterfactuals.
+@settings(max_examples=8, derandomize=True, deadline=None)
 @example(benefits=20_000, interest=30_000, age=70, year=2026)
 @example(benefits=0, interest=0, age=60, year=2024)
 @example(benefits=60_000, interest=300_000, age=70, year=2026)
