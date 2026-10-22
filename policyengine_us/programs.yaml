@@ -1174,6 +1174,17 @@ programs:
           homes, plus the institutional Supplement for Personal Needs.
           Mandatory grandfathered and essential-person supplements and
           ancillary facility subsidies are not modeled.
+      - state: OR
+        status: partial
+        name: Oregon SSP
+        full_name: Oregon State Supplemental Payment
+        variable: or_ssp
+        parameter_prefix: gov.states.or.odhs.ssp
+        verified_years: "2026"
+        notes: Models 2026 OSIPM in-home, SSI couple community care, transitional personal
+          incidentals/room and board, spousal diversion, special room-and-board and nursing
+          facility personal incidentals payments. Other special needs and historical mandatory
+          supplements are not modeled.
       - state: WY
         status: partial
         name: Wyoming SSP
@@ -1257,17 +1268,6 @@ programs:
         notes: Models 2026 locality rates and SSI and non-SSI budgets for certified assisted living,
           adult foster care and supportive housing residents. Conditional resource benefits and
           historical grandfathering are not modeled.
-      - state: OR
-        status: partial
-        name: Oregon SSP
-        full_name: Oregon State Supplemental Payment
-        variable: or_ssp
-        parameter_prefix: gov.states.or.odhs.ssp
-        verified_years: "2026"
-        notes: Models 2026 OSIPM in-home, SSI couple community care, transitional personal
-          incidentals/room and board, spousal diversion, special room-and-board and nursing
-          facility personal incidentals payments. Other special needs and historical mandatory
-          supplements are not modeled.
 
   - id: social_security
     name: Social Security
