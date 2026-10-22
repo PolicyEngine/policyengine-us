@@ -102,3 +102,45 @@
   output:
     # 15,000 - 967 * 12 = 15,000 - 11,604 = 3,396.
     mn_ccap_countable_rsdi: 3_396
+
+- name: Case 7, RSDI just above the federal maximum SSI payment counts only the excess.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        social_security_retirement: 11_940  # 995/month
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # 11,940 - 11,928 = 12.
+    mn_ccap_countable_rsdi: 12
+
+- name: Case 8, a child's own dependents' benefit gets its own offset.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        social_security_disability: 18_000  # 1,500/month
+      person2:
+        age: 8
+        social_security_dependents: 13_200  # 1,100/month
+      person3:
+        age: 5
+        social_security_dependents: 6_000  # 500/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # person1: 18,000 - 11,928 = 6,072.
+    # person2: 13,200 - 11,928 = 1,272.
+    # person3: max(6,000 - 11,928, 0) = 0.
+    mn_ccap_countable_rsdi: [6_072, 1_272, 0]

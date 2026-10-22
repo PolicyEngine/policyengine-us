@@ -1,11 +1,9 @@
 description: Minnesota counts these Retirement, Survivors, and Disability Insurance sources under the Child Care Assistance Program, to the extent they exceed the federal maximum Supplemental Security Income payment.
 values:
   2025-01-01:
-    # Listed as components rather than the social_security umbrella, which also
-    # adds social_security_dependents.
-    - social_security_retirement
-    - social_security_survivors
-    - social_security_disability
+    # Retirement, survivors, disability and dependents' benefits; RSDI pays
+    # dependents of insured people (Combined Manual 0029.06.06).
+    - social_security
 
 metadata:
   unit: list
@@ -18,3 +16,7 @@ metadata:
       href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&RevisionSelectionMethod=LatestReleased&dDocName=CCAP_0606
     - title: Minnesota CCAP Policy Manual, section 6.15.24 (Annualizing RSDI)
       href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&RevisionSelectionMethod=LatestReleased&dDocName=CCAP_061524
+    - title: Minnesota Combined Manual, 0017.15.45 - Income From RSDI and SSI
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&RevisionSelectionMethod=LatestReleased&dDocName=cm_00171545
+    - title: Minnesota Combined Manual, 0029.06.06 - Retirement, Survivors and Disability Insurance
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&RevisionSelectionMethod=LatestReleased&dDocName=cm_00290606

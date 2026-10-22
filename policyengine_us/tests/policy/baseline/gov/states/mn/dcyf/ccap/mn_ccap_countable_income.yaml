@@ -248,3 +248,28 @@
     # person2 RSDI: max(6,000 - 11,928, 0) = 0.
     # (6,072 + 0 + 24,000) / 12 = 30,072 / 12 = 2,506 per month.
     mn_ccap_countable_income: 2_506
+
+- name: Case 14, a child's RSDI above the federal maximum SSI payment counts as family income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000  # 2,000/month
+      person2:
+        age: 8
+        social_security_dependents: 13_200  # 1,100/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Minn. Stat. 256P.06, subd. 2 exempts only a child's earned income, so
+    # the child's own RSDI counts above 994 * 12 = 11,928:
+    # person2 RSDI: 13,200 - 11,928 = 1,272.
+    # (24,000 + 1,272) / 12 = 25,272 / 12 = 2,106 per month.
+    mn_ccap_countable_income: 2_106
