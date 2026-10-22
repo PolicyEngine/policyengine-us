@@ -696,3 +696,24 @@
         state_code: WV
   output:
     is_optional_senior_or_disabled_income_eligible: [true, true]
+
+# North Dakota's income level for categorically needy aged, blind, or
+# disabled recipients "is that which establishes supplemental security
+# income eligibility" (N.D.A.C. 75-02-02.1-40(1)(a)(2)): $994 a month
+# ($11,928 a year) for one person in 2026. $996 a month is over it,
+# although it is under 75% of the 2026 poverty guideline ($11,970).
+- name: North Dakota income between the SSI rate and 75% of poverty is ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 11_952
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    is_optional_senior_or_disabled_income_eligible: [false]
