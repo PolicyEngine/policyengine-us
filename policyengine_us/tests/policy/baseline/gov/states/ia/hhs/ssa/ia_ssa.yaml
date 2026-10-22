@@ -2560,3 +2560,56 @@
     # for 2025. 37.60 * 31 = 1,165.60; SSI 967, participation 967 - 126 = 841;
     # 1,165.60 - 841 = 324.60.
     ia_ssa: 324.6
+
+- name: Case 87, an SMME student working above the SGA level keeps SSI's student earned income exclusion.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 20
+    is_full_time_student:
+      2026: true
+    meets_ssi_disability_criteria:
+      2026: true
+    # Reviewer example: SSDI of $900 and wages of $2,000 a month.
+    social_security_disability:
+      2026: 10_800
+    employment_income:
+      2026: 24_000
+    ia_ssa_category: SMME
+    ia_ssa_smme_coverage_eligible: true
+  output:
+    # 20 CFR 416.1112(c)(3): min(min(2,410, 2,000) * 12, 9,730) = 9,730 a
+    # year, or 810.83 a month. SMME income 880 + (2,000 - 810.83 - 65) / 2 =
+    # 1,442.08 is below 1,596.
+    ia_ssa_smme_countable_income: 1_442.08
+    ia_ssa: 0
+
+- name: Case 88, an SMME worker above the SGA level counts outside shelter support.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 40
+    meets_ssi_disability_criteria:
+      2026: true
+    # Reviewer example: SSDI of $500 and wages of $1,700 a month, with
+    # shelter paid by someone outside the household.
+    social_security_disability:
+      2026: 6_000
+    employment_income:
+      2026: 20_400
+    ssi_receives_outside_shelter_support:
+      2026: true
+    ia_ssa_category: SMME
+    ia_ssa_smme_coverage_eligible: true
+  output:
+    # 416.1130 and 416.1140: the presumed maximum value 994 / 3 + 20 = 351.33
+    # counts as unearned income. (851.33 - 20) + (1,700 - 65) / 2 = 1,648.83
+    # is at least 1,596.
+    ia_ssa_smme_countable_income: 1_648.83
+    ia_ssa: 1

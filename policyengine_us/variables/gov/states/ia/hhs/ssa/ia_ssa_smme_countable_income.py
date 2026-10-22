@@ -11,7 +11,7 @@ class ia_ssa_smme_countable_income(Variable):
     definition_period = MONTH
     unit = USD
     defined_for = StateCode.IA
-    documentation = "SSI countable income plus any SSI payment, combined for a couple whose SSI couple computation applies. For a disabled person working above the SGA level, whom SSI does not count, the person's own income after SSI's exclusions. Deductions and financial groups of a Medicaid coverage category that differ from SSI are not modeled."
+    documentation = "SSI countable income plus any SSI payment, combined for a couple whose SSI couple computation applies. For a disabled person working above the SGA level, whom SSI does not count, the person's own income, including in-kind support and maintenance, after SSI's exclusions, including the student earned income exclusion. Deductions and financial groups of a Medicaid coverage category that differ from SSI are not modeled."
     reference = (
         # Iowa Code 249.3(4)(g)
         "https://www.legis.iowa.gov/docs/code/249.pdf#page=2",
@@ -35,13 +35,22 @@ class ia_ssa_smme_countable_income(Variable):
         # SSI counts income only for people it treats as aged, blind or
         # disabled, so ssi_countable_income is 0 for a disabled person working
         # above the SGA level, whom SMME still covers (Iowa Code
-        # 249.3(4)(a)(2)). That person's own income gets SSI's exclusions
-        # instead (ia_ssa.yaml Case 77).
+        # 249.3(4)(a)(2)). That person's own income gets SSI's income rules
+        # instead: the student earned income exclusion (20 CFR
+        # 416.1112(c)(3)), in-kind support and maintenance (416.1130, 416.1140)
+        # and the general and earned income exclusions (ia_ssa.yaml Cases 77,
+        # 87 and 88).
         # NOTE: That person's income is not combined with a spouse's, and none
         # is deemed from a spouse or parent, so ia_ssa uses the one-person
         # guideline (Case 82).
-        earned = max_(person("ssi_earned_income", period), 0)
-        unearned = person("ssi_unearned_income", period)
+        earned = max_(
+            person("ssi_earned_income", period)
+            - person("ssi_blind_or_disabled_working_student_exclusion", period),
+            0,
+        )
+        unearned = person("ssi_unearned_income", period) + person(
+            "ssi_in_kind_support_and_maintenance", period
+        )
         own_income = (
             _apply_ssi_exclusions(
                 earned * MONTHS_IN_YEAR, unearned * MONTHS_IN_YEAR, parameters, period
