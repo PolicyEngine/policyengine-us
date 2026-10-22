@@ -11,6 +11,10 @@ values:
     - interest_income
     - pension_income
     - veterans_benefits
+    # Military retirement pay and Survivor Benefit Plan annuities count as
+    # retirement benefits under 256P.06, subd. 3(2)(ix), which has no income
+    # tax condition. Item (xi), income from members of the armed forces unless
+    # excluded from income taxes, is not applied to them.
     - military_retirement_income
     - total_unemployment_compensation
     - workers_compensation
