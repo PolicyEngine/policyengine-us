@@ -32,13 +32,13 @@ class spm_unit_benefits(Variable):
             "ri_ssp",  # Rhode Island benefits
             "sd_ssp",  # South Dakota benefits
             "va_ag",  # Virginia benefits
-            "wi_ssp",  # Wisconsin benefits
             "ks_sspp",  # Kansas benefits
             "hi_oss",
             "la_oss",  # Louisiana benefits
             "ma_state_supplement",  # Massachusetts benefits
             "md_paa",  # Maryland benefits
             "wa_ssp",  # Washington benefits
+            "wi_ssp",  # Wisconsin benefits
             "mi_ssp",  # Michigan benefits
             "me_ssp",  # Maine benefits
             "mo_ssp",  # Missouri benefits

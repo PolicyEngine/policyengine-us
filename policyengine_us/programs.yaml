@@ -1150,6 +1150,19 @@ programs:
           tracks. Unmodeled paths: grandfathered medically-needy-in-medical-
           institution recipients per WAC 388-478-0055(2)(b); DDA-determined /
           PVL track per (2)(f); and foster child in BRS per (2)(g).
+      - state: WI
+        status: partial
+        name: Wisconsin SSP
+        full_name: Wisconsin State SSI Supplement
+        variable: wi_ssp
+        parameter_prefix: gov.states.wi.dhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models 2026 regular State SSI Supplement, certified Exceptional
+          Expense (SSI-E) and Caretaker Supplement payments, including the May
+          2026 regular and SSI-E rate increase. Grandfathered state-only SSI recipients are not modeled;
+          without parent IDs the Caretaker Supplement pays one SSI parent per
+          family, and groups over 12 need a supplied net income limit.
       - state: NJ
         status: partial
         name: New Jersey SSP
@@ -1257,19 +1270,6 @@ programs:
         notes: Models 2026 locality rates and SSI and non-SSI budgets for certified assisted living,
           adult foster care and supportive housing residents. Conditional resource benefits and
           historical grandfathering are not modeled.
-      - state: WI
-        status: partial
-        name: Wisconsin SSP
-        full_name: Wisconsin State SSI Supplement
-        variable: wi_ssp
-        parameter_prefix: gov.states.wi.dhs.ssp
-        verified_years: "2026"
-        notes: >-
-          Models 2026 regular State SSI Supplement, certified Exceptional
-          Expense (SSI-E) and Caretaker Supplement payments, including the May
-          2026 regular and SSI-E rate increase. Grandfathered state-only SSI recipients are not modeled;
-          without parent IDs the Caretaker Supplement pays one SSI parent per
-          family, and groups over 12 need a supplied net income limit.
 
   - id: social_security
     name: Social Security
