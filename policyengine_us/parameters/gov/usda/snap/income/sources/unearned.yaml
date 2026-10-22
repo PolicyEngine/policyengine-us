@@ -69,6 +69,10 @@ values:
     - wa_ssp
     - wi_ssp_countable_for_snap
     - wy_ssp
+    # Not listed: OAR 461-145-0410(7)(c)(D) excludes Oregon's modeled OSIP
+    # special need payments (or_ssp) from SNAP income as reimbursements. Its
+    # nursing facility payment goes to institution residents, who are not SNAP
+    # households under 7 CFR 273.1(b)(7)(vi).
     # Listed elsewhere: ca_state_supplement is an SPM unit variable with no
     # person-level counterpart. policyengine-core projects a group value onto
     # every member, so listing it here would count it once per person in the
