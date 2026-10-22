@@ -17,6 +17,23 @@ uv run policyengine-core test policyengine_us/tests/path/to/test.yaml -c policye
 uv run pytest policyengine_us/tests/path/to/test_file.py::test_name -v
 ```
 
+### Certificate trust updates
+
+Use uv 0.13.4 or newer and synchronize the patched dependency lock with
+`uv sync --locked --extra dev`. Native HTTPS clients such as hf-xet also use
+the operating system's certificate store. On Debian or Ubuntu, update it with:
+
+```bash
+sudo apt-get update
+sudo apt-get install --only-upgrade --yes ca-certificates
+```
+
+Use the equivalent certificate-store update for other Linux distributions;
+on macOS, install the relevant operating system security updates. Restart
+running Python processes and notebook kernels after updating both dependency
+and system trust stores. CI updates and verifies the Linux system store before
+running model jobs.
+
 ### Memory: running suites locally
 
 `make test` runs the same suites as CI, one batched subprocess at a time
