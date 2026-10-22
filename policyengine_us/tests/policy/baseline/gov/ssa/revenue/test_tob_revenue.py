@@ -24,7 +24,17 @@ REVENUE_VARIABLES = (
 
 
 def simulation(benefits, interest, age, year):
-    situation = {"people": {}, "tax_units": {}, "households": {}}
+    situation = {
+        entity: {}
+        for entity in (
+            "people",
+            "tax_units",
+            "households",
+            "marital_units",
+            "spm_units",
+            "families",
+        )
+    }
     for i, (filing_status, cohabitating) in enumerate(PROFILES):
         joint = filing_status == "JOINT"
         members = [f"head{i}"] + ([f"spouse{i}"] if joint else [])
@@ -40,7 +50,14 @@ def simulation(benefits, interest, age, year):
             "filing_status": {year: filing_status},
             "cohabitating_spouses": {year: cohabitating},
         }
-        situation["households"][f"household{i}"] = {"members": members}
+        situation["households"][f"household{i}"] = {
+            "members": members,
+            "state_name": {year: "TX"},
+        }
+        # Missing group entities default to one group containing everyone,
+        # so define each explicitly to keep these households independent.
+        for entity in ("marital_units", "spm_units", "families"):
+            situation[entity][f"unit{i}"] = {"members": members}
     return Simulation(situation=situation)
 
 
