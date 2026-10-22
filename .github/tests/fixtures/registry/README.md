@@ -16,3 +16,17 @@ live registry access was unavailable on the development lane. The complete graph
 was written by uv (two packages resolved); its TOML was not manually assembled.
 The opt-in `RELEASE_LOCK_REAL_UV=1` test runs the installed uv with normal registry
 access and validates a root-only refresh without depending on country packages.
+
+When the workflows moved to uv 0.13.4, the lock was re-resolved with that version
+(root version bumped to 1.0.1, locked, restored to 1.0.0, locked again) against
+live PyPI, using the release flags from `.github/release_lock.py`:
+
+```sh
+uv lock --no-config --no-sources --default-index https://pypi.org/simple \
+  --python "$(command -v python3)" --no-python-downloads --no-cache
+```
+
+uv 0.13.4 keeps an existing `revision = 3` lock while it is still satisfied, but
+writes `revision = 5` whenever it re-resolves, so the root-only refresh test
+failed until the fixture was regenerated. The regeneration changed only the
+`revision` field; the idna artifact URLs and hashes are unchanged.

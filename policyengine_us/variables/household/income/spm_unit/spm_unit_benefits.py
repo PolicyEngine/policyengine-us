@@ -19,17 +19,22 @@ class spm_unit_benefits(Variable):
             "ak_ssp",
             "dc_ossp",  # DC benefits
             "id_aabd",  # Idaho benefits
+            "vt_aabd",  # Vermont benefits
             "ky_ssp",  # Kentucky benefits
             "de_ssp",  # Delaware benefits
             "fl_oss",
             "nj_ssp",  # New Jersey benefits
+            "nh_ssp",  # New Hampshire benefits
             "pa_ssp",  # Pennsylvania benefits
             "wy_ssp",  # Wyoming benefits
+            "or_ssp",  # Oregon benefits
             "nc_sa",  # North Carolina benefits
             "mt_ssp",  # Montana benefits
             "ok_ssp",  # Oklahoma benefits
+            "oh_rss",  # Ohio benefits
             "ny_ssp",  # New York benefits
             "ri_ssp",  # Rhode Island benefits
+            "ut_ssp",  # Utah benefits
             "sd_ssp",  # South Dakota benefits
             "va_ag",  # Virginia benefits
             "ia_ssa",  # Iowa benefits
@@ -39,6 +44,7 @@ class spm_unit_benefits(Variable):
             "ma_state_supplement",  # Massachusetts benefits
             "md_paa",  # Maryland benefits
             "wa_ssp",  # Washington benefits
+            "wi_ssp",  # Wisconsin benefits
             "mi_ssp",  # Michigan benefits
             "me_ssp",  # Maine benefits
             "mo_ssp",  # Missouri benefits

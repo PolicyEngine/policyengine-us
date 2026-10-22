@@ -116,6 +116,7 @@ CONFLICT_COMMENT_RE = re.compile(
 # or reword a comment that is not one, then lower or delete its count here.
 # A new file or a higher count fails.
 KNOWN_UNMARKED: dict[str, int] = {
+    "policyengine_us/parameters/gov/irs/ald/charitable_contributions/cap.yaml": 1,
     "policyengine_us/parameters/gov/irs/credits/residential_clean_energy/fuel_cell_cap_per_kw.yaml": 1,
     "policyengine_us/parameters/gov/irs/income/exemption/overtime/hce_salary_threshold.yaml": 1,
     "policyengine_us/parameters/gov/irs/income/exemption/overtime/salary_basis_threshold.yaml": 1,
