@@ -26,6 +26,45 @@
   output:
     wi_itemized_deduction_credit_potential: 0
 
+# 2020 Form 1 instructions, PDF p. 17 (printed p. 15), line 11:
+# https://www.revenue.wi.gov/TaxForms2020/2020-Form1-inst.pdf#page=17
+# Schedule 1, PDF p. 5, lines 3 and 8-9:
+# https://www.revenue.wi.gov/TaxForms2020/2020-Form1.pdf#page=5
+# Eligible charity = 10,000 - 300 = 9,700; credit = 9,700 * .05 = 485.
+- name: Wisconsin 2020 credit excludes gifts already deducted above the line
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    tax_unit_itemizes: false
+    charitable_deduction: 10_000
+    charitable_deduction_for_non_itemizers: 300
+    wi_standard_deduction: 0
+    medical_expense_deduction: 0
+    interest_deduction: 0
+    deductible_mortgage_insurance_premiums: 0
+    casualty_loss_deduction: 0
+  output:
+    wi_itemized_deduction_credit_charitable_deduction: 9_700
+    wi_itemized_deduction_credit_potential: 485
+
+- name: Wisconsin 2020 credit retains gifts for federal itemizers
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    tax_unit_itemizes: true
+    charitable_deduction: 10_000
+    charitable_deduction_for_non_itemizers: 300
+    wi_standard_deduction: 0
+    medical_expense_deduction: 0
+    interest_deduction: 0
+    deductible_mortgage_insurance_premiums: 0
+    casualty_loss_deduction: 0
+  output:
+    wi_itemized_deduction_credit_charitable_deduction: 10_000
+    wi_itemized_deduction_credit_potential: 500
+
 # Wis. Stat. 71.07(5)(a)-(c):
 # https://docs.legis.wisconsin.gov/statutes/statutes/71/i/07/5
 # 2021 Schedule 1 instructions (hypothetical Schedule A):

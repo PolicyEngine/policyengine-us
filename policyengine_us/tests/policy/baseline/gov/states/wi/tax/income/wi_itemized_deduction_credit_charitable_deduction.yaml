@@ -1,0 +1,52 @@
+# 2020 Form 1 instructions, PDF p. 17 (printed p. 15), line 11:
+# https://www.revenue.wi.gov/TaxForms2020/2020-Form1-inst.pdf#page=17
+# Gifts used for the federal line 10b deduction cannot also count for this credit.
+- name: Wisconsin 2020 charitable component excludes the claimed federal allowance
+  period: 2020
+  input:
+    state_code: WI
+    tax_unit_itemizes: false
+    charitable_deduction: 10_000
+    charitable_deduction_for_non_itemizers: 300
+  output:
+    wi_itemized_deduction_credit_charitable_deduction: 9_700
+
+- name: Wisconsin 2020 federal itemizers retain their full charitable component
+  period: 2020
+  input:
+    state_code: WI
+    tax_unit_itemizes: true
+    charitable_deduction: 10_000
+    charitable_deduction_for_non_itemizers: 300
+  output:
+    wi_itemized_deduction_credit_charitable_deduction: 10_000
+
+- name: Wisconsin 2020 subtracts the actual allowance below the federal cap
+  period: 2020
+  input:
+    state_code: WI
+    tax_unit_itemizes: false
+    charitable_deduction: 1_000
+    charitable_deduction_for_non_itemizers: 100
+  output:
+    wi_itemized_deduction_credit_charitable_deduction: 900
+
+- name: Wisconsin 2020 charitable component cannot be negative
+  period: 2020
+  input:
+    state_code: WI
+    tax_unit_itemizes: false
+    charitable_deduction: 200
+    charitable_deduction_for_non_itemizers: 300
+  output:
+    wi_itemized_deduction_credit_charitable_deduction: 0
+
+- name: Wisconsin 2021 retains the full gift without adding the federal allowance
+  period: 2021
+  input:
+    state_code: WI
+    tax_unit_itemizes: false
+    charitable_deduction: 10_000
+    charitable_deduction_for_non_itemizers: 300
+  output:
+    wi_itemized_deduction_credit_charitable_deduction: 10_000

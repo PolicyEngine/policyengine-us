@@ -27,7 +27,7 @@ class wi_itemized_deduction_credit_potential(Variable):
             [
                 "medical_expense_deduction",
                 "interest_deduction",
-                "charitable_deduction",
+                "wi_itemized_deduction_credit_charitable_deduction",
                 "casualty_loss_deduction",
             ],
         )
