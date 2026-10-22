@@ -3,10 +3,14 @@
 Policy examples and independent tax calculations live in the variable YAML
 files. Python is needed to quantify the split invariants over generated
 inputs and to exercise calculation order on an already populated cache.
-Each example has four tax units in one vectorized simulation: single,
-joint, separate living together, and separate living apart. Joint benefits
-and interest are divided between spouses to exercise tax-unit aggregation.
+Each generated batch has eight income pairs and four filing profiles per
+pair: single, joint, separate living together, and separate living apart.
+One vectorized simulation shares the expensive counterfactual setup across
+the batch. Joint benefits and interest are divided between spouses to
+exercise tax-unit aggregation.
 """
+
+from itertools import product
 
 import numpy as np
 from hypothesis import example, given, settings
@@ -23,7 +27,7 @@ REVENUE_VARIABLES = (
 )
 
 
-def simulation(benefits, interest, age, year):
+def simulation(cases, age, year):
     situation = {
         entity: {}
         for entity in (
@@ -35,7 +39,9 @@ def simulation(benefits, interest, age, year):
             "families",
         )
     }
-    for i, (filing_status, cohabitating) in enumerate(PROFILES):
+    for i, ((benefits, interest), (filing_status, cohabitating)) in enumerate(
+        product(cases, PROFILES)
+    ):
         joint = filing_status == "JOINT"
         members = [f"head{i}"] + ([f"spouse{i}"] if joint else [])
         for j, member in enumerate(members):
@@ -92,24 +98,32 @@ def check_invariants(sim, year, order=REVENUE_VARIABLES):
     return result
 
 
-# Each draw exercises four filing profiles and three full tax counterfactuals.
-@settings(max_examples=8, derandomize=True, deadline=None)
-@example(benefits=20_000, interest=30_000, age=70, year=2026)
-@example(benefits=0, interest=0, age=60, year=2024)
-@example(benefits=60_000, interest=300_000, age=70, year=2026)
+# Each generated draw exercises 32 tax units in three tax counterfactuals.
+# Batching increases generated household coverage while reducing full-model
+# branch clones; each draw still owns an independent simulation and caches.
+@settings(max_examples=2, derandomize=True, deadline=None)
+@example(cases=[(20_000, 30_000)], age=70, year=2026)
+@example(cases=[(0, 0)], age=60, year=2024)
+@example(cases=[(60_000, 300_000)], age=70, year=2026)
 @given(
-    benefits=st.integers(min_value=0, max_value=60_000),
-    interest=st.integers(min_value=0, max_value=300_000),
+    cases=st.lists(
+        st.tuples(
+            st.integers(min_value=0, max_value=60_000),
+            st.integers(min_value=0, max_value=300_000),
+        ),
+        min_size=8,
+        max_size=8,
+    ),
     age=st.sampled_from([60, 70]),
     year=st.sampled_from([2024, 2026]),
 )
-def test_generated_tob_split_invariants(benefits, interest, age, year):
-    check_invariants(simulation(benefits, interest, age, year), year)
+def test_generated_tob_split_invariants(cases, age, year):
+    check_invariants(simulation(cases, age, year), year)
 
 
 def test_tob_split_preserves_inputs_and_cached_current_law_tax_in_either_order():
     year = 2026
-    sim = simulation(20_000, 30_000, 70, year)
+    sim = simulation([(20_000, 30_000)], 70, year)
     # Populate the cache before creating counterfactual branches. If the
     # branches keep calculated AGI or tax arrays, the split can become zero.
     names = (
