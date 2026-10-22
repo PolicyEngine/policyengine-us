@@ -58,6 +58,9 @@ def simulation(benefits, interest, age, year):
         # so define each explicitly to keep these households independent.
         for entity in ("marital_units", "spm_units", "families"):
             situation[entity][f"unit{i}"] = {"members": members}
+        # These childless units do not participate in TANF. Supplying this
+        # avoids unrelated monthly benefit calculations in tax branches.
+        situation["spm_units"][f"unit{i}"]["takes_up_tanf_if_eligible"] = {year: False}
     return Simulation(situation=situation)
 
 
