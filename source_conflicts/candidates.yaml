@@ -1385,13 +1385,16 @@ candidates:
     statute: Income below 110% of the poverty guideline cannot by itself exclude the household; the FY2026 plan
       assurances (p.45) and contract G(8)e (p.13) repeat this.
     other: The plan and matrix set 60% of SMI for every size, which falls below that floor from household size 15.
-  example: Fifteen people with $100,000 exceed the $98,320 limit but are below the $101,915 floor, so they keep the
-    band 4 base of $200.
+  example: Fifteen people with $100,000 exceed the $98,320 limit but are below the $101,915 floor (with the model's
+    one-year guideline lag), so they keep the band 4 base of $200, the model's estimate since the sources give no band
+    above the range.
   pe_us:
     follows: statute
     code:
     - policyengine_us/variables/gov/states/fl/commerce/liheap/eligibility/fl_liheap_eligible.py
     - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/fl/commerce/liheap/eligibility/fpg_year_lag.yaml
+    - policyengine_us/variables/gov/states/fl/commerce/liheap/fl_liheap.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9969
   state: unreviewed
@@ -1415,6 +1418,9 @@ candidates:
   - kind: guidance
     citation: FY2025 LIHEAP State Plan item 2.1, p.8
     url: https://liheapch.acf.gov/docs/2025/state-plans/FL_Plan_2025.pdf#page=8
+  - kind: form
+    citation: FY2025 LIHEAP payment matrix, maximum income values
+    url: https://liheapch.acf.gov/docs/2025/benefits-matricies/FL_BenefitMatrix_2025.pdf
   - kind: guidance
     citation: FY2026 LIHEAP State Plan item 2.1, p.8
     url: https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=8
