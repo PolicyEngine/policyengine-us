@@ -8,3 +8,5 @@ class md_total_additions(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MD
+
+    adds = ["md_other_additions"]
