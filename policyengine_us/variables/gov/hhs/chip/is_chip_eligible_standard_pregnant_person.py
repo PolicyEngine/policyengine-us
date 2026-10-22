@@ -7,8 +7,12 @@ from policyengine_us.variables.gov.hhs.medicaid.income.medicaid_income_level imp
 class is_chip_eligible_standard_pregnant_person(Variable):
     value_type = bool
     entity = Person
-    label = "Pregnant person eligible for standard CHIP"
-    documentation = "Determines if a pregnant person is eligible for the standard Children's Health Insurance Program"
+    label = "Pregnant or postpartum person eligible for standard CHIP"
+    documentation = (
+        "Determines standard pregnancy CHIP eligibility, including Rhode "
+        "Island's continuous postpartum coverage at the annual model's "
+        "January snapshot."
+    )
     definition_period = YEAR
     reference = (
         "https://www.ssa.gov/OP_Home/ssact/title21/2110.htm",
@@ -19,6 +23,7 @@ class is_chip_eligible_standard_pregnant_person(Variable):
         "https://www.medicaid.gov/federal-policy-guidance/downloads/sho-12-002.pdf",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/sho26001.pdf#page=28",
         "https://rules.sos.ri.gov/regulations/part/210-30-00-1",
+        "https://www.medicaid.gov/CHIP/Downloads/RI-22-0025.pdf#page=4",
     )
 
     def formula(person, period, parameters):
@@ -55,4 +60,4 @@ class is_chip_eligible_standard_pregnant_person(Variable):
             & ~medicaid_eligible
             & income_eligible
             & ri_insurance_eligible
-        )
+        ) | person("ri_chip_postpartum_eligible", period.first_month)

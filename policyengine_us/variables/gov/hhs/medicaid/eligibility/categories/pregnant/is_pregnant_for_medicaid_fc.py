@@ -30,17 +30,15 @@ class is_pregnant_for_medicaid_fc(Variable):
         ma = parameters(period).gov.hhs.medicaid.eligibility.categories.pregnant
         state = person.household("state_code_str", period)
         income_limit = ma.income_limit[state]
-        ri = parameters(period).gov.states.ri.eohhs.medicaid
-        postpartum = ~person("is_pregnant", period) & (
-            person("count_days_postpartum", period) < ma.postpartum_coverage[state]
-        )
-        # Rhode Island covers insured pregnant people through Medicaid at its
-        # CHIP pregnancy ceiling. The same ceiling approximates prior pregnancy
-        # eligibility for extended postpartum coverage using current income.
-        ri_higher_limit = (state == "RI") & (
-            person("ri_medicaid_has_third_party_coverage", period)
-            | (ri.extended_postpartum_coverage & postpartum)
+        ri_higher_limit = (state == "RI") & person(
+            "ri_medicaid_has_third_party_coverage", period
         )
         chip_income_limit = parameters(period).gov.hhs.chip.pregnant.income_limit[state]
         income_limit = where(ri_higher_limit, chip_income_limit, income_limit)
-        return medicaid_income_eligible(person, period, parameters, income_limit)
+        ri_postpartum_eligible = person(
+            "ri_medicaid_postpartum_eligible", period.first_month
+        )
+        return (
+            medicaid_income_eligible(person, period, parameters, income_limit)
+            | ri_postpartum_eligible
+        )

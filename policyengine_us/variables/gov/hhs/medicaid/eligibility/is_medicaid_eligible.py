@@ -20,16 +20,8 @@ class is_medicaid_eligible(Variable):
         )
         ca_ffyp_eligible = person("ca_ffyp_eligible", period)
         il_hbi_eligible = person("il_hbi_eligible", period)
-        ri = parameters(period).gov.states.ri.eohhs.medicaid
-        state = person.household("state_code_str", period)
-        # Rhode Island funds full postpartum coverage even when federal funding
-        # is unavailable. Pregnancy financial and non-financial criteria proxy
-        # prior pregnancy eligibility because the model has no coverage history.
-        ri_postpartum_eligible = (
-            (state == "RI")
-            & ri.extended_postpartum_coverage
-            & ~person("is_pregnant", period)
-            & person("is_pregnant_for_medicaid", period)
+        ri_postpartum_eligible = person(
+            "ri_medicaid_postpartum_eligible", period.first_month
         )
 
         p = parameters(period).gov.hhs.medicaid.eligibility

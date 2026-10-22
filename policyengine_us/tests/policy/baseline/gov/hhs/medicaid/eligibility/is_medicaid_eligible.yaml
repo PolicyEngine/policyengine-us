@@ -314,3 +314,105 @@
     medicaid_category: SECTION_1115_MEC_ADULT
     is_medicaid_work_requirement_applicable_adult: true
     is_medicaid_eligible: true
+
+# R.I. Gen. Laws § 42-12.3-3(g) bases continuation on eligibility while
+# pregnant, including RIte Start and Title XXI, without requiring federal funds.
+# Current income does not replace that history or terminate continuation.
+# https://webserver.rilegislature.gov/Statutes/TITLE42/42-12.3/42-12.3-3.htm
+- name: Case 17, Rhode Island pregnancy history preserves coverage after income rises and prevents new coverage when income falls.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        count_days_postpartum: 300
+        ri_pregnancy_coverage: MEDICAID
+        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+      person2:
+        age: 30
+        immigration_status: CITIZEN
+        count_days_postpartum: 300
+        ri_pregnancy_coverage: NONE
+        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+      person3:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        count_days_postpartum: 300
+        ri_pregnancy_coverage: NONE
+        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 1.8
+      person4:
+        age: 30
+        immigration_status: CITIZEN
+        count_days_postpartum: 300
+        ri_pregnancy_coverage: NONE
+        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+      person5:
+        age: 30
+        immigration_status: CITIZEN
+        count_days_postpartum: 30
+        ri_pregnancy_coverage: NONE
+        ri_medicaid_pregnancy_end_date: "2023-12-02"
+        medicaid_household_size: 2
+        medicaid_income_level: 1.8
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: RI
+  output:
+    is_pregnant_for_medicaid: [true, false, false, false, false]
+    is_medicaid_eligible: [true, false, false, false, false]
+
+# A new pregnancy does not end the prior pregnancy's continuation period.
+# These applicants have income above both current pregnancy ceilings, and
+# the state-funded entitlement also protects the undocumented applicant.
+- name: Case 18, Rhode Island continuation survives a new pregnancy for citizens and undocumented residents.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        ri_pregnancy_coverage: MEDICAID
+        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: UNDOCUMENTED
+        ri_pregnancy_coverage: MEDICAID
+        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    is_pregnant_for_medicaid: [true, true]
+    is_medicaid_eligible: [true, true]
+
+- name: Case 19, Rhode Island pregnancy history does not confer continuation outside the state.
+  period: 2024
+  input:
+    age: 30
+    immigration_status: CITIZEN
+    count_days_postpartum: 300
+    ri_pregnancy_coverage: MEDICAID
+    ri_medicaid_pregnancy_end_date: "2023-03-07"
+    medicaid_household_size: 2
+    medicaid_income_level: 4
+    state_code: CO
+  output:
+    is_pregnant_for_medicaid: false
+    is_medicaid_eligible: false
