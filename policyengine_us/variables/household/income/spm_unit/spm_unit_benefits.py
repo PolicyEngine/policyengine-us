@@ -42,6 +42,7 @@ class spm_unit_benefits(Variable):
             "ma_state_supplement",  # Massachusetts benefits
             "md_paa",  # Maryland benefits
             "wa_ssp",  # Washington benefits
+            "wi_ssp",  # Wisconsin benefits
             "mi_ssp",  # Michigan benefits
             "me_ssp",  # Maine benefits
             "mo_ssp",  # Missouri benefits
