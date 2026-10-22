@@ -14,8 +14,10 @@ values:
     - debt_relief
     # Decedent income
     # Estate interest income
-    - taxable_unemployment_compensation
-    - taxable_social_security
+    # Section 7.7 counts unemployment compensation and SSA benefits in
+    # full (gross), with no carve-out for the federally taxable share.
+    - total_unemployment_compensation
+    - social_security
     - illicit_income
     - taxable_retirement_distributions
     - miscellaneous_income
@@ -26,3 +28,7 @@ metadata:
   reference:
     - title: SC DSS TANF Policy Manual Section 7.1
       href: https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=101
+    - title: SC DSS TANF Policy Manual Section 7.7, SSA benefits
+      href: https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=115
+    - title: SC DSS TANF Policy Manual Section 7.7, Unemployment compensation benefits (UCB)
+      href: https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=117

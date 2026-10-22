@@ -13,3 +13,5 @@ class me_additions(Variable):
         title="Schedule 1A, Income Addition Modifications",
         href="https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_1a_ff.pdf",
     )
+
+    adds = ["me_other_additions"]
