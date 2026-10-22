@@ -1161,6 +1161,16 @@ programs:
           Models 2026 New Jersey optional supplement rates by living
           arrangement, including the ineligible-spouse variation. Mandatory
           grandfathered supplementation is not modeled.
+      - state: NH
+        status: partial
+        name: New Hampshire SSP
+        full_name: New Hampshire State Supplement Program
+        variable: nh_ssp
+        parameter_prefix: gov.states.nh.dhhs.ssp
+        verified_years: '2026'
+        notes: Models 2026 adult category cash assistance (OAA, ANB and APTD) for independent
+          living, certified community care, couples and needy essential persons. Conditional
+          resources, sanctions and grandfathered benefits are not modeled.
       - state: PA
         status: partial
         name: Pennsylvania SSP
