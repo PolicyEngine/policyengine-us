@@ -105,10 +105,14 @@ class ia_ssa(Variable):
         # income criteria", and 8-E p.12 says to "Process as a one-person
         # household" when SSI deems nothing from an ineligible spouse. So the
         # guideline is for two people only when SMME income includes a
-        # spouse's income: an eligible couple's combined income, or income SSI
-        # deems from a spouse (ia_ssa.yaml Cases 47-49 and 81-84).
-        spouse_income = joint | person(
-            "is_ssi_spousal_deeming_applies", period.this_year
+        # spouse's income: an eligible couple's combined income, or income
+        # deemed from a spouse, by SSI or, for an applicant working above the
+        # SGA level, by ia_ssa_smme_spousal_deeming_applies (ia_ssa.yaml Cases
+        # 47-49, 81-84 and 90-92).
+        spouse_income = (
+            joint
+            | person("is_ssi_spousal_deeming_applies", period.this_year)
+            | person("ia_ssa_smme_spousal_deeming_applies", period)
         )
         size = where(spouse_income, 2, 1)
         # 441 IAC 75.1 revises the federal poverty level "annually on April 1",

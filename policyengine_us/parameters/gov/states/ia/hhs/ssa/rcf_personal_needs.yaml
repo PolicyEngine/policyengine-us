@@ -1,5 +1,7 @@
 description: Iowa provides this amount as the monthly residential care personal needs allowance under the State Supplementary Assistance program.
 values:
+  2023-01-01: 120
+  2024-01-01: 123
   2025-01-01: 126
   2026-01-01: 130
 
@@ -13,8 +15,10 @@ metadata:
   # federal social security benefits are increased due to a recognized increase
   # in the cost of living". Rounding to the nearest dollar is inferred from
   # General Letters 6-B-45, 6-B-46 and 6-B-47 ($123, $126 and $130 for
-  # 2024-2026: 123 * 1.025 = 126.08 and 126 * 1.028 = 129.53). The published
-  # allowance replaces the projection.
+  # 2024-2026: 123 * 1.025 = 126.08 and 126 * 1.028 = 129.53). It does not fit
+  # 2024, when Iowa published $123 although 120 * 1.032 = 123.84, so it only
+  # approximates projected years. The published allowance replaces the
+  # projection.
   uprating:
     parameter: gov.ssa.uprating
     rounding:
@@ -29,3 +33,7 @@ metadata:
       href: https://www.legis.iowa.gov/docs/code/249.pdf#page=4
     - title: "Iowa HHS General Letter 6-B-46 (effective January 1, 2025) #page 1-2"
       href: https://hhs.iowa.gov/media/15607/download#page=1
+    - title: Iowa HHS General Letter 6-B-45 (effective January 1, 2024)
+      href: https://hhs.iowa.gov/media/12206/download#page=1
+    - title: Iowa HHS 2023 State Supplementary Assistance standards
+      href: https://hhs.iowa.gov/media/9237/download

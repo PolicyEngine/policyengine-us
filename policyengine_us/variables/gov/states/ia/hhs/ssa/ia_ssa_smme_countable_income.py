@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.ia.hhs.ssa._smme_spouse_income import (
+    smme_spouse_income,
+)
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
@@ -11,7 +14,7 @@ class ia_ssa_smme_countable_income(Variable):
     definition_period = MONTH
     unit = USD
     defined_for = StateCode.IA
-    documentation = "SSI countable income plus any SSI payment, combined for a couple whose SSI couple computation applies. For a disabled person working above the SGA level, whom SSI does not count, the person's own income, including in-kind support and maintenance, after SSI's exclusions, including the student earned income exclusion. Deductions and financial groups of a Medicaid coverage category that differ from SSI are not modeled."
+    documentation = "SSI countable income plus any SSI payment, combined for a couple whose SSI couple computation applies. For a disabled person working above the SGA level, whom SSI does not count, the person's own income, including in-kind support and maintenance and any spouse income deemed under SSI's rules, after SSI's exclusions, including the student earned income exclusion. Deductions and financial groups of a Medicaid coverage category that differ from SSI are not modeled."
     reference = (
         # Iowa Code 249.3(4)(g)
         "https://www.legis.iowa.gov/docs/code/249.pdf#page=2",
@@ -39,10 +42,11 @@ class ia_ssa_smme_countable_income(Variable):
         # instead: the student earned income exclusion (20 CFR
         # 416.1112(c)(3)), in-kind support and maintenance (416.1130, 416.1140)
         # and the general and earned income exclusions (ia_ssa.yaml Cases 77,
-        # 87 and 88).
-        # NOTE: That person's income is not combined with a spouse's, and none
-        # is deemed from a spouse or parent, so ia_ssa uses the one-person
-        # guideline (Case 82).
+        # 87 and 88). As 8-E pp.12-13 do, a spouse's income above the couple
+        # rate less the individual rate is added before the exclusions
+        # (ia_ssa_smme_spousal_deeming_applies), and ia_ssa then uses the
+        # two-person guideline (Cases 82 and 90-92).
+        # NOTE: Income deemed from a parent is not modeled on this path.
         earned = max_(
             person("ssi_earned_income", period)
             - person("ssi_blind_or_disabled_working_student_exclusion", period),
@@ -51,6 +55,10 @@ class ia_ssa_smme_countable_income(Variable):
         unearned = person("ssi_unearned_income", period) + person(
             "ssi_in_kind_support_and_maintenance", period
         )
+        deemed = person("ia_ssa_smme_spousal_deeming_applies", period)
+        spouse_earned, spouse_unearned = smme_spouse_income(person, period)
+        earned = earned + deemed * spouse_earned
+        unearned = unearned + deemed * spouse_unearned
         own_income = (
             _apply_ssi_exclusions(
                 earned * MONTHS_IN_YEAR, unearned * MONTHS_IN_YEAR, parameters, period

@@ -2375,7 +2375,7 @@
     ia_ssa_smme_countable_income: [1_680, 1_680]
     ia_ssa: [1, 1]
 
-- name: Case 82, an SMME applicant working above the SGA level is compared with the one-person guideline.
+- name: Case 82, a spouse's wages are deemed to an SMME applicant working above the SGA level.
   period: 2026-04
   absolute_error_margin: 0.01
   input:
@@ -2413,10 +2413,11 @@
         state_code:
           2026: IA
   output:
-    # SSI doesn't count person1, so SMME income is person1's own 1,847.50,
-    # with no spouse income, compared with the one-person 1,596. person2's own
-    # income is (1,000 - 20 - 65) / 2 = 457.50.
-    ia_ssa_smme_countable_income: [1_847.5, 457.5]
+    # 8-E pp.12-13: the spouse's 1,000 is more than 1,491 - 994 = 497, so it
+    # is deemed: (900 - 20) + (2,000 + 1,000 - 65) / 2 = 2,347.50, at least the
+    # two-person 2,164. person2's own income is (1,000 - 20 - 65) / 2 = 457.50.
+    ia_ssa_smme_spousal_deeming_applies: [true, false]
+    ia_ssa_smme_countable_income: [2_347.5, 457.5]
     ia_ssa: [1, 0]
 
 - name: Case 83, SSI deems nothing from a spouse with a 497 dollar pension, so the one-person guideline applies.
@@ -2613,3 +2614,160 @@
     # is at least 1,596.
     ia_ssa_smme_countable_income: 1_648.83
     ia_ssa: 1
+
+- name: Case 89, in March SMME income at the prior year's 120 percent still qualifies.
+  period: 2026-03
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 65
+    ia_ssa_category: SMME
+    ia_ssa_smme_coverage_eligible: true
+    ia_ssa_smme_countable_income: 1_565
+  output:
+    # 1.2 * 15,650 / 12 = 1,565 until April (441 IAC 75.1; RC-0130 Rev. 04/25).
+    ia_ssa: 1
+
+- name: Case 90, a spouse's wages deemed to an SMME applicant working above the SGA level reach the two-person guideline.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 50
+        meets_ssi_disability_criteria:
+          2026: true
+        # Wages of $1,700 a month, above the $1,690 SGA level.
+        employment_income:
+          2026: 20_400
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 45
+        # Wages of $3,000 a month.
+        employment_income:
+          2026: 36_000
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # 8-E pp.12-13 deem the spouse's 3,000: (1,700 + 3,000 - 20 - 65) / 2 =
+    # 2,307.50, at least the two-person 2,164. person2's own income is
+    # (3,000 - 20 - 65) / 2 = 1,457.50.
+    ia_ssa_smme_countable_income: [2_307.5, 1_457.5]
+    ia_ssa: [1, 0]
+
+- name: Case 91, a spouse's wages deemed to an SMME applicant working above the SGA level leave income below the two-person guideline.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 50
+        meets_ssi_disability_criteria:
+          2026: true
+        # Wages of $3,277 a month.
+        employment_income:
+          2026: 39_324
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 45
+        # Wages of $600 a month.
+        employment_income:
+          2026: 7_200
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # The spouse's 600 is more than 497, so it is deemed: (3,277 + 600 - 20 -
+    # 65) / 2 = 1,896, below the two-person 2,164 (own income alone, 1,596,
+    # would qualify). person2's own income is (600 - 85) / 2 = 257.50.
+    ia_ssa_smme_countable_income: [1_896, 257.5]
+    ia_ssa: [0, 0]
+
+- name: Case 92, nothing is deemed from a spouse with a 497 dollar pension to an SMME applicant working above the SGA level.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 50
+        meets_ssi_disability_criteria:
+          2026: true
+        # Case 77's worker: SSDI of $900 and wages of $2,000 a month.
+        social_security_disability:
+          2026: 10_800
+        employment_income:
+          2026: 24_000
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 45
+        # A pension of $497 a month and no wages.
+        pension_income:
+          2026: 5_964
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # 497 is not more than 1,491 - 994 = 497, so nothing is deemed and the
+    # one-person 1,596 applies to 1,847.50. person2's own income is 497 - 20 = 477.
+    ia_ssa_smme_spousal_deeming_applies: [false, false]
+    ia_ssa_smme_countable_income: [1_847.5, 477]
+    ia_ssa: [1, 0]
+
+- name: Case 93, residential care in January 2024 uses General Letter 6-B-45's levels.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2024: IA
+    age:
+      2024: 70
+    ia_ssa_category: RESIDENTIAL_CARE
+  output:
+    # GL 6-B-45 sets $36.82 a day and a $123 allowance for 2024. 36.82 * 31 =
+    # 1,141.42; SSI 943, participation 943 - 123 = 820; 1,141.42 - 820 = 321.42.
+    ia_ssa: 321.42
