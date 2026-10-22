@@ -1,3 +1,29 @@
+## [2.56.1] - 2026-10-21
+
+### Fixed
+
+- Keep a claimable filer's own exemptions under the Hawaii and Virginia dependent-exemption repeal: the contributed repeal no longer gives a filer whom another taxpayer can claim the regular, aged or personal exemption that the baseline denies (HRS 235-54(a); Va. Code 58.1-322.03(2)(a)).
+
+
+## [2.56.0] - 2026-10-21
+
+### Added
+
+- Added state-specific `<state>_other_additions` and `<state>_other_subtractions` variables for 30 states (AZ, CT, DC, GA, HI, ID, IL, KS, KY, MD, ME, MI, MN, MO, MT, NC, ND, NE, NJ, NM, OH, OK, OR, RI, SC, UT, VA, VT, WI, WV) to support custom state income additions and subtractions. Removed legacy inputs `oh_other_add_backs`, `il_schedule_m_additions`, and `il_schedule_m_subtractions` in favor of standardized `oh_other_additions`, `il_other_additions`, and `il_other_subtractions` (breaking change for callers providing those legacy inputs).
+
+### Fixed
+
+- Apply the federal 110% poverty guideline floor to Indiana EAP, Maryland MEAP and Riverside County LIHEAP income eligibility.
+- South Carolina TANF now counts gross unemployment compensation and gross Social Security as unearned income, instead of only the federally taxable amounts.
+
+
+## [2.55.1] - 2026-10-21
+
+### Fixed
+
+- Count the FL and SD LIHEAP comments that merged before the source-conflict guard in its ratchet baseline, so the guard passes on main.
+
+
 ## [2.55.0] - 2026-10-21
 
 ### Added
