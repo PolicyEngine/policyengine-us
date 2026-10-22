@@ -1247,16 +1247,6 @@ programs:
         notes: Models 2026 independent living and certified nonwaiver assisted living/adult foster
           care supplements. Out-of-state placements, historical mandatory supplements and claim
           administration are not modeled.
-      - state: VA
-        status: partial
-        name: Virginia Auxiliary Grant
-        full_name: Virginia Auxiliary Grant
-        variable: va_ag
-        parameter_prefix: gov.states.va.dars.ag
-        verified_years: '2026'
-        notes: Models 2026 locality rates and SSI and non-SSI budgets for certified assisted living,
-          adult foster care and supportive housing residents. Conditional resource benefits and
-          historical grandfathering are not modeled.
       - state: UT
         status: partial
         name: Utah SSP
@@ -1271,6 +1261,16 @@ programs:
           recipients in Medicaid-funded medical institutions. The over-income
           path has no take-up, so microsimulation pays far more people than
           the program reaches.
+      - state: VA
+        status: partial
+        name: Virginia Auxiliary Grant
+        full_name: Virginia Auxiliary Grant
+        variable: va_ag
+        parameter_prefix: gov.states.va.dars.ag
+        verified_years: '2026'
+        notes: Models 2026 locality rates and SSI and non-SSI budgets for certified assisted living,
+          adult foster care and supportive housing residents. Conditional resource benefits and
+          historical grandfathering are not modeled.
 
   - id: social_security
     name: Social Security
