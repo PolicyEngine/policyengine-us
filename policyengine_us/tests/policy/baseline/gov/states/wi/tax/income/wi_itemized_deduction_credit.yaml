@@ -40,3 +40,59 @@
     state_code: WI
   output:
     wi_itemized_deduction_credit_potential: 1_250  # = (3K + 12K + 20K - 10K) * 5%
+
+- name: WI excludes mortgage insurance premiums in 2021.
+  period: 2021
+  input:
+    state_code: WI
+    adjusted_gross_income: 80_000
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+    wi_standard_deduction: 10_000
+  output:
+    deductible_mortgage_insurance_premiums: 2_000
+    interest_deduction: 12_000
+    wi_itemized_deduction_credit_potential: 0
+
+- name: WI excludes mortgage insurance premiums in 2022.
+  period: 2022
+  input:
+    state_code: WI
+    adjusted_gross_income: 80_000
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+    wi_standard_deduction: 10_000
+  output:
+    deductible_mortgage_insurance_premiums: 0
+    interest_deduction: 10_000
+    wi_itemized_deduction_credit_potential: 0
+
+- name: WI excludes mortgage insurance premiums in 2026.
+  period: 2026
+  input:
+    state_code: WI
+    adjusted_gross_income: 80_000
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+    wi_standard_deduction: 10_000
+  output:
+    deductible_mortgage_insurance_premiums: 2_000
+    interest_deduction: 12_000
+    wi_itemized_deduction_credit_potential: 0
+
+- name: WI excludes only the federally deductible premium after its AGI phase-out.
+  period: 2021
+  input:
+    state_code: WI
+    adjusted_gross_income: 101_000
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+    wi_standard_deduction: 10_000
+  output:
+    deductible_mortgage_insurance_premiums: 1_800
+    interest_deduction: 11_800
+    wi_itemized_deduction_credit_potential: 0
