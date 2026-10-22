@@ -10,7 +10,8 @@ class la_other_additions(Variable):
     defined_for = StateCode.LA
     documentation = (
         "Louisiana other additions to federal adjusted gross income reported on "
-        "Form IT-540, Schedule E, Line 8 (Other Additions to Federal AGI), entered as a positive amount, "
+        "Form IT-540, Schedule E, Lines 2A-2E, entered as a positive amount, "
         "excluding items PolicyEngine calculates separately."
     )
-    reference = "https://dam.ldr.la.gov/taxforms/IT540i%20WEB(2025)D11.pdf#page=7"
+    # PDF pages 6-7
+    reference = "https://dam.ldr.la.gov/taxforms/IT540i%20WEB(2025)D11.pdf#page=6"

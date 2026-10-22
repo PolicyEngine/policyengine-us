@@ -9,7 +9,8 @@ class in_other_additions(Variable):
     definition_period = YEAR
     defined_for = StateCode.IN
     documentation = (
-        "Indiana other add-backs reported on Form IT-40, Schedule 1, Line 2 "
+        "Indiana other add-backs reported on Form IT-40, Schedule 1, Line 6 "
         "(Other Add-Backs), entered as a positive amount, excluding items PolicyEngine calculates separately."
     )
-    reference = "https://www.in.gov/dor/files/reference/2024-it-40-booklet.pdf#page=15"
+    # PDF pages 13-16
+    reference = "https://forms.in.gov/Download.aspx?id=16915#page=13"

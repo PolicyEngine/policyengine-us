@@ -10,6 +10,9 @@ class in_other_subtractions(Variable):
     defined_for = StateCode.IN
     documentation = (
         "Indiana other deductions reported on Form IT-40, Schedule 2, Line 11 "
-        "(Other Deductions), entered as a positive amount, excluding items PolicyEngine calculates separately."
+        "(Other Deductions), entered as a positive amount. Excludes deduction codes "
+        "PolicyEngine computes separately: 601, 602, 621, 632, and 643, and for "
+        "2026 only the tip, overtime, and car loan interest deductions."
     )
-    reference = "https://www.in.gov/dor/files/reference/2024-it-40-booklet.pdf#page=19"
+    # PDF pages 19-24
+    reference = "https://forms.in.gov/Download.aspx?id=16915#page=19"

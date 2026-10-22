@@ -18,3 +18,14 @@
     ia_other_subtractions: 2_000
     ia_income_adjustments: 2_000
     ia_net_income: 48_000
+
+- name: Case 3, ia_other_subtractions lowers Iowa taxable income from 2023
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: IA
+    employment_income: 50_000
+    ia_other_subtractions: 2_000
+  output:
+    ia_taxable_income_consolidated: 33_400
+    ia_income_tax_before_credits: 1_604.48

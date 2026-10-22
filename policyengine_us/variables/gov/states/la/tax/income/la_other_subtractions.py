@@ -11,6 +11,6 @@ class la_other_subtractions(Variable):
     documentation = (
         "Louisiana other subtractions from federal adjusted gross income reported on "
         "Form IT-540, Schedule E, Code 49E (Other), entered as a positive amount, "
-        "excluding items PolicyEngine calculates separately."
+        "excluding items PolicyEngine calculates separately and the permanent total disability income exclusion (R.S. 47:44.1(B))."
     )
-    reference = "https://dam.ldr.la.gov/taxforms/IT540i%20WEB(2025)D11.pdf#page=7"
+    reference = "https://dam.ldr.la.gov/taxforms/IT540i%20WEB(2025)D11.pdf#page=10"
