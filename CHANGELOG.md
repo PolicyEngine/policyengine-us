@@ -1,3 +1,67 @@
+## [2.59.0] - 2026-10-22
+
+### Added
+
+- Add Georgia LIHEAP household, income, ordinary eligibility, and regular heating benefits, with the federal 110% poverty guideline floor (gov.hhs.liheap.fpg_floor) and documented categorical and payment-table coverage limits.
+
+
+## [2.58.1] - 2026-10-22
+
+### Fixed
+
+- Take the 2020 charitable deduction for non-itemizers (IRC 62(a)(22), Form 1040 line 10b) above the line, capped at $300 for every return as the statute reads, so it reduces adjusted gross income; stop adding the 2020 and 2021 non-itemizer amount to itemized deductions; include the non-itemizer cash charitable deduction in itemization comparisons; and add it back in states that did not adopt it.
+
+
+## [2.58.0] - 2026-10-22
+
+### Added
+
+- Add Oregon State Supplemental Payment for 2026.
+
+
+## [2.57.0] - 2026-10-22
+
+### Added
+
+- Add New Hampshire's adult category state supplement (Old Age Assistance, Aid to the Needy Blind and Aid to the Permanently and Totally Disabled) for 2026.
+- Add Ohio Residential State Supplement for 2026.
+- Add Utah's state supplements to SSI recipients for 2026: the Department of Workforce Services supplement and the $15 payment to Medicaid institution residents.
+- Add Vermont federally administered optional AABD supplement rates and calculations for 2026. Add Vermont 2026 Essential Person grants alongside federally administered AABD.
+- Add Wisconsin Caretaker Supplement eligibility, income tests and child benefit payments. Add Wisconsin State SSI Supplement and certified exceptional-expense payments, including the May 2026 rate increase.
+
+### Fixed
+
+- Stop trusting the compromised eMudhra intermediate certificate authorities in the locked development and CI environment: upgrade certifi to 2026.10.19 and hf-xet to 1.7.0 in uv.lock, pin uv 0.13.4 in the workflows, and update and verify Linux system certificate authorities before running model jobs so native HTTPS clients also use patched trust stores.
+- Count Riverside County General Relief property once per unit instead of once per member, and limit each earner's General Relief wage deductions to their own CA income tax withholding and Additional Medicare Tax withholding. Add `additional_medicare_tax_withheld`, the Additional Medicare Tax an employer withholds from wages above $200,000 under 26 U.S.C. 3102(f)(1).
+- Make Wisconsin Works (W-2) units ineligible when every custodial parent receives SSI, under Wis. Stat. 49.145(2)(i); a custodial parent not on SSI can still qualify.
+
+
+## [2.56.2] - 2026-10-22
+
+### Fixed
+
+- Set North Carolina's 2027 State-County Special Assistance rates to the federally approved 3.6% Social Security cost-of-living adjustment ($1,447 basic, $1,857 enhanced) instead of the unrounded CPI-W ratio.
+
+
+## [2.56.1] - 2026-10-21
+
+### Fixed
+
+- Keep a claimable filer's own exemptions under the Hawaii and Virginia dependent-exemption repeal: the contributed repeal no longer gives a filer whom another taxpayer can claim the regular, aged or personal exemption that the baseline denies (HRS 235-54(a); Va. Code 58.1-322.03(2)(a)).
+
+
+## [2.56.0] - 2026-10-21
+
+### Added
+
+- Added state-specific `<state>_other_additions` and `<state>_other_subtractions` variables for 30 states (AZ, CT, DC, GA, HI, ID, IL, KS, KY, MD, ME, MI, MN, MO, MT, NC, ND, NE, NJ, NM, OH, OK, OR, RI, SC, UT, VA, VT, WI, WV) to support custom state income additions and subtractions. Removed legacy inputs `oh_other_add_backs`, `il_schedule_m_additions`, and `il_schedule_m_subtractions` in favor of standardized `oh_other_additions`, `il_other_additions`, and `il_other_subtractions` (breaking change for callers providing those legacy inputs).
+
+### Fixed
+
+- Apply the federal 110% poverty guideline floor to Indiana EAP, Maryland MEAP and Riverside County LIHEAP income eligibility.
+- South Carolina TANF now counts gross unemployment compensation and gross Social Security as unearned income, instead of only the federally taxable amounts.
+
+
 ## [2.55.1] - 2026-10-21
 
 ### Fixed
