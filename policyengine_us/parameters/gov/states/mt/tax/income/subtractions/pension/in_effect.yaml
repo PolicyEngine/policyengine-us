@@ -1,0 +1,13 @@
+description: Montana provides the partial pension, annuity, and IRA income exemption if this is true.
+values:
+  2021-01-01: true
+  2024-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Montana partial pension, annuity, and IRA income exemption in effect
+  reference:
+    - title: Montana Code Annotated 2021, 15-30-2110(2)(c), repealed effective January 1, 2024 (secs. 65, 70(1), Ch. 503, L. 2021)
+      href: https://web.archive.org/web/20220630022434/https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0100/0150-0300-0210-0100.html
+    - title: 2023 Montana Form 2 instructions, line 34, "Beginning in Tax Year 2024, this deduction is repealed"
+      href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=35

@@ -1,0 +1,92 @@
+# Jim and Pam examples in the Form 2 instructions: 2021 line 35 (PDF page 30),
+# 2022 line 34 (PDF page 31), 2023 line 34 (PDF page 34). Federal AGI is
+# 35,400; Jim has a 25,000 and Pam a 2,300 retirement distribution.
+- name: 2021 instructions example, Jim and Pam
+  period: 2021
+  input:
+    people:
+      jim:
+        is_tax_unit_head: true
+        employment_income: 8_100
+        taxable_private_pension_income: 25_000
+      pam:
+        is_tax_unit_spouse: true
+        taxable_private_pension_income: 2_300
+    tax_units:
+      tax_unit:
+        members: [jim, pam]
+    households:
+      household:
+        members: [jim, pam]
+        state_code: MT
+  output:
+    # 4,400 + 2,300
+    mt_pension_exemption_joint: 6_700
+
+- name: 2022 instructions example, Jim and Pam
+  period: 2022
+  input:
+    people:
+      jim:
+        is_tax_unit_head: true
+        employment_income: 8_100
+        taxable_private_pension_income: 25_000
+      pam:
+        is_tax_unit_spouse: true
+        taxable_private_pension_income: 2_300
+    tax_units:
+      tax_unit:
+        members: [jim, pam]
+    households:
+      household:
+        members: [jim, pam]
+        state_code: MT
+  output:
+    # 4,640 + 2,300
+    mt_pension_exemption_joint: 6_940
+
+- name: 2023 instructions example, Jim and Pam
+  period: 2023
+  input:
+    people:
+      jim:
+        is_tax_unit_head: true
+        employment_income: 8_100
+        taxable_private_pension_income: 25_000
+      pam:
+        is_tax_unit_spouse: true
+        taxable_private_pension_income: 2_300
+    tax_units:
+      tax_unit:
+        members: [jim, pam]
+    households:
+      household:
+        members: [jim, pam]
+        state_code: MT
+  output:
+    # 5,060 + 2,300
+    mt_pension_exemption_joint: 7_360
+    # 35,400 - 7,360
+    mt_agi_joint: 28_040
+
+- name: A joint return reduces the exemption by the joint federal AGI
+  period: 2023
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 40_000
+      spouse:
+        is_tax_unit_spouse: true
+        taxable_private_pension_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # Worksheet lines 3b-7: 5,060 - 2 x (60,000 - 42,140) is below zero.
+    mt_pension_exemption_joint: 0
+    mt_agi_joint: 60_000

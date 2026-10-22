@@ -1,0 +1,43 @@
+- name: Pension above the 2023 cap is capped at 5,060
+  period: 2023
+  input:
+    taxable_private_pension_income: 25_000
+    state_code: MT
+  output:
+    mt_pension_exemption_before_phase_out: 5_060
+
+- name: Pension and IRA income below the 2023 cap are exempt in full
+  period: 2023
+  input:
+    taxable_private_pension_income: 1_000
+    taxable_ira_distributions: 1_300
+    state_code: MT
+  output:
+    mt_pension_exemption_before_phase_out: 2_300
+
+- name: A dependent's pension does not qualify
+  period: 2023
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+      dependent:
+        is_tax_unit_dependent: true
+        taxable_private_pension_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+        state_code: MT
+  output:
+    mt_pension_exemption_before_phase_out: [0, 0]
+
+- name: The exemption is repealed from 2024
+  period: 2024
+  input:
+    taxable_private_pension_income: 20_000
+    state_code: MT
+  output:
+    mt_pension_exemption_before_phase_out: 0
