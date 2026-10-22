@@ -9,6 +9,7 @@ class is_medicaid_eligible(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396a#a_10",
         "https://www.kff.org/racial-equity-and-health-policy/fact-sheet/key-facts-on-health-coverage-of-immigrants",
+        "https://webserver.rilegislature.gov/Statutes/TITLE42/42-12.3/42-12.3-3.htm",
     )
 
     def formula(person, period, parameters):
@@ -19,6 +20,17 @@ class is_medicaid_eligible(Variable):
         )
         ca_ffyp_eligible = person("ca_ffyp_eligible", period)
         il_hbi_eligible = person("il_hbi_eligible", period)
+        ri = parameters(period).gov.states.ri.eohhs.medicaid
+        state = person.household("state_code_str", period)
+        # Rhode Island funds full postpartum coverage even when federal funding
+        # is unavailable. Pregnancy financial and non-financial criteria proxy
+        # prior pregnancy eligibility because the model has no coverage history.
+        ri_postpartum_eligible = (
+            (state == "RI")
+            & ri.extended_postpartum_coverage
+            & ~person("is_pregnant", period)
+            & person("is_pregnant_for_medicaid", period)
+        )
 
         p = parameters(period).gov.hhs.medicaid.eligibility
         federal_work_requirement_eligible = True
@@ -51,4 +63,5 @@ class is_medicaid_eligible(Variable):
             )
             | ca_ffyp_eligible
             | il_hbi_eligible
+            | ri_postpartum_eligible
         )

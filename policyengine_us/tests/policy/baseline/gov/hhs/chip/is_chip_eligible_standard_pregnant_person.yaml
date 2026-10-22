@@ -359,3 +359,74 @@
         state_code: RI
   output:
     is_chip_eligible_standard_pregnant_person: [true, true, true]
+
+# 210-RICR-30-00-1 § 1.6(A)(2)(b)(1)-(2) requires the absence of
+# third-party insurance for standard pregnancy CHIP in Rhode Island.
+# https://rules.sos.ri.gov/regulations/part/210-30-00-1
+# Supply Medicaid ineligibility here to exercise the CHIP insurance gate
+# independently; the Medicaid integration cases test the insured pathway.
+- name: Case 14, Rhode Island standard pregnancy CHIP excludes third-party coverage independently of Medicaid eligibility.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_esi: true
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_marketplace_health_coverage_at_interview: true
+      person3:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_non_marketplace_direct_purchase_health_coverage_at_interview: true
+      person4:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        medicare_enrolled: true
+      person5:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_tricare_health_coverage_at_interview: true
+      person6:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        has_champva_health_coverage_at_interview: true
+      person7:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: RI
+  output:
+    is_chip_eligible_standard_pregnant_person: [false, false, false, false, false, false, true]

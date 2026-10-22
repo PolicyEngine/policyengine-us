@@ -18,6 +18,7 @@ class is_chip_eligible_standard_pregnant_person(Variable):
         "https://www.law.cornell.edu/cfr/text/45/155.20",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/sho-12-002.pdf",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/sho26001.pdf#page=28",
+        "https://rules.sos.ri.gov/regulations/part/210-30-00-1",
     )
 
     def formula(person, period, parameters):
@@ -45,6 +46,7 @@ class is_chip_eligible_standard_pregnant_person(Variable):
         income_eligible = medicaid_income_eligible(
             person, period, parameters, income_limit
         )
+        ri_insurance_eligible = ~person("ri_medicaid_has_third_party_coverage", period)
 
         return (
             is_pregnant
@@ -52,4 +54,5 @@ class is_chip_eligible_standard_pregnant_person(Variable):
             & immigration_eligible
             & ~medicaid_eligible
             & income_eligible
+            & ri_insurance_eligible
         )

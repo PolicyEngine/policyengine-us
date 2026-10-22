@@ -1,0 +1,1 @@
+Correct Rhode Island pregnancy Medicaid and CHIP routing for people with third-party health coverage, and model extended postpartum Medicaid, including state-funded coverage, with current-income and 365-day proxies for prior pregnancy eligibility and the statutory twelve-month period. Fixes #10390.
