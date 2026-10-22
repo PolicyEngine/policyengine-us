@@ -17,6 +17,23 @@ uv run policyengine-core test policyengine_us/tests/path/to/test.yaml -c policye
 uv run pytest policyengine_us/tests/path/to/test_file.py::test_name -v
 ```
 
+### Certificate trust updates
+
+Use uv 0.13.4 or newer and synchronize the patched dependency lock with
+`uv sync --locked --extra dev`. Native HTTPS clients such as hf-xet also use
+the operating system's certificate store. On Debian or Ubuntu, update it with:
+
+```bash
+sudo apt-get update
+sudo apt-get install --only-upgrade --yes ca-certificates
+```
+
+Use the equivalent certificate-store update for other Linux distributions;
+on macOS, install the relevant operating system security updates. Restart
+running Python processes and notebook kernels after updating both dependency
+and system trust stores. CI updates and verifies the Linux system store before
+running model jobs.
+
 ### Memory: running suites locally
 
 `make test` runs the same suites as CI, one batched subprocess at a time
@@ -76,6 +93,30 @@ Every policy change here must also be correct in [rulespec-us](https://github.co
 - Federal modules live under `us/` (for example `us/statutes/26/32.yaml` for the EITC and `us/policies/irs/rev-proc-2025-32/` for annual IRS amounts). State modules live under `us-<state>/` (for example `us-nj/statutes/54a:4-7.yaml`). Search `main` there before opening a new issue.
 - An `encoded-correct` claim names the module and a companion case in its `.test.yaml` that exercises the same situation as your YAML test.
 - Use `queued` only when the signed encoder is blocked; record the blocker in the issue. Each billed encoder run requires separate approval. Label `queued` issues `pe-parity`. Reuse your YAML test's external expected values as the companion tests; don't copy values computed by policyengine-us.
+
+## Source conflicts
+
+When a statute conflicts with a regulation, form, instructions, manual or stated agency practice, PolicyEngine US's rule is to follow the statute. Forms and instructions fill gaps where the statute is silent. Every such conflict is recorded in the register that PolicyEngine shares with Axiom: `known-source-conflicts.yaml` in [rulespec-us](https://github.com/TheAxiomFoundation/rulespec-us). Its fields are defined in that repository's `tools/README.md`, under "Source-conflict register". A PR that takes such a reading, or finds one already in the code, does three things:
+
+1. **Add or update the entry in rulespec-us.**
+   - Give each source's text and its kind (statute, regulation, form, instructions, manual, guidance, agency practice, ...).
+   - Give the alternatives, each with an id, and the years.
+   - Add an implementation for each file here: `repo: PolicyEngine/policyengine-us`, a commit, the path, `follows` (what the code does), and `adopts` with a `basis` (the reading it intends, and why).
+   - Add the YAML test cases that pin each reading, by commit, path and case name. Pin only commits on `main`: the register records shipped code. An open PR goes under `proposed` until it merges.
+   - Describe correspondence with an agency in `unpublished_sources`. Never quote it or name the person.
+2. **Mark the deciding line** in the variable or parameter file: `# Source conflict <jurisdiction>:<id>`, for example `# Source conflict us-hi:claim-of-right-deduction-floor`.
+3. **Refresh the pinned copy** once the entry is on rulespec-us `main`: `python scripts/update_source_conflicts.py --commit <rulespec-us commit>`. Delete the item from `source_conflicts/candidates.yaml` if it was there.
+
+`policyengine_us/tests/code_health/test_source_conflicts.py` checks structure, not whether the code follows a statute. It fails when:
+
+- the vendored register (`source_conflicts/known-source-conflicts.yaml`) differs from its pin (`source_conflicts/pin.yaml`: rulespec-us commit and sha256);
+- a comment that starts like a marker is not exactly `# Source conflict <jurisdiction>:<id>` alone on its own line. A comment starts like one when it has one or more `#`, then "source conflict" in any case, with any separator or none between the words (a space, hyphen, underscore, dash, dot or zero-width space), followed either by something shaped like a global id (after an optional colon, or after "conflicts") or by no word character and no colon. A file whose comments cannot be read (it doesn't tokenize or parse) fails too;
+- a marker names an entry that isn't in the pinned copy, or whose entry doesn't list the file;
+- an implementation the register marks `cites_entry: true` is missing here or has lost its marker;
+- the count of comments that read like a conflict between sources ("the instructions say", "in practice", "discrepancy", "Source conflict:", ...) changes in a file without a marker. A new file or a higher count means register and mark the conflict, or reword the comment; a lower count means lower `KNOWN_UNMARKED`. A file with any valid marker is exempt, so the count doesn't prove every conflict in it is marked;
+- a backlog item (`source_conflicts/candidates.yaml`) is malformed, already registered, cites a code path that isn't a file git tracks here (absolute, with `..`, or under a hidden directory such as `.github`), or contains a decision-queue id, a session id, a local path or an email address anywhere in the file: in its raw text, comments and keys included, and in every parsed value and key (escapes, `!!binary`, sets). Homoglyphs, such as a Cyrillic letter in "Source", are not caught; review catches those.
+
+A model that departs from the statute with no official source behind it is a bug, not a source conflict. Fix it, or open an issue.
 
 ## Repo-specific anti-patterns
 

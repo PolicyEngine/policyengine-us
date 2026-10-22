@@ -18,6 +18,12 @@ class al_interest_deduction(Variable):
         # 2025 Form 40 instructions, Schedule A lines 10a through 14,
         # PDF pages 19-20
         "https://www.revenue.alabama.gov/wp-content/uploads/2026/01/25f40bk.pdf#page=19",
+        # 2021 Form 40 instructions, Schedule A lines 10a through 14: the
+        # amount currently allowed for federal purposes
+        "https://www.revenue.alabama.gov/wp-content/uploads/2022/06/21f40bk.pdf#page=19",
+        # 2021 Schedule A (Form 40), line 11: qualified mortgage insurance
+        # premiums
+        "https://www.revenue.alabama.gov/wp-content/uploads/2022/06/21f40.pdf#page=3",
         # 2022 Schedule A (Form 40)
         "https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2023/01/22f40schabdc_blk.pdf#page=1",
         # 2021 Schedule A (Form 40)
@@ -29,4 +35,8 @@ class al_interest_deduction(Variable):
     # allowable as an interest deduction for federal income tax purposes in
     # the corresponding tax year", so mortgage interest follows the federal
     # acquisition-debt limits.
-    adds = ["deductible_mortgage_interest", "investment_interest_expense"]
+    adds = [
+        "deductible_mortgage_interest",
+        "investment_interest_expense",
+        "deductible_mortgage_insurance_premiums",
+    ]

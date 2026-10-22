@@ -808,7 +808,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AL, DC, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OR, TX
+    coverage: AL, DC, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX
     state_implementations:
       - state: AL
         status: partial
@@ -818,6 +818,29 @@ programs:
         parameter_prefix: gov.states.al.adeca.liheap
         verified_years: "2026"
         notes: FY2026 regular heating with the HUD allowance deduction and the funded IIJA supplement. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: OH
+        status: partial
+        name: Ohio HEAP
+        full_name: Ohio Home Energy Assistance Program
+        variable: oh_liheap
+        parameter_prefix: gov.states.oh.odjfs.liheap
+        notes: Regular heating only, without the PIPP reduction; crisis, cooling and weatherization assistance are out of scope. Payment coefficients after 2023 are estimates from workbook covers and published benefit ranges, so no full benefit year is verified.
+      - state: OK
+        status: partial
+        name: Oklahoma LIHEAP
+        full_name: Oklahoma Low Income Home Energy Assistance Program
+        variable: ok_liheap
+        parameter_prefix: gov.states.ok.dhs.liheap
+        verified_years: "2025-2027"
+        notes: FY2025-FY2027 regular winter heating only, using the Appendix C-7-A payment matrix. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: RI
+        status: partial
+        name: Rhode Island LIHEAP
+        full_name: Rhode Island Low Income Home Energy Assistance Program
+        variable: ri_liheap
+        parameter_prefix: gov.states.ri.dhs.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating, including heat-in-rent grants and the $350 utility enhancement, assuming a qualifying utility account. Earlier years and FY2027 payments reuse FY2026 amounts as unverified estimates; crisis, cooling and weatherization are out of scope.
       - state: DC
         status: complete
         name: DC LIHEAP
@@ -923,6 +946,13 @@ programs:
         parameter_prefix: gov.states.or.ohcs.liheap
         verified_years: "2025-2027"
         notes: PY2025-PY2027 regular heating only, with the two county regions, five fuel columns and the roomer half payment. Crisis, cooling, Fuel Payment, equipment and OEAP assistance are out of scope.
+      - state: SD
+        status: partial
+        name: South Dakota LIEAP
+        full_name: South Dakota Low Income Energy Assistance Program
+        variable: sd_liheap
+        parameter_prefix: gov.states.sd.dss.liheap
+        notes: FY2024-FY2026 regular heating only; mixed-status income is counted in full and FY2026 Mid thresholds are inferred, so no year is verified. Crisis, cooling and weatherization are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP
@@ -1120,6 +1150,19 @@ programs:
           tracks. Unmodeled paths: grandfathered medically-needy-in-medical-
           institution recipients per WAC 388-478-0055(2)(b); DDA-determined /
           PVL track per (2)(f); and foster child in BRS per (2)(g).
+      - state: WI
+        status: partial
+        name: Wisconsin SSP
+        full_name: Wisconsin State SSI Supplement
+        variable: wi_ssp
+        parameter_prefix: gov.states.wi.dhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models 2026 regular State SSI Supplement, certified Exceptional
+          Expense (SSI-E) and Caretaker Supplement payments, including the May
+          2026 regular and SSI-E rate increase. Grandfathered state-only SSI recipients are not modeled;
+          without parent IDs the Caretaker Supplement pays one SSI parent per
+          family, and groups over 12 need a supplied net income limit.
       - state: NJ
         status: partial
         name: New Jersey SSP
@@ -1131,6 +1174,16 @@ programs:
           Models 2026 New Jersey optional supplement rates by living
           arrangement, including the ineligible-spouse variation. Mandatory
           grandfathered supplementation is not modeled.
+      - state: NH
+        status: partial
+        name: New Hampshire SSP
+        full_name: New Hampshire State Supplement Program
+        variable: nh_ssp
+        parameter_prefix: gov.states.nh.dhhs.ssp
+        verified_years: '2026'
+        notes: Models 2026 adult category cash assistance (OAA, ANB and APTD) for independent
+          living, certified community care, couples and needy essential persons. Conditional
+          resources, sanctions and grandfathered benefits are not modeled.
       - state: PA
         status: partial
         name: Pennsylvania SSP
@@ -1144,6 +1197,17 @@ programs:
           homes, plus the institutional Supplement for Personal Needs.
           Mandatory grandfathered and essential-person supplements and
           ancillary facility subsidies are not modeled.
+      - state: OR
+        status: partial
+        name: Oregon SSP
+        full_name: Oregon State Supplemental Payment
+        variable: or_ssp
+        parameter_prefix: gov.states.or.odhs.ssp
+        verified_years: "2026"
+        notes: Models 2026 OSIPM in-home, SSI couple community care, transitional personal
+          incidentals/room and board, spousal diversion, special room-and-board and nursing
+          facility personal incidentals payments. Other special needs and historical mandatory
+          supplements are not modeled.
       - state: WY
         status: partial
         name: Wyoming SSP
@@ -1185,6 +1249,18 @@ programs:
         notes: Models the 2026 community supplement for individuals, couples and individuals with
           an ineligible spouse. Essential spouses, persons in a TANF case and grandfathered
           institutional payments are not modeled.
+      - state: OH
+        status: partial
+        name: Ohio RSS
+        full_name: Ohio Residential State Supplement
+        variable: oh_rss
+        parameter_prefix: gov.states.oh.dbh.rss
+        verified_years: "2026"
+        notes: >-
+          Models 2026 payments for approved residential placements, including
+          first-month proration. Care certification is an input, so
+          microsimulation pays no RSS; PASS and specialized work-expense
+          exclusions are not modeled.
       - state: NY
         status: partial
         name: New York SSP
@@ -1217,6 +1293,20 @@ programs:
         notes: Models 2026 independent living and certified nonwaiver assisted living/adult foster
           care supplements. Out-of-state placements, historical mandatory supplements and claim
           administration are not modeled.
+      - state: UT
+        status: partial
+        name: Utah SSP
+        full_name: Utah State Supplemental Payment
+        variable: ut_ssp
+        parameter_prefix: gov.states.ut.dhhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models the 2026 Department of Workforce Services supplement, paid
+          quarterly to SSI recipients and over-income applicants other than
+          single individuals living alone, and the $15 monthly payment to SSI
+          recipients in Medicaid-funded medical institutions. The over-income
+          path has no take-up, so microsimulation pays far more people than
+          the program reaches.
       - state: VA
         status: partial
         name: Virginia Auxiliary Grant
@@ -1227,6 +1317,17 @@ programs:
         notes: Models 2026 locality rates and SSI and non-SSI budgets for certified assisted living,
           adult foster care and supportive housing residents. Conditional resource benefits and
           historical grandfathering are not modeled.
+      - state: VT
+        status: partial
+        name: Vermont optional AABD
+        full_name: Vermont Aid to the Aged, Blind or Disabled optional supplement
+        variable: vt_aabd
+        parameter_prefix: gov.states.vt.dcf.aabd
+        verified_years: "2026"
+        notes: >-
+          Models 2026 federally administered supplements and state Essential Person
+          grants. Mandatory grandfathered payments and the state-administered
+          limited-nursing Level III supplement are not modeled.
 
   - id: social_security
     name: Social Security

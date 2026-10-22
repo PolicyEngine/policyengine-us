@@ -1,0 +1,472 @@
+# FY2026 DHS matrix row A: gas 232, electricity 393, delivered fuel 861.
+# Qualifying primary gas/electric grants receive the separate 350 enhancement.
+# These raw-input cases assume a qualifying utility account and grant receipt.
+- name: Case 1, ordinary direct heating receives the published award and applicable enhancement.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [10_000, 10_000, 10_000]
+    ssi: [0, 0, 0]
+    tanf: [0, 0, 0]
+    childcare_expenses: [0, 0, 0]
+    child_care_subsidies: [0, 0, 0]
+    heating_type: [NATURAL_GAS, ELECTRICITY, FUEL_OIL]
+    gas_expense: [1_200, 0, 0]
+    pre_subsidy_electricity_expense: [0, 1_200, 1_200]
+    fuel_oil_expense: [0, 0, 1_200]
+    heat_expense_included_in_rent: [false, false, false]
+    receives_housing_assistance: [false, false, false]
+    is_in_public_housing: [false, false, false]
+  output:
+    ri_liheap_income: [10_000, 10_000, 10_000]
+    ri_liheap: [582, 743, 861]
+
+# FY2026 row F (subsidized housing with a primary heating bill) prints the row E cells at
+# any income: gas 159 + 350, electric 268 + 350, oil 657.
+- name: Case 2, subsidized households with direct primary bills use the subsidized schedule.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [10_000, 10_000, 10_000]
+    ssi: [0, 0, 0]
+    tanf: [0, 0, 0]
+    childcare_expenses: [0, 0, 0]
+    child_care_subsidies: [0, 0, 0]
+    heating_type: [NATURAL_GAS, ELECTRICITY, FUEL_OIL]
+    gas_expense: [1_200, 0, 0]
+    pre_subsidy_electricity_expense: [0, 1_200, 0]
+    fuel_oil_expense: [0, 0, 1_200]
+    heat_expense_included_in_rent: [false, false, false]
+    receives_housing_assistance: [true, false, true]
+    is_in_public_housing: [false, true, false]
+  output:
+    ri_liheap: [509, 618, 657]
+
+# FY2026 size-1 income ceiling 42,252 is inclusive. The final award must
+# also enforce state, qualified membership and a heating obligation.
+- name: Case 3, final payment enforces income and other eligibility requirements.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI, MA, RI, RI]
+    age: [40, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, UNDOCUMENTED, CITIZEN]
+    employment_income: [42_252, 42252.01, 10_000, 10_000, 10_000, 10_000]
+    ssi: [0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0]
+    childcare_expenses: [0, 0, 0, 0, 0, 0]
+    child_care_subsidies: [0, 0, 0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NONE]
+    gas_expense: [1_200, 1_200, 0, 1_200, 1_200, 1_200]
+    heat_expense_included_in_rent: [false, false, false, false, false, false]
+  output:
+    ri_liheap: [509, 0, 0, 0, 0, 0]
+
+# FY2026 rows G and I: direct grant 400; subsidized secondary electric 50 + 350.
+# A qualifying secondary utility account receiving the grant is assumed.
+- name: Case 4, eligible heat-in-rent households receive their regular grants.
+  period: 2026
+  input:
+    state_code: [RI, RI, RI]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [10_000, 10_000, 10_000]
+    ssi: [0, 0, 0]
+    tanf: [0, 0, 0]
+    childcare_expenses: [0, 0, 0]
+    child_care_subsidies: [0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, ELECTRICITY]
+    gas_expense: [0, 0, 0]
+    pre_subsidy_electricity_expense: [0, 120, 120]
+    heat_expense_included_in_rent: [true, true, true]
+    receives_housing_assistance: [false, true, false]
+    is_in_public_housing: [false, false, true]
+  output:
+    ri_liheap_eligible: [true, true, true]
+    ri_liheap: [400, 400, 400]
+
+# Period 2025 backfills the FY2026 schedule (undated formulas, parameter backfilling).
+# FY2025 plan item 2.6 gives a $64 minimum and $1,148 maximum benefit, so 861 checks
+# the backfill only; it is not FY2025 policy.
+- name: Case 5, earlier years backfill an unverified heating award estimate.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI]
+    age: [40]
+    immigration_status: [CITIZEN]
+    employment_income: [10_000]
+    ssi: [0]
+    tanf: [0]
+    childcare_expenses: [0]
+    child_care_subsidies: [0]
+    heating_type: [FUEL_OIL]
+    fuel_oil_expense: [1_200]
+    heat_expense_included_in_rent: [false]
+    receives_housing_assistance: [false]
+    is_in_public_housing: [false]
+  output:
+    ri_liheap_income: [10_000]
+    ri_liheap_eligible: [true]
+    ri_liheap_income_band: [1]
+    ri_liheap_base_payment: [861]
+    ri_liheap: [861]
+
+# Same household in 2026: 10000 <= 42252 size-1 limit; 10000 <= 11738 (75% of the
+# 2025 FPG 15650) is band 1 (row A); delivered fuel 861 with no utility enhancement.
+- name: Case 6, the same household receives the FY2026 delivered fuel award in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI]
+    age: [40]
+    immigration_status: [CITIZEN]
+    employment_income: [10_000]
+    ssi: [0]
+    tanf: [0]
+    childcare_expenses: [0]
+    child_care_subsidies: [0]
+    heating_type: [FUEL_OIL]
+    fuel_oil_expense: [1_200]
+    heat_expense_included_in_rent: [false]
+    receives_housing_assistance: [false]
+    is_in_public_housing: [false]
+  output:
+    ri_liheap_income: [10_000]
+    ri_liheap_income_limit: [42_252]
+    ri_liheap_eligible: [true]
+    ri_liheap_income_band: [1]
+    ri_liheap_base_payment: [861]
+    ri_liheap: [861]
+
+# Row F uses the same primary heating obligation test as eligibility (has_heating_expense
+# or a positive fuel bill), so a subsidized household with the flag and no bill amount gets
+# gas 159 + 350 = 509, electric 268 + 350 = 618 and wood 657, not band 1 (582 / 743 / 861).
+- name: Case 7, subsidized households with a heating obligation but no bill amount use the subsidized row.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [10_000, 10_000, 10_000]
+    ssi: [0, 0, 0]
+    tanf: [0, 0, 0]
+    childcare_expenses: [0, 0, 0]
+    child_care_subsidies: [0, 0, 0]
+    heating_type: [NATURAL_GAS, ELECTRICITY, WOOD]
+    has_heating_expense: [true, true, true]
+    gas_expense: [0, 0, 0]
+    pre_subsidy_electricity_expense: [0, 0, 0]
+    wood_expense: [0, 0, 0]
+    heat_expense_included_in_rent: [false, false, false]
+    receives_housing_assistance: [true, false, true]
+    is_in_public_housing: [false, true, false]
+  output:
+    ri_liheap_eligible: [true, true, true]
+    ri_liheap_income_band: [1, 1, 1]
+    ri_liheap_base_payment: [509, 618, 657]
+    ri_liheap: [509, 618, 657]
+
+# 18000 IRA distributions count in full. Size-1 FY2026 bands use the 2025 FPG 15650:
+# 15650 < 18000 <= 19563 (125%) is band 3 (row C); delivered fuel pays 752.
+- name: Case 8, retirement account distributions set the payment band.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI]
+    age: [60]
+    immigration_status: [CITIZEN]
+    taxable_ira_distributions: [18_000]
+    ssi: [0]
+    tanf: [0]
+    childcare_expenses: [0]
+    child_care_subsidies: [0]
+    heating_type: [FUEL_OIL]
+    fuel_oil_expense: [1_200]
+    heat_expense_included_in_rent: [false]
+    receives_housing_assistance: [false]
+    is_in_public_housing: [false]
+  output:
+    ri_liheap_income: [18_000]
+    ri_liheap_eligible: [true]
+    ri_liheap_income_band: [3]
+    ri_liheap: [752]
+
+# 24000 Social Security - 2434.80 pinned Part B premium (202.90 x 12) = 21565.20.
+# 19563 < 21565.20 <= 23475 is band 4 (row D): delivered fuel 704. Without the
+# Medicare deduction, 24000 > 23475 would be band 5 and pay 657.
+- name: Case 9, the Medicare Part B premium deduction sets a lower payment band.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI]
+    age: [67]
+    immigration_status: [CITIZEN]
+    social_security: [24_000]
+    medicare_part_b_premium: [2_434.80]
+    ssi: [0]
+    tanf: [0]
+    childcare_expenses: [0]
+    child_care_subsidies: [0]
+    heating_type: [FUEL_OIL]
+    fuel_oil_expense: [1_200]
+    heat_expense_included_in_rent: [false]
+    receives_housing_assistance: [false]
+    is_in_public_housing: [false]
+  output:
+    ri_liheap_income: [21_565.20]
+    ri_liheap_eligible: [true]
+    ri_liheap_income_band: [4]
+    ri_liheap: [704]
+
+# FY2026 matrix rows G-I, manual II.B and DHS DIV 1-1 (October 2025): heat-in-rent direct 400,
+# secondary electric 80 + 350, subsidized secondary electric 50 + 350. The primary
+# heating fuel does not change a grant routed to the separate electric account.
+- name: Case 10, heat-in-rent routes use existing electric bills and housing flags.
+  period: 2026
+  input:
+    state_code: [RI, RI, RI, RI, RI, RI, RI, RI]
+    age: [40, 40, 40, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [0, 0, 0, 0, 0, 0, 0, 0]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0]
+    childcare_expenses: [0, 0, 0, 0, 0, 0, 0, 0]
+    child_care_subsidies: [0, 0, 0, 0, 0, 0, 0, 0]
+    heating_type: [FUEL_OIL, NATURAL_GAS, OTHER, FUEL_OIL, NATURAL_GAS, ELECTRICITY, NATURAL_GAS, NONE]
+    rent: [12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000]
+    gas_expense: [0, 0, 0, 0, 0, 0, 0, 0]
+    pre_subsidy_electricity_expense: [0, 0, 0, 1_200, 1_200, 1_200, 0, 1_200]
+    heat_expense_included_in_rent: [true, true, true, true, true, true, true, true]
+    receives_housing_assistance: [false, false, false, false, true, false, true, false]
+    is_in_public_housing: [false, false, false, false, false, true, false, false]
+    has_heating_expense: [false, false, false, false, false, false, true, false]
+  output:
+    ri_liheap_income: [0, 0, 0, 0, 0, 0, 0, 0]
+    ri_liheap_eligible: [true, true, true, true, true, true, false, false]
+    ri_liheap: [400, 400, 400, 430, 400, 400, 0, 0]
+
+# Period 2025 backfills the FY2026 heat-in-rent grants and $350 enhancement. No FY2025
+# matrix or enhancement amount was located, so 430 checks the backfill only.
+- name: Case 11, earlier heat-in-rent awards backfill without claiming verified history.
+  period: 2025
+  input:
+    state_code: RI
+    age: 40
+    immigration_status: CITIZEN
+    employment_income: 10_000
+    heating_type: NATURAL_GAS
+    rent: 12_000
+    heat_expense_included_in_rent: true
+    pre_subsidy_electricity_expense: 1_200
+    receives_housing_assistance: false
+    is_in_public_housing: false
+  output:
+    ri_liheap: 430
+
+# FY2026 row G prints $400 under Deliverables, Natural Gas and Other and leaves the
+# Electric cell blank. Wages are the 2026 Rhode Island minimum wage: 16 x 40 x 52 =
+# 33,280 <= 42,252 (size 1), and heat in unsubsidized rent meets the energy burden.
+# Unit 1 has no separate electric bill, so row G applies: blank Electric cell, 0, and
+# no enhancement because no utility account receives a grant. Unit 2 has an electric
+# bill, so row H applies: 80 + 350 enhancement (DIV 1-1) = 430.
+- name: Case 12, electric heat included in unsubsidized rent follows the blank row G cell.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [33_280, 33_280]
+    ssi: [0, 0]
+    tanf: [0, 0]
+    childcare_expenses: [0, 0]
+    child_care_subsidies: [0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [0, 1_200]
+    heat_expense_included_in_rent: [true, true]
+    receives_housing_assistance: [false, false]
+    is_in_public_housing: [false, false]
+  output:
+    ri_liheap_eligible: [true, true]
+    ri_liheap_base_payment: [0, 430]
+    ri_liheap: [0, 430]
+
+# Threshold edge for the federal floor, 42 U.S.C. 8624(b)(2)(B), with the 2026 example
+# from review: 23 qualified members (forced size) and 150,000 of countable income
+# (forced). The 60% SMI limit is 148,694 (eligibility Case 4), but 150,000 is below
+# the floor 1.1 x 136,650 = 150,315 on the 2025 guideline, so the household stays
+# eligible. Bands use the same guideline: 136,650 (100%) < 150,000 <= 170,813 (125%,
+# 170,812.50 rounded half up) is band 3 (row C): natural gas 192 + 350 = 542.
+- name: Case 13, threshold edge, a twenty three member household below the federal poverty floor is paid above the state median income limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI]
+    ri_liheap_household_size: [23]
+    ri_liheap_income: [150_000]
+    heating_type: [NATURAL_GAS]
+    gas_expense: [1_200]
+    heat_expense_included_in_rent: [false]
+    receives_housing_assistance: [false]
+    is_in_public_housing: [false]
+  output:
+    ri_liheap_income_limit: [148_694]
+    ri_liheap_eligible: [true]
+    ri_liheap_income_band: [3]
+    ri_liheap_base_payment: [542]
+    ri_liheap: [542]
+
+# FY2026 row G pays $400 under Deliverables, Natural Gas and Other. HeatingType documents
+# UNSPECIFIED as heat in rent with an unknown fuel, and Appendix B has no coal or solar
+# box, so UNSPECIFIED, SOLAR and COAL read the Other cell: 400. With no electric bill no
+# utility account receives the grant, so there is no enhancement. Heat in unsubsidized
+# rent meets the energy burden; wages are the 2026 Rhode Island minimum wage, 16 x 40 x
+# 52 = 33,280 <= 42,252 (size 1).
+- name: Case 14, heat in unsubsidized rent with an unspecified, solar or coal fuel receives the row G Other amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [33_280, 33_280, 33_280]
+    ssi: [0, 0, 0]
+    tanf: [0, 0, 0]
+    childcare_expenses: [0, 0, 0]
+    child_care_subsidies: [0, 0, 0]
+    heating_type: [UNSPECIFIED, SOLAR, COAL]
+    pre_subsidy_electricity_expense: [0, 0, 0]
+    heat_expense_included_in_rent: [true, true, true]
+    receives_housing_assistance: [false, false, false]
+    is_in_public_housing: [false, false, false]
+  output:
+    ri_liheap_eligible: [true, true, true]
+    ri_liheap_base_payment: [400, 400, 400]
+    ri_liheap: [400, 400, 400]
+
+# Outside heat in rent the Other column is blank in rows A-F, and Appendix B has no coal
+# or solar box. Coal, solar and other households with their own bill meet the energy
+# burden and the income test (33,280 <= 42,252), so they are eligible, but no matrix
+# amount applies and no utility grant carries the enhancement: 0.
+- name: Case 15, coal, solar and other heat with a direct bill stay eligible but receive no matrix amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [33_280, 33_280, 33_280]
+    ssi: [0, 0, 0]
+    tanf: [0, 0, 0]
+    childcare_expenses: [0, 0, 0]
+    child_care_subsidies: [0, 0, 0]
+    heating_type: [COAL, SOLAR, OTHER]
+    coal_expense: [1_200, 0, 0]
+    pre_subsidy_electricity_expense: [0, 1_200, 0]
+    other_heating_fuel_expense: [0, 0, 1_200]
+    heat_expense_included_in_rent: [false, false, false]
+    receives_housing_assistance: [false, false, false]
+    is_in_public_housing: [false, false, false]
+  output:
+    ri_liheap_eligible: [true, true, true]
+    ri_liheap: [0, 0, 0]
+
+# Threshold edge for the two-person limit, reached end to end. The undocumented parent is
+# not counted in the size (manual page 12) but her wages count, so the qualified size is
+# 2 (the citizen spouse and child) and the FY2026 limit is 55,252, not the three-person
+# 68,253. Income 55,252 equals the limit, which is inclusive. Size 2 bands use the 2025
+# guideline 21,150: 55,252 > 31,725 (150%) is band 5 (row E): natural gas 159 + 350 = 509.
+- name: Case 16, threshold edge, a mixed-status family at the two-person income limit is eligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 55_252
+      person2:
+        age: 38
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      person3:
+        age: 9
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+        is_in_public_housing: false
+  output:
+    ri_liheap_household_size: 2
+    ri_liheap_income: 55_252
+    ri_liheap_income_limit: 55_252
+    ri_liheap_eligible: true
+    ri_liheap_income_band: 5
+    ri_liheap: 509
+
+# Threshold edge: the same family with one more cent of wages exceeds the two-person
+# limit of 55,252 and is far above the federal floor (1.1 x 21,150 = 23,265), so it is
+# ineligible and receives 0. Using all three members would give the 68,253 limit.
+- name: Case 17, threshold edge, the same mixed-status family one cent above the two-person limit is ineligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 55_252.01
+      person2:
+        age: 38
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      person3:
+        age: 9
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+        is_in_public_housing: false
+  output:
+    ri_liheap_household_size: 2
+    ri_liheap_income_limit: 55_252
+    ri_liheap_eligible: false
+    ri_liheap: 0

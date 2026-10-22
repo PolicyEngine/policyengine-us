@@ -153,3 +153,49 @@
     al_interest_deduction: 20_000
     # No other itemized deduction applies.
     al_itemized_deductions: 20_000
+
+# Qualified mortgage insurance premiums follow the federal deduction under
+# 26 U.S.C. 163(h)(3)(E) (2021 Schedule A (Form 40), line 11).
+
+- name: Qualified premiums for both residences enter Alabama interest deduction
+  period: 2021
+  input:
+    state_code: AL
+    adjusted_gross_income: 80_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 2_000
+    al_interest_deduction: 2_000
+
+- name: Alabama includes only the federally deductible premium amount
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: AL
+    adjusted_gross_income: 100_001
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    # First $1,000 increment above $100,000 reduces premiums by 10%.
+    al_interest_deduction: 1_800
+
+- name: Alabama premium deduction sunsets with the federal deduction in 2022
+  period: 2022
+  input:
+    state_code: AL
+    adjusted_gross_income: 80_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    al_interest_deduction: 0
+
+- name: Alabama follows the federal restoration of premiums from 2026
+  period: 2026
+  input:
+    state_code: AL
+    adjusted_gross_income: 80_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    al_interest_deduction: 2_000
