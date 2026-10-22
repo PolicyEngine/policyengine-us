@@ -1,0 +1,1 @@
+Deny the qualified tips and overtime deductions to married couples filing separately (26 U.S.C. 224(f) and 225(e)), and reduce each by $100 only for each full $1,000 of modified AGI over the threshold, as Schedule 1-A lines 11 and 19 round, instead of continuously.

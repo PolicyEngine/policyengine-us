@@ -49,3 +49,208 @@
   output:
     # 26 U.S.C. 225(b)(2)(B): modified AGI 160,000; (160,000 - 150,000) x 10%.
     overtime_income_deduction: 9_000
+
+- name: Single at the phase-out threshold keeps the full deduction
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 12_500
+    adjusted_gross_income: 150_000
+    filing_status: SINGLE
+  output:
+    overtime_income_deduction: 12_500
+
+- name: Single $999 over the threshold has no full $1,000 increment
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 12_500
+    adjusted_gross_income: 150_999
+    filing_status: SINGLE
+  output:
+    # Schedule 1-A line 19: 999 / 1,000 = 0.999, decreased to 0.
+    overtime_income_deduction: 12_500
+
+- name: Single $1,000 over the threshold loses $100
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 12_500
+    adjusted_gross_income: 151_000
+    filing_status: SINGLE
+  output:
+    overtime_income_deduction: 12_400
+
+- name: Single $1,001 over the threshold still loses $100
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 12_500
+    adjusted_gross_income: 151_001
+    filing_status: SINGLE
+  output:
+    # Schedule 1-A line 19: 1,001 / 1,000 = 1.001, decreased to 1.
+    overtime_income_deduction: 12_400
+
+- name: Single one dollar short of full phase-out keeps $100
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 12_500
+    adjusted_gross_income: 274_999
+    filing_status: SINGLE
+  output:
+    # 124 full increments: 12,500 - 12,400.
+    overtime_income_deduction: 100
+
+- name: Single fully phased out at 125 increments
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 12_500
+    adjusted_gross_income: 275_000
+    filing_status: SINGLE
+  output:
+    overtime_income_deduction: 0
+
+- name: Joint $999 over the $300,000 threshold keeps the full $25,000
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 25_000
+    adjusted_gross_income: 300_999
+    filing_status: JOINT
+  output:
+    overtime_income_deduction: 25_000
+
+- name: Joint $1,000 over the $300,000 threshold loses $100
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 25_000
+    adjusted_gross_income: 301_000
+    filing_status: JOINT
+  output:
+    overtime_income_deduction: 24_900
+
+- name: Joint one dollar short of full phase-out keeps $100
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 25_000
+    adjusted_gross_income: 549_999
+    filing_status: JOINT
+  output:
+    overtime_income_deduction: 100
+
+- name: Joint fully phased out at 250 increments
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 25_000
+    adjusted_gross_income: 550_000
+    filing_status: JOINT
+  output:
+    overtime_income_deduction: 0
+
+- name: Married filing separately below the threshold gets no deduction
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 12_500
+    adjusted_gross_income: 80_000
+    filing_status: SEPARATE
+  output:
+    # 26 U.S.C. 225(e): a married individual must file a joint return.
+    overtime_income_deduction: 0
+
+- name: A married couple filing separately gets no deduction on either return
+  period: 2025
+  input:
+    people:
+      spouse1:
+        age: 40
+        ssn_card_type: CITIZEN
+        fsla_overtime_premium: 12_500
+      spouse2:
+        age: 39
+        ssn_card_type: CITIZEN
+    marital_units:
+      marital_unit:
+        members: [spouse1, spouse2]
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 80_000
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+        adjusted_gross_income: 0
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: TX
+  output:
+    # 26 U.S.C. 225(e): a married individual must file a joint return.
+    overtime_income_deduction: [0, 0]
+
+- name: The same couple filing jointly takes the deduction
+  period: 2025
+  input:
+    people:
+      spouse1:
+        age: 40
+        ssn_card_type: CITIZEN
+        fsla_overtime_premium: 12_500
+      spouse2:
+        age: 39
+        ssn_card_type: CITIZEN
+    marital_units:
+      marital_unit:
+        members: [spouse1, spouse2]
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    overtime_income_deduction: 12_500
+
+- name: Separated spouses with no qualifying person file separately and get no deduction
+  period: 2025
+  input:
+    people:
+      spouse1:
+        age: 40
+        ssn_card_type: CITIZEN
+        is_separated: true
+        fsla_overtime_premium: 12_500
+      spouse2:
+        age: 39
+        ssn_card_type: CITIZEN
+        is_separated: true
+    marital_units:
+      marital_unit:
+        members: [spouse1, spouse2]
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        adjusted_gross_income: 80_000
+      tax_unit2:
+        members: [spouse2]
+        adjusted_gross_income: 0
+    households:
+      household1:
+        members: [spouse1]
+        state_code: TX
+      household2:
+        members: [spouse2]
+        state_code: TX
+  output:
+    filing_status: [SEPARATE, SEPARATE]
+    overtime_income_deduction: [0, 0]
