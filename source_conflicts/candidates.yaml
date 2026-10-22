@@ -5659,6 +5659,31 @@ candidates:
   state: unreviewed
   note: 'The statute-first rule requires revising the deduction-only ACTC bar; verify that interpretation separately
     from EITC, whose statutory wording differs. Code not yet on main: elects_section_911_exclusion.'
+- id: us:charitable-non-itemizer-2020-separate-cap
+  program: income-tax
+  years:
+    from: 2020
+    to: 2020
+    type: tax
+  question: Is the 2020 above-the-line charitable deduction capped at $300 or $150 for a married separate filer?
+  sources:
+  - kind: statute
+    citation: Pub. L. 116-136, sec. 2204; 26 U.S.C. 62(a)(22), 62(f)
+    url: https://www.congress.gov/116/plaws/publ136/PLAW-116publ136.pdf#page=65
+  - kind: instructions
+    citation: 2020 Instructions for Form 1040, line 10b
+    url: https://www.irs.gov/pub/irs-prior/i1040gi--2020.pdf#page=30
+  readings:
+    statute: The cap is $300 for every eligible individual, with no separate-filer reduction.
+    other: The line 10b instructions limit married separate filers to $150.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/irs/ald/charitable_contributions/cap.yaml
+    - policyengine_us/variables/gov/irs/income/taxable_income/adjusted_gross_income/above_the_line_deductions/charitable_contributions/charitable_contributions_ald.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10186
+  state: ruled
 - id: us:claim-of-right-same-class-aggregation
   program: income-tax
   years:
