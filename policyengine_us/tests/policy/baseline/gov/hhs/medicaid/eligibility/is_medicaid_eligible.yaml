@@ -314,3 +314,87 @@
     medicaid_category: SECTION_1115_MEC_ADULT
     is_medicaid_work_requirement_applicable_adult: true
     is_medicaid_eligible: true
+
+# ND 510-05-85-40: the January 2026 medically needy standards remain
+# $1,174 individual / $1,587 couple from April 2025. These households
+# exceed the SSI standards, but qualify without medical spenddown.
+- name: Case 17, North Dakota senior above the SSI rate retains medically needy coverage.
+  period: 2026
+  input:
+    age: 70
+    social_security_retirement: 12_180
+    state_code: ND
+  output:
+    ssi: 0
+    ssi_countable_resources: 0
+    medicaid_optional_senior_or_disabled_countable_income: 11_940
+    medicaid_optional_senior_or_disabled_income_limit: 11_928
+    medicaid_medically_needy_medical_expenses: 0
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_medically_needy_for_medicaid: true
+    medicaid_category: MEDICALLY_NEEDY
+    is_medicaid_eligible: true
+
+- name: Case 18, North Dakota aged couple above the SSI couple rate has medically needy coverage.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 9_600
+      person2:
+        age: 68
+        social_security_retirement: 9_360
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    ssi: [0, 0]
+    ssi_countable_resources: [0, 0]
+    medicaid_optional_senior_or_disabled_countable_income: [9_360, 9_360]
+    medicaid_optional_senior_or_disabled_income_limit: [17_892, 17_892]
+    medicaid_medically_needy_medical_expenses: [0, 0]
+    is_optional_senior_or_disabled_for_medicaid: [false, false]
+    is_medically_needy_for_medicaid: [true, true]
+    medicaid_category: [MEDICALLY_NEEDY, MEDICALLY_NEEDY]
+    is_medicaid_eligible: [true, true]
+
+# WV IMM 3.17.3.A.3 uses the individual standard when no income is
+# deemed from an ineligible spouse. The younger spouse can qualify
+# separately through the adult expansion group.
+- name: Case 19, West Virginia senior with an ineligible spouse cannot use the couple standard without deeming.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 17_040
+      person2:
+        age: 60
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    ssi: [0, 0]
+    medicaid_optional_senior_or_disabled_countable_income: [16_800, 0]
+    medicaid_optional_senior_or_disabled_income_limit: [11_928, 11_928]
+    is_ssi_spousal_deeming_applies: [false, false]
+    is_optional_senior_or_disabled_for_medicaid: [false, false]
+    medicaid_category: [NONE, ADULT]
+    is_medicaid_eligible: [false, true]

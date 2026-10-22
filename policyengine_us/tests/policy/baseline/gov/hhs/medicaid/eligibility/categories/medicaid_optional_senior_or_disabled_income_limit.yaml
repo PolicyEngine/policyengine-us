@@ -3,9 +3,9 @@
 # 85% (DSS Manual § 0805.015.45; current dollars in MHABD Appendix J).
 # Missouri publishes the standards as monthly dollar amounts, rounding
 # the percentage of the monthly guideline up to the next whole dollar.
-# In every state the guideline is the one-person or couple figure (2025:
-# $15,650 and $21,150), following the applicant's marital unit rather
-# than the tax unit (42 CFR 435.602).
+# The guideline is the one-person or couple figure (2025: $15,650 and
+# $21,150), following the applicant's marital unit rather than the tax
+# unit (42 CFR 435.602). West Virginia's needs-group exceptions are below.
 - name: Missouri blind single person gets the 100% FPL blind standard
   period: 2025
   input:
@@ -409,3 +409,124 @@
   output:
     # 967 x 12
     medicaid_optional_senior_or_disabled_income_limit: [11_604]
+
+# WV IMM 3.17.3.A.2-4: use the individual standard when an ineligible
+# spouse has no deemed income, and the couple standard when both spouses
+# are eligible or income is deemed. The 2026 SSI standards are $994 and
+# $1,491 monthly; the deeming allocation is their $497 difference.
+# https://bfa.wv.gov/media/40005/download?inline#page=385
+- name: Case 19, West Virginia uses the individual standard with an ineligible spouse and no deemed income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 17_040
+      person2:
+        age: 60
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      couple:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # $1,420 monthly retirement income less $20 = $1,400 countable.
+    # Marriage alone must not give the applicant the $1,491 limit.
+    is_ssi_spousal_deeming_applies: [false, false]
+    medicaid_optional_senior_or_disabled_income_limit: [11_928, 11_928]
+    is_optional_senior_or_disabled_income_eligible: [false, false]
+
+- name: Case 20, West Virginia keeps the individual standard at the spousal deeming threshold.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 62
+        social_security_retirement: 5_964
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      couple:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # $497 monthly does not exceed the $1,491 - $994 allocation.
+    is_ssi_spousal_deeming_applies: [false, false]
+    medicaid_optional_senior_or_disabled_income_limit: [11_928, 11_928]
+
+- name: Case 21, West Virginia uses the couple standard for the second spouse when deeming applies.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 62
+        social_security_retirement: 7_200
+      person2:
+        age: 70
+        social_security_retirement: 10_800
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      couple:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # The spouse's $600 monthly exceeds the $497 allocation. Combined
+    # countable income is $900 + $600 - $20 = $1,480 monthly.
+    is_ssi_spousal_deeming_applies: [false, true]
+    medicaid_optional_senior_or_disabled_income_limit: [11_928, 17_892]
+    is_optional_senior_or_disabled_income_eligible: [false, true]
+
+- name: Case 22, West Virginia eligible spouses use the couple standard without changing Missouri.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 68
+      person3:
+        age: 70
+      person4:
+        age: 60
+    marital_units:
+      wv_couple:
+        members: [person1, person2]
+      mo_couple:
+        members: [person3, person4]
+    tax_units:
+      wv_couple:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+      mo_couple:
+        members: [person3, person4]
+        tax_unit_is_joint: true
+    households:
+      west_virginia:
+        members: [person1, person2]
+        state_code: WV
+      missouri:
+        members: [person3, person4]
+        state_code: MO
+  output:
+    # WV: $1,491 monthly SSI couple rate. MO: $1,533 monthly, regardless
+    # of whether the second spouse independently meets the ABD criteria.
+    medicaid_optional_senior_or_disabled_income_limit: [17_892, 17_892, 18_396, 18_396]

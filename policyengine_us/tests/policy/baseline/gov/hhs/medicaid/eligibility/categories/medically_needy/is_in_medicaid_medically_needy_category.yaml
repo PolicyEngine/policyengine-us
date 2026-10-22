@@ -13,3 +13,41 @@
     state_code: MA
   output:
     is_in_medicaid_medically_needy_category: false
+
+# ND's archived 510-05-30-05 includes non-SSI aged, blind, or disabled
+# individuals in its medically needy group on or after January 1, 2014.
+- name: Case 3, North Dakota seniors have a medically needy category in 2015.
+  period: 2015
+  input:
+    age: 70
+    state_code: ND
+  output:
+    is_in_medicaid_medically_needy_category: true
+
+- name: Case 4, North Dakota disabled adults have a medically needy category in 2018.
+  period: 2018
+  input:
+    age: 40
+    is_disabled: true
+    meets_ssi_disability_criteria: true
+    state_code: ND
+  output:
+    is_in_medicaid_medically_needy_category: true
+
+- name: Case 5, North Dakota childless adults without a disability do not meet an ABD medically needy category.
+  period: 2026
+  input:
+    age: 40
+    state_code: ND
+  output:
+    is_in_medicaid_medically_needy_category: false
+
+- name: Case 6, North Dakota blind adults need not meet the separate SSI disability criteria.
+  period: 2026
+  input:
+    age: 40
+    is_blind: true
+    meets_ssi_disability_criteria: false
+    state_code: ND
+  output:
+    is_in_medicaid_medically_needy_category: true
