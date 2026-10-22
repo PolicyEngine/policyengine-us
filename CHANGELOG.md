@@ -1,3 +1,11 @@
+## [2.60.0] - 2026-10-22
+
+### Added
+
+- Add Arkansas LIHEAP income limits, countable income, and regular heating payment tables.
+- Model state school meal coverage beyond universal meals: coverage of both reduced-price copays in 24 more jurisdictions and of one meal in New Hampshire and Utah, state free-meal income limits above 185% of poverty (NJ, ND, OR, HI) and New Jersey's standing breakfast-only limit, universal breakfast with separate breakfast and lunch tiers, universal meals in CT (SY 2022-23) and NV (SY 2022-24), and corrected universal-meal dates for MA, MI and VT.
+
+
 ## [2.59.0] - 2026-10-22
 
 ### Added
