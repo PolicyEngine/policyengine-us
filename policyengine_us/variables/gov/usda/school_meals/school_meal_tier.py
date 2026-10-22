@@ -21,11 +21,27 @@ class school_meal_tier(Variable):
     )
     reference = (
         "https://www.law.cornell.edu/cfr/text/7/245.2",
+        "https://www.federalregister.gov/documents/2026/04/09/2026-06842/child-nutrition-programs-income-eligibility-guidelines",
         "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_115C/GS_115C-264.html",
     )
 
     def formula(spm_unit, period, parameters):
         fpg_ratio = spm_unit("school_meal_fpg_ratio", period)
+        state = spm_unit.household("state_code_str", period)
+        territory = np.isin(state, ["GU", "PR", "VI"])
+        if territory.any():
+            # USDA uses the contiguous-state income guideline for these
+            # territories. Keep the shared ratio unchanged: CSFP and other
+            # programs also consume it and need separate policy review.
+            fpg = parameters(period).gov.hhs.fpg
+            size = spm_unit("spm_unit_size", period)
+            guideline = (
+                fpg.first_person.CONTIGUOUS_US
+                + fpg.additional_person.CONTIGUOUS_US * (size - 1)
+            )
+            income = spm_unit("school_meal_countable_income", period)
+            territory_ratio = (income / guideline).astype(fpg_ratio.dtype)
+            fpg_ratio = where(territory, territory_ratio, fpg_ratio)
         p = parameters(period).gov.usda.school_meals
         p_income_limit = p.income.limit
         # Categorical eligibility provides free school meals.
@@ -38,7 +54,6 @@ class school_meal_tier(Variable):
         # States that cover the reduced-price copay provide the free tier
         # to students who qualify for reduced-price meals.
         reduced_income_eligible = fpg_ratio <= p_income_limit.REDUCED
-        state = spm_unit.household("state_code_str", period)
         state_covers_reduced_copay = p.state_covers_reduced_price_copay[state].astype(
             bool
         )
