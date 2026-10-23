@@ -9,9 +9,9 @@ lower whole number". Sections 224(f) and 225(e) allow a married individual
 either deduction only on a joint return, and the Part II and Part III cautions
 say "If married, you must file jointly to claim this deduction."
 
-Each test builds one simulation of many tax units. Joint returns have two
-spouses, so the combined caps and the both-spouses SSN rule apply as on the
-return. The tests check:
+Each test call, and each Hypothesis example, builds one simulation of many tax
+units. Joint returns have two spouses, so the combined caps and the
+both-spouses SSN rule apply as on the return. The tests check:
 
 1. Every seeded draw, evaluated under all five filing statuses, matches an
    independent restatement of Schedule 1-A lines 7-13 (tips) and 15-21
@@ -19,15 +19,15 @@ return. The tests check:
 2. Each deduction lies between 0 and its capped qualifying amount, and a
    positive deduction is the capped amount less a whole multiple of $100.
    These follow from 1, and are checked on the model's output directly so
-   that an error in the restatement cannot hide them.
+   that an error in the restatement's phase-out arithmetic cannot hide them.
 3. At every $1,000 step from each threshold to full phase-out, for each filing
    status that may claim: the amount is the cap less $100 per whole step (not
-   below zero), one dollar below the step it is $100 higher (or what is left
-   at the last step), and $999 above the step it is unchanged.
+   below zero); one dollar below each step past the threshold it is $100
+   higher (or what is left at the last step); and $999 above the step it is
+   unchanged.
 4. Raising modified AGI never raises either deduction, and leaves it unchanged
    while the count of whole $1,000 increments over the threshold is unchanged
    (Hypothesis, with incomes drawn around both thresholds and their steps).
-   With 3, the amount is flat across each step.
 
 Modified AGI here is adjusted gross income with no section 911, 931 or 933
 exclusions; the YAML tests cover the section 911 and 931 add-backs. AGIs are
@@ -260,10 +260,12 @@ amounts = st.one_of(
 # Shrinking a failure takes minutes on a simulation this size; the failing
 # example is still reported.
 @settings(
-    max_examples=6,
+    # The first generated example is the minimal one (every case at one
+    # income with no raise), so the seventh keeps six informative examples.
+    max_examples=7,
     deadline=None,
     derandomize=True,
-    phases=(Phase.explicit, Phase.reuse, Phase.generate),
+    phases=(Phase.explicit, Phase.generate),
 )
 @given(
     cases=st.lists(
