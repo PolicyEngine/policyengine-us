@@ -1,0 +1,544 @@
+# The award is the benefit matrix cell for the size group (1-2, 3-5, 6-8, 9 or more),
+# the income group (A-D) and the energy burden column; burden is annual energy cost
+# over income rounded half up to four decimals (2026 Policy Manual 2.17), with columns starting
+# at 0, 0.0510, 0.0672, 0.0828, 0.0998, 0.1215, 0.1529, 0.2182 and 1.0000, and zero
+# income takes column 9. FFY2026 (2026 Benefit Matrix): income groups A-C end at 71%,
+# 87% and 117% of the 2025 poverty guideline (15,650 + 5,500 per additional person),
+# and a propane benefit is at least 500 (2026 Policy Manual 2.10). FFY2027 (LI-12
+# matrix): income groups end at the printed amounts and propane has no minimum.
+# Wages of 15,080 are full-time work (2,080 hours) at the federal 7.25 minimum wage,
+# which Tennessee follows; electricity of 1,680 is about the EIA 2024 Tennessee average
+# residential bill of 140 a month.
+
+- name: Case 1, income exactly at the size-one group A top in FFY2026 receives the group A amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        # Part-time work at 7.25 an hour.
+        employment_income: 11_111.50
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Group A top 15,650 x 0.71 = 11,111.50; 1,680 / 11,111.50 = 0.1512 -> column 6
+    tn_liheap: 560
+
+- name: Case 2, income one cent above the size-one group A top in FFY2026 receives the group B amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 11_111.51
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Group B top 15,650 x 0.87 = 13,615.50; 1,680 / 11,111.51 = 0.1512 -> column 6
+    tn_liheap: 555
+
+- name: Case 3, income exactly at the size-one group C top in FFY2026 receives the group C amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 18_310.50
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        # Gas of 75 a month.
+        gas_expense: 900
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Group C top 15,650 x 1.17 = 18,310.50; (900 + 1,680) / 18,310.50 = 0.1409 -> column 6
+    tn_liheap: 550
+
+- name: Case 4, income one cent above the size-one group C top in FFY2026 receives the group D amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 18_310.51
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Group D up to the 32,053 limit; 2,580 / 18,310.51 = 0.1409 -> column 6
+    tn_liheap: 540
+
+- name: Case 5, a raw burden of exactly 0.12145 rounds half up to 0.1215 and starts the sixth column.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        # Gas of about 62 a month.
+        gas_expense: 749
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Group D (20,000 above the 18,310.50 group C top);
+    # (749 + 1,680) / 20,000 = 0.12145 -> half up 0.1215 -> column 6
+    # (half to even would give 0.1214, column 5, 445)
+    tn_liheap: 540
+
+- name: Case 6, a raw burden of 0.05094 rounds down to 0.0509 and stays in the first column.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_018.80
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # 1,018.80 / 20,000 = 0.05094 -> 0.0509 -> column 1, group D
+    tn_liheap: 174
+
+- name: Case 7, zero income receives the highest burden column.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Zero income -> column 9, group A, sizes 1-2
+    tn_liheap: 750
+
+- name: Case 8, a two-person household uses the sizes one-to-two group.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # Part-time work at 7.25 an hour.
+        employment_income: 12_000
+      person2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Group A top (15,650 + 5,500) x 0.71 = 15,016.50; 1,680 / 12,000 = 0.14 -> column 6
+    tn_liheap: 560
+
+- name: Case 9, a three-person household uses the sizes three-to-five group.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+      person2:
+        age: 6
+      person3:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    # Group A top (15,650 + 5,500 x 2) x 0.71 = 18,921.50; 0.14 -> column 6
+    tn_liheap: 600
+
+- name: Case 10, a six-person household adds all energy bills and uses the sizes six-to-eight group.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 15_080
+      person2:
+        age: 34
+        employment_income: 15_080
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 7
+      person6:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        # Gas of 50 a month.
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: TN
+  output:
+    # Group A top (15,650 + 5,500 x 5) x 0.71 = 30,636.50;
+    # (600 + 1,680) / 30,160 = 0.0756 -> column 3
+    tn_liheap: 565
+
+- name: Case 11, a thirteen-person household in FFY2026 extends the nine-or-more group with its own poverty guideline.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 45, employment_income: 40_000}
+      person2: {age: 43, employment_income: 28_000}
+      person3: {age: 17}
+      person4: {age: 16}
+      person5: {age: 15}
+      person6: {age: 14}
+      person7: {age: 13}
+      person8: {age: 12}
+      person9: {age: 11}
+      person10: {age: 10}
+      person11: {age: 9}
+      person12: {age: 8}
+      person13: {age: 7}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_080
+        pre_subsidy_electricity_expense: 3_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
+        state_code: TN
+  output:
+    # Guideline 15,650 + 5,500 x 12 = 81,650: group A top 57,971.50, group B top 71,035.50;
+    # 68,000 is group B (the size-twelve B top of 66,250.50 would give group C);
+    # 4,080 / 68,000 = 0.06 -> column 2
+    tn_liheap: 525
+
+- name: Case 12, a propane benefit below 500 in FFY2026 is raised to 500.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        # Propane of 100 a month.
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # 1,200 / 20,000 = 0.06 -> column 2, group D: max(250, 500)
+    tn_liheap: 500
+
+- name: Case 13, a propane benefit above 500 in FFY2026 is unchanged.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # (1,200 + 1,680) / 15,080 = 0.1910 -> column 7, group C: max(700, 500)
+    tn_liheap: 700
+
+- name: Case 14, heat included in rent with no separate energy bills receives the first column.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # 0 / 15,080 = 0 -> column 1, sizes 1-2
+    tn_liheap: 174
+
+- name: Case 15, income above the limit receives nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 32_054
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # 32,054 > 32,053 limit
+    tn_liheap: 0
+
+- name: Case 16, income one cent above the printed FFY2027 size-one group A top receives the group B amount.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 11_331.51
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Printed group A top 11,331.50 (71% of 15,960 would be 11,331.60);
+    # 1,680 / 11,331.51 = 0.1483 -> column 6
+    tn_liheap: 631
+
+- name: Case 17, income at the printed FFY2027 four-person group B top receives the group B amount.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 28_710.51
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 920
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TN
+  output:
+    # Printed group B top 28,710.51 (87% of 33,000 would be 28,710);
+    # (920 + 1,680) / 28,710.51 = 0.0906 -> column 4
+    tn_liheap: 505
+
+- name: Case 18, a thirteen-person household in FFY2027 uses the printed size-thirteen income groups.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 45, employment_income: 42_000}
+      person2: {age: 43, employment_income: 28_000}
+      person3: {age: 17}
+      person4: {age: 16}
+      person5: {age: 15}
+      person6: {age: 14}
+      person7: {age: 13}
+      person8: {age: 12}
+      person9: {age: 11}
+      person10: {age: 10}
+      person11: {age: 9}
+      person12: {age: 8}
+      person13: {age: 7}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 3_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
+        state_code: TN
+  output:
+    # Size-thirteen group B runs 59,597.51 to 73,027.50 (the size-twelve B top is
+    # 68,242.50); 4,200 / 70,000 = 0.06 -> column 2
+    tn_liheap: 605
+
+- name: Case 19, a propane benefit in FFY2027 has no minimum.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # 1,200 / 20,000 = 0.06 -> column 2, group D (above 18,673.50)
+    tn_liheap: 366
+
+- name: Case 20, income exactly at the printed FFY2026 three-person group C top receives the group C amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 34
+        employment_income: 31_180.50
+      person2:
+        age: 32
+      person3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        # Gas of 100 a month.
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    # Group C top (15,650 + 5,500 x 2) x 1.17 = 26,650 x 1.17 = 31,180.50, rounded to cents;
+    # (1,200 + 1,680) / 31,180.50 = 0.092365 -> 0.0924 -> column 4;
+    # sizes 3-5 group C column 4 = 400 (group D would be 390)
+    tn_liheap: 400
+
+- name: Case 21, a nine-person household in FFY2027 above 60 percent of state median income is eligible under the poverty-guideline limit and uses the nine-or-more group.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 42, employment_income: 90_000}
+      person2: {age: 40}
+      person3: {age: 16}
+      person4: {age: 14}
+      person5: {age: 12}
+      person6: {age: 10}
+      person7: {age: 8}
+      person8: {age: 6}
+      person9: {age: 3}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 3_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code: TN
+  output:
+    # floor(1.5 x (15,960 + 5,680 x 8)) = floor(1.5 x 61,400) = 92,100;
+    # 60% SMI would be floor(63,196 x 1.41) = 89,106, below the 90,000 income
+    tn_liheap_income_limit: 92_100
+    # Printed size-nine group C top 71,838.50, so group D;
+    # (1,200 + 3,000) / 90,000 = 0.046667 -> 0.0467 -> column 1;
+    # nine-or-more group D column 1 = 540 (the sizes 6-8 group would give 409)
+    tn_liheap: 540
