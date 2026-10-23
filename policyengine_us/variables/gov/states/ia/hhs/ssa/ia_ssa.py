@@ -107,8 +107,10 @@ class ia_ssa(Variable):
         # guideline is for two people only when SMME income includes a
         # spouse's income: an eligible couple's combined income, or income
         # deemed from a spouse, by SSI or, for an applicant working above the
-        # SGA level, by ia_ssa_smme_spousal_deeming_applies (ia_ssa.yaml Cases
-        # 47-49, 81-84 and 90-92).
+        # SGA level, by ia_ssa_smme_spousal_deeming_applies (a spouse's income
+        # above the couple rate less the individual rate, or an aged, blind or
+        # disabled spouse's income; ia_ssa.yaml Cases 47-49, 81-84, 90-92 and
+        # 94-97).
         spouse_income = (
             joint
             | person("is_ssi_spousal_deeming_applies", period.this_year)

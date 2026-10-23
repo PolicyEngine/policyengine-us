@@ -43,9 +43,10 @@ class ia_ssa_smme_countable_income(Variable):
         # 416.1112(c)(3)), in-kind support and maintenance (416.1130, 416.1140)
         # and the general and earned income exclusions (ia_ssa.yaml Cases 77,
         # 87 and 88). As 8-E pp.12-13 do, a spouse's income above the couple
-        # rate less the individual rate is added before the exclusions
+        # rate less the individual rate, or an aged, blind or disabled
+        # spouse's income, is added before the exclusions
         # (ia_ssa_smme_spousal_deeming_applies), and ia_ssa then uses the
-        # two-person guideline (Cases 82 and 90-92).
+        # two-person guideline (Cases 82, 90-92 and 94-97).
         # NOTE: Income deemed from a parent is not modeled on this path.
         earned = max_(
             person("ssi_earned_income", period)

@@ -2771,3 +2771,188 @@
     # GL 6-B-45 sets $36.82 a day and a $123 allowance for 2024. 36.82 * 31 =
     # 1,141.42; SSI 943, participation 943 - 123 = 820; 1,141.42 - 820 = 321.42.
     ia_ssa: 321.42
+
+- name: Case 94, a child's allocation comes off a spouse's pension first and then wages before deeming to an SMME applicant working above the SGA level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 50
+        meets_ssi_disability_criteria:
+          2026: true
+        # Wages of $1,700 a month, above the $1,690 SGA level.
+        employment_income:
+          2026: 20_400
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 45
+        # A pension of $200 and wages of $2,880 a month.
+        pension_income:
+          2026: 2_400
+        employment_income:
+          2026: 34_560
+      person3:
+        age:
+          2026: 10
+    marital_units:
+      couple:
+        members: [person1, person2]
+      child:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: IA
+  output:
+    # 8-E steps 1-3: the child's 497 allocation takes the spouse's 200 of
+    # pension and 297 of wages, leaving 2,880 - 297 = 2,583 > 497 to deem.
+    # (1,700 + 2,583 - 20 - 65) / 2 = 2,099, below January's two-person 2,115.
+    # person2's own income is (200 - 20) + (2,880 - 65) / 2 = 1,587.50.
+    ssi_ineligible_child_allocation: [0, 0, 497]
+    ia_ssa_smme_spousal_deeming_applies: [true, false, false]
+    ia_ssa_smme_countable_income: [2_099, 1_587.5, 0]
+    ia_ssa: [0, 0, 0]
+
+- name: Case 95, a spouse's 497.01 dollar pension is deemed to an SMME applicant working above the SGA level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 50
+        meets_ssi_disability_criteria:
+          2026: true
+        # Case 77's worker: SSDI of $900 and wages of $2,000 a month.
+        social_security_disability:
+          2026: 10_800
+        employment_income:
+          2026: 24_000
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 45
+        # A pension of $497.01 a month and no wages.
+        pension_income:
+          2026: 5_964.12
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # 497.01 is more than 1,491 - 994 = 497, so the pension is deemed as
+    # unearned income: (900 + 497.01 - 20) + (2,000 - 65) / 2 = 2,344.51, at
+    # least January's two-person 2,115. person2's own income is 497.01 - 20.
+    ia_ssa_smme_spousal_deeming_applies: [true, false]
+    ia_ssa_smme_countable_income: [2_344.51, 477.01]
+    ia_ssa: [1, 0]
+
+- name: Case 96, nothing is deemed to an SMME applicant working above the SGA level from a spouse who lives in a medical facility.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 50
+        meets_ssi_disability_criteria:
+          2026: true
+        employment_income:
+          2026: 39_324
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 70
+        pension_income:
+          2026: 6_240
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # 20 CFR 416.1167(a)(1); 8-E p.11-12 "same household": the spouse's 520
+    # pension is not deemed. person1's own income is (3,277 - 20 - 65) / 2 =
+    # 1,596, at least the one-person 1,596 (with deeming it would be 2,106,
+    # below the two-person 2,164). person2's 2,106 comes from SSI's federal
+    # deeming, which does not yet apply 20 CFR 416.1163(f)(5).
+    ia_ssa_smme_spousal_deeming_applies: [false, false]
+    ia_ssa_smme_countable_income: [1_596, 2_106]
+    ia_ssa: [1, 0]
+
+- name: Case 97, an aged spouse is not an ineligible spouse, so an SMME applicant working above the SGA level is budgeted as a couple.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 50
+        meets_ssi_disability_criteria:
+          2026: true
+        employment_income:
+          2026: 39_324
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 70
+        social_security_retirement:
+          2026: 4_800
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # 8-E p.12: an ineligible spouse is "not eligible for SSI or
+    # non-MAGI-related Medicaid, or State Supplementary Assistance". The
+    # spouse is aged, so the couple's income is combined with no $497 test:
+    # (400 - 20) + (3,277 - 65) / 2 = 1,986 < 2,164. Alone, 1,596 would
+    # qualify against the one-person 1,596.
+    ia_ssa_smme_spousal_deeming_applies: [true, false]
+    ia_ssa_smme_countable_income: [1_986, 1_986]
+    ia_ssa: [0, 0]
