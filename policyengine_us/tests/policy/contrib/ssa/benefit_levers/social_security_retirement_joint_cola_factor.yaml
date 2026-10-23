@@ -116,3 +116,34 @@
     social_security_retirement_reported: 12000
   output:
     social_security_retirement_joint_cola_factor: 1.0014478764478765
+
+- name: Adjacent eligibility-year sensitivity exposes a 63-year-old
+  period: 2027
+  input:
+    age: 63
+    gov.contrib.ssa.benefit_levers.cola.start_year: 2027
+    gov.contrib.ssa.benefit_levers.cola.pp_change: 0.0015
+    social_security_retirement_reported: 12000
+  output:
+    social_security_retirement_joint_cola_factor: 1.0014478764478765
+
+- name: A second configured CPI-E size uses the same formula
+  period: 2027
+  input:
+    age: 70
+    gov.contrib.ssa.benefit_levers.cola.start_year: 2027
+    gov.contrib.ssa.benefit_levers.cola.pp_change: 0.0030
+    social_security_retirement_reported: 12000
+  output:
+    social_security_retirement_joint_cola_factor: 1.0028957528957528
+
+- name: An externally supplied alternative rate replaces the baseline numerator
+  period: 2027
+  input:
+    age: 70
+    gov.contrib.ssa.benefit_levers.cola.start_year: 2027
+    gov.contrib.ssa.benefit_levers.cola.alternative_rate: 0.02
+    social_security_retirement_first_cola_year: 2027
+    social_security_retirement_reported: 12000
+  output:
+    social_security_retirement_joint_cola_factor: 0.9845559845559845

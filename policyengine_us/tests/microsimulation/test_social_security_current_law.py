@@ -339,6 +339,11 @@ def test_constructor_created_baseline_keeps_migrated_uprating(
         {"gov.contrib.ssa.benefit_levers.across_the_board.rate": {"2024": 0}}
     )
     inputs = situation(years=(2024,))
+    # Isolate this source migration from the existing wage/self-employment
+    # constructor moves, which Core's pre-wrapper baseline does not perform.
+    for person in inputs["people"].values():
+        person.pop("employment_income")
+        person.pop("self_employment_income")
     original = reference_simulation(
         original_input_system, wrapper, situation=deepcopy(inputs)
     )
