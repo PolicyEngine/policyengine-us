@@ -1,0 +1,313 @@
+# Household income under rule 3(C)(1) of 99-346 CMR ch. 24 (2026 edition, pages
+# 11-15; the 2025 edition has the same text):
+# https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=11
+# - Gross income of all members over the age of 18 (modeled as age 18 and older),
+#   from the listed sources: wages, self-employment, Social Security and SSI
+#   "including Medicare deductions", child support, pensions and others.
+# - Excluded: "Assets drawn down from financial institutions" and "Income earned by
+#   a Household Member who is a full time high school student, unless they are the
+#   Primary Applicant" (the tax unit head). TANF is not a listed source.
+# - Each source is floored at zero, so a self-employment loss cannot offset wages.
+# - Over-income households deduct documented medical expenses (IRS Publication
+#   502), "only the amount necessary to make the Household eligible".
+# - Ineligible members' income counts.
+# Incomes use figures for applications filed in the season: Maine's 2025 minimum
+# wage of $14.65 an hour (Maine Department of Labor, 26 M.R.S. 664(1)); the 2025
+# average retired-worker Social Security benefit of $1,976 a month (SSA, 2025 COLA
+# fact sheet); and the 2025 standard Medicare Part B premium of $185.00 a month
+# (CMS). The 2026 income limit is 36,836 (one person), 48,170 (two) and 59,504
+# (three); see eligibility/me_heap_income_limit.yaml. Cases 8 and 9 pay an oil bill
+# of 1,745, EIA's 2025-26 U.S. average winter heating-oil expenditure (Short-Term
+# Energy Outlook, October 2026, Table WF01), so only income decides eligibility.
+
+- name: Case 1, an 18-year-old high school student's and a 17-year-old's earnings are not counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        # 14.65 x 40 hours x 52 weeks = 30,472.
+        employment_income: 30_472
+        ssi: 0
+      child1:
+        age: 18
+        # A high school senior working 12 hours a week for 40 weeks:
+        # 14.65 x 12 x 40 = 7,032.
+        is_in_k12_school: true
+        employment_income: 7_032
+        ssi: 0
+      child2:
+        age: 17
+        # Left school and works 14.65 x 30 hours x 52 weeks = 22,854.
+        is_in_k12_school: false
+        employment_income: 22_854
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: ME
+  output:
+    # child1 is a full-time high school student who is not the applicant: excluded.
+    # child2 is under 18: excluded. 30,472 <= 59,504, so no medical adjustment.
+    me_heap_income: 30_472
+
+- name: Case 2, threshold edge, an 18-year-old who has left school is counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 44
+        # 14.65 x 20 hours x 52 weeks = 15,236.
+        employment_income: 15_236
+        ssi: 0
+      child1:
+        age: 18
+        # Graduated; works 14.65 x 30 hours x 52 weeks = 22,854, the same job as
+        # the 17-year-old in Case 1.
+        is_in_k12_school: false
+        employment_income: 22_854
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head, child1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [head, child1]
+        state_code: ME
+  output:
+    # 15,236 + 22,854 = 38,090 <= 48,170, so no medical adjustment.
+    me_heap_income: 38_090
+
+- name: Case 3, a high school student who is the applicant has earnings counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 19
+        # A young parent finishing high school who works 14.65 x 20 hours x 52
+        # weeks = 15,236.
+        is_in_k12_school: true
+        employment_income: 15_236
+        ssi: 0
+      child1:
+        age: 1
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head, child1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [head, child1]
+        state_code: ME
+  output:
+    # The student is the tax unit head (the primary applicant), so the student exclusion
+    # does not apply: 15,236.
+    me_heap_income: 15_236
+
+- name: Case 4, S corporation income counts and a self-employment loss does not reduce other income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 52
+        # 14.65 x 25 hours x 52 weeks = 19,045.
+        employment_income: 19_045
+        # A small woodworking business that lost money.
+        self_employment_income: -4_200
+        # Share of profit from a family business organized as an S corporation.
+        partnership_s_corp_income: 8_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    # Self-employment income includes partnership and S corporation income
+    # (rule 3(C)(1)(b)). 19,045 + max(-4,200, 0) + 8,000 = 27,045, not 22,845
+    # (the loss offset) or 19,045 (S corporation income omitted).
+    # 27,045 <= 36,836, so no medical adjustment.
+    me_heap_income: 27_045
+
+- name: Case 5, Social Security counts in full and IRA withdrawals do not count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        # 1,976 x 12 = 23,712, gross of the Medicare premium.
+        social_security_retirement: 23_712
+        # Withdrawals from savings in a traditional IRA.
+        taxable_ira_distributions: 6_000
+        # Part B premium: 185 x 12 = 2,220.
+        medical_expense_health_insurance_premiums: 2_220
+        other_medical_expenses: 0
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    # Social Security 23,712 counts; the IRA withdrawal is an asset drawn down.
+    # 23,712 <= 36,836, so the medical premiums are not deducted: 23,712.
+    me_heap_income: 23_712
+
+- name: Case 6, TANF is not counted but child support is.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 27
+        # 200 a month.
+        child_support_received: 2_400
+        ssi: 0
+      child1:
+        age: 5
+        ssi: 0
+      child2:
+        age: 2
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+        # Maine TANF maximum for three, 895 a month (10-144 CMR ch. 331, Appendix
+        # Table 2, from 2024-10-01): 895 x 12 = 10,740.
+        tanf: 10_740
+        snap: 0
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: ME
+  output:
+    # Child support 2,400; TANF is excluded: 2,400.
+    me_heap_income: 2_400
+
+- name: Case 7, an ineligible member's income is counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        immigration_status: CITIZEN
+        # 14.65 x 40 hours x 52 weeks = 30,472.
+        employment_income: 30_472
+        ssi: 0
+      spouse:
+        age: 33
+        immigration_status: UNDOCUMENTED
+        # 14.65 x 15 hours x 52 weeks = 11,427.
+        employment_income: 11_427
+        ssi: 0
+      child1:
+        age: 4
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: ME
+  output:
+    # Size 2 (the spouse is not counted), limit 48,170.
+    me_heap_household_size: 2
+    # 30,472 + 11,427 = 41,899 <= 48,170.
+    me_heap_income: 41_899
+
+- name: Case 8, medical expenses that cover the excess bring income to the limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 66
+        # 1,976 x 12 = 23,712.
+        social_security_retirement: 23_712
+        # Part-time job: 14.65 x 20 hours x 52 weeks = 15,236.
+        employment_income: 15_236
+        # Part B premium: 185 x 12 = 2,220.
+        medical_expense_health_insurance_premiums: 2_220
+        other_medical_expenses: 0
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        snap: 0
+        tanf: 0
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 1_745
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [head]
+        state_code: ME
+        is_in_public_housing: false
+  output:
+    # Gross 23,712 + 15,236 = 38,948 > 36,836. Deducting 2,220 gives 36,728,
+    # but only the amount needed counts: max(36,728, 36,836) = 36,836.
+    me_heap_income: 36_836
+    me_heap_eligible: true
+
+- name: Case 9, medical expenses that do not cover the excess leave the household over the limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 66
+        # 1,976 x 12 = 23,712.
+        social_security_retirement: 23_712
+        # Part-time job: 14.65 x 25 hours x 52 weeks = 19,045.
+        employment_income: 19_045
+        # Part B premium: 185 x 12 = 2,220.
+        medical_expense_health_insurance_premiums: 2_220
+        other_medical_expenses: 0
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        snap: 0
+        tanf: 0
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 1_745
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [head]
+        state_code: ME
+        is_in_public_housing: false
+  output:
+    # Gross 23,712 + 19,045 = 42,757 > 36,836. 42,757 - 2,220 = 40,537 > 36,836:
+    # max(40,537, 36,836) = 40,537, still over the limit.
+    me_heap_income: 40_537
+    me_heap_eligible: false
