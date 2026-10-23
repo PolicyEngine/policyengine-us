@@ -75,19 +75,14 @@ def concurrent(job):
     return min(job.get("strategy", {}).get("max-parallel", math.inf), runners(job))
 
 
-def test_lanes_cap_a_pr_at_11_runners_at_once():
+def test_uncapped_matrices_keep_a_pr_at_16_runners_at_once():
     # Within pr.yaml, validation runs alone; everything that needs only it starts
     # together, Rest waits for RestPython, and Contrib waits for Baseline.
-    # Baseline and Contrib each keep one job per group but run at most
-    # max-parallel of them at once: GitHub starts the next group as one
-    # finishes, so the lanes rebalance from real durations on every run, with
-    # nothing to re-pair as groups grow.
-    assert (
-        GROUP_WORKFLOWS["Baseline"]["jobs"]["Baseline"]["strategy"]["max-parallel"] == 6
-    )
-    assert (
-        GROUP_WORKFLOWS["Contrib"]["jobs"]["Contrib"]["strategy"]["max-parallel"] == 6
-    )
+    # The Enterprise runner capacity allows every group in each matrix to
+    # start together. The existing dependencies still bound the peak.
+    for name in ("Baseline", "Contrib"):
+        for job in (GROUP_WORKFLOWS[name]["jobs"][name], PUSH_JOBS[name]):
+            assert "max-parallel" not in job["strategy"]
     first_wave = {}
     for name, job in JOBS.items():
         if needs(job) != ["ReleaseLock"]:
@@ -99,12 +94,12 @@ def test_lanes_cap_a_pr_at_11_runners_at_once():
             if not needs(inner):
                 first_wave[inner_name] = concurrent(inner)
     assert "Rest" not in first_wave and "Contrib" not in first_wave
-    assert sum(first_wave.values()) == 11
+    assert sum(first_wave.values()) == 16
     # Contrib starts only after Baseline has finished, so at most Contrib's
-    # lanes plus every other first-wave job can be running then.
+    # groups plus every other first-wave job can be running then.
     single = {name: n for name, n in first_wave.items() if name != "Baseline"}
     contrib = concurrent(GROUP_WORKFLOWS["Contrib"]["jobs"]["Contrib"])
-    assert contrib + sum(single.values()) <= 11
+    assert contrib + sum(single.values()) <= 16
 
 
 def test_contrib_waits_for_baseline_and_skips_when_it_fails():
@@ -125,7 +120,7 @@ def test_yaml_suites_run_two_memory_aware_workers_per_runner():
             assert job["env"]["POLICYENGINE_BATCH_WORKERS"] == 2
 
 
-def test_release_ci_runs_the_same_baseline_and_contrib_lanes():
+def test_release_ci_runs_the_same_baseline_and_contrib_matrices():
     for name in ("Baseline", "Contrib"):
         pr_job = GROUP_WORKFLOWS[name]["jobs"][name]
         assert PUSH_JOBS[name]["strategy"] == pr_job["strategy"]

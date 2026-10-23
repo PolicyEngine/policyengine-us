@@ -1,8 +1,10 @@
 """Tie PolicyEngine-US code to the shared source-conflict register.
 
-When a statute conflicts with a regulation, form, instructions, manual or
-stated agency practice, PolicyEngine-US follows the statute; forms and
-instructions fill gaps where the statute is silent. Each such choice is an
+When sources conflict, PolicyEngine-US follows the principles in
+CONTRIBUTING.md ("Source conflicts"): the statute over a form, instructions,
+a manual or stated agency practice (forms and instructions fill gaps where the
+statute is silent); a Treasury regulation as binding; and the administering
+agency's reading where the text leaves a true tie. Each such choice is an
 entry in the register PolicyEngine-US shares with Axiom
 (``known-source-conflicts.yaml`` in TheAxiomFoundation/rulespec-us; field
 reference in that repository's tools/README.md). The code that makes the
