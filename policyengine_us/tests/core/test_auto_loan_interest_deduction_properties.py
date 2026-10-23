@@ -22,10 +22,11 @@ units, each in its own household. The tests check:
    follow from 1, and are checked on the model's output directly so that an
    error in the restatement's arithmetic cannot hide them.
 3. At every $1,000 step from each threshold to full phase-out, for each filing
-   status: k whole steps over the threshold leave the cap less $200 per step
-   (not below zero), and $1, $500 or $999 more takes another $200, because a
-   portion of $1,000 counts as a whole one. One dollar below the threshold the
-   full cap is left.
+   status and for interest below, at and above the cap: k whole steps over the
+   threshold leave the capped interest less $200 per step (not below zero),
+   and $1, $500 or $999 more takes another $200, because a portion of $1,000
+   counts as a whole one. One dollar below the threshold the capped interest
+   is left.
 4. A single filer, a head of household, a separate filer and a surviving
    spouse get the same deduction at every income, and a joint return at
    modified AGI m gets what a single filer gets at m - $100,000.
@@ -159,28 +160,36 @@ def test_deduction_matches_schedule_1a_under_every_filing_status(seed):
 
 
 def test_each_thousand_dollars_or_portion_takes_two_hundred():
+    # Interest below, at and above the cap, so the walk also sees the cap and
+    # that it applies before the reduction.
+    interests = (5_000, CAP, 12_000)
     units, index = [], {}
     for status in STATUSES:
         threshold = _threshold(status)
-        index[(status, "below")] = len(units)
-        units.append((status, threshold - 1, CAP))
-        for k in range(STEPS + 2):
-            for offset in (0, 1, 500, 999):
-                index[(status, k, offset)] = len(units)
-                units.append((status, threshold + INCREMENT * k + offset, CAP))
+        for interest in interests:
+            index[(status, interest, "below")] = len(units)
+            units.append((status, threshold - 1, interest))
+            for k in range(STEPS + 2):
+                for offset in (0, 1, 500, 999):
+                    index[(status, interest, k, offset)] = len(units)
+                    magi = threshold + INCREMENT * k + offset
+                    units.append((status, magi, interest))
     value = _simulate(units)
 
     for status in STATUSES:
-        assert value[index[(status, "below")]] == CAP, status
-        for k in range(STEPS + 2):
-            # 3. k whole steps over the threshold take $200 each ...
-            at_step = value[index[(status, k, 0)]]
-            assert at_step == max(CAP - REDUCTION * k, 0), (status, k)
-            # ... and any portion of the next $1,000 takes another $200.
-            for offset in (1, 500, 999):
-                assert value[index[(status, k, offset)]] == max(
-                    CAP - REDUCTION * (k + 1), 0
-                ), (status, k, offset)
+        for interest in interests:
+            capped = min(interest, CAP)
+            key = (status, interest)
+            assert value[index[(*key, "below")]] == capped, key
+            for k in range(STEPS + 2):
+                # 3. k whole steps over the threshold take $200 each ...
+                at_step = value[index[(*key, k, 0)]]
+                assert at_step == max(capped - REDUCTION * k, 0), (*key, k)
+                # ... and any portion of the next $1,000 takes another $200.
+                for offset in (1, 500, 999):
+                    assert value[index[(*key, k, offset)]] == max(
+                        capped - REDUCTION * (k + 1), 0
+                    ), (*key, k, offset)
 
 
 def test_only_a_joint_return_has_the_higher_threshold():
