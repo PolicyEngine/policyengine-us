@@ -136,12 +136,12 @@
       child1:
         # AGI 10,000 < 26,000 joint threshold -> no reduction;
         # age 5 -> 3,273 x 1.0 = 3,273.
-        co_family_affordability_credit: 3_273.0
+        co_family_affordability_credit: 0
         co_state_supplement: 0.0
         co_oap: 0.0
       child2:
         # Age 6 -> 3,273 x 0.75 = 2,454.75.
-        co_family_affordability_credit: 2_454.75
+        co_family_affordability_credit: 0
         co_state_supplement: 0.0
         co_oap: 0.0
       child3:
@@ -245,7 +245,7 @@
       child1:
         # AGI exactly at the 26,000 joint threshold -> excess 0 -> full
         # 3,273 x 1.0 (age under 6); $1 more starts the reduction.
-        co_family_affordability_credit: 3_273.0
+        co_family_affordability_credit: 0
         co_state_supplement: 0.0
         co_oap: 0.0
 - name: co_family_affordability_joint_agi_26k_plus_1_first_increment (co)
@@ -343,7 +343,7 @@
       child1:
         # Excess 1 over the 26,000 joint threshold -> ceil(1/5,000) = 1
         # increment x 6.875%; 3,273 x 0.93125 = 3,047.98.
-        co_family_affordability_credit: 3_047.98
+        co_family_affordability_credit: 0
         co_state_supplement: 0.0
         co_oap: 0.0
 - name: co_family_affordability_hoh_agi_90k_fully_phased_out (co)

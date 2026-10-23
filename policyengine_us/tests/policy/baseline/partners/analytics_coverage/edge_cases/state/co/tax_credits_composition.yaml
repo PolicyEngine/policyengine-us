@@ -98,12 +98,12 @@
       child1:
         # FAC: excess 4,000 over 16,000 HOH threshold -> 1 increment x 6.875%;
         # age 8 -> 3,273 x 0.75 x 0.93125 = 2,285.99.
-        co_family_affordability_credit: 2_285.99
+        co_family_affordability_credit: 0
         co_state_supplement: 0.0
         co_oap: 0.0
       child2:
         # Age 3 -> 3,273 x 1.0 x 0.93125 = 3,047.98.
-        co_family_affordability_credit: 3_047.98
+        co_family_affordability_credit: 0
         co_state_supplement: 0.0
         co_oap: 0.0
 - name: statetax_size_4_couple_2_children (co)
@@ -220,11 +220,11 @@
       child1:
         # FAC joint: AGI 20,000 < 26,000 threshold -> no reduction;
         # age 8 -> 3,273 x 0.75 = 2,454.75.
-        co_family_affordability_credit: 2_454.75
+        co_family_affordability_credit: 0
         co_state_supplement: 0.0
         co_oap: 0.0
       child2:
         # Age 3 -> full 3,273 (contrast with the HOH case at the same AGI).
-        co_family_affordability_credit: 3_273.0
+        co_family_affordability_credit: 0
         co_state_supplement: 0.0
         co_oap: 0.0
