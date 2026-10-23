@@ -36,7 +36,10 @@ class save_plan_payment(Variable):
         balance_share = person(
             "income_driven_repayment_balance_share", period.this_year
         )
-        prorated_payment = rate * discretionary_income * balance_share
+        # Payments are set in whole cents. Rounding before the small payment
+        # test keeps an exact $5.00 from falling below the threshold through
+        # floating-point error.
+        prorated_payment = np.round(rate * discretionary_income * balance_share, 2)
         small_payment = p.income_driven_repayment.small_payment
         adjusted_payment = where(
             prorated_payment < small_payment.threshold,

@@ -45,7 +45,10 @@ class income_based_repayment_payment(Variable):
         )
         prorated_payment = rate * discretionary_income * balance_share
         standard_payment = person("standard_repayment_payment", period)
-        capped_payment = min_(prorated_payment, standard_payment)
+        # Payments are set in whole cents. Rounding before the small payment
+        # test keeps an exact $5.00 from falling below the threshold through
+        # floating-point error (e.g. 15% x $400 / 12).
+        capped_payment = np.round(min_(prorated_payment, standard_payment), 2)
         small_payment = p.income_driven_repayment.small_payment
         adjusted_payment = where(
             capped_payment < small_payment.threshold,

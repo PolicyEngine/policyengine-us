@@ -228,3 +228,25 @@
         state_code: TX
   output:
     save_plan_payment: 0
+
+- name: Case 11, a payment of exactly 5 dollars rises to 10 dollars.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 37_110
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 2.25 x 15,960 = 35,910; 5% x 1,200 / 12 = 5.00 exactly, which is not less
+    # than 5, so it rises to 10 (685.209(g)(1)(iii)(B)).
+    save_plan_payment: 10
