@@ -1,0 +1,66 @@
+description: Arkansas uses these sources as unearned income under the Low Income Home Energy Assistance Program.
+# Each source is floored at zero in the income formula, so a loss in one source
+# cannot offset other income. The formula also counts Social Security and
+# railroad retirement net of the Medicare Part B premium, interest above the
+# monthly disregard, and TEA. Rental income is in the earned list.
+# Where the plan and the FFY 2025 manual differ, the manual is followed: plan
+# Section 1.9 checks "Loans that need to be repaid", but manual Appendix F says
+# "All loans are excluded as income" (page 163), so no loan is counted.
+# Appendix F also counts these receipts, which lack sufficiently specific inputs
+# and are not represented: adoption assistance (page 156), cryptocurrency (page
+# 157), crowd-fund accounts (page 158), executor fees (page 159), foster care
+# payments (page 160), HUD utility payments (page 161; Appendix E, page 155;
+# the application's "Housing Utility Assistance Payment"), inheritance and jury
+# duty pay (page 162), royalties (page 166) and Trade Adjustment Assistance
+# (page 168). Appendix F also excludes irregular income that does not exceed
+# $90 in a three-month period (page 162); annual inputs cannot identify such
+# receipts, so they are counted.
+values:
+  2024-10-01:
+    - total_unemployment_compensation
+    - strike_benefits
+    - ssi
+    # Military retirement pay is a separate input from the pension inputs that
+    # pension_income adds, so both are listed; a household reports the amount
+    # in one or the other (manual Appendix F, page 165).
+    - pension_income
+    - military_retirement_pay
+    # Non-Social-Security survivor receipts: the Appendix F Pension row covers
+    # payments to a person's "surviving dependents" (page 165).
+    - survivor_benefits
+    - alimony_income
+    - child_support_received
+    - ordinary_dividend_income
+    - veterans_benefits
+    # Manual Appendix F (page 157) counts only regular cash gifts (three or
+    # more consecutive months); financial_assistance cannot separate them, so
+    # all reported gifts are counted.
+    - financial_assistance
+    # Manual Appendices E (page 155) and F (page 168) and the application
+    # (page 2) count workers' compensation; plan Section 1.9 leaves "Insurance
+    # payments made directly to the insured" unchecked.
+    - workers_compensation
+    # Manual Appendix F (page 160) counts all gaming or gambling winnings. Plan
+    # Section 1.9 (page 7) counts lottery winnings as the only one-time lump
+    # sum, and manual page 163 excludes nonrecurring lump sums; the Appendix F
+    # row is followed.
+    - gambling_winnings
+    # Manual Appendix F (page 157) counts capital gains and excludes capital
+    # losses. Plan Section 1.9 (page 7) counts no one-time lump sum other than
+    # lottery winnings, and manual page 163 excludes nonrecurring lump sums,
+    # including the sale of personal property; the Appendix F row is followed.
+    - capital_gains
+
+metadata:
+  unit: list
+  period: year
+  label: Arkansas LIHEAP unearned income sources
+  reference:
+    - title: "Arkansas FY2026 State Plan, Section 1.9 #page 6-7"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf#page=6
+    - title: "Arkansas FY2025 State Plan, Section 1.9 #page 5-7"
+      href: https://liheapch.acf.gov/docs/2025/state-plans/AR_Plan_2025.pdf#page=5
+    - title: "Arkansas FFY 2025 LIHEAP Policy and Procedures Manual, Appendices E and F #page 155-163,165-168"
+      href: https://liheapch.acf.gov/docs/2025/manuals/AR_Manual_2025.pdf#page=155
+    - title: Arkansas LIHEAP Application LIHEAP 9495 R 11/2025, Section III Household Income
+      href: https://www.adeq.state.ar.us/energy/assistance/pdfs/fillable_aeo-9495_liheap-long-application.pdf#page=2
