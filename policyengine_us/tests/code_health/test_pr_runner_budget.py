@@ -15,6 +15,9 @@ GROUP_WORKFLOWS = {
 PYTHON_JOBS = GROUP_WORKFLOWS["PythonTests"]["jobs"]
 PUSH_JOBS = yaml.safe_load((ROOT / ".github/workflows/push.yaml").read_text())["jobs"]
 KEEP_RUNNING = "${{ !cancelled() }}"
+KEEP_RUNNING_WITH_SYSTEM_CA = (
+    "${{ !cancelled() && steps.system-ca.outcome == 'success' }}"
+)
 
 
 def action(name):
@@ -72,19 +75,14 @@ def concurrent(job):
     return min(job.get("strategy", {}).get("max-parallel", math.inf), runners(job))
 
 
-def test_lanes_cap_a_pr_at_11_runners_at_once():
+def test_uncapped_matrices_keep_a_pr_at_16_runners_at_once():
     # Within pr.yaml, validation runs alone; everything that needs only it starts
     # together, Rest waits for RestPython, and Contrib waits for Baseline.
-    # Baseline and Contrib each keep one job per group but run at most
-    # max-parallel of them at once: GitHub starts the next group as one
-    # finishes, so the lanes rebalance from real durations on every run, with
-    # nothing to re-pair as groups grow.
-    assert (
-        GROUP_WORKFLOWS["Baseline"]["jobs"]["Baseline"]["strategy"]["max-parallel"] == 6
-    )
-    assert (
-        GROUP_WORKFLOWS["Contrib"]["jobs"]["Contrib"]["strategy"]["max-parallel"] == 6
-    )
+    # The Enterprise runner capacity allows every group in each matrix to
+    # start together. The existing dependencies still bound the peak.
+    for name in ("Baseline", "Contrib"):
+        for job in (GROUP_WORKFLOWS[name]["jobs"][name], PUSH_JOBS[name]):
+            assert "max-parallel" not in job["strategy"]
     first_wave = {}
     for name, job in JOBS.items():
         if needs(job) != ["ReleaseLock"]:
@@ -96,12 +94,12 @@ def test_lanes_cap_a_pr_at_11_runners_at_once():
             if not needs(inner):
                 first_wave[inner_name] = concurrent(inner)
     assert "Rest" not in first_wave and "Contrib" not in first_wave
-    assert sum(first_wave.values()) == 11
+    assert sum(first_wave.values()) == 16
     # Contrib starts only after Baseline has finished, so at most Contrib's
-    # lanes plus every other first-wave job can be running then.
+    # groups plus every other first-wave job can be running then.
     single = {name: n for name, n in first_wave.items() if name != "Baseline"}
     contrib = concurrent(GROUP_WORKFLOWS["Contrib"]["jobs"]["Contrib"])
-    assert contrib + sum(single.values()) <= 11
+    assert contrib + sum(single.values()) <= 16
 
 
 def test_contrib_waits_for_baseline_and_skips_when_it_fails():
@@ -122,7 +120,7 @@ def test_yaml_suites_run_two_memory_aware_workers_per_runner():
             assert job["env"]["POLICYENGINE_BATCH_WORKERS"] == 2
 
 
-def test_release_ci_runs_the_same_baseline_and_contrib_lanes():
+def test_release_ci_runs_the_same_baseline_and_contrib_matrices():
     for name in ("Baseline", "Contrib"):
         pr_job = GROUP_WORKFLOWS[name]["jobs"][name]
         assert PUSH_JOBS[name]["strategy"] == pr_job["strategy"]
@@ -192,21 +190,35 @@ def test_sequential_variants_preserve_failures_and_allow_later_results():
     ):
         variants = calls(job, name)
         assert [step["with"][key] for step in variants] == expected
-        assert all(step["if"] == KEEP_RUNNING for step in variants[1:])
+        assert all(step["if"] == KEEP_RUNNING_WITH_SYSTEM_CA for step in variants[1:])
         # A failure must remain a job failure even if a later variant passes.
         assert not JOBS[job].get("continue-on-error")
         assert all(
             not step.get("continue-on-error")
             for step in JOBS[job]["steps"] + action(name)
         )
-    # A wheel failure must not suppress metadata or any Python version.
+    # A wheel failure must not suppress metadata or any Python version once
+    # system trust setup succeeds. A failed trust check must stop every variant.
     checks = [
         step
         for step in JOBS["PackageCompatibility"]["steps"]
         if step.get("uses", "").startswith("./.github/actions/")
+        and step["uses"] != "./.github/actions/setup-system-ca"
     ]
     assert len(checks) == 7
-    assert all(step["if"] == KEEP_RUNNING for step in checks[1:])
+    # The first wheel keeps the implicit success() gate after trust setup.
+    assert "if" not in checks[0]
+    assert all(step["if"] == KEEP_RUNNING_WITH_SYSTEM_CA for step in checks[1:])
+
+
+def test_package_variants_verify_system_trust_before_setting_up_environments():
+    steps = JOBS["PackageCompatibility"]["steps"]
+    (setup,) = calls("PackageCompatibility", "setup-system-ca")
+    assert setup["id"] == "system-ca"
+    assert "if" not in setup
+    assert not setup.get("continue-on-error")
+    assert steps[0]["uses"].startswith("actions/checkout@")
+    assert steps[1] == setup
 
 
 def test_variants_use_distinct_clean_checkouts_for_locks_environments_and_outputs():
@@ -247,7 +259,7 @@ def test_variants_use_distinct_clean_checkouts_for_locks_environments_and_output
 
 def test_bundle_contract_keeps_its_dependency_and_separate_environment():
     (call,) = calls("PackageCompatibility", "bundle-metadata")
-    assert call["if"] == KEEP_RUNNING
+    assert call["if"] == KEEP_RUNNING_WITH_SYSTEM_CA
     steps = action("bundle-metadata")
     assert steps[0]["with"] == {"path": "bundle-metadata"}
     assert steps[1]["with"]["python-version"] == "3.14"
