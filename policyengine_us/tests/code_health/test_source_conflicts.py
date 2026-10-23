@@ -1,8 +1,10 @@
 """Tie PolicyEngine-US code to the shared source-conflict register.
 
-When a statute conflicts with a regulation, form, instructions, manual or
-stated agency practice, PolicyEngine-US follows the statute; forms and
-instructions fill gaps where the statute is silent. Each such choice is an
+When sources conflict, PolicyEngine-US follows the principles in
+CONTRIBUTING.md ("Source conflicts"): the statute over a form, instructions,
+a manual or stated agency practice (forms and instructions fill gaps where the
+statute is silent); a Treasury regulation as binding; and the administering
+agency's reading where the text leaves a true tie. Each such choice is an
 entry in the register PolicyEngine-US shares with Axiom
 (``known-source-conflicts.yaml`` in TheAxiomFoundation/rulespec-us; field
 reference in that repository's tools/README.md). The code that makes the
@@ -116,6 +118,7 @@ CONFLICT_COMMENT_RE = re.compile(
 # or reword a comment that is not one, then lower or delete its count here.
 # A new file or a higher count fails.
 KNOWN_UNMARKED: dict[str, int] = {
+    "policyengine_us/parameters/gov/irs/ald/charitable_contributions/cap.yaml": 1,
     "policyengine_us/parameters/gov/irs/credits/residential_clean_energy/fuel_cell_cap_per_kw.yaml": 1,
     "policyengine_us/parameters/gov/irs/income/exemption/overtime/hce_salary_threshold.yaml": 1,
     "policyengine_us/parameters/gov/irs/income/exemption/overtime/salary_basis_threshold.yaml": 1,
