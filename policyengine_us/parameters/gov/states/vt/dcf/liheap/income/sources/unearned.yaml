@@ -10,6 +10,9 @@ description: Vermont uses these sources as unearned income under the Low Income 
 values:
   2024-06-22:
     - ssi
+    # The state AABD supplement to SSI is public assistance under rule
+    # 2911.2(b)(1).
+    - vt_aabd
     - general_assistance
     - pension_income
     # Military retired pay and Survivor Benefit Plan annuities are separate

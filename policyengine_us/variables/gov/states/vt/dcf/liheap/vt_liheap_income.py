@@ -28,7 +28,8 @@ class vt_liheap_income(Variable):
             earned = earned + max_(person(source, period), 0)
         unearned = 0
         for source in p.sources.unearned:
-            unearned = unearned + max_(person(source, period), 0)
+            # add() also sums monthly sources such as vt_aabd over the year.
+            unearned = unearned + max_(add(person, period, [source]), 0)
         # Rule 2912(a)(12) excludes the earnings of a member under 18 who lives
         # with a parent or under parental control and attends elementary, high
         # school, home school or GED classes at least half time. K-12 enrollment
