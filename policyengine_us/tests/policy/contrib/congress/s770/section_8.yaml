@@ -629,6 +629,110 @@
     s770_active_business_income_tax: 32_400
     net_investment_income_tax: 32_400
 
+- name: Draw gross exclusion uses the netting factor from changed SECA rates
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    gov.irs.self_employment.rate.social_security: .14
+    gov.irs.self_employment.rate.medicare: .06
+    s_corp_income: 200_000
+    s770_draw_gross: 150_000
+    # q = 1 - .5 x (.14 + .06) = .9, so 9,000 / q = 10,000 gross.
+    s770_draw_oasdi_base: 9_000
+    s770_draw_hi_in_effect: false
+    niit_magi: 400_000
+    filing_status: SINGLE
+  output:
+    s770_active_business_income: 190_000
+    s770_active_taxable_base: 190_000
+    s770_active_business_income_tax: 30_780
+    net_investment_income_tax: 30_780
+
+- name: Undrawn and floor rejected draws supply zero actual classification hooks
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    people:
+      undrawn:
+        age: 45
+        s_corp_income: 200_000
+        # The supplying draw reform has a zero phase-in share.
+        s770_draw_gross: 0
+        s770_draw_oasdi_base: 0
+        s770_draw_hi_in_effect: false
+      floor_rejected:
+        age: 45
+        s_corp_income: 200_000
+        # The supplying reform rejected a planned $200 draw below its floor.
+        # It must supply actual accepted draw/base of zero even with HI on.
+        # These hooks do not calculate the phase-in or reporting floor.
+        s770_draw_gross: 0
+        s770_draw_oasdi_base: 0
+        s770_draw_hi_in_effect: true
+    tax_units:
+      undrawn:
+        members: [undrawn]
+        filing_status: SINGLE
+        niit_magi: 400_000
+      floor_rejected:
+        members: [floor_rejected]
+        filing_status: SINGLE
+        niit_magi: 400_000
+    households:
+      household:
+        members: [undrawn, floor_rejected]
+        state_code: TX
+  output:
+    s770_active_business_income: [200_000, 200_000]
+    s770_active_taxable_base: [200_000, 200_000]
+    s770_active_business_income_tax: [32_400, 32_400]
+    net_investment_income_tax: [32_400, 32_400]
+
+- name: Before active inclusion already SE passive income remains in existing NII
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    partnership_income: 10_000
+    passive_partnership_s_corp_income: 10_000
+    partnership_self_employment_net_earnings: 10_000
+    s770_passive_se_income: 10_000
+    niit_magi: 250_000
+    filing_status: SINGLE
+  output:
+    s770_nii_base: 10_000
+    s770_active_business_income: 0
+    s770_nii_taxable_base: 10_000
+    s770_nii_addon_tax: 0
+    s770_active_business_income_tax: 0
+    net_investment_income_tax: 380
+
+- name: Activating the SECA exclusion can lower tax with no signed active loss
+  period: 2026
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    partnership_income: 10_000
+    passive_partnership_s_corp_income: 10_000
+    partnership_self_employment_net_earnings: 10_000
+    s770_passive_se_income: 10_000
+    niit_magi: 250_000
+    filing_status: SINGLE
+  output:
+    # Same household as above: N falls by 10,000, while A stays zero.
+    # Monotonic activation requires fixed NII/source exclusions as well as A>=0.
+    s770_nii_base: 0
+    s770_active_business_income: 0
+    s770_nii_taxable_base: 0
+    s770_active_taxable_base: 0
+    s770_nii_addon_tax: 0
+    s770_active_business_income_tax: 0
+    net_investment_income_tax: 0
+
 - name: Explicit passive SE overlap is removed once from each affected category
   period: 2026
   absolute_error_margin: 0.01

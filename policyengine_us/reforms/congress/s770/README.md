@@ -51,7 +51,11 @@ that the available fields implement every statutory category. For `N=−10,000`,
 `A=20,000`, `X=50,000`, the tax is $1,620. For `N=20,000`, `A=−10,000`, the
 tax is also $1,620. Active losses can therefore reduce liability relative to
 the add-on alone ($3,240 in the latter example). Activation is monotone with
-nonnegative active income and nonnegative rates, not for arbitrary signed losses.
+nonnegative active income, nonnegative rates and fixed signed NII/source rules,
+including exclusions and NOL treatment. Changing source exclusions can lower
+liability even when the active residual is nonnegative: removing $10,000 of
+already-SE passive income from NII with no active residual reduces existing NIIT
+from $380 to zero. Arbitrary signed active losses also defeat monotonicity.
 
 ## Pass-through classification and SECA/FICA interaction
 
@@ -83,7 +87,11 @@ and do not impose SECA themselves. The supplier must connect actual taxed amount
 
 Here `q=1−employer_share*(SE_OASDI_rate+SE_HI_rate)`, currently .9235, using
 existing parameters. The undrawn phase-in share and floor-rejected planned draw
-remain in `A`. No independent owners-draw policy is enabled by these hooks.
+remain in `A`. The supplying reform must apply its phase-in and reporting floor
+and provide the actual floor-accepted draw and taxed base; an undrawn or
+floor-rejected draw supplies zero for both hooks, including when HI is selected.
+These hooks do not calculate the draw, phase-in or reporting floor themselves.
+No independent owners-draw policy is enabled by these hooks.
 
 ## Literal-bill category audit and NOL support
 

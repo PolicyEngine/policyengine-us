@@ -11,7 +11,10 @@ Unified-liability equivalence assumes identical signed sources, exclusions,
 NOL treatment, MAGI, thresholds and timing, with existing rate + add-on rate =
 active rate = 16.2%. It does not imply equal OASDI transfers or full statutory
 category coverage. Adding a signed active loss can lower total tax, so the
-monotonicity property requires a nonnegative active residual.
+monotonicity property requires a nonnegative active residual and fixed signed
+NII/source rules, including exclusions and NOL treatment, across switches.
+Activating an exclusion can lower existing NIIT even with a nonnegative active
+residual; YAML pins that separate source-classification counterexample.
 """
 
 from types import SimpleNamespace
@@ -78,9 +81,11 @@ def test_review_counterexamples_and_zero_addon_threshold_allocation():
 
 @SETTINGS
 @hypothesis.given(nii=SIGNED, active=NONNEGATIVE, excess=NONNEGATIVE)
-def test_turning_on_parts_is_monotone_for_nonnegative_active_income(
+def test_turning_on_parts_is_monotone_with_fixed_nii_and_nonnegative_active_income(
     nii, active, excess
 ):
+    # The signed NII input is fixed across switches. Applying new SECA/FICA
+    # source exclusions when the active option starts is outside this property.
     n, a = allocate_bases(nii, active, excess)
     n_without_active, _ = allocate_bases(nii, 0, excess)
     baseline = EXISTING_RATE * n_without_active
