@@ -484,3 +484,45 @@
   output:
     tax_unit_qualified_passenger_vehicle_loan_interest: 4_000
     auto_loan_interest_deduction: 4_000
+
+- name: Spouses' separate loans share one $10,000 limit on a joint return
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      a:
+        age: 40
+        qualified_passenger_vehicle_loan_interest_person: 6_000
+      b:
+        age: 40
+        qualified_passenger_vehicle_loan_interest_person: 5_000
+    tax_units:
+      tax_unit:
+        members: [a, b]
+        adjusted_gross_income: 150_000
+    marital_units:
+      couple:
+        members: [a, b]
+    households:
+      household:
+        members: [a, b]
+        state_code: TX
+  output:
+    # 26 CFR 1.163-16(h)(3), Example 1 (91 FR 57241): A pays $6,000 and B
+    # $5,000 on their own loans; they "can deduct no more than $10,000" on
+    # their joint return.
+    tax_unit_qualified_passenger_vehicle_loan_interest: 11_000
+    auto_loan_interest_deduction: 10_000
+
+- name: Single filer phase-out from the regulation's example
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 124_200
+    filing_status: SINGLE
+    qualified_passenger_vehicle_loan_interest_person: 7_000
+  output:
+    # 26 CFR 1.163-16(h)(3), Example 2 (91 FR 57241): modified AGI $124,200
+    # exceeds $100,000 by $24,200, rounded up to 25 steps of $200, so the
+    # $7,000 is reduced by $5,000 to $2,000.
+    auto_loan_interest_deduction: 2_000
