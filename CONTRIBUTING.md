@@ -17,6 +17,23 @@ uv run policyengine-core test policyengine_us/tests/path/to/test.yaml -c policye
 uv run pytest policyengine_us/tests/path/to/test_file.py::test_name -v
 ```
 
+### Certificate trust updates
+
+Use uv 0.13.4 or newer and synchronize the patched dependency lock with
+`uv sync --locked --extra dev`. Native HTTPS clients such as hf-xet also use
+the operating system's certificate store. On Debian or Ubuntu, update it with:
+
+```bash
+sudo apt-get update
+sudo apt-get install --only-upgrade --yes ca-certificates
+```
+
+Use the equivalent certificate-store update for other Linux distributions;
+on macOS, install the relevant operating system security updates. Restart
+running Python processes and notebook kernels after updating both dependency
+and system trust stores. CI updates and verifies the Linux system store before
+running model jobs.
+
 ### Memory: running suites locally
 
 `make test` runs the same suites as CI, one batched subprocess at a time
@@ -79,7 +96,14 @@ Every policy change here must also be correct in [rulespec-us](https://github.co
 
 ## Source conflicts
 
-When a statute conflicts with a regulation, form, instructions, manual or stated agency practice, PolicyEngine US's rule is to follow the statute. Forms and instructions fill gaps where the statute is silent. Every such conflict is recorded in the register that PolicyEngine shares with Axiom: `known-source-conflicts.yaml` in [rulespec-us](https://github.com/TheAxiomFoundation/rulespec-us). Its fields are defined in that repository's `tools/README.md`, under "Source-conflict register". A PR that takes such a reading, or finds one already in the code, does three things:
+When sources conflict, PolicyEngine US follows these principles (2026-10-20):
+
+- **Statute first.** When a statute conflicts with a form, instructions, a manual or stated agency practice, follow the statute. Forms and instructions fill gaps where the statute is silent.
+- **Regulations are law.** A Treasury regulation binds until a court sets it aside, so the statute-first rule doesn't override it. A regulation that flatly contradicts its statute isn't followed automatically: it goes to the project lead, who decides it case by case, and the ruling is recorded in the register.
+- **The agency breaks true ties.** Where the text and the canons don't settle a reading, follow the administering agency's reading, so the model matches what households receive.
+- **Canons:** definitions control; one meaning per section; no double deduction without a clear statement; specific over general; read timing rules so statutory deadlines can be met; and the operative words govern over form shortcuts.
+
+Every such conflict is recorded in the register that PolicyEngine shares with Axiom: `known-source-conflicts.yaml` in [rulespec-us](https://github.com/TheAxiomFoundation/rulespec-us). Its fields are defined in that repository's `tools/README.md`, under "Source-conflict register". A PR that takes such a reading, or finds one already in the code, does three things:
 
 1. **Add or update the entry in rulespec-us.**
    - Give each source's text and its kind (statute, regulation, form, instructions, manual, guidance, agency practice, ...).
