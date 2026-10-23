@@ -281,6 +281,23 @@ def _probe():
     del simulation
     gc.collect()
 
+    simulation = SimulationBuilder().build_from_entities(system, situation())
+    result["core_entities_builder"] = _snapshot(simulation, (2024, 2026))
+    del simulation
+    gc.collect()
+
+    for route, method in (
+        ("core_variables_builder", "build_from_variables"),
+        ("core_flat_dict_builder", "build_from_dict"),
+    ):
+        inputs = {"age": {2024: [70, 45]}}
+        for index, component in enumerate(COMPONENTS):
+            inputs[component] = {2024: [amounts[index] for amounts in AMOUNTS]}
+        simulation = getattr(SimulationBuilder(), method)(system, inputs)
+        result[route] = _snapshot(simulation, (2024, 2026))
+        del simulation
+        gc.collect()
+
     simulation = SimulationBuilder().build_from_dict(
         system, situation(include_benefits=False)
     )
@@ -522,6 +539,9 @@ def differential(tmp_path_factory):
         "complete_export_rewrite",
         "yaml_core_builder",
         "yaml_core_downstream",
+        "core_entities_builder",
+        "core_variables_builder",
+        "core_flat_dict_builder",
         "public_set_input",
         "clone",
         "branch",
