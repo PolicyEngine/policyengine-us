@@ -1,0 +1,291 @@
+# Wisconsin WHEAP countable gross income, PY2026 WHEAP Manual 3.3 and
+# Tables 3.4-3.6: wages of members 18 or older and not in high school,
+# self-employment and rental income netted across the household and floored at
+# zero, unearned income, Social Security and Railroad Retirement net of Medicare
+# premiums, interest and dividends of $120 or more per member, retirement
+# withdrawals at 73 or older, W-2 cash grants, less court-ordered child support
+# paid. Unemployment compensation is ignored.
+
+- name: Case 1, earnings of a 16-year-old and an 18-year-old high school student are excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 42_000
+      person2:
+        age: 16
+        employment_income: 3_000
+        self_employment_income: 1_200
+      person3:
+        age: 18
+        is_in_k12_school: true
+        employment_income: 2_500
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    # Manual 3.3.2 and Table 3.6: earnings of members under 18 and of high
+    # school students are ignored, including the 16-year-old's 1,200 of
+    # lawn-mowing self-employment income. Only the parent's 42,000 counts.
+    wi_wheap_countable_income: 42_000
+
+- name: Case 2, wages of an 18-year-old who has left high school count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 42_000
+      person2:
+        age: 18
+        is_in_k12_school: false
+        employment_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Age 18 is not under 18, so the exclusion does not apply:
+    # 42,000 + 6,000 = 48,000.
+    wi_wheap_countable_income: 48_000
+
+- name: Case 3, one member's business loss offsets another member's business and rental profit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 47
+        self_employment_income: 18_000
+        rental_income: 2_400
+      person2:
+        age: 45
+        sstb_self_employment_income: -5_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Manual 3.3.5: losses of one self-employment source offset profits of
+    # another, across household members, with rental income in the offset:
+    # 18,000 + 2,400 - 5,000 = 15,400.
+    wi_wheap_countable_income: 15_400
+
+- name: Case 4, a net household business loss counts as zero and does not reduce wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 39
+        employment_income: 30_000
+        rental_income: 1_200
+      person2:
+        age: 37
+        self_employment_income: -8_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Business group: 1,200 - 8,000 = -6,800, counted as 0; Manual 3.3.5 bars
+    # offsetting wages with a self-employment loss. Wages 30,000.
+    wi_wheap_countable_income: 30_000
+
+- name: Case 5, Social Security and Railroad Retirement count net of the Medicare Part B premium.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 21_600
+        medicare_part_b_premium: 2_434.80
+        ssi: 0
+      person2:
+        age: 68
+        railroad_benefits: 14_400
+        medicare_part_b_premium: 2_434.80
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Table 3.5: Medicare premiums are deducted from the benefit. 2026 Part B
+    # standard premium 202.90 x 12 = 2,434.80 each.
+    # (21,600 - 2,434.80) + (14,400 - 2,434.80) = 19,165.20 + 11,965.20.
+    wi_wheap_countable_income: 31_130.40
+
+- name: Case 6, interest and dividends count at 120 dollars per member but not at 119 dollars.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 52
+        employment_income: 35_000
+        taxable_interest_income: 80
+        qualified_dividend_income: 40
+      person2:
+        age: 50
+        taxable_interest_income: 119
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Manual 3.3.2 and Table 3.4: a member's combined interest and dividends
+    # count when at least 120 a year. person1 80 + 40 = 120 counts;
+    # person2 119 is ignored. 35,000 + 120 = 35,120.
+    wi_wheap_countable_income: 35_120
+
+- name: Case 7, retirement account withdrawals count at age 73 but not at age 72.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 73
+        taxable_ira_distributions: 9_000
+        ssi: 0
+      person2:
+        age: 72
+        taxable_ira_distributions: 6_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Manual 3.3.2 item g: all withdrawals count for an owner 73 or older;
+    # under 73 non-regular withdrawals are asset drawdowns (model counts 73+
+    # only). Only person1's 9,000 counts.
+    wi_wheap_countable_income: 9_000
+
+- name: Case 8, child support received counts and court-ordered child support paid is deducted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 36_000
+        child_support_received: 3_600
+      person2:
+        age: 40
+        employment_income: 28_000
+        child_support_expense: 4_200
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    # Manual 3.3.3 and Table 3.5: child support received counts; court-ordered
+    # child support paid is deducted.
+    # 36,000 + 28,000 + 3,600 - 4,200 = 63,400.
+    wi_wheap_countable_income: 63_400
+
+- name: Case 9, unemployment compensation is ignored while gambling winnings and W-2 cash count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 29
+        unemployment_compensation: 4_200
+        gambling_winnings: 650
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        tanf: 3_648
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Table 3.6 ignores unemployment insurance; Table 3.4 counts gambling
+    # winnings and W-2 cash grants (six months x 608 = 3,648).
+    # 650 + 3,648 = 4,298.
+    wi_wheap_countable_income: 4_298
+
+- name: Case 10, child support paid above income leaves countable income at zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 44
+        employment_income: 4_000
+        child_support_expense: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    # 4,000 - 6,000 = -2,000, floored at 0.
+    wi_wheap_countable_income: 0

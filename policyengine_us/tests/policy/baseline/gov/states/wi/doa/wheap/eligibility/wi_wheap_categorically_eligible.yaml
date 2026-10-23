@@ -1,0 +1,188 @@
+# Wisconsin WHEAP categorical eligibility: a household in which all members
+# receive W-2 cash (TANF), FoodShare (SNAP) or SSI passes the income test
+# (Wis. Stat. 16.27(5)(c); PY2026 WHEAP Manual 3.3.1). Annual receipt stands
+# in for receipt during the entire prior month.
+
+- name: Case 1, FoodShare household is categorically eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 31
+        employment_income: 22_000
+      person2:
+        age: 7
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        snap: 3_600
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    # FoodShare 300 a month covers the whole household.
+    wi_wheap_categorically_eligible: true
+
+- name: Case 2, household in which every member receives SSI is categorically eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 72
+        ssi: 8_946
+      person2:
+        age: 70
+        ssi: 8_946
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # 2026 SSI couple rate 1,491 a month, 745.50 each (8,946 a year each).
+    wi_wheap_categorically_eligible: true
+
+- name: Case 3, household with one member who does not receive SSI is not categorically eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        ssi: 11_928
+      person2:
+        age: 45
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Manual 3.3.1: every member must receive a qualifying benefit; the
+    # working adult receives none.
+    wi_wheap_categorically_eligible: false
+
+- name: Case 4, W-2 cash household is categorically eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 26
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        tanf: 7_296
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # W-2 Transitions grant 608 a month x 12 = 7,296.
+    wi_wheap_categorically_eligible: true
+
+- name: Case 5, FoodShare household with an undocumented member is not categorically eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        employment_income: 18_000
+      person2:
+        age: 6
+        immigration_status: CITIZEN
+      person3:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        snap: 4_800
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    # Manual 3.3.1 item 2(d): if some but not all members (including
+    # ineligible non-citizens) receive a qualifying benefit, the household is
+    # not categorical. FoodShare covers only the two citizen children.
+    wi_wheap_categorically_eligible: false
+
+- name: Case 6, household in which every member reports SSI receipt is categorically eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 72
+        receives_ssi: true
+        ssi: 0
+      person2:
+        age: 70
+        receives_ssi: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Receiving SSI = computed SSI above 0 or reported receipt (receives_ssi).
+    wi_wheap_categorically_eligible: true
+
+- name: Case 7, FoodShare household with a refugee member outside the FoodShare group is not categorically eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 36
+        immigration_status: REFUGEE
+        employment_income: 40_000
+      person2:
+        age: 34
+        immigration_status: CITIZEN
+      person3:
+        age: 6
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        snap: 900
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    # From July 2025, P.L. 119-21 limits SNAP to citizens, lawful permanent
+    # residents and Cuban/Haitian entrants (7 U.S.C. 2015(f)), so the refugee
+    # is excluded from the FoodShare group; FoodShare (75 a month) covers the
+    # citizen spouse and child only. The refugee receives no SSI or W-2, so not
+    # every member is a recipient (Manual 3.3.1 item 2(d)).
+    wi_wheap_categorically_eligible: false
