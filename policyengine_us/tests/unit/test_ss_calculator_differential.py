@@ -129,6 +129,15 @@ def _cached_reference_values(simulation):
     ]
 
 
+def _reference_simulation(situation):
+    """Let the US wrapper clone once and Core remove the feature once."""
+    return Simulation(
+        situation=deepcopy(situation),
+        tax_benefit_system=Simulation.default_tax_benefit_system_instance,
+        reform=WithoutHouseholdCalculator,
+    )
+
+
 @pytest.mark.parametrize(
     "situation",
     [
@@ -141,13 +150,7 @@ def _cached_reference_values(simulation):
     ids=("working", "early-retirement", "survivor", "disability", "own-record-couple"),
 )
 def test_calculator_off_matches_model_without_feature(situation):
-    isolated = Simulation.default_tax_benefit_system_instance.clone()
-    isolated.apply_reform_set(WithoutHouseholdCalculator)
-    reference = Simulation(
-        situation=deepcopy(situation),
-        tax_benefit_system=isolated,
-        reform=WithoutHouseholdCalculator,
-    )
+    reference = _reference_simulation(situation)
     off_inputs = deepcopy(situation)
     for person in off_inputs["people"].values():
         person["ss_calculator_source"] = "off"
@@ -197,19 +200,15 @@ def test_legacy_public_input_and_later_zero_override_survive(amount):
 def test_off_unselected_history_does_not_change_irmaa_lookback():
     """Calculator records are not a past-year tax return supplied to the model."""
     situation = _situation(75, (30_000, 0, 0, 0), investment_income=150_000)
-    isolated = Simulation.default_tax_benefit_system_instance.clone()
-    isolated.apply_reform_set(WithoutHouseholdCalculator)
-    reference = Simulation(
-        situation=deepcopy(situation),
-        tax_benefit_system=isolated,
-        reform=WithoutHouseholdCalculator,
-    )
+    reference = _reference_simulation(situation)
     situation["people"]["worker"].update(
         {
             "ss_calculator_source": "off",
             "ss_calculator_annual_earnings": {2020: 50_000},
             "ss_calculator_pre_fra_earnings": {2020: 20_000},
             "ss_calculator_withhold_cola": {2020: True},
+            "ss_calculated_retirement": {2020: 0},
+            "ss_calculated_payment": {"2020-01": 0},
         }
     )
     actual = Simulation(situation=situation)

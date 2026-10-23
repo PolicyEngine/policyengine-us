@@ -17,19 +17,18 @@ from policyengine_us.tools.social_security.cola import read_parameter_events
 
 
 def _simulation(*, situation, reform=None):
-    """Apply parameter-only variants to an isolated, processed runtime clone.
+    """Apply each variant once to the wrapper's isolated runtime clone.
 
-    Supplying the prepared system avoids reconstructing the full country for
-    every variant. Keep the reform argument as the Simulation baseline marker;
-    Core does not apply it again when a tax-benefit system is supplied.
+    Passing the processed default system avoids reconstructing the country.
+    The US wrapper clones supplied policy when a reform is present, and Core
+    then applies the reform. Precloning or preapplying here would duplicate
+    that work and keep a second full policy tree alive during construction.
     """
     if reform is None:
         return Simulation(situation=situation)
-    isolated = Simulation.default_tax_benefit_system_instance.clone()
-    isolated.apply_reform_set(reform)
     return Simulation(
         situation=situation,
-        tax_benefit_system=isolated,
+        tax_benefit_system=Simulation.default_tax_benefit_system_instance,
         reform=reform,
     )
 
@@ -274,7 +273,9 @@ def test_annual_earnings_input_is_allocated_to_entitlement_months_before_checks(
     assert simulation.calculate("ss_calculated_benefit", "2026-01")[0] == 0
     assert simulation.calculate("ss_calculated_payment", "2026-02")[0] == 0
     assert simulation.calculate("ss_calculated_payment", "2026-03")[0] == 1000
-    assert simulation.calculate("ss_calculated_annual_entitlement", 2026)[0] == 11000
+    # December entitlement includes the 3.6% COLA first paid January2027;
+    # that $36 increase belongs to this entitlement total, not 2026 checks.
+    assert simulation.calculate("ss_calculated_annual_entitlement", 2026)[0] == 11036
     assert simulation.calculate("ss_calculated_annual_payment", 2026)[0] == 10000
 
 
@@ -285,7 +286,7 @@ def test_s770_parameter_schedule_reaches_old_cohort_at_2026():
                 "worker": _record(
                     ss_calculator_source="aime",
                     ss_calculator_supplied_aime=5000,
-                    ss_calculator_birth_date="1960-01-02",
+                    ss_calculator_birth_date="1958-01-02",
                     ss_calculator_entitlement_month="2020-01",
                     ss_calculator_eligibility_year=2020,
                 )
