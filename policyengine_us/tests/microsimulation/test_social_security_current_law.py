@@ -365,6 +365,10 @@ def test_monthly_input_normalization_and_exact_multi_year_reads_match_original(
         person["social_security_retirement"] = {2024: 12_000, "2024-07": 500}
         person["social_security_disability"] = {"2024-07": 300}
         person["social_security_survivors"] = {"year:2024:2": 2_000}
+    for household in inputs["households"].values():
+        # Main's weighted API also needs an exact weight for this multi-year
+        # request; source migration does not change Core's weight semantics.
+        household["household_weight"] = {"year:2024:2": 1}
     original = reference_simulation(
         original_input_system, wrapper, situation=deepcopy(inputs)
     )

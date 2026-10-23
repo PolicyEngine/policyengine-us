@@ -8,7 +8,7 @@ class social_security_disability(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
-    label = "Social Security disability benefits"
+    label = "Social Security disability benefits (SSDI)"
     unit = USD
     documentation = "Selected source with applicable benefit levers; an explicit public input is a final override."
 

@@ -316,6 +316,9 @@ def test_exact_multi_year_sources_keep_keys_uniform_factors_and_overrides(wrappe
     reported = f"{public}_reported"
     multi_year = "year:2024:2"
     simulation = make_simulation(wrapper, {public: {multi_year: 24_000}})
+    # Core's weighted Microsimulation API needs a weight for this exact
+    # noncanonical request, just as it does for an exact public input on main.
+    simulation.set_input("household_weight", multi_year, [1])
     assert input_periods(simulation, public) == set()
     assert input_periods(simulation, reported) == {multi_year}
     assert amount(simulation, public, multi_year) == 24_000
@@ -331,16 +334,19 @@ def test_exact_multi_year_sources_keep_keys_uniform_factors_and_overrides(wrappe
         export_source_inputs(uniform), tax_benefit_system=system
     )
     assert input_periods(reloaded, reported) == {multi_year}
+    assert input_periods(reloaded, "household_weight") == {multi_year}
     assert amount(reloaded, public, multi_year) == pytest.approx(26_400)
     uniform.set_input(public, multi_year, [0])
     clone = uniform.clone(clone_tax_benefit_system=False)
     drop_inherited_values(clone)
+    assert input_periods(clone, "household_weight") == {multi_year}
     assert amount(clone, public, multi_year) == 0
     override_reload = reload_source_inputs(
         export_source_inputs(clone), tax_benefit_system=system
     )
     assert amount(override_reload, public, multi_year) == 0
     assert amount(override_reload, reported, multi_year) == 24_000
+    assert input_periods(override_reload, "household_weight") == {multi_year}
 
 
 def test_exact_multi_year_both_names_and_neutralization_keep_core_precedence(
