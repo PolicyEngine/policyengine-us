@@ -8,3 +8,4 @@ class id_additions(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.ID
+    adds = ["id_other_additions"]

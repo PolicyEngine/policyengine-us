@@ -15,6 +15,9 @@ GROUP_WORKFLOWS = {
 PYTHON_JOBS = GROUP_WORKFLOWS["PythonTests"]["jobs"]
 PUSH_JOBS = yaml.safe_load((ROOT / ".github/workflows/push.yaml").read_text())["jobs"]
 KEEP_RUNNING = "${{ !cancelled() }}"
+KEEP_RUNNING_WITH_SYSTEM_CA = (
+    "${{ !cancelled() && steps.system-ca.outcome == 'success' }}"
+)
 
 
 def action(name):
@@ -192,21 +195,35 @@ def test_sequential_variants_preserve_failures_and_allow_later_results():
     ):
         variants = calls(job, name)
         assert [step["with"][key] for step in variants] == expected
-        assert all(step["if"] == KEEP_RUNNING for step in variants[1:])
+        assert all(step["if"] == KEEP_RUNNING_WITH_SYSTEM_CA for step in variants[1:])
         # A failure must remain a job failure even if a later variant passes.
         assert not JOBS[job].get("continue-on-error")
         assert all(
             not step.get("continue-on-error")
             for step in JOBS[job]["steps"] + action(name)
         )
-    # A wheel failure must not suppress metadata or any Python version.
+    # A wheel failure must not suppress metadata or any Python version once
+    # system trust setup succeeds. A failed trust check must stop every variant.
     checks = [
         step
         for step in JOBS["PackageCompatibility"]["steps"]
         if step.get("uses", "").startswith("./.github/actions/")
+        and step["uses"] != "./.github/actions/setup-system-ca"
     ]
     assert len(checks) == 7
-    assert all(step["if"] == KEEP_RUNNING for step in checks[1:])
+    # The first wheel keeps the implicit success() gate after trust setup.
+    assert "if" not in checks[0]
+    assert all(step["if"] == KEEP_RUNNING_WITH_SYSTEM_CA for step in checks[1:])
+
+
+def test_package_variants_verify_system_trust_before_setting_up_environments():
+    steps = JOBS["PackageCompatibility"]["steps"]
+    (setup,) = calls("PackageCompatibility", "setup-system-ca")
+    assert setup["id"] == "system-ca"
+    assert "if" not in setup
+    assert not setup.get("continue-on-error")
+    assert steps[0]["uses"].startswith("actions/checkout@")
+    assert steps[1] == setup
 
 
 def test_variants_use_distinct_clean_checkouts_for_locks_environments_and_outputs():
@@ -247,7 +264,7 @@ def test_variants_use_distinct_clean_checkouts_for_locks_environments_and_output
 
 def test_bundle_contract_keeps_its_dependency_and_separate_environment():
     (call,) = calls("PackageCompatibility", "bundle-metadata")
-    assert call["if"] == KEEP_RUNNING
+    assert call["if"] == KEEP_RUNNING_WITH_SYSTEM_CA
     steps = action("bundle-metadata")
     assert steps[0]["with"] == {"path": "bundle-metadata"}
     assert steps[1]["with"]["python-version"] == "3.14"

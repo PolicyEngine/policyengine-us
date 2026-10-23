@@ -80,6 +80,18 @@ programs:
     verified_start_year: 2021
     notes: Nationwide rules
     state_implementations:
+      - state: AR
+        status: complete
+        name: Arkansas reduced-price meal copay coverage and free breakfast
+        effective: 2023-08-01
+        notes: Both-meal copay coverage for K-12 public school students from SY2023-24; free breakfast for every public school student from SY2025-26.
+        reference: Act 656 of 2023 (SB 477); Ark. Att'y Gen. Op. No. 2023-031; Act 123 of 2025 (SB 59); A.C.A. § 6-18-722
+      - state: AZ
+        status: complete
+        name: Arizona reduced-price meal copay coverage
+        effective: 2023-01-01
+        notes: Both-meal copay coverage from January 2023 through SY2026-27, paid from one-time federal ESSER money and then one-time state appropriations; it ends June 30, 2027 with the last enacted appropriation.
+        reference: ADE HNS 10-2022; Laws 2024, ch. 209 (HB 2897); ADE HNS 06-2024; Laws 2025, ch. 233 (SB 1735); ADE HNS 07-2025; Laws 2026, ch. 126 (SB 1847); ADE HNS 08-2026
       - state: CA
         status: complete
         name: California universal meals
@@ -87,50 +99,217 @@ programs:
         reference: AB 130 (2021); Cal. Educ. Code § 49501.5
       - state: CO
         status: complete
+        name: Colorado reduced-price meal copay coverage
+        effective: 2007-07-01
+        notes: Breakfast-only copay coverage from SY2007-08 (Start Smart Nutrition Program); both meals from SY2019-20, when the Child Nutrition School Lunch Protection Program reached grade 12 (grade-limited lunch coverage before then is not modeled); superseded by universal meals from SY2023-24.
+        reference: SB 07-059 (C.R.S. § 22-82.7-104); HB 19-1171 (C.R.S. § 22-82.9-105)
+      - state: CO
+        status: partial
         name: Colorado Healthy School Meals for All
         effective: 2023-07-01
+        notes: School food authorities opt in (C.R.S. § 22-82.9-204(2)). Partial because the model treats the program as covering every student.
         reference: HB 22-1414 / Proposition FF (2022); C.R.S. § 22-82.9-201 et seq.
+      - state: CT
+        status: partial
+        name: Connecticut SMART funds universal meals
+        effective: 2022-07-01
+        notes: SY2022-23 only. School food authorities that opted in served breakfast and lunch free to all students until their first allocation ran out and again from March 1, 2023. Partial because the model treats this opt-in, funding-limited program as covering every student for the whole year.
+        reference: P.A. 22-118 § 10 (CSDE OM 14-22); P.A. 23-1 § 1 (CSDE OM 06-23)
+      - state: CT
+        status: partial
+        name: Connecticut reduced-price meal copay coverage and free breakfast
+        effective: 2023-07-01
+        notes: STABLE (SY2023-24) and RISE (SY2026-27) funded free breakfast for all students and free lunch for reduced-price students; STAR (SY2024-25) covered both reduced-price copays; SY2025-26 had no state funding. Partial because STABLE and RISE were school food authority opt-in programs, which the model treats as covering every student.
+        reference: P.A. 23-204 (CSDE OM 18-23); P.A. 24-81 § 242 (CSDE OM 16-24); P.A. 26-68 (CSDE OM 13-26)
+      - state: DC
+        status: complete
+        name: District of Columbia Healthy Schools Act meals
+        effective: 2010-08-01
+        notes: Free breakfast for all students, and free breakfast and lunch for reduced-price students, at public and public charter schools.
+        reference: D.C. Law 18-209 (Healthy Schools Act of 2010), §§ 203, 802; D.C. Code § 38-822.03
+      - state: DE
+        status: complete
+        name: Delaware reduced-price meal copay coverage and free breakfast
+        effective: 2024-07-01
+        notes: Both-meal copay coverage at public district and charter schools from SY2024-25; free breakfast for all students at public schools in the School Breakfast Program from SY2025-26, excluding CEP and Provision 1-3 schools.
+        reference: 84 Del. Laws c. 317 (14 Del. C. § 4137A); 85 Del. Laws c. 110 (14 Del. C. § 4137C); 85 Del. Laws c. 65, § 33
+      - state: HI
+        status: complete
+        name: Hawaii reduced-price meal copay coverage and expanded free meals
+        effective: 2025-07-01
+        notes: Both-meal copay coverage from SY2025-26; free meals up to 300% of the Hawaii poverty guideline at department schools from SY2026-27.
+        reference: Act 139, SLH 2025 (SB 1300 CD1); HRS § 302A-404(b)-(c)
+      - state: LA
+        status: complete
+        name: Louisiana reduced-price meal copay coverage
+        effective: 2023-07-01
+        notes: Both-meal copay coverage for K-12 students from SY2023-24, effective July 1, 2023 with the HB 1 (Act 447) appropriation; not limited to public schools.
+        reference: Act 305 of 2023 (HB 282); Act 447 of 2023 (HB 1); La. R.S. 17:192(B)(3)
       - state: MA
         status: complete
         name: Massachusetts universal meals
-        effective: 2023-07-01
-        reference: FY2024 Budget — Ch. 28 of the Acts of 2023, Outside Sections
+        effective: 2022-07-01
+        notes: Universal through the FY2023 budget in SY2022-23 and by statute from SY2023-24.
+        reference: FY2023 Budget — St. 2022, c. 126, item 7053-1925; FY2024 Budget — Ch. 28 of the Acts of 2023, Outside Sections; M.G.L. c. 69, § 1C(a)(1)
+      - state: MD
+        status: complete
+        name: Maryland reduced-price meal copay coverage
+        effective: 2021-07-01
+        notes: Reduced-price breakfast free from FY2022 and both meals free from FY2023, at county boards and nonpublic schools that opt in.
+        reference: Md. Code, Educ. § 7-602(e)
+      - state: ME
+        status: complete
+        name: Maine reduced-price meal copay coverage
+        effective: 2008-06-30
+        notes: Breakfast-only copay coverage at public schools from SY2008-09; both meals from SY2019-20; superseded by universal meals.
+        reference: P.L. 2007, c. 539, Part IIII; P.L. 2019, c. 343, Part NNNN; 20-A M.R.S. § 6602(1)(B), (D)
       - state: ME
         status: complete
         name: Maine School Meals for All
         effective: 2022-07-01
-        reference: LD 1679 / PL 2021 c.719 (enacted May 2022); 20-A M.R.S. § 6602
+        notes: The act was approved July 1, 2021, but the program took effect with SY2022-23, its first funded year; federal waivers made SY2021-22 meals free.
+        reference: LD 221 / P.L. 2021, c. 398, Part OOOO (approved July 1, 2021); 20-A M.R.S. § 6602(1)(H)-(I)
       - state: MI
-        status: complete
+        status: partial
         name: Michigan School Meals
         effective: 2023-07-01
-        reference: PA 103 of 2023 (SB 0173); MCL 388.1630d
+        notes: Universal free meals funded by annual School Aid Act § 30d allocations; ends September 30, 2027 with the last enacted allocation (2026 PA 25). Partial because participating entities opt in, and the model treats the program as covering every student.
+        reference: PA 103 of 2023 (SB 0173); MCL 388.1630d; 2026 PA 25, § 30d
+      - state: MN
+        status: complete
+        name: Minnesota reduced-price meal copay coverage
+        effective: 2003-07-01
+        notes: Breakfast-only copay coverage at schools receiving state breakfast aid from SY2003-04; both meals from SY2014-15; superseded by universal meals from SY2023-24.
+        reference: Laws 2003, 1st Sp., c. 9, art. 5, § 6; Laws 2014, c. 312, art. 19, §§ 1-4; Minn. Stat. §§ 124D.111, subd. 4, 124D.1158, subd. 4
       - state: MN
         status: complete
         name: Minnesota Free School Meals for Kids
         effective: 2023-07-01
-        reference: HF 5 (2023); Minn. Stat. § 124D.111
+        reference: Laws 2023, c. 18 (HF 5); Minn. Stat. § 124D.111, subd. 1c
       - state: NC
         status: complete
         name: North Carolina reduced-price meal copay coverage
-        effective: 2020-07-01
-        notes: Both-meal copay coverage in SY2020-21 and from SY2022-23 onward; the SY2021-22 state provision covers breakfast only. Assumes a covered school participating in both meal programs.
+        effective: 2011-07-01
+        notes: Breakfast-only copay coverage from SY2011-12 through SY2019-20 and in SY2021-22; both-meal copay coverage in SY2020-21 and from SY2022-23 onward. Assumes a covered school participating in both meal programs.
         reference: G.S. 115C-264(a1) (S.L. 2025-89 § 2A.8); S.L. 2023-134 § 7.58; S.L. 2022-74 § 7.3; S.L. 2020-80 § 2.3.(b); S.L. 2011-342 § 1
+      - state: ND
+        status: complete
+        name: North Dakota expanded free meals
+        effective: 2023-07-01
+        notes: Free meals up to 200% of the federal poverty guideline in the 2023-25 biennium and 225% in the 2025-27 biennium; it ends June 30, 2027 with the enacted biennium. The $6 million grant cap per biennium is not modeled.
+        reference: S.B. 2284 (2023), § 17; H.B. 1013 (2025), § 12
+      - state: NE
+        status: complete
+        name: Nebraska Hunger-Free Schools Act
+        effective: 2026-07-01
+        notes: No charge to reduced-price students for either meal from SY2026-27 through SY2031-32, the statutory pilot period; the Department of Education requires every school food authority outside CEP to charge them $0, with no application.
+        reference: LB966 (2026), Hunger-Free Schools Act, §§ 3-4
+      - state: NH
+        status: partial
+        name: New Hampshire reduced-price breakfast coverage
+        effective: 2019-07-01
+        notes: Breakfast only. Partial because schools apply for the state reimbursement, which the model treats as covering every school.
+        reference: RSA 189:11-a, VII(b)
+      - state: NJ
+        status: complete
+        name: New Jersey reduced-price meal copay coverage and expanded free meals
+        effective: 2020-07-19
+        notes: Both-meal copay coverage at public schools from July 2020; free meals up to 199% of the federal poverty level from September 1, 2023 and 224% from SY2024-25, excluding CEP sites; after SY2024-25 free lunch above 185% rests on annual Working Class Families State Supplement appropriations through June 30, 2027, while free breakfast up to 224% is standing law; nonpublic schools added January 16, 2024.
+        reference: P.L.2019, c.445 (N.J.S.A. 18A:33-21.1); P.L.2022, c.104; P.L.2023, c.336; P.L.2025, c.74; P.L.2026, c.27
+      - state: NM
+        status: complete
+        name: New Mexico reduced-price meal copay coverage
+        effective: 2020-07-01
+        notes: Both-meal copay coverage at school districts and charter schools from SY2020-21; superseded by universal meals from SY2023-24.
+        reference: HB 10 (2020)
       - state: NM
         status: complete
         name: New Mexico Healthy Universal School Meals
         effective: 2023-07-01
         reference: SB 4 (2023), Chapter 30, § 3; N.M. Stat. § 22-13C-4(A)
+      - state: NV
+        status: complete
+        name: Nevada universal meals
+        effective: 2022-07-01
+        notes: SY2022-23 and SY2023-24 only, funded with state American Rescue Plan Act money.
+        reference: Interim Finance Committee approval of State ARPA funds (June 21, 2022); Nevada Department of Agriculture Food and Nutrition Board reports (August 31, 2023; June 4, 2024)
+      - state: NY
+        status: complete
+        name: New York reduced-price meal copay coverage
+        effective: 2019-07-01
+        notes: Both-meal copay coverage from SY2019-20 through SY2024-25, funded by annual Aid to Localities appropriations; superseded by universal meals (Education Law § 915-a) from SY2025-26.
+        reference: Laws of 2019-2024, ch. 53 (Aid to Localities), Education Department, student cost of reduced price meals; NYSED 2019-2020 Adult/Student Selling Prices
       - state: NY
         status: complete
         name: New York Universal Free School Meals
         effective: 2025-07-01
         reference: Chapter 56 of the Laws of 2025 (S3006C/A3006C, FY26 ELFA Article VII); NY Education Law § 915-a
+      - state: OH
+        status: complete
+        name: Ohio reduced-price meal copay coverage
+        effective: 2023-10-03
+        notes: Both-meal copay coverage at public and chartered nonpublic schools.
+        reference: ORC § 3313.819(B); ORC § 3301.91
+      - state: OR
+        status: complete
+        name: Oregon reduced-price meal coverage and expanded free meals
+        effective: 2009-08-04
+        notes: Reduced-price breakfast free from SY2009-10 and lunch from SY2015-16; free meals up to 300% of the federal poverty guidelines at public schools outside CEP from SY2021-22.
+        reference: Oregon Laws 2009, c. 885, §§ 49-50; Oregon Laws 2015, c. 718; Oregon Laws 2021, c. 119 (HB 2536); ORS 327.531, 327.535
+      - state: PA
+        status: complete
+        name: Pennsylvania universal free breakfast and reduced-price lunch coverage
+        effective: 2022-10-01
+        notes: Free breakfast for all students from October 1, 2022 (the Governor's Universal Free Breakfast Program for SY2022-23, then the FY2023-24 budget and Act 33) and free lunch for reduced-price students from SY2023-24, to the extent funds are available.
+        reference: Governor's news release, September 9, 2022; Act 33 of 2023; 24 P.S. § 13-1337.1(c.2)
+      - state: RI
+        status: complete
+        name: Rhode Island reduced-price meal copay coverage
+        effective: 2024-07-01
+        notes: Both-meal copay coverage at public schools from FY2025, to the extent funds are available.
+        reference: P.L. 2024, ch. 117; R.I. Gen. Laws §§ 16-8-10, 16-8-10.1
+      - state: SC
+        status: complete
+        name: South Carolina reduced-price meal copay coverage and free breakfast
+        effective: 2024-07-01
+        notes: Both-meal copay coverage under annual budget provisos from FY2024-25, and free breakfast for all public school students in SY2026-27; both end June 30, 2027 with the last enacted proviso.
+        reference: FY2024-25 Proviso 1.115; FY2025-26 Proviso 1.109; FY2026-27 Proviso 1.103
+      - state: SD
+        status: complete
+        name: South Dakota reduced-price meal copay coverage
+        effective: 2026-07-01
+        notes: Public school districts may not charge reduced-price students for either meal.
+        reference: 2026 S.D. Sess. Laws ch. 84 (HB 1082)
+      - state: TX
+        status: complete
+        name: Texas reduced-price meal copay coverage
+        effective: 2023-09-01
+        notes: Breakfast-only copay coverage from September 1, 2023 and both meals from September 1, 2025 under General Appropriations Act riders; it ends August 31, 2027 with the enacted riders.
+        reference: GAA 2024-25, Art. IX, § 17.19(b); GAA 2026-27, Art. VI, Department of Agriculture riders 29, 31
+      - state: UT
+        status: partial
+        name: Utah reduced-price lunch coverage
+        effective: 2025-07-01
+        notes: Lunch only, for K-12 students at LEAs in the National School Lunch Program, under a standing statute. Partial because reimbursement depends on appropriations (one-time money for FY2026 and FY2027 so far); LEAs are reimbursed pro rata if funds fall short and may ask parents to cover the remaining cost.
+        reference: H.B. 100 (2025); Utah Code § 53F-2-423; S.B. 3 (2025), Item 356; S.B. 2 (2026), Item 12
+      - state: VT
+        status: complete
+        name: Vermont reduced-price meal copay coverage
+        effective: 2010-04-28
+        notes: Breakfast-only copay coverage in force by 2010 (earlier start unverified); both meals from July 1, 2013; superseded by universal meals from SY2022-23.
+        reference: Act 87 of 2010 (H.408); Act 50 of 2013 (H.530), Sec. E.501.2; 16 V.S.A. § 1264(c)
       - state: VT
         status: complete
         name: Vermont Universal School Meals
-        effective: 2023-07-01
-        reference: Act 64 / H.165 (2023); 16 V.S.A. § 4017
+        effective: 2022-07-01
+        notes: Universal under Act 151 in SY2022-23 and permanently under Act 64 from SY2023-24.
+        reference: Act 151 of 2022 (S.100); Act 64 / H.165 (2023); 16 V.S.A. §§ 1264(a)(1)(B), 4017
+      - state: WA
+        status: complete
+        name: Washington reduced-price meal copay coverage
+        effective: 2006-07-01
+        notes: Breakfast-only copay coverage from FY2007 (2006 supplemental budget) through FY2021 (K-3 lunch coverage from FY2008 is not modeled); both meals from SY2021-22 (lunch by statute, breakfast by budget proviso through June 30, 2027); lunch only from July 1, 2027.
+        reference: ESSB 6386 (2006 c 372), § 512; RCW 28A.235.160(7); ESSB 5092 (2021 c 334), §§ 508, 1505; ESSB 5167 (2025 c 424), §§ 508, 1506
 
   - id: summer_ebt
     name: Summer EBT
@@ -808,8 +987,54 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: DC, Riverside County, MA, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OR, TX
+    coverage: AR, AL, DC, GA, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX
     state_implementations:
+      - state: AL
+        status: partial
+        name: Alabama LIHEAP
+        full_name: Alabama Low Income Home Energy Assistance Program
+        variable: al_liheap
+        parameter_prefix: gov.states.al.adeca.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating with the HUD allowance deduction and the funded IIJA supplement. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: AR
+        status: partial
+        name: Arkansas LIHEAP
+        full_name: Arkansas Low Income Home Energy Assistance Program
+        variable: ar_liheap
+        parameter_prefix: gov.states.ar.ee.aeo.liheap
+        notes: FY2025-FY2026 regular heating matrices and income limits are checked; income rules follow the FFY 2025 manual (no FY2026 manual was found), and other years are unverified. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: GA
+        status: partial
+        name: Georgia LIHEAP
+        full_name: Georgia Low Income Home Energy Assistance Program
+        variable: ga_liheap
+        parameter_prefix: gov.states.ga.dfcs.liheap
+        verified_years: "2025-2026"
+        notes: FY2025-FY2026 regular heating only, with the published fuel matrix and the bundled-utility rental payment. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: OH
+        status: partial
+        name: Ohio HEAP
+        full_name: Ohio Home Energy Assistance Program
+        variable: oh_liheap
+        parameter_prefix: gov.states.oh.odjfs.liheap
+        notes: Regular heating only, without the PIPP reduction; crisis, cooling and weatherization assistance are out of scope. Payment coefficients after 2023 are estimates from workbook covers and published benefit ranges, so no full benefit year is verified.
+      - state: OK
+        status: partial
+        name: Oklahoma LIHEAP
+        full_name: Oklahoma Low Income Home Energy Assistance Program
+        variable: ok_liheap
+        parameter_prefix: gov.states.ok.dhs.liheap
+        verified_years: "2025-2027"
+        notes: FY2025-FY2027 regular winter heating only, using the Appendix C-7-A payment matrix. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: RI
+        status: partial
+        name: Rhode Island LIHEAP
+        full_name: Rhode Island Low Income Home Energy Assistance Program
+        variable: ri_liheap
+        parameter_prefix: gov.states.ri.dhs.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating, including heat-in-rent grants and the $350 utility enhancement, assuming a qualifying utility account. Earlier years and FY2027 payments reuse FY2026 amounts as unverified estimates; crisis, cooling and weatherization are out of scope.
       - state: DC
         status: complete
         name: DC LIHEAP
@@ -822,6 +1047,13 @@ programs:
         full_name: Massachusetts Low Income Home Energy Assistance Program
         variable: ma_liheap
         parameter_prefix: gov.states.ma.doer.liheap
+      - state: FL
+        status: partial
+        name: Florida LIHEAP
+        full_name: Florida Low Income Home Energy Assistance Program
+        variable: fl_liheap
+        parameter_prefix: gov.states.fl.commerce.liheap
+        notes: Regular heating for FY2025-FY2026; FY2026 limits use 60% of state median income for every size, departing from contract wording for large households and from the printed size-13 row. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: IL
         status: complete
         name: Illinois LIHEAP
@@ -908,6 +1140,13 @@ programs:
         parameter_prefix: gov.states.or.ohcs.liheap
         verified_years: "2025-2027"
         notes: PY2025-PY2027 regular heating only, with the two county regions, five fuel columns and the roomer half payment. Crisis, cooling, Fuel Payment, equipment and OEAP assistance are out of scope.
+      - state: SD
+        status: partial
+        name: South Dakota LIEAP
+        full_name: South Dakota Low Income Energy Assistance Program
+        variable: sd_liheap
+        parameter_prefix: gov.states.sd.dss.liheap
+        notes: FY2024-FY2026 regular heating only; mixed-status income is counted in full and FY2026 Mid thresholds are inferred, so no year is verified. Crisis, cooling and weatherization are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP
@@ -1105,6 +1344,19 @@ programs:
           tracks. Unmodeled paths: grandfathered medically-needy-in-medical-
           institution recipients per WAC 388-478-0055(2)(b); DDA-determined /
           PVL track per (2)(f); and foster child in BRS per (2)(g).
+      - state: WI
+        status: partial
+        name: Wisconsin SSP
+        full_name: Wisconsin State SSI Supplement
+        variable: wi_ssp
+        parameter_prefix: gov.states.wi.dhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models 2026 regular State SSI Supplement, certified Exceptional
+          Expense (SSI-E) and Caretaker Supplement payments, including the May
+          2026 regular and SSI-E rate increase. Grandfathered state-only SSI recipients are not modeled;
+          without parent IDs the Caretaker Supplement pays one SSI parent per
+          family, and groups over 12 need a supplied net income limit.
       - state: NJ
         status: partial
         name: New Jersey SSP
@@ -1116,6 +1368,16 @@ programs:
           Models 2026 New Jersey optional supplement rates by living
           arrangement, including the ineligible-spouse variation. Mandatory
           grandfathered supplementation is not modeled.
+      - state: NH
+        status: partial
+        name: New Hampshire SSP
+        full_name: New Hampshire State Supplement Program
+        variable: nh_ssp
+        parameter_prefix: gov.states.nh.dhhs.ssp
+        verified_years: '2026'
+        notes: Models 2026 adult category cash assistance (OAA, ANB and APTD) for independent
+          living, certified community care, couples and needy essential persons. Conditional
+          resources, sanctions and grandfathered benefits are not modeled.
       - state: PA
         status: partial
         name: Pennsylvania SSP
@@ -1129,6 +1391,17 @@ programs:
           homes, plus the institutional Supplement for Personal Needs.
           Mandatory grandfathered and essential-person supplements and
           ancillary facility subsidies are not modeled.
+      - state: OR
+        status: partial
+        name: Oregon SSP
+        full_name: Oregon State Supplemental Payment
+        variable: or_ssp
+        parameter_prefix: gov.states.or.odhs.ssp
+        verified_years: "2026"
+        notes: Models 2026 OSIPM in-home, SSI couple community care, transitional personal
+          incidentals/room and board, spousal diversion, special room-and-board and nursing
+          facility personal incidentals payments. Other special needs and historical mandatory
+          supplements are not modeled.
       - state: WY
         status: partial
         name: Wyoming SSP
@@ -1148,6 +1421,107 @@ programs:
         verified_years: '2026'
         notes: Models 2026 basic and enhanced facility and in-home payments, including lower contracted
           rates and first-month proration. Open/shut and discharge payments are not modeled.
+      - state: MT
+        status: partial
+        name: Montana SSP
+        full_name: Montana State Supplementary Payment
+        variable: mt_ssp
+        parameter_prefix: gov.states.mt.dphhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models 2026 Montana optional supplements for state-certified
+          personal care, group home, foster care and transitional living
+          placements. Mandatory grandfathered supplementation and out-of-state
+          custody placements are not modeled.
+      - state: OK
+        status: partial
+        name: Oklahoma SSP
+        full_name: Oklahoma State Supplemental Payment
+        variable: ok_ssp
+        parameter_prefix: gov.states.ok.dhs.ssp
+        verified_years: '2026'
+        notes: Models the 2026 community supplement for individuals, couples and individuals with
+          an ineligible spouse. Essential spouses, persons in a TANF case and grandfathered
+          institutional payments are not modeled.
+      - state: OH
+        status: partial
+        name: Ohio RSS
+        full_name: Ohio Residential State Supplement
+        variable: oh_rss
+        parameter_prefix: gov.states.oh.dbh.rss
+        verified_years: "2026"
+        notes: >-
+          Models 2026 payments for approved residential placements, including
+          first-month proration. Care certification is an input, so
+          microsimulation pays no RSS; PASS and specialized work-expense
+          exclusions are not modeled.
+      - state: NY
+        status: partial
+        name: New York SSP
+        full_name: New York State Supplement Program
+        variable: ny_ssp
+        parameter_prefix: gov.states.ny.otda.ssp
+        verified_years: '2026'
+        notes: Models 2026 living alone, living with others and congregate care supplements with
+          downstate premiums, plus the medical facility personal needs allowance. Grandfathered
+          mandatory payments are not modeled.
+      - state: RI
+        status: partial
+        name: Rhode Island SSP
+        full_name: Rhode Island State Supplementary Payment
+        variable: ri_ssp
+        parameter_prefix: gov.states.ri.dhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models 2026 optional living-arrangement supplements and Title XIX
+          facility personal-needs payments. Mandatory grandfathered payments,
+          facility subsidies and the statutory supportive residential-care
+          category are not modeled.
+      - state: SD
+        status: partial
+        name: South Dakota SSP
+        full_name: South Dakota State Supplemental Payment
+        variable: sd_ssp
+        parameter_prefix: gov.states.sd.dss.ssp
+        verified_years: "2026"
+        notes: Models 2026 independent living and certified nonwaiver assisted living/adult foster
+          care supplements. Out-of-state placements, historical mandatory supplements and claim
+          administration are not modeled.
+      - state: UT
+        status: partial
+        name: Utah SSP
+        full_name: Utah State Supplemental Payment
+        variable: ut_ssp
+        parameter_prefix: gov.states.ut.dhhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models the 2026 Department of Workforce Services supplement, paid
+          quarterly to SSI recipients and over-income applicants other than
+          single individuals living alone, and the $15 monthly payment to SSI
+          recipients in Medicaid-funded medical institutions. The over-income
+          path has no take-up, so microsimulation pays far more people than
+          the program reaches.
+      - state: VA
+        status: partial
+        name: Virginia Auxiliary Grant
+        full_name: Virginia Auxiliary Grant
+        variable: va_ag
+        parameter_prefix: gov.states.va.dars.ag
+        verified_years: '2026'
+        notes: Models 2026 locality rates and SSI and non-SSI budgets for certified assisted living,
+          adult foster care and supportive housing residents. Conditional resource benefits and
+          historical grandfathering are not modeled.
+      - state: VT
+        status: partial
+        name: Vermont optional AABD
+        full_name: Vermont Aid to the Aged, Blind or Disabled optional supplement
+        variable: vt_aabd
+        parameter_prefix: gov.states.vt.dcf.aabd
+        verified_years: "2026"
+        notes: >-
+          Models 2026 federally administered supplements and state Essential Person
+          grants. Mandatory grandfathered payments and the state-administered
+          limited-nursing Level III supplement are not modeled.
 
   - id: social_security
     name: Social Security
@@ -1224,6 +1598,18 @@ programs:
     parameter_prefix: gov.ed.pell_grant
     verified_start_year: 2023
     notes: EFC params (head/dependent assessment rates, amount limits) from 2023; SAI formula from 2024
+
+  - id: repayment_assistance_plan
+    name: Repayment Assistance Plan
+    full_name: Federal student loan Repayment Assistance Plan
+    category: Education
+    agency: ED
+    status: partial
+    coverage: US
+    variable: repayment_assistance_plan_payment
+    parameter_prefix: gov.ed.student_loans.repayment_assistance_plan
+    verified_start_year: 2026
+    notes: Monthly payment from July 2026 (base payment, dependent reduction, $10 minimum, spousal proration, final-payment cap) from balance inputs; interest subsidy, principal match and forgiveness not modeled; not subtracted from household net income
 
   # --- Federal tax credits ---
   - id: education_tax_credits

@@ -1,0 +1,648 @@
+- name: Case 1, a working spouse's earnings are deemed with no threshold.
+  # The client is 62 with no income. The spouse, 50, earns $1,500/month and
+  # does not take up Medicaid. 9 CCR 2503-5 3.534(A):
+  # (1,500 - 65) / 2 = 717.50/month, or 8,610/year. The spouse is not
+  # OAP-eligible, so nothing is deemed the other way.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        employment_income: 18_000
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_oap_deeming_exempt: [false, false]
+    co_oap_deemed_income: [8_610, 0]
+
+- name: Case 2, a spouse on Medicaid with income within the OAP limit has nothing deemed.
+  # Same couple, with the spouse enrolled in Medicaid. The spouse's own
+  # countable income, (1,500 - 65 - 10) / 2 = 712.50, is within the $1,032
+  # limit, so 3.534(C) deems none of it.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        employment_income: 18_000
+        medicaid_enrolled: true
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_oap_own_countable_income: [0, 8_550]
+    co_oap_deeming_exempt: [false, true]
+    co_oap_deemed_income: [0, 0]
+
+- name: Case 3, a spouse's unearned income above the grant standard is deemed.
+  # The spouse, 50, has a $1,500/month pension. 3.534(B)(2):
+  # 1,500 - 1,032 = 468/month, or 5,616/year.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        pension_income: 18_000
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_oap_deemed_income: [5_616, 0]
+
+- name: Case 4, the spouse's court-ordered child support is deducted.
+  # As Case 3, with $200/month of child support paid. 3.534(B)(5):
+  # 1,500 - 1,032 - 200 = 268/month, or 3,216/year.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        pension_income: 18_000
+        child_support_expense: 2_400
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_oap_deemed_income: [3_216, 0]
+
+- name: Case 5, an allocation for a dependent child with no income.
+  # The spouse, 50, has a $2,000/month pension; their child, 10, has no
+  # income. 3.534(B)(3) deducts half the $994 SSI benefit standard:
+  # 2,000 - 1,032 - 497 = 471/month, or 5,652/year.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        pension_income: 24_000
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CO
+  output:
+    co_oap_deemed_income: [5_652, 0, 0]
+
+- name: Case 6, the child allocation is reduced by the child's own income.
+  # As Case 5, with the child receiving $100/month of Social Security
+  # survivor benefits. The
+  # allocation is 497 - 100 = 397: 2,000 - 1,032 - 397 = 571/month, or
+  # 6,852/year.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        pension_income: 24_000
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        social_security_survivors: 1_200
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CO
+  output:
+    co_oap_deemed_income: [6_852, 0, 0]
+
+- name: Case 7, a spouse on SSI has nothing deemed.
+  # The spouse, 66, earns $1,000/month. SSI counts (1,000 - 20 - 65) / 2 =
+  # 457.50 and pays 536.50. The spouse's OAP income, (1,000 - 65) / 2 +
+  # 536.50 = 1,004, is within the $1,032 limit, so 3.534(C) deems nothing.
+  # 3.534(A) would otherwise deem (1,000 - 65) / 2 = 467.50.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 66
+        employment_income: 12_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [0, 6_438]
+    co_oap_deeming_exempt: [true, true]
+    co_oap_deemed_income: [0, 0]
+
+- name: Case 8, spousal earnings under $65 deem nothing.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        employment_income: 600
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_oap_deemed_income: [0, 0]
+
+- name: Case 9, two OAP clients within the limit have nothing deemed to each other.
+  # Both are 62. The spouse's $600/month pension gives own countable income
+  # 600 - 10 = 590, within the limit, and the spouse is an OAP client
+  # (1,032 - 590 = 442/month, or 5,304/year), so 3.534(C) deems nothing to
+  # the head, who gets the full 1,032/month.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 62
+        pension_income: 7_200
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_oap_deeming_exempt: [true, true]
+    co_oap_deemed_income: [0, 0]
+    co_oap: [12_384, 5_304]
+
+- name: Case 10, earned and unearned income are deemed together.
+  # The spouse, 50, earns $1,000/month and has a $1,200/month pension.
+  # (1,000 - 65) / 2 + (1,200 - 1,032) = 467.50 + 168 = 635.50/month, or
+  # 7,626/year.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        employment_income: 12_000
+        pension_income: 14_400
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_oap_deemed_income: [7_626, 0]
+    # The spouse: (1,200 - 10) + (1,000 - 65) / 2 = 1,657.50/month of their own.
+    co_oap_countable_income: [7_626, 19_890]
+
+- name: Case 11, a child's SSI counts as the child's own income.
+  # As Case 5, with the child receiving $600/month of SSI. 3.534(B)(3): the
+  # allocation is max(0, 497 - 600) = 0, so 2,000 - 1,032 = 968/month, or
+  # 11,616/year, is deemed.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        pension_income: 24_000
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        ssi: 7_200
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CO
+  output:
+    co_oap_deemed_income: [11_616, 0, 0]
+
+- name: Case 12, a spouse on SSI above the OAP limit has SSI deemed with the rest.
+  # Both are 65; the spouse has a $1,000/month pension. SSI computes the
+  # couple: 1,491 - (1,000 - 20) = 511, or 255.50 each. The spouse's own OAP
+  # income, 1,000 - 10 + 255.50 = 1,245.50, exceeds the limit, so 3.534(C)
+  # does not apply. 3.534(B): 1,000 + 255.50 - 1,032 = 223.50/month is
+  # deemed, or 2,682/year. The client: 1,032 - 255.50 - 223.50 = 553/month,
+  # or 6,636/year.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+      spouse:
+        age: 65
+        pension_income: 12_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [3_066, 3_066]
+    co_oap_deeming_exempt: [true, false]
+    co_oap_deemed_income: [2_682, 0]
+    co_oap: [6_636, 0]
+
+- name: Case 13, the child allocation comes from the spouse's household.
+  # The client, 62, lives alone. The spouse, 50, lives in another Colorado
+  # household with their child, 10, and has a $2,000/month pension.
+  # 2,000 - 1,032 - 497 = 471/month is deemed, or 5,652/year. The client:
+  # 1,032 - 471 = 561/month, or 6,732/year.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        pension_income: 24_000
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      head_household:
+        members: [head]
+        state_code: CO
+      spouse_household:
+        members: [spouse, child]
+        state_code: CO
+  output:
+    co_oap_deemed_income: [5_652, 0, 0]
+    co_oap: [6_732, 0, 0]
+
+- name: Case 14, a spouse in another state on Medicaid has nothing deemed.
+  # The client, 62, lives in Colorado. The spouse, 50, lives in New York,
+  # earns $1,000/month and is enrolled in Medicaid. 3.534(C) sets no
+  # residence condition: the spouse's own countable income,
+  # (1,000 - 65 - 10) / 2 = 462.50, is within the limit, so nothing is deemed.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        employment_income: 12_000
+        medicaid_enrolled: true
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      head_household:
+        members: [head]
+        state_code: CO
+      spouse_household:
+        members: [spouse]
+        state_code: NY
+  output:
+    co_oap_deeming_exempt: [false, true]
+    co_oap_deemed_income: [0, 0]
+    co_oap: [12_384, 0]
+
+- name: Case 15, a spouse whose income equals the standard receives no OAP and is deemed.
+  # Both are 62. The spouse earns $2,138.87/month and has $0.13/month of
+  # pension: (2,138.87 - 65 - 9.87) / 2 = 1,032, so the spouse is denied
+  # (3.533) and is not receiving Adult Financial payments. 3.534(A) deems
+  # (2,138.87 - 65) / 2 = 1,036.935/month, or 12,443.22/year, and the client
+  # is denied too.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 62
+        employment_income: 25_666.44
+        pension_income: 1.56
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_oap_deeming_exempt: [true, false]
+    co_oap_deemed_income: [12_443.22, 0]
+    co_oap: [0, 0]
+
+- name: Case 16, reported current Medicaid coverage exempts the spouse.
+  # 2027, so the Medicaid branch runs. The spouse, 40, earns $5,000/year and
+  # reports current Medicaid coverage but would not take it up as modeled.
+  # 3.534(C) asks whether the spouse is receiving Medicaid, so nothing is
+  # deemed and the client gets the full 1,032/month.
+  period: 2027
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        employment_income: 5_000
+        receives_medicaid: true
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_oap_deeming_exempt: [false, true]
+    co_oap: [12_384, 0]
+
+- name: Case 17, a child's own child support reduces the child allocation.
+  # As Case 5, with the child receiving $900/month of child support.
+  # 3.520.786 exempts income of the client, spouse and sponsor, not the
+  # child, so the allocation is max(0, 497 - 900) = 0 and 2,000 - 1,032 =
+  # 968/month is deemed, or 11,616/year. The client: 1,032 - 968 = 64,
+  # raised to 189.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        pension_income: 24_000
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        child_support_received: 10_800
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CO
+  output:
+    co_oap_deemed_income: [11_616, 0, 0]
+    co_oap: [2_268, 0, 0]
+
+- name: Case 18, a non-exempt spouse's matching ISM is deemed.
+  # Both are 65 and receive shelter from outside. SSA charges the couple a
+  # presumed maximum value of 1,491 / 3 + 20 = 517, or 258.50 each, and with
+  # the spouse's $950/month pension pays SSI of 1,491 - (950 + 517 - 20) = 44,
+  # or 22 each. The spouse's own OAP income, 950 + 258.50 - 10 + 22 =
+  # 1,220.50, exceeds the limit. 3.534(B): 950 + 258.50 + 22 - 1,032 =
+  # 198.50/month is deemed, or 2,382/year. The client: 1,032 - (258.50 - 10
+  # + 22) - 198.50 = 563/month, or 6,756/year; SSI reduces this grant, so
+  # cents would be kept.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 65
+        ssi_receives_outside_shelter_support: true
+        is_tax_unit_head: true
+      spouse:
+        age: 65
+        pension_income: 11_400
+        ssi_receives_outside_shelter_support: true
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [264, 264]
+    co_oap_deemed_income: [2_382, 0]
+    co_oap: [6_756, 0]
+
+- name: Case 19, an 18-year-old in secondary school is a dependent child.
+  # As Case 5, with the child 18 and in secondary school. The rule does not
+  # define "dependent child"; TANF's ages (under 19 for a secondary school
+  # student) apply, so 2,000 - 1,032 - 497 = 471/month is deemed, or
+  # 5,652/year. The client: 1,032 - 471 = 561/month, or 6,732/year.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        pension_income: 24_000
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+      child:
+        age: 18
+        is_in_secondary_school: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CO
+  output:
+    co_oap_deemed_income: [5_652, 0, 0]
+    co_oap: [6_732, 0, 0]
+
+- name: Case 20, a child's rental loss does not offset the child's other income.
+  # As Case 5, with the child receiving $600/month of survivor benefits and a
+  # $300/month rental loss. The loss counts as zero, so the allocation is
+  # max(0, 497 - 600) = 0 and 968/month is deemed, or 11,616/year.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        pension_income: 24_000
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        social_security_survivors: 7_200
+        rental_income: -3_600
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CO
+  output:
+    co_oap_deemed_income: [11_616, 0, 0]
+    co_oap: [2_268, 0, 0]
