@@ -141,7 +141,7 @@ Historical bends back to 1979 are separate parameters, preserving legacy scale
 values. Future bends use the model's existing wage-indexed projections.
 
 `gov.contrib.ssa.pia` contains neutral bend-point multipliers, factors and cohort
-start, and explicit `recompute_existing`. No top-factor package schedule is
+start, an `in_effect` opt-in gate, and explicit `recompute_existing`. No top-factor package schedule is
 selected. S.770 is separately enabled with
 `gov.contrib.congress.s770.section_2.in_effect` and uses original eligibility
 bend points for older beneficiaries.
@@ -157,7 +157,11 @@ without its required frozen inputs fails. Frozen scales, dollar thresholds,
 maximum AIMEs and targets require explicit January observations for each
 eligibility cohort; they never silently carry a prior cohort's data forward.
 The policy fraction and ordinary factor schedules retain normal dated-policy
-semantics. No population percentile or solvency
+semantics. Both indexing paths also require their own `in_effect` switch and
+start cohort; setting a fraction alone does not activate progressive indexing.
+Ordinary settings read the eligibility-year snapshot. Explicit older-cohort
+recomputation reads payment-year settings while retaining original-cohort
+bend points and frozen indexing inputs. No population percentile or solvency
 estimate supplies missing values. Scoring must pin price/wage bases, lags,
 anchor, maximum-taxable career, source hashes and combined-policy order.
 Composition order is custom bends/factors, S.770, full indexing, progressive

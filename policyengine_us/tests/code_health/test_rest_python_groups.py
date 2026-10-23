@@ -249,12 +249,20 @@ def old_command():
     """The pytest arguments of the single process the groups replace.
 
     It was test-other-python, the Python tests outside contrib and
-    microsimulation, with the SPM files left to their own step.
+    microsimulation, with the SPM and Simulation/API files left to their
+    own sequential processes on the Microsimulation runner.
     """
     (other,) = dry_run("test-other-python")
-    (spm,) = dry_run("test-other-python-spm")
-    assert other[0] == spm[0] == "pytest", (other, spm)
-    spm_files = [arg for arg in spm[1:] if not arg.startswith("-")]
+    simulation_commands = dry_run("test-other-python-spm")
+    assert other[0] == "pytest"
+    assert simulation_commands
+    assert all(command[0] == "pytest" for command in simulation_commands)
+    spm_files = [
+        arg
+        for command in simulation_commands
+        for arg in command[1:]
+        if not arg.startswith("-")
+    ]
     return other[1:] + [f"--ignore={file}" for file in spm_files]
 
 
@@ -511,6 +519,37 @@ def test_spm_and_dataset_suites_run_once_in_separate_steps_with_reports(workflow
         any(fnmatch(report, pattern) for pattern in patterns) for report in reports
     )
     assert uploads[0]["with"]["name"] != "rest-test-timings"
+
+
+def test_calculator_api_files_run_once_in_separate_simulation_processes():
+    commands = dry_run("test-other-python-spm")
+    files_by_process = [
+        [arg for arg in command[1:] if not arg.startswith("-")] for command in commands
+    ]
+    files = [file for process_files in files_by_process for file in process_files]
+    assert len(files) == len(set(files)), "Simulation files run more than once"
+    for name in ("engine", "differential"):
+        file = f"policyengine_us/tests/unit/test_ss_calculator_{name}.py"
+        assert [process for process in files_by_process if file in process] == [
+            [file]
+        ], f"{file} must run once in its own process"
+
+    # The CI step gives SPM a JUnit path through PYTEST_ADDOPTS. Later
+    # processes need separate reports so they do not overwrite that suite.
+    reported = dry_run(
+        "test-other-python-spm", "PYTEST_ADDOPTS=--junitxml=simulation-spm.xml"
+    )
+    reports = [
+        arg.removeprefix("--junitxml=")
+        for command in reported
+        for arg in command[1:]
+        if arg.startswith("--junitxml=")
+    ]
+    assert reports == [
+        "simulation-ss-calculator-engine.xml",
+        "simulation-ss-calculator-differential.xml",
+    ]
+    assert len(set(reports + ["simulation-spm.xml"])) == 3
 
 
 def test_groups_run_as_plain_pytest_without_a_report_dir(groups):
