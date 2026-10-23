@@ -432,6 +432,16 @@ def _low_income_draw(seed, n):
     return units
 
 
+def _valid_dependent_amount(unit, output, adults_only=False):
+    """Output 0 (tips) or 1 (overtime) of dependents with valid SSNs, the
+    amounts a mask that ignored dependent status would count."""
+    return sum(
+        dependent[2 + output]
+        for dependent in unit.dependents
+        if dependent[1] in VALID_SSN and (dependent[0] >= 18 or not adults_only)
+    )
+
+
 def test_dependents_and_filers_without_valid_ssns_add_nothing(reference_system):
     rng = np.random.default_rng(2)
     # Returns around the thresholds and caps, and returns well below them.
@@ -498,11 +508,7 @@ def test_dependents_and_filers_without_valid_ssns_add_nothing(reference_system):
         # SSN and whose head has something to claim.
         output = 0 if name == "tip_income_deduction" else 1
         dependent_amounts = [
-            _observable(
-                unit,
-                output,
-                sum(dependent[2 + output] for dependent in unit.dependents),
-            )
+            _observable(unit, output, _valid_dependent_amount(unit, output))
             for unit in base
         ]
         invalid_amounts = [
@@ -514,18 +520,13 @@ def test_dependents_and_filers_without_valid_ssns_add_nothing(reference_system):
             )
             for unit in base
         ]
+        # A role-based mask counts these adult dependents, inferred as head
+        # (and spouse), and nothing once they are removed.
         minor_filer_with_adult_dependents = [
             unit.status != "JOINT"
             and unit.ages[0] < 18
-            and _observable(
-                unit,
-                output,
-                sum(
-                    dependent[2 + output]
-                    for dependent in unit.dependents
-                    if dependent[0] >= 18
-                ),
-            )
+            and unit.magi <= _threshold(unit.status)
+            and _valid_dependent_amount(unit, output, adults_only=True) > 0
             for unit in base
         ]
         assert sum(dependent_amounts) >= 30, name
