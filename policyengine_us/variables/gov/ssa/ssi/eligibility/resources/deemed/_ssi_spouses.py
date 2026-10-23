@@ -67,7 +67,12 @@ def _ssi_established_spouse_indices(person, period, first, second):
 
 
 def _ssi_spouse_index(person, period):
-    """The row of each person's co-resident spouse, or -1."""
+    """The row of each person's co-resident spouse, or -1.
+
+    New York's SSP minor test also uses this co-resident spouse proxy.
+    SSI's 416.1856 marriage classification uses _ssi_is_married instead,
+    including legal spouses living apart.
+    """
     first, second = co_resident_parent_indices(person, period)
     return _ssi_established_spouse_indices(person, period, first, second)
 

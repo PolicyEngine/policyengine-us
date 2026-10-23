@@ -35,7 +35,7 @@ def ok_ssp_income(person, period, parameters, *, combined):
     # It also uses SSI's earned income, which excludes the parents' pre-tax
     # health premiums that 317:35-5-42(b)(9)(A) counts as wages.
     unearned = unearned + person(
-        "ssi_unearned_income_deemed_from_ineligible_parent", period
+        "ssi_unearned_income_deemed_from_ineligible_parent_monthly", period
     )
     earned = max_(
         earned
@@ -59,7 +59,7 @@ def ok_ssp_income(person, period, parameters, *, combined):
     # disabled spouse who is not eligible (issue 10243), so the half equals the
     # deeming value (1/6 couple FBR + $10) even when 317:35-5-42(m)(4) deems
     # nothing and the individual value would apply.
-    ism = person("ssi_in_kind_support_and_maintenance", period)
+    ism = person("ssi_in_kind_support_and_maintenance_monthly", period)
     ism = where(joint, ism / 2, ism)
     if combined:
         eligible = person("ok_ssp_eligible", period)

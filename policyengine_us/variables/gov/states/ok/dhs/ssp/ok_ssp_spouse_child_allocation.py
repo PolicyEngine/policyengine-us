@@ -8,7 +8,12 @@ class ok_ssp_spouse_child_allocation(Variable):
     definition_period = MONTH
     unit = USD
     reference = "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-15-1-5"
-    documentation = "The total allocation for the family's children who are not aged, blind or disabled, each reduced by that child's own income. Blended families and children in a TANF case are not modeled separately."
+    documentation = (
+        "The total allocation for the family's unmarried SSI-ineligible children "
+        "who are not household heads, including full-time students under age 22. "
+        "Each allocation is reduced by the child's own income. Blended families "
+        "and children in a TANF case are not modeled separately."
+    )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ok.dhs.ssp

@@ -739,3 +739,122 @@
     # counts as living alone. The resident gets the family care rate.
     ny_ssp_living_arrangement: [LIVING_ALONE, FAMILY_CARE]
     ny_ssp: [87, 228.48]
+
+- name: Case 49, student exclusions change spousal deeming and SSP during the year.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 45
+        meets_ssi_disability_criteria: true
+      spouse:
+        age: 43
+        pension_income: 14_400
+      student1:
+        age: 19
+        is_full_time_student: true
+        employment_income: 24_000
+      student2:
+        age: 20
+        is_full_time_student: true
+        employment_income: 24_000
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+      student1:
+        members: [student1]
+      student2:
+        members: [student2]
+    tax_units:
+      family:
+        members: [claimant, spouse, student1, student2]
+    households:
+      household:
+        members: [claimant, spouse, student1, student2]
+        state_code: NY
+  output:
+    # Each student earns 2_000/month. January-April exclude all earnings:
+    # 1_200 spouse pension - 2 * 497 allocations = 206 <= 497, no deeming.
+    # In May, 9_730 - 4 * 2_000 = 1_730 of each student's exclusion remains.
+    # Allocation = 497 - (2_000 - 1_730) = 227 each; countable deemed income
+    # = 1_200 - 2 * 227 - 20 = 726. June-December allocations are zero,
+    # so countable income = 1_200 - 20 = 1_180 and SSI = 1_491 - 1_180 = 311.
+    is_ssi_spousal_deeming_applies_monthly:
+      2026-01: [false, false, false, false]
+      2026-05: [true, false, false, false]
+      2026-06: [true, false, false, false]
+    ssi_countable_income_monthly:
+      2026-01: [0, 0, 0, 0]
+      2026-05: [726, 0, 0, 0]
+      2026-06: [1_180, 0, 0, 0]
+    ssi:
+      2026-01: [994, 0, 0, 0]
+      2026-05: [765, 0, 0, 0]
+      2026-06: [311, 0, 0, 0]
+    # Living with others rate 23. Through May countable income is below 994;
+    # June-December max(23 - (1_180 - 994), 0) = 0. Annual = 5 * 23 = 115.
+    # The annual-average countable income (726 + 7 * 1_180) / 12 = 748.83
+    # would incorrectly preserve all 12 payments, totaling 276.
+    ny_ssp:
+      2026-01: [23, 0, 0, 0]
+      2026-05: [23, 0, 0, 0]
+      2026-06: [0, 0, 0, 0]
+      2026-12: [0, 0, 0, 0]
+      2026: [115, 0, 0, 0]
+
+- name: Case 50, January spousal deeming uses January status rather than December.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    age: 65
+    ny_ssp_living_arrangement: LIVING_WITH_OTHERS
+    is_ssi_spousal_deeming_applies_monthly:
+      2026-01: true
+      2026-12: false
+    ssi_countable_income_monthly:
+      2026-01: 1_180
+    ssi_income_deemed_from_ineligible_spouse_monthly:
+      2026-01: 1_180
+  output:
+    # January's SSI couple budget is 1_491 - 1_180 = 311. New York compares
+    # countable income with the individual FBR: max(23 - (1_180 - 994), 0).
+    # December's false status would retain the shared helper's 23 payment.
+    ssi: 311
+    ny_ssp: 0
+
+- name: Case 51, personal needs allowance uses the facility resident's monthly income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    age: 70
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    ssi_countable_income_monthly:
+      2026-01: 0
+      2026-02: 0
+      2026-03: 0
+      2026-04: 0
+      2026-05: 0
+      2026-06: 0
+      2026-07: 10
+      2026-08: 10
+      2026-09: 10
+      2026-10: 10
+      2026-11: 10
+      2026-12: 10
+  output:
+    # Federal facility rate 30 less countable income 0/10 gives SSI 30/20.
+    # New York pays 25 only in the six zero-income months: 6 * 25 = 150.
+    # Annual countable income is 60, so its average of 5 would wrongly
+    # suppress the allowance even in January.
+    ssi:
+      2026-01: 30
+      2026-07: 20
+      2026: 300
+    ny_ssp:
+      2026-01: 25
+      2026-07: 0
+      2026: 150
