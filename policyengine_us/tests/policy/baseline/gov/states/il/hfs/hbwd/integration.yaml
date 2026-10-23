@@ -23,10 +23,10 @@
     # Unearned: $1,000 - $10 (remaining flat exemption)
     # Total: ~$2,728.13
     # Premium calculation
-    il_hbwd_premium: 113
-    # Earned $1,713.45 → bracket 6 (1501-1750) → $38
-    # Unearned $1,000 → bracket 4 (1001-1250) → $75
-    # Total: $38 + $75 = $113
+    il_hbwd_premium: 94
+    # Earned $1,713.45 → 1501-1750 band → $38
+    # Unearned $1,000 → 751-1000 band → $56
+    # Total: $38 + $56 = $94
 
 - name: Case 2, couple with one eligible member.
   period: 2024-01
@@ -160,10 +160,10 @@
     # Earned after expenses and exemptions: ~$850
     # Unearned: $1,500
     # Total: ~$2,349.95
-    il_hbwd_premium: 132
-    # Earned $824.95 → bracket 3 (751-1000) → $19
-    # Unearned $1,500 → bracket 6 (1501-1750) → $113
-    # Total: $19 + $113 = $132
+    il_hbwd_premium: 113
+    # Earned $824.95 → 751-1000 band → $19
+    # Unearned $1,500 → 1251-1500 band → $94
+    # Total: $19 + $94 = $113
 
 - name: Case 7, ineligible too young.
   period: 2024-01

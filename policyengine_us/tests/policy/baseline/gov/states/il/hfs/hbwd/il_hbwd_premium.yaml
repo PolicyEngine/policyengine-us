@@ -7,10 +7,10 @@
     il_hbwd_countable_earned_income: 2_000
     il_hbwd_countable_unearned_income: 0
   output:
-    il_hbwd_premium: 50
-    # Earned $2,000 → bracket 8 (2001-2250) → $50
-    # Unearned $0 → bracket 0 → $0
-    # Total: $50
+    il_hbwd_premium: 44
+    # Earned $2,000 → 1751-2000 band → $44
+    # Unearned $0 → 0-250 band → $0
+    # Total: $44
 
 - name: Case 2, premium with earned and unearned.
   period: 2024-01
@@ -21,10 +21,10 @@
     il_hbwd_countable_earned_income: 1_000
     il_hbwd_countable_unearned_income: 1_200
   output:
-    il_hbwd_premium: 100
-    # Earned $1,000 → bracket 4 (1001-1250) → $25
-    # Unearned $1,200 → bracket 4 (1001-1250) → $75
-    # Total: $25 + $75 = $100
+    il_hbwd_premium: 94
+    # Earned $1,000 → 751-1000 band → $19
+    # Unearned $1,200 → 1001-1250 band → $75
+    # Total: $19 + $75 = $94
 
 - name: Case 3, premium with higher income.
   period: 2024-01
@@ -35,10 +35,10 @@
     il_hbwd_countable_earned_income: 3_000
     il_hbwd_countable_unearned_income: 2_000
   output:
-    il_hbwd_premium: 225
-    # Earned $3,000 → bracket 12 (3001-3250) → $75
-    # Unearned $2,000 → bracket 8 (2001-2250) → $150
-    # Total: $75 + $150 = $225
+    il_hbwd_premium: 200
+    # Earned $3,000 → 2751-3000 band → $69
+    # Unearned $2,000 → 1751-2000 band → $131
+    # Total: $69 + $131 = $200
 
 - name: Case 4, premium capped at $500.
   period: 2024-01
@@ -46,14 +46,13 @@
   input:
     state_code: IL
     il_hbwd_eligible: true
-    il_hbwd_countable_earned_income: 5_000
-    il_hbwd_countable_unearned_income: 5_000
+    il_hbwd_countable_earned_income: 5_001
+    il_hbwd_countable_unearned_income: 5_001
   output:
     il_hbwd_premium: 500
-    # Earned $5,000+ → bracket 20 → $125
-    # Unearned $5,000+ → bracket 20 → $375
-    # Uncapped: $500
-    # Capped: $500
+    # Earned above $5,000 → 5000+ band → $125
+    # Unearned above $5,000 → 5000+ band → $375
+    # Total: $500, the chart's highest premium
 
 - name: Case 5, no premium in first bracket.
   period: 2024-01
@@ -78,10 +77,10 @@
     il_hbwd_countable_earned_income: 250
     il_hbwd_countable_unearned_income: 250
   output:
-    il_hbwd_premium: 25
-    # Earned $250 → bracket 1 (251-500) → $6
-    # Unearned $250 → bracket 1 (251-500) → $19
-    # Total: $6 + $19 = $25
+    il_hbwd_premium: 0
+    # Earned $250 → 0-250 band → $0
+    # Unearned $250 → 0-250 band → $0
+    # Total: $0
 
 - name: Case 7, married couple both disabled, each premium uses only their own withholding.
   period: 2025-01
@@ -119,3 +118,17 @@
     # Earned $1,802.61 → bracket 7 (1751-2000) → $44
     # Unearned $0 → bracket 0 → $0
     # Deducting the couple's combined withholding would give 1,710.41 → $38
+
+- name: Case 8, income of exactly $5,000 is in the 4751-5000 band, not the 5000+ band.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    il_hbwd_eligible: true
+    il_hbwd_countable_earned_income: 5_000
+    il_hbwd_countable_unearned_income: 5_000
+  output:
+    il_hbwd_premium: 475
+    # Earned $5,000 → 4751-5000 band → $119
+    # Unearned $5,000 → 4751-5000 band → $356
+    # Total: $119 + $356 = $475
