@@ -1,0 +1,1 @@
+Subtract Michigan household resources premiums once (MI-1040CR line 31 leaves out the self-employed health insurance deduction on line 30), and exclude the first $300 of gambling winnings and of gifts (MCL 206.510(1)(a) and (b), lines 20 and 24), counting gifts from relatives and friends on line 24.
