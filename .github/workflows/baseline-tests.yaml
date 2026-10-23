@@ -11,12 +11,20 @@ jobs:
     env:
       PYTHONUNBUFFERED: 1
       PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
+      # Two batch subprocesses per runner while its memory allows (see
+      # test_batched.py): 32% fewer runner-minutes, same cases, no shutdowns.
+      POLICYENGINE_BATCH_WORKERS: 2
     strategy:
       fail-fast: false
+      # At most 6 Baseline groups run at once; GitHub starts the next group on a
+      # fresh runner as each finishes, so the lanes balance from real durations.
+      max-parallel: 6
       matrix:
         include:
-          # One state per subprocess; retain four runners and one worker each.
-          # The former NY/OH/OK process peaked at 15.1 GB (run 36930199045).
+          # One state per batch subprocess, over four runners. The job's
+          # POLICYENGINE_BATCH_WORKERS overrides --workers 1, and runner memory
+          # decides whether two run at once. The former NY/OH/OK process peaked
+          # at 15.1 GB (run 36930199045).
           - group: states-shard-1
             cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 1/4
           - group: states-shard-2
@@ -42,6 +50,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -49,7 +60,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies

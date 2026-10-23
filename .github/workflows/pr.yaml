@@ -26,7 +26,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       # Keep collecting independent results after a failure; failed steps
       # still fail the job, and cancellation stops the remaining checks.
       - name: Check committed registry lock
@@ -43,6 +43,9 @@ jobs:
         if: ${{ !cancelled() }}
         id: lint-install
         run: uv sync --locked --extra dev
+      - name: Test system certificate trust guard
+        if: ${{ !cancelled() && steps.lint-install.outcome == 'success' }}
+        run: uv run --no-sync python -m unittest discover -s .github/tests -p test_system_ca.py -v
       - name: Check formatting
         if: ${{ !cancelled() && steps.lint-install.outcome == 'success' }}
         run: uv run --no-sync ruff format --check .
@@ -118,6 +121,9 @@ jobs:
       # Load actions from the tested merge commit. Each area uses its own
       # checkout and environment; wheels still build the reviewed PR head.
       - uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Set up wheel Python
         uses: actions/setup-python@v6
         with:
@@ -125,38 +131,38 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Build and retain rc1 wheel
         uses: ./.github/actions/candidate-wheel
         with:
           kind: rc1
       - name: Build and retain final wheel
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         uses: ./.github/actions/candidate-wheel
         with:
           kind: final
       - name: Validate bundle metadata contract
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         uses: ./.github/actions/bundle-metadata
       # Keep running independent checks after a failure, and stop on cancel.
       # Each version resolves its own lock and installs into its own .venv.
       - name: Python 3.11
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         uses: ./.github/actions/python-compat
         with:
           python-version: "3.11"
       - name: Python 3.12
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         uses: ./.github/actions/python-compat
         with:
           python-version: "3.12"
       - name: Python 3.13
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         uses: ./.github/actions/python-compat
         with:
           python-version: "3.13"
       - name: Python 3.14
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         uses: ./.github/actions/python-compat
         with:
           python-version: "3.14"
@@ -166,11 +172,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SELECTIVE_TEST_MAX_TARGETS: 25
-      # 100 (was 250): selective runs pack every matched yaml into ONE
-      # policyengine-core subprocess, and ~250 yaml files retained ~15 GB
-      # and OOM'd the 16 GB runner on run 28698452678. When the limit is
-      # exceeded run_selective_tests.py safely narrows to directly changed
-      # test files (or skips, deferring to the full suite jobs).
+      # Keep Quick Feedback's total scope bounded. Selected locations run
+      # sequentially, with contrib/reform folders split one file per process
+      # like the Full Suite CRFB shard. Above this limit, the runner narrows
+      # to directly changed files (or defers to the full suite jobs).
       SELECTIVE_TEST_MAX_FILES: 100
       PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
     steps:
@@ -178,6 +183,9 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 10
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Fetch base branch
         run: git fetch origin ${{ github.base_ref }} --depth=1000
       - name: Set up Python
@@ -187,7 +195,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
@@ -257,6 +265,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -264,7 +275,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
@@ -274,9 +285,13 @@ jobs:
         run: bash ./update_itemization.sh
       - name: Run Household API Partners YAML tests
         run: uv run --no-sync make test-yaml-no-structural-other-partners
+  # Contrib starts once Baseline passes, on the same 6 lanes, so most PRs see
+  # their Baseline result first. A Baseline failure skips Contrib, and
+  # re-running the failed Baseline group then runs Contrib for the first time:
+  # no finished Contrib work is repeated.
   Contrib:
     name: Contrib tests
-    needs: ReleaseLock
+    needs: [ReleaseLock, Baseline]
     uses: ./.github/workflows/contrib-tests.yaml
   PythonTests:
     name: Python tests

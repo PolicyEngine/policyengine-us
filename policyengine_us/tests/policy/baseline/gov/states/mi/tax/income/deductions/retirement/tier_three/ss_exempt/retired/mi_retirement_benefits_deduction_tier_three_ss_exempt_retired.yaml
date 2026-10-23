@@ -154,3 +154,24 @@
     # The head's own military pay limits the cap: min(70,000, 60,000) = 60,000.
     # min(20,000 + 30,000, 60,000) = 50,000
     mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 50_000
+
+- name: 2022 single filer with tier 3 retired deduction limited to tier 1 due to military survivor pay
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 40_000
+        military_retirement_pay_survivors: 1_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_retirement_benefits_deduction_tier_three_eligible: true
+        mi_retirement_benefits_deduction_tier_three_ss_exempt_retired_eligible_people: 1
+        mi_retirement_benefits_deduction_tier_one_amount: 10_000
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output: # min(35000 < 10000, 40000) = 10000
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 10_000

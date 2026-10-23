@@ -382,6 +382,86 @@
         auto_loan_interest: 1575.0
         household_vehicles_value: 21964.705078125
   output:
-    # Also includes #10032's IRA 219(g) phase-out, since this is a two-cause
-    # CA + IRA cell.
-    state_income_tax_before_refundable_credits: 4441.45
+    # Also includes #10032's IRA 219(g) phase-out.
+    # FTB Schedule CA (540), Section C, line 11: $337.50 educator addback x 8% = $27 (R&TC 17072(b)).
+    state_income_tax_before_refundable_credits: 4468.45
+
+# 2024 Schedule CA (540) instructions, line 15 (Form 540 booklet, PDF p. 66):
+# "California law does not conform" to the federal limit of personal casualty
+# losses to declared disasters; filers complete a second Form 4684 with
+# California amounts.
+- name: California allows a non-disaster casualty loss the federal return does not.
+  period: 2024
+  input:
+    state_code: CA
+    employment_income: 100_000
+    casualty_loss: 15_000
+  output:
+    casualty_loss_deduction: 0
+    # Form 4684: (15,000 - 100) - 10% x 100,000 = 4,900
+    ca_itemized_deductions_pre_limitation: 4_900
+
+- name: California counts the casualty loss once when the federal suspension is lifted.
+  period: 2024
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    state_code: CA
+    employment_income: 100_000
+    casualty_loss: 15_000
+  output:
+    ca_casualty_loss_deduction: 4_900
+    # The federal deduction, now positive, is replaced by California's 4,900,
+    # not added to it.
+    ca_itemized_deductions_pre_limitation: 4_900
+
+- name: CA excludes mortgage insurance premiums in 2021.
+  period: 2021
+  input:
+    state_code: CA
+    adjusted_gross_income: 80_000
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 2_000
+    interest_deduction: 12_000
+    ca_itemized_deductions_pre_limitation: 10_000
+
+- name: CA excludes mortgage insurance premiums in 2022.
+  period: 2022
+  input:
+    state_code: CA
+    adjusted_gross_income: 80_000
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 0
+    interest_deduction: 10_000
+    ca_itemized_deductions_pre_limitation: 10_000
+
+- name: CA excludes mortgage insurance premiums in 2026.
+  period: 2026
+  input:
+    state_code: CA
+    adjusted_gross_income: 80_000
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 2_000
+    interest_deduction: 12_000
+    ca_itemized_deductions_pre_limitation: 10_000
+
+- name: California excludes only the federally deductible premium after its AGI phase-out.
+  period: 2021
+  input:
+    state_code: CA
+    adjusted_gross_income: 101_000
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 1_800
+    interest_deduction: 11_800
+    ca_itemized_deductions_pre_limitation: 10_000

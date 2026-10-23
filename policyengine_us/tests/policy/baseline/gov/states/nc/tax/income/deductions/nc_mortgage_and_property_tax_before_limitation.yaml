@@ -1,0 +1,93 @@
+# Form D-400 Schedule A line 3: home mortgage interest (line 1) plus real
+# estate property taxes (line 2), G.S. 105-153.5(a)(2)b.
+
+- name: Mortgage interest plus real estate taxes within the federal cap
+  period: 2024
+  input:
+    filing_status: JOINT
+    mortgage_interest: 9_000
+    real_estate_taxes: 4_000
+    state_code: NC
+  output:
+    nc_mortgage_and_property_tax_before_limitation: 13_000
+
+- name: Real estate taxes above the federal cap count only up to the cap
+  period: 2024
+  input:
+    filing_status: SEPARATE
+    mortgage_interest: 9_000
+    real_estate_taxes: 11_000
+    state_code: NC
+  output:
+    # Section 164 allows $5,000 of these taxes on a separate return.
+    nc_mortgage_and_property_tax_before_limitation: 14_000
+
+- name: The amount before limitation is not capped at $20,000
+  period: 2024
+  input:
+    filing_status: SINGLE
+    mortgage_interest: 25_000
+    state_code: NC
+  output:
+    nc_mortgage_and_property_tax_before_limitation: 25_000
+
+- name: North Carolina excludes mortgage insurance premiums through 2021
+  period: 2021
+  input:
+    state_code: NC
+    adjusted_gross_income: 80_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    # 2021 D-401 p20, Schedule A line 1, excludes premiums explicitly.
+    deductible_mortgage_insurance_premiums: 2_000
+    nc_mortgage_and_property_tax_before_limitation: 0
+
+- name: No federal or North Carolina premium deduction in 2022
+  period: 2022
+  input:
+    state_code: NC
+    adjusted_gross_income: 80_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 0
+    nc_mortgage_and_property_tax_before_limitation: 0
+
+- name: North Carolina conforms to the restored federal premiums in 2026
+  period: 2026
+  input:
+    state_code: NC
+    adjusted_gross_income: 80_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    # SL 2026-31 section 12(a) adopts the IRC as of July 5, 2025.
+    # GS 105-153.5(a)(2)b limits the express premium exclusion to 2014-2021.
+    deductible_mortgage_insurance_premiums: 2_000
+    nc_mortgage_and_property_tax_before_limitation: 2_000
+
+- name: North Carolina includes premiums after the federal AGI phase-out
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    adjusted_gross_income: 100_001
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    # The first fraction of a $1,000 AGI increment reduces $2,000 by 10%.
+    deductible_mortgage_insurance_premiums: 1_800
+    nc_mortgage_and_property_tax_before_limitation: 1_800
+
+- name: Restored premiums share North Carolina's 20000 mortgage and tax cap
+  period: 2026
+  input:
+    state_code: NC
+    adjusted_gross_income: 80_000
+    mortgage_interest: 19_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    nc_mortgage_and_property_tax_before_limitation: 21_000
+    nc_mortgage_and_property_tax_deduction: 20_000

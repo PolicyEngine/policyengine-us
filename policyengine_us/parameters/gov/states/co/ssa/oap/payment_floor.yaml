@@ -1,0 +1,21 @@
+description: Colorado raises an Old Age Pension grant below this amount to it with a state supplementary payment.
+
+values:
+  # Before 2026 Colorado met the SSI pass-along requirement by maintaining
+  # total expenditures, with irregular lump-sum payments and no payment floor.
+  2002-01-01: 0
+  2026-01-01: 189
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Colorado OAP payment floor standard
+  reference:
+    - title: "9 CCR 2503-5, Sections 3.530(C), 3.531(D)(2), 3.532(B), 3.533(B), OAP payment floor standard #page 74-77"
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-5&ruleVersionId=12428#page=74
+    - title: 9 CCR 2503-5, Section 3.530(C) (emergency rule effective January 1, 2026)
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-5&ruleVersionId=12318#page=58
+    - title: 9 CCR 2503-5, Section 3.531(D) (effective March 2, 2025), MOE payments without a payment floor
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-5&ruleVersionId=11861#page=58
+    - title: "Colorado State Board of Human Services, Adult Financial Payment Floor and COLA 2026, rulemaking packet 2025-00596 #page 1,4,8"
+      href: https://www.sos.state.co.us/CCR/Upload/AGORequestEmergency/RegulatoryAnalysisAttachment2025-00596.pdf#page=1
