@@ -1,0 +1,61 @@
+- name: A blind child's parental deeming uses January's student allocation.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        person_id: 1
+        is_tax_unit_head: true
+        employment_income: 31_200
+      child:
+        age: 9
+        person_id: 2
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_blind: true
+      student:
+        age: 19
+        person_id: 3
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_full_time_college_student: true
+        employment_income: 24_000
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+      student_unit:
+        members: [student]
+    tax_units:
+      family_tax_unit:
+        members: [parent, child, student]
+    families:
+      family:
+        members: [parent, child, student]
+    households:
+      home:
+        members: [parent, child, student]
+        state_code: NH
+  output:
+    people:
+      child:
+        # Student earnings are 24,000 / 12 = 2,000 per month. The 9,730
+        # annual student exclusion is exhausted in May: sibling allocations
+        # are 497 Jan-Apr, 497 - (2,000 - 1,730) = 227 May, and 0 Jun-Dec.
+        # January parental deeming: (2,600 - 497 - 85) / 2 - 994 = 15.
+        ssi_unearned_income_deemed_from_ineligible_parent_monthly: 15
+        # May deeming is (2,600 - 227 - 85) / 2 - 994 = 150; Jun-Dec is
+        # (2,600 - 85) / 2 - 994 = 263.50. Annual deeming is therefore
+        # 4 * 15 + 150 + 7 * 263.50 = 2,054.50; its monthly average is 171.21.
+        ssi_unearned_income_deemed_from_ineligible_parent:
+          2026: 2_054.5
+        # January's 15 is below the federal 20 general exclusion: full SSI.
+        ssi: 994
+        # NH counts January's 15 + 994 SSI - 13 standard disregard = 996.
+        nh_ssp_countable_income: 996
+        # One-person standard: 994 + 27 - 13 = 1,008; grant: 1,008 - 996 = 12.
+        # Annual-average deeming would give 171.21 + 994 - 13 = 1,152.21
+        # countable income and incorrectly pay no state grant.
+        nh_ssp: 12
