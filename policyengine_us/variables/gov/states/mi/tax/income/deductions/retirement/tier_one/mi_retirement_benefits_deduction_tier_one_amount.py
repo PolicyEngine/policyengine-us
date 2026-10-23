@@ -32,7 +32,7 @@ class mi_retirement_benefits_deduction_tier_one_amount(Variable):
         # Line 10
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         military_retirement_pay = (
-            person("military_retirement_income", period) * is_head_or_spouse
+            person("mi_military_retirement_subtraction", period) * is_head_or_spouse
         )
 
         total_military_retirement_pay = tax_unit.sum(military_retirement_pay)
