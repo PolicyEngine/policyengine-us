@@ -1,0 +1,53 @@
+- name: Published SSA 2023 supplied AIME, age 62 and FRA 67
+  # SSA Supplement 2023 Appendix D:
+  # https://www.ssa.gov/policy/docs/statcomps/supplement/2023/apnd.html
+  period: 2023
+  input:
+    ss_calculator_source: aime
+    ss_calculator_worker_id: worker-record-1
+    ss_calculator_birth_date: '1961-01-02'
+    ss_calculator_eligibility_year: 2023
+    ss_calculator_entitlement_month: '2023-01'
+    ss_calculator_supplied_aime: 3000
+    ss_calculator_insured: true
+    ss_calculator_no_special_monthly_test: true
+    ss_calculator_no_prior_withholding_adjustment: true
+    ss_calculator_earnings_test_no_trigger: true
+  output:
+    ss_calculated_eligibility_pia:
+      2023-01: 1606.7
+    ss_calculated_benefit:
+      2023-01: 1124
+    # Dec2023 entitlement includes the 3.2% COLA, check paid Jan2024.
+    ss_calculated_annual_payment: 12364
+    # Eleven baseline entitlement months and the COLA-adjusted December.
+    ss_calculated_annual_entitlement: 13524
+    social_security_retirement: 0
+
+- name: Supplied PIA zero is selected even when unselected AIME is positive
+  period: 2026
+  input:
+    ss_calculator_source: pia
+    ss_calculator_worker_id: worker-record-zero
+    ss_calculator_birth_date: '1964-01-02'
+    ss_calculator_eligibility_year: 2026
+    ss_calculator_entitlement_month: '2026-01'
+    ss_calculator_supplied_aime: 5000
+    ss_calculator_supplied_pia: 0
+    ss_calculator_insured: true
+    ss_calculator_no_special_monthly_test: true
+    ss_calculator_no_prior_withholding_adjustment: true
+    ss_calculator_earnings_test_no_trigger: true
+  output:
+    ss_calculated_retirement: 0
+    ss_calculated_annual_entitlement: 0
+
+- name: The opt-in calculator is disabled by default
+  period: 2026
+  input:
+    social_security_retirement: 20000
+    ss_calculator_supplied_aime: 5000
+  output:
+    ss_calculated_retirement: 0
+    ss_calculated_survivors: 0
+    social_security_retirement: 20000
