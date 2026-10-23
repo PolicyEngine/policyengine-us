@@ -9,7 +9,8 @@ class repayment_assistance_plan_base_payment(Variable):
         "Annual base payment from the bracket rate on the whole adjusted "
         "gross income of the most recent return "
         "(income_driven_repayment_adjusted_gross_income), or the low-income "
-        "amount when that income is not more than the first threshold."
+        "amount when that income is not more than the rate scale's first "
+        "finite threshold."
     )
     unit = USD
     definition_period = YEAR
