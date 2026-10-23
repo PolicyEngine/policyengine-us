@@ -1,3 +1,10 @@
+## [2.60.1] - 2026-10-23
+
+### Changed
+
+- Point the Florida and South Dakota LIHEAP source-conflict candidates at their code on main, and add four Florida candidates.
+
+
 ## [2.60.0] - 2026-10-22
 
 ### Added
