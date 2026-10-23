@@ -5,7 +5,7 @@ class overtime_income_deduction_eligible_person(Variable):
     value_type = bool
     entity = Person
     label = "Person's overtime counts toward the overtime income deduction"
-    documentation = "Whether the person is a filer (a tax unit member who is not a dependent, so the head or spouse) and has a Social Security number valid for the overtime income deduction, so that qualified overtime compensation the person receives counts toward the unit's deduction."
+    documentation = "Whether the person is a filer (a tax unit member who is not a dependent) and has a Social Security number valid for the overtime income deduction, so that qualified overtime compensation the person receives counts toward the unit's deduction."
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/225#d_1",

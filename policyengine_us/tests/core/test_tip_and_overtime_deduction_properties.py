@@ -51,8 +51,9 @@ check:
 8. Giving every head and spouse a valid SSN never lowers either deduction.
 
 5-8 compare the model with itself on paired returns, so they do not depend on
-the restatement in 1, and each checks that its draw contains returns where the
-property could fail.
+the restatement in 1. Their returns come partly from the draws above and partly
+from returns below both thresholds and caps, and each checks that its draw
+contains returns where breaking the property would change the deduction.
 
 Modified AGI here is adjusted gross income with no section 911, 931 or 933
 exclusions; the YAML tests cover the section 911 and 931 add-backs. AGIs are
@@ -395,9 +396,64 @@ def _without_invalid_filers(unit):
     )
 
 
+def _observable(unit, output, extra):
+    """Whether counting `extra` more of output 0 (tips) or 1 (overtime) would
+    change the deduction: modified AGI at or below the threshold, so nothing
+    phases out, and room under the cap."""
+    cap = _caps(unit.status)[output]
+    counted = _counted(unit)[output]
+    return (
+        unit.status != "SEPARATE"
+        and unit.magi <= _threshold(unit.status)
+        and min(counted + extra, cap) > min(counted, cap)
+    )
+
+
+def _low_income_draw(seed, n):
+    """Returns below both thresholds with amounts under the caps, so each
+    paired comparison below can show a difference."""
+    rng = np.random.default_rng(seed)
+
+    def amount():
+        return int(rng.choice([0, int(rng.integers(1, 6_001))]))
+
+    units = []
+    for _ in range(n):
+        status = str(rng.choice(CLAIMING))
+        magi = float(rng.integers(20_000, DEFAULT_THRESHOLD - 10_000))
+        amounts = [amount() for _ in range(4)]
+        ssns = (_ssn(rng), _ssn(rng))
+        dependents = tuple(
+            (int(rng.choice([10, 17, 22, 70])), _ssn(rng), amount(), amount())
+            for _ in range(int(rng.integers(0, 3)))
+        )
+        ages = (int(rng.choice([40, 17], p=[0.8, 0.2])), 40)
+        units.append(Unit(status, magi, *amounts, ssns, dependents, ages))
+    return units
+
+
 def test_dependents_and_filers_without_valid_ssns_add_nothing(reference_system):
     rng = np.random.default_rng(2)
-    base = [Unit(str(rng.choice(CLAIMING)), *draw) for draw in _draw(seed=3, n=120)]
+    # Returns around the thresholds and caps, and returns well below them.
+    base = [Unit(str(rng.choice(CLAIMING)), *draw) for draw in _draw(seed=3, n=60)]
+    base += _low_income_draw(seed=4, n=100)
+    # Filers under 18 whose only adult is an input dependent, at low income: the
+    # model infers that dependent as head, so a role-based mask would count the
+    # dependent's amounts and drop the filer's (round-1 review).
+    base += [
+        Unit(
+            status,
+            60_000,
+            4_000,
+            0,
+            3_000,
+            0,
+            ("CITIZEN", "CITIZEN"),
+            ((45, "CITIZEN", 1_000, 500), (10, "CITIZEN", 0, 0)),
+            (17, 40),
+        )
+        for status in ("SINGLE", "HEAD_OF_HOUSEHOLD")
+    ]
     idle_spouse = [unit._replace(spouse_tips=0, spouse_overtime=0) for unit in base]
     variants = {
         "base": base,
@@ -435,32 +491,45 @@ def test_dependents_and_filers_without_valid_ssns_add_nothing(reference_system):
         # 8. A valid SSN never lowers either deduction.
         assert np.all(value["all valid SSNs"] >= value["base"]), name
 
-        # Each property has returns in the draw where it could fail: a
-        # dependent or an invalid filer with an amount the deduction would
-        # count, and a joint return whose spouse lacks a valid SSN and whose
-        # head has something to claim.
+        # Each property has returns in the draw where breaking it would change
+        # the deduction: dependents' or invalid filers' amounts that would
+        # move the capped, unphased amount; a filer under 18 whose adult
+        # dependent has an amount; a joint return whose spouse lacks a valid
+        # SSN and whose head has something to claim.
         output = 0 if name == "tip_income_deduction" else 1
         dependent_amounts = [
-            any(dependent[2 + output] > 0 for dependent in unit.dependents)
-            for unit in base
-        ]
-        invalid_amounts = [
-            _counted(unit._replace(ssns=("CITIZEN", "CITIZEN")))[output]
-            > _counted(unit)[output]
-            for unit in base
-        ]
-        assert sum(dependent_amounts) >= 20, name
-        # A filer under 18 whose adult dependents have amounts: the model
-        # infers one of those dependents as head.
-        minor_filer_with_adult_dependents = [
-            unit.ages[0] < 18
-            and any(
-                dependent[0] >= 18 and dependent[2 + output] > 0
-                for dependent in unit.dependents
+            _observable(
+                unit,
+                output,
+                sum(dependent[2 + output] for dependent in unit.dependents),
             )
             for unit in base
         ]
+        invalid_amounts = [
+            _observable(
+                unit,
+                output,
+                _counted(unit._replace(ssns=("CITIZEN", "CITIZEN")))[output]
+                - _counted(unit)[output],
+            )
+            for unit in base
+        ]
+        minor_filer_with_adult_dependents = [
+            unit.status != "JOINT"
+            and unit.ages[0] < 18
+            and _observable(
+                unit,
+                output,
+                sum(
+                    dependent[2 + output]
+                    for dependent in unit.dependents
+                    if dependent[0] >= 18
+                ),
+            )
+            for unit in base
+        ]
+        assert sum(dependent_amounts) >= 30, name
+        assert sum(invalid_amounts) >= 15, name
         assert sum(minor_filer_with_adult_dependents) >= 3, name
-        assert sum(invalid_amounts) >= 20, name
         assert (joint & (value["idle spouse, valid SSN"] > 0)).sum() >= 10, name
         assert (value["all valid SSNs"] > value["base"]).sum() >= 10, name
