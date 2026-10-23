@@ -87,3 +87,45 @@
   output:
     is_tax_unit_head: [true, false]
     tip_income_deduction_eligible_person: [true, false]
+
+- name: An adult input as a dependent does not count even when no other adult is a filer
+  period: 2025
+  input:
+    people:
+      adult:
+        age: 40
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [adult]
+  output:
+    # The head-or-spouse inference keeps an input dependent as head when no
+    # adult filer is left, but the person's income is still left out of the
+    # unit (irs_gross_income).
+    is_tax_unit_head: true
+    tip_income_deduction_eligible_person: false
+
+- name: A filer under 18 counts and an adult input as a dependent does not
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 17
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: false
+      parent:
+        age: 45
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+    marital_units:
+      filer_marital_unit:
+        members: [filer]
+      parent_marital_unit:
+        members: [parent]
+    tax_units:
+      tax_unit:
+        members: [filer, parent]
+  output:
+    is_tax_unit_head: [false, true]
+    tip_income_deduction_eligible_person: [true, false]

@@ -28,8 +28,8 @@ class overtime_income_deduction(Variable):
         # 1-A, line 19, drops any fraction of a $1,000 increment.
         increments = np.floor(magi_excess / p.phase_out.increment)
         phase_out_amount = increments * p.phase_out.increment * p.phase_out.rate
-        # 26 U.S.C. 225(d)(1): only overtime received by a head or spouse with
-        # a valid SSN counts. Dependents' overtime belongs on their own returns.
+        # 26 U.S.C. 225(d)(1): only overtime received by a filer with a valid
+        # SSN counts. Dependents' overtime belongs on their own returns.
         eligible_person = person("overtime_income_deduction_eligible_person", period)
         total_overtime_income = tax_unit.sum(overtime_income * eligible_person)
         capped_overtime_income = min_(cap, total_overtime_income)

@@ -19,8 +19,12 @@ none. A dependent's tips and overtime are the dependent's own income (section
 
 Each test call, and each Hypothesis example, builds one simulation of many tax
 units. Joint returns have two spouses, so the combined caps apply as on the
-return. Seeded draws also vary each head's and spouse's SSN card type and add
-dependents with tips and overtime of their own. The tests check:
+return. Seeded draws also vary each head's and spouse's SSN card type, make
+some heads 17, and add dependents (children and adults input as dependents)
+with tips and overtime of their own. A 17-year-old filer with only adult
+dependents is the case where the model's head-or-spouse inference picks an
+input dependent as head; the dependent still counts for nothing. The tests
+check:
 
 1. Every seeded draw, evaluated under all five filing statuses, matches an
    independent restatement of Schedule 1-A lines 7-13 (tips) and 15-21
@@ -92,11 +96,14 @@ SSN_CARD_TYPES = (*VALID_SSN, "OTHER_NON_CITIZEN", "NONE")
 
 # One tax unit: filing status, modified AGI, the head's and (joint returns
 # only) the spouse's tips and overtime, the head's and spouse's SSN card
-# types, and dependents as (age, SSN card type, tips, overtime).
+# types, dependents as (age, SSN card type, tips, overtime), and the head's
+# and spouse's ages. Every head and spouse is input as a filer (not a
+# dependent) and every dependent as a dependent.
 Unit = namedtuple(
     "Unit",
-    "status magi head_tips spouse_tips head_overtime spouse_overtime ssns dependents",
-    defaults=(("CITIZEN", "CITIZEN"), ()),
+    "status magi head_tips spouse_tips head_overtime spouse_overtime ssns "
+    "dependents ages",
+    defaults=(("CITIZEN", "CITIZEN"), (), (40, 40)),
 )
 
 
@@ -117,7 +124,8 @@ def _caps(status):
 
 def _counted(unit):
     """Tips and overtime that count: the head's, and on a joint return the
-    spouse's, when that person has a valid SSN; never a dependent's."""
+    spouse's, when that person has a valid SSN; never a dependent's, whatever
+    role the model infers for them."""
     filers = [(unit.ssns[0], unit.head_tips, unit.head_overtime)]
     if unit.status == "JOINT":
         filers.append((unit.ssns[1], unit.spouse_tips, unit.spouse_overtime))
@@ -146,12 +154,14 @@ def _simulate(reference_system, units):
     people, tax_units, marital_units, households = {}, {}, {}, {}
     for i, unit in enumerate(units):
         # (name, age, SSN card type, tips, overtime, input as a dependent)
-        filers = [(f"head{i}", 40, unit.ssns[0], unit.head_tips, unit.head_overtime)]
+        filers = [
+            (f"head{i}", unit.ages[0], unit.ssns[0], unit.head_tips, unit.head_overtime)
+        ]
         if unit.status == "JOINT":
             filers.append(
                 (
                     f"spouse{i}",
-                    40,
+                    unit.ages[1],
                     unit.ssns[1],
                     unit.spouse_tips,
                     unit.spouse_overtime,
@@ -193,11 +203,6 @@ def _simulate(reference_system, units):
     )
     magi = simulation.calculate("agi_plus_section_911_931_933_exclusions", period)
     np.testing.assert_array_equal(magi, [unit.magi for unit in units])
-    filer = simulation.calculate("is_tax_unit_head_or_spouse", period)
-    np.testing.assert_array_equal(
-        filer,
-        [not person["is_tax_unit_dependent"][period] for person in people.values()],
-    )
     return {name: simulation.calculate(name, period) for name in OUTPUTS}
 
 
@@ -247,7 +252,8 @@ def _draw(seed, n=150):
             )
             for _ in range(int(rng.integers(0, 3)))
         )
-        draws.append((magi, *amounts, ssns, dependents))
+        ages = (int(rng.choice([40, 17], p=[0.8, 0.2])), 40)
+        draws.append((magi, *amounts, ssns, dependents, ages))
     return draws
 
 
@@ -444,6 +450,17 @@ def test_dependents_and_filers_without_valid_ssns_add_nothing(reference_system):
             for unit in base
         ]
         assert sum(dependent_amounts) >= 20, name
+        # A filer under 18 whose adult dependents have amounts: the model
+        # infers one of those dependents as head.
+        minor_filer_with_adult_dependents = [
+            unit.ages[0] < 18
+            and any(
+                dependent[0] >= 18 and dependent[2 + output] > 0
+                for dependent in unit.dependents
+            )
+            for unit in base
+        ]
+        assert sum(minor_filer_with_adult_dependents) >= 3, name
         assert sum(invalid_amounts) >= 20, name
         assert (joint & (value["idle spouse, valid SSN"] > 0)).sum() >= 10, name
         assert (value["all valid SSNs"] > value["base"]).sum() >= 10, name

@@ -472,3 +472,57 @@
     is_tax_unit_dependent: [false, true]
     adjusted_gross_income: 60_000
     overtime_income_deduction: 3_000
+
+- name: An adult input as a dependent deducts nothing even as the only adult in the unit
+  period: 2025
+  input:
+    people:
+      adult:
+        age: 40
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+        fsla_overtime_premium: 1_000
+    tax_units:
+      tax_unit:
+        members: [adult]
+        filing_status: SINGLE
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [adult]
+        state_code: TX
+  output:
+    # A dependent's overtime stays off the unit's return, like the rest of the
+    # dependent's income (irs_gross_income).
+    overtime_income_deduction: 0
+
+- name: A filer under 18 deducts their own overtime, not an adult dependent's
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 17
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: false
+        fsla_overtime_premium: 3_000
+      parent:
+        age: 45
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+        fsla_overtime_premium: 500
+    marital_units:
+      filer_marital_unit:
+        members: [filer]
+      parent_marital_unit:
+        members: [parent]
+    tax_units:
+      tax_unit:
+        members: [filer, parent]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [filer, parent]
+        state_code: TX
+  output:
+    overtime_income_deduction: 3_000

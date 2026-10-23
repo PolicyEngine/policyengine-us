@@ -5,7 +5,7 @@ class tip_income_deduction_eligible_person(Variable):
     value_type = bool
     entity = Person
     label = "Person's tips count toward the tip income deduction"
-    documentation = "Whether the person is the head or spouse of the tax unit and has a Social Security number valid for the tip income deduction, so that qualified tips the person receives count toward the unit's deduction."
+    documentation = "Whether the person is a filer (a tax unit member who is not a dependent, so the head or spouse) and has a Social Security number valid for the tip income deduction, so that qualified tips the person receives count toward the unit's deduction."
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/224#e_1",
@@ -20,7 +20,9 @@ class tip_income_deduction_eligible_person(Variable):
         # the tips, so on a joint return a spouse without tips needs none.
         eligible_ssn_card_type = np.isin(ssn_card_str, p.eligible_ssn_card_type)
         # A dependent's tips are the dependent's own income (26 U.S.C. 73(a)
-        # for a child's services) and go on the dependent's own return;
-        # irs_gross_income likewise leaves dependents' income out of the unit.
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        return eligible_ssn_card_type & head_or_spouse
+        # for a child's services) and go on the dependent's own return. This
+        # matches irs_gross_income, which leaves dependents' income out of the
+        # unit. An input dependent never counts, even where the head-or-spouse
+        # inference has to pick one because no other adult is a filer.
+        filer = ~person("is_tax_unit_dependent", period)
+        return eligible_ssn_card_type & filer

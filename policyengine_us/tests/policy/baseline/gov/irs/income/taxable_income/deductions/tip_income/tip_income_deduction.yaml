@@ -593,3 +593,60 @@
     is_tax_unit_dependent: [false, true]
     adjusted_gross_income: 60_000
     tip_income_deduction: 4_000
+
+- name: An adult input as a dependent deducts nothing even as the only adult in the unit
+  period: 2025
+  input:
+    people:
+      adult:
+        age: 40
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+        tip_income: 6_000
+        treasury_tipped_occupation_code: 102
+    tax_units:
+      tax_unit:
+        members: [adult]
+        filing_status: SINGLE
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [adult]
+        state_code: TX
+  output:
+    # A dependent's tips stay off the unit's return, like the rest of the
+    # dependent's income (irs_gross_income).
+    tip_income_deduction: 0
+
+- name: A filer under 18 deducts their own tips, not an adult dependent's
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 17
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: false
+        tip_income: 4_000
+        treasury_tipped_occupation_code: 102
+      parent:
+        age: 45
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+        tip_income: 1_000
+        treasury_tipped_occupation_code: 102
+    marital_units:
+      filer_marital_unit:
+        members: [filer]
+      parent_marital_unit:
+        members: [parent]
+    tax_units:
+      tax_unit:
+        members: [filer, parent]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [filer, parent]
+        state_code: TX
+  output:
+    tip_income_deduction: 4_000
