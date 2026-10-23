@@ -46,10 +46,18 @@ class is_chip_eligible_standard_pregnant_person(Variable):
             person, period, parameters, income_limit
         )
 
+        # A targeted low-income pregnant woman must not be covered under a
+        # group health plan or health insurance coverage, in the same manner
+        # as a child (42 USC 1397ll(d)(2)(C) and 1397jj(b)(1)(C)).
+        has_disqualifying_coverage = person(
+            "has_chip_disqualifying_health_coverage", period
+        )
+
         return (
             is_pregnant
             & state_has_pregnant_chip
             & immigration_eligible
             & ~medicaid_eligible
             & income_eligible
+            & ~has_disqualifying_coverage
         )

@@ -63,8 +63,8 @@
   period: 2025
   input:
     people:
-      # person1: insured Californian; person2: insured Texan control;
-      # person3: uninsured Californian.
+      # person1: insured Californian; person2: insured Texan, excluded by
+      # the federal no-other-coverage rule; person3: uninsured Californian.
       person1:
         age: 30
         is_pregnant: true
@@ -107,5 +107,5 @@
       marital_unit3:
         members: [person3]
   output:
-    is_chip_fcep_eligible_person: [false, true, true]
-    chip_category: [NONE, PREGNANT_FCEP, PREGNANT_FCEP]
+    is_chip_fcep_eligible_person: [false, false, true]
+    chip_category: [NONE, NONE, PREGNANT_FCEP]
