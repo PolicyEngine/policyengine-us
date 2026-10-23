@@ -1,0 +1,118 @@
+- name: CPI-E precision survives the statutory baseline rounding
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    gov.contrib.ssa.benefit_levers.cola.start_year: 2027
+    gov.contrib.ssa.benefit_levers.cola.pp_change: 0.0015
+    social_security_retirement_reported: 12000
+  output:
+    # January 2027 baseline is 3.6%; 12000 * 1.0375 / 1.036.
+    social_security_retirement_joint_cola_factor: 1.0014478764478765
+    social_security_retirement: 12017.374517374517
+
+- name: Newly eligible retirement has no same-year COLA exposure
+  period: 2027
+  input:
+    age: 62
+    gov.contrib.ssa.benefit_levers.cola.start_year: 2027
+    gov.contrib.ssa.benefit_levers.cola.pp_change: 0.0015
+    social_security_retirement_reported: 12000
+  output:
+    social_security_retirement_joint_cola_factor: 1
+    social_security_retirement: 12000
+
+- name: Static age cross-sections infer eligibility separately in each year
+  period: 2035
+  input:
+    age: 70
+    gov.contrib.ssa.benefit_levers.cola.start_year: 2027
+    gov.contrib.ssa.benefit_levers.cola.end_year: 2027
+    gov.contrib.ssa.benefit_levers.cola.pp_change: 0.0015
+    social_security_retirement_reported: 12000
+  output:
+    # This row's inferred eligibility is 2027, first COLA January 2028.
+    social_security_retirement_joint_cola_factor: 1
+    social_security_retirement: 12000
+
+- name: Retirement COLAs accrue before a later claiming age
+  period: 2027
+  input:
+    age: 67
+    ss_claiming_age: 67
+    gov.contrib.ssa.benefit_levers.cola.start_year: 2027
+    gov.contrib.ssa.benefit_levers.cola.pp_change: 0.0015
+    social_security_retirement_reported: 12000
+  output:
+    social_security_retirement_joint_cola_factor: 1.0014478764478765
+
+- name: Supplied first-COLA date overrides an older-age proxy
+  period: 2027
+  input:
+    age: 75
+    social_security_retirement_first_cola_year: 2028
+    gov.contrib.ssa.benefit_levers.cola.start_year: 2027
+    gov.contrib.ssa.benefit_levers.cola.pp_change: 0.0015
+    social_security_retirement_reported: 12000
+  output:
+    social_security_retirement_joint_cola_factor: 1
+    social_security_retirement: 12000
+
+- name: Withheld COLA uses one numerator even when CPI-E is active
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    gov.contrib.ssa.benefit_levers.cola.start_year: 2027
+    gov.contrib.ssa.benefit_levers.cola.pp_change: 0.0015
+    gov.contrib.ssa.benefit_levers.cola.withholding_enabled: true
+    social_security_retirement_first_cola_year: 2027
+    social_security_retirement_cola_withheld: true
+    social_security_retirement_reported: 12000
+  output:
+    social_security_retirement_joint_cola_factor: 0.9652509652509652
+    social_security_retirement: 11583.011583011583
+
+- name: Chained CPI change retains its requested precision
+  period: 2027
+  input:
+    age: 70
+    gov.contrib.ssa.benefit_levers.cola.start_year: 2027
+    gov.contrib.ssa.benefit_levers.cola.pp_change: -0.0030
+    social_security_retirement_reported: 12000
+  output:
+    social_security_retirement_joint_cola_factor: 0.997104247104247
+
+- name: December effective date first changes the following January check
+  period: 2028
+  input:
+    age: 70
+    gov.contrib.ssa.benefit_levers.cola.effective_year: 2028
+    gov.contrib.ssa.benefit_levers.cola.effective_month: 12
+    gov.contrib.ssa.benefit_levers.cola.pp_change: 0.0015
+    social_security_retirement_reported: 12000
+  output:
+    social_security_retirement_joint_cola_factor: 1
+
+- name: First affected January after December effective date
+  period: 2029
+  input:
+    age: 70
+    gov.contrib.ssa.benefit_levers.cola.effective_year: 2028
+    gov.contrib.ssa.benefit_levers.cola.effective_month: 12
+    gov.contrib.ssa.benefit_levers.cola.pp_change: 0.0015
+    social_security_retirement_reported: 12000
+  output:
+    # Statutory baseline 339.431 / 332.241 - 1 rounds to 2.2%.
+    social_security_retirement_joint_cola_factor: 1.0014677103718199
+
+- name: A retirement claim date does not erase eligibility COLAs
+  period: 2027
+  input:
+    age: 70
+    social_security_retirement_entitlement_year: 2027
+    gov.contrib.ssa.benefit_levers.cola.start_year: 2027
+    gov.contrib.ssa.benefit_levers.cola.pp_change: 0.0015
+    social_security_retirement_reported: 12000
+  output:
+    social_security_retirement_joint_cola_factor: 1.0014478764478765

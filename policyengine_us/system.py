@@ -36,6 +36,7 @@ from policyengine_core.parameters.operations.uprate_parameters import (
 )
 from .tools.default_uprating import add_default_uprating
 from .tools.period_branch import delete_input_values
+from .tools.social_security_inputs import migrate_social_security_inputs
 from .tools.section_911 import validate_section_911_batch_inputs
 from .tools.per_capita_uprating import (
     add_per_capita_parameters_for_parameter_uprating,
@@ -258,6 +259,8 @@ class Simulation(SPMSimulationMixin, CoreSimulation):
         )
         if reform is not None:
             self.apply_reform(reform)
+
+        migrate_social_security_inputs(self)
 
         # Labor supply responses
 
@@ -518,6 +521,8 @@ class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
         )
         if reform is not None:
             self.apply_reform(reform)
+
+        migrate_social_security_inputs(self)
 
         # Labor supply responses
 
