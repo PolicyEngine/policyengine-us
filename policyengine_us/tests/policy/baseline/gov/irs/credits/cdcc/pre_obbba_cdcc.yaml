@@ -1,12 +1,14 @@
 # The pre_obbba_cdcc family recomputes the federal section 21 credit on the
 # rate schedule as it stood before the One Big Beautiful Bill Act (OBBBA). For
-# 2025 it must equal the live cdcc (identical schedule); for 2026 it must hold
-# the pre-OBBBA rate (max 35%, min 20%, no amended second phase-out) while the
-# live cdcc reflects the OBBBA increase (max 50%, min 35%). Read by states whose
-# income tax statically conforms to a pre-2026 IRC (KY, ME, VT).
+# tax years before the Act's section 21 amendment applies (P.L. 119-21 sec.
+# 70405(b): years beginning after December 31, 2025) it must equal the live
+# cdcc, including 2021's refundable American Rescue Plan Act credit; for 2026 it must
+# hold the pre-OBBBA rate (max 35%, min 20%, no amended second phase-out) while
+# the live cdcc reflects the OBBBA increase (max 50%, min 35%). Read by states
+# whose income tax statically conforms to a pre-OBBBA IRC.
 
-# Low-income joint family, two children, $6,000 childcare, AGI below the first
-# phase-out start so the applicable rate is at its maximum.
+# Joint family, two children, $6,000 childcare, $50,000 AGI: $35,000 over the
+# $15,000 phase-out start is 18 increments, so the 2025 rate is the 20% floor.
 - name: 2025 pre-OBBBA CDCC equals the live CDCC (identical schedule)
   period: 2025
   absolute_error_margin: 0.01
@@ -65,3 +67,64 @@
     pre_obbba_cdcc_potential: 1_200
     pre_obbba_cdcc: 1_200
     pre_obbba_capped_cdcc: 1_200
+
+# 2021: the American Rescue Plan Act made the credit refundable with a 50% rate
+# below $125,000 of AGI and $8,000 / $16,000 expense limits (IRC 21(g)). The Act
+# did not change 2021, so the pre-OBBBA credit is the live refundable credit,
+# not the 2025 rate on 2021 expense limits ($1,200 before this fix).
+- name: 2021 pre-OBBBA CDCC equals the live refundable ARPA credit
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 25_000
+      spouse:
+        age: 35
+        employment_income: 25_000
+      child1:
+        age: 5
+      child2:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 6_000
+        premium_tax_credit: 0
+  output:
+    # 50% x $6,000 = $3,000, refundable, so not capped at liability.
+    cdcc_potential: 3_000
+    cdcc: 3_000
+    capped_cdcc: 3_000
+    pre_obbba_cdcc_potential: 3_000
+    pre_obbba_cdcc: 3_000
+    pre_obbba_capped_cdcc: 3_000
+
+# The mirrors key on the Act's effective date, not on a section 21 parameter.
+# A reform that switches off the amended second phase-out in 2026 leaves the
+# live 50% maximum and 35% floor in place, and must not move the mirrors.
+- name: 2026 pre-OBBBA CDCC stays frozen when a reform switches off the amended phase-out
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.irs.credits.cdcc.phase_out.amended_structure.applies: false
+    people:
+      parent:
+        age: 30
+        employment_income: 50_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        tax_unit_childcare_expenses: 1_000
+        premium_tax_credit: 0
+  output:
+    # Live: 50% less 18 points = 32%, floored at 35%; no second phase-down.
+    cdcc: 350
+    # Pre-OBBBA: 35% less 18 points = 17%, floored at 20%.
+    pre_obbba_cdcc_potential: 200
+    pre_obbba_cdcc: 200
+    pre_obbba_capped_cdcc: 200

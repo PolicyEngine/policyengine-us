@@ -1,0 +1,20 @@
+- name: Case 1, default ga_other_additions is zero
+  period: 2024
+  input:
+    state_code: GA
+    employment_income: 50_000
+  output:
+    ga_other_additions: 0
+    ga_additions: 0
+    ga_agi: 50_000
+
+- name: Case 2, ga_other_additions increases GA AGI
+  period: 2024
+  input:
+    state_code: GA
+    employment_income: 50_000
+    ga_other_additions: 2_000
+  output:
+    ga_other_additions: 2_000
+    ga_additions: 2_000
+    ga_agi: 52_000

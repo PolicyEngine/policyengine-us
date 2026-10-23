@@ -122,3 +122,45 @@
   output:
     ar_gambling_loss_deduction: 4_000
     ar_itemized_deductions_joint: [5_000, 0]
+
+- name: Arkansas excludes mortgage insurance premiums for joint itemization in 2021.
+  period: 2021
+  input:
+    state_code: AR
+    adjusted_gross_income: 80_000
+    ar_agi_indiv: 80_000
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 2_000
+    interest_deduction: 12_000
+    ar_itemized_deductions_joint: 10_000
+
+- name: Arkansas excludes mortgage insurance premiums for joint itemization in 2022.
+  period: 2022
+  input:
+    state_code: AR
+    adjusted_gross_income: 80_000
+    ar_agi_indiv: 80_000
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 0
+    interest_deduction: 10_000
+    ar_itemized_deductions_joint: 10_000
+
+- name: Arkansas excludes mortgage insurance premiums for joint itemization in 2026.
+  period: 2026
+  input:
+    state_code: AR
+    adjusted_gross_income: 80_000
+    ar_agi_indiv: 80_000
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 2_000
+    interest_deduction: 12_000
+    ar_itemized_deductions_joint: 10_000

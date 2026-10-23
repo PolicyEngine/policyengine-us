@@ -1,0 +1,42 @@
+description: Oklahoma provides this regular winter heating payment by net income and household size for propane, kerosene or heating oil under the Low Income Home Energy Assistance Program.
+
+1:
+  1:
+    2021-10-01: 425
+  2:
+    2021-10-01: 468
+  3:
+    2021-10-01: 500
+
+2:
+  1:
+    2021-10-01: 350
+  2:
+    2021-10-01: 385
+  3:
+    2021-10-01: 412
+
+3:
+  1:
+    2021-10-01: 280
+  2:
+    2021-10-01: 308
+  3:
+    2021-10-01: 330
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Oklahoma LIHEAP delivered winter payment matrix
+  propagate_metadata_to_children: true
+  breakdown:
+    - range(1, 4)
+    - range(1, 4)
+  breakdown_labels:
+    - Net monthly income band
+    - Household size group
+  reference:
+    - title: OKDHS Appendix C-7-A, Winter Heating Program
+      href: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-7-a.pdf#page=1
+    - title: Oklahoma FY2026 Benefits Matrix
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/OK_BenefitMatrix_2026.docx
