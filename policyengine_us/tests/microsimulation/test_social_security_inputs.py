@@ -388,3 +388,63 @@ def test_containing_period_migration_preserves_sources_and_inner_final_overrides
     assert amount(simulation, reported, 2024) == 12_000
     assert amount(simulation, public, "year:2024:2") == 24_000
     assert amount(simulation, reported, "year:2024:10") == 100_000
+
+
+def test_multi_year_selected_base_input_and_neutralization_take_precedence(monkeypatch):
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported, base = f"{public}_reported", f"{public}_base"
+    multi_year = "year:2024:2"
+    simulation = make_simulation(
+        inputs={reported: {multi_year: 24_000}, base: {multi_year: 6_000}}
+    )
+    for year in (2024, 2025):
+        simulation.set_input(FACTOR, year, [1.1])
+    assert amount(simulation, public, multi_year) == pytest.approx(6_600)
+    reloaded = reload_source_inputs(
+        export_source_inputs(simulation), tax_benefit_system=system
+    )
+    assert amount(reloaded, public, multi_year) == pytest.approx(6_600)
+
+    base_only = make_simulation(inputs={base: {multi_year: 6_000}})
+    assert amount(base_only, public, multi_year) == 6_000
+    neutralized = make_simulation(
+        inputs={reported: {multi_year: 24_000}, base: {multi_year: 6_000}}
+    )
+    neutralized.set_input(FACTOR, 2024, [1.1])
+    neutralized.set_input(FACTOR, 2025, [0.8])
+    with monkeypatch.context() as context:
+        context.setattr(system.variables[base], "is_neutralized", True)
+        assert amount(neutralized, public, multi_year) == 0
+
+
+def test_multi_year_reported_total_rejects_partial_base_overrides():
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    simulation = make_simulation(
+        inputs={
+            f"{public}_reported": {"year:2024:2": 24_000},
+            f"{public}_base": {2024: 6_000},
+        }
+    )
+    with pytest.raises(ValueError, match="base overrides for other periods"):
+        simulation.calculate(public, "year:2024:2")
+
+
+def test_multi_year_zero_rows_do_not_require_annual_allocation():
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported = f"{public}_reported"
+    multi_year = "year:2024:2"
+    inputs = {
+        "people": {
+            "positive": {reported: {multi_year: 24_000}},
+            "zero": {reported: {multi_year: 0}},
+        },
+        "households": {"household": {"members": ["positive", "zero"]}},
+    }
+    simulation = Simulation(situation=inputs, tax_benefit_system=system)
+    simulation.set_input(FACTOR, 2024, [1.1, 1.1])
+    simulation.set_input(FACTOR, 2025, [1.1, 0.8])
+    np.testing.assert_allclose(simulation.calculate(public, multi_year), [26_400, 0])
+    all_zero = simulation.get_branch("all_zero_multi_year")
+    all_zero.set_input(reported, multi_year, [0, 0])
+    drop_inherited_values(all_zero)
+    np.testing.assert_array_equal(all_zero.calculate(public, multi_year), [0, 0])

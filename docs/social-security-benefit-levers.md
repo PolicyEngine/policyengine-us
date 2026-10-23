@@ -54,8 +54,11 @@ PE-US wrappers also preserve an exact supplied multi-year annual total, such as
 `year:2024:2`. They apply a benefit multiplier only when it is identical in every
 calendar year covered by that total. Differing annual multipliers require
 separately supplied annual source amounts, because the total provides no annual
-allocation. Explicit public multi-year inputs remain final overrides, and
-neutralization still takes precedence. Raw Core `SimulationBuilder` and YAML
+allocation for nonzero rows. Zero rows remain zero. An exact supplied `_base`
+amount takes precedence over `_reported`, and base neutralization or abolition
+still applies; base overrides for only part of a multi-year source require
+annual source amounts. Explicit public multi-year inputs remain final overrides,
+and neutralization still takes precedence. Raw Core `SimulationBuilder` and YAML
 should supply canonical annual `_reported` periods for lever calculations; the
 additional exact multi-year reported-source adapter belongs to PE-US wrappers.
 
