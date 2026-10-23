@@ -1,3 +1,32 @@
+## [2.60.1] - 2026-10-23
+
+### Changed
+
+- Point the Florida and South Dakota LIHEAP source-conflict candidates at their code on main, and add four Florida candidates.
+
+
+## [2.60.0] - 2026-10-22
+
+### Added
+
+- Add Arkansas LIHEAP income limits, countable income, and regular heating payment tables.
+- Model state school meal coverage beyond universal meals: coverage of both reduced-price copays in 24 more jurisdictions and of one meal in New Hampshire and Utah, state free-meal income limits above 185% of poverty (NJ, ND, OR, HI) and New Jersey's standing breakfast-only limit, universal breakfast with separate breakfast and lunch tiers, universal meals in CT (SY 2022-23) and NV (SY 2022-24), and corrected universal-meal dates for MA, MI and VT.
+
+
+## [2.59.0] - 2026-10-22
+
+### Added
+
+- Add Georgia LIHEAP household, income, ordinary eligibility, and regular heating benefits, with the federal 110% poverty guideline floor (gov.hhs.liheap.fpg_floor) and documented categorical and payment-table coverage limits.
+
+
+## [2.58.1] - 2026-10-22
+
+### Fixed
+
+- Take the 2020 charitable deduction for non-itemizers (IRC 62(a)(22), Form 1040 line 10b) above the line, capped at $300 for every return as the statute reads, so it reduces adjusted gross income; stop adding the 2020 and 2021 non-itemizer amount to itemized deductions; include the non-itemizer cash charitable deduction in itemization comparisons; and add it back in states that did not adopt it.
+
+
 ## [2.58.0] - 2026-10-22
 
 ### Added
