@@ -1,0 +1,59 @@
+- name: Disability income of someone retired on permanent and total disability.
+  period: 2024
+  input:
+    retired_on_total_disability: true
+    disability_benefits: 8_000
+    tax_exempt_disability_benefits: 3_000
+    total_disability_payments: 5_000
+  output:
+    permanent_disability_retirement_pay: 5_000
+
+- name: Disability benefits alone do not show the plan provides for disability retirement.
+  period: 2024
+  input:
+    retired_on_total_disability: true
+    disability_benefits: 8_000
+  output:
+    permanent_disability_retirement_pay: 0
+
+- name: Disability pay paid as wages.
+  period: 2024
+  input:
+    retired_on_total_disability: true
+    employment_income: 6_000
+    total_disability_payments: 6_000
+  output:
+    permanent_disability_retirement_pay: 6_000
+
+- name: Only the taxable part of qualifying payments is disability income, whatever other wages there are.
+  period: 2024
+  input:
+    retired_on_total_disability: true
+    # Qualifying payments of 9,000, of which 5,000 came from premiums the
+    # retiree paid; only the 4,000 included in gross income is entered.
+    disability_benefits: 9_000
+    tax_exempt_disability_benefits: 5_000
+    total_disability_payments: 4_000
+    # Unrelated wages.
+    employment_income: 1_000
+  output:
+    permanent_disability_retirement_pay: 4_000
+
+- name: Disability income entered without matching income in federal AGI is not counted.
+  period: 2024
+  input:
+    retired_on_total_disability: true
+    disability_benefits: 6_000
+    tax_exempt_disability_benefits: 6_000
+    total_disability_payments: 6_000
+  output:
+    permanent_disability_retirement_pay: 0
+
+- name: Someone who did not retire on disability has none.
+  period: 2024
+  input:
+    retired_on_total_disability: false
+    disability_benefits: 8_000
+    total_disability_payments: 8_000
+  output:
+    permanent_disability_retirement_pay: 0

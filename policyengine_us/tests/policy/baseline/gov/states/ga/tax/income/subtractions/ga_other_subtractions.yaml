@@ -1,0 +1,31 @@
+- name: Case 1, default ga_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: GA
+    employment_income: 50_000
+  output:
+    ga_other_subtractions: 0
+    ga_subtractions: 0
+    ga_agi: 50_000
+
+- name: Case 2, ga_other_subtractions reduces GA AGI
+  period: 2024
+  input:
+    state_code: GA
+    employment_income: 50_000
+    ga_other_subtractions: 2_000
+  output:
+    ga_other_subtractions: 2_000
+    ga_subtractions: 2_000
+    ga_agi: 48_000
+
+- name: Case 3, ga_other_subtractions reduces GA AGI in 2026
+  period: 2026
+  input:
+    state_code: GA
+    employment_income: 50_000
+    ga_other_subtractions: 2_000
+  output:
+    ga_other_subtractions: 2_000
+    ga_subtractions: 2_000
+    ga_agi: 48_000
