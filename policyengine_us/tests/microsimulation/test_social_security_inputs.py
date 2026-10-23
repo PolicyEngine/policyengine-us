@@ -2,7 +2,7 @@
 
 These cases need Python because YAML bypasses PE-US constructors and cannot
 exercise cloning, stored-input bookkeeping or source export. They reuse the
-read-only country model and use one person, without loading population data.
+read-only country model and tiny populations, without loading external data.
 """
 
 import json
@@ -13,7 +13,11 @@ import pytest
 from policyengine_core.simulations import SimulationBuilder
 
 from policyengine_us import Microsimulation, Simulation
-from policyengine_us.data.economic_assumptions import MICRODATA_UPRATING_OVERRIDES
+from policyengine_us.data.dataset_schema import USSingleYearDataset
+from policyengine_us.data.economic_assumptions import (
+    MICRODATA_UPRATING_OVERRIDES,
+    extend_single_year_dataset,
+)
 from policyengine_us.system import system
 from policyengine_us.tools.period_branch import drop_inherited_values
 from policyengine_us.tools.social_security_inputs import (
@@ -472,3 +476,58 @@ def test_dimensionless_benefit_factors_keep_annual_levels_on_monthly_requests():
     for name in factor_names:
         assert amount(supplied, name, "2024-07") == pytest.approx(1.2)
         assert amount(supplied, name, 2024) == pytest.approx(1.2)
+
+
+def test_original_component_dataset_columns_extend_once_by_per_capita_growth():
+    base_amounts = dict(zip(SOCIAL_SECURITY_COMPONENTS, (24_000, 6_000, 3_000, 1_200)))
+    group_entities = ("household", "tax_unit", "spm_unit", "family", "marital_unit")
+    single = USSingleYearDataset(
+        person=pd.DataFrame(
+            {
+                "person_id": [1],
+                "age": [70],
+                **{f"person_{entity}_id": [1] for entity in group_entities},
+                **{name: [value] for name, value in base_amounts.items()},
+            }
+        ),
+        household=pd.DataFrame({"household_id": [1], "household_weight": [1.0]}),
+        tax_unit=pd.DataFrame({"tax_unit_id": [1]}),
+        spm_unit=pd.DataFrame({"spm_unit_id": [1]}),
+        family=pd.DataFrame({"family_id": [1]}),
+        marital_unit=pd.DataFrame({"marital_unit_id": [1]}),
+        time_period=2024,
+    )
+    # Independent expectation: national-total growth divided by population
+    # growth exactly once, without using the dataset uprater's resolver.
+    base_parameters = system.parameters("2024-01-01")
+    projected_parameters = system.parameters("2025-01-01")
+    national_growth = (
+        projected_parameters.calibration.gov.irs.soi.social_security
+        / base_parameters.calibration.gov.irs.soi.social_security
+    )
+    population_growth = (
+        projected_parameters.calibration.gov.census.populations.total
+        / base_parameters.calibration.gov.census.populations.total
+    )
+    per_person_growth = national_growth / population_growth
+    extended = extend_single_year_dataset(single, end_year=2025, system=system)
+    for public, base in base_amounts.items():
+        assert single.person[public].iloc[0] == base
+        assert extended[2024].person[public].iloc[0] == base
+        assert extended[2025].person[public].iloc[0] == pytest.approx(
+            base * per_person_growth, rel=1e-12
+        )
+
+    simulation = Microsimulation(dataset=extended, tax_benefit_system=system)
+    for public, base in base_amounts.items():
+        reported = f"{public}_reported"
+        assert input_periods(simulation, public) == set()
+        assert input_periods(simulation, reported) == {"2024", "2025"}
+        for year, expected in ((2024, base), (2025, base * per_person_growth)):
+            assert amount(simulation, public, f"{year}-07") == pytest.approx(
+                expected / 12, rel=1e-6
+            )
+            assert amount(simulation, public, year) == pytest.approx(expected, rel=1e-6)
+            assert amount(simulation, reported, year) == pytest.approx(
+                expected, rel=1e-6
+            )
