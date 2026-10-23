@@ -55,7 +55,10 @@ class income_contingent_repayment_payment(Variable):
             "income_contingent_repayment_discretionary_income", period
         )
         income_payment = p.rate * discretionary_income
-        calculated_payment = min_(fixed_payment * factor, income_payment)
+        # Payments are set in whole cents. Rounding before the minimum keeps
+        # floating-point residue from turning a $0 payment into the $5
+        # minimum.
+        calculated_payment = np.round(min_(fixed_payment * factor, income_payment), 2)
         # A calculated payment above zero and at or below the minimum is raised
         # to the minimum.
         adjusted_payment = where(
