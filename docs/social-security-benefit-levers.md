@@ -27,14 +27,20 @@ are supplied in the same period, the reported amount remains the source and
 the public input remains a final override.
 
 A public `set_input` after construction is a final override for its own period.
-It also seeds the reported twin for that period unless an actual twin input
-already exists; a calculated or uprated cache does not count as an input.
-Later years uprate that source. An existing reported input, including zero,
-retains precedence. Aggregate `social_security` inputs remain final overrides.
+It also seeds or refreshes the reported twin for that period unless the caller
+explicitly supplied that twin. Automatically migrated or seeded twins follow
+later public writes, preserving main's uprating and earlier-year lookbacks;
+calculated or uprated caches do not block seeding. An explicitly supplied
+reported input, including zero, retains precedence. Aggregate `social_security`
+inputs remain final overrides.
 Clones and branches retain these rules. Later public writes replace their
 runtime input-name list privately, preserving overrides in legacy extraction
 without changing a parent or sibling clone. Migrated inputs extract as twins;
 later overrides extract alongside their twins and retain precedence on reload.
+A private provenance envelope preserves the distinction between automatic and
+explicit sources through legacy extraction and complete snapshots, including
+subsequent public writes after reload. Builders consume this metadata before
+validating ordinary situation inputs.
 
 Each component has a `_source` selector with default `reported`. Reserved
 options `supplied_aime`, `supplied_pia`, `supplied_ratio_survivor`, and `history`

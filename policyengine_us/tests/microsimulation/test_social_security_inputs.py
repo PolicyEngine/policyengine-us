@@ -134,9 +134,10 @@ def test_later_public_override_survives_clones_and_cache_clear(wrapper):
         copy.set_input(public, 2024, [42])
         drop_inherited_values(copy)
         assert amount(copy, public, 2024) == 42
+        assert amount(copy, f"{public}_reported", 2024) == 42
         assert simulation._user_input_keys == original_keys
         assert amount(simulation, public, 2024) == 0
-    assert amount(simulation, f"{public}_reported", 2024) == 12_000
+    assert amount(simulation, f"{public}_reported", 2024) == 0
 
 
 @pytest.mark.parametrize(
@@ -174,12 +175,17 @@ def test_core_builder_migrates_initial_public_inputs_and_preserves_precedence(ro
     assert "age" in person
     simulation.set_input(retirement, 2024, [0])
     assert amount(simulation, retirement, 2024) == 0
-    assert amount(simulation, f"{retirement}_reported", 2024) == 12_000
+    assert amount(simulation, f"{retirement}_reported", 2024) == 0
+    simulation.set_input(disability, 2024, [42])
+    assert amount(simulation, disability, 2024) == 42
+    assert amount(simulation, f"{disability}_reported", 2024) == 666
 
 
 @pytest.mark.parametrize("wrapper", (*WRAPPERS, make_core_simulation))
 @pytest.mark.parametrize("reported_input", (None, 0, 6_000))
-def test_later_public_write_seeds_only_absent_reported_input(wrapper, reported_input):
+def test_later_public_writes_refresh_automatic_sources_and_keep_explicit_twins(
+    wrapper, reported_input
+):
     public = SOCIAL_SECURITY_COMPONENTS[0]
     reported = f"{public}_reported"
     inputs = {} if reported_input is None else {reported: {2024: reported_input}}
@@ -201,6 +207,66 @@ def test_later_public_write_seeds_only_absent_reported_input(wrapper, reported_i
     assert amount(simulation, public, 2026) == pytest.approx(
         expected_source * 13_522.16 / 12_000, abs=0.01
     )
+    simulation.set_input(public, 2024, [24_000])
+    expected_source = 24_000 if reported_input is None else reported_input
+    assert amount(simulation, reported, 2024) == expected_source
+    drop_inherited_values(simulation)
+    assert amount(simulation, public, 2026) == pytest.approx(
+        expected_source * 13_522.16 / 12_000, abs=0.01
+    )
+    assert input_periods(simulation, reported) == {"2024"}
+
+
+@pytest.mark.parametrize("wrapper", (*WRAPPERS, make_core_simulation))
+def test_repeated_public_writes_refresh_migrated_sources_and_future_years(wrapper):
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported = f"{public}_reported"
+    inputs = {public: {2024: 12_000}}
+    simulation = (
+        wrapper(inputs)
+        if wrapper is make_core_simulation
+        else make_simulation(wrapper, inputs)
+    )
+    simulation.set_input(FACTOR, 2024, [1.08])
+    simulation.set_input(FACTOR, 2026, [1.08])
+    for override in (24_000, 18_000, 0):
+        simulation.set_input(public, 2024, [override])
+        drop_inherited_values(simulation)
+        assert amount(simulation, public, 2024) == override
+        assert amount(simulation, reported, 2024) == override
+        assert amount(simulation, public, 2026) == pytest.approx(
+            override * 13_522.16 / 12_000 * 1.08, abs=0.01
+        )
+        assert input_periods(simulation, public) == {"2024"}
+        assert input_periods(simulation, reported) == {"2024"}
+
+
+@pytest.mark.parametrize("wrapper", (*WRAPPERS, make_core_simulation))
+@pytest.mark.parametrize("explicit_source", (0, 12_000))
+def test_direct_reported_holder_write_replaces_automatic_source_origin(
+    wrapper, explicit_source
+):
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported = f"{public}_reported"
+    inputs = {public: {2024: 12_000}}
+    simulation = (
+        wrapper(inputs)
+        if wrapper is make_core_simulation
+        else make_simulation(wrapper, inputs)
+    )
+    # A same-value write also becomes explicit; provenance cannot be inferred
+    # by comparing the stored amount with its former automatic amount.
+    simulation.get_holder(reported).set_input(
+        2024, [explicit_source], simulation.branch_name
+    )
+    for override in (24_000, 18_000):
+        simulation.set_input(public, 2024, [override])
+        drop_inherited_values(simulation)
+        assert amount(simulation, public, 2024) == override
+        assert amount(simulation, reported, 2024) == explicit_source
+        assert amount(simulation, public, 2026) == pytest.approx(
+            explicit_source * 13_522.16 / 12_000, abs=0.01
+        )
 
 
 @pytest.mark.parametrize("wrapper", (*WRAPPERS, make_core_simulation))
@@ -216,7 +282,9 @@ def test_later_monthly_public_write_seeds_the_stored_rolling_year(wrapper):
     assert input_periods(simulation, reported) == {"year:2024-07"}
     assert simulation.get_array(public, "year:2024-07")[0] == 12_000
     assert simulation.get_array(reported, "year:2024-07")[0] == 12_000
-    assert amount(simulation, public, "2024-07") == 1_000
+    # A monthly output reads the calendar year, whose January start precedes
+    # the first rolling source in July. Main also returns zero here.
+    assert amount(simulation, public, "2024-07") == 0
     assert amount(simulation, public, 2026) > 12_000
 
 
@@ -243,6 +311,54 @@ def test_clone_and_branch_later_public_writes_keep_input_lists_private(wrapper):
         assert simulation._user_input_keys == original_keys
         assert amount(simulation, public, 2025) == parent_later_source
         assert input_periods(simulation, reported) == {"2024"}
+
+
+@pytest.mark.parametrize("wrapper", WRAPPERS)
+def test_branch_explicit_twin_overrides_inherited_automatic_source_privately(wrapper):
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported = f"{public}_reported"
+    simulation = make_simulation(wrapper, {public: {2024: 12_000}})
+    explicit = simulation.get_branch("explicit_reported_source")
+    explicit.set_input(reported, 2024, [0])
+    automatic = simulation.get_branch("inherited_automatic_source")
+    for copy in (explicit, automatic):
+        copy.set_input(public, 2024, [24_000])
+        drop_inherited_values(copy)
+        assert amount(copy, public, 2024) == 24_000
+    assert amount(explicit, reported, 2024) == 0
+    assert amount(explicit, public, 2026) == 0
+    assert amount(automatic, reported, 2024) == 24_000
+    assert amount(automatic, public, 2026) == pytest.approx(27_044.32, abs=0.01)
+    assert amount(simulation, reported, 2024) == 12_000
+    # A branch's explicit replacement must not mark its parent's automatic
+    # source explicit, or prevent the parent's next public write from seeding.
+    simulation.set_input(public, 2024, [36_000])
+    assert amount(simulation, reported, 2024) == 36_000
+    assert amount(explicit, reported, 2024) == 0
+    assert amount(automatic, reported, 2024) == 24_000
+
+
+@pytest.mark.parametrize("wrapper", WRAPPERS)
+def test_neutral_reform_replay_keeps_automatic_source_origin_private(wrapper):
+    from policyengine_core.reforms import Reform
+
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported = f"{public}_reported"
+    simulation = make_simulation(wrapper, {public: {2024: 12_000}})
+    parent_later = amount(simulation, public, 2026)
+    branch = simulation.get_branch("replayed_automatic_source", clone_system=True)
+    branch.apply_reform(
+        Reform.from_dict(
+            {"gov.contrib.ssa.benefit_levers.across_the_board.rate": {"2024": 0}}
+        )
+    )
+    branch.set_input(public, 2024, [24_000])
+    assert amount(branch, reported, 2024) == 24_000
+    assert amount(branch, public, 2024) == 24_000
+    assert amount(branch, public, 2026) == pytest.approx(27_044.32, abs=0.01)
+    assert input_periods(branch, reported) == {"2024"}
+    assert amount(simulation, reported, 2024) == 12_000
+    assert amount(simulation, public, 2026) == parent_later
 
 
 def test_dataset_constructor_migrates_stored_original_columns():
@@ -284,12 +400,12 @@ def test_dataset_constructor_migrates_stored_original_columns():
     # Loader-time public writes migrate; later writes remain final outputs.
     simulation.set_input(public, 2024, [0])
     assert amount(simulation, public, 2024) == 0
-    assert amount(simulation, f"{public}_reported", 2024) == 12_000
+    assert amount(simulation, f"{public}_reported", 2024) == 0
     reloaded = reload_source_inputs(
         export_source_inputs(simulation), tax_benefit_system=system
     )
     assert amount(reloaded, public, 2024) == 0
-    assert amount(reloaded, f"{public}_reported", 2024) == 12_000
+    assert amount(reloaded, f"{public}_reported", 2024) == 0
 
 
 def test_complete_snapshot_preserves_histories_and_separate_final_overrides():
@@ -320,6 +436,10 @@ def test_complete_snapshot_preserves_histories_and_separate_final_overrides():
             )
     assert input_periods(reloaded, public) == {"2026", "2027"}
     assert export_source_inputs(reloaded)["overrides"][public]["2027"] == [0]
+    reloaded.set_input(public, 2027, [24_000])
+    assert amount(reloaded, f"{public}_reported", 2027) == 24_000
+    assert amount(reloaded, public, 2028) > 24_000
+    assert amount(simulation, f"{public}_reported", 2027) == 0
 
 
 def test_legacy_extraction_uses_reported_sources_and_months_keep_flow_conversion():
@@ -336,6 +456,9 @@ def test_legacy_extraction_uses_reported_sources_and_months_keep_flow_conversion
             assert amount(copy, public, "2024-07") == 1_000
         assert amount(copy, public, 2024) == 12_000
         assert amount(copy, public, "2024-07") == 1_000
+    reloaded.set_input(public, 2024, [24_000])
+    assert amount(reloaded, f"{public}_reported", 2024) == 24_000
+    assert amount(reloaded, public, 2026) == pytest.approx(27_044.32, abs=0.01)
 
 
 @pytest.mark.parametrize("wrapper", WRAPPERS)
@@ -348,10 +471,94 @@ def test_legacy_extraction_preserves_later_public_override(wrapper, override):
     extracted = simulation.extract_person(0)
     person = next(iter(extracted["people"].values()))
     assert person[public]["2024"] == override
-    assert person[reported]["2024"] == 12_000
+    assert person[reported]["2024"] == override
     reloaded = Simulation(situation=extracted, tax_benefit_system=system)
     assert amount(reloaded, public, 2024) == override
-    assert amount(reloaded, reported, 2024) == 12_000
+    assert amount(reloaded, reported, 2024) == override
+
+
+@pytest.mark.parametrize("wrapper", WRAPPERS)
+@pytest.mark.parametrize("snapshot", ("legacy_extraction", "complete_export"))
+def test_source_round_trip_retains_automatic_origin_for_subsequent_writes(
+    wrapper, snapshot
+):
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported = f"{public}_reported"
+    simulation = make_simulation(wrapper, {public: {2024: 12_000}})
+    simulation.set_input(public, 2024, [24_000])
+    # A cached intervening source is not exported or treated as supplied.
+    amount(simulation, reported, 2025)
+    if snapshot == "legacy_extraction":
+        payload = json.loads(json.dumps(simulation.extract_person(0)))
+        person = next(iter(payload["people"].values()))
+        reloaded = Simulation(situation=payload, tax_benefit_system=system)
+        assert person[public] == {"2024": 24_000}
+    else:
+        payload = json.loads(json.dumps(export_source_inputs(simulation)))
+        person = next(iter(payload["sources"]["people"].values()))
+        reloaded = reload_source_inputs(payload, tax_benefit_system=system)
+        assert public not in person
+        assert payload["overrides"][public] == {"2024": [24_000]}
+    assert person[reported] == {"2024": 24_000}
+    assert set(person).issubset(system.variables)
+    reloaded.set_input(public, 2024, [36_000])
+    assert amount(reloaded, public, 2024) == 36_000
+    assert amount(reloaded, reported, 2024) == 36_000
+    assert amount(reloaded, public, 2026) == pytest.approx(40_566.48, abs=0.02)
+    assert input_periods(reloaded, reported) == {"2024"}
+    assert amount(simulation, reported, 2024) == 24_000
+
+
+@pytest.mark.parametrize("wrapper", WRAPPERS)
+def test_complete_reload_reform_baseline_retains_automatic_source_origin(wrapper):
+    from policyengine_core.reforms import Reform
+
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported = f"{public}_reported"
+    simulation = make_simulation(wrapper, {public: {2024: 12_000}})
+    simulation.set_input(public, 2024, [24_000])
+    reloaded = reload_source_inputs(
+        export_source_inputs(simulation),
+        tax_benefit_system=system,
+        reform=Reform.from_dict(
+            {"gov.contrib.ssa.benefit_levers.across_the_board.rate": {"2024": 0}}
+        ),
+    )
+    baseline = reloaded.baseline
+    assert baseline is not None
+    baseline.set_input(public, 2024, [36_000])
+    assert amount(baseline, public, 2024) == 36_000
+    assert amount(baseline, reported, 2024) == 36_000
+    assert amount(baseline, public, 2026) == pytest.approx(40_566.48, abs=0.02)
+    assert amount(reloaded, reported, 2024) == 24_000
+    reloaded.set_input(public, 2024, [48_000])
+    assert amount(reloaded, reported, 2024) == 48_000
+    assert amount(reloaded, public, 2026) == pytest.approx(54_088.64, abs=0.02)
+    assert amount(baseline, reported, 2024) == 36_000
+    assert amount(simulation, reported, 2024) == 24_000
+
+
+@pytest.mark.parametrize("wrapper", WRAPPERS)
+def test_explicit_only_legacy_extraction_needs_no_provenance_envelope(wrapper):
+    retirement, disability = SOCIAL_SECURITY_COMPONENTS[:2]
+    simulation = make_simulation(
+        wrapper,
+        {
+            f"{retirement}_reported": {2024: 0},
+            f"{disability}_reported": {2024: 6_000},
+        },
+    )
+    payload = simulation.extract_person(0)
+    assert set(payload).issubset(system.entities_plural())
+    person = next(iter(payload["people"].values()))
+    assert set(person).issubset(system.variables)
+    reloaded = Simulation(situation=payload, tax_benefit_system=system)
+    reloaded.set_input(retirement, 2024, [24_000])
+    reloaded.set_input(disability, 2024, [12_000])
+    assert amount(reloaded, f"{retirement}_reported", 2024) == 0
+    assert amount(reloaded, f"{disability}_reported", 2024) == 6_000
+    assert amount(reloaded, retirement, 2026) == 0
+    assert amount(reloaded, disability, 2026) == pytest.approx(6_761.08, abs=0.01)
 
 
 def test_reported_twins_are_pure_and_original_dataset_names_keep_their_uprater():
@@ -467,7 +674,7 @@ def test_exact_multi_year_sources_keep_keys_uniform_factors_and_overrides(wrappe
         export_source_inputs(clone), tax_benefit_system=system
     )
     assert amount(override_reload, public, multi_year) == 0
-    assert amount(override_reload, reported, multi_year) == 24_000
+    assert amount(override_reload, reported, multi_year) == 0
     assert input_periods(override_reload, "household_weight") == {multi_year}
 
 

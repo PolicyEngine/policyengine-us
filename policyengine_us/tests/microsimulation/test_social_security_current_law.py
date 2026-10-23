@@ -159,6 +159,8 @@ def _probe():
                 result["complete_export_reload"] = _snapshot(
                     simulation, (2024, 2025, 2026, 2027)
                 )
+                simulation.set_input("social_security_retirement", 2026, [36_000, 0])
+                result["complete_export_rewrite"] = _snapshot(simulation, (2026, 2027))
             else:
                 payload = export_source_inputs(simulation)
                 assert payload["overrides"]["social_security_retirement"]["2026"] == [
@@ -172,14 +174,23 @@ def _probe():
                 assert result["complete_export_reload"] == _snapshot(
                     simulation, (2024, 2025, 2026, 2027)
                 )
+                reloaded.set_input("social_security_retirement", 2026, [36_000, 0])
+                result["complete_export_rewrite"] = _snapshot(reloaded, (2026, 2027))
                 del reloaded
         del simulation
         gc.collect()
 
-        # Same-period explicit twin precedence remains covered by the input
-        # tests. This regression specifically checks the later final write
-        # survives legacy extraction, including its tax and net-income effects.
-        simulation = wrapper(situation=situation(), tax_benefit_system=system)
+        # A same-period later public write updates the twin originally moved
+        # from public ingress. An explicitly supplied twin retains priority
+        # in the separate precedence tests. Extraction must preserve this
+        # origin as well as the final override for a subsequent public write.
+        inputs = situation()
+        for person in inputs["people"].values():
+            # Legacy extraction does not round-trip the existing earnings
+            # constructor migrations. Isolate the reported benefit regression.
+            person.pop("employment_income")
+            person.pop("self_employment_income")
+        simulation = wrapper(situation=inputs, tax_benefit_system=system)
         simulation.set_input("social_security_retirement", 2024, [24_000, 0])
         # Extract before calculations introduce earlier lookback cache periods
         # into Core's legacy first-known-period selection.
@@ -187,8 +198,31 @@ def _probe():
         reloaded = Simulation(situation=payload, tax_benefit_system=system)
         live = _snapshot(simulation, (2024,), (*BENEFITS, *DOWNSTREAM))
         extracted = _snapshot(reloaded, (2024,), (*BENEFITS, *DOWNSTREAM))
-        assert extracted == {key: values[:1] for key, values in live.items()}
+        expected = {key: values[:1] for key, values in live.items()}
+        assert extracted == expected, {
+            key: {"live": expected[key], "reloaded": extracted[key]}
+            for key in expected
+            if extracted[key] != expected[key]
+        }
         result[f"extraction_reload_{label}"] = extracted
+        live_future = _snapshot(simulation, (2026, 2027), (*BENEFITS, *DOWNSTREAM))
+        result[f"same_period_override_{label}"] = live_future
+        assert (
+            live_future["medicare_irmaa_magi_two_years_prior@2026"]
+            == live["medicare_irmaa_tax_year_magi@2024"]
+        )
+        extracted_future = _snapshot(reloaded, (2026, 2027), (*BENEFITS, *DOWNSTREAM))
+        expected_future = {key: values[:1] for key, values in live_future.items()}
+        assert extracted_future == expected_future, {
+            key: {"live": expected_future[key], "reloaded": extracted_future[key]}
+            for key in expected_future
+            if extracted_future[key] != expected_future[key]
+        }
+        result[f"extraction_future_reload_{label}"] = extracted_future
+        reloaded.set_input("social_security_retirement", 2024, [36_000])
+        result[f"extraction_rewrite_{label}"] = _snapshot(
+            reloaded, (2024, 2026, 2027), (*BENEFITS, *DOWNSTREAM)
+        )
         del simulation, reloaded
         gc.collect()
 
@@ -402,11 +436,18 @@ def differential(tmp_path_factory):
         "later_override_microsimulation",
         "extraction_reload_simulation",
         "extraction_reload_microsimulation",
+        "same_period_override_simulation",
+        "same_period_override_microsimulation",
+        "extraction_future_reload_simulation",
+        "extraction_future_reload_microsimulation",
+        "extraction_rewrite_simulation",
+        "extraction_rewrite_microsimulation",
         "automatic_baseline_simulation",
         "automatic_baseline_microsimulation",
         "neutral_constructor_simulation",
         "neutral_constructor_microsimulation",
         "complete_export_reload",
+        "complete_export_rewrite",
         "yaml_core_builder",
         "yaml_core_downstream",
         "public_set_input",

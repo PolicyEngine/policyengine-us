@@ -1,13 +1,15 @@
 """Compatibility ingress and complete, source-safe simulation snapshots.
 
 Initial ingress moves legacy benefit inputs to their pure reported sources.
-A later public write overrides its period and seeds an absent reported source.
+A later public write overrides its period and refreshes its automatic source.
+An explicitly supplied reported source retains precedence.
 """
 
 import json
 from contextvars import ContextVar
 from functools import wraps
 
+from policyengine_core.periods import period as to_period
 from policyengine_core.simulations.simulation import NpEncoder
 
 from policyengine_us.tools.period_branch import delete_input_values
@@ -19,11 +21,90 @@ SOCIAL_SECURITY_COMPONENTS = (
     "social_security_survivors",
     "social_security_dependents",
 )
+_REPORTED_COMPONENTS = tuple(f"{name}_reported" for name in SOCIAL_SECURITY_COMPONENTS)
 
 
 _initial_social_security_ingress = ContextVar(
     "initial_social_security_ingress", default=False
 )
+_PROVENANCE = "_social_security_input_provenance"
+_AUTOMATIC_INPUTS = "_social_security_automatic_reported_inputs"
+
+
+def _recorded_input_location(simulation, name, period, *, branch_names=None):
+    """Identify the actual supplied tier, including one hidden by a cache."""
+    holder = simulation.get_holder(name)
+    period = holder._storage_period(period)
+    input_keys = getattr(simulation, "_user_input_keys", ())
+    if branch_names is None:
+        branch_names = simulation._get_visible_branch_names()
+    for branch_name in branch_names:
+        key = (name, branch_name, period)
+        if key not in input_keys:
+            continue
+        for storage_name, storage, separator in (
+            ("memory", holder._memory_storage, ":"),
+            ("disk", holder._disk_storage, "_"),
+        ):
+            if holder._stores_user_input(period, branch_name, storage_name):
+                sequence = storage._sequence_numbers.get(
+                    f"{branch_name}{separator}{period}"
+                )
+                return key, (storage_name, sequence)
+    return None
+
+
+def _is_automatic_reported_input(simulation, name, period):
+    location = _recorded_input_location(simulation, name, period)
+    return (
+        location is not None
+        and getattr(simulation, _AUTOMATIC_INPUTS, {}).get(location[0]) == location[1]
+    )
+
+
+def _mark_automatic_reported_input(simulation, name, period, *, branch_name=None):
+    location = _recorded_input_location(
+        simulation,
+        name,
+        period,
+        branch_names=None if branch_name is None else (branch_name,),
+    )
+    if location is not None:
+        # Core clones simulation attributes shallowly. Never mutate a shared
+        # provenance dictionary: each write belongs to this simulation alone.
+        automatic = dict(getattr(simulation, _AUTOMATIC_INPUTS, {}))
+        automatic[location[0]] = location[1]
+        setattr(simulation, _AUTOMATIC_INPUTS, automatic)
+
+
+def _automatic_reported_metadata(simulation, *, exported_periods=None):
+    automatic = {}
+    for public_name in SOCIAL_SECURITY_COMPONENTS:
+        name = f"{public_name}_reported"
+        for period in simulation._get_set_input_periods(name):
+            if (
+                exported_periods is not None
+                and (name, str(period)) not in exported_periods
+            ):
+                continue
+            if _is_automatic_reported_input(simulation, name, period):
+                automatic.setdefault(name, []).append(str(period))
+    return {"version": 1, "automatic_reported": automatic} if automatic else None
+
+
+def _restore_automatic_reported_metadata(simulation, metadata):
+    if metadata is None:
+        return
+    if not isinstance(metadata, dict) or metadata.get("version") != 1:
+        raise ValueError("Unsupported Social Security input provenance version")
+    automatic = metadata.get("automatic_reported", {})
+    if not isinstance(automatic, dict):
+        raise ValueError("Social Security input provenance must contain a mapping")
+    for name, periods in automatic.items():
+        if name not in _REPORTED_COMPONENTS or not isinstance(periods, list):
+            raise ValueError("Invalid automatic Social Security reported input")
+        for period in periods:
+            _mark_automatic_reported_input(simulation, name, to_period(period))
 
 
 def install_social_security_input_compatibility():
@@ -55,10 +136,10 @@ def install_social_security_input_compatibility():
             if not track_public_write:
                 return original_set_input(simulation, variable_name, period, value)
 
-            holder = simulation.get_holder(variable_name)
-            branch = simulation.branch_name
             before = {
-                supplied_period: holder._stored_sequence_number(supplied_period, branch)
+                supplied_period: _recorded_input_location(
+                    simulation, variable_name, supplied_period
+                )
                 for supplied_period in simulation._get_set_input_periods(variable_name)
             }
             result = original_set_input(simulation, variable_name, period, value)
@@ -68,10 +149,13 @@ def install_social_security_input_compatibility():
             # in: a monthly input to a yearly variable stores a rolling year.
             # Inspect actual stores rather than guessing those period aliases.
             for supplied_period in simulation._get_set_input_periods(variable_name):
-                if (
-                    holder._stored_sequence_number(supplied_period, branch)
-                    == before.get(supplied_period)
-                    or supplied_period in reported_periods
+                if _recorded_input_location(
+                    simulation, variable_name, supplied_period
+                ) == before.get(supplied_period) or (
+                    supplied_period in reported_periods
+                    and not _is_automatic_reported_input(
+                        simulation, reported_name, supplied_period
+                    )
                 ):
                     continue
                 supplied_value = simulation._get_recorded_input_array(
@@ -83,6 +167,9 @@ def install_social_security_input_compatibility():
                         reported_name,
                         supplied_period,
                         supplied_value.copy(),
+                    )
+                    _mark_automatic_reported_input(
+                        simulation, reported_name, supplied_period
                     )
 
             # Core clones share this legacy list. Replace it privately so a
@@ -97,6 +184,65 @@ def install_social_security_input_compatibility():
         set_input._social_security_compatibility = True
         CoreSimulation.set_input = set_input
 
+    original_extract = CoreSimulation.extract_person
+    if not getattr(original_extract, "_social_security_compatibility", False):
+
+        @wraps(original_extract)
+        def extract_person(simulation, index=0, exclude_entities=("state",)):
+            payload = original_extract(simulation, index, exclude_entities)
+            if not getattr(
+                simulation.tax_benefit_system,
+                "_social_security_input_compatibility",
+                False,
+            ):
+                return payload
+            people = payload.get(simulation.persons.entity.plural, {})
+            exported_periods = {
+                (name, str(period))
+                for person in people.values()
+                for name, values in person.items()
+                if name in _REPORTED_COMPONENTS
+                for period in values
+            }
+            metadata = _automatic_reported_metadata(
+                simulation, exported_periods=exported_periods
+            )
+            if metadata is not None:
+                payload[_PROVENANCE] = metadata
+            return payload
+
+        extract_person._social_security_compatibility = True
+        CoreSimulation.extract_person = extract_person
+
+    original_invalidate = CoreSimulation._invalidate_all_caches
+    if not getattr(original_invalidate, "_social_security_compatibility", False):
+
+        @wraps(original_invalidate)
+        def invalidate_all_caches(simulation):
+            automatic = []
+            if getattr(
+                simulation.tax_benefit_system,
+                "_social_security_input_compatibility",
+                False,
+            ):
+                for key, stamp in getattr(simulation, _AUTOMATIC_INPUTS, {}).items():
+                    name, branch_name, period = key
+                    if _recorded_input_location(
+                        simulation, name, period, branch_names=(branch_name,)
+                    ) == (key, stamp):
+                        automatic.append(key)
+            result = original_invalidate(simulation)
+            # Core replay assigns new store sequence numbers. Replaying an
+            # automatic source does not turn it into an explicit caller input.
+            for name, branch_name, period in automatic:
+                _mark_automatic_reported_input(
+                    simulation, name, period, branch_name=branch_name
+                )
+            return result
+
+        invalidate_all_caches._social_security_compatibility = True
+        CoreSimulation._invalidate_all_caches = invalidate_all_caches
+
     def wrap_builder(original_build):
         @wraps(original_build)
         def build(builder, tax_benefit_system, input_dict, simulation=None):
@@ -106,6 +252,13 @@ def install_social_security_input_compatibility():
                 return original_build(
                     builder, tax_benefit_system, input_dict, simulation
                 )
+            metadata = input_dict.get(_PROVENANCE)
+            if _PROVENANCE in input_dict:
+                input_dict = {
+                    name: values
+                    for name, values in input_dict.items()
+                    if name != _PROVENANCE
+                }
             token = _initial_social_security_ingress.set(True)
             try:
                 result = original_build(
@@ -135,12 +288,17 @@ def install_social_security_input_compatibility():
                 )
             )
             migrate_social_security_inputs(result)
+            _restore_automatic_reported_metadata(result, metadata)
             return result
 
         build._social_security_compatibility = True
         return build
 
-    for method_name in ("build_from_entities", "build_from_variables"):
+    for method_name in (
+        "build_from_dict",
+        "build_from_entities",
+        "build_from_variables",
+    ):
         original_build = getattr(SimulationBuilder, method_name)
         if not getattr(original_build, "_social_security_compatibility", False):
             setattr(SimulationBuilder, method_name, wrap_builder(original_build))
@@ -190,6 +348,7 @@ def migrate_social_security_inputs(simulation, *, include_baseline=True):
                     break
         for period, value in sources.items():
             simulation.set_input(reported_name, period, value.copy())
+            _mark_automatic_reported_input(simulation, reported_name, period)
         for period in sources:
             for branch_name in visible_branches:
                 delete_input_values(holder, period, branch_name)
@@ -276,6 +435,7 @@ def export_source_inputs(simulation):
                 "version": 1,
                 "sources": sources,
                 "overrides": overrides,
+                _PROVENANCE: _automatic_reported_metadata(simulation),
                 "default_input_period": str(simulation.default_input_period),
                 "default_calculation_period": str(
                     simulation.default_calculation_period
@@ -299,7 +459,14 @@ def reload_source_inputs(payload, **simulation_kwargs):
         raise ValueError("Unsupported source-input snapshot version")
     for period_name in ("default_input_period", "default_calculation_period"):
         simulation_kwargs.setdefault(period_name, payload[period_name])
-    simulation = Simulation(situation=payload["sources"], **simulation_kwargs)
+    metadata = payload.get(_PROVENANCE)
+    sources = payload["sources"]
+    if metadata is not None:
+        # Restore before Core creates a reform baseline, so that clone also
+        # knows which twins came from legacy public inputs.
+        sources = {**sources, _PROVENANCE: metadata}
+    simulation = Simulation(situation=sources, **simulation_kwargs)
+    _restore_automatic_reported_metadata(simulation, metadata)
     for name, periods in payload["overrides"].items():
         for period, values in periods.items():
             simulation.set_input(name, period, values)
