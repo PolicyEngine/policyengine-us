@@ -299,3 +299,32 @@
         state_code: AZ
   output:
     is_chip_immigration_status_eligible: [false, false, false, false]
+
+# Lawfully residing pregnant people covered under the option keep it through
+# the extended postpartum period (SHO #21-007 Q11). Virginia elected the option
+# in Medicaid and CHIP, and its FAMIS MOMS demonstration covers them for 12
+# months postpartum from April 1, 2022.
+- name: Case 15, Virginia pregnancy option covers a recent permanent resident 12 months postpartum.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        under_12_months_postpartum: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 30
+        is_pregnant: false
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    households:
+      household1:
+        members: [person1]
+        state_code: VA
+      household2:
+        members: [person2]
+        state_code: VA
+  output:
+    is_chip_immigration_status_eligible: [true, false]
