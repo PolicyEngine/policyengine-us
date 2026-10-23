@@ -5,6 +5,8 @@ from decimal import Decimal
 
 import numpy as np
 
+from policyengine_us.tools.general import has_input_for_period
+
 from .cola import read_parameter_events
 from .household import BenefitPolicies, SuppliedRecord, SurvivorBasis, calculate_year
 from .parameters import bend_points_at, formula_path_at
@@ -119,12 +121,19 @@ def calculator_output(person, period, parameters, output):
             )
         for earnings_year in (year - 1, year):
             when = str(earnings_year)
-            amount = money("annual_earnings", when)
-            pre = money("pre_fra_earnings", when)
-            if amount >= 0:
-                earnings[earnings_year] = amount
-            if pre >= 0:
-                before_fra[earnings_year] = pre
+            # These are dated records. Core otherwise carries an earlier pure
+            # annual input forward, which would turn missing earnings into an
+            # invented observation for a later earnings-test year.
+            for field, destination in (
+                ("annual_earnings", earnings),
+                ("pre_fra_earnings", before_fra),
+            ):
+                if has_input_for_period(
+                    person.simulation, "ss_calculator_" + field, when
+                ):
+                    amount = money(field, when)
+                    if amount >= 0:
+                        destination[earnings_year] = amount
             test = parameters.gov.ssa.social_security.earnings_test(f"{when}-01-01")
             lower[earnings_year] = test.exempt_amount_under_fra
             higher[earnings_year] = test.exempt_amount_year_of_fra
@@ -158,7 +167,13 @@ def calculator_output(person, period, parameters, output):
                 not policy.end_year or payment_year <= policy.end_year
             )
             withheld = bool(
-                policy.withholding_enabled and value("withhold_cola", str(payment_year))
+                policy.withholding_enabled
+                and has_input_for_period(
+                    person.simulation,
+                    "ss_calculator_withhold_cola",
+                    str(payment_year),
+                )
+                and value("withhold_cola", str(payment_year))
             )
             changes[payment_year] = delta if applies else Decimal(0)
             if applies and alternative >= 0:

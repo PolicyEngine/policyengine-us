@@ -277,6 +277,10 @@ def test_annual_earnings_input_is_allocated_to_entitlement_months_before_checks(
     # that $36 increase belongs to this entitlement total, not 2026 checks.
     assert simulation.calculate("ss_calculated_annual_entitlement", 2026)[0] == 11036
     assert simulation.calculate("ss_calculated_annual_payment", 2026)[0] == 10000
+    # Country input carry-forward must not reuse the 2026 earnings record as
+    # a supplied 2027 observation. The next year's annual test needs its data.
+    with pytest.raises(ValueError, match="Supply annual earnings"):
+        simulation.calculate("ss_calculated_annual_payment", 2027)
 
 
 def test_s770_parameter_schedule_reaches_old_cohort_at_2026():
@@ -372,6 +376,12 @@ def test_joint_cola_withholding_pp_change_and_payment_factors_apply_once():
     # PIA1037.5/1000, then benefit factors1.10*.80 ->913/880 whole dollars.
     np.testing.assert_array_equal(
         simulation.calculate("ss_calculated_payment", "2027-01"), [913, 880]
+    )
+    # Only the supplied 2027 decision withholds a COLA. January2028's 1.1%
+    # baseline plus .15 percentage points applies to both records; after the
+    # continuing .88 payment factor, the checks are924 and891 dollars.
+    np.testing.assert_array_equal(
+        simulation.calculate("ss_calculated_payment", "2028-01"), [924, 891]
     )
 
 

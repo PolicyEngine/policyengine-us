@@ -81,7 +81,8 @@ count. No earnings test applies from FRA onward. Annual excess-earnings
 deductions are truncated to whole dollars, allocated to the earliest affected
 benefit months and capped at their benefits. Calculating January's check may
 also require the previous year's earnings. A `-1` earnings input means missing,
-not zero. Alternatively assert `ss_calculator_earnings_test_no_trigger`; supplied
+not zero. Each annual earnings record must be supplied for its exact year;
+an earlier record never carries forward. Alternatively assert `ss_calculator_earnings_test_no_trigger`; supplied
 excess earnings contradicting it fail.
 
 This route requires `ss_calculator_no_special_monthly_test` and
@@ -173,6 +174,8 @@ payment-year parameters reused from #10400. COLA settings also accept an
 effective year/month, payment start/end year and a supplied alternative rate. The annual person
 input `ss_calculator_withhold_cola` accepts an externally resolved E3 decision
 when `cola.withholding_enabled` is true.
+Each withholding decision applies only in its supplied year; an absent year's
+decision is false.
 Withholding sets that event's COLA to zero, jointly with any rate change; no
 second COLA factor is applied. Payable shares must lie in [0,1], and rates must
 not imply a negative benefit. A depletion-year midyear blend is supplied in the
