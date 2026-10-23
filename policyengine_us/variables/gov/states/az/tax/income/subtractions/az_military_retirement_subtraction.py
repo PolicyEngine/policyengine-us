@@ -10,6 +10,7 @@ class az_military_retirement_subtraction(Variable):
         "https://www.azleg.gov/ars/43/01022.htm",
         "https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140BOOKLET.pdf#page=25",
         "https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140BOOKLET.pdf#page=27",
+        "https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140i.pdf",
     )
     definition_period = YEAR
     defined_for = StateCode.AZ
@@ -18,7 +19,12 @@ class az_military_retirement_subtraction(Variable):
         p = parameters(period).gov.states.az.tax.income.subtractions.military_retirement
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        military_retirement_income = person("military_retirement_income", period)
+        # Form 140 line 29b extends the military retirement subtraction to
+        # payments received by a deceased veteran's surviving spouse.
+        retirement_pay = person("military_retirement_pay", period)
+        survivor_pay = person("military_retirement_pay_survivors", period)
+        surviving_spouse = person("is_surviving_spouse", period)
+        military_retirement_income = retirement_pay + survivor_pay * surviving_spouse
         eligible_military_pay = military_retirement_income * head_or_spouse
         capped_military_pay = min_(eligible_military_pay, p.max_amount)
         return tax_unit.sum(capped_military_pay)

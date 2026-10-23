@@ -9,6 +9,7 @@ class sc_retirement_deduction_survivors(Variable):
     unit = USD
     reference = (
         "https://www.scstatehouse.gov/code/t12c006.php",  # SECTION 12-6-1170(A)(1)
+        "https://dor.sc.gov/sites/dor/files/forms/SC1040Instr_2021.pdf",
         "https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=17",
     )
     definition_period = YEAR
@@ -18,13 +19,14 @@ class sc_retirement_deduction_survivors(Variable):
         age = person("age", period)
         # line 1
         max_deduction_allowed = p.cap.calc(age)
-        # line 2
-        military_retirement_pay_survivors = person(
-            "military_retirement_pay_survivors", period
+        # Line 2 uses the military deduction claimed on line p-6, rather
+        # than taxable survivor benefits that were not deducted.
+        military_retirement_deduction = person(
+            "sc_military_deduction_survivors", period
         )
         # line 3
         retirement_deduction_available = max_(
-            max_deduction_allowed - military_retirement_pay_survivors, 0
+            max_deduction_allowed - military_retirement_deduction, 0
         )
         # line 4: only the head's and spouse's survivor benefits are in the
         # filer's federal AGI; a dependent reports their own on their own
