@@ -1,0 +1,87 @@
+# 20 U.S.C. 1087e(q)(1) and (d)(1)(F): the plan runs "beginning on July 1, 2026"
+# and excludes excepted (Parent PLUS) loans. 34 CFR 685.209(c)(6), (d)(4): a
+# Direct Loan borrower with eligible loans may repay under the plan. Only tax
+# unit heads and spouses are borrowers here (a tax dependent's unit AGI is the
+# parents' income).
+
+- name: Case 1, head of tax unit with an eligible loan balance is eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    repayment_assistance_plan_eligible: true
+
+- name: Case 2, the plan starts in July 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    repayment_assistance_plan_eligible:
+      2026-01: false
+      2026-06: false
+      2026-07: true
+      2026-12: true
+
+- name: Case 3, a borrower with only Parent PLUS loans is not eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_student_loan_balance: 0
+        federal_parent_plus_loan_balance: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    repayment_assistance_plan_eligible: false
+
+- name: Case 4, a tax dependent with a loan balance is not eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        federal_student_loan_balance: 20_000
+      person2:
+        # A college student claimed as the parent's dependent.
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        federal_student_loan_balance: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # person1 heads the unit; person2 is a dependent, not a head or spouse.
+    repayment_assistance_plan_eligible: [true, false]
+
+- name: Case 5, both spouses on a joint return with eligible loans are eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 30_000
+      person2:
+        age: 38
+        federal_student_loan_balance: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    repayment_assistance_plan_eligible: [true, true]
