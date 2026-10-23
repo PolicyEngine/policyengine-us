@@ -158,3 +158,116 @@
     state_code: VA
   output:
     va_standard_deduction: 9_200
+
+
+- name: 2025 single filer who can be claimed as a dependent has the standard deduction limited to earned income
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 20
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: VA
+  output:
+    # Va. Code 58.1-322.03(1)(b): min($8,750, $500).
+    va_standard_deduction: 500
+
+- name: 2025 single filer who can be claimed as a dependent with no earned income has no standard deduction
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 20
+        taxable_interest_income: 15000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: VA
+  output:
+    # No federal-style floor or add-on.
+    va_standard_deduction: 0
+
+- name: 2025 joint return with one claimable spouse caps the joint deduction at the couple's earned income (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 2000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        employment_income: 10000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: VA
+  output:
+    # min($17,500, $2,000 + $10,000).
+    va_standard_deduction: 12_000
+
+- name: 2025 joint return with one claimable spouse caps the joint deduction at the couple's earned income (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        employment_income: 10000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        employment_income: 2000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: VA
+  output:
+    va_standard_deduction: 12_000
+
+- name: 2025 joint return with neither spouse claimable gets the full joint deduction
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 2000
+      person_b:
+        age: 22
+        employment_income: 10000
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: VA
+  output:
+    va_standard_deduction: 17_500

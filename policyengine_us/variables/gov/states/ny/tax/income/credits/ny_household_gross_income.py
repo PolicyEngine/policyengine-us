@@ -28,7 +28,8 @@ class ny_household_gross_income(Variable):
         # Form IT-214, Step 3 "Determine household gross income" (line 16 =
         # sum of lines 9 through 15). Line 9 is federal AGI; the remaining
         # lines add income that is not already in AGI, "even if not taxable."
-        agi = tax_unit("adjusted_gross_income", period)  # line 9
+        # Line 9: recomputed federal AGI (IT-201 line 19a; IT-214 instructions).
+        agi = tax_unit("ny_recomputed_federal_agi", period)
         person = tax_unit.members
         # Line 11: Social Security payments not included on line 9 (i.e. the
         # portion of benefits not taxed federally). Line 11 instructions:

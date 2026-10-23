@@ -21,7 +21,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Check committed registry lock
         run: python .github/release_lock.py --committed
   ReleaseLockTests:
@@ -38,7 +38,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Test guard without importing the country model
         env:
           RELEASE_LOCK_REAL_UV: "1"
@@ -56,9 +56,11 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Install dependencies
         run: uv sync --locked --extra dev
+      - name: Test system certificate trust guard
+        run: uv run --no-sync python -m unittest discover -s .github/tests -p test_system_ca.py -v
       - name: Check formatting
         run: uv run --no-sync ruff format --check .
   versioning:
@@ -111,7 +113,7 @@ jobs:
         if: steps.head.outputs.current == 'true'
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Set up Python
         if: steps.head.outputs.current == 'true'
         uses: actions/setup-python@v6
@@ -214,6 +216,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -221,7 +226,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
@@ -245,6 +250,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -252,7 +260,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
@@ -305,6 +313,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -312,7 +323,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
@@ -345,6 +356,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -352,7 +366,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
@@ -363,7 +377,7 @@ jobs:
       # Each group remains a separate, sequential process on its runner.
       # SPM simulation/API contracts stay in the Microsimulation job.
       - name: Run remaining Python tests
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         env:
           PYTEST_ADDOPTS: "--durations=0 -v -p no:unraisableexception -p no:threadexception"
         run: uv run --no-sync make test-other-python-rest REST_PYTHON_SHARD=1 REST_REPORT_DIR=.
@@ -376,7 +390,7 @@ jobs:
             rest-python-*.xml
             rest-python-*-resources.txt
       - name: Run tests/variables YAML tests
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         env:
           PYTEST_ADDOPTS: "--durations=0 --junitxml=rest-variables.xml -p no:unraisableexception -p no:threadexception"
         run: /usr/bin/time -v -o rest-variables-resources.txt uv run --no-sync make test-yaml-variables
@@ -414,6 +428,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -421,7 +438,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
@@ -433,7 +450,7 @@ jobs:
       # SPM simulation/API contracts stay in the Microsimulation job.
       - name: Run remaining Python tests
         id: python_tests
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         env:
           PYTEST_ADDOPTS: "--durations=0 -v -p no:unraisableexception -p no:threadexception"
         run: uv run --no-sync make test-other-python-rest REST_PYTHON_SHARD=2 REST_REPORT_DIR=.
@@ -470,6 +487,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -477,7 +497,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
@@ -494,7 +514,7 @@ jobs:
         run: /usr/bin/time -v -o simulation-spm-resources.txt uv run --no-sync make test-other-python-spm
       - name: Run microsimulation tests
         # Continue after failures, but stop when the workflow is cancelled.
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         env:
           PYTEST_ADDOPTS: "--durations=0 -v --junitxml=simulation-microsimulation.xml -p no:unraisableexception -p no:threadexception"
         run: /usr/bin/time -v -o simulation-microsimulation-resources.txt uv run --no-sync make test-microsimulation
@@ -523,6 +543,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -530,7 +553,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Check committed registry lock before publication
         run: python .github/release_lock.py --committed
       - name: Install package
