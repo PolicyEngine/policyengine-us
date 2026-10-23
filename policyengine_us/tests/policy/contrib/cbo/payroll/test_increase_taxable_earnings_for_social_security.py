@@ -34,6 +34,15 @@ from policyengine_us.variables.gov.irs.tax.self_employment.self_employment_socia
 from policyengine_us.variables.gov.irs.tax.self_employment.social_security_taxable_self_employment_income import (
     social_security_taxable_self_employment_income,
 )
+from policyengine_us.variables.gov.states.ct.tax.payroll.paid_leave.ct_employee_paid_leave_contribution import (
+    ct_employee_paid_leave_contribution,
+)
+from policyengine_us.variables.gov.states.de.tax.payroll.paid_leave.de_employee_paid_leave_contribution import (
+    de_employee_paid_leave_contribution,
+)
+from policyengine_us.variables.gov.states.de.tax.payroll.paid_leave.de_employer_paid_leave_contribution import (
+    de_employer_paid_leave_contribution,
+)
 
 WAGE_BASE = "taxable_earnings_for_social_security"
 SE_BASE = "social_security_taxable_self_employment_income"
@@ -41,6 +50,11 @@ TAXES = (
     "employee_social_security_tax",
     "employer_social_security_tax",
     "self_employment_social_security_tax",
+)
+PAID_LEAVE_CONTRIBUTIONS = (
+    "ct_employee_paid_leave_contribution",
+    "de_employee_paid_leave_contribution",
+    "de_employer_paid_leave_contribution",
 )
 BASELINE_VARIABLES = {
     variable.__name__: variable
@@ -50,6 +64,9 @@ BASELINE_VARIABLES = {
         employee_social_security_tax,
         employer_social_security_tax,
         self_employment_social_security_tax,
+        ct_employee_paid_leave_contribution,
+        de_employee_paid_leave_contribution,
+        de_employer_paid_leave_contribution,
     )
 }
 
@@ -139,7 +156,7 @@ def reform_variables():
     return BASELINE_VARIABLES | {variable.__name__: variable for variable in overrides}
 
 
-def _parameters(cap, threshold):
+def _parameters(cap, threshold, ct_rate=0.005, de_employee_share=0.5):
     root = SimpleNamespace(
         gov=SimpleNamespace(
             irs=SimpleNamespace(
@@ -158,15 +175,32 @@ def _parameters(cap, threshold):
                     payroll=SimpleNamespace(secondary_earnings_threshold=threshold)
                 )
             ),
+            states=SimpleNamespace(
+                ct=SimpleNamespace(
+                    tax=SimpleNamespace(
+                        payroll=SimpleNamespace(
+                            paid_leave=SimpleNamespace(employee_rate=ct_rate)
+                        )
+                    )
+                ),
+                de=SimpleNamespace(
+                    tax=SimpleNamespace(
+                        payroll=SimpleNamespace(
+                            paid_leave=SimpleNamespace(employee_share=de_employee_share)
+                        )
+                    )
+                ),
+            ),
         )
     )
     return lambda period: root
 
 
-def _calculate(variables, wages, net_self_employment, parameters):
+def _calculate(variables, wages, net_self_employment, parameters, de_rate=0.008):
     values = {
         "payroll_tax_gross_wages": wages,
         "taxable_self_employment_income": net_self_employment,
+        "de_paid_leave_contribution_rate": de_rate,
     }
 
     def person(name, period):
@@ -174,7 +208,7 @@ def _calculate(variables, wages, net_self_employment, parameters):
             values[name] = variables[name].formula(person, period, parameters)
         return values[name]
 
-    for variable in (WAGE_BASE, SE_BASE, *TAXES):
+    for variable in (WAGE_BASE, SE_BASE, *TAXES, *PAID_LEAVE_CONTRIBUTIONS):
         person(variable, "2027")
     return values
 
@@ -198,20 +232,38 @@ CASE = st.tuples(
     # Filesystem startup cost must not reduce the generated case coverage.
     suppress_health_check=[HealthCheck.too_slow],
 )
-@given(cases=st.lists(CASE, min_size=1, max_size=12))
+@given(
+    cases=st.lists(CASE, min_size=1, max_size=12),
+    ct_rate=st.floats(min_value=0, max_value=1),
+    de_rate=st.floats(min_value=0, max_value=1),
+    de_employee_share=st.floats(min_value=0, max_value=1),
+)
 @example(
     cases=[
         (400_000, 0, 192_300, 250_000),
         (300_000, 46_175, 192_300, 250_000),
         (300_000, 100_000, 300_000, 250_000),
         (400_000, 50_000, 192_300, np.inf),
-    ]
+    ],
+    ct_rate=0.005,
+    de_rate=0.008,
+    de_employee_share=0.5,
 )
-def test_donut_invariants(reform_variables, cases):
+def test_donut_invariants(reform_variables, cases, ct_rate, de_rate, de_employee_share):
     wages, net_self_employment, cap, threshold = np.asarray(cases, dtype=float).T
-    parameters = _parameters(cap, threshold)
-    baseline = _calculate(BASELINE_VARIABLES, wages, net_self_employment, parameters)
-    reformed = _calculate(reform_variables, wages, net_self_employment, parameters)
+    parameters = _parameters(cap, threshold, ct_rate, de_employee_share)
+    baseline = _calculate(
+        BASELINE_VARIABLES, wages, net_self_employment, parameters, de_rate
+    )
+    reformed = _calculate(
+        reform_variables, wages, net_self_employment, parameters, de_rate
+    )
+
+    # State paid-leave laws use the unchanged federal contribution and benefit
+    # base, even when the reform taxes wages above that base. Exercise their
+    # actual formulas with the same wages, cap, rates, and shares in both runs.
+    for variable in PAID_LEAVE_CONTRIBUTIONS:
+        np.testing.assert_array_equal(reformed[variable], baseline[variable])
 
     baseline_tax = sum(baseline[variable] for variable in TAXES)
     reformed_tax = sum(reformed[variable] for variable in TAXES)

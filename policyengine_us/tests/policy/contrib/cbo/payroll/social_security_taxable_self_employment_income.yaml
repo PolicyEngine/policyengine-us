@@ -19,6 +19,7 @@
     payroll_tax_gross_wages: 200_000
     taxable_self_employment_income: 40_000
   output:
+    taxable_earnings_for_social_security: 192_300
     social_security_taxable_self_employment_income: 0
 
 - name: Combined earnings exactly at the upper edge of the donut add no taxable self-employment earnings.
@@ -52,6 +53,7 @@
     payroll_tax_gross_wages: 100_000
     taxable_self_employment_income: 100_000
   output:
+    taxable_earnings_for_social_security: 100_000
     social_security_taxable_self_employment_income: 92_300
 
 - name: Self-employment alone receives both the capped base and earnings above the threshold.

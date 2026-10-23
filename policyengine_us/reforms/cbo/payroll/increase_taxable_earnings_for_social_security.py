@@ -9,7 +9,7 @@ def create_increase_taxable_earnings_for_social_security() -> Reform:
         definition_period = YEAR
         unit = USD
         reference = (
-            "https://www.cbo.gov/budget-options/54806",
+            "https://www.cbo.gov/budget-options/60955",
             "https://www.ssa.gov/OACT/solvency/provisions_tr2025/charts/chart_run418.html",
         )
 
@@ -32,7 +32,8 @@ def create_increase_taxable_earnings_for_social_security() -> Reform:
         definition_period = YEAR
         unit = USD
         reference = (
-            "https://www.cbo.gov/budget-options/54806",
+            "https://www.cbo.gov/budget-options/60955",
+            "https://www.law.cornell.edu/uscode/text/26/1402#b",
             "https://www.ssa.gov/OACT/solvency/provisions_tr2025/charts/chart_run418.html",
         )
 

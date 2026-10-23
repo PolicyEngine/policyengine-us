@@ -53,3 +53,13 @@
     employee_social_security_tax: 24_800
     employer_social_security_tax: 24_800
     self_employment_social_security_tax: 0
+
+- name: Wages between the threshold and a higher cap are taxed once.
+  period: 2036
+  reforms: policyengine_us.reforms.cbo.payroll.increase_taxable_earnings_for_social_security.increase_taxable_earnings_for_social_security
+  input:
+    gov.contrib.cbo.payroll.secondary_earnings_threshold: 250_000
+    gov.irs.payroll.social_security.cap: 263_100
+    payroll_tax_gross_wages: 255_000
+  output:
+    taxable_earnings_for_social_security: 255_000
