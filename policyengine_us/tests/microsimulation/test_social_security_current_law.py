@@ -2,8 +2,9 @@
 
 The same probe runs in separate Python processes against this checkout and
 main. No variable definitions or input names are substituted in the reference.
-Set PE_US_MAIN_CHECKOUT to a clean main checkout, or make a local main remote
-ref available (the fixture archives it without changing either checkout).
+An unmodified pre-feature main checkout is required. Set PE_US_MAIN_CHECKOUT
+to that checkout, or make the reviewed main commit or a pre-feature main ref
+available locally (the fixture archives it without changing either checkout).
 """
 
 import io
@@ -45,6 +46,7 @@ DOWNSTREAM = (
     "medicare_part_b_premium",
 )
 AMOUNTS = ((12_000, 0, 1_800, 600), (0, 6_000, 1_200, 300))
+REVIEWED_MAIN_SHA = "8986e05cab65d56435a23df1910e2d35f2c5f5bf"
 
 
 def situation(*, include_benefits=True):
@@ -156,6 +158,8 @@ def _probe():
                     reload_source_inputs,
                 )
             except ImportError:
+                if has_levers:
+                    raise
                 result["complete_export_reload"] = _snapshot(
                     simulation, (2024, 2025, 2026, 2027)
                 )
@@ -321,6 +325,12 @@ def _probe():
         result["h5_scored_year"] = _snapshot(
             simulation, (2026,), (*BENEFITS, *DOWNSTREAM)
         )
+        for index, component in enumerate(COMPONENTS):
+            np.testing.assert_array_equal(
+                np.asarray(simulation.calculate(component, 2026)),
+                [amounts[index] for amounts in AMOUNTS],
+                err_msg=f"H5 scored-year source was not loaded for {component}",
+            )
         # Main has no benefit-lever parameter. Its role here is the unchanged
         # current-law reference; the lever assertion runs in the current tree.
         if has_levers:
@@ -352,9 +362,13 @@ def _probe():
 
 
 def _main_checkout(current, directory):
+    reported_files = {f"{component}_reported.py" for component in COMPONENTS}
     configured = os.environ.get("PE_US_MAIN_CHECKOUT")
     if configured:
         checkout = Path(configured).resolve()
+        assert checkout != current.resolve(), (
+            "PE_US_MAIN_CHECKOUT must be a separate unmodified pre-feature main checkout"
+        )
         assert (checkout / "policyengine_us").is_dir(), configured
         if (checkout / ".git").exists():
             status = subprocess.check_output(
@@ -363,16 +377,51 @@ def _main_checkout(current, directory):
                 text=True,
             )
             assert not status, "PE_US_MAIN_CHECKOUT must have no tracked changes"
+            if (current / ".git").exists():
+                current_head = subprocess.check_output(
+                    ["git", "rev-parse", "HEAD"], cwd=current, text=True
+                ).strip()
+                reference_head = subprocess.check_output(
+                    ["git", "rev-parse", "HEAD"], cwd=checkout, text=True
+                ).strip()
+                assert reference_head != current_head, (
+                    "PE_US_MAIN_CHECKOUT must not use the current checkout's HEAD"
+                )
+        assert not any(
+            path.name in reported_files
+            for path in (checkout / "policyengine_us" / "variables").rglob(
+                "*_reported.py"
+            )
+        ), "PE_US_MAIN_CHECKOUT must contain unmodified pre-feature main variables"
         return checkout
-    for ref in ("refs/remotes/origin/main", "refs/remotes/gh/main", "refs/heads/main"):
+    for ref in (
+        REVIEWED_MAIN_SHA,
+        "refs/remotes/origin/main",
+        "refs/remotes/gh/main",
+        "refs/heads/main",
+    ):
         exists = subprocess.run(
-            ["git", "rev-parse", "--verify", ref],
+            ["git", "rev-parse", "--verify", f"{ref}^{{commit}}"],
             cwd=current,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
             check=False,
         )
         if exists.returncode == 0:
+            names = subprocess.check_output(
+                [
+                    "git",
+                    "ls-tree",
+                    "-r",
+                    "--name-only",
+                    ref,
+                    "policyengine_us/variables",
+                ],
+                cwd=current,
+                text=True,
+            )
+            if any(Path(name).name in reported_files for name in names.splitlines()):
+                continue
             archive = subprocess.check_output(["git", "archive", ref], cwd=current)
             checkout = directory / "main"
             checkout.mkdir()
@@ -380,8 +429,9 @@ def _main_checkout(current, directory):
                 stored.extractall(checkout, filter="data")
             return checkout
     pytest.skip(
-        "Differential needs PE_US_MAIN_CHECKOUT or a local origin/main, gh/main, "
-        "or main ref containing an unmodified main checkout"
+        "Differential needs an unmodified pre-feature main checkout: set "
+        "PE_US_MAIN_CHECKOUT or provide the reviewed main commit or a local "
+        "origin/main, gh/main, or main ref without reported benefit variables"
     )
 
 
