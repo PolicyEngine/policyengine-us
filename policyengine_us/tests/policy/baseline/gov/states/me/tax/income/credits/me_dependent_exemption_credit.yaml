@@ -137,3 +137,103 @@
         state_code: ME
   output:
     me_dependent_exemption_credit: 10
+
+
+- name: 2025 single filer who can be claimed as a dependent gets no dependent exemption credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        me_agi: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: ME
+  output:
+    # 36 MRSA 5219-SS counts dependents for whom the federal child or other
+    # dependent credit may be claimed; IRC 152(b)(1).
+    me_dependent_exemption_credit: 0
+
+- name: 2025 joint return with one claimable spouse gets no dependent exemption credit (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        me_agi: 0
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: ME
+  output:
+    me_dependent_exemption_credit: 0
+
+- name: 2025 joint return with one claimable spouse gets no dependent exemption credit (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        me_agi: 0
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: ME
+  output:
+    me_dependent_exemption_credit: 0
+
+- name: 2025 joint return with neither spouse claimable gets the doubled credit for a child under 6
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+      person_b:
+        age: 22
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        me_agi: 0
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: ME
+  output:
+    # $305 x 2 for a child under 6.
+    me_dependent_exemption_credit: 610

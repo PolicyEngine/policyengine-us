@@ -1,0 +1,17 @@
+description: Florida sets these regular heating income-band upper bounds as fractions of the maximum household income under the Low Income Home Energy Assistance Program.
+first:
+  2024-10-01: 0.5
+second:
+  2024-10-01: 0.7
+third:
+  2024-10-01: 0.85
+metadata:
+  unit: /1
+  period: year
+  label: Florida LIHEAP heating income-band fractions
+  propagate_metadata_to_children: true
+  reference:
+    - title: Florida FY2026 LIHEAP Payment Matrix, income bands
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/FL_BenefitMatrix_Heat-Cool_2026.pdf
+    - title: Florida FY2025 LIHEAP Payment Matrix, income bands for 1 to 8 people
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/FL_BenefitMatrix_2025.pdf
