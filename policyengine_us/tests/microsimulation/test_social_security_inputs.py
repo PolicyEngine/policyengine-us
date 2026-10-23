@@ -537,3 +537,32 @@ def test_original_component_dataset_columns_extend_once_by_per_capita_growth():
             assert amount(simulation, reported, year) == pytest.approx(
                 expected, rel=1e-6
             )
+
+
+def test_multi_year_microsimulation_uses_raw_source_and_fund_enums():
+    from policyengine_core.reforms import Reform
+
+    public = "social_security_dependents"
+    multi_year = "year:2024:2"
+    reform = Reform.from_dict(
+        {
+            "gov.contrib.ssa.benefit_levers.payable.share": {"2024": 0.8},
+            "gov.contrib.ssa.benefit_levers.payable.oasi_only": {"2024": True},
+        }
+    )
+    simulation = HouseholdMicrosimulation(
+        situation=situation({f"{public}_base": {multi_year: 6_000}}),
+        reform=reform,
+        tax_benefit_system=system,
+    )
+    simulation.set_input("household_weight", multi_year, [1])
+    # A positive exact base lacks annual base inputs. The adapter itself must
+    # reject the unspecified enum, rather than comparing decoded display text.
+    with pytest.raises(ValueError, match="dependent benefit fund"):
+        simulation.calculate(public, multi_year)
+    for fund, expected in (("di", 6_000), ("oasi", 4_800)):
+        branch = simulation.get_branch(f"multi_year_{fund}")
+        for year in (2024, 2025):
+            branch.set_input(f"{public}_fund", year, [fund])
+        drop_inherited_values(branch)
+        assert amount(branch, public, multi_year) == pytest.approx(expected)

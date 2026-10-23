@@ -3,6 +3,7 @@
 import numpy as np
 from policyengine_core.periods import YEAR
 from policyengine_core.periods import period as to_period
+from policyengine_core.simulations import Simulation as CoreSimulation
 
 from policyengine_us.tools.social_security_benefit_levers import (
     SocialSecurityBenefitSource,
@@ -54,7 +55,7 @@ class SocialSecurityPeriodMixin:
             base_abolished = False
         if has_exact_base or base_variable.is_neutralized or base_abolished:
             # Let Core preserve exact base-input and neutralization precedence.
-            amount = self.calculate(base_name, period)
+            amount = CoreSimulation.calculate(self, base_name, period)
         else:
             if any(
                 known.start <= period.stop and known.stop >= period.start
@@ -64,7 +65,7 @@ class SocialSecurityPeriodMixin:
                     "A multi-year reported input with base overrides for other "
                     "periods requires separately supplied annual source amounts"
                 )
-            amount = self.calculate(reported_name, period)
+            amount = CoreSimulation.calculate(self, reported_name, period)
         nonzero = amount != 0
         # Core accepts a stored multi-year YEAR input before checking period
         # consistency. A uniform multiplier needs no annual allocation, while
@@ -72,7 +73,7 @@ class SocialSecurityPeriodMixin:
         common_factor = None
         for year_number in range(period.start.year, period.stop.year + 1):
             year = to_period(year_number)
-            source = self.calculate(f"{variable_name}_source", year)
+            source = CoreSimulation.calculate(self, f"{variable_name}_source", year)
             if np.any(source != SocialSecurityBenefitSource.reported):
                 raise NotImplementedError(
                     "Multi-year Social Security sources require the reported route; "
@@ -85,7 +86,7 @@ class SocialSecurityPeriodMixin:
                 "social_security_across_the_board_factor",
                 f"{variable_name}_payable_factor",
             ):
-                factor = factor * self.calculate(name, year)
+                factor = factor * CoreSimulation.calculate(self, name, year)
             try:
                 annual_base_abolished = self.tax_benefit_system.parameters(
                     year
@@ -99,9 +100,16 @@ class SocialSecurityPeriodMixin:
                 and self.tax_benefit_system.parameters(
                     year
                 ).gov.contrib.ssa.benefit_levers.payable.oasi_only
-                and np.any(self.calculate("social_security_payable_factor", year) != 1)
+                and np.any(
+                    CoreSimulation.calculate(
+                        self, "social_security_payable_factor", year
+                    )
+                    != 1
+                )
             ):
-                fund = self.calculate("social_security_dependents_fund", year)
+                fund = CoreSimulation.calculate(
+                    self, "social_security_dependents_fund", year
+                )
                 if np.any((amount > 0) & (fund == SocialSecurityFund.unspecified)):
                     raise ValueError(
                         "OASI-only payable cuts require the dependent benefit fund"

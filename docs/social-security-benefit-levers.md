@@ -61,6 +61,8 @@ annual source amounts. Explicit public multi-year inputs remain final overrides,
 and neutralization still takes precedence. Raw Core `SimulationBuilder` and YAML
 should supply canonical annual `_reported` periods for lever calculations; the
 additional exact multi-year reported-source adapter belongs to PE-US wrappers.
+A weighted `Microsimulation` request also needs an explicit weight for that exact
+multi-year period, matching Core.
 
 ## Parameters and composition
 
