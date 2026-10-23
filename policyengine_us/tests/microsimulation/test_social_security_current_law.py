@@ -74,6 +74,24 @@ def situation(*, include_benefits=True):
     return result
 
 
+def extraction_situation():
+    """The review's single-person, single-input-period extraction reproducer."""
+    result = {
+        "people": {
+            "retiree": {
+                "age": {2024: 70},
+                "social_security_retirement": {2024: 12_000},
+                "taxable_interest_income": {2024: 40_000},
+                "takes_up_ssi_if_eligible": {2024: True},
+            }
+        }
+    }
+    for plural in ("households", "tax_units", "spm_units", "families", "marital_units"):
+        result[plural] = {"group": {"members": ["retiree"]}}
+    result["households"]["group"]["state_code"] = {2024: "TX"}
+    return result
+
+
 def _snapshot(simulation, periods, variables=BENEFITS):
     return {
         f"{variable}@{period}": np.asarray(
@@ -188,17 +206,15 @@ def _probe():
         # from public ingress. An explicitly supplied twin retains priority
         # in the separate precedence tests. Extraction must preserve this
         # origin as well as the final override for a subsequent public write.
-        inputs = situation()
-        for person in inputs["people"].values():
-            # Legacy extraction does not round-trip the existing earnings
-            # constructor migrations. Isolate the reported benefit regression.
-            person.pop("employment_income")
-            person.pop("self_employment_income")
-        simulation = wrapper(situation=inputs, tax_benefit_system=system)
-        simulation.set_input("social_security_retirement", 2024, [24_000, 0])
+        simulation = wrapper(
+            situation=extraction_situation(), tax_benefit_system=system
+        )
+        simulation.set_input("social_security_retirement", 2024, [24_000])
         # Extract before calculations introduce earlier lookback cache periods
         # into Core's legacy first-known-period selection.
         payload = simulation.extract_person(0)
+        extracted_person = next(iter(payload["people"].values()))
+        assert extracted_person["age"] == {"2024": 70}
         reloaded = Simulation(situation=payload, tax_benefit_system=system)
         live = _snapshot(simulation, (2024,), (*BENEFITS, *DOWNSTREAM))
         extracted = _snapshot(reloaded, (2024,), (*BENEFITS, *DOWNSTREAM))
@@ -209,6 +225,12 @@ def _probe():
             if extracted[key] != expected[key]
         }
         result[f"extraction_reload_{label}"] = extracted
+        assert live["medicare_irmaa_tax_year_magi@2024"][0] > 0
+        for candidate in (simulation, reloaded):
+            # PE-US carries the supplied age forward. Keep this retired
+            # household eligible for Medicare in the future lookback checks.
+            for year in (2026, 2027):
+                np.testing.assert_array_equal(candidate.calculate("age", year), [70])
         live_future = _snapshot(simulation, (2026, 2027), (*BENEFITS, *DOWNSTREAM))
         result[f"same_period_override_{label}"] = live_future
         assert (
