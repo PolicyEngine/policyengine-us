@@ -69,26 +69,29 @@ def _irs(year, status):
     return other, length
 
 
-PHASE_OUT = {
-    year: system.parameters(f"{year}-01-01").gov.irs.deductions.qbi.phase_out
-    for year in range(2018, 2036)
-}
+# Read the leaves rather than system.parameters(instant): a whole-tree
+# snapshot per year would stay resident for the rest of the CI process.
+PHASE_OUT = system.parameters.gov.irs.deductions.qbi.phase_out
+
+
+def _phase_out(year, status):
+    instant = f"{year}-01-01"
+    return (
+        getattr(PHASE_OUT.start, status)(instant),
+        getattr(PHASE_OUT.length, status)(instant),
+    )
 
 
 def test_phase_out_parameters_match_the_irs_tables():
     for year in IRS:
-        p = PHASE_OUT[year]
         for status in STATUSES:
-            assert (p.start[status], p.length[status]) == _irs(year, status), (
-                year,
-                status,
-            )
+            assert _phase_out(year, status) == _irs(year, status), (year, status)
 
 
 def test_phase_out_parameters_keep_the_statutory_relations():
-    for year, p in PHASE_OUT.items():
-        start = {s: p.start[s] for s in STATUSES}
-        length = {s: p.length[s] for s in STATUSES}
+    for year in range(2018, 2036):
+        start = {s: _phase_out(year, s)[0] for s in STATUSES}
+        length = {s: _phase_out(year, s)[1] for s in STATUSES}
         for status in ["HEAD_OF_HOUSEHOLD", "SURVIVING_SPOUSE"]:
             assert start[status] == start["SINGLE"], (year, status)
             assert length[status] == length["SINGLE"], (year, status)
@@ -131,10 +134,9 @@ def businesses(draw):
 
 def _income_grid(year):
     """Taxable incomes at and around every status's threshold and range end."""
-    p = PHASE_OUT[year]
     points = {0.0}
     for status in STATUSES:
-        start, length = p.start[status], p.length[status]
+        start, length = _phase_out(year, status)
         for edge in [start, start + length / 2, start + length]:
             points.update([edge - 1, edge, edge + 1])
         points.add(start + 2 * length)
@@ -239,6 +241,14 @@ def _check(batch, year):
         assert (qbid[b] <= ceiling + TOLERANCE).all(), business
 
 
+# Each simulated year keeps a parameter snapshot (about 20 MB) resident for the
+# rest of the CI process, so the simulations cover one year per regime: the
+# statutory 2018 amounts, 2019 (Rev. Proc. 2018-57 names only single and head
+# of household returns), 2025 (last $50,000 range), 2026 (OBBBA range and the
+# 199A(i) minimum) and 2027 (projected rounding). The parameter tests above
+# cover every year.
+SIM_YEARS = [2018, 2019, 2025, 2026, 2027]
+
 SETTINGS = dict(
     max_examples=20,
     deadline=None,
@@ -250,7 +260,7 @@ SETTINGS = dict(
 @settings(**SETTINGS)
 @given(
     st.lists(businesses(), min_size=2, max_size=5),
-    st.sampled_from(range(2018, 2028)),
+    st.sampled_from(SIM_YEARS),
 )
 def test_drawn_businesses_through_the_phase_in(batch, year):
     _check(batch, year)
@@ -282,5 +292,5 @@ def test_seeded_businesses_every_year():
             "qualified_reit_and_ptp_income": some(-5_000, 30_000, 0.3),
         }
 
-    for year in range(2018, 2028):
+    for year in SIM_YEARS:
         _check([business() for _ in range(6)], year)
