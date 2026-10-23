@@ -50,3 +50,73 @@
     state_code: MA
   output:
     is_medically_needy_for_medicaid: false
+
+- name: Case 3, aged parent claimed as a tax dependent does not add income or resources to the filer's test.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        # $18,000 Social Security - $240 general exclusion.
+        ssi_countable_income: 17_760
+        medicaid_medically_needy_medical_expenses: 13_000
+        ssi_countable_resources: 500
+        is_optional_senior_or_disabled_for_medicaid: false
+      person2:
+        age: 92
+        is_tax_unit_dependent: true
+        # $4,000 pension - $240 general exclusion.
+        ssi_countable_income: 3_760
+        ssi_countable_resources: 1_800
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    # person1: 17,760 - 13,000 = 4,760 <= 522 x 12 = 6,264; resources 500 <= 2,000.
+    # Summing over the tax unit would give 8,520 and 2,300, both over the limits.
+    # person2 receives SSI (3,760 < 994 x 12), so is covered through SSI instead.
+    is_medically_needy_for_medicaid: [true, false]
+
+- name: Case 4, married couple filing separately is tested on combined income against the couple limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 68
+        # Couple's $26,400 Social Security - $240 general exclusion, split
+        # equally between the two aged spouses.
+        ssi_countable_income: 13_080
+        medicaid_medically_needy_medical_expenses: 8_000
+        ssi_countable_resources: 1_000
+        is_optional_senior_or_disabled_for_medicaid: false
+      person2:
+        age: 66
+        ssi_countable_income: 13_080
+        medicaid_medically_needy_medical_expenses: 8_000
+        ssi_countable_resources: 1_000
+        is_optional_senior_or_disabled_for_medicaid: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    # 2 x (13,080 - 8,000) = 10,160 > 650 x 12 = 7,800.
+    # Each spouse alone would pass the individual limit: 5,080 <= 6,264.
+    is_medically_needy_for_medicaid: [false, false]
