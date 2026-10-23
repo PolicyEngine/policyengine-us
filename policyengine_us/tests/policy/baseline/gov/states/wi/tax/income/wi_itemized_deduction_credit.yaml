@@ -38,7 +38,7 @@
     state_code: WI
     tax_unit_itemizes: false
     charitable_deduction: 10_000
-    charitable_deduction_for_non_itemizers: 300
+    charitable_contributions_ald: 300
     wi_standard_deduction: 0
     medical_expense_deduction: 0
     interest_deduction: 0
@@ -55,15 +55,80 @@
     state_code: WI
     tax_unit_itemizes: true
     charitable_deduction: 10_000
-    charitable_deduction_for_non_itemizers: 300
+    charitable_cash_donations: 10_000
     wi_standard_deduction: 0
     medical_expense_deduction: 0
     interest_deduction: 0
     deductible_mortgage_insurance_premiums: 0
     casualty_loss_deduction: 0
   output:
+    charitable_contributions_ald: 0
     wi_itemized_deduction_credit_charitable_deduction: 10_000
     wi_itemized_deduction_credit_potential: 500
+
+# 2020 instructions, PDF p. 37: the standard deduction is zero at 126,499 or over.
+# https://www.revenue.wi.gov/TaxForms2020/2020-Form1-inst.pdf#page=37
+# ALD = min(10,000, 300) = 300; AGI = 150,000 - 300 = 149,700.
+# Eligible charity = 10,000 - 300 = 9,700; potential credit = 9,700 * .05 = 485.
+- name: Wisconsin 2020 non-itemizer credit computes the claimed deduction from gifts
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 150_000
+        charitable_cash_donations: 10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [person]
+        state_code: WI
+  output:
+    charitable_contributions_ald: 300
+    adjusted_gross_income: 149_700
+    charitable_deduction: 10_000
+    wi_itemized_deduction_credit_charitable_deduction: 9_700
+    wi_standard_deduction: 0
+    wi_itemized_deduction_credit_potential: 485
+
+# Schedule A is at most 10,000 gifts + 10,000 SALT = 20,000, below the
+# 24,800 joint standard deduction, so the computed federal choice is not to itemize.
+# ALD = 300; AGI = 130,000 - 300 = 129,700; WI standard deduction = 0.
+# Eligible charity = 9,700; potential credit = 9,700 * .05 = 485.
+- name: Wisconsin 2020 joint credit computes federal non-itemization and the claimed deduction
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 130_000
+        charitable_cash_donations: 10_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WI
+  output:
+    filing_status: JOINT
+    tax_unit_itemizes: false
+    charitable_contributions_ald: 300
+    adjusted_gross_income: 129_700
+    charitable_deduction: 10_000
+    wi_itemized_deduction_credit_charitable_deduction: 9_700
+    wi_standard_deduction: 0
+    wi_itemized_deduction_credit_potential: 485
 
 # Wis. Stat. 71.07(5)(a)-(c):
 # https://docs.legis.wisconsin.gov/statutes/statutes/71/i/07/5

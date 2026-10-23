@@ -7,7 +7,7 @@
     state_code: WI
     tax_unit_itemizes: false
     charitable_deduction: 10_000
-    charitable_deduction_for_non_itemizers: 300
+    charitable_contributions_ald: 300
   output:
     wi_itemized_deduction_credit_charitable_deduction: 9_700
 
@@ -17,8 +17,9 @@
     state_code: WI
     tax_unit_itemizes: true
     charitable_deduction: 10_000
-    charitable_deduction_for_non_itemizers: 300
+    charitable_cash_donations: 10_000
   output:
+    charitable_contributions_ald: 0
     wi_itemized_deduction_credit_charitable_deduction: 10_000
 
 - name: Wisconsin 2020 subtracts the actual allowance below the federal cap
@@ -27,7 +28,7 @@
     state_code: WI
     tax_unit_itemizes: false
     charitable_deduction: 1_000
-    charitable_deduction_for_non_itemizers: 100
+    charitable_contributions_ald: 100
   output:
     wi_itemized_deduction_credit_charitable_deduction: 900
 
@@ -37,7 +38,7 @@
     state_code: WI
     tax_unit_itemizes: false
     charitable_deduction: 200
-    charitable_deduction_for_non_itemizers: 300
+    charitable_contributions_ald: 300
   output:
     wi_itemized_deduction_credit_charitable_deduction: 0
 

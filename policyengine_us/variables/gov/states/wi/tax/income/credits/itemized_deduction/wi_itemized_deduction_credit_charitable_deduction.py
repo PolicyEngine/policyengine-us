@@ -9,7 +9,8 @@ class wi_itemized_deduction_credit_charitable_deduction(Variable):
     definition_period = YEAR
     reference = (
         "https://docs.legis.wisconsin.gov/statutes/statutes/71/i/07/5",
-        "https://www.revenue.wi.gov/TaxForms2020/2020-Form1-inst.pdf#page=17",
+        # PDF pages 2, 17
+        "https://www.revenue.wi.gov/TaxForms2020/2020-Form1-inst.pdf#page=2",
         "https://www.revenue.wi.gov/TaxForms2021/2021-Form1-Inst.pdf#page=16",
     )
     defined_for = StateCode.WI
@@ -19,13 +20,8 @@ class wi_itemized_deduction_credit_charitable_deduction(Variable):
 
     def formula_2020(tax_unit, period, parameters):
         charitable = tax_unit("charitable_deduction", period)
-        # The federal variable is a potential allowance, including for itemizers.
-        # Only non-itemizers claim it on Form 1040 line 10b in 2020.
-        claimed_above_the_line = where(
-            tax_unit("tax_unit_itemizes", period),
-            0,
-            tax_unit("charitable_deduction_for_non_itemizers", period),
-        )
+        # Gifts claimed on federal Form 1040 line 10b; zero for itemizers.
+        claimed_above_the_line = tax_unit("charitable_contributions_ald", period)
         return max_(0, charitable - claimed_above_the_line)
 
     def formula_2021(tax_unit, period, parameters):
