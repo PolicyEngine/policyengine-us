@@ -1,0 +1,18 @@
+description: The Department of Education provides the Repayment Assistance Plan if this is true.
+values:
+  0000-01-01: false
+  2026-07-01: true
+
+metadata:
+  unit: bool
+  period: month
+  label: Repayment Assistance Plan in effect
+  reference:
+    - title: 20 U.S.C. 1087e(q)(1)
+      href: https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title20-section1087e&num=0&edition=prelim
+    - title: Pub. L. 119-21, sec. 82001(d), 139 Stat. 341
+      href: https://www.govinfo.gov/content/pkg/PLAW-119publ21/pdf/PLAW-119publ21.pdf#page=271
+    - title: 34 CFR 685.209(c)(6)
+      href: https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(c)(6)
+    - title: 91 FR 23768, Effective date
+      href: https://www.govinfo.gov/content/pkg/FR-2026-05-01/pdf/2026-08556.pdf#page=1
