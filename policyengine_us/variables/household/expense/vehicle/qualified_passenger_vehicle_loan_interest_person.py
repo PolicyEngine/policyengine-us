@@ -15,7 +15,8 @@ class qualified_passenger_vehicle_loan_interest_person(Variable):
     )
     definition_period = YEAR
     reference = (
-        "https://www.law.cornell.edu/uscode/text/26/163#h_4_B",
+        "https://www.law.cornell.edu/uscode/text/26/163#h_4_B_i",
         "https://www.govinfo.gov/content/pkg/FR-2026-09-08/pdf/2026-18219.pdf#page=24",
+        "https://www.govinfo.gov/content/pkg/FR-2026-09-08/pdf/2026-18219.pdf#page=30",
     )
     uprating = "gov.bls.cpi.cpi_u"

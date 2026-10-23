@@ -10,9 +10,11 @@ class qualified_passenger_vehicle_loan_interest(Variable):
         "Interest on loans that meet the federal qualified passenger "
         "vehicle loan interest requirements, including qualifying vehicle "
         "and loan requirements, entered for the household as a whole. The "
-        "whole amount counts on the return of the household head's tax unit "
-        "(the oldest member's when no head is designated). To count a loan "
-        "on the return of the person who incurred it, enter it in "
+        "whole amount counts on the return of the tax unit that includes the "
+        "household head: the oldest flagged head when several are flagged, "
+        "and the oldest member when none is. A head claimed as a dependent "
+        "puts it on the claiming filer's return. To count a loan on the "
+        "return of the person who incurred it, enter it in "
         "qualified_passenger_vehicle_loan_interest_person instead."
     )
     definition_period = YEAR

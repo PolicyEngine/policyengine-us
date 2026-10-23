@@ -38,7 +38,15 @@ CAP = 10_000  # 26 U.S.C. 163(h)(4)(C)(i)
 THRESHOLD = {"JOINT": 200_000}  # 163(h)(4)(C)(ii)(I); 100,000 otherwise
 OTHER_THRESHOLD = 100_000
 STEP, INCREMENT = 200, 1_000
-KINDS = ["single", "joint", "hoh", "joint_with_child"]
+KINDS = ["single", "joint", "hoh", "joint_with_child", "adult_dependent"]
+# Each kind's dependent, if any, and its age range. An adult dependent (a
+# student, an elderly parent) can hold their own loan and be the household's
+# oldest member.
+DEPENDENT_AGES = {
+    "hoh": (1, 17),
+    "joint_with_child": (1, 17),
+    "adult_dependent": (18, 90),
+}
 
 
 def money(high):
@@ -49,15 +57,16 @@ def money(high):
 def tax_unit_specs(draw):
     kind = draw(st.sampled_from(KINDS))
     adults = 2 if kind.startswith("joint") else 1
-    children = 1 if kind in ("hoh", "joint_with_child") else 0
+    dependents = 1 if kind in DEPENDENT_AGES else 0
     people = []
-    for i in range(adults + children):
-        is_child = i >= adults
+    for i in range(adults + dependents):
+        is_dependent = i >= adults
+        ages = DEPENDENT_AGES[kind] if is_dependent else (18, 90)
         people.append(
             {
-                "age": draw(st.integers(1, 17) if is_child else st.integers(18, 90)),
-                "dependent": is_child,
-                "wages": 0.0 if is_child else draw(money(260_000)),
+                "age": draw(st.integers(*ages)),
+                "dependent": is_dependent,
+                "wages": 0.0 if is_dependent else draw(money(260_000)),
                 "interest": draw(money(12_000)),
                 "head_flag": draw(st.sampled_from([False, False, False, True])),
             }
@@ -85,13 +94,14 @@ def _seeded_households(n=80, seed=20261023, ties=True):
         for _ in range(int(rng.integers(1, 5))):
             kind = str(rng.choice(KINDS))
             adults = 2 if kind.startswith("joint") else 1
-            children = 1 if kind in ("hoh", "joint_with_child") else 0
+            dependents = 1 if kind in DEPENDENT_AGES else 0
+            low, high = DEPENDENT_AGES.get(kind, (18, 90))
             units.append(
                 {
                     "kind": kind,
                     "people": [
                         {
-                            "age": int(rng.integers(1, 18))
+                            "age": int(rng.integers(low, high + 1))
                             if i >= adults
                             else int(rng.integers(18, 91)),
                             "dependent": i >= adults,
@@ -101,7 +111,7 @@ def _seeded_households(n=80, seed=20261023, ties=True):
                             # oldest-member fallback runs beside flagged ones.
                             "head_flag": bool(h % 3) and rng.random() < 0.3,
                         }
-                        for i in range(adults + children)
+                        for i in range(adults + dependents)
                     ],
                 }
             )

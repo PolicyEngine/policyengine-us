@@ -204,6 +204,90 @@
     tax_unit_qualified_passenger_vehicle_loan_interest: 2_000
     auto_loan_interest_deduction: 2_000
 
+- name: Adult dependents' own loans do not reach the filer's return
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 80_000
+        qualified_passenger_vehicle_loan_interest_person: 1_000
+      student:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        qualified_passenger_vehicle_loan_interest_person: 2_500
+      grandparent:
+        age: 82
+        is_tax_unit_dependent: true
+        qualified_passenger_vehicle_loan_interest_person: 1_500
+    tax_units:
+      tax_unit:
+        members: [parent, student, grandparent]
+    marital_units:
+      parent_marital_unit:
+        members: [parent]
+      student_marital_unit:
+        members: [student]
+      grandparent_marital_unit:
+        members: [grandparent]
+    spm_units:
+      spm_unit:
+        members: [parent, student, grandparent]
+    households:
+      household:
+        members: [parent, student, grandparent]
+        state_code: TX
+  output:
+    # The student's and grandparent's loans are their own indebtedness
+    # (26 CFR 1.163-16(d)(1)); only the parent's $1,000 is on this return.
+    tax_unit_qualified_passenger_vehicle_loan_interest: 1_000
+    auto_loan_interest_deduction: 1_000
+
+- name: The oldest-member fallback counts dependents, so the amount follows the oldest member
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 50_000
+      grandparent:
+        age: 85
+        is_tax_unit_dependent: true
+      roommate:
+        age: 60
+        employment_income: 50_000
+    tax_units:
+      family_unit:
+        members: [parent, grandparent]
+      roommate_unit:
+        members: [roommate]
+    marital_units:
+      parent_marital_unit:
+        members: [parent]
+      grandparent_marital_unit:
+        members: [grandparent]
+      roommate_marital_unit:
+        members: [roommate]
+    spm_units:
+      family_spm_unit:
+        members: [parent, grandparent]
+      roommate_spm_unit:
+        members: [roommate]
+    households:
+      household:
+        members: [parent, grandparent, roommate]
+        state_code: TX
+        qualified_passenger_vehicle_loan_interest: 5_000
+  output:
+    # No head is designated. The oldest member is the 85-year-old dependent,
+    # so the amount goes to the return that claims them, not to the 60-year-old
+    # roommate, who is the oldest filer. Before: [3_333.33, 1_666.67].
+    tax_unit_qualified_passenger_vehicle_loan_interest: [5_000, 0]
+    auto_loan_interest_deduction: [5_000, 0]
+
 - name: Person and household amounts add on the head's return
   period: 2025
   absolute_error_margin: 0.01
