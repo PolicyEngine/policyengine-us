@@ -1173,7 +1173,16 @@ def build(sources: Path, only: list[str] | None = None) -> None:
     manifest = {
         "retrieved_at": retrieved.read_text().strip() if retrieved.exists() else None,
         "build_inputs": {"vt_local_option.csv": sha256(HERE / "vt_local_option.csv")},
-        "output_sha256": {"place_counties.csv": sha256(OUTPUT / "place_counties.csv")},
+        # Every shipped CSV, so the package's rates tie to the inputs hashed below.
+        "output_sha256": {
+            name: sha256(OUTPUT / name)
+            for name in (
+                "rates.csv",
+                "populations.csv",
+                "place_counties.csv",
+                "state_rates.csv",
+            )
+        },
         "sha256": {
             str(p.relative_to(sources)): sha256(p)
             for p in sorted(sources.rglob("*"))

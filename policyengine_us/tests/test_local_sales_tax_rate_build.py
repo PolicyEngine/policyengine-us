@@ -203,3 +203,11 @@ def test_chunk_boundaries_preserve_all_counts(cached_build, tmp_path):
     assert audit["accepted_rows"] == 3
     assert audit["skipped_rows"] == 0
     assert audit["padded_trailing_type_rows"] == 1
+
+
+def test_manifest_hashes_every_shipped_csv(build_script):
+    manifest = json.loads((build_script.HERE / "manifest.json").read_text())
+    shipped = sorted(path.name for path in build_script.OUTPUT.glob("*.csv"))
+    assert sorted(manifest["output_sha256"]) == shipped
+    for name, digest in manifest["output_sha256"].items():
+        assert build_script.sha256(build_script.OUTPUT / name) == digest, name
