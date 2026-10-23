@@ -284,7 +284,8 @@
     local_sales_tax: 64.36
 
 - name: Mississippi uses the ratio outside Jackson and Tupelo
-  # Max's ruling d1590; 2025 Instructions for Schedule A PDF pp. 4-5, 14, 18:
+  # 2025 Instructions for Schedule A PDF pp. 4-5, 14, 18 (p. 5: "If there is no
+  # table for your locality, the table amount is considered to be zero"):
   # https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=18
   # Only Jackson and Tupelo have tables. At $85,000/family 1, line 1 = 1,243.
   # Other/unknown localities: line 2 = 0; line 6 = 1,243 x 1 / 7 = 177.57.

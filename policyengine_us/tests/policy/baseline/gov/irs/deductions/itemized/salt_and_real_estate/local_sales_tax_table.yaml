@@ -2,7 +2,9 @@
 # Schedule A (Form 1040)). Each state defaults to the table in its row for
 # "Any locality that imposes a local sales tax" or "... or any other
 # locality that imposes a local sales tax". Mississippi has no such row;
-# other localities have no table (NONE) under Max's ruling d1590.
+# other localities have no table (NONE): "If there is no table for your
+# locality, the table amount is considered to be zero" (2025 instructions,
+# PDF page 5).
 
 - name: Default local tables, 2022
   # 2022 selector (PDF page 17), row and table by state:

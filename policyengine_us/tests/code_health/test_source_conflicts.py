@@ -152,7 +152,6 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/variables/gov/irs/income/taxable_income/deductions/qualified_business_income_deduction/section_199a_net_capital_gain.py": 2,
     "policyengine_us/variables/gov/local/ca/cc/ga/ca_cc_general_assistance_maximum_grant.py": 1,
     "policyengine_us/variables/gov/local/ca/cc/ga/eligibility/ca_cc_general_assistance_eligible.py": 1,
-    "policyengine_us/variables/gov/local/tax/sales/local_sales_tax.py": 1,
     "policyengine_us/variables/gov/states/ar/ade/oec/sra/rates/ar_sra_daily_copay.py": 1,
     "policyengine_us/variables/gov/states/ct/tax/income/rebate/ct_child_tax_rebate.py": 1,
     "policyengine_us/variables/gov/states/fl/commerce/liheap/eligibility/fl_liheap_eligible.py": 1,

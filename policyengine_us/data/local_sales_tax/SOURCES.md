@@ -173,12 +173,14 @@ same row counts on a cached build. Older unaudited v2 caches are ignored.
   list and logs municipalities with no coded unit, including Montgomery;
   these uncoded and county-remainder limits remain.
 
-## Mississippi methodology (Max's ruling d1590)
+## Mississippi methodology
 
 The [2025 IRS selector (PDF p. 18)](https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=18)
 lists "City of Jackson only" (Table C) and "City of Tupelo only" (Table A),
-with no other-locality row. Under Max's ruling d1590 (reading B), other
-Mississippi localities have no table: `local_sales_tax_table` is `NONE`,
+with no other-locality row. The instructions say "If there is no table for
+your locality, the table amount is considered to be zero"
+([PDF p. 5](https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=5)),
+so other Mississippi localities have no table: `local_sales_tax_table` is `NONE`,
 worksheet line 2 is zero, and line 6 uses the ratio method
 ([PDF pp. 4–5](https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=4)).
 Jackson and Tupelo retain their named tables.
