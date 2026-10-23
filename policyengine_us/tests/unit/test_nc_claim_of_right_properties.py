@@ -65,6 +65,12 @@ def grid_simulation(year, people, tax_units):
         }
         situation["tax_units"][f"t{i}"] = {
             "members": [person],
+            # These tests check the deduction's arithmetic, which applies
+            # when federal tax is computed with the deduction (section
+            # 1341(a)(4)). Fixing that method here skips the two extra
+            # federal tax computations that choose it;
+            # test_claim_of_right_section_1341_properties.py covers the choice.
+            "claim_of_right_credit_applies": {year: False},
             **{name: {year: float(values[i])} for name, values in tax_units.items()},
         }
         situation["households"][f"h{i}"] = {

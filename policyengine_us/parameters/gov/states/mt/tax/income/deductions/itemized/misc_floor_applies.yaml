@@ -1,0 +1,14 @@
+description: Montana applies the modeled historical floor-subject miscellaneous itemized deduction component if this is true.
+values:
+  2015-01-01: false
+  2017-01-01: true
+  2018-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Montana historical miscellaneous itemized deduction applies
+  reference:
+    - title: 2017 Montana Form 2 with Legal References, Schedule III lines 21-26
+      href: https://mtrevenue.gov/wp-content/uploads/2018/02/2017-Form2-with-Legal-References.pdf#page=6
+    - title: 26 U.S.C. 67, suspension of miscellaneous itemized deductions
+      href: https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapB-partI-sec67.htm

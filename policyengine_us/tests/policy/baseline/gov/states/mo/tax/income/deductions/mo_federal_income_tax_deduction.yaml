@@ -166,3 +166,20 @@
     state_code: MO
   output:
     mo_federal_income_tax_deduction: 0
+
+- name: The section 1341 credit reduces the federal income tax deduction base
+  # RSMo 143.171(2)(1) reduces federal tax by credits except its listed
+  # exceptions. Income tax of 340 includes 1,500 of section 1341 relief;
+  # 25% of the remaining 340 is 85.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    mo_adjusted_gross_income: 30_000
+    income_tax: 340
+    claim_of_right_credit: 1_500
+    recovery_rebate_credit: 0
+    refundable_ctc: 0
+    filing_status: SINGLE
+    state_code: MO
+  output:
+    mo_federal_income_tax_deduction: 85

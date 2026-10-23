@@ -6,13 +6,20 @@ description: Montana counts these sources as miscellaneous deductions.
 values:
   2021-01-01:
     - casualty_loss_deduction
+    # Form 2 itemized deductions line 18 follows federal Schedule A line 16.
+    - mt_claim_of_right_deduction
+  # From 2024 mt_federal_deductions takes the full federal deduction.
   2024-01-01: []
-    
+
 metadata:
   unit: list
-  label: Montana miscellaneous deductions 
+  label: Montana miscellaneous deductions
   period: year
   reference:
+    - title: 2023 Montana Form 2 instructions, itemized deductions line 18
+      href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=39
+    - title: 2024 Montana Form 2 instructions, line 2 and Worksheet A
+      href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=15
     - title: Montana Individual Income Tax Return (Form 2) 2024
       href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=8
     - title: Montana Individual Income Tax Return (Form 2) 2022

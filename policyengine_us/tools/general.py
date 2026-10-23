@@ -189,15 +189,25 @@ def get_itemization_branch(tax_unit, period, itemizes: bool):
     """
     The branch of ``tax_unit``'s simulation that fixes ``tax_unit_itemizes``.
 
-    It is named ``itemizing`` or ``not_itemizing``. Every caller asks for the
-    same inputs, so they share one branch: the choice itself and the tax
-    liabilities it compares.
+    It is named ``itemizing`` or ``not_itemizing``. When some tax unit repays
+    more than $3,000 of claim of right income (26 U.S.C. 1341), the branch
+    also takes this simulation's method, ``claim_of_right_credit_applies``, as
+    an input, so it never chooses one for itself: with itemizing fixed, a
+    branch would choose the method best for that choice, not the method this
+    simulation uses. Every caller asks for the same inputs, so they share one
+    branch. With no qualifying repayment the method is false everywhere and is
+    left out, which keeps the branch sharing this simulation's cache.
     """
+    overrides = {"tax_unit_itemizes": np.full(tax_unit.count, itemizes, dtype=bool)}
+    if tax_unit("claim_of_right_section_1341_eligible", period).any():
+        overrides["claim_of_right_credit_applies"] = tax_unit(
+            "claim_of_right_credit_applies", period
+        )
     return get_override_branch(
         tax_unit.simulation,
         "itemizing" if itemizes else "not_itemizing",
         period,
-        {"tax_unit_itemizes": np.full(tax_unit.count, itemizes, dtype=bool)},
+        overrides,
     )
 
 

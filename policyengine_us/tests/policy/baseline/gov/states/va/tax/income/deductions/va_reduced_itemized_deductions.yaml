@@ -40,3 +40,37 @@
     state_code: VA
   output:
     va_reduced_itemized_deductions: 35_282
+
+- name: The federal claim of right repayment deduction stays in the limited itemized deduction total
+  # Va. Code 58.1-322.03(1)(a) adopts federally allowable itemized
+  # deductions; IRC 68(c) does not exempt section 1341 repayments.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 500_000 # > $332,700
+    charitable_deduction: 20_000
+    claim_of_right_deduction: 10_000
+    state_and_local_sales_or_income_tax: 0
+    state_code: VA
+  output:
+    # Line 1: 30,000. Line 9: min(80% x 30,000, 3% x (500,000 - 332,700))
+    # = 5,019. Line 12a: 30,000 - 5,019.
+    va_reduced_itemized_deductions: 24_981
+
+- name: The 2017 limited total includes miscellaneous deductions after the federal AGI floor
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 350_000
+    charitable_deduction: 20_000
+    total_misc_deductions: 8_000
+    claim_of_right_deduction: 0
+    state_and_local_sales_or_income_tax: 0
+    state_code: VA
+  output:
+    # 8,000 - 2% x 350,000 = 1,000 enters before the section 68 reduction.
+    misc_deduction: 1_000
+    # 21,000 - min(80% x 21,000, 3% x (350,000 - 261,500)).
+    va_reduced_itemized_deductions: 18_345
