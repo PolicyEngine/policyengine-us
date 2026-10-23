@@ -155,3 +155,12 @@ understates NII because passive pass-through income is missing. Microcosm #1251
 repairs total/passive fields; #1261 splits the entities. Scoring remains
 provisional until the selected artifact actually contains both repairs and its
 stored fields are checked. No population effects are asserted here.
+
+## Test structure
+
+The YAML examples are grouped by reform configuration across four variable-named
+files. Each file stays within the existing five-combination memory budget;
+the Congress batcher can therefore release cached reform models between files.
+Keep that grouping when adding cases rather than combining the files. Python
+properties exercise the vector helpers, with one shared household simulation
+checking dated registration, source aggregation and revenue-variable integration.
