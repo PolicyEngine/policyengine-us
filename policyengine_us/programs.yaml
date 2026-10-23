@@ -1609,7 +1609,7 @@ programs:
     variable: repayment_assistance_plan_payment
     parameter_prefix: gov.ed.student_loans.repayment_assistance_plan
     verified_start_year: 2026
-    notes: Monthly payment from July 2026 (base payment, dependent reduction, $10 minimum, spousal proration, final-payment cap) from balance inputs; interest subsidy, principal match and forgiveness not modeled; not subtracted from household net income
+    notes: Monthly payment from July 2026 (base payment on the latest return's AGI, dependent reduction, $10 minimum, spousal proration over Direct and FFEL debt, final-payment cap) from balance inputs; tax-dependent borrowers treated as ineligible; interest subsidy, principal match and forgiveness not modeled; not subtracted from household net income
 
   - id: income_based_repayment
     name: Income-Based Repayment
@@ -1621,7 +1621,7 @@ programs:
     variable: income_based_repayment_payment
     parameter_prefix: gov.ed.student_loans.income_based_repayment
     verified_start_year: 2026
-    notes: Monthly payment (15% or 10% for new borrowers of income above 150% of the poverty guideline, spousal proration, 10-year standard payment cap on the current balance, small payment adjustment); bar on borrowers with loans made on or after July 1, 2026, interest and forgiveness not modeled; not subtracted from household net income
+    notes: Monthly payment (15% or 10% for new borrowers of income above 150% of the poverty guideline, cap at the couple's 10-year standard payment on current Direct and FFEL balances, spousal and FFEL proration, small payment adjustment); tax-dependent borrowers treated as ineligible; bar on borrowers with loans made on or after July 1, 2026, interest and forgiveness not modeled; not subtracted from household net income
 
   - id: save_plan
     name: SAVE plan (counterfactual)
@@ -1633,7 +1633,7 @@ programs:
     variable: save_plan_payment
     parameter_prefix: gov.ed.student_loans.save_plan
     verified_start_year: 2026
-    notes: Counterfactual monthly payment under 34 CFR 685.209(f)(1) (5% undergraduate and 10% graduate rates on income above 225% of the poverty guideline, spousal proration, small payment adjustment); computed for any period without implying the plan is available; interest and forgiveness not modeled; not subtracted from household net income
+    notes: Counterfactual monthly payment under 34 CFR 685.209(f)(1) (5% undergraduate and 10% graduate rates on income above 225% of the poverty guideline, spousal and FFEL proration, small payment adjustment); computed for any period without implying the plan is available; interest and forgiveness not modeled; not subtracted from household net income
 
   # --- Federal tax credits ---
   - id: education_tax_credits

@@ -8,7 +8,8 @@ class federal_student_loan_interest_rate(Variable):
     documentation = (
         "Annual interest rate on the loans in federal_student_loan_balance, "
         "weighted by balance. Used to amortize the balance under the "
-        "standard repayment plan."
+        "standard repayment plan. The Income-Based Repayment plan's standard "
+        "payment cap also applies it to the person's federal_ffel_loan_balance."
     )
     unit = "/1"
     definition_period = YEAR

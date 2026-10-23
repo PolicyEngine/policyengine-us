@@ -2,14 +2,22 @@
 # $120 if AGI is not more than $10,000; otherwise the bracket rate times the
 # WHOLE AGI, where each bracket runs from "more than" its lower bound to "not
 # more than" its upper bound (ED rejected a marginal reading at 91 FR 23838).
+#
+# Cases labelled rulespec-us#1455 Cn or En are the companion cases for the
+# Repayment Assistance Plan payment encoding in TheAxiomFoundation/rulespec-us
+# issue 1455. They use an unmarried borrower with a 30,000 dollar balance and no
+# dependents, so the applicable monthly payment (A) and the borrower's payment
+# (P) both equal B / 12, or the 10 dollar minimum. The E cases test both sides
+# of each bracket edge.
 
-- name: Case 1, AGI exactly 10,000 receives the flat low-income base payment.
+- name: Case 1, rulespec-us#1455 C1, AGI exactly 10,000 receives the flat low-income base payment.
   period: 2027
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
+        federal_student_loan_balance: 30_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -17,14 +25,20 @@
   output:
     # (iv)(I): AGI not more than $10,000 -> $120.
     repayment_assistance_plan_base_payment: 120
+    # 120 / 12 = 10.
+    repayment_assistance_plan_applicable_monthly_payment:
+      2027-01: 10
+    repayment_assistance_plan_payment:
+      2027-01: 10
 
-- name: Case 2, AGI one dollar over 10,000 drops below the low-income base payment.
+- name: Case 2, rulespec-us#1455 C2, AGI one dollar over 10,000 drops below the low-income base payment.
   period: 2027
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
+        federal_student_loan_balance: 30_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -32,14 +46,20 @@
   output:
     # (iv)(II): 1% x 10,001 = 100.01, less than the $120 at AGI 10,000.
     repayment_assistance_plan_base_payment: 100.01
+    # max(100.01 / 12, 10) = max(8.334, 10) = 10.
+    repayment_assistance_plan_applicable_monthly_payment:
+      2027-01: 10
+    repayment_assistance_plan_payment:
+      2027-01: 10
 
-- name: Case 3, AGI exactly 20,000 stays in the 1 percent bracket.
+- name: Case 3, rulespec-us#1455 C3, AGI exactly 20,000 stays in the 1 percent bracket.
   period: 2027
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
+        federal_student_loan_balance: 30_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -47,14 +67,20 @@
   output:
     # (iv)(II) "not more than $20,000": 1% x 20,000 = 200.
     repayment_assistance_plan_base_payment: 200
+    # 200 / 12 = 16 2/3.
+    repayment_assistance_plan_applicable_monthly_payment:
+      2027-01: 16.67
+    repayment_assistance_plan_payment:
+      2027-01: 16.67
 
-- name: Case 4, AGI one dollar over 20,000 applies 2 percent to the whole AGI.
+- name: Case 4, rulespec-us#1455 C5, AGI one dollar over 20,000 applies 2 percent to the whole AGI.
   period: 2027
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
+        federal_student_loan_balance: 30_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -62,6 +88,11 @@
   output:
     # (iv)(III): 2% x 20,001 = 400.02.
     repayment_assistance_plan_base_payment: 400.02
+    # 400.02 / 12 = 33.335.
+    repayment_assistance_plan_applicable_monthly_payment:
+      2027-01: 33.335
+    repayment_assistance_plan_payment:
+      2027-01: 33.335
 
 - name: Case 5, AGI of 55,000 applies 5 percent.
   period: 2027
@@ -78,13 +109,14 @@
     # (iv)(VI): 5% x 55,000 = 2,750.
     repayment_assistance_plan_base_payment: 2_750
 
-- name: Case 6, AGI exactly 100,000 stays in the 9 percent bracket.
+- name: Case 6, rulespec-us#1455 C6, AGI exactly 100,000 stays in the 9 percent bracket.
   period: 2027
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
+        federal_student_loan_balance: 30_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -92,14 +124,20 @@
   output:
     # (iv)(X) "not more than $100,000": 9% x 100,000 = 9,000.
     repayment_assistance_plan_base_payment: 9_000
+    # 9,000 / 12 = 750.
+    repayment_assistance_plan_applicable_monthly_payment:
+      2027-01: 750
+    repayment_assistance_plan_payment:
+      2027-01: 750
 
-- name: Case 7, AGI one dollar over 100,000 applies the top 10 percent rate.
+- name: Case 7, rulespec-us#1455 C7, AGI one dollar over 100,000 applies the top 10 percent rate.
   period: 2027
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
+        federal_student_loan_balance: 30_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -107,14 +145,20 @@
   output:
     # (iv)(XI): 10% x 100,001 = 10,000.10.
     repayment_assistance_plan_base_payment: 10_000.1
+    # 10,000.10 / 12 = 833.341666...
+    repayment_assistance_plan_applicable_monthly_payment:
+      2027-01: 833.34
+    repayment_assistance_plan_payment:
+      2027-01: 833.34
 
-- name: Case 8, negative AGI receives the flat low-income base payment.
+- name: Case 8, rulespec-us#1455 C8, negative AGI receives the flat low-income base payment.
   period: 2027
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
+        federal_student_loan_balance: 30_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -122,3 +166,237 @@
   output:
     # (iv)(I): -20,000 is not more than $10,000 -> $120.
     repayment_assistance_plan_base_payment: 120
+    # 120 / 12 = 10.
+    repayment_assistance_plan_applicable_monthly_payment:
+      2027-01: 10
+    repayment_assistance_plan_payment:
+      2027-01: 10
+
+- name: Case 9, rulespec-us#1455 C4, AGI 12,000 gives exactly the low-income amount at 1 percent.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 12_000
+  output:
+    # (iv)(II): 1% x 12,000 = 120, the same as the (iv)(I) amount.
+    repayment_assistance_plan_base_payment: 120
+    # 120 / 12 = 10 exactly, without the minimum.
+    repayment_assistance_plan_applicable_monthly_payment:
+      2027-01: 10
+    repayment_assistance_plan_payment:
+      2027-01: 10
+
+- name: Case 10, rulespec-us#1455 E1, AGI 30,000 stays at 2 percent and 30,001 moves to 3 percent.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+      person2:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        adjusted_gross_income: 30_000
+      tax_unit2:
+        members: [person2]
+        adjusted_gross_income: 30_001
+  output:
+    # 2% x 30,000 = 600; 3% x 30,001 = 900.03.
+    repayment_assistance_plan_base_payment: [600, 900.03]
+    # 600 / 12 = 50; 900.03 / 12 = 75.0025.
+    repayment_assistance_plan_applicable_monthly_payment:
+      2027-01: [50, 75.0025]
+    repayment_assistance_plan_payment:
+      2027-01: [50, 75.0025]
+
+- name: Case 11, rulespec-us#1455 E2, AGI 40,000 stays at 3 percent and 40,001 moves to 4 percent.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+      person2:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        adjusted_gross_income: 40_000
+      tax_unit2:
+        members: [person2]
+        adjusted_gross_income: 40_001
+  output:
+    # 3% x 40,000 = 1,200; 4% x 40,001 = 1,600.04.
+    repayment_assistance_plan_base_payment: [1_200, 1_600.04]
+    # 1,200 / 12 = 100; 1,600.04 / 12 = 133.336666...
+    repayment_assistance_plan_applicable_monthly_payment:
+      2027-01: [100, 133.34]
+    repayment_assistance_plan_payment:
+      2027-01: [100, 133.34]
+
+- name: Case 12, rulespec-us#1455 E3, AGI 50,000 stays at 4 percent and 50,001 moves to 5 percent.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+      person2:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        adjusted_gross_income: 50_000
+      tax_unit2:
+        members: [person2]
+        adjusted_gross_income: 50_001
+  output:
+    # 4% x 50,000 = 2,000; 5% x 50,001 = 2,500.05.
+    repayment_assistance_plan_base_payment: [2_000, 2_500.05]
+    # 2,000 / 12 = 166 2/3; 2,500.05 / 12 = 208.3375.
+    repayment_assistance_plan_applicable_monthly_payment:
+      2027-01: [166.67, 208.3375]
+    repayment_assistance_plan_payment:
+      2027-01: [166.67, 208.3375]
+
+- name: Case 13, rulespec-us#1455 E4, AGI 60,000 stays at 5 percent and 60,001 moves to 6 percent.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+      person2:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        adjusted_gross_income: 60_000
+      tax_unit2:
+        members: [person2]
+        adjusted_gross_income: 60_001
+  output:
+    # 5% x 60,000 = 3,000; 6% x 60,001 = 3,600.06.
+    repayment_assistance_plan_base_payment: [3_000, 3_600.06]
+    # 3,000 / 12 = 250; 3,600.06 / 12 = 300.005.
+    repayment_assistance_plan_applicable_monthly_payment:
+      2027-01: [250, 300.005]
+    repayment_assistance_plan_payment:
+      2027-01: [250, 300.005]
+
+- name: Case 14, rulespec-us#1455 E5, AGI 70,000 stays at 6 percent and 70,001 moves to 7 percent.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+      person2:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        adjusted_gross_income: 70_000
+      tax_unit2:
+        members: [person2]
+        adjusted_gross_income: 70_001
+  output:
+    # 6% x 70,000 = 4,200; 7% x 70,001 = 4,900.07.
+    repayment_assistance_plan_base_payment: [4_200, 4_900.07]
+    # 4,200 / 12 = 350; 4,900.07 / 12 = 408.339166...
+    repayment_assistance_plan_applicable_monthly_payment:
+      2027-01: [350, 408.34]
+    repayment_assistance_plan_payment:
+      2027-01: [350, 408.34]
+
+- name: Case 15, rulespec-us#1455 E6, AGI 80,000 stays at 7 percent and 80,001 moves to 8 percent.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+      person2:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        adjusted_gross_income: 80_000
+      tax_unit2:
+        members: [person2]
+        adjusted_gross_income: 80_001
+  output:
+    # 7% x 80,000 = 5,600; 8% x 80,001 = 6,400.08.
+    repayment_assistance_plan_base_payment: [5_600, 6_400.08]
+    # 5,600 / 12 = 466 2/3; 6,400.08 / 12 = 533.34.
+    repayment_assistance_plan_applicable_monthly_payment:
+      2027-01: [466.67, 533.34]
+    repayment_assistance_plan_payment:
+      2027-01: [466.67, 533.34]
+
+- name: Case 16, rulespec-us#1455 E7, AGI 90,000 stays at 8 percent and 90,001 moves to 9 percent.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+      person2:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        adjusted_gross_income: 90_000
+      tax_unit2:
+        members: [person2]
+        adjusted_gross_income: 90_001
+  output:
+    # 8% x 90,000 = 7,200; 9% x 90,001 = 8,100.09.
+    repayment_assistance_plan_base_payment: [7_200, 8_100.09]
+    # 7,200 / 12 = 600; 8,100.09 / 12 = 675.0075.
+    repayment_assistance_plan_applicable_monthly_payment:
+      2027-01: [600, 675.0075]
+    repayment_assistance_plan_payment:
+      2027-01: [600, 675.0075]
+
+- name: Case 17, the base payment uses the latest return's adjusted gross income.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # The most recent return shows 20,000; income this year is 60,000.
+        income_driven_repayment_adjusted_gross_income: 20_000
+        adjusted_gross_income: 60_000
+  output:
+    # (q)(4)(A) "for the most recent taxable year": 1% x 20,000 = 200, not
+    # 5% x 60,000 = 3,000.
+    repayment_assistance_plan_base_payment: 200

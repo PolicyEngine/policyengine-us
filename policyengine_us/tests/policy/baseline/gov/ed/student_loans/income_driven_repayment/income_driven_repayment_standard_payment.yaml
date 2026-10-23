@@ -1,0 +1,109 @@
+# Cap on Income-Based Repayment payments (34 CFR 685.209(f)(2)(ii), (f)(3)(ii)):
+# the sum over the head and spouse of each one's 10-year standard payment on
+# their eligible Direct and FFEL loans ((b)(5), (e)(2)(i)) at their own rate,
+# balance x i / (1 - (1 + i) ^ -120) with i = rate / 12, at least 50 dollars
+# and no more than the eligible balance (685.208(b)(1)).
+
+- name: Case 1, a single borrower's cap is their standard payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # 30,000 x 0.005 / (1 - 1.005 ^ -120) = 333.06.
+    income_driven_repayment_standard_payment: 333.06
+
+- name: Case 2, joint filers add standard payments at each spouse's own rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0
+      person2:
+        age: 38
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.12
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    # 30,000 / 120 = 250; 30,000 x 0.01 / (1 - 1.01 ^ -120) = 430.41.
+    income_driven_repayment_standard_payment: 680.41
+
+- name: Case 3, FFEL loans enter the cap at the person's interest rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 10_000
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 38
+        federal_ffel_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    # 111.02 on the borrower's Direct Loans + 333.06 on the spouse's FFEL loans.
+    income_driven_repayment_standard_payment: 444.08
+
+- name: Case 4, each person's standard payment is at least the 50 dollar minimum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 38
+        federal_student_loan_balance: 3_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    # 333.06 + max(33.31, 50).
+    income_driven_repayment_standard_payment: 383.06
+
+- name: Case 5, a tax dependent's loans do not enter the cap.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        federal_student_loan_balance: 20_000
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        federal_student_loan_balance: 15_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    # Only the head's 20,000: 222.04.
+    income_driven_repayment_standard_payment: 222.04
