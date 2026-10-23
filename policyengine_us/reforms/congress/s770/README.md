@@ -44,8 +44,9 @@ the existing 3.8 percent NIIT also uses `n`. The reform replaces
 component taxes are already included there and in federal income tax; adding
 them again would double count.
 
-With identical sources, exclusions, NOL treatment, MAGI, thresholds and timing,
-and `existing_rate + addon_rate = active_rate = .162`, this equals `.162 * L`
+With both options enabled, identical sources, exclusions, NOL treatment, MAGI,
+thresholds and timing, and `existing_rate + addon_rate = active_rate = .162`,
+this equals `.162 * L`
 for all signed inputs. This is a conditional liability identity, not a claim
 that the available fields implement every statutory category. For `N=−10,000`,
 `A=20,000`, `X=50,000`, the tax is $1,620. For `N=20,000`, `A=−10,000`, the

@@ -7,9 +7,9 @@ YAML cannot express those dated parameter changes. No population data are used.
 Direct-NII YAML cases cover the NOL-denial hook separately from these source
 aggregation checks.
 
-Unified-liability equivalence assumes identical signed sources, exclusions,
-NOL treatment, MAGI, thresholds and timing, with existing rate + add-on rate =
-active rate = 16.2%. It does not imply equal OASDI transfers or full statutory
+With both options enabled, unified-liability equivalence assumes identical signed
+sources, exclusions, NOL treatment, MAGI, thresholds and timing, with existing
+rate + add-on rate = active rate = 16.2%. It does not imply equal OASDI transfers or full statutory
 category coverage. Adding a signed active loss can lower total tax, so the
 monotonicity property requires a nonnegative active residual and fixed signed
 NII/source rules, including exclusions and NOL treatment, across switches.
