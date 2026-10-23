@@ -31,7 +31,10 @@ class tip_income_deduction(Variable):
         increments = np.floor(magi_excess / p.phase_out.increment)
         phase_out_amount = increments * p.phase_out.increment * p.phase_out.rate
         qualified_tip_income = tip_income * occupation_requirement_met
-        total_tip_income = tax_unit.sum(qualified_tip_income)
+        # 26 U.S.C. 224(e)(1): only tips received by a head or spouse with a
+        # valid SSN count. Dependents' tips belong on their own returns.
+        eligible_person = person("tip_income_deduction_eligible_person", period)
+        total_tip_income = tax_unit.sum(qualified_tip_income * eligible_person)
         capped_tip_income = min_(p.cap, total_tip_income)
         deduction = max_(0, capped_tip_income - phase_out_amount)
         # 26 U.S.C. 224(f): a married individual takes the deduction only on

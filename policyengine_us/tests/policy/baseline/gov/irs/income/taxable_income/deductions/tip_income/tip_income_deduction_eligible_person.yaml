@@ -1,0 +1,89 @@
+- name: Head and spouse with valid SSNs count; a dependent and an ITIN spouse do not
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        ssn_card_type: CITIZEN
+      spouse:
+        age: 38
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+      child:
+        age: 17
+        ssn_card_type: CITIZEN
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+  output:
+    is_tax_unit_head_or_spouse: [true, true, false]
+    # A dependent's tips are the dependent's own income (26 U.S.C. 73(a)).
+    tip_income_deduction_eligible_person: [true, true, false]
+
+- name: A spouse without a valid SSN does not count, whatever the card type
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        ssn_card_type: CITIZEN
+      spouse:
+        age: 38
+        ssn_card_type: OTHER_NON_CITIZEN
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+  output:
+    tip_income_deduction_eligible_person: [true, false]
+
+- name: A head with no SSN card does not count
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        ssn_card_type: NONE
+      child:
+        age: 10
+        ssn_card_type: CITIZEN
+    marital_units:
+      marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    tax_units:
+      tax_unit:
+        members: [head, child]
+  output:
+    tip_income_deduction_eligible_person: [false, false]
+
+- name: An adult input as a dependent does not count
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: false
+      parent:
+        age: 70
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit:
+        members: [head]
+      parent_marital_unit:
+        members: [parent]
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+  output:
+    is_tax_unit_head: [true, false]
+    tip_income_deduction_eligible_person: [true, false]

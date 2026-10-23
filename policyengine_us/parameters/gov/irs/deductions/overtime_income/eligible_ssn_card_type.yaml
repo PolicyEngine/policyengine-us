@@ -1,4 +1,4 @@
-description: The IRS limits the overtime income deduction to filers with one of these SSN Card types.
+description: The IRS counts overtime toward the overtime income deduction only when the head or spouse who received it has one of these SSN card types.
 values:
   2018-01-01:
     - CITIZEN
@@ -9,5 +9,11 @@ metadata:
   period: year
   unit: list
   reference:
+    - title: 26 U.S.C. 225(d)
+      href: https://www.law.cornell.edu/uscode/text/26/225#d
+    - title: 26 U.S.C. 24(h)(7)
+      href: https://www.law.cornell.edu/uscode/text/26/24#h_7
+    - title: 2025 Form 1040 instructions, Schedule 1-A, Part III
+      href: https://www.irs.gov/pub/irs-pdf/i1040gi.pdf#page=106
     - title: H.R.1 - One Big Beautiful Bill Act
       href: https://www.congress.gov/bill/119th-congress/house-bill/1/text

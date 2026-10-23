@@ -318,3 +318,157 @@
     # 26 U.S.C. 7703(b): considered unmarried, so 225(e) does not apply.
     filing_status: [HEAD_OF_HOUSEHOLD, SEPARATE]
     overtime_income_deduction: [12_500, 0]
+
+- name: A joint return claims the overtime of a spouse with a valid SSN when the other spouse has none
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        ssn_card_type: CITIZEN
+        fsla_overtime_premium: 5_000
+      spouse:
+        age: 38
+        ssn_card_type: OTHER_NON_CITIZEN
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # 26 U.S.C. 225(d)(1): only the spouse who received the overtime needs an SSN.
+    filing_status: JOINT
+    overtime_income_deduction_ssn_requirement_met: true
+    overtime_income_deduction: 5_000
+
+- name: Overtime received by a spouse without a valid SSN does not count
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        ssn_card_type: CITIZEN
+      spouse:
+        age: 38
+        ssn_card_type: OTHER_NON_CITIZEN
+        fsla_overtime_premium: 10_000
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # 26 U.S.C. 225(d)(1): the spouse who received the overtime needs the SSN.
+    filing_status: JOINT
+    overtime_income_deduction_ssn_requirement_met: true
+    overtime_income_deduction: 0
+
+- name: On a joint return with overtime on both sides, only the spouse with a valid SSN counts
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        ssn_card_type: CITIZEN
+        fsla_overtime_premium: 15_000
+      spouse:
+        age: 38
+        ssn_card_type: OTHER_NON_CITIZEN
+        fsla_overtime_premium: 20_000
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # The $25,000 joint cap applies to the $15,000 that counts, not to $35,000.
+    filing_status: JOINT
+    overtime_income_deduction_ssn_requirement_met: true
+    overtime_income_deduction: 15_000
+
+- name: A dependent's overtime does not count toward the filer's deduction
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 45
+        ssn_card_type: CITIZEN
+        employment_income: 60_000
+      teen:
+        age: 17
+        ssn_card_type: CITIZEN
+        employment_income: 8_000
+        tip_income: 6_000
+        treasury_tipped_occupation_code: 102
+        fsla_overtime_premium: 1_000
+    marital_units:
+      parent_marital_unit:
+        members: [parent]
+      teen_marital_unit:
+        members: [teen]
+    tax_units:
+      tax_unit:
+        members: [parent, teen]
+    households:
+      household:
+        members: [parent, teen]
+        state_code: TX
+  output:
+    # The teen's overtime and wages are the teen's own income (26 U.S.C. 73(a)), outside the parent's AGI.
+    filing_status: HEAD_OF_HOUSEHOLD
+    is_tax_unit_dependent: [false, true]
+    adjusted_gross_income: 60_000
+    overtime_income_deduction: 0
+
+- name: A filer's own overtime counts while a dependent's does not
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 45
+        ssn_card_type: CITIZEN
+        employment_income: 60_000
+        fsla_overtime_premium: 3_000
+      teen:
+        age: 17
+        ssn_card_type: CITIZEN
+        employment_income: 8_000
+        tip_income: 6_000
+        treasury_tipped_occupation_code: 102
+        fsla_overtime_premium: 1_000
+    marital_units:
+      parent_marital_unit:
+        members: [parent]
+      teen_marital_unit:
+        members: [teen]
+    tax_units:
+      tax_unit:
+        members: [parent, teen]
+    households:
+      household:
+        members: [parent, teen]
+        state_code: TX
+  output:
+    # Only the parent's $3,000 counts; the teen's $1,000 does not.
+    filing_status: HEAD_OF_HOUSEHOLD
+    is_tax_unit_dependent: [false, true]
+    adjusted_gross_income: 60_000
+    overtime_income_deduction: 3_000
