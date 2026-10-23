@@ -1,0 +1,25 @@
+description: Vermont uses these sources as earned income under the Low Income Home Energy Assistance Program.
+# Rule 2911.3 counts self-employment income, including rent from property a
+# member manages and roomer or boarder payments, under the 3SquaresVT method.
+# The model has only net business income, so each listed source is floored at
+# zero and counted in full; a loss in one source cannot offset another.
+values:
+  2024-06-22:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    # Partnership and S corporation income from a member's own business.
+    - partnership_s_corp_income
+
+metadata:
+  unit: list
+  period: year
+  label: Vermont LIHEAP earned income sources
+  reference:
+    - title: "Vermont Seasonal Fuel Assistance Rules 2910, 2911.1 and 2911.3 #page 25,27,29"
+      href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=25
+    - title: Vermont DCF Procedure P-2910, Income
+      href: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2910.pdf
+    - title: Vermont FY2026 LIHEAP State Plan, Section 1.9
+      href: https://liheapch.acf.gov/docs/2026/state-plans/VT_Plan_2026.pdf#page=6

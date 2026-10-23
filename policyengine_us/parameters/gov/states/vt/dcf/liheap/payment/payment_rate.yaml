@@ -1,0 +1,27 @@
+description: Vermont pays this share of the base benefit as the ratable benefit under the Low Income Home Energy Assistance Program.
+# ESTIMATE. DCF sets the payment rate by procedure each season (33 V.S.A.
+# 2605(c); rule 2914(a)(8)) and does not publish it: P-2914B sends staff to the
+# ACCESS system for the current rate. 0.51 is inferred from the FFY2026 plan's
+# $2,089 maximum benefit, which equals floor(4,552 x 0.90 x 0.51), the largest
+# standard heating cost times the top heat cost percentage; 51% is the only
+# whole percent that reproduces it. The value is reused for the 2026-27 season
+# until DCF publishes that season's rate; DCF's September 16, 2026 memo said the
+# 2026-27 benefit levels were not yet determined.
+values:
+  2025-10-01: 0.51
+
+metadata:
+  unit: /1
+  period: year
+  label: Vermont LIHEAP payment rate
+  reference:
+    - title: Vermont FY2026 LIHEAP State Plan, Section 2.6
+      href: https://liheapch.acf.gov/docs/2026/state-plans/VT_Plan_2026.pdf#page=10
+    - title: Vermont DCF Procedure P-2914B, Payment Rate
+      href: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2914B.pdf
+    - title: 33 V.S.A. § 2605(c)
+      href: https://legislature.vermont.gov/statutes/section/33/026/02605
+    - title: Vermont Seasonal Fuel Assistance Rule 2914(a)(8)
+      href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=39
+    - title: Vermont DCF memo to the Joint Fiscal Committee, Fuel Assistance Update, September 16, 2026
+      href: https://ljfo.vermont.gov/assets/Meetings/Joint-Fiscal-Committee/2026-09-16/5a1aec4660/2026.09.16.-LIHEAP-Funds.-JFC.pdf#page=1
