@@ -1,3 +1,12 @@
+## [2.60.3] - 2026-10-23
+
+### Fixed
+
+- Deny the qualified tips and overtime deductions to married couples filing separately (26 U.S.C. 224(f) and 225(e)), and reduce each by $100 only for each full $1,000 of modified AGI over the threshold (26 U.S.C. 224(b)(2)(A) and 225(b)(2)(A), as Schedule 1-A lines 11 and 19 compute it), instead of continuously.
+- Subtract Michigan household resources premiums once (MI-1040CR line 31 leaves out the self-employed health insurance deduction on line 30), and exclude the first $300 of gambling winnings and of gifts (MCL 206.510(1)(a) and (b), lines 20 and 24), counting gifts from relatives and friends on line 24.
+- Correct the 2020 Schedule M1M worksheet line cited in the Minnesota Social Security subtraction.
+
+
 ## [2.60.2] - 2026-10-23
 
 ### Fixed
