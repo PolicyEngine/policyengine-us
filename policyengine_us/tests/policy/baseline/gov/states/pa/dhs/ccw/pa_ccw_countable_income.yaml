@@ -2,11 +2,14 @@
 # Tests countable income from sources.yaml
 # 55 Pa. Code Appendix A Part I
 #
-# Sources include: employment_income, self_employment_income, social_security,
-# social_security_disability, social_security_survivors, ssi, pension_income,
-# military_retirement_pay, unemployment_compensation, workers_compensation,
-# veterans_benefits, child_support_received, alimony_income, dividend_income,
-# interest_income, rental_income
+# Sources include: employment_income, self_employment_income,
+# sstb_self_employment_income, social_security, ssi, pension_income,
+# military_retirement_pay, total_unemployment_compensation,
+# workers_compensation, veterans_benefits, child_support_received,
+# alimony_income, dividend_income, interest_income, rental_income
+#
+# social_security adds the retirement, disability, survivors and dependents
+# benefits, so each Social Security benefit counts once (Part I.E).
 
 - name: Case 1, employment income only.
   period: 2025-01
@@ -89,3 +92,72 @@
   output:
     # Monthly: (30,000 + 18,000) / 12 = 48,000 / 12 = 4,000
     pa_ccw_countable_income: 4_000
+
+- name: Case 5, Social Security survivor benefits count once.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security_survivors: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # Part I.E: survivors' benefits paid by SSA.
+    # Monthly: 12,000 / 12 = 1,000
+    pa_ccw_countable_income: 1_000
+
+- name: Case 6, Social Security disability benefits count once.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        social_security_disability: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # Part I.E: disability insurance payments made by SSA.
+    # Monthly: 9,600 / 12 = 800
+    pa_ccw_countable_income: 800
+
+- name: Case 7, each Social Security benefit type counts once.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        social_security_disability: 9_600
+      person2:
+        age: 8
+        social_security_dependents: 2_400
+      person3:
+        age: 6
+        social_security_survivors: 3_600
+      person4:
+        age: 68
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: PA
+  output:
+    # The retirement benefit exceeds the federal SSI benefit rate, so ssi is 0.
+    # Monthly: (9,600 + 2,400 + 3,600 + 18,000) / 12 = 33,600 / 12 = 2,800
+    pa_ccw_countable_income: 2_800

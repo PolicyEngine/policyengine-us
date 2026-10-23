@@ -4,9 +4,9 @@ values:
     - employment_income
     - self_employment_income
     - sstb_self_employment_income
+    # Part I.E; social_security adds the retirement, disability,
+    # survivors and dependents benefits.
     - social_security
-    - social_security_disability
-    - social_security_survivors
     - ssi
     - pension_income
     - military_retirement_pay
@@ -27,5 +27,5 @@ metadata:
   period: year
   label: Pennsylvania CCW countable income sources
   reference:
-    - title: 55 Pa. Code Chapter 3042 Appendix A Part I
+    - title: "55 Pa. Code Chapter 3042 Appendix A Part I #page 59-60"
       href: https://www.pacodeandbulletin.gov/secure/pacode/data/055/chapter3042/055_3042.pdf#page=59
