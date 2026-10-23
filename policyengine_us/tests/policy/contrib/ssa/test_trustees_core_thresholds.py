@@ -120,7 +120,7 @@ def test_reported_social_security_components_use_aggregate_ss_uprater():
         (social_security_survivors, social_security_survivors_reported),
     ):
         assert reported.uprating == expected_uprater
-        assert getattr(public, "uprating", None) is None
+        assert "uprating" not in public.__dict__
 
 
 def test_reform_wage_indexes_core_tax_threshold_from_2035():
