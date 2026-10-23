@@ -187,12 +187,21 @@ def test_migrated_input_records_are_private_and_explicit_overrides_survive():
     for original, (migrated, value) in migrated_inputs.items():
         assert (migrated, source.branch_name, period) in source._user_input_keys
         assert (original, source.branch_name, period) not in source._user_input_keys
-        # Baseline was copied before migration and must retain its raw inputs.
+        # The baseline is rebuilt after migration, so both arms retain the
+        # same pre-response inputs and forget the emptied aggregate inputs.
+        assert (
+            migrated,
+            source.branch_name,
+            period,
+        ) in source.baseline._user_input_keys
         assert (
             original,
             source.branch_name,
             period,
-        ) in source.baseline._user_input_keys
+        ) not in source.baseline._user_input_keys
+        np.testing.assert_array_equal(
+            source.baseline.get_array(migrated, YEAR), [value]
+        )
         np.testing.assert_array_equal(
             source.baseline.calculate(original, YEAR), [value]
         )
@@ -308,9 +317,8 @@ def test_baseline_measurement_branch_is_baseline_policy_over_the_inputs():
 
 
 def test_baseline_measurement_branch_reads_a_branchs_own_inputs():
-    # A reform household's baseline keeps the situation's employment_income as
-    # an override from construction, so a branch with other earnings cannot be
-    # measured from it.
+    # A reform household's baseline keeps the situation's original earnings,
+    # so a branch with other earnings cannot be measured from it.
     simulation = make_simulation(situation=household(50_000), reform=RATE_CUT)
     branch = simulation.get_branch("other_earnings")
     branch.set_input("employment_income_before_lsr", YEAR, np.array([100_000.0]))
