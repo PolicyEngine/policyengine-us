@@ -1,3 +1,103 @@
+# 26 U.S.C. 225(g) allows no deduction for any taxable year beginning after
+# December 31, 2028, and Pub. L. 119-21 sec. 70202(g) applies the section to
+# taxable years beginning after December 31, 2024. The same single filer, below
+# the $150,000 phase-out start, is computed in each year.
+
+- name: 2024, before the deduction takes effect, no deduction is allowed.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        fsla_overtime_premium: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    overtime_income_deduction: 0
+
+- name: 2025, the first year, the deduction is allowed.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        fsla_overtime_premium: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    overtime_income_deduction: 5_000
+
+- name: 2028, the last year, the deduction is allowed.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 40
+        fsla_overtime_premium: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    overtime_income_deduction: 5_000
+
+- name: 2029, after 225(g) ends it, no deduction is allowed.
+  period: 2029
+  input:
+    people:
+      person1:
+        age: 40
+        fsla_overtime_premium: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    overtime_income_deduction: 0
+
+- name: 2030, later years stay at zero.
+  period: 2030
+  input:
+    people:
+      person1:
+        age: 40
+        fsla_overtime_premium: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    overtime_income_deduction: 0
+
 - name: Ineligible cardholder present
   period: 2025
   input:

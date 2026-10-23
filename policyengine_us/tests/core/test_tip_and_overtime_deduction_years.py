@@ -23,7 +23,6 @@ the same in every year. The tests check:
 """
 
 import numpy as np
-import pytest
 from hypothesis import Phase, example, given, settings
 from hypothesis import strategies as st
 
@@ -95,9 +94,9 @@ def _draw(seed, n=120):
     return units
 
 
-@pytest.mark.parametrize("seed", [0, 1])
-def test_deductions_apply_only_from_2025_through_2028(seed):
-    units = _draw(seed)
+def test_deductions_apply_only_from_2025_through_2028():
+    # One draw, so the switched-on reform builds one model.
+    units = _draw(seed=0, n=240)
     situation = _situation(units, YEARS)
     baseline = Simulation(tax_benefit_system=system, situation=situation)
     always = Simulation(
