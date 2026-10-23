@@ -355,3 +355,57 @@
     # 2,098.83 - 1,491 = 607.83; 2,098.83 - 2,098.83 = 0;
     # 2,356.57 - 2,098.83 = 257.74; 2,356.57 - 2,356.57 = 0.
     ca_state_supplement: [7_293.96, 0, 3_092.88, 0]
+
+# A CAPI-eligible member's income does not reduce the state supplement: CAPI
+# budgets its own members' income (CAPI regulations MPP 49-035), and SSI/SSP
+# counts another member's income only when it is deemed (20 CFR 416.1160(a)).
+# 2025: federal SSI is $967; the no-cooking individual standard is
+# $1,206.94 + $128.87 = $1,335.81.
+- name: Case 10, 2025 aged citizen sharing an SPM unit with a CAPI-eligible sibling keeps the supplement.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 6_000 # 500 a month
+      person2:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 10
+        ssi_qualifying_quarters_earnings: 0
+        pension_income: 6_000 # 500 a month
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # person2 is an LPR with fewer than 40 quarters, so SSI and the state
+    # supplement bar her and she is CAPI-eligible.
+    ca_capi_eligible_person: [false, true]
+    # Each has 500 - 20 = 480 a month of countable income.
+    ssi_countable_income: [5_760, 5_760]
+    # person1's SSI is 967 - 480 = 487 a month.
+    ssi: [5_844, 0] # 487 * 12
+    # One eligible aged member, and living_arrangements_allow_for_food_preparation
+    # defaults to false, so the standard is 1,206.94 + 128.87 = 1,335.81.
+    ca_state_supplement_payment_standard: 16_029.72 # 1,335.81 * 12
+    # The supplement is 1,335.81 - 487 - 480 = 368.81 a month; person2's 480
+    # is not counted.
+    ca_state_supplement: 4_425.72 # 368.81 * 12

@@ -12,6 +12,7 @@ class md_paa_countable_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.MD
     reference = (
+        "https://regs.maryland.gov/us/md/exec/comar/07.03.07.07",
         "https://regs.maryland.gov/us/md/exec/comar/07.03.07.08",
         "https://regs.maryland.gov/us/md/exec/comar/07.03.07.09",
         "https://dhs.maryland.gov/documents/FIA/Manuals/Public%20Assistance%20to%20Adults%20%28PAA%29%20Manual/PAA%20900%20Calculation%20of%20Benefits%20rev%2011.22.docx",
@@ -44,7 +45,19 @@ class md_paa_countable_income(Variable):
         )
 
         both_eligible = person("ssi_couple_computation_applies", period.this_year)
-        spousal_deemed = person("ssi_income_deemed_from_ineligible_spouse", period)
+        # COMAR 07.03.07.07 counts the individual's own income and has no
+        # spousal deeming. The SSI cascade deems spouse income only to people
+        # SSA can pay, so people who fail SSI's citizen or qualified-noncitizen
+        # test count their own income alone.
+        immigration_status = person("immigration_status", period)
+        is_citizen = immigration_status == immigration_status.possible_values.CITIZEN
+        is_qualified_noncitizen = person("is_ssi_qualified_noncitizen", period)
+        meets_ssi_immigration_test = is_citizen | is_qualified_noncitizen
+        spousal_deemed = where(
+            meets_ssi_immigration_test,
+            person("ssi_income_deemed_from_ineligible_spouse", period),
+            0,
+        )
         return where(
             both_eligible,
             personal_countable / 2,

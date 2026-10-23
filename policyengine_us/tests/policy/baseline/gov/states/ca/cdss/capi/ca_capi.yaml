@@ -98,3 +98,27 @@
     ca_state_supplement_aged_blind_disabled_amount: 0
     ca_state_supplement: 0
     ca_capi: 11_306
+
+- name: Integration test, aged permanent resident without 40 SSI quarters whose pension exceeds the CAPI standard
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 10
+        ssi_qualifying_quarters_earnings: 0
+        pension_income: 24_000 # 2,000 a month
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ssi: 0
+    ca_capi_eligible_person: true
+    # (2,000 - 20) x 12 = 23,760 of countable income.
+    ssi_countable_income: 23_760
+    # 1,980 a month exceeds CAPI's individual payment standard, which is at
+    # most the 1,335.81 SSI/SSP no-cooking standard, so CAPI pays nothing.
+    ca_capi: 0

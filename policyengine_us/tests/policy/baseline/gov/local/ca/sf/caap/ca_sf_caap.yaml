@@ -316,8 +316,8 @@
     # size-1 grant ($714) is paid through the top-level benefit, not the GA $578.
     ca_sf_caap: 714
 
-- name: Case 15, aged TPS member with a CAPI payment is excluded from the
-    budget unit along with her income.
+- name: Case 15, aged TPS member whose pension rules out CAPI stays in the
+    budget unit with her income.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -339,22 +339,14 @@
         spm_unit_cash_assets: 0
   output:
     # person2 is categorically CAPI-eligible (aged 68 + noncitizen + TPS is not
-    # an SSI-qualified status) and the model pays her unit CAPI, so the
-    # receipt-based bar (ca_capi > 0) drops her from the budget unit and her
-    # pension is masked out of countable income; the remaining member collects
-    # the size-1 grant.
-    # NOTE: in real life her 2,000/month pension is roughly double the CAPI
-    # payment standard, so she would receive no CAPI and would stay in the
-    # CAAP budget unit (size 2, max grant 1,036), where her income fails the
-    # strict income test: ca_sf_caap = 0. The model currently pays her CAPI
-    # regardless of income because ca_capi's income test reads
-    # ssi_countable_income, which is zeroed for anyone failing the SSI
-    # immigration test (CAPI's entire target population) -- an upstream CAPI
-    # limitation. When that is fixed upstream, this case's expectations flip
-    # to budget_unit_size 2, countable_income 2_000, ca_sf_caap 0.
-    ca_sf_caap_budget_unit_size: 1
-    ca_sf_caap_countable_income: 0
-    ca_sf_caap: 578
+    # an SSI-qualified status), but CAPI counts her pension: her countable
+    # pension (2,000 - 20 = 1,980/month) exceeds CAPI's payment standard, so
+    # ca_capi = 0. The receipt-based bar (ca_capi > 0) does not apply, and she
+    # stays in the CAAP budget unit (size 2, max grant 1,036), where her
+    # income fails the strict income test.
+    ca_sf_caap_budget_unit_size: 2
+    ca_sf_caap_countable_income: 2_000
+    ca_sf_caap: 0
 
 - name: Case 16, one spouse receiving SSI and only one spouse applying yields
     the full one-person grant against the applicant's own income.
