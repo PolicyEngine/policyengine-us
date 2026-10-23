@@ -108,3 +108,24 @@
     # distribution and income equals AGI.
     adjusted_gross_income: 300_000
     nyc_school_credit_income: 300_000
+
+- name: 2020 NYC school credit income uses recomputed federal AGI
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 250_100
+        charitable_cash_donations: 300
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+        in_nyc: true
+  output:
+    # Federal AGI 249,800; recomputed federal AGI (line 19a) 250,100.
+    adjusted_gross_income: 249_800
+    nyc_school_credit_income: 250_100

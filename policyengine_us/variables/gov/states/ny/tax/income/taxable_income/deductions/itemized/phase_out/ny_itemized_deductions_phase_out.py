@@ -79,7 +79,7 @@ class ny_itemized_deductions_phase_out(Variable):
         # The defined_for guard already restricts this to filers whose federal
         # AGI exceeds the applicable amount (worksheet line 7), so the excess is
         # positive; max_ guards the vectorized boundary.
-        agi = tax_unit("adjusted_gross_income", period)
+        agi = tax_unit("ny_recomputed_federal_agi", period)
         filing_status = tax_unit("filing_status", period)
         applicable_amount = p.start[filing_status]
         agi_excess = max_(agi - applicable_amount, 0)

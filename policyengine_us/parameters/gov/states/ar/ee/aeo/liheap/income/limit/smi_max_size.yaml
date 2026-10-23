@@ -1,0 +1,21 @@
+description: Arkansas uses state median income for households up to this size under the Low Income Home Energy Assistance Program.
+values:
+  # FY2025 plan Section 2.1: sizes 1-6 use state median income, size 7 and up
+  # use the HHS poverty guidelines.
+  2024-10-01: 6
+  # FY2026 plan Section 2.1: sizes 1-7 use state median income.
+  2025-10-01: 7
+
+metadata:
+  unit: person
+  period: year
+  label: Arkansas LIHEAP maximum state median income household size
+  reference:
+    - title: Arkansas FY2026 State Plan, Section 2.1
+      href: https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf#page=9
+    - title: Arkansas FY2026 Income Eligibility Chart
+      href: https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Eligibility-Chart_2026.pdf
+    - title: Arkansas FY2025 State Plan, Section 2.1
+      href: https://liheapch.acf.gov/docs/2025/state-plans/AR_Plan_2025.pdf#page=8
+    - title: Arkansas FY2025 Income Eligibility Chart
+      href: https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Eligibility-Chart_2025.pdf

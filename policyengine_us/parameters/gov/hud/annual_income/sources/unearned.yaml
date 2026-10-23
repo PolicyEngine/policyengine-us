@@ -20,15 +20,21 @@ values:
     - social_security
     - ssi
     - nj_ssp
+    - nh_ssp
     - pa_ssp
     - wy_ssp
+    - or_ssp_countable_for_hud
     - nc_sa_countable_for_hud
     - nv_oss
     - mt_ssp
+    # Exclude only SSI-E meeting the assisted-home care conditions.
+    - wi_ssp_countable_for_hud
     - ok_ssp
     - ny_ssp
     - ri_ssp
+    - ut_dws_ssp
     - sd_ssp
+    - vt_aabd
     - va_ag
     - general_assistance
     - total_unemployment_compensation
