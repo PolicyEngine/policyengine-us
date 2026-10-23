@@ -10,6 +10,11 @@ class tip_income_deduction(Variable):
     defined_for = "tip_income_deduction_ssn_requirement_met"
 
     def formula(tax_unit, period, parameters):
+        # Section 224 applies to taxable years beginning after December 31,
+        # 2024, and 224(h) allows no deduction for any taxable year beginning
+        # after December 31, 2028.
+        if not parameters(period).gov.irs.deductions.tip_income.in_effect:
+            return 0
         person = tax_unit.members
         tip_income = person("tip_income", period)
         occupation_requirement_met = person(
