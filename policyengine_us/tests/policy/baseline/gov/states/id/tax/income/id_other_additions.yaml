@@ -1,0 +1,20 @@
+- name: Case 1, default id_other_additions is zero
+  period: 2024
+  input:
+    state_code: ID
+    employment_income: 50_000
+  output:
+    id_other_additions: 0
+    id_additions: 0
+    id_agi: 50_000
+
+- name: Case 2, id_other_additions increases ID AGI
+  period: 2024
+  input:
+    state_code: ID
+    employment_income: 50_000
+    id_other_additions: 2_000
+  output:
+    id_other_additions: 2_000
+    id_additions: 2_000
+    id_agi: 52_000
