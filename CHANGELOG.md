@@ -1,3 +1,10 @@
+## [2.60.4] - 2026-10-23
+
+### Fixed
+
+- Limit Alabama's and North Carolina's mortgage interest deductions to the federally allowed amount after the 26 U.S.C. 163(h)(3) acquisition-debt limits, and Hawaii's to its own pre-TCJA limits ($1,000,000 of acquisition debt plus $100,000 of home equity debt) under HRS 235-2.4, instead of all interest paid.
+
+
 ## [2.60.3] - 2026-10-23
 
 ### Fixed
