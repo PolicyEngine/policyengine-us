@@ -1,0 +1,402 @@
+# Qualified passenger vehicle loan interest counts on the return of the
+# taxpayer who incurred the loan. 26 U.S.C. 163(h)(4)(B)(i): "interest which
+# is paid or accrued during the taxable year on indebtedness incurred by the
+# taxpayer". 26 CFR 1.163-16(d)(1) (T.D. 10054, 91 FR 57237) repeats it, and
+# 1.163-16(h)(1) limits the amount to $10,000 "per Federal tax return
+# regardless of filing status".
+#
+# qualified_passenger_vehicle_loan_interest_person is a person's own loans
+# and counts for the tax unit head and spouse. The household-level
+# qualified_passenger_vehicle_loan_interest does not say who incurred the
+# loan, so it goes in full to the tax unit holding the household head (the
+# oldest member when no head is designated).
+#
+# Each "Before" figure is the previous formula, which split the household
+# amount across tax units by member count. Unless noted: 2025, Texas, each
+# adult has $50,000 of wages (under the $100,000 phase-out start).
+
+- name: The household amount goes to the household head's tax unit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      older_roommate:
+        age: 50
+        employment_income: 50_000
+      head:
+        age: 25
+        employment_income: 50_000
+        is_household_head: true
+    tax_units:
+      roommate_unit:
+        members: [older_roommate]
+      head_unit:
+        members: [head]
+    marital_units:
+      roommate_marital_unit:
+        members: [older_roommate]
+      head_marital_unit:
+        members: [head]
+    spm_units:
+      roommate_spm_unit:
+        members: [older_roommate]
+      head_spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [older_roommate, head]
+        state_code: TX
+        qualified_passenger_vehicle_loan_interest: 5_000
+  output:
+    # Before: [2_500, 2_500].
+    tax_unit_qualified_passenger_vehicle_loan_interest: [0, 5_000]
+    auto_loan_interest_deduction: [0, 5_000]
+
+- name: With no household head designated, the oldest member's tax unit takes it
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      older_roommate:
+        age: 50
+        employment_income: 50_000
+      younger_roommate:
+        age: 25
+        employment_income: 50_000
+    tax_units:
+      older_unit:
+        members: [older_roommate]
+      younger_unit:
+        members: [younger_roommate]
+    marital_units:
+      older_marital_unit:
+        members: [older_roommate]
+      younger_marital_unit:
+        members: [younger_roommate]
+    spm_units:
+      older_spm_unit:
+        members: [older_roommate]
+      younger_spm_unit:
+        members: [younger_roommate]
+    households:
+      household:
+        members: [older_roommate, younger_roommate]
+        state_code: TX
+        qualified_passenger_vehicle_loan_interest: 5_000
+  output:
+    # Before: [2_500, 2_500].
+    tax_unit_qualified_passenger_vehicle_loan_interest: [5_000, 0]
+    auto_loan_interest_deduction: [5_000, 0]
+
+- name: A parent's three-person unit and a roommate no longer split by head count
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 50_000
+        is_household_head: true
+      child_1:
+        age: 10
+        is_tax_unit_dependent: true
+      child_2:
+        age: 8
+        is_tax_unit_dependent: true
+      roommate:
+        age: 30
+        employment_income: 50_000
+    tax_units:
+      family_unit:
+        members: [parent, child_1, child_2]
+      roommate_unit:
+        members: [roommate]
+    marital_units:
+      parent_marital_unit:
+        members: [parent]
+      child_1_marital_unit:
+        members: [child_1]
+      child_2_marital_unit:
+        members: [child_2]
+      roommate_marital_unit:
+        members: [roommate]
+    spm_units:
+      family_spm_unit:
+        members: [parent, child_1, child_2]
+      roommate_spm_unit:
+        members: [roommate]
+    households:
+      household:
+        members: [parent, child_1, child_2, roommate]
+        state_code: TX
+        qualified_passenger_vehicle_loan_interest: 8_000
+  output:
+    # Before: [6_000, 2_000], 3/4 and 1/4 of the household amount.
+    tax_unit_qualified_passenger_vehicle_loan_interest: [8_000, 0]
+    auto_loan_interest_deduction: [8_000, 0]
+
+- name: Each filer's own loan counts on that filer's return
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 52
+        employment_income: 60_000
+        is_household_head: true
+        qualified_passenger_vehicle_loan_interest_person: 4_000
+      adult_child:
+        age: 24
+        employment_income: 30_000
+        qualified_passenger_vehicle_loan_interest_person: 3_000
+    tax_units:
+      parent_unit:
+        members: [parent]
+      adult_child_unit:
+        members: [adult_child]
+    marital_units:
+      parent_marital_unit:
+        members: [parent]
+      adult_child_marital_unit:
+        members: [adult_child]
+    spm_units:
+      spm_unit:
+        members: [parent, adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+        state_code: TX
+  output:
+    tax_unit_qualified_passenger_vehicle_loan_interest: [4_000, 3_000]
+    auto_loan_interest_deduction: [4_000, 3_000]
+
+- name: A dependent's own loan does not reach the filer's return
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 50_000
+        qualified_passenger_vehicle_loan_interest_person: 2_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        qualified_passenger_vehicle_loan_interest_person: 3_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_marital_unit:
+        members: [parent]
+      child_marital_unit:
+        members: [child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # The child's interest is on indebtedness the child incurred, not the
+    # parent; only the parent's $2,000 is on the parent's return.
+    tax_unit_qualified_passenger_vehicle_loan_interest: 2_000
+    auto_loan_interest_deduction: 2_000
+
+- name: Person and household amounts add on the head's return
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        is_household_head: true
+        qualified_passenger_vehicle_loan_interest_person: 1_000
+      roommate:
+        age: 60
+        employment_income: 50_000
+        qualified_passenger_vehicle_loan_interest_person: 500
+    tax_units:
+      head_unit:
+        members: [head]
+      roommate_unit:
+        members: [roommate]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      roommate_marital_unit:
+        members: [roommate]
+    spm_units:
+      head_spm_unit:
+        members: [head]
+      roommate_spm_unit:
+        members: [roommate]
+    households:
+      household:
+        members: [head, roommate]
+        state_code: TX
+        qualified_passenger_vehicle_loan_interest: 2_000
+  output:
+    # Head: 1,000 own + 2,000 household. Roommate: 500 own.
+    tax_unit_qualified_passenger_vehicle_loan_interest: [3_000, 500]
+    auto_loan_interest_deduction: [3_000, 500]
+
+- name: The $10,000 limit applies to the one return that holds the household amount
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 50_000
+        is_household_head: true
+      roommate:
+        age: 25
+        employment_income: 50_000
+    tax_units:
+      head_unit:
+        members: [head]
+      roommate_unit:
+        members: [roommate]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      roommate_marital_unit:
+        members: [roommate]
+    spm_units:
+      head_spm_unit:
+        members: [head]
+      roommate_spm_unit:
+        members: [roommate]
+    households:
+      household:
+        members: [head, roommate]
+        state_code: TX
+        qualified_passenger_vehicle_loan_interest: 15_000
+  output:
+    # Before: 7,500 on each return, 15,000 in all, each under the limit.
+    tax_unit_qualified_passenger_vehicle_loan_interest: [15_000, 0]
+    auto_loan_interest_deduction: [10_000, 0]
+
+- name: Several people flagged as household head still count the amount once
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      younger_head:
+        age: 30
+        employment_income: 50_000
+        is_household_head: true
+      older_head:
+        age: 55
+        employment_income: 50_000
+        is_household_head: true
+      oldest_member:
+        age: 80
+        employment_income: 50_000
+    tax_units:
+      younger_unit:
+        members: [younger_head]
+      older_unit:
+        members: [older_head]
+      oldest_unit:
+        members: [oldest_member]
+    marital_units:
+      younger_marital_unit:
+        members: [younger_head]
+      older_marital_unit:
+        members: [older_head]
+      oldest_marital_unit:
+        members: [oldest_member]
+    spm_units:
+      younger_spm_unit:
+        members: [younger_head]
+      older_spm_unit:
+        members: [older_head]
+      oldest_spm_unit:
+        members: [oldest_member]
+    households:
+      household:
+        members: [younger_head, older_head, oldest_member]
+        state_code: TX
+        qualified_passenger_vehicle_loan_interest: 5_000
+  output:
+    # The older of the two flagged heads takes it; the unflagged oldest
+    # member does not.
+    tax_unit_qualified_passenger_vehicle_loan_interest: [0, 5_000, 0]
+
+- name: A household head claimed as a dependent puts the amount on the claiming return
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      son:
+        age: 50
+        employment_income: 50_000
+      grandmother:
+        age: 80
+        is_household_head: true
+        is_tax_unit_dependent: true
+      roommate:
+        age: 35
+        employment_income: 50_000
+    tax_units:
+      son_unit:
+        members: [son, grandmother]
+      roommate_unit:
+        members: [roommate]
+    marital_units:
+      son_marital_unit:
+        members: [son]
+      grandmother_marital_unit:
+        members: [grandmother]
+      roommate_marital_unit:
+        members: [roommate]
+    spm_units:
+      family_spm_unit:
+        members: [son, grandmother]
+      roommate_spm_unit:
+        members: [roommate]
+    households:
+      household:
+        members: [son, grandmother, roommate]
+        state_code: TX
+        qualified_passenger_vehicle_loan_interest: 3_000
+  output:
+    # Before: [2_000, 1_000].
+    tax_unit_qualified_passenger_vehicle_loan_interest: [3_000, 0]
+
+- name: One tax unit in the household takes the whole household amount, as before
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+      spouse:
+        age: 38
+      child:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      couple:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+        qualified_passenger_vehicle_loan_interest: 4_000
+  output:
+    tax_unit_qualified_passenger_vehicle_loan_interest: 4_000
+    auto_loan_interest_deduction: 4_000
