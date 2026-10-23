@@ -18,8 +18,9 @@ of this Act”. There is no statutory fixed start year. The configurable 2026
 defaults illustrate assumed enactment timing and have no effect while disabled.
 
 Section 9(a) assigns 62 percent of all section 1411 tax to a merged Social
-Security fund. It appropriates the revenue beginning with the first fiscal year
-after enactment; the merged fund receives assets on the following January 1.
+Security fund. Revenue appropriation starts with the first fiscal year beginning
+after enactment; assets transfer on January 1 of the first calendar year beginning
+after enactment.
 `transfer.start_year` is a separate annual modeling choice. This liability model
 does not estimate fiscal-year collection lags or prorate receipts.
 
