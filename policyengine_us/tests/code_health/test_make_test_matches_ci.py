@@ -133,3 +133,42 @@ def test_contrib_ssa_yaml_has_a_dedicated_single_file_serial_route():
     excluded = arguments[arguments.index("--exclude") + 1].split(",")
     assert "ssa" in excluded, "SSA YAML must not also enter a shared subdir batch"
     assert commands <= make_commands("test"), "The full suite must retain SSA's route"
+
+
+@pytest.mark.parametrize("workflow_name", ("python-tests.yaml", "push.yaml"))
+def test_microsimulation_fetches_the_pinned_social_security_reference(workflow_name):
+    """A shallow CI checkout otherwise skips every legacy differential case."""
+    source = (
+        REPO_ROOT
+        / "policyengine_us/tests/microsimulation/test_social_security_current_law.py"
+    ).read_text()
+    reference = re.search(
+        r"^REVIEWED_MAIN_SHA = [\"']([0-9a-f]{40})[\"']$", source, re.MULTILINE
+    )
+    assert reference, "the differential must declare its reviewed main commit"
+    expected_fetch = [
+        "git",
+        "fetch",
+        "--no-tags",
+        "--depth=1",
+        "origin",
+        reference.group(1),
+    ]
+    workflow = yaml.safe_load(
+        (REPO_ROOT / ".github/workflows" / workflow_name).read_text()
+    )
+    steps = workflow["jobs"]["Microsimulation"]["steps"]
+    fetch_steps = [
+        index
+        for index, step in enumerate(steps)
+        for line in (step.get("run") or "").splitlines()
+        if shlex.split(line) == expected_fetch
+    ]
+    test_steps = [
+        index
+        for index, step in enumerate(steps)
+        if "test-microsimulation" in MAKE_TARGET.findall(step.get("run") or "")
+    ]
+    assert len(fetch_steps) == 1, "fetch the exact pre-feature reference once"
+    assert len(test_steps) == 1, "the microsimulation suite must run once"
+    assert fetch_steps[0] < test_steps[0], "fetch the reference before the suite runs"

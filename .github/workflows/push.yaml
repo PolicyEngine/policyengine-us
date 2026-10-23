@@ -490,6 +490,8 @@ jobs:
       - name: Update system certificate authorities
         id: system-ca
         uses: ./.github/actions/setup-system-ca
+      - name: Fetch Social Security differential reference
+        run: git fetch --no-tags --depth=1 origin 8986e05cab65d56435a23df1910e2d35f2c5f5bf
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
