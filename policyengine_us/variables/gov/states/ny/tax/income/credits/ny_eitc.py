@@ -1,5 +1,8 @@
 from policyengine_us.model_api import *
 from policyengine_us.tools.pinned_tbs import get_pre_arpa_eitc_tbs
+from policyengine_us.variables.gov.states.ny.tax.income.adjusted_gross_income.ny_recomputed_federal_agi import (
+    get_ny_recomputed_branch,
+)
 
 
 class ny_eitc(Variable):
@@ -11,6 +14,9 @@ class ny_eitc(Variable):
     reference = (
         "https://www.nysenate.gov/legislation/laws/TAX/606",  # (d)
         "https://www.tax.ny.gov/pdf/2021/inc/it215i_2021.pdf",
+        # 2020 IT-215 instructions: recompute the federal credit with line
+        # 19a when lines 19 and 19a differ.
+        "https://www.tax.ny.gov/pdf/2020/inc/it215i_2020.pdf#page=2",
     )
     defined_for = StateCode.NY
 
@@ -32,7 +38,13 @@ class ny_eitc(Variable):
                     branch.delete_arrays(variable)
             federal_eitc = branch.tax_unit("eitc", period)
         else:
-            federal_eitc = tax_unit("eitc", period)
+            # IT-215: the federal credit recomputed with recomputed federal
+            # AGI (IT-201 line 19a) when it differs from federal AGI.
+            branch = get_ny_recomputed_branch(tax_unit, period)
+            if branch is None:
+                federal_eitc = tax_unit("eitc", period)
+            else:
+                federal_eitc = branch.calculate("eitc", period)
         tentative_nys_eitc = federal_eitc * p.eitc.match
         income_tax_before_credits = tax_unit("ny_income_tax_before_credits", period)
         household_credit = tax_unit("ny_household_credit", period)

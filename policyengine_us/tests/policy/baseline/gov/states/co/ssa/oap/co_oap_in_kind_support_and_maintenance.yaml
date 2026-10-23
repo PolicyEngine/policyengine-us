@@ -1,0 +1,23 @@
+- name: Reported SSI receipt counts matching ISM even when modeled SSI is zero.
+  # 3.520.79(B)(6) charges an SSI recipient the matching SSA ISM.
+  period: 2026-01
+  input:
+    ssi: 0
+    receives_ssi: true
+    ssi_in_kind_support_and_maintenance:
+      2026: 3_600
+    ssi_couple_computation_applies: false
+  output:
+    co_oap_in_kind_support_and_maintenance: 300
+
+- name: Reported SSI receipt preserves the couple's equal ISM split.
+  # The couple's $300 matching ISM is split equally between its members.
+  period: 2026-01
+  input:
+    ssi: 0
+    receives_ssi: true
+    ssi_in_kind_support_and_maintenance:
+      2026: 3_600
+    ssi_couple_computation_applies: true
+  output:
+    co_oap_in_kind_support_and_maintenance: 150

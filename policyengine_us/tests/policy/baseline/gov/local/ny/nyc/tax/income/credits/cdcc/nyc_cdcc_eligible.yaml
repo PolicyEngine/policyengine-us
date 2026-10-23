@@ -33,3 +33,27 @@
     adjusted_gross_income: 30_001
   output:
     nyc_cdcc_eligible: false
+
+- name: 2020 NYC child care credit tests recomputed federal AGI
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_100
+        charitable_cash_donations: 300
+      person2:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+        in_nyc: true
+  output:
+    # Federal AGI 29,800 is under $30,000; recomputed federal AGI (IT-216
+    # line 9, IT-201 line 19a) is 30,100, over it.
+    adjusted_gross_income: 29_800
+    nyc_cdcc_eligible: false
