@@ -1,0 +1,406 @@
+# Monthly payment under 20 U.S.C. 1087e(q)(4) and 34 CFR 685.209. Cases 1-12 are
+# the issue #9719 table, recomputed from the statute:
+#   base = $120 if AGI <= $10,000, else bracket rate x whole AGI ((q)(4)(B)(iv))
+#   applicable = base / 12 - $50 x dependents claimed on the return, min $10
+#     ((q)(4)(B)(i), (ii), (v); 685.209(b)(3), (f)(5))
+#   joint filers whose spouse has eligible loans: x own share of the couple's
+#     eligible balance, min $10 again (685.209(e)(2)(i), (g)(3)(i))
+#   capped at the balance left to repay ((q)(4)(B)(iii)), with payments earlier
+#     in the year (from July 2026 on) counted against the balance.
+
+- name: Case 1, AGI 10,000 gives the low-income base payment over 12 months.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+  output:
+    # 120 / 12 = 10.
+    repayment_assistance_plan_payment: 10
+
+- name: Case 2, AGI 10,001 falls under the minimum, so the payment is 10 dollars.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_001
+  output:
+    # 1% x 10,001 = 100.01 / 12 = 8.33 -> minimum 10.
+    repayment_assistance_plan_payment: 10
+
+- name: Case 3, AGI exactly 20,000 is in the 1 percent bracket.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 20_000
+  output:
+    # 1% x 20,000 = 200 / 12 = 16.6667.
+    repayment_assistance_plan_payment: 16.67
+
+- name: Case 4, AGI 20,001 is in the 2 percent bracket.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 20_001
+  output:
+    # 2% x 20,001 = 400.02 / 12 = 33.335 exactly (the issue rounds to 33.34).
+    repayment_assistance_plan_payment: 33.335
+
+- name: Case 5, AGI 55,000 with no dependents is in the 5 percent bracket.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 55_000
+  output:
+    # 5% x 55,000 = 2,750 / 12 = 229.1667.
+    repayment_assistance_plan_payment: 229.17
+
+- name: Case 6, head of household with two dependents.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+      person2:
+        age: 8
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 55_000
+  output:
+    # 229.1667 - 2 x 50 = 129.1667; the children owe nothing.
+    repayment_assistance_plan_payment: [129.17, 0, 0]
+
+- name: Case 7, three dependents take the payment to the 10 dollar minimum.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+      person2:
+        age: 10
+      person3:
+        age: 8
+      person4:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 30_000
+  output:
+    # 2% x 30,000 = 600 / 12 = 50; 50 - 3 x 50 = -100 -> minimum 10.
+    repayment_assistance_plan_payment: [10, 0, 0, 0]
+
+- name: Case 8, joint filers in the top bracket with one borrowing spouse.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        federal_student_loan_balance: 60_000
+      person2:
+        age: 44
+      person3:
+        age: 12
+      person4:
+        age: 9
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: JOINT
+        adjusted_gross_income: 120_000
+  output:
+    # 10% x 120,000 = 12,000 / 12 = 1,000; 1,000 - 2 x 50 = 900. The spouse has
+    # no eligible loans, so person1 has the full share.
+    repayment_assistance_plan_payment: [900, 0, 0, 0]
+
+- name: Case 9, married filing separately excludes the spouse's income.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 30_000
+      person2:
+        age: 40
+    # PolicyEngine models separate returns as separate tax units, so each
+    # unit's AGI is the filer's own ((q)(4)(A); 685.209(e)(1)(i)(A)).
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 40_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+        adjusted_gross_income: 80_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    # 3% x 40,000 = 1,200 / 12 = 100.
+    repayment_assistance_plan_payment: [100, 0]
+
+- name: Case 10, joint filers who both borrowed split the payment by balance.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 30_000
+      person2:
+        age: 38
+        federal_student_loan_balance: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 80_000
+  output:
+    # 7% x 80,000 ("not more than $80,000") = 5,600 / 12 = 466.6667.
+    # Shares 30,000 / 40,000 = 75% and 10,000 / 40,000 = 25%:
+    # 466.6667 x 0.75 = 350; 466.6667 x 0.25 = 116.6667.
+    repayment_assistance_plan_applicable_monthly_payment: 466.67
+    repayment_assistance_plan_payment: [350, 116.67]
+
+- name: Case 11, a balance below the monthly payment is the final payment.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 150
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 55_000
+  output:
+    # min(229.1667, 150) = 150 ((q)(4)(B)(iii)).
+    repayment_assistance_plan_payment: 150
+
+- name: Case 12, a borrower with only Parent PLUS loans owes nothing under the plan.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_student_loan_balance: 0
+        federal_parent_plus_loan_balance: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 55_000
+  output:
+    # Excepted loans are not repaid under the plan ((d)(1)(F)(i); 685.209(d)(4)).
+    repayment_assistance_plan_payment: 0
+
+- name: Case 13, payments start in July 2026 and the 2026 total sums six months.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 55_000
+  output:
+    # 229.1667 per month from July; 6 x 229.1667 = 1,375.
+    repayment_assistance_plan_payment:
+      2026-01: 0
+      2026-06: 0
+      2026-07: 229.17
+      2026-12: 229.17
+      2026: 1_375
+
+- name: Case 14, payments within a year stop once they add up to the balance.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 55_000
+  output:
+    # m = 229.1667. January and February pay m; March pays what is left,
+    # 500 - 2 x 229.1667 = 41.6667; later months pay 0. The year totals 500.
+    repayment_assistance_plan_payment:
+      2027-01: 229.17
+      2027-02: 229.17
+      2027-03: 41.67
+      2027-04: 0
+      2027-12: 0
+      2027: 500
+
+- name: Case 15, the 2026 balance cap counts months from the July start.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 300
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 55_000
+  output:
+    # July pays m = 229.1667; August pays 300 - 229.1667 = 70.8333; then 0.
+    repayment_assistance_plan_payment:
+      2026-06: 0
+      2026-07: 229.17
+      2026-08: 70.83
+      2026-09: 0
+      2026: 300
+
+- name: Case 16, a prorated payment below 10 dollars rises to the minimum.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 38_000
+      person2:
+        age: 38
+        federal_student_loan_balance: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 30_000
+  output:
+    # 2% x 30,000 = 600 / 12 = 50. Shares 95% and 5%: 47.50 and 2.50; the
+    # second is raised to 10 (685.209(g)(3)(i)(B)).
+    repayment_assistance_plan_payment: [47.5, 10]
+
+- name: Case 17, the final payment can be below the 10 dollar minimum.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 5
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+  output:
+    # 120 / 12 = 10, but only 5 is left to repay ((q)(4)(B)(iii);
+    # 685.209(g)(3)(ii) "except that the final payment may be less than $10").
+    repayment_assistance_plan_payment: 5
+
+- name: Case 18, a tax dependent with a loan balance owes nothing.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        federal_student_loan_balance: 20_000
+      person2:
+        # A college student claimed as the parent's dependent.
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        federal_student_loan_balance: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 90_000
+  output:
+    # 8% x 90,000 = 7,200 / 12 = 600; 600 - 1 x 50 = 550. The dependent's own
+    # balance neither makes them a borrower nor dilutes the parent's share.
+    repayment_assistance_plan_applicable_monthly_payment: 550
+    repayment_assistance_plan_payment: [550, 0]
+
+- name: Case 19, a parent whose only borrower is a tax dependent owes nothing.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        # A college student claimed as the parent's dependent.
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        federal_student_loan_balance: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 90_000
+  output:
+    repayment_assistance_plan_applicable_monthly_payment: 0
+    repayment_assistance_plan_payment: [0, 0]

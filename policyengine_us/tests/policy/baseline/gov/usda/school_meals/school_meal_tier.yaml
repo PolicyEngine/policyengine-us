@@ -143,3 +143,890 @@
         state_code: NC
   output:
     school_meal_tier: PAID
+
+# Reduced-price copay coverage by jurisdiction and calendar year, at 180% of
+# FPG (the reduced-price band) with no categorical eligibility. Annual periods
+# read parameters on January 1, so coverage that starts or ends between July 1
+# and December 31 first changes the next calendar year. Every case lists:
+# AR, AZ, CT, DC, DE, GA, HI, LA, MD, NE, NJ, NM, OH, PA, RI, SC, SD, TX, WA,
+# VA and FL. GA (left out for now) and VA are intentionally not covered, and
+# FL has no coverage.
+# Calendar 2010 cannot be tested: the federal income limits start 2011-01-01.
+
+# DC: D.C. Law 18-209, Title II applies from 2010-08-01.
+- name: Only the District of Columbia covers the reduced-price copay in 2011.
+  period: 2011
+  input:
+    state_code: [AR, AZ, CT, DC, DE, GA, HI, LA, MD, NE, NJ, NM, OH, PA, RI, SC, SD, TX, WA, VA, FL]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [REDUCED, REDUCED, REDUCED, FREE, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+
+# NJ (2020-07-19) and NM (2020-07-01) start after January 1, 2020. Outside
+# this matrix, OR, VT, MN, NY, ME and CO also cover both copays in 2020 (see
+# the Oregon and pre-universal cases below).
+- name: Only the District of Columbia covers the reduced-price copay in 2020 among the jurisdictions in this matrix.
+  period: 2020
+  input:
+    state_code: [AR, AZ, CT, DC, DE, GA, HI, LA, MD, NE, NJ, NM, OH, PA, RI, SC, SD, TX, WA, VA, FL]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [REDUCED, REDUCED, REDUCED, FREE, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+
+# NJ: P.L.2019, c.445; NM: HB 10 (2020). WA starts 2021-07-01.
+- name: New Jersey and New Mexico cover the reduced-price copay from 2021.
+  period: 2021
+  input:
+    state_code: [AR, AZ, CT, DC, DE, GA, HI, LA, MD, NE, NJ, NM, OH, PA, RI, SC, SD, TX, WA, VA, FL]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [REDUCED, REDUCED, REDUCED, FREE, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, FREE, FREE, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+
+# WA: RCW 28A.235.160(7) and the budget breakfast proviso, from 2021-07-01.
+# MD starts 2022-07-01.
+- name: Washington covers the reduced-price copay from 2022.
+  period: 2022
+  input:
+    state_code: [AR, AZ, CT, DC, DE, GA, HI, LA, MD, NE, NJ, NM, OH, PA, RI, SC, SD, TX, WA, VA, FL]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [REDUCED, REDUCED, REDUCED, FREE, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, FREE, FREE, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, FREE, REDUCED, REDUCED]
+
+# AZ: ESSER-funded coverage from 2023-01-01, so January 1, 2023 is covered.
+# MD: Educ. section 7-602(e)(2), from FY2023 (2022-07-01).
+# CT: SMART funds made meals universal for SY 2022-23 (from 2022-07-01).
+# AR (2023-08-01), LA, OH and PA start in SY 2023-24.
+- name: Arizona and Maryland cover the reduced-price copay, and Connecticut has universal free meals, in 2023.
+  period: 2023
+  input:
+    state_code: [AR, AZ, CT, DC, DE, GA, HI, LA, MD, NE, NJ, NM, OH, PA, RI, SC, SD, TX, WA, VA, FL]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [REDUCED, FREE, FREE, FREE, REDUCED, REDUCED, REDUCED, REDUCED, FREE, REDUCED, FREE, FREE, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, FREE, REDUCED, REDUCED]
+
+# AR from 2023-08-01; LA and PA from 2023-07-01; OH from 2023-10-03; CT
+# STABLE for SY 2023-24. DE, RI and SC start 2024-07-01.
+- name: Arkansas, Connecticut, Louisiana, Ohio and Pennsylvania cover the reduced-price copay from 2024.
+  period: 2024
+  input:
+    state_code: [AR, AZ, CT, DC, DE, GA, HI, LA, MD, NE, NJ, NM, OH, PA, RI, SC, SD, TX, WA, VA, FL]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [FREE, FREE, FREE, FREE, REDUCED, REDUCED, REDUCED, FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, REDUCED, REDUCED, REDUCED, REDUCED, FREE, REDUCED, REDUCED]
+
+# DE, RI and SC from 2024-07-01; CT STAR for SY 2024-25.
+# HI (2025-07-01) and TX (2025-09-01) start later in 2025.
+- name: Delaware, Rhode Island and South Carolina cover the reduced-price copay from 2025.
+  period: 2025
+  input:
+    state_code: [AR, AZ, CT, DC, DE, GA, HI, LA, MD, NE, NJ, NM, OH, PA, RI, SC, SD, TX, WA, VA, FL]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [FREE, FREE, FREE, FREE, FREE, REDUCED, REDUCED, FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, FREE, FREE, REDUCED, REDUCED, FREE, REDUCED, REDUCED]
+
+# HI: Act 139, SLH 2025; TX: GAA 2026-27 riders 29 and 31. CT had no state
+# funding in SY 2025-26. NE and SD start 2026-07-01.
+- name: Hawaii and Texas cover the reduced-price copay in 2026 while Connecticut does not.
+  period: 2026
+  input:
+    state_code: [AR, AZ, CT, DC, DE, GA, HI, LA, MD, NE, NJ, NM, OH, PA, RI, SC, SD, TX, WA, VA, FL]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [FREE, FREE, REDUCED, FREE, FREE, REDUCED, FREE, FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, FREE, FREE, REDUCED, FREE, FREE, REDUCED, REDUCED]
+
+# CT RISE (SY 2026-27), NE LB966 and SD HB 1082 start 2026-07-01.
+- name: All 18 covered jurisdictions in this matrix give the free tier in 2027, while Georgia, Virginia and Florida do not.
+  period: 2027
+  input:
+    state_code: [AR, AZ, CT, DC, DE, GA, HI, LA, MD, NE, NJ, NM, OH, PA, RI, SC, SD, TX, WA, VA, FL]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [FREE, FREE, FREE, FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, REDUCED, REDUCED]
+
+# Enacted funding ends 2027-07-01 for AZ, CT and SC, and 2027-09-01
+# for TX. WA's breakfast copay proviso ends 2027-06-30, so WA covers only
+# lunch from 2027-07-01 (see school_meal_lunch_tier) and its tier for both
+# meals is REDUCED.
+- name: Budget-funded reduced-price copay coverage ends before 2028.
+  period: 2028
+  input:
+    state_code: [AR, AZ, CT, DC, DE, GA, HI, LA, MD, NE, NJ, NM, OH, PA, RI, SC, SD, TX, WA, VA, FL]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [FREE, REDUCED, REDUCED, FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, REDUCED, FREE, REDUCED, REDUCED, REDUCED, REDUCED]
+
+# NE: LB966 covers school years 2026-27 through 2031-32.
+- name: The Nebraska pilot still covers the reduced-price copay in 2032.
+  period: 2032
+  input:
+    state_code: [AR, AZ, CT, DC, DE, GA, HI, LA, MD, NE, NJ, NM, OH, PA, RI, SC, SD, TX, WA, VA, FL]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [FREE, REDUCED, REDUCED, FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, REDUCED, FREE, REDUCED, REDUCED, REDUCED, REDUCED]
+
+# NE: false from 2032-07-01, after SY 2031-32.
+- name: The Nebraska pilot no longer covers the reduced-price copay in 2033.
+  period: 2033
+  input:
+    state_code: [AR, AZ, CT, DC, DE, GA, HI, LA, MD, NE, NJ, NM, OH, PA, RI, SC, SD, TX, WA, VA, FL]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [FREE, REDUCED, REDUCED, FREE, FREE, REDUCED, FREE, FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, FREE, REDUCED, FREE, REDUCED, REDUCED, REDUCED, REDUCED]
+
+# Oregon Laws 2015, c. 718: reduced-price lunch at no charge from SY 2015-16
+# (2015-07-01), so calendar 2015 reads breakfast-only coverage (Oregon Laws
+# 2009, c. 885; state_covers_reduced_price_copay_breakfast_only) and the tier
+# for both meals stays REDUCED; 2016 reads coverage of both meals.
+- name: Oregon did not cover both reduced-price copays in 2015.
+  period: 2015
+  input:
+    state_code: OR
+    school_meal_fpg_ratio: 1.8
+    meets_school_meal_categorical_eligibility: false
+  output:
+    school_meal_tier: REDUCED
+
+- name: Oregon covers the reduced-price copay from 2016.
+  period: 2016
+  input:
+    state_code: OR
+    school_meal_fpg_ratio: 1.8
+    meets_school_meal_categorical_eligibility: false
+  output:
+    school_meal_tier: FREE
+
+# State free-meal income limits above the federal 130% (gov.usda.school_meals
+# .state_free_income_limit). The tier uses the higher of the federal and state
+# limits; every law is inclusive ("at or below", "not more than").
+# Limits read on January 1 of each calendar year:
+#   NJ: 1.99 in 2024 (from 2023-09-01); 2.24 in 2025-2027 (from 2024-07-01);
+#       none from 2028 (lunch funding ends 2027-06-30; breakfast continues in
+#       state_free_income_limit_breakfast_only).
+#   ND: 2.00 in 2024-2025 (from 2023-07-01); 2.25 in 2026-2027 (from
+#       2025-07-01); none from 2028 (biennium ends 2027-06-30).
+#   OR: 3.00 from 2022 (from 2021-07-01).
+#   HI: 3.00 from 2027 (from 2026-07-01).
+# Each case repeats NJ, ND, OR, HI and FL (no state limit) once per ratio.
+
+# OR's 300% limit starts 2021-07-01, so 2.90 is above 185% and PAID everywhere.
+- name: No state free-meal income limit applies in 2021.
+  period: 2021
+  input:
+    state_code: [NJ, ND, OR, HI, FL]
+    school_meal_fpg_ratio: [2.9, 2.9, 2.9, 2.9, 2.9]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false]
+  output:
+    school_meal_tier: [PAID, PAID, PAID, PAID, PAID]
+
+# 3.00 <= OR 3.00 is FREE; the other states have no limit above 185%.
+- name: Oregon's 300% free-meal income limit applies from 2022.
+  period: 2022
+  input:
+    state_code: [NJ, ND, OR, HI, FL]
+    school_meal_fpg_ratio: [3.0, 3.0, 3.0, 3.0, 3.0]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false]
+  output:
+    school_meal_tier: [PAID, PAID, FREE, PAID, PAID]
+
+# First five at 190%: only OR (3.00) is FREE; NJ (2023-09-01) and ND
+# (2023-07-01) start in 2024. Last five at 180%: NJ is FREE through its
+# reduced-price copay coverage, OR through both its 2015 copay coverage and
+# its 300% limit, and ND, HI and FL stay REDUCED.
+- name: Only Oregon's free-meal income limit applies in 2023.
+  period: 2023
+  input:
+    state_code: [NJ, ND, OR, HI, FL, NJ, ND, OR, HI, FL]
+    school_meal_fpg_ratio: [1.9, 1.9, 1.9, 1.9, 1.9, 1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [PAID, PAID, FREE, PAID, PAID, FREE, REDUCED, FREE, REDUCED, REDUCED]
+
+# First five at 198%: 1.98 <= NJ 1.99 and ND 2.00. Last five at 200%:
+# 2.00 > NJ 1.99 is PAID; 2.00 <= ND 2.00 is FREE at the limit.
+- name: New Jersey's 199% and North Dakota's 200% free-meal income limits apply in 2024.
+  period: 2024
+  input:
+    state_code: [NJ, ND, OR, HI, FL, NJ, ND, OR, HI, FL]
+    school_meal_fpg_ratio: [1.98, 1.98, 1.98, 1.98, 1.98, 2.0, 2.0, 2.0, 2.0, 2.0]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [FREE, FREE, FREE, PAID, PAID, PAID, FREE, FREE, PAID, PAID]
+
+# First five at 223%: 2.23 <= NJ 2.24 is FREE; ND stays at 2.00 until
+# 2025-07-01, so it is PAID. Last five at 225%: above NJ's 2.24.
+- name: New Jersey's 224% free-meal income limit applies from 2025.
+  period: 2025
+  input:
+    state_code: [NJ, ND, OR, HI, FL, NJ, ND, OR, HI, FL]
+    school_meal_fpg_ratio: [2.23, 2.23, 2.23, 2.23, 2.23, 2.25, 2.25, 2.25, 2.25, 2.25]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [FREE, PAID, FREE, PAID, PAID, PAID, PAID, FREE, PAID, PAID]
+
+# First five at 225%: 2.25 <= ND 2.25 is FREE at the limit; above NJ's
+# 2.24. Last five at 250%: only OR (3.00) is FREE; HI's 300% limit starts
+# 2026-07-01.
+- name: North Dakota's 225% free-meal income limit applies from 2026.
+  period: 2026
+  input:
+    state_code: [NJ, ND, OR, HI, FL, NJ, ND, OR, HI, FL]
+    school_meal_fpg_ratio: [2.25, 2.25, 2.25, 2.25, 2.25, 2.5, 2.5, 2.5, 2.5, 2.5]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [PAID, FREE, FREE, PAID, PAID, PAID, PAID, FREE, PAID, PAID]
+
+# First five at 225%: ND's 2.25 still applies in its biennium's last
+# calendar year; HI is FREE. Middle five at 300%: at the OR and HI 3.00
+# limits. Last five at 301%: above every limit.
+- name: Hawaii's 300% free-meal income limit applies from 2027.
+  period: 2027
+  input:
+    state_code: [NJ, ND, OR, HI, FL, NJ, ND, OR, HI, FL, NJ, ND, OR, HI, FL]
+    school_meal_fpg_ratio: [2.25, 2.25, 2.25, 2.25, 2.25, 3.0, 3.0, 3.0, 3.0, 3.0, 3.01, 3.01, 3.01, 3.01, 3.01]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [PAID, FREE, FREE, FREE, PAID, PAID, PAID, FREE, FREE, PAID, PAID, PAID, PAID, PAID, PAID]
+
+# First five at 200%: ND is PAID with no state limit after 2027-06-30, and
+# New Jersey's limit for both meals ends with its FY2027 lunch funding, so NJ
+# is PAID too (its 224% breakfast-only limit applies in
+# school_meal_breakfast_tier); OR and HI (3.00) are FREE. Last: ND at 180%
+# returns to REDUCED, since North Dakota has no reduced-price copay coverage.
+- name: North Dakota's and New Jersey's free-meal income limits for both meals end after 2027.
+  period: 2028
+  input:
+    state_code: [NJ, ND, OR, HI, FL, ND]
+    school_meal_fpg_ratio: [2.0, 2.0, 2.0, 2.0, 2.0, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false]
+  output:
+    school_meal_tier: [PAID, PAID, FREE, FREE, PAID, REDUCED]
+
+# Exactly at New Jersey's limits. 1.99 and 2.24 have no exact binary
+# representation, so these cases also check that the comparison is inclusive
+# at the stored precision of school_meal_fpg_ratio.
+- name: New Jersey students exactly at the 199% free-meal income limit are free in 2024.
+  period: 2024
+  input:
+    state_code: NJ
+    school_meal_fpg_ratio: 1.99
+    meets_school_meal_categorical_eligibility: false
+  output:
+    school_meal_tier: FREE
+
+- name: New Jersey students exactly at the 224% free-meal income limit are free in 2025.
+  period: 2025
+  input:
+    state_code: NJ
+    school_meal_fpg_ratio: 2.24
+    meets_school_meal_categorical_eligibility: false
+  output:
+    school_meal_tier: FREE
+
+# Household boundaries: one adult and one child, no categorical eligibility.
+# 2025 guideline for two people: 15,650 + 5,500 = 21,150.
+# NJ limit: 2.24 * 21,150 = 47,376.
+- name: New Jersey household exactly at 224% of FPG is free in 2025.
+  period: 2025
+  input:
+    people:
+      person1: {age: 35, employment_income_before_lsr: 47_376}
+      person2: {age: 10}
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    school_meal_tier: FREE
+
+# 47,377 / 21,150 = 2.24005, above 2.24 and above the 185% reduced-price limit.
+- name: New Jersey household one dollar above 224% of FPG pays full price in 2025.
+  period: 2025
+  input:
+    people:
+      person1: {age: 35, employment_income_before_lsr: 47_377}
+      person2: {age: 10}
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    school_meal_tier: PAID
+
+# 2024 guideline for two people: 15,060 + 5,380 = 20,440.
+# NJ limit: 1.99 * 20,440 = 40,675.60, so 40,675 / 20,440 = 1.98997 is free.
+- name: New Jersey household just under 199% of FPG is free in 2024.
+  period: 2024
+  input:
+    people:
+      person1: {age: 35, employment_income_before_lsr: 40_675}
+      person2: {age: 10}
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    school_meal_tier: FREE
+
+# 40,676 / 20,440 = 1.99002, above 1.99.
+- name: New Jersey household just over 199% of FPG pays full price in 2024.
+  period: 2024
+  input:
+    people:
+      person1: {age: 35, employment_income_before_lsr: 40_676}
+      person2: {age: 10}
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    school_meal_tier: PAID
+
+# ND limit: 2.00 * 20,440 = 40,880.
+- name: North Dakota household exactly at 200% of FPG is free in 2024.
+  period: 2024
+  input:
+    people:
+      person1: {age: 35, employment_income_before_lsr: 40_880}
+      person2: {age: 10}
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    school_meal_tier: FREE
+
+# 40,881 / 20,440 = 2.00005, above 2.00.
+- name: North Dakota household one dollar above 200% of FPG pays full price in 2024.
+  period: 2024
+  input:
+    people:
+      person1: {age: 35, employment_income_before_lsr: 40_881}
+      person2: {age: 10}
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    school_meal_tier: PAID
+
+# 2026 guideline for two people: 15,960 + 5,680 = 21,640.
+# ND limit: 2.25 * 21,640 = 48,690.
+- name: North Dakota household exactly at 225% of FPG is free in 2026.
+  period: 2026
+  input:
+    people:
+      person1: {age: 35, employment_income_before_lsr: 48_690}
+      person2: {age: 10}
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    school_meal_tier: FREE
+
+# 48,691 / 21,640 = 2.25005, above 2.25.
+- name: North Dakota household one dollar above 225% of FPG pays full price in 2026.
+  period: 2026
+  input:
+    people:
+      person1: {age: 35, employment_income_before_lsr: 48_691}
+      person2: {age: 10}
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    school_meal_tier: PAID
+
+# OR limit: 3.00 * 21,640 = 64,920.
+- name: Oregon household exactly at 300% of FPG is free in 2026.
+  period: 2026
+  input:
+    people:
+      person1: {age: 35, employment_income_before_lsr: 64_920}
+      person2: {age: 10}
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    school_meal_tier: FREE
+
+# 64,921 / 21,640 = 3.00005, above 3.00.
+- name: Oregon household one dollar above 300% of FPG pays full price in 2026.
+  period: 2026
+  input:
+    people:
+      person1: {age: 35, employment_income_before_lsr: 64_921}
+      person2: {age: 10}
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    school_meal_tier: PAID
+
+# Categorical eligibility still gives the free tier above every income limit.
+- name: Categorical eligibility gives a New Jersey household at 300% of FPG the free tier in 2025.
+  period: 2025
+  input:
+    state_code: NJ
+    school_meal_fpg_ratio: 3
+    meets_school_meal_categorical_eligibility: true
+  output:
+    school_meal_tier: FREE
+
+# Universal free breakfast (AR, DE, DC, PA at 300% of FPG) and single-meal
+# copay coverage (NH breakfast, UT lunch at 180%) apply only in
+# school_meal_breakfast_tier and school_meal_lunch_tier.
+- name: Single-meal state policies leave the tier for both meals unchanged in 2026.
+  period: 2026
+  input:
+    state_code: [AR, DE, DC, PA, NH, UT]
+    school_meal_fpg_ratio: [3, 3, 3, 3, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false]
+  output:
+    school_meal_tier: [PAID, PAID, PAID, PAID, REDUCED, REDUCED]
+
+# Edge cases at the federal and state income cutoffs, with no categorical
+# eligibility. One-person SPM units keep the guideline arithmetic simple; the
+# tier does not depend on the number of children.
+
+# Calendar 2026 guideline for one person: 15,960. Florida has no state policy
+# (state free-meal limit 0), so the federal limits apply at the dollar:
+# 1.30 * 15,960 = 20,748 and 1.85 * 15,960 = 29,526.
+#   20,747 (1.29994) and 20,748 (1.30) are FREE; 20,749 (1.30006) is REDUCED.
+#   29,526 (1.85) is REDUCED; 29,527 (1.85006) is PAID.
+# North Dakota's 225% limit (no reduced-price copay coverage) replaces both
+# federal cutoffs, so 20,749 and 29,527 are FREE there.
+- name: Federal 130% and 185% cutoffs apply at the dollar in Florida, while North Dakota's 225% limit replaces both in 2026.
+  period: 2026
+  input:
+    state_code: [FL, FL, FL, FL, FL, ND, ND]
+    school_meal_countable_income: [20_747, 20_748, 20_749, 29_526, 29_527, 20_749, 29_527]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [FREE, FREE, REDUCED, REDUCED, PAID, FREE, FREE]
+
+# Alaska and Hawaii households are measured against their own guidelines.
+# 2026 guidelines for one person: AK 19,950; HI 18,360; contiguous 15,960.
+# AK: 1.30 * 19,950 = 25,935 is FREE; 25,936 is REDUCED. The same 25,935 in
+#   Florida is 25,935 / 15,960 = 1.625, REDUCED.
+# HI covers the reduced-price copay from 2025-07-01, so 1.30 * 18,360 =
+#   23,868, 23,869 and exactly 1.85 * 18,360 = 33,966 are FREE; 33,967 is
+#   PAID. HI's 300% limit starts 2026-07-01, so 3 * 18,360 = 55,080 is still
+#   PAID in calendar 2026.
+- name: Alaska and Hawaii households meet the federal cutoffs on their own guidelines in 2026.
+  period: 2026
+  input:
+    state_code: [AK, AK, FL, HI, HI, HI, HI, HI]
+    school_meal_countable_income: [25_935, 25_936, 25_935, 23_868, 23_869, 33_966, 33_967, 55_080]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false]
+  output:
+    spm_unit_fpg: [19_950, 19_950, 15_960, 18_360, 18_360, 18_360, 18_360, 18_360]
+    school_meal_tier: [FREE, REDUCED, REDUCED, FREE, FREE, FREE, PAID, PAID]
+
+# New Jersey in 2026, with countable income set on four-person SPM units of
+# one adult and three children. 2026 guideline for four people:
+# 15,960 + 3 * 5,680 = 33,000; NJ limit 2.24 * 33,000 = 73,920.
+# 73,919 / 33,000 = 2.23997 and 73,920 / 33,000 = 2.24 are FREE;
+# 73,921 / 33,000 = 2.24003 is PAID.
+- name: New Jersey households of four one dollar below, at and one dollar above 224% of FPG in 2026.
+  period: 2026
+  input:
+    people:
+      person1: {age: 35}
+      person2: {age: 6}
+      person3: {age: 9}
+      person4: {age: 12}
+      person5: {age: 35}
+      person6: {age: 6}
+      person7: {age: 9}
+      person8: {age: 12}
+      person9: {age: 35}
+      person10: {age: 6}
+      person11: {age: 9}
+      person12: {age: 12}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4]
+        school_meal_countable_income: 73_919
+        meets_school_meal_categorical_eligibility: false
+      spm_unit2:
+        members: [person5, person6, person7, person8]
+        school_meal_countable_income: 73_920
+        meets_school_meal_categorical_eligibility: false
+      spm_unit3:
+        members: [person9, person10, person11, person12]
+        school_meal_countable_income: 73_921
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household1:
+        members: [person1, person2, person3, person4]
+        state_code: NJ
+      household2:
+        members: [person5, person6, person7, person8]
+        state_code: NJ
+      household3:
+        members: [person9, person10, person11, person12]
+        state_code: NJ
+  output:
+    spm_unit_fpg: [33_000, 33_000, 33_000]
+    school_meal_tier: [FREE, FREE, PAID]
+
+# North Dakota still has its 200% limit on January 1, 2025 (225% from
+# 2025-07-01). 2025 guideline for one person: 15,650; 2.00 * 15,650 = 31,300.
+# 31,299 and 31,300 are FREE; 31,301 / 15,650 = 2.00006 is PAID. The same
+# 31,301 is FREE in New Jersey (224% in 2025).
+- name: North Dakota one dollar below, at and one dollar above 200% of FPG in 2025.
+  period: 2025
+  input:
+    state_code: [ND, ND, ND, NJ]
+    school_meal_countable_income: [31_299, 31_300, 31_301, 31_301]
+    meets_school_meal_categorical_eligibility: [false, false, false, false]
+  output:
+    school_meal_tier: [FREE, FREE, PAID, FREE]
+
+# Oregon's 300% limit first applies in calendar 2022 (from 2021-07-01).
+# 2022 guideline for one person: 13,590; 3 * 13,590 = 40,770.
+# 40,769 and 40,770 are FREE; 40,771 / 13,590 = 3.00007 is PAID.
+- name: Oregon one dollar below, at and one dollar above 300% of FPG in 2022, its first year.
+  period: 2022
+  input:
+    state_code: [OR, OR, OR]
+    school_meal_countable_income: [40_769, 40_770, 40_771]
+    meets_school_meal_categorical_eligibility: [false, false, false]
+  output:
+    school_meal_tier: [FREE, FREE, PAID]
+
+# Calendar 2027 uses a projected guideline, so these cases set the ratio
+# within 0.0001 of each limit: NJ 2.24; ND 2.25 (the last calendar year of its
+# 2025-27 biennium); HI 3.00 (its first calendar year).
+- name: Ratios just below, at and just above the New Jersey, North Dakota and Hawaii limits in 2027.
+  period: 2027
+  input:
+    state_code: [NJ, NJ, NJ, ND, ND, ND, HI, HI, HI]
+    school_meal_fpg_ratio: [2.2399, 2.24, 2.2401, 2.2499, 2.25, 2.2501, 2.9999, 3.0, 3.0001]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [FREE, FREE, PAID, FREE, FREE, PAID, FREE, FREE, PAID]
+
+# Nevada's State ARPA universal meals ran 2022-07-01 to 2024-06-30. Calendar
+# 2024 is still universal; from 2025 Nevada returns to the federal tiers, since
+# it has no reduced-price copay coverage or income limit.
+- name: Nevada universal free meals give the free tier in the reduced-price band and above 185% of FPG in 2024.
+  period: 2024
+  input:
+    state_code: [NV, NV]
+    school_meal_fpg_ratio: [1.8, 3]
+    meets_school_meal_categorical_eligibility: [false, false]
+  output:
+    school_meal_tier: [FREE, FREE]
+
+- name: Nevada returns to the federal tiers in 2025 after universal free meals end.
+  period: 2025
+  input:
+    state_code: [NV, NV, NV, NV]
+    school_meal_fpg_ratio: [1.3, 1.3001, 1.8, 3]
+    meets_school_meal_categorical_eligibility: [false, false, false, false]
+  output:
+    school_meal_tier: [FREE, REDUCED, REDUCED, PAID]
+
+# New Jersey's 199% limit applies on January 1, 2024 (from 2023-09-01).
+# 2024 guideline for four people: 15,060 + 3 * 5,380 = 31,200;
+# 1.99 * 31,200 = 62,088, so the computed ratio lands exactly on the limit,
+# which float32 cannot store exactly. 62,087 / 31,200 = 1.98997 and
+# 62,088 / 31,200 = 1.99 are FREE; 62,089 / 31,200 = 1.99003 is PAID.
+- name: New Jersey households of four one dollar below, at and one dollar above 199% of FPG in 2024.
+  period: 2024
+  input:
+    people:
+      person1: {age: 35}
+      person2: {age: 6}
+      person3: {age: 9}
+      person4: {age: 12}
+      person5: {age: 35}
+      person6: {age: 6}
+      person7: {age: 9}
+      person8: {age: 12}
+      person9: {age: 35}
+      person10: {age: 6}
+      person11: {age: 9}
+      person12: {age: 12}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4]
+        school_meal_countable_income: 62_087
+        meets_school_meal_categorical_eligibility: false
+      spm_unit2:
+        members: [person5, person6, person7, person8]
+        school_meal_countable_income: 62_088
+        meets_school_meal_categorical_eligibility: false
+      spm_unit3:
+        members: [person9, person10, person11, person12]
+        school_meal_countable_income: 62_089
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household1:
+        members: [person1, person2, person3, person4]
+        state_code: NJ
+      household2:
+        members: [person5, person6, person7, person8]
+        state_code: NJ
+      household3:
+        members: [person9, person10, person11, person12]
+        state_code: NJ
+  output:
+    spm_unit_fpg: [31_200, 31_200, 31_200]
+    school_meal_tier: [FREE, FREE, PAID]
+
+# Users can override the universal free meals flag, for example for a school
+# outside the state program. FL with the flag on is FREE for both meals at
+# 300% of FPG. CA with the flag off falls back to income (300% is PAID); CA
+# has no universal free breakfast, copay coverage or breakfast-only income
+# limit, so both meals are PAID.
+- name: The universal free meals flag can be overridden in both directions in 2026.
+  period: 2026
+  input:
+    state_code: [FL, CA]
+    school_meal_fpg_ratio: [3, 3]
+    meets_school_meal_categorical_eligibility: [false, false]
+    state_has_universal_free_school_meals: [true, false]
+  output:
+    school_meal_tier: [FREE, PAID]
+    school_meal_breakfast_tier: [FREE, PAID]
+    school_meal_lunch_tier: [FREE, PAID]
+
+# Reduced-price copay coverage that predates universal meals, at 180% of FPG
+# with no categorical eligibility. Every case lists NY, CO, MN, ME and VT.
+# Both meals from: VT 2013-07-01 (Act 50 of 2013), MN 2014-07-01 (Laws 2014,
+# c. 312, art. 19), NY 2019-07-01 (Aid to Localities appropriations), ME
+# 2019-07-01 (P.L. 2019, c. 343), CO 2019-08-02 (HB 19-1171). Universal meals
+# from: ME and VT 2022-07-01, CO and MN 2023-07-01, NY 2025-07-01.
+- name: None of these states covers both reduced-price copays in 2013.
+  period: 2013
+  input:
+    state_code: [NY, CO, MN, ME, VT]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false]
+  output:
+    school_meal_tier: [REDUCED, REDUCED, REDUCED, REDUCED, REDUCED]
+
+# VT's 2013-07-01 start first applies on January 1, 2014.
+- name: Vermont covers both reduced-price copays from 2014.
+  period: 2014
+  input:
+    state_code: [NY, CO, MN, ME, VT]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false]
+  output:
+    school_meal_tier: [REDUCED, REDUCED, REDUCED, REDUCED, FREE]
+
+# MN's 2014-07-01 start first applies on January 1, 2015.
+- name: Minnesota covers both reduced-price copays from 2015.
+  period: 2015
+  input:
+    state_code: [NY, CO, MN, ME, VT]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false]
+  output:
+    school_meal_tier: [REDUCED, REDUCED, FREE, REDUCED, FREE]
+
+# The NY, ME (2019-07-01) and CO (2019-08-02) starts come after
+# January 1, 2019.
+- name: New York, Colorado and Maine still charge reduced-price students in 2019.
+  period: 2019
+  input:
+    state_code: [NY, CO, MN, ME, VT]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false]
+  output:
+    school_meal_tier: [REDUCED, REDUCED, FREE, REDUCED, FREE]
+
+# First calendar year of the NY, CO and ME starts.
+- name: New York, Colorado and Maine cover both reduced-price copays from 2020.
+  period: 2020
+  input:
+    state_code: [NY, CO, MN, ME, VT]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false]
+  output:
+    school_meal_tier: [FREE, FREE, FREE, FREE, FREE]
+
+# NY's Aid to Localities act funds the reduced-price copay one school year at
+# a time. The SY 2020-21 and SY 2021-22 entries (2020-07-01 and 2021-07-01)
+# are read on January 1, 2021 and January 1, 2022.
+- name: New York covers reduced-price students in 2021.
+  period: 2021
+  input:
+    state_code: NY
+    school_meal_fpg_ratio: 1.8
+    meets_school_meal_categorical_eligibility: false
+  output:
+    school_meal_tier: FREE
+
+- name: New York covers reduced-price students in 2022.
+  period: 2022
+  input:
+    state_code: NY
+    school_meal_fpg_ratio: 1.8
+    meets_school_meal_categorical_eligibility: false
+  output:
+    school_meal_tier: FREE
+
+# CO and MN universal meals start 2023-07-01, so 300% of FPG is still
+# PAID there in 2023 while 180% is FREE through copay coverage. ME and VT
+# are universal by then.
+- name: Colorado and Minnesota cover reduced-price students in 2023, before universal meals.
+  period: 2023
+  input:
+    state_code: [NY, CO, MN, ME, VT, CO, MN]
+    school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 3, 3]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [FREE, FREE, FREE, FREE, FREE, PAID, PAID]
+
+# NY's SY 2023-24 entry (2023-07-01) is read on January 1, 2024.
+- name: New York covers reduced-price students in 2024.
+  period: 2024
+  input:
+    state_code: NY
+    school_meal_fpg_ratio: 1.8
+    meets_school_meal_categorical_eligibility: false
+  output:
+    school_meal_tier: FREE
+
+# NY's last reduced-price appropriation funds SY 2024-25; universal
+# meals (Education Law section 915-a) start 2025-07-01.
+- name: New York covers reduced-price students in 2025, before universal meals.
+  period: 2025
+  input:
+    state_code: [NY, NY]
+    school_meal_fpg_ratio: [1.8, 3]
+    meets_school_meal_categorical_eligibility: [false, false]
+  output:
+    school_meal_tier: [FREE, PAID]
+
+# The year after NY's copay coverage ends (2025-07-01). With the
+# universal flag overridden to false, reduced-price students are REDUCED
+# again.
+- name: New York reduced-price students rely on universal meals from 2026.
+  period: 2026
+  input:
+    state_code: [NY, NY]
+    school_meal_fpg_ratio: [1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false]
+    state_has_universal_free_school_meals: [true, false]
+  output:
+    school_meal_tier: [FREE, REDUCED]
+
+# Universal free meal dates at the tier level, at 300% of FPG (above every
+# income limit) with no categorical eligibility, asserting all three tiers as
+# the override case above does. 180% shows copay coverage for contrast.
+# ME universal meals (2022-07-01, when the program took effect), PA's
+# universal free breakfast (2022-10-01) and CT's SMART universal meals
+# (2022-07-01) all start after January 1, 2022, so all three are PAID.
+- name: Maine, Pennsylvania and Connecticut have no universal free meals or breakfast at 300% of FPG in 2022.
+  period: 2022
+  input:
+    state_code: [ME, PA, CT]
+    school_meal_fpg_ratio: [3, 3, 3]
+    meets_school_meal_categorical_eligibility: [false, false, false]
+  output:
+    school_meal_tier: [PAID, PAID, PAID]
+    school_meal_breakfast_tier: [PAID, PAID, PAID]
+    school_meal_lunch_tier: [PAID, PAID, PAID]
+
+# Read on January 1, 2023: ME and CT have universal free meals, so both
+# meals are FREE. PA has only universal free breakfast, so its tier for both
+# meals and its lunch stay PAID.
+- name: Maine and Connecticut universal free meals and Pennsylvania universal free breakfast apply at 300% of FPG in 2023.
+  period: 2023
+  input:
+    state_code: [ME, PA, CT]
+    school_meal_fpg_ratio: [3, 3, 3]
+    meets_school_meal_categorical_eligibility: [false, false, false]
+  output:
+    school_meal_tier: [FREE, PAID, FREE]
+    school_meal_breakfast_tier: [FREE, FREE, FREE]
+    school_meal_lunch_tier: [FREE, PAID, FREE]
+
+# CT's SMART universal meals end 2023-06-30. STABLE (SY 2023-24) gives
+# universal free breakfast and covers the reduced-price copay, so at 300% only
+# breakfast is FREE, and at 180% both meals are FREE.
+- name: Connecticut has universal free breakfast but no universal free meals in 2024.
+  period: 2024
+  input:
+    state_code: [CT, CT]
+    school_meal_fpg_ratio: [3, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false]
+  output:
+    school_meal_tier: [PAID, FREE]
+    school_meal_breakfast_tier: [FREE, FREE]
+    school_meal_lunch_tier: [PAID, FREE]
+
+# MI universal meals end 2027-10-01 (no enacted allocation after FY2026-27).
+# Michigan has no copay coverage or income limit, so 300% is PAID and 180% is
+# REDUCED for both meals.
+- name: Michigan returns to the federal tiers in 2028 after universal free meals end.
+  period: 2028
+  input:
+    state_code: [MI, MI]
+    school_meal_fpg_ratio: [3, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false]
+  output:
+    school_meal_tier: [PAID, REDUCED]
+    school_meal_breakfast_tier: [PAID, REDUCED]
+    school_meal_lunch_tier: [PAID, REDUCED]
