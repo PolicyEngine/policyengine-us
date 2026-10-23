@@ -1,3 +1,26 @@
+## [2.60.4] - 2026-10-23
+
+### Fixed
+
+- Limit Alabama's and North Carolina's mortgage interest deductions to the federally allowed amount after the 26 U.S.C. 163(h)(3) acquisition-debt limits, and Hawaii's to its own pre-TCJA limits ($1,000,000 of acquisition debt plus $100,000 of home equity debt) under HRS 235-2.4, instead of all interest paid.
+
+
+## [2.60.3] - 2026-10-23
+
+### Fixed
+
+- Deny the qualified tips and overtime deductions to married couples filing separately (26 U.S.C. 224(f) and 225(e)), and reduce each by $100 only for each full $1,000 of modified AGI over the threshold (26 U.S.C. 224(b)(2)(A) and 225(b)(2)(A), as Schedule 1-A lines 11 and 19 compute it), instead of continuously.
+- Subtract Michigan household resources premiums once (MI-1040CR line 31 leaves out the self-employed health insurance deduction on line 30), and exclude the first $300 of gambling winnings and of gifts (MCL 206.510(1)(a) and (b), lines 20 and 24), counting gifts from relatives and friends on line 24.
+- Correct the 2020 Schedule M1M worksheet line cited in the Minnesota Social Security subtraction.
+
+
+## [2.60.2] - 2026-10-23
+
+### Fixed
+
+- Follow the statute where USDA or state practice differs: the amended ABAWD rules apply in Alaska and Hawaii from 2025-07-04 rather than the states' announced 2025-11-01, and the cap on the additional allotment for households of 9 or more applies from FY2026. Use USDA's cost basis before whole-dollar allotment rounding where the source bounds determine the cap, correcting urban Alaska's FY2026 cap to $4,885.
+
+
 ## [2.60.1] - 2026-10-23
 
 ### Changed

@@ -8,6 +8,10 @@ class tip_income_deduction(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "tip_income_deduction_ssn_requirement_met"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/224",
+        "https://www.irs.gov/pub/irs-pdf/f1040s1a.pdf#page=1",
+    )
 
     def formula(tax_unit, period, parameters):
         # Section 224 applies to taxable years beginning after December 31,
@@ -27,8 +31,16 @@ class tip_income_deduction(Variable):
         p = parameters(period).gov.irs.deductions.tip_income
         start = p.phase_out.start[filing_status]
         magi_excess = max_(magi - start, 0)
-        phase_out_amount = magi_excess * p.phase_out.rate
+        # 26 U.S.C. 224(b)(2)(A): $100 for each $1,000 of excess. Schedule
+        # 1-A, line 11, drops any fraction of a $1,000 increment.
+        increments = np.floor(magi_excess / p.phase_out.increment)
+        phase_out_amount = increments * p.phase_out.increment * p.phase_out.rate
         qualified_tip_income = tip_income * occupation_requirement_met
         total_tip_income = tax_unit.sum(qualified_tip_income)
         capped_tip_income = min_(p.cap, total_tip_income)
-        return max_(0, capped_tip_income - phase_out_amount)
+        deduction = max_(0, capped_tip_income - phase_out_amount)
+        # 26 U.S.C. 224(f): a married individual takes the deduction only on
+        # a joint return. Spouses considered unmarried under section 7703(b)
+        # file as head of household and keep it.
+        separate = filing_status == filing_status.possible_values.SEPARATE
+        return where(separate, 0, deduction)

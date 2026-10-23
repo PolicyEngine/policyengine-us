@@ -29,15 +29,20 @@ candidates:
   readings:
     statute: The federal effective date is 2025-07-04.
     other: Alaska applies the changes from 2025-11-01.
-  example: In August 2025, the model applies the changes in Texas but not Alaska.
+  example: In August 2025, PR 10299 applies the changes in Alaska as well as Texas.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ak/dpa/snap/work_requirements/abawd/hr1_in_effect.yaml
+    - policyengine_us/variables/gov/usda/snap/eligibility/work_requirements/is_snap_abawd_hr1_in_effect.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/8861
+    - https://github.com/PolicyEngine/policyengine-us/pull/10299
   state: unreviewed
-  note: 'The statute-first rule requires changing the delayed model date unless waiver authority permits the delay;
-    verify that authority. Code not yet on main: is_snap_abawd_hr1_in_effect, gov.states.ak.dpa.snap.work_requirements.abawd.hr1_in_effect.'
+  note: PR 10299 adopts the July 4, 2025 enactment date, consistent with FNS; the change is in flight. Section 10102
+    has no later effective date. A 7 U.S.C. 2015(o)(7) good-faith exemption requires a state request and a federal
+    determination; none covering July through October 2025 was found. Alaska's separately modeled good-faith window
+    starts November 1, 2025, and its area waivers and retained exceptions are unchanged.
 - id: us-al:federal-tax-deduction-credit-list
   program: income-tax
   years:
@@ -828,6 +833,36 @@ candidates:
   state: unreviewed
   note: 'PE-US follows the handbook; verify the form revision and overlapping effective period. Code not yet on
     main: ca_scc_general_assistance_countable_vehicle_value.'
+- id: us-ca:snap-abawd-implementation-date
+  program: snap
+  years:
+    from: 2025
+    to: 2026
+    type: calendar
+  question: Do the amended SNAP ABAWD rules apply in California from July 4, 2025 or CDSS's June 1, 2026 implementation
+    date?
+  sources:
+  - kind: statute
+    citation: P.L. 119-21 §10102, amending 7 U.S.C. 2015(o)
+    url: https://www.govinfo.gov/content/pkg/PLAW-119publ21/pdf/PLAW-119publ21.pdf#page=11
+  - kind: guidance
+    citation: CDSS All County Letter 25-93
+    url: https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2025/25-93.pdf#page=3
+  readings:
+    statute: Section 10102 has no later effective date; the federal amendments apply from enactment on July 4, 2025.
+    other: ACL 25-93 makes its guidance effective June 1, 2026 to allow automation changes and staff training.
+  example: In September 2025, the California branch leaves HR1 ABAWD changes off while the federal toggle is on.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/usda/snap/eligibility/work_requirements/is_snap_abawd_hr1_in_effect.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10299
+  state: open
+  note: The California branch of is_snap_abawd_hr1_in_effect follows ACL 25-93; changing it is outside PR 10299's
+    scope. The hub follows up on whether USDA approved a 7 U.S.C. 2015(o)(7) good-faith exemption for California.
+    That provision names only Alaska and Hawaii, so any claimed California approval also requires verification
+    of its legal authority.
 - id: us-ca:snap-child-support-exclusion
   program: snap
   years:
@@ -1855,15 +1890,19 @@ candidates:
   readings:
     statute: The federal effective date is 2025-07-04.
     other: Hawaii applies the changes from 2025-11-01.
-  example: In August 2025, the model applies the changes in Texas but not Hawaii.
+  example: In August 2025, PR 10299 applies the changes in Hawaii as well as Texas.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/hi/dhs/snap/work_requirements/abawd/hr1_in_effect.yaml
+    - policyengine_us/variables/gov/usda/snap/eligibility/work_requirements/is_snap_abawd_hr1_in_effect.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/8861
+    - https://github.com/PolicyEngine/policyengine-us/pull/10299
   state: unreviewed
-  note: 'The statute-first rule requires changing the delayed model date unless waiver authority permits the delay;
-    verify that authority. Code not yet on main: is_snap_abawd_hr1_in_effect, gov.states.hi.dhs.snap.work_requirements.abawd.hr1_in_effect.'
+  note: PR 10299 adopts the July 4, 2025 enactment date, consistent with FNS; the change is in flight. Section 10102
+    has no later effective date. A 7 U.S.C. 2015(o)(7) good-faith exemption requires a state request and a federal
+    determination; none covering July through October 2025 was found. Hawaii's area waiver ended June 30, 2025.
 - id: us-hi:snap-child-support-deduction
   program: snap
   years:
@@ -6123,30 +6162,41 @@ candidates:
 - id: us:mortgage-interest-limit-ratio-rounding
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 2018
     type: tax
   question: Should the deductible share of mortgage interest above the debt limit use the exact ratio or the ratio
     rounded to three places in Table 1?
   sources:
   - kind: statute
     citation: 26 U.S.C. 163(h)(3)
-    url: null
+    url: https://www.law.cornell.edu/uscode/text/26/163#h_3
   - kind: worksheet
     citation: 2025 Pub. 936 Table 1, line 14
-    url: null
+    url: https://www.irs.gov/pub/irs-prior/p936--2025.pdf#page=14
+  - kind: worksheet
+    citation: 2017 Pub. 936 Table 1, line 11, which the 2025 Hawaii N-11 instructions (line 21c) direct filers to
+    url: https://www.irs.gov/pub/irs-prior/p936--2017.pdf#page=11
   readings:
     statute: Section 163(h)(3) does not specify rounding of the deductible-interest ratio.
-    other: Publication 936 Table 1 line 14 rounds the ratio to three decimal places.
-  example: A 2016 joint example gives $26,666.67 using the exact ratio versus $26,680 using the rounded ratio.
+    other: Publication 936 Table 1 (2025 line 14; 2017 line 11) rounds the ratio to three decimal places.
+  example: A 2025 joint return with $40,000 of interest on $1,500,000 of 2016 debt gives $26,666.67 using the exact
+    ratio versus $26,680 using the ratio rounded to .667.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/household/expense/tax_unit/mortgage_interest_structure.py
+    - policyengine_us/variables/gov/states/al/tax/income/deductions/itemized/al_investment_interest.py
+    - policyengine_us/variables/gov/states/nc/tax/income/deductions/nc_mortgage_and_property_tax_before_limitation.py
+    - policyengine_us/variables/gov/states/hi/tax/income/deductions/itemized/hi_mortgage_interest_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10274
   state: unreviewed
-  note: 'This is a disputed worksheet gap-fill; PE-US uses the exact ratio, and the supplied worked example is for
-    2016 rather than the cited 2025 worksheet. Code not yet on main: deductible_mortgage_interest.'
+  note: 'PE-US follows two conventions, so follows stays unknown until one is picked. The federal deduction
+    (deductible_mortgage_interest_tax_unit) uses the exact ratio, and Alabama and North Carolina read that federal
+    amount. Hawaii (hi_mortgage_interest_deduction) follows the 2017 worksheet as a gap-fill, rounding line 11 to
+    three places, and floors the result at the federal deduction, a PE safeguard that binds only when the rounded
+    share falls below the exact federal share. Settling the federal reading (rulespec-us#1413) and using it for
+    both would make that floor unnecessary.'
 - id: us:niit-excess-business-loss-addback
   program: income-tax
   years:
@@ -6372,24 +6422,31 @@ candidates:
     under the published tables?
   sources:
   - kind: statute
-    citation: 7 U.S.C. 2012(u)(2)(I), as amended by P.L. 119-21
+    citation: 7 U.S.C. 2012(u)(2)(I) and (u)(3)(C), as amended by P.L. 119-21
     url: https://www.law.cornell.edu/uscode/text/7/2012#u_2
   - kind: guidance
     citation: USDA FY2026 SNAP COLA table
-    url: null
+    url: https://fna-bwbufwdzbabpezgc.z01.azurefd.us/sites/default/files/resource-files/snap-fy26maximumAllotments-deductions.pdf#page=1
+  - kind: guidance
+    citation: FNS SNAP Provisions of the One Big Beautiful Bill Act of 2025, September 4, 2025
+    url: https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-implementation.pdf#page=2
   readings:
-    statute: The cap starts in FY2026.
-    other: The cap starts in FY2027.
+    statute: The cap starts October 1, 2025 for FY2026, consistent with the annual October 1 computation and FNS.
+    other: The FY2026 published table omits the cap; deferring it until the FY2027 table follows that omission.
   example: Applying the cap in FY2026 changes the supplied 18-plus-person allotment from $3,969 to $3,777 in the
     48 states and DC.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/usda/snap/max_allotment.yaml
+    - policyengine_us/variables/gov/usda/snap/snap_max_allotment.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9623
+    - https://github.com/PolicyEngine/policyengine-us/pull/10299
   state: open
-  note: 'The statute-first rule requires revising the model''s delayed cap; verify the FY2026 table and the October
-    1, 2025 effective date. Code not yet on main: snap_max_allotment, max_allotment.yaml cap.'
+  note: PR 10299 applies the cap from October 1, 2025; the change is in flight. FNS expressly gives that date on
+    page 2 of its September 4, 2025 memo, consistent with 7 U.S.C. 2012(u)(3)(C)'s annual October 1 computation.
+    The conflicting reading comes from the FY2026 table's omission, not from FNS's effective-date guidance.
 - id: us:snap-minimum-allotment-rounding-base
   program: snap
   years:
