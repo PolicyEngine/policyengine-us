@@ -5,6 +5,7 @@ class social_security_payable_factor(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
+    unit = "/1"
     label = "Social Security supplied payable-share factor"
     documentation = "Externally supplied annual share, including a supplier-blended depletion year; no depletion projection is inferred."
 

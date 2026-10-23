@@ -5,6 +5,7 @@ class social_security_across_the_board_factor(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
+    unit = "/1"
     label = "Social Security across-the-board factor"
 
     def formula(person, period, parameters):

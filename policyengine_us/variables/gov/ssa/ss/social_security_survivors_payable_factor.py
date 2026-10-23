@@ -5,6 +5,7 @@ class social_security_survivors_payable_factor(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
+    unit = "/1"
     label = "Social Security survivors payable factor"
 
     def formula(person, period, parameters):

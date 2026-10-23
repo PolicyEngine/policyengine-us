@@ -6,6 +6,7 @@ class social_security_dependents_payable_factor(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
+    unit = "/1"
     label = "Social Security dependents payable factor"
 
     def formula(person, period, parameters):

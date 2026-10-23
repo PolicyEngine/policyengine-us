@@ -8,6 +8,7 @@ class social_security_survivors_joint_cola_factor(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
+    unit = "/1"
     label = "Joint Social Security survivors COLA factor"
     documentation = (
         "One payment-event numerator combines adjusted COLAs and withholding."

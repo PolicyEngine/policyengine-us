@@ -448,3 +448,27 @@ def test_multi_year_zero_rows_do_not_require_annual_allocation():
     all_zero.set_input(reported, multi_year, [0, 0])
     drop_inherited_values(all_zero)
     np.testing.assert_array_equal(all_zero.calculate(public, multi_year), [0, 0])
+
+
+def test_dimensionless_benefit_factors_keep_annual_levels_on_monthly_requests():
+    factor_names = (
+        "social_security_across_the_board_factor",
+        "social_security_payable_factor",
+        *(
+            f"{component}_{suffix}"
+            for component in SOCIAL_SECURITY_COMPONENTS
+            for suffix in ("joint_cola_factor", "pia_ratio_factor", "payable_factor")
+        ),
+    )
+    simulation = make_simulation()
+    for name in factor_names:
+        assert system.variables[name].unit == "/1"
+        assert amount(simulation, name, "2024-07") == 1
+        assert amount(simulation, name, 2024) == 1
+    supplied = simulation.get_branch("supplied_dimensionless_factors")
+    for name in factor_names:
+        supplied.set_input(name, 2024, [1.2])
+    drop_inherited_values(supplied)
+    for name in factor_names:
+        assert amount(supplied, name, "2024-07") == pytest.approx(1.2)
+        assert amount(supplied, name, 2024) == pytest.approx(1.2)
