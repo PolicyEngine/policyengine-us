@@ -1,0 +1,60 @@
+description: Nevada counts these sources as unearned income of all household members under the Low Income Home Energy Assistance Program.
+values:
+  2025-07-01:
+    - ssi
+    # Nevada's Optional State Supplementation, paid by SSA with SSI.
+    - nv_oss
+    # Pensions, annuities and retirement fund withdrawals.
+    - pension_income
+    - military_retirement_income
+    - retirement_distributions
+    - railroad_benefits
+    - survivor_benefits
+    - disability_benefits
+    - total_unemployment_compensation
+    - workers_compensation
+    - veterans_benefits
+    # Child support and alimony paid to a household member.
+    - child_support_received
+    - alimony_income
+    - interest_income
+    - ordinary_dividend_income
+    # Rental income, including money received from a roomer or boarder.
+    - rental_income
+    - farm_rent_income
+    # Cash contributions and recurring gifts.
+    - financial_assistance
+    # State, county, city or Native American public assistance.
+    - general_assistance
+    - strike_benefits
+    # Trust fund income.
+    - estate_income
+    # Gaming and lottery winnings.
+    - gambling_winnings
+    # Capital gains from the sale of property other than the primary home.
+    - capital_gains
+# Each source is floored at zero. Social Security net of the Medicare Part B
+# premium is counted in nv_liheap_countable_income; Section 703 B.I also
+# deducts the Part D premium, which has no input. Social Security and
+# veterans cost-of-living increases during the program year are not
+# excluded. TANF counts toward the Fixed Annual Credit only
+# (nv_liheap_fac_income). The earned income tax credit, SNAP, tax refunds,
+# public housing assistance and the other Section 706 exempt income are
+# excluded. Lump sums, inheritance, insurance payments, FEMA Disaster
+# Unemployment Assistance, utility reimbursement payments and educational
+# assistance have no inputs, nor do the Fixed Annual Credit-only reverse
+# mortgage, AARP and Title V, Supported Living Arrangement, vendor payment
+# and savings or credit draw income.
+metadata:
+  unit: list
+  period: year
+  label: Nevada LIHEAP unearned income sources
+  reference:
+    - title: "Nevada SFY2026 Energy Assistance Program Manual, Sections 703 B, 705 and 706 #page 44,46-48"
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=44
+    - title: "Nevada SFY2027 Energy Assistance Program Manual, Sections 703 B, 705 and 706 #page 44,46-48"
+      href: https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/2027-eap-state-manual--08.25.26-1.pdf#page=44
+    - title: Nevada FY2026 LIHEAP State Plan, Section 1.9
+      href: https://liheapch.acf.gov/docs/2026/state-plans/NV_Plan_2026.pdf#page=6
+    - title: Nevada FY2027 LIHEAP State Plan, Section 1.9
+      href: https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/fy-2027-low-income-home-energy-assistance-program-liheap-state-plan.pdf#page=6

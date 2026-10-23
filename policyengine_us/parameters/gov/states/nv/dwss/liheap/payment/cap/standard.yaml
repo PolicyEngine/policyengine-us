@@ -1,0 +1,92 @@
+description: Nevada caps the Fixed Annual Credit at this amount by household size and income band for households whose primary heating fuel is not propane, fuel oil or kerosene under the Low Income Home Energy Assistance Program.
+# "ALL ENERGY SOURCES (except propane and oil)", the same in SFY2026 and
+# SFY2027. Income bands 1-4 are "<75%", ">75-100%", ">100-125%" and
+# ">125-150%"; household size 8 covers the "8+" row.
+1:
+  1:
+    2025-07-01: 2_000
+  2:
+    2025-07-01: 1_600
+  3:
+    2025-07-01: 1_280
+  4:
+    2025-07-01: 1_152
+2:
+  1:
+    2025-07-01: 2_106
+  2:
+    2025-07-01: 1_684
+  3:
+    2025-07-01: 1_348
+  4:
+    2025-07-01: 1_213
+3:
+  1:
+    2025-07-01: 2_216
+  2:
+    2025-07-01: 1_773
+  3:
+    2025-07-01: 1_418
+  4:
+    2025-07-01: 1_277
+4:
+  1:
+    2025-07-01: 2_333
+  2:
+    2025-07-01: 1_866
+  3:
+    2025-07-01: 1_493
+  4:
+    2025-07-01: 1_344
+5:
+  1:
+    2025-07-01: 2_450
+  2:
+    2025-07-01: 1_960
+  3:
+    2025-07-01: 1_568
+  4:
+    2025-07-01: 1_411
+6:
+  1:
+    2025-07-01: 2_572
+  2:
+    2025-07-01: 2_058
+  3:
+    2025-07-01: 1_646
+  4:
+    2025-07-01: 1_482
+7:
+  1:
+    2025-07-01: 2_701
+  2:
+    2025-07-01: 2_161
+  3:
+    2025-07-01: 1_728
+  4:
+    2025-07-01: 1_556
+8:
+  1:
+    2025-07-01: 2_836
+  2:
+    2025-07-01: 2_269
+  3:
+    2025-07-01: 1_815
+  4:
+    2025-07-01: 1_633
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Nevada LIHEAP standard benefit cap
+  breakdown:
+    - range(1, 9) # household size
+    - range(1, 5) # income band
+  breakdown_labels:
+    - Household size
+    - Income band
+  reference:
+    - title: Nevada SFY2026 Energy Assistance Program Manual, Appendix A benefit cap tables
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=111
+    - title: Nevada SFY2027 Energy Assistance Program Manual, Appendix A benefit cap tables
+      href: https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/2027-eap-state-manual--08.25.26-1.pdf#page=111

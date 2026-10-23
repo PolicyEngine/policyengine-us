@@ -1,0 +1,29 @@
+description: Nevada counts these sources as earned income of household members under the Low Income Home Energy Assistance Program.
+# Gross wages, salaries, commissions, tips and military pay, and net receipts
+# from self-employment, a farm or a partnership. Each source is floored at
+# zero, so a loss in one source cannot offset another. The earnings of a
+# school-attending member under the children's earned income age limit count
+# toward the Fixed Annual Credit only. Travel and uniform reimbursements and
+# an earned income tax credit paid with wages, deducted from gross earnings
+# by Section 703 A, have no separate inputs.
+values:
+  2025-07-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+
+metadata:
+  unit: list
+  period: year
+  label: Nevada LIHEAP earned income sources
+  reference:
+    - title: "Nevada SFY2026 Energy Assistance Program Manual, Sections 703 A and 705 #page 43-44,46-48"
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=43
+    - title: "Nevada SFY2027 Energy Assistance Program Manual, Sections 703 A and 705 #page 43-44,46-48"
+      href: https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/2027-eap-state-manual--08.25.26-1.pdf#page=43
+    - title: "Nevada FY2026 LIHEAP State Plan, Section 1.9 #page 5-6"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/NV_Plan_2026.pdf#page=5
+    - title: "Nevada FY2027 LIHEAP State Plan, Section 1.9 #page 5-6"
+      href: https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/fy-2027-low-income-home-energy-assistance-program-liheap-state-plan.pdf#page=5
