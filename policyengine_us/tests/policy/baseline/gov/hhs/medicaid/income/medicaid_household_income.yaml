@@ -443,3 +443,171 @@
     # parents ((f)(3)(iii)): 12,000 - 5,000 = 7,000 for all three.
     medicaid_uses_non_filer_rules: [true, true, true]
     medicaid_household_income: [7_000, 7_000, 7_000]
+
+# These member-income inputs isolate the composition sum after the filing exclusions.
+- name: Non-filer membership counts each income once for young parents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 18
+        own_children_in_household: 1
+        medicaid_household_income_member: 1200
+        medicaid_uses_non_filer_rules: true
+      parent2:
+        age: 18
+        own_children_in_household: 1
+        medicaid_household_income_member: 2300
+        medicaid_uses_non_filer_rules: true
+      child:
+        age: 1
+        medicaid_household_income_member: 400
+        medicaid_uses_non_filer_rules: true
+    marital_units:
+      couple:
+        members:
+        - parent1
+        - parent2
+      child_unit:
+        members:
+        - child
+    households:
+      household:
+        members:
+        - parent1
+        - parent2
+        - child
+        state_code: CA
+  output:
+    medicaid_household_income:
+    - 3900
+    - 3900
+    - 3900
+- name: Non-filer membership counts each income once for an adult with a young spouse.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 35
+        own_children_in_household: 1
+        medicaid_household_income_member: 1200
+        medicaid_uses_non_filer_rules: true
+      parent2:
+        age: 18
+        own_children_in_household: 1
+        medicaid_household_income_member: 2300
+        medicaid_uses_non_filer_rules: true
+      child:
+        age: 1
+        medicaid_household_income_member: 400
+        medicaid_uses_non_filer_rules: true
+    marital_units:
+      couple:
+        members:
+        - parent1
+        - parent2
+      child_unit:
+        members:
+        - child
+    households:
+      household:
+        members:
+        - parent1
+        - parent2
+        - child
+        state_code: CA
+  output:
+    medicaid_household_income:
+    - 3900
+    - 3900
+    - 3900
+- name: Non-filer membership counts each income once for young spouses filing separately.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 18
+        own_children_in_household: 1
+        medicaid_household_income_member: 1200
+        medicaid_uses_non_filer_rules: true
+      parent2:
+        age: 18
+        own_children_in_household: 1
+        medicaid_household_income_member: 2300
+        medicaid_uses_non_filer_rules: true
+      child:
+        age: 1
+        medicaid_household_income_member: 400
+        medicaid_uses_non_filer_rules: true
+    marital_units:
+      couple:
+        members:
+        - parent1
+        - parent2
+      child_unit:
+        members:
+        - child
+    households:
+      household:
+        members:
+        - parent1
+        - parent2
+        - child
+        state_code: CA
+    tax_units:
+      return1:
+        members:
+        - parent1
+        - child
+        cohabitating_spouses: true
+      return2:
+        members:
+        - parent2
+        cohabitating_spouses: true
+  output:
+    medicaid_household_income:
+    - 3900
+    - 3900
+    - 3900
+- name: Non-filer membership counts each income once for young parents netting a business loss.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 18
+        own_children_in_household: 1
+        medicaid_household_income_member: 1200
+        medicaid_uses_non_filer_rules: true
+      parent2:
+        age: 18
+        own_children_in_household: 1
+        medicaid_household_income_member: -500
+        medicaid_uses_non_filer_rules: true
+      child:
+        age: 1
+        medicaid_household_income_member: 0
+        medicaid_uses_non_filer_rules: true
+    marital_units:
+      couple:
+        members:
+        - parent1
+        - parent2
+      child_unit:
+        members:
+        - child
+    households:
+      household:
+        members:
+        - parent1
+        - parent2
+        - child
+        state_code: CA
+  output:
+    medicaid_household_income:
+    - 700
+    - 700
+    - 700
