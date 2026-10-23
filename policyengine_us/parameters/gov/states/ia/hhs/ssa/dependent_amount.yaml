@@ -1,0 +1,28 @@
+description: Iowa provides this amount as the monthly dependent-person supplement under the State Supplementary Assistance program.
+values:
+  2023-01-01: 474
+  2024-01-01: 490
+  2025-01-01: 503
+  2026-01-01: 518
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Iowa SSA dependent-person supplement
+  # The same amount is the dependent's income limit (6-B Nonfinancial Eligibility (DP)).
+  # NOTE: 441 IAC 52.1 adjusts assistance standards each January 1 for the SSA
+  # cost-of-living adjustment but publishes no method, so this value stays at
+  # its 2026 level until a later schedule is added.
+  reference:
+    - title: "Iowa HHS Employees' Manual 6-B (revised May 22, 2026), Dependent Person Supplement #page 24-28"
+      href: https://hhs.iowa.gov/media/3987/download?inline=#page=24
+    - title: 441 IAC 52.1 and 52.1(2)
+      href: https://www.legis.iowa.gov/docs/iac/chapter/441.52.pdf#page=1
+    - title: SSA POMS SI 01415.058 F.2 (TN 95, 08-26), Iowa payment levels
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501415058#f2
+    - title: "Iowa HHS General Letter 6-B-46 (effective January 1, 2025) #page 1-2"
+      href: https://hhs.iowa.gov/media/15607/download#page=1
+    - title: Iowa HHS General Letter 6-B-45 (effective January 1, 2024)
+      href: https://hhs.iowa.gov/media/12206/download#page=1
+    - title: Iowa HHS 2023 State Supplementary Assistance standards
+      href: https://hhs.iowa.gov/media/9237/download

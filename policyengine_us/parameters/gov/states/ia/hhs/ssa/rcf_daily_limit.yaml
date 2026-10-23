@@ -1,0 +1,29 @@
+description: Iowa limits the residential care facility daily rate to this amount under the State Supplementary Assistance program.
+values:
+  2023-01-01: 35.89
+  2024-01-01: 36.82
+  2025-01-01: 37.6
+  2026-01-01: 38.47
+
+metadata:
+  unit: currency-USD
+  period: day
+  label: Iowa SSA maximum residential care daily rate
+  # NOTE: Iowa Code 249.12(3) sets the rate through "the maximum per diem rates
+  # established by the general assembly through the appropriations process",
+  # not by the COLA (2025 $37.60 to 2026 $38.47 is 2.3 percent against a 2.8
+  # percent COLA). Later years carry the 2026 rate as a frozen projection until
+  # a new rate is published.
+  reference:
+    - title: Iowa HHS Employees' Manual 6-B (revised May 22, 2026), Billing and Payments (RCF)
+      href: https://hhs.iowa.gov/media/3987/download?inline=#page=72
+    - title: "441 IAC 52.1 and 52.1(3) #page 1-2"
+      href: https://www.legis.iowa.gov/docs/iac/chapter/441.52.pdf#page=1
+    - title: Iowa Code 249.12(3)
+      href: https://www.legis.iowa.gov/docs/code/249.pdf#page=5
+    - title: "Iowa HHS General Letter 6-B-46 (effective January 1, 2025) #page 1-2"
+      href: https://hhs.iowa.gov/media/15607/download#page=1
+    - title: "Iowa HHS General Letter 6-B-45 (effective January 1, 2024) #page 1,24"
+      href: https://hhs.iowa.gov/media/12206/download#page=1
+    - title: Iowa HHS 2023 State Supplementary Assistance standards
+      href: https://hhs.iowa.gov/media/9237/download
