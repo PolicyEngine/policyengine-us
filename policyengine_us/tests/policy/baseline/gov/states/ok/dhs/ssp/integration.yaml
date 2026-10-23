@@ -616,7 +616,9 @@
     # Teen: (300 - 85) / 2 = 107.5.
     ok_ssp_own_countable_income: [297.17, 1_691, 107.5, 0]
     # Combined: (3_467 - 696 - 85) / 2 + 297.17 = 1_640.17 > 1_532.
-    ok_ssp_countable_income: [1_640.17, 1_640.17, 107.5, 0]
+    # The combined-income helper also subtracts the family's 696 allocation
+    # from the ineligible teen's 300 earnings, leaving 0 for that unit.
+    ok_ssp_countable_income: [1_640.17, 1_640.17, 0, 0]
     ok_ssp: [0, 0, 0, 0]
 
 - name: Case 21, a disabled child's parental deeming uses January's student allocation.
@@ -670,22 +672,26 @@
     ok_ssp: [0, 40, 0]
 
 - name: Case 22, June in-kind support follows that month's spousal deeming.
-  period: 2026-06
+  # Annual inputs cover calendar 2026; outputs below select June.
+  period: 2026
   absolute_error_margin: 0.01
   input:
     people:
       claimant:
         age: 45
         person_id: 1
+        is_tax_unit_head: true
         meets_ssi_disability_criteria: true
         ssi_receives_outside_shelter_support: true
       spouse:
         age: 43
         person_id: 2
+        is_tax_unit_spouse: true
         pension_income: 14_400
       student1:
         age: 19
         person_id: 3
+        is_tax_unit_dependent: true
         parent_1_id: 1
         parent_2_id: 2
         is_full_time_college_student: true
@@ -693,6 +699,7 @@
       student2:
         age: 20
         person_id: 4
+        is_tax_unit_dependent: true
         parent_1_id: 1
         parent_2_id: 2
         is_full_time_college_student: true
@@ -704,6 +711,9 @@
         members: [student1]
       student2_unit:
         members: [student2]
+    tax_units:
+      family_tax_unit:
+        members: [claimant, spouse, student1, student2]
     families:
       family:
         members: [claimant, spouse, student1, student2]
@@ -714,17 +724,26 @@
   output:
     # Student exclusions run out in May, so no federal child allocation
     # remains in June. Spouse's 1_200 pension is above the 497 threshold.
+    is_ssi_spousal_deeming_applies_monthly:
+      2026-01: [false, false, false, false]
+      2026-06: [true, false, false, false]
     # ISM Jan-Apr is 994 / 3 + 20 = 351.33; May-Dec is
     # 1_491 / 6 + 10 = 258.5. The annual average, 289.44, is not June's ISM.
-    ssi_in_kind_support_and_maintenance_monthly: [258.5, 0, 0, 0]
+    ssi_in_kind_support_and_maintenance_monthly:
+      2026-06: [258.5, 0, 0, 0]
     # Federal SSI: 1_491 - ((258.5 - 20) + (1_200 - 20)) = 72.5.
-    ssi: [72.5, 0, 0, 0]
+    ssi:
+      2026-06: [72.5, 0, 0, 0]
     # Oklahoma's allocation is 0 because each student's gross 2_000 > 498.
-    ok_ssp_spouse_child_allocation: [0, 0, 0, 0]
+    ok_ssp_spouse_child_allocation:
+      2026-06: [0, 0, 0, 0]
     # Claimant: 258.5 - 20 + 72.5 = 311. Spouse: 1_200 - 20 = 1_180.
     # Each student: (2_000 - 85) / 2 = 957.5.
-    ok_ssp_own_countable_income: [311, 1_180, 957.5, 957.5]
+    ok_ssp_own_countable_income:
+      2026-06: [311, 1_180, 957.5, 957.5]
     # Combined: 258.5 + 1_200 - 20 + 72.5 = 1_511, leaving 1_532 - 1_511 = 21.
     # Using annual-average ISM would give 1_541.94 and incorrectly pay 0.
-    ok_ssp_countable_income: [1_511, 1_511, 957.5, 957.5]
-    ok_ssp: [21, 0, 0, 0]
+    ok_ssp_countable_income:
+      2026-06: [1_511, 1_511, 957.5, 957.5]
+    ok_ssp:
+      2026-06: [21, 0, 0, 0]
