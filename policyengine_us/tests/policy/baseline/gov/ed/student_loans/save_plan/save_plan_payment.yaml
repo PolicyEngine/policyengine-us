@@ -200,14 +200,14 @@
         state_code: TX
   output:
     # 2024 guideline 15,060: 2.25 x 15,060 = 33,885; discretionary income 6,115.
-    # January to June: 10% x 6,115 / 12 = 50.96. July on: 5% -> 25.48.
-    # Year: 6 x 50.9583 + 6 x 25.4792 = 458.63.
+    # January to June: 10% x 6,115 / 12 = 50.9583, set at 50.96. July on:
+    # 5% -> 25.4792, set at 25.48. Year: 6 x 50.96 + 6 x 25.48 = 458.64.
     save_plan_payment:
       2024-01: 50.96
       2024-06: 50.96
       2024-07: 25.48
       2024-12: 25.48
-      2024: 458.63
+      2024: 458.64
 
 - name: Case 10, a borrower with only Parent PLUS loans owes nothing.
   period: 2026-01
