@@ -13,8 +13,8 @@
 # limit = 2 x guideline: 31,300 (1) / 42,300 (2) / 53,300 (3) / 64,300 (4).
 # Poverty points by income / guideline: <= 0.75 -> 8, <= 1.00 -> 6,
 # <= 1.25 -> 5, <= 2.00 -> 4. Benefit = 40 x points clipped to [80, 800];
-# propane and fuel oil households receive the flat 800, and kerosene follows
-# fuel oil by inference.
+# propane and fuel oil households that buy their own fuel receive the flat
+# 800, and kerosene follows fuel oil by inference.
 
 - name: Case 1, retiree on Social Security in a detached gas-heated house.
   period: 2026

@@ -9,6 +9,9 @@ description: Iowa pays this flat Regular Assistance benefit to households heatin
 # amount is $800." The three statements agree numerically for FY26 because the
 # general maximum is also $800. Kerosene follows fuel oil through
 # ia_liheap_fuel_category (an inference; the manual has no kerosene row).
+# The model pays the flat amount only to households that buy the fuel
+# themselves; a household whose heat is included in its rent takes the matrix
+# amount (an inference from Appendix D, page 122; see ia_liheap).
 values:
   2025-10-01: 800
 

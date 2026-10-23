@@ -5,9 +5,9 @@
 # burden (section 5.50 p. 22 and Appendix D pp. 122-123, where electricity from
 # solar cells, wind, a generator or an extension cord is not a burden), and a
 # heating fuel: https://hhs.iowa.gov/media/17262/download?inline#page=18
-# Modeling: heating_type UNSPECIFIED pays nothing under the all-state
-# convention (callers must send the fuel), NONE means the home has no heating,
-# SOLAR is ineligible under Appendix D p. 123.
+# Modeling: this implementation requires a known heating_type and treats
+# UNSPECIFIED as ineligible, including when heat is included in the rent; NONE
+# means the home has no heating; SOLAR is ineligible under Appendix D p. 123.
 
 - name: Case 1, single renter paying a natural gas vendor is eligible.
   period: 2026

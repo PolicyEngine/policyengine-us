@@ -10,11 +10,12 @@
 # Modeling: true when the household has a fixed source (social_security, ssi,
 # pension_income, railroad_benefits, veterans_benefits) and no other recorded
 # source. Recorded sources are every member's, at any age, including sources
-# Iowa does not count: each earned source floored at zero, the countable
-# unearned sources that are not fixed, child_support_received and FIP (read
-# through tanf). A minor's Social Security is left out of the countable amount
-# but still identifies a fixed source (Appendix C p. 114; section 4.40(3)(a)
-# p. 14). Child support paid is a deduction, not an income source.
+# Iowa does not count: each earned source and each countable unearned source
+# that is not fixed, floored at zero so a loss cannot cancel another source,
+# child_support_received and FIP (read through tanf). A minor's Social
+# Security is left out of the countable amount but still identifies a fixed
+# source (Appendix C p. 114; section 4.40(3)(a) p. 14). Child support paid is
+# a deduction, not an income source.
 
 - name: Case 1, Social Security alone is fixed income.
   period: 2026
@@ -422,3 +423,47 @@
     # no other source.
     ia_liheap_countable_income: 14_400
     ia_liheap_fixed_income_only: true
+
+- name: Case 18, Social Security with a rental loss and interest is not fixed income only.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 18_000
+        rental_income: -500
+        interest_income: 500
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # fixed 18,000; other sources max(-500, 0) + 500 = 500 > 0, so false. A
+    # signed sum (-500 + 500 = 0) would let the loss cancel the interest.
+    ia_liheap_fixed_income_only: false
+
+- name: Case 19, Social Security plus a self-employment profit is not fixed income only.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 18_000
+        self_employment_income: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # fixed 18,000; other sources max(3,000, 0) = 3,000 > 0, so false.
+    ia_liheap_fixed_income_only: false

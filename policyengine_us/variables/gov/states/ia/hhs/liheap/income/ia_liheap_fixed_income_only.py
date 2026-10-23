@@ -47,16 +47,13 @@ class ia_liheap_fixed_income_only(Variable):
         # follows for FY2026. The FY27 manual and Program Notice 27-01
         # (effective October 1, 2026) reword the factor to "no other countable
         # sources of income"; that change is not modeled because only FY2026
-        # is verified. Earned sources are floored per source as in the
-        # countable amount. Appendix C adds that child support (page 92) and
-        # FIP (page 98) are not fixed income although neither is counted.
-        earned = 0
-        for source in p.earned:
-            earned = earned + max_(person(source, period), 0)
+        # is verified. Earned and unearned sources are floored per source as
+        # in the countable amounts, so a loss (such as a rental loss) cannot
+        # cancel another source. Appendix C adds that child support (page 92)
+        # and FIP (page 98) are not fixed income although neither is counted.
         other_unearned = [source for source in p.unearned if source not in p.fixed]
-        non_fixed = (
-            spm_unit.sum(earned)
-            + add(spm_unit, period, other_unearned)
-            + add(spm_unit, period, p.other_recorded)
-        )
+        other_income = 0
+        for source in list(p.earned) + other_unearned:
+            other_income = other_income + max_(person(source, period, options=[ADD]), 0)
+        non_fixed = spm_unit.sum(other_income) + add(spm_unit, period, p.other_recorded)
         return (fixed > 0) & (non_fixed == 0)

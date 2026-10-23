@@ -6,17 +6,18 @@ description: Iowa counts these unearned income sources toward gross household in
 # adoption assistance, inheritances and life insurance, AmeriCorps and VISTA,
 # reimbursements, rebates and tax refunds, in-kind income, short-term
 # disability, VA education and housing allowances, and savings balances.
+# Each source is floored at zero per person in the countable unearned income
+# formula, so a loss in one source (such as a rental loss) does not offset
+# other income.
 values:
   2025-10-01:
-    # Appendix C Social Security Benefits (SSA, SSI, SSDI): "Count the net
-    # amount as income (gross minus benefits repaid to SSA)" and the amount
-    # "paid by check or direct deposit"; the plan checks "Excluding MediCare
-    # deduction". The model counts social_security gross as a documented
-    # approximation: netting the Medicare Part B premium (the model has
-    # medicare_part_b_premium) is deferred, as in Kansas, and SSA repayments
-    # have no input.
-    - social_security
-    # ssi is a monthly variable; add() sums the twelve months.
+    # Social Security is counted in the countable unearned income formula, net
+    # of the Medicare Part B premium: Appendix C Social Security Benefits (SSA,
+    # SSI, SSDI) says "Count the net amount as income (gross minus benefits
+    # repaid to SSA)", Section 6.10 and Appendix C use the amount "paid by
+    # check or direct deposit", and plan Section 1.9 checks "Excluding MediCare
+    # deduction". SSA repayments and Part D premiums have no input.
+    # ssi is a monthly variable; the formula sums the twelve months.
     - ssi
     - pension_income
     # Appendix C Pensions and Retirement Income rows: military retirement pay
@@ -46,6 +47,9 @@ values:
     # and are not separable from the model input.
     - veterans_benefits
     - alimony_income
+    # Appendix C Rental Income (page 110): "Income received from rental
+    # properties, such as farmland or dwellings." A rental loss is not income
+    # received, so it is floored at zero like the earned sources.
     - rental_income
     # Appendix C Interest (Bonds, Investments) is counted while Interest
     # Bearing Bank Accounts is not; the model input does not split them, so

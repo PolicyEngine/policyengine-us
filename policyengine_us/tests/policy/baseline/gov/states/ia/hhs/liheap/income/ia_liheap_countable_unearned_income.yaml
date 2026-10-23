@@ -8,18 +8,28 @@
 # (p. 96) and taxable gambling winnings (p. 99); it excludes child support
 # received (pp. 92-93) and capital gains (p. 92):
 # https://hhs.iowa.gov/media/17262/download?inline#page=114
-# Modeling: Social Security is counted gross (Iowa nets Medicare premiums);
-# bank interest and the under-$120 dividend rule are approximations. ssi is a
-# MONTH variable, so the twelve months are summed.
+# Modeling: Social Security is counted net of the person's out-of-pocket
+# Medicare Part B premium (medicare_part_b_premium), floored at zero; FFY2026
+# plan section 1.9 counts SSA benefits "Excluding MediCare deduction":
+# https://liheapch.acf.gov/docs/2026/state-plans/IA_Plan_2026.pdf#page=6
+# Every other source is floored at zero per person, so a rental loss offsets
+# nothing (Appendix C p. 110, "Income received from rental properties"). Bank
+# interest and the under-$120 dividend rule are approximations. ssi is a MONTH
+# variable, so the twelve months are summed.
 
 - name: Case 1, Social Security and a pension are counted.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 67
         social_security: 18_000
         pension_income: 6_000
+        # Combined income of 2,000 a month is above the Medicare Savings
+        # Program limit, so the full 2026 standard premium is paid:
+        # 202.90 x 12 = 2,434.80.
+        medicare_part_b_premium: 2_434.8
     spm_units:
       spm_unit:
         members: [person1]
@@ -30,8 +40,8 @@
         members: [person1]
         state_code: IA
   output:
-    # 18,000 + 6,000 = 24,000.
-    ia_liheap_countable_unearned_income: 24_000
+    # Social Security net of the premium: 18,000 - 2,434.80 + 6,000 = 21,565.20.
+    ia_liheap_countable_unearned_income: 21_565.2
 
 - name: Case 2, SSI is summed over the twelve months.
   period: 2026
@@ -235,3 +245,54 @@
     # Appendix C pp. 109 and 111, Pensions and Retirement Income: a 20-year
     # military retiree's 2,200 a month pension counts; 26,400.
     ia_liheap_countable_unearned_income: 26_400
+
+- name: Case 11, a Medicare premium larger than the Social Security benefit is floored at zero and does not reduce a pension.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        # A small Social Security benefit of about 167 a month.
+        social_security: 2_000
+        pension_income: 24_000
+        # 26,000 a year is above the Medicare Savings Program limit, so the
+        # full 2026 standard premium is paid: 202.90 x 12 = 2,434.80.
+        medicare_part_b_premium: 2_434.8
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # max(2,000 - 2,434.80, 0) + 24,000 = 24,000 (an unfloored premium would
+    # give 23,565.20).
+    ia_liheap_countable_unearned_income: 24_000
+
+- name: Case 12, a rental loss is floored at zero per source and does not offset a pension.
+  period: 2026
+  input:
+    people:
+      person1:
+        # Age 62 is below the Medicare and SSI aged thresholds.
+        age: 62
+        pension_income: 18_000
+        rental_income: -4_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Appendix C p. 110 counts "Income received from rental properties"; a
+    # loss is not income received: 18,000 + max(-4,000, 0) = 18,000 (a signed
+    # sum, or a floor on the unearned total, would give 14,000).
+    ia_liheap_countable_unearned_income: 18_000

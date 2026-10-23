@@ -14,9 +14,11 @@
 # Modeling: 800 for the PROPANE and FUEL_OIL fuel categories, with KEROSENE
 # following fuel oil by inference (Appendix I item 3 and the award rule both
 # say "Fuel Oil", and section 12.20 p. 47 lists kerosene as a deliverable
-# fuel); otherwise clip(40 x points, 80, 800). The largest total any other
-# household can reach is 8 + 5 + 4 = 17 points (680), so the 800 cap binds
-# only through the flat amount.
+# fuel); otherwise clip(40 x points, 80, 800). A household whose heat is
+# included in its rent does not buy the fuel and takes the matrix amount (an
+# inference from the draft plan p. 48 and Appendix D p. 122). The largest
+# total any other household can reach is 8 + 5 + 4 = 17 points (680), so the
+# 800 cap binds only through the flat amount.
 
 - name: Case 1, retiree on Social Security in a detached gas-heated house receives 480.
   period: 2026
@@ -397,3 +399,69 @@
     ia_liheap_targeting_points: 2
     ia_liheap_points: 12
     ia_liheap: 480
+
+- name: Case 16, retiree whose Social Security is counted net of the Medicare Part B premium receives 440.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        social_security: 33_000
+        # 2,750 a month is above the Medicare Savings Program limit, so the
+        # full 2026 standard premium is paid: 202.90 x 12 = 2,434.80.
+        medicare_part_b_premium: 2_434.8
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ia_liheap_dwelling_type: DETACHED
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Plan section 1.9 p. 6 counts SSA benefits "Excluding MediCare deduction"
+    # (Appendix C p. 114, the net amount): 33,000 - 2,434.80 = 30,565.20, at or
+    # below the 31,300 limit (gross 33,000 would exceed it and pay 0).
+    ia_liheap_countable_income: 30_565.2
+    ia_liheap_income_eligible: true
+    ia_liheap_fixed_income_only: true
+    # 30,565.20 / 15,650 = 1.9531 -> 196 percent -> 126 to 200 band.
+    ia_liheap_poverty_points: 4
+    # fixed income +1, elderly +1, detached +1 = 3.
+    ia_liheap_targeting_points: 3
+    # 4 + 3 + natural gas 4 = 11 points x 40 = 440.
+    ia_liheap_points: 11
+    ia_liheap: 440
+
+- name: Case 17, tenant with heat in unsubsidized rent in a propane-heated building receives the matrix amount, not the flat 800.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        bottled_gas_expense: 0
+        heat_expense_included_in_rent: true
+        ia_liheap_dwelling_type: ATTACHED_2_TO_4_UNITS
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Unsubsidized heat in rent is an energy burden (Appendix D p. 122).
+    ia_liheap_has_energy_burden: true
+    ia_liheap_fuel_category: PROPANE
+    # The tenant does not buy the deliverable fuel, so the flat amount does not
+    # apply (an inference from the draft plan p. 48, section 11.00 p. 42 and
+    # Appendix D p. 122). 28,000 / 15,650 = 1.7891 -> 4; heat in rent -4,
+    # two to four units 0; propane 5; 4 - 4 + 5 = 5 points x 40 = 200.
+    ia_liheap_targeting_points: -4
+    ia_liheap_points: 5
+    ia_liheap: 200

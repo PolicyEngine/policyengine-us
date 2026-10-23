@@ -35,11 +35,12 @@ class ia_liheap_eligible(Variable):
         energy_burden = spm_unit("ia_liheap_has_energy_burden", period)
         heating_type = spm_unit("heating_type", period)
         types = heating_type.possible_values
-        # UNSPECIFIED pays nothing under the all-state convention (callers must
-        # send the fuel; the fuel row of the matrix cannot be scored without
-        # it). NONE means the home has no heating. Appendix D: a household whose
-        # heat "is obtained from solar cells, wind power, an extension cord, or
-        # a generator" has no energy burden.
+        # This implementation requires a known heating_type and treats
+        # UNSPECIFIED as ineligible, including when heat is included in the
+        # rent, because the fuel row of the matrix cannot be scored without
+        # it. NONE means the home has no heating. Appendix D: a household
+        # whose heat "is obtained from solar cells, wind power, an extension
+        # cord, or a generator" has no energy burden.
         fuel_known = (
             (heating_type != types.UNSPECIFIED)
             & (heating_type != types.NONE)

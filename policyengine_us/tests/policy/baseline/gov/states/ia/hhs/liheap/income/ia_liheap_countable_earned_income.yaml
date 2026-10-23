@@ -145,3 +145,25 @@
     # 28,000 + 4,000 + 3,000 = 35,000 (Appendix C p. 108 military pay
     # excluding housing allowance; p. 113 self-employment and contract income).
     ia_liheap_countable_earned_income: 35_000
+
+- name: Case 7, a self-employment profit is counted beside wages.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 26_000
+        self_employment_income: 4_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 26,000 + max(4,000, 0) = 30,000 (Appendix C p. 113, self-employment
+    # income).
+    ia_liheap_countable_earned_income: 30_000

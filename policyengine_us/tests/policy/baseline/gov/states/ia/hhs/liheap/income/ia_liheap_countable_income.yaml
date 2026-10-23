@@ -196,3 +196,30 @@
   output:
     # 30,000 + 12,000 - 2,400 = 39,600.
     ia_liheap_countable_income: 39_600
+
+- name: Case 9, a rental loss cannot offset wages.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 34_000
+        rental_income: -6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+        ia_liheap_dwelling_type: DETACHED
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # max(-6,000, 0) = 0 unearned (Appendix C p. 110); 34,000 + 0 = 34,000 >
+    # 31,300, so the household is over income and receives 0. Netting the loss
+    # would give 28,000 and 4 + 1 + 4 = 9 points, 360.
+    ia_liheap_countable_unearned_income: 0
+    ia_liheap_countable_income: 34_000
+    ia_liheap_income_eligible: false
+    ia_liheap: 0
