@@ -14,7 +14,7 @@ values:
     - pension_income
     # PolicyEngine records military retirement separately from pension_income,
     # so include it under the 8.15.2.11.C(5) pensions category.
-    - military_retirement_pay
+    - military_retirement_income
     - rental_income
     # Social Security retirement, survivors, and dependents benefits are
     # counted; SSDI is exempt (8.15.2.11.C(6)), so the aggregate social_security

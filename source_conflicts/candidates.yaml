@@ -29,15 +29,20 @@ candidates:
   readings:
     statute: The federal effective date is 2025-07-04.
     other: Alaska applies the changes from 2025-11-01.
-  example: In August 2025, the model applies the changes in Texas but not Alaska.
+  example: In August 2025, PR 10299 applies the changes in Alaska as well as Texas.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ak/dpa/snap/work_requirements/abawd/hr1_in_effect.yaml
+    - policyengine_us/variables/gov/usda/snap/eligibility/work_requirements/is_snap_abawd_hr1_in_effect.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/8861
+    - https://github.com/PolicyEngine/policyengine-us/pull/10299
   state: unreviewed
-  note: 'The statute-first rule requires changing the delayed model date unless waiver authority permits the delay;
-    verify that authority. Code not yet on main: is_snap_abawd_hr1_in_effect, gov.states.ak.dpa.snap.work_requirements.abawd.hr1_in_effect.'
+  note: PR 10299 adopts the July 4, 2025 enactment date, consistent with FNS; the change is in flight. Section 10102
+    has no later effective date. A 7 U.S.C. 2015(o)(7) good-faith exemption requires a state request and a federal
+    determination; none covering July through October 2025 was found. Alaska's separately modeled good-faith window
+    starts November 1, 2025, and its area waivers and retained exceptions are unchanged.
 - id: us-al:federal-tax-deduction-credit-list
   program: income-tax
   years:
@@ -420,12 +425,17 @@ candidates:
     the clearinghouse matrix.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/electricity.yaml
+    - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/fuel_oil.yaml
+    - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/natural_gas.yaml
+    - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/other.yaml
+    - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/propane.yaml
+    - policyengine_us/variables/gov/states/ar/ee/aeo/liheap/payment/ar_liheap_matrix_amount.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9973
   state: unreviewed
-  note: 'PE-US follows AEO''s matrix; verify the clearinghouse document''s effective year and possible mislabeling.
-    Code not yet on main: ar_liheap benefit parameters.'
+  note: 'PE-US follows AEO''s matrix; verify the clearinghouse document''s effective year and possible mislabeling.'
 - id: us-ar:liheap-gambling-and-capital-gains
   program: liheap
   years:
@@ -437,25 +447,24 @@ candidates:
   sources:
   - kind: guidance
     citation: FY2026 LIHEAP State Plan §1.9, page 7
-    url: https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf#page=5
+    url: https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf#page=7
   - kind: manual
-    citation: Arkansas LIHEAP manual page 138
-    url: null
-  - kind: manual
-    citation: Draft manual Appendix F pp.132 and 135
-    url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2025/manuals/AR_Manual%5Bdraft%5D_2025.pdf#page=36
+    citation: FFY 2025 LIHEAP Policy and Procedures Manual, Appendix F capital gains, gaming or gambling winnings and
+      nonrecurring lump-sum rows, pp. 157, 160 and 163
+    url: https://liheapch.acf.gov/docs/2025/manuals/AR_Manual_2025.pdf#page=157
   readings:
     statute: No statute is supplied; the plan counts lottery winnings as the only one-time lump sum and the manual
       excludes nonrecurring lump sums.
     other: Appendix F counts all gaming and gambling winnings and positive capital gains.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/income/sources/unearned.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9973
   state: unreviewed
-  note: 'PE-US follows Appendix F; verify final operative text and whether specific inclusions override the general
-    exclusion. Code not yet on main: ar_liheap countable income.'
+  note: 'PE-US follows Appendix F; verify whether its specific inclusions override the general exclusion of nonrecurring
+    lump sums.'
 - id: us-ar:liheap-minor-and-student-earnings
   program: liheap
   years:
@@ -463,28 +472,36 @@ candidates:
     to: 2026
     type: federal-fiscal
   question: Are all minors' and full-time students' earnings excluded or only the narrower student categories specified
-    by the manuals?
+    by the manual?
   sources:
   - kind: form
     citation: AEO 9495 application §III, R 01/FY2025 and R 11/2025
     url: https://www.adeq.state.ar.us/energy/assistance/pdfs/fillable_aeo-9495_liheap-long-application.pdf#page=2
   - kind: manual
-    citation: FY2025 draft and FFY2025 LIHEAP manuals; draft pp.133-134 and final pp.56, 141, 158-159
-    url: https://liheapch.acf.gov/docs/2025/manuals/AR_Manual_2025.pdf#page=12
+    citation: FFY 2025 LIHEAP Policy and Procedures Manual, section 4.7, section 17.0 Full-time Student and Appendix
+      F, pp. 56, 141 and 158-159
+    url: https://liheapch.acf.gov/docs/2025/manuals/AR_Manual_2025.pdf#page=56
   readings:
     statute: No statute is supplied; the application requests work income only from adults who are not full-time
       students.
-    other: The manuals condition exclusions on attendance, dependency, age and other student circumstances.
-  example: A 35-year-old full-time graduate student with $40,000 wages has $0 countable income and a $308 gas grant
-    in FY2026; the same nonstudent receives $0.
+    other: The manual conditions exclusions on attendance, dependency, age and other student circumstances.
+  example: In FY2026, a 35-year-old full-time graduate student with $40,000 of wages has countable income of $32,004
+    (monthly $2,667, above the $2,347 one-person limit) and receives $0 with gas heat, the same as a nonstudent; excluding
+    the student's wages under the forms' full-time student carve-out alone would give $0 countable income and a $308 gas grant.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/income/earned_minimum_age.yaml
+    - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/income/full_time_student_age_limit.yaml
+    - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/income/high_school_student_age_limit.yaml
+    - policyengine_us/variables/gov/states/ar/ee/aeo/liheap/income/ar_liheap_countable_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9973
   state: unreviewed
-  note: 'PE-US follows the forms; verify that omitted questions constitute an exclusion rather than a separate reporting
-    process. Code not yet on main: ar_liheap countable income.'
+  note: 'PE-US follows the manual''s page 141 Full-time Student definition (dependents up to age 23: college students
+    at 12 or more credit hours, or high school students over 18), section 4.7 for 18-year-olds in high school, and
+    the forms for members under 18; verify that the forms'' omitted questions for members under 18 are an exclusion
+    rather than a separate reporting process.'
 - id: us-ar:liheap-workers-compensation-and-tea
   program: liheap
   years:
@@ -496,10 +513,10 @@ candidates:
   sources:
   - kind: guidance
     citation: FY2026 LIHEAP State Plan §1.9
-    url: https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf#page=5
+    url: https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf#page=6
   - kind: manual
-    citation: Draft manual Appendices E-F pp.130 and 144
-    url: null
+    citation: FFY 2025 LIHEAP Policy and Procedures Manual, Appendices E and F, pp. 155 and 168
+    url: https://liheapch.acf.gov/docs/2025/manuals/AR_Manual_2025.pdf#page=155
   - kind: form
     citation: AEO 9495 application R 11/2025, page 2
     url: https://www.adeq.state.ar.us/energy/assistance/pdfs/fillable_aeo-9495_liheap-long-application.pdf#page=2
@@ -510,12 +527,13 @@ candidates:
     TEA in FY2026.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/income/sources/unearned.yaml
+    - policyengine_us/variables/gov/states/ar/ee/aeo/liheap/income/ar_liheap_countable_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9973
   state: unreviewed
-  note: 'PE-US counts both sources; verify final manual adoption and the plan''s categories. Code not yet on main:
-    ar_liheap countable income.'
+  note: 'PE-US counts both sources; verify that the FFY 2025 manual still governs FY2026 and the plan''s categories.'
 - id: us-ar:snap-child-support-deduction
   program: snap
   years:
@@ -815,6 +833,36 @@ candidates:
   state: unreviewed
   note: 'PE-US follows the handbook; verify the form revision and overlapping effective period. Code not yet on
     main: ca_scc_general_assistance_countable_vehicle_value.'
+- id: us-ca:snap-abawd-implementation-date
+  program: snap
+  years:
+    from: 2025
+    to: 2026
+    type: calendar
+  question: Do the amended SNAP ABAWD rules apply in California from July 4, 2025 or CDSS's June 1, 2026 implementation
+    date?
+  sources:
+  - kind: statute
+    citation: P.L. 119-21 §10102, amending 7 U.S.C. 2015(o)
+    url: https://www.govinfo.gov/content/pkg/PLAW-119publ21/pdf/PLAW-119publ21.pdf#page=11
+  - kind: guidance
+    citation: CDSS All County Letter 25-93
+    url: https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2025/25-93.pdf#page=3
+  readings:
+    statute: Section 10102 has no later effective date; the federal amendments apply from enactment on July 4, 2025.
+    other: ACL 25-93 makes its guidance effective June 1, 2026 to allow automation changes and staff training.
+  example: In September 2025, the California branch leaves HR1 ABAWD changes off while the federal toggle is on.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/usda/snap/eligibility/work_requirements/is_snap_abawd_hr1_in_effect.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10299
+  state: open
+  note: The California branch of is_snap_abawd_hr1_in_effect follows ACL 25-93; changing it is outside PR 10299's
+    scope. The hub follows up on whether USDA approved a 7 U.S.C. 2015(o)(7) good-faith exemption for California.
+    That provision names only Alaska and Hawaii, so any claimed California approval also requires verification
+    of its legal authority.
 - id: us-ca:snap-child-support-exclusion
   program: snap
   years:
@@ -1315,19 +1363,138 @@ candidates:
     url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=4
   - kind: manual
     citation: Florida LIHEAP manual part 1100.04B(1), p.47
-    url: null
+    url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=47
   readings:
     statute: No statute is supplied; parts 900.01A and 100.01 allow utilities in unsubsidized rent and payment to
       the landlord.
     other: Part 1100.04B(1) requests a statement that home energy costs are not included in rent.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/fl/commerce/liheap/eligibility/fl_liheap_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9969
   state: unreviewed
-  note: 'PE-US follows the eligibility provisions; verify whether the statement applies to a narrower payment situation.
-    Code not yet on main: fl_liheap eligibility.'
+  note: 'PE-US follows parts 900.01A and 100.01: heat in unsubsidized rent qualifies (fl_liheap_eligible.py). Verify whether the 1100.04B(1) statement applies to a narrower payment situation.'
+- id: us-fl:liheap-fy2026-payment-range
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Do Florida's FY2026 regular heating payments range from the plan's estimated $400 to $1,350 or from the
+    October 2025 payment matrix's $200 to $700?
+  sources:
+  - kind: guidance
+    citation: FY2026 LIHEAP State Plan item 2.6, p.9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=9
+  - kind: form
+    citation: October 2025 LIHEAP payment matrix
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/FL_BenefitMatrix_Heat-Cool_2026.pdf
+  - kind: manual
+    citation: Florida LIHEAP manual Part 200 Q.4, p.9
+    url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=9
+  - kind: guidance
+    citation: Executed October 2025 LIHEAP amendment, §D(10)b
+    url: https://www.pbcgov.com/pubInf/Agenda/20260106/3E2.pdf#page=9
+  readings:
+    statute: No statute is supplied; the manual and contract D(10)b require the current matrix, which pays $200 to
+      $700 with all additions.
+    other: Plan item 2.6 prints the FY2025 estimates, a $400 minimum and a $1,350 maximum.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/parameters/gov/states/fl/commerce/liheap/payment/base_amount.yaml
+    - policyengine_us/variables/gov/states/fl/commerce/liheap/fl_liheap.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/9969
+  state: unreviewed
+  note: PE-US follows the October 2025 matrix (base_amount.yaml, fl_liheap.py). The draft FFY2027 plan, section 2.6,
+    estimates a $200 minimum and a $700 maximum, matching it.
+- id: us-fl:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Can Florida's 60% SMI heating limit exclude a household of 15 or more whose income is below the federal
+    110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: guidance
+    citation: FY2026 LIHEAP State Plan item 2.1, p.8
+    url: https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=8
+  - kind: form
+    citation: October 2025 LIHEAP payment matrix footnote
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/FL_BenefitMatrix_Heat-Cool_2026.pdf
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household; the FY2026 plan
+      assurances (p.45) and contract G(8)e (p.13) repeat this.
+    other: The plan and matrix set 60% of SMI for every size, which falls below that floor from household size 15.
+  example: Fifteen people with $100,000 exceed the $98,320 limit but are below the $101,915 floor (with the model's
+    one-year guideline lag), so they keep the band 4 base of $200, the model's estimate since the sources give no band
+    above the range.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/fl/commerce/liheap/eligibility/fl_liheap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/fl/commerce/liheap/eligibility/fpg_year_lag.yaml
+    - policyengine_us/variables/gov/states/fl/commerce/liheap/fl_liheap.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/9969
+  state: unreviewed
+  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (fl_liheap_eligible.py).
+- id: us-fl:liheap-income-limit-manual-sections
+  program: liheap
+  years:
+    from: 2025
+    to: 2026
+    type: federal-fiscal
+  question: Is Florida LIHEAP's heating income limit 60% of state median income (with 150% of the poverty guideline
+    from size 9 under manual part 900.01D and the FY2025 plan and matrix), or 150% of the poverty guideline for every
+    household size, as manual parts 1100.03D and 1200.01A and contract G(7)d set it?
+  sources:
+  - kind: manual
+    citation: Florida LIHEAP manual part 900.01D, p.39
+    url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=39
+  - kind: manual
+    citation: Florida LIHEAP manual parts 1100.03D (p.47) and 1200.01A (p.49)
+    url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=47
+  - kind: guidance
+    citation: FY2025 LIHEAP State Plan item 2.1, p.8
+    url: https://liheapch.acf.gov/docs/2025/state-plans/FL_Plan_2025.pdf#page=8
+  - kind: form
+    citation: FY2025 LIHEAP payment matrix, maximum income values
+    url: https://liheapch.acf.gov/docs/2025/benefits-matricies/FL_BenefitMatrix_2025.pdf
+  - kind: guidance
+    citation: FY2026 LIHEAP State Plan item 2.1, p.8
+    url: https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=8
+  - kind: form
+    citation: October 2025 LIHEAP payment matrix, maximum income values
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/FL_BenefitMatrix_Heat-Cool_2026.pdf
+  - kind: manual
+    citation: Florida LIHEAP manual Part 200 Q.4 (follow the current benefit matrix), p.9
+    url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=9
+  - kind: guidance
+    citation: Executed October 2025 LIHEAP amendment, §G(7)d
+    url: https://www.pbcgov.com/pubInf/Agenda/20260106/3E2.pdf#page=12
+  readings:
+    statute: No statute is supplied; part 900.01D sets 60% of SMI for sizes 1-8 and 150% of the guideline from 9, as
+      the FY2025 plan and matrix do, and the FY2026 plan and matrix set 60% of SMI for every size.
+    other: Parts 1100.03D and 1200.01A, and contract G(7)d, set 150% of the poverty guideline for every size.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/fl/commerce/liheap/eligibility/fl_liheap_income_limit.py
+    - policyengine_us/parameters/gov/states/fl/commerce/liheap/eligibility/fpg_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/9969
+  state: unreviewed
+  note: PE-US follows part 900.01D and the FY2025 matrix in FY2025, and the FY2026 plan and matrix from FY2026, since
+    the manual says to follow the current benefit matrix (page 9) (fl_liheap_income_limit.py, fpg_rate.yaml).
 - id: us-fl:liheap-large-household-contract-limit
   program: liheap
   years:
@@ -1338,21 +1505,55 @@ candidates:
   sources:
   - kind: guidance
     citation: FY2026 LIHEAP State Plan item 2.1 and payment-matrix footnote
-    url: https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=4
+    url: https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=8
   - kind: guidance
     citation: Executed October 2025 LIHEAP amendment, Attachment A-2 §G8c
-    url: https://www.pbcgov.com/pubInf/Agenda/20260106/3E2.pdf#page=9
+    url: https://www.pbcgov.com/pubInf/Agenda/20260106/3E2.pdf#page=12
   readings:
     statute: No statute is supplied; the plan and operating materials use 60% SMI.
     other: The executed amendment specifies 150% poverty for household sizes nine and above.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/fl/commerce/liheap/eligibility/fl_liheap_income_limit.py
+    - policyengine_us/parameters/gov/states/fl/commerce/liheap/eligibility/fpg_rate.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9969
   state: open
-  note: 'PE-US follows the represented operational rule of 60% SMI; resolve the grant-agreement contradiction. Code
-    not yet on main: fl_liheap income limit.'
+  note: 'PE-US follows the FY2026 plan and matrix, 60% SMI for every size (fpg_rate is 0 from October 2025); resolve the grant-agreement contradiction.'
+- id: us-fl:liheap-minor-income
+  program: liheap
+  years:
+    from: 2025
+    to: 2026
+    type: federal-fiscal
+  question: Does Florida LIHEAP exclude all minors' income, as the current application and portal FAQ do, or count
+    the income of 16- and 17-year-olds who do not attend school full time, as manual part 1200.01D does?
+  sources:
+  - kind: form
+    citation: Florida statewide LIHEAP application, Monthly Household Income, p.1
+    url: https://storage.googleapis.com/florida-liheap-relief-static-assets/Florida_LIHEAP_Application_English.pdf#page=1
+  - kind: guidance
+    citation: Florida LIHEAP portal FAQ, income not counted
+    url: https://floridaliheap.com/faq
+  - kind: manual
+    citation: Florida LIHEAP manual part 1200.01D, p.49
+    url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=49
+  readings:
+    statute: No statute is supplied; the application asks for income of household members "except minors", and the
+      portal FAQ lists income of minors as not counted.
+    other: Part 1200.01D counts the income of members 18 and older and of 16- and 17-year-olds who do not attend
+      school full time.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/fl/commerce/liheap/income/fl_liheap_countable_income.py
+    - policyengine_us/parameters/gov/states/fl/commerce/liheap/income/adult_age.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/9969
+  state: unreviewed
+  note: PE-US follows the current application and portal FAQ, so no income of a member under 18 counts
+    (fl_liheap_countable_income.py, adult_age.yaml). The application gives no effective date, so FY2025 is a backfill.
 - id: us-fl:liheap-size-13-income-limit
   program: liheap
   years:
@@ -1367,13 +1568,13 @@ candidates:
     url: https://www.law.cornell.edu/uscode/text/42/8624
   - kind: guidance
     citation: FY2026 LIHEAP State Plan item 2.1
-    url: https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=4
+    url: https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=8
   - kind: form
     citation: FY2026 LIHEAP Payment Matrix size-13 row and footnote
     url: https://liheapch.acf.gov/docs/2026/benefits-matricies/FL_BenefitMatrix_Heat-Cool_2026.pdf
   - kind: guidance
     citation: Florida LIHEAP portal FAQ size-13 income limit
-    url: null
+    url: https://floridaliheap.com/faq
   readings:
     statute: The federal ceiling is the greater of 150% poverty, $122,475 for 13, and 60% SMI; the state plan and
       footnote choose 60% SMI, $94,610.
@@ -1382,12 +1583,15 @@ candidates:
     and $80,419.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/fl/commerce/liheap/eligibility/fl_liheap_income_limit.py
+    - policyengine_us/variables/gov/hhs/hhs_smi.py
+    - policyengine_us/parameters/gov/states/fl/commerce/liheap/eligibility/truncates_smi_limit.yaml
+    - policyengine_us/variables/gov/states/fl/commerce/liheap/fl_liheap.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9969
   state: unreviewed
-  note: 'Distinguish the federal maximum from Florida''s chosen limit and verify the apparently erroneous row. Code
-    not yet on main: fl_liheap income limit, liheap_smi_limit.'
+  note: 'PE-US uses 60% of SMI for size 13, within the federal ceiling, for the limit and the payment bands (fl_liheap_income_limit.py). Distinguish the federal maximum from Florida''s chosen limit and verify the apparently erroneous row.'
 - id: us-ga:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -1686,15 +1890,19 @@ candidates:
   readings:
     statute: The federal effective date is 2025-07-04.
     other: Hawaii applies the changes from 2025-11-01.
-  example: In August 2025, the model applies the changes in Texas but not Hawaii.
+  example: In August 2025, PR 10299 applies the changes in Hawaii as well as Texas.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/hi/dhs/snap/work_requirements/abawd/hr1_in_effect.yaml
+    - policyengine_us/variables/gov/usda/snap/eligibility/work_requirements/is_snap_abawd_hr1_in_effect.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/8861
+    - https://github.com/PolicyEngine/policyengine-us/pull/10299
   state: unreviewed
-  note: 'The statute-first rule requires changing the delayed model date unless waiver authority permits the delay;
-    verify that authority. Code not yet on main: is_snap_abawd_hr1_in_effect, gov.states.hi.dhs.snap.work_requirements.abawd.hr1_in_effect.'
+  note: PR 10299 adopts the July 4, 2025 enactment date, consistent with FNS; the change is in flight. Section 10102
+    has no later effective date. A 7 U.S.C. 2015(o)(7) good-faith exemption requires a state request and a federal
+    determination; none covering July through October 2025 was found. Hawaii's area waiver ended June 30, 2025.
 - id: us-hi:snap-child-support-deduction
   program: snap
   years:
@@ -3732,6 +3940,38 @@ candidates:
     prs: []
   state: unreviewed
   note: Verify whether the still-listed ruling applies during these years despite its obsolete tax base.
+- id: us-nh:ssp-permanent-resident-forty-quarters
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: Can a lawful permanent resident credited with 40 qualifying quarters receive New Hampshire's state
+    supplement during the five years after entry?
+  sources:
+  - kind: statute
+    citation: 8 U.S.C. 1622(b)(2)
+    url: https://www.law.cornell.edu/uscode/text/8/1622
+  - kind: manual
+    citation: NH DHHS Adult Assistance Manual 305.13
+    url: https://dhhs.nh.gov/aam_htm/html/305_13_qualified_aliens_with_restricted_eligibility_based_on_date_of_entry_into_the_us_aam.htm
+  - kind: regulation
+    citation: N.H. Admin. Rules He-W 616.02
+    url: https://gc.nh.gov/rules/state_agencies/he-w600.html
+  readings:
+    statute: A permanent resident credited with 40 qualifying quarters is "eligible for any State public benefits",
+      so the five-year wait does not apply.
+    other: The manual keeps "lawfully admitted permanent residents regardless of work history" out for five years.
+  example: A permanent resident within five years of entry with 40 credited quarters is eligible under the statute
+    and ineligible under the manual; with 39 quarters both readings bar them.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10156
+  state: ruled
+  note: 'The manual may rest on 8 U.S.C. 1624, which lets a State restrict general cash public assistance; whether
+    the adult categories are that is unsettled. Code not yet on main: nh_ssp_eligible.'
 - id: us-nj:claim-of-right-same-category-offset
   program: income-tax
   years:
@@ -4844,37 +5084,41 @@ candidates:
     from: 2025
     to: 2025
     type: federal-fiscal
-  question: Is the FY2025 four-person annual income limit $62,400 under the rule or $63,432 in the published table?
+  question: Do South Dakota's FY2025 income limits for households of one to three follow the plan's 60% of state
+    median income or the published table's 200% of the 2024 poverty guideline?
   sources:
-  - kind: regulation
-    citation: ARSD 67:15:01:10
-    url: https://sdlegislature.gov/Rules/Administrative/67:15:01:10
+  - kind: guidance
+    citation: FY2025 LIHEAP State Plan item 2.1, p.8
+    url: https://liheapch.acf.gov/docs/2025/state-plans/SD_Plan_2025.pdf#page=8
   - kind: agency-practice
-    citation: FY2025 table
-    url: null
+    citation: DSS 2024-2025 heating season income limits (archived January 14, 2025)
+    url: https://web.archive.org/web/20250114001211/https://dss.sd.gov/economicassistance/energy_weatherization_assistance.aspx
   readings:
-    statute: No statute supplied; the rule's min/max formula gives $62,400.
-    other: The published table gives $63,432.
-  example: The four-person annual limits differ by using $62,400 versus $63,432.
+    statute: No statute supplied; plan item 2.1 sets 60% of state median income for sizes 1-9 and 150% of the poverty
+      guideline for size 10.
+    other: The published table uses 200% of the 2024 guideline for sizes 1-3 and matches the plan for sizes 4-10.
+  example: One person's annual limit is $32,984 under the plan and $30,120 in the table.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/sd/dss/liheap/eligibility/sd_liheap_income_limit.py
+    - policyengine_us/parameters/gov/states/sd/dss/liheap/income/limits/table/amount.yaml
+    - policyengine_us/parameters/gov/states/sd/dss/liheap/income/limits/table/in_effect.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9974
   state: unreviewed
-  note: 'PE-US follows the printed table; obtain it and verify the discrepancy. Code not yet on main: sd_liheap
-    income limit parameters.'
+  note: PE-US follows the published table for the sizes it lists, from October 2024 (sd_liheap_income_limit.py,
+    table/in_effect.yaml). For sizes 4-7 the table also exceeds the model's FY2024 limit pattern. ARSD 67:15:01:10
+    sets only the three-month income period, not a limit.
 - id: us-sd:liheap-2026-plan-income-limits
   program: liheap
   years:
     from: 2026
     to: 2026
     type: federal-fiscal
-  question: Do FY2026 limits follow the rule and DSS's published limits or the plan's 60% SMI?
+  question: Do South Dakota's FY2026 limits for households of four to six follow DSS's published limits, 200% of the
+    2025 poverty guideline, or the plan's 60% of state median income?
   sources:
-  - kind: regulation
-    citation: ARSD 67:15:01:10
-    url: https://sdlegislature.gov/Rules/Administrative/67:15:01:10
   - kind: guidance
     citation: FY2026 LIHEAP State Plan section 2.1 (page 9)
     url: https://liheapch.acf.gov/docs/2026/state-plans/SD_Plan_2026.pdf#page=9
@@ -4882,17 +5126,22 @@ candidates:
     citation: DSS heating season income limits (2025-2026)
     url: https://web.archive.org/web/20260101052007/https://dss.sd.gov/economicassistance/energy_weatherization_assistance.aspx
   readings:
-    statute: No statute supplied; the rule and DSS give three-month limits of $16,075, $18,825 and $21,575 for sizes
-      4-6.
-    other: The plan's 60% SMI gives $16,677, $19,345 and $22,014.
+    statute: No statute supplied; DSS's 2025-2026 limits, 200% of the 2025 guideline, are $16,075, $18,825 and $21,575
+      a quarter for sizes 4-6.
+    other: The plan's 60% of state median income gives $16,677, $19,345 and $22,013 a quarter under the model's
+      flooring ($22,014 unrounded).
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/sd/dss/liheap/eligibility/sd_liheap_income_limit.py
+    - policyengine_us/parameters/gov/states/sd/dss/liheap/income/limits/fpg_upper_rate.yaml
+    - policyengine_us/parameters/gov/states/sd/dss/liheap/income/limits/smi_rate.yaml
+    - policyengine_us/parameters/gov/states/sd/dss/liheap/income/limits/table/in_effect.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9974
   state: unreviewed
-  note: 'PE-US follows DSS''s limits, which match the rule; reconcile the plan''s 60%-SMI entry. Code not yet on
-    main: sd_liheap income limit parameters.'
+  note: PE-US follows DSS's 2025-2026 limits through the 200% cap (fpg_upper_rate.yaml), with the published table
+    off from October 2025 (sd_liheap_income_limit.py); reconcile the plan's 60%-SMI entry.
 - id: us-sd:liheap-cash-gifts
   program: liheap
   years:
@@ -4913,12 +5162,13 @@ candidates:
   example: $12,000 of wages plus $2,400 of help counts as $14,400.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/sd/dss/liheap/income/sources/unearned.yaml
+    - policyengine_us/variables/gov/states/sd/dss/liheap/income/sd_liheap_countable_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9974
   state: unreviewed
-  note: 'PE-US follows the rule and manual; verify whether the plan checkbox excludes a broader category. Code not
-    yet on main: sd_liheap_countable_income.'
+  note: 'PE-US follows the rule and manual: regular cash gifts count (income/sources/unearned.yaml); verify whether the plan checkbox excludes a broader category.'
 - id: us-sd:liheap-categorical-eligibility
   program: liheap
   years:
@@ -4934,7 +5184,7 @@ candidates:
     url: https://sdlegislature.gov/Rules/Administrative/67:15:01:01
   - kind: guidance
     citation: FY2026 plan section 1.4a (page 5)
-    url: null
+    url: https://liheapch.acf.gov/docs/2026/state-plans/SD_Plan_2026.pdf#page=5
   - kind: manual
     citation: LIEAP manual, p. 12
     url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/SD_Policy-and-Procedures-Manual2018.pdf#page=12
@@ -4943,12 +5193,12 @@ candidates:
     other: The manual also covers SNAP-considered members, Medicare Savings Program households and SSI recipients.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/sd/dss/liheap/eligibility/sd_liheap_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9974
   state: unreviewed
-  note: 'PE-US follows the rule and plan; establish which broader manual provisions remain operative. Code not yet
-    on main: sd_liheap_eligible.'
+  note: 'PE-US follows the rule and plan: every application member must receive SNAP (sd_liheap_eligible.py); establish which broader manual provisions remain operative.'
 - id: us-sd:liheap-gambling-winnings
   program: liheap
   years:
@@ -4959,7 +5209,7 @@ candidates:
   sources:
   - kind: manual
     citation: Manual page 27
-    url: null
+    url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/SD_Policy-and-Procedures-Manual2018.pdf#page=27
   - kind: guidance
     citation: FY2026 LIHEAP State Plan section 1.9 (page 6)
     url: https://liheapch.acf.gov/docs/2026/state-plans/SD_Plan_2026.pdf#page=6
@@ -4968,12 +5218,13 @@ candidates:
     other: The unchecked plan entry indicates winnings are not counted.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/sd/dss/liheap/income/sources/unearned.yaml
+    - policyengine_us/variables/gov/states/sd/dss/liheap/income/sd_liheap_countable_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9974
   state: unreviewed
-  note: 'PE-US follows the manual; verify the unchecked entry and applicable manual edition. Code not yet on main:
-    sd_liheap_countable_income.'
+  note: 'PE-US follows the manual: winnings count in full (income/sources/unearned.yaml); verify the unchecked entry and applicable manual edition.'
 - id: us-sd:liheap-kerosene-payment-method
   program: liheap
   years:
@@ -4990,21 +5241,27 @@ candidates:
   - kind: manual
     citation: LIEAP Policy and Procedures Manual (2018), p. 31
     url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/SD_Policy-and-Procedures-Manual2018.pdf#page=31
+  - kind: regulation
+    citation: ARSD 67:15:01:43.01
+    url: https://sdlegislature.gov/Rules/Administrative/67:15:01:43.01
   - kind: guidance
-    citation: DSS energy assistance page
-    url: null
+    citation: FY2026 LIHEAP State Plan item 9.1, p.22
+    url: https://liheapch.acf.gov/docs/2026/state-plans/SD_Plan_2026.pdf#page=22
+  - kind: guidance
+    citation: DSS energy assistance page (archived January 1, 2026)
+    url: https://web.archive.org/web/20260101052007/https://dss.sd.gov/economicassistance/energy_weatherization_assistance.aspx
   readings:
     statute: No statute supplied; the rule names only wood and coal for direct household payments, treating kerosene
       as a vendor fuel.
     other: The manual pays kerosene households the entire fuel-oil benefit by check.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/sd/dss/liheap/sd_liheap.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9974
   state: unreviewed
-  note: 'PE-US follows the manual; confirm the recipient and whether unpaid charges cap the award. Code not yet
-    on main: sd_liheap.'
+  note: 'PE-US follows the plan and rules, not the 2018 manual: only wood and coal are paid in full, so kerosene is capped at unpaid charges like fuel oil (sd_liheap.py). Confirm the recipient and whether unpaid charges cap the award.'
 - id: us-tx:family-planning-unearned-income-exclusions
   program: family-planning-program
   years:
@@ -5658,6 +5915,31 @@ candidates:
   state: unreviewed
   note: 'The statute-first rule requires revising the deduction-only ACTC bar; verify that interpretation separately
     from EITC, whose statutory wording differs. Code not yet on main: elects_section_911_exclusion.'
+- id: us:charitable-non-itemizer-2020-separate-cap
+  program: income-tax
+  years:
+    from: 2020
+    to: 2020
+    type: tax
+  question: Is the 2020 above-the-line charitable deduction capped at $300 or $150 for a married separate filer?
+  sources:
+  - kind: statute
+    citation: Pub. L. 116-136, sec. 2204; 26 U.S.C. 62(a)(22), 62(f)
+    url: https://www.congress.gov/116/plaws/publ136/PLAW-116publ136.pdf#page=65
+  - kind: instructions
+    citation: 2020 Instructions for Form 1040, line 10b
+    url: https://www.irs.gov/pub/irs-prior/i1040gi--2020.pdf#page=30
+  readings:
+    statute: The cap is $300 for every eligible individual, with no separate-filer reduction.
+    other: The line 10b instructions limit married separate filers to $150.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/irs/ald/charitable_contributions/cap.yaml
+    - policyengine_us/variables/gov/irs/income/taxable_income/adjusted_gross_income/above_the_line_deductions/charitable_contributions/charitable_contributions_ald.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10186
+  state: ruled
 - id: us:claim-of-right-same-class-aggregation
   program: income-tax
   years:
@@ -5911,30 +6193,41 @@ candidates:
 - id: us:mortgage-interest-limit-ratio-rounding
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 2018
     type: tax
   question: Should the deductible share of mortgage interest above the debt limit use the exact ratio or the ratio
     rounded to three places in Table 1?
   sources:
   - kind: statute
     citation: 26 U.S.C. 163(h)(3)
-    url: null
+    url: https://www.law.cornell.edu/uscode/text/26/163#h_3
   - kind: worksheet
     citation: 2025 Pub. 936 Table 1, line 14
-    url: null
+    url: https://www.irs.gov/pub/irs-prior/p936--2025.pdf#page=14
+  - kind: worksheet
+    citation: 2017 Pub. 936 Table 1, line 11, which the 2025 Hawaii N-11 instructions (line 21c) direct filers to
+    url: https://www.irs.gov/pub/irs-prior/p936--2017.pdf#page=11
   readings:
     statute: Section 163(h)(3) does not specify rounding of the deductible-interest ratio.
-    other: Publication 936 Table 1 line 14 rounds the ratio to three decimal places.
-  example: A 2016 joint example gives $26,666.67 using the exact ratio versus $26,680 using the rounded ratio.
+    other: Publication 936 Table 1 (2025 line 14; 2017 line 11) rounds the ratio to three decimal places.
+  example: A 2025 joint return with $40,000 of interest on $1,500,000 of 2016 debt gives $26,666.67 using the exact
+    ratio versus $26,680 using the ratio rounded to .667.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/household/expense/tax_unit/mortgage_interest_structure.py
+    - policyengine_us/variables/gov/states/al/tax/income/deductions/itemized/al_investment_interest.py
+    - policyengine_us/variables/gov/states/nc/tax/income/deductions/nc_mortgage_and_property_tax_before_limitation.py
+    - policyengine_us/variables/gov/states/hi/tax/income/deductions/itemized/hi_mortgage_interest_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10274
   state: unreviewed
-  note: 'This is a disputed worksheet gap-fill; PE-US uses the exact ratio, and the supplied worked example is for
-    2016 rather than the cited 2025 worksheet. Code not yet on main: deductible_mortgage_interest.'
+  note: 'PE-US follows two conventions, so follows stays unknown until one is picked. The federal deduction
+    (deductible_mortgage_interest_tax_unit) uses the exact ratio, and Alabama and North Carolina read that federal
+    amount. Hawaii (hi_mortgage_interest_deduction) follows the 2017 worksheet as a gap-fill, rounding line 11 to
+    three places, and floors the result at the federal deduction, a PE safeguard that binds only when the rounded
+    share falls below the exact federal share. Settling the federal reading (rulespec-us#1413) and using it for
+    both would make that floor unnecessary.'
 - id: us:niit-excess-business-loss-addback
   program: income-tax
   years:
@@ -6160,24 +6453,31 @@ candidates:
     under the published tables?
   sources:
   - kind: statute
-    citation: 7 U.S.C. 2012(u)(2)(I), as amended by P.L. 119-21
+    citation: 7 U.S.C. 2012(u)(2)(I) and (u)(3)(C), as amended by P.L. 119-21
     url: https://www.law.cornell.edu/uscode/text/7/2012#u_2
   - kind: guidance
     citation: USDA FY2026 SNAP COLA table
-    url: null
+    url: https://fna-bwbufwdzbabpezgc.z01.azurefd.us/sites/default/files/resource-files/snap-fy26maximumAllotments-deductions.pdf#page=1
+  - kind: guidance
+    citation: FNS SNAP Provisions of the One Big Beautiful Bill Act of 2025, September 4, 2025
+    url: https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-implementation.pdf#page=2
   readings:
-    statute: The cap starts in FY2026.
-    other: The cap starts in FY2027.
+    statute: The cap starts October 1, 2025 for FY2026, consistent with the annual October 1 computation and FNS.
+    other: The FY2026 published table omits the cap; deferring it until the FY2027 table follows that omission.
   example: Applying the cap in FY2026 changes the supplied 18-plus-person allotment from $3,969 to $3,777 in the
     48 states and DC.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/usda/snap/max_allotment.yaml
+    - policyengine_us/variables/gov/usda/snap/snap_max_allotment.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9623
+    - https://github.com/PolicyEngine/policyengine-us/pull/10299
   state: open
-  note: 'The statute-first rule requires revising the model''s delayed cap; verify the FY2026 table and the October
-    1, 2025 effective date. Code not yet on main: snap_max_allotment, max_allotment.yaml cap.'
+  note: PR 10299 applies the cap from October 1, 2025; the change is in flight. FNS expressly gives that date on
+    page 2 of its September 4, 2025 memo, consistent with 7 U.S.C. 2012(u)(3)(C)'s annual October 1 computation.
+    The conflicting reading comes from the FY2026 table's omission, not from FNS's effective-date guidance.
 - id: us:snap-minimum-allotment-rounding-base
   program: snap
   years:

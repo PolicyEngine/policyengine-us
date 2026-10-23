@@ -47,6 +47,9 @@ TESTS = REPO / "policyengine_us" / "tests"
 WORKFLOWS = [
     REPO / ".github" / "workflows" / name for name in ("python-tests.yaml", "push.yaml")
 ]
+KEEP_RUNNING_WITH_SYSTEM_CA = (
+    "${{ !cancelled() && steps.system-ca.outcome == 'success' }}"
+)
 # CI runs this file under a shard of `make test-other-python-rest`, and that
 # make exports these. Passed on, they would restrict the guard's reference to
 # one shard, or carry its report directory into the stub run and overwrite
@@ -130,6 +133,21 @@ def workflow_jobs(workflow):
 
 def rest_steps(workflow, job="RestPython"):
     return workflow_jobs(workflow)[job]["steps"]
+
+
+def assert_system_ca_precedes(steps, runtime_step):
+    """Continuations require a successful, unconditional CA setup first."""
+    (setup,) = [
+        step
+        for step in steps
+        if step.get("uses") == "./.github/actions/setup-system-ca"
+    ]
+    assert setup["id"] == "system-ca"
+    assert "if" not in setup
+    assert not setup.get("continue-on-error", False)
+    assert steps.index(setup) == 1
+    assert steps[0]["uses"].startswith("actions/checkout@")
+    assert steps.index(setup) < steps.index(runtime_step)
 
 
 def ci_python_shards(workflow):
@@ -311,7 +329,8 @@ def test_each_group_writes_reports_its_ci_shard_uploads(workflow, report_dir):
             for step in steps
             if "make test-other-python-rest" in step.get("run", "")
         ]
-        assert run["if"] == "${{ !cancelled() }}"
+        assert run["if"] == KEEP_RUNNING_WITH_SYSTEM_CA
+        assert_system_ca_precedes(steps, run)
         (upload,) = [
             step
             for step in steps
@@ -335,7 +354,8 @@ def test_variable_yaml_selection_runs_once_in_the_first_python_shard(workflow):
     job, step = calls[0]
     assert job == "RestPython"
     assert "strategy" not in jobs[job], "variables YAML must run exactly once"
-    assert step["if"] == "${{ !cancelled() }}"
+    assert step["if"] == KEEP_RUNNING_WITH_SYSTEM_CA
+    assert_system_ca_precedes(jobs[job]["steps"], step)
     assert shlex.split(step["run"]) == [
         "/usr/bin/time",
         "-v",
@@ -413,7 +433,8 @@ def test_original_rest_check_aggregates_all_shards_without_hiding_failure(workfl
     ]
     assert "make test-other-python-rest" in python_step["run"]
     assert "REST_PYTHON_SHARD=2" in shlex.split(python_step["run"])
-    assert python_step["if"] == "${{ !cancelled() }}"
+    assert python_step["if"] == KEEP_RUNNING_WITH_SYSTEM_CA
+    assert_system_ca_precedes(summary["steps"], python_step)
     # This runner executes shard 2 before checking shard 1. Its own failures
     # must remain failures, and cancellation skipping its Python step must
     # fail the check even if shard 1 succeeded.
@@ -475,7 +496,8 @@ def test_spm_and_dataset_suites_run_once_in_separate_steps_with_reports(workflow
         selected.append(step)
     steps = jobs["Microsimulation"]["steps"]
     assert steps.index(selected[0]) < steps.index(selected[1])
-    assert selected[1]["if"] == "${{ !cancelled() }}"
+    assert selected[1]["if"] == KEEP_RUNNING_WITH_SYSTEM_CA
+    assert_system_ca_precedes(steps, selected[0])
     assert len(set(reports)) == 4
     uploads = [
         step
