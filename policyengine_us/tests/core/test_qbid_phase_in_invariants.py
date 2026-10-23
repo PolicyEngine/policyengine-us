@@ -19,8 +19,12 @@ instructions name them).
    a. A surviving spouse's and a head of household's per-person deduction and
       tax unit deduction equal a single filer's.
    b. Without SSTB losses, the per-person deduction never rises with taxable
-      income. (An SSTB loss shrinks as the applicable percentage falls, so less
-      of it offsets other QBI and the deduction can rise; that is the law.)
+      income. An SSTB loss is an intended exception: 199A(d)(3)(A)(ii) counts
+      only the applicable percentage of SSTB "income, gain, deduction, or
+      loss", so less of the loss offsets other QBI as income rises. A 2025
+      single filer with $100,000 of non-SSTB QBI, ample W-2 wages and a
+      $50,000 SSTB loss gets $10,000 at the threshold and $20,000 past the
+      phase-in range.
    c. For a person with one kind of business (non-SSTB or SSTB) and no losses,
       the per-person deduction matches Form 8995-A Part III and Schedule A,
       recomputed in numpy from the IRS table rather than the parameters.
