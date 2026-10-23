@@ -4,6 +4,8 @@ The inexpensive Hypothesis cases exercise vector helpers without rebuilding
 the model. One shared, read-only simulation then checks registration, changing
 switches/start years, entity aggregation and revenue accounting across years;
 YAML cannot express those dated parameter changes. No population data are used.
+Direct-NII YAML cases cover the NOL-denial hook separately from these source
+aggregation checks.
 
 Unified-liability equivalence assumes identical signed sources, exclusions,
 NOL treatment, MAGI, thresholds and timing, with existing rate + add-on rate =
@@ -190,12 +192,11 @@ class DatedSection8Options(Reform):
                     "active_business.rate": ACTIVE_RATE,
                     "nii_addon.oasdi_share": SHARE,
                     "active_business.oasdi_share": SHARE,
-                    "active_business.deny_nol": year != 2032,
                     "transfer.mode": {
-                        2029: "bill",
-                        2030: "combined_rate_share",
-                        2031: "all_addon",
-                    }.get(year, "custom"),
+                        2029: 3,
+                        2030: 1,
+                        2031: 2,
+                    }.get(year, 0),
                     "transfer.start_year": 2035 if year == 2034 else 2026,
                     "transfer.bill_share": SHARE,
                     "transfer.oasdi_rate": ADDON_RATE,
@@ -221,7 +222,6 @@ ROWS = [
     dict(rental=20_000, total=30_000, fica=10_000, nii_fica=5_000),
     dict(total=100_000, draw=80_000, draw_base=9_235),
     dict(total=100_000, draw=80_000, draw_base=9_235, hi=True),
-    dict(rental=-5_000, total=20_000, nol=15_000),
     dict(rental=20_000, total=20_000, agi=230_000, dependent=True),
     dict(
         rental=15_000, total=20_000, agi=180_000, estate_adjustment=20_000, feie=10_000
@@ -281,7 +281,6 @@ def _situation():
             "filing_status": annual("JOINT" if row.get("spouse") else "SINGLE"),
             "adjusted_gross_income": annual(row.get("agi", 250_000)),
             "niit_magi_section_911_addition": annual(row.get("feie", 0)),
-            "s770_niit_nol_deduction": annual(row.get("nol", 0)),
             "s770_nii_fica_seca_income": annual(row.get("nii_fica", 0)),
         }
         households[f"household_{i}"] = {"members": members, "state_code": annual("TX")}
@@ -319,8 +318,6 @@ def test_dated_registration_components_and_revenue_accounts(dated_simulation, ye
             active += 11_000
         if active_on:
             nii -= row.get("overlap", 0) + row.get("nii_fica", 0)
-            if year != 2032:
-                nii += row.get("nol", 0)
         expected_nii.append(nii)
         expected_active.append(active)
         threshold = 250_000 if row.get("spouse") else 200_000

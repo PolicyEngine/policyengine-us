@@ -32,6 +32,10 @@ def transfer_shares(
     oasdi_rate,
 ):
     """Shares of existing NIIT, the add-on, and active tax, respectively."""
+    # Core parameters accept numbers, booleans and lists, not string scalars.
+    mode = {0: "custom", 1: "combined_rate_share", 2: "all_addon", 3: "bill"}.get(
+        mode, mode
+    )
     if mode == "custom":
         return 0, nii_share, active_share
     if mode == "bill":

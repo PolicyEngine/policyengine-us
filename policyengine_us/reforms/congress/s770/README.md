@@ -110,13 +110,19 @@ Transfers are separate from liability. `transfer.mode` selects:
 
 | Mode | Existing NIIT | NII add-on | Active tax |
 | --- | --- | --- | --- |
-| `custom` (default) | 0 | `nii_addon.oasdi_share` | `active_business.oasdi_share` |
-| `combined_rate_share` | OASDI rate / combined NII rate | Same combined share | OASDI rate / active rate |
-| `all_addon` | 0 | 100% | `active_business.oasdi_share` |
-| `bill` | `transfer.bill_share` | Same bill share | Same bill share |
+| `0` = `custom` (default) | 0 | `nii_addon.oasdi_share` | `active_business.oasdi_share` |
+| `1` = `combined_rate_share` | OASDI rate / combined NII rate | Same combined share | OASDI rate / active rate |
+| `2` = `all_addon` | 0 | 100% | `active_business.oasdi_share` |
+| `3` = `bill` | `transfer.bill_share` | Same bill share | Same bill share |
 
-The OACT-style 12.4/16.2 convention is approximately 76.5432 percent, distinct
-from the bill's 62 percent. A combined-rate share requires an OASDI rate no
+The mode parameter uses integer codes because core does not support string
+parameter scalars.
+
+The [OACT 2025 F8 description](https://www.ssa.gov/OACT/solvency/provisions_tr2025/coverage.html)
+allocates the active tax attributable to 12.4 of its 16.2 percentage points to
+OASDI. That convention is approximately 76.5432 percent, distinct from the
+bill's 62 percent. Here it is also available for the combined NII rate as a
+custom transfer convention. A combined-rate share requires an OASDI rate no
 larger than each positive tax rate to which it applies; a zero tax has zero
 transfer. When the NII add-on is off or its rate is zero, this custom mode
 transfers no existing NIIT, while the active transfer remains independent.
