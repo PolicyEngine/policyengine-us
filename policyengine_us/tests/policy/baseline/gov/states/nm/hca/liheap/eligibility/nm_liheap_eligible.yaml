@@ -1,0 +1,251 @@
+# Countable income must not exceed 150% of the poverty guideline (8.150.100.9 D and
+# 8.150.520.14 NMAC; FFY2026 size-one limit 1,956 a month = 23,472 a year). The
+# household must incur a heating cost (8.150.410.9 A): wood-gathering households have a
+# heating responsibility without a bill (8.150.410.9 C); heat included in non-subsidized
+# rent qualifies, while subsidized households with heat in rent qualify only with an
+# additional out-of-pocket cost (8.150.410.11 A-B). At least one member must be a citizen
+# or qualified non-citizen (8.150.410.13). Wages of 12,000 are about 19 hours a week at
+# the 2026 New Mexico minimum wage of 12.00; gas of 900 is 75 a month, within common
+# New Mexico winter gas bills of 60 to 120 a month.
+
+- name: Case 1, income exactly at the size-one limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 23_472
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 23,472 <= 1,956 x 12
+    nm_liheap_eligible: true
+
+- name: Case 2, income one dollar a year above the size-one limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 23_473
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_liheap_eligible: false
+
+- name: Case 3, a home with no heating is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_liheap_eligible: false
+
+- name: Case 4, an unspecified heating fuel without heat in rent is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: false
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_liheap_eligible: false
+
+- name: Case 5, an unspecified heating fuel with heat included in non-subsidized rent is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+        is_in_public_housing: false
+  output:
+    nm_liheap_eligible: true
+
+- name: Case 6, a household heating with gathered wood and no wood bill is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: WOOD
+        wood_expense: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_liheap_eligible: true
+
+- name: Case 7, a household with rental assistance and heat in rent but no out-of-pocket heating cost is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_liheap_eligible: false
+
+- name: Case 8, a public housing household with heat in rent but no out-of-pocket heating cost is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+        is_in_public_housing: true
+  output:
+    nm_liheap_eligible: false
+
+- name: Case 9, a household with rental assistance and heat in rent that pays an extra heating cost is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        # Out-of-pocket electric heating cost of 30 a month beyond the subsidy.
+        pre_subsidy_electricity_expense: 360
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_liheap_eligible: true
+
+- name: Case 10, a household with rental assistance that pays its own gas bill is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_liheap_eligible: true
+
+- name: Case 11, a gas-heated household with no heating bill and heat outside rent is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: false
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_liheap_eligible: false
+
+- name: Case 12, a household of only undocumented members with no income is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # Size 0; zero income would otherwise pass the income test
+    nm_liheap_eligible: false

@@ -1,0 +1,26 @@
+description: New Mexico counts these sources as earned income of household members over the earned income age under the Low Income Home Energy Assistance Program.
+# Wages, pay for irregular work and self-employment income, with the net
+# income of a business counted as gross income. The existing net business
+# inputs get no further deduction, and each source is floored at zero, so a
+# loss in one source cannot offset another. Rental income counts as earned
+# income for a landlord working 20 or more hours a week; no input records
+# landlord hours, so rental income is listed with unearned income.
+values:
+  2025-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+
+metadata:
+  unit: list
+  period: year
+  label: New Mexico LIHEAP earned income sources
+  reference:
+    - title: 8.150.520.8 A, 8.150.520.9 C and 8.150.520.12 NMAC
+      href: https://www.srca.nm.gov/parts/title08/08.150.0520.html
+    - title: "New Mexico FY2026 LIHEAP State Plan, Sections 1.8-1.9 #page 5-6"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/NM_Plan_2026.pdf#page=5
+    - title: "New Mexico FY2027 LIHEAP State Plan, Sections 1.8-1.9 #page 5-6"
+      href: https://www.hca.nm.gov/wp-content/uploads/DETAILED-MODEL-PLAN-LIHEAP_10_01_2026-4.pdf#page=5

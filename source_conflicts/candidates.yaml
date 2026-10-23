@@ -3864,6 +3864,37 @@ candidates:
     prs: []
   state: unreviewed
   note: PE-US follows agency practice; establish authority for departure from the codified regulation.
+- id: us-nm:liheap-three-income-points
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does New Mexico LIHEAP give three income points for income up to 100% of the poverty guideline, as the
+    regulation provides, or up to 110%, as the agency's point and income guides apply?
+  sources:
+  - kind: regulation
+    citation: 8.150.620.9 B NMAC
+    url: https://www.srca.nm.gov/parts/title08/08.150.0620.html
+  - kind: guidance
+    citation: HCA LIHEAP FFY2026 Point and Income Guide
+    url: https://www.hca.nm.gov/wp-content/uploads/Heating-and-Cooling-Point-and-Income-Guide-2026.pdf
+  - kind: guidance
+    citation: HCA LIHEAP FFY2027 Point and Income Guidelines
+    url: https://www.hca.nm.gov/wp-content/uploads/NM-LIHEAP-FFY-2027-Point-and-Income-Guidelines.pdf
+  readings:
+    statute: No statute supplied; the regulation gives three points for income from zero to 100% of the poverty guideline
+      and two points from 100% to 150%.
+    other: The FFY2025-FFY2027 guides and the FFY2026 ISD 017 card give three points at or below 110% of the poverty guideline.
+  example: In FFY2026, a one-person household with monthly income of $1,400 (107% of the guideline) scores two income
+    points under the regulation and three under the guides.
+  pe_us:
+    follows: unknown
+    code: []
+    prs: []
+  state: ruled
+  note: 'PE-US follows the guides, which HCA applies; the regulation lets the secretary adjust point values but does
+    not mention this cutoff. Code not yet on main: nm_liheap, gov.states.nm.hca.liheap.payment.income_points.low_income_fpg_rate.'
 - id: us-nm:medical-care-credit-mixed-age-spouses
   program: income-tax
   years:
