@@ -157,3 +157,16 @@
     adjusted_gross_income: 50_000
     ma_gross_income: 50_000
     ma_agi: 50_000
+
+- name: Filer military retirement pay and survivor benefits are excluded from MA gross income.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: MA
+    employment_income: 50_000
+    military_retirement_pay: 20_000
+    military_retirement_pay_survivors: 10_000
+  output:
+    adjusted_gross_income: 80_000
+    ma_gross_income: 50_000
+    ma_agi: 50_000
