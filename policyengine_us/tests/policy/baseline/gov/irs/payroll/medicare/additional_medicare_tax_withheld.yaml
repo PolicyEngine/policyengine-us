@@ -1,0 +1,70 @@
+- name: Case 1, nothing is withheld on wages at the threshold.
+  period: 2024
+  input:
+    employment_income: 200_000
+  output:
+    additional_medicare_tax_withheld: 0
+
+- name: Case 2, 0.9% is withheld on wages above the threshold.
+  period: 2024
+  input:
+    employment_income: 250_000
+  output:
+    # 0.9% * (250,000 - 200,000)
+    additional_medicare_tax_withheld: 450
+
+- name: Case 3, 26 CFR 31.3102-4(a) example of spouses with $100,000 and $300,000 wages.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 100_000
+      person2:
+        age: 43
+        employment_income: 300_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    # Each employer withholds on its own employee's wages above $200,000,
+    # disregarding the spouse's wages: 0.9% * 100,000 for person2.
+    additional_medicare_tax_withheld: [0, 900]
+    # The joint liability is 0.9% * (400,000 - 250,000).
+    additional_medicare_tax: 1_350
+
+- name: Case 4, 26 CFR 31.3102-4(b) example of spouses with $190,000 and $150,000 wages.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 190_000
+      person2:
+        age: 43
+        employment_income: 150_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    # Neither spouse's wages exceed $200,000, so nothing is withheld.
+    additional_medicare_tax_withheld: [0, 0]
+    # The couple still owes 0.9% * (340,000 - 250,000) on the joint return.
+    additional_medicare_tax: 810
+
+- name: Case 5, nothing is withheld from self-employment income.
+  period: 2024
+  input:
+    self_employment_income: 300_000
+  output:
+    additional_medicare_tax_withheld: 0
+
+- name: Case 6, traditional 401(k) deferrals do not reduce Medicare wages.
+  period: 2025
+  input:
+    employment_income: 250_000
+    traditional_401k_contributions_desired: 50_000
+  output:
+    additional_medicare_tax_withheld: 450
