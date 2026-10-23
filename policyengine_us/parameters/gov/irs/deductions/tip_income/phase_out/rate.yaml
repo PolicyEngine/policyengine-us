@@ -1,4 +1,4 @@
-description: The IRS phases out the tip income exemption at the following rate for income above a certain threshold.
+description: The IRS reduces the tip income deduction by this share of the modified adjusted gross income above the threshold, counted in full increments.
 
 values:
   2025-01-01: 0.1
@@ -6,7 +6,10 @@ values:
 metadata:
   unit: /1
   period: year
-  label: Tip income exemption phase out rate
+  label: Tip income deduction phase-out rate
   reference:
-    - title: H.R.1 - One Big Beautiful Bill Act
-      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+    # increment x rate: $100 for each full $1,000 of excess.
+    - title: 26 U.S.C. § 224(b)(2)(A)
+      href: https://www.law.cornell.edu/uscode/text/26/224#b_2_A
+    - title: 2025 Schedule 1-A (Form 1040), line 12
+      href: https://www.irs.gov/pub/irs-pdf/f1040s1a.pdf#page=1

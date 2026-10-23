@@ -1,0 +1,16 @@
+description: Hawaii allows this qualified mortgage insurance premium deduction.
+values:
+  1900-01-01: false
+  2007-01-01: true
+  2022-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Hawaii mortgage insurance premiums deduction in effect
+  reference:
+    - title: Hawaii Department of Taxation Announcement 2021-01
+      href: https://files.hawaii.gov/tax/news/announce/ann21-01.pdf
+    - title: Hawaii 2021 Digest of Tax Measures, IRC 163(h)(3)(E)(iv)(I)
+      href: https://files.hawaii.gov/tax/legal/legis/2021/21digest.pdf#page=9
+    - title: HRS 235-2.4(j), IRC 163(h)(3)(F) is inoperative
+      href: https://data.capitol.hawaii.gov/hrscurrent/Vol04_Ch0201-0257/HRS0235/HRS_0235-0002_0004.htm

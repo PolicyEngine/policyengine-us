@@ -27,14 +27,17 @@ class snap_max_allotment(Variable):
         )
         return main_allotment + additional_allotment
 
-    def formula_2026_10_01(spm_unit, period, parameters):
+    def formula_2025_10_01(spm_unit, period, parameters):
+        # Starts October 1, 2025 under 7 U.S.C. 2012(u)(3)(C)'s annual computation and FNS's September 4, 2025 memo.
         allotment = snap_max_allotment.formula(spm_unit, period, parameters)
         snap_region = spm_unit.household("snap_region_str", period)
         # 7 U.S.C. 2012(u)(2)(I), as amended by P.L. 119-21, limits the
         # increment for households of 9 or more to 200 percent of the
-        # four-person allotment. USDA dates that provision to October 2025,
-        # but its FY2026 table listed only a per-person increment; its
-        # FY2027 memo first published the resulting 18+ caps. The cap here
-        # covers published tables from October 2026; FY2026 is unchanged.
+        # four-person allotment. USDA's FY2026 table already applies the
+        # amended household ratios of the same paragraph (its $218 increment
+        # is 22% of the $994 4-person maximum, rounded down), but it listed no
+        # cap; its FY2027 memo first published the resulting 18+ caps. The
+        # model applies the cap from FY2026. The cap parameter documents
+        # USDA's unrounded-cost method and the unresolved FY2026 Guam value.
         cap = parameters(period).gov.usda.snap.max_allotment.cap[snap_region]
         return min_(allotment, cap)

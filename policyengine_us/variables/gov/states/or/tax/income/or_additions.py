@@ -8,3 +8,5 @@ class or_additions(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.OR
+
+    adds = ["or_other_additions"]
