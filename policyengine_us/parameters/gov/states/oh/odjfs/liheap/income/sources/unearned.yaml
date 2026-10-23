@@ -7,10 +7,13 @@ values:
     # minor's benefit paid to an adult payee (Guidelines section E-2.2).
     - ssi
     - pension_income
-    # Military retirement pay is a separate input from the pension inputs that
+    # Military retirement income (retiree pay plus Survivor Benefit Plan
+    # annuities) is a separate input from the pension inputs that
     # pension_income adds, so both are listed; a household reports the amount
-    # in one or the other. Appendix XXIII lists military pensions.
-    - military_retirement_pay
+    # in one or the other. A military survivor annuity belongs in
+    # military_retirement_pay_survivors, not survivor_benefits. Appendix XXIII
+    # lists military pensions.
+    - military_retirement_income
     # Railroad Retirement is a retirement benefit that is not on the excluded
     # income list; section E-2.3 counts any income not listed elsewhere.
     - railroad_benefits
