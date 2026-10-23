@@ -2,21 +2,23 @@
 
 Program Design (d)(7) defines an applicable return filer by household income
 "at or above 100 percent and at or below 165 percent of the federal poverty
-level" in PY2026, and "at or above 100 percent and under 200 percent" in
-PY2027. The bounds below are transcribed from those Designs, not read from
-the parameters, and are evaluated in exact rational arithmetic.
+level" in PY2026, and "at or above 100 percent and at or below 200 percent"
+in the Final 2027 Design. The bounds below are transcribed from those
+Designs, not read from the parameters, and are evaluated in exact rational
+arithmetic.
 
 The model divides nonnegative ACA MAGI by the prior-year poverty guideline.
 It must not use aca_magi_fraction for the band: that fraction truncates to
 whole percentages, so every income from 165.00% to 165.99% of the guideline
-becomes 1.65 and would pass an "at or below 165 percent" test. FTB 3849
-Table 1-2, for the predecessor California program, likewise truncates for
-the rate lookup but decides band edges on the exact percentage.
+becomes 1.65 and would pass an "at or below 165 percent" test (in PY2027,
+200.00% to 200.99% becomes 2.00). FTB 3849 Table 1-2, for the predecessor
+California program, likewise truncates for the rate lookup but decides band
+edges on the exact percentage.
 
 The model stores MAGI and the guideline as float32 and divides them in
 float64, so the reference reads (d)(7) exactly on the stored float32 values.
 
-- The parameters match the Designs' bounds and inclusivity.
+- The parameters match the Designs' bounds.
 - With every non-income condition met, eligibility equals the exact reading
   of (d)(7) for any stored income and guideline. The examples mix three kinds
   of income: whole dollars near each edge (some guidelines are multiples of
@@ -38,12 +40,12 @@ from hypothesis import strategies as st
 from policyengine_us import Simulation
 from policyengine_us.system import system
 
-# Program Design (d)(7), by plan year: (floor, limit, limit is inclusive).
+# Program Design (d)(7), by plan year: the floor and the limit, both inclusive.
 DESIGN_BANDS = {
     # 2026 Design: "at or above 100 percent and at or below 165 percent".
-    2026: (Fraction(1), Fraction(165, 100), True),
-    # 2027 Design V4: "at or above 100 percent and under 200 percent".
-    2027: (Fraction(1), Fraction(2), False),
+    2026: (Fraction(1), Fraction(165, 100)),
+    # Final 2027 Design: "at or above 100 percent and at or below 200 percent".
+    2027: (Fraction(1), Fraction(2)),
 }
 EDGES = (Fraction(1), Fraction(165, 100), Fraction(2))
 MAX_TAX_UNITS = 128
@@ -55,10 +57,9 @@ def stored(value):
 
 
 def design_eligible(year, income, guideline):
-    floor, limit, inclusive = DESIGN_BANDS[year]
+    floor, limit = DESIGN_BANDS[year]
     ratio = max(stored(income), 0) / stored(guideline)
-    below_limit = ratio <= limit if inclusive else ratio < limit
-    return ratio >= floor and below_limit
+    return floor <= ratio <= limit
 
 
 def model_eligible(year, incomes, guidelines):
@@ -113,11 +114,10 @@ def tax_unit_incomes(draw):
 @pytest.mark.parametrize("year", sorted(DESIGN_BANDS))
 def test_parameters_match_program_design(year):
     p = system.parameters(f"{year}-01-01").gov.states.ca.hbex.premium_subsidy
-    floor, limit, inclusive = DESIGN_BANDS[year]
+    floor, limit = DESIGN_BANDS[year]
     assert p.in_effect
     assert Fraction(str(p.fpl_floor)) == floor
     assert Fraction(str(p.fpl_limit)) == limit
-    assert bool(p.fpl_limit_inclusive) is inclusive
 
 
 @pytest.mark.parametrize("year", sorted(DESIGN_BANDS))
@@ -135,7 +135,18 @@ def test_parameters_match_program_design(year):
     ]
 )
 # A $20-multiple guideline puts 100%, 165% and 200% on whole dollars.
-@example(units=[(16_000, 16_000), (26_400, 16_000), (26_401, 16_000), (32_000, 16_000)])
+@example(
+    units=[
+        (16_000, 16_000),
+        (26_400, 16_000),
+        (26_401, 16_000),
+        (32_000, 16_000),
+        (32_001, 16_000),
+    ]
+)
+# PY2027, 2026 one-person guideline $15,960: 199.994%, 200.000%, 200.006% and
+# 200.996%; truncation maps 200.000% to 200.996% to 2.00.
+@example(units=[(31_919, 15_960), (31_920, 15_960), (31_921, 15_960), (32_079, 15_960)])
 # The 2025 guideline for 72 people, $406,150: $674,209 is exactly 166%, which
 # float32 truncation in aca_magi_fraction misrounds to 165.99%.
 @example(units=[(674_209, 406_150), (812_300, 406_150)])

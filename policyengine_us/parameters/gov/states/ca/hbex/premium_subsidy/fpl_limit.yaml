@@ -1,10 +1,15 @@
 description: California limits income eligibility to this share of the federal poverty line under the California Premium Subsidy program.
 values:
-  # PY2026 Program Design (d)(7): "at or below 165 percent" (inclusive).
+  # Each limit is inclusive and applies to the exact income-to-FPL ratio, not
+  # the truncated aca_magi_fraction.
+  # PY2026 Program Design (d)(7): "at or below 165 percent".
   2026-01-01: 1.65
-  # PY2027 Program Design V4 (adopted Board Res. 2026-22) extends eligibility to
-  # "under 200 percent" (strict; see fpl_limit_inclusive). The limit applies
-  # to the exact income-to-FPL ratio, not the truncated aca_magi_fraction.
+  # Final 2027 Program Design (d)(7): "at or below 200 percent".
+  # The OE27 enroller deck conflicts with (d)(7) at 200%: its summary slide says
+  # the subsidy "applies only to enrollees up to under 200% FPL", while its own
+  # worked example at exactly 200% FPL applies the 5.28% rate. Follow the
+  # adopted Design.
+  # Candidate: us-ca:premium-subsidy-200-fpl-limit until registered.
   2027-01-01: 2.0
 
 metadata:
@@ -16,7 +21,9 @@ metadata:
       href: https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=2
     - title: 2026 California State Premium Subsidy Policy Explainer, eligibility
       href: https://hbex.coveredca.com/stakeholders/PDFs/2026-02_StatePremiumSub_PolicyExplainer-Final.pdf#page=1
-    - title: 2027 California Premium Subsidy Program Design V4, subdiv. (d)(7)
-      href: https://board.coveredca.com/meetings/2026/May%2021,%202026/CoveredCA_2027_Premium_Subsidy_Program_Design_V4_05-19-26.pdf#page=2
-    - title: Covered California Board Resolution 2026-22
-      href: https://board.coveredca.com/meetings/2026/June%2018,%202026/2026-22.pdf
+    - title: Final 2027 California Premium Subsidy Program Design, subdiv. (d)(7)
+      href: https://hbex.coveredca.com/data-research/Final-2027-California-Premium-Subsidy-Program-Design.pdf#page=2
+    - title: 2027 California State Premium Subsidy Program Insight, eligibility
+      href: https://hbex.coveredca.com/stakeholders/PDFs/2026-03_StatePremiumSub2027_Insight_Final.pdf#page=1
+    - title: "Covered California OE 2027 Enroller Kick-off, 200% FPL example #page 37-40"
+      href: https://hbex.coveredca.com/toolkit/webinars-briefings/downloads/OE27_Enroller_Kickoff.pdf#page=37

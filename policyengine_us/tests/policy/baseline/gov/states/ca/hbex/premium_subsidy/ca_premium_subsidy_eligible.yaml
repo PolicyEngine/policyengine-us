@@ -5,7 +5,7 @@
 # married-filing-separately exclusion, and the federal FPL-band income test),
 # the tax unit is an applicable return filer, and ACA MAGI is at
 # or above the 100% FPL floor and at or below the FPL limit (1.65 in PY2026,
-# under 2.00 in PY2027; see fpl_limit_inclusive). Program Design (d)(7) applies
+# 2.00 in PY2027). Program Design (d)(7) applies
 # these limits to the exact ratio of nonnegative ACA MAGI to prior-year FPG,
 # not to the truncated aca_magi_fraction (FTB 3849 Table 1-2 likewise decides
 # band edges on the exact percentage). Supplied-income cases pin prior-year FPG
@@ -13,7 +13,7 @@
 # supplied so the gate logic is tested in isolation from the premium-data
 # lookup. Income-derived cases use the actual prior-year one-person FPG
 # ($15,650 for PY2026, $15,960 for PY2027).
-#   fpl_floor = 1.0; fpl_limit = 1.65 inclusive (PY2026), 2.0 exclusive (PY2027)
+#   fpl_floor = 1.0; fpl_limit = 1.65 (PY2026), 2.0 (PY2027), both inclusive
 
 # ---- Income-band boundaries ----
 
@@ -549,11 +549,11 @@
   output:
     ca_premium_subsidy_eligible: false
 
-# ---- PY2027 FPL-limit edge (under 200%) ----
+# ---- PY2027 FPL-limit edge (at or below 200%) ----
 
-- name: Case 17, PY2027 at 199% FPL (1.99) is eligible (limit under 200%).
-  # PY2027 Program Design (d)(7): "under 200 percent". 1.99 < 2.0 -> in-band.
-  # Confirms the widened PY2027 band admits units up to 199% FPL.
+- name: Case 17, PY2027 at 199% FPL (1.99) is eligible.
+  # Final 2027 Program Design (d)(7): "at or below 200 percent". 1.99 <= 2.0.
+  # Confirms the widened PY2027 band admits units between 165% and 200% FPL.
   period: 2027
   input:
     people:
@@ -574,9 +574,9 @@
   output:
     ca_premium_subsidy_eligible: true
 
-- name: Case 18, PY2027 at exactly 200% FPL (2.00) is ineligible (strict limit).
-  # PY2027 fpl_limit 2.0 with fpl_limit_inclusive false: 2.00 is not under 2.0.
-  # Pairs with Case 17 to bracket the PY2027 upper edge.
+- name: Case 18, PY2027 at exactly 200% FPL (2.00) is eligible (inclusive limit).
+  # Exact ratio 20_000 / 10_000 = 2.0, which is "at or below 200 percent".
+  # Pairs with Case 18a to bracket the PY2027 upper edge.
   period: 2027
   input:
     people:
@@ -595,10 +595,33 @@
         members: [person1]
         state_code: CA
   output:
+    ca_premium_subsidy_eligible: true
+
+- name: Case 18a, PY2027 at 200.5% FPL (2.005) is ineligible.
+  # Exact ratio 20_050 / 10_000 = 2.005 > 2.0. A limit tested on the truncated
+  # fraction (2.00) would wrongly admit it.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 20_050
+        tax_unit_fpg:
+          2026: 10_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
     ca_premium_subsidy_eligible: false
 
 - name: Case 17a, PY2027 at 199.5% FPL (1.995) is eligible.
-  # Exact ratio 19_950 / 10_000 = 1.995 < 2.0. A limit of 1.99 on the exact
+  # Exact ratio 19_950 / 10_000 = 1.995 <= 2.0. A limit of 1.99 on the exact
   # ratio would wrongly exclude incomes between 199% and 200% of FPL.
   period: 2027
   input:
@@ -623,8 +646,7 @@
 # ---- PY2027 200% limit from derived income ----
 
 - name: Case 17b, PY2027 income of 199.994% of FPL is eligible.
-  # $31,919 / 2026 one-person FPG $15,960 = 199.9937%, which is "under 200
-  # percent" (2027 Program Design (d)(7)).
+  # $31,919 / 2026 one-person FPG $15,960 = 199.9937%.
   period: 2027
   absolute_error_margin: 0.0001
   input:
@@ -646,8 +668,10 @@
     aca_magi_fraction: 1.99
     ca_premium_subsidy_eligible: true
 
-- name: Case 18b, PY2027 income of exactly 200% of FPL is ineligible.
-  # $31,920 / $15,960 = 200.000%, which is not "under 200 percent".
+- name: Case 18b, PY2027 income of exactly 200% of FPL is eligible.
+  # $31,920 / $15,960 = 200.000%, "at or below 200 percent" (Final 2027
+  # Design (d)(7)). This is the OE27 enroller deck's 200% FPL example, which
+  # applies the 5.28% state rate (PDF pages 37-40).
   period: 2027
   absolute_error_margin: 0.0001
   input:
@@ -667,11 +691,57 @@
   output:
     aca_magi: 31_920
     aca_magi_fraction: 2.00
+    ca_premium_subsidy_eligible: true
+
+- name: Case 18d, PY2027 income of 200.006% of FPL is ineligible though it truncates to 2.00.
+  # $31,921 / $15,960 = 200.0063%.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 31_921
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi: 31_921
+    aca_magi_fraction: 2.00
+    ca_premium_subsidy_eligible: false
+
+- name: Case 18e, PY2027 income of 200.996% of FPL is ineligible though it truncates to 2.00.
+  # $32,079 / $15,960 = 200.9962%; 201% of FPL is $32,079.60.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 32_079
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi: 32_079
+    aca_magi_fraction: 2.00
     ca_premium_subsidy_eligible: false
 
 - name: Case 18c, PY2027 income of 165.006% of FPL is eligible (165% is the PY2026 limit only).
   # $26,335 / $15,960 = 165.0063%. Ineligible under the PY2026 limit, but
-  # inside the PY2027 band, which runs to under 200%.
+  # inside the PY2027 band, which runs to 200%.
   period: 2027
   absolute_error_margin: 0.0001
   input:

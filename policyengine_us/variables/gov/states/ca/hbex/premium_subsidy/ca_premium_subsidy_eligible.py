@@ -12,8 +12,8 @@ class ca_premium_subsidy_eligible(Variable):
         # return filer definition at Program Design (d)(7).
         # PDF pages 1-2
         "https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=1",
-        # 2027 Program Design V4, (d)(7): "under 200 percent".
-        "https://board.coveredca.com/meetings/2026/May%2021,%202026/CoveredCA_2027_Premium_Subsidy_Program_Design_V4_05-19-26.pdf#page=2",
+        # Final 2027 Program Design, (d)(7): "at or below 200 percent".
+        "https://hbex.coveredca.com/data-research/Final-2027-California-Premium-Subsidy-Program-Design.pdf#page=2",
         # FTB 3849 Table 1-2 (predecessor program): exact percentage decides
         # the band edge; the truncated percentage only drives the rate lookup.
         "https://www.ftb.ca.gov/forms/2020/2020-3849-instructions.pdf#page=6",
@@ -41,8 +41,8 @@ class ca_premium_subsidy_eligible(Variable):
         # exceptions (abandoned-spouse, domestic-abuse relief) are not applied.
         aptc_eligible = add(tax_unit, period, ["is_aca_ptc_eligible"]) > 0
         # Program Design (d)(7) bounds household income "at or above 100
-        # percent" and, in PY2026, "at or below 165 percent" (PY2027: "under
-        # 200 percent") of the FPL. Test the exact ratio, not the truncated
+        # percent" and "at or below" 165 percent (PY2026) or 200 percent
+        # (PY2027) of the FPL. Test the exact ratio, not the truncated
         # aca_magi_fraction: truncation maps 165.00%-165.99% to 1.65, which
         # would admit incomes above 165%. FTB 3849 Table 1-2 (2020) likewise
         # decides band edges on the exact percentage.
@@ -51,12 +51,9 @@ class ca_premium_subsidy_eligible(Variable):
         # Divide in float64: a float32 quotient can round a ratio just above
         # a limit down onto it.
         exact_magi_frac = magi.astype(np.float64) / fpg
-        below_limit = where(
-            p.fpl_limit_inclusive,
-            exact_magi_frac <= p.fpl_limit,
-            exact_magi_frac < p.fpl_limit,
+        income_eligible = (exact_magi_frac >= p.fpl_floor) & (
+            exact_magi_frac <= p.fpl_limit
         )
-        income_eligible = (exact_magi_frac >= p.fpl_floor) & below_limit
         # An applicable return filer (Program Design (d)(7); GC
         # Section 100810(a)(6)) must file a California return, so the tax unit
         # must be a filer. This gate replaces reliance on the federal 100% FPL
