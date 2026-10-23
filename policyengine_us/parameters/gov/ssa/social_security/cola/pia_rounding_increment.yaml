@@ -1,0 +1,9 @@
+description: Dollar increment used to round PIA after each Social Security COLA.
+values:
+  1975-06-01: 0.1
+metadata:
+  unit: currency-USD
+  label: Social Security COLA PIA rounding increment
+  reference:
+    - title: SSA COLA history, timing, and computation
+      href: https://secure.ssa.gov/poms.nsf/lnx/0300601020
