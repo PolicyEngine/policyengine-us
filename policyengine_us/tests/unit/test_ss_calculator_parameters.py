@@ -27,7 +27,7 @@ def calculator_parameters(reference_parameters):
     the adapter's production paths intact while avoiding a whole-US tree copy
     and whole-US instant snapshots for each isolated parameter reform.
     """
-    root = ParameterNode()
+    root = ParameterNode(data={})
     for path in (
         "gov.ssa.social_security.pia",
         "gov.contrib.ssa.pia",
@@ -43,7 +43,8 @@ def calculator_parameters(reference_parameters):
             else:
                 if part not in destination.children:
                     destination.add_child(
-                        part, ParameterNode(name=".".join(parts[: index + 1]))
+                        part,
+                        ParameterNode(name=".".join(parts[: index + 1]), data={}),
                     )
                 destination = destination.children[part]
     return root
