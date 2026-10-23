@@ -42,6 +42,9 @@ explicit sources through legacy extraction and complete snapshots, including
 subsequent public writes after reload. Builders consume this metadata before
 validating ordinary situation inputs.
 
+This compatibility layer requires Core 3.33.1 or later for recorded-input,
+storage-origin and replay APIs. The lockfile uses Core 3.33.2.
+
 Each component has a `_source` selector with default `reported`. Reserved
 options `supplied_aime`, `supplied_pia`, `supplied_ratio_survivor`, and `history`
 fail explicitly until their calculation routes are implemented. Selection never
