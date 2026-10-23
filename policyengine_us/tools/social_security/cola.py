@@ -218,7 +218,8 @@ def read_parameter_events(parameters, through_year: int) -> tuple[ColaEvent, ...
     try:
         # Reuse the canonical statutory history supplied by the benefit-lever
         # route. Its authored event dates preserve irregular historical timing.
-        raw_history = parameters.gov.ssa.cola_history.rate
+        history_parameters = parameters.gov.ssa.cola_history
+        raw_history = history_parameters.rate
         history_start = str(raw_history.metadata["historical_start"])
         history_end = str(raw_history.metadata["historical_end"])
         observations = sorted(
@@ -238,7 +239,9 @@ def read_parameter_events(parameters, through_year: int) -> tuple[ColaEvent, ...
             year = int(observation.instant_str[:4])
             if year > through_year:
                 continue
-            node = parameters(observation.instant_str).gov.ssa.cola_history
+            # Snapshot only these four leaves, not the complete US parameter
+            # tree for each historical year.
+            node = history_parameters(observation.instant_str)
             effective_number = int(node.effective_month)
             payment_number = int(node.first_payment_month)
             effective = f"{year}-{effective_number:02d}"
@@ -253,9 +256,9 @@ def read_parameter_events(parameters, through_year: int) -> tuple[ColaEvent, ...
             )
             kwargs = {}
             if year == 1999:
-                correction = parameters(
+                correction = parameters.gov.ssa.social_security.cola(
                     observation.instant_str
-                ).gov.ssa.social_security.cola
+                )
                 kwargs = {
                     "as_paid_rate": _decimal(correction.december_1999_as_paid_rate),
                     "correction_payment_month": str(
@@ -275,9 +278,10 @@ def read_parameter_events(parameters, through_year: int) -> tuple[ColaEvent, ...
             # not evidence of a frozen Q3 projection after its last dated
             # observation. Inspect the raw tree, including runtime extensions,
             # before reading instant values that could silently carry forward.
+            q3_parameter = parameters.gov.ssa.uprating
             q3_years = {
                 int(observation.instant_str[:4])
-                for observation in parameters.gov.ssa.uprating.values_list
+                for observation in q3_parameter.values_list
                 if observation.value is not None
                 and observation.instant_str[5:] == "01-01"
             }
@@ -302,7 +306,7 @@ def read_parameter_events(parameters, through_year: int) -> tuple[ColaEvent, ...
                     f"The frozen SSA Q3 path is missing payment year {min(missing_years)}"
                 )
             q3 = {
-                year: _decimal(parameters(f"{year}-01-01").gov.ssa.uprating)
+                year: _decimal(q3_parameter(f"{year}-01-01"))
                 for year in range(anchor_year + 1, through_year + 1)
             }
             result.extend(

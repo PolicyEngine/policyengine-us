@@ -136,23 +136,82 @@ def _active(start_year, eligibility_year, payment_year, recompute_mode):
     return year >= start_year
 
 
+def _computation_years(eligibility_year, payment_year, recompute_mode):
+    year = _year(eligibility_year, "eligibility year")
+    if recompute_mode not in ("cohort", "retroactive"):
+        raise ValueError("recompute_mode must be 'cohort' or 'retroactive'")
+    if payment_year is not None:
+        _year(payment_year, "payment year")
+        if payment_year < year:
+            raise ValueError("payment year cannot precede eligibility year")
+    if recompute_mode == "retroactive" and payment_year is None:
+        raise ValueError("retroactive recomputation requires a payment year")
+    return year
+
+
+def _active_features(path, year, payment_year, recompute_mode):
+    """Resolve provision gates once for calculation and inference decisions."""
+    features = set()
+    if _active(path.effective_year, year, payment_year, recompute_mode):
+        features.add("bend_points")
+    if path.factor_values is not None and _active(
+        path.factor_start_year, year, payment_year, recompute_mode
+    ):
+        features.add("factors")
+    if path.s770 and _active(2026, year, payment_year, recompute_mode):
+        features.add("s770")
+    for feature, start in (
+        ("full_price_indexing", path.full_price_indexing_start_year),
+        ("progressive_price_indexing", path.progressive_price_indexing_start_year),
+    ):
+        if start is not None and _active(start, year, payment_year, recompute_mode):
+            features.add(feature)
+    return features
+
+
+def has_active_reform(
+    formula_path: FormulaPath | None,
+    eligibility_year: int,
+    payment_year: int | None = None,
+    recompute_mode: str = "cohort",
+) -> bool:
+    """Whether a provision applies and can require recovering supplied AIME.
+
+    A configured future provision or identity custom scale must not make a
+    supplied unreformed PIA go through an unnecessary inverse. Enabled indexing
+    paths still require validation of their frozen inputs, including at an
+    identity anchor.
+    """
+    year = _computation_years(eligibility_year, payment_year, recompute_mode)
+    path = formula_path or FormulaPath()
+    features = _active_features(path, year, payment_year, recompute_mode)
+    if features & {"s770", "full_price_indexing", "progressive_price_indexing"}:
+        return True
+    if "bend_points" in features:
+        if len(path.bend_point_multipliers) != 2:
+            raise ValueError("two bend-point multipliers are required")
+        if any(
+            _number(value, "bend-point multiplier") != 1
+            for value in path.bend_point_multipliers
+        ):
+            return True
+    return "factors" in features and tuple(
+        _number(value, "PIA factor") for value in path.factor_values
+    ) != tuple(Fraction(value) for value in DEFAULT_FACTORS)
+
+
 def _cohort_value(path, year, name):
     if path is None or year not in path:
         raise ValueError(f"{name} requires a frozen value for eligibility year {year}")
     return _number(path[year], name)
 
 
-def progressive_threshold(
+def _progressive_threshold(
     eligibility_year: int,
     formula_path: FormulaPath,
     *,
     bend_points: tuple[Number, Number],
-) -> Decimal:
-    """Return the M8 protected threshold; a supplied dollar path takes priority.
-
-    The fractional threshold uses the unreformed eligibility-year bend points,
-    including when another provision changes the formula's bend points.
-    """
+) -> Fraction:
     year = _year(eligibility_year, "eligibility year")
     bends, _ = _scale(bend_points, DEFAULT_FACTORS)
     if formula_path.threshold_by_year is not None:
@@ -171,7 +230,24 @@ def progressive_threshold(
         )
     if threshold < bends[0]:
         raise ValueError("progressive threshold cannot cut the protected first segment")
-    return _decimal(threshold)
+    return threshold
+
+
+def progressive_threshold(
+    eligibility_year: int,
+    formula_path: FormulaPath,
+    *,
+    bend_points: tuple[Number, Number],
+) -> Decimal:
+    """Return the M8 protected threshold; a supplied dollar path takes priority.
+
+    The fractional threshold uses the unreformed eligibility-year bend points,
+    including when another provision changes the formula's bend points. The
+    formula itself retains the exact rational threshold through final rounding.
+    """
+    return _decimal(
+        _progressive_threshold(eligibility_year, formula_path, bend_points=bend_points)
+    )
 
 
 def compute_pia(
@@ -192,22 +268,15 @@ def compute_pia(
     inverse lower-endpoint convention and continuous reform sensitivities.
     ``round_result=False`` exposes the formula before statutory dime truncation.
     """
-    year = _year(eligibility_year, "eligibility year")
-    if recompute_mode not in ("cohort", "retroactive"):
-        raise ValueError("recompute_mode must be 'cohort' or 'retroactive'")
-    if payment_year is not None:
-        _year(payment_year, "payment year")
-        if payment_year < year:
-            raise ValueError("payment year cannot precede eligibility year")
-    if recompute_mode == "retroactive" and payment_year is None:
-        raise ValueError("retroactive recomputation requires a payment year")
+    year = _computation_years(eligibility_year, payment_year, recompute_mode)
     amount = _number(aime, "AIME")
     if amount < 0:
         raise ValueError("AIME must be nonnegative")
     baseline_bends, rates = _scale(bend_points, factors)
     bends = baseline_bends
     path = formula_path or FormulaPath()
-    if _active(path.effective_year, year, payment_year, recompute_mode):
+    features = _active_features(path, year, payment_year, recompute_mode)
+    if "bend_points" in features:
         if len(path.bend_point_multipliers) != 2:
             raise ValueError("two bend-point multipliers are required")
         multipliers = tuple(
@@ -215,11 +284,9 @@ def compute_pia(
             for value in path.bend_point_multipliers
         )
         bends = tuple(bp * multiplier for bp, multiplier in zip(bends, multipliers))
-    if path.factor_values is not None and _active(
-        path.factor_start_year, year, payment_year, recompute_mode
-    ):
+    if "factors" in features:
         _, rates = _scale(baseline_bends, path.factor_values)
-    if path.s770 and _active(2026, year, payment_year, recompute_mode):
+    if "s770" in features:
         rates = (Fraction(95, 100), rates[1], rates[2])
         if path.s770_increase_first_bend_point:
             bends = (bends[0] * Fraction(118, 100), bends[1])
@@ -227,25 +294,15 @@ def compute_pia(
 
     # Full price indexing scales every marginal factor by a pinned ratio of
     # price growth to wage growth, using the same documented cohort index basis.
-    if path.full_price_indexing_start_year is not None and _active(
-        path.full_price_indexing_start_year, year, payment_year, recompute_mode
-    ):
+    if "full_price_indexing" in features:
         scale = _cohort_value(path.real_wage_scale_by_year, year, "real-wage scale")
         if scale <= 0:
             raise ValueError("real-wage scale must be positive")
         rates = tuple(rate * scale for rate in rates)
 
     result = _raw_pia(amount, bends, rates)
-    if path.progressive_price_indexing_start_year is not None and _active(
-        path.progressive_price_indexing_start_year,
-        year,
-        payment_year,
-        recompute_mode,
-    ):
-        threshold = _number(
-            progressive_threshold(year, path, bend_points=baseline_bends),
-            "progressive threshold",
-        )
+    if "progressive_price_indexing" in features:
+        threshold = _progressive_threshold(year, path, bend_points=baseline_bends)
         if threshold < bends[0]:
             raise ValueError(
                 "progressive threshold cuts the final formula's first segment"

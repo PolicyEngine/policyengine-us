@@ -9,6 +9,7 @@ import pytest
 from policyengine_us.tools.social_security.pia import (
     FormulaPath,
     compute_pia,
+    has_active_reform,
     inverse_pia,
     inverse_unrounded,
     progressive_threshold,
@@ -105,6 +106,30 @@ def test_fixed_cohort_and_aime_ignore_scoring_year_without_recompute():
     assert compute_pia(5000, 2020, path, 2035, bend_points=BENDS) == D("2156.8")
 
 
+@pytest.mark.parametrize(
+    "path",
+    [
+        FormulaPath(),
+        FormulaPath(effective_year=2027, bend_point_multipliers=(1.1, 1)),
+        FormulaPath(factor_start_year=2027, factor_values=(".95", ".32", ".15")),
+        FormulaPath(factor_values=(".9", ".32", ".15")),
+        FormulaPath(full_price_indexing_start_year=2032),
+        FormulaPath(progressive_price_indexing_start_year=2032),
+        FormulaPath(s770=True),
+    ],
+)
+def test_inactive_or_identity_paths_do_not_require_aime_inference(path):
+    assert not has_active_reform(path, 2020, 2026)
+
+
+def test_recompute_activation_matches_formula_applicability():
+    path = FormulaPath(factor_start_year=2027, factor_values=(".9", ".32", ".05"))
+    assert not has_active_reform(path, 2020, 2026, "retroactive")
+    assert has_active_reform(path, 2020, 2027, "retroactive")
+    assert has_active_reform(FormulaPath(s770=True), 2020, 2026, "retroactive")
+    assert has_active_reform(FormulaPath(full_price_indexing_start_year=2032), 2032)
+
+
 def test_s770_recomputes_old_cohort_at_original_bends_from_2026():
     # Introduced S.770 section 2: 95% first factor, 18% first-bend increase,
     # effective January 2026, with recomputation at initial-eligibility bends.
@@ -190,6 +215,14 @@ def test_progressive_indexing_continuity_and_maximum_target():
     )
     assert compute_pia(10000, 2032, path, bend_points=(1000, 6000)) == 2800
     assert compute_pia(6000, 2032, path, bend_points=(1000, 6000)) == D("2315.3")
+
+
+def test_progressive_fraction_preserves_exact_dime_boundaries():
+    # q=13000/3, F(q)=5900/3 and k=25/34, so at AIME=5988 the
+    # reformed PIA is exactly (4*5988+16100)/17 = 2356. Converting
+    # q to a finite Decimal before computing k can lose one dime.
+    path = _progressive_path(bend_point_fraction=Fraction(2, 3))
+    assert compute_pia(5988, 2032, path, bend_points=(1000, 6000)) == 2356
 
 
 def test_progressive_no_change_anchor_has_unit_above_threshold_multiplier():
