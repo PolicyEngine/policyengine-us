@@ -1,0 +1,30 @@
+- name: Case 1, default mo_other_additions is zero
+  period: 2024
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_other_additions: 0
+    mo_additions: 0
+    mo_adjusted_gross_income: 50_000
+
+- name: Case 2, mo_other_additions increases MO AGI
+  period: 2024
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+        mo_other_additions: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_other_additions: 2_000
+    mo_additions: 2_000
+    mo_adjusted_gross_income: 52_000

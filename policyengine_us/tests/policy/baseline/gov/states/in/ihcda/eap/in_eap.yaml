@@ -341,3 +341,27 @@
   output:
     in_eap_income: [15_080, 15_080, 15_080]
     in_eap: [125, 125, 175]
+- name: Case 17, a household that qualifies only through the federal 110% poverty floor receives the highest-income award.
+  period: 2026
+  input:
+    state_code: [IN, IN]
+    age: [40, 40]
+    ssi: [0, 0]
+    social_security: [0, 0]
+    receives_ssi: [false, false]
+    receives_medicaid: [false, false]
+    rent: [0, 0]
+    in_eap_household_size: [16, 16]
+    in_eap_income: [106_000, 107_965]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_000, 1_000]
+    pre_subsidy_electricity_expense: [1_000, 1_000]
+  output:
+    # Both incomes exceed the 104,543 size-16 limit. Household 1 is below the
+    # 107,965 floor (110% of the 2025 guideline of 98,150) and qualifies under
+    # 42 U.S.C. 8624(b)(2)(B). Household 2 is at the floor and does not qualify.
+    in_eap_eligible: [true, false]
+    # Household 1 is above the middle income band: 2 income points + 3
+    # single-family points + 1 natural gas point = 6 x $25 = $150, plus the
+    # $50 higher-income electric allowance.
+    in_eap: [200, 0]

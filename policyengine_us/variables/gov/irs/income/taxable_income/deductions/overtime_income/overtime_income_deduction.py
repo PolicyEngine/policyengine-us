@@ -8,6 +8,10 @@ class overtime_income_deduction(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "overtime_income_deduction_ssn_requirement_met"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/225",
+        "https://www.irs.gov/pub/irs-pdf/f1040s1a.pdf#page=1",
+    )
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
@@ -20,7 +24,15 @@ class overtime_income_deduction(Variable):
         cap = p.cap[filing_status]
         start = p.phase_out.start[filing_status]
         magi_excess = max_(magi - start, 0)
-        phase_out_amount = magi_excess * p.phase_out.rate
+        # 26 U.S.C. 225(b)(2)(A): $100 for each $1,000 of excess. Schedule
+        # 1-A, line 19, drops any fraction of a $1,000 increment.
+        increments = np.floor(magi_excess / p.phase_out.increment)
+        phase_out_amount = increments * p.phase_out.increment * p.phase_out.rate
         total_overtime_income = tax_unit.sum(overtime_income)
         capped_overtime_income = min_(cap, total_overtime_income)
-        return max_(0, capped_overtime_income - phase_out_amount)
+        deduction = max_(0, capped_overtime_income - phase_out_amount)
+        # 26 U.S.C. 225(e): a married individual takes the deduction only on
+        # a joint return. Spouses considered unmarried under section 7703(b)
+        # file as head of household and keep it.
+        separate = filing_status == filing_status.possible_values.SEPARATE
+        return where(separate, 0, deduction)

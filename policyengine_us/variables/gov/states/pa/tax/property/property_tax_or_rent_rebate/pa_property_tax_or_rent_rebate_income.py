@@ -59,7 +59,8 @@ class pa_property_tax_or_rent_rebate_income(Variable):
                     "gambling_winnings",
                     "alimony_income",
                     "workers_compensation",
-                    "disability_benefits",
+                    # The taxable part is already in adjusted_gross_income.
+                    "tax_exempt_disability_benefits",
                 ],
             )
         )
