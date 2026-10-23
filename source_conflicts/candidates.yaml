@@ -6162,30 +6162,41 @@ candidates:
 - id: us:mortgage-interest-limit-ratio-rounding
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 2018
     type: tax
   question: Should the deductible share of mortgage interest above the debt limit use the exact ratio or the ratio
     rounded to three places in Table 1?
   sources:
   - kind: statute
     citation: 26 U.S.C. 163(h)(3)
-    url: null
+    url: https://www.law.cornell.edu/uscode/text/26/163#h_3
   - kind: worksheet
     citation: 2025 Pub. 936 Table 1, line 14
-    url: null
+    url: https://www.irs.gov/pub/irs-prior/p936--2025.pdf#page=14
+  - kind: worksheet
+    citation: 2017 Pub. 936 Table 1, line 11, which the 2025 Hawaii N-11 instructions (line 21c) direct filers to
+    url: https://www.irs.gov/pub/irs-prior/p936--2017.pdf#page=11
   readings:
     statute: Section 163(h)(3) does not specify rounding of the deductible-interest ratio.
-    other: Publication 936 Table 1 line 14 rounds the ratio to three decimal places.
-  example: A 2016 joint example gives $26,666.67 using the exact ratio versus $26,680 using the rounded ratio.
+    other: Publication 936 Table 1 (2025 line 14; 2017 line 11) rounds the ratio to three decimal places.
+  example: A 2025 joint return with $40,000 of interest on $1,500,000 of 2016 debt gives $26,666.67 using the exact
+    ratio versus $26,680 using the ratio rounded to .667.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/household/expense/tax_unit/mortgage_interest_structure.py
+    - policyengine_us/variables/gov/states/al/tax/income/deductions/itemized/al_investment_interest.py
+    - policyengine_us/variables/gov/states/nc/tax/income/deductions/nc_mortgage_and_property_tax_before_limitation.py
+    - policyengine_us/variables/gov/states/hi/tax/income/deductions/itemized/hi_mortgage_interest_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10274
   state: unreviewed
-  note: 'This is a disputed worksheet gap-fill; PE-US uses the exact ratio, and the supplied worked example is for
-    2016 rather than the cited 2025 worksheet. Code not yet on main: deductible_mortgage_interest.'
+  note: 'PE-US follows two conventions, so follows stays unknown until one is picked. The federal deduction
+    (deductible_mortgage_interest_tax_unit) uses the exact ratio, and Alabama and North Carolina read that federal
+    amount. Hawaii (hi_mortgage_interest_deduction) follows the 2017 worksheet as a gap-fill, rounding line 11 to
+    three places, and floors the result at the federal deduction, a PE safeguard that binds only when the rounded
+    share falls below the exact federal share. Settling the federal reading (rulespec-us#1413) and using it for
+    both would make that floor unnecessary.'
 - id: us:niit-excess-business-loss-addback
   program: income-tax
   years:
