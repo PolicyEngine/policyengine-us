@@ -8,7 +8,9 @@ class tob_revenue_total(Variable):
     label = "Total trust fund revenue from SS benefit taxation"
     documentation = (
         "Tax revenue from taxation of Social Security benefits using "
-        "branching methodology per 42 U.S.C. 401 note."
+        "branching methodology per 42 U.S.C. 401 note. The total and its "
+        "OASDI and Medicare HI shares are signed: negative unit differences "
+        "are retained for aggregation."
     )
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/42/401"

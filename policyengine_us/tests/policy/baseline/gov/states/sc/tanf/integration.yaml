@@ -115,7 +115,7 @@
       person1:
         age: 35
         employment_income_before_lsr: 0
-        taxable_social_security: 3_600
+        social_security: 3_600
       person2:
         age: 8
         is_child_dependent: true
@@ -129,7 +129,7 @@
         state_code: SC
   output:
     sc_tanf: 223.20
-    # monthly unearned = 3,600/12 = 300
+    # monthly unearned = 3,600/12 = 300 (gross Social Security counts)
     # tanf_fpg for size 2 = 1703.33
     # need_standard = 1703.33 * 0.5 = 851.67
     # countable_income = 0 (earned) + 300 (unearned) = 300
@@ -222,3 +222,182 @@
     sc_tanf: 0
     # Both members are undocumented, so no one qualifies as
     # citizen or legal immigrant -> ineligible
+
+- name: Case 9, 2020 unemployment compensation below the federal exclusion counts in full.
+  period: 2020-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        unemployment_compensation: 6_000
+      person2:
+        age: 8
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # 2020 federal exclusion: first 10,200 of UC is tax-exempt,
+    # so taxable UC = max(6,000 - 10,200, 0) = 0.
+    taxable_unemployment_compensation: [0, 0]
+    # Section 7.7 counts gross UC: 6,000 / 12 = 500 per month.
+    total_unemployment_compensation: [500, 0]
+    sc_tanf_gross_unearned_income: [500, 0]
+    sc_tanf_countable_income: 500
+    # tanf_fpg for size 2 (2020-01, uses 2019 FPG) = 16,910 / 12 = 1,409.17
+    # need_standard = 1,409.17 * 0.5 = 704.58
+    # 500 < 704.58 -> countable income eligible
+    sc_tanf_income_eligible: true
+    # excess = 704.58 - 500 = 204.58
+    # benefit = 204.58 * 0.3372 = 68.99
+    # (Counting taxable UC instead gave 704.58 * 0.3372 = 237.59.)
+    sc_tanf: 68.99
+
+- name: Case 10, 2020 unemployment compensation above the federal exclusion counts in full.
+  period: 2020-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        unemployment_compensation: 12_000
+      person2:
+        age: 8
+        is_child_dependent: true
+      person3:
+        age: 7
+        is_child_dependent: true
+      person4:
+        age: 6
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: SC
+  output:
+    # taxable UC = 12,000 - 10,200 = 1,800 per year = 150 per month.
+    taxable_unemployment_compensation: [150, 0, 0, 0]
+    # Gross UC counts: 12,000 / 12 = 1,000 per month.
+    total_unemployment_compensation: [1_000, 0, 0, 0]
+    sc_tanf_gross_unearned_income: [1_000, 0, 0, 0]
+    sc_tanf_countable_income: 1_000
+    # tanf_fpg for size 4 (2020-01, uses 2019 FPG) = 25,750 / 12 = 2,145.83
+    # need_standard = 2,145.83 * 0.5 = 1,072.92
+    # 1,000 < 1,072.92 -> countable income eligible
+    sc_tanf_income_eligible: true
+    # excess = 1,072.92 - 1,000 = 72.92
+    # benefit = 72.92 * 0.3372 = 24.59
+    # (Counting taxable UC instead gave (1,072.92 - 150) * 0.3372 = 311.21.)
+    sc_tanf: 24.59
+
+- name: Case 11, gross Social Security counts when none of it is federally taxable.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        social_security_disability: 6_000
+      person2:
+        age: 8
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Provisional income = 6,000 * 0.5 = 3,000, below the 25,000 base
+    # amount, so taxable Social Security = 0.
+    taxable_social_security: [0, 0]
+    # Section 7.7 counts the gross SSA benefit: 6,000 / 12 = 500 per month.
+    social_security: [500, 0]
+    sc_tanf_gross_unearned_income: [500, 0]
+    sc_tanf_countable_income: 500
+    # tanf_fpg for size 2 (2025-01) = 1,703.33
+    # need_standard = 1,703.33 * 0.5 = 851.67
+    # 500 < 851.67 -> countable income eligible
+    sc_tanf_income_eligible: true
+    # excess = 851.67 - 500 = 351.67
+    # benefit = 351.67 * 0.4046 = 142.28
+    # (Counting taxable Social Security instead gave 851.67 * 0.4046 = 344.58.)
+    sc_tanf: 142.28
+
+- name: Case 12, gross Social Security above the need standard makes the family ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        social_security_disability: 12_000
+      person2:
+        age: 8
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Provisional income = 12,000 * 0.5 = 6,000 < 25,000 -> taxable SS = 0.
+    taxable_social_security: [0, 0]
+    # Gross SSA benefit counts: 12,000 / 12 = 1,000 per month.
+    sc_tanf_countable_income: 1_000
+    # need_standard = 851.67; 1,000 >= 851.67 -> not income eligible
+    sc_tanf_income_eligible: false
+    # (Counting taxable Social Security instead paid 344.58.)
+    sc_tanf: 0
+
+- name: Case 13, gross Social Security and unemployment compensation both count once.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        social_security_disability: 3_600
+        unemployment_compensation: 2_400
+      person2:
+        age: 10
+        is_child_dependent: true
+      person3:
+        age: 8
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+  output:
+    # SS = 3,600 / 12 = 300 per month; taxable SS = 0.
+    # UC = 2,400 / 12 = 200 per month (fully taxable after 2020).
+    taxable_social_security: [0, 0, 0]
+    taxable_unemployment_compensation: [200, 0, 0]
+    # gross unearned = 300 + 200 = 500
+    sc_tanf_gross_unearned_income: [500, 0, 0]
+    sc_tanf_countable_income: 500
+    # tanf_fpg for size 3 (2025-01) = 2,151.67
+    # need_standard = 2,151.67 * 0.5 = 1,075.83
+    # excess = 1,075.83 - 500 = 575.83
+    # benefit = 575.83 * 0.4046 = 232.98
+    # (Counting taxable SS instead gave (1,075.83 - 200) * 0.4046 = 354.36.)
+    sc_tanf: 232.98

@@ -1,0 +1,12 @@
+description: Utah provides this amount as the monthly supplement to a couple living alone or with others in their own household under the State Supplemental Payments to Supplemental Security Income Recipients program.
+values:
+  # DWS has republished the amounts each January since 2024; no indexing rule is published.
+  2026-01-01: 5.75
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Utah DWS SSP couple amount in their own household
+  reference:
+    - title: Utah DWS Eligibility Manual 205-10, State Supplemental Payments to SSI Recipients (effective January 1, 2026)
+      href: https://jobs.utah.gov/infosource/eligibilitymanual/200_Program_Eligibility_Requirements/205-10_State_Supplemental_Payments_to_SSI_Recipients_-_General_Information.htm

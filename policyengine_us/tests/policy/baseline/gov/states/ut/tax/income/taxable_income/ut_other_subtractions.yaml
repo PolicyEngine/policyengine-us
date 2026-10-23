@@ -1,0 +1,14 @@
+- name: Case 1, default ut_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: UT
+  output:
+    ut_other_subtractions: 0.0
+
+- name: Case 2, ut_other_subtractions flows into ut_subtractions
+  period: 2024
+  input:
+    state_code: UT
+    ut_other_subtractions: 1_100
+  output:
+    ut_subtractions: 1_100
