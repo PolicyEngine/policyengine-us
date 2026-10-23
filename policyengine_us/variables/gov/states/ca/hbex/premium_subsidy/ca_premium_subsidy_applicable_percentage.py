@@ -13,10 +13,11 @@ class ca_premium_subsidy_applicable_percentage(Variable):
         # benchmark second lowest cost silver plan, bracket-interpolated
         # linearly within each federal poverty line band.
         "https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=2",
-        "https://board.coveredca.com/meetings/2026/May%2021,%202026/CoveredCA_2027_Premium_Subsidy_Program_Design_V4_05-19-26.pdf#page=2",
+        "https://hbex.coveredca.com/data-research/Final-2027-California-Premium-Subsidy-Program-Design.pdf#page=2",
+        "https://hbex.coveredca.com/toolkit/webinars-briefings/downloads/OE27_Enroller_Kickoff.pdf#page=40",
         "https://www.ftb.ca.gov/forms/2020/2020-3849-instructions.pdf#page=6",
         "https://www.ftb.ca.gov/forms/2021/2021-3849-instructions.pdf#page=6",
-        "https://www.irs.gov/pub/irs-pdf/i8962.pdf#page=9",
+        "https://www.irs.gov/pub/irs-prior/i8962--2025.pdf#page=9",
     )
 
     def formula(tax_unit, period, parameters):
@@ -37,6 +38,10 @@ class ca_premium_subsidy_applicable_percentage(Variable):
         # Form 8962 Worksheet 2 line 4 likewise checks "more than" before
         # truncation. side="left" keeps an exact threshold in the lower
         # band; clipping keeps both bracket endpoints in the rate arrays.
+        # The OE27 enroller example conflicts with the adopted Designs at 150%:
+        # it charges 2.80%, but (d)(4) starts the paying band "Above 150%".
+        # Follow the adopted 0% boundary; the citations above document both.
+        # Candidate: us-ca:premium-subsidy-150-fpl-boundary until registered.
         bracket_idx = clip(
             np.searchsorted(thresholds, exact_magi_frac, side="left") - 1,
             0,
@@ -47,7 +52,7 @@ class ca_premium_subsidy_applicable_percentage(Variable):
         bracket_end = thresholds[bracket_idx + 1]
 
         # Retain the truncated fraction within the band: 150.6% uses the
-        # 150% lookup row of the upper band (3.19% in 2026, 2.69% in 2027).
+        # 150% lookup row of the upper band (3.19% in 2026).
         position = clip(
             (magi_frac - bracket_start) / (bracket_end - bracket_start), 0, 1
         )

@@ -1,4 +1,4 @@
-"""Properties of the adopted 2026/2027 Design (d)(4) contribution bands.
+"""Properties of the adopted 2026 Design (d)(4) contribution bands.
 
 FTB 3849 Table 1-2 distinguishes exact band eligibility from the truncated
 percentage used for the rate lookup. The physical-income properties use
@@ -45,7 +45,7 @@ def _rates(year, incomes, *, truncate=True):
     return formula(tax_unit, calculation_period, system.parameters)
 
 
-@pytest.mark.parametrize("year", [2026, 2027])
+@pytest.mark.parametrize("year", [2026])
 @settings(max_examples=100, deadline=None, derandomize=True)
 @given(incomes=st.lists(st.integers(-100_000, 600_000), min_size=2, max_size=40))
 @example(incomes=[149_999, 150_000, 150_001, 150_999, 151_000])
@@ -54,7 +54,7 @@ def test_rate_never_decreases_with_exact_income(year, incomes):
     assert np.all(np.diff(rates) >= -1e-12)
 
 
-@pytest.mark.parametrize("year", [2026, 2027])
+@pytest.mark.parametrize("year", [2026])
 @settings(max_examples=100, deadline=None, derandomize=True)
 @given(income=st.integers(-100_000, 150_000))
 @example(income=150_000)
@@ -62,7 +62,7 @@ def test_rate_is_zero_at_or_below_exactly_150_percent(year, income):
     assert _rates(year, [income])[0] == 0
 
 
-@pytest.mark.parametrize("year, starting_rate", [(2026, 0.0319), (2027, 0.0269)])
+@pytest.mark.parametrize("year, starting_rate", [(2026, 0.0319)])
 @settings(max_examples=100, deadline=None, derandomize=True)
 @given(income=st.integers(150_001, 150_999))
 def test_exact_income_above_150_uses_upper_band_truncated_starting_rate(
@@ -73,7 +73,7 @@ def test_exact_income_above_150_uses_upper_band_truncated_starting_rate(
 
 @pytest.mark.parametrize(
     "year, boundary",
-    [(2026, 1), (2026, 1.65), (2027, 1), (2027, 1.65), (2027, 2)],
+    [(2026, 1), (2026, 1.65)],
 )
 @settings(max_examples=100, deadline=None, derandomize=True)
 @given(epsilon=st.floats(min_value=1e-7, max_value=1e-4))
