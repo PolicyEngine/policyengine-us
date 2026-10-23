@@ -145,7 +145,7 @@ changelog.d/medicaid-ce-exclusions.md
 - Follow the exact order of operations specified in regulations
 - Verify behavior at edge cases (income just below/above thresholds, exact boundary conditions)
 - Consider real-world examples to validate implementation, including official calculators
-- **Statute governs (ruled 2026-10-19).** Where a statute conflicts with a regulation, form, instructions, manual or stated agency practice, follow the statute; forms and instructions fill gaps where the statute is silent. Record every such choice in the shared source-conflict register (rulespec-us `known-source-conflicts.yaml`) and mark the deciding line `# Source conflict <jurisdiction>:<id>`; see CONTRIBUTING.md#source-conflicts. `policyengine_us/tests/code_health/test_source_conflicts.py` enforces it.
+- **Conflicting sources (ruled 2026-10-19, refined 2026-10-20).** Where a statute conflicts with a form, instructions, manual or stated agency practice, follow the statute; forms and instructions fill gaps where the statute is silent. A Treasury regulation binds until a court sets it aside, so the statute-first rule doesn't override it. Where the text and the canons don't settle a reading, follow the administering agency's reading. Record every such choice in the shared source-conflict register (rulespec-us `known-source-conflicts.yaml`) and mark the deciding line `# Source conflict <jurisdiction>:<id>`; see CONTRIBUTING.md#source-conflicts. `policyengine_us/tests/code_health/test_source_conflicts.py` enforces it.
 
 ## Parameter and variable references
 - One `reference` entry per source document; URLs that differ only by `#page=` are one source. Do not split a multi-page table into per-page entries.
