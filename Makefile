@@ -166,10 +166,12 @@ test-yaml-structural-heavy-shard-4:
 test-yaml-structural-other:
 	# Per-subdir so every remaining contrib folder runs in its own subprocess,
 	# instead of stacking ~20 light files into one ~13-min catch-all batch that
-	# risked the 30-min per-batch timeout on slow runners. ssa is excluded (it
-	# has no YAML tests — only a pytest .py run elsewhere). --workers 1 so a
-	# single ~1-5 GB peak is resident at a time, leaving headroom for growth.
+	# risked the 30-min per-batch timeout on slow runners. SSA runs separately
+	# per-file below because its reform combinations retain large model copies.
 	$(BATCH) $(TESTS)/policy/contrib --exclude states,ctc,ubi_center,federal,harris,treasury,crfb,congress,refundable_credit_conversion,ssa --mode per-subdir --workers 1
+	# SSA's COLA file measured about 11 GB locally. Override CI's worker setting
+	# as well as the CLI default so each file exits before the next one starts.
+	POLICYENGINE_BATCH_WORKERS=1 $(BATCH) $(TESTS)/policy/contrib/ssa --mode per-file --workers 1
 test-yaml-structural-other-shard-2a:
 	# ctc is microsim-heavy: per-file isolation frees each ~5 GB peak between
 	# files, and --workers 1 keeps only one peak resident at a time.
