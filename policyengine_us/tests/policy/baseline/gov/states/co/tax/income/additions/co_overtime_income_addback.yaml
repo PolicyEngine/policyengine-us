@@ -164,3 +164,15 @@
     overtime_income_deduction: 3_000
     co_overtime_income_addback: 3_000
     co_additions: 3_000
+
+- name: Case 11, 2029 Colorado still adds back any federal overtime deduction taken.
+  period: 2029
+  absolute_error_margin: 0.01
+  input:
+    # Entered directly, as under a reform that extends section 225 past 2028.
+    overtime_income_deduction: 3_000
+    state_code: CO
+  output:
+    # C.R.S. 39-22-104(3)(u) adds back "the amount of any overtime compensation
+    # excluded or deducted from federal gross income", with no end date.
+    co_overtime_income_addback: 3_000

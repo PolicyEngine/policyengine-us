@@ -5,14 +5,17 @@ Sections 224 and 225 apply to taxable years beginning after December 31, 2024
 deduction shall be allowed under this section for any taxable year beginning
 after December 31, 2028."
 
-Each test builds one simulation of many tax units, with the same inputs in
-every year. The tests check:
+The first test builds two simulations of many tax units (current law, and
+both deductions switched on in every year); the second builds one. Inputs are
+the same in every year. The tests check:
 
 1. Outside 2025-2028 both deductions are zero for every return.
 2. The year switch is the only thing that changes across years. With both
    deductions switched on in every year, each return gets in every year what
-   it gets in 2025, since the caps, thresholds and phase-out rate carry one
-   value, dated 2025. Inside 2025-2028 that is also the current-law amount.
+   it gets in 2025. Inside 2025-2028 that is also the current-law amount. This
+   holds because the caps, thresholds and phase-out parameters each carry one
+   value, dated 2025; if any is later indexed or amended, compare against
+   that year's value instead.
 3. South Carolina's add-back, Montana's Schedule 1-A subtraction and
    Arizona's subtractions pass the federal deductions through exactly. Giving
    a return its tips and overtime moves each by the federal tips and overtime

@@ -1,1 +1,1 @@
-Limit the tips and overtime deductions to 2025-2028, as 26 U.S.C. 224(h) and 225(g) and their effective dates require, so South Carolina no longer adds back, and Montana and Arizona no longer subtract, deductions that were never allowed federally from 2029.
+Limit the tips and overtime deductions to 2025-2028, as 26 U.S.C. 224(h) and 225(g) and their effective dates require. From 2029 Montana and Arizona no longer subtract them and South Carolina's OBBBA add-back no longer includes them.
