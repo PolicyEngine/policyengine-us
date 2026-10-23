@@ -1,0 +1,27 @@
+description: Louisiana adds these residential energy bills to compute the total energy cost under the Low Income Home Energy Assistance Program.
+# The guide adds the bills of every energy vendor. Annual amounts stand in for
+# the application-month bill; the ratio to annual income gives the same
+# burden. Bill line items the guide includes or excludes (taxes, customer
+# charges, franchise fees, arrears, deposits) cannot be separated from these
+# totals. Community solar participants report their electric bill.
+values:
+  2025-10-01:
+    - pre_subsidy_electricity_expense
+    - gas_expense
+    - bottled_gas_expense
+    - fuel_oil_expense
+    - wood_expense
+    - coal_expense
+    - other_heating_fuel_expense
+
+metadata:
+  unit: list
+  period: year
+  label: Louisiana LIHEAP total energy cost sources
+  reference:
+    - title: "Louisiana LIHEAP Service Delivery Guide, revised January 1, 2024, Section 4.1 #page 37-38"
+      href: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20REVISED%20January%201_%202024.pdf#page=37
+    - title: "Louisiana LIHEAP Service Delivery Guide, effective April 1, 2026, Section 4.1 #page 43-44"
+      href: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20FINAL%20-%20Effective%20April%201%2c%202026.pdf#page=43
+    - title: Louisiana FY2026 LIHEAP State Plan, Sections 2.4-2.5
+      href: https://liheapch.acf.gov/docs/2026/state-plans/LA_Plan_2026.pdf#page=10

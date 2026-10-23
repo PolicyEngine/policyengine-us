@@ -1,0 +1,364 @@
+# FFY2026 Heating and Cooling Benefit Matrix: energy burden (energy cost / income)
+# bands of 9.9% and less, 10-17.9%, 18-24.9% and 25% and greater pay 200, 350, 500
+# and 650 for one to three members and 250, 400, 550 and 700 for four or more.
+# One 100 supplement per household for a member 60 or older, disabled, or five or
+# younger. Zero income receives the maximum for the size (Service Delivery Guide
+# page 41). Wages of 15,080 are full-time work at the federal 7.25 minimum wage;
+# electricity of 1,740 is about the EIA 2024 Louisiana average residential bill of
+# 145 a month.
+
+- name: Case 1, burden just below 10 percent receives the lowest size-one award.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_799
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # 1,799 / 18,000 = 0.0999 -> band 1, size 1
+    la_liheap: 200
+
+- name: Case 2, burden exactly 10 percent starts the second band and age 59 adds no supplement.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 59
+        employment_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # 1,800 / 18,000 = 0.10 -> band 2, size 1
+    la_liheap: 350
+
+- name: Case 3, burden exactly 18 percent for three members starts the third band and a six-year-old adds no supplement.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+      person2:
+        age: 6
+      person3:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 2_400
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: LA
+  output:
+    # (1,200 + 2,400) / 20,000 = 0.18 -> band 3, sizes 1-3
+    la_liheap: 500
+
+- name: Case 4, burden exactly 18 percent for four members uses the larger-household amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 20_000
+      person2:
+        age: 31
+      person3:
+        age: 7
+      person4:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pre_subsidy_electricity_expense: 2_400
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: LA
+  output:
+    # (1,200 + 2,400) / 20,000 = 0.18 -> band 3, sizes 4+
+    la_liheap: 550
+
+- name: Case 5, burden exactly 25 percent receives the top band.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        # Part-time work at 7.25 an hour.
+        employment_income: 8_000
+      person2:
+        age: 50
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # 2,000 / 8,000 = 0.25 -> band 4, size 2
+    la_liheap: 650
+
+- name: Case 6, zero countable income from a business loss receives the size maximum.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        self_employment_income: -3_000
+      person2:
+        age: 34
+      person3:
+        age: 8
+      person4:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: LA
+  output:
+    # max(-3,000, 0) = 0 income -> band 4, sizes 4+
+    la_liheap: 700
+
+- name: Case 7, a 60-year-old receives the priority supplement.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        pension_income: 14_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # 1,740 / 14,400 = 0.1208 -> band 2, size 1: 350 + 100
+    la_liheap: 450
+
+- name: Case 8, a disabled SSI recipient receives the priority supplement.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        # 2026 federal SSI benefit rate of 994 a month.
+        ssi: 11_928
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_liheap_household_size: 1
+    # 994 x 12 SSI
+    la_liheap_countable_income: 11_928
+    la_liheap_income_limit: 30_618
+    # Unsubsidized: no allowance deduction
+    la_liheap_energy_cost: 2_400
+    la_liheap_eligible: true
+    # 2,400 / 11,928 = 0.2012 -> band 3, size 1: 500 + 100
+    la_liheap: 600
+
+- name: Case 9, a five-year-old receives the priority supplement.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 15_080
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # 1,740 / 15,080 = 0.1154 -> band 2, size 2: 350 + 100
+    la_liheap: 450
+
+- name: Case 10, an undocumented 65-year-old's wages count but add no member or supplement.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+      person2:
+        age: 65
+        immigration_status: UNDOCUMENTED
+        employment_income: 4_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # 1,740 / (15,080 + 4,000) = 0.0912 -> band 1, size 1, no supplement
+    la_liheap: 200
+
+- name: Case 11, several priority members add one supplement and reach the 800 maximum.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 62
+        pension_income: 6_000
+      person2:
+        age: 33
+        is_disabled: true
+        ssi: 0
+      person3:
+        age: 4
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: LA
+  output:
+    # (900 + 1,740) / 6,000 = 0.44 -> band 4, sizes 4+: 700 + 100 once
+    la_liheap: 800
+
+- name: Case 12, unsubsidized heat in rent with no separate energy bills receives the lowest band.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # 0 / 15,080 = 0 -> band 1, size 1
+    la_liheap: 200
+
+- name: Case 13, a subsidized household's utility allowance lowers its burden band.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        receives_housing_assistance: true
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+        # Section 8 utility allowance of 120 a month.
+        hud_utility_allowance: 1_440
+  output:
+    la_liheap_household_size: 1
+    la_liheap_countable_income: 15_080
+    la_liheap_income_limit: 30_618
+    # 2,400 - 1,440 allowance (subsidized, under 60)
+    la_liheap_energy_cost: 960
+    la_liheap_eligible: true
+    # 960 / 15,080 = 0.0637 -> band 1 (2,400 alone would be band 2)
+    la_liheap: 200
+
+- name: Case 14, a subsidized household whose utility allowance exceeds its bill receives nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        receives_housing_assistance: true
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+        hud_utility_allowance: 1_800
+  output:
+    # 1,500 - 1,800 = -300 energy cost -> ineligible
+    la_liheap: 0

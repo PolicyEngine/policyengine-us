@@ -1,0 +1,326 @@
+# Service Delivery Guide (rev. January 1, 2024): income must not exceed the limit
+# (page 33), a household of only ineligible aliens does not qualify (page 33),
+# the applicant must be responsible for energy costs (page 35), and a subsidized
+# household whose utility allowance exceeds its bill is ineligible unless a member
+# is 60 or older (page 40). 42 U.S.C. 8624(b)(2)(B) protects income below 110% of
+# the poverty guideline (2025 guidelines in FFY2026: 15,650 + 5,500 per extra person).
+# Wages of 15,080 are full-time work at the federal 7.25 minimum wage; electricity of
+# 1,740 is about the EIA 2024 Louisiana average residential bill of 145 a month.
+
+- name: Case 1, income exactly at the size-one limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_618
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_liheap_eligible: true
+
+- name: Case 2, income one dollar above the size-one limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_619
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_liheap_eligible: false
+
+- name: Case 3, a thirteen-person household above the limit is not protected by the poverty floor.
+  period: 2026
+  input:
+    people:
+      # Limit 90,089; floor (15,650 + 5,500 x 12) x 1.1 = 89,815.
+      person1: {age: 45, employment_income: 90_090}
+      person2: {age: 43}
+      person3: {age: 17}
+      person4: {age: 16}
+      person5: {age: 15}
+      person6: {age: 14}
+      person7: {age: 13}
+      person8: {age: 12}
+      person9: {age: 11}
+      person10: {age: 10}
+      person11: {age: 9}
+      person12: {age: 8}
+      person13: {age: 7}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
+        state_code: LA
+  output:
+    la_liheap_eligible: false
+
+- name: Case 4, a fourteen-person household above the limit but below the poverty floor is eligible.
+  period: 2026
+  input:
+    people:
+      # Limit 91,855; floor (15,650 + 5,500 x 13) x 1.1 = 95,865.
+      person1: {age: 45, employment_income: 95_864}
+      person2: {age: 43}
+      person3: {age: 17}
+      person4: {age: 16}
+      person5: {age: 15}
+      person6: {age: 14}
+      person7: {age: 13}
+      person8: {age: 12}
+      person9: {age: 11}
+      person10: {age: 10}
+      person11: {age: 9}
+      person12: {age: 8}
+      person13: {age: 7}
+      person14: {age: 6}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        state_code: LA
+  output:
+    la_liheap_eligible: true
+
+- name: Case 5, income equal to 110 percent of the poverty guideline is not protected.
+  period: 2026
+  input:
+    people:
+      # The floor protects income less than 95,865 only.
+      person1: {age: 45, employment_income: 95_865}
+      person2: {age: 43}
+      person3: {age: 17}
+      person4: {age: 16}
+      person5: {age: 15}
+      person6: {age: 14}
+      person7: {age: 13}
+      person8: {age: 12}
+      person9: {age: 11}
+      person10: {age: 10}
+      person11: {age: 9}
+      person12: {age: 8}
+      person13: {age: 7}
+      person14: {age: 6}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        state_code: LA
+  output:
+    la_liheap_eligible: false
+
+- name: Case 6, a household with no heating bill and no heat in rent is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 0
+        heat_expense_included_in_rent: false
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_liheap_eligible: false
+
+- name: Case 7, a home with no heating is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        pre_subsidy_electricity_expense: 1_740
+        # Heat in rent passes the responsibility test, so only the NONE fuel gate fails.
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_liheap_eligible: false
+
+- name: Case 8, an unknown heating fuel with heat included in rent is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_liheap_eligible: true
+
+- name: Case 9, an unknown heating fuel without heat in rent is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        pre_subsidy_electricity_expense: 1_740
+        heat_expense_included_in_rent: false
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_liheap_eligible: false
+
+- name: Case 10, a subsidized household whose bill exceeds its utility allowance is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        receives_housing_assistance: true
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+        # Section 8 utility allowance of 100 a month; energy cost 1,740 - 1,200 = 540.
+        hud_utility_allowance: 1_200
+  output:
+    la_liheap_eligible: true
+
+- name: Case 11, a subsidized household whose utility allowance equals its bill is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        receives_housing_assistance: true
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+        # Energy cost 1,740 - 1,740 = 0 shows no energy burden.
+        hud_utility_allowance: 1_740
+  output:
+    la_liheap_eligible: false
+
+- name: Case 12, a subsidized 60-year-old is exempt from the utility allowance test.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 60
+        pension_income: 14_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        receives_housing_assistance: true
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+        # No deduction at 60 or older, so energy cost stays 1,500 despite the 1,800 allowance.
+        hud_utility_allowance: 1_800
+  output:
+    la_liheap_eligible: true
+
+- name: Case 13, a household of only undocumented members is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        employment_income: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_liheap_eligible: false
+
+- name: Case 14, a household outside Louisiana is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    la_liheap_eligible: false
