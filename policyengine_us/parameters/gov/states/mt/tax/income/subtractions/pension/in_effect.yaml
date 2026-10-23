@@ -1,5 +1,8 @@
 description: Montana provides the partial pension, annuity, and IRA income exemption if this is true.
 values:
+  # The exemption also applied before 2021, at lower indexed amounts
+  # (MCA 15-30-2110(2)(c) and (17)). Those amounts are not listed, so earlier
+  # years use the 2021 cap and phase-out threshold.
   2021-01-01: true
   2024-01-01: false
 metadata:

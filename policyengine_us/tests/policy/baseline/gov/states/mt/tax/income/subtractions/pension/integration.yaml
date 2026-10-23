@@ -20,3 +20,14 @@
   output:
     # Taxable income 14,940 - 2,988 - 2 x 2,960 = 6,032; tax 6,032 x 2% - 36.
     mt_income_tax: 84.64
+
+- name: Single filer aged 60 with military retired pay
+  period: 2023
+  input:
+    age: 60
+    military_retirement_pay: 20_000
+    state_code: MT
+  output:
+    # MCA 15-30-2101(25)(b): the same Montana AGI (14,940) and tax as the
+    # pension case above.
+    mt_income_tax: 170.76

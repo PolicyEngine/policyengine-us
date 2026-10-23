@@ -90,3 +90,71 @@
     # Worksheet lines 3b-7: 5,060 - 2 x (60,000 - 42,140) is below zero.
     mt_pension_exemption_joint: 0
     mt_agi_joint: 60_000
+
+# In the phase-out range a joint return reduces the combined line 3b amount
+# once by the joint federal AGI (worksheet line 7). Reducing each spouse's
+# amount separately would give a lower total.
+- name: 2021 joint return in the phase-out range
+  period: 2021
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        taxable_private_pension_income: 18_700
+      spouse:
+        is_tax_unit_spouse: true
+        taxable_private_pension_income: 18_700
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # 2 x 4,400 - 2 x (37,400 - 36,700)
+    mt_pension_exemption_joint: 7_400
+
+- name: 2022 joint return in the phase-out range
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        taxable_private_pension_income: 19_700
+      spouse:
+        is_tax_unit_spouse: true
+        taxable_private_pension_income: 19_700
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # 2 x 4,640 - 2 x (39,400 - 38,660)
+    mt_pension_exemption_joint: 7_800
+
+- name: 2023 joint return in the phase-out range
+  period: 2023
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        taxable_private_pension_income: 21_500
+      spouse:
+        is_tax_unit_spouse: true
+        taxable_private_pension_income: 21_500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # 2 x 5,060 - 2 x (43,000 - 42,140)
+    mt_pension_exemption_joint: 8_400
+    # 43,000 - 8,400
+    mt_agi_joint: 34_600
