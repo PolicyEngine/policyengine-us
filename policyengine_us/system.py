@@ -36,7 +36,10 @@ from policyengine_core.parameters.operations.uprate_parameters import (
 )
 from .tools.default_uprating import add_default_uprating
 from .tools.period_branch import delete_input_values
-from .tools.social_security_inputs import migrate_social_security_inputs
+from .tools.social_security_inputs import (
+    install_social_security_input_compatibility,
+    migrate_social_security_inputs,
+)
 from .tools.social_security_periods import SocialSecurityPeriodMixin
 from .tools.section_911 import validate_section_911_batch_inputs
 from .tools.per_capita_uprating import (
@@ -56,6 +59,8 @@ from policyengine_us.spm import (
     clone_spm_system,
     create_spm_provider,
 )
+
+install_social_security_input_compatibility()
 
 COUNTRY_DIR = Path(__file__).parent
 
@@ -97,6 +102,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
     """
 
     variables_dir = COUNTRY_DIR / "variables"
+    _social_security_input_compatibility = True
     auto_carry_over_input_variables = True
     basic_inputs = [
         "state_name",

@@ -1,8 +1,8 @@
 """Input compatibility, branch isolation and complete source round trips.
 
-These cases need Python because YAML bypasses PE-US constructors and cannot
-exercise cloning, stored-input bookkeeping or source export. They reuse the
-read-only country model and tiny populations, without loading external data.
+These cases cover Core's YAML builder as well as cloning, stored-input
+bookkeeping and source export. They reuse the read-only country model and
+tiny populations, without loading external data.
 """
 
 import json
@@ -50,6 +50,25 @@ def situation(inputs):
 
 def make_simulation(wrapper=Simulation, inputs=None):
     return wrapper(situation=situation(inputs or {}), tax_benefit_system=system)
+
+
+def make_core_simulation(inputs=None, route="dict_entities"):
+    builder = SimulationBuilder()
+    inputs = inputs or {}
+    if route == "dict_entities":
+        return builder.build_from_dict(system, situation(inputs))
+    if route == "entities":
+        return builder.build_from_entities(system, situation(inputs))
+    variables = {
+        "age": {2024: [70]},
+        **{
+            name: {period: [value] for period, value in values.items()}
+            for name, values in inputs.items()
+        },
+    }
+    if route == "dict_variables":
+        return builder.build_from_dict(system, variables)
+    return builder.build_from_variables(system, variables)
 
 
 def amount(simulation, name, period):
@@ -120,23 +139,110 @@ def test_later_public_override_survives_clones_and_cache_clear(wrapper):
     assert amount(simulation, f"{public}_reported", 2024) == 12_000
 
 
-def test_core_builder_public_inputs_are_final_overrides():
+@pytest.mark.parametrize(
+    "route", ("dict_entities", "entities", "dict_variables", "variables")
+)
+def test_core_builder_migrates_initial_public_inputs_and_preserves_precedence(route):
     retirement, disability = SOCIAL_SECURITY_COMPONENTS[:2]
-    simulation = SimulationBuilder().build_from_dict(
-        system,
-        situation(
-            {
-                f"{retirement}_reported": {2024: 12_000},
-                disability: {2024: 777},
-                FACTOR: {2024: 1.1},
-            }
-        ),
+    simulation = make_core_simulation(
+        {
+            retirement: {2024: 12_000},
+            disability: {2024: 777},
+            f"{disability}_reported": {2024: 666},
+            FACTOR: {2024: 1.1, 2026: 1.08},
+        },
+        route,
     )
     assert amount(simulation, retirement, 2024) == pytest.approx(13_200)
+    assert input_periods(simulation, retirement) == set()
+    assert input_periods(simulation, f"{retirement}_reported") == {"2024"}
+    assert retirement not in simulation.input_variables
+    assert f"{retirement}_reported" in simulation.input_variables
+    later_source = amount(simulation, f"{retirement}_reported", 2026)
+    assert later_source == pytest.approx(13_522.16, abs=0.01)
+    assert amount(simulation, retirement, 2026) == pytest.approx(later_source * 1.08)
+    # Existing both-name inputs retain the established explicit-override rule.
     assert amount(simulation, disability, 2024) == 777
+    assert amount(simulation, f"{disability}_reported", 2024) == 666
     assert input_periods(simulation, disability) == {"2024"}
+    assert disability in simulation.input_variables
+    assert "age" in simulation.input_variables
+    payload = simulation.extract_person(0)
+    person = next(iter(payload["people"].values()))
+    assert person[disability] == {"2024": 777}
+    assert person[f"{disability}_reported"] == {"2024": 666}
+    assert "age" in person
     simulation.set_input(retirement, 2024, [0])
     assert amount(simulation, retirement, 2024) == 0
+    assert amount(simulation, f"{retirement}_reported", 2024) == 12_000
+
+
+@pytest.mark.parametrize("wrapper", (*WRAPPERS, make_core_simulation))
+@pytest.mark.parametrize("reported_input", (None, 0, 6_000))
+def test_later_public_write_seeds_only_absent_reported_input(wrapper, reported_input):
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported = f"{public}_reported"
+    inputs = {} if reported_input is None else {reported: {2024: reported_input}}
+    simulation = (
+        wrapper(inputs)
+        if wrapper is make_core_simulation
+        else make_simulation(wrapper, inputs)
+    )
+    # A calculated twin, even a cached zero, is not an explicitly supplied twin.
+    assert amount(simulation, reported, 2024) == (reported_input or 0)
+    simulation.set_input(FACTOR, 2024, [1.08])
+    simulation.set_input(public, 2024, [12_000])
+    expected_source = 12_000 if reported_input is None else reported_input
+    assert amount(simulation, public, 2024) == 12_000
+    assert amount(simulation, reported, 2024) == expected_source
+    assert input_periods(simulation, reported) == {"2024"}
+    assert public in simulation.input_variables
+    assert reported in simulation.input_variables
+    assert amount(simulation, public, 2026) == pytest.approx(
+        expected_source * 13_522.16 / 12_000, abs=0.01
+    )
+
+
+@pytest.mark.parametrize("wrapper", (*WRAPPERS, make_core_simulation))
+def test_later_monthly_public_write_seeds_the_stored_rolling_year(wrapper):
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported = f"{public}_reported"
+    simulation = (
+        wrapper() if wrapper is make_core_simulation else make_simulation(wrapper)
+    )
+    simulation.set_input(public, "2024-07", [12_000])
+    # Core retains a rolling annual input for a monthly annual-flow write.
+    assert input_periods(simulation, public) == {"year:2024-07"}
+    assert input_periods(simulation, reported) == {"year:2024-07"}
+    assert simulation.get_array(public, "year:2024-07")[0] == 12_000
+    assert simulation.get_array(reported, "year:2024-07")[0] == 12_000
+    assert amount(simulation, public, "2024-07") == 1_000
+    assert amount(simulation, public, 2026) > 12_000
+
+
+@pytest.mark.parametrize("wrapper", WRAPPERS)
+def test_clone_and_branch_later_public_writes_keep_input_lists_private(wrapper):
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported = f"{public}_reported"
+    simulation = make_simulation(wrapper, {public: {2024: 12_000}})
+    original_variables = list(simulation.input_variables)
+    original_keys = set(simulation._user_input_keys)
+    parent_later_source = amount(simulation, reported, 2025)
+    for copy in (
+        simulation.clone(clone_tax_benefit_system=False),
+        simulation.get_branch("new_public_override"),
+    ):
+        copy.set_input(public, 2025, [24_000])
+        drop_inherited_values(copy)
+        assert amount(copy, public, 2025) == 24_000
+        assert amount(copy, reported, 2025) == 24_000
+        assert amount(copy, public, 2026) > 24_000
+        assert public in copy.input_variables
+        assert copy.input_variables is not simulation.input_variables
+        assert simulation.input_variables == original_variables
+        assert simulation._user_input_keys == original_keys
+        assert amount(simulation, public, 2025) == parent_later_source
+        assert input_periods(simulation, reported) == {"2024"}
 
 
 def test_dataset_constructor_migrates_stored_original_columns():
@@ -202,7 +308,7 @@ def test_complete_snapshot_preserves_histories_and_separate_final_overrides():
     simulation.set_input(public, 2027, [0])
     payload = json.loads(json.dumps(export_source_inputs(simulation)))
     person = payload["sources"]["people"]["person"]
-    assert set(person[f"{public}_reported"]) == {"2024", "2026"}
+    assert set(person[f"{public}_reported"]) == {"2024", "2026", "2027"}
     assert public not in person
     assert set(payload["overrides"][public]) == {"2026", "2027"}
     assert person["ss_aime_input"] == {"2024": 1_000, "2026": 2_000}
@@ -230,6 +336,22 @@ def test_legacy_extraction_uses_reported_sources_and_months_keep_flow_conversion
             assert amount(copy, public, "2024-07") == 1_000
         assert amount(copy, public, 2024) == 12_000
         assert amount(copy, public, "2024-07") == 1_000
+
+
+@pytest.mark.parametrize("wrapper", WRAPPERS)
+@pytest.mark.parametrize("override", (0, 24_000))
+def test_legacy_extraction_preserves_later_public_override(wrapper, override):
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported = f"{public}_reported"
+    simulation = make_simulation(wrapper, {public: {2024: 12_000}})
+    simulation.set_input(public, 2024, [override])
+    extracted = simulation.extract_person(0)
+    person = next(iter(extracted["people"].values()))
+    assert person[public]["2024"] == override
+    assert person[reported]["2024"] == 12_000
+    reloaded = Simulation(situation=extracted, tax_benefit_system=system)
+    assert amount(reloaded, public, 2024) == override
+    assert amount(reloaded, reported, 2024) == 12_000
 
 
 def test_reported_twins_are_pure_and_original_dataset_names_keep_their_uprater():

@@ -1,1 +1,1 @@
-Add composable Social Security benefit levers, pure reported component inputs, and a stored-data scoring preflight.
+Add composable Social Security benefit levers, pure reported component inputs, and a stored-data scoring preflight. Legacy public inputs migrate on every ingress route; later public overrides seed missing sources and survive extraction.

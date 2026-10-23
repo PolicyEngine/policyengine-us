@@ -19,13 +19,22 @@ inputs, including zero, with the original effective per-capita SOI/CBO
 uprating. Public formulas have no variable-level uprating. Dataset extension
 still uprates original column names before constructor migration.
 
-Both PE-US constructors migrate a legacy public input to its reported twin
-separately for each supplied period. When both names are supplied in the same
-period, the reported amount remains the source and the public input remains a
-final override. Later public `set_input` calls and aggregate `social_security`
-inputs are final overrides. Core `SimulationBuilder` and YAML bypass constructor
-migration: use `_reported` for lever-sensitive fixtures. A public override in
-one year does not become the reported source for later years.
+Initial ingress through either PE-US constructor, dataset loading, or Core's
+`SimulationBuilder` (including YAML) migrates a legacy public input to its
+reported twin separately for each supplied period. The public formula then
+applies the levers in the stored year as well as later years. When both names
+are supplied in the same period, the reported amount remains the source and
+the public input remains a final override.
+
+A public `set_input` after construction is a final override for its own period.
+It also seeds the reported twin for that period unless an actual twin input
+already exists; a calculated or uprated cache does not count as an input.
+Later years uprate that source. An existing reported input, including zero,
+retains precedence. Aggregate `social_security` inputs remain final overrides.
+Clones and branches retain these rules. Later public writes replace their
+runtime input-name list privately, preserving overrides in legacy extraction
+without changing a parent or sibling clone. Migrated inputs extract as twins;
+later overrides extract alongside their twins and retain precedence on reload.
 
 Each component has a `_source` selector with default `reported`. Reserved
 options `supplied_aime`, `supplied_pia`, `supplied_ratio_survivor`, and `history`

@@ -1,10 +1,12 @@
 """Compatibility ingress and complete, source-safe simulation snapshots.
 
-Constructor migration is intentionally separate from ``set_input``: a later
-write to a public benefit is an output override, including an explicit zero.
+Initial ingress moves legacy benefit inputs to their pure reported sources.
+A later public write overrides its period and seeds an absent reported source.
 """
 
 import json
+from contextvars import ContextVar
+from functools import wraps
 
 from policyengine_core.simulations.simulation import NpEncoder
 
@@ -17,6 +19,131 @@ SOCIAL_SECURITY_COMPONENTS = (
     "social_security_survivors",
     "social_security_dependents",
 )
+
+
+_initial_social_security_ingress = ContextVar(
+    "initial_social_security_ingress", default=False
+)
+
+
+def install_social_security_input_compatibility():
+    """Extend Core's ingress routes only for systems opting into this policy.
+
+    Core's entity builder writes holders directly, and its variable-level
+    ``set_input`` handler runs only for mismatched period units. A builder
+    adapter therefore migrates initial sources, while a simulation adapter
+    preserves subsequent public overrides, including on raw Core simulations.
+    """
+    from policyengine_core.simulations import Simulation as CoreSimulation
+    from policyengine_core.simulations.simulation_builder import SimulationBuilder
+
+    original_set_input = CoreSimulation.set_input
+    if not getattr(original_set_input, "_social_security_compatibility", False):
+
+        @wraps(original_set_input)
+        def set_input(simulation, variable_name, period, value):
+            track_public_write = (
+                variable_name in SOCIAL_SECURITY_COMPONENTS
+                and getattr(
+                    simulation.tax_benefit_system,
+                    "_social_security_input_compatibility",
+                    False,
+                )
+                and hasattr(simulation, "input_variables")
+                and not _initial_social_security_ingress.get()
+            )
+            if not track_public_write:
+                return original_set_input(simulation, variable_name, period, value)
+
+            holder = simulation.get_holder(variable_name)
+            branch = simulation.branch_name
+            before = {
+                supplied_period: holder._stored_sequence_number(supplied_period, branch)
+                for supplied_period in simulation._get_set_input_periods(variable_name)
+            }
+            result = original_set_input(simulation, variable_name, period, value)
+            reported_name = f"{variable_name}_reported"
+            reported_periods = set(simulation._get_set_input_periods(reported_name))
+            # Period helpers can store a different period from the one passed
+            # in: a monthly input to a yearly variable stores a rolling year.
+            # Inspect actual stores rather than guessing those period aliases.
+            for supplied_period in simulation._get_set_input_periods(variable_name):
+                if (
+                    holder._stored_sequence_number(supplied_period, branch)
+                    == before.get(supplied_period)
+                    or supplied_period in reported_periods
+                ):
+                    continue
+                supplied_value = simulation._get_recorded_input_array(
+                    variable_name, supplied_period
+                )
+                if supplied_value is not None:
+                    original_set_input(
+                        simulation,
+                        reported_name,
+                        supplied_period,
+                        supplied_value.copy(),
+                    )
+
+            # Core clones share this legacy list. Replace it privately so a
+            # later override is extracted without changing the source clone.
+            simulation.input_variables = list(
+                dict.fromkeys(
+                    [*simulation.input_variables, variable_name, reported_name]
+                )
+            )
+            return result
+
+        set_input._social_security_compatibility = True
+        CoreSimulation.set_input = set_input
+
+    def wrap_builder(original_build):
+        @wraps(original_build)
+        def build(builder, tax_benefit_system, input_dict, simulation=None):
+            if not getattr(
+                tax_benefit_system, "_social_security_input_compatibility", False
+            ):
+                return original_build(
+                    builder, tax_benefit_system, input_dict, simulation
+                )
+            token = _initial_social_security_ingress.set(True)
+            try:
+                result = original_build(
+                    builder, tax_benefit_system, input_dict, simulation
+                )
+            finally:
+                _initial_social_security_ingress.reset(token)
+            # Only build_from_dict rebuilds Core's legacy extraction list.
+            # Direct entity/variable builders need the same recorded inputs,
+            # including non-benefit sources and exact both-name overrides.
+            visible_branches = result._get_visible_branch_names()
+            recorded_names = {
+                name
+                for name, branch_name, _ in result._user_input_keys
+                if branch_name in visible_branches
+            }
+            result.input_variables = list(
+                dict.fromkeys(
+                    [
+                        *getattr(result, "input_variables", []),
+                        *sorted(
+                            name
+                            for name in recorded_names
+                            if result._get_set_input_periods(name)
+                        ),
+                    ]
+                )
+            )
+            migrate_social_security_inputs(result)
+            return result
+
+        build._social_security_compatibility = True
+        return build
+
+    for method_name in ("build_from_entities", "build_from_variables"):
+        original_build = getattr(SimulationBuilder, method_name)
+        if not getattr(original_build, "_social_security_compatibility", False):
+            setattr(SimulationBuilder, method_name, wrap_builder(original_build))
 
 
 def migrate_social_security_inputs(simulation, *, include_baseline=True):
@@ -77,7 +204,7 @@ def migrate_social_security_inputs(simulation, *, include_baseline=True):
     # Core's legacy extraction reads this runtime list, which was assembled
     # before migration. Retain public names only where actual overrides remain.
     runtime_inputs = []
-    for name in simulation.input_variables:
+    for name in getattr(simulation, "input_variables", []):
         if name not in migrated or simulation._get_set_input_periods(name):
             runtime_inputs.append(name)
         if name in migrated:
