@@ -86,25 +86,41 @@ def test_reform_only_changes_federal_irs_uprating_parameters():
     assert changed_names
 
 
-def test_social_security_components_use_aggregate_ss_uprater():
+def test_reported_social_security_components_use_aggregate_ss_uprater():
     from policyengine_us.variables.gov.ssa.ss.social_security_dependents import (
         social_security_dependents,
+    )
+    from policyengine_us.variables.gov.ssa.ss.social_security_dependents_reported import (
+        social_security_dependents_reported,
     )
     from policyengine_us.variables.gov.ssa.ss.social_security_disability import (
         social_security_disability,
     )
+    from policyengine_us.variables.gov.ssa.ss.social_security_disability_reported import (
+        social_security_disability_reported,
+    )
     from policyengine_us.variables.gov.ssa.ss.social_security_retirement import (
         social_security_retirement,
+    )
+    from policyengine_us.variables.gov.ssa.ss.social_security_retirement_reported import (
+        social_security_retirement_reported,
     )
     from policyengine_us.variables.gov.ssa.ss.social_security_survivors import (
         social_security_survivors,
     )
+    from policyengine_us.variables.gov.ssa.ss.social_security_survivors_reported import (
+        social_security_survivors_reported,
+    )
 
     expected_uprater = "calibration.gov.irs.soi.social_security"
-    assert social_security_retirement.uprating == expected_uprater
-    assert social_security_disability.uprating == expected_uprater
-    assert social_security_dependents.uprating == expected_uprater
-    assert social_security_survivors.uprating == expected_uprater
+    for public, reported in (
+        (social_security_retirement, social_security_retirement_reported),
+        (social_security_disability, social_security_disability_reported),
+        (social_security_dependents, social_security_dependents_reported),
+        (social_security_survivors, social_security_survivors_reported),
+    ):
+        assert reported.uprating == expected_uprater
+        assert getattr(public, "uprating", None) is None
 
 
 def test_reform_wage_indexes_core_tax_threshold_from_2035():

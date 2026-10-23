@@ -327,12 +327,20 @@ test-other-python-rest-remaining-heavy:
 	$(call rest_pytest,remaining-heavy,$(REST_REMAINING_HEAVY_TESTS))
 test-other-python-rest-remaining:
 	$(call rest_pytest,remaining,$(TESTS)/,$(REST_LISTED_TESTS) $(TESTS)/core $(TESTS)/policy)
+MICROSIMULATION_GROUPS := base social-security-inputs social-security-current-law
 test-microsimulation:
+	@failed=""; for group in $(MICROSIMULATION_GROUPS); do \
+		$(MAKE) --no-print-directory test-microsimulation-$$group || failed="$$failed $$group"; \
+	done; \
+	if [ -n "$$failed" ]; then echo "Failed microsimulation groups:$$failed"; exit 1; fi
+test-microsimulation-base:
 	# Compatibility checks copy policy for differential/branch isolation. Keep
 	# their heaps separate on this existing runner (local differential peak 7 GB).
 	pytest $(TESTS)/microsimulation --maxfail=0 --ignore=$(TESTS)/microsimulation/test_social_security_inputs.py --ignore=$(TESTS)/microsimulation/test_social_security_current_law.py
-	pytest $(TESTS)/microsimulation/test_social_security_inputs.py --maxfail=0
-	pytest $(TESTS)/microsimulation/test_social_security_current_law.py --maxfail=0
+test-microsimulation-social-security-inputs:
+	pytest $(TESTS)/microsimulation/test_social_security_inputs.py --maxfail=0 $(if $(findstring --junitxml,$(PYTEST_ADDOPTS)),--junitxml=simulation-social-security-inputs.xml)
+test-microsimulation-social-security-current-law:
+	pytest $(TESTS)/microsimulation/test_social_security_current_law.py --maxfail=0 $(if $(findstring --junitxml,$(PYTEST_ADDOPTS)),--junitxml=simulation-social-security-current-law.xml)
 # Local convenience: run both halves back to back.
 test-other: test-other-python test-microsimulation
 test-policy-contrib-python:

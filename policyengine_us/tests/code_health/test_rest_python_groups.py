@@ -577,6 +577,54 @@ exit "$outcome"
 """
 
 
+@pytest.mark.parametrize("failed_index", [None, 0, 1, 2])
+def test_microsimulation_processes_keep_reports_and_run_after_failures(
+    tmp_path, failed_index
+):
+    report_option = "--junitxml=simulation-microsimulation.xml"
+    commands = dry_run("test-microsimulation", f"PYTEST_ADDOPTS={report_option}")
+    assert len(commands) == 3
+    reports = []
+    groups = {}
+    for index, command in enumerate(commands):
+        args = [report_option, *command[1:]]
+        reports.append([a for a in args if a.startswith("--junitxml=")][-1])
+        groups[str(index)] = collected_files(
+            [a for a in command[1:] if not a.startswith("--junitxml=")]
+        )
+    reference = collected_files([str(TESTS / "microsimulation")])
+    assert partition_problems(reference, groups) == []
+    assert len(set(reports)) == 3
+    assert all(
+        fnmatch(report.split("=", 1)[1], "simulation-*.xml") for report in reports
+    )
+
+    stub = tmp_path / "bin" / "pytest"
+    stub.parent.mkdir()
+    stub.write_text(STUB_PYTEST)
+    stub.chmod(0o755)
+    calls = tmp_path / "calls.txt"
+    outcomes = ["0"] * 3
+    if failed_index is not None:
+        outcomes[failed_index] = "1"
+    env = {k: v for k, v in os.environ.items() if k not in PARENT_MAKE_VARIABLES}
+    env.update(
+        PATH=f"{stub.parent}{os.pathsep}{env['PATH']}",
+        PYTEST_ADDOPTS=report_option,
+        STUB_CALLS=str(calls),
+        STUB_OUTCOMES=" ".join(outcomes),
+    )
+    result = subprocess.run(
+        ["make", "--no-print-directory", "test-microsimulation"],
+        cwd=REPO,
+        env=env,
+        capture_output=True,
+        text=True,
+    )
+    assert calls.read_text().splitlines() == [" ".join(c[1:]) for c in commands]
+    assert (result.returncode != 0) == (failed_index is not None)
+
+
 @pytest.mark.parametrize("scenario", ["one-fails-one-killed", "all-fail", "all-pass"])
 def test_every_group_runs_and_any_failure_fails_the_target(tmp_path, groups, scenario):
     outcomes = ["0"] * len(groups)
