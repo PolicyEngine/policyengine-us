@@ -10,7 +10,9 @@ class tob_revenue_oasdi(Variable):
         "Tax revenue credited to OASDI trust funds per 42 U.S.C. 401 note. "
         "Per Section 121(e) of PL 98-21, OASDI receives the 'increase in tax "
         "liabilities attributable to' section 86 LESS the 1993 amendments. "
-        "Calculated using branching to isolate marginal tax impact."
+        "Calculated using branching to isolate the signed marginal tax "
+        "impact. Negative unit differences are retained when aggregating "
+        "tax liabilities."
     )
     unit = USD
     reference = "https://www.ssa.gov/OP_Home/comp2/F098-021.html"
@@ -25,7 +27,7 @@ class tob_revenue_oasdi(Variable):
         Method:
         1. Calculate tax with NO taxable SS
         2. Calculate tax with the pre-1993 section 86 includible amount
-        3. OASDI revenue = (2) - (1)
+        3. Signed OASDI revenue = (2) - (1), without a per-unit floor
         """
         sim = tax_unit.simulation
         old_law_taxable_ss = tax_unit(
@@ -70,4 +72,4 @@ class tob_revenue_oasdi(Variable):
         tax_old_law_ss = branch_old_law.tax_unit("income_tax", period)
         del sim.branches["oasdi_old_law"]
 
-        return max_(tax_old_law_ss - tax_no_ss, 0)
+        return tax_old_law_ss - tax_no_ss

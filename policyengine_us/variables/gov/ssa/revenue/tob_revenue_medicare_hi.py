@@ -11,7 +11,8 @@ class tob_revenue_medicare_hi(Variable):
         "amended by OBRA 1993 section 13215(c). HI receives the increase in "
         "tax liability attributable to the 1993 amendments: total taxation-of-"
         "benefits revenue less the pre-1993 OASDI allocation. Both amounts "
-        "use branches to calculate the marginal income tax liability."
+        "use branches to calculate signed marginal income tax liabilities, "
+        "retaining negative unit differences for aggregation."
     )
     unit = USD
     reference = "https://www.ssa.gov/OP_Home/comp2/F098-021.html"

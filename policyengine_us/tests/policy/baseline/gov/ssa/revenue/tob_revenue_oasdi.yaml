@@ -2,6 +2,68 @@
 # Tests OASDI trust fund revenue allocation from SS benefit taxation
 # Uses double-branching methodology per 42 U.S.C. 401 note
 
+- name: Single itemizer retains negative OASDI and HI tax differences
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 67
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    social_security: 1_000
+    taxable_interest_income: 11_500
+    tax_exempt_interest_income: 23_000
+    charitable_cash_donations: 20_000
+    # No other deductions; suppress imputed Medicare premium expenses.
+    itemized_medical_expenses: 0
+    salt_deduction: 0
+    takes_up_tanf_if_eligible: false
+    state_code: TX
+  output:
+    # Itemization is an explicit election, held fixed in all counterfactuals.
+    # This single filer does not rely on the separate-filer Schedule R base.
+    tax_unit_combined_income_for_social_security_taxability: 35_000
+    tax_unit_taxable_social_security_pre_1993: 500
+    tax_unit_taxable_social_security: 850
+    # Without / pre-1993 / current inclusion:
+    # AGI = $11,500 / $12,000 / $12,350.
+    # Section 170(b)(1)(G): binding 60% cash-gift limit gives deductions
+    # $6,900 / $7,200 / $7,410, and taxable income $4,600 / $4,800 / $4,940.
+    # Ordinary tax (10%) = $460 / $480 / $494.
+    # Section 22 credit = 15% * ($5,000 - nontaxable SS
+    #                              - 50% * (AGI - $7,500))
+    # = $300 / $337.50 / $363.75 (all below the credit limit).
+    # Net taxes = $160 / $142.50 / $130.25.
+    charitable_deduction: 7_410
+    elderly_disabled_credit: 363.75
+    income_tax: 130.25
+    tob_revenue_oasdi: -17.50
+    tob_revenue_medicare_hi: -12.25
+    tob_revenue_total: -29.75
+
+- name: Single itemizer counterfactual taxes with no old and current inclusion
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: [67, 67, 67]
+    filing_status: [SINGLE, SINGLE, SINGLE]
+    tax_unit_itemizes: [true, true, true]
+    social_security: [1_000, 1_000, 1_000]
+    taxable_interest_income: [11_500, 11_500, 11_500]
+    tax_exempt_interest_income: [23_000, 23_000, 23_000]
+    charitable_cash_donations: [20_000, 20_000, 20_000]
+    itemized_medical_expenses: [0, 0, 0]
+    salt_deduction: [0, 0, 0]
+    tax_unit_taxable_social_security: [0, 500, 850]
+    takes_up_tanf_if_eligible: [false, false, false]
+    state_code: [TX, TX, TX]
+  output:
+    # Independent counterfactual checks for the signed split above.
+    adjusted_gross_income: [11_500, 12_000, 12_350]
+    charitable_deduction: [6_900, 7_200, 7_410]
+    taxable_income: [4_600, 4_800, 4_940]
+    elderly_disabled_credit: [300, 337.50, 363.75]
+    income_tax: [160, 142.50, 130.25]
+
 - name: No SS benefits - zero OASDI revenue
   period: 2024
   input:
