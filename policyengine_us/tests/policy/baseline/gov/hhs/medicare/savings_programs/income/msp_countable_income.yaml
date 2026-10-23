@@ -113,3 +113,25 @@
     # (12,000 - 2,400 + 24,000 - 3,600) / 12 = 2,500 monthly.
     # Apply the couple's exclusions once: (2,500 - 20 - 65) / 2 = 1,207.50.
     msp_countable_income: [1_207.50, 1_207.50]
+
+- name: Case 6, Illinois exempts the first 25 dollars of income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    social_security_retirement: 12_000
+    state_code: IL
+  output:
+    # 12,000 / 12 - 25 = 975.
+    msp_countable_income: 975
+
+- name: Case 7, Mississippi raises the general income exclusion to 50 dollars.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    social_security_retirement: 12_000
+    state_code: MS
+  output:
+    # 12,000 / 12 - 50 = 950.
+    msp_countable_income: 950
