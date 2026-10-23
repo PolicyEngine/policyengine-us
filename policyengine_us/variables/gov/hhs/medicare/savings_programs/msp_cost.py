@@ -22,7 +22,11 @@ class msp_cost(Variable):
     def formula(person, period, parameters):
         monthly_cost = 0
         for month in period.get_subperiods(MONTH):
-            monthly_cost += person("msp_benefit_value", month) + person(
+            eligible_participant = person("msp_eligible", month) & person(
+                "msp_participation", month
+            )
+            estimated_cost = person("msp_benefit_value", month) + person(
                 "qmb_cost_sharing", month
             )
+            monthly_cost += estimated_cost * eligible_participant
         return where(person("medicaid_enrolled", period), 0, monthly_cost)
