@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.childcare import childcare_hours_for_daily_schedule
 
 
 class FLSRTimeCategory(Enum):
@@ -22,9 +23,9 @@ class fl_sr_time_category(Variable):
         # a 24-hour period. This is a DAILY measure, not weekly -- e.g. 4 days x
         # 6 hours is full-time even though it is only 24 hours/week.
         p = parameters(period).gov.states.fl.doe.sr.copay
-        # Zero is also the input default for unknown hours. Use full-time
-        # pricing; attendance and expense rules still determine payment.
-        hours = person("childcare_hours_per_day", period.this_year)
+        # Unresolved hours retain full-time pricing; attendance and expense
+        # rules still determine payment.
+        hours = childcare_hours_for_daily_schedule(person, period)
         return where(
             (hours == 0) | (hours >= p.full_time_hours_threshold),
             FLSRTimeCategory.FULL_TIME,
