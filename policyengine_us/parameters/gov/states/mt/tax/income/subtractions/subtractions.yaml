@@ -3,6 +3,7 @@ values:
   2010-01-01:
     - mt_disability_income_exclusion_person
     - mt_unemployment_compensation_subtraction
+    - mt_other_subtractions
   2021-01-01:
     - mt_interest_exemption_person
     - us_govt_interest_person
@@ -12,12 +13,17 @@ values:
     # SB 399 (2021) repealed the exemption effective tax year 2024.
     - mt_unemployment_compensation_subtraction
     - salt_refund_income # Form 2 Subtractions Schedule
+    - mt_other_subtractions
   2024-01-01:
+    # MCA 15-30-2120(3)(n) allows exempting up to 50% of military retirement pay
+    # (capped at MT earned income, (3)(n)(i)) and up to 50% of military survivor
+    # benefits regardless of other income ((3)(n)(ii), Form WMRE); not yet modeled.
     - mt_interest_exemption_person
     - mt_tuition_subtraction_person
     - mt_old_age_subtraction
     - mt_disability_income_exclusion_person
     - salt_refund_income # MCA 15-30-2120 / Form 2 Subtractions Schedule
+    - mt_other_subtractions
   2025-01-01:
     # Section 15-30-2120 starts from federal taxable income, so federal
     # OBBBA Schedule 1-A deductions (enhanced senior deduction, qualified
@@ -31,6 +37,7 @@ values:
     # Schedule 1-A deductions expire after 2028.
     - mt_federal_obbba_subtraction
     - salt_refund_income # MCA 15-30-2120 / Form 2 Subtractions Schedule
+    - mt_other_subtractions
 metadata:
   unit: list
   period: year
