@@ -1,0 +1,30 @@
+description: Missouri pays a renter household whose heating costs are included in the rent this share of its annual rent, up to the Energy Assistance amount for its heating fuel, under the Low Income Home Energy Assistance Program.
+# 13 CSR 40-19.020(13) sets a payment of no more than eight percent of annual
+# rent, applied here. The October 2025 manual (page 63), the FFY2024-FFY2026
+# plans and the DSS draft FFY2027 plan (section 2.3) describe 16 percent; the
+# manual caps the payment at the Energy Assistance amount for the household's
+# energy source. RSMo 660.115.2 separately limits renter payments from the
+# state Utilicare stabilization fund to the lesser of eight percent of annual
+# rent or $100; Energy Assistance is paid from federal LIHEAP funds.
+values:
+  2017-05-30: 0.08
+
+metadata:
+  unit: /1
+  period: year
+  label: Missouri LIHEAP renter annual rent share
+  reference:
+    - title: 13 CSR 40-19.020(13)
+      href: https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-19.pdf#page=4
+    - title: Missouri LIHEAP Policy and Procedure Manual (October 2025), Renter Household Payment
+      href: https://dss.mo.gov/sites/mydss/files/media/pdf/2025/10/liheap-policy-procedure-manual.pdf#page=63
+    - title: Missouri LIHEAP FFY2026 State Plan, Section 2.3
+      href: https://liheapch.acf.gov/docs/2026/state-plans/MO_Plan_2026.pdf#page=8
+    - title: Missouri DSS draft FFY2027 LIHEAP State Plan (report status Saved with Errors), Section 2.3
+      href: https://dss.mo.gov/sites/mydss/files/media/pdf/2026/08/liheap-active-ffy2027.pdf#page=8
+    - title: Missouri LIHEAP FFY2025 State Plan, Section 2.3
+      href: https://liheapch.acf.gov/docs/2025/state-plans/MO_Plan_2025.pdf#page=8
+    - title: Missouri LIHEAP FFY2024 State Plan, Section 2.3
+      href: https://liheapch.acf.gov/docs/2024/state-plans/MO_Plan_2024.pdf#page=8
+    - title: RSMo 660.115
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=660.115
