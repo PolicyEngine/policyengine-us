@@ -361,7 +361,7 @@
   output:
     nc_lieap_earned_income: [0, 0]
     nc_lieap_gross_income_person: [24_000, 9_600]
-    # EP-300.09 B.3 (page 13): an $85 monthly medical deduction at age 60 or
+    # EP-300.09 B.4 (page 13): an $85 monthly medical deduction at age 60 or
     # older, 85 * 12 = 1,020. 24,000 - 1,020 = 22,980; 9,600 - 1,020 = 8,580.
     nc_lieap_income: [22_980, 8_580]
   absolute_error_margin: 0.01
