@@ -254,3 +254,21 @@
     #   the plan's multiplier.
     #   Oil, Level 7: the $25 nominal grant, printed $25.
     md_meap: [110, 732, 391, 1_078, 25]
+
+- name: Case 15, a household that qualifies only through the federal 110% poverty floor is paid at its poverty level.
+  period: 2026
+  input:
+    state_code: [MD, MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_150, 1_150]
+    md_meap_household_size: [29, 29]
+    md_meap_countable_income: [186_000, 186_615]
+    md_meap_categorically_eligible: [false, false]
+  output:
+    # Both incomes exceed the 185,864 size-29 limit. Household 1 is below the
+    # 186,615 floor (110% of the 2025 guideline of 169,650) and qualifies under
+    # 42 U.S.C. 8624(b)(2)(B). Household 2 is at the floor and does not qualify.
+    md_meap_eligible: [true, false]
+    # 186,000 / 169,650 = 109.6% of the guideline, Level 4 (over 100% to 150%).
+    # The matrix pays $360 for gas at Level 4.
+    md_meap: [360, 0]
