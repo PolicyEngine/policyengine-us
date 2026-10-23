@@ -216,27 +216,50 @@ def read_parameter_events(parameters, through_year: int) -> tuple[ColaEvent, ...
     if through_year < 1983:
         raise ValueError("COLA calculations require a benchmark year of 1983 or later")
     try:
-        history = parameters("2026-01-01").gov.ssa.social_security.cola
-        last_year = int(history.historical_last_effective_year)
+        # Reuse the canonical statutory history supplied by the benefit-lever
+        # route. Its authored event dates preserve irregular historical timing.
+        raw_history = parameters.gov.ssa.cola_history.rate
+        history_start = str(raw_history.metadata["historical_start"])
+        history_end = str(raw_history.metadata["historical_end"])
+        observations = sorted(
+            (
+                observation
+                for observation in raw_history.values_list
+                if observation.value is not None
+                and history_start <= observation.instant_str <= history_end
+            ),
+            key=lambda observation: observation.instant_str,
+        )
+        if not observations:
+            raise ValueError("The statutory SSA COLA history has no dated events")
+        last_year = int(history_end[:4])
         result = []
-        for year in range(1975, min(last_year, through_year) + 1):
-            # The effective month changed once, in 1983.  Read both dates from
-            # parameters so an event never silently receives a January date.
-            node = parameters(f"{year}-12-01").gov.ssa.social_security.cola
-            effective = f"{year}-{int(node.effective_month_number):02d}"
-            payment = f"{year + int(node.first_payment_year_offset)}-{int(node.first_payment_month_number):02d}"
+        for observation in observations:
+            year = int(observation.instant_str[:4])
+            if year > through_year:
+                continue
+            node = parameters(observation.instant_str).gov.ssa.cola_history
+            effective_number = int(node.effective_month)
+            payment_number = int(node.first_payment_month)
+            effective = f"{year}-{effective_number:02d}"
+            if observation.instant_str[:7] != effective:
+                raise ValueError("Statutory COLA date and effective month disagree")
+            payment_year = year + int(payment_number <= effective_number)
+            payment = f"{payment_year}-{payment_number:02d}"
             rule = (
                 "dime_floor"
-                if int(node.pia_rounding_direction) == -1
-                and _decimal(node.pia_rounding_increment) == DIME
+                if int(node.pia_rounding) == 2
                 else "unsupported_historical_rounding"
             )
             kwargs = {}
             if year == 1999:
+                correction = parameters(
+                    observation.instant_str
+                ).gov.ssa.social_security.cola
                 kwargs = {
-                    "as_paid_rate": _decimal(node.december_1999_as_paid_rate),
+                    "as_paid_rate": _decimal(correction.december_1999_as_paid_rate),
                     "correction_payment_month": str(
-                        int(node.december_1999_correction_payment_month)
+                        int(correction.december_1999_correction_payment_month)
                     ),
                 }
                 kwargs["correction_payment_month"] = (
@@ -265,12 +288,14 @@ def read_parameter_events(parameters, through_year: int) -> tuple[ColaEvent, ...
                 )
             # Find the most recent nonzero historical COLA for the high-water
             # anchor.  A zero-COLA year must not reset that comparison basis.
-            anchor_year = last_year
-            while (
-                parameters(f"{anchor_year}-12-01").gov.ssa.social_security.cola.rate
-                == 0
-            ):
-                anchor_year -= 1
+            positive_history = [
+                observation
+                for observation in observations
+                if _decimal(observation.value) > 0
+            ]
+            if not positive_history:
+                raise ValueError("The statutory COLA history has no positive anchor")
+            anchor_year = int(positive_history[-1].instant_str[:4])
             missing_years = set(range(anchor_year + 1, through_year + 1)) - q3_years
             if missing_years:
                 raise ValueError(

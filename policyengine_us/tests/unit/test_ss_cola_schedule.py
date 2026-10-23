@@ -114,6 +114,13 @@ def test_projection_rejects_missing_or_invalid_q3_path():
 
 def test_audited_history_timing_corrected_1999_and_future_horizon(parameters):
     # https://www.ssa.gov/OACT/COLA/colaseries.html
+    canonical = parameters("2025-12-01").gov.ssa.cola_history
+    assert D(str(canonical.rate)) == D(".028")
+    assert canonical.effective_month == 12
+    assert canonical.first_payment_month == 1
+    assert canonical.pia_rounding == 2
+    assert parameters("1981-06-01").gov.ssa.cola_history.pia_rounding == 1
+    assert parameters("1982-06-01").gov.ssa.cola_history.pia_rounding == 2
     events = read_parameter_events(parameters, 2059)
     by_effective = {event.effective_month: event for event in events}
     assert by_effective["1975-06"].payment_month == "1975-07"
@@ -124,6 +131,19 @@ def test_audited_history_timing_corrected_1999_and_future_horizon(parameters):
     assert by_effective["2026-12"].rate == D(".036")
     assert by_effective["2058-12"].payment_month == "2059-01"
     assert apply_colas("1000", 2057, "2059-01", events) >= D("1000")
+
+
+def test_canonical_history_stops_before_projected_2027_check(parameters):
+    # Canonical authored history ends December2025. January2027 uses runtime
+    # Q3 levels317.265 and328.746, giving a statutory rounded rate3.6%.
+    assert (
+        str(parameters.gov.ssa.cola_history.rate.metadata["historical_end"])
+        == "2025-12-01"
+    )
+    events = read_parameter_events(parameters, 2027)
+    projected = next(event for event in events if event.payment_month == "2027-01")
+    assert projected.effective_month == "2026-12"
+    assert projected.rate == D(".036")
 
 
 def test_projection_explicitly_rejects_after_runtime_frozen_horizon(parameters):
