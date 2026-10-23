@@ -1,3 +1,10 @@
+## [2.61.3] - 2026-10-23
+
+### Fixed
+
+- Stop Colorado FAMLI, Paid Leave Oregon and WA Cares contributions from applying before their programs started, apply WA Cares from July 1, 2023, and add the 2019-2024 Washington Paid Family and Medical Leave premium rates and employer shares.
+
+
 ## [2.61.2] - 2026-10-23
 
 ### Fixed
