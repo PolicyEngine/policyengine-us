@@ -1,0 +1,12 @@
+description: In combined_rate_share mode, allocate this rate over the enabled combined
+  NII rate and active tax rate. At bill example rates the OACT convention is 12.4 divided
+  by 16.2; it differs from the bill share of 62 percent.
+values:
+  '0000-01-01': 0.124
+metadata:
+  label: S.770 OASDI rate for combined-rate allocation
+  period: year
+  reference:
+  - title: S.770 (119th Congress), sections 8 and 9
+    href: https://www.congress.gov/bill/119th-congress/senate-bill/770/text
+  unit: /1

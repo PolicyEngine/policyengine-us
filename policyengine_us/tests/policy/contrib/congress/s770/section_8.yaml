@@ -1,0 +1,698 @@
+- name: Active S corporation shareholder with 500000 of income
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    s_corp_income: 500_000
+    niit_magi: 500_000
+    filing_status: SINGLE
+  output:
+    s770_active_business_income: 500_000
+    s770_nii_taxable_base: 0
+    s770_active_taxable_base: 300_000
+    s770_nii_addon_tax: 0
+    # 16.2% x min(500,000, 500,000 - 200,000).
+    s770_active_business_income_tax: 48_600
+    net_investment_income_tax: 48_600
+    s770_active_business_income_revenue_oasdi: 30_132
+    s770_revenue_oasdi: 30_132
+
+- name: Limited partner excludes the passive subset from the active residual
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    partnership_income: 300_000
+    passive_partnership_s_corp_income: 100_000
+    niit_magi: 400_000
+    filing_status: SINGLE
+  output:
+    partnership_s_corp_income: 300_000
+    net_investment_income: 100_000
+    s770_nii_base: 100_000
+    s770_active_business_income: 200_000
+    # NII consumes 100,000 of the shared 200,000 MAGI excess first.
+    s770_nii_taxable_base: 100_000
+    s770_active_taxable_base: 100_000
+    s770_nii_addon_tax: 0
+    s770_active_business_income_tax: 16_200
+    net_investment_income_tax: 20_000
+
+- name: General partner earnings already subject to SECA have no new active tax
+  period: 2026
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    partnership_income: 300_000
+    partnership_self_employment_net_earnings: 300_000
+    niit_magi: 500_000
+    filing_status: SINGLE
+  output:
+    s770_active_business_income: 0
+    s770_active_business_income_tax: 0
+    net_investment_income_tax: 0
+
+- name: Wages subject to FICA do not enter either new tax base
+  period: 2026
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    employment_income: 500_000
+    filing_status: SINGLE
+  output:
+    s770_nii_base: 0
+    s770_active_business_income: 0
+    s770_nii_addon_tax: 0
+    s770_active_business_income_tax: 0
+    net_investment_income_tax: 0
+
+- name: Below threshold neither part imposes tax
+  period: 2026
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    taxable_interest_income: 50_000
+    s_corp_income: 100_000
+    niit_magi: 199_999
+    filing_status: SINGLE
+  output:
+    s770_nii_taxable_base: 0
+    s770_active_taxable_base: 0
+    s770_nii_addon_tax: 0
+    s770_active_business_income_tax: 0
+    net_investment_income_tax: 0
+    s770_revenue_oasdi: 0
+
+- name: Both switches off preserve current NIIT on the same household
+  period: 2026
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    taxable_interest_income: 100_000
+    s_corp_income: 200_000
+    niit_magi: 400_000
+    filing_status: SINGLE
+  output:
+    s770_nii_addon_tax: 0
+    s770_active_business_income_tax: 0
+    net_investment_income_tax: 3_800
+    s770_revenue_oasdi: 0
+
+- name: NII addon alone on the same household
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    taxable_interest_income: 100_000
+    s_corp_income: 200_000
+    niit_magi: 400_000
+    filing_status: SINGLE
+  output:
+    s770_nii_taxable_base: 100_000
+    s770_active_taxable_base: 0
+    s770_nii_addon_tax: 12_400
+    s770_active_business_income_tax: 0
+    net_investment_income_tax: 16_200
+    s770_nii_addon_revenue_oasdi: 7_688
+    s770_existing_niit_revenue_oasdi: 0
+    s770_revenue_oasdi: 7_688
+
+- name: Active option alone on the same household
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    taxable_interest_income: 100_000
+    s_corp_income: 200_000
+    niit_magi: 400_000
+    filing_status: SINGLE
+  output:
+    s770_nii_taxable_base: 100_000
+    s770_active_taxable_base: 100_000
+    s770_nii_addon_tax: 0
+    s770_active_business_income_tax: 16_200
+    net_investment_income_tax: 20_000
+    s770_active_business_income_revenue_oasdi: 10_044
+    s770_revenue_oasdi: 10_044
+
+- name: Both options on the same household share one MAGI excess
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    taxable_interest_income: 100_000
+    s_corp_income: 200_000
+    niit_magi: 400_000
+    filing_status: SINGLE
+  output:
+    s770_nii_taxable_base: 100_000
+    s770_active_taxable_base: 100_000
+    s770_nii_addon_tax: 12_400
+    s770_active_business_income_tax: 16_200
+    # .162 x min(100,000 + 200,000, 400,000 - 200,000).
+    net_investment_income_tax: 32_400
+    s770_nii_addon_revenue_oasdi: 7_688
+    s770_active_business_income_revenue_oasdi: 10_044
+    s770_existing_niit_revenue_oasdi: 0
+    s770_revenue_oasdi: 17_732
+
+- name: Zero addon rate still reserves NII threshold room
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.nii_addon.rate: 0
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    taxable_interest_income: 20_000
+    s_corp_income: 20_000
+    niit_magi: 230_000
+    filing_status: SINGLE
+  output:
+    s770_nii_taxable_base: 20_000
+    s770_active_taxable_base: 10_000
+    s770_nii_addon_tax: 0
+    s770_active_business_income_tax: 1_620
+    # .038 x 20,000 + .162 x 10,000.
+    net_investment_income_tax: 2_380
+
+- name: Zero active rate does not change the NII allocation
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.rate: 0
+    taxable_interest_income: 20_000
+    s_corp_income: 20_000
+    niit_magi: 230_000
+    filing_status: SINGLE
+  output:
+    s770_nii_taxable_base: 20_000
+    s770_active_taxable_base: 10_000
+    s770_nii_addon_tax: 2_480
+    s770_active_business_income_tax: 0
+    net_investment_income_tax: 3_240
+
+- name: Signed NII loss offsets active income before either bucket is clipped
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    estate_income: -10_000
+    s_corp_income: 20_000
+    niit_magi: 250_000
+    filing_status: SINGLE
+  output:
+    s770_nii_base: -10_000
+    s770_active_business_income: 20_000
+    s770_nii_taxable_base: 0
+    s770_active_taxable_base: 10_000
+    s770_nii_addon_tax: 0
+    # Review counterexample: .162 x (-10,000 + 20,000), not .162 x 20,000.
+    s770_active_business_income_tax: 1_620
+    net_investment_income_tax: 1_620
+
+- name: Signed active loss also reduces the existing NIIT component
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    taxable_interest_income: 20_000
+    s_corp_income: -10_000
+    niit_magi: 250_000
+    filing_status: SINGLE
+  output:
+    s770_nii_base: 20_000
+    s770_active_business_income: -10_000
+    s770_nii_taxable_base: 10_000
+    s770_active_taxable_base: 0
+    s770_nii_addon_tax: 1_240
+    s770_active_business_income_tax: 0
+    net_investment_income_tax: 1_620
+
+- name: A net unified loss produces no resulting section 1411 liability
+  period: 2026
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    estate_income: -30_000
+    s_corp_income: 20_000
+    niit_magi: 250_000
+    filing_status: SINGLE
+  output:
+    s770_nii_base: -30_000
+    s770_active_business_income: 20_000
+    s770_nii_taxable_base: 0
+    s770_active_taxable_base: 0
+    s770_nii_addon_tax: 0
+    s770_active_business_income_tax: 0
+    net_investment_income_tax: 0
+
+- name: An inactive active option does not import its signed loss
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    taxable_interest_income: 20_000
+    s_corp_income: -10_000
+    niit_magi: 250_000
+    filing_status: SINGLE
+  output:
+    s770_nii_taxable_base: 20_000
+    s770_active_taxable_base: 0
+    s770_nii_addon_tax: 2_480
+    s770_active_business_income_tax: 0
+    net_investment_income_tax: 3_240
+
+- name: NOL denial restores the deduction to broadened NII before allocation
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    # This supplied NII already deducts 30,000 under section 172.
+    net_investment_income: -10_000
+    s770_niit_nol_deduction: 30_000
+    s_corp_income: 20_000
+    niit_magi: 250_000
+    filing_status: SINGLE
+  output:
+    s770_nii_base: 20_000
+    s770_active_business_income: 20_000
+    s770_nii_taxable_base: 20_000
+    s770_active_taxable_base: 20_000
+    s770_nii_addon_tax: 2_480
+    s770_active_business_income_tax: 3_240
+    net_investment_income_tax: 6_480
+
+- name: Custom NOL permission preserves the supplied deduction
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.deny_nol: false
+    net_investment_income: -10_000
+    s770_niit_nol_deduction: 30_000
+    s_corp_income: 20_000
+    niit_magi: 250_000
+    filing_status: SINGLE
+  output:
+    s770_nii_base: -10_000
+    s770_nii_taxable_base: 0
+    s770_active_taxable_base: 10_000
+    s770_nii_addon_tax: 0
+    s770_active_business_income_tax: 1_620
+    net_investment_income_tax: 1_620
+
+- name: NII addon alone does not activate the active option NOL denial
+  period: 2026
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    net_investment_income: -10_000
+    s770_niit_nol_deduction: 30_000
+    s_corp_income: 20_000
+    niit_magi: 250_000
+    filing_status: SINGLE
+  output:
+    s770_nii_base: -10_000
+    s770_nii_addon_tax: 0
+    s770_active_business_income_tax: 0
+    net_investment_income_tax: 0
+
+- name: Both options respect the bill start year
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    taxable_interest_income: 100_000
+    s_corp_income: 200_000
+    niit_magi: 400_000
+    filing_status: SINGLE
+  output:
+    s770_nii_addon_tax: 0
+    s770_active_business_income_tax: 0
+    net_investment_income_tax: 3_800
+    s770_revenue_oasdi: 0
+
+- name: The active option can start later than the NII addon
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.start_year: 2027
+    taxable_interest_income: 100_000
+    s_corp_income: 200_000
+    niit_magi: 400_000
+    filing_status: SINGLE
+  output:
+    s770_nii_addon_tax: 12_400
+    s770_active_business_income_tax: 0
+    net_investment_income_tax: 16_200
+
+- name: The NII addon can start later than the active option
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.nii_addon.start_year: 2027
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    taxable_interest_income: 100_000
+    s_corp_income: 200_000
+    niit_magi: 400_000
+    filing_status: SINGLE
+  output:
+    s770_nii_addon_tax: 0
+    s770_active_business_income_tax: 16_200
+    net_investment_income_tax: 20_000
+
+- name: Bill transfer mode sends 62 percent of all resulting NIIT to OASDI
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    gov.contrib.congress.s770.section_8.transfer.mode: bill
+    taxable_interest_income: 100_000
+    s_corp_income: 200_000
+    niit_magi: 400_000
+    filing_status: SINGLE
+  output:
+    net_investment_income_tax: 32_400
+    s770_existing_niit_revenue_oasdi: 2_356
+    s770_nii_addon_revenue_oasdi: 7_688
+    s770_active_business_income_revenue_oasdi: 10_044
+    s770_revenue_oasdi: 20_088
+
+- name: Combined rate allocation sends 12.4 of 16.2 percentage points to OASDI
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    gov.contrib.congress.s770.section_8.transfer.mode: combined_rate_share
+    taxable_interest_income: 100_000
+    s_corp_income: 200_000
+    niit_magi: 400_000
+    filing_status: SINGLE
+  output:
+    net_investment_income_tax: 32_400
+    s770_existing_niit_revenue_oasdi: 3_800 * .124 / .162
+    s770_nii_addon_revenue_oasdi: 12_400 * .124 / .162
+    s770_active_business_income_revenue_oasdi: 12_400
+    s770_revenue_oasdi: 24_800
+
+- name: All addon mode transfers all new NII points and the chosen active share
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    gov.contrib.congress.s770.section_8.transfer.mode: all_addon
+    taxable_interest_income: 100_000
+    s_corp_income: 200_000
+    niit_magi: 400_000
+    filing_status: SINGLE
+  output:
+    s770_existing_niit_revenue_oasdi: 0
+    s770_nii_addon_revenue_oasdi: 12_400
+    s770_active_business_income_revenue_oasdi: 10_044
+    s770_revenue_oasdi: 22_444
+
+- name: Custom transfer shares remain independently configurable
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.nii_addon.oasdi_share: .5
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.oasdi_share: .25
+    taxable_interest_income: 100_000
+    s_corp_income: 200_000
+    niit_magi: 400_000
+    filing_status: SINGLE
+  output:
+    s770_existing_niit_revenue_oasdi: 0
+    s770_nii_addon_revenue_oasdi: 6_200
+    s770_active_business_income_revenue_oasdi: 4_050
+    s770_revenue_oasdi: 10_250
+
+- name: Bill transfer has its own start year
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    gov.contrib.congress.s770.section_8.transfer.mode: bill
+    gov.contrib.congress.s770.section_8.transfer.start_year: 2027
+    taxable_interest_income: 100_000
+    s_corp_income: 200_000
+    niit_magi: 400_000
+    filing_status: SINGLE
+  output:
+    net_investment_income_tax: 32_400
+    s770_existing_niit_revenue_oasdi: 0
+    s770_nii_addon_revenue_oasdi: 0
+    s770_active_business_income_revenue_oasdi: 0
+    s770_revenue_oasdi: 0
+
+- name: Head and spouse aggregate but dependent income stays outside both bases
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        taxable_interest_income: 10_000
+        s_corp_income: 100_000
+      spouse:
+        age: 45
+        is_tax_unit_spouse: true
+        taxable_interest_income: 20_000
+        partnership_income: 200_000
+      dependent:
+        age: 15
+        is_tax_unit_dependent: true
+        taxable_interest_income: 50_000
+        s_corp_income: 500_000
+    tax_units:
+      family:
+        members: [head, spouse, dependent]
+        filing_status: JOINT
+        niit_magi: 350_000
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: TX
+  output:
+    s770_nii_base: 30_000
+    s770_active_business_income: 300_000
+    s770_nii_taxable_base: 30_000
+    s770_active_taxable_base: 70_000
+    s770_nii_addon_tax: 3_720
+    s770_active_business_income_tax: 11_340
+    net_investment_income_tax: 16_200
+
+- name: OASDI only draw above cap room excludes only profits actually taxed
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    s_corp_income: 200_000
+    s770_draw_gross: 150_000
+    # q=.9235; 9,235 of covered net earnings represents 10,000 gross profit.
+    s770_draw_oasdi_base: 9_235
+    s770_draw_hi_in_effect: false
+    niit_magi: 400_000
+    filing_status: SINGLE
+  output:
+    s770_active_business_income: 190_000
+    s770_active_taxable_base: 190_000
+    s770_active_business_income_tax: 30_780
+    net_investment_income_tax: 30_780
+
+- name: HI draw above cap room excludes the full gross draw from the active base
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    s_corp_income: 200_000
+    s770_draw_gross: 150_000
+    s770_draw_oasdi_base: 9_235
+    s770_draw_hi_in_effect: true
+    niit_magi: 400_000
+    filing_status: SINGLE
+  output:
+    s770_active_business_income: 50_000
+    s770_active_taxable_base: 50_000
+    s770_active_business_income_tax: 8_100
+    net_investment_income_tax: 8_100
+
+- name: OASDI only draw with no remaining cap room leaves all profits active
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    s_corp_income: 200_000
+    s770_draw_gross: 150_000
+    s770_draw_oasdi_base: 0
+    s770_draw_hi_in_effect: false
+    niit_magi: 400_000
+    filing_status: SINGLE
+  output:
+    s770_active_business_income: 200_000
+    s770_active_taxable_base: 200_000
+    s770_active_business_income_tax: 32_400
+    net_investment_income_tax: 32_400
+
+- name: Explicit passive SE overlap is removed once from each affected category
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    partnership_income: 300_000
+    passive_partnership_s_corp_income: 100_000
+    partnership_self_employment_net_earnings: 150_000
+    s770_passive_se_income: 40_000
+    niit_magi: 400_000
+    filing_status: SINGLE
+  output:
+    # N = 100,000 - 40,000; A = 300,000 - 100,000 - (150,000 - 40,000).
+    s770_nii_base: 60_000
+    s770_active_business_income: 90_000
+    s770_nii_taxable_base: 60_000
+    s770_active_taxable_base: 90_000
+    s770_nii_addon_tax: 7_440
+    s770_active_business_income_tax: 14_580
+    net_investment_income_tax: 24_300
+
+- name: Existing filing status thresholds govern both options
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    people:
+      single:
+        age: 40
+        taxable_interest_income: 20_000
+        s_corp_income: 20_000
+      joint:
+        age: 40
+        taxable_interest_income: 20_000
+        s_corp_income: 20_000
+      separate:
+        age: 40
+        taxable_interest_income: 20_000
+        s_corp_income: 20_000
+      head:
+        age: 40
+        taxable_interest_income: 20_000
+        s_corp_income: 20_000
+      survivor:
+        age: 40
+        taxable_interest_income: 20_000
+        s_corp_income: 20_000
+    tax_units:
+      single:
+        members: [single]
+        filing_status: SINGLE
+        niit_magi: 230_000
+      joint:
+        members: [joint]
+        filing_status: JOINT
+        niit_magi: 280_000
+      separate:
+        members: [separate]
+        filing_status: SEPARATE
+        niit_magi: 155_000
+      head:
+        members: [head]
+        filing_status: HEAD_OF_HOUSEHOLD
+        niit_magi: 230_000
+      survivor:
+        members: [survivor]
+        filing_status: SURVIVING_SPOUSE
+        niit_magi: 280_000
+    households:
+      household:
+        members: [single, joint, separate, head, survivor]
+        state_code: TX
+  output:
+    # Each filing status has 30,000 of MAGI excess: n=20,000, a=10,000.
+    s770_nii_taxable_base: [20_000, 20_000, 20_000, 20_000, 20_000]
+    s770_active_taxable_base: [10_000, 10_000, 10_000, 10_000, 10_000]
+    s770_nii_addon_tax: [2_480, 2_480, 2_480, 2_480, 2_480]
+    s770_active_business_income_tax: [1_620, 1_620, 1_620, 1_620, 1_620]
+    net_investment_income_tax: [4_860, 4_860, 4_860, 4_860, 4_860]
+
+- name: Exact threshold is untaxed and one dollar above it has one dollar of base
+  period: 2026
+  absolute_error_margin: 0.001
+  reforms: policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.congress.s770.section_8.nii_addon.in_effect: true
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    people:
+      exact:
+        age: 40
+        s_corp_income: 100_000
+      above:
+        age: 40
+        s_corp_income: 100_000
+    tax_units:
+      exact:
+        members: [exact]
+        filing_status: SINGLE
+        niit_magi: 200_000
+      above:
+        members: [above]
+        filing_status: SINGLE
+        niit_magi: 200_001
+    households:
+      household:
+        members: [exact, above]
+        state_code: TX
+  output:
+    s770_active_taxable_base: [0, 1]
+    s770_nii_addon_tax: [0, 0]
+    s770_active_business_income_tax: [0, .162]
+    net_investment_income_tax: [0, .162]
