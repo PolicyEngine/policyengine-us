@@ -73,7 +73,7 @@ def household_specs(draw):
     }
 
 
-def _seeded_households(n=80, seed=20261023):
+def _seeded_households(n=80, seed=20261023, ties=True):
     rng = np.random.default_rng(seed)
 
     def some(high, p=0.6):
@@ -106,6 +106,17 @@ def _seeded_households(n=80, seed=20261023):
                 }
             )
         households.append({"tax_units": units, "amount": some(16_000, 0.7)})
+    if not ties:
+        # Distinct ages within each household, so the holder is unambiguous
+        # whatever order the members are listed in.
+        for household in households:
+            seen = set()
+            for unit in household["tax_units"]:
+                for p in unit["people"]:
+                    while p["age"] in seen:
+                        p["age"] += 1
+                    seen.add(p["age"])
+        return households
     # Ties: two 40-year-old roommates, no head flagged; and two flagged
     # heads of the same age. The first listed takes the household amount.
     tie = {"age": 40, "dependent": False, "wages": 50_000.0, "interest": 0.0}
@@ -130,7 +141,7 @@ def _seeded_households(n=80, seed=20261023):
     return households
 
 
-def _situation(households, year):
+def _situation(households, year, shuffle_seed=None):
     people, tax_units, marital_units, spm_units, hh = {}, {}, {}, {}, {}
     for h, household in enumerate(households):
         members = []
@@ -163,6 +174,10 @@ def _situation(households, year):
             "state_code": {year: "TX"},
             "qualified_passenger_vehicle_loan_interest": {year: household["amount"]},
         }
+    if shuffle_seed is not None:
+        names = list(people)
+        order = np.random.default_rng(shuffle_seed).permutation(len(names))
+        people = {names[i]: people[names[i]] for i in order}
     return {
         "people": people,
         "tax_units": tax_units,
@@ -202,8 +217,8 @@ def _statute_deduction(interest, magi, filing_status):
     return np.array(out)
 
 
-def _calculate(households, year):
-    sim = Simulation(situation=_situation(households, year))
+def _calculate(households, year, shuffle_seed=None):
+    sim = Simulation(situation=_situation(households, year, shuffle_seed))
     return {
         "interest": sim.calculate(
             "tax_unit_qualified_passenger_vehicle_loan_interest", year
@@ -214,8 +229,8 @@ def _calculate(households, year):
     }
 
 
-def _check(households, year):
-    result = _calculate(households, year)
+def _check(households, year, shuffle_seed=None):
+    result = _calculate(households, year, shuffle_seed)
     interest, deduction = result["interest"], result["deduction"]
     expected = _expected_interest(households)
 
@@ -287,6 +302,12 @@ def test_seeded_mixed_batch_2026_locality():
     households = _seeded_households(seed=20261024)
     _check(households, "2026")
     _check_locality(households, "2026")
+
+
+def test_people_listed_out_of_household_order():
+    # Microdata need not list a household's members next to each other.
+    households = _seeded_households(n=60, seed=20261025, ties=False)
+    _check(households, "2025", shuffle_seed=7)
 
 
 @settings(
