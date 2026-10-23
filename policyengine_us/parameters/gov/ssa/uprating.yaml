@@ -9,6 +9,10 @@ values:
   2027-01-01: 328.746 # 2026Q3: (327.104 + 328.481 + 330.654) / 3
   # Forecasts carry the 2026Q3 CPI-W actual forward at CBO's February 2026
   # quarterly CPI-U growth: 2026Q3 actual * CBO CPI-U (Q3) / CBO CPI-U (2026Q3).
+  # CBO's Economic Projections publish no CPI-W series, so CBO CPI-U Q3/Q3
+  # growth stands in for CPI-W Q3/Q3. CBO's own projected COLAs (2.3% a year
+  # for 2029-2036) match this growth (2.26% a year) to the tenth of a percent
+  # that CBO publishes.
   2028-01-01: 336.945 # 2027Q3: 328.746 * 341.281 / 332.976
   2029-01-01: 344.854 # 2028Q3: 328.746 * 349.291 / 332.976
   2030-01-01: 352.722 # 2029Q3: 328.746 * 357.260 / 332.976
@@ -24,13 +28,18 @@ metadata:
   unit: currency-USD
   label: SSA uprating
   reference:
-    - title: Historical values
+    - title: SSA | Cost-of-living adjustments, 1975-present
       href: https://www.ssa.gov/oact/cola/colaseries.html
+    - title: 42 U.S. Code § 415(i)
+      href: https://www.law.cornell.edu/uscode/text/42/415#i
     - title: BLS CPI-W, U.S. city average, all items, not seasonally adjusted (CWUR0000SA0)
       href: https://data.bls.gov/timeseries/CWUR0000SA0
     - title: 2027 Cost-of-Living Adjustment (COLA) Fact Sheet
       href: https://www.ssa.gov/news/en/cola/factsheets/2027.html
     - title: CBO | Economic Projections | February 2026
+      # Sheet: 1. Quarterly, Row 53: CPI-U
       href: https://www.cbo.gov/system/files/2026-02/51135-2026-02-Economic-Projections.xlsx
     - title: CBO | Economic Projections | February 2026, quarterly CSV (variable cpiu)
       href: https://github.com/US-CBO/cbo-data/blob/284a95665f9f2f74ed1f482feb629b43fce323da/data/economic/economic_projections/quarterly_2026-02.csv
+    - title: CBO | The Budget and Economic Outlook, 2026 to 2036 | February 2026, Chapter 3, Social Security (projected COLAs)
+      href: https://www.cbo.gov/system/files/2026-02/61882-Outlook-2026.pdf#page=74

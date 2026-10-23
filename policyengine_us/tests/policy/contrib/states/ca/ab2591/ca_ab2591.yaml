@@ -2,12 +2,12 @@
 # Allows taxpayers to elect a standard deduction equal to the federal
 # poverty line for their household size.
 # Effective for taxable years beginning on or after July 1, 2027.
-# 2027 federal poverty guidelines (CONTIGUOUS_US):
-#   first person = $16,367
-#   additional person = $5,825
-#   1-person FPL  = $16,367
-#   2-person FPL  = $22,191
-#   4-person FPL  = $33,841
+# 2027 federal poverty guidelines (CONTIGUOUS_US), 2026 values x 336.766 / 328.4:
+#   first person = $16,366.58
+#   additional person = $5,824.70
+#   1-person FPL  = $16,367 (rounded)
+#   2-person FPL  = $22,191 (rounded)
+#   4-person FPL  = $33,841 (rounded)
 
 - name: Single filer uses one-person FPL.
   period: 2027

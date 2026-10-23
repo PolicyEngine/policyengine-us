@@ -11,7 +11,7 @@ values:
   # Forecasts carry the June 2026 actual forward at CBO's February 2026
   # quarterly CPI-U growth: June 2026 actual * CBO CPI-U (Q2) / CBO CPI-U (2026Q2).
   2027-10-01: 342.578 # 2027Q2: 333.952 * 339.250 / 330.708
-  2028-10-01: 350.710 # 2028Q2: 333.952 * 347.303 / 330.708
+  2028-10-01: 350.71 # 2028Q2: 333.952 * 347.303 / 330.708
   2029-10-01: 358.747 # 2029Q2: 333.952 * 355.262 / 330.708
   2030-10-01: 366.868 # 2030Q2: 333.952 * 363.304 / 330.708
   2031-10-01: 375.156 # 2031Q2: 333.952 * 371.512 / 330.708
@@ -26,11 +26,16 @@ metadata:
   label: SNAP uprating
   economy: false
   reference:
-    - title: 7 U.S. Code § 2012(u)(4)
-      href: https://www.law.cornell.edu/uscode/text/7/2012#u_4
+    - title: 7 U.S. Code § 2012(u)(3)(C)
+      href: https://www.law.cornell.edu/uscode/text/7/2012#u_3_C
+    - title: 7 U.S. Code § 2012(u)(4) (2023 edition, before Pub. L. 119-21)
+      href: https://www.govinfo.gov/content/pkg/USCODE-2023-title7/html/USCODE-2023-title7-chap51-sec2012.htm
+    - title: 7 CFR 273.10(e)(4)(ii)
+      href: https://www.ecfr.gov/current/title-7/part-273/section-273.10#p-273.10(e)(4)(ii)
     - title: BLS Consumer Price Index for All Urban Consumers (CPI-U), all items, U.S. city average, not seasonally adjusted (CUUR0000SA0)
       href: https://data.bls.gov/timeseries/CUUR0000SA0
     - title: CBO | Economic Projections | February 2026
+      # Sheet: 1. Quarterly, Row 53: CPI-U
       href: https://www.cbo.gov/system/files/2026-02/51135-2026-02-Economic-Projections.xlsx
     - title: CBO | Economic Projections | February 2026, quarterly CSV (variable cpiu)
       href: https://github.com/US-CBO/cbo-data/blob/284a95665f9f2f74ed1f482feb629b43fce323da/data/economic/economic_projections/quarterly_2026-02.csv

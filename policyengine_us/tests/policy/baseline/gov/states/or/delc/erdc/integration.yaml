@@ -35,6 +35,9 @@
     or_erdc_eligible: true
     or_erdc: 1_490
 
+# 2027 2-person FPG = (15,960 + 5,680) x 336.766 / 328.4 = 22,191.28.
+# Initial limit = ceil(22,191.28 / 12 x 2) = ceil(3,698.55) = 3,699. The rule
+# is income < limit, so income of 3,699 is ineligible.
 - name: Case 2, initial applicant at the strict income limit is ineligible.
   period: 2027-01
   absolute_error_margin: 0.1

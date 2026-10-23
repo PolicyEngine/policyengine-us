@@ -23,7 +23,11 @@ LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS = (
 
 
 def get_irs_cpi(parameters: ParameterNode, year: int) -> float:
-    """Calculate IRS CPI based on Chained CPI-U average from Sep to Aug."""
+    """Average chained CPI-U from August of ``year - 1`` through July of ``year``.
+
+    26 U.S.C. 1(f) uses the 12 months ending August; #9105 tracks the
+    one-month offset.
+    """
     cpi = parameters.gov.bls.cpi.c_cpi_u
     end = instant(f"{year}-08-01")
     start = end.offset(-MONTHS_IN_YEAR, MONTH)
@@ -779,32 +783,27 @@ def extend_social_security_payroll_cap(
     """
     Extend the Social Security contribution and benefit base through `end_year`.
 
-    This follows the statutory formula in 20 CFR 404.1048 using the projected
-    national average wage index (NAWI), rather than extrapolating the cap
-    independently.
+    Follows 42 U.S.C. 430(b) on the projected national average wage index
+    (NAWI): the base for year Y is the larger of the base in effect for Y - 1
+    and the 1994 base ($60,600) times NAWI(Y - 2) / NAWI(1992), rounded to the
+    nearest $300 (a multiple of $150 rounds up). 20 CFR 404.1048(b)(2)(i)
+    still states the pre-1995 chained formula, which Pub. L. 103-296,
+    sec. 321(g)(1), replaced for bases after 1994.
     """
     cap = parameters.gov.irs.payroll.social_security.cap
     nawi = parameters.gov.ssa.nawi
-
-    last_increase_determination_year = last_projected_year - 1
-    if cap(f"{last_projected_year}-01-01") <= cap(f"{last_projected_year - 1}-01-01"):
-        for year in range(last_projected_year - 1, 1992, -1):
-            if cap(f"{year}-01-01") > cap(f"{year - 1}-01-01"):
-                last_increase_determination_year = year - 1
-                break
+    base_1994 = cap("1994-01-01")
+    nawi_1992 = nawi("1992-01-01")
 
     for year in range(last_projected_year + 1, end_year + 1):
-        determination_year = year - 1
-        current_cap = cap(f"{determination_year}-01-01")
-        numerator = nawi(f"{determination_year - 1}-01-01")
-        denominator = nawi(f"{last_increase_determination_year - 1}-01-01")
+        current_cap = cap(f"{year - 1}-01-01")
         proposed_cap = round_social_security_payroll_cap(
-            current_cap * numerator / denominator
+            base_1994 * nawi(f"{year - 2}-01-01") / nawi_1992
         )
-        new_cap = max(current_cap, proposed_cap)
-        cap.update(period=f"year:{year}-01-01:1", value=new_cap)
-        if new_cap > current_cap:
-            last_increase_determination_year = determination_year
+        cap.update(
+            period=f"year:{year}-01-01:1",
+            value=max(current_cap, proposed_cap),
+        )
 
     final_value = cap(f"{end_year}-01-01")
     cap.update(start=instant(f"{end_year}-01-01"), value=final_value)
@@ -936,8 +935,8 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
 
     # IRS uprating - special case that computes from CPI
     IRS_UPRATING_START_YEAR = 2010
-    # 2036 reads the 12 months ending August 2035, whose chained CPI-U
-    # projection points (CBO February 2026) run through the 2035 instant.
+    # 2036 averages chained CPI-U from August 2034 to July 2035 (see #9105);
+    # the 2035 instant holds CBO's February 2026 calendar-2035 point.
     IRS_LAST_PROJECTED_YEAR = 2036
 
     uprating_index = parameters.gov.irs.uprating
@@ -1011,21 +1010,22 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         period_day=1,
     )
 
-    # CPI-U (February values, last projection year 2035). The 2035 instant
-    # holds CBO's February 2026 projection that applies through 2036, so
-    # extrapolation starts at the 2036 instant.
+    # CPI-U (February values, last projection year 2036). Each February
+    # instant holds CBO's February 2026 calendar-year average for that year
+    # (the "# YYYY value" comments name the tax year it feeds), so CBO's last
+    # point, calendar 2036, sits at the 2036 instant.
     extend_parameter_values(
         parameters.gov.bls.cpi.cpi_u,
-        last_projected_year=2035,
+        last_projected_year=2036,
         end_year=END_YEAR,
         period_month=2,
         period_day=1,
     )
 
-    # Chained CPI-U (February values, last projection year 2035), as for CPI-U.
+    # Chained CPI-U (February values, last projection year 2036), as for CPI-U.
     extend_parameter_values(
         parameters.gov.bls.cpi.c_cpi_u,
-        last_projected_year=2035,
+        last_projected_year=2036,
         end_year=END_YEAR,
         period_month=2,
         period_day=1,
