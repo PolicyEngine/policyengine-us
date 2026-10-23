@@ -33,16 +33,46 @@ def migrate_social_security_inputs(simulation, *, include_baseline=True):
         reported_name = f"{public_name}_reported"
         reported_periods = set(simulation._get_set_input_periods(reported_name))
         holder = simulation.get_holder(public_name)
+        # Snapshot before deleting: deleting a multi-year period also deletes
+        # contained supplied periods, including a shorter legacy source whose
+        # lexical sort order happens to place it after the longer period.
+        sources = {}
         for period in simulation._get_set_input_periods(public_name):
-            if period in reported_periods:
+            if period not in reported_periods:
+                value = simulation._get_recorded_input_array(public_name, period)
+                if value is not None:
+                    sources[period] = value.copy()
+        if not sources:
+            continue
+        retained_overrides = []
+        for name, branch_name, period in tuple(simulation._user_input_keys):
+            if (
+                name != public_name
+                or branch_name not in visible_branches
+                or period not in reported_periods
+            ):
                 continue
-            value = simulation._get_recorded_input_array(public_name, period)
-            if value is None:
-                continue
+            for storage_name, storage in (
+                ("memory", holder._memory_storage),
+                ("disk", holder._disk_storage),
+            ):
+                if holder._stores_user_input(period, branch_name, storage_name):
+                    retained_overrides.append(
+                        (branch_name, period, storage.get(period, branch_name).copy())
+                    )
+                    break
+        for period, value in sources.items():
             simulation.set_input(reported_name, period, value.copy())
+        for period in sources:
             for branch_name in visible_branches:
                 delete_input_values(holder, period, branch_name)
-            migrated.add(public_name)
+        # Keep exact-period both-name overrides even inside a migrated longer
+        # source period. Restore each original branch slot through set_input,
+        # preserving its input classification and ordinary replay bookkeeping.
+        for branch_name, period, value in retained_overrides:
+            if not holder._stores_user_input(period, branch_name):
+                holder.set_input(period, value, branch_name)
+        migrated.add(public_name)
 
     # Core's legacy extraction reads this runtime list, which was assembled
     # before migration. Retain public names only where actual overrides remain.

@@ -235,6 +235,7 @@ def test_reported_twins_are_pure_and_original_dataset_names_keep_their_uprater()
         assert not original.is_input_variable()
         assert original.uprating is None
         assert reported.is_input_variable()
+        assert reported.label == original.label
         assert not reported.formulas and not reported.adds and not reported.subtracts
         assert reported.uprating.endswith("social_security_per_capita")
         assert (
@@ -303,3 +304,87 @@ def test_parameter_reform_registration_order_preserves_stable_public_formula():
         first.tax_benefit_system.variables["social_security_retirement"].formulas
         == second.tax_benefit_system.variables["social_security_retirement"].formulas
     )
+
+
+@pytest.mark.parametrize("wrapper", WRAPPERS)
+def test_exact_multi_year_sources_keep_keys_uniform_factors_and_overrides(wrapper):
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported = f"{public}_reported"
+    multi_year = "year:2024:2"
+    simulation = make_simulation(wrapper, {public: {multi_year: 24_000}})
+    assert input_periods(simulation, public) == set()
+    assert input_periods(simulation, reported) == {multi_year}
+    assert amount(simulation, public, multi_year) == 24_000
+    parent_keys = set(simulation._user_input_keys)
+    uniform = simulation.get_branch("uniform_multi_year")
+    for year in (2024, 2025):
+        uniform.set_input(FACTOR, year, [1.1])
+    drop_inherited_values(uniform)
+    assert amount(uniform, public, multi_year) == pytest.approx(26_400)
+    assert simulation._user_input_keys == parent_keys
+    assert amount(simulation, public, multi_year) == 24_000
+    reloaded = reload_source_inputs(
+        export_source_inputs(uniform), tax_benefit_system=system
+    )
+    assert input_periods(reloaded, reported) == {multi_year}
+    assert amount(reloaded, public, multi_year) == pytest.approx(26_400)
+    uniform.set_input(public, multi_year, [0])
+    clone = uniform.clone(clone_tax_benefit_system=False)
+    drop_inherited_values(clone)
+    assert amount(clone, public, multi_year) == 0
+    override_reload = reload_source_inputs(
+        export_source_inputs(clone), tax_benefit_system=system
+    )
+    assert amount(override_reload, public, multi_year) == 0
+    assert amount(override_reload, reported, multi_year) == 24_000
+
+
+def test_exact_multi_year_both_names_and_neutralization_keep_core_precedence(
+    monkeypatch,
+):
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported = f"{public}_reported"
+    multi_year = "year:2024:2"
+    simulation = make_simulation(
+        inputs={public: {multi_year: 123}, reported: {multi_year: 24_000}}
+    )
+    simulation.set_input(FACTOR, 2024, [1.1])
+    simulation.set_input(FACTOR, 2025, [0.8])
+    assert amount(simulation, public, multi_year) == 123
+    assert amount(simulation, reported, multi_year) == 24_000
+    neutralized = make_simulation(inputs={reported: {multi_year: 24_000}})
+    with monkeypatch.context() as context:
+        context.setattr(system.variables[public], "is_neutralized", True)
+        assert amount(neutralized, public, multi_year) == 0
+
+
+def test_exact_multi_year_source_rejects_differing_annual_factors_without_allocation():
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    multi_year = "year:2024:2"
+    simulation = make_simulation(inputs={public: {multi_year: 24_000}})
+    simulation.set_input(FACTOR, 2024, [1.1])
+    simulation.set_input(FACTOR, 2025, [0.8])
+    with pytest.raises(ValueError, match="separately supplied annual source amounts"):
+        simulation.calculate(public, multi_year)
+    assert input_periods(simulation, f"{public}_reported") == {multi_year}
+
+
+def test_containing_period_migration_preserves_sources_and_inner_final_overrides():
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported = f"{public}_reported"
+    simulation = make_simulation(
+        inputs={
+            public: {2024: 123, "year:2024:10": 100_000, "year:2024:2": 24_000},
+            reported: {2024: 12_000},
+        }
+    )
+    assert input_periods(simulation, public) == {"2024"}
+    assert input_periods(simulation, reported) == {
+        "2024",
+        "year:2024:2",
+        "year:2024:10",
+    }
+    assert amount(simulation, public, 2024) == 123
+    assert amount(simulation, reported, 2024) == 12_000
+    assert amount(simulation, public, "year:2024:2") == 24_000
+    assert amount(simulation, reported, "year:2024:10") == 100_000

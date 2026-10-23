@@ -43,6 +43,22 @@ before final overrides. Core's legacy `extract_person` remains a one-period
 interface. Neither interface settles the separate API/application metadata and
 field-exposure contract.
 
+Annual benefit inputs retain Core's period normalization. For example, supplying
+`social_security_retirement: {"2024-07": 500}` through a PE-US constructor stores
+500 under the rolling annual period `year:2024-07`, then migrates that exact
+stored period to `_reported`. A July monthly output still follows Core's normal
+calendar-year amount divided by twelve; it is not a new monthly entitlement
+schedule. The complete source snapshot preserves the rolling annual key.
+
+PE-US wrappers also preserve an exact supplied multi-year annual total, such as
+`year:2024:2`. They apply a benefit multiplier only when it is identical in every
+calendar year covered by that total. Differing annual multipliers require
+separately supplied annual source amounts, because the total provides no annual
+allocation. Explicit public multi-year inputs remain final overrides, and
+neutralization still takes precedence. Raw Core `SimulationBuilder` and YAML
+should supply canonical annual `_reported` periods for lever calculations; the
+additional exact multi-year reported-source adapter belongs to PE-US wrappers.
+
 ## Parameters and composition
 
 All lever parameters live under `gov.contrib.ssa.benefit_levers`:

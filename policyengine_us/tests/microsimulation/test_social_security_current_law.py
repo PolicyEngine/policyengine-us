@@ -354,3 +354,37 @@ def test_constructor_created_baseline_keeps_migrated_uprating(
     for public in SOCIAL_SECURITY_COMPONENTS:
         assert not current.baseline._get_set_input_periods(public)
         assert current.baseline._get_set_input_periods(f"{public}_reported")
+
+
+@pytest.mark.parametrize("wrapper", [Simulation, HouseholdMicrosimulation])
+def test_monthly_input_normalization_and_exact_multi_year_reads_match_original(
+    original_input_system, wrapper
+):
+    inputs = situation(include_benefits=False)
+    for person in inputs["people"].values():
+        person["social_security_retirement"] = {2024: 12_000, "2024-07": 500}
+        person["social_security_disability"] = {"2024-07": 300}
+        person["social_security_survivors"] = {"year:2024:2": 2_000}
+    original = reference_simulation(
+        original_input_system, wrapper, situation=deepcopy(inputs)
+    )
+    current = wrapper(situation=inputs, tax_benefit_system=system)
+    # Core's default FLOW input handler maps July to a rolling YEAR starting
+    # in July. It does not store an exact MONTH on these annual variables.
+    periods = current._get_set_input_periods("social_security_retirement_reported")
+    assert {str(period) for period in periods} == {"2024", "year:2024-07"}
+    assert all(period.unit == YEAR and period.size == 1 for period in periods)
+    requests = ("2024-07", "year:2024-07", 2024, "2024-06", "year:2024:2")
+    for public in SOCIAL_SECURITY_COMPONENTS[:2]:
+        assert_equal_outputs(current, original, requests[:-1], variables=(public,))
+    assert_equal_outputs(
+        current, original, ("year:2024:2",), variables=("social_security_survivors",)
+    )
+    reloaded = reload_source_inputs(
+        export_source_inputs(current), tax_benefit_system=system
+    )
+    for public in SOCIAL_SECURITY_COMPONENTS[:2]:
+        assert_equal_outputs(reloaded, original, requests[:-1], variables=(public,))
+    assert_equal_outputs(
+        reloaded, original, ("year:2024:2",), variables=("social_security_survivors",)
+    )
