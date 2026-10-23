@@ -990,3 +990,27 @@
         state_code: AR
   output:
     ar_liheap_countable_income: 9_156
+
+# Manual Appendix F (p165) counts pensions paid to a person's surviving dependents. A
+# $9,600 military Survivor Benefit Plan annuity, entered in
+# military_retirement_pay_survivors, counts in full: 9600/12 = 800, a whole MCI.
+- name: Case 34, a military survivor annuity counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 62
+        immigration_status: CITIZEN
+        ssi: 0
+        military_retirement_pay_survivors: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 9_600
