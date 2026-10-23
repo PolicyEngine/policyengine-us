@@ -1,0 +1,54 @@
+description: Montana provides this full-season base benefit to households heating primarily with fuel oil, by dwelling type and number of bedrooms, under the Low Income Home Energy Assistance Program.
+# Kerosene, a deliverable heating fuel under ARM 37.70.401(5), uses this
+# column; the matrix has no separate kerosene column.
+# The 2025-2026 and 2026-2027 matrices print the same amounts. The flat
+# non-traditional dwelling row is payment/non_traditional_benefit.yaml.
+SINGLE_FAMILY:
+  1:
+    2025-10-01: 1_234
+  2:
+    2025-10-01: 1_794
+  3:
+    2025-10-01: 2_444
+  4:
+    2025-10-01: 3_362
+MULTI_FAMILY:
+  1:
+    2025-10-01: 901
+  2:
+    2025-10-01: 1_318
+  3:
+    2025-10-01: 1_747
+  4:
+    2025-10-01: 1_949
+MOBILE_HOME:
+  1:
+    2025-10-01: 1_296
+  2:
+    2025-10-01: 1_952
+  3:
+    2025-10-01: 2_865
+  4:
+    2025-10-01: 3_347
+metadata:
+  unit: currency-USD
+  period: year
+  label: Montana LIHEAP fuel oil base benefit
+  breakdown:
+    - mt_liheap_dwelling_type
+    - range(1, 5)
+  breakdown_labels:
+    - Dwelling type
+    - Bedrooms
+  propagate_metadata_to_children: true
+  reference:
+    - title: Montana LIHEAP Policy Manual 2025-2026, section 9.1 Maximum Benefit Award Matrix
+      href: https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=122
+    - title: Montana LIHEAP Policy Manual 2026-2027, section 9.1 Maximum Benefit Award Matrix
+      href: https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=124
+    - title: Admin. R. Mont. 37.70.401(5) (deliverable heating fuel), effective May 27, 2023 and unchanged on May 23, 2026
+      href: https://rules.mt.gov/policy-library-documents/application/pdf/325b36e5abb6a3bfa036c3802fc997ed50711b5407868ec8f4b61eabc538e3ed#page=1
+    - title: Admin. R. Mont. 37.70.601(1)-(2), effective September 24, 2022 to May 22, 2026
+      href: https://rules.mt.gov/policy-library-documents/application/pdf/0074fe4c5989f116f77c281ac5736bf5b0f2facbfaf09daf76450ecad7fcdf47#page=1
+    - title: Admin. R. Mont. 37.70.601(1)-(2), effective May 23, 2026
+      href: https://rules.mt.gov/policy-library-documents/application/pdf/b2add645c2eceddb643df5cdaf684339b968b43fc63b88f21ea882dfeb930366#page=1

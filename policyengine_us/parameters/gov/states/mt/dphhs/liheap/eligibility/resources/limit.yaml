@@ -1,0 +1,62 @@
+description: Montana limits countable non-business resources to this amount, by household size, under the Low Income Home Energy Assistance Program.
+# The tables add a fixed amount per member up to a household maximum: $1,465
+# up to $29,290 in 2025-2026 and $1,502 up to $31,524 in 2026-2027.
+brackets:
+  - threshold:
+      2025-10-01: 1
+    amount:
+      2025-10-01: 14_358
+      2026-10-01: 14_717
+  - threshold:
+      2025-10-01: 2
+    amount:
+      2025-10-01: 21_966
+      2026-10-01: 22_515
+  - threshold:
+      2025-10-01: 3
+    amount:
+      2025-10-01: 23_431
+      2026-10-01: 24_017
+  - threshold:
+      2025-10-01: 4
+    amount:
+      2025-10-01: 24_896
+      2026-10-01: 25_518
+  - threshold:
+      2025-10-01: 5
+    amount:
+      2025-10-01: 26_360
+      2026-10-01: 27_019
+  - threshold:
+      2025-10-01: 6
+    amount:
+      2025-10-01: 27_825
+      2026-10-01: 28_521
+  - threshold:
+      2025-10-01: 7
+    amount:
+      2025-10-01: 29_290
+      2026-10-01: 30_022
+  - threshold:
+      2025-10-01: .inf
+      2026-10-01: 8
+    amount:
+      2025-10-01: 29_290
+      2026-10-01: 31_524
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  period: year
+  label: Montana LIHEAP non-business resource limit
+  reference:
+    - title: Admin. R. Mont. 37.70.408(1), (4) and (5), effective May 27, 2023 to May 22, 2026
+      href: https://rules.mt.gov/policy-library-documents/application/pdf/68a4c23444a94d952bc1fa28f5b3c8f528f075b616525c34295b11b0630e1e4f#page=1
+    - title: Admin. R. Mont. 37.70.408(1), (4) and (5), effective May 23, 2026
+      href: https://rules.mt.gov/policy-library-documents/application/pdf/2421ff8e6709d83f812fd3c3a68f94c9895ab82bef2dcde672cf25d0869167c5#page=1
+    - title: Montana LIHEAP Policy Manual 2025-2026, section 9.4 Resources Guidelines
+      href: https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=124
+    - title: Montana LIHEAP Policy Manual 2026-2027, section 9.4 Resources Guidelines
+      href: https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=126
+    - title: "Montana LIHEAP FY2026 State Plan, item 2.3 #page 9-10"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/MT_Plan_2026.pdf#page=9
