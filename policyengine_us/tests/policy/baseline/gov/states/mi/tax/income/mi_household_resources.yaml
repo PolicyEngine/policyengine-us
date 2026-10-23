@@ -1098,3 +1098,46 @@
   output:
     # Line 33: 10,000 - 1,000 = 9,000.
     mi_household_resources: 9_000
+
+- name: The 2020 charitable deduction for non-itemizers comes off household resources
+  # Michigan Treasury FAQ: for 2020 the charitable cash contribution "is a
+  # deduction from adjusted gross income and therefore Total Household
+  # Resources as well". U.S. Form 1040 line 10b: min(500, 300).
+  period: 2020
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        charitable_cash_donations: 500
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MI
+  output:
+    charitable_contributions_ald: 300
+    mi_household_resources: 39_700
+
+- name: The 2021 charitable deduction for non-itemizers is not taken from household resources
+  # The 2021 deduction is taken from AGI, so it is not a deduction from
+  # total household resources (Michigan Treasury FAQ).
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        charitable_cash_donations: 500
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MI
+  output:
+    charitable_deduction_for_non_itemizers: 300
+    mi_household_resources: 40_000
