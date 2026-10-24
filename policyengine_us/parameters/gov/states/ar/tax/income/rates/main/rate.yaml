@@ -8,8 +8,8 @@ metadata:
   reference:
   - title: Tax Legislation for 2022 Ark. Code § 26-51-201 (a)(1)(A) # (d)(1) for uprating.
     href: https://law.justia.com/codes/arkansas/title-26/subtitle-5/chapter-51/subchapter-2/section-26-51-201/
-  - title: Arkansas Act 1459 of 2013, § 1 (0.9% first bracket from tax year 2014)
-    href: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2013R%2FPublic%2F&file=1459.pdf&ddBienniumSession=2013%2F2013R#page=1
+  - title: "Arkansas Act 1459 of 2013, §§ 1-2 (2014 first bracket and capped CPI-U indexing) #page 1,3"
+    href: https://arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2013%2FPublic%2F&file=1459.pdf&ddBienniumSession=2013%2F2013R#page=1
   - title: Arkansas Act 22 of 2015, § 2, amending Ark. Code § 26-51-201(a) (tax year 2014-2018 tables and the bracket adjustment above $75,000)
     href: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2015R%2FPublic%2F&file=22.pdf&ddBienniumSession=2015%2F2015R#page=1
   - title: Arkansas Act 78 of 2017, § 2, amending Ark. Code § 26-51-201(a)(7)-(8) (tax year 2019)
@@ -61,7 +61,7 @@ brackets:
         2014-01-01: 0
       metadata:
         uprating:
-          parameter: gov.irs.uprating
+          parameter: gov.states.ar.tax.income.uprating
           rounding:
             type: nearest
             interval: 100
@@ -83,7 +83,7 @@ brackets:
         2026-01-01: 5_600
       metadata:
         uprating:
-          parameter: gov.irs.uprating
+          parameter: gov.states.ar.tax.income.uprating
           rounding:
             type: nearest
             interval: 100
@@ -107,7 +107,7 @@ brackets:
         2026-01-01: 11_200
       metadata:
         uprating:
-          parameter: gov.irs.uprating
+          parameter: gov.states.ar.tax.income.uprating
           rounding:
             type: nearest
             interval: 100
@@ -131,7 +131,7 @@ brackets:
         2026-01-01: 16_000
       metadata:
         uprating:
-          parameter: gov.irs.uprating
+          parameter: gov.states.ar.tax.income.uprating
           rounding:
             type: nearest
             interval: 100
@@ -156,7 +156,7 @@ brackets:
         2026-01-01: 26_400
       metadata:
         uprating:
-          parameter: gov.irs.uprating
+          parameter: gov.states.ar.tax.income.uprating
           rounding:
             type: nearest
             interval: 100

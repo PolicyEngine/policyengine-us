@@ -82,6 +82,45 @@ def get_cpi_u_average_for_12_months_ending_august(
     return get_average_for_12_months_ending_august(parameters.gov.bls.cpi.cpi_u, year)
 
 
+def get_ar_cpi(parameters: ParameterNode, calendar_year: int) -> float:
+    """Average unchained CPI-U for the twelve months ending August 31.
+
+    A.C.A. 26-51-201(d)(2), Act 1459 of 2013, section 2, PDF page 3.
+    For calendar year T this includes September T-1 through August T.
+    """
+    cpi = parameters.gov.bls.cpi.cpi_u
+    start = instant(f"{calendar_year - 1}-09-01")
+    return (
+        sum(cpi(start.offset(month, MONTH)) for month in range(MONTHS_IN_YEAR))
+        / MONTHS_IN_YEAR
+    )
+
+
+def extend_ar_income_tax_uprating(parameters: ParameterNode, end_year: int) -> None:
+    """Compound Arkansas's positive annual CPI-U increase, subject to its cap.
+
+    The published 2026 tables anchor projections. For tax year Y,
+    26-51-201(d)(2) compares September Y-2 through August Y-1 with
+    September Y-3 through August Y-2. The statute's increase-if-any
+    language prevents a decrease. Bracket rounding remains in the
+    individual parameters' metadata, and bracket-adjustment amounts
+    remain fixed.
+    """
+    income = parameters.gov.states.ar.tax.income
+    index = income.uprating
+    for year in range(2027, end_year + 1):
+        current = get_ar_cpi(parameters, year - 1)
+        prior = get_ar_cpi(parameters, year - 2)
+        increase = min(
+            income.uprating_cap(f"{year}-01-01"), max(current / prior - 1, 0)
+        )
+        index.update(
+            period=f"year:{year}-01-01:1",
+            value=index(f"{year - 1}-01-01") * (1 + increase),
+        )
+    index.update(start=instant(f"{end_year}-01-01"), value=index(f"{end_year}-01-01"))
+
+
 def get_or_ctc_cola(parameters: ParameterNode, tax_year: int) -> float:
     """Calculate the Oregon Kids' Credit cost-of-living adjustment.
 
@@ -1017,6 +1056,10 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         period_month=2,
         period_day=1,
     )
+
+    # Arkansas uses capped positive CPI-U changes over September-August
+    # windows, independently of the shared IRS chained CPI index.
+    extend_ar_income_tax_uprating(parameters, end_year=END_YEAR)
 
     # Chained CPI-U (February values, last projection year 2034)
     extend_parameter_values(

@@ -142,7 +142,7 @@
     wv_senior_citizen_disability_deduction: 10_000
     wv_subtractions: 12_000
 
-- name: A line 39 contribution reduces only the contributor's remaining income.
+- name: A 529 contribution preserves both spouses' senior modifications.
   period: 2025
   input:
     people:
@@ -164,11 +164,11 @@
         members: [head, spouse]
         state_code: WV
   output:
-    # The contribution deducts 2,000 on a line within the excluded range.
-    # Head: min(6,000 - 2,000, 8,000); spouse: min(6,000, 8,000).
+    # Section 11-21-12a allows the contribution in addition to both
+    # senior modifications: 6,000 + 6,000 + 2,000 = 14,000.
     wv_529_plan_deduction: 2_000
-    wv_senior_citizen_disability_deduction_person: [4_000, 6_000]
-    wv_subtractions: 12_000
+    wv_senior_citizen_disability_deduction_person: [6_000, 6_000]
+    wv_subtractions: 14_000
 
 - name: Income still above the cap after exclusions leaves the modification unchanged.
   period: 2025
@@ -181,7 +181,7 @@
     wv_senior_citizen_disability_deduction_total_modifications: 3_000
     state_code: WV
   output:
-    # min(20,000 - 4,000, 8,000) - 3,000 = 5,000, as before.
+    # min(20,000 - 3,000, 8,000) - 3,000 = 5,000, as before.
     wv_senior_citizen_disability_deduction_person: 5_000
 
 - name: Box d is subtracted after excluding refunds and applying the cap.
@@ -231,7 +231,7 @@
   output:
     wv_senior_citizen_disability_deduction_person: 0
 
-- name: A qualifying disabled person also excludes a line 39 contribution.
+- name: A qualifying disabled person retains the additional 529 deduction.
   period: 2025
   input:
     age: 50
@@ -240,10 +240,10 @@
     investment_in_529_plan_indv: 1_000
     state_code: WV
   output:
-    # min(6,000 - 1,000, 8,000) - 0 = 5,000.
-    wv_senior_citizen_disability_deduction_person: 5_000
+    # min(6,000, 8,000) - 0 = 6,000, plus the separate contribution.
+    wv_senior_citizen_disability_deduction_person: 6_000
     wv_529_plan_deduction: 1_000
-    wv_subtractions: 6_000
+    wv_subtractions: 7_000
 
 - name: Each spouse's $8,000 limit uses their own AGI, after their own IRA deduction.
   period: 2024
@@ -268,3 +268,71 @@
     # W. Va. Code 11-21-12(c): up to $8,000 of each eligible individual's
     # federal AGI. Before: [5_000, 8_000].
     wv_senior_citizen_disability_deduction_person: [4_000, 8_000]
+
+# W. Va. Code sections 11-21-12(c)(9) and 11-21-12a: contribution payments
+# are deductible separately, rather than income excluded from box (c).
+- name: A senior's contribution does not reduce the senior modification.
+  period: 2025
+  input:
+    state_code: WV
+    age: 66
+    is_tax_unit_head: true
+    adjusted_gross_income_person: 6_000
+    investment_in_529_plan_indv: 2_000
+    wv_senior_citizen_disability_deduction_total_modifications: 0
+  output:
+    wv_senior_citizen_disability_deduction_person: 6_000
+    wv_529_plan_deduction: 2_000
+
+- name: The 529 contribution is independent from the senior income cap from 2014.
+  period: 2014
+  input:
+    wv_senior_citizen_disability_deduction_eligible_person: true
+    adjusted_gross_income_person: 6_000
+    investment_in_529_plan_indv: 2_000
+    wv_senior_citizen_disability_deduction_total_modifications: 0
+  output:
+    wv_senior_citizen_disability_deduction_person: 6_000
+
+- name: Refund exclusions and modifications still apply independently of contributions.
+  period: 2025
+  input:
+    state_code: WV
+    age: 66
+    adjusted_gross_income_person: 6_000
+    investment_in_529_plan_indv: 2_000
+    salt_refund_income: 1_000
+    wv_senior_citizen_disability_deduction_total_modifications: 500
+  output:
+    # Preserve Schedule M base: min(6,000 - 1,000, 8,000) - 500.
+    wv_senior_citizen_disability_deduction_person: 4_500
+
+- name: A senior's additional 529 deduction remains available on a joint return.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 66
+        adjusted_gross_income_person: 6_000
+        investment_in_529_plan_indv: 2_000
+        wv_senior_citizen_disability_deduction_total_modifications: 0
+      spouse:
+        age: 60
+        adjusted_gross_income_person: 40_000
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        adjusted_gross_income: 46_000
+        wv_additions: 0
+        wv_low_income_earned_income_exclusion: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WV
+  output:
+    wv_senior_citizen_disability_deduction_person: [6_000, 0]
+    wv_529_plan_deduction: 2_000
+    wv_subtractions: 8_000
+    wv_agi: 38_000
+    wv_taxable_income: 34_000

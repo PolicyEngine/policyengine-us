@@ -8,10 +8,8 @@ values:
     # Line numbers below are from the 2025 form.
     - military_service_income # Line 36
     - salt_refund_income # Line 38
-    # Line 39 is a contribution deduction, not an income receipt. Its amount
-    # removes income within the form's excluded range. Use the contributor's
-    # own amount rather than projecting the tax-unit 529 deduction to spouses.
-    - investment_in_529_plan_indv # Line 39
+    # Section 11-21-12a separately deducts 529 contribution payments;
+    # those payments are not income excluded from the senior income cap.
 
 metadata:
   unit: list
@@ -26,3 +24,9 @@ metadata:
       href: https://tax.wv.gov/Documents/TaxForms/2018/it140.booklet.pdf#page=5
     - title: West Virginia Personal Income Tax Forms and Instructions 2014, Schedule M line 52
       href: https://tax.wv.gov/Documents/TaxForms/2014/it140.booklet.pdf#page=9
+    - title: W. Va. Code section 11-21-12(c)(9)
+      href: https://code.wvlegislature.gov/11-21-12/
+    - title: W. Va. Code section 11-21-12a, additional college-savings modification
+      href: https://code.wvlegislature.gov/11-21-12a/
+    - title: West Virginia 2000 HB4679, section 11-21-12a
+      href: https://code.wvlegislature.gov/signed_bills/2000/2000-RS-HB4679-SUB%20ENR_signed.pdf#page=3

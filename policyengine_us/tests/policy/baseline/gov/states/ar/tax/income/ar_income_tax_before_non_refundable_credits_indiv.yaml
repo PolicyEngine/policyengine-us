@@ -541,23 +541,26 @@
     # Midpoint 95,550.50 x 3.9% - 87.40 = 3,639.07 -> 3,639
     ar_income_tax_before_non_refundable_credits_indiv: 3_639
 
-# 2027 cases use incomes whose tax survives a one-step change in the projected
-# uprating factor. The (B)-(C) rows near the indexed threshold (about $97,500)
-# sit within a few hundredths of a percent of a rounding flip, so
-# test_ar_income_tax_schedule.py checks them against the loaded index instead.
-- name: AR 2027 indexed Act 1 of 2026 tables - top of the 0% row
+# These 2027 mechanism tests use complete synthetic CPI-U windows with 4%
+# growth, capped at 3%, and independent chained growth of 1%. They do not
+# assert an actual 2027 coefficient: October 2025 CPI was not published.
+# The synthetic indexed boundaries are $5,800/$11,500/$16,500/$27,200,
+# the high-income threshold is $97,500, and its 2% boundary is $4,800.
+- name: AR 2027 synthetic indexed Act 1 of 2026 tables - top of the 0% row
   period: 2027
   absolute_error_margin: 0.01
+  reforms: policyengine_us.tests.fixtures.ar_indexing.ar_cpi_four_percent_chained_one_percent
   input:
     ar_taxable_income_indiv: 5_799
     state_code: AR
   output:
-    # the indexed 2% row starts at $5,800 (5,600 x 1.0298 = 5,767, nearest $100)
+    # The synthetic 2% row starts at $5,800 (5,600 x 1.03 = 5,768, nearest $100).
     ar_income_tax_before_non_refundable_credits_indiv: 0
 
-- name: AR 2027 indexed Act 1 of 2026 tables - 2% row
+- name: AR 2027 synthetic indexed Act 1 of 2026 tables - 2% row
   period: 2027
   absolute_error_margin: 0.01
+  reforms: policyengine_us.tests.fixtures.ar_indexing.ar_cpi_four_percent_chained_one_percent
   input:
     ar_taxable_income_indiv: 5_900
     state_code: AR
@@ -565,9 +568,10 @@
     # Row $5,900-$5,999, midpoint 5,949.50: (5,949.50 - 5,800) x 2% = 2.99 -> 3
     ar_income_tax_before_non_refundable_credits_indiv: 3
 
-- name: AR 2027 indexed Act 1 of 2026 tables - income the frozen 2026 reduction undertaxed by $108
+- name: AR 2027 synthetic indexed Act 1 of 2026 tables - income the frozen 2026 reduction undertaxed by $108
   period: 2027
   absolute_error_margin: 0.01
+  reforms: policyengine_us.tests.fixtures.ar_indexing.ar_cpi_four_percent_chained_one_percent
   input:
     ar_taxable_income_indiv: 11_300
     state_code: AR
@@ -577,9 +581,10 @@
     # reduction schedule gave 2% x 11,300 - 224 = 2.00
     ar_income_tax_before_non_refundable_credits_indiv: 111
 
-- name: AR 2027 indexed Act 1 of 2026 tables - start of the 3% row
+- name: AR 2027 synthetic indexed Act 1 of 2026 tables - start of the 3% row
   period: 2027
   absolute_error_margin: 0.01
+  reforms: policyengine_us.tests.fixtures.ar_indexing.ar_cpi_four_percent_chained_one_percent
   input:
     ar_taxable_income_indiv: 11_500
     state_code: AR
@@ -588,9 +593,10 @@
     # (11,500 - 5,800) x 2% + (11,549.50 - 11,500) x 3% = 114 + 1.485 = 115.485 -> 115
     ar_income_tax_before_non_refundable_credits_indiv: 115
 
-- name: AR 2027 indexed Act 1 of 2026 tables - start of the 3.4% row
+- name: AR 2027 synthetic indexed Act 1 of 2026 tables - start of the 3.4% row
   period: 2027
   absolute_error_margin: 0.01
+  reforms: policyengine_us.tests.fixtures.ar_indexing.ar_cpi_four_percent_chained_one_percent
   input:
     ar_taxable_income_indiv: 16_500
     state_code: AR
@@ -599,9 +605,10 @@
     # 114 + (16,500 - 11,500) x 3% + (16,549.50 - 16,500) x 3.4% = 264 + 1.683 = 265.683 -> 266
     ar_income_tax_before_non_refundable_credits_indiv: 266
 
-- name: AR 2027 indexed Act 1 of 2026 tables - income the frozen 2026 reduction undertaxed by $70.20
+- name: AR 2027 synthetic indexed Act 1 of 2026 tables - income the frozen 2026 reduction undertaxed by $70.20
   period: 2027
   absolute_error_margin: 0.01
+  reforms: policyengine_us.tests.fixtures.ar_indexing.ar_cpi_four_percent_chained_one_percent
   input:
     ar_taxable_income_indiv: 26_500
     state_code: AR
@@ -611,9 +618,10 @@
     # the frozen 2026 reduction schedule gave 3.4% x 26,500 - 367.20 = 533.80
     ar_income_tax_before_non_refundable_credits_indiv: 606
 
-- name: AR 2027 indexed Act 1 of 2026 tables - start of the 3.7% row
+- name: AR 2027 synthetic indexed Act 1 of 2026 tables - start of the 3.7% row
   period: 2027
   absolute_error_margin: 0.01
+  reforms: policyengine_us.tests.fixtures.ar_indexing.ar_cpi_four_percent_chained_one_percent
   input:
     ar_taxable_income_indiv: 27_200
     state_code: AR
@@ -622,21 +630,23 @@
     # 264 + (27,200 - 16,500) x 3.4% + (27,249.50 - 27,200) x 3.7% = 627.80 + 1.8315 = 629.63 -> 630
     ar_income_tax_before_non_refundable_credits_indiv: 630
 
-- name: AR 2027 indexed Act 1 of 2026 tables - top of table (A) at the indexed high-income threshold
+- name: AR 2027 synthetic indexed Act 1 of 2026 tables - top of table (A) at the indexed high-income threshold
   period: 2027
   absolute_error_margin: 0.01
+  reforms: policyengine_us.tests.fixtures.ar_indexing.ar_cpi_four_percent_chained_one_percent
   input:
     ar_taxable_income_indiv: 97_500
     state_code: AR
   output:
-    # The threshold is 94,700 x 1.0298 = 97,522, nearest $100 = 97,500. Row
+    # The synthetic threshold is 94,700 x 1.03 = 97,541, nearest $100 = 97,500. Row
     # $97,401-$97,500, midpoint 97,450.50 <= 97,500, so table (A):
     # 627.80 + (97,450.50 - 27,200) x 3.7% = 627.80 + 2,599.27 = 3,227.07 -> 3,227
     ar_income_tax_before_non_refundable_credits_indiv: 3_227
 
-- name: AR 2027 indexed Act 1 of 2026 tables - high income
+- name: AR 2027 synthetic indexed Act 1 of 2026 tables - high income
   period: 2027
   absolute_error_margin: 0.01
+  reforms: policyengine_us.tests.fixtures.ar_indexing.ar_cpi_four_percent_chained_one_percent
   input:
     ar_taxable_income_indiv: 150_000
     state_code: AR
@@ -797,3 +807,40 @@
   output:
     # "For $50,000 and over" (p.6): 50,000 x 7% - 949.24 = 2,550.76
     ar_income_tax_before_non_refundable_credits_indiv: 2_550.76
+
+# A.C.A. § 26-51-201(d)(2), Act 1459 of 2013, § 2, PDF page 3:
+# https://arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2013%2FPublic%2F&file=1459.pdf&ddBienniumSession=2013%2F2013R#page=3
+# These complete synthetic windows test the indexing rule, not an actual
+# 2027 coefficient: the October 2025 CPI observation was not published.
+- name: Arkansas caps synthetic four percent CPI-U growth at three percent
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.tests.fixtures.ar_indexing.ar_cpi_four_percent_chained_one_percent
+  input:
+    state_code: AR
+    ar_taxable_income_indiv: 150_000
+  output:
+    # $4,700 * 1.03 rounds to $4,800; $96 + $145,200 * 3.7%.
+    ar_income_tax_before_non_refundable_credits_indiv: 5_468.40
+
+- name: Arkansas uses synthetic CPI-U growth rather than chained growth
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.tests.fixtures.ar_indexing.ar_cpi_one_percent_chained_four_percent
+  input:
+    state_code: AR
+    ar_taxable_income_indiv: 150_000
+  output:
+    # $4,700 * 1.01 rounds to $4,700; $94 + $145,300 * 3.7%.
+    ar_income_tax_before_non_refundable_credits_indiv: 5_470.10
+
+- name: Arkansas does not lower boundaries after a synthetic CPI-U decrease
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.tests.fixtures.ar_indexing.ar_cpi_minus_one_percent_chained_four_percent
+  input:
+    state_code: AR
+    ar_taxable_income_indiv: 150_000
+  output:
+    # Negative CPI-U growth leaves the $4,700 boundary unchanged.
+    ar_income_tax_before_non_refundable_credits_indiv: 5_470.10

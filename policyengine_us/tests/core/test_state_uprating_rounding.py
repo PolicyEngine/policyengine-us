@@ -5,6 +5,9 @@ from math import isinf
 import pytest
 
 from policyengine_us.system import system as SYSTEM
+from policyengine_us.tests.fixtures.ar_indexing import (
+    ar_cpi_four_percent_chained_one_percent,
+)
 
 
 def _thresholds(scale, period, bracket_indexes=(1, 2, 3)):
@@ -13,10 +16,11 @@ def _thresholds(scale, period, bracket_indexes=(1, 2, 3)):
 
 def test_ar_income_tax_bounds_round_to_nearest_100_after_last_published_year():
     # A.C.A. 26-51-201(d)(1): bracket amounts are indexed "rounding to the
-    # nearest one hundred dollars ($100)". Expected values follow the loaded
-    # index, so a CPI refresh moves them without breaking the test.
-    main = SYSTEM.parameters.gov.states.ar.tax.income.rates.main
-    uprating = SYSTEM.parameters.gov.irs.uprating
+    # nearest one hundred dollars ($100)". Complete synthetic CPI windows
+    # avoid assuming a resolution for the missing October 2025 observation.
+    parameters = ar_cpi_four_percent_chained_one_percent(SYSTEM).parameters
+    main = parameters.gov.states.ar.tax.income.rates.main
+    uprating = parameters.gov.states.ar.tax.income.uprating
     high_income = main.high_income
     bounds_2026 = {
         "rate": (main.rate, (1, 2, 3, 4), (5_600, 11_200, 16_000, 26_400)),
@@ -43,7 +47,7 @@ def test_ar_income_tax_bounds_round_to_nearest_100_after_last_published_year():
             differs_from_rounding_down |= loaded != rounded_down
         assert isinf(main.rate.brackets[5].threshold(period))
         assert isinf(main.rate.brackets[6].threshold(period))
-    # With 2027's factor, 5,600 x 1.0298 = 5,766.9 rounds up to 5,800.
+    # The synthetic 3% increase takes $5,600 to $5,768, rounded to $5,800.
     assert differs_from_rounding_down
 
 
