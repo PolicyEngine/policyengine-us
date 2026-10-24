@@ -1,0 +1,30 @@
+- name: Case 1, default oh_other_subtractions is zero
+  period: 2024
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_other_subtractions: 0
+    oh_deductions: 0
+    oh_agi_person: 50_000
+
+- name: Case 2, oh_other_subtractions reduces OH AGI
+  period: 2024
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+        oh_other_subtractions: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_other_subtractions: 2_000
+    oh_deductions: 2_000
+    oh_agi_person: 48_000
