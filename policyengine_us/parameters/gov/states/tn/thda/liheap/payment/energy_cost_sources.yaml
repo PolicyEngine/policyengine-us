@@ -1,0 +1,28 @@
+description: Tennessee adds these household energy bills to compute the energy cost in the energy burden under the Low Income Home Energy Assistance Program.
+# The energy burden uses the annual average of all household energy usage
+# (electric, gas, propane and other fuels), preferably over 12 months, and the
+# bill data includes service, usage and delivery charges and taxes. Annual
+# expense inputs stand in for the 12-month usage; deposits, optional charges
+# and non-energy services cannot be separated from these totals. Public
+# housing and Section 8 tenants enter their overage charges as bills. Heat
+# included in the rent has no landlord-cost input, so its burden counts only
+# separately billed energy and is a lower bound.
+values:
+  2025-10-01:
+    - pre_subsidy_electricity_expense
+    - gas_expense
+    - bottled_gas_expense
+    - fuel_oil_expense
+    - wood_expense
+    - coal_expense
+    - other_heating_fuel_expense
+
+metadata:
+  unit: list
+  period: year
+  label: Tennessee LIHEAP energy cost sources
+  reference:
+    - title: "Tennessee LIHEAP 2026 Policy Manual, Sections 1.2 and 2.17-2.19 #page 8,32-33"
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/LIHEAP-2026-Policy-Manual-for-Tennessee.pdf#page=8
+    - title: Tennessee FY2026 LIHEAP State Plan, Section 2.5
+      href: https://liheapch.acf.gov/docs/2026/state-plans/TN_Plan_2026.pdf#page=9

@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AR, AL, DC, GA, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX
+    coverage: AR, AL, DC, GA, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TN, TX
     state_implementations:
       - state: AL
         status: partial
@@ -1147,6 +1147,14 @@ programs:
         variable: sd_liheap
         parameter_prefix: gov.states.sd.dss.liheap
         notes: FY2024-FY2026 regular heating only; mixed-status income is counted in full and FY2026 Mid thresholds are inferred, so no year is verified. Crisis, cooling and weatherization are out of scope.
+      - state: TN
+        status: partial
+        name: Tennessee LIHEAP
+        full_name: Tennessee Low Income Home Energy Assistance Program
+        variable: tn_liheap
+        parameter_prefix: gov.states.tn.thda.liheap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular benefit from the THDA benefit matrices; FY2027 uses the posted LI-12 matrix while its plan and manual are drafts. Crisis and weatherization assistance are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP

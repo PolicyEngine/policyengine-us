@@ -1,0 +1,18 @@
+description: Tennessee raises the regular benefit to this minimum for households that apply it to propane under the Low Income Home Energy Assistance Program.
+# FY2026 sets a $500 minimum propane payment because of utility company
+# payment requirements. The draft 2027 manual's deliverable fuel rules omit
+# the minimum, so FY2027 has none. A household heating primarily with propane
+# is assumed to apply its benefit to propane.
+values:
+  2025-10-01: 500
+  2026-10-01: 0
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Tennessee LIHEAP propane minimum payment
+  reference:
+    - title: Tennessee LIHEAP 2026 Policy Manual, utility selection for LIHEAP benefits
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/LIHEAP-2026-Policy-Manual-for-Tennessee.pdf#page=25
+    - title: Tennessee LIHEAP 2027 Policy Manual (draft), deliverable fuel benefits
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/DRAFT-LIHEAP-2027-Policy-Manual-7-11-2026.pdf#page=18
