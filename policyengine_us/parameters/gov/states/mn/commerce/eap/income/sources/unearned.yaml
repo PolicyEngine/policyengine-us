@@ -1,0 +1,30 @@
+description: Minnesota counts these sources as unearned income under the Energy Assistance Program.
+values:
+  2025-10-01:
+    # The formula counts Social Security and pensions net of the Medicare Part B
+    # premium, unemployment compensation with the student exclusion, retirement
+    # account distributions from age 59 1/2, and MFIP and other TANF cash
+    # through the SPM unit tanf variable.
+    - ssi
+    - general_assistance
+    - military_retirement_income
+    - railroad_benefits
+    - veterans_benefits
+    - workers_compensation
+    - disability_benefits
+    # Minnesota Paid Leave, wage replacement cash paid from 2026-01-01.
+    - pfml_benefits
+    - alimony_income
+    - strike_benefits
+    # Trust disbursements.
+    - estate_income
+    - survivor_benefits
+metadata:
+  unit: list
+  period: year
+  label: Minnesota EAP unearned income sources
+  reference:
+    - title: "Minnesota EAP Policy Manual FFY26, Chapter 3, Income Definition and Determination and Income Inclusions and Exclusions #page 88-89,91,96-99"
+      href: https://mn.gov/commerce-stat/pdfs/ffy26-eap-policy-manual.pdf#page=88
+    - title: "Minnesota EAP Policy Manual FFY27, Policy Manual Changes and Chapter 3, Income Inclusions and Exclusions and Minnesota Paid Leave #page 11-12,91-92,96,98,100,116"
+      href: https://mn.gov/commerce-stat/pdfs/ffy27-eap-policy-manual.pdf#page=11

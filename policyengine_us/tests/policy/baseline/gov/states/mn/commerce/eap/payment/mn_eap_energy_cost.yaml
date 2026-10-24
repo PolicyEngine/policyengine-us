@@ -1,0 +1,176 @@
+# Energy cost is the household's total home energy bills, heating fuels plus
+# all electricity (FFY26 EAP Policy Manual, Chapter 4 "What is Primary Heat?").
+# With heat included in unsubsidized rent, the backup matrix average annual
+# energy cost for the primary fuel and housing type applies; with heat
+# included in subsidized rent, the electric cost applies (Chapter 4 "Knowing
+# Which Method to Use"). Backup matrix values: Appendix 4A 'Backup Matrix
+# Values'!A2:C57, FFY26 and FFY27 editions.
+
+# Own bills: $1,100 gas + $1,000 electricity + $200 firewood for a wood stove
+# = $2,300.
+- name: Case 1, own bills are summed across fuels including electricity.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 41
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+        pre_subsidy_electricity_expense: 1_000
+        wood_expense: 200
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_eap_energy_cost: 2_300
+
+# Heat included in unsubsidized rent: the FFY26 backup matrix replaces bills.
+# Unit 1: natural gas, apartment, C26 = $1,458 (its $600 electric bill is not
+# added). Unit 2: propane, mobile home, C14 = $3,293.
+- name: Case 2, unsubsidized heat-in-rent uses the FFY2026 backup matrix for two housing types.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 41
+      person2:
+        age: 63
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        mn_eap_housing_type: APARTMENT
+        pre_subsidy_electricity_expense: 600
+      spm_unit2:
+        members: [person2]
+        heating_type: PROPANE
+        heat_expense_included_in_rent: true
+        mn_eap_housing_type: MOBILE_HOME
+    households:
+      household1:
+        members: [person1]
+        state_code: MN
+      household2:
+        members: [person2]
+        state_code: MN
+  output:
+    mn_eap_energy_cost: [1_458, 3_293]
+
+# Fuel oil and kerosene both use the Oil row: FFY26 Oil, Duplex, C3 = $2,566
+# (propane duplex is $2,502, natural gas $2,423, electricity $1,747). Electric
+# heat in a townhouse uses the Electricity row, C40 = $1,547.
+- name: Case 3, fuel oil and kerosene both use the oil row and electric heat uses the electricity row.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 52
+      person2:
+        age: 52
+      person3:
+        age: 52
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        heat_expense_included_in_rent: true
+        mn_eap_housing_type: DUPLEX
+      spm_unit2:
+        members: [person2]
+        heating_type: KEROSENE
+        heat_expense_included_in_rent: true
+        mn_eap_housing_type: DUPLEX
+      spm_unit3:
+        members: [person3]
+        heating_type: ELECTRICITY
+        heat_expense_included_in_rent: true
+        mn_eap_housing_type: TOWNHOUSE
+    households:
+      household1:
+        members: [person1]
+        state_code: MN
+      household2:
+        members: [person2]
+        state_code: MN
+      household3:
+        members: [person3]
+        state_code: MN
+  output:
+    mn_eap_energy_cost: [2_566, 2_566, 1_547]
+
+# Heat included in subsidized rent: only the electric bill counts. Unit 1
+# (Section 8 voucher) pays $720 for electricity; unit 2 (public housing) pays
+# $650. The backup matrix is not used.
+- name: Case 4, subsidized heat-in-rent uses the electric bill only.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+      person2:
+        age: 68
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        mn_eap_housing_type: APARTMENT
+        pre_subsidy_electricity_expense: 720
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        mn_eap_housing_type: APARTMENT
+        pre_subsidy_electricity_expense: 650
+    households:
+      household1:
+        members: [person1]
+        state_code: MN
+      household2:
+        members: [person2]
+        state_code: MN
+        is_in_public_housing: true
+  output:
+    mn_eap_energy_cost: [720, 650]
+
+# FFY27 backup matrix: natural gas, apartment, C26 = $1,554 (FFY26 was
+# $1,458). With no housing type supplied, the House row applies: C29 =
+# $2,634.
+- name: Case 5, FFY2027 backup matrix values and the house default.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 41
+      person2:
+        age: 41
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        mn_eap_housing_type: APARTMENT
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+    households:
+      household1:
+        members: [person1]
+        state_code: MN
+      household2:
+        members: [person2]
+        state_code: MN
+  output:
+    mn_eap_energy_cost: [1_554, 2_634]

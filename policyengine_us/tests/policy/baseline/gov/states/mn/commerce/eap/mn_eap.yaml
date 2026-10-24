@@ -1,0 +1,245 @@
+# Primary Heat benefit = pay share x annual energy cost, rounded to the
+# nearest dollar and held between the $200 minimum and $1,400 maximum (FFY26
+# EAP Policy Manual and FFY27 EAP Policy Manual, Chapter 4 "Determining
+# Primary Heat Benefits"; Appendix 4A Calculator!H2 = ROUND(G2*C2, 0) and
+# Calculator!I2; 'Formula Parameters'!C2:C3).
+
+# Appendix 4A FFY26 Calculator row 2: size 1, $1,000 a month ($12,000 a year)
+# against $3,119 ($37,428): E2 = 0.3206156; F2 = 0.439 - 0.331 x 0.3206156 /
+# 0.896 = 0.3205583. $2,000 annual energy cost: 0.3205583 x $2,000 = $641.12
+# -> H2 = I2 = $641.
+- name: Case 1, a mid benefit reproduces FFY2026 Appendix 4A Calculator row 2.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 36
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        pre_subsidy_electricity_expense: 1_000
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_eap_pay_share: 0.3205583
+    mn_eap: 641
+
+# Appendix 4A FFY27 Calculator row 2: size 1, $12,000 a year against $3,205 x
+# 12 = $38,460: E2 = 0.3120125; F2 = 0.452 - 0.339 x 0.3120125 / 0.891 =
+# 0.3332882. 0.3332882 x $2,000 = $666.58, rounded up to H2 = I2 = $667.
+- name: Case 2, a mid benefit rounds up and reproduces FFY2027 Appendix 4A Calculator row 2.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 36
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        pre_subsidy_electricity_expense: 1_000
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_eap_pay_share: 0.3332882
+    mn_eap: 667
+
+# $35,000 / $37,428 = 0.935 -> pay min 0.108; $450 gas + $650 electricity =
+# $1,100; 0.108 x $1,100 = $118.80 -> $119, raised to the $200 minimum.
+- name: Case 3, the 200 dollar minimum binds.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 29
+        employment_income: 35_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 450
+        pre_subsidy_electricity_expense: 650
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_eap: 200
+
+# Size 3 FFY26 limit $5,039 x 12 = $60,468; $14,000 / $60,468 = 0.2315275;
+# share 0.439 - 0.331 x 0.2315275 / 0.896 = 0.3534692; $2,700 propane + $1,500
+# electricity = $4,200; 0.3534692 x $4,200 = $1,484.57 -> $1,485, capped at the
+# $1,400 maximum.
+- name: Case 4, the 1,400 dollar maximum binds.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 34
+        employment_income: 14_000
+      person2:
+        age: 7
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: PROPANE
+        bottled_gas_expense: 2_700
+        pre_subsidy_electricity_expense: 1_500
+        mn_eap_housing_type: HOUSE
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    mn_eap: 1_400
+
+# Heat included in unsubsidized rent with wood heat: eligible, but the backup
+# matrix has no wood row, so the energy cost and the benefit are $0.
+- name: Case 5, heat-in-rent with no backup matrix row pays nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 47
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: WOOD
+        heat_expense_included_in_rent: true
+        mn_eap_housing_type: HOUSE
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_eap_eligible: true
+    mn_eap_energy_cost: 0
+    mn_eap: 0
+
+# $40,000 is above the FFY26 size 1 limit of $37,428, so no benefit.
+- name: Case 6, an over-income household gets no benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 44
+        employment_income: 40_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        pre_subsidy_electricity_expense: 900
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_eap_eligible: false
+    mn_eap: 0
+
+# Minneapolis renter family of four paying its own gas and electricity, FFY26.
+# Size 4 (all citizens). Countable income: $37,440 ($18 x 2,080 hours) +
+# $14,040 ($13.50 x 1,040 hours) = $51,480; the 16-year-old high school
+# student's $4,000 summer wages are excluded. Limit $5,999 x 12 = $71,988.
+# Energy cost $1,050 gas + $1,000 electricity = $2,050. Percentile $51,480 /
+# $71,988 = 0.7151192; share 0.439 - 0.331 x 0.7151192 / 0.896 = 0.1748209.
+# Benefit 0.1748209 x $2,050 = $358.38 -> $358.
+- name: Case 7, Minneapolis renter family paying gas and electricity in FFY2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 37_440
+      person2:
+        age: 36
+        employment_income: 14_040
+      person3:
+        age: 16
+        is_in_k12_school: true
+        employment_income: 4_000
+      person4:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_050
+        pre_subsidy_electricity_expense: 1_000
+        mn_eap_housing_type: DUPLEX
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MN
+  output:
+    mn_eap_household_size: 4
+    mn_eap_countable_income: 51_480
+    mn_eap_income_limit: 71_988
+    mn_eap_energy_cost: 2_050
+    mn_eap_eligible: true
+    mn_eap_pay_share: 0.1748209
+    mn_eap: 358
+
+# Single parent and child renting a mobile home with propane heat included in
+# the rent, FFY27. Size 2. Countable income: $27,000 wages; the $3,000 of
+# child support is not counted. Limit $4,191 x 12 = $50,292. Energy cost from
+# the FFY27 backup matrix, Propane, Mobile Home, C14 = $3,342. Percentile
+# $27,000 / $50,292 = 0.5368647; share 0.452 - 0.339 x 0.5368647 / 0.891 =
+# 0.2477383. Benefit 0.2477383 x $3,342 = $827.94 -> $828.
+- name: Case 8, mobile home renter with propane heat included in rent in FFY2027.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 31
+        employment_income: 27_000
+        child_support_received: 3_000
+      person2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: PROPANE
+        heat_expense_included_in_rent: true
+        mn_eap_housing_type: MOBILE_HOME
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_eap_household_size: 2
+    mn_eap_countable_income: 27_000
+    mn_eap_income_limit: 50_292
+    mn_eap_energy_cost: 3_342
+    mn_eap_eligible: true
+    mn_eap_pay_share: 0.2477383
+    mn_eap: 828
