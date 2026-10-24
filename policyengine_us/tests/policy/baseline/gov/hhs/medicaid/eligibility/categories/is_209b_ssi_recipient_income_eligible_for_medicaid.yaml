@@ -161,3 +161,37 @@
     # 22,000 - 400 = 21,600, within the 21,648 blind couple standard
     # (ceil(21,640 / 12) x 12) but over the 18,396 aged/disabled standard.
     is_209b_ssi_recipient_income_eligible_for_medicaid: [true, true]
+
+# New Hampshire tests SSI recipients against its standard of need for an
+# independent couple, $1,492 a month in 2026 (SR 26-01; MAM 601 Table A;
+# He-W 858.03), the SSI couple rate plus $1. This couple has $720 a month of
+# Social Security each: $1,420 of countable income after the $20 couple
+# disregard, so they receive $71 a month of SSI. 75% of the 2026 two-person
+# poverty guideline ($1,353 a month) would deny them unless they spent down.
+- name: Case 10, New Hampshire SSI couple under the standard of need qualifies without spenddown.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 72
+        medicaid_optional_senior_or_disabled_countable_income: 8_520
+        medicaid_medically_needy_medical_expenses: 0
+      person2:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 8_520
+        medicaid_medically_needy_medical_expenses: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # (1,491 + 1) x 12 = 17,904; combined income 17,040.
+    medicaid_optional_senior_or_disabled_income_limit: [17_904, 17_904]
+    is_209b_ssi_recipient_income_eligible_for_medicaid: [true, true]

@@ -52,8 +52,19 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
         ssi = parameters(period).gov.ssa.ssi.amount
         ssi_rate = where(is_couple, ssi.couple, ssi.individual) * MONTHS_IN_YEAR
         uses_ssi_rate = p.income.limit.uses_ssi_federal_benefit_rate[state].astype(bool)
+        # Other states set a monthly dollar standard of their own. In most it
+        # is the SSI rate plus a state amount, such as the state supplement.
+        standard = p.income.limit.state_standard
+        state_amount = where(
+            is_couple, standard.couple[state], standard.individual[state]
+        )
+        adds_ssi_rate = standard.adds_ssi_rate[state].astype(bool)
+        state_standard = state_amount * MONTHS_IN_YEAR + where(
+            adds_ssi_rate, ssi_rate, 0
+        )
+        uses_state_standard = p.income.limit.uses_state_standard[state].astype(bool)
         return select(
-            [is_mo, uses_ssi_rate],
-            [mo_monthly_limit * MONTHS_IN_YEAR, ssi_rate],
+            [is_mo, uses_ssi_rate, uses_state_standard],
+            [mo_monthly_limit * MONTHS_IN_YEAR, ssi_rate, state_standard],
             default=limit_pct * unit_fpg,
         )
