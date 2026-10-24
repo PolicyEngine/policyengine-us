@@ -1,7 +1,6 @@
 description: Washington counts these unearned income sources without an additional deduction under the Low Income Home Energy Assistance Program.
 values:
   2025-10-01:
-    - social_security
     - ssi
     - general_assistance
     - strike_benefits
@@ -20,8 +19,10 @@ values:
 # represents other aid, such as ABD, not those same payments again.
 # FY2026 excludes VA benefits, insurance payments, one-time lump sums, refunds
 # and balances. Broad annual inputs cannot identify every exempt subtype.
-# Medicare deductions remain deferred. Social Security is counted once via
-# its aggregate and receives no unverified retirement deduction.
+# Social Security is counted separately in the formula, net of the Medicare
+# Part B premium, and receives no retirement deduction.
+# Plan section 1.9 names only Supplemental Security Income, so the state
+# supplement (wa_ssp) is not counted.
 # Repayable loans, structured settlements, foster payments, jury pay and
 # royalties lack dedicated inputs. Work-study wages may be included in
 # employment income; do not add a duplicate amount or invent new inputs.

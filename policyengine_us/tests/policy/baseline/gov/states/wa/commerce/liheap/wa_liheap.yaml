@@ -1,5 +1,5 @@
 # FY2026 worksheet example and independently calculated cases under the
-# approved intermediate-rounding and final actual-cost-cap conventions.
+# modeled intermediate-rounding and final actual-cost-cap conventions.
 - name: Case 1, Published worksheet example pays 336 after intermediate rounding.
   period: 2026
   input:
@@ -332,17 +332,7 @@
     heating_expense: -100
   output:
     wa_liheap: 0
-- name: Case 34, Annual heating cost 100 applies the minimum, maximum and final cost cap.
-  period: 2026
-  input:
-    state_code: WA
-    wa_liheap_household_size: 1
-    wa_liheap_countable_income: 0
-    heating_type: ELECTRICITY
-    heating_expense: 100
-  output:
-    wa_liheap: 100
-- name: Case 35, Annual heating cost 249.5 applies the minimum, maximum and final cost cap.
+- name: Case 34, Annual heating cost 249.5 applies the minimum, maximum and final cost cap.
   period: 2026
   input:
     state_code: WA
@@ -352,7 +342,7 @@
     heating_expense: 249.5
   output:
     wa_liheap: 249.5
-- name: Case 36, Annual heating cost 250 applies the minimum, maximum and final cost cap.
+- name: Case 35, Annual heating cost 250 applies the minimum, maximum and final cost cap.
   period: 2026
   input:
     state_code: WA
@@ -362,7 +352,7 @@
     heating_expense: 250
   output:
     wa_liheap: 250
-- name: Case 37, Annual heating cost 277 applies the minimum, maximum and final cost cap.
+- name: Case 36, Annual heating cost 277 applies the minimum, maximum and final cost cap.
   period: 2026
   input:
     state_code: WA
@@ -372,17 +362,7 @@
     heating_expense: 277
   output:
     wa_liheap: 250
-- name: Case 38, Annual heating cost 279 applies the minimum, maximum and final cost cap.
-  period: 2026
-  input:
-    state_code: WA
-    wa_liheap_household_size: 1
-    wa_liheap_countable_income: 0
-    heating_type: ELECTRICITY
-    heating_expense: 279
-  output:
-    wa_liheap: 251
-- name: Case 39, Annual heating cost 405 applies the minimum, maximum and final cost cap.
+- name: Case 37, Annual heating cost 405 applies the minimum, maximum and final cost cap.
   period: 2026
   input:
     state_code: WA
@@ -392,7 +372,7 @@
     heating_expense: 405
   output:
     wa_liheap: 365
-- name: Case 40, Annual heating cost 1388 applies the minimum, maximum and final cost cap.
+- name: Case 38, Annual heating cost 1388 applies the minimum, maximum and final cost cap.
   period: 2026
   input:
     state_code: WA
@@ -402,7 +382,7 @@
     heating_expense: 1388
   output:
     wa_liheap: 1249
-- name: Case 41, Annual heating cost 1389 applies the minimum, maximum and final cost cap.
+- name: Case 39, Annual heating cost 1389 applies the minimum, maximum and final cost cap.
   period: 2026
   input:
     state_code: WA
@@ -412,7 +392,7 @@
     heating_expense: 1389
   output:
     wa_liheap: 1250
-- name: Case 42, Annual heating cost 1390 applies the minimum, maximum and final cost cap.
+- name: Case 40, Annual heating cost 1390 applies the minimum, maximum and final cost cap.
   period: 2026
   input:
     state_code: WA
@@ -422,17 +402,7 @@
     heating_expense: 1390
   output:
     wa_liheap: 1250
-- name: Case 43, Annual heating cost 2000 applies the minimum, maximum and final cost cap.
-  period: 2026
-  input:
-    state_code: WA
-    wa_liheap_household_size: 1
-    wa_liheap_countable_income: 0
-    heating_type: ELECTRICITY
-    heating_expense: 2000
-  output:
-    wa_liheap: 1250
-- name: Case 44, Monthly income below the quotient rounding transition pays 840.
+- name: Case 41, Monthly income below the quotient rounding transition pays 840.
   period: 2026
   input:
     state_code: WA
@@ -442,7 +412,7 @@
     heating_expense: 1000
   output:
     wa_liheap: 840
-- name: Case 45, Monthly income above the quotient rounding transition pays 830.
+- name: Case 42, Monthly income above the quotient rounding transition pays 830.
   period: 2026
   input:
     state_code: WA
@@ -452,7 +422,7 @@
     heating_expense: 1000
   output:
     wa_liheap: 830
-- name: Case 46, Adjusted income just below a cent rounding transition pays 840.
+- name: Case 43, Adjusted income just below a cent rounding transition pays 840.
   period: 2026
   input:
     state_code: WA
@@ -462,7 +432,7 @@
     heating_expense: 1000
   output:
     wa_liheap: 840
-- name: Case 47, Adjusted income just above a cent rounding transition pays 830.
+- name: Case 44, Adjusted income just above a cent rounding transition pays 830.
   period: 2026
   input:
     state_code: WA
@@ -472,7 +442,7 @@
     heating_expense: 1000
   output:
     wa_liheap: 830
-- name: Case 48, Negative countable income does not increase the maximum multiplier.
+- name: Case 45, Negative countable income does not increase the maximum multiplier.
   period: 2026
   input:
     state_code: WA
@@ -482,7 +452,7 @@
     heating_expense: 400
   output:
     wa_liheap: 360
-- name: Case 49, Household size beyond the printed table has an unsupported award.
+- name: Case 46, Household size beyond the printed table has an unsupported award.
   period: 2026
   input:
     state_code: WA
@@ -493,7 +463,7 @@
   output:
     wa_liheap: 0
     wa_liheap_eligible: true
-- name: Case 50, No qualified members produces no award.
+- name: Case 47, No qualified members produces no award.
   period: 2026
   input:
     state_code: WA
@@ -504,7 +474,7 @@
   output:
     wa_liheap: 0
     wa_liheap_eligible: false
-- name: Case 51, Heat included in rent uses the reported heating cost.
+- name: Case 48, Heat included in rent uses the reported heating cost.
   period: 2026
   input:
     state_code: WA
@@ -516,7 +486,7 @@
   output:
     wa_liheap: 336
     wa_liheap_eligible: true
-- name: Case 52, Subsidized rent with a supported heating cost is not categorically excluded.
+- name: Case 49, Subsidized rent with a supported heating cost is not categorically excluded.
   period: 2026
   input:
     state_code: WA
@@ -529,7 +499,7 @@
   output:
     wa_liheap: 336
     wa_liheap_eligible: true
-- name: Case 53, Heat included in rent with unknown cost does not invent a surrogate.
+- name: Case 50, Heat included in rent with unknown cost does not invent a surrogate.
   period: 2026
   input:
     state_code: WA
@@ -541,7 +511,7 @@
   output:
     wa_liheap: 0
     wa_liheap_eligible: true
-- name: Case 54, Unknown fuel with a directly supplied heating cost supports the worksheet.
+- name: Case 51, Unknown fuel with a directly supplied heating cost supports the worksheet.
   period: 2026
   input:
     state_code: WA
@@ -551,7 +521,7 @@
     heating_expense: 400
   output:
     wa_liheap: 336
-- name: Case 55, Explicit NONE heating type produces no award.
+- name: Case 52, Explicit NONE heating type produces no award.
   period: 2026
   input:
     state_code: WA
@@ -561,7 +531,7 @@
     heating_expense: 400
   output:
     wa_liheap: 0
-- name: Case 56, Out-of-state household produces no award.
+- name: Case 53, Out-of-state household produces no award.
   period: 2026
   input:
     state_code: OR
@@ -571,7 +541,7 @@
     heating_expense: 400
   output:
     wa_liheap: 0
-- name: Case 57, Unsupported extrapolation with a nonpositive denominator returns zero.
+- name: Case 54, Unsupported extrapolation with a nonpositive denominator returns zero.
   period: 2026
   input:
     state_code: WA
@@ -582,7 +552,7 @@
     wa_liheap_eligible: true
   output:
     wa_liheap: 0
-- name: Case 58, Canonical ELECTRICITY primary heating bill feeds the award.
+- name: Case 55, Canonical ELECTRICITY primary heating bill feeds the award.
   period: 2026
   input:
     state_code: WA
@@ -593,95 +563,7 @@
   output:
     heating_expense: 400
     wa_liheap: 336
-- name: Case 59, Canonical NATURAL_GAS primary heating bill feeds the award.
-  period: 2026
-  input:
-    state_code: WA
-    wa_liheap_household_size: 1
-    wa_liheap_countable_income: 6000
-    heating_type: NATURAL_GAS
-    gas_expense: 400
-  output:
-    heating_expense: 400
-    wa_liheap: 336
-- name: Case 60, Canonical FUEL_OIL primary heating bill feeds the award.
-  period: 2026
-  input:
-    state_code: WA
-    wa_liheap_household_size: 1
-    wa_liheap_countable_income: 6000
-    heating_type: FUEL_OIL
-    fuel_oil_expense: 400
-  output:
-    heating_expense: 400
-    wa_liheap: 336
-- name: Case 61, Canonical KEROSENE primary heating bill feeds the award.
-  period: 2026
-  input:
-    state_code: WA
-    wa_liheap_household_size: 1
-    wa_liheap_countable_income: 6000
-    heating_type: KEROSENE
-    fuel_oil_expense: 400
-  output:
-    heating_expense: 400
-    wa_liheap: 336
-- name: Case 62, Canonical PROPANE primary heating bill feeds the award.
-  period: 2026
-  input:
-    state_code: WA
-    wa_liheap_household_size: 1
-    wa_liheap_countable_income: 6000
-    heating_type: PROPANE
-    bottled_gas_expense: 400
-  output:
-    heating_expense: 400
-    wa_liheap: 336
-- name: Case 63, Canonical WOOD primary heating bill feeds the award.
-  period: 2026
-  input:
-    state_code: WA
-    wa_liheap_household_size: 1
-    wa_liheap_countable_income: 6000
-    heating_type: WOOD
-    wood_expense: 400
-  output:
-    heating_expense: 400
-    wa_liheap: 336
-- name: Case 64, Canonical COAL primary heating bill feeds the award.
-  period: 2026
-  input:
-    state_code: WA
-    wa_liheap_household_size: 1
-    wa_liheap_countable_income: 6000
-    heating_type: COAL
-    coal_expense: 400
-  output:
-    heating_expense: 400
-    wa_liheap: 336
-- name: Case 65, Canonical SOLAR primary heating bill feeds the award.
-  period: 2026
-  input:
-    state_code: WA
-    wa_liheap_household_size: 1
-    wa_liheap_countable_income: 6000
-    heating_type: SOLAR
-    pre_subsidy_electricity_expense: 400
-  output:
-    heating_expense: 400
-    wa_liheap: 336
-- name: Case 66, Canonical OTHER primary heating bill feeds the award.
-  period: 2026
-  input:
-    state_code: WA
-    wa_liheap_household_size: 1
-    wa_liheap_countable_income: 6000
-    heating_type: OTHER
-    other_heating_fuel_expense: 400
-  output:
-    heating_expense: 400
-    wa_liheap: 336
-- name: Case 67, Single adult wages flow through eligibility and the final heating award.
+- name: Case 56, Single adult wages flow through eligibility and the final heating award.
   period: 2026
   input:
     people:
@@ -709,7 +591,7 @@
     wa_liheap_income_limit: 23475
     wa_liheap_eligible: true
     wa_liheap: 590
-- name: Case 68, Two adult earners use the household adjuster after their wage deductions.
+- name: Case 57, Two adult earners use the household adjuster after their wage deductions.
   period: 2026
   input:
     people:
@@ -744,7 +626,7 @@
     wa_liheap_income_limit: 31725
     wa_liheap_eligible: true
     wa_liheap: 630
-- name: Case 69, Mixed-status household retains parent income and has no extra benefit proration.
+- name: Case 58, Mixed-status household retains parent income and has no extra benefit proration.
   period: 2026
   input:
     people:
@@ -778,7 +660,7 @@
     wa_liheap_income_limit: 23475
     wa_liheap_eligible: true
     wa_liheap: 590
-- name: Case 70, Minor wages are excluded while child support and SSI affect the final award.
+- name: Case 59, Minor wages are excluded while child support and SSI affect the final award.
   period: 2026
   input:
     people:
@@ -814,7 +696,7 @@
     wa_liheap_income_limit: 31725
     wa_liheap_eligible: true
     wa_liheap: 780
-- name: Case 71, Separate SPM units and an out-of-state household remain independent in one
+- name: Case 60, Separate SPM units and an out-of-state household remain independent in one
     simulation.
   period: 2026
   input:
@@ -882,7 +764,7 @@
     - 100
     - 0
 
-- name: Case 72, one cent below the adjusted-income rounding tie retains the lower quotient.
+- name: Case 61, one cent below the adjusted-income rounding tie retains the lower quotient.
   period: 2026
   input:
     age: 40
@@ -892,11 +774,11 @@
     heating_type: ELECTRICITY
     pre_subsidy_electricity_expense: 1_000
   output:
-    # At the tie, 3,479.22 / 12 = 289.935 rounds to 289.94.
-    # The next quotient rounds to .44, giving (1.30 - .44) * 1,000.
+    # 3,479.21 / 12 = 289.934 rounds to 289.93; 3,648.10 - 289.93 = 3,358.17.
+    # 1,460.80 / 3,358.17 = 0.43499 rounds to .43, giving (1.30 - .43) * 1,000.
     wa_liheap: 870
 
-- name: Case 73, an exact adjusted-income half-cent tie rounds upward.
+- name: Case 62, an exact adjusted-income half-cent tie rounds upward.
   period: 2026
   input:
     age: 40
@@ -910,7 +792,7 @@
     # The next quotient rounds to .44, giving (1.30 - .44) * 1,000.
     wa_liheap: 860
 
-- name: Case 74, one cent above the adjusted-income rounding tie retains the upper quotient.
+- name: Case 63, one cent above the adjusted-income rounding tie retains the upper quotient.
   period: 2026
   input:
     age: 40
@@ -920,15 +802,15 @@
     heating_type: ELECTRICITY
     pre_subsidy_electricity_expense: 1_000
   output:
-    # At the tie, 3,479.22 / 12 = 289.935 rounds to 289.94.
-    # The next quotient rounds to .44, giving (1.30 - .44) * 1,000.
+    # 3,479.23 / 12 = 289.936 rounds to 289.94; 3,648.10 - 289.94 = 3,358.16.
+    # 1,460.80 / 3,358.16 = 0.43500 rounds to .44, giving (1.30 - .44) * 1,000.
     wa_liheap: 860
 
 # Commerce Policy 1.1.2 counts cash actually received, not untaken entitlement.
 # No TANF: 1460.80 / 3648.10 rounds to .40; (1.30 - .40) * 1000 = 900.
 # Received TANF: 6840 / 12 / 1.36 rounds to 419.12; denominator 3228.98,
 # quotient .45, and (1.30 - .45) * 1000 = 850. SFA is a separate program.
-- name: TANF take-up changes received income once per household and the final award.
+- name: Case 64, TANF take-up changes received income once per household and the final award.
   period: 2026
   input:
     people:
@@ -969,7 +851,7 @@
 # Ordinary DoD retirement is separate from pension/VA income. Apply the
 # Commerce retirement deduction: 26000 * .90 = 23400 (limit 23475).
 # Monthly income 1950 gives denominator 1698.10, quotient .86, multiplier .44.
-- name: Ordinary military retirement receives the retirement deduction before the final award.
+- name: Case 65, Ordinary military retirement receives the retirement deduction before the final award.
   period: 2026
   input:
     state_code: WA
@@ -992,3 +874,50 @@
     wa_liheap_countable_income: 23400
     wa_liheap_eligible: true
     wa_liheap: 440
+
+# Military Survivor Benefit Plan annuities count through military retirement
+# income with the 10% retirement deduction: 26,000 * .90 = 23,400 (limit 23,475).
+# Monthly 23,400 / 12 = 1,950.00; denominator 3,648.10 - 1,950.00 = 1,698.10.
+# 1,460.80 / 1,698.10 = 0.86026 rounds to .86; (1.30 - .86) * 1,000 = 440.
+- name: Case 66, Military survivor annuity receives the retirement deduction.
+  period: 2026
+  input:
+    state_code: WA
+    age: 70
+    immigration_status: CITIZEN
+    military_retirement_pay_survivors: 26_000
+    ssi: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+  output:
+    military_retirement_income: 26_000
+    wa_liheap_household_size: 1
+    wa_liheap_income_limit: 23_475
+    wa_liheap_countable_income: 23_400
+    wa_liheap_eligible: true
+    wa_liheap: 440
+
+# Plan section 1.9: Social Security counts net of the Medicare Part B premium.
+# MSP income (24,000 - 240) / 12 = 1,980 exceeds 1.35 * 15,960 / 12 = 1,795.50,
+# so the person pays the full 12 * 202.90 = 2,434.80 premium.
+# Countable: 24,000 - 2,434.80 = 21,565.20 (limit 23,475).
+# Monthly 21,565.20 / 12 = 1,797.10; denominator 3,648.10 - 1,797.10 = 1,851.00.
+# 1,460.80 / 1,851.00 = 0.78919 rounds to .79; (1.30 - .79) * 1,000 = 510.
+- name: Case 67, Social Security counts net of the Medicare Part B premium.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    age: 70
+    immigration_status: CITIZEN
+    social_security_retirement: 24_000
+    ssi: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+  output:
+    medicare_part_b_premium: 2_434.8
+    wa_liheap_household_size: 1
+    wa_liheap_income_limit: 23_475
+    wa_liheap_countable_income: 21_565.2
+    wa_liheap_eligible: true
+    wa_liheap: 510

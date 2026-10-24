@@ -12,8 +12,8 @@ class wa_liheap(Variable):
         "The printed worksheet supplies constants and household adjusters; "
         "two-decimal intermediate rounding, half-up ties and final dollar "
         "rounding are documented conventions consistent with its example. "
-        "The approved model caps the minimum/maximum-adjusted award at "
-        "reported heating cost and applies no extra mixed-status proration. "
+        "The award after the minimum and maximum is capped at reported "
+        "heating cost, with no extra mixed-status proration. "
         "No rent-included or missing-bill cost is imputed. Zero for missing cost "
         "or a household larger than the published adjuster table means an "
         "unsupported amount, not necessarily legal ineligibility. The SPM unit "
@@ -53,6 +53,6 @@ class wa_liheap(Variable):
         multiplier = max_(p.multiplier_constant - quotient, 0)
         expense = max_(spm_unit("heating_expense", period), 0)
         rounded_award = np.floor(expense * multiplier + 0.5)
-        # Approved ordering: minimum/maximum first, actual heating cost last.
+        # Apply the minimum and maximum first, then cap at actual heating cost.
         award = min_(clip(rounded_award, p.minimum, p.maximum), expense)
         return where(supported_size & (denominator > 0), award, 0)

@@ -1,5 +1,6 @@
 # FY2026 plan sections 1.8-1.9; Byrd Barr FY2025-26 application pages 1-2;
-# Commerce 2026 manual Policy 1.1.2, pages 14-15. SSA subtype deduction is unverified.
+# Commerce 2026 manual Policy 1.1.2, pages 14-15. Social Security counts net of the
+# Medicare Part B premium; no SSA subtype retirement deduction is applied.
 
 - name: Case 1, payroll wages receive the twenty-percent deduction.
   period: 2026
@@ -89,7 +90,7 @@
   output:
     wa_liheap_countable_income: 10800
 
-- name: Case 8, Social Security retirement remains fully counted pending subtype evidence.
+- name: Case 8, Social Security counts in full when a Medicare Savings Program pays the Part B premium.
   period: 2026
   input:
     state_code: WA
@@ -99,6 +100,9 @@
     age: 65
     social_security_retirement: 12000
   output:
+    # MSP income: (12,000 - 240) / 12 = 980 < 1.35 * 15,960 / 12 = 1,795.50,
+    # so the program pays the 12 * 202.90 premium and none is deducted.
+    medicare_part_b_premium: 0
     wa_liheap_countable_income: 12000
 
 - name: Case 9, Social Security disability and SSI remain fully counted.
@@ -124,6 +128,8 @@
     social_security: 15000
     social_security_retirement: 10000
   output:
+    # MSP income (15,000 - 240) / 12 = 1,230 is below 1,795.50, so the
+    # program pays the Part B premium and the aggregate counts once in full.
     wa_liheap_countable_income: 15000
 
 - name: Case 11, TANF and State Family Assistance count once per unit.
@@ -137,7 +143,7 @@
   output:
     wa_liheap_countable_income: 3600
 
-- name: Case 12, child support received counts and paid support is deducted.
+- name: Case 12, child support received counts and paid support is not deducted.
   period: 2026
   input:
     state_code: WA
@@ -148,35 +154,10 @@
     child_support_received: 5000
     child_support_expense: 1200
   output:
-    wa_liheap_countable_income: 3800
+    # The plan and Commerce manual list no deduction for support paid.
+    wa_liheap_countable_income: 5000
 
-- name: Case 13, support deduction cannot create negative income.
-  period: 2026
-  input:
-    state_code: WA
-    ssi: 0
-    wa_tanf: 0
-    wa_sfa: 0
-    age: 40
-    employment_income: 1000
-    child_support_expense: 3000
-  output:
-    wa_liheap_countable_income: 0
-
-- name: Case 14, negative support cannot raise income.
-  period: 2026
-  input:
-    state_code: WA
-    ssi: 0
-    wa_tanf: 0
-    wa_sfa: 0
-    age: 40
-    employment_income: 1000
-    child_support_expense: -2000
-  output:
-    wa_liheap_countable_income: 800
-
-- name: Case 15, VA benefits and insurance payments are excluded under the FY2026 plan.
+- name: Case 13, VA benefits and insurance payments are excluded under the FY2026 plan.
   period: 2026
   input:
     state_code: WA
@@ -190,7 +171,7 @@
   output:
     wa_liheap_countable_income: 0
 
-- name: Case 16, refundable credits and balances are excluded.
+- name: Case 14, refundable credits and balances are excluded.
   period: 2026
   input:
     state_code: WA
@@ -203,7 +184,7 @@
   output:
     wa_liheap_countable_income: 0
 
-- name: Case 17, ordinary income sources count without duplicate components.
+- name: Case 15, ordinary income sources count without duplicate components.
   period: 2026
   input:
     state_code: WA
@@ -223,7 +204,7 @@
   output:
     wa_liheap_countable_income: 45000
 
-- name: Case 18, rental losses do not offset positive income.
+- name: Case 16, rental losses do not offset positive income.
   period: 2026
   input:
     state_code: WA
@@ -237,7 +218,7 @@
   output:
     wa_liheap_countable_income: 11600
 
-- name: Case 19, private and public pension components are counted only through pension income.
+- name: Case 17, private and public pension components are counted only through pension income.
   period: 2026
   input:
     state_code: WA
@@ -250,7 +231,7 @@
   output:
     wa_liheap_countable_income: 10800
 
-- name: Case 20, separate net business sources retain their positive amounts.
+- name: Case 18, separate net business sources retain their positive amounts.
   period: 2026
   input:
     state_code: WA
@@ -265,7 +246,7 @@
   output:
     wa_liheap_countable_income: 10000
 
-- name: Case 21, a minors unearned income counts while wages are excluded.
+- name: Case 19, a minors unearned income counts while wages are excluded.
   period: 2026
   input:
     people:
@@ -278,7 +259,7 @@
   output:
     wa_liheap_countable_income: 13_800
 
-- name: Case 22, income from an undocumented parent remains countable.
+- name: Case 20, income from an undocumented parent remains countable.
   period: 2026
   input:
     people:
@@ -292,7 +273,7 @@
     wa_liheap_household_size: 1
     wa_liheap_countable_income: 19_200
 
-- name: Case 23, household-level assistance is not multiplied by member count.
+- name: Case 21, household-level assistance is not multiplied by member count.
   period: 2026
   input:
     people:
@@ -305,7 +286,7 @@
   output:
     wa_liheap_countable_income: 6_000
 
-- name: Case 24, Washington income calculation is zero outside Washington.
+- name: Case 22, Washington income calculation is zero outside Washington.
   period: 2026
   input:
     state_code: OR
@@ -313,3 +294,23 @@
     employment_income: 24_000
   output:
     wa_liheap_countable_income: 0
+
+- name: Case 23, Social Security below the Part B premium does not reduce other income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    ssi: 0
+    wa_tanf: 0
+    wa_sfa: 0
+    age: 70
+    pension_income: 30_000
+    social_security_retirement: 1_800
+  output:
+    # MSP income (30,000 + 1,800 - 240) / 12 = 2,630 exceeds 1,795.50, so the
+    # person pays the full 12 * 202.90 = 2,434.80 premium.
+    # Pension: 30,000 * (1 - 0.10) = 27,000.
+    # Social Security: max(1,800 - 2,434.80, 0) = 0, so the remaining
+    # 634.80 of premium is not taken from the pension.
+    medicare_part_b_premium: 2_434.8
+    wa_liheap_countable_income: 27_000

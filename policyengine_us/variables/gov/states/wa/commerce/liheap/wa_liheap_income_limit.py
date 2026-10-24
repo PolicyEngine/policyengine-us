@@ -15,7 +15,7 @@ class wa_liheap_income_limit(Variable):
     )
     reference = (
         "https://liheapch.acf.gov/docs/2026/state-plans/WA_Plan_2026.pdf#page=8",
-        "https://drive.google.com/file/d/18fvR5CL8UKpTj4Vsm7KlkitKUJclAvkR/view",
+        "https://drive.google.com/file/d/18fvR5CL8UKpTj4Vsm7KlkitKUJclAvkR/view#page=1",
         "https://deptofcommerce.app.box.com/s/3fp0xz4y2x2p4hedw9ww4sk7ma36srlx",
     )
     defined_for = StateCode.WA

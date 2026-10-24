@@ -12,10 +12,10 @@ class wa_liheap_countable_income(Variable):
         "All members' otherwise countable income is retained, including members "
         "excluded from household size. Reported wages approximate earnings taxed "
         "at payout; existing net business income receives no further deduction. "
-        "The retirement deduction covers pension income and retirement-account "
-        "distributions. Social Security and SSI remain fully counted because "
-        "their deduction treatment is unverified; this may overstate income. "
-        "Medicare deductions, exempt subtypes and receipts without existing "
+        "The retirement deduction covers pension income, retirement-account "
+        "distributions and military retirement income. Social Security counts "
+        "net of the Medicare Part B premium; SSI counts in full. Paid child "
+        "support is not deducted. Exempt subtypes and receipts without existing "
         "inputs are not reconstructed. Supply adjusted countable income directly "
         "when the detailed program amount is known."
     )
@@ -26,7 +26,6 @@ class wa_liheap_countable_income(Variable):
         "https://drive.google.com/file/d/18fvR5CL8UKpTj4Vsm7KlkitKUJclAvkR/view#page=1",
         # Policy 1.1.2 incorporates LIHEAP income rules, PDF pages 14-15.
         "https://deptofcommerce.app.box.com/s/5a32797ex8tz2blo8nwtifecokpya37j#page=14",
-        "https://www.liheapcalendar.com/CACLMT/FAQ",
     )
     defined_for = StateCode.WA
 
@@ -48,16 +47,24 @@ class wa_liheap_countable_income(Variable):
         )
         unemployment = max_(person("total_unemployment_compensation", period), 0)
         unearned = sum(max_(person(source, period), 0) for source in p.unearned_sources)
+        # Plan section 1.9 checks "Excluding MediCare deduction" for Social
+        # Security, so each person's benefit counts net of the Part B premium
+        # that person pays. medicare_part_b_premium is zero for a person not
+        # enrolled and excludes any share a Medicare Savings Program pays.
+        social_security = max_(person("social_security", period), 0)
+        premium = person("medicare_part_b_premium", period)
+        net_social_security = max_(social_security - premium, 0)
         personal_income = (
             earned
             + retirement * (1 - p.retirement_deduction_rate)
             + unemployment * (1 - p.unemployment_deduction_rate)
             + unearned
+            + net_social_security
         )
         # Each SPM-level cash payment is included once, not once per member.
         # General assistance input represents other assistance, such as ABD.
         assistance = add(spm_unit, period, ["tanf", "wa_sfa"])
-        support_paid = spm_unit.sum(max_(person("child_support_expense", period), 0))
-        return max_(
-            spm_unit.sum(personal_income) + max_(assistance, 0) - support_paid, 0
-        )
+        # Income comes from the plan and Commerce manual, which list no
+        # deduction for child support paid. The CACLMT subgrantee FAQ deducts
+        # child support paid; not modeled (https://www.liheapcalendar.com/CACLMT/FAQ).
+        return spm_unit.sum(personal_income) + max_(assistance, 0)

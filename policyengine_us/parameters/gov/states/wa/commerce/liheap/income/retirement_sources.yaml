@@ -3,9 +3,10 @@ values:
   2025-10-01:
     - pension_income
     - retirement_distributions
-    - military_retirement_pay
+    - military_retirement_income
 
 # Pension income already includes its pension and annuity components.
+# Military retirement income includes military survivor annuities.
 # Social Security, SSI, railroad and other survivor benefit subtype deductions
 # are unverified and are not assumed. Broad distributions lack lump-sum detail.
 metadata:
