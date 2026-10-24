@@ -3752,8 +3752,8 @@ candidates:
     from: 2026
     to: 2026
     type: calendar
-  question: Can a lawful permanent resident credited with 40 qualifying quarters receive New Hampshire's state
-    supplement during the five years after entry?
+  question: Can a lawful permanent resident credited with 40 qualifying quarters receive New Hampshire's state supplement
+    during the five years after entry?
   sources:
   - kind: statute
     citation: 8 U.S.C. 1622(b)(2)
@@ -3772,12 +3772,16 @@ candidates:
     and ineligible under the manual; with 39 quarters both readings bar them.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/nh/dhhs/ssp/nh_ssp_eligible.py
+    - policyengine_us/parameters/gov/states/nh/dhhs/ssp/immigration/permanent_resident_qualifying_quarters.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10156
   state: ruled
-  note: 'The manual may rest on 8 U.S.C. 1624, which lets a State restrict general cash public assistance; whether
-    the adult categories are that is unsettled. Code not yet on main: nh_ssp_eligible.'
+  note: 'PE-US follows the statute: a lawful permanent resident with at least 40 qualifying quarters skips the five-year
+    wait, and the NOTE records AAM 305.13''s contrary rule (nh_ssp_eligible.py, immigration/permanent_resident_qualifying_quarters.yaml).
+    The quarters come from snap_alien_qualifying_quarters, which defaults to 0. The manual may rest on 8 U.S.C.
+    1624, which lets a State restrict general cash public assistance; whether the adult categories are that is unsettled.'
 - id: us-nj:claim-of-right-same-category-offset
   program: income-tax
   years:
@@ -3831,6 +3835,37 @@ candidates:
     prs: []
   state: unreviewed
   note: PE-US follows the handbooks; establish authority for departure from the regulation readopted in 2025.
+- id: us-nj:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2022
+    to: 2027
+    type: federal-fiscal
+  question: Can New Jersey LIHEAP's 60% SMI limit exclude a very large household whose income is below the federal
+    110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: New Jersey FY2026 LIHEAP State Plan, item 2.1, page 9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/NJ_Plan_2026.pdf#page=9
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The plan sets 60% of SMI for all household sizes, which falls below that floor from a household size
+      between 28 and 32, depending on the year, in FY2022 to FY2027 (size 32 in FY2026).
+  example: In FY2026, thirty-two people with $203,000 exceed the $202,092 limit but are below the $204,765 floor.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/nj/dca/liheap/eligibility/nj_liheap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/nj/dca/liheap/eligibility/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10279
+  state: unreviewed
+  note: PE-US applies the floor to the prior year's guideline, rounded to cents, with the statute's strict "less
+    than" (nj_liheap_eligible.py).
 - id: us-nj:liheap-tanf-and-general-assistance-income
   program: liheap
   years:
@@ -3871,19 +3906,32 @@ candidates:
   - kind: guidance
     citation: NJDOE guidance, July 29, 2026
     url: https://www.nj.gov/education/broadcasts/2026/jul/29/GuidelinesforReportingEnrollmentIncomeStatus.pdf#page=1
+  - kind: statute
+    citation: P.L.2025, c.74 (FY2026 Appropriations Act), Working Class Families State Supplement
+    url: https://pub.njleg.gov/Bills/2024/AL25/74_.PDF#page=29
+  - kind: statute
+    citation: P.L.2026, c.27 (FY2027 Appropriations Act), Working Class Families State Supplement
+    url: https://pub.njleg.gov/Bills/2026/AL26/27_.PDF#page=28
   readings:
-    statute: The named lunch expansion ends after 2024-25 unless reenacted.
+    statute: c.336 names the 224% lunch limit only for SY 2023-24 and 2024-25; the code's comment reads the FY2026
+      and FY2027 appropriations as continuing it through SY 2026-27.
     other: Guidance continues treating 186%-224% as eligible for free meals.
-  example: 'NJ 2025, $42,300 earnings: paid meals and $0 on main versus free meals and an additional $1,078.20 in
-    the PR.'
+  example: In SY 2025-26, a household at 200% of the poverty guideline gets free breakfast and lunch under the appropriations,
+    versus free breakfast and a paid lunch if the lunch limit ended after SY 2024-25.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/usda/school_meals/state_free_income_limit.yaml
+    - policyengine_us/parameters/gov/usda/school_meals/state_free_income_limit_breakfast_only.yaml
+    - policyengine_us/variables/gov/usda/school_meals/school_meal_tier.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10238
   state: unreviewed
-  note: 'The draft carries the guidance''s limit forward; the statute-first rule requires changing that choice,
-    subject to verifying subsequent legislation. Code not yet on main: school_meal_tier, state_free_income_limit.'
+  note: 'PE-US follows enacted law, where the draft carried the guidance forward: free lunch and breakfast run to
+    224% of the poverty guideline through SY 2026-27, which the comment ties to the FY2026 and FY2027 appropriations
+    for the Working Class Families State Supplement, and from July 2027 only breakfast stays at 224%, under c.336''s
+    breakfast limit, which has no end date (state_free_income_limit.yaml, state_free_income_limit_breakfast_only.yaml,
+    school_meal_tier.py). Verify that the appropriations carry the lunch limit.'
 - id: us-nm:ccap-income-ceilings
   program: child-care-assistance
   years:
@@ -4055,13 +4103,17 @@ candidates:
     follows: statute
     code:
     - policyengine_us/variables/gov/states/ny/tax/income/ny_allowable_college_tuition_expenses.py
+    - policyengine_us/variables/household/demographic/tax_unit/head_or_spouse_is_dependent_elsewhere_without_filing_exception.py
+    - policyengine_us/variables/household/demographic/person/is_dependent_elsewhere_without_filing_exception.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10090
   state: ruled
   note: 'PE-US follows the statute per individual: only a claimed individual''s own tuition, and dependents'' tuition
-    on a return with a claimable filer, are disallowed, so the other spouse keeps their tuition (ny_allowable_college_tuition_expenses.py).
-    The model has no input for which return claims a person, so it takes an actual claim to be on a New York return.
-    Ruled in October 2026 to read the statute per individual; verify the form''s stopping condition.'
+    on a return with a claimable filer who does not meet the claimant filing exception, are disallowed, so the other
+    spouse keeps their tuition (ny_allowable_college_tuition_expenses.py, head_or_spouse_is_dependent_elsewhere_without_filing_exception.py,
+    is_dependent_elsewhere_without_filing_exception.py). The model has no input for which return claims a person,
+    so it takes an actual claim to be on a New York return. Ruled in October 2026 to read the statute per individual;
+    verify the form''s stopping condition.'
 - id: us-ny:heap-code-c-ssi-household-membership
   program: liheap
   years:
@@ -4190,23 +4242,28 @@ candidates:
     citation: LIHEAP IM 2025-02, Attachment 4, state median income table
     url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=5
   - kind: guidance
+    citation: HHS Attachment 4, SMI for optional use in FY26 and mandatory use in FY27, Ohio row
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_Att4SMITable_States_FY2027.pdf#page=5
+  - kind: guidance
     citation: Office of the Ohio Consumers' Counsel, Home Energy Assistance Program fact sheet (August 2026)
     url: https://occ.ohio.gov/sites/default/files/2026-08/OCC-Home-Energy-Assistance-Program-HEAP_0.pdf#page=1
   readings:
-    statute: The federal ceiling is the greater of 150% of the poverty guideline and 60% of SMI; 60% of SMI is $96,945.68
-      for 9 and $99,008.35 for 10, and HHS prints $96,944 and $99,007.
-    other: The Consumers' Counsel sheet prints $96,946 and $99,010.
+    statute: No statute supplied; both sets are within 60% of the FFY2027 SMI ($99,667 and $101,787), which HHS
+      makes optional for FY2026 and mandatory for FY2027. The HHS FFY2026 table gives $96,944 and $99,007.
+    other: The Consumers' Counsel sheet prints $96,946 and $99,010, $2 and $3 above the FFY2026 table.
   pe_us:
-    follows: statute
+    follows: unknown
     code:
     - policyengine_us/variables/gov/states/oh/odjfs/liheap/eligibility/oh_liheap_income_limit.py
     - policyengine_us/parameters/gov/states/oh/odjfs/liheap/eligibility/smi_year_lag.yaml
+    - policyengine_us/variables/gov/hhs/hhs_smi.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9975
   state: unreviewed
-  note: PE-US uses the HHS amounts, and the comment records that the sheet's figures for sizes 9 and 10 exceed even
-    unrounded 60% of SMI (oh_liheap_income_limit.py, eligibility/smi_year_lag.yaml). Verify the sheet and which
-    figures the agency applies.
+  note: PE-US uses the HHS FFY2026 amounts, reusing the FFY2026 SMI for the 2026-27 season (a one-year lag the parameter
+    calls inferred), and the comment records that the sheet's figures for sizes 9 and 10 exceed even unrounded 60%
+    of the FFY2026 SMI (oh_liheap_income_limit.py, eligibility/smi_year_lag.yaml, liheap_smi_limit in gov/hhs/hhs_smi.py).
+    Verify the sheet and which figures the agency applies.
 - id: us-oh:heap-awards-above-150-percent-poverty
   program: liheap
   years:
@@ -4247,10 +4304,10 @@ candidates:
   sources:
   - kind: manual
     citation: Guidelines E-2.2, E-2.3, Appendix XXIII
-    url: null
+    url: https://irp.cdn-website.com/aa88b0b1/files/uploaded/2022-24%20ATTACHMENT%202022-2023%20EAP%20Guidelines%20%281%29.pdf#page=7
   - kind: guidance
     citation: FY2026 LIHEAP State Plan section 1.9, page 6
-    url: https://dam.assets.ohio.gov/image/upload/v1769700600/development.ohio.gov/individual/energyassistance/DETAILED_MODEL_PLAN_LIHEAP__10_01_2025.pdf#page=5
+    url: https://dam.assets.ohio.gov/image/upload/v1769700600/development.ohio.gov/individual/energyassistance/DETAILED_MODEL_PLAN_LIHEAP__10_01_2025.pdf#page=6
   readings:
     statute: No statutory rule supplied; the Guidelines exclude a dependent minor's SSI and other income but count
       Social Security.
@@ -4346,10 +4403,10 @@ candidates:
   sources:
   - kind: manual
     citation: Guidelines E-2.2, E-2.3, Appendix XXIII
-    url: null
+    url: https://irp.cdn-website.com/aa88b0b1/files/uploaded/2022-24%20ATTACHMENT%202022-2023%20EAP%20Guidelines%20%281%29.pdf#page=7
   - kind: guidance
     citation: FY2026 LIHEAP State Plan section 1.9, page 6
-    url: https://dam.assets.ohio.gov/image/upload/v1769700600/development.ohio.gov/individual/energyassistance/DETAILED_MODEL_PLAN_LIHEAP__10_01_2025.pdf#page=5
+    url: https://dam.assets.ohio.gov/image/upload/v1769700600/development.ohio.gov/individual/energyassistance/DETAILED_MODEL_PLAN_LIHEAP__10_01_2025.pdf#page=6
   readings:
     statute: No statutory rule supplied; the Guidelines count General Assistance.
     other: The plan leaves General Assistance unchecked.
@@ -4363,7 +4420,7 @@ candidates:
   state: unreviewed
   note: 'PE-US follows the Guidelines: general_assistance is countable unearned income, and the list''s comment
     records the plan''s unchecked item (income/sources/unearned.yaml, oh_liheap_countable_income.py). Confirm the
-    checkbox''s meaning and cited page.'
+    checkbox''s meaning.'
 - id: us-oh:heap-heat-in-rent-bill-name
   program: liheap
   years:
@@ -4374,10 +4431,10 @@ candidates:
   sources:
   - kind: manual
     citation: Guidelines E-4
-    url: null
+    url: https://irp.cdn-website.com/aa88b0b1/files/uploaded/2022-24%20ATTACHMENT%202022-2023%20EAP%20Guidelines%20%281%29.pdf#page=12
   - kind: guidance
     citation: FY2026 plan section 2.3, page 8
-    url: null
+    url: https://dam.assets.ohio.gov/image/upload/v1769700600/development.ohio.gov/individual/energyassistance/DETAILED_MODEL_PLAN_LIHEAP__10_01_2025.pdf#page=8
   readings:
     statute: No statutory rule supplied; the Guidelines do not require the bill in a household member's name.
     other: The plan requires the renter's name unless the tenant verifies paying all or part of the bill.
@@ -4397,7 +4454,8 @@ candidates:
     from: 2023
     to: 2023
     type: federal-fiscal
-  question: Is Ohio's 2022-2023 income limit 60% SMI under the plan or 175% of poverty guidelines under the Guidelines?
+  question: For households of one to seven, is Ohio's 2022-2023 income limit 60% SMI under the plan or 175% of poverty
+    guidelines under the Guidelines?
   sources:
   - kind: statute
     citation: 42 U.S.C. 8624(b)(2)(B)
@@ -4407,9 +4465,10 @@ candidates:
     url: https://liheapch.acf.gov/docs/2023/state-plans/OH_Plan_2023.pdf#page=8
   - kind: manual
     citation: Ohio 2022-2023 Energy Assistance Programs Guidelines section E-2.2, page 7
-    url: https://irp.cdn-website.com/aa88b0b1/files/uploaded/2022-24%20ATTACHMENT%202022-2023%20EAP%20Guidelines%20%281%29.pdf#page=5
+    url: https://irp.cdn-website.com/aa88b0b1/files/uploaded/2022-24%20ATTACHMENT%202022-2023%20EAP%20Guidelines%20%281%29.pdf#page=7
   readings:
-    statute: The federal cap permits either measure and does not resolve the agency-source disagreement.
+    statute: The federal cap admits either measure through size 7; from size 8 the Guidelines' 175% FPG exceeds
+      it (us-oh:heap-fpg-limit-above-federal-ceiling).
     other: The plan uses 60% SMI for every size; the Guidelines use 175% of poverty guidelines.
   pe_us:
     follows: unknown
@@ -4422,7 +4481,7 @@ candidates:
   state: unreviewed
   note: 'PE-US follows the Guidelines: from July 2022 the limit is 175% of the poverty guideline for every household
     size, and the comment records the FY2023 plan''s 60% SMI (eligibility/maximum_fpg_household_size.yaml, eligibility/fpg_rate.yaml,
-    oh_liheap_income_limit.py). Reconcile the agency sources and verify the cited PDF page.'
+    oh_liheap_income_limit.py). Reconcile the agency sources for sizes 1-7.'
 - id: us-oh:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -4437,7 +4496,7 @@ candidates:
     url: https://www.law.cornell.edu/uscode/text/42/8624
   - kind: guidance
     citation: Ohio FY2026 LIHEAP State Plan / HEAP applications (60% SMI above size cutoff)
-    url: https://dam.assets.ohio.gov/image/upload/v1769700600/development.ohio.gov/individual/energyassistance/DETAILED_MODEL_PLAN_LIHEAP__10_01_2025.pdf#page=5
+    url: https://dam.assets.ohio.gov/image/upload/v1769700600/development.ohio.gov/individual/energyassistance/DETAILED_MODEL_PLAN_LIHEAP__10_01_2025.pdf#page=8
   readings:
     statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
     other: The printed Ohio limits fall below that floor for households of 17 or more.
@@ -4539,13 +4598,20 @@ candidates:
     code:
     - policyengine_us/parameters/gov/states/ok/dhs/liheap/income/sources/unearned.yaml
     - policyengine_us/variables/gov/states/ok/dhs/liheap/income/ok_liheap_income_deductions.py
+    - policyengine_us/variables/gov/states/ok/dhs/liheap/eligibility/ok_liheap_eligible.py
+    - policyengine_us/variables/gov/states/ok/dhs/liheap/income/ok_liheap_gross_income.py
+    - policyengine_us/variables/gov/states/ok/dhs/liheap/income/ok_liheap_deemed_income.py
+    - policyengine_us/variables/gov/states/ok/dhs/liheap/income/ok_liheap_net_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9970
   state: unreviewed
-  note: 'PE-US follows the regulation: Social Security counts gross for the gross income test, Medicare premiums
-    are deducted afterward as a medical expense, and the list''s comment records the plan checkbox (income/sources/unearned.yaml,
-    ok_liheap_income_deductions.py). The plan narrative agrees, so reconcile its contrary checkbox and verify page
-    references.'
+  note: 'PE-US follows the regulation: Social Security counts gross in the gross income test, and allowable Medicare
+    premiums enter the medical deduction only for USDA elderly or disabled members. Eligible members'' deductions
+    come after the gross test, in the net income that sets the payment, while ineligible members'' deductions are
+    applied before their income is deemed. The list''s comment records the plan checkbox and says the plan narrative
+    also uses gross income (income/sources/unearned.yaml, ok_liheap_income_deductions.py, ok_liheap_eligible.py,
+    ok_liheap_gross_income.py, ok_liheap_deemed_income.py, ok_liheap_net_income.py). Reconcile the checkbox and
+    verify page references.'
 - id: us-ok:liheap-resource-test
   program: liheap
   years:
@@ -4557,7 +4623,7 @@ candidates:
   sources:
   - kind: regulation
     citation: OAC 340:20-1-10(h)(2) and 340:20-1-11(e), as adopted September 15, 2025 (Oklahoma Register Vol. 42,
-      Issue 20, pages 576 and 581)
+      Issue 20, PDF pages 576 and 581)
     url: https://oklahoma.gov/content/dam/ok/en/omma/content/rulemaking-process/rules/Register_Volume-42_Issue-20.pdf#page=576
   - kind: form
     citation: OKDHS Appendix C-7, 10/1/2025 edition
@@ -4665,6 +4731,38 @@ candidates:
   state: unreviewed
   note: PE-US extends the final band through the eligibility limit; verify the table bounds and payment effect at
     the boundary.
+- id: us-or:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2025
+    to: 2027
+    type: program
+    note: program year as the program defines it
+  question: Can Oregon LIHEAP's 60% SMI limit exclude a household of 19 or more whose income is below the federal
+    110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: Oregon FY2026 LIHEAP State Plan, item 2.1, page 8
+    url: https://liheapch.acf.gov/docs/2026/state-plans/OR_Plan_2026.pdf#page=8
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The plan sets 60% of SMI for all household sizes, which falls below that floor from size 19 in PY2025
+      and size 20 in PY2026 and PY2027.
+  example: In PY2026, twenty people with $130,000 exceed the $128,441 limit but are below the $132,165 floor.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/or/ohcs/liheap/eligibility/or_liheap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/or/ohcs/liheap/eligibility/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10279
+  state: unreviewed
+  note: PE-US applies the floor to the prior year's guideline, rounded to cents, with the statute's strict "less
+    than" (or_liheap_eligible.py).
 - id: us-pa:liheap-interest-dividend-threshold
   program: liheap
   years:
@@ -4906,6 +5004,37 @@ candidates:
   state: unreviewed
   note: The statute-first rule requires changing the $10,000 form-based limit to the statutory limit; confirm applicable
     years and the boundary test.
+- id: us-ri:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Can Rhode Island LIHEAP's 60% SMI limit exclude a household of 23 or more whose income is below the
+    federal 110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: Rhode Island FY2026 LIHEAP State Plan, item 2.1, page 8
+    url: https://liheapch.acf.gov/docs/2026/state-plans/RI_Plan_2026.pdf#page=8
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The plan sets 60% of SMI for all household sizes, which falls below that floor from size 23 in 2026 and
+      2027.
+  example: In FY2026, twenty-three people with $150,000 exceed the $148,694 limit but are below the $150,315 floor.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ri/dhs/liheap/eligibility/ri_liheap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/ri/dhs/liheap/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/9972
+  state: unreviewed
+  note: PE-US applies the floor to the prior year's guideline, rounded to cents, with the statute's strict "less
+    than" (ri_liheap_eligible.py).
 - id: us-ri:liheap-lottery-winnings
   program: liheap
   years:
@@ -5036,7 +5165,7 @@ candidates:
   sources:
   - kind: manual
     citation: Rhode Island LIHEAP Manual, section II.B, page 6
-    url: https://ripuc.ri.gov/eventsactions/docket/4290-DHS-DR-PUC%203-6%20attachment%20LIHEAP%20Manual%202020%20-%20Final.pdf#page=5
+    url: https://ripuc.ri.gov/eventsactions/docket/4290-DHS-DR-PUC%203-6%20attachment%20LIHEAP%20Manual%202020%20-%20Final.pdf#page=6
   - kind: plan
     citation: Rhode Island FY2026 LIHEAP State Plan, item 2.3, page 8
     url: https://liheapch.acf.gov/docs/2026/state-plans/RI_Plan_2026.pdf#page=8
@@ -5395,12 +5524,15 @@ candidates:
     follows: statute
     code:
     - policyengine_us/variables/gov/states/va/tax/income/exemptions/va_personal_exemption_person.py
+    - policyengine_us/variables/household/demographic/tax_unit/head_or_spouse_is_dependent_elsewhere_without_filing_exception.py
+    - policyengine_us/variables/household/demographic/person/is_dependent_elsewhere_without_filing_exception.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10091
   state: ruled
-  note: 'PE-US follows the statutory federal link: a filer who can be claimed gets no personal exemption, and the
-    dependents on a return with such a filer get none (va_personal_exemption_person.py). Ruled in October 2026 to
-    follow the statutory federal link; obtain the dated agency guidance and missing URL.'
+  note: 'PE-US follows the statutory federal link: a filer who can be claimed gets no personal exemption, and dependents
+    get none when either filer is claimable and does not meet the claimant filing exception (va_personal_exemption_person.py,
+    head_or_spouse_is_dependent_elsewhere_without_filing_exception.py, is_dependent_elsewhere_without_filing_exception.py).
+    Ruled in October 2026 to follow the statutory federal link; obtain the dated agency guidance and missing URL.'
 - id: us-va:dependent-credit-bar-claimable-versus-claimed
   program: income-tax
   years:
@@ -5731,7 +5863,7 @@ candidates:
     url: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/WI/WI-13-021-MM1.pdf#page=13
   - kind: manual
     citation: BadgerCare Plus Handbook § 2.2.1.3
-    url: null
+    url: https://www.emhandbooks.wisconsin.gov/bcplus/bcplus.htm
   readings:
     statute: An 18-year-old full-time student in secondary school or equivalent vocational or technical training,
       expected to complete it before 19, is a dependent child.
@@ -5746,8 +5878,7 @@ candidates:
   state: unreviewed
   note: 'PE-US follows the statute and state plan: Wisconsin elects the option, and the formula requires is_full_time_student,
     a proxy the comments say is broader than the federal option because it also captures full-time college students
-    (student_option.yaml, is_parent_for_medicaid_nfc.py). Obtain the handbook URL and verify whether its wording
-    reflects practice.'
+    (student_option.yaml, is_parent_for_medicaid_nfc.py). Verify whether its wording reflects practice.'
 - id: us-wi:shares-home-value-and-vehicle-asset-tests
   program: child-care-assistance
   years:
@@ -5984,13 +6115,15 @@ candidates:
     - policyengine_us/variables/gov/states/wy/dfs/ccap/eligibility/wy_ccap_income_eligible.py
     - policyengine_us/variables/gov/states/wy/dfs/ccap/income/wy_ccap_countable_income.py
     - policyengine_us/variables/gov/states/wy/dfs/ccap/copay/wy_ccap_copay.py
+    - policyengine_us/parameters/gov/states/wy/dfs/ccap/copay/full_day.yaml
+    - policyengine_us/parameters/gov/states/wy/dfs/ccap/copay/part_day.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9109
   state: unreviewed
   note: 'PE-US follows the Rules: eligibility and the copay step use countable income after the $200 earned income
-    disregard and child support paid, and the copay schedule''s comment records the chart''s "Monthly Gross Income"
-    header (wy_ccap_income_eligible.py, wy_ccap_countable_income.py, wy_ccap_copay.py). Establish whether the chart
-    header denotes a different calculation.'
+    disregard and child support paid, and the copay schedules'' comment records the chart''s "Monthly Gross Income"
+    header (wy_ccap_income_eligible.py, wy_ccap_countable_income.py, wy_ccap_copay.py, copay/full_day.yaml, copay/part_day.yaml).
+    Establish whether the chart header denotes a different calculation.'
 - id: us:additional-child-credit-housing-deduction-bar
   program: income-tax
   years:
