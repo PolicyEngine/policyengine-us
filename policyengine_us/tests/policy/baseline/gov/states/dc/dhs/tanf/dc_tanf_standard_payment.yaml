@@ -37,3 +37,32 @@
     dc_tanf_assistance_unit_size: 17
   output:
     dc_tanf_standard_payment: 2_668
+
+- name: Three people in September 2025 get the FY2025 payment level.
+  period: 2025-09
+  input:
+    state_code:
+      2025: DC
+    dc_tanf_assistance_unit_size: 3
+  output:
+    dc_tanf_standard_payment: 781
+
+- name: Three people in October 2025 get the FY2026 payment level.
+  period: 2025-10
+  input:
+    state_code:
+      2025: DC
+    dc_tanf_assistance_unit_size: 3
+  output:
+    # D.C. Code 4-205.52(d-1)(2): 781 * 1.029 (2024 CPI-U), rounded down = 803.
+    dc_tanf_standard_payment: 803
+
+- name: Ten people in October 2026 keep the FY2026 payment level.
+  period: 2026-10
+  input:
+    state_code:
+      2026: DC
+    dc_tanf_assistance_unit_size: 10
+  output:
+    # No inflation adjustment for FY2027-FY2030 (D.C. Code 4-205.52(d-1)(1)(D)).
+    dc_tanf_standard_payment: 2_024

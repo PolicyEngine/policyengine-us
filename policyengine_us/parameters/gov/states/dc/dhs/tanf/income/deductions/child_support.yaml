@@ -2,6 +2,8 @@ description: The District of Columbia excludes this amount of monthly child supp
 
 values:
   2005-10-01: 150
+  # From October 1, 2025, the full current monthly child support received is disregarded.
+  2025-10-01: .inf
 
 metadata:
   unit: currency-USD
