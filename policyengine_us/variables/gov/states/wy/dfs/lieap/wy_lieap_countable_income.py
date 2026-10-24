@@ -33,7 +33,9 @@ class wy_lieap_countable_income(Variable):
         person = spm_unit.members
         # Supplied net business income approximates allowable expenses.
         # Separate business and rental losses cannot offset positive sources.
-        earned = sum(max_(person(source, period), 0) for source in p.earned_sources)
+        earned = 0
+        for source in p.earned_sources:
+            earned = earned + max_(person(source, period), 0)
         support_paid = max_(person("child_support_expense", period), 0)
         # The input does not identify court orders or monthly regularity.
         # Deduct only from this payer's earnings, never another member's.
@@ -42,7 +44,9 @@ class wy_lieap_countable_income(Variable):
             max_(earned - support_paid, 0),
             0,
         )
-        unearned = sum(max_(person(source, period), 0) for source in p.unearned_sources)
+        unearned = 0
+        for source in p.unearned_sources:
+            unearned = unearned + max_(person(source, period), 0)
         # Rules 8(a)(ii)(U) exempt "Medicare deducted from SSA", and plan section
         # 1.9 counts Social Security excluding the Medicare deduction.
         # medicare_part_b_premium is zero for a person who is not enrolled and
