@@ -1,0 +1,110 @@
+description: Washington uses this household-size adjuster in the Low Income Home Energy Assistance Program benefit worksheet.
+# Preserve all 24 printed values. The award formula treats sizes beyond
+# the last published threshold as unsupported rather than extrapolating.
+brackets:
+  - threshold:
+      2025-10-01: 1
+    amount:
+      2025-10-01: 1
+  - threshold:
+      2025-10-01: 2
+    amount:
+      2025-10-01: 1.36
+  - threshold:
+      2025-10-01: 3
+    amount:
+      2025-10-01: 1.71
+  - threshold:
+      2025-10-01: 4
+    amount:
+      2025-10-01: 2.07
+  - threshold:
+      2025-10-01: 5
+    amount:
+      2025-10-01: 2.43
+  - threshold:
+      2025-10-01: 6
+    amount:
+      2025-10-01: 2.79
+  - threshold:
+      2025-10-01: 7
+    amount:
+      2025-10-01: 3.14
+  - threshold:
+      2025-10-01: 8
+    amount:
+      2025-10-01: 3.5
+  - threshold:
+      2025-10-01: 9
+    amount:
+      2025-10-01: 3.86
+  - threshold:
+      2025-10-01: 10
+    amount:
+      2025-10-01: 4.21
+  - threshold:
+      2025-10-01: 11
+    amount:
+      2025-10-01: 4.57
+  - threshold:
+      2025-10-01: 12
+    amount:
+      2025-10-01: 4.93
+  - threshold:
+      2025-10-01: 13
+    amount:
+      2025-10-01: 5.29
+  - threshold:
+      2025-10-01: 14
+    amount:
+      2025-10-01: 5.64
+  - threshold:
+      2025-10-01: 15
+    amount:
+      2025-10-01: 6
+  - threshold:
+      2025-10-01: 16
+    amount:
+      2025-10-01: 6.36
+  - threshold:
+      2025-10-01: 17
+    amount:
+      2025-10-01: 6.71
+  - threshold:
+      2025-10-01: 18
+    amount:
+      2025-10-01: 7.07
+  - threshold:
+      2025-10-01: 19
+    amount:
+      2025-10-01: 7.43
+  - threshold:
+      2025-10-01: 20
+    amount:
+      2025-10-01: 7.79
+  - threshold:
+      2025-10-01: 21
+    amount:
+      2025-10-01: 8.14
+  - threshold:
+      2025-10-01: 22
+    amount:
+      2025-10-01: 8.5
+  - threshold:
+      2025-10-01: 23
+    amount:
+      2025-10-01: 8.86
+  - threshold:
+      2025-10-01: 24
+    amount:
+      2025-10-01: 9.21
+
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: /1
+  period: year
+  label: Washington LIHEAP household-size adjuster
+  reference:
+    - title: "FY2026 Benefit Matrix, household adjuster table #page 1-2"
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/WA_BenefitMatrix_2026.pdf#page=1

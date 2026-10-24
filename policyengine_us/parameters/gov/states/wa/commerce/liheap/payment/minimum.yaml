@@ -1,0 +1,13 @@
+description: Washington provides this scheduled minimum heating benefit under the Low Income Home Energy Assistance Program.
+# The minimum-adjusted award is capped at actual heating cost.
+# Thus positive costs below $250 may produce a smaller modeled payment.
+values:
+  2025-10-01: 250
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Washington LIHEAP scheduled minimum benefit
+  reference:
+    - title: "FY2026 State Plan, section 2.6"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/WA_Plan_2026.pdf#page=10
