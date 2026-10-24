@@ -219,13 +219,15 @@ candidates:
     follows: statute
     code:
     - policyengine_us/parameters/gov/states/ar/tax/income/deductions/itemized/casualty_loss/income_floor.yaml
-    - policyengine_us/variables/gov/states/ar/tax/income/deductions/itemized/ar_casualty_loss_deduction_indiv.py
     - policyengine_us/variables/gov/states/ar/tax/income/deductions/itemized/ar_casualty_loss_deduction_joint.py
+    - policyengine_us/variables/gov/states/ar/tax/income/deductions/itemized/ar_casualty_loss_deduction_indiv.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9625
+    - https://github.com/PolicyEngine/policyengine-us/pull/9944
   state: unreviewed
-  note: 'PE-US follows the statute and form: one 10% floor applies to the tax unit''s combined losses after the
-    exclusion (ar_casualty_loss_deduction_indiv.py, ar_casualty_loss_deduction_joint.py, casualty_loss/income_floor.yaml).
+  note: 'PE-US follows the statute and form: one 10% floor applies to a return''s combined losses after the exclusion,
+    the couple''s total on a joint return and each spouse''s own losses when spouses file separately on one return
+    (ar_casualty_loss_deduction_joint.py, ar_casualty_loss_deduction_indiv.py, casualty_loss/income_floor.yaml).
     The floor cites the AR3 line 18 instructions for 2015-2025; verify which editions require each loss to exceed
     10% of AGI.'
 - id: us-ar:casualty-loss-status-four-spouse-floors
@@ -251,13 +253,18 @@ candidates:
     other: Apply one $100 reduction per event and one 10% floor per return.
   example: The supplied statutory calculation is ($12,000 − $100 − $3,000) + ($8,000 − $100 − $2,000) = $14,800.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ar/tax/income/deductions/itemized/ar_casualty_loss_deduction_indiv.py
+    - policyengine_us/parameters/gov/states/ar/tax/income/deductions/itemized/casualty_loss/exclusion.yaml
+    - policyengine_us/parameters/gov/states/ar/tax/income/deductions/itemized/casualty_loss/income_floor.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9944
   state: open
-  note: 'A decision was requested; the statute-first rule requires separate spouse reductions and floors after confirming
-    the adopted rule''s scope. Code not yet on main: ar_casualty_loss_deduction_indiv, ar_casualty_loss_deduction_joint.'
+  note: 'Changed by #9944: PE-US now follows the statute. For spouses filing separately on the same return, each
+    spouse''s loss is reduced by the $100 exclusion and then by 10% of that spouse''s Arkansas AGI; only joint-return
+    spouses count as one individual, and the input records one casualty per person (ar_casualty_loss_deduction_indiv.py,
+    casualty_loss/exclusion.yaml, casualty_loss/income_floor.yaml). Confirm the adopted rule''s scope.'
 - id: us-ar:claim-of-right-itemizer-requirement
   program: income-tax
   years:
@@ -797,6 +804,39 @@ candidates:
   state: ruled
   note: 'The October 2026 statute-first ruling retains $120; verify the procedural inference from the form and the
     spouse exclusions. Code not yet on main: ca_renter_credit.'
+- id: us-ca:riverside-liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2025
+    to: 2026
+    type: program
+    note: program year as the program defines it
+  question: Can Riverside County's LIHEAP income limit exclude a household of 20 or more whose income is below the
+    federal 110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: California 2026 LIHEAP State Plan, HEAP and Fast Track payment table, page 184
+    url: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=184
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: CSD's printed income ranges fall below that floor at sizes 20 to 25 in 2025 and 21 to 25 in 2026; for
+      21 people the 2026 table tops out at $11,340.68 a month.
+  example: In 2026, twenty-one people with $137,000 exceed the $136,088.93 limit but are below the $138,215 floor.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/local/ca/riv/liheap/ca_riv_liheap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/local/ca/riv/cap/liheap/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10279
+  state: unreviewed
+  note: PE-US applies the floor to the prior year's guideline, rounded to cents, with the statute's strict "less
+    than"; its own limit is 60% of SMI, which the comment says falls below the floor from size 20 in 2025 and size
+    21 in 2026 and 2027 (ca_riv_liheap_eligible.py).
 - id: us-ca:santa-clara-ga-vehicle-boundary
   program: general-assistance-santa-clara
   years:
@@ -1185,6 +1225,37 @@ candidates:
     no DC source settles years before 2023 and that setting it to false applies the DC-law reading. The October
     2026 ruling chose the childless schedule; verify ARPA's effect before identifying a statutory departure and
     establish any pre-2021 conflict separately.
+- id: us-dc:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2022
+    to: 2024
+    type: federal-fiscal
+  question: Can the District's 60% SMI limit exclude a household of 34 to 39 whose income is below the federal 110%
+    poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: District of Columbia FY2023 and FY2024 LIHEAP State Plans, item 2.1, page 8
+    url: https://liheapch.acf.gov/docs/2024/state-plans/DC_Plan_2024.pdf#page=8
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The plans set 60% of SMI for all household sizes, which falls below that floor from size 34 to 39 in
+      FY2022 to FY2024.
+  example: In FY2024, thirty-six people with $213,000 exceed the $212,669.78 limit but are below the $213,928 floor.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/dc/doee/liheap/dc_liheap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/dc/doee/liheap/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10279
+  state: unreviewed
+  note: PE-US applies the floor to the prior year's guideline, rounded to cents, with the statute's strict "less
+    than" (dc_liheap_eligible.py).
 - id: us-dc:schedule-h-claimable-unclaimed-claimant
   program: property-tax-credit
   question: Does the statutory dependent-claimant bar apply to a claimable but unclaimed filer or only to a filer
@@ -1586,16 +1657,22 @@ candidates:
   readings:
     statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
     other: The printed Georgia limits fall below that floor starting at household size 16.
-  example: A 17-person household earning $111,980 exceeds the $109,627 state limit but is below the $114,015 floor
-    and receives a $560 natural-gas benefit in the PR.
+  example: In FY2026, seventeen people with $111,980 exceed the $109,627 limit but are below the $114,015 floor;
+    PE-US awards $560 for natural gas.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/ga/dfcs/liheap/eligibility/ga_liheap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/ga/dfcs/liheap/eligibility/fpg_year_lag.yaml
+    - policyengine_us/variables/gov/states/ga/dfcs/liheap/eligibility/ga_liheap_income_limit.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9968
   state: unreviewed
-  note: 'The open PR applies the federal floor; verify each fiscal-year table and the worked benefit. Code not yet
-    on main: ga_liheap_income_limit, gov.hhs.liheap.fpg_floor.'
+  note: 'PE-US follows the statute: income below 110% of the prior year''s poverty guideline, rounded to cents,
+    qualifies even above the 60% SMI limit. The comment says the limit and the printed matrices fall below that
+    floor from size 16 in FY2025 and FY2026 and that Georgia''s plans assure the floor (ga_liheap_eligible.py, gov/hhs/liheap/fpg_floor.yaml,
+    eligibility/fpg_year_lag.yaml, ga_liheap_income_limit.py).'
 - id: us-ga:liheap-lawful-noncitizen-household-members
   program: liheap
   years:
@@ -1616,12 +1693,16 @@ candidates:
     other: Page 57 and the glossary leave noncitizens out.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/ga/dfcs/liheap/ga_liheap_household_size.py
+    - policyengine_us/variables/gov/states/ga/dfcs/liheap/eligibility/ga_liheap_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9968
   state: unreviewed
-  note: 'PE-US follows the eligibility sections; identify immigration categories and distinguish applicant eligibility
-    from household-size counting. Code not yet on main: ga_liheap.'
+  note: 'PE-US follows the eligibility sections: lawful immigrants count in household size and undocumented members
+    do not, and the comment records page 57''s bar on all-noncitizen households and the glossary''s exclusion from
+    household size (ga_liheap_household_size.py). A household of lawful immigrants alone qualifies (ga_liheap_eligible.py).
+    Distinguish applicant eligibility from household-size counting.'
 - id: us-ga:liheap-plan-manual-income-inclusions
   program: liheap
   years:
@@ -1633,7 +1714,7 @@ candidates:
   sources:
   - kind: manual
     citation: Georgia LIHEAP Policy Manual, January 2022, §1200.7, page 66
-    url: null
+    url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=66
   - kind: guidance
     citation: FY2026 LIHEAP State Plan §1.9, page 6
     url: https://liheapch.acf.gov/docs/2026/state-plans/GA_Plan_2026.pdf#page=5
@@ -1642,12 +1723,16 @@ candidates:
     other: The plan leaves these income categories unchecked.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ga/dfcs/liheap/income/sources/person.yaml
+    - policyengine_us/variables/gov/states/ga/dfcs/liheap/income/ga_liheap_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9968
   state: unreviewed
-  note: 'PE-US follows the manual; obtain the complete plan questions and manual provisions to verify categories
-    and years. Code not yet on main: ga_liheap_countable_income.'
+  note: 'PE-US follows the manual: the adult income list counts gambling winnings, cash gifts (financial_assistance),
+    disability benefits and workers'' compensation, and its comments record that the FY2025 and FY2026 plans leave
+    those categories unchecked (income/sources/person.yaml, ga_liheap_income.py). Obtain the complete plan questions
+    to verify categories and years.'
 - id: us-ga:liheap-subsidized-renter-energy-burden
   program: liheap
   years:
@@ -1662,19 +1747,23 @@ candidates:
     url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=3
   - kind: guidance
     citation: FY2026 LIHEAP State Plan §2.3, page 8
-    url: null
+    url: https://liheapch.acf.gov/docs/2026/state-plans/GA_Plan_2026.pdf#page=8
   readings:
     statute: No statute is supplied; the manual requires verification of an energy burden when fuel costs are included
       in subsidized rent.
     other: The plan reports no additional or differing policies for subsidized renters.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/ga/dfcs/liheap/eligibility/ga_liheap_eligible.py
+    - policyengine_us/variables/gov/states/ga/dfcs/liheap/eligibility/_ga_liheap_housing.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9968
   state: unreviewed
-  note: 'PE-US follows the manual; verify that the plan addresses the same circumstances; the bundled benefit comparison
-    lacks competing matrix amounts. Code not yet on main: ga_liheap.'
+  note: 'PE-US follows the manual: every household needs an energy burden, which a subsidized renter with heat in
+    rent shows through a heating bill or a direct electric bill, and the comment records that FY2026 plan item 2.3
+    answers No to differing policies for subsidized renters (ga_liheap_eligible.py, eligibility/_ga_liheap_housing.py).
+    Verify that the plan addresses the same circumstances.'
 - id: us-hi:claim-of-right-credit-agi-addback
   program: income-tax
   years:
@@ -1780,10 +1869,11 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10087
     - https://github.com/PolicyEngine/policyengine-us/pull/10089
   state: ruled
-  note: 'PE-US follows the regulation and instructions: each spouse takes the larger of the $7,000 disabled exemption
-    and their own regular and age exemptions, so the non-disabled spouse keeps theirs (hi_disabled_exemptions.py,
-    compared with hi_regular_exemptions in hi_exemptions.py). The October 2026 ruling retained the regulation and
-    instruction reading; verify the statute and whether the guidance describes only the disabled spouse''s exemption.'
+  note: 'PE-US follows the regulation and instructions: each spouse takes the larger of their disabled exemption
+    ($7,000 if disabled, otherwise zero) and their own regular and age exemptions, so the nondisabled spouse keeps
+    theirs (hi_disabled_exemptions.py, compared with hi_regular_exemptions in hi_exemptions.py). The October 2026
+    ruling retained the regulation and instruction reading; verify the statute and whether the guidance describes
+    only the disabled spouse''s exemption.'
 - id: us-hi:snap-abawd-implementation-date
   program: snap
   years:
@@ -5646,14 +5736,18 @@ candidates:
     code:
     - policyengine_us/tools/section_911.py
     - policyengine_us/variables/gov/irs/credits/ctc/refundable/refundable_ctc_barred_by_section_911_exclusion.py
+    - policyengine_us/parameters/gov/irs/credits/ctc/refundable/fully_refundable.yaml
+    - policyengine_us/parameters/gov/irs/credits/ctc/refundable/foreign_earned_income_exclusion_bar_applies.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10022
   state: unreviewed
   note: 'PE-US follows the instructions: elects_section_911_exclusion treats a filer who claims only the section
     911(c)(4) housing deduction as electing section 911, so refundable_ctc_barred_by_section_911_exclusion denies
-    the additional child tax credit, and the helper''s docstring says this case rests on the IRS instructions, not
-    the statute (tools/section_911.py). The statute-first rule requires revising the deduction-only ACTC bar; verify
-    that interpretation separately from EITC, whose statutory wording differs.'
+    the additional child tax credit from 2015 except in 2021, when the credit is fully refundable and the bar does
+    not apply; the helper''s docstring says this case rests on the IRS instructions, not the statute (tools/section_911.py,
+    refundable/fully_refundable.yaml, refundable/foreign_earned_income_exclusion_bar_applies.yaml). The statute-first
+    rule requires revising the deduction-only ACTC bar; verify that interpretation separately from EITC, whose statutory
+    wording differs.'
 - id: us:charitable-non-itemizer-2020-separate-cap
   program: income-tax
   years:
@@ -5725,17 +5819,23 @@ candidates:
     statute: Section 63(c)(5) leaves earned income undefined.
     other: The worksheet uses reported wages and listed Schedule 1 income, minus the Schedule 1 line 15 deduction.
   example: A 2025 dependent with $10,000 wages, a $6,000 401(k) deferral and $600 interest gets a $4,450 deduction
-    and must file in the PR; main gave $10,450.
+    and must file; wages before the deferral would give $10,450.
   pe_us:
-    follows: unknown
-    code: []
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/irs/income/taxable_income/deductions/standard_deduction/standard_deduction_worksheet_earned_income_person.py
+    - policyengine_us/variables/gov/irs/income/taxable_income/deductions/standard_deduction/standard_deduction_worksheet_earned_income.py
+    - policyengine_us/parameters/gov/irs/income/filing_requirement/dependent/earned_income_sources.yaml
+    - policyengine_us/variables/gov/irs/income/taxable_income/deductions/standard_deduction/basic_standard_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10272
   state: unreviewed
-  note: 'Main uses a broader earned-income measure; the open PR adopts the worksheet as a permitted gap-fill, with
-    partnership-related line 15 deductions still needing verification. Code not yet on main: standard_deduction_worksheet_earned_income_person,
-    standard_deduction_worksheet_earned_income, basic_standard_deduction, medicaid_person_is_required_to_file, or_standard_deduction,
-    hi_deductions.'
+  note: 'PE-US follows the worksheet: earned income is W-2 box 1 wages (after elective deferrals), earned disability
+    benefits and Schedule 1 business and farm income, less the deductible part of self-employment tax, summed for
+    the head and spouse and floored at zero; the Medicaid filing test and Oregon''s and Hawaii''s dependent deductions
+    read the same measure (standard_deduction_worksheet_earned_income_person.py, standard_deduction_worksheet_earned_income.py,
+    filing_requirement/dependent/earned_income_sources.yaml, basic_standard_deduction.py). Verify the line 15 subtraction
+    for partnership self-employment income, which the list leaves out.'
 - id: us:education-benefits-joint-claimed-spouse
   program: income-tax
   years:
