@@ -1,7 +1,7 @@
 # Sources: Utah HEAT manual sections 602-605 and 609; FY2026 plan pages 8-9.
-# The annual 2026 period represents the agreed March 2026 snapshot.
+# The annual 2026 period represents the March 2026 snapshot.
 
-# UT-15: income component 250 + zero-income burden 250.
+# Income component 250 + zero-income burden 250.
 - name: "Case 1, zero income yields the ordinary gas award."
   period: 2026
   absolute_error_margin: 0.01
@@ -24,8 +24,8 @@
   output:
     ut_heat: 500
 
-# UT-15: 250+250+150 target+150 propane=800.
-- name: "Case 2, targeted propane household reaches the maximum."
+# 250+250+150 target+150 propane=800.
+- name: "Case 2, targeted propane household reaches the highest formula award."
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -47,7 +47,7 @@
   output:
     ut_heat: 800
 
-# UT-15: I 1330, P 1330; Q 100; gas burden round(15.8647)=16; 150+160=310.
+# I 1330, P 1330; Q 100; gas burden round(15.8647)=16; 150+160=310.
 - name: "Case 3, gas house at one hundred percent poverty."
   period: 2026
   absolute_error_margin: 0.01
@@ -74,7 +74,7 @@
     ut_heat_household_size: 1
     ut_heat_income_limit: 23_940
 
-# UT-14/15: I 1330; apartment 161/1330*100 rounds 12; 150+120=270.
+# I 1330; apartment 161/1330*100 rounds 12; 150+120=270.
 - name: "Case 4, gas apartment uses its lower cost standard."
   period: 2026
   absolute_error_margin: 0.01
@@ -98,7 +98,7 @@
   output:
     ut_heat: 270
 
-# UT-13/15: I 1995; Q 150; 211/1995*100 rounds 11; 100+110=210.
+# I 1995; Q 150; 211/1995*100 rounds 11; 100+110=210.
 - name: "Case 5, income at the inclusive one person limit."
   period: 2026
   absolute_error_margin: 0.01
@@ -122,7 +122,7 @@
   output:
     ut_heat: 210
 
-# UT-13: monthly 1995.01 exceeds 1995; no benefit minimum for ineligible households.
+# Monthly 1995.01 exceeds 1995, so the household is ineligible and receives 0.
 - name: "Case 6, income twelve cents above the annual limit is ineligible."
   period: 2026
   absolute_error_margin: 0.01
@@ -146,7 +146,7 @@
   output:
     ut_heat: 0
 
-# UT-15: I 1331; ceil(100*1331/1330)=101; burden 16; 149+160=309.
+# I 1331; ceil(100*1331/1330)=101; burden 16; 149+160=309.
 - name: "Case 7, poverty percentage rounds upward."
   period: 2026
   absolute_error_margin: 0.01
@@ -170,7 +170,7 @@
   output:
     ut_heat: 309
 
-# UT-15: I 2840, P 2277, Q 125; 100*71/2840=2.5=>3; 125+30=155.
+# I 2840, P 2277, Q 125; 100*71/2840=2.5=>3; 125+30=155.
 - name: "Case 8, energy burden rounds half upward."
   period: 2026
   absolute_error_margin: 0.01
@@ -202,7 +202,7 @@
   output:
     ut_heat: 155
 
-# UT-15: I 2840.04; Q 125; burden just below 2.5=>2; 125+20=145.
+# I 2840.04; Q 125; burden just below 2.5=>2; 125+20=145.
 - name: "Case 9, energy burden just below the half point rounds down."
   period: 2026
   absolute_error_margin: 0.01
@@ -234,8 +234,10 @@
   output:
     ut_heat: 145
 
-# UT-15: size 14, P 7484, I 11225, Q 150, burden 1; raw 110 is raised to 140.
-- name: "Case 10, large household receives the sourced minimum."
+# Size 14, P 7484, I 11225; Q 150 => income 250-150=100. Coal apartment
+# 71/11225*100 rounds to burden 1 => 10. Section 607 adds the components
+# with no floor: 100+10=110.
+- name: "Case 10, large household at the income limit receives the unfloored formula amount."
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -308,11 +310,11 @@
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
         state_code: UT
   output:
-    ut_heat: 140
+    ut_heat: 110
     ut_heat_household_size: 14
     ut_heat_income_limit: 134_700
 
-# UT-15: zero income 500 plus one 150 target credit.
+# Zero income 500 plus one 150 target credit.
 - name: "Case 11, target credit begins at age sixty."
   period: 2026
   absolute_error_margin: 0.01
@@ -335,7 +337,7 @@
   output:
     ut_heat: 650
 
-# UT-15: age 59 is below 60.
+# Age 59 is below 60.
 - name: "Case 12, age fifty nine alone gives no target credit."
   period: 2026
   absolute_error_margin: 0.01
@@ -358,7 +360,7 @@
   output:
     ut_heat: 500
 
-# UT-15: child 5 is below 6; target credit once.
+# Child 5 is below 6; target credit once.
 - name: "Case 13, eligible child under six gives one target credit."
   period: 2026
   absolute_error_margin: 0.01
@@ -385,7 +387,7 @@
   output:
     ut_heat: 650
 
-# UT-15: child 6 is outside under 6 category.
+# Child 6 is outside under 6 category.
 - name: "Case 14, child at six gives no young child target credit."
   period: 2026
   absolute_error_margin: 0.01
@@ -412,7 +414,7 @@
   output:
     ut_heat: 500
 
-# UT-15: older, disabled and young members trigger one 150 credit.
+# Older, disabled and young members trigger one 150 credit.
 - name: "Case 15, multiple target members give only one credit."
   period: 2026
   absolute_error_margin: 0.01
@@ -440,7 +442,7 @@
   output:
     ut_heat: 650
 
-# UT-15: disability target independent of age.
+# Disability target independent of age.
 - name: "Case 16, disabled adult gives target credit."
   period: 2026
   absolute_error_margin: 0.01
@@ -464,7 +466,7 @@
   output:
     ut_heat: 650
 
-# UT-05/15: ineligible resident excluded from size and target credit.
+# Ineligible resident excluded from size and target credit.
 - name: "Case 17, ineligible older resident gives no target credit."
   period: 2026
   absolute_error_margin: 0.01
@@ -492,7 +494,7 @@
     ut_heat: 500
     ut_heat_household_size: 1
 
-# UT-05: size 1; adult income 15960 counts; 310 base+150 eligible child.
+# Size 1; adult income 15960 counts; 310 base+150 eligible child.
 - name: "Case 18, eligible child supports mixed status household."
   period: 2026
   absolute_error_margin: 0.01
@@ -522,7 +524,7 @@
     ut_heat_household_size: 1
     ut_heat_countable_income: 15_960
 
-# UT-06/15: nonsubsidized heat-in-rent uses regular standard; no actual-bill cap.
+# Nonsubsidized heat-in-rent uses regular standard; no actual-bill cap.
 - name: "Case 19, ordinary heat in rent qualifies without a direct bill."
   period: 2026
   absolute_error_margin: 0.01
@@ -548,7 +550,7 @@
   output:
     ut_heat: 500
 
-# UT-16: actual expense establishes responsibility; standards determine grant.
+# Actual expense establishes responsibility; standards determine grant.
 - name: "Case 20, small direct heating bill does not cap the scheduled award."
   period: 2026
   absolute_error_margin: 0.01
@@ -571,7 +573,7 @@
   output:
     ut_heat: 500
 
-# UT-12: 20400-2400-2040=15960, no 20% earnings disregard.
+# 20400-2400-2040=15960, no 20% earnings disregard.
 - name: "Case 21, medical and child support deductions reach exact poverty."
   period: 2026
   absolute_error_margin: 0.01
@@ -598,8 +600,8 @@
     ut_heat: 310
     ut_heat_countable_income: 15_960
 
-# UT-11/15: countable-income floor 0; maximum 800.
-- name: "Case 22, negative net business income does not inflate the maximum."
+# Countable income floors at 0; 250+250+150 target+150 propane=800.
+- name: "Case 22, negative net business income does not inflate the award."
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -623,7 +625,7 @@
     ut_heat: 800
     ut_heat_countable_income: 0
 
-# UT-14/15: size 3, P 2277, I 3000, Q 132 => income 118; standard 211, rounded burden 7. Fuel addition 0; apply 140 minimum.
+# Size 3, P 2277, I 3000, Q 132 => income 118; standard 211, rounded burden 7. Fuel addition 0; 118+70=188.
 - name: "Case 23, natural gas house standard."
   period: 2026
   absolute_error_margin: 0.01
@@ -655,7 +657,7 @@
   output:
     ut_heat: 188
 
-# UT-14/15: size 3, P 2277, I 3000, Q 132 => income 118; standard 161, rounded burden 5. Fuel addition 0; apply 140 minimum.
+# Size 3, P 2277, I 3000, Q 132 => income 118; standard 161, rounded burden 5. Fuel addition 0; 118+50=168.
 - name: "Case 24, natural gas apartment standard."
   period: 2026
   absolute_error_margin: 0.01
@@ -687,7 +689,7 @@
   output:
     ut_heat: 168
 
-# UT-14/15: size 3, P 2277, I 3000, Q 132 => income 118; standard 541, rounded burden 18. Fuel addition 150; apply 140 minimum.
+# Size 3, P 2277, I 3000, Q 132 => income 118; standard 541, rounded burden 18. Fuel addition 150; 118+180+150=448.
 - name: "Case 25, propane house standard."
   period: 2026
   absolute_error_margin: 0.01
@@ -719,7 +721,7 @@
   output:
     ut_heat: 448
 
-# UT-14/15: size 3, P 2277, I 3000, Q 132 => income 118; standard 408, rounded burden 14. Fuel addition 150; apply 140 minimum.
+# Size 3, P 2277, I 3000, Q 132 => income 118; standard 408, rounded burden 14. Fuel addition 150; 118+140+150=408.
 - name: "Case 26, propane apartment standard."
   period: 2026
   absolute_error_margin: 0.01
@@ -751,7 +753,7 @@
   output:
     ut_heat: 408
 
-# UT-14/15: size 3, P 2277, I 3000, Q 132 => income 118; standard 541, rounded burden 18. Fuel addition 0; apply 140 minimum.
+# Size 3, P 2277, I 3000, Q 132 => income 118; standard 541, rounded burden 18. Fuel addition 0; 118+180=298.
 - name: "Case 27, kerosene house standard."
   period: 2026
   absolute_error_margin: 0.01
@@ -783,7 +785,7 @@
   output:
     ut_heat: 298
 
-# UT-14/15: size 3, P 2277, I 3000, Q 132 => income 118; standard 408, rounded burden 14. Fuel addition 0; apply 140 minimum.
+# Size 3, P 2277, I 3000, Q 132 => income 118; standard 408, rounded burden 14. Fuel addition 0; 118+140=258.
 - name: "Case 28, kerosene apartment standard."
   period: 2026
   absolute_error_margin: 0.01
@@ -815,7 +817,7 @@
   output:
     ut_heat: 258
 
-# UT-14/15: size 3, P 2277, I 3000, Q 132 => income 118; standard 468, rounded burden 16. Fuel addition 150; apply 140 minimum.
+# Size 3, P 2277, I 3000, Q 132 => income 118; standard 468, rounded burden 16. Fuel addition 150; 118+160+150=428.
 - name: "Case 29, fuel oil house standard."
   period: 2026
   absolute_error_margin: 0.01
@@ -847,7 +849,7 @@
   output:
     ut_heat: 428
 
-# UT-14/15: size 3, P 2277, I 3000, Q 132 => income 118; standard 354, rounded burden 12. Fuel addition 150; apply 140 minimum.
+# Size 3, P 2277, I 3000, Q 132 => income 118; standard 354, rounded burden 12. Fuel addition 150; 118+120+150=388.
 - name: "Case 30, fuel oil apartment standard."
   period: 2026
   absolute_error_margin: 0.01
@@ -879,7 +881,7 @@
   output:
     ut_heat: 388
 
-# UT-14/15: size 3, P 2277, I 3000, Q 132 => income 118; standard 287, rounded burden 10. Fuel addition 0; apply 140 minimum.
+# Size 3, P 2277, I 3000, Q 132 => income 118; standard 287, rounded burden 10. Fuel addition 0; 118+100=218.
 - name: "Case 31, electricity house standard."
   period: 2026
   absolute_error_margin: 0.01
@@ -911,7 +913,7 @@
   output:
     ut_heat: 218
 
-# UT-14/15: size 3, P 2277, I 3000, Q 132 => income 118; standard 218, rounded burden 7. Fuel addition 0; apply 140 minimum.
+# Size 3, P 2277, I 3000, Q 132 => income 118; standard 218, rounded burden 7. Fuel addition 0; 118+70=188.
 - name: "Case 32, electricity apartment standard."
   period: 2026
   absolute_error_margin: 0.01
@@ -943,7 +945,7 @@
   output:
     ut_heat: 188
 
-# UT-14/15: size 3, P 2277, I 3000, Q 132 => income 118; standard 92, rounded burden 3. Fuel addition 0; apply 140 minimum.
+# Size 3, P 2277, I 3000, Q 132 => income 118; standard 92, rounded burden 3. Fuel addition 0; 118+30=148.
 - name: "Case 33, coal house standard."
   period: 2026
   absolute_error_margin: 0.01
@@ -975,7 +977,7 @@
   output:
     ut_heat: 148
 
-# UT-14/15: size 3, P 2277, I 3000, Q 132 => income 118; standard 71, rounded burden 2. Fuel addition 0; apply 140 minimum.
+# Size 3, P 2277, I 3000, Q 132 => income 118; standard 71, rounded burden 2. Fuel addition 0; 118+20=138.
 - name: "Case 34, coal apartment standard."
   period: 2026
   absolute_error_margin: 0.01
@@ -1005,9 +1007,9 @@
         members: [person1, person2, person3]
         state_code: UT
   output:
-    ut_heat: 140
+    ut_heat: 138
 
-# UT-14/15: size 3, P 2277, I 3000, Q 132 => income 118; standard 92, rounded burden 3. Fuel addition 0; apply 140 minimum.
+# Size 3, P 2277, I 3000, Q 132 => income 118; standard 92, rounded burden 3. Fuel addition 0; 118+30=148.
 - name: "Case 35, other house standard."
   period: 2026
   absolute_error_margin: 0.01
@@ -1039,7 +1041,7 @@
   output:
     ut_heat: 148
 
-# UT-14/15: size 3, P 2277, I 3000, Q 132 => income 118; standard 71, rounded burden 2. Fuel addition 0; apply 140 minimum.
+# Size 3, P 2277, I 3000, Q 132 => income 118; standard 71, rounded burden 2. Fuel addition 0; 118+20=138.
 - name: "Case 36, other apartment standard."
   period: 2026
   absolute_error_margin: 0.01
@@ -1069,9 +1071,9 @@
         members: [person1, person2, person3]
         state_code: UT
   output:
-    ut_heat: 140
+    ut_heat: 138
 
-# UT-14/15: size 3, P 2277, I 3000, Q 132 => income 118; standard 343, rounded burden 11. Fuel addition 0; apply 140 minimum.
+# Size 3, P 2277, I 3000, Q 132 => income 118; standard 343, rounded burden 11. Fuel addition 0; 118+110=228.
 - name: "Case 37, wood house standard."
   period: 2026
   absolute_error_margin: 0.01
@@ -1103,7 +1105,7 @@
   output:
     ut_heat: 228
 
-# UT-14/15: size 3, P 2277, I 3000, Q 132 => income 118; standard 260, rounded burden 9. Fuel addition 0; apply 140 minimum.
+# Size 3, P 2277, I 3000, Q 132 => income 118; standard 260, rounded burden 9. Fuel addition 0; 118+90=208.
 - name: "Case 38, wood apartment standard."
   period: 2026
   absolute_error_margin: 0.01
@@ -1135,7 +1137,7 @@
   output:
     ut_heat: 208
 
-# UT-05/15: separate ordinary gas, targeted propane, mixed-status young-child, and no-heating cases in one vector.
+# Separate ordinary gas, targeted propane, mixed-status young-child, and no-heating cases in one vector.
 - name: "Case 39, mixed households preserve separate formulas and eligibility."
   period: 2026
   input:
@@ -1202,7 +1204,7 @@
     ut_heat_countable_income: [15_960, 0, 15_960, 0]
     ut_heat_eligible: [true, true, true, false]
 
-# Reported premium repair contract v2: supplied positive aggregate takes precedence.
+# A supplied positive premium aggregate takes precedence over its components.
 # Components represent paid, unreimbursed premiums; no calculated Medicare premium is used.
 # Source: Utah HEAT section 407, effective March 1 through September 30, 2026.
 # Award arithmetic uses sections 602-604 and the March 2026 gas-house standard of 211.
@@ -1548,6 +1550,37 @@
         state_code: UT
   output:
     ut_heat_countable_income: 36_000
+    ut_heat_income_limit: 23_940
+    ut_heat_eligible: false
+    ut_heat: 0
+
+# Section 402 counts pensions and annuities as unearned income; section 405
+# exempts no uniformed-services survivor annuity. A surviving spouse receives
+# a 26,000 Survivor Benefit Plan annuity: 26,000 / 12 = 2,166.67 per month,
+# above the one-person 1,995 monthly limit (23,940 / 12); no award is due.
+- name: "Case 49, military survivor annuity counts toward heating eligibility."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        military_retirement_pay_survivors: 26_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        heat_expense_included_in_rent: false
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household1:
+        members: [person1]
+        state_code: UT
+  output:
+    military_retirement_income: 26_000
+    ut_heat_countable_income: 26_000
     ut_heat_income_limit: 23_940
     ut_heat_eligible: false
     ut_heat: 0

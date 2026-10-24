@@ -5053,6 +5053,49 @@ candidates:
   state: open
   note: 'PE-US follows the regulation; resolve the pending conflict with the information letter. Code not yet on
     main: tx_ssi_state_supplement.'
+- id: us-ut:heat-earned-income-disregard
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does Utah HEAT disregard 20% of earned income, as Utah Admin. Code R982-403-6 provides, or count earned
+    income in full, as manual sections 401 and 406 and the March 2026 worksheet do?
+  sources:
+  - kind: regulation
+    citation: Utah Admin. Code R982-403-6(1), effective June 14, 2022
+    url: https://adminrules.utah.gov/api/rule/4676/file/c1e409f0-8dd1-4548-b624-a00614e57fb2.html
+  - kind: manual
+    citation: Utah HEAT Manual section 204, effective October 1, 2024
+    url: https://jobs.utah.gov/infosource/heatpolicy/Policy/200_Program_Standards/204_Eligibility_with_Ineligible_Resident.htm
+  - kind: calculator
+    citation: Utah FY2026 LIHEAP benefit matrix workbook, cell C8
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/UT_BenefitMatrix_2026.xlsx
+  - kind: manual
+    citation: Utah HEAT Manual section 401, effective October 1, 2024 to September 30, 2026
+    url: https://jobs.utah.gov/infosource/heatpolicy/Policy/Obsolete_Policy/Obsolete_400/Obsolete_401_(10_1_24_to_9_30_26)_Income.htm
+  - kind: manual
+    citation: Utah HEAT Manual section 406, income disregards obsolete September 30, 2023
+    url: https://jobs.utah.gov/infosource/heatpolicy/Policy/400_Income_Standards/406_No_Longer_Applicable.htm
+  - kind: worksheet
+    citation: Utah HEAT Benefit Calculation Worksheet, effective March 1, 2026
+    url: https://jobs.utah.gov/infosource/heatpolicy/assets/docs/Training/FY26/3.1.26%20Benefit%20Calculation%20Worksheet.pdf#page=1
+  readings:
+    statute: No statute is supplied; R982-403-6(1) disregards 20% of earned income, including self-employment earned
+      income, and manual section 204 and the FY2026 workbook apply the same disregard.
+    other: Manual section 406 marks income disregards obsolete, and section 401 and the March 2026 worksheet compute
+      countable income with no disregard.
+  example: A one-person household with $27,000 annual wages heating a house with natural gas receives $0 in the PR
+    (monthly $2,250 exceeds the $1,995 limit) versus $234 with the disregard (monthly $1,800).
+  pe_us:
+    follows: conflicting-source
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10344
+  state: unreviewed
+  note: 'PE-US follows manual sections 401 and 406 and the March 2026 worksheet; R982-403 is a current rule with
+    its next five-year review due June 17, 2027, so decide whether it governs over the manual. Code not yet on main:
+    ut_heat_countable_income.'
 - id: us-va:claim-of-right-credit-gap-fill
   program: income-tax
   years:

@@ -2,7 +2,7 @@
 # LPR is separately eligible; parole/conditional entry needs an eligible criterion.
 # Service exceptions use actual marital, tax and family relationships.
 
-# UT-05; section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
 - name: "Case 1, citizen."
   period: 2026
   input:
@@ -27,7 +27,7 @@
   output:
     ut_heat_eligible_person: true
 
-# UT-05; section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
 - name: "Case 2, recent permanent resident."
   period: 2026
   input:
@@ -52,7 +52,7 @@
   output:
     ut_heat_eligible_person: true
 
-# UT-05; section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
 - name: "Case 3, refugee."
   period: 2026
   input:
@@ -77,7 +77,7 @@
   output:
     ut_heat_eligible_person: true
 
-# UT-05; section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
 - name: "Case 4, asylee."
   period: 2026
   input:
@@ -102,7 +102,7 @@
   output:
     ut_heat_eligible_person: true
 
-# UT-05; section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
 - name: "Case 5, deportation withheld."
   period: 2026
   input:
@@ -127,7 +127,7 @@
   output:
     ut_heat_eligible_person: true
 
-# UT-05; section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
 - name: "Case 6, Cuban Haitian entrant."
   period: 2026
   input:
@@ -152,7 +152,7 @@
   output:
     ut_heat_eligible_person: true
 
-# UT-05; section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
 - name: "Case 7, parole below five years."
   period: 2026
   input:
@@ -177,7 +177,7 @@
   output:
     ut_heat_eligible_person: false
 
-# UT-05; section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
 - name: "Case 8, parole at five years."
   period: 2026
   input:
@@ -202,7 +202,7 @@
   output:
     ut_heat_eligible_person: true
 
-# UT-05; section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
 - name: "Case 9, conditional entrant below five years."
   period: 2026
   input:
@@ -227,7 +227,7 @@
   output:
     ut_heat_eligible_person: false
 
-# UT-05; section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
 - name: "Case 10, conditional entrant at five years."
   period: 2026
   input:
@@ -252,7 +252,7 @@
   output:
     ut_heat_eligible_person: true
 
-# UT-05; section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
 - name: "Case 11, undocumented resident."
   period: 2026
   input:
@@ -277,7 +277,7 @@
   output:
     ut_heat_eligible_person: false
 
-# UT-05; section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
 - name: "Case 12, DACA recipient."
   period: 2026
   input:
@@ -302,7 +302,7 @@
   output:
     ut_heat_eligible_person: false
 
-# UT-05; section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
 - name: "Case 13, TPS recipient."
   period: 2026
   input:
@@ -327,7 +327,7 @@
   output:
     ut_heat_eligible_person: false
 
-# UT-05: the qualifying veteran exception has no time limit.
+# The qualifying veteran exception has no time limit.
 - name: "Case 14, recent parolee who is a veteran."
   period: 2026
   input:
@@ -351,7 +351,7 @@
   output:
     ut_heat_eligible_person: true
 
-# UT-05: an actual marital-unit connection; no synthetic SPM-wide veteran flag.
+# An actual marital-unit connection; no synthetic SPM-wide veteran flag.
 - name: "Case 15, actual spouse of veteran qualifies without five years."
   period: 2026
   input:
@@ -388,7 +388,7 @@
   output:
     ut_heat_eligible_person: [true, true]
 
-# UT-05: share an SPM unit and household but have separate family, tax, and marital units.
+# Share an SPM unit and household but have separate family, tax, and marital units.
 - name: "Case 16, unrelated veteran does not confer immigration eligibility."
   period: 2026
   input:

@@ -1,7 +1,7 @@
 # Source: Utah HEAT section 608 and the March 1, 2026 poverty table.
 # Annual thresholds are 1.5 * (15,960 + 5,680 * (eligible members - 1)).
 
-# UT-13: 1.5*(15960+5680*(size-1)); above 14 published monthly increment 710.
+# 1.5*(15960+5680*(size-1)); above 14 published monthly increment 710.
 - name: "Case 1, published March limit for 1 eligible members."
   period: 2026
   absolute_error_margin: 0.01
@@ -24,7 +24,7 @@
   output:
     ut_heat_income_limit: 23_940
 
-# UT-13: 1.5*(15960+5680*(size-1)); above 14 published monthly increment 710.
+# 1.5*(15960+5680*(size-1)); above 14 published monthly increment 710.
 - name: "Case 2, published March limit for 2 eligible members."
   period: 2026
   absolute_error_margin: 0.01
@@ -51,7 +51,7 @@
   output:
     ut_heat_income_limit: 32_460
 
-# UT-13: 1.5*(15960+5680*(size-1)); above 14 published monthly increment 710.
+# 1.5*(15960+5680*(size-1)); above 14 published monthly increment 710.
 - name: "Case 3, published March limit for 3 eligible members."
   period: 2026
   absolute_error_margin: 0.01
@@ -82,7 +82,7 @@
   output:
     ut_heat_income_limit: 40_980
 
-# UT-13: 1.5*(15960+5680*(size-1)); above 14 published monthly increment 710.
+# 1.5*(15960+5680*(size-1)); above 14 published monthly increment 710.
 - name: "Case 4, published March limit for 14 eligible members."
   period: 2026
   absolute_error_margin: 0.01
@@ -157,7 +157,7 @@
   output:
     ut_heat_income_limit: 134_700
 
-# UT-13: 1.5*(15960+5680*(size-1)); above 14 published monthly increment 710.
+# 1.5*(15960+5680*(size-1)); above 14 published monthly increment 710.
 - name: "Case 5, published March limit for 15 eligible members."
   period: 2026
   absolute_error_margin: 0.01

@@ -2,7 +2,7 @@
 # Section 406 rescinded the general 20% earnings disregard.
 # Medicare and prior-period business-loss reconstruction remain outside scope.
 
-# UT-08; section 406 rescinds disregard, the contrary line in the older matrix is not used.
+# Sections 401 and 406 and the March 2026 worksheet count gross earnings in full.
 - name: "Case 1, gross earnings have no twenty percent disregard."
   period: 2026
   absolute_error_margin: 0.01
@@ -26,7 +26,7 @@
   output:
     ut_heat_countable_income: 18_000
 
-# UT-10: exclusion covers earned and unearned child income.
+# Exclusion covers earned and unearned child income.
 - name: "Case 2, all income of a seventeen year old is excluded."
   period: 2026
   absolute_error_margin: 0.01
@@ -56,7 +56,7 @@
   output:
     ut_heat_countable_income: 15_960
 
-# UT-10: age 18 remains in school.
+# Age 18 remains in school.
 - name: "Case 3, eighteen year old secondary student income is excluded."
   period: 2026
   absolute_error_margin: 0.01
@@ -87,7 +87,7 @@
   output:
     ut_heat_countable_income: 15_960
 
-# UT-10: 15960+12000+2400; the exclusion ends when the person is not in school.
+# 15960+12000+2400; the exclusion ends when the person is not in school.
 - name: "Case 4, eighteen year old out of school income counts."
   period: 2026
   absolute_error_margin: 0.01
@@ -119,7 +119,7 @@
   output:
     ut_heat_countable_income: 30_360
 
-# UT-10: the student exception ends after 18.
+# The student exception ends after 18.
 - name: "Case 5, nineteen year old student income counts."
   period: 2026
   absolute_error_margin: 0.01
@@ -149,7 +149,7 @@
   output:
     ut_heat_countable_income: 27_960
 
-# UT-10: support received is parent income.
+# Support received is parent income.
 - name: "Case 6, parent child support counts despite child income exclusion."
   period: 2026
   absolute_error_margin: 0.01
@@ -178,7 +178,7 @@
   output:
     ut_heat_countable_income: 3_600
 
-# UT-05: count income of all age-eligible members; no general 20% disregard.
+# Count income of all age-eligible members; no general 20% disregard.
 - name: "Case 7, income of ineligible resident counts."
   period: 2026
   absolute_error_margin: 0.01
@@ -207,7 +207,7 @@
   output:
     ut_heat_countable_income: 18_000
 
-# UT-10: DWS government assistance and ordinary bank interest are exempt.
+# DWS government assistance and ordinary bank interest are exempt.
 - name: "Case 8, FEP general assistance and bank interest are excluded."
   period: 2026
   absolute_error_margin: 0.01
@@ -233,7 +233,7 @@
   output:
     ut_heat_countable_income: 0
 
-# UT-09: recurring cash gifts and ordinary dividends count; no excluded agency classification applies.
+# Recurring cash gifts and ordinary dividends count; no excluded agency classification applies.
 - name: "Case 9, ordinary dividends and cash contributions count."
   period: 2026
   absolute_error_margin: 0.01
@@ -258,7 +258,7 @@
   output:
     ut_heat_countable_income: 3_600
 
-# UT-09: annual SSI input 2400=200/month; count gross SSA and pension income.
+# Annual SSI input 2400=200/month; count gross SSA and pension income.
 - name: "Case 10, gross social security SSI and pension count once."
   period: 2026
   absolute_error_margin: 0.01
@@ -283,7 +283,7 @@
   output:
     ut_heat_countable_income: 18_000
 
-# UT-09: 1200+2400+3600+4800.
+# 1200+2400+3600+4800.
 - name: "Case 11, supported unearned benefit sources count."
   period: 2026
   absolute_error_margin: 0.01
@@ -310,7 +310,7 @@
   output:
     ut_heat_countable_income: 12_000
 
-# UT-11: no additional percentage business deduction.
+# No additional percentage business deduction.
 - name: "Case 12, net business and rental income use supplied net amounts."
   period: 2026
   absolute_error_margin: 0.01
@@ -335,7 +335,7 @@
   output:
     ut_heat_countable_income: 15_600
 
-# UT-11: user-authorized nonnegative rental income.
+# Rental income counts only when positive; a rental loss does not offset earnings.
 - name: "Case 13, negative rent does not offset earnings."
   period: 2026
   absolute_error_margin: 0.01
@@ -360,7 +360,7 @@
   output:
     ut_heat_countable_income: 15_960
 
-# UT-12: qualified paid expenses 20400-2400-2040.
+# Qualified paid expenses 20400-2400-2040.
 - name: "Case 14, medical and support payments are deductible."
   period: 2026
   absolute_error_margin: 0.01
@@ -386,7 +386,7 @@
   output:
     ut_heat_countable_income: 15_960
 
-# UT-12: medical payment by an excluded member is allowed; that member's income also counts.
+# Medical payment by an excluded member is allowed; that member's income also counts.
 - name: "Case 15, medical payments by ineligible member remain deductible."
   period: 2026
   absolute_error_margin: 0.01
@@ -416,7 +416,7 @@
   output:
     ut_heat_countable_income: 15_960
 
-# Contract medical input rule: the supplied generic premium 1200 takes precedence over the component fallback 3600.
+# The supplied generic premium 1200 takes precedence over the component fallback 3600.
 - name: "Case 16, reported premiums are not counted twice."
   period: 2026
   absolute_error_margin: 0.01
@@ -442,7 +442,7 @@
   output:
     ut_heat_countable_income: 16_800
 
-# UT-12/contract: 18000-1200-840; no automatically derived Medicare amount.
+# 18000-1200-840; no automatically derived Medicare amount.
 - name: "Case 17, supplied non Medicare premiums are the fallback."
   period: 2026
   absolute_error_margin: 0.01
@@ -469,7 +469,7 @@
   output:
     ut_heat_countable_income: 15_960
 
-# UT-12: qualifying alimony paid outside the unit.
+# Qualifying alimony paid outside the unit.
 - name: "Case 18, alimony paid is deductible."
   period: 2026
   absolute_error_margin: 0.01
@@ -494,7 +494,7 @@
   output:
     ut_heat_countable_income: 15_960
 
-# UT-15 countable income is nonnegative.
+# Countable income is nonnegative.
 - name: "Case 19, deductions floor countable income at zero."
   period: 2026
   absolute_error_margin: 0.01
@@ -519,7 +519,7 @@
   output:
     ut_heat_countable_income: 0
 
-# UT-12 enumerated deductions do not include ordinary child care.
+# Enumerated deductions do not include ordinary child care.
 - name: "Case 20, childcare is not a general qualified deduction."
   period: 2026
   absolute_error_margin: 0.01
@@ -544,7 +544,7 @@
   output:
     ut_heat_countable_income: 15_960
 
-# UT-11/contract: signed current net business 15960-3960=12000; prior-period loss reconstruction unavailable.
+# Signed current net business 15960-3960=12000; prior-period loss reconstruction unavailable.
 - name: "Case 21, current net business loss offsets other income."
   period: 2026
   absolute_error_margin: 0.01
@@ -569,12 +569,12 @@
   output:
     ut_heat_countable_income: 12_000
 
-# Reported premium repair contract v2: supplied positive aggregate takes precedence.
+# A supplied positive premium aggregate takes precedence over its components.
 # Components represent paid, unreimbursed premiums; no calculated Medicare premium is used.
 # Source: Utah HEAT section 407, effective March 1 through September 30, 2026.
 # Award arithmetic uses sections 602-604 and the March 2026 gas-house standard of 211.
 
-# Contract v2: 18,360 - 1,200 - 2,400 - 600 = 14,160 despite a negative aggregate report.
+# 18,360 - 1,200 - 2,400 - 600 = 14,160 despite a negative aggregate report.
 - name: "Case 22, a nonpositive aggregate falls back to both reported premium components."
   period: 2026
   absolute_error_margin: 0.01
@@ -606,7 +606,7 @@
   output:
     ut_heat_countable_income: 14_160
 
-# Contract v2: negative component reports cannot reduce the other positive deduction; 18,360-2,400 and 18,360-1,200.
+# Negative component reports cannot reduce the other positive deduction; 18,360-2,400 and 18,360-1,200.
 - name: "Case 23, reported premium components are independently nonnegative."
   period: 2026
   absolute_error_margin: 0.01

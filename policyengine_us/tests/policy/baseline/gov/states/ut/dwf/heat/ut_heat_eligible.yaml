@@ -1,7 +1,7 @@
 # Sources: Utah HEAT manual sections 202-204, 208 and March 2026 section 608.
-# The annual 2026 period represents the agreed March 2026 snapshot.
+# The annual 2026 period represents the March 2026 snapshot.
 
-# UT-13: monthly income 1995 equals published 150% limit.
+# Monthly income 1995 equals published 150% limit.
 - name: "Case 1, inclusive income limit."
   period: 2026
   input:
@@ -24,7 +24,7 @@
   output:
     ut_heat_eligible: true
 
-# UT-13: monthly income 1995.01 exceeds limit.
+# Monthly income 1995.01 exceeds limit.
 - name: "Case 2, income just above limit."
   period: 2026
   input:
@@ -47,7 +47,7 @@
   output:
     ut_heat_eligible: false
 
-# UT-04: requires adult 18+; emancipation unavailable.
+# Requires adult 18+; emancipation unavailable.
 - name: "Case 3, no adult member."
   period: 2026
   input:
@@ -69,7 +69,7 @@
   output:
     ut_heat_eligible: false
 
-# UT-04: adult threshold is inclusive 18.
+# Adult threshold is inclusive 18.
 - name: "Case 4, adult age eighteen."
   period: 2026
   input:
@@ -91,7 +91,7 @@
   output:
     ut_heat_eligible: true
 
-# UT-04/05: at least one eligible person.
+# At least one eligible person.
 - name: "Case 5, no qualified member."
   period: 2026
   input:
@@ -113,7 +113,7 @@
   output:
     ut_heat_eligible: false
 
-# UT-05: an eligible child can qualify unit; the adult need not be eligible.
+# An eligible child can qualify unit; the adult need not be eligible.
 - name: "Case 6, citizen child with ineligible adult."
   period: 2026
   input:
@@ -139,7 +139,7 @@
   output:
     ut_heat_eligible: true
 
-# UT-04: Utah residence required.
+# Utah residence required.
 - name: "Case 7, wrong state."
   period: 2026
   input:
@@ -161,7 +161,7 @@
   output:
     ut_heat_eligible: false
 
-# UT-06: NONE affirmatively denotes no home heat.
+# NONE affirmatively denotes no home heat.
 - name: "Case 8, no heating source."
   period: 2026
   input:
@@ -183,7 +183,7 @@
   output:
     ut_heat_eligible: false
 
-# UT-06: no supplied responsibility.
+# No supplied responsibility.
 - name: "Case 9, no energy costs or rent responsibility."
   period: 2026
   input:
@@ -207,7 +207,7 @@
   output:
     ut_heat_eligible: false
 
-# UT-06: households supplying own firewood are eligible.
+# Households supplying own firewood are eligible.
 - name: "Case 10, self supplied firewood qualifies."
   period: 2026
   input:
@@ -229,7 +229,7 @@
   output:
     ut_heat_eligible: true
 
-# UT-06: indirect energy responsibility.
+# Indirect energy responsibility.
 - name: "Case 11, ordinary heat in rent."
   period: 2026
   input:
@@ -254,7 +254,7 @@
   output:
     ut_heat_eligible: true
 
-# UT-06: utility costs are wholly covered.
+# Utility costs are wholly covered.
 - name: "Case 12, subsidized rent with all utilities covered."
   period: 2026
   input:
@@ -279,7 +279,7 @@
   output:
     ut_heat_eligible: false
 
-# UT-06: separately paid utility in addition to subsidized rent.
+# Separately paid utility in addition to subsidized rent.
 - name: "Case 13, subsidized rent with separately paid electricity."
   period: 2026
   input:
@@ -304,7 +304,7 @@
   output:
     ut_heat_eligible: true
 
-# UT-06: subsidized housing does not itself bar utility responsibility.
+# Subsidized housing does not itself bar utility responsibility.
 - name: "Case 14, subsidized household directly pays heating."
   period: 2026
   input:

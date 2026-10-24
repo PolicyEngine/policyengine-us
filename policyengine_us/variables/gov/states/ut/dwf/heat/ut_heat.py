@@ -71,5 +71,8 @@ class ut_heat(Variable):
         # Kerosene shares propane's cost standard, but section 605 names only
         # propane and fuel oil for this addition. No actual-expense cap applies.
         # Funding-dependent extra supplements and equipment/crisis are excluded.
-        amount = income_points + burden_component + target_credit + fuel_credit
-        return clip(amount, p.minimum, p.maximum)
+        # Section 607 and the March 2026 worksheet add the components with no
+        # floor or ceiling. Plan section 2.6 reports $140 and $800 as estimated
+        # benefit levels; $800 is the formula's maximum and $140 its one-person
+        # minimum, so larger households can receive less.
+        return income_points + burden_component + target_credit + fuel_credit

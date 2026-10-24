@@ -1,6 +1,6 @@
 # Source: Utah HEAT section 204; exclude ineligible persons from household size.
 
-# UT-05: only the eligible child and refugee count.
+# Only the eligible child and refugee count.
 - name: "Case 1, only qualified members enter size."
   period: 2026
   input:
@@ -34,7 +34,7 @@
   output:
     ut_heat_household_size: 2
 
-# UT-05: no eligible member.
+# No eligible member.
 - name: "Case 2, no eligible members gives zero size."
   period: 2026
   input:

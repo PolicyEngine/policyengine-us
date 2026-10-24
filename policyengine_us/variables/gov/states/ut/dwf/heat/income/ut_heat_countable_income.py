@@ -9,7 +9,7 @@ class ut_heat_countable_income(Variable):
     label = "Utah HEAT annual countable household income"
     defined_for = StateCode.UT
     reference = (
-        "https://jobs.utah.gov/infosource/heatpolicy/Policy/400_Income_Standards/401_Income/401_Income.htm",
+        "https://jobs.utah.gov/infosource/heatpolicy/Policy/Obsolete_Policy/Obsolete_400/Obsolete_401_(10_1_24_to_9_30_26)_Income.htm",
         "https://jobs.utah.gov/infosource/heatpolicy/Policy/400_Income_Standards/402_Unearned_Income.htm",
         "https://jobs.utah.gov/infosource/heatpolicy/Policy/400_Income_Standards/404_Self-Employment/404_Self-Employment.htm",
         "https://jobs.utah.gov/infosource/heatpolicy/Policy/Obsolete_Policy/Obsolete_400/Obsolete_405_(3_1_25_to_9_30_26)_Income_Exclusions.htm",
@@ -29,8 +29,11 @@ class ut_heat_countable_income(Variable):
         )
         # Annual inputs approximate the preceding eligibility month. All
         # otherwise countable adult income counts regardless of immigration.
-        # Section 406 rescinded the general 20% disregard; section 401 and the
-        # March 2026 worksheet prevail over the stale section 204/XLSX line.
+        # Earned income counts in full, following manual sections 401 and 406
+        # (income disregards obsolete since September 30, 2023) and the March
+        # 2026 worksheet. Utah Admin. Code R982-403-6 disregards 20% of earned
+        # income, as do manual section 204 and the FY2026 benefit matrix
+        # workbook.
         wages = max_(person("employment_income", period), 0)
         business = add(person, period, p.business_income_sources)
         rental = max_(person("rental_income", period), 0) + max_(
