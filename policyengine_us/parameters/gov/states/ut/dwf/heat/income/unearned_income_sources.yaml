@@ -1,0 +1,34 @@
+description: Utah counts these unearned income sources under the Home Energy Assistance Target program.
+values:
+  2024-10-01:
+    - social_security
+    - ssi
+    - railroad_benefits
+    - pension_income
+    - military_retirement_income
+    - retirement_distributions
+    - survivor_benefits
+    - veterans_benefits
+    - total_unemployment_compensation
+    - workers_compensation
+    - disability_benefits
+    - strike_benefits
+    - financial_assistance
+    - alimony_income
+    - child_support_received
+    - ordinary_dividend_income
+    - estate_income
+    - gambling_winnings
+# The cash contribution input represents private gifts. Section 405 exempts
+# TANF/FEP/GA and nonprofit/government aid, ordinary bank interest, educational
+# aid and enumerated nonrecurring receipts. Existing inputs do not separately
+# represent adoption payments, passive royalties or foster-child elections.
+metadata:
+  unit: list
+  period: year
+  label: Utah HEAT unearned income sources
+  reference:
+    - title: Utah HEAT Manual, Section 402 Unearned Income
+      href: https://jobs.utah.gov/infosource/heatpolicy/Policy/400_Income_Standards/402_Unearned_Income.htm
+    - title: Utah HEAT Manual, Section 405 Income Exclusions
+      href: https://jobs.utah.gov/infosource/heatpolicy/Policy/Obsolete_Policy/Obsolete_400/Obsolete_405_(3_1_25_to_9_30_26)_Income_Exclusions.htm

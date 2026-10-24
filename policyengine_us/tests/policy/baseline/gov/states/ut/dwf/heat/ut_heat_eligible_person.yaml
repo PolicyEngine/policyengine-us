@@ -1,0 +1,434 @@
+# Source: Utah HEAT section 203-2B, effective October 1, 2025.
+# LPR is separately eligible; parole/conditional entry needs an eligible criterion.
+# Service exceptions use actual marital, tax and family relationships.
+
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+- name: "Case 1, citizen."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        years_since_us_entry: 0
+        is_veteran: false
+        is_military: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_heat_eligible_person: true
+
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+- name: "Case 2, recent permanent resident."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi: 0
+        years_since_us_entry: 0
+        is_veteran: false
+        is_military: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_heat_eligible_person: true
+
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+- name: "Case 3, refugee."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: REFUGEE
+        ssi: 0
+        years_since_us_entry: 0
+        is_veteran: false
+        is_military: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_heat_eligible_person: true
+
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+- name: "Case 4, asylee."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: ASYLEE
+        ssi: 0
+        years_since_us_entry: 0
+        is_veteran: false
+        is_military: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_heat_eligible_person: true
+
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+- name: "Case 5, deportation withheld."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: DEPORTATION_WITHHELD
+        ssi: 0
+        years_since_us_entry: 0
+        is_veteran: false
+        is_military: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_heat_eligible_person: true
+
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+- name: "Case 6, Cuban Haitian entrant."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CUBAN_HAITIAN_ENTRANT
+        ssi: 0
+        years_since_us_entry: 0
+        is_veteran: false
+        is_military: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_heat_eligible_person: true
+
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+- name: "Case 7, parole below five years."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: PAROLED_ONE_YEAR
+        ssi: 0
+        years_since_us_entry: 4.99
+        is_veteran: false
+        is_military: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_heat_eligible_person: false
+
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+- name: "Case 8, parole at five years."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: PAROLED_ONE_YEAR
+        ssi: 0
+        years_since_us_entry: 5
+        is_veteran: false
+        is_military: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_heat_eligible_person: true
+
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+- name: "Case 9, conditional entrant below five years."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CONDITIONAL_ENTRANT
+        ssi: 0
+        years_since_us_entry: 4.99
+        is_veteran: false
+        is_military: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_heat_eligible_person: false
+
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+- name: "Case 10, conditional entrant at five years."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CONDITIONAL_ENTRANT
+        ssi: 0
+        years_since_us_entry: 5
+        is_veteran: false
+        is_military: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_heat_eligible_person: true
+
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+- name: "Case 11, undocumented resident."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+        years_since_us_entry: 10
+        is_veteran: false
+        is_military: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_heat_eligible_person: false
+
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+- name: "Case 12, DACA recipient."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: DACA
+        ssi: 0
+        years_since_us_entry: 10
+        is_veteran: false
+        is_military: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_heat_eligible_person: false
+
+# Section 203-2 B qualified and eligible categories, including the explicit LPR exception.
+- name: "Case 13, TPS recipient."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        ssi: 0
+        years_since_us_entry: 10
+        is_veteran: false
+        is_military: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_heat_eligible_person: false
+
+# The qualifying veteran exception has no time limit.
+- name: "Case 14, recent parolee who is a veteran."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: PAROLED_ONE_YEAR
+        ssi: 0
+        years_since_us_entry: 0
+        is_veteran: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_heat_eligible_person: true
+
+# An actual marital-unit connection; no synthetic SPM-wide veteran flag.
+- name: "Case 15, actual spouse of veteran qualifies without five years."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        is_veteran: true
+        is_tax_unit_head: true
+      person2:
+        age: 38
+        immigration_status: PAROLED_ONE_YEAR
+        ssi: 0
+        years_since_us_entry: 0
+        is_tax_unit_spouse: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    ut_heat_eligible_person: [true, true]
+
+# Share an SPM unit and household but have separate family, tax, and marital units.
+- name: "Case 16, unrelated veteran does not confer immigration eligibility."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        is_veteran: true
+        is_tax_unit_head: true
+      person2:
+        age: 38
+        immigration_status: PAROLED_ONE_YEAR
+        ssi: 0
+        years_since_us_entry: 0
+        is_tax_unit_head: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+  output:
+    ut_heat_eligible_person: [true, false]
