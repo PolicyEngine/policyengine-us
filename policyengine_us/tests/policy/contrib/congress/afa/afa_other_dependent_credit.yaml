@@ -165,6 +165,53 @@
     ctc_refundable_maximum: 3_600
     ctc: 2_000
 
+- name: Integration test - CTC partially phased out, head with an ITIN
+  # Proposed section 24A has no filer SSN rule (24A(e)(2) asks only for a timely
+  # taxpayer TIN), so the $2,000-per-child floor still applies (issue #9403).
+  period: 2025
+  reforms: policyengine_us.reforms.congress.afa.afa_other_dependent_credit.afa_other_dependent_credit
+  input:
+    gov.contrib.congress.afa.in_effect: true
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 300_000
+        ssn_card_type: NONE
+        has_itin: true
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, person2]
+  output:
+    ctc_qualifying_children: 0
+    refundable_ctc: 2_000
+    ctc: 2_000
+
+- name: Integration test - CTC at $150,000, head with an ITIN
+  period: 2025
+  reforms: policyengine_us.reforms.congress.afa.afa_other_dependent_credit.afa_other_dependent_credit
+  input:
+    gov.contrib.congress.afa.in_effect: true
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 150_000
+        ssn_card_type: NONE
+        has_itin: true
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, person2]
+  output:
+    refundable_ctc: 2_000
+    ctc: 2_000
+
 - name: Integration test - CTC partially phased out, 2 kids
   period: 2025
   reforms: policyengine_us.reforms.congress.afa.afa_other_dependent_credit.afa_other_dependent_credit
