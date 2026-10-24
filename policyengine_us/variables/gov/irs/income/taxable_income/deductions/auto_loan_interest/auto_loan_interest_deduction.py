@@ -14,10 +14,8 @@ class auto_loan_interest_deduction(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        auto_loan_interest = add(
-            tax_unit,
-            period,
-            ["qualified_passenger_vehicle_loan_interest"],
+        auto_loan_interest = tax_unit(
+            "tax_unit_qualified_passenger_vehicle_loan_interest", period
         )
         p = parameters(period).gov.irs.deductions.auto_loan_interest
         capped_interest = min_(auto_loan_interest, p.cap)
