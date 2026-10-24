@@ -150,6 +150,22 @@ def test_series_is_defined_across_the_projection_window(series):
         assert _value(series, year) not in (None, 0)
 
 
+def test_default_series_has_a_value_for_every_year():
+    """A year with no value holds the previous one, so the per-capita index
+    drifts down with population and then jumps when values resume. CBO AGI
+    once had nothing for 2016 to 2018, so inputs dated 2018 came out 29% too
+    high by 2019."""
+    total = get_parameter(system.parameters, _authored_series(DEFAULT))
+    years = sorted(
+        {
+            int(value.instant_str[:4])
+            for value in total.values_list
+            if value.instant_str.endswith("-01-01")
+        }
+    )
+    assert years == list(range(years[0], years[-1] + 1))
+
+
 @pytest.mark.parametrize("year", (2025, 2030, 2035, 2036))
 def test_unemployment_compensation_grows_with_cbo_unemployment_outlays(year):
     soi = "calibration.gov.irs.soi.unemployment_compensation"
