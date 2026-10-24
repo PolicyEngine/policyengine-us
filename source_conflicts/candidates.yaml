@@ -2658,23 +2658,26 @@ candidates:
     url: https://content.govdelivery.com/accounts/MDMSDE/bulletins/31a37f2
   readings:
     statute: From June 1, 2024, the Department "may not increase the copayment levels of the Program in effect as
-      of January 1, 2024". MSDE's flat maximum had applied since May 23, 2022.
+      of January 1, 2024". The statute does not say whether those are MSDE's flat maximums, which applied from May
+      23, 2022, or COMAR's printed tables.
     other: COMAR 13A.14.06.12 still prints regional weekly copayment tables by income level and child order.
   example: md_ccs_weekly_copay.yaml Case 1 (January 2025, one child in full-time care, $50,000 income) gives $3
-    a week. COMAR's level A amounts for a youngest child 24 months or older in three units of care range from $4.03
-    to $7.22 by region.
+    a week. COMAR's level A amounts for three units of care run from $4.03 to $7.22 for a youngest child 24 months
+    or older and from $2.42 to $4.33 for a second or third child.
   pe_us:
-    follows: statute
+    follows: unknown
     code:
     - policyengine_us/parameters/gov/states/md/msde/ccs/copay/weekly_amount.yaml
     - policyengine_us/variables/gov/states/md/msde/ccs/md_ccs_weekly_copay.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/7889
   state: unreviewed
-  note: The flat schedule meets the cap under any reading of "in effect"; restoring COMAR's tables would raise copays.
-    From May 2022 to May 2024 no statute is supplied, and the model followed the bulletin over COMAR. The bulletin's
-    amounts are maximums and some families pay $0, while the model charges the maximum, subject to the 7 percent
-    federal cap. The parameter starts 2022-05-01; the bulletin dates the change May 23, 2022.
+  note: 'The model follows MSDE''s flat maximums. If those are the levels in effect, the model meets the cap, and
+    restoring COMAR''s tables would raise most copays. If COMAR''s tables are, some flat amounts exceed them: Region
+    V''s level A second-child amount is $2.42 for three units and about $0.81 for one, against $3 and $1. From May
+    2022 to May 2024 no statute is supplied. The bulletin''s amounts are maximums and some families pay $0, while
+    the model charges the maximum, subject to the 7 percent federal cap. The parameter starts 2022-05-01; the bulletin
+    dates the change May 23, 2022.'
 - id: us-md:dependent-exemption-chart-10a
   program: income-tax
   years:
@@ -4278,6 +4281,7 @@ candidates:
     code:
     - policyengine_us/variables/gov/states/ny/otda/ssp/ny_ssp.py
     - policyengine_us/variables/gov/states/ny/otda/ssp/ny_ssp_care_setting.py
+    - policyengine_us/variables/gov/states/ny/otda/ssp/ny_ssp_living_arrangement.py
     - policyengine_us/parameters/gov/states/ny/otda/ssp/personal_needs/developmental_or_mental_health_facility.yaml
     - policyengine_us/parameters/gov/states/ny/otda/ssp/personal_needs/residential_health_care_facility.yaml
     prs:
@@ -4302,36 +4306,39 @@ candidates:
     url: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-3.2
   readings:
     statute: A residential health care facility resident who receives or is eligible to receive SSI or additional
-      state payments is entitled to the allowance "in accordance with regulations of the department"; the statute
-      states no income test.
+      state payments is entitled to the $25 allowance "in accordance with regulations of the department", and the
+      $5 group "shall receive" its allowance; neither sentence states an income test.
     other: The resident must have no countable income, earned or unearned, other than the federal SSI benefit for
       medical facility residents when Medicaid pays at least 50 percent of the cost of care.
   example: 'A nursing home resident with $45 a month of Social Security has $25 of countable income and $5 of SSI:
-    the statute pays $25 and the regulation pays $0.'
+    the regulation pays $0; reading the statute with no income test would pay $25.'
   pe_us:
-    follows: conflicting-source
+    follows: unknown
     code:
     - policyengine_us/variables/gov/states/ny/otda/ssp/ny_ssp.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10158
   state: unreviewed
   note: The model pays the allowance only with SSI above zero and no countable income; ny_ssp.yaml Cases 20 and
-    21 pin it. The $25 sentence delegates to the department's regulations, so 398-3.2(d) may implement the statute
-    rather than conflict with it.
+    21 pin it. The $25 sentence delegates to the department's regulations, so 398-3.2(d) may implement it rather
+    than conflict with it; the $5 sentence has no such phrase.
 - id: us-ny:ssp-spousal-deeming-subtraction
   program: ssi-state-supplement
   years:
     from: 2026
     type: calendar
   question: Under spousal deeming, does New York's state supplement subtract the claimant's SSI plus countable income
-    from the standard of need, as Social Services Law 209(4) reads, or the greater of the FBR or countable income,
-    as 18 NYCRR 398-4.4(b) reads?
+    from the standard of need, as Social Services Law 209(4) reads, or the greater of the FBR or countable income
+    once, as 18 NYCRR 398-2.1(ac) and 398-4.4(b) are read together?
   sources:
   - kind: statute
     citation: N.Y. Soc. Serv. Law §209(4)
     url: https://www.nysenate.gov/legislation/laws/SOS/209
   - kind: regulation
-    citation: 18 NYCRR 398-2.1(ac), 398-2.1(o) and 398-4.4(b)
+    citation: 18 NYCRR 398-2.1(ac), (g) and (o)
+    url: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-2.1
+  - kind: regulation
+    citation: 18 NYCRR 398-4.4(b)
     url: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-4.4
   - kind: manual
     citation: SSA POMS SI 01320.430 D
@@ -4339,12 +4346,14 @@ candidates:
   readings:
     statute: The standard of need is reduced by "the sum of such individual's or couple's supplemental security
       income benefit plus countable income".
-    other: 18 NYCRR 398-4.4(b) subtracts the greater of the FBR or countable income, with deemed income counted
-      (398-2.1(g)) against the claimant's own individual FBR. SSA's method for federally administered supplements
+    other: 398-2.1(ac) sets the State benefit rate at the standard of need minus "the FBR or a recipient's monthly
+      Countable Income, whichever is greater", and 398-4.4(b) subtracts the greater of the two from that rate again.
+      Read to subtract once, with deemed income counted (398-2.1(g)) against the claimant's own individual FBR,
+      the regulation pays the standard less the greater amount. SSA's method for federally administered supplements
       (POMS SI 01320.430 D) is a third reading and uses the couple rate.
   example: 'Integration Case 11: a claimant living with an ineligible spouse has countable income of 650.83, including
-    deemed income, and SSI of 840.17 against a 1,017 standard. The regulation pays 1,017 - max(994, 650.83) = 23;
-    the statute subtracts 840.17 + 650.83 = 1,491 and pays 0.'
+    deemed income, and SSI of 840.17 against a 1,017 standard. Subtracting once pays 1,017 - max(994, 650.83) =
+    23; the statute subtracts 840.17 + 650.83 = 1,491 and pays 0.'
   pe_us:
     follows: conflicting-source
     code:
@@ -4352,9 +4361,11 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10158
   state: unreviewed
-  note: The model follows the regulation (NOTE in ny_ssp.py); integration.yaml Cases 6 and 11 pin it. New York has
-    administered its own supplement since October 1, 2014. Whether a state regulation that departs from the statute's
-    text binds as a Treasury regulation would is not yet ruled.
+  note: The model follows the regulation read to subtract once (NOTE in ny_ssp.py); integration.yaml Cases 6 and
+    11 pin it. Read literally, 398-2.1(ac) and 398-4.4(b) subtract the greater amount twice, which would pay a claimant
+    living alone with no income nothing instead of $87. New York has administered its own supplement since October
+    1, 2014. Whether a state regulation that departs from the statute's text binds as a Treasury regulation would
+    is not yet ruled.
 - id: us-oh:heap-awards-above-150-percent-poverty
   program: liheap
   years:
@@ -4568,6 +4579,7 @@ candidates:
     follows: unknown
     code:
     - policyengine_us/variables/gov/states/oh/dbh/rss/oh_rss_countable_income.py
+    - policyengine_us/variables/gov/states/oh/dbh/rss/oh_rss.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10164
   state: unreviewed
@@ -4743,14 +4755,15 @@ candidates:
       point to Appendix C-1 for it.
     other: '20 CFR 416.1163(b)(1) sets the allocation at the couple FBR less the individual FBR: $1,491 - $994 =
       $497 in 2026.'
-  example: integration.yaml Case 15 sums a $498 allocation into the ineligible-spouse path (198 + 498 = 696); the
-    federal amount would give 695.
+  example: 'integration.yaml Case 15 sums two $498 allocations on the ineligible-spouse path, one reduced by a teen''s
+    $300 of earnings: (498 - 300) + 498 = 696. The federal amount would give (497 - 300) + 497 = 694.'
   pe_us:
     follows: unknown
     code:
     - policyengine_us/variables/gov/states/ok/dhs/ssp/ok_ssp_spouse_child_allocation.py
     - policyengine_us/variables/gov/states/ok/dhs/ssp/_ok_ssp_income.py
     - policyengine_us/parameters/gov/states/ok/dhs/ssp/child_allocation.yaml
+    - policyengine_us/variables/gov/ssa/ssi/eligibility/income/deemed/ssi_ineligible_child_allocation.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10165
   state: unreviewed
@@ -4846,6 +4859,7 @@ candidates:
     follows: unknown
     code:
     - policyengine_us/variables/gov/states/ok/dhs/ssp/_ok_ssp_income.py
+    - policyengine_us/variables/gov/ssa/ssi/eligibility/income/ism/ssi_pmv_amount.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10165
   state: unreviewed
@@ -5081,38 +5095,6 @@ candidates:
   note: The model follows POMS and the Handbook; YAML comments by the care rows record the §299.37 levels. SSA administers
     the care-home supplements. pa_ssp.yaml Cases 3 and 4 and integration.yaml Case 4 pin it. The Handbook is served
     over http only; the parameter references link it.
-- id: us-pa:ssp-mixed-arrangement-couple-move-month
-  program: ssi-state-supplement
-  years:
-    from: 2026
-    type: calendar
-  question: In the month one spouse of a Pennsylvania couple moves into a personal care home, does each spouse get
-    the average of the two couple rates or half of their own couple rate?
-  sources:
-  - kind: manual
-    citation: SSA POMS SI 02005.030 G.1
-    url: https://secure.ssa.gov/poms.nsf/lnx/0502005030#g1
-  - kind: manual
-    citation: SSA POMS SI PHI01415.010 Appendix I, Chart 35 note 2
-    url: https://secure.ssa.gov/poms.nsf/lnx/0501415010PHI
-  readings:
-    statute: No statute supplied; POMS SI 02005.030 G.1 averages the individual supplements of a multi-living-arrangement
-      couple living together unless the State provides couple levels.
-    other: Chart 35 note 2 pays the spouse who moves into the personal care home half the couple rate for that home,
-      and the spouse who stays half the couple household rate, for the month of the move.
-  example: 'Integration Case 6: the average gives 347.675 and 347.68; note 2 gives 33.30 / 2 = 16.65 and 1,357.40
-    / 2 = 678.70.'
-  pe_us:
-    follows: unknown
-    code:
-    - policyengine_us/variables/gov/states/pa/dhs/ssp/pa_ssp_living_arrangement.py
-    - policyengine_us/variables/gov/ssa/ssi/_ssi_state_supplement.py
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/10167
-  state: unreviewed
-  note: The shared state supplement helper averages; pa_ssp_living_arrangement documents the per-spouse split as
-    a limitation. integration.yaml Case 6 pins it. The couple total is the same unless income reduces one spouse's
-    half to zero.
 - id: us-pa:ssp-supplement-for-personal-needs
   program: ssi-state-supplement
   years:
@@ -5482,6 +5464,7 @@ candidates:
     code:
     - policyengine_us/parameters/gov/states/ri/dhs/ssp/amount/couple.yaml
     - policyengine_us/variables/gov/states/ri/dhs/ssp/ri_ssp.py
+    - policyengine_us/variables/gov/ssa/ssi/_ssi_state_supplement.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10168
   state: unreviewed
@@ -5672,39 +5655,6 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/9974
   state: unreviewed
   note: 'PE-US follows the plan and rules, not the 2018 manual: only wood and coal are paid in full, so kerosene is capped at unpaid charges like fuel oil (sd_liheap.py). Confirm the recipient and whether unpaid charges cap the award.'
-- id: us-sd:ssp-care-personal-needs-allowance
-  program: ssi-state-supplement
-  years:
-    from: 2026
-    type: calendar
-  question: Does South Dakota's assisted living and adult foster care payment exclude $60 of SSI for personal needs,
-    as SSA's program description says, when ARSD 67:46:06:05 limits the personal needs deduction to nursing and
-    intermediate care facilities?
-  sources:
-  - kind: regulation
-    citation: ARSD 67:46:06:05
-    url: https://sdlegislature.gov/Rules/Administrative/67:46:06:05
-  - kind: guidance
-    citation: 'SSA, State Assistance Programs for SSI Recipients, January 2011: South Dakota'
-    url: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/sd.html
-  readings:
-    statute: No statute supplied; the current 67:46:06:05 allows a $100 monthly personal needs deduction only to
-      an applicant or recipient residing in a nursing or intermediate care facility.
-    other: SSA's 2011 description, which sd_ssp cites, says the State excludes $60 of the federal SSI payment to
-      recipients in assisted living facilities or foster care homes.
-  example: 'sd_ssp.yaml Case 9: SSI of 994 and a 2,200 care bill give 1,206 under the current rule and 1,266 with
-    a $60 exclusion.'
-  pe_us:
-    follows: unknown
-    code:
-    - policyengine_us/variables/gov/states/sd/dss/ssp/sd_ssp_care_income_deductions.py
-    - policyengine_us/variables/gov/states/sd/dss/ssp/sd_ssp.py
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/10169
-  state: unreviewed
-  note: The model follows the current rule (sd_ssp_care_income_deductions documentation). SSA's text matched 67:46:06:05
-    as in effect from 2004, which gave every long-term care applicant $60; 41 SDR 93 (effective December 3, 2014)
-    limited it to nursing and intermediate care facilities. This may be a stale source rather than a live conflict.
 - id: us-sd:ssp-couple-other-income
   program: ssi-state-supplement
   years:
@@ -5795,6 +5745,7 @@ candidates:
     follows: unknown
     code:
     - policyengine_us/variables/gov/states/sd/dss/ssp/sd_ssp_care_joint_entry.py
+    - policyengine_us/variables/gov/states/sd/dss/ssp/sd_ssp_care.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10169
   state: unreviewed
@@ -5936,7 +5887,7 @@ candidates:
       student under age 22.
   example: A disabled 20-year-old student with $1,200 a month of Social Security disability and $500 of wages has
     no SSI. Excluding the wages gives countable income of 1,180 and an AG of 1,037; Chapter H's list gives 1,397.50
-    and 819.50.
+    and a deficiency of 819.50, paid as 820.
   pe_us:
     follows: unknown
     code:
