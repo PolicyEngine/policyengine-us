@@ -243,41 +243,6 @@ candidates:
   state: open
   note: 'A decision was requested; the statute-first rule requires separate spouse reductions and floors after confirming
     the adopted rule''s scope. Code not yet on main: ar_casualty_loss_deduction_indiv, ar_casualty_loss_deduction_joint.'
-- id: us-ar:claim-of-right-deduction-floor
-  program: income-tax
-  years:
-    from: 2013
-    type: tax
-  question: Does Arkansas's deduction for restoring more than $3,000 held under a claim of right (Ark. Code 26-51-457)
-    count toward the 2% floor on miscellaneous itemized deductions, whose list of exceptions does not name it, or
-    sit outside the floor as the Department of Finance and Administration treats the volunteer firefighter deduction
-    enacted in the same session?
-  sources:
-  - kind: statute
-    citation: Act 1284 of 2013, section 1 (Ark. Code 26-51-457(a))
-    url: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2013R%2FPublic%2F&file=1284.pdf&ddBienniumSession=2013%2F2013R
-  - kind: statute
-    citation: Act 382 of 1987, section 28(a) (now Ark. Code 26-51-437)
-    url: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F1987R%2FPublic%2F&file=382.pdf&ddBienniumSession=1987%2F1987R#page=9
-  - kind: form
-    citation: 2014 Form AR3, lines 26 and 28
-    url: https://www.dfa.arkansas.gov/wp-content/uploads/AR3_2014_RE.pdf#page=1
-  readings:
-    statute: Count the claim of right deduction among miscellaneous itemized deductions, so only the part above
-      2% of Arkansas AGI is deducted.
-    other: Deduct it in full outside the floor, as the department's forms treat the volunteer firefighter deduction
-      (AR3 line 26, totaled with lines not subject to the 2% limitation), which the same 2013 session enacted without
-      an express exception either.
-  example: 'A filer with $60,000 of wages repays $10,000: the statute reading deducts $8,800 (above 2% of AGI),
-    the firefighter analogy $10,000, about $47 of Arkansas tax at 3.9%.'
-  pe_us:
-    follows: statute
-    code: []
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/10203
-  state: ruled
-  note: Verified entry drafted in TheAxiomFoundation/rulespec-us#1825; it registers once its source captures are
-    on main.
 - id: us-ar:claim-of-right-itemizer-requirement
   program: income-tax
   years:
@@ -1124,39 +1089,6 @@ candidates:
   state: open
   note: 'PE-US follows the regulation; verify the guide''s applicability, earlier coverage from 2020, and the requested
     source choice. Code not yet on main: co_oap, co_oap_countable_income.'
-- id: us-co:oap-interest-and-dividends
-  program: old-age-pension
-  years:
-    from: 2026
-    type: calendar
-  question: For Colorado's Old Age Pension, are interest and dividends countable unearned income under 3.520.785(B)(10),
-    or exempt under 3.520.786(K), which exempts the unearned income SSA excludes, including interest and dividends
-    on countable resources?
-  sources:
-  - kind: regulation
-    citation: us-co/regulation/9-ccr-2503-5/3.520.785
-    url: null
-  - kind: regulation
-    citation: us-co/regulation/9-ccr-2503-5/3.520.786
-    url: null
-  - kind: regulation
-    citation: us-co/regulation/9-ccr-2503-5/3.520.781
-    url: null
-  readings:
-    statute: Exempt interest and dividends on countable resources, because 3.520.781(C) makes the 3.520.786 exemptions
-      govern countable income and 3.520.786(K) incorporates SSA's exclusions (20 CFR 416.1124).
-    other: Count interest and dividends as unearned income under 3.520.785(B)(10).
-  example: A 2026 client with $360 of interest and $240 of dividends a year ($50 a month) has no countable income
-    from them under the exempt reading; under 3.520.785(B)(10) the $50 a month is countable unearned income before
-    the unearned income disregard.
-  pe_us:
-    follows: statute
-    code: []
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/10176
-  state: ruled
-  note: Verified entry drafted in TheAxiomFoundation/rulespec-us#1825; it registers once its source captures are
-    on main.
 - id: us-co:premium-assistance-ptc-recipients
   program: health-insurance-premium-assistance
   years:
@@ -1699,34 +1631,6 @@ candidates:
   state: unreviewed
   note: 'PE-US follows the manual; verify that the plan addresses the same circumstances; the bundled benefit comparison
     lacks competing matrix amounts. Code not yet on main: ga_liheap.'
-- id: us-hi:care-credit-claimable-unclaimed-filer
-  program: income-tax
-  years:
-    from: 2025
-    to: 2025
-    type: tax
-  question: Does the statute's disjunctive eligibility language permit a claimable but unclaimed filer to receive
-    the care credit despite instructions barring every claimable filer?
-  sources:
-  - kind: statute
-    citation: HRS 235-55.6(a)(1)
-    url: https://data.capitol.hawaii.gov/hrscurrent/Vol04_Ch0201-0257/HRS0235/HRS_0235-0055_0006.htm
-  - kind: instructions
-    citation: 2025 Form N-11 instructions p.21
-    url: https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=21
-  readings:
-    statute: A literal reading of or permits a filer who can be claimed but is not actually claimed.
-    other: Every filer who is claimed or eligible to be claimed is barred.
-  pe_us:
-    follows: conflicting-source
-    code:
-    - policyengine_us/variables/gov/states/hi/tax/income/credits/cdcc/hi_cdcc_qualifying_individual.py
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/10089
-  state: ruled
-  note: 'An October 2026 ruling confirmed the instructions; the later statute-first rule requires changing the bar
-    if the literal statutory reading is confirmed, with earlier instruction years still to verify. Code not yet
-    on main: hi_cdcc_eligible.'
 - id: us-hi:claim-of-right-credit-agi-addback
   program: income-tax
   years:
@@ -1766,49 +1670,6 @@ candidates:
   note: 'Ruled in October 2026 under the statute-first rule; N-364 first exists for 2025, so earlier claiming procedures
     need separate verification. Code not yet on main: gov/states/hi/tax/income/claim_of_right/hi_claim_of_right.yaml,
     hi_claim_of_right_deduction.'
-- id: us-hi:claim-of-right-deduction-floor
-  program: income-tax
-  years:
-    from: 2022
-    to: 2025
-    type: tax
-  question: From 2022 through 2025, which claim of right repayments fall under Hawaii's 2% floor on miscellaneous
-    itemized deductions? The statute keeps a section 1341 repayment over $3,000 outside the floor and one of $3,000
-    or less inside it. The Form N-11 instructions list them the other way round.
-  sources:
-  - kind: statute
-    citation: us-hi/statute/235-2.4
-    url: null
-  - kind: statute
-    citation: us/statute/26/67/b/9
-    url: null
-  - kind: instructions
-    citation: 2025 Form N-11 instructions, p. 19 (Worksheet A-6, Other Expenses and Expenses NOT Subject to the
-      2% Limit)
-    url: https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=19
-  - kind: instructions
-    citation: 2025 Form N-11 instructions, p. 19 (Expenses NOT Subject to the 2% Limit)
-    url: https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=19
-  - kind: instructions
-    citation: 2022 Form N-11 instructions, p. 19
-    url: https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=19
-  readings:
-    statute: Section 67(b)(9), operative through HRS 235-2.4(b), keeps a section 1341 deduction (a repayment over
-      $3,000) outside the 2% floor; a repayment of $3,000 or less is a miscellaneous itemized deduction above 2%
-      of Hawaii AGI.
-    other: Follow the 2022-2025 N-11 lists, which put the over-$3,000 repayment among expenses subject to the 2%
-      floor and the $3,000-or-less repayment among expenses not subject to it.
-  example: 'A 2025 single filer with $50,000 of wages (Hawaii AGI $50,000) repays $10,000 and takes the deduction
-    method: the statute reading deducts $10,000, the N-11 lists $9,000. This is the difference in deduction, not
-    tax; the tax difference is that times the filer''s Hawaii marginal rate.'
-  pe_us:
-    follows: statute
-    code: []
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/10200
-  state: ruled
-  note: Verified entry drafted in TheAxiomFoundation/rulespec-us#1825; it registers once its source captures are
-    on main.
 - id: us-hi:joint-return-claimable-spouse-exemption
   program: income-tax
   years:
@@ -3004,36 +2865,6 @@ candidates:
   state: ruled
   note: 'Ruled statute-first in October 2026; the rule requires replacing claimability with the statutory actual-claim
     exclusion. Code not yet on main: is_eligible_md_poverty_line_credit.'
-- id: us-md:poverty-credit-earned-income-losses
-  program: income-tax
-  years:
-    from: 2025
-    type: tax
-  question: Does Maryland's state poverty level credit (5% of earned income) take earned income as IRC 32(c)(2)
-    defines it, net of a self-employment or farm loss, or as Form 502 Worksheet 18B line 2 computes it, leaving
-    the loss out?
-  sources:
-  - kind: statute
-    citation: us/statute/26/32/c/2
-    url: null
-  - kind: worksheet
-    citation: 2025 Maryland resident tax booklet, State Poverty Level Credit Worksheet (18B), line 2, p. 23
-    url: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=23
-  readings:
-    statute: Use IRC 32(c)(2) earned income, which nets a self-employment or farm loss against wages and is figured
-      after the section 164(f) deduction; the credit is floored at zero.
-    other: Add wages and self-employment profit, leaving out any farm or business loss, as Worksheet 18B line 2
-      instructs.
-  example: 'A 2024 single filer with $5,000 of wages, a $10,000 farm loss and $20,000 of interest: the statute reading
-    gives no poverty level credit; Worksheet 18B line 2 counts the $5,000 of wages alone, for a $250 credit.'
-  pe_us:
-    follows: statute
-    code:
-    - policyengine_us/variables/gov/states/md/tax/income/credits/poverty_line/md_poverty_line_credit_potential.py
-    prs: []
-  state: ruled
-  note: Verified entry drafted in TheAxiomFoundation/rulespec-us#1825; it registers once its source captures are
-    on main.
 - id: us-md:poverty-threshold-exemption-count
   program: income-tax
   years:
@@ -3336,31 +3167,6 @@ candidates:
   state: unreviewed
   note: PE-US follows the manual and surrounding report editions; obtain contemporaneous BEM 556 for October 2022-September
     2023.
-- id: us-mn:msa-guardian-fee-cap
-  program: minnesota-supplemental-aid
-  years:
-    from: 2026
-    type: calendar
-  question: Does an approved guardian fee allowance equal 5% of gross monthly income capped at $100, or $100 regardless
-    of income?
-  sources:
-  - kind: statute
-    citation: Minn. Stat. 256D.44 subd. 5(d)
-    url: https://www.revisor.mn.gov/statutes/cite/256D.44
-  - kind: agency-practice
-    citation: MN DHS correspondence, 2026-10-19
-    url: null
-  readings:
-    statute: Allow 5% of gross monthly income, up to $100.
-    other: Allow $100 whenever a fee is approved, regardless of income.
-  example: An SSI-only recipient receives $49.70 versus $100 in 2026, and $51.45 versus $100 in 2027.
-  pe_us:
-    follows: statute
-    code: []
-    prs: []
-  state: ruled
-  note: Ruled in October 2026 to retain the statutory cap; confirm and describe the stated agency practice without
-    quoting correspondence.
 - id: us-mn:small-claim-of-right-repayment-deduction
   program: income-tax
   years:
@@ -4238,34 +4044,6 @@ candidates:
   state: ruled
   note: 'Ruled in October 2026 to read the statute per individual; verify the form''s stopping condition. Code not
     yet on main: ny_allowable_college_tuition_expenses.'
-- id: us-ny:dependent-standard-deduction-filing-status
-  program: income-tax
-  years:
-    from: 2015
-    type: tax
-  question: Does the dependent standard deduction apply across filing statuses under the statute or only to single
-    filers under the instructions?
-  sources:
-  - kind: statute
-    citation: N.Y. Tax Law 614(e)
-    url: https://www.nysenate.gov/legislation/laws/TAX/614
-  - kind: instructions
-    citation: 2025 IT-201 instructions, standard deduction table, p. 11
-    url: https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=11
-  readings:
-    statute: The resident-individual wording is status-neutral and supports the dependent amount for non-single
-      claimable filers.
-    other: Only single dependent filers receive $3,100; other statuses receive their regular deduction.
-  example: The supplied 2025 couple receives a $16,050 deduction under the table, versus the possible $3,100 statutory
-    reading.
-  pe_us:
-    follows: conflicting-source
-    code: []
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/10024
-  state: ruled
-  note: 'An October 2026 ruling followed the table; the statute-first rule requires a change if the status-neutral
-    wording governs, or a gap-fill finding if status is unspecified. Code not yet on main: ny_standard_deduction.'
 - id: us-ny:heap-code-c-ssi-household-membership
   program: liheap
   years:
@@ -4373,42 +4151,6 @@ candidates:
   state: ruled
   note: 'Ruled in October 2026 to retain the credit under the statute; verify the instructions'' return-level interpretation.
     Code not yet on main: ny_real_property_tax_credit.'
-- id: us-oh:claim-of-right-federal-claim-condition
-  program: income-tax
-  years:
-    from: 2021
-    to: 2025
-    type: tax
-  question: Does Ohio's deduction for repaying income reported in a prior year (R.C. 5747.01(A)(12)) need only to
-    be allowable, as the statute says, or must the federal return also have claimed the section 1341 credit or a
-    Schedule A deduction for the repayment, as the IT 1040 instructions require?
-  sources:
-  - kind: statute
-    citation: R.C. 5747.01(A)(12)
-    url: https://codes.ohio.gov/ohio-revised-code/section-5747.01
-  - kind: statute
-    citation: R.C. 5747.01(A)(12)(a)
-    url: https://codes.ohio.gov/ohio-revised-code/section-5747.01
-  - kind: instructions
-    citation: 2025 Ohio IT 1040 instructions, Schedule of Adjustments line 29, p. 23
-    url: https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2025/it1040-booklet.pdf#page=23
-  readings:
-    statute: Deduct the repayment whenever (A)(12) allows it (an item included in a prior year's Ohio AGI that did
-      not qualify for the resident or nonresident credit and does not otherwise reduce AGI), whether or not the
-      federal return claimed relief for it.
-    other: Deduct only when the federal return claimed the section 1341 credit or itemized the repayment on Schedule
-      A, as every IT 1040 edition from 2021 (line 23) to 2025 (line 29) instructs.
-  example: 'A 2025 single filer repays $10,000 of wages taxed in an earlier year, takes the federal standard deduction,
-    and the section 1341 methods tie: the statute reading deducts $10,000 from Ohio AGI, the instructions $0. This
-    is the difference in deduction, worth up to $275 of Ohio tax at the 2.75% rate.'
-  pe_us:
-    follows: conflicting-source
-    code: []
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/10195
-  state: ruled
-  note: Verified entry drafted in TheAxiomFoundation/rulespec-us#1825; it registers once its source captures are
-    on main.
 - id: us-oh:heap-awards-above-150-percent-poverty
   program: liheap
   years:
@@ -5728,34 +5470,6 @@ candidates:
     threshold and federal-method conditions by year. Code not yet on main: gov/states/wv/tax/income/subtractions/wv_claim_of_right_subtraction.yaml,
     policyengine_us/variables/gov/states/wv/tax/income/subtractions/wv_subtractions.py, wv_claim_of_right_subtraction,
     gov.states.wv.tax.income.subtractions.claim_of_right.threshold.'
-- id: us-wv:senior-disability-modification-income-base
-  program: income-tax
-  years:
-    from: 2014
-    type: tax
-  question: Does the senior/disability modification exclude all other Schedule M subtractions from its income base
-    or only the statutory listed offsets?
-  sources:
-  - kind: statute
-    citation: W. Va. Code 11-21-12(c)(9)
-    url: https://code.wvlegislature.gov/11-21-12/
-  - kind: form
-    citation: 2025 Schedule M, line 47 box (c)
-    url: https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=6
-  readings:
-    statute: The listed offsets omit state tax refunds, allowing the modification to use income also subtracted
-      as a refund.
-    other: Other Schedule M subtractions are excluded before applying the $8,000 cap.
-  example: A 66-year-old with $6,000 AGI including a $2,000 state refund gets a $6,000 senior modification under
-    the statutory reading or $4,000 under the form.
-  pe_us:
-    follows: conflicting-source
-    code: []
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/10082
-  state: ruled
-  note: 'An October 2026 ruling followed the form; the statute-first rule requires changing the income base after
-    verifying the statutory offsets. Code not yet on main: wv_senior_citizen_disability_deduction_person.'
 - id: us-wv:senior-modification-excluded-line-range
   program: income-tax
   years:
@@ -5937,32 +5651,6 @@ candidates:
   state: unreviewed
   note: 'The model follows the publication; verify the statutory reading before treating this regulation-versus-publication
     disagreement as a required statutory change. Code not yet on main: claim_of_right_section_1341_eligible.'
-- id: us:dependent-care-exclusion-separate-filer-income
-  program: income-tax
-  years:
-    from: 2018
-    type: tax
-  question: Does section 21(e)(4)'s unmarried rule reach the section 129(b) earned-income limit, as Form 2441 instructions
-    apply it, when section 129(a)(2)(C) limits its cross-reference to that paragraph?
-  sources:
-  - kind: statute
-    citation: 26 U.S.C. 129(a)(2)(C)
-    url: null
-  - kind: instructions
-    citation: 2025 Form 2441 line 19 instructions
-    url: null
-  readings:
-    statute: The unmarried rule covers the section 129(a)(2) dollar cap only; section 129(b) uses the lesser of
-      the married filer's and spouse's earned income.
-    other: A separate filer considered unmarried enters their own earned income.
-  pe_us:
-    follows: conflicting-source
-    code: []
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/9949
-  state: unreviewed
-  note: 'The statute-first rule requires revising the form-based earned-income limit; verify whether the marital-status
-    cross-reference extends beyond section 129(a)(2). Code not yet on main: min_head_spouse_earned, dependent_care_assistance_exclusion.'
 - id: us:dependent-deduction-worksheet-earned-income
   program: income-tax
   years:
@@ -6225,75 +5913,6 @@ candidates:
   state: unreviewed
   note: 'Main follows the form-line omission; the statute-first rule requires the statutory add-back proposed in
     the open PR. Code not yet on main: excess_business_loss, net_investment_income_excess_business_loss, gov.irs.investment.income.sources.'
-- id: us:niit-magi-trust-code-h-adjustment
-  program: income-tax
-  years:
-    from: 2013
-    type: tax
-  question: Does a positive code H amount raise NIIT MAGI under the Form 8960 instructions when section 1411(d)
-    adjusts MAGI only for section 911?
-  sources:
-  - kind: statute
-    citation: 26 U.S.C. 1411(d)
-    url: null
-  - kind: instructions
-    citation: 2024 Form 8960 instructions, line 7, page 11
-    url: null
-  readings:
-    statute: MAGI is AGI plus the section 911 add-back only.
-    other: MAGI also rises by any positive code H amount.
-  pe_us:
-    follows: conflicting-source
-    code:
-    - policyengine_us/variables/household/income/person/estate/estate_income_niit_magi_adjustment.py
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/9633
-  state: open
-  note: 'The statute-first rule requires revising the extra MAGI adjustment; verify whether CFC or PFIC regulatory
-    authority reconciles the instructions with section 1411(d). Code not yet on main: niit_magi, net_investment_income_tax.'
-- id: us:qbid-net-capital-gain-investment-election
-  program: income-tax
-  years:
-    from: 2018
-    type: tax
-  question: Does the statutory section 1(h) cross-reference reduce net capital gain by amounts elected as investment
-    income, or does the QBID calculation ignore the election under the regulation and form?
-  sources:
-  - kind: statute
-    citation: 26 U.S.C. 199A(a)(2)(B)
-    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title26/pdf/USCODE-2024-title26-subtitleA-chap1-subchapB-partVI-sec199A.pdf#page=1
-  - kind: statute
-    citation: 26 U.S.C. 199A(a)(2)(B); 26 U.S.C. 1(h)(2)
-    url: null
-  - kind: regulation
-    citation: Treas. Reg. 1.199A-1(b)(3)
-    url: https://www.govinfo.gov/content/pkg/CFR-2025-title26-vol4/pdf/CFR-2025-title26-vol4-sec1-199A-1.pdf#page=1
-  - kind: regulation
-    citation: Treas. Reg. 1.199A-1(b)(3); T.D. 9847 preamble; Form 8995 line 12 instructions
-    url: https://www.ecfr.gov/current/title-26/part-1/section-1.199A-1#p-1.199A-1(b)(3)
-  - kind: guidance
-    citation: TD 9847 preamble, 84 FR 2954
-    url: https://www.govinfo.gov/content/pkg/FR-2019-02-08/pdf/2019-01025.pdf#page=3
-  - kind: form
-    citation: 2025 Form 8995, lines 11-15
-    url: https://www.irs.gov/pub/irs-prior/f8995--2025.pdf#page=1
-  readings:
-    statute: Applying section 1(h)(2)'s election reduction lowers net capital gain subtracted from taxable income,
-      increasing the QBID income cap.
-    other: The regulation, preamble and form ignore the election and subtract the unreduced net capital gain and
-      qualified dividends.
-  example: For the supplied election case with line 11 of $100,000 and line 12 of $60,000, the regulation/form result
-    is $8,000 versus a legacy $12,000 result.
-  pe_us:
-    follows: conflicting-source
-    code: []
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/9886
-    - https://github.com/PolicyEngine/policyengine-us/pull/10077
-  state: open
-  note: 'The statute-first rule requires revising the regulatory default if the cross-reference reading is confirmed;
-    resolve the requested ruling and which direction the cap runs. Code not yet on main: section_199a_net_capital_gain,
-    qualified_business_income_deduction.'
 - id: us:recovery-rebate-joint-claimable-spouse
   program: recovery-rebate-credit
   years:
