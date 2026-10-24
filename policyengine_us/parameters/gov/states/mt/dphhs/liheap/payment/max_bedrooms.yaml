@@ -1,0 +1,12 @@
+description: Montana uses no more than this number of bedrooms in the base benefit lookup under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01: 4
+metadata:
+  unit: int
+  period: year
+  label: Montana LIHEAP maximum bedrooms
+  reference:
+    - title: Montana LIHEAP Policy Manual 2025-2026, section 3.21 Bedrooms Limited to Household
+      href: https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=58
+    - title: Montana LIHEAP Policy Manual 2026-2027, section 3.21 Bedrooms Limited to Household
+      href: https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=58

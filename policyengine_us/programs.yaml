@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AR, AL, DC, GA, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX
+    coverage: AR, AL, DC, GA, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, MT, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX
     state_implementations:
       - state: AL
         status: partial
@@ -1100,6 +1100,14 @@ programs:
         parameter_prefix: gov.states.ms.mdhs.liheap
         verified_years: "2026"
         notes: FY2026 regular assistance for heating fuel and electric bills, using the published matrix as printed. Crisis assistance and energy equipment are out of scope.
+      - state: MT
+        status: partial
+        name: Montana LIHEAP
+        full_name: Montana Low Income Home Energy Assistance Program
+        variable: mt_liheap
+        parameter_prefix: gov.states.mt.dphhs.liheap
+        verified_years: "2026-2027"
+        notes: FFY2026-FFY2027 regular heating benefit from the base benefit matrix and district multipliers, including the modified benefit for subsidized heat-in-rent households. Emergency (CRF), proration and weatherization are out of scope.
       - state: NC
         status: partial
         name: North Carolina LIEAP

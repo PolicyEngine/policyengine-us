@@ -1,0 +1,68 @@
+description: Montana multiplies the base benefit by this income and heating degree day factor, by percent of the poverty guideline, for households in District 5 under the Low Income Home Energy Assistance Program.
+# Thresholds are whole percentages of the poverty guideline at the start of
+# each printed band (0-25%, 26-50%, 51-74%, 75-100%, 101-125%, 126-150%,
+# 151-175%, 176-200% and >201%).
+# Sub-grantee column: Opp Inc.
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 0.99
+      2026-10-01: 0.96
+  - threshold:
+      2025-10-01: 26
+    amount:
+      2025-10-01: 0.94
+      2026-10-01: 0.91
+  - threshold:
+      2025-10-01: 51
+    amount:
+      2025-10-01: 0.89
+      2026-10-01: 0.86
+  - threshold:
+      2025-10-01: 75
+    amount:
+      2025-10-01: 0.84
+      2026-10-01: 0.81
+  - threshold:
+      2025-10-01: 101
+    amount:
+      2025-10-01: 0.75
+      2026-10-01: 0.76
+  - threshold:
+      2025-10-01: 126
+    amount:
+      2025-10-01: 0.65
+      2026-10-01: 0.61
+  - threshold:
+      2025-10-01: 151
+    amount:
+      2025-10-01: 0.55
+      2026-10-01: 0.51
+  - threshold:
+      2025-10-01: 176
+    amount:
+      2025-10-01: 0.45
+      2026-10-01: 0.41
+  - threshold:
+      2025-10-01: 201
+    amount:
+      2025-10-01: 0.35
+      2026-10-01: 0.32
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Montana LIHEAP District 5 income and heating degree day multiplier
+  reference:
+    - title: Montana LIHEAP Policy Manual 2025-2026, section 9.2 Income/Heating Degree Day Multipliers
+      href: https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=123
+    - title: Montana DPHHS Energy Assistance Program page, 2025-2026 Income/HDD Multipliers
+      href: https://web.archive.org/web/20251117073831/https://www.dphhs.mt.gov/HCSD/energyassistance/index
+    - title: Montana LIHEAP Policy Manual 2026-2027, section 9.2 Income/Heating Degree Day Multipliers
+      href: https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=125
+    - title: Admin. R. Mont. 37.70.601(1)(a), (1)(e) and (2), effective September 24, 2022 to May 22, 2026
+      href: https://rules.mt.gov/policy-library-documents/application/pdf/0074fe4c5989f116f77c281ac5736bf5b0f2facbfaf09daf76450ecad7fcdf47#page=1
+    - title: Admin. R. Mont. 37.70.601(1)(a), (1)(e) and (2), effective May 23, 2026
+      href: https://rules.mt.gov/policy-library-documents/application/pdf/b2add645c2eceddb643df5cdaf684339b968b43fc63b88f21ea882dfeb930366#page=1

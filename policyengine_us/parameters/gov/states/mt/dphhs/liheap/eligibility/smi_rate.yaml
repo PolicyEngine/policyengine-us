@@ -1,0 +1,25 @@
+description: Montana limits annual gross income to this fraction of state median income under the Low Income Home Energy Assistance Program.
+# The published income tables equal the greater of this limit and the
+# poverty-guideline limit at every household size (sizes 1-15 in the
+# 2025-2026 and 2026-2027 tables). ARM 37.70.406(1), manual section 3.12 and
+# the 2025-2026 table footnote assign households of nine or more members to
+# the poverty-guideline limit alone (the 2026-2027 footnote: ten or more). At
+# size 9 the published amounts ($91,432 and $97,942) equal 60% of state median
+# income, above 150% of the guideline; the model applies the published tables.
+values:
+  2025-10-01: 0.6
+metadata:
+  unit: /1
+  period: year
+  label: Montana LIHEAP state median income rate
+  reference:
+    - title: Admin. R. Mont. 37.70.406(1), effective May 27, 2023 to May 22, 2026
+      href: https://rules.mt.gov/policy-library-documents/application/pdf/b2d910910cc1ecf830fc66d844708df2504ed257f556ce252cc3b4d25dc84a88#page=1
+    - title: Admin. R. Mont. 37.70.406(1), effective May 23, 2026
+      href: https://rules.mt.gov/policy-library-documents/application/pdf/f314cbda8448e499b69120f0401d35836fe02c4884e961091b2d56c86e3b1abc#page=1
+    - title: "Montana LIHEAP Policy Manual 2025-2026, sections 3.12 and 9.3 #page 30,123-124"
+      href: https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=30
+    - title: "Montana LIHEAP Policy Manual 2026-2027, sections 3.12 and 9.3 #page 30,125-126"
+      href: https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=30
+    - title: Montana LIHEAP FY2026 State Plan, item 2.1
+      href: https://liheapch.acf.gov/docs/2026/state-plans/MT_Plan_2026.pdf#page=9

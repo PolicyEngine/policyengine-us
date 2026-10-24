@@ -1,0 +1,248 @@
+# ARM 37.70.401(1), 37.70.407; LIHEAP Manual 2026-2027 sections 3.11-3.15:
+# annual gross income of members age 18 and older, Social Security net of the
+# Medicare Part B premium, gifts of $50 or more a month per member before May
+# 23, 2026 (none after), TANF cash, capital gains; health insurance premiums
+# are deducted except for categorically eligible households.
+# The parent's $30,000 of wages counts; the 17-year-old's $4,000 does not.
+- name: Case 1, only adults' income counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 42
+        immigration_status: CITIZEN
+        employment_income: 30_000
+        ssi: 0
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        employment_income: 4_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_liheap_countable_income: 30_000
+
+# Manual section 3.15: Social Security counts net of the Medicare premium.
+# $18,000 - 2026 standard Part B premium $202.90 x 12 = $2,434.80 -> $15,565.20.
+- name: Case 2, Social Security counts net of the Medicare Part B premium.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 70
+    immigration_status: CITIZEN
+    social_security_retirement: 18_000
+    medicare_part_b_premium: 2_434.80
+    ssi: 0
+    snap: 0
+    tanf: 0
+  output:
+    mt_liheap_countable_income: 15_565.20
+
+# ARM 37.70.407(1)(w), effective May 27, 2023 to May 22, 2026 (FFY2026):
+# gifts up to $50 a month per member are excluded, but a gift of $50 or more
+# counts in full. $600 a year = $50 a month counts; $599.88 a year = $49.99 a
+# month does not.
+- name: Case 3, gifts count only at fifty dollars a month or more per member.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MT, MT]
+    age: [45, 45]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [12_000, 12_000]
+    financial_assistance: [600, 599.88]
+    ssi: [0, 0]
+    snap: [0, 0]
+    tanf: [0, 0]
+  output:
+    mt_liheap_countable_income: [12_600, 12_000]
+
+# ARM 37.70.407(1)(bb); manual section 3.15: health insurance premiums are
+# deducted for a household that is not categorically eligible.
+# $30,000 - $1,800 out-of-pocket premiums - $1,200 payroll premiums = $27,000.
+- name: Case 4, health insurance premiums are deducted for a non-categorical household.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 34
+        immigration_status: CITIZEN
+        employment_income: 30_000
+        health_insurance_premiums_without_medicare_part_b: 1_800
+        pre_tax_health_insurance_premiums: 1_200
+        ssi: 0
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 5
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_liheap_categorical_eligibility: NONE
+    mt_liheap_countable_income: 27_000
+
+# Manual section 3.15: the premium deduction is not applied to categorically
+# eligible households. Same family receiving $200 a month of SNAP: $30,000.
+- name: Case 5, health insurance premiums are not deducted for a SNAP categorical household.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 34
+        immigration_status: CITIZEN
+        employment_income: 30_000
+        health_insurance_premiums_without_medicare_part_b: 1_800
+        pre_tax_health_insurance_premiums: 1_200
+        ssi: 0
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 5
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 2_400
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_liheap_categorical_eligibility: SNAP
+    mt_liheap_countable_income: 30_000
+
+# ARM 37.70.401(1) names capital gains as income: $20,000 + $2,000 = $22,000.
+- name: Case 6, capital gains count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 58
+    immigration_status: CITIZEN
+    employment_income: 20_000
+    long_term_capital_gains: 2_000
+    ssi: 0
+    snap: 0
+    tanf: 0
+  output:
+    mt_liheap_countable_income: 22_000
+
+# Manual section 3.15: TANF cash counts. $6,000 wages + $3,600 TANF = $9,600.
+- name: Case 7, TANF cash counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 26
+        immigration_status: CITIZEN
+        employment_income: 6_000
+        ssi: 0
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_liheap_countable_income: 9_600
+
+# Each income source is floored at zero: a $5,000 self-employment loss does not
+# offset $20,000 of wages.
+- name: Case 8, a self-employment loss does not reduce wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 50
+    immigration_status: CITIZEN
+    employment_income: 20_000
+    self_employment_income: -5_000
+    ssi: 0
+    snap: 0
+    tanf: 0
+  output:
+    mt_liheap_countable_income: 20_000
+
+# Manual section 3.12: "Only income from people in the household 18 years old
+# or older will be counted." Case 1 with an 18-year-old instead of a
+# 17-year-old: $30,000 + $4,000 = $34,000.
+- name: Case 9, an 18-year-old member's income counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 42
+        immigration_status: CITIZEN
+        employment_income: 30_000
+        ssi: 0
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+        employment_income: 4_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_liheap_countable_income: 34_000
+
+# ARM 37.70.407(1)(w) as amended effective May 23, 2026 excludes monetary
+# gifts, and 37.70.401(1) no longer lists them. In FFY2027 a member's $600 a
+# month of gifts ($7,200 a year, above both the old $50 rule and the manual's
+# $500 recurring test) is not counted: $12,000 of wages only.
+- name: Case 10, gifts are not counted from the May 2026 rule amendment.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 45
+    immigration_status: CITIZEN
+    employment_income: 12_000
+    financial_assistance: 7_200
+    ssi: 0
+    snap: 0
+    tanf: 0
+  output:
+    mt_liheap_countable_income: 12_000
