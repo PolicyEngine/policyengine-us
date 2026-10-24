@@ -1,20 +1,48 @@
 - name: Alabama work related itemized deductions unit test 1
   period: 2021
   input:
-    misc_deduction: 2_000
+    total_misc_deductions: 2_000
     al_agi: 70_000
     state_code: AL
   output:
     al_misc_deduction: 600
-#2000-70000*0.2=600
+#2000-70000*0.02=600
 
 
 - name: Alabama work related itemized deductions unit test 2
   period: 2021
   input:
-    misc_deduction: 7_000
+    total_misc_deductions: 7_000
     al_agi: 30_000
     state_code: AL
   output:
     al_misc_deduction: 6_400
 #7000-30000*0.02=6400
+
+# Ala. Code 40-18-15(a)(23); 2024 Form 40 instructions, Schedule A lines 20 to
+# 24: unreimbursed employee expenses (line 20) and other expenses such as tax
+# preparation fees (line 21), less 2% of Alabama AGI (line 23). The federal
+# miscellaneous deduction is zero from 2018.
+- name: Case 3, 2025 Alabama keeps the miscellaneous deduction the federal return suspends.
+  period: 2025
+  input:
+    unreimbursed_business_employee_expenses: 3_000
+    tax_preparation_fees: 500
+    al_agi: 50_000
+    state_code: AL
+  output:
+    misc_deduction: 0
+    # 3,500 - 2% * 50,000
+    al_misc_deduction: 2_500
+
+- name: Case 4, 2017 only Alabama's 2% floor applies, not the federal floor as well.
+  period: 2017
+  input:
+    adjusted_gross_income: 100_000
+    total_misc_deductions: 5_000
+    al_agi: 90_000
+    state_code: AL
+  output:
+    # Federal deduction 5,000 - 2,000 = 3,000; Alabama 5,000 - 1,800.
+    misc_deduction: 3_000
+    al_misc_deduction: 3_200
