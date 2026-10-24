@@ -29,7 +29,8 @@ candidates:
   readings:
     statute: The federal effective date is 2025-07-04.
     other: Alaska applies the changes from 2025-11-01.
-  example: In August 2025, PE-US applies the changes in Alaska as well as Texas.
+  example: In August 2025, the changes apply in Alaska as in Texas under the statute, which PE-US follows, but not
+    under Alaska's November 1, 2025 date.
   pe_us:
     follows: statute
     code:
@@ -1893,20 +1894,22 @@ candidates:
   readings:
     statute: The federal effective date is 2025-07-04.
     other: Hawaii applies the changes from 2025-11-01.
-  example: In August 2025, PE-US applies the changes in Hawaii as well as Texas.
+  example: In August 2025, the changes apply in Hawaii as in Texas under the statute, which PE-US follows, but not
+    under Hawaii's November 1, 2025 date.
   pe_us:
     follows: statute
     code:
     - policyengine_us/parameters/gov/states/hi/dhs/snap/work_requirements/abawd/hr1_in_effect.yaml
     - policyengine_us/variables/gov/usda/snap/eligibility/work_requirements/is_snap_abawd_hr1_in_effect.py
+    - policyengine_us/parameters/gov/usda/snap/work_requirements/abawd/waived_counties/hi.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/8861
     - https://github.com/PolicyEngine/policyengine-us/pull/10299
   state: unreviewed
   note: 'PE-US follows the statute: since #10299 Hawaii''s HR1 toggle is true from July 4, 2025, and the parameter''s
     comment records DHS''s announced November 1, 2025 start and says no good-faith exemption covering July through
-    October 2025 was found (hr1_in_effect.yaml, is_snap_abawd_hr1_in_effect.py). Hawaii''s area waiver ended June
-    30, 2025.'
+    October 2025 was found (hr1_in_effect.yaml, is_snap_abawd_hr1_in_effect.py). Hawaii''s Kauai and Maui area waiver
+    ended June 30, 2025 (waived_counties/hi.yaml).'
 - id: us-hi:snap-child-support-deduction
   program: snap
   years:
