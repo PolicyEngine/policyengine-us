@@ -21,7 +21,9 @@
       tax_unit:
         members: [person1]
         tax_unit_is_filer: true
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -41,7 +43,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 4.05
+        aca_magi: 40_500
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -60,7 +64,9 @@
       tax_unit:
         members: [person1]
         tax_unit_is_filer: true
-        aca_magi_fraction: 4.00
+        aca_magi: 40_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -78,7 +84,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -96,7 +104,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -114,7 +124,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2024: 10_000
     households:
       household:
         members: [person1]
@@ -132,7 +144,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2027: 10_000
     households:
       household:
         members: [person1]
@@ -154,7 +168,9 @@
       tax_unit:
         members: [person1, person2]
         tax_unit_is_filer: true
-        aca_magi_fraction: 3.00
+        aca_magi: 30_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1, person2]
@@ -176,7 +192,9 @@
       tax_unit:
         members: [person1]
         tax_unit_is_filer: true
-        aca_magi_fraction: 0
+        aca_magi: 0
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -195,7 +213,9 @@
       tax_unit:
         members: [person1]
         tax_unit_is_filer: true
-        aca_magi_fraction: 3.99
+        aca_magi: 39_900
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -216,7 +236,9 @@
       tax_unit:
         members: [person1]
         tax_unit_is_filer: true
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2026: 10_000
     households:
       household:
         members: [person1]
@@ -236,7 +258,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 4.01
+        aca_magi: 40_100
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -262,7 +286,9 @@
         tax_unit_is_filer: false
         # Nor does it take up the federal credit, so it files no return to claim it.
         takes_up_aca_if_eligible: false
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -344,3 +370,69 @@
         state_code: NM
   output:
     nm_premium_assistance_eligible: true
+
+- name: Case 14, $62,600 (exactly 400% of the 2025 guideline) is base-eligible.
+  # The PY2026 manual: "consumers with household income over 400% of the FPL do
+  # not qualify". is_aca_ptc_eligible is supplied to isolate the state ceiling.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        files_return_for_aca_ptc: true
+        aca_magi: 62_600
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    aca_magi_fraction: 4.00
+    nm_premium_assistance_eligible: true
+
+- name: Case 15, $62,600.47 (400.003%) is base-ineligible though truncated to 4.00.
+  # The PY2026 manual: "consumers with household income over 400% of the FPL do
+  # not qualify". is_aca_ptc_eligible is supplied to isolate the state ceiling.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        files_return_for_aca_ptc: true
+        aca_magi: 62_600.47
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    aca_magi_fraction: 4.00
+    nm_premium_assistance_eligible: false
+
+- name: Case 16, $62,755.56 (400.994%) is base-ineligible though truncated to 4.00.
+  # The PY2026 manual: "consumers with household income over 400% of the FPL do
+  # not qualify". is_aca_ptc_eligible is supplied to isolate the state ceiling.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        files_return_for_aca_ptc: true
+        aca_magi: 62_755.56
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    aca_magi_fraction: 4.00
+    nm_premium_assistance_eligible: false

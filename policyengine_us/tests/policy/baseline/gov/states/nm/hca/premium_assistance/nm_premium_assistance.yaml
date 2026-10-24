@@ -75,8 +75,9 @@
 # ---- Base band: gross-up OFF (>200% FPL) ----
 
 - name: Case 3, just above 200% FPL (2.01), no gross-up, target ~0.04%.
-  # benchmark = 6_000 (magi_frac 2.01 > 2.0). target_pct 0.0004.
-  # amount = max(0, 6_000 - 3_000 - 0.0004*30_000) = 6_000 - 3_000 - 12 = 2_988.
+  # 201% of the 2025 one-person guideline ($15,650) is 31_456.50.
+  # benchmark = 6_000 (ratio 2.01 > 2.0). target_pct 0.0004.
+  # amount = max(0, 6_000 - 3_000 - 0.0004*31_456.50) = 6_000 - 3_000 - 12.58 = 2_987.42.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -88,7 +89,7 @@
       tax_unit:
         members: [person1]
         tax_unit_is_filer: true
-        aca_magi: 30_000
+        aca_magi: 31_456.50
         aca_magi_fraction: 2.01
         slcsp: 6_000
         aca_ptc: 3_000
@@ -97,7 +98,7 @@
         members: [person1]
         state_code: NM
   output:
-    nm_premium_assistance: 2_988
+    nm_premium_assistance: 2_987.42
 
 - name: Case 4, 300% FPL, target 5%, no gross-up.
   # benchmark = 9_000. target_pct 0.05. term = 0.05*45_000 = 2_250.
@@ -114,6 +115,9 @@
         members: [person1]
         tax_unit_is_filer: true
         aca_magi: 45_000
+        # The case's arithmetic assumes a $15,000 prior-year guideline.
+        tax_unit_fpg:
+          2025: 15_000
         aca_magi_fraction: 3.00
         slcsp: 9_000
         aca_ptc: 4_000
@@ -139,6 +143,9 @@
         members: [person1]
         tax_unit_is_filer: true
         aca_magi: 60_000
+        # The case's arithmetic assumes a $15,000 prior-year guideline.
+        tax_unit_fpg:
+          2025: 15_000
         aca_magi_fraction: 4.00
         slcsp: 10_000
         aca_ptc: 4_000
@@ -165,6 +172,9 @@
       tax_unit:
         members: [person1]
         aca_magi: 39_000
+        # The case's arithmetic assumes a $15,600 prior-year guideline.
+        tax_unit_fpg:
+          2025: 15_600
         aca_magi_fraction: 2.50
         slcsp: 6_000
         aca_ptc: 6_000
@@ -223,6 +233,9 @@
         members: [person1]
         filing_status: SINGLE
         aca_magi: 120_000
+        # The case's arithmetic assumes a $24,000 prior-year guideline.
+        tax_unit_fpg:
+          2025: 24_000
         aca_magi_fraction: 5.00
         slcsp: 8_000
         aca_ptc: 0
@@ -235,7 +248,8 @@
 
 - name: Case 9, MIH filer using married-filing-separately is ineligible -> $0.
   # Federal PTC criteria (except income) exclude separate filers; MIH inherits
-  # that exclusion, so despite pays_aca_premium the amount is 0.
+  # that exclusion, so despite pays_aca_premium the amount is 0. 420% of the 2025
+  # two-person guideline ($21,150) is 88_830.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -252,7 +266,7 @@
       tax_unit:
         members: [person1, person2]
         filing_status: SEPARATE
-        aca_magi: 70_000
+        aca_magi: 88_830
         aca_magi_fraction: 4.20
         slcsp: 12_000
         aca_ptc: 0
@@ -277,6 +291,9 @@
       tax_unit:
         members: [person1]
         aca_magi: 39_000
+        # The case's arithmetic assumes a $15,600 prior-year guideline.
+        tax_unit_fpg:
+          2025: 15_600
         aca_magi_fraction: 2.50
         slcsp: 6_000
         aca_ptc: 3_000
@@ -298,7 +315,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi: 39_000
+        aca_magi: 37_650  # 250% of the 2024 one-person guideline ($15,060)
         aca_magi_fraction: 2.50
         slcsp: 6_000
         aca_ptc: 3_000
@@ -350,7 +367,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi: 22_000
+        aca_magi: 23_475  # 150% of the 2025 one-person guideline ($15,650)
         aca_magi_fraction: 1.50
         slcsp: 0
         aca_ptc: 0
@@ -375,7 +392,7 @@
       tax_unit:
         members: [person1]
         filing_status: SINGLE
-        aca_magi: 70_000
+        aca_magi: 70_425  # 450% of the 2025 one-person guideline ($15,650)
         aca_magi_fraction: 4.50
         slcsp: 0
         aca_ptc: 0
@@ -405,6 +422,9 @@
         filing_status: SINGLE
         tax_unit_is_filer: true
         aca_magi: 60_000
+        # The case's arithmetic assumes a $15,000 prior-year guideline.
+        tax_unit_fpg:
+          2025: 15_000
         aca_magi_fraction: 4.00
         slcsp: 10_000
         aca_ptc: 0
@@ -418,8 +438,9 @@
 - name: Case 16, base->MIH handoff just above 400% FPL (4.01) routes to MIH.
   # magi_frac 4.01 > 4.0 -> base ineligible, MIH eligible. is_aca_ptc_eligible
   # is false above 400% FPL, so MIH uses pays_aca_premium & non-separate filing.
-  # MIH amount = max(0, 10_000 - 0 - 0.085*60_150) = max(0, 10_000 - 5_112.75)
-  # = 4_887.25. Same 8.5% rate as the base 300-400% top, so the handoff is
+  # 401% of the 2025 one-person guideline ($15,650) is 62_756.50.
+  # MIH amount = max(0, 10_000 - 0 - 0.085*62_756.50) = max(0, 10_000 - 5_334.30)
+  # = 4_665.70. Same 8.5% rate as the base 300-400% top, so the handoff is
   # nearly continuous here; the routing branch is what changes.
   period: 2026
   absolute_error_margin: 0.01
@@ -434,7 +455,7 @@
         members: [person1]
         filing_status: SINGLE
         tax_unit_is_filer: true
-        aca_magi: 60_150
+        aca_magi: 62_756.50
         aca_magi_fraction: 4.01
         slcsp: 10_000
         aca_ptc: 0
@@ -443,13 +464,13 @@
         members: [person1]
         state_code: NM
   output:
-    nm_premium_assistance: 4_887.25
+    nm_premium_assistance: 4_665.70
 
 - name: Case 17, MIH unit where only one member pays the ACA premium is eligible.
   # No member is is_aca_ptc_eligible (base gate fails), but person1 pays_aca_premium
   # so tax_unit.any(pays_aca_premium) is true -> MIH gate passes. Non-separate
-  # filing. magi_frac 4.20 > 4.0.
-  # MIH amount = max(0, 12_000 - 0 - 0.085*66_000) = max(0, 12_000 - 5_610) = 6_390.
+  # filing. 420% of the 2025 two-person guideline ($21,150) is 88_830; ratio 4.20 > 4.0.
+  # MIH amount = max(0, 12_000 - 0 - 0.085*88_830) = max(0, 12_000 - 7_550.55) = 4_449.45.
   # Demonstrates the base gate (needs is_aca_ptc_eligible) vs MIH gate
   # (needs pays_aca_premium) difference within one household.
   period: 2026
@@ -469,7 +490,7 @@
         members: [person1, person2]
         filing_status: JOINT
         tax_unit_is_filer: true
-        aca_magi: 66_000
+        aca_magi: 88_830
         aca_magi_fraction: 4.20
         slcsp: 12_000
         aca_ptc: 0
@@ -478,14 +499,17 @@
         members: [person1, person2]
         state_code: NM
   output:
-    nm_premium_assistance: 6_390
+    nm_premium_assistance: 4_449.45
 
 - name: Case 18, negative MAGI in the base band is clamped to zero (guarded).
-  # magi_frac 3.00 -> target% 0.05, no gross-up, benchmark = 9_000.
+  # aca_magi_fraction is supplied at 3.00 only so the target percentage is
+  # nonzero (0.05) and the clamp matters. Eligibility and the gross-up read the
+  # exact ratio, max(-10_000, 0) / FPG = 0, which is up to 200% FPL, so the PY2026
+  # gross-up applies: benchmark = 9_000 * 1.1 = 9_900.
   # income is clamped to max(-10_000, 0) = 0, so the target term is 0.05*0 = 0.
-  # amount = max(0, 9_000 - 4_000 - 0) = 5_000. Without the clamp the
-  # -target%*income term would ADD 500, inflating the top-up to 5_500 above the
-  # benchmark - aca_ptc residual (= 5_000); the income>=0 guard prevents that.
+  # amount = max(0, 9_900 - 4_000 - 0) = 5_900. Without the clamp the
+  # -target%*income term would ADD 500, inflating the top-up to 6_400 above the
+  # benchmark - aca_ptc residual (= 5_900); the income>=0 guard prevents that.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -506,7 +530,7 @@
         members: [person1]
         state_code: NM
   output:
-    nm_premium_assistance: 5_000
+    nm_premium_assistance: 5_900
 
 - name: Case 19, PY2027 carry-forward year pays the same base-band top-up.
   # Same schedule and parameters carry forward through PY2027. 300% FPL, target 5%,
@@ -523,6 +547,9 @@
         members: [person1]
         tax_unit_is_filer: true
         aca_magi: 45_000
+        # The case's arithmetic assumes a $15,000 prior-year guideline.
+        tax_unit_fpg:
+          2026: 15_000
         aca_magi_fraction: 3.00
         slcsp: 9_000
         aca_ptc: 4_000
@@ -554,6 +581,9 @@
         members: [person1]
         tax_unit_is_filer: true
         aca_magi: 45_000
+        # The case's arithmetic assumes a $15,000 prior-year guideline.
+        tax_unit_fpg:
+          2027: 15_000
         aca_magi_fraction: 3.00
         slcsp: 9_000
         aca_ptc: 4_000
@@ -582,7 +612,9 @@
         members: [person1]
         filing_status: SINGLE
         tax_unit_is_filer: true
-        aca_magi: 62_000
+        aca_magi: 63_382.50  # 405% of the pinned $15,650 guideline
+        tax_unit_fpg:
+          2027: 15_650
         aca_magi_fraction: 4.05
         slcsp: 10_000
         aca_ptc: 0
@@ -599,11 +631,12 @@
   # In the PY2026 baseline federal APTC is $0 above 400% FPL, so the - aca_ptc
   # term in the MIH branch is never exercised by any other case. Here aca_ptc is
   # injected non-zero (a reform-style input restoring APTC above 400% FPL) to
-  # drive the subtraction. magi_frac 4.50 > 4.0 -> MIH; no gross-up on MIH.
-  # amount = max(0, 10_000 - 2_000 - 0.085*70_000)
-  #        = max(0, 10_000 - 2_000 - 5_950) = 2_050.
+  # drive the subtraction. 450% of the 2025 one-person guideline ($15,650) is
+  # 70_425; ratio 4.50 > 4.0 -> MIH; no gross-up on MIH.
+  # amount = max(0, 10_000 - 2_000 - 0.085*70_425)
+  #        = max(0, 10_000 - 2_000 - 5_986.125) = 2_013.875.
   # Documents the reform-scenario behavior: the state subsidy nets any restored
-  # APTC (2_050 here vs 4_050 if the - aca_ptc term were dropped).
+  # APTC (2_013.875 here vs 4_013.875 if the - aca_ptc term were dropped).
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -617,7 +650,7 @@
         members: [person1]
         filing_status: SINGLE
         tax_unit_is_filer: true
-        aca_magi: 70_000
+        aca_magi: 70_425
         aca_magi_fraction: 4.50
         slcsp: 10_000
         aca_ptc: 2_000
@@ -626,7 +659,7 @@
         members: [person1]
         state_code: NM
   output:
-    nm_premium_assistance: 2_050
+    nm_premium_assistance: 2_013.875
 
 # ---- Mid-bracket target interpolation (base band) ----
 
@@ -634,8 +667,9 @@
   # magi_frac 2.75 lands mid-way in the 250-300% band (initial 2%, final 5%):
   # position = (2.75 - 2.5) / (3.0 - 2.5) = 0.5, so target% = 0.02 + 0.5*0.03
   # = 0.035. No gross-up (2.75 > 2.0). benchmark = 8_000.
-  # amount = max(0, 8_000 - 1_000 - 0.035*43_000)
-  #        = max(0, 8_000 - 1_000 - 1_505) = 5_495.
+  # 275% of the 2025 one-person guideline ($15,650) is 43_037.50.
+  # amount = max(0, 8_000 - 1_000 - 0.035*43_037.50)
+  #        = max(0, 8_000 - 1_000 - 1_506.3125) = 5_493.6875.
   # Exercises the within-band searchsorted interpolation at a non-endpoint FPL,
   # complementing the band-endpoint cases (200/250/300/400% FPL) above.
   period: 2026
@@ -649,7 +683,7 @@
       tax_unit:
         members: [person1]
         tax_unit_is_filer: true
-        aca_magi: 43_000
+        aca_magi: 43_037.50
         aca_magi_fraction: 2.75
         slcsp: 8_000
         aca_ptc: 1_000
@@ -658,25 +692,27 @@
         members: [person1]
         state_code: NM
   output:
-    nm_premium_assistance: 5_495
+    nm_premium_assistance: 5_493.6875
 
 # ---- Derived 400%-FPL boundary pair (A10) ----
 # These two cases do NOT inject aca_magi/aca_magi_fraction/is_aca_ptc_eligible;
 # they drive the whole federal ACA chain from raw employment_income for a single
 # NM filer in 2026 and inject only slcsp. The pair straddles the 400% FPL cliff:
-# 62_700 -> ~4.00 (base band, MIH-ineligible) and 62_800 -> ~4.01 (base-
-# ineligible, MIH-eligible). Above 400% FPL the federal APTC and the base target
-# schedule both bind at the cap, so all three benefits round to 0 at 62_700.
-# EXPECTED TO CHANGE once upstream #9264 lands (the aca_magi_fraction whole-%
-# truncation fix): the exact fraction each wage maps to may shift by a cent of
-# FPL, moving one case across the 4.00 boundary.
+# 62_700 -> 4.00 truncated and 62_800 -> 4.01 truncated; both are base-
+# ineligible, MIH-eligible on the exact ratio: 62_700 is 400.64% and 62_800 is
+# 401.28% of $15,650, both "above 400% of the FPL" (Addendum 1). Truncation maps
+# 62_700 to 4.00, which once left it in neither component.
 
-- name: Case 24, derived single NM filer 2026 at ~400% FPL (base band, benefits 0).
-  # employment_income 62_700 derives aca_magi_fraction ~4.00; base-eligible but
-  # the 8.5% top-of-schedule target plus the derived federal APTC leave no state
-  # top-up. MIH-ineligible (not > 4.0). Paired with Case 25 across the cliff.
-  # May move when #9264 lands (aca_magi_fraction whole-% truncation fix).
+- name: Case 24, derived single NM filer 2026 at 400.64% FPL is a Middle Income Household.
+  # employment_income 62_700 is 400.64% of the 2025 one-person guideline
+  # ($15,650); aca_magi_fraction truncates to 4.00. The federal credit stops above
+  # 400%, so the base program (which needs is_aca_ptc_eligible) does not apply.
+  # Addendum 1 covers income "above 400% of the FPL", decided on the exact ratio,
+  # so the household is MIH-eligible (main left it in neither component):
+  # MIH amount = max(0, 8_000 - 0 - 0.085*62_700) = 8_000 - 5_329.50 = 2_670.50.
+  # Paired with Case 25 across the cliff.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -693,13 +729,14 @@
         members: [person1]
         state_code: NM
   output:
-    nm_premium_assistance: 0
+    nm_premium_assistance_eligible: false
+    nm_premium_assistance_mih_eligible: true
+    nm_premium_assistance: 2_670.50
 
 - name: Case 25, derived single NM filer 2026 at ~401% FPL (MIH-eligible).
   # employment_income 62_800 derives aca_magi_fraction ~4.01 -> base-ineligible,
   # MIH-eligible (> 4.0). The MIH 8.5% cap gives a small positive top-up against
   # the 8_000 benchmark. Paired with Case 24 across the 400% FPL cliff.
-  # May move when #9264 lands (aca_magi_fraction whole-% truncation fix).
   period: 2026
   input:
     people:
@@ -809,8 +846,9 @@
 
 - name: Case 29, negative MAGI in the MIH band is clamped to zero (guarded mirror).
   # Base-band Case 18 covers the negative-income clamp for the base branch; this
-  # mirrors it for the MIH branch. magi_frac 4.50 > 4.0 -> MIH. income clamps to
-  # max(-20_000, 0) = 0, so the 0.085*income term is 0.
+  # mirrors it for the MIH branch. Negative MAGI is 0% of the guideline on the
+  # exact ratio, so MIH eligibility is supplied to reach the MIH amount's clamp.
+  # income clamps to max(-20_000, 0) = 0, so the 0.085*income term is 0.
   # amount = max(0, 10_000 - 0 - 0.085*0) = 10_000. Without the clamp the
   # -0.085*(-20_000) term would ADD 1_700 above the slcsp, inflating the cap.
   period: 2026
@@ -826,6 +864,7 @@
         members: [person1]
         filing_status: SINGLE
         tax_unit_is_filer: true
+        nm_premium_assistance_mih_eligible: true
         aca_magi: -20_000
         aca_magi_fraction: 4.50
         slcsp: 10_000
@@ -887,3 +926,138 @@
     # Derived SLCSP from the Bernalillo County rating area yields a positive base
     # top-up. Value is data-driven from the premium table.
     nm_premium_assistance: 2_645.60
+
+- name: Case 32, $31,300 (exactly 200% of the 2025 guideline) keeps the PY2026 gross-up.
+  # PY2026: "up to 200% FPL" (the next range starts at "200.01"); PY2027: "under
+  # 200% (< 200%)". Eligibility and a 0% target are supplied, so the amount shows
+  # only the gross-up: 6_000 * 1.1 - 4_000 = 2_600.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nm_premium_assistance_eligible: true
+        nm_premium_assistance_mih_eligible: false
+        nm_premium_assistance_target_contribution_percentage: 0
+        aca_magi: 31_300
+        slcsp: 6_000
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    aca_magi_fraction: 2.00
+    nm_premium_assistance: 2_600
+
+- name: Case 33, $31,300.47 (200.003%) gets no PY2026 gross-up though truncated to 2.00.
+  # PY2026: "up to 200% FPL" (the next range starts at "200.01"); PY2027: "under
+  # 200% (< 200%)". Eligibility and a 0% target are supplied, so the amount shows
+  # only the gross-up: 6_000 - 4_000 = 2_000.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nm_premium_assistance_eligible: true
+        nm_premium_assistance_mih_eligible: false
+        nm_premium_assistance_target_contribution_percentage: 0
+        aca_magi: 31_300.47
+        slcsp: 6_000
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    aca_magi_fraction: 2.00
+    nm_premium_assistance: 2_000
+
+- name: Case 34, $31,455.56 (200.994%) gets no PY2026 gross-up though truncated to 2.00.
+  # PY2026: "up to 200% FPL" (the next range starts at "200.01"); PY2027: "under
+  # 200% (< 200%)". Eligibility and a 0% target are supplied, so the amount shows
+  # only the gross-up: 6_000 - 4_000 = 2_000.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nm_premium_assistance_eligible: true
+        nm_premium_assistance_mih_eligible: false
+        nm_premium_assistance_target_contribution_percentage: 0
+        aca_magi: 31_455.56
+        slcsp: 6_000
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    aca_magi_fraction: 2.00
+    nm_premium_assistance: 2_000
+
+- name: Case 35, $31,919 (199.994% of the 2026 guideline) keeps the PY2027 gross-up.
+  # PY2026: "up to 200% FPL" (the next range starts at "200.01"); PY2027: "under
+  # 200% (< 200%)". Eligibility and a 0% target are supplied, so the amount shows
+  # only the gross-up: 6_000 * 1.1 - 4_000 = 2_600.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nm_premium_assistance_eligible: true
+        nm_premium_assistance_mih_eligible: false
+        nm_premium_assistance_target_contribution_percentage: 0
+        aca_magi: 31_919
+        slcsp: 6_000
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    aca_magi_fraction: 1.99
+    nm_premium_assistance: 2_600
+
+- name: Case 36, $31,920 (exactly 200% of the 2026 guideline) gets no PY2027 gross-up.
+  # PY2026: "up to 200% FPL" (the next range starts at "200.01"); PY2027: "under
+  # 200% (< 200%)". Eligibility and a 0% target are supplied, so the amount shows
+  # only the gross-up: 6_000 - 4_000 = 2_000.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nm_premium_assistance_eligible: true
+        nm_premium_assistance_mih_eligible: false
+        nm_premium_assistance_target_contribution_percentage: 0
+        aca_magi: 31_920
+        slcsp: 6_000
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    aca_magi_fraction: 2.00
+    nm_premium_assistance: 2_000
