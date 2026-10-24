@@ -2114,7 +2114,7 @@ candidates:
     to: 2026
     type: program
     note: program year as the program defines it
-  question: Is RCAP's unlicensed-facility per diem $27 under the in-force rule or $37 under FSSA's guide?
+  question: Is RCAP's unlicensed-facility per diem $27 under the in-force rule or the $37 implied by FSSA's guide?
   sources:
   - kind: regulation
     citation: 455 IAC 1-3-3(a) (readopted 11/13/2019)
@@ -2124,7 +2124,8 @@ candidates:
     url: https://www.in.gov/fssa/ddars/files/RCAP-Provider-Guide.pdf
   readings:
     statute: The rule gives $27 daily.
-    other: The guide gives $37 daily.
+    other: The guide's $1,125.41 county-home monthly income limit implies $37 daily after truncating $37 times 365/12
+      to cents.
   example: $27 versus $37 daily.
   pe_us:
     follows: unknown
