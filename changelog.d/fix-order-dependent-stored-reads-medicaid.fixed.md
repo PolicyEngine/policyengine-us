@@ -1,0 +1,1 @@
+The Medicaid enrollment that SSI state supplements read (medicaid_enrolled_for_ssi_state_supplement) now reads medicaid_enrolled directly only when it was supplied, so whether medicaid_enrolled had already been calculated no longer changes it.
