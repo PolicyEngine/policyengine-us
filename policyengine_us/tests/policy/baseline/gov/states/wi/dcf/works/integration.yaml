@@ -36,7 +36,7 @@
         is_tax_unit_head_or_spouse: true
         tanf_gross_earned_income: 1_000
       person2:
-        age: 0  # Newborn (monthly_age = 0 ≤ 2)
+        age: 0  # Newborn (0 x 12 = 0 months ≤ 2)
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -211,7 +211,7 @@
         is_tax_unit_head_or_spouse: true
         tanf_gross_earned_income: 0
       person2:
-        age: 3  # monthly_age = 3 > 2 threshold
+        age: 3  # 3 x 12 = 36 months > 2 threshold
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -277,6 +277,31 @@
         state_code: WI
   output:
     wi_works_countable_income: 2_000
+    wi_works_eligible: true
+    wi_works_placement: CSJ
+    wi_works: 653
+
+- name: Case 12, child aged 1 year (above CMC threshold) gets CSJ.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 27
+        is_tax_unit_head_or_spouse: true
+        tanf_gross_earned_income: 0
+      person2:
+        age: 1  # 1 x 12 = 12 months > 2 threshold
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # CMC covers a custodial parent of a child 8 weeks old or less
+    # (Wis. Stat. 49.148(1m)(a)1); a 1-year-old gets the $653 CSJ grant.
     wi_works_eligible: true
     wi_works_placement: CSJ
     wi_works: 653
