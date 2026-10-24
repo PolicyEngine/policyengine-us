@@ -1,0 +1,24 @@
+description: >-
+  Arkansas excludes these federal interest components from itemized deductions
+  under its fixed January 1, 2017, Internal Revenue Code conformity. Act 155 of
+  2017 section 19 replaced the earlier January 1, 2015, conformity date, but
+  section 25 applies the change retroactively from tax year 2015. Premiums
+  therefore remain deductible for 2015 and 2016 under the federal extension
+  enacted in P.L. 114-113, division Q, section 152.
+values:
+  1900-01-01: []
+  2017-01-01:
+    - deductible_mortgage_insurance_premiums
+metadata:
+  unit: list
+  period: year
+  label: Arkansas disallowed federal interest components
+  reference:
+    - title: "Arkansas Act 155 of 2017, sections 19 and 25, interest conformity and retroactive effective date #page 9-10"
+      href: https://arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2017R%2FPublic%2FACT155.pdf#page=9
+    - title: Arkansas Act 580 of 2015, section 17, earlier January 1, 2015, interest conformity date
+      href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2015%2FPublic%2FACT580.pdf#page=7
+    - title: P.L. 114-113, division Q, section 152, mortgage insurance premium extension through 2016
+      href: https://www.govinfo.gov/content/pkg/PLAW-114publ113/html/PLAW-114publ113.htm
+    - title: 2021 Arkansas Individual Income Tax Instructions, AR3 interest expense
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/2021_AR1000F_and_AR1000NR_Instructions.pdf#page=20

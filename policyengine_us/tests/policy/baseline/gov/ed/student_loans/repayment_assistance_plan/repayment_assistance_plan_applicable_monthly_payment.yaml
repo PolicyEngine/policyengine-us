@@ -1,0 +1,97 @@
+# 20 U.S.C. 1087e(q)(4)(B)(i)-(ii); 34 CFR 685.209(b)(3), (f)(5), (g)(3)(ii).
+# Applicable monthly payment = base payment / 12 - $50 per dependent claimed on
+# the return, and at least $10. Spousal proration and the final-payment cap are
+# applied per borrower in repayment_assistance_plan_payment.
+
+- name: Case 1, two dependents reduce the monthly payment by 100 dollars.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+      person2:
+        age: 8
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 55_000
+  output:
+    # 5% x 55,000 = 2,750 / 12 = 229.1667; 229.1667 - 2 x 50 = 129.1667.
+    repayment_assistance_plan_applicable_monthly_payment: 129.17
+
+- name: Case 2, the dependent reduction cannot push the payment below 10 dollars.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+      person2:
+        age: 10
+      person3:
+        age: 8
+      person4:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 30_000
+  output:
+    # 2% x 30,000 ("not more than $30,000") = 600 / 12 = 50; 50 - 3 x 50 = -100;
+    # the (q)(4)(B)(ii) minimum raises it to 10.
+    repayment_assistance_plan_applicable_monthly_payment: 10
+
+- name: Case 3, the non-monotone first bracket falls to the 10 dollar minimum.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 10_001
+  output:
+    # 1% x 10,001 = 100.01 / 12 = 8.33, below the minimum -> 10.
+    repayment_assistance_plan_applicable_monthly_payment: 10
+
+- name: Case 4, a tax unit with no eligible borrower has no applicable payment.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 55_000
+  output:
+    repayment_assistance_plan_applicable_monthly_payment: 0
+
+- name: Case 5, no applicable payment before the plan starts in July 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 55_000
+  output:
+    # 5% x 55,000 = 2,750 / 12 = 229.1667 from July.
+    repayment_assistance_plan_applicable_monthly_payment:
+      2026-06: 0
+      2026-07: 229.17

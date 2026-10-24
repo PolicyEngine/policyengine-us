@@ -292,3 +292,23 @@
         state_code: NY
   output:
     ny_ccap_countable_income: -60_000
+
+# 404.5(b)(5)(vii): pensions and annuities are countable. A military Survivor
+# Benefit Plan annuity is recorded in military_retirement_pay_survivors.
+- name: Case 16, a military Survivor Benefit Plan annuity is countable.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        military_retirement_pay_survivors: 6_000
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 16_000
