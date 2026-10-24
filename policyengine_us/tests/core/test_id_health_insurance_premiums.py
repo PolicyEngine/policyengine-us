@@ -249,7 +249,11 @@ def test_deleted_medical_input_recalculated_federal_first():
                 "dependent": {
                     "age": {year: 20},
                     "is_tax_unit_dependent": {year: True},
-                    "health_insurance_premiums": {year: 500},
+                    # Other costs, which the federal subtotal counts for every
+                    # member and Idaho's claimant worksheet leaves out, keep
+                    # the two amounts apart. A dependent's own premiums would
+                    # not: neither counts them.
+                    "other_medical_expenses": {year: 500},
                 },
             },
             "tax_units": {
@@ -273,7 +277,7 @@ def test_deleted_medical_input_recalculated_federal_first():
 
     # Federal first: 3,000 + 500 - 30,000 * 7.5% = 1,250.
     assert simulation.calculate("medical_expense_deduction", year).tolist() == [1_250]
-    # Idaho excludes the dependent's payment: medical overlap is
+    # Idaho excludes the dependent's costs: medical overlap is
     # 3,000 - 30,000 * 7.5% = 750, leaving 3,000 - 750 = 2,250.
     # Core's provenance defect before 3.32.27 uses 1,250 and returns 1,750.
     assert simulation.calculate(

@@ -17,11 +17,16 @@ class nd_renters_refund_income(Variable):
         "Renter refund income after unreimbursed medical costs actually paid. "
         "The paid-cost base restores the self-employed premiums excluded from "
         "the federal subtotal: by the federal formula, or as supplied with a "
-        "caller's subtotal in itemized_medical_expenses_applied_exclusion. A "
-        "caller-supplied subtotal without that amount is used unchanged, "
-        "including when components are supplied. Premium inputs use payer "
+        "caller's subtotal in itemized_medical_expenses_applied_exclusion. For "
+        "a caller-supplied subtotal without that amount no exclusion is "
+        "inferred, even when components are supplied. Premium inputs use payer "
         "attribution: each person reports premiums that person paid, including "
-        "family coverage regardless of whom it covers."
+        "family coverage regardless of whom it covers. The federal subtotal "
+        "counts only the head's and spouse's premiums, while NDCC "
+        "57-02-08.1(5)(c) also takes out medical expenses paid by the "
+        "applicant's dependents, so their own premium payments are added "
+        "back, to a supplied subtotal as well, since a Schedule A amount never "
+        "includes them."
     )
 
     def formula(tax_unit, period, parameters):
@@ -34,7 +39,7 @@ class nd_renters_refund_income(Variable):
         excluded_premiums = add(tax_unit, period, ["pre_tax_health_insurance_premiums"])
         # Restore premiums excluded from the federal subtotal (computed, or
         # supplied with a caller's subtotal).
-        medical_expenses = add(
+        filer_medical_expenses = add(
             tax_unit,
             period,
             [
@@ -42,6 +47,16 @@ class nd_renters_refund_income(Variable):
                 "itemized_medical_expenses_applied_exclusion",
             ],
         )
+        # NDCC 57-02-08.1(5)(c) takes out medical expenses "paid during the
+        # year by the applicant or the applicant's dependent". The federal
+        # subtotal leaves out the dependents' own premium payments, so add
+        # them back.
+        person = tax_unit.members
+        dependent_premiums = tax_unit.sum(
+            person("medical_expense_health_insurance_premiums", period)
+            * person("is_tax_unit_dependent", period)
+        )
+        medical_expenses = filer_medical_expenses + dependent_premiums
         return max_(
             add(tax_unit, period, p.income_sources)
             - excluded_premiums

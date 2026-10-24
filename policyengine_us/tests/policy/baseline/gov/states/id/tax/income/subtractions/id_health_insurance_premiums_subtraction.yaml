@@ -244,7 +244,9 @@
         members: [head, dependent]
         state_code: ID
   output:
-    medical_expense_deduction: 1_250
+    # The federal deduction also leaves out the dependent's own 500
+    # (IRC 213(a)): 3,000 - 7.5% of 30,000.
+    medical_expense_deduction: 750
     id_health_insurance_premiums_medical_deduction: 750
     id_itemizes: true
     id_health_insurance_premiums_subtraction: 2_250
@@ -273,7 +275,9 @@
         members: [head, dependent]
         state_code: ID
   output:
-    medical_expense_deduction: 250
+    # The federal deduction also leaves out the dependent's own 500
+    # (IRC 213(a)): 2,000 is below the 2,250 floor.
+    medical_expense_deduction: 0
     id_health_insurance_premiums_medical_deduction: 0
     id_itemizes: true
     id_health_insurance_premiums_subtraction: 2_000
@@ -309,7 +313,9 @@
         members: [head, spouse, dependent]
         state_code: ID
   output:
-    medical_expense_deduction: 5_500
+    # Federal: the filers' 5,000 of premiums and every member's 6,000 of
+    # other costs, less the 6,000 floor; not the dependent's own 500.
+    medical_expense_deduction: 5_000
     id_health_insurance_premiums_medical_deduction: 1_000
     id_itemizes: true
     id_health_insurance_premiums_subtraction: 4_000
@@ -424,7 +430,9 @@
         members: [head, dependent]
         state_code: ID
   output:
-    medical_expense_deduction: 1_250
+    # The federal deduction also leaves out the dependent's own 500
+    # (IRC 213(a)): 3,000 - 7.5% of 30,000.
+    medical_expense_deduction: 750
     id_health_insurance_premiums_medical_deduction: 750
     id_health_insurance_premiums_subtraction: 2_250
 

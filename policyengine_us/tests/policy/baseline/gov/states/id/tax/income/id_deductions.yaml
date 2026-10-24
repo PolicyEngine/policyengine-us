@@ -64,7 +64,7 @@
     id_deductions: 1_000
 
 - name: Claimant medical overlap determines the combined deduction election
-  # Form 39R worksheet: claimant medical deduction is $750, not $1,250.
+  # Form 39R worksheet: claimant medical deduction is $750.
   # Itemized route: $16,750 + $2,250 = $19,000.
   # Standard route: $15,750 + $3,000 = $18,750.
   period: 2025
@@ -89,7 +89,9 @@
         members: [head, dependent]
         state_code: ID
   output:
-    medical_expense_deduction: 1_250
+    # The federal deduction also leaves out the dependent's own 500
+    # (IRC 213(a)): 3,000 - 7.5% of 30,000.
+    medical_expense_deduction: 750
     id_health_insurance_premiums_medical_deduction: 750
     id_itemizes: true
     id_deductions: 16_750

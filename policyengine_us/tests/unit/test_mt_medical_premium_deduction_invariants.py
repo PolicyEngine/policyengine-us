@@ -55,8 +55,9 @@ independently. For every tax unit:
    Montana AGI is unchanged by those increases (asserted).
 5. Pre-tax premiums never change lines 2 or 3.
 6. Line 1 base: other expenses equal federal itemized medical expenses plus
-   the self-employed premiums those exclude, less the premiums. Line 1
-   therefore tracks the federal definition apart from the premiums.
+   the self-employed premiums those exclude, less the filers' premiums (the
+   federal subtotal leaves out a dependent's own). Line 1 therefore tracks
+   the federal definition apart from the premiums.
 7. Differential (2021-2023): for single filers whose deduction is recorded
    per person, the joint and separate variants agree.
 8. From 2024 the joint deduction is the federal medical expense deduction and
@@ -448,7 +449,7 @@ def _check(units, year, mode):
         _unit_sum(run, other),
         run["itemized_medical_expenses"]
         + run["itemized_medical_expenses_applied_exclusion"]
-        - _unit_sum(run, premium)
+        - _unit_sum(run, filer * premium)
         - run["itemized_medical_expenses_long_term_care_premiums"],
         atol=TOLERANCE,
     )
