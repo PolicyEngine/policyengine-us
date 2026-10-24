@@ -22,9 +22,19 @@
 # on its repository's default branch. Field reference: tools/README.md,
 # "Source-conflict register".
 #
+# Every alternative has an id. follows, adopts and pins name `reading` or an
+# alternative id, never a position. Code outside RuleSpec (implementations) may
+# adopt a reading other than the entry's own, with a basis and optionally its
+# own ruling; it lags only when what it follows differs from what it adopts.
+# Each source has a kind: corpus texts take it from their document class (with
+# text_kinds to narrow it), pending_texts and unpublished_sources state it.
+# years bounds the disagreement; conflict: resolved (with a resolution) marks
+# one a legislature or agency has closed.
+#
 # The register is public: no people's names, decision-queue ids, session
 # ids, local paths or email addresses. ruling.by is an organisation and
-# ruling.record a public PR, issue or comment.
+# ruling.record a public PR, issue or comment. An unpublished source
+# (correspondence) is described, never quoted or named.
 version: 1
 entries:
 - id: oasdi-ret-negative-nese-proration
@@ -35,6 +45,7 @@ entries:
   texts: []
   pending_texts:
   - citation: POMS RS 02501.080B.2.c
+    kind: manual
     url: https://secure.ssa.gov/poms.nsf/lnx/0302501080
     snapshot:
       repo: PolicyEngine/microcosm-dynamics
@@ -44,6 +55,7 @@ entries:
     excerpt: prorate the net earnings (or loss) equally over all months the beneficiary was engaged in
       self-employment
   - citation: POMS RS 02501.080B.2.c (note)
+    kind: manual
     url: https://secure.ssa.gov/poms.nsf/lnx/0302501080
     snapshot:
       repo: PolicyEngine/microcosm-dynamics
@@ -54,7 +66,8 @@ entries:
       multiplying by the months before the beneficiary attains FRA.
   reading: Floor the monthly NESE share to whole dollars, losses included (the literal "round down").
   alternatives:
-  - reading: 'Drop the cents: truncate a negative monthly share toward zero.'
+  - id: drop-the-cents
+    reading: 'Drop the cents: truncate a negative monthly share toward zero.'
     effect: In the invented case the drop-the-cents reading withholds $1 more for the year.
   basis: The note's last instruction is "round down", which for a negative amount is the mathematical
     floor; the two readings agree on every published positive example.
@@ -77,14 +90,14 @@ entries:
     name: test_negative_nese_floor_and_drop_cents_readings_are_explicit
     pins:
     - reading
-    - alternatives[0]
+    - drop-the-cents
   - repo: PolicyEngine/microcosm-dynamics
     commit: f43eee7afc46c643729dec8d6d4227cb5c77a678
     path: tests/test_track_b_ret_ledger.py
     name: test_negative_nese_reading_changes_final_deduction_by_one_dollar
     pins:
     - reading
-    - alternatives[0]
+    - drop-the-cents
   money_case:
     description: 'June FRA year, annual NESE loss of $13 over twelve months and pre-FRA wages $13 above
       the higher exempt amount, $600 January rate: the January check is $599 under floor and $598 under
@@ -101,6 +114,7 @@ entries:
   texts: []
   pending_texts:
   - citation: 20 CFR 404.435(b)(3)
+    kind: regulation
     url: https://www.ecfr.gov/api/versioner/v1/full/2026-10-07/title-20.xml?part=404&subpart=E
     snapshot:
       repo: PolicyEngine/microcosm-dynamics
@@ -111,6 +125,7 @@ entries:
       entitled to disability benefits under section 223 of the Social Security Act or as a disabled widow,
       widower, or child under section 202.
   - citation: POMS RS 02501.030B.4
+    kind: manual
     url: https://secure.ssa.gov/poms.nsf/lnx/0302501030
     snapshot:
       repo: PolicyEngine/microcosm-dynamics
@@ -120,6 +135,7 @@ entries:
     excerpt: If the beneficiary becomes simultaneously entitled to RIB and DIB benefits, the earnings
       test (ET) applies to any month they elect to receive RIB.
   - citation: POMS RS 02501.030B.4
+    kind: manual
     url: https://secure.ssa.gov/poms.nsf/lnx/0302501030
     snapshot:
       repo: PolicyEngine/microcosm-dynamics
@@ -130,7 +146,8 @@ entries:
   reading: No non-service months while the beneficiary is entitled to disability benefits, even in months
     RIB is elected (20 CFR 404.435(b)(3)).
   alternatives:
-  - reading: Count non-service months for any month RIB is elected during simultaneous entitlement (POMS
+  - id: poms-election-month
+    reading: Count non-service months for any month RIB is elected during simultaneous entitlement (POMS
       RS 02501.030B.4).
     effect: In the invented case all $4,200 of June-December benefits is paid instead of withheld.
   basis: The regulation's exclusion is categorical; the POMS exception is operational guidance the regulation
@@ -154,21 +171,21 @@ entries:
     name: test_simultaneous_dib_rib_source_readings_change_4200_dollars
     pins:
     - reading
-    - alternatives[0]
+    - poms-election-month
   - repo: PolicyEngine/microcosm-dynamics
     commit: f43eee7afc46c643729dec8d6d4227cb5c77a678
     path: tests/test_track_b_ret_ledger_readings.py
     name: test_property_explicit_poms_election_protects_only_eligible_rib_months
     pins:
     - reading
-    - alternatives[0]
+    - poms-election-month
   - repo: PolicyEngine/microcosm-dynamics
     commit: f43eee7afc46c643729dec8d6d4227cb5c77a678
     path: tests/test_track_b_ret_grace.py
     name: test_simultaneous_disability_cfr_default_and_poms_alternative_are_explicit
     pins:
     - reading
-    - alternatives[0]
+    - poms-election-month
   money_case:
     description: '2026: $45,000 January wages, then entitlement to RIB and DIB in June with RIB elected
       at $600 a month and no work June-December: $4,200 withheld under the CFR reading, $4,200 paid under
@@ -193,6 +210,7 @@ entries:
       individual became so entitled prior to attaining age 60
   pending_texts:
   - citation: 20 CFR 404.435(a)(5)
+    kind: regulation
     url: https://www.ecfr.gov/api/versioner/v1/full/2026-10-07/title-20.xml?part=404&subpart=E
     snapshot:
       repo: PolicyEngine/microcosm-dynamics
@@ -201,6 +219,7 @@ entries:
       sha256: fa67514821b77e8a88cdeacacb420341e6481d0cfa0c662233b5359f0d67f39b
     excerpt: Are age 18 or over and entitled to a child's insurance benefit based on disability
   - citation: 20 CFR 404.435(a)(6)
+    kind: regulation
     url: https://www.ecfr.gov/api/versioner/v1/full/2026-10-07/title-20.xml?part=404&subpart=E
     snapshot:
       repo: PolicyEngine/microcosm-dynamics
@@ -211,7 +230,8 @@ entries:
   reading: Exempt automatically only the CFR's disability-based categories; the Act's age clauses apply
     only when the caller explicitly asserts the entitlement, age facts and any 402(s) condition.
   alternatives:
-  - reading: Apply the Act's 203(f)(1)(C)-(D) age clauses automatically, subject to section 202(s).
+  - id: act-age-clauses
+    reading: Apply the Act's 203(f)(1)(C)-(D) age clauses automatically, subject to section 202(s).
     effect: In the invented case the child or widow keeps $600 more for the year.
   basis: The Act's age clauses are subject to 202(s), which is not captured or adjudicated here, so the
     CFR's narrower disability categories are the automatic default and the broader reading needs an explicit
@@ -235,13 +255,13 @@ entries:
     name: test_optional_act_age_exemptions_are_an_explicit_600_dollar_reading
     pins:
     - reading
-    - alternatives[0]
+    - act-age-clauses
   - repo: PolicyEngine/microcosm-dynamics
     commit: f43eee7afc46c643729dec8d6d4227cb5c77a678
     path: tests/test_track_b_ret_ledger_readings.py
     name: test_property_other_statutory_own_exemptions_protect_only_that_workers_excess
     pins:
-    - alternatives[0]
+    - act-age-clauses
   money_case:
     description: 'An ordinary $200-a-month child or widow with earnings $1,200 above the lower exempt
       amount: $600 withheld by default, nothing withheld under the Act''s age clauses.'
@@ -261,6 +281,7 @@ entries:
     excerpt: is married to an individual entitled to old-age insurance benefits under section 402(a)
   pending_texts:
   - citation: 20 CFR 404.420
+    kind: regulation
     url: https://www.ecfr.gov/api/versioner/v1/full/2026-10-07/title-20.xml?part=404&subpart=E
     snapshot:
       repo: PolicyEngine/microcosm-dynamics
@@ -269,6 +290,7 @@ entries:
       sha256: fa67514821b77e8a88cdeacacb420341e6481d0cfa0c662233b5359f0d67f39b
     excerpt: a person who is married to an old-age insurance beneficiary
   - citation: POMS RS 02501.140
+    kind: manual
     url: https://secure.ssa.gov/poms.nsf/lnx/0302501140
     snapshot:
       repo: PolicyEngine/microcosm-dynamics
@@ -280,10 +302,12 @@ entries:
   reading: Refuse deemed entitlement outside the married basis of Act 203(b)(1) and 20 CFR 404.420, and
     refuse an ordinary (non-disabled) deemed adult child; the refusals are counted.
   alternatives:
-  - reading: 'POMS RS 02501.140: deem an unmarried spouse or child receiving benefits on another record
+  - id: poms-unmarried-deemed
+    reading: 'POMS RS 02501.140: deem an unmarried spouse or child receiving benefits on another record
       entitled.'
     effect: The number holder's excess would also be charged against that recipient's benefit.
-  - reading: 'Act 203(b)(1): deem a married ordinary adult child entitled, not only a disabled one.'
+  - id: act-married-ordinary-child
+    reading: 'Act 203(b)(1): deem a married ordinary adult child entitled, not only a disabled one.'
     effect: The excess would also be charged against a married ordinary deemed child's benefit.
   basis: The Act and the CFR both require marriage to the number holder; POMS's wording is broader, and
     the CFR's child basis is disability. No amount is computed for a case only the broader wording would
@@ -321,6 +345,7 @@ entries:
   texts: []
   pending_texts:
   - citation: POMS RS 00615.003
+    kind: manual
     url: https://secure.ssa.gov/poms.nsf/lnx/0300615003
     snapshot:
       repo: PolicyEngine/microcosm-dynamics
@@ -329,6 +354,7 @@ entries:
       sha256: 935b391658a9f94117fde850fa4eb88293eb9ac5f19e05a5b9f946c4e15e6c2d
     excerpt: People Born from 1/2/1911 Through 1/1/40
   - citation: 20 CFR 404.409(b)
+    kind: regulation
     url: https://www.ecfr.gov/api/versioner/v1/full/2026-10-07/title-20.xml?part=404&section=404.409
     snapshot:
       repo: PolicyEngine/microcosm-dynamics
@@ -337,6 +363,7 @@ entries:
       sha256: f5545ff658026f9926715cbc75d032ab1d502833d828c552e303bef494e9dce9
     excerpt: Before 1/2/1912 62 years.
   - citation: 20 CFR 404.409(b)
+    kind: regulation
     url: https://www.ecfr.gov/api/versioner/v1/full/2026-10-07/title-20.xml?part=404&section=404.409
     snapshot:
       repo: PolicyEngine/microcosm-dynamics
@@ -347,9 +374,11 @@ entries:
   reading: Refuse widow(er) claims for births from 1911-01-02 to 1912-01-01, including the full-retirement-age
     helper; the refusals are counted.
   alternatives:
-  - reading: 'POMS RS 00615.003: full retirement age 65 for this cohort.'
+  - id: poms-fra-65
+    reading: 'POMS RS 00615.003: full retirement age 65 for this cohort.'
     effect: $829 a month in the invented case.
-  - reading: '20 CFR 404.409(b): full retirement age 62 for this cohort.'
+  - id: cfr-fra-62
+    reading: '20 CFR 404.409(b): full retirement age 62 for this cohort.'
     effect: $1,000 a month (no reduction) in the invented case.
   basis: The POMS table and the regulation's table disagree for one birth year; neither is silently admitted.
   status: ruled
@@ -371,7 +400,7 @@ entries:
     name: test_historic_survivor_fra_conflict_is_refused
     pins:
     - reading
-    - alternatives[0]
+    - poms-fra-65
   money_case:
     description: 'A widow born January 2, 1911 claiming in January 1973 on a $1,000 PIA, 36 of 60 reduction
       months: $829 under FRA 65, $1,000 (unreduced) under FRA 62.'
@@ -390,6 +419,7 @@ entries:
       (5)(D)
   pending_texts:
   - citation: 20 CFR 404.412(a)(4)
+    kind: regulation
     url: https://www.ecfr.gov/api/versioner/v1/full/2026-10-07/title-20.xml?part=404&section=404.412
     snapshot:
       repo: PolicyEngine/microcosm-dynamics
@@ -399,6 +429,7 @@ entries:
     excerpt: any month in which she or he had in her or his care a child of the deceased insured individual
       and for which the child was entitled to child's benefits;
   - citation: POMS RS 00615.482
+    kind: manual
     url: https://secure.ssa.gov/poms.nsf/lnx/0300615482
     snapshot:
       repo: PolicyEngine/microcosm-dynamics
@@ -409,9 +440,11 @@ entries:
   reading: Credit only certified months in which the benefit was raised to the mother's or father's rate;
     refuse a history with child-in-care months that were not, and count the refusal.
   alternatives:
-  - reading: '20 CFR 404.412(a)(4): credit every month with an entitled child in care.'
+  - id: cfr-every-month-in-care
+    reading: '20 CFR 404.412(a)(4): credit every month with an entitled child in care.'
     effect: $898.20 a month in the invented case.
-  - reading: 'POMS RS 00615.482 and Act 202(q)(7)(D): credit only months raised to the mother''s or father''s
+  - id: poms-raised-months-only
+    reading: 'POMS RS 00615.482 and Act 202(q)(7)(D): credit only months raised to the mother''s or father''s
       rate.'
     effect: $877.80 a month in the invented case.
   basis: The Act ties the credit to months whose reduction was determined under 202(q)(5)(D), as POMS
@@ -435,8 +468,8 @@ entries:
     name: test_widow_nonbinding_child_care_readings_are_explicit
     pins:
     - reading
-    - alternatives[0]
-    - alternatives[1]
+    - cfr-every-month-in-care
+    - poms-raised-months-only
   money_case:
     description: 'Widow at 64, FRA 67, $1,000 PIA, six child-in-care months never raised to the mother''s
       rate: $898.20 crediting them (30 reduction months of 84), $877.80 not (36).'
@@ -452,6 +485,7 @@ entries:
   texts: []
   pending_texts:
   - citation: POMS RS 00615.201A.1
+    kind: manual
     url: https://secure.ssa.gov/poms.nsf/lnx/0300615201
     snapshot:
       repo: PolicyEngine/microcosm-dynamics
@@ -461,6 +495,7 @@ entries:
     excerpt: After 12/72 a spouse reentitled prior to FRA as a spouse on the same earnings is reduced
       the same number of months as the earlier entitlement. An ARF at FRA will remove all months of nonentitlement.
   - citation: POMS RS 00615.491A
+    kind: manual
     url: https://secure.ssa.gov/poms.nsf/lnx/0300615491
     snapshot:
       repo: PolicyEngine/microcosm-dynamics
@@ -472,9 +507,11 @@ entries:
       is reentitled.
   reading: Refuse a reduced spouse reentitled before FRA (named refusal), and count the refusal.
   alternatives:
-  - reading: 'POMS RS 00615.201A.1: keep the original reduction months until an adjustment at FRA.'
+  - id: poms-keep-original-months
+    reading: 'POMS RS 00615.201A.1: keep the original reduction months until an adjustment at FRA.'
     effect: $422.50 a month in the invented case.
-  - reading: 'POMS RS 00615.491A: remove the terminated months at reentitlement.'
+  - id: poms-remove-terminated-months
+    reading: 'POMS RS 00615.491A: remove the terminated months at reentitlement.'
     effect: $425.20 a month in the invented case.
   basis: Two POMS sections give different timings for the same credit; neither is silently admitted.
   status: ruled
@@ -496,8 +533,8 @@ entries:
     name: test_spouse_reentitlement_counterfactual_readings_keep_named_refusal
     pins:
     - reading
-    - alternatives[0]
-    - alternatives[1]
+    - poms-keep-original-months
+    - poms-remove-terminated-months
   money_case:
     description: 'Spouse born January 2, 1960, first reduced in January 2022, terminated in February and
       reentitled in March, $650 unreduced: 60 reduction months give $422.50, 59 give $425.20.'
@@ -515,6 +552,7 @@ entries:
     excerpt: for any such subsequent month
   pending_texts:
   - citation: POMS RS 00630.400
+    kind: manual
     url: https://secure.ssa.gov/poms.nsf/lnx/0300630400
     snapshot:
       repo: PolicyEngine/microcosm-dynamics
@@ -523,6 +561,7 @@ entries:
       sha256: e6242ec12c64aafba782e5c37a8cfea09f65820ef05b30b8a3bf2a50ecc03d61
     excerpt: Total family payment is less after the PIA increase than it was before
   - citation: POMS RS 00630.400
+    kind: manual
     url: https://secure.ssa.gov/poms.nsf/lnx/0300630400
     snapshot:
       repo: PolicyEngine/microcosm-dynamics
@@ -534,7 +573,8 @@ entries:
     total, with two or more entitled, a binding maximum and an age-reduced beneficiary; the literal reading
     stays available behind a switch.'
   alternatives:
-  - reading: 'The Act''s literal "any such subsequent month": once a total is protected, any later month
+  - id: literal-any-subsequent-month
+    reading: 'The Act''s literal "any such subsequent month": once a total is protected, any later month
       whose total falls below it is raised (the reference refuses those months and every later governed
       month).'
     effect: After a child ages out, every later month on the record is refused instead of computed.
@@ -546,3 +586,746 @@ entries:
     date: '2026-10-12'
     record: https://github.com/TheAxiomFoundation/rulespec-us/pull/1710#issuecomment-6126429754
   outcome: computed
+  proposed:
+  - repo: PolicyEngine/microcosm-dynamics
+    pr: https://github.com/PolicyEngine/microcosm-dynamics/pull/530
+    path: src/populace_dynamics/track_b/gross_benefits.py
+    follows: literal-any-subsequent-month
+- id: claim-of-right-deduction-floor
+  jurisdiction: us-hi
+  program: income-tax
+  question: From 2022 through 2025, which claim of right repayments fall under Hawaii's 2% floor on miscellaneous
+    itemized deductions? The statute keeps a section 1341 repayment, one above the section 1341 threshold, outside the
+    floor and one at or below the threshold inside it. The Form N-11 instructions list them the other way round.
+  texts:
+  - corpus_citation_path: us-hi/statute/235-2.4
+    excerpt: Section 67 (with respect to the 2-percent floor on miscellaneous itemized deductions) of the Internal
+      Revenue Code shall be operative for purposes of this chapter, except that the suspension in section 67(g)
+      shall not be operative for purposes of this chapter.
+  - corpus_citation_path: us/statute/26/67/b/9
+    excerpt: the deduction under section 1341 (relating to computation of tax where taxpayer restores substantial
+      amount held under claim of right),
+  pending_texts:
+  - citation: 2025 Form N-11 instructions, p. 19 (Worksheet A-6, Other Expenses and Expenses NOT Subject to the
+      2% Limit)
+    kind: instructions
+    url: https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=19
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: ce9377ee80157a17eb730fa1b8550b4d433c696c
+      path: source_conflicts/sources/us-hi/n11-instructions-2025-p19.txt
+      sha256: 9e806165b035da92b1a533b12ee8a1899deae007e404f62067b39fba04501296
+    excerpt: Deduction for repayment of amounts under a claim of right over $3,000. See Repayments in the 2017 federal
+      Publication 525
+  - citation: 2025 Form N-11 instructions, p. 19 (Expenses NOT Subject to the 2% Limit)
+    kind: instructions
+    url: https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=19
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: ce9377ee80157a17eb730fa1b8550b4d433c696c
+      path: source_conflicts/sources/us-hi/n11-instructions-2025-p19.txt
+      sha256: 9e806165b035da92b1a533b12ee8a1899deae007e404f62067b39fba04501296
+    excerpt: Deduction for repayment of amounts under a claim of right of $3,000 or less.
+  - citation: 2022 Form N-11 instructions, p. 19
+    kind: instructions
+    url: https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=19
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: ce9377ee80157a17eb730fa1b8550b4d433c696c
+      path: source_conflicts/sources/us-hi/n11-instructions-2022-p19.txt
+      sha256: d49a31bc696484a3c756360b129c94f9b34a5463cc2821937c5cacace9ddc6e1
+    excerpt: Deduction for repayment of amounts under a claim of right over $3,000. See Repayments in the 2017 federal
+      Publication 525
+  reading: Section 67(b)(9), operative through HRS 235-2.4(b), keeps a section 1341 deduction (a repayment above
+    the section 1341 threshold) outside the 2% floor; a repayment at or below the threshold is a miscellaneous
+    itemized deduction above 2% of Hawaii AGI.
+  alternatives:
+  - id: n11-instruction-lists
+    reading: Follow the 2022-2025 N-11 lists, which put the repayment above the section 1341 threshold among expenses
+      subject to the 2% floor and the repayment at or below it among expenses not subject to it.
+    effect: Following the lists would put a repayment above the section 1341 threshold under the 2% floor, reducing its deduction by 2% of Hawaii AGI, and leave a repayment at or below the threshold outside it.
+  basis: Section 1341 became operative in Hawaii for taxable years beginning after December 31, 2021 (Act 56, SLH
+    2023), so section 67(b)(9)'s exception for the section 1341 deduction applies through HRS 235-2.4(b). The N-11
+    lists match the federal Schedule A categories transposed, and no Hawaii statute or rule adopts them.
+  status: open
+  outcome: computed
+  years:
+    from: 2022
+    to: 2025
+    type: tax
+  proposed:
+  - repo: PolicyEngine/policyengine-us
+    pr: https://github.com/PolicyEngine/policyengine-us/pull/10200
+    path: policyengine_us/variables/gov/states/hi/tax/income/claim_of_right/hi_claim_of_right_deduction.py
+    follows: reading
+- id: claim-of-right-federal-claim-condition
+  jurisdiction: us-oh
+  program: income-tax
+  question: Does Ohio's deduction for repaying income reported in a prior year (R.C. 5747.01(A)(12)) need only to
+    be allowable, as the statute says, or must the federal return also have claimed the section 1341 credit or a
+    Schedule A deduction for the repayment, as the IT 1040 instructions require?
+  texts: []
+  pending_texts:
+  - citation: R.C. 5747.01(A)(12)
+    kind: statute
+    url: https://codes.ohio.gov/ohio-revised-code/section-5747.01
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: ce9377ee80157a17eb730fa1b8550b4d433c696c
+      path: source_conflicts/sources/us-oh/rc-5747.01.html
+      sha256: 9981a8f73a9c4a1301620fe6cd3df4ecee4de11bacf120caf545a6814ffef276
+    excerpt: 'Deduct any portion of the deduction described in section 1341(a)(2) of the Internal Revenue Code,
+      for repaying previously reported income received under a claim of right, that meets both of the following
+      requirements:'
+  - citation: R.C. 5747.01(A)(12)(a)
+    kind: statute
+    url: https://codes.ohio.gov/ohio-revised-code/section-5747.01
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: ce9377ee80157a17eb730fa1b8550b4d433c696c
+      path: source_conflicts/sources/us-oh/rc-5747.01.html
+      sha256: 9981a8f73a9c4a1301620fe6cd3df4ecee4de11bacf120caf545a6814ffef276
+    excerpt: It is allowable for repayment of an item that was included in the taxpayer's adjusted gross income
+      for a prior taxable year
+  - citation: 2025 Ohio IT 1040 instructions, Schedule of Adjustments line 29, p. 23
+    kind: instructions
+    url: https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2025/it1040-booklet.pdf#page=23
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: ce9377ee80157a17eb730fa1b8550b4d433c696c
+      path: source_conflicts/sources/us-oh/it1040-instructions-2025-p23.txt
+      sha256: 6d058019308712a1c0c20809ac21ed9a32009e546ee042242f0113ab894811a2
+    excerpt: In the current tax year, you claimed either (i) an itemized deduction on your federal Schedule A for
+      the amount repaid OR (ii) a tax credit on your federal 1040 based upon the amount repaid.
+  reading: Deduct the repayment whenever (A)(12) allows it (an item included in a prior year's Ohio AGI that did
+    not qualify for the resident or nonresident credit and does not otherwise reduce AGI), whether or not the federal
+    return claimed relief for it.
+  alternatives:
+  - id: it1040-federal-claim
+    reading: Deduct only when the federal return claimed the section 1341 credit or itemized the repayment on Schedule
+      A, as the IT 1040 instructions say in the 2021 (line 23), 2022, 2024 and 2025 (line 29) editions; the 2023
+      edition was not checked.
+    effect: An eligible repayment above the section 1341 threshold on a return that takes the federal standard deduction and whose section 1341 methods tie gets no Ohio deduction.
+  basis: The statute conditions the deduction on its being allowable, not on a federal claim; the federal-claim
+    condition appears only in the department's instructions, and no Ohio rule adopts it.
+  status: open
+  outcome: computed
+  years:
+    from: 2021
+    to: 2025
+    type: tax
+    note: The 2021, 2022, 2024 and 2025 IT 1040 instructions were checked; 2023 is inferred from the editions on
+      either side.
+  proposed:
+  - repo: PolicyEngine/policyengine-us
+    pr: https://github.com/PolicyEngine/policyengine-us/pull/10195
+    path: policyengine_us/variables/gov/states/oh/tax/income/deductions/claim_of_right/oh_claim_of_right_deduction.py
+    follows: it1040-federal-claim
+- id: claim-of-right-deduction-floor
+  jurisdiction: us-ar
+  program: income-tax
+  question: Does Arkansas's deduction for restoring an amount held under a claim of right (Ark. Code 26-51-457) count toward the 2% floor on miscellaneous itemized deductions, whose list of exceptions does not name it, or sit outside the floor as the Department of Finance and Administration treats the volunteer firefighter deduction enacted in the same session?
+  texts: []
+  pending_texts:
+  - citation: Act 1284 of 2013, section 1 (Ark. Code 26-51-457(a))
+    kind: statute
+    url: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2013R%2FPublic%2F&file=1284.pdf&ddBienniumSession=2013%2F2013R
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: ce9377ee80157a17eb730fa1b8550b4d433c696c
+      path: source_conflicts/sources/us-ar/act-1284-2013.txt
+      sha256: 204ebea7f4b244c1c24975da0c00747fd6e7d7f7f56171f85a3ea9c064a702d4
+    excerpt: Title 26 U.S.C. § 1341(a)(1)-(3) and (b)(2), as they existed on January 1, 2013, regarding the computation
+      of income tax when a taxpayer restores a substantial amount held under a claim of right, is adopted for purposes
+      of computing income tax liability under this chapter.
+  - citation: Act 382 of 1987, section 28(a) (now Ark. Code 26-51-437)
+    kind: statute
+    url: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F1987R%2FPublic%2F&file=382.pdf&ddBienniumSession=1987%2F1987R#page=9
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: ce9377ee80157a17eb730fa1b8550b4d433c696c
+      path: source_conflicts/sources/us-ar/act-382-1987-p9.txt
+      sha256: 87cf3f82736130bbfe305d7664f690b5ac90a412888a9d6c3b7bec64cdcfe12e
+    excerpt: the miscellaneous itemized deductions for any taxable year shall be allowed only to the extent that
+      the aggregate of such deductions exceeds two percent (2%) of adjusted gross income.
+  - citation: 2014 Form AR3, lines 26 and 28
+    kind: form
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/AR3_2014_RE.pdf#page=1
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: ce9377ee80157a17eb730fa1b8550b4d433c696c
+      path: source_conflicts/sources/us-ar/ar3-2014.txt
+      sha256: 411d4b1a366f9e6b0f35a119482af4fd161833f5a5defdd961e5a4d208e2fc41
+    excerpt: 'TOTAL MISCELLANEOUS DEDUCTIONS NOT SUBJECT TO THE 2% AGI LIMITATION: (Add lines 26 and 27)'
+  reading: Count the claim of right deduction among miscellaneous itemized deductions, so only the part above 2%
+    of Arkansas AGI is deducted.
+  alternatives:
+  - id: dfa-firefighter-analog
+    reading: Deduct it in full outside the floor, as the department's forms treat the volunteer firefighter deduction
+      (AR3 line 26, totaled with lines not subject to the 2% limitation), which the same 2013 session enacted without
+      an express exception either.
+    effect: The repayment would be deducted in full rather than reduced by 2% of Arkansas AGI.
+  - id: character-of-repayment
+    reading: Place the deduction by the character of the repayment, outside the floor when deductible as a loss
+      (the 26-51-437(b) exception for losses) and inside it when deductible as an employee expense.
+    effect: Needs an input the model does not have; for a repayment deductible as a loss it equals the dfa-firefighter-analog
+      reading.
+  basis: The statute's list of exceptions to the floor does not include the claim of right deduction, and where
+    the legislature meant to exempt a deduction it said so (Act 708 of 1991). No department form, instruction or
+    rule names the claim of right deduction; the firefighter treatment is practice for a different deduction.
+  status: open
+  outcome: computed
+  years:
+    from: 2013
+    type: tax
+  proposed:
+  - repo: PolicyEngine/policyengine-us
+    pr: https://github.com/PolicyEngine/policyengine-us/pull/10203
+    path: policyengine_us/parameters/gov/states/ar/tax/income/deductions/itemized/misc/sources.yaml
+    follows: reading
+- id: oap-interest-and-dividends
+  jurisdiction: us-co
+  program: old-age-pension
+  question: For Colorado's Old Age Pension, are interest and dividends countable unearned income under 3.520.785(B)(10),
+    or exempt under 3.520.786(K), which exempts the unearned income SSA excludes, including interest and dividends
+    on countable resources?
+  texts:
+  - corpus_citation_path: us-co/regulation/9-ccr-2503-5/3.520.785
+    excerpt: 10. Dividends and interest received on financial accounts, savings bonds, leases, etc.
+  - corpus_citation_path: us-co/regulation/9-ccr-2503-5/3.520.786
+    excerpt: K. Unearned income as defined in the Social Security Program Operations Manual System (POMS), Section
+      SI 00830.099 Guide to Unearned Income Exclusions
+  - corpus_citation_path: us-co/regulation/9-ccr-2503-5/3.520.781
+    excerpt: C. Certain income shall be exempt and shall not be considered as countable income, in part or in whole,
+      as outlined in Section 3.520.786.
+  reading: Exempt interest and dividends on countable resources, because 3.520.781(C) makes the 3.520.786 exemptions
+    govern countable income and 3.520.786(K) incorporates SSA's exclusions (20 CFR 416.1124).
+  alternatives:
+  - id: countable-unearned-income
+    reading: Count interest and dividends as unearned income under 3.520.785(B)(10).
+    effect: A client's interest and dividends reduce the pension, after the unearned income disregard.
+  basis: The two sections of the same rule disagree; 3.520.781(C) says exempt income is not countable, so the exemption
+    in 3.520.786(K) controls the listing in 3.520.785(B)(10).
+  status: open
+  outcome: computed
+  years:
+    from: 2026
+    type: calendar
+  implementations:
+  - repo: PolicyEngine/policyengine-us
+    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    path: policyengine_us/parameters/gov/states/co/ssa/oap/income/sources/unearned.yaml
+    follows: reading
+    adopts: reading
+    basis: PolicyEngine-US follows 3.520.781(C), which makes the exemptions in 3.520.786 govern countable income, so the SSA exclusions that 3.520.786(K)
+      incorporates override the listing in 3.520.785(B)(10).
+    ruling:
+      by: PolicyEngine
+      date: '2026-10-20'
+      record: https://github.com/PolicyEngine/policyengine-us/pull/10176
+    cites_entry: false
+  tests:
+  - repo: PolicyEngine/policyengine-us
+    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    path: policyengine_us/tests/policy/baseline/gov/states/co/ssa/oap/co_oap_own_countable_income.yaml
+    name: Case 12, interest and dividends on countable resources are exempt.
+    pins:
+    - reading
+- id: poverty-credit-earned-income-losses
+  jurisdiction: us-md
+  program: income-tax
+  question: Does Maryland's state poverty level credit (5% of earned income) take earned income as IRC 32(c)(2)
+    defines it, net of a self-employment or farm loss, or as Form 502 Worksheet 18B line 2 computes it, leaving
+    the loss out?
+  texts:
+  - corpus_citation_path: us/statute/26/32/c/2
+    excerpt: (ii) the amount of the taxpayer’s net earnings from self-employment for the taxable year (within the
+      meaning of section 1402(a)), but such net earnings shall be determined with regard to the deduction allowed
+      to the taxpayer by section 164(f).
+  pending_texts:
+  - citation: 2025 Maryland resident tax booklet, State Poverty Level Credit Worksheet (18B), line 2, p. 23
+    kind: worksheet
+    url: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=23
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: ce9377ee80157a17eb730fa1b8550b4d433c696c
+      path: source_conflicts/sources/us-md/resident-booklet-2025-p23.txt
+      sha256: ff06a1a0c4043fc7a7d44fe9b93b76410ff60cb14f9595e99bb490a25b958a21
+    excerpt: Enter the total of your salary, wages, tips and other employee compensation and net profit from self-employment
+      here, and on Line 1b of Form 502, if Line 1b is currently blank. (Do not include a farm or business loss.)
+  reading: Use IRC 32(c)(2) earned income, which nets a self-employment or farm loss against wages and is figured
+    after the section 164(f) deduction; the credit is floored at zero.
+  alternatives:
+  - id: worksheet-18b-line-2
+    reading: Add wages and self-employment profit, leaving out any farm or business loss, as Worksheet 18B line
+      2 instructs.
+    effect: A filer whose loss offsets wages gets a credit on the wages alone.
+  basis: Tax-General 10-709 sets the credit at 5% of earned income "as defined under § 32(c)(2) of the Internal
+    Revenue Code", and 10-107 reads federal terms with their federal interpretations; no Maryland regulation adopts
+    the worksheet's exclusion.
+  status: open
+  outcome: computed
+  years:
+    from: 2025
+    type: tax
+  implementations:
+  - repo: PolicyEngine/policyengine-us
+    commit: 79249f0feacd2600f88d566cfdf46f1155a0b9fc
+    path: policyengine_us/variables/gov/states/md/tax/income/credits/poverty_line/md_poverty_line_credit_potential.py
+    follows: reading
+    adopts: reading
+    basis: PolicyEngine-US follows the statute when it conflicts with forms or worksheets.
+    ruling:
+      by: PolicyEngine
+      date: '2026-10-19'
+      record: https://github.com/PolicyEngine/policyengine-us/pull/10287
+    cites_entry: false
+  tests:
+  - repo: PolicyEngine/policyengine-us
+    commit: 79249f0feacd2600f88d566cfdf46f1155a0b9fc
+    path: policyengine_us/tests/policy/baseline/gov/states/md/tax/income/credits/poverty_line/md_poverty_line_credit_earned_income.yaml
+    name: A farm loss is netted against wages like other self-employment (2024)
+    pins:
+    - reading
+- id: niit-magi-trust-code-h-adjustment
+  jurisdiction: us
+  program: income-tax
+  question: Does section 1411(d)'s definition of modified adjusted gross income as AGI plus the section 911 excess exclude the further MAGI adjustments
+    prescribed by Treas. Reg. 1.1411-10(e), including the estate and trust beneficiary adjustment carried by Form 8960's line 7 instructions for code H?
+  texts:
+  - corpus_citation_path: us/statute/26/1411/d
+    excerpt: |-
+      For purposes of this chapter, the term “modified adjusted gross income” means adjusted gross income increased by the excess of—
+
+      (1) the amount excluded from gross income under section 911(a)(1), over
+
+      (2) the amount of any deductions (taken into account in computing adjusted gross income) or exclusions disallowed under section 911(d)(6) with respect to the amounts described in paragraph (1).
+  - corpus_citation_path: us/statute/26/62/a
+    excerpt: 'For purposes of this subtitle, the term “adjusted gross income” means, in the case of an individual, gross income minus the following deductions:'
+  pending_texts:
+  - citation: Treas. Reg. 1.1411-10(e)(1)(i) and (f), 2025 CFR edition
+    kind: regulation
+    url: https://www.govinfo.gov/content/pkg/CFR-2025-title26-vol14/pdf/CFR-2025-title26-vol14-sec1-1411-10.pdf#page=6
+    excerpt: Increased by amounts included in net investment income
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+      path: source_conflicts/sources/us/treas-reg-1-1411-10-2025-p6.txt
+      sha256: 1e7b45794e9936fb24e083738647d45456891118ffa377cc37b4c73d0a755784
+  - citation: 2025 Instructions for Form 8960, line 7, distributions from estates and trusts, code H
+    kind: instructions
+    url: https://www.irs.gov/pub/irs-prior/i8960--2025.pdf#page=13
+    excerpt: and increase your MAGI on Form 8960, line 13 (or Form 8960, line 19a), by the same amount.
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+      path: source_conflicts/sources/us/form-8960-instructions-2025-p13.txt
+      sha256: 54af89dcc01302b2739514f4f5c7ae53961179c1ab4a5be9b22be6023a422638
+  reading: Apply applicable regulatory MAGI adjustments passed through an estate or trust alongside section 1411(d)'s section 911 addition. A positive Schedule
+    K-1 (Form 1041) box 14 code H amount increases MAGI by the same amount; a negative amount changes MAGI when the trust indicates that it does.
+  alternatives:
+  - id: statutory-magi-only
+    reading: Compute MAGI as AGI plus the section 911 excess only, without an additional estate or trust beneficiary MAGI adjustment.
+    effect: A positive code H amount increases net investment income without increasing MAGI, reducing NIIT when the MAGI excess limits the tax base.
+  basis: Treasury regulations are law and bind until a court sets them aside, so the statute-first rule does not override Treas. Reg. 1.1411-10(e); paragraph
+    (f) carries the relevant adjustments through estate and trust distributable net income, and the Form 8960 instructions specify their code H treatment.
+  status: open
+  outcome: computed
+  years:
+    from: 2013
+    type: tax
+    note: NIIT begins in 2013; Treas. Reg. 1.1411-10(i) makes the final regulation applicable from 2014 and permits application to 2013.
+  implementations:
+  - repo: PolicyEngine/policyengine-us
+    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    path: policyengine_us/variables/gov/irs/tax/federal_income/niit_magi.py
+    follows: reading
+    adopts: reading
+    basis: Treasury regulations are law and bind until a court sets them aside, so the statute-first rule does not override the regulation's MAGI adjustments.
+    ruling:
+      by: PolicyEngine
+      date: '2026-10-20'
+      record: https://github.com/TheAxiomFoundation/rulespec-us/pull/1871
+    cites_entry: false
+  tests:
+  - repo: PolicyEngine/policyengine-us
+    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    path: policyengine_us/tests/policy/baseline/gov/irs/tax/federal_income/net_investment_income_tax.yaml
+    name: A positive code H adjustment also increases MAGI
+    pins:
+    - reading
+- id: qbid-net-capital-gain-investment-election
+  jurisdiction: us
+  program: income-tax
+  question: For the section 199A(a)(2)(B) taxable-income cap, is net capital gain reduced by capital gain and qualified dividends elected into investment
+    income under section 163(d)(4)(B), as section 1(h) provides for rate purposes, or does Treas. Reg. 1.199A-1(b)(3) require no election reduction?
+  texts:
+  - corpus_citation_path: us/statute/26/199A/a/2
+    excerpt: |-
+      an amount equal to 20 percent of the excess (if any) of—
+
+      (A) the taxable income of the taxpayer for the taxable year, over
+
+      (B) the net capital gain (as defined in section 1(h)) of the taxpayer for such taxable year.
+  - corpus_citation_path: us/statute/26/1/h/2
+    excerpt: For purposes of this subsection, the net capital gain for any taxable year shall be reduced (but not below zero) by the amount which the taxpayer
+      takes into account as investment income under section 163(d)(4)(B)(iii).
+  - corpus_citation_path: us/statute/26/1/h/11
+    excerpt: Qualified dividend income shall not include any amount which the taxpayer takes into account as investment income under section 163(d)(4)(B).
+  - corpus_citation_path: us/statute/26/1222
+    excerpt: (11) Net capital gain The term “net capital gain” means the excess of the net long-term capital gain for the taxable year over the net short-term
+      capital loss for such year.
+  pending_texts:
+  - citation: Treas. Reg. 1.199A-1(b)(3), 2025 CFR, PDF p. 1
+    kind: regulation
+    url: https://www.govinfo.gov/content/pkg/CFR-2025-title26-vol4/pdf/CFR-2025-title26-vol4-sec1-199A-1.pdf#page=1
+    excerpt: Net capital gain means net capital gain as defined in section 1222(11) plus any qualified dividend income (as defined in section 1(h)(11)(B))
+      for the taxable year.
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+      path: source_conflicts/sources/us/treas-reg-1-199a-1-2025-p1.txt
+      sha256: 8d159ac9ce602ec4a19fe5be16e77a6104955bf101d94f52a63e2711bf588856
+  reading: Use section 1222(11) net capital gain plus qualified dividend income as defined in section 1(h)(11)(B), without reducing either component for
+    a section 163(d)(4)(B) investment-income election, as Treas. Reg. 1.199A-1(b)(3) defines the amount for section 199A.
+  alternatives:
+  - id: investment-election-reduction
+    reading: Apply the investment-income election exclusions in section 1(h)(2) and (11)(D)(i) to section 199A's net capital gain, subtracting the elected
+      capital gain and qualified dividends from the combined amount, but not below zero.
+    effect: The election reduces the amount subtracted from taxable income, raising the taxable-income cap and potentially increasing the qualified business
+      income deduction.
+  basis: Treas. Reg. 1.199A-1(b)(3) supplies a definition specifically for section 199A that omits the investment-income election reduction; a Treasury
+    regulation binds until a court sets it aside, so the statute-first rule does not override it.
+  status: open
+  outcome: computed
+  years:
+    from: 2018
+    type: tax
+  implementations:
+  - repo: PolicyEngine/policyengine-us
+    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    path: policyengine_us/variables/gov/irs/income/taxable_income/deductions/qualified_business_income_deduction/section_199a_net_capital_gain.py
+    follows: reading
+    adopts: reading
+    basis: 'Regulations are law: a Treasury regulation binds until a court sets it aside, so the statute-first rule does not override it.'
+    ruling:
+      by: PolicyEngine
+      date: '2026-10-20'
+      record: https://github.com/TheAxiomFoundation/rulespec-us/pull/1871
+    cites_entry: false
+  tests:
+  - repo: PolicyEngine/policyengine-us
+    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    path: policyengine_us/tests/policy/baseline/gov/irs/income/taxable_income/deductions/qbid/qualified_business_income_deduction.yaml
+    name: Income limitation ignores the Form 4952 investment income election
+    pins:
+    - reading
+- id: dependent-care-exclusion-separate-filer-income
+  jurisdiction: us
+  program: income-tax
+  question: Does section 129(b)(1)(B) limit the dependent care exclusion of a married taxpayer who files separately and satisfies section 21(e)(4)'s living-apart
+    rule to the lesser spouse's earned income, or does the taxpayer use their own earned income?
+  texts:
+  - corpus_citation_path: us/statute/26/21/d/1
+    excerpt: |-
+      Except as otherwise provided in this subsection, the amount of the employment-related expenses incurred during any taxable year which may be taken into account under subsection (a) shall not exceed—
+
+      (A) in the case of an individual who is not married at the close of such year, such individual’s earned income for such year, or
+
+      (B) in the case of an individual who is married at the close of such year, the lesser of such individual’s earned income or the earned income of his spouse for such year.
+  - corpus_citation_path: us/statute/26/21/e/3
+    excerpt: An individual legally separated from his spouse under a decree of divorce or of separate maintenance shall not be considered as married.
+  - corpus_citation_path: us/statute/26/21/e/4
+    excerpt: |-
+      If—
+
+      (A) an individual who is married and who files a separate return— (i) maintains as his home a household which constitutes for more than one-half of the taxable year the principal place of abode of a qualifying individual, and (ii) furnishes over half of the cost of maintaining such household during the taxable year, and
+
+      (B) during the last 6 months of such taxable year such individual’s spouse is not a member of such household,
+
+      such individual shall not be considered as married.
+  pending_texts:
+  - citation: 26 U.S.C. 129(a)(2)(C) and (b)(1), 2024 edition, PDF p. 1
+    kind: statute
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title26/pdf/USCODE-2024-title26-subtitleA-chap1-subchapB-partIII-sec129.pdf#page=1
+    excerpt: For purposes of this paragraph, marital status shall be determined under the rules of paragraphs (3) and (4) of section 21(e).
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+      path: source_conflicts/sources/us/usc-26-129-2024-p1.txt
+      sha256: e4996b059a39580953e44713517051b4f684b3a1847aebb1ec5b9abf6037f447
+  - citation: 2025 Instructions for Form 2441, line 19, married filing separately, p. 5
+    kind: instructions
+    url: https://www.irs.gov/pub/irs-prior/i2441--2025.pdf#page=5
+    excerpt: Yes. Enter your earned income (from line 18) on line 19.
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+      path: source_conflicts/sources/us/i2441-2025-p5.txt
+      sha256: ead8f61983188c9ea1a6ecd9def8f44f48652f7818545120784313bf535d5496
+  reading: A separate filer who satisfies section 21(e)(4)'s living-apart rule is treated as unmarried for section 129(b)(1), so the earned-income ceiling
+    on the dependent care exclusion is the taxpayer's own earned income.
+  alternatives:
+  - id: ordinary-legal-marriage
+    reading: Apply ordinary legal marriage under section 129(b)(1)(B) and use the lesser of the taxpayer's and spouse's earned income, even if section 21(e)(4)
+      treats the taxpayer as unmarried; section 129(a)(2)(C) expressly limits its marital-status cross-reference to that paragraph.
+    effect: A qualifying separate filer whose spouse has lower earned income receives a smaller exclusion than under the own-income ceiling.
+  basis: The canon of one meaning per section reads married in section 129(b)(1) consistently with section 129(a)(2)(C), which imports section 21(e)(3)
+    and (4). Section 21(d)(1) uses a parallel earned-income limitation, and Form 2441 line 19 applies the living-apart rule to the exclusion.
+  status: open
+  outcome: computed
+  years:
+    from: 2018
+    type: tax
+    note: Every edition of the Form 2441 instructions from 2018 through 2025 carries the line 19 rule; 2018 is the earliest edition checked.
+  implementations:
+  - repo: PolicyEngine/policyengine-us
+    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    path: policyengine_us/variables/gov/irs/credits/cdcc/min_head_spouse_earned.py
+    follows: reading
+    adopts: reading
+    basis: PolicyEngine applies the canon of one meaning per section, reading married consistently in section 129(a)(2)(C) and (b)(1).
+    ruling:
+      by: PolicyEngine
+      date: '2026-10-20'
+      record: https://github.com/TheAxiomFoundation/rulespec-us/pull/1871
+    cites_entry: false
+  tests:
+  - repo: PolicyEngine/policyengine-us
+    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    path: policyengine_us/tests/policy/baseline/gov/irs/credits/cdcc/dependent_care_assistance_exclusion.yaml
+    name: Separate filer treated as unmarried uses the $5,000 cap
+    pins:
+    - reading
+- id: care-credit-claimable-unclaimed-filer
+  jurisdiction: us-hi
+  program: income-tax
+  question: Does HRS 235-55.6(a)(1) allow the dependent care credit to an otherwise eligible taxpayer who could be claimed as a dependent but is not actually
+    claimed, despite Form N-11's line 30 instructions excluding claimable filers?
+  texts:
+  - corpus_citation_path: us-hi/statute/235-55.6
+    excerpt: who is not claimed or is not otherwise eligible to be claimed as a dependent by another taxpayer
+  pending_texts:
+  - citation: 2025 Form N-11 instructions, line 30, p. 21
+    kind: instructions
+    url: https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=21
+    excerpt: eligible to be claimed as a dependent by any taxpayer for federal or Hawaii income tax purposes, you do not qualify for this credit.
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+      path: source_conflicts/sources/us-hi/n11-instructions-2025-p21.txt
+      sha256: 2fc6d5bcf4e0d1092cd45e33c55ab03cd45ac7d0ba3d93910da3429a9384a155
+  - citation: 2018 Form N-11 instructions, line 30, p. 23
+    kind: instructions
+    url: https://files.hawaii.gov/tax/forms/2018/n11ins.pdf#page=23
+    excerpt: Do not claim this credit if you are being claimed or eligible to be claimed
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+      path: source_conflicts/sources/us-hi/n11-instructions-2018-p23.txt
+      sha256: c63685c5d87d053cec3fbbfab3822ff7ecd5f2b006117c02e36030c4144726dd
+  reading: Exclude a taxpayer eligible to be claimed as a dependent by another taxpayer for federal or Hawaii income tax purposes, whether or not anyone
+    actually claims the taxpayer.
+  alternatives:
+  - id: actually-claimed-only
+    reading: Exclude only a taxpayer actually claimed as a dependent by another taxpayer; a claimable but unclaimed taxpayer may qualify if the other credit
+      requirements are met.
+    effect: A claimable but unclaimed filer with a qualifying individual can satisfy the filer eligibility requirement.
+  basis: The word "otherwise" leaves HRS 235-55.6(a)(1) open to competing readings that the text and canons do not settle; the administering agency's reading
+    decides, so the model matches what households receive.
+  status: open
+  outcome: computed
+  years:
+    from: 2018
+    type: tax
+    note: Every edition of the Form N-11 instructions from 2018 through 2025 carries the exclusion; 2018 is the earliest edition checked.
+  implementations:
+  - repo: PolicyEngine/policyengine-us
+    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    path: policyengine_us/variables/gov/states/hi/tax/income/credits/cdcc/hi_cdcc_eligible.py
+    follows: reading
+    adopts: reading
+    basis: Where the text and the canons do not settle a reading, the administering agency's reading decides, so the model matches what households receive.
+    ruling:
+      by: PolicyEngine
+      date: '2026-10-20'
+      record: https://github.com/TheAxiomFoundation/rulespec-us/pull/1871
+    cites_entry: false
+  tests:
+  - repo: PolicyEngine/policyengine-us
+    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    path: policyengine_us/tests/policy/baseline/gov/states/hi/tax/income/credits/cdcc/hi_cdcc_eligible.yaml
+    name: 2025 claimable but unclaimed single filer cannot claim the care credit
+    pins:
+    - reading
+- id: dependent-standard-deduction-filing-status
+  jurisdiction: us-ny
+  program: income-tax
+  question: Does the dependent standard deduction in N.Y. Tax Law 614(e) apply only to single filers, as the IT-201 instructions show, or to a filer claimable
+    as a dependent regardless of filing status?
+  texts:
+  - corpus_citation_path: us-ny/statute/TAX/614
+    excerpt: (a) Unmarried individual. For taxable years beginning after nineteen hundred ninety-six, the New York standard deduction of a resident individual
+      who is not married nor the head of a household nor a surviving spouse nor an individual who is claimed as a dependent by another New York state taxpayer
+      shall be seven thousand five hundred dollars;
+  - corpus_citation_path: us-ny/statute/TAX/614
+    excerpt: (e) Standard deduction of a dependent individual. For taxable years beginning after nineteen hundred ninety-six, the New York standard deduction
+      of a resident individual whose federal exemption amount is zero shall be three thousand dollars;
+  pending_texts:
+  - citation: 2025 IT-201 instructions, New York State standard deduction table (line 34)
+    kind: instructions
+    url: https://www.tax.ny.gov/forms/html-instructions/2025/it/it201i-2025.htm
+    excerpt: Single and you marked item C Yes $3,100 ① Single and you marked item C No $8,000 ② Married filing joint return $16,050 ③ Married filing separate
+      return $8,000
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+      path: source_conflicts/sources/us-ny/it201-instructions-2025.html
+      sha256: 933704619ab93e01a75796c5934bdd6c532b14260202b970efc6a2ffcea977ca
+  reading: Apply the dependent standard deduction amount only to single filers who can be claimed as dependents on another taxpayer's federal return; claimable
+    filers of other statuses receive their status's ordinary standard deduction.
+  alternatives:
+  - id: dependent-amount-all-statuses
+    reading: Apply the dependent standard deduction amount to every filer who can be claimed as a dependent on another taxpayer's federal return, regardless
+      of filing status.
+    effect: Claimable filers using a non-single filing status receive the dependent amount instead of the ordinary amount for their status.
+  basis: Section 614(a) excludes dependents from its unmarried category, while subsections (b) through (d) set amounts for other statuses and subsection
+    (e) separately addresses dependents. Read within that structure, subsection (e) applies to single filers; where the text and canons do not settle the
+    reading, the administering agency's reading decides, and the IT-201 table limits the dependent amount to single filers.
+  status: open
+  outcome: computed
+  years:
+    from: 2020
+    type: tax
+    note: Scope begins with the dependent-deduction parameter's first year; the statutory provisions predate that coverage.
+  implementations:
+  - repo: PolicyEngine/policyengine-us
+    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    path: policyengine_us/variables/gov/states/ny/tax/income/taxable_income/deductions/ny_standard_deduction.py
+    follows: reading
+    adopts: reading
+    basis: Where the text and canons do not settle the reading, the administering agency's reading decides, so the model matches what households receive.
+    ruling:
+      by: PolicyEngine
+      date: '2026-10-20'
+      record: https://github.com/TheAxiomFoundation/rulespec-us/pull/1871
+    cites_entry: false
+  tests:
+  - repo: PolicyEngine/policyengine-us
+    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    path: policyengine_us/tests/policy/baseline/gov/states/ny/tax/income/taxable_income/deductions/ny_standard_deduction.yaml
+    name: 2025 separate filer who can be claimed as a dependent keeps the regular amount
+    pins:
+    - reading
+- id: senior-disability-modification-income-base
+  jurisdiction: us-wv
+  program: income-tax
+  question: Does the senior or disability modification under W. Va. Code 11-21-12(c)(9) use the taxpayer's whole federal AGI, with only the listed modifications
+    offset against the cap, or Schedule M's base excluding amounts already modified on lines 35 to 46?
+  texts:
+  - corpus_citation_path: us-wv/statute/11-21-12
+    excerpt: '(9) Federal adjusted gross income in the amount of $8,000 received from any source after December 31, 1986, by any person who has attained
+      the age of 65 on or before the last day of the taxable year, or by any person certified by proper authority as permanently and totally disabled, regardless
+      of age, on or before the last day of the taxable year, to the extent includable in federal adjusted gross income for federal tax purposes: Provided
+      , That if a person has a medical certification from a prior year and he or she is still permanently and totally disabled, a copy of the original certificate
+      is acceptable as proof of disability. A copy of the form filed for the federal disability income tax exclusion is acceptable: Provided, however ,
+      That: (i) Where the total modification under subdivisions (1), (2), (5), (6), (7), and (8) of this subsection is $8,000 per person or more, no deduction
+      shall be allowed under this subdivision; and (ii) Where the total modification under subdivisions (1), (2), (5), (6), (7), and (8) of this subsection
+      is less than $8,000 per person, the total modification allowed under this subdivision for all gross income received by that person shall be limited
+      to the difference between $8,000 and the sum of modifications under subdivisions (1), (2), (5), (6), (7), and (8) of this subsection;'
+  pending_texts:
+  - citation: 2025 West Virginia Form IT-140, Schedule M, line 47 box (c), income not included in lines 35 to 46, PDF p. 6
+    kind: form
+    url: https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=6
+    excerpt: Income not included in lines 35 to 46 (NOT TO EXCEED $8000)
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+      path: source_conflicts/sources/us-wv/it140-schedule-m-2025-p6.txt
+      sha256: 619d7d21e1cdc369fcbd422c58aa4208e3e7d385811ad3a49b97175d23cdbdff
+  reading: Use each eligible person's federal AGI after excluding that person's amounts already modified on Schedule M lines 35 to 46, apply the cap, then
+    subtract that person's listed modifications on lines 29 to 34; floor the result at zero.
+  alternatives:
+  - id: whole-federal-agi
+    reading: Use the taxpayer's whole federal AGI as the income base, with only the modifications expressly listed in the statute offset against the cap.
+    effect: Amounts already subtracted under other modifications can support an additional senior or disability deduction, allowing total subtractions to
+      exceed federal AGI.
+  basis: The canon of no double deduction without a clear statement supports Schedule M's exclusion of amounts already modified from the income base; the
+    statute does not clearly authorize deducting those amounts twice.
+  status: open
+  outcome: computed
+  years:
+    from: 2014
+    type: tax
+    note: Subdivision (c)(8) before 2019 and (c)(9) from 2019; Schedule M line references are for 2025.
+  implementations:
+  - repo: PolicyEngine/policyengine-us
+    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    path: policyengine_us/variables/gov/states/wv/tax/income/subtractions/senior_citizen_disability/wv_senior_citizen_disability_deduction_person.py
+    follows: reading
+    adopts: reading
+    basis: PolicyEngine applies the canon of no double deduction without a clear statement and keeps Schedule M's income base.
+    ruling:
+      by: PolicyEngine
+      date: '2026-10-20'
+      record: https://github.com/TheAxiomFoundation/rulespec-us/pull/1871
+    cites_entry: false
+  tests:
+  - repo: PolicyEngine/policyengine-us
+    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    path: policyengine_us/tests/policy/baseline/gov/states/wv/tax/income/subtractions/senior_citizen_disability/wv_senior_citizen_disability_deduction_person.yaml
+    name: A senior with a taxable state refund subtracts no more than own income.
+    pins:
+    - reading
+- id: msa-guardian-fee-cap
+  jurisdiction: us-mn
+  program: minnesota-supplemental-aid
+  question: Is Minnesota Supplemental Aid's guardian or conservator fee allowance limited to 5% of the assistance unit's gross monthly income, up to the
+    statutory monthly maximum, or is the full monthly maximum allowed whenever a fee is approved, regardless of income?
+  texts: []
+  pending_texts:
+  - citation: Minn. Stat. 256D.44 subd. 5(d)
+    kind: statute
+    url: https://www.revisor.mn.gov/statutes/cite/256D.44
+    excerpt: This rate shall not exceed five percent of the assistance unit's gross monthly income up to a maximum of $100 per month.
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+      path: source_conflicts/sources/us-mn/minn-stat-256d44.html
+      sha256: e45fa2a9ccd185384a45f9ca2214296f78aeff1f08b0ce0bff13af12320cc8ea
+  unpublished_sources:
+  - kind: agency-practice
+    date: '2026-10-19'
+    description: Minnesota Department of Human Services correspondence describing its practice of allowing the full monthly maximum for an approved guardian
+      fee, regardless of income.
+  reading: Apply the statutory limit of 5% of the assistance unit's gross monthly income, capped at the statutory monthly maximum.
+  alternatives:
+  - id: full-monthly-maximum
+    reading: Allow the full statutory monthly maximum whenever a guardian or conservator fee is approved, regardless of income.
+    effect: An assistance unit whose income produces a percentage limit below the monthly maximum receives a larger allowance.
+  basis: Minn. Stat. 256D.44 subd. 5(d) expressly limits the fee by gross monthly income and a monthly maximum; the statute governs when it conflicts with
+    department practice.
+  status: open
+  outcome: computed
+  years:
+    from: 2026
+    type: calendar
+  implementations:
+  - repo: PolicyEngine/policyengine-us
+    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    path: policyengine_us/variables/gov/states/mn/dhs/msa/payment/mn_msa_guardian_fee.py
+    follows: reading
+    adopts: reading
+    basis: The statute governs when it conflicts with department practice.
+    ruling:
+      by: PolicyEngine
+      date: '2026-10-19'
+      record: https://github.com/TheAxiomFoundation/rulespec-us/pull/1871
+    cites_entry: false
+  tests:
+  - repo: PolicyEngine/policyengine-us
+    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    path: policyengine_us/tests/policy/baseline/gov/states/mn/dhs/msa/payment/mn_msa_guardian_fee.yaml
+    name: Case 3, guardian fee bound by 5% of low gross income.
+    pins:
+    - reading
