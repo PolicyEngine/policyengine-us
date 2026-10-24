@@ -12,3 +12,5 @@ class va_additions(Variable):
         "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=24",
     )
     defined_for = StateCode.VA
+
+    adds = ["va_other_additions"]

@@ -1,0 +1,27 @@
+description: The IRS treats qualified mortgage insurance premiums as deductible qualified residence interest if this is true.
+values:
+  1900-01-01: false
+  # Premiums paid or accrued after December 31, 2006, under contracts issued
+  # after that date (P.L. 109-432, sec. 419).
+  2007-01-01: true
+  # 163(h)(3)(E)(iv): no deduction for amounts paid or accrued after
+  # December 31, 2021.
+  2022-01-01: false
+  # P.L. 119-21, sec. 70108: 163(h)(3)(F)(i)(III) turns off clause (iv) for
+  # taxable years beginning after December 31, 2025.
+  2026-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: IRS mortgage insurance premiums deduction in effect
+  reference:
+    - title: 26 U.S. Code § 163(h)(3)(E) - Mortgage insurance premiums treated as interest
+      href: https://www.law.cornell.edu/uscode/text/26/163#h_3_E
+    - title: 26 U.S. Code § 163(h)(3)(F)(i)(III)
+      href: https://www.law.cornell.edu/uscode/text/26/163#h_3_F_i_III
+    - title: Public Law 119-21, sec. 70108
+      href: https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=93
+    - title: 2021 Instructions for Schedule A (Form 1040), line 8d
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2021.pdf#page=9
+    - title: 2025 Publication 936, Reminders
+      href: https://www.irs.gov/pub/irs-pdf/p936.pdf#page=1
