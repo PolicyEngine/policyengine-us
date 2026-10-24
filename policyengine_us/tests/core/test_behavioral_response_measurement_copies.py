@@ -67,13 +67,14 @@ def collect_cycles_less_often():
     """Run the cycle collector less often while these tests copy policy.
 
     Every reform simulation, measurement and clone here deep-copies the
-    parameter tree: about five million objects, nearly all still in use. A
-    collection starts each time allocations exceed deallocations by the first
-    threshold, and at the default of 2,000 there were one or two full
-    collections, each traversing every live tree, per copy: half the time of
-    building, measuring and cloning a reform simulation (2026-10-23). At
-    100,000 there were about a quarter as many, this module ran about a
-    quarter faster, and its peak memory rose about 2%.
+    parameter tree: 6.4 million objects the collector tracks, none of them
+    garbage while the copy is in use. A collection starts each time
+    allocations exceed deallocations by the first threshold. At the default of
+    2,000, three rounds of building, measuring, cloning and branching a reform
+    simulation ran 29 full collections, each traversing every live tree; at
+    100,000 they ran 8 (2026-10-23). In CI the tests this module did not
+    otherwise change then ran a fifth to a quarter faster (run 40052943537
+    against 40038526568 and 40050303812).
     """
     thresholds = gc.get_threshold()
     gc.set_threshold(GC_THRESHOLD, *thresholds[1:])
@@ -153,30 +154,53 @@ def set_wages(simulation, wages, period=YEAR):
     )
 
 
-# The source holds one household at each of WAGES, so each pin covers every
+# Most pins' source holds one household at each of WAGES, so each covers every
 # level. A copy given other wages moves each household to another's: 20,000 to
 # 50,000, 50,000 to 100,000 (the original pins) and 100,000 to 20,000.
 SWAPPED_WAGES = (50_000, 100_000, 20_000)
 
 
-# Only the pins run. Under ``derandomize`` the generated examples were fixed,
-# and each reran a pinned path at other wages, which the households now cover.
-# Drop ``phases`` to explore the remaining combinations.
+# Only the pins run. Under ``derandomize`` the three generated examples were the
+# same on every run, and each reran a pinned path at other wages, which the
+# households and the last pin now cover. Drop ``phases`` to generate examples
+# from these strategies as well.
 @settings(phases=[Phase.explicit], deadline=None)
 @given(
     kind=st.sampled_from(["clone", "branch"]),
     after_source_measured=st.booleans(),
+    source_wages=st.just(WAGES),
     copy_wages=st.permutations(WAGES).map(tuple),
 )
 # Each of these failed before: zero response, or the source's relative changes.
-@example(kind="branch", after_source_measured=False, copy_wages=WAGES)
-@example(kind="clone", after_source_measured=False, copy_wages=WAGES)
-@example(kind="clone", after_source_measured=True, copy_wages=SWAPPED_WAGES)
-@example(kind="branch", after_source_measured=True, copy_wages=SWAPPED_WAGES)
+@example(
+    kind="branch", after_source_measured=False, source_wages=WAGES, copy_wages=WAGES
+)
+@example(
+    kind="clone", after_source_measured=False, source_wages=WAGES, copy_wages=WAGES
+)
+@example(
+    kind="clone",
+    after_source_measured=True,
+    source_wages=WAGES,
+    copy_wages=SWAPPED_WAGES,
+)
+@example(
+    kind="branch",
+    after_source_measured=True,
+    source_wages=WAGES,
+    copy_wages=SWAPPED_WAGES,
+)
+# A source whose every measured response is zero (at 20,000 under this reform).
+@example(
+    kind="clone",
+    after_source_measured=True,
+    source_wages=(20_000,),
+    copy_wages=(50_000,),
+)
 def test_a_copy_reports_the_response_for_its_inputs_and_measurement_state(
-    kind, after_source_measured, copy_wages
+    kind, after_source_measured, source_wages, copy_wages
 ):
-    source = make_simulation(situation=households(WAGES), reform=LSR_REFORM)
+    source = make_simulation(situation=households(source_wages), reform=LSR_REFORM)
     if after_source_measured:
         source_response = response(source)
         measured = {
@@ -186,7 +210,7 @@ def test_a_copy_reports_the_response_for_its_inputs_and_measurement_state(
             ].items()
         }
     copy = source.clone() if kind == "clone" else source.get_branch("copy")
-    if copy_wages != WAGES:
+    if copy_wages != source_wages:
         set_wages(copy, copy_wages)
     copy_response = response(copy)
     if kind == "branch" and after_source_measured:
@@ -194,7 +218,7 @@ def test_a_copy_reports_the_response_for_its_inputs_and_measurement_state(
         # With this reform's uniform elasticities, the response scales with wages.
         np.testing.assert_allclose(
             copy_response,
-            source_response * np.divide(copy_wages, WAGES),
+            source_response * np.divide(copy_wages, source_wages),
             atol=1e-3,
         )
         copied_measurements = copy.__dict__[BEHAVIORAL_RESPONSE_CACHE_ATTR][str(YEAR)]
@@ -204,7 +228,9 @@ def test_a_copy_reports_the_response_for_its_inputs_and_measurement_state(
     else:
         np.testing.assert_allclose(copy_response, fresh_response(copy_wages), atol=1e-3)
     if after_source_measured:
-        np.testing.assert_allclose(response(source), fresh_response(WAGES), atol=1e-3)
+        np.testing.assert_allclose(
+            response(source), fresh_response(source_wages), atol=1e-3
+        )
 
 
 def test_migrated_input_records_are_private_and_explicit_overrides_survive():
