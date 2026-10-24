@@ -140,6 +140,8 @@
         age: 68
         taxable_pension_income: 20_000
         taxable_unemployment_compensation: 0
+        # The couple's Economic Impact Payments received during 2020.
+        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 3_600
       person2:
         age: 64
         unemployment_compensation: 8_000
@@ -167,8 +169,8 @@
     adjusted_gross_income_person: [20_000, 1_200, 0]
     dependent_gross_income: [0, 0, 4_000]
     mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback: [0, 6_800, 0]
-    # Each person's compensation once. The head also carries the joint
-    # return's 2020 recovery rebate credit, 1_200 x 2 + 600 x 2 = 3_600.
+    # Each person's compensation once. The head also carries the couple's
+    # 2020 Economic Impact Payments, 1_200 x 2 + 600 x 2 = 3_600.
     mt_elderly_homeowner_or_renter_credit_gross_household_income: [23_600, 8_000, 4_000]
 
 - name: Case 8, a person recorded as both a dependent and the head.

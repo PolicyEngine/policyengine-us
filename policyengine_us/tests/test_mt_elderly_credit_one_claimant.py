@@ -12,8 +12,12 @@ property tax billed (line 23) and rent (line 24). A tax unit billed no
 property tax is treated as living in a home in another member's name, whose
 property tax "can qualify as rent only" (ARM 42.4.302(2)(b)): its line 24 is
 the larger of the rent it paid and the property tax billed to the
-household's other members. The model pays the tax unit whose credit is
-largest.
+household's other members. That bill does not make it eligible: its head or
+spouse must have occupied the home as an owner, renter, or lessee (MCA
+15-30-2338(1)(c)). By default a tax unit that pays rent or is billed property
+tax meets that test and one with neither does not; a tax unit marked as a
+lessee here meets it through the qualifying-occupancy input. The model pays
+the tax unit whose credit is largest.
 
 A reference written here from the schedule's lines is compared with the
 model for random Montana households of one to three tax units (single or
@@ -59,13 +63,34 @@ from policyengine_us.system import system
 YEAR = 2024
 TOLERANCE = 0.01
 P = system.parameters(YEAR).gov.states.mt.tax.income.credits.elderly_homeowner_or_renter
+OCCUPANCY = "mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months"
+
+
+def occupies(unit):
+    """Whether the tax unit's head and spouse occupy the home as owners,
+    renters, or lessees: they pay rent, are billed property tax, or are
+    marked as lessees."""
+    return unit.get("lessee", False) or unit["property_tax"] > 0 or unit["rent"] > 0
+
+
+def eligible(unit):
+    """MCA 15-30-2338(1)(a) and (c); every household here is a full-year
+    Montana resident."""
+    oldest = max(adult["age"] for adult in unit["adults"])
+    return oldest >= P.age_threshold and occupies(unit)
 
 
 def build_situation(households):
     """Each household is a list of tax units; each tax unit is a dict with
     "adults" (a list of dicts with age, pension, interest and social
     security) and the head's property tax and rent. Every household is built
-    twice: as given, and with its tax units in reverse order."""
+    twice: as given, and with its tax units in reverse order. When any tax
+    unit is marked as a lessee, every adult's qualifying occupancy is an
+    input: an input for some people gives the others its default, not its
+    formula."""
+    any_lessee = any(
+        unit.get("lessee", False) for units in households for unit in units
+    )
     people, tax_units, marital_units, spm_units, families, situation_households = (
         {},
         {},
@@ -100,6 +125,10 @@ def build_situation(households):
                 head = unit_members[0]
                 people[head]["real_estate_taxes"] = {YEAR: unit["property_tax"]}
                 people[head]["rent"] = {YEAR: unit["rent"]}
+                if any_lessee:
+                    months = 12 if occupies(unit) else 0
+                    for person in unit_members:
+                        people[person][OCCUPANCY] = {YEAR: months}
                 tax_units[unit_key] = {"members": unit_members}
                 marital_units[unit_key] = {"members": unit_members}
                 members += unit_members
@@ -137,7 +166,6 @@ def reference(units):
     household_property_tax = sum(unit["property_tax"] for unit in units)
     credits = []
     for unit in units:
-        eligible = max(adult["age"] for adult in unit["adults"]) >= P.age_threshold
         # Line 24: a tax unit billed no property tax may use the property tax
         # billed to the household's other members as rent, in place of the
         # rent it paid if that is larger (ARM 42.4.302(2)(b)).
@@ -147,7 +175,7 @@ def reference(units):
         # Lines 23-28.
         housing = unit["property_tax"] + rent * P.rent_equivalent_tax_rate
         capped = min(max(housing - net, 0), P.cap)
-        credits.append(eligible * capped * multiplier)
+        credits.append(eligible(unit) * capped * multiplier)
     return gross, credits
 
 
@@ -198,10 +226,7 @@ def assert_properties(households):
             # 3. At most one payment; one selection where any tax unit is
             # eligible.
             assert (credit > tol).sum() <= 1, units
-            any_eligible = any(
-                max(adult["age"] for adult in unit["adults"]) >= P.age_threshold
-                for unit in units
-            )
+            any_eligible = any(eligible(unit) for unit in units)
             assert selected.sum() == int(any_eligible), units
             # 4. Nothing or the whole credit; the selected unit gets it all.
             assert np.all((np.abs(credit) <= tol) | (np.abs(credit - pre) <= tol)), (
@@ -247,21 +272,39 @@ PARENT_IN_CHILDS_HOME = [
     {"adults": [adult(80, pension=14_000)], "property_tax": 0, "rent": 0},
     {"adults": [adult(45, interest=6_000)], "property_tax": 4_000, "rent": 0},
 ]
+# The same parent holding the home as a rent-free lessee.
+LESSEE_IN_CHILDS_HOME = [
+    {**PARENT_IN_CHILDS_HOME[0], "lessee": True},
+    PARENT_IN_CHILDS_HOME[1],
+]
 
 
 def test_property_tax_in_another_name_worked_example():
-    """2024 Schedule 2EC: a parent, 80, with a 14,000 pension lives in the
-    home of an adult child, 45, who has 6,000 of interest and is billed 4,000
-    of property tax; each files their own return. Line 18 = 20,000; line 22
-    = 7,400 x 0.035 = 259. The home is in the child's name, so its property
-    tax "can qualify as rent only" on the parent's schedule (ARM
-    42.4.302(2)(b)): line 24 = 4,000, line 25 = 600, line 27 = 341. The child
-    is under 62 and cannot claim."""
-    households = [PARENT_IN_CHILDS_HOME]
+    """2024 Schedule 2EC: a parent, 80, with a 14,000 pension lives rent-free
+    as a lessee in the home of an adult child, 45, who has 6,000 of interest
+    and is billed 4,000 of property tax; each files their own return. Line
+    18 = 20,000; line 22 = 7,400 x 0.035 = 259. The home is in the child's
+    name, so its property tax "can qualify as rent only" on the parent's
+    schedule (ARM 42.4.302(2)(b)): line 24 = 4,000, line 25 = 600, line 27 =
+    341. The child is under 62 and cannot claim."""
+    households = [LESSEE_IN_CHILDS_HOME]
     result = calculate(households)
     assert result["pre_one_claimant"] == pytest.approx([341, 0, 0, 341], abs=TOLERANCE)
     assert result["selected"].tolist() == [True, False, False, True]
     assert result["credit"] == pytest.approx([341, 0, 0, 341], abs=TOLERANCE)
+    assert_properties(households)
+
+
+def test_another_members_bill_does_not_establish_occupancy():
+    """The same parent without owner, renter, or lessee status: no rent paid
+    and no property tax billed, so nothing shows the six months of
+    qualifying occupancy MCA 15-30-2338(1)(c) requires, and the child's bill
+    cannot. Neither tax unit is eligible, so no one is selected or paid."""
+    households = [PARENT_IN_CHILDS_HOME]
+    result = calculate(households)
+    assert result["pre_one_claimant"] == pytest.approx([0, 0, 0, 0], abs=TOLERANCE)
+    assert result["selected"].tolist() == [False, False, False, False]
+    assert result["credit"] == pytest.approx([0, 0, 0, 0], abs=TOLERANCE)
     assert_properties(households)
 
 
@@ -297,15 +340,15 @@ def assert_raising_a_bill(units, index, increase):
 
 def test_newly_billed_tax_unit_can_lose_credit():
     """The exception in invariant 6, which follows the form's reading of line
-    23 ("the property tax you were billed"). Billing the parent 100 of
+    23 ("the property tax you were billed"). Billing the lessee parent 100 of
     property tax makes the home theirs too: line 23 = 100 and line 24 = 0,
     so line 27 = max(100 - 259, 0) = 0 instead of 341. Line 22 is unchanged
     at 259. The child's bill still counts for no one but the child."""
     result = calculate(
-        [PARENT_IN_CHILDS_HOME, raise_property_tax(PARENT_IN_CHILDS_HOME, 0, 100)]
+        [LESSEE_IN_CHILDS_HOME, raise_property_tax(LESSEE_IN_CHILDS_HOME, 0, 100)]
     )
     assert result["pre_one_claimant"][[0, 4]] == pytest.approx([341, 0], abs=TOLERANCE)
-    assert_raising_a_bill(PARENT_IN_CHILDS_HOME, 1, 500)
+    assert_raising_a_bill(LESSEE_IN_CHILDS_HOME, 1, 500)
 
 
 try:
@@ -391,8 +434,10 @@ if hypothesis is not None:
             ]
         ]
     )
-    # A parent in an adult child's home: the child's bill is the parent's
-    # rent (line 24 = 4,000; line 27 = 600 - 259 = 341).
+    # A lessee parent in an adult child's home: the child's bill is the
+    # parent's rent (line 24 = 4,000; line 27 = 600 - 259 = 341).
+    @hypothesis.example([LESSEE_IN_CHILDS_HOME])
+    # Without owner, renter, or lessee status the parent is not eligible.
     @hypothesis.example([PARENT_IN_CHILDS_HOME])
     # The same parent paying the child 2,400 of rent: line 24 is the larger
     # bill, 4,000, not 2,400 + 4,000.
@@ -418,7 +463,7 @@ if hypothesis is not None:
         max_examples=10, deadline=None, derandomize=True, suppress_health_check=SLOW
     )
     @hypothesis.given(raised_bill())
-    # Raising the child's bill raises the parent's rent and credit.
-    @hypothesis.example((PARENT_IN_CHILDS_HOME, 1, 500))
+    # Raising the child's bill raises the lessee parent's rent and credit.
+    @hypothesis.example((LESSEE_IN_CHILDS_HOME, 1, 500))
     def test_raising_a_bill(case):
         assert_raising_a_bill(*case)

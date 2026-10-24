@@ -1,0 +1,1 @@
+End Montana's disability income exclusion with its 2024 repeal, count only the federal refundable credits a household actually received in the elderly homeowner/renter credit's gross household income, and require that credit's claimant to meet the six-month owner, renter or lessee occupancy and nine-month residence tests (MCA 15-30-2338(1)(b)-(c)).
