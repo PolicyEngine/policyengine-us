@@ -1,0 +1,3672 @@
+# All 28 household sizes from the original FY2026 matrix.
+# The strict federal income floor overrides top-band next dollars at sizes 21-28.
+# Size and income are intentional component inputs; end-to-end cases are separate.
+# https://liheapch.acf.gov/docs/2026/benefits-matricies/ND_BenefitMatrix_2026.xlsx
+- name: Case 1, all 140 published upper boundaries and next dollars in distinct households.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 40
+      person3:
+        age: 40
+      person4:
+        age: 40
+      person5:
+        age: 40
+      person6:
+        age: 40
+      person7:
+        age: 40
+      person8:
+        age: 40
+      person9:
+        age: 40
+      person10:
+        age: 40
+      person11:
+        age: 40
+      person12:
+        age: 40
+      person13:
+        age: 40
+      person14:
+        age: 40
+      person15:
+        age: 40
+      person16:
+        age: 40
+      person17:
+        age: 40
+      person18:
+        age: 40
+      person19:
+        age: 40
+      person20:
+        age: 40
+      person21:
+        age: 40
+      person22:
+        age: 40
+      person23:
+        age: 40
+      person24:
+        age: 40
+      person25:
+        age: 40
+      person26:
+        age: 40
+      person27:
+        age: 40
+      person28:
+        age: 40
+      person29:
+        age: 40
+      person30:
+        age: 40
+      person31:
+        age: 40
+      person32:
+        age: 40
+      person33:
+        age: 40
+      person34:
+        age: 40
+      person35:
+        age: 40
+      person36:
+        age: 40
+      person37:
+        age: 40
+      person38:
+        age: 40
+      person39:
+        age: 40
+      person40:
+        age: 40
+      person41:
+        age: 40
+      person42:
+        age: 40
+      person43:
+        age: 40
+      person44:
+        age: 40
+      person45:
+        age: 40
+      person46:
+        age: 40
+      person47:
+        age: 40
+      person48:
+        age: 40
+      person49:
+        age: 40
+      person50:
+        age: 40
+      person51:
+        age: 40
+      person52:
+        age: 40
+      person53:
+        age: 40
+      person54:
+        age: 40
+      person55:
+        age: 40
+      person56:
+        age: 40
+      person57:
+        age: 40
+      person58:
+        age: 40
+      person59:
+        age: 40
+      person60:
+        age: 40
+      person61:
+        age: 40
+      person62:
+        age: 40
+      person63:
+        age: 40
+      person64:
+        age: 40
+      person65:
+        age: 40
+      person66:
+        age: 40
+      person67:
+        age: 40
+      person68:
+        age: 40
+      person69:
+        age: 40
+      person70:
+        age: 40
+      person71:
+        age: 40
+      person72:
+        age: 40
+      person73:
+        age: 40
+      person74:
+        age: 40
+      person75:
+        age: 40
+      person76:
+        age: 40
+      person77:
+        age: 40
+      person78:
+        age: 40
+      person79:
+        age: 40
+      person80:
+        age: 40
+      person81:
+        age: 40
+      person82:
+        age: 40
+      person83:
+        age: 40
+      person84:
+        age: 40
+      person85:
+        age: 40
+      person86:
+        age: 40
+      person87:
+        age: 40
+      person88:
+        age: 40
+      person89:
+        age: 40
+      person90:
+        age: 40
+      person91:
+        age: 40
+      person92:
+        age: 40
+      person93:
+        age: 40
+      person94:
+        age: 40
+      person95:
+        age: 40
+      person96:
+        age: 40
+      person97:
+        age: 40
+      person98:
+        age: 40
+      person99:
+        age: 40
+      person100:
+        age: 40
+      person101:
+        age: 40
+      person102:
+        age: 40
+      person103:
+        age: 40
+      person104:
+        age: 40
+      person105:
+        age: 40
+      person106:
+        age: 40
+      person107:
+        age: 40
+      person108:
+        age: 40
+      person109:
+        age: 40
+      person110:
+        age: 40
+      person111:
+        age: 40
+      person112:
+        age: 40
+      person113:
+        age: 40
+      person114:
+        age: 40
+      person115:
+        age: 40
+      person116:
+        age: 40
+      person117:
+        age: 40
+      person118:
+        age: 40
+      person119:
+        age: 40
+      person120:
+        age: 40
+      person121:
+        age: 40
+      person122:
+        age: 40
+      person123:
+        age: 40
+      person124:
+        age: 40
+      person125:
+        age: 40
+      person126:
+        age: 40
+      person127:
+        age: 40
+      person128:
+        age: 40
+      person129:
+        age: 40
+      person130:
+        age: 40
+      person131:
+        age: 40
+      person132:
+        age: 40
+      person133:
+        age: 40
+      person134:
+        age: 40
+      person135:
+        age: 40
+      person136:
+        age: 40
+      person137:
+        age: 40
+      person138:
+        age: 40
+      person139:
+        age: 40
+      person140:
+        age: 40
+      person141:
+        age: 40
+      person142:
+        age: 40
+      person143:
+        age: 40
+      person144:
+        age: 40
+      person145:
+        age: 40
+      person146:
+        age: 40
+      person147:
+        age: 40
+      person148:
+        age: 40
+      person149:
+        age: 40
+      person150:
+        age: 40
+      person151:
+        age: 40
+      person152:
+        age: 40
+      person153:
+        age: 40
+      person154:
+        age: 40
+      person155:
+        age: 40
+      person156:
+        age: 40
+      person157:
+        age: 40
+      person158:
+        age: 40
+      person159:
+        age: 40
+      person160:
+        age: 40
+      person161:
+        age: 40
+      person162:
+        age: 40
+      person163:
+        age: 40
+      person164:
+        age: 40
+      person165:
+        age: 40
+      person166:
+        age: 40
+      person167:
+        age: 40
+      person168:
+        age: 40
+      person169:
+        age: 40
+      person170:
+        age: 40
+      person171:
+        age: 40
+      person172:
+        age: 40
+      person173:
+        age: 40
+      person174:
+        age: 40
+      person175:
+        age: 40
+      person176:
+        age: 40
+      person177:
+        age: 40
+      person178:
+        age: 40
+      person179:
+        age: 40
+      person180:
+        age: 40
+      person181:
+        age: 40
+      person182:
+        age: 40
+      person183:
+        age: 40
+      person184:
+        age: 40
+      person185:
+        age: 40
+      person186:
+        age: 40
+      person187:
+        age: 40
+      person188:
+        age: 40
+      person189:
+        age: 40
+      person190:
+        age: 40
+      person191:
+        age: 40
+      person192:
+        age: 40
+      person193:
+        age: 40
+      person194:
+        age: 40
+      person195:
+        age: 40
+      person196:
+        age: 40
+      person197:
+        age: 40
+      person198:
+        age: 40
+      person199:
+        age: 40
+      person200:
+        age: 40
+      person201:
+        age: 40
+      person202:
+        age: 40
+      person203:
+        age: 40
+      person204:
+        age: 40
+      person205:
+        age: 40
+      person206:
+        age: 40
+      person207:
+        age: 40
+      person208:
+        age: 40
+      person209:
+        age: 40
+      person210:
+        age: 40
+      person211:
+        age: 40
+      person212:
+        age: 40
+      person213:
+        age: 40
+      person214:
+        age: 40
+      person215:
+        age: 40
+      person216:
+        age: 40
+      person217:
+        age: 40
+      person218:
+        age: 40
+      person219:
+        age: 40
+      person220:
+        age: 40
+      person221:
+        age: 40
+      person222:
+        age: 40
+      person223:
+        age: 40
+      person224:
+        age: 40
+      person225:
+        age: 40
+      person226:
+        age: 40
+      person227:
+        age: 40
+      person228:
+        age: 40
+      person229:
+        age: 40
+      person230:
+        age: 40
+      person231:
+        age: 40
+      person232:
+        age: 40
+      person233:
+        age: 40
+      person234:
+        age: 40
+      person235:
+        age: 40
+      person236:
+        age: 40
+      person237:
+        age: 40
+      person238:
+        age: 40
+      person239:
+        age: 40
+      person240:
+        age: 40
+      person241:
+        age: 40
+      person242:
+        age: 40
+      person243:
+        age: 40
+      person244:
+        age: 40
+      person245:
+        age: 40
+      person246:
+        age: 40
+      person247:
+        age: 40
+      person248:
+        age: 40
+      person249:
+        age: 40
+      person250:
+        age: 40
+      person251:
+        age: 40
+      person252:
+        age: 40
+      person253:
+        age: 40
+      person254:
+        age: 40
+      person255:
+        age: 40
+      person256:
+        age: 40
+      person257:
+        age: 40
+      person258:
+        age: 40
+      person259:
+        age: 40
+      person260:
+        age: 40
+      person261:
+        age: 40
+      person262:
+        age: 40
+      person263:
+        age: 40
+      person264:
+        age: 40
+      person265:
+        age: 40
+      person266:
+        age: 40
+      person267:
+        age: 40
+      person268:
+        age: 40
+      person269:
+        age: 40
+      person270:
+        age: 40
+      person271:
+        age: 40
+      person272:
+        age: 40
+      person273:
+        age: 40
+      person274:
+        age: 40
+      person275:
+        age: 40
+      person276:
+        age: 40
+      person277:
+        age: 40
+      person278:
+        age: 40
+      person279:
+        age: 40
+      person280:
+        age: 40
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 1
+        nd_liheap_countable_income: 13518
+      spm_unit2:
+        members:
+        - person2
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 1
+        nd_liheap_countable_income: 13519
+      spm_unit3:
+        members:
+        - person3
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 1
+        nd_liheap_countable_income: 20274
+      spm_unit4:
+        members:
+        - person4
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 1
+        nd_liheap_countable_income: 20275
+      spm_unit5:
+        members:
+        - person5
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 1
+        nd_liheap_countable_income: 27030
+      spm_unit6:
+        members:
+        - person6
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 1
+        nd_liheap_countable_income: 27031
+      spm_unit7:
+        members:
+        - person7
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 1
+        nd_liheap_countable_income: 33786
+      spm_unit8:
+        members:
+        - person8
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 1
+        nd_liheap_countable_income: 33787
+      spm_unit9:
+        members:
+        - person9
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 1
+        nd_liheap_countable_income: 40530
+      spm_unit10:
+        members:
+        - person10
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 1
+        nd_liheap_countable_income: 40531
+      spm_unit11:
+        members:
+        - person11
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 2
+        nd_liheap_countable_income: 17670
+      spm_unit12:
+        members:
+        - person12
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 2
+        nd_liheap_countable_income: 17671
+      spm_unit13:
+        members:
+        - person13
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 2
+        nd_liheap_countable_income: 26514
+      spm_unit14:
+        members:
+        - person14
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 2
+        nd_liheap_countable_income: 26515
+      spm_unit15:
+        members:
+        - person15
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 2
+        nd_liheap_countable_income: 35346
+      spm_unit16:
+        members:
+        - person16
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 2
+        nd_liheap_countable_income: 35347
+      spm_unit17:
+        members:
+        - person17
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 2
+        nd_liheap_countable_income: 44178
+      spm_unit18:
+        members:
+        - person18
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 2
+        nd_liheap_countable_income: 44179
+      spm_unit19:
+        members:
+        - person19
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 2
+        nd_liheap_countable_income: 53010
+      spm_unit20:
+        members:
+        - person20
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 2
+        nd_liheap_countable_income: 53011
+      spm_unit21:
+        members:
+        - person21
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 3
+        nd_liheap_countable_income: 21834
+      spm_unit22:
+        members:
+        - person22
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 3
+        nd_liheap_countable_income: 21835
+      spm_unit23:
+        members:
+        - person23
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 3
+        nd_liheap_countable_income: 32742
+      spm_unit24:
+        members:
+        - person24
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 3
+        nd_liheap_countable_income: 32743
+      spm_unit25:
+        members:
+        - person25
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 3
+        nd_liheap_countable_income: 43662
+      spm_unit26:
+        members:
+        - person26
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 3
+        nd_liheap_countable_income: 43663
+      spm_unit27:
+        members:
+        - person27
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 3
+        nd_liheap_countable_income: 54570
+      spm_unit28:
+        members:
+        - person28
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 3
+        nd_liheap_countable_income: 54571
+      spm_unit29:
+        members:
+        - person29
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 3
+        nd_liheap_countable_income: 65478
+      spm_unit30:
+        members:
+        - person30
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 3
+        nd_liheap_countable_income: 65479
+      spm_unit31:
+        members:
+        - person31
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 4
+        nd_liheap_countable_income: 25986
+      spm_unit32:
+        members:
+        - person32
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 4
+        nd_liheap_countable_income: 25987
+      spm_unit33:
+        members:
+        - person33
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 4
+        nd_liheap_countable_income: 38982
+      spm_unit34:
+        members:
+        - person34
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 4
+        nd_liheap_countable_income: 38983
+      spm_unit35:
+        members:
+        - person35
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 4
+        nd_liheap_countable_income: 51966
+      spm_unit36:
+        members:
+        - person36
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 4
+        nd_liheap_countable_income: 51967
+      spm_unit37:
+        members:
+        - person37
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 4
+        nd_liheap_countable_income: 64962
+      spm_unit38:
+        members:
+        - person38
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 4
+        nd_liheap_countable_income: 64963
+      spm_unit39:
+        members:
+        - person39
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 4
+        nd_liheap_countable_income: 77958
+      spm_unit40:
+        members:
+        - person40
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 4
+        nd_liheap_countable_income: 77959
+      spm_unit41:
+        members:
+        - person41
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 5
+        nd_liheap_countable_income: 30150
+      spm_unit42:
+        members:
+        - person42
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 5
+        nd_liheap_countable_income: 30151
+      spm_unit43:
+        members:
+        - person43
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 5
+        nd_liheap_countable_income: 45210
+      spm_unit44:
+        members:
+        - person44
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 5
+        nd_liheap_countable_income: 45211
+      spm_unit45:
+        members:
+        - person45
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 5
+        nd_liheap_countable_income: 60282
+      spm_unit46:
+        members:
+        - person46
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 5
+        nd_liheap_countable_income: 60283
+      spm_unit47:
+        members:
+        - person47
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 5
+        nd_liheap_countable_income: 75354
+      spm_unit48:
+        members:
+        - person48
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 5
+        nd_liheap_countable_income: 75355
+      spm_unit49:
+        members:
+        - person49
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 5
+        nd_liheap_countable_income: 90426
+      spm_unit50:
+        members:
+        - person50
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 5
+        nd_liheap_countable_income: 90427
+      spm_unit51:
+        members:
+        - person51
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 6
+        nd_liheap_countable_income: 34302
+      spm_unit52:
+        members:
+        - person52
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 6
+        nd_liheap_countable_income: 34303
+      spm_unit53:
+        members:
+        - person53
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 6
+        nd_liheap_countable_income: 51450
+      spm_unit54:
+        members:
+        - person54
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 6
+        nd_liheap_countable_income: 51451
+      spm_unit55:
+        members:
+        - person55
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 6
+        nd_liheap_countable_income: 68598
+      spm_unit56:
+        members:
+        - person56
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 6
+        nd_liheap_countable_income: 68599
+      spm_unit57:
+        members:
+        - person57
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 6
+        nd_liheap_countable_income: 85746
+      spm_unit58:
+        members:
+        - person58
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 6
+        nd_liheap_countable_income: 85747
+      spm_unit59:
+        members:
+        - person59
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 6
+        nd_liheap_countable_income: 102894
+      spm_unit60:
+        members:
+        - person60
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 6
+        nd_liheap_countable_income: 102895
+      spm_unit61:
+        members:
+        - person61
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 7
+        nd_liheap_countable_income: 35082
+      spm_unit62:
+        members:
+        - person62
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 7
+        nd_liheap_countable_income: 35083
+      spm_unit63:
+        members:
+        - person63
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 7
+        nd_liheap_countable_income: 52626
+      spm_unit64:
+        members:
+        - person64
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 7
+        nd_liheap_countable_income: 52627
+      spm_unit65:
+        members:
+        - person65
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 7
+        nd_liheap_countable_income: 70158
+      spm_unit66:
+        members:
+        - person66
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 7
+        nd_liheap_countable_income: 70159
+      spm_unit67:
+        members:
+        - person67
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 7
+        nd_liheap_countable_income: 87702
+      spm_unit68:
+        members:
+        - person68
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 7
+        nd_liheap_countable_income: 87703
+      spm_unit69:
+        members:
+        - person69
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 7
+        nd_liheap_countable_income: 105234
+      spm_unit70:
+        members:
+        - person70
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 7
+        nd_liheap_countable_income: 105235
+      spm_unit71:
+        members:
+        - person71
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 8
+        nd_liheap_countable_income: 35862
+      spm_unit72:
+        members:
+        - person72
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 8
+        nd_liheap_countable_income: 35863
+      spm_unit73:
+        members:
+        - person73
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 8
+        nd_liheap_countable_income: 53790
+      spm_unit74:
+        members:
+        - person74
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 8
+        nd_liheap_countable_income: 53791
+      spm_unit75:
+        members:
+        - person75
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 8
+        nd_liheap_countable_income: 71718
+      spm_unit76:
+        members:
+        - person76
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 8
+        nd_liheap_countable_income: 71719
+      spm_unit77:
+        members:
+        - person77
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 8
+        nd_liheap_countable_income: 89646
+      spm_unit78:
+        members:
+        - person78
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 8
+        nd_liheap_countable_income: 89647
+      spm_unit79:
+        members:
+        - person79
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 8
+        nd_liheap_countable_income: 107574
+      spm_unit80:
+        members:
+        - person80
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 8
+        nd_liheap_countable_income: 107575
+      spm_unit81:
+        members:
+        - person81
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 9
+        nd_liheap_countable_income: 36642
+      spm_unit82:
+        members:
+        - person82
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 9
+        nd_liheap_countable_income: 36643
+      spm_unit83:
+        members:
+        - person83
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 9
+        nd_liheap_countable_income: 54966
+      spm_unit84:
+        members:
+        - person84
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 9
+        nd_liheap_countable_income: 54967
+      spm_unit85:
+        members:
+        - person85
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 9
+        nd_liheap_countable_income: 73278
+      spm_unit86:
+        members:
+        - person86
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 9
+        nd_liheap_countable_income: 73279
+      spm_unit87:
+        members:
+        - person87
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 9
+        nd_liheap_countable_income: 91602
+      spm_unit88:
+        members:
+        - person88
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 9
+        nd_liheap_countable_income: 91603
+      spm_unit89:
+        members:
+        - person89
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 9
+        nd_liheap_countable_income: 109914
+      spm_unit90:
+        members:
+        - person90
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 9
+        nd_liheap_countable_income: 109915
+      spm_unit91:
+        members:
+        - person91
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 10
+        nd_liheap_countable_income: 37422
+      spm_unit92:
+        members:
+        - person92
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 10
+        nd_liheap_countable_income: 37423
+      spm_unit93:
+        members:
+        - person93
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 10
+        nd_liheap_countable_income: 56130
+      spm_unit94:
+        members:
+        - person94
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 10
+        nd_liheap_countable_income: 56131
+      spm_unit95:
+        members:
+        - person95
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 10
+        nd_liheap_countable_income: 74838
+      spm_unit96:
+        members:
+        - person96
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 10
+        nd_liheap_countable_income: 74839
+      spm_unit97:
+        members:
+        - person97
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 10
+        nd_liheap_countable_income: 93546
+      spm_unit98:
+        members:
+        - person98
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 10
+        nd_liheap_countable_income: 93547
+      spm_unit99:
+        members:
+        - person99
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 10
+        nd_liheap_countable_income: 112242
+      spm_unit100:
+        members:
+        - person100
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 10
+        nd_liheap_countable_income: 112243
+      spm_unit101:
+        members:
+        - person101
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 11
+        nd_liheap_countable_income: 38202
+      spm_unit102:
+        members:
+        - person102
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 11
+        nd_liheap_countable_income: 38203
+      spm_unit103:
+        members:
+        - person103
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 11
+        nd_liheap_countable_income: 57294
+      spm_unit104:
+        members:
+        - person104
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 11
+        nd_liheap_countable_income: 57295
+      spm_unit105:
+        members:
+        - person105
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 11
+        nd_liheap_countable_income: 76398
+      spm_unit106:
+        members:
+        - person106
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 11
+        nd_liheap_countable_income: 76399
+      spm_unit107:
+        members:
+        - person107
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 11
+        nd_liheap_countable_income: 95490
+      spm_unit108:
+        members:
+        - person108
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 11
+        nd_liheap_countable_income: 95491
+      spm_unit109:
+        members:
+        - person109
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 11
+        nd_liheap_countable_income: 114582
+      spm_unit110:
+        members:
+        - person110
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 11
+        nd_liheap_countable_income: 114583
+      spm_unit111:
+        members:
+        - person111
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 12
+        nd_liheap_countable_income: 38982
+      spm_unit112:
+        members:
+        - person112
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 12
+        nd_liheap_countable_income: 38983
+      spm_unit113:
+        members:
+        - person113
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 12
+        nd_liheap_countable_income: 58470
+      spm_unit114:
+        members:
+        - person114
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 12
+        nd_liheap_countable_income: 58471
+      spm_unit115:
+        members:
+        - person115
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 12
+        nd_liheap_countable_income: 77958
+      spm_unit116:
+        members:
+        - person116
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 12
+        nd_liheap_countable_income: 77959
+      spm_unit117:
+        members:
+        - person117
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 12
+        nd_liheap_countable_income: 97446
+      spm_unit118:
+        members:
+        - person118
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 12
+        nd_liheap_countable_income: 97447
+      spm_unit119:
+        members:
+        - person119
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 12
+        nd_liheap_countable_income: 116922
+      spm_unit120:
+        members:
+        - person120
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 12
+        nd_liheap_countable_income: 116923
+      spm_unit121:
+        members:
+        - person121
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 13
+        nd_liheap_countable_income: 39762
+      spm_unit122:
+        members:
+        - person122
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 13
+        nd_liheap_countable_income: 39763
+      spm_unit123:
+        members:
+        - person123
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 13
+        nd_liheap_countable_income: 59634
+      spm_unit124:
+        members:
+        - person124
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 13
+        nd_liheap_countable_income: 59635
+      spm_unit125:
+        members:
+        - person125
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 13
+        nd_liheap_countable_income: 79518
+      spm_unit126:
+        members:
+        - person126
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 13
+        nd_liheap_countable_income: 79519
+      spm_unit127:
+        members:
+        - person127
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 13
+        nd_liheap_countable_income: 99390
+      spm_unit128:
+        members:
+        - person128
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 13
+        nd_liheap_countable_income: 99391
+      spm_unit129:
+        members:
+        - person129
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 13
+        nd_liheap_countable_income: 119262
+      spm_unit130:
+        members:
+        - person130
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 13
+        nd_liheap_countable_income: 119263
+      spm_unit131:
+        members:
+        - person131
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 14
+        nd_liheap_countable_income: 40542
+      spm_unit132:
+        members:
+        - person132
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 14
+        nd_liheap_countable_income: 40543
+      spm_unit133:
+        members:
+        - person133
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 14
+        nd_liheap_countable_income: 60798
+      spm_unit134:
+        members:
+        - person134
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 14
+        nd_liheap_countable_income: 60799
+      spm_unit135:
+        members:
+        - person135
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 14
+        nd_liheap_countable_income: 81066
+      spm_unit136:
+        members:
+        - person136
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 14
+        nd_liheap_countable_income: 81067
+      spm_unit137:
+        members:
+        - person137
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 14
+        nd_liheap_countable_income: 101334
+      spm_unit138:
+        members:
+        - person138
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 14
+        nd_liheap_countable_income: 101335
+      spm_unit139:
+        members:
+        - person139
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 14
+        nd_liheap_countable_income: 121602
+      spm_unit140:
+        members:
+        - person140
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 14
+        nd_liheap_countable_income: 121603
+      spm_unit141:
+        members:
+        - person141
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 15
+        nd_liheap_countable_income: 41322
+      spm_unit142:
+        members:
+        - person142
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 15
+        nd_liheap_countable_income: 41323
+      spm_unit143:
+        members:
+        - person143
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 15
+        nd_liheap_countable_income: 61974
+      spm_unit144:
+        members:
+        - person144
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 15
+        nd_liheap_countable_income: 61975
+      spm_unit145:
+        members:
+        - person145
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 15
+        nd_liheap_countable_income: 82626
+      spm_unit146:
+        members:
+        - person146
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 15
+        nd_liheap_countable_income: 82627
+      spm_unit147:
+        members:
+        - person147
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 15
+        nd_liheap_countable_income: 103290
+      spm_unit148:
+        members:
+        - person148
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 15
+        nd_liheap_countable_income: 103291
+      spm_unit149:
+        members:
+        - person149
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 15
+        nd_liheap_countable_income: 123942
+      spm_unit150:
+        members:
+        - person150
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 15
+        nd_liheap_countable_income: 123943
+      spm_unit151:
+        members:
+        - person151
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 16
+        nd_liheap_countable_income: 42102
+      spm_unit152:
+        members:
+        - person152
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 16
+        nd_liheap_countable_income: 42103
+      spm_unit153:
+        members:
+        - person153
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 16
+        nd_liheap_countable_income: 63138
+      spm_unit154:
+        members:
+        - person154
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 16
+        nd_liheap_countable_income: 63139
+      spm_unit155:
+        members:
+        - person155
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 16
+        nd_liheap_countable_income: 84186
+      spm_unit156:
+        members:
+        - person156
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 16
+        nd_liheap_countable_income: 84187
+      spm_unit157:
+        members:
+        - person157
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 16
+        nd_liheap_countable_income: 105234
+      spm_unit158:
+        members:
+        - person158
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 16
+        nd_liheap_countable_income: 105235
+      spm_unit159:
+        members:
+        - person159
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 16
+        nd_liheap_countable_income: 126282
+      spm_unit160:
+        members:
+        - person160
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 16
+        nd_liheap_countable_income: 126283
+      spm_unit161:
+        members:
+        - person161
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 17
+        nd_liheap_countable_income: 42882
+      spm_unit162:
+        members:
+        - person162
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 17
+        nd_liheap_countable_income: 42883
+      spm_unit163:
+        members:
+        - person163
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 17
+        nd_liheap_countable_income: 64314
+      spm_unit164:
+        members:
+        - person164
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 17
+        nd_liheap_countable_income: 64315
+      spm_unit165:
+        members:
+        - person165
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 17
+        nd_liheap_countable_income: 85746
+      spm_unit166:
+        members:
+        - person166
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 17
+        nd_liheap_countable_income: 85747
+      spm_unit167:
+        members:
+        - person167
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 17
+        nd_liheap_countable_income: 107190
+      spm_unit168:
+        members:
+        - person168
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 17
+        nd_liheap_countable_income: 107191
+      spm_unit169:
+        members:
+        - person169
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 17
+        nd_liheap_countable_income: 128622
+      spm_unit170:
+        members:
+        - person170
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 17
+        nd_liheap_countable_income: 128623
+      spm_unit171:
+        members:
+        - person171
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 18
+        nd_liheap_countable_income: 43662
+      spm_unit172:
+        members:
+        - person172
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 18
+        nd_liheap_countable_income: 43663
+      spm_unit173:
+        members:
+        - person173
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 18
+        nd_liheap_countable_income: 65478
+      spm_unit174:
+        members:
+        - person174
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 18
+        nd_liheap_countable_income: 65479
+      spm_unit175:
+        members:
+        - person175
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 18
+        nd_liheap_countable_income: 87306
+      spm_unit176:
+        members:
+        - person176
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 18
+        nd_liheap_countable_income: 87307
+      spm_unit177:
+        members:
+        - person177
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 18
+        nd_liheap_countable_income: 109134
+      spm_unit178:
+        members:
+        - person178
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 18
+        nd_liheap_countable_income: 109135
+      spm_unit179:
+        members:
+        - person179
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 18
+        nd_liheap_countable_income: 130962
+      spm_unit180:
+        members:
+        - person180
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 18
+        nd_liheap_countable_income: 130963
+      spm_unit181:
+        members:
+        - person181
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 19
+        nd_liheap_countable_income: 44430
+      spm_unit182:
+        members:
+        - person182
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 19
+        nd_liheap_countable_income: 44431
+      spm_unit183:
+        members:
+        - person183
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 19
+        nd_liheap_countable_income: 66654
+      spm_unit184:
+        members:
+        - person184
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 19
+        nd_liheap_countable_income: 66655
+      spm_unit185:
+        members:
+        - person185
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 19
+        nd_liheap_countable_income: 88866
+      spm_unit186:
+        members:
+        - person186
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 19
+        nd_liheap_countable_income: 88867
+      spm_unit187:
+        members:
+        - person187
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 19
+        nd_liheap_countable_income: 111078
+      spm_unit188:
+        members:
+        - person188
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 19
+        nd_liheap_countable_income: 111079
+      spm_unit189:
+        members:
+        - person189
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 19
+        nd_liheap_countable_income: 133290
+      spm_unit190:
+        members:
+        - person190
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 19
+        nd_liheap_countable_income: 133291
+      spm_unit191:
+        members:
+        - person191
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 20
+        nd_liheap_countable_income: 45210
+      spm_unit192:
+        members:
+        - person192
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 20
+        nd_liheap_countable_income: 45211
+      spm_unit193:
+        members:
+        - person193
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 20
+        nd_liheap_countable_income: 67818
+      spm_unit194:
+        members:
+        - person194
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 20
+        nd_liheap_countable_income: 67819
+      spm_unit195:
+        members:
+        - person195
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 20
+        nd_liheap_countable_income: 90426
+      spm_unit196:
+        members:
+        - person196
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 20
+        nd_liheap_countable_income: 90427
+      spm_unit197:
+        members:
+        - person197
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 20
+        nd_liheap_countable_income: 113034
+      spm_unit198:
+        members:
+        - person198
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 20
+        nd_liheap_countable_income: 113035
+      spm_unit199:
+        members:
+        - person199
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 20
+        nd_liheap_countable_income: 135630
+      spm_unit200:
+        members:
+        - person200
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 20
+        nd_liheap_countable_income: 135631
+      spm_unit201:
+        members:
+        - person201
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 21
+        nd_liheap_countable_income: 45990
+      spm_unit202:
+        members:
+        - person202
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 21
+        nd_liheap_countable_income: 45991
+      spm_unit203:
+        members:
+        - person203
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 21
+        nd_liheap_countable_income: 68994
+      spm_unit204:
+        members:
+        - person204
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 21
+        nd_liheap_countable_income: 68995
+      spm_unit205:
+        members:
+        - person205
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 21
+        nd_liheap_countable_income: 91986
+      spm_unit206:
+        members:
+        - person206
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 21
+        nd_liheap_countable_income: 91987
+      spm_unit207:
+        members:
+        - person207
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 21
+        nd_liheap_countable_income: 114978
+      spm_unit208:
+        members:
+        - person208
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 21
+        nd_liheap_countable_income: 114979
+      spm_unit209:
+        members:
+        - person209
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 21
+        nd_liheap_countable_income: 137970
+      spm_unit210:
+        members:
+        - person210
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 21
+        nd_liheap_countable_income: 137971
+      spm_unit211:
+        members:
+        - person211
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 22
+        nd_liheap_countable_income: 46770
+      spm_unit212:
+        members:
+        - person212
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 22
+        nd_liheap_countable_income: 46771
+      spm_unit213:
+        members:
+        - person213
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 22
+        nd_liheap_countable_income: 70158
+      spm_unit214:
+        members:
+        - person214
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 22
+        nd_liheap_countable_income: 70159
+      spm_unit215:
+        members:
+        - person215
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 22
+        nd_liheap_countable_income: 93546
+      spm_unit216:
+        members:
+        - person216
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 22
+        nd_liheap_countable_income: 93547
+      spm_unit217:
+        members:
+        - person217
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 22
+        nd_liheap_countable_income: 116934
+      spm_unit218:
+        members:
+        - person218
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 22
+        nd_liheap_countable_income: 116935
+      spm_unit219:
+        members:
+        - person219
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 22
+        nd_liheap_countable_income: 140310
+      spm_unit220:
+        members:
+        - person220
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 22
+        nd_liheap_countable_income: 140311
+      spm_unit221:
+        members:
+        - person221
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 23
+        nd_liheap_countable_income: 47550
+      spm_unit222:
+        members:
+        - person222
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 23
+        nd_liheap_countable_income: 47551
+      spm_unit223:
+        members:
+        - person223
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 23
+        nd_liheap_countable_income: 71322
+      spm_unit224:
+        members:
+        - person224
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 23
+        nd_liheap_countable_income: 71323
+      spm_unit225:
+        members:
+        - person225
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 23
+        nd_liheap_countable_income: 95094
+      spm_unit226:
+        members:
+        - person226
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 23
+        nd_liheap_countable_income: 95095
+      spm_unit227:
+        members:
+        - person227
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 23
+        nd_liheap_countable_income: 118878
+      spm_unit228:
+        members:
+        - person228
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 23
+        nd_liheap_countable_income: 118879
+      spm_unit229:
+        members:
+        - person229
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 23
+        nd_liheap_countable_income: 142650
+      spm_unit230:
+        members:
+        - person230
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 23
+        nd_liheap_countable_income: 142651
+      spm_unit231:
+        members:
+        - person231
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 24
+        nd_liheap_countable_income: 48330
+      spm_unit232:
+        members:
+        - person232
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 24
+        nd_liheap_countable_income: 48331
+      spm_unit233:
+        members:
+        - person233
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 24
+        nd_liheap_countable_income: 72498
+      spm_unit234:
+        members:
+        - person234
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 24
+        nd_liheap_countable_income: 72499
+      spm_unit235:
+        members:
+        - person235
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 24
+        nd_liheap_countable_income: 96654
+      spm_unit236:
+        members:
+        - person236
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 24
+        nd_liheap_countable_income: 96655
+      spm_unit237:
+        members:
+        - person237
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 24
+        nd_liheap_countable_income: 120822
+      spm_unit238:
+        members:
+        - person238
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 24
+        nd_liheap_countable_income: 120823
+      spm_unit239:
+        members:
+        - person239
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 24
+        nd_liheap_countable_income: 144990
+      spm_unit240:
+        members:
+        - person240
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 24
+        nd_liheap_countable_income: 144991
+      spm_unit241:
+        members:
+        - person241
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 25
+        nd_liheap_countable_income: 49110
+      spm_unit242:
+        members:
+        - person242
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 25
+        nd_liheap_countable_income: 49111
+      spm_unit243:
+        members:
+        - person243
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 25
+        nd_liheap_countable_income: 73662
+      spm_unit244:
+        members:
+        - person244
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 25
+        nd_liheap_countable_income: 73663
+      spm_unit245:
+        members:
+        - person245
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 25
+        nd_liheap_countable_income: 98214
+      spm_unit246:
+        members:
+        - person246
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 25
+        nd_liheap_countable_income: 98215
+      spm_unit247:
+        members:
+        - person247
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 25
+        nd_liheap_countable_income: 122778
+      spm_unit248:
+        members:
+        - person248
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 25
+        nd_liheap_countable_income: 122779
+      spm_unit249:
+        members:
+        - person249
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 25
+        nd_liheap_countable_income: 147330
+      spm_unit250:
+        members:
+        - person250
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 25
+        nd_liheap_countable_income: 147331
+      spm_unit251:
+        members:
+        - person251
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 26
+        nd_liheap_countable_income: 49890
+      spm_unit252:
+        members:
+        - person252
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 26
+        nd_liheap_countable_income: 49891
+      spm_unit253:
+        members:
+        - person253
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 26
+        nd_liheap_countable_income: 74838
+      spm_unit254:
+        members:
+        - person254
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 26
+        nd_liheap_countable_income: 74839
+      spm_unit255:
+        members:
+        - person255
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 26
+        nd_liheap_countable_income: 99774
+      spm_unit256:
+        members:
+        - person256
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 26
+        nd_liheap_countable_income: 99775
+      spm_unit257:
+        members:
+        - person257
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 26
+        nd_liheap_countable_income: 124722
+      spm_unit258:
+        members:
+        - person258
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 26
+        nd_liheap_countable_income: 124723
+      spm_unit259:
+        members:
+        - person259
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 26
+        nd_liheap_countable_income: 149670
+      spm_unit260:
+        members:
+        - person260
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 26
+        nd_liheap_countable_income: 149671
+      spm_unit261:
+        members:
+        - person261
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 27
+        nd_liheap_countable_income: 50670
+      spm_unit262:
+        members:
+        - person262
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 27
+        nd_liheap_countable_income: 50671
+      spm_unit263:
+        members:
+        - person263
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 27
+        nd_liheap_countable_income: 76002
+      spm_unit264:
+        members:
+        - person264
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 27
+        nd_liheap_countable_income: 76003
+      spm_unit265:
+        members:
+        - person265
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 27
+        nd_liheap_countable_income: 101334
+      spm_unit266:
+        members:
+        - person266
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 27
+        nd_liheap_countable_income: 101335
+      spm_unit267:
+        members:
+        - person267
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 27
+        nd_liheap_countable_income: 126678
+      spm_unit268:
+        members:
+        - person268
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 27
+        nd_liheap_countable_income: 126679
+      spm_unit269:
+        members:
+        - person269
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 27
+        nd_liheap_countable_income: 152010
+      spm_unit270:
+        members:
+        - person270
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 27
+        nd_liheap_countable_income: 152011
+      spm_unit271:
+        members:
+        - person271
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 28
+        nd_liheap_countable_income: 51450
+      spm_unit272:
+        members:
+        - person272
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 28
+        nd_liheap_countable_income: 51451
+      spm_unit273:
+        members:
+        - person273
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 28
+        nd_liheap_countable_income: 77178
+      spm_unit274:
+        members:
+        - person274
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 28
+        nd_liheap_countable_income: 77179
+      spm_unit275:
+        members:
+        - person275
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 28
+        nd_liheap_countable_income: 102894
+      spm_unit276:
+        members:
+        - person276
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 28
+        nd_liheap_countable_income: 102895
+      spm_unit277:
+        members:
+        - person277
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 28
+        nd_liheap_countable_income: 128622
+      spm_unit278:
+        members:
+        - person278
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 28
+        nd_liheap_countable_income: 128623
+      spm_unit279:
+        members:
+        - person279
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 28
+        nd_liheap_countable_income: 154338
+      spm_unit280:
+        members:
+        - person280
+        heating_type: NATURAL_GAS
+        nd_liheap_household_size: 28
+        nd_liheap_countable_income: 154339
+    households:
+      household1:
+        members:
+        - person1
+        state_code: ND
+      household2:
+        members:
+        - person2
+        state_code: ND
+      household3:
+        members:
+        - person3
+        state_code: ND
+      household4:
+        members:
+        - person4
+        state_code: ND
+      household5:
+        members:
+        - person5
+        state_code: ND
+      household6:
+        members:
+        - person6
+        state_code: ND
+      household7:
+        members:
+        - person7
+        state_code: ND
+      household8:
+        members:
+        - person8
+        state_code: ND
+      household9:
+        members:
+        - person9
+        state_code: ND
+      household10:
+        members:
+        - person10
+        state_code: ND
+      household11:
+        members:
+        - person11
+        state_code: ND
+      household12:
+        members:
+        - person12
+        state_code: ND
+      household13:
+        members:
+        - person13
+        state_code: ND
+      household14:
+        members:
+        - person14
+        state_code: ND
+      household15:
+        members:
+        - person15
+        state_code: ND
+      household16:
+        members:
+        - person16
+        state_code: ND
+      household17:
+        members:
+        - person17
+        state_code: ND
+      household18:
+        members:
+        - person18
+        state_code: ND
+      household19:
+        members:
+        - person19
+        state_code: ND
+      household20:
+        members:
+        - person20
+        state_code: ND
+      household21:
+        members:
+        - person21
+        state_code: ND
+      household22:
+        members:
+        - person22
+        state_code: ND
+      household23:
+        members:
+        - person23
+        state_code: ND
+      household24:
+        members:
+        - person24
+        state_code: ND
+      household25:
+        members:
+        - person25
+        state_code: ND
+      household26:
+        members:
+        - person26
+        state_code: ND
+      household27:
+        members:
+        - person27
+        state_code: ND
+      household28:
+        members:
+        - person28
+        state_code: ND
+      household29:
+        members:
+        - person29
+        state_code: ND
+      household30:
+        members:
+        - person30
+        state_code: ND
+      household31:
+        members:
+        - person31
+        state_code: ND
+      household32:
+        members:
+        - person32
+        state_code: ND
+      household33:
+        members:
+        - person33
+        state_code: ND
+      household34:
+        members:
+        - person34
+        state_code: ND
+      household35:
+        members:
+        - person35
+        state_code: ND
+      household36:
+        members:
+        - person36
+        state_code: ND
+      household37:
+        members:
+        - person37
+        state_code: ND
+      household38:
+        members:
+        - person38
+        state_code: ND
+      household39:
+        members:
+        - person39
+        state_code: ND
+      household40:
+        members:
+        - person40
+        state_code: ND
+      household41:
+        members:
+        - person41
+        state_code: ND
+      household42:
+        members:
+        - person42
+        state_code: ND
+      household43:
+        members:
+        - person43
+        state_code: ND
+      household44:
+        members:
+        - person44
+        state_code: ND
+      household45:
+        members:
+        - person45
+        state_code: ND
+      household46:
+        members:
+        - person46
+        state_code: ND
+      household47:
+        members:
+        - person47
+        state_code: ND
+      household48:
+        members:
+        - person48
+        state_code: ND
+      household49:
+        members:
+        - person49
+        state_code: ND
+      household50:
+        members:
+        - person50
+        state_code: ND
+      household51:
+        members:
+        - person51
+        state_code: ND
+      household52:
+        members:
+        - person52
+        state_code: ND
+      household53:
+        members:
+        - person53
+        state_code: ND
+      household54:
+        members:
+        - person54
+        state_code: ND
+      household55:
+        members:
+        - person55
+        state_code: ND
+      household56:
+        members:
+        - person56
+        state_code: ND
+      household57:
+        members:
+        - person57
+        state_code: ND
+      household58:
+        members:
+        - person58
+        state_code: ND
+      household59:
+        members:
+        - person59
+        state_code: ND
+      household60:
+        members:
+        - person60
+        state_code: ND
+      household61:
+        members:
+        - person61
+        state_code: ND
+      household62:
+        members:
+        - person62
+        state_code: ND
+      household63:
+        members:
+        - person63
+        state_code: ND
+      household64:
+        members:
+        - person64
+        state_code: ND
+      household65:
+        members:
+        - person65
+        state_code: ND
+      household66:
+        members:
+        - person66
+        state_code: ND
+      household67:
+        members:
+        - person67
+        state_code: ND
+      household68:
+        members:
+        - person68
+        state_code: ND
+      household69:
+        members:
+        - person69
+        state_code: ND
+      household70:
+        members:
+        - person70
+        state_code: ND
+      household71:
+        members:
+        - person71
+        state_code: ND
+      household72:
+        members:
+        - person72
+        state_code: ND
+      household73:
+        members:
+        - person73
+        state_code: ND
+      household74:
+        members:
+        - person74
+        state_code: ND
+      household75:
+        members:
+        - person75
+        state_code: ND
+      household76:
+        members:
+        - person76
+        state_code: ND
+      household77:
+        members:
+        - person77
+        state_code: ND
+      household78:
+        members:
+        - person78
+        state_code: ND
+      household79:
+        members:
+        - person79
+        state_code: ND
+      household80:
+        members:
+        - person80
+        state_code: ND
+      household81:
+        members:
+        - person81
+        state_code: ND
+      household82:
+        members:
+        - person82
+        state_code: ND
+      household83:
+        members:
+        - person83
+        state_code: ND
+      household84:
+        members:
+        - person84
+        state_code: ND
+      household85:
+        members:
+        - person85
+        state_code: ND
+      household86:
+        members:
+        - person86
+        state_code: ND
+      household87:
+        members:
+        - person87
+        state_code: ND
+      household88:
+        members:
+        - person88
+        state_code: ND
+      household89:
+        members:
+        - person89
+        state_code: ND
+      household90:
+        members:
+        - person90
+        state_code: ND
+      household91:
+        members:
+        - person91
+        state_code: ND
+      household92:
+        members:
+        - person92
+        state_code: ND
+      household93:
+        members:
+        - person93
+        state_code: ND
+      household94:
+        members:
+        - person94
+        state_code: ND
+      household95:
+        members:
+        - person95
+        state_code: ND
+      household96:
+        members:
+        - person96
+        state_code: ND
+      household97:
+        members:
+        - person97
+        state_code: ND
+      household98:
+        members:
+        - person98
+        state_code: ND
+      household99:
+        members:
+        - person99
+        state_code: ND
+      household100:
+        members:
+        - person100
+        state_code: ND
+      household101:
+        members:
+        - person101
+        state_code: ND
+      household102:
+        members:
+        - person102
+        state_code: ND
+      household103:
+        members:
+        - person103
+        state_code: ND
+      household104:
+        members:
+        - person104
+        state_code: ND
+      household105:
+        members:
+        - person105
+        state_code: ND
+      household106:
+        members:
+        - person106
+        state_code: ND
+      household107:
+        members:
+        - person107
+        state_code: ND
+      household108:
+        members:
+        - person108
+        state_code: ND
+      household109:
+        members:
+        - person109
+        state_code: ND
+      household110:
+        members:
+        - person110
+        state_code: ND
+      household111:
+        members:
+        - person111
+        state_code: ND
+      household112:
+        members:
+        - person112
+        state_code: ND
+      household113:
+        members:
+        - person113
+        state_code: ND
+      household114:
+        members:
+        - person114
+        state_code: ND
+      household115:
+        members:
+        - person115
+        state_code: ND
+      household116:
+        members:
+        - person116
+        state_code: ND
+      household117:
+        members:
+        - person117
+        state_code: ND
+      household118:
+        members:
+        - person118
+        state_code: ND
+      household119:
+        members:
+        - person119
+        state_code: ND
+      household120:
+        members:
+        - person120
+        state_code: ND
+      household121:
+        members:
+        - person121
+        state_code: ND
+      household122:
+        members:
+        - person122
+        state_code: ND
+      household123:
+        members:
+        - person123
+        state_code: ND
+      household124:
+        members:
+        - person124
+        state_code: ND
+      household125:
+        members:
+        - person125
+        state_code: ND
+      household126:
+        members:
+        - person126
+        state_code: ND
+      household127:
+        members:
+        - person127
+        state_code: ND
+      household128:
+        members:
+        - person128
+        state_code: ND
+      household129:
+        members:
+        - person129
+        state_code: ND
+      household130:
+        members:
+        - person130
+        state_code: ND
+      household131:
+        members:
+        - person131
+        state_code: ND
+      household132:
+        members:
+        - person132
+        state_code: ND
+      household133:
+        members:
+        - person133
+        state_code: ND
+      household134:
+        members:
+        - person134
+        state_code: ND
+      household135:
+        members:
+        - person135
+        state_code: ND
+      household136:
+        members:
+        - person136
+        state_code: ND
+      household137:
+        members:
+        - person137
+        state_code: ND
+      household138:
+        members:
+        - person138
+        state_code: ND
+      household139:
+        members:
+        - person139
+        state_code: ND
+      household140:
+        members:
+        - person140
+        state_code: ND
+      household141:
+        members:
+        - person141
+        state_code: ND
+      household142:
+        members:
+        - person142
+        state_code: ND
+      household143:
+        members:
+        - person143
+        state_code: ND
+      household144:
+        members:
+        - person144
+        state_code: ND
+      household145:
+        members:
+        - person145
+        state_code: ND
+      household146:
+        members:
+        - person146
+        state_code: ND
+      household147:
+        members:
+        - person147
+        state_code: ND
+      household148:
+        members:
+        - person148
+        state_code: ND
+      household149:
+        members:
+        - person149
+        state_code: ND
+      household150:
+        members:
+        - person150
+        state_code: ND
+      household151:
+        members:
+        - person151
+        state_code: ND
+      household152:
+        members:
+        - person152
+        state_code: ND
+      household153:
+        members:
+        - person153
+        state_code: ND
+      household154:
+        members:
+        - person154
+        state_code: ND
+      household155:
+        members:
+        - person155
+        state_code: ND
+      household156:
+        members:
+        - person156
+        state_code: ND
+      household157:
+        members:
+        - person157
+        state_code: ND
+      household158:
+        members:
+        - person158
+        state_code: ND
+      household159:
+        members:
+        - person159
+        state_code: ND
+      household160:
+        members:
+        - person160
+        state_code: ND
+      household161:
+        members:
+        - person161
+        state_code: ND
+      household162:
+        members:
+        - person162
+        state_code: ND
+      household163:
+        members:
+        - person163
+        state_code: ND
+      household164:
+        members:
+        - person164
+        state_code: ND
+      household165:
+        members:
+        - person165
+        state_code: ND
+      household166:
+        members:
+        - person166
+        state_code: ND
+      household167:
+        members:
+        - person167
+        state_code: ND
+      household168:
+        members:
+        - person168
+        state_code: ND
+      household169:
+        members:
+        - person169
+        state_code: ND
+      household170:
+        members:
+        - person170
+        state_code: ND
+      household171:
+        members:
+        - person171
+        state_code: ND
+      household172:
+        members:
+        - person172
+        state_code: ND
+      household173:
+        members:
+        - person173
+        state_code: ND
+      household174:
+        members:
+        - person174
+        state_code: ND
+      household175:
+        members:
+        - person175
+        state_code: ND
+      household176:
+        members:
+        - person176
+        state_code: ND
+      household177:
+        members:
+        - person177
+        state_code: ND
+      household178:
+        members:
+        - person178
+        state_code: ND
+      household179:
+        members:
+        - person179
+        state_code: ND
+      household180:
+        members:
+        - person180
+        state_code: ND
+      household181:
+        members:
+        - person181
+        state_code: ND
+      household182:
+        members:
+        - person182
+        state_code: ND
+      household183:
+        members:
+        - person183
+        state_code: ND
+      household184:
+        members:
+        - person184
+        state_code: ND
+      household185:
+        members:
+        - person185
+        state_code: ND
+      household186:
+        members:
+        - person186
+        state_code: ND
+      household187:
+        members:
+        - person187
+        state_code: ND
+      household188:
+        members:
+        - person188
+        state_code: ND
+      household189:
+        members:
+        - person189
+        state_code: ND
+      household190:
+        members:
+        - person190
+        state_code: ND
+      household191:
+        members:
+        - person191
+        state_code: ND
+      household192:
+        members:
+        - person192
+        state_code: ND
+      household193:
+        members:
+        - person193
+        state_code: ND
+      household194:
+        members:
+        - person194
+        state_code: ND
+      household195:
+        members:
+        - person195
+        state_code: ND
+      household196:
+        members:
+        - person196
+        state_code: ND
+      household197:
+        members:
+        - person197
+        state_code: ND
+      household198:
+        members:
+        - person198
+        state_code: ND
+      household199:
+        members:
+        - person199
+        state_code: ND
+      household200:
+        members:
+        - person200
+        state_code: ND
+      household201:
+        members:
+        - person201
+        state_code: ND
+      household202:
+        members:
+        - person202
+        state_code: ND
+      household203:
+        members:
+        - person203
+        state_code: ND
+      household204:
+        members:
+        - person204
+        state_code: ND
+      household205:
+        members:
+        - person205
+        state_code: ND
+      household206:
+        members:
+        - person206
+        state_code: ND
+      household207:
+        members:
+        - person207
+        state_code: ND
+      household208:
+        members:
+        - person208
+        state_code: ND
+      household209:
+        members:
+        - person209
+        state_code: ND
+      household210:
+        members:
+        - person210
+        state_code: ND
+      household211:
+        members:
+        - person211
+        state_code: ND
+      household212:
+        members:
+        - person212
+        state_code: ND
+      household213:
+        members:
+        - person213
+        state_code: ND
+      household214:
+        members:
+        - person214
+        state_code: ND
+      household215:
+        members:
+        - person215
+        state_code: ND
+      household216:
+        members:
+        - person216
+        state_code: ND
+      household217:
+        members:
+        - person217
+        state_code: ND
+      household218:
+        members:
+        - person218
+        state_code: ND
+      household219:
+        members:
+        - person219
+        state_code: ND
+      household220:
+        members:
+        - person220
+        state_code: ND
+      household221:
+        members:
+        - person221
+        state_code: ND
+      household222:
+        members:
+        - person222
+        state_code: ND
+      household223:
+        members:
+        - person223
+        state_code: ND
+      household224:
+        members:
+        - person224
+        state_code: ND
+      household225:
+        members:
+        - person225
+        state_code: ND
+      household226:
+        members:
+        - person226
+        state_code: ND
+      household227:
+        members:
+        - person227
+        state_code: ND
+      household228:
+        members:
+        - person228
+        state_code: ND
+      household229:
+        members:
+        - person229
+        state_code: ND
+      household230:
+        members:
+        - person230
+        state_code: ND
+      household231:
+        members:
+        - person231
+        state_code: ND
+      household232:
+        members:
+        - person232
+        state_code: ND
+      household233:
+        members:
+        - person233
+        state_code: ND
+      household234:
+        members:
+        - person234
+        state_code: ND
+      household235:
+        members:
+        - person235
+        state_code: ND
+      household236:
+        members:
+        - person236
+        state_code: ND
+      household237:
+        members:
+        - person237
+        state_code: ND
+      household238:
+        members:
+        - person238
+        state_code: ND
+      household239:
+        members:
+        - person239
+        state_code: ND
+      household240:
+        members:
+        - person240
+        state_code: ND
+      household241:
+        members:
+        - person241
+        state_code: ND
+      household242:
+        members:
+        - person242
+        state_code: ND
+      household243:
+        members:
+        - person243
+        state_code: ND
+      household244:
+        members:
+        - person244
+        state_code: ND
+      household245:
+        members:
+        - person245
+        state_code: ND
+      household246:
+        members:
+        - person246
+        state_code: ND
+      household247:
+        members:
+        - person247
+        state_code: ND
+      household248:
+        members:
+        - person248
+        state_code: ND
+      household249:
+        members:
+        - person249
+        state_code: ND
+      household250:
+        members:
+        - person250
+        state_code: ND
+      household251:
+        members:
+        - person251
+        state_code: ND
+      household252:
+        members:
+        - person252
+        state_code: ND
+      household253:
+        members:
+        - person253
+        state_code: ND
+      household254:
+        members:
+        - person254
+        state_code: ND
+      household255:
+        members:
+        - person255
+        state_code: ND
+      household256:
+        members:
+        - person256
+        state_code: ND
+      household257:
+        members:
+        - person257
+        state_code: ND
+      household258:
+        members:
+        - person258
+        state_code: ND
+      household259:
+        members:
+        - person259
+        state_code: ND
+      household260:
+        members:
+        - person260
+        state_code: ND
+      household261:
+        members:
+        - person261
+        state_code: ND
+      household262:
+        members:
+        - person262
+        state_code: ND
+      household263:
+        members:
+        - person263
+        state_code: ND
+      household264:
+        members:
+        - person264
+        state_code: ND
+      household265:
+        members:
+        - person265
+        state_code: ND
+      household266:
+        members:
+        - person266
+        state_code: ND
+      household267:
+        members:
+        - person267
+        state_code: ND
+      household268:
+        members:
+        - person268
+        state_code: ND
+      household269:
+        members:
+        - person269
+        state_code: ND
+      household270:
+        members:
+        - person270
+        state_code: ND
+      household271:
+        members:
+        - person271
+        state_code: ND
+      household272:
+        members:
+        - person272
+        state_code: ND
+      household273:
+        members:
+        - person273
+        state_code: ND
+      household274:
+        members:
+        - person274
+        state_code: ND
+      household275:
+        members:
+        - person275
+        state_code: ND
+      household276:
+        members:
+        - person276
+        state_code: ND
+      household277:
+        members:
+        - person277
+        state_code: ND
+      household278:
+        members:
+        - person278
+        state_code: ND
+      household279:
+        members:
+        - person279
+        state_code: ND
+      household280:
+        members:
+        - person280
+        state_code: ND
+  output:
+    nd_liheap_share:
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0.45
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0.45
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0.45
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0.45
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0.45
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0.45
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0.45
+    - 1
+    - 0.95
+    - 0.95
+    - 0.85
+    - 0.85
+    - 0.65
+    - 0.65
+    - 0.45
+    - 0.45
+    - 0.45
+- name: Case 2, zero income receives the full share.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+        nd_liheap_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_share: 1

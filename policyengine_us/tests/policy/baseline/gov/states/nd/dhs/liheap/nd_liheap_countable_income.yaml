@@ -1,0 +1,445 @@
+# ND manual 415-25-05-05, -20, -27, -30 and -50.
+# Expected amounts are independently derived from the source contract.
+# https://www.nd.gov/dhs/policymanuals/415/415_25_05_05.htm
+- name: Case 1, 27 percent deduction applies to wages.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_countable_income: 14600
+- name: Case 2, pension income receives no earned deduction.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 20000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_countable_income: 20000
+- name: Case 3, a net business loss does not reduce wages.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20000
+        self_employment_income: -5000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_countable_income: 14600
+- name: Case 4, separate net business inputs do not offset each other.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: 10000
+        sstb_self_employment_income: -5000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_countable_income: 7300
+- name: Case 5, ordinary investment income and one-time capital gains are excluded.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        interest_income: 2000
+        dividend_income: 2000
+        capital_gains: 2000
+        pension_income: 10000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_countable_income: 10000
+- name: Case 6, recurring assistance below the annual disregard is excluded.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 10000
+        financial_assistance: 359
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_countable_income: 10000
+- name: Case 7, recurring assistance at the annual threshold counts.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 10000
+        financial_assistance: 360
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_countable_income: 10360
+- name: Case 8, support received counts and paid support is deducted.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        child_support_received: 2400
+        alimony_income: 1200
+        child_support_expense: 600
+        alimony_expense: 300
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_countable_income: 2700
+- name: Case 9, reported medical deductions do not require age or disability.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20000
+        other_medical_expenses: 1000
+        health_insurance_premiums_without_medicare_part_b: 1200
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_countable_income: 12400
+- name: Case 10, direct insurance premiums replace decomposed premiums.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 10000
+        health_insurance_premiums: 1200
+        health_insurance_premiums_without_medicare_part_b: 600
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_countable_income: 8800
+- name: Case 11, deductions cannot make income negative.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 1000
+        other_medical_expenses: 2000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_countable_income: 0
+- name: Case 12, a dependent high school student remains excluded through age 19.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 25000
+        ssi: 0
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+        is_in_secondary_school: true
+        employment_income: 8000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_liheap_countable_income: 25000
+- name: Case 13, student earnings count starting at age 20.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 25000
+        ssi: 0
+      person2:
+        age: 20
+        is_tax_unit_dependent: true
+        is_in_secondary_school: true
+        employment_income: 8000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_liheap_countable_income: 30840
+- name: Case 14, unearned child income remains countable.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 25000
+        ssi: 0
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+        social_security: 3000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_liheap_countable_income: 28000
+- name: Case 15, supported childcare medical and support expenses combine.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20000
+        other_medical_expenses: 1000
+        child_support_expense: 600
+        ssi: 0
+      person2:
+        age: 4
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+        childcare_expenses: 2000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_liheap_countable_income: 11000
+- name: Case 16, state TANF enters once for the household.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+      person2:
+        age: 4
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 2400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_liheap_countable_income: 2400
+
+# Reported premium repair contract v2: supplied positive aggregate takes precedence.
+# Components represent paid, unreimbursed premiums; no calculated Medicare premium is used.
+# Source: ND manual 415-25-05-05-05, including paid Medicare premiums.
+# https://www.nd.gov/dhs/policymanuals/415/415_25_05_05_05.htm
+
+# Contract v2: a negative aggregate is not a reported positive total; 34,000 - 1,200 - 2,400 - 600 = 29,800.
+- name: "Case 17, a nonpositive aggregate uses the reported premium components."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        immigration_status: "CITIZEN"
+        pension_income: 34_000
+        ssi: 0
+        medicare_enrolled: true
+        health_insurance_premiums: -1
+        health_insurance_premiums_without_medicare_part_b: 1_200
+        medicare_part_b_premiums_reported: 2_400
+        other_medical_expenses: 600
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        nd_tanf: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "ND"
+  output:
+    nd_liheap_countable_income: 29_800
+
+# Contract v2: negative non-Part-B and negative Part-B reports cannot offset the other positive component.
+- name: "Case 18, each reported premium component has its own zero floor."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        immigration_status: "CITIZEN"
+        pension_income: 34_000
+        ssi: 0
+        medicare_enrolled: true
+        health_insurance_premiums: 0
+        health_insurance_premiums_without_medicare_part_b: -300
+        medicare_part_b_premiums_reported: 2_400
+      person2:
+        age: 68
+        immigration_status: "CITIZEN"
+        pension_income: 34_000
+        ssi: 0
+        medicare_enrolled: true
+        health_insurance_premiums: 0
+        health_insurance_premiums_without_medicare_part_b: 1_200
+        medicare_part_b_premiums_reported: -300
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        nd_tanf: 0
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        nd_tanf: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "ND"
+      household2:
+        members: ["person2"]
+        state_code: "ND"
+  output:
+    nd_liheap_countable_income: [31_600, 32_800]
