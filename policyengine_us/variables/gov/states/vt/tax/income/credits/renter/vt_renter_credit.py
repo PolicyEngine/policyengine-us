@@ -8,6 +8,7 @@ class vt_renter_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
+        "https://legislature.vermont.gov/statutes/fullchapter/32/154",  # 6066(b)(2), (c)(2)
         "https://law.justia.com/codes/vermont/2022/title-32/chapter-154/section-6066/",  # b
         "https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf#page=35",
         # the formula used in this file is based on the excel sheet provided on the official Vermont government website
@@ -19,7 +20,16 @@ class vt_renter_credit(Variable):
         p = parameters(period).gov.states.vt.tax.income.credits.renter
         # get tax unit size and county.
         tax_unit_size = tax_unit("tax_unit_size", period)
-        county = tax_unit.household("county", period)
+        county = tax_unit.household("county_str", period)
+        # defined_for masks results after evaluation, so every row needs a
+        # valid Vermont county while indexing the state-only parameter tables.
+        in_vt = tax_unit.household("state_code_str", period) == "VT"
+        county = where(in_vt, county, "ADDISON_COUNTY_VT")
+        # 32 V.S.A. 6066(b)(2): the fair market rent is for "a number of
+        # bedrooms equal to the number of personal exemptions" under
+        # 5811(21)(C), which allows none for a filer who can be claimed as a
+        # dependent and no dependents on a return where either filer can be.
+        exemptions = clip(tax_unit("exemptions_count", period), 0, 8)
         # locate the values by family size and county
         full_credit_income_limit = p.income_limit_ami.thirty_percent[tax_unit_size][
             county
@@ -27,7 +37,7 @@ class vt_renter_credit(Variable):
         partial_credit_income_limit = p.income_limit_ami.fifty_percent[tax_unit_size][
             county
         ]
-        fmr = p.fair_market_rent[tax_unit_size][county]
+        fmr = p.fair_market_rent[exemptions][county]
         # The department rounds the credit amount to whole dollars, half up,
         # before applying the income phase-out: its 2021 calculator computes
         # ROUND(FMR * 12 * 10%, 0), and its published tables are whole dollars.
@@ -79,7 +89,15 @@ class vt_renter_credit(Variable):
         # 6066(b)(1)); 2026 Vt. Act 169 raises this for claim year 2027 only.
         capped_credit = min_(credit_value, p.max_credit)
         unrounded = capped_credit * (1 - shared_residence_reduction)
+        # 6066(c)(2): the claimant "may not be a person claimed as a dependent
+        # by any taxpayer", an actual claim. On a joint return either spouse
+        # may be the claimant, so only a return on which every filer is
+        # claimed loses it.
+        person = tax_unit.members
+        filer = person("is_tax_unit_head_or_spouse", period)
+        claimed = person("claimed_as_dependent_on_another_return", period)
+        claimant_eligible = tax_unit.any(filer & ~claimed)
         # The department calculators use ROUND(..., 0): Calculator!G16 in
         # 2021-2022 and Calculator!G17 in 2023-2025. Credits are nonnegative,
         # so floor(x + 0.5) matches their half-up rounding at exact ties.
-        return np.floor(unrounded + 0.5)
+        return claimant_eligible * np.floor(unrounded + 0.5)

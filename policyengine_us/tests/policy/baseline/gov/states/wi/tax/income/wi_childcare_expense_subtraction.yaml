@@ -79,3 +79,106 @@
     state_code: WI
   output:
     wi_childcare_expense_subtraction: 2_000
+
+# Disabled-adult care remains eligible when the filer can be claimed.
+# The $2,000 childcare is excluded unless the filing exception applies
+# or the child is incapable of self-care (IRC 21(b)(1)(B)).
+
+- name: 2021 claimable filer keeps adult care and only qualifying childcare
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 60000
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: false
+      adult:
+        age: 30
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+        care_expenses: 1000
+    tax_units:
+      tax_unit:
+        members: [filer, child, adult]
+        tax_unit_childcare_expenses: 2000
+    households:
+      household:
+        members: [filer, child, adult]
+        state_code: WI
+  output:
+    wi_childcare_expense_subtraction: 1000
+
+- name: 2021 filing exception filer keeps adult care and only qualifying childcare
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 60000
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: false
+      adult:
+        age: 30
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+        care_expenses: 1000
+    tax_units:
+      tax_unit:
+        members: [filer, child, adult]
+        tax_unit_childcare_expenses: 2000
+    households:
+      household:
+        members: [filer, child, adult]
+        state_code: WI
+  output:
+    wi_childcare_expense_subtraction: 3000
+
+- name: 2021 incapable child filer keeps adult care and only qualifying childcare
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 60000
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+      adult:
+        age: 30
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+        care_expenses: 1000
+    tax_units:
+      tax_unit:
+        members: [filer, child, adult]
+        tax_unit_childcare_expenses: 2000
+    households:
+      household:
+        members: [filer, child, adult]
+        state_code: WI
+  output:
+    wi_childcare_expense_subtraction: 3000

@@ -16,7 +16,10 @@ def create_ri_exemption_reform() -> Reform:
 
             person = tax_unit.members
             age = person("age", period)
-            is_dependent = person("is_tax_unit_dependent", period)
+            # Retain the baseline dependent taxpayer test and filing exception.
+            is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+            )
 
             # Apply age limit if in effect
             if p.age_limit.in_effect:
@@ -83,7 +86,10 @@ def create_ri_exemption_reform() -> Reform:
 
         def formula(tax_unit, period, parameters):
             person = tax_unit.members
-            is_dependent = person("is_tax_unit_dependent", period)
+            # Retain the baseline dependent taxpayer test and filing exception.
+            is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+            )
             total_dependents = tax_unit.sum(is_dependent)
             eligible_dependent_exemptions = tax_unit(
                 "ri_eligible_dependents_count", period
@@ -101,17 +107,13 @@ def create_ri_exemption_reform() -> Reform:
         def formula(tax_unit, period, parameters):
             p_base = parameters(period).gov.states.ri.tax.income.exemption
 
-            # Calculate personal exemptions base amount
-            filing_status = tax_unit("filing_status", period)
-            older_dependents = tax_unit("ri_older_dependents_count", period)
-            personal_exemptions = (
-                where(
-                    filing_status == filing_status.possible_values.JOINT,
-                    2,
-                    1,
-                )
-                + older_dependents
+            # Preserve the baseline exclusion of claimable filers, even when
+            # the filing exception permits them to claim their dependents.
+            own_exemptions = tax_unit(
+                "head_spouse_count_not_dependent_elsewhere", period
             )
+            older_dependents = tax_unit("ri_older_dependents_count", period)
+            personal_exemptions = own_exemptions + older_dependents
             personal_exemption_base = personal_exemptions * p_base.amount
 
             # Apply baseline phase-out to personal exemptions
