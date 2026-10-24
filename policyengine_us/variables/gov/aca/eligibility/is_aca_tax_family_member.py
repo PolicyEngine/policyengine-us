@@ -1,0 +1,47 @@
+from policyengine_us.model_api import *
+
+
+class is_aca_tax_family_member(Variable):
+    value_type = bool
+    entity = Person
+    label = "Member of the premium tax credit tax family"
+    definition_period = YEAR
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/36B#c_1_D",
+        "https://www.law.cornell.edu/uscode/text/26/152#b_1",
+        "https://www.law.cornell.edu/cfr/text/26/1.36B-1#d_2",
+        "https://www.law.cornell.edu/cfr/text/26/1.36B-2#b_3",
+        "https://www.irs.gov/pub/irs-prior/i8962--2025.pdf#page=8",
+        "https://www.irs.gov/pub/irs-prior/p501--2025.pdf#page=11",
+    )
+    documentation = (
+        "Whether the person is in an applicable taxpayer's family for the "
+        "premium tax credit (Form 8962 line 1, tax family size). 26 CFR "
+        "1.36B-1(d)(2) defines the family as the taxpayer, both spouses on a "
+        "joint return, 'except for individuals who qualify as a dependent of "
+        "another taxpayer', plus the dependents the taxpayer claims. A head or "
+        "spouse who can be claimed on another return "
+        "(claimable_as_dependent_on_another_return, whether or not claimed) "
+        "is not a member; on a joint return the other spouse still is. Such a "
+        "return claims no dependents (IRC 152(b)(1)) unless the would-be "
+        "claimant meets the refund-only filing exception (Publication 501, "
+        "Dependent Taxpayer Test). No credit is allowed to someone another "
+        "taxpayer can claim (IRC 36B(c)(1)(D)), so a return whose every head "
+        "and spouse can be claimed has no applicable taxpayer and no family "
+        "for the credit. is_aca_filer completes an absent or partial set "
+        "of head/spouse roles to identify one filer, or two on a joint "
+        "return, using age and supplied dependency hints without an adult-age "
+        "cutoff. Explicit roles are "
+        "needed when ages cannot distinguish filers from dependents. A "
+        "dependent on a return with an applicable taxpayer is a member even if "
+        "another taxpayer could also claim them: this return claims them."
+    )
+
+    def formula(person, period, parameters):
+        filer = person("is_aca_filer", period)
+        claimable = person("claimable_as_dependent_on_another_return", period)
+        applicable_taxpayer = person.tax_unit.any(filer & ~claimable)
+        exception = person("dependent_claimant_filing_exception", period)
+        claims_dependents = ~person.tax_unit.any(filer & claimable & ~exception)
+        dependent_member = applicable_taxpayer & claims_dependents
+        return where(filer, ~claimable, dependent_member)

@@ -28,3 +28,263 @@
     selected_marketplace_plan_actuarial_value: 0.7
     marketplace_csr_actuarial_value: 0
     marketplace_effective_actuarial_value: 0.7
+
+- name: 2025 one policy covering a claimable spouse gets no cost-sharing reductions (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    # 45 CFR 155.305(g)(3): a policy gets only the category all its
+    # enrollees qualify for; the model prices one policy per tax unit.
+    person_receives_aca: [false, true]
+    marketplace_csr_eligible: false
+
+- name: 2025 one policy covering a claimable spouse gets no cost-sharing reductions (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+  output:
+    person_receives_aca: [true, false]
+    marketplace_csr_eligible: false
+
+- name: 2025 one policy whose enrollees are all in the family keeps cost-sharing reductions
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    marketplace_csr_eligible: true
+
+- name: Review r3 2025 enrolled claimable spouse who pays no marginal premium blocks shared-policy CSR
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      spouse:
+        age: 19
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      child_1:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      child_2:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      child_3:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child_1, child_2, child_3]
+        filing_status: JOINT
+        aca_magi: 40_000
+        tax_unit_is_filer: true
+        selected_marketplace_plan_category: SILVER
+    households:
+      household:
+        members: [head, spouse, child_1, child_2, child_3]
+        state_code: TX
+  output:
+    # The spouse is fourth among the covered under-21s. The three-child
+    # premium cap does not remove them from the single policy's CSR test
+    # under 45 CFR 155.305(g)(3).
+    is_aca_marketplace_enrollee: [true, true, true, true, true]
+    pays_aca_premium: [true, false, true, true, true]
+    is_aca_tax_family_member: [true, false, true, true, true]
+    is_aca_ptc_eligible: [true, false, true, true, true]
+    marketplace_csr_eligible: false
+
+- name: Review r3 2025 ordinary fourth enrolled child who pays no marginal premium preserves shared-policy CSR
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      child_1:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      child_2:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      child_3:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      child_4:
+        age: 19
+        is_full_time_student: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2, child_3, child_4]
+        filing_status: HEAD_OF_HOUSEHOLD
+        aca_magi: 40_000
+        tax_unit_is_filer: true
+        selected_marketplace_plan_category: SILVER
+    households:
+      household:
+        members: [head, child_1, child_2, child_3, child_4]
+        state_code: TX
+  output:
+    # If separately insured the fourth child would meet the same PTC
+    # conditions as the other family members; the premium cap changes only
+    # the marginal charge, not their eligibility under 155.305(g)(3).
+    is_aca_marketplace_enrollee: [true, true, true, true, true]
+    pays_aca_premium: [true, true, true, true, false]
+    is_aca_tax_family_member: [true, true, true, true, true]
+    is_aca_ptc_eligible: [true, true, true, true, false]
+    marketplace_csr_eligible: true

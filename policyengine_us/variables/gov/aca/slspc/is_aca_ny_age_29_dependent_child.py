@@ -1,6 +1,19 @@
 from policyengine_us.model_api import *
 
 
+def ny_age_29_child_condition(person, period, parameters):
+    """New York's age-29 dependent-child test without the premium condition."""
+    p = parameters(period).gov.aca
+    state_code = person.household("state_code", period)
+    in_ny = state_code == state_code.possible_values.NY
+    age = person("monthly_age", period)
+    lower_age = p.family_tier_dependent_child_age_threshold
+    upper_age = p.ny_age_29_dependent_child_age_threshold
+    in_age_range = (age >= lower_age) & (age < upper_age)
+    is_tax_dependent = person("is_tax_unit_dependent", period)
+    return in_ny & in_age_range & is_tax_dependent
+
+
 class is_aca_ny_age_29_dependent_child(Variable):
     value_type = bool
     entity = Person
@@ -8,14 +21,6 @@ class is_aca_ny_age_29_dependent_child(Variable):
     definition_period = MONTH
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.aca
-        state_code = person.household("state_code", period)
-        in_ny = state_code == state_code.possible_values.NY
-        age = person("monthly_age", period)
-        lower_age = p.family_tier_dependent_child_age_threshold
-        upper_age = p.ny_age_29_dependent_child_age_threshold
-        in_age_range = (age >= lower_age) & (age < upper_age)
-        is_tax_dependent = person("is_tax_unit_dependent", period)
-        return (
-            person("pays_aca_premium", period) & in_ny & in_age_range & is_tax_dependent
+        return person("pays_aca_premium", period) & ny_age_29_child_condition(
+            person, period, parameters
         )

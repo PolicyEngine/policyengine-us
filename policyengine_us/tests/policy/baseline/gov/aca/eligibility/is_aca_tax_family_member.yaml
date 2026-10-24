@@ -1,0 +1,669 @@
+- name: 2025 single filer who can be claimed elsewhere, and their child, are outside the tax family
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: TX
+  output:
+    # 26 CFR 1.36B-1(d)(2): the family is the taxpayer, both spouses on a
+    # joint return, except for individuals who qualify as a dependent of
+    # another taxpayer; IRC 152(b)(1): such a return claims no dependents.
+    is_aca_tax_family_member: [false, false]
+
+- name: 2025 joint return with one claimable spouse keeps only the other spouse in the tax family (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+  output:
+    # 26 CFR 1.36B-1(d)(2): the family is the taxpayer, both spouses on a
+    # joint return, except for individuals who qualify as a dependent of
+    # another taxpayer; IRC 152(b)(1): such a return claims no dependents.
+    is_aca_tax_family_member: [false, true, false]
+
+- name: 2025 joint return with one claimable spouse keeps only the other spouse in the tax family (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: TX
+  output:
+    is_aca_tax_family_member: [true, false, false]
+
+- name: 2025 joint return with both spouses claimable has no tax family
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+  output:
+    is_aca_tax_family_member: [false, false, false]
+
+- name: 2025 joint return with neither spouse claimable keeps everyone in the tax family
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+  output:
+    is_aca_tax_family_member: [true, true, true]
+
+- name: 2025 dependent another taxpayer could also claim stays in the family of the return that claims them
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      child:
+        age: 10
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: TX
+  output:
+    is_aca_tax_family_member: [true, true]
+
+- name: "2025 joint return, claimable spouse whose claimant meets the refund-only exception: spouse out, child in (the claimable spouse is the head)"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+  output:
+    # Publication 501 (2025) p.11, Dependent Taxpayer Test: the return can claim
+    # dependents when the would-be claimant files only for a refund.
+    # Form 1040 line 12a still marks the spouse as claimable (2025 instructions p.33).
+    is_aca_tax_family_member: [false, true, true]
+
+- name: "2025 joint return, claimable spouse whose claimant meets the refund-only exception: spouse out, child in (the claimable spouse is the spouse)"
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: TX
+  output:
+    is_aca_tax_family_member: [true, false, true]
+
+- name: 2025 single claimable filer with the refund-only exception has no applicable taxpayer, so no family
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: TX
+  output:
+    # IRC 36B(c)(1)(D): no credit to someone another taxpayer can claim.
+    is_aca_tax_family_member: [false, false]
+
+- name: 2025 joint return, spouse claimable but not actually claimed is still out of the family (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    # 26 CFR 1.36B-2(b)(3): 'may claim', whether or not claimed.
+    is_aca_tax_family_member: [false, true]
+
+- name: 2025 joint return, spouse claimable but not actually claimed is still out of the family (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+  output:
+    is_aca_tax_family_member: [true, false]
+
+- name: "2025 tax unit with neither head nor spouse: a claimable 17-year-old filer is out of the family"
+  period: 2025
+  input:
+    people:
+      minor:
+        age: 17
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [minor]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [minor]
+        state_code: TX
+  output:
+    # Role inference gives a lone minor no head; own claimability decides.
+    is_tax_unit_head: [false]
+    is_aca_tax_family_member: [false]
+
+- name: "2025 tax unit with neither head nor spouse: an unclaimed 17-year-old filer stays in the family"
+  period: 2025
+  input:
+    people:
+      minor:
+        age: 17
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [minor]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [minor]
+        state_code: TX
+  output:
+    is_tax_unit_head: [false]
+    is_aca_tax_family_member: [true]
+
+- name: "2025 claimable 17-year-old filing with an infant: neither is in a family"
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 17
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+        claimable_as_dependent_on_another_return: true
+      infant:
+        age: 1
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [parent, infant]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, infant]
+        state_code: TX
+  output:
+    # Role inference makes the oldest adult the head, so this unit has none; the
+    # oldest member is taken as the filer (IRC 36B(c)(1)(D)).
+    is_tax_unit_head: [false, false]
+    is_aca_tax_family_member: [false, false]
+
+- name: "2025 unclaimed 17-year-old filing with an infant: both are in the family"
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 17
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+      infant:
+        age: 1
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [parent, infant]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, infant]
+        state_code: TX
+  output:
+    is_aca_tax_family_member: [true, true]
+
+# Ages alone cannot distinguish equally old filers from dependents;
+# the explicit-role cases document how callers resolve that ambiguity.
+- name: Review r3 minor joint filers ages 17 and 16, order ['a', 'b']
+  period: 2025
+  input:
+    people:
+      a:
+        age: 17
+        claimable_as_dependent_on_another_return: true
+      b:
+        age: 16
+    tax_units:
+      tax_unit:
+        members: &id001
+        - a
+        - b
+        filing_status: JOINT
+    households:
+      household:
+        members: *id001
+        state_code: TX
+  output:
+    is_aca_tax_family_member:
+    - false
+    - true
+- name: Review r3 minor joint filers ages 17 and 17, order ['a', 'b']
+  period: 2025
+  input:
+    people:
+      a:
+        age: 17
+        claimable_as_dependent_on_another_return: true
+      b:
+        age: 17
+    tax_units:
+      tax_unit:
+        members: &id002
+        - a
+        - b
+        filing_status: JOINT
+    households:
+      household:
+        members: *id002
+        state_code: TX
+  output:
+    is_aca_tax_family_member:
+    - false
+    - true
+- name: Review r3 minor joint filers ages 17 and 17, order ['b', 'a']
+  period: 2025
+  input:
+    people:
+      b:
+        age: 17
+      a:
+        age: 17
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: &id003
+        - b
+        - a
+        filing_status: JOINT
+    households:
+      household:
+        members: *id003
+        state_code: TX
+  output:
+    is_aca_tax_family_member:
+    - true
+    - false
+- name: Review r3 equal-age minor filers and dependent with explicit roles, order
+    ['a', 'b', 'dependent']
+  period: 2025
+  input:
+    people:
+      a:
+        age: 17
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      b:
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      dependent:
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: &id004
+        - a
+        - b
+        - dependent
+        filing_status: JOINT
+    households:
+      household:
+        members: *id004
+        state_code: TX
+  output:
+    is_aca_tax_family_member:
+    - false
+    - true
+    - false
+- name: Review r3 equal-age minor filers and dependent with explicit roles, order
+    ['b', 'a', 'dependent']
+  period: 2025
+  input:
+    people:
+      b:
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      a:
+        age: 17
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      dependent:
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: &id005
+        - b
+        - a
+        - dependent
+        filing_status: JOINT
+    households:
+      household:
+        members: *id005
+        state_code: TX
+  output:
+    is_aca_tax_family_member:
+    - true
+    - false
+    - false
+- name: Review r3 minor joint filer inference respects supplied dependency hints
+  period: 2025
+  input:
+    people:
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+      a:
+        age: 16
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: true
+      b:
+        age: 15
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: &id006
+        - dependent
+        - a
+        - b
+        filing_status: JOINT
+    households:
+      household:
+        members: *id006
+        state_code: TX
+  output:
+    is_aca_tax_family_member:
+    - false
+    - false
+    - true

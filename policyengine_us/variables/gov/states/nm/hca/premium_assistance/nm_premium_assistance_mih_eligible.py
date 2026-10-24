@@ -29,7 +29,11 @@ class nm_premium_assistance_mih_eligible(Variable):
         # the Medicaid coverage gap, income under the federal PTC floor of 100%
         # FPL; that cannot bind here, because income_eligible already requires
         # income above 400% FPL.
-        pays_premium = add(tax_unit, period, ["pays_aca_premium"]) > 0
+        # The Addendum requires every federal PTC criterion except income, so
+        # the enrollee must also be in the federal tax family (26 U.S.C.
+        # 36B(c)(1)(D)): is_aca_coverage_family_member is pays_aca_premium
+        # restricted to that family.
+        pays_premium = add(tax_unit, period, ["is_aca_coverage_family_member"]) > 0
         filing_status = tax_unit("filing_status", period)
         not_separate = filing_status != filing_status.possible_values.SEPARATE
         # is_aca_ptc_eligible does not embed the federal PTC filing requirement
