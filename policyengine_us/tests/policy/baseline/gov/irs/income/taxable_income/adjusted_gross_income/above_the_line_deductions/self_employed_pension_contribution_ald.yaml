@@ -1,0 +1,55 @@
+- name: Case 1, the deduction cannot make AGI negative when Schedule C profit is the only income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: 20_000
+        self_employed_pension_contributions_desired: 20_000
+  output:
+    # Half of self-employment tax: 20,000 x 92.35% x 15.3% / 2 = 1,412.96.
+    # Pub. 560 Deduction Worksheet step 3: 20,000 - 1,412.96 = 18,587.05,
+    # the most the plan deduction can be (26 U.S.C. 404(a)(8)(C)).
+    self_employment_tax_ald: 1_412.96
+    self_employed_pension_contribution_ald_person: [18_587.05]
+    self_employed_pension_contribution_ald: 18_587.05
+    adjusted_gross_income: 0
+
+- name: Case 2, contributions supplied directly are still limited.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: 20_000
+        self_employed_pension_contributions: 20_000
+  output:
+    self_employed_pension_contribution_ald_person: [18_587.05]
+    adjusted_gross_income: 0
+
+- name: Case 3, a married couple's limits are each spouse's own.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: 200_000
+        self_employed_pension_contributions_desired: 100_000
+      person2:
+        age: 40
+        self_employment_income: 30_000
+        self_employed_pension_contributions_desired: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    # Person 1: 20% x 186,403.65 + 23,500 = 60,780.73 (the Pub. 560 2025
+    # example's step 3). Person 2: (27,880.57 + 23,500) / 2 = 25,690.28.
+    self_employed_pension_contribution_ald_person: [60_780.73, 25_690.28]
+    self_employed_pension_contribution_ald: 86_471.01
