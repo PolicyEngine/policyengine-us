@@ -25,8 +25,38 @@ values:
     # (f) Prizes and awards.
     # (g) Gifts and inheritances.
     # (h) Support and maintenance in kind.
+  # The exclusion took effect July 1, 2004. Annual simulations select this
+  # source list beginning in 2005 because SSI unearned income is annual.
+  2004-07-01:
+    # (a) Annuities, pensions, and other periodic payments.
+    - pension_income
+    - social_security
+    - disability_benefits
+    - veterans_benefits
+    - survivor_benefits
+    - workers_compensation
+    - total_unemployment_compensation
+    - retirement_distributions
+    - military_retirement_income
+    - gi_cash_assistance
+    # (b) Alimony and support payments.
+    - alimony_income
+    - child_support_received
+    - financial_assistance
+    # (d) Rents.
+    - rental_income
+    # (e) Death benefits.
+    # (f) Prizes and awards.
+    # (g) Gifts and inheritances.
+    # (h) Support and maintenance in kind.
 metadata:
   label: SSI unearned income sources
   reference:
     - title: United States Code of Federal Regulations, Title 20, Subsection 416.1121
       href: https://www.law.cornell.edu/cfr/text/20/416.1121
+    - title: United States Code, Title 42, Section 1382a(b)(23)
+      href: https://www.govinfo.gov/content/pkg/USCODE-2023-title42/html/USCODE-2023-title42-chap7-subchapXVI-partA-sec1382a.htm
+    - title: United States Code of Federal Regulations, Title 20, Subsection 416.1124(c)(22)
+      href: https://www.ecfr.gov/current/title-20/section-416.1124
+    - title: SSA POMS SI 00830.500 - Dividends and Interest
+      href: https://secure.ssa.gov/poms.nsf/lnx/0500830500
