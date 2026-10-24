@@ -1,0 +1,38 @@
+description: Maine assigns these points by primary heating fuel under the Low Income Home Energy Assistance Program.
+# The wood row is cordwood. Bio-fuel (6), corn (5) and wood pellets (5) in the
+# 2025 edition and wood pellets (4) and biobrick (3) in the June 29, 2026
+# replacement have no heating_type value and are not stored.
+electricity:
+  2024-07-03: 14
+  2026-06-29: 8
+lp_gas:
+  2024-07-03: 10
+  2026-06-29: 5
+kerosene:
+  2024-07-03: 8
+  2026-06-29: 5
+oil:
+  2024-07-03: 7
+  2026-06-29: 4
+coal:
+  2024-07-03: 5
+  2026-06-29: 4
+natural_gas:
+  2024-07-03: 5
+  2026-06-29: 3
+wood:
+  2024-07-03: 4
+  2026-06-29: 3
+
+metadata:
+  unit: /1
+  period: year
+  label: Maine HEAP fuel points
+  propagate_metadata_to_children: true
+  reference:
+    - title: "Maine FY2026 Benefit Matrix, 99-346 CMR ch. 24, section 4(A) (2025 edition) #page 1-2"
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/ME_BenefitMatrix_2026.pdf#page=1
+    - title: 99-346 CMR ch. 24, section 4(A) (2025 edition, SOS filing 2025-135)
+      href: https://www.maine.gov/sos/sites/maine.gov.sos/files/inline-files/346c024.docx
+    - title: 99-346 CMR ch. 24, section 4(A) (effective June 29, 2026)
+      href: https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=16

@@ -1,0 +1,337 @@
+# Benefit points under rule 4(A): dwelling, county, fuel, priority and subsidized
+# housing points, times the income multiplier, prorated by eligible members over all
+# members, with fractions rounded up.
+# - 2025 edition (period 2026), benefit matrix pages 1-2: no base points;
+#   stick-built/modular 9, mobile/manufactured 8, condo/duplex and apartment 6;
+#   Aroostook 7, Penobscot 5, Cumberland 3, Kennebec 2; electricity 14, LP gas 10,
+#   kerosene 8, oil 7, coal 5, natural gas 5, wood 4; subsidized household
+#   responsible for heating -9; priority "60+, Disabled or child 6 and under" 5
+#   "or" child 7-17 3:
+#   https://liheapch.acf.gov/docs/2026/benefits-matricies/ME_BenefitMatrix_2026.pdf#page=1
+# - 2026 edition (period 2027), rule pages 16-17: base 8; stick-built/modular 3,
+#   mobile 2, condo/duplex and apartment 1; Aroostook 6, Penobscot 3, Cumberland 1,
+#   Kennebec 1; electric 8, LP gas 5, kerosene 5, oil 4, coal 4, natural gas 3, wood
+#   3; at risk (60+, child 6 and under, disabled) 5, "Points for the first in the
+#   house"; heating subsidized -3:
+#   https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=16
+# Modeling assumptions: SOLAR uses the electricity row (a grid-tied home with electric
+# heat) and WOOD the cordwood row. Unless stated,
+# households are unsubsidized, heat is not in the rent, and the income multiplier
+# is set to 1 so the points equal the matrix total. Cases 10 and 11 also assert the
+# benefit, so they pay an oil bill: EIA's U.S. average winter heating-oil
+# expenditure, 1,745 for 2025-26 and 2,115 forecast for 2026-27 (Short-Term Energy
+# Outlook, October 2026, Table WF01).
+
+- name: Case 1, dwelling and county points in 2026.
+  period: 2026
+  input:
+    state_code: [ME, ME, ME, ME]
+    age: [40, 40, 40, 40]
+    county: [KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, AROOSTOOK_COUNTY_ME]
+    me_heap_dwelling_type: [STICK_BUILT_OR_MODULAR, MOBILE_OR_MANUFACTURED, CONDO_DUPLEX_OR_APARTMENT, STICK_BUILT_OR_MODULAR]
+    heating_type: [FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL]
+    me_heap_income_multiplier: [1, 1, 1, 1]
+  output:
+    # Dwelling + county + oil 7: 9 + 2 + 7 = 18; 8 + 2 + 7 = 17; 6 + 2 + 7 = 15;
+    # Aroostook 9 + 7 + 7 = 23.
+    me_heap_points: [18, 17, 15, 23]
+
+- name: Case 2, dwelling and county points with base points in 2027.
+  period: 2027
+  input:
+    state_code: [ME, ME, ME, ME]
+    age: [40, 40, 40, 40]
+    county: [KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, AROOSTOOK_COUNTY_ME]
+    me_heap_dwelling_type: [STICK_BUILT_OR_MODULAR, MOBILE_OR_MANUFACTURED, CONDO_DUPLEX_OR_APARTMENT, STICK_BUILT_OR_MODULAR]
+    heating_type: [FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL]
+    me_heap_income_multiplier: [1, 1, 1, 1]
+  output:
+    # Base 8 + dwelling + county + oil 4: 8 + 3 + 1 + 4 = 16; 8 + 2 + 1 + 4 = 15;
+    # 8 + 1 + 1 + 4 = 14; Aroostook 8 + 3 + 6 + 4 = 21.
+    me_heap_points: [16, 15, 14, 21]
+
+- name: Case 3, fuel points in 2026.
+  period: 2026
+  input:
+    state_code: [ME, ME, ME, ME, ME, ME, ME, ME]
+    age: [40, 40, 40, 40, 40, 40, 40, 40]
+    county: [KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME]
+    heating_type: [ELECTRICITY, SOLAR, PROPANE, KEROSENE, FUEL_OIL, COAL, NATURAL_GAS, WOOD]
+    me_heap_income_multiplier: [1, 1, 1, 1, 1, 1, 1, 1]
+  output:
+    # Stick-built 9 + Kennebec 2 = 11, plus electricity 14, solar 14 (electricity
+    # row), LP gas 10, kerosene 8, oil 7, coal 5, natural gas 5, wood 4.
+    me_heap_points: [25, 25, 21, 19, 18, 16, 16, 15]
+
+- name: Case 4, fuel points in 2027.
+  period: 2027
+  input:
+    state_code: [ME, ME, ME, ME, ME, ME, ME, ME]
+    age: [40, 40, 40, 40, 40, 40, 40, 40]
+    county: [KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME]
+    heating_type: [ELECTRICITY, SOLAR, PROPANE, KEROSENE, FUEL_OIL, COAL, NATURAL_GAS, WOOD]
+    me_heap_income_multiplier: [1, 1, 1, 1, 1, 1, 1, 1]
+  output:
+    # Base 8 + stick-built 3 + Kennebec 1 = 12, plus electric 8, solar 8, LP gas 5,
+    # kerosene 5, oil 4, coal 4, natural gas 3, wood 3.
+    me_heap_points: [20, 20, 17, 17, 16, 16, 15, 15]
+
+- name: Case 5, threshold edge at age 60, and a disabled adult, for priority points in 2026.
+  period: 2026
+  input:
+    state_code: [ME, ME, ME]
+    age: [59, 60, 40]
+    is_disabled: [false, false, true]
+    county: [KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME]
+    heating_type: [FUEL_OIL, FUEL_OIL, FUEL_OIL]
+    me_heap_income_multiplier: [1, 1, 1]
+  output:
+    # Stick-built 9 + Kennebec 2 + oil 7 = 18; age 59: no priority; age 60 and the
+    # disabled adult: + 5 = 23.
+    me_heap_points: [18, 23, 23]
+
+- name: Case 6, threshold edges at ages 6 to 7 and 17 to 18 for child priority points in 2026.
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 40
+      child1:
+        age: 6
+      parent2:
+        age: 40
+      child2:
+        age: 7
+      parent3:
+        age: 40
+      child3:
+        age: 17
+      parent4:
+        age: 40
+      child4:
+        age: 18
+    spm_units:
+      spm_unit1:
+        members: [parent1, child1]
+        heating_type: FUEL_OIL
+        me_heap_income_multiplier: 1
+      spm_unit2:
+        members: [parent2, child2]
+        heating_type: FUEL_OIL
+        me_heap_income_multiplier: 1
+      spm_unit3:
+        members: [parent3, child3]
+        heating_type: FUEL_OIL
+        me_heap_income_multiplier: 1
+      spm_unit4:
+        members: [parent4, child4]
+        heating_type: FUEL_OIL
+        me_heap_income_multiplier: 1
+    households:
+      household1:
+        members: [parent1, child1]
+        state_code: ME
+        county: KENNEBEC_COUNTY_ME
+      household2:
+        members: [parent2, child2]
+        state_code: ME
+        county: KENNEBEC_COUNTY_ME
+      household3:
+        members: [parent3, child3]
+        state_code: ME
+        county: KENNEBEC_COUNTY_ME
+      household4:
+        members: [parent4, child4]
+        state_code: ME
+        county: KENNEBEC_COUNTY_ME
+  output:
+    # Stick-built 9 + Kennebec 2 + oil 7 = 18, plus: child aged 6, 5 = 23; child
+    # aged 7, 3 = 21; child aged 17, 3 = 21; an 18-year-old is not a child, 0 = 18.
+    me_heap_points: [23, 21, 21, 18]
+
+- name: Case 7, in 2027 older children earn no priority points and the at-risk points are awarded once.
+  period: 2027
+  input:
+    people:
+      parent1:
+        age: 40
+      child1:
+        age: 10
+      parent2:
+        age: 40
+      child2:
+        age: 6
+      head:
+        age: 70
+      spouse:
+        age: 68
+    spm_units:
+      spm_unit1:
+        members: [parent1, child1]
+        heating_type: FUEL_OIL
+        me_heap_income_multiplier: 1
+      spm_unit2:
+        members: [parent2, child2]
+        heating_type: FUEL_OIL
+        me_heap_income_multiplier: 1
+      spm_unit3:
+        members: [head, spouse]
+        heating_type: FUEL_OIL
+        me_heap_income_multiplier: 1
+    households:
+      household1:
+        members: [parent1, child1]
+        state_code: ME
+        county: KENNEBEC_COUNTY_ME
+      household2:
+        members: [parent2, child2]
+        state_code: ME
+        county: KENNEBEC_COUNTY_ME
+      household3:
+        members: [head, spouse]
+        state_code: ME
+        county: KENNEBEC_COUNTY_ME
+  output:
+    # Base 8 + stick-built 3 + Kennebec 1 + oil 4 = 16, plus: child aged 10, 0 =
+    # 16; child aged 6, 5 = 21; two members over 60, 5 once = 21, not 26.
+    me_heap_points: [16, 21, 21]
+
+- name: Case 8, subsidized tenants paying their own heating bill lose nine points in 2026.
+  period: 2026
+  input:
+    state_code: [ME, ME, ME]
+    age: [40, 40, 40]
+    county: [KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME]
+    me_heap_dwelling_type: [CONDO_DUPLEX_OR_APARTMENT, CONDO_DUPLEX_OR_APARTMENT, CONDO_DUPLEX_OR_APARTMENT]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    heat_expense_included_in_rent: [false, false, false]
+    # Housing Choice Voucher, public housing, private rental.
+    receives_housing_assistance: [true, false, false]
+    is_in_public_housing: [false, true, false]
+    me_heap_income_multiplier: [1, 1, 1]
+  output:
+    # Apartment 6 + Kennebec 2 + electricity 14 = 22; subsidized: 22 - 9 = 13.
+    me_heap_points: [13, 13, 22]
+
+- name: Case 9, subsidized tenants paying their own heating bill lose three points in 2027.
+  period: 2027
+  input:
+    state_code: [ME, ME]
+    age: [40, 40]
+    county: [KENNEBEC_COUNTY_ME, KENNEBEC_COUNTY_ME]
+    me_heap_dwelling_type: [CONDO_DUPLEX_OR_APARTMENT, CONDO_DUPLEX_OR_APARTMENT]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    heat_expense_included_in_rent: [false, false]
+    # Housing Choice Voucher, private rental.
+    receives_housing_assistance: [true, false]
+    is_in_public_housing: [false, false]
+    me_heap_income_multiplier: [1, 1]
+  output:
+    # Base 8 + apartment 1 + Kennebec 1 + electric 8 = 18; subsidized: 18 - 3 = 15.
+    me_heap_points: [15, 18]
+
+- name: Case 10, proration to an exact whole number of points is not rounded up in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 36
+        immigration_status: CITIZEN
+        # 14.65 x 30 hours x 52 weeks = 22,854 (Maine's 2025 minimum wage).
+        employment_income: 22_854
+        ssi: 0
+      spouse:
+        age: 34
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+      child1:
+        age: 8
+        ssi: 0
+      child2:
+        age: 5
+        ssi: 0
+      child3:
+        age: 2
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2, child3]
+        snap: 0
+        tanf: 0
+        me_heap_dwelling_type: MOBILE_OR_MANUFACTURED
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 1_745
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3]
+        state_code: ME
+        county: PENOBSCOT_COUNTY_ME
+  output:
+    # Four of five members are eligible.
+    me_heap_household_size: 4
+    me_heap_income: 22_854
+    # 22,854 / (15,650 + 3 x 5,500 = 32,150) = 71.09% -> 71: 1.10.
+    me_heap_income_multiplier: 1.1
+    # Mobile 8 + Penobscot 5 + oil 7 + child under 7 5 = 25. 25 x 1.10 x 4/5 = 22
+    # exactly; in binary floating point the product is 22.000000000000004, which
+    # must not round up to 23.
+    me_heap_points: 22
+    # 22 x 22 = 484.
+    me_heap: 484
+
+- name: Case 11, prorated fractional points are rounded up in 2027.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        immigration_status: CITIZEN
+        # 15.10 x 40 hours x 52 weeks = 31,408 (Maine's 2026 minimum wage).
+        employment_income: 31_408
+        ssi: 0
+      spouse:
+        age: 33
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+      child1:
+        age: 4
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+        snap: 0
+        tanf: 0
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 2_115
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: ME
+        county: KENNEBEC_COUNTY_ME
+  output:
+    # Two of three members are eligible.
+    me_heap_household_size: 2
+    # 31,408 / (15,960 + 5,680 = 21,640) = 145.14%: 0.9.
+    me_heap_income_multiplier: 0.9
+    # Base 8 + stick-built 3 + Kennebec 1 + oil 4 + child under 7 5 = 21.
+    # 21 x 0.9 x 2/3 = 12.6, rounded up to 13.
+    me_heap_points: 13
+    # 13 x 22 = 286.
+    me_heap: 286
+
+- name: Case 12, a household whose county is not in the table earns no county points.
+  period: 2026
+  input:
+    state_code: ME
+    age: 40
+    # The county is recorded as unknown, which has no row in the table.
+    county: UNKNOWN
+    me_heap_dwelling_type: STICK_BUILT_OR_MODULAR
+    heating_type: FUEL_OIL
+    me_heap_income_multiplier: 1
+  output:
+    # Stick-built 9 + no county row 0 + oil 7 = 16.
+    me_heap_points: 16

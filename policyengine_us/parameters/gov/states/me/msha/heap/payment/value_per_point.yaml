@@ -1,0 +1,25 @@
+description: Maine pays this amount per benefit point under the Low Income Home Energy Assistance Program.
+# ESTIMATE. MaineHousing announces the dollar value of points after each federal
+# award (rule 4(A)) and has published none for FFY2025 through FFY2027. $22 is
+# inferred from the FFY2025 and FFY2026 plans' $1,012 maximum benefit: the
+# 2025-edition maximum of 35 points times 130% is 45.5, rounded up to 46, and
+# 46 x $22 = $1,012. Their $88 minimum (4 x $22) follows the plans' 4-point
+# template; the matrix's smallest award is 3 points (6 + 2 + 4 - 9 = 3;
+# 3 x 70% = 2.1, rounded up to 3), so the minimum does not support the value.
+# The value is reused with the June 29, 2026 matrix until MaineHousing
+# announces one. The last published values ($55 and $44 for FFY2023) belong
+# to an older energy-cost matrix and are not used.
+values:
+  2024-10-01: 22
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Maine HEAP dollar value per point
+  reference:
+    - title: Maine FY2025 LIHEAP State Plan, Section 2.6
+      href: https://liheapch.acf.gov/docs/2025/state-plans/ME_Plan_2025.pdf#page=8
+    - title: Maine FY2026 LIHEAP State Plan, Section 2.6
+      href: https://liheapch.acf.gov/docs/2026/state-plans/ME_Plan_2026.pdf#page=10
+    - title: 99-346 CMR ch. 24, section 4(A) (effective June 29, 2026)
+      href: https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=15

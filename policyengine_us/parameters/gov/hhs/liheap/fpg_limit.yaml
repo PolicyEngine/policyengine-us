@@ -1,0 +1,11 @@
+description: The US Department of Health and Human Services allows states to provide assistance to households with income up to this percentage of the poverty guideline, when greater than the state median income limit, under the Low Income Home Energy Assistance Program.
+# Pub. L. 97-35, section 2605(b)(2)(B)(i), set this ceiling from fiscal year 1982.
+values:
+  1981-10-01: 1.5
+metadata:
+  period: year
+  unit: /1
+  label: LIHEAP poverty guideline income limit
+  reference:
+    - title: 42 U.S.C. 8624(b)(2)(B)(i)
+      href: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B

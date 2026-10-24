@@ -1,0 +1,166 @@
+# HEAP Fuel Assistance benefit = points x the dollar value per point (rule 4(A));
+# subsidized tenants with heat in their rent receive a nominal benefit "to maximize
+# benefits under SNAP" (rule 4(B), page 17 of the 2026 edition; 4(C) of the 2025
+# edition):
+# https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=17
+# - $22 a point is an estimate: the FFY2025 and FFY2026 plans give a $1,012 maximum
+#   (section 2.6), which equals the 2025 edition's highest points, 35 x 1.30 = 45.5,
+#   rounded up to 46, times $22. The model reuses $22 for 2027:
+#   https://liheapch.acf.gov/docs/2026/state-plans/ME_Plan_2026.pdf#page=10
+# - $21 for subsidized heat in rent: FFY2026 plan section 1.7 and MaineHousing notice
+#   2024-HEAP-003.
+# Incomes use Maine's 2025 minimum wage, $14.65 an hour (Maine Department of Labor),
+# the 2025 average Social Security disability benefit, $1,580 a month, and the
+# 2026 average retired-worker benefit, $2,071 a month (SSA COLA fact sheets).
+# Heating bills are EIA's winter household expenditures (Short-Term Energy Outlook,
+# October 2026, Table WF01): 2025-26 Northeast electricity 1,685 and U.S. average
+# heating oil 1,745; 2026-27 forecast Northeast natural gas 879. Rule 3(A)(4)
+# requires a heating bill or heat included in rent.
+
+- name: Case 1, the 2026 plan maximum of 1,012 dollars.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 64
+        # An early retiree living on withdrawals from savings in a traditional IRA
+        # before claiming Social Security.
+        taxable_ira_distributions: 9_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        snap: 0
+        tanf: 0
+        me_heap_dwelling_type: STICK_BUILT_OR_MODULAR
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_685
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [head]
+        state_code: ME
+        county: AROOSTOOK_COUNTY_ME
+        is_in_public_housing: false
+  output:
+    # Assets drawn down from financial institutions are not income: 0.
+    me_heap_income: 0
+    me_heap_eligible: true
+    # 0% of the guideline -> 0%-25% band: 1.30.
+    me_heap_income_multiplier: 1.3
+    # Stick-built 9 + Aroostook 7 + electricity 14 + age 60 or over 5 = 35.
+    # 35 x 1.30 = 45.5, rounded up to 46.
+    me_heap_points: 46
+    # 46 x 22 = 1,012.
+    me_heap: 1_012
+
+- name: Case 2, an older adult heating an apartment with natural gas in 2027.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        # 2,071 x 12 = 24,852.
+        social_security_retirement: 24_852
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        snap: 0
+        tanf: 0
+        me_heap_dwelling_type: CONDO_DUPLEX_OR_APARTMENT
+        heating_type: NATURAL_GAS
+        gas_expense: 879
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [head]
+        state_code: ME
+        county: KENNEBEC_COUNTY_ME
+        is_in_public_housing: false
+  output:
+    # 24,852 <= 38,070.
+    me_heap_eligible: true
+    # 24,852 / 15,960 = 155.71%: 151-175.99% band, 0.8.
+    me_heap_income_multiplier: 0.8
+    # Base 8 + apartment 1 + Kennebec 1 + natural gas 3 + age 60 or over 5 = 18.
+    # 18 x 0.8 = 14.4, rounded up to 15.
+    me_heap_points: 15
+    # 15 x 22 = 330.
+    me_heap: 330
+
+- name: Case 3, a subsidized tenant with heat in the rent receives the nominal benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 58
+        is_disabled: true
+        # 1,580 x 12 = 18,960.
+        social_security_disability: 18_960
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        snap: 0
+        tanf: 0
+        me_heap_dwelling_type: CONDO_DUPLEX_OR_APARTMENT
+        # The building's heat is included in the rent and its fuel is unknown.
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+        # Housing Choice Voucher.
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [head]
+        state_code: ME
+        county: KENNEBEC_COUNTY_ME
+        is_in_public_housing: false
+  output:
+    # 18,960 <= 36,836, and subsidized heat in rent needs no listed fuel.
+    me_heap_eligible: true
+    me_heap: 21
+
+- name: Case 4, a couple over the income limit receives nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 38
+        # 14.65 x 40 hours x 52 weeks = 30,472.
+        employment_income: 30_472
+        medical_expense_health_insurance_premiums: 0
+        other_medical_expenses: 0
+        ssi: 0
+      spouse:
+        age: 36
+        employment_income: 30_472
+        medical_expense_health_insurance_premiums: 0
+        other_medical_expenses: 0
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+        snap: 0
+        tanf: 0
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 1_745
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ME
+        county: KENNEBEC_COUNTY_ME
+        is_in_public_housing: false
+  output:
+    # The oil bill meets the energy-cost test, so only income fails:
+    # 30,472 x 2 = 60,944 > 48,170, with no medical expenses or SNAP/TANF.
+    me_heap_eligible: false
+    me_heap: 0
