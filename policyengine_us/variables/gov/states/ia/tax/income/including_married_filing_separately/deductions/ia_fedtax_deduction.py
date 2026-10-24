@@ -27,7 +27,8 @@ class ia_fedtax_deduction(Variable):
         # (line 12) is not added back. With payments equal to the liability,
         # the deduction is the federal income tax without the added-back taxes.
         ustax = person.tax_unit("income_tax_before_refundable_credits", period)
-        # correct ustax amount for flaw in CTC refundable/nonrefundable split
+        # Retain the existing addback in fully refundable years, including
+        # any nonrefundable credit for other dependents in 2021.
         ctc = parameters(period).gov.irs.credits.ctc
         ctc_fully_refundable = ctc.refundable.fully_refundable
         if ctc_fully_refundable:
