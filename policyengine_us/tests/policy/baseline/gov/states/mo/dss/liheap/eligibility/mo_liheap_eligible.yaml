@@ -1,0 +1,263 @@
+# Missouri LIHEAP Energy Assistance eligibility: at least one qualifying
+# member; countable income at or below the 60% SMI limit, or below the
+# federal 110% poverty floor; cash resources of at most $3,000; heating costs
+# paid through the household's own fuel bill or through unsubsidized rent
+# that includes heat; and a heating fuel other than coal.
+
+- name: Case 1, countable income exactly at the size one limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+        mo_liheap_countable_income: 34_080
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Boundary case: FFY2026 size 1 limit 2,840 x 12 = 34,080.
+    mo_liheap_eligible: true
+
+- name: Case 2, countable income one dollar above the size one limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+        mo_liheap_countable_income: 34_081
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Boundary case: 34,081 > 34,080, and the 110% poverty floor for one
+    # person, 1.1 x 15,650 = 17,215, is far below the limit.
+    mo_liheap_eligible: false
+
+- name: Case 3, FFY2026 federal poverty floor admits a sixteen-person household above the state limit.
+  period: 2026
+  input:
+    state_code: [MO, MO]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_800, 1_800]
+    mo_liheap_household_size: [16, 16]
+    mo_liheap_countable_income: [107_000, 107_965]
+  output:
+    # Size 16 limit: 8,847 x 12 = 106,164. Floor with the 2025 guidelines:
+    # 1.1 x (15,650 + 5,500 x 15) = 1.1 x 98,150 = 107,965.
+    # Unit 1: 107,000 is above the limit but below the floor -> eligible.
+    # Unit 2 (boundary case): income exactly at the floor is not below it
+    # -> ineligible.
+    mo_liheap_eligible: [true, false]
+
+- name: Case 4, FFY2027 federal poverty floor uses the 2026 guidelines at size sixteen.
+  period: 2027
+  input:
+    state_code: MO
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 2_400
+    mo_liheap_household_size: 16
+    mo_liheap_countable_income: 110_500
+  output:
+    # Size 16 limit: 9,164 x 12 = 109,968. Floor: 1.1 x (15,960 + 5,680 x 15)
+    # = 1.1 x 101,160 = 111,276. 110,500 is between them -> eligible.
+    mo_liheap_eligible: true
+
+- name: Case 5, cash assets exactly at the 3,000 resource limit are eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        bank_account_assets: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+        mo_liheap_countable_income: 24_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Boundary case: 3,000 <= 3,000.
+    mo_liheap_eligible: true
+
+- name: Case 6, cash assets of 3,001 exceed the resource limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        bank_account_assets: 3_001
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+        mo_liheap_countable_income: 24_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Boundary case: 3,001 > 3,000.
+    mo_liheap_eligible: false
+
+- name: Case 7, household with no citizen or qualified noncitizen is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        employment_income: 31_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Household size 0, so the household fails the size test even though the
+    # member's countable income (31,200 x 0.8 = 24,960) is below the size one
+    # limit.
+    mo_liheap_eligible: false
+
+- name: Case 8, housing assistance recipient with heat included in the rent is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 33
+        pre_subsidy_rent: 9_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        mo_liheap_countable_income: 14_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_liheap_eligible: false
+
+- name: Case 9, public housing tenant with heat included in the rent is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 33
+        pre_subsidy_rent: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        mo_liheap_countable_income: 14_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        is_in_public_housing: true
+  output:
+    mo_liheap_eligible: false
+
+- name: Case 10, housing assistance recipient paying its own electric heating bill is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 33
+        pre_subsidy_rent: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_400
+        receives_housing_assistance: true
+        mo_liheap_countable_income: 14_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_liheap_eligible: true
+
+- name: Case 11, home with no heating has no heating cost and is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        mo_liheap_countable_income: 18_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_liheap_eligible: false
+
+- name: Case 12, household that heats with coal is denied.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 61
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: COAL
+        coal_expense: 800
+        mo_liheap_countable_income: 18_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # The coal bill is a heating cost, but manual denial code O ("Heats with
+    # Coal") applies.
+    mo_liheap_eligible: false
+
+- name: Case 13, household heating with another fuel is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 61
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: OTHER
+        other_heating_fuel_expense: 600
+        mo_liheap_countable_income: 18_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Eligible; the payment schedule has no row for other fuels (see
+    # mo_liheap.yaml).
+    mo_liheap_eligible: true

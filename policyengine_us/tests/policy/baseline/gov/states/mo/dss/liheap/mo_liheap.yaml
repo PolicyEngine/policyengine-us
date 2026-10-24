@@ -1,0 +1,145 @@
+# Missouri LIHEAP Energy Assistance: a one-time payment by primary heating
+# fuel (FFY2026 Appendix K; FFY2027 application MO 886-4576). A renter whose
+# heat is included in the rent receives 8% of annual rent, capped at the
+# amount for the household's fuel (13 CSR 40-19.020(13)). Zero when
+# ineligible.
+
+- name: Case 1, payment for every heating fuel.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MO, MO, MO, MO, MO, MO, MO, MO, MO, MO, MO]
+    heating_type: [NATURAL_GAS, PROPANE, ELECTRICITY, FUEL_OIL, WOOD, KEROSENE, SOLAR, OTHER, UNSPECIFIED, NONE, COAL]
+    has_heating_expense: [true, true, true, true, true, true, true, true, true, false, true]
+    mo_liheap_countable_income: [18_000, 18_000, 18_000, 18_000, 18_000, 18_000, 18_000, 18_000, 18_000, 18_000, 18_000]
+  output:
+    # Natural gas 326, tank propane 495, electric 318, fuel oil 326, wood 219,
+    # kerosene 153; solar is paid on the electric account (318). Other fuels
+    # have no schedule row and an unspecified fuel matches no row, so both are
+    # eligible for 0. A home with no heating has no heating cost, and coal is
+    # denied (manual denial code O).
+    mo_liheap_eligible: [true, true, true, true, true, true, true, true, true, false, false]
+    mo_liheap: [326, 495, 318, 326, 219, 153, 318, 0, 0, 0, 0]
+
+- name: Case 2, renter share of rent split between two partners is below the propane amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 27
+        pre_subsidy_rent: 3_000
+      person2:
+        age: 26
+        pre_subsidy_rent: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: PROPANE
+        heat_expense_included_in_rent: true
+        mo_liheap_countable_income: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Annual rent 3,000 + 3,000 = 6,000 ($500 a month);
+    # 6,000 x 0.08 = 480 < 495 -> 480.
+    mo_liheap: 480
+
+- name: Case 3, renter share of rent above the natural gas amount is capped.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 33
+        pre_subsidy_rent: 9_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        mo_liheap_countable_income: 22_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # 750 x 12 = 9,000 x 0.08 = 720 > 326 -> 326.
+    mo_liheap: 326
+
+- name: Case 4, renter with heat in the rent and an unspecified fuel receives nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 33
+        pre_subsidy_rent: 9_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+        mo_liheap_countable_income: 22_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Eligible, but the cap is the amount for an unspecified fuel:
+    # min(9,000 x 0.08 = 720, 0) = 0.
+    mo_liheap_eligible: true
+    mo_liheap: 0
+
+- name: Case 5, Kansas household is outside the Missouri program.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_800
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    mo_liheap: 0
+
+- name: Case 6, FFY2027 single parent heating with kerosene, teenager's wages excluded.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 41
+        employment_income_before_lsr: 41_600
+        bank_account_assets: 900
+      person2:
+        age: 16
+        employment_income_before_lsr: 5_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: KEROSENE
+        fuel_oil_expense: 1_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Parent: $20 an hour x 2,080 hours = 41,600 x (1 - 0.2) = 33,280.
+    # The 16-year-old's 5,200 is excluded. Size 2 limit (FFY2027):
+    # 3,847 x 12 = 46,164. Counting the teenager's wages without the 20%
+    # deduction (46,800) would exceed it. Kerosene pays 153.
+    mo_liheap_countable_income: 33_280
+    mo_liheap_income_limit: 46_164
+    mo_liheap_eligible: true
+    mo_liheap: 153

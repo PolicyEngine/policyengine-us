@@ -1,0 +1,124 @@
+# Missouri LIHEAP countable household income: all members' countable income
+# plus Missouri TANF, less child support paid by any member and the medical
+# deduction, floored at zero.
+
+- name: Case 1, Missouri TANF counts as income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 27
+        child_support_received: 2_400
+      person2:
+        age: 6
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        mo_tanf: 3_504
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    # TANF of 292 a month = 3,504 + child support received 2,400 = 5,904.
+    mo_liheap_countable_income: 5_904
+
+- name: Case 2, child support paid outside the household is deducted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 31_200
+        child_support_expense: 4_800
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # 31,200 x 0.8 = 24,960 - child support paid of 400 a month (4,800)
+    # = 20,160.
+    mo_liheap_countable_income: 20_160
+
+- name: Case 3, medical deduction for a retiree is subtracted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        social_security_retirement: 23_400
+        medicare_part_b_premium: 2_434.80
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # 23,400 - 2,434.80 = 20,965.20 - medical deduction 1,200 = 19,765.20.
+    mo_liheap_countable_income: 19_765.20
+
+- name: Case 4, child support paid above countable earnings floors income at zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 24
+        employment_income: 6_240
+        child_support_expense: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # 8 hours a week at $15.00 = 6,240 x 0.8 = 4,992;
+    # max(4,992 - 6,000, 0) = 0.
+    mo_liheap_countable_income: 0
+
+- name: Case 5, an undocumented member is left out of the household size but that member's earnings count and child support paid is deducted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 34
+        immigration_status: CITIZEN
+        employment_income: 31_200
+      person2:
+        age: 32
+        immigration_status: UNDOCUMENTED
+        employment_income: 31_200
+        child_support_expense: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # The undocumented member is left out of the household size (2 - 1 = 1)
+    # but the 2025 manual counts that member's income: 31,200 x 0.8 = 24,960
+    # for each member = 49,920. The 300 a month (3,600) of child support that
+    # member pays to someone outside the household is deducted:
+    # 49,920 - 3,600 = 46,320.
+    mo_liheap_household_size: 1
+    mo_liheap_countable_income: 46_320

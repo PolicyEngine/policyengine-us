@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AR, AL, DC, GA, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX
+    coverage: AR, AL, DC, GA, Riverside County, MA, FL, IL, IN, KS, KY, MD, MO, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX
     state_implementations:
       - state: AL
         status: partial
@@ -1092,6 +1092,14 @@ programs:
         parameter_prefix: gov.states.md.dhs.meap
         verified_years: "2025-2027"
         notes: FY25-FY27 regular heating only, with the fuel tables, the Garrett County multiplier and the subsidized and nominal levels. The SNAP nominal payment, cooling, EUSP, arrearage, crisis and equipment benefits are out of scope.
+      - state: MO
+        status: partial
+        name: Missouri LIHEAP
+        full_name: Missouri Low Income Home Energy Assistance Program
+        variable: mo_liheap
+        parameter_prefix: gov.states.mo.dss.liheap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular Energy Assistance only, including the heat-in-rent payment. Crisis (ECIP), cooling and weatherization assistance are out of scope.
       - state: MS
         status: partial
         name: Mississippi LIHEAP
