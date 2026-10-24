@@ -12,14 +12,15 @@ For every year:
 1. At each tier's lower edge the percentage equals the tier's initial
    percentage, and at exactly 400 percent it equals the top tier's final
    percentage.
-2. Within a tier the percentage is continuous: it stays between the tier's
-   initial and final percentages, it reaches the final percentage just below
-   the next edge, and two incomes in one tier differ by no more than the tier's
-   slope times the distance between them, plus one rounding step. The
-   regulation interpolates linearly and then rounds to the nearest hundredth
-   of a percent, so the bound holds whether or not the model rounds.
+2. Within a tier the percentage is the straight line from the tier's initial
+   to its final percentage, which is continuous, rounded to the nearest
+   hundredth of a percent (26 CFR 1.36B-3(g)(1)). So it stays between the
+   tier's initial and final percentages, it reaches the final percentage just
+   below the next edge, and at every income it is within half a rounding step
+   of the line. The bound holds whether or not the model rounds.
 3. The percentage never decreases as income rises from 0 to 400 percent,
-   including across tier edges.
+   including across tier edges. Before rounding, its only jumps are at tier
+   edges; rounding adds steps of 0.01 percentage point.
 4. The required contribution (household income times the percentage) never
    decreases as income rises, so for a fixed benchmark premium the credit never
    rises with income up to 400 percent (checked for 2026 and 2027, from income
@@ -48,8 +49,7 @@ CONTRIBUTION_YEARS = (2026, 2027)
 EPSILON = 1e-5
 TOLERANCE = 1e-6
 # 26 CFR 1.36B-3(g)(1) rounds the interpolated percentage to the nearest
-# hundredth of a percent, which can widen a step between two incomes by up to
-# 0.0001.
+# hundredth of a percent, which moves it off the line by up to half of 0.0001.
 ROUNDING = 1e-4
 # Every tier edge in any year's table, approached from both sides.
 EDGES = (0.0, 1.33, 1.5, 2.0, 2.5, 3.0, 4.0)
@@ -146,10 +146,8 @@ def test_applicable_percentage_table(points):
             below = rate[x == upper - EPSILON]
             assert (top - below >= -TOLERANCE).all(), year
             assert (top - below <= rise * EPSILON + TOLERANCE).all(), year
-        same_tier = tier[1:] == tier[:-1]
-        step = np.abs(np.diff(rate))[same_tier]
-        bound = (slope[tier][1:] * np.diff(seen))[same_tier] + ROUNDING + TOLERANCE
-        assert (step <= bound).all(), year
+        line = initial[tier] + slope[tier] * (seen - thresholds[tier])
+        assert (np.abs(rate - line) <= ROUNDING / 2 + TOLERANCE).all(), year
         # Property 3.
         assert (np.diff(rate) >= -TOLERANCE).all(), year
 
