@@ -1,0 +1,145 @@
+# Each taxpayer and spouse keeps their own $29 personal credit
+# ("Each taxpayer and spouse is entitled to one personal tax credit", AR1000F
+# instructions) when another taxpayer can claim them; only the dependents'
+# credits go (IRC 152(b)(1)). The filers are 30, so no aged credits apply.
+
+- name: 2025 single filer who can be claimed as a dependent keeps their own personal credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, child]
+        state_code: AR
+  output:
+    # $29 x 1.
+    ar_personal_credits_potential: 29
+
+- name: 2025 single filer who cannot be claimed gets credits for the filer and the child
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, child]
+        state_code: AR
+  output:
+    # $29 x 2.
+    ar_personal_credits_potential: 58
+
+- name: 2025 joint return with one claimable spouse keeps both spouses' personal credits (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: AR
+  output:
+    # $29 x 2.
+    ar_personal_credits_potential: 58
+
+- name: 2025 joint return with one claimable spouse keeps both spouses' personal credits (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: AR
+  output:
+    # $29 x 2.
+    ar_personal_credits_potential: 58
+
+- name: 2025 joint return with both spouses claimable keeps both spouses' personal credits
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: AR
+  output:
+    # $29 x 2.
+    ar_personal_credits_potential: 58
+
+- name: 2025 joint return with neither spouse claimable gets credits for both spouses and the child
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+      person_b:
+        age: 30
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: AR
+  output:
+    # $29 x 3.
+    ar_personal_credits_potential: 87
