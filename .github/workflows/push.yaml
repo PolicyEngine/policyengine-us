@@ -470,7 +470,7 @@ jobs:
       && (needs.RestPlan.result != 'skipped')
       && (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
-    name: Full Suite - Rest (Python + variables)
+    name: Check Rest Python shards
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

@@ -7,7 +7,7 @@ through the step. `make test-other-python-rest` now runs the same files as one
 pytest process per group in REST_PYTHON_GROUPS. In CI, rest_python_shards.py
 plans those groups' files over parallel shards from a recent run's times,
 splitting a long group into chunks. A process runs files of one group only,
-and Rest keeps the original check, failing unless every shard succeeded.
+and Rest, which runs no tests, fails unless every shard succeeded.
 
 Paths and --ignore flags can drop a file, or run it twice, while every test
 still passes. So this guard expands the groups through `make -n`, asks pytest
@@ -18,8 +18,8 @@ change to the groups leaves one out. Plans made with no, measured, skewed and
 tiny times must then run each group's files once, in the group's order, and
 the workflows must run and upload each shard of the plan. Running the target
 and a shard with a stub pytest checks that every process runs and that any
-failure fails them. The original Rest check aggregates the plan and shards,
-and must fail on failed, cancelled or skipped jobs.
+failure fails them. The Rest check aggregates the plan and shards, and must
+fail on failed, cancelled or skipped jobs.
 
 pytest lists the files here through its own discovery (paths, --ignore,
 python_files), but nothing is imported: rest_python_shards.py's list-files
@@ -781,12 +781,12 @@ def test_variable_yaml_selection_runs_once_on_the_planned_shard(workflow):
 
 
 @pytest.mark.parametrize("workflow", WORKFLOWS, ids=lambda path: path.name)
-def test_original_rest_check_aggregates_the_plan_and_shards_without_hiding_failure(
+def test_the_rest_check_aggregates_the_plan_and_shards_without_hiding_failure(
     workflow,
 ):
     jobs = workflow_jobs(workflow)
     summary = jobs["Rest"]
-    assert summary["name"] == "Full Suite - Rest (Python + variables)"
+    assert summary["name"] == "Check Rest Python shards"
     assert summary["needs"] == ["RestPlan", "RestPython"]
     # It runs after a failed plan or shard, but a cancelled run stops it: a
     # job-level always() kept it running after cancellation.

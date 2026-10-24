@@ -69,8 +69,8 @@ def test_pr_runner_budget_keeps_the_heavy_suites_separate():
     # Rest hit the 90-minute timeout on #10024, #9913, #10139 and #10029
     # in October 2026, and by run 40014592006 its two chained runners took
     # 130 minutes. RestPlan now spreads the groups over parallel shards (five
-    # from the October reports, at most MAX_SHARDS), and Rest keeps the
-    # summary check on a runner of its own.
+    # from the October reports, at most MAX_SHARDS), and Rest checks their
+    # results on a runner of its own.
     assert sum(counts.values()) == 27
     assert {
         name: counts[name]
@@ -210,7 +210,7 @@ def test_suite_groups_have_no_extra_runners_or_triggers():
     # plan's and every shard's result; there is no variables-only runner.
     # !cancelled(), not always(): always() kept it running after cancellation.
     assert PYTHON_JOBS["Rest"]["if"] == KEEP_RUNNING
-    assert PYTHON_JOBS["Rest"]["name"] == "Full Suite - Rest (Python + variables)"
+    assert PYTHON_JOBS["Rest"]["name"] == "Check Rest Python shards"
 
 
 def test_sequential_variants_preserve_failures_and_allow_later_results():

@@ -3,8 +3,8 @@ on:
   workflow_call:
 # RestPlan spreads the Rest Python groups over parallel shards by the latest
 # release run's times (policyengine_us/tests/rest_python_shards.py); each
-# process still runs files of one Makefile group. Rest keeps the original
-# check and fails unless the plan and every shard succeeded.
+# process still runs files of one Makefile group. Rest runs no tests: it
+# fails unless the plan and every shard succeeded.
 # Only the guarded PR workflow calls this file; it has no automatic triggers.
 jobs:
   RestPlan:
@@ -135,7 +135,7 @@ jobs:
     # Runs after a failed plan or shard but stops when the run is cancelled.
     # always() kept this runner alive after cancellation.
     if: ${{ !cancelled() }}
-    name: Full Suite - Rest (Python + variables)
+    name: Check Rest Python shards
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
