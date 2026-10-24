@@ -851,14 +851,22 @@ def test_exact_multi_year_both_names_and_neutralization_keep_core_precedence(
 
 
 @pytest.mark.parametrize("wrapper", PERIOD_WRAPPERS)
+@pytest.mark.parametrize(
+    "multi_year,annual_factors",
+    (
+        ("year:2024:2", {2024: 1.1, 2025: 0.8}),
+        ("year:2024-07:2", {2024: 1.1, 2025: 1.1, 2026: 0.8}),
+    ),
+)
 def test_exact_multi_year_source_rejects_differing_annual_factors_without_allocation(
-    wrapper,
+    wrapper, multi_year, annual_factors
 ):
     public = SOCIAL_SECURITY_COMPONENTS[0]
-    multi_year = "year:2024:2"
     simulation = make_simulation(wrapper, {public: {multi_year: 24_000}})
-    simulation.set_input(FACTOR, 2024, [1.1])
-    simulation.set_input(FACTOR, 2025, [0.8])
+    simulation.set_input("household_weight", multi_year, [1])
+    assert amount(simulation, public, multi_year) == 24_000
+    for year, factor in annual_factors.items():
+        simulation.set_input(FACTOR, year, [factor])
     with pytest.raises(ValueError, match="separately supplied annual source amounts"):
         simulation.calculate(public, multi_year)
     assert input_periods(simulation, f"{public}_reported") == {multi_year}

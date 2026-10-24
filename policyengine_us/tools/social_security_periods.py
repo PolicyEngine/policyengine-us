@@ -93,7 +93,12 @@ def _calculate_social_security_period(self, variable_name, period, original_calc
     # A uniform multiplier needs no allocation; differing annual multipliers
     # need separately supplied annual sources. Core supplies the subperiods.
     common_factor = None
-    for year in period.get_subperiods(YEAR):
+    # A rolling compound can overlap one more calendar year than its size.
+    # Check every calendar year touched, including the final partial year.
+    calendar_span = period.this_year.start.period(
+        YEAR, size=period.stop.year - period.start.year + 1
+    )
+    for year in calendar_span.get_subperiods(YEAR):
         source = CoreSimulation.calculate(self, f"{variable_name}_source", year)
         if np.any(source != SocialSecurityBenefitSource.reported):
             raise NotImplementedError(
