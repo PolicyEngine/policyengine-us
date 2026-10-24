@@ -1,0 +1,26 @@
+description: New Hampshire uses these fuel costs per million British thermal units to estimate heating cost under the Fuel Assistance Program.
+KEROSENE:
+  2026-10-01: 35.185
+FUEL_OIL:
+  2026-10-01: 28.881
+NATURAL_GAS:
+  2026-10-01: 15
+COAL:
+  2026-10-01: 14.286
+WOOD:
+  2026-10-01: 21.65
+ELECTRICITY:
+  2026-10-01: 64.706
+PROPANE:
+  2026-10-01: 42.497
+# Unsupported fuel contributes no estimate, not a legal zero cost.
+UNAVAILABLE:
+  2026-10-01: 0
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: New Hampshire FAP fuel cost per million British thermal units
+  reference:
+    - title: PY2027 New Hampshire Fuel Assistance Program Procedures Manual, Benefit Determination
+      href: https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=77

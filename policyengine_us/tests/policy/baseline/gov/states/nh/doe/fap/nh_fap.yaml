@@ -1,0 +1,2758 @@
+# Source: PY27 NH Fuel Assistance Program Procedures Manual.
+# https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf
+# Physical PDF pages: 10, 17, 18, 35, 36, 74, 76, 77, 78.
+# Period 2027 represents the researched 2026-2027 schedule with 2026 FPG.
+# Inputs are annual; SSI and FANF totals are explicitly supplied to isolate receipts.
+# Final modeled awards use actual or estimated costs and the ordinary fuel schedule.
+# No additional heat-in-rent reduction is applied under the approved modeling assumption.
+# This assumption is not agency-confirmed; unsupported fuel amounts remain zero.
+
+# Manual p78, delivered DD/A cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 1, delivered matrix cost tier DD and income band A."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 500
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 10_000
+    nh_fap: 750
+
+# Manual p78, utility DD/A cell, including published whole-dollar rounding.
+- name: "Case 2, utility matrix cost tier DD and income band A."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 500
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 10_000
+    nh_fap: 563
+
+# Manual p78, delivered DD/B cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 3, delivered matrix cost tier DD and income band B."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 14_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 500
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 14_000
+    nh_fap: 650
+
+# Manual p78, utility DD/B cell, including published whole-dollar rounding.
+- name: "Case 4, utility matrix cost tier DD and income band B."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 14_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "ELECTRICITY"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        pre_subsidy_electricity_expense: 500
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 14_000
+    nh_fap: 488
+
+# Manual p78, delivered DD/C cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 5, delivered matrix cost tier DD and income band C."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 18_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 500
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 18_000
+    nh_fap: 550
+
+# Manual p78, utility DD/C cell, including published whole-dollar rounding.
+- name: "Case 6, utility matrix cost tier DD and income band C."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 18_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 500
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 18_000
+    nh_fap: 413
+
+# Manual p78, delivered DD/D cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 7, delivered matrix cost tier DD and income band D."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 22_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 500
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 22_000
+    nh_fap: 500
+
+# Manual p78, utility DD/D cell, including published whole-dollar rounding.
+- name: "Case 8, utility matrix cost tier DD and income band D."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 22_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "ELECTRICITY"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        pre_subsidy_electricity_expense: 500
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 22_000
+    nh_fap: 375
+
+# Manual p78, delivered DD/E cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 9, delivered matrix cost tier DD and income band E."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 26_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 500
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 26_000
+    nh_fap: 440
+
+# Manual p78, utility DD/E cell, including published whole-dollar rounding.
+- name: "Case 10, utility matrix cost tier DD and income band E."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 26_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 500
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 26_000
+    nh_fap: 330
+
+# Manual p78, delivered DD/F cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 11, delivered matrix cost tier DD and income band F."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 40_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 500
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 40_000
+    nh_fap: 400
+
+# Manual p78, utility DD/F cell, including published whole-dollar rounding.
+- name: "Case 12, utility matrix cost tier DD and income band F."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 40_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "ELECTRICITY"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        pre_subsidy_electricity_expense: 500
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 40_000
+    nh_fap: 300
+
+# Manual p78, delivered CC/A cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 13, delivered matrix cost tier CC and income band A."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_200
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 10_000
+    nh_fap: 1_460
+
+# Manual p78, utility CC/A cell, including published whole-dollar rounding.
+- name: "Case 14, utility matrix cost tier CC and income band A."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "ELECTRICITY"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 10_000
+    nh_fap: 1_095
+
+# Manual p78, delivered CC/B cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 15, delivered matrix cost tier CC and income band B."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 14_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_200
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 14_000
+    nh_fap: 1_270
+
+# Manual p78, utility CC/B cell, including published whole-dollar rounding.
+- name: "Case 16, utility matrix cost tier CC and income band B."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 14_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 1_200
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 14_000
+    nh_fap: 953
+
+# Manual p78, delivered CC/C cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 17, delivered matrix cost tier CC and income band C."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 18_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_200
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 18_000
+    nh_fap: 1_150
+
+# Manual p78, utility CC/C cell, including published whole-dollar rounding.
+- name: "Case 18, utility matrix cost tier CC and income band C."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 18_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "ELECTRICITY"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 18_000
+    nh_fap: 863
+
+# Manual p78, delivered CC/D cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 19, delivered matrix cost tier CC and income band D."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 22_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_200
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 22_000
+    nh_fap: 950
+
+# Manual p78, utility CC/D cell, including published whole-dollar rounding.
+- name: "Case 20, utility matrix cost tier CC and income band D."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 22_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 1_200
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 22_000
+    nh_fap: 713
+
+# Manual p78, delivered CC/E cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 21, delivered matrix cost tier CC and income band E."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 26_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_200
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 26_000
+    nh_fap: 730
+
+# Manual p78, utility CC/E cell, including published whole-dollar rounding.
+- name: "Case 22, utility matrix cost tier CC and income band E."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 26_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "ELECTRICITY"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 26_000
+    nh_fap: 548
+
+# Manual p78, delivered CC/F cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 23, delivered matrix cost tier CC and income band F."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 40_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_200
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 40_000
+    nh_fap: 525
+
+# Manual p78, utility CC/F cell, including published whole-dollar rounding.
+- name: "Case 24, utility matrix cost tier CC and income band F."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 40_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 1_200
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 40_000
+    nh_fap: 394
+
+# Manual p78, delivered BB/A cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 25, delivered matrix cost tier BB and income band A."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 2_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 10_000
+    nh_fap: 2_350
+
+# Manual p78, utility BB/A cell, including published whole-dollar rounding.
+- name: "Case 26, utility matrix cost tier BB and income band A."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 2_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 10_000
+    nh_fap: 1_763
+
+# Manual p78, delivered BB/B cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 27, delivered matrix cost tier BB and income band B."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 14_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 2_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 14_000
+    nh_fap: 2_040
+
+# Manual p78, utility BB/B cell, including published whole-dollar rounding.
+- name: "Case 28, utility matrix cost tier BB and income band B."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 14_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "ELECTRICITY"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        pre_subsidy_electricity_expense: 2_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 14_000
+    nh_fap: 1_530
+
+# Manual p78, delivered BB/C cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 29, delivered matrix cost tier BB and income band C."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 18_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 2_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 18_000
+    nh_fap: 1_720
+
+# Manual p78, utility BB/C cell, including published whole-dollar rounding.
+- name: "Case 30, utility matrix cost tier BB and income band C."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 18_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 2_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 18_000
+    nh_fap: 1_290
+
+# Manual p78, delivered BB/D cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 31, delivered matrix cost tier BB and income band D."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 22_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 2_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 22_000
+    nh_fap: 1_410
+
+# Manual p78, utility BB/D cell, including published whole-dollar rounding.
+- name: "Case 32, utility matrix cost tier BB and income band D."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 22_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "ELECTRICITY"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        pre_subsidy_electricity_expense: 2_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 22_000
+    nh_fap: 1_058
+
+# Manual p78, delivered BB/E cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 33, delivered matrix cost tier BB and income band E."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 26_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 2_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 26_000
+    nh_fap: 1_100
+
+# Manual p78, utility BB/E cell, including published whole-dollar rounding.
+- name: "Case 34, utility matrix cost tier BB and income band E."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 26_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 2_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 26_000
+    nh_fap: 825
+
+# Manual p78, delivered BB/F cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 35, delivered matrix cost tier BB and income band F."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 40_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 2_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 40_000
+    nh_fap: 800
+
+# Manual p78, utility BB/F cell, including published whole-dollar rounding.
+- name: "Case 36, utility matrix cost tier BB and income band F."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 40_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "ELECTRICITY"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        pre_subsidy_electricity_expense: 2_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 40_000
+    nh_fap: 600
+
+# Manual p78, delivered AA/A cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 37, delivered matrix cost tier AA and income band A."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 10_000
+    nh_fap: 2_500
+
+# Manual p78, utility AA/A cell, including published whole-dollar rounding.
+- name: "Case 38, utility matrix cost tier AA and income band A."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "ELECTRICITY"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        pre_subsidy_electricity_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 10_000
+    nh_fap: 1_875
+
+# Manual p78, delivered AA/B cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 39, delivered matrix cost tier AA and income band B."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 14_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 14_000
+    nh_fap: 2_150
+
+# Manual p78, utility AA/B cell, including published whole-dollar rounding.
+- name: "Case 40, utility matrix cost tier AA and income band B."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 14_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 14_000
+    nh_fap: 1_613
+
+# Manual p78, delivered AA/C cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 41, delivered matrix cost tier AA and income band C."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 18_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 18_000
+    nh_fap: 1_825
+
+# Manual p78, utility AA/C cell, including published whole-dollar rounding.
+- name: "Case 42, utility matrix cost tier AA and income band C."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 18_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "ELECTRICITY"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        pre_subsidy_electricity_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 18_000
+    nh_fap: 1_369
+
+# Manual p78, delivered AA/D cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 43, delivered matrix cost tier AA and income band D."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 22_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 22_000
+    nh_fap: 1_500
+
+# Manual p78, utility AA/D cell, including published whole-dollar rounding.
+- name: "Case 44, utility matrix cost tier AA and income band D."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 22_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 22_000
+    nh_fap: 1_125
+
+# Manual p78, delivered AA/E cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 45, delivered matrix cost tier AA and income band E."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 26_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 26_000
+    nh_fap: 1_200
+
+# Manual p78, utility AA/E cell, including published whole-dollar rounding.
+- name: "Case 46, utility matrix cost tier AA and income band E."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 26_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "ELECTRICITY"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        pre_subsidy_electricity_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 26_000
+    nh_fap: 900
+
+# Manual p78, delivered AA/F cell. Actual annual primary-fuel bill selects the row.
+- name: "Case 47, delivered matrix cost tier AA and income band F."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 40_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 40_000
+    nh_fap: 825
+
+# Manual p78, utility AA/F cell, including published whole-dollar rounding.
+- name: "Case 48, utility matrix cost tier AA and income band F."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 40_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 40_000
+    nh_fap: 619
+
+# Manual pp17 and74; one-person 2026 FPG of 15,960 for the initial PY2027 snapshot.
+- name: "Case 49, income exactly 11970 remains in its inclusive FPG band."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 11_970
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 2_500
+
+# Manual pp17,74 and78; strict upper-band transition.
+- name: "Case 50, income one cent above 11970 enters the next FPG band."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 11_970.01
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 2_150
+
+# Manual pp17 and74; one-person 2026 FPG of 15,960 for the initial PY2027 snapshot.
+- name: "Case 51, income exactly 15960 remains in its inclusive FPG band."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 15_960
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 2_150
+
+# Manual pp17,74 and78; strict upper-band transition.
+- name: "Case 52, income one cent above 15960 enters the next FPG band."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 15_960.01
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 1_825
+
+# Manual pp17 and74; one-person 2026 FPG of 15,960 for the initial PY2027 snapshot.
+- name: "Case 53, income exactly 19950 remains in its inclusive FPG band."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 19_950
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 1_825
+
+# Manual pp17,74 and78; strict upper-band transition.
+- name: "Case 54, income one cent above 19950 enters the next FPG band."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 19_950.01
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 1_500
+
+# Manual pp17 and74; one-person 2026 FPG of 15,960 for the initial PY2027 snapshot.
+- name: "Case 55, income exactly 23940 remains in its inclusive FPG band."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 23_940
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 1_500
+
+# Manual pp17,74 and78; strict upper-band transition.
+- name: "Case 56, income one cent above 23940 enters the next FPG band."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 23_940.01
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 1_200
+
+# Manual pp17 and74; one-person 2026 FPG of 15,960 for the initial PY2027 snapshot.
+- name: "Case 57, income exactly 27930 remains in its inclusive FPG band."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 27_930
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 1_200
+
+# Manual pp17,74 and78; strict upper-band transition.
+- name: "Case 58, income one cent above 27930 enters the next FPG band."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 27_930.01
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 825
+
+# Manual pp77-78 exact cost ranges and utility schedule.
+- name: "Case 59, utility annual cost 999.99 selects the current cost tier."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 999.99
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 563
+
+# Manual pp77-78 exact cost ranges and utility schedule.
+- name: "Case 60, utility annual cost 1000 selects the current cost tier."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 1_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 1_095
+
+# Manual pp77-78 exact cost ranges and utility schedule.
+- name: "Case 61, utility annual cost 1749.99 selects the current cost tier."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 1_749.99
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 1_095
+
+# Manual pp77-78 exact cost ranges and utility schedule.
+- name: "Case 62, utility annual cost 1750 selects the current cost tier."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 1_750
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 1_763
+
+# Manual pp77-78 exact cost ranges and utility schedule.
+- name: "Case 63, utility annual cost 3499.99 selects the current cost tier."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 3_499.99
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 1_763
+
+# Manual pp77-78 exact cost ranges and utility schedule.
+- name: "Case 64, utility annual cost 3500 selects the current cost tier."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 3_500
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 1_875
+
+# Manual p77 multiplier 1.000 and p78 BB/F delivered benefit.
+- name: "Case 65, kerosene uses the full delivered-fuel schedule."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 40_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "KEROSENE"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 2_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 800
+
+# Manual p77 multiplier 1.000 and p78 BB/F delivered benefit.
+- name: "Case 66, propane uses the full delivered-fuel schedule."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 40_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "PROPANE"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        bottled_gas_expense: 2_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 800
+
+# Manual p77 multiplier 1.000 and p78 BB/F delivered benefit.
+- name: "Case 67, wood uses the full delivered-fuel schedule."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 40_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "WOOD"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        wood_expense: 2_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 800
+
+# Manual p77 multiplier 1.000 and p78 BB/F delivered benefit.
+- name: "Case 68, coal uses the full delivered-fuel schedule."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 40_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "COAL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        coal_expense: 2_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 800
+
+# Manual p78 DD/A amount is750; no actual-cost cap is stated.
+- name: "Case 69, actual-cost schedule is not capped at a small positive bill."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 100
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 750
+
+# Manual p10 provides application priority; pp77-78 contain no age supplement.
+- name: "Case 70, an older adult receives the same regular schedule."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 14_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 2_150
+
+# Manual p10 provides application priority; pp77-78 contain no disability supplement.
+- name: "Case 71, disability does not add an unsourced regular supplement."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        nh_ssp: 0
+        is_disabled: true
+        employment_income: 14_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 2_150
+
+# Manual p74: size 2 D band ends at 32,460; p78 AA/D is 1500.
+- name: "Case 72, two qualified members use the published two-person FPG."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 15_000
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 15_000
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "NH"
+  output:
+    nh_fap_household_size: 2
+    nh_fap_countable_income: 30_000
+    nh_fap: 1_500
+
+# Manual p36 includes ineligible-member income but excludes their size; size 1 band F applies without income proration.
+- name: "Case 73, mixed status counts both incomes but only the qualified person."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 15_000
+      person2:
+        age: 40
+        immigration_status: "UNDOCUMENTED"
+        ssi: 0
+        employment_income: 15_000
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "NH"
+  output:
+    nh_fap_household_size: 1
+    nh_fap_countable_income: 30_000
+    nh_fap: 825
+
+# Manual p74 size 1 ceiling 48,713; p78 AA/F is 825.
+- name: "Case 74, the inclusive income ceiling retains the base schedule."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 48_713
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 825
+
+# Manual p74 size 1 maximum 48,713.
+- name: "Case 75, income above the ceiling removes the scheduled benefit."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 48_714
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 0
+
+# Manual pp76-78 formula and matrix with four bedrooms alone: cost 2272.564 selects BB, income 45120 selects F, yielding a modeled award of 800.
+- name: "Case 76, bedrooms alone determine the two-person oil benefit cost band."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 45_120
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        fuel_oil_expense: 0
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+  output:
+    nh_fap_heating_cost: 2_272.564431
+    nh_fap_countable_income: 45_120
+    nh_fap: 800
+
+# Manual pp18,77-78: two bedrooms alone give estimated cost 1136.282, selecting CC/A 1460; actual 4000 selects AA/A 2500. The 500 bill does not cap the benefit.
+- name: "Case 77, the larger cost basis determines the delivered benefit."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "FUEL_OIL"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 500
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "FUEL_OIL"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 2
+      household2:
+        members: ["person2"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 2
+  output:
+    nh_fap_heating_cost: [1_136.282215, 4_000]
+    nh_fap: [1_460, 2_500]
+
+# Manual pp77-78: two-bedroom Coos gas cost 561.366 selects DD/A 750 * .75 =562.50, rounded to 563; actual 4000 selects AA/A 2500 * .75 =1875.
+- name: "Case 78, utility reduction follows the selected proxy or actual cost band."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 0
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "NATURAL_GAS"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 4_000
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 2
+      household2:
+        members: ["person2"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 2
+  output:
+    nh_fap_heating_cost: [561.365854, 4_000]
+    nh_fap: [563, 1_875]
+
+# Approved heat-in-rent assumption; this is not an agency-confirmed rent reduction.
+# Manual pp76-78: default single-family factor 2000, Belknap HDD 6610,
+# 3 bedrooms used as rooms, electricity 64.706/MBTU at efficiency 1.
+# Estimated cost = 2000 * 3 * 6610 / 1_000_000 * 64.706 = 2566.23996.
+# Income band A and cost band BB: 2350 * 0.75, rounded half up = 1763.
+- name: Case 79, unsubsidized heat-in-rent with three bedrooms and electricity receives the modeled final award.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 10_000
+        ssi: 0
+      parent2:
+        age: 38
+        immigration_status: CITIZEN
+        ssi: 0
+      child:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent1, parent2, child]
+        nh_fanf: 0
+        heating_expense: 0
+        heating_type: ELECTRICITY
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      home:
+        members: [parent1, parent2, child]
+        state_code: NH
+        bedrooms: 3
+  output:
+    nh_fap_countable_income: 10_000
+    nh_fap_heating_cost: 2_566.23996
+    nh_fap_eligible: true
+    nh_fap: 1_763
+
+# Manual p78 AA/A: delivered 2500; electricity and gas 2500 * 0.75 = 1875.
+# Approved assumption applies that fuel schedule once to direct-pay and heat-in-rent.
+# Manual p21 excludes subsidized heat-in-rent, not subsidized direct-pay households.
+- name: Case 80, heat-in-rent retains each fuel schedule while subsidized heat-in-rent is excluded.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      electric_direct:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 10_000
+        ssi: 0
+      electric_rent:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 10_000
+        ssi: 0
+      gas_direct:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 10_000
+        ssi: 0
+      gas_rent:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 10_000
+        ssi: 0
+      oil_direct:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 10_000
+        ssi: 0
+      oil_rent:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 10_000
+        ssi: 0
+      subsidized_rent:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 10_000
+        ssi: 0
+      subsidized_direct:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 10_000
+        ssi: 0
+    spm_units:
+      electric_direct:
+        members: [electric_direct]
+        nh_fanf: 0
+        heating_expense: 4_000
+        heating_type: ELECTRICITY
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      electric_rent:
+        members: [electric_rent]
+        nh_fanf: 0
+        heating_expense: 4_000
+        heating_type: ELECTRICITY
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+      gas_direct:
+        members: [gas_direct]
+        nh_fanf: 0
+        heating_expense: 4_000
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      gas_rent:
+        members: [gas_rent]
+        nh_fanf: 0
+        heating_expense: 4_000
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+      oil_direct:
+        members: [oil_direct]
+        nh_fanf: 0
+        heating_expense: 4_000
+        heating_type: FUEL_OIL
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      oil_rent:
+        members: [oil_rent]
+        nh_fanf: 0
+        heating_expense: 4_000
+        heating_type: FUEL_OIL
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+      subsidized_rent:
+        members: [subsidized_rent]
+        nh_fanf: 0
+        heating_expense: 4_000
+        heating_type: ELECTRICITY
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+      subsidized_direct:
+        members: [subsidized_direct]
+        nh_fanf: 0
+        heating_expense: 4_000
+        heating_type: ELECTRICITY
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: true
+    households:
+      electric_direct:
+        members: [electric_direct]
+        state_code: NH
+        bedrooms: 3
+      electric_rent:
+        members: [electric_rent]
+        state_code: NH
+        bedrooms: 3
+      gas_direct:
+        members: [gas_direct]
+        state_code: NH
+        bedrooms: 3
+      gas_rent:
+        members: [gas_rent]
+        state_code: NH
+        bedrooms: 3
+      oil_direct:
+        members: [oil_direct]
+        state_code: NH
+        bedrooms: 3
+      oil_rent:
+        members: [oil_rent]
+        state_code: NH
+        bedrooms: 3
+      subsidized_rent:
+        members: [subsidized_rent]
+        state_code: NH
+        bedrooms: 3
+      subsidized_direct:
+        members: [subsidized_direct]
+        state_code: NH
+        bedrooms: 3
+  output:
+    nh_fap_eligible: [true, true, true, true, true, true, false, true]
+    nh_fap: [1_875, 1_875, 1_875, 1_875, 2_500, 2_500, 0, 1_875]
+
+# Manual page 15 counts ordinary DoD retirement separately from pension/VA income.
+# Primary pay of 50,000 exceeds the one-person 48,713 ceiling. The 10,000 control
+# remains in income band A; a 500 electric bill uses DD/A: 750 * 0.75 -> 563.
+- name: "Case 81, ordinary military retirement pay affects eligibility and retains eligible retirees."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_veteran: true
+        years_in_military: 20
+        military_retirement_pay: 50_000
+        pension_income: 0
+        veterans_benefits: 0
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        is_veteran: true
+        years_in_military: 20
+        military_retirement_pay: 10_000
+        pension_income: 0
+        veterans_benefits: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 500
+      spm_unit2:
+        members: [person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 500
+    households:
+      household1:
+        members: [person1]
+        state_code: NH
+        bedrooms: 0
+      household2:
+        members: [person2]
+        state_code: NH
+        bedrooms: 0
+  output:
+    nh_fap_countable_income: [50_000, 10_000]
+    nh_fap_income_limit: [48_713, 48_713]
+    nh_fap_eligible: [false, true]
+    nh_fap: [0, 563]
+
+# Manual pages 13,15-16 count received welfare and adult SSI. The first family
+# does not take up TANF, so only SSI of 9,600 counts. The second family reports
+# actual TANF receipts of 3,600, counted once: 9,600 + 3,600 = 13,200.
+# Both are below the two-person A ceiling of 16,230, receiving AA/A = 2,500.
+# No counterfactual FANF entitlement is supplied or asserted as a legal award.
+- name: "Case 82, actual TANF receipt counts once and nonreceipt does not reduce the heating award."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: true
+        ssi: 9_600
+        nh_ssp: 0
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+      person3:
+        age: 40
+        immigration_status: CITIZEN
+        is_disabled: true
+        ssi: 9_600
+        nh_ssp: 0
+      person4:
+        age: 10
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3, person4]
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        takes_up_tanf_if_eligible: false
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 4_000
+      spm_unit2:
+        members: [person3, person4]
+        tanf: 3_600
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: NH
+        bedrooms: 0
+      household2:
+        members: [person3, person4]
+        state_code: NH
+        bedrooms: 0
+  output:
+    tanf: [0, 3_600]
+    nh_fap_countable_income: [9_600, 13_200]
+    nh_fap_eligible: [true, true]
+    nh_fap: [2_500, 2_500]
+
+# 42 USC 8624(b)(2)(B) protects income strictly below 110% FPG. PY2027 uses
+# 2026 guidelines: 15,960 + 27 * 5,680 = 169,320; the floor is 186,252.
+# Each economic household has 28 adult relatives with separate tax units.
+# Income 186,000 and a cent below the floor qualify despite SMI of 185,486;
+# equality and a cent above do not. Protected income uses band C and a 1,000
+# electric bill uses cost band CC: 1,150 * 0.75 = 862.50 -> 863.
+- name: "Case 83, the federal floor protects large households strictly below the season-start threshold."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 40, immigration_status: CITIZEN, employment_income: 186_000}
+      person2: {age: 40, immigration_status: CITIZEN}
+      person3: {age: 40, immigration_status: CITIZEN}
+      person4: {age: 40, immigration_status: CITIZEN}
+      person5: {age: 40, immigration_status: CITIZEN}
+      person6: {age: 40, immigration_status: CITIZEN}
+      person7: {age: 40, immigration_status: CITIZEN}
+      person8: {age: 40, immigration_status: CITIZEN}
+      person9: {age: 40, immigration_status: CITIZEN}
+      person10: {age: 40, immigration_status: CITIZEN}
+      person11: {age: 40, immigration_status: CITIZEN}
+      person12: {age: 40, immigration_status: CITIZEN}
+      person13: {age: 40, immigration_status: CITIZEN}
+      person14: {age: 40, immigration_status: CITIZEN}
+      person15: {age: 40, immigration_status: CITIZEN}
+      person16: {age: 40, immigration_status: CITIZEN}
+      person17: {age: 40, immigration_status: CITIZEN}
+      person18: {age: 40, immigration_status: CITIZEN}
+      person19: {age: 40, immigration_status: CITIZEN}
+      person20: {age: 40, immigration_status: CITIZEN}
+      person21: {age: 40, immigration_status: CITIZEN}
+      person22: {age: 40, immigration_status: CITIZEN}
+      person23: {age: 40, immigration_status: CITIZEN}
+      person24: {age: 40, immigration_status: CITIZEN}
+      person25: {age: 40, immigration_status: CITIZEN}
+      person26: {age: 40, immigration_status: CITIZEN}
+      person27: {age: 40, immigration_status: CITIZEN}
+      person28: {age: 40, immigration_status: CITIZEN}
+      person29: {age: 40, immigration_status: CITIZEN, employment_income: 186_251.99}
+      person30: {age: 40, immigration_status: CITIZEN}
+      person31: {age: 40, immigration_status: CITIZEN}
+      person32: {age: 40, immigration_status: CITIZEN}
+      person33: {age: 40, immigration_status: CITIZEN}
+      person34: {age: 40, immigration_status: CITIZEN}
+      person35: {age: 40, immigration_status: CITIZEN}
+      person36: {age: 40, immigration_status: CITIZEN}
+      person37: {age: 40, immigration_status: CITIZEN}
+      person38: {age: 40, immigration_status: CITIZEN}
+      person39: {age: 40, immigration_status: CITIZEN}
+      person40: {age: 40, immigration_status: CITIZEN}
+      person41: {age: 40, immigration_status: CITIZEN}
+      person42: {age: 40, immigration_status: CITIZEN}
+      person43: {age: 40, immigration_status: CITIZEN}
+      person44: {age: 40, immigration_status: CITIZEN}
+      person45: {age: 40, immigration_status: CITIZEN}
+      person46: {age: 40, immigration_status: CITIZEN}
+      person47: {age: 40, immigration_status: CITIZEN}
+      person48: {age: 40, immigration_status: CITIZEN}
+      person49: {age: 40, immigration_status: CITIZEN}
+      person50: {age: 40, immigration_status: CITIZEN}
+      person51: {age: 40, immigration_status: CITIZEN}
+      person52: {age: 40, immigration_status: CITIZEN}
+      person53: {age: 40, immigration_status: CITIZEN}
+      person54: {age: 40, immigration_status: CITIZEN}
+      person55: {age: 40, immigration_status: CITIZEN}
+      person56: {age: 40, immigration_status: CITIZEN}
+      person57: {age: 40, immigration_status: CITIZEN, employment_income: 186_252}
+      person58: {age: 40, immigration_status: CITIZEN}
+      person59: {age: 40, immigration_status: CITIZEN}
+      person60: {age: 40, immigration_status: CITIZEN}
+      person61: {age: 40, immigration_status: CITIZEN}
+      person62: {age: 40, immigration_status: CITIZEN}
+      person63: {age: 40, immigration_status: CITIZEN}
+      person64: {age: 40, immigration_status: CITIZEN}
+      person65: {age: 40, immigration_status: CITIZEN}
+      person66: {age: 40, immigration_status: CITIZEN}
+      person67: {age: 40, immigration_status: CITIZEN}
+      person68: {age: 40, immigration_status: CITIZEN}
+      person69: {age: 40, immigration_status: CITIZEN}
+      person70: {age: 40, immigration_status: CITIZEN}
+      person71: {age: 40, immigration_status: CITIZEN}
+      person72: {age: 40, immigration_status: CITIZEN}
+      person73: {age: 40, immigration_status: CITIZEN}
+      person74: {age: 40, immigration_status: CITIZEN}
+      person75: {age: 40, immigration_status: CITIZEN}
+      person76: {age: 40, immigration_status: CITIZEN}
+      person77: {age: 40, immigration_status: CITIZEN}
+      person78: {age: 40, immigration_status: CITIZEN}
+      person79: {age: 40, immigration_status: CITIZEN}
+      person80: {age: 40, immigration_status: CITIZEN}
+      person81: {age: 40, immigration_status: CITIZEN}
+      person82: {age: 40, immigration_status: CITIZEN}
+      person83: {age: 40, immigration_status: CITIZEN}
+      person84: {age: 40, immigration_status: CITIZEN}
+      person85: {age: 40, immigration_status: CITIZEN, employment_income: 186_252.01}
+      person86: {age: 40, immigration_status: CITIZEN}
+      person87: {age: 40, immigration_status: CITIZEN}
+      person88: {age: 40, immigration_status: CITIZEN}
+      person89: {age: 40, immigration_status: CITIZEN}
+      person90: {age: 40, immigration_status: CITIZEN}
+      person91: {age: 40, immigration_status: CITIZEN}
+      person92: {age: 40, immigration_status: CITIZEN}
+      person93: {age: 40, immigration_status: CITIZEN}
+      person94: {age: 40, immigration_status: CITIZEN}
+      person95: {age: 40, immigration_status: CITIZEN}
+      person96: {age: 40, immigration_status: CITIZEN}
+      person97: {age: 40, immigration_status: CITIZEN}
+      person98: {age: 40, immigration_status: CITIZEN}
+      person99: {age: 40, immigration_status: CITIZEN}
+      person100: {age: 40, immigration_status: CITIZEN}
+      person101: {age: 40, immigration_status: CITIZEN}
+      person102: {age: 40, immigration_status: CITIZEN}
+      person103: {age: 40, immigration_status: CITIZEN}
+      person104: {age: 40, immigration_status: CITIZEN}
+      person105: {age: 40, immigration_status: CITIZEN}
+      person106: {age: 40, immigration_status: CITIZEN}
+      person107: {age: 40, immigration_status: CITIZEN}
+      person108: {age: 40, immigration_status: CITIZEN}
+      person109: {age: 40, immigration_status: CITIZEN}
+      person110: {age: 40, immigration_status: CITIZEN}
+      person111: {age: 40, immigration_status: CITIZEN}
+      person112: {age: 40, immigration_status: CITIZEN}
+    tax_units:
+      tax_unit1: {members: [person1]}
+      tax_unit2: {members: [person2]}
+      tax_unit3: {members: [person3]}
+      tax_unit4: {members: [person4]}
+      tax_unit5: {members: [person5]}
+      tax_unit6: {members: [person6]}
+      tax_unit7: {members: [person7]}
+      tax_unit8: {members: [person8]}
+      tax_unit9: {members: [person9]}
+      tax_unit10: {members: [person10]}
+      tax_unit11: {members: [person11]}
+      tax_unit12: {members: [person12]}
+      tax_unit13: {members: [person13]}
+      tax_unit14: {members: [person14]}
+      tax_unit15: {members: [person15]}
+      tax_unit16: {members: [person16]}
+      tax_unit17: {members: [person17]}
+      tax_unit18: {members: [person18]}
+      tax_unit19: {members: [person19]}
+      tax_unit20: {members: [person20]}
+      tax_unit21: {members: [person21]}
+      tax_unit22: {members: [person22]}
+      tax_unit23: {members: [person23]}
+      tax_unit24: {members: [person24]}
+      tax_unit25: {members: [person25]}
+      tax_unit26: {members: [person26]}
+      tax_unit27: {members: [person27]}
+      tax_unit28: {members: [person28]}
+      tax_unit29: {members: [person29]}
+      tax_unit30: {members: [person30]}
+      tax_unit31: {members: [person31]}
+      tax_unit32: {members: [person32]}
+      tax_unit33: {members: [person33]}
+      tax_unit34: {members: [person34]}
+      tax_unit35: {members: [person35]}
+      tax_unit36: {members: [person36]}
+      tax_unit37: {members: [person37]}
+      tax_unit38: {members: [person38]}
+      tax_unit39: {members: [person39]}
+      tax_unit40: {members: [person40]}
+      tax_unit41: {members: [person41]}
+      tax_unit42: {members: [person42]}
+      tax_unit43: {members: [person43]}
+      tax_unit44: {members: [person44]}
+      tax_unit45: {members: [person45]}
+      tax_unit46: {members: [person46]}
+      tax_unit47: {members: [person47]}
+      tax_unit48: {members: [person48]}
+      tax_unit49: {members: [person49]}
+      tax_unit50: {members: [person50]}
+      tax_unit51: {members: [person51]}
+      tax_unit52: {members: [person52]}
+      tax_unit53: {members: [person53]}
+      tax_unit54: {members: [person54]}
+      tax_unit55: {members: [person55]}
+      tax_unit56: {members: [person56]}
+      tax_unit57: {members: [person57]}
+      tax_unit58: {members: [person58]}
+      tax_unit59: {members: [person59]}
+      tax_unit60: {members: [person60]}
+      tax_unit61: {members: [person61]}
+      tax_unit62: {members: [person62]}
+      tax_unit63: {members: [person63]}
+      tax_unit64: {members: [person64]}
+      tax_unit65: {members: [person65]}
+      tax_unit66: {members: [person66]}
+      tax_unit67: {members: [person67]}
+      tax_unit68: {members: [person68]}
+      tax_unit69: {members: [person69]}
+      tax_unit70: {members: [person70]}
+      tax_unit71: {members: [person71]}
+      tax_unit72: {members: [person72]}
+      tax_unit73: {members: [person73]}
+      tax_unit74: {members: [person74]}
+      tax_unit75: {members: [person75]}
+      tax_unit76: {members: [person76]}
+      tax_unit77: {members: [person77]}
+      tax_unit78: {members: [person78]}
+      tax_unit79: {members: [person79]}
+      tax_unit80: {members: [person80]}
+      tax_unit81: {members: [person81]}
+      tax_unit82: {members: [person82]}
+      tax_unit83: {members: [person83]}
+      tax_unit84: {members: [person84]}
+      tax_unit85: {members: [person85]}
+      tax_unit86: {members: [person86]}
+      tax_unit87: {members: [person87]}
+      tax_unit88: {members: [person88]}
+      tax_unit89: {members: [person89]}
+      tax_unit90: {members: [person90]}
+      tax_unit91: {members: [person91]}
+      tax_unit92: {members: [person92]}
+      tax_unit93: {members: [person93]}
+      tax_unit94: {members: [person94]}
+      tax_unit95: {members: [person95]}
+      tax_unit96: {members: [person96]}
+      tax_unit97: {members: [person97]}
+      tax_unit98: {members: [person98]}
+      tax_unit99: {members: [person99]}
+      tax_unit100: {members: [person100]}
+      tax_unit101: {members: [person101]}
+      tax_unit102: {members: [person102]}
+      tax_unit103: {members: [person103]}
+      tax_unit104: {members: [person104]}
+      tax_unit105: {members: [person105]}
+      tax_unit106: {members: [person106]}
+      tax_unit107: {members: [person107]}
+      tax_unit108: {members: [person108]}
+      tax_unit109: {members: [person109]}
+      tax_unit110: {members: [person110]}
+      tax_unit111: {members: [person111]}
+      tax_unit112: {members: [person112]}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25, person26, person27, person28]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit2:
+        members: [person29, person30, person31, person32, person33, person34, person35, person36, person37, person38, person39, person40, person41, person42, person43, person44, person45, person46, person47, person48, person49, person50, person51, person52, person53, person54, person55, person56]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit3:
+        members: [person57, person58, person59, person60, person61, person62, person63, person64, person65, person66, person67, person68, person69, person70, person71, person72, person73, person74, person75, person76, person77, person78, person79, person80, person81, person82, person83, person84]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit4:
+        members: [person85, person86, person87, person88, person89, person90, person91, person92, person93, person94, person95, person96, person97, person98, person99, person100, person101, person102, person103, person104, person105, person106, person107, person108, person109, person110, person111, person112]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25, person26, person27, person28]
+        state_code: NH
+        bedrooms: 0
+      household2:
+        members: [person29, person30, person31, person32, person33, person34, person35, person36, person37, person38, person39, person40, person41, person42, person43, person44, person45, person46, person47, person48, person49, person50, person51, person52, person53, person54, person55, person56]
+        state_code: NH
+        bedrooms: 0
+      household3:
+        members: [person57, person58, person59, person60, person61, person62, person63, person64, person65, person66, person67, person68, person69, person70, person71, person72, person73, person74, person75, person76, person77, person78, person79, person80, person81, person82, person83, person84]
+        state_code: NH
+        bedrooms: 0
+      household4:
+        members: [person85, person86, person87, person88, person89, person90, person91, person92, person93, person94, person95, person96, person97, person98, person99, person100, person101, person102, person103, person104, person105, person106, person107, person108, person109, person110, person111, person112]
+        state_code: NH
+        bedrooms: 0
+  output:
+    nh_fap_household_size: [28, 28, 28, 28]
+    nh_fap_countable_income: [186_000, 186_251.99, 186_252, 186_252.01]
+    nh_fap_income_limit: [185_486, 185_486, 185_486, 185_486]
+    nh_fap_eligible: [true, true, false, false]
+    nh_fap: [863, 863, 0, 0]
+
+# Manual page 15 counts annuity payments and military retirement pay. A uniformed
+# services Survivor Benefit Plan annuity is reported in military_retirement_pay_survivors.
+# Income 20,000 is above 125% of the 2026 one-person FPG (15,960 * 1.25 = 19,950)
+# and within 150% (23,940), so band D. No bill: Coos single-family proxy with four
+# bedrooms, 2,000 * 4 * 7,672 / 1,000,000 * 28.881 / 0.78 = 2,272.56, cost band BB.
+# Fuel oil multiplier 1: BB/D = 1,410.
+- name: Case 84, a military Survivor Benefit Plan annuity counts as unearned income.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        nh_ssp: 0
+        immigration_status: CITIZEN
+        military_retirement_pay_survivors: 20_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+    households:
+      household1:
+        members: [person1]
+        state_code: NH
+        county_str: COOS_COUNTY_NH
+        bedrooms: 4
+  output:
+    nh_fap_countable_income: 20_000
+    nh_fap_heating_cost: 2_272.564431
+    nh_fap_eligible: true
+    nh_fap: 1_410

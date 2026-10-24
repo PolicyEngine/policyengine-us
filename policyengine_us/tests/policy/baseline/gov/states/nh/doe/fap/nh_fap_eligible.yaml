@@ -1,0 +1,1168 @@
+# Source: PY27 NH Fuel Assistance Program Procedures Manual.
+# https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf
+# Physical PDF pages: 12, 17, 18, 21, 35, 36, 74.
+# Period 2027 represents the researched 2026-2027 schedule with 2026 FPG.
+# Inputs are annual; SSI and FANF totals are explicitly supplied to isolate receipts.
+# Heat-in-rent cases assert eligibility only, not an unresolved final award.
+
+# Manual pp12,17 and74; maximum is inclusive.
+- name: "Case 1, income at the 1-person annual ceiling is eligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 48_713
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: true
+
+# Manual pp12,17 and74; above published maximum.
+- name: "Case 2, income one cent above the 1-person annual ceiling is ineligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 48_713.01
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: false
+
+# Manual pp12,17 and74; maximum is inclusive.
+- name: "Case 3, income at the 2-person annual ceiling is eligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 63_702
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: true
+
+# Manual pp12,17 and74; above published maximum.
+- name: "Case 4, income one cent above the 2-person annual ceiling is ineligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 63_702.01
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: false
+
+# Manual pp12,17 and74; maximum is inclusive.
+- name: "Case 5, income at the 3-person annual ceiling is eligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 78_691
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2", "person3"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: true
+
+# Manual pp12,17 and74; above published maximum.
+- name: "Case 6, income one cent above the 3-person annual ceiling is ineligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 78_691.01
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2", "person3"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: false
+
+# Manual pp12,17 and74; maximum is inclusive.
+- name: "Case 7, income at the 4-person annual ceiling is eligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 93_680
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person4:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3", "person4"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2", "person3", "person4"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: true
+
+# Manual pp12,17 and74; above published maximum.
+- name: "Case 8, income one cent above the 4-person annual ceiling is ineligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 93_680.01
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person4:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3", "person4"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2", "person3", "person4"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: false
+
+# Manual pp12,17 and74; maximum is inclusive.
+- name: "Case 9, income at the 5-person annual ceiling is eligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 108_668
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person4:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person5:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3", "person4", "person5"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2", "person3", "person4", "person5"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: true
+
+# Manual pp12,17 and74; above published maximum.
+- name: "Case 10, income one cent above the 5-person annual ceiling is ineligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 108_668.01
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person4:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person5:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3", "person4", "person5"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2", "person3", "person4", "person5"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: false
+
+# Manual pp12,17 and74; maximum is inclusive.
+- name: "Case 11, income at the 6-person annual ceiling is eligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 123_657
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person4:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person5:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person6:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: true
+
+# Manual pp12,17 and74; above published maximum.
+- name: "Case 12, income one cent above the 6-person annual ceiling is ineligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 123_657.01
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person4:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person5:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person6:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: false
+
+# Manual pp12,17 and74; maximum is inclusive.
+- name: "Case 13, income at the 7-person annual ceiling is eligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 126_468
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person4:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person5:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person6:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person7:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6", "person7"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6", "person7"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: true
+
+# Manual pp12,17 and74; above published maximum.
+- name: "Case 14, income one cent above the 7-person annual ceiling is ineligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 126_468.01
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person4:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person5:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person6:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person7:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6", "person7"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6", "person7"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: false
+
+# Manual pp12,17 and74; maximum is inclusive.
+- name: "Case 15, income at the 8-person annual ceiling is eligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 129_278
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person4:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person5:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person6:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person7:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person8:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6", "person7", "person8"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6", "person7", "person8"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: true
+
+# Manual pp12,17 and74; above published maximum.
+- name: "Case 16, income one cent above the 8-person annual ceiling is ineligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 129_278.01
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person4:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person5:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person6:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person7:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person8:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6", "person7", "person8"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6", "person7", "person8"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: false
+
+# Manual p12 primary New Hampshire residence required.
+- name: "Case 17, a residence outside New Hampshire is ineligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "MA"
+  output:
+    nh_fap_eligible: false
+
+# Manual pp35-36 require a qualified recipient.
+- name: "Case 18, no qualified household members are ineligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "UNDOCUMENTED"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: false
+
+# Contract represents no heating exposure through heating_type NONE; manual p12 requires energy responsibility.
+- name: "Case 19, no heating type is ineligible despite an unrelated fuel bill."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NONE"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: false
+
+# Manual p12 requires responsibility for energy costs; absent bedrooms leave no proxy estimate.
+- name: "Case 20, zero direct cost without heat in rent is ineligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: false
+
+# Manual p12 has no positive-dollar expense minimum.
+- name: "Case 21, a positive direct heating cost satisfies energy responsibility."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 0.01
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: true
+
+# Manual pp12 and21. Eligibility only: the unresolved heat-in-rent award adjustment is not asserted.
+- name: "Case 22, nonsubsidized heat in rent can qualify without a separate bill."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+        fuel_oil_expense: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: true
+
+# Manual p21 excludes subsidized housing with heat included in rent.
+- name: "Case 23, subsidized housing with heat included in rent is ineligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        fuel_oil_expense: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: false
+
+# Manual p21 permits subsidized tenants otherwise eligible when they pay their own heat.
+- name: "Case 24, subsidized housing with separately paid heat can qualify."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: true
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: true
+
+# Manual p35 all qualified noncitizens regardless of entry date.
+- name: "Case 25, a new lawful permanent resident has no five-year bar."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "LEGAL_PERMANENT_RESIDENT"
+        ssi: 0
+        years_since_us_entry: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_eligible: true
+
+# Manual pp17,74: 50,000 - 2,000 = 48,000 is below the 48,713 ceiling;
+# the identical gross amount without a reported premium remains above it.
+- name: "Case 26, reported Medicare deductions affect income eligibility."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: "CITIZEN"
+        ssi: 0
+        nh_ssp: 0
+        social_security: 50_000
+        medicare_part_b_premiums_reported: 2_000
+      person2:
+        age: 70
+        immigration_status: "CITIZEN"
+        ssi: 0
+        nh_ssp: 0
+        social_security: 50_000
+        medicare_part_b_premiums_reported: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        fuel_oil_expense: 4_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      spm_unit2:
+        members: ["person2"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        fuel_oil_expense: 4_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+      household2:
+        members: ["person2"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: [48_000, 50_000]
+    nh_fap_eligible: [true, false]
+
+# Manual pp12,18,21,35: estimate may replace an absent actual bill; retain income, qualified-member, subsidized heat-in-rent, fuel and state requirements.
+- name: "Case 27, a room proxy establishes heating costs while other gates remain."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 60_000
+      person4:
+        age: 40
+        immigration_status: "UNDOCUMENTED"
+        ssi: 0
+        employment_income: 10_000
+      person5:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person6:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person7:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person8:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person9:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "FUEL_OIL"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "FUEL_OIL"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      spm_unit3:
+        members: ["person3"]
+        heating_type: "FUEL_OIL"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      spm_unit4:
+        members: ["person4"]
+        heating_type: "FUEL_OIL"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      spm_unit5:
+        members: ["person5"]
+        heating_type: "FUEL_OIL"
+        nh_fanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+      spm_unit6:
+        members: ["person6"]
+        heating_type: "NONE"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      spm_unit7:
+        members: ["person7"]
+        heating_type: "FUEL_OIL"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      spm_unit8:
+        members: ["person8"]
+        heating_type: "FUEL_OIL"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+      spm_unit9:
+        members: ["person9"]
+        heating_type: "FUEL_OIL"
+        nh_fanf: 0
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: true
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+      household2:
+        members: ["person2"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 0
+      household3:
+        members: ["person3"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+      household4:
+        members: ["person4"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+      household5:
+        members: ["person5"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+      household6:
+        members: ["person6"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+      household7:
+        members: ["person7"]
+        state_code: "NH"
+        county_str: "UNKNOWN"
+        bedrooms: 4
+      household8:
+        members: ["person8"]
+        state_code: "MA"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+      household9:
+        members: ["person9"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+  output:
+    nh_fap_eligible: [true, false, false, false, false, false, false, false, true]
+
+# The shared $50 investment exclusion leaves $25 of $75 interest countable;
+# 48,713 + 25 = 48,738 exceeds the one-person income limit.
+- name: "Case 28, interest remaining after the SPM-unit exclusion can put income above the limit."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 48_713
+        interest_income: 75
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 48_738
+    nh_fap_eligible: false
+    nh_fap: 0
+
+# Manual p21 excludes subsidized tenants whose heat is included in rent;
+# public housing is subsidized housing.
+- name: "Case 29, public housing with heat included in rent is ineligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+        fuel_oil_expense: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        is_in_public_housing: true
+  output:
+    nh_fap_eligible: false

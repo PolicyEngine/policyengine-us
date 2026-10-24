@@ -1,0 +1,643 @@
+# Source: PY27 NH Fuel Assistance Program Procedures Manual, physical pages 17, 18, 76, 77.
+# https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf
+# Agency service counties: https://www.capnh.org/home-old
+# Using bedrooms alone is a user-approved modeling approximation, not the statutory room definition.
+# Inputs and estimates are annual; actual bills and the estimated cost are not added together.
+
+# Manual pp76-77 formula with the approved bedroom-only proxy: 2000 * 4 * 7672 / 1,000,000 * 28.881 / .78 = 2272.564431.
+- name: "Case 1, four bedrooms produce a four-room oil estimate without added rooms."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "FUEL_OIL"
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+        fuel_oil_expense: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+  output:
+    nh_fap_heating_cost: 2_272.564431
+
+# Manual p77: single-family factor 2000 * two bedrooms * 7672 HDD; apply each fuel price / efficiency. WOOD is cordwood; electricity has no extra 70% reduction.
+- name: "Case 2, each observed fuel uses its published heating-cost conversion."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person4:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person5:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person6:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person7:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "KEROSENE"
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "FUEL_OIL"
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+      spm_unit3:
+        members: ["person3"]
+        heating_type: "NATURAL_GAS"
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+      spm_unit4:
+        members: ["person4"]
+        heating_type: "COAL"
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+      spm_unit5:
+        members: ["person5"]
+        heating_type: "WOOD"
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+      spm_unit6:
+        members: ["person6"]
+        heating_type: "ELECTRICITY"
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+      spm_unit7:
+        members: ["person7"]
+        heating_type: "PROPANE"
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 2
+      household2:
+        members: ["person2"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 2
+      household3:
+        members: ["person3"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 2
+      household4:
+        members: ["person4"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 2
+      household5:
+        members: ["person5"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 2
+      household6:
+        members: ["person6"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 2
+      household7:
+        members: ["person7"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 2
+  output:
+    nh_fap_heating_cost: [1_384.304205, 1_136.282215, 561.365854, 584.545024, 1_054.595556, 1_985.697728, 1_671.984533]
+
+# Manual p77 agency HDD and CAPNH county directory; factor 2000 * two bedrooms * HDD / 1,000,000 * 28.881 / .78.
+- name: "Case 3, all ten counties use the agency heating degree days."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person4:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person5:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person6:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person7:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person8:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person9:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person10:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "FUEL_OIL"
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "FUEL_OIL"
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+      spm_unit3:
+        members: ["person3"]
+        heating_type: "FUEL_OIL"
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+      spm_unit4:
+        members: ["person4"]
+        heating_type: "FUEL_OIL"
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+      spm_unit5:
+        members: ["person5"]
+        heating_type: "FUEL_OIL"
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+      spm_unit6:
+        members: ["person6"]
+        heating_type: "FUEL_OIL"
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+      spm_unit7:
+        members: ["person7"]
+        heating_type: "FUEL_OIL"
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+      spm_unit8:
+        members: ["person8"]
+        heating_type: "FUEL_OIL"
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+      spm_unit9:
+        members: ["person9"]
+        heating_type: "FUEL_OIL"
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+      spm_unit10:
+        members: ["person10"]
+        heating_type: "FUEL_OIL"
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "BELKNAP_COUNTY_NH"
+        bedrooms: 2
+      household2:
+        members: ["person2"]
+        state_code: "NH"
+        county_str: "MERRIMACK_COUNTY_NH"
+        bedrooms: 2
+      household3:
+        members: ["person3"]
+        state_code: "NH"
+        county_str: "HILLSBOROUGH_COUNTY_NH"
+        bedrooms: 2
+      household4:
+        members: ["person4"]
+        state_code: "NH"
+        county_str: "ROCKINGHAM_COUNTY_NH"
+        bedrooms: 2
+      household5:
+        members: ["person5"]
+        state_code: "NH"
+        county_str: "STRAFFORD_COUNTY_NH"
+        bedrooms: 2
+      household6:
+        members: ["person6"]
+        state_code: "NH"
+        county_str: "CHESHIRE_COUNTY_NH"
+        bedrooms: 2
+      household7:
+        members: ["person7"]
+        state_code: "NH"
+        county_str: "SULLIVAN_COUNTY_NH"
+        bedrooms: 2
+      household8:
+        members: ["person8"]
+        state_code: "NH"
+        county_str: "CARROLL_COUNTY_NH"
+        bedrooms: 2
+      household9:
+        members: ["person9"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 2
+      household10:
+        members: ["person10"]
+        state_code: "NH"
+        county_str: "GRAFTON_COUNTY_NH"
+        bedrooms: 2
+  output:
+    nh_fap_heating_cost: [978.991846, 978.991846, 887.6094, 887.6094, 897.680723, 975.733477, 975.733477, 1_136.282215, 1_136.282215, 1_136.282215]
+
+# Manual p77: dwelling factors 2000, 1800 and 1400 with Strafford HDD 6061.
+- name: "Case 4, dwelling factors change a two-bedroom oil estimate."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "FUEL_OIL"
+        nh_fap_dwelling_type: "SINGLE_FAMILY_OR_MODULAR"
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "FUEL_OIL"
+        nh_fap_dwelling_type: "MOBILE_HOME"
+      spm_unit3:
+        members: ["person3"]
+        heating_type: "FUEL_OIL"
+        nh_fap_dwelling_type: "APARTMENT_CONDO_OR_DUPLEX"
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "STRAFFORD_COUNTY_NH"
+        bedrooms: 2
+      household2:
+        members: ["person2"]
+        state_code: "NH"
+        county_str: "STRAFFORD_COUNTY_NH"
+        bedrooms: 2
+      household3:
+        members: ["person3"]
+        state_code: "NH"
+        county_str: "STRAFFORD_COUNTY_NH"
+        bedrooms: 2
+  output:
+    nh_fap_heating_cost: [897.680723, 807.912651, 628.376506]
+
+# Approved model assumption: no room estimate for nonpositive bedrooms, so actual bills are retained.
+- name: "Case 5, zero or negative bedrooms preserve the actual bill fallback."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "FUEL_OIL"
+        fuel_oil_expense: 0
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "FUEL_OIL"
+        fuel_oil_expense: 650
+      spm_unit3:
+        members: ["person3"]
+        heating_type: "FUEL_OIL"
+        fuel_oil_expense: 750
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 0
+      household2:
+        members: ["person2"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 0
+      household3:
+        members: ["person3"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: -1
+  output:
+    nh_fap_heating_cost: [0, 650, 750]
+
+# Manual p18: compare actual annual cost and design heat load for best benefit; 500 is below the four-bedroom estimate.
+- name: "Case 6, the estimate is retained when the actual bill is lower."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "FUEL_OIL"
+        fuel_oil_expense: 500
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+  output:
+    nh_fap_heating_cost: 2_272.564431
+
+# Manual p18 allows documented actual cost for high usage; 5000 exceeds 2272.564431.
+- name: "Case 7, a larger annual bill replaces the estimate."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "FUEL_OIL"
+        fuel_oil_expense: 5_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+  output:
+    nh_fap_heating_cost: 5_000
+
+# No proxy for OTHER, SOLAR, UNSPECIFIED or NONE. Canonical OTHER and grid-tied SOLAR bills still permit actual-cost fallback.
+- name: "Case 8, unsupported proxy fuels retain available canonical actual bills."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person4:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "OTHER"
+        other_heating_fuel_expense: 250
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "SOLAR"
+        pre_subsidy_electricity_expense: 650
+      spm_unit3:
+        members: ["person3"]
+        heating_type: "UNSPECIFIED"
+        fuel_oil_expense: 4_000
+      spm_unit4:
+        members: ["person4"]
+        heating_type: "NONE"
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+      household2:
+        members: ["person2"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+      household3:
+        members: ["person3"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+      household4:
+        members: ["person4"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+  output:
+    nh_fap_heating_cost: [250, 650, 0, 0]
+
+# Only the ten NH counties map to published agency HDD; actual-cost fallback remains available.
+- name: "Case 9, unknown and outside counties do not generate an estimate."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "FUEL_OIL"
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "FUEL_OIL"
+        fuel_oil_expense: 650
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "UNKNOWN"
+        bedrooms: 4
+      household2:
+        members: ["person2"]
+        state_code: "NH"
+        county_str: "SUFFOLK_COUNTY_MA"
+        bedrooms: 4
+  output:
+    nh_fap_heating_cost: [0, 650]
+
+# State scope applies even when a supplied county string and bill would otherwise give a positive cost.
+- name: "Case 10, the heating-cost component is limited to New Hampshire."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "FUEL_OIL"
+        fuel_oil_expense: 5_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "MA"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+  output:
+    nh_fap_heating_cost: 0
+
+# The adopted contract floors actual bills at zero and selects the better heating-cost basis.
+- name: "Case 11, negative reported bills cannot reduce a positive estimate."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "FUEL_OIL"
+        fuel_oil_expense: -1_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 4
+  output:
+    nh_fap_heating_cost: 2_272.564431
+
+# With no room estimate and no positive annual cost, the component is zero.
+- name: "Case 12, negative reported bills without bedrooms have zero modeled cost."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "FUEL_OIL"
+        fuel_oil_expense: -1_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 0
+  output:
+    nh_fap_heating_cost: 0
+
+# The existing bedrooms zero default disables the approximate room path.
+- name: "Case 13, omitted bedrooms preserve existing actual-cost cases."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "FUEL_OIL"
+        fuel_oil_expense: 500
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+  output:
+    nh_fap_heating_cost: 500
+
+# Approved whole-household approximation: both units use two bedrooms; no inferred private-room allocation. Factor 1400 with Coos HDD 7672.
+- name: "Case 14, SPM units reuse household bedrooms with their own fuel."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 40
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "WOOD"
+        nh_fap_dwelling_type: "APARTMENT_CONDO_OR_DUPLEX"
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "NATURAL_GAS"
+        nh_fap_dwelling_type: "APARTMENT_CONDO_OR_DUPLEX"
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        bedrooms: 2
+  output:
+    nh_fap_heating_cost: [738.216889, 392.956098]

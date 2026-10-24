@@ -1,0 +1,38 @@
+description: New Hampshire provides this share of the delivered-fuel scheduled benefit under the Fuel Assistance Program.
+# Whole-dollar half-up rounding reproduces all 24 published utility cells.
+# Unsupported fuels have no published multiplier; zero marks an unsupported
+# amount, not a legal zero benefit.
+UNSPECIFIED:
+  2026-10-01: 0
+ELECTRICITY:
+  2026-10-01: 0.75
+NATURAL_GAS:
+  2026-10-01: 0.75
+FUEL_OIL:
+  2026-10-01: 1
+KEROSENE:
+  2026-10-01: 1
+PROPANE:
+  2026-10-01: 1
+# Existing WOOD also represents pellets, bio-bricks and winter blends, which
+# share the 1.000 multiplier.
+WOOD:
+  2026-10-01: 1
+COAL:
+  2026-10-01: 1
+SOLAR:
+  2026-10-01: 0
+OTHER:
+  2026-10-01: 0
+NONE:
+  2026-10-01: 0
+
+metadata:
+  unit: /1
+  period: year
+  label: New Hampshire FAP benefit multiplier
+  breakdown:
+    - heating_type
+  reference:
+    - title: PY2027 New Hampshire Fuel Assistance Program Procedures Manual, Benefit Determination, Fuel Cost, Efficiency, and Benefit Multiplier
+      href: https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=77
