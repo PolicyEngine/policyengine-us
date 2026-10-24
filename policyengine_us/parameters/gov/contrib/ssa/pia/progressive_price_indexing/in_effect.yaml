@@ -1,0 +1,9 @@
+description: Whether the household PIA formula applies a supplied progressive price-indexing path; enabling it without a threshold fails.
+values:
+  1983-01-01: false
+metadata:
+  unit: bool
+  label: Progressive PIA price indexing
+  reference:
+    - title: SSA OACT price-indexing provision memorandum
+      href: https://www.ssa.gov/OACT/solvency/advisoryboard_20050810.pdf

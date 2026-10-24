@@ -23,6 +23,10 @@ TESTS := policyengine_us/tests
 REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 	$(TESTS)/core/test_spm_simulation_isolation.py \
 	$(TESTS)/core/test_spm_system.py
+# Calculator Simulation/API contracts use that same runner, with each file
+# in its own process so its reform trees are released before the next suite.
+REST_SIMULATION_API_TESTS := $(TESTS)/unit/test_ss_calculator_engine.py \
+	$(TESTS)/unit/test_ss_calculator_differential.py
 # The remaining Python tests run as one pytest process per group, one after
 # another, so each exit releases its heap before the next group starts. As a
 # single process they peaked at 15.7 GB RSS on the 16 GB runner, with 1.5M
@@ -84,7 +88,7 @@ REST_REMAINING_HEAVY_TESTS := $(TESTS)/test_niit_section_911_magi.py \
 	$(TESTS)/test_schedule_d_filer_net_capital_gain.py
 REST_LISTED_TESTS := $(REST_CACHED_ARRAY_TESTS) $(REST_HEAVY_A_TESTS) $(REST_HEAVY_B_TESTS) \
 	$(REST_CORE_HEAVY_TESTS) $(REST_POLICY_PARAMETER_TESTS) $(REST_REMAINING_HEAVY_TESTS)
-REST_IGNORES := $(addprefix --ignore=,$(TESTS)/policy/contrib $(TESTS)/microsimulation $(REST_SPM_TESTS))
+REST_IGNORES := $(addprefix --ignore=,$(TESTS)/policy/contrib $(TESTS)/microsimulation $(REST_SPM_TESTS) $(REST_SIMULATION_API_TESTS))
 # $(call rest_pytest,<group>,<paths>,<more paths to ignore>) is the pytest
 # command for one group. With REST_REPORT_DIR set, each group writes its own
 # JUnit XML and GNU time report there: rest-python-<group>.xml and
@@ -293,6 +297,8 @@ test-other-python:
 	pytest policyengine_us/tests/ --maxfail=0 --ignore=$(TESTS)/policy/contrib --ignore=$(TESTS)/microsimulation
 test-other-python-spm:
 	pytest $(REST_SPM_TESTS) --maxfail=0
+	pytest $(TESTS)/unit/test_ss_calculator_engine.py --maxfail=0 $(if $(findstring --junitxml=,$(PYTEST_ADDOPTS)),--junitxml=simulation-ss-calculator-engine.xml)
+	pytest $(TESTS)/unit/test_ss_calculator_differential.py --maxfail=0 $(if $(findstring --junitxml=,$(PYTEST_ADDOPTS)),--junitxml=simulation-ss-calculator-differential.xml)
 # Every group runs even after one fails; the target fails if any group did.
 test-other-python-rest:
 	@failed=""; for group in $(REST_PYTHON_GROUPS); do \
