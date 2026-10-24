@@ -1,4 +1,4 @@
-description: Dollar gap between upper and lower threshold of pre-QBID taxable income
+description: Dollar gap between upper and lower threshold of pre-QBID taxable income; only joint returns receive twice the amount for other filers.
 metadata:
   propagate_metadata_to_children: true
   label: QBID phase-out length
@@ -9,6 +9,16 @@ metadata:
   reference:
     - title: 26 U.S. Code § 199A(b)(3)(B) - Qualified business income
       href: https://www.law.cornell.edu/uscode/text/26/199A#b_3_B
+    - title: 26 U.S. Code § 199A(d)(3)
+      href: https://www.law.cornell.edu/uscode/text/26/199A#d_3
+    - title: Public Law 119-21, § 70105(a) and (c) (phase-in range for taxable years beginning after 2025), pages 91-92
+      href: https://www.govinfo.gov/content/pkg/PLAW-119publ21/pdf/PLAW-119publ21.pdf#page=91
+    - title: 2026 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=22
+    - title: 2025 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=15
+    - title: 2023 Instructions for Form 8995 (qualifying surviving spouse uses the single phase-in range)
+      href: https://www.irs.gov/pub/irs-prior/i8995--2023.pdf#page=2
 HEAD_OF_HOUSEHOLD:
   2013-01-01: 1.0
   2018-01-01: 50_000
@@ -27,5 +37,7 @@ SINGLE:
   2026-01-01: 75_000
 SURVIVING_SPOUSE:
   2013-01-01: 1.0
-  2018-01-01: 100_000
-  2026-01-01: 150_000
+  # A surviving spouse does not file a joint return, so sections
+  # 199A(b)(3)(B) and (d)(3) give them the range for other filers.
+  2018-01-01: 50_000
+  2026-01-01: 75_000
