@@ -5,6 +5,13 @@ class mt_income_tax_rebate(Variable):
     value_type = float
     entity = Person
     label = "Montana 2021 income tax rebate"
+    documentation = (
+        "One-time Montana HB 192 income tax rebate paid in 2023 and determined from "
+        "the 2021 return. PolicyEngine attributes it to eligibility tax year 2021 as "
+        "a refundable payment through mt_refundable_credits. The amount is zero "
+        "outside 2021. The separate-versus-joint filing election is determined before "
+        "this rebate by assumption."
+    )
     unit = USD
     definition_period = YEAR
     reference = (

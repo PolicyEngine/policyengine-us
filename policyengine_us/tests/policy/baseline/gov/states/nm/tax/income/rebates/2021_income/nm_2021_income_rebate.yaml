@@ -127,3 +127,87 @@
         state_code: NM
   output:
     nm_2021_income_rebate: 0
+
+# Historical guard regression.
+# Main: HB163 (2022), section 4, PDF p13, NMSA 7-2-7.6(B)-(C).
+# https://www.nmlegis.gov/Sessions/22%20Regular/final/HB0163.pdf#page=13
+# Supplemental: HB2 (2022 special), section 1, PDF pp1-2, NMSA 7-2-7.5(A),(D).
+# https://www.nmlegis.gov/Sessions/22%20Special/final/HB0002.pdf#page=1
+# Additional: HB547 (2023), section 11, PDF pp31-32, NMSA 7-2-7.7(A)-(B).
+# https://www.nmlegis.gov/Sessions/23%20Regular/final/HB0547.pdf#page=31
+# Each rebate is expressly tied to the 2021 return/liability, so the 2020
+# amounts are $0 + $0 + $0; tax is $1,000 - $0 = $1,000.
+- name: New Mexico three 2021 rebates do not reduce 2020 tax
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    state_code: NM
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+    claimed_as_dependent_on_another_return: false
+    claimable_as_dependent_on_another_return: false
+    nm_income_tax_before_refundable_credits: 1_000
+    nm_cdcc: 0
+    nm_medical_expense_credit: 0
+    nm_eitc: 0
+    nm_low_income_comprehensive_tax_rebate: 0
+    nm_property_tax_rebate: 0
+  output:
+    nm_2021_income_rebate: 0
+    nm_additional_2021_income_rebate: 0
+    nm_supplemental_2021_income_rebate: 0
+    nm_refundable_credits: 0
+    nm_income_tax: 1_000
+
+# The pre-program zero must backdate to 2015 for every filing-status branch.
+- name: New Mexico rebates are zero in 2015 for every filing status
+  period: 2015
+  absolute_error_margin: 0
+  input:
+    people:
+      single: {}
+      joint: {}
+      separate: {}
+      head_of_household: {}
+      surviving_spouse: {}
+    tax_units:
+      single_unit:
+        members: [single]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+      joint_unit:
+        members: [joint]
+        filing_status: JOINT
+        adjusted_gross_income: 50_000
+      separate_unit:
+        members: [separate]
+        filing_status: SEPARATE
+        adjusted_gross_income: 50_000
+      head_of_household_unit:
+        members: [head_of_household]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 50_000
+      surviving_spouse_unit:
+        members: [surviving_spouse]
+        filing_status: SURVIVING_SPOUSE
+        adjusted_gross_income: 50_000
+    households:
+      single_household:
+        members: [single]
+        state_code: NM
+      joint_household:
+        members: [joint]
+        state_code: NM
+      separate_household:
+        members: [separate]
+        state_code: NM
+      head_of_household_household:
+        members: [head_of_household]
+        state_code: NM
+      surviving_spouse_household:
+        members: [surviving_spouse]
+        state_code: NM
+  output:
+    nm_2021_income_rebate: [0, 0, 0, 0, 0]
+    nm_additional_2021_income_rebate: [0, 0, 0, 0, 0]
+    nm_supplemental_2021_income_rebate: [0, 0, 0, 0, 0]

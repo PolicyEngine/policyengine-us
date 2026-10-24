@@ -315,3 +315,76 @@
         state_code: HI
   output:
     hi_act_115_rebate: 600
+
+# Historical guard regression.
+# Act 115 (2022), section 3(a), PDF p2, limits the refund to taxable year 2021;
+# section 3(d), PDF p3, ties eligibility to filing that year's return.
+# https://data.capitol.hawaii.gov/sessions/sessionlaws/Years/SLH2022/SLH2022_Act115.pdf#page=2
+# Hand calculation for 2020: rebate $0; other refundable credits $0;
+# income tax $1,000 - $0 = $1,000, irrespective of the one exemption/AGI tier.
+- name: Hawaii Act 115 refund does not reduce 2020 tax
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+    claimed_as_dependent_on_another_return: false
+    claimable_as_dependent_on_another_return: false
+    exemptions_count: 1
+    hi_income_tax_before_refundable_credits: 1_000
+    hi_food_excise_credit: 0
+    hi_cdcc: 0
+    hi_tax_credit_for_low_income_household_renters: 0
+  output:
+    hi_act_115_rebate: 0
+    hi_refundable_credits: 0
+    hi_income_tax: 1_000
+
+# Backdating must keep every amount bracket at zero in both schedules before
+# 2021; otherwise either the $300 or $100 tier could recreate a historical refund.
+- name: Hawaii Act 115 schedules are zero in the earliest modeled year
+  period: 2015
+  absolute_error_margin: 0
+  input:
+    people:
+      single_low: {}
+      single_high: {}
+      joint_low: {}
+      joint_high: {}
+    tax_units:
+      single_low_unit:
+        members: [single_low]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+        exemptions_count: 1
+      single_high_unit:
+        members: [single_high]
+        filing_status: SINGLE
+        adjusted_gross_income: 100_000
+        exemptions_count: 1
+      joint_low_unit:
+        members: [joint_low]
+        filing_status: JOINT
+        adjusted_gross_income: 50_000
+        exemptions_count: 1
+      joint_high_unit:
+        members: [joint_high]
+        filing_status: JOINT
+        adjusted_gross_income: 200_000
+        exemptions_count: 1
+    households:
+      single_low_household:
+        members: [single_low]
+        state_code: HI
+      single_high_household:
+        members: [single_high]
+        state_code: HI
+      joint_low_household:
+        members: [joint_low]
+        state_code: HI
+      joint_high_household:
+        members: [joint_high]
+        state_code: HI
+  output:
+    hi_act_115_rebate: [0, 0, 0, 0]

@@ -1,4 +1,8 @@
-description: Illinois provides this income tax rebate amount for joint filers, based on federal adjusted gross income.
+description: >-
+  Illinois provides this income tax rebate amount for joint filers, based on federal
+  adjusted gross income. PolicyEngine attributes this one-time rebate to eligibility tax
+  year 2021, determined from that year's return, although it was paid in 2022.
+  Later-year standalone calculations do not establish inclusion in credit totals.
 metadata:
   threshold_unit: currency-USD
   amount_unit: currency-USD
@@ -13,8 +17,10 @@ brackets:
   - threshold:
       2021-01-01: 0
     amount:
+      2020-01-01: 0
       2021-01-01: 100
   - threshold:
       2021-01-01: 400_000
     amount:
+      2020-01-01: 0
       2021-01-01: 0

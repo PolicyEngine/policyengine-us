@@ -1,5 +1,12 @@
-description: Colorado pays the state sales tax refund for a tax year if this is true, which requires excess state revenues for the state fiscal year ending in that tax year.
+description: >-
+  Colorado pays the state sales tax refund for a tax year if this is true, which
+  requires excess state revenues for the state fiscal year ending in that tax year. The
+  refund is attributed to the modeled eligibility tax year, even when the return and
+  payment occur later. This is the residual sales tax refund mechanism, separate from
+  Colorado Cash Back; in_effect controls whether the refund is available.
 values:
+  2015-01-01: true
+  2016-01-01: false
   2021-01-01: true
   # FY 2025-26 revenue fell $175.9 million short of the Referendum C cap, as
   # the State Controller certified on 2026-09-08, so no tax year 2026 refund.
