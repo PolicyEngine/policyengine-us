@@ -1,0 +1,105 @@
+- name: A dependent's tips do not reduce the filer's Georgia AGI
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 60_000
+      teen:
+        age: 17
+        is_tax_unit_dependent: true
+        employment_income: 8_000
+        treasury_tipped_occupation_code: 102
+        tip_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [parent, teen]
+    households:
+      household:
+        members: [parent, teen]
+        state_code: GA
+  output:
+    # O.C.G.A. § 48-7-27(a) subtracts the exclusion from the taxpayer's
+    # federal AGI. The teen's tips are the teen's own income (26 U.S.C.
+    # 73(a)) and are not in the parent's AGI.
+    ga_cash_tip_exclusion: 0
+    ga_subtractions: 0
+    ga_agi: 60_000
+
+- name: A dependent's tips do not count when the model infers the dependent
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 60_000
+      teen:
+        age: 17
+        employment_income: 8_000
+        treasury_tipped_occupation_code: 102
+        tip_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [parent, teen]
+    households:
+      household:
+        members: [parent, teen]
+        state_code: GA
+  output:
+    ga_cash_tip_exclusion: 0
+
+- name: On a joint return only the spouses' own tips count, each capped
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 40_000
+        treasury_tipped_occupation_code: 102
+        tip_income: 4_000
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 40_000
+        treasury_tipped_occupation_code: 102
+        tip_income: 1_000
+      teen:
+        age: 17
+        is_tax_unit_dependent: true
+        employment_income: 8_000
+        treasury_tipped_occupation_code: 102
+        tip_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, teen]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, teen]
+        state_code: GA
+  output:
+    # Head: min(4,000, 1,750) = 1,750. Spouse: 1,000. Teen: none.
+    ga_cash_tip_exclusion: 2_750
+
+- name: A teen filing their own return keeps the exclusion for their own tips
+  period: 2026
+  input:
+    people:
+      teen:
+        age: 17
+        is_tax_unit_head: true
+        employment_income: 8_000
+        treasury_tipped_occupation_code: 102
+        tip_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [teen]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [teen]
+        state_code: GA
+  output:
+    ga_cash_tip_exclusion: 1_750
