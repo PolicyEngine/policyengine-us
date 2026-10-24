@@ -605,8 +605,10 @@
     co_sales_tax_refund: [0, 0, 0, 0, 0, 0, 0]
 
 # Positive controls for 2025 to 2027, with zero, one and two eligible
-# filers. 2027: the gate is on again and the tax year 2025 amounts stand in
-# until CDOR publishes the tax year 2027 table (an intended placeholder).
+# filers. 2027: the gate is on again, at the tier amounts that the LCS
+# September 2026 forecast projects for tax year 2027 (Table 9, p. 35):
+#   up to $57,000 -> $43; $57,001-$117,000 -> $58; $117,001-$187,000 -> $67;
+#   $187,001-$265,000 -> $79; $265,001-$349,000 -> $85; $349,001+ -> $137.
 - name: 2025 to 2027 - refunds for zero, one and two eligible filers
   period: 2027
   input:
@@ -655,9 +657,126 @@
   output:
     co_sales_tax_refund_person_eligible:
       2027: [true, true, true, false, false]
-    # Joint, both eligible, second tier: 2 x $25. Single, first tier: $19.
-    # Under-18 filers with no wages or tax are not qualified individuals.
+    # 2025: joint, both eligible, second tier: 2 x $25; single, first tier:
+    # $19. 2027: the $60,000 joint unit is in the second tier: 2 x $58; the
+    # $4,625 single filer is in the first tier: $43. Under-18 filers with no
+    # wages or tax are not qualified individuals.
     co_sales_tax_refund:
       2025: [50, 19, 0, 0]
       2026: [0, 0, 0, 0]
-      2027: [50, 19, 0, 0]
+      2027: [116, 43, 0, 0]
+
+# Tax year 2028 at the tier amounts that the LCS September 2026 forecast
+# projects (Table 9, p. 35):
+#   up to $59,000 -> $47; $59,001-$120,000 -> $62; $120,001-$192,000 -> $71;
+#   $192,001-$272,000 -> $85; $272,001-$358,000 -> $91; $358,001+ -> $147.
+# Eligible single filers sit on both sides of the first and top boundaries
+# and at the bottom of each middle tier. Joint filers with both spouses
+# eligible sit on both sides of the first boundary and get twice the
+# per-person amount: 2 x $47 = $94 and 2 x $62 = $124.
+- name: 2028 - projected tiers around the boundaries for single and joint filers
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+      person2:
+        age: 30
+        is_tax_unit_head: true
+      person3:
+        age: 30
+        is_tax_unit_head: true
+      person4:
+        age: 30
+        is_tax_unit_head: true
+      person5:
+        age: 30
+        is_tax_unit_head: true
+      person6:
+        age: 30
+        is_tax_unit_head: true
+      person7:
+        age: 30
+        is_tax_unit_head: true
+      head8:
+        age: 40
+        is_tax_unit_head: true
+      spouse8:
+        age: 40
+        is_tax_unit_spouse: true
+      head9:
+        age: 40
+        is_tax_unit_head: true
+      spouse9:
+        age: 40
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        co_modified_agi: 59_000
+        co_income_tax_before_non_refundable_credits: 0
+      tax_unit2:
+        members: [person2]
+        co_modified_agi: 59_001
+        co_income_tax_before_non_refundable_credits: 0
+      tax_unit3:
+        members: [person3]
+        co_modified_agi: 120_001
+        co_income_tax_before_non_refundable_credits: 0
+      tax_unit4:
+        members: [person4]
+        co_modified_agi: 192_001
+        co_income_tax_before_non_refundable_credits: 0
+      tax_unit5:
+        members: [person5]
+        co_modified_agi: 272_001
+        co_income_tax_before_non_refundable_credits: 0
+      tax_unit6:
+        members: [person6]
+        co_modified_agi: 358_000
+        co_income_tax_before_non_refundable_credits: 0
+      tax_unit7:
+        members: [person7]
+        co_modified_agi: 358_001
+        co_income_tax_before_non_refundable_credits: 0
+      tax_unit8:
+        members: [head8, spouse8]
+        co_modified_agi: 59_000
+        co_income_tax_before_non_refundable_credits: 0
+        filing_status: JOINT
+      tax_unit9:
+        members: [head9, spouse9]
+        co_modified_agi: 59_001
+        co_income_tax_before_non_refundable_credits: 0
+        filing_status: JOINT
+    households:
+      household1:
+        members: [person1]
+        state_code: CO
+      household2:
+        members: [person2]
+        state_code: CO
+      household3:
+        members: [person3]
+        state_code: CO
+      household4:
+        members: [person4]
+        state_code: CO
+      household5:
+        members: [person5]
+        state_code: CO
+      household6:
+        members: [person6]
+        state_code: CO
+      household7:
+        members: [person7]
+        state_code: CO
+      household8:
+        members: [head8, spouse8]
+        state_code: CO
+      household9:
+        members: [head9, spouse9]
+        state_code: CO
+  output:
+    co_sales_tax_refund: [47, 62, 71, 85, 91, 91, 147, 94, 124]

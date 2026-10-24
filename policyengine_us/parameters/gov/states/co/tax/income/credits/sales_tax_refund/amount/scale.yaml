@@ -21,6 +21,11 @@ metadata:
       href: https://tax.colorado.gov/income-tax-topics-state-sales-tax-refund
     - title: 2025 Colorado Individual Tax Filing Guide 104 Book
       href: https://tax.colorado.gov/sites/tax/files/documents/Book104_2025.pdf#page=23
+    - title: Colorado Legislative Council Staff, Economic and Revenue Forecast, September 2026, Table 9 (projected tax year 2027 and 2028 refunds)
+      href: https://content.leg.colorado.gov/sites/default/files/2026-09/sept2026-forecast-with-cover-for-remediation-and-posting-accessible.pdf#page=35
+# The 2027 and 2028 values are the projected tiers in the LCS September 2026
+# forecast (Table 9). They stand in until CDOR certifies the actual amounts,
+# which depend on each fiscal year's TABOR surplus.
 brackets:
   - threshold:
       2021-01-01: -.inf
@@ -30,57 +35,79 @@ brackets:
       2023-01-01: 0
       2024-01-01: 177
       2025-01-01: 19
+      2027-01-01: 43
+      2028-01-01: 47
   - threshold:
       2021-01-01: 44_001
       2022-01-01: 48_001
       2024-01-01: 53_001
       2025-01-01: 52_001
+      2027-01-01: 57_001
+      2028-01-01: 59_001
     amount:
       2021-01-01: 49
       2022-01-01: 208
       2023-01-01: 0
       2024-01-01: 240
       2025-01-01: 25
+      2027-01-01: 58
+      2028-01-01: 62
   - threshold:
       2021-01-01: 88_001
       2022-01-01: 95_001
       2024-01-01: 105_001
+      2027-01-01: 117_001
+      2028-01-01: 120_001
     amount:
       2021-01-01: 56
       2022-01-01: 234
       2023-01-01: 0
       2024-01-01: 277
       2025-01-01: 29
+      2027-01-01: 67
+      2028-01-01: 71
   - threshold:
       2021-01-01: 139_001
       2022-01-01: 151_001
       2024-01-01: 166_001
       2025-01-01: 168_001
+      2027-01-01: 187_001
+      2028-01-01: 192_001
     amount:
       2021-01-01: 68
       2022-01-01: 285
       2023-01-01: 0
       2024-01-01: 323
       2025-01-01: 35
+      2027-01-01: 79
+      2028-01-01: 85
   - threshold:
       2021-01-01: 193_001
       2022-01-01: 209_001
       2024-01-01: 233_001
+      2027-01-01: 265_001
+      2028-01-01: 272_001
     amount:
       2021-01-01: 74
       2022-01-01: 300
       2023-01-01: 0
       2024-01-01: 350
       2025-01-01: 37
+      2027-01-01: 85
+      2028-01-01: 91
   - threshold:
       2021-01-01: 246_001
       2022-01-01: 268_001
       2024-01-01: 302_001
       2025-01-01: 299_001
+      2027-01-01: 349_001
+      2028-01-01: 358_001
     amount:
       2021-01-01: 117
       2022-01-01: 486
       2023-01-01: 0
       2024-01-01: 565
       2025-01-01: 59
+      2027-01-01: 137
+      2028-01-01: 147
 
