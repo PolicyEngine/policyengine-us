@@ -15,6 +15,21 @@ def create_ks_dependent_exemption() -> Reform:
 
             person = tax_unit.members
             age = person("age", period)
+            # A return on which the filer (or, if joint, either spouse) can be
+            # claimed as a dependent has no dependents (IRC 152(b)(1)), unless
+            # the would-be claimant meets the filing exception (Publication 501).
+            no_dependents = tax_unit(
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+            )
+            state_exemptions = parameters(period).gov.states.ks.tax.income.exemptions
+            if not state_exemptions.by_filing_status.in_effect:
+                # The consolidated regime's Total Kansas exemptions are zero
+                # when a filer is actually claimed, even with the federal
+                # filing exception. Match ks_count_exemptions so subtracting
+                # this count cannot leave negative personal exemptions.
+                filer = person("is_tax_unit_head_or_spouse", period)
+                claimed = person("claimed_as_dependent_on_another_return", period)
+                no_dependents = no_dependents | tax_unit.any(filer & claimed)
             is_dependent = person("is_tax_unit_dependent", period)
 
             # Apply age limit if in effect.
@@ -24,7 +39,7 @@ def create_ks_dependent_exemption() -> Reform:
             else:
                 eligible_dependents = is_dependent
 
-            return tax_unit.sum(eligible_dependents)
+            return where(no_dependents, 0, tax_unit.sum(eligible_dependents))
 
     class ks_dependent_exemption(Variable):
         value_type = float

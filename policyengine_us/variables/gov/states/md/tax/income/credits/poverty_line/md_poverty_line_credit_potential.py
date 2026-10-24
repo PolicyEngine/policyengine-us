@@ -43,7 +43,9 @@ class md_poverty_line_credit_potential(Variable):
         # § 32(c)(2) reference, which § 10-107 reads with federal
         # interpretations.
         p = parameters(period).gov.states.md.tax.income.credits.poverty_line
-        earnings = tax_unit("eitc_earned_income", period)
+        # A filer who can be claimed takes no credit (see
+        # md_poverty_line_credit_earned_income).
+        earnings = tax_unit("md_poverty_line_credit_earned_income", period)
         earnings_portion = earnings * p.earned_income_share
         amount_if_eligible = min_(tax_after_non_refundable_eitc, earnings_portion)
         return amount_if_eligible * eligible
