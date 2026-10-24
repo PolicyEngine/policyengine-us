@@ -1,0 +1,32 @@
+- name: Case 1, default mt_other_additions is zero
+  period: 2022
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_other_additions: 0
+    mt_additions: 0
+
+- name: Case 2, mt_other_additions increases mt_additions
+  period: 2022
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+        mt_other_additions: 2_000
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_other_additions: 2_000
+    mt_additions: 2_000

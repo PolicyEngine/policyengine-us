@@ -1,0 +1,14 @@
+- name: Case 1, default or_other_additions is zero
+  period: 2024
+  input:
+    state_code: OR
+  output:
+    or_other_additions: 0.0
+
+- name: Case 2, or_other_additions flows into or_additions
+  period: 2024
+  input:
+    state_code: OR
+    or_other_additions: 1_200
+  output:
+    or_additions: 1_200

@@ -1,5 +1,6 @@
 description: Employer-side Colorado FAMLI contribution rate.
 values:
+  0000-01-01: 0
   2023-01-01: 0.0045
   2026-01-01: 0.0044
   2027-01-01: 0.0043
@@ -9,7 +10,7 @@ metadata:
   unit: /1
   label: Colorado employer FAMLI rate
   reference:
-    - title: Colorado Revised Statutes Section 8-13.3-507
+    - title: "Colorado Revised Statutes Section 8-13.3-507 #page 199-200"
       href: https://leg.colorado.gov/sites/default/files/images/olls/crs2023-title-08.pdf#page=199
     - title: Colorado Revised Statutes 2026, Section 8-13.3-507 (3)(c) (the FAMLI director sets the premium rate by rule from 2027)
       href: https://olls.info/crs/crs2026-title-08.pdf#page=391
@@ -19,3 +20,5 @@ metadata:
       href: https://cdle.colorado.gov/press-releases/press-release-colorados-family-and-medical-leave-insurance-famli-announces-lower
     - title: Colorado Senate Bill 25-144
       href: https://leg.colorado.gov/sites/default/files/documents/2025A/bills/2025a_144_eng.pdf#page=2
+    - title: Colorado Department of Labor and Employment FAMLI employer bulletin (September 24, 2024), section 2025 Premium Rate Stays the Same
+      href: https://content.govdelivery.com/accounts/CODLE/bulletins/3b7ca14
