@@ -1,10 +1,19 @@
+# Tiers follow 42 U.S.C. 18071(c)(2) and 45 CFR 155.305(g)(2): household income
+# "not more than" (the regulation: "less than or equal to") 150, 200 and 250
+# percent of the FPL, on the exact ratio of ACA MAGI to the prior-year guideline,
+# not the truncated aca_magi_fraction. Supplied-income cases pin the prior-year
+# guideline to $10,000; income-derived cases use the 2025 one-person guideline,
+# $15,650.
+
 - name: Case 1, silver enrollee at 125 percent FPL receives 94 percent AV CSR.
   absolute_error_margin: 0.001
   period: 2026
   input:
     pays_aca_premium: true
     is_aca_ptc_eligible: true
-    aca_magi_fraction: 1.25
+    aca_magi: 12_500
+    tax_unit_fpg:
+      2025: 10_000
     selected_marketplace_plan_category: SILVER
   output:
     person_receives_aca: true
@@ -20,7 +29,9 @@
   input:
     pays_aca_premium: true
     is_aca_ptc_eligible: true
-    aca_magi_fraction: 1.75
+    aca_magi: 17_500
+    tax_unit_fpg:
+      2025: 10_000
     selected_marketplace_plan_category: SILVER
   output:
     marketplace_csr_eligible: true
@@ -34,7 +45,9 @@
   input:
     pays_aca_premium: true
     is_aca_ptc_eligible: true
-    aca_magi_fraction: 2.25
+    aca_magi: 22_500
+    tax_unit_fpg:
+      2025: 10_000
     selected_marketplace_plan_category: SILVER
   output:
     marketplace_csr_eligible: true
@@ -48,7 +61,9 @@
   input:
     pays_aca_premium: true
     is_aca_ptc_eligible: true
-    aca_magi_fraction: 2.75
+    aca_magi: 27_500
+    tax_unit_fpg:
+      2025: 10_000
     selected_marketplace_plan_category: SILVER
   output:
     marketplace_csr_eligible: false
@@ -72,7 +87,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 0.75
+        aca_magi: 7_500
+        tax_unit_fpg:
+          2024: 10_000
         filing_status: SINGLE
         selected_marketplace_plan_category: SILVER
     households:
@@ -106,7 +123,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 0.75
+        aca_magi: 7_500
+        tax_unit_fpg:
+          2025: 10_000
         filing_status: SINGLE
         selected_marketplace_plan_category: SILVER
     households:
@@ -126,3 +145,115 @@
     selected_marketplace_plan_actuarial_value: 0
     marketplace_csr_actuarial_value: 0
     marketplace_effective_actuarial_value: 0
+
+- name: Case 7, silver enrollee at 150% of the 2025 guideline ($23,475) gets AV 94.
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    pays_aca_premium: true
+    is_aca_ptc_eligible: true
+    aca_magi: 23_475
+    state_code: TX
+    selected_marketplace_plan_category: SILVER
+  output:
+    aca_magi_fraction: 1.50
+    marketplace_csr_eligible: true
+    marketplace_csr_category: AV_94
+
+- name: Case 8, silver enrollee at 150.003% of the 2025 guideline ($23,475.47) gets AV 87.
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    pays_aca_premium: true
+    is_aca_ptc_eligible: true
+    aca_magi: 23_475.47
+    state_code: TX
+    selected_marketplace_plan_category: SILVER
+  output:
+    aca_magi_fraction: 1.50
+    marketplace_csr_eligible: true
+    marketplace_csr_category: AV_87
+
+- name: Case 9, silver enrollee at 150.994% of the 2025 guideline ($23,630.56) gets AV 87.
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    pays_aca_premium: true
+    is_aca_ptc_eligible: true
+    aca_magi: 23_630.56
+    state_code: TX
+    selected_marketplace_plan_category: SILVER
+  output:
+    aca_magi_fraction: 1.50
+    marketplace_csr_eligible: true
+    marketplace_csr_category: AV_87
+
+- name: Case 10, silver enrollee at 200% of the 2025 guideline ($31,300) gets AV 87.
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    pays_aca_premium: true
+    is_aca_ptc_eligible: true
+    aca_magi: 31_300
+    state_code: TX
+    selected_marketplace_plan_category: SILVER
+  output:
+    aca_magi_fraction: 2.00
+    marketplace_csr_eligible: true
+    marketplace_csr_category: AV_87
+
+- name: Case 11, silver enrollee at 200.003% of the 2025 guideline ($31,300.47) gets AV 73.
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    pays_aca_premium: true
+    is_aca_ptc_eligible: true
+    aca_magi: 31_300.47
+    state_code: TX
+    selected_marketplace_plan_category: SILVER
+  output:
+    aca_magi_fraction: 2.00
+    marketplace_csr_eligible: true
+    marketplace_csr_category: AV_73
+
+- name: Case 12, silver enrollee at 250% of the 2025 guideline ($39,125) gets AV 73.
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    pays_aca_premium: true
+    is_aca_ptc_eligible: true
+    aca_magi: 39_125
+    state_code: TX
+    selected_marketplace_plan_category: SILVER
+  output:
+    aca_magi_fraction: 2.50
+    marketplace_csr_eligible: true
+    marketplace_csr_category: AV_73
+
+- name: Case 13, silver enrollee at 250.003% of the 2025 guideline ($39,125.47) gets no CSR.
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    pays_aca_premium: true
+    is_aca_ptc_eligible: true
+    aca_magi: 39_125.47
+    state_code: TX
+    selected_marketplace_plan_category: SILVER
+  output:
+    aca_magi_fraction: 2.50
+    marketplace_csr_eligible: false
+    marketplace_csr_category: NONE
+
+- name: Case 14, silver enrollee at 250.994% of the 2025 guideline ($39,280.56) gets no CSR.
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    pays_aca_premium: true
+    is_aca_ptc_eligible: true
+    aca_magi: 39_280.56
+    state_code: TX
+    selected_marketplace_plan_category: SILVER
+  output:
+    aca_magi_fraction: 2.50
+    marketplace_csr_eligible: false
+    marketplace_csr_category: NONE
