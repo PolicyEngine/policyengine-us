@@ -55,7 +55,7 @@
         state_code: UT
   output:
     ut_at_home_parent_credit: 0
-- name: 2 eligible parents with 1 child
+- name: 1 eligible parent with 2 children
   period: 2022
   input:
     people:
@@ -123,4 +123,35 @@
         - person4
         state_code: UT
   output:
-    ut_at_home_parent_credit: 400
+    # Utah Code 59-10-1005(2): $100 for each qualifying child when the claimant
+    # or a joint-filing spouse is an at-home parent, once per return.
+    ut_at_home_parent_credit: 200
+
+- name: 2025 two at-home parents with one newborn get one credit for the child
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 2_000
+      spouse:
+        age: 30
+        employment_income: 1_000
+        is_tax_unit_spouse: true
+      newborn:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse, newborn]
+        filing_status: JOINT
+        ut_income_tax_before_non_refundable_credits: 1000000
+    households:
+      household:
+        members: [head, spouse, newborn]
+        state_code: UT
+  output:
+    # Utah Code 59-10-1005(2): $100 for each qualifying child if the claimant
+    # or a joint-filing spouse is an at-home parent; both spouses earning
+    # $3,000 or less does not double it.
+    ut_at_home_parent_credit_potential: 100
+    ut_at_home_parent_credit: 100
