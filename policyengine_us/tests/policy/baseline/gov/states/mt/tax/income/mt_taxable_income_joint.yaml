@@ -155,6 +155,8 @@
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT
+        # From 2024 Montana uses the federal return's deduction type.
+        tax_unit_itemizes: true
     households:
       household:
         members: [person1, person2]
@@ -164,7 +166,7 @@
     mt_old_age_subtraction: [5_500, 5_500]
     # Federal AGI: 30,000 + 25,000 = 55,000
     # Total AGI after subtractions: 55,000 - 11,000 = 44,000
-    # Deductions: max(5,500, 7,000) = 7,000
+    # Deductions: itemized, as on the federal return: 7,000
     # Exemptions: 1,400 + 1,400 = 2,800
     # Taxable income: 44,000 - 7,000 - 2,800 = 34,200 (allocated to head)
     mt_taxable_income_joint: [34_200, 0]
@@ -276,3 +278,112 @@
     # Exemptions: 1,000 + 1,000 = 2,000
     # Taxable income: 39,500 - 6,000 - 2,000 = 31,500
     mt_taxable_income_joint: [31_500, 0]
+
+# 2024 Form 2 instructions, line 2: "You must use the same type of deduction
+# taken on your federal return to determine Montana taxable income." Montana
+# taxable income starts from federal taxable income (MCA 15-30-2120(1)).
+- name: From 2024 a federal standard deduction filer takes the standard deduction even if itemizing would give more.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        adjusted_gross_income_person: 80_000
+        mt_standard_deduction_joint: 29_200
+        mt_itemized_deductions_joint: 35_000
+      person2:
+        age: 44
+        mt_standard_deduction_joint: 0
+        mt_itemized_deductions_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # 80,000 - 29,200 = 50,800.
+    mt_taxable_income_joint: [50_800, 0]
+
+- name: From 2024 a federal itemizer takes the itemized deductions even below the standard deduction.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        adjusted_gross_income_person: 80_000
+        mt_standard_deduction_joint: 29_200
+        mt_itemized_deductions_joint: 25_000
+      person2:
+        age: 44
+        mt_standard_deduction_joint: 0
+        mt_itemized_deductions_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_itemizes: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # 80,000 - 25,000 = 55,000.
+    mt_taxable_income_joint: [55_000, 0]
+
+- name: Through 2023 Montana filers take the larger deduction whatever the federal return did.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 45
+        adjusted_gross_income_person: 80_000
+        mt_standard_deduction_joint: 10_000
+        mt_itemized_deductions_joint: 25_000
+        mt_personal_exemptions_joint: 0
+      person2:
+        age: 44
+        mt_standard_deduction_joint: 0
+        mt_itemized_deductions_joint: 0
+        mt_personal_exemptions_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # 80,000 - max(10,000, 25,000) = 55,000.
+    mt_taxable_income_joint: [55_000, 0]
+
+# 26 U.S.C. 63(b)(4): a filer who does not itemize also deducts the section
+# 170(p) charitable contributions, up to $2,000 on a joint return from 2026.
+- name: From 2026 a Montana standard deduction filer also takes the federal charitable deduction for non-itemizers.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+        charitable_cash_donations: 3_000
+      person2:
+        age: 44
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    tax_unit_itemizes: false
+    standard_deduction: 32_200
+    # min(2,000, 3,000 of cash gifts) = 2,000.
+    charitable_deduction_for_non_itemizers: 2_000
+    # 80,000 - 32,200 - 2,000 = 45,800.
+    mt_taxable_income_joint: [45_800, 0]
