@@ -10,6 +10,10 @@ import json
 import numpy as np
 import pandas as pd
 import pytest
+from policyengine_core.holders.helpers import (
+    set_input_dispatch_by_period,
+    set_input_divide_by_period,
+)
 from policyengine_core.periods import period
 from policyengine_core.simulations import (
     Simulation as CoreSimulation,
@@ -79,10 +83,24 @@ WRAPPER_WRITE_ROUTES = (
     *((wrapper, "simulation") for wrapper in WRAPPERS),
     (Simulation, "holder"),
 )
-CORE_WRITE_ROUTES = (*WRAPPER_WRITE_ROUTES, (make_core_simulation, "simulation"))
+CORE_WRITE_ROUTES = (
+    *WRAPPER_WRITE_ROUTES,
+    (make_core_simulation, "simulation"),
+    (make_core_simulation, "dispatch"),
+    (make_core_simulation, "divide"),
+)
 
 
 def write_public_input(simulation, name, input_period, values, route):
+    if route in ("dispatch", "divide"):
+        helper = (
+            set_input_dispatch_by_period
+            if route == "dispatch"
+            else set_input_divide_by_period
+        )
+        return helper(
+            simulation.get_holder(name), period(input_period), np.asarray(values)
+        )
     if route == "holder":
         return simulation.get_holder(name).set_input(
             period=period(input_period),
@@ -236,8 +254,11 @@ def test_later_public_writes_refresh_automatic_sources_and_keep_explicit_twins(
     assert amount(simulation, public, 2026) == pytest.approx(
         expected_source * 13_522.16 / 12_000, abs=0.01
     )
-    write_public_input(simulation, public, 2024, [24_000], write_route)
-    expected_source = 24_000 if reported_input is None else reported_input
+    # Core's period-splitting helpers preserve an already supplied annual
+    # input, and divide rejects a conflicting repeated total.
+    replacement = 12_000 if write_route in ("dispatch", "divide") else 24_000
+    write_public_input(simulation, public, 2024, [replacement], write_route)
+    expected_source = replacement if reported_input is None else reported_input
     assert amount(simulation, reported, 2024) == expected_source
     drop_inherited_values(simulation)
     assert amount(simulation, public, 2026) == pytest.approx(
@@ -342,6 +363,33 @@ def test_clone_and_branch_later_public_writes_keep_input_lists_private(
         assert simulation._user_input_keys == original_keys
         assert amount(simulation, public, 2025) == parent_later_source
         assert input_periods(simulation, reported) == {"2024"}
+
+
+def test_holder_write_before_branch_creation_stays_in_its_named_branch():
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported = f"{public}_reported"
+    simulation = make_simulation()
+    simulation.get_holder(public).set_input(
+        period=period(2024), array=np.array([12_000]), branch_name="later"
+    )
+    branch = simulation.get_branch("later")
+    assert amount(branch, public, 2024) == 12_000
+    assert amount(branch, reported, 2024) == 12_000
+    assert amount(branch, public, 2026) == pytest.approx(13_522.16, abs=0.01)
+    for year in (2024, 2026):
+        assert amount(simulation, public, year) == 0
+        assert amount(simulation, reported, year) == 0
+
+    reloaded = Simulation(situation=branch.extract_person(0), tax_benefit_system=system)
+    assert amount(reloaded, public, 2024) == 12_000
+    assert amount(reloaded, public, 2026) == pytest.approx(13_522.16, abs=0.01)
+    clone = branch.clone(clone_tax_benefit_system=False)
+    write_public_input(clone, public, 2024, [24_000], "holder")
+    drop_inherited_values(clone)
+    assert amount(clone, public, 2026) == pytest.approx(27_044.32, abs=0.01)
+    assert amount(branch, public, 2026) == pytest.approx(13_522.16, abs=0.01)
+    assert amount(reloaded, public, 2026) == pytest.approx(13_522.16, abs=0.01)
+    assert amount(simulation, public, 2026) == 0
 
 
 @pytest.mark.parametrize("wrapper", WRAPPERS)

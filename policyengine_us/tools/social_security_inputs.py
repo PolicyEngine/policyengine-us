@@ -9,6 +9,7 @@ import json
 from contextvars import ContextVar
 from functools import wraps
 
+from policyengine_core.holders.helpers import get_stored_input
 from policyengine_core.periods import period as to_period
 from policyengine_core.simulations.simulation import NpEncoder
 
@@ -54,8 +55,10 @@ def _recorded_input_location(simulation, name, period, *, branch_names=None):
     return None
 
 
-def _is_automatic_reported_input(simulation, name, period):
-    location = _recorded_input_location(simulation, name, period)
+def _is_automatic_reported_input(simulation, name, period, *, branch_names=None):
+    location = _recorded_input_location(
+        simulation, name, period, branch_names=branch_names
+    )
     return (
         location is not None
         and getattr(simulation, _AUTOMATIC_INPUTS, {}).get(location[0]) == location[1]
@@ -120,73 +123,131 @@ def install_social_security_input_compatibility():
     from policyengine_core.simulations.simulation_builder import SimulationBuilder
     from policyengine_core.holders import Holder
 
+    def tracks_public_input(holder):
+        simulation = getattr(holder, "simulation", None)
+        return (
+            holder.variable.name in SOCIAL_SECURITY_COMPONENTS
+            and getattr(
+                getattr(simulation, "tax_benefit_system", None),
+                "_social_security_input_compatibility",
+                False,
+            )
+            and hasattr(simulation, "input_variables")
+            and not _initial_social_security_ingress.get()
+        )
+
+    def input_locations(holder, branch_name):
+        return {
+            period: location
+            for stored_branch, period in holder.get_known_branch_periods()
+            if stored_branch == branch_name
+            and (
+                location := _recorded_input_location(
+                    holder.simulation,
+                    holder.variable.name,
+                    period,
+                    branch_names=(branch_name,),
+                )
+            )
+            is not None
+        }
+
+    def synchronize_public_input(holder, period, branch_name):
+        simulation = holder.simulation
+        variable_name = holder.variable.name
+        period = holder._storage_period(period)
+        if (
+            _recorded_input_location(
+                simulation, variable_name, period, branch_names=(branch_name,)
+            )
+            is None
+        ):
+            return
+        reported_name = f"{variable_name}_reported"
+        reported_holder = simulation.get_holder(reported_name)
+        readable_branches = reported_holder._readable_branches(branch_name)
+        reported_location = _recorded_input_location(
+            simulation, reported_name, period, branch_names=readable_branches
+        )
+        if reported_location is None or _is_automatic_reported_input(
+            simulation, reported_name, period, branch_names=readable_branches
+        ):
+            supplied_value = get_stored_input(holder, period, branch_name)
+            if supplied_value is not None:
+                reported_holder.set_input(period, supplied_value.copy(), branch_name)
+                _mark_automatic_reported_input(
+                    simulation, reported_name, period, branch_name=branch_name
+                )
+        # Core clones share this legacy list. Replace it privately so a
+        # later override is extracted without changing the source clone.
+        simulation.input_variables = list(
+            dict.fromkeys([*simulation.input_variables, variable_name, reported_name])
+        )
+
     original_set_input = Holder.set_input
     if not getattr(original_set_input, "_social_security_compatibility", False):
 
         @wraps(original_set_input)
         def set_input(holder, period, array, branch_name="default"):
-            simulation = holder.simulation
-            variable_name = holder.variable.name
-            track_public_write = (
-                variable_name in SOCIAL_SECURITY_COMPONENTS
-                and getattr(
-                    simulation.tax_benefit_system,
-                    "_social_security_input_compatibility",
-                    False,
-                )
-                and hasattr(simulation, "input_variables")
-                and not _initial_social_security_ingress.get()
-            )
-            if not track_public_write:
+            if not tracks_public_input(holder):
                 return original_set_input(holder, period, array, branch_name)
 
-            before = {
-                supplied_period: _recorded_input_location(
-                    simulation, variable_name, supplied_period
-                )
-                for supplied_period in simulation._get_set_input_periods(variable_name)
-            }
+            before = input_locations(holder, branch_name)
             result = original_set_input(holder, period, array, branch_name)
-            reported_name = f"{variable_name}_reported"
-            reported_periods = set(simulation._get_set_input_periods(reported_name))
             # Period helpers can store a different period from the one passed
             # in: a monthly input to a yearly variable stores a rolling year.
-            # Inspect actual stores rather than guessing those period aliases.
-            for supplied_period in simulation._get_set_input_periods(variable_name):
-                if _recorded_input_location(
-                    simulation, variable_name, supplied_period
-                ) == before.get(supplied_period) or (
-                    supplied_period in reported_periods
-                    and not _is_automatic_reported_input(
-                        simulation, reported_name, supplied_period
-                    )
-                ):
-                    continue
-                supplied_value = simulation._get_recorded_input_array(
-                    variable_name, supplied_period
-                )
-                if supplied_value is not None:
-                    original_set_input(
-                        simulation.get_holder(reported_name),
-                        supplied_period,
-                        supplied_value.copy(),
-                        branch_name,
-                    )
-                    _mark_automatic_reported_input(
-                        simulation, reported_name, supplied_period
-                    )
-
-            # Core clones share this legacy list. Replace it privately so a
-            # later override is extracted without changing the source clone.
-            simulation.input_variables = list(
-                dict.fromkeys(
-                    [*simulation.input_variables, variable_name, reported_name]
-                )
-            )
+            # Inspect actual inputs under the written branch, including a
+            # branch slot this simulation will read only after cloning.
+            for supplied_period, location in input_locations(
+                holder, branch_name
+            ).items():
+                if location != before.get(supplied_period):
+                    synchronize_public_input(holder, supplied_period, branch_name)
             return result
 
         set_input._social_security_compatibility = True
         Holder.set_input = set_input
+
+    original_store = Holder._set
+    if not getattr(original_store, "_social_security_compatibility", False):
+
+        @wraps(original_store)
+        def store_input(
+            holder,
+            period,
+            value,
+            branch_name="default",
+            validate_nan=False,
+            derived=False,
+            is_input=None,
+            sequence_number=None,
+        ):
+            # Core's direct period helpers and documented custom input stores
+            # can call _set(is_input=True) without entering Holder.set_input.
+            # Normal setter calls synchronize once, after their handler ends.
+            track_direct_input = (
+                is_input
+                and not getattr(
+                    getattr(holder, "simulation", None), "_user_input_contexts", None
+                )
+                and tracks_public_input(holder)
+            )
+            result = original_store(
+                holder,
+                period,
+                value,
+                branch_name,
+                validate_nan=validate_nan,
+                derived=derived,
+                is_input=is_input,
+                sequence_number=sequence_number,
+            )
+            if track_direct_input:
+                synchronize_public_input(holder, period, branch_name)
+            return result
+
+        store_input._social_security_compatibility = True
+        Holder._set = store_input
 
     original_dataset_build = CoreSimulation.build_from_dataset
     if not getattr(original_dataset_build, "_social_security_compatibility", False):
