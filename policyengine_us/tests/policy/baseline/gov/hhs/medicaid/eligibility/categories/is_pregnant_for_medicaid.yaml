@@ -25,6 +25,8 @@
   output:
     is_pregnant_for_medicaid: false
 
+# California elected 12 months from 2022-04-01 (SPA CA-22-0030). The annual
+# variable reads January 1, so annual 2022 still applies the 60-day rule.
 - name: Under FPL limit, 59 days postpartum, eligible in CA.
   period: 2022
   input:
@@ -155,6 +157,17 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    families:
+      family:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
     households:
       household:
         members: [person1, person2]
@@ -162,6 +175,8 @@
   output:
     is_pregnant_for_medicaid_nfc: [false, false]
     is_pregnant_for_medicaid: [false, false]
+    medicaid_category: [NONE, INFANT]
+    is_medicaid_eligible: [false, true]
 
 - name: TX mother between 60 days and 12 months postpartum is covered as pregnant in 2025 under SPA TX-23-0028
   period: 2025
@@ -176,6 +191,17 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    families:
+      family:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
     households:
       household:
         members: [person1, person2]
@@ -183,9 +209,14 @@
   output:
     is_pregnant_for_medicaid_nfc: [true, false]
     is_pregnant_for_medicaid: [true, false]
+    medicaid_category: [PREGNANT, INFANT]
+    is_medicaid_eligible: [true, true]
 
-# Coverage runs while count_days_postpartum is below 365 in an electing state.
-- name: CA postpartum coverage holds at 364 days and stops at 365 days under SPA CA-22-0030
+# This pins the model's postpartum day limit (count_days_postpartum <
+# postpartum_coverage). SPA CA-22-0030 and 42 USC 1396a(e)(16)(A) run coverage
+# through the last day of the month in which the 12-month postpartum period
+# ends, so day 365 is usually still covered in law.
+- name: CA postpartum coverage holds at 364 days and stops at the model's 365-day postpartum limit
   period: 2023
   input:
     people:
@@ -223,6 +254,7 @@
         members: [person2]
         state_code: CA
   output:
+    is_pregnant_for_medicaid_nfc: [true, false]
     is_pregnant_for_medicaid: [true, false]
 
 - name: AR, which has not elected 12-month postpartum coverage, keeps the 60-day period
@@ -232,6 +264,7 @@
     count_days_postpartum: 90
     medicaid_income_level: 1
   output:
+    is_pregnant_for_medicaid_nfc: false
     is_pregnant_for_medicaid: false
 
 # SPA WI-26-0014 takes effect 2026-06-01, so annual 2026 still applies the
@@ -243,6 +276,7 @@
     count_days_postpartum: 90
     medicaid_income_level: 1
   output:
+    is_pregnant_for_medicaid_nfc: false
     is_pregnant_for_medicaid: false
 
 - name: WI postpartum coverage extends to 12 months in 2027 under SPA WI-26-0014
@@ -252,6 +286,7 @@
     count_days_postpartum: 90
     medicaid_income_level: 1
   output:
+    is_pregnant_for_medicaid_nfc: true
     is_pregnant_for_medicaid: true
 
 # SPAs IA-25-0018 and IA-25-0019 moved Iowa's postpartum extension from
@@ -321,6 +356,7 @@
         members: [person2]
         state_code: NJ
   output:
+    is_pregnant_for_medicaid_nfc: [false, false]
     is_pregnant_for_medicaid: [false, false]
 
 - name: IL and NJ section 1115 postpartum extensions apply in 2022
@@ -361,4 +397,153 @@
         members: [person2]
         state_code: NJ
   output:
+    is_pregnant_for_medicaid_nfc: [true, true]
     is_pregnant_for_medicaid: [true, true]
+
+# Louisiana (SPA LA-22-0009) and Michigan (SPA MI-22-0100) elect the option
+# from 2022-04-01, and Virginia's section 1115 coverage began 2022-07-01. All
+# three start after January 1, 2022, so annual 2022 applies the 60-day rule
+# and annual 2023 applies 12 months.
+- name: LA, MI and VA postpartum extensions do not apply in annual 2022
+  period: 2022
+  input:
+    people:
+      person1:
+        count_days_postpartum: 90
+        medicaid_income_level: 1
+      person2:
+        count_days_postpartum: 90
+        medicaid_income_level: 1
+      person3:
+        count_days_postpartum: 90
+        medicaid_income_level: 1
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+      spm_unit3:
+        members: [person3]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+      family3:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household1:
+        members: [person1]
+        state_code: LA
+      household2:
+        members: [person2]
+        state_code: MI
+      household3:
+        members: [person3]
+        state_code: VA
+  output:
+    is_pregnant_for_medicaid_nfc: [false, false, false]
+    is_pregnant_for_medicaid: [false, false, false]
+
+- name: LA, MI and VA postpartum extensions apply in 2023
+  period: 2023
+  input:
+    people:
+      person1:
+        count_days_postpartum: 90
+        medicaid_income_level: 1
+      person2:
+        count_days_postpartum: 90
+        medicaid_income_level: 1
+      person3:
+        count_days_postpartum: 90
+        medicaid_income_level: 1
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+      spm_unit3:
+        members: [person3]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+      family3:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household1:
+        members: [person1]
+        state_code: LA
+      household2:
+        members: [person2]
+        state_code: MI
+      household3:
+        members: [person3]
+        state_code: VA
+  output:
+    is_pregnant_for_medicaid_nfc: [true, true, true]
+    is_pregnant_for_medicaid: [true, true, true]
+
+# SPA ID-25-0001 takes effect on January 1, 2025, so annual 2025 applies
+# 12 months in the same year.
+- name: ID postpartum coverage stays at 60 days in 2024
+  period: 2024
+  input:
+    state_code: ID
+    count_days_postpartum: 90
+    medicaid_income_level: 1
+  output:
+    is_pregnant_for_medicaid_nfc: false
+    is_pregnant_for_medicaid: false
+
+- name: ID postpartum coverage extends to 12 months in 2025 under SPA ID-25-0001
+  period: 2025
+  input:
+    state_code: ID
+    count_days_postpartum: 90
+    medicaid_income_level: 1
+  output:
+    is_pregnant_for_medicaid_nfc: true
+    is_pregnant_for_medicaid: true
+
+# SPA UT-25-0024 moved Utah's election into the Medicaid Reform section 1115
+# demonstration on 2026-01-01, and 12-month coverage continues.
+- name: UT postpartum coverage stays at 12 months in 2026 under the section 1115 demonstration
+  period: 2026
+  input:
+    state_code: UT
+    count_days_postpartum: 90
+    medicaid_income_level: 1
+  output:
+    is_pregnant_for_medicaid_nfc: true
+    is_pregnant_for_medicaid: true

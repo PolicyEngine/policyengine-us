@@ -1,12 +1,18 @@
-description: Number of days after giving birth for which the parent is covered as pregnant under Medicaid postpartum coverage (provided they meet the means test).
+description: States provide pregnancy-related coverage for this number of days after a pregnancy ends under the Medicaid program.
+# NOTE: is_pregnant_for_medicaid_nfc is YEAR-defined and reads this parameter
+# on January 1, so a mid-year effective date applies from the next calendar
+# year. 60 and 365 are the statutory minimum day counts: 42 USC 1396a(e)(5)
+# and (e)(16) run coverage through the last day of the month in which the
+# 60-day or 12-month period ends, but count_days_postpartum has no calendar
+# date, so the model stops coverage at day 60 or day 365.
 metadata:
   unit: day
-  label: Medicaid postpartum coverage
+  label: Medicaid postpartum coverage period
   breakdown:
   - state_code
   reference:
     - title: 42 U.S. Code § 1396a(e)(5) and (16)
-      href: https://www.law.cornell.edu/uscode/text/42/1396a#e_5
+      href: https://www.law.cornell.edu/uscode/text/42/1396a#e_16
     - title: CMS approval of Alabama State Plan Amendment AL-22-0007
       href: https://www.medicaid.gov/medicaid/spa/downloads/AL-22-0007.pdf#page=1
     - title: CMS approval of Alaska State Plan Amendment AK-24-0001
@@ -25,8 +31,8 @@ metadata:
       href: https://www.medicaid.gov/medicaid/spa/downloads/DC-22-0001.pdf#page=2
     - title: "CMS approval of the Florida Managed Medical Assistance section 1115 demonstration amendment #page 1-2"
       href: https://www.medicaid.gov/medicaid/section-1115-demonstrations/downloads/fl-mma-ca1.pdf#page=1
-    - title: Florida Senate Bill 2526 (2022), enrolled, section 11
-      href: https://www.flsenate.gov/Session/Bill/2022/2526/BillText/er/PDF#page=21
+    - title: "Florida Senate Bill 2526 (2022), enrolled, sections 6 and 11 #page 11-12,21"
+      href: https://www.flsenate.gov/Session/Bill/2022/2526/BillText/er/PDF#page=11
     - title: CMS approval of Georgia State Plan Amendment GA-22-0005
       href: https://www.medicaid.gov/medicaid/spa/downloads/GA-22-005.pdf#page=2
     - title: CMS approval of Hawaii State Plan Amendment HI-22-0008
@@ -74,7 +80,15 @@ metadata:
     - title: CMS approval of New Hampshire State Plan Amendment NH-23-0005
       href: https://www.medicaid.gov/sites/default/files/2023-11/NH-23-0005.pdf#page=2
     - title: CMS approval of the New Jersey FamilyCare Comprehensive Demonstration section 1115 amendment
-      href: https://web.archive.org/web/20251031053944/https://www.nj.gov/humanservices/dmahs/home/NJ_PostPartum_1115_approval_letter_and_stc_10-27-21.pdf#page=1
+      href: https://www.medicaid.gov/Medicaid-CHIP-Program-Information/By-Topics/Waivers/1115/downloads/nj/nj-1115-request-ca.pdf#page=1
+    - title: CMS temporary extension of the New Jersey FamilyCare Comprehensive Demonstration through December 31, 2022
+      href: https://www.medicaid.gov/sites/default/files/2022-06/nj-1115-request-ca1.pdf#page=1
+    - title: CMS temporary extension of the New Jersey FamilyCare Comprehensive Demonstration through January 31, 2023
+      href: https://www.medicaid.gov/sites/default/files/2023-01/nj-1115-request-ca2.pdf#page=1
+    - title: CMS temporary extension of the New Jersey FamilyCare Comprehensive Demonstration through March 31, 2023
+      href: https://www.medicaid.gov/sites/default/files/2023-01/nj-1115-request-ca3.pdf#page=1
+    - title: CMS approval of the New Jersey FamilyCare Comprehensive Demonstration section 1115 extension, expenditure authority 6 (postpartum extension)
+      href: https://www.medicaid.gov/medicaid/section-1115-demonstrations/downloads/nj-1115-cms-exten-demnstr-aprvl-03302023.pdf#page=27
     - title: CMS approval of New Mexico State Plan Amendment NM-22-0013
       href: https://www.medicaid.gov/medicaid/spa/downloads/NM-22-0013.pdf#page=2
     - title: CMS approval of New York State Plan Amendment NY-23-0006
@@ -107,12 +121,14 @@ metadata:
       href: https://www.medicaid.gov/sites/default/files/2024-03/UT-23-0017.pdf#page=2
     - title: CMS approval of Utah State Plan Amendment UT-25-0024
       href: https://www.medicaid.gov/medicaid/spa/downloads/UT-25-0024.pdf#page=2
-    - title: "CMS approval of the Utah Medicaid Reform section 1115 demonstration amendment #page 3,26"
+    - title: "CMS approval of the Utah Medicaid Reform section 1115 demonstration amendment #page 3,26,90"
       href: https://www.medicaid.gov/medicaid/section-1115-demonstrations/downloads/ut-medicaid-reform-appvl-11132025.pdf#page=3
     - title: CMS approval of Vermont State Plan Amendment VT-23-0004
       href: https://www.medicaid.gov/sites/default/files/2023-08/VT-23-0004.pdf#page=2
-    - title: CMS approval of the Virginia FAMIS MOMS and FAMIS Select section 1115 demonstration amendment
+    - title: "CMS approval of the Virginia FAMIS MOMS and FAMIS Select section 1115 demonstration amendment #page 1,10"
       href: https://www.medicaid.gov/Medicaid-CHIP-Program-Information/By-Topics/Waivers/1115/downloads/va/va-famis-moms-famis-select-11182021-ca.pdf#page=1
+    - title: Virginia FAMIS MOMS and FAMIS Select section 1115 demonstration semi-annual monitoring report, July to December 2023
+      href: https://www.medicaid.gov/medicaid/section-1115-demonstrations/downloads/va-famis-moms-famis-select-semi-annl-rpt-07012023-12312023.pdf#page=12
     - title: CMS approval of Washington State Plan Amendment WA-22-0012
       href: https://www.medicaid.gov/medicaid/spa/downloads/WA-22-0012.pdf#page=2
     - title: CMS approval of West Virginia State Plan Amendment WV-22-0007
@@ -257,7 +273,10 @@ UT:
   2024-01-01: 365
 VA:
   2021-01-01: 60
-  2021-11-18: 365
+  # CMS approved the section 1115 amendment on 2021-11-18. The STCs defer
+  # coverage to an operational ramp-up period, and DMAS implemented the
+  # 12-month extension on 2022-07-01.
+  2022-07-01: 365
 VT:
   2021-01-01: 60
   2023-04-01: 365
