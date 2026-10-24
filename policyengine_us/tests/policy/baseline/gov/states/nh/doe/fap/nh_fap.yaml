@@ -1563,34 +1563,8 @@
   output:
     nh_fap: 825
 
-# Manual p77 exact ECOS ranges control the overlapping printed utility labels on p78.
-- name: "Case 59, delivered annual cost 999.99 selects the current cost tier."
-  period: 2027
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        immigration_status: "CITIZEN"
-        ssi: 0
-        employment_income: 10_000
-    spm_units:
-      spm_unit1:
-        members: ["person1"]
-        nh_fanf: 0
-        heating_type: "FUEL_OIL"
-        heat_expense_included_in_rent: false
-        receives_housing_assistance: false
-        fuel_oil_expense: 999.99
-    households:
-      household1:
-        members: ["person1"]
-        state_code: "NH"
-  output:
-    nh_fap: 750
-
 # Manual pp77-78 exact cost ranges and utility schedule.
-- name: "Case 60, utility annual cost 999.99 selects the current cost tier."
+- name: "Case 59, utility annual cost 999.99 selects the current cost tier."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -1615,34 +1589,8 @@
   output:
     nh_fap: 563
 
-# Manual p77 exact ECOS ranges control the overlapping printed utility labels on p78.
-- name: "Case 61, delivered annual cost 1000 selects the current cost tier."
-  period: 2027
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        immigration_status: "CITIZEN"
-        ssi: 0
-        employment_income: 10_000
-    spm_units:
-      spm_unit1:
-        members: ["person1"]
-        nh_fanf: 0
-        heating_type: "FUEL_OIL"
-        heat_expense_included_in_rent: false
-        receives_housing_assistance: false
-        fuel_oil_expense: 1_000
-    households:
-      household1:
-        members: ["person1"]
-        state_code: "NH"
-  output:
-    nh_fap: 1_460
-
 # Manual pp77-78 exact cost ranges and utility schedule.
-- name: "Case 62, utility annual cost 1000 selects the current cost tier."
+- name: "Case 60, utility annual cost 1000 selects the current cost tier."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -1667,34 +1615,8 @@
   output:
     nh_fap: 1_095
 
-# Manual p77 exact ECOS ranges control the overlapping printed utility labels on p78.
-- name: "Case 63, delivered annual cost 1749.99 selects the current cost tier."
-  period: 2027
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        immigration_status: "CITIZEN"
-        ssi: 0
-        employment_income: 10_000
-    spm_units:
-      spm_unit1:
-        members: ["person1"]
-        nh_fanf: 0
-        heating_type: "FUEL_OIL"
-        heat_expense_included_in_rent: false
-        receives_housing_assistance: false
-        fuel_oil_expense: 1_749.99
-    households:
-      household1:
-        members: ["person1"]
-        state_code: "NH"
-  output:
-    nh_fap: 1_460
-
 # Manual pp77-78 exact cost ranges and utility schedule.
-- name: "Case 64, utility annual cost 1749.99 selects the current cost tier."
+- name: "Case 61, utility annual cost 1749.99 selects the current cost tier."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -1719,34 +1641,8 @@
   output:
     nh_fap: 1_095
 
-# Manual p77 exact ECOS ranges control the overlapping printed utility labels on p78.
-- name: "Case 65, delivered annual cost 1750 selects the current cost tier."
-  period: 2027
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        immigration_status: "CITIZEN"
-        ssi: 0
-        employment_income: 10_000
-    spm_units:
-      spm_unit1:
-        members: ["person1"]
-        nh_fanf: 0
-        heating_type: "FUEL_OIL"
-        heat_expense_included_in_rent: false
-        receives_housing_assistance: false
-        fuel_oil_expense: 1_750
-    households:
-      household1:
-        members: ["person1"]
-        state_code: "NH"
-  output:
-    nh_fap: 2_350
-
 # Manual pp77-78 exact cost ranges and utility schedule.
-- name: "Case 66, utility annual cost 1750 selects the current cost tier."
+- name: "Case 62, utility annual cost 1750 selects the current cost tier."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -1771,34 +1667,8 @@
   output:
     nh_fap: 1_763
 
-# Manual p77 exact ECOS ranges control the overlapping printed utility labels on p78.
-- name: "Case 67, delivered annual cost 3499.99 selects the current cost tier."
-  period: 2027
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        immigration_status: "CITIZEN"
-        ssi: 0
-        employment_income: 10_000
-    spm_units:
-      spm_unit1:
-        members: ["person1"]
-        nh_fanf: 0
-        heating_type: "FUEL_OIL"
-        heat_expense_included_in_rent: false
-        receives_housing_assistance: false
-        fuel_oil_expense: 3_499.99
-    households:
-      household1:
-        members: ["person1"]
-        state_code: "NH"
-  output:
-    nh_fap: 2_350
-
 # Manual pp77-78 exact cost ranges and utility schedule.
-- name: "Case 68, utility annual cost 3499.99 selects the current cost tier."
+- name: "Case 63, utility annual cost 3499.99 selects the current cost tier."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -1823,34 +1693,8 @@
   output:
     nh_fap: 1_763
 
-# Manual p77 exact ECOS ranges control the overlapping printed utility labels on p78.
-- name: "Case 69, delivered annual cost 3500 selects the current cost tier."
-  period: 2027
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        immigration_status: "CITIZEN"
-        ssi: 0
-        employment_income: 10_000
-    spm_units:
-      spm_unit1:
-        members: ["person1"]
-        nh_fanf: 0
-        heating_type: "FUEL_OIL"
-        heat_expense_included_in_rent: false
-        receives_housing_assistance: false
-        fuel_oil_expense: 3_500
-    households:
-      household1:
-        members: ["person1"]
-        state_code: "NH"
-  output:
-    nh_fap: 2_500
-
 # Manual pp77-78 exact cost ranges and utility schedule.
-- name: "Case 70, utility annual cost 3500 selects the current cost tier."
+- name: "Case 64, utility annual cost 3500 selects the current cost tier."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -1876,7 +1720,7 @@
     nh_fap: 1_875
 
 # Manual p77 multiplier 1.000 and p78 BB/F delivered benefit.
-- name: "Case 71, kerosene uses the full delivered-fuel schedule."
+- name: "Case 65, kerosene uses the full delivered-fuel schedule."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -1902,7 +1746,7 @@
     nh_fap: 800
 
 # Manual p77 multiplier 1.000 and p78 BB/F delivered benefit.
-- name: "Case 72, propane uses the full delivered-fuel schedule."
+- name: "Case 66, propane uses the full delivered-fuel schedule."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -1928,7 +1772,7 @@
     nh_fap: 800
 
 # Manual p77 multiplier 1.000 and p78 BB/F delivered benefit.
-- name: "Case 73, wood uses the full delivered-fuel schedule."
+- name: "Case 67, wood uses the full delivered-fuel schedule."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -1954,7 +1798,7 @@
     nh_fap: 800
 
 # Manual p77 multiplier 1.000 and p78 BB/F delivered benefit.
-- name: "Case 74, coal uses the full delivered-fuel schedule."
+- name: "Case 68, coal uses the full delivered-fuel schedule."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -1980,7 +1824,7 @@
     nh_fap: 800
 
 # Manual p78 DD/A amount is750; no actual-cost cap is stated.
-- name: "Case 75, actual-cost schedule is not capped at a small positive bill."
+- name: "Case 69, actual-cost schedule is not capped at a small positive bill."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2006,7 +1850,7 @@
     nh_fap: 750
 
 # Manual p10 provides application priority; pp77-78 contain no age supplement.
-- name: "Case 76, an older adult receives the same regular schedule."
+- name: "Case 70, an older adult receives the same regular schedule."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2032,7 +1876,7 @@
     nh_fap: 2_150
 
 # Manual p10 provides application priority; pp77-78 contain no disability supplement.
-- name: "Case 77, disability does not add an unsourced regular supplement."
+- name: "Case 71, disability does not add an unsourced regular supplement."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2059,7 +1903,7 @@
     nh_fap: 2_150
 
 # Manual p74: size 2 D band ends at 32,460; p78 AA/D is 1500.
-- name: "Case 78, two qualified members use the published two-person FPG."
+- name: "Case 72, two qualified members use the published two-person FPG."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2092,7 +1936,7 @@
     nh_fap: 1_500
 
 # Manual p36 includes ineligible-member income but excludes their size; size 1 band F applies without income proration.
-- name: "Case 79, mixed status counts both incomes but only the qualified person."
+- name: "Case 73, mixed status counts both incomes but only the qualified person."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2125,7 +1969,7 @@
     nh_fap: 825
 
 # Manual p74 size 1 ceiling 48,713; p78 AA/F is 825.
-- name: "Case 80, the inclusive income ceiling retains the base schedule."
+- name: "Case 74, the inclusive income ceiling retains the base schedule."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2151,7 +1995,7 @@
     nh_fap: 825
 
 # Manual p74 size 1 maximum 48,713.
-- name: "Case 81, income above the ceiling removes the scheduled benefit."
+- name: "Case 75, income above the ceiling removes the scheduled benefit."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2177,7 +2021,7 @@
     nh_fap: 0
 
 # Manual pp76-78 formula and matrix with four bedrooms alone: cost 2272.564 selects BB, income 45120 selects F, yielding a modeled award of 800.
-- name: "Case 82, bedrooms alone determine the two-person oil benefit cost band."
+- name: "Case 76, bedrooms alone determine the two-person oil benefit cost band."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2212,7 +2056,7 @@
     nh_fap: 800
 
 # Manual pp18,77-78: two bedrooms alone give estimated cost 1136.282, selecting CC/A 1460; actual 4000 selects AA/A 2500. The 500 bill does not cap the benefit.
-- name: "Case 83, the larger cost basis determines the delivered benefit."
+- name: "Case 77, the larger cost basis determines the delivered benefit."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2260,7 +2104,7 @@
     nh_fap: [1_460, 2_500]
 
 # Manual pp77-78: two-bedroom Coos gas cost 561.366 selects DD/A 750 * .75 =562.50, rounded to 563; actual 4000 selects AA/A 2500 * .75 =1875.
-- name: "Case 84, utility reduction follows the selected proxy or actual cost band."
+- name: "Case 78, utility reduction follows the selected proxy or actual cost band."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2312,7 +2156,7 @@
 # 3 bedrooms used as rooms, electricity 64.706/MBTU at efficiency 1.
 # Estimated cost = 2000 * 3 * 6610 / 1_000_000 * 64.706 = 2566.23996.
 # Income band A and cost band BB: 2350 * 0.75, rounded half up = 1763.
-- name: Case 85, unsubsidized heat-in-rent with three bedrooms and electricity receives the modeled final award.
+- name: Case 79, unsubsidized heat-in-rent with three bedrooms and electricity receives the modeled final award.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2352,7 +2196,7 @@
 # Manual p78 AA/A: delivered 2500; electricity and gas 2500 * 0.75 = 1875.
 # Approved assumption applies that fuel schedule once to direct-pay and heat-in-rent.
 # Manual p21 excludes subsidized heat-in-rent, not subsidized direct-pay households.
-- name: Case 86, heat-in-rent retains each fuel schedule while subsidized heat-in-rent is excluded.
+- name: Case 80, heat-in-rent retains each fuel schedule while subsidized heat-in-rent is excluded.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2494,7 +2338,7 @@
 # Manual page 15 counts ordinary DoD retirement separately from pension/VA income.
 # Primary pay of 50,000 exceeds the one-person 48,713 ceiling. The 10,000 control
 # remains in income band A; a 500 electric bill uses DD/A: 750 * 0.75 -> 563.
-- name: "Case 87, ordinary military retirement pay affects eligibility and retains eligible retirees."
+- name: "Case 81, ordinary military retirement pay affects eligibility and retains eligible retirees."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2549,7 +2393,7 @@
 # actual TANF receipts of 3,600, counted once: 9,600 + 3,600 = 13,200.
 # Both are below the two-person A ceiling of 16,230, receiving AA/A = 2,500.
 # No counterfactual FANF entitlement is supplied or asserted as a legal award.
-- name: "Case 88, actual TANF receipt counts once and nonreceipt does not reduce the heating award."
+- name: "Case 82, actual TANF receipt counts once and nonreceipt does not reduce the heating award."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2607,7 +2451,7 @@
 # Income 186,000 and a cent below the floor qualify despite SMI of 185,486;
 # equality and a cent above do not. Protected income uses band C and a 1,000
 # electric bill uses cost band CC: 1,150 * 0.75 = 862.50 -> 863.
-- name: "Case 89, the federal floor protects large households strictly below the season-start threshold."
+- name: "Case 83, the federal floor protects large households strictly below the season-start threshold."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2877,3 +2721,34 @@
     nh_fap_income_limit: [185_486, 185_486, 185_486, 185_486]
     nh_fap_eligible: [true, true, false, false]
     nh_fap: [863, 863, 0, 0]
+
+# Manual page 15 counts annuity payments and military retirement pay. A uniformed
+# services Survivor Benefit Plan annuity is reported in military_retirement_pay_survivors.
+# Income 20,000 is above 125% of the 2026 one-person FPG (15,960 * 1.25 = 19,950)
+# and within 150% (23,940), so band D. No bill: Coos single-family proxy with four
+# bedrooms, 2,000 * 4 * 7,672 / 1,000,000 * 28.881 / 0.78 = 2,272.56, cost band BB.
+# Fuel oil multiplier 1: BB/D = 1,410.
+- name: Case 84, a military Survivor Benefit Plan annuity counts as unearned income.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        military_retirement_pay_survivors: 20_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+    households:
+      household1:
+        members: [person1]
+        state_code: NH
+        county_str: COOS_COUNTY_NH
+        bedrooms: 4
+  output:
+    nh_fap_countable_income: 20_000
+    nh_fap_heating_cost: 2_272.564431
+    nh_fap_eligible: true
+    nh_fap: 1_410

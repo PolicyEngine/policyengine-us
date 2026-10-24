@@ -57,24 +57,13 @@ class nh_fap(Variable):
         )
         delivered_benefit = p.payment.delivered_benefit[cost_band][income_band]
         heating_type = spm_unit("heating_type", period)
-        fuel = heating_type.possible_values
-        utility = (heating_type == fuel.ELECTRICITY) | (
-            heating_type == fuel.NATURAL_GAS
-        )
-        delivered = (
-            (heating_type == fuel.FUEL_OIL)
-            | (heating_type == fuel.PROPANE)
-            | (heating_type == fuel.KEROSENE)
-            | (heating_type == fuel.WOOD)
-            | (heating_type == fuel.COAL)
-        )
-        multiplier = where(utility, p.payment.utility_multiplier, 1)
+        multiplier = p.payment.benefit_multiplier[heating_type]
         # Half-up whole dollars reproduce every utility matrix cell.
         benefit = np.floor(delivered_benefit * multiplier + 0.5)
         # Approved approximation: unsubsidized heat-in-rent receives this
-        # scheduled amount, including the utility multiplier exactly once.
+        # scheduled amount, including the fuel multiplier exactly once.
         # The state's heat-in-rent reduction remains unverified.
         # Unknown, solar and other fuels have no supported payment
-        # classification; zero marks an unsupported amount.
+        # classification; their zero multiplier marks an unsupported amount.
         # The schedule is not capped at the household's actual heating cost.
-        return where((expense > 0) & (utility | delivered), benefit, 0)
+        return where(expense > 0, benefit, 0)

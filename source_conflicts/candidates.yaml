@@ -3732,6 +3732,41 @@ candidates:
     prs: []
   state: unreviewed
   note: Verify whether the still-listed ruling applies during these years despite its obsolete tax base.
+- id: us-nh:fap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: program
+    note: New Hampshire Fuel Assistance Program year 2026-2027 (PY2027)
+  question: Can New Hampshire's 60% SMI limit exclude a large household whose income is below the federal 110%
+    poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624
+  - kind: plan
+    citation: FY2026 New Hampshire LIHEAP State Plan section 2.1, 60% SMI for all household sizes
+    url: https://liheapch.acf.gov/docs/2026/state-plans/NH_Plan_2026.pdf#page=8
+  - kind: manual
+    citation: PY2027 New Hampshire Fuel Assistance Program Procedures Manual, Income Guidelines, 60% SMI printed for
+      sizes 1-8
+    url: https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=74
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The 60% SMI limit applies at every household size; with the federal SMI size adjustments it falls below
+      that floor starting at household size 28.
+  example: A 28-person household with $186,000 of countable income and a $2,000 fuel-oil heating cost exceeds the
+    $185,486 limit but is below the $186,252 floor and receives the $1,720 BB/C award in the PR.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10343
+  state: unreviewed
+  note: 'The open PR applies the federal floor; verify the extended limits, since the manual prints 60% SMI amounts
+    only through eight persons. Code not yet on main: nh_fap_eligible, nh_fap_income_limit,
+    gov.states.nh.doe.fap.smi_rate.'
 - id: us-nj:claim-of-right-same-category-offset
   program: income-tax
   years:
