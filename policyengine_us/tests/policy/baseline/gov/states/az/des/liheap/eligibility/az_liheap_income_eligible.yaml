@@ -1,8 +1,9 @@
 # Arizona LIHEAP income eligibility: when categorical eligibility does not
 # apply, gross income must be "at or below" the Appendix A limit for the
-# eligible household size (DES LIHEAP Policy rev. 13 eff. 2025-08-25, p. 8
-# VI.A.6.c.i and p. 37 Appendix A,
-# https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=37).
+# eligible household size (DES LIHEAP Policy rev. 16A eff. 2026-07-01, p. 8
+# VI.A.6.c.i, https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=8;
+# FFY2026 Appendix A in rev. 13 eff. 2025-08-25, p. 37,
+# https://web.archive.org/web/20251030203752/https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=37).
 # Annual limits are twelve times the monthly limits: size 1 2,807 x 12 =
 # 33,684; size 2 3,671 x 12 = 44,052; size 5 6,262 x 12 = 75,144; size 6
 # 7,126 x 12 = 85,512; size 10 8,143 x 12 = 97,716; size 13 (9,518 + 687) x
@@ -71,7 +72,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5]
-        az_tanf: 0
+        tanf: 0
         heating_type: NATURAL_GAS
         pre_subsidy_electricity_expense: 2_400
         gas_expense: 700
@@ -135,7 +136,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6]
-        az_tanf: 0
+        tanf: 0
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 3_000
     households:
@@ -178,7 +179,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
-        az_tanf: 0
+        tanf: 0
         heating_type: NATURAL_GAS
         pre_subsidy_electricity_expense: 3_600
         gas_expense: 900
@@ -271,7 +272,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
-        az_tanf: 0
+        tanf: 0
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 4_800
     households:
@@ -369,7 +370,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        az_tanf: 0
+        tanf: 0
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 2_400
     households:

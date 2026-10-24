@@ -17,12 +17,14 @@ class az_liheap_energy_cost(Variable):
 
     # "Energy Utility: A service or Portable Fuel that provides a source of
     # heating or cooling for a Household. Eligible Energy Utility service
-    # providers include vendors of electricity, gas, or portable fuel" (page 4);
-    # "Portable Fuel: Energy that is derived from propane, wood, coal, fuel for
-    # gas generators, and/or pellets" (page 5). Fuel oil and other heating fuel
-    # bills are purchased home energy and are counted with them. The electric
-    # bill is read before subsidies, as heating_expense does, so the burden is
-    # gross of discount programs and no subsidy chain feeds back into LIHEAP.
+    # providers include vendors of electricity or gas; Portable Fuel for
+    # purposes of heating or cooling" (page 4); "Portable Fuel: Energy that is
+    # derived from propane, wood, coal, fuel for gas generators, and/or pellets
+    # and that is used for heating or cooling a residence" (page 5). Fuel oil
+    # and other heating fuel bills are purchased home energy and are counted
+    # with them. The electric bill is read before subsidies, as heating_expense
+    # does, so the burden is gross of discount programs and no subsidy chain
+    # feeds back into LIHEAP.
     adds = [
         "pre_subsidy_electricity_expense",
         "gas_expense",

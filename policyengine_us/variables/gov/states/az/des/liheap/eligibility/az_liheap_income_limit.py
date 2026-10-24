@@ -16,8 +16,9 @@ class az_liheap_income_limit(Variable):
         "monthly dollars."
     )
     reference = (
-        # PDF pages 8, 37
+        # PDF pages 8, 39
         "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=8",
+        "https://web.archive.org/web/20251030203752/https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=37",
         "https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=9",
         "https://liheapch.acf.gov/profiles/povertytables/FY2026/azsmi.htm",
         "https://liheapch.acf.gov/profiles/povertytables/FY2026/popstate.htm",
@@ -31,18 +32,19 @@ class az_liheap_income_limit(Variable):
         state_group = spm_unit.household("state_group_str", period)
         # Section VI.A.6.c.i: "Gross Income must be at or below the greater of:
         # A) 60% of the SMI; or B) 150% of the FPL." Appendix A prints the
-        # FFY2026 monthly result for sizes 1 to 12 plus $687 per additional
-        # person. Its SMI arm reproduces only with the shared HHS floor order,
-        # the four-person 60% amount first (64,789 from 107,983) and then the
-        # size-adjusted annual amount, followed by a floor of the monthly
-        # amount; this is a reconciled numerical pattern, not an explicit
-        # rounding rule.
+        # monthly result for sizes 1 to 12 plus an amount per additional person
+        # ($687 for FFY2026 in revision 13, $710 for FFY2027 in revision 16A).
+        # Its SMI arm reproduces only with the shared HHS floor order, the
+        # four-person 60% amount first (64,789 from 107,983 for FFY2026) and
+        # then the size-adjusted annual amount, followed by a floor of the
+        # monthly amount; this is a reconciled numerical pattern, not an
+        # explicit rounding rule.
         smi_annual = liheap_smi_limit(size, state, p.smi_rate, period, parameters)
         smi_monthly = np.floor(smi_annual / MONTHS_IN_YEAR)
         # The FPL arm uses the guideline in force when the season's limits were
         # set (the 2025 guideline for FFY2026) and floors the monthly amount.
-        # Appendix A's "EACH ADDL OVER 12 +$687" is the floored monthly value of
-        # 150% of the additional-person guideline, applied beyond the table.
+        # Appendix A's "EACH ADDL OVER 12" amount is the floored monthly value
+        # of 150% of the additional-person guideline, applied beyond the table.
         capped_size = clip(size, 1, p.max_table_size)
         guideline = fpg(
             capped_size, state_group, period, parameters, year_lag=p.fpg_year_lag

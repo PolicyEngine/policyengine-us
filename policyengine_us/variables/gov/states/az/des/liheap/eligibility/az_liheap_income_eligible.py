@@ -8,7 +8,7 @@ class az_liheap_income_eligible(Variable):
     label = "Arizona LIHEAP income eligible"
     documentation = "Countable household income does not exceed the Appendix A income limit for the eligible household size."
     reference = (
-        # PDF pages 8, 37
+        # PDF pages 8, 39
         "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=8",
         "https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=9",
     )

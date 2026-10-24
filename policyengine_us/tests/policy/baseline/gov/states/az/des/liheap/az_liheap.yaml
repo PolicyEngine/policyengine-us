@@ -7,8 +7,8 @@
 # https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=10;
 # DES program page payment table, https://des.az.gov/liheap). The benefit is
 # not capped at the bill: any remainder is credited to the Priority 1
-# account (DES LIHEAP Policy rev. 13, pp. 33-34 VII.B.3.b.iii,
-# https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=33).
+# account (DES LIHEAP Policy rev. 16A, pp. 34-35 VII.B.3.b.iii,
+# https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=34).
 # A categorically eligible household with zero points receives the plan's
 # $160 minimum. Annual limits: size 1 33,684; size 2 44,052; size 3 54,420.
 
@@ -281,7 +281,7 @@
         state_code: AZ
   output:
     # Income 0 -> 5; burden 300 against zero income -> 6; need 0; total 11
-    # -> 480, more than the 300 bill (policy pp. 33-34: remainder credited).
+    # -> 480, more than the 300 bill (policy pp. 34-35: remainder credited).
     az_liheap_points: 11
     az_liheap: 480
 
@@ -371,7 +371,7 @@
         members: [person1]
         state_code: AZ
   output:
-    # Railroad Retirement is "retirement income" (policy p. 8 VI.A.6.e.ii.B):
+    # Railroad Retirement is "retirement income" (policy p. 9 VI.A.6.e.ii.B):
     # countable income 40,000.
     az_liheap_countable_income: 40_000
     # Appendix A size 1: 2,807 x 12 = 33,684.

@@ -14,7 +14,7 @@ class az_liheap_countable_earned_income(Variable):
     )
     unit = USD
     reference = (
-        # PDF pages 8-9, 13
+        # PDF pages 8-9, 13-14
         "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=8",
         # PDF pages 6-7
         "https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=6",
@@ -23,15 +23,17 @@ class az_liheap_countable_earned_income(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.az.des.liheap.income
-        # Section VII.A.1.c.ii.B verifies "Profit or loss documentation from
-        # self-employment" without saying whether a loss offsets other income,
-        # so each net source is floored at zero (project convention).
+        # Section VII.A.1.c.ii.B counts "Income from self-employment or
+        # sole-proprietorship" and Section VII.A.1.c.iii.B.1 accepts a
+        # "Schedule C (Profit and Loss Statement)", without saying whether a
+        # loss offsets other income, so each net source is floored at zero
+        # (project convention).
         earned = 0
         for source in p.sources.earned:
             earned = earned + max_(person(source, period), 0)
         # Section VI.A.6.d.ii counts "Income from all Household members aged 18
         # and older"; Section VI.A.6.e.ii.E excludes income of members under 18
-        # in revision 13 and their earned income in revision 15, and the plan's
+        # in revision 13 and their earned income from revision 15, and the plan's
         # Section 1.9 leaves "Earned income of a child under the age of 18"
         # unchecked, so under-18 earnings never count.
         age = person("age", period)

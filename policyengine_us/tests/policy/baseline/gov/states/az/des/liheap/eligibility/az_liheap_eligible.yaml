@@ -1,11 +1,11 @@
 # Arizona LIHEAP eligibility: an Arizona household with at least one eligible
 # member that meets categorical or income eligibility and needs help with an
-# energy bill (DES LIHEAP Policy rev. 13 eff. 2025-08-25, pp. 6-8 VI.A,
+# energy bill (DES LIHEAP Policy rev. 16A eff. 2026-07-01, pp. 6-8 VI.A,
 # https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=6).
 # The Standard benefit covers every home energy bill (electricity, gas and
 # portable fuel, p. 4 "Energy Utility"), so a home with no heating system but
 # an electricity bill qualifies, and renters with energy in rent are eligible
-# (p. 32 VII.B.3.a.ii.B). An unspecified heating type pays nothing (project
+# (p. 33 VII.B.3.a.ii.B). An unspecified heating type pays nothing (project
 # rule). Size-1 annual limit 2,807 x 12 = 33,684.
 
 - name: Case 1, single minimum-wage earner with an electricity bill is eligible.
@@ -94,8 +94,8 @@
         members: [person1]
         state_code: AZ
   output:
-    # Policy p. 4: undesignated energy payments in rent form a household;
-    # p. 32: payment goes to the applicant when utilities are in rent.
+    # Policy p. 5: undesignated energy payments in rent form a household;
+    # p. 33: payment goes to the applicant when utilities are in rent.
     az_liheap_energy_cost: 0
     az_liheap_eligible: true
 
@@ -194,7 +194,7 @@
         members: [person1, person2]
         state_code: AZ
   output:
-    # Policy pp. 6-7 VI.A.3: at least one member must be a citizen or
+    # Policy p. 7 VI.A.3: at least one member must be a citizen or
     # qualified noncitizen.
     az_liheap_household_size: 0
     az_liheap_eligible: false

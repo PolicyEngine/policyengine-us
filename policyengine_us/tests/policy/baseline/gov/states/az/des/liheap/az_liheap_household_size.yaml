@@ -1,7 +1,7 @@
 # Arizona LIHEAP household size. Only Eligible Household Members (U.S. citizens
 # and Qualified Noncitizens under 8 U.S.C. 1641(b)) count toward the household
 # size; in a Mixed-Status Household the income of every member aged 18 or
-# older still counts (DES LIHEAP Policy rev. 13 eff. 2025-08-25, p. 4
+# older still counts (DES LIHEAP Policy rev. 16A eff. 2026-07-01, pp. 4-5
 # definitions and p. 8 VI.A.6.d,
 # https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=8).
 # The variable is defined only for Arizona households.
@@ -68,7 +68,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
-        az_tanf: 0
+        tanf: 0
         heating_type: ELECTRICITY
         pre_subsidy_electricity_expense: 2_700
     households:

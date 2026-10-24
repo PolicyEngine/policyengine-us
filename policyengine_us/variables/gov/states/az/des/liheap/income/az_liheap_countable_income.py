@@ -14,7 +14,7 @@ class az_liheap_countable_income(Variable):
     )
     unit = USD
     reference = (
-        # PDF pages 4, 8-9, 14, 31
+        # PDF pages 4, 8-9, 14, 32
         "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=4",
         # PDF pages 5-7
         "https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=5",
@@ -26,13 +26,15 @@ class az_liheap_countable_income(Variable):
     # twelve is the policy's own arithmetic. Cash Assistance is a household
     # benefit with no person-level attribution, so it is summed here rather
     # than in the person-level unearned source list: Section VI.A.6.e.ii.B
-    # counts "SSA and TANF benefits", and Section VII.B.1.c.ii adds "the Cash
-    # Assistance benefit" to the reported income of households categorically
-    # eligible through it. The policy's narrower base for categorically
-    # eligible households (the enrolled member's reported income) is not
-    # modeled; the whole household's countable income is used.
+    # counts "Social Security and TANF benefits", and Section VII.B.1.c.ii adds
+    # "the Cash Assistance benefit" to the reported income of households
+    # categorically eligible through it. The take-up-gated tanf includes
+    # Arizona Cash Assistance, so a family that does not take it up has none
+    # counted. The policy's narrower base for categorically eligible
+    # households (the enrolled member's reported income) is not modeled; the
+    # whole household's countable income is used.
     adds = [
         "az_liheap_countable_earned_income",
         "az_liheap_countable_unearned_income",
-        "az_tanf",
+        "tanf",
     ]

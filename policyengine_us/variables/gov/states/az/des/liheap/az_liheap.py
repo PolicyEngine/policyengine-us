@@ -23,7 +23,7 @@ class az_liheap(Variable):
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/AZ_BenefitMatrix_Heating_2026.pdf#page=1",
         # PDF pages 4, 10
         "https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=4",
-        # PDF pages 10, 29-30, 33-34
+        # PDF pages 10, 31, 34-35, 41
         "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=10",
         "https://des.az.gov/liheap",
     )

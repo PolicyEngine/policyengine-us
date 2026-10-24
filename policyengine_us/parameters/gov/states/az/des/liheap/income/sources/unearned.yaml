@@ -1,17 +1,16 @@
 description: Arizona uses these person-level unearned income sources to determine gross household income under the Low Income Home Energy Assistance Program.
-# Section VI.A.6.e.ii.B-D counts "Unearned income, including SSA and TANF
-# benefits, alimony, child support, gambling profits, and retirement income",
-# "Income from Unemployment Insurance" and "Consistent income received from
-# other sources"; the plan's Section 1.9 checks the full list. Cash Assistance
-# (az_tanf) is a household benefit and is added in az_liheap_countable_income.
+# Section VI.A.6.e.ii.B-D counts "Unearned income, including Social Security
+# and TANF benefits, alimony, child support, gambling profits, and retirement
+# income", "Income from Unemployment Insurance" and "Consistent income received
+# from other sources"; the plan's Section 1.9 checks the full list. Each source
+# is floored at zero in the formula, so a rental loss does not offset other
+# income. Social Security is added in the formula net of the Medicare Part B
+# premium. Cash Assistance (tanf) is a household benefit and is added in
+# az_liheap_countable_income.
 values:
   2025-08-25:
     - total_unemployment_compensation
     - strike_benefits
-    # Section VII.A.1.c.ii.D note: Medicare premiums "should be subtracted when
-    # determining gross income". Social Security is counted gross here; the
-    # premium netting is deferred, as in the other state LIHEAP implementations.
-    - social_security
     - ssi
     - pension_income
     # Section VI.A.6.e.ii.B "retirement income": military retirement pay and
@@ -21,17 +20,25 @@ values:
     # SEP, 403(b) and Keogh distributions.
     - retirement_distributions
     # Railroad Retirement annuities are "retirement income" (Section
-    # VI.A.6.e.ii.B, page 8) and "retirement benefits" (Section
+    # VI.A.6.e.ii.B, page 9) and "retirement benefits" (Section
     # VII.A.1.c.ii.D, page 14); plan Section 1.9 checks "Retirement / pension
     # benefits" (page 6).
     - railroad_benefits
     - veterans_benefits
     - alimony_income
     - child_support_received
+    # Plan Section 1.9 checks "Rental income" (page 6); farm rent is counted
+    # with it.
     - rental_income
+    - farm_rent_income
     - interest_income
     - ordinary_dividend_income
     - general_assistance
+    # Section VI.A.6.e.ii.B counts "gambling profits" (page 9). Plan Section 1.9
+    # leaves one-time lump sums such as "winnings from lotteries" unchecked
+    # (page 6); gambling_winnings does not separate one-time winnings, so all
+    # are counted.
+    - gambling_winnings
     # Employment disability insurance: plan Section 1.9 checks "Insurance
     # payments made directly to the insured" (page 6), and Gross Income is
     # "The total Household income for all Household members before taxes and
@@ -39,7 +46,7 @@ values:
     - disability_benefits
     # Plan Section 1.9 neither lists nor excludes workers' compensation; the
     # Gross Income definition (page 4) and Section VI.A.6.e.ii.D "Consistent
-    # income received from other sources" (page 8) support counting it.
+    # income received from other sources" (page 9) support counting it.
     - workers_compensation
     # Cash gifts over $50, jury duty, legal settlements, other insurance
     # payments to the insured, mortgage or sales-contract payments, royalties
@@ -50,7 +57,7 @@ metadata:
   period: year
   label: Arizona LIHEAP countable unearned income sources
   reference:
-    - title: "Arizona DES LIHEAP Policy, revision 13 (effective August 25, 2025), Gross Income definition, Section VI.A.6.e.ii.B-D and Section VII.A.1.c.ii.C-F #page 4,8,13-14"
+    - title: "Arizona DES LIHEAP Policy, revision 16A (effective July 1, 2026), Gross Income definition, Section VI.A.6.e.ii.B-D and Section VII.A.1.c.ii.C-F #page 4,9,14"
       href: https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=4
-    - title: "Arizona LIHEAP FY2026 State Plan, Section 1.9 (unemployment insurance, strike pay, SSA benefits, SSI, retirement and pension, general assistance, TANF, rental income, alimony, child support, interest, dividends or royalties, insurance payments made directly to the insured and VA benefits counted) #page 6-7"
+    - title: "Arizona LIHEAP FY2026 State Plan, Section 1.9 (unemployment insurance, strike pay, SSA benefits excluding the Medicare deduction, SSI, retirement and pension, general assistance, TANF, rental income, alimony, child support, interest, dividends or royalties, insurance payments made directly to the insured and VA benefits counted) #page 6-7"
       href: https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=6

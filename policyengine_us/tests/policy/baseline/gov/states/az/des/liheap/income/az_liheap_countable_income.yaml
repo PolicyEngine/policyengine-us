@@ -1,8 +1,8 @@
 # Arizona LIHEAP countable income of the household: countable earned plus
 # unearned income of every member, plus the unit's DES Cash Assistance (TANF)
-# benefit (DES LIHEAP Policy rev. 13 eff. 2025-08-25, p. 8 VI.A.6.e.ii.B
-# "Unearned income, including SSA and TANF benefits",
-# https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=8;
+# benefit (DES LIHEAP Policy rev. 16A eff. 2026-07-01, p. 9 VI.A.6.e.ii.B
+# "Unearned income, including Social Security and TANF benefits",
+# https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=9;
 # FY2026 plan 1.9 TANF checked,
 # https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=6).
 # az_tanf is a monthly variable; in a yearly test its input is the annual
@@ -44,6 +44,9 @@
       person2:
         age: 67
         social_security: 18_000
+        # Her own 1,500 a month is within the Medicare Savings Program limits,
+        # so the program pays her Part B premium and nothing is netted.
+        medicare_part_b_premium: 0
         ssi: 0
       person3:
         age: 15

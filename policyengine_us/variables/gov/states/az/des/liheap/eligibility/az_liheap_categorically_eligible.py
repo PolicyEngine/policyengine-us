@@ -19,8 +19,8 @@ class az_liheap_categorically_eligible(Variable):
         # Section VI.A.6.b.i: "If one (1) Household member's current enrollment
         # in Cash Assistance or Nutrition Assistance is verified, the Household
         # will be considered categorically eligible." A positive modeled
-        # benefit in the year stands for current enrollment; the MONTH-defined
-        # snap and az_tanf are summed over the year by add(). SSI and
-        # veterans programs do not confer categorical eligibility (plan
-        # Section 1.4).
+        # benefit in the year stands for current enrollment; add() sums the
+        # MONTH-defined snap over the year, and the annual tanf includes
+        # Arizona Cash Assistance. Both are take-up gated. SSI and veterans
+        # programs do not confer categorical eligibility (plan Section 1.4).
         return add(spm_unit, period, p.categorical_programs) > 0

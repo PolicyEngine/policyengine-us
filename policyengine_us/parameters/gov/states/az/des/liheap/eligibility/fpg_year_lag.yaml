@@ -1,8 +1,11 @@
 description: Arizona uses federal poverty guidelines from this many years before the modeled program year for the income limit under the Low Income Home Energy Assistance Program.
-# Verified for FFY2026: Appendix A's household sizes 10 to 12 and its $687
-# additional-person increment reproduce with the 2025 guideline (15,650 plus
-# 5,500 per additional person), not the 2026 guideline. This is a relative year
-# selection, not a fixed guideline year. Earlier Arizona policy is unverified.
+# Verified for FFY2026: revision 13's Appendix A household sizes 10 to 12 and
+# its $687 additional-person increment reproduce with the 2025 guideline
+# (15,650 plus 5,500 per additional person), not the 2026 guideline. Revision
+# 16A's Appendix A prints the FFY2027 limits, whose sizes 10 to 12 and $710
+# increment reproduce with the 2026 guideline, the same one-year lag. This is a
+# relative year selection, not a fixed guideline year. Earlier Arizona policy
+# is unverified.
 values:
   2025-08-25: 1
 
@@ -11,7 +14,9 @@ metadata:
   period: year
   label: Arizona LIHEAP federal poverty guideline year lag
   reference:
-    - title: Arizona DES LIHEAP Policy, revision 13 (effective August 25, 2025), Appendix A Income Eligibility by Household Size
-      href: https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=37
+    - title: Arizona DES LIHEAP Policy, revision 13 (effective August 25, 2025), Appendix A Income Eligibility by Household Size (FFY2026 limits, archived copy)
+      href: https://web.archive.org/web/20251030203752/https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=37
+    - title: Arizona DES LIHEAP Policy, revision 16A (effective July 1, 2026), Appendix A LIHEAP Income Eligibility by Household Size (FFY2027 limits)
+      href: https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=39
     - title: LIHEAP Clearinghouse, FFY2026 poverty guidelines by household size (2025 HHS guideline)
       href: https://liheapch.acf.gov/profiles/povertytables/FY2026/popstate.htm

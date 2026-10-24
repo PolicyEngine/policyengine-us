@@ -1,8 +1,10 @@
 # Arizona Standard LIHEAP benefit, end to end. Sources: DES LIHEAP Policy
-# rev. 13 eff. 2025-08-25 (household and immigration pp. 4-8, categorical
-# eligibility pp. 7-8, countable income pp. 8-9, benefit factors p. 10,
-# Appendix A p. 37) and rev. 15 eff. 2026-03-23 (p. 9 E, earned income of
-# under-18 members only), https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=8;
+# rev. 16A eff. 2026-07-01 (household and immigration pp. 4-8, categorical
+# eligibility pp. 7-8, countable income pp. 8-9 with the rev. 15 p. 9 E
+# exclusion of under-18 earned income only, benefit factors p. 10, FY27
+# Appendix A p. 39), https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=8;
+# rev. 13 eff. 2025-08-25 (FFY2026 Appendix A p. 37),
+# https://web.archive.org/web/20251030203752/https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=37;
 # LIHEAP Eligibility Worksheet, $640 Limit, eff. 2024-10-12 (point tables and
 # payment matrix),
 # https://liheapch.acf.gov/docs/2026/benefits-matricies/AZ_BenefitMatrix_Heating_2026.pdf#page=1;
@@ -61,13 +63,17 @@
     az_liheap_points: 5
     az_liheap: 320
 
-- name: Case 2, a retiree on SNAP above the income limit with propane heat receives 160.
+- name: Case 2, a retiree on SNAP with propane heat, under the limit after the Medicare premium, receives 320.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 70
         social_security: 36_000
+        # Income of 3,000 a month is above the Medicare Savings Program
+        # limits, so the retiree pays the 2026 standard premium of 202.90 x 12.
+        medicare_part_b_premium: 2_434.80
         ssi: 0
     spm_units:
       spm_unit:
@@ -83,26 +89,27 @@
         state_code: AZ
   output:
     az_liheap_household_size: 1
-    # Social Security counted gross.
-    az_liheap_countable_income: 36_000
+    # Social Security net of the Part B premium (policy p. 14 note):
+    # 36,000 - 2,434.80 = 33,565.20.
+    az_liheap_countable_income: 33_565.20
     # Appendix A size 1: 2,807 x 12.
     az_liheap_income_limit: 33_684
-    # 36,000 > 33,684.
-    az_liheap_income_eligible: false
-    # SNAP receipt (200 a month) confers categorical eligibility.
+    # 33,565.20 <= 33,684.
+    az_liheap_income_eligible: true
+    # SNAP receipt (200 a month) also confers categorical eligibility.
     az_liheap_categorically_eligible: true
     # 1,200 + 1,500.
     az_liheap_energy_cost: 2_700
     az_liheap_eligible: true
-    # 36,000 / 33,684 = 1.069 > 1.00: no income points.
-    az_liheap_income_points: 0
-    # 2,700 / 36,000 = 0.075: 6%-10% band, 1 point + 2 portable fuel.
+    # 33,565.20 / 33,684 = 0.996: 81%-100% band.
+    az_liheap_income_points: 1
+    # 2,700 / 33,565.20 = 0.080: 6%-10% band, 1 point + 2 portable fuel.
     az_liheap_energy_burden_points: 3
     # Aged 60 and over.
     az_liheap_energy_need_points: 1
-    # 0 + 3 + 1 = 4: the 1-4 band.
-    az_liheap_points: 4
-    az_liheap: 160
+    # 1 + 3 + 1 = 5: the 5-8 band.
+    az_liheap_points: 5
+    az_liheap: 320
 
 - name: Case 3, a mixed-status family of four is sized at three and receives 160.
   period: 2026
@@ -170,14 +177,14 @@
         pre_subsidy_electricity_expense: 0
         gas_expense: 0
         snap: 0
-        az_tanf: 4_164
+        tanf: 4_164
     households:
       household:
         members: [person1, person2]
         state_code: AZ
   output:
     az_liheap_household_size: 2
-    # Cash Assistance 347 x 12 = 4,164 counts as income (policy p. 8 B).
+    # Cash Assistance 347 x 12 = 4,164 counts as income (policy p. 9 B).
     az_liheap_countable_income: 4_164
     # Appendix A size 2: 3,671 x 12.
     az_liheap_income_limit: 44_052
@@ -258,11 +265,12 @@
     az_liheap_countable_unearned_income: [0, 3_600]
     # 18,000 + 3,600.
     az_liheap_countable_income: 21_600
-    # Model projection for FFY2027: Arizona SMI 112,946; floor(0.6 x 112,946)
-    # = 67,767; floor(0.68 x 67,767) = 46,081; floor(46,081 / 12) = 3,840;
-    # FPG arm floor(1.5 x (15,960 + 5,680) / 12) = 2,705; 3,840 x 12 = 46,080.
-    # Equals the two-person limit on the DES program page captured 2026-09-21
-    # (not independently verified policy).
+    # FY27 limit: Arizona SMI 112,946; floor(0.6 x 112,946) = 67,767;
+    # floor(0.68 x 67,767) = 46,081; floor(46,081 / 12) = 3,840; FPG arm
+    # floor(1.5 x (15,960 + 5,680) / 12) = 2,705; 3,840 x 12 = 46,080. The
+    # model reproduces the published FY27 size-2 limit of 3,840 a month (DES
+    # LIHEAP Policy revision 16A, Appendix A, p. 39). Verified coverage stays
+    # FY2026; 2027 is not claimed.
     az_liheap_income_limit: 46_080
     az_liheap_income_eligible: true
     az_liheap_eligible: true

@@ -6,7 +6,7 @@
 # https://liheapch.acf.gov/docs/2026/benefits-matricies/AZ_BenefitMatrix_Heating_2026.pdf#page=1;
 # DES program page example "350 / 2,000 = 17.5%, three points",
 # https://des.az.gov/liheap). Portable Fuel is propane, wood, coal, generator
-# fuel and pellets (DES LIHEAP Policy rev. 13, p. 5,
+# fuel and pellets (DES LIHEAP Policy rev. 16A, p. 5,
 # https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=5),
 # modeled as heating_type PROPANE, WOOD or COAL. Annual bills over annual
 # income give the same ratio as the monthly figures; a band top belongs to its
@@ -403,3 +403,34 @@
     az_liheap_energy_cost: 3_000
     # 3,000 / 24,000 = 0.125: 11%-15% band; electric heat, no bonus.
     az_liheap_energy_burden_points: 2
+
+- name: Case 18, no energy bill with no income scores 0 burden points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        pre_subsidy_electricity_expense: 0
+        gas_expense: 0
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_countable_income: 0
+    az_liheap_energy_cost: 0
+    # Energy in rent with no bill is no burden even though 0 / 0 is
+    # undefined; without the zero-cost guard it would take the 6-point band.
+    az_liheap_energy_burden_points: 0
+    # Income 0 / 33,684 = 0 -> 5; burden 0; need 0; total 5 -> 320 (11 points
+    # and 480 without the guard).
+    az_liheap_points: 5
+    az_liheap: 320

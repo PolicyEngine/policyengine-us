@@ -15,7 +15,7 @@ class az_liheap_eligible(Variable):
         "have no inputs and are not modeled."
     )
     reference = (
-        # PDF pages 4, 6-8, 32
+        # PDF pages 4-8, 33
         "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=4",
         "https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=9",
     )
@@ -30,7 +30,7 @@ class az_liheap_eligible(Variable):
         categorically_eligible = spm_unit("az_liheap_categorically_eligible", period)
         income_eligible = spm_unit("az_liheap_income_eligible", period)
         # Section VI.A.1: "An Applicant must require assistance with payment of
-        # energy-related expenses." The Household definition (page 4) includes
+        # energy-related expenses." The Household definition (page 5) includes
         # members "who make undesignated payments for Energy Utilities in the
         # form of rent", and Section VII.B.3.a.ii.B pays the applicant directly
         # when "Energy Utilities are included within the cost of their rent".

@@ -2,11 +2,12 @@ description: Arizona counts the unearned income of household members under the a
 # Revision 13, Section VI.A.6.e.ii.E: "Income from Household members under the
 # age of 18 is not considered Countable Income." Revision 15 (effective March
 # 23, 2026) rewrote the sentence to "Earned income from Household members under
-# the age of 18 is not considered Countable Income". Earned income of members
-# under 18 is excluded under both revisions.
+# the age of 18 is not considered Countable Income", and revision 16A keeps
+# that wording. Earned income of members under 18 is excluded under every
+# revision.
 # NOTE: Counting a child's unearned income (SSI, survivor benefits, child
 # support) from March 23, 2026 is an inference from that narrowed exclusion.
-# Revision 15 does not say so directly, and its Section VI.A.6.d.ii still says
+# The revisions do not say so directly, and Section VI.A.6.d.ii still says
 # that the income of members aged 18 and older is household income.
 values:
   2025-08-25: false
@@ -17,5 +18,7 @@ metadata:
   period: year
   label: Arizona LIHEAP counts unearned income of members under 18
   reference:
-    - title: Arizona DES LIHEAP Policy, revision 13 (effective August 25, 2025) and revision 15 (effective March 23, 2026), Section VI.A.6.e.ii.E
+    - title: Arizona DES LIHEAP Policy, revision 13 (effective August 25, 2025), Section VI.A.6.e.ii.E (archived copy)
+      href: https://web.archive.org/web/20251030203752/https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=9
+    - title: Arizona DES LIHEAP Policy, revision 16A (effective July 1, 2026), Section VI.A.6.e.ii.E (the revision 15 wording of March 23, 2026)
       href: https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=9

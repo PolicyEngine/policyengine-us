@@ -15,7 +15,7 @@ class az_liheap_energy_need_points(Variable):
     )
     reference = (
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/AZ_BenefitMatrix_Heating_2026.pdf#page=1",
-        # PDF pages 4, 10
+        # PDF pages 4, 10, 41
         "https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=4",
         "https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=10",
     )
