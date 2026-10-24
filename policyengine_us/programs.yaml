@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AR, AL, DC, GA, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX
+    coverage: AR, AL, DC, GA, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NV, NY, OH, OK, OR, SD, RI, TX
     state_implementations:
       - state: AL
         status: partial
@@ -1124,6 +1124,14 @@ programs:
         parameter_prefix: gov.states.nj.dca.liheap
         verified_years: "2026-2027"
         notes: FY2026-FY2027 regular heating only, covering eligibility, countable income and the benefit grid, including the one renters cell that changes in FY2027; the program is not modeled before FY2022. Crisis, cooling and equipment assistance are out of scope.
+      - state: NV
+        status: partial
+        name: Nevada LIHEAP
+        full_name: Nevada Energy Assistance Program
+        variable: nv_liheap
+        parameter_prefix: gov.states.nv.dwss.liheap
+        verified_years: "2026-2027"
+        notes: SFY2026-SFY2027 Fixed Annual Credit, Nevada's single regular benefit toward primary heating and electric costs, with the $360 minimum and the capped benefit tables. Crisis assistance and weatherization are out of scope.
       - state: NY
         status: partial
         name: New York HEAP
