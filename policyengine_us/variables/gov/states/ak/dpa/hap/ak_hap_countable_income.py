@@ -43,9 +43,10 @@ class ak_hap_countable_income(Variable):
         countable_earned = spm_unit.sum(where(exempt_child, 0, earned))
         # These are cash receipts, so a tax loss in an unearned source does not
         # offset other income. Net rental sources are separately nonnegative.
-        unearned = spm_unit.sum(
-            sum(max_(person(source, period), 0) for source in p.unearned_sources)
-        )
+        unearned_person = 0
+        for source in p.unearned_sources:
+            unearned_person = unearned_person + max_(person(source, period), 0)
+        unearned = spm_unit.sum(unearned_person)
         rental = spm_unit.sum(
             max_(person("rental_income", period), 0)
             + max_(person("farm_rent_income", period), 0)
