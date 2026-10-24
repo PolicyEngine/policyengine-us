@@ -41,35 +41,24 @@ REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 # JUnit measures per-file elapsed time, not memory. The extra boundaries
 # below isolate retained full models and target <= ~10 GB per process;
 # verify those estimates against each group's GNU time report in CI.
-#   core (142 s), policy (185 s), remaining (239 s).
+# heavy-a also holds capital_gains_mtr_measurement (#10058): 396 s of
+# reformed household simulations in run 40045994536, with heavy-a at
+# 8.1 GiB/11:16.
 # SSI resource deeming retains a reformed system at import and builds another
 # in its grid fixture. Core reached 13.3 GB in CI run 38141803955 after this
 # and three smaller modules arrived; isolate SSI rather than filling heavy-a
-# (8.1 GB including the pending capital-gains MTR change). These groups remain
-# sequential subprocesses within each Rest Python shard.
+# (8.1 GB including the pending capital-gains MTR change).
+# CI does not run this target. tests/rest_python_shards.py reads these groups
+# from its dry run and spreads their files over parallel runners by recent
+# CI times, splitting a long group into chunks. A process still runs files
+# of one group only, in this order, so none holds more than its group here.
 REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core-heavy core policy-parameters policy remaining-heavy remaining
-# CI runs two shards of these existing isolated processes. Across seven
-# recent runs (including 38326922385 and 38289790999), their summed group
-# times were 32-45 and 32-46 minutes; variables adds about a minute to shard 1.
-# Both stay near 45 minutes, while the old serial job hit its 90-minute limit.
-# No shard runs more than one Python group at a time. Locally, leaving
-# REST_PYTHON_SHARD unset still runs every group in the original order.
-REST_PYTHON_SHARD_1_GROUPS := cached-arrays core-heavy policy-parameters remaining-heavy remaining
-REST_PYTHON_SHARD_2_GROUPS := heavy-a heavy-b core policy
-REST_PYTHON_SHARD ?=
-ifeq ($(REST_PYTHON_SHARD),)
-REST_PYTHON_SELECTED_GROUPS := $(REST_PYTHON_GROUPS)
-else
-REST_PYTHON_SELECTED_GROUPS := $(REST_PYTHON_SHARD_$(REST_PYTHON_SHARD)_GROUPS)
-ifeq ($(strip $(REST_PYTHON_SELECTED_GROUPS)),)
-$(error REST_PYTHON_SHARD must be 1 or 2)
-endif
-endif
 REST_CACHED_ARRAY_TESTS := $(TESTS)/test_formulas_do_not_write_into_cached_arrays.py
 REST_HEAVY_A_TESTS := $(TESTS)/test_md_poverty_line_credit_invariants.py \
 	$(TESTS)/core/test_ald_determinism.py \
 	$(TESTS)/core/test_dependent_net_investment_income_invariants.py \
-	$(TESTS)/core/test_ssi_state_supplement_medicaid_dependency.py
+	$(TESTS)/core/test_ssi_state_supplement_medicaid_dependency.py \
+	$(TESTS)/core/test_capital_gains_mtr_measurement.py
 REST_HEAVY_B_TESTS := $(TESTS)/core/test_marginal_tax_rate_coverage.py \
 	$(TESTS)/core/test_multi_year_simulation.py \
 	$(TESTS)/core/test_behavioral_response_measurements.py \
@@ -97,10 +86,11 @@ REST_LISTED_TESTS := $(REST_CACHED_ARRAY_TESTS) $(REST_HEAVY_A_TESTS) $(REST_HEA
 	$(REST_CORE_HEAVY_TESTS) $(REST_POLICY_PARAMETER_TESTS) $(REST_REMAINING_HEAVY_TESTS)
 REST_IGNORES := $(addprefix --ignore=,$(TESTS)/policy/contrib $(TESTS)/microsimulation $(REST_SPM_TESTS))
 # $(call rest_pytest,<group>,<paths>,<more paths to ignore>) is the pytest
-# command for one group. CI sets REST_REPORT_DIR, and each group then writes
-# its own JUnit XML and GNU time report there: rest-python-<group>.xml and
-# rest-python-<group>-resources.txt. Unset, it is plain pytest, since macOS
-# /usr/bin/time has no -v.
+# command for one group. With REST_REPORT_DIR set, each group writes its own
+# JUnit XML and GNU time report there: rest-python-<group>.xml and
+# rest-python-<group>-resources.txt; rest_python_shards.py names the groups
+# from these files. Unset, it is plain pytest, since macOS /usr/bin/time has
+# no -v.
 rest_pytest = $(strip $(if $(REST_REPORT_DIR),/usr/bin/time -v -o $(REST_REPORT_DIR)/rest-python-$(1)-resources.txt) \
 	pytest $(2) --maxfail=0 $(REST_IGNORES) $(addprefix --ignore=,$(3)) \
 	$(if $(REST_REPORT_DIR),--junitxml=$(REST_REPORT_DIR)/rest-python-$(1).xml))
@@ -259,7 +249,8 @@ test-yaml-no-structural-other-usda:
 	# The single USDA process peaked at 14.9 GB in CI before a later run
 	# shut down in WIC. Release accumulated model and parameter caches
 	# between eight sequential YAML batches on the same runner. USDA Python
-	# tests remain covered by test-other-python-rest in the Rest job.
+	# tests stay in test-other-python-rest's policy group, which CI spreads
+	# over the planned Rest Python shards.
 	$(BATCH) $(TESTS)/policy/baseline/gov/usda --batches 8 --workers 1
 test-yaml-no-structural-other-ssa-usda: test-yaml-no-structural-other-ssa test-yaml-no-structural-other-usda
 test-yaml-no-structural-other-rest-a:
@@ -306,7 +297,7 @@ test-other-python-spm:
 	pytest $(REST_SPM_TESTS) --maxfail=0
 # Every group runs even after one fails; the target fails if any group did.
 test-other-python-rest:
-	@failed=""; for group in $(REST_PYTHON_SELECTED_GROUPS); do \
+	@failed=""; for group in $(REST_PYTHON_GROUPS); do \
 		echo "=== Rest Python group: $$group ==="; \
 		$(MAKE) --no-print-directory test-other-python-rest-$$group || failed="$$failed $$group"; \
 	done; \

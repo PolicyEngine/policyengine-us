@@ -345,8 +345,8 @@ def _probe():
         del simulation
         gc.collect()
 
-    # Raw Core dataset construction writes to holders directly, without
-    # either US wrapper or the situation builder's migration path.
+    # Raw Core dataset construction runs without either US wrapper or the
+    # situation builder's migration path.
     columns = {"person_id": [1]}
     for entity in ("household", "tax_unit", "spm_unit", "family", "marital_unit"):
         columns[f"person_{entity}_id"] = [1]
@@ -368,7 +368,7 @@ def _probe():
     gc.collect()
 
     # Preserve Core's exact compound input and its annual/downstream
-    # behavior. This simulation has no US compound-period adapter.
+    # behavior. This simulation has no US wrapper.
     inputs = extraction_situation()
     inputs["people"]["retiree"]["social_security_retirement"] = {"year:2024:2": 24_000}
     simulation = SimulationBuilder().build_from_dict(system, inputs)

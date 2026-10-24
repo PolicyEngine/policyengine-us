@@ -124,7 +124,7 @@ def install_social_security_input_compatibility():
     if not getattr(original_set_input, "_social_security_compatibility", False):
 
         @wraps(original_set_input)
-        def set_input(holder, period, value, branch_name="default"):
+        def set_input(holder, period, array, branch_name="default"):
             simulation = holder.simulation
             variable_name = holder.variable.name
             track_public_write = (
@@ -138,7 +138,7 @@ def install_social_security_input_compatibility():
                 and not _initial_social_security_ingress.get()
             )
             if not track_public_write:
-                return original_set_input(holder, period, value, branch_name)
+                return original_set_input(holder, period, array, branch_name)
 
             before = {
                 supplied_period: _recorded_input_location(
@@ -146,7 +146,7 @@ def install_social_security_input_compatibility():
                 )
                 for supplied_period in simulation._get_set_input_periods(variable_name)
             }
-            result = original_set_input(holder, period, value, branch_name)
+            result = original_set_input(holder, period, array, branch_name)
             reported_name = f"{variable_name}_reported"
             reported_periods = set(simulation._get_set_input_periods(reported_name))
             # Period helpers can store a different period from the one passed

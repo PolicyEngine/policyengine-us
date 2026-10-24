@@ -5,10 +5,12 @@ values:
     # premium (rule 67:15:01:18(12)), and TANF through the take-up-gated tanf.
     - ssi
     - pension_income
-    # Military retirement pay is a separate input from the pension inputs that
+    # Military retirement income (retiree pay plus Survivor Benefit Plan
+    # annuities) is a separate input from the pension inputs that
     # pension_income adds, so both are listed; a household reports the amount
-    # in one or the other.
-    - military_retirement_pay
+    # in one or the other. A military survivor annuity belongs in
+    # military_retirement_pay_survivors, not survivor_benefits.
+    - military_retirement_income
     - railroad_benefits
     - survivor_benefits
     - total_unemployment_compensation

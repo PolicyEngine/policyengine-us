@@ -85,7 +85,9 @@ CORE_WRITE_ROUTES = (*WRAPPER_WRITE_ROUTES, (make_core_simulation, "simulation")
 def write_public_input(simulation, name, input_period, values, route):
     if route == "holder":
         return simulation.get_holder(name).set_input(
-            period(input_period), np.asarray(values), simulation.branch_name
+            period=period(input_period),
+            array=np.asarray(values),
+            branch_name=simulation.branch_name,
         )
     return simulation.set_input(name, input_period, values)
 

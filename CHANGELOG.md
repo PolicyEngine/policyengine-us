@@ -1,3 +1,88 @@
+## [2.62.6] - 2026-10-24
+
+### Fixed
+
+- Measure the capital gains marginal tax rate on long-term gains, so capital gains realization responses see the preferential rates and changes to them, and scale the measured rise with income so the rate keeps its precision for large households.
+
+
+## [2.62.5] - 2026-10-24
+
+### Fixed
+
+- Label `save_plan_payment` as a counterfactual, since the SAVE plan is no longer available.
+
+
+## [2.62.4] - 2026-10-24
+
+### Changed
+
+- Run the Rest Python tests on parallel CI shards that a plan job balances from the latest release run's test times, splitting long groups, instead of two chained runners that took about 130 minutes.
+
+
+## [2.62.3] - 2026-10-23
+
+### Changed
+
+- Remove the six-job parallelism caps from Baseline and Contrib CI matrices to use available runner capacity, preserving job dependencies, memory protections, and cancellation behavior.
+
+
+## [2.62.2] - 2026-10-23
+
+### Fixed
+
+- Use Form W-2 box 1 wages, which leave out elective deferrals, and farm income as earned income in the federal, Oregon and Hawaii standard deduction worksheets for dependents and in the Medicaid dependent filing test, which now also subtracts the deductible part of self-employment tax as the worksheet does.
+
+
+## [2.62.1] - 2026-10-23
+
+### Fixed
+
+- Count only tips and overtime received by a filer (a tax unit member who is not a dependent) with a valid SSN toward the qualified tips and overtime deductions (26 U.S.C. 224(e)(1) and 225(d)(1)). A dependent's tips and overtime no longer raise the filer's deductions, and a joint return on which one spouse lacks a valid SSN now deducts the other spouse's tips and overtime instead of nothing.
+- Correct Minnesota unemployment insurance taxable wage bases for 2014 through 2026.
+
+
+## [2.62.0] - 2026-10-23
+
+### Added
+
+- Add federal student loan Income-Based Repayment, SAVE plan (counterfactual) and 10-year standard repayment payments under 20 U.S.C. 1098e and 34 CFR 685.208 and 685.209.
+
+
+## [2.61.3] - 2026-10-23
+
+### Fixed
+
+- Stop Colorado FAMLI, Paid Leave Oregon and WA Cares contributions from applying before their programs started, apply WA Cares from July 1, 2023, and add the 2019-2024 Washington Paid Family and Medical Leave premium rates and employer shares.
+
+
+## [2.61.2] - 2026-10-23
+
+### Fixed
+
+- Wisconsin's itemized deduction credit now uses only the Schedule 1 medical, interest, charitable, and casualty components, excluding miscellaneous deductions and SALT, and subtracts the charitable deduction actually claimed above the line in 2020.
+
+
+## [2.61.1] - 2026-10-23
+
+### Fixed
+
+- Count military Survivor Benefit Plan annuities (military_retirement_pay_survivors) as income in state benefit programs that listed only military_retirement_pay.
+- Count Minnesota CCAP Retirement, Survivors, and Disability Insurance, including dependents' benefits, only above the federal maximum SSI payment, per Minn. Stat. 256P.06, subd. 3(2)(xvi).
+- Base the 2021 New York supplemental EITC payment on the New York State EIC instead of the federal EITC, and apply the $25 minimum payment.
+
+
+## [2.61.0] - 2026-10-23
+
+### Added
+
+- Source captures for eight source-conflict register entries, and a Hawaii dependent care credit case for a claimable but unclaimed filer.
+- Add federal student loan balance inputs and the Repayment Assistance Plan monthly payment under 20 U.S.C. 1087e(q) and 34 CFR 685.209, effective July 1, 2026.
+
+### Fixed
+
+- Allocate Social Security taxation revenue to OASDI using the pre-1993 section 86 inclusion, including the provisional-income limit, and credit Medicare HI with the remaining revenue. Preserve signed tax differences in both shares, including when benefit inclusion reduces tax liability.
+
+
 ## [2.60.4] - 2026-10-23
 
 ### Fixed
