@@ -41,3 +41,35 @@
     state_code: WI
   output:
     wi_homestead_credit: 0
+
+- name: Case 5, a dependent grandchild's survivor benefits do not reduce the claimant's credit.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 18_000
+        taxable_pension_income: 6_000
+        rent: 9_000
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        social_security_survivors: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Household income 23,500 (6,000 + 18,000 - 500), without the
+    # grandchild's 12,000; it is under the 24,680 limit.
+    wi_homestead_income: 23_500
+    wi_homestead_eligible: true
+    # Rent with heat included: 9,000 x 20% = 1,800, capped at 1,460.
+    wi_homestead_property_tax: 1_800
+    # (1,460 - (23,500 - 8,060) x 8.785%) x 80% = (1,460 - 1,356.40) x 80%.
+    # Schedule H's Tables A and B round to bands and give 84.
+    wi_homestead_credit: 82.88
