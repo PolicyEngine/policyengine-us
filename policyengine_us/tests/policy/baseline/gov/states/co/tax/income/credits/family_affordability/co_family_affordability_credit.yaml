@@ -118,3 +118,45 @@
   output:
     co_family_affordability_credit: [0, 0, 0]
     co_refundable_credits: 0
+
+- name: Colorado family affordability credit in 2025
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+      child:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        adjusted_gross_income: 0
+    households:
+      household:
+        members: [head, child]
+        state_code: CO
+  output:
+    co_family_affordability_credit: [0, 3_273]
+
+- name: Colorado pauses the family affordability credit in 2026
+  period: 2026
+  input:
+    people:
+      head:
+        age: 30
+      child:
+        age: 1
+      older_child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [head, child, older_child]
+        adjusted_gross_income: 0
+    households:
+      household:
+        members: [head, child, older_child]
+        state_code: CO
+  output:
+    # C.R.S. 39-22-130(6)(f): no credit when forecast revenue growth is below
+    # three percent; the Department of Revenue pauses it for tax year 2026.
+    co_family_affordability_credit: [0, 0, 0]

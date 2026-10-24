@@ -4,7 +4,14 @@ from policyengine_us.model_api import *
 class id_ctc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Idaho Child Tax Credit"
+    label = "Idaho child tax credit worksheet amount"
+    documentation = (
+        "Worksheet amount of the Idaho child tax credit. Idaho Code 63-3029L(1) "
+        "allows the credit only for taxable years beginning before January 1, "
+        "2026; from 2026 the nonrefundable credit list and the state child tax "
+        "credit totals leave it out, so it applies only under a reform that "
+        "revives it."
+    )
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.ID
