@@ -1,14 +1,18 @@
 description: New Mexico limits initial income eligibility to this percentage of the federal poverty guideline under the Child Care Assistance Program.
-# Codified vs. operative layering. The NMAC rule (8.15.2.9) codifies a 200% FPG
-# initial-certification ceiling. Since May 1, 2022, however, ECECD has operated
-# CCAP under successively broader emergency/expansion policies: the Legislative
-# Finance Committee's December 2025 policy brief documents an operative initial
-# ceiling of 400% FPG from May 1, 2022 (held at 400% through the July 1, 2023
-# copay-waiver expiration), and no income limit at all once Universal Child Care
-# took effect November 1, 2025. We encode the operative ceilings (which is what
-# actually determined eligibility) rather than the superseded codified 200%, and
-# set the limit to infinity from 2025-11-01 (income_limit_in_effect also turns
-# off then, short-circuiting the income test). Earlier operative expansions
+# Codified vs. operative layering. The NMAC rule (8.15.2.9.F, then 8.9.3.9.F
+# from 2022-11-01) codifies a 200% FPG initial-certification ceiling, or 400%
+# for essential workers in priority four plus (Subsection G). Since May 1,
+# 2022, however, ECECD has operated CCAP under successively broader
+# emergency/expansion policies: the Legislative Finance Committee's December
+# 2025 policy brief documents an operative initial ceiling of 400% FPG from May
+# 1, 2022 (held at 400% through the July 1, 2023 copay-waiver expiration), and
+# no income limit at all once Universal Child Care took effect November 1,
+# 2025. The 2025-11-04 amendment added category four C with no income cap
+# (8.9.3.9.H), and the rule that replaced 8.9.3 NMAC on 2026-09-09 sets no
+# income limit. We encode the operative ceilings (which is what actually
+# determined eligibility) rather than the superseded codified 200%, and set the
+# limit to infinity from 2025-11-01 (income_limit_in_effect also turns off
+# then, short-circuiting the income test). Earlier operative expansions
 # (150%/350% before May 2022) predate CCAP coverage in PolicyEngine and are not
 # encoded.
 values:
@@ -21,8 +25,14 @@ metadata:
   period: year
   label: New Mexico CCAP initial income limit
   reference:
-    - title: 8.15.2.9 NMAC (codified 200% initial ceiling)
+    - title: 8.15.2.9 NMAC (codified 200% initial ceiling, before 2022-11-01)
       href: https://www.srca.nm.gov/parts/title08/08.015.0002.html
+    - title: 8.9.3.9.F-G NMAC (codified 200% and essential-worker 400% initial ceilings, 2022-11-01 to 2025-11-03)
+      href: https://www.srca.nm.gov/parts/title08/08.009.0003.html
+    - title: 8.9.3.9.H NMAC, as amended effective 2025-11-04 (category four C has no income cap)
+      href: https://www.nmececd.org/wp-content/uploads/2025/11/8.9.3_integrated_FULL-TEXT.pdf#page=6
+    - title: "8.9.3.10.C and 8.9.3.12-13 NMAC (from 2026-09-09; no income limit, income sets waitlist priority only) #page 9,12"
+      href: https://prod-rf-lambda.rtssaas.com/PublicFiles/d89c47bd0d70402dba89b03a22bda6d1/b0e207a9-a1a3-412d-9660-0a6e925f6f25/8.9.3.pdf#page=9
     - title: LFC Policy Brief, New Mexico Childcare Assistance Eligibility Changes (Dec 9 2025), p.2 (operative 400% from 2022-05-01; no income limit from 2025-11-01)
       href: https://www.nmlegis.gov/handouts/ALFC%20120825%20Item%208%20Policy%20Brief%20Child%20Care%20Update.pdf#page=2
     - title: ECECD Universal Child Care (no income limit from 2025-11-01)
