@@ -96,7 +96,7 @@
 # Missouri's limits from July 1, 2025 are 6,068.80 for one person and
 # 12,137.55 for a couple. One spouse holds more than the individual limit,
 # but the couple's combined resources are tested against the couple limit.
-- name: Missouri spouse over the individual limit is eligible when combined resources are under the couple limit
+- name: Missouri spouse over the individual limit is eligible when combined resources are under the couple limit.
   period: 2026
   input:
     people:
@@ -121,7 +121,7 @@
     # 11,500 combined is under 12,137.55.
     is_optional_senior_or_disabled_asset_eligible: [true, true]
 
-- name: Missouri couple at the couple resource limit is ineligible
+- name: Missouri couple at the couple resource limit is ineligible.
   period: 2026
   input:
     people:
@@ -200,3 +200,125 @@
   output:
     # 9,600 is under the 2025 limit of 9,660.
     is_optional_senior_or_disabled_asset_eligible: true
+
+- name: Arkansas applicant at the 2026 Medicare Savings Program individual resource limit is eligible.
+  period: 2026
+  input:
+    age: 70
+    ssi_countable_resources: 9_950
+    state_code: AR
+  output:
+    # MS 23110(6): resources "equal to but not exceeding" the MSP standard.
+    # 9,950 equals the 2026 limit of 9,950.
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: Arkansas applicant one dollar over the 2026 Medicare Savings Program individual resource limit is ineligible.
+  period: 2026
+  input:
+    age: 70
+    ssi_countable_resources: 9_951
+    state_code: AR
+  output:
+    # 9,951 exceeds the 2026 limit of 9,950.
+    is_optional_senior_or_disabled_asset_eligible: false
+
+- name: South Carolina applicant at the 2026 Medicare Savings Program individual resource limit is eligible.
+  period: 2026
+  input:
+    age: 70
+    ssi_countable_resources: 9_950
+    state_code: SC
+  output:
+    # MPPM 303.06.02: countable resources "must be at or below" 9,950.
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: Oklahoma couple at the 2026 Medicare Savings Program couple resource limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 7_455
+      person2:
+        age: 68
+        ssi_countable_resources: 7_455
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # C-1 Schedule VI: resources "equal to or less than" 14,910.
+    # 7,455 + 7,455 = 14,910 combined.
+    is_optional_senior_or_disabled_asset_eligible: [true, true]
+
+- name: Oklahoma uses the 2023 Medicare Savings Program individual resource limit.
+  period: 2023
+  input:
+    age: 70
+    ssi_countable_resources: 5_000
+    state_code: OK
+  output:
+    # 5,000 is under the 2023 limit of 9,090.
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: Oklahoma uses the 2015 Medicare Savings Program couple resource limit.
+  period: 2015
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 5_000
+      person2:
+        age: 68
+        ssi_countable_resources: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # 10,000 combined is under the 2015 couple limit of 10,930.
+    is_optional_senior_or_disabled_asset_eligible: [true, true]
+
+- name: Arkansas uses the 2016 Medicare Savings Program individual resource limit.
+  period: 2016
+  input:
+    age: 70
+    ssi_countable_resources: 7_400
+    state_code: AR
+  output:
+    # 7,400 is over the 2016 limit of 7,280.
+    is_optional_senior_or_disabled_asset_eligible: false
+
+- name: South Carolina uses the 2023 Medicare Savings Program individual resource limit.
+  period: 2023
+  input:
+    age: 70
+    ssi_countable_resources: 9_000
+    state_code: SC
+  output:
+    # 9,000 is under the 2023 limit of 9,090.
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: South Carolina applies the 2025 Medicare Savings Program limit, not the 2026 limit, in 2025.
+  period: 2025
+  input:
+    age: 70
+    ssi_countable_resources: 9_700
+    state_code: SC
+  output:
+    # 9,700 is over the 2025 limit of 9,660, though under the 2026 limit of 9,950.
+    is_optional_senior_or_disabled_asset_eligible: false

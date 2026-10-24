@@ -17,6 +17,8 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-015-00/",
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-015-00/0805-015-25/",
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-015-00/0805-015-40/",
+        # California ABD FPL Part B and health insurance premium deductions
+        "https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/20-24.pdf#page=3",
     )
 
     def formula(person, period, parameters):
@@ -43,11 +45,11 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
         state = person.household("state_code_str", period)
         p = parameters(
             period
-        ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.disregard
+        ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income
         income_disregard = where(
             couple_computation,
-            p.couple[state],
-            p.individual[state],
+            p.disregard.couple[state],
+            p.disregard.individual[state],
         )
         personal_countable = _apply_medicaid_optional_senior_or_disabled_exclusions(
             earned_income,
@@ -56,6 +58,24 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
             income_disregard,
             parameters,
             period,
+        )
+
+        # ACWDL 20-24 deducts Part B "regardless of how the premium is paid",
+        # so use the base premium, not the premium net of MSP coverage.
+        medicare_enrolled = person("medicare_enrolled", period)
+        part_b_premium = person("base_part_b_premium", period) * medicare_enrolled
+        other_premiums = person(
+            "health_insurance_premiums_without_medicare_part_b", period
+        )
+        own_premiums = part_b_premium + other_premiums
+        premiums = where(
+            couple_computation,
+            person.marital_unit.sum(own_premiums),
+            own_premiums,
+        )
+        deducts_premiums = p.deducts_health_insurance_premiums[state].astype(bool)
+        personal_countable = max_(
+            personal_countable - where(deducts_premiums, premiums, 0), 0
         )
 
         spousal_deemed = person(
