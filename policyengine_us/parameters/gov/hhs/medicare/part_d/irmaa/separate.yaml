@@ -12,6 +12,26 @@ metadata:
       href: https://www.law.cornell.edu/uscode/text/42/1395r#i
     - title: 42 CFR § 423.286(d)(4) - Part D IRMAA paid in addition to the Part D premium.
       href: https://www.law.cornell.edu/cfr/text/42/423.286#d_4
+    - title: CMS, Annual Release of Part D National Average Bid Amount and other Part C & D Bid Information (July 31, 2014)
+      href: https://www.cms.gov/medicare/health-plans/medicareadvtgspecratestats/downloads/partdandmabenchmarks2015.pdf#page=4
+    - title: CMS, Annual Release of Part D National Average Bid Amount and other Part C & D Bid Information (July 29, 2015)
+      href: https://www.cms.gov/medicare/health-plans/medicareadvtgspecratestats/downloads/partdandmabenchmarks2016.pdf#page=4
+    - title: CMS, Annual Release of Part D National Average Bid Amount and Other Part C & D Bid Information (July 29, 2016)
+      href: https://www.cms.gov/medicare/health-plans/medicareadvtgspecratestats/downloads/partdandmabenchmarks2017.pdf#page=5
+    - title: CMS, Annual Release of Part D National Average Bid Amount and Other Part C & D Bid Information (July 31, 2017)
+      href: https://www.cms.gov/medicare/health-plans/medicareadvtgspecratestats/downloads/partdandmabenchmarks2018.pdf#page=5
+    - title: CMS, Annual Release of Part D National Average Bid Amount and Other Part C & D Bid Information (July 31, 2018)
+      href: https://www.cms.gov/medicare/health-plans/medicareadvtgspecratestats/downloads/partdandmabenchmarks2019.pdf#page=5
+    - title: CMS Office of the Actuary, 2020 Part D Income-Related Monthly Premium Adjustment
+      href: https://www.cms.gov/Medicare/Health-Plans/MedicareAdvtgSpecRateStats/Downloads/PartDIRMAA2020.pdf#page=3
+    - title: CMS Office of the Actuary, 2021 Part D Income-Related Monthly Premium Adjustment
+      href: https://www.cms.gov/files/document/2021-part-d-income-related-monthly-premium-adjustment.pdf#page=3
+    - title: 2022 Medicare Parts A & B Premiums and Deductibles and 2022 Medicare Part D Income-Related Monthly Adjustment Amounts
+      href: https://www.cms.gov/newsroom/fact-sheets/2022-medicare-parts-b-premiums-deductibles-2022-medicare-part-d-income-related-monthly-adjustment
+    - title: 2023 Medicare Parts A & B Premiums and Deductibles and 2023 Medicare Part D Income-Related Monthly Adjustment Amounts
+      href: https://www.cms.gov/newsroom/fact-sheets/2023-medicare-parts-b-premiums-and-deductibles-2023-medicare-part-d-income-related-monthly
+    - title: 2026 Medicare Trustees Report, Table V.E4
+      href: https://www.cms.gov/oact/tr/2026#page=218
     - title: 2024 Medicare Parts A & B Premiums and Deductibles
       href: https://www.cms.gov/newsroom/fact-sheets/2024-medicare-parts-b-premiums-and-deductibles
     - title: 2025 Medicare Parts A & B Premiums and Deductibles
@@ -20,26 +40,70 @@ metadata:
       href: https://www.cms.gov/newsroom/fact-sheets/2026-medicare-parts-b-premiums-deductibles
 brackets:
   - threshold:
+      2015-01-01: 0
       2024-01-01: 0
       2025-01-01: 0
       2026-01-01: 0
     amount:
+      2015-01-01: 0
       2024-01-01: 0
       2025-01-01: 0
       2026-01-01: 0
   - threshold:
+      # The 65% tier before 2018 and the 80% tier from 2018.
+      2015-01-01: 85_001
+      2016-01-01: 85_001
+      2017-01-01: 85_001
+      2018-01-01: 85_001
+      2019-01-01: 85_001
+      2020-01-01: 87_001
+      2021-01-01: 88_001
+      2022-01-01: 91_001
+      2023-01-01: 97_001
       2024-01-01: 103_001
       2025-01-01: 106_001
       2026-01-01: 109_001
     amount:
+      2015-01-01: 51.30
+      2016-01-01: 52.80
+      2017-01-01: 55.20
+      2018-01-01: 74.80
+      2019-01-01: 70.90
+      2020-01-01: 70.00
+      2021-01-01: 70.70
+      2022-01-01: 71.30
+      2023-01-01: 70.00
       2024-01-01: 74.20
       2025-01-01: 78.60
       2026-01-01: 83.30
   - threshold:
+      # The 80% tier before 2018 and the 85% tier from 2019. Married filing
+      # separately reduces each individual dollar amount by the $85,000
+      # threshold (42 U.S.C. 1395r(i)(3)(C)(iii)); in 2018 the 65% tier then
+      # ended at $75,000, below the threshold, so only the 80% tier applied.
+      2015-01-01: 129_001
+      2016-01-01: 129_001
+      2017-01-01: 129_001
+      2018-01-01: .inf
+      2019-01-01: 415_000
+      2020-01-01: 413_000
+      2021-01-01: 412_000
+      2022-01-01: 409_000
+      2023-01-01: 403_000
       2024-01-01: 397_000
       2025-01-01: 394_000
       2026-01-01: 391_000
     amount:
+      # 2018 repeats the 80% tier amount; its threshold is unreachable.
+      2015-01-01: 70.80
+      2016-01-01: 72.90
+      2017-01-01: 76.20
+      2018-01-01: 74.80
+      2019-01-01: 77.40
+      2020-01-01: 76.40
+      2021-01-01: 77.10
+      2022-01-01: 77.90
+      2023-01-01: 76.40
       2024-01-01: 81.00
       2025-01-01: 85.80
       2026-01-01: 91

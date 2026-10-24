@@ -6,6 +6,28 @@ metadata:
   period: month
   label: Medicare Part B income brackets for head of household filers
   reference:
+    - title: 42 U.S.C. § 1395r(i)
+      href: https://www.law.cornell.edu/uscode/text/42/1395r#i
+    - title: Medicare Part B premium rates beginning January 1, 2015 (79 FR 61314)
+      href: https://www.govinfo.gov/content/pkg/FR-2014-10-10/pdf/2014-24248.pdf#page=3
+    - title: Medicare Part B premium rates beginning January 1, 2016 (80 FR 70811)
+      href: https://www.govinfo.gov/content/pkg/FR-2015-11-16/pdf/2015-29181.pdf#page=4
+    - title: Medicare Part B premium rates beginning January 1, 2017 (81 FR 80063)
+      href: https://www.govinfo.gov/content/pkg/FR-2016-11-15/pdf/2016-27425.pdf#page=4
+    - title: Medicare Part B premium rates beginning January 1, 2018 (82 FR 55370)
+      href: https://www.govinfo.gov/content/pkg/FR-2017-11-21/pdf/2017-24877.pdf#page=3
+    - title: Medicare Part B premium rates beginning January 1, 2019 (83 FR 52462)
+      href: https://www.govinfo.gov/content/pkg/FR-2018-10-17/pdf/2018-22530.pdf#page=4
+    - title: Medicare Part B premium rates beginning January 1, 2020 (84 FR 61625)
+      href: https://www.govinfo.gov/content/pkg/FR-2019-11-13/pdf/2019-24440.pdf#page=3
+    - title: "Medicare Part B premium rates beginning January 1, 2021 (85 FR 71904) #page 3-4"
+      href: https://www.govinfo.gov/content/pkg/FR-2020-11-12/pdf/2020-25029.pdf#page=3
+    - title: Medicare Part B premium rates beginning January 1, 2022 (86 FR 64205)
+      href: https://www.govinfo.gov/content/pkg/FR-2021-11-17/pdf/2021-25050.pdf#page=4
+    - title: Medicare Part B premium rates beginning January 1, 2023 (87 FR 59080)
+      href: https://www.govinfo.gov/content/pkg/FR-2022-09-29/pdf/2022-21090.pdf#page=4
+    - title: 2026 Medicare Trustees Report, Table V.E3
+      href: https://www.cms.gov/oact/tr/2026#page=215
     - title: 2024 Medicare Parts A & B Premiums and Deductibles
       href: https://www.cms.gov/newsroom/fact-sheets/2024-medicare-parts-b-premiums-and-deductibles
     - title: 2025 Medicare Parts A & B Premiums and Deductibles
@@ -14,50 +36,144 @@ metadata:
       href: https://www.cms.gov/newsroom/fact-sheets/2026-medicare-parts-b-premiums-deductibles
 brackets:
   - threshold:
+      2015-01-01: 0
       2024-01-01: 0
       2025-01-01: 0
       2026-01-01: 0
     amount:
+      2015-01-01: 0
       2024-01-01: 0
       2025-01-01: 0
       2026-01-01: 0
   - threshold:
+      2015-01-01: 85_001
+      2016-01-01: 85_001
+      2017-01-01: 85_001
+      2018-01-01: 85_001
+      2019-01-01: 85_001
+      2020-01-01: 87_001
+      2021-01-01: 88_001
+      2022-01-01: 91_001
+      2023-01-01: 97_001
       2024-01-01: 103_001
       2025-01-01: 106_001
       2026-01-01: 109_001
     amount:
+      2015-01-01: 42.00
+      2016-01-01: 48.70
+      2017-01-01: 53.50
+      2018-01-01: 53.50
+      2019-01-01: 54.10
+      2020-01-01: 57.80
+      2021-01-01: 59.40
+      2022-01-01: 68.00
+      2023-01-01: 65.90
       2024-01-01: 69.90
       2025-01-01: 74
       2026-01-01: 81.20
   - threshold:
+      2015-01-01: 107_001
+      2016-01-01: 107_001
+      2017-01-01: 107_001
+      2018-01-01: 107_001
+      2019-01-01: 107_001
+      2020-01-01: 109_001
+      2021-01-01: 111_001
+      2022-01-01: 114_001
+      2023-01-01: 123_001
       2024-01-01: 129_001
       2025-01-01: 133_001
       2026-01-01: 137_001
     amount:
+      2015-01-01: 104.90
+      2016-01-01: 121.80
+      2017-01-01: 133.90
+      2018-01-01: 133.90
+      2019-01-01: 135.40
+      2020-01-01: 144.60
+      2021-01-01: 148.50
+      2022-01-01: 170.10
+      2023-01-01: 164.80
       2024-01-01: 174.70
       2025-01-01: 185
       2026-01-01: 202.90
   - threshold:
+      2015-01-01: 160_001
+      2016-01-01: 160_001
+      2017-01-01: 160_001
+      2018-01-01: 133_501
+      2019-01-01: 133_501
+      2020-01-01: 136_001
+      2021-01-01: 138_001
+      2022-01-01: 142_001
+      2023-01-01: 153_001
       2024-01-01: 161_001
       2025-01-01: 167_001
       2026-01-01: 171_001
     amount:
+      2015-01-01: 167.80
+      2016-01-01: 194.90
+      2017-01-01: 214.30
+      2018-01-01: 214.30
+      2019-01-01: 216.70
+      2020-01-01: 231.40
+      2021-01-01: 237.60
+      2022-01-01: 272.20
+      2023-01-01: 263.70
       2024-01-01: 279.50
       2025-01-01: 295.9
       2026-01-01: 324.60
   - threshold:
+      2015-01-01: 214_001
+      2016-01-01: 214_001
+      2017-01-01: 214_001
+      2018-01-01: 160_001
+      2019-01-01: 160_001
+      2020-01-01: 163_001
+      2021-01-01: 165_001
+      2022-01-01: 170_001
+      2023-01-01: 183_001
       2024-01-01: 193_001
       2025-01-01: 200_001
       2026-01-01: 205_001
     amount:
+      2015-01-01: 230.80
+      2016-01-01: 268.00
+      2017-01-01: 294.60
+      2018-01-01: 294.60
+      2019-01-01: 297.90
+      2020-01-01: 318.10
+      2021-01-01: 326.70
+      2022-01-01: 374.20
+      2023-01-01: 362.60
       2024-01-01: 384.30
       2025-01-01: 406.9
       2026-01-01: 446.30
   - threshold:
+      # The 85% tier begins in 2019 (Bipartisan Budget Act of 2018, section 53114).
+      2015-01-01: .inf
+      2016-01-01: .inf
+      2017-01-01: .inf
+      2018-01-01: .inf
+      2019-01-01: 500_000
+      2020-01-01: 500_000
+      2021-01-01: 500_000
+      2022-01-01: 500_000
+      2023-01-01: 500_000
       2024-01-01: 500_000
       2025-01-01: 500_000
       2026-01-01: 500_000
     amount:
+      # Before 2019 the threshold is unreachable and the amount repeats the 80% tier.
+      2015-01-01: 230.80
+      2016-01-01: 268.00
+      2017-01-01: 294.60
+      2018-01-01: 294.60
+      2019-01-01: 325.00
+      2020-01-01: 347.00
+      2021-01-01: 356.40
+      2022-01-01: 408.20
+      2023-01-01: 395.60
       2024-01-01: 419.30
       2025-01-01: 443.9
       2026-01-01: 487
