@@ -1,0 +1,157 @@
+# Gross household income with no deductions (rules 2910 and 2911; P-2910: "Fuel has
+# no deductions for income"). Earned income (2911.1), unearned income including Reach
+# Up and child support (2911.2) and self-employment (2911.3) count. The earned income
+# of a member under 18 who lives with a parent and attends elementary or high school
+# at least half time is excluded (2912(a)(12)), including during vacation breaks.
+# Rules, "#page 25-29,34":
+# https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=25
+# Modeling assumption: each source is floored at zero per person, so a self-employment loss
+# cannot offset wages. Reach Up is the SPM unit's tanf, counted once.
+# Wages use the 2026 Vermont minimum wage, $14.42 an hour (Vermont Department of
+# Labor, indexed under 21 V.S.A. 384(a)).
+
+- name: Case 1, wages, child support and Reach Up add up with no deductions.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 31
+        # 14.42 x 20 hours x 52 weeks = 14,996.80.
+        employment_income: 14_996.8
+        # 200 a month.
+        child_support_received: 2_400
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+        # Reach Up of 600 a month.
+        tanf: 7_200
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: VT
+  output:
+    # 14,996.80 + 2,400 + 7,200 = 24,596.80.
+    vt_liheap_income: 24_596.8
+
+- name: Case 2, a self-employment loss does not reduce wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 47
+        # 14.42 x 25 hours x 52 weeks = 18,746.
+        employment_income: 18_746
+        # A small craft business that lost money.
+        self_employment_income: -4_200
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VT
+  output:
+    # Wages 18,746 + max(-4,200, 0) = 18,746, not 14,546.
+    vt_liheap_income: 18_746
+
+- name: Case 3, a 16-year-old student's earnings are excluded but older or out-of-school teens' count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 44
+        # 14.42 x 40 hours x 52 weeks = 29,993.60.
+        employment_income: 29_993.6
+      child1:
+        age: 16
+        is_in_k12_school: true
+        is_tax_unit_dependent: true
+        # Summer job: 14.42 x 15 hours x 10 weeks = 2,163.
+        employment_income: 2_163
+      child2:
+        age: 17
+        is_in_k12_school: false
+        is_tax_unit_dependent: true
+        # Left school and works 14.42 x 30 hours x 52 weeks = 22,495.20.
+        employment_income: 22_495.2
+      child3:
+        age: 18
+        is_in_k12_school: true
+        is_tax_unit_dependent: true
+        # High school senior: 14.42 x 12 hours x 40 weeks = 6,921.60.
+        employment_income: 6_921.6
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2, child3]
+        # No Reach Up.
+        tanf: 0
+    households:
+      household:
+        members: [head, child1, child2, child3]
+        state_code: VT
+  output:
+    # child1 is under 18, a dependent and in school: excluded. child2 is not in
+    # school and child3 is 18: both counted.
+    # 29,993.60 + 22,495.20 + 6,921.60 = 59,410.40.
+    vt_liheap_income: 59_410.4
+
+- name: Case 4, Social Security and IRA withdrawals both count in full.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 73
+        # Social Security of 1,200 a month, gross of the Medicare premium.
+        social_security_retirement: 14_400
+        # Required minimum distributions from a traditional IRA.
+        taxable_ira_distributions: 3_000
+        # Social Security is above the SSI federal benefit rate.
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VT
+  output:
+    # Rule 2911.2(b)(4) and (9) count retirement benefits, including retirement
+    # account distributions, and social security: 14,400 + 3,000 = 17,400.
+    vt_liheap_income: 17_400
+
+- name: Case 5, a 16-year-old student who is not a tax dependent has her earnings counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 16
+        is_in_k12_school: true
+        # A teen parent who lives on her own with her child, so she is not
+        # under parental control or anyone's tax dependent.
+        is_tax_unit_dependent: false
+        # After-school job: 14.42 x 15 hours x 52 weeks = 11,247.60.
+        employment_income: 11_247.6
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # No Reach Up.
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # person1 is under 18 and in school but not a dependent, so rule
+    # 2912(a)(12) does not exclude her wages: 11,247.60.
+    vt_liheap_income: 11_247.6

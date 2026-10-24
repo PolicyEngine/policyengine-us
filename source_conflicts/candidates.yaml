@@ -5419,6 +5419,70 @@ candidates:
     prs: []
   state: unreviewed
   note: PE-US follows Virginia's regulation; verify the federal-fiscal-2024 report against the contemporaneous rule.
+- id: us-vt:liheap-income-maximum-large-households
+  program: liheap
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: Does the Seasonal Fuel Assistance income limit for households of 10 or more stop at the LIHEAP maximum
+    the statute adds, below the 185% amounts the procedure table prints?
+  sources:
+  - kind: statute
+    citation: 33 V.S.A. § 2604(a)
+    url: https://legislature.vermont.gov/statutes/section/33/026/02604
+  - kind: regulation
+    citation: Vermont Seasonal Fuel Assistance Rule 2913(b)
+    url: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=38
+  - kind: manual
+    citation: DCF Procedure P-2913, Income Guidelines, effective March 1, 2025 to February 28, 2026
+    url: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2913.pdf
+  readings:
+    statute: Gross income may exceed neither 185% of the poverty guideline nor the LIHEAP maximum (the greater of 150%
+      of the guideline and 60% of state median income), so the FFY2026 size-10 limit is $113,748 a year.
+    other: P-2913 prints the 185% amounts for sizes 10-15 (size 10 $10,044 a month, $120,528 a year) without the LIHEAP
+      maximum.
+  example: A 10-person household with $115,000 of gross income in 2026 is ineligible under the statute and eligible under
+    the printed table.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/vt/dcf/liheap/eligibility/vt_liheap_income_limit.py
+    prs: []
+  state: ruled
+  note: Rule 2913(b) repeats both statutory tests. No document shows whether DCF applies the LIHEAP maximum to large
+    households. Code not yet on main.
+- id: us-vt:liheap-income-maximum-rounding
+  program: liheap
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: Does the Seasonal Fuel Assistance income maximum stop at exactly 185% of the poverty guideline where
+    the procedure table's rounded monthly amounts are higher?
+  sources:
+  - kind: statute
+    citation: 33 V.S.A. § 2604(a)
+    url: https://legislature.vermont.gov/statutes/section/33/026/02604
+  - kind: regulation
+    citation: Vermont Seasonal Fuel Assistance Rules 2913(b)-(c) and 2914(a)(3)
+    url: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=38
+  - kind: manual
+    citation: DCF Procedure P-2913, Income Guidelines, effective March 1, 2025 to February 28, 2026
+    url: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2913.pdf
+  readings:
+    statute: Gross income may not exceed exactly 185% of the poverty guideline, so the FFY2026 two-person limit is
+      $39,127.50 a year ($3,260.625 a month).
+    other: P-2913 prints 185% of the monthly guideline rounded half up to the dollar, above 185% of the guideline for
+      some sizes (two people $3,262 a month, $39,144 a year).
+  example: A two-person household with $3,261 a month ($39,132 a year) of gross income in 2026 is eligible under the
+    printed table and ineligible under the statute.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/vt/dcf/liheap/eligibility/vt_liheap_income_limit.py
+    prs: []
+  state: ruled
+  note: The statute sets a ceiling, so the printed amount applies where it rounds below 185% (one person $2,412 a
+    month against $2,412.71). Code not yet on main.
 - id: us-vt:low-income-cdcc-threshold-equality
   program: income-tax
   years:
