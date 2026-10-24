@@ -1,0 +1,1 @@
+Use the 50% earned income disregard for New Hampshire FANF recipients from September 2022 onward, per He-W 654.13(e) and FAM 603.01, instead of the 75% Cliff Effect pilot rate, which applied only to pilot participants who started or moved to full-time work.
