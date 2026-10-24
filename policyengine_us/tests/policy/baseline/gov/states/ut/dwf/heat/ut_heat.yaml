@@ -1374,11 +1374,10 @@
     ut_heat_income_limit: 23_940
     ut_heat: 0
 
-# Sections 402/404 distinguish unearned receipts from current net business losses.
-# Estate loss: 15,000 + 12,000 = 27,000, above the 23,940 limit.
-# Current business loss: 15,000 + 12,000 - 12,000 = 15,000;
-# monthly income 1,250 gives 250 - ceil(100 * 1,250 / 1,330) + 170 = 326.
-- name: "Case 45, estate losses cannot erase pensions while current business losses remain counted."
+# Sections 402/404: each source is floored at zero, so neither an estate loss
+# nor a current business loss offsets other income.
+# Both households: 15,000 + 12,000 = 27,000, above the 23,940 limit.
+- name: "Case 45, neither estate losses nor business losses erase wages and pensions."
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -1416,8 +1415,8 @@
         members: [person2]
         state_code: UT
   output:
-    ut_heat_countable_income: [27_000, 15_000]
-    ut_heat: [0, 326]
+    ut_heat_countable_income: [27_000, 27_000]
+    ut_heat: [0, 0]
 
 # Section 407 permits household-paid, unreimbursed medical premiums. Pretax
 # payroll premiums are disjoint from the alternative nonpretax aggregate/components.

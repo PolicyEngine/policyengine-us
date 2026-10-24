@@ -544,8 +544,8 @@
   output:
     ut_heat_countable_income: 15_960
 
-# Signed current net business 15960-3960=12000; prior-period loss reconstruction unavailable.
-- name: "Case 21, current net business loss offsets other income."
+# Each business source is floored at zero: 15,960 + 0 = 15,960; prior-period loss reconstruction unavailable.
+- name: "Case 21, current net business loss does not offset other income."
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -567,7 +567,7 @@
         members: [person1]
         state_code: UT
   output:
-    ut_heat_countable_income: 12_000
+    ut_heat_countable_income: 15_960
 
 # A supplied positive premium aggregate takes precedence over its components.
 # Components represent paid, unreimbursed premiums; no calculated Medicare premium is used.

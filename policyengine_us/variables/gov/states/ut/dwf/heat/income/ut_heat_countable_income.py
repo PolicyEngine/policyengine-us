@@ -35,14 +35,17 @@ class ut_heat_countable_income(Variable):
         # income, as do manual section 204 and the FY2026 benefit matrix
         # workbook.
         wages = max_(person("employment_income", period), 0)
-        business = add(person, period, p.business_income_sources)
+        business = 0
+        for source in p.business_income_sources:
+            business = business + max_(person(source, period), 0)
         rental = max_(person("rental_income", period), 0) + max_(
             person("farm_rent_income", period), 0
         )
         # Existing net business inputs stand for current net amounts. They do
         # not reconstruct HEAT expenses or isolate disallowed prior-period
-        # losses. Current reported losses enter the household total; rental
-        # losses do not. No business expense or insurance is deducted twice.
+        # losses. Each business and rental source is floored at zero, so a
+        # loss does not offset other income. No business expense or insurance
+        # is deducted twice.
         unearned = 0
         for source in p.unearned_income_sources:
             unearned = unearned + max_(person(source, period), 0)
