@@ -43,9 +43,10 @@
     ca_non_refundable_credits: 0
     ca_amt: 0
   output:
-    # Regular tax 3,201.97f + .093 x (2,000,000 - 72,724f) = 181,942.90 (f = 196.85 / 172.797),
+    # The 2026 FTB schedule times f = 197.44 / 177.11375 gives regular tax
+    # 3,310.88f + .093 x (2,000,000 - 75,197f) = 181,894.95,
     # plus mental health services tax .01 x (2,000,000 - 1,000,000) = 10,000.
-    ca_income_tax_before_refundable_credits: 191_942.90
+    ca_income_tax_before_refundable_credits: 191_894.95
 
 # PolicyBench scenario_099, snapshot 20260501, tax year 2026. Exact inputs
 # copied from scenario_json via the PolicyBench household converter.
@@ -54,8 +55,9 @@
 # https://www.ftb.ca.gov/forms/2025/2025-540-booklet.pdf#page=64
 # On this model head, CA deductions are $12,621 donations + $8,653.50
 # property tax = $21,274.50, so taxable income is $138,792.30. Applying the
-# 2026 indexed joint brackets gives $5,752.91 less $1,284.46 exemptions
-# = $4,468.45 tax. Restoring $337.50 at 8% adds $27 to the unfixed $4,441.45.
+# published 2026 joint brackets gives $5,693.62 less $1,298 exemptions
+# (2 x $158 personal + 2 x $491 dependent) = $4,395.62 tax. Restoring
+# $337.50 at 8% adds $27 to the unfixed $4,368.62.
 - name: 2026, PolicyBench scenario_099 restores the spouse educator deduction
   period: 2026
   absolute_error_margin: 0.02
@@ -194,6 +196,6 @@
     ca_agi: 160066.8
     ca_deductions: 21274.50
     ca_taxable_income: 138792.30
-    ca_income_tax_before_credits: 5752.91
-    ca_non_refundable_credits: 1284.46
-    ca_income_tax_before_refundable_credits: 4468.45
+    ca_income_tax_before_credits: 5693.62
+    ca_non_refundable_credits: 1298
+    ca_income_tax_before_refundable_credits: 4395.62

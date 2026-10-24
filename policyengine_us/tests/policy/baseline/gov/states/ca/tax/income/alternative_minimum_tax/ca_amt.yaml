@@ -64,11 +64,12 @@
     ca_amt_exemption: 0
     ca_non_refundable_credits: 0
   output:
-    # Regular tax falls to 88,942.90 once the rates above 9.3% expire (see
+    # Regular tax falls to 88,894.95 once the rates above 9.3% expire (see
     # ca_income_tax_before_credits.yaml). Tentative minimum tax is .07 x 1,400,000 = 98,000,
-    # so AMT is 98,000 - 88,942.90 = 9,057.10 and total tax is 98,000.
-    ca_income_tax_before_credits: 88_942.90
-    ca_amt: 9_057.10
+    # so AMT is 98,000 - 88,894.95 = 9,105.05 and total tax is 98,000.
+    # The regular tax uses the 2026 FTB schedule times 197.44 / 177.11375.
+    ca_income_tax_before_credits: 88_894.95
+    ca_amt: 9_105.05
     ca_income_tax_before_refundable_credits: 98_000
 
 

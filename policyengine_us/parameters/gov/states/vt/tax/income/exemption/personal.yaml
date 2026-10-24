@@ -1,3 +1,4 @@
+# Values after the last published anchor are computed estimates until VT publishes them.
 description: Vermont provides the following personal exemption amount.
 values:
   2021-01-01: 4_350
@@ -9,11 +10,7 @@ metadata:
   unit: currency-USD
   period: year
   label: Vermont personal exemption amount
-  uprating: 
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
+  uprating: null
   reference:
     # Legal code specifies $4,150. Date unknown.
     - title: Legal Code Titl. 32 V.S.A. § 5811(21)(C)(i)

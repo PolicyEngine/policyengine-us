@@ -5,30 +5,35 @@ SINGLE:
   2023-01-01: 50_746
   2024-01-01: 52_421
   2025-01-01: 53_994
+  2026-01-01: 55_830
 SEPARATE:
   2021-01-01: 45_448
   2022-01-01: 49_220
   2023-01-01: 50_746
   2024-01-01: 52_421
   2025-01-01: 53_994
+  2026-01-01: 55_830
 SURVIVING_SPOUSE:
   2021-01-01: 90_896
   2022-01-01: 98_440
   2023-01-01: 101_492
   2024-01-01: 104_842
   2025-01-01: 107_987
+  2026-01-01: 111_660
 JOINT:
   2021-01-01: 90_896
   2022-01-01: 98_440
   2023-01-01: 101_492
   2024-01-01: 104_842
   2025-01-01: 107_987
+  2026-01-01: 111_660
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 90_896
   2022-01-01: 98_440
   2023-01-01: 101_492
   2024-01-01: 104_842
   2025-01-01: 107_987
+  2026-01-01: 111_660
 
 metadata:
   period: year
@@ -40,6 +45,8 @@ metadata:
   # single/separate: $25,000 starting in 1998 indexed by California CPI
   # surviving_spouse/joint/head: $50,000 starting in 1998 indexed by California CPI
   reference:
+  - title: 2026 California indexing (FTB Tax News, October 2026)
+    href: https://www.ftb.ca.gov/about-ftb/newsroom/tax-news/#article1
   - title: Cal. Rev. & Tax. Code § 17053.5
     href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17053.5
   - title: 2021 California Form 540 instructions

@@ -198,13 +198,15 @@ def test_ca_prop3_app_activation_from_2031():
     years = [2030, 2031, 2035]
     simulation = _app_simulation({"2031-01-01.2100-12-31": True}, years)
     _assert_active_years(simulation, years, active_years={2031, 2035})
+    # Published 2026 FTB thresholds times the 2031 C-CPI-U proxy factor
+    # 197.44 / 177.11375, as independently integrated in ca_prop3.yaml.
     assert simulation.calculate("ca_income_tax_before_credits", 2031)[
         0
-    ] == pytest.approx(101_169.10, abs=1)
+    ] == pytest.approx(100_911.03, abs=1)
     # With the toggle off, 2031 tax is the baseline.
     baseline = Simulation(situation=_situation(years))
     assert baseline.calculate("ca_income_tax_before_credits", 2031)[0] == pytest.approx(
-        88_942.90, abs=1
+        88_894.95, abs=1
     )
 
 

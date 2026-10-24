@@ -125,9 +125,13 @@ def test_projections_compute_from_statutory_bases_not_chained():
 
 def _cola_on_series(values, tax_year):
     """Run the COLA helper against a synthetic CPI-U series."""
-    cpi_u = Parameter("cpi_u", data=dict(values))
-    bls = SimpleNamespace(cpi=SimpleNamespace(cpi_u=cpi_u))
-    parameters = SimpleNamespace(gov=SimpleNamespace(bls=bls))
+    cpi = SimpleNamespace(
+        cpi_u=Parameter("cpi_u", data=dict(values)),
+        tax_year_projection=SimpleNamespace(
+            cpi_u=Parameter("cpi_u_projection", data=_tax_year_projection())
+        ),
+    )
+    parameters = SimpleNamespace(gov=SimpleNamespace(bls=SimpleNamespace(cpi=cpi)))
     return get_or_ctc_cola(parameters, tax_year)
 
 
@@ -141,8 +145,8 @@ def _monthly(values, start_year, start_month, end_year, end_month, level):
 
 
 # A synthetic mirror of the live series shape: 2022 Q2 base months averaging
-# 300, monthly observations through August 2025, then annual projection
-# points at February instants.
+# 300, monthly observations through August 2025, then calendar-year
+# projection points at February instants.
 def _base_series():
     values = {"2022-04-01": 297, "2022-05-01": 300, "2022-06-01": 303}
     _monthly(values, 2022, 7, 2025, 8, 331)
@@ -151,16 +155,24 @@ def _base_series():
     return values
 
 
+# CBO's projections of the 12 months ending the August before each tax
+# year. They differ from the calendar-year points above, so each assertion
+# shows which series a window read.
+def _tax_year_projection():
+    return {"2027-01-01": 344, "2028-01-01": 358}
+
+
 def test_cola_fully_observed_window_averages_monthly_data():
     # Tax year 2026 window (September 2024 - August 2025) is fully observed
     # at 331: COLA = 331 / 300 - 1.
     assert _cola_on_series(_base_series(), 2026) == pytest.approx(31 / 300)
 
 
-def test_cola_unobserved_window_uses_annual_projection_point():
-    # Tax year 2027 has no observed months, so the February 2026 annual
-    # projection point (347) applies: COLA = 347 / 300 - 1.
-    assert _cola_on_series(_base_series(), 2027) == pytest.approx(47 / 300)
+def test_cola_unobserved_window_uses_tax_year_projection():
+    # Tax year 2027 has no observed months, so CBO's projection of that
+    # window (344) applies, not the February 2026 calendar-year point (347):
+    # COLA = 344 / 300 - 1.
+    assert _cola_on_series(_base_series(), 2027) == pytest.approx(44 / 300)
 
 
 def test_cola_partial_window_ignores_overwritten_february_projection():
@@ -170,16 +182,16 @@ def test_cola_partial_window_ignores_overwritten_february_projection():
     # disagrees: the tax year 2027 window averages the ten observed months
     # (five at 330, five at 342) with a flat two-month tail at the last
     # observation (342), giving (5 * 330 + 5 * 342 + 2 * 342) / 12 = 337 and
-    # COLA = 37 / 300. Reading the overwritten February instant as an
-    # annual projection would instead give 42 / 300 — so this assertion
-    # fails against the raw-February-read regression it guards against.
+    # COLA = 37 / 300. Reading the overwritten February instant as a
+    # projection would instead give 42 / 300 — so this assertion fails
+    # against the raw-February-read regression it guards against.
     values = _base_series()
     _monthly(values, 2025, 9, 2026, 1, 330)
     _monthly(values, 2026, 2, 2026, 6, 342)
     assert _cola_on_series(values, 2027) == pytest.approx(37 / 300)
-    # Later, fully unobserved windows still read their own projection
-    # points: tax year 2028 uses February 2027 (361).
-    assert _cola_on_series(values, 2028) == pytest.approx(61 / 300)
+    # Later, fully unobserved windows still read their own tax-year
+    # projection: tax year 2028 uses 358.
+    assert _cola_on_series(values, 2028) == pytest.approx(58 / 300)
 
 
 def test_cola_observations_ending_on_a_february_stay_conservative():
