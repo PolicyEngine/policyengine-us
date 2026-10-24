@@ -29,7 +29,7 @@ candidates:
   readings:
     statute: The federal effective date is 2025-07-04.
     other: Alaska applies the changes from 2025-11-01.
-  example: In August 2025, PR 10299 applies the changes in Alaska as well as Texas.
+  example: In August 2025, PE-US applies the changes in Alaska as well as Texas.
   pe_us:
     follows: statute
     code:
@@ -39,10 +39,11 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/8861
     - https://github.com/PolicyEngine/policyengine-us/pull/10299
   state: unreviewed
-  note: PR 10299 adopts the July 4, 2025 enactment date, consistent with FNS; the change is in flight. Section 10102
-    has no later effective date. A 7 U.S.C. 2015(o)(7) good-faith exemption requires a state request and a federal
-    determination; none covering July through October 2025 was found. Alaska's separately modeled good-faith window
-    starts November 1, 2025, and its area waivers and retained exceptions are unchanged.
+  note: 'PE-US follows the statute: since #10299 Alaska''s HR1 toggle is true from July 4, 2025, and the parameter''s
+    comment says section 10102 has no later effective date, that USDA applies the amended exceptions from enactment,
+    and that no authority for a statewide delay before Alaska''s November 1, 2025 good-faith exemption was found
+    (hr1_in_effect.yaml, is_snap_abawd_hr1_in_effect.py). The good-faith window is modeled separately, through the
+    waived areas and the retained pre-HR1 exceptions.'
 - id: us-al:federal-tax-deduction-credit-list
   program: income-tax
   years:
@@ -1892,7 +1893,7 @@ candidates:
   readings:
     statute: The federal effective date is 2025-07-04.
     other: Hawaii applies the changes from 2025-11-01.
-  example: In August 2025, PR 10299 applies the changes in Hawaii as well as Texas.
+  example: In August 2025, PE-US applies the changes in Hawaii as well as Texas.
   pe_us:
     follows: statute
     code:
@@ -1902,9 +1903,10 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/8861
     - https://github.com/PolicyEngine/policyengine-us/pull/10299
   state: unreviewed
-  note: PR 10299 adopts the July 4, 2025 enactment date, consistent with FNS; the change is in flight. Section 10102
-    has no later effective date. A 7 U.S.C. 2015(o)(7) good-faith exemption requires a state request and a federal
-    determination; none covering July through October 2025 was found. Hawaii's area waiver ended June 30, 2025.
+  note: 'PE-US follows the statute: since #10299 Hawaii''s HR1 toggle is true from July 4, 2025, and the parameter''s
+    comment records DHS''s announced November 1, 2025 start and says no good-faith exemption covering July through
+    October 2025 was found (hr1_in_effect.yaml, is_snap_abawd_hr1_in_effect.py). Hawaii''s area waiver ended June
+    30, 2025.'
 - id: us-hi:snap-child-support-deduction
   program: snap
   years:
@@ -6246,9 +6248,10 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/9623
     - https://github.com/PolicyEngine/policyengine-us/pull/10299
   state: open
-  note: PR 10299 applies the cap from October 1, 2025; the change is in flight. FNS expressly gives that date on
-    page 2 of its September 4, 2025 memo, consistent with 7 U.S.C. 2012(u)(3)(C)'s annual October 1 computation.
-    The conflicting reading comes from the FY2026 table's omission, not from FNS's effective-date guidance.
+  note: 'PE-US follows the statute: since #10299 snap_max_allotment applies the cap from October 1, 2025, citing
+    7 U.S.C. 2012(u)(3)(C)''s annual computation and FNS''s September 4, 2025 memo, and the cap''s comment says
+    the FY2026 table prints no cap (snap_max_allotment.py, max_allotment.yaml). The conflicting reading comes from
+    the FY2026 table''s omission, not from FNS''s effective-date guidance.'
 - id: us:snap-minimum-allotment-rounding-base
   program: snap
   years:
