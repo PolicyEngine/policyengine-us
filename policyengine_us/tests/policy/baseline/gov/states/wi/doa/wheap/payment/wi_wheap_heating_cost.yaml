@@ -1,0 +1,211 @@
+# Wisconsin WHEAP benefit heating cost (FFY2026 HE+ Benefit Calculator,
+# Computation C19-C35 and HT_Proxy A4:H28; PY2026 WHEAP Manual 2.3.1 and
+# 4.4.13-4.4.28). Heat proxy = base + per-room amount x rooms by fuel class and
+# dwelling type, rooms = bedrooms held between 1 and 9 (1 for a motel or
+# camper). The reported cost, less a 60 percent baseload for electric heat, is
+# held between 0.75 and 2 times the proxy; heat included in rent uses 0.75
+# times the proxy.
+
+- name: Case 1, natural gas cost inside the bounds is used as reported.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 950
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        bedrooms: 3
+  output:
+    # Dwelling type not supplied: SINGLE_FAMILY default. Proxy 354 + 60 x 3 =
+    # 534; bounds 400.50 to 1,068; 950 is inside.
+    wi_wheap_heating_cost: 950
+
+- name: Case 2, cost below 0.75 times the proxy is raised to that floor.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 300
+        wi_wheap_dwelling_type: TWO_TO_FOUR_UNITS
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        bedrooms: 2
+  output:
+    # 2 to 4 units, natural gas: 297 + 65 x 2 = 427; 0.75 x 427 = 320.25 > 300.
+    wi_wheap_heating_cost: 320.25
+
+- name: Case 3, cost above twice the proxy is capped.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        heating_expense: 2_400
+        wi_wheap_dwelling_type: MOBILE_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        bedrooms: 2
+  output:
+    # Mobile home, propane: 723 + 69 x 2 = 861; 2 x 861 = 1,722 < 2,400.
+    wi_wheap_heating_cost: 1_722
+
+- name: Case 4, heat included in rent uses 0.75 times the proxy and a studio counts one room.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 0
+        heat_expense_included_in_rent: true
+        wi_wheap_dwelling_type: APARTMENT
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        bedrooms: 0
+  output:
+    # Manual 4.4.17 and calculator Benefits!C12: at least 1 room.
+    # Apartment, natural gas: 116 + 68 x 1 = 184; 0.75 x 184 = 138.
+    wi_wheap_heating_cost: 138
+
+- name: Case 5, electric heat removes a 60 percent baseload from the whole electric bill.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        heating_expense: 1_200
+        wi_wheap_dwelling_type: APARTMENT
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        bedrooms: 2
+  output:
+    # Eligible cost 1,200 - 0.6 x 1,200 = 480. Apartment, electric:
+    # 88 + 111 x 2 = 310; bounds 232.50 to 620; 480 is inside.
+    wi_wheap_heating_cost: 480
+
+- name: Case 6, a motel or camper counts one room regardless of bedrooms.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        heating_expense: 1_700
+        wi_wheap_dwelling_type: MOTEL_OR_CAMPER
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        bedrooms: 2
+  output:
+    # Manual 4.4.17: one room. Propane: 751 + 51 x 1 = 802; cap 1,604 < 1,700.
+    # Two rooms would give a cap of 1,706.
+    wi_wheap_heating_cost: 1_604
+
+- name: Case 7, rooms above nine are capped at nine.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: FUEL_OIL
+        heating_expense: 4_000
+        wi_wheap_dwelling_type: SINGLE_FAMILY
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        bedrooms: 10
+  output:
+    # Single family, fuel oil: 1,221 + 68 x 9 = 1,833; cap 3,666 < 4,000.
+    # Ten rooms would give a cap of 3,802.
+    wi_wheap_heating_cost: 3_666
+
+- name: Case 8, kerosene uses the wood-or-other proxy.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: KEROSENE
+        heating_expense: 1_800
+        wi_wheap_dwelling_type: SINGLE_FAMILY
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        bedrooms: 3
+  output:
+    # Manual 4.4.28.3 places kerosene in wood and other: 524 + 89 x 3 = 791;
+    # cap 1,582 < 1,800. The fuel oil proxy would allow 2,850.
+    wi_wheap_heating_cost: 1_582
+
+- name: Case 9, solar heating has no proxy and gives no heating cost.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: SOLAR
+        heating_expense: 600
+        wi_wheap_dwelling_type: SINGLE_FAMILY
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        bedrooms: 3
+  output:
+    # Manual 4.4.28.3: solar-only heat has no fuel record; no calculator class.
+    wi_wheap_heating_cost: 0

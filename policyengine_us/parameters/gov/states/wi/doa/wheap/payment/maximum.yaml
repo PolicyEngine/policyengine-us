@@ -1,0 +1,12 @@
+description: Wisconsin limits the regular heating benefit to this amount under the Home Energy Assistance Program.
+# The FFY2026 proxy table and formula constants yield at most $2,574, so the
+# cap does not bind.
+values:
+  2025-10-01: 2_580
+metadata:
+  unit: currency-USD
+  period: year
+  label: Wisconsin WHEAP maximum benefit
+  reference:
+    - title: Wisconsin LIHEAP State Plan FFY2026, agency-posted edition, section 2.6
+      href: https://web.archive.org/web/20260316195114/https://energyandhousing.wi.gov/Documents/WHEAP/LiheapPlan_FFY2026.pdf#page=7

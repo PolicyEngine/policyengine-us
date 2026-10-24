@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AR, AL, DC, GA, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX
+    coverage: AR, AL, DC, GA, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX, WI
     state_implementations:
       - state: AL
         status: partial
@@ -1154,6 +1154,14 @@ programs:
         variable: tx_ceap
         parameter_prefix: gov.states.tx.tdhca.ceap
         notes: Models the 150% FPG income limit, the alternative 60% SMI limit from the FY2024 state plan (applied through 2024), benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
+      - state: WI
+        status: partial
+        name: Wisconsin WHEAP
+        full_name: Wisconsin Home Energy Assistance Program
+        variable: wi_wheap
+        parameter_prefix: gov.states.wi.doa.wheap
+        verified_years: "2026"
+        notes: FFY2026 regular heating benefit from the HE+ formula with the published heat proxy table. The non-heating electric benefit, crisis and weatherization are out of scope.
 
   # --- SSA programs ---
   - id: ssi
