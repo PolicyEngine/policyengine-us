@@ -11,6 +11,7 @@ values:
     - total_unemployment_compensation
     - workers_compensation
     - disability_benefits
+    - nh_ssp
     - general_assistance
     - strike_benefits
     - financial_assistance
@@ -23,8 +24,9 @@ values:
 # Broad receipts approximate the source's regular payments. Inputs do not
 # identify VA Aid and Attendance, educational VA benefits, special-needs
 # trusts, or irregular injury/insurance payments. Financial assistance lacks
-# the required six-month regularity flag. General assistance approximates
-# non-FANF state welfare; FANF is included separately once per SPM unit.
+# the required six-month regularity flag. nh_ssp holds the APTD, ANB and OAA
+# state welfare payments; general assistance approximates other non-FANF state
+# welfare. FANF is included separately once per SPM unit.
 # Rental inputs are treated as net and nonnegative without reconstructing
 # business expenses. Pension income includes annuities and insurance income.
 # Gambling winnings approximate the taxable gambling and lottery category.

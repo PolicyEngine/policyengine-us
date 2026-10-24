@@ -26,7 +26,9 @@ class nh_fap_eligible(Variable):
         federal_floor = np.round(guideline * floor_rate, 2)
         income_eligible = (income <= limit) | (income < federal_floor)
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
-        subsidized = spm_unit("receives_housing_assistance", period)
+        subsidized = spm_unit(
+            "receives_housing_assistance", period
+        ) | spm_unit.household("is_in_public_housing", period)
         heating_cost = spm_unit("nh_fap_heating_cost", period)
         heating_type = spm_unit("heating_type", period)
         fuel = heating_type.possible_values

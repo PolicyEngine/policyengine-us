@@ -30,7 +30,8 @@ class nh_fap_countable_income(Variable):
         countable_earnings = spm_unit.sum(where(high_school_student, 0, earned_income))
         unearned_person = 0
         for source in p.unearned_sources:
-            unearned_person = unearned_person + max_(person(source, period), 0)
+            # add() also sums monthly sources such as nh_ssp over the year.
+            unearned_person = unearned_person + max_(add(person, period, [source]), 0)
         unearned_income = spm_unit.sum(unearned_person)
         adult_ssi = spm_unit.sum(
             where(

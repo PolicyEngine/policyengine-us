@@ -921,12 +921,14 @@
         age: 70
         immigration_status: "CITIZEN"
         ssi: 0
+        nh_ssp: 0
         social_security: 50_000
         medicare_part_b_premiums_reported: 2_000
       person2:
         age: 70
         immigration_status: "CITIZEN"
         ssi: 0
+        nh_ssp: 0
         social_security: 50_000
         medicare_part_b_premiums_reported: 0
     spm_units:
@@ -1137,3 +1139,30 @@
     nh_fap_countable_income: 48_738
     nh_fap_eligible: false
     nh_fap: 0
+
+# Manual p21 excludes subsidized tenants whose heat is included in rent;
+# public housing is subsidized housing.
+- name: "Case 29, public housing with heat included in rent is ineligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+        fuel_oil_expense: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        is_in_public_housing: true
+  output:
+    nh_fap_eligible: false

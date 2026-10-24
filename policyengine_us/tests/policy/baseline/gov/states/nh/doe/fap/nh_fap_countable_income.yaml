@@ -3,8 +3,9 @@
 # Physical PDF pages: 13, 14, 15, 16, 17, 23, 25, 26, 29, 34, 36.
 # Period 2027 represents the researched 2026-2027 schedule with 2026 FPG.
 # Inputs are annual; SSI and FANF totals are explicitly supplied to isolate receipts.
-# Investment treatment follows the specific separate exclusions on pp15-16;
-# p17's combined wording remains an explicitly documented interpretation gap.
+# Investment income receives one combined $50 exclusion per SPM unit (p17's
+# interest "and/or" dividends wording), a modeling convention; pp15-16 list
+# the two exclusions separately.
 
 # Manual p15 counts salaries and wages before deductions; p17 does not list a general earned-income disregard.
 - name: "Case 1, gross annual wages receive no general earnings disregard."
@@ -159,6 +160,7 @@
         age: 18
         immigration_status: "CITIZEN"
         ssi: 6_000
+        nh_ssp: 0
         is_disabled: true
     spm_units:
       spm_unit1:
@@ -789,6 +791,7 @@
         age: 70
         immigration_status: "CITIZEN"
         ssi: 0
+        nh_ssp: 0
         social_security: 24_000
         medicare_part_b_premiums_reported: 2_400
     spm_units:
@@ -813,6 +816,7 @@
         age: 70
         immigration_status: "CITIZEN"
         ssi: 0
+        nh_ssp: 0
         railroad_benefits: 18_000
         medicare_part_b_premiums_reported: 2_400
     spm_units:
@@ -837,6 +841,7 @@
         age: 70
         immigration_status: "CITIZEN"
         ssi: 0
+        nh_ssp: 0
         social_security: 24_000
         medicare_part_b_premiums_reported: 2_400
         child_support_expense: 2_000
@@ -862,6 +867,7 @@
         age: 70
         immigration_status: "CITIZEN"
         ssi: 0
+        nh_ssp: 0
         social_security: 24_000
         medicare_part_b_premiums_reported: 2_400
         child_support_expense: 23_000
@@ -887,6 +893,7 @@
         age: 70
         immigration_status: "CITIZEN"
         ssi: 0
+        nh_ssp: 0
         social_security: 24_000
         medicare_part_b_premiums_reported: 0
     spm_units:
@@ -911,18 +918,21 @@
         age: 70
         immigration_status: "CITIZEN"
         ssi: 0
+        nh_ssp: 0
         social_security: 24_000
         medicare_part_b_premiums_reported: 2_400
       person2:
         age: 68
         immigration_status: "CITIZEN"
         ssi: 0
+        nh_ssp: 0
         railroad_benefits: 18_000
         medicare_part_b_premiums_reported: 1_200
       person3:
         age: 70
         immigration_status: "CITIZEN"
         ssi: 0
+        nh_ssp: 0
         social_security: 12_000
         medicare_part_b_premiums_reported: 0
     spm_units:
@@ -985,3 +995,26 @@
         state_code: "NH"
   output:
     nh_fap_countable_income: [30, 0, 10_000]
+
+# Manual p15 counts state welfare payments (APTD, ANB, FANF, OAA, RCA); the
+# state supplement pays APTD, ANB and OAA. $100 a month x 12 = $1,200.
+- name: "Case 34, state supplement payments count as unearned income."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: "CITIZEN"
+        ssi: 0
+        nh_ssp: 1_200
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 1_200

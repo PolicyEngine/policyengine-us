@@ -1885,6 +1885,7 @@
         age: 40
         immigration_status: "CITIZEN"
         ssi: 0
+        nh_ssp: 0
         is_disabled: true
         employment_income: 14_000
     spm_units:
@@ -2403,6 +2404,7 @@
         immigration_status: CITIZEN
         is_disabled: true
         ssi: 9_600
+        nh_ssp: 0
       person2:
         age: 10
         immigration_status: CITIZEN
@@ -2411,6 +2413,7 @@
         immigration_status: CITIZEN
         is_disabled: true
         ssi: 9_600
+        nh_ssp: 0
       person4:
         age: 10
         immigration_status: CITIZEN
@@ -2735,6 +2738,7 @@
     people:
       person1:
         age: 70
+        nh_ssp: 0
         immigration_status: CITIZEN
         military_retirement_pay_survivors: 20_000
     spm_units:
