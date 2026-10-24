@@ -23,7 +23,9 @@ class mo_liheap_countable_income_person(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mo.dss.liheap.income
-        earned = sum(max_(person(source, period), 0) for source in p.earned_sources)
+        earned = 0
+        for source in p.earned_sources:
+            earned = earned + max_(person(source, period), 0)
         countable_earned = earned * (1 - p.earned_income_deduction_rate)
         # The 2025 manual (Earnings of Children) leaves out the earned income
         # and the disability income of members under 18 but counts their SSA
