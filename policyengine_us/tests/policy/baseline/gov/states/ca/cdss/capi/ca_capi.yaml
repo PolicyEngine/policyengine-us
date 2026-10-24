@@ -1,38 +1,53 @@
 - name: Single eligible person
-  period: 2024
+  period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
-        ssi_amount_if_eligible: 1_000
-        ca_capi_eligible_person: true
-        ssi_countable_income: 500
-    spm_units:
-      spm_unit:
+        age: 70
+        immigration_status: UNDOCUMENTED
+        # 520 per month foreign pension.
+        pension_income: 6_240
+        # SSI zeroes countable income for people who fail its immigration
+        # test, so the case supplies it: 520 - 20 general exclusion = 500 per
+        # month (6,000 per year).
+        ssi_countable_income: 6_000
+    households:
+      household:
         members: [person1]
-        ca_capi_eligible: true
-        ca_state_supplement: 2_000
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
   output:
-    ca_capi: 2_490
+    # Individual standard 1,233.94 - 10 = 1,223.94 (MPP 49-050.11), less
+    # countable income 500 = 723.94 per month (MPP 49-055.32).
+    # 723.94 x 12 = 8,687.28.
+    ca_capi: 8_687.28
 
 - name: Couple, both people eligible
-  period: 2024
+  period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
-        ssi_amount_if_eligible: 1_000
-        ca_capi_eligible_person: true
-        ssi_countable_income: 500
+        age: 72
+        immigration_status: UNDOCUMENTED
       person2:
-        ssi_amount_if_eligible: 1_000
-        ca_capi_eligible_person: true
-        ssi_countable_income: 4_000
-    spm_units:
-      spm_unit:
+        age: 68
+        immigration_status: UNDOCUMENTED
+    marital_units:
+      marital_unit:
         members: [person1, person2]
-        ca_capi_eligible: true
-        ca_state_supplement: 4_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
   output:
-    ca_capi: 1_480
+    # Couple standard 2,098.83 - 20 = 2,078.83 (MPP 49-050.12); each member
+    # receives one-half (MPP 49-055.4): 1,039.415 per month, 12,472.98 per
+    # year. The unit total is 2 x 12,472.98 = 24,945.96.
+    ca_capi_person: [12_472.98, 12_472.98]
+    ca_capi: 24_945.96
 
 - name: Integration test, ineligible
   period: 2024
@@ -74,7 +89,8 @@
     ca_capi: 0
 
 - name: Integration test, undocumented
-  period: 2024
+  period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -97,4 +113,78 @@
     ca_state_supplement_blind_amount: 0
     ca_state_supplement_aged_blind_disabled_amount: 0
     ca_state_supplement: 0
-    ca_capi: 11_306
+    # Disabled individual standard 1,233.94 + no-cooking food allowance
+    # 128.87 (living arrangements default to no food preparation) =
+    # 1,362.81; less $10 = 1,352.81 per month. Earnings of 83.33 per month
+    # fall within the $20 + $65 exclusions, so countable income is 0.
+    # 1,352.81 x 12 = 16,233.72.
+    ca_capi: 16_233.72
+
+- name: Mixed couple, only the noncitizen spouse receives CAPI
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: CITIZEN
+      person2:
+        age: 68
+        immigration_status: UNDOCUMENTED
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The citizen receives SSI/SSP, which CAPI does not add. The noncitizen
+    # spouse's standard is 2,098.83 / 2 - 10 = 1,039.415 per month
+    # (MPP 49-050.13); 1,039.415 x 12 = 12,472.98.
+    ca_capi_person: [0, 12_472.98]
+    ca_capi: 12_472.98
+
+- name: Two unrelated eligible people in one unit, income is not pooled
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: UNDOCUMENTED
+        # 1,520 per month foreign pension.
+        pension_income: 18_240
+        # SSI zeroes countable income for people who fail its immigration
+        # test, so the case supplies it: 1,520 - 20 = 1,500 per month
+        # (18,000 per year).
+        ssi_countable_income: 18_000
+      person2:
+        age: 68
+        immigration_status: UNDOCUMENTED
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # Each person is assessed on their own income (MPP 49-035.1, 49-055.32).
+    # person1: 1,500 is not lower than the 1,223.94 standard, so 0.
+    # person2: no income, so 1,223.94 per month; x 12 = 14,687.28. Pooling
+    # person1's excess income with person2's standard would lower this.
+    ca_capi_person: [0, 14_687.28]
+    ca_capi: 14_687.28
