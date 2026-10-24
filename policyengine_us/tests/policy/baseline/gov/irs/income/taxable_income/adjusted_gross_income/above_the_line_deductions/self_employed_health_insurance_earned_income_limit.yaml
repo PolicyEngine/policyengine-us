@@ -1,0 +1,95 @@
+# Form 7206 lines 4-13 (Pub. 535 Worksheet 6-A before 2023). Expected values
+# are hand-computed from the form: the deductible part of self-employment tax
+# is net profit x 0.9235 x 15.3% / 2 below the Social Security wage base.
+
+- name: Case 1, one business, the limit is net profit less half of self-employment tax.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    self_employment_income: 2_000
+  output:
+    # Line 15: 2,000 x 0.9235 x 0.153 / 2 = 141.2955.
+    self_employment_tax_ald_person: 141.2955
+    # Line 13: 2,000 - 141.2955.
+    self_employed_health_insurance_earned_income_limit: 1_858.7045
+
+- name: Case 2, the SEP, SIMPLE and qualified plan deduction also reduces the limit.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    self_employment_income: 20_000
+    self_employed_pension_contributions_desired: 3_000
+  output:
+    # Line 15: 20,000 x 0.9235 x 0.153 / 2 = 1,412.955.
+    self_employment_tax_ald_person: 1_412.955
+    # Line 16 (within the $66,000 annual additions limit).
+    self_employed_pension_contribution_ald_person: 3_000
+    # Lines 8 to 10: 20,000 - 1,412.955 - 3,000.
+    self_employed_health_insurance_earned_income_limit: 15_587.045
+
+- name: Case 3, a farm business takes its share of the self-employment tax deduction.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    self_employment_income: 30_000
+    farm_operations_income: 10_000
+  output:
+    # Line 15: 40,000 x 0.9235 x 0.153 / 2 = 2,825.91.
+    self_employment_tax_ald_person: 2_825.91
+    # Lines 5 to 8: 30,000 / 40,000 = 0.75; 30,000 - 0.75 x 2,825.91.
+    self_employed_health_insurance_earned_income_limit: 27_880.5675
+
+- name: Case 4, a partnership's self-employment earnings take their share too.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    self_employment_income: 30_000
+    partnership_self_employment_net_earnings: 30_000
+  output:
+    # Line 15: 60,000 x 0.9235 x 0.153 / 2 = 4,238.865.
+    self_employment_tax_ald_person: 4_238.865
+    # Lines 5 to 8: 30,000 / 60,000 = 0.5; 30,000 - 0.5 x 4,238.865.
+    self_employed_health_insurance_earned_income_limit: 27_880.5675
+
+- name: Case 5, a farm loss is left out of line 5, so the plan business takes the whole deduction.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    self_employment_income: 30_000
+    farm_operations_income: -10_000
+  output:
+    # Line 15: (30,000 - 10,000) x 0.9235 x 0.153 / 2 = 1,412.955.
+    self_employment_tax_ald_person: 1_412.955
+    # Lines 5 to 8: line 5 is 30,000, so line 6 is 1; 30,000 - 1,412.955.
+    self_employed_health_insurance_earned_income_limit: 28_587.045
+
+- name: Case 6, wages above the Social Security wage base leave only the Medicare part.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 200_000
+    self_employment_income: 10_000
+  output:
+    # Wages exceed the $176,100 wage base, so line 15 is
+    # 10,000 x 0.9235 x 0.029 / 2 = 133.9075.
+    self_employment_tax_ald_person: 133.9075
+    self_employed_health_insurance_earned_income_limit: 9_866.0925
+
+- name: Case 7, net earnings under $400 owe no self-employment tax, so the limit is net profit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    self_employment_income: 400
+  output:
+    # 400 x 0.9235 = 369.40, under the $400 threshold of section 1402(b)(2).
+    self_employment_tax_ald_person: 0
+    self_employed_health_insurance_earned_income_limit: 400
+
+- name: Case 8, a Schedule C loss leaves no limit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    self_employment_income: -5_000
+    partnership_self_employment_net_earnings: 20_000
+  output:
+    self_employed_health_insurance_earned_income_limit: 0
