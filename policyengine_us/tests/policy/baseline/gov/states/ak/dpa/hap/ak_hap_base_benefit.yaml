@@ -7,7 +7,7 @@
 # http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm
 # https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
 # Geographic/name and nearest-gas approximations are documented in the research manifest.
-# 415 replaces the stale published one-person 25% cell407 under the approved reconciliation.
+# 415 replaces the stale published one-person 25% cell 407 under the approved reconciliation.
 # Fuel, dwelling and location are explicit; no new monetary inputs or sentinel defaults.
 
 # GRANT: 10 oil points * 1.4; minimum 2 before half-up whole-point rounding, then $175/point.
@@ -1082,7 +1082,7 @@
     ak_hap_countable_income: 24_000
     ak_hap_income_factor: 0.6
 
-# Qualified size 2, annual36000/month3000 -> factor .5; 10 * .7 * .5 + 1 = 4.5 -> 5.
+# Qualified size 2, annual 36,000 (3,000 a month) -> factor .5; 10 * .7 * .5 + 1 = 4.5 -> 5.
 - name: Case 35, mixed earnings and vulnerability round four and a half points upward.
   period: 2027
   absolute_error_margin: 0.0001
@@ -1165,7 +1165,7 @@
   output:
     ak_hap_base_benefit: 700
 
-# Ambler35 oil * 1 * 1 = 35 points; $6125.
+# Ambler 35 oil * 1 * 1 = 35 points; $6,125.
 - name: Case 37, Ambler exactly thirty-five points reaches cap.
   period: 2027
   absolute_error_margin: 0.01
@@ -1195,7 +1195,7 @@
   output:
     ak_hap_base_benefit: 6_125
 
-# Ambler35 * 1.4 + 1 = 50 points, capped35 * $175.
+# Ambler 35 * 1.4 + 1 = 50 points, capped 35 * $175.
 - name: Case 38, points above thirty-five are capped after vulnerability.
   period: 2027
   absolute_error_margin: 0.01
@@ -1255,7 +1255,7 @@
   output:
     ak_hap_base_benefit: 0
 
-# HH expense200.01 passes; Ambler35 * $175 = 6125 with no actual-expense cap.
+# HH expense 200.01 passes; Ambler 35 * $175 = 6,125 with no actual-expense cap.
 - name: Case 40, expense just above two hundred is not an award cap.
   period: 2027
   absolute_error_margin: 0.01
@@ -1285,7 +1285,7 @@
   output:
     ak_hap_base_benefit: 6_125
 
-# Primary NATURAL_GAS bill0; secondary oil10000 cannot satisfy the primary-heating expense gate.
+# Primary NATURAL_GAS bill 0; secondary oil 10,000 cannot satisfy the primary-heating expense gate.
 - name: Case 41, zero primary expense fails despite other fuel bills.
   period: 2027
   absolute_error_margin: 0.01
@@ -1316,8 +1316,8 @@
   output:
     ak_hap_base_benefit: 0
 
-# One qualified adult; annual payroll 24924, no general earned disregard. Apply source band to Fairbanks10 oil points.
-- name: Case 42, integrated wages at exact125percent use the inclusive income boundary.
+# One qualified adult; annual payroll 24924, no general earned disregard. Apply source band to Fairbanks 10 oil points.
+- name: Case 42, integrated wages at exact 125 percent use the inclusive income boundary.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -1347,8 +1347,8 @@
   output:
     ak_hap_base_benefit: 1_050
 
-# One qualified adult; annual payroll 24924.12, no general earned disregard. Apply source band to Fairbanks10 oil points.
-- name: Case 43, integrated wages at above125percent use the inclusive income boundary.
+# One qualified adult; annual payroll 24924.12, no general earned disregard. Apply source band to Fairbanks 10 oil points.
+- name: Case 43, integrated wages at above 125 percent use the inclusive income boundary.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -1378,8 +1378,8 @@
   output:
     ak_hap_base_benefit: 875
 
-# One qualified adult; annual payroll 29916, no general earned disregard. Apply source band to Fairbanks10 oil points.
-- name: Case 44, integrated wages at exact150percent use the inclusive income boundary.
+# One qualified adult; annual payroll 29916, no general earned disregard. Apply source band to Fairbanks 10 oil points.
+- name: Case 44, integrated wages at exact 150 percent use the inclusive income boundary.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -1409,8 +1409,8 @@
   output:
     ak_hap_base_benefit: 875
 
-# One qualified adult; annual payroll 29916.12, no general earned disregard. Apply source band to Fairbanks10 oil points.
-- name: Case 45, integrated wages at above150percent use the inclusive income boundary.
+# One qualified adult; annual payroll 29916.12, no general earned disregard. Apply source band to Fairbanks 10 oil points.
+- name: Case 45, integrated wages at above 150 percent use the inclusive income boundary.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -1440,8 +1440,8 @@
   output:
     ak_hap_base_benefit: 0
 
-# One qualified adult; annual payroll 4980, no general earned disregard. Apply source band to Fairbanks10 oil points.
-- name: Case 46, integrated wages at reconciled25percent use the inclusive income boundary.
+# One qualified adult; annual payroll 4980, no general earned disregard. Apply source band to Fairbanks 10 oil points.
+- name: Case 46, integrated wages at reconciled 25 percent use the inclusive income boundary.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -1471,8 +1471,8 @@
   output:
     ak_hap_base_benefit: 1_750
 
-# One qualified adult; annual payroll 4980.12, no general earned disregard. Apply source band to Fairbanks10 oil points.
-- name: Case 47, integrated wages at above25percent use the inclusive income boundary.
+# One qualified adult; annual payroll 4980.12, no general earned disregard. Apply source band to Fairbanks 10 oil points.
+- name: Case 47, integrated wages at above 25 percent use the inclusive income boundary.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -1502,7 +1502,7 @@
   output:
     ak_hap_base_benefit: 1_575
 
-# Unchanged income component floors total net receipts at0; income factor1 and Fairbanks10points.
+# Unchanged income component floors total net receipts at 0; income factor 1 and Fairbanks 10 points.
 - name: Case 48, negative current net business income does not inflate benefit.
   period: 2027
   absolute_error_margin: 0.0001
@@ -1535,7 +1535,7 @@
     ak_hap_countable_income: 0
     ak_hap_income_factor: 1
 
-# Five qualified members, monthly2900 <=75% ceiling3021; 27 * .8 + 1 = 22.6 -> 23 * $175.
+# Five qualified members, monthly 2,900 <= 75% ceiling 3,021; 27 * .8 + 1 = 22.6 -> 23 * $175.
 - name: Case 49, Savoonga updated five-person band supersedes stale worked label.
   period: 2027
   absolute_error_margin: 0.0001
@@ -1601,7 +1601,7 @@
     ak_hap_household_size: 5
     ak_hap_income_factor: 0.8
 
-# HH/VER: annual rent12000 counts for expense gate despite direct fuel bill0.
+# HH/VER: annual rent 12,000 counts for expense gate despite direct fuel bill 0.
 - name: Case 50, rent included heat uses full annual rent for expense gate.
   period: 2027
   absolute_error_margin: 0.01
@@ -1633,7 +1633,7 @@
   output:
     ak_hap_base_benefit: 1_750
 
-# Full annual rent200 does not exceed200.
+# Full annual rent 200 does not exceed 200.
 - name: Case 51, rent included heat at exact expense threshold fails.
   period: 2027
   absolute_error_margin: 0.01
@@ -1665,7 +1665,7 @@
   output:
     ak_hap_base_benefit: 0
 
-# Annual rent200.01 passes gate; Fairbanks points amount remains1750.
+# Annual rent 200.01 passes gate; Fairbanks points amount remains 1,750.
 - name: Case 52, rent included heat above expense threshold is not capped by rent.
   period: 2027
   absolute_error_margin: 0.01
@@ -1729,7 +1729,7 @@
   output:
     ak_hap_base_benefit: 0
 
-# Juneau5 * .55 * .7 + 1 = 2.925 -> 3 *175; positive allowance affects a later unresolved final adjustment only.
+# Juneau 5 * .55 * .7 + 1 = 2.925 -> 3 * 175; positive allowance affects a later unresolved final adjustment only.
 - name: Case 54, base amount does not apply disputed utility allowance reduction.
   period: 2027
   absolute_error_margin: 0.01
@@ -1821,7 +1821,7 @@
   output:
     ak_hap_base_benefit: 0
 
-# Akutan */APIA is Native-only; absent enrollment facts do not exclude. Oil11 *175.
+# Akutan */APIA is Native-only; absent enrollment facts do not exclude. Oil 11 * 175.
 - name: Case 57, Native-only routing does not infer tribal eligibility.
   period: 2027
   absolute_error_margin: 0.01
@@ -1851,7 +1851,7 @@
   output:
     ak_hap_base_benefit: 1_925
 
-# Fort Greely0/USA is explicitly excluded from tribal list; on-base residence is unobserved. Oil11 *175 under the ordinary location approximation.
+# Fort Greely 0/USA is explicitly excluded from tribal list; on-base residence is unobserved. Oil 11 * 175 under the ordinary location approximation.
 - name: Case 58, USA marker is not an all-resident tribal provider.
   period: 2027
   absolute_error_margin: 0.01
@@ -1881,7 +1881,7 @@
   output:
     ak_hap_base_benefit: 1_925
 
-# Tetlin current12oil differs from legacy16, but 0/TCC routing controls this state component.
+# Tetlin current 12 oil differs from legacy 16, but 0/TCC routing controls this state component.
 - name: Case 59, Tetlin is routed to all-resident tribal program.
   period: 2027
   absolute_error_margin: 0.01
@@ -1972,7 +1972,7 @@
   output:
     ak_hap_base_benefit: 0
 
-# Numeric0 represents unavailable supported oil geography, not statutory ineligibility.
+# Numeric 0 represents unavailable supported oil geography, not statutory ineligibility.
 - name: Case 62, missing place yields an unavailable modeled amount.
   period: 2027
   absolute_error_margin: 0.01
@@ -2002,7 +2002,7 @@
   output:
     ak_hap_base_benefit: 0
 
-# Numeric0 represents unavailable supported oil geography, not statutory ineligibility.
+# Numeric 0 represents unavailable supported oil geography, not statutory ineligibility.
 - name: Case 63, unmatched place yields an unavailable modeled amount.
   period: 2027
   absolute_error_margin: 0.01
@@ -2032,7 +2032,7 @@
   output:
     ak_hap_base_benefit: 0
 
-# Numeric0 represents unavailable supported oil geography, not statutory ineligibility.
+# Numeric 0 represents unavailable supported oil geography, not statutory ineligibility.
 - name: Case 64, seven-digit GEOID supplied instead of place yields an unavailable modeled amount.
   period: 2027
   absolute_error_margin: 0.01
@@ -2062,7 +2062,7 @@
   output:
     ak_hap_base_benefit: 0
 
-# Numeric0 represents unavailable supported oil geography, not statutory ineligibility.
+# Numeric 0 represents unavailable supported oil geography, not statutory ineligibility.
 - name: Case 65, ambiguous Anchorage oil place yields an unavailable modeled amount.
   period: 2027
   absolute_error_margin: 0.01
@@ -2152,7 +2152,7 @@
   output:
     ak_hap_base_benefit: 1_400
 
-# Numeric0 is missing modeled fuel coverage, not a legal determination that all such households are ineligible.
+# Numeric 0 is missing modeled fuel coverage, not a legal determination that all such households are ineligible.
 - name: Case 68, other without a supported subtype yields an unavailable modeled amount.
   period: 2027
   absolute_error_margin: 0.01
@@ -2182,7 +2182,7 @@
   output:
     ak_hap_base_benefit: 0
 
-# Numeric0 is missing modeled fuel coverage, not a legal determination that all such households are ineligible.
+# Numeric 0 is missing modeled fuel coverage, not a legal determination that all such households are ineligible.
 - name: Case 69, solar without a supported subtype yields an unavailable modeled amount.
   period: 2027
   absolute_error_margin: 0.01
@@ -2212,7 +2212,7 @@
   output:
     ak_hap_base_benefit: 0
 
-# Numeric0 is missing modeled fuel coverage, not a legal determination that all such households are ineligible.
+# Numeric 0 is missing modeled fuel coverage, not a legal determination that all such households are ineligible.
 - name: Case 70, unspecified without a supported subtype yields an unavailable modeled amount.
   period: 2027
   absolute_error_margin: 0.01
@@ -2270,7 +2270,7 @@
   output:
     ak_hap_base_benefit: 0
 
-# Independent SPM calculations before sharing: 10+1=11 ->1925; 10*.6=6 ->1050. Do not divide points or grants by two.
+# Independent SPM calculations before sharing: 10 + 1 = 11 -> 1,925; 10 * .6 = 6 -> 1,050. Do not divide points or grants by two.
 - name: Case 72, two SPM units retain their own unshared base amounts.
   period: 2027
   absolute_error_margin: 0.0001
@@ -2327,7 +2327,7 @@
     - 1_925
     - 1_050
 
-# Mixed vector: Anchorage gas5*.4=2 ->350; Ambler35*1.4=49 capped35 ->6125; no qualified member ->0.
+# Mixed vector: Anchorage gas 5 * .4 = 2 -> 350; Ambler 35 * 1.4 = 49 capped 35 -> 6,125; no qualified member -> 0.
 - name: Case 73, distinct SPM units preserve geography fuel and composition gates.
   period: 2027
   absolute_error_margin: 0.0001
@@ -2410,7 +2410,7 @@
     - 6_125
     - 0
 
-# Grant steps1-4: Fairbanks oil 10 * .8 + 1 elderly point =9; 9 *175 =1575. This assumes purchased wood, not pellets or self-harvest.
+# Grant steps 1-4: Fairbanks oil 10 * .8 + 1 elderly point = 9; 9 * 175 = 1,575. This assumes purchased wood, not pellets or self-harvest.
 - name: "Case 74, purchased wood receives the single vulnerable-household point."
   period: 2027
   absolute_error_margin: 0.01
@@ -2438,7 +2438,7 @@
   output:
     ak_hap_base_benefit: 1_575
 
-# Fairbanks 10 * .8 * .15 =1.2 fails the unrounded 2-point minimum; an elderly member adds 1 to reach2.2, rounded2 *175=350.
+# Fairbanks 10 * .8 * .15 = 1.2 fails the unrounded 2-point minimum; an elderly member adds 1 to reach 2.2, rounded 2 * 175 = 350.
 - name: "Case 75, purchased fuel changes whether a studio meets minimum heating points."
   period: 2027
   absolute_error_margin: 0.01
@@ -2484,7 +2484,7 @@
   output:
     ak_hap_base_benefit: [0, 350]
 
-# Annual income20000 lies in the 100-125% band, factor .6. Fairbanks10 * .8 * .4 * .6 =1.92 fails before rounding; adding the elderly point makes2.92 ->3 *175=525.
+# Annual income 20,000 lies in the 100-125% band, factor .6. Fairbanks 10 * .8 * .4 * .6 = 1.92 fails before rounding; adding the elderly point makes 2.92 -> 3 * 175 = 525.
 - name: "Case 76, the purchased factor precedes income reduction and minimum points."
   period: 2027
   absolute_error_margin: 0.01
@@ -2531,7 +2531,7 @@
   output:
     ak_hap_base_benefit: [0, 525]
 
-# Koyuk oil25 (Addendum A; Census place41940); income25000 gives .5. One-bedroom25 * .8 * .55 * .5=5.5 ->6; elderly studio25 * .8 * .15 * .5 +1=2.5 ->3.
+# Koyuk oil 25 (Addendum A; Census place 41940); income 25,000 gives .5. One-bedroom 25 * .8 * .55 * .5 = 5.5 -> 6; elderly studio 25 * .8 * .15 * .5 + 1 = 2.5 -> 3.
 - name: "Case 77, purchased fuel preserves half-up rounding at exact half points."
   period: 2027
   absolute_error_margin: 0.01
@@ -2579,7 +2579,7 @@
   output:
     ak_hap_base_benefit: [1_050, 525]
 
-# Household expense requirement remains strictly above200. Unrelated oil expense cannot replace the wood bill; zero wood expense does not infer self-harvest.
+# Household expense requirement remains strictly above 200. Unrelated oil expense cannot replace the wood bill; zero wood expense does not infer self-harvest.
 - name: "Case 78, purchased wood still requires annual primary heating expense above two hundred dollars."
   period: 2027
   absolute_error_margin: 0.01
@@ -2644,36 +2644,8 @@
   output:
     ak_hap_base_benefit: [0, 0, 1_400]
 
-# Ambler oil35 * .8 * large dwelling1.4 =39.2 points; round39 then cap35 *175=6125.
-- name: "Case 79, purchased fuel remains subject to the final heating-point cap."
-  period: 2027
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        immigration_status: "CITIZEN"
-        ssi: 0
-        ak_ssp: 0
-        ak_permanent_fund_dividend: 0
-    spm_units:
-      spm_unit1:
-        members: ["person1"]
-        heating_type: "WOOD"
-        ak_hap_dwelling_type: "LARGE_MOBILE_HOME_OR_BOAT"
-        ak_atap: 0
-        receives_housing_assistance: false
-        wood_expense: 1_000
-    households:
-      household1:
-        members: ["person1"]
-        state_code: "AK"
-        place_fips: "01970"
-  output:
-    ak_hap_base_benefit: 6_125
-
 # Anchorage oil mapping remains ambiguous and an unmatched place is unavailable; selecting wood or coal cannot use gas points instead.
-- name: "Case 80, purchased fuel cannot resolve unavailable oil community points."
+- name: "Case 79, purchased fuel cannot resolve unavailable oil community points."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2718,101 +2690,8 @@
   output:
     ak_hap_base_benefit: [0, 0]
 
-# Akiachak0/AVCP routes all residents; an unqualified household and a non-AK household receive no state base component.
-- name: "Case 81, purchased fuel preserves tribal routing qualified-person and state gates."
-  period: 2027
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        immigration_status: "CITIZEN"
-        ssi: 0
-        ak_ssp: 0
-        ak_permanent_fund_dividend: 0
-      person2:
-        age: 40
-        immigration_status: "UNDOCUMENTED"
-        ssi: 0
-        ak_ssp: 0
-        ak_permanent_fund_dividend: 0
-      person3:
-        age: 40
-        immigration_status: "CITIZEN"
-        ssi: 0
-        ak_ssp: 0
-        ak_permanent_fund_dividend: 0
-    spm_units:
-      spm_unit1:
-        members: ["person1"]
-        heating_type: "WOOD"
-        ak_hap_dwelling_type: "TWO_BEDROOM_HOUSE"
-        ak_atap: 0
-        receives_housing_assistance: false
-        wood_expense: 1_000
-      spm_unit2:
-        members: ["person2"]
-        heating_type: "WOOD"
-        ak_hap_dwelling_type: "TWO_BEDROOM_HOUSE"
-        ak_atap: 0
-        receives_housing_assistance: false
-        wood_expense: 1_000
-      spm_unit3:
-        members: ["person3"]
-        heating_type: "WOOD"
-        ak_hap_dwelling_type: "TWO_BEDROOM_HOUSE"
-        ak_atap: 0
-        receives_housing_assistance: false
-        wood_expense: 1_000
-    households:
-      household1:
-        members: ["person1"]
-        state_code: "AK"
-        place_fips: "00760"
-      household2:
-        members: ["person2"]
-        state_code: "AK"
-        place_fips: "24230"
-      household3:
-        members: ["person3"]
-        state_code: "NH"
-        place_fips: "24230"
-  output:
-    ak_hap_base_benefit: [0, 0, 0]
-
-# An ordinary purchased-coal calculation would yield1400, but subsidized heat in rent is excluded before payment.
-- name: "Case 82, purchased coal retains the existing subsidized heat-in-rent exclusion."
-  period: 2027
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        immigration_status: "CITIZEN"
-        ssi: 0
-        ak_ssp: 0
-        ak_permanent_fund_dividend: 0
-        pre_subsidy_rent: 12_000
-    spm_units:
-      spm_unit1:
-        members: ["person1"]
-        heating_type: "COAL"
-        ak_hap_dwelling_type: "TWO_BEDROOM_HOUSE"
-        ak_atap: 0
-        receives_housing_assistance: true
-        wood_expense: 1_000
-        coal_expense: 1_000
-        heat_expense_included_in_rent: true
-    households:
-      household1:
-        members: ["person1"]
-        state_code: "AK"
-        place_fips: "24230"
-  output:
-    ak_hap_base_benefit: 0
-
-# Purchased approximation is fixed for WOOD, independent of reported bill: zero wood bill plus300 annual rent meets the existing heat-in-rent expense gate; base8 *175=1400.
-- name: "Case 83, unsubsidized heat in rent supplies the expense gate without inferring fuel procurement."
+# Purchased approximation is fixed for WOOD, independent of reported bill: zero wood bill plus 300 annual rent meets the existing heat-in-rent expense gate; base 8 * 175 = 1,400.
+- name: "Case 80, unsubsidized heat in rent supplies the expense gate without inferring fuel procurement."
   period: 2027
   absolute_error_margin: 0.01
   input:

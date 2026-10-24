@@ -248,7 +248,7 @@
   output:
     ak_hap: [962.50, 962.50, 1_925, 0, 0]
 
-# Grant step8 requires subsidized housing, directly paid heat and a positive
+# Grant step 8 requires subsidized housing, directly paid heat and a positive
 # allowance. Test all Boolean combinations of those supplied facts, plus a
 # second positive allowance magnitude. Fairbanks zero-income base is 1,750.
 # Subsidized heat-in-rent cases remain zero through the existing base gate.
@@ -443,9 +443,9 @@
     ak_hap_base_benefit: [1_750, 1_750, 1_750, 1_750, 1_750, 1_750, 0, 0, 1_750]
     ak_hap: [1_750, 1_750, 1_750, 1_750, 1_750, 875, 0, 0, 875]
 
-# Juneau oil5 * dwelling1 * income factor0.6 =3 points, at least2; $525.
-# Step8 then reduces dollars to262.50. Reducing points first would wrongly
-# deny this household for having only1.5 points.
+# Juneau oil 5 * dwelling 1 * income factor 0.6 = 3 points, at least 2;
+# 3 * 175 = $525. Step 8 then reduces dollars to 262.50. Reducing points
+# first would wrongly deny this household for having only 1.5 points.
 - name: Case 7, a three point Juneau household receives half the dollar award.
   period: 2027
   absolute_error_margin: 0.01
@@ -481,10 +481,11 @@
     ak_hap_base_benefit: 525
     ak_hap: 262.50
 
-# Fairbanks studio10 * .15 =1.5 points fails before rounding. The two elderly
-# units each add1, reach2.5 points, and round up to3 before conversion to$525.
-# The ineligible unit does not enter their two-household denominator; sharing
-# gives262.50 each and the subsidized unit is halved again to131.25.
+# Fairbanks studio 10 * .15 = 1.5 points fails before rounding. The two
+# elderly units each add 1, reach 2.5 points, and round up to 3 before
+# conversion to $525. The ineligible unit does not enter their two-household
+# denominator; sharing gives 262.50 each and the subsidized unit is halved
+# again to 131.25.
 - name: Case 8, minimum points and half up rounding precede sharing and allowance adjustments.
   period: 2027
   absolute_error_margin: 0.01
@@ -546,9 +547,10 @@
     ak_hap_base_benefit: [0, 525, 525]
     ak_hap: [0, 262.50, 131.25]
 
-# Ambler oil35 * large-mobile-home1.4 =49 points, capped at35, giving$6,125.
-# Both eligible resident units get3,062.50; step8 halves only the subsidized
-# unit again to1,531.25. Neither benefit is capped at its $300 heating bill.
+# Ambler oil 35 * large mobile home 1.4 = 49 points, capped at 35, giving
+# $6,125. Both eligible resident units get 3,062.50; step 8 halves only the
+# subsidized unit again to 1,531.25. Neither benefit is capped at its $300
+# heating bill.
 - name: Case 9, the point cap applies before sharing and final dollar reduction.
   period: 2027
   absolute_error_margin: 0.01
@@ -596,327 +598,301 @@
     ak_hap_base_benefit: [6_125, 6_125]
     ak_hap: [3_062.50, 1_531.25]
 
-- name: Primary military retirement excludes its household from eligible heating shares
+# Fairbanks oil 10 * two-bedroom house 1. The retiree's $36,000 military
+# retirement pay is above the one-person 150% ceiling of 2,493 * 12 = 29,916,
+# so factor 0 and base 0; pension and veterans inputs do not count it again.
+# Each zero-income neighbor has 10 * 1 * 175 = 1,750. Only the two eligible
+# units enter the denominator, so each receives 1,750 / 2 = 875.
+- name: Case 10, primary military retirement excludes its household from eligible heating shares.
   period: 2027
+  absolute_error_margin: 0.01
   input:
     people:
-      retiree:
+      person1:
         age: 40
         immigration_status: CITIZEN
         years_in_military: 20
-        military_retirement_pay: 36000
-      neighbor1:
-        age: 40
-        immigration_status: CITIZEN
-      neighbor2:
-        age: 40
-        immigration_status: CITIZEN
-    tax_units:
-      tax_unit0:
-        members:
-        - retiree
-      tax_unit1:
-        members:
-        - neighbor1
-      tax_unit2:
-        members:
-        - neighbor2
-    spm_units:
-      spm_unit0:
-        members:
-        - retiree
-        heating_type: FUEL_OIL
-        fuel_oil_expense: 3000
-      spm_unit1:
-        members:
-        - neighbor1
-        heating_type: FUEL_OIL
-        fuel_oil_expense: 3000
-      spm_unit2:
-        members:
-        - neighbor2
-        heating_type: FUEL_OIL
-        fuel_oil_expense: 3000
-    households:
-      home:
-        members:
-        - retiree
-        - neighbor1
-        - neighbor2
-        state_code: AK
-        place_fips: '24230'
-  output:
-    pension_income:
-    - 0
-    - 0
-    - 0
-    veterans_benefits:
-    - 0
-    - 0
-    - 0
-    ak_hap_countable_income:
-    - 36000
-    - 0
-    - 0
-    ak_hap_income_factor:
-    - 0
-    - 1
-    - 1
-    ak_hap_base_benefit:
-    - 0
-    - 1750
-    - 1750
-    ak_hap:
-    - 0
-    - 875
-    - 875
-- name: Only received ATAP reduces the regular heating award
-  period: 2027
-  input:
-    people:
-      parent0:
-        age: 40
-        immigration_status: CITIZEN
-      child0:
-        age: 10
-        immigration_status: CITIZEN
-      parent1:
-        age: 40
-        immigration_status: CITIZEN
-      child1:
-        age: 10
-        immigration_status: CITIZEN
-    tax_units:
-      tax_unit0:
-        members: &id001
-        - parent0
-        - child0
-      tax_unit1:
-        members: &id002
-        - parent1
-        - child1
-    spm_units:
-      spm_unit0:
-        members: *id001
-        heating_type: FUEL_OIL
-        fuel_oil_expense: 3000
-        takes_up_tanf_if_eligible: false
-      spm_unit1:
-        members: *id002
-        heating_type: FUEL_OIL
-        fuel_oil_expense: 3000
-        takes_up_tanf_if_eligible: true
-    households:
-      home0:
-        members: *id001
-        state_code: AK
-        place_fips: '24230'
-      home1:
-        members: *id002
-        state_code: AK
-        place_fips: '24230'
-  output:
-    tanf:
-    - 0
-    - 9852
-    ak_hap_countable_income:
-    - 0
-    - 9852
-    ak_hap_income_factor:
-    - 1
-    - 0.9
-    ak_hap:
-    - 1750
-    - 1575
-- name: Published decimal income factors preserve half-up whole heating points
-  period: 2027
-  input:
-    people:
-      person0:
-        age: 40
-        immigration_status: CITIZEN
-        employment_income: 12000
-      person1:
-        age: 40
-        immigration_status: CITIZEN
-        employment_income: 18000
+        military_retirement_pay: 36_000
       person2:
         age: 40
         immigration_status: CITIZEN
-        employment_income: 25000
-    tax_units:
-      tax_unit0:
-        members:
-        - person0
-      tax_unit1:
-        members:
-        - person1
-      tax_unit2:
-        members:
-        - person2
-    spm_units:
-      spm_unit0:
-        members:
-        - person0
-        heating_type: FUEL_OIL
-        fuel_oil_expense: 1000
-      spm_unit1:
-        members:
-        - person1
-        heating_type: FUEL_OIL
-        fuel_oil_expense: 1000
-      spm_unit2:
-        members:
-        - person2
-        heating_type: FUEL_OIL
-        fuel_oil_expense: 1000
-    households:
-      home0:
-        members:
-        - person0
-        state_code: AK
-        place_fips: '36400'
-      home1:
-        members:
-        - person1
-        state_code: AK
-        place_fips: '36400'
-      home2:
-        members:
-        - person2
-        state_code: AK
-        place_fips: '36400'
-  output:
-    ak_hap_countable_income:
-    - 12000
-    - 18000
-    - 25000
-    ak_hap_income_factor:
-    - 0.8
-    - 0.7
-    - 0.5
-    ak_hap_base_benefit:
-    - 700
-    - 700
-    - 525
-    ak_hap:
-    - 700
-    - 700
-    - 525
-
-- name: Explicit public housing controls included heat and reported utility allowance
-  period: 2027
-  input:
-    people:
-      person0:
-        age: 40
-        immigration_status: CITIZEN
-        pre_subsidy_rent: 12000
-      person1:
-        age: 40
-        immigration_status: CITIZEN
-        pre_subsidy_rent: 12000
-      person2:
-        age: 40
-        immigration_status: CITIZEN
-        pre_subsidy_rent: 12000
       person3:
         age: 40
         immigration_status: CITIZEN
-        pre_subsidy_rent: 12000
     tax_units:
-      tax_unit0:
-        members:
-        - person0
       tax_unit1:
-        members:
-        - person1
+        members: [person1]
       tax_unit2:
-        members:
-        - person2
+        members: [person2]
       tax_unit3:
-        members:
-        - person3
+        members: [person3]
     spm_units:
-      spm_unit0:
-        members:
-        - person0
-        heating_type: FUEL_OIL
-        heat_expense_included_in_rent: true
       spm_unit1:
-        members:
-        - person1
+        members: [person1]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+      spm_unit2:
+        members: [person2]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+      spm_unit3:
+        members: [person3]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: AK
+        place_fips: '24230'
+  output:
+    pension_income: [0, 0, 0]
+    veterans_benefits: [0, 0, 0]
+    ak_hap_countable_income: [36_000, 0, 0]
+    ak_hap_income_factor: [0, 1, 1]
+    ak_hap_base_benefit: [0, 1_750, 1_750]
+    ak_hap: [0, 875, 875]
+
+# Two Fairbanks units of a parent and a 10-year-old child, each with a $3,000
+# oil bill. The unit that does not take up ATAP counts no income: factor 1,
+# 10 * 175 = 1,750. The other counts its modeled 9,852 ATAP receipt. The
+# two-person guideline floor(27,050 / 12) = 2,254 a month gives a 25% ceiling
+# of floor(563.5) * 12 = 6,756 and a 50% ceiling of 1,127 * 12 = 13,524, so
+# factor 0.9: 10 * 0.9 = 9 points * 175 = 1,575.
+- name: Case 11, only received ATAP reduces the regular heating award.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+      person3:
+        age: 40
+        immigration_status: CITIZEN
+      person4:
+        age: 10
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3, person4]
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+        takes_up_tanf_if_eligible: false
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+        takes_up_tanf_if_eligible: true
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: AK
+        place_fips: '24230'
+      household2:
+        members: [person3, person4]
+        state_code: AK
+        place_fips: '24230'
+  output:
+    tanf: [0, 9_852]
+    ak_hap_countable_income: [0, 9_852]
+    ak_hap_income_factor: [1, 0.9]
+    ak_hap: [1_750, 1_575]
+
+# Juneau oil 5 * two-bedroom house 1. One-person annual ceilings: 50% 9,972,
+# 75% 14,952, 100% 19,944, 125% 24,924 and 150% 29,916. Income 12,000 gives
+# factor 0.8: 5 * 0.8 = 4 points -> 700. Income 18,000 gives 0.7: 3.5 points
+# round half up to 4 -> 700. Income 25,000 gives 0.5: 2.5 points, at least 2,
+# round half up to 3 -> 525.
+- name: Case 12, published decimal income factors preserve half-up whole heating points.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 12_000
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 18_000
+      person3:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 25_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 1_000
+      spm_unit2:
+        members: [person2]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 1_000
+      spm_unit3:
+        members: [person3]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 1_000
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+        place_fips: '36400'
+      household2:
+        members: [person2]
+        state_code: AK
+        place_fips: '36400'
+      household3:
+        members: [person3]
+        state_code: AK
+        place_fips: '36400'
+  output:
+    ak_hap_countable_income: [12_000, 18_000, 25_000]
+    ak_hap_income_factor: [0.8, 0.7, 0.5]
+    ak_hap_base_benefit: [700, 700, 525]
+    ak_hap: [700, 700, 525]
+
+# Four zero-income Fairbanks public housing units: 10 * 175 = 1,750 when
+# eligible. Heat included in subsidized rent is excluded, with or without a
+# separate housing assistance flag, so the first two receive 0. The two units
+# paying a $3,000 oil bill directly with a $1,200 utility allowance keep the
+# 1,750 base, and step 8 halves the dollars to 875.
+- name: Case 13, explicit public housing controls included heat and the reported utility allowance.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        pre_subsidy_rent: 12_000
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        pre_subsidy_rent: 12_000
+      person3:
+        age: 40
+        immigration_status: CITIZEN
+        pre_subsidy_rent: 12_000
+      person4:
+        age: 40
+        immigration_status: CITIZEN
+        pre_subsidy_rent: 12_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+      tax_unit4:
+        members: [person4]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        heat_expense_included_in_rent: true
+      spm_unit2:
+        members: [person2]
         heating_type: FUEL_OIL
         heat_expense_included_in_rent: true
         receives_housing_assistance: true
-      spm_unit2:
-        members:
-        - person2
+      spm_unit3:
+        members: [person3]
         heating_type: FUEL_OIL
         heat_expense_included_in_rent: false
-        fuel_oil_expense: 3000
-      spm_unit3:
-        members:
-        - person3
+        fuel_oil_expense: 3_000
+      spm_unit4:
+        members: [person4]
         heating_type: FUEL_OIL
         heat_expense_included_in_rent: false
         receives_housing_assistance: true
-        fuel_oil_expense: 3000
+        fuel_oil_expense: 3_000
     households:
-      home0:
-        members:
-        - person0
+      household1:
+        members: [person1]
         state_code: AK
         place_fips: '24230'
         is_in_public_housing: true
-      home1:
-        members:
-        - person1
+      household2:
+        members: [person2]
         state_code: AK
         place_fips: '24230'
         is_in_public_housing: true
-      home2:
-        members:
-        - person2
+      household3:
+        members: [person3]
         state_code: AK
         place_fips: '24230'
         is_in_public_housing: true
-        hud_utility_allowance: 1200
-      home3:
-        members:
-        - person3
+        hud_utility_allowance: 1_200
+      household4:
+        members: [person4]
         state_code: AK
         place_fips: '24230'
         is_in_public_housing: true
-        hud_utility_allowance: 1200
+        hud_utility_allowance: 1_200
   output:
-    is_in_public_housing:
-    - true
-    - true
-    - true
-    - true
-    receives_housing_assistance:
-    - false
-    - true
-    - false
-    - true
-    housing_assistance:
-    - 0
-    - 0
-    - 0
-    - 0
-    ak_hap_countable_income:
-    - 0
-    - 0
-    - 0
-    - 0
-    ak_hap_base_benefit:
-    - 0
-    - 0
-    - 1750
-    - 1750
-    ak_hap:
-    - 0
-    - 0
-    - 875
-    - 875
+    is_in_public_housing: [true, true, true, true]
+    receives_housing_assistance: [false, true, false, true]
+    housing_assistance: [0, 0, 0, 0]
+    ak_hap_countable_income: [0, 0, 0, 0]
+    ak_hap_base_benefit: [0, 0, 1_750, 1_750]
+    ak_hap: [0, 0, 875, 875]
+
+# Manual 3003-1 B.6.c counts annuities, pensions and retirement benefits, and
+# Manual 3003-2 does not exempt a military survivor annuity. An $18,000
+# Survivor Benefit Plan annuity is $1,500 a month. One-person bands use
+# floor(19,950 / 12) = 1,662 a month: the 75% ceiling is floor(1,662 * 0.75)
+# = 1,246 (14,952 a year) and the 100% ceiling is 1,662 (19,944 a year), so
+# factor 0.7. Fairbanks oil 10 * two-bedroom house 1 * 0.7 = 7 points, plus
+# 1 point for age 62 = 8 points; 8 * 175 = 1,400. Leaving the annuity out
+# would give factor 1 and (10 + 1) * 175 = 1,925.
+- name: Case 14, a military survivor annuity counts as unearned income.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 62
+        immigration_status: CITIZEN
+        military_retirement_pay_survivors: 18_000
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 3_000
+        ak_atap: 0
+        receives_housing_assistance: false
+        heat_expense_included_in_rent: false
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+        place_fips: '24230'
+        hud_utility_allowance: 0
+  output:
+    military_retirement_income: 18_000
+    ak_hap_countable_income: 18_000
+    ak_hap_income_factor: 0.7
+    heating_expense: 3_000
+    ak_hap_base_benefit: 1_400
+    ak_hap: 1_400

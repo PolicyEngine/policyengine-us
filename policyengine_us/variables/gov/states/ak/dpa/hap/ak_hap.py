@@ -6,7 +6,7 @@ class ak_hap(Variable):
     entity = SPMUnit
     definition_period = YEAR
     unit = USD
-    label = "Alaska Heating Assistance Program benefit"
+    label = "Alaska Heating Assistance Program federal LIHEAP component benefit"
     reference = (
         "http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm",
         "http://dpaweb.hss.state.ak.us/manuals/HAP/3004/3004-5_grant_computation.htm",

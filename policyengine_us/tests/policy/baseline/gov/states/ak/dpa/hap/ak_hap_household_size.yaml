@@ -224,8 +224,8 @@
   output:
     ak_hap_household_size: 3
 
-# No final eligibility is asserted. MS 3003-6 E still counts all members' income; contract returns a zero limit for zero qualified size.
-- name: "Case 3, an Alaska household without a qualified member has no income ceiling."
+# No final eligibility is asserted. MS 3003-6 E still counts all members' income when no member counts toward the household size.
+- name: "Case 3, an Alaska household without a qualified member still counts its members' income."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -250,9 +250,8 @@
   output:
     ak_hap_household_size: 0
     ak_hap_countable_income: 12_000
-    ak_hap_income_limit: 0
 
-# Shared contract masks all three components to Alaska; MS 3002-1 B requires Alaska residence.
+# Shared contract masks both components to Alaska; MS 3002-1 B requires Alaska residence.
 - name: "Case 4, all supported HAP components are zero outside Alaska."
   period: 2027
   absolute_error_margin: 0.01
@@ -278,4 +277,3 @@
   output:
     ak_hap_household_size: 0
     ak_hap_countable_income: 0
-    ak_hap_income_limit: 0
