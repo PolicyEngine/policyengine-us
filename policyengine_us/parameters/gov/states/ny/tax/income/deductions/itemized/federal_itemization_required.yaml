@@ -1,0 +1,15 @@
+description: New York allows the New York itemized deduction only to filers who itemize on their federal return, if this is true.
+values:
+  2017-01-01: true
+  2018-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: New York itemized deduction requires federal itemization
+  reference:
+    - title: N.Y. Tax Law 615(a)
+      href: https://legislation.nysenate.gov/pdf/laws/TAX615
+    - title: 2017 Form IT-201 instructions, line 34
+      href: https://www.tax.ny.gov/pdf/2017/inc/it201i_2017.pdf#page=20
+    - title: 2018 Form IT-196 instructions, general information
+      href: https://www.tax.ny.gov/pdf/2018/inc/it196i_2018.pdf#page=1
