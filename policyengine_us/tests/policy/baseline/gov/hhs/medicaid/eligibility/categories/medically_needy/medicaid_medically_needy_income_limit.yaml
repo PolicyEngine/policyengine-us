@@ -1,0 +1,207 @@
+- name: Case 1, Connecticut uses its March 2026 dollar limit from 2027.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    state_code: CT
+  output:
+    # 851 x 12 = 10,212.
+    medicaid_medically_needy_income_limit: 10_212
+
+- name: Case 2, District of Columbia couple uses its 2026 dollar limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 68
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    # 901.67 x 12 = 10,820.04.
+    medicaid_medically_needy_income_limit: [10_820.04, 10_820.04]
+
+- name: Case 3, Kansas uses its dollar limit before July 2025.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    state_code: KS
+  output:
+    # 475 x 12 = 5,700.
+    medicaid_medically_needy_income_limit: 5_700
+
+- name: Case 4, Kansas couple uses the SSI couple rate from July 2025.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 68
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # 1,491 x 12 = 17,892.
+    medicaid_medically_needy_income_limit: [17_892, 17_892]
+
+- name: Case 5, Minnesota uses 100 percent of the poverty guideline.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    state_code: MN
+  output:
+    # 1.00 x 15,960 = 15,960.
+    medicaid_medically_needy_income_limit: 15_960
+
+- name: Case 6, New Hampshire uses its July 2025 dollar limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    state_code: NH
+  output:
+    # 939 x 12 = 11,268.
+    medicaid_medically_needy_income_limit: 11_268
+
+- name: Case 7, New York couple uses 138 percent of the poverty guideline.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 68
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # 1.38 x 21,640 = 29,863.20.
+    medicaid_medically_needy_income_limit: [29_863.2, 29_863.2]
+
+- name: Case 8, Rhode Island uses its 2026 dollar limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    state_code: RI
+  output:
+    # 1,200 x 12 = 14,400.
+    medicaid_medically_needy_income_limit: 14_400
+
+- name: Case 9, Utah couple uses 100 percent of the two-person poverty guideline.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 68
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # 1.00 x 21,640 = 21,640.
+    medicaid_medically_needy_income_limit: [21_640, 21_640]
+
+- name: Case 10, Washington couple uses the one-person SSI rate.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 68
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # 994 x 12 = 11,928.
+    medicaid_medically_needy_income_limit: [11_928, 11_928]
+
+- name: Case 11, Wisconsin uses 100 percent of the poverty guideline.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    state_code: WI
+  output:
+    # 1.00 x 15,960 = 15,960.
+    medicaid_medically_needy_income_limit: 15_960
+
+- name: Case 12, Illinois couple uses 100 percent of the two-person poverty guideline.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 68
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # 1.00 x 21,640 = 21,640.
+    medicaid_medically_needy_income_limit: [21_640, 21_640]
+
+- name: Case 13, North Dakota uses 90 percent of the poverty guideline.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    state_code: ND
+  output:
+    # 0.9 x 15,960 = 14,364.
+    medicaid_medically_needy_income_limit: 14_364
