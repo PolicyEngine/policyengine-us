@@ -1,3 +1,10 @@
+## [2.62.7] - 2026-10-24
+
+### Fixed
+
+- Exclude county agency staff guardians and conservators from Minnesota Supplemental Aid guardian fees while retaining the statutory 5% of gross monthly income / $100 cap for other guardians.
+
+
 ## [2.62.6] - 2026-10-24
 
 ### Fixed
