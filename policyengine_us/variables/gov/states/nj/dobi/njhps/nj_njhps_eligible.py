@@ -24,7 +24,10 @@ class nj_njhps_eligible(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.nj.dobi.njhps
         in_effect = p.in_effect
-        magi_fraction = tax_unit("aca_magi_fraction", period)
+        # The exact ratio, not the truncated aca_magi_fraction, which maps
+        # 600.00%-600.99% to 6.00 (see nj_njhps_member_eligible).
+        magi = max_(tax_unit("aca_magi", period), 0)
+        magi_fraction = magi / tax_unit("tax_unit_fpg", period.last_year)
         income_eligible = (magi_fraction >= p.fpl_floor) & (
             magi_fraction <= p.fpl_limit
         )
