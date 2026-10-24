@@ -27,9 +27,11 @@ Invariants:
 4. Invalidating a simulation's cached formula output drops its measurements.
 """
 
+import gc
+
 import numpy as np
 import pytest
-from hypothesis import example, given, settings
+from hypothesis import Phase, example, given, settings
 from hypothesis import strategies as st
 from policyengine_core.periods import ETERNITY, YEAR as YEAR_PERIOD
 from policyengine_core.periods import period as to_period
@@ -57,6 +59,25 @@ LSR_REFORM = {
     },
 }
 WAGES = (20_000, 50_000, 100_000)
+GC_THRESHOLD = 100_000
+
+
+@pytest.fixture(autouse=True, scope="module")
+def collect_cycles_less_often():
+    """Run the cycle collector less often while these tests copy policy.
+
+    Every reform simulation, measurement and clone here deep-copies the
+    parameter tree: millions of new objects, nearly all still in use. A
+    collection starts each time allocations exceed deallocations by the first
+    threshold (2,000 by default), so one copy ran thousands of collections
+    over live objects, about two thirds of its time (2026-10-23). A higher
+    threshold reclaims the same garbage in fewer passes; this module's peak
+    memory stayed the same.
+    """
+    thresholds = gc.get_threshold()
+    gc.set_threshold(GC_THRESHOLD, *thresholds[1:])
+    yield
+    gc.set_threshold(*thresholds)
 
 
 def household(wages):
@@ -68,6 +89,21 @@ def household(wages):
         "marital_units": {"mu": {"members": ["you"]}},
         "households": {"h": {"members": ["you"], "state_name": {YEAR: "CA"}}},
     }
+
+
+def households(wages):
+    """``household(w)`` for each of ``wages``, side by side in one situation."""
+    situation = {}
+    for index, wage in enumerate(wages):
+        for group, units in household(wage).items():
+            for name, unit in units.items():
+                if "members" in unit:
+                    unit = {
+                        **unit,
+                        "members": [f"{member}_{index}" for member in unit["members"]],
+                    }
+                situation.setdefault(group, {})[f"{name}_{index}"] = unit
+    return situation
 
 
 def make_simulation(**kwargs):
@@ -89,12 +125,14 @@ _fresh = {}
 def fresh_response(wages, period=YEAR):
     """The response a new reform simulation with these wages reports.
 
-    Values only, so sharing them across tests shares no simulation state.
+    ``wages`` is one household's, or a tuple of several households' side by
+    side. Values only, so sharing them across tests shares no simulation state.
     """
     key = (wages, period)
     if key not in _fresh:
+        situation = households(wages) if isinstance(wages, tuple) else household(wages)
         _fresh[key] = response(
-            make_simulation(situation=household(wages), reform=LSR_REFORM), period
+            make_simulation(situation=situation, reform=LSR_REFORM), period
         )
     return _fresh[key]
 
@@ -107,33 +145,31 @@ def set_wages(simulation, wages, period=YEAR):
     everything but inputs first.
     """
     drop_inherited_values(simulation)
-    simulation.set_input("employment_income_before_lsr", period, np.array([wages]))
+    simulation.set_input(
+        "employment_income_before_lsr", period, np.array(wages, ndmin=1)
+    )
 
 
-@settings(max_examples=3, deadline=None, derandomize=True)
+# Every household takes another's wages, so each pin below runs all three
+# levels in one simulation: one household goes from 50,000 to 100,000.
+SWAPPED_WAGES = (50_000, 100_000, 20_000)
+
+
+@settings(phases=[Phase.explicit], deadline=None)
 @given(
     kind=st.sampled_from(["clone", "branch"]),
     after_source_measured=st.booleans(),
-    source_wages=st.sampled_from(WAGES),
-    copy_wages=st.sampled_from(WAGES),
+    copy_wages=st.permutations(WAGES).map(tuple),
 )
 # Each of these failed before: zero response, or the source's relative changes.
-@example(
-    kind="branch", after_source_measured=False, source_wages=50_000, copy_wages=50_000
-)
-@example(
-    kind="clone", after_source_measured=False, source_wages=50_000, copy_wages=50_000
-)
-@example(
-    kind="clone", after_source_measured=True, source_wages=50_000, copy_wages=100_000
-)
-@example(
-    kind="branch", after_source_measured=True, source_wages=50_000, copy_wages=100_000
-)
+@example(kind="branch", after_source_measured=False, copy_wages=WAGES)
+@example(kind="clone", after_source_measured=False, copy_wages=WAGES)
+@example(kind="clone", after_source_measured=True, copy_wages=SWAPPED_WAGES)
+@example(kind="branch", after_source_measured=True, copy_wages=SWAPPED_WAGES)
 def test_a_copy_reports_the_response_for_its_inputs_and_measurement_state(
-    kind, after_source_measured, source_wages, copy_wages
+    kind, after_source_measured, copy_wages
 ):
-    source = make_simulation(situation=household(source_wages), reform=LSR_REFORM)
+    source = make_simulation(situation=households(WAGES), reform=LSR_REFORM)
     if after_source_measured:
         source_response = response(source)
         measured = {
@@ -143,14 +179,16 @@ def test_a_copy_reports_the_response_for_its_inputs_and_measurement_state(
             ].items()
         }
     copy = source.clone() if kind == "clone" else source.get_branch("copy")
-    if copy_wages != source_wages:
+    if copy_wages != WAGES:
         set_wages(copy, copy_wages)
     copy_response = response(copy)
     if kind == "branch" and after_source_measured:
         # d1021: perturbed wages use the household's measured relative changes.
         # With this reform's uniform elasticities, the response scales with wages.
         np.testing.assert_allclose(
-            copy_response, source_response * copy_wages / source_wages, atol=1e-3
+            copy_response,
+            source_response * np.divide(copy_wages, WAGES),
+            atol=1e-3,
         )
         copied_measurements = copy.__dict__[BEHAVIORAL_RESPONSE_CACHE_ATTR][str(YEAR)]
         assert copied_measurements.keys() == measured.keys()
@@ -159,9 +197,7 @@ def test_a_copy_reports_the_response_for_its_inputs_and_measurement_state(
     else:
         np.testing.assert_allclose(copy_response, fresh_response(copy_wages), atol=1e-3)
     if after_source_measured:
-        np.testing.assert_allclose(
-            response(source), fresh_response(source_wages), atol=1e-3
-        )
+        np.testing.assert_allclose(response(source), fresh_response(WAGES), atol=1e-3)
 
 
 def test_migrated_input_records_are_private_and_explicit_overrides_survive():

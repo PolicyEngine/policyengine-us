@@ -1,0 +1,1 @@
+Cut the CI time of the behavioural-response measurement copy tests: collect garbage less often while they copy policy trees, and run each pinned copy case for all three wage levels in one simulation instead of three fixed generated examples.
