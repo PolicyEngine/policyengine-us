@@ -33,7 +33,9 @@ class wa_liheap_countable_income(Variable):
         p = parameters(period).gov.states.wa.commerce.liheap.income
         person = spm_unit.members
         wages = max_(person("employment_income", period), 0)
-        business = sum(max_(person(source, period), 0) for source in p.business_sources)
+        business = 0
+        for source in p.business_sources:
+            business = business + max_(person(source, period), 0)
         # Net inputs approximate allowable business expenses; the 50% standard
         # expense option and 20% wage deduction are not applied again.
         # Annual net inputs cannot reproduce separate monthly loss floors.
@@ -42,11 +44,13 @@ class wa_liheap_countable_income(Variable):
             wages * (1 - p.wage_deduction_rate) + business,
             0,
         )
-        retirement = sum(
-            max_(person(source, period), 0) for source in p.retirement_sources
-        )
+        retirement = 0
+        for source in p.retirement_sources:
+            retirement = retirement + max_(person(source, period), 0)
         unemployment = max_(person("total_unemployment_compensation", period), 0)
-        unearned = sum(max_(person(source, period), 0) for source in p.unearned_sources)
+        unearned = 0
+        for source in p.unearned_sources:
+            unearned = unearned + max_(person(source, period), 0)
         # Plan section 1.9 checks "Excluding MediCare deduction" for Social
         # Security, so each person's benefit counts net of the Part B premium
         # that person pays. medicare_part_b_premium is zero for a person not
