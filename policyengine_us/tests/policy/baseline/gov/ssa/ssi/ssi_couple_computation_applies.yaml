@@ -138,3 +138,28 @@
     # Not a joint claim → couple computation does not apply
     ssi_claim_is_joint: [false, false]
     ssi_couple_computation_applies: [false, false]
+
+- name: Case 6, Medicaid facility input separates a couple's SSI computation.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        is_in_medicaid_facility: true
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        pension_income: 1_200
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    ssi_federal_living_arrangement: [MEDICAL_TREATMENT_FACILITY, OWN_HOUSEHOLD]
+    ssi_couple_computation_applies: [false, false]
