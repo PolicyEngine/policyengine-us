@@ -23,18 +23,19 @@
     # Grant standard $2,100 - countable income $2,000 = $100 payment
     va_tanf: 100
 
-- name: If up tanf eligible, small payment is still paid.
-  period: 2023
+- name: If up tanf eligible before July 2022, the UP grant standard applies.
+  period: 2021
   input:
     va_tanf_eligibility: true
     va_up_tanf_eligibility: true
     va_tanf_grant_standard: 0
-    va_tanf_up_grant_standard: 2_100
-    va_tanf_countable_income: 2_000
+    va_tanf_up_grant_standard: 2_400
+    va_tanf_countable_income: 1_200
     county_str: ARLINGTON_COUNTY_VA
   output:
-    # UP grant standard $2,100 - countable income $2,000 = $100 payment
-    va_tanf: 100
+    # UP grant standard $2,400 - countable income $1,200 = $1,200 payment
+    # ($200 - $100 = $100 a month, below the monthly maximum)
+    va_tanf: 1_200
 
 - name: If tanf eligible, payment less than maximum payment, they get the difference.
   period: 2023
@@ -106,37 +107,37 @@
     # Payment 15000 capped at Group II max: 12*722 = 8_664
     va_tanf: 8_664
 
-# Group III TANF-UP: ceil(648*1.155)=749
-# Annual max = 12*749 = 8_988
+# TANF-UP maximums apply only before July 2022, while Virginia had
+# separate TANF-UP standards. January 2022 multiplier: 1.1
+# Group III TANF-UP: ceil(648*1.1) = ceil(712.8) = 713
 
-- name: Group III TANF-UP capped at scaled max payment.
-  period: 2023
+- name: Group III TANF-UP capped at scaled max payment before July 2022.
+  period: 2022-01
   input:
     va_tanf_eligibility: true
     va_up_tanf_eligibility: true
     va_tanf_grant_standard: 0
-    va_tanf_up_grant_standard: 15_000
+    va_tanf_up_grant_standard: 1_500
     va_tanf_countable_income: 0
     county_str: ARLINGTON_COUNTY_VA
   output:
-    # Payment 15000 capped at Group III UP max: 12*749 = 8_988
-    va_tanf: 8_988
+    # Payment 1,500 capped at Group III UP max: 713
+    va_tanf: 713
 
-# Group II TANF-UP: ceil(544*1.155)=629
-# Annual max = 12*629 = 7_548
+# Group II TANF-UP: ceil(544*1.1) = ceil(598.4) = 599
 
-- name: Group II TANF-UP capped at scaled max payment.
-  period: 2023
+- name: Group II TANF-UP capped at scaled max payment before July 2022.
+  period: 2022-01
   input:
     va_tanf_eligibility: true
     va_up_tanf_eligibility: true
     va_tanf_grant_standard: 0
-    va_tanf_up_grant_standard: 15_000
+    va_tanf_up_grant_standard: 1_500
     va_tanf_countable_income: 0
     county_str: PITTSYLVANIA_COUNTY_VA
   output:
-    # Payment 15000 capped at Group II UP max: 12*629 = 7_548
-    va_tanf: 7_548
+    # Payment 1,500 capped at Group II UP max: 599
+    va_tanf: 599
 
 - name: Payment below cap is not reduced.
   period: 2023
@@ -151,3 +152,62 @@
     # Payment = 9600 - 1200 = 8400, Group III monthly max = 861
     # Monthly payment = 700, which is below the cap
     va_tanf: 8_400
+
+# From July 2022 Virginia has one schedule of standards (TANF Manual Section
+# 304, Appendix 2) for all units, so TANF-UP units get the TANF standard and
+# the TANF maximum. January 2025 multiplier: 1.155
+
+- name: From July 2022, a TANF-UP unit gets the TANF grant standard.
+  period: 2025-01
+  input:
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: true
+    va_tanf_grant_standard: 500
+    va_tanf_up_grant_standard: 400
+    va_tanf_countable_income: 100
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    # TANF grant standard $500 - countable income $100 = $400
+    # (the TANF-UP standard would give $400 - $100 = $300)
+    va_tanf: 400
+
+- name: From July 2022, a Group III TANF-UP unit is capped at the TANF maximum.
+  period: 2025-01
+  input:
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: true
+    va_tanf_grant_standard: 1_500
+    va_tanf_up_grant_standard: 1_500
+    va_tanf_countable_income: 0
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Group III TANF maximum: ceil(745*1.155) = ceil(860.475) = 861
+    # (the TANF-UP maximum would be ceil(648*1.155) = 749)
+    va_tanf: 861
+
+- name: From July 2022, a Group II TANF-UP unit is capped at the TANF maximum.
+  period: 2025-01
+  input:
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: true
+    va_tanf_grant_standard: 1_500
+    va_tanf_up_grant_standard: 1_500
+    va_tanf_countable_income: 0
+    county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    # Group II TANF maximum: ceil(625*1.155) = ceil(721.875) = 722
+    # (the TANF-UP maximum would be ceil(544*1.155) = 629)
+    va_tanf: 722
+
+- name: From July 2022, a single-parent unit is unaffected.
+  period: 2025-01
+  input:
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: false
+    va_tanf_grant_standard: 500
+    va_tanf_up_grant_standard: 400
+    va_tanf_countable_income: 100
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    # TANF grant standard $500 - countable income $100 = $400
+    va_tanf: 400
