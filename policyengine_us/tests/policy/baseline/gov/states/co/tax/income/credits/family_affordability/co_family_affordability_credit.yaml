@@ -118,3 +118,166 @@
   output:
     co_family_affordability_credit: [0, 0, 0]
     co_refundable_credits: 0
+
+
+- name: 2025 single filer who can be claimed as a dependent, keeps the Colorado family affordability credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 25
+        employment_income: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: CO
+  output:
+    # IRC 152(c) qualifying-child status survives filer claimability.
+    co_family_affordability_credit: [0, 3_273]
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent, keeps the Colorado family affordability credit (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CO
+  output:
+    co_family_affordability_credit: [0, 0, 3_273]
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent, keeps the Colorado family affordability credit (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: CO
+  output:
+    co_family_affordability_credit: [0, 0, 3_273]
+
+- name: 2025 joint return with both spouses claimable as dependents, keeps the Colorado family affordability credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CO
+  output:
+    co_family_affordability_credit: [0, 0, 3_273]
+
+- name: 2025 joint return with neither spouse claimable gets the Colorado family affordability credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CO
+  output:
+    # AGI 10,000 is below the 25,000 joint reduction
+    # threshold; child under 6: 3,273.
+    co_family_affordability_credit: [0, 0, 3_273]
+
+- name: 2025 claimable but unclaimed filer keeps child and family credits for an age-four qualifying child
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 25
+        employment_income: 10_000
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, child]
+        state_code: CO
+  output:
+    co_ctc: 1_200
+    co_ctc_eligible_children_count: 1
+    co_family_affordability_credit: [0, 3_273]
