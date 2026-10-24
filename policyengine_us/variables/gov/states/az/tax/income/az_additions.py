@@ -8,3 +8,4 @@ class az_additions(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.AZ
+    adds = ["az_other_additions"]
