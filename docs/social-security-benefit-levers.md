@@ -57,9 +57,12 @@ factors once, and perform their earnings test on the resulting payable amount.
 exports all recorded pure-input periods and entity memberships as `sources`,
 with supplied formula-variable values in a separate `overrides` payload. Cached
 calculations are excluded. `reload_source_inputs(payload, ...)` restores sources
-before final overrides. Core's legacy `extract_person` remains a one-period
-interface. Neither interface settles the separate API/application metadata and
-field-exposure contract.
+before final overrides. Core's legacy `extract_person` retains every recorded
+input period for the four benefit components and their reported twins, excluding
+formula caches. This keeps later overrides final on reload and preserves their
+source histories and future uprating. Other variables keep Core's usual first
+known period. Neither interface settles the separate API/application metadata
+and field-exposure contract.
 
 Annual benefit inputs retain Core's period normalization. For example, supplying
 `social_security_retirement: {"2024-07": 500}` through a PE-US constructor stores

@@ -197,6 +197,34 @@ def install_social_security_input_compatibility():
             ):
                 return payload
             people = payload.get(simulation.persons.entity.plural, {})
+            benefit_inputs = {
+                name: {
+                    str(period): value
+                    for period in simulation._get_set_input_periods(name)
+                    if (value := simulation._get_recorded_input_array(name, period))
+                    is not None
+                }
+                for name in (*SOCIAL_SECURITY_COMPONENTS, *_REPORTED_COMPONENTS)
+            }
+            for person_name, person in people.items():
+                # Core names extracted people by their original zero-based
+                # index plus one, even when extracting a later household.
+                person_index = (
+                    int(person_name.removeprefix(f"{simulation.persons.entity.key}_"))
+                    - 1
+                )
+                for name, values in benefit_inputs.items():
+                    # Core exports its first known period, which may be a
+                    # formula cache rather than the later public override.
+                    # Keep every actual benefit input and its source history
+                    # together, without converting calculated values to inputs.
+                    if values:
+                        person[name] = {
+                            period: float(value[person_index])
+                            for period, value in values.items()
+                        }
+                    else:
+                        person.pop(name, None)
             exported_periods = {
                 (name, str(period))
                 for person in people.values()
@@ -392,9 +420,10 @@ def export_source_inputs(simulation):
     payload; calculated results never become sources. Only the current branch
     and its visible ancestors are exported, using their normal precedence.
 
-    This is the complete-history alternative to Core's legacy one-period
-    ``extract_person`` API. Export the desired small simulation or household;
-    this helper deliberately does not materialize a population dataset.
+    This is the complete-history alternative to Core's legacy ``extract_person``
+    API, which retains all supplied periods only for benefit components and their
+    reported twins. Export the desired small simulation or household; this
+    helper deliberately does not materialize a population dataset.
     """
     names = {
         key: [str(name) for name in population.ids]

@@ -478,6 +478,67 @@ def test_legacy_extraction_preserves_later_public_override(wrapper, override):
 
 
 @pytest.mark.parametrize("wrapper", WRAPPERS)
+@pytest.mark.parametrize("explicit_source", (None, 0, 6_000))
+def test_legacy_extraction_keeps_later_override_and_matching_source(
+    wrapper, explicit_source
+):
+    from policyengine_core.reforms import Reform
+
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported = f"{public}_reported"
+    inputs = situation({public: {2024: 1_000}})
+    inputs["people"]["other"] = {"age": {2024: 70}, public: {2024: 12_000}}
+    for plural, groups in inputs.items():
+        if plural != "people":
+            groups["other"] = {"members": ["other"]}
+    reform = Reform.from_dict(
+        {
+            "gov.contrib.ssa.benefit_levers.across_the_board.start_year": {
+                "2026": 2026
+            },
+            "gov.contrib.ssa.benefit_levers.across_the_board.rate": {"2026": 0.08},
+        }
+    )
+    simulation = wrapper(situation=inputs, tax_benefit_system=system, reform=reform)
+    # Core's first known public period is now a calculated 2024 cache, so it
+    # cannot identify the later supplied override without recorded-input APIs.
+    np.testing.assert_array_equal(simulation.calculate(public, 2024), [1_000, 12_000])
+    if explicit_source is not None:
+        simulation.set_input(reported, 2026, [500, explicit_source])
+    simulation.set_input(public, 2026, [18_000, 24_000])
+    expected_source = 24_000 if explicit_source is None else explicit_source
+
+    # Select the second household: its Core extraction label retains index 2,
+    # while its reloaded population contains just one person at index 0.
+    payload = simulation.extract_person(1)
+    assert set(payload["people"]) == {"person_2"}
+    person = payload["people"]["person_2"]
+    assert person[public] == {"2026": 24_000}
+    assert person[reported] == {"2024": 12_000, "2026": expected_source}
+    reloaded = Simulation(situation=payload, tax_benefit_system=system, reform=reform)
+    assert input_periods(reloaded, public) == {"2026"}
+    # Reload must retain the final override, despite the 1.08 benefit factor.
+    assert amount(reloaded, public, 2026) == 24_000
+    assert amount(reloaded, reported, 2026) == expected_source
+    assert amount(reloaded, public, 2027) == pytest.approx(
+        np.asarray(simulation.calculate(public, 2027))[1]
+    )
+
+    reloaded.set_input(public, 2026, [36_000])
+    assert amount(reloaded, reported, 2026) == (
+        36_000 if explicit_source is None else explicit_source
+    )
+    assert np.asarray(simulation.calculate(reported, 2026))[1] == expected_source
+    simulation.set_input(public, 2026, [18_000, 36_000])
+    for candidate in (simulation, reloaded):
+        drop_inherited_values(candidate)
+    assert amount(reloaded, public, 2026) == 36_000
+    assert amount(reloaded, public, 2027) == pytest.approx(
+        np.asarray(simulation.calculate(public, 2027))[1]
+    )
+
+
+@pytest.mark.parametrize("wrapper", WRAPPERS)
 @pytest.mark.parametrize("snapshot", ("legacy_extraction", "complete_export"))
 def test_source_round_trip_retains_automatic_origin_for_subsequent_writes(
     wrapper, snapshot
