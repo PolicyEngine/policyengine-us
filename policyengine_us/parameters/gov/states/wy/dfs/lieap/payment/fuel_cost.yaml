@@ -1,0 +1,36 @@
+description: Wyoming uses these seasonal primary fuel cost standards under the Low Income Energy Assistance Program.
+# Exact source cells retain electricity and natural-gas decimals.
+# Zero entries mean no verified mapping to the six published fuel standards;
+# they do not establish legal ineligibility. Kerosene is not silently mapped.
+UNSPECIFIED:
+  2025-10-01: 0
+ELECTRICITY:
+  2025-10-01: 1_712.997
+NATURAL_GAS:
+  2025-10-01: 1_550.85
+FUEL_OIL:
+  2025-10-01: 2_640
+KEROSENE:
+  2025-10-01: 0
+PROPANE:
+  2025-10-01: 1_300
+WOOD:
+  2025-10-01: 1_225
+COAL:
+  2025-10-01: 525
+SOLAR:
+  2025-10-01: 0
+OTHER:
+  2025-10-01: 0
+NONE:
+  2025-10-01: 0
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Wyoming LIEAP seasonal fuel cost standard
+  breakdown:
+    - heating_type
+  reference:
+    - title: FY2026 Benefit Matrix, Coal H10, Heating Oil H10, Electric H10, Natural Gas H10, Propane F9, Wood H9
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/WY_BenefitMatrix_2026.xlsx

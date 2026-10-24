@@ -1,0 +1,15 @@
+description: Wyoming uses the federal poverty guideline from this many years before the modeled fiscal year for the veterans exclusion and the federal income floor under the Low Income Energy Assistance Program.
+# Annual FY2026 represents the season starting in October 2025; use the
+# guideline at season start. Earlier and later policy remains unverified.
+values:
+  2025-10-01: 1
+
+metadata:
+  unit: year
+  period: year
+  label: Wyoming LIEAP poverty guideline year lag
+  reference:
+    - title: "LIEAP Rules, Chapter 1, section 8(a)(ii)(S)"
+      href: https://rules.wyo.gov/Search.aspx?mode=7
+    - title: "FY2026 State Plan, fiscal-year dates"
+      href: https://dfs.wyo.gov/wp-content/uploads/2025/10/FFY2026-LIEAP-State-Model-Plan.pdf#page=2

@@ -1,0 +1,60 @@
+# Approved modeling convention: count citizens and qualified noncitizens within
+# each SPM unit. Wyoming's FY2026 plan, section 17.3, establishes status
+# verification but does not specify mixed-status household-size calculations.
+# https://dfs.wyo.gov/wp-content/uploads/2025/10/FFY2026-LIEAP-State-Model-Plan.pdf#page=38
+
+- name: Case 1, a citizen child counts and an undocumented parent does not.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_lieap_household_size: 1
+
+- name: Case 2, separate SPM units sharing a home retain their own qualifying-member counts.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: REFUGEE
+      person2:
+        age: 38
+        immigration_status: ASYLEE
+      person3:
+        age: 30
+        immigration_status: DACA
+      person4:
+        age: 28
+        immigration_status: TPS
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+      spm_unit2:
+        members: [person3, person4]
+    households:
+      household1:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_lieap_household_size: [2, 0]
+
+- name: Case 3, a qualifying member outside Wyoming has no Wyoming program household size.
+  period: 2026
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    state_code: CO
+  output:
+    wy_lieap_household_size: 0

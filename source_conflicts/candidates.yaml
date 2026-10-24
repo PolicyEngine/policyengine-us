@@ -5573,6 +5573,73 @@ candidates:
   state: unreviewed
   note: 'PE-US follows the Rules; establish whether the chart header denotes a different calculation. Code not yet
     on main: wy_ccap_income_eligible, wy_ccap_countable_income.'
+- id: us-wy:lieap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can Wyoming's 60% SMI limit exclude a large household whose income is below the federal 110%
+    poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624
+  - kind: plan
+    citation: Wyoming FY2026 LIEAP State Plan, section 2.1, 60% SMI for all household sizes
+    url: https://dfs.wyo.gov/wp-content/uploads/2025/10/FFY2026-LIEAP-State-Model-Plan.pdf#page=8
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The 60% SMI limit falls below that floor starting at household size 17.
+  example: A 17-person household earning $113,900 exceeds the $113,688 state limit but is below the $114,015 floor
+    and receives a $238 heating-oil benefit in the PR.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10346
+  state: unreviewed
+  note: 'The open PR applies the federal floor and sets the benefit fraction from income relative to the raised
+    limit; the agency payment method for these households is unverified. Code not yet on main: wy_lieap_eligible,
+    wy_lieap.'
+- id: us-wy:lieap-income-limit-statute-lesser-of
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does W.S. 42-2-501(c), which requires eligibility at incomes not exceeding the lesser of 215% of the
+    poverty level or 60% of state median income, set a coverage minimum or the income ceiling?
+  sources:
+  - kind: statute
+    citation: W.S. 42-2-501(c)-(d)
+    url: https://wyoleg.gov/statutes/compress/title42.pdf#page=34
+  - kind: regulation
+    citation: Wyoming DFS LIEAP Rules, Chapter 1, sections 3(oo) and 7(a)(ii)
+    url: https://rules.wyo.gov/Search.aspx?mode=7
+  - kind: plan
+    citation: Wyoming FY2026 LIEAP State Plan, section 2.1, 60% SMI for all household sizes
+    url: https://dfs.wyo.gov/wp-content/uploads/2025/10/FFY2026-LIEAP-State-Model-Plan.pdf#page=8
+  - kind: agency-practice
+    citation: DFS 2016 statute clean-up request, Appendix C, asking to remove the 215% clause
+    url: https://wyoleg.gov/InterimCommittee/2016/10-0825AppendixC.pdf#page=8
+  readings:
+    statute: The state plan must cover households with incomes at or below the lesser of 215% of the poverty level
+      or 60% of state median income.
+    other: Rules 3(oo) and 7(a)(ii) treat the section 42-2-501(c) standard as the maximum income, and the FY2026
+      plan applies 60% of state median income for every household size.
+  example: A one-person FY2026 household with $34,000 of countable income is above 215% of the 2025 guideline
+    ($33,647.50) and within 60% of state median income ($35,829), and the PR finds it income-eligible.
+  pe_us:
+    follows: conflicting-source
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10346
+  state: unreviewed
+  note: 'The open PR reads the statute as a coverage minimum that the plan meets and applies 60% of state median
+    income for every size. Under the ceiling reading, FY2026 sizes 1-3 with incomes of $33,647.50-$35,829,
+    $45,472.50-$46,853 and $57,297.50-$57,877 would be ineligible. No amendment history for the clause was found.
+    Code not yet on main: wy_lieap_income_limit, smi_rate.yaml.'
 - id: us:additional-child-credit-housing-deduction-bar
   program: income-tax
   years:

@@ -1,0 +1,20 @@
+description: Wyoming counts these nonnegative earnings sources for adults under the Low Income Energy Assistance Program.
+values:
+  2025-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+
+# Existing net business inputs approximate the allowed business-expense rules.
+# No additional expense deduction is applied to amounts already reported net.
+metadata:
+  unit: list
+  period: year
+  label: Wyoming LIEAP earned income sources
+  reference:
+    - title: "FY2026 State Plan, section 1.9 #page 5-6"
+      href: https://dfs.wyo.gov/wp-content/uploads/2025/10/FFY2026-LIEAP-State-Model-Plan.pdf#page=5
+    - title: LIEAP Rules, Chapter 1, sections 3(w) and 8(a)
+      href: https://rules.wyo.gov/Search.aspx?mode=7
