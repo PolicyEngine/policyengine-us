@@ -20,7 +20,9 @@ class nd_liheap_countable_earned_income(Variable):
         # Supplied net business inputs omit policy depreciation addbacks.
         # Separate source/person losses cannot offset other earnings; losses
         # within an aggregated business input cannot be isolated.
-        earnings = sum(max_(person(source, period), 0) for source in p.earned_sources)
+        earnings = 0
+        for source in p.earned_sources:
+            earnings = earnings + max_(person(source, period), 0)
         school = person("is_in_k12_school", period) | person(
             "is_in_secondary_school", period
         )

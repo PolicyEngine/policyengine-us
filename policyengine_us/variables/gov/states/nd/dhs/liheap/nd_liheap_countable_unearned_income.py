@@ -16,7 +16,9 @@ class nd_liheap_countable_unearned_income(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.nd.dhs.liheap.income
-        income = sum(max_(person(source, period), 0) for source in p.unearned_sources)
+        income = 0
+        for source in p.unearned_sources:
+            income = income + max_(person(source, period), 0)
         contributions = person("financial_assistance", period)
         # This input lacks regularity and education-conditioned support flags;
         # supplied amounts are treated as recurring, unconditional support.
