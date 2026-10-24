@@ -1,10 +1,13 @@
 # Hawaii TANF dependent care deduction tests
-# Deduction is actual childcare expenses, capped at rate per child per month
+# Deduction is the actual cost of care for each incapacitated (disabled)
+# adult in the household, capped per adult per month.
+# Child care is not deducted.
 # Rate: $175 (full-time, 32+ hrs) or $165 (part-time, <32 hrs)
 # Uses MAX of adult hours - if either parent is full-time, use full-time rate
-# Per Hawaii TANF State Plan
+# Per HAR 17-676-54.1(c)(4) and (d)(4), HAR 17-676-2 and the Hawaii TANF
+# State Plan section 10.2.1(D)
 
-- name: Case 1, no childcare expenses.
+- name: Case 1, no care expenses.
   period: 2024-01
   input:
     people:
@@ -26,7 +29,7 @@
   output:
     hi_tanf_dependent_care_deduction: 0
 
-- name: Case 2, single parent full-time, expenses below cap.
+- name: Case 2, child care for a child in the unit is not deducted.
   period: 2024-01
   input:
     people:
@@ -38,259 +41,21 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        # $1,200/year = $100/month, below $175 cap
-        childcare_expenses: 1_200
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: HI
-  output:
-    # 40 hrs = full-time, $175 cap
-    # $100/month < $175 cap, so full amount deducted
-    hi_tanf_dependent_care_deduction: 100
-
-- name: Case 3, single parent full-time, expenses above cap.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        weekly_hours_worked_before_lsr: 40
-      person2:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        # $3,600/year = $300/month, above $175 cap
-        childcare_expenses: 3_600
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: HI
-  output:
-    # 40 hrs = full-time, $175 cap
-    # $300/month > $175 cap, capped at 1 child × $175 = $175
-    hi_tanf_dependent_care_deduction: 175
-
-- name: Case 4, single parent part-time, expenses above cap.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        weekly_hours_worked_before_lsr: 20
-      person2:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        # $3,600/year = $300/month, above $165 cap
-        childcare_expenses: 3_600
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: HI
-  output:
-    # 20 hrs = part-time, $165 cap
-    # $300/month > $165 cap, capped at 1 child × $165 = $165
-    hi_tanf_dependent_care_deduction: 165
-
-- name: Case 5, two parents both full-time, uses full-time rate.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        weekly_hours_worked_before_lsr: 40
-      person2:
-        age: 28
-        weekly_hours_worked_before_lsr: 35
-      person3:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
         # $3,600/year = $300/month
         childcare_expenses: 3_600
     tax_units:
       tax_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: HI
-  output:
-    # MAX(40, 35) = 40 hrs = full-time, $175 cap
-    # $300/month > $175 cap, capped at $175
-    hi_tanf_dependent_care_deduction: 175
-
-- name: Case 6, two parents one part-time, uses full-time rate (MAX).
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        weekly_hours_worked_before_lsr: 40
-      person2:
-        age: 28
-        weekly_hours_worked_before_lsr: 20
-      person3:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        # $3,600/year = $300/month
-        childcare_expenses: 3_600
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: HI
-  output:
-    # MAX(40, 20) = 40 hrs = full-time, $175 cap
-    # $300/month > $175 cap, capped at $175
-    hi_tanf_dependent_care_deduction: 175
-
-- name: Case 7, two children, full-time parent.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        weekly_hours_worked_before_lsr: 40
-      person2:
-        age: 5
-      person3:
-        age: 8
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        # $6,000/year = $500/month, above 2 × $175 = $350 cap
-        childcare_expenses: 6_000
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: HI
-  output:
-    # 40 hrs = full-time, $175 per child
-    # $500/month > $350 cap, capped at 2 children × $175 = $350
-    hi_tanf_dependent_care_deduction: 350
-
-- name: Case 8, no children in household.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        weekly_hours_worked_before_lsr: 40
-      person2:
-        age: 25
-        weekly_hours_worked_before_lsr: 40
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        childcare_expenses: 2_400
-    tax_units:
-      tax_unit:
         members: [person1, person2]
     households:
       household:
         members: [person1, person2]
         state_code: HI
   output:
-    # No children means cap = 0 children × $175 = $0
+    # HAR 17-676-54.1(c)(4) and (d)(4) deduct only the care of an
+    # incapacitated adult; no incapacitated adult here, so $0.
     hi_tanf_dependent_care_deduction: 0
 
-- name: Case 9, exactly 32 hours (boundary between part-time and full-time).
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        weekly_hours_worked_before_lsr: 32
-      person2:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        childcare_expenses: 3_600
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: HI
-  output:
-    # 32 hrs = full-time (32+ threshold), $175 cap
-    hi_tanf_dependent_care_deduction: 175
-
-- name: Case 10, two parents both part-time, uses part-time rate.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        weekly_hours_worked_before_lsr: 25
-      person2:
-        age: 28
-        weekly_hours_worked_before_lsr: 20
-      person3:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        childcare_expenses: 3_600
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: HI
-  output:
-    # MAX(25, 20) = 25 hrs = part-time, $165 cap
-    hi_tanf_dependent_care_deduction: 165
-
-- name: Case 11, exactly 31 hours (just under full-time threshold).
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        weekly_hours_worked_before_lsr: 31
-      person2:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        childcare_expenses: 3_600
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: HI
-  output:
-    # 31 hrs < 32 threshold = part-time, $165 cap
-    hi_tanf_dependent_care_deduction: 165
-
-- name: Case 12, three children, full-time parent.
+- name: Case 3, child care for three children is not deducted.
   period: 2024-01
   input:
     people:
@@ -306,7 +71,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
-        # $8,400/year = $700/month, above 3 × $175 = $525 cap
+        # $8,400/year = $700/month
         childcare_expenses: 8_400
     tax_units:
       tax_unit:
@@ -316,11 +81,10 @@
         members: [person1, person2, person3, person4]
         state_code: HI
   output:
-    # 40 hrs = full-time, $175 per child
-    # $700/month > $525 cap, capped at 3 children × $175 = $525
-    hi_tanf_dependent_care_deduction: 525
+    # No incapacitated adult, so $0.
+    hi_tanf_dependent_care_deduction: 0
 
-- name: Case 13, disabled adult household member care expenses.
+- name: Case 4, disabled adult care below the full-time cap.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -340,12 +104,212 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # Per State Plan 10.2.1(D): care of a disabled adult household member
-    # up to $175/month (full-time employment, 40 hours >= 32).
+    # 40 hrs = full-time, $175 cap per disabled adult.
     # Expenses = 1,200 / 12 = 100/month, below the cap.
     hi_tanf_dependent_care_deduction: 100
 
-- name: Case 14, adult care expenses without disability are not deducted.
+- name: Case 5, disabled adult care above the full-time cap.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 25
+        is_disabled: true
+        care_expenses: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # $300/month > $175 cap: min(300, 1 x 175) = 175
+    hi_tanf_dependent_care_deduction: 175
+
+- name: Case 6, disabled adult care above the part-time cap.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 20
+      person2:
+        age: 25
+        is_disabled: true
+        care_expenses: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # 20 hrs = part-time, $165 cap: min(300, 165) = 165
+    hi_tanf_dependent_care_deduction: 165
+
+- name: Case 7, two parents one part-time, uses full-time rate (MAX).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 20
+      person3:
+        age: 60
+        is_disabled: true
+        care_expenses: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    # MAX(40, 20, 0) = 40 hrs = full-time, $175 cap
+    # $300/month > $175 cap, capped at $175
+    hi_tanf_dependent_care_deduction: 175
+
+- name: Case 8, two parents both part-time, uses part-time rate.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 20
+      person3:
+        age: 60
+        is_disabled: true
+        care_expenses: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    # MAX(25, 20, 0) = 25 hrs = part-time, $165 cap
+    hi_tanf_dependent_care_deduction: 165
+
+- name: Case 9, exactly 32 hours (boundary between part-time and full-time).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 32
+      person2:
+        age: 25
+        is_disabled: true
+        care_expenses: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # 32 hrs = full-time (32+ threshold), $175 cap
+    hi_tanf_dependent_care_deduction: 175
+
+- name: Case 10, exactly 31 hours (just under full-time threshold).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 31
+      person2:
+        age: 25
+        is_disabled: true
+        care_expenses: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # 31 hrs < 32 threshold = part-time, $165 cap
+    hi_tanf_dependent_care_deduction: 165
+
+- name: Case 11, two disabled adults, cap per disabled adult.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 60
+        is_disabled: true
+        care_expenses: 3_600
+      person3:
+        age: 62
+        is_disabled: true
+        care_expenses: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    # Expenses = 300 + 300 = 600/month
+    # Cap = 2 disabled adults x $175 = $350
+    hi_tanf_dependent_care_deduction: 350
+
+- name: Case 12, child care and disabled adult care, only the adult care counts.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 5
+      person3:
+        age: 60
+        is_disabled: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # $3,600/year = $300/month child care, not deductible
+        childcare_expenses: 3_600
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    # Adult care = 1,200 / 12 = 100/month; cap = 1 disabled adult x $175
+    # min(100, 175) = 100
+    hi_tanf_dependent_care_deduction: 100
+
+- name: Case 13, adult care expenses without disability are not deducted.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -364,6 +328,6 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # Person2 is neither a child nor a disabled adult, so no care
-    # recipients: min(100, 0) = 0.
+    # Person2 is not a disabled adult, so no care recipients:
+    # min(100, 0) = 0.
     hi_tanf_dependent_care_deduction: 0
