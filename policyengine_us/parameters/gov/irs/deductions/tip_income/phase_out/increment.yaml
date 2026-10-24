@@ -1,0 +1,14 @@
+description: The IRS reduces the tip income deduction for each full increment of this size by which modified adjusted gross income exceeds the threshold.
+
+values:
+  2025-01-01: 1_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Tip income deduction phase-out increment
+  reference:
+    - title: 26 U.S.C. § 224(b)(2)(A)
+      href: https://www.law.cornell.edu/uscode/text/26/224#b_2_A
+    - title: 2025 Schedule 1-A (Form 1040), line 11
+      href: https://www.irs.gov/pub/irs-pdf/f1040s1a.pdf#page=1
