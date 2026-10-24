@@ -1,0 +1,67 @@
+# The same household under each repayment plan, with incomes held fixed.
+# Outputs are for October 2026, after the Repayment Assistance Plan starts.
+
+- name: Single parent of two with 55,000 dollars of AGI and a 30,000 dollar balance.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 8
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 55_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # Repayment Assistance Plan: 5% x 55,000 / 12 - 2 x 50 = 129.17.
+    repayment_assistance_plan_payment:
+      2026-10: [129.17, 0, 0]
+    # IBR: 15% x (55,000 - 1.5 x 27,320) / 12 = 175.25.
+    income_based_repayment_payment:
+      2026-10: [175.25, 0, 0]
+    # SAVE: 55,000 < 2.25 x 27,320 = 61,470, so 0.
+    save_plan_payment:
+      2026-10: [0, 0, 0]
+    # Standard 10-year: 30,000 x 0.005 / (1 - 1.005 ^ -120) = 333.06.
+    standard_repayment_payment:
+      2026-10: [333.06, 0, 0]
+
+- name: Single filer with 25,000 dollars of AGI pays more under RAP than under IBR or SAVE.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        federal_student_loan_balance: 20_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 25_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # RAP: 2% x 25,000 / 12 = 41.67.
+    repayment_assistance_plan_payment:
+      2026-10: 41.67
+    # IBR: 15% x (25,000 - 23,940) / 12 = 13.25.
+    income_based_repayment_payment:
+      2026-10: 13.25
+    # SAVE: 25,000 < 35,910, so 0.
+    save_plan_payment:
+      2026-10: 0

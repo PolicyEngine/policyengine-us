@@ -1,0 +1,14 @@
+description: New York does not issue a supplemental earned income tax credit payment below this amount.
+values:
+  2021-01-01: 25
+metadata:
+  unit: currency-USD
+  period: year
+  label: New York supplemental EITC minimum payment
+  reference:
+    - title: Section 606 Credits against tax (d)(8)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606 # (d)(8)
+    - title: S.8009-C/A.9009-C (Chapter 59 of the Laws of 2022), Part NN section 2
+      href: https://legislation.nysenate.gov/pdf/bills/2021/S8009C#page=88
+    - title: NY Tax Department, Additional New York State child and earned income tax payments
+      href: https://web.archive.org/web/20221020033542/https://www.tax.ny.gov/pit/child-earned-payments.htm
