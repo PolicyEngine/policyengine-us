@@ -18,9 +18,9 @@ class nh_fap_countable_income(Variable):
         # Separate business losses cannot offset positive sources. Existing
         # net inputs lack depreciation, amortization and home-business addbacks;
         # partnership/S-corporation inputs also lack FAP expense detail.
-        business_income = sum(
-            max_(person(source, period), 0) for source in p.business_sources
-        )
+        business_income = 0
+        for source in p.business_sources:
+            business_income = business_income + max_(person(source, period), 0)
         earned_income = max_(person("employment_income", period), 0) + business_income
         # Secondary school also includes equivalent training in the model;
         # this conjunction approximates the full-time high-school exclusion.
@@ -28,9 +28,10 @@ class nh_fap_countable_income(Variable):
             "is_in_secondary_school", period
         )
         countable_earnings = spm_unit.sum(where(high_school_student, 0, earned_income))
-        unearned_income = spm_unit.sum(
-            sum(max_(person(source, period), 0) for source in p.unearned_sources)
-        )
+        unearned_person = 0
+        for source in p.unearned_sources:
+            unearned_person = unearned_person + max_(person(source, period), 0)
+        unearned_income = spm_unit.sum(unearned_person)
         adult_ssi = spm_unit.sum(
             where(
                 person("age", period) >= p.ssi_min_age,
