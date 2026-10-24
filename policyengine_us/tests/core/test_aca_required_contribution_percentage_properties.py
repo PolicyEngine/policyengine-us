@@ -15,7 +15,9 @@ For every year:
 2. Within a tier the percentage is continuous: it stays between the tier's
    initial and final percentages, it reaches the final percentage just below
    the next edge, and two incomes in one tier differ by no more than the tier's
-   slope times the distance between them.
+   slope times the distance between them, plus one rounding step. The
+   regulation interpolates linearly and then rounds to the nearest hundredth
+   of a percent, so the bound holds whether or not the model rounds.
 3. The percentage never decreases as income rises from 0 to 400 percent,
    including across tier edges.
 4. The required contribution (household income times the percentage) never
@@ -45,6 +47,10 @@ CONTRIBUTION_YEARS = (2026, 2027)
 # within 1e-6.
 EPSILON = 1e-5
 TOLERANCE = 1e-6
+# 26 CFR 1.36B-3(g)(1) rounds the interpolated percentage to the nearest
+# hundredth of a percent, which can widen a step between two incomes by up to
+# 0.0001.
+ROUNDING = 1e-4
 # Every tier edge in any year's table, approached from both sides.
 EDGES = (0.0, 1.33, 1.5, 2.0, 2.5, 3.0, 4.0)
 KNOTS = sorted(
@@ -142,7 +148,7 @@ def test_applicable_percentage_table(points):
             assert (top - below <= rise * EPSILON + TOLERANCE).all(), year
         same_tier = tier[1:] == tier[:-1]
         step = np.abs(np.diff(rate))[same_tier]
-        bound = (slope[tier][1:] * np.diff(seen))[same_tier] + TOLERANCE
+        bound = (slope[tier][1:] * np.diff(seen))[same_tier] + ROUNDING + TOLERANCE
         assert (step <= bound).all(), year
         # Property 3.
         assert (np.diff(rate) >= -TOLERANCE).all(), year
@@ -155,7 +161,10 @@ def test_applicable_percentage_table(points):
     suppress_health_check=[HealthCheck.too_slow, HealthCheck.data_too_large],
 )
 @given(
-    st.lists(st.integers(0, 70_000), min_size=2, max_size=60).map(sorted),
+    # Fixed incomes in four tiers, so every example compares distinct incomes.
+    st.lists(st.integers(0, 70_000), max_size=60).map(
+        lambda drawn: sorted([10_000, 25_000, 40_000, 60_000, *drawn])
+    ),
     st.integers(1_000, 20_000),
 )
 def test_required_contribution_rises_with_income(incomes, slcsp):
