@@ -867,6 +867,7 @@ def test_exact_multi_year_source_rejects_differing_annual_factors_without_alloca
     assert amount(simulation, public, multi_year) == 24_000
     for year, factor in annual_factors.items():
         simulation.set_input(FACTOR, year, [factor])
+    drop_inherited_values(simulation)
     with pytest.raises(ValueError, match="separately supplied annual source amounts"):
         simulation.calculate(public, multi_year)
     assert input_periods(simulation, f"{public}_reported") == {multi_year}
