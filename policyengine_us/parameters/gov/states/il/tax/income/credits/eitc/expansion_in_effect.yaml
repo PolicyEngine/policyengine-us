@@ -1,0 +1,15 @@
+description: Illinois extends its Earned Income Tax Credit to filers without a qualifying child aged 18 to 24 or 65 or older, and to ITIN filers, when this is true. Before then, the credit is a match of the federal Earned Income Tax Credit.
+values:
+  2018-01-01: false
+  2023-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Illinois EITC expanded eligibility in effect
+  reference:
+    - title: 35 ILCS 5/212(b-5), (b-10), (b-15) - for taxable years beginning on or after January 1, 2023
+      href: https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=003500050K212
+    - title: Illinois Department of Revenue 2022 Schedule IL-E/EIC - you must have claimed the federal Earned Income Credit
+      href: https://taxarchive.illinois.gov/content/dam/soi/en/web/taxarchive/forms/income-tax/2022/individual/il-1040-schedule-il-e-eic.pdf#page=1
+    - title: Illinois Department of Revenue 2023 Schedule IL-E/EIC - New for 2023, Illinois Expanded EITC Worksheet
+      href: https://taxarchive.illinois.gov/content/dam/soi/en/web/taxarchive/forms/income-tax/2023/individual/il-1040-schedule-il-e-eic.pdf#page=1
