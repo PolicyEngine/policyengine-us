@@ -15,3 +15,72 @@
     is_optional_senior_or_disabled_asset_eligible: false
   output:
     is_optional_senior_or_disabled_for_medicaid: false
+
+# 2026: Social Security of $900 a month leaves countable income of $10,560 a
+# year after the $20 a month disregard, under both the SSI rate ($11,928) and
+# 75% of the poverty guideline ($11,970).
+- name: Case 3, aged Alabaman who does not take up SSI is not covered, since Alabama covers only SSI recipients.
+  period: 2026
+  input:
+    age: 70
+    state_code: AL
+    social_security_retirement: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    ssi: 0
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: NONE
+    is_medicaid_eligible: false
+
+- name: Case 4, the same person in Pennsylvania, which covers aged people who do not receive SSI, is covered.
+  period: 2026
+  input:
+    age: 70
+    state_code: PA
+    social_security_retirement: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    is_optional_senior_or_disabled_for_medicaid: true
+    medicaid_category: SENIOR_OR_DISABLED
+    is_medicaid_eligible: true
+
+# North Dakota covers aged, blind, or disabled people who do not receive SSI
+# only as medically needy (N.D. Admin. Code 75-02-02.1-05(3)(e)).
+- name: Case 5, disabled North Dakotan who does not take up SSI is not covered by the pathway.
+  period: 2026
+  input:
+    age: 50
+    state_code: ND
+    meets_ssi_disability_criteria: true
+    social_security_disability: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+
+# Arkansas's group (ARSeniors) covers only aged people (MS 23110). 2026:
+# Social Security of $900 a month leaves countable income of $10,560 a year
+# after the $20 a month disregard, under 80% of the poverty guideline
+# ($12,768).
+- name: Case 6, disabled Arkansan under 65 is not covered, since ARSeniors covers only aged people.
+  period: 2026
+  input:
+    age: 50
+    state_code: AR
+    meets_ssi_disability_criteria: true
+    social_security_disability: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+
+- name: Case 7, aged Arkansan with the same income is covered.
+  period: 2026
+  input:
+    age: 70
+    state_code: AR
+    social_security_retirement: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    is_optional_senior_or_disabled_for_medicaid: true
