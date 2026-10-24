@@ -285,8 +285,7 @@ jobs:
         run: bash ./update_itemization.sh
       - name: Run Household API Partners YAML tests
         run: uv run --no-sync make test-yaml-no-structural-other-partners
-  # Contrib starts once Baseline passes, on the same 6 lanes, so most PRs see
-  # their Baseline result first. A Baseline failure skips Contrib, and
+  # Contrib starts once Baseline passes. A Baseline failure skips Contrib, and
   # re-running the failed Baseline group then runs Contrib for the first time:
   # no finished Contrib work is repeated.
   Contrib:

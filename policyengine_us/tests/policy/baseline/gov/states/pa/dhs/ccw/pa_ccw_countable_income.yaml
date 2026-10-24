@@ -2,11 +2,12 @@
 # Tests countable income from sources.yaml
 # 55 Pa. Code Appendix A Part I
 #
-# Sources include: employment_income, self_employment_income, social_security,
-# social_security_disability, social_security_survivors, ssi, pension_income,
-# military_retirement_pay, unemployment_compensation, workers_compensation,
-# veterans_benefits, child_support_received, alimony_income, dividend_income,
-# interest_income, rental_income
+# Sources include: employment_income, self_employment_income,
+# sstb_self_employment_income, social_security, social_security_disability,
+# social_security_survivors, ssi, pension_income, military_retirement_income,
+# total_unemployment_compensation, workers_compensation, veterans_benefits,
+# child_support_received, alimony_income, dividend_income, interest_income,
+# rental_income
 
 - name: Case 1, employment income only.
   period: 2025-01
