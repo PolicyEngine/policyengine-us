@@ -838,11 +838,13 @@ def test_exact_multi_year_both_names_and_neutralization_keep_core_precedence(
     simulation = make_simulation(
         wrapper, {public: {multi_year: 123}, reported: {multi_year: 24_000}}
     )
+    simulation.set_input("household_weight", multi_year, [1])
     simulation.set_input(FACTOR, 2024, [1.1])
     simulation.set_input(FACTOR, 2025, [0.8])
     assert amount(simulation, public, multi_year) == 123
     assert amount(simulation, reported, multi_year) == 24_000
     neutralized = make_simulation(wrapper, {reported: {multi_year: 24_000}})
+    neutralized.set_input("household_weight", multi_year, [1])
     with monkeypatch.context() as context:
         context.setattr(system.variables[public], "is_neutralized", True)
         assert amount(neutralized, public, multi_year) == 0
@@ -893,6 +895,7 @@ def test_multi_year_selected_base_input_and_neutralization_take_precedence(
     simulation = make_simulation(
         wrapper, {reported: {multi_year: 24_000}, base: {multi_year: 6_000}}
     )
+    simulation.set_input("household_weight", multi_year, [1])
     for year in (2024, 2025):
         simulation.set_input(FACTOR, year, [1.1])
     assert amount(simulation, public, multi_year) == pytest.approx(6_600)
@@ -902,10 +905,12 @@ def test_multi_year_selected_base_input_and_neutralization_take_precedence(
     assert amount(reloaded, public, multi_year) == pytest.approx(6_600)
 
     base_only = make_simulation(wrapper, {base: {multi_year: 6_000}})
+    base_only.set_input("household_weight", multi_year, [1])
     assert amount(base_only, public, multi_year) == 6_000
     neutralized = make_simulation(
         wrapper, {reported: {multi_year: 24_000}, base: {multi_year: 6_000}}
     )
+    neutralized.set_input("household_weight", multi_year, [1])
     neutralized.set_input(FACTOR, 2024, [1.1])
     neutralized.set_input(FACTOR, 2025, [0.8])
     with monkeypatch.context() as context:
