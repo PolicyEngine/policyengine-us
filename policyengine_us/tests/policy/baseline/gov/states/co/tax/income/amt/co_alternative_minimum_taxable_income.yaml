@@ -31,3 +31,19 @@
   output:
     # max(0, 0 + 0 - 50,000) = 0
     co_alternative_minimum_taxable_income: 0
+
+# DR 0104AMT (2025): line 2 sums DR 0104 lines 3 through 7 and 9, leaving out
+# the state income tax addback on line 2; line 4 sums the DR 0104AD
+# subtractions excluding the state income tax refund on line 1.
+- name: CO AMTI leaves out the state income tax addback and the refund subtraction
+  period: 2025
+  input:
+    amt_income_less_exemptions: 200_000
+    co_additions: 10_000
+    co_state_addback: 6_000
+    co_subtractions: 5_000
+    salt_refund_income: 1_500
+    state_code: CO
+  output:
+    # 200,000 + (10,000 - 6,000) - (5,000 - 1,500)
+    co_alternative_minimum_taxable_income: 200_500
