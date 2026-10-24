@@ -67,12 +67,13 @@ def collect_cycles_less_often():
     """Run the cycle collector less often while these tests copy policy.
 
     Every reform simulation, measurement and clone here deep-copies the
-    parameter tree: millions of new objects, nearly all still in use. A
+    parameter tree: about five million objects, nearly all still in use. A
     collection starts each time allocations exceed deallocations by the first
-    threshold (2,000 by default), so one copy ran thousands of collections
-    over live objects, about two thirds of its time (2026-10-23). A higher
-    threshold reclaims the same garbage in fewer passes; this module's peak
-    memory stayed the same.
+    threshold, and at the default of 2,000 there were one or two full
+    collections, each traversing every live tree, per copy: half the time of
+    building, measuring and cloning a reform simulation (2026-10-23). At
+    100,000 there were about a quarter as many, this module ran about a
+    quarter faster, and its peak memory rose about 2%.
     """
     thresholds = gc.get_threshold()
     gc.set_threshold(GC_THRESHOLD, *thresholds[1:])
@@ -125,14 +126,16 @@ _fresh = {}
 def fresh_response(wages, period=YEAR):
     """The response a new reform simulation with these wages reports.
 
-    ``wages`` is one household's, or a tuple of several households' side by
-    side. Values only, so sharing them across tests shares no simulation state.
+    ``wages`` is one household's, or a tuple of several households', each
+    measured in a simulation of its own. Values only, so sharing them across
+    tests shares no simulation state.
     """
+    if isinstance(wages, tuple):
+        return np.concatenate([fresh_response(wage, period) for wage in wages])
     key = (wages, period)
     if key not in _fresh:
-        situation = households(wages) if isinstance(wages, tuple) else household(wages)
         _fresh[key] = response(
-            make_simulation(situation=situation, reform=LSR_REFORM), period
+            make_simulation(situation=household(wages), reform=LSR_REFORM), period
         )
     return _fresh[key]
 
@@ -150,11 +153,15 @@ def set_wages(simulation, wages, period=YEAR):
     )
 
 
-# Every household takes another's wages, so each pin below runs all three
-# levels in one simulation: one household goes from 50,000 to 100,000.
+# The source holds one household at each of WAGES, so each pin covers every
+# level. A copy given other wages moves each household to another's: 20,000 to
+# 50,000, 50,000 to 100,000 (the original pins) and 100,000 to 20,000.
 SWAPPED_WAGES = (50_000, 100_000, 20_000)
 
 
+# Only the pins run. Under ``derandomize`` the generated examples were fixed,
+# and each reran a pinned path at other wages, which the households now cover.
+# Drop ``phases`` to explore the remaining combinations.
 @settings(phases=[Phase.explicit], deadline=None)
 @given(
     kind=st.sampled_from(["clone", "branch"]),
