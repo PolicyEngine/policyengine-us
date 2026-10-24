@@ -937,6 +937,44 @@ def stub_environment(tmp_path, outcomes):
     return env, calls
 
 
+@pytest.mark.parametrize("failed_index", [None, 0, 1, 2])
+def test_microsimulation_processes_keep_reports_and_run_after_failures(
+    tmp_path, failed_index
+):
+    report_option = "--junitxml=simulation-microsimulation.xml"
+    commands = dry_run("test-microsimulation", f"PYTEST_ADDOPTS={report_option}")
+    assert len(commands) == 3
+    reports = []
+    groups = {}
+    for index, command in enumerate(commands):
+        args = [report_option, *command[1:]]
+        reports.append([a for a in args if a.startswith("--junitxml=")][-1])
+        groups[str(index)] = collected_files(
+            [a for a in command[1:] if not a.startswith("--junitxml=")]
+        )
+    reference = collected_files([str(TESTS / "microsimulation")])
+    assert partition_problems(reference, groups) == []
+    assert len(set(reports)) == 3
+    assert all(
+        fnmatch(report.split("=", 1)[1], "simulation-*.xml") for report in reports
+    )
+
+    outcomes = ["0"] * 3
+    if failed_index is not None:
+        outcomes[failed_index] = "1"
+    env, calls = stub_environment(tmp_path, outcomes)
+    env["PYTEST_ADDOPTS"] = report_option
+    result = subprocess.run(
+        ["make", "--no-print-directory", "test-microsimulation"],
+        cwd=REPO,
+        env=env,
+        capture_output=True,
+        text=True,
+    )
+    assert calls.read_text().splitlines() == ["|".join(c[1:]) for c in commands]
+    assert (result.returncode != 0) == (failed_index is not None)
+
+
 def scenario_outcomes(scenario, count):
     outcomes = ["0"] * count
     if scenario == "one-fails-one-killed":

@@ -156,10 +156,12 @@ test-yaml-structural-heavy-shard-4:
 test-yaml-structural-other:
 	# Per-subdir so every remaining contrib folder runs in its own subprocess,
 	# instead of stacking ~20 light files into one ~13-min catch-all batch that
-	# risked the 30-min per-batch timeout on slow runners. ssa is excluded (it
-	# has no YAML tests — only a pytest .py run elsewhere). --workers 1 so a
-	# single ~1-5 GB peak is resident at a time, leaving headroom for growth.
+	# risked the 30-min per-batch timeout on slow runners. SSA runs separately
+	# per-file below because its reform combinations retain large model copies.
 	$(BATCH) $(TESTS)/policy/contrib --exclude states,ctc,ubi_center,federal,harris,treasury,crfb,congress,refundable_credit_conversion,ssa --mode per-subdir --workers 1
+	# SSA's COLA file measured about 11 GB locally. Override CI's worker setting
+	# as well as the CLI default so each file exits before the next one starts.
+	POLICYENGINE_BATCH_WORKERS=1 $(BATCH) $(TESTS)/policy/contrib/ssa --mode per-file --workers 1
 test-yaml-structural-other-shard-2a:
 	# ctc is microsim-heavy: per-file isolation frees each ~5 GB peak between
 	# files, and --workers 1 keeps only one peak resident at a time.
@@ -318,8 +320,20 @@ test-other-python-rest-remaining-heavy:
 	$(call rest_pytest,remaining-heavy,$(REST_REMAINING_HEAVY_TESTS))
 test-other-python-rest-remaining:
 	$(call rest_pytest,remaining,$(TESTS)/,$(REST_LISTED_TESTS) $(TESTS)/core $(TESTS)/policy)
+MICROSIMULATION_GROUPS := base social-security-inputs social-security-current-law
 test-microsimulation:
-	pytest $(TESTS)/microsimulation --maxfail=0
+	@failed=""; for group in $(MICROSIMULATION_GROUPS); do \
+		$(MAKE) --no-print-directory test-microsimulation-$$group || failed="$$failed $$group"; \
+	done; \
+	if [ -n "$$failed" ]; then echo "Failed microsimulation groups:$$failed"; exit 1; fi
+test-microsimulation-base:
+	# Compatibility checks copy policy for differential/branch isolation. Keep
+	# their heaps separate on this existing runner (local differential peak 7 GB).
+	pytest $(TESTS)/microsimulation --maxfail=0 --ignore=$(TESTS)/microsimulation/test_social_security_inputs.py --ignore=$(TESTS)/microsimulation/test_social_security_current_law.py
+test-microsimulation-social-security-inputs:
+	pytest $(TESTS)/microsimulation/test_social_security_inputs.py --maxfail=0 $(if $(findstring --junitxml,$(PYTEST_ADDOPTS)),--junitxml=simulation-social-security-inputs.xml)
+test-microsimulation-social-security-current-law:
+	pytest $(TESTS)/microsimulation/test_social_security_current_law.py --maxfail=0 $(if $(findstring --junitxml,$(PYTEST_ADDOPTS)),--junitxml=simulation-social-security-current-law.xml)
 # Local convenience: run both halves back to back.
 test-other: test-other-python test-microsimulation
 test-policy-contrib-python:
