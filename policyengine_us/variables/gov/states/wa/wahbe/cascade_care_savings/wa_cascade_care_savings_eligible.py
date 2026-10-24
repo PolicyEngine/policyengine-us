@@ -14,7 +14,9 @@ class wa_cascade_care_savings_eligible(Variable):
     documentation = (
         "A tax unit is eligible for Cascade Care Savings when the program is "
         "in effect, household income (ACA MAGI per 26 U.S.C. 36B(d)(2)) is at "
-        "or below 250% of the federal poverty line, and at least one member is "
+        "or below 250% of the prior-year federal poverty guideline, measured as "
+        "the exact ratio rather than the truncated aca_magi_fraction, and at "
+        "least one member is "
         "a Cascade Care Savings enrollee (Group 1, eligible for the federal "
         "ACA premium tax credit; or Group 3, undocumented and lacking minimum "
         "essential coverage through Washington Apple Health Expansion or Apple "
@@ -29,8 +31,13 @@ class wa_cascade_care_savings_eligible(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.wa.wahbe.cascade_care_savings
         in_effect = p.in_effect
-        magi_fraction = tax_unit("aca_magi_fraction", period)
-        income_eligible = magi_fraction <= p.fpl_limit
+        # Section 4(1)(c) covers income "up to 250% of the Federal Poverty
+        # Level". Test the exact ratio, not the truncated aca_magi_fraction:
+        # truncation maps 250.00%-250.99% to 2.50, which would admit incomes
+        # above 250%.
+        magi = max_(tax_unit("aca_magi", period), 0)
+        exact_magi_frac = magi / tax_unit("tax_unit_fpg", period.last_year)
+        income_eligible = exact_magi_frac <= p.fpl_limit
         has_eligible_member = (
             add(tax_unit, period, ["wa_cascade_care_savings_member_eligible"]) > 0
         )
