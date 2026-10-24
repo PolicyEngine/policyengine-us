@@ -1,3 +1,10 @@
+## [2.62.11] - 2026-10-24
+
+### Changed
+
+- Mark the deciding lines of nine source conflicts now in the register shared with Axiom, vendor the register at its newer rulespec-us commit, and drop the twelve newly registered conflicts from the candidates list.
+
+
 ## [2.62.10] - 2026-10-24
 
 ### Fixed
