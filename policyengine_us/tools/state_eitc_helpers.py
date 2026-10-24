@@ -28,16 +28,32 @@ def eitc_section_911_eligible(tax_unit, period):
 def eitc_filing_status_eligible(
     tax_unit, period, parameters, separate_filer_eligible=None
 ):
-    """Apply the federal EITC separate-filer rule unless a state overrides it."""
+    """Apply IRC 32(d), optionally using a state's frozen exception switch.
+
+    The switch enables the separated-spouse exception, rather than making
+    every separate filer eligible. Qualifying children are counted before
+    identification requirements: IRC 32(c)(3)(D) limits the credit schedule,
+    not the separated-spouse exception in IRC 32(d)(2)(B).
+    """
 
     if separate_filer_eligible is None:
         separate_filer_eligible = parameters(
             period
         ).gov.irs.credits.eitc.eligibility.separate_filer
     filing_status = tax_unit("filing_status", period)
-    return separate_filer_eligible | (
-        filing_status != filing_status.possible_values.SEPARATE
+    not_separate = filing_status != filing_status.possible_values.SEPARATE
+    if not separate_filer_eligible:
+        return not_separate
+
+    person = tax_unit.members
+    has_resident_qualifying_child = tax_unit.any(
+        person("is_eitc_qualifying_child", period)
+        & person("eitc_child_lived_with_taxpayer_more_than_half_year", period)
     )
+    meets_separation_conditions = tax_unit(
+        "eitc_spouses_lived_apart_last_six_months", period
+    ) | tax_unit("eitc_legal_separation_and_apart_at_year_end", period)
+    return not_separate | (has_resident_qualifying_child & meets_separation_conditions)
 
 
 def calculate_eitc_demographic_eligibility(
