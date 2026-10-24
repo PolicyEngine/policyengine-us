@@ -10,7 +10,11 @@ import json
 import numpy as np
 import pandas as pd
 import pytest
-from policyengine_core.simulations import SimulationBuilder
+from policyengine_core.periods import period
+from policyengine_core.simulations import (
+    Simulation as CoreSimulation,
+    SimulationBuilder,
+)
 
 from policyengine_us import Microsimulation, Simulation
 from policyengine_us.data.dataset_schema import USSingleYearDataset
@@ -69,6 +73,29 @@ def make_core_simulation(inputs=None, route="dict_entities"):
     if route == "dict_variables":
         return builder.build_from_dict(system, variables)
     return builder.build_from_variables(system, variables)
+
+
+WRAPPER_WRITE_ROUTES = (
+    *((wrapper, "simulation") for wrapper in WRAPPERS),
+    (Simulation, "holder"),
+)
+CORE_WRITE_ROUTES = (*WRAPPER_WRITE_ROUTES, (make_core_simulation, "simulation"))
+
+
+def write_public_input(simulation, name, input_period, values, route):
+    if route == "holder":
+        return simulation.get_holder(name).set_input(
+            period(input_period), np.asarray(values), simulation.branch_name
+        )
+    return simulation.set_input(name, input_period, values)
+
+
+def core_builder_wrapper(*, situation, tax_benefit_system):
+    """Use raw Core with the same constructor shape as the public wrappers."""
+    return SimulationBuilder().build_from_dict(tax_benefit_system, situation)
+
+
+PERIOD_WRAPPERS = (*WRAPPERS, core_builder_wrapper)
 
 
 def amount(simulation, name, period):
@@ -181,10 +208,10 @@ def test_core_builder_migrates_initial_public_inputs_and_preserves_precedence(ro
     assert amount(simulation, f"{disability}_reported", 2024) == 666
 
 
-@pytest.mark.parametrize("wrapper", (*WRAPPERS, make_core_simulation))
+@pytest.mark.parametrize("wrapper,write_route", CORE_WRITE_ROUTES)
 @pytest.mark.parametrize("reported_input", (None, 0, 6_000))
 def test_later_public_writes_refresh_automatic_sources_and_keep_explicit_twins(
-    wrapper, reported_input
+    wrapper, write_route, reported_input
 ):
     public = SOCIAL_SECURITY_COMPONENTS[0]
     reported = f"{public}_reported"
@@ -197,7 +224,7 @@ def test_later_public_writes_refresh_automatic_sources_and_keep_explicit_twins(
     # A calculated twin, even a cached zero, is not an explicitly supplied twin.
     assert amount(simulation, reported, 2024) == (reported_input or 0)
     simulation.set_input(FACTOR, 2024, [1.08])
-    simulation.set_input(public, 2024, [12_000])
+    write_public_input(simulation, public, 2024, [12_000], write_route)
     expected_source = 12_000 if reported_input is None else reported_input
     assert amount(simulation, public, 2024) == 12_000
     assert amount(simulation, reported, 2024) == expected_source
@@ -207,7 +234,7 @@ def test_later_public_writes_refresh_automatic_sources_and_keep_explicit_twins(
     assert amount(simulation, public, 2026) == pytest.approx(
         expected_source * 13_522.16 / 12_000, abs=0.01
     )
-    simulation.set_input(public, 2024, [24_000])
+    write_public_input(simulation, public, 2024, [24_000], write_route)
     expected_source = 24_000 if reported_input is None else reported_input
     assert amount(simulation, reported, 2024) == expected_source
     drop_inherited_values(simulation)
@@ -288,8 +315,10 @@ def test_later_monthly_public_write_seeds_the_stored_rolling_year(wrapper):
     assert amount(simulation, public, 2026) > 12_000
 
 
-@pytest.mark.parametrize("wrapper", WRAPPERS)
-def test_clone_and_branch_later_public_writes_keep_input_lists_private(wrapper):
+@pytest.mark.parametrize("wrapper,write_route", WRAPPER_WRITE_ROUTES)
+def test_clone_and_branch_later_public_writes_keep_input_lists_private(
+    wrapper, write_route
+):
     public = SOCIAL_SECURITY_COMPONENTS[0]
     reported = f"{public}_reported"
     simulation = make_simulation(wrapper, {public: {2024: 12_000}})
@@ -300,7 +329,7 @@ def test_clone_and_branch_later_public_writes_keep_input_lists_private(wrapper):
         simulation.clone(clone_tax_benefit_system=False),
         simulation.get_branch("new_public_override"),
     ):
-        copy.set_input(public, 2025, [24_000])
+        write_public_input(copy, public, 2025, [24_000], write_route)
         drop_inherited_values(copy)
         assert amount(copy, public, 2025) == 24_000
         assert amount(copy, reported, 2025) == 24_000
@@ -361,7 +390,10 @@ def test_neutral_reform_replay_keeps_automatic_source_origin_private(wrapper):
     assert amount(simulation, public, 2026) == parent_later
 
 
-def test_dataset_constructor_migrates_stored_original_columns():
+@pytest.mark.parametrize(
+    "wrapper,factor", ((Microsimulation, 1.1), (CoreSimulation, 1.08))
+)
+def test_dataset_constructor_migrates_stored_original_columns(wrapper, factor):
     public = SOCIAL_SECURITY_COMPONENTS[0]
     frame = pd.DataFrame(
         {
@@ -391,10 +423,17 @@ def test_dataset_constructor_migrates_stored_original_columns():
             f"{public}_reported__2026": [13_000],
         }
     )
-    simulation = Microsimulation(dataset=frame, tax_benefit_system=system)
-    simulation.set_input(FACTOR, 2024, [1.1])
-    assert amount(simulation, public, 2024) == pytest.approx(13_200)
+    simulation = wrapper(
+        dataset=frame,
+        tax_benefit_system=system,
+        default_input_period=2024,
+        default_calculation_period=2024,
+    )
+    simulation.set_input(FACTOR, 2024, [factor])
+    simulation.set_input(FACTOR, 2026, [factor])
+    assert amount(simulation, public, 2024) == pytest.approx(12_000 * factor)
     assert amount(simulation, public, 2026) == 14_000
+    assert amount(simulation, f"{public}_reported", 2026) == 13_000
     assert input_periods(simulation, public) == {"2026"}
     assert input_periods(simulation, f"{public}_reported") == {"2024", "2026"}
     # Loader-time public writes migrate; later writes remain final outputs.
@@ -538,15 +577,15 @@ def test_legacy_extraction_keeps_later_override_and_matching_source(
     )
 
 
-@pytest.mark.parametrize("wrapper", WRAPPERS)
+@pytest.mark.parametrize("wrapper,write_route", WRAPPER_WRITE_ROUTES)
 @pytest.mark.parametrize("snapshot", ("legacy_extraction", "complete_export"))
 def test_source_round_trip_retains_automatic_origin_for_subsequent_writes(
-    wrapper, snapshot
+    wrapper, write_route, snapshot
 ):
     public = SOCIAL_SECURITY_COMPONENTS[0]
     reported = f"{public}_reported"
     simulation = make_simulation(wrapper, {public: {2024: 12_000}})
-    simulation.set_input(public, 2024, [24_000])
+    write_public_input(simulation, public, 2024, [24_000], write_route)
     # A cached intervening source is not exported or treated as supplied.
     amount(simulation, reported, 2025)
     if snapshot == "legacy_extraction":
@@ -562,7 +601,7 @@ def test_source_round_trip_retains_automatic_origin_for_subsequent_writes(
         assert payload["overrides"][public] == {"2024": [24_000]}
     assert person[reported] == {"2024": 24_000}
     assert set(person).issubset(system.variables)
-    reloaded.set_input(public, 2024, [36_000])
+    write_public_input(reloaded, public, 2024, [36_000], write_route)
     assert amount(reloaded, public, 2024) == 36_000
     assert amount(reloaded, reported, 2024) == 36_000
     assert amount(reloaded, public, 2026) == pytest.approx(40_566.48, abs=0.02)
@@ -700,7 +739,7 @@ def test_parameter_reform_registration_order_preserves_stable_public_formula():
     )
 
 
-@pytest.mark.parametrize("wrapper", WRAPPERS)
+@pytest.mark.parametrize("wrapper", PERIOD_WRAPPERS)
 def test_exact_multi_year_sources_keep_keys_uniform_factors_and_overrides(wrapper):
     public = SOCIAL_SECURITY_COMPONENTS[0]
     reported = f"{public}_reported"
@@ -739,29 +778,33 @@ def test_exact_multi_year_sources_keep_keys_uniform_factors_and_overrides(wrappe
     assert input_periods(override_reload, "household_weight") == {multi_year}
 
 
+@pytest.mark.parametrize("wrapper", PERIOD_WRAPPERS)
 def test_exact_multi_year_both_names_and_neutralization_keep_core_precedence(
-    monkeypatch,
+    monkeypatch, wrapper
 ):
     public = SOCIAL_SECURITY_COMPONENTS[0]
     reported = f"{public}_reported"
     multi_year = "year:2024:2"
     simulation = make_simulation(
-        inputs={public: {multi_year: 123}, reported: {multi_year: 24_000}}
+        wrapper, {public: {multi_year: 123}, reported: {multi_year: 24_000}}
     )
     simulation.set_input(FACTOR, 2024, [1.1])
     simulation.set_input(FACTOR, 2025, [0.8])
     assert amount(simulation, public, multi_year) == 123
     assert amount(simulation, reported, multi_year) == 24_000
-    neutralized = make_simulation(inputs={reported: {multi_year: 24_000}})
+    neutralized = make_simulation(wrapper, {reported: {multi_year: 24_000}})
     with monkeypatch.context() as context:
         context.setattr(system.variables[public], "is_neutralized", True)
         assert amount(neutralized, public, multi_year) == 0
 
 
-def test_exact_multi_year_source_rejects_differing_annual_factors_without_allocation():
+@pytest.mark.parametrize("wrapper", PERIOD_WRAPPERS)
+def test_exact_multi_year_source_rejects_differing_annual_factors_without_allocation(
+    wrapper,
+):
     public = SOCIAL_SECURITY_COMPONENTS[0]
     multi_year = "year:2024:2"
-    simulation = make_simulation(inputs={public: {multi_year: 24_000}})
+    simulation = make_simulation(wrapper, {public: {multi_year: 24_000}})
     simulation.set_input(FACTOR, 2024, [1.1])
     simulation.set_input(FACTOR, 2025, [0.8])
     with pytest.raises(ValueError, match="separately supplied annual source amounts"):
@@ -790,12 +833,15 @@ def test_containing_period_migration_preserves_sources_and_inner_final_overrides
     assert amount(simulation, reported, "year:2024:10") == 100_000
 
 
-def test_multi_year_selected_base_input_and_neutralization_take_precedence(monkeypatch):
+@pytest.mark.parametrize("wrapper", PERIOD_WRAPPERS)
+def test_multi_year_selected_base_input_and_neutralization_take_precedence(
+    monkeypatch, wrapper
+):
     public = SOCIAL_SECURITY_COMPONENTS[0]
     reported, base = f"{public}_reported", f"{public}_base"
     multi_year = "year:2024:2"
     simulation = make_simulation(
-        inputs={reported: {multi_year: 24_000}, base: {multi_year: 6_000}}
+        wrapper, {reported: {multi_year: 24_000}, base: {multi_year: 6_000}}
     )
     for year in (2024, 2025):
         simulation.set_input(FACTOR, year, [1.1])
@@ -805,10 +851,10 @@ def test_multi_year_selected_base_input_and_neutralization_take_precedence(monke
     )
     assert amount(reloaded, public, multi_year) == pytest.approx(6_600)
 
-    base_only = make_simulation(inputs={base: {multi_year: 6_000}})
+    base_only = make_simulation(wrapper, {base: {multi_year: 6_000}})
     assert amount(base_only, public, multi_year) == 6_000
     neutralized = make_simulation(
-        inputs={reported: {multi_year: 24_000}, base: {multi_year: 6_000}}
+        wrapper, {reported: {multi_year: 24_000}, base: {multi_year: 6_000}}
     )
     neutralized.set_input(FACTOR, 2024, [1.1])
     neutralized.set_input(FACTOR, 2025, [0.8])

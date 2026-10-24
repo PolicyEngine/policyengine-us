@@ -111,18 +111,22 @@ def install_social_security_input_compatibility():
     """Extend Core's ingress routes only for systems opting into this policy.
 
     Core's entity builder writes holders directly, and its variable-level
-    ``set_input`` handler runs only for mismatched period units. A builder
-    adapter therefore migrates initial sources, while a simulation adapter
-    preserves subsequent public overrides, including on raw Core simulations.
+    ``set_input`` handler runs only for mismatched period units. Builder
+    and dataset adapters migrate initial sources. Holder-level interception
+    preserves subsequent public overrides from every supported input route:
+    simulation setters, direct holder writes, and custom period helpers.
     """
     from policyengine_core.simulations import Simulation as CoreSimulation
     from policyengine_core.simulations.simulation_builder import SimulationBuilder
+    from policyengine_core.holders import Holder
 
-    original_set_input = CoreSimulation.set_input
+    original_set_input = Holder.set_input
     if not getattr(original_set_input, "_social_security_compatibility", False):
 
         @wraps(original_set_input)
-        def set_input(simulation, variable_name, period, value):
+        def set_input(holder, period, value, branch_name="default"):
+            simulation = holder.simulation
+            variable_name = holder.variable.name
             track_public_write = (
                 variable_name in SOCIAL_SECURITY_COMPONENTS
                 and getattr(
@@ -134,7 +138,7 @@ def install_social_security_input_compatibility():
                 and not _initial_social_security_ingress.get()
             )
             if not track_public_write:
-                return original_set_input(simulation, variable_name, period, value)
+                return original_set_input(holder, period, value, branch_name)
 
             before = {
                 supplied_period: _recorded_input_location(
@@ -142,7 +146,7 @@ def install_social_security_input_compatibility():
                 )
                 for supplied_period in simulation._get_set_input_periods(variable_name)
             }
-            result = original_set_input(simulation, variable_name, period, value)
+            result = original_set_input(holder, period, value, branch_name)
             reported_name = f"{variable_name}_reported"
             reported_periods = set(simulation._get_set_input_periods(reported_name))
             # Period helpers can store a different period from the one passed
@@ -163,10 +167,10 @@ def install_social_security_input_compatibility():
                 )
                 if supplied_value is not None:
                     original_set_input(
-                        simulation,
-                        reported_name,
+                        simulation.get_holder(reported_name),
                         supplied_period,
                         supplied_value.copy(),
+                        branch_name,
                     )
                     _mark_automatic_reported_input(
                         simulation, reported_name, supplied_period
@@ -182,7 +186,32 @@ def install_social_security_input_compatibility():
             return result
 
         set_input._social_security_compatibility = True
-        CoreSimulation.set_input = set_input
+        Holder.set_input = set_input
+
+    original_dataset_build = CoreSimulation.build_from_dataset
+    if not getattr(original_dataset_build, "_social_security_compatibility", False):
+
+        @wraps(original_dataset_build)
+        def build_from_dataset(simulation):
+            if not getattr(
+                simulation.tax_benefit_system,
+                "_social_security_input_compatibility",
+                False,
+            ):
+                return original_dataset_build(simulation)
+            token = _initial_social_security_ingress.set(True)
+            try:
+                result = original_dataset_build(simulation)
+            finally:
+                _initial_social_security_ingress.reset(token)
+            # Raw Core simulations use this loader without either country
+            # constructor or an entity/variable builder. Migrate before Core
+            # creates its reform baseline, exactly as for situation ingress.
+            migrate_social_security_inputs(simulation)
+            return result
+
+        build_from_dataset._social_security_compatibility = True
+        CoreSimulation.build_from_dataset = build_from_dataset
 
     original_extract = CoreSimulation.extract_person
     if not getattr(original_extract, "_social_security_compatibility", False):
@@ -330,6 +359,12 @@ def install_social_security_input_compatibility():
         original_build = getattr(SimulationBuilder, method_name)
         if not getattr(original_build, "_social_security_compatibility", False):
             setattr(SimulationBuilder, method_name, wrap_builder(original_build))
+
+    from policyengine_us.tools.social_security_periods import (
+        install_social_security_period_compatibility,
+    )
+
+    install_social_security_period_compatibility()
 
 
 def migrate_social_security_inputs(simulation, *, include_baseline=True):

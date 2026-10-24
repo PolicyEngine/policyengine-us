@@ -45,6 +45,12 @@ DOWNSTREAM = (
     "medicare_irmaa_magi",
     "medicare_part_b_premium",
 )
+INGRESS_OUTCOMES = (
+    *COMPONENTS,
+    "income_tax",
+    "household_net_income",
+    "medicare_irmaa_magi_two_years_prior",
+)
 AMOUNTS = ((12_000, 0, 1_800, 600), (0, 6_000, 1_200, 300))
 REVIEWED_MAIN_SHA = "8986e05cab65d56435a23df1910e2d35f2c5f5bf"
 
@@ -124,15 +130,28 @@ def _probe():
     """Only imports from the checkout selected through the subprocess path."""
     import gc
 
+    import pandas as pd
     import yaml
     from policyengine_core.data import Dataset
+    from policyengine_core.periods import period
     from policyengine_core.reforms import Reform
-    from policyengine_core.simulations import SimulationBuilder
+    from policyengine_core.simulations import (
+        Simulation as CoreSimulation,
+        SimulationBuilder,
+    )
     from policyengine_us import Microsimulation, Simulation
     from policyengine_us.system import system
 
     class HouseholdMicrosimulation(Microsimulation):
         default_dataset = None
+
+    class HolderSetterSimulation(Simulation):
+        def set_input(self, variable, input_period, value):
+            if variable in COMPONENTS and hasattr(self, "input_variables"):
+                return self.get_holder(variable).set_input(
+                    period(input_period), np.asarray(value), self.branch_name
+                )
+            return super().set_input(variable, input_period, value)
 
     has_levers = "social_security_retirement_reported" in system.variables
     neutral = (
@@ -304,6 +323,61 @@ def _probe():
     for index, component in enumerate(COMPONENTS):
         simulation.set_input(component, 2024, [amounts[index] for amounts in AMOUNTS])
     result["public_set_input"] = _snapshot(simulation, (2024, 2026))
+    del simulation
+    gc.collect()
+
+    # Both paths bypass CoreSimulation.set_input. The public holder must
+    # still seed future benefits and keep a later write final in its year.
+    for route, wrapper in (
+        ("direct_public_holder", Simulation),
+        ("subclass_public_set_input_holder", HolderSetterSimulation),
+    ):
+        inputs = extraction_situation()
+        del inputs["people"]["retiree"]["social_security_retirement"]
+        simulation = wrapper(situation=inputs, tax_benefit_system=system)
+        if route == "direct_public_holder":
+            simulation.get_holder("social_security_retirement").set_input(
+                period(2024), np.array([12_000]), simulation.branch_name
+            )
+        else:
+            simulation.set_input("social_security_retirement", 2024, [12_000])
+        result[route] = _snapshot(simulation, (2024, 2026), INGRESS_OUTCOMES)
+        del simulation
+        gc.collect()
+
+    # Raw Core dataset construction writes to holders directly, without
+    # either US wrapper or the situation builder's migration path.
+    columns = {"person_id": [1]}
+    for entity in ("household", "tax_unit", "spm_unit", "family", "marital_unit"):
+        columns[f"person_{entity}_id"] = [1]
+        columns[f"{entity}_id"] = [1]
+    columns.update(
+        {
+            "age__2024": [70],
+            "social_security_retirement__2024": [12_000],
+        }
+    )
+    simulation = CoreSimulation(
+        dataset=pd.DataFrame(columns),
+        tax_benefit_system=system,
+        default_input_period=2024,
+        default_calculation_period=2024,
+    )
+    result["raw_core_dataset"] = _snapshot(simulation, (2024, 2026), INGRESS_OUTCOMES)
+    del simulation
+    gc.collect()
+
+    # Preserve Core's exact compound input and its annual/downstream
+    # behavior. This simulation has no US compound-period adapter.
+    inputs = extraction_situation()
+    inputs["people"]["retiree"]["social_security_retirement"] = {"year:2024:2": 24_000}
+    simulation = SimulationBuilder().build_from_dict(system, inputs)
+    result["core_builder_exact_multiyear"] = _snapshot(
+        simulation, ("year:2024:2",), ("social_security_retirement",)
+    )
+    result["core_builder_exact_multiyear"].update(
+        _snapshot(simulation, (2024, 2026), INGRESS_OUTCOMES)
+    )
     del simulation
     gc.collect()
 
@@ -543,6 +617,10 @@ def differential(tmp_path_factory):
         "core_variables_builder",
         "core_flat_dict_builder",
         "public_set_input",
+        "direct_public_holder",
+        "subclass_public_set_input_holder",
+        "raw_core_dataset",
+        "core_builder_exact_multiyear",
         "clone",
         "branch",
         "clone_parent",
