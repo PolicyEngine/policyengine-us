@@ -1,10 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.medicaid.income._apply_medicaid_optional_senior_or_disabled_exclusions import (
-    _apply_medicaid_optional_senior_or_disabled_exclusions,
-)
-from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
-    _apply_ssi_exclusions,
-)
 
 
 class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent(
@@ -15,77 +9,17 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
     label = "Medicaid optional senior or disabled unearned income deemed from ineligible parent"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/cfr/text/20/416.1165"
+    reference = (
+        "https://www.law.cornell.edu/cfr/text/20/416.1165",
+        "https://www.law.cornell.edu/uscode/text/42/1396b#v",
+        "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-020-00/0805-020-15/",
+        "https://www.emhandbooks.wisconsin.gov/meh-ebd/policy_files/1/1.1.htm#1.1.3.3",
+        "https://www.emhandbooks.wisconsin.gov/meh-ebd/policy_files/15/15.1.htm#15.1.2",
+    )
 
     def formula(person, period, parameters):
-        eligible_child = person("is_ssi_aged_blind_disabled", period) & person(
-            "is_child", period
+        # Aggregate monthly budgets while retaining the annual input contract.
+        return person(
+            "medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent_monthly",
+            period,
         )
-        ineligible_parent = person("is_ssi_ineligible_parent", period)
-        tax_unit = person.tax_unit
-
-        prereduction_parental_earned_income = eligible_child * tax_unit.sum(
-            person("ssi_earned_income", period) * ineligible_parent
-        )
-        blind_disabled_working_student_income = person(
-            "ssi_blind_or_disabled_working_student_exclusion", period
-        )
-        parental_earned_income = max_(
-            prereduction_parental_earned_income - blind_disabled_working_student_income,
-            0,
-        )
-
-        parental_unearned_income = eligible_child * tax_unit.sum(
-            person("ssi_unearned_income", period) * ineligible_parent
-        )
-
-        child_allocations = eligible_child * add(
-            tax_unit, period, ["ssi_ineligible_child_allocation"]
-        )
-        parental_allocations = eligible_child * add(
-            tax_unit, period, ["ssi_ineligible_parent_allocation"]
-        )
-
-        parental_unearned_income -= child_allocations
-        remaining_child_allocations = max_(0, -parental_unearned_income)
-        parental_unearned_income = max_(0, parental_unearned_income)
-        parental_earned_income = max_(
-            0, parental_earned_income - remaining_child_allocations
-        )
-
-        state = person.household("state_code_str", period)
-        general_disregard = parameters(
-            period
-        ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.disregard.individual[
-            state
-        ]
-        # Missouri deems parental income in the SSI order: the $20
-        # exclusion comes off before the $65 and the half (DSS Manual
-        # § 0805.020.15 steps 4-6), unlike its applicant budget.
-        net_parental_deemed_income = where(
-            state == "MO",
-            _apply_ssi_exclusions(
-                parental_earned_income,
-                parental_unearned_income,
-                parameters,
-                period,
-                general_exclusion=general_disregard,
-            ),
-            _apply_medicaid_optional_senior_or_disabled_exclusions(
-                parental_earned_income,
-                parental_unearned_income,
-                state,
-                general_disregard,
-                parameters,
-                period,
-            ),
-        )
-        net_parental_deemed_income = max_(
-            0, net_parental_deemed_income - parental_allocations
-        )
-
-        count_eligible_children = tax_unit.sum(eligible_child)
-        income = np.zeros_like(count_eligible_children, dtype=float)
-        mask = count_eligible_children > 0
-        income[mask] = net_parental_deemed_income[mask] / count_eligible_children[mask]
-        return income

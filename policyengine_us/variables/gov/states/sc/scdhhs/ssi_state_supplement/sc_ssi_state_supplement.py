@@ -17,6 +17,6 @@ class sc_ssi_state_supplement(Variable):
         # Per S.C. Code Regs. 126-910: OSS = max(0, NIL - countable income)
         p = parameters(period).gov.states.sc.scdhhs.ssi_state_supplement
         nil = p.net_income_limit
-        countable_income = person("ssi_countable_income", period)
+        countable_income = person("ssi_countable_income_monthly", period)
         ssi = person("ssi", period)
         return max_(0, nil - countable_income - ssi)

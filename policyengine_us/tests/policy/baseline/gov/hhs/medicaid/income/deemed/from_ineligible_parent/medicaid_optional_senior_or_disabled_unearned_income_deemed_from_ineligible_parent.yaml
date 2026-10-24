@@ -29,6 +29,8 @@
         is_ssi_disabled: true
       sibling:
         age: 14
+        # Isolate pretax premiums from the student earned-income exclusion.
+        is_in_k12_school: false
         employment_income: 2_400
         pre_tax_health_insurance_premiums: 1_200
       parent:
@@ -129,3 +131,1502 @@
     # the parents' living allowance (1,491 x 12 = 17,892, the couple SSI
     # federal benefit rate) -> 19,098, split equally -> 9,549 each.
     medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [9_549, 9_549, 0, 0]
+
+- name: Missouri does not allocate to a co-resident adult student.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        person_id: 1
+        is_tax_unit_head: true
+        is_parent: true
+        ssi_unearned_income: 24_000
+      claimant:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      student:
+        age: 20
+        person_id: 3
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+    tax_units:
+      family:
+        members: [parent, claimant, student]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      claimant_unit:
+        members: [claimant]
+      student_unit:
+        members: [student]
+    households:
+      home:
+        members: [parent, claimant, student]
+        state_code: MO
+  output:
+    # DSS 0805.020.15 step 1 restricts allocations to children under 18:
+    # https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-020-00/0805-020-15/
+    # SSI still allocates for this student, but Missouri must not deduct it.
+    ssi_ineligible_child_allocation: [0, 0, 5_964]
+    # ($2,000 - $20 - $994) * 12 = $11,832, not $5,868.
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [0, 11_832, 0]
+
+# Current state manual definitions constrain SSI's newly supported adult-student
+# allocations before the common deduction sequence. Each household has one
+# parent with $2,000 monthly unearned income and a disabled citizen claimant.
+# At the state's age ceiling there is no Medicaid child allocation:
+# ($2,000 - $20 - $994) * 12 = $11,832. California retains its existing
+# $230 general disregard, giving ($2,000 - $230 - $994) * 12 = $9,312.
+# SSI still gives each unmarried full-time student a $497 monthly allocation.
+- name: Review r3 state age ceilings exclude adult students from Medicaid parental allocations.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      ca_parent:
+        age: 40
+        person_id: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      ca_claimant:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      ca_student:
+        age: 21
+        person_id: 3
+        parent_1_id: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+      fl_parent:
+        age: 40
+        person_id: 7
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      fl_claimant:
+        age: 10
+        person_id: 8
+        parent_1_id: 7
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      fl_student:
+        age: 21
+        person_id: 9
+        parent_1_id: 7
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+      id_parent:
+        age: 40
+        person_id: 10
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      id_claimant:
+        age: 10
+        person_id: 11
+        parent_1_id: 10
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      id_student:
+        age: 21
+        person_id: 12
+        parent_1_id: 10
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+      la_parent:
+        age: 40
+        person_id: 13
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      la_claimant:
+        age: 10
+        person_id: 14
+        parent_1_id: 13
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      la_student:
+        age: 21
+        person_id: 15
+        parent_1_id: 13
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+      mi_parent:
+        age: 40
+        person_id: 16
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      mi_claimant:
+        age: 10
+        person_id: 17
+        parent_1_id: 16
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      mi_student:
+        age: 18
+        person_id: 18
+        parent_1_id: 16
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+      mo_parent:
+        age: 40
+        person_id: 19
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      mo_claimant:
+        age: 10
+        person_id: 20
+        parent_1_id: 19
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      mo_student:
+        age: 18
+        person_id: 21
+        parent_1_id: 19
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+      mt_parent:
+        age: 40
+        person_id: 22
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      mt_claimant:
+        age: 10
+        person_id: 23
+        parent_1_id: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      mt_student:
+        age: 21
+        person_id: 24
+        parent_1_id: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+      nc_parent:
+        age: 40
+        person_id: 25
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      nc_claimant:
+        age: 10
+        person_id: 26
+        parent_1_id: 25
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      nc_student:
+        age: 21
+        person_id: 27
+        parent_1_id: 25
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+      nj_parent:
+        age: 40
+        person_id: 28
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      nj_claimant:
+        age: 10
+        person_id: 29
+        parent_1_id: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      nj_student:
+        age: 18
+        person_id: 30
+        parent_1_id: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+      ny_parent:
+        age: 40
+        person_id: 31
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      ny_claimant:
+        age: 10
+        person_id: 32
+        parent_1_id: 31
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      ny_student:
+        age: 18
+        person_id: 33
+        parent_1_id: 31
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+      oh_parent:
+        age: 40
+        person_id: 34
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      oh_claimant:
+        age: 10
+        person_id: 35
+        parent_1_id: 34
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      oh_student:
+        age: 18
+        person_id: 36
+        parent_1_id: 34
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+      va_parent:
+        age: 40
+        person_id: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      va_claimant:
+        age: 10
+        person_id: 41
+        parent_1_id: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      va_student:
+        age: 21
+        person_id: 42
+        parent_1_id: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+      wi_parent:
+        age: 40
+        person_id: 43
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      wi_claimant:
+        age: 10
+        person_id: 44
+        parent_1_id: 43
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      wi_student:
+        age: 19
+        person_id: 45
+        parent_1_id: 43
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+      tx_parent:
+        age: 40
+        person_id: 46
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      tx_claimant:
+        age: 10
+        person_id: 47
+        parent_1_id: 46
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      tx_student:
+        age: 21
+        person_id: 48
+        parent_1_id: 46
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+    tax_units:
+      ca_family:
+        members: [ca_parent, ca_claimant, ca_student]
+      fl_family:
+        members: [fl_parent, fl_claimant, fl_student]
+      id_family:
+        members: [id_parent, id_claimant, id_student]
+      la_family:
+        members: [la_parent, la_claimant, la_student]
+      mi_family:
+        members: [mi_parent, mi_claimant, mi_student]
+      mo_family:
+        members: [mo_parent, mo_claimant, mo_student]
+      mt_family:
+        members: [mt_parent, mt_claimant, mt_student]
+      nc_family:
+        members: [nc_parent, nc_claimant, nc_student]
+      nj_family:
+        members: [nj_parent, nj_claimant, nj_student]
+      ny_family:
+        members: [ny_parent, ny_claimant, ny_student]
+      oh_family:
+        members: [oh_parent, oh_claimant, oh_student]
+      va_family:
+        members: [va_parent, va_claimant, va_student]
+      wi_family:
+        members: [wi_parent, wi_claimant, wi_student]
+      tx_family:
+        members: [tx_parent, tx_claimant, tx_student]
+    marital_units:
+      ca_parent_unit:
+        members: [ca_parent]
+      ca_claimant_unit:
+        members: [ca_claimant]
+      ca_student_unit:
+        members: [ca_student]
+      fl_parent_unit:
+        members: [fl_parent]
+      fl_claimant_unit:
+        members: [fl_claimant]
+      fl_student_unit:
+        members: [fl_student]
+      id_parent_unit:
+        members: [id_parent]
+      id_claimant_unit:
+        members: [id_claimant]
+      id_student_unit:
+        members: [id_student]
+      la_parent_unit:
+        members: [la_parent]
+      la_claimant_unit:
+        members: [la_claimant]
+      la_student_unit:
+        members: [la_student]
+      mi_parent_unit:
+        members: [mi_parent]
+      mi_claimant_unit:
+        members: [mi_claimant]
+      mi_student_unit:
+        members: [mi_student]
+      mo_parent_unit:
+        members: [mo_parent]
+      mo_claimant_unit:
+        members: [mo_claimant]
+      mo_student_unit:
+        members: [mo_student]
+      mt_parent_unit:
+        members: [mt_parent]
+      mt_claimant_unit:
+        members: [mt_claimant]
+      mt_student_unit:
+        members: [mt_student]
+      nc_parent_unit:
+        members: [nc_parent]
+      nc_claimant_unit:
+        members: [nc_claimant]
+      nc_student_unit:
+        members: [nc_student]
+      nj_parent_unit:
+        members: [nj_parent]
+      nj_claimant_unit:
+        members: [nj_claimant]
+      nj_student_unit:
+        members: [nj_student]
+      ny_parent_unit:
+        members: [ny_parent]
+      ny_claimant_unit:
+        members: [ny_claimant]
+      ny_student_unit:
+        members: [ny_student]
+      oh_parent_unit:
+        members: [oh_parent]
+      oh_claimant_unit:
+        members: [oh_claimant]
+      oh_student_unit:
+        members: [oh_student]
+      va_parent_unit:
+        members: [va_parent]
+      va_claimant_unit:
+        members: [va_claimant]
+      va_student_unit:
+        members: [va_student]
+      wi_parent_unit:
+        members: [wi_parent]
+      wi_claimant_unit:
+        members: [wi_claimant]
+      wi_student_unit:
+        members: [wi_student]
+      tx_parent_unit:
+        members: [tx_parent]
+      tx_claimant_unit:
+        members: [tx_claimant]
+      tx_student_unit:
+        members: [tx_student]
+    households:
+      ca_home:
+        members: [ca_parent, ca_claimant, ca_student]
+        state_code: CA
+      fl_home:
+        members: [fl_parent, fl_claimant, fl_student]
+        state_code: FL
+      id_home:
+        members: [id_parent, id_claimant, id_student]
+        state_code: ID
+      la_home:
+        members: [la_parent, la_claimant, la_student]
+        state_code: LA
+      mi_home:
+        members: [mi_parent, mi_claimant, mi_student]
+        state_code: MI
+      mo_home:
+        members: [mo_parent, mo_claimant, mo_student]
+        state_code: MO
+      mt_home:
+        members: [mt_parent, mt_claimant, mt_student]
+        state_code: MT
+      nc_home:
+        members: [nc_parent, nc_claimant, nc_student]
+        state_code: NC
+      nj_home:
+        members: [nj_parent, nj_claimant, nj_student]
+        state_code: NJ
+      ny_home:
+        members: [ny_parent, ny_claimant, ny_student]
+        state_code: NY
+      oh_home:
+        members: [oh_parent, oh_claimant, oh_student]
+        state_code: OH
+      va_home:
+        members: [va_parent, va_claimant, va_student]
+        state_code: VA
+      wi_home:
+        members: [wi_parent, wi_claimant, wi_student]
+        state_code: WI
+      tx_home:
+        members: [tx_parent, tx_claimant, tx_student]
+        state_code: TX
+  output:
+    people:
+      ca_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 9312
+      ca_student:
+        ssi_ineligible_child_allocation: 5964
+      fl_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+      fl_student:
+        ssi_ineligible_child_allocation: 5964
+      id_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+      id_student:
+        ssi_ineligible_child_allocation: 5964
+      la_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+      la_student:
+        ssi_ineligible_child_allocation: 5964
+      mi_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+      mi_student:
+        ssi_ineligible_child_allocation: 5964
+      mo_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+      mo_student:
+        ssi_ineligible_child_allocation: 5964
+      mt_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+      mt_student:
+        ssi_ineligible_child_allocation: 5964
+      nc_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+      nc_student:
+        ssi_ineligible_child_allocation: 5964
+      nj_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+      nj_student:
+        ssi_ineligible_child_allocation: 5964
+      ny_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+      ny_student:
+        ssi_ineligible_child_allocation: 5964
+      oh_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+      oh_student:
+        ssi_ineligible_child_allocation: 5964
+      va_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+      va_student:
+        ssi_ineligible_child_allocation: 5964
+      wi_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+      wi_student:
+        ssi_ineligible_child_allocation: 5964
+      tx_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+      tx_student:
+        ssi_ineligible_child_allocation: 5964
+
+# Below-ceiling controls retain $497 monthly allocations: $11,832 - $5,964
+# = $5,868, or $9,312 - $5,964 = $3,348 in California. Wisconsin includes
+# full-time secondary students at 18 regardless of tax role; Texas includes students below 21.
+# The Wisconsin seniors each earn $9,000, excluded under MEH 15.5.8.
+# Secondary enrollment proxies expected completion before 19 (MEH 1.1.3.3).
+# The disabled siblings are immigration-ineligible for both programs, so
+# their Medicaid allocation must be excluded by the state's nonblind and
+# nondisabled definition, independently of the Medicaid recipient mask.
+- name: Review r3 state allocation definitions preserve eligible students and exclude disabled children.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mo_below_parent:
+        age: 40
+        person_id: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      mo_below_claimant:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+        # This variable is supplied for siblings below; supply claimants too.
+        is_medicaid_immigration_status_eligible: true
+      mo_below_student:
+        age: 17
+        person_id: 3
+        parent_1_id: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+      la_below_parent:
+        age: 40
+        person_id: 4
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      la_below_claimant:
+        age: 10
+        person_id: 5
+        parent_1_id: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+        # This variable is supplied for siblings below; supply claimants too.
+        is_medicaid_immigration_status_eligible: true
+      la_below_student:
+        age: 20
+        person_id: 6
+        parent_1_id: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+      ca_below_parent:
+        age: 40
+        person_id: 7
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      ca_below_claimant:
+        age: 10
+        person_id: 8
+        parent_1_id: 7
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+        # This variable is supplied for siblings below; supply claimants too.
+        is_medicaid_immigration_status_eligible: true
+      ca_below_student:
+        age: 20
+        person_id: 9
+        parent_1_id: 7
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+      wi_dependent_parent:
+        age: 40
+        person_id: 10
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      wi_dependent_claimant:
+        age: 10
+        person_id: 11
+        parent_1_id: 10
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+        # This variable is supplied for siblings below; supply claimants too.
+        is_medicaid_immigration_status_eligible: true
+      wi_dependent_student:
+        age: 18
+        person_id: 12
+        parent_1_id: 10
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_in_secondary_school: true
+        ssi_earned_income: 9000
+        is_household_head: false
+      wi_not_dependent_parent:
+        age: 40
+        person_id: 13
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      wi_not_dependent_claimant:
+        age: 10
+        person_id: 14
+        parent_1_id: 13
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+        # This variable is supplied for siblings below; supply claimants too.
+        is_medicaid_immigration_status_eligible: true
+      wi_not_dependent_student:
+        age: 18
+        person_id: 15
+        parent_1_id: 13
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_full_time_student: true
+        is_in_secondary_school: true
+        ssi_earned_income: 9000
+        is_household_head: false
+      tx_below_parent:
+        age: 40
+        person_id: 16
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      ga_ssi_scope_parent:
+        age: 40
+        person_id: 1001
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      tx_below_claimant:
+        age: 10
+        person_id: 17
+        parent_1_id: 16
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+        # This variable is supplied for siblings below; supply claimants too.
+        is_medicaid_immigration_status_eligible: true
+      ga_ssi_scope_claimant:
+        age: 10
+        person_id: 1002
+        parent_1_id: 1001
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+        # This variable is supplied for siblings below; supply claimants too.
+        is_medicaid_immigration_status_eligible: true
+      tx_below_student:
+        age: 20
+        person_id: 18
+        parent_1_id: 16
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+      ga_ssi_scope_student:
+        age: 21
+        person_id: 1003
+        parent_1_id: 1001
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+      la_disabled_parent:
+        age: 40
+        person_id: 19
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      la_disabled_claimant:
+        age: 10
+        person_id: 20
+        parent_1_id: 19
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+        # This variable is supplied for siblings below; supply claimants too.
+        is_medicaid_immigration_status_eligible: true
+      la_disabled_student:
+        age: 17
+        person_id: 21
+        parent_1_id: 19
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+        is_ssi_disabled: true
+        immigration_status: UNDOCUMENTED
+        is_medicaid_immigration_status_eligible: false
+      ny_disabled_parent:
+        age: 40
+        person_id: 22
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      ny_disabled_claimant:
+        age: 10
+        person_id: 23
+        parent_1_id: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+        # This variable is supplied for siblings below; supply claimants too.
+        is_medicaid_immigration_status_eligible: true
+      ny_disabled_student:
+        age: 17
+        person_id: 24
+        parent_1_id: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+        is_ssi_disabled: true
+        immigration_status: UNDOCUMENTED
+        is_medicaid_immigration_status_eligible: false
+      va_disabled_parent:
+        age: 40
+        person_id: 25
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      va_disabled_claimant:
+        age: 10
+        person_id: 26
+        parent_1_id: 25
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+        # This variable is supplied for siblings below; supply claimants too.
+        is_medicaid_immigration_status_eligible: true
+      va_disabled_student:
+        age: 17
+        person_id: 27
+        parent_1_id: 25
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+        is_ssi_disabled: true
+        immigration_status: UNDOCUMENTED
+        is_medicaid_immigration_status_eligible: false
+      wi_disabled_parent:
+        age: 40
+        person_id: 28
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      wi_disabled_claimant:
+        age: 10
+        person_id: 29
+        parent_1_id: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+        # This variable is supplied for siblings below; supply claimants too.
+        is_medicaid_immigration_status_eligible: true
+      wi_disabled_student:
+        age: 17
+        person_id: 30
+        parent_1_id: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+        is_ssi_disabled: true
+        immigration_status: UNDOCUMENTED
+        is_medicaid_immigration_status_eligible: false
+      fl_disabled_parent:
+        age: 40
+        person_id: 31
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      fl_disabled_claimant:
+        age: 10
+        person_id: 32
+        parent_1_id: 31
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+        # This variable is supplied for siblings below; supply claimants too.
+        is_medicaid_immigration_status_eligible: true
+      fl_disabled_student:
+        age: 17
+        person_id: 33
+        parent_1_id: 31
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+        is_ssi_disabled: true
+        immigration_status: UNDOCUMENTED
+        is_medicaid_immigration_status_eligible: false
+    tax_units:
+      mo_below_family:
+        members: [mo_below_parent, mo_below_claimant, mo_below_student]
+      la_below_family:
+        members: [la_below_parent, la_below_claimant, la_below_student]
+      ca_below_family:
+        members: [ca_below_parent, ca_below_claimant, ca_below_student]
+      wi_dependent_family:
+        members: [wi_dependent_parent, wi_dependent_claimant, wi_dependent_student]
+      wi_not_dependent_family:
+        members: [wi_not_dependent_parent, wi_not_dependent_claimant]
+      wi_not_dependent_student_unit:
+        members: [wi_not_dependent_student]
+      tx_below_family:
+        members: [tx_below_parent, tx_below_claimant, tx_below_student]
+      ga_ssi_scope_family:
+        members: [ga_ssi_scope_parent, ga_ssi_scope_claimant, ga_ssi_scope_student]
+      la_disabled_family:
+        members: [la_disabled_parent, la_disabled_claimant, la_disabled_student]
+      ny_disabled_family:
+        members: [ny_disabled_parent, ny_disabled_claimant, ny_disabled_student]
+      va_disabled_family:
+        members: [va_disabled_parent, va_disabled_claimant, va_disabled_student]
+      wi_disabled_family:
+        members: [wi_disabled_parent, wi_disabled_claimant, wi_disabled_student]
+      fl_disabled_family:
+        members: [fl_disabled_parent, fl_disabled_claimant, fl_disabled_student]
+    marital_units:
+      mo_below_parent_unit:
+        members: [mo_below_parent]
+      mo_below_claimant_unit:
+        members: [mo_below_claimant]
+      mo_below_student_unit:
+        members: [mo_below_student]
+      la_below_parent_unit:
+        members: [la_below_parent]
+      la_below_claimant_unit:
+        members: [la_below_claimant]
+      la_below_student_unit:
+        members: [la_below_student]
+      ca_below_parent_unit:
+        members: [ca_below_parent]
+      ca_below_claimant_unit:
+        members: [ca_below_claimant]
+      ca_below_student_unit:
+        members: [ca_below_student]
+      wi_dependent_parent_unit:
+        members: [wi_dependent_parent]
+      wi_dependent_claimant_unit:
+        members: [wi_dependent_claimant]
+      wi_dependent_student_unit:
+        members: [wi_dependent_student]
+      wi_not_dependent_parent_unit:
+        members: [wi_not_dependent_parent]
+      wi_not_dependent_claimant_unit:
+        members: [wi_not_dependent_claimant]
+      wi_not_dependent_student_unit:
+        members: [wi_not_dependent_student]
+      tx_below_parent_unit:
+        members: [tx_below_parent]
+      ga_ssi_scope_parent_unit:
+        members: [ga_ssi_scope_parent]
+      tx_below_claimant_unit:
+        members: [tx_below_claimant]
+      ga_ssi_scope_claimant_unit:
+        members: [ga_ssi_scope_claimant]
+      tx_below_student_unit:
+        members: [tx_below_student]
+      ga_ssi_scope_student_unit:
+        members: [ga_ssi_scope_student]
+      la_disabled_parent_unit:
+        members: [la_disabled_parent]
+      la_disabled_claimant_unit:
+        members: [la_disabled_claimant]
+      la_disabled_student_unit:
+        members: [la_disabled_student]
+      ny_disabled_parent_unit:
+        members: [ny_disabled_parent]
+      ny_disabled_claimant_unit:
+        members: [ny_disabled_claimant]
+      ny_disabled_student_unit:
+        members: [ny_disabled_student]
+      va_disabled_parent_unit:
+        members: [va_disabled_parent]
+      va_disabled_claimant_unit:
+        members: [va_disabled_claimant]
+      va_disabled_student_unit:
+        members: [va_disabled_student]
+      wi_disabled_parent_unit:
+        members: [wi_disabled_parent]
+      wi_disabled_claimant_unit:
+        members: [wi_disabled_claimant]
+      wi_disabled_student_unit:
+        members: [wi_disabled_student]
+      fl_disabled_parent_unit:
+        members: [fl_disabled_parent]
+      fl_disabled_claimant_unit:
+        members: [fl_disabled_claimant]
+      fl_disabled_student_unit:
+        members: [fl_disabled_student]
+    households:
+      mo_below_home:
+        members: [mo_below_parent, mo_below_claimant, mo_below_student]
+        state_code: MO
+      la_below_home:
+        members: [la_below_parent, la_below_claimant, la_below_student]
+        state_code: LA
+      ca_below_home:
+        members: [ca_below_parent, ca_below_claimant, ca_below_student]
+        state_code: CA
+      wi_dependent_home:
+        members: [wi_dependent_parent, wi_dependent_claimant, wi_dependent_student]
+        state_code: WI
+      wi_not_dependent_home:
+        members: [wi_not_dependent_parent, wi_not_dependent_claimant, wi_not_dependent_student]
+        state_code: WI
+      tx_below_home:
+        members: [tx_below_parent, tx_below_claimant, tx_below_student]
+        state_code: TX
+      ga_ssi_scope_home:
+        members: [ga_ssi_scope_parent, ga_ssi_scope_claimant, ga_ssi_scope_student]
+        state_code: GA
+      la_disabled_home:
+        members: [la_disabled_parent, la_disabled_claimant, la_disabled_student]
+        state_code: LA
+      ny_disabled_home:
+        members: [ny_disabled_parent, ny_disabled_claimant, ny_disabled_student]
+        state_code: NY
+      va_disabled_home:
+        members: [va_disabled_parent, va_disabled_claimant, va_disabled_student]
+        state_code: VA
+      wi_disabled_home:
+        members: [wi_disabled_parent, wi_disabled_claimant, wi_disabled_student]
+        state_code: WI
+      fl_disabled_home:
+        members: [fl_disabled_parent, fl_disabled_claimant, fl_disabled_student]
+        state_code: FL
+  output:
+    people:
+      mo_below_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
+      mo_below_student:
+        ssi_ineligible_child_allocation: 5964
+      la_below_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
+      la_below_student:
+        ssi_ineligible_child_allocation: 5964
+      ca_below_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 3348
+      ca_below_student:
+        ssi_ineligible_child_allocation: 5964
+      wi_dependent_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
+      wi_dependent_student:
+        ssi_ineligible_child_allocation: 5964
+      wi_not_dependent_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
+      wi_not_dependent_student:
+        ssi_ineligible_child_allocation: 5964
+      tx_below_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
+      ga_ssi_scope_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
+      tx_below_student:
+        ssi_ineligible_child_allocation: 5964
+      ga_ssi_scope_student:
+        ssi_ineligible_child_allocation: 5964
+      la_disabled_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+      la_disabled_student:
+        ssi_ineligible_child_allocation: 5964
+      ny_disabled_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+      ny_disabled_student:
+        ssi_ineligible_child_allocation: 5964
+      va_disabled_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+      va_disabled_student:
+        ssi_ineligible_child_allocation: 5964
+      wi_disabled_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+      wi_disabled_student:
+        ssi_ineligible_child_allocation: 5964
+      fl_disabled_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+      fl_disabled_student:
+        ssi_ineligible_child_allocation: 5964
+
+# MEH 1.1.3.3 and 15.1.2: at 18 the education condition, not tax
+# dependency, governs allocations. College alone does not qualify. Minors
+# need no school attendance. Secondary includes equivalent-level training.
+- name: Wisconsin allocation children require secondary attendance at 18 regardless of tax role.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      college_dependent_parent:
+        age: 40
+        person_id: 100
+        is_parent: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        ssi_unearned_income: 24000
+      college_dependent_claimant:
+        age: 10
+        person_id: 101
+        parent_1_id: 100
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+        is_medicaid_immigration_status_eligible: true
+      college_dependent_student:
+        age: 18
+        person_id: 102
+        parent_1_id: 100
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_household_head: false
+        is_full_time_student: true
+        is_in_secondary_school: false
+        is_full_time_college_student: true
+        ssi_earned_income: 9000
+      college_independent_parent:
+        age: 40
+        person_id: 103
+        is_parent: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        ssi_unearned_income: 24000
+      college_independent_claimant:
+        age: 10
+        person_id: 104
+        parent_1_id: 103
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+        is_medicaid_immigration_status_eligible: true
+      college_independent_student:
+        age: 18
+        person_id: 105
+        parent_1_id: 103
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_household_head: false
+        is_full_time_student: true
+        is_in_secondary_school: false
+        is_full_time_college_student: true
+        ssi_earned_income: 9000
+      part_time_secondary_parent:
+        age: 40
+        person_id: 106
+        is_parent: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        ssi_unearned_income: 24000
+      part_time_secondary_claimant:
+        age: 10
+        person_id: 107
+        parent_1_id: 106
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+        is_medicaid_immigration_status_eligible: true
+      part_time_secondary_student:
+        age: 18
+        person_id: 108
+        parent_1_id: 106
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_household_head: false
+        is_full_time_student: false
+        is_in_secondary_school: true
+        is_full_time_college_student: false
+        ssi_earned_income: 0
+      minor_nonstudent_parent:
+        age: 40
+        person_id: 109
+        is_parent: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        ssi_unearned_income: 24000
+      minor_nonstudent_claimant:
+        age: 10
+        person_id: 110
+        parent_1_id: 109
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+        is_medicaid_immigration_status_eligible: true
+      minor_nonstudent_student:
+        age: 17
+        person_id: 111
+        parent_1_id: 109
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_household_head: false
+        is_full_time_student: false
+        is_in_secondary_school: false
+        is_full_time_college_student: false
+        ssi_earned_income: 0
+    tax_units:
+      college_dependent_family:
+        members: [college_dependent_parent, college_dependent_claimant, college_dependent_student]
+      college_independent_family:
+        members: [college_independent_parent, college_independent_claimant]
+      college_independent_student_unit:
+        members: [college_independent_student]
+      part_time_secondary_family:
+        members: [part_time_secondary_parent, part_time_secondary_claimant, part_time_secondary_student]
+      minor_nonstudent_family:
+        members: [minor_nonstudent_parent, minor_nonstudent_claimant, minor_nonstudent_student]
+    marital_units:
+      college_dependent_parent_marital_unit:
+        members: [college_dependent_parent]
+      college_dependent_claimant_marital_unit:
+        members: [college_dependent_claimant]
+      college_dependent_student_marital_unit:
+        members: [college_dependent_student]
+      college_independent_parent_marital_unit:
+        members: [college_independent_parent]
+      college_independent_claimant_marital_unit:
+        members: [college_independent_claimant]
+      college_independent_student_marital_unit:
+        members: [college_independent_student]
+      part_time_secondary_parent_marital_unit:
+        members: [part_time_secondary_parent]
+      part_time_secondary_claimant_marital_unit:
+        members: [part_time_secondary_claimant]
+      part_time_secondary_student_marital_unit:
+        members: [part_time_secondary_student]
+      minor_nonstudent_parent_marital_unit:
+        members: [minor_nonstudent_parent]
+      minor_nonstudent_claimant_marital_unit:
+        members: [minor_nonstudent_claimant]
+      minor_nonstudent_student_marital_unit:
+        members: [minor_nonstudent_student]
+    households:
+      college_dependent_home:
+        members: [college_dependent_parent, college_dependent_claimant, college_dependent_student]
+        state_code: WI
+      college_independent_home:
+        members: [college_independent_parent, college_independent_claimant, college_independent_student]
+        state_code: WI
+      part_time_secondary_home:
+        members: [part_time_secondary_parent, part_time_secondary_claimant, part_time_secondary_student]
+        state_code: WI
+      minor_nonstudent_home:
+        members: [minor_nonstudent_parent, minor_nonstudent_claimant, minor_nonstudent_student]
+        state_code: WI
+  output:
+    people:
+      college_dependent_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+      college_dependent_student:
+        ssi_ineligible_child_allocation: 5964
+      college_independent_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+      college_independent_student:
+        ssi_ineligible_child_allocation: 5964
+      part_time_secondary_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+      part_time_secondary_student:
+        ssi_ineligible_child_allocation: 0
+      minor_nonstudent_claimant:
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
+      minor_nonstudent_student:
+        ssi_ineligible_child_allocation: 5964
+
+# Original review r4 witnesses: K-12 evidence without is_in_secondary_school.
+- name: WI legal dependent 18-year-old high-school senior, tax dependent True
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        person_id: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      claimant:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      student:
+        age: 18
+        person_id: 3
+        parent_1_id: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_household_head: false
+        is_in_k12_school: true
+        is_full_time_college_student: false
+        ssi_earned_income: 9000
+    tax_units:
+      family:
+        members: [parent, claimant, student]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      claimant_unit:
+        members: [claimant]
+      student_unit:
+        members: [student]
+    households:
+      home:
+        members: [parent, claimant, student]
+        state_code: WI
+  output:
+    ssi_ineligible_child_allocation: [0, 0, 5964]
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [0, 5868, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 5868, 0]
+
+- name: WI legal dependent 18-year-old high-school senior, tax dependent False
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        person_id: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_unearned_income: 24000
+      claimant:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      student:
+        age: 18
+        person_id: 3
+        parent_1_id: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_full_time_student: true
+        is_household_head: false
+        is_in_k12_school: true
+        is_full_time_college_student: false
+        ssi_earned_income: 9000
+    tax_units:
+      family:
+        members: [parent, claimant]
+      student_family:
+        members: [student]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      claimant_unit:
+        members: [claimant]
+      student_unit:
+        members: [student]
+    households:
+      home:
+        members: [parent, claimant, student]
+        state_code: WI
+  output:
+    ssi_ineligible_child_allocation: [0, 0, 5964]
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [0, 5868, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 5868, 0]
