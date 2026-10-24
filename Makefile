@@ -41,10 +41,9 @@ REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 # JUnit measures per-file elapsed time, not memory. The extra boundaries
 # below isolate retained full models and target <= ~10 GB per process;
 # verify those estimates against each group's GNU time report in CI.
-# heavy-a also holds capital_gains_mtr_measurement (#10058): 632 s of
-# reformed household simulations in run 39507589106, with heavy-a at
-# 8.9 GB/16:18. Its revenue-peak test, 231 s of that, has since gone from
-# three simulations to one.
+# heavy-a also holds capital_gains_mtr_measurement (#10058): 396 s of
+# reformed household simulations in run 40045994536, with heavy-a at
+# 8.1 GiB/11:16.
 # SSI resource deeming retains a reformed system at import and builds another
 # in its grid fixture. Core reached 13.3 GB in CI run 38141803955 after this
 # and three smaller modules arrived; isolate SSI rather than filling heavy-a

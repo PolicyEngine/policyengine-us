@@ -564,10 +564,12 @@ def test_federal_income_tax_peaks_at_the_revenue_maximizing_top_rate():
     assert revenue[1] > max(revenue[0], revenue[2])
 
     # The household's realizations and tax at the peak are the closed form's.
-    # At other top rates they are too: the measured rate follows the top rate
-    # (test_rate_follows_the_top_capital_gains_rate) and the response is the
-    # semi-elasticity form of the measured change. Each simulation took 77 s
-    # in CI, so the test simulates the peak only.
+    # They are at the neighbouring top rates too, since there the measured
+    # rate follows the top rate (test_rate_follows_the_top_capital_gains_rate)
+    # and the response is the semi-elasticity form of the measured change.
+    # That does not hold at every top rate: not in the alternative minimum tax
+    # sliver just above 28%, nor past the 1(h)(1) cap near 37%. A simulation
+    # takes about 70 s in CI, so the test simulates the peak only.
     simulation = simulate(
         texas_single_filers([REVENUE_GAINS]),
         reform={
