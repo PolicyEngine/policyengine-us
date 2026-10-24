@@ -214,3 +214,64 @@
     va_eap_points: 76
     # 76 x 4.531665 = 344.40654.
     va_eap: 344.41
+
+- name: Case 9, a retiree's out-of-pocket Medicare Part B premium is deducted from Social Security.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 66
+        social_security_retirement: 25_000
+        # 2026 standard Part B premium 202.90 x 12 = 2,434.80. Income is above
+        # the Medicare Savings Program limits, so the enrollee pays it.
+        medicare_part_b_premium: 2_434.80
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [head]
+        state_code: VA
+        county: FAIRFAX_COUNTY_VA
+  output:
+    # Manual B.6.b.15: 25,000 - 2,434.80 - 600 elderly deduction = 21,965.20
+    # <= 23,472. Counted gross, 25,000 - 600 = 24,400 > 23,472 and pays 0.
+    va_eap_countable_income: 21_965.20
+    va_eap_income_eligible: true
+    va_eap_eligible: true
+    # floor(100 x 21,965.20 / 23,472) = floor(93.58) = 93 -> 3.
+    va_eap_income_points: 3
+    # 9 + 3 + 16 + 20 + 43 = 91.
+    va_eap_points: 91
+    # 91 x 4.531665 = 412.381515.
+    va_eap: 412.38
+
+- name: Case 10, a rental loss does not offset wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 30_000
+        rental_income: -8_000
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [head]
+        state_code: VA
+        county: HENRICO_COUNTY_VA
+  output:
+    # 30,000 + max(-8,000, 0) = 30,000 > 23,472. Netting the loss would give
+    # 22,000 (93%, 3 income points, 67 points, 303.62).
+    va_eap_countable_income: 30_000
+    va_eap_income_eligible: false
+    va_eap: 0

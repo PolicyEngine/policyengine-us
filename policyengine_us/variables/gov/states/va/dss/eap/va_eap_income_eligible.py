@@ -10,7 +10,7 @@ class va_eap_income_eligible(Variable):
     reference = (
         "https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=28",
         "https://liheapch.acf.gov/docs/2026/state-plans/VA_Plan_2026.pdf#page=8",
-        "https://law.lis.virginia.gov/admincodefull/title22/agency40/chapter680/",
+        "https://law.lis.virginia.gov/admincode/title22/agency40/chapter680/section20/",
     )
     defined_for = StateCode.VA
 

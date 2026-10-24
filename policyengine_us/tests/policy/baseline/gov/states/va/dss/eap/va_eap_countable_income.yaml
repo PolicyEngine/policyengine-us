@@ -1,11 +1,12 @@
 # Virginia EAP countable income: gross earned and unearned income of every
 # member, including members left out of the household size (Complete EAP
 # Manual B.6, B.7, C.5.a.3). Earned income of members under 18 is exempt
-# (B.6.b item 20). Each self-employment source is floored at zero. $50 a
-# month ($600 a year) is deducted once per member who is 60 or older or
-# disabled (B.6.c), and the result is floored at zero. ssi and tanf are set
-# where the model would otherwise compute a payment the household does not
-# receive.
+# (B.6.b item 20). Each self-employment source, rental income and farm rent
+# income is floored at zero per person. Each member's out-of-pocket Medicare
+# Part B premium is deducted from gross income (B.6.b item 15). $50 a month
+# ($600 a year) is deducted once per member who is 60 or older or disabled
+# (B.6.c), and the result is floored at zero. ssi and tanf are set where the
+# model would otherwise compute a payment the household does not receive.
 
 - name: Case 1, full-time wages count in full.
   period: 2026
@@ -418,3 +419,100 @@
   output:
     # 9,600 + 12,000 - 600 elderly deduction = 21,000.
     va_eap_countable_income: 21_000
+
+- name: Case 20, a farm rent loss does not offset rental income or wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 24_000
+        rental_income: 4_800
+        farm_rent_income: -2_500
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # Each rental source is floored per person: 24,000 + 4,800 +
+    # max(-2,500, 0) = 28,800. Netting the loss against the rental income or
+    # the unearned total would give 26,300.
+    va_eap_countable_income: 28_800
+
+- name: Case 21, every income source not set in another case counts, including TANF and the Auxiliary Grant.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        # Earned sources.
+        sstb_self_employment_income: 2_100
+        farm_operations_income: 1_300
+        partnership_s_corp_income: 1_700
+        # Unearned sources. Unemployment compensation is reported, so
+        # total_unemployment_compensation passes it through.
+        unemployment_compensation: 3_100
+        strike_benefits: 900
+        railroad_benefits: 4_200
+        # The Part B premium is deducted from household gross income;
+        # pinning it at 0 means no deduction applies here.
+        medicare_part_b_premium: 0
+        retirement_distributions: 1_500
+        survivor_benefits: 2_400
+        general_assistance: 600
+        rental_income: 3_600
+        farm_rent_income: 1_100
+        alimony_income: 2_700
+        workers_compensation: 3_300
+        disability_benefits: 2_900
+        # va_ag is MONTH-defined: 100 a month, summed back over the year.
+        va_ag: 1_200
+      child1:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [head, child1]
+        tanf: 1_800
+    households:
+      household:
+        members: [head, child1]
+        state_code: VA
+  output:
+    # Person-level: head, child1.
+    total_unemployment_compensation: [3_100, 0]
+    # Earned 2,100 + 1,300 + 1,700 = 5,100. Unearned 3,100 + 900 + 4,200 +
+    # 1,500 + 2,400 + 600 + 1,800 TANF + 3,600 + 1,100 + 2,700 + 3,300 +
+    # 2,900 + 1,200 = 29,300. No member is elderly or disabled (employer
+    # disability benefits are not a B.6.c disability), so 5,100 + 29,300 =
+    # 34,400.
+    va_eap_countable_income: 34_400
+
+- name: Case 22, a retiree's Medicare Part B premium is deducted when the household has no Social Security.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        taxable_private_pension_income: 24_000
+        # 2026 standard Part B premium 202.90 x 12 = 2,434.80, paid by the
+        # member; the pension is above the Medicare Savings Program limits.
+        medicare_part_b_premium: 2_434.80
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # Exemption 15 covers a premium the member is responsible for, not only
+    # one withheld from Social Security: 24,000 - 2,434.80 - 600 elderly
+    # deduction = 20,965.20.
+    va_eap_countable_income: 20_965.20

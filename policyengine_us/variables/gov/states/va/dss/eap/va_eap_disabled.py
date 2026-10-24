@@ -10,7 +10,7 @@ class va_eap_disabled(Variable):
     reference = (
         # PDF pages 31, 52
         "https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=31",
-        "https://law.lis.virginia.gov/admincodefull/title22/agency40/chapter680/",
+        "https://law.lis.virginia.gov/admincode/title22/agency40/chapter680/section10/",
     )
     defined_for = StateCode.VA
 

@@ -6,7 +6,10 @@ description: Virginia counts these earned income sources under the Energy Assist
 # wages. The existing net self-employment, farm and pass-through inputs stand
 # for profit without a further business-expense deduction, and each source is
 # floored at zero in the formula so a business loss does not offset other
-# income. Rental income is counted with the unearned sources.
+# income. C.5.a.4.b lists rental property among the self-employment profit
+# determinations. Rental and farm rental income stay in the unearned list,
+# which the formula also floors per person and source, so a rental loss does
+# not offset other income either.
 values:
   2025-05-01:
     - employment_income
@@ -20,7 +23,7 @@ metadata:
   period: year
   label: Virginia EAP countable earned income sources
   reference:
-    - title: "Virginia Energy Assistance Manual, Volume IX, Chapter B.6 Income and Chapter C.5.a.3 Countable Income #page 28,38-40"
+    - title: "Virginia Energy Assistance Manual, Volume IX, Chapter B.6 Income and Chapter C.5.a.3-4 Countable Income #page 28,38-40"
       href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=28
     - title: "LIHEAP FY2026 Virginia Detailed Model Plan, Sections 1.8-1.9 (gross income; wages, self-employment income, contract income and commissions counted) #page 5-6"
       href: https://liheapch.acf.gov/docs/2026/state-plans/VA_Plan_2026.pdf#page=5

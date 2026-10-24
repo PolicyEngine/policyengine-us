@@ -55,6 +55,9 @@
       head:
         age: 66
         social_security_retirement: 23_700
+        # No out-of-pocket Part B premium, so the elderly deduction alone
+        # decides; the model would otherwise charge 2,434.80 at this income.
+        medicare_part_b_premium: 0
         ssi: 0
     spm_units:
       spm_unit:
