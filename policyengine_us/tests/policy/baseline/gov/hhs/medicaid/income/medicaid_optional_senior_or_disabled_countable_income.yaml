@@ -105,3 +105,183 @@
     # rounding, 1,131.75 would exceed the $1,131 standard.
     medicaid_optional_senior_or_disabled_countable_income: 13_572
     is_optional_senior_or_disabled_income_eligible: true
+
+- name: California subtracts only the 20-dollar any-income deduction from December 2020.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    medicare_enrolled: false
+    ssi_marital_unearned_income: 12_000
+    state_code: CA
+  output:
+    # DHCS ACWDL 20-24, no Part B or other premiums: (1,000 - 20) x 12 = 11,760.
+    medicaid_optional_senior_or_disabled_countable_income: 11_760
+
+- name: Connecticut subtracts its 2026 disregard from unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    ssi_marital_unearned_income: 12_000
+    state_code: CT
+  output:
+    # (1,000 - 562) x 12 = 5,256.
+    medicaid_optional_senior_or_disabled_countable_income: 5_256
+
+- name: South Carolina subtracts a 50-dollar general disregard.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    ssi_marital_unearned_income: 12_000
+    state_code: SC
+  output:
+    # (1,000 - 50) x 12 = 11,400.
+    medicaid_optional_senior_or_disabled_countable_income: 11_400
+
+- name: California deducts the base Medicare Part B premium for a Medicare enrollee.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    medicare_enrolled: true
+    ssi_marital_unearned_income: 12_000
+    state_code: CA
+  output:
+    # DHCS ACWDL 20-24 deducts Part B regardless of how it is paid; the
+    # 2026 base premium is 202.90 a month.
+    # (1,000 - 20 - 202.90) x 12 = 9,325.20.
+    medicaid_optional_senior_or_disabled_countable_income: 9_325.2
+
+- name: California applies one 20-dollar deduction to a couple's combined unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        medicare_enrolled: false
+        ssi_unearned_income: 15_600
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        medicare_enrolled: false
+        ssi_unearned_income: 7_800
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ssi_couple_computation_applies: [true, true]
+    # ACWDL 20-24 Example 3: (1,950 - 20) x 12 / 2 = 11,580 each.
+    medicaid_optional_senior_or_disabled_countable_income: [11_580, 11_580]
+
+- name: Connecticut subtracts its 2026 couple disregard from a couple's combined unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        ssi_unearned_income: 15_600
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 7_800
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # (1,950 - 1,124) x 12 / 2 = 4,956 each.
+    medicaid_optional_senior_or_disabled_countable_income: [4_956, 4_956]
+
+- name: South Carolina gives its 50-dollar disregard only once to a couple.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        ssi_unearned_income: 15_600
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 7_800
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # MPPM 303.06.03C: (1,950 - 50) x 12 / 2 = 11,400 each. A 50-dollar
+    # disregard for each spouse would give 11,100.
+    medicaid_optional_senior_or_disabled_countable_income: [11_400, 11_400]
+
+- name: California subtracts the 20-dollar deduction in 2021.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    medicare_enrolled: false
+    ssi_marital_unearned_income: 12_000
+    state_code: CA
+  output:
+    # The December 2020 value first applies in 2021 annual calculations.
+    # (1,000 - 20) x 12 = 11,760.
+    medicaid_optional_senior_or_disabled_countable_income: 11_760
+
+- name: California subtracts the 230-dollar disregard and no premiums in 2020.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    medicare_enrolled: true
+    ssi_marital_unearned_income: 12_000
+    state_code: CA
+  output:
+    # 2020 annual calculations read January 1, 2020: the 230 disregard
+    # applies and the December 2020 premium deduction does not.
+    # (1,000 - 230) x 12 = 9,240.
+    medicaid_optional_senior_or_disabled_countable_income: 9_240
+
+- name: California deducts both spouses' Part B premiums and other health insurance premiums from a couple's combined income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        medicare_enrolled: true
+        ssi_unearned_income: 15_600
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        medicare_enrolled: true
+        ssi_unearned_income: 7_800
+        health_insurance_premiums_without_medicare_part_b: 360
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # ACWDL 20-24 Example 3: the couple's premiums are summed before the
+    # split. Monthly, 1,950 - 20 - 2 x 202.90 - 30 = 1,494.20.
+    # 1,494.20 x 12 / 2 = 8,965.20 each.
+    medicaid_optional_senior_or_disabled_countable_income: [8_965.2, 8_965.2]
