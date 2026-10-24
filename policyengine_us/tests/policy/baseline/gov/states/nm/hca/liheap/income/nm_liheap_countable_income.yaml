@@ -1,0 +1,189 @@
+# Gross income before deductions (8.150.520.12 NMAC): earned income of members over the
+# age of 18 and unearned income of all members (8.150.520.12 B), including OASDI before
+# the Medicare premium deduction, contributions from family or friends and TANF
+# (8.150.520.13 A-C). An ineligible non-citizen's income is prorated by the share of
+# eligible members (8.150.520.10 B). Self-employment counts at its net (8.150.520.9 C).
+# Wages of 24,960 are full-time work (2,080 hours) at the 2026 New Mexico minimum wage of
+# 12.00 an hour; gas of 900 is 75 a month, within common winter gas bills of 60 to 120.
+
+- name: Case 1, an undocumented member's wages are prorated by the share of eligible members.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_960
+      person2:
+        age: 8
+      person3:
+        age: 42
+        immigration_status: UNDOCUMENTED
+        employment_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # 24,960 + 18,000 / 3 x 2 = 24,960 + 12,000
+    nm_liheap_countable_income: 36_960
+
+- name: Case 2, an 18-year-old's wages are excluded while a 19-year-old's wages and the 18-year-old's interest are counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 24_960
+      person2:
+        age: 19
+        employment_income: 6_000
+      person3:
+        age: 18
+        employment_income: 4_000
+        interest_income: 200
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # 24,960 + 6,000 + 200; the 18-year-old's 4,000 wages are excluded
+    nm_liheap_countable_income: 31_160
+
+- name: Case 3, Social Security counts at its gross amount before the Medicare Part B premium.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        ssi: 0
+        social_security_retirement: 24_000
+        # 2026 standard Part B premium of 202.90 a month.
+        medicare_part_b_premium: 2_434.80
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # Gross 24,000; the 2,434.80 premium is not deducted (8.150.520.13 B)
+    nm_liheap_countable_income: 24_000
+
+- name: Case 4, SSI and contributions from relatives count as unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        # 2026 federal SSI benefit rate of 994 a month.
+        ssi: 11_928
+        # Help of 100 a month from a relative.
+        financial_assistance: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 994 x 12 + 100 x 12 = 11,928 + 1,200
+    nm_liheap_countable_income: 13_128
+
+- name: Case 5, New Mexico Works cash assistance received by the household is counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # New Mexico Works three-person payment standard of 549 a month.
+        tanf: 6_588
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # 549 x 12 = 6,588
+    nm_liheap_countable_income: 6_588
+
+- name: Case 6, child support is counted and capital gains are not.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_960
+        # Child support of 300 a month.
+        child_support_received: 3_600
+        long_term_capital_gains: 1_000
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # 24,960 + 3,600; the 1,000 capital gain is not an income source
+    nm_liheap_countable_income: 28_560
+
+- name: Case 7, a business loss is floored at zero and does not offset wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_960
+        self_employment_income: -5_000
+        interest_income: 300
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 24,960 + max(-5,000, 0) + 300 = 25,260
+    nm_liheap_countable_income: 25_260
