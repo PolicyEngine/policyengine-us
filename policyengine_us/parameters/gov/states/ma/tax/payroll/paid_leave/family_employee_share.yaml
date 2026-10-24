@@ -1,0 +1,22 @@
+description: Largest share of the Massachusetts PFML family leave contribution an employer may deduct from wages.
+values:
+  0000-01-01: 0
+  2024-01-01: 1
+  # Acts 2026 c. 101 s. 26 strikes "100" in s. 6(c)(2), (d) and (e)(2) and inserts "40".
+  2027-01-01: 0.4
+
+metadata:
+  period: year
+  unit: /1
+  label: Massachusetts PFML family employee share
+  reference:
+    - title: Massachusetts General Laws Chapter 175M Section 6
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXXII/Chapter175M/Section6
+    - title: Massachusetts Paid Family and Medical Leave employer contribution rates and calculator (2026 and 2027 sections, updated October 1, 2026)
+      href: https://www.mass.gov/info-details/paid-family-and-medical-leave-employer-contribution-rates-and-calculator
+    - title: Massachusetts Paid Family and Medical Leave employer contribution rates, 2024 section (archived May 26, 2024)
+      href: https://web.archive.org/web/20240526092717/https://www.mass.gov/info-details/paid-family-and-medical-leave-employer-contribution-rates-and-calculator
+    - title: Massachusetts Paid Family and Medical Leave employer contribution rates, 2025 & 2026 section (archived December 8, 2025)
+      href: https://web.archive.org/web/20251208080415/https://www.mass.gov/info-details/paid-family-and-medical-leave-employer-contribution-rates-and-calculator
+    - title: Acts of 2026, Chapter 101, Sections 25, 26, 43 and 45
+      href: https://malegislature.gov/Laws/SessionLaws/Acts/2026/Chapter101

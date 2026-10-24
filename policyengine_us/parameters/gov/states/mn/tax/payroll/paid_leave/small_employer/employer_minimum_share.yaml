@@ -1,0 +1,16 @@
+description: Minnesota requires small employers to pay at least this share of the full Paid Leave premium rate; employees pay the remaining portion of the small employer premium, if any, through a wage deduction.
+values:
+  # Earlier years read the 2026 value; the zero rate keeps every amount at 0
+  # before 2026 unless a reform sets an earlier rate.
+  0000-01-01: 0.25
+  2026-01-01: 0.25
+
+metadata:
+  period: year
+  unit: /1
+  label: Minnesota Paid Leave small employer minimum premium share
+  reference:
+    - title: Minnesota Statutes Section 268B.14, subdivision 5a(b)(1)
+      href: https://www.revisor.mn.gov/statutes/cite/268B.14
+    - title: Minnesota DEED, Paid Leave small employer premium rate designation ("Like large employers, small employers can deduct up to 0.44% of wages")
+      href: https://mn.gov/deed/assets/paid-leave-small-employer-premium-rate-designation-acc_tcm1045-716947.pdf#page=1

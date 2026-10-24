@@ -79,6 +79,9 @@ def calculate(sim: Simulation, variable: str) -> float:
             "ME", "employer_total_me_paid_leave_taxable_wages", 4_000, id="ME"
         ),
         pytest.param(
+            "MN", "employer_total_mn_paid_leave_taxable_wages", 4_000, id="MN"
+        ),
+        pytest.param(
             "OR", "employer_total_or_paid_leave_taxable_wages", 4_000, id="OR"
         ),
         pytest.param(
@@ -131,6 +134,7 @@ def make_employer_total_simulation(
     employer_total_dc_paid_leave_taxable_wages: float = WAGES,
     employer_total_ma_paid_leave_taxable_wages: float = WAGES,
     employer_total_me_paid_leave_taxable_wages: float = WAGES,
+    employer_total_mn_paid_leave_taxable_wages: float = WAGES,
     employer_total_or_paid_leave_taxable_wages: float = WAGES,
     employer_total_vt_child_care_contribution_wages: float = WAGES,
     employer_total_wa_paid_leave_taxable_wages: float = WAGES,
@@ -181,6 +185,9 @@ def make_employer_total_simulation(
                     },
                     "employer_total_me_paid_leave_taxable_wages": {
                         PERIOD: employer_total_me_paid_leave_taxable_wages
+                    },
+                    "employer_total_mn_paid_leave_taxable_wages": {
+                        PERIOD: employer_total_mn_paid_leave_taxable_wages
                     },
                     "employer_total_or_paid_leave_taxable_wages": {
                         PERIOD: employer_total_or_paid_leave_taxable_wages
@@ -509,6 +516,14 @@ def test_employee_payroll_tax_zero_when_payroll_tax_abolished():
             id="ME",
         ),
         pytest.param(
+            "MN",
+            {
+                "mn_employer_paid_leave_contribution": 440,
+                "mn_employer_additional_state_payroll_tax": 440,
+            },
+            id="MN",
+        ),
+        pytest.param(
             "OR",
             {
                 "or_employer_paid_leave_contribution": 400,
@@ -593,6 +608,109 @@ def test_small_employer_thresholds_zero_employer_paid_leave_share(
 
 
 @pytest.mark.parametrize(
+    ("small_employer_minimum", "small_employee", "small_employer"),
+    [
+        # A small employer minimum above the 75% small employer premium
+        # leaves employees nothing ("the remaining portion, if any").
+        pytest.param(0.8, 0, 750, id="employee-floor"),
+        # A negative minimum can't make employees pay more than the premium.
+        pytest.param(-0.1, 750, 0, id="employee-cap"),
+    ],
+)
+def test_minnesota_paid_leave_shares_follow_the_parameters(
+    small_employer_minimum: float, small_employee: float, small_employer: float
+):
+    # The employee portion is derived from the rate and the employer minimums
+    # (Minn. Stat. 268B.14, subds. 3 and 5a(b)), so a reform of either reaches
+    # both sides.
+    paid_leave = "gov.states.mn.tax.payroll.paid_leave"
+    reform = Reform.from_dict(
+        {
+            f"{paid_leave}.rate": {"2026-01-01.2026-12-31": 0.01},
+            f"{paid_leave}.employer_minimum_share": {"2026-01-01.2026-12-31": 0.6},
+            f"{paid_leave}.small_employer.employer_minimum_share": {
+                "2026-01-01.2026-12-31": small_employer_minimum
+            },
+        },
+        country_id="us",
+    )
+    people = {
+        name: {
+            "age": {PERIOD: 30},
+            "employment_income": {PERIOD: WAGES},
+            "employer_headcount": {PERIOD: headcount},
+        }
+        for name, headcount in (("large", 100), ("small", 30))
+    }
+    sim = Simulation(
+        tax_benefit_system=CountryTaxBenefitSystem(reform=(reform,)),
+        situation={
+            "people": people,
+            "households": {
+                "household": {"members": list(people), "state_code": {PERIOD: "MN"}}
+            },
+            "tax_units": {"tax_unit": {"members": list(people)}},
+            "spm_units": {"spm_unit": {"members": list(people)}},
+            "families": {"family": {"members": list(people)}},
+            "marital_units": {
+                f"{name}_marital_unit": {"members": [name]} for name in people
+            },
+        },
+    )
+
+    # Large: 1% premium, 40% of it deductible. Small: 75% * 1% premium.
+    assert sim.calculate("mn_paid_leave_premium", PERIOD) == pytest.approx([1_000, 750])
+    assert sim.calculate(
+        "mn_employee_paid_leave_contribution", PERIOD
+    ) == pytest.approx([400, small_employee])
+    assert sim.calculate(
+        "mn_employer_paid_leave_contribution", PERIOD
+    ) == pytest.approx([600, small_employer])
+
+
+def test_minnesota_small_employer_wage_limit_rounds_half_up():
+    # 150% * $73,991 / 4 = $27,746.625, which rounds half up to $27,746.63
+    # (half to even would give $27,746.62).
+    reform = Reform.from_dict(
+        {
+            "gov.states.mn.tax.payroll.paid_leave.small_employer.state_average_annual_wage": {
+                "2026-01-01.2026-12-31": 73_991
+            },
+        },
+        country_id="us",
+    )
+    people = {
+        name: {
+            "age": {PERIOD: 30},
+            "employment_income": {PERIOD: WAGES},
+            "employer_headcount": {PERIOD: 10},
+            "mn_paid_leave_employer_average_quarterly_wage": {PERIOD: average_wage},
+        }
+        for name, average_wage in (("at_limit", 27_746.63), ("above", 27_746.64))
+    }
+    sim = Simulation(
+        tax_benefit_system=CountryTaxBenefitSystem(reform=(reform,)),
+        situation={
+            "people": people,
+            "households": {
+                "household": {"members": list(people), "state_code": {PERIOD: "MN"}}
+            },
+            "tax_units": {"tax_unit": {"members": list(people)}},
+            "spm_units": {"spm_unit": {"members": list(people)}},
+            "families": {"family": {"members": list(people)}},
+            "marital_units": {
+                f"{name}_marital_unit": {"members": [name]} for name in people
+            },
+        },
+    )
+
+    assert sim.calculate("mn_paid_leave_small_employer", PERIOD).tolist() == [
+        True,
+        False,
+    ]
+
+
+@pytest.mark.parametrize(
     ("state_code", "expected"),
     [
         pytest.param(
@@ -637,6 +755,7 @@ def test_small_employer_thresholds_zero_employer_paid_leave_share(
             {
                 "mn_paid_leave_taxable_wages": 7_000,
                 "mn_employee_paid_leave_contribution": 30.8,
+                "mn_employer_paid_leave_contribution": 30.8,
             },
             id="MN",
         ),
@@ -962,6 +1081,7 @@ def test_new_york_mctmt_employer_tax(
         pytest.param("DE", 100, WAGES, 9_000, 400, id="DE"),
         pytest.param("MA", 100, WAGES, 9_000, 420, id="MA"),
         pytest.param("ME", 100, WAGES, 9_000, 500, id="ME"),
+        pytest.param("MN", 100, WAGES, 9_000, 440, id="MN"),
         pytest.param("OR", 100, WAGES, 9_000, 400, id="OR"),
         pytest.param("RI", 100, WAGES, 29_200, 61.32, id="RI"),
         pytest.param("VT", 100, WAGES, 9_000, 330, id="VT"),
@@ -996,6 +1116,7 @@ def test_employer_total_additional_state_payroll_tax(
         pytest.param("DE", 20, id="DE"),
         pytest.param("MA", 29.4, id="MA"),
         pytest.param("ME", 35, id="ME"),
+        pytest.param("MN", 30.8, id="MN"),
         pytest.param("OR", 28, id="OR"),
         pytest.param("RI", 8.4, id="RI"),
         pytest.param("VT", 13.2, id="VT"),
@@ -1014,6 +1135,7 @@ def test_employer_total_additional_state_payroll_tax_uses_state_specific_wage_ba
         employer_total_dc_paid_leave_taxable_wages=7_000,
         employer_total_ma_paid_leave_taxable_wages=7_000,
         employer_total_me_paid_leave_taxable_wages=7_000,
+        employer_total_mn_paid_leave_taxable_wages=7_000,
         employer_total_or_paid_leave_taxable_wages=7_000,
         employer_total_vt_child_care_contribution_wages=4_000,
         employer_total_wa_paid_leave_taxable_wages=7_000,

@@ -21,10 +21,38 @@ class employer_headcount(Variable):
     label = "Employer headcount"
     documentation = (
         "Employer employee count used as a proxy for size-based payroll "
-        "contribution rules, including paid leave and similar programs."
+        "contribution rules, including paid leave and similar programs. For "
+        "Minnesota Paid Leave's small employer rate it stands in for the "
+        "employer's highest quarterly employee count in the basis period "
+        "(Minn. Stat. 268B.14, subd. 5b)."
     )
     definition_period = YEAR
     default_value = 100
+
+
+class employer_state_payroll_premium_deduction_share(Variable):
+    value_type = float
+    entity = Person
+    label = "Employer state payroll premium deduction share"
+    documentation = (
+        "Share of the largest employee premium the law lets the employer "
+        "deduct from wages that the employer actually deducts, for state "
+        "programs where the law caps the deduction and leaves the amount to "
+        "the employer: Colorado FAMLI, Delaware Paid Leave, Maine and "
+        "Massachusetts Paid Family and Medical Leave, Minnesota Paid Leave, "
+        "New York Paid Family Leave and Disability Benefits, the Vermont "
+        "Child Care Contribution and Washington Paid Family and Medical "
+        "Leave. 1, the default, deducts the full permitted share; 0 deducts "
+        "nothing. The employer pays any part it does not deduct, which the "
+        "employer-side variables carry except in New York, whose employer "
+        "cost is not modeled. For the state paid family and medical leave "
+        "funds, the federal treatment of that payment as the employee's wages "
+        "(Rev. Rul. 2025-4; Notice 2026-6) is not modeled. "
+        "Values outside 0 to 1 are treated as the nearer bound."
+    )
+    unit = "/1"
+    definition_period = YEAR
+    default_value = 1
 
 
 class employer_quarterly_payroll_expense_override(Variable):

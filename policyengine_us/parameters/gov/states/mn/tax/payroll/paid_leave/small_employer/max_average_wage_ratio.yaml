@@ -1,0 +1,16 @@
+description: Minnesota limits the Paid Leave small employer premium rate to employers whose average wage is at most this multiple of the state's average wage in covered employment for the basis period.
+values:
+  # Earlier years read the 2026 value; the zero rate keeps every amount at 0
+  # before 2026 unless a reform sets an earlier rate.
+  0000-01-01: 1.5
+  2026-01-01: 1.5
+
+metadata:
+  period: year
+  unit: /1
+  label: Minnesota Paid Leave small employer average wage limit ratio
+  reference:
+    - title: Minnesota Statutes Section 268B.14, subdivision 5a(a)(2)
+      href: https://www.revisor.mn.gov/statutes/cite/268B.14
+    - title: Minnesota DEED, Paid Leave small employer premium rate designation
+      href: https://mn.gov/deed/assets/paid-leave-small-employer-premium-rate-designation-acc_tcm1045-716947.pdf#page=1
