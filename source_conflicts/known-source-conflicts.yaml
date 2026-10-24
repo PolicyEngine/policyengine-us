@@ -542,6 +542,154 @@ entries:
     currency: USD
     period: month
     computed_by: test_spouse_reentitlement_counterfactual_readings_keep_named_refusal
+- id: oasdi-dual-entitlement-zero-after-age-reduction
+  jurisdiction: us
+  program: social-security
+  question: When dual entitlement reduces a spouse's benefit to zero only after auxiliary age reduction,
+    is the spouse disregarded in redistributing the family maximum, or does the age-reduction amount still
+    count?
+  texts: []
+  pending_texts:
+  - citation: POMS GN 02603.045A
+    kind: manual
+    url: https://secure.ssa.gov/poms.nsf/lnx/0202603045
+    snapshot:
+      repo: PolicyEngine/microcosm-dynamics
+      commit: 6967142aada78870fdf9c414b371d5e2b7d63352
+      path: tests/data/track_b/gross_benefit_sources/poms_gn_02603_045.html
+      sha256: 99d515b4e1e635e91c489bb65f4d59f15c2d8e2a6935275f83b4b3030681549e
+    excerpt: The benefit payable to the dually entitled person is the amount before any applicable reduction
+      for age
+  - citation: POMS GN 02603.050A.2
+    kind: manual
+    url: https://secure.ssa.gov/poms.nsf/lnx/0202603050
+    snapshot:
+      repo: PolicyEngine/microcosm-dynamics
+      commit: 6967142aada78870fdf9c414b371d5e2b7d63352
+      path: tests/data/track_b/gross_benefit_sources/poms_gn_02603_050.html
+      sha256: 4b151ca0a071fb5cb42393b541d1e0bb0459e5734923988e132efa43f6c322d0
+    excerpt: If dual entitlement reduces a beneficiary's rate to $0.00 (technically entitled)
+  - citation: POMS GN 02603.050C
+    kind: manual
+    url: https://secure.ssa.gov/poms.nsf/lnx/0202603050
+    snapshot:
+      repo: PolicyEngine/microcosm-dynamics
+      commit: 6967142aada78870fdf9c414b371d5e2b7d63352
+      path: tests/data/track_b/gross_benefit_sources/poms_gn_02603_050.html
+      sha256: 4b151ca0a071fb5cb42393b541d1e0bb0459e5734923988e132efa43f6c322d0
+    excerpt: Age reduction amount for all workers or deductees
+  reading: Refuse the family (parisi_redistribution_ambiguous) and count it; zero reached before age reduction
+    is computed.
+  alternatives:
+  - id: disregard-zeroed-spouse
+    reading: 'GN 02603.050A.2: disregard the zeroed spouse.'
+    effect: Children $125 each; record total $750.
+  - id: keep-age-reduction-term
+    reading: 'GN 02603.050C: keep the spouse''s $20.90 age-reduction term.'
+    effect: Children $114.50 each; record total $729.
+  - id: before-age-less-own-benefit
+    reading: 'GN 02603.045A alone: count the before-age amount less the own benefit ($19.30).'
+    effect: Children $115.30 each; record total $730.60.
+  basis: The sections give three different counted amounts; the layer refuses rather than select the highest
+    payment.
+  status: ruled
+  ruling:
+    by: Axiom Foundation
+    date: '2026-10-12'
+    record: https://github.com/TheAxiomFoundation/rulespec-us/pull/1710#issuecomment-6126429754
+  outcome: refused
+  implementations:
+  - repo: PolicyEngine/microcosm-dynamics
+    commit: 6967142aada78870fdf9c414b371d5e2b7d63352
+    path: src/populace_dynamics/track_b/gross_benefits.py
+    follows: reading
+    cites_entry: true
+  tests:
+  - repo: PolicyEngine/microcosm-dynamics
+    commit: 6967142aada78870fdf9c414b371d5e2b7d63352
+    path: tests/test_track_b_gross_benefits_parisi.py
+    name: test_method_b_zero_only_after_age_is_refused_and_kept_in_denominator
+    pins:
+    - reading
+    - disregard-zeroed-spouse
+    - keep-age-reduction-term
+    - before-age-less-own-benefit
+  money_case:
+    description: 'Method-B spouse, PIA $500, maximum $750, own RIB $64, 36 reduction months, two children:
+      children $125, $114.50 or $115.30 each and record totals $750, $729 or $730.60 depending on the reading
+      (the test takes the $20.90 age-reduction term and the $19.30 before-age amount as inputs).'
+    amount: '21.00'
+    currency: USD
+    period: month
+    computed_by: test_method_b_zero_only_after_age_is_refused_and_kept_in_denominator
+- id: oasdi-parent-entitlement-count-interval
+  jurisdiction: us
+  program: social-security
+  question: With two potential parents on a survivor record, when one parent's own retirement benefit
+    lies between the two-parent and one-parent original benefits, is that parent entitled, and at which
+    rate is the other paid?
+  texts: []
+  pending_texts:
+  - citation: POMS RS 00209.001
+    kind: manual
+    url: https://secure.ssa.gov/poms.nsf/lnx/0300209001
+    snapshot:
+      repo: PolicyEngine/microcosm-dynamics
+      commit: 6967142aada78870fdf9c414b371d5e2b7d63352
+      path: tests/data/track_b/gross_benefit_sources/poms_rs_00209_001.html
+      sha256: 1655746c729459a578d09e2653ce2b5b58069119fa5efd9fdbf2e6437d024bb7
+    excerpt: not be entitled to retirement insurance benefit (RIB) equal to or exceeding the amount of
+      the parent's original benefit (One parent = 82 1/2%; Two parents = 75%);
+  - citation: POMS RS 00209.015
+    kind: manual
+    url: https://secure.ssa.gov/poms.nsf/lnx/0300209015
+    snapshot:
+      repo: PolicyEngine/microcosm-dynamics
+      commit: 6967142aada78870fdf9c414b371d5e2b7d63352
+      path: tests/data/track_b/gross_benefit_sources/poms_rs_00209_015.html
+      sha256: f2892dcc142f79e773d701b5c10b0583cf05990cbd391e12a0e57c1c06855c07
+    excerpt: One parent entitled
+  - citation: POMS RS 00209.015
+    kind: manual
+    url: https://secure.ssa.gov/poms.nsf/lnx/0300209015
+    snapshot:
+      repo: PolicyEngine/microcosm-dynamics
+      commit: 6967142aada78870fdf9c414b371d5e2b7d63352
+      path: tests/data/track_b/gross_benefit_sources/poms_rs_00209_015.html
+      sha256: f2892dcc142f79e773d701b5c10b0583cf05990cbd391e12a0e57c1c06855c07
+    excerpt: Two parents entitled
+  reading: Refuse the family (parent_benefit) when the own benefit falls in that interval and both parents
+    are potential entitlements; count the refusal.
+  alternatives:
+  - id: two-parents-first
+    reading: 'Count two parents first: the first parent''s own benefit exceeds the two-parent rate, so
+      only the other is entitled, at the one-parent rate.'
+    effect: The other parent is paid at the one-parent rate.
+  - id: one-parent-rate-first
+    reading: 'Test eligibility at the one-parent rate first: both count, and the other is paid at the
+      two-parent rate.'
+    effect: The other parent is paid at the two-parent rate.
+  basis: The entitlement test depends on the parent count and the count depends on entitlement; the sources
+    fix no order.
+  status: ruled
+  ruling:
+    by: Axiom Foundation
+    date: '2026-10-12'
+    record: https://github.com/TheAxiomFoundation/rulespec-us/pull/1710#issuecomment-6126429754
+  outcome: refused
+  implementations:
+  - repo: PolicyEngine/microcosm-dynamics
+    commit: 6967142aada78870fdf9c414b371d5e2b7d63352
+    path: src/populace_dynamics/track_b/gross_benefits.py
+    follows: reading
+    cites_entry: true
+  tests:
+  - repo: PolicyEngine/microcosm-dynamics
+    commit: 6967142aada78870fdf9c414b371d5e2b7d63352
+    path: tests/test_track_b_gross_benefits_parents_ieds.py
+    name: test_two_potential_parents_refuse_the_own_rib_entitlement_cycle
+    pins:
+    - reading
 - id: oasdi-family-maximum-saving-clause
   jurisdiction: us
   program: social-security
@@ -586,11 +734,46 @@ entries:
     date: '2026-10-12'
     record: https://github.com/TheAxiomFoundation/rulespec-us/pull/1710#issuecomment-6126429754
   outcome: computed
-  proposed:
+  implementations:
   - repo: PolicyEngine/microcosm-dynamics
-    pr: https://github.com/PolicyEngine/microcosm-dynamics/pull/530
+    commit: 6967142aada78870fdf9c414b371d5e2b7d63352
     path: src/populace_dynamics/track_b/gross_benefits.py
     follows: literal-any-subsequent-month
+    cites_entry: true
+  tests:
+  - repo: PolicyEngine/microcosm-dynamics
+    commit: 6967142aada78870fdf9c414b371d5e2b7d63352
+    path: tests/test_track_b_gross_benefits.py
+    name: test_savings_clause_protects_every_later_month_not_just_the_next
+    pins:
+    - literal-any-subsequent-month
+  - repo: PolicyEngine/microcosm-dynamics
+    commit: 6967142aada78870fdf9c414b371d5e2b7d63352
+    path: tests/test_track_b_gross_benefits.py
+    name: test_known_over_refusal_a_beneficiary_leaves_in_a_cola_month
+    pins:
+    - literal-any-subsequent-month
+  - repo: PolicyEngine/microcosm-dynamics
+    commit: 6967142aada78870fdf9c414b371d5e2b7d63352
+    path: tests/test_track_b_gross_benefits_properties.py
+    name: test_savings_clause_guard_along_month_paths
+    pins:
+    - literal-any-subsequent-month
+  - repo: PolicyEngine/microcosm-dynamics
+    commit: 6967142aada78870fdf9c414b371d5e2b7d63352
+    path: tests/test_track_b_gross_benefits_properties.py
+    name: test_a_reduced_joiner_after_a_cola_is_refused_iff_the_total_falls
+    pins:
+    - literal-any-subsequent-month
+  money_case:
+    description: November total $1,500.00; the PIA rises for December (a COLA), so November is the protected
+      month; in January an age-reduced spouse joins and the total falls to $1,477.60. SSA's reading pays
+      January at $1,477.60; the literal reading raises January to November's $1,500.00 (the reference
+      refuses that month instead of computing the raise).
+    amount: '22.40'
+    currency: USD
+    period: month
+    computed_by: test_savings_clause_protects_every_later_month_not_just_the_next
 - id: claim-of-right-deduction-floor
   jurisdiction: us-hi
   program: income-tax
@@ -813,7 +996,7 @@ entries:
     type: calendar
   implementations:
   - repo: PolicyEngine/policyengine-us
-    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    commit: eeaf8096e06d16b7fd2c55f40f88f544c9bf0066
     path: policyengine_us/parameters/gov/states/co/ssa/oap/income/sources/unearned.yaml
     follows: reading
     adopts: reading
@@ -823,7 +1006,7 @@ entries:
       by: PolicyEngine
       date: '2026-10-20'
       record: https://github.com/PolicyEngine/policyengine-us/pull/10176
-    cites_entry: false
+    cites_entry: true
   tests:
   - repo: PolicyEngine/policyengine-us
     commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
@@ -870,7 +1053,7 @@ entries:
     type: tax
   implementations:
   - repo: PolicyEngine/policyengine-us
-    commit: 79249f0feacd2600f88d566cfdf46f1155a0b9fc
+    commit: eeaf8096e06d16b7fd2c55f40f88f544c9bf0066
     path: policyengine_us/variables/gov/states/md/tax/income/credits/poverty_line/md_poverty_line_credit_potential.py
     follows: reading
     adopts: reading
@@ -879,7 +1062,7 @@ entries:
       by: PolicyEngine
       date: '2026-10-19'
       record: https://github.com/PolicyEngine/policyengine-us/pull/10287
-    cites_entry: false
+    cites_entry: true
   tests:
   - repo: PolicyEngine/policyengine-us
     commit: 79249f0feacd2600f88d566cfdf46f1155a0b9fc
@@ -937,7 +1120,7 @@ entries:
     note: NIIT begins in 2013; Treas. Reg. 1.1411-10(i) makes the final regulation applicable from 2014 and permits application to 2013.
   implementations:
   - repo: PolicyEngine/policyengine-us
-    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    commit: eeaf8096e06d16b7fd2c55f40f88f544c9bf0066
     path: policyengine_us/variables/gov/irs/tax/federal_income/niit_magi.py
     follows: reading
     adopts: reading
@@ -946,7 +1129,7 @@ entries:
       by: PolicyEngine
       date: '2026-10-20'
       record: https://github.com/TheAxiomFoundation/rulespec-us/pull/1871
-    cites_entry: false
+    cites_entry: true
   tests:
   - repo: PolicyEngine/policyengine-us
     commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
@@ -1003,7 +1186,7 @@ entries:
     type: tax
   implementations:
   - repo: PolicyEngine/policyengine-us
-    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    commit: eeaf8096e06d16b7fd2c55f40f88f544c9bf0066
     path: policyengine_us/variables/gov/irs/income/taxable_income/deductions/qualified_business_income_deduction/section_199a_net_capital_gain.py
     follows: reading
     adopts: reading
@@ -1012,7 +1195,7 @@ entries:
       by: PolicyEngine
       date: '2026-10-20'
       record: https://github.com/TheAxiomFoundation/rulespec-us/pull/1871
-    cites_entry: false
+    cites_entry: true
   tests:
   - repo: PolicyEngine/policyengine-us
     commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
@@ -1080,7 +1263,7 @@ entries:
     note: Every edition of the Form 2441 instructions from 2018 through 2025 carries the line 19 rule; 2018 is the earliest edition checked.
   implementations:
   - repo: PolicyEngine/policyengine-us
-    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    commit: eeaf8096e06d16b7fd2c55f40f88f544c9bf0066
     path: policyengine_us/variables/gov/irs/credits/cdcc/min_head_spouse_earned.py
     follows: reading
     adopts: reading
@@ -1089,7 +1272,7 @@ entries:
       by: PolicyEngine
       date: '2026-10-20'
       record: https://github.com/TheAxiomFoundation/rulespec-us/pull/1871
-    cites_entry: false
+    cites_entry: true
   tests:
   - repo: PolicyEngine/policyengine-us
     commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
@@ -1141,7 +1324,7 @@ entries:
     note: Every edition of the Form N-11 instructions from 2018 through 2025 carries the exclusion; 2018 is the earliest edition checked.
   implementations:
   - repo: PolicyEngine/policyengine-us
-    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    commit: eeaf8096e06d16b7fd2c55f40f88f544c9bf0066
     path: policyengine_us/variables/gov/states/hi/tax/income/credits/cdcc/hi_cdcc_eligible.py
     follows: reading
     adopts: reading
@@ -1150,7 +1333,7 @@ entries:
       by: PolicyEngine
       date: '2026-10-20'
       record: https://github.com/TheAxiomFoundation/rulespec-us/pull/1871
-    cites_entry: false
+    cites_entry: true
   tests:
   - repo: PolicyEngine/policyengine-us
     commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
@@ -1200,7 +1383,7 @@ entries:
     note: Scope begins with the dependent-deduction parameter's first year; the statutory provisions predate that coverage.
   implementations:
   - repo: PolicyEngine/policyengine-us
-    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    commit: eeaf8096e06d16b7fd2c55f40f88f544c9bf0066
     path: policyengine_us/variables/gov/states/ny/tax/income/taxable_income/deductions/ny_standard_deduction.py
     follows: reading
     adopts: reading
@@ -1209,7 +1392,7 @@ entries:
       by: PolicyEngine
       date: '2026-10-20'
       record: https://github.com/TheAxiomFoundation/rulespec-us/pull/1871
-    cites_entry: false
+    cites_entry: true
   tests:
   - repo: PolicyEngine/policyengine-us
     commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
@@ -1260,7 +1443,7 @@ entries:
     note: Subdivision (c)(8) before 2019 and (c)(9) from 2019; Schedule M line references are for 2025.
   implementations:
   - repo: PolicyEngine/policyengine-us
-    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    commit: eeaf8096e06d16b7fd2c55f40f88f544c9bf0066
     path: policyengine_us/variables/gov/states/wv/tax/income/subtractions/senior_citizen_disability/wv_senior_citizen_disability_deduction_person.py
     follows: reading
     adopts: reading
@@ -1269,7 +1452,7 @@ entries:
       by: PolicyEngine
       date: '2026-10-20'
       record: https://github.com/TheAxiomFoundation/rulespec-us/pull/1871
-    cites_entry: false
+    cites_entry: true
   tests:
   - repo: PolicyEngine/policyengine-us
     commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
@@ -1312,7 +1495,7 @@ entries:
     type: calendar
   implementations:
   - repo: PolicyEngine/policyengine-us
-    commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
+    commit: eeaf8096e06d16b7fd2c55f40f88f544c9bf0066
     path: policyengine_us/variables/gov/states/mn/dhs/msa/payment/mn_msa_guardian_fee.py
     follows: reading
     adopts: reading
@@ -1321,7 +1504,7 @@ entries:
       by: PolicyEngine
       date: '2026-10-19'
       record: https://github.com/TheAxiomFoundation/rulespec-us/pull/1871
-    cites_entry: false
+    cites_entry: true
   tests:
   - repo: PolicyEngine/policyengine-us
     commit: 7bb70aab8c162e45e6cbabb45049cf1f01b0ee4a
