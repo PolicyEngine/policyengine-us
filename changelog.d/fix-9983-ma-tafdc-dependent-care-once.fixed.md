@@ -1,0 +1,1 @@
+Subtract the Massachusetts TAFDC dependent care deduction once from the unit's earnings after the 50% disregard (106 CMR 704.275(A)), sharing it among earners by their earnings, instead of subtracting it from each earner (or half of it from each spouse on a joint return).
