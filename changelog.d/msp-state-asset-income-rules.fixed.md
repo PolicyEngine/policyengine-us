@@ -1,0 +1,1 @@
+Applied state Medicare Savings Program rules: no asset test in Washington from 2023; California asset limits of $130,000 / $195,000 (July 2022 to 2023, and again from 2026); Minnesota asset limits of $10,000 / $18,000; and general income exclusions of $25 in Illinois and $50 in Mississippi.
