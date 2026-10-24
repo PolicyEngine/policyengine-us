@@ -11,6 +11,8 @@ BUSINESS_LOSS_SOURCES = [
     "farm_operations_income",
     "farm_rent_income",
     "rental_income",
+    # Schedule E Part III estate and trust losses (limited_business_loss).
+    "estate_income",
 ]
 
 # Above-the-line deductions the model can attribute to one person, keyed by
@@ -32,8 +34,9 @@ def dependent_income_and_deductions(person, period, parameters):
     """A dependent's own-return income before above-the-line deductions, and
     the person-level above-the-line deductions to subtract from it.
 
-    Income nets business losses and capital losses (within the IRC 1211(b)
-    limit) and leaves out Social Security, as IRC 86(b)(2) requires.
+    Income nets business losses (within the IRC 461(l) limit) and capital
+    losses (within the IRC 1211(b) limit) and leaves out Social Security, as
+    IRC 86(b)(2) requires.
     """
     p = parameters(period).gov.irs
     sources = p.gross_income.sources
@@ -47,7 +50,13 @@ def dependent_income_and_deductions(person, period, parameters):
         "capital_gains" in sources and "non_sch_d_capital_gains" in sources
     )
 
+    # A dependent who lives with their spouse files separately; any other
+    # files as single.
+    lives_with_spouse = person("dependent_lives_with_spouse", period)
+
     income = 0
+    business_income = 0
+    business_loss = 0
     for source in sources:
         components = DEPENDENT_GROSS_INCOME_SOURCE_OVERRIDES.get(source, [source])
         for component in components:
@@ -55,14 +64,26 @@ def dependent_income_and_deductions(person, period, parameters):
                 continue
             amount = add(person, period, [component])
             if deduct_losses and component in BUSINESS_LOSS_SOURCES:
-                income += amount
+                business_income += max_(0, amount)
+                business_loss += max_(0, -amount)
             else:
                 income += max_(0, amount)
+
+    if deduct_losses:
+        # IRC 461(l), as limited_business_loss applies it to the filers:
+        # business losses are deductible up to business income plus the
+        # threshold, which is infinite while the limit is suspended (2018
+        # through 2020).
+        threshold = where(
+            lives_with_spouse,
+            p.ald.loss.max["SEPARATE"],
+            p.ald.loss.max["SINGLE"],
+        )
+        income += business_income - min_(business_loss, business_income + threshold)
 
     if "capital_gains" in sources:
         # IRC 1211(b): net capital losses are deductible up to the limit,
         # which is lower for a married individual filing separately.
-        lives_with_spouse = person("dependent_lives_with_spouse", period)
         capital_loss_limit = p.ald.loss.capital.max
         loss_limit = deduct_losses * where(
             lives_with_spouse,
@@ -97,8 +118,8 @@ class dependent_taxable_ss_magi(Variable):
     relative gross income test, losses and above-the-line deductions reduce
     it. Above-the-line deductions the model records only for the tax unit
     (health savings account contributions) are not attributed to
-    dependents, and the IRC 461(l) excess business loss limit is not
-    applied.
+    dependents. The IRC 461(l) excess business loss limit applies to the
+    dependent's own business income and losses.
     """
     definition_period = YEAR
     defined_for = "is_tax_unit_dependent"
