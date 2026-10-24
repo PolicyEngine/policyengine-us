@@ -59,8 +59,8 @@
   output:
     ak_hap_countable_income: 6_000
 
-# MS 3003-4 A.7 and supplied-net approximation: 12,000 - 3,000 = 9,000. Prior-period losses and disallowed expenses cannot be reconstructed.
-- name: "Case 3, a signed current net business loss can offset other current income."
+# MS 3003-4 A.7 and supplied-net approximation: each source is floored at zero, so 12,000 + 0 = 12,000. Prior-period losses and disallowed expenses cannot be reconstructed.
+- name: "Case 3, a current net business loss does not offset other income."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -84,9 +84,9 @@
         members: ["person1"]
         state_code: "AK"
   output:
-    ak_hap_countable_income: 9_000
+    ak_hap_countable_income: 12_000
 
-# MS 3003-4 A.7 and D.2: 2,000 - 600 + 800 + 600 + 400 = 3,200. Use canonical partnership and S-corporation components.
+# MS 3003-4 A.7 and D.2: 2,000 + 0 (the 600 SSTB loss is floored) + 800 + (600 + 400) = 3,800. Use canonical partnership and S-corporation components.
 - name: "Case 4, separate supplied business sources count once without another expense deduction."
   period: 2027
   absolute_error_margin: 0.01
@@ -114,7 +114,7 @@
         members: ["person1"]
         state_code: "AK"
   output:
-    ak_hap_countable_income: 3_200
+    ak_hap_countable_income: 3_800
 
 # MS 3003-1 B.6.f and contract nonnegative rental streams: 10,000 + 0 + 600.
 - name: "Case 5, negative rental income does not offset positive farm rental income."
@@ -171,8 +171,8 @@
   output:
     ak_hap_countable_income: 1_000
 
-# Contract final household floor after the signed supplied-net approximation.
-- name: "Case 7, final household income cannot become negative."
+# Each source is floored at zero: 100 + 0 = 100.
+- name: "Case 7, a business loss larger than wages leaves the wages counted."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -196,7 +196,7 @@
         members: ["person1"]
         state_code: "AK"
   output:
-    ak_hap_countable_income: 0
+    ak_hap_countable_income: 100
 
 # MS 3003-6 E includes otherwise countable income of ineligible aliens without proration.
 - name: "Case 8, all members income counts in a mixed-status household."

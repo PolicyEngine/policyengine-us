@@ -6,7 +6,8 @@ values:
     - farm_operations_income
     - partnership_s_corp_income
 
-# Existing signed net sources stand in for gross less allowable current costs.
+# Existing net sources, each floored at zero, stand in for gross less
+# allowable current costs.
 # No second 50% standard expense deduction is applied. Partnership/S-corporation
 # aggregate includes its components, which must not also be added separately.
 metadata:

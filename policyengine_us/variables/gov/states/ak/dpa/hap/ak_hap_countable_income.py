@@ -32,14 +32,16 @@ class ak_hap_countable_income(Variable):
             & person("is_tax_unit_dependent", period)
             & school
         )
-        # Supplied signed net business income approximates gross receipts less
+        # Supplied net business income approximates gross receipts less
         # allowable current costs. Do not deduct the 50% expense standard again.
-        # Prior-period losses, disallowed tax expenses and multiple businesses
-        # within a source cannot be separated. Partnership/S-corp metadata is
-        # broader than policy net income; no expense reconstruction is imputed.
-        earned = max_(person("employment_income", period), 0) + add(
-            person, period, p.business_sources
-        )
+        # Each source is floored at zero, so a business loss does not offset
+        # wages or other income. Prior-period losses, disallowed tax expenses
+        # and multiple businesses within a source cannot be separated.
+        # Partnership/S-corp metadata is broader than policy net income; no
+        # expense reconstruction is imputed.
+        earned = max_(person("employment_income", period), 0)
+        for source in p.business_sources:
+            earned = earned + max_(person(source, period), 0)
         countable_earned = spm_unit.sum(where(exempt_child, 0, earned))
         # These are cash receipts, so a tax loss in an unearned source does not
         # offset other income. Net rental sources are separately nonnegative.

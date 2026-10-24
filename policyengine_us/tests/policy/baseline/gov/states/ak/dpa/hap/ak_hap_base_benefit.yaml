@@ -1502,7 +1502,7 @@
   output:
     ak_hap_base_benefit: 1_575
 
-# Unchanged income component floors total net receipts at 0; income factor 1 and Fairbanks 10 points.
+# The business loss is floored at zero, so countable income is 0; income factor 1 and Fairbanks 10 points.
 - name: Case 48, negative current net business income does not inflate benefit.
   period: 2027
   absolute_error_margin: 0.0001
