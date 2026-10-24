@@ -1,3 +1,10 @@
+## [2.62.12] - 2026-10-24
+
+### Changed
+
+- Point the federal and Alaska to Hawaii source-conflict candidates whose pull requests have merged at their code on main, and add candidates for conflicts that code records.
+
+
 ## [2.62.11] - 2026-10-24
 
 ### Changed
