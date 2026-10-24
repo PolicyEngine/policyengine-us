@@ -8,8 +8,10 @@ metadata:
   reference:
     - title: Treasury Office of Tax Analysis Section 1332 methodology addendum, Table 2 (Enhanced subsidy schedule)
       href: https://www.cms.gov/files/document/1332-ota-methodology-addendum-nj-pass-through.pdf#page=12
-    - title: NJ DOBI FY2025-2026 Budget Discussion Points
+    - title: NJ DOBI FY2025-2026 Budget Discussion Points, p.8 ("lowest ... $20 and the maximum is $100")
       href: https://pub.njleg.state.nj.us/publications/budget/governors-budget/2026/dobi_response_2026.pdf#page=8
+    - title: NJ DOBI FY2026-2027 Budget Discussion Points, p.4 (schedule continued to 600% FPL in 2026; PY2025 cohort averages by FPL band)
+      href: https://pub.njleg.state.nj.us/publications/budget/governors-budget/2027/dobi_response_2027.pdf#page=4
     - title: P.L. 2020 c.61
       href: https://pub.njleg.gov/bills/2020/AL20/61_.HTM
     - title: Get Covered NJ - New Jersey Health Plan Savings
@@ -20,19 +22,27 @@ brackets:
   # CORROBORATION CHAIN: the exact per-member-per-month (PMPM) values below are
   # the ENHANCED schedule (post-ARP, effective mid-2021) from the U.S. Treasury
   # Office of Tax Analysis Section 1332 methodology addendum (Nov 2021). These
-  # values appear both as body-text bullets on file p.8 and, more cleanly, in the
-  # side-by-side Table 2 ("Enhanced" column) on file p.12 (the href points at
-  # Table 2). The enhanced schedule states:
+  # values appear both as body-text bullets on printed page 8 (PDF page 9) and,
+  # more cleanly, in the side-by-side Table 2 ("Enhanced" column) on PDF page 12
+  # (the href points at Table 2). The enhanced schedule states:
   # "From 138% through 150% of FPL: $20 PMPM"; "From 150% through 200%: $40 PMPM";
   # "From 200% through 250%: $50 PMPM"; "From 250% through 400%: $100 PMPM";
   # "From 400% through 600%: $50 PMPM". This is NOT the superseded INITIAL schedule
   # (Feb 2021: $20/$30/$40/$95, covering only 138-400% FPL) printed in Table 1 on
-  # file p.5, which the model deliberately does not use. The DOBI FY2025-2026
-  # Budget Discussion Points confirm the enhanced schedule remains unchanged/flat
-  # for PY2026 (NJHPS expenditures "projected to remain flat at $212.2" million in
-  # FY2026, continuing "up to 600% FPL"). Neither source alone both states the
-  # values and confirms PY2026 currency, so both are carried. The Get Covered NJ
-  # URL is a secondary (anchorless) corroborating reference, not a value source.
+  # file p.5, which the model deliberately does not use. No New Jersey document
+  # for plan year 2026 restates the five amounts (Get Covered NJ's page sends the
+  # reader to its calculator), so PY2026 currency rests on the DOBI budget
+  # responses: FY2025-2026, p.8 — "The lowest amount an eligible individual can
+  # receive per month in New Jersey Health Plan Savings is $20 and the maximum is
+  # $100", and "$100 per person per month – which can mean a $400 a month for a
+  # family of four at 300% FPL"; FY2026-2027, p.4 — the Department "continued
+  # providing NJ Health Plan Savings subsidies up to 600% FPL" after the enhanced
+  # federal credits lapsed, with PY2025 cohort averages ($16 under 200% FPL, $43
+  # at 200-250%, $91 and $96 at 250-400%, $40 at 400%+) all at or under the
+  # schedule, as a premium-capped flat amount must be. Neither source alone both
+  # states the values and confirms PY2026 currency, so all are carried. The Get
+  # Covered NJ URL is a secondary (anchorless) corroborating reference, not a
+  # value source.
   # Bands are lower-exclusive / upper-inclusive, so thresholds use the "x.0001"
   # convention to match the published "from X% through Y%" banding. The 138% floor
   # is enforced by the eligibility gate; this base band gives $0 below 138% FPL so
