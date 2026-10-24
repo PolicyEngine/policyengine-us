@@ -24,9 +24,9 @@ For every year:
    in dollars through the poverty-line fraction).
 
 Why Python: the YAML cases pin the 2027 table at chosen points; this checks
-every year's table at its knots and at drawn incomes, so an edge assigned to the
-wrong tier, an interpolation that runs past a tier's final percentage, or a new
-table row entered in the wrong order fails wherever it falls. Cost, measured
+every year's table at its edges and at drawn incomes, so a mistyped edge, an
+interpolation that runs past a tier's final percentage, or a new table row
+entered in the wrong order fails wherever it falls. Cost, measured
 locally (macOS, shared host): about 6 s of test calls, 12 s in pytest and 36 s
 wall time including the model import, peak memory footprint 1.7 GB. It runs in
 the `core` group of the rest Python tests.
@@ -116,6 +116,8 @@ def test_applicable_percentage_table(points):
     seen = x.astype(np.float32).astype(float)
     for year in YEARS:
         thresholds, initial, final = table(simulation, year)
+        # Every edge is probed; a new or mistyped edge must be added to EDGES.
+        assert set(thresholds) <= set(EDGES), (year, thresholds)
         rate = np.asarray(
             simulation.calculate("aca_required_contribution_percentage", year)
         )
