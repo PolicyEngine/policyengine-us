@@ -41,10 +41,10 @@ REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 # JUnit measures per-file elapsed time, not memory. The extra boundaries
 # below isolate retained full models and target <= ~10 GB per process;
 # verify those estimates against each group's GNU time report in CI.
-# heavy-a also holds capital_gains_mtr_measurement (#10058): 463 s of
-# reformed household simulations in run 38157151942, 150 s of it the
-# response-order test, with heavy-a at 8.1 GB/15:19 in that slower run.
-#   core (142 s), policy (185 s), remaining (239 s).
+# heavy-a also holds capital_gains_mtr_measurement (#10058): 632 s of
+# reformed household simulations in run 39507589106, with heavy-a at
+# 8.9 GB/16:18. Its revenue-peak test, 231 s of that, has since gone from
+# three simulations to one.
 # SSI resource deeming retains a reformed system at import and builds another
 # in its grid fixture. Core reached 13.3 GB in CI run 38141803955 after this
 # and three smaller modules arrived; isolate SSI rather than filling heavy-a
@@ -57,8 +57,12 @@ REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core-heavy core policy-param
 # Both stay near 45 minutes, while the old serial job hit its 90-minute limit.
 # No shard runs more than one Python group at a time. Locally, leaving
 # REST_PYTHON_SHARD unset still runs every group in the original order.
-REST_PYTHON_SHARD_1_GROUPS := cached-arrays core-heavy policy-parameters remaining-heavy remaining
-REST_PYTHON_SHARD_2_GROUPS := heavy-a heavy-b core policy
+# Core has since grown: in main's run 40031737740 it took 43:46, and the
+# groups summed to 48.8 minutes in shard 1 and 69.0 in shard 2, where heavy-a
+# took 4:22. With #10058's file heavy-a would put shard 2 near 80 minutes, so
+# it runs in shard 1.
+REST_PYTHON_SHARD_1_GROUPS := cached-arrays heavy-a core-heavy policy-parameters remaining-heavy remaining
+REST_PYTHON_SHARD_2_GROUPS := heavy-b core policy
 REST_PYTHON_SHARD ?=
 ifeq ($(REST_PYTHON_SHARD),)
 REST_PYTHON_SELECTED_GROUPS := $(REST_PYTHON_GROUPS)
