@@ -14,6 +14,7 @@ class mn_msa_guardian_fee(Variable):
     )
 
     def formula(person, period, parameters):
+        # Source conflict us-mn:msa-guardian-fee-cap
         # Per Minn. Stat. § 256D.44 Subd. 5(d) and CM 0023.15, the fee
         # shall not exceed five percent of the assistance unit's gross
         # monthly income up to a maximum of $100 per month. Per CM 0017,
