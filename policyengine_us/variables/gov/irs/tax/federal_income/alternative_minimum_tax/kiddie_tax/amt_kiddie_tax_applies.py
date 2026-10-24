@@ -13,6 +13,8 @@ class amt_kiddie_tax_applies(Variable):
     )
     reference = [
         "https://www.law.cornell.edu/uscode/text/26/1#g_2_A",
+        "https://www.law.cornell.edu/uscode/text/26/1#g_2_C",
+        "https://www.irs.gov/pub/irs-prior/i6251--2017.pdf#page=11",
         "https://www.irs.gov/pub/irs-prior/p929--2021.pdf",
     ]
 
@@ -46,4 +48,7 @@ class amt_kiddie_tax_applies(Variable):
         # Check spouse age: spouse must be young (or not exist - age == 0)
         no_or_young_spouse = (age_spouse == 0) | (age_spouse < spouse_age_limit)
 
-        return young_head & no_or_young_spouse
+        # IRC 1(g)(2)(C) excludes children filing joint returns.
+        filing_status = tax_unit("filing_status", period)
+        joint = filing_status == filing_status.possible_values.JOINT
+        return young_head & no_or_young_spouse & ~joint

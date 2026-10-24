@@ -140,7 +140,7 @@
     employment_income: 0
     filing_status: JOINT
   output:
-    amt_kiddie_tax_applies: true
+    amt_kiddie_tax_applies: false
     # 2025 Form 6251 Exemption Worksheet line 1: 137,000 for joint filers.
     amt_exemption: 137_000
 
@@ -176,7 +176,7 @@
     employment_income: 0
     filing_status: JOINT
   output:
-    amt_kiddie_tax_applies: true
+    amt_kiddie_tax_applies: false
     amt_exemption: 140_200
 
 - name: 2026 single 18-year-old in the phase-out range
@@ -191,3 +191,124 @@
     # exemption_phase_out = 0.5 * 100,000 = 50,000
     # amt_exemption = max(0, 90,100 - 50,000) = 40,100
     amt_exemption: 40_100
+
+# IRC 1(g)(2)(C), 59(j); 2017 Form 6251 lines 28-35, instructions p. 11:
+# https://www.irs.gov/pub/irs-prior/i6251--2017.pdf#page=11
+# The model backdates some 2018 parameters into 2017. Supply the historical
+# upstream return amounts to isolate the AMT formulas; wages still compute
+# adjusted_earnings and the erroneous child cap, rather than supplying the cap.
+# 2017 regular rates: https://www.irs.gov/pub/irs-drop/rp-16-55.pdf#page=7
+# Standard deduction: https://www.irs.gov/pub/irs-drop/rp-16-55.pdf#page=15
+# Personal exemptions: https://www.irs.gov/pub/irs-drop/rp-16-55.pdf#page=18
+- name: A joint return by young spouses receives the ordinary 2017 AMT exemption
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    people:
+      head:
+        age: 18
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income: 12_000
+        taxable_interest_income: 121_000
+      spouse:
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        employment_income: 17_000
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        tax_unit_itemizes: false
+        adjusted_gross_income: 150_000
+        standard_deduction: 12_700
+        taxable_income_deductions: 12_700
+        exemptions: 8_100
+        regular_tax_before_credits: 23_777.50
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # AGI = 12,000 + 17,000 + 121,000 = 150,000.
+    # Regular taxable income = 150,000 - 12,700 - 2 * 4,050 = 129,200.
+    # AMTI = 150,000; below joint phase-out threshold 160,900.
+    # IRC 1(g)(2)(C) excludes joint returns, so the 59(j) cap cannot apply.
+    # AMT base = 150,000 - 84,500 = 65,500; tentative tax = 17,030.
+    # Regular tax = 1,865 + 8,587.50 + 13,325 = 23,777.50; AMT = 0.
+    taxable_income: 129_200
+    amt_income: 150_000
+    amt_exemption: 84_500
+    amt_income_less_exemptions: 65_500
+    amt_base_tax: 17_030
+    alternative_minimum_tax: 0
+    amt_kiddie_tax_applies: false
+
+# Post-2017 confirmation controls: the SECURE Act override makes the
+# historical predicate defect irrelevant to the federal exemption.
+- name: Young joint filers receive the full exemption in 2021
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      head:
+        age: 18
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        employment_income: 12_000
+      spouse:
+        age: 17
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        employment_income: 17_000
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    adjusted_gross_income: 29_000
+    taxable_income: 3_900
+    amt_income: 29_000
+    amt_exemption: 114_600
+    amt_income_less_exemptions: 0
+    alternative_minimum_tax: 0
+
+- name: Young joint filers receive the full exemption in 2022
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      head:
+        age: 18
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        employment_income: 12_000
+      spouse:
+        age: 17
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        employment_income: 17_000
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    adjusted_gross_income: 29_000
+    taxable_income: 3_100
+    amt_income: 29_000
+    amt_exemption: 118_100
+    amt_income_less_exemptions: 0
+    alternative_minimum_tax: 0
