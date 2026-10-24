@@ -2075,6 +2075,38 @@ candidates:
     by the match rate, and its comment argues the post-2023 federal changes are inflation indexing only (in_eitc.py).
     in_eitc_eligible tests the frozen snapshot, January 1, 2023 through 2025 and January 1, 2026 from 2026. The
     statute-first rule requires changing the amount base if frozen conformity is verified.'
+- id: us-in:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2025
+    to: 2027
+    type: program
+    note: program year as the program defines it
+  question: Can Indiana EAP's 60% SMI limit exclude a household of 15 or more whose income is below the federal
+    110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: manual
+    citation: Indiana PY2026 EAP Intake and Operations Manual, Sections 3.1 and 8.3, p.23
+    url: https://www.in.gov/ihcda/files/Indiana-LIHEAP-Intake-and-Operations-Program-Manual-PY2026.pdf#page=23
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: Income must be at or below 60% of SMI, which falls below that floor from size 15 in PY2025 and size 16
+      in PY2026 and PY2027.
+  example: In PY2026, sixteen people with $106,000 exceed the $104,543 limit but are below the $107,965 floor.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/in/ihcda/eap/in_eap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/in/ihcda/eap/eligibility/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10281
+  state: unreviewed
+  note: PE-US applies the floor to the prior year's guideline, rounded to cents, with the statute's strict "less
+    than" (in_eap_eligible.py).
 - id: us-in:rcap-unlicensed-facility-per-diem
   program: ssi-state-supplement
   years:
@@ -2085,8 +2117,8 @@ candidates:
   question: Is RCAP's unlicensed-facility per diem $27 under the in-force rule or $37 under FSSA's guide?
   sources:
   - kind: regulation
-    citation: Indiana RCAP rule (in-force text)
-    url: null
+    citation: 455 IAC 1-3-3(a) (readopted 11/13/2019)
+    url: https://www.law.cornell.edu/regulations/indiana/455-IAC-1-3-3
   - kind: manual
     citation: FSSA guide (2017)
     url: https://www.in.gov/fssa/ddars/files/RCAP-Provider-Guide.pdf
@@ -2104,8 +2136,8 @@ candidates:
   state: unreviewed
   note: 'PE-US uses $37 from July 1, 2008 and $27 before, citing 455 IAC 1-3-3 and the September 2017 FSSA RCAP
     Provider Guide (rcap/per_diem/unlicensed.yaml, in_ssp_rcap.py). That code came from #7887; #9709, which this
-    entry named before, changed only California''s standards. Obtain the exact in-force rule text and establish
-    concurrent applicability in 2026, which is unconfirmed.'
+    entry named before, changed only California''s standards. The guide prints no per diem; its $1,125.41 county-home
+    income limit is $37 times 365/12 truncated. Establish which rate applies in 2026.'
 - id: us-ks:2021-2023-exemptions-dependent-filer
   program: income-tax
   years:
@@ -2335,11 +2367,15 @@ candidates:
     citation: DCBS Division of Family Support Operation Manual Volume III, MS 2820 (OMTL-682, revised 11/1/25),
       Maximum Payment Scale
     url: https://www.chfs.ky.gov/agencies/dcbs/dfs/Documents/OMVOLIII.pdf
+  - kind: regulation
+    citation: 921 KAR 2:016 Section 9(2)(a) (effective 2-16-2023), table by Number of Eligible Persons
+    url: https://apps.legislature.ky.gov/law/kar/titles/921/002/016/
   - kind: agency-practice
     citation: KY FACES, Kentucky Transitional Assistance Program (KTAP) page
     url: https://prd.webapps.chfs.ky.gov/kyfaces/Kinship/KTAP
   readings:
-    statute: No statute supplied; the manual's Maximum Payment Scale runs by Number of Eligible Persons.
+    statute: No statute supplied; the manual's Maximum Payment Scale and the regulation's table run by Number of
+      Eligible Persons.
     other: KY FACES shows the same dollar amounts with the axis labeled Number of Children.
   pe_us:
     follows: unknown
@@ -2349,8 +2385,10 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/8942
   state: unreviewed
-  note: 'PE-US follows the manual: the scale is keyed to assistance unit size, and the parameter''s comment records
-    the web app''s Number of Children label (benefit/payment_maximum.yaml). Confirm which count the agency applies.'
+  note: 'PE-US follows the manual and regulation: the scale is keyed to assistance unit size, proxied by SPM unit
+    size and capped at seven, and the parameter''s comment records the web app''s Number of Children label (benefit/payment_maximum.yaml,
+    ky_ktap_payment_maximum.py). The KY FACES page is written for kinship caregivers, whose child-only cases count
+    only the children, so the label may describe that audience; confirm which count the agency applies.'
 - id: us-ky:liheap-subsidized-income-points
   program: liheap
   years:
@@ -2443,7 +2481,7 @@ candidates:
   sources:
   - kind: statute
     citation: R.S. 47:294(B); R.S. 47:44.1(A)
-    url: null
+    url: https://www.legis.la.gov/legis/Law.aspx?d=101761
   - kind: guidance
     citation: LDR Revenue Information Bulletin 26-019 (September 28, 2026)
     url: https://dam.ldr.la.gov/lawspolicies/RIB%2026-019.pdf
@@ -2605,6 +2643,37 @@ candidates:
   note: 'PE-US follows the Overview for 2026: income must be from 100% to 400% FPL, and the floor''s and limit''s
     comments record the regulation''s Plan Type 1 and 3D bands, which are left unmodelled (fpl_floor.yaml, fpl_limit.yaml,
     ma_connector_care_eligible.py). Reconcile the narrower coverage with the regulation.'
+- id: us-ma:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2022
+    to: 2027
+    type: program
+    note: program year as the program defines it
+  question: Can Massachusetts HEAP's 60% SMI limit exclude a household of 30 to 34 whose income is below the federal
+    110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: FY2026 LIHEAP State Plan item 2.1, p.9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/MA_Plan_2026.pdf#page=9
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The plan sets 60% of SMI for all household sizes, which falls below that floor from size 30 to 34.
+  example: In FY2026, thirty-four people with $216,000 exceed the $215,077.68 limit but are below the $216,865 floor.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ma/doer/liheap/eligibility/ma_liheap_income_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/variables/gov/states/ma/doer/liheap/ma_liheap_fpg.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10279
+  state: unreviewed
+  note: PE-US applies the floor to the guideline ma_liheap_fpg already lags, rounded to cents, with the strict "less
+    than" (ma_liheap_income_eligible.py).
 - id: us-ma:pfml-cap-swap-effective-date
   program: paid-family-medical-leave
   years:
@@ -2733,7 +2802,7 @@ candidates:
   sources:
   - kind: plan
     citation: LIHEAP State Plan (Garrett 1.1 multiplier)
-    url: https://liheapch.acf.gov/docs/2026/state-plans/MD_Plan_2026.pdf#page=5
+    url: https://liheapch.acf.gov/docs/2026/state-plans/MD_Plan_2026.pdf#page=11
   - kind: form
     citation: FY27 MEAP Benefit Matrices, Garrett County table
     url: https://dhs.maryland.gov/documents/OHEP/FY27-MEAP-Benefit-Matrices.pdf#page=1
@@ -2746,31 +2815,66 @@ candidates:
     code:
     - policyengine_us/variables/gov/states/md/dhs/meap/md_meap.py
     - policyengine_us/parameters/gov/states/md/dhs/meap/payment/garrett_multiplier.yaml
+    - policyengine_us/parameters/gov/states/md/dhs/meap/payment/amount/oil.yaml
+    - policyengine_us/parameters/gov/states/md/dhs/meap/payment/regional_counties.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9746
   state: unreviewed
-  note: 'PE-US follows the plan''s multiplier: Garrett County pays 1.1 times the statewide amount, rounded half
-    up, so oil Level 4 is $1,078, and the documentation records the FY27 table''s $1,210 in that one cell (md_meap.py,
-    payment/garrett_multiplier.yaml). Verify its FY27 applicability and clarify the printed cell.'
+  note: 'PE-US follows the plan''s multiplier: Garrett County, the one regional county, pays 1.1 times the statewide
+    amount, rounded half up, so oil Level 4 is 1.1 times $980, or $1,078, and the documentation records the FY27
+    table''s $1,210 in that one cell (md_meap.py, payment/garrett_multiplier.yaml, payment/amount/oil.yaml, payment/regional_counties.yaml).
+    Verify its FY27 applicability and clarify the printed cell.'
+- id: us-md:meap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2025
+    to: 2027
+    type: program
+    note: program year as the program defines it
+  question: Can Maryland MEAP's 60% SMI limit for households of 11 or more exclude a household of 29 or more whose
+    income is below the federal 110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: guidance
+    citation: OHEP Income Guidelines FY2026 (updated July 9, 2025), 60% SMI footnote
+    url: https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/Income-Guidelines-FY2026-Updated-7.9.2025.pdf
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: Households of 11 or more are limited to 60% of SMI, which falls below that floor from size 29.
+  example: In FY26, twenty-nine people with $186,000 exceed the $185,864 limit but are below the $186,615 floor.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/md/dhs/meap/eligibility/md_meap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/variables/gov/states/md/dhs/meap/income/md_meap_fpg.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10281
+  state: unreviewed
+  note: PE-US applies the floor to md_meap_fpg's prior-year guideline, rounded to cents, with the strict "less than"
+    (md_meap_eligible.py).
 - id: us-md:meap-income-limit-plan-percentages
   program: liheap
   years:
     from: 2026
     to: 2026
-    type: federal-fiscal
-  question: Do Maryland MEAP's FY2026 income limits for sizes 1-10 follow the published annual 200% FPG amounts
-    or the state plan's equivalent SMI percentages and additional-member line?
+    type: program
+    note: program year as the program defines it
+  question: Do Maryland MEAP's FY2026 income limits for sizes 1-10 follow the OHEP guidelines' 200% FPG amounts
+    or the state plan's lower SMI percentages?
   sources:
   - kind: guidance
     citation: OHEP Income Guidelines FY2026 (updated July 9, 2025)
     url: https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/Income-Guidelines-FY2026-Updated-7.9.2025.pdf
   - kind: plan
-    citation: FY2026 LIHEAP State Plan, income eligibility, page 9
+    citation: FY2026 LIHEAP State Plan item 2.1, p.9
     url: https://liheapch.acf.gov/docs/2026/state-plans/MD_Plan_2026.pdf#page=9
   readings:
-    statute: No statute supplied; the published guidelines give annual amounts at 200% FPG for sizes 1-10.
-    other: The plan states truncated equivalent SMI percentages and an additional-member line inconsistent with
-      them.
+    statute: No statute supplied; the OHEP guidelines print 200% FPG limits for sizes 1-8, add $11,004 per additional
+      member, and use 60% of SMI from size 11.
+    other: Plan item 2.1 lists 39.00% to 58.70% of SMI for sizes 1-10, each a truncated equivalent of 200% FPG.
   pe_us:
     follows: unknown
     code:
@@ -2780,9 +2884,10 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9746
   state: unreviewed
-  note: PE-US follows the published 200% FPG amounts for sizes 1-10 and uses 60% SMI from size 11, and the documentation
-    records the plan's truncated percentages and inconsistent additional-member line (md_meap_income_limit.py, eligibility/fpg_rate.yaml,
-    eligibility/smi_min_size.yaml). Verify the plan's figures and whether they change any household's eligibility.
+  note: PE-US follows 200% of the poverty guideline for sizes 1-10 and 60% of SMI from size 11. For sizes 9 and
+    10 it uses 200% of the guideline ($119,300 and $130,300), not the guidelines' $11,004 add-on, which gives $4
+    and $8 more (md_meap_income_limit.py, eligibility/fpg_rate.yaml, eligibility/smi_min_size.yaml).
+  example: Seven people with $96,000 are under the guidelines' $97,300 but over the plan's 46.00% of SMI ($95,706).
 - id: us-md:meap-interest-dividends
   program: liheap
   years:
@@ -2798,10 +2903,10 @@ candidates:
     url: https://regs.maryland.gov/us/md/exec/comar/07.03.21.04
   - kind: manual
     citation: OHEP Operations Manual, Attachment A
-    url: null
+    url: https://dhs.maryland.gov/documents/OHEP/OHEP-Operations-Manual.pdf#page=111
   - kind: plan
     citation: FY2026 LIHEAP State Plan 1.9
-    url: https://liheapch.acf.gov/docs/2026/state-plans/MD_Plan_2026.pdf#page=5
+    url: https://liheapch.acf.gov/docs/2026/state-plans/MD_Plan_2026.pdf#page=7
   readings:
     statute: COMAR and the manual count the income.
     other: The plan leaves interest, dividends or royalties unchecked.
@@ -2831,10 +2936,10 @@ candidates:
     url: https://regs.maryland.gov/us/md/exec/comar/07.03.21.04
   - kind: manual
     citation: OHEP manual checklists
-    url: null
+    url: https://dhs.maryland.gov/documents/OHEP/OHEP-Operations-Manual.pdf#page=111
   - kind: plan
     citation: FY2026 plan checklists
-    url: null
+    url: https://liheapch.acf.gov/docs/2026/state-plans/MD_Plan_2026.pdf#page=6
   readings:
     statute: COMAR excludes the payments.
     other: The manual and plan checklists count them.
@@ -2864,7 +2969,7 @@ candidates:
     url: https://regs.maryland.gov/us/md/exec/comar/07.03.21.04
   - kind: manual
     citation: OHEP Operations Manual (May 2025), page 108
-    url: https://dhs.maryland.gov/documents/OHEP/OHEP-Operations-Manual.pdf#page=11
+    url: https://dhs.maryland.gov/documents/OHEP/OHEP-Operations-Manual.pdf#page=108
   readings:
     statute: A nonqualified member's income counts, but the member does not count in household size.
     other: Children under 18 count regardless of citizenship status.
@@ -2878,8 +2983,7 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/9746
   state: unreviewed
   note: 'PE-US follows the manual: children under 18 count in household size whatever their immigration status,
-    while ineligible adults do not (md_meap_household_size.py). Determine the governing source and verify the supplied
-    page anchor.'
+    while ineligible adults do not (md_meap_household_size.py). Determine the governing source.'
 - id: us-md:meap-strike-pay
   program: liheap
   years:
@@ -2895,10 +2999,10 @@ candidates:
     url: https://regs.maryland.gov/us/md/exec/comar/07.03.21.04
   - kind: plan
     citation: LIHEAP state plan 1.9, Strike Pay
-    url: null
+    url: https://liheapch.acf.gov/docs/2026/state-plans/MD_Plan_2026.pdf#page=6
   - kind: manual
     citation: OHEP Operations Manual, Attachment B
-    url: null
+    url: https://dhs.maryland.gov/documents/OHEP/OHEP-Operations-Manual.pdf#page=112
   readings:
     statute: COMAR counts funds without employee contributions, and the plan checks strike pay.
     other: The manual excludes those funds.
@@ -3095,7 +3199,7 @@ candidates:
   sources:
   - kind: statute
     citation: 36 M.R.S. § 5219-KK
-    url: null
+    url: https://legislature.maine.gov/statutes/36/title36sec5219-KK.html
   - kind: form
     citation: 2022 Schedule PTFC/STFC line 5c
     url: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_pstfc_ff.pdf#page=2
@@ -3154,7 +3258,7 @@ candidates:
     statute is described as child-only?
   sources:
   - kind: statute
-    citation: 22 M.R.S. §3762(3)(B)(7-D) (described as child-only)
+    citation: 22 M.R.S. §3762(3)(B)(7-D)(d) (described as child-only)
     url: https://www.mainelegislature.org/legis/statutes/22/title22sec3762.html
   - kind: regulation
     citation: 10-144 CMR ch. 331, Ch. IV § B(2)(b)
@@ -3214,7 +3318,7 @@ candidates:
     url: https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-508
   - kind: instructions
     citation: 2025 MI-1040 book, page 32, line 21 (MI-1040CR); related lines 22, 27 and 31
-    url: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=28
+    url: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=32
   readings:
     statute: Count the claimant and spouse's income.
     other: Count the specified income and premiums for all members, including amounts received for dependent adults.
@@ -3251,15 +3355,19 @@ candidates:
   readings:
     statute: The premium deduction does not expressly address amounts deducted elsewhere.
     other: Deduct premiums once, excluding amounts already deducted on lines 21 or 30.
-  example: With $50,000 Schedule C income and $5,000 premiums, household resources are $41,467.61 instead of $36,467.61.
+  example: With $50,000 Schedule C income and $5,000 premiums, household resources are $41,467.61 with the premiums
+    subtracted once and $36,467.61 with them subtracted twice.
   pe_us:
     follows: gap-fill
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/mi/tax/income/mi_household_resources.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9840
   state: unreviewed
-  note: 'The open PR follows the form; verify overlapping deductions and annual instruction coverage. Code not yet
-    on main: mi_household_resources.'
+  note: 'PE-US follows the form: line 31 subtracts the family''s health insurance premiums less the self-employed
+    health insurance deduction already taken on line 30, so each premium dollar is subtracted once, and Social Security
+    and railroad benefits stay gross on line 21 with their Medicare premiums on line 31 (mi_household_resources.py).
+    Verify overlapping deductions the inputs cannot identify and annual instruction coverage.'
 - id: us-mi:snap-child-support-deduction
   program: snap
   years:
@@ -3495,7 +3603,7 @@ candidates:
   sources:
   - kind: regulation
     citation: 7 CFR 273.5(b)(8)
-    url: null
+    url: https://www.law.cornell.edu/cfr/text/7/273.5
   - kind: manual
     citation: Missouri SNAP manual
     url: https://dssmanuals.mo.gov/food-stamps/1135-000-00/1135-025-00/
@@ -3528,10 +3636,10 @@ candidates:
     url: https://revisor.mo.gov/main/OneSection.aspx?section=143.177&bid=49978&hl=
   - kind: form
     citation: 2023 Form MO-WFTC checklist and Line 3 instructions
-    url: null
+    url: https://dor.mo.gov/forms/MO-WFTC_2023.pdf#page=1
   - kind: guidance
     citation: Missouri DOR WFTC FAQ
-    url: null
+    url: https://dor.mo.gov/faq/taxation/individual/missouri-working-family-tax-credit.html
   - kind: guidance
     citation: 2023 DOR information page
     url: null
@@ -3552,7 +3660,7 @@ candidates:
   note: 'PE-US follows the statute in every year: investment income equal to the limit keeps eligibility, and the
     comment records the 2023 form''s "equal to or greater than" wording and says the 2024 and 2025 forms use "greater
     than" (mo_wftc_eligible.py, wftc/investment_income_limit.yaml). Confirm the documented maintainer choice''s
-    date and obtain the 2023 form URL.'
+    date.'
 - id: us-ms:liheap-110-percent-poverty-floor
   program: liheap
   years:
@@ -3565,18 +3673,18 @@ candidates:
   sources:
   - kind: statute
     citation: 42 U.S.C. 8624(b)(2)(B)
-    url: null
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
   - kind: manual
     citation: Mississippi LIHEAP manual, Rule 6.1 C and printed 60% SMI table, PDF page 58
-    url: null
+    url: https://www.sos.ms.gov/adminsearch/ACCode/00000693c.pdf#page=58
   - kind: plan
     citation: FY2026 plan assurance (2), page 44
-    url: null
+    url: https://liheapch.acf.gov/docs/2026/state-plans/MS_Plan_2026.pdf#page=44
   readings:
     statute: A household below 110% of the lagged poverty guideline cannot be excluded solely on income.
     other: Apply the manual's 60% SMI limit at every household size.
   example: In FY2026, a household of 11 with $77,000 exceeds the $75,593 manual limit but falls below the $77,715
-    floor; the proposed statutory model awards $650 for propane.
+    floor; PE-US awards $650 for propane.
   pe_us:
     follows: statute
     code:
@@ -3639,16 +3747,17 @@ candidates:
     code:
     - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_property_tax_billed.py
     - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_gross_rent.py
-    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_pre_one_claimant.py
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_selected_claimant.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9900
     - https://github.com/PolicyEngine/policyengine-us/pull/9945
   state: open
   note: 'PE-US follows the form: the claimant counts the property tax billed to their own tax unit and the rent
-    it paid; only when no one in the tax unit is billed does the household''s property tax count, as rent (mt_elderly_homeowner_or_renter_credit_property_tax_billed.py,
-    mt_elderly_homeowner_or_renter_credit_gross_rent.py, mt_elderly_homeowner_or_renter_credit_pre_one_claimant.py).
-    A source-choice decision remains open; the statute-first rule requires changing claimant-only costs if the whole-homestead
-    reading is confirmed.'
+    it paid; only when no one in the tax unit is billed does the household''s property tax count, as rent. The selected
+    claimant''s comment records the statute''s whole-homestead reading, which would give the one claimant the household''s
+    whole property tax and rent, as not modeled (mt_elderly_homeowner_or_renter_credit_property_tax_billed.py, mt_elderly_homeowner_or_renter_credit_gross_rent.py,
+    mt_elderly_homeowner_or_renter_credit_selected_claimant.py). A source-choice decision remains open; the statute-first
+    rule requires changing claimant-only costs if the whole-homestead reading is confirmed.'
 - id: us-mt:elderly-credit-nonloss-agi-adjustments
   program: elderly-homeowner-renter-credit
   years:
@@ -3703,13 +3812,16 @@ candidates:
     - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.py
     - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_received.py
     - policyengine_us/parameters/gov/states/mt/tax/income/credits/elderly_homeowner_or_renter/gross_income_sources.yaml
+    - policyengine_us/variables/gov/states/mt/tax/income/tax_calculation/mt_refundable_credits_before_renter_credit.py
+    - policyengine_us/parameters/gov/states/mt/tax/income/credits/refundable.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9915
   state: unreviewed
-  note: PE-US uses the current return's federal and other Montana refundable credits as a proxy for credits received,
-    while the elderly credit itself enters as an input for the amount received during the year (mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.py,
-    mt_elderly_homeowner_or_renter_credit_received.py, elderly_homeowner_or_renter/gross_income_sources.yaml). Resolve
-    the regulation/form timing difference, noting that the 2024 caption uses received amounts.
+  note: PE-US uses the current return's federal and other Montana refundable credits (the Montana EITC from 2019)
+    as a proxy for credits received, while the elderly credit itself enters as an input for the amount received
+    during the year (mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.py, mt_refundable_credits_before_renter_credit.py,
+    credits/refundable.yaml, mt_elderly_homeowner_or_renter_credit_received.py, elderly_homeowner_or_renter/gross_income_sources.yaml).
+    Resolve the regulation/form timing difference, noting that the 2024 caption uses received amounts.
 - id: us-mt:elderly-credit-rent-free-occupants
   program: income-tax
   years:
