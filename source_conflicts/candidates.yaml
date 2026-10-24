@@ -3680,6 +3680,92 @@ candidates:
   state: unreviewed
   note: PE-US follows state rules from October 1, 2017; obtain historical versions because the supplied manual is
     a 2026 revision.
+- id: us-nd:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can North Dakota's printed 60% SMI limit exclude a large household whose income is below the federal 110%
+    poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624
+  - kind: guidance
+    citation: North Dakota FY2026 LIHEAP income limits full table (benefit matrix workbook), 60% SMI column
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/ND_BenefitMatrix_2026.xlsx
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The printed North Dakota limits fall below that floor for households of 21 to 28 members.
+  example: A 21-person household with $138,000 of countable income exceeds the $137,970 printed limit but is below
+    the $138,215 floor and receives the 45% minimum share, $1,350 on a $3,000 fuel-oil bill, in the PR.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/nd/dhs/liheap/nd_liheap_share.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10342
+  state: unreviewed
+  note: The PR applies the federal floor with the 45% minimum share from manual 415-30-05; above 28 members the floor
+    also exceeds the 60% SMI extrapolation. Verify each later fiscal-year table.
+- id: us-nd:liheap-renter-table-vs-subtraction-prose
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does a North Dakota renter whose heat is included in rent receive the share-based table amount, or that
+    amount subtracted from the monthly estimated heating cost?
+  sources:
+  - kind: manual
+    citation: Energy Assistance Policy Manual 415-30-30, Renter Heating Benefit Table
+    url: https://www.nd.gov/dhs/policymanuals/415/415_30_30.htm
+  - kind: manual
+    citation: Energy Assistance Policy Manual 415-30-30-10, Renter Benefits Computation of Monthly Payment
+    url: https://www.nd.gov/dhs/policymanuals/415/415_30_30_10.htm
+  readings:
+    statute: No statute is supplied; the 415-30-30 table pays the LIHEAP share of the monthly estimated heating cost.
+    other: 415-30-30-10 subtracts that share-based amount from the monthly estimated heating cost.
+  example: A fuel-oil renter at the 100% share receives $183 a month under the table and $0 under the subtraction.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/nd/dhs/liheap/nd_liheap.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10342
+  state: unreviewed
+  note: PE-US follows the table, whose amounts keep the 415-30-05 minimum (45%) and maximum (100%) benefit levels;
+    confirm the subtraction wording with the state.
+- id: us-nd:liheap-six-person-limit-workbook-vs-manual
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Is North Dakota's FY2026 six-person 60% SMI annual income limit $102,894 or $102,984?
+  sources:
+  - kind: guidance
+    citation: North Dakota FY2026 LIHEAP income limits full table (benefit matrix workbook), household size 6
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/ND_BenefitMatrix_2026.xlsx
+  - kind: manual
+    citation: Energy Assistance Policy Manual 415-25-05-10, Income Eligibility Levels
+    url: https://www.nd.gov/dhs/policymanuals/415/415_25_05_10.htm
+  readings:
+    statute: No statute is supplied; the workbook prints $102,894, which equals 12 times the manual's $8,574.50 monthly
+      limit.
+    other: The manual prints $102,984 as the six-person annual limit.
+  example: A six-person household with $102,950 of countable income is ineligible under the workbook figure and
+    receives the 45% share, $1,350 on a $3,000 fuel-oil bill, under the manual figure.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/nd/dhs/liheap/income_limits.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10342
+  state: unreviewed
+  note: PE-US follows the workbook, whose sizes 1 to 6 rise by $12,468 to $12,480 per step; $102,984 would be a
+    $12,558 step. Confirm the annual figure with the state.
 - id: us-nd:stillborn-subtraction-dependency-condition
   program: income-tax
   years:

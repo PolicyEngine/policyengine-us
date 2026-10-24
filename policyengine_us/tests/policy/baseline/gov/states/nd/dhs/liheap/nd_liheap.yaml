@@ -11,14 +11,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id001
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id001
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_countable_income: 14600
@@ -35,14 +34,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id002
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id002
+        members: [person1]
         state_code: ND
   output:
     nd_liheap: 650
@@ -56,14 +54,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id003
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id003
+        members: [person1]
         state_code: ND
   output:
     nd_liheap: 450
@@ -77,14 +74,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id004
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id004
+        members: [person1]
         state_code: ND
   output:
     nd_liheap: 450
@@ -98,14 +94,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id005
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id005
+        members: [person1]
         state_code: ND
   output:
     nd_liheap: 0
@@ -119,14 +114,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id006
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 0
         nd_tanf: 0
     households:
       household:
-        members: *id006
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: false
@@ -140,15 +134,14 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id007
-        - person1
+        members: [person1]
         heating_type: NONE
         gas_expense: 1000
         nd_tanf: 0
         pre_subsidy_electricity_expense: 1000
     households:
       household:
-        members: *id007
+        members: [person1]
         state_code: ND
   output:
     nd_liheap: 0
@@ -162,15 +155,14 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id008
-        - person1
+        members: [person1]
         heating_type: ELECTRICITY
         gas_expense: 0
         nd_tanf: 0
         pre_subsidy_electricity_expense: 1000
     households:
       household:
-        members: *id008
+        members: [person1]
         state_code: ND
   output:
     nd_liheap: 950
@@ -184,15 +176,14 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id009
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
         receives_housing_assistance: true
     households:
       household:
-        members: *id009
+        members: [person1]
         state_code: ND
   output:
     nd_liheap: 850
@@ -205,8 +196,7 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id010
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 0
         nd_tanf: 0
@@ -214,7 +204,7 @@
         heat_expense_included_in_rent: true
     households:
       household:
-        members: *id010
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: false
@@ -228,14 +218,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id011
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id011
+        members: [person1]
         state_code: SD
   output:
     nd_liheap_eligible: false
@@ -250,8 +239,7 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id012
-        - person1
+        members: [person1]
         heating_type: FUEL_OIL
         gas_expense: 0
         nd_tanf: 0
@@ -259,7 +247,7 @@
         receives_housing_assistance: false
     households:
       household:
-        members: *id012
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: true
@@ -274,8 +262,7 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id013
-        - person1
+        members: [person1]
         heating_type: FUEL_OIL
         gas_expense: 0
         nd_tanf: 0
@@ -283,7 +270,7 @@
         receives_housing_assistance: false
     households:
       household:
-        members: *id013
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: true
@@ -298,8 +285,7 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id014
-        - person1
+        members: [person1]
         heating_type: FUEL_OIL
         gas_expense: 0
         nd_tanf: 0
@@ -307,7 +293,7 @@
         receives_housing_assistance: false
     households:
       household:
-        members: *id014
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: true
@@ -322,8 +308,7 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id015
-        - person1
+        members: [person1]
         heating_type: FUEL_OIL
         gas_expense: 0
         nd_tanf: 0
@@ -331,7 +316,7 @@
         receives_housing_assistance: false
     households:
       household:
-        members: *id015
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: true
@@ -346,8 +331,7 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id016
-        - person1
+        members: [person1]
         heating_type: FUEL_OIL
         gas_expense: 0
         nd_tanf: 0
@@ -355,7 +339,7 @@
         receives_housing_assistance: false
     households:
       household:
-        members: *id016
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: true
@@ -370,8 +354,7 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id017
-        - person1
+        members: [person1]
         heating_type: PROPANE
         gas_expense: 0
         nd_tanf: 0
@@ -379,7 +362,7 @@
         receives_housing_assistance: false
     households:
       household:
-        members: *id017
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: true
@@ -394,8 +377,7 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id018
-        - person1
+        members: [person1]
         heating_type: PROPANE
         gas_expense: 0
         nd_tanf: 0
@@ -403,7 +385,7 @@
         receives_housing_assistance: false
     households:
       household:
-        members: *id018
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: true
@@ -418,8 +400,7 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id019
-        - person1
+        members: [person1]
         heating_type: PROPANE
         gas_expense: 0
         nd_tanf: 0
@@ -427,7 +408,7 @@
         receives_housing_assistance: false
     households:
       household:
-        members: *id019
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: true
@@ -442,8 +423,7 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id020
-        - person1
+        members: [person1]
         heating_type: PROPANE
         gas_expense: 0
         nd_tanf: 0
@@ -451,7 +431,7 @@
         receives_housing_assistance: false
     households:
       household:
-        members: *id020
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: true
@@ -466,8 +446,7 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id021
-        - person1
+        members: [person1]
         heating_type: PROPANE
         gas_expense: 0
         nd_tanf: 0
@@ -475,7 +454,7 @@
         receives_housing_assistance: false
     households:
       household:
-        members: *id021
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: true
@@ -490,8 +469,7 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id022
-        - person1
+        members: [person1]
         heating_type: ELECTRICITY
         gas_expense: 0
         nd_tanf: 0
@@ -499,7 +477,7 @@
         receives_housing_assistance: false
     households:
       household:
-        members: *id022
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: true
@@ -514,8 +492,7 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id023
-        - person1
+        members: [person1]
         heating_type: ELECTRICITY
         gas_expense: 0
         nd_tanf: 0
@@ -523,7 +500,7 @@
         receives_housing_assistance: false
     households:
       household:
-        members: *id023
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: true
@@ -538,8 +515,7 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id024
-        - person1
+        members: [person1]
         heating_type: ELECTRICITY
         gas_expense: 0
         nd_tanf: 0
@@ -547,7 +523,7 @@
         receives_housing_assistance: false
     households:
       household:
-        members: *id024
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: true
@@ -562,8 +538,7 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id025
-        - person1
+        members: [person1]
         heating_type: ELECTRICITY
         gas_expense: 0
         nd_tanf: 0
@@ -571,7 +546,7 @@
         receives_housing_assistance: false
     households:
       household:
-        members: *id025
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: true
@@ -586,8 +561,7 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id026
-        - person1
+        members: [person1]
         heating_type: ELECTRICITY
         gas_expense: 0
         nd_tanf: 0
@@ -595,7 +569,7 @@
         receives_housing_assistance: false
     households:
       household:
-        members: *id026
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: true
@@ -610,8 +584,7 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id027
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 0
         nd_tanf: 0
@@ -619,7 +592,7 @@
         receives_housing_assistance: false
     households:
       household:
-        members: *id027
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: true
@@ -634,8 +607,7 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id028
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 0
         nd_tanf: 0
@@ -643,7 +615,7 @@
         receives_housing_assistance: false
     households:
       household:
-        members: *id028
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: true
@@ -658,8 +630,7 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id029
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 0
         nd_tanf: 0
@@ -667,7 +638,7 @@
         receives_housing_assistance: false
     households:
       household:
-        members: *id029
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: true
@@ -682,8 +653,7 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id030
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 0
         nd_tanf: 0
@@ -691,7 +661,7 @@
         receives_housing_assistance: false
     households:
       household:
-        members: *id030
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: true
@@ -706,8 +676,7 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id031
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 0
         nd_tanf: 0
@@ -715,7 +684,7 @@
         receives_housing_assistance: false
     households:
       household:
-        members: *id031
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_eligible: true
@@ -1231,3 +1200,117 @@
     nd_liheap_share: [1, 1]
     nd_liheap_eligible: [false, true]
     nd_liheap: [0, 3_000]
+
+# Section 415-25-05-20-20 counts military retirement income, which includes
+# survivor annuities. The 30,000 annuity is above the one-person 85% limit of
+# 27,030 and within the 65% limit of 33,786: 3,000 * 0.65 = 1,950.
+- name: "Case 41, a military survivor annuity counts as unearned income."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        military_retirement_pay_survivors: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_countable_unearned_income: 30_000
+    nd_liheap_countable_income: 30_000
+    nd_liheap_share: 0.65
+    nd_liheap_eligible: true
+    nd_liheap: 1_950
+
+# Above the 28-person table, nd_liheap_share uses SMI bands. FY2026 four-person
+# North Dakota SMI is 129,911; the 45 CFR 96.85(b) factor for 29 people is
+# 0.52 + 5 * 0.16 + 23 * 0.03 = 2.01, so SMI is 261,121.11. Pension of 130,000
+# is above the 40% limit of 104,448.44 and within the 50% limit of 130,560.56:
+# 65% share, 3,000 * 0.65 = 1,950. The 28-person 50% limit of 128,622 would
+# give 45%. The 110% FPG floor of 186,615 applies only when no band matches.
+- name: "Case 42, a 29-person household uses state median income bands."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 40, immigration_status: CITIZEN, pension_income: 130_000}
+      person2: {age: 40, immigration_status: CITIZEN}
+      person3: {age: 40, immigration_status: CITIZEN}
+      person4: {age: 40, immigration_status: CITIZEN}
+      person5: {age: 40, immigration_status: CITIZEN}
+      person6: {age: 40, immigration_status: CITIZEN}
+      person7: {age: 40, immigration_status: CITIZEN}
+      person8: {age: 40, immigration_status: CITIZEN}
+      person9: {age: 40, immigration_status: CITIZEN}
+      person10: {age: 40, immigration_status: CITIZEN}
+      person11: {age: 40, immigration_status: CITIZEN}
+      person12: {age: 40, immigration_status: CITIZEN}
+      person13: {age: 40, immigration_status: CITIZEN}
+      person14: {age: 40, immigration_status: CITIZEN}
+      person15: {age: 40, immigration_status: CITIZEN}
+      person16: {age: 40, immigration_status: CITIZEN}
+      person17: {age: 40, immigration_status: CITIZEN}
+      person18: {age: 40, immigration_status: CITIZEN}
+      person19: {age: 40, immigration_status: CITIZEN}
+      person20: {age: 40, immigration_status: CITIZEN}
+      person21: {age: 40, immigration_status: CITIZEN}
+      person22: {age: 40, immigration_status: CITIZEN}
+      person23: {age: 40, immigration_status: CITIZEN}
+      person24: {age: 40, immigration_status: CITIZEN}
+      person25: {age: 40, immigration_status: CITIZEN}
+      person26: {age: 40, immigration_status: CITIZEN}
+      person27: {age: 40, immigration_status: CITIZEN}
+      person28: {age: 40, immigration_status: CITIZEN}
+      person29: {age: 40, immigration_status: CITIZEN}
+    tax_units:
+      tax_unit1: {members: [person1]}
+      tax_unit2: {members: [person2]}
+      tax_unit3: {members: [person3]}
+      tax_unit4: {members: [person4]}
+      tax_unit5: {members: [person5]}
+      tax_unit6: {members: [person6]}
+      tax_unit7: {members: [person7]}
+      tax_unit8: {members: [person8]}
+      tax_unit9: {members: [person9]}
+      tax_unit10: {members: [person10]}
+      tax_unit11: {members: [person11]}
+      tax_unit12: {members: [person12]}
+      tax_unit13: {members: [person13]}
+      tax_unit14: {members: [person14]}
+      tax_unit15: {members: [person15]}
+      tax_unit16: {members: [person16]}
+      tax_unit17: {members: [person17]}
+      tax_unit18: {members: [person18]}
+      tax_unit19: {members: [person19]}
+      tax_unit20: {members: [person20]}
+      tax_unit21: {members: [person21]}
+      tax_unit22: {members: [person22]}
+      tax_unit23: {members: [person23]}
+      tax_unit24: {members: [person24]}
+      tax_unit25: {members: [person25]}
+      tax_unit26: {members: [person26]}
+      tax_unit27: {members: [person27]}
+      tax_unit28: {members: [person28]}
+      tax_unit29: {members: [person29]}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25, person26, person27, person28, person29]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25, person26, person27, person28, person29]
+        state_code: ND
+  output:
+    nd_liheap_household_size: 29
+    nd_liheap_countable_income: 130_000
+    nd_liheap_share: 0.65
+    nd_liheap_eligible: true
+    nd_liheap: 1_950

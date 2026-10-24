@@ -11,14 +11,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id001
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id001
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_countable_income: 14600
@@ -32,14 +31,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id002
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id002
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_countable_income: 20000
@@ -54,14 +52,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id003
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id003
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_countable_income: 14600
@@ -76,14 +73,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id004
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id004
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_countable_income: 7300
@@ -100,14 +96,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id005
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id005
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_countable_income: 10000
@@ -122,14 +117,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id006
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id006
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_countable_income: 10000
@@ -144,14 +138,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id007
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id007
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_countable_income: 10360
@@ -168,14 +161,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id008
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id008
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_countable_income: 2700
@@ -191,14 +183,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id009
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id009
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_countable_income: 12400
@@ -214,14 +205,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id010
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id010
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_countable_income: 8800
@@ -236,14 +226,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id011
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id011
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_countable_income: 0
@@ -263,15 +252,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id012
-        - person1
-        - person2
+        members: [person1, person2]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id012
+        members: [person1, person2]
         state_code: ND
   output:
     nd_liheap_countable_income: 25000
@@ -291,15 +278,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id013
-        - person1
-        - person2
+        members: [person1, person2]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id013
+        members: [person1, person2]
         state_code: ND
   output:
     nd_liheap_countable_income: 30840
@@ -318,15 +303,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id014
-        - person1
-        - person2
+        members: [person1, person2]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id014
+        members: [person1, person2]
         state_code: ND
   output:
     nd_liheap_countable_income: 28000
@@ -345,16 +328,14 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id015
-        - person1
-        - person2
+        members: [person1, person2]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
         childcare_expenses: 2000
     households:
       household:
-        members: *id015
+        members: [person1, person2]
         state_code: ND
   output:
     nd_liheap_countable_income: 11000
@@ -370,15 +351,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id016
-        - person1
-        - person2
+        members: [person1, person2]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 2400
     households:
       household:
-        members: *id016
+        members: [person1, person2]
         state_code: ND
   output:
     nd_liheap_countable_income: 2400

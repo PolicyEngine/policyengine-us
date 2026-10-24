@@ -3659,15 +3659,14 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id001
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
         nd_liheap_countable_income: 0
     households:
       household:
-        members: *id001
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_share: 1

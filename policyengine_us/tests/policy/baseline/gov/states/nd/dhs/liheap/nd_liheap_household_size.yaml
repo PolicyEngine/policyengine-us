@@ -15,15 +15,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id001
-        - person1
-        - person2
+        members: [person1, person2]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id001
+        members: [person1, person2]
         state_code: ND
   output:
     nd_liheap_household_size: 1
@@ -40,14 +38,13 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: &id002
-        - person1
+        members: [person1]
         heating_type: NATURAL_GAS
         gas_expense: 1000
         nd_tanf: 0
     households:
       household:
-        members: *id002
+        members: [person1]
         state_code: ND
   output:
     nd_liheap_household_size: 0

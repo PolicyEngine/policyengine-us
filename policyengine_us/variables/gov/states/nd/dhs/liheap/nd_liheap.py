@@ -20,6 +20,8 @@ class nd_liheap(Variable):
         share = spm_unit("nd_liheap_share", period)
         fuel = spm_unit("heating_type", period)
         direct_payment = max_(spm_unit("heating_expense", period), 0) * share
+        # Renter payments use the 415-30-30 monthly table amounts (share times
+        # the fuel's yearly cap over 12), which keep 415-30-05's 45%-100% range.
         renter_cap = p.renter_annual_cap[fuel]
         # Shares are published as integer percentages. Recover that precision
         # after the float32 variable read so the oil 45% tie remains $82.50.

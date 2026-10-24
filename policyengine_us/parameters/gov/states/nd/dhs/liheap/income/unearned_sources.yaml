@@ -6,7 +6,7 @@ values:
     - total_unemployment_compensation
     - workers_compensation
     - pension_income
-    - military_retirement_pay
+    - military_retirement_income
     - retirement_distributions
     - general_assistance
     - railroad_benefits
@@ -26,6 +26,9 @@ values:
 # lack active-business status and are treated as unearned. Ordinary investment
 # interest/dividends are excluded. Royalties, tribal exemptions, recoupments and
 # military allotments lack separately usable inputs. TANF is added once per unit.
+# Recurring gambling winnings count under 415-25-05-20-20, but the model cannot
+# separate recurring from nonrecurring winnings, so gambling_winnings is not
+# counted.
 metadata:
   unit: list
   period: year
