@@ -1,3 +1,10 @@
+## [2.62.9] - 2026-10-24
+
+### Fixed
+
+- Fix the CBO Social Security secondary earnings threshold reform to include self-employment earnings, avoid negative SECA and overlapping tax bases, activate for future-dated thresholds, and preserve Connecticut and Delaware paid-leave contribution bases.
+
+
 ## [2.62.8] - 2026-10-24
 
 ### Fixed
