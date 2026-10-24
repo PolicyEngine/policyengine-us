@@ -42,4 +42,8 @@ class va_tanf(Variable):
         )
         maximum = np.ceil(base_max * p.standard_multiplier)
 
-        return min_(payment, maximum)
+        # The payment is the budgetary deficiency adjusted to the next lower
+        # dollar; no payment is made when it is under the minimum, but the
+        # unit stays eligible (TANF Manual 502.1 A).
+        capped_payment = np.floor(min_(payment, maximum))
+        return where(capped_payment >= p.minimum_payment, capped_payment, 0)

@@ -1,0 +1,15 @@
+description: Michigan requires the Family Independence Program payment standard to exceed budgetable income by at least this amount in the issuance deficit test for financial need to exist.
+
+values:
+  # Dated to the start of the other BEM 518 income budgeting parameters.
+  2008-10-01: 10
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Michigan FIP minimum issuance deficit
+  reference:
+    - title: Michigan DHHS BEM 518 - FIP/RCA/SDA Income Budgeting, Financial Need and Issuance Deficit Test
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/518.pdf#page=2
+    - title: Michigan DHHS BEM 518 - FIP/RCA/SDA Income Budgeting, Benefit Amount
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/518.pdf#page=4

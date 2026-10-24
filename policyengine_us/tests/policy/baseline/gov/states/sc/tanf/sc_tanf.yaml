@@ -36,3 +36,50 @@
     # need_standard = 1703.33 * 0.5 = 851.67
     # excess = 851.67 - 500 = 351.67
     # benefit = 351.67 * 0.4046 = 142.31
+
+- name: Case 4, a benefit under $10 is not paid.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        sc_tanf_countable_income: 840
+        sc_tanf_eligible: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: SC
+  output:
+    # Need standard for 2 (2025-01) = $1,703.33 * 0.5 = $851.67
+    # Benefit = ($851.67 - $840) * 0.4046 = $4.72, under $10
+    # (S.C. Code Regs. 114-1140(A)(5))
+    sc_tanf: 0
+
+- name: Case 5, a benefit of $10 or more is paid.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        sc_tanf_countable_income: 820
+        sc_tanf_eligible: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: SC
+  output:
+    # Need standard for 2 (2025-01) = $851.67
+    # Benefit = ($851.67 - $820) * 0.4046 = $12.81
+    sc_tanf: 12.81
