@@ -1,5 +1,6 @@
 description: Washington deducts this share of retirement income under the Low Income Home Energy Assistance Program.
-# Apply to pension income and retirement-account distributions only.
+# Apply to the sources in retirement_sources.yaml only: pension income,
+# retirement-account distributions and military retirement income.
 # The full SSA/SSI subtype mapping is unverified; no deduction is imputed
 # for those sources. This can overstate countable income.
 values:
