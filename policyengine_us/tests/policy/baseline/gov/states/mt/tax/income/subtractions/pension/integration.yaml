@@ -1,0 +1,33 @@
+# Single filer, 20,000 of taxable pension income, no other income, 2023
+# Form 2. Montana AGI: 20,000 - 5,060 = 14,940. Standard deduction: 20% of
+# 14,940 = 2,988. Exemptions: 2,960 each.
+- name: Single filer aged 60 with a pension
+  period: 2023
+  input:
+    age: 60
+    taxable_private_pension_income: 20_000
+    state_code: MT
+  output:
+    # Taxable income 14,940 - 2,988 - 2,960 = 8,992; tax 8,992 x 3% - 99.
+    mt_income_tax: 170.76
+
+- name: Single filer aged 70 with a pension
+  period: 2023
+  input:
+    age: 70
+    taxable_private_pension_income: 20_000
+    state_code: MT
+  output:
+    # Taxable income 14,940 - 2,988 - 2 x 2,960 = 6,032; tax 6,032 x 2% - 36.
+    mt_income_tax: 84.64
+
+- name: Single filer aged 60 with military retired pay
+  period: 2023
+  input:
+    age: 60
+    military_retirement_pay: 20_000
+    state_code: MT
+  output:
+    # MCA 15-30-2101(25)(b): the same Montana AGI (14,940) and tax as the
+    # pension case above.
+    mt_income_tax: 170.76
