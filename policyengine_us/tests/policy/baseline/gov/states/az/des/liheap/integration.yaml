@@ -89,7 +89,7 @@
         state_code: AZ
   output:
     az_liheap_household_size: 1
-    # Social Security net of the Part B premium (policy p. 14 note):
+    # Gross income less the Part B premium (policy p. 14 note):
     # 36,000 - 2,434.80 = 33,565.20.
     az_liheap_countable_income: 33_565.20
     # Appendix A size 1: 2,807 x 12.

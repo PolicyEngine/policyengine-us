@@ -353,11 +353,15 @@
 
 - name: Case 14, a railroad retiree's annuity puts a single person over the limit and pays nothing.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 70
         railroad_benefits: 40_000
+        # Income of 3,333 a month is above the Medicare Savings Program
+        # limits, so the retiree pays the 2026 standard premium of 202.90 x 12.
+        medicare_part_b_premium: 2_434.80
         ssi: 0
     spm_units:
       spm_unit:
@@ -371,12 +375,12 @@
         members: [person1]
         state_code: AZ
   output:
-    # Railroad Retirement is "retirement income" (policy p. 9 VI.A.6.e.ii.B):
-    # countable income 40,000.
-    az_liheap_countable_income: 40_000
+    # Railroad Retirement is "retirement income" (policy p. 9 VI.A.6.e.ii.B),
+    # less the Part B premium (p. 14 note): 40,000 - 2,434.80 = 37,565.20.
+    az_liheap_countable_income: 37_565.20
     # Appendix A size 1: 2,807 x 12 = 33,684.
     az_liheap_income_limit: 33_684
-    # 40,000 > 33,684.
+    # 37,565.20 > 33,684.
     az_liheap_income_eligible: false
     # No SNAP or Cash Assistance.
     az_liheap_categorically_eligible: false

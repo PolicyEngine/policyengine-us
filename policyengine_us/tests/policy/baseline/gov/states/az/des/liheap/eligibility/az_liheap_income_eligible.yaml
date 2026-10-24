@@ -161,6 +161,9 @@
         employment_income: 42_716
       person3:
         age: 66
+        # No income of their own, so a Medicare Savings Program pays the
+        # Part B premium and nothing is subtracted.
+        medicare_part_b_premium: 0
         ssi: 0
       person4:
         age: 17
@@ -206,6 +209,9 @@
         employment_income: 42_717
       person3:
         age: 66
+        # No income of their own, so a Medicare Savings Program pays the
+        # Part B premium and nothing is subtracted.
+        medicare_part_b_premium: 0
         ssi: 0
       person4:
         age: 17
@@ -247,9 +253,13 @@
         employment_income: 52_460
       person3:
         age: 70
+        # No income of their own, so a Medicare Savings Program pays the
+        # Part B premiums of both grandparents and nothing is subtracted.
+        medicare_part_b_premium: 0
         ssi: 0
       person4:
         age: 68
+        medicare_part_b_premium: 0
         ssi: 0
       person5:
         age: 17
@@ -298,9 +308,13 @@
         employment_income: 52_461
       person3:
         age: 70
+        # No income of their own, so a Medicare Savings Program pays the
+        # Part B premiums of both grandparents and nothing is subtracted.
+        medicare_part_b_premium: 0
         ssi: 0
       person4:
         age: 68
+        medicare_part_b_premium: 0
         ssi: 0
       person5:
         age: 17

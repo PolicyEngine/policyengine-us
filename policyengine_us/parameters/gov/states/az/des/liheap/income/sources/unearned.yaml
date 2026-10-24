@@ -4,13 +4,14 @@ description: Arizona uses these person-level unearned income sources to determin
 # income", "Income from Unemployment Insurance" and "Consistent income received
 # from other sources"; the plan's Section 1.9 checks the full list. Each source
 # is floored at zero in the formula, so a rental loss does not offset other
-# income. Social Security is added in the formula net of the Medicare Part B
-# premium. Cash Assistance (tanf) is a household benefit and is added in
-# az_liheap_countable_income.
+# income. Cash Assistance (tanf) is a household benefit and is added in
+# az_liheap_countable_income, which also subtracts the household's Medicare
+# Part B premiums.
 values:
   2025-08-25:
     - total_unemployment_compensation
     - strike_benefits
+    - social_security
     - ssi
     - pension_income
     # Section VI.A.6.e.ii.B "retirement income": military retirement pay and

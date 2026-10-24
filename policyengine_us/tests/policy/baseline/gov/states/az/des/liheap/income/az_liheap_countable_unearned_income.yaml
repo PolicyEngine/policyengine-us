@@ -10,17 +10,15 @@
 # Members under 18: rev. 13 p. 9 E counts none of their income; rev. 15
 # (eff. 2026-03-23) p. 9 E excludes only their earned income, so a child's
 # unearned income counts from period 2027 (parameters are read at the start
-# of the period). Social Security counts net of the member's out-of-pocket
-# Medicare Part B premium (policy p. 14 VII.A.1.c.ii.D note; plan 1.9
-# "Excluding MediCare deduction"). Social Security after the premium, rental
-# income and farm rental income are each floored at zero per person, so a
-# premium or a loss does not offset other income.
+# of the period). Each source is floored at zero per person, so a rental or
+# farm rental loss does not offset other income. Social Security counts
+# gross here: the Medicare Part B premium (policy p. 14 VII.A.1.c.ii.D note)
+# comes off household income in az_liheap_countable_income.
 # 2026 Part B standard premium 202.90 a month: 202.90 x 12 = 2,434.80.
 # 2026 SSI federal benefit rate 994 a month: 994 x 12 = 11,928.
 
-- name: Case 1, a retiree's Social Security net of the Medicare Part B premium and pension income are counted.
+- name: Case 1, a retiree's Social Security and pension income are counted gross of the Medicare premium.
   period: 2026
-  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -41,9 +39,9 @@
         members: [person1]
         state_code: AZ
   output:
-    # (23,712 - 2,434.80) + 6,000 = 27,277.20 (plan 1.9: SSA and
-    # retirement/pension checked).
-    az_liheap_countable_unearned_income: 27_277.20
+    # 23,712 + 6,000 = 29,712 (plan 1.9: SSA and retirement/pension
+    # checked); the premium is not deducted at the person level.
+    az_liheap_countable_unearned_income: 29_712
 
 - name: Case 2, unemployment, child support, alimony and rent are counted.
   period: 2026
@@ -174,11 +172,15 @@
 
 - name: Case 7, a Railroad Retirement annuity is counted as retirement income.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 68
         railroad_benefits: 30_000
+        # Income of 2,500 a month is above the Medicare Savings Program
+        # limits, so the retiree pays the 2,434.80 standard premium.
+        medicare_part_b_premium: 2_434.80
         ssi: 0
     spm_units:
       spm_unit:
@@ -194,7 +196,8 @@
     # Policy p. 9 VI.A.6.e.ii.B "retirement income", p. 14 "retirement
     # benefits"; plan 1.9 "Retirement / pension benefits" checked: 30,000.
     az_liheap_countable_unearned_income: 30_000
-    az_liheap_countable_income: 30_000
+    # Household income less the Part B premium: 30,000 - 2,434.80.
+    az_liheap_countable_income: 27_565.20
 
 - name: Case 8, long-term disability insurance paid to the insured worker is counted.
   period: 2026
@@ -291,41 +294,7 @@
     az_liheap_countable_unearned_income: 14_400
     az_liheap_countable_income: 14_400
 
-- name: Case 12, netting the Medicare Part B premium brings a retiree under the income limit.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 67
-        social_security: 34_000
-        # Income of 2,833 a month is above the Medicare Savings Program
-        # limits, so the retiree pays the 2,434.80 standard premium.
-        medicare_part_b_premium: 2_434.80
-        ssi: 0
-    spm_units:
-      spm_unit:
-        members: [person1]
-        heating_type: ELECTRICITY
-        pre_subsidy_electricity_expense: 1_800
-        snap: 0
-        tanf: 0
-    households:
-      household:
-        members: [person1]
-        state_code: AZ
-  output:
-    # 34,000 - 2,434.80 = 31,565.20 (policy p. 14 VII.A.1.c.ii.D note).
-    az_liheap_countable_unearned_income: 31_565.20
-    az_liheap_countable_income: 31_565.20
-    # 31,565.20 <= 33,684; gross Social Security of 34,000 would be over it.
-    az_liheap_income_eligible: true
-    # Income 31,565.20 / 33,684 = 0.937 -> 1; burden 1,800 / 31,565.20 =
-    # 0.057 -> 1; elderly 1; total 3 -> 160.
-    az_liheap_points: 3
-    az_liheap: 160
-
-- name: Case 13, a rental loss does not offset wages.
+- name: Case 12, a rental loss does not offset wages.
   period: 2026
   input:
     people:
@@ -353,7 +322,7 @@
     az_liheap_eligible: false
     az_liheap: 0
 
-- name: Case 14, farm rent and gambling winnings are counted as unearned income.
+- name: Case 13, farm rent and gambling winnings are counted as unearned income.
   period: 2026
   input:
     people:
