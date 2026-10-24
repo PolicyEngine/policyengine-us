@@ -67,17 +67,11 @@ def elects_section_911_exclusion(tax_unit, period):
     Form 2555 filers from Worksheet B, refundable CTC, and EITC.
 
     A filer who claims only the section 911(c)(4) housing deduction (Form
-    2555 line 50) is also barred. That case rests on the IRS instructions,
-    not on the statute. Section 24(d)(3) applies to a taxpayer who "elects
-    to exclude any amount from gross income under section 911", and section
-    911(c)(4)(A) treats the housing amount as "a deduction allowable in
-    computing adjusted gross income", not an exclusion. The Schedule 8812
-    instructions bar every Form 2555 filer: Part II-A says "If you file Form
-    2555, you cannot claim the additional child tax credit", and Credit
-    Limit Worksheet B applies only if "You are not filing Form 2555".
-    Publication 596 Rule 5 denies the EITC to anyone who files Form 2555 "to
-    deduct or exclude a foreign housing amount"; section 32(c)(1)(C) excludes
-    an individual who "claims the benefits of section 911".
+    2555 line 50) also claims the benefits of section 911, so section
+    32(c)(1)(C) ("claims the benefits of section 911") bars the EITC, as
+    Publication 596 Rule 5 says ("to deduct or exclude a foreign housing
+    amount"). The refundable child tax credit uses the narrower test in
+    `excludes_amount_under_section_911`.
 
     References:
     https://www.law.cornell.edu/uscode/text/26/911#a
@@ -96,6 +90,42 @@ def elects_section_911_exclusion(tax_unit, period):
                 *SECTION_911_LEAF_INPUTS,
             )
         ]
+    )
+
+
+def excludes_amount_under_section_911(tax_unit, period):
+    """Whether the filer elects to exclude an amount under section 911(a).
+
+    Section 24(d)(3) denies the refundable child tax credit to a taxpayer who
+    "elects to exclude any amount from gross income under section 911".
+    Section 911(c)(4)(A) treats the housing amount of a filer without
+    employer-provided housing as "a deduction allowable in computing adjusted
+    gross income", not an exclusion, so claiming only that deduction (Form
+    2555 line 50) does not trigger the bar. The Schedule 8812 instructions
+    bar every Form 2555 filer ("If you file Form 2555, you cannot claim the
+    additional child tax credit"); the model follows the statute.
+
+    With Form 2555 leaf inputs, the exclusions are the line 42 foreign earned
+    income exclusion and the line 36 housing exclusion, tested before the
+    line 44 allocable deductions so that deductions offsetting the stacking
+    amount cannot hide an exclusion. The legacy aggregates
+    (foreign_earned_income_exclusion and section_911_excluded_income) include
+    the housing deduction, so they cannot tell a deduction-only filer apart;
+    a positive aggregate is treated as an exclusion. Supply the leaves to
+    model a filer who claims only the deduction.
+
+    References:
+    https://www.law.cornell.edu/uscode/text/26/24#d_3
+    https://www.law.cornell.edu/uscode/text/26/911#a
+    https://www.law.cornell.edu/uscode/text/26/911#c_4
+    https://www.irs.gov/pub/irs-prior/f2555--2025.pdf#page=3
+    """
+    if has_section_911_leaf_inputs(tax_unit, period):
+        return (tax_unit("foreign_earned_income_exclusion_amount", period) > 0) | (
+            tax_unit("foreign_housing_exclusion", period) > 0
+        )
+    return (tax_unit("foreign_earned_income_exclusion", period) > 0) | (
+        tax_unit("section_911_excluded_income", period) > 0
     )
 
 

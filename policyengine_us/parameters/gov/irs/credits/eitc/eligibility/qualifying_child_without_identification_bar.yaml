@@ -1,0 +1,17 @@
+description: The Internal Revenue Service denies the earned income tax credit to a filer who has qualifying children none of whom meets the identification requirement, when this is true.
+values:
+  # Former 26 U.S.C. 32(c)(1)(F), in the 2015 Code edition; earlier years
+  # are not separately verified.
+  0000-01-01: true
+  # American Rescue Plan Act section 9622 struck subparagraph (F) for
+  # taxable years beginning after December 31, 2020.
+  2021-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: EITC bar on filers whose qualifying children all lack identification
+  reference:
+    - title: 26 U.S.C. 32(c)(1)(F) (2015 edition)
+      href: https://www.govinfo.gov/content/pkg/USCODE-2015-title26/html/USCODE-2015-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec32.htm
+    - title: Public Law 117-2, section 9622
+      href: https://www.congress.gov/117/plaws/publ2/PLAW-117publ2.pdf#page=151

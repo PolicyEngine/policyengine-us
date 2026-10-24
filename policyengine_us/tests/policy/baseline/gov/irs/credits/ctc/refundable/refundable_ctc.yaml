@@ -206,3 +206,20 @@
     section_911_excluded_income: 0
     # Without the section 911 bar, the same phase-in gives a $3,400 refund.
     refundable_ctc: 0
+
+- name: A filer claiming only the foreign housing deduction gets the refundable credit
+  # Section 24(d)(3) bars only an election to exclude an amount under section
+  # 911; the section 911(c)(4)(A) housing deduction is not an exclusion.
+  # Phase-in: 15% x ($12,500 - $2,500) = $1,500, below the $1,700 refundable
+  # maximum and the $2,200 credit, with no tax to absorb the credit.
+  period: 2025
+  input:
+    foreign_earned_income_exclusion_amount: 0
+    foreign_housing_exclusion: 0
+    foreign_housing_deduction: 1_000
+    ctc: 2_200
+    ctc_refundable_maximum: 1_700
+    ctc_phase_in: 1_500
+    ctc_limiting_tax_liability: 0
+  output:
+    refundable_ctc: 1_500
