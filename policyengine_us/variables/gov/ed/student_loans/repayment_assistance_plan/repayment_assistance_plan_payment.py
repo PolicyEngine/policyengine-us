@@ -7,9 +7,18 @@ class repayment_assistance_plan_payment(Variable):
     label = "Repayment Assistance Plan monthly payment"
     documentation = (
         "Monthly payment owed by a borrower under the Repayment Assistance "
-        "Plan, after spousal proration and the final-payment cap. Payments in "
-        "a year stop once they add up to the borrower's loan balance; interest "
-        "accrual is not modeled."
+        "Plan, after spousal proration and the final-payment cap, assuming the "
+        "borrower is enrolled in the plan and in active repayment, not in "
+        "deferment, forbearance or default. Joint filers owe the applicable "
+        "monthly payment times their share of the couple's eligible loans, "
+        "which per 34 CFR 685.209(b)(5) and (g)(3)(i) are Direct and FFEL "
+        "loans (federal_student_loan_balance plus federal_ffel_loan_balance), "
+        "and at least the minimum payment. The plan cannot repay FFEL loans "
+        "(685.209(d)(4)), and (g)(3) has no FFEL adjustment like (g)(1)(ii), "
+        "so a borrower's own FFEL loans raise their share of the payment on "
+        "their Direct Loans. Payments in a year stop once they add up to the "
+        "borrower's opening Direct Loan balance; interest accrual is not "
+        "modeled."
     )
     unit = USD
     definition_period = MONTH
@@ -17,6 +26,7 @@ class repayment_assistance_plan_payment(Variable):
     reference = (
         "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title20-section1087e&num=0&edition=prelim",
         "https://www.govinfo.gov/content/pkg/PLAW-119publ21/pdf/PLAW-119publ21.pdf#page=274",
+        "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(b)(5)",
         "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(e)(2)",
         "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(g)(3)",
     )
@@ -24,10 +34,11 @@ class repayment_assistance_plan_payment(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.ed.student_loans.repayment_assistance_plan
         balance = person("federal_student_loan_balance", period.this_year)
-        # Joint filers whose spouse also has eligible loans split the payment by
-        # each spouse's share of the couple's eligible balance.
-        eligible = person("repayment_assistance_plan_eligible", period)
-        eligible_balance = where(eligible, balance, 0)
+        # Joint filers split the payment by each spouse's share of the couple's
+        # eligible Direct and FFEL loans (685.209(b)(5), (g)(3)(i)).
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
+        ffel_balance = person("federal_ffel_loan_balance", period.this_year)
+        eligible_balance = where(is_head_or_spouse, balance + ffel_balance, 0)
         couple_balance = person.tax_unit.sum(eligible_balance)
         balance_share = np.divide(
             eligible_balance,

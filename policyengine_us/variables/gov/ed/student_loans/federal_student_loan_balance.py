@@ -13,7 +13,11 @@ class federal_student_loan_balance(Variable):
         "are not excepted consolidation loans. Excludes Parent PLUS loans and "
         "consolidation loans that repaid them (see "
         "federal_parent_plus_loan_balance), and FFEL or Perkins loans that have "
-        "not been consolidated into a Direct Consolidation Loan."
+        "not been consolidated into a Direct Consolidation Loan (see "
+        "federal_ffel_loan_balance for FFEL loans). This is the opening balance "
+        "for the year: it is uprated by CPI-U across years with no repayment "
+        "roll-forward, and within a year only the Repayment Assistance Plan's "
+        "final-payment cap draws it down."
     )
     unit = USD
     quantity_type = STOCK

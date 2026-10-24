@@ -1,4 +1,6 @@
-# Share of the couple's eligible balance (34 CFR 685.209(e)(2)(i), (g)(1)(i)).
+# Own Direct balance / couple's Direct and FFEL balance: the (g)(1)(i) share of
+# the couple's eligible loans times the (g)(1)(ii) Direct share of the person's
+# own eligible loans (34 CFR 685.209(b)(5), (e)(2)(i), (g)(1)(i)-(ii)).
 
 - name: Case 1, joint filers who both borrowed split by balance.
   period: 2026
@@ -54,3 +56,58 @@
         filing_status: HEAD_OF_HOUSEHOLD
   output:
     income_driven_repayment_balance_share: [1, 0]
+
+- name: Case 4, a spouse's FFEL loans enter the couple's balance.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 10_000
+      person2:
+        age: 38
+        federal_ffel_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    # 10,000 / (10,000 + 30,000); the spouse has no Direct Loans.
+    income_driven_repayment_balance_share: [0.25, 0]
+
+- name: Case 5, a single borrower's own FFEL loans reduce the Direct share.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 10_000
+        federal_ffel_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+  output:
+    # (g)(1)(ii) alone: 10,000 / 40,000.
+    income_driven_repayment_balance_share: 0.25
+
+- name: Case 6, both spouses hold Direct and FFEL loans.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 30_000
+        federal_ffel_loan_balance: 10_000
+      person2:
+        age: 38
+        federal_student_loan_balance: 20_000
+        federal_ffel_loan_balance: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    # Couple 80,000. person1: 40,000 / 80,000 x 30,000 / 40,000 = 0.375.
+    # person2: 40,000 / 80,000 x 20,000 / 40,000 = 0.25.
+    income_driven_repayment_balance_share: [0.375, 0.25]

@@ -7,6 +7,11 @@
 #     eligible balance, min $10 again (685.209(e)(2)(i), (g)(3)(i))
 #   capped at the balance left to repay ((q)(4)(B)(iii)), with payments earlier
 #     in the year (from July 2026 on) counted against the balance.
+# Cases labelled rulespec-us#1455 Cn are companion cases for the payment
+# encoding in TheAxiomFoundation/rulespec-us issue 1455 (C1-C8 and the bracket
+# edges are in repayment_assistance_plan_base_payment.yaml; C15 and C18 are in
+# integration.yaml). C17, a borrower claimed as a tax dependent, is not yet
+# modeled.
 
 - name: Case 1, AGI 10,000 gives the low-income base payment over 12 months.
   period: 2027-01
@@ -93,7 +98,7 @@
     # 5% x 55,000 = 2,750 / 12 = 229.1667.
     repayment_assistance_plan_payment: 229.17
 
-- name: Case 6, head of household with two dependents.
+- name: Case 6, rulespec-us#1455 C9, head of household with two dependents.
   period: 2027-01
   absolute_error_margin: 0.01
   input:
@@ -112,6 +117,7 @@
         adjusted_gross_income: 55_000
   output:
     # 229.1667 - 2 x 50 = 129.1667; the children owe nothing.
+    repayment_assistance_plan_applicable_monthly_payment: 129.17
     repayment_assistance_plan_payment: [129.17, 0, 0]
 
 - name: Case 7, three dependents take the payment to the 10 dollar minimum.
@@ -189,7 +195,7 @@
     # 3% x 40,000 = 1,200 / 12 = 100.
     repayment_assistance_plan_payment: [100, 0]
 
-- name: Case 10, joint filers who both borrowed split the payment by balance.
+- name: Case 10, rulespec-us#1455 C11, joint filers who both borrowed split the payment by balance.
   period: 2027-01
   absolute_error_margin: 0.01
   input:
@@ -229,7 +235,7 @@
     # min(229.1667, 150) = 150 ((q)(4)(B)(iii)).
     repayment_assistance_plan_payment: 150
 
-- name: Case 12, a borrower with only Parent PLUS loans owes nothing under the plan.
+- name: Case 12, rulespec-us#1455 C19, a borrower with only Parent PLUS loans owes nothing under the plan.
   period: 2027-01
   absolute_error_margin: 0.01
   input:
@@ -269,7 +275,7 @@
       2026-12: 229.17
       2026: 1_375
 
-- name: Case 14, payments within a year stop once they add up to the balance.
+- name: Case 14, rulespec-us#1455 C13, payments within a year stop once they add up to the balance.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -293,7 +299,7 @@
       2027-12: 0
       2027: 500
 
-- name: Case 15, the 2026 balance cap counts months from the July start.
+- name: Case 15, rulespec-us#1455 C20, the 2026 balance cap counts months from the July start.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -315,7 +321,7 @@
       2026-09: 0
       2026: 300
 
-- name: Case 16, a prorated payment below 10 dollars rises to the minimum.
+- name: Case 16, rulespec-us#1455 C12, a prorated payment below 10 dollars rises to the minimum.
   period: 2027-01
   absolute_error_margin: 0.01
   input:
@@ -333,10 +339,12 @@
         adjusted_gross_income: 30_000
   output:
     # 2% x 30,000 = 600 / 12 = 50. Shares 95% and 5%: 47.50 and 2.50; the
-    # second is raised to 10 (685.209(g)(3)(i)(B)).
+    # second is raised to 10 (685.209(g)(3)(i)(B)). The payments total 57.50,
+    # more than the applicable payment.
+    repayment_assistance_plan_applicable_monthly_payment: 50
     repayment_assistance_plan_payment: [47.5, 10]
 
-- name: Case 17, the final payment can be below the 10 dollar minimum.
+- name: Case 17, rulespec-us#1455 C14, the final payment can be below the 10 dollar minimum.
   period: 2027-01
   absolute_error_margin: 0.01
   input:
@@ -352,6 +360,7 @@
   output:
     # 120 / 12 = 10, but only 5 is left to repay ((q)(4)(B)(iii);
     # 685.209(g)(3)(ii) "except that the final payment may be less than $10").
+    repayment_assistance_plan_applicable_monthly_payment: 10
     repayment_assistance_plan_payment: 5
 
 - name: Case 18, a tax dependent with a loan balance owes nothing.
@@ -404,3 +413,94 @@
   output:
     repayment_assistance_plan_applicable_monthly_payment: 0
     repayment_assistance_plan_payment: [0, 0]
+
+- name: Case 20, rulespec-us#1455 C10, one dependent takes the payment to zero and then the minimum.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+      person2:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 30_000
+  output:
+    # 2% x 30,000 = 600 / 12 = 50; 50 - 1 x 50 = 0; the minimum raises it to
+    # 10. The child owes nothing.
+    repayment_assistance_plan_applicable_monthly_payment: 10
+    repayment_assistance_plan_payment: [10, 0]
+
+- name: Case 21, rulespec-us#1455 C16, a spouse's FFEL debt counts in the joint proration.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 10_000
+      person2:
+        # The spouse has only FFEL loans, which the plan cannot repay.
+        age: 38
+        federal_ffel_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 60_000
+  output:
+    # 5% x 60,000 = 3,000 / 12 = 250. The couple's eligible loans are 10,000 of
+    # Direct and 30,000 of FFEL (685.209(b)(5)), so the borrower pays
+    # 250 x 10,000 / 40,000 = 62.50 (685.209(g)(3)(i)). The spouse has no
+    # loans the plan can repay and owes nothing under it.
+    repayment_assistance_plan_applicable_monthly_payment: 250
+    repayment_assistance_plan_payment: [62.5, 0]
+
+- name: Case 22, a borrower's own FFEL loans count toward their joint share.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 10_000
+        federal_ffel_loan_balance: 30_000
+      person2:
+        age: 38
+        federal_student_loan_balance: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 60_000
+  output:
+    # A = 250. 685.209(g)(3)(i) divides each borrower's eligible Direct and FFEL
+    # loans by the couple's: (10,000 + 30,000) / 80,000 = 50% and
+    # 40,000 / 80,000 = 50%, so each pays 125. Unlike (g)(1)(ii) for the
+    # other plans, (g)(3) does not shrink person1's share to the Direct part.
+    repayment_assistance_plan_payment: [125, 125]
+
+- name: Case 23, the payment uses the latest return's AGI rather than this year's.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        # Income rose from 20,000 on the most recent return to 60,000.
+        income_driven_repayment_adjusted_gross_income: 20_000
+        adjusted_gross_income: 60_000
+  output:
+    # (q)(4)(A) "for the most recent taxable year": 1% x 20,000 = 200 / 12 =
+    # 16 2/3, not 5% x 60,000 / 12 = 250.
+    repayment_assistance_plan_applicable_monthly_payment: 16.67
+    repayment_assistance_plan_payment: 16.67
