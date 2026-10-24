@@ -1,0 +1,67 @@
+description: The Department of Education sets the base payment to this share of adjusted gross income under the Repayment Assistance Plan.
+# The rate applies to the whole adjusted gross income, not the amount above the
+# threshold. Each bracket covers income "more than" its threshold and "not more
+# than" the next one, so the scale is evaluated with right=True. Income not more
+# than the second threshold receives the flat low-income base payment instead.
+# The brackets are fixed in statute and not indexed to inflation (91 FR 23860).
+brackets:
+  - threshold:
+      2026-07-01: -.inf
+    amount:
+      2026-07-01: 0
+  - threshold:
+      2026-07-01: 10_000
+    amount:
+      2026-07-01: 0.01
+  - threshold:
+      2026-07-01: 20_000
+    amount:
+      2026-07-01: 0.02
+  - threshold:
+      2026-07-01: 30_000
+    amount:
+      2026-07-01: 0.03
+  - threshold:
+      2026-07-01: 40_000
+    amount:
+      2026-07-01: 0.04
+  - threshold:
+      2026-07-01: 50_000
+    amount:
+      2026-07-01: 0.05
+  - threshold:
+      2026-07-01: 60_000
+    amount:
+      2026-07-01: 0.06
+  - threshold:
+      2026-07-01: 70_000
+    amount:
+      2026-07-01: 0.07
+  - threshold:
+      2026-07-01: 80_000
+    amount:
+      2026-07-01: 0.08
+  - threshold:
+      2026-07-01: 90_000
+    amount:
+      2026-07-01: 0.09
+  - threshold:
+      2026-07-01: 100_000
+    amount:
+      2026-07-01: 0.1
+
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  label: Repayment Assistance Plan base payment rate
+  reference:
+    - title: 20 U.S.C. 1087e(q)(4)(B)(iv)
+      href: https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title20-section1087e&num=0&edition=prelim
+    - title: Pub. L. 119-21, sec. 82001(d), 139 Stat. 344-345
+      href: https://www.govinfo.gov/content/pkg/PLAW-119publ21/pdf/PLAW-119publ21.pdf#page=274
+    - title: 34 CFR 685.209(b)(2)
+      href: https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(b)(2)
+    - title: 91 FR 23888, 34 CFR 685.209(b)(2)
+      href: https://www.govinfo.gov/content/pkg/FR-2026-05-01/pdf/2026-08556.pdf#page=121

@@ -1,8 +1,10 @@
 """Tie PolicyEngine-US code to the shared source-conflict register.
 
-When a statute conflicts with a regulation, form, instructions, manual or
-stated agency practice, PolicyEngine-US follows the statute; forms and
-instructions fill gaps where the statute is silent. Each such choice is an
+When sources conflict, PolicyEngine-US follows the principles in
+CONTRIBUTING.md ("Source conflicts"): the statute over a form, instructions,
+a manual or stated agency practice (forms and instructions fill gaps where the
+statute is silent); a Treasury regulation as binding; and the administering
+agency's reading where the text leaves a true tie. Each such choice is an
 entry in the register PolicyEngine-US shares with Axiom
 (``known-source-conflicts.yaml`` in TheAxiomFoundation/rulespec-us; field
 reference in that repository's tools/README.md). The code that makes the
@@ -116,6 +118,7 @@ CONFLICT_COMMENT_RE = re.compile(
 # or reword a comment that is not one, then lower or delete its count here.
 # A new file or a higher count fails.
 KNOWN_UNMARKED: dict[str, int] = {
+    "policyengine_us/parameters/gov/irs/ald/charitable_contributions/cap.yaml": 1,
     "policyengine_us/parameters/gov/irs/credits/residential_clean_energy/fuel_cell_cap_per_kw.yaml": 1,
     "policyengine_us/parameters/gov/irs/income/exemption/overtime/hce_salary_threshold.yaml": 1,
     "policyengine_us/parameters/gov/irs/income/exemption/overtime/salary_basis_threshold.yaml": 1,
@@ -124,11 +127,13 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/parameters/gov/states/ca/cpuc/income_sources.yaml": 1,
     "policyengine_us/parameters/gov/states/co/doi/premium_assistance/amount/additional_member.yaml": 1,
     "policyengine_us/parameters/gov/states/co/doi/premium_assistance/amount/first_member.yaml": 1,
+    "policyengine_us/parameters/gov/states/fl/commerce/liheap/payment/base_amount.yaml": 1,
     "policyengine_us/parameters/gov/states/hi/bessd/ccap/income/countable_income/sources.yaml": 1,
     "policyengine_us/parameters/gov/states/ma/hic/connector_care/fpl_floor.yaml": 1,
     "policyengine_us/parameters/gov/states/mo/tax/income/deductions/federal_income_tax/ignored_credits.yaml": 1,
     "policyengine_us/parameters/gov/states/mt/tax/income/subtractions/disability_income/cap.yaml": 1,
     "policyengine_us/parameters/gov/states/or/ohcs/liheap/payment/income_band.yaml": 1,
+    "policyengine_us/parameters/gov/states/sd/dss/liheap/income/limits/table/in_effect.yaml": 1,
     "policyengine_us/parameters/gov/states/ut/dwf/ccap/copay/income_limits.yaml": 1,
     "policyengine_us/parameters/gov/states/wi/tax/income/credits/homestead/income/disqualified_loss_sources.yaml": 1,
     "policyengine_us/parameters/gov/territories/pr/tax/income/credits/earned_income/eligibility/min.yaml": 1,
@@ -150,6 +155,9 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/variables/gov/local/tax/sales/local_sales_tax.py": 1,
     "policyengine_us/variables/gov/states/ar/ade/oec/sra/rates/ar_sra_daily_copay.py": 1,
     "policyengine_us/variables/gov/states/ct/tax/income/rebate/ct_child_tax_rebate.py": 1,
+    "policyengine_us/variables/gov/states/fl/commerce/liheap/eligibility/fl_liheap_eligible.py": 1,
+    "policyengine_us/variables/gov/states/fl/commerce/liheap/eligibility/fl_liheap_income_limit.py": 1,
+    "policyengine_us/variables/gov/states/fl/commerce/liheap/fl_liheap.py": 1,
     "policyengine_us/variables/gov/states/hi/tax/income/credits/cdcc/hi_cdcc_qualifying_individuals.py": 1,
     "policyengine_us/variables/gov/states/hi/tax/income/subtractions/hi_student_loan_interest_adjustment.py": 1,
     "policyengine_us/variables/gov/states/ks/tax/income/deductions/ks_itemized_deductions.py": 1,

@@ -1,0 +1,14 @@
+- name: Case 1, default va_other_additions is zero
+  period: 2024
+  input:
+    state_code: VA
+  output:
+    va_other_additions: 0.0
+
+- name: Case 2, va_other_additions flows into va_additions
+  period: 2024
+  input:
+    state_code: VA
+    va_other_additions: 1_200
+  output:
+    va_additions: 1_200

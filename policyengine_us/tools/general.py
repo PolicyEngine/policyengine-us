@@ -185,6 +185,22 @@ def filer_share(person, period, amounts):
     return where(total > 0, proportional, equal)
 
 
+def get_itemization_branch(tax_unit, period, itemizes: bool):
+    """
+    The branch of ``tax_unit``'s simulation that fixes ``tax_unit_itemizes``.
+
+    It is named ``itemizing`` or ``not_itemizing``. Every caller asks for the
+    same inputs, so they share one branch: the choice itself and the tax
+    liabilities it compares.
+    """
+    return get_override_branch(
+        tax_unit.simulation,
+        "itemizing" if itemizes else "not_itemizing",
+        period,
+        {"tax_unit_itemizes": np.full(tax_unit.count, itemizes, dtype=bool)},
+    )
+
+
 def sum_contained_tax_units(var, population, period):
     tax_unit = population.members.tax_unit.reference_entity
     values = tax_unit(var, period)
