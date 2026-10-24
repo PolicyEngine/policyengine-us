@@ -1,0 +1,560 @@
+# Aggregation only: hold other benefits, taxes and costs at zero.
+# Each dated block: $100/month * 12 months = $1,200/year.
+# Calculated 2024 grant: $764.90 + $62.43 = $827.33/month;
+# $827.33 * 12 = $9,927.96/year (no income or assets).
+# Two recipients: ($100 + $200)/month * 12 = $3,600/year,
+# whether they share an SPM unit or occupy two in one household.
+
+- name: Illinois AABD monthly cash is counted once in annual resources in 2023
+  period: 2023
+  absolute_error_margin: 0.02
+  input:
+    age: 30
+    state_code: IL
+    il_aabd_person:
+      2023-01: 100
+      2023-02: 100
+      2023-03: 100
+      2023-04: 100
+      2023-05: 100
+      2023-06: 100
+      2023-07: 100
+      2023-08: 100
+      2023-09: 100
+      2023-10: 100
+      2023-11: 100
+      2023-12: 100
+    social_security: 0
+    ssi: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    acp: 0
+    ebb: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    child_support_received: 0
+    workers_compensation: 0
+    educational_assistance: 0
+    financial_assistance: 0
+    survivor_benefits: 0
+    household_head_start_benefits: 0
+    basic_income: 0
+    spm_unit_capped_housing_subsidy: 0
+    household_health_benefits: 0
+    commodity_supplemental_food_program: 0
+    spm_unit_energy_subsidy: 0
+    household_market_income: 0
+    household_refundable_tax_credits: 0
+    household_tax_before_refundable_credits: 0
+    household_health_costs: 0
+    spm_unit_market_income: 0
+    spm_unit_taxes: 0
+    spm_unit_spm_expenses: 0
+  output:
+    il_aabd: 1200
+    household_state_benefits: 1200
+    household_benefits: 1200
+    household_net_income: 1200
+    spm_unit_benefits: 1200
+    spm_unit_net_income: 1200
+
+- name: Illinois AABD monthly cash is counted once in annual resources in 2024
+  period: 2024
+  absolute_error_margin: 0.02
+  input:
+    age: 30
+    state_code: IL
+    il_aabd_person:
+      2024-01: 100
+      2024-02: 100
+      2024-03: 100
+      2024-04: 100
+      2024-05: 100
+      2024-06: 100
+      2024-07: 100
+      2024-08: 100
+      2024-09: 100
+      2024-10: 100
+      2024-11: 100
+      2024-12: 100
+    social_security: 0
+    ssi: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    acp: 0
+    ebb: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    child_support_received: 0
+    workers_compensation: 0
+    educational_assistance: 0
+    financial_assistance: 0
+    survivor_benefits: 0
+    household_head_start_benefits: 0
+    basic_income: 0
+    spm_unit_capped_housing_subsidy: 0
+    household_health_benefits: 0
+    commodity_supplemental_food_program: 0
+    spm_unit_energy_subsidy: 0
+    household_market_income: 0
+    household_refundable_tax_credits: 0
+    household_tax_before_refundable_credits: 0
+    household_health_costs: 0
+    spm_unit_market_income: 0
+    spm_unit_taxes: 0
+    spm_unit_spm_expenses: 0
+  output:
+    il_aabd: 1200
+    household_state_benefits: 1200
+    household_benefits: 1200
+    household_net_income: 1200
+    spm_unit_benefits: 1200
+    spm_unit_net_income: 1200
+
+- name: Illinois AABD monthly cash is counted once in annual resources in 2025
+  period: 2025
+  absolute_error_margin: 0.02
+  input:
+    age: 30
+    state_code: IL
+    il_aabd_person:
+      2025-01: 100
+      2025-02: 100
+      2025-03: 100
+      2025-04: 100
+      2025-05: 100
+      2025-06: 100
+      2025-07: 100
+      2025-08: 100
+      2025-09: 100
+      2025-10: 100
+      2025-11: 100
+      2025-12: 100
+    social_security: 0
+    ssi: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    acp: 0
+    ebb: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    child_support_received: 0
+    workers_compensation: 0
+    educational_assistance: 0
+    financial_assistance: 0
+    survivor_benefits: 0
+    household_head_start_benefits: 0
+    basic_income: 0
+    spm_unit_capped_housing_subsidy: 0
+    household_health_benefits: 0
+    commodity_supplemental_food_program: 0
+    spm_unit_energy_subsidy: 0
+    household_market_income: 0
+    household_refundable_tax_credits: 0
+    household_tax_before_refundable_credits: 0
+    household_health_costs: 0
+    spm_unit_market_income: 0
+    spm_unit_taxes: 0
+    spm_unit_spm_expenses: 0
+  output:
+    il_aabd: 1200
+    household_state_benefits: 1200
+    household_benefits: 1200
+    household_net_income: 1200
+    spm_unit_benefits: 1200
+    spm_unit_net_income: 1200
+
+- name: Illinois AABD monthly cash is counted once in annual resources in 2026
+  period: 2026
+  absolute_error_margin: 0.02
+  input:
+    age: 30
+    state_code: IL
+    il_aabd_person:
+      2026-01: 100
+      2026-02: 100
+      2026-03: 100
+      2026-04: 100
+      2026-05: 100
+      2026-06: 100
+      2026-07: 100
+      2026-08: 100
+      2026-09: 100
+      2026-10: 100
+      2026-11: 100
+      2026-12: 100
+    social_security: 0
+    ssi: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    acp: 0
+    ebb: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    child_support_received: 0
+    workers_compensation: 0
+    educational_assistance: 0
+    financial_assistance: 0
+    survivor_benefits: 0
+    household_head_start_benefits: 0
+    basic_income: 0
+    spm_unit_capped_housing_subsidy: 0
+    household_health_benefits: 0
+    commodity_supplemental_food_program: 0
+    spm_unit_energy_subsidy: 0
+    household_market_income: 0
+    household_refundable_tax_credits: 0
+    household_tax_before_refundable_credits: 0
+    household_health_costs: 0
+    spm_unit_market_income: 0
+    spm_unit_taxes: 0
+    spm_unit_spm_expenses: 0
+  output:
+    il_aabd: 1200
+    household_state_benefits: 1200
+    household_benefits: 1200
+    household_net_income: 1200
+    spm_unit_benefits: 1200
+    spm_unit_net_income: 1200
+
+- name: Non-Illinois control excludes AABD even with supplied person payments
+  period: 2024
+  absolute_error_margin: 0.02
+  input:
+    age: 30
+    state_code: WI
+    il_aabd_person:
+      2024-01: 100
+      2024-02: 100
+      2024-03: 100
+      2024-04: 100
+      2024-05: 100
+      2024-06: 100
+      2024-07: 100
+      2024-08: 100
+      2024-09: 100
+      2024-10: 100
+      2024-11: 100
+      2024-12: 100
+    social_security: 0
+    ssi: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    acp: 0
+    ebb: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    child_support_received: 0
+    workers_compensation: 0
+    educational_assistance: 0
+    financial_assistance: 0
+    survivor_benefits: 0
+    household_head_start_benefits: 0
+    basic_income: 0
+    spm_unit_capped_housing_subsidy: 0
+    household_health_benefits: 0
+    commodity_supplemental_food_program: 0
+    spm_unit_energy_subsidy: 0
+    household_market_income: 0
+    household_refundable_tax_credits: 0
+    household_tax_before_refundable_credits: 0
+    household_health_costs: 0
+    spm_unit_market_income: 0
+    spm_unit_taxes: 0
+    spm_unit_spm_expenses: 0
+  output:
+    il_aabd: 0
+    household_state_benefits: 0
+    household_benefits: 0
+    household_net_income: 0
+    spm_unit_benefits: 0
+    spm_unit_net_income: 0
+
+- name: Calculated Illinois AABD cash reaches annual household and SPM resources
+  period: 2024
+  absolute_error_margin: 0.02
+  input:
+    age: 68
+    state_code: IL
+    social_security: 0
+    ssi: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    acp: 0
+    ebb: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    child_support_received: 0
+    workers_compensation: 0
+    educational_assistance: 0
+    financial_assistance: 0
+    survivor_benefits: 0
+    household_head_start_benefits: 0
+    basic_income: 0
+    spm_unit_capped_housing_subsidy: 0
+    household_health_benefits: 0
+    commodity_supplemental_food_program: 0
+    spm_unit_energy_subsidy: 0
+    household_market_income: 0
+    household_refundable_tax_credits: 0
+    household_tax_before_refundable_credits: 0
+    household_health_costs: 0
+    spm_unit_market_income: 0
+    spm_unit_taxes: 0
+    spm_unit_spm_expenses: 0
+    immigration_status: CITIZEN
+    county_str: COOK_COUNTY_IL
+    employment_income: 0
+    il_aabd_countable_assets: 0
+  output:
+    il_aabd: 9927.96
+    household_state_benefits: 9927.96
+    household_benefits: 9927.96
+    household_net_income: 9927.96
+    spm_unit_benefits: 9927.96
+    spm_unit_net_income: 9927.96
+    il_aabd_person:
+      2024-01: 827.33
+      '2024': 9927.96
+
+- name: Illinois AABD sums two recipients across one SPM unit
+  period: 2024
+  absolute_error_margin: 0.02
+  input:
+    people:
+      first:
+        age: 30
+        il_aabd_person:
+          2024-01: 100
+          2024-02: 100
+          2024-03: 100
+          2024-04: 100
+          2024-05: 100
+          2024-06: 100
+          2024-07: 100
+          2024-08: 100
+          2024-09: 100
+          2024-10: 100
+          2024-11: 100
+          2024-12: 100
+        educational_assistance: 0
+        ssi: 0
+        survivor_benefits: 0
+        social_security: 0
+        child_support_received: 0
+        wic: 0
+        workers_compensation: 0
+        financial_assistance: 0
+        unemployment_compensation: 0
+        commodity_supplemental_food_program: 0
+      second:
+        age: 30
+        il_aabd_person:
+          2024-01: 200
+          2024-02: 200
+          2024-03: 200
+          2024-04: 200
+          2024-05: 200
+          2024-06: 200
+          2024-07: 200
+          2024-08: 200
+          2024-09: 200
+          2024-10: 200
+          2024-11: 200
+          2024-12: 200
+        educational_assistance: 0
+        ssi: 0
+        survivor_benefits: 0
+        social_security: 0
+        child_support_received: 0
+        wic: 0
+        workers_compensation: 0
+        financial_assistance: 0
+        unemployment_compensation: 0
+        commodity_supplemental_food_program: 0
+    spm_units:
+      unit_0:
+        members: &id001
+        - first
+        - second
+        spm_unit_capped_housing_subsidy: 0
+        spm_unit_market_income: 0
+        ebb: 0
+        acp: 0
+        spm_unit_energy_subsidy: 0
+        tanf: 0
+        spm_unit_taxes: 0
+        snap: 0
+        spm_unit_spm_expenses: 0
+        free_school_meals: 0
+        reduced_price_school_meals: 0
+    households:
+      household:
+        members:
+        - first
+        - second
+        state_code: IL
+        household_refundable_tax_credits: 0
+        household_head_start_benefits: 0
+        household_health_costs: 0
+        household_health_benefits: 0
+        household_market_income: 0
+        household_tax_before_refundable_credits: 0
+    tax_units:
+      unit_0:
+        members: *id001
+        basic_income: 0
+        high_efficiency_electric_home_rebate: 0
+        residential_efficiency_electrification_rebate: 0
+  output:
+    household_state_benefits: 3600
+    household_benefits: 3600
+    household_net_income: 3600
+    il_aabd: 3600
+    spm_unit_benefits: 3600
+    spm_unit_net_income: 3600
+
+- name: Illinois AABD sums two recipients across two SPM units
+  period: 2024
+  absolute_error_margin: 0.02
+  input:
+    people:
+      first:
+        age: 30
+        il_aabd_person:
+          2024-01: 100
+          2024-02: 100
+          2024-03: 100
+          2024-04: 100
+          2024-05: 100
+          2024-06: 100
+          2024-07: 100
+          2024-08: 100
+          2024-09: 100
+          2024-10: 100
+          2024-11: 100
+          2024-12: 100
+        educational_assistance: 0
+        ssi: 0
+        survivor_benefits: 0
+        social_security: 0
+        child_support_received: 0
+        wic: 0
+        workers_compensation: 0
+        financial_assistance: 0
+        unemployment_compensation: 0
+        commodity_supplemental_food_program: 0
+      second:
+        age: 30
+        il_aabd_person:
+          2024-01: 200
+          2024-02: 200
+          2024-03: 200
+          2024-04: 200
+          2024-05: 200
+          2024-06: 200
+          2024-07: 200
+          2024-08: 200
+          2024-09: 200
+          2024-10: 200
+          2024-11: 200
+          2024-12: 200
+        educational_assistance: 0
+        ssi: 0
+        survivor_benefits: 0
+        social_security: 0
+        child_support_received: 0
+        wic: 0
+        workers_compensation: 0
+        financial_assistance: 0
+        unemployment_compensation: 0
+        commodity_supplemental_food_program: 0
+    spm_units:
+      unit_0:
+        members: &id002
+        - first
+        spm_unit_capped_housing_subsidy: 0
+        spm_unit_market_income: 0
+        ebb: 0
+        acp: 0
+        spm_unit_energy_subsidy: 0
+        tanf: 0
+        spm_unit_taxes: 0
+        snap: 0
+        spm_unit_spm_expenses: 0
+        free_school_meals: 0
+        reduced_price_school_meals: 0
+      unit_1:
+        members: &id003
+        - second
+        spm_unit_capped_housing_subsidy: 0
+        spm_unit_market_income: 0
+        ebb: 0
+        acp: 0
+        spm_unit_energy_subsidy: 0
+        tanf: 0
+        spm_unit_taxes: 0
+        snap: 0
+        spm_unit_spm_expenses: 0
+        free_school_meals: 0
+        reduced_price_school_meals: 0
+    households:
+      household:
+        members:
+        - first
+        - second
+        state_code: IL
+        household_refundable_tax_credits: 0
+        household_head_start_benefits: 0
+        household_health_costs: 0
+        household_health_benefits: 0
+        household_market_income: 0
+        household_tax_before_refundable_credits: 0
+    tax_units:
+      unit_0:
+        members: *id002
+        basic_income: 0
+        high_efficiency_electric_home_rebate: 0
+        residential_efficiency_electrification_rebate: 0
+      unit_1:
+        members: *id003
+        basic_income: 0
+        high_efficiency_electric_home_rebate: 0
+        residential_efficiency_electrification_rebate: 0
+  output:
+    household_state_benefits: 3600
+    household_benefits: 3600
+    household_net_income: 3600
+    il_aabd:
+    - 1200
+    - 2400
+    spm_unit_benefits:
+    - 1200
+    - 2400
+    spm_unit_net_income:
+    - 1200
+    - 2400
