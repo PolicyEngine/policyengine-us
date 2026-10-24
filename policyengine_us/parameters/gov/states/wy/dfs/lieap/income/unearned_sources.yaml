@@ -1,10 +1,9 @@
-description: Wyoming counts these nonnegative unearned income sources before separate interest, gifts and veterans adjustments under the Low Income Energy Assistance Program.
+description: Wyoming counts these nonnegative unearned income sources before separate Social Security, interest, gifts and veterans adjustments under the Low Income Energy Assistance Program.
 values:
   2025-10-01:
-    - social_security
     - ssi
     - pension_income
-    - military_retirement_pay
+    - military_retirement_income
     - retirement_distributions
     - railroad_benefits
     - survivor_benefits
@@ -26,14 +25,16 @@ values:
 # countable income directly for those cases. No new subtype input is added.
 # Regular disability/worker/survivor income approximates nonexempt receipts;
 # pension_income already includes annuities. No duplicate pension components.
-# Medicare deducted from SSA remains unmodeled under the agreed scope.
+# military_retirement_income adds retirement pay and survivor annuities.
+# Social Security is counted in the formula, net of the Medicare Part B
+# premium deducted from it (rules 8(a)(ii)(U)).
 # Contract payments and royalties lack dedicated inputs and are not imputed.
 metadata:
   unit: list
   period: year
   label: Wyoming LIEAP unearned income sources
   reference:
-    - title: FY2026 State Plan, section 1.9
-      href: https://dfs.wyo.gov/wp-content/uploads/2025/10/FFY2026-LIEAP-State-Model-Plan.pdf#page=6
+    - title: "FY2026 State Plan, section 1.9 #page 5-6"
+      href: https://dfs.wyo.gov/wp-content/uploads/2025/10/FFY2026-LIEAP-State-Model-Plan.pdf#page=5
     - title: LIEAP Rules, Chapter 1, section 8(a)
       href: https://rules.wyo.gov/Search.aspx?mode=7

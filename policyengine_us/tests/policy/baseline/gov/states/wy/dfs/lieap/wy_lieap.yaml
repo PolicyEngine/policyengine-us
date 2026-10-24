@@ -1793,6 +1793,10 @@
   output:
     wy_lieap: 0
 
+# Rules 10(d) apply the $10 cutoff to the computed benefit, and 13(b)(i)
+# then limit payment to the actual primary fuel cost. The adjusted oil
+# benefit 2,640 * .8 - round_half_up(211.2) = 1,901 passes the cutoff,
+# so a bill below $10 is paid in full.
 - name: Case 129, actual expense 9 with zero income.
   period: 2026
   absolute_error_margin: 0.001
@@ -1804,7 +1808,8 @@
     wy_lieap_countable_income: 0
     heating_type: FUEL_OIL
   output:
-    wy_lieap: 0
+    # min(1,901, 9) = 9.
+    wy_lieap: 9
 
 - name: Case 130, actual expense 9.99 with zero income.
   period: 2026
@@ -1817,7 +1822,8 @@
     wy_lieap_countable_income: 0
     heating_type: FUEL_OIL
   output:
-    wy_lieap: 0
+    # min(1,901, 9.99) = 9.99.
+    wy_lieap: 9.99
 
 - name: Case 131, actual expense 10 with zero income.
   period: 2026
@@ -2083,7 +2089,9 @@
     wy_lieap_household_size: [2, 0, 1, 0]
     wy_lieap_countable_income: [38_850, 0, 0, 0]
     wy_lieap_income_limit: [46_853, 0, 35_829, 0]
-    wy_lieap: [209.6275, 0, 0, 0]
+    # The propane unit's adjusted benefit 1,300 * .8 - round_half_up(104) = 936
+    # passes the $10 cutoff and is then limited to its $9 bill.
+    wy_lieap: [209.6275, 0, 9, 0]
 
 - name: Case 148, real FY2026 incomes a cent below every band ceiling preserve inclusive selection.
   period: 2026
@@ -2305,478 +2313,31 @@
     wy_lieap: [1782, 1663, 1544, 1426, 1307, 1188, 1069, 950, 832, 713, 594, 475, 356, 238, 0]
 
 # 42 USC 8624(b)(2)(B): income LESS THAN 110% of the 2025 guideline is
-# protected. Native SMI limit 113688; 110% * (15650 + 16 * 5500) = 114015.
-# The approved effective-limit ratio gives the protected oil household .10:
-# 2640 * .10 - round_half_up(264 * .10) = 238, below its 3000 cost.
-# Each economic household consists of adult relatives with separate tax units.
-- name: Federal income protection applies below the floor and preserves strict equality controls.
+# protected. Each unit enters a 17-member household; the guideline and
+# limit still compute from that size. Native SMI limit 113,688;
+# 110% * (15,650 + 16 * 5,500) = 114,015.
+# Unit 1: 113,900 is above 113,688 but below 114,015, so it qualifies.
+# Its ratio to the effective limit, 113,900 / 114,015 = .999, selects .10:
+# 2,640 * .10 - round_half_up(264 * .10) = 238, below its 3,000 cost.
+# Unit 2: 114,015 equals the floor, so it is not protected.
+- name: Case 151, federal income protection applies only below the 110 percent poverty floor.
   period: 2026
+  absolute_error_margin: 0.01
   input:
-    people:
-      household_0_adult_0:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-        employment_income: 113900
-      household_0_adult_1:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_0_adult_2:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_0_adult_3:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_0_adult_4:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_0_adult_5:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_0_adult_6:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_0_adult_7:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_0_adult_8:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_0_adult_9:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_0_adult_10:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_0_adult_11:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_0_adult_12:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_0_adult_13:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_0_adult_14:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_0_adult_15:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_0_adult_16:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_1_adult_0:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-        employment_income: 114015
-      household_1_adult_1:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_1_adult_2:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_1_adult_3:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_1_adult_4:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_1_adult_5:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_1_adult_6:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_1_adult_7:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_1_adult_8:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_1_adult_9:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_1_adult_10:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_1_adult_11:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_1_adult_12:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_1_adult_13:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_1_adult_14:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_1_adult_15:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_1_adult_16:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_2_adult_0:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-        employment_income: 114016
-      household_2_adult_1:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_2_adult_2:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_2_adult_3:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_2_adult_4:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_2_adult_5:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_2_adult_6:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_2_adult_7:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_2_adult_8:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_2_adult_9:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_2_adult_10:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_2_adult_11:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_2_adult_12:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_2_adult_13:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_2_adult_14:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_2_adult_15:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      household_2_adult_16:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-    tax_units:
-      tax_0_0:
-        members:
-        - household_0_adult_0
-      tax_0_1:
-        members:
-        - household_0_adult_1
-      tax_0_2:
-        members:
-        - household_0_adult_2
-      tax_0_3:
-        members:
-        - household_0_adult_3
-      tax_0_4:
-        members:
-        - household_0_adult_4
-      tax_0_5:
-        members:
-        - household_0_adult_5
-      tax_0_6:
-        members:
-        - household_0_adult_6
-      tax_0_7:
-        members:
-        - household_0_adult_7
-      tax_0_8:
-        members:
-        - household_0_adult_8
-      tax_0_9:
-        members:
-        - household_0_adult_9
-      tax_0_10:
-        members:
-        - household_0_adult_10
-      tax_0_11:
-        members:
-        - household_0_adult_11
-      tax_0_12:
-        members:
-        - household_0_adult_12
-      tax_0_13:
-        members:
-        - household_0_adult_13
-      tax_0_14:
-        members:
-        - household_0_adult_14
-      tax_0_15:
-        members:
-        - household_0_adult_15
-      tax_0_16:
-        members:
-        - household_0_adult_16
-      tax_1_0:
-        members:
-        - household_1_adult_0
-      tax_1_1:
-        members:
-        - household_1_adult_1
-      tax_1_2:
-        members:
-        - household_1_adult_2
-      tax_1_3:
-        members:
-        - household_1_adult_3
-      tax_1_4:
-        members:
-        - household_1_adult_4
-      tax_1_5:
-        members:
-        - household_1_adult_5
-      tax_1_6:
-        members:
-        - household_1_adult_6
-      tax_1_7:
-        members:
-        - household_1_adult_7
-      tax_1_8:
-        members:
-        - household_1_adult_8
-      tax_1_9:
-        members:
-        - household_1_adult_9
-      tax_1_10:
-        members:
-        - household_1_adult_10
-      tax_1_11:
-        members:
-        - household_1_adult_11
-      tax_1_12:
-        members:
-        - household_1_adult_12
-      tax_1_13:
-        members:
-        - household_1_adult_13
-      tax_1_14:
-        members:
-        - household_1_adult_14
-      tax_1_15:
-        members:
-        - household_1_adult_15
-      tax_1_16:
-        members:
-        - household_1_adult_16
-      tax_2_0:
-        members:
-        - household_2_adult_0
-      tax_2_1:
-        members:
-        - household_2_adult_1
-      tax_2_2:
-        members:
-        - household_2_adult_2
-      tax_2_3:
-        members:
-        - household_2_adult_3
-      tax_2_4:
-        members:
-        - household_2_adult_4
-      tax_2_5:
-        members:
-        - household_2_adult_5
-      tax_2_6:
-        members:
-        - household_2_adult_6
-      tax_2_7:
-        members:
-        - household_2_adult_7
-      tax_2_8:
-        members:
-        - household_2_adult_8
-      tax_2_9:
-        members:
-        - household_2_adult_9
-      tax_2_10:
-        members:
-        - household_2_adult_10
-      tax_2_11:
-        members:
-        - household_2_adult_11
-      tax_2_12:
-        members:
-        - household_2_adult_12
-      tax_2_13:
-        members:
-        - household_2_adult_13
-      tax_2_14:
-        members:
-        - household_2_adult_14
-      tax_2_15:
-        members:
-        - household_2_adult_15
-      tax_2_16:
-        members:
-        - household_2_adult_16
-    spm_units:
-      unit_0:
-        members: &id001
-        - household_0_adult_0
-        - household_0_adult_1
-        - household_0_adult_2
-        - household_0_adult_3
-        - household_0_adult_4
-        - household_0_adult_5
-        - household_0_adult_6
-        - household_0_adult_7
-        - household_0_adult_8
-        - household_0_adult_9
-        - household_0_adult_10
-        - household_0_adult_11
-        - household_0_adult_12
-        - household_0_adult_13
-        - household_0_adult_14
-        - household_0_adult_15
-        - household_0_adult_16
-        heating_type: FUEL_OIL
-        fuel_oil_expense: 3000
-      unit_1:
-        members: &id002
-        - household_1_adult_0
-        - household_1_adult_1
-        - household_1_adult_2
-        - household_1_adult_3
-        - household_1_adult_4
-        - household_1_adult_5
-        - household_1_adult_6
-        - household_1_adult_7
-        - household_1_adult_8
-        - household_1_adult_9
-        - household_1_adult_10
-        - household_1_adult_11
-        - household_1_adult_12
-        - household_1_adult_13
-        - household_1_adult_14
-        - household_1_adult_15
-        - household_1_adult_16
-        heating_type: FUEL_OIL
-        fuel_oil_expense: 3000
-      unit_2:
-        members: &id003
-        - household_2_adult_0
-        - household_2_adult_1
-        - household_2_adult_2
-        - household_2_adult_3
-        - household_2_adult_4
-        - household_2_adult_5
-        - household_2_adult_6
-        - household_2_adult_7
-        - household_2_adult_8
-        - household_2_adult_9
-        - household_2_adult_10
-        - household_2_adult_11
-        - household_2_adult_12
-        - household_2_adult_13
-        - household_2_adult_14
-        - household_2_adult_15
-        - household_2_adult_16
-        heating_type: FUEL_OIL
-        fuel_oil_expense: 3000
-    households:
-      home_0:
-        members: *id001
-        state_code: WY
-      home_1:
-        members: *id002
-        state_code: WY
-      home_2:
-        members: *id003
-        state_code: WY
+    state_code: [WY, WY]
+    wy_lieap_household_size: [17, 17]
+    wy_lieap_countable_income: [113_900, 114_015]
+    heating_type: [FUEL_OIL, FUEL_OIL]
+    heating_expense: [3_000, 3_000]
   output:
-    wy_lieap_household_size:
-    - 17
-    - 17
-    - 17
-    wy_lieap_fpg:
-    - 103650
-    - 103650
-    - 103650
-    wy_lieap_income_limit:
-    - 113688
-    - 113688
-    - 113688
-    wy_lieap_countable_income:
-    - 113900
-    - 114015
-    - 114016
-    wy_lieap_eligible:
-    - true
-    - false
-    - false
-    wy_lieap:
-    - 238
-    - 0
-    - 0
+    wy_lieap_fpg: [103_650, 103_650]
+    wy_lieap_income_limit: [113_688, 113_688]
+    wy_lieap_eligible: [true, false]
+    wy_lieap: [238, 0]
 
 # Rules chapter 1, sections 3(nn) and 8(a)(i): nonexempt ordinary DoD
 # retirement counts separately from pension and VA. 36000 exceeds 35829.
-- name: Ordinary military retirement is counted separately from the veterans exclusion.
+- name: Case 152, ordinary military retirement is counted separately from the veterans exclusion.
   period: 2026
   input:
     state_code: WY
@@ -2798,3 +2359,52 @@
     wy_lieap_income_limit: 35829
     wy_lieap_eligible: false
     wy_lieap: 0
+
+# Rules chapter 1, section 3(nn) counts gross non-exempt money from any
+# source, and no section 8(a)(ii) exemption covers a uniformed-services
+# survivor annuity. military_retirement_income adds the $40,000 Survivor
+# Benefit Plan annuity, which exceeds the $35,829 one-person FY2026 limit
+# and the $17,215 federal floor (110% * 15,650).
+- name: Case 153, a military survivor annuity counts as military retirement income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    age: 70
+    immigration_status: CITIZEN
+    military_retirement_pay_survivors: 40_000
+    ssi: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_500
+  output:
+    military_retirement_income: 40_000
+    wy_lieap_countable_income: 40_000
+    wy_lieap_income_limit: 35_829
+    wy_lieap_eligible: false
+    wy_lieap: 0
+
+# Rules chapter 1, section 8(a)(ii)(U) exempts Medicare deducted from SSA,
+# and FY2026 plan section 1.9 counts Social Security excluding the Medicare
+# deduction. The 2026 Part B premium is 202.90 * 12 = 2,434.80; $37,000 of
+# Social Security is above the Medicare Savings Program limits, so the
+# person pays it: 37,000 - 2,434.80 = 34,565.20, within the $35,829 limit.
+# Ratio 34,565.20 / 35,829 = .965 selects .10:
+# 1,550.85 * .10 = 155.085; round_half_up(15.5085) = 16 withheld;
+# 155.085 - 16 = 139.085, below the $1,500 bill.
+- name: Case 154, Social Security counts net of the Medicare Part B premium.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    age: 70
+    immigration_status: CITIZEN
+    social_security_retirement: 37_000
+    ssi: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_500
+  output:
+    medicare_part_b_premium: 2_434.8
+    wy_lieap_countable_income: 34_565.2
+    wy_lieap_income_limit: 35_829
+    wy_lieap_eligible: true
+    wy_lieap: 139.085

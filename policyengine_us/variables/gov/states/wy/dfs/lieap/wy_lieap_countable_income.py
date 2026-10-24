@@ -17,7 +17,8 @@ class wy_lieap_countable_income(Variable):
         "This proxy can understate income from other kinds of VA benefits. "
         "Annual source inputs cannot distinguish embedded lump sums, exempt "
         "reimbursements or irregular receipts; supply countable income directly "
-        "when those adjustments are known. Medicare deductions remain unmodeled."
+        "when those adjustments are known. Social Security counts net of the "
+        "Medicare Part B premium the person pays."
     )
     reference = (
         # Section 1.9; minor-earnings/lump-sum conflicts documented.
@@ -42,6 +43,12 @@ class wy_lieap_countable_income(Variable):
             0,
         )
         unearned = sum(max_(person(source, period), 0) for source in p.unearned_sources)
+        # Rules 8(a)(ii)(U) exempt "Medicare deducted from SSA", and plan section
+        # 1.9 counts Social Security excluding the Medicare deduction.
+        # medicare_part_b_premium is zero for a person who is not enrolled and
+        # excludes the share a Medicare Savings Program pays.
+        premium = person("medicare_part_b_premium", period)
+        social_security = max_(person("social_security", period) - premium, 0)
         # These are thresholds, not deductions. Annualization assumes
         # constant monthly receipts; interest and gifts are assessed separately.
         interest = max_(person("interest_income", period), 0)
@@ -59,6 +66,12 @@ class wy_lieap_countable_income(Variable):
         veterans_exclusion = guideline * p.veterans_fpg_rate
         countable_veterans = max_(veterans - veterans_exclusion, 0)
         return (
-            spm_unit.sum(earned + unearned + countable_interest + countable_gifts)
+            spm_unit.sum(
+                earned
+                + unearned
+                + social_security
+                + countable_interest
+                + countable_gifts
+            )
             + countable_veterans
         )

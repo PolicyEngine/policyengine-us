@@ -49,6 +49,12 @@ class wy_lieap(Variable):
         base = p.fuel_cost[heating_type] * fraction
         # The workbook rounds only the withheld amount, half-up to dollars.
         withheld = np.floor(base * p.holdback_rate + 0.5)
+        adjusted_benefit = base - withheld
+        # Rules 10(d) bar a computed benefit below the minimum before
+        # 13(b)(i) limits payment to the actual primary fuel cost.
         expense = max_(spm_unit("heating_expense", period), 0)
-        award = min_(base - withheld, expense)
-        return where(award >= p.minimum_payment, award, 0)
+        return where(
+            adjusted_benefit >= p.minimum_payment,
+            min_(adjusted_benefit, expense),
+            0,
+        )

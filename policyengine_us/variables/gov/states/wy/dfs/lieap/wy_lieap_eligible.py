@@ -22,6 +22,8 @@ class wy_lieap_eligible(Variable):
     defined_for = StateCode.WY
 
     def formula(spm_unit, period, parameters):
+        # Follows FY2026 plan section 1.4, which elects no categorical eligibility;
+        # rules 7(a)(i) list POWER, SNAP and veteran or survivor pension recipients.
         size = spm_unit("wy_lieap_household_size", period)
         income = spm_unit("wy_lieap_countable_income", period)
         limit = spm_unit("wy_lieap_income_limit", period)
