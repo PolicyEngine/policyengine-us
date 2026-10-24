@@ -1,3 +1,10 @@
+## [2.62.6] - 2026-10-24
+
+### Fixed
+
+- Measure the capital gains marginal tax rate on long-term gains, so capital gains realization responses see the preferential rates and changes to them, and scale the measured rise with income so the rate keeps its precision for large households.
+
+
 ## [2.62.5] - 2026-10-24
 
 ### Fixed
