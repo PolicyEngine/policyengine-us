@@ -16,7 +16,7 @@
   output:
     va_529_plan_deduction: 4_000
 
-- name: Two beneficiaries increases the cap
+- name: Without account-level amounts, two accounts default to an even split of contributions
   period: 2024
   input:
     people:
@@ -31,6 +31,10 @@
         members: [person1]
         state_code: VA
   output:
+    # va_529_plan_deduction_capped_amount is not supplied, so it defaults to
+    # min(7_000, 4_000 x 2) = 7_000, the per-account caps applied to 3_500
+    # contributed to each of two accounts.
+    va_529_plan_deduction_capped_amount: 7_000
     va_529_plan_deduction: 7_000
 
 - name: Zero contributions
@@ -163,3 +167,118 @@
   output:
     va_529_plan_deduction_person: [0, 0]
     va_529_plan_deduction: 0
+
+# Va. Code § 58.1-322.03(7)(a) limits the deduction to "$4,000 per prepaid
+# tuition contract or college savings trust account" and carries forward
+# contributions above that amount "until the purchase price or college savings
+# trust contribution has been fully deducted". Subdivision 7(b) lets an owner
+# aged 70 or older deduct "the full amount ... less any amounts previously
+# deducted". The 2024 Form 760 instructions, code 104, agree: "the lesser of
+# $4,000 or the amount contributed during the taxable year to each
+# Commonwealth Savers account".
+
+- name: Uneven account contributions receive separate caps
+  period: 2024
+  input:
+    state_code: VA
+    age: 45
+    investment_in_529_plan_indv: 8_000
+    count_529_contribution_beneficiaries: 2
+    va_529_plan_deduction_capped_amount: 5_000
+    va_529_plan_carryforward: 0
+  output:
+    # Account records: $7,000 and $1,000, so min(7_000, 4_000)
+    # + min(1_000, 4_000) = 5_000. Before this fix the pooled cap
+    # min(8_000, 4_000 x 2) gave 8_000.
+    va_529_plan_deduction: 5_000
+
+- name: Prior undeducted contributions remain deductible
+  period: 2024
+  input:
+    state_code: VA
+    age: 45
+    investment_in_529_plan_indv: 0
+    count_529_contribution_beneficiaries: 1
+    va_529_plan_deduction_capped_amount: 3_000
+    va_529_plan_carryforward: 3_000
+  output:
+    # One account with a $3,000 carryforward: min(0 + 3_000, 4_000) = 3_000.
+    # Before this fix the model allowed only current contributions, 0.
+    va_529_plan_deduction: 3_000
+
+- name: Age 70 removes the annual cap on current and carried-forward contributions
+  period: 2024
+  input:
+    state_code: VA
+    age: 70
+    investment_in_529_plan_indv: 1_000
+    va_529_plan_deduction_capped_amount: 4_000
+    va_529_plan_carryforward: 6_000
+  output:
+    # 1_000 current + 6_000 undeducted carryforward = 7_000, uncapped.
+    va_529_plan_deduction: 7_000
+
+- name: Without account-level amounts, a carryforward into one account is capped with the current contribution
+  period: 2024
+  input:
+    state_code: VA
+    age: 45
+    investment_in_529_plan_indv: 3_000
+    count_529_contribution_beneficiaries: 1
+    va_529_plan_carryforward: 2_000
+  output:
+    # Default capped amount: min(3_000 + 2_000, 4_000 x 1) = 4_000.
+    va_529_plan_deduction_capped_amount: 4_000
+    va_529_plan_deduction: 4_000
+
+- name: A dependent's account-level amount is not deducted on the parents' return
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+        investment_in_529_plan_indv: 1_000
+        count_529_contribution_beneficiaries: 1
+        va_529_plan_deduction_capped_amount: 1_000
+        va_529_plan_carryforward: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_529_plan_deduction_person: [0, 0]
+    va_529_plan_deduction: 0
+
+- name: Each spouse's account-level amounts and carryforwards stay with that owner
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        investment_in_529_plan_indv: 9_000
+        count_529_contribution_beneficiaries: 2
+        va_529_plan_deduction_capped_amount: 7_000
+      person2:
+        age: 72
+        investment_in_529_plan_indv: 500
+        count_529_contribution_beneficiaries: 1
+        va_529_plan_carryforward: 2_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Person 1 (under 70) contributed $6,000 and $3,000 to two accounts:
+    # min(6_000, 4_000) + min(3_000, 4_000) = 7_000. Person 2 (72):
+    # 500 + 2_500 = 3_000.
+    va_529_plan_deduction_person: [7_000, 3_000]
+    va_529_plan_deduction: 10_000

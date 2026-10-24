@@ -1,9 +1,18 @@
 # Indiana supplemental homestead credit (Senate Enrolled Act 1, 2025;
-# IC 6-1.1-20.6-7.7): the lesser of 10% of the homestead property tax liability
-# or $300, for taxes first due and payable in 2026 and after. No age or income
-# limit.
+# IC 6-1.1-20.6-7.7), for property taxes first due and payable in 2026 and
+# after:
+# - (b): a person who qualifies for the homestead standard deduction under
+#   IC 6-1.1-12-37 for their homestead (or the surviving spouse of one who
+#   did) is entitled to the credit;
+# - (c): the credit is the lesser of 10% of the property tax liability on that
+#   homestead or $300;
+# - (d): taxes approved by referendum or local public question are not
+#   considered.
+# DLGF June 18, 2025 FAQ, questions 26-30 (PDF pages 7-8), confirms all three.
+# Generic real_estate_taxes neither establish qualification nor measure the
+# homestead liability.
 
-- name: Case 1, 2026 homeowner below the cap receives 10% of property tax.
+- name: Case 1, 2026 qualifying homestead below the cap receives 10% of its liability.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -13,6 +22,8 @@
     tax_units:
       tax_unit:
         members: [person1]
+        in_supplemental_homestead_credit_eligible: true
+        in_homestead_property_tax_liability: 2_000
     households:
       household:
         members: [person1]
@@ -20,7 +31,7 @@
   output:
     in_supplemental_homestead_credit: 200
 
-- name: Case 2, 2026 homeowner at the $3,000 liability boundary receives the $300 cap.
+- name: Case 2, 2026 qualifying homestead at the $3,000 liability boundary receives the $300 cap.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -30,6 +41,8 @@
     tax_units:
       tax_unit:
         members: [person1]
+        in_supplemental_homestead_credit_eligible: true
+        in_homestead_property_tax_liability: 3_000
     households:
       household:
         members: [person1]
@@ -37,7 +50,7 @@
   output:
     in_supplemental_homestead_credit: 300
 
-- name: Case 3, 2026 homeowner above the cap is limited to $300.
+- name: Case 3, 2026 qualifying homestead above the cap is limited to $300.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -47,6 +60,8 @@
     tax_units:
       tax_unit:
         members: [person1]
+        in_supplemental_homestead_credit_eligible: true
+        in_homestead_property_tax_liability: 5_000
     households:
       household:
         members: [person1]
@@ -54,7 +69,7 @@
   output:
     in_supplemental_homestead_credit: 300
 
-- name: Case 4, 2026 renter with no real estate taxes receives no credit.
+- name: Case 4, 2026 renter with no homestead receives no credit.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -64,6 +79,8 @@
     tax_units:
       tax_unit:
         members: [person1]
+        in_supplemental_homestead_credit_eligible: false
+        in_homestead_property_tax_liability: 0
     households:
       household:
         members: [person1]
@@ -81,6 +98,8 @@
     tax_units:
       tax_unit:
         members: [person1]
+        in_supplemental_homestead_credit_eligible: true
+        in_homestead_property_tax_liability: 2_000
     households:
       household:
         members: [person1]
@@ -100,10 +119,79 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+        in_supplemental_homestead_credit_eligible: true
+        in_homestead_property_tax_liability: 4_000
     households:
       household:
         members: [person1, person2]
         state_code: IN
   output:
-    # 10% of the combined $3,000 is $300, exactly the cap, for the tax unit.
+    # 10% of the $4,000 homestead liability is $400, capped once at $300.
+    in_supplemental_homestead_credit: 300
+
+- name: Case 7, real estate taxes without homestead qualification produce no credit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: IN
+    real_estate_taxes: 3_000
+    in_supplemental_homestead_credit_eligible: false
+    in_homestead_property_tax_liability: 0
+    in_homestead_referendum_property_tax: 0
+  output:
+    # IC 6-1.1-20.6-7.7(b): no homestead deduction qualification, no credit.
+    # Before this fix the model gave min(10% x 3,000, 300) = 300.
+    in_supplemental_homestead_credit: 0
+
+- name: Case 8, only the qualifying homestead's liability enters the credit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: IN
+    real_estate_taxes: 5_000
+    in_supplemental_homestead_credit_eligible: true
+    in_homestead_property_tax_liability: 2_000
+    in_homestead_referendum_property_tax: 0
+  output:
+    # IC 6-1.1-20.6-7.7(c): min(10% x 2,000, 300) = 200. The other $3,000 of
+    # real estate taxes is on other property. Before this fix: 300.
+    in_supplemental_homestead_credit: 200
+
+- name: Case 9, referendum-approved homestead taxes are excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: IN
+    real_estate_taxes: 2_000
+    in_supplemental_homestead_credit_eligible: true
+    in_homestead_property_tax_liability: 2_000
+    in_homestead_referendum_property_tax: 1_000
+  output:
+    # IC 6-1.1-20.6-7.7(d): min(10% x (2,000 - 1,000), 300) = 100. Before this
+    # fix: 200.
+    in_supplemental_homestead_credit: 100
+
+- name: Case 10, referendum taxes above the reported liability floor the base at zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: IN
+    real_estate_taxes: 1_000
+    in_supplemental_homestead_credit_eligible: true
+    in_homestead_property_tax_liability: 1_000
+    in_homestead_referendum_property_tax: 1_200
+  output:
+    in_supplemental_homestead_credit: 0
+
+- name: Case 11, the cap binds after the referendum exclusion.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: IN
+    real_estate_taxes: 6_000
+    in_supplemental_homestead_credit_eligible: true
+    in_homestead_property_tax_liability: 6_000
+    in_homestead_referendum_property_tax: 2_000
+  output:
+    # min(10% x (6,000 - 2,000), 300) = min(400, 300) = 300.
     in_supplemental_homestead_credit: 300

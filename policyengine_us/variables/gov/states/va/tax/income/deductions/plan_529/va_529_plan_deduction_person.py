@@ -23,10 +23,13 @@ class va_529_plan_deduction_person(Variable):
         # accounts. Dependents file their own returns, which this tax unit
         # does not model, so dependent-owned accounts are excluded.
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        # § 58.1-322.03(7)(a): up to $4,000 per contract or account each year,
+        # with any excess carried forward until fully deducted.
+        capped = person("va_529_plan_deduction_capped_amount", period)
+        # § 58.1-322.03(7)(b): an owner who has attained age 70 deducts the
+        # full amount contributed, less any amounts previously deducted, so
+        # this year's contributions and the undeducted carryforward.
         contributions = person("investment_in_529_plan_indv", period)
-        accounts = person("count_529_contribution_beneficiaries", period)
-        capped = min_(contributions, p.cap * accounts)
-        # An owner who has attained age 70 may deduct the full amount
-        # contributed during the year.
+        carryforward = person("va_529_plan_carryforward", period)
         age_exempt = person("age", period) >= p.age_threshold
-        return head_or_spouse * where(age_exempt, contributions, capped)
+        return head_or_spouse * where(age_exempt, contributions + carryforward, capped)
