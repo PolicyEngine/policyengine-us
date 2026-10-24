@@ -3356,8 +3356,10 @@ candidates:
   example: An SSI-only recipient receives $49.70 versus $100 in 2026, and $51.45 versus $100 in 2027.
   pe_us:
     follows: statute
-    code: []
-    prs: []
+    code:
+    - policyengine_us/variables/gov/states/mn/dhs/msa/payment/mn_msa_guardian_fee.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10315
   state: ruled
   note: Ruled in October 2026 to retain the statutory cap; confirm and describe the stated agency practice without
     quoting correspondence.

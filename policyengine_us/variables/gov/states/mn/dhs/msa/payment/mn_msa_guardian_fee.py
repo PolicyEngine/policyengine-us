@@ -20,9 +20,14 @@ class mn_msa_guardian_fee(Variable):
         # for SSI recipients count the full SSI FBR as gross unearned
         # income (even when the actual SSI check is less). Aggregate to
         # the marital unit before applying the cap.
+        # Minnesota DHS correspondence (2026-10-19) reports that approved
+        # guardian fees are $100 in practice regardless of income.
+        # PolicyEngine follows the statute's 5%/$100 cap, which governs.
         p = parameters(period).gov.states.mn.dhs.msa.special_needs.guardian_fee
         has_guardian = person("mn_msa_has_guardian", period)
+        guardian_is_county_staff = person("mn_msa_guardian_is_county_staff", period)
         gross = person("mn_msa_gross_income", period)
         unit_gross = person.marital_unit.sum(gross)
         unit_fee = min_(unit_gross * p.rate, p.max_amount)
-        return has_guardian * unit_fee
+        # Minn. Stat. § 256D.44 Subd. 5(d) allows no fee for county agency staff.
+        return has_guardian * ~guardian_is_county_staff * unit_fee
