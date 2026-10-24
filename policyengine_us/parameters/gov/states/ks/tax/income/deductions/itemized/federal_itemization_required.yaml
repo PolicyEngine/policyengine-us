@@ -1,0 +1,13 @@
+description: Kansas allows the Kansas itemized deduction only to filers who itemize on their federal return, if this is true.
+values:
+  2015-01-01: true
+  2021-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Kansas itemized deduction requires federal itemization
+  reference:
+    - title: K.S.A. 79-32,120(a)(1)
+      href: https://www.ksrevisor.gov/statutes/chapters/ch79/079_032_0120.html
+    - title: 2018 Form K-40 instructions, itemized deductions
+      href: https://www.ksrevenue.gov/pdf/ip18.pdf#page=2
