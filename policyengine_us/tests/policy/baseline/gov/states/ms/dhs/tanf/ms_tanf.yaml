@@ -112,7 +112,7 @@
     # $200 - $50 = $150
     ms_tanf: 150
 
-- name: Case 11, high income reduces benefit to near zero.
+- name: Case 11, benefit under the $10 minimum payment is not issued.
   period: 2026-01
   input:
     state_code: MS
@@ -120,5 +120,16 @@
     ms_tanf_maximum_benefit: 260
     ms_tanf_countable_income: 255
   output:
-    # $260 - $255 = $5
-    ms_tanf: 5
+    # $260 - $255 = $5 < $10 minimum payment
+    ms_tanf: 0
+
+- name: Case 12, benefit equal to the $10 minimum payment is issued.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_tanf_eligible: true
+    ms_tanf_maximum_benefit: 260
+    ms_tanf_countable_income: 250
+  output:
+    # $260 - $250 = $10 >= $10 minimum payment
+    ms_tanf: 10
