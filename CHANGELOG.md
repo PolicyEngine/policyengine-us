@@ -1,3 +1,10 @@
+## [2.62.5] - 2026-10-24
+
+### Fixed
+
+- Label `save_plan_payment` as a counterfactual, since the SAVE plan is no longer available.
+
+
 ## [2.62.4] - 2026-10-24
 
 ### Changed
