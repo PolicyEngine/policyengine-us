@@ -11,6 +11,72 @@
 # unreviewed.
 version: 1
 candidates:
+- id: us-ak:hap-shared-household-allocation
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: federal-fiscal
+  question: Does Alaska split a shared dwelling's heating award equally among its eligible households or by each
+    household's actual share of the heating cost?
+  sources:
+  - kind: regulation
+    citation: 7 AAC 44.035(c) and 44.080(h)
+    url: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+  - kind: manual
+    citation: Alaska HAP Manual 3002-1 A.3 and A.5, Multiple Households Residing in the Same Dwelling and Housing
+      Percent Share
+    url: null
+  readings:
+    statute: No statute is supplied; 7 AAC 44.035(c) pays each household the percentage of its sole-household award
+      equal to the percentage of the dwelling's heating cost it actually pays, and 44.080(h) reduces its points to
+      that proportionate share.
+    other: The manual divides each award by the number of eligible households in the dwelling, never pays a sharer
+      more than 50% and disregards what each household contributes to heat or rent.
+  example: Two eligible Fairbanks households paying 25% and 75% of the heating bills, with sole-household awards of
+    $1,925 and $1,050, receive $962.50 and $525 in the PR; 7 AAC 44.035(c) would pay $481.25 and $787.50.
+  pe_us:
+    follows: conflicting-source
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10341
+  state: unreviewed
+  note: 'Same id as the entry proposed in draft rulespec-us PR 1846; delete this candidate when that entry registers.
+    The manual is served only over http, at http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm.
+    Code not yet on main: ak_hap, gov.states.ak.dpa.hap.benefit.maximum_shared_household_share.'
+- id: us-ak:hap-utility-allowance-order
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: federal-fiscal
+  question: Does Alaska's 50% subsidized-housing utility-allowance reduction apply to heating points before the
+    2.0-point minimum and rounding, or to the rounded dollar award?
+  sources:
+  - kind: regulation
+    citation: 7 AAC 44.080(l)-(n)
+    url: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+  - kind: manual
+    citation: Alaska HAP Manual 3004-5, Grant Computation, Step 8
+    url: null
+  readings:
+    statute: No statute is supplied; the regulation halves the heating cost points before the 2.0-point minimum and
+      the rounding to whole points.
+    other: The manual applies the 2.0-point minimum, rounding, the 35-point cap and the benefit rate first, then
+      halves the dollar award.
+  example: A one-person Juneau household with 3.0 points, direct oil bills and a utility allowance receives $262.50
+    ($525 halved) in the PR; under 7 AAC 44.080(l)-(m) its points halve to 1.5, below the 2.0 minimum, so it
+    receives $0.
+  pe_us:
+    follows: conflicting-source
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10341
+  state: unreviewed
+  note: 'Draft rulespec-us PR 1846 covers only the shared-household allocation; register this order separately or
+    extend that entry. The manual is served only over http, at
+    http://dpaweb.hss.state.ak.us/manuals/HAP/3004/3004-5_grant_computation.htm. Code not yet on main: ak_hap,
+    gov.states.ak.dpa.hap.benefit.utility_allowance_reduction.'
 - id: us-ak:snap-abawd-implementation-date
   program: snap
   years:

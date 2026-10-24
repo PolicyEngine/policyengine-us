@@ -1,0 +1,540 @@
+description: Alaska assigns these oil heating points by Census place under the Heating Assistance Program.
+# Derived Census place crosswalk; unknown or ambiguous places are absent.
+# Anchorage oil is ambiguous. FY2027 Loring 4 / Tetlin 12 disagree with
+# the older regulatory Appendix values 5 / 16; use this annual manual.
+"00650": # Akhiok city
+  2026-10-01: 8
+"00760": # Akiachak CDP
+  2026-10-01: 21
+"00870": # Akiak city
+  2026-10-01: 21
+"01090": # Akutan city
+  2026-10-01: 11
+"01200": # Alakanuk city
+  2026-10-01: 21
+"01305": # Alatna CDP
+  2026-10-01: 27
+"01420": # Aleknagik city
+  2026-10-01: 13
+"01860": # Allakaket city
+  2026-10-01: 27
+"01970": # Ambler city
+  2026-10-01: 35
+"02080": # Anaktuvuk Pass city
+  2026-10-01: 16
+"03110": # Anchor Point CDP
+  2026-10-01: 6
+"03220": # Anderson city
+  2026-10-01: 11
+"03440": # Angoon city
+  2026-10-01: 8
+"03550": # Aniak city
+  2026-10-01: 21
+"03880": # Anvik city
+  2026-10-01: 19
+"03990": # Arctic Village CDP
+  2026-10-01: 32
+"04210": # Atka city
+  2026-10-01: 6
+"04430": # Atmautluak CDP
+  2026-10-01: 19
+"04500": # Atqasuk city
+  2026-10-01: 24
+"05750": # Beaver CDP
+  2026-10-01: 24
+"06245": # Beluga CDP
+  2026-10-01: 7
+"06520": # Bethel city
+  2026-10-01: 16
+"06630": # Bettles city
+  2026-10-01: 29
+"07070": # Big Lake CDP
+  2026-10-01: 7
+"07620": # Birch Creek CDP
+  2026-10-01: 27
+"08740": # Brevig Mission city
+  2026-10-01: 23
+"09600": # Buckland city
+  2026-10-01: 33
+"10150": # Cantwell CDP
+  2026-10-01: 11
+"11690": # Central CDP
+  2026-10-01: 23
+"11800": # Chalkyitsik CDP
+  2026-10-01: 28
+"12350": # Chase CDP
+  2026-10-01: 8
+"12680": # Chefornak city
+  2026-10-01: 20
+"13230": # Chevak city
+  2026-10-01: 25
+"13340": # Chickaloon CDP
+  2026-10-01: 8
+"13450": # Chicken CDP
+  2026-10-01: 19
+"13550": # Chignik city
+  2026-10-01: 9
+"13670": # Chignik Lagoon CDP
+  2026-10-01: 9
+"13780": # Chignik Lake CDP
+  2026-10-01: 9
+"13860": # Chiniak CDP
+  2026-10-01: 6
+"14000": # Chistochina CDP
+  2026-10-01: 12
+"14110": # Chitina CDP
+  2026-10-01: 11
+"14330": # Chuathbaluk city
+  2026-10-01: 21
+"14880": # Circle CDP
+  2026-10-01: 23
+"15320": # Clam Gulch CDP
+  2026-10-01: 7
+"16360": # Coffman Cove city
+  2026-10-01: 6
+"16530": # Cold Bay city
+  2026-10-01: 11
+"16630": # Coldfoot CDP
+  2026-10-01: 19
+"16750": # College CDP
+  2026-10-01: 10
+"17190": # Cooper Landing CDP
+  2026-10-01: 9
+"17300": # Copper Center CDP
+  2026-10-01: 11
+"17410": # Cordova city
+  2026-10-01: 7
+"17740": # Craig city
+  2026-10-01: 5
+"17850": # Crooked Creek CDP
+  2026-10-01: 26
+"18510": # Deering city
+  2026-10-01: 31
+"18620": # Delta Junction city
+  2026-10-01: 11
+"18805": # Denali Park CDP
+  2026-10-01: 10
+"18950": # Dillingham city
+  2026-10-01: 11
+"19060": # Diomede city
+  2026-10-01: 27
+"19720": # Dot Lake CDP
+  2026-10-01: 12
+"20380": # Eagle city
+  2026-10-01: 19
+"20970": # Edna Bay city
+  2026-10-01: 11
+"21040": # Eek city
+  2026-10-01: 22
+"21150": # Egegik city
+  2026-10-01: 15
+"21810": # Ekwok city
+  2026-10-01: 14
+"22140": # Elfin Cove CDP
+  2026-10-01: 6
+"22250": # Elim city
+  2026-10-01: 26
+"22910": # Emmonak city
+  2026-10-01: 24
+"23460": # Ester CDP
+  2026-10-01: 11
+"23790": # Evansville CDP
+  2026-10-01: 29
+"23900": # Excursion Inlet CDP
+  2026-10-01: 7
+"24230": # Fairbanks city
+  2026-10-01: 10
+"24660": # False Pass city
+  2026-10-01: 11
+"26100": # Fort Greely CDP
+  2026-10-01: 11
+"26760": # Fort Yukon city
+  2026-10-01: 23
+"26870": # Fox CDP
+  2026-10-01: 11
+"27090": # Fritz Creek CDP
+  2026-10-01: 7
+"27420": # Gakona CDP
+  2026-10-01: 11
+"27530": # Galena city
+  2026-10-01: 20
+"27640": # Gambell city
+  2026-10-01: 27
+"28740": # Glennallen CDP
+  2026-10-01: 11
+"29180": # Golovin city
+  2026-10-01: 26
+"29290": # Goodnews Bay city
+  2026-10-01: 20
+"30060": # Grayling city
+  2026-10-01: 22
+"30500": # Gulkana CDP
+  2026-10-01: 11
+"30940": # Gustavus city
+  2026-10-01: 6
+"31050": # Haines CDP
+  2026-10-01: 6
+"31270": # Halibut Cove CDP
+  2026-10-01: 7
+"32150": # Healy CDP
+  2026-10-01: 10
+"32310": # Healy Lake CDP
+  2026-10-01: 13
+"32810": # Hollis CDP
+  2026-10-01: 5
+"33030": # Holy Cross city
+  2026-10-01: 21
+"33140": # Homer city
+  2026-10-01: 7
+"33360": # Hoonah city
+  2026-10-01: 7
+"33470": # Hooper Bay city
+  2026-10-01: 25
+"33580": # Hope CDP
+  2026-10-01: 7
+"33800": # Houston city
+  2026-10-01: 7
+"33910": # Hughes city
+  2026-10-01: 33
+"34350": # Huslia city
+  2026-10-01: 30
+"34460": # Hydaburg city
+  2026-10-01: 5
+"34570": # Hyder CDP
+  2026-10-01: 4
+"34790": # Igiugig CDP
+  2026-10-01: 12
+"35120": # Iliamna CDP
+  2026-10-01: 19
+"35890": # Ivanof Bay CDP
+  2026-10-01: 12
+"36400": # Juneau city and borough
+  2026-10-01: 5
+"36770": # Kake city
+  2026-10-01: 6
+"36990": # Kaktovik city
+  2026-10-01: 24
+"37430": # Kaltag city
+  2026-10-01: 22
+"37540": # Karluk CDP
+  2026-10-01: 10
+"37650": # Kasaan city
+  2026-10-01: 5
+"37975": # Kasigluk CDP
+  2026-10-01: 19
+"38090": # Kasilof CDP
+  2026-10-01: 7
+"38420": # Kenai city
+  2026-10-01: 8
+"38970": # Ketchikan city
+  2026-10-01: 4
+"39300": # Kiana city
+  2026-10-01: 26
+"39410": # King Cove city
+  2026-10-01: 11
+"39630": # King Salmon CDP
+  2026-10-01: 13
+"39740": # Kipnuk CDP
+  2026-10-01: 20
+"39960": # Kivalina city
+  2026-10-01: 28
+"40400": # Klawock city
+  2026-10-01: 5
+"40510": # Klukwan CDP
+  2026-10-01: 8
+"40645": # Knik-Fairview CDP
+  2026-10-01: 7
+"40840": # Kobuk city
+  2026-10-01: 35
+"40950": # Kodiak city
+  2026-10-01: 6
+"41280": # Kokhanok CDP
+  2026-10-01: 19
+"41500": # Koliganek CDP
+  2026-10-01: 16
+"41610": # Kongiganak CDP
+  2026-10-01: 22
+"41720": # Kotlik city
+  2026-10-01: 24
+"41830": # Kotzebue city
+  2026-10-01: 21
+"41940": # Koyuk city
+  2026-10-01: 25
+"42050": # Koyukuk city
+  2026-10-01: 20
+"42380": # Kwethluk city
+  2026-10-01: 20
+"42490": # Kwigillingok CDP
+  2026-10-01: 22
+"42820": # Lake Minchumina CDP
+  2026-10-01: 27
+"43040": # Larsen Bay city
+  2026-10-01: 7
+"43810": # Levelock CDP
+  2026-10-01: 12
+"44030": # Lime Village CDP
+  2026-10-01: 26
+"44580": # Livengood CDP
+  2026-10-01: 14
+"45020": # Loring CDP
+  2026-10-01: 4
+"45790": # McCarthy CDP
+  2026-10-01: 11
+"46010": # McGrath city
+  2026-10-01: 22
+"46780": # Manley Hot Springs CDP
+  2026-10-01: 13
+"46890": # Manokotak city
+  2026-10-01: 16
+"47000": # Marshall city
+  2026-10-01: 25
+"47990": # Mekoryuk city
+  2026-10-01: 21
+"48540": # Mentasta Lake CDP
+  2026-10-01: 12
+"48870": # Metlakatla CDP
+  2026-10-01: 6
+"49530": # Minto CDP
+  2026-10-01: 16
+"50080": # Moose Creek CDP
+  2026-10-01: 11
+"50190": # Moose Pass CDP
+  2026-10-01: 6
+"51180": # Mountain Village city
+  2026-10-01: 25
+"52060": # Naknek CDP
+  2026-10-01: 13
+"52210": # Nanwalek CDP
+  2026-10-01: 8
+"52390": # Napakiak city
+  2026-10-01: 11
+"52720": # Napaskiak city
+  2026-10-01: 20
+"52940": # Nelson Lagoon CDP
+  2026-10-01: 8
+"53050": # Nenana city
+  2026-10-01: 11
+"53270": # Newhalen city
+  2026-10-01: 19
+"53710": # New Stuyahok city
+  2026-10-01: 16
+"53820": # Newtok CDP
+  2026-10-01: 25
+"53930": # Nightmute city
+  2026-10-01: 21
+"54050": # Nikiski CDP
+  2026-10-01: 7
+"54085": # Nikolaevsk CDP
+  2026-10-01: 6
+"54150": # Nikolai city
+  2026-10-01: 27
+"54260": # Nikolski CDP
+  2026-10-01: 6
+"54480": # Ninilchik CDP
+  2026-10-01: 8
+"54700": # Noatak CDP
+  2026-10-01: 32
+"54920": # Nome city
+  2026-10-01: 17
+"55030": # Nondalton city
+  2026-10-01: 19
+"55140": # Noorvik city
+  2026-10-01: 26
+"55910": # North Pole city
+  2026-10-01: 11
+"56220": # Northway CDP
+  2026-10-01: 12
+"56320": # Nuiqsut city
+  2026-10-01: 20
+"56350": # Nulato city
+  2026-10-01: 24
+"56680": # Nunapitchuk city
+  2026-10-01: 19
+"57340": # Old Harbor city
+  2026-10-01: 7
+"58330": # Oscarville CDP
+  2026-10-01: 20
+"58550": # Ouzinkie city
+  2026-10-01: 6
+"58660": # Palmer city
+  2026-10-01: 7
+"59320": # Paxson CDP
+  2026-10-01: 12
+"59540": # Pedro Bay CDP
+  2026-10-01: 19
+"59650": # Pelican city
+  2026-10-01: 7
+"60200": # Perryville CDP
+  2026-10-01: 9
+"60310": # Petersburg CDP
+  2026-10-01: 5
+"60640": # Pilot Point city
+  2026-10-01: 12
+"60750": # Pilot Station city
+  2026-10-01: 25
+"61080": # Platinum city
+  2026-10-01: 20
+"61120": # Pleasant Valley CDP
+  2026-10-01: 11
+"61190": # Point Baker CDP
+  2026-10-01: 11
+"61630": # Point Hope city
+  2026-10-01: 23
+"61700": # Point Lay CDP
+  2026-10-01: 18
+"62285": # Portage Creek CDP
+  2026-10-01: 14
+"62510": # Port Alexander city
+  2026-10-01: 11
+"62620": # Port Alsworth CDP
+  2026-10-01: 19
+"63280": # Port Graham CDP
+  2026-10-01: 8
+"63390": # Port Heiden city
+  2026-10-01: 12
+"63610": # Port Lions city
+  2026-10-01: 8
+"63870": # Port Protection CDP
+  2026-10-01: 11
+"64600": # Quinhagak city
+  2026-10-01: 20
+"64820": # Rampart CDP
+  2026-10-01: 20
+"64930": # Red Devil CDP
+  2026-10-01: 26
+"65590": # Ruby city
+  2026-10-01: 19
+"65700": # Russian Mission city
+  2026-10-01: 25
+"66550": # Salcha CDP
+  2026-10-01: 11
+"67020": # Sand Point city
+  2026-10-01: 8
+"67460": # Savoonga city
+  2026-10-01: 27
+"67570": # Saxman city
+  2026-10-01: 4
+"67680": # Scammon Bay city
+  2026-10-01: 22
+"68230": # Selawik city
+  2026-10-01: 29
+"68340": # Seldovia city
+  2026-10-01: 9
+"68560": # Seward city
+  2026-10-01: 6
+"68670": # Shageluk city
+  2026-10-01: 24
+"68890": # Shaktoolik city
+  2026-10-01: 21
+"69770": # Shishmaref city
+  2026-10-01: 29
+"70100": # Shungnak city
+  2026-10-01: 35
+"70540": # Sitka city and borough
+  2026-10-01: 6
+"70760": # Skagway CDP
+  2026-10-01: 8
+"70870": # Skwentna CDP
+  2026-10-01: 11
+"70930": # Slana CDP
+  2026-10-01: 12
+"71090": # Sleetmute CDP
+  2026-10-01: 26
+"71640": # Soldotna city
+  2026-10-01: 9
+"72190": # South Naknek CDP
+  2026-10-01: 13
+"72960": # Stebbins city
+  2026-10-01: 21
+"73070": # Sterling CDP
+  2026-10-01: 9
+"73290": # Stevens Village CDP
+  2026-10-01: 23
+"73400": # Stony River CDP
+  2026-10-01: 26
+"74340": # Susitna CDP
+  2026-10-01: 10
+"74525": # Sutton-Alpine CDP
+  2026-10-01: 7
+"74610": # Takotna CDP
+  2026-10-01: 20
+"74830": # Talkeetna CDP
+  2026-10-01: 8
+"75050": # Tanacross CDP
+  2026-10-01: 12
+"75160": # Tanana city
+  2026-10-01: 20
+"75380": # Tatitlek CDP
+  2026-10-01: 11
+"75930": # Teller city
+  2026-10-01: 23
+"76590": # Tetlin CDP
+  2026-10-01: 12
+"77140": # Thorne Bay city
+  2026-10-01: 5
+"77690": # Togiak city
+  2026-10-01: 17
+"77800": # Tok CDP
+  2026-10-01: 12
+"78240": # Toksook Bay city
+  2026-10-01: 21
+"78350": # Tonsina CDP
+  2026-10-01: 11
+"78680": # Trapper Creek CDP
+  2026-10-01: 8
+"78790": # Tuluksak CDP
+  2026-10-01: 21
+"79120": # Tuntutuliak CDP
+  2026-10-01: 20
+"79230": # Tununak CDP
+  2026-10-01: 20
+"79780": # Twin Hills CDP
+  2026-10-01: 17
+"79830": # Two Rivers CDP
+  2026-10-01: 11
+"79890": # Tyonek CDP
+  2026-10-01: 7
+"80100": # Ugashik CDP
+  2026-10-01: 12
+"80660": # Unalakleet city
+  2026-10-01: 21
+"80770": # Unalaska city
+  2026-10-01: 6
+"81920": # Utqiaġvik city
+  2026-10-01: 21
+"82200": # Valdez city
+  2026-10-01: 8
+"82420": # Venetie CDP
+  2026-10-01: 23
+"82750": # Wainwright city
+  2026-10-01: 21
+"82860": # Wales city
+  2026-10-01: 27
+"83080": # Wasilla city
+  2026-10-01: 7
+"84000": # Whale Pass city
+  2026-10-01: 6
+"84070": # White Mountain city
+  2026-10-01: 26
+"84510": # Whittier city
+  2026-10-01: 8
+"85280": # Willow CDP
+  2026-10-01: 7
+"85610": # Wiseman CDP
+  2026-10-01: 19
+"86380": # Wrangell city and borough
+  2026-10-01: 5
+"86490": # Yakutat CDP
+  2026-10-01: 6
+UNAVAILABLE:
+  2026-10-01: 0
+
+metadata:
+  unit: /1
+  period: year
+  label: Alaska HAP oil community heating points
+  reference:
+    - title: Alaska HAP Manual Addendum A, FFY2027 Community Listing
+      href: http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm
+    - title: Census 2025 Alaska Places Gazetteer
+      href: https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2025_Gazetteer/2025_gaz_place_02.txt

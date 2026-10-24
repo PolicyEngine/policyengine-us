@@ -1,0 +1,18 @@
+description: Alaska reduces the calculated benefit by this share for subsidized households paying heating costs directly and receiving a utility allowance under the Heating Assistance Program.
+# Approved manual-based convention: grant manual step 8 applies this
+# reduction to the dollar award, regardless of the allowance amount.
+# In contrast, 7 AAC 44.080(l)-(n) halves points before the minimum and
+# rounding. This selection does not establish a regulatory amendment or
+# verify historical years before FY2027.
+values:
+  2026-10-01: 0.5
+
+metadata:
+  unit: /1
+  period: year
+  label: Alaska HAP utility allowance benefit reduction
+  reference:
+    - title: Alaska HAP Manual 3004-5, Grant Computation, Step 8
+      href: http://dpaweb.hss.state.ak.us/manuals/HAP/3004/3004-5_grant_computation.htm
+    - title: 7 AAC 44.080(l)-(n) (conflicting text)
+      href: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
