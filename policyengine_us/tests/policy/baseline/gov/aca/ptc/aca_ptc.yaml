@@ -276,3 +276,60 @@
   output:
     is_aca_ptc_eligible: [false]
     aca_ptc: 0
+
+- name: ACA PTC is paid at exactly 400% of the poverty line in 2026
+  # 4 x $15,650 (2025 one-person guideline) = $62,600 "does not exceed 400
+  # percent" (26 U.S.C. 36B(c)(1)(A)). Form 8962 line 5 is 400, so the
+  # applicable percentage is the 2026 maximum of 9.96%.
+  # PTC = 12_000 - 0.0996 * 62_600 = 12_000 - 6_234.96 = 5_765.04.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 62_600
+        slcsp: 12_000
+        tax_unit_is_filer: true
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    aca_required_contribution_percentage: 0.0996
+    aca_ptc: 5_765.04
+
+- name: ACA PTC is zero at 400.003% of the poverty line in 2026
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 62_600.47
+        slcsp: 12_000
+        tax_unit_is_filer: true
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    aca_ptc: 0

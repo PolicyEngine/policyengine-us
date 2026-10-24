@@ -27,10 +27,7 @@ class basic_health_program(Variable):
 
     def formula_2026(tax_unit, period, parameters):
         p = parameters(period).gov.hhs.basic_health_program.payment
-        magi_fraction = tax_unit("aca_magi_fraction", period)
-        ptc_income_eligible = parameters(period).gov.aca.ptc_income_eligibility.calc(
-            magi_fraction
-        )
+        ptc_income_eligible = tax_unit("aca_ptc_income_eligible", period)
         # The adjusted reference premium is a MONTH variable; reading it from
         # this YEAR formula sums the twelve monthly values into an annual
         # figure, matching the annual aca_magi contribution below (the same

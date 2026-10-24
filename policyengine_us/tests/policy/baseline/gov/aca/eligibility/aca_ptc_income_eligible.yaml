@@ -1,0 +1,157 @@
+# 26 U.S.C. 36B(c)(1)(A): household income that "equals or exceeds 100 percent
+# but does not exceed 400 percent" of the poverty line. Form 8962 Worksheet 2
+# decides "more than 400%" on the dollar amounts, then drops the decimals of the
+# percentage for line 5. Income-derived cases use a single filer in Texas and
+# the prior-year one-person poverty guideline: $15,650 (2025) for tax year 2026
+# and $15,960 (2026) for tax year 2027. 400% of those is $62,600 and $63,840.
+
+- name: Case 1, 2026, $15,649 (99.994% of the 2025 guideline) is below the floor.
+  period: 2026
+  input:
+    aca_magi: 15_649
+    state_code: TX
+  output:
+    aca_magi_fraction: 0.99
+    aca_ptc_income_eligible: false
+
+- name: Case 2, 2026, exactly 100% of the 2025 guideline meets the floor.
+  period: 2026
+  input:
+    aca_magi: 15_650
+    state_code: TX
+  output:
+    aca_magi_fraction: 1.00
+    aca_ptc_income_eligible: true
+
+- name: Case 3, 2026, $62,599 (399.994%) is eligible.
+  period: 2026
+  input:
+    aca_magi: 62_599
+    state_code: TX
+  output:
+    aca_magi_fraction: 3.99
+    aca_ptc_income_eligible: true
+
+- name: Case 4, 2026, exactly 400% does not exceed 400% and is eligible.
+  # Worksheet 2: $62,600 is not more than 4 x $15,650, so line 5 is 400 and the
+  # credit is allowed. The scale's 400% bracket starts at 4.00, so main excluded
+  # this household.
+  period: 2026
+  input:
+    aca_magi: 62_600
+    state_code: TX
+  output:
+    aca_magi_fraction: 4.00
+    aca_ptc_income_eligible: true
+
+- name: Case 5, 2026, $62,600.47 (400.003%) exceeds 400% and is ineligible.
+  # The truncated fraction is still 4.00; the dollar comparison decides.
+  period: 2026
+  input:
+    aca_magi: 62_600.47
+    state_code: TX
+  output:
+    aca_magi_fraction: 4.00
+    aca_ptc_income_eligible: false
+
+- name: Case 6, 2026, $62,755.56 (400.994%) is ineligible.
+  period: 2026
+  input:
+    aca_magi: 62_755.56
+    state_code: TX
+  output:
+    aca_magi_fraction: 4.00
+    aca_ptc_income_eligible: false
+
+- name: Case 7, 2026, $62,756.50 (401%) is ineligible.
+  period: 2026
+  input:
+    aca_magi: 62_756.50
+    state_code: TX
+  output:
+    aca_magi_fraction: 4.01
+    aca_ptc_income_eligible: false
+
+- name: Case 8, 2027, exactly 400% of the 2026 guideline is eligible.
+  period: 2027
+  input:
+    aca_magi: 63_840
+    state_code: TX
+  output:
+    aca_magi_fraction: 4.00
+    aca_ptc_income_eligible: true
+
+- name: Case 9, 2027, $63,840.48 (400.003%) is ineligible.
+  period: 2027
+  input:
+    aca_magi: 63_840.48
+    state_code: TX
+  output:
+    aca_magi_fraction: 4.00
+    aca_ptc_income_eligible: false
+
+- name: Case 10, 2025, above 400% is eligible while the enhanced credit removes the cap.
+  # 2024 one-person guideline $15,060; $60,240.45 is 400.003%.
+  period: 2025
+  input:
+    aca_magi: 60_240.45
+    state_code: TX
+  output:
+    aca_magi_fraction: 4.00
+    aca_ptc_income_eligible: true
+
+- name: Case 11, 2026, a two-person unit at exactly 400% of its guideline is eligible.
+  # 2025 two-person guideline $21,150; 4 x $21,150 = $84,600.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        aca_magi: 84_600
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    aca_ptc_income_eligible: true
+
+- name: Case 12, 2026, the same two-person unit $1 above 400% is ineligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        aca_magi: 84_601
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    aca_ptc_income_eligible: false
+
+- name: Case 13, 2026, a supplied fraction of 3.99 without income is eligible.
+  # A supplied fraction alone stands for a whole percentage.
+  period: 2026
+  input:
+    aca_magi_fraction: 3.99
+    state_code: TX
+  output:
+    aca_ptc_income_eligible: true
+
+- name: Case 14, 2026, a supplied fraction of 4.01 without income is ineligible.
+  period: 2026
+  input:
+    aca_magi_fraction: 4.01
+    state_code: TX
+  output:
+    aca_ptc_income_eligible: false
