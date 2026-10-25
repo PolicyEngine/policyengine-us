@@ -148,6 +148,18 @@ def _probe():
     from policyengine_us import Microsimulation, Simulation
     from policyengine_us.system import system
 
+    def dump_without_empty_holders(simulation, directory):
+        dump_simulation(simulation, directory)
+        # Core can create empty holders for variables removed between schemas.
+        # Preserve entities and every directory containing any array or metadata.
+        for holder_directory in Path(directory).iterdir():
+            if (
+                holder_directory.name != "__entities__"
+                and holder_directory.is_dir()
+                and not any(holder_directory.iterdir())
+            ):
+                holder_directory.rmdir()
+
     class HouseholdMicrosimulation(Microsimulation):
         default_dataset = None
 
@@ -414,10 +426,10 @@ def _probe():
                     simulation._get_recorded_input_array(name, period(2024)) is not None
                 )
         own_dump = dump_directory / "both_names"
-        dump_simulation(simulation, own_dump)
+        dump_without_empty_holders(simulation, own_dump)
     else:
         own_dump = legacy_dump
-        dump_simulation(simulation, legacy_dump)
+        dump_without_empty_holders(simulation, legacy_dump)
 
     live = _snapshot(simulation, (2024, 2026), INGRESS_OUTCOMES)
     restored = restore_simulation(legacy_dump, system)
@@ -457,7 +469,7 @@ def _probe():
         simulation.set_input("social_security_retirement_reported", 2024, [6_000])
         simulation.set_input("social_security_retirement", 2024, [12_000])
         explicit_dump = dump_directory / "explicit_reported"
-        dump_simulation(simulation, explicit_dump)
+        dump_without_empty_holders(simulation, explicit_dump)
         restored = restore_simulation(explicit_dump, system)
         expected_future = np.asarray(
             simulation.calculate("social_security_retirement", 2026)
@@ -490,7 +502,7 @@ def _probe():
             for name in (component, f"{component}_reported"):
                 assert simulation._get_recorded_input_array(name, period(2024)) is None
         raw_dump = dump_directory / "raw_cache"
-        dump_simulation(simulation, raw_dump)
+        dump_without_empty_holders(simulation, raw_dump)
         restored = restore_simulation(raw_dump, system)
         assert _snapshot(restored, (2024, 2026), INGRESS_OUTCOMES) == _snapshot(
             simulation, (2024, 2026), INGRESS_OUTCOMES
