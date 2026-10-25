@@ -1,1 +1,0 @@
-Vendor the source-conflict register shared with Axiom at its newer rulespec-us commit. The register now records that nine PolicyEngine-US files cite their entries, so the guard requires those files to keep their markers. It also adds two Social Security entries implemented outside this repository.
