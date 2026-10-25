@@ -317,6 +317,62 @@ def test_existing_builder_refreshes_loaded_sources_and_keeps_earlier_overrides(
         )
 
 
+@pytest.mark.parametrize("route", ("builder", "dataset", "later"))
+@pytest.mark.parametrize("explicit_source", (None, 0))
+def test_failed_loading_synchronizes_successful_stores_without_changing_error(
+    route, explicit_source
+):
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported = f"{public}_reported"
+    failure = RuntimeError("setter failed after storing its input")
+
+    class StoreThenRaise(CoreSimulation):
+        fail_after_store = False
+
+        def set_input(self, name, input_period, value):
+            super().set_input(name, input_period, value)
+            if self.fail_after_store and name == public:
+                raise failure
+
+    simulation = StoreThenRaise(situation=situation({}), tax_benefit_system=system)
+    if explicit_source is not None:
+        simulation.set_input(reported, 2024, [explicit_source])
+    simulation.fail_after_store = True
+    with pytest.raises(RuntimeError) as caught:
+        if route == "builder":
+            SimulationBuilder().build_from_variables(
+                system, {public: {2024: [24_000]}}, simulation=simulation
+            )
+        elif route == "dataset":
+            entities = ("household", "tax_unit", "spm_unit", "family", "marital_unit")
+            frame = pd.DataFrame(
+                {
+                    "person_id": [1],
+                    **{f"person_{entity}_id": [1] for entity in entities},
+                    **{f"{entity}_id": [1] for entity in entities},
+                    **(
+                        {f"{reported}__2024": [explicit_source]}
+                        if explicit_source is not None
+                        else {}
+                    ),
+                    f"{public}__2024": [24_000],
+                }
+            )
+            # Core accepts a DataFrame through its constructor, where it
+            # resolves the dataset object before invoking this same loader.
+            from policyengine_core.data import Dataset
+
+            simulation.dataset = Dataset.from_dataframe(frame, time_period=2024)
+            simulation.build_from_dataset()
+        else:
+            simulation.set_input(public, 2024, [24_000])
+    assert caught.value is failure
+    assert simulation._user_input_contexts == []
+    assert amount(simulation, reported, 2024) == (
+        24_000 if explicit_source is None else explicit_source
+    )
+
+
 @pytest.mark.parametrize("wrapper", (*WRAPPERS, make_core_simulation))
 @pytest.mark.parametrize("explicit_source", (0, 12_000))
 def test_direct_reported_holder_write_replaces_automatic_source_origin(

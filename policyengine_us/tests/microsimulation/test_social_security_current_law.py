@@ -171,6 +171,14 @@ def _probe():
                 )
             return super().set_input(variable, input_period, value)
 
+    class StoreThenRaiseSimulation(Simulation):
+        def set_input(self, variable, input_period, value):
+            result = super().set_input(variable, input_period, value)
+            error = getattr(self, "store_error", None)
+            if variable in COMPONENTS and error is not None:
+                raise error
+            return result
+
     has_levers = "social_security_retirement_reported" in system.variables
     neutral = (
         Reform.from_dict(
@@ -384,6 +392,63 @@ def _probe():
     result["raw_core_dataset"] = _snapshot(simulation, (2024, 2026), INGRESS_OUTCOMES)
     del simulation
     gc.collect()
+
+    # An existing builder composes initial dataset ingress with a replacement
+    # public source. Copy before any future calculation, so cached uprating
+    # results cannot conceal a stale automatic reported source.
+    simulation = CoreSimulation(
+        dataset=pd.DataFrame(columns),
+        tax_benefit_system=system,
+        default_input_period=2024,
+        default_calculation_period=2024,
+    )
+    SimulationBuilder().build_from_variables(
+        system,
+        {"social_security_retirement": {2024: [24_000]}},
+        simulation=simulation,
+    )
+    copied = simulation.clone(clone_tax_benefit_system=False)
+    copied.set_input("social_security_retirement", 2026, [18_000])
+    SimulationBuilder().build_from_variables(
+        system,
+        {"social_security_retirement": {2024: [36_000]}},
+        simulation=copied,
+    )
+    result["dataset_existing_builder_overwrite"] = _snapshot(
+        simulation, (2024, 2026), INGRESS_OUTCOMES
+    )
+    result["dataset_builder_clone_overwrite"] = _snapshot(
+        copied, (2024, 2026, 2027), INGRESS_OUTCOMES
+    )
+    del simulation, copied
+    gc.collect()
+
+    # Successful stores remain effective when a delegating setter raises.
+    # Exercise identical setters inside and outside builder loading and
+    # preserve the exact exception object supplied by the setter.
+    for route in ("builder_failed_initial_loading", "setter_failed_after_loading"):
+        inputs = extraction_situation()
+        del inputs["people"]["retiree"]["social_security_retirement"]
+        simulation = StoreThenRaiseSimulation(
+            situation=inputs, tax_benefit_system=system
+        )
+        simulation.store_error = RuntimeError("setter failed after storing")
+        try:
+            if route == "builder_failed_initial_loading":
+                SimulationBuilder().build_from_variables(
+                    system,
+                    {"social_security_retirement": {2024: [24_000]}},
+                    simulation=simulation,
+                )
+            else:
+                simulation.set_input("social_security_retirement", 2024, [24_000])
+        except RuntimeError as error:
+            assert error is simulation.store_error
+        else:
+            raise AssertionError("The delegating setter did not raise")
+        result[route] = _snapshot(simulation, (2024, 2026), INGRESS_OUTCOMES)
+        del simulation
+        gc.collect()
 
     # Subsampling rebuilds holder storage from a dataframe. Its new stores
     # must retain the distinction between automatic and explicit sources.
@@ -772,6 +837,10 @@ def differential(tmp_path_factory):
         "direct_public_holder",
         "subclass_public_set_input_holder",
         "raw_core_dataset",
+        "dataset_existing_builder_overwrite",
+        "dataset_builder_clone_overwrite",
+        "builder_failed_initial_loading",
+        "setter_failed_after_loading",
         "subsample_public_override",
         "dump_restore_legacy_public",
         "dump_restore_legacy_public_override",

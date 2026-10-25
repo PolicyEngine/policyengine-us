@@ -284,6 +284,7 @@ def install_social_security_input_compatibility():
                 False,
             ):
                 return original_dataset_build(simulation)
+            outermost = not _initial_social_security_ingress.get()
             token = _initial_social_security_ingress.set(True)
             writes = _initial_social_security_writes.get()
             if writes is None:
@@ -294,15 +295,15 @@ def install_social_security_input_compatibility():
             finally:
                 _initial_social_security_writes.reset(writes_token)
                 _initial_social_security_ingress.reset(token)
-            # Raw Core simulations use this loader without either country
-            # constructor or an entity/variable builder. Migrate before Core
-            # creates its reform baseline, exactly as for situation ingress.
-            migrate_social_security_inputs(
-                simulation, loaded_public_inputs=writes.get(simulation, {})
-            )
-            reloaded = _reloaded_social_security_provenance.get()
-            if reloaded is not None and reloaded[0] is simulation:
-                _restore_automatic_reported_metadata(simulation, reloaded[1])
+                if outermost:
+                    # A successful store remains an input even when a later
+                    # setter raises. Reconcile before propagating that error.
+                    migrate_social_security_inputs(
+                        simulation, loaded_public_inputs=writes.get(simulation, {})
+                    )
+                    reloaded = _reloaded_social_security_provenance.get()
+                    if reloaded is not None and reloaded[0] is simulation:
+                        _restore_automatic_reported_metadata(simulation, reloaded[1])
             return result
 
         build_from_dataset._social_security_compatibility = True
@@ -391,19 +392,11 @@ def install_social_security_input_compatibility():
                         )
                 simulation._social_security_dump_inputs_restored = True
             token = _initial_social_security_ingress.set(True)
-            # Nested dict/entity/variable builders form one loading operation.
-            # Record actual stores, after period helpers have split them, so a
-            # builder on an existing simulation refreshes only its new inputs.
-            writes = _initial_social_security_writes.get()
-            if writes is None:
-                writes = {}
-            writes_token = _initial_social_security_writes.set(writes)
             try:
                 return original_restore_holder(
                     simulation, variable, directory, inputs, calculated_number
                 )
             finally:
-                _initial_social_security_writes.reset(writes_token)
                 _initial_social_security_ingress.reset(token)
 
         restore_holder._social_security_compatibility = True
@@ -513,38 +506,52 @@ def install_social_security_input_compatibility():
                     for name, values in input_dict.items()
                     if name != _PROVENANCE
                 }
+            outermost = not _initial_social_security_ingress.get()
             token = _initial_social_security_ingress.set(True)
+            # Nested dict/entity/variable builders form one loading operation.
+            # Record actual stores after Core has handled their periods.
+            writes = _initial_social_security_writes.get()
+            if writes is None:
+                writes = {}
+            writes_token = _initial_social_security_writes.set(writes)
+            result = None
             try:
                 result = original_build(
                     builder, tax_benefit_system, input_dict, simulation
                 )
             finally:
+                _initial_social_security_writes.reset(writes_token)
                 _initial_social_security_ingress.reset(token)
-            # Only build_from_dict rebuilds Core's legacy extraction list.
-            # Direct entity/variable builders need the same recorded inputs,
-            # including non-benefit sources and exact both-name overrides.
-            visible_branches = result._get_visible_branch_names()
-            recorded_names = {
-                name
-                for name, branch_name, _ in result._user_input_keys
-                if branch_name in visible_branches
-            }
-            result.input_variables = list(
-                dict.fromkeys(
-                    [
-                        *getattr(result, "input_variables", []),
-                        *sorted(
+                if outermost:
+                    targets = dict(writes)
+                    target = result if result is not None else simulation
+                    if target is not None:
+                        targets.setdefault(target, {})
+                    for target, loaded in targets.items():
+                        # Successful stores identify even a fresh build that
+                        # raises before it can return its simulation.
+                        visible_branches = target._get_visible_branch_names()
+                        recorded_names = {
                             name
-                            for name in recorded_names
-                            if result._get_set_input_periods(name)
-                        ),
-                    ]
-                )
-            )
-            migrate_social_security_inputs(
-                result, loaded_public_inputs=writes.get(result, {})
-            )
-            _restore_automatic_reported_metadata(result, metadata)
+                            for name, branch_name, _ in target._user_input_keys
+                            if branch_name in visible_branches
+                        }
+                        target.input_variables = list(
+                            dict.fromkeys(
+                                [
+                                    *getattr(target, "input_variables", []),
+                                    *sorted(
+                                        name
+                                        for name in recorded_names
+                                        if target._get_set_input_periods(name)
+                                    ),
+                                ]
+                            )
+                        )
+                        migrate_social_security_inputs(
+                            target, loaded_public_inputs=loaded
+                        )
+                        _restore_automatic_reported_metadata(target, metadata)
             return result
 
         build._social_security_compatibility = True
