@@ -318,8 +318,15 @@ class Backend:
             storage: str
 
         person = types.SimpleNamespace(key="person", plural="people", is_person=True)
+        member = types.SimpleNamespace(
+            key="member", plural="members", max=None, subroles=None
+        )
         household = types.SimpleNamespace(
-            key="household", plural="households", is_person=False
+            key="household",
+            plural="households",
+            is_person=False,
+            roles=(member,),
+            flattened_roles=(member,),
         )
 
         class Holder:
