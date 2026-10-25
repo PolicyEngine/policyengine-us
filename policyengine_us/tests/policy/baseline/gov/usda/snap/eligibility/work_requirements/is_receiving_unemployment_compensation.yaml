@@ -393,3 +393,146 @@
   output:
     # Feb-Apr covers April; position (3 - 1) mod 12 = 2 < 3
     is_receiving_unemployment_compensation: true
+
+- name: Case 21, reversed supplied person IDs keep the position defaults.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        person_id:
+          2026: 19
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+      person2:
+        person_id:
+          2026: 1
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # Positions 0 and 1 whatever the IDs -> starts Jan and Feb, as in Case 17.
+    # Ranking the IDs would swap them to [false, true].
+    is_receiving_unemployment_compensation: [true, false]
+
+- name: Case 22, tied supplied person IDs keep the position defaults.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        person_id:
+          2026: 7
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+      person2:
+        person_id:
+          2026: 7
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # Positions 0 and 1 -> starts Jan and Feb.
+    is_receiving_unemployment_compensation: [true, false]
+
+- name: Case 23, reversed supplied person IDs keep the position defaults in every axis copy.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        person_id:
+          2026: 19
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+      person2:
+        person_id:
+          2026: 1
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+    axes:
+      - - name: employment_income
+          min: 0
+          max: 60_000
+          count: 2
+          period: 2026
+  output:
+    # Each copy repeats Case 21.
+    is_receiving_unemployment_compensation: [true, false, true, false]
+
+- name: Case 24, positions count within each household.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+      person2:
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+      person3:
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+      person4:
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+      spm_unit2:
+        members: [person3, person4]
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3, person4]
+    households:
+      household1:
+        members: [person1, person2]
+      household2:
+        members: [person3, person4]
+  output:
+    # Each household's first member starts in January and second in February.
+    is_receiving_unemployment_compensation: [true, false, true, false]

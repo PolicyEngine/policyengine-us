@@ -9,13 +9,16 @@ STORED_START_MONTH = "unemployment_compensation_start_month"
 # Position 12 and later reuse the list from its start.
 SITUATION_START_MONTH_INDEX = np.array([0, 1, 10, 8, 8, 0, 4, 4, 4, 3, 5, 5])
 
-# TRANSITIONAL: datasets built before the start month was stored carry no
-# unemployment_compensation_start_month, among them the default Populace US
-# build. For those datasets alone the start month is still hashed from
-# person_id, exactly as before, so their results do not change. Once the
-# default dataset stores the column this hash is deleted and such a dataset
-# raises instead. tests/code_health/test_no_engine_time_randomness.py lists
-# this file until then.
+# TRANSITIONAL: datasets built before the start month was stored, among them
+# every Populace US release to date, carry no
+# unemployment_compensation_start_month. For those datasets alone the start
+# month is still hashed from person_id, exactly as before, so their results
+# do not change. The hash is deleted, and such a dataset raises instead, once
+# the national and ACS local-area releases that pe-us and policyengine.py pin
+# both store the column and policyengine.py's input-table adapter declares
+# that its populations come from a dataset. Until then
+# tests/code_health/test_no_engine_time_randomness.py ratchets this hash and
+# every call of legacy_start_month_index.
 SPLITMIX64_SHIFTS = (np.uint64(30), np.uint64(27), np.uint64(31))
 SPLITMIX64_MULTIPLIERS = (
     np.uint64(0xBF58476D1CE4E5B9),
@@ -39,26 +42,27 @@ def legacy_start_month_index(key):
 
 def stored_start_month_index(person, stored, period):
     """Start month index (0 = January) of a data-built simulation."""
-    if not stored.any():
+    inputs = getattr(person.simulation, "input_variables", None) or ()
+    supplied = STORED_START_MONTH in inputs
+    if not supplied and not stored.any():
         person_id = person("person_id", period.this_year)
         return legacy_start_month_index(person_id)
     if not stored.all():
         missing = int((stored == 0).sum())
         raise ValueError(
             f"The dataset stores {STORED_START_MONTH} for some people but not "
-            f"for {missing} of {stored.size}. The dataset build must assign a "
-            "start month (1-12) to every person."
+            f"for {missing} of {stored.size} in {period.this_year}. The "
+            "dataset build must assign a start month (1-12) to every person."
         )
     return stored - 1
 
 
-def situation_start_month_index(person, stored, period):
+def situation_start_month_index(person, stored):
     """Start month index (0 = January) of a household situation."""
-    person_id = person("person_id", period.this_year)
-    # NOTE: the default person_id is np.arange over the whole situation, so
-    # each axis copy of a household gets new IDs. The rank of the ID within
-    # the household is the same in every copy.
-    position = person.get_rank(person.household, person_id)
+    # NOTE: the position counts a household's members in the order the
+    # situation lists its people, whatever person_id they carry, and is the
+    # same in every axis copy of the household.
+    position = person.household.reference_entity.members_position
     default = SITUATION_START_MONTH_INDEX[position % SITUATION_START_MONTH_INDEX.size]
     return where(stored > 0, stored - 1, default)
 
@@ -75,7 +79,9 @@ class is_receiving_unemployment_compensation(Variable):
         "of the year are placed as one contiguous block of calendar months "
         "that wraps within the year, starting in "
         "unemployment_compensation_start_month. Datasets store that start "
-        "month, assigned when the dataset is built. A household situation "
+        "month, assigned when the dataset is built; for now a dataset that "
+        "stores none keeps the start month the model used to hash from "
+        "person_id. A household situation "
         "may supply it; otherwise the start follows the person's position in "
         "their household, which is the same in every axis copy: the first "
         "member starts in January, the second in February, the third in "
@@ -107,6 +113,6 @@ class is_receiving_unemployment_compensation(Variable):
         if person.simulation.is_over_dataset:
             start = stored_start_month_index(person, stored, period)
         else:
-            start = situation_start_month_index(person, stored, period)
+            start = situation_start_month_index(person, stored)
         position = (period.start.month - 1 - start) % MONTHS_IN_YEAR
         return position < months

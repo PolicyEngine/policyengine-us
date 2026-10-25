@@ -17,13 +17,24 @@ formula:
   and wrapping into January.
 - Filtering: a dataset cut to some households keeps each person's start
   month and months of receipt.
-- A column stored for some people but not others raises an error that names
-  it.
+- A column stored for some people but not others, or stored as all zeros,
+  raises an error that names it.
+- A simulation built the way policyengine.py's input-table adapter builds one
+  (an empty situation, then the dataset's populations and columns) is a
+  household situation to pe-us. Without the column it keeps the retired
+  formula's household-position months; with a complete column it gives the
+  same months as a Microsimulation of the same file.
+
+TRANSITIONAL: a dataset without the column still hashes person_id. When the
+hash is deleted, test_dataset_without_the_column_gives_the_same_results
+becomes a test that such a dataset raises.
 """
 
 import numpy as np
 import pandas as pd
 import pytest
+
+from policyengine_core.simulations.simulation_builder import SimulationBuilder
 
 from policyengine_us import Microsimulation
 from policyengine_us.data.dataset_schema import USSingleYearDataset
@@ -31,6 +42,7 @@ from policyengine_us.data.dataset_schema import USSingleYearDataset
 YEAR = 2024
 LATER_YEAR = 2026
 COLUMN = "unemployment_compensation_start_month"
+GROUPS = ("household", "tax_unit", "spm_unit", "family", "marital_unit")
 
 
 def retired_start_month_index(key) -> np.ndarray:
@@ -105,6 +117,36 @@ def _dataset(person: pd.DataFrame) -> USSingleYearDataset:
 
 def _with_stored_column(person: pd.DataFrame) -> pd.DataFrame:
     return person.assign(**{COLUMN: stored_start_month(person["person_id"])})
+
+
+def _population_built(person: pd.DataFrame):
+    """A simulation built as policyengine.py's input-table adapter builds one.
+
+    The adapter subclasses Microsimulation with no default dataset, starts
+    from an empty situation, declares the dataset's populations and sets each
+    column other than the ids as an input
+    (src/policyengine/tax_benefit_models/us/model.py), so person_id keeps its
+    default and the simulation is not over a dataset.
+    """
+
+    class InputMicrosimulation(Microsimulation):
+        default_dataset = None
+
+    simulation = InputMicrosimulation(situation={}, default_input_period=YEAR)
+    builder = SimulationBuilder()
+    builder.populations = simulation.tax_benefit_system.instantiate_entities()
+    builder.declare_person_entity("person", person["person_id"].values)
+    for group in GROUPS:
+        link = person[f"person_{group}_id"].values
+        builder.declare_entity(group, np.unique(link))
+        builder.join_with_persons(
+            builder.populations[group], link, np.array(["member"] * link.size)
+        )
+    simulation.build_from_populations(builder.populations)
+    for column in person.columns:
+        if column != "person_id" and not column.startswith("person_"):
+            simulation.set_input(column, YEAR, person[column].values)
+    return simulation
 
 
 def _receipt_by_month(simulation, year) -> np.ndarray:
@@ -232,6 +274,62 @@ def test_partly_stored_column_raises_naming_it(people):
     simulation = Microsimulation(dataset=_dataset(stored))
     with pytest.raises(ValueError, match=COLUMN):
         simulation.calculate("is_receiving_unemployment_compensation", f"{YEAR}-01")
+
+
+def test_stored_column_of_zeros_raises_naming_it(people):
+    # A dataset that stores the column must fill it, so an all-zero column
+    # is not taken for an absent one.
+    stored = people.assign(**{COLUMN: 0})
+    simulation = Microsimulation(dataset=_dataset(stored))
+    with pytest.raises(ValueError, match=COLUMN):
+        simulation.calculate("is_receiving_unemployment_compensation", f"{YEAR}-01")
+
+
+def test_start_month_set_after_construction_is_used(people, stored_simulation):
+    simulation = Microsimulation(dataset=_dataset(people))
+    simulation.set_input(COLUMN, YEAR, stored_start_month(people["person_id"]))
+    np.testing.assert_array_equal(
+        _receipt_by_month(simulation, YEAR),
+        _receipt_by_month(stored_simulation, YEAR),
+    )
+    partial = Microsimulation(dataset=_dataset(people))
+    values = stored_start_month(people["person_id"])
+    values[:2] = 0
+    partial.set_input(COLUMN, YEAR, values)
+    with pytest.raises(ValueError, match=COLUMN):
+        partial.calculate("is_receiving_unemployment_compensation", f"{YEAR}-01")
+
+
+def test_population_built_simulation_keys_household_position(people):
+    simulation = _population_built(people)
+    assert not simulation.is_over_dataset
+    # The retired formula ranked the default person_id within the household,
+    # which is each member's position there.
+    position = people.groupby("person_household_id").cumcount().values
+    months = np.asarray(
+        simulation.calculate("unemployment_compensation_months", YEAR).values
+    )
+    expected = np.stack(
+        [
+            retired_receipt(retired_start_month_index(position), months, month)
+            for month in range(1, 13)
+        ],
+        axis=1,
+    )
+    np.testing.assert_array_equal(_receipt_by_month(simulation, YEAR), expected)
+
+
+def test_population_built_simulation_follows_a_stored_column(people, stored_simulation):
+    # With the column, the adapter gives the dataset's months, as a
+    # Microsimulation of the file does, not the household-position months it
+    # gave without it. A release that adds the column changes the adapter's
+    # results for that reason, and has to be qualified through the adapter.
+    stored = _population_built(_with_stored_column(people))
+    unstored = _population_built(people)
+    np.testing.assert_array_equal(
+        _receipt_by_month(stored, YEAR), _receipt_by_month(stored_simulation, YEAR)
+    )
+    assert (_receipt_by_month(stored, YEAR) != _receipt_by_month(unstored, YEAR)).any()
 
 
 def test_out_of_range_start_month_raises_naming_it(people):

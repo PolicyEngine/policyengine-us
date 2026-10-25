@@ -117,7 +117,7 @@ changelog.d/medicaid-ce-exclusions.md
 - For scale parameters that return integers, avoid using `rate_unit: int` in metadata (use `/1` instead)
 - Use `bool` instead of `int` or `/1` in `rate_unit` for scale parameters when appropriate
 - Program takeup is assigned during microdata construction, not simulation time
-  - So is every other stochastic input (for example the month unemployment compensation receipt starts): the dataset build draws it and stores it as an input variable, and formulas only compare against it. Seeding does not make a draw acceptable, and neither does hashing entity ids. `tests/code_health/test_no_engine_time_randomness.py` fails on any draw, sample or entity hash in the package
+  - So is every other stochastic input (for example the month unemployment compensation receipt starts): the dataset build draws it and stores it as an input variable, and formulas only compare against it. Seeding does not make a draw acceptable, and neither does hashing entity ids. `tests/code_health/test_no_engine_time_randomness.py` fails on the draw, sample and entity-hash patterns it recognises (not a proof that none exists), outside a reviewed exemption list and a ratchet of transitional draws that only shrinks
   - Changes to takeup parameters (SNAP, EITC, etc.) have no effect in the web app
   - These parameters should include `economy: false` in their metadata
 - **Labor Supply Response & Negative Earnings**: Use `max_(earnings, 0)` to prevent sign flips. Negative total earnings should result in zero labor supply responses.
