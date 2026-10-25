@@ -12,6 +12,9 @@ formula:
   (splitmix64(person_id) mod 12, plus 1) gives exactly the old results, in
   every month of the base year and of a later, extended year.
 - Determinism: two simulations of the same dataset agree.
+- Every start month (1-12) with every number of months (0-12) gives one
+  block of exactly that many calendar months, starting in the start month
+  and wrapping into January.
 - Filtering: a dataset cut to some households keeps each person's start
   month and months of receipt.
 - A column stored for some people but not others raises an error that names
@@ -193,6 +196,34 @@ def test_filtered_dataset_keeps_each_persons_months(people, stored_simulation):
         index=filtered.calculate("person_id", YEAR).values,
     )
     pd.testing.assert_frame_equal(cut, full.loc[cut.index])
+
+
+def test_every_start_month_and_length_gives_one_wrapping_block():
+    start, months = np.meshgrid(np.arange(1, 13), np.arange(0, 13), indexing="ij")
+    start, months = start.ravel(), months.ravel()
+    ids = np.arange(1, start.size + 1)
+    person = pd.DataFrame(
+        {
+            "person_id": ids,
+            "person_household_id": ids,
+            "person_tax_unit_id": ids,
+            "person_spm_unit_id": ids,
+            "person_family_id": ids,
+            "person_marital_unit_id": ids,
+            "age": np.full(ids.size, 35.0),
+            "unemployment_compensation_months": months,
+            COLUMN: start,
+        }
+    )
+    receipt = _receipt_by_month(Microsimulation(dataset=_dataset(person)), YEAR)
+    # Built by counting months forward from the start, not by the formula's
+    # modular comparison.
+    expected = np.zeros((ids.size, 12), dtype=bool)
+    for row, (first, length) in enumerate(zip(start, months)):
+        for offset in range(length):
+            expected[row, (first - 1 + offset) % 12] = True
+    np.testing.assert_array_equal(receipt, expected)
+    np.testing.assert_array_equal(receipt.sum(axis=1), months)
 
 
 def test_partly_stored_column_raises_naming_it(people):
