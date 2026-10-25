@@ -289,7 +289,32 @@ def test_repeated_public_writes_refresh_migrated_sources_and_future_years(wrappe
             override * 13_522.16 / 12_000 * 1.08, abs=0.01
         )
         assert input_periods(simulation, public) == {"2024"}
-        assert input_periods(simulation, reported) == {"2024"}
+    assert input_periods(simulation, reported) == {"2024"}
+
+
+@pytest.mark.parametrize("explicit_source", (None, 0, 6_000))
+def test_existing_builder_refreshes_loaded_sources_and_keeps_earlier_overrides(
+    explicit_source,
+):
+    inputs = {name: {2024: 12_000} for name in SOCIAL_SECURITY_COMPONENTS}
+    simulation = make_core_simulation(inputs)
+    for name in SOCIAL_SECURITY_COMPONENTS:
+        simulation.set_input(name, 2025, [18_000])
+        if explicit_source is not None:
+            simulation.set_input(f"{name}_reported", 2024, [explicit_source])
+    SimulationBuilder().build_from_variables(
+        system,
+        {name: {2024: [24_000]} for name in SOCIAL_SECURITY_COMPONENTS},
+        simulation=simulation,
+    )
+    for name in SOCIAL_SECURITY_COMPONENTS:
+        assert amount(simulation, f"{name}_reported", 2024) == (
+            24_000 if explicit_source is None else explicit_source
+        )
+        assert amount(simulation, name, 2025) == 18_000
+        assert input_periods(simulation, name) == (
+            {"2025"} if explicit_source is None else {"2024", "2025"}
+        )
 
 
 @pytest.mark.parametrize("wrapper", (*WRAPPERS, make_core_simulation))

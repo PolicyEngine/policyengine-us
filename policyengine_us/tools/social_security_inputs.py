@@ -29,6 +29,9 @@ _REPORTED_COMPONENTS = tuple(f"{name}_reported" for name in SOCIAL_SECURITY_COMP
 _initial_social_security_ingress = ContextVar(
     "initial_social_security_ingress", default=False
 )
+_initial_social_security_writes = ContextVar(
+    "initial_social_security_writes", default=None
+)
 _reloaded_social_security_provenance = ContextVar(
     "reloaded_social_security_provenance", default=None
 )
@@ -251,6 +254,11 @@ def install_social_security_input_compatibility():
                 is_input=is_input,
                 sequence_number=sequence_number,
             )
+            loading_writes = _initial_social_security_writes.get()
+            if track_source and effective_input and loading_writes is not None:
+                loading_writes.setdefault(holder.simulation, {}).setdefault(
+                    holder.variable.name, set()
+                ).add(holder._storage_period(period))
             # Initial registered inputs wait until every explicit twin is
             # loaded. Raw cache seeds never enter that migration, so mirror
             # them immediately without making either value a supplied input.
@@ -277,14 +285,21 @@ def install_social_security_input_compatibility():
             ):
                 return original_dataset_build(simulation)
             token = _initial_social_security_ingress.set(True)
+            writes = _initial_social_security_writes.get()
+            if writes is None:
+                writes = {}
+            writes_token = _initial_social_security_writes.set(writes)
             try:
                 result = original_dataset_build(simulation)
             finally:
+                _initial_social_security_writes.reset(writes_token)
                 _initial_social_security_ingress.reset(token)
             # Raw Core simulations use this loader without either country
             # constructor or an entity/variable builder. Migrate before Core
             # creates its reform baseline, exactly as for situation ingress.
-            migrate_social_security_inputs(simulation)
+            migrate_social_security_inputs(
+                simulation, loaded_public_inputs=writes.get(simulation, {})
+            )
             reloaded = _reloaded_social_security_provenance.get()
             if reloaded is not None and reloaded[0] is simulation:
                 _restore_automatic_reported_metadata(simulation, reloaded[1])
@@ -376,11 +391,19 @@ def install_social_security_input_compatibility():
                         )
                 simulation._social_security_dump_inputs_restored = True
             token = _initial_social_security_ingress.set(True)
+            # Nested dict/entity/variable builders form one loading operation.
+            # Record actual stores, after period helpers have split them, so a
+            # builder on an existing simulation refreshes only its new inputs.
+            writes = _initial_social_security_writes.get()
+            if writes is None:
+                writes = {}
+            writes_token = _initial_social_security_writes.set(writes)
             try:
                 return original_restore_holder(
                     simulation, variable, directory, inputs, calculated_number
                 )
             finally:
+                _initial_social_security_writes.reset(writes_token)
                 _initial_social_security_ingress.reset(token)
 
         restore_holder._social_security_compatibility = True
@@ -518,7 +541,9 @@ def install_social_security_input_compatibility():
                     ]
                 )
             )
-            migrate_social_security_inputs(result)
+            migrate_social_security_inputs(
+                result, loaded_public_inputs=writes.get(result, {})
+            )
             _restore_automatic_reported_metadata(result, metadata)
             return result
 
@@ -541,29 +566,40 @@ def install_social_security_input_compatibility():
     install_social_security_period_compatibility()
 
 
-def migrate_social_security_inputs(simulation, *, include_baseline=True):
+def migrate_social_security_inputs(
+    simulation, *, include_baseline=True, loaded_public_inputs=None
+):
     """Move legacy component inputs, period by period, into pure sources.
 
-    A reported input in the same visible period makes the public input a
-    deliberate final override. Inputs in other periods do not affect that
-    choice. Recorded-input helpers exclude formula caches and honor visible
-    branch precedence.
+    An explicit twin in the same visible period keeps its priority. Automatic
+    twins refresh for public inputs stored by this loading operation. Earlier
+    public overrides are not initial inputs merely because another builder is
+    run on the same simulation. Without a loading record, migrate only legacy
+    public inputs with no twin. Recorded-input helpers exclude formula caches
+    and honor visible branch precedence.
     """
     visible_branches = simulation._get_visible_branch_names()
     migrated = set()
     for public_name in SOCIAL_SECURITY_COMPONENTS:
         reported_name = f"{public_name}_reported"
-        reported_periods = set(simulation._get_set_input_periods(reported_name))
         holder = simulation.get_holder(public_name)
         # Snapshot before deleting: deleting a multi-year period also deletes
         # contained supplied periods, including a shorter legacy source whose
         # lexical sort order happens to place it after the longer period.
         sources = {}
         for period in simulation._get_set_input_periods(public_name):
-            if period not in reported_periods:
-                value = simulation._get_recorded_input_array(public_name, period)
-                if value is not None:
-                    sources[period] = value.copy()
+            location = _recorded_input_location(
+                simulation, reported_name, period, include_unrecorded=True
+            )
+            if location is not None and (
+                not _is_automatic_reported_input(simulation, reported_name, period)
+                or loaded_public_inputs is None
+                or period not in loaded_public_inputs.get(public_name, ())
+            ):
+                continue
+            value = simulation._get_recorded_input_array(public_name, period)
+            if value is not None:
+                sources[period] = value.copy()
         if not sources:
             continue
         retained_overrides = []
@@ -571,7 +607,7 @@ def migrate_social_security_inputs(simulation, *, include_baseline=True):
             if (
                 name != public_name
                 or branch_name not in visible_branches
-                or period not in reported_periods
+                or period in sources
             ):
                 continue
             for storage_name, storage in (
