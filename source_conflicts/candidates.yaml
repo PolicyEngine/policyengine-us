@@ -2783,6 +2783,47 @@ candidates:
   state: unreviewed
   note: 'The statute-first rule requires changing main''s form-based treatment; the open PR proposes following the
     statute and TB-58. Code not yet on main: md_net_capital_gain, md_capital_gains_surtax.'
+- id: us-md:ccs-copay-flat-schedule
+  program: child-care-assistance
+  years:
+    from: 2024
+    type: calendar
+  question: Do Maryland Child Care Scholarship copays follow the regional weekly tables in COMAR 13A.14.06.12, or
+    MSDE's flat maximum of $3, $2 and $1 a week per scholarship, given that Educ. §9.5-111(d)(4) bars raising copays
+    above January 1, 2024 levels?
+  sources:
+  - kind: statute
+    citation: Md. Code, Educ. §9.5-111(d)(4) (Chapter 717 of 2024)
+    url: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=ged&section=9.5-111&enactments=false
+  - kind: regulation
+    citation: COMAR 13A.14.06.12
+    url: https://regs.maryland.gov/us/md/exec/comar/13A.14.06.12
+  - kind: guidance
+    citation: MSDE Division of Early Childhood bulletin, Child Care Scholarship Program Changes Effective May 23,
+      2022
+    url: https://content.govdelivery.com/accounts/MDMSDE/bulletins/31a37f2
+  readings:
+    statute: From June 1, 2024, the Department "may not increase the copayment levels of the Program in effect as
+      of January 1, 2024". The statute does not say whether those are MSDE's flat maximums, which applied from May
+      23, 2022, or COMAR's printed tables.
+    other: COMAR 13A.14.06.12 still prints regional weekly copayment tables by income level and child order.
+  example: md_ccs_weekly_copay.yaml Case 1 (January 2025, one child in full-time care, $50,000 income) gives $3
+    a week. COMAR's level A amounts for three units of care run from $4.03 to $7.22 for a youngest child 24 months
+    or older and from $2.42 to $4.33 for a second or third child.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/parameters/gov/states/md/msde/ccs/copay/weekly_amount.yaml
+    - policyengine_us/variables/gov/states/md/msde/ccs/md_ccs_weekly_copay.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/7889
+  state: unreviewed
+  note: 'The model follows MSDE''s flat maximums. If those are the levels in effect, the model meets the cap, and
+    restoring COMAR''s tables would raise most copays. If COMAR''s tables are, some flat amounts exceed them: Region
+    V''s level A second-child amount is $2.42 for three units and about $0.81 for one, against $3 and $1. From May
+    2022 to May 2024 no statute is supplied. The bulletin''s amounts are maximums and some families pay $0, while
+    the model charges the maximum, subject to the 7 percent federal cap. The parameter starts 2022-05-01; the bulletin
+    dates the change May 23, 2022.'
 - id: us-md:dependent-exemption-chart-10a
   program: income-tax
   years:
@@ -4244,6 +4285,35 @@ candidates:
     prs: []
   state: unreviewed
   note: PE-US follows the manual and plan; verify the matrix discrepancy for sizes 14 and above.
+- id: us-ny:heap-other-income-catch-all
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does New York HEAP count income not specifically excluded, as HEAP Manual D.12(a)(38) does, when the
+    FFY 2026 state plan leaves the "Other" countable income box unchecked?
+  sources:
+  - kind: manual
+    citation: NY HEAP Manual (7/1/2021 edition) Chapter 8 D.12(a)(38)
+    url: https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=37
+  - kind: plan
+    citation: New York FFY 2026 LIHEAP State Plan section 1.9, PDF page 7
+    url: https://liheapch.acf.gov/docs/2026/state-plans/NY_Plan_2026.pdf#page=7
+  readings:
+    statute: No statute supplied; the manual counts all other income not specifically excluded under D.13.
+    other: The state plan's section 1.9 list of countable income leaves "Other" unchecked.
+  example: ny_heap_countable_income.yaml Case 3 counts $1,200 of miscellaneous income, for countable income of $28,800;
+    without it, countable income would be $27,600.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/parameters/gov/states/ny/otda/heap/income/sources/unearned.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/9744
+  state: unreviewed
+  note: The code follows the manual; its comment reads "the manual controls". Other boxes left unchecked in section
+    1.9 may raise the same question.
 - id: us-ny:household-credit-claimable-spouse
   program: income-tax
   years:
@@ -4297,6 +4367,151 @@ candidates:
   state: ruled
   note: 'Ruled in October 2026 to retain the credit under the statute; verify the instructions'' return-level interpretation.
     Code not yet on main: ny_real_property_tax_credit.'
+- id: us-ny:ssp-couple-facility-entry-month
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: When a New York couple enters a congregate care level II or III facility after the first of the month,
+    is that month's state supplement set by the couple's arrangement on the first day or paid at the couple facility
+    rate?
+  sources:
+  - kind: regulation
+    citation: 18 NYCRR 398-4.4(c)
+    url: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-4.4
+  - kind: manual
+    citation: SSA POMS SI NY01415.026 B, codes D and E
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501415026NY
+  readings:
+    statute: No statute supplied; 18 NYCRR 398-4.4(c) sets the State benefit rate by the individual's or couple's
+      living arrangement on the first day of the month.
+    other: POMS SI NY01415.026 says a couple entering a level 2 or level 3 facility usually gets the couple FBR
+      and the couple supplement for that level (code D or E) for the month of change only, then two individual rates.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/ny/otda/ssp/ny_ssp_care_setting.py
+    - policyengine_us/variables/gov/states/ny/otda/ssp/ny_ssp.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10158
+  state: unreviewed
+  note: The model has no entry-date input, so the monthly ny_ssp_care_setting input decides the rate and neither
+    reading is applied by itself. No test covers the entry month.
+- id: us-ny:ssp-personal-needs-five-dollar-facilities
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: Do residents of other medical facilities receive New York's $5 personal needs allowance, as the 2026
+    OTDA chart says, or only residents of OPWDD intermediate care facilities and OMH hospitals, as Social Services
+    Law 209(2-a) provides?
+  sources:
+  - kind: statute
+    citation: N.Y. Soc. Serv. Law §209(2-a)
+    url: https://www.nysenate.gov/legislation/laws/SOS/209
+  - kind: regulation
+    citation: 18 NYCRR 398-3.4
+    url: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-3.4
+  - kind: guidance
+    citation: OTDA 2026 SSP payment chart, footnote 4
+    url: https://opwdd.ny.gov/system/files/documents/2025/11/25-inf-06-attachment-1.pdf#page=2
+  readings:
+    statute: The $5 allowance goes to residents of OPWDD intermediate care facilities and patients of OMH hospitals;
+      residents of residential health care facilities receive $25. 18 NYCRR 398-3.4 agrees.
+    other: The OTDA chart gives $5 to residents of other medical facilities.
+  example: 'ny_ssp.yaml Case 35: a general hospital resident with $30 of SSI receives 0 under the statute; the chart''s
+    footnote would pay $5.'
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ny/otda/ssp/ny_ssp.py
+    - policyengine_us/variables/gov/states/ny/otda/ssp/ny_ssp_care_setting.py
+    - policyengine_us/variables/gov/states/ny/otda/ssp/ny_ssp_living_arrangement.py
+    - policyengine_us/parameters/gov/states/ny/otda/ssp/personal_needs/developmental_or_mental_health_facility.yaml
+    - policyengine_us/parameters/gov/states/ny/otda/ssp/personal_needs/residential_health_care_facility.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10158
+  state: unreviewed
+  note: The model follows the statute and regulation (NOTE in ny_ssp.py); ny_ssp.yaml Cases 19 and 35 pin it. Read
+    alone, 18 NYCRR 398-3.2(c) requires residence in a residential health care facility, which would bar both $5
+    groups.
+- id: us-ny:ssp-personal-needs-income-test
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Does New York's personal needs allowance require that the facility resident have no countable income
+    other than SSI, as 18 NYCRR 398-3.2(d) does, when Social Services Law 209(2-a) states no income test?
+  sources:
+  - kind: statute
+    citation: N.Y. Soc. Serv. Law §209(2-a)
+    url: https://www.nysenate.gov/legislation/laws/SOS/209
+  - kind: regulation
+    citation: 18 NYCRR 398-3.2(d)
+    url: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-3.2
+  readings:
+    statute: A residential health care facility resident who receives or is eligible to receive SSI or additional
+      state payments is entitled to the $25 allowance "in accordance with regulations of the department", and the
+      $5 group "shall receive" its allowance; neither sentence states an income test.
+    other: The resident must have no countable income, earned or unearned, other than the federal SSI benefit for
+      medical facility residents when Medicaid pays at least 50 percent of the cost of care.
+  example: 'A nursing home resident with $45 a month of Social Security has $25 of countable income and $5 of SSI:
+    the regulation pays $0; reading the statute with no income test would pay $25.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/ny/otda/ssp/ny_ssp.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10158
+  state: unreviewed
+  note: The model pays the allowance only with SSI above zero and no countable income; ny_ssp.yaml Cases 20 and
+    21 pin it. The $25 sentence delegates to the department's regulations, so 398-3.2(d) may implement it rather
+    than conflict with it; the $5 sentence has no such phrase.
+- id: us-ny:ssp-spousal-deeming-subtraction
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Under spousal deeming, does New York's state supplement subtract the claimant's SSI plus countable income
+    from the standard of need, as Social Services Law 209(4) reads, or the greater of the FBR or countable income
+    once, as 18 NYCRR 398-2.1(ac) and 398-4.4(b) are read together?
+  sources:
+  - kind: statute
+    citation: N.Y. Soc. Serv. Law §209(4)
+    url: https://www.nysenate.gov/legislation/laws/SOS/209
+  - kind: regulation
+    citation: 18 NYCRR 398-2.1(ac), (g) and (o)
+    url: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-2.1
+  - kind: regulation
+    citation: 18 NYCRR 398-4.4(b)
+    url: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-4.4
+  - kind: manual
+    citation: SSA POMS SI 01320.430 D
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501320430
+  readings:
+    statute: The standard of need is reduced by "the sum of such individual's or couple's supplemental security
+      income benefit plus countable income".
+    other: 398-2.1(ac) sets the State benefit rate at the standard of need minus "the FBR or a recipient's monthly
+      Countable Income, whichever is greater", and 398-4.4(b) subtracts the greater of the two from that rate again.
+      Read to subtract once, with deemed income counted (398-2.1(g)) against the claimant's own individual FBR,
+      the regulation pays the standard less the greater amount. SSA's method for federally administered supplements
+      (POMS SI 01320.430 D) is a third reading and uses the couple rate.
+  example: 'Integration Case 11: a claimant living with an ineligible spouse has countable income of 650.83, including
+    deemed income, and SSI of 840.17 against a 1,017 standard. Subtracting once pays 1,017 - max(994, 650.83) =
+    23; the statute subtracts 840.17 + 650.83 = 1,491 and pays 0.'
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/ny/otda/ssp/ny_ssp.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10158
+  state: unreviewed
+  note: The model follows the regulation read to subtract once (NOTE in ny_ssp.py); integration.yaml Cases 6 and
+    11 pin it. Read literally, 398-2.1(ac) and 398-4.4(b) subtract the greater amount twice, which would pay a claimant
+    living alone with no income nothing instead of $87. New York has administered its own supplement since October
+    1, 2014. Whether a state regulation that departs from the statute's text binds as a Treasury regulation would
+    is not yet ruled.
 - id: us-oh:heap-awards-above-150-percent-poverty
   program: liheap
   years:
@@ -4453,6 +4668,138 @@ candidates:
   state: unreviewed
   note: 'The open PR applies the federal floor; verify the applicable fiscal-year tables and large-household calculations.
     Code not yet on main: oh_liheap_eligible, gov.hhs.liheap.fpg_floor.'
+- id: us-oh:rss-couple-income-standard
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Is an Ohio RSS couple's pooled countable income tested against the SSI couple rate that OAC 5160:1-5-01(E)(2)
+    cites, or against twice the $1,800 RSS income standard?
+  sources:
+  - kind: regulation
+    citation: OAC 5160:1-5-01(B)(2), (E)(2) and (G)(1)
+    url: https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-5-01
+  - kind: regulation
+    citation: OAC 5160:1-3-03.5(B)(2)
+    url: https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-3-03.5
+  readings:
+    statute: No statute supplied; 5160:1-5-01(E)(2) determines a couple's eligibility "collectively, utilizing the
+      appropriate couple income standard as defined in rule 5160:1-3-03.5", which is "the current supplemental security
+      income (SSI) benefit rate for a couple".
+    other: 5160:1-5-01(B)(2) defines a single RSS income standard, the allowable fee plus the personal needs allowance
+      ($1,800), and the model applies it to each spouse.
+  example: 'Integration Case 1: both spouses are approved and their only income is $1,491 of SSI. The SSI couple
+    standard leaves them at the standard and ineligible; twice the RSS standard pays each (3,600 - 1,491) / 2 =
+    1,054.50.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/oh/dbh/rss/oh_rss_countable_income.py
+    - policyengine_us/variables/gov/states/oh/dbh/rss/oh_rss.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10164
+  state: unreviewed
+  note: The model compares pooled countable income with twice the RSS income standard (NOTE in oh_rss_countable_income.py);
+    integration.yaml Cases 1 and 8 pin it. Read literally, (E)(2) makes a couple whose only income is SSI ineligible.
+- id: us-oh:rss-one-eligible-spouse-income-standard
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: When only one spouse has an RSS level of care, is that spouse's income tested against the SSI individual
+    rate that OAC 5160:1-5-01(E)(3) cites, or against the $1,800 RSS income standard?
+  sources:
+  - kind: regulation
+    citation: OAC 5160:1-5-01(B)(2) and (E)(3)
+    url: https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-5-01
+  - kind: regulation
+    citation: OAC 5160:1-3-03.5(B)(3)
+    url: https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-3-03.5
+  readings:
+    statute: No statute supplied; 5160:1-5-01(E)(3) uses "the appropriate individual income standard as defined
+      in rule 5160:1-3-03.5", the SSI individual rate ($994 in 2026).
+    other: The RSS income standard of 5160:1-5-01(B)(2), $1,800, which the model uses.
+  example: 'Integration Case 15: the approved spouse has $1,200 a month of Social Security disability, countable
+    income of 1,180 and no SSI. Against $994 the spouse is ineligible; against $1,800 the payment is 620.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/oh/dbh/rss/oh_rss_countable_income.py
+    - policyengine_us/variables/gov/states/oh/dbh/rss/oh_rss.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10164
+  state: unreviewed
+  note: The model compares that spouse's own countable income with the RSS income standard (NOTE in oh_rss_countable_income.py);
+    integration.yaml Case 15 pins it.
+- id: us-oh:rss-one-eligible-spouse-resources
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: When only one spouse has an RSS level of care, are that spouse's own resources tested against $2,000,
+    or the couple's combined resources against $3,000 under Ohio's Medicaid resource rules?
+  sources:
+  - kind: regulation
+    citation: OAC 5160:1-5-01(E)(3)
+    url: https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-5-01
+  - kind: regulation
+    citation: OAC 5160:1-3-05.1(B)(9)(b)
+    url: https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-3-05.1
+  - kind: regulation
+    citation: OAC 5160:1-3-05.20(E)(1)-(2)
+    url: https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-3-05.20
+  readings:
+    statute: No statute supplied; 5160:1-5-01(E)(3) applies the individual standard, so the approved spouse's own
+      resources are tested against $2,000.
+    other: 5160:1-3-05.1(B)(9)(b) and 5160:1-3-05.20(E)(1)-(2) combine a married couple's resources against $3,000,
+      whether or not the other spouse is eligible.
+  example: 'Integration Case 13: only person1 is approved, with resources of $1,500; the spouse has $1,600. The
+    individual test pays person1 1,800; the combined test ($3,100 against $3,000) pays 0.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/oh/dbh/rss/oh_rss.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10164
+  state: unreviewed
+  note: 'The model follows the RSS rule (NOTE in oh_rss.py); integration.yaml Case 13 pins it. The reading decides
+    the result only when medicaid_enrolled is entered: computed Medicaid and the SSI resource test both combine
+    the couple''s resources, and integration.yaml Case 14 pays [0, 0].'
+- id: us-oh:rss-recipient-of-ssi-or-social-security
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Must an Ohio Residential State Supplement recipient receive SSI or Social Security, as ORC 5119.41(A)
+    describes the program, or only meet the eligibility criteria of the rules?
+  sources:
+  - kind: statute
+    citation: ORC 5119.41(A)-(B)
+    url: https://codes.ohio.gov/ohio-revised-code/section-5119.41
+  - kind: regulation
+    citation: OAC 5160:1-5-01(C)
+    url: https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-5-01
+  - kind: regulation
+    citation: OAC 5122-36-02(A)
+    url: https://codes.ohio.gov/ohio-administrative-code/rule-5122-36-02
+  readings:
+    statute: The program supplements "the amounts received by aged, blind, or disabled adults as supplemental security
+      income payments ... or as social security benefits or social security disability insurance benefits", so a
+      person who receives neither is not paid.
+    other: The criteria of 5160:1-5-01(C) and 5122-36-02(A), to which 5119.41(B) leaves eligibility, do not require
+      receipt of SSI or Social Security.
+  example: 'Integration Case 3: an approved 65-year-old with no income whose spouse''s deemed wages reduce SSI to
+    0 receives 1,800 under the rules and 0 under the receipt reading.'
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/oh/dbh/rss/oh_rss.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10164
+  state: unreviewed
+  note: The model follows the rules and does not require SSI take-up (NOTE in oh_rss.py); integration.yaml Cases
+    3 and 13 pin it. Because 5119.41(B) makes eligibility depend on the rules, (A) may describe the program rather
+    than add a condition.
 - id: us-ok:liheap-child-earnings
   program: liheap
   years:
@@ -4534,6 +4881,137 @@ candidates:
   state: unreviewed
   note: 'PE-US follows the regulation; the plan narrative agrees, so reconcile its contrary checkbox and verify
     page references. Code not yet on main: ok_liheap.'
+- id: us-ok:ssp-ineligible-child-allocation
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: Is Oklahoma's ineligible child allocation $498, as Appendix C-1 Schedule VIII.C lists, or $497, the
+    couple FBR less the individual FBR?
+  sources:
+  - kind: manual
+    citation: OKDHS Appendix C-1 Schedule VIII.C (July 1, 2026)
+    url: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-1.pdf#page=4
+  - kind: regulation
+    citation: 20 CFR 416.1163(b)(1)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1163
+  readings:
+    statute: No statute supplied; Appendix C-1 Schedule VIII.C lists a $498 allocation, and OAC 340:15-1-5 and 317:35-5-42
+      point to Appendix C-1 for it.
+    other: '20 CFR 416.1163(b)(1) sets the allocation at the couple FBR less the individual FBR: $1,491 - $994 =
+      $497 in 2026.'
+  example: 'integration.yaml Case 15 sums two $498 allocations on the ineligible-spouse path, one reduced by a teen''s
+    $300 of earnings: (498 - 300) + 498 = 696. The federal amount would give (497 - 300) + 497 = 694.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/ok/dhs/ssp/ok_ssp_spouse_child_allocation.py
+    - policyengine_us/variables/gov/states/ok/dhs/ssp/_ok_ssp_income.py
+    - policyengine_us/parameters/gov/states/ok/dhs/ssp/child_allocation.yaml
+    - policyengine_us/variables/gov/ssa/ssi/eligibility/income/deemed/ssi_ineligible_child_allocation.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10165
+  state: unreviewed
+  note: The model uses $498 on the ineligible-spouse path and the federal $497 on the child path, which reuses federal
+    parental deeming, so a sibling's allocation can be $1 lower (NOTE in _ok_ssp_income.py). The difference changes
+    the payment only below the $40 cap.
+- id: us-ok:ssp-ineligible-spouse-definition
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Is an aged, blind or disabled spouse who is not SSP-eligible an ineligible spouse for Oklahoma's state
+    supplement?
+  sources:
+  - kind: regulation
+    citation: OAC 340:15-1-2
+    url: https://www.law.cornell.edu/regulations/oklahoma/OAC-340-15-1-2
+  - kind: regulation
+    citation: OAC 317:35-5-42(k)(1), applied by OAC 340:15-1-4(10)
+    url: https://www.oklahoma.gov/ohca/policies-and-rules/xpolicy/medical-assistance-for-adults-and-children-eligibility/eligibility-and-countable-income/countable-income-and-resources/determination-of-countable-income-for-individuals-categorically-.html
+  readings:
+    statute: No statute supplied; 340:15-1-2 defines an eligible individual with an ineligible spouse as one living
+      with a spouse who is not 65 years of age and older, blind, or disabled and is not an essential spouse, and
+      is silent on an aged, blind or disabled spouse who is not eligible.
+    other: 317:35-5-42(k)(1) makes any spouse in the household who is not eligible for SSI an ineligible spouse.
+  example: 'Integration Case 5: the claimant has $500 a month of Social Security and the aged spouse, who declines
+    SSI, has $1,500. As an ineligible spouse, couple income of 1,980 counts and the SSP is 0; ignoring the spouse,
+    the claimant''s own 480 is under the $1,034 standard and the SSP is 40.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/ok/dhs/ssp/ok_ssp.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10165
+  state: unreviewed
+  note: The model treats any spouse living together who is not ok_ssp_eligible as an ineligible spouse, except one
+    in a medical facility or incarcerated (NOTE in ok_ssp.py); integration.yaml Cases 5 and 6 pin it.
+- id: us-ok:ssp-minor-income-limit
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Must a blind or disabled minor's countable income, including deemed parental income, be below the FBR
+    or below the SSP standard for an individual to receive Oklahoma's state supplement?
+  sources:
+  - kind: regulation
+    citation: OAC 340:15-1-4(9)(B)(iii)
+    url: https://www.law.cornell.edu/regulations/oklahoma/OAC-340-15-1-4
+  - kind: regulation
+    citation: OAC 340:15-1-5(c)(6)
+    url: https://www.law.cornell.edu/regulations/oklahoma/OAC-340-15-1-5
+  - kind: manual
+    citation: OKDHS Appendix C-1 Schedule VIII.C
+    url: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-1.pdf#page=4
+  readings:
+    statute: No statute supplied; 340:15-1-4(9)(B)(iii) requires countable deemed income below 100 percent of the
+      FBR, and Appendix C-1 Schedule VIII.C says the same.
+    other: 340:15-1-5(c)(6) compares the child's income plus income deemed from the parents with the SSP standard
+      for an eligible individual.
+  example: 'A disabled child with countable income of 1,010 and no SSI: the (c)(6) test pays 1,034 - 1,010 = 24;
+    the FBR test pays 0.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/ok/dhs/ssp/ok_ssp.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10165
+  state: unreviewed
+  note: The model follows the (c)(6) procedure (NOTE in ok_ssp.py). The readings differ only for countable income
+    from 994 up to 1,034; no test covers that range.
+- id: us-ok:ssp-presumed-maximum-value-with-ineligible-spouse
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: When an ineligible spouse's income is deemed, is an Oklahoma SSP claimant's in-kind support and maintenance
+    capped at one-third of the individual FBR plus $20, or at one-sixth of the couple FBR plus $10?
+  sources:
+  - kind: regulation
+    citation: OAC 317:35-5-42(b)(8)(D)
+    url: https://www.oklahoma.gov/ohca/policies-and-rules/xpolicy/medical-assistance-for-adults-and-children-eligibility/eligibility-and-countable-income/countable-income-and-resources/determination-of-countable-income-for-individuals-categorically-.html
+  - kind: manual
+    citation: SSA POMS SI 01320.150 B.1.a
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501320150
+  readings:
+    statute: No statute supplied; 317:35-5-42 sets the maximum presumed value at one-third of the SSI FBR plus the
+      $20 general income exclusion and does not say which FBR applies when spouse income is deemed.
+    other: 'POMS SI 01320.150 B.1.a caps the value at one-sixth of the couple FBR plus $10 when there is income
+      to deem from the spouse: 258.50 in 2026, against 351.33.'
+  example: 'Integration Case 16: with 258.50 of in-kind support and maintenance the couple income is 1,511 and the
+    SSP is 21; at 351.33 the income is 1,603.83 and the SSP is 0.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/ok/dhs/ssp/_ok_ssp_income.py
+    - policyengine_us/variables/gov/ssa/ssi/eligibility/income/ism/ssi_pmv_amount.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10165
+  state: unreviewed
+  note: The model takes the federal in-kind support and maintenance value, so it follows POMS. The NOTE in _ok_ssp_income.py
+    adds that federal SSI also runs a couple computation for an aged, blind or disabled spouse who is not eligible
+    (issue 10243), so the deeming value applies even when 317:35-5-42(m)(4) deems nothing.
 - id: us-or:2026-standard-deduction-agency-figures
   program: income-tax
   years:
@@ -4728,6 +5206,75 @@ candidates:
     prs: []
   state: unreviewed
   note: PE-US follows the handbook; verify its historical applicability to the report periods.
+- id: us-pa:ssp-care-home-levels
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Are Pennsylvania's domiciliary care and personal care home supplements the $434.30 and $439.30 printed
+    in 55 Pa. Code §299.37, or the $634.30 and $639.30 that SSA and DHS give for 2026?
+  sources:
+  - kind: regulation
+    citation: 55 Pa. Code §299.37
+    url: https://www.pacodeandbulletin.gov/secure/pacode/data/055/chapter299/s299.37.html
+  - kind: manual
+    citation: SSA POMS SI 01415.058 K.2.a and K.2.b
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501415058#k2a
+  - kind: manual
+    citation: Pennsylvania Medical Assistance Eligibility Handbook 387 Appendix A
+    url: null
+  readings:
+    statute: No statute supplied; §299.37 (amended effective July 1, 2011) prints $434.30 and $439.30 for individuals
+      and $947.40 and $957.40 for couples.
+    other: POMS SI 01415.058 K.2 and Handbook 387 Appendix A give $634.30 and $639.30 for individuals and $1,347.40
+      and $1,357.40 for couples.
+  example: 'pa_ssp.yaml Case 3: a certified domiciliary care resident with no income receives 634.30, against 434.30
+    under §299.37.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/parameters/gov/states/pa/dhs/ssp/amount/individual.yaml
+    - policyengine_us/parameters/gov/states/pa/dhs/ssp/amount/couple.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10167
+  state: unreviewed
+  note: The model follows POMS and the Handbook; YAML comments by the care rows record the §299.37 levels. SSA administers
+    the care-home supplements. pa_ssp.yaml Cases 3 and 4 and integration.yaml Case 4 pin it. The Handbook is served
+    over http only; the parameter references link it.
+- id: us-pa:ssp-supplement-for-personal-needs
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: Is Pennsylvania's Supplement for Personal Needs for a Medicaid facility resident $22.10, or the $15.00
+    that Handbook 387 Appendix A's 2026 note lists?
+  sources:
+  - kind: manual
+    citation: Pennsylvania Long-Term Care Handbook 450.243
+    url: null
+  - kind: manual
+    citation: Pennsylvania Medical Assistance Eligibility Handbook 387 Appendix A (January 1, 2026)
+    url: null
+  - kind: regulation
+    citation: 55 Pa. Code §299.37
+    url: https://www.pacodeandbulletin.gov/secure/pacode/data/055/chapter299/s299.37.html
+  readings:
+    statute: No statute supplied; LTC Handbook 450.243 pays an SSI recipient in a long-term care facility $30 of
+      SSI plus a $22.10 Supplement for Personal Needs, the maximum independent-living supplement (§299.37).
+    other: Appendix A's note on the state supplements in its 2026 table lists $15.00 for an MA institution, although
+      the table's $52.10 total is $30 plus $22.10.
+  example: An SSI recipient in a Medicaid facility with no other income receives 22.10, or 15.00 under the note.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/parameters/gov/states/pa/dhs/ssp/amount/individual.yaml
+    - policyengine_us/variables/gov/states/pa/dhs/ssp/pa_ssp.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10167
+  state: unreviewed
+  note: The model uses $22.10 (comment by MEDICAID_INSTITUTION in amount/individual.yaml); pa_ssp.yaml Cases 6 and
+    17 pin it. Both handbooks are served over http only; the parameter references link them.
 - id: us-pa:tax-forgiveness-dependent-parent-exception
   program: income-tax
   years:
@@ -4935,6 +5482,141 @@ candidates:
   state: unreviewed
   note: 'PE-US follows the manual; verify whether the unchecked insurance category covers these payments. Code not
     yet on main: ri_liheap countable income.'
+- id: us-ri:ssp-category-d-without-federal-ssi
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Is Rhode Island's Category D supplement for an assisted living resident denied SSI for excess income
+    a state-only DHS payment, or an SSA payment under the federal rules with a $1 minimum?
+  sources:
+  - kind: regulation
+    citation: 218-RICR-20-00-5 §§5.1.1, 5.2.B.3 and 5.3.A.2
+    url: https://risos-apa-production-public.s3.amazonaws.com/DHS/REG_13426_20260109151518643.pdf#page=1
+  - kind: regulation
+    citation: 20 CFR 416.2025(b)(3) and 416.2020(c)
+    url: https://www.law.cornell.edu/cfr/text/20/416.2025
+  - kind: manual
+    citation: SSA POMS SI 01415.058 L.2
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501415058#l2
+  readings:
+    statute: No statute supplied; the state regulation has SSA administer Category D for SSI recipients and DHS
+      pay a resident denied SSI for excess income a state-only supplement based on countable income.
+    other: Under 20 CFR 416.2025(b)(3) a federally administered supplement is reduced by income above the FBR, 416.2020(c)
+      raises payments under $1 to $1, and POMS L.2 gives a Category D total of $1,326, above the $994 FBR.
+  example: 'ri_ssp.yaml Case 16: an aged resident with countable income of 1,325.50 and no SSI receives 0.50 from
+    DHS, or 1 if SSA paid.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/ri/dhs/ssp/ri_ssp.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10168
+  state: unreviewed
+  note: The model follows the state regulation because 20 CFR 416.2010(a)(1) leaves supplement-only coverage to
+    the State (NOTE in ri_ssp.py); ri_ssp.yaml Cases 16 and 17 pin it. The Federal-State agreement was not checked.
+- id: us-ri:ssp-federal-administration-after-2010
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Does SSA still administer Rhode Island's Category D supplement, when R.I. Gen. Laws §40-6-27(a)(2) says
+    state supplements are not federally administered as of July 1, 2010?
+  sources:
+  - kind: statute
+    citation: R.I. Gen. Laws §40-6-27(a)(2)
+    url: https://webserver.rilegislature.gov/Statutes/TITLE40/40-6/40-6-27.htm
+  - kind: regulation
+    citation: 218-RICR-20-00-5 §5.1.1.B
+    url: https://risos-apa-production-public.s3.amazonaws.com/DHS/REG_13426_20260109151518643.pdf#page=1
+  - kind: manual
+    citation: SSA POMS SI 01415.058 L
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501415058#l1
+  - kind: manual
+    citation: SSA POMS SI BOS01415.950
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501415950BOS
+  readings:
+    statute: As of July 1, 2010, state supplement payments are not federally administered and DHS pays them directly.
+    other: §5.1.1.B has SSA administer Category D for SSI recipients, and POMS SI 01415.058 L.2 lists a 2026 Category
+      D level. SI BOS01415.950 says SSA administered categories A, B and E only through December 31, 2010.
+  example: 'ri_ssp.yaml Case 17: a reported SSI recipient with countable income 331.50 above the FBR receives 1
+    when SSA pays, with its $1 minimum, and 0.50 when DHS pays.'
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/ri/dhs/ssp/ri_ssp.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10168
+  state: unreviewed
+  note: 'The model follows the regulation and POMS: SSA pays Category D to SSI recipients (comment in ri_ssp.py);
+    ri_ssp.yaml Case 17 pins it. The readings differ only by SSA''s rounding and $1 minimum.'
+- id: us-ri:ssp-supportive-residential-care-category
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Does Rhode Island pay the $300 supplement that R.I. Gen. Laws §40-6-27(a)(1)(vii) lists for state-licensed
+    supportive residential-care settings?
+  sources:
+  - kind: statute
+    citation: R.I. Gen. Laws §40-6-27(a)(1)(vii)
+    url: https://webserver.rilegislature.gov/Statutes/TITLE40/40-6/40-6-27.htm
+  - kind: regulation
+    citation: 218-RICR-20-00-5 §5.6
+    url: https://risos-apa-production-public.s3.amazonaws.com/DHS/REG_13426_20260109151518643.pdf#page=13
+  - kind: manual
+    citation: SSA POMS SI 01415.058 L.2
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501415058#l2
+  readings:
+    statute: Individuals in state-licensed supportive residential-care settings that meet DHS standards receive
+      $300 a month.
+    other: 218-RICR-20-00-5 §5.6 and SSA's 2026 payment levels publish no such category.
+  example: An uncertified resident of such a setting with no income would receive 300 under (vii); the model pays
+    the own-household rate of 39.92.
+  pe_us:
+    follows: not-modelled
+    code:
+    - policyengine_us/variables/gov/states/ri/dhs/ssp/ri_ssp_living_arrangement.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10168
+  state: unreviewed
+  note: The category is not modeled (NOTE in ri_ssp_living_arrangement.py). No test covers it.
+- id: us-ri:ssp-title-xix-couple-amount
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Is a Rhode Island couple in a Title XIX facility paid jointly at twice the $45 personal needs allowance,
+    or as two individuals?
+  sources:
+  - kind: statute
+    citation: R.I. Gen. Laws §40-6-27(a)(3)
+    url: https://webserver.rilegislature.gov/Statutes/TITLE40/40-6/40-6-27.htm
+  - kind: regulation
+    citation: 218-RICR-20-00-5 §5.6.A
+    url: https://risos-apa-production-public.s3.amazonaws.com/DHS/REG_13426_20260109151518643.pdf#page=13
+  - kind: manual
+    citation: SSA POMS SI BOS01415.950 (Title XIX facility charts through January 2010)
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501415950BOS
+  readings:
+    statute: Individuals living in institutions receive a $45 monthly personal needs allowance from the state; the
+      statute sets no couple amount.
+    other: §5.6.A prints the Category E couple amounts as "N/A". SSA's charts through January 2010 set the couple
+      supplement ($40) at twice the individual one ($20).
+  example: 'A couple in a Title XIX facility where one spouse has $100 a month of Social Security: jointly at $90,
+    each receives (90 - 20) / 2 = 35; as two individuals they receive 0 and 45.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/parameters/gov/states/ri/dhs/ssp/amount/couple.yaml
+    - policyengine_us/variables/gov/states/ri/dhs/ssp/ri_ssp.py
+    - policyengine_us/variables/gov/ssa/ssi/_ssi_state_supplement.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10168
+  state: unreviewed
+  note: The model computes the couple jointly at $90, which the couple.yaml comment derives from the per-individual
+    allowance in §40-6-27(a)(3); ri_ssp.yaml Case 18 pins [45, 45] for a couple with no income. SSA administered
+    Category E only through December 31, 2010.
 - id: us-sd:liheap-2025-published-income-limit
   program: liheap
   years:
@@ -5119,6 +5801,102 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/9974
   state: unreviewed
   note: 'PE-US follows the plan and rules, not the 2018 manual: only wood and coal are paid in full, so kerosene is capped at unpaid charges like fuel oil (sd_liheap.py). Confirm the recipient and whether unpaid charges cap the award.'
+- id: us-sd:ssp-couple-other-income
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Does other income of either spouse end South Dakota's independent living supplement for both members
+    of an eligible couple, or only for the spouse who has it?
+  sources:
+  - kind: manual
+    citation: SSA POMS SI DEN01415.011 B.5.b
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501415011DEN
+  - kind: regulation
+    citation: ARSD 67:12:14:03(2)
+    url: https://sdlegislature.gov/Rules/Administrative/67:12:14:03
+  readings:
+    statute: No statute supplied; POMS SI DEN01415.011 B.5.b pays only individuals and couples who have no other
+      income.
+    other: ARSD 67:12:14:03(2) ends the payment when "The person is receiving other income", person by person.
+  example: 'Integration Case 3: both spouses receive 505.50 of SSI and one has $500 a month of Social Security.
+    Pooling pays both 0; the per-person reading pays the other spouse $15 as an individual or a couple member''s
+    $8 or $7.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/sd/dss/ssp/sd_ssp_independent.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10169
+  state: unreviewed
+  note: The model pools an eligible couple's other income (NOTE in sd_ssp_independent.py); integration.yaml Case
+    3 pins it.
+- id: us-sd:ssp-independent-payment-ssi-receipt
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Must a South Dakota resident receive SSI to get the independent living supplement, or does SDCL 28-5A-1's
+    class of residents who would be eligible to receive SSI qualify?
+  sources:
+  - kind: statute
+    citation: SDCL 28-5A-1
+    url: https://sdlegislature.gov/Statutes/28-5A-1
+  - kind: regulation
+    citation: ARSD 67:12:14:02(1) and 67:12:14:03(1)
+    url: https://sdlegislature.gov/Rules/Administrative/67:12:14:02
+  readings:
+    statute: The department may provide supplementary payments, under its rules, to residents who are receiving
+      or would be eligible to receive SSI.
+    other: 67:12:14:02(1) requires that the person be receiving SSI, and 67:12:14:03(1) ends the payment when SSI
+      stops.
+  example: 'sd_ssp.yaml Case 20: an aged resident with no income who does not take up SSI receives 0 under the rule,
+    while the statute''s class includes the resident.'
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/sd/dss/ssp/sd_ssp_independent.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10169
+  state: unreviewed
+  note: The model pays the independent supplement only with modeled SSI above zero or reported receipt; the care
+    payment needs no SSI. The statute authorizes payments "under such rules as may be promulgated", so the narrower
+    rule may be a valid use of that authority rather than a conflict.
+- id: us-sd:ssp-joint-entry-resource-limit-after-entry-month
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Does South Dakota's $3,000 resource limit for spouses who begin long-term care in the same month still
+    apply in assisted living and adult foster care after the month of entry?
+  sources:
+  - kind: regulation
+    citation: ARSD 67:46:05:30
+    url: https://sdlegislature.gov/Rules/Administrative/67:46:05:30
+  - kind: regulation
+    citation: ARSD 67:46:05:42(8)
+    url: https://sdlegislature.gov/Rules/Administrative/67:46:05:42
+  - kind: regulation
+    citation: ARSD 67:46:04:10(6)
+    url: https://sdlegislature.gov/Rules/Administrative/67:46:04:10
+  readings:
+    statute: No statute supplied; 67:46:05:30 allows $3,000 for an individual with a spouse if both begin receiving
+      long-term care services in the same month, with no limit to the month of entry.
+    other: 67:46:05:42(8), for nursing facilities, and 67:46:04:10(6), for income, treat the spouses separately
+      after the calendar month of entry.
+  example: 'The integration.yaml Case 7 couple in a later month (resources 2,100 and 800): under the $3,000 limit
+    they receive 1,000 and 1,400; tested alone, the first spouse''s 2,100 is over $2,000, and they receive 0 and
+    1,400 (integration.yaml Case 8).'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/sd/dss/ssp/sd_ssp_care_joint_entry.py
+    - policyengine_us/variables/gov/states/sd/dss/ssp/sd_ssp_care.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10169
+  state: unreviewed
+  note: sd_ssp_care_joint_entry is true only in the month both spouses entered care; later months use the $2,000
+    limit and each spouse's own income. integration.yaml Cases 5, 7 and 8 pin it.
 - id: us-tx:family-planning-unearned-income-exclusions
   program: family-planning-program
   years:
@@ -5198,6 +5976,73 @@ candidates:
   state: open
   note: 'PE-US follows the regulation; resolve the pending conflict with the information letter. Code not yet on
     main: tx_ssi_state_supplement.'
+- id: us-va:ag-entry-month-spouse-at-home
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: In the month a Virginia Auxiliary Grant resident enters care while the spouse stays home, does the budget
+    keep SSA's deemed spouse income or count only the applicant's own income?
+  sources:
+  - kind: manual
+    citation: Virginia Auxiliary Grant Manual Chapter B §6
+    url: https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf#page=34
+  - kind: manual
+    citation: Virginia Auxiliary Grant Manual Chapter D §5
+    url: https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf#page=126
+  - kind: regulation
+    citation: 20 CFR 416.1163(f)(2)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1163
+  readings:
+    statute: No statute supplied; Chapter B §6 makes the assistance unit the AG applicant only.
+    other: Chapter D uses SSA's net earned and unearned income amounts, and SSA still deems the spouse's income
+      in the month of separation (20 CFR 416.1163(f)(2)).
+  example: 'Integration Case 3: SSA deems 1,480 of the home spouse''s Social Security and pays 11 of SSI, so the
+    AG is 2,217 - 1,491 = 726; counting only the applicant''s income gives 2,217 - 11 = 2,206.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/va/dars/ag/va_ag_countable_income.py
+    - policyengine_us/variables/gov/states/va/dars/ag/va_ag_certified.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10172
+  state: unreviewed
+  note: The model follows Chapter D (NOTE in va_ag_countable_income.py); integration.yaml Cases 3 and 6 pin it.
+    For later months, va_ag_certified tells users to put the spouses in separate marital units, so neither SSI nor
+    the AG deems.
+- id: us-va:ag-student-earned-income-exclusion
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Does Virginia's Auxiliary Grant exclude a student's earnings for an applicant who does not receive SSI?
+  sources:
+  - kind: manual
+    citation: Virginia Auxiliary Grant Manual Chapter H §2.2
+    url: https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf#page=370
+  - kind: manual
+    citation: Virginia Auxiliary Grant Manual Chapter D
+    url: https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf#page=123
+  - kind: regulation
+    citation: 20 CFR 416.1112(c)(3)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1112
+  readings:
+    statute: No statute supplied; Chapter H's list of earned income exclusions does not name the SSI student earned
+      income exclusion.
+    other: Chapter D requires the AG program to use SSI policy, and 20 CFR 416.1112(c)(3) excludes earnings of a
+      student under age 22.
+  example: A disabled 20-year-old student with $1,200 a month of Social Security disability and $500 of wages has
+    no SSI. Excluding the wages gives countable income of 1,180 and an AG of 1,037; Chapter H's list gives 1,397.50
+    and a deficiency of 819.50, paid as 820.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/va/dars/ag/va_ag_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10172
+  state: unreviewed
+  note: The model keeps the SSI student exclusion for non-SSI applicants (NOTE in va_ag_countable_income.py). No
+    test covers it.
 - id: us-va:claim-of-right-credit-gap-fill
   program: income-tax
   years:
