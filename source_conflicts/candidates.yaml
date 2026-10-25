@@ -29,7 +29,8 @@ candidates:
   readings:
     statute: The federal effective date is 2025-07-04.
     other: Alaska applies the changes from 2025-11-01.
-  example: In August 2025, PR 10299 applies the changes in Alaska as well as Texas.
+  example: In August 2025, the changes apply in Alaska as in Texas under the statute, which PE-US follows, but not
+    under Alaska's November 1, 2025 date.
   pe_us:
     follows: statute
     code:
@@ -39,10 +40,11 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/8861
     - https://github.com/PolicyEngine/policyengine-us/pull/10299
   state: unreviewed
-  note: PR 10299 adopts the July 4, 2025 enactment date, consistent with FNS; the change is in flight. Section 10102
-    has no later effective date. A 7 U.S.C. 2015(o)(7) good-faith exemption requires a state request and a federal
-    determination; none covering July through October 2025 was found. Alaska's separately modeled good-faith window
-    starts November 1, 2025, and its area waivers and retained exceptions are unchanged.
+  note: 'PE-US follows the statute: since #10299 Alaska''s HR1 toggle is true from July 4, 2025, and the parameter''s
+    comment says section 10102 has no later effective date, that USDA applies the amended exceptions from enactment,
+    and that no authority for a statewide delay before Alaska''s November 1, 2025 good-faith exemption was found
+    (hr1_in_effect.yaml, is_snap_abawd_hr1_in_effect.py). The good-faith window is modeled separately, through the
+    waived areas and the retained pre-HR1 exceptions.'
 - id: us-al:federal-tax-deduction-credit-list
   program: income-tax
   years:
@@ -86,10 +88,10 @@ candidates:
   sources:
   - kind: statute
     citation: Code of Ala. §40-18-25(b)
-    url: null
+    url: https://alison.legislature.state.al.us/code-of-alabama?section=40-18-25
   - kind: regulation
     citation: Ala. Admin. Code r. 810-3-25-.11
-    url: null
+    url: https://admincode.legislature.state.al.us/administrative-code/810-3-25
   - kind: instructions
     citation: 2025 Alabama Form 40 booklet p.24, citing r. 810-3-25-.05(8)(b)
     url: https://www.revenue.alabama.gov/wp-content/uploads/2026/01/25f40bk.pdf#page=24
@@ -100,12 +102,15 @@ candidates:
       1, 2005.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/al/tax/income/agi/gross_income_sources.yaml
+    - policyengine_us/variables/gov/states/al/tax/income/al_agi.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10060
   state: unreviewed
-  note: 'Obtain direct statutory and current-rule citations and identify booklet editions repeating the obsolete
-    restriction. Code not yet on main: gov.states.al.tax.income.agi.gross_income_sources.'
+  note: 'PE-US follows the statute and current rule: estate_income counts signed in Alabama gross income, so a beneficiary''s
+    loss passes through (gross_income_sources.yaml, read by al_agi.py). estate_income does not separate trusts from
+    estates. Identify booklet editions repeating the obsolete restriction.'
 - id: us-al:liheap-insurance-payments
   program: liheap
   years:
@@ -126,12 +131,15 @@ candidates:
     other: The plan leaves insurance payments made directly to the insured unchecked.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/al/adeca/liheap/income/sources/unearned.yaml
+    - policyengine_us/variables/gov/states/al/adeca/liheap/income/al_liheap_countable_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9967
   state: unreviewed
-  note: 'PE-US follows the manual; verify which modeled payments fall within the plan''s category. Code not yet
-    on main: al_liheap.'
+  note: The unearned income list cites manual sections 5.5-5.5.2 and has no insurance or annuity input of its own;
+    it counts pension_income, disability_benefits and workers_compensation (income/sources/unearned.yaml, al_liheap_countable_income.py).
+    Verify which modeled payments fall within the plan's category.
 - id: us-al:liheap-lump-sums-and-refunds
   program: liheap
   years:
@@ -152,12 +160,15 @@ candidates:
     other: The plan lists one-time lump sums including rebates, credits, lottery winnings and refund deposits.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/al/adeca/liheap/income/al_liheap_countable_income.py
+    - policyengine_us/parameters/gov/states/al/adeca/liheap/income/sources/unearned.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9967
   state: unreviewed
-  note: 'PE-US follows the manual; verify the lump-sum categories and gross-versus-net treatment. Code not yet on
-    main: al_liheap.'
+  note: 'PE-US follows the manual: gambling winnings count net of losses (al_liheap_countable_income.py), and the
+    unearned income list has no refund, rebate or other lump-sum input (income/sources/unearned.yaml). Verify the
+    lump-sum categories and gross-versus-net treatment.'
 - id: us-al:medicaid-parent-dependent-child-age
   program: medicaid
   years:
@@ -182,8 +193,9 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9213
   state: unreviewed
-  note: 'PE-US follows the administrative code; verify overlapping effective dates and any conflict before the cited
-    2023 code. Code not yet on main: dependent_child/age_limit.yaml.'
+  note: 'PE-US follows the administrative code: Alabama''s age limit is 19 from 2014 with no student condition,
+    and the file''s comment records the S25 conflict (age_limit.yaml). Verify overlapping effective dates and any
+    conflict before the cited 2023 code, since the model applies 19 from 2014.'
 - id: us-ar:casualty-loss-aggregate-agi-floor
   program: income-tax
   years:
@@ -207,12 +219,19 @@ candidates:
     other: The booklet says each loss must exceed 10% of AGI.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ar/tax/income/deductions/itemized/casualty_loss/income_floor.yaml
+    - policyengine_us/variables/gov/states/ar/tax/income/deductions/itemized/ar_casualty_loss_deduction_joint.py
+    - policyengine_us/variables/gov/states/ar/tax/income/deductions/itemized/ar_casualty_loss_deduction_indiv.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9625
+    - https://github.com/PolicyEngine/policyengine-us/pull/9944
   state: unreviewed
-  note: 'The merged PR follows the statute and form; obtain the booklet citation and verify editions. Code not yet
-    on main: ar_casualty_loss_deduction_joint, ar_casualty_loss_deduction_indiv.'
+  note: 'PE-US follows the statute and form: one 10% floor applies to a return''s combined losses after the exclusion,
+    the couple''s total on a joint return and each spouse''s own losses when spouses file separately on one return
+    (ar_casualty_loss_deduction_joint.py, ar_casualty_loss_deduction_indiv.py, casualty_loss/income_floor.yaml).
+    The floor cites the AR3 line 18 instructions for 2015-2025; verify which editions require each loss to exceed
+    10% of AGI.'
 - id: us-ar:casualty-loss-status-four-spouse-floors
   program: income-tax
   years:
@@ -236,13 +255,18 @@ candidates:
     other: Apply one $100 reduction per event and one 10% floor per return.
   example: The supplied statutory calculation is ($12,000 − $100 − $3,000) + ($8,000 − $100 − $2,000) = $14,800.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ar/tax/income/deductions/itemized/ar_casualty_loss_deduction_indiv.py
+    - policyengine_us/parameters/gov/states/ar/tax/income/deductions/itemized/casualty_loss/exclusion.yaml
+    - policyengine_us/parameters/gov/states/ar/tax/income/deductions/itemized/casualty_loss/income_floor.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9944
   state: open
-  note: 'A decision was requested; the statute-first rule requires separate spouse reductions and floors after confirming
-    the adopted rule''s scope. Code not yet on main: ar_casualty_loss_deduction_indiv, ar_casualty_loss_deduction_joint.'
+  note: 'Changed by #9944: PE-US now follows the statute. For spouses filing separately on the same return, each
+    spouse''s loss is reduced by the $100 exclusion and then by 10% of that spouse''s Arkansas AGI; only joint-return
+    spouses count as one individual, and the input records one casualty per person (ar_casualty_loss_deduction_indiv.py,
+    casualty_loss/exclusion.yaml, casualty_loss/income_floor.yaml). Confirm the adopted rule''s scope.'
 - id: us-ar:claim-of-right-itemizer-requirement
   program: income-tax
   years:
@@ -321,12 +345,14 @@ candidates:
       as clarifying existing law.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/ar/tax/income/deductions/itemized/ar_gambling_loss_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9636
   state: ruled
-  note: 'The earlier ruling is undated and followed guidance; the October 2026 statute-first rule requires changing
-    the pre-2015 model treatment. Code not yet on main: ar_gambling_loss_deduction.'
+  note: 'PE-US follows DFA''s guidance: ar_gambling_loss_deduction has no 2015 start date, and its 2014 test deducts
+    losses up to winnings (ar_gambling_loss_deduction.py). The earlier ruling is undated and followed guidance;
+    the October 2026 statute-first rule requires changing the pre-2015 model treatment.'
 - id: us-ar:income-tax-above-table-formula
   program: income-tax
   years:
@@ -360,13 +386,15 @@ candidates:
     follows: gap-fill
     code:
     - policyengine_us/parameters/gov/states/ar/tax/income/rates/main/tax_table/threshold.yaml
+    - policyengine_us/variables/gov/states/ar/tax/income/ar_income_tax_helpers.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9611
     - https://github.com/PolicyEngine/policyengine-us/pull/9624
     - https://github.com/PolicyEngine/policyengine-us/pull/9696
   state: unreviewed
-  note: 'PE-US follows the bracket card''s gap-fill; verify each year''s publications and resolve the differing
-    supplied 2025 page references. Code not yet on main: ar_regular_income_tax, ar_main_income_tax, gov.states.ar.tax.income.rates.main.tax_table.threshold.'
+  note: PE-US follows the bracket card's formula at and above the table threshold, and the threshold's comment records
+    the conflict with the booklet note (tax_table/threshold.yaml, ar_income_tax_helpers.py). Verify each year's
+    publications and resolve the differing supplied 2025 page references.
 - id: us-ar:liheap-fy2025-benefit-matrix
   program: liheap
   years:
@@ -633,13 +661,15 @@ candidates:
     follows: unknown
     code:
     - policyengine_us/parameters/gov/states/ca/cpuc/income_sources.yaml
+    - policyengine_us/variables/gov/states/ca/cpuc/ca_cpuc_countable_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9464
     - https://github.com/PolicyEngine/policyengine-us/pull/9467
   state: unreviewed
-  note: 'Current PE-US evidence excludes housing subsidies; the decision''s exclusion starts 2014-08-14, while FERA
-    coverage and earlier conflicting form editions need verification. Code not yet on main: gov.states.ca.cpuc.income_sources,
-    ca_care_eligible, CPUC countable income sources parameter.'
+  note: 'PE-US follows D.14-08-030 and PG&E''s stated practice: housing assistance leaves the countable income list
+    from 2015, and the list''s comment rests FERA coverage on PG&E''s June 5, 2026 reply brief, not on the decision
+    (income_sources.yaml, ca_cpuc_countable_income.py). #9464, which would have counted housing subsidies, closed
+    unmerged. Verify FERA coverage and earlier conflicting form editions.'
 - id: us-ca:itemized-limit-casualty-exclusion
   program: income-tax
   years:
@@ -659,12 +689,16 @@ candidates:
     other: The literal worksheet reference excludes the federal casualty amount, recorded as zero from 2018.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ca/tax/income/deductions/itemized/limit/excluded_deductions.yaml
+    - policyengine_us/variables/gov/states/ca/tax/income/deductions/itemized/ca_casualty_loss_deduction.py
+    - policyengine_us/variables/gov/states/ca/tax/income/deductions/itemized/ca_itemized_deductions.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10068
   state: unreviewed
-  note: 'The merged PR follows the statute; verify worksheet editions and affected years. Code not yet on main:
-    gov.states.ca.tax.income.deductions.itemized.limit.excluded_deductions, ca_casualty_loss_deduction.'
+  note: 'PE-US follows the statute: California''s own casualty deduction is excluded from the high-AGI limitation
+    (limit/excluded_deductions.yaml, read by ca_itemized_deductions.py). The exclusion list starts in 2021, while
+    the candidate runs from 2018; verify worksheet editions and affected years.'
 - id: us-ca:itemized-limit-investment-interest-exclusion
   program: income-tax
   question: Does the itemized-deduction limitation exclude California investment interest or the federal Schedule
@@ -772,6 +806,39 @@ candidates:
   state: ruled
   note: 'The October 2026 statute-first ruling retains $120; verify the procedural inference from the form and the
     spouse exclusions. Code not yet on main: ca_renter_credit.'
+- id: us-ca:riverside-liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2025
+    to: 2026
+    type: program
+    note: program year as the program defines it
+  question: Can Riverside County's LIHEAP income limit exclude a household of 20 or more whose income is below the
+    federal 110% poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: California 2026 LIHEAP State Plan, HEAP and Fast Track payment table, page 184
+    url: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=184
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: CSD's printed income ranges fall below that floor at sizes 20 to 25 in 2025 and 21 to 25 in 2026; for
+      21 people the 2026 table tops out at $11,340.68 a month.
+  example: In 2026, twenty-one people with $137,000 exceed the $136,088.93 limit but are below the $138,215 floor.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/local/ca/riv/liheap/ca_riv_liheap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/local/ca/riv/cap/liheap/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10279
+  state: unreviewed
+  note: PE-US applies the floor to the prior year's guideline, rounded to cents, with the statute's strict "less
+    than"; its own limit is 60% of SMI, which the comment says falls below the floor from size 20 in 2025 and size
+    21 in 2026 and 2027 (ca_riv_liheap_eligible.py).
 - id: us-ca:santa-clara-ga-vehicle-boundary
   program: general-assistance-santa-clara
   years:
@@ -793,11 +860,14 @@ candidates:
     follows: unknown
     code:
     - policyengine_us/variables/gov/local/ca/scc/ga/eligibility/ca_scc_general_assistance_countable_vehicle_value.py
+    - policyengine_us/parameters/gov/local/ca/scc/general_assistance/personal_property/vehicle_value_limit.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9072
   state: unreviewed
-  note: 'PE-US follows the handbook; verify the form revision and overlapping effective period. Code not yet on
-    main: ca_scc_general_assistance_countable_vehicle_value.'
+  note: 'PE-US follows the handbook: a vehicle worth exactly $4,650 is exempt (ca_scc_general_assistance_countable_vehicle_value.py).
+    The limit''s comment cites GA-62 rev. 11/25 and says the county publishes no dated history, so the April 2016
+    start follows the personal property limit (vehicle_value_limit.yaml). Verify the form revision and overlapping
+    effective period.'
 - id: us-ca:snap-abawd-implementation-date
   program: snap
   years:
@@ -896,10 +966,10 @@ candidates:
     url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200
   - kind: manual
     citation: SSA POMS SI 01415.058 §B
-    url: null
+    url: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415058#b2b
   - kind: guidance
     citation: CDSS 2026 May Revision
-    url: null
+    url: https://cdss.ca.gov/Portals/9/Additional-Resources/Fiscal-and-Financial-Information/LOcal-Assistance-Estimates/2026-27/Revisions/2026-may-revision-reference-documents.pdf#page=26
   - kind: guidance
     citation: CDSS ACIN I-59-25
     url: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACINs/2025/I-59_25.pdf
@@ -908,7 +978,7 @@ candidates:
     url: https://cdss.ca.gov/Portals/13/SHD/ParaRegIndex/SSI%20Monthly%20Payment%20Amounts%202026.pdf
   - kind: guidance
     citation: SSA pamphlet EN-05-11125
-    url: null
+    url: https://www.ssa.gov/pubs/EN-05-11125.pdf#page=2
   readings:
     statute: The per-recipient amount gives twice the $1,626.07 individual rate, or $3,252.14 for a couple.
     other: The CDSS monthly table and SSA pamphlet print $3,239.14.
@@ -920,8 +990,9 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9709
   state: unreviewed
-  note: 'Verify the per-recipient calculation and document the inconsistent 2026 summary tables. Code not yet on
-    main: gov.states.ca.cdss.state_supplement.payment_standard.allowance.out_of_home_care.'
+  note: 'PE-US follows the statute: the 2026 allowance is $1,153.31, from a $3,252.14 couple standard, twice the
+    $1,626.07 individual rate (allowance/out_of_home_care.yaml), and the file''s comment lists the sources on each
+    side. Verify the per-recipient calculation and document the inconsistent 2026 summary tables.'
 - id: us-co:claim-of-right-subtraction-practice
   program: income-tax
   years:
@@ -1083,12 +1154,15 @@ candidates:
     other: The guide requires gross income below the maximum grant standard at initial application.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/co/ssa/oap/co_oap.py
+    - policyengine_us/variables/gov/states/co/ssa/oap/co_oap_own_countable_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10176
   state: open
-  note: 'PE-US follows the regulation; verify the guide''s applicability, earlier coverage from 2020, and the requested
-    source choice. Code not yet on main: co_oap, co_oap_countable_income.'
+  note: 'PE-US follows the regulation: each month it compares total countable income after the 3.533 disregards
+    with the grant standard, and has no separate gross-income test at initial application (co_oap.py, co_oap_own_countable_income.py).
+    Verify the guide''s applicability, earlier coverage from 2020, and the requested source choice.'
 - id: us-co:premium-assistance-ptc-recipients
   program: health-insurance-premium-assistance
   years:
@@ -1130,10 +1204,10 @@ candidates:
     url: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04#(f)(1)(D)(ii)
   - kind: statute
     citation: ARPA §9622 heading
-    url: null
+    url: https://www.congress.gov/117/plaws/publ2/PLAW-117publ2.pdf#page=151
   - kind: instructions
     citation: 2021 D-40 booklet, New for 2021 note, PDF p.3
-    url: null
+    url: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=3
   readings:
     statute: The DC provision read alone retains qualifying-child classification and matches the self-only federal
       credit actually allowed.
@@ -1143,12 +1217,47 @@ candidates:
   pe_us:
     follows: unknown
     code:
+    - policyengine_us/parameters/gov/states/dc/tax/income/credits/eitc/qualifying_child_tin_required.yaml
     - policyengine_us/variables/gov/states/dc/tax/income/credits/eitc/dc_eitc_has_qualifying_child.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9643
   state: ruled
-  note: 'The October 2026 ruling chose the childless schedule; verify ARPA''s effect before identifying a statutory
-    departure and establish any pre-2021 conflict separately. Code not yet on main: gov.states.dc.tax.income.credits.eitc.qualifying_child_tin_required.'
+  note: PE-US applies the childless schedule in every year from 2015 when no qualifying child has an SSN or ITIN
+    (qualifying_child_tin_required.yaml, read by dc_eitc_has_qualifying_child.py). The parameter's comment says
+    no DC source settles years before 2023 and that setting it to false applies the DC-law reading. The October
+    2026 ruling chose the childless schedule; verify ARPA's effect before identifying a statutory departure and
+    establish any pre-2021 conflict separately.
+- id: us-dc:liheap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2022
+    to: 2024
+    type: federal-fiscal
+  question: Can the District's 60% SMI limit exclude a household of 34 to 39 whose income is below the federal 110%
+    poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: plan
+    citation: District of Columbia FY2023 and FY2024 LIHEAP State Plans, item 2.1, page 8
+    url: https://liheapch.acf.gov/docs/2024/state-plans/DC_Plan_2024.pdf#page=8
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The plans set 60% of SMI for all household sizes, which falls below that floor from size 34 to 39 in
+      FY2022 to FY2024.
+  example: In FY2024, thirty-six people with $213,000 exceed the $212,669.78 limit but are below the $213,928 floor.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/dc/doee/liheap/dc_liheap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/dc/doee/liheap/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10279
+  state: unreviewed
+  note: PE-US applies the floor to the prior year's guideline, rounded to cents, with the statute's strict "less
+    than" (dc_liheap_eligible.py).
 - id: us-dc:schedule-h-claimable-unclaimed-claimant
   program: property-tax-credit
   question: Does the statutory dependent-claimant bar apply to a claimable but unclaimed filer or only to a filer
@@ -1192,12 +1301,16 @@ candidates:
     other: AGI must be strictly below the relevant limit.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/de/tax/income/subtractions/de_529_plan_subtraction.py
+    - policyengine_us/variables/gov/states/de/tax/income/subtractions/de_529_plan_subtraction_joint.py
+    - policyengine_us/parameters/gov/states/de/tax/income/subtractions/plan_529/agi_limit.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9878
   state: unreviewed
-  note: 'Verify instruction coverage from 2022 onward and the statutory anchor; the supplied variable name is inferred
-    from a test filename. Code not yet on main: de_529_plan_subtraction.'
+  note: 'PE-US follows the statute: a filer whose federal AGI equals the limit keeps the subtraction, and the limit''s
+    comment reads the statute as barring only AGI "greater than" the limit (de_529_plan_subtraction.py, de_529_plan_subtraction_joint.py,
+    plan_529/agi_limit.yaml). Verify instruction coverage from 2022 onward.'
 - id: us-de:eitc-combined-separate-spouse-routing
   program: income-tax
   years:
@@ -1250,13 +1363,17 @@ candidates:
     other: The worksheet accepts spouses aged at least 60 or totally and permanently disabled.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/de/tax/income/subtractions/exclusions/de_elderly_or_disabled_income_exclusion_joint.py
+    - policyengine_us/variables/gov/states/de/tax/income/subtractions/exclusions/de_elderly_or_disabled_income_exclusion_eligible_person.py
+    - policyengine_us/parameters/gov/states/de/tax/income/subtractions/exclusions/elderly_or_disabled/eligibility/age_threshold.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9858
   state: unreviewed
-  note: 'The statute-first rule requires replacing age-60 eligibility if the literal boundary is confirmed; verify
-    individual-return scope and intervening editions. Code not yet on main: de_elderly_or_disabled_income_exclusion_joint,
-    de_elderly_or_disabled_income_exclusion_indiv.'
+  note: 'PE-US follows the worksheet: a filer or spouse aged exactly 60 qualifies (age at least age_threshold),
+    on joint returns (de_elderly_or_disabled_income_exclusion_joint.py) and on other returns (de_elderly_or_disabled_income_exclusion_eligible_person.py).
+    The statute-first rule requires replacing age-60 eligibility if the literal boundary is confirmed; verify individual-return
+    scope and intervening editions.'
 - id: us-de:snap-child-support-exclusion
   program: snap
   years:
@@ -1542,16 +1659,22 @@ candidates:
   readings:
     statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
     other: The printed Georgia limits fall below that floor starting at household size 16.
-  example: A 17-person household earning $111,980 exceeds the $109,627 state limit but is below the $114,015 floor
-    and receives a $560 natural-gas benefit in the PR.
+  example: In FY2026, seventeen people with $111,980 exceed the $109,627 limit but are below the $114,015 floor;
+    PE-US awards $560 for natural gas.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/ga/dfcs/liheap/eligibility/ga_liheap_eligible.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/ga/dfcs/liheap/eligibility/fpg_year_lag.yaml
+    - policyengine_us/variables/gov/states/ga/dfcs/liheap/eligibility/ga_liheap_income_limit.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9968
   state: unreviewed
-  note: 'The open PR applies the federal floor; verify each fiscal-year table and the worked benefit. Code not yet
-    on main: ga_liheap_income_limit, gov.hhs.liheap.fpg_floor.'
+  note: 'PE-US follows the statute: income below 110% of the prior year''s poverty guideline, rounded to cents,
+    qualifies even above the 60% SMI limit. The comment says the limit and the printed matrices fall below that
+    floor from size 16 in FY2025 and FY2026 and that Georgia''s plans assure the floor (ga_liheap_eligible.py, gov/hhs/liheap/fpg_floor.yaml,
+    eligibility/fpg_year_lag.yaml, ga_liheap_income_limit.py).'
 - id: us-ga:liheap-lawful-noncitizen-household-members
   program: liheap
   years:
@@ -1572,12 +1695,16 @@ candidates:
     other: Page 57 and the glossary leave noncitizens out.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/ga/dfcs/liheap/ga_liheap_household_size.py
+    - policyengine_us/variables/gov/states/ga/dfcs/liheap/eligibility/ga_liheap_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9968
   state: unreviewed
-  note: 'PE-US follows the eligibility sections; identify immigration categories and distinguish applicant eligibility
-    from household-size counting. Code not yet on main: ga_liheap.'
+  note: 'PE-US follows the eligibility sections: lawful immigrants count in household size and undocumented members
+    do not, and the comment records page 57''s bar on all-noncitizen households and the glossary''s exclusion from
+    household size (ga_liheap_household_size.py). A household of lawful immigrants alone qualifies (ga_liheap_eligible.py).
+    Distinguish applicant eligibility from household-size counting.'
 - id: us-ga:liheap-plan-manual-income-inclusions
   program: liheap
   years:
@@ -1589,7 +1716,7 @@ candidates:
   sources:
   - kind: manual
     citation: Georgia LIHEAP Policy Manual, January 2022, §1200.7, page 66
-    url: null
+    url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=66
   - kind: guidance
     citation: FY2026 LIHEAP State Plan §1.9, page 6
     url: https://liheapch.acf.gov/docs/2026/state-plans/GA_Plan_2026.pdf#page=5
@@ -1598,12 +1725,16 @@ candidates:
     other: The plan leaves these income categories unchecked.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ga/dfcs/liheap/income/sources/person.yaml
+    - policyengine_us/variables/gov/states/ga/dfcs/liheap/income/ga_liheap_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9968
   state: unreviewed
-  note: 'PE-US follows the manual; obtain the complete plan questions and manual provisions to verify categories
-    and years. Code not yet on main: ga_liheap_countable_income.'
+  note: 'PE-US follows the manual: the adult income list counts gambling winnings, cash gifts (financial_assistance),
+    disability benefits and workers'' compensation, and its comments record that the FY2025 and FY2026 plans leave
+    those categories unchecked (income/sources/person.yaml, ga_liheap_income.py). Obtain the complete plan questions
+    to verify categories and years.'
 - id: us-ga:liheap-subsidized-renter-energy-burden
   program: liheap
   years:
@@ -1618,19 +1749,23 @@ candidates:
     url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=3
   - kind: guidance
     citation: FY2026 LIHEAP State Plan §2.3, page 8
-    url: null
+    url: https://liheapch.acf.gov/docs/2026/state-plans/GA_Plan_2026.pdf#page=8
   readings:
     statute: No statute is supplied; the manual requires verification of an energy burden when fuel costs are included
       in subsidized rent.
     other: The plan reports no additional or differing policies for subsidized renters.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/ga/dfcs/liheap/eligibility/ga_liheap_eligible.py
+    - policyengine_us/variables/gov/states/ga/dfcs/liheap/eligibility/_ga_liheap_housing.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9968
   state: unreviewed
-  note: 'PE-US follows the manual; verify that the plan addresses the same circumstances; the bundled benefit comparison
-    lacks competing matrix amounts. Code not yet on main: ga_liheap.'
+  note: 'PE-US follows the manual: every household needs an energy burden, which a subsidized renter with heat in
+    rent shows through a heating bill or a direct electric bill, and the comment records that FY2026 plan item 2.3
+    answers No to differing policies for subsidized renters (ga_liheap_eligible.py, eligibility/_ga_liheap_housing.py).
+    Verify that the plan addresses the same circumstances.'
 - id: us-hi:claim-of-right-credit-agi-addback
   program: income-tax
   years:
@@ -1690,13 +1825,17 @@ candidates:
   example: The other spouse retains $1,144 under the statute versus $0 under the joint-return instruction reading.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/irs/income/taxable_income/exemptions/exemptions_count.py
+    - policyengine_us/variables/gov/states/hi/tax/income/exemptions/hi_regular_exemptions.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10087
     - https://github.com/PolicyEngine/policyengine-us/pull/10089
   state: ruled
-  note: 'The October 2026 ruling confirmed the per-individual reading; obtain the instruction URL and confirm the
-    joint-return application. Code not yet on main: exemptions_count, hi_regular_exemptions.'
+  note: 'PE-US follows the per-individual statute: exemptions_count leaves out only the filer who can be claimed,
+    so the other spouse keeps a regular exemption, and hi_regular_exemptions adds the age exemption only for filers
+    who cannot be claimed (exemptions_count.py, hi_regular_exemptions.py). The October 2026 ruling confirmed the
+    per-individual reading; obtain the instruction URL and confirm the joint-return application.'
 - id: us-hi:joint-return-one-disabled-spouse-exemptions
   program: income-tax
   years:
@@ -1725,14 +1864,18 @@ candidates:
     reading.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/hi/tax/income/exemptions/hi_disabled_exemptions.py
+    - policyengine_us/variables/gov/states/hi/tax/income/exemptions/hi_exemptions.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10087
     - https://github.com/PolicyEngine/policyengine-us/pull/10089
   state: ruled
-  note: 'The October 2026 ruling retained the regulation and instruction reading; verify the statute and whether
-    the guidance describes only the disabled spouse''s exemption. Code not yet on main: hi_disabled_exemptions,
-    hi_regular_exemptions.'
+  note: 'PE-US follows the regulation and instructions: each spouse takes the larger of their disabled exemption
+    ($7,000 if disabled, otherwise zero) and their own regular and age exemptions, so the nondisabled spouse keeps
+    theirs (hi_disabled_exemptions.py, compared with hi_regular_exemptions in hi_exemptions.py). The October 2026
+    ruling retained the regulation and instruction reading; verify the statute and whether the guidance describes
+    only the disabled spouse''s exemption.'
 - id: us-hi:snap-abawd-implementation-date
   program: snap
   years:
@@ -1751,19 +1894,22 @@ candidates:
   readings:
     statute: The federal effective date is 2025-07-04.
     other: Hawaii applies the changes from 2025-11-01.
-  example: In August 2025, PR 10299 applies the changes in Hawaii as well as Texas.
+  example: In August 2025, the changes apply in Hawaii as in Texas under the statute, which PE-US follows, but not
+    under Hawaii's November 1, 2025 date.
   pe_us:
     follows: statute
     code:
     - policyengine_us/parameters/gov/states/hi/dhs/snap/work_requirements/abawd/hr1_in_effect.yaml
     - policyengine_us/variables/gov/usda/snap/eligibility/work_requirements/is_snap_abawd_hr1_in_effect.py
+    - policyengine_us/parameters/gov/usda/snap/work_requirements/abawd/waived_counties/hi.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/8861
     - https://github.com/PolicyEngine/policyengine-us/pull/10299
   state: unreviewed
-  note: PR 10299 adopts the July 4, 2025 enactment date, consistent with FNS; the change is in flight. Section 10102
-    has no later effective date. A 7 U.S.C. 2015(o)(7) good-faith exemption requires a state request and a federal
-    determination; none covering July through October 2025 was found. Hawaii's area waiver ended June 30, 2025.
+  note: 'PE-US follows the statute: since #10299 Hawaii''s HR1 toggle is true from July 4, 2025, and the parameter''s
+    comment records DHS''s announced November 1, 2025 start and says no good-faith exemption covering July through
+    October 2025 was found (hr1_in_effect.yaml, is_snap_abawd_hr1_in_effect.py). Hawaii''s Kauai and Maui area waiver
+    ended June 30, 2025 (waived_counties/hi.yaml).'
 - id: us-hi:snap-child-support-deduction
   program: snap
   years:
@@ -2038,7 +2184,7 @@ candidates:
     follows: conflicting-source
     code:
     - policyengine_us/parameters/gov/states/in/tax/income/deductions/deductions.yaml
-    - policyengine_us/variables/gov/states/in/tax/income/deductions/in_other_deductions.py
+    - policyengine_us/variables/gov/states/in/tax/income/deductions/in_other_subtractions.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10196
   state: unreviewed
@@ -2637,6 +2783,47 @@ candidates:
   state: unreviewed
   note: 'The statute-first rule requires changing main''s form-based treatment; the open PR proposes following the
     statute and TB-58. Code not yet on main: md_net_capital_gain, md_capital_gains_surtax.'
+- id: us-md:ccs-copay-flat-schedule
+  program: child-care-assistance
+  years:
+    from: 2024
+    type: calendar
+  question: Do Maryland Child Care Scholarship copays follow the regional weekly tables in COMAR 13A.14.06.12, or
+    MSDE's flat maximum of $3, $2 and $1 a week per scholarship, given that Educ. §9.5-111(d)(4) bars raising copays
+    above January 1, 2024 levels?
+  sources:
+  - kind: statute
+    citation: Md. Code, Educ. §9.5-111(d)(4) (Chapter 717 of 2024)
+    url: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=ged&section=9.5-111&enactments=false
+  - kind: regulation
+    citation: COMAR 13A.14.06.12
+    url: https://regs.maryland.gov/us/md/exec/comar/13A.14.06.12
+  - kind: guidance
+    citation: MSDE Division of Early Childhood bulletin, Child Care Scholarship Program Changes Effective May 23,
+      2022
+    url: https://content.govdelivery.com/accounts/MDMSDE/bulletins/31a37f2
+  readings:
+    statute: From June 1, 2024, the Department "may not increase the copayment levels of the Program in effect as
+      of January 1, 2024". The statute does not say whether those are MSDE's flat maximums, which applied from May
+      23, 2022, or COMAR's printed tables.
+    other: COMAR 13A.14.06.12 still prints regional weekly copayment tables by income level and child order.
+  example: md_ccs_weekly_copay.yaml Case 1 (January 2025, one child in full-time care, $50,000 income) gives $3
+    a week. COMAR's level A amounts for three units of care run from $4.03 to $7.22 for a youngest child 24 months
+    or older and from $2.42 to $4.33 for a second or third child.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/parameters/gov/states/md/msde/ccs/copay/weekly_amount.yaml
+    - policyengine_us/variables/gov/states/md/msde/ccs/md_ccs_weekly_copay.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/7889
+  state: unreviewed
+  note: 'The model follows MSDE''s flat maximums. If those are the levels in effect, the model meets the cap, and
+    restoring COMAR''s tables would raise most copays. If COMAR''s tables are, some flat amounts exceed them: Region
+    V''s level A second-child amount is $2.42 for three units and about $0.81 for one, against $3 and $1. From May
+    2022 to May 2024 no statute is supplied. The bulletin''s amounts are maximums and some families pay $0, while
+    the model charges the maximum, subject to the 7 percent federal cap. The parameter starts 2022-05-01; the bulletin
+    dates the change May 23, 2022.'
 - id: us-md:dependent-exemption-chart-10a
   program: income-tax
   years:
@@ -4168,6 +4355,35 @@ candidates:
     prs: []
   state: unreviewed
   note: PE-US follows the manual and plan; verify the matrix discrepancy for sizes 14 and above.
+- id: us-ny:heap-other-income-catch-all
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does New York HEAP count income not specifically excluded, as HEAP Manual D.12(a)(38) does, when the
+    FFY 2026 state plan leaves the "Other" countable income box unchecked?
+  sources:
+  - kind: manual
+    citation: NY HEAP Manual (7/1/2021 edition) Chapter 8 D.12(a)(38)
+    url: https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=37
+  - kind: plan
+    citation: New York FFY 2026 LIHEAP State Plan section 1.9, PDF page 7
+    url: https://liheapch.acf.gov/docs/2026/state-plans/NY_Plan_2026.pdf#page=7
+  readings:
+    statute: No statute supplied; the manual counts all other income not specifically excluded under D.13.
+    other: The state plan's section 1.9 list of countable income leaves "Other" unchecked.
+  example: ny_heap_countable_income.yaml Case 3 counts $1,200 of miscellaneous income, for countable income of $28,800;
+    without it, countable income would be $27,600.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/parameters/gov/states/ny/otda/heap/income/sources/unearned.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/9744
+  state: unreviewed
+  note: The code follows the manual; its comment reads "the manual controls". Other boxes left unchecked in section
+    1.9 may raise the same question.
 - id: us-ny:household-credit-claimable-spouse
   program: income-tax
   years:
@@ -4226,6 +4442,151 @@ candidates:
   note: 'PE-US follows the statute: the credit needs at least one filer who cannot be claimed, so a qualified taxpayer
     keeps it when the spouse can be claimed (ny_real_property_tax_credit.py). Ruled in October 2026 to retain the
     credit under the statute; verify the instructions'' return-level interpretation.'
+- id: us-ny:ssp-couple-facility-entry-month
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: When a New York couple enters a congregate care level II or III facility after the first of the month,
+    is that month's state supplement set by the couple's arrangement on the first day or paid at the couple facility
+    rate?
+  sources:
+  - kind: regulation
+    citation: 18 NYCRR 398-4.4(c)
+    url: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-4.4
+  - kind: manual
+    citation: SSA POMS SI NY01415.026 B, codes D and E
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501415026NY
+  readings:
+    statute: No statute supplied; 18 NYCRR 398-4.4(c) sets the State benefit rate by the individual's or couple's
+      living arrangement on the first day of the month.
+    other: POMS SI NY01415.026 says a couple entering a level 2 or level 3 facility usually gets the couple FBR
+      and the couple supplement for that level (code D or E) for the month of change only, then two individual rates.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/ny/otda/ssp/ny_ssp_care_setting.py
+    - policyengine_us/variables/gov/states/ny/otda/ssp/ny_ssp.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10158
+  state: unreviewed
+  note: The model has no entry-date input, so the monthly ny_ssp_care_setting input decides the rate and neither
+    reading is applied by itself. No test covers the entry month.
+- id: us-ny:ssp-personal-needs-five-dollar-facilities
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: Do residents of other medical facilities receive New York's $5 personal needs allowance, as the 2026
+    OTDA chart says, or only residents of OPWDD intermediate care facilities and OMH hospitals, as Social Services
+    Law 209(2-a) provides?
+  sources:
+  - kind: statute
+    citation: N.Y. Soc. Serv. Law §209(2-a)
+    url: https://www.nysenate.gov/legislation/laws/SOS/209
+  - kind: regulation
+    citation: 18 NYCRR 398-3.4
+    url: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-3.4
+  - kind: guidance
+    citation: OTDA 2026 SSP payment chart, footnote 4
+    url: https://opwdd.ny.gov/system/files/documents/2025/11/25-inf-06-attachment-1.pdf#page=2
+  readings:
+    statute: The $5 allowance goes to residents of OPWDD intermediate care facilities and patients of OMH hospitals;
+      residents of residential health care facilities receive $25. 18 NYCRR 398-3.4 agrees.
+    other: The OTDA chart gives $5 to residents of other medical facilities.
+  example: 'ny_ssp.yaml Case 35: a general hospital resident with $30 of SSI receives 0 under the statute; the chart''s
+    footnote would pay $5.'
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ny/otda/ssp/ny_ssp.py
+    - policyengine_us/variables/gov/states/ny/otda/ssp/ny_ssp_care_setting.py
+    - policyengine_us/variables/gov/states/ny/otda/ssp/ny_ssp_living_arrangement.py
+    - policyengine_us/parameters/gov/states/ny/otda/ssp/personal_needs/developmental_or_mental_health_facility.yaml
+    - policyengine_us/parameters/gov/states/ny/otda/ssp/personal_needs/residential_health_care_facility.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10158
+  state: unreviewed
+  note: The model follows the statute and regulation (NOTE in ny_ssp.py); ny_ssp.yaml Cases 19 and 35 pin it. Read
+    alone, 18 NYCRR 398-3.2(c) requires residence in a residential health care facility, which would bar both $5
+    groups.
+- id: us-ny:ssp-personal-needs-income-test
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Does New York's personal needs allowance require that the facility resident have no countable income
+    other than SSI, as 18 NYCRR 398-3.2(d) does, when Social Services Law 209(2-a) states no income test?
+  sources:
+  - kind: statute
+    citation: N.Y. Soc. Serv. Law §209(2-a)
+    url: https://www.nysenate.gov/legislation/laws/SOS/209
+  - kind: regulation
+    citation: 18 NYCRR 398-3.2(d)
+    url: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-3.2
+  readings:
+    statute: A residential health care facility resident who receives or is eligible to receive SSI or additional
+      state payments is entitled to the $25 allowance "in accordance with regulations of the department", and the
+      $5 group "shall receive" its allowance; neither sentence states an income test.
+    other: The resident must have no countable income, earned or unearned, other than the federal SSI benefit for
+      medical facility residents when Medicaid pays at least 50 percent of the cost of care.
+  example: 'A nursing home resident with $45 a month of Social Security has $25 of countable income and $5 of SSI:
+    the regulation pays $0; reading the statute with no income test would pay $25.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/ny/otda/ssp/ny_ssp.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10158
+  state: unreviewed
+  note: The model pays the allowance only with SSI above zero and no countable income; ny_ssp.yaml Cases 20 and
+    21 pin it. The $25 sentence delegates to the department's regulations, so 398-3.2(d) may implement it rather
+    than conflict with it; the $5 sentence has no such phrase.
+- id: us-ny:ssp-spousal-deeming-subtraction
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Under spousal deeming, does New York's state supplement subtract the claimant's SSI plus countable income
+    from the standard of need, as Social Services Law 209(4) reads, or the greater of the FBR or countable income
+    once, as 18 NYCRR 398-2.1(ac) and 398-4.4(b) are read together?
+  sources:
+  - kind: statute
+    citation: N.Y. Soc. Serv. Law §209(4)
+    url: https://www.nysenate.gov/legislation/laws/SOS/209
+  - kind: regulation
+    citation: 18 NYCRR 398-2.1(ac), (g) and (o)
+    url: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-2.1
+  - kind: regulation
+    citation: 18 NYCRR 398-4.4(b)
+    url: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-4.4
+  - kind: manual
+    citation: SSA POMS SI 01320.430 D
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501320430
+  readings:
+    statute: The standard of need is reduced by "the sum of such individual's or couple's supplemental security
+      income benefit plus countable income".
+    other: 398-2.1(ac) sets the State benefit rate at the standard of need minus "the FBR or a recipient's monthly
+      Countable Income, whichever is greater", and 398-4.4(b) subtracts the greater of the two from that rate again.
+      Read to subtract once, with deemed income counted (398-2.1(g)) against the claimant's own individual FBR,
+      the regulation pays the standard less the greater amount. SSA's method for federally administered supplements
+      (POMS SI 01320.430 D) is a third reading and uses the couple rate.
+  example: 'Integration Case 11: a claimant living with an ineligible spouse has countable income of 650.83, including
+    deemed income, and SSI of 840.17 against a 1,017 standard. Subtracting once pays 1,017 - max(994, 650.83) =
+    23; the statute subtracts 840.17 + 650.83 = 1,491 and pays 0.'
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/ny/otda/ssp/ny_ssp.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10158
+  state: unreviewed
+  note: The model follows the regulation read to subtract once (NOTE in ny_ssp.py); integration.yaml Cases 6 and
+    11 pin it. Read literally, 398-2.1(ac) and 398-4.4(b) subtract the greater amount twice, which would pay a claimant
+    living alone with no income nothing instead of $87. New York has administered its own supplement since October
+    1, 2014. Whether a state regulation that departs from the statute's text binds as a Treasury regulation would
+    is not yet ruled.
 - id: us-oh:heap-2026-2027-large-household-smi-amounts
   program: liheap
   years:
@@ -4512,6 +4873,138 @@ candidates:
   note: 'PE-US follows the statute: a household below 110% of the poverty guideline is income-eligible even above
     the 60% SMI limit, which the comment finds below that floor from household size 17 in 2025 to 2027 (oh_liheap_eligible.py,
     gov/hhs/liheap/fpg_floor.yaml). Verify the applicable fiscal-year tables and large-household calculations.'
+- id: us-oh:rss-couple-income-standard
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Is an Ohio RSS couple's pooled countable income tested against the SSI couple rate that OAC 5160:1-5-01(E)(2)
+    cites, or against twice the $1,800 RSS income standard?
+  sources:
+  - kind: regulation
+    citation: OAC 5160:1-5-01(B)(2), (E)(2) and (G)(1)
+    url: https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-5-01
+  - kind: regulation
+    citation: OAC 5160:1-3-03.5(B)(2)
+    url: https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-3-03.5
+  readings:
+    statute: No statute supplied; 5160:1-5-01(E)(2) determines a couple's eligibility "collectively, utilizing the
+      appropriate couple income standard as defined in rule 5160:1-3-03.5", which is "the current supplemental security
+      income (SSI) benefit rate for a couple".
+    other: 5160:1-5-01(B)(2) defines a single RSS income standard, the allowable fee plus the personal needs allowance
+      ($1,800), and the model applies it to each spouse.
+  example: 'Integration Case 1: both spouses are approved and their only income is $1,491 of SSI. The SSI couple
+    standard leaves them at the standard and ineligible; twice the RSS standard pays each (3,600 - 1,491) / 2 =
+    1,054.50.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/oh/dbh/rss/oh_rss_countable_income.py
+    - policyengine_us/variables/gov/states/oh/dbh/rss/oh_rss.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10164
+  state: unreviewed
+  note: The model compares pooled countable income with twice the RSS income standard (NOTE in oh_rss_countable_income.py);
+    integration.yaml Cases 1 and 8 pin it. Read literally, (E)(2) makes a couple whose only income is SSI ineligible.
+- id: us-oh:rss-one-eligible-spouse-income-standard
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: When only one spouse has an RSS level of care, is that spouse's income tested against the SSI individual
+    rate that OAC 5160:1-5-01(E)(3) cites, or against the $1,800 RSS income standard?
+  sources:
+  - kind: regulation
+    citation: OAC 5160:1-5-01(B)(2) and (E)(3)
+    url: https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-5-01
+  - kind: regulation
+    citation: OAC 5160:1-3-03.5(B)(3)
+    url: https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-3-03.5
+  readings:
+    statute: No statute supplied; 5160:1-5-01(E)(3) uses "the appropriate individual income standard as defined
+      in rule 5160:1-3-03.5", the SSI individual rate ($994 in 2026).
+    other: The RSS income standard of 5160:1-5-01(B)(2), $1,800, which the model uses.
+  example: 'Integration Case 15: the approved spouse has $1,200 a month of Social Security disability, countable
+    income of 1,180 and no SSI. Against $994 the spouse is ineligible; against $1,800 the payment is 620.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/oh/dbh/rss/oh_rss_countable_income.py
+    - policyengine_us/variables/gov/states/oh/dbh/rss/oh_rss.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10164
+  state: unreviewed
+  note: The model compares that spouse's own countable income with the RSS income standard (NOTE in oh_rss_countable_income.py);
+    integration.yaml Case 15 pins it.
+- id: us-oh:rss-one-eligible-spouse-resources
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: When only one spouse has an RSS level of care, are that spouse's own resources tested against $2,000,
+    or the couple's combined resources against $3,000 under Ohio's Medicaid resource rules?
+  sources:
+  - kind: regulation
+    citation: OAC 5160:1-5-01(E)(3)
+    url: https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-5-01
+  - kind: regulation
+    citation: OAC 5160:1-3-05.1(B)(9)(b)
+    url: https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-3-05.1
+  - kind: regulation
+    citation: OAC 5160:1-3-05.20(E)(1)-(2)
+    url: https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-3-05.20
+  readings:
+    statute: No statute supplied; 5160:1-5-01(E)(3) applies the individual standard, so the approved spouse's own
+      resources are tested against $2,000.
+    other: 5160:1-3-05.1(B)(9)(b) and 5160:1-3-05.20(E)(1)-(2) combine a married couple's resources against $3,000,
+      whether or not the other spouse is eligible.
+  example: 'Integration Case 13: only person1 is approved, with resources of $1,500; the spouse has $1,600. The
+    individual test pays person1 1,800; the combined test ($3,100 against $3,000) pays 0.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/oh/dbh/rss/oh_rss.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10164
+  state: unreviewed
+  note: 'The model follows the RSS rule (NOTE in oh_rss.py); integration.yaml Case 13 pins it. The reading decides
+    the result only when medicaid_enrolled is entered: computed Medicaid and the SSI resource test both combine
+    the couple''s resources, and integration.yaml Case 14 pays [0, 0].'
+- id: us-oh:rss-recipient-of-ssi-or-social-security
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Must an Ohio Residential State Supplement recipient receive SSI or Social Security, as ORC 5119.41(A)
+    describes the program, or only meet the eligibility criteria of the rules?
+  sources:
+  - kind: statute
+    citation: ORC 5119.41(A)-(B)
+    url: https://codes.ohio.gov/ohio-revised-code/section-5119.41
+  - kind: regulation
+    citation: OAC 5160:1-5-01(C)
+    url: https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-5-01
+  - kind: regulation
+    citation: OAC 5122-36-02(A)
+    url: https://codes.ohio.gov/ohio-administrative-code/rule-5122-36-02
+  readings:
+    statute: The program supplements "the amounts received by aged, blind, or disabled adults as supplemental security
+      income payments ... or as social security benefits or social security disability insurance benefits", so a
+      person who receives neither is not paid.
+    other: The criteria of 5160:1-5-01(C) and 5122-36-02(A), to which 5119.41(B) leaves eligibility, do not require
+      receipt of SSI or Social Security.
+  example: 'Integration Case 3: an approved 65-year-old with no income whose spouse''s deemed wages reduce SSI to
+    0 receives 1,800 under the rules and 0 under the receipt reading.'
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/oh/dbh/rss/oh_rss.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10164
+  state: unreviewed
+  note: The model follows the rules and does not require SSI take-up (NOTE in oh_rss.py); integration.yaml Cases
+    3 and 13 pin it. Because 5119.41(B) makes eligibility depend on the rules, (A) may describe the program rather
+    than add a condition.
 - id: us-ok:liheap-child-earnings
   program: liheap
   years:
@@ -4649,6 +5142,137 @@ candidates:
   state: unreviewed
   note: PE-US applies no resource test, and the comment records that the September 15, 2026 amendment removed both
     provisions (ok_liheap_eligible.py). Verify agency practice while the rules were in force.
+- id: us-ok:ssp-ineligible-child-allocation
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: Is Oklahoma's ineligible child allocation $498, as Appendix C-1 Schedule VIII.C lists, or $497, the
+    couple FBR less the individual FBR?
+  sources:
+  - kind: manual
+    citation: OKDHS Appendix C-1 Schedule VIII.C (July 1, 2026)
+    url: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-1.pdf#page=4
+  - kind: regulation
+    citation: 20 CFR 416.1163(b)(1)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1163
+  readings:
+    statute: No statute supplied; Appendix C-1 Schedule VIII.C lists a $498 allocation, and OAC 340:15-1-5 and 317:35-5-42
+      point to Appendix C-1 for it.
+    other: '20 CFR 416.1163(b)(1) sets the allocation at the couple FBR less the individual FBR: $1,491 - $994 =
+      $497 in 2026.'
+  example: 'integration.yaml Case 15 sums two $498 allocations on the ineligible-spouse path, one reduced by a teen''s
+    $300 of earnings: (498 - 300) + 498 = 696. The federal amount would give (497 - 300) + 497 = 694.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/ok/dhs/ssp/ok_ssp_spouse_child_allocation.py
+    - policyengine_us/variables/gov/states/ok/dhs/ssp/_ok_ssp_income.py
+    - policyengine_us/parameters/gov/states/ok/dhs/ssp/child_allocation.yaml
+    - policyengine_us/variables/gov/ssa/ssi/eligibility/income/deemed/ssi_ineligible_child_allocation.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10165
+  state: unreviewed
+  note: The model uses $498 on the ineligible-spouse path and the federal $497 on the child path, which reuses federal
+    parental deeming, so a sibling's allocation can be $1 lower (NOTE in _ok_ssp_income.py). The difference changes
+    the payment only below the $40 cap.
+- id: us-ok:ssp-ineligible-spouse-definition
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Is an aged, blind or disabled spouse who is not SSP-eligible an ineligible spouse for Oklahoma's state
+    supplement?
+  sources:
+  - kind: regulation
+    citation: OAC 340:15-1-2
+    url: https://www.law.cornell.edu/regulations/oklahoma/OAC-340-15-1-2
+  - kind: regulation
+    citation: OAC 317:35-5-42(k)(1), applied by OAC 340:15-1-4(10)
+    url: https://www.oklahoma.gov/ohca/policies-and-rules/xpolicy/medical-assistance-for-adults-and-children-eligibility/eligibility-and-countable-income/countable-income-and-resources/determination-of-countable-income-for-individuals-categorically-.html
+  readings:
+    statute: No statute supplied; 340:15-1-2 defines an eligible individual with an ineligible spouse as one living
+      with a spouse who is not 65 years of age and older, blind, or disabled and is not an essential spouse, and
+      is silent on an aged, blind or disabled spouse who is not eligible.
+    other: 317:35-5-42(k)(1) makes any spouse in the household who is not eligible for SSI an ineligible spouse.
+  example: 'Integration Case 5: the claimant has $500 a month of Social Security and the aged spouse, who declines
+    SSI, has $1,500. As an ineligible spouse, couple income of 1,980 counts and the SSP is 0; ignoring the spouse,
+    the claimant''s own 480 is under the $1,034 standard and the SSP is 40.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/ok/dhs/ssp/ok_ssp.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10165
+  state: unreviewed
+  note: The model treats any spouse living together who is not ok_ssp_eligible as an ineligible spouse, except one
+    in a medical facility or incarcerated (NOTE in ok_ssp.py); integration.yaml Cases 5 and 6 pin it.
+- id: us-ok:ssp-minor-income-limit
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Must a blind or disabled minor's countable income, including deemed parental income, be below the FBR
+    or below the SSP standard for an individual to receive Oklahoma's state supplement?
+  sources:
+  - kind: regulation
+    citation: OAC 340:15-1-4(9)(B)(iii)
+    url: https://www.law.cornell.edu/regulations/oklahoma/OAC-340-15-1-4
+  - kind: regulation
+    citation: OAC 340:15-1-5(c)(6)
+    url: https://www.law.cornell.edu/regulations/oklahoma/OAC-340-15-1-5
+  - kind: manual
+    citation: OKDHS Appendix C-1 Schedule VIII.C
+    url: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-1.pdf#page=4
+  readings:
+    statute: No statute supplied; 340:15-1-4(9)(B)(iii) requires countable deemed income below 100 percent of the
+      FBR, and Appendix C-1 Schedule VIII.C says the same.
+    other: 340:15-1-5(c)(6) compares the child's income plus income deemed from the parents with the SSP standard
+      for an eligible individual.
+  example: 'A disabled child with countable income of 1,010 and no SSI: the (c)(6) test pays 1,034 - 1,010 = 24;
+    the FBR test pays 0.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/ok/dhs/ssp/ok_ssp.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10165
+  state: unreviewed
+  note: The model follows the (c)(6) procedure (NOTE in ok_ssp.py). The readings differ only for countable income
+    from 994 up to 1,034; no test covers that range.
+- id: us-ok:ssp-presumed-maximum-value-with-ineligible-spouse
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: When an ineligible spouse's income is deemed, is an Oklahoma SSP claimant's in-kind support and maintenance
+    capped at one-third of the individual FBR plus $20, or at one-sixth of the couple FBR plus $10?
+  sources:
+  - kind: regulation
+    citation: OAC 317:35-5-42(b)(8)(D)
+    url: https://www.oklahoma.gov/ohca/policies-and-rules/xpolicy/medical-assistance-for-adults-and-children-eligibility/eligibility-and-countable-income/countable-income-and-resources/determination-of-countable-income-for-individuals-categorically-.html
+  - kind: manual
+    citation: SSA POMS SI 01320.150 B.1.a
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501320150
+  readings:
+    statute: No statute supplied; 317:35-5-42 sets the maximum presumed value at one-third of the SSI FBR plus the
+      $20 general income exclusion and does not say which FBR applies when spouse income is deemed.
+    other: 'POMS SI 01320.150 B.1.a caps the value at one-sixth of the couple FBR plus $10 when there is income
+      to deem from the spouse: 258.50 in 2026, against 351.33.'
+  example: 'Integration Case 16: with 258.50 of in-kind support and maintenance the couple income is 1,511 and the
+    SSP is 21; at 351.33 the income is 1,603.83 and the SSP is 0.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/ok/dhs/ssp/_ok_ssp_income.py
+    - policyengine_us/variables/gov/ssa/ssi/eligibility/income/ism/ssi_pmv_amount.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10165
+  state: unreviewed
+  note: The model takes the federal in-kind support and maintenance value, so it follows POMS. The NOTE in _ok_ssp_income.py
+    adds that federal SSI also runs a couple computation for an aged, blind or disabled spouse who is not eligible
+    (issue 10243), so the deeming value applies even when 317:35-5-42(m)(4) deems nothing.
 - id: us-or:2026-standard-deduction-agency-figures
   program: income-tax
   years:
@@ -4877,6 +5501,75 @@ candidates:
     prs: []
   state: unreviewed
   note: PE-US follows the handbook; verify its historical applicability to the report periods.
+- id: us-pa:ssp-care-home-levels
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Are Pennsylvania's domiciliary care and personal care home supplements the $434.30 and $439.30 printed
+    in 55 Pa. Code §299.37, or the $634.30 and $639.30 that SSA and DHS give for 2026?
+  sources:
+  - kind: regulation
+    citation: 55 Pa. Code §299.37
+    url: https://www.pacodeandbulletin.gov/secure/pacode/data/055/chapter299/s299.37.html
+  - kind: manual
+    citation: SSA POMS SI 01415.058 K.2.a and K.2.b
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501415058#k2a
+  - kind: manual
+    citation: Pennsylvania Medical Assistance Eligibility Handbook 387 Appendix A
+    url: null
+  readings:
+    statute: No statute supplied; §299.37 (amended effective July 1, 2011) prints $434.30 and $439.30 for individuals
+      and $947.40 and $957.40 for couples.
+    other: POMS SI 01415.058 K.2 and Handbook 387 Appendix A give $634.30 and $639.30 for individuals and $1,347.40
+      and $1,357.40 for couples.
+  example: 'pa_ssp.yaml Case 3: a certified domiciliary care resident with no income receives 634.30, against 434.30
+    under §299.37.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/parameters/gov/states/pa/dhs/ssp/amount/individual.yaml
+    - policyengine_us/parameters/gov/states/pa/dhs/ssp/amount/couple.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10167
+  state: unreviewed
+  note: The model follows POMS and the Handbook; YAML comments by the care rows record the §299.37 levels. SSA administers
+    the care-home supplements. pa_ssp.yaml Cases 3 and 4 and integration.yaml Case 4 pin it. The Handbook is served
+    over http only; the parameter references link it.
+- id: us-pa:ssp-supplement-for-personal-needs
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: Is Pennsylvania's Supplement for Personal Needs for a Medicaid facility resident $22.10, or the $15.00
+    that Handbook 387 Appendix A's 2026 note lists?
+  sources:
+  - kind: manual
+    citation: Pennsylvania Long-Term Care Handbook 450.243
+    url: null
+  - kind: manual
+    citation: Pennsylvania Medical Assistance Eligibility Handbook 387 Appendix A (January 1, 2026)
+    url: null
+  - kind: regulation
+    citation: 55 Pa. Code §299.37
+    url: https://www.pacodeandbulletin.gov/secure/pacode/data/055/chapter299/s299.37.html
+  readings:
+    statute: No statute supplied; LTC Handbook 450.243 pays an SSI recipient in a long-term care facility $30 of
+      SSI plus a $22.10 Supplement for Personal Needs, the maximum independent-living supplement (§299.37).
+    other: Appendix A's note on the state supplements in its 2026 table lists $15.00 for an MA institution, although
+      the table's $52.10 total is $30 plus $22.10.
+  example: An SSI recipient in a Medicaid facility with no other income receives 22.10, or 15.00 under the note.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/parameters/gov/states/pa/dhs/ssp/amount/individual.yaml
+    - policyengine_us/variables/gov/states/pa/dhs/ssp/pa_ssp.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10167
+  state: unreviewed
+  note: The model uses $22.10 (comment by MEDICAID_INSTITUTION in amount/individual.yaml); pa_ssp.yaml Cases 6 and
+    17 pin it. Both handbooks are served over http only; the parameter references link them.
 - id: us-pa:tax-forgiveness-dependent-parent-exception
   program: income-tax
   years:
@@ -5213,6 +5906,141 @@ candidates:
   note: 'PE-US follows the manual: workers_compensation counts, as does disability_benefits, which stands in for
     TDI and TCI, and the list''s comment records the plan''s unchecked insurance item (income/sources/unearned.yaml,
     ri_liheap_income.py). Verify whether the unchecked insurance category covers these payments.'
+- id: us-ri:ssp-category-d-without-federal-ssi
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Is Rhode Island's Category D supplement for an assisted living resident denied SSI for excess income
+    a state-only DHS payment, or an SSA payment under the federal rules with a $1 minimum?
+  sources:
+  - kind: regulation
+    citation: 218-RICR-20-00-5 §§5.1.1, 5.2.B.3 and 5.3.A.2
+    url: https://risos-apa-production-public.s3.amazonaws.com/DHS/REG_13426_20260109151518643.pdf#page=1
+  - kind: regulation
+    citation: 20 CFR 416.2025(b)(3) and 416.2020(c)
+    url: https://www.law.cornell.edu/cfr/text/20/416.2025
+  - kind: manual
+    citation: SSA POMS SI 01415.058 L.2
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501415058#l2
+  readings:
+    statute: No statute supplied; the state regulation has SSA administer Category D for SSI recipients and DHS
+      pay a resident denied SSI for excess income a state-only supplement based on countable income.
+    other: Under 20 CFR 416.2025(b)(3) a federally administered supplement is reduced by income above the FBR, 416.2020(c)
+      raises payments under $1 to $1, and POMS L.2 gives a Category D total of $1,326, above the $994 FBR.
+  example: 'ri_ssp.yaml Case 16: an aged resident with countable income of 1,325.50 and no SSI receives 0.50 from
+    DHS, or 1 if SSA paid.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/ri/dhs/ssp/ri_ssp.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10168
+  state: unreviewed
+  note: The model follows the state regulation because 20 CFR 416.2010(a)(1) leaves supplement-only coverage to
+    the State (NOTE in ri_ssp.py); ri_ssp.yaml Cases 16 and 17 pin it. The Federal-State agreement was not checked.
+- id: us-ri:ssp-federal-administration-after-2010
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Does SSA still administer Rhode Island's Category D supplement, when R.I. Gen. Laws §40-6-27(a)(2) says
+    state supplements are not federally administered as of July 1, 2010?
+  sources:
+  - kind: statute
+    citation: R.I. Gen. Laws §40-6-27(a)(2)
+    url: https://webserver.rilegislature.gov/Statutes/TITLE40/40-6/40-6-27.htm
+  - kind: regulation
+    citation: 218-RICR-20-00-5 §5.1.1.B
+    url: https://risos-apa-production-public.s3.amazonaws.com/DHS/REG_13426_20260109151518643.pdf#page=1
+  - kind: manual
+    citation: SSA POMS SI 01415.058 L
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501415058#l1
+  - kind: manual
+    citation: SSA POMS SI BOS01415.950
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501415950BOS
+  readings:
+    statute: As of July 1, 2010, state supplement payments are not federally administered and DHS pays them directly.
+    other: §5.1.1.B has SSA administer Category D for SSI recipients, and POMS SI 01415.058 L.2 lists a 2026 Category
+      D level. SI BOS01415.950 says SSA administered categories A, B and E only through December 31, 2010.
+  example: 'ri_ssp.yaml Case 17: a reported SSI recipient with countable income 331.50 above the FBR receives 1
+    when SSA pays, with its $1 minimum, and 0.50 when DHS pays.'
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/ri/dhs/ssp/ri_ssp.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10168
+  state: unreviewed
+  note: 'The model follows the regulation and POMS: SSA pays Category D to SSI recipients (comment in ri_ssp.py);
+    ri_ssp.yaml Case 17 pins it. The readings differ only by SSA''s rounding and $1 minimum.'
+- id: us-ri:ssp-supportive-residential-care-category
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Does Rhode Island pay the $300 supplement that R.I. Gen. Laws §40-6-27(a)(1)(vii) lists for state-licensed
+    supportive residential-care settings?
+  sources:
+  - kind: statute
+    citation: R.I. Gen. Laws §40-6-27(a)(1)(vii)
+    url: https://webserver.rilegislature.gov/Statutes/TITLE40/40-6/40-6-27.htm
+  - kind: regulation
+    citation: 218-RICR-20-00-5 §5.6
+    url: https://risos-apa-production-public.s3.amazonaws.com/DHS/REG_13426_20260109151518643.pdf#page=13
+  - kind: manual
+    citation: SSA POMS SI 01415.058 L.2
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501415058#l2
+  readings:
+    statute: Individuals in state-licensed supportive residential-care settings that meet DHS standards receive
+      $300 a month.
+    other: 218-RICR-20-00-5 §5.6 and SSA's 2026 payment levels publish no such category.
+  example: An uncertified resident of such a setting with no income would receive 300 under (vii); the model pays
+    the own-household rate of 39.92.
+  pe_us:
+    follows: not-modelled
+    code:
+    - policyengine_us/variables/gov/states/ri/dhs/ssp/ri_ssp_living_arrangement.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10168
+  state: unreviewed
+  note: The category is not modeled (NOTE in ri_ssp_living_arrangement.py). No test covers it.
+- id: us-ri:ssp-title-xix-couple-amount
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Is a Rhode Island couple in a Title XIX facility paid jointly at twice the $45 personal needs allowance,
+    or as two individuals?
+  sources:
+  - kind: statute
+    citation: R.I. Gen. Laws §40-6-27(a)(3)
+    url: https://webserver.rilegislature.gov/Statutes/TITLE40/40-6/40-6-27.htm
+  - kind: regulation
+    citation: 218-RICR-20-00-5 §5.6.A
+    url: https://risos-apa-production-public.s3.amazonaws.com/DHS/REG_13426_20260109151518643.pdf#page=13
+  - kind: manual
+    citation: SSA POMS SI BOS01415.950 (Title XIX facility charts through January 2010)
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501415950BOS
+  readings:
+    statute: Individuals living in institutions receive a $45 monthly personal needs allowance from the state; the
+      statute sets no couple amount.
+    other: §5.6.A prints the Category E couple amounts as "N/A". SSA's charts through January 2010 set the couple
+      supplement ($40) at twice the individual one ($20).
+  example: 'A couple in a Title XIX facility where one spouse has $100 a month of Social Security: jointly at $90,
+    each receives (90 - 20) / 2 = 35; as two individuals they receive 0 and 45.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/parameters/gov/states/ri/dhs/ssp/amount/couple.yaml
+    - policyengine_us/variables/gov/states/ri/dhs/ssp/ri_ssp.py
+    - policyengine_us/variables/gov/ssa/ssi/_ssi_state_supplement.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10168
+  state: unreviewed
+  note: The model computes the couple jointly at $90, which the couple.yaml comment derives from the per-individual
+    allowance in §40-6-27(a)(3); ri_ssp.yaml Case 18 pins [45, 45] for a couple with no income. SSA administered
+    Category E only through December 31, 2010.
 - id: us-sd:liheap-2025-published-income-limit
   program: liheap
   years:
@@ -5397,6 +6225,102 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/9974
   state: unreviewed
   note: 'PE-US follows the plan and rules, not the 2018 manual: only wood and coal are paid in full, so kerosene is capped at unpaid charges like fuel oil (sd_liheap.py). Confirm the recipient and whether unpaid charges cap the award.'
+- id: us-sd:ssp-couple-other-income
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Does other income of either spouse end South Dakota's independent living supplement for both members
+    of an eligible couple, or only for the spouse who has it?
+  sources:
+  - kind: manual
+    citation: SSA POMS SI DEN01415.011 B.5.b
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501415011DEN
+  - kind: regulation
+    citation: ARSD 67:12:14:03(2)
+    url: https://sdlegislature.gov/Rules/Administrative/67:12:14:03
+  readings:
+    statute: No statute supplied; POMS SI DEN01415.011 B.5.b pays only individuals and couples who have no other
+      income.
+    other: ARSD 67:12:14:03(2) ends the payment when "The person is receiving other income", person by person.
+  example: 'Integration Case 3: both spouses receive 505.50 of SSI and one has $500 a month of Social Security.
+    Pooling pays both 0; the per-person reading pays the other spouse $15 as an individual or a couple member''s
+    $8 or $7.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/sd/dss/ssp/sd_ssp_independent.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10169
+  state: unreviewed
+  note: The model pools an eligible couple's other income (NOTE in sd_ssp_independent.py); integration.yaml Case
+    3 pins it.
+- id: us-sd:ssp-independent-payment-ssi-receipt
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Must a South Dakota resident receive SSI to get the independent living supplement, or does SDCL 28-5A-1's
+    class of residents who would be eligible to receive SSI qualify?
+  sources:
+  - kind: statute
+    citation: SDCL 28-5A-1
+    url: https://sdlegislature.gov/Statutes/28-5A-1
+  - kind: regulation
+    citation: ARSD 67:12:14:02(1) and 67:12:14:03(1)
+    url: https://sdlegislature.gov/Rules/Administrative/67:12:14:02
+  readings:
+    statute: The department may provide supplementary payments, under its rules, to residents who are receiving
+      or would be eligible to receive SSI.
+    other: 67:12:14:02(1) requires that the person be receiving SSI, and 67:12:14:03(1) ends the payment when SSI
+      stops.
+  example: 'sd_ssp.yaml Case 20: an aged resident with no income who does not take up SSI receives 0 under the rule,
+    while the statute''s class includes the resident.'
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/sd/dss/ssp/sd_ssp_independent.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10169
+  state: unreviewed
+  note: The model pays the independent supplement only with modeled SSI above zero or reported receipt; the care
+    payment needs no SSI. The statute authorizes payments "under such rules as may be promulgated", so the narrower
+    rule may be a valid use of that authority rather than a conflict.
+- id: us-sd:ssp-joint-entry-resource-limit-after-entry-month
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Does South Dakota's $3,000 resource limit for spouses who begin long-term care in the same month still
+    apply in assisted living and adult foster care after the month of entry?
+  sources:
+  - kind: regulation
+    citation: ARSD 67:46:05:30
+    url: https://sdlegislature.gov/Rules/Administrative/67:46:05:30
+  - kind: regulation
+    citation: ARSD 67:46:05:42(8)
+    url: https://sdlegislature.gov/Rules/Administrative/67:46:05:42
+  - kind: regulation
+    citation: ARSD 67:46:04:10(6)
+    url: https://sdlegislature.gov/Rules/Administrative/67:46:04:10
+  readings:
+    statute: No statute supplied; 67:46:05:30 allows $3,000 for an individual with a spouse if both begin receiving
+      long-term care services in the same month, with no limit to the month of entry.
+    other: 67:46:05:42(8), for nursing facilities, and 67:46:04:10(6), for income, treat the spouses separately
+      after the calendar month of entry.
+  example: 'The integration.yaml Case 7 couple in a later month (resources 2,100 and 800): under the $3,000 limit
+    they receive 1,000 and 1,400; tested alone, the first spouse''s 2,100 is over $2,000, and they receive 0 and
+    1,400 (integration.yaml Case 8).'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/sd/dss/ssp/sd_ssp_care_joint_entry.py
+    - policyengine_us/variables/gov/states/sd/dss/ssp/sd_ssp_care.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10169
+  state: unreviewed
+  note: sd_ssp_care_joint_entry is true only in the month both spouses entered care; later months use the $2,000
+    limit and each spouse's own income. integration.yaml Cases 5, 7 and 8 pin it.
 - id: us-tx:family-planning-unearned-income-exclusions
   program: family-planning-program
   years:
@@ -5479,6 +6403,73 @@ candidates:
   state: open
   note: 'PE-US follows the regulation; resolve the pending conflict with the information letter. Code not yet on
     main: tx_ssi_state_supplement.'
+- id: us-va:ag-entry-month-spouse-at-home
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: In the month a Virginia Auxiliary Grant resident enters care while the spouse stays home, does the budget
+    keep SSA's deemed spouse income or count only the applicant's own income?
+  sources:
+  - kind: manual
+    citation: Virginia Auxiliary Grant Manual Chapter B §6
+    url: https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf#page=34
+  - kind: manual
+    citation: Virginia Auxiliary Grant Manual Chapter D §5
+    url: https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf#page=126
+  - kind: regulation
+    citation: 20 CFR 416.1163(f)(2)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1163
+  readings:
+    statute: No statute supplied; Chapter B §6 makes the assistance unit the AG applicant only.
+    other: Chapter D uses SSA's net earned and unearned income amounts, and SSA still deems the spouse's income
+      in the month of separation (20 CFR 416.1163(f)(2)).
+  example: 'Integration Case 3: SSA deems 1,480 of the home spouse''s Social Security and pays 11 of SSI, so the
+    AG is 2,217 - 1,491 = 726; counting only the applicant''s income gives 2,217 - 11 = 2,206.'
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/va/dars/ag/va_ag_countable_income.py
+    - policyengine_us/variables/gov/states/va/dars/ag/va_ag_certified.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10172
+  state: unreviewed
+  note: The model follows Chapter D (NOTE in va_ag_countable_income.py); integration.yaml Cases 3 and 6 pin it.
+    For later months, va_ag_certified tells users to put the spouses in separate marital units, so neither SSI nor
+    the AG deems.
+- id: us-va:ag-student-earned-income-exclusion
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    type: calendar
+  question: Does Virginia's Auxiliary Grant exclude a student's earnings for an applicant who does not receive SSI?
+  sources:
+  - kind: manual
+    citation: Virginia Auxiliary Grant Manual Chapter H §2.2
+    url: https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf#page=370
+  - kind: manual
+    citation: Virginia Auxiliary Grant Manual Chapter D
+    url: https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf#page=123
+  - kind: regulation
+    citation: 20 CFR 416.1112(c)(3)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1112
+  readings:
+    statute: No statute supplied; Chapter H's list of earned income exclusions does not name the SSI student earned
+      income exclusion.
+    other: Chapter D requires the AG program to use SSI policy, and 20 CFR 416.1112(c)(3) excludes earnings of a
+      student under age 22.
+  example: A disabled 20-year-old student with $1,200 a month of Social Security disability and $500 of wages has
+    no SSI. Excluding the wages gives countable income of 1,180 and an AG of 1,037; Chapter H's list gives 1,397.50
+    and a deficiency of 819.50, paid as 820.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/va/dars/ag/va_ag_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10172
+  state: unreviewed
+  note: The model keeps the SSI student exclusion for non-SSI applicants (NOTE in va_ag_countable_income.py). No
+    test covers it.
 - id: us-va:claim-of-right-credit-gap-fill
   program: income-tax
   years:
@@ -6147,12 +7138,21 @@ candidates:
     other: The instructions bar a Form 2555 filer even when the form claims only the housing deduction.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/tools/section_911.py
+    - policyengine_us/variables/gov/irs/credits/ctc/refundable/refundable_ctc_barred_by_section_911_exclusion.py
+    - policyengine_us/parameters/gov/irs/credits/ctc/refundable/fully_refundable.yaml
+    - policyengine_us/parameters/gov/irs/credits/ctc/refundable/foreign_earned_income_exclusion_bar_applies.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10022
   state: unreviewed
-  note: 'The statute-first rule requires revising the deduction-only ACTC bar; verify that interpretation separately
-    from EITC, whose statutory wording differs. Code not yet on main: elects_section_911_exclusion.'
+  note: 'PE-US follows the instructions: elects_section_911_exclusion treats a filer who claims only the section
+    911(c)(4) housing deduction as electing section 911, so refundable_ctc_barred_by_section_911_exclusion denies
+    the additional child tax credit from 2015 except in 2021, when the credit is fully refundable and the bar does
+    not apply; the helper''s docstring says this case rests on the IRS instructions, not the statute (tools/section_911.py,
+    refundable/fully_refundable.yaml, refundable/foreign_earned_income_exclusion_bar_applies.yaml). The statute-first
+    rule requires revising the deduction-only ACTC bar; verify that interpretation separately from EITC, whose statutory
+    wording differs.'
 - id: us:charitable-non-itemizer-2020-separate-cap
   program: income-tax
   years:
@@ -6224,17 +7224,23 @@ candidates:
     statute: Section 63(c)(5) leaves earned income undefined.
     other: The worksheet uses reported wages and listed Schedule 1 income, minus the Schedule 1 line 15 deduction.
   example: A 2025 dependent with $10,000 wages, a $6,000 401(k) deferral and $600 interest gets a $4,450 deduction
-    and must file in the PR; main gave $10,450.
+    and must file; wages before the deferral would give $10,450.
   pe_us:
-    follows: unknown
-    code: []
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/irs/income/taxable_income/deductions/standard_deduction/standard_deduction_worksheet_earned_income_person.py
+    - policyengine_us/variables/gov/irs/income/taxable_income/deductions/standard_deduction/standard_deduction_worksheet_earned_income.py
+    - policyengine_us/parameters/gov/irs/income/filing_requirement/dependent/earned_income_sources.yaml
+    - policyengine_us/variables/gov/irs/income/taxable_income/deductions/standard_deduction/basic_standard_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10272
   state: unreviewed
-  note: 'Main uses a broader earned-income measure; the open PR adopts the worksheet as a permitted gap-fill, with
-    partnership-related line 15 deductions still needing verification. Code not yet on main: standard_deduction_worksheet_earned_income_person,
-    standard_deduction_worksheet_earned_income, basic_standard_deduction, medicaid_person_is_required_to_file, or_standard_deduction,
-    hi_deductions.'
+  note: 'PE-US follows the worksheet: earned income is W-2 box 1 wages (after elective deferrals), earned disability
+    benefits and Schedule 1 business and farm income, less the deductible part of self-employment tax, summed for
+    the head and spouse and floored at zero; the Medicaid filing test and Oregon''s and Hawaii''s dependent deductions
+    read the same measure (standard_deduction_worksheet_earned_income_person.py, standard_deduction_worksheet_earned_income.py,
+    filing_requirement/dependent/earned_income_sources.yaml, basic_standard_deduction.py). Verify the line 15 subtraction
+    for partnership self-employment income, which the list leaves out.'
 - id: us:education-benefits-joint-claimed-spouse
   program: income-tax
   years:
@@ -6256,11 +7262,14 @@ candidates:
     follows: conflicting-source
     code:
     - policyengine_us/variables/gov/irs/credits/education/is_barred_from_education_credits_by_dependency.py
+    - policyengine_us/variables/gov/irs/income/taxable_income/adjusted_gross_income/above_the_line_deductions/student_loan_interest/student_loan_interest_ald_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10087
   state: ruled
-  note: 'Ruled October 2026; the statute-first rule now requires changing the whole-return bar; verify the education-credit
-    page anchor because the supplied URL is for student loan interest. Code not yet on main: student_loan_interest_ald_eligible.'
+  note: 'PE-US follows the Form 1040 instructions: a claimed head or spouse bars the whole joint return from the
+    education credits and the student loan interest deduction (is_barred_from_education_credits_by_dependency.py,
+    student_loan_interest_ald_eligible.py). Ruled October 2026; the statute-first rule now requires changing the
+    whole-return bar; verify the education-credit page anchor because the supplied URL is for student loan interest.'
 - id: us:eitc-trust-royalties-investment-income
   program: income-tax
   years:
@@ -6280,12 +7289,16 @@ candidates:
     other: Only Schedule E Part I royalties enter line 8.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/variables/gov/irs/credits/earned_income/eitc_relevant_investment_income.py
+    - policyengine_us/variables/household/income/person/estate/passive_estate_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10194
   state: unreviewed
-  note: 'The statute-first rule requires including qualifying Part III royalties; obtain the worksheet version and
-    verify the omitted income basket. Code not yet on main: eitc_relevant_investment_income.'
+  note: 'PE-US follows the worksheet: the passive basket counts passive_estate_income, Schedule E Part III column
+    (d), and leaves out the box 5 royalties, annuities and income in respect of a decedent that go in nonpassive
+    column (f) (eitc_relevant_investment_income.py, passive_estate_income.py). The statute-first rule requires including
+    qualifying Part III royalties; obtain the worksheet version and verify the omitted income basket.'
 - id: us:filing-chart-a-blindness-and-equality
   program: income-tax
   years:
@@ -6313,11 +7326,14 @@ candidates:
     follows: statute
     code:
     - policyengine_us/variables/gov/irs/tax_unit_is_required_to_file.py
+    - policyengine_us/parameters/gov/irs/income/filing_requirement/standard_deduction_rule/applies.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10137
   state: open
-  note: 'This decision is still open; code comments citing it do not establish a completed ruling or its date. Code
-    not yet on main: tax_unit_is_required_to_file.'
+  note: 'PE-US follows the statute for 2018 to 2025: a return is required only when gross income exceeds the full
+    standard deduction, blindness included (tax_unit_is_required_to_file.py, standard_deduction_rule/applies.yaml).
+    From 2026 it applies section 6012(a)(1), which counts age but not blindness and requires a return at equality.
+    This decision is still open; code comments citing it do not establish a completed ruling or its date.'
 - id: us:filing-claimable-married-separate
   program: income-tax
   years:
@@ -6337,12 +7353,14 @@ candidates:
     other: A return is required only if the spouse itemizes or one of the dollar tests is met.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/irs/tax_unit_is_required_to_file.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10135
   state: open
-  note: 'Verify the married-dependent Chart B conditions and applicable years; the decision remains open. Code not
-    yet on main: tax_unit_is_required_to_file.'
+  note: 'PE-US follows the statute: a married individual filing separately, claimable or not, must file with any
+    positive gross income, since the separate threshold is the exemption amount, zero while it is suspended (tax_unit_is_required_to_file.py).
+    Verify the married-dependent Chart B conditions and applicable years; the decision remains open.'
 - id: us:filing-claimable-spouse-unearned-income-additions
   program: income-tax
   years:
@@ -6372,8 +7390,11 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10135
     - https://github.com/PolicyEngine/policyengine-us/pull/10137
   state: open
-  note: 'The statute-first rule requires removing the extra amounts from this statutory test; separate 2026 issues
-    same-year instructions for the separate 2026 issues are not cited here. Code not yet on main: tax_unit_is_required_to_file.'
+  note: 'PE-US follows Chart B and Publication 501 Table 2: the unearned income threshold for a filer who can be
+    claimed is the section 63(c)(5)(A) amount plus their own additional standard deduction for age or blindness,
+    on joint returns too, and the comment records that section 6012(f)(2)(D) names the 63(c)(5)(A) amount alone
+    (tax_unit_is_required_to_file.py). The statute-first rule requires removing the extra amounts from this statutory
+    test.'
 - id: us:hsa-limit-indexing-windows
   program: income-tax
   years:
@@ -6395,13 +7416,19 @@ candidates:
   example: The method projected 2027 limits of $4,500 and $9,000 before those amounts were published.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/parameters/uprating_extensions.py
+    - policyengine_us/parameters/gov/irs/gross_income/health_savings_account_contributions/limit/self_only.yaml
+    - policyengine_us/parameters/gov/irs/gross_income/health_savings_account_contributions/limit/family.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10097
   state: unreviewed
-  note: 'The statute-first rule requires changing conflicting projections; verify the statutory window substitution
-    first, and preserve the distinction from published limits fixed through 2027. Code not yet on main: extend_hsa_contribution_limits,
-    get_hsa_cola.'
+  note: 'PE-US follows IRS practice: projections after the published limits use 12-month windows ending March 31,
+    except the 2016 C-CPI-U-to-CPI ratio, which keeps the window ending August 31, and the docstring says these
+    windows reproduce every published 2019-2027 limit (get_hsa_cola and extend_hsa_contribution_limits in uprating_extensions.py,
+    limit/self_only.yaml, limit/family.yaml). The statute-first rule requires changing conflicting projections;
+    verify the statutory window substitution first, and preserve the distinction from published limits fixed through
+    2027.'
 - id: us:mortgage-interest-limit-ratio-rounding
   program: income-tax
   years:
@@ -6524,8 +7551,9 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10137
   state: open
-  note: 'PE-US requires positive gross income, matching neither official reading; the statute-first rule requires
-    a model change, and no completed ruling date is recorded. Code not yet on main: tax_unit_is_required_to_file.'
+  note: PE-US requires a separate filer to file only with positive gross income, matching neither the literal statute,
+    which reaches a separate filer with none, nor the IRS's $5 relief (tax_unit_is_required_to_file.py). The statute-first
+    rule requires a model change, and no completed ruling date is recorded.
 - id: us:snap-bbce-income-chart-rounding
   program: snap
   years:
@@ -6547,13 +7575,16 @@ candidates:
   example: California, Colorado, DC and Arizona publish $2,610 where the exact percentage gives $2,608.33.
   pe_us:
     follows: unknown
-    code: []
+    code:
+    - policyengine_us/variables/gov/hhs/tanf/non_cash/tanf_non_cash_gross_income_limit.py
+    - policyengine_us/variables/gov/hhs/tanf/non_cash/meets_tanf_non_cash_gross_income_test.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9243
   state: unreviewed
-  note: 'This is a disputed gap-fill; PE-US uses exact percentages rather than the published charts, so neither
-    statutory adherence nor following the charts is established. Code not yet on main: tanf_non_cash_gross_income_limit,
-    meets_tanf_non_cash_gross_income_test.'
+  note: PE-US uses the exact percentage of the poverty guideline, not any state chart's rounding, and the comment
+    notes that where a chart rounds up, a household between the two limits is ineligible here though the chart admits
+    it (tanf_non_cash_gross_income_limit.py, meets_tanf_non_cash_gross_income_test.py). This is a disputed gap-fill,
+    so neither statutory adherence nor following the charts is established.
 - id: us:snap-conditional-entrant-waiting-period
   program: snap
   years:
@@ -6580,12 +7611,14 @@ candidates:
     follows: unknown
     code:
     - policyengine_us/parameters/gov/usda/snap/eligibility/waiting_period/subject_immigration_statuses.yaml
+    - policyengine_us/variables/gov/usda/snap/eligibility/waiting_period/meets_snap_qualified_alien_waiting_period.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9661
   state: unreviewed
-  note: 'PE-US follows the regulation; verify battered-alien scope and the competing page anchors; the supplied
-    period is 2003-04-01 through 2025-07-03, and conditional entry ended in 1980. Code not yet on main: gov.usda.snap.eligibility.waiting_period.subject_immigration_statuses,
-    meets_snap_qualified_alien_waiting_period.'
+  note: 'PE-US follows the regulation: conditional entrants are on the five-year clock from April 2003, the list''s
+    comment records the FNS memo''s conflicting label, and battered aliens have no immigration status value (waiting_period/subject_immigration_statuses.yaml,
+    meets_snap_qualified_alien_waiting_period.py). Verify battered-alien scope and the competing page anchors; the
+    supplied period is 2003-04-01 through 2025-07-03, and conditional entry ended in 1980.'
 - id: us:snap-large-household-cap-effective-date
   program: snap
   years:
@@ -6618,9 +7651,10 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/9623
     - https://github.com/PolicyEngine/policyengine-us/pull/10299
   state: open
-  note: PR 10299 applies the cap from October 1, 2025; the change is in flight. FNS expressly gives that date on
-    page 2 of its September 4, 2025 memo, consistent with 7 U.S.C. 2012(u)(3)(C)'s annual October 1 computation.
-    The conflicting reading comes from the FY2026 table's omission, not from FNS's effective-date guidance.
+  note: 'PE-US follows the statute: since #10299 snap_max_allotment applies the cap from October 1, 2025, citing
+    7 U.S.C. 2012(u)(3)(C)''s annual computation and FNS''s September 4, 2025 memo, and the cap''s comment says
+    the FY2026 table prints no cap (snap_max_allotment.py, max_allotment.yaml). The conflicting reading comes from
+    the FY2026 table''s omission, not from FNS''s effective-date guidance.'
 - id: us:snap-minimum-allotment-rounding-base
   program: snap
   years:
@@ -6647,13 +7681,17 @@ candidates:
   pe_us:
     follows: unknown
     code:
+    - policyengine_us/variables/gov/usda/snap/snap_min_allotment.py
     - policyengine_us/parameters/gov/usda/snap/min_allotment/published_adjustment.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9162
     - https://github.com/PolicyEngine/policyengine-us/pull/9623
   state: unreviewed
-  note: 'Resolve the statutory base and year-specific model behavior; the rounded method is reported for FY2023
-    and a guidance adjustment for FY2027, with no intervening-year conflict established. Code not yet on main: snap_min_allotment.'
+  note: 'PE-US rounds 8% of the rounded-down one-person maximum, as the regulation does, and adds a published adjustment
+    where USDA''s figure, computed from the unrounded cost, differs: $1 in the 48 states and DC for FY2027 only
+    (snap_min_allotment.py, min_allotment/published_adjustment.yaml). Resolve the statutory base and year-specific
+    model behavior; the rounded method is reported for FY2023 and a guidance adjustment for FY2027, with no intervening-year
+    conflict established.'
 - id: us:snap-waiting-period-age-based-ssi
   program: snap
   years:
@@ -6678,13 +7716,17 @@ candidates:
     five years.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/variables/gov/usda/snap/eligibility/waiting_period/is_snap_alien_waiting_period_exempt.py
+    - policyengine_us/variables/gov/usda/is_usda_disabled.py
+    - policyengine_us/parameters/gov/usda/disabled_programs.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9661
   state: unreviewed
-  note: 'The statute-first rule requires revising the any-SSI exemption if the narrower reading holds; first check
-    the cross-referenced disability definition and the preamble''s scope. Code not yet on main: is_snap_alien_waiting_period_exempt,
-    is_usda_disabled.'
+  note: 'PE-US exempts anyone receiving SSI on any basis: is_snap_alien_waiting_period_exempt reads is_usda_disabled,
+    which counts any SSI receipt among the benefits in gov.usda.disabled_programs (is_snap_alien_waiting_period_exempt.py,
+    is_usda_disabled.py, disabled_programs.yaml). The statute-first rule requires revising the any-SSI exemption
+    if the narrower reading holds; first check the cross-referenced disability definition and the preamble''s scope.'
 - id: us:ssi-spousal-deeming-child-scope
   program: ssi
   years:
