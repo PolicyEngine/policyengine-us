@@ -479,26 +479,8 @@ def _select_subsample_sources(simulation, metadata, person_ids):
     }
 
 
-def _purge_derived_view(simulation, public_name):
-    """Discard only calculated view arrays; retain raw sources and inputs."""
-    for name in (public_name, f"{public_name}_reported"):
-        holder = _holder(simulation, name)
-        if holder is None:
-            continue
-        for tier, storage in (
-            ("memory", holder._memory_storage),
-            ("disk", holder._disk_storage),
-        ):
-            if storage is None:
-                continue
-            for branch, period in tuple(storage.get_known_branch_periods()):
-                if storage.is_derived(period, branch):
-                    _delete_exact(holder, period, branch, tier=tier)
-    simulation._fast_cache = {}
-
-
 def _purge_derived_arrays(simulation):
-    """Discard formula results after initial routing changes their source.
+    """Discard formula results after benefit sources change.
 
     Core's general cache drop also removes nonregistered, nonderived carry
     seeds. Those are independent caller values and remain valid here.
@@ -666,7 +648,10 @@ def install_social_security_input_compatibility():
         if tracked:
             public = name.removesuffix("_reported")
             simulation._drop_values_that_may_depend_on(public, period)
-            _purge_derived_view(simulation, public)
+            # Component bases and downstream results also depend on the
+            # reported source. Core's dependency drops run only on branches,
+            # so ordinary simulations need the same derived-only cleanup.
+            _purge_derived_arrays(simulation)
         result = _PHYSICAL["set"](
             holder,
             period,

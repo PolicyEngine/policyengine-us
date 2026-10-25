@@ -522,9 +522,12 @@ def test_explicit_noninput_store_keeps_its_branch_inside_an_input_context():
     finally:
         simulation._user_input_contexts.pop()
     for name in (public, reported):
-        assert set(simulation.get_holder(name).get_known_branch_periods()) == {
-            ("default", period(2024))
-        }
+        # The reported holder exposes the public source at read time; it
+        # need not store a separate twin on the default branch.
+        np.testing.assert_array_equal(
+            simulation.get_holder(name).get_array(period(2024), "default"),
+            [12_000],
+        )
         assert input_periods(simulation, name) == set()
         assert amount(simulation, name, 2024) == 12_000
     assert amount(simulation, public, 2026) == pytest.approx(13_522.16, abs=0.01)
@@ -733,9 +736,15 @@ def test_dataset_source_survives_raw_twin_write_and_extraction(route):
     assert amount(reloaded, reported, 2024) == 12_000
     assert amount(reloaded, public, 2024) == 12_000
     assert amount(reloaded, public, 2026) == pytest.approx(13_522.16, abs=0.01)
+    assert amount(reloaded, "social_security", 2026) == pytest.approx(
+        13_522.16, abs=0.01
+    )
     reloaded.set_input(public, 2024, [24_000])
     assert amount(reloaded, reported, 2024) == 24_000
     assert amount(reloaded, public, 2026) == pytest.approx(27_044.32, abs=0.01)
+    assert amount(reloaded, "social_security", 2026) == pytest.approx(
+        27_044.32, abs=0.01
+    )
     assert amount(simulation, reported, 2024) == 6_000
 
 
