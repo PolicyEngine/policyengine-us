@@ -8,6 +8,13 @@ class id_household_and_dependent_care_expense_deduction(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.ID
+    reference = (
+        # Idaho Code 63-3022D: for an individual who maintains a household that
+        # includes one or more qualifying individuals under IRC 21(b)(1).
+        "https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3022D/",
+        "https://www.law.cornell.edu/uscode/text/26/21#b",
+        "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=44",
+    )
 
     def formula(tax_unit, period, parameters):
         p = parameters(
@@ -15,8 +22,10 @@ class id_household_and_dependent_care_expense_deduction(Variable):
         ).gov.states.id.tax.income.deductions.dependent_care_expenses
         # Idaho Code §63-3022D adopts the IRC §21(b)(2) employment-related
         # expense definition, which covers childcare plus care for a disabled
-        # adult qualifying individual (care_expenses).
-        childcare = tax_unit("tax_unit_childcare_expenses", period)
+        # adult qualifying individual (care_expenses). A qualifying adult
+        # does not make child-only daycare a qualifying expense when the
+        # child fails the dependent-taxpayer test.
+        childcare = tax_unit("cdcc_qualifying_childcare_expenses", period)
         adult_care = add(tax_unit, period, ["care_expenses"])
         expenses = childcare + adult_care
         # In 2023 Idaho implemented an increased cap independent of the number of children
@@ -28,8 +37,13 @@ class id_household_and_dependent_care_expense_deduction(Variable):
         exclusion = tax_unit("dependent_care_assistance_exclusion", period)
         limit = max_(limit - exclusion, 0)
         eligible_capped_expenses = min_(expenses, limit)
+        # The deduction needs a household member who is an IRC 21(b)(1)
+        # qualifying individual. A child under 13 is not one when the filer
+        # (or, if joint, either spouse) can be claimed as a dependent; a
+        # disabled dependent or spouse still is.
+        has_qualifying_individual = tax_unit("count_cdcc_eligible", period) > 0
         # cap further to the lowest earnings between the taxpayer and spouse
-        return min_(
+        return has_qualifying_individual * min_(
             eligible_capped_expenses,
             tax_unit("min_head_spouse_earned", period),
         )
