@@ -247,6 +247,43 @@
     # line 4b, combines both spouses' amounts on a joint return).
     il_eitc: 480
 
+- name: IL EIC nets a spouse's farm loss, 2023 (20% x 2,400)
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        farm_operations_income: -4_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 7
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: IL
+  output:
+    # Net farm earnings are net earnings from self-employment under IRC
+    # 1402(a), so IRC 32(c)(2)(A)(ii) counts the spouse's $4,000 farm loss.
+    # Federal earned income is $6,000; two children, 2023 (Rev. Proc.
+    # 2022-38, section 3.06): 40% x 6,000 = 2,400; IL EIC 20%: 480.
+    il_eitc: 480
+
 - name: IL EIC for a 65+ couple nets a self-employment loss, 2023 (20% x 7.65% x 5,000)
   period: 2023
   absolute_error_margin: 0.01
