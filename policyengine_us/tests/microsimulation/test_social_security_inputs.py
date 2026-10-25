@@ -510,6 +510,63 @@ def test_raw_nonderived_stores_keep_carry_sources_without_becoming_inputs(route)
     assert amount(simulation, disability, 2026) == 0
 
 
+@pytest.mark.parametrize("route", ("cache", "store_noninput"))
+@pytest.mark.parametrize("ingress", ("builder", "situation", "dataset"))
+def test_initial_raw_handler_stores_keep_sources_and_explicit_twin_priority(
+    monkeypatch, route, ingress
+):
+    retirement, disability = SOCIAL_SECURITY_COMPONENTS[:2]
+
+    def store_raw_source(holder, requested_period, array):
+        if route == "cache":
+            holder.put_in_cache(array, requested_period.this_year)
+        else:
+            holder._set(requested_period.this_year, array, is_input=False)
+
+    for public in (retirement, disability):
+        monkeypatch.setattr(system.variables[public], "set_input", store_raw_source)
+    inputs = {
+        retirement: {"2024-07": 12_000},
+        f"{disability}_reported": {2024: 0},
+        disability: {"2024-07": 12_000},
+    }
+    if ingress == "builder":
+        simulation = make_core_simulation(inputs, route="entities")
+    elif ingress == "situation":
+        simulation = CoreSimulation(
+            situation=situation(inputs), tax_benefit_system=system
+        )
+    else:
+        entities = ("household", "tax_unit", "spm_unit", "family", "marital_unit")
+        frame = pd.DataFrame(
+            {
+                "person_id": [1],
+                **{f"person_{entity}_id": [1] for entity in entities},
+                **{f"{entity}_id": [1] for entity in entities},
+                **{
+                    f"{name}__{input_period}": [value]
+                    for name, values in inputs.items()
+                    for input_period, value in values.items()
+                },
+            }
+        )
+        simulation = CoreSimulation(
+            dataset=frame,
+            tax_benefit_system=system,
+            default_input_period=2024,
+            default_calculation_period=2024,
+        )
+    for public in (retirement, disability):
+        assert amount(simulation, public, 2024) == 12_000
+        assert input_periods(simulation, public) == set()
+    assert amount(simulation, f"{retirement}_reported", 2024) == 12_000
+    assert input_periods(simulation, f"{retirement}_reported") == set()
+    assert amount(simulation, retirement, 2026) == pytest.approx(13_522.16, abs=0.01)
+    assert amount(simulation, f"{disability}_reported", 2024) == 0
+    assert input_periods(simulation, f"{disability}_reported") == {"2024"}
+    assert amount(simulation, disability, 2026) == 0
+
+
 def test_raw_memory_mirror_keeps_a_surviving_disk_source_automatic(tmp_path):
     public = SOCIAL_SECURITY_COMPONENTS[0]
     reported = f"{public}_reported"

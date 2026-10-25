@@ -156,15 +156,10 @@ def install_social_security_input_compatibility():
 
     def tracks_public_input(holder):
         simulation = getattr(holder, "simulation", None)
-        return (
-            holder.variable.name in SOCIAL_SECURITY_COMPONENTS
-            and getattr(
-                getattr(simulation, "tax_benefit_system", None),
-                "_social_security_input_compatibility",
-                False,
-            )
-            and hasattr(simulation, "input_variables")
-            and not _initial_social_security_ingress.get()
+        return holder.variable.name in SOCIAL_SECURITY_COMPONENTS and getattr(
+            getattr(simulation, "tax_benefit_system", None),
+            "_social_security_input_compatibility",
+            False,
         )
 
     def synchronize_public_input(holder, period, branch_name, *, is_input):
@@ -209,7 +204,13 @@ def install_social_security_input_compatibility():
         # Core clones share this legacy list. Replace it privately so a
         # later override is extracted without changing the source clone.
         simulation.input_variables = list(
-            dict.fromkeys([*simulation.input_variables, variable_name, reported_name])
+            dict.fromkeys(
+                [
+                    *getattr(simulation, "input_variables", ()),
+                    variable_name,
+                    reported_name,
+                ]
+            )
         )
 
     original_store = Holder._set
@@ -250,7 +251,12 @@ def install_social_security_input_compatibility():
                 is_input=is_input,
                 sequence_number=sequence_number,
             )
-            if track_source:
+            # Initial registered inputs wait until every explicit twin is
+            # loaded. Raw cache seeds never enter that migration, so mirror
+            # them immediately without making either value a supplied input.
+            if track_source and (
+                not _initial_social_security_ingress.get() or not effective_input
+            ):
                 synchronize_public_input(
                     holder, period, stored_branch, is_input=effective_input
                 )
