@@ -1,3 +1,15 @@
+## [2.63.3] - 2026-10-25
+
+### Changed
+
+- Point the Indiana to Montana source-conflict candidates whose pull requests have merged at their code on main, and add candidates for conflicts that code records.
+- Point the New Mexico to Wyoming source-conflict candidates whose pull requests have merged at their code on main, and add candidates for conflicts that code records.
+
+### Fixed
+
+- Add the 2027 premium tax credit applicable percentage table from Rev. Proc. 2026-26, so 2027 no longer reuses the 2026 table.
+
+
 ## [2.63.2] - 2026-10-25
 
 ### Changed
