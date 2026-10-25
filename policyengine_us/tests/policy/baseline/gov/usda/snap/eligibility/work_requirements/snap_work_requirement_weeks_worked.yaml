@@ -13,13 +13,12 @@
 # - 30-hour exemption (7 CFR 273.7(b)(1)(vii)): averaged hours >= 30, or
 #   earnings / 52 >= 7.25 x 30 = 217.50 a week (11,310 a year).
 # - UI exemption (7 CFR 273.7(b)(1)(v)): months = ceil(weeks unemployed x
-#   12 / 52), placed from the start month splitmix64(key) mod 12. The key is
-#   a supplied person_id, or else the position in the household (0 for a
-#   lone person). Start months used: key 0 -> Jan, 1 -> Feb, 6 -> May,
-#   14 -> Oct, 19 -> Dec.
+#   12 / 52), placed from unemployment_compensation_start_month when
+#   supplied, or else from the position in the household (0 -> January for
+#   a lone person).
 #
 # The issue ran some of these cases in March, April, May or July. They run
-# here in January, and the month placement is set through person_id instead.
+# here in January, and the month placement is set through the start month instead.
 
 # --- 7 CFR 273.24(a)(1)(i): 20 hours per week, averaged monthly ---
 
@@ -150,8 +149,8 @@
       2026: 5_000
     weeks_unemployed:
       2026: 13
-    person_id:
-      2026: 1
+    unemployment_compensation_start_month:
+      2026: 2
   output:
     # 3 months from February -> Feb-Apr, so January is outside the block;
     # no hours -> 0 x 52 / 12 = 0 < 80. Before this change: exempt in every month.
@@ -226,10 +225,10 @@
       2026: TX
     unemployment_compensation:
       2026: 5_000
-    person_id:
-      2026: 6
+    unemployment_compensation_start_month:
+      2026: 5
   output:
-    # weeks_unemployed = 0 -> 12 months; person_id 6 starts in May, and a
+    # weeks_unemployed = 0 -> 12 months; start month 5 is May, and a
     # 12-month block covers January as well.
     is_receiving_unemployment_compensation: true
     is_snap_work_registration_exempt_non_age: true
@@ -359,10 +358,10 @@
       2026: 5_000
     weeks_unemployed:
       2026: 14
-    person_id:
-      2026: 14
+    unemployment_compensation_start_month:
+      2026: 10
   output:
-    # months = ceil(14 x 12 / 52) = ceil(3.23) = 4; person_id 14 starts in
+    # months = ceil(14 x 12 / 52) = ceil(3.23) = 4; start month 10 is
     # October -> Oct, Nov, Dec, Jan (the rounded-up fourth month)
     is_receiving_unemployment_compensation: true
     meets_snap_abawd_work_requirements: true
@@ -380,10 +379,10 @@
       2026: 5_000
     weeks_unemployed:
       2026: 1
-    person_id:
-      2026: 19
+    unemployment_compensation_start_month:
+      2026: 12
   output:
-    # months = ceil(1 x 12 / 52) = 1; person_id 19 starts in December -> Dec
+    # months = ceil(1 x 12 / 52) = 1; start month 12 is December -> Dec
     # only; no hours -> fails the 80-hour test in January
     is_receiving_unemployment_compensation: false
     meets_snap_abawd_work_requirements: false
