@@ -37,3 +37,105 @@
     state_code: IL
   output:
     il_personal_exemption: 2_375
+
+- name: A claimable but unclaimed 2025 filer retains the basic exemption
+  period: 2025
+  input:
+    age: 30
+    state_code: IL
+    filing_status: SINGLE
+    il_base_income: 10_000
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: false
+  output:
+    il_personal_exemption: 2_850
+
+- name: An actually claimed 2025 filer above the basic amount loses the exemption
+  period: 2025
+  input:
+    age: 30
+    state_code: IL
+    filing_status: SINGLE
+    il_base_income: 10_000
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: true
+  output:
+    il_personal_exemption: 0
+
+- name: A claimable but unclaimed 2021 filer retains the basic exemption
+  period: 2021
+  input:
+    age: 30
+    state_code: IL
+    filing_status: SINGLE
+    il_base_income: 10_000
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: false
+  output:
+    il_personal_exemption: 2_375
+
+- name: An actually claimed single filer below the basic amount retains one exemption
+  period: 2025
+  input:
+    age: 30
+    state_code: IL
+    filing_status: SINGLE
+    il_base_income: 2_849
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: true
+  output:
+    il_personal_exemption: 2_850
+
+- name: An actually claimed single filer at the basic amount retains one exemption
+  period: 2025
+  input:
+    age: 30
+    state_code: IL
+    filing_status: SINGLE
+    il_base_income: 2_850
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: true
+  output:
+    il_personal_exemption: 2_850
+
+- name: An actually claimed single filer above the basic amount loses the exemption
+  period: 2025
+  input:
+    age: 30
+    state_code: IL
+    filing_status: SINGLE
+    il_base_income: 2_851
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: true
+  output:
+    il_personal_exemption: 0
+
+- name: A claimable but unclaimed filer at the AGI limit keeps total exemptions
+  period: 2025
+  input:
+    age: 30
+    state_code: IL
+    filing_status: SINGLE
+    il_base_income: 10_000
+    adjusted_gross_income: 250_000
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: false
+  output:
+    il_personal_exemption: 2_850
+    il_is_exemption_eligible: true
+    il_total_exemptions: 2_850
+
+- name: A claimable but unclaimed filer above the AGI limit loses total exemptions
+  period: 2025
+  input:
+    age: 30
+    state_code: IL
+    filing_status: SINGLE
+    il_base_income: 10_000
+    adjusted_gross_income: 250_001
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: false
+  output:
+    il_personal_exemption: 2_850
+    il_is_exemption_eligible: false
+    il_total_exemptions: 0
