@@ -6,6 +6,7 @@ values:
   2023-01-01: 144
   2024-01-01: 149
   2025-01-01: 153
+  2026-01-01: 158
 
 metadata:
   period: year
@@ -13,6 +14,8 @@ metadata:
   label: California income exemption amount
   uprating: gov.states.ca.cpi
   reference:
+  - title: 2026 California indexing (FTB Tax News, October 2026)
+    href: https://www.ftb.ca.gov/about-ftb/newsroom/tax-news/#article1
   - title: 2021 Form 540 California Resident Income Tax Return
     href: https://www.ftb.ca.gov/forms/2021/2021-540.pdf#page=1
   - title: 2022 Form 540 California Resident Income Tax Return
@@ -25,4 +28,3 @@ metadata:
     href: https://www.ftb.ca.gov/forms/2025/2025-540.pdf#page=1
   - title: Cal. Rev. & Tax. Code § 17054
     href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=17054.&nodeTreePath=3.20.2&lawCode=RTC
-    # Index according to federal tax parameter rules until we add California CPI trend.

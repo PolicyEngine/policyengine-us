@@ -179,15 +179,24 @@ def test_2026_thresholds_apply_the_hand_computed_factor(status):
 # Synthetic CPI-U series for the adjustment's window semantics.
 
 
-def _parameters_for_series(values):
-    """A minimal parameter tree holding only a synthetic CPI-U series."""
+def _parameters_for_series(values, projection_values):
+    """A minimal tree with separate monthly and tax-year CPI-U series."""
     cpi_u = Parameter("cpi_u", data=dict(values))
-    bls = SimpleNamespace(cpi=SimpleNamespace(cpi_u=cpi_u))
+    bls = SimpleNamespace(
+        cpi=SimpleNamespace(
+            cpi_u=cpi_u,
+            tax_year_projection=SimpleNamespace(
+                cpi_u=Parameter("cpi_u_projection", data=dict(projection_values))
+            ),
+        )
+    )
     return SimpleNamespace(gov=SimpleNamespace(bls=bls))
 
 
-def _nyc_cola_on_series(values, tax_year):
-    parameters = _parameters_for_series(values)
+def _nyc_cola_on_series(values, tax_year, projection_values=None):
+    if projection_values is None:
+        projection_values = _tax_year_projection()
+    parameters = _parameters_for_series(values, projection_values)
     return get_nyc_income_tax_elimination_credit_cola(parameters, tax_year)
 
 
@@ -220,6 +229,11 @@ def _base_series():
     return values
 
 
+def _tax_year_projection():
+    """Window averages keyed by tax year, unlike February calendar averages."""
+    return {"2027-01-01": 344, "2028-01-01": 358}
+
+
 def test_cola_fully_observed_window_averages_monthly_data():
     # Tax year 2026 compares the 2025 index (324) with the 2024 index (300).
     # Windows shifted one month earlier would give 323 / 300 (window) or
@@ -229,14 +243,14 @@ def test_cola_fully_observed_window_averages_monthly_data():
     assert _nyc_cola_on_series(_base_series(), 2025) == 0
 
 
-def test_cola_unobserved_window_uses_annual_projection_point():
+def test_cola_unobserved_window_uses_tax_year_projection():
     # The tax year 2027 window (September 2025 - August 2026) has no observed
-    # month, so the February 2026 projection point (339) is the 2026 index.
-    # Averaging the raw instants instead would give
-    # (5 * 330 + 7 * 339) / 12 = 335.25.
-    assert _nyc_cola_on_series(_base_series(), 2027) == pytest.approx(39 / 300)
-    # Tax year 2028 reads the February 2027 projection point (351).
-    assert _nyc_cola_on_series(_base_series(), 2028) == pytest.approx(51 / 300)
+    # month, so its tax-year projection (344) applies. The February 2026
+    # calendar-year projection is deliberately different (339); averaging
+    # the raw instants would give (5 * 330 + 7 * 339) / 12 = 335.25.
+    assert _nyc_cola_on_series(_base_series(), 2027) == pytest.approx(44 / 300)
+    # Tax year 2028 reads its own projection (358), not February 2027 (351).
+    assert _nyc_cola_on_series(_base_series(), 2028) == pytest.approx(58 / 300)
 
 
 def test_cola_partial_window_carries_last_observation_flat():
@@ -245,7 +259,7 @@ def test_cola_partial_window_carries_last_observation_flat():
     # 2027 window averages the four observations with an eight-month tail at
     # the December level: (1,332 + 8 * 336) / 12 = 335. Averaging only the
     # observed months (333), reading the raw instants (336.75) or reading the
-    # projection point (339) would each give a different answer.
+    # tax-year projection (344) would each give a different answer.
     values = _base_series()
     values.update(
         {"2025-09-01": 330, "2025-10-01": 332, "2025-11-01": 334, "2025-12-01": 336}
@@ -254,7 +268,7 @@ def test_cola_partial_window_carries_last_observation_flat():
     # The completed tax year 2026 window and later unobserved windows are
     # unaffected.
     assert _nyc_cola_on_series(values, 2026) == pytest.approx(24 / 300)
-    assert _nyc_cola_on_series(values, 2028) == pytest.approx(51 / 300)
+    assert _nyc_cola_on_series(values, 2028) == pytest.approx(58 / 300)
 
 
 def test_cola_partial_window_treats_an_observed_february_as_an_observation():
@@ -277,9 +291,10 @@ def test_cola_floors_at_zero_when_the_index_falls_below_2024():
     values = _base_series()
     _monthly(values, 2024, 9, 2025, 8, 297)
     assert _nyc_cola_on_series(values, 2026) == 0
-    # A projection point below the 2024 index also floors at zero.
-    values["2026-02-01"] = 288
-    assert _nyc_cola_on_series(values, 2027) == 0
+    # A tax-year projection below the 2024 index also floors at zero,
+    # even though the calendar-year projection remains above it.
+    projections = {**_tax_year_projection(), "2027-01-01": 288}
+    assert _nyc_cola_on_series(values, 2027, projections) == 0
     # An index exactly equal to the 2024 index gives zero too.
     _monthly(values, 2024, 9, 2025, 8, 300)
     assert _nyc_cola_on_series(values, 2026) == 0
@@ -298,14 +313,17 @@ CPI_LEVELS = st.floats(min_value=50, max_value=1_000)
 @given(
     base_window=st.lists(CPI_LEVELS, min_size=12, max_size=12),
     window_2025=st.lists(CPI_LEVELS, min_size=12, max_size=12),
-    projections=st.lists(CPI_LEVELS, min_size=2, max_size=2),
+    calendar_projections=st.lists(CPI_LEVELS, min_size=2, max_size=2),
+    tax_year_projections=st.lists(CPI_LEVELS, min_size=2, max_size=2),
     scale=st.floats(min_value=0.01, max_value=100),
 )
-def test_cola_invariants(base_window, window_2025, projections, scale):
+def test_cola_invariants(
+    base_window, window_2025, calendar_projections, tax_year_projections, scale
+):
     """Invariants for any CPI-U series observed through August 2025.
 
     1. The adjustment is the plain ratio of twelve-month averages (or of the
-       projection point to the 2024 average) less one, floored at zero.
+       tax-year projection to the 2024 average) less one, floored at zero.
     2. It is never negative.
     3. It is unit-free: rescaling the whole series leaves it unchanged.
     """
@@ -314,16 +332,18 @@ def test_cola_invariants(base_window, window_2025, projections, scale):
         BASE_WINDOW_MONTHS + WINDOW_2025_MONTHS, base_window + window_2025
     ):
         values[f"{year}-{month:02d}-01"] = level
-    values["2026-02-01"], values["2027-02-01"] = projections
+    values["2026-02-01"], values["2027-02-01"] = calendar_projections
+    projection_values = dict(zip(("2027-01-01", "2028-01-01"), tax_year_projections))
     index_2024 = sum(base_window) / 12
     expected = {
         2026: max(sum(window_2025) / 12 / index_2024 - 1, 0),
-        2027: max(projections[0] / index_2024 - 1, 0),
-        2028: max(projections[1] / index_2024 - 1, 0),
+        2027: max(tax_year_projections[0] / index_2024 - 1, 0),
+        2028: max(tax_year_projections[1] / index_2024 - 1, 0),
     }
-    parameters = _parameters_for_series(values)
+    parameters = _parameters_for_series(values, projection_values)
     scaled_parameters = _parameters_for_series(
-        {instant: level * scale for instant, level in values.items()}
+        {instant: level * scale for instant, level in values.items()},
+        {instant: level * scale for instant, level in projection_values.items()},
     )
     for tax_year, expected_cola in expected.items():
         cola = get_nyc_income_tax_elimination_credit_cola(parameters, tax_year)
@@ -368,8 +388,8 @@ def test_thresholds_hold_their_last_projected_value_after_2100():
 # series cannot reach: deflation and a published value.
 
 
-def _synthetic_threshold_parameters(cpi_values, published=None):
-    """A tree holding a synthetic CPI-U series and the statutory thresholds.
+def _synthetic_threshold_parameters(cpi_values, projection_values, published=None):
+    """A tree with synthetic CPI-U series and the statutory thresholds.
 
     ``published`` maps (status, dependents) to {year: value} entries encoded
     after 2025, as a Department of Taxation and Finance publication would be.
@@ -399,21 +419,25 @@ def _synthetic_threshold_parameters(cpi_values, published=None):
     )
     nyc = SimpleNamespace(tax=SimpleNamespace(income=SimpleNamespace(credits=credits)))
     gov = SimpleNamespace(
-        bls=SimpleNamespace(cpi=SimpleNamespace(cpi_u=Parameter("cpi_u", cpi_values))),
+        bls=_parameters_for_series(cpi_values, projection_values).gov.bls,
         local=SimpleNamespace(ny=SimpleNamespace(nyc=nyc)),
     )
     return SimpleNamespace(gov=gov), thresholds
 
 
 def _rising_then_falling_series():
-    """2024 index 300; 2025 index 330; projections 360, 270, then 315."""
+    """2024 index 300; 2025 index 330; distinct calendar-year projections."""
     values = {}
     _monthly(values, 2023, 9, 2024, 8, 300)
     _monthly(values, 2024, 9, 2025, 8, 330)
-    values["2026-02-01"] = 360
-    values["2027-02-01"] = 270
-    values["2028-02-01"] = 315
+    values["2026-02-01"] = 370
+    values["2027-02-01"] = 290
+    values["2028-02-01"] = 325
     return values
+
+
+def _rising_then_falling_projections():
+    return {"2027-01-01": 360, "2028-01-01": 270, "2029-01-01": 315}
 
 
 def test_extension_recomputes_each_year_from_the_statutory_amounts():
@@ -423,7 +447,7 @@ def test_extension_recomputes_each_year_from_the_statutory_amounts():
     # measures against 2024 rather than the prior year, but never below the
     # statutory amounts.
     parameters, thresholds = _synthetic_threshold_parameters(
-        _rising_then_falling_series()
+        _rising_then_falling_series(), _rising_then_falling_projections()
     )
     extend_nyc_income_tax_elimination_credit_thresholds(parameters, end_year=2030)
     factors = {2025: 1, 2026: 1.1, 2027: 1.2, 2028: 1, 2029: 1.05, 2030: 1.05}
@@ -443,7 +467,7 @@ def test_extension_keeps_published_values_and_projects_after_them():
     # published value. Other brackets are projected from 2026 as usual.
     published = {("joint", 1): {2026: 40_000}}
     parameters, thresholds = _synthetic_threshold_parameters(
-        _rising_then_falling_series(), published
+        _rising_then_falling_series(), _rising_then_falling_projections(), published
     )
     extend_nyc_income_tax_elimination_credit_thresholds(parameters, end_year=2030)
     joint = thresholds.children["joint"].brackets

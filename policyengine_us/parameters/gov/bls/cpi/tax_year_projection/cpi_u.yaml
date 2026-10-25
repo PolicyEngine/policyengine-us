@@ -1,0 +1,26 @@
+description: The Congressional Budget Office projects this average of the Consumer Price Index for All Urban Consumers over the 12 months ending the August before each tax year.
+values:
+  # Keyed by tax year: the 2028 value averages September 2026 through
+  # August 2027. Windows with BLS observations use cpi_u.yaml instead.
+  2027-01-01: 328.701
+  2028-01-01: 337.382
+  2029-01-01: 345.443
+  2030-01-01: 353.398
+  2031-01-01: 361.404
+  2032-01-01: 369.57
+  2033-01-01: 377.913
+  2034-01-01: 386.443
+  2035-01-01: 395.162
+  2036-01-01: 404.081
+  # Values for 2037-2100 are set programmatically in uprating_extensions.py.
+metadata:
+  unit: /1
+  period: year
+  label: CBO tax-year CPI-U projection
+  economy: false
+  reference:
+    - title: CBO | Tax Parameters and Effective Marginal Tax Rates | February 2026
+      # Sheet 1. Tax Parameters, row 152: Consumer price index, all urban
+      # consumers (CPIU), under "Inflation indexes for tax year (average CPI
+      # over the 12 months ending the previous August)".
+      href: https://www.cbo.gov/system/files/2026-02/53724-2026-02-Tax-Parameters.xlsx

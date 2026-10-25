@@ -109,14 +109,13 @@
   output:
     ri_social_security_modification_eligible: false
 
-# The 2027 income limit is a gov.irs.uprating CPI projection from the 2025
-# explicit value (#8905 unfroze the sibling-of-values `uprating:` block that
-# had been silently ignored, freezing 2026/2027 at the 2025 figure). RI has
-# not yet published its own 2027 adjustment; the official figure supersedes
-# this projection once released (see #8905).
+# Retain the original fixture's synthetic 2027 income limits to isolate the
+# strict eligibility boundary after removal of the age requirement. These
+# assumptions are not published Rhode Island tax-year amounts.
 - name: 2027 - Single filer just below income limit is eligible
   period: 2027
   input:
+    gov.states.ri.tax.income.agi.subtractions.social_security.limit.income.SINGLE: 112_650
     adjusted_gross_income: 112_649
     filing_status: SINGLE
     older_spouse_birth_year: 1990
@@ -127,6 +126,7 @@
 - name: 2027 - Single filer at income limit is ineligible
   period: 2027
   input:
+    gov.states.ri.tax.income.agi.subtractions.social_security.limit.income.SINGLE: 112_650
     adjusted_gross_income: 112_650
     filing_status: SINGLE
     older_spouse_birth_year: 1990
@@ -137,6 +137,7 @@
 - name: 2027 - Joint filer just below income limit is eligible
   period: 2027
   input:
+    gov.states.ri.tax.income.agi.subtractions.social_security.limit.income.JOINT: 140_850
     adjusted_gross_income: 140_849
     filing_status: JOINT
     older_spouse_birth_year: 1990
@@ -147,6 +148,7 @@
 - name: 2027 - Joint filer at income limit is ineligible
   period: 2027
   input:
+    gov.states.ri.tax.income.agi.subtractions.social_security.limit.income.JOINT: 140_850
     adjusted_gross_income: 140_850
     filing_status: JOINT
     older_spouse_birth_year: 1990
