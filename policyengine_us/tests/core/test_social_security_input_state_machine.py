@@ -4,6 +4,9 @@ Property: a reported source uses an explicit input at or before its requested
 period; otherwise its read-time view follows the latest public input. Exact
 compound totals keep their own period semantics. Copies preserve those
 sources and public final overrides, while later writes remain isolated.
+After every step, actual Core readers must return the independently modeled
+reported amount and public formula amount, including the initial scored year
+and a later year whose intermediate base may already have been cached.
 
 The backend executes installed Core source bodies and the production US hooks
 without importing the country. Run this file directly for a country-free test:
@@ -97,6 +100,76 @@ class Model:
                 return None, False
         return self.visible(self.public, component, period), True
 
+    def reader_source(self, component, period):
+        """The source an annual reader selects, independently of Core storage."""
+        requested = as_period(period)
+        explicit = {
+            known: value
+            for other_component, known in self.keys()
+            if other_component == component
+            and as_period(known).start <= requested.start
+            and (value := self.visible(self.explicit, component, known)) is not None
+        }
+        mapping = self.explicit if explicit else self.public
+        candidates = explicit or {
+            known: value
+            for other_component, known in self.keys()
+            if other_component == component
+            and as_period(known).start <= requested.start
+            and (value := self.visible(mapping, component, known)) is not None
+        }
+        if period in candidates:
+            return candidates[period], period, not bool(explicit)
+        if not candidates:
+            return None, None, False
+        # Core first uprates an input starting strictly before the request.
+        # Only when none exists does carry-over consider a compound input
+        # starting in the requested year.
+        earlier = {
+            known: value
+            for known, value in candidates.items()
+            if as_period(known).start < requested.start
+        }
+        known = max(
+            earlier or candidates,
+            key=lambda text: (
+                as_period(text).start,
+                as_period(text).stop,
+                text,
+            ),
+        )
+        return candidates[known], known, not bool(explicit)
+
+    def reader_amount(self, component, period):
+        value, known, _ = self.reader_source(component, period)
+        if value is None:
+            return 0
+        return value.amount * 2 ** (
+            as_period(period).start.year - as_period(known).start.year
+        )
+
+    def drop_overlapping_raw(self, component, reported, period):
+        """Model Core's newer cleanup of non-input overlapping cache seeds.
+
+        This follows the same rule as main: a raw cache is a carry seed while
+        it survives, but an overlapping registered set_input may remove it.
+        Reserved initial sources are registered inputs and are retained.
+        """
+        requested = as_period(period)
+        for name in ("explicit",) if reported else ("public", "overrides"):
+            mapping = getattr(self, name)
+            for key, value in tuple(mapping.items()):
+                branch, other_component, known = key
+                candidate = as_period(known)
+                if (
+                    branch in self.visible_branches
+                    and other_component == component
+                    and not value.registered
+                    and candidate.start <= requested.stop
+                    and candidate.stop >= requested.start
+                ):
+                    del mapping[key]
+
     def write(
         self,
         component,
@@ -107,7 +180,10 @@ class Model:
         route,
         initial=False,
         branch_name=None,
+        cleanup=False,
     ):
+        if cleanup:
+            self.drop_overlapping_raw(component, reported, period)
         branch_name = self.branch_name if branch_name is None else branch_name
         key = (branch_name, component, period)
         value = Input(amount, registered, route)
@@ -217,7 +293,15 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
                 else type(simulation).set_input
             )
             setter(simulation, name, period, [amount])
-        model.write(component, reported, period, amount, True, route)
+        model.write(
+            component,
+            reported,
+            period,
+            amount,
+            True,
+            route,
+            cleanup=self.backend.cleans_raw_overlaps,
+        )
 
     @rule(
         slot=TARGET,
@@ -303,8 +387,15 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
             return
         simulation, model = self.state(slot)
         component, period = self.write_key(model, component, period, data)
-        simulation.get_holder(self.name(component, reported)).put_in_cache(
-            [amount], as_period(period), simulation.branch_name, derived=True
+        # Cache an actual reader result. An arbitrary fabricated formula
+        # result could disagree with its own source by construction; this
+        # rule instead checks that real derived results never become sources.
+        name = self.name(component, reported)
+        if as_period(period).size > 1:
+            period = str(as_period(period).start.year)
+        value = simulation.calculate(name, as_period(period))
+        simulation.get_holder(name).put_in_cache(
+            value, as_period(period), simulation.branch_name, derived=True
         )
 
     @rule(
@@ -373,6 +464,7 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
             "yaml" if yaml else "builder",
             initial=True,
             branch_name="default" if yaml else model.branch_name,
+            cleanup=self.backend.cleans_raw_overlaps,
         )
         if fresh:
             self.append(result, model)
@@ -426,6 +518,7 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
             True,
             "failed initial setter" if initial else "failed setter",
             initial=initial,
+            cleanup=self.backend.cleans_raw_overlaps,
         )
 
     @rule(slot=TARGET, branch=st.booleans())
@@ -523,7 +616,7 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
                         simulation, reported, as_period(period)
                     )
                     continue
-                assert actual is not None, (key, expected.route, "missing twin")
+                assert actual is not None, (key, expected.route, "missing source view")
                 assert float(actual[0]) == expected.amount, (
                     key,
                     expected.route,
@@ -555,6 +648,57 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
                     assert (
                         float(holder.get_array(period, simulation.branch_name)[0])
                         == expected.amount
+                    )
+                # The source view alone cannot expose stale calculated
+                # intermediates. Exercise Core's actual calculation body on
+                # the scored years and a later year after every operation.
+                for year in ("2023", "2024", "2025", "2026"):
+                    expected_amount = model.reader_amount(component, year)
+                    actual_reported = simulation.calculate(
+                        f"{component}_reported", as_period(year)
+                    )
+                    assert float(actual_reported[0]) == expected_amount, (
+                        component,
+                        year,
+                        "reported reader",
+                        float(actual_reported[0]),
+                        expected_amount,
+                    )
+                    source, source_period, expected_automatic = model.reader_source(
+                        component, year
+                    )
+                    if source is not None:
+                        value, automatic = self.backend.hooks["_effective_value"](
+                            simulation,
+                            f"{component}_reported",
+                            as_period(source_period),
+                        )
+                        assert (
+                            value is not None and float(value.array[0]) == source.amount
+                        ), (
+                            component,
+                            year,
+                            "selected source",
+                            source_period,
+                        )
+                        assert automatic == expected_automatic, (
+                            component,
+                            year,
+                            "selected source provenance",
+                            automatic,
+                            expected_automatic,
+                        )
+                    override = model.visible(model.overrides, component, year)
+                    expected_public = (
+                        override.amount if override is not None else expected_amount * 2
+                    )
+                    actual_public = simulation.calculate(component, as_period(year))
+                    assert float(actual_public[0]) == expected_public, (
+                        component,
+                        year,
+                        "public reader through base and factor",
+                        float(actual_public[0]),
+                        expected_public,
                     )
             for component, period in model.keys():
                 expected = model.visible(model.overrides, component, period)

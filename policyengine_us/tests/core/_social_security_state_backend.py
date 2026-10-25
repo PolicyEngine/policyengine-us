@@ -4,7 +4,10 @@ The country is intentionally never imported. Core's installed source bodies
 implement every write, builder, copy, replay, extraction and dump route below;
 the US module's complete function bodies implement the hooks. Only entities,
 arrays, periods, storage and dependency bookkeeping are synthetic. This tests
-input semantics, not benefit calculations or full-model performance.
+input semantics and Core's source selection, not country benefit formulas or
+full-model performance. A reported -> base -> public formula chain exercises
+cache invalidation and scored-year factors. The synthetic uprating index
+doubles each year so source changes have exact reader values.
 """
 
 from __future__ import annotations
@@ -54,6 +57,9 @@ class Period:
     start: Instant
     size: int = 1
     unit: str = "year"
+
+    def __iter__(self):
+        return iter((self.unit, (self.start.year, self.start.month, 1), self.size))
 
     @property
     def stop(self):
@@ -264,6 +270,9 @@ class History:
     def record_derived(self, *args):
         pass
 
+    def prune(self, *args):
+        pass
+
 
 class Backend:
     """Install the unchanged hooks around unchanged Core routes in isolation."""
@@ -288,12 +297,15 @@ class Backend:
             YEAR="year",
             MONTH="month",
             ETERNITY="eternity",
+            DAY="day",
             key_period_size=lambda p: p.size,
+            unit_weight=lambda unit: {"day": 1, "month": 2, "year": 3}[unit],
         )
         commons = types.SimpleNamespace(
             empty_clone=lambda value: object.__new__(type(value))
         )
         calculation_frames = ContextVar("state_machine_frames", default=())
+        formula_simulation = ContextVar("state_machine_formula", default=None)
         branch_clone = ContextVar("state_machine_branch_clone", default=None)
 
         class BranchClone:
@@ -341,6 +353,9 @@ class Backend:
 
             def _storage_period(self, period):
                 return as_period(period)
+
+            def default_array(self):
+                return np.zeros(1)
 
             def _raise_if_input_contains_nan(self, array):
                 assert np.isfinite(array).all()
@@ -414,6 +429,7 @@ class Backend:
             group_entities = [household]
             cache_blacklist = []
             data_modified = False
+            auto_carry_over_input_variables = True
 
             def __init__(self):
                 self.variables = {
@@ -425,11 +441,18 @@ class Backend:
                         value_type=float,
                         set_input=None,
                         end=None,
+                        requires_computation_after=None,
+                        defined_for=None,
+                        uprating="fixture_index",
+                        calculate_output=None,
+                        quantity_type="flow",
+                        check_uprating_value_type=lambda: None,
                         is_input_variable=lambda name=name: name.endswith("_reported"),
                     )
                     for name in (
                         *COMPONENTS,
                         *(f"{name}_reported" for name in COMPONENTS),
+                        *(f"{name}_base" for name in COMPONENTS),
                     )
                 }
 
@@ -447,6 +470,9 @@ class Backend:
             def clone(self):
                 return self
 
+            def parameters(self, *args):
+                return types.SimpleNamespace(gov=types.SimpleNamespace(abolitions={}))
+
         system = System()
 
         class Simulation:
@@ -459,7 +485,9 @@ class Backend:
                 self._user_input_keys = set()
                 self._user_input_contexts = []
                 self._inputs_set = 0
+                self._input_epoch = 0
                 self._calculations_started = 0
+                self._calculations_in_flight = 0
                 self.input_variables = []
                 self.parent_branch = None
                 self.branch_name = "default"
@@ -504,11 +532,7 @@ class Backend:
                 return set()
 
             def _drop_computed(self, since=None):
-                return sum(
-                    holder._drop_computed(since)
-                    for population in self.populations.values()
-                    for holder in population._holders.values()
-                )
+                raise AssertionError("Installed Core cache cleanup was not loaded")
 
             def subsample(self, *args):
                 raise NotImplementedError(
@@ -516,12 +540,38 @@ class Backend:
                 )
 
             def calculate(self, name, period):
-                return self.get_holder(name).get_array(
-                    as_period(period), self.branch_name
-                )
+                # The country-free fixture has no tracer or concurrent
+                # formulas. Retain Core's public reader cache behavior while
+                # its installed _calculate body supplies the actual value.
+                period = as_period(period)
+                key = (name, period)
+                if key not in self._fast_cache:
+                    self._fast_cache[key] = self._calculate(name, period)
+                return self._fast_cache[key]
 
             def _calculate(self, name, period):
-                return self.calculate(name, period)
+                raise AssertionError("Installed Core calculation body was not loaded")
+
+            def check_macro_cache(self, *args):
+                return False
+
+            def _check_period_consistency(self, period, variable):
+                if period.unit != "year" or period.size != 1:
+                    raise ValueError("A compound reader requires an exact source")
+
+            def _check_for_cycle(self, *args):
+                pass
+
+            def _run_formula(self, variable, population, period):
+                if variable.name in COMPONENTS:
+                    return self.calculate(f"{variable.name}_base", period) * 2
+                if variable.name.endswith("_base"):
+                    component = variable.name.removesuffix("_base")
+                    return self.calculate(f"{component}_reported", period)
+                return None
+
+            def _cast_formula_result(self, array, variable):
+                return np.asarray(array, dtype=float)
 
         class DelegatingSimulation(Simulation):
             def set_input(self, name, period, value):
@@ -603,13 +653,21 @@ class Backend:
             commons=commons,
             next_sequence_number=next_sequence,
             _calculation_frames=calculation_frames,
+            _formula_simulation=formula_simulation,
             _branch_clone=branch_clone,
             _BranchClone=BranchClone,
             _note_unobserved_activity=lambda: None,
+            _taint_waiting_frames=lambda *args: None,
             directory_containing=lambda path: None,
             PreservedUserInput=PreservedInput,
             NpEncoder=Encoder,
             ETERNITY="eternity",
+            YEAR="year",
+            MONTH="month",
+            QuantityType=types.SimpleNamespace(STOCK="stock"),
+            SpiralError=type("SpiralError", (Exception,), {}),
+            FullTracer=type("FullTracer", (), {}),
+            get_parameter=lambda *args: lambda instant: 2 ** (instant.year - 2023),
             Dataset=Dataset,
             Simulation=Simulation,
             SimulationBuilder=Builder,
@@ -654,6 +712,15 @@ class Backend:
             if isinstance(node, ast.FunctionDef)
         )
         core_helpers = execute(helper_source, helper_names, namespace)
+        # Core 3.33.12 cleans overlapping raw seeds after a direct set_input;
+        # 3.33.2 does this only in dispatch/divide helpers. Keep the reference
+        # model tied to the installed behavior rather than a version string.
+        self.cleans_raw_overlaps = "_drop_calculated_over_own_period" in core_helpers
+        execute(
+            core / "simulations/simulation.py",
+            ("_end_order", "_latest_input_key", "_uprating_index_value"),
+            namespace,
+        )
         sim_methods = (
             "set_input",
             "build_from_dataset",
@@ -666,6 +733,12 @@ class Backend:
             "_get_visible_branch_names",
             "_get_set_input_periods",
             "_get_recorded_input_array",
+            "_calculate",
+            "_calculation_start",
+            "_cache_result",
+            "_may_keep",
+            "_input_set_meanwhile",
+            "_drop_computed",
         )
         for name, method in execute(
             core / "simulations/simulation.py", sim_methods, namespace, "Simulation"

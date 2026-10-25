@@ -463,6 +463,50 @@ def _probe():
             raise AssertionError("The delegating setter did not raise")
         result[route] = _snapshot(simulation, (2024, 2026), INGRESS_OUTCOMES)
         del simulation
+        if route == "setter_failed_after_loading":
+            # The machine found a raw annual public seed followed by a
+            # compound public setter that stores and raises. Keep the exact
+            # shrunk zero sequence and a distinct-value variant in the same
+            # route. Both checkouts use the installed Core version's source
+            # cleanup; no reported-name input is substituted on main.
+            for label, raw_amount, compound_amount in (
+                ("zero", 0, 0),
+                ("nonzero", 12_000, 24_000),
+            ):
+                simulation = StoreThenRaiseSimulation(
+                    situation=inputs, tax_benefit_system=system
+                )
+                simulation.get_holder("social_security_retirement").put_in_cache(
+                    np.array([raw_amount]), period(2023), derived=False
+                )
+                before = _snapshot(simulation, (2023, 2024, 2026))
+                simulation.store_error = RuntimeError("compound setter stored input")
+                try:
+                    simulation.set_input(
+                        "social_security_retirement",
+                        "year:2023:2",
+                        [compound_amount],
+                    )
+                except RuntimeError as error:
+                    assert error is simulation.store_error
+                else:
+                    raise AssertionError("The compound setter did not raise")
+                after = _snapshot(simulation, (2023, 2024, 2026))
+                after.update(
+                    _snapshot(
+                        simulation,
+                        ("year:2023:2",),
+                        ("social_security_retirement",),
+                    )
+                )
+                for stage, snapshot in (("before", before), ("after", after)):
+                    result[route].update(
+                        {
+                            f"raw_cache_compound_{label}_{stage}:{request}": values
+                            for request, values in snapshot.items()
+                        }
+                    )
+                del simulation
         gc.collect()
 
     # Subsampling rebuilds holder storage from a dataframe. Its new stores
@@ -818,6 +862,11 @@ def differential(tmp_path_factory):
             f"{completed.stdout[-4000:]}\n{completed.stderr[-8000:]}"
         )
         results[label] = json.loads(destination.read_text())
+        print(
+            f"Social Security differential ({label}): "
+            f"{len(results[label])} routes, "
+            f"{sum(len(values) for values in results[label].values())} arrays"
+        )
     return results["current"], results["main"]
 
 
