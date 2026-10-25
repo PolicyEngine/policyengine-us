@@ -139,6 +139,12 @@ def _probe():
         Simulation as CoreSimulation,
         SimulationBuilder,
     )
+
+    # Capture the public API before country import installs compatibility.
+    from policyengine_core.tools.simulation_dumper import (
+        dump_simulation,
+        restore_simulation,
+    )
     from policyengine_us import Microsimulation, Simulation
     from policyengine_us.system import system
 
@@ -367,6 +373,136 @@ def _probe():
     del simulation
     gc.collect()
 
+    # Subsampling rebuilds holder storage from a dataframe. Its new stores
+    # must retain the distinction between automatic and explicit sources.
+    sample_columns = {
+        **columns,
+        "household_weight__2024": [1.0],
+        "taxable_interest_income__2024": [40_000],
+        "state_code__2024": ["TX"],
+    }
+    simulation = CoreSimulation(
+        dataset=pd.DataFrame(sample_columns),
+        tax_benefit_system=system,
+        default_input_period=2024,
+        default_calculation_period=2024,
+    )
+    simulation.set_input("social_security_retirement", 2024, [12_000])
+    simulation.subsample(n=1, seed=0, time_period=2024)
+    simulation.set_input("social_security_retirement", 2024, [24_000])
+    result["subsample_public_override"] = _snapshot(
+        simulation, (2024, 2026), INGRESS_OUTCOMES
+    )
+    del simulation
+    gc.collect()
+
+    # Main writes the legacy dump first. The current checkout restores those
+    # exact public-only files, rather than fabricating a legacy dump with its
+    # own compatibility hooks. A normal later setter supplies both names in
+    # the current checkout's own dump and needs automatic-source provenance.
+    dump_directory = Path(os.environ["PE_US_DIFFERENTIAL_DUMPS"])
+    legacy_dump = dump_directory / "legacy_public"
+    inputs = extraction_situation()
+    del inputs["people"]["retiree"]["social_security_retirement"]
+    simulation = Simulation(situation=inputs, tax_benefit_system=system)
+    for component, amount in zip(COMPONENTS, AMOUNTS[0]):
+        simulation.set_input(component, 2024, [amount])
+    if has_levers:
+        for component in COMPONENTS:
+            for name in (component, f"{component}_reported"):
+                assert (
+                    simulation._get_recorded_input_array(name, period(2024)) is not None
+                )
+        own_dump = dump_directory / "both_names"
+        dump_simulation(simulation, own_dump)
+    else:
+        own_dump = legacy_dump
+        dump_simulation(simulation, legacy_dump)
+
+    live = _snapshot(simulation, (2024, 2026), INGRESS_OUTCOMES)
+    restored = restore_simulation(legacy_dump, system)
+    result["dump_restore_legacy_public"] = _snapshot(
+        restored, (2024, 2026), INGRESS_OUTCOMES
+    )
+    assert result["dump_restore_legacy_public"] == live
+    restored.set_input("social_security_retirement", 2024, [24_000])
+    result["dump_restore_legacy_public_override"] = _snapshot(
+        restored, (2024, 2026), INGRESS_OUTCOMES
+    )
+    del restored
+    gc.collect()
+
+    restored = restore_simulation(own_dump, system)
+    result["dump_restore_both_names"] = _snapshot(
+        restored, (2024, 2026), INGRESS_OUTCOMES
+    )
+    assert result["dump_restore_both_names"] == live
+    for candidate in (simulation, restored):
+        candidate.set_input("social_security_retirement", 2024, [24_000])
+    result["dump_restore_both_names_override"] = _snapshot(
+        restored, (2024, 2026), INGRESS_OUTCOMES
+    )
+    assert result["dump_restore_both_names_override"] == _snapshot(
+        simulation, (2024, 2026), INGRESS_OUTCOMES
+    )
+    del simulation, restored
+    gc.collect()
+
+    if has_levers:
+        # An explicit twin is intentionally independent of a later final
+        # public override. Restoring must not label every twin automatic.
+        simulation = Simulation(
+            situation=extraction_situation(), tax_benefit_system=system
+        )
+        simulation.set_input("social_security_retirement_reported", 2024, [6_000])
+        simulation.set_input("social_security_retirement", 2024, [12_000])
+        explicit_dump = dump_directory / "explicit_reported"
+        dump_simulation(simulation, explicit_dump)
+        restored = restore_simulation(explicit_dump, system)
+        expected_future = np.asarray(
+            simulation.calculate("social_security_retirement", 2026)
+        ).copy()
+        for candidate in (simulation, restored):
+            candidate.set_input("social_security_retirement", 2024, [24_000])
+            np.testing.assert_array_equal(
+                candidate.calculate("social_security_retirement", 2024), [24_000]
+            )
+            np.testing.assert_array_equal(
+                candidate.calculate("social_security_retirement", 2026),
+                expected_future,
+            )
+        assert _snapshot(restored, (2024, 2026), INGRESS_OUTCOMES) == _snapshot(
+            simulation, (2024, 2026), INGRESS_OUTCOMES
+        )
+        del simulation, restored
+        gc.collect()
+
+        # Core treats a nonderived raw cache value as an uprating source,
+        # without registering it for input replay. Dump restoration promotes
+        # it to a recorded input and must retain its automatic twin's origin.
+        inputs = extraction_situation()
+        del inputs["people"]["retiree"]["social_security_retirement"]
+        simulation = Simulation(situation=inputs, tax_benefit_system=system)
+        for component, amount in zip(COMPONENTS, AMOUNTS[0]):
+            simulation.get_holder(component).put_in_cache(
+                np.array([amount]), period(2024)
+            )
+            for name in (component, f"{component}_reported"):
+                assert simulation._get_recorded_input_array(name, period(2024)) is None
+        raw_dump = dump_directory / "raw_cache"
+        dump_simulation(simulation, raw_dump)
+        restored = restore_simulation(raw_dump, system)
+        assert _snapshot(restored, (2024, 2026), INGRESS_OUTCOMES) == _snapshot(
+            simulation, (2024, 2026), INGRESS_OUTCOMES
+        )
+        for candidate in (simulation, restored):
+            candidate.set_input("social_security_retirement", 2024, [24_000])
+        assert _snapshot(restored, (2024, 2026), INGRESS_OUTCOMES) == _snapshot(
+            simulation, (2024, 2026), INGRESS_OUTCOMES
+        )
+        del simulation, restored
+        gc.collect()
+
     # Preserve Core's exact compound input and its annual/downstream
     # behavior. This simulation has no US wrapper.
     inputs = extraction_situation()
@@ -553,11 +689,15 @@ def differential(tmp_path_factory):
     directory = tmp_path_factory.mktemp("social_security_differential")
     current = Path(__file__).resolve().parents[3]
     reference = _main_checkout(current, directory)
-    results = []
-    for label, checkout in (("current", current), ("main", reference)):
+    results = {}
+    dump_directory = directory / "dumps"
+    dump_directory.mkdir()
+    # The main probe publishes a real legacy dump for the current probe.
+    for label, checkout in (("main", reference), ("current", current)):
         destination = directory / f"{label}.json"
         environment = dict(os.environ)
         environment["PYTHONPATH"] = str(checkout)
+        environment["PE_US_DIFFERENTIAL_DUMPS"] = str(dump_directory)
         for variable in (
             "OMP_NUM_THREADS",
             "OPENBLAS_NUM_THREADS",
@@ -585,8 +725,8 @@ def differential(tmp_path_factory):
             f"{label} differential probe failed:\n"
             f"{completed.stdout[-4000:]}\n{completed.stderr[-8000:]}"
         )
-        results.append(json.loads(destination.read_text()))
-    return results
+        results[label] = json.loads(destination.read_text())
+    return results["current"], results["main"]
 
 
 @pytest.mark.parametrize(
@@ -620,6 +760,11 @@ def differential(tmp_path_factory):
         "direct_public_holder",
         "subclass_public_set_input_holder",
         "raw_core_dataset",
+        "subsample_public_override",
+        "dump_restore_legacy_public",
+        "dump_restore_legacy_public_override",
+        "dump_restore_both_names",
+        "dump_restore_both_names_override",
         "core_builder_exact_multiyear",
         "clone",
         "branch",

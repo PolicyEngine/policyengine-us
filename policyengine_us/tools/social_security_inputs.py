@@ -8,6 +8,7 @@ An explicitly supplied reported source retains precedence.
 import json
 from contextvars import ContextVar
 from functools import wraps
+from pathlib import Path
 
 from policyengine_core.holders.helpers import get_stored_input
 from policyengine_core.periods import period as to_period
@@ -28,12 +29,22 @@ _REPORTED_COMPONENTS = tuple(f"{name}_reported" for name in SOCIAL_SECURITY_COMP
 _initial_social_security_ingress = ContextVar(
     "initial_social_security_ingress", default=False
 )
+_reloaded_social_security_provenance = ContextVar(
+    "reloaded_social_security_provenance", default=None
+)
+_DUMP_PROVENANCE_FILE = "social_security_input_provenance.json"
 _PROVENANCE = "_social_security_input_provenance"
 _AUTOMATIC_INPUTS = "_social_security_automatic_reported_inputs"
 
 
-def _recorded_input_location(simulation, name, period, *, branch_names=None):
-    """Identify the actual supplied tier, including one hidden by a cache."""
+def _recorded_input_location(
+    simulation, name, period, *, branch_names=None, include_unrecorded=False
+):
+    """Locate a supplied input, or optionally a legacy nonderived cache seed.
+
+    Sequence stamps distinguish automatic sources from explicit replacements
+    even when the caller writes exactly the same amount.
+    """
     holder = simulation.get_holder(name)
     period = holder._storage_period(period)
     input_keys = getattr(simulation, "_user_input_keys", ())
@@ -41,13 +52,20 @@ def _recorded_input_location(simulation, name, period, *, branch_names=None):
         branch_names = simulation._get_visible_branch_names()
     for branch_name in branch_names:
         key = (name, branch_name, period)
-        if key not in input_keys:
-            continue
         for storage_name, storage, separator in (
             ("memory", holder._memory_storage, ":"),
             ("disk", holder._disk_storage, "_"),
         ):
-            if holder._stores_user_input(period, branch_name, storage_name):
+            if storage is None:
+                continue
+            recorded = key in input_keys and holder._stores_user_input(
+                period, branch_name, storage_name
+            )
+            if recorded or (
+                include_unrecorded
+                and storage.has(period, branch_name)
+                and not storage.is_derived(period, branch_name)
+            ):
                 sequence = storage._sequence_numbers.get(
                     f"{branch_name}{separator}{period}"
                 )
@@ -57,12 +75,11 @@ def _recorded_input_location(simulation, name, period, *, branch_names=None):
 
 def _is_automatic_reported_input(simulation, name, period, *, branch_names=None):
     location = _recorded_input_location(
-        simulation, name, period, branch_names=branch_names
+        simulation, name, period, branch_names=branch_names, include_unrecorded=True
     )
-    return (
-        location is not None
-        and getattr(simulation, _AUTOMATIC_INPUTS, {}).get(location[0]) == location[1]
-    )
+    return location is not None and location[1] in getattr(
+        simulation, _AUTOMATIC_INPUTS, {}
+    ).get(location[0], ())
 
 
 def _mark_automatic_reported_input(simulation, name, period, *, branch_name=None):
@@ -71,12 +88,19 @@ def _mark_automatic_reported_input(simulation, name, period, *, branch_name=None
         name,
         period,
         branch_names=None if branch_name is None else (branch_name,),
+        include_unrecorded=True,
     )
     if location is not None:
         # Core clones simulation attributes shallowly. Never mutate a shared
         # provenance dictionary: each write belongs to this simulation alone.
         automatic = dict(getattr(simulation, _AUTOMATIC_INPUTS, {}))
-        automatic[location[0]] = location[1]
+        # A raw memory mirror can temporarily hide a surviving disk input.
+        # Keep each tier's origin so dropping that mirror reveals the original
+        # automatic disk source, rather than turning it into an explicit twin.
+        stamps = automatic.get(location[0], ())
+        automatic[location[0]] = frozenset(
+            stamp for stamp in stamps if stamp[0] != location[1][0]
+        ) | {location[1]}
         setattr(simulation, _AUTOMATIC_INPUTS, automatic)
 
 
@@ -84,7 +108,12 @@ def _automatic_reported_metadata(simulation, *, exported_periods=None):
     automatic = {}
     for public_name in SOCIAL_SECURITY_COMPONENTS:
         name = f"{public_name}_reported"
-        for period in simulation._get_set_input_periods(name):
+        # Dumping iterates this dictionary. Inspect existing holders without
+        # creating missing twins while Core is iterating over their values.
+        holder = simulation.persons._holders.get(name)
+        if holder is None:
+            continue
+        for period in holder.get_input_periods(simulation.branch_name):
             if (
                 exported_periods is not None
                 and (name, str(period)) not in exported_periods
@@ -118,6 +147,8 @@ def install_social_security_input_compatibility():
     and dataset adapters migrate initial sources. Holder-level interception
     preserves subsequent public overrides from every supported input route:
     simulation setters, direct holder writes, and custom period helpers.
+    Nonderived cache seeds retain Core's carryover semantics without becoming
+    registered inputs; calculated (derived) caches never synchronize.
     """
     from policyengine_core.simulations import Simulation as CoreSimulation
     from policyengine_core.simulations.simulation_builder import SimulationBuilder
@@ -136,77 +167,50 @@ def install_social_security_input_compatibility():
             and not _initial_social_security_ingress.get()
         )
 
-    def input_locations(holder, branch_name):
-        return {
-            period: location
-            for stored_branch, period in holder.get_known_branch_periods()
-            if stored_branch == branch_name
-            and (
-                location := _recorded_input_location(
-                    holder.simulation,
-                    holder.variable.name,
-                    period,
-                    branch_names=(branch_name,),
-                )
-            )
-            is not None
-        }
-
-    def synchronize_public_input(holder, period, branch_name):
+    def synchronize_public_input(holder, period, branch_name, *, is_input):
         simulation = holder.simulation
         variable_name = holder.variable.name
         period = holder._storage_period(period)
-        if (
-            _recorded_input_location(
-                simulation, variable_name, period, branch_names=(branch_name,)
-            )
-            is None
-        ):
-            return
         reported_name = f"{variable_name}_reported"
         reported_holder = simulation.get_holder(reported_name)
         readable_branches = reported_holder._readable_branches(branch_name)
         reported_location = _recorded_input_location(
-            simulation, reported_name, period, branch_names=readable_branches
+            simulation,
+            reported_name,
+            period,
+            branch_names=readable_branches,
+            include_unrecorded=True,
         )
         if reported_location is None or _is_automatic_reported_input(
             simulation, reported_name, period, branch_names=readable_branches
         ):
-            supplied_value = get_stored_input(holder, period, branch_name)
+            supplied_value = (
+                get_stored_input(holder, period, branch_name)
+                if is_input
+                else holder._get_array_from_storage(period, branch_name)
+            )
             if supplied_value is not None:
-                reported_holder.set_input(period, supplied_value.copy(), branch_name)
+                if is_input:
+                    reported_holder.set_input(
+                        period, supplied_value.copy(), branch_name
+                    )
+                else:
+                    # Core also uprates from legacy, nonderived cache stores.
+                    # Mirror their source semantics without promoting them to
+                    # replayable/exported inputs. Calculated caches never enter.
+                    reported_holder._set(
+                        period, supplied_value.copy(), branch_name, is_input=False
+                    )
                 _mark_automatic_reported_input(
                     simulation, reported_name, period, branch_name=branch_name
                 )
+        if not is_input:
+            return
         # Core clones share this legacy list. Replace it privately so a
         # later override is extracted without changing the source clone.
         simulation.input_variables = list(
             dict.fromkeys([*simulation.input_variables, variable_name, reported_name])
         )
-
-    original_set_input = Holder.set_input
-    if not getattr(original_set_input, "_social_security_compatibility", False):
-
-        @wraps(original_set_input)
-        def set_input(holder, period, array, branch_name="default"):
-            if not tracks_public_input(holder):
-                return original_set_input(holder, period, array, branch_name)
-
-            before = input_locations(holder, branch_name)
-            result = original_set_input(holder, period, array, branch_name)
-            # Period helpers can store a different period from the one passed
-            # in: a monthly input to a yearly variable stores a rolling year.
-            # Inspect actual inputs under the written branch, including a
-            # branch slot this simulation will read only after cloning.
-            for supplied_period, location in input_locations(
-                holder, branch_name
-            ).items():
-                if location != before.get(supplied_period):
-                    synchronize_public_input(holder, supplied_period, branch_name)
-            return result
-
-        set_input._social_security_compatibility = True
-        Holder.set_input = set_input
 
     original_store = Holder._set
     if not getattr(original_store, "_social_security_compatibility", False):
@@ -222,15 +226,19 @@ def install_social_security_input_compatibility():
             is_input=None,
             sequence_number=None,
         ):
-            # Core's direct period helpers and documented custom input stores
-            # can call _set(is_input=True) without entering Holder.set_input.
-            # Normal setter calls synchronize once, after their handler ends.
-            track_direct_input = (
-                is_input
-                and not getattr(
-                    getattr(holder, "simulation", None), "_user_input_contexts", None
-                )
-                and tracks_public_input(holder)
+            track_source = not derived and tracks_public_input(holder)
+            # Mirror Core's classification and effective branch, including
+            # restore contexts and custom handlers that store before raising.
+            contexts = (
+                getattr(holder.simulation, "_user_input_contexts", None)
+                if track_source
+                else None
+            )
+            effective_input = bool(contexts) if is_input is None else is_input
+            stored_branch = (
+                contexts[-1]
+                if effective_input and contexts and branch_name == "default"
+                else branch_name
             )
             result = original_store(
                 holder,
@@ -242,8 +250,10 @@ def install_social_security_input_compatibility():
                 is_input=is_input,
                 sequence_number=sequence_number,
             )
-            if track_direct_input:
-                synchronize_public_input(holder, period, branch_name)
+            if track_source:
+                synchronize_public_input(
+                    holder, period, stored_branch, is_input=effective_input
+                )
             return result
 
         store_input._social_security_compatibility = True
@@ -269,10 +279,106 @@ def install_social_security_input_compatibility():
             # constructor or an entity/variable builder. Migrate before Core
             # creates its reform baseline, exactly as for situation ingress.
             migrate_social_security_inputs(simulation)
+            reloaded = _reloaded_social_security_provenance.get()
+            if reloaded is not None and reloaded[0] is simulation:
+                _restore_automatic_reported_metadata(simulation, reloaded[1])
             return result
 
         build_from_dataset._social_security_compatibility = True
         CoreSimulation.build_from_dataset = build_from_dataset
+
+    original_subsample = CoreSimulation.subsample
+    if not getattr(original_subsample, "_social_security_compatibility", False):
+
+        @wraps(original_subsample)
+        def subsample(simulation, *args, **kwargs):
+            if not getattr(
+                simulation.tax_benefit_system,
+                "_social_security_input_compatibility",
+                False,
+            ):
+                return original_subsample(simulation, *args, **kwargs)
+            # Restore stamps during dataset rebuilding, before Core replays
+            # inputs and clones the rebuilt reform baseline.
+            token = _reloaded_social_security_provenance.set(
+                (simulation, _automatic_reported_metadata(simulation))
+            )
+            try:
+                return original_subsample(simulation, *args, **kwargs)
+            finally:
+                _reloaded_social_security_provenance.reset(token)
+
+        subsample._social_security_compatibility = True
+        CoreSimulation.subsample = subsample
+
+    from policyengine_core.tools import simulation_dumper
+
+    original_dump_holder = simulation_dumper._dump_holder
+    if not getattr(original_dump_holder, "_social_security_compatibility", False):
+
+        @wraps(original_dump_holder)
+        def dump_holder(holder, directory):
+            result = original_dump_holder(holder, directory)
+            simulation = holder.simulation
+            name = holder.variable.name
+            if name in _REPORTED_COMPONENTS and getattr(
+                simulation.tax_benefit_system,
+                "_social_security_input_compatibility",
+                False,
+            ):
+                exported_periods = {
+                    (name, str(period)) for period in holder.get_known_periods()
+                }
+                metadata = _automatic_reported_metadata(
+                    simulation, exported_periods=exported_periods
+                )
+                if metadata is not None:
+                    path = Path(directory) / name / _DUMP_PROVENANCE_FILE
+                    path.write_text(json.dumps(metadata))
+            return result
+
+        dump_holder._social_security_compatibility = True
+        simulation_dumper._dump_holder = dump_holder
+
+    original_restore_holder = simulation_dumper._restore_holder
+    if not getattr(original_restore_holder, "_social_security_compatibility", False):
+
+        @wraps(original_restore_holder)
+        def restore_holder(
+            simulation, variable, directory, inputs=False, calculated_number=None
+        ):
+            if not getattr(
+                simulation.tax_benefit_system,
+                "_social_security_input_compatibility",
+                False,
+            ):
+                return original_restore_holder(
+                    simulation, variable, directory, inputs, calculated_number
+                )
+            if not inputs and not getattr(
+                simulation, "_social_security_dump_inputs_restored", False
+            ):
+                # Core finishes the input pass before restoring any calculated
+                # arrays. Load all twins first, so directory order cannot turn
+                # an explicit twin into an automatic source or vice versa.
+                migrate_social_security_inputs(simulation)
+                for name in _REPORTED_COMPONENTS:
+                    path = Path(directory) / name / _DUMP_PROVENANCE_FILE
+                    if path.exists():
+                        _restore_automatic_reported_metadata(
+                            simulation, json.loads(path.read_text())
+                        )
+                simulation._social_security_dump_inputs_restored = True
+            token = _initial_social_security_ingress.set(True)
+            try:
+                return original_restore_holder(
+                    simulation, variable, directory, inputs, calculated_number
+                )
+            finally:
+                _initial_social_security_ingress.reset(token)
+
+        restore_holder._social_security_compatibility = True
+        simulation_dumper._restore_holder = restore_holder
 
     original_extract = CoreSimulation.extract_person
     if not getattr(original_extract, "_social_security_compatibility", False):
@@ -343,11 +449,12 @@ def install_social_security_input_compatibility():
                 "_social_security_input_compatibility",
                 False,
             ):
-                for key, stamp in getattr(simulation, _AUTOMATIC_INPUTS, {}).items():
+                for key, stamps in getattr(simulation, _AUTOMATIC_INPUTS, {}).items():
                     name, branch_name, period = key
-                    if _recorded_input_location(
+                    location = _recorded_input_location(
                         simulation, name, period, branch_names=(branch_name,)
-                    ) == (key, stamp):
+                    )
+                    if location is not None and location[1] in stamps:
                         automatic.append(key)
             result = original_invalidate(simulation)
             # Core replay assigns new store sequence numbers. Replaying an

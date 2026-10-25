@@ -6,6 +6,7 @@ tiny populations, without loading external data.
 """
 
 import json
+from types import SimpleNamespace
 
 import numpy as np
 import pandas as pd
@@ -390,6 +391,191 @@ def test_holder_write_before_branch_creation_stays_in_its_named_branch():
     assert amount(branch, public, 2026) == pytest.approx(13_522.16, abs=0.01)
     assert amount(reloaded, public, 2026) == pytest.approx(13_522.16, abs=0.01)
     assert amount(simulation, public, 2026) == 0
+
+
+@pytest.mark.parametrize("is_input", (None, True))
+def test_context_stores_synchronize_sources_in_the_effective_branch(is_input):
+    retirement, disability = SOCIAL_SECURITY_COMPONENTS[:2]
+    simulation = make_simulation(inputs={f"{disability}_reported": {2024: 0}})
+    # Core restoration and custom input handlers use _set directly. Its
+    # default branch follows the active input context, including a branch
+    # that has no simulation object yet.
+    simulation._user_input_contexts.append("context_inputs")
+    try:
+        for public in (retirement, disability):
+            simulation.get_holder(public)._set(
+                period(2024), np.array([12_000]), is_input=is_input
+            )
+    finally:
+        simulation._user_input_contexts.pop()
+
+    branch = simulation.get_branch("context_inputs")
+    for public in (retirement, disability):
+        assert amount(branch, public, 2024) == 12_000
+        assert amount(simulation, public, 2024) == 0
+        assert (public, "context_inputs", period(2024)) in branch._user_input_keys
+    assert amount(branch, f"{retirement}_reported", 2024) == 12_000
+    # An inherited explicit zero keeps precedence over a public input.
+    assert amount(branch, f"{disability}_reported", 2024) == 0
+    for public in (retirement, disability):
+        branch.set_input(public, 2024, [24_000])
+    drop_inherited_values(branch)
+    assert amount(branch, f"{retirement}_reported", 2024) == 24_000
+    assert amount(branch, retirement, 2026) == pytest.approx(27_044.32, abs=0.01)
+    assert amount(branch, f"{disability}_reported", 2024) == 0
+    assert amount(branch, disability, 2026) == 0
+    assert amount(simulation, f"{retirement}_reported", 2024) == 0
+
+
+def test_explicit_noninput_store_keeps_its_branch_inside_an_input_context():
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported = f"{public}_reported"
+    simulation = make_simulation()
+    simulation._user_input_contexts.append("context_inputs")
+    try:
+        simulation.get_holder(public)._set(
+            period(2024), np.array([12_000]), is_input=False
+        )
+    finally:
+        simulation._user_input_contexts.pop()
+    for name in (public, reported):
+        assert set(simulation.get_holder(name).get_known_branch_periods()) == {
+            ("default", period(2024))
+        }
+        assert input_periods(simulation, name) == set()
+        assert amount(simulation, name, 2024) == 12_000
+    assert amount(simulation, public, 2026) == pytest.approx(13_522.16, abs=0.01)
+
+
+def test_failing_period_handler_synchronizes_the_inputs_it_already_stored(monkeypatch):
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported = f"{public}_reported"
+    simulation = make_simulation()
+    branch = simulation.get_branch("partial_handler")
+
+    def store_then_fail(holder, requested_period, array):
+        holder._set(requested_period.this_year, array)
+        raise RuntimeError("handler failed after storing its annual input")
+
+    monkeypatch.setattr(system.variables[public], "set_input", store_then_fail)
+    with pytest.raises(RuntimeError, match="after storing"):
+        branch.get_holder(public).set_input(
+            period("2024-07"), np.array([12_000]), branch.branch_name
+        )
+    assert branch._user_input_contexts == []
+    assert amount(branch, public, 2024) == 12_000
+    assert amount(branch, reported, 2024) == 12_000
+    assert input_periods(branch, reported) == {"2024"}
+    assert amount(branch, public, 2026) == pytest.approx(13_522.16, abs=0.01)
+    branch.set_input(public, 2024, [24_000])
+    drop_inherited_values(branch)
+    assert amount(branch, reported, 2024) == 24_000
+    assert amount(branch, public, 2026) == pytest.approx(27_044.32, abs=0.01)
+    assert amount(simulation, public, 2024) == 0
+    assert amount(simulation, reported, 2024) == 0
+
+
+@pytest.mark.parametrize("route", ("store_default", "store_noninput", "cache"))
+def test_raw_nonderived_stores_keep_carry_sources_without_becoming_inputs(route):
+    retirement, disability = SOCIAL_SECURITY_COMPONENTS[:2]
+    simulation = make_simulation(inputs={f"{disability}_reported": {2024: 0}})
+    for public in (retirement, disability):
+        holder = simulation.get_holder(public)
+        if route == "cache":
+            holder.put_in_cache(np.array([12_000]), period(2024), derived=False)
+        else:
+            holder._set(
+                period(2024),
+                np.array([12_000]),
+                is_input=False if route == "store_noninput" else None,
+            )
+        assert amount(simulation, public, 2024) == 12_000
+        assert input_periods(simulation, public) == set()
+        assert public not in simulation.input_variables
+    assert amount(simulation, f"{retirement}_reported", 2024) == 12_000
+    assert input_periods(simulation, f"{retirement}_reported") == set()
+    assert f"{retirement}_reported" not in simulation.input_variables
+    assert amount(simulation, retirement, 2026) == pytest.approx(13_522.16, abs=0.01)
+    assert amount(simulation, f"{disability}_reported", 2024) == 0
+    assert amount(simulation, disability, 2026) == 0
+    # A later replayable input replaces its automatic cache source and still
+    # respects a separately supplied reported source.
+    for public in (retirement, disability):
+        simulation.set_input(public, 2024, [24_000])
+    drop_inherited_values(simulation)
+    assert amount(simulation, f"{retirement}_reported", 2024) == 24_000
+    assert input_periods(simulation, f"{retirement}_reported") == {"2024"}
+    assert amount(simulation, retirement, 2026) == pytest.approx(27_044.32, abs=0.01)
+    assert amount(simulation, f"{disability}_reported", 2024) == 0
+    assert amount(simulation, disability, 2026) == 0
+
+
+def test_raw_memory_mirror_keeps_a_surviving_disk_source_automatic(tmp_path):
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported = f"{public}_reported"
+    simulation = make_simulation()
+    reported_holder = simulation.get_holder(reported)
+    reported_holder._disk_storage = reported_holder.create_disk_storage(
+        tmp_path, preserve=True
+    )
+    reported_holder._on_disk_storable = True
+    simulation.memory_config = SimpleNamespace(
+        max_memory_occupation_pc=0,
+        priority_variables=system.variables,
+        variables_to_drop=(),
+    )
+    stored_period = period(2024)
+    simulation.set_input(public, 2024, [12_000])
+    assert reported_holder._memory_storage.get(stored_period) is None
+    np.testing.assert_array_equal(
+        reported_holder._disk_storage.get(stored_period), [12_000]
+    )
+
+    # A raw memory cache shadows the disk input without replacing its
+    # replayable tier or erasing that tier's automatic-source provenance.
+    reported_holder._on_disk_storable = False
+    simulation.get_holder(public).put_in_cache(np.array([18_000]), stored_period)
+    np.testing.assert_array_equal(
+        reported_holder._memory_storage.get(stored_period), [18_000]
+    )
+    np.testing.assert_array_equal(
+        simulation._get_recorded_input_array(reported, stored_period), [12_000]
+    )
+    simulation._invalidate_all_caches()
+    assert reported_holder._memory_storage.get(stored_period) is None
+    np.testing.assert_array_equal(
+        reported_holder._disk_storage.get(stored_period), [12_000]
+    )
+    reported_holder._on_disk_storable = True
+    simulation.set_input(public, 2024, [24_000])
+    np.testing.assert_array_equal(
+        reported_holder._disk_storage.get(stored_period), [24_000]
+    )
+    assert amount(simulation, reported, 2024) == 24_000
+    assert amount(simulation, public, 2026) == pytest.approx(27_044.32, abs=0.01)
+
+
+def test_derived_public_caches_never_become_reported_carry_sources():
+    retirement, disability = SOCIAL_SECURITY_COMPONENTS[:2]
+    simulation = make_simulation()
+    # A calculation can cache through either API, even within an input
+    # handler. Core explicitly excludes derived stores from input contexts.
+    simulation._user_input_contexts.append(simulation.branch_name)
+    try:
+        simulation.get_holder(retirement)._set(
+            period(2024), np.array([12_000]), derived=True
+        )
+        simulation.get_holder(disability).put_in_cache(
+            np.array([12_000]), period(2024), derived=True
+        )
+    finally:
+        simulation._user_input_contexts.pop()
+    for public in (retirement, disability):
+        assert amount(simulation, public, 2024) == 12_000
+        assert input_periods(simulation, public) == set()
+        assert simulation.get_array(f"{public}_reported", 2024) is None
+        assert input_periods(simulation, f"{public}_reported") == set()
+        assert amount(simulation, public, 2026) == 0
 
 
 @pytest.mark.parametrize("wrapper", WRAPPERS)
