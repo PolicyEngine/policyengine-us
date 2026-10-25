@@ -402,6 +402,9 @@ def _probe():
         default_input_period=2024,
         default_calculation_period=2024,
     )
+    # Existing builders must also replace a source after its scored-year
+    # formula (including its base) has already been cached.
+    simulation.calculate("social_security_retirement", 2024)
     SimulationBuilder().build_from_variables(
         system,
         {"social_security_retirement": {2024: [24_000]}},

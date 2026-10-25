@@ -275,6 +275,7 @@ def migrate_social_security_inputs(
     only stores belonging to that loading operation.
     """
     moved = set()
+    purged = False
     for name in SOCIAL_SECURITY_COMPONENTS:
         holder = _holder(simulation, name)
         if holder is None:
@@ -300,10 +301,30 @@ def migrate_social_security_inputs(
                 # formula. A custom input handler may already have calculated
                 # values from that override while the builder was loading.
                 simulation._drop_values_that_may_depend_on(name, period)
-                _purge_derived_view(simulation, name)
+                if not purged:
+                    # Core's dependency drops apply only on branches. A
+                    # builder can replace a source on an ordinary simulation
+                    # whose base or downstream values are already cached.
+                    # Keep raw carry seeds and every supplied input intact.
+                    _purge_derived_arrays(simulation)
+                    purged = True
                 _store_source(holder, period, value.array, source_branch)
                 if explicit is None:
-                    _delete_exact(holder, period, branch)
+                    # A local source must also displace inherited public
+                    # final overrides in this simulation's private snapshot.
+                    # Retain each ancestor's independent public source for
+                    # ordinary branch fallback after a later local raw write.
+                    for visible in _branches(simulation):
+                        inherited = _physical_value(holder, period, (visible,))
+                        if inherited is not None and visible != branch:
+                            _store_source(
+                                holder,
+                                period,
+                                inherited.array,
+                                f"{_SOURCE_BRANCH}{visible}",
+                                registered=inherited.registered,
+                            )
+                        _delete_exact(holder, period, visible)
                 moved.add(name)
     _refresh_input_variables(simulation)
     baseline = getattr(simulation, "baseline", None)
@@ -468,6 +489,26 @@ def _purge_derived_view(simulation, public_name):
             for branch, period in tuple(storage.get_known_branch_periods()):
                 if storage.is_derived(period, branch):
                     _delete_exact(holder, period, branch, tier=tier)
+    simulation._fast_cache = {}
+
+
+def _purge_derived_arrays(simulation):
+    """Discard formula results after initial routing changes their source.
+
+    Core's general cache drop also removes nonregistered, nonderived carry
+    seeds. Those are independent caller values and remain valid here.
+    """
+    for population in simulation.populations.values():
+        for holder in population._holders.values():
+            for tier, storage in (
+                ("memory", holder._memory_storage),
+                ("disk", holder._disk_storage),
+            ):
+                if storage is None:
+                    continue
+                for branch, period in tuple(storage.get_known_branch_periods()):
+                    if storage.is_derived(period, branch):
+                        _delete_exact(holder, period, branch, tier=tier)
     simulation._fast_cache = {}
 
 

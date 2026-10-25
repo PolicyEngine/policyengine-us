@@ -299,6 +299,7 @@ def test_existing_builder_refreshes_loaded_sources_and_keeps_earlier_overrides(
     inputs = {name: {2024: 12_000} for name in SOCIAL_SECURITY_COMPONENTS}
     simulation = make_core_simulation(inputs)
     for name in SOCIAL_SECURITY_COMPONENTS:
+        assert amount(simulation, name, 2024) == 12_000
         simulation.set_input(name, 2025, [18_000])
         if explicit_source is not None:
             simulation.set_input(f"{name}_reported", 2024, [explicit_source])
@@ -308,6 +309,7 @@ def test_existing_builder_refreshes_loaded_sources_and_keeps_earlier_overrides(
         simulation=simulation,
     )
     for name in SOCIAL_SECURITY_COMPONENTS:
+        assert amount(simulation, name, 2024) == 24_000
         assert amount(simulation, f"{name}_reported", 2024) == (
             24_000 if explicit_source is None else explicit_source
         )
