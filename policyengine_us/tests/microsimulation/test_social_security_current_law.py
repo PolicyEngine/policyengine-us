@@ -407,6 +407,18 @@ def _probe():
         {"social_security_retirement": {2024: [24_000]}},
         simulation=simulation,
     )
+    # Combine the builder replacement with extraction before calculations
+    # add lookback caches to Core's first-known-period extraction path.
+    payload = simulation.extract_person(0)
+    reloaded = Simulation(situation=payload, tax_benefit_system=system)
+    result["dataset_builder_extraction_reload"] = _snapshot(
+        reloaded, (2024, 2026), INGRESS_OUTCOMES
+    )
+    reloaded.set_input("social_security_retirement", 2024, [36_000])
+    result["dataset_builder_extraction_rewrite"] = _snapshot(
+        reloaded, (2024, 2026), INGRESS_OUTCOMES
+    )
+    del reloaded
     copied = simulation.clone(clone_tax_benefit_system=False)
     copied.set_input("social_security_retirement", 2026, [18_000])
     SimulationBuilder().build_from_variables(
@@ -837,6 +849,8 @@ def differential(tmp_path_factory):
         "direct_public_holder",
         "subclass_public_set_input_holder",
         "raw_core_dataset",
+        "dataset_builder_extraction_reload",
+        "dataset_builder_extraction_rewrite",
         "dataset_existing_builder_overwrite",
         "dataset_builder_clone_overwrite",
         "builder_failed_initial_loading",

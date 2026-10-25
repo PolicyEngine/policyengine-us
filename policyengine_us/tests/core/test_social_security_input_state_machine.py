@@ -1,9 +1,9 @@
 """Search compositions of public and reported Social Security input routes.
 
-Property: for every component and exact supplied period, an explicit reported
-input has priority; otherwise the reported value follows the latest public
-input, with automatic provenance. Copies preserve that property and public
-final overrides, while subsequent writes remain isolated from their source.
+Property: a reported source uses an explicit input at or before its requested
+period; otherwise its read-time view follows the latest public input. Exact
+compound totals keep their own period semantics. Copies preserve those
+sources and public final overrides, while later writes remain isolated.
 
 The backend executes installed Core source bodies and the production US hooks
 without importing the country. Run this file directly for a country-free test:
@@ -50,45 +50,110 @@ class Input:
 
 @dataclass
 class Model:
-    # These dictionaries describe caller intent, never inspect production
-    # provenance to decide whether a twin is automatic or explicit.
+    # Caller inputs are distinct slots on each branch. A raw branch write
+    # hides, rather than erases, an inherited registered input.
     public: dict = field(default_factory=dict)
     explicit: dict = field(default_factory=dict)
     overrides: dict = field(default_factory=dict)
+    branch_name: str = "default"
+    visible_branches: tuple = ("default",)
+
+    def keys(self):
+        return {
+            (component, period)
+            for mapping in (self.public, self.explicit, self.overrides)
+            for branch, component, period in mapping
+            if branch in self.visible_branches
+        }
+
+    def visible(self, mapping, component, period):
+        return next(
+            (
+                mapping[(branch, component, period)]
+                for branch in self.visible_branches
+                if (branch, component, period) in mapping
+            ),
+            None,
+        )
+
+    def reported(self, component, period):
+        explicit = self.visible(self.explicit, component, period)
+        if explicit is not None:
+            return explicit, False
+        requested = as_period(period)
+        for other_component, known in self.keys():
+            candidate = as_period(known)
+            if (
+                other_component == component
+                and (
+                    candidate.start <= requested.start
+                    if requested.size == 1
+                    else candidate == requested
+                )
+                and self.visible(self.explicit, component, known) is not None
+            ):
+                # Core uprates from the earlier explicit source. It must not
+                # see a same-period public fallback as a newer reported input.
+                return None, False
+        return self.visible(self.public, component, period), True
 
     def write(
-        self, component, reported, period, amount, registered, route, initial=False
+        self,
+        component,
+        reported,
+        period,
+        amount,
+        registered,
+        route,
+        initial=False,
+        branch_name=None,
     ):
-        key = (component, period)
+        branch_name = self.branch_name if branch_name is None else branch_name
+        key = (branch_name, component, period)
         value = Input(amount, registered, route)
         if reported:
             self.explicit[key] = value
         else:
             self.public[key] = value
-            if initial and key not in self.explicit:
-                self.overrides.pop(key, None)
+            if initial and self.visible(self.explicit, component, period) is None:
+                # Initial migration removes visible public slots, including
+                # a superseded inherited final override for the same period.
+                for branch in self.visible_branches:
+                    self.overrides.pop((branch, component, period), None)
             else:
                 self.overrides[key] = value
 
     def keep_registered(self):
-        self.public = {
-            key: value for key, value in self.public.items() if value.registered
-        }
-        self.explicit = {
-            key: value for key, value in self.explicit.items() if value.registered
-        }
-        self.overrides = {
-            key: value for key, value in self.overrides.items() if value.registered
-        }
+        for name in ("public", "explicit", "overrides"):
+            setattr(
+                self,
+                name,
+                {
+                    key: value
+                    for key, value in getattr(self, name).items()
+                    if value.registered
+                },
+            )
 
-    def dump_promotes_raw(self):
-        for mapping in (self.public, self.explicit, self.overrides):
-            for value in mapping.values():
-                value.registered = True
+    def flatten(self, promote_raw=False):
+        keys = self.keys()
+        for name in ("public", "explicit", "overrides"):
+            mapping = getattr(self, name)
+            flat = {}
+            for component, period in keys:
+                value = self.visible(mapping, component, period)
+                if value is not None:
+                    value = copy.deepcopy(value)
+                    if promote_raw:
+                        value.registered = True
+                    flat[("default", component, period)] = value
+            setattr(self, name, flat)
+        self.branch_name = "default"
+        self.visible_branches = ("default",)
 
 
 class SocialSecurityInputsMachine(RuleBasedStateMachine):
-    """All writes may slot earlier clones, branches, or restored copies."""
+    """All writes may target earlier clones, branches, or restored copies."""
 
     def __init__(self):
         super().__init__()
@@ -115,7 +180,7 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
     def write_key(model, component, period, data):
         # Reuse caller-known slots as well as drawing fresh ones. This makes
         # collisions between independent routes, copies and replay common.
-        keys = sorted(model.public.keys() | model.explicit.keys())
+        keys = sorted(model.keys())
         if (
             data is not None
             and keys
@@ -257,7 +322,9 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
             {self.name(component, reported): {period: [amount]}}
         )
         simulation.build_from_dataset()
-        model = Model()
+        model = Model(
+            branch_name=model.branch_name, visible_branches=model.visible_branches
+        )
         model.write(component, reported, period, amount, True, "dataset", initial=True)
         self.states[slot % len(self.states)] = (simulation, model)
 
@@ -305,6 +372,7 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
             True,
             "yaml" if yaml else "builder",
             initial=True,
+            branch_name="default" if yaml else model.branch_name,
         )
         if fresh:
             self.append(result, model)
@@ -368,7 +436,13 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
             if branch
             else simulation.clone()
         )
-        self.append(copied, copy.deepcopy(model))
+        copied_model = copy.deepcopy(model)
+        if branch:
+            copied_model.branch_name = copied.branch_name
+            copied_model.visible_branches = tuple(
+                dict.fromkeys((copied.branch_name, *copied_model.visible_branches))
+            )
+        self.append(copied, copied_model)
 
     @rule(slot=TARGET)
     def dump_restore(self, slot):
@@ -380,16 +454,25 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
             directory, self.backend.system
         )
         copied_model = copy.deepcopy(model)
-        copied_model.dump_promotes_raw()
+        copied_model.flatten(promote_raw=True)
         self.append(restored, copied_model)
 
-    @rule(slot=TARGET)
-    def extract_reload(self, slot):
+    @rule(slot=TARGET, full_history=st.booleans())
+    def extract_reload(self, slot, full_history=False):
         simulation, model = self.state(slot)
-        payload = simulation.extract_person()
-        restored = self.backend.Builder().build_from_dict(self.backend.system, payload)
+        if full_history:
+            payload = self.backend.hooks["export_source_inputs"](simulation)
+            restored = self.backend.hooks["reload_source_inputs"](
+                payload, tax_benefit_system=self.backend.system
+            )
+        else:
+            payload = simulation.extract_person()
+            restored = self.backend.Builder().build_from_dict(
+                self.backend.system, payload
+            )
         copied_model = copy.deepcopy(model)
         copied_model.keep_registered()
+        copied_model.flatten()
         self.append(restored, copied_model)
 
     @rule(slot=TARGET, replay=st.booleans())
@@ -421,13 +504,25 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
     def reported_values_and_provenance_follow_intent(self):
         for simulation, model in self.states:
             assert simulation._user_input_contexts == []
-            for key in model.public.keys() | model.explicit.keys():
+            assert not hasattr(simulation, "_social_security_automatic_reported_inputs")
+            for key in model.keys():
                 component, period = key
-                expected = model.explicit.get(key, model.public.get(key))
+                expected, expected_automatic = model.reported(component, period)
                 reported = f"{component}_reported"
                 actual = simulation.get_holder(reported).get_array(
                     as_period(period), simulation.branch_name
                 )
+                if expected is None:
+                    assert actual is None or simulation.get_holder(reported).is_derived(
+                        as_period(period), simulation.branch_name
+                    ), (
+                        key,
+                        "public source shadowed explicit history",
+                    )
+                    assert not self.backend.hooks["_is_automatic_reported_input"](
+                        simulation, reported, as_period(period)
+                    )
+                    continue
                 assert actual is not None, (key, expected.route, "missing twin")
                 assert float(actual[0]) == expected.amount, (
                     key,
@@ -438,7 +533,7 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
                 automatic = self.backend.hooks["_is_automatic_reported_input"](
                     simulation, reported, as_period(period)
                 )
-                assert automatic == (key not in model.explicit), (
+                assert automatic == expected_automatic, (
                     key,
                     expected.route,
                     "provenance",
@@ -448,20 +543,23 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
                 reported_holder = simulation.get_holder(f"{component}_reported")
                 for period in reported_holder.get_input_periods(simulation.branch_name):
                     key = (component, str(period))
-                    assert key in model.public or key in model.explicit, (
+                    assert model.reported(*key)[0] is not None, (
                         key,
                         "unexplained reported input",
                     )
                 holder = simulation.get_holder(component)
                 for period in holder.get_input_periods(simulation.branch_name):
                     key = (component, str(period))
-                    expected = model.overrides.get(key)
+                    expected = model.visible(model.overrides, *key)
                     assert expected is not None, (key, "unexpected public override")
                     assert (
                         float(holder.get_array(period, simulation.branch_name)[0])
                         == expected.amount
                     )
-            for (component, period), expected in model.overrides.items():
+            for component, period in model.keys():
+                expected = model.visible(model.overrides, component, period)
+                if expected is None:
+                    continue
                 actual = simulation.get_holder(component).get_array(
                     as_period(period), simulation.branch_name
                 )

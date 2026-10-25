@@ -125,7 +125,7 @@ def compiled_hooks(source):
     body = [
         n
         for n in tree.body
-        if isinstance(n, (ast.Assign, ast.AnnAssign, ast.FunctionDef))
+        if isinstance(n, (ast.Assign, ast.AnnAssign, ast.ClassDef, ast.FunctionDef))
     ]
     code = ast.fix_missing_locations(
         ast.Module(
@@ -179,6 +179,11 @@ class Storage:
             (key.split(":", 1)[0], as_period(key.split(":", 1)[1]))
             for key in self._arrays
         ]
+
+    def get_known_periods(self):
+        return list(
+            dict.fromkeys(period for _, period in self.get_known_branch_periods())
+        )
 
     def delete(self, period=None, branch_name="default"):
         for key in list(self._arrays):
@@ -254,6 +259,9 @@ class History:
         return History()
 
     def record_unknown_sources(self, *args):
+        pass
+
+    def record_derived(self, *args):
         pass
 
 
@@ -410,6 +418,7 @@ class Backend:
                         value_type=float,
                         set_input=None,
                         end=None,
+                        is_input_variable=lambda name=name: name.endswith("_reported"),
                     )
                     for name in (
                         *COMPONENTS,
@@ -459,6 +468,12 @@ class Backend:
                 self.build_from_populations(
                     populations or self.tax_benefit_system.instantiate_entities()
                 )
+                if kwargs.get("situation") is not None:
+                    # Country constructor plumbing uses the same actual Core
+                    # builder; no input migration logic lives in this fixture.
+                    Builder().build_from_dict(
+                        self.tax_benefit_system, kwargs["situation"], simulation=self
+                    )
 
             def build_from_populations(self, populations):
                 self.populations = populations
@@ -577,6 +592,7 @@ class Backend:
             types=types,
             json=json,
             logging=logging,
+            log=logging.getLogger(__name__),
             commons=commons,
             next_sequence_number=next_sequence,
             _calculation_frames=calculation_frames,
@@ -593,10 +609,15 @@ class Backend:
             _get_person_count=lambda values: 1,
             check_type=lambda *args: None,
             PeriodMismatchError=ValueError,
+            _period_from_storage_key=as_period,
             copy=copy,
         )
         holder_methods = (
             "clone",
+            "_get_array_from_storage",
+            "get_array",
+            "get_known_periods",
+            "get_known_branch_periods",
             "set_input",
             "_set",
             "put_in_cache",
@@ -616,9 +637,16 @@ class Backend:
             core / "holders/holder.py", holder_methods, namespace, "Holder"
         ).items():
             setattr(Holder, name, method)
-        execute(
-            core / "holders/helpers.py", ("_is_input", "get_stored_input"), namespace
+        helper_source = core / "holders/helpers.py"
+        # Later compatible Core releases add helper calls to these routes.
+        # Execute the installed helper bodies together so their internal
+        # dependencies remain the real implementation across Core versions.
+        helper_names = tuple(
+            node.name
+            for node in source_tree(helper_source).body
+            if isinstance(node, ast.FunctionDef)
         )
+        core_helpers = execute(helper_source, helper_names, namespace)
         sim_methods = (
             "set_input",
             "build_from_dataset",
@@ -683,9 +711,8 @@ class Backend:
         )
         helpers = module(
             "policyengine_core.holders.helpers",
-            _is_input=namespace["_is_input"],
             _period_from_storage_key=as_period,
-            get_stored_input=namespace["get_stored_input"],
+            **core_helpers,
         )
         period_hooks = module(
             "policyengine_us.tools.social_security_periods",
@@ -742,21 +769,28 @@ class Backend:
                 "SOCIAL_SECURITY_INPUT_SOURCE", ROOT / "tools/social_security_inputs.py"
             )
         )
-        hook_namespace = dict(
+        hook_module = module(
+            "_social_security_state_hooks",
             json=json,
             ContextVar=ContextVar,
+            dataclass=dataclass,
             wraps=wraps,
             Path=Path,
+            next_sequence_number=next_sequence,
             get_stored_input=namespace["get_stored_input"],
             to_period=as_period,
             NpEncoder=Encoder,
             ETERNITY="eternity",
         )
+        self.stack.enter_context(
+            patch.dict(sys.modules, {hook_module.__name__: hook_module})
+        )
+        hook_namespace = hook_module.__dict__
         execute(
             ROOT / "tools/period_branch.py", ("delete_input_values",), hook_namespace
         )
-        # Keep every assignment and function body from the real hook module;
-        # execute anew for each example, so ContextVars and stamps stay private.
+        # Keep every assignment, class and function from the real hook module;
+        # execute anew for each example so all mutable state stays private.
         exec(compiled_hooks(hook_source), hook_namespace)
         hook_namespace["install_social_security_input_compatibility"]()
         self.Simulation = Simulation

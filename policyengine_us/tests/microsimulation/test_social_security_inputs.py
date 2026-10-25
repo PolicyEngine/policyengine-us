@@ -648,15 +648,16 @@ def test_initial_raw_handler_stores_keep_sources_and_explicit_twin_priority(
     assert amount(simulation, disability, 2026) == 0
 
 
-def test_raw_memory_mirror_keeps_a_surviving_disk_source_automatic(tmp_path):
+def test_raw_memory_source_keeps_a_surviving_disk_input_available(tmp_path):
     public = SOCIAL_SECURITY_COMPONENTS[0]
     reported = f"{public}_reported"
     simulation = make_simulation()
+    source_holder = simulation.get_holder(public)
     reported_holder = simulation.get_holder(reported)
-    reported_holder._disk_storage = reported_holder.create_disk_storage(
+    source_holder._disk_storage = source_holder.create_disk_storage(
         tmp_path, preserve=True
     )
-    reported_holder._on_disk_storable = True
+    source_holder._on_disk_storable = True
     simulation.memory_config = SimpleNamespace(
         max_memory_occupation_pc=0,
         priority_variables=system.variables,
@@ -664,33 +665,76 @@ def test_raw_memory_mirror_keeps_a_surviving_disk_source_automatic(tmp_path):
     )
     stored_period = period(2024)
     simulation.set_input(public, 2024, [12_000])
-    assert reported_holder._memory_storage.get(stored_period) is None
+    assert source_holder._memory_storage.get(stored_period) is None
     np.testing.assert_array_equal(
-        reported_holder._disk_storage.get(stored_period), [12_000]
+        source_holder._disk_storage.get(stored_period), [12_000]
     )
+    assert reported_holder._memory_storage.get(stored_period) is None
 
-    # A raw memory cache shadows the disk input without replacing its
-    # replayable tier or erasing that tier's automatic-source provenance.
-    reported_holder._on_disk_storable = False
+    # The read-time twin sees the raw memory source while registered-only
+    # exports retain the surviving disk input. No automatic twin is stored.
+    source_holder._on_disk_storable = False
     simulation.get_holder(public).put_in_cache(np.array([18_000]), stored_period)
     np.testing.assert_array_equal(
-        reported_holder._memory_storage.get(stored_period), [18_000]
+        source_holder._memory_storage.get(stored_period), [18_000]
     )
     np.testing.assert_array_equal(
         simulation._get_recorded_input_array(reported, stored_period), [12_000]
     )
     simulation._invalidate_all_caches()
-    assert reported_holder._memory_storage.get(stored_period) is None
+    assert source_holder._memory_storage.get(stored_period) is None
     np.testing.assert_array_equal(
-        reported_holder._disk_storage.get(stored_period), [12_000]
+        source_holder._disk_storage.get(stored_period), [12_000]
     )
-    reported_holder._on_disk_storable = True
+    source_holder._on_disk_storable = True
     simulation.set_input(public, 2024, [24_000])
     np.testing.assert_array_equal(
-        reported_holder._disk_storage.get(stored_period), [24_000]
+        source_holder._disk_storage.get(stored_period), [24_000]
     )
     assert amount(simulation, reported, 2024) == 24_000
     assert amount(simulation, public, 2026) == pytest.approx(27_044.32, abs=0.01)
+
+
+@pytest.mark.parametrize("route", ("store_noninput", "cache"))
+def test_dataset_source_survives_raw_twin_write_and_extraction(route):
+    public = SOCIAL_SECURITY_COMPONENTS[0]
+    reported = f"{public}_reported"
+    entities = ("household", "tax_unit", "spm_unit", "family", "marital_unit")
+    simulation = CoreSimulation(
+        dataset=pd.DataFrame(
+            {
+                "person_id": [1],
+                **{f"person_{entity}_id": [1] for entity in entities},
+                **{f"{entity}_id": [1] for entity in entities},
+                "age__2024": [70],
+                f"{public}__2024": [12_000],
+            }
+        ),
+        tax_benefit_system=system,
+        default_input_period=2024,
+        default_calculation_period=2024,
+    )
+    holder = simulation.get_holder(reported)
+    assert not holder._memory_storage.get_known_branch_periods()
+    assert not any(name == reported for name, _, _ in simulation._user_input_keys)
+    if route == "cache":
+        holder.put_in_cache(np.array([6_000]), period(2024), derived=False)
+    else:
+        holder._set(period(2024), np.array([6_000]), is_input=False)
+    assert amount(simulation, reported, 2024) == 6_000
+    assert simulation._get_recorded_input_array(reported, period(2024)) is None
+
+    # Raw twins affect live calculations but are excluded from extraction.
+    # The independent registered public source must remain available on reload.
+    payload = json.loads(json.dumps(simulation.extract_person(0)))
+    reloaded = Simulation(situation=payload, tax_benefit_system=system)
+    assert amount(reloaded, reported, 2024) == 12_000
+    assert amount(reloaded, public, 2024) == 12_000
+    assert amount(reloaded, public, 2026) == pytest.approx(13_522.16, abs=0.01)
+    reloaded.set_input(public, 2024, [24_000])
+    assert amount(reloaded, reported, 2024) == 24_000
+    assert amount(reloaded, public, 2026) == pytest.approx(27_044.32, abs=0.01)
+    assert amount(simulation, reported, 2024) == 6_000
 
 
 def test_derived_public_caches_never_become_reported_carry_sources():
@@ -837,7 +881,7 @@ def test_complete_snapshot_preserves_histories_and_separate_final_overrides():
     simulation.set_input(public, 2027, [0])
     payload = json.loads(json.dumps(export_source_inputs(simulation)))
     person = payload["sources"]["people"]["person"]
-    assert set(person[f"{public}_reported"]) == {"2024", "2026", "2027"}
+    assert set(person[f"{public}_reported"]) == {"2024", "2026"}
     assert public not in person
     assert set(payload["overrides"][public]) == {"2026", "2027"}
     assert person["ss_aime_input"] == {"2024": 1_000, "2026": 2_000}
@@ -850,9 +894,30 @@ def test_complete_snapshot_preserves_histories_and_separate_final_overrides():
     assert input_periods(reloaded, public) == {"2026", "2027"}
     assert export_source_inputs(reloaded)["overrides"][public]["2027"] == [0]
     reloaded.set_input(public, 2027, [24_000])
-    assert amount(reloaded, f"{public}_reported", 2027) == 24_000
-    assert amount(reloaded, public, 2028) > 24_000
-    assert amount(simulation, f"{public}_reported", 2027) == 0
+    # An explicit twin at or before the request keeps priority over later
+    # public sources. The final public override remains independent of it.
+    source_index = system.parameters(
+        "2026-01-01"
+    ).calibration.gov.irs.soi.social_security_per_capita
+    expected_2027 = (
+        14_000
+        * system.parameters(
+            "2027-01-01"
+        ).calibration.gov.irs.soi.social_security_per_capita
+        / source_index
+    )
+    expected_2028 = (
+        14_000
+        * system.parameters(
+            "2028-01-01"
+        ).calibration.gov.irs.soi.social_security_per_capita
+        / source_index
+    )
+    assert amount(reloaded, f"{public}_reported", 2027) == pytest.approx(expected_2027)
+    assert amount(reloaded, public, 2028) == pytest.approx(expected_2028)
+    assert amount(simulation, f"{public}_reported", 2027) == pytest.approx(
+        expected_2027
+    )
 
 
 def test_legacy_extraction_uses_reported_sources_and_months_keep_flow_conversion():

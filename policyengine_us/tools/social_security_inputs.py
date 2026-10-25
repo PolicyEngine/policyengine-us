@@ -1,20 +1,27 @@
-"""Compatibility ingress and complete, source-safe simulation snapshots.
+"""Read-time Social Security sources without automatic reported inputs.
 
-Initial ingress moves legacy benefit inputs to their pure reported sources.
-A later public write overrides its period and refreshes its automatic source.
-An explicitly supplied reported source retains precedence.
+No automatic reported arrays or per-simulation origin maps are created.
+
+Initial public inputs remain supplied Core inputs on reserved source branches
+of their public holders. Those branches are invisible to public calculations,
+so benefit factors apply in the initial scored year. Later public inputs stay
+normal final overrides. Reported holders expose a read-time source view; Core
+still performs its own uprating, casting and derived-result caching.
+
+Explicit sources at or before a requested period take precedence. Snapshot
+adapters serialize independent public source values and accept older origin
+metadata for compatibility; they never serialize new sequence stamps.
 """
 
 import json
 from contextvars import ContextVar
+from dataclasses import dataclass
 from functools import wraps
 from pathlib import Path
 
-from policyengine_core.holders.helpers import get_stored_input
+from policyengine_core.data_storage.store_history import next_sequence_number
 from policyengine_core.periods import period as to_period
 from policyengine_core.simulations.simulation import NpEncoder
-
-from policyengine_us.tools.period_branch import delete_input_values
 
 
 SOCIAL_SECURITY_COMPONENTS = (
@@ -24,548 +31,836 @@ SOCIAL_SECURITY_COMPONENTS = (
     "social_security_dependents",
 )
 _REPORTED_COMPONENTS = tuple(f"{name}_reported" for name in SOCIAL_SECURITY_COMPONENTS)
-
-
-_initial_social_security_ingress = ContextVar(
-    "initial_social_security_ingress", default=False
-)
-_initial_social_security_writes = ContextVar(
-    "initial_social_security_writes", default=None
-)
-_reloaded_social_security_provenance = ContextVar(
-    "reloaded_social_security_provenance", default=None
-)
-_DUMP_PROVENANCE_FILE = "social_security_input_provenance.json"
+_SOURCE_BRANCH = "__social_security_source__"
+_SOURCE_DATA_FILE = "social_security_source_inputs.json"
+_LEGACY_DUMP_FILE = "social_security_input_provenance.json"
+# Keep the established envelope key so existing complete-snapshot callers
+# need not change; version two contains actual source values, never stamps.
 _PROVENANCE = "_social_security_input_provenance"
-_AUTOMATIC_INPUTS = "_social_security_automatic_reported_inputs"
+
+_initial_social_security_ingress = ContextVar("initial_ss_ingress", default=False)
+_initial_social_security_writes = ContextVar("initial_ss_writes", default=None)
+_reported_request = ContextVar("reported_ss_request", default=None)
+_subsampling_social_security_sources = ContextVar(
+    "subsampling_ss_sources", default=None
+)
+_PHYSICAL = {}
 
 
-def _recorded_input_location(
-    simulation, name, period, *, branch_names=None, include_unrecorded=False
-):
-    """Locate a supplied input, or optionally a legacy nonderived cache seed.
+@dataclass(frozen=True)
+class _Value:
+    array: object
+    branch: str
+    tier: str
+    registered: bool
 
-    Sequence stamps distinguish automatic sources from explicit replacements
-    even when the caller writes exactly the same amount.
+
+def _enabled(simulation):
+    return getattr(
+        getattr(simulation, "tax_benefit_system", None),
+        "_social_security_input_compatibility",
+        False,
+    )
+
+
+def _holder(simulation, name):
+    # Never create a holder while Core's dump traverses existing holders.
+    return simulation.persons._holders.get(name)
+
+
+def _branches(simulation, branch_name=None):
+    if branch_name is None or branch_name == simulation.branch_name:
+        return simulation._get_visible_branch_names()
+    return simulation.get_holder(SOCIAL_SECURITY_COMPONENTS[0])._readable_branches(
+        branch_name
+    )
+
+
+def _source_branches(simulation, branch_name=None):
+    return tuple(
+        candidate
+        for branch in _branches(simulation, branch_name)
+        for candidate in (branch, f"{_SOURCE_BRANCH}{branch}")
+    )
+
+
+def _physical_periods(holder):
+    if holder is None:
+        return set()
+    return {
+        period
+        for storage in (holder._memory_storage, holder._disk_storage)
+        if storage is not None
+        for _, period in storage.get_known_branch_periods()
+    }
+
+
+def _physical_value(holder, period, branches, *, registered_only=False):
+    """Read supplied values and raw carry seeds, excluding formula caches.
+
+    Core's per-tier input record decides whether an input survives. In
+    particular, nonderived memory seeds do not erase a recorded disk input
+    from a registered-only snapshot.
     """
-    holder = simulation.get_holder(name)
+    if holder is None:
+        return None
     period = holder._storage_period(period)
-    input_keys = getattr(simulation, "_user_input_keys", ())
-    if branch_names is None:
-        branch_names = simulation._get_visible_branch_names()
-    for branch_name in branch_names:
-        key = (name, branch_name, period)
-        for storage_name, storage, separator in (
-            ("memory", holder._memory_storage, ":"),
-            ("disk", holder._disk_storage, "_"),
+    keys = getattr(holder.simulation, "_user_input_keys", ())
+    for branch in branches:
+        for tier, storage in (
+            ("memory", holder._memory_storage),
+            ("disk", holder._disk_storage),
         ):
-            if storage is None:
+            if storage is None or not storage.has(period, branch):
                 continue
-            recorded = key in input_keys and holder._stores_user_input(
-                period, branch_name, storage_name
-            )
-            if recorded or (
-                include_unrecorded
-                and storage.has(period, branch_name)
-                and not storage.is_derived(period, branch_name)
-            ):
-                sequence = storage._sequence_numbers.get(
-                    f"{branch_name}{separator}{period}"
-                )
-                return key, (storage_name, sequence)
+            if storage.is_derived(period, branch):
+                continue
+            registered = (
+                holder.variable.name,
+                branch,
+                period,
+            ) in keys and holder._stores_user_input(period, branch, tier)
+            if not registered_only or registered:
+                return _Value(storage.get(period, branch), branch, tier, registered)
     return None
 
 
-def _is_automatic_reported_input(simulation, name, period, *, branch_names=None):
-    location = _recorded_input_location(
-        simulation, name, period, branch_names=branch_names, include_unrecorded=True
+def _explicit_periods(simulation, name, branch_name=None, *, registered_only=False):
+    holder = _holder(simulation, name)
+    branches = _branches(simulation, branch_name)
+    return {
+        period
+        for period in _physical_periods(holder)
+        if _physical_value(holder, period, branches, registered_only=registered_only)
+        is not None
+    }
+
+
+def _public_periods(simulation, name, branch_name=None, *, registered_only=False):
+    holder = _holder(simulation, name)
+    branches = _source_branches(simulation, branch_name)
+    return {
+        period
+        for period in _physical_periods(holder)
+        if _physical_value(holder, period, branches, registered_only=registered_only)
+        is not None
+    }
+
+
+def _explicit_before(simulation, name, period, branch_name=None):
+    period = to_period(period)
+    # Core accepts an exact stored compound total before its annual period
+    # check, but cannot calculate or uprate another period into that total.
+    # An annual explicit source therefore cannot displace an exact multi-year
+    # public source. Annual requests retain Core's ordinary source ordering.
+    exact_only = period.unit == "year" and period.size > 1
+    return any(
+        known == period if exact_only else known.start <= period.start
+        for known in _explicit_periods(simulation, name, branch_name)
     )
-    return location is not None and location[1] in getattr(
-        simulation, _AUTOMATIC_INPUTS, {}
-    ).get(location[0], ())
 
 
-def _mark_automatic_reported_input(simulation, name, period, *, branch_name=None):
-    location = _recorded_input_location(
-        simulation,
-        name,
+def _allow_fallback(simulation, name, period=None, branch_name=None):
+    request = _reported_request.get()
+    if request is not None and request[:2] == (simulation, name):
+        return request[2]
+    return period is None or not _explicit_before(simulation, name, period, branch_name)
+
+
+def _effective_value(
+    simulation, name, period, branch_name=None, *, registered_only=False
+):
+    explicit = _physical_value(
+        _holder(simulation, name),
         period,
-        branch_names=None if branch_name is None else (branch_name,),
-        include_unrecorded=True,
+        _branches(simulation, branch_name),
+        registered_only=registered_only,
     )
-    if location is not None:
-        # Core clones simulation attributes shallowly. Never mutate a shared
-        # provenance dictionary: each write belongs to this simulation alone.
-        automatic = dict(getattr(simulation, _AUTOMATIC_INPUTS, {}))
-        # A raw memory mirror can temporarily hide a surviving disk input.
-        # Keep each tier's origin so dropping that mirror reveals the original
-        # automatic disk source, rather than turning it into an explicit twin.
-        stamps = automatic.get(location[0], ())
-        automatic[location[0]] = frozenset(
-            stamp for stamp in stamps if stamp[0] != location[1][0]
-        ) | {location[1]}
-        setattr(simulation, _AUTOMATIC_INPUTS, automatic)
+    if explicit is not None:
+        return explicit, False
+    if not _allow_fallback(simulation, name, period, branch_name):
+        return None, False
+    public = name.removesuffix("_reported")
+    source = _physical_value(
+        _holder(simulation, public),
+        period,
+        _source_branches(simulation, branch_name),
+        registered_only=registered_only,
+    )
+    return source, source is not None
 
 
-def _automatic_reported_metadata(simulation, *, exported_periods=None):
-    automatic = {}
-    for public_name in SOCIAL_SECURITY_COMPONENTS:
-        name = f"{public_name}_reported"
-        # Dumping iterates this dictionary. Inspect existing holders without
-        # creating missing twins while Core is iterating over their values.
-        holder = simulation.persons._holders.get(name)
+def _is_automatic_reported_input(simulation, name, period, *, branch_names=None):
+    """Compatibility query computed from surviving sources, without stamps."""
+    branch_name = None if branch_names is None else next(iter(branch_names), None)
+    _, fallback = _effective_value(simulation, name, period, branch_name)
+    return fallback
+
+
+def _delete_exact(holder, period, branch_name, *, tier=None):
+    """Remove one storage slot, preserving compound-period neighbors.
+
+    Core's general delete API also deletes contained periods. Initial routing
+    is a representation change and must not delete those other caller inputs.
+    """
+    period = holder._storage_period(period)
+    if tier in (None, "memory"):
+        memory = holder._memory_storage
+        memory._arrays.pop(f"{branch_name}:{period}", None)
+        memory._unmark_dropped_keys()
+        memory._stop_sharing_dropped_keys()
+        memory._forget_dropped_numbers()
+    disk = holder._disk_storage
+    if disk is not None and tier in (None, "disk"):
+        disk._files.pop(f"{branch_name}_{period}", None)
+        disk._forget_dropped_keys()
+    recorded = getattr(holder, "_user_input_storage", None)
+    if recorded is not None:
+        recorded = dict(recorded)
+        slot = (branch_name, str(period))
+        if tier is None:
+            recorded.pop(slot, None)
+        elif slot in recorded:
+            known_period, locations = recorded[slot]
+            recorded[slot] = (known_period, locations - {tier})
+        holder._user_input_storage = recorded
+    if not holder._stores_user_input(period, branch_name):
+        holder.simulation._user_input_keys = {
+            key
+            for key in getattr(holder.simulation, "_user_input_keys", ())
+            if key != (holder.variable.name, branch_name, period)
+        }
+    holder._evict_fast_cache(period, branch_name)
+
+
+def _store_source(holder, period, array, branch_name, *, registered=True):
+    _PHYSICAL["set"](
+        holder,
+        period,
+        array.copy(),
+        branch_name,
+        is_input=registered,
+    )
+
+
+def _refresh_input_variables(simulation):
+    existing = list(getattr(simulation, "input_variables", ()))
+    benefit_names = (*SOCIAL_SECURITY_COMPONENTS, *_REPORTED_COMPONENTS)
+    existing = [name for name in existing if name not in benefit_names]
+    visible = set(simulation._get_visible_branch_names())
+    recorded_names = {
+        name
+        for name, branch, _ in getattr(simulation, "_user_input_keys", ())
+        if branch in visible and name not in benefit_names
+    }
+    existing.extend(
+        name
+        for name in sorted(recorded_names)
+        if simulation._get_set_input_periods(name)
+    )
+    for name in benefit_names:
+        if simulation._get_set_input_periods(name):
+            existing.append(name)
+    simulation.input_variables = list(dict.fromkeys(existing))
+
+
+def migrate_social_security_inputs(
+    simulation, *, include_baseline=True, loaded_public_inputs=None
+):
+    """Route successful initial public stores into invisible source branches.
+
+    A caller-supplied same-period twin keeps the public value as a deliberate
+    final override. The independent public source is still preserved, so a
+    later raw twin's removal can reveal it again. Composed builders finalize
+    only stores belonging to that loading operation.
+    """
+    moved = set()
+    for name in SOCIAL_SECURITY_COMPONENTS:
+        holder = _holder(simulation, name)
         if holder is None:
             continue
-        for period in holder.get_input_periods(simulation.branch_name):
+        reported = f"{name}_reported"
+        for branch in _branches(simulation):
+            source_branch = f"{_SOURCE_BRANCH}{branch}"
+            for period in tuple(_physical_periods(holder)):
+                value = _physical_value(holder, period, (branch,), registered_only=True)
+                if value is None:
+                    continue
+                if loaded_public_inputs is not None:
+                    if (name, branch, period) not in loaded_public_inputs:
+                        continue
+                elif _physical_value(holder, period, (source_branch,)) is not None:
+                    # A constructor's second migration must retain later
+                    # public overrides and must not reclassify source copies.
+                    continue
+                explicit = _physical_value(
+                    _holder(simulation, reported), period, _branches(simulation)
+                )
+                # Routing removes an exact public override and exposes its
+                # formula. A custom input handler may already have calculated
+                # values from that override while the builder was loading.
+                simulation._drop_values_that_may_depend_on(name, period)
+                _purge_derived_view(simulation, name)
+                _store_source(holder, period, value.array, source_branch)
+                if explicit is None:
+                    _delete_exact(holder, period, branch)
+                moved.add(name)
+    _refresh_input_variables(simulation)
+    baseline = getattr(simulation, "baseline", None)
+    if include_baseline and baseline is not None and baseline is not simulation:
+        migrate_social_security_inputs(baseline, include_baseline=False)
+    return moved
+
+
+def _automatic_reported_metadata(
+    simulation, *, exported_periods=None, person_indices=None, include_raw=False
+):
+    """Serialize source data, not automatic provenance or sequence stamps.
+
+    Physical public values are sufficient to reconstruct the read-time view.
+    ``projected_reported`` identifies only the compatibility projections in
+    the surrounding payload, so reload does not mistake them for new explicit
+    twins. It is derived at export and is never kept on the simulation.
+    """
+    sources = []
+    projected = {}
+    for public in SOCIAL_SECURITY_COMPONENTS:
+        holder = _holder(simulation, public)
+        if holder is None:
+            continue
+        for kind, branches in (
+            ("initial", tuple(f"{_SOURCE_BRANCH}{b}" for b in _branches(simulation))),
+            ("override", tuple(_branches(simulation))),
+        ):
+            for period in _physical_periods(holder):
+                value = _physical_value(
+                    holder, period, branches, registered_only=not include_raw
+                )
+                if value is None:
+                    continue
+                array = value.array
+                if person_indices is not None:
+                    array = array[person_indices]
+                sources.append(
+                    {
+                        "name": public,
+                        "period": str(period),
+                        "kind": kind,
+                        "values": array,
+                        "registered": value.registered,
+                    }
+                )
+        reported = f"{public}_reported"
+        for period in _public_periods(simulation, public, registered_only=True):
             if (
                 exported_periods is not None
-                and (name, str(period)) not in exported_periods
+                and (reported, str(period)) not in exported_periods
             ):
                 continue
-            if _is_automatic_reported_input(simulation, name, period):
-                automatic.setdefault(name, []).append(str(period))
-    return {"version": 1, "automatic_reported": automatic} if automatic else None
+            value, fallback = _effective_value(
+                simulation, reported, period, registered_only=True
+            )
+            if value is not None and fallback:
+                projected.setdefault(reported, []).append(str(period))
+    if not sources and not projected:
+        return None
+    return json.loads(
+        json.dumps(
+            {"version": 2, "public_sources": sources, "projected_reported": projected},
+            cls=NpEncoder,
+        )
+    )
 
 
-def _restore_automatic_reported_metadata(simulation, metadata):
+def _restore_automatic_reported_metadata(simulation, metadata, *, dumped=False):
+    """Accept old automatic projections; restore new independent public data."""
     if metadata is None:
         return
-    if not isinstance(metadata, dict) or metadata.get("version") != 1:
-        raise ValueError("Unsupported Social Security input provenance version")
-    automatic = metadata.get("automatic_reported", {})
-    if not isinstance(automatic, dict):
-        raise ValueError("Social Security input provenance must contain a mapping")
-    for name, periods in automatic.items():
-        if name not in _REPORTED_COMPONENTS or not isinstance(periods, list):
-            raise ValueError("Invalid automatic Social Security reported input")
-        for period in periods:
-            _mark_automatic_reported_input(simulation, name, to_period(period))
+    if not isinstance(metadata, dict) or metadata.get("version") not in (1, 2):
+        raise ValueError("Unsupported Social Security source-data version")
+    if metadata["version"] == 1:
+        # Older snapshots stored real automatic reported arrays. Move those
+        # values into independent public source slots and remove their copies.
+        for name, periods in metadata.get("automatic_reported", {}).items():
+            if name not in _REPORTED_COMPONENTS or not isinstance(periods, list):
+                raise ValueError("Invalid legacy Social Security source data")
+            holder = _holder(simulation, name)
+            for text in periods:
+                period = to_period(text)
+                value = _physical_value(holder, period, _branches(simulation))
+                if value is None:
+                    continue
+                source = simulation.get_holder(name.removesuffix("_reported"))
+                _store_source(
+                    source,
+                    period,
+                    value.array,
+                    f"{_SOURCE_BRANCH}{simulation.branch_name}",
+                    registered=value.registered,
+                )
+                _delete_exact(holder, period, value.branch)
+    else:
+        for name, periods in metadata.get("projected_reported", {}).items():
+            if name not in _REPORTED_COMPONENTS or not isinstance(periods, list):
+                raise ValueError("Invalid projected Social Security source")
+            holder = _holder(simulation, name)
+            if holder is not None:
+                for text in periods:
+                    for branch in _branches(simulation):
+                        _delete_exact(holder, to_period(text), branch)
+        import numpy as np
+
+        for entry in metadata.get("public_sources", ()):
+            name, kind = entry.get("name"), entry.get("kind")
+            if name not in SOCIAL_SECURITY_COMPONENTS or kind not in (
+                "initial",
+                "override",
+            ):
+                raise ValueError("Invalid Social Security public source")
+            branch = simulation.branch_name
+            if kind == "initial":
+                branch = f"{_SOURCE_BRANCH}{branch}"
+            _store_source(
+                simulation.get_holder(name),
+                to_period(entry["period"]),
+                np.asarray(entry["values"]),
+                branch,
+                registered=True if dumped else entry.get("registered", True),
+            )
+    _refresh_input_variables(simulation)
+
+
+def _select_subsample_sources(simulation, metadata, person_ids):
+    """Apply Core's retained person rows to independent public source data.
+
+    Core keeps selected IDs and adjusts weights rather than duplicating rows.
+    Using those IDs also follows its entity rebuild when the original IDs are
+    nonconsecutive or the retained groups have different original sizes.
+    """
+    if metadata is None:
+        return None
+    positions = {person_id: index for index, person_id in enumerate(person_ids)}
+    retained = [positions[person_id] for person_id in simulation.persons.ids]
+    return {
+        **metadata,
+        "public_sources": [
+            {
+                **entry,
+                "values": [entry["values"][index] for index in retained],
+            }
+            for entry in metadata.get("public_sources", ())
+        ],
+    }
+
+
+def _purge_derived_view(simulation, public_name):
+    """Discard only calculated view arrays; retain raw sources and inputs."""
+    for name in (public_name, f"{public_name}_reported"):
+        holder = _holder(simulation, name)
+        if holder is None:
+            continue
+        for tier, storage in (
+            ("memory", holder._memory_storage),
+            ("disk", holder._disk_storage),
+        ):
+            if storage is None:
+                continue
+            for branch, period in tuple(storage.get_known_branch_periods()):
+                if storage.is_derived(period, branch):
+                    _delete_exact(holder, period, branch, tier=tier)
+    simulation._fast_cache = {}
 
 
 def install_social_security_input_compatibility():
-    """Extend Core's ingress routes only for systems opting into this policy.
-
-    Core's entity builder writes holders directly, and its variable-level
-    ``set_input`` handler runs only for mismatched period units. Builder
-    and dataset adapters migrate initial sources. Holder-level interception
-    preserves subsequent public overrides from every supported input route:
-    simulation setters, direct holder writes, and custom period helpers.
-    Nonderived cache seeds retain Core's carryover semantics without becoming
-    registered inputs; calculated (derived) caches never synchronize.
-    """
+    from policyengine_core.holders import Holder
     from policyengine_core.simulations import Simulation as CoreSimulation
     from policyengine_core.simulations.simulation_builder import SimulationBuilder
-    from policyengine_core.holders import Holder
+    from policyengine_core.tools import simulation_dumper
 
-    def tracks_public_input(holder):
-        simulation = getattr(holder, "simulation", None)
-        return holder.variable.name in SOCIAL_SECURITY_COMPONENTS and getattr(
-            getattr(simulation, "tax_benefit_system", None),
-            "_social_security_input_compatibility",
-            False,
+    if getattr(Holder.get_array, "_social_security_readtime", False):
+        return
+    if getattr(Holder._set, "_social_security_compatibility", False):
+        raise RuntimeError(
+            "Replace eager compatibility before installing read-time hooks"
         )
 
-    def synchronize_public_input(holder, period, branch_name, *, is_input):
-        simulation = holder.simulation
-        variable_name = holder.variable.name
-        period = holder._storage_period(period)
-        reported_name = f"{variable_name}_reported"
-        reported_holder = simulation.get_holder(reported_name)
-        readable_branches = reported_holder._readable_branches(branch_name)
-        reported_location = _recorded_input_location(
-            simulation,
-            reported_name,
-            period,
-            branch_names=readable_branches,
-            include_unrecorded=True,
-        )
-        if reported_location is None or _is_automatic_reported_input(
-            simulation, reported_name, period, branch_names=readable_branches
+    _PHYSICAL.update(
+        set=Holder._set,
+        get_array=Holder.get_array,
+        get_known_periods=Holder.get_known_periods,
+        get_input_periods=Holder.get_input_periods,
+        recorded_periods=CoreSimulation._get_set_input_periods,
+        recorded_array=CoreSimulation._get_recorded_input_array,
+        calculate=CoreSimulation._calculate,
+    )
+
+    @wraps(_PHYSICAL["get_array"])
+    def get_array(holder, period, branch_name="default"):
+        simulation, name = holder.simulation, holder.variable.name
+        if (
+            name not in _REPORTED_COMPONENTS
+            or not _enabled(simulation)
+            or holder.variable.is_neutralized
         ):
-            supplied_value = (
-                get_stored_input(holder, period, branch_name)
-                if is_input
-                else holder._get_array_from_storage(period, branch_name)
-            )
-            if supplied_value is not None:
-                if is_input:
-                    reported_holder.set_input(
-                        period, supplied_value.copy(), branch_name
-                    )
-                else:
-                    # Core also uprates from legacy, nonderived cache stores.
-                    # Mirror their source semantics without promoting them to
-                    # replayable/exported inputs. Calculated caches never enter.
-                    reported_holder._set(
-                        period, supplied_value.copy(), branch_name, is_input=False
-                    )
-                _mark_automatic_reported_input(
-                    simulation, reported_name, period, branch_name=branch_name
+            return _PHYSICAL["get_array"](holder, period, branch_name)
+        value, fallback = _effective_value(simulation, name, period, branch_name)
+        if value is not None:
+            if fallback:
+                simulation._get_store_history().record_derived(
+                    name.removesuffix("_reported"), next_sequence_number()
                 )
-        if not is_input:
-            return
-        # Core clones share this legacy list. Replace it privately so a
-        # later override is extracted without changing the source clone.
-        simulation.input_variables = list(
-            dict.fromkeys(
-                [
-                    *getattr(simulation, "input_variables", ()),
-                    variable_name,
-                    reported_name,
+            return value.array
+        return _PHYSICAL["get_array"](holder, period, branch_name)
+
+    get_array._social_security_readtime = True
+    Holder.get_array = get_array
+
+    @wraps(_PHYSICAL["get_known_periods"])
+    def get_known_periods(holder):
+        values = _PHYSICAL["get_known_periods"](holder)
+        if holder.variable.name in _REPORTED_COMPONENTS and _enabled(holder.simulation):
+            if _allow_fallback(holder.simulation, holder.variable.name):
+                values = [
+                    *values,
+                    *(
+                        period
+                        for period in _public_periods(
+                            holder.simulation,
+                            holder.variable.name.removesuffix("_reported"),
+                        )
+                        if _effective_value(
+                            holder.simulation, holder.variable.name, period
+                        )[0]
+                        is not None
+                    ),
                 ]
+        return list(dict.fromkeys(values))
+
+    Holder.get_known_periods = get_known_periods
+
+    @wraps(_PHYSICAL["get_input_periods"])
+    def get_input_periods(holder, branch_name="default"):
+        simulation, name = holder.simulation, holder.variable.name
+        if name not in _REPORTED_COMPONENTS or not _enabled(simulation):
+            return _PHYSICAL["get_input_periods"](holder, branch_name)
+        periods = _explicit_periods(simulation, name, branch_name)
+        if _allow_fallback(simulation, name, branch_name=branch_name):
+            periods |= _public_periods(
+                simulation, name.removesuffix("_reported"), branch_name
             )
+        return [
+            period
+            for period in periods
+            if _effective_value(simulation, name, period, branch_name)[0] is not None
+        ]
+
+    Holder.get_input_periods = get_input_periods
+
+    @wraps(_PHYSICAL["calculate"])
+    def calculate(simulation, name, period=None):
+        if (
+            name not in _REPORTED_COMPONENTS
+            or not _enabled(simulation)
+            or period is None
+        ):
+            return _PHYSICAL["calculate"](simulation, name, period)
+        token = _reported_request.set(
+            (simulation, name, not _explicit_before(simulation, name, period))
         )
+        try:
+            return _PHYSICAL["calculate"](simulation, name, period)
+        finally:
+            _reported_request.reset(token)
 
-    original_store = Holder._set
-    if not getattr(original_store, "_social_security_compatibility", False):
+    CoreSimulation._calculate = calculate
 
-        @wraps(original_store)
-        def store_input(
+    @wraps(_PHYSICAL["recorded_periods"])
+    def recorded_periods(simulation, name):
+        periods = set(_PHYSICAL["recorded_periods"](simulation, name))
+        if name in _REPORTED_COMPONENTS and _enabled(simulation):
+            periods |= _public_periods(
+                simulation, name.removesuffix("_reported"), registered_only=True
+            )
+            periods = {
+                period
+                for period in periods
+                if _effective_value(simulation, name, period, registered_only=True)[0]
+                is not None
+            }
+        return sorted(periods, key=str)
+
+    CoreSimulation._get_set_input_periods = recorded_periods
+
+    @wraps(_PHYSICAL["recorded_array"])
+    def recorded_array(simulation, name, period):
+        if name not in _REPORTED_COMPONENTS or not _enabled(simulation):
+            return _PHYSICAL["recorded_array"](simulation, name, period)
+        value, _ = _effective_value(simulation, name, period, registered_only=True)
+        return None if value is None else value.array
+
+    CoreSimulation._get_recorded_input_array = recorded_array
+
+    @wraps(_PHYSICAL["set"])
+    def store(
+        holder,
+        period,
+        value,
+        branch_name="default",
+        validate_nan=False,
+        derived=False,
+        is_input=None,
+        sequence_number=None,
+    ):
+        simulation, name = holder.simulation, holder.variable.name
+        tracked = (
+            not derived
+            and name in (*SOCIAL_SECURITY_COMPONENTS, *_REPORTED_COMPONENTS)
+            and _enabled(simulation)
+        )
+        if tracked:
+            public = name.removesuffix("_reported")
+            simulation._drop_values_that_may_depend_on(public, period)
+            _purge_derived_view(simulation, public)
+        result = _PHYSICAL["set"](
             holder,
             period,
             value,
-            branch_name="default",
-            validate_nan=False,
-            derived=False,
-            is_input=None,
-            sequence_number=None,
-        ):
-            track_source = not derived and tracks_public_input(holder)
-            # Mirror Core's classification and effective branch, including
-            # restore contexts and custom handlers that store before raising.
-            contexts = (
-                getattr(holder.simulation, "_user_input_contexts", None)
-                if track_source
-                else None
-            )
-            effective_input = bool(contexts) if is_input is None else is_input
-            stored_branch = (
+            branch_name,
+            validate_nan=validate_nan,
+            derived=derived,
+            is_input=is_input,
+            sequence_number=sequence_number,
+        )
+        if tracked:
+            contexts = getattr(simulation, "_user_input_contexts", ())
+            registered = bool(contexts) if is_input is None else is_input
+            effective_branch = (
                 contexts[-1]
-                if effective_input and contexts and branch_name == "default"
+                if registered and contexts and branch_name == "default"
                 else branch_name
             )
-            result = original_store(
-                holder,
-                period,
-                value,
-                branch_name,
-                validate_nan=validate_nan,
-                derived=derived,
-                is_input=is_input,
-                sequence_number=sequence_number,
-            )
-            loading_writes = _initial_social_security_writes.get()
-            if track_source and effective_input and loading_writes is not None:
-                loading_writes.setdefault(holder.simulation, {}).setdefault(
-                    holder.variable.name, set()
-                ).add(holder._storage_period(period))
-            # Initial registered inputs wait until every explicit twin is
-            # loaded. Raw cache seeds never enter that migration, so mirror
-            # them immediately without making either value a supplied input.
-            if track_source and (
-                not _initial_social_security_ingress.get() or not effective_input
-            ):
-                synchronize_public_input(
-                    holder, period, stored_branch, is_input=effective_input
-                )
-            return result
-
-        store_input._social_security_compatibility = True
-        Holder._set = store_input
-
-    original_dataset_build = CoreSimulation.build_from_dataset
-    if not getattr(original_dataset_build, "_social_security_compatibility", False):
-
-        @wraps(original_dataset_build)
-        def build_from_dataset(simulation):
-            if not getattr(
-                simulation.tax_benefit_system,
-                "_social_security_input_compatibility",
-                False,
-            ):
-                return original_dataset_build(simulation)
-            outermost = not _initial_social_security_ingress.get()
-            token = _initial_social_security_ingress.set(True)
             writes = _initial_social_security_writes.get()
-            if writes is None:
-                writes = {}
-            writes_token = _initial_social_security_writes.set(writes)
-            try:
-                result = original_dataset_build(simulation)
-            finally:
-                _initial_social_security_writes.reset(writes_token)
-                _initial_social_security_ingress.reset(token)
-                if outermost:
-                    # A successful store remains an input even when a later
-                    # setter raises. Reconcile before propagating that error.
-                    migrate_social_security_inputs(
-                        simulation, loaded_public_inputs=writes.get(simulation, {})
-                    )
-                    reloaded = _reloaded_social_security_provenance.get()
-                    if reloaded is not None and reloaded[0] is simulation:
-                        _restore_automatic_reported_metadata(simulation, reloaded[1])
-            return result
+            if name in SOCIAL_SECURITY_COMPONENTS and registered and writes is not None:
+                writes.setdefault(simulation, set()).add(
+                    (name, effective_branch, holder._storage_period(period))
+                )
+            elif name in SOCIAL_SECURITY_COMPONENTS:
+                # One logical public slot has one latest value. Replacing a
+                # source on this same branch retires its initial-routing
+                # copy; an inherited source on another branch remains a
+                # separate parent input, as ordinary Core fallback requires.
+                _delete_exact(
+                    holder,
+                    holder._storage_period(period),
+                    f"{_SOURCE_BRANCH}{effective_branch}",
+                )
+            _refresh_input_variables(simulation)
+        return result
 
-        build_from_dataset._social_security_compatibility = True
-        CoreSimulation.build_from_dataset = build_from_dataset
+    Holder._set = store
 
-    original_subsample = CoreSimulation.subsample
-    if not getattr(original_subsample, "_social_security_compatibility", False):
-
-        @wraps(original_subsample)
-        def subsample(simulation, *args, **kwargs):
-            if not getattr(
-                simulation.tax_benefit_system,
-                "_social_security_input_compatibility",
-                False,
-            ):
-                return original_subsample(simulation, *args, **kwargs)
-            # Restore stamps during dataset rebuilding, before Core replays
-            # inputs and clones the rebuilt reform baseline.
-            token = _reloaded_social_security_provenance.set(
-                (simulation, _automatic_reported_metadata(simulation))
+    def wrap_loading(original, *, dataset=False):
+        @wraps(original)
+        def load(first, *args, **kwargs):
+            system = (
+                first.tax_benefit_system
+                if dataset
+                else args[0]
+                if args
+                else kwargs["tax_benefit_system"]
             )
-            try:
-                return original_subsample(simulation, *args, **kwargs)
-            finally:
-                _reloaded_social_security_provenance.reset(token)
-
-        subsample._social_security_compatibility = True
-        CoreSimulation.subsample = subsample
-
-    from policyengine_core.tools import simulation_dumper
-
-    original_dump_holder = simulation_dumper._dump_holder
-    if not getattr(original_dump_holder, "_social_security_compatibility", False):
-
-        @wraps(original_dump_holder)
-        def dump_holder(holder, directory):
-            result = original_dump_holder(holder, directory)
-            simulation = holder.simulation
-            name = holder.variable.name
-            if name in _REPORTED_COMPONENTS and getattr(
-                simulation.tax_benefit_system,
-                "_social_security_input_compatibility",
-                False,
-            ):
-                exported_periods = {
-                    (name, str(period)) for period in holder.get_known_periods()
-                }
-                metadata = _automatic_reported_metadata(
-                    simulation, exported_periods=exported_periods
-                )
-                if metadata is not None:
-                    path = Path(directory) / name / _DUMP_PROVENANCE_FILE
-                    path.write_text(json.dumps(metadata))
-            return result
-
-        dump_holder._social_security_compatibility = True
-        simulation_dumper._dump_holder = dump_holder
-
-    original_restore_holder = simulation_dumper._restore_holder
-    if not getattr(original_restore_holder, "_social_security_compatibility", False):
-
-        @wraps(original_restore_holder)
-        def restore_holder(
-            simulation, variable, directory, inputs=False, calculated_number=None
-        ):
-            if not getattr(
-                simulation.tax_benefit_system,
-                "_social_security_input_compatibility",
-                False,
-            ):
-                return original_restore_holder(
-                    simulation, variable, directory, inputs, calculated_number
-                )
-            if not inputs and not getattr(
-                simulation, "_social_security_dump_inputs_restored", False
-            ):
-                # Core finishes the input pass before restoring any calculated
-                # arrays. Load all twins first, so directory order cannot turn
-                # an explicit twin into an automatic source or vice versa.
-                migrate_social_security_inputs(simulation)
-                for name in _REPORTED_COMPONENTS:
-                    path = Path(directory) / name / _DUMP_PROVENANCE_FILE
-                    if path.exists():
-                        _restore_automatic_reported_metadata(
-                            simulation, json.loads(path.read_text())
-                        )
-                simulation._social_security_dump_inputs_restored = True
-            token = _initial_social_security_ingress.set(True)
-            try:
-                return original_restore_holder(
-                    simulation, variable, directory, inputs, calculated_number
-                )
-            finally:
-                _initial_social_security_ingress.reset(token)
-
-        restore_holder._social_security_compatibility = True
-        simulation_dumper._restore_holder = restore_holder
-
-    original_extract = CoreSimulation.extract_person
-    if not getattr(original_extract, "_social_security_compatibility", False):
-
-        @wraps(original_extract)
-        def extract_person(simulation, index=0, exclude_entities=("state",)):
-            payload = original_extract(simulation, index, exclude_entities)
-            if not getattr(
-                simulation.tax_benefit_system,
-                "_social_security_input_compatibility",
-                False,
-            ):
-                return payload
-            people = payload.get(simulation.persons.entity.plural, {})
-            benefit_inputs = {
-                name: {
-                    str(period): value
-                    for period in simulation._get_set_input_periods(name)
-                    if (value := simulation._get_recorded_input_array(name, period))
-                    is not None
-                }
-                for name in (*SOCIAL_SECURITY_COMPONENTS, *_REPORTED_COMPONENTS)
-            }
-            for person_name, person in people.items():
-                # Core names extracted people by their original zero-based
-                # index plus one, even when extracting a later household.
-                person_index = (
-                    int(person_name.removeprefix(f"{simulation.persons.entity.key}_"))
-                    - 1
-                )
-                for name, values in benefit_inputs.items():
-                    # Core exports its first known period, which may be a
-                    # formula cache rather than the later public override.
-                    # Keep every actual benefit input and its source history
-                    # together, without converting calculated values to inputs.
-                    if values:
-                        person[name] = {
-                            period: float(value[person_index])
-                            for period, value in values.items()
-                        }
+            if not getattr(system, "_social_security_input_compatibility", False):
+                return original(first, *args, **kwargs)
+            metadata = None
+            if not dataset:
+                input_dict = args[1] if len(args) > 1 else kwargs["input_dict"]
+                metadata = input_dict.get(_PROVENANCE)
+                if _PROVENANCE in input_dict:
+                    input_dict = {
+                        k: v for k, v in input_dict.items() if k != _PROVENANCE
+                    }
+                    if len(args) > 1:
+                        args = (args[0], input_dict, *args[2:])
                     else:
-                        person.pop(name, None)
-            exported_periods = {
-                (name, str(period))
-                for person in people.values()
-                for name, values in person.items()
-                if name in _REPORTED_COMPONENTS
-                for period in values
-            }
-            metadata = _automatic_reported_metadata(
-                simulation, exported_periods=exported_periods
-            )
-            if metadata is not None:
-                payload[_PROVENANCE] = metadata
-            return payload
-
-        extract_person._social_security_compatibility = True
-        CoreSimulation.extract_person = extract_person
-
-    original_invalidate = CoreSimulation._invalidate_all_caches
-    if not getattr(original_invalidate, "_social_security_compatibility", False):
-
-        @wraps(original_invalidate)
-        def invalidate_all_caches(simulation):
-            automatic = []
-            if getattr(
-                simulation.tax_benefit_system,
-                "_social_security_input_compatibility",
-                False,
-            ):
-                for key, stamps in getattr(simulation, _AUTOMATIC_INPUTS, {}).items():
-                    name, branch_name, period = key
-                    location = _recorded_input_location(
-                        simulation, name, period, branch_names=(branch_name,)
-                    )
-                    if location is not None and location[1] in stamps:
-                        automatic.append(key)
-            result = original_invalidate(simulation)
-            # Core replay assigns new store sequence numbers. Replaying an
-            # automatic source does not turn it into an explicit caller input.
-            for name, branch_name, period in automatic:
-                _mark_automatic_reported_input(
-                    simulation, name, period, branch_name=branch_name
-                )
-            return result
-
-        invalidate_all_caches._social_security_compatibility = True
-        CoreSimulation._invalidate_all_caches = invalidate_all_caches
-
-    def wrap_builder(original_build):
-        @wraps(original_build)
-        def build(builder, tax_benefit_system, input_dict, simulation=None):
-            if not getattr(
-                tax_benefit_system, "_social_security_input_compatibility", False
-            ):
-                return original_build(
-                    builder, tax_benefit_system, input_dict, simulation
-                )
-            metadata = input_dict.get(_PROVENANCE)
-            if _PROVENANCE in input_dict:
-                input_dict = {
-                    name: values
-                    for name, values in input_dict.items()
-                    if name != _PROVENANCE
-                }
+                        kwargs = {**kwargs, "input_dict": input_dict}
             outermost = not _initial_social_security_ingress.get()
             token = _initial_social_security_ingress.set(True)
-            # Nested dict/entity/variable builders form one loading operation.
-            # Record actual stores after Core has handled their periods.
             writes = _initial_social_security_writes.get()
             if writes is None:
                 writes = {}
             writes_token = _initial_social_security_writes.set(writes)
             result = None
             try:
-                result = original_build(
-                    builder, tax_benefit_system, input_dict, simulation
-                )
+                result = original(first, *args, **kwargs)
+                return result
             finally:
                 _initial_social_security_writes.reset(writes_token)
                 _initial_social_security_ingress.reset(token)
                 if outermost:
                     targets = dict(writes)
-                    target = result if result is not None else simulation
+                    target = first if dataset else result
+                    if target is None and not dataset:
+                        target = kwargs.get("simulation")
+                        if target is None and len(args) > 2:
+                            target = args[2]
                     if target is not None:
-                        targets.setdefault(target, {})
+                        targets.setdefault(target, set())
                     for target, loaded in targets.items():
-                        # Successful stores identify even a fresh build that
-                        # raises before it can return its simulation.
-                        visible_branches = target._get_visible_branch_names()
-                        recorded_names = {
-                            name
-                            for name, branch_name, _ in target._user_input_keys
-                            if branch_name in visible_branches
-                        }
-                        target.input_variables = list(
-                            dict.fromkeys(
-                                [
-                                    *getattr(target, "input_variables", []),
-                                    *sorted(
-                                        name
-                                        for name in recorded_names
-                                        if target._get_set_input_periods(name)
-                                    ),
-                                ]
-                            )
-                        )
+                        # During routing, projected twins temporarily retain
+                        # any both-name public final overrides. Conversion
+                        # then replaces those projection arrays with the
+                        # independently serialized public source data.
                         migrate_social_security_inputs(
                             target, loaded_public_inputs=loaded
                         )
+                        rebuilding = _subsampling_social_security_sources.get()
+                        if (
+                            dataset
+                            and rebuilding is not None
+                            and rebuilding[0] is target
+                        ):
+                            metadata = _select_subsample_sources(
+                                target, rebuilding[1], rebuilding[2]
+                            )
                         _restore_automatic_reported_metadata(target, metadata)
+
+        return load
+
+    CoreSimulation.build_from_dataset = wrap_loading(
+        CoreSimulation.build_from_dataset, dataset=True
+    )
+    for name in ("build_from_dict", "build_from_entities", "build_from_variables"):
+        setattr(SimulationBuilder, name, wrap_loading(getattr(SimulationBuilder, name)))
+
+    original_subsample = CoreSimulation.subsample
+
+    @wraps(original_subsample)
+    def subsample(simulation, *args, **kwargs):
+        if not _enabled(simulation):
+            return original_subsample(simulation, *args, **kwargs)
+        token = _subsampling_social_security_sources.set(
+            (
+                simulation,
+                _automatic_reported_metadata(simulation),
+                tuple(simulation.persons.ids),
+            )
+        )
+        try:
+            return original_subsample(simulation, *args, **kwargs)
+        finally:
+            _subsampling_social_security_sources.reset(token)
+
+    CoreSimulation.subsample = subsample
+
+    original_extract = CoreSimulation.extract_person
+
+    @wraps(original_extract)
+    def extract_person(simulation, index=0, exclude_entities=("state",)):
+        payload = original_extract(simulation, index, exclude_entities)
+        if not _enabled(simulation):
+            return payload
+        people = payload.get(simulation.persons.entity.plural, {})
+        indices = []
+        exported = set()
+        for person_name, person in people.items():
+            person_index = (
+                int(person_name.removeprefix(f"{simulation.persons.entity.key}_")) - 1
+            )
+            indices.append(person_index)
+            for name in (*SOCIAL_SECURITY_COMPONENTS, *_REPORTED_COMPONENTS):
+                values = {
+                    str(period): float(array[person_index])
+                    for period in simulation._get_set_input_periods(name)
+                    if (array := simulation._get_recorded_input_array(name, period))
+                    is not None
+                }
+                if values:
+                    person[name] = values
+                    exported.update((name, period) for period in values)
+                else:
+                    person.pop(name, None)
+        metadata = _automatic_reported_metadata(
+            simulation, exported_periods=exported, person_indices=indices
+        )
+        if metadata is not None:
+            payload[_PROVENANCE] = metadata
+        return payload
+
+    CoreSimulation.extract_person = extract_person
+
+    original_dump = simulation_dumper._dump_holder
+
+    @wraps(original_dump)
+    def dump_holder(holder, directory):
+        result = original_dump(holder, directory)
+        if not _enabled(holder.simulation):
             return result
+        if holder.variable.name in (*SOCIAL_SECURITY_COMPONENTS, *_REPORTED_COMPONENTS):
+            # A virtual source need not have a physically visible array.
+            # Core creates the directory before discovering that; leave no
+            # empty holder folder for its restore parser to misinterpret.
+            storage_path = Path(directory) / holder.variable.name
+            if storage_path.exists() and not any(storage_path.iterdir()):
+                storage_path.rmdir()
+        if holder.variable.name in SOCIAL_SECURITY_COMPONENTS:
+            metadata = _automatic_reported_metadata(holder.simulation, include_raw=True)
+            if metadata is not None:
+                # Core enumerates every root entry as a variable to restore.
+                # Keep source data inside a valid holder directory, including
+                # when all this holder's actual inputs use hidden branches.
+                storage_path = Path(directory) / holder.variable.name
+                storage_path.mkdir(exist_ok=True)
+                (storage_path / _SOURCE_DATA_FILE).write_text(json.dumps(metadata))
+        return result
 
-        build._social_security_compatibility = True
-        return build
+    simulation_dumper._dump_holder = dump_holder
+    original_restore = simulation_dumper._restore_holder
 
-    for method_name in (
-        "build_from_dict",
-        "build_from_entities",
-        "build_from_variables",
+    @wraps(original_restore)
+    def restore_holder(
+        simulation, variable, directory, inputs=False, calculated_number=None
     ):
-        original_build = getattr(SimulationBuilder, method_name)
-        if not getattr(original_build, "_social_security_compatibility", False):
-            setattr(SimulationBuilder, method_name, wrap_builder(original_build))
+        if not _enabled(simulation):
+            return original_restore(
+                simulation, variable, directory, inputs, calculated_number
+            )
+        if not inputs and not getattr(
+            simulation, "_social_security_source_data_restored", False
+        ):
+            source_path = next(
+                (
+                    path
+                    for name in SOCIAL_SECURITY_COMPONENTS
+                    if (path := Path(directory) / name / _SOURCE_DATA_FILE).exists()
+                ),
+                None,
+            )
+            if source_path is not None:
+                _restore_automatic_reported_metadata(
+                    simulation, json.loads(source_path.read_text()), dumped=True
+                )
+            else:
+                for name in _REPORTED_COMPONENTS:
+                    path = Path(directory) / name / _LEGACY_DUMP_FILE
+                    if path.exists():
+                        _restore_automatic_reported_metadata(
+                            simulation, json.loads(path.read_text()), dumped=True
+                        )
+                migrate_social_security_inputs(simulation)
+            simulation._social_security_source_data_restored = True
+        token = _initial_social_security_ingress.set(True)
+        try:
+            return original_restore(
+                simulation, variable, directory, inputs, calculated_number
+            )
+        finally:
+            _initial_social_security_ingress.reset(token)
 
+    simulation_dumper._restore_holder = restore_holder
+
+    # Core's physical replay/drop/clone methods require no automatic-stamp
+    # adapter: the independent public source is a genuine registered input.
+    # The complete snapshot entry points below keep their established shape.
     from policyengine_us.tools.social_security_periods import (
         install_social_security_period_compatibility,
     )
@@ -573,110 +868,8 @@ def install_social_security_input_compatibility():
     install_social_security_period_compatibility()
 
 
-def migrate_social_security_inputs(
-    simulation, *, include_baseline=True, loaded_public_inputs=None
-):
-    """Move legacy component inputs, period by period, into pure sources.
-
-    An explicit twin in the same visible period keeps its priority. Automatic
-    twins refresh for public inputs stored by this loading operation. Earlier
-    public overrides are not initial inputs merely because another builder is
-    run on the same simulation. Without a loading record, migrate only legacy
-    public inputs with no twin. Recorded-input helpers exclude formula caches
-    and honor visible branch precedence.
-    """
-    visible_branches = simulation._get_visible_branch_names()
-    migrated = set()
-    for public_name in SOCIAL_SECURITY_COMPONENTS:
-        reported_name = f"{public_name}_reported"
-        holder = simulation.get_holder(public_name)
-        # Snapshot before deleting: deleting a multi-year period also deletes
-        # contained supplied periods, including a shorter legacy source whose
-        # lexical sort order happens to place it after the longer period.
-        sources = {}
-        for period in simulation._get_set_input_periods(public_name):
-            location = _recorded_input_location(
-                simulation, reported_name, period, include_unrecorded=True
-            )
-            if location is not None and (
-                not _is_automatic_reported_input(simulation, reported_name, period)
-                or loaded_public_inputs is None
-                or period not in loaded_public_inputs.get(public_name, ())
-            ):
-                continue
-            value = simulation._get_recorded_input_array(public_name, period)
-            if value is not None:
-                sources[period] = value.copy()
-        if not sources:
-            continue
-        retained_overrides = []
-        for name, branch_name, period in tuple(simulation._user_input_keys):
-            if (
-                name != public_name
-                or branch_name not in visible_branches
-                or period in sources
-            ):
-                continue
-            for storage_name, storage in (
-                ("memory", holder._memory_storage),
-                ("disk", holder._disk_storage),
-            ):
-                if holder._stores_user_input(period, branch_name, storage_name):
-                    retained_overrides.append(
-                        (branch_name, period, storage.get(period, branch_name).copy())
-                    )
-                    break
-        for period, value in sources.items():
-            simulation.set_input(reported_name, period, value.copy())
-            _mark_automatic_reported_input(simulation, reported_name, period)
-        for period in sources:
-            for branch_name in visible_branches:
-                delete_input_values(holder, period, branch_name)
-        # Keep exact-period both-name overrides even inside a migrated longer
-        # source period. Restore each original branch slot through set_input,
-        # preserving its input classification and ordinary replay bookkeeping.
-        for branch_name, period, value in retained_overrides:
-            if not holder._stores_user_input(period, branch_name):
-                holder.set_input(period, value, branch_name)
-        migrated.add(public_name)
-
-    # Core's legacy extraction reads this runtime list, which was assembled
-    # before migration. Retain public names only where actual overrides remain.
-    runtime_inputs = []
-    for name in getattr(simulation, "input_variables", []):
-        if name not in migrated or simulation._get_set_input_periods(name):
-            runtime_inputs.append(name)
-        if name in migrated:
-            runtime_inputs.append(f"{name}_reported")
-    for public_name in SOCIAL_SECURITY_COMPONENTS:
-        reported_name = f"{public_name}_reported"
-        if simulation._get_set_input_periods(reported_name):
-            runtime_inputs.append(reported_name)
-    simulation.input_variables = list(dict.fromkeys(runtime_inputs))
-    # Core creates this clone during super().__init__, before either PE-US
-    # wrapper reaches migration. Its copied public sources otherwise override
-    # formulas in the supplied year and disappear from the uprating route in
-    # later years. Each branch needs its own source/input-key migration.
-    baseline = getattr(simulation, "baseline", None)
-    if include_baseline and baseline is not None and baseline is not simulation:
-        migrate_social_security_inputs(baseline, include_baseline=False)
-    return migrated
-
-
 def export_source_inputs(simulation):
-    """Export all supplied periods, separating pure sources and final overrides.
-
-    The JSON-compatible payload preserves entity memberships and every recorded
-    pure-input period, including selectors, dates, worker links and earnings
-    histories. Supplied formula-variable inputs have their own ``overrides``
-    payload; calculated results never become sources. Only the current branch
-    and its visible ancestors are exported, using their normal precedence.
-
-    This is the complete-history alternative to Core's legacy ``extract_person``
-    API, which retains all supplied periods only for benefit components and their
-    reported twins. Export the desired small simulation or household; this
-    helper deliberately does not materialize a population dataset.
-    """
+    """Export all registered source periods and final overrides."""
     names = {
         key: [str(name) for name in population.ids]
         for key, population in simulation.populations.items()
@@ -686,30 +879,23 @@ def export_source_inputs(simulation):
         entity = population.entity
         sources[entity.plural] = {name: {} for name in names[key]}
         if not entity.is_person:
-            # All PE-US group entities use the unbounded member role.
             for person_index, group_index in enumerate(population.members_entity_id):
                 group = sources[entity.plural][names[key][int(group_index)]]
                 group.setdefault("members", []).append(names["person"][person_index])
-
     overrides = {}
     for name, variable in simulation.tax_benefit_system.variables.items():
-        periods = simulation._get_set_input_periods(name)
-        if not periods:
-            continue
-        for period in periods:
+        for period in simulation._get_set_input_periods(name):
             values = simulation._get_recorded_input_array(name, period)
             if values is None:
                 continue
             if hasattr(values, "decode_to_str"):
                 values = values.decode_to_str()
             if variable.is_input_variable():
-                entity = variable.entity
-                for index, entity_name in enumerate(names[entity.key]):
-                    source = sources[entity.plural][entity_name]
+                for index, entity_name in enumerate(names[variable.entity.key]):
+                    source = sources[variable.entity.plural][entity_name]
                     source.setdefault(name, {})[str(period)] = values[index]
             else:
                 overrides.setdefault(name, {})[str(period)] = values
-
     return json.loads(
         json.dumps(
             {
@@ -728,12 +914,7 @@ def export_source_inputs(simulation):
 
 
 def reload_source_inputs(payload, **simulation_kwargs):
-    """Reload a complete source snapshot, then restore its final overrides.
-
-    Pass the desired ``tax_benefit_system`` or ``reform`` through keyword
-    arguments. Loading overrides after construction preserves a public-only
-    final override instead of treating it as a legacy reported source.
-    """
+    """Reload complete snapshots, including legacy automatic projections."""
     from policyengine_us import Simulation
 
     if payload.get("version") != 1:
@@ -743,15 +924,10 @@ def reload_source_inputs(payload, **simulation_kwargs):
     metadata = payload.get(_PROVENANCE)
     sources = payload["sources"]
     if metadata is not None:
-        # Restore before Core creates a reform baseline, so that clone also
-        # knows which twins came from legacy public inputs.
         sources = {**sources, _PROVENANCE: metadata}
     simulation = Simulation(situation=sources, **simulation_kwargs)
-    _restore_automatic_reported_metadata(simulation, metadata)
     for name, periods in payload["overrides"].items():
         for period, values in periods.items():
             simulation.set_input(name, period, values)
-    simulation.input_variables = list(
-        dict.fromkeys([*simulation.input_variables, *payload["overrides"]])
-    )
+    _refresh_input_variables(simulation)
     return simulation
