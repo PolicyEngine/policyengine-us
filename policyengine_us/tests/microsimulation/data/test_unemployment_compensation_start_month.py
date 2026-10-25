@@ -55,9 +55,10 @@ def _people(households: int = 60, seed: int = 20261025) -> pd.DataFrame:
     sizes = rng.integers(1, 5, size=households)
     household_ids = np.repeat(np.arange(1, households + 1), sizes)
     # CPS-style ids (PH_SEQ * 100 + P_SEQ) on scattered PH_SEQ values, plus a
-    # few large ids, so the hash sees ids like those in the survey.
+    # few ids near the top of the engine's int32 range, so the hash sees ids
+    # like those in the survey and in cloned builds.
     ph_seq = rng.choice(np.arange(1, 90_000), size=households, replace=False)
-    ph_seq[:3] = [2**40 + 7, 2**50 + 11, 2**55 + 3]
+    ph_seq[:3] = [2**24 + 7, 20_000_011, 21_474_835]
     position = np.concatenate([np.arange(size) for size in sizes])
     person_id = np.repeat(ph_seq, sizes) * 100 + position + 1
     n = person_id.size
@@ -137,6 +138,15 @@ def people() -> pd.DataFrame:
 @pytest.fixture(scope="module")
 def stored_simulation(people):
     return Microsimulation(dataset=_dataset(_with_stored_column(people)))
+
+
+def test_engine_sees_the_dataset_person_ids(people, stored_simulation):
+    # The engine stores int variables as int32, so the build must hash the
+    # ids the engine sees. These ids fit, so the two agree.
+    np.testing.assert_array_equal(
+        stored_simulation.calculate("person_id", YEAR).values,
+        people["person_id"].values,
+    )
 
 
 @pytest.mark.parametrize("year", [YEAR, LATER_YEAR])
