@@ -65,7 +65,8 @@ def _enabled(simulation):
 
 def _holder(simulation, name):
     # Never create a holder while Core's dump traverses existing holders.
-    return simulation.persons._holders.get(name)
+    persons = getattr(simulation, "persons", None)
+    return getattr(persons, "_holders", {}).get(name)
 
 
 def _branches(simulation, branch_name=None):
@@ -275,6 +276,10 @@ def migrate_social_security_inputs(
     only stores belonging to that loading operation.
     """
     moved = set()
+    # A loader can fail before Core creates its populations. There are then
+    # no successful holder writes to route, including in constructor probes.
+    if getattr(simulation, "persons", None) is None:
+        return moved
     purged = False
     for name in SOCIAL_SECURITY_COMPONENTS:
         holder = _holder(simulation, name)
