@@ -1,3 +1,24 @@
+## [2.63.1] - 2026-10-25
+
+### Changed
+
+- Add source-conflict candidates for conflicts that the New York, Ohio, Oklahoma, Pennsylvania, Rhode Island, South Dakota and Virginia state supplement code, the Maryland Child Care Scholarship copays and New York HEAP record.
+
+
+## [2.63.0] - 2026-10-24
+
+### Added
+
+- Added state-specific `<state>_other_additions` and `<state>_other_subtractions` variables for 7 states (AL, AR, IA, IN, LA, MS, PA) to standardize custom state income additions and subtractions across all state income tax systems. Removed legacy inputs `in_other_add_backs` and `in_other_deductions` in favor of standardized `in_other_additions` and `in_other_subtractions` (breaking change for callers providing those legacy inputs).
+
+
+## [2.62.12] - 2026-10-24
+
+### Changed
+
+- Point the federal and Alaska to Hawaii source-conflict candidates whose pull requests have merged at their code on main, and add candidates for conflicts that code records.
+
+
 ## [2.62.11] - 2026-10-24
 
 ### Changed
