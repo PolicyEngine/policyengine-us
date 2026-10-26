@@ -16,7 +16,8 @@ that may be the one read, in each scope Python looks in, so the scan errs
 toward reporting. Bindings come from imports, named imports and re-exports
 followed across the package, star imports, assignments of a name or
 attribute chain (``xp = np``, also in tuples), default arguments, ``global``
-and ``nonlocal``, functions, lambdas and comprehensions. No code sees the
+and ``nonlocal`` (the nearest enclosing function that binds the name,
+wherever in its body), functions, lambdas and comprehensions. No code sees the
 names a class body it is nested in binds. A module or class body looks
 further out when no binding is sure to have run before the use (all are in
 an ``if``, loop, ``try``, ``with`` or ``match``, or the use comes first).
@@ -80,6 +81,7 @@ RATCHET must reach zero.
 import ast
 from collections import Counter
 from functools import cache
+from itertools import permutations
 from pathlib import Path
 from typing import NamedTuple
 
@@ -342,6 +344,8 @@ class _Scope:
         self.stars = []
         # Names a global or nonlocal statement gives to another scope.
         self.declared = {}
+        # For a function or lambda, the names Python makes local to it.
+        self.local_names = frozenset()
 
     def bind(self, name, line, target=None, conditional=False):
         owner = self.declared.get(name)
@@ -398,6 +402,61 @@ class _Scope:
         if name in UNBOUND_NAMES:
             targets.add(UNBOUND_NAMES[name])
         return targets
+
+
+def _function_locals(node) -> frozenset:
+    """The names Python makes local to a function or lambda, wherever its
+    body binds them: its parameters and every name bound outside nested
+    scopes, less those a global or nonlocal statement sends elsewhere."""
+    arguments = node.args
+    parameters = arguments.posonlyargs + arguments.args + arguments.kwonlyargs
+    parameters += [arguments.vararg, arguments.kwarg]
+    names = {argument.arg for argument in parameters if argument is not None}
+    declared = set()
+    stack = list(node.body if isinstance(node.body, list) else [node.body])
+    while stack:
+        child = stack.pop()
+        if isinstance(child, (ast.Global, ast.Nonlocal)):
+            declared.update(child.names)
+            continue
+        if isinstance(child, FUNCTION_NODES + (ast.ClassDef, ast.Lambda)):
+            # Only its name, decorators, defaults and bases are this scope's.
+            if not isinstance(child, ast.Lambda):
+                names.add(child.name)
+            stack.extend(getattr(child, "decorator_list", []))
+            if isinstance(child, ast.ClassDef):
+                stack.extend(child.bases + [k.value for k in child.keywords])
+            else:
+                stack.extend(child.args.defaults)
+                stack.extend(d for d in child.args.kw_defaults if d)
+            continue
+        if isinstance(child, COMPREHENSION_NODES):
+            # Its loop variables are its own (a nested nonlocal can't read
+            # them after it ends, even where CPython inlines it); a walrus
+            # binds here.
+            names.update(
+                sub.target.id
+                for sub in ast.walk(child)
+                if isinstance(sub, ast.NamedExpr)
+            )
+            stack.append(child.generators[0].iter)
+            continue
+        if isinstance(child, ast.Name) and not isinstance(child.ctx, ast.Load):
+            names.add(child.id)
+        elif isinstance(child, (ast.Import, ast.ImportFrom)):
+            names.update(
+                (alias.asname or alias.name).split(".")[0]
+                for alias in child.names
+                if alias.name != "*"
+            )
+        elif isinstance(child, ast.ExceptHandler) and child.name:
+            names.add(child.name)
+        elif isinstance(child, (ast.MatchAs, ast.MatchStar)) and child.name:
+            names.add(child.name)
+        elif isinstance(child, ast.MatchMapping) and child.rest:
+            names.add(child.rest)
+        stack.extend(ast.iter_child_nodes(child))
+    return frozenset(names - declared)
 
 
 def _alias(scope, value, line):
@@ -613,10 +672,15 @@ def _build_scopes(tree, module, package, modules):
                 for name in node.names:
                     inner.declared[name] = top
             elif isinstance(node, ast.Nonlocal):
-                owner = inner.parent
-                while owner is not None and owner.kind not in ("function", "lambda"):
-                    owner = owner.parent
+                # The nearest enclosing function that makes the name local,
+                # wherever in its body it binds it; class bodies are skipped.
                 for name in node.names:
+                    owner = inner.parent
+                    while owner is not None and not (
+                        owner.kind in ("function", "lambda")
+                        and name in owner.local_names
+                    ):
+                        owner = owner.parent
                     if owner is not None:
                         inner.declared[name] = owner
             elif not isinstance(node, FUNCTION_NODES + (ast.ClassDef, ast.Lambda)):
@@ -644,6 +708,7 @@ def _build_scopes(tree, module, package, modules):
         qualname = name if scope.parent is None else f"{scope.qualname}.{name}"
         kind = "lambda" if isinstance(node, ast.Lambda) else "function"
         inner = _Scope(kind, qualname, scope, modules)
+        inner.local_names = _function_locals(node)
         body = node.body if isinstance(node.body, list) else [node.body]
         declare(inner, body)
         bind_arguments(inner, scope, node.args, node.lineno)
@@ -1165,6 +1230,32 @@ def _kinds(source: str) -> set:
             "    return lib.random.uniform()\n",
             "random source",
         ),
+        # nonlocal names the nearest function that binds the name, not the
+        # nearest function, and wherever in its body the binding is.
+        (
+            "def outer():\n"
+            "    import numpy as lib\n"
+            "    def middle():\n"
+            "        def inner():\n"
+            "            nonlocal lib\n"
+            "            lib.random.random()\n"
+            "            lib = None\n"
+            "        inner()\n"
+            "    middle()\n",
+            "random source",
+        ),
+        (
+            "def outer():\n"
+            "    def middle():\n"
+            "        def inner():\n"
+            "            nonlocal lib\n"
+            "            lib = None\n"
+            "            return lib.random.random()\n"
+            "        return inner\n"
+            "    import numpy as lib\n"
+            "    return middle\n",
+            "random source",
+        ),
         ("if flag:\n    hash = str\nkey = hash('x')\n", "builtin hash"),
         ("key = hash('x')\nhash = str\n", "builtin hash"),
         ("import importlib\nimportlib.import_module('random')\n", "stochastic import"),
@@ -1246,6 +1337,16 @@ def test_detector_flags_each_draw_pattern(source, kind):
         "def f():\n    hash = str\n    return hash('x')\n",
         # The walrus value is the comprehension's own np, not numpy.
         "import numpy as np\n[(lib := np) for np in [object()]]\nlib.random.uniform()\n",
+        # nonlocal stops at the nearest function binding the name.
+        "def outer():\n"
+        "    import numpy as lib\n"
+        "    def middle():\n"
+        "        lib = object()\n"
+        "        def inner():\n"
+        "            nonlocal lib\n"
+        "            return lib.random.random()\n"
+        "        return inner\n"
+        "    return middle\n",
     ],
 )
 def test_detector_skips_deterministic_code(source):
@@ -1406,6 +1507,24 @@ def test_cyclic_star_imports_resolve_in_any_order():
     ]
     assert results[0] == results[1] == results[2]
     assert [kind for _, _, kind in results[0]["user"]] == ["random source"]
+
+
+def test_cyclic_named_imports_resolve_in_any_order():
+    # Looking up ``a.lib`` from ``other`` meets ``a`` again through ``b``, so
+    # ``b.lib`` is cut short there, without numpy. Keeping that partial answer
+    # would hide numpy from ``user`` whenever ``other`` is analysed first.
+    sources = {
+        "a": "if flag:\n    import numpy as lib\nelse:\n    from .b import lib\n",
+        "b": "from .a import lib\n",
+        "other": "from .a import lib\nlib.random.uniform()\n",
+        "user": "from .b import lib\nlib.random.uniform()\n",
+    }
+    results = [
+        _package_findings(sources, list(order)) for order in permutations(sources)
+    ]
+    assert all(result == results[0] for result in results)
+    for module in ("other", "user"):
+        assert [kind for _, _, kind in results[0][module]] == ["random source"]
 
 
 def test_model_api_passes_on_cores_numpy_and_its_own_helpers():

@@ -46,7 +46,9 @@ def start_month_supplied(simulation):
     Presence follows the stored inputs, never the values, so a column of
     zeros counts as supplied. It covers columns a dataset supplies, values set
     after construction and inputs a parent branch holds. A reform that
-    neutralizes the start month leaves it unsupplied.
+    neutralizes the start month leaves it unsupplied. Core carries an input
+    forward but not backwards, so a year before the first input reads the
+    default 0, which stored_start_month_index rejects.
     """
     holder = simulation.get_holder(STORED_START_MONTH)
     return len(holder.get_input_periods(simulation.branch_name)) > 0

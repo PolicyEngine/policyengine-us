@@ -313,6 +313,21 @@ def test_start_month_of_zeros_set_after_construction_raises(people):
         simulation.calculate("is_receiving_unemployment_compensation", f"{YEAR}-01")
 
 
+def test_start_month_applies_forward_from_the_year_it_is_set(people, stored_simulation):
+    # Core carries an input forward to later periods, never backwards: a
+    # year before the first input reads the default 0, which raises.
+    later_only = Microsimulation(dataset=_dataset(people))
+    later_only.set_input(COLUMN, LATER_YEAR, stored_start_month(people["person_id"]))
+    with pytest.raises(ValueError, match=COLUMN):
+        later_only.calculate("is_receiving_unemployment_compensation", f"{YEAR}-01")
+    carried = Microsimulation(dataset=_dataset(people))
+    carried.set_input(COLUMN, YEAR, stored_start_month(people["person_id"]))
+    np.testing.assert_array_equal(
+        _receipt_by_month(carried, LATER_YEAR),
+        _receipt_by_month(stored_simulation, LATER_YEAR),
+    )
+
+
 def test_start_month_set_on_a_branch_is_supplied_there_only(people, stored_simulation):
     parent = Microsimulation(dataset=_dataset(people))
     branch = parent.get_branch("start_month_of_zeros")
