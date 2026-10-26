@@ -501,10 +501,10 @@
 # (reduced-price copay coverage) and PAID above it. Breakfast is FREE up to
 # the breakfast-only limit, 2.24: 2.2399 and 2.24 are FREE and 2.2401 is
 # PAID. At 1.85 both meals are FREE; at 1.8501 breakfast is FREE through the
-# breakfast-only limit while the tier and lunch are PAID. Rounding each dollar
-# limit up to the next whole dollar raises the ratio limit by less than $1
-# over the projected one-person guideline (about 16,699), under 0.0001, so
-# 1.8501 and 2.2401 stay above their limits.
+# breakfast-only limit while the tier and lunch are PAID. Rounding the federal
+# 185% dollar limit up to the next whole dollar raises its ratio limit by
+# less than $1 over the projected one-person guideline (about 16,753), under
+# 0.0001, so 1.8501 stays above it. The state 224% limit is compared exactly.
 - name: New Jersey ratios at and just above 185% and just below, at and just above its 224% breakfast-only limit in 2028.
   period: 2028
   input:
@@ -516,19 +516,20 @@
     school_meal_breakfast_tier: [FREE, FREE, FREE, FREE, PAID]
     school_meal_lunch_tier: [FREE, PAID, PAID, PAID, PAID]
 
-# New Jersey's breakfast-only limit at its whole-dollar value: the guideline
-# times 2.24, rounded up to the next whole dollar, as on New Jersey's Form 427.
-# Calendar 2028 uses a projected guideline, so spm_unit_fpg is set to the 2026
-# guideline for two people, 21,640: 2.24 * 21,640 = 48,473.60, rounded up to
-# 48,474. Breakfast is FREE at 48,474 and PAID at 48,475. Both incomes are
-# above 185% (40,034) and New Jersey has no limit for both meals in 2028, so
-# the tier for both meals and the lunch tier are PAID.
-- name: New Jersey's breakfast-only income limit applies at its whole-dollar value, $48,474 for a $21,640 guideline, in 2028.
+# New Jersey's breakfast-only limit is the statutory percentage itself
+# (N.J.S.A. 18A:33-14a(a)(3): "not more than 224 percent"), compared exactly,
+# not rounded up to a whole dollar as on New Jersey's Form 427. Calendar 2028
+# uses a projected guideline, so spm_unit_fpg is set to the 2026 guideline for
+# two people, 21,640: 2.24 * 21,640 = 48,473.60. Breakfast is FREE at 48,473
+# (2.23997) and PAID at 48,474 (2.24002), although Form 427 would list
+# 48,474. Both incomes are above 185% (40,034) and New Jersey has no limit for
+# both meals in 2028, so the tier for both meals and the lunch tier are PAID.
+- name: New Jersey's breakfast-only income limit applies at its statutory value, $48,473.60 for a $21,640 guideline, in 2028.
   period: 2028
   input:
     state_code: [NJ, NJ]
     spm_unit_fpg: [21_640, 21_640]
-    school_meal_countable_income: [48_474, 48_475]
+    school_meal_countable_income: [48_473, 48_474]
     meets_school_meal_categorical_eligibility: [false, false]
   output:
     school_meal_tier: [PAID, PAID]

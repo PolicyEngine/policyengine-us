@@ -1,1 +1,1 @@
-Compare school meal income limits at whole-dollar thresholds rounded up, as USDA and states publish them, so a household exactly at a published limit gets that tier.
+Compare the federal free and reduced-price school meal income limits at USDA's published whole-dollar values, rounded up, so a household exactly at a published federal limit gets that tier; state percentage limits are still compared exactly.
