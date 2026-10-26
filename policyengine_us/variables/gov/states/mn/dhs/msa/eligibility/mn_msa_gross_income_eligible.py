@@ -22,20 +22,7 @@ class mn_msa_gross_income_eligible(Variable):
         ssi_individual_fbr = parameters(period).gov.ssa.ssi.amount.individual
         categorically_eligible = person("is_ssi_aged_blind_disabled", period.this_year)
         both_eligible = person.marital_unit.sum(categorically_eligible) == 2
-        income = add(
-            person,
-            period,
-            [
-                "ssi_earned_income",
-                "ssi_unearned_income",
-                "ssi_earned_income_deemed_from_ineligible_spouse",
-                "ssi_unearned_income_deemed_from_ineligible_spouse",
-                "ssi_unearned_income_deemed_from_ineligible_parent",
-            ],
-        )
-        ssi = person("ssi", period)
-        ssi_fbr = person("ssi_amount_if_eligible", period)
-        gross = income + where(ssi > 0, ssi_fbr, 0)
+        gross = person("mn_msa_gross_income", period)
         au_income = where(both_eligible, person.marital_unit.sum(gross), gross)
         cap = ssi_individual_fbr * where(
             both_eligible, p.couple_fbr_multiplier, p.individual_fbr_multiplier

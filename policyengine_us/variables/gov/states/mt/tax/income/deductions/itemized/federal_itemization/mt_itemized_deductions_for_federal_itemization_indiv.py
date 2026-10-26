@@ -8,27 +8,47 @@ class mt_itemized_deductions_for_federal_itemization_indiv(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
+        "https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2021_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=33",
+        # 2021 Form 2 line 9 includes qualified mortgage insurance premiums
+        # allowed on the federal return, after the federal AGI phase-out.
         "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7",
         "https://law.justia.com/codes/montana/2022/title-15/chapter-30/part-21/section-15-30-2131/",
         # MT Code § 15-30-2131 (2022) (1)
+        "https://mca.legmt.gov/bills/2019/mca/title_0150/chapter_0300/part_0210/section_0010/0150-0300-0210-0010.html",
+        # MCA 15-30-2101: "Internal Revenue Code" means the IRC as amended
+        "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=38",
+        # 2023 Form 2 instructions, itemized deductions line 9: home mortgage
+        # interest "allowed by federal law", limited to the first $750,000 of
+        # acquisition debt incurred after Dec. 15, 2017
     )
     defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.irs.deductions
+        p = parameters(period).gov.states.mt.tax.income.deductions.itemized
         # Since we only compute the federal charitable deduction at the tax unit level,
         # we will split the value between each spouse
-        charitable_deduction = person.tax_unit("charitable_deduction", period) * 0.5
+        charitable_deduction = (
+            person.tax_unit("charitable_deduction", period) * p.spouse_allocation_rate
+        )
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # The interest deduction is the sum of mortagage and investment interest expenses
         investment_interest = person("investment_interest_expense", period)
-        mortgage_interest = person("mortgage_interest", period)
-        interest_ded = investment_interest + mortgage_interest
+        # Montana allows the mortgage interest federal law allows, so interest
+        # on acquisition debt above the IRC 163(h)(3) caps is not deductible
+        # (MCA 15-30-2131(1)(a); Form 2 instructions, itemized line 9).
+        mortgage_interest = person("deductible_mortgage_interest", period)
+        # Apply the federal phase-out first, then allocate the allowed
+        # premiums according to each spouse's payments on both residences.
+        mortgage_insurance = person(
+            "deductible_mortgage_insurance_premiums_indiv", period
+        )
+        interest_ded = investment_interest + mortgage_interest + mortgage_insurance
         other_deductions = add(
             person,
             period,
             [
                 "mt_misc_deductions",
+                "mt_child_dependent_care_expense_deduction",
                 "mt_medical_expense_deduction_indiv",
                 "mt_salt_deduction",
                 "mt_federal_income_tax_deduction_for_federal_itemization_indiv",

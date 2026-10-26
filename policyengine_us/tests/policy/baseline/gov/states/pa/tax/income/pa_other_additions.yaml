@@ -1,0 +1,20 @@
+- name: Case 1, default pa_other_additions is zero
+  period: 2024
+  input:
+    state_code: PA
+    employment_income: 50_000
+  output:
+    pa_other_additions: 0
+    irs_gross_income: 50_000
+    pa_total_taxable_income: 50_000
+
+- name: Case 2, pa_other_additions increases PA total taxable income
+  period: 2024
+  input:
+    state_code: PA
+    employment_income: 50_000
+    pa_other_additions: 2_000
+  output:
+    pa_other_additions: 2_000
+    irs_gross_income: 50_000
+    pa_total_taxable_income: 52_000

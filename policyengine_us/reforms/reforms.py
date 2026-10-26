@@ -290,6 +290,9 @@ from .refundable_credit_conversion import (
 from .states.ca.ab2591 import (
     create_ca_ab2591_reform,
 )
+from .states.ca.prop3 import (
+    create_ca_prop3_reform,
+)
 from .states.ga.sb520 import (
     create_ga_sb520_reform,
 )
@@ -562,6 +565,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
     ca_ab2591 = create_ca_ab2591_reform(parameters, period)
+    ca_prop3 = create_ca_prop3_reform(parameters, period)
     ga_sb520 = create_ga_sb520_reform(parameters, period)
     hi_hb2306_cdcc = create_hi_hb2306_cdcc_reform(parameters, period)
     nc_eitc = create_nc_eitc_reform(parameters, period)
@@ -712,6 +716,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         tx_rebate,
         al_hb527_overtime_deduction,
         ca_ab2591,
+        ca_prop3,
         ga_sb520,
         hi_hb2306_cdcc,
         nc_eitc,

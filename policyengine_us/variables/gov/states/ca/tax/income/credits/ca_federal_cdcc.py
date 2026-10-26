@@ -6,7 +6,7 @@ class ca_federal_cdcc(Variable):
     entity = TaxUnit
     label = "Child and Dependent Care Expenses Credit replicated to include California limitations"
     unit = USD
-    documentation = "https://www.ftb.ca.gov/about-ftb/data-reports-plans/Summary-of-Federal-Income-Tax-Changes/index.html#PL-117-2-9631"
+    reference = "https://www.ftb.ca.gov/about-ftb/data-reports-plans/Summary-of-Federal-Income-Tax-Changes/index.html#PL-117-2-9631"
     definition_period = YEAR
     defined_for = StateCode.CA
 

@@ -18,6 +18,7 @@ class ny_itemized_deductions_max(Variable):
     Public Law 115-97 (TCJA). This means:
     - No SALT cap ($10,000 limit does not apply)
     - State/local income taxes are NOT deductible (only sales + property)
+    - Medical expenses deductible above 10% of AGI (not the 7.5% floor)
     - Miscellaneous deductions still allowed with 2% AGI floor
     - Casualty losses not limited to federally declared disasters
     - NY-specific college tuition deduction addition per § 615(d)
@@ -26,11 +27,17 @@ class ny_itemized_deductions_max(Variable):
         # Federal deductions that don't differ from pre-TCJA
         "charitable_deduction",
         "interest_deduction",
-        "medical_expense_deduction",
         # NY-specific pre-TCJA versions
+        "ny_medical_expense_deduction",
         "ny_salt_deduction",
         "ny_misc_deduction",
         "ny_casualty_loss_deduction",
         # NY-specific addition per Tax Law § 615(d)
         "ny_college_tuition_deduction",
     ]
+
+    # IT-196-I (2021), page 2: New York did not adopt the extension
+    # of the mortgage-insurance deduction beyond 2020.
+    subtracts = (
+        "gov.states.ny.tax.income.deductions.itemized.disallowed_interest_components"
+    )

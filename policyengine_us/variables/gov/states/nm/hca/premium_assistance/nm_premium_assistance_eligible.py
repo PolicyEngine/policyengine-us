@@ -24,8 +24,9 @@ class nm_premium_assistance_eligible(Variable):
         # exclusion, and the 100-400% FPL required-contribution income test.
         aptc_eligible = add(tax_unit, period, ["is_aca_ptc_eligible"]) > 0
         # is_aca_ptc_eligible does not embed the federal PTC filing requirement
-        # (IRC 36B(a); aca_ptc does), so gate it explicitly here.
-        is_filer = tax_unit("tax_unit_is_filer", period)
+        # (IRC 36B(a); aca_ptc does), so gate it explicitly here, as aca_ptc
+        # does.
+        is_filer = tax_unit("files_return_for_aca_ptc", period)
         magi_frac = tax_unit("aca_magi_fraction", period)
         income_eligible = magi_frac <= p.fpl_limit
         return in_effect & aptc_eligible & is_filer & income_eligible
