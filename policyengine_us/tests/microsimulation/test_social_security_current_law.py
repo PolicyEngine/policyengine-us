@@ -927,6 +927,21 @@ def differential(tmp_path_factory):
 )
 def test_legacy_public_ingress_matches_unmodified_main(differential, route):
     current, main = differential
+    for request in main[route]:
+        if request in current[route] and not np.array_equal(
+            current[route][request], main[route][request]
+        ):
+            print(
+                "Social Security differential mismatch: "
+                + json.dumps(
+                    {
+                        "route": route,
+                        "request": request,
+                        "current": current[route][request],
+                        "main": main[route][request],
+                    }
+                )
+            )
     assert current[route].keys() == main[route].keys()
     for request in main[route]:
         np.testing.assert_array_equal(
