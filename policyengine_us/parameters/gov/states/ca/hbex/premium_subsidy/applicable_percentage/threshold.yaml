@@ -1,9 +1,14 @@
 description: California sets the federal poverty line thresholds for the applicable percentage brackets under the California Premium Subsidy program.
 values:
-  # 150% is untiered in the Program Design prose but sits in the 3.19% band:
-  # the Explainer labels the band "150% - At or Below 165%", and under
-  # 26 CFR 1.36B-3(g)(2) FPL-percentage truncation to 2 decimals collapses
-  # [150%, 151%) to 1.50, so 150% takes the 150-165% bracket rate.
+  # The adopted Program Design runs its bands "100% up to 150%" (0%) and
+  # "Above 150% up to 165%", so an exact ratio equal to a threshold takes the
+  # lower band: 150% pays 0%. The Policy Explainer labels the upper band
+  # "150% - At or Below 165%"; the model follows the adopted design.
+  # Band selection uses exact nonnegative ACA MAGI divided by prior-year FPG;
+  # only the rate lookup uses truncated aca_magi_fraction. The Designs leave
+  # rounding unspecified. FTB 3849 Table 1-2 (2020/2021) tests exact income
+  # for "above" boundaries before truncating for lookup; Form 8962 Worksheet 2
+  # line 4 likewise checks "more than" before truncation.
   2026-01-01:
     - 1
     - 1.5

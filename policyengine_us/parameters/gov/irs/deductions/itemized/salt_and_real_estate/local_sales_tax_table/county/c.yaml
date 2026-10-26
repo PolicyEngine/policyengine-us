@@ -1,0 +1,98 @@
+description: The IRS has residents of these counties use Optional Local Sales Tax Table C.
+metadata:
+  unit: list
+  period: year
+  label: Counties using Optional Local Sales Tax Table C
+  reference:
+    - title: 2022 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=17
+    - title: 2023 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=17
+    - title: 2024 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=16
+    - title: 2025 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=18
+# Counties (and Louisiana parishes and Alaska boroughs) that the IRS selector
+# names for this table, by 2020 Census county FIPS code. The 2025 selector
+# names the same localities with the same tables as the 2024 selector, so
+# the 2024 value applies to 2025. A place named in another row takes
+# precedence (place lists), as in "Dekalb County (excluding Atlanta)".
+values:
+  2022-01-01:
+    - "02110"  # Juneau City and Borough, AK
+    - "02220"  # Sitka City and Borough, AK
+    - "22005"  # Ascension Parish, LA
+    - "22015"  # Bossier Parish, LA
+    - "22017"  # Caddo Parish, LA
+    - "22019"  # Calcasieu Parish, LA
+    - "22045"  # Iberia Parish, LA
+    - "22051"  # Jefferson Parish, LA
+    - "22055"  # Lafayette Parish, LA
+    - "22057"  # Lafourche Parish, LA
+    - "22063"  # Livingston Parish, LA
+    - "22071"  # Orleans Parish, LA
+    - "22073"  # Ouachita Parish, LA
+    - "22079"  # Rapides Parish, LA
+    - "22087"  # St. Bernard Parish, LA
+    - "22097"  # St. Landry Parish, LA
+    - "22103"  # St. Tammany Parish, LA
+    - "22105"  # Tangipahoa Parish, LA
+    - "22109"  # Terrebonne Parish, LA
+    - "45001"  # Abbeville County, SC
+    - "45015"  # Berkeley County, SC
+    - "45027"  # Clarendon County, SC
+    - "45035"  # Dorchester County, SC
+    - "45039"  # Fairfield County, SC
+    - "45049"  # Hampton County, SC
+    - "45077"  # Pickens County, SC
+    - "45079"  # Richland County, SC
+    - "45087"  # Union County, SC
+  2023-01-01:
+    - "02110"  # Juneau City and Borough, AK
+    - "02220"  # Sitka City and Borough, AK
+    - "22005"  # Ascension Parish, LA
+    - "22015"  # Bossier Parish, LA
+    - "22017"  # Caddo Parish, LA
+    - "22019"  # Calcasieu Parish, LA
+    - "22045"  # Iberia Parish, LA
+    - "22051"  # Jefferson Parish, LA
+    - "22055"  # Lafayette Parish, LA
+    - "22057"  # Lafourche Parish, LA
+    - "22063"  # Livingston Parish, LA
+    - "22071"  # Orleans Parish, LA
+    - "22073"  # Ouachita Parish, LA
+    - "22079"  # Rapides Parish, LA
+    - "22087"  # St. Bernard Parish, LA
+    - "22097"  # St. Landry Parish, LA
+    - "22103"  # St. Tammany Parish, LA
+    - "22105"  # Tangipahoa Parish, LA
+    - "22109"  # Terrebonne Parish, LA
+    - "45001"  # Abbeville County, SC
+    - "45027"  # Clarendon County, SC
+    - "45035"  # Dorchester County, SC
+    - "45039"  # Fairfield County, SC
+    - "45049"  # Hampton County, SC
+    - "45077"  # Pickens County, SC
+    - "45079"  # Richland County, SC
+    - "45087"  # Union County, SC
+  2024-01-01:
+    - "02110"  # Juneau City and Borough, AK
+    - "02220"  # Sitka City and Borough, AK
+    - "22005"  # Ascension Parish, LA
+    - "22015"  # Bossier Parish, LA
+    - "22017"  # Caddo Parish, LA
+    - "22019"  # Calcasieu Parish, LA
+    - "22045"  # Iberia Parish, LA
+    - "22051"  # Jefferson Parish, LA
+    - "22055"  # Lafayette Parish, LA
+    - "22057"  # Lafourche Parish, LA
+    - "22063"  # Livingston Parish, LA
+    - "22071"  # Orleans Parish, LA
+    - "22073"  # Ouachita Parish, LA
+    - "22079"  # Rapides Parish, LA
+    - "22087"  # St. Bernard Parish, LA
+    - "22097"  # St. Landry Parish, LA
+    - "22103"  # St. Tammany Parish, LA
+    - "22105"  # Tangipahoa Parish, LA
+    - "22109"  # Terrebonne Parish, LA
+    - "45085"  # Sumter County, SC
