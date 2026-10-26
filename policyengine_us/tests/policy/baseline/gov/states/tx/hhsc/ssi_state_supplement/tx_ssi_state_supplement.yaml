@@ -338,3 +338,62 @@
     ssi: 30
     tx_ssi_state_supplement_eligible: true
     tx_ssi_state_supplement: 540
+
+- name: Case 29, 2011 facility resident whose countable income equals the $30 reduced standard.
+  # A $50/month pension less the $20 general exclusion is $30 of countable
+  # income. Federal SSI and the eligibility test read the same $30 standard
+  # (gov.ssa.ssi.amount.medical_facility): SSI pays $30 - $30 = $0 and the
+  # resident still gets the $30 supplement ($60 PNA less $30).
+  period: 2011
+  input:
+    people:
+      person1:
+        age: 80
+        pension_income: 600
+        is_in_medicaid_facility: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    ssi_countable_income: 360
+    ssi: 0
+    tx_ssi_state_supplement_eligible: true
+    # ($60 - $30) * 12 = $360/year
+    tx_ssi_state_supplement: 360
+
+- name: Case 30, 2011 facility resident whose countable income exceeds the $30 reduced standard.
+  # A $51/month pension gives $31 of countable income, so neither SSI nor the
+  # supplement is paid.
+  period: 2011
+  input:
+    people:
+      person1:
+        age: 80
+        pension_income: 612
+        is_in_medicaid_facility: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    ssi_countable_income: 372
+    ssi: 0
+    tx_ssi_state_supplement_eligible: false
+    tx_ssi_state_supplement: 0
