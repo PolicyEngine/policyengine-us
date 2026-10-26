@@ -639,3 +639,35 @@
     state_sales_tax: 1_000
   output:
     local_sales_tax: 0
+
+- name: Gulfport, Mississippi, 2015, no local table uses the ratio method
+  # 2015 state table (PDF p. 15), $80,000-$90,000, one column: $1139.
+  # Line 2 is zero outside Jackson and Tupelo; heading rate is 7%.
+  # Line 6 = 1139 * (1 / 7) = 162.71 dollars, rounded to cents.
+  period: 2015
+  input:
+    state_code: MS
+    county_fips: "28047"
+    place_fips: "29700"
+    employment_income: 85_000
+    local_sales_tax_rate: 0.01
+  output:
+    local_sales_tax_table: NONE
+    state_sales_tax: 1_139
+    local_sales_tax: 162.71
+
+- name: Gulfport, Mississippi, 2018, no local table uses the ratio method
+  # 2018 state table (PDF p. 15), $80,000-$90,000, one column: $1232.
+  # Line 2 is zero outside Jackson and Tupelo; heading rate is 7%.
+  # Line 6 = 1232 * (1 / 7) = 176 dollars, rounded to cents.
+  period: 2018
+  input:
+    state_code: MS
+    county_fips: "28047"
+    place_fips: "29700"
+    employment_income: 85_000
+    local_sales_tax_rate: 0.01
+  output:
+    local_sales_tax_table: NONE
+    state_sales_tax: 1_232
+    local_sales_tax: 176

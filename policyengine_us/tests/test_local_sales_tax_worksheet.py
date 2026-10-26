@@ -290,10 +290,10 @@ def test_i1_methods_partition_the_jurisdictions(raw, year):
     assert set().union(*groups) == set(STATES)
     # Default selections cover each local-table state exactly once. Mississippi
     # has no default table; only its named cities use tables.
-    defaults = [set(_dated(raw["default"][t], year)) for t in TABLE_SELECTIONS]
+    defaults = [set(_dated(raw["default"][t], year)) for t in TABLES]
     assert set(_dated(raw["default"]["NONE"], year)) == {"MS"}
-    assert sum(len(d) for d in defaults) == len(local_table)
-    assert set().union(*defaults) == local_table
+    assert sum(len(d) for d in defaults) == len(local_table - {"MS"})
+    assert set().union(*defaults) == local_table - {"MS"}
 
 
 @HYPOTHESIS_SETTINGS

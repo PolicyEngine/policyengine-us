@@ -499,6 +499,216 @@
   output:
     local_sales_tax_table: C
 
+- name: Geography fallbacks, 2015
+  # 2015 selector, PDF p. 18: Westchester County -> B, NYC -> A,
+  # other NY localities -> D. Scarsdale (3665431) is not named, so its
+  # principal county supplies the table without an entered county FIPS.
+  period: 2015
+  input:
+    people:
+      principal_county: {}
+      county_enum: {}
+      city_flag: {}
+      state_default: {}
+    households:
+      principal_county:
+        members: [principal_county]
+        state_code: NY
+        place_fips: "65431"
+      county_enum:
+        members: [county_enum]
+        state_code: NY
+        county: WESTCHESTER_COUNTY_NY
+      city_flag:
+        members: [city_flag]
+        state_code: NY
+        in_nyc: true
+      state_default:
+        members: [state_default]
+        state_code: NY
+  output:
+    local_sales_tax_table: [B, B, A, D]
+
+- name: Geography fallbacks, 2016
+  # 2016 selector, PDF p. 18: Westchester County -> B, NYC -> A,
+  # other NY localities -> D. Scarsdale (3665431) is not named, so its
+  # principal county supplies the table without an entered county FIPS.
+  period: 2016
+  input:
+    people:
+      principal_county: {}
+      county_enum: {}
+      city_flag: {}
+      state_default: {}
+    households:
+      principal_county:
+        members: [principal_county]
+        state_code: NY
+        place_fips: "65431"
+      county_enum:
+        members: [county_enum]
+        state_code: NY
+        county: WESTCHESTER_COUNTY_NY
+      city_flag:
+        members: [city_flag]
+        state_code: NY
+        in_nyc: true
+      state_default:
+        members: [state_default]
+        state_code: NY
+  output:
+    local_sales_tax_table: [B, B, A, D]
+
+- name: Geography fallbacks, 2017
+  # 2017 selector, PDF p. 19: Westchester County -> B, NYC -> A,
+  # other NY localities -> D. Scarsdale (3665431) is not named, so its
+  # principal county supplies the table without an entered county FIPS.
+  period: 2017
+  input:
+    people:
+      principal_county: {}
+      county_enum: {}
+      city_flag: {}
+      state_default: {}
+    households:
+      principal_county:
+        members: [principal_county]
+        state_code: NY
+        place_fips: "65431"
+      county_enum:
+        members: [county_enum]
+        state_code: NY
+        county: WESTCHESTER_COUNTY_NY
+      city_flag:
+        members: [city_flag]
+        state_code: NY
+        in_nyc: true
+      state_default:
+        members: [state_default]
+        state_code: NY
+  output:
+    local_sales_tax_table: [B, B, A, D]
+
+- name: Geography fallbacks, 2018
+  # 2018 selector, PDF p. 18: Westchester County -> A, NYC -> A,
+  # other NY localities -> D. Scarsdale (3665431) is not named, so its
+  # principal county supplies the table without an entered county FIPS.
+  period: 2018
+  input:
+    people:
+      principal_county: {}
+      county_enum: {}
+      city_flag: {}
+      state_default: {}
+    households:
+      principal_county:
+        members: [principal_county]
+        state_code: NY
+        place_fips: "65431"
+      county_enum:
+        members: [county_enum]
+        state_code: NY
+        county: WESTCHESTER_COUNTY_NY
+      city_flag:
+        members: [city_flag]
+        state_code: NY
+        in_nyc: true
+      state_default:
+        members: [state_default]
+        state_code: NY
+  output:
+    local_sales_tax_table: [A, A, A, D]
+
+- name: Geography fallbacks, 2019
+  # 2019 selector, PDF p. 19: Westchester County -> B, NYC -> A,
+  # other NY localities -> D. Scarsdale (3665431) is not named, so its
+  # principal county supplies the table without an entered county FIPS.
+  period: 2019
+  input:
+    people:
+      principal_county: {}
+      county_enum: {}
+      city_flag: {}
+      state_default: {}
+    households:
+      principal_county:
+        members: [principal_county]
+        state_code: NY
+        place_fips: "65431"
+      county_enum:
+        members: [county_enum]
+        state_code: NY
+        county: WESTCHESTER_COUNTY_NY
+      city_flag:
+        members: [city_flag]
+        state_code: NY
+        in_nyc: true
+      state_default:
+        members: [state_default]
+        state_code: NY
+  output:
+    local_sales_tax_table: [B, B, A, D]
+
+- name: Geography fallbacks, 2020
+  # 2020 selector, PDF p. 18: Westchester County -> B, NYC -> A,
+  # other NY localities -> D. Scarsdale (3665431) is not named, so its
+  # principal county supplies the table without an entered county FIPS.
+  period: 2020
+  input:
+    people:
+      principal_county: {}
+      county_enum: {}
+      city_flag: {}
+      state_default: {}
+    households:
+      principal_county:
+        members: [principal_county]
+        state_code: NY
+        place_fips: "65431"
+      county_enum:
+        members: [county_enum]
+        state_code: NY
+        county: WESTCHESTER_COUNTY_NY
+      city_flag:
+        members: [city_flag]
+        state_code: NY
+        in_nyc: true
+      state_default:
+        members: [state_default]
+        state_code: NY
+  output:
+    local_sales_tax_table: [B, B, A, D]
+
+- name: Geography fallbacks, 2021
+  # 2021 selector, PDF p. 18: Westchester County -> B, NYC -> A,
+  # other NY localities -> D. Scarsdale (3665431) is not named, so its
+  # principal county supplies the table without an entered county FIPS.
+  period: 2021
+  input:
+    people:
+      principal_county: {}
+      county_enum: {}
+      city_flag: {}
+      state_default: {}
+    households:
+      principal_county:
+        members: [principal_county]
+        state_code: NY
+        place_fips: "65431"
+      county_enum:
+        members: [county_enum]
+        state_code: NY
+        county: WESTCHESTER_COUNTY_NY
+      city_flag:
+        members: [city_flag]
+        state_code: NY
+        in_nyc: true
+      state_default:
+        members: [state_default]
+        state_code: NY
+  output:
+    local_sales_tax_table: [B, B, A, D]
+
 - name: DeKalb County, Georgia, outside Atlanta, 2024
   # 2024 selector: "Dekalb County (excluding Atlanta)" -> A; any other -> B.
   period: 2024
@@ -711,7 +921,7 @@
   # IL: "Any locality" -> A
   # LA: "Any other locality" -> B
   # MO: "Any locality" -> B
-  # MS: "Cities of Jackson and Tupelo only" -> B
+  # MS: no other-locality row -> NONE (only Jackson and Tupelo are named)
   # NC: "Any locality" -> A
   # NY: "Any other locality" -> D
   # SC: "... or Any other locality" -> B
@@ -798,7 +1008,7 @@
         members: [person_VA]
         state_code: VA
   output:
-    local_sales_tax_table: [C, B, B, A, B, A, B, B, B, A, D, B, B, A, B]
+    local_sales_tax_table: [C, B, B, A, B, A, B, B, NONE, A, D, B, B, A, B]
 
 - name: Default local tables, 2016
   # 2016 selector (PDF page 18), row and table by state:
@@ -810,7 +1020,7 @@
   # IL: "... or any other locality" -> A
   # LA: "... or any other locality" -> B
   # MO: "Any locality" -> B
-  # MS: "City of Jackson only" -> A
+  # MS: no other-locality row -> NONE (only Jackson and Tupelo are named)
   # NC: "Any locality" -> A
   # NY: "Any other locality" -> D
   # SC: "... or any other locality" -> B
@@ -897,7 +1107,7 @@
         members: [person_VA]
         state_code: VA
   output:
-    local_sales_tax_table: [C, B, B, A, B, A, B, B, A, A, D, B, B, A, B]
+    local_sales_tax_table: [C, B, B, A, B, A, B, B, NONE, A, D, B, B, A, B]
 
 - name: Default local tables, 2017
   # 2017 selector (PDF page 19), row and table by state:
@@ -909,7 +1119,7 @@
   # IL: "... or any other locality that imposes a local sales tax" -> A
   # LA: "... or any other locality that imposes a local sales tax" -> B
   # MO: "Any locality that imposes a local sales tax" -> B
-  # MS: "City of Jackson only" -> A
+  # MS: no other-locality row -> NONE (only Jackson and Tupelo are named)
   # NC: "Any locality that imposes a local sales tax" -> A
   # NY: "Any other locality that imposes a local sales tax" -> D
   # SC: "... or any other locality that imposes a local sales tax" -> B
@@ -996,7 +1206,7 @@
         members: [person_VA]
         state_code: VA
   output:
-    local_sales_tax_table: [C, B, B, A, B, A, B, B, A, A, D, B, B, A, B]
+    local_sales_tax_table: [C, B, B, A, B, A, B, B, NONE, A, D, B, B, A, B]
 
 - name: Default local tables, 2018
   # 2018 selector (PDF page 18), row and table by state:
@@ -1008,7 +1218,7 @@
   # IL: "... or any other locality that imposes a local sales tax" -> A
   # LA: "... or any other locality that imposes a local sales tax" -> B
   # MO: "Any locality that imposes a local sales tax" -> B
-  # MS: "City of Jackson only" -> A
+  # MS: no other-locality row -> NONE (only Jackson and Tupelo are named)
   # NC: "Any locality that imposes a local sales tax" -> A
   # NY: "Any other locality that imposes a local sales tax" -> D
   # SC: "... or any other locality that imposes a local sales tax" -> B
@@ -1095,7 +1305,7 @@
         members: [person_VA]
         state_code: VA
   output:
-    local_sales_tax_table: [C, B, B, A, B, A, B, B, A, A, D, B, B, A, B]
+    local_sales_tax_table: [C, B, B, A, B, A, B, B, NONE, A, D, B, B, A, B]
 
 - name: Default local tables, 2019
   # 2019 selector (PDF page 19), row and table by state:
@@ -1107,7 +1317,7 @@
   # IL: "... or any other locality that imposes a local sales tax" -> A
   # LA: "... or any other locality that imposes a local sales tax" -> C
   # MO: "Any locality that imposes a local sales tax" -> B
-  # MS: "City of Jackson only" -> A
+  # MS: no other-locality row -> NONE (only Jackson and Tupelo are named)
   # NC: "Any locality that imposes a local sales tax" -> A
   # NY: "Any other locality that imposes a local sales tax" -> D
   # SC: "... or any other locality that imposes a local sales tax" -> C
@@ -1194,7 +1404,7 @@
         members: [person_VA]
         state_code: VA
   output:
-    local_sales_tax_table: [C, C, B, A, B, A, C, B, A, A, D, C, C, A, C]
+    local_sales_tax_table: [C, C, B, A, B, A, C, B, NONE, A, D, C, C, A, C]
 
 - name: Default local tables, 2020
   # 2020 selector (PDF page 18), row and table by state:
@@ -1206,7 +1416,7 @@
   # IL: "... or any other locality that imposes a local sales tax" -> A
   # LA: "... or any other locality that imposes a local sales tax" -> C
   # MO: "Any locality that imposes a local sales tax" -> B
-  # MS: "City of Jackson only" -> A
+  # MS: no other-locality row -> NONE (only Jackson and Tupelo are named)
   # NC: "Any locality that imposes a local sales tax" -> A
   # NY: "Any other locality that imposes a local sales tax" -> D
   # SC: "... or any other locality that imposes a local sales tax" -> C
@@ -1293,7 +1503,7 @@
         members: [person_VA]
         state_code: VA
   output:
-    local_sales_tax_table: [C, C, B, A, A, A, C, B, A, A, D, C, B, A, B]
+    local_sales_tax_table: [C, C, B, A, A, A, C, B, NONE, A, D, C, B, A, B]
 
 - name: Default local tables, 2021
   # 2021 selector (PDF page 18), row and table by state:
@@ -1305,7 +1515,7 @@
   # IL: "... or any other locality that imposes a local sales tax" -> A
   # LA: "... or any other locality that imposes a local sales tax" -> C
   # MO: "Any locality that imposes a local sales tax" -> C
-  # MS: "City of Jackson only" -> A
+  # MS: no other-locality row -> NONE (only Jackson and Tupelo are named)
   # NC: "Any locality that imposes a local sales tax" -> A
   # NY: "Any other locality that imposes a local sales tax" -> D
   # SC: "... or any other locality that imposes a local sales tax" -> C
@@ -1392,7 +1602,7 @@
         members: [person_VA]
         state_code: VA
   output:
-    local_sales_tax_table: [C, C, B, A, C, A, C, C, A, A, D, C, C, A, B]
+    local_sales_tax_table: [C, C, B, A, C, A, C, C, NONE, A, D, C, C, A, B]
 
 - name: Jackson, Mississippi, 2015, the state's only row
   # 2015 selector, Mississippi: "Cities of Jackson and Tupelo only" -> B.
