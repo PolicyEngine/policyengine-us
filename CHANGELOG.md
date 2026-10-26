@@ -1,3 +1,11 @@
+## [2.64.0] - 2026-10-26
+
+### Added
+
+- Model the IRS local general sales tax worksheet for the optional sales tax deduction: the Optional Local Sales Tax Tables (with the selector's named counties and cities) and the ratio method, with official locality rates for New York, Virginia and the Streamlined Sales Tax states, and inputs for a household's combined or local rate elsewhere. Without an entered rate, the local amount in the 16 local-sales-tax states with no official rate file in this build (AL, AK, AZ, CA, CO, FL, HI, ID, IL, LA, MO, MS, NM, PA, SC and TX) is now $0; it was 20% of the state table amount.
+  Preserve supplied county geography carried into later dataset years when resolving local sales tax rates and tables.
+
+
 ## [2.63.4] - 2026-10-26
 
 ### Fixed
