@@ -12,14 +12,14 @@
   output:
     state_has_universal_free_school_meals: false
 
-- name: Maine provides universal free meals from SY 2022-23.
+- name: Maine provides universal free meals under 20-A M.R.S. § 6602(1)(H)-(I) in 2023.
   period: 2023
   input:
     state_code: ME
   output:
     state_has_universal_free_school_meals: true
 
-- name: Maine had no standing universal program before LD 1679 took effect.
+- name: Maine had no universal program on January 1, 2021, before P.L. 2021, c. 398 took effect.
   period: 2021
   input:
     state_code: ME
@@ -40,14 +40,14 @@
   output:
     state_has_universal_free_school_meals: false
 
-- name: Massachusetts provides universal free meals from FY24.
+- name: Massachusetts universal free meals continue under M.G.L. c. 69, section 1C in 2024.
   period: 2024
   input:
     state_code: MA
   output:
     state_has_universal_free_school_meals: true
 
-- name: Massachusetts had no universal program before FY24 budget took effect.
+- name: Massachusetts had no universal program in calendar 2022 (read on January 1, before SY 2022-23).
   period: 2022
   input:
     state_code: MA
@@ -96,14 +96,14 @@
   output:
     state_has_universal_free_school_meals: false
 
-- name: Vermont provides universal free meals from SY 2023-24.
+- name: Vermont universal free meals continue under Act 64 of 2023 in 2024.
   period: 2024
   input:
     state_code: VT
   output:
     state_has_universal_free_school_meals: true
 
-- name: Vermont had no universal program before Act 64 (2023) took effect.
+- name: Vermont had no universal program in calendar 2022 (read on January 1, before Act 151 took effect for SY 2022-23).
   period: 2022
   input:
     state_code: VT
@@ -145,3 +145,125 @@
   output:
     # CA universal active since 2022-07-01; TX never; NY not until 2025-07-01.
     state_has_universal_free_school_meals: [true, false, false]
+
+# Annual periods read parameters on January 1. A start date of July 1, 2022
+# first affects calendar 2023.
+# Massachusetts: St. 2022, c. 126, item 7053-1925 funded universal meals for
+# SY 2022-23 (from 2022-07-01); M.G.L. c. 69, section 1C applies from
+# 2023-07-01.
+- name: Massachusetts provides universal free meals in 2023 under the FY2023 budget.
+  period: 2023
+  input:
+    state_code: MA
+  output:
+    state_has_universal_free_school_meals: true
+
+# Vermont: Act 151 of 2022 made meals universal for SY 2022-23 (effective
+# 2022-07-01); Act 64 of 2023 continues them from 2023-07-01.
+- name: Vermont provides universal free meals in 2023 under Act 151 of 2022.
+  period: 2023
+  input:
+    state_code: VT
+  output:
+    state_has_universal_free_school_meals: true
+
+# Nevada: State ARPA funds paid for universal meals in SY 2022-23 and
+# SY 2023-24 (2022-07-01 to 2024-06-30). A.B. 319, which would have funded
+# SY 2024-25, was vetoed, so the parameter is false from 2024-07-01.
+- name: Nevada had no universal program in calendar 2022 (read on January 1, before SY 2022-23).
+  period: 2022
+  input:
+    state_code: NV
+  output:
+    state_has_universal_free_school_meals: false
+
+- name: Nevada provides universal free meals in 2023 with State ARPA funds.
+  period: 2023
+  input:
+    state_code: NV
+  output:
+    state_has_universal_free_school_meals: true
+
+- name: Nevada universal free meals continue in 2024, read on January 1 during SY 2023-24.
+  period: 2024
+  input:
+    state_code: NV
+  output:
+    state_has_universal_free_school_meals: true
+
+- name: Nevada universal free meals ended after SY 2023-24.
+  period: 2025
+  input:
+    state_code: NV
+  output:
+    state_has_universal_free_school_meals: false
+
+# Annual periods read January 1. CA (AB 130) starts 2022-07-01, and ME's
+# program (P.L. 2021, c. 398, Part OOOO, approved July 1, 2021) took effect
+# with SY 2022-23, its first funded year, so calendar 2022 is universal in
+# neither state.
+- name: California and Maine universal free meals are not yet in force in 2022.
+  period: 2022
+  input:
+    state_code: [CA, ME]
+  output:
+    state_has_universal_free_school_meals: [false, false]
+
+# CO (HB 22-1414), MI (PA 103 of 2023), MN (Laws 2023, c. 18) and NM (SB 4)
+# start 2023-07-01, after the January 1, 2023 reading.
+- name: Colorado, Michigan, Minnesota and New Mexico universal free meals are not yet in force in 2023.
+  period: 2023
+  input:
+    state_code: [CO, MI, MN, NM]
+  output:
+    state_has_universal_free_school_meals: [false, false, false, false]
+
+# NY (Chapter 56 of the Laws of 2025) starts 2025-07-01.
+- name: New York universal free meals are not yet in force in 2025.
+  period: 2025
+  input:
+    state_code: NY
+  output:
+    state_has_universal_free_school_meals: false
+
+# Connecticut: SMART funds made meals universal for SY 2022-23 (2022-07-01 to
+# 2023-06-30). Read on January 1: 2022 is before the start, 2023 is inside
+# SY 2022-23, and 2024 is after the end.
+- name: Connecticut had no universal program in calendar 2022 (read on January 1, before SY 2022-23).
+  period: 2022
+  input:
+    state_code: CT
+  output:
+    state_has_universal_free_school_meals: false
+
+- name: Connecticut provides universal free meals in 2023 with SMART funds.
+  period: 2023
+  input:
+    state_code: CT
+  output:
+    state_has_universal_free_school_meals: true
+
+- name: Connecticut universal free meals ended after SY 2022-23.
+  period: 2024
+  input:
+    state_code: CT
+  output:
+    state_has_universal_free_school_meals: false
+
+# Michigan: School Aid Act section 30d is allocated one state fiscal year at a
+# time; the last enacted allocation (2026 PA 25) is for 2026-2027, so the
+# parameter is false from 2027-10-01. Calendar 2027 reads January 1, 2027
+# (true); calendar 2028 reads January 1, 2028 (false).
+- name: Michigan universal free meals continue in 2027 under the FY2026-27 allocation.
+  period: 2027
+  input:
+    state_code: MI
+  output:
+    state_has_universal_free_school_meals: true
+
+- name: Michigan universal free meals have no enacted allocation in 2028.
+  period: 2028
+  input:
+    state_code: MI
+  output:
+    state_has_universal_free_school_meals: false

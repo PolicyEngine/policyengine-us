@@ -1,0 +1,35 @@
+- name: A person's wages count as reported in W-2 box 1, after a 401(k) deferral
+  # $10,000 - $6,000 = $4,000.
+  period: 2025
+  input:
+    people:
+      person:
+        age: 17
+        employment_income: 10_000
+        traditional_401k_contributions: 6_000
+  output:
+    standard_deduction_worksheet_earned_income_person: 4_000
+
+- name: Farm income counts net of the deductible part of self-employment tax
+  # $15,000 - $15,000 x 0.9235 x 15.3% / 2 = $13,940.28.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 17
+        farm_operations_income: 15_000
+  output:
+    standard_deduction_worksheet_earned_income_person: 13_940.28
+
+- name: A loss is kept, not floored, so a joint return can net it against the other spouse
+  # $1,000 of wages less a $5,000 business loss.
+  period: 2025
+  input:
+    people:
+      person:
+        age: 17
+        employment_income: 1_000
+        self_employment_income: -5_000
+  output:
+    standard_deduction_worksheet_earned_income_person: -4_000
