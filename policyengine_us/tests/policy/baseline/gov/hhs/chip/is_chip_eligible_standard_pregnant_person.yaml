@@ -602,3 +602,57 @@
         state_code: CO
   output:
     is_chip_eligible_standard_pregnant_person: true
+
+# West Virginia's Medicaid pregnancy limit is 190% FPL (185% plus the 5
+# percentage point disregard), and its separate CHIP pregnancy band runs above
+# it to 305%. Both start July 1, 2019, so 2020 is the first annual year. 2020
+# household of 2 (FPG 17,240): 17,240 x 1.90 / 12 = 2,729.67 -> $2,730 a month
+# ($32,760 a year). At $2,730 a month the applicant stays in Medicaid; at
+# $2,731 a month ($32,772 a year) she moves to standard pregnancy CHIP.
+- name: Case 21, West Virginia pregnant applicant at the $2,730 Medicaid ceiling stays in Medicaid in 2020.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        employment_income: 32_760
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    medicaid_household_size: 2
+    is_pregnant_for_medicaid: true
+    medicaid_category: PREGNANT
+    is_medicaid_eligible: true
+    is_chip_eligible_standard_pregnant_person: false
+    chip_category: NONE
+
+- name: Case 22, West Virginia pregnant applicant $1 above the Medicaid ceiling moves to standard pregnancy CHIP in 2020.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        employment_income: 32_772
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    medicaid_household_size: 2
+    is_pregnant_for_medicaid: false
+    medicaid_category: NONE
+    is_medicaid_eligible: false
+    is_chip_eligible_standard_pregnant_person: true
+    chip_category: PREGNANT_STANDARD
