@@ -345,5 +345,115 @@ def test_reload_reinstall_write_and_read():
     assert scalar(simulation, PUBLIC, "2024") == 24_000
 
 
+@pytest.mark.parametrize("warm_source", (False, True))
+def test_dataset_rebuild_refreshes_discarded_holder_caches(warm_source):
+    from policyengine_core.data import Dataset
+
+    simulation = fresh()
+    assert scalar(simulation, "independent_formula", "2023") == 77
+    independent_holder = simulation.get_holder("independent_formula")
+    independent_key = ("independent_formula", period("2023"))
+    independent_fast = simulation._fast_cache[independent_key]
+    if warm_source:
+        assert scalar(simulation, PUBLIC, "2023") == 0
+
+    class TinyDataset:
+        data_format = Dataset.TIME_PERIOD_ARRAYS
+        time_period = "2023"
+
+        def load(self):
+            return {
+                "person_id": {"2023": np.array([1])},
+                "household_id": {"2023": np.array([1])},
+                "person_household_id": {"2023": np.array([1])},
+                PUBLIC: {"2023": np.array([1.0])},
+            }
+
+    simulation.dataset = TinyDataset()
+    simulation.build_from_dataset()
+    assert scalar(simulation, PUBLIC + "_reported", "2023") == 1
+    assert scalar(simulation, PUBLIC, "2023") == 1
+    # Core replaces populations during dataset loading. Retain its former
+    # holder here to audit the adapter's treatment of the detached cache.
+    assert float(independent_holder.get_array(period("2023"))[0]) == 77
+    if not warm_source:
+        # No source read means no cutoff and no adapter eviction, including
+        # a cached reader whose former holder Core itself has detached.
+        assert simulation._fast_cache[independent_key] is independent_fast
+
+
+def test_dataset_rebuild_keeps_new_input_provenance_when_old_cache_shares_key():
+    from policyengine_core.data import Dataset
+
+    simulation = SimulationBuilder().build_from_variables(make_system(), {})
+    assert scalar(simulation, PUBLIC, "2023") == 0
+    since = earliest_source_dependency(simulation, requested="2023")
+    assert since is not None
+    assert scalar(simulation, "independent_input", "2023") == 0
+    old_holder = simulation.get_holder("independent_input")
+    assert old_holder.is_derived(period("2023"))
+    assert sequence_number(simulation, "independent_input", "2023") >= since
+
+    class TinyDataset:
+        data_format = Dataset.TIME_PERIOD_ARRAYS
+        time_period = "2023"
+
+        def load(self):
+            return {
+                "person_id": {"2023": np.array([1])},
+                "household_id": {"2023": np.array([1])},
+                "person_household_id": {"2023": np.array([1])},
+                # Store this before the benefit write so an old derived
+                # cache with the same key cannot unregister the new input.
+                "independent_input": {"2023": np.array([99.0])},
+                PUBLIC: {"2023": np.array([1.0])},
+            }
+
+    simulation.dataset = TinyDataset()
+    simulation.build_from_dataset()
+    current_holder = simulation.get_holder("independent_input")
+    assert current_holder is not old_holder
+    np.testing.assert_array_equal(stored(simulation, "independent_input", "2023"), [99])
+    assert current_holder._is_input(period("2023"))
+    assert period("2023") in simulation._get_set_input_periods("independent_input")
+    snapshot = hooks.export_source_inputs(simulation)
+    person = next(iter(snapshot["sources"]["people"].values()))
+    assert person["independent_input"]["2023"] == 99
+    assert scalar(simulation, PUBLIC, "2023") == 1
+
+
+@pytest.mark.parametrize("initial", (False, True), ids=("raw_source", "initial_source"))
+def test_public_write_evicts_exact_reported_memo_without_dropping_other_caches(initial):
+    simulation = fresh()
+    assert scalar(simulation, "independent_formula", "2024") == 77
+    independent_key = ("independent_formula", period("2024"))
+    independent_fast = simulation._fast_cache[independent_key]
+    if initial:
+        SimulationBuilder().build_from_variables(
+            simulation.tax_benefit_system,
+            {PUBLIC: {"2024": [12_000.0]}},
+            simulation=simulation,
+        )
+    else:
+        simulation.get_holder(PUBLIC).put_in_cache(
+            np.array([12_000.0]), period("2024"), derived=False
+        )
+    assert scalar(simulation, PUBLIC + "_reported", "2024") == 12_000
+    # This exact read returns the source view without storing a derived
+    # reported array. There is no post-cutoff formula array to purge.
+    assert (
+        simulation.get_holder(PUBLIC + "_reported")._memory_storage.get(period("2024"))
+        is None
+    )
+    epoch = simulation._input_epoch
+    simulation.set_input(PUBLIC, "2024", [24_000.0])
+    assert scalar(simulation, PUBLIC + "_reported", "2024") == 24_000
+    assert simulation._fast_cache[independent_key] is independent_fast
+    assert stored(simulation, "independent_formula", "2024") is independent_fast
+    assert simulation._input_epoch == epoch
+
+
 if __name__ == "__main__":
-    raise SystemExit(pytest.main([__file__, "-q"]))
+    raise SystemExit(
+        pytest.main([__file__, "-q", "--confcutdir", str(Path(__file__).parent)])
+    )

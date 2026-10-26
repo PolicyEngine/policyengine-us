@@ -18,6 +18,7 @@ from contextvars import ContextVar
 from dataclasses import dataclass
 from functools import wraps
 from pathlib import Path
+from weakref import ref
 
 from policyengine_core.data_storage.store_history import next_sequence_number
 from policyengine_core.periods import period as to_period
@@ -40,6 +41,9 @@ _PROVENANCE = "_social_security_input_provenance"
 
 _initial_social_security_ingress = ContextVar("initial_ss_ingress", default=False)
 _initial_social_security_writes = ContextVar("initial_ss_writes", default=None)
+_loading_social_security_cache_entries = ContextVar(
+    "loading_ss_cache_entries", default=()
+)
 _reported_request = ContextVar("reported_ss_request", default=None)
 _subsampling_social_security_sources = ContextVar(
     "subsampling_ss_sources", default=None
@@ -471,6 +475,76 @@ def _select_subsample_sources(simulation, metadata, person_ids):
     }
 
 
+def _derived_cached_returns(simulation):
+    """Remember numbered formula returns without retaining an old dataset.
+
+    Core's dataset rebuild detaches holders but leaves their fast-cache
+    returns. Weak references and sequence numbers let the bounded refresh
+    remove those returns after a source write, without retaining populations
+    or using detached holders to modify the new input registry.
+    """
+    fast_cache = getattr(simulation, "_fast_cache", {})
+    if not fast_cache:
+        return {}
+    holders = {
+        holder.variable.name: holder
+        for population in simulation.populations.values()
+        for holder in population._holders.values()
+    }
+
+    def has_source(holder, period, branches):
+        return holder is not None and any(
+            storage is not None
+            and storage.has(period, branch)
+            and not storage.is_derived(period, branch)
+            for branch in branches
+            for storage in (holder._memory_storage, holder._disk_storage)
+        )
+
+    entries = {}
+    for key, array in fast_cache.items():
+        name, requested = key
+        holder = holders.get(name)
+        if holder is None:
+            continue
+        period = holder._storage_period(requested)
+        if name in _REPORTED_COMPONENTS and not holder.variable.is_neutralized:
+            branches = _branches(simulation)
+            # A read-time explicit/public source can shadow a physical
+            # reported cache. Such a returned input is not a derived array.
+            if has_source(holder, period, branches):
+                continue
+            exact_only = period.unit == "year" and period.size > 1
+            explicit_before = any(
+                (known == period if exact_only else known.start <= period.start)
+                and has_source(holder, known, branches)
+                for known in _physical_periods(holder)
+            )
+            if not explicit_before and has_source(
+                holders.get(name.removesuffix("_reported")),
+                period,
+                _source_branches(simulation),
+            ):
+                continue
+        branch = holder._branch_storing(period, simulation.branch_name)
+        if branch is None:
+            continue
+        if holder._memory_storage.has(period, branch):
+            storage = holder._memory_storage
+            storage_key = f"{branch}:{period}"
+        else:
+            storage = holder._disk_storage
+            storage_key = f"{branch}_{period}"
+        if storage.is_derived(period, branch):
+            number = storage._sequence_numbers.get(storage_key)
+            if number is not None:
+                # Do not read disk arrays: decoding produces a new object.
+                # The fast-cache return already has the selected slot's
+                # derivation/sequence metadata; retain only a weak reference.
+                entries[key] = (number, ref(array))
+    return entries
+
+
 def _purge_derived_arrays(simulation, public, period):
     """Drop only derived arrays Core numbers as possibly dependent.
 
@@ -511,6 +585,18 @@ def _purge_derived_arrays(simulation, public, period):
                     ):
                         _delete_exact(holder, period, branch, tier=tier)
                         dropped += 1
+    for owner, entries in _loading_social_security_cache_entries.get():
+        if owner is not simulation:
+            continue
+        for key, (number, reference) in tuple(entries.items()):
+            if number >= since:
+                array = reference()
+                if array is not None and simulation._fast_cache.get(key) is array:
+                    # This numbered formula array remains in the fast cache
+                    # after Core detached its original holder during rebuild.
+                    simulation._fast_cache.pop(key)
+                    dropped += 1
+                entries.pop(key)
     if not dropped:
         return 0
     # _delete_exact uses Holder._evict_fast_cache per removed key. Also drop
@@ -732,6 +818,16 @@ def install_social_security_input_compatibility():
                 if registered and contexts and branch_name == "default"
                 else branch_name
             )
+            if name in SOCIAL_SECURITY_COMPONENTS:
+                reported_holder = _holder(simulation, f"{name}_reported")
+                if reported_holder is not None:
+                    # An exact reported read can memoize the public input
+                    # itself, without storing any derived array. Evict that
+                    # changed source view exactly as Core evicts the written
+                    # holder's own memo; unrelated cached returns stay intact.
+                    reported_holder._evict_fast_cache(
+                        holder._storage_period(period), effective_branch
+                    )
             writes = _initial_social_security_writes.get()
             if name in SOCIAL_SECURITY_COMPONENTS and registered and writes is not None:
                 writes.setdefault(simulation, set()).add(
@@ -782,6 +878,14 @@ def install_social_security_input_compatibility():
             if writes is None:
                 writes = {}
             writes_token = _initial_social_security_writes.set(writes)
+            cache_entries_token = _loading_social_security_cache_entries.set(
+                (
+                    *_loading_social_security_cache_entries.get(),
+                    (first, _derived_cached_returns(first)),
+                )
+                if dataset
+                else _loading_social_security_cache_entries.get()
+            )
             result = None
             try:
                 result = original(first, *args, **kwargs)
@@ -789,33 +893,36 @@ def install_social_security_input_compatibility():
             finally:
                 _initial_social_security_writes.reset(writes_token)
                 _initial_social_security_ingress.reset(token)
-                if outermost:
-                    targets = dict(writes)
-                    target = first if dataset else result
-                    if target is None and not dataset:
-                        target = kwargs.get("simulation")
-                        if target is None and len(args) > 2:
-                            target = args[2]
-                    if target is not None:
-                        targets.setdefault(target, set())
-                    for target, loaded in targets.items():
-                        # During routing, projected twins temporarily retain
-                        # any both-name public final overrides. Conversion
-                        # then replaces those projection arrays with the
-                        # independently serialized public source data.
-                        migrate_social_security_inputs(
-                            target, loaded_public_inputs=loaded
-                        )
-                        rebuilding = _subsampling_social_security_sources.get()
-                        if (
-                            dataset
-                            and rebuilding is not None
-                            and rebuilding[0] is target
-                        ):
-                            metadata = _select_subsample_sources(
-                                target, rebuilding[1], rebuilding[2]
+                try:
+                    if outermost:
+                        targets = dict(writes)
+                        target = first if dataset else result
+                        if target is None and not dataset:
+                            target = kwargs.get("simulation")
+                            if target is None and len(args) > 2:
+                                target = args[2]
+                        if target is not None:
+                            targets.setdefault(target, set())
+                        for target, loaded in targets.items():
+                            # During routing, projected twins temporarily retain
+                            # any both-name public final overrides. Conversion
+                            # then replaces those projection arrays with the
+                            # independently serialized public source data.
+                            migrate_social_security_inputs(
+                                target, loaded_public_inputs=loaded
                             )
-                        _restore_automatic_reported_metadata(target, metadata)
+                            rebuilding = _subsampling_social_security_sources.get()
+                            if (
+                                dataset
+                                and rebuilding is not None
+                                and rebuilding[0] is target
+                            ):
+                                metadata = _select_subsample_sources(
+                                    target, rebuilding[1], rebuilding[2]
+                                )
+                            _restore_automatic_reported_metadata(target, metadata)
+                finally:
+                    _loading_social_security_cache_entries.reset(cache_entries_token)
 
         return load
 
