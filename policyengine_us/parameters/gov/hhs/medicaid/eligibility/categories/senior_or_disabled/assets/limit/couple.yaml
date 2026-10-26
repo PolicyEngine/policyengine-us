@@ -10,8 +10,6 @@ metadata:
       href: https://www.kff.org/report-section/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey-appendix-tables/
     - title: "Asset Limit Changes for Non-MAGI Medi-Cal | California DHCS (asset limit reinstated at $130,000 plus $65,000 per additional household member effective January 1, 2026)"
       href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/Pages/Asset-Limit-Changes-for-Non-MAGI-Medi-Cal.aspx
-    - title: "California DHCS All County Welfare Directors Letter 21-31, Asset Limit Changes for Non-MAGI Medi-Cal (Phase I) #page 2-4"
-      href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/21-31.pdf#page=2
     - title: California Senate Bill 164 (Statutes of 2026, Chapter 27), Section 69 - Welfare and Institutions Code 14005.62(a), operative July 1, 2027
       href: https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260SB164
     - title: "California DHCS All County Welfare Directors Letter 25-14 (reinstatement of the non-MAGI Medi-Cal asset limit)"
@@ -28,8 +26,6 @@ AR:
   2024-01-01: 14_130
 CA:
   2015-01-01: 3_000
-  # Annual calculations read parameters on January 1, so the July 1, 2022 value first applies in 2023.
-  2022-07-01: 195_000
   2024-01-01: .inf
   2026-01-01: 195_000
   # Annual calculations read parameters on January 1, so the July 1, 2027 value first applies in 2028.
