@@ -49,6 +49,12 @@ jobs:
       - name: Check formatting
         if: ${{ !cancelled() && steps.lint-install.outcome == 'success' }}
         run: uv run --no-sync ruff format --check .
+      # The test jobs resolve the latest compatible core. Before 3.33.1,
+      # core's subsample reaches spm.py's export override, so the start-month
+      # tests also run here, on the locked core.
+      - name: Test the start month on the locked core
+        if: ${{ !cancelled() && steps.lint-install.outcome == 'success' }}
+        run: uv run --no-sync pytest policyengine_us/tests/microsimulation/data/test_unemployment_compensation_start_month.py -q
       - name: Check changed changelog fragments
         if: ${{ !cancelled() }}
         shell: bash

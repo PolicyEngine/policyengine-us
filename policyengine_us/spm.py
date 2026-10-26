@@ -1020,11 +1020,13 @@ class SPMSimulationMixin:
         # Core before 3.33.1 subsamples by exporting every period a holder
         # knows, calculated ones included, and reloading them all as inputs
         # (policyengine-core#633); from 3.33.1 its subsample rebuilds from
-        # recorded inputs and doesn't call this (policyengine-core#573). A
-        # presence-tested input goes out only for the periods it is an input
-        # where this simulation reads it, on this branch or one it inherits
-        # from. A calculated default, this branch's or an inherited one, would
-        # otherwise come back as a supplied column of zeros.
+        # recorded inputs and doesn't call this (policyengine-core#573), so
+        # there this changes only to_input_dataframe and to_input_dict with
+        # include_computed_variables=True. A presence-tested input goes out
+        # only for the periods it is an input where this simulation reads
+        # it, on this branch or one it inherits from. A calculated default,
+        # this branch's or an inherited one, would otherwise come back as a
+        # supplied column of zeros.
         if include_computed_variables and variable_name in PRESENCE_TESTED_INPUTS:
             holder = self.get_holder(variable_name)
             return sorted(holder.get_input_periods(self.branch_name), key=str)
