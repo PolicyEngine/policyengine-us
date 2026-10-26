@@ -5,7 +5,7 @@ values:
     - self_employment_income
     - farm_operations_income
     - social_security
-    - unemployment_compensation
+    - total_unemployment_compensation
     - workers_compensation
     - pension_income
     - alimony_income
@@ -16,7 +16,7 @@ values:
     - veterans_benefits
     # PolicyEngine records military retirement separately from pension_income,
     # so it is listed on its own here.
-    - military_retirement_pay
+    - military_retirement_income
     # Sources excluded under Section 8(4):
     # - ssi  # §8(4)(ll) excludes Supplemental Security Income for a child;
     #   KY (unlike WV) does not count child SSI.

@@ -16,8 +16,8 @@ values:
     # TANF is countable per Rule §2.C.4, but excluded here to avoid
     # circular dependency: tanf → childcare_expenses → me_ccap → me_ccap_countable_income → tanf
     - veterans_benefits
-    - military_retirement_pay
-    - unemployment_compensation
+    - military_retirement_income
+    - total_unemployment_compensation
     - workers_compensation
     - interest_income
     - dividend_income

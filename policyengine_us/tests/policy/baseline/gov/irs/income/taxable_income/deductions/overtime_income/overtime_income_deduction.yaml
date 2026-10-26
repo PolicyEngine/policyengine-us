@@ -28,7 +28,7 @@
   output:
     overtime_income_deduction: 0
 
-- name: Partially phased out
+- name: Joint below the $300,000 threshold is not phased out
   period: 2025
   input:
     overtime_income_deduction_ssn_requirement_met: true
@@ -37,3 +37,492 @@
     filing_status: JOINT
   output:
     overtime_income_deduction: 10_000
+
+- name: Income excluded under section 931 counts toward the phase-out
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 10_000
+    adjusted_gross_income: 140_000
+    specified_possession_income: 20_000
+    filing_status: SINGLE
+  output:
+    # 26 U.S.C. 225(b)(2)(B): modified AGI 160,000, 10 whole $1,000 steps x $100.
+    overtime_income_deduction: 9_000
+
+- name: Single at the phase-out threshold keeps the full deduction
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 12_500
+    adjusted_gross_income: 150_000
+    filing_status: SINGLE
+  output:
+    overtime_income_deduction: 12_500
+
+- name: Single $999 over the threshold has no full $1,000 increment
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 12_500
+    adjusted_gross_income: 150_999
+    filing_status: SINGLE
+  output:
+    # Schedule 1-A line 19: 999 / 1,000 = 0.999, decreased to 0.
+    overtime_income_deduction: 12_500
+
+- name: Single $1,000 over the threshold loses $100
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 12_500
+    adjusted_gross_income: 151_000
+    filing_status: SINGLE
+  output:
+    overtime_income_deduction: 12_400
+
+- name: Single $1,001 over the threshold still loses $100
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 12_500
+    adjusted_gross_income: 151_001
+    filing_status: SINGLE
+  output:
+    # Schedule 1-A line 19: 1,001 / 1,000 = 1.001, decreased to 1.
+    overtime_income_deduction: 12_400
+
+- name: Single one dollar short of full phase-out keeps $100
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 12_500
+    adjusted_gross_income: 274_999
+    filing_status: SINGLE
+  output:
+    # 124 full increments: 12,500 - 12,400.
+    overtime_income_deduction: 100
+
+- name: Single fully phased out at 125 increments
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 12_500
+    adjusted_gross_income: 275_000
+    filing_status: SINGLE
+  output:
+    overtime_income_deduction: 0
+
+- name: Joint $999 over the $300,000 threshold keeps the full $25,000
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 25_000
+    adjusted_gross_income: 300_999
+    filing_status: JOINT
+  output:
+    overtime_income_deduction: 25_000
+
+- name: Joint $1,000 over the $300,000 threshold loses $100
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 25_000
+    adjusted_gross_income: 301_000
+    filing_status: JOINT
+  output:
+    overtime_income_deduction: 24_900
+
+- name: Joint one dollar short of full phase-out keeps $100
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 25_000
+    adjusted_gross_income: 549_999
+    filing_status: JOINT
+  output:
+    overtime_income_deduction: 100
+
+- name: Joint fully phased out at 250 increments
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 25_000
+    adjusted_gross_income: 550_000
+    filing_status: JOINT
+  output:
+    overtime_income_deduction: 0
+
+- name: Head of household uses the $150,000 threshold and the $12,500 cap
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 25_000
+    adjusted_gross_income: 151_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    overtime_income_deduction: 12_400
+
+- name: Surviving spouse is not married and uses the $150,000 threshold and the $12,500 cap
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 25_000
+    adjusted_gross_income: 151_000
+    filing_status: SURVIVING_SPOUSE
+  output:
+    overtime_income_deduction: 12_400
+
+- name: Married filing separately below the threshold gets no deduction
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 12_500
+    adjusted_gross_income: 80_000
+    filing_status: SEPARATE
+  output:
+    # 26 U.S.C. 225(e): a married individual must file a joint return.
+    overtime_income_deduction: 0
+
+- name: A married couple filing separately gets no deduction on either return
+  period: 2025
+  input:
+    people:
+      spouse1:
+        age: 40
+        ssn_card_type: CITIZEN
+        fsla_overtime_premium: 12_500
+      spouse2:
+        age: 39
+        ssn_card_type: CITIZEN
+        fsla_overtime_premium: 5_000
+    marital_units:
+      marital_unit:
+        members: [spouse1, spouse2]
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 80_000
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+        adjusted_gross_income: 0
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: TX
+  output:
+    # 26 U.S.C. 225(e): a married individual must file a joint return.
+    overtime_income_deduction: [0, 0]
+
+- name: The same couple filing jointly takes the deduction on their combined overtime
+  period: 2025
+  input:
+    people:
+      spouse1:
+        age: 40
+        ssn_card_type: CITIZEN
+        fsla_overtime_premium: 12_500
+      spouse2:
+        age: 39
+        ssn_card_type: CITIZEN
+        fsla_overtime_premium: 5_000
+    marital_units:
+      marital_unit:
+        members: [spouse1, spouse2]
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    # 12,500 + 5,000, under the $25,000 joint cap.
+    overtime_income_deduction: 17_500
+
+- name: Separated spouses with no qualifying person file separately and get no deduction
+  period: 2025
+  input:
+    people:
+      spouse1:
+        age: 40
+        ssn_card_type: CITIZEN
+        is_separated: true
+        fsla_overtime_premium: 12_500
+      spouse2:
+        age: 39
+        ssn_card_type: CITIZEN
+        fsla_overtime_premium: 5_000
+        is_separated: true
+    marital_units:
+      marital_unit:
+        members: [spouse1, spouse2]
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        adjusted_gross_income: 80_000
+      tax_unit2:
+        members: [spouse2]
+        adjusted_gross_income: 0
+    households:
+      household1:
+        members: [spouse1]
+        state_code: TX
+      household2:
+        members: [spouse2]
+        state_code: TX
+  output:
+    filing_status: [SEPARATE, SEPARATE]
+    overtime_income_deduction: [0, 0]
+
+- name: A separated spouse with a qualifying child files as head of household and keeps the deduction
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        ssn_card_type: CITIZEN
+        is_separated: true
+        fsla_overtime_premium: 12_500
+      child:
+        age: 10
+        ssn_card_type: CITIZEN
+      spouse:
+        age: 39
+        ssn_card_type: CITIZEN
+        is_separated: true
+    marital_units:
+      marital_unit:
+        members: [parent, spouse]
+      child_marital_unit:
+        members: [child]
+    tax_units:
+      tax_unit1:
+        members: [parent, child]
+        adjusted_gross_income: 80_000
+      tax_unit2:
+        members: [spouse]
+        adjusted_gross_income: 0
+    households:
+      household1:
+        members: [parent, child]
+        state_code: TX
+      household2:
+        members: [spouse]
+        state_code: TX
+  output:
+    # 26 U.S.C. 7703(b): considered unmarried, so 225(e) does not apply.
+    filing_status: [HEAD_OF_HOUSEHOLD, SEPARATE]
+    overtime_income_deduction: [12_500, 0]
+
+- name: A joint return claims the overtime of a spouse with a valid SSN when the other spouse has none
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        ssn_card_type: CITIZEN
+        fsla_overtime_premium: 5_000
+      spouse:
+        age: 38
+        ssn_card_type: OTHER_NON_CITIZEN
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # 26 U.S.C. 225(d)(1): only the spouse who received the overtime needs an SSN.
+    filing_status: JOINT
+    overtime_income_deduction_ssn_requirement_met: true
+    overtime_income_deduction: 5_000
+
+- name: Overtime received by a spouse without a valid SSN does not count
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        ssn_card_type: CITIZEN
+      spouse:
+        age: 38
+        ssn_card_type: OTHER_NON_CITIZEN
+        fsla_overtime_premium: 10_000
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # 26 U.S.C. 225(d)(1): the spouse who received the overtime needs the SSN.
+    filing_status: JOINT
+    overtime_income_deduction_ssn_requirement_met: true
+    overtime_income_deduction: 0
+
+- name: On a joint return with overtime on both sides, only the spouse with a valid SSN counts
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        ssn_card_type: CITIZEN
+        fsla_overtime_premium: 15_000
+      spouse:
+        age: 38
+        ssn_card_type: OTHER_NON_CITIZEN
+        fsla_overtime_premium: 20_000
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # The $25,000 joint cap applies to the $15,000 that counts, not to $35,000.
+    filing_status: JOINT
+    overtime_income_deduction_ssn_requirement_met: true
+    overtime_income_deduction: 15_000
+
+- name: A dependent's overtime does not count toward the filer's deduction
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 45
+        ssn_card_type: CITIZEN
+        employment_income: 60_000
+      teen:
+        age: 17
+        ssn_card_type: CITIZEN
+        employment_income: 8_000
+        tip_income: 6_000
+        treasury_tipped_occupation_code: 102
+        fsla_overtime_premium: 1_000
+    marital_units:
+      parent_marital_unit:
+        members: [parent]
+      teen_marital_unit:
+        members: [teen]
+    tax_units:
+      tax_unit:
+        members: [parent, teen]
+    households:
+      household:
+        members: [parent, teen]
+        state_code: TX
+  output:
+    # The teen's overtime and wages are the teen's own income (26 U.S.C. 73(a)), outside the parent's AGI.
+    filing_status: HEAD_OF_HOUSEHOLD
+    is_tax_unit_dependent: [false, true]
+    adjusted_gross_income: 60_000
+    overtime_income_deduction: 0
+
+- name: A filer's own overtime counts while a dependent's does not
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 45
+        ssn_card_type: CITIZEN
+        employment_income: 60_000
+        fsla_overtime_premium: 3_000
+      teen:
+        age: 17
+        ssn_card_type: CITIZEN
+        employment_income: 8_000
+        tip_income: 6_000
+        treasury_tipped_occupation_code: 102
+        fsla_overtime_premium: 1_000
+    marital_units:
+      parent_marital_unit:
+        members: [parent]
+      teen_marital_unit:
+        members: [teen]
+    tax_units:
+      tax_unit:
+        members: [parent, teen]
+    households:
+      household:
+        members: [parent, teen]
+        state_code: TX
+  output:
+    # Only the parent's $3,000 counts; the teen's $1,000 does not.
+    filing_status: HEAD_OF_HOUSEHOLD
+    is_tax_unit_dependent: [false, true]
+    adjusted_gross_income: 60_000
+    overtime_income_deduction: 3_000
+
+- name: An adult input as a dependent deducts nothing even as the only adult in the unit
+  period: 2025
+  input:
+    people:
+      adult:
+        age: 40
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+        fsla_overtime_premium: 1_000
+    tax_units:
+      tax_unit:
+        members: [adult]
+        filing_status: SINGLE
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [adult]
+        state_code: TX
+  output:
+    # A dependent's overtime stays off the unit's return, like the rest of the
+    # dependent's income (irs_gross_income).
+    overtime_income_deduction: 0
+
+- name: A filer under 18 deducts their own overtime, not an adult dependent's
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 17
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: false
+        fsla_overtime_premium: 3_000
+      parent:
+        age: 45
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+        fsla_overtime_premium: 500
+    marital_units:
+      filer_marital_unit:
+        members: [filer]
+      parent_marital_unit:
+        members: [parent]
+    tax_units:
+      tax_unit:
+        members: [filer, parent]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [filer, parent]
+        state_code: TX
+  output:
+    overtime_income_deduction: 3_000

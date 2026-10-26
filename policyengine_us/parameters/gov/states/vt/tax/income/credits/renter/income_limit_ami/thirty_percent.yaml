@@ -10,12 +10,33 @@ metadata:
   label: Vermont full renter credit income limit
   reference:
     # The table is derived from the official Vermont government website. The legal code refers to area median income.
+    # The published tables equal HUD's extremely low-income (ELI) limit. For Franklin
+    # and Grand Isle they use the average across Vermont's twelve HUD income-limit
+    # areas, rounded to the nearest $10 (32 V.S.A. § 6061(19)).
   - title: 32 V.S.A. §6066. Homestead Property Tax Credit and Renter Credit (b)(B)
     href: https://law.justia.com/codes/vermont/2022/title-32/chapter-154/section-6066/
+  - title: 32 V.S.A. § 6061(19), extremely low-income limit
+    href: https://legislature.vermont.gov/statutes/section/32/154/06061
+  - title: 2025 Renter Credit Website Calculator, 2025 Income Limits sheet
+    href: https://tax.vermont.gov/sites/tax/files/documents/2025%20Renter%20Credit%20Website%20Calculator.xlsx
+  - title: 2024 Renter Credit Website Calculator, 2024 Income Limits sheet
+    href: https://tax.vermont.gov/sites/tax/files/documents/2024%20Renter%20Credit%20Website%20Calculator.xlsx
+  - title: 2023 Renter Credit Website Calculator, 2023 Income Limits sheet
+    href: https://web.archive.org/web/20250526044955/https://tax.vermont.gov/document/2023-renter-credit-website-calculator
+  - title: HUD FY2025 Section 8 income limits (ELI columns)
+    href: https://www.huduser.gov/portal/datasets/il/il25/Section8-FY25.xlsx
+  - title: HUD FY2024 Section 8 income limits (ELI columns)
+    href: https://www.huduser.gov/portal/datasets/il/il24/Section8-FY24.xlsx
+  - title: HUD FY2023 Section 8 income limits (ELI columns)
+    href: https://www.huduser.gov/portal/datasets/il/il23/Section8-FY23.xlsx
+  - title: HUD FY2022 Section 8 income limits (ELI columns)
+    href: https://www.huduser.gov/portal/datasets/il/il22/Section8-FY22.xlsx
+  - title: HUD FY2021 Section 8 income limits (ELI columns)
+    href: https://www.huduser.gov/portal/datasets/il/il21/Section8-FY21.xlsx
   - title: 2021 Vermont instruction booklet
     href: https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2021.pdf#page=34
   - title: 2022 Vermont instruction booklet
-    href: https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf#page=35
+    href: https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf#page=36
   - title: Vt. 2023 Income Tax Return Booklet
     href: https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2023.pdf#page=36
   - title: Vt. 2024 Income Tax Return Booklet
@@ -294,7 +315,7 @@ metadata:
     2021-01-01: 26_500
     2022-01-01: 27_750
     2023-01-01: 30_000
-    2024-01-01: 30_000
+    2024-01-01: 31_200
     2025-01-01: 32_150
   CHITTENDEN_COUNTY_VT:
     2021-01-01: 28_750
@@ -382,7 +403,7 @@ metadata:
     2024-01-01: 36_580
     2025-01-01: 37_650
   CHITTENDEN_COUNTY_VT:
-    2021-01-01: 31_040
+    2021-01-01: 31_050
     2022-01-01: 34_800
     2023-01-01: 36_850
     2024-01-01: 38_550
@@ -600,6 +621,8 @@ metadata:
     2024-01-01: 47_340
     2025-01-01: 48_650
   WASHINGTON_COUNTY_VT:
+    # The TY2021 booklet prints $41,120. HUD's FY2021 limit, and every other
+    # county's 7-person value in the booklet, is $40,120.
     2021-01-01: 40_120
     2022-01-01: 41_910
     2023-01-01: 45_420

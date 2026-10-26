@@ -13,13 +13,87 @@
 # test growth, and --workers 1 everywhere except the partners target
 # (its largest batch measured 2.5 GB, so two-wide stays trivially safe).
 BATCH := python policyengine_us/tests/test_batched.py
+# CI's Baseline and Contrib jobs set POLICYENGINE_BATCH_WORKERS=2, which
+# overrides --workers below: test_batched.py then runs two batch subprocesses
+# per runner while its memory allows. Local runs keep the counts given here.
 TESTS := policyengine_us/tests
-# Run the expensive SPM construction/isolation tests in a separate process
-# before the remaining files on the same CI runner, releasing their heap.
-# The remaining group discovers every other Python test, including future files.
+# Run SPM construction/isolation tests in their own process on the existing
+# Microsimulation CI runner, before the dataset tests. Rest excludes these
+# files and runs every other Python test in REST_PYTHON_GROUPS below.
 REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 	$(TESTS)/core/test_spm_simulation_isolation.py \
 	$(TESTS)/core/test_spm_system.py
+# The remaining Python tests run as one pytest process per group, one after
+# another, so each exit releases its heap before the next group starts. As a
+# single process they peaked at 15.7 GB RSS on the 16 GB runner, with 1.5M
+# major page faults (CI run 37198184683). Four runs on 2026-10-04, such as
+# 37202679009, then lost the runner 1,424-1,454 tests into the step, inside
+# test_formulas_do_not_write_into_cached_arrays or at the start of
+# test_md_poverty_line_credit_invariants: "The runner has received a shutdown
+# signal", as test-yaml-reform records for a process past 16 GB.
+# Each file runs in the first group whose paths hold it: the listed heavy
+# modules, then core/, then policy/, and remaining takes every other file.
+# code_health/test_rest_python_groups.py checks that the groups together
+# collect each file of the old single process exactly once.
+# CI run 38141803955 measured RSS/wall: cached-arrays 3.3 GB/5:26,
+# heavy-a 8.1 GB/9:55 (including pending #10058), heavy-b 8.5 GB/7:31,
+# core 13.3 GB/11:51, policy 13.9 GB/8:46, remaining 14.4 GB/22:18.
+# JUnit measures per-file elapsed time, not memory. The extra boundaries
+# below isolate retained full models and target <= ~10 GB per process;
+# verify those estimates against each group's GNU time report in CI.
+# heavy-a also holds capital_gains_mtr_measurement (#10058): 396 s of
+# reformed household simulations in run 40045994536, with heavy-a at
+# 8.1 GiB/11:16.
+# SSI resource deeming retains a reformed system at import and builds another
+# in its grid fixture. Core reached 13.3 GB in CI run 38141803955 after this
+# and three smaller modules arrived; isolate SSI rather than filling heavy-a
+# (8.1 GB including the pending capital-gains MTR change).
+# CI does not run this target. tests/rest_python_shards.py reads these groups
+# from its dry run and spreads their files over parallel runners by recent
+# CI times, splitting a long group into chunks. A process still runs files
+# of one group only, in this order, so none holds more than its group here.
+REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core-heavy core policy-parameters policy remaining-heavy remaining
+REST_CACHED_ARRAY_TESTS := $(TESTS)/test_formulas_do_not_write_into_cached_arrays.py
+REST_HEAVY_A_TESTS := $(TESTS)/test_md_poverty_line_credit_invariants.py \
+	$(TESTS)/core/test_ald_determinism.py \
+	$(TESTS)/core/test_dependent_net_investment_income_invariants.py \
+	$(TESTS)/core/test_ssi_state_supplement_medicaid_dependency.py \
+	$(TESTS)/core/test_capital_gains_mtr_measurement.py
+REST_HEAVY_B_TESTS := $(TESTS)/core/test_marginal_tax_rate_coverage.py \
+	$(TESTS)/core/test_multi_year_simulation.py \
+	$(TESTS)/core/test_behavioral_response_measurements.py \
+	$(TESTS)/core/test_dependent_losses_agi_invariants.py
+# SSI runs before the federal-credit fixture and NY/AL pinned-system cache
+# are built. Pins have three bounded entries; keep them apart from the NIIT,
+# CTC and Medicaid systems below, which stay resident after their files end.
+REST_CORE_HEAVY_TESTS := $(TESTS)/core/test_ssi_resource_deeming_invariants.py \
+	$(TESTS)/test_federal_credit_limit_order.py \
+	$(TESTS)/test_pinned_branch_credit_dependents.py
+# These three parameter modules construct full reform trees; one also loads
+# a default Microsimulation only to read parameters. Release their heap before
+# the remaining policy tests, rather than stacking both in the 13.9 GB group.
+REST_POLICY_PARAMETER_TESTS := $(TESTS)/policy/baseline/parameters
+# The first four files retain three independent full systems (the two CTC
+# files share one). The last two use transient TX simulations and balance
+# elapsed time without warming the NY/AL pinned-system cache.
+REST_REMAINING_HEAVY_TESTS := $(TESTS)/test_niit_section_911_magi.py \
+	$(TESTS)/test_ctc_foreign_earned_income_exclusion.py \
+	$(TESTS)/test_ctc_foreign_earned_income_exclusion_property.py \
+	$(TESTS)/unit/test_medicaid_abd_ssi_rate_standard_properties.py \
+	$(TESTS)/test_capital_gain_distributions_loss_limit.py \
+	$(TESTS)/test_schedule_d_filer_net_capital_gain.py
+REST_LISTED_TESTS := $(REST_CACHED_ARRAY_TESTS) $(REST_HEAVY_A_TESTS) $(REST_HEAVY_B_TESTS) \
+	$(REST_CORE_HEAVY_TESTS) $(REST_POLICY_PARAMETER_TESTS) $(REST_REMAINING_HEAVY_TESTS)
+REST_IGNORES := $(addprefix --ignore=,$(TESTS)/policy/contrib $(TESTS)/microsimulation $(REST_SPM_TESTS))
+# $(call rest_pytest,<group>,<paths>,<more paths to ignore>) is the pytest
+# command for one group. With REST_REPORT_DIR set, each group writes its own
+# JUnit XML and GNU time report there: rest-python-<group>.xml and
+# rest-python-<group>-resources.txt; rest_python_shards.py names the groups
+# from these files. Unset, it is plain pytest, since macOS /usr/bin/time has
+# no -v.
+rest_pytest = $(strip $(if $(REST_REPORT_DIR),/usr/bin/time -v -o $(REST_REPORT_DIR)/rest-python-$(1)-resources.txt) \
+	pytest $(2) --maxfail=0 $(REST_IGNORES) $(addprefix --ignore=,$(3)) \
+	$(if $(REST_REPORT_DIR),--junitxml=$(REST_REPORT_DIR)/rest-python-$(1).xml))
 
 all: build
 format:
@@ -27,10 +101,40 @@ format:
 	uv run ruff check .
 install:
 	pip install -e .[dev]
-test:
-	pytest $(TESTS)/ --maxfail=0
-	coverage run -a --branch -m policyengine_core.scripts.policyengine_command test $(TESTS)/policy/ -c policyengine_us
-	coverage xml -i
+# Run every target serially, whatever -j says: several YAML suites resident
+# at once is the memory blow-up `make test` exists to prevent. GNU make 3.81
+# (macOS) supports only this whole-file form. CI calls single targets.
+.NOTPARALLEL:
+
+# Full local suite: the same suites CI runs, one bounded subprocess at a time.
+# Never hand the whole policy tree, or a long file list, to one
+# `policyengine-core test` process: a 1,500-file baseline run reached 118 GB
+# on a 128 GB Mac on 2026-10-02 (see CONTRIBUTING.md, "Memory").
+test: test-other-python-spm test-other-python-rest test-microsimulation test-policy-contrib-python test-yaml
+# Every YAML suite in .github/workflows/pr.yaml, in sequence. .NOTPARALLEL
+# below keeps Make to one prerequisite at a time even under `make -j` or a
+# -j in MAKEFLAGS, and each target already runs --workers 1 (partners runs
+# two small batches at once), so at most one large batch is resident.
+# test_make_test_matches_ci.py keeps this list in step with CI.
+test-yaml: test-yaml-no-structural-states \
+	test-yaml-no-structural-other-irs \
+	test-yaml-no-structural-other-household \
+	test-yaml-no-structural-other-ssa-usda \
+	test-yaml-no-structural-other-rest-a \
+	test-yaml-no-structural-other-rest-b \
+	test-yaml-contrib-hhs \
+	test-yaml-reform \
+	test-yaml-no-structural-other-partners \
+	test-yaml-structural-heavy-shard-1 \
+	test-yaml-structural-heavy-shard-2 \
+	test-yaml-structural-heavy-shard-3 \
+	test-yaml-structural-heavy-shard-4 \
+	test-yaml-structural-other \
+	test-yaml-structural-other-shard-2a \
+	test-yaml-structural-other-shard-2b \
+	test-yaml-structural-other-shard-3 \
+	test-yaml-structural-congress \
+	test-yaml-variables
 test-yaml-structural:
 	$(BATCH) $(TESTS)/policy/contrib --exclude states
 test-yaml-structural-heavy:
@@ -85,11 +189,11 @@ test-yaml-structural-congress:
 test-yaml-variables:
 	$(BATCH) $(TESTS)/variables --batches 1
 test-yaml-no-structural-states:
-	# 16 batches (was 8) ~= ~3 states per batch. Both 8-batch state shard
-	# jobs OOM'd two-wide on CI run 28698452678 (each ~6-state batch peaks
-	# ~8+ GB); halving the batch size at --workers 1 keeps each subprocess
-	# <= ~6 GB with >= ~10 GB free for future state growth.
-	$(BATCH) $(TESTS)/policy/baseline/gov/states --batches 16 --workers 1
+	# Release model/parameter caches between states. The former NY/OH/OK
+	# group peaked at 15.1 GB; keep one subprocess at a time here. CI's four
+	# runners run up to two while memory allows (POLICYENGINE_BATCH_WORKERS).
+	# Root-level state tests remain included.
+	$(BATCH) $(TESTS)/policy/baseline/gov/states --mode per-subdir --workers 1
 test-yaml-no-structural-other:
 	$(BATCH) $(TESTS)/policy/baseline --batches 2 --exclude states
 	$(BATCH) $(TESTS)/policy/baseline/household --batches 1
@@ -102,8 +206,9 @@ test-yaml-no-structural-other-irs:
 	$(BATCH) $(TESTS)/policy/baseline/gov/irs --mode per-subdir --workers 1
 test-yaml-no-structural-other-household:
 	# 4 batches (was 2), --workers 1: a 2-batch half of this folder (incl.
-	# the weights/MTR files) peaked 11.8 GB on CI run 28698452678. Quarter
-	# batches keep each subprocess <= ~6 GB.
+	# the weights/MTR files) peaked 11.8 GB on CI run 28698452678, and by
+	# October 2026 the last quarter batch reached 15.1 GB. test_batched.py's
+	# memory budget now continues a batch in a fresh subprocess past ~8 GB.
 	$(BATCH) $(TESTS)/policy/baseline/household --batches 4 --workers 1
 test-yaml-no-structural-other-contrib:
 	# ubi_center is microsim-heavy → per-file, one ~4 GB peak at a time.
@@ -124,8 +229,9 @@ test-yaml-reform:
 	# ~8 GB file runs solo with ~8 GB spare); new reform files auto-route.
 	$(BATCH) $(TESTS)/policy/reform --mode per-file --workers 1
 test-yaml-no-structural-other-hhs:
-	# hhs (~2.7 GB peak) rides along with the baseline-contrib runner,
-	# which has spare headroom.
+	# hhs rides along with the baseline-contrib runner. As one process it
+	# peaked at 15.1 GB (CI run 38656284185); test_batched.py's memory budget
+	# continues it in a fresh subprocess past ~8 GB.
 	$(BATCH) $(TESTS)/policy/baseline/gov/hhs --batches 1
 # baseline contrib + gov/hhs share one CI runner. policy/reform no longer
 # rides along: its per-file peaks (~5.5-8 GB) plus this pair filled a job
@@ -138,8 +244,12 @@ test-yaml-no-structural-other-ssa:
 	$(BATCH) $(TESTS)/policy/baseline/gov/ssa/revenue --batches 2 --workers 1
 	$(BATCH) $(TESTS)/policy/baseline/gov/ssa --exclude revenue --mode per-subdir --workers 1
 test-yaml-no-structural-other-usda:
-	# usda (~3 GB peak, ~7 min) rides along with ssa, rebalancing runners.
-	$(BATCH) $(TESTS)/policy/baseline/gov/usda --batches 1
+	# The single USDA process peaked at 14.9 GB in CI before a later run
+	# shut down in WIC. Release accumulated model and parameter caches
+	# between eight sequential YAML batches on the same runner. USDA Python
+	# tests stay in test-other-python-rest's policy group, which CI spreads
+	# over the planned Rest Python shards.
+	$(BATCH) $(TESTS)/policy/baseline/gov/usda --batches 8 --workers 1
 test-yaml-no-structural-other-ssa-usda: test-yaml-no-structural-other-ssa test-yaml-no-structural-other-usda
 test-yaml-no-structural-other-rest-a:
 	# First half of the old "rest" job: four independent folders, one
@@ -183,8 +293,31 @@ test-other-python:
 	pytest policyengine_us/tests/ --maxfail=0 --ignore=$(TESTS)/policy/contrib --ignore=$(TESTS)/microsimulation
 test-other-python-spm:
 	pytest $(REST_SPM_TESTS) --maxfail=0
+# Every group runs even after one fails; the target fails if any group did.
 test-other-python-rest:
-	pytest $(TESTS)/ --maxfail=0 --ignore=$(TESTS)/policy/contrib --ignore=$(TESTS)/microsimulation $(addprefix --ignore=,$(REST_SPM_TESTS))
+	@failed=""; for group in $(REST_PYTHON_GROUPS); do \
+		echo "=== Rest Python group: $$group ==="; \
+		$(MAKE) --no-print-directory test-other-python-rest-$$group || failed="$$failed $$group"; \
+	done; \
+	if [ -n "$$failed" ]; then echo "Failed Rest Python groups:$$failed"; exit 1; fi
+test-other-python-rest-cached-arrays:
+	$(call rest_pytest,cached-arrays,$(REST_CACHED_ARRAY_TESTS))
+test-other-python-rest-heavy-a:
+	$(call rest_pytest,heavy-a,$(REST_HEAVY_A_TESTS))
+test-other-python-rest-heavy-b:
+	$(call rest_pytest,heavy-b,$(REST_HEAVY_B_TESTS))
+test-other-python-rest-core-heavy:
+	$(call rest_pytest,core-heavy,$(REST_CORE_HEAVY_TESTS))
+test-other-python-rest-core:
+	$(call rest_pytest,core,$(TESTS)/core,$(REST_LISTED_TESTS))
+test-other-python-rest-policy-parameters:
+	$(call rest_pytest,policy-parameters,$(REST_POLICY_PARAMETER_TESTS))
+test-other-python-rest-policy:
+	$(call rest_pytest,policy,$(TESTS)/policy,$(REST_LISTED_TESTS))
+test-other-python-rest-remaining-heavy:
+	$(call rest_pytest,remaining-heavy,$(REST_REMAINING_HEAVY_TESTS))
+test-other-python-rest-remaining:
+	$(call rest_pytest,remaining,$(TESTS)/,$(REST_LISTED_TESTS) $(TESTS)/core $(TESTS)/policy)
 test-microsimulation:
 	pytest $(TESTS)/microsimulation --maxfail=0
 # Local convenience: run both halves back to back.

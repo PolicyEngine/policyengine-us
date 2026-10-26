@@ -9,7 +9,7 @@ class ma_liheap_fpg(Variable):
     label = "Massachusetts LIHEAP federal poverty guideline"
     definition_period = YEAR
     defined_for = StateCode.MA
-    reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"
+    reference = "https://web.archive.org/web/20250720165524/https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"
 
     def formula(spm_unit, period, parameters):
         n = spm_unit("spm_unit_size", period.this_year)

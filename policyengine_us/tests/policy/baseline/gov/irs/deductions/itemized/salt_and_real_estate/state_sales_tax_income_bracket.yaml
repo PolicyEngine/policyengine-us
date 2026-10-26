@@ -27,7 +27,7 @@
     state_sales_tax_income_bracket: 19
 
 # IRS rows run from "At least" one threshold to "But less than" the next,
-# with a top row of "$300,000 or more" (2022-2025 Optional State Sales Tax
+# with a top row of "$300,000 or more" (2018-2025 Optional State Sales Tax
 # Tables, Instructions for Schedule A (Form 1040)).
 
 - name: Income just below $20,000 is in the $0-$20,000 row
@@ -60,6 +60,27 @@
 
 - name: Income of exactly $300,000 is in the $300,000 or more row
   period: 2025
+  input:
+    adjusted_gross_income: 300_000
+  output:
+    state_sales_tax_income_bracket: 19
+
+- name: Income just below $100,000 is in the $90,000-$100,000 row, 2018
+  period: 2018
+  input:
+    adjusted_gross_income: 99_999
+  output:
+    state_sales_tax_income_bracket: 9
+
+- name: Income of exactly $100,000 is in the $100,000-$120,000 row, 2019
+  period: 2019
+  input:
+    adjusted_gross_income: 100_000
+  output:
+    state_sales_tax_income_bracket: 10
+
+- name: Income of exactly $300,000 is in the $300,000 or more row, 2021
+  period: 2021
   input:
     adjusted_gross_income: 300_000
   output:

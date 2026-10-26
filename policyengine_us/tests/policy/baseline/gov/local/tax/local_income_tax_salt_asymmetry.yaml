@@ -27,3 +27,18 @@
     local_income_tax: 0
     # But still levied in the pre-refundable aggregate.
     local_income_tax_before_refundable_credits: 167.5
+
+- name: Multnomah County PFA tax is excluded from the SALT-deductible local income tax
+  period: 2025
+  input:
+    state_code: OR
+    in_multnomah_county_or: true
+    or_taxable_income: 200_000
+    filing_status: SINGLE
+  output:
+    or_multnomah_pfa_tax: 1_125  # (200,000 - 125,000) * 1.5%
+    # Excluded from the SALT-deductible measure (circular-dependency avoidance).
+    local_income_tax: 0
+    # But still levied in the pre-refundable aggregate.
+    local_income_tax_before_refundable_credits: 1_125
+

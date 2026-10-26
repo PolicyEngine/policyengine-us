@@ -8,8 +8,8 @@ class non_deductible_mortgage_interest(Variable):
     unit = USD
     definition_period = YEAR
     documentation = (
-        "Home mortgage interest that is not deductible federally after "
-        "applying the acquisition-debt caps."
+        "Home mortgage interest and points that are not deductible federally "
+        "after applying the acquisition-debt caps."
     )
 
     def formula(person, period, parameters):

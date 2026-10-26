@@ -8,7 +8,8 @@ class nm_low_income_comprehensive_tax_rebate_exemptions(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://casetext.com/statute/new-mexico-statutes-1978/chapter-7-taxation/article-2-income-tax-general-provisions/section-7-2-14-low-income-comprehensive-tax-rebate?sort=relevance&type=regulation&tab=keyword&jxs=&resultsNav=false",
+        "https://law.justia.com/codes/new-mexico/chapter-7/article-2/section-7-2-14/",
+        "https://realfile.tax.newmexico.gov/2025pit-rc-ins.pdf#page=3",
     )
     defined_for = StateCode.NM
 
@@ -21,6 +22,11 @@ class nm_low_income_comprehensive_tax_rebate_exemptions(Variable):
           tax purposes for each individual included in the return who is
           domiciled in New Mexico...
         """
+        # The federal count leaves out a filer who can be claimed as a
+        # dependent and, on such a return, the dependents, as PIT-RC line 2a
+        # does: "If either you or your spouse meet the general
+        # qualifications, but not both, then the non-qualifying spouse is not
+        # eligible".
         federal_exemptions = tax_unit("exemptions_count", period)
         """
           ...plus two additional exemptions for each individual domiciled

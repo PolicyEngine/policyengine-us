@@ -519,3 +519,57 @@
   output:
     is_in_snap_abawd_waived_area:
       2026-07: [true, false, false, false]
+
+# FY2024 predecessor lists end before 2025-07-03, so they are not part of
+# the frozen pre-enactment geography: they affect pre-enactment months only
+# (where the switch-off result equals current law). FY2026 lists are unioned
+# with the snapshot and add nothing to it, because every FY2026 county was
+# already waived on 2025-07-03.
+
+- name: Case 32, MI resident of Kent County keeps the FY2024 waiver in a month before enactment but is not waived after enactment, because the 2025-07-03 geography excludes Kent.
+  period: 2025
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    state_code: MI
+    county_fips: "26081"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-02: true
+      2025-08: false
+
+- name: Case 33, OR resident of Hood River County keeps the FY2024 waiver in December 2024 but is not waived after enactment, because the 2025-07-03 geography excludes Hood River.
+  period: 2024
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    state_code:
+      2024: OR
+      2025: OR
+    county_fips:
+      2024: "41027"
+      2025: "41027"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-12: true
+      2025-08: false
+
+- name: Case 34, AZ resident of Apache County stays waived after enactment through the frozen 14-county waiver, although the FY2026 waiver covers only Yuma County.
+  period: 2026
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    state_code: AZ
+    county_fips: "04001"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-03: true
+      2026-12: true
+
+- name: Case 35, NV resident of Clark County stays waived after the statewide waiver's actual 2026-01-31 end through the frozen statewide waiver, although the FY2026 waiver covers only Mineral County.
+  period: 2026
+  input:
+    gov.usda.snap.work_requirements.abawd.hr1_waiver_criteria.in_effect: false
+    state_code: NV
+    county_fips: "32003"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-02: true
+      2026-12: true

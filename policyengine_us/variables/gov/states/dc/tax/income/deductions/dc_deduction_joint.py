@@ -17,7 +17,7 @@ class dc_deduction_joint(Variable):
         #    you must itemize on your DC tax return. You must take the same
         #    type of deduction (itemized or standard) on your DC return as
         #    taken on your federal return.
-        # https://otr.cfo.dc.gov/page/individual-income-tax-special-circumstances-faqs
+        # https://web.archive.org/web/20220726171620/https://otr.cfo.dc.gov/page/individual-income-tax-special-circumstances-faqs
         return where(
             tax_unit("tax_unit_itemizes", period),
             tax_unit("dc_itemized_deductions", period),

@@ -10,7 +10,7 @@ class oh_ccap_rate_with_addons(Variable):
     defined_for = "oh_ccap_eligible_child"
     reference = (
         "https://codes.ohio.gov/ohio-administrative-code/rule-5180:6-1-10",
-        "https://codes.ohio.gov/ohio-administrative-code/rule-5180:2-16-09",
+        "https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5180/2/16/5180$2-16-09_20231007.pdf",
     )
 
     def formula(person, period, parameters):

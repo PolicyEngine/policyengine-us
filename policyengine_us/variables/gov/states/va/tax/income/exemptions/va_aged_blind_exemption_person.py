@@ -15,4 +15,8 @@ class va_aged_blind_exemption_person(Variable):
         aged_person = person("is_irs_aged", period).astype(int)
         blind_person = person("is_blind", period).astype(int)
         aged_blind_count = aged_person + blind_person
-        return aged_blind_count * p.aged_blind
+        # Va. Code 58.1-322.03(2)(b) grants the exemption to "each blind or
+        # aged taxpayer" (the head or spouse), not to dependents, and has no
+        # bar for a taxpayer whom another taxpayer can claim.
+        filer = person("is_tax_unit_head_or_spouse", period)
+        return filer * aged_blind_count * p.aged_blind

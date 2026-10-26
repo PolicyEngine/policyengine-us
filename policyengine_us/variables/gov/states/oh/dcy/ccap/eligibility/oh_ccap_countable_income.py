@@ -8,7 +8,7 @@ class oh_ccap_countable_income(Variable):
     definition_period = MONTH
     unit = USD
     defined_for = StateCode.OH
-    reference = "https://codes.ohio.gov/ohio-administrative-code/rule-5180:2-16-03"
+    reference = "https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5180/2/16/5180$2-16-03_20220227.pdf"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.oh.dcy.ccap.income

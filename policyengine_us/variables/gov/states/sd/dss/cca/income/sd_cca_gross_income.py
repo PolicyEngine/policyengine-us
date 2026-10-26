@@ -8,7 +8,5 @@ class sd_cca_gross_income(Variable):
     label = "South Dakota CCA gross countable income"
     definition_period = MONTH
     defined_for = StateCode.SD
-    reference = (
-        "https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=10"
-    )
+    reference = "https://web.archive.org/web/20251031171652/https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=10"
     adds = "gov.states.sd.dss.cca.income.sources"

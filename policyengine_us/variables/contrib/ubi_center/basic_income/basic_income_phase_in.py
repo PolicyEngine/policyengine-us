@@ -13,7 +13,7 @@ class basic_income_phase_in(Variable):
         earnings = tax_unit("tax_unit_earned_income", period)
         if p.include_ss_benefits_as_earnings:
             ss_benefits = tax_unit("tax_unit_social_security", period)
-            earnings += ss_benefits
+            earnings = earnings + ss_benefits
         if p.per_person:
             tax_unit_size = tax_unit("tax_unit_size", period)
             rate = p.rate * tax_unit_size

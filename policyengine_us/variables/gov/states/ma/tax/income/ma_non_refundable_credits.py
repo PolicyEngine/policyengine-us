@@ -10,7 +10,7 @@ class ma_non_refundable_credits(Variable):
     label = "MA non-refundable credits"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.mass.gov/doc/2021-form-1-massachusetts-resident-income-tax-return/download"
+    reference = "https://web.archive.org/web/20230513222941/https://www.mass.gov/doc/2021-form-1-massachusetts-resident-income-tax-return/download"
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):

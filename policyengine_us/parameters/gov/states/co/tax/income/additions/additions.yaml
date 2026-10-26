@@ -3,6 +3,7 @@ values:
   2021-01-01: 
     - co_state_addback
     - co_qualified_business_income_deduction_addback 
+    - co_other_additions
     # - Non-Colorado state and local bond interest
     # - Improper distributions from a qualified state tuition program for which tuition program contribution subtraction was previously claimed.
     # - Charitable gross conservation easement
@@ -14,6 +15,7 @@ values:
     - co_state_addback
     - co_qualified_business_income_deduction_addback
     - co_federal_deduction_addback
+    - co_other_additions
     # - Non-qualifying Distribution addback
     # - Non-Colorado state and local bond interest
     # - Improper distributions from a qualified state tuition program for which tuition program contribution subtraction was previously claimed.
@@ -27,13 +29,14 @@ values:
     - co_qualified_business_income_deduction_addback
     - co_federal_deduction_addback
     - co_overtime_income_addback  # Overtime deduction add-back (HB25-1296), TY2026+
+    - co_other_additions
 metadata:
   unit: list
   period: year
   label: Colorado federal taxable income additions 
   reference:
   - title: C.R.S. 39-22-104 . Income tax imposed on individuals, estates, and trusts - section (3)
-    href: https://casetext.com/statute/colorado-revised-statutes/title-39-taxation/specific-taxes/income-tax/article-22-income-tax/part-1-general/section-39-22-104-effective-until-official-proclamation-by-governor-income-tax-imposed-on-individuals-estates-and-trusts-single-rate-report-legislative-declaration-definitions-repeal
+    href: https://law.justia.com/codes/colorado/2022/title-39/article-22/part-1/section-39-22-104/
   - title: 2021 Colorado Individual Income Tax Filing Guide, 104 Book - Additions
     href: https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2021.pdf#page=5
   - title: 2022 Colorado Individual Income Tax Filing Guide, 104 Book - Additions

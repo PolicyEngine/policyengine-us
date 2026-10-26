@@ -1,15 +1,24 @@
 """Structural checks on the IRS Optional State Sales Tax Table (#9595).
 
 The IRS prints the table in blocks of three states, six family-size columns
-each. A three-column shift within those blocks once left 30 jurisdictions
-with another state's values in some or all family-size columns. Two checks
-catch that kind of transcription error:
+each. (Through 2017 the columns count the exemptions claimed on Form 1040,
+line 6d; PolicyEngine counts both as tax_unit_size.) A three-column shift
+within those blocks once left 30 jurisdictions with another state's values in
+some or all family-size columns. Two checks catch that kind of transcription
+error:
 
 - The IRS amounts never fall as family size or income rises. The shift put
   some family-size-6 amounts below family-size-1 amounts.
 - No two family-size columns of the IRS table are identical. The shift copied
   whole columns from one state to another, which a monotonicity check misses
   when the copied state's own row happens to rise.
+
+A third check keeps each year's table its own: no jurisdiction's table is the
+same in two IRS table years. A year missing from the file silently takes a
+neighboring year's table. PolicyEngine-US extends each parameter's earliest
+value back to 2015 (`backdate_parameters` in policyengine_us/system.py), so
+2015-2021 used the 2022 table, and then 2015-2017 the 2018 table, until their
+own tables were added.
 
 The variable-level tests run grids of single-person households through the
 formulas that read the table:
@@ -21,7 +30,12 @@ formulas that read the table:
   it.
 - state_sales_tax never falls as adjusted gross income or family size rises.
 - local_sales_tax is zero in the ten jurisdictions whose residents the
-  worksheet sends to -0- on line 6, and 20% of state_sales_tax elsewhere.
+  worksheet sends to -0- on line 6. One percentage point above the state rate
+  (line 3 = 1), it is the Optional Local Sales Tax Table amount in the
+  worksheet's line-2 states where a local table is selected, and
+  state_sales_tax divided by the heading rate (in points) in other localities
+  with a state table
+  (test_local_sales_tax_worksheet.py tests the worksheet in full).
 - state_and_local_sales_or_income_tax is the larger of the income tax (state
   withholding plus local income tax) and the sales tax (state plus local).
 
@@ -40,10 +54,13 @@ from policyengine_core.simulations import SimulationBuilder
 
 from policyengine_us.model_api import REPO
 from policyengine_us.system import system
+from policyengine_us.tools.local_sales_tax_rates import (
+    state_general_sales_tax_rates,
+)
 
 TABLE_PATH = "gov.irs.deductions.itemized.salt_and_real_estate.state_sales_tax_table"
 TABLE_DIR = REPO.joinpath("parameters", *TABLE_PATH.split("."))
-IRS_TABLE_YEARS = (2022, 2023, 2024, 2025)
+IRS_TABLE_YEARS = tuple(range(2015, 2026))
 # Later years are uprated from the last IRS table.
 CHECKED_YEARS = IRS_TABLE_YEARS + (2026, 2030)
 FAMILY_SIZES = range(1, 7)
@@ -59,7 +76,7 @@ IRS_JURISDICTIONS = {
 # Worksheet, instruction after line 1: "If, for all of 2023, you lived only in
 # Connecticut, the District of Columbia, Indiana, Kentucky, Maine, Maryland,
 # Massachusetts, Michigan, New Jersey, or Rhode Island, skip lines 2 through 5,
-# enter -0- on line 6" (same list in 2022, 2024, and 2025).
+# enter -0- on line 6" (same list in 2015 through 2025).
 NO_LOCAL_SALES_TAX = ["CT", "DC", "IN", "KY", "MA", "MD", "ME", "MI", "NJ", "RI"]
 # Lower bound of each IRS income row after the first ("At least").
 IRS_ROW_FLOORS = [
@@ -70,10 +87,15 @@ IRS_ROW_FLOORS = [
 # Family sizes above 6 use the "Over 5" column.
 SIMULATED_FAMILY_SIZES = range(1, 9)
 # The IRS counts income as "the amount shown on your Form 1040 or 1040-SR,
-# line 11 [line 11b in 2025], plus any nontaxable items, such as" tax-exempt
-# interest, veterans' benefits, workers' compensation, the nontaxable part of
-# social security and of IRA, pension, or annuity distributions, and public
-# assistance payments. These are the PolicyEngine variables for those items.
+# line 11, plus any nontaxable items, such as the following" (2020-2024; the
+# 2015-2017 instructions cite Form 1040, line 38, 2018 line 7, 2019 line 8b,
+# and 2025 line 11b). The list is the same from 2015 to 2025: tax-exempt
+# interest; veterans' benefits; nontaxable combat pay; workers' compensation;
+# the nontaxable part of social security and railroad retirement benefits; the
+# nontaxable part of IRA, pension, or annuity distributions; and public
+# assistance payments.
+# These are the PolicyEngine variables for those items. Combat pay and
+# railroad retirement benefits are not included.
 TABLE_INCOME_SOURCES = [
     "adjusted_gross_income",
     "tax_exempt_interest_income",
@@ -173,6 +195,25 @@ def test_no_family_size_column_repeats_another(table_yaml, year):
     assert not repeats, f"Identical columns: {repeats[:10]}"
 
 
+def test_no_state_table_repeats_another_years(table_yaml):
+    """The IRS prints a new table each year, and no jurisdiction's 114 cells
+    are the same in any two years. A year left out of the file would
+    silently take a neighboring year's table: the earliest table is extended
+    back to 2015, and a missing later year keeps the year before."""
+    repeats = []
+    for state in sorted(IRS_JURISDICTIONS):
+        tables = {}
+        for year in IRS_TABLE_YEARS:
+            table = tuple(
+                table_yaml[state][size][bracket][date(year, 1, 1)]
+                for size in FAMILY_SIZES
+                for bracket in INCOME_BRACKETS
+            )
+            tables.setdefault(table, []).append(year)
+        repeats += [(state, years) for years in tables.values() if len(years) > 1]
+    assert not repeats, f"Same table in several years: {repeats[:10]}"
+
+
 def _grid_simulation(year, states, sizes, **inputs):
     """One single-person household per grid point, with the given inputs."""
     simulation = SimulationBuilder().build_default_simulation(system, len(states))
@@ -261,8 +302,11 @@ def test_every_income_source_counts_toward_the_income_row(year):
 
 
 @pytest.mark.parametrize("year", CHECKED_YEARS)
-def test_local_sales_tax_is_zero_or_twenty_percent_of_state_amount(year):
-    """Every state, family size 1 to 8, and income row."""
+def test_local_sales_tax_one_point_above_the_state_rate(year):
+    """Every state, family size 1 to 8, and income row, at a combined rate one
+    percentage point above the state's general rate (the official state rate
+    where PolicyEngine has the state's rate files, else the heading rate),
+    with each state's default local table."""
     grid = list(
         product(
             sorted(IRS_JURISDICTIONS | {"AK"}),
@@ -271,14 +315,47 @@ def test_local_sales_tax_is_zero_or_twenty_percent_of_state_amount(year):
         )
     )
     states, sizes, brackets = zip(*grid)
+    salt = system.parameters.gov.irs.deductions.itemized.salt_and_real_estate
+    headings = salt.state_sales_tax_table.rate(f"{year}-01-01")
+    heading = np.array([headings[state] for state in states])
+    official = state_general_sales_tax_rates(year)
+    state_rate = np.array(
+        [official.get(state, headings[state]) for state in states], dtype=float
+    )
     simulation = _grid_simulation(
-        year, states, sizes, state_sales_tax_income_bracket=brackets
+        year,
+        states,
+        sizes,
+        state_sales_tax_income_bracket=brackets,
+        combined_sales_tax_rate=state_rate + 0.01,
     )
     state_amount = simulation.calculate("state_sales_tax", year)
     local_amount = simulation.calculate("local_sales_tax", year)
+    local_tables = salt.local_sales_tax_table.tax(f"{year}-01-01")
+    table = simulation.calculate("local_sales_tax_table", year).decode_to_str()
+    has_table = table != "NONE"
+    table_amount = np.array(
+        [
+            local_tables[str(letter)][str(min(size, 6))][str(bracket)]
+            if letter != "NONE"
+            else 0
+            for letter, size, bracket in zip(table, sizes, brackets)
+        ]
+    )
     no_local = np.isin(states, NO_LOCAL_SALES_TAX)
+    uses_table = (
+        np.isin(states, salt.local_sales_tax_table.states(f"{year}-01-01")) & has_table
+    )
+    ratio = ~no_local & ~uses_table
     assert (local_amount[no_local] == 0).all()
-    assert np.allclose(local_amount[~no_local], 0.2 * state_amount[~no_local])
+    np.testing.assert_allclose(
+        local_amount[uses_table], table_amount[uses_table], rtol=1e-4
+    )
+    np.testing.assert_allclose(
+        local_amount[ratio],
+        state_amount[ratio] / (100 * heading[ratio]),
+        rtol=1e-4,
+    )
 
 
 @pytest.mark.parametrize("year", IRS_TABLE_YEARS)
