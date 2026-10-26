@@ -73,11 +73,15 @@ otherwise, so the scan also looks further out. Where the module, while it
 runs, may import the importing one (directly or through other modules,
 counting every import in them, even in a function; the submodules a star
 import of a package loads, those its ``__all__`` lists or, where it is built
-otherwise, all of them; any call whose literal arguments name a module as
+otherwise, all of them, and those ``__import__`` loads where a literal
+``fromlist`` holds ``*``; any call whose literal arguments name a module as
 ``importlib.import_module`` or ``__import__`` would read them, whatever
-name the call is made under; and the packages an import starts), the star
-import may see it
-part-run, before it binds a name or sets ``__all__``: it may then bind any
+name the call is made under; the packages an import starts; and the imports
+in code that may run later, when it is called or read (functions, lambdas,
+generator expressions, annotations, type parameters and ``type`` values),
+in the packages around a module, which have run before it, and in the
+modules they import as they run, since its code may call that code), the
+star import may see it part-run, before it binds a name or sets ``__all__``: it may then bind any
 name the module binds without a leading underscore, and binds none surely.
 EXTERNAL_EXPORTS lists the
 names numpy and ``policyengine_core.model_api`` bind where they matter here;
@@ -113,7 +117,8 @@ else binds them. Reported, as (file, enclosing function or class, kind):
 
 This is a ratchet over recognised patterns, not a proof that no
 hand-written draw exists. It does not follow ``eval`` or ``exec``, imports
-of a computed name, values reached through objects or containers
+of a computed name, package search paths changed as the code runs (a
+``__path__`` assignment) or import hooks, values reached through objects or containers
 (``self.r = np.random`` is caught where ``np.random`` is read; a later
 ``self.r.uniform()`` is not), the values calls return (``r =
 importlib.import_module("random")`` is caught at the import; a later
@@ -780,9 +785,18 @@ class Modules:
         self.imported = {}
         # module -> the modules it star-imports from.
         self.star_bases = {}
+        # module -> (the package modules it imports as it runs, the packages
+        # it star-imports from as it runs).
+        self.run_imports = {}
+        # module -> (the package modules code in it that may run later
+        # imports, the packages that code star-imports from).
+        self.later_imports = {}
         # package -> its submodules.
         self._children = None
         self._reached = {}
+        # the packages around a module -> (the package modules that ran
+        # before it, the package modules their later code may start).
+        self._ran = {}
         self._memo = {}
         self._active = set()
         self._cuts = 0
@@ -798,38 +812,31 @@ class Modules:
         if module not in self.tops:
             self.tops[module] = top
             self.publics[module] = _public_names(tree)
-            self.imported[module] = self._imports_of(module, tree)
-            self.star_bases[module] = frozenset(
-                _absolute(node.module or "", node.level, self._package(module))
-                for node in ast.walk(tree)
-                if isinstance(node, ast.ImportFrom)
-                and any(alias.name == "*" for alias in node.names)
+            (run, run_stars), (later, later_stars) = _imports_in(
+                tree, self._package(module)
+            )
+            # Its code may call a function that imports, so every import
+            # counts.
+            self.imported[module] = self._imports_of(module, run | later)
+            self.star_bases[module] = frozenset(run_stars | later_stars)
+            self.run_imports[module] = (
+                self._imports_of(module, run),
+                frozenset(run_stars),
+            )
+            self.later_imports[module] = (
+                self._imports_of(module, later),
+                frozenset(later_stars),
             )
 
     def _package(self, module):
         return self.sources.get(module, (None,))[0]
 
-    def _imports_of(self, module, tree) -> frozenset:
-        """The package modules ``module`` may start when it runs: those its
-        imports name, anywhere in it (its code may call a function that
-        imports), or literal dynamic imports, and the packages around them.
-        A call under any name counts as a dynamic import where its literal
-        arguments name a module: an alias, a re-export or ``getattr`` may
-        make it one. The packages around ``module`` have started before it.
-        Star imports' submodules are added by ``reached``."""
-        package = self.sources.get(module, (None,))[0]
-        names = set()
-        for node in ast.walk(tree):
-            if isinstance(node, ast.Import):
-                names.update(alias.name for alias in node.names)
-            elif isinstance(node, ast.ImportFrom):
-                base = _absolute(node.module or "", node.level, package)
-                names.add(base)
-                names.update(f"{base}.{alias.name}" for alias in node.names)
-            elif isinstance(node, ast.Call):
-                names.update(_dynamic_imports(node, DYNAMIC_IMPORTS, package))
-        parts = module.split(".")
-        started = {".".join(parts[:end]) for end in range(1, len(parts) + 1)}
+    def _imports_of(self, module, names) -> frozenset:
+        """The package modules ``module`` may start by importing ``names``
+        (from ``_imports_in``): each one and the packages around it. The
+        packages around ``module`` have started before it. Star imports'
+        submodules are added by ``reached``."""
+        started = _started(module)
         imported = set()
         for name in names:
             parts = name.split(".")
@@ -847,11 +854,38 @@ class Modules:
             while stack:
                 current = stack.pop()
                 self.top(current)
-                fresh = (self.imported[current] | self.star_loads(current)) - seen
+                fresh = (
+                    self.imported[current]
+                    | self.star_loads(current)
+                    | self.called(current)
+                ) - seen
                 seen |= fresh
                 stack.extend(fresh)
             self._reached[module] = frozenset(seen)
         return self._reached[module]
+
+    def called(self, module) -> frozenset:
+        """The package modules ``module``'s code may start by calling or
+        reading code that may run later in the modules that ran before it:
+        the packages around it, and the package modules their code, as it
+        ran, imported, directly or through the modules it started."""
+        around = _started(module) - {module}
+        if around not in self._ran:
+            ran = {package for package in around if package in self.sources}
+            stack = list(ran)
+            while stack:
+                current = stack.pop()
+                self.top(current)
+                names, bases = self.run_imports[current]
+                fresh = (names | self._star_children(bases)) - ran
+                ran |= fresh
+                stack.extend(fresh)
+            starts = set()
+            for current in ran:
+                names, bases = self.later_imports[current]
+                starts |= names | self._star_children(bases)
+            self._ran[around] = (frozenset(ran), frozenset(starts))
+        return self._ran[around][1] - _started(module)
 
     def star_loads(self, module) -> frozenset:
         """The submodules ``module``'s star imports of packages may start:
@@ -859,16 +893,18 @@ class Modules:
         of them where ``__all__`` is built otherwise. A star import of a
         package without ``__all__`` starts none. The packages around
         ``module`` have started before it."""
+        return self._star_children(self.star_bases[module]) - _started(module)
+
+    def _star_children(self, bases) -> frozenset:
+        """The submodules star imports from ``bases`` may start."""
         if self._children is None:
             self._children = {}
             for name in self.sources:
                 if "." in name:
                     parent = name.rsplit(".", 1)[0]
                     self._children.setdefault(parent, set()).add(name)
-        parts = module.split(".")
-        started = {".".join(parts[:end]) for end in range(1, len(parts) + 1)}
         loads = set()
-        for base in self.star_bases[module]:
+        for base in bases:
             if base not in self.sources:
                 continue
             self.top(base)
@@ -879,7 +915,7 @@ class Modules:
             elif isinstance(public, _Exports):
                 listed = public.final | public.earlier
                 loads |= {c for c in children if c.rsplit(".", 1)[1] in listed}
-        return frozenset(loads - started)
+        return frozenset(loads)
 
     def cyclic(self, importer, base) -> bool:
         """Whether ``importer``'s star import of ``base`` may run while
@@ -1266,7 +1302,8 @@ def _argument(call, position, keyword):
 
 def _dynamic_imports(call, called, package) -> list:
     """Absolute names a call of a dynamic import function imports, where its
-    arguments are literals."""
+    arguments are literals: ``base.*`` where an ``__import__`` ``fromlist``
+    holds ``*``."""
     names = []
     if "importlib.import_module" in called:
         name = _literal(_argument(call, 0, "name"))
@@ -1286,8 +1323,63 @@ def _dynamic_imports(call, called, package) -> list:
             fromlist = _argument(call, 3, "fromlist")
             if isinstance(fromlist, (ast.List, ast.Tuple, ast.Set)):
                 items = [_literal(item) for item in fromlist.elts]
-                names += [f"{base}.{item}" for item in items if item]
+            else:
+                # A string is iterated: each character is an item.
+                items = list(_literal(fromlist) or "")
+            names += [f"{base}.{item}" for item in items if item]
     return names
+
+
+# Code that may run after the statement holding it, when it is called or
+# read, so after the module has run: as may annotations (deferred from 3.14),
+# type parameters and ``type`` values.
+LATER_NODES = (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda, ast.GeneratorExp)
+LATER_FIELDS = ("annotation", "type_params")
+
+
+def _imports_in(tree, package):
+    """((names, star bases) of the imports that run with ``tree``'s module,
+    (names, star bases) of those in code that may run later: in a function,
+    lambda or generator expression (with its decorators, defaults and first
+    iterable, which run at once, to be safe), an annotation, type parameters
+    or a ``type`` alias.
+
+    Names are absolute, as an import, or a call whose literal arguments name
+    a module as ``importlib.import_module`` or ``__import__`` would read
+    them, imports them, whatever name the call is made under: an alias, a
+    re-export or ``getattr`` may make it one. Star bases are the packages a
+    star import, or ``__import__`` with ``*`` in its ``fromlist``, loads
+    from."""
+    found = {False: (set(), set()), True: (set(), set())}
+    stack = [(tree, False)]
+    while stack:
+        node, later = stack.pop()
+        names, stars = found[later]
+        if isinstance(node, ast.Import):
+            names.update(alias.name for alias in node.names)
+        elif isinstance(node, ast.ImportFrom):
+            base = _absolute(node.module or "", node.level, package)
+            names.add(base)
+            names.update(f"{base}.{alias.name}" for alias in node.names)
+            if any(alias.name == "*" for alias in node.names):
+                stars.add(base)
+        elif isinstance(node, ast.Call):
+            for name in _dynamic_imports(node, DYNAMIC_IMPORTS, package):
+                names.add(name)
+                if name.endswith(".*"):
+                    stars.add(name[: -len(".*")])
+        later = later or isinstance(node, LATER_NODES) or isinstance(node, TYPE_ALIAS)
+        for field, value in ast.iter_fields(node):
+            for child in value if isinstance(value, list) else [value]:
+                if isinstance(child, ast.AST):
+                    stack.append((child, later or field in LATER_FIELDS))
+    return found[False], found[True]
+
+
+def _started(module) -> frozenset:
+    """``module`` and the packages around it, which start before it runs."""
+    parts = module.split(".")
+    return frozenset(".".join(parts[:end]) for end in range(1, len(parts) + 1))
 
 
 class Analysis(NamedTuple):
@@ -2830,12 +2922,56 @@ def _modules_of(sources: dict) -> Modules:
             },
             False,
         ),
+        # pkg.sub has run, all of it, before api starts; its star import of
+        # pkg loads no package again.
         (
             {
-                "pkg": "__all__ = ['sub']\n",
-                "pkg.sub": "def load():\n    from . import user\n",
+                "pkg": "__all__ = list([])\n",
+                "pkg.sub": "from . import user\n",
                 "pkg.sub.api": "from .. import *\nhash = str\n",
                 "pkg.sub.user": "from .api import *\nkey = hash('x')\n",
+            },
+            False,
+        ),
+        (
+            {
+                "pkg.sub": "__all__ = ['user']\n",
+                "pkg.sub.user": "from pkg.api import *\nkey = hash('x')\n",
+                "pkg.api": "__import__('pkg.sub', fromlist=['*'])\nhash = str\n",
+            },
+            True,
+        ),
+        (
+            {
+                "pkg.sub": "__all__ = ['user']\n",
+                "pkg.sub.user": "from pkg.api import *\nkey = hash('x')\n",
+                "pkg.api": "from builtins import __import__ as load\n"
+                "load('pkg.sub', fromlist=('*',))\n"
+                "hash = str\n",
+            },
+            True,
+        ),
+        (
+            {
+                "pkg.sub": "__all__ = ['user']\n",
+                "pkg.sub.user": "from pkg.api import *\nkey = hash('x')\n",
+                "pkg.api": "__import__('sub', globals(), None, ['*'], 1)\nhash = str\n",
+            },
+            True,
+        ),
+        (
+            {
+                "pkg.sub": "__all__ = ['user']\n",
+                "pkg.sub.user": "from pkg.api import *\nkey = hash('x')\n",
+                "pkg.api": "__import__('pkg.sub', fromlist='*')\nhash = str\n",
+            },
+            True,
+        ),
+        (
+            {
+                "pkg.sub": "",
+                "pkg.sub.user": "from pkg.api import *\nkey = hash('x')\n",
+                "pkg.api": "__import__('pkg.sub', fromlist=['*'])\nhash = str\n",
             },
             False,
         ),
@@ -2861,6 +2997,178 @@ def test_star_imports_see_cycles_through_star_loads_and_renamed_imports(
         }
         for user in users:
             assert [kind for _, _, kind in analyses[user].findings] == expected
+
+
+@pytest.mark.parametrize(
+    "sources, reaches_builtin",
+    [
+        (
+            {
+                "pkg": "def load():\n    from . import user\n",
+                "pkg.api": "from pkg import load\nload()\nhash = str\n",
+                "pkg.user": "from pkg.api import *\nkey = hash('x')\n",
+            },
+            True,
+        ),
+        (
+            {
+                "pkg": "from .helpers import go\ndef load():\n    go()\n",
+                "pkg.helpers": "def go():\n    from . import user\n",
+                "pkg.api": "from pkg import load\nload()\nhash = str\n",
+                "pkg.user": "from pkg.api import *\nkey = hash('x')\n",
+            },
+            True,
+        ),
+        (
+            {
+                "pkg": "def load():\n    from .mid import user\n",
+                "pkg.mid": "",
+                "pkg.mid.api": "from pkg import load\nload()\nhash = str\n",
+                "pkg.mid.user": "from pkg.mid.api import *\nkey = hash('x')\n",
+            },
+            True,
+        ),
+        (
+            {
+                "pkg": "def load():\n    __import__('pkg.sub', fromlist=['*'])\n",
+                "pkg.api": "from pkg import load\nload()\nhash = str\n",
+                "pkg.sub": "__all__ = ['user']\n",
+                "pkg.sub.user": "from pkg.api import *\nkey = hash('x')\n",
+            },
+            True,
+        ),
+        (
+            {
+                "pkg": "load = lambda: __import__('pkg.user')\n",
+                "pkg.api": "from pkg import load\nload()\nhash = str\n",
+                "pkg.user": "from pkg.api import *\nkey = hash('x')\n",
+            },
+            True,
+        ),
+        (
+            {
+                "pkg": "loads = (__import__('pkg.user') for _ in [0])\n",
+                "pkg.api": "from pkg import loads\nnext(loads)\nhash = str\n",
+                "pkg.user": "from pkg.api import *\nkey = hash('x')\n",
+            },
+            True,
+        ),
+        (
+            {
+                "pkg": "class Loader:\n"
+                "    def load(self):\n"
+                "        from . import user\n",
+                "pkg.api": "from pkg import Loader\nLoader().load()\nhash = str\n",
+                "pkg.user": "from pkg.api import *\nkey = hash('x')\n",
+            },
+            True,
+        ),
+        (
+            {
+                "pkg": "from .sub import *\n",
+                "pkg.sub": "__all__ = ['helpers']\n",
+                "pkg.sub.helpers": "def go():\n    from .. import user\n",
+                "pkg.api": "from pkg import helpers\nhelpers.go()\nhash = str\n",
+                "pkg.user": "from pkg.api import *\nkey = hash('x')\n",
+            },
+            True,
+        ),
+        # pkg ran its import of other before api started; nothing api may
+        # call imports user.
+        (
+            {
+                "pkg": "from . import other\ndef load():\n    return other\n",
+                "pkg.other": "VALUE = 1\n",
+                "pkg.api": "from pkg import load\nload()\nhash = str\n",
+                "pkg.user": "from pkg.api import *\nkey = hash('x')\n",
+            },
+            False,
+        ),
+        # pkg.mid ran, with its import of user, before api started: a
+        # function's import of it starts nothing.
+        (
+            {
+                "pkg": "def load():\n    from . import mid\n",
+                "pkg.mid": "from . import user\n",
+                "pkg.mid.api": "from .. import load\nhash = str\n",
+                "pkg.mid.user": "from pkg.mid.api import *\nkey = hash('x')\n",
+            },
+            False,
+        ),
+    ],
+)
+def test_star_imports_see_cycles_through_code_the_packages_around_may_run(
+    sources, reaches_builtin
+):
+    # The packages around a module, and what they imported as they ran, have
+    # run before it, but its code may call their functions: an import in
+    # one is an edge.
+    users = [module for module, source in sources.items() if "hash('x')" in source]
+    expected = ["builtin hash"] if reaches_builtin else []
+    for order in permutations(sources):
+        modules = _modules_of(sources)
+        analyses = {
+            module: analyse(
+                sources[module],
+                f"{module}.py",
+                module,
+                modules.sources[module][0],
+                modules,
+            )
+            for module in order
+        }
+        for user in users:
+            assert [kind for _, _, kind in analyses[user].findings] == expected
+
+
+@pytest.mark.parametrize(
+    "source, run, later",
+    [
+        ("import pkg.a\nclass C:\n    import pkg.b\n", {"pkg.a", "pkg.b"}, set()),
+        (
+            "if x:\n    import pkg.a\ntry:\n    import pkg.b\nexcept E:\n    pass\n",
+            {"pkg.a", "pkg.b"},
+            set(),
+        ),
+        ("def f():\n    import pkg.a\n", set(), {"pkg.a"}),
+        ("async def f():\n    import pkg.a\n", set(), {"pkg.a"}),
+        ("def f():\n    if x:\n        import pkg.a\n", set(), {"pkg.a"}),
+        ("class C:\n    def m(self):\n        import pkg.a\n", set(), {"pkg.a"}),
+        ("f = lambda: __import__('pkg.a')\n", set(), {"pkg.a"}),
+        ("g = (__import__('pkg.a') for _ in [0])\n", set(), {"pkg.a"}),
+        ("x: __import__('pkg.a')\n", set(), {"pkg.a"}),
+        ("def f(x: __import__('pkg.a')): pass\n", set(), {"pkg.a"}),
+        ("@__import__('pkg.a')\ndef f(): pass\n", set(), {"pkg.a"}),
+    ],
+)
+def test_imports_are_split_by_when_they_may_run(source, run, later):
+    (run_names, _), (later_names, _) = _imports_in(ast.parse(source), "pkg")
+    assert (run_names, later_names) == (run, later)
+
+
+@pytest.mark.parametrize(
+    "minor, source",
+    [
+        (12, "class C[T: __import__('pkg.a')]:\n    pass\n"),
+        (12, "type Alias = __import__('pkg.a')\n"),
+        (13, "def f[T = __import__('pkg.a')](): pass\n"),
+    ],
+)
+def test_type_parameters_and_aliases_may_run_later(minor, source):
+    if sys.version_info < (3, minor):
+        pytest.skip(f"needs Python 3.{minor}")
+    (run_names, _), (later_names, _) = _imports_in(ast.parse(source), "pkg")
+    assert (run_names, later_names) == (set(), {"pkg.a"})
+
+
+def test_imports_in_name_star_bases_by_when_they_may_run():
+    source = (
+        "from .sub import *\n"
+        "__import__('pkg.top', fromlist=['*'])\n"
+        "def f():\n    __import__('pkg.inner', fromlist='*')\n"
+    )
+    (_, run_stars), (_, later_stars) = _imports_in(ast.parse(source), "pkg")
+    assert (run_stars, later_stars) == ({"pkg.sub", "pkg.top"}, {"pkg.inner"})
 
 
 def test_star_imports_see_all_of_a_module_whose_package_imports_the_importer():
