@@ -1,0 +1,14 @@
+- name: Case 1, both casualty loss deductions count toward the total.
+  # Schedule A Individual, Part I, line 2: 10,000 (no cap)
+  # Schedule A Individual, Part I, line 5: 7,000, capped at 5,000
+  # 10,000 + 5,000 = 15,000
+  period: 2025
+  input:
+    pr_principal_residence_casualty_loss: 10_000
+    pr_personal_property_casualty_loss: 7_000
+    filing_status: SINGLE
+    state_code: PR
+  output:
+    pr_casualty_loss_deduction: 10_000
+    pr_personal_property_casualty_loss_deduction: 5_000
+    pr_deductions: 15_000
