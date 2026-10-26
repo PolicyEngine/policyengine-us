@@ -1,0 +1,228 @@
+# Monthly payment under 34 CFR 685.209(b)(4)(ii), (f)(2), (g)(1):
+#   discretionary income = max(AGI - 1.5 x poverty guideline, 0)
+#   payment = 10% x discretionary income / 12
+#   x own share of the couple's eligible balance (joint filers)
+#   capped at the 10-year standard payment; under 5 -> 0; 5 to under 10 -> 10.
+# 2026 guideline in the 48 states: 15,960 + 5,680 per additional person.
+# Standard payment at 6 percent: 30,000 -> 333.06; 40,000 -> 444.08;
+# 20,000 -> 222.04; 10,000 -> 111.02.
+
+- name: Case 1, single filer pays 10 percent of discretionary income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 40,000 - 1.5 x 15,960 = 16,060; 10% x 16,060 / 12 = 133.83 < 333.06.
+    pay_as_you_earn_payment: 133.83
+
+- name: Case 2, the standard payment caps a high earner with a small balance.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 10_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 100_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 10% x 76,060 / 12 = 633.83 > 10,000 x 0.005 / (1 - 1.005 ^ -120) = 111.02.
+    pay_as_you_earn_payment: 111.02
+
+- name: Case 3, joint filers who both borrowed split the payment by balance.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 40_000
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 38
+        federal_student_loan_balance: 20_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 1.5 x 21,640 = 32,460; 10% x 47,540 / 12 = 396.17.
+    # Shares 2/3 and 1/3: 264.11 and 132.06, below the caps of 444.08 and
+    # 222.04.
+    pay_as_you_earn_payment: [264.11, 132.06]
+
+- name: Case 4, joint filers who both borrowed are each capped at their own standard payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 40_000
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 38
+        federal_student_loan_balance: 10_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 150_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 10% x (150,000 - 32,460) / 12 = 979.50; shares 80% and 20%: 783.60 and
+    # 195.90, above the caps of 444.08 and 111.02.
+    pay_as_you_earn_payment: [444.08, 111.02]
+
+- name: Case 5, a payment under 5 dollars becomes zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 24_500
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 10% x 560 / 12 = 4.67 < 5 -> 0 (685.209(g)(1)(iii)(A)).
+    pay_as_you_earn_payment: 0
+
+- name: Case 6, a payment from 5 to under 10 dollars becomes 10 dollars.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 25_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 10% x 1,060 / 12 = 8.83 -> 10 (685.209(g)(1)(iii)(B)).
+    pay_as_you_earn_payment: 10
+
+- name: Case 7, married filing separately excludes the spouse's income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 40
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 40_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+        adjusted_gross_income: 80_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Own AGI and a family of one: 133.83, as in Case 1.
+    pay_as_you_earn_payment: [133.83, 0]
+
+- name: Case 8, a borrower with a loan made on or after July 1, 2026 can't use the plan.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 34 CFR 685.209(c)(4)(v), (d)(5); 20 U.S.C. 1087e(d)(6)-(7).
+    pay_as_you_earn_payment: 0
+
+- name: Case 9, a payment of exactly 5 dollars rises to 10 dollars.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 24_540
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 1.5 x 15,960 = 23,940; 10% x 600 / 12 = 5.00 exactly, which is not less
+    # than 5, so it rises to 10 (685.209(g)(1)(iii)(B)).
+    pay_as_you_earn_payment: 10
