@@ -988,3 +988,39 @@ def test_s770_starts_with_january_entitlement_and_its_february_check():
 def test_restricted_survivor_excludes_child_and_disabled_early_entitlement(birth):
     with pytest.raises(ValueError, match="restricted survivor route excludes"):
         compute(survivor(birth_date=birth))
+
+
+@pytest.mark.parametrize("flag", [False, True])
+def test_s770_prior_disability_survivor_retains_bend_increase(flag):
+    # The worker was continuously DIB-eligible from 2018 until death in 2020.
+    # Section 2(c)(2)(B) treats prior disability as initial eligibility:
+    # https://www.congress.gov/bill/119th-congress/senate-bill/770/text
+    # Historical bends and COLAs:
+    # https://www.ssa.gov/oact/cola/bendpoints.html
+    # https://www.ssa.gov/oact/cola/colaseries.html
+    record = survivor(
+        survivor=survivor_basis(
+            authoritative_year=2018,
+            no_prior_disability=False,
+            provenance="Continuous DIB eligibility from 2018 until August 2020 death",
+        ),
+        entitlement_month="2020-08",
+        monthly_amount=D(2088),
+        valuation_month="2020-11",
+    )
+    rates = (".028", ".016", ".013", ".059", ".087", ".032", ".025", ".028")
+    events = [
+        ColaEvent(f"{year}-12", f"{year + 1}-01", D(rate))
+        for year, rate in zip(range(2018, 2026), rates)
+    ]
+    result = calculate_year(
+        record,
+        2026,
+        bend_points=(895, 5397),
+        cola_events=events,
+        formula_path=FormulaPath(s770=True),
+        recompute_mode="retroactive",
+        s770_survivor_bend_increase=flag,
+    )
+    assert record.benchmark() == 2018
+    assert row_for(result, "2026-01").payable_benefit == 2841

@@ -438,7 +438,11 @@ def calculate_year(
     restricted_survivor = False
     if record.source == "survivor":
         _, before62 = record.survivor.benchmark()
-        restricted_survivor = before62 and record.survivor.death_year < 2026
+        restricted_survivor = (
+            before62
+            and record.survivor.death_year < 2026
+            and record.survivor.no_prior_disability
+        )
         death_month = (
             record.survivor.death_date.strftime("%Y-%m")
             if record.survivor.death_date

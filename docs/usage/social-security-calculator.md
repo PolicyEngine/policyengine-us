@@ -117,8 +117,9 @@ January 1 attainment uses the preceding year. A year-only fallback requires
 `year_only_not_january_1`; death and age-62 attainment in the same year require
 exact dates or `same_year_death_before_62` (1/0; -1 means unspecified).
 
-COLAs for a pre-62 death begin with December of the death benchmark, paid the
-following January. Recovery propagates the supplied final-payment interval
+COLAs begin with December of the accepted computation benchmark, paid the
+following January. For a pre-62 death without prior eligibility, this is the
+death benchmark. Recovery propagates the supplied final-payment interval
 backward through the composite ratio and **every rounded COLA**, retaining a
 half-open eligibility-PIA interval. The lower admissible dime is the point
 convention; baseline forward computation must reproduce the supplied payment.
@@ -127,10 +128,14 @@ endpoint and expose the corresponding AIME interval. Zero stays zero.
 
 The default-false parameter
 `gov.contrib.congress.s770.section_2.recompute_pre2026_death_before_eligibility`
-controls only the 18% first-bend-point increase for the pre-2026 death-before-62
-subset. The 95% first factor still applies when false. Deaths in 2026 or later
-receive both changes independently of that switch. See [the recorded modeling
-ruling](social-security/RULINGS.md).
+controls only the 18% first-bend-point increase for pre-2026 deaths before any
+initial eligibility. This requires both death before age 62 and the
+`no_prior_disability` assertion. The 95% first factor still applies when false.
+An accepted authoritative prior-disability benchmark receives both changes
+regardless of the switch, as do deaths in 2026 or later. S.770 section 2(c)(2)(B) includes
+initial disability eligibility before 2026. See [the recorded modeling
+ruling](social-security/RULINGS.md) and [the bill
+text](https://www.congress.gov/bill/119th-congress/senate-bill/770/text).
 
 ## Shared PIA paths and policies
 
