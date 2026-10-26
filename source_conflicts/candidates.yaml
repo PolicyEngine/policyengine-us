@@ -3449,6 +3449,35 @@ candidates:
   state: unreviewed
   note: 'Verify the rounding gap-fill; the separate January-versus-April timing difference is a model approximation.
     Code not yet on main: medicaid_income_level, medicaid_optional_senior_or_disabled_income_limit.'
+- id: us-mo:mhabd-couple-resource-limit-boundary
+  program: medicaid
+  years:
+    from: 2015
+    type: calendar
+  question: Is a Missouri aged, blind or disabled couple whose countable resources equal the couple limit eligible,
+    as the statute's "not to exceed" says, or ineligible, as the rule's "at or in excess of" says?
+  sources:
+  - kind: statute
+    citation: RSMo 208.010.2(7) (208.010.2(4) before fiscal year 2018)
+    url: https://revisor.mo.gov/main/OneSection.aspx?section=208.010
+  - kind: regulation
+    citation: 13 CSR 40-8.020(4)(A)1.B and (4)(B)
+    url: https://www.sos.mo.gov/CMSImages/AdRules/csr/current/13csr/13c40-8.pdf#page=2
+  readings:
+    statute: A married couple living together "may own resources not to exceed" the couple amount, so resources
+      equal to the limit qualify.
+    other: A household with countable assets "at or in excess of" the limit is ineligible.
+  example: A 2026 Missouri couple with $12,137.55 of countable resources is eligible under the statute and ineligible
+    under the rule.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/is_optional_senior_or_disabled_asset_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10364
+  state: open
+  note: PR 10364 follows the statute for couples, pending the project lead's ruling (RSMo 536.014 voids a rule in
+    conflict with state law). Individuals keep the strict test, the agency's reading of the individual clause.
 - id: us-mo:negative-federal-agi-combined-return
   program: income-tax
   years:

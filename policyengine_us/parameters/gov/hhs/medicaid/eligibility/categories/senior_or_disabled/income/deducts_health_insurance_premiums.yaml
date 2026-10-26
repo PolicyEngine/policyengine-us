@@ -1,4 +1,4 @@
-description: The state deducts Medicare Part B and other health insurance premiums from countable income under the optional Medicaid pathway for seniors or people with disabilities, if this is true.
+description: The state deducts health insurance premiums that the person pays from countable income under the optional Medicaid pathway for seniors or people with disabilities, if this is true.
 metadata:
   unit: bool
   period: year
@@ -6,7 +6,11 @@ metadata:
   breakdown:
   - state_code
   reference:
-    - title: "California DHCS All County Welfare Directors Letter 20-24, Aged and Disabled Federal Poverty Level program #page 2-5"
+    - title: Cal. Code Regs. Tit. 22, § 50555.2 (a), (c) Health Insurance Premiums
+      href: https://www.law.cornell.edu/regulations/california/22-CCR-50555.2
+    - title: California DHCS All County Welfare Directors Letter 00-57, MC 176 Aged and Disabled FPL Financial Eligibility Form, line 17
+      href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/c00-57.pdf#page=3
+    - title: "California DHCS All County Welfare Directors Letter 20-24, Aged and Disabled Federal Poverty Level program #page 2-3"
       href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/20-24.pdf#page=2
 
 AK:
@@ -18,9 +22,8 @@ AR:
 AZ:
   2015-01-01: false
 CA:
-  # The 2020-12-01 value first applies in 2021 annual calculations.
-  2015-01-01: false
-  2020-12-01: true
+  # The ABD FPL program deducted premiums from its start in 2001.
+  2015-01-01: true
 CO:
   2015-01-01: false
 CT:

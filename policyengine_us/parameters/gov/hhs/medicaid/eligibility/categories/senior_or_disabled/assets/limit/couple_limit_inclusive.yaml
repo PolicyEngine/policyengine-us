@@ -1,0 +1,115 @@
+description: The state counts a couple's resources equal to the couple asset limit as within the limit under the Medicaid optional senior or disabled pathway, if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: Medicaid senior or disabled couple asset limit includes the limit amount
+  breakdown:
+  - state_code
+  reference:
+    - title: Missouri Revised Statutes 208.010.2(7)
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=208.010
+
+AK:
+  2015-01-01: false
+AL:
+  2015-01-01: false
+AR:
+  2015-01-01: false
+AZ:
+  2015-01-01: false
+CA:
+  2015-01-01: false
+CO:
+  2015-01-01: false
+CT:
+  2015-01-01: false
+DC:
+  2015-01-01: false
+DE:
+  2015-01-01: false
+FL:
+  2015-01-01: false
+GA:
+  2015-01-01: false
+HI:
+  2015-01-01: false
+IA:
+  2015-01-01: false
+ID:
+  2015-01-01: false
+IL:
+  2015-01-01: false
+IN:
+  2015-01-01: false
+KS:
+  2015-01-01: false
+KY:
+  2015-01-01: false
+LA:
+  2015-01-01: false
+MA:
+  2015-01-01: false
+MD:
+  2015-01-01: false
+ME:
+  2015-01-01: false
+MI:
+  2015-01-01: false
+MN:
+  2015-01-01: false
+MO:
+  # A married claimant living with a spouse "may own resources not to exceed"
+  # the couple amount (208.010.2(4) before fiscal year 2018).
+  2015-01-01: true
+MS:
+  2015-01-01: false
+MT:
+  2015-01-01: false
+NC:
+  2015-01-01: false
+ND:
+  2015-01-01: false
+NE:
+  2015-01-01: false
+NH:
+  2015-01-01: false
+NJ:
+  2015-01-01: false
+NM:
+  2015-01-01: false
+NV:
+  2015-01-01: false
+NY:
+  2015-01-01: false
+OH:
+  2015-01-01: false
+OK:
+  2015-01-01: false
+OR:
+  2015-01-01: false
+PA:
+  2015-01-01: false
+RI:
+  2015-01-01: false
+SC:
+  2015-01-01: false
+SD:
+  2015-01-01: false
+TN:
+  2015-01-01: false
+TX:
+  2015-01-01: false
+UT:
+  2015-01-01: false
+VA:
+  2015-01-01: false
+VT:
+  2015-01-01: false
+WA:
+  2015-01-01: false
+WI:
+  2015-01-01: false
+WV:
+  2015-01-01: false
+WY:
+  2015-01-01: false

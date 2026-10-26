@@ -14,6 +14,8 @@ metadata:
       href: https://portal.ct.gov/-/media/aginganddisability/agingservices/choices/benefitsquickguide.pdf#page=2
     - title: Connecticut CHOICES Benefits Quick Guide (Rev 04.04.2025)
       href: https://portal.ct.gov/ads/-/media/ads-beta/choices/choices-benefits-quick-guide.pdf?rev=3b8c59ca12224218bc4c4438649e7ac7#page=1
+    - title: "California DHCS All County Welfare Directors Letter 00-57, Aged and Disabled Federal Poverty Level program, MC 176 financial eligibility form, line 8"
+      href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/c00-57.pdf#page=3
     - title: "California DHCS All County Welfare Directors Letter 20-24, Aged and Disabled Federal Poverty Level program #page 2-3"
       href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/20-24.pdf#page=2
     - title: Connecticut DSS Program Standards Chart (as of January 1, 2026), AABD / MAABD disregards
@@ -36,9 +38,10 @@ AZ:
 AR:
   2015-01-01: 20
 CA:
-  # The 2020-12-01 value first applies in 2021 annual calculations.
-  2015-01-01: 230
-  2020-12-01: 20
+  # The 20-dollar any-income deduction (MC 176 line 8), which ACWDL 20-24 keeps.
+  # Before December 2020 California also subtracted the disregard in
+  # additional_disregard after the SSI exclusions.
+  2015-01-01: 20
 CO:
   2015-01-01: 20
 CT:

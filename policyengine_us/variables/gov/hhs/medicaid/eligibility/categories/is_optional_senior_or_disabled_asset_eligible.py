@@ -9,6 +9,7 @@ class is_optional_senior_or_disabled_asset_eligible(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396a#m",
         "https://www.law.cornell.edu/uscode/text/42/1396d#p",
+        "https://revisor.mo.gov/main/OneSection.aspx?section=208.010",
     )
 
     def formula(person, period, parameters):
@@ -41,5 +42,12 @@ class is_optional_senior_or_disabled_asset_eligible(Variable):
         # The MSP resource standard (42 USC 1396d(p)(1)(C)) and the AR, OK
         # and SC rules allow resources equal to the limit.
         within_msp_limit = assets <= msp_limit
-        below_state_limit = assets < state_limit
-        return where(uses_msp_limit, within_msp_limit, below_state_limit)
+        # RSMo 208.010.2(7): a married couple "may own resources not to
+        # exceed" the couple amount.
+        couple_may_equal_limit = is_couple & p.assets.limit.couple_limit_inclusive[
+            state
+        ].astype(bool)
+        within_state_limit = where(
+            couple_may_equal_limit, assets <= state_limit, assets < state_limit
+        )
+        return where(uses_msp_limit, within_msp_limit, within_state_limit)

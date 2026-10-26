@@ -121,7 +121,7 @@
     # 11,500 combined is under 12,137.55.
     is_optional_senior_or_disabled_asset_eligible: [true, true]
 
-- name: Missouri couple at the couple resource limit is ineligible.
+- name: Missouri couple at the couple resource limit is eligible.
   period: 2026
   input:
     people:
@@ -143,7 +143,33 @@
         members: [person1, person2]
         state_code: MO
   output:
-    # 12,137.55 combined is not under the 12,137.55 couple limit.
+    # RSMo 208.010.2(7): a couple "may own resources not to exceed" the limit.
+    # 12,137.55 combined equals the 12,137.55 couple limit.
+    is_optional_senior_or_disabled_asset_eligible: [true, true]
+
+- name: Missouri couple one cent over the couple resource limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 6_000
+      person2:
+        age: 68
+        ssi_countable_resources: 6_137.56
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # 12,137.56 combined exceeds the 12,137.55 couple limit.
     is_optional_senior_or_disabled_asset_eligible: [false, false]
 
 - name: Missouri's July 2026 individual limit applies from 2027.
@@ -322,3 +348,154 @@
   output:
     # 9,700 is over the 2025 limit of 9,660, though under the 2026 limit of 9,950.
     is_optional_senior_or_disabled_asset_eligible: false
+
+- name: Missouri applies the 1,000-dollar individual resource limit in 2017.
+  period: 2017
+  input:
+    age: 70
+    ssi_countable_resources: 1_500
+    state_code: MO
+  output:
+    # 13 CSR 40-8.020(4)(A): 1,000 before July 1, 2017. 1,500 is over it.
+    is_optional_senior_or_disabled_asset_eligible: false
+
+- name: Missouri couple at the July 2017 couple resource limit is eligible in 2018.
+  period: 2018
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 2_000
+      person2:
+        age: 68
+        ssi_countable_resources: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # RSMo 208.010.2(7): resources "not to exceed" the couple amount qualify.
+    # 4,000 combined equals the 4,000 couple limit effective July 1, 2017.
+    is_optional_senior_or_disabled_asset_eligible: [true, true]
+
+- name: Missouri applies the July 2018 individual resource limit in 2019.
+  period: 2019
+  input:
+    age: 70
+    ssi_countable_resources: 2_500
+    state_code: MO
+  output:
+    # 2,500 is under the 3,000 limit effective July 1, 2018.
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: Missouri applies the July 2019 individual resource limit in 2020.
+  period: 2020
+  input:
+    age: 70
+    ssi_countable_resources: 3_500
+    state_code: MO
+  output:
+    # 3,500 is under the 4,000 limit effective July 1, 2019.
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: Missouri applies the July 2020 individual resource limit in 2021.
+  period: 2021
+  input:
+    age: 70
+    ssi_countable_resources: 4_500
+    state_code: MO
+  output:
+    # 4,500 is under the 5,000 limit effective July 1, 2020.
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: Missouri applies the July 2021 individual resource limit in 2022.
+  period: 2022
+  input:
+    age: 70
+    ssi_countable_resources: 5_020
+    state_code: MO
+  output:
+    # 5,020 is under the 5,035 limit effective July 1, 2021 (IM-70).
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: Missouri applies the July 2022 individual resource limit in 2023.
+  period: 2023
+  input:
+    age: 70
+    ssi_countable_resources: 5_200
+    state_code: MO
+  output:
+    # 5,200 is under the 5,301.85 limit effective July 1, 2022 (IM-77).
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: Missouri applies the July 2023 individual resource limit in 2024.
+  period: 2024
+  input:
+    age: 70
+    ssi_countable_resources: 5_500
+    state_code: MO
+  output:
+    # 5,500 is under the 5,726 limit effective July 1, 2023 (IM-57).
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: Missouri applies the July 2024 individual resource limit in 2025.
+  period: 2025
+  input:
+    age: 70
+    ssi_countable_resources: 5_800
+    state_code: MO
+  output:
+    # 5,800 is under the 5,909.25 limit effective July 1, 2024.
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: Missouri applies the July 2025 individual resource limit in 2026.
+  period: 2026
+  input:
+    age: 70
+    ssi_countable_resources: 6_000
+    state_code: MO
+  output:
+    # 6,000 is under the 6,068.80 limit effective July 1, 2025.
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: Arkansas applicant under the 2015 Medicare Savings Program individual resource limit is eligible.
+  period: 2015
+  input:
+    age: 70
+    ssi_countable_resources: 7_000
+    state_code: AR
+  output:
+    # 7,000 is under the 2015 Medicare Savings Program limit of 7,280.
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: South Carolina couple one dollar over the 2026 Medicare Savings Program couple resource limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 7_455
+      person2:
+        age: 68
+        ssi_countable_resources: 7_456
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # 14,911 combined exceeds the 2026 couple limit of 14,910.
+    is_optional_senior_or_disabled_asset_eligible: [false, false]
