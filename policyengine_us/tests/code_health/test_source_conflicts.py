@@ -151,7 +151,6 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/reforms/states/mn/walz/mn_walz_hf1938.py": 1,
     "policyengine_us/variables/gov/local/ca/cc/ga/ca_cc_general_assistance_maximum_grant.py": 1,
     "policyengine_us/variables/gov/local/ca/cc/ga/eligibility/ca_cc_general_assistance_eligible.py": 1,
-    "policyengine_us/variables/gov/local/tax/sales/local_sales_tax.py": 1,
     "policyengine_us/variables/gov/states/ar/ade/oec/sra/rates/ar_sra_daily_copay.py": 1,
     "policyengine_us/variables/gov/states/ca/hbex/premium_subsidy/ca_premium_subsidy_applicable_percentage.py": 1,
     "policyengine_us/variables/gov/states/ct/tax/income/rebate/ct_child_tax_rebate.py": 1,
