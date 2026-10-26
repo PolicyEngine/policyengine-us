@@ -10,21 +10,32 @@ integer hash of entity ids passes that check, so this scan looks for the
 hash as well.
 
 Every module of the package except tests is parsed (formulas, reforms,
-simulation code, data loading, uprating and tools). Names are resolved under
-Python's scoping rules: imports, assignments of one name or attribute to
-another (``xp = np``), default arguments, functions, lambdas, comprehensions,
-and class bodies that their methods cannot see. So ``from numpy import random
-as r`` followed by ``r.random(3)`` is caught, and so are ``xp = np`` followed
-by ``xp.random.uniform()`` and ``from numpy import *`` followed by
-``random.uniform()``, while a local variable called ``random`` is not. A star
-import binds every public name the imported package module defines or
-imports, or the names STAR_EXPORTS lists for numpy and
-``policyengine_core.model_api``; ``np``, ``numpy`` and ``pd`` are bound to
-numpy and pandas wherever nothing else binds them. Reported, as (file,
-enclosing function or class, kind):
+simulation code, data loading, uprating and tools). A name resolves to
+everything it may refer to where it is used: the targets of every binding
+that may be the one read, in each scope Python looks in, so the scan errs
+toward reporting. Bindings come from imports, named imports and re-exports
+followed across the package, star imports, assignments of a name or
+attribute chain (``xp = np``, also in tuples), default arguments, ``global``
+and ``nonlocal``, functions, lambdas and comprehensions. No code sees the
+names a class body it is nested in binds. A module or class body looks
+further out when no binding is sure to have run before the use (all are in
+an ``if``, loop, ``try``, ``with`` or ``match``, or the use comes first).
+So ``from numpy import random as r`` followed by ``r.random(3)`` is caught,
+as are ``xp = np`` followed by ``xp.random.uniform()``, ``from
+policyengine_us.model_api import np as lib`` followed by
+``lib.random.uniform()``, and a ``try: import numpy as lib`` with a
+fallback, while a local variable called ``random`` is not. A star import of
+a package module binds its ``__all__`` (built from string literals with
+``=``, ``+``, ``+=``, ``append``, ``extend`` or ``insert``; any other
+``__all__`` exports every name) or, without one, every name it binds
+without a leading underscore. EXTERNAL_EXPORTS lists the names numpy and
+``policyengine_core.model_api`` bind where they matter here; ``np``,
+``numpy`` and ``pd`` are bound to numpy and pandas wherever nothing else
+binds them. Reported, as (file, enclosing function or class, kind):
 - ``stochastic import``: importing ``random``, ``secrets`` or
   ``numpy.random`` (or anything from them), including through
-  ``importlib.import_module`` or ``__import__`` with a literal name;
+  ``importlib.import_module`` or ``__import__`` with literal arguments,
+  positional or keyword (``package``, ``fromlist`` and ``level`` too);
 - ``random source``: a name or attribute that resolves into ``numpy.random``,
   ``random`` or ``secrets``, or to ``uuid.uuid1``, ``uuid.uuid4`` or
   ``os.urandom``, including through ``getattr`` with a literal name;
@@ -43,15 +54,20 @@ enclosing function or class, kind):
   named ``shuffle``, ``permutation``, ``choice`` and the like;
 - ``id modulo``: ``... % n``, ``%=``, ``np.mod``, ``divmod`` and the like,
   where the dividend reads an id (a name or string ending ``_id``);
-- ``draw helper call``: a use of a top-level function of the package whose
-  body has a finding EXEMPT does not cover, or that itself uses such a
-  function, so that calling an existing draw again also counts.
+- ``draw helper call``: a use, under any name it is imported or re-exported
+  as, of a top-level function of the package (one defined in an ``if`` or
+  ``try`` too) whose body has a finding EXEMPT does not cover, or that
+  itself uses such a function, so that calling an existing draw again also
+  counts.
 
 This is a ratchet over recognised patterns, not a proof that no
 hand-written draw exists. It does not follow ``eval`` or ``exec``, imports
-of a computed name, values reached through objects (``self.r = np.random``
-is caught where ``np.random`` is read, a later ``self.r.uniform()`` is not),
-or methods as draw helpers.
+of a computed name, values reached through objects or containers
+(``self.r = np.random`` is caught where ``np.random`` is read; a later
+``self.r.uniform()`` is not), the values calls return (``r =
+importlib.import_module("random")`` is caught at the import; a later
+``r.random()`` is not), names ``match`` patterns capture, or methods as draw
+helpers.
 
 EXEMPT lists reviewed occurrences that are not draws; RATCHET lists today's
 engine-time draws that still have to move into the data. Both count exact
@@ -109,9 +125,9 @@ EXEMPT = {
 }
 OFFLINE_MODULES = {"policyengine_us.tools.taxsim"}
 
-# Names a star import of a module outside the package binds, where they
-# matter here. numpy's __all__ includes its random module.
-STAR_EXPORTS = {
+# Names modules outside the package bind, where they matter here, for star
+# and named imports alike. numpy's __all__ includes its random module.
+EXTERNAL_EXPORTS = {
     "numpy": {"random": "numpy.random"},
     "policyengine_core.model_api": {
         "np": "numpy",
@@ -199,10 +215,24 @@ HASH_CONSTANTS = {
 }
 FUNCTION_NODES = (ast.FunctionDef, ast.AsyncFunctionDef)
 COMPREHENSION_NODES = (ast.ListComp, ast.SetComp, ast.GeneratorExp, ast.DictComp)
-# Scopes whose names a class body nested in them cannot hide.
-FUNCTION_LIKE_NODES = FUNCTION_NODES + (ast.Lambda,) + COMPREHENSION_NODES
-# Alias chains longer than this are treated as unresolved.
-MAX_ALIAS_DEPTH = 32
+# Statements whose bodies may not run, so a binding inside may not happen.
+COMPOUND_NODES = (
+    ast.If,
+    ast.For,
+    ast.AsyncFor,
+    ast.While,
+    ast.Try,
+    ast.TryStar,
+    ast.With,
+    ast.AsyncWith,
+    ast.Match,
+)
+# Lookups nested deeper than this are treated as unresolved.
+MAX_RESOLUTION_DEPTH = 64
+# What ``from module import *`` binds when the module has no __all__, and
+# when its __all__ is built in a way this scan does not evaluate.
+DEFAULT_PUBLIC = "names without a leading underscore"
+EVERY_NAME = "every name"
 
 
 def _matches(target: str, prefixes) -> bool:
@@ -250,6 +280,21 @@ def _dotted(node):
     return None
 
 
+def _literal(node) -> str | None:
+    if isinstance(node, ast.Constant) and isinstance(node.value, str):
+        return node.value
+    return None
+
+
+def _targets(target) -> set:
+    """The dotted names a binding's target may be."""
+    if target is None:
+        return set()
+    if isinstance(target, str):
+        return {target}
+    return set(target.targets())
+
+
 class _Alias:
     """A name bound, at ``line``, to another name or attribute chain."""
 
@@ -258,63 +303,101 @@ class _Alias:
         self.root, self.attributes = _dotted(value)
         self.line = line
 
-    def target(self, depth):
-        # The value is evaluated before the name is bound.
-        target = self.scope.resolve(self.root, self.line, depth + 1, before=True)
-        return ".".join([target] + self.attributes) if target else None
+    def targets(self):
+        # The value is evaluated where and when the binding is made.
+        roots = self.scope.modules.guarded(
+            self,
+            frozenset(),
+            lambda: frozenset(self.scope.resolve(self.root, self.line)),
+        )
+        return {".".join([root] + self.attributes) for root in roots}
+
+
+class _Imported:
+    """A name ``from base import name`` binds."""
+
+    def __init__(self, modules, base, name):
+        self.modules = modules
+        self.base = base
+        self.name = name
+
+    def targets(self):
+        return self.modules.imported(self.base, self.name)
 
 
 class _Scope:
-    def __init__(self, node, qualname, parent):
-        self.node = node
+    """One namespace: a module, class, function, lambda or comprehension."""
+
+    def __init__(self, kind, qualname, parent, modules):
+        self.kind = kind
         self.qualname = qualname
         self.parent = parent
-        # name -> [(line, target)]. The target is what the name refers to (a
-        # module, function or other import), an _Alias, or None for a value.
+        self.modules = modules
+        # name -> [(line, target, conditional)]. The target is what the name
+        # refers to (a module, function or other import), an _Alias or
+        # _Imported to resolve, or None for a value. A conditional binding
+        # (in an if, loop, try, with or match, or a deletion) may not happen.
         self.bindings = {}
+        # (line, module, conditional) for each star import.
+        self.stars = []
+        # Names a global or nonlocal statement gives to another scope.
+        self.declared = {}
 
-    def bind(self, name, line, target=None):
-        self.bindings.setdefault(name, []).append((line, target))
+    def bind(self, name, line, target=None, conditional=False):
+        owner = self.declared.get(name)
+        if owner is not None:
+            # Bound in that scope whenever this one runs, which may be never.
+            return owner.bind(name, line, target, conditional=True)
+        self.bindings.setdefault(name, []).append((line, target, conditional))
 
-    def resolve(self, name, line, depth=0, before=False):
-        """What ``name`` refers to at ``line``; None for a local value.
+    def own(self, name, line, deferred):
+        """(targets, bound, falls through) for ``name`` in this scope alone."""
+        entries = [(entry[0], entry[2]) for entry in self.bindings.get(name, [])]
+        targets = set()
+        for _, target, _ in self.bindings.get(name, []):
+            targets |= _targets(target)
+        for star_line, base, conditional in self.stars:
+            provided = self.modules.star_binds(base, name)
+            if provided is not None:
+                targets |= provided
+                entries.append((star_line, conditional))
+        if not entries:
+            return targets, False, True
+        if self.kind not in ("module", "class"):
+            # A name bound anywhere in a function is local to all of it.
+            return targets, True, False
+        # A module or class body looks further out unless a binding is sure
+        # to have run before the use.
+        sure = [entry_line for entry_line, conditional in entries if not conditional]
+        falls = not sure or (not deferred and line is not None and line <= min(sure))
+        return targets, True, falls
 
-        ``before`` excludes bindings made on ``line`` itself.
+    def resolve(self, name, line=None, deferred=False) -> set:
+        """Every dotted target ``name`` may refer to at ``line``.
+
+        The answer errs toward reporting: the targets of every binding that
+        may be the one read, in each scope Python looks in until a binding is
+        sure to hold. ``deferred`` says the code runs once the scope has run
+        to its end, as a function body does.
         """
-        if depth > MAX_ALIAS_DEPTH:
-            return None
-        scope = self
-        # Whether the lookup started inside a function-like scope that
-        # ``scope`` encloses: such code cannot see class bodies around it,
-        # and runs after the module's top level has bound everything.
-        from_function = False
+        targets = set()
+        scope = self.declared.get(name, self)
+        first = True
         while scope is not None:
-            is_class = isinstance(scope.node, ast.ClassDef)
-            entries = scope.bindings.get(name)
-            if entries and not (is_class and from_function):
-                if scope.parent is None and from_function:
-                    entry = max(entries, key=lambda entry: entry[0])
-                    return self._target(entry, depth)
-                earlier = [
-                    entry
-                    for entry in entries
-                    if entry[0] < line or (entry[0] == line and not before)
-                ]
-                if earlier:
-                    entry = max(earlier, key=lambda entry: entry[0])
-                    return self._target(entry, depth)
-                if scope.parent is not None and not is_class:
-                    # A name bound anywhere in a function is local to it.
-                    return self._target(entries[0], depth)
-            if isinstance(scope.node, FUNCTION_LIKE_NODES):
-                from_function = True
+            # No code nested in a class body sees the names it binds.
+            if first or scope.kind != "class":
+                found, bound, falls = scope.own(name, line, deferred)
+                targets |= found
+                if bound and not falls:
+                    return targets
+            if scope.kind in ("function", "lambda"):
+                # The scopes around a function have run by the time it does.
+                deferred = True
+            first = False
             scope = scope.parent
-        return UNBOUND_NAMES.get(name)
-
-    @staticmethod
-    def _target(entry, depth):
-        target = entry[1]
-        return target.target(depth) if isinstance(target, _Alias) else target
+        if name in UNBOUND_NAMES:
+            targets.add(UNBOUND_NAMES[name])
+        return targets
 
 
 def _alias(scope, value, line):
@@ -324,24 +407,190 @@ def _alias(scope, value, line):
     return None
 
 
-def _build_scopes(tree, module, package, star_exports):
-    """Bindings per scope, and the innermost scope of every node."""
-    top = _Scope(tree, "<module>", None)
+def _is_all(node) -> bool:
+    return isinstance(node, ast.Name) and node.id == "__all__"
+
+
+def _strings(node, current):
+    """The set of strings ``node`` builds, with ``current`` as __all__."""
+    if isinstance(node, (ast.List, ast.Tuple, ast.Set)):
+        values = [_literal(element) for element in node.elts]
+        return None if None in values else set(values)
+    if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Add):
+        left, right = _strings(node.left, current), _strings(node.right, current)
+        return None if left is None or right is None else left | right
+    if _is_all(node):
+        return set(current)
+    return None
+
+
+def _public_names(tree):
+    """What ``from module import *`` binds, from the module's ``__all__``.
+
+    A frozenset of names, DEFAULT_PUBLIC without an ``__all__``, or
+    EVERY_NAME for an ``__all__`` built other than from string literals with
+    ``=``, ``+``, ``+=``, ``append``, ``extend`` and ``insert`` at the top
+    level. Removals are ignored, which keeps more names than Python would.
+    """
+    uses = {node for node in ast.walk(tree) if _is_all(node)}
+    if not uses:
+        return DEFAULT_PUBLIC
+    names, handled = set(), set()
+    for statement in tree.body:
+        value = None
+        if isinstance(statement, (ast.Assign, ast.AnnAssign)):
+            targets = (
+                statement.targets
+                if isinstance(statement, ast.Assign)
+                else [statement.target]
+            )
+            if len(targets) == 1 and _is_all(targets[0]) and statement.value:
+                value = _strings(statement.value, names)
+                if value is None:
+                    return EVERY_NAME
+                names = value
+        elif (
+            isinstance(statement, ast.AugAssign)
+            and _is_all(statement.target)
+            and isinstance(statement.op, ast.Add)
+        ):
+            value = _strings(statement.value, names)
+            if value is None:
+                return EVERY_NAME
+            names = names | value
+        elif (
+            isinstance(statement, ast.Expr)
+            and isinstance(statement.value, ast.Call)
+            and isinstance(statement.value.func, ast.Attribute)
+            and _is_all(statement.value.func.value)
+        ):
+            method, args = statement.value.func.attr, statement.value.args
+            if method == "append" and len(args) == 1 and _literal(args[0]):
+                value = {_literal(args[0])}
+            elif method == "insert" and len(args) == 2 and _literal(args[1]):
+                value = {_literal(args[1])}
+            elif method == "extend" and len(args) == 1:
+                value = _strings(args[0], names)
+            elif method == "remove":
+                value = set()
+            if value is None:
+                return EVERY_NAME
+            names = names | value
+        if value is not None:
+            handled |= {node for node in ast.walk(statement) if _is_all(node)}
+    if uses - handled:
+        return EVERY_NAME
+    return frozenset(names)
+
+
+class Modules:
+    """The package's modules, built on demand, for names one imports from another.
+
+    ``sources`` maps module names to (package name, a function returning the
+    source). A lookup is a pure function of the sources: a cycle is cut
+    where a lookup meets itself, and a result computed across a cut is not
+    kept, so no answer depends on the order of lookups.
+    """
+
+    def __init__(self, sources: dict, external=None):
+        self.sources = sources
+        self.external = EXTERNAL_EXPORTS if external is None else external
+        self.tops = {}
+        self.publics = {}
+        self._memo = {}
+        self._active = set()
+        self._cuts = 0
+
+    def top(self, module):
+        if module not in self.tops:
+            package, read = self.sources[module]
+            tree = ast.parse(read(), filename=module)
+            self.register(module, _build_scopes(tree, module, package, self)[0], tree)
+        return self.tops[module]
+
+    def register(self, module, top, tree):
+        if module not in self.tops:
+            self.tops[module] = top
+            self.publics[module] = _public_names(tree)
+
+    def guarded(self, key, cut, compute):
+        """``compute()``, or ``cut`` where the lookup meets itself."""
+        if key in self._memo:
+            return self._memo[key]
+        if key in self._active or len(self._active) > MAX_RESOLUTION_DEPTH:
+            self._cuts += 1
+            return cut
+        self._active.add(key)
+        cuts = self._cuts
+        try:
+            result = compute()
+        finally:
+            self._active.discard(key)
+        if self._cuts == cuts and not isinstance(key, _Alias):
+            self._memo[key] = result
+        return result
+
+    def binding(self, module, name):
+        """(bound, targets) for ``module``'s top-level ``name`` once it ran."""
+
+        def compute():
+            targets, bound, _ = self.top(module).own(name, None, True)
+            return bound, frozenset(targets)
+
+        return self.guarded(("binding", module, name), (False, frozenset()), compute)
+
+    def imported(self, base, name) -> set:
+        """What ``from base import name`` may bind: a submodule or a name."""
+        targets = {f"{base}.{name}"}
+        if base in self.sources:
+            targets |= self.binding(base, name)[1]
+        elif self.external.get(base, {}).get(name):
+            targets.add(self.external[base][name])
+        return targets
+
+    def star_binds(self, base, name):
+        """What ``from base import *`` binds ``name`` to, or None."""
+        if base not in self.sources:
+            mapped = self.external.get(base, {}).get(name)
+            return {mapped} if mapped else None
+        self.top(base)
+        public = self.publics[base]
+        if public == DEFAULT_PUBLIC:
+            exported = not name.startswith("_")
+        else:
+            exported = public == EVERY_NAME or name in public
+        if not exported:
+            return None
+        bound, targets = self.binding(base, name)
+        if bound:
+            return set(targets)
+        if isinstance(public, frozenset):
+            return {f"{base}.{name}"}  # A submodule __all__ lists.
+        return None
+
+
+def _build_scopes(tree, module, package, modules):
+    """(module scope, the innermost scope of every node) of ``tree``."""
+    top = _Scope("module", "<module>", None, modules)
     scope_of = {}
 
-    def assign(target, value, scope):
+    def assign(target, value, scope, conditional, evaluated_in=None):
+        """Bind ``target`` in ``scope`` to ``value``, evaluated in
+        ``evaluated_in`` (by default ``scope``)."""
         scope_of[target] = scope
         if isinstance(target, ast.Name):
-            scope.bind(target.id, target.lineno, _alias(scope, value, target.lineno))
+            line = target.lineno
+            alias = _alias(evaluated_in or scope, value, line)
+            scope.bind(target.id, line, alias, conditional)
         elif (
             isinstance(target, (ast.Tuple, ast.List))
             and isinstance(value, (ast.Tuple, ast.List))
             and len(target.elts) == len(value.elts)
         ):
             for element, element_value in zip(target.elts, value.elts):
-                assign(element, element_value, scope)
+                assign(element, element_value, scope, conditional, evaluated_in)
         else:
-            visit(target, scope)
+            visit(target, scope, conditional)
 
     def bind_arguments(inner, outer, arguments, line):
         positional = arguments.posonlyargs + arguments.args
@@ -354,7 +603,26 @@ def _build_scopes(tree, module, package, star_exports):
             if argument is not None:
                 inner.bind(argument.arg, line, _alias(outer, default, line))
 
-    def visit_function(node, scope):
+    def declare(inner, body):
+        """Send names a global or nonlocal statement in ``body`` names to
+        the scope that binds them."""
+        stack = list(body)
+        while stack:
+            node = stack.pop()
+            if isinstance(node, ast.Global):
+                for name in node.names:
+                    inner.declared[name] = top
+            elif isinstance(node, ast.Nonlocal):
+                owner = inner.parent
+                while owner is not None and owner.kind not in ("function", "lambda"):
+                    owner = owner.parent
+                for name in node.names:
+                    if owner is not None:
+                        inner.declared[name] = owner
+            elif not isinstance(node, FUNCTION_NODES + (ast.ClassDef, ast.Lambda)):
+                stack.extend(ast.iter_child_nodes(node))
+
+    def visit_function(node, scope, conditional):
         # Decorators, defaults and annotations are evaluated in the outer
         # scope.
         outer = list(getattr(node, "decorator_list", []))
@@ -367,41 +635,45 @@ def _build_scopes(tree, module, package, star_exports):
                 if isinstance(argument, ast.arg) and argument.annotation
             ]
         for child in outer:
-            visit(child, scope)
+            visit(child, scope, conditional)
         name = getattr(node, "name", "<lambda>")
         if not isinstance(node, ast.Lambda):
             top_level = scope.parent is None
-            scope.bind(name, node.lineno, f"{module}.{name}" if top_level else None)
+            target = f"{module}.{name}" if top_level else None
+            scope.bind(name, node.lineno, target, conditional)
         qualname = name if scope.parent is None else f"{scope.qualname}.{name}"
-        inner = _Scope(node, qualname, scope)
+        kind = "lambda" if isinstance(node, ast.Lambda) else "function"
+        inner = _Scope(kind, qualname, scope, modules)
+        body = node.body if isinstance(node.body, list) else [node.body]
+        declare(inner, body)
         bind_arguments(inner, scope, node.args, node.lineno)
-        for child in node.body if isinstance(node.body, list) else [node.body]:
+        for child in body:
             visit(child, inner)
 
-    def visit_class(node, scope):
+    def visit_class(node, scope, conditional):
         for child in node.decorator_list + node.bases:
-            visit(child, scope)
+            visit(child, scope, conditional)
         for keyword in node.keywords:
-            visit(keyword.value, scope)
+            visit(keyword.value, scope, conditional)
         top_level = scope.parent is None
-        scope.bind(
-            node.name, node.lineno, f"{module}.{node.name}" if top_level else None
-        )
+        target = f"{module}.{node.name}" if top_level else None
+        scope.bind(node.name, node.lineno, target, conditional)
         qualname = node.name if top_level else f"{scope.qualname}.{node.name}"
-        inner = _Scope(node, qualname, scope)
+        inner = _Scope("class", qualname, scope, modules)
+        declare(inner, node.body)
         for child in node.body:
             visit(child, inner)
 
-    def visit_comprehension(node, scope):
+    def visit_comprehension(node, scope, conditional):
         # The first iterable is evaluated in the enclosing scope; the rest
         # in the comprehension's own, reported under the enclosing name.
-        visit(node.generators[0].iter, scope)
-        inner = _Scope(node, scope.qualname, scope)
+        visit(node.generators[0].iter, scope, conditional)
+        inner = _Scope("comprehension", scope.qualname, scope, modules)
         for index, generator in enumerate(node.generators):
             scope_of[generator] = inner
             if index:
                 visit(generator.iter, inner)
-            assign(generator.target, None, inner)
+            assign(generator.target, None, inner, False)
             for condition in generator.ifs:
                 visit(condition, inner)
         if isinstance(node, ast.DictComp):
@@ -411,58 +683,60 @@ def _build_scopes(tree, module, package, star_exports):
         for element in elements:
             visit(element, inner)
 
-    def visit(node, scope):
+    def visit(node, scope, conditional=False):
         scope_of[node] = scope
-        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda)):
-            return visit_function(node, scope)
+        if isinstance(node, FUNCTION_NODES + (ast.Lambda,)):
+            return visit_function(node, scope, conditional)
         if isinstance(node, ast.ClassDef):
-            return visit_class(node, scope)
+            return visit_class(node, scope, conditional)
         if isinstance(node, COMPREHENSION_NODES):
-            return visit_comprehension(node, scope)
+            return visit_comprehension(node, scope, conditional)
         if isinstance(node, ast.Assign):
-            visit(node.value, scope)
+            visit(node.value, scope, conditional)
             for target in node.targets:
-                assign(target, node.value, scope)
+                assign(target, node.value, scope, conditional)
             return
         if isinstance(node, ast.AnnAssign):
-            visit(node.annotation, scope)
+            visit(node.annotation, scope, conditional)
             if node.value is not None:
-                visit(node.value, scope)
-            return assign(node.target, node.value, scope)
+                visit(node.value, scope, conditional)
+            return assign(node.target, node.value, scope, conditional)
         if isinstance(node, ast.NamedExpr):
-            visit(node.value, scope)
+            visit(node.value, scope, conditional)
+            # The target belongs to the scope around any comprehensions; the
+            # value is evaluated where the expression is.
             owner = scope
-            while isinstance(owner.node, COMPREHENSION_NODES):
+            while owner.kind == "comprehension":
                 owner = owner.parent
-            return assign(node.target, node.value, owner)
+            return assign(node.target, node.value, owner, conditional, scope)
         if isinstance(node, ast.Import):
             for alias in node.names:
                 if alias.asname:
-                    scope.bind(alias.asname, node.lineno, alias.name)
+                    scope.bind(alias.asname, node.lineno, alias.name, conditional)
                 else:
                     root = alias.name.split(".")[0]
-                    scope.bind(root, node.lineno, root)
+                    scope.bind(root, node.lineno, root, conditional)
         elif isinstance(node, ast.ImportFrom):
             base = _absolute(node.module or "", node.level, package)
             for alias in node.names:
                 if alias.name == "*":
-                    for name, target in star_exports(base).items():
-                        scope.bind(name, node.lineno, target)
+                    scope.stars.append((node.lineno, base, conditional))
                 else:
-                    scope.bind(
-                        alias.asname or alias.name,
-                        node.lineno,
-                        f"{base}.{alias.name}",
-                    )
-        elif isinstance(node, ast.Name) and isinstance(node.ctx, (ast.Store, ast.Del)):
-            scope.bind(node.id, node.lineno)
+                    imported = _Imported(modules, base, alias.name)
+                    name = alias.asname or alias.name
+                    scope.bind(name, node.lineno, imported, conditional)
+        elif isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store):
+            scope.bind(node.id, node.lineno, None, conditional)
+        elif isinstance(node, ast.Name) and isinstance(node.ctx, ast.Del):
+            scope.bind(node.id, node.lineno, None, True)
         elif isinstance(node, ast.ExceptHandler) and node.name:
-            scope.bind(node.name, node.lineno)
+            scope.bind(node.name, node.lineno, None, True)
+        inside = conditional or isinstance(node, COMPOUND_NODES)
         for child in ast.iter_child_nodes(node):
-            visit(child, scope)
+            visit(child, scope, inside)
 
     visit(tree, top)
-    return scope_of
+    return top, scope_of
 
 
 def _reads_an_id(node) -> bool:
@@ -490,26 +764,54 @@ def _is_xorshift(left, right, shift_of) -> bool:
     return False
 
 
-def _literal(node) -> str | None:
-    if isinstance(node, ast.Constant) and isinstance(node.value, str):
-        return node.value
+def _argument(call, position, keyword):
+    """The argument ``call`` passes at ``position`` or as ``keyword``."""
+    if len(call.args) > position:
+        return call.args[position]
+    for passed in call.keywords:
+        if passed.arg == keyword:
+            return passed.value
     return None
+
+
+def _dynamic_imports(call, called, package) -> list:
+    """Absolute names a call of a dynamic import function imports, where its
+    arguments are literals."""
+    names = []
+    if "importlib.import_module" in called:
+        name = _literal(_argument(call, 0, "name"))
+        relative_to = _literal(_argument(call, 1, "package"))
+        if name and name.startswith("."):
+            level = len(name) - len(name.lstrip("."))
+            names.append(_absolute(name.lstrip("."), level, relative_to))
+        elif name:
+            names.append(name)
+    if "builtins.__import__" in called:
+        name = _literal(_argument(call, 0, "name"))
+        level = _argument(call, 4, "level")
+        level = level.value if isinstance(level, ast.Constant) else 0
+        if name is not None and isinstance(level, int):
+            base = _absolute(name, level, package) if level else name
+            names.append(base)
+            fromlist = _argument(call, 3, "fromlist")
+            if isinstance(fromlist, (ast.List, ast.Tuple, ast.Set)):
+                items = [_literal(item) for item in fromlist.elts]
+                names += [f"{base}.{item}" for item in items if item]
+    return names
 
 
 class Analysis(NamedTuple):
     module: str
     # (line, enclosing scope, kind), without draw helper calls.
     findings: list
-    # (line, enclosing scope, target) for each use of a package name.
+    # (line, enclosing scope, targets) for each use that may name something
+    # in the package.
     references: list
-    # Names of the module's top-level functions.
+    # Names of the module's top-level functions, also those defined in an
+    # if or try.
     functions: list
     # (line, absolute module name) for each import, static or literal dynamic.
     imports: list
-
-
-def _no_star_exports(module):
-    return STAR_EXPORTS.get(module, {})
 
 
 def analyse(
@@ -517,11 +819,18 @@ def analyse(
     filename: str = "<string>",
     module: str = "m",
     package: str | None = None,
-    star_exports=_no_star_exports,
+    modules: Modules | None = None,
 ) -> Analysis:
-    """Draw patterns, package references and imports of one module."""
+    """Draw patterns, package references and imports of one module.
+
+    ``modules`` resolves names imported from other package modules; without
+    it the module stands alone.
+    """
     tree = ast.parse(source, filename=filename)
-    scope_of = _build_scopes(tree, module, package, star_exports)
+    if modules is None:
+        modules = Modules({module: (package, lambda: source)})
+    top, scope_of = _build_scopes(tree, module, package, modules)
+    modules.register(module, top, tree)
     parents = {
         child: node for node in ast.walk(tree) for child in ast.iter_child_nodes(node)
     }
@@ -536,13 +845,19 @@ def analyse(
     def report(node, kind):
         findings.append((node.lineno, scope_for(node).qualname, kind))
 
-    def target_of(node):
+    def report_targets(node, targets):
+        for kind in sorted({_classify(target) for target in targets} - {None}):
+            report(node, kind)
+
+    def targets_of(node) -> set:
         dotted = _dotted(node)
         if dotted is None:
-            return None
+            return set()
         root, attributes = dotted
-        target = scope_for(node).resolve(root, node.lineno)
-        return ".".join([target] + attributes) if target else None
+        return {
+            ".".join([target] + attributes)
+            for target in scope_for(node).resolve(root, node.lineno)
+        }
 
     def shift_of(node):
         if isinstance(node, ast.BinOp) and isinstance(
@@ -550,7 +865,7 @@ def analyse(
         ):
             return node.left
         if isinstance(node, ast.Call) and node.args:
-            if target_of(node.func) in SHIFT_FUNCTIONS:
+            if targets_of(node.func) & SHIFT_FUNCTIONS:
                 return node.args[0]
         return None
 
@@ -579,36 +894,26 @@ def analyse(
             parent = parents.get(node)
             if isinstance(parent, ast.Attribute) and parent.value is node:
                 continue  # Only the whole chain counts.
-            target = target_of(node)
-            if target is None:
-                continue
-            kind = _classify(target)
-            if kind:
-                report(node, kind)
-            elif target.startswith(root_package):
-                references.append((node.lineno, scope_for(node).qualname, target))
+            targets = targets_of(node)
+            report_targets(node, targets)
+            named = frozenset(t for t in targets if t.startswith(root_package))
+            if named:
+                references.append((node.lineno, scope_for(node).qualname, named))
         if isinstance(node, ast.Call):
             func = node.func
-            called = target_of(func)
-            first = _literal(node.args[0]) if node.args else None
-            if called in DYNAMIC_IMPORTS and first:
-                if first.startswith("."):
-                    keywords = {k.arg: _literal(k.value) for k in node.keywords}
-                    level = len(first) - len(first.lstrip("."))
-                    first = _absolute(first.lstrip("."), level, keywords.get("package"))
-                check_import(node, first)
-            if called == "builtins.getattr" and len(node.args) >= 2:
-                owner = target_of(node.args[0])
+            called = targets_of(func)
+            if called & DYNAMIC_IMPORTS:
+                for name in _dynamic_imports(node, called, package):
+                    check_import(node, name)
+            if "builtins.getattr" in called and len(node.args) >= 2:
                 attribute = _literal(node.args[1])
-                kind = (
-                    _classify(f"{owner}.{attribute}") if owner and attribute else None
-                )
-                if kind:
-                    report(node, kind)
-            if called in XOR_FUNCTIONS and len(node.args) == 2:
+                if attribute:
+                    owners = targets_of(node.args[0])
+                    report_targets(node, {f"{owner}.{attribute}" for owner in owners})
+            if called & XOR_FUNCTIONS and len(node.args) == 2:
                 if _is_xorshift(*node.args, shift_of):
                     report(node, "xorshift")
-            if called in MOD_FUNCTIONS and node.args and _reads_an_id(node.args[0]):
+            if called & MOD_FUNCTIONS and node.args and _reads_an_id(node.args[0]):
                 report(node, "id modulo")
             if isinstance(func, ast.Attribute):
                 keywords = {keyword.arg for keyword in node.keywords}
@@ -632,7 +937,11 @@ def analyse(
                 report(node, "xorshift")
             if isinstance(node.op, ast.Mod) and _reads_an_id(left):
                 report(node, "id modulo")
-    functions = [node.name for node in tree.body if isinstance(node, FUNCTION_NODES)]
+    functions = [
+        node.name
+        for node in ast.walk(tree)
+        if isinstance(node, FUNCTION_NODES) and scope_of.get(node) is top
+    ]
     return Analysis(module, findings, references, functions, imports)
 
 
@@ -640,8 +949,8 @@ def helper_calls(analysis: Analysis, helpers) -> list:
     """(line, scope, "draw helper call") for each use of a draw helper."""
     return [
         (line, scope, "draw helper call")
-        for line, scope, target in analysis.references
-        if _matches(target, helpers)
+        for line, scope, targets in analysis.references
+        if any(_matches(target, helpers) for target in targets)
     ]
 
 
@@ -733,86 +1042,29 @@ def package_modules():
             yield relative, dotted, dotted.rsplit(".", 1)[0], path
 
 
-def module_star_exports(paths: dict):
-    """A function giving the names ``from <module> import *`` binds.
-
-    ``paths`` maps package module names to (package name, path). Each
-    module's public top-level names map to what they refer to, following its
-    own imports and star imports.
-    """
-    exports = {}
-
-    def star_exports(module):
-        if module in STAR_EXPORTS or module not in paths:
-            return STAR_EXPORTS.get(module, {})
-        if module in exports:
-            return exports[module]
-        exports[module] = {}  # A cycle sees what has been bound so far.
-        package, path = paths[module]
-        tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
-        names = exports[module]
-        public = None
-        for node in tree.body:
-            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
-                names[node.name] = f"{module}.{node.name}"
-            elif isinstance(node, ast.Import):
-                for alias in node.names:
-                    root = alias.name.split(".")[0]
-                    names[alias.asname or root] = alias.name if alias.asname else root
-            elif isinstance(node, ast.ImportFrom):
-                base = _absolute(node.module or "", node.level, package)
-                for alias in node.names:
-                    if alias.name == "*":
-                        names.update(star_exports(base))
-                    else:
-                        names[alias.asname or alias.name] = f"{base}.{alias.name}"
-            elif isinstance(node, (ast.Assign, ast.AnnAssign)):
-                targets = (
-                    node.targets if isinstance(node, ast.Assign) else [node.target]
-                )
-                dotted = _dotted(node.value) if node.value is not None else None
-                for target in targets:
-                    for name in ast.walk(target):
-                        if isinstance(name, ast.Name):
-                            names[name.id] = None
-                    if isinstance(target, ast.Name) and dotted:
-                        # name = other.chain, with other bound above.
-                        root, attributes = dotted
-                        if names.get(root):
-                            names[target.id] = ".".join([names[root]] + attributes)
-                    if isinstance(target, ast.Name) and target.id == "__all__":
-                        try:
-                            public = set(ast.literal_eval(node.value))
-                        except ValueError:
-                            public = None
-        exports[module] = {
-            name: target
-            for name, target in names.items()
-            if (name in public if public is not None else not name.startswith("_"))
-        }
-        return exports[module]
-
-    return star_exports
+def _reader(path):
+    return lambda: path.read_text(encoding="utf-8")
 
 
 class PackageScan(NamedTuple):
     counts: dict
     helpers: set
     imports: dict
-    star_exports: object
+    modules: Modules
 
 
 @cache
 def package_scan() -> PackageScan:
     """Every module analysed once per test session."""
-    modules = list(package_modules())
-    paths = {module: (package, path) for _, module, package, path in modules}
-    star_exports = module_star_exports(paths)
+    listed = list(package_modules())
+    modules = Modules(
+        {module: (package, _reader(path)) for _, module, package, path in listed}
+    )
     analyses = {
         relative: analyse(
-            path.read_text(encoding="utf-8"), relative, module, package, star_exports
+            path.read_text(encoding="utf-8"), relative, module, package, modules
         )
-        for relative, module, package, path in modules
+        for relative, module, package, path in listed
     }
     helpers = draw_helpers(analyses, EXEMPT)
     counts = count_findings(
@@ -822,7 +1074,7 @@ def package_scan() -> PackageScan:
         }
     )
     imports = {relative: analysis.imports for relative, analysis in analyses.items()}
-    return PackageScan(counts, helpers, imports, star_exports)
+    return PackageScan(counts, helpers, imports, modules)
 
 
 def _kinds(source: str) -> set:
@@ -859,8 +1111,69 @@ def _kinds(source: str) -> set:
             "random source",
         ),
         ("if (r := np.random):\n    r.uniform()\n", "random source"),
+        # A walrus in a comprehension binds outside it, to a value read inside.
+        (
+            "import numpy as np\n[(lib := np) for _ in [0]]\nlib.random.uniform()\n",
+            "random source",
+        ),
+        # A name may refer to any binding that may be the one read.
+        (
+            "from policyengine_core.model_api import np as lib\nlib.random.uniform()\n",
+            "random source",
+        ),
+        (
+            "import numpy as lib\n"
+            "values = [lib.random.uniform() for _ in range(1)]\n"
+            "lib = object()\n",
+            "random source",
+        ),
+        (
+            "import numpy as np\n"
+            "class Outer:\n"
+            "    np = object()\n"
+            "    class Inner:\n"
+            "        value = np.random.uniform()\n",
+            "random source",
+        ),
+        (
+            "class Outer:\n    hash = 1\n    class Inner:\n        key = hash('x')\n",
+            "builtin hash",
+        ),
+        ("import numpy as lib; alias = lib; alias.random.uniform()\n", "random source"),
+        (
+            "try:\n"
+            "    import numpy as lib\n"
+            "except ImportError:\n"
+            "    lib = None\n"
+            "lib.random.uniform()\n",
+            "random source",
+        ),
+        (
+            "def setup():\n"
+            "    global lib\n"
+            "    import numpy as lib\n"
+            "def f():\n"
+            "    return lib.random.uniform()\n",
+            "random source",
+        ),
+        (
+            "def outer():\n"
+            "    lib = None\n"
+            "    def setup():\n"
+            "        nonlocal lib\n"
+            "        import numpy as lib\n"
+            "    return lib.random.uniform()\n",
+            "random source",
+        ),
+        ("if flag:\n    hash = str\nkey = hash('x')\n", "builtin hash"),
+        ("key = hash('x')\nhash = str\n", "builtin hash"),
         ("import importlib\nimportlib.import_module('random')\n", "stochastic import"),
+        (
+            "import importlib\nimportlib.import_module(name='random')\n",
+            "stochastic import",
+        ),
         ("__import__('numpy.random')\n", "stochastic import"),
+        ("__import__('numpy', fromlist=['random'])\n", "stochastic import"),
         ("from importlib import import_module as load\nload('zlib')\n", "hash library"),
         # Hashes.
         ('key = hash("x")\n', "builtin hash"),
@@ -927,6 +1240,12 @@ def test_detector_flags_each_draw_pattern(source, kind):
         "getattr(np, 'where')(a, b, c)\n",
         "import importlib\nimportlib.import_module('numpy')\n",
         "def helper(x):\n    return x + 1\ndef f(x):\n    return helper(x)\n",
+        # A binding sure to have run hides the builtin.
+        "hash = str\nkey = hash('x')\n",
+        "class A:\n    hash = str\n    key = hash('x')\n",
+        "def f():\n    hash = str\n    return hash('x')\n",
+        # The walrus value is the comprehension's own np, not numpy.
+        "import numpy as np\n[(lib := np) for np in [object()]]\nlib.random.uniform()\n",
     ],
 )
 def test_detector_skips_deterministic_code(source):
@@ -1006,17 +1325,95 @@ def test_reusing_an_allowed_hash_or_draw_spends_an_occurrence():
     assert any("in more: draw helper call" in violation for violation in violations)
 
 
-def test_star_imports_bind_the_imported_names():
-    def star_exports(module):
-        return {"draws": "numpy.random"} if module == "pkg.api" else {}
+def _package_findings(sources: dict, order=None, exempt=None) -> dict:
+    """{module: findings} of a package ``pkg`` given {module: source}.
 
-    source = "from pkg.api import *\ndraws.uniform()\n"
-    found = analyse(source, star_exports=star_exports).findings
-    assert [kind for _, _, kind in found] == ["random source"]
-    # The package's model_api passes on core's numpy and its own helpers.
-    exports = package_scan().star_exports("policyengine_us.model_api")
-    assert exports["np"] == "numpy"
-    assert exports["all_of_variables"] == "policyengine_us.model_api.all_of_variables"
+    ``order`` is the order the modules are analysed in.
+    """
+    modules = Modules(
+        {
+            f"pkg.{name}": ("pkg", lambda source=source: source)
+            for name, source in sources.items()
+        }
+    )
+    analyses = {
+        name: analyse(sources[name], f"{name}.py", f"pkg.{name}", "pkg", modules)
+        for name in order or sources
+    }
+    helpers = draw_helpers(analyses, exempt or {})
+    return {
+        name: sorted(analysis.findings + helper_calls(analysis, helpers))
+        for name, analysis in analyses.items()
+    }
+
+
+def _package_kinds(sources: dict, module: str = "user") -> list:
+    return [kind for _, _, kind in _package_findings(sources)[module]]
+
+
+def test_named_imports_and_reexports_resolve_to_what_they_name():
+    api = "import numpy as lib\nfrom numpy import random as draws\n"
+    user = (
+        "from .api import lib\n"
+        "lib.random.uniform()\n"
+        "from .api import draws as d\n"
+        "d.uniform()\n"
+    )
+    assert _package_kinds({"api": api, "user": user}) == ["random source"] * 2
+    # A draw helper re-exported by name is still a draw helper.
+    helper = "def mix(x):\n    return x ^ (x >> 3)\n"
+    found = _package_findings(
+        {
+            "a": helper,
+            "b": "from .a import mix\n",
+            "c": "from .b import mix\ndef consumer(x):\n    return mix(x)\n",
+        }
+    )
+    assert ("consumer", "draw helper call") in {(s, k) for _, s, k in found["c"]}
+
+
+@pytest.mark.parametrize(
+    "api",
+    [
+        "import numpy as lib\nleft, right = lib, 1\n",
+        "import numpy as _lib\n__all__ = ['left'] + []\nleft = _lib\n",
+        "import numpy as _lib\n__all__ = []\n__all__.append('left')\nleft = _lib\n",
+        "import numpy as _lib\n__all__ = ('x',)\n__all__ += ['left']\nleft = _lib\n",
+        "import numpy as _lib\n__all__ = names()\nleft = _lib\n",
+    ],
+)
+def test_star_imports_bind_what_the_module_exports(api):
+    user = "from .api import *\nleft.random.uniform()\n"
+    assert _package_kinds({"api": api, "user": user}) == ["random source"]
+
+
+def test_star_imports_bind_private_names_only_through_all():
+    user = "from .api import *\n_lib.random.uniform()\n"
+    assert _package_kinds({"api": "import numpy as _lib\n", "user": user}) == []
+    api = "import numpy as _lib\n__all__ = ['_lib']\n"
+    assert _package_kinds({"api": api, "user": user}) == ["random source"]
+
+
+def test_cyclic_star_imports_resolve_in_any_order():
+    sources = {
+        "a": "from .b import *\nimport numpy as lib\n",
+        "b": "from .a import *\n",
+        "user": "from .b import *\nlib.random.uniform()\n",
+    }
+    results = [
+        _package_findings(sources, order)
+        for order in (["a", "b", "user"], ["user", "b", "a"], ["b", "user", "a"])
+    ]
+    assert results[0] == results[1] == results[2]
+    assert [kind for _, _, kind in results[0]["user"]] == ["random source"]
+
+
+def test_model_api_passes_on_cores_numpy_and_its_own_helpers():
+    modules = package_scan().modules
+    assert "numpy" in modules.star_binds("policyengine_us.model_api", "np")
+    assert "policyengine_us.model_api.all_of_variables" in modules.star_binds(
+        "policyengine_us.model_api", "all_of_variables"
+    )
 
 
 def test_transitional_start_month_hash_is_a_draw_helper():
@@ -1028,6 +1425,7 @@ def test_transitional_start_month_hash_is_a_draw_helper():
     assert f"{module}.legacy_start_month_index" in helpers
     assert f"{module}.stored_start_month_index" in helpers
     assert f"{module}.situation_start_month_index" not in helpers
+    assert f"{module}.start_month_supplied" not in helpers
     assert "policyengine_us.system._file_sha256" not in helpers
 
 
@@ -1074,6 +1472,11 @@ def _is_offline(name: str) -> bool:
         "from importlib import import_module as load\n"
         "load('.taxsim', package='policyengine_us.tools')\n",
         "__import__('policyengine_us.tools.taxsim')\n",
+        "import importlib\n"
+        "importlib.import_module(name='policyengine_us.tools.taxsim')\n",
+        "import importlib\nimportlib.import_module('.taxsim', 'policyengine_us.tools')\n",
+        "__import__('policyengine_us.tools', fromlist=['taxsim'])\n",
+        "__import__('taxsim', globals(), locals(), [], 1)\n",
     ],
 )
 def test_offline_import_check_sees_each_import_form(source):

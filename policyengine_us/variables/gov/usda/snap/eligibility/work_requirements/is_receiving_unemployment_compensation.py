@@ -40,19 +40,30 @@ def legacy_start_month_index(key):
     return (x % np.uint64(MONTHS_IN_YEAR)).astype(int)
 
 
+def start_month_supplied(simulation):
+    """Whether the simulation holds the start month as an input it can read.
+
+    Presence follows the stored inputs, never the values, so a column of
+    zeros counts as supplied. It covers columns a dataset supplies, values set
+    after construction and inputs a parent branch holds. A reform that
+    neutralizes the start month leaves it unsupplied.
+    """
+    holder = simulation.get_holder(STORED_START_MONTH)
+    return len(holder.get_input_periods(simulation.branch_name)) > 0
+
+
 def stored_start_month_index(person, stored, period):
     """Start month index (0 = January) of a data-built simulation."""
-    inputs = getattr(person.simulation, "input_variables", None) or ()
-    supplied = STORED_START_MONTH in inputs
-    if not supplied and not stored.any():
+    if not start_month_supplied(person.simulation):
         person_id = person("person_id", period.this_year)
         return legacy_start_month_index(person_id)
     if not stored.all():
         missing = int((stored == 0).sum())
         raise ValueError(
-            f"The dataset stores {STORED_START_MONTH} for some people but not "
-            f"for {missing} of {stored.size} in {period.this_year}. The "
-            "dataset build must assign a start month (1-12) to every person."
+            f"The dataset supplies {STORED_START_MONTH}, but {missing} of "
+            f"{stored.size} people have no start month in {period.this_year}. "
+            "The dataset build must assign a start month (1-12) to every "
+            "person in every year it covers."
         )
     return stored - 1
 

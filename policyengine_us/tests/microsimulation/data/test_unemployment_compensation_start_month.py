@@ -18,7 +18,10 @@ formula:
 - Filtering: a dataset cut to some households keeps each person's start
   month and months of receipt.
 - A column stored for some people but not others, or stored as all zeros,
-  raises an error that names it.
+  raises an error that names it. Presence follows the simulation's inputs,
+  not the values, so this holds for a column set after construction and for
+  one set on a branch too. A reform that neutralizes the column leaves it
+  unsupplied.
 - A simulation built the way policyengine.py's input-table adapter builds one
   (an empty situation, then the dataset's populations and columns) is a
   household situation to pe-us. Without the column it keeps the retired
@@ -34,6 +37,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from policyengine_core.reforms import Reform
 from policyengine_core.simulations.simulation_builder import SimulationBuilder
 
 from policyengine_us import Microsimulation
@@ -298,6 +302,59 @@ def test_start_month_set_after_construction_is_used(people, stored_simulation):
     partial.set_input(COLUMN, YEAR, values)
     with pytest.raises(ValueError, match=COLUMN):
         partial.calculate("is_receiving_unemployment_compensation", f"{YEAR}-01")
+
+
+def test_start_month_of_zeros_set_after_construction_raises(people):
+    # Core lists input_variables when the simulation is built, so presence
+    # comes from the inputs the simulation holds, not from that list.
+    simulation = Microsimulation(dataset=_dataset(people))
+    simulation.set_input(COLUMN, YEAR, np.zeros(len(people), dtype=int))
+    with pytest.raises(ValueError, match=COLUMN):
+        simulation.calculate("is_receiving_unemployment_compensation", f"{YEAR}-01")
+
+
+def test_start_month_set_on_a_branch_is_supplied_there_only(people, stored_simulation):
+    parent = Microsimulation(dataset=_dataset(people))
+    branch = parent.get_branch("start_month_of_zeros")
+    branch.set_input(COLUMN, YEAR, np.zeros(len(people), dtype=int))
+    with pytest.raises(ValueError, match=COLUMN):
+        branch.calculate("is_receiving_unemployment_compensation", f"{YEAR}-01")
+    # The parent cannot read the branch's input, so it still has no column.
+    np.testing.assert_array_equal(
+        _receipt_by_month(parent, YEAR), _receipt_by_month(stored_simulation, YEAR)
+    )
+
+
+def test_branch_reads_its_parents_stored_column(people):
+    # A start month that differs from the retired hash shows which one the
+    # branch used.
+    stored = people.assign(**{COLUMN: 1})
+    parent = Microsimulation(dataset=_dataset(stored))
+    branch = parent.get_branch("reads_the_parent")
+    np.testing.assert_array_equal(
+        _receipt_by_month(branch, YEAR), _receipt_by_month(parent, YEAR)
+    )
+    months = np.asarray(
+        parent.calculate("unemployment_compensation_months", YEAR).values
+    )
+    np.testing.assert_array_equal(_receipt_by_month(branch, YEAR).sum(axis=1), months)
+    january = _receipt_by_month(branch, YEAR)[:, 0]
+    np.testing.assert_array_equal(january, months > 0)
+
+
+def test_reform_that_neutralizes_the_column_leaves_it_unsupplied(people):
+    # Core ignores a dataset's values for a neutralized variable, so the
+    # reform simulation has no start month and, for now, hashes person_id.
+    # (Its baseline loses the column too: policyengine-core#632.)
+    class neutralize_start_month(Reform):
+        def apply(self):
+            self.neutralize_variable(COLUMN)
+
+    stored = people.assign(**{COLUMN: 1})
+    reformed = Microsimulation(dataset=_dataset(stored), reform=neutralize_start_month)
+    np.testing.assert_array_equal(
+        _receipt_by_month(reformed, YEAR), _retired_by_month(reformed, YEAR)
+    )
 
 
 def test_population_built_simulation_keys_household_position(people):
