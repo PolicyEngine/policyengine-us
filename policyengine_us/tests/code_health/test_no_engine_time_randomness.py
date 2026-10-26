@@ -17,34 +17,45 @@ toward reporting. Bindings come from imports, named imports and re-exports
 followed across the package, star imports, assignments of a name or
 attribute chain (``xp = np``, also in tuples), default arguments, ``global``
 and ``nonlocal`` (the nearest enclosing function that binds the name,
-wherever in its body), functions, lambdas and comprehensions. An attribute of
-a package module, or of a module EXTERNAL_EXPORTS maps, is what that module
-binds under the name, so ``api.np.random`` is numpy's random module where
-``api`` is ``policyengine_core.model_api``. No code sees the names a class
-body it is nested in binds. A module or class body looks further out when no
-binding is sure to have run before the use with no ``del`` or ``except ...
-as`` cleanup that may come between (all are in an ``if``, loop, ``try``,
-``with`` or ``match``, or the use comes first). A function may run as soon as
-its ``def`` has run, so the scopes around it count only the bindings before
-the ``def``, and every later deletion. A function's ``del`` of a name it
-declares ``global`` runs whenever the function is called, so after the
-``def`` it may come between any binding and any use. A class body, a
-decorated function and a lambda may run before the statement that creates
+wherever in its body), functions, lambdas and comprehensions. An attribute
+of a package module, or of a module EXTERNAL_EXPORTS maps, is what that
+module binds under the name, so ``api.np.random`` is numpy's random module
+where ``api`` is ``policyengine_core.model_api``. No code sees the names a
+class body it is nested in binds. A module or class body looks further out
+when no binding is sure to have run before the use with no ``del`` or
+``except ... as`` cleanup that may come between (all are in an ``if``, loop,
+``try``, ``with`` or ``match``, or the use comes first). A function may run
+as soon as its ``def`` has run, so the scopes around it count only the
+bindings before the ``def``, and every later deletion. A function's ``del``
+of a name it declares ``global`` runs whenever the function is called, so
+after the ``def`` it may come between any binding and any use. A class body,
+a decorated function and a lambda may run before the statement that creates
 them has bound its names (a decorator may call the function, and an
 assignment's value may call a lambda in it), so code inside them doesn't
-take those bindings as sure.
+take those bindings as sure. Nor does a use take as sure a binding its own
+statement makes, which Python makes after evaluating it (a multi-line
+assignment, or a default or base on a later line of its ``def`` or
+``class``). An annotation is read as code that may run any time after its
+statement starts, seeing a class body around it, which covers both ways
+Python may evaluate it: with its statement, as up to 3.13, and whenever the
+annotations are read, as 3.14 defers them (PEP 649). An annotation alone
+binds no value in a module or class body.
+
 So ``from numpy import random as r`` followed by ``r.random(3)`` is caught,
 as are ``xp = np`` followed by ``xp.random.uniform()``, ``from
 policyengine_us.model_api import np as lib`` followed by
 ``lib.random.uniform()``, and a ``try: import numpy as lib`` with a
 fallback, while a local variable called ``random`` is not. A star import of
 a package module binds its ``__all__`` (built from string literals with
-``=``, ``+``, ``+=``, ``append``, ``extend`` or ``insert``; any other
-``__all__`` exports every name) or, without one, every name it binds
-without a leading underscore. EXTERNAL_EXPORTS lists the names numpy and
-``policyengine_core.model_api`` bind where they matter here; ``np``,
-``numpy`` and ``pd`` are bound to numpy and pandas wherever nothing else
-binds them. Reported, as (file, enclosing function or class, kind):
+``=``, ``+``, ``+=``, ``append``, ``extend``, ``insert`` or ``remove``; any
+other ``__all__`` exports every name) or, without one, every name it binds
+without a leading underscore. It may not bind a name an earlier or removed
+``__all__`` held (an import cycle can see that one), one the module binds
+only conditionally or deletes, or any name where ``__all__`` is built
+otherwise, so the scan also looks further out. EXTERNAL_EXPORTS lists the
+names numpy and ``policyengine_core.model_api`` bind where they matter here;
+``np``, ``numpy`` and ``pd`` are bound to numpy and pandas wherever nothing
+else binds them. Reported, as (file, enclosing function or class, kind):
 - ``stochastic import``: importing ``random``, ``secrets`` or
   ``numpy.random`` (or anything from them), including through
   ``importlib.import_module`` or ``__import__`` with literal arguments,
@@ -332,7 +343,8 @@ class _Alias:
 
 
 class _Scope:
-    """One namespace: a module, class, function, lambda or comprehension."""
+    """One namespace: a module, class, function, lambda or comprehension, or
+    the annotations of one statement."""
 
     def __init__(self, kind, qualname, parent, modules, line=None):
         self.kind = kind
@@ -404,7 +416,8 @@ class _Scope:
             provided = self.modules.star_binds(base, name)
             if provided is not None:
                 targets |= provided
-                entries.append((star_line, conditional))
+                sure = self.modules.star_binds_surely(base, name)
+                entries.append((star_line, conditional or not sure))
         if not entries:
             return targets, False, True
         if self.kind not in ("module", "class"):
@@ -436,19 +449,37 @@ class _Scope:
         ]
         return targets, True, not any(map(holds, sure))
 
-    def resolve(self, name, line=None, deferred=False) -> set:
+    def resolve(self, name, line=None, deferred=False, statement=None) -> set:
         """Every dotted target ``name`` may refer to at ``line``.
 
         The answer errs toward reporting: the targets of every binding that
         may be the one read, in each scope Python looks in until a binding is
         sure to hold. ``deferred`` says the code may run at any time after
-        ``line``.
+        ``line``. ``statement`` is the (first line, last line) of the
+        statement the use is in, whose own bindings may not have happened.
         """
+        spans = [statement] if statement else []
+        return self._resolve(name, line, deferred, self.declared.get(name), True, spans)
+
+    def _resolve(self, name, line, deferred, owner, first, unfinished) -> set:
+        """``resolve`` from this scope on, with the state of the scopes
+        already passed: the global or nonlocal ``owner`` still to reach,
+        whether this is the first scope looked in, and the unfinished
+        spans."""
         targets = set()
-        owner = self.declared.get(name)
-        scope, first = self, True
-        unfinished = []
+        scope = self
+        unfinished = list(unfinished)
         while scope is not None:
+            if scope.kind == "annotation":
+                # Up to 3.13 an annotation is evaluated with its statement.
+                # 3.14 defers it to whenever the annotations are read (PEP
+                # 649), any time after the statement starts, in a scope that
+                # also sees a class body around it. Reading it as deferred
+                # from the statement covers both, since no binding the
+                # statement makes is sure (resolve).
+                line, deferred = scope.line, True
+                scope = scope.parent
+                continue
             if scope is owner:
                 owner = None
             # A global or nonlocal name skips the scopes up to the one it
@@ -581,18 +612,26 @@ def _strings(node, current):
     return None
 
 
+class _Exports(NamedTuple):
+    # Names __all__ holds once the module has run.
+    final: frozenset
+    # Names it held before, or that were removed, which a module importing it
+    # during an import cycle may see.
+    earlier: frozenset
+
+
 def _public_names(tree):
     """What ``from module import *`` binds, from the module's ``__all__``.
 
-    A frozenset of names, DEFAULT_PUBLIC without an ``__all__``, or
-    EVERY_NAME for an ``__all__`` built other than from string literals with
-    ``=``, ``+``, ``+=``, ``append``, ``extend`` and ``insert`` at the top
-    level. Removals are ignored, which keeps more names than Python would.
+    An _Exports, DEFAULT_PUBLIC without an ``__all__``, or EVERY_NAME for an
+    ``__all__`` built other than from string literals with ``=``, ``+``,
+    ``+=``, ``append``, ``extend``, ``insert`` and ``remove`` at the top
+    level.
     """
     uses = {node for node in ast.walk(tree) if _is_all(node)}
     if not uses:
         return DEFAULT_PUBLIC
-    names, handled = set(), set()
+    names, seen, handled = set(), set(), set()
     for statement in tree.body:
         value = None
         if isinstance(statement, (ast.Assign, ast.AnnAssign)):
@@ -629,15 +668,19 @@ def _public_names(tree):
             elif method == "extend" and len(args) == 1:
                 value = _strings(args[0], names)
             elif method == "remove":
+                removed = _literal(args[0]) if len(args) == 1 else None
+                # Without a literal, any name may be the one removed.
+                names = names - {removed} if removed else set()
                 value = set()
             if value is None:
                 return EVERY_NAME
             names = names | value
         if value is not None:
             handled |= {node for node in ast.walk(statement) if _is_all(node)}
+            seen |= names
     if uses - handled:
         return EVERY_NAME
-    return frozenset(names)
+    return _Exports(frozenset(names), frozenset(seen - names))
 
 
 class Modules:
@@ -694,13 +737,16 @@ class Modules:
         return result
 
     def binding(self, module, name):
-        """(bound, targets) for ``module``'s top-level ``name`` once it ran."""
+        """(bound, targets, falls through) for ``module``'s top-level
+        ``name`` once it ran: whether any statement binds it, what to, and
+        whether it may be unbound after all."""
 
         def compute():
-            targets, bound, _ = self.top(module).own(name, None, True)
-            return bound, frozenset(targets)
+            targets, bound, falls = self.top(module).own(name, None, True)
+            return bound, frozenset(targets), falls
 
-        return self.guarded(("binding", module, name), (False, frozenset()), compute)
+        cut = (False, frozenset(), True)
+        return self.guarded(("binding", module, name), cut, compute)
 
     def expand(self, target, start=1) -> frozenset:
         """``target`` and what else it names, where a prefix of it at least
@@ -744,22 +790,38 @@ class Modules:
         public = self.publics[base]
         if public == DEFAULT_PUBLIC:
             exported = not name.startswith("_")
+        elif public == EVERY_NAME:
+            exported = True
         else:
-            exported = public == EVERY_NAME or name in public
+            exported = name in public.final or name in public.earlier
         if not exported:
             return None
-        bound, targets = self.binding(base, name)
+        bound, targets, _ = self.binding(base, name)
         if bound:
             return set(targets)
-        if isinstance(public, frozenset):
+        if isinstance(public, _Exports):
             return {f"{base}.{name}"}  # A submodule __all__ lists.
         return None
 
+    def star_binds_surely(self, base, name) -> bool:
+        """Whether ``from base import *``, which star_binds says may bind
+        ``name``, is sure to."""
+        if base not in self.sources:
+            return True
+        public = self.publics[base]
+        if public == EVERY_NAME:
+            return False
+        if isinstance(public, _Exports) and name not in public.final:
+            return False  # Only an earlier or removed __all__ held it.
+        bound, _, falls = self.binding(base, name)
+        return not (bound and falls)
+
 
 def _build_scopes(tree, module, package, modules):
-    """(module scope, the innermost scope of every node) of ``tree``."""
+    """(module scope, the innermost scope of every node, the (first line,
+    last line) of the innermost statement around every node) of ``tree``."""
     top = _Scope("module", "<module>", None, modules)
-    scope_of = {}
+    scope_of, statement_of = {}, {}
 
     def assign(target, value, scope, conditional, evaluated_in=None):
         """Bind ``target`` in ``scope`` to ``value``, evaluated in
@@ -814,20 +876,30 @@ def _build_scopes(tree, module, package, modules):
             elif not isinstance(node, FUNCTION_NODES + (ast.ClassDef, ast.Lambda)):
                 stack.extend(ast.iter_child_nodes(node))
 
+    def visit_annotations(annotations, scope, line, conditional):
+        # Evaluated in the outer scope, with the statement or later (see
+        # _Scope.resolve); the statement's own bindings are not sure for
+        # them, as for any use in it.
+        if not annotations:
+            return
+        inner = _Scope("annotation", scope.qualname, scope, modules, line)
+        for annotation in annotations:
+            visit(annotation, inner, conditional)
+
     def visit_function(node, scope, conditional):
-        # Decorators, defaults and annotations are evaluated in the outer
-        # scope.
+        # Decorators and defaults are evaluated in the outer scope.
         outer = list(getattr(node, "decorator_list", []))
         outer += node.args.defaults + [d for d in node.args.kw_defaults if d]
+        for child in outer:
+            visit(child, scope, conditional)
         if not isinstance(node, ast.Lambda):
-            outer += [node.returns] if node.returns else []
-            outer += [
+            annotations = [node.returns] if node.returns else []
+            annotations += [
                 argument.annotation
                 for argument in ast.walk(node.args)
                 if isinstance(argument, ast.arg) and argument.annotation
             ]
-        for child in outer:
-            visit(child, scope, conditional)
+            visit_annotations(annotations, scope, node.lineno, conditional)
         name = getattr(node, "name", "<lambda>")
         if not isinstance(node, ast.Lambda):
             top_level = scope.parent is None
@@ -836,7 +908,10 @@ def _build_scopes(tree, module, package, modules):
         qualname = name if scope.parent is None else f"{scope.qualname}.{name}"
         kind = "lambda" if isinstance(node, ast.Lambda) else "function"
         inner = _Scope(kind, qualname, scope, modules, node.lineno)
-        if isinstance(node, ast.Lambda) or node.decorator_list:
+        if getattr(node, "decorator_list", None):
+            # A decorator may call the function before its name is bound. A
+            # lambda's body is part of its own statement, which every use
+            # in it already treats as unfinished (resolve).
             inner.unfinished = statement_span[-1]
         inner.local_names = _function_locals(node)
         body = node.body if isinstance(node.body, list) else [node.body]
@@ -896,6 +971,7 @@ def _build_scopes(tree, module, package, modules):
 
     def visit_node(node, scope, conditional):
         scope_of[node] = scope
+        statement_of[node] = statement_span[-1]
         if isinstance(node, FUNCTION_NODES + (ast.Lambda,)):
             return visit_function(node, scope, conditional)
         if isinstance(node, ast.ClassDef):
@@ -908,16 +984,27 @@ def _build_scopes(tree, module, package, modules):
                 assign(target, node.value, scope, conditional)
             return
         if isinstance(node, ast.AnnAssign):
-            visit(node.annotation, scope, conditional)
+            body = scope.kind in ("module", "class")
+            if body and node.simple:
+                visit_annotations([node.annotation], scope, node.lineno, conditional)
+            else:
+                # 3.14 never evaluates this one; earlier versions do, with
+                # the statement, outside a function.
+                visit(node.annotation, scope, conditional)
             if node.value is not None:
                 visit(node.value, scope, conditional)
+            elif body and isinstance(node.target, ast.Name):
+                # An annotation alone binds no value here; in a function it
+                # still makes the name local.
+                scope_of[node.target] = scope
+                return
             return assign(node.target, node.value, scope, conditional)
         if isinstance(node, ast.NamedExpr):
             visit(node.value, scope, conditional)
-            # The target belongs to the scope around any comprehensions; the
-            # value is evaluated where the expression is.
+            # The target belongs to the scope around any comprehensions or
+            # annotations; the value is evaluated where the expression is.
             owner = scope
-            while owner.kind == "comprehension":
+            while owner.kind in ("comprehension", "annotation"):
                 owner = owner.parent
             return assign(node.target, node.value, owner, conditional, scope)
         if isinstance(node, ast.Import):
@@ -949,7 +1036,7 @@ def _build_scopes(tree, module, package, modules):
             visit(child, scope, inside)
 
     visit(tree, top)
-    return top, scope_of
+    return top, scope_of, statement_of
 
 
 def _reads_an_id(node) -> bool:
@@ -1042,7 +1129,7 @@ def analyse(
     tree = ast.parse(source, filename=filename)
     if modules is None:
         modules = Modules({module: (package, lambda: source)})
-    top, scope_of = _build_scopes(tree, module, package, modules)
+    top, scope_of, statement_of = _build_scopes(tree, module, package, modules)
     modules.register(module, top, tree)
     parents = {
         child: node for node in ast.walk(tree) for child in ast.iter_child_nodes(node)
@@ -1054,6 +1141,11 @@ def analyse(
         while node not in scope_of:
             node = parents[node]
         return scope_of[node]
+
+    def statement_for(node):
+        while node not in statement_of:
+            node = parents[node]
+        return statement_of[node]
 
     def report(node, kind):
         findings.append((node.lineno, scope_for(node).qualname, kind))
@@ -1069,7 +1161,9 @@ def analyse(
         root, attributes = dotted
         return modules.expand_all(
             ".".join([target] + attributes)
-            for target in scope_for(node).resolve(root, node.lineno)
+            for target in scope_for(node).resolve(
+                root, node.lineno, statement=statement_for(node)
+            )
         )
 
     def shift_of(node):
@@ -1547,6 +1641,34 @@ def _kinds(source: str) -> set:
         ),
         ("class hash:\n    answer = hash('x')\n", "builtin hash"),
         ("hash = (lambda value: hash(value))('x')\n", "builtin hash"),
+        # 3.14 evaluates annotations when they are read (PEP 649), after any
+        # later deletion; up to 3.13 they run with their statement.
+        ("hash = str\ndef f(x: hash('x')):\n    pass\ndel hash\n", "builtin hash"),
+        ("hash = str\ndef f() -> hash('x'):\n    pass\ndel hash\n", "builtin hash"),
+        (
+            "class C:\n"
+            "    hash = str\n"
+            "    def f(self, x: hash('x')):\n"
+            "        pass\n"
+            "    del hash\n",
+            "builtin hash",
+        ),
+        (
+            "class C:\n    hash = str\n    y: hash('x') = 1\n    del hash\n",
+            "builtin hash",
+        ),
+        ("hash = str\ny: hash('x') = 1\ndel hash\n", "builtin hash"),
+        ("def hash(x: hash('x')):\n    pass\n", "builtin hash"),
+        # A statement binds its names only after evaluating them.
+        ("hash = (\n    hash('x')\n)\n", "builtin hash"),
+        ("def hash(\n    value=hash('x'),\n):\n    return value\n", "builtin hash"),
+        ("class hash(\n    make(hash('x')),\n):\n    pass\n", "builtin hash"),
+        # An annotation alone binds no value in a module or class body.
+        ("hash: int\nkey = hash('x')\n", "builtin hash"),
+        (
+            "import numpy as lib\nclass C:\n    lib: object\n    answer = lib.random.uniform()\n",
+            "random source",
+        ),
         # A function may run before a later binding, or after a deletion.
         (
             "def consumer(value):\n"
@@ -1642,6 +1764,19 @@ def test_detector_flags_each_draw_pattern(source, kind):
         "hash = str\nkey = hash('x')\n",
         "class A:\n    hash = str\n    key = hash('x')\n",
         "def f():\n    hash = str\n    return hash('x')\n",
+        # An annotation reads a binding sure to have run before its
+        # statement; a deferred one in a class body also sees the class.
+        "hash = str\ndef f(x: hash('x')):\n    pass\n",
+        "class C:\n    hash = str\n    def f(self, x: hash('x')):\n        pass\n",
+        "hash = str\ny: hash('x') = 1\n",
+        # A statement's bindings count for the statements after it.
+        "hash = str\nkey = (\n    hash('x')\n)\n",
+        "class A:\n    hash = str\n    key = (\n        hash('x')\n    )\n",
+        "def hash(x):\n    return (\n        hash(x - 1)\n    ) if x else 0\nhash(1)\n",
+        # An annotated value binds; in a function an annotation alone makes
+        # the name local (UnboundLocalError), hiding the builtin.
+        "hash: object = str\nkey = hash('x')\n",
+        "def f():\n    hash: object\n    return hash('x')\n",
         # The walrus value is the comprehension's own np, not numpy.
         "import numpy as np\n[(lib := np) for np in [object()]]\nlib.random.uniform()\n",
         # nonlocal stops at the nearest function binding the name.
@@ -1894,6 +2029,41 @@ def test_star_imports_bind_private_names_only_through_all():
     assert _package_kinds({"api": "import numpy as _lib\n", "user": user}) == []
     api = "import numpy as _lib\n__all__ = ['_lib']\n"
     assert _package_kinds({"api": api, "user": user}) == ["random source"]
+
+
+def test_star_imports_see_an_earlier_all_in_a_cycle():
+    # Importing api first runs user while __all__ still lists lib.
+    api = "import numpy as lib\n__all__ = ['lib']\nfrom . import user\n__all__ = []\n"
+    user = "from .api import *\nlib.random.uniform()\n"
+    assert _package_kinds({"api": api, "user": user}) == ["random source"]
+
+
+@pytest.mark.parametrize(
+    "api",
+    [
+        # An earlier __all__, which a module imported in a cycle sees.
+        "hash = str\n__all__ = ['hash']\nfrom . import user\n__all__ = []\n",
+        "hash = str\n__all__ = ['hash']\n__all__.remove('hash')\n",
+        "hash = str\n__all__ = ['hash']\n__all__.remove(name)\n",
+        "if flag:\n    hash = str\n",
+        "hash = str\ndel hash\n",
+        "hash = str\n__all__ = names()\n",
+    ],
+)
+def test_star_imports_may_not_bind_some_names(api):
+    # So the importer looks further out, here to the builtin.
+    user = "from .api import *\nkey = hash('x')\n"
+    assert _package_kinds({"api": api, "user": user}) == ["builtin hash"]
+
+
+@pytest.mark.parametrize(
+    "api",
+    ["hash = str\n", "hash = str\n__all__ = ['hash']\n", "from .other import hash\n"],
+)
+def test_star_imports_bind_what_the_module_surely_exports(api):
+    user = "from .api import *\nkey = hash('x')\n"
+    sources = {"api": api, "other": "hash = str\n", "user": user}
+    assert _package_kinds(sources) == []
 
 
 def test_cyclic_star_imports_resolve_in_any_order():
