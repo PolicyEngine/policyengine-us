@@ -6,7 +6,8 @@ below the Referendum C cap (State Controller certification of 2026-09-08), so
 no tax year 2026 refund is paid. Tax year 2025 refunds come from the FY 2024-25
 surplus, at the per-person tier amounts in the Legislative Council Staff March
 2026 forecast, Table 8. Tax year 2027 refunds use the tier amounts that the LCS
-September 2026 forecast projects (Table 9) until CDOR certifies the actual ones.
+September 2026 forecast projects (Table 9) until the State Controller certifies
+the surplus and CDOR publishes the tiers.
 
 Hypothesis draws batches of tax units (single, joint, or head of household
 with a dependent), each with a modified AGI, filer ages and wages; a seeded

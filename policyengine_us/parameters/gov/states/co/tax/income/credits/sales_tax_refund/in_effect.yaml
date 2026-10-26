@@ -5,9 +5,9 @@ values:
   # the State Controller certified on 2026-09-08, so no tax year 2026 refund.
   2026-01-01: false
   # The LCS September 2026 forecast expects the six-tier refund to apply for
-  # tax years 2027 to 2029. Its projected tax year 2027 and 2028 tier amounts
-  # (Table 9, in amount/scale.yaml) stand in until CDOR certifies the actual
-  # amounts.
+  # tax years 2027 to 2029. Its projected tier amounts (Table 9, in
+  # amount/scale.yaml) stand in until the State Controller certifies each
+  # fiscal year's surplus and CDOR publishes the tiers in the DR 0104.
   2027-01-01: true
 metadata:
   unit: bool
