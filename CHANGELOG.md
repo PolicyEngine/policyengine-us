@@ -1,3 +1,10 @@
+## [2.65.1] - 2026-10-26
+
+### Fixed
+
+- Base Indiana EITC eligibility in tax years 2024 and 2025 on the current-year federal EITC instead of a recomputed credit with the frozen 2023 investment income limit and phaseout amounts, as IC 6-3.1-21-6(a) and (e) index those amounts to the taxable year.
+
+
 ## [2.65.0] - 2026-10-26
 
 ### Added
