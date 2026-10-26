@@ -16,7 +16,10 @@ class ia_liheap_countable_unearned_income(Variable):
         "Each source is floored at zero, so a loss in one source (such as a "
         "rental loss) does not offset other income. Social Security is counted "
         "net of the out-of-pocket Medicare Part B premium; SSA repayments and "
-        "Part D premiums have no input. Approximations: all interest is counted "
+        "Part D premiums have no input. No Part A premium is subtracted, "
+        "because a Social Security beneficiary aged 65 or older is entitled to "
+        "Part A without one under 42 U.S.C. 426(a), so none is withheld from "
+        "the check. Approximations: all interest is counted "
         "although Iowa excludes interest on bank accounts; dividends are "
         "counted in full although Iowa ignores a combined annual total under "
         "$120. Social Security paid to members under 18 is recorded at $0.00 "
@@ -52,7 +55,9 @@ class ia_liheap_countable_unearned_income(Variable):
         # amount" and use the amount "paid by check or direct deposit" as shown
         # on the SSA-1099. medicare_part_b_premium is zero for a person who is
         # not enrolled and excludes the share a Medicare Savings Program pays,
-        # which is not withheld from the check.
+        # which is not withheld from the check. Only Part B comes off: under
+        # 42 U.S.C. 426(a) a Social Security beneficiary aged 65 or older is
+        # entitled to Part A, so no Part A premium is withheld.
         premium = person("medicare_part_b_premium", period)
         social_security = max_(person("social_security", period) - premium, 0)
         age = person("age", period)

@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AR, AL, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX
+    coverage: AR, AL, DC, GA, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX
     state_implementations:
       - state: AL
         status: partial
@@ -1067,7 +1067,7 @@ programs:
         variable: ia_liheap
         parameter_prefix: gov.states.ia.hhs.liheap
         verified_years: "2026"
-        notes: FY2026 Regular Assistance heating benefit from the points matrix, with a flat amount for propane and fuel oil. Crisis assistance, cooling and weatherization are out of scope.
+        notes: FY2026 Regular Assistance heating benefit from the points matrix, with a flat amount for households that buy propane or fuel oil. Crisis assistance, cooling and weatherization are out of scope.
       - state: IN
         status: partial
         name: Indiana EAP
