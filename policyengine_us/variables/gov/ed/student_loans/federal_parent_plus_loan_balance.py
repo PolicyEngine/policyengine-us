@@ -9,9 +9,10 @@ class federal_parent_plus_loan_balance(Variable):
         "Outstanding principal and interest on Federal Direct PLUS Loans the "
         "person borrowed as a parent on behalf of a dependent student, and on "
         "Direct Consolidation Loans that repaid such loans. These excepted "
-        "loans cannot be repaid under the Repayment Assistance Plan. This is "
-        "the opening balance for the year: it is uprated by CPI-U across years "
-        "with no repayment roll-forward."
+        "loans cannot be repaid under the Repayment Assistance Plan; "
+        "parent_plus_standard_repayment_payment repays them under the "
+        "standard plan. This is the opening balance for the year: it is "
+        "uprated by CPI-U across years with no repayment roll-forward."
     )
     unit = USD
     quantity_type = STOCK
