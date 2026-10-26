@@ -32,16 +32,27 @@ class de_personal_credit_indv(Variable):
         fixed = person("de_aged_personal_credit_indv", period) + person(
             "de_cdcc_indv", period
         )
-        # Each column's own $110 personal credit is fixed to that column.
-        head_fixed = person.tax_unit.sum(is_head * fixed) + credit_per
-        spouse_fixed = person.tax_unit.sum(is_spouse * fixed) + credit_per
+        # Each column's own $110 personal credit is fixed to that column. 30
+        # Del. C. 1110(b)(1) gives it "for each personal exemption to which
+        # such individual is entitled ... for federal income tax purposes",
+        # and a spouse who can be claimed as a dependent has none (IRC
+        # 151(d)(2)).
+        head_own = where(
+            person.tax_unit("head_is_dependent_elsewhere", period), 0, credit_per
+        )
+        spouse_own = where(
+            person.tax_unit("spouse_is_dependent_elsewhere", period), 0, credit_per
+        )
+        head_fixed = person.tax_unit.sum(is_head * fixed) + head_own
+        spouse_fixed = person.tax_unit.sum(is_spouse * fixed) + spouse_own
 
         head_capacity = max_(head_tax - head_fixed, 0)
         spouse_capacity = max_(spouse_tax - spouse_fixed, 0)
 
         total_units = person.tax_unit("exemptions_count", period)
-        # Dependent increments: exemptions beyond the two spouses.
-        dep_units = max_(total_units - 2, 0)
+        # Dependent increments: exemptions beyond the spouses' own.
+        own_units = person.tax_unit("head_spouse_count_not_dependent_elsewhere", period)
+        dep_units = max_(total_units - own_units, 0)
 
         # Optimal dependent split: try proportional floor and ceil, pick
         # whichever maximises effective credits (min of alloc vs
@@ -62,7 +73,7 @@ class de_personal_credit_indv(Variable):
         )
 
         n_head_dep = where(eff_high > eff_low, n_high, n_low)
-        head_alloc = credit_per + n_head_dep * credit_per
-        spouse_alloc = credit_per + (dep_units - n_head_dep) * credit_per
+        head_alloc = head_own + n_head_dep * credit_per
+        spouse_alloc = spouse_own + (dep_units - n_head_dep) * credit_per
 
         return is_head_or_spouse * where(is_head, head_alloc, spouse_alloc)

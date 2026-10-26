@@ -1,1 +1,0 @@
-A reform simulation that is subsampled now rebuilds its baseline arm bound to baseline policy: holders, populations, inputs and parameter tracing belong to the baseline again, and the arm no longer keeps the replaced arm as its own baseline.

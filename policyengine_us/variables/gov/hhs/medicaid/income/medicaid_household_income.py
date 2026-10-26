@@ -18,8 +18,32 @@ class medicaid_household_income(Variable):
     entity = Person
     label = "Medicaid MAGI household income"
     unit = USD
+    documentation = (
+        "The sum of the MAGI-based income of every member of the person's "
+        "Medicaid household (42 CFR 435.603(d)(1)). Members' amounts are "
+        "added before any floor, so a loss of one member, such as a spouse's "
+        "business loss on a joint return, offsets the others' income, as it "
+        "does in the couple's joint AGI. Only the total is floored at zero, "
+        "as Form 8962 combines the taxpayer's and dependents' modified AGIs "
+        "'even if one or both of them are negative' before entering a "
+        "negative total as zero. In households with parent links "
+        "(parent_1_id, parent_2_id), the non-filer household is the members "
+        "medicaid_household_size counts, and every member's amount is added "
+        "signed. Without links, the non-filer household's parents and "
+        "siblings are read from the whole family, and those relatives' "
+        "amounts are added only when positive (each child's, and each "
+        "couple's parents' netted), so a relative outside the household "
+        "cannot lower its income. An adult's own amount and their spouse's "
+        "are added signed; a child's own amount and their siblings' enter "
+        "with the family's children, only when positive. Unmarried "
+        "co-resident parents are each counted only when positive."
+    )
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/cfr/text/42/435.603#d"
+    reference = (
+        "https://www.law.cornell.edu/cfr/text/42/435.603#d",
+        "https://www.law.cornell.edu/uscode/text/26/36B#d_2_A",
+        "https://www.irs.gov/pub/irs-prior/i8962--2025.pdf#page=8",
+    )
 
     def formula(person, period, parameters):
         child_age_eligible = person("medicaid_non_filer_child_age_eligible", period)
@@ -52,9 +76,27 @@ class medicaid_household_income(Variable):
             0,
         )
         spouse_income = same_unit_spouse_income + separate_spouse_income
-        family_child_income = person.family.sum(child_age_eligible * member_income)
+        # The non-filer household's parents and siblings are read from the
+        # whole family, which can include people outside the household, such
+        # as a grandparent who is also a parent there. So their amounts are
+        # added only when positive: each child's, and each couple's parents'
+        # netted together, so married parents' losses still offset each
+        # other's income. An adult's own and their spouse's amounts are added
+        # signed; a child's own amount is among the family's children.
+        family_child_income = person.family.sum(
+            child_age_eligible * max_(0, member_income)
+        )
+        is_parent = person("is_parent", period)
+        couple_parent_income = person.marital_unit.sum(is_parent * member_income)
+        couple_parents = person.marital_unit.sum(is_parent)
+        parent_share = np.divide(
+            is_parent.astype(float),
+            couple_parents,
+            out=np.zeros_like(couple_parents, dtype=float),
+            where=couple_parents > 0,
+        )
         family_parent_income = person.family.sum(
-            person("is_parent", period) * member_income
+            parent_share * max_(0, couple_parent_income)
         )
         non_filer_household_income = where(
             child_age_eligible,
@@ -62,20 +104,30 @@ class medicaid_household_income(Variable):
             member_income + spouse_income + family_child_income,
         )
         # With parent links in the household, sum over the same members that
-        # medicaid_household_size counts.
+        # medicaid_household_size counts, adding every selected amount signed.
+        has_parent_ids = household_has_parent_ids(person, period)
         non_filer_household_income = where(
-            household_has_parent_ids(person, period),
+            has_parent_ids,
             medicaid_non_filer_member_sum(person, period, member_income),
             non_filer_household_income,
         )
+        # A tax household includes the cohabiting spouse of a filer who files
+        # separately (42 CFR 435.603(f)(4)), and so do the households of that
+        # filer's dependents, which are the filer's (435.603(f)(2)).
+        filer_separate_spouse_income = where(
+            head_or_spouse | claimed_by_another_return,
+            separate_spouse_income,
+            person.tax_unit.sum(
+                person("is_tax_unit_head", period) * separate_spouse_income
+            ),
+        )
         tax_member_income_sum = person.tax_unit.sum(tax_member_income)
-        tax_household_income = tax_member_income_sum + separate_spouse_income
+        tax_household_income = tax_member_income_sum + filer_separate_spouse_income
         # With parent links, every dependent shares the taxpayer's
         # household, including that taxpayer's flagged separately filing
-        # spouse. Propagate the head's spouse income once across the unit,
-        # keeping the original expression in households without links.
+        # spouse. Propagate the head's spouse income once across the unit.
         tax_household_income = where(
-            household_has_parent_ids(person, period),
+            has_parent_ids,
             tax_member_income_sum
             + person.tax_unit.sum(head_or_spouse * separate_spouse_income),
             tax_household_income,
@@ -95,6 +147,7 @@ class medicaid_household_income(Variable):
         claimant_tax_household_income = medicaid_claiming_tax_unit_value(
             person, period, tax_household_income
         )
+
         tax_route_income = where(
             known_claiming_tax_unit,
             claimant_tax_household_income,
@@ -103,10 +156,14 @@ class medicaid_household_income(Variable):
         # With parent links in the household, add a tax dependent's
         # co-resident spouse, whom medicaid_household_size adds.
         tax_route_income = where(
-            household_has_parent_ids(person, period),
+            has_parent_ids,
             tax_route_income
             + medicaid_tax_dependent_spouse_sum(person, period, member_income),
             tax_route_income,
         )
-
-        return where(non_filer_rules, non_filer_household_income, tax_route_income)
+        household_income = where(
+            non_filer_rules, non_filer_household_income, tax_route_income
+        )
+        # Each member's MAGI-based income can be negative; only the
+        # household's total is floored.
+        return max_(0, household_income)

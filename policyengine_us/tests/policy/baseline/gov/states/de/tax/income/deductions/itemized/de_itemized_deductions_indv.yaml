@@ -58,3 +58,280 @@
         state_code: DE 
   output:
     de_itemized_deductions_indv: [1_000, 0]
+
+- name: Deductions are allocated to the spouse who paid them, not by income share
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 60_000
+        real_estate_taxes: 6_000
+        deductible_mortgage_interest: 10_000
+      person2:
+        adjusted_gross_income_person: 40_000
+        real_estate_taxes: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # 2023 PIT-RES instructions, line 13: "If you are unable to specifically
+    # allocate deductions between spouses, prorate the deductions" by income.
+    # Here each deduction is specifically allocable: person 1 paid 6_000 of
+    # real estate tax and 10_000 of mortgage interest, person 2 paid 1_000 of
+    # real estate tax. Proration by income would give 60% / 40% of 17_000.
+    de_itemized_deductions_indv: [16_000, 1_000]
+
+- name: Amounts a dependent paid cannot be allocated to a spouse and are prorated
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 60_000
+        real_estate_taxes: 2_000
+      person2:
+        adjusted_gross_income_person: 40_000
+      person3:
+        is_tax_unit_dependent: true
+        real_estate_taxes: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Person 1's 2_000 is theirs; the dependent's 1_000 is split 60% / 40%.
+    de_itemized_deductions_indv: [2_600, 400, 0]
+
+- name: Proration counts only positive income, so no spouse gets a negative deduction
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 45_000
+      person2:
+        adjusted_gross_income_person: -5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        de_itemized_deductions_unit: 4_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # A share of 45_000 / 40_000 and -5_000 / 40_000 would give person 2 a
+    # negative deduction of -500.
+    de_itemized_deductions_indv: [4_000, 0]
+
+- name: With no positive income the spouses split unallocable deductions equally
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 0
+      person2:
+        adjusted_gross_income_person: -2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        de_itemized_deductions_unit: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_itemized_deductions_indv: [500, 500]
+
+- name: An overridden unit total does not subtract from a spouse's traced deduction
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        real_estate_taxes: 5_000
+      spouse:
+        age: 40
+        employment_income: 40_000
+    tax_units:
+      couple:
+        members: [head, spouse]
+        # Deliberately inconsistent override: the traced expense exceeds this.
+        de_itemized_deductions_unit: 1_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    de_itemized_deductions_indv: [5_000, 0]
+
+- name: A zero unit override cannot create negative deductions for a nonpayer
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 0
+      spouse:
+        age: 40
+        employment_income: 0
+        real_estate_taxes: 5_000
+      dependent:
+        age: 10
+    tax_units:
+      couple:
+        members: [head, spouse, dependent]
+        de_itemized_deductions_unit: 0
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: DE
+  output:
+    de_itemized_deductions_indv: [0, 5_000, 0]
+
+- name: Mortgage premiums belong to their payer separately from mortgage interest
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+        adjusted_gross_income_person: 48_000
+        deductible_mortgage_interest: 10_000
+      spouse:
+        age: 40
+        adjusted_gross_income_person: 32_000
+        mortgage_insurance_premiums: 2_000
+    tax_units:
+      couple:
+        members: [head, spouse]
+        filing_status: JOINT
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    # PIT-RES 2021 instructions PDF pp7,12: allocate identifiable expenses
+    # to their payer; PIT-RSA line 8d includes qualified mortgage premiums.
+    # https://revenuefiles.delaware.gov/2021/PIT-RES_TY21_2021-01_Instructions.pdf#page=7
+    de_itemized_deductions_unit: 12_000
+    de_itemized_deductions_indv: [10_000, 2_000]
+
+- name: Both residences' premiums retain payer shares after the federal phase-out
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        adjusted_gross_income_person: 61_800
+        deductible_mortgage_interest: 10_000
+        mortgage_insurance_premiums: 1_000
+      spouse:
+        age: 40
+        adjusted_gross_income_person: 41_200
+        second_residence_mortgage_insurance_premiums: 2_000
+    tax_units:
+      couple:
+        members: [head, spouse]
+        filing_status: JOINT
+        adjusted_gross_income: 103_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    # Federal 30% reduction leaves 700 of head-paid premiums and 1,400
+    # of spouse-paid second-residence premiums, allocated independently
+    # of the 10,000 interest that the head paid.
+    deductible_mortgage_insurance_premiums: 2_100
+    de_itemized_deductions_unit: 12_100
+    de_itemized_deductions_indv: [10_700, 1_400]
+
+- name: Premium-only deductions are specifically allocated rather than prorated
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+        adjusted_gross_income_person: 48_000
+      spouse:
+        age: 40
+        adjusted_gross_income_person: 32_000
+        mortgage_insurance_premiums: 2_000
+    tax_units:
+      couple:
+        members: [head, spouse]
+        filing_status: JOINT
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    de_itemized_deductions_unit: 2_000
+    de_itemized_deductions_indv: [0, 2_000]
+
+- name: Only the dependent-paid premium share uses Delaware income proration
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        adjusted_gross_income_person: 48_000
+      spouse:
+        age: 40
+        adjusted_gross_income_person: 32_000
+        mortgage_insurance_premiums: 1_000
+      dependent:
+        age: 10
+        is_tax_unit_dependent: true
+        second_residence_mortgage_insurance_premiums: 2_000
+    tax_units:
+      couple:
+        members: [head, spouse, dependent]
+        filing_status: JOINT
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: DE
+  output:
+    # The spouse's identifiable 1,000 stays with the spouse. Only the
+    # dependent-paid 2,000 is split at the filers' 60% / 40% income shares.
+    de_itemized_deductions_unit: 3_000
+    de_itemized_deductions_indv: [1_200, 1_800, 0]
+
+- name: Premium allocation respects reformed sources that omit interest
+  period: 2021
+  input:
+    gov.states.de.tax.income.deductions.itemized.sources: []
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 40
+        mortgage_insurance_premiums: 2_000
+    tax_units:
+      couple:
+        members: [head, spouse]
+        filing_status: JOINT
+        adjusted_gross_income: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    de_itemized_deductions_unit: 0
+    de_itemized_deductions_indv: [0, 0]

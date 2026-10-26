@@ -1,4 +1,5 @@
 description: New York provides the following Drive Clean point-of-sale rebate amount, based on the all-electric range of the vehicle.
+# The lower amounts apply to vehicles purchased after June 30, 2021.
 brackets:
   # 0 - 19 miles 
   - threshold:
@@ -10,19 +11,19 @@ brackets:
       2017-03-21: 20
     amount:
       2017-03-21: 1_100
-      2021-06-30: 500
+      2021-07-01: 500
   # 40 - 119 miles
   - threshold:
       2017-03-21: 40
     amount:
       2017-03-21: 1_700
-      2021-06-31: 1_000
+      2021-07-01: 1_000
   # 120 - 199 miles
   - threshold:
       2017-03-21: 119
     amount:
       2017-03-21: 2_000
-      2021-06-31: 1_000
+      2021-07-01: 1_000
   # 200 miles and above
   - threshold:
       2017-03-21: 200
