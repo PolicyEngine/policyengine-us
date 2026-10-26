@@ -87,7 +87,10 @@
 
 # Emergency Medicaid waives only the receipt of SSI (42 U.S.C.
 # 1396b(v)(2)(B)), so a blind or disabled noncitizen who fails the
-# immigration test keeps the group in Arkansas.
+# immigration test keeps the group in Arkansas when they meet SSI's
+# income and resource tests. With no income and no resources, this person
+# meets both: $0 countable income is below the $994 SSI rate, and $0 is
+# within the $2,000 resource limit.
 - name: Case 8, disabled undocumented Arkansan under 65 keeps the group for emergency Medicaid.
   period: 2026
   input:
@@ -112,4 +115,20 @@
   output:
     is_medicaid_immigration_status_eligible: true
     is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+
+# $5,000 in a bank account is under Arkansas's $9,430 asset limit but over
+# SSI's $2,000 resource limit, so this noncitizen fails the SSI group's
+# resource test and, being under 65, does not qualify for ARSeniors either.
+- name: Case 10, disabled undocumented Arkansan under 65 over the SSI resource limit is not covered.
+  period: 2026
+  input:
+    age: 50
+    state_code: AR
+    immigration_status: UNDOCUMENTED
+    meets_ssi_disability_criteria: true
+    bank_account_assets: 5_000
+  output:
+    is_medicaid_immigration_status_eligible: false
+    is_optional_senior_or_disabled_asset_eligible: true
     is_optional_senior_or_disabled_for_medicaid: false

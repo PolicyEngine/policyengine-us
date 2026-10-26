@@ -23,12 +23,17 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
         covers_group = (
             p.covers_non_ssi_recipients[state].astype(bool) | ~immigration_eligible
         )
-        # Arkansas's group (ARSeniors) covers only aged people. Blind or
-        # disabled noncitizens who fail the immigration test still keep this
-        # group: emergency Medicaid waives the receipt of SSI (42 U.S.C.
-        # 1396b(v)(2)(B)), so they qualify through the SSI group.
-        covers_blind_or_disabled = (
-            p.covers_blind_or_disabled[state].astype(bool) | ~immigration_eligible
+        # Arkansas's group (ARSeniors) covers only aged people. Emergency
+        # Medicaid waives only the receipt of SSI (42 U.S.C. 1396b(v)(2)(B)),
+        # so blind or disabled noncitizens who fail the immigration test keep
+        # this group only if they meet the SSI group's income and resource
+        # tests.
+        meets_ssi_income_test = person(
+            "ssi_countable_income", period
+        ) / MONTHS_IN_YEAR < person("ssi_amount_if_eligible", period.first_month)
+        meets_ssi_resource_test = person("meets_ssi_resource_test", period.first_month)
+        covers_blind_or_disabled = p.covers_blind_or_disabled[state].astype(bool) | (
+            ~immigration_eligible & meets_ssi_income_test & meets_ssi_resource_test
         )
         is_senior_or_disabled = where(
             covers_blind_or_disabled,
