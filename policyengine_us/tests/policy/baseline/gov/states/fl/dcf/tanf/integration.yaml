@@ -658,3 +658,38 @@
     fl_tca_net_income_eligible: false
     # 410 > 303 -> Fail
     fl_tca: 0
+
+- name: Case 22, current participant with unearned income above the payment standard keeps the disregard but fails the net test.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 1_200  # $100/month
+        social_security: 4_800  # $400/month
+        pre_subsidy_rent: 9_600
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    fl_tca_payment_standard: 303
+    # Size 3, >$50 shelter.
+    fl_tca_200_and_half_disregard_eligible: true
+    # A current participant keeps the disregard (2420.0315 condition 1).
+    fl_tca_countable_earned_income: 0
+    # 2620.0111.01 steps 2-3: max($100 - $90, 0) = $10, less the $110
+    # remainder, floored at 0.
+    fl_tca_countable_income: 400
+    # Step 4: 0 earned + $400 unearned.
+    fl_tca_net_income_eligible: false
+    # 400 > 303 -> Fail
+    fl_tca: 0

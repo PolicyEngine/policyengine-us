@@ -9,7 +9,8 @@ class fl_tca_countable_earned_income(Variable):
     definition_period = MONTH
     reference = (
         "https://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0400-0499/0414/Sections/0414.095.html",
-        "https://ffic.myflfamilies.com/manual/2400.pdf",
+        "https://ffic.myflfamilies.com/manual/2400.pdf#page=28",
+        "https://ffic.myflfamilies.com/manual/2600.pdf#page=21",
     )
     defined_for = StateCode.FL
 

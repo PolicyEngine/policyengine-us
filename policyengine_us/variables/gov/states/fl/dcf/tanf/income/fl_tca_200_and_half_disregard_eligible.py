@@ -8,7 +8,7 @@ class fl_tca_200_and_half_disregard_eligible(Variable):
     definition_period = MONTH
     reference = (
         "https://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0400-0499/0414/Sections/0414.095.html",
-        "https://ffic.myflfamilies.com/manual/2400.pdf",
+        "https://ffic.myflfamilies.com/manual/2400.pdf#page=28",
     )
     defined_for = StateCode.FL
     documentation = """
@@ -21,9 +21,11 @@ class fl_tca_200_and_half_disregard_eligible(Variable):
       (2) has gross countable income (earned + unearned), less the $90 standard
           earned income disregard, that is less than the applicable payment
           standard.
-    Florida Statutes 414.095(11)(a) states the same two conditions: the
-    individual must be a current participant in the program, or eligible for
-    participation without the earnings disregard.
+    Florida Statutes 414.095(11)(a) requires the individual to be a current
+    participant in the program, or eligible for participation without the
+    earnings disregard. The statute does not mention the $90 standard
+    disregard; the manual supplies the $90 and the test of income after it in
+    condition (2).
 
     Condition (1) uses is_tanf_enrolled, which defaults to reported TANF
     receipt, to stand for receipt of TCA in one of the past four months.
