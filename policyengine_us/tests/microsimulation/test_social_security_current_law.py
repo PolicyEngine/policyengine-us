@@ -994,7 +994,9 @@ def differential(tmp_path_factory):
             env=environment,
             capture_output=True,
             text=True,
-            timeout=420,
+            # Each 74-route probe took about 290s in CI run 40318424511.
+            # Allow slower hosts while retaining a bounded hang guard.
+            timeout=900,
             check=False,
         )
         assert completed.returncode == 0, (

@@ -52,7 +52,7 @@ REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 # from its dry run and spreads their files over parallel runners by recent
 # CI times, splitting a long group into chunks. A process still runs files
 # of one group only, in this order, so none holds more than its group here.
-REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core-heavy core policy-parameters policy remaining-heavy remaining
+REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core-heavy social-security-inputs core policy-parameters policy remaining-heavy remaining
 REST_CACHED_ARRAY_TESTS := $(TESTS)/test_formulas_do_not_write_into_cached_arrays.py
 REST_HEAVY_A_TESTS := $(TESTS)/test_md_poverty_line_credit_invariants.py \
 	$(TESTS)/core/test_ald_determinism.py \
@@ -69,6 +69,11 @@ REST_HEAVY_B_TESTS := $(TESTS)/core/test_marginal_tax_rate_coverage.py \
 REST_CORE_HEAVY_TESTS := $(TESTS)/core/test_ssi_resource_deeming_invariants.py \
 	$(TESTS)/test_federal_credit_limit_order.py \
 	$(TESTS)/test_pinned_branch_credit_dependents.py
+# Synthetic household input/branch checks load no national dataset. Keep their
+# retained reform systems in a separate process rather than growing core's heap.
+# Local 4 GiB-capped run peaked at 2.385 GiB before its 1800s loaded-host cap;
+# CI run 40318424511 passed all 126 cases in 312.62s (6:20 process wall).
+REST_SOCIAL_SECURITY_INPUT_TESTS := $(TESTS)/core/test_social_security_inputs.py
 # These three parameter modules construct full reform trees; one also loads
 # a default Microsimulation only to read parameters. Release their heap before
 # the remaining policy tests, rather than stacking both in the 13.9 GB group.
@@ -83,7 +88,7 @@ REST_REMAINING_HEAVY_TESTS := $(TESTS)/test_niit_section_911_magi.py \
 	$(TESTS)/test_capital_gain_distributions_loss_limit.py \
 	$(TESTS)/test_schedule_d_filer_net_capital_gain.py
 REST_LISTED_TESTS := $(REST_CACHED_ARRAY_TESTS) $(REST_HEAVY_A_TESTS) $(REST_HEAVY_B_TESTS) \
-	$(REST_CORE_HEAVY_TESTS) $(REST_POLICY_PARAMETER_TESTS) $(REST_REMAINING_HEAVY_TESTS)
+	$(REST_CORE_HEAVY_TESTS) $(REST_SOCIAL_SECURITY_INPUT_TESTS) $(REST_POLICY_PARAMETER_TESTS) $(REST_REMAINING_HEAVY_TESTS)
 REST_IGNORES := $(addprefix --ignore=,$(TESTS)/policy/contrib $(TESTS)/microsimulation $(REST_SPM_TESTS))
 # $(call rest_pytest,<group>,<paths>,<more paths to ignore>) is the pytest
 # command for one group. With REST_REPORT_DIR set, each group writes its own
@@ -310,6 +315,8 @@ test-other-python-rest-heavy-b:
 	$(call rest_pytest,heavy-b,$(REST_HEAVY_B_TESTS))
 test-other-python-rest-core-heavy:
 	$(call rest_pytest,core-heavy,$(REST_CORE_HEAVY_TESTS))
+test-other-python-rest-social-security-inputs:
+	$(call rest_pytest,social-security-inputs,$(REST_SOCIAL_SECURITY_INPUT_TESTS))
 test-other-python-rest-core:
 	$(call rest_pytest,core,$(TESTS)/core,$(REST_LISTED_TESTS))
 test-other-python-rest-policy-parameters:
@@ -320,7 +327,7 @@ test-other-python-rest-remaining-heavy:
 	$(call rest_pytest,remaining-heavy,$(REST_REMAINING_HEAVY_TESTS))
 test-other-python-rest-remaining:
 	$(call rest_pytest,remaining,$(TESTS)/,$(REST_LISTED_TESTS) $(TESTS)/core $(TESTS)/policy)
-MICROSIMULATION_GROUPS := base social-security-inputs social-security-current-law
+MICROSIMULATION_GROUPS := base social-security-current-law
 test-microsimulation:
 	@failed=""; for group in $(MICROSIMULATION_GROUPS); do \
 		$(MAKE) --no-print-directory test-microsimulation-$$group || failed="$$failed $$group"; \
@@ -329,11 +336,11 @@ test-microsimulation:
 test-microsimulation-base:
 	# Compatibility checks copy policy for differential/branch isolation. Keep
 	# their heaps separate on this existing runner (local differential peak 7 GB).
-	pytest $(TESTS)/microsimulation --maxfail=0 --ignore=$(TESTS)/microsimulation/test_social_security_inputs.py --ignore=$(TESTS)/microsimulation/test_social_security_current_law.py
-test-microsimulation-social-security-inputs:
-	pytest $(TESTS)/microsimulation/test_social_security_inputs.py --maxfail=0 $(if $(findstring --junitxml,$(PYTEST_ADDOPTS)),--junitxml=simulation-social-security-inputs.xml)
+	pytest $(TESTS)/microsimulation --maxfail=0 --ignore=$(TESTS)/microsimulation/test_social_security_current_law.py
 test-microsimulation-social-security-current-law:
-	pytest $(TESTS)/microsimulation/test_social_security_current_law.py --maxfail=0 $(if $(findstring --junitxml,$(PYTEST_ADDOPTS)),--junitxml=simulation-social-security-current-law.xml)
+	# Only the two probes need a country system. Avoid importing another through
+	# the empty parent conftest in the pytest process that compares their JSON.
+	pytest $(TESTS)/microsimulation/test_social_security_current_law.py --confcutdir=$(TESTS)/microsimulation --maxfail=0 $(if $(findstring --junitxml,$(PYTEST_ADDOPTS)),--junitxml=simulation-social-security-current-law.xml)
 # Local convenience: run both halves back to back.
 test-other: test-other-python test-microsimulation
 test-policy-contrib-python:
