@@ -59,6 +59,9 @@ REVIEWED_MAIN_SHA = "8986e05cab65d56435a23df1910e2d35f2c5f5bf"
 # Hand-computed per-person growth from calibration.gov.cbo.social_security
 # divided by calibration.gov.census.populations.total in each year. The IRS
 # SOI series follows this CBO growth; Core multiplies float32 benefit arrays.
+UPRATING_2023_TO_2026 = np.float32(
+    (1_665_942_000_000 / 352_304_000) / (1_379_268_000_000 / 342_835_000)
+)
 UPRATING_2024_TO_2026 = np.float32(
     (1_665_942_000_000 / 352_304_000) / (1_454_424_000_000 / 346_588_000)
 )
@@ -555,7 +558,12 @@ def _probe():
                 else:
                     raise AssertionError("The compound setter did not raise")
                 if label == "nonzero":
-                    record_live_value(route, simulation, "social_security", 2023)
+                    # Core 3.33.2 retains the exact 2023 raw seed. Both Core
+                    # versions select the replacement compound source in
+                    # 2026; main still retains its cached retirement there.
+                    record_live_value(
+                        route, simulation, "social_security_retirement", 2026
+                    )
                 _clear_derived_caches(simulation)
                 after = _snapshot(simulation, (2023, 2024, 2026))
                 after.update(
@@ -1068,9 +1076,12 @@ def test_legacy_public_ingress_matches_unmodified_main(differential, route):
             "dataset_builder_extraction_rewrite",
             [np.float32(36_000) * UPRATING_2024_TO_2026],
         ),
-        # Intended difference from main: its cached 2023 total remains
-        # 12,000 after the nonzero raw seed's compound setter stores 24,000.
-        ("setter_failed_after_loading", [24_000 + 0 + 0 + 0]),
+        # Intended difference from main: its cached 2026 retirement remains
+        # 14,104.5751953125, uprated from the previous 12,000 raw source.
+        (
+            "setter_failed_after_loading",
+            [np.float32(24_000) * UPRATING_2023_TO_2026],
+        ),
         # Intended difference from main: its cached 2026 retirement remains
         # 13,522.158203125, uprated from the restored 12,000 source.
         (
