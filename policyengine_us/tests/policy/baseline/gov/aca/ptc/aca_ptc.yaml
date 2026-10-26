@@ -276,3 +276,148 @@
   output:
     is_aca_ptc_eligible: [false]
     aca_ptc: 0
+
+# 2027 cases derive aca_required_contribution_percentage from the Rev. Proc.
+# 2026-26 section 3.01 table. Household income is a multiple of the 2026 HHS
+# poverty guideline ($15,960 for one person), the prior-year guideline that
+# applies to 2027 coverage.
+- name: 2027 ACA PTC at 100 percent FPL uses the flat 2.15 percent.
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 8_256
+    aca_magi: 15_960
+    aca_magi_fraction: 1.00
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.0215
+    aca_ptc: 7_912.86  # 8_256 - 0.0215 * 15_960 = 8_256 - 343.14
+
+- name: 2027 ACA PTC at 133 percent FPL uses the 3.23 percent initial percentage.
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 8_256
+    aca_magi: 21_226.80
+    aca_magi_fraction: 1.33
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.0323
+    aca_ptc: 7_570.37  # 8_256 - 0.0323 * 21_226.80 = 8_256 - 685.63
+
+- name: 2027 ACA PTC at 150 percent FPL uses 4.3 percent.
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 8_256
+    aca_magi: 23_940
+    aca_magi_fraction: 1.50
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.043
+    aca_ptc: 7_226.58  # 8_256 - 0.043 * 23_940 = 8_256 - 1_029.42
+
+- name: 2027 ACA PTC at 200 percent FPL uses 6.78 percent (Covered California OE27 example).
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 8_256
+    aca_magi: 31_920
+    aca_magi_fraction: 2.00
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.0678
+    aca_ptc: 6_091.82  # 8_256 - 0.0678 * 31_920 = 8_256 - 2_164.18
+
+- name: 2027 ACA PTC at 275 percent FPL interpolates to 9.44 percent.
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 8_256
+    aca_magi: 43_890
+    aca_magi_fraction: 2.75
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.0944
+    aca_ptc: 4_112.78  # 8_256 - 0.0944 * 43_890 = 8_256 - 4_143.22
+
+- name: 2027 ACA PTC at 350 percent FPL uses the flat 10.22 percent.
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 8_256
+    aca_magi: 55_860
+    aca_magi_fraction: 3.50
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.1022
+    aca_ptc: 2_547.11  # 8_256 - 0.1022 * 55_860 = 8_256 - 5_708.89
+
+- name: 2027 ACA PTC floors at zero when the 10.22 percent contribution exceeds the benchmark.
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 6_000
+    aca_magi: 62_244
+    aca_magi_fraction: 3.90
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.1022
+    aca_ptc: 0  # 0.1022 * 62_244 = 6_361.34 > 6_000
+
+- name: 2027 ACA PTC derives 200 percent FPL from income and the 2026 poverty guideline.
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 31_920
+        slcsp: 8_256
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    aca_magi_fraction: 2.00  # 31_920 / 15_960 (2026 guideline, one person)
+    aca_required_contribution_percentage: 0.0678
+    aca_ptc: 6_091.82  # 8_256 - 0.0678 * 31_920
+
+- name: 2027 ACA PTC for a married couple at 250 percent FPL uses 8.66 percent.
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+      person2:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi: 54_100
+        slcsp: 15_000
+        tax_unit_is_filer: true
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    aca_magi_fraction: 2.50  # 54_100 / 21_640 (2026 guideline, two people)
+    aca_required_contribution_percentage: 0.0866
+    aca_ptc: 10_314.94  # 15_000 - 0.0866 * 54_100 = 15_000 - 4_685.06
