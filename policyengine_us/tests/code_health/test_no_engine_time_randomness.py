@@ -17,29 +17,39 @@ toward reporting. Bindings come from imports, named imports and re-exports
 followed across the package, star imports, assignments of a name or
 attribute chain (``xp = np``, also in tuples), default arguments, ``global``
 and ``nonlocal`` (the nearest enclosing function that binds the name,
-wherever in its body), functions, lambdas and comprehensions. An attribute
+wherever in its body; either sends the name there in the code nested in
+its scope too, unless that code binds the name itself), functions, lambdas
+and comprehensions. An attribute
 of a package module, or of a module EXTERNAL_EXPORTS maps, is what that
 module binds under the name, so ``api.np.random`` is numpy's random module
 where ``api`` is ``policyengine_core.model_api``. No code sees the names a
-class body it is nested in binds. A module or class body looks further out
+class body it is nested in binds, or its ``global`` and ``nonlocal``
+statements. A module or class body looks further out
 when no binding is sure to have run before the use with no ``del`` or
 ``except ... as`` cleanup that may come between (all are in an ``if``, loop,
 ``try``, ``with`` or ``match``, or the use comes first). A function may run
 as soon as its ``def`` has run, so the scopes around it count only the
 bindings before the ``def``, and every later deletion. A function's ``del``
 of a name it declares ``global`` runs whenever the function is called, so
-after the ``def`` it may come between any binding and any use. A class body,
+after the ``def`` it may come between any binding and any use. A generator
+expression runs its body as it is iterated, so the same holds for it from
+the expression (its first iterable runs at once). A class body,
 a decorated function and a lambda may run before the statement that creates
 them has bound its names (a decorator may call the function, and an
 assignment's value may call a lambda in it), so code inside them doesn't
 take those bindings as sure. Nor does a use take as sure a binding its own
-statement makes, which Python makes after evaluating it (a multi-line
-assignment, or a default or base on a later line of its ``def`` or
-``class``). An annotation is read as code that may run any time after its
+statement makes (a multi-line assignment, or a default or base on a later
+line of its ``def`` or ``class``): Python makes those after evaluating it,
+and treating a walrus earlier in the statement the same way errs toward
+reporting. An annotation is read as code that may run any time after its
 statement starts, seeing a class body around it, which covers both ways
 Python may evaluate it: with its statement, as up to 3.13, and whenever the
-annotations are read, as 3.14 defers them (PEP 649). An annotation alone
-binds no value in a module or class body.
+annotations are read, as 3.14 defers them (PEP 649). A type parameter's
+bound or default and a ``type`` alias's value, which Python evaluates when
+they are read (PEP 695, 3.12+), are read the same way. A ``type`` statement
+binds its alias's name, but a type parameter's own name is not taken as
+bound, which errs toward reporting. An annotation alone binds no value in a
+module or class body.
 
 So ``from numpy import random as r`` followed by ``r.random(3)`` is caught,
 as are ``xp = np`` followed by ``xp.random.uniform()``, ``from
@@ -52,7 +62,13 @@ other ``__all__`` exports every name) or, without one, every name it binds
 without a leading underscore. It may not bind a name an earlier or removed
 ``__all__`` held (an import cycle can see that one), one the module binds
 only conditionally or deletes, or any name where ``__all__`` is built
-otherwise, so the scan also looks further out. EXTERNAL_EXPORTS lists the
+otherwise, so the scan also looks further out. Where the module, while it
+runs, may import the importing one (directly or through other modules,
+counting every import in them, even in a function, a literal dynamic
+import, and the packages an import starts), the star import may see it
+part-run, before it binds a name or sets ``__all__``: it may then bind any
+name the module binds without a leading underscore, and binds none surely.
+EXTERNAL_EXPORTS lists the
 names numpy and ``policyengine_core.model_api`` bind where they matter here;
 ``np``, ``numpy`` and ``pd`` are bound to numpy and pandas wherever nothing
 else binds them. Reported, as (file, enclosing function or class, kind):
@@ -107,6 +123,7 @@ from collections import Counter
 from functools import cache
 from itertools import permutations
 from pathlib import Path
+import sys
 from typing import NamedTuple
 
 import pytest
@@ -241,6 +258,7 @@ HASH_CONSTANTS = {
 }
 FUNCTION_NODES = (ast.FunctionDef, ast.AsyncFunctionDef)
 COMPREHENSION_NODES = (ast.ListComp, ast.SetComp, ast.GeneratorExp, ast.DictComp)
+TYPE_ALIAS = getattr(ast, "TypeAlias", ())  # Python 3.12+
 # Statements whose bodies may not run, so a binding inside may not happen.
 COMPOUND_NODES = (
     ast.If,
@@ -368,7 +386,8 @@ class _Scope:
         # its names (a class body, a decorated function, a lambda), that
         # statement's (first line, last line).
         self.unfinished = None
-        # (line, module, conditional) for each star import.
+        # (line, module, conditional, importing module) for each star
+        # import.
         self.stars = []
         # Names a global or nonlocal statement gives to another scope.
         self.declared = {}
@@ -412,11 +431,11 @@ class _Scope:
         targets = set()
         for _, target, _ in self.bindings.get(name, []):
             targets |= _targets(target)
-        for star_line, base, conditional in self.stars:
-            provided = self.modules.star_binds(base, name)
+        for star_line, base, conditional, importer in self.stars:
+            provided = self.modules.star_binds(base, name, importer)
             if provided is not None:
                 targets |= provided
-                sure = self.modules.star_binds_surely(base, name)
+                sure = self.modules.star_binds_surely(base, name, importer)
                 entries.append((star_line, conditional or not sure))
         if not entries:
             return targets, False, True
@@ -458,17 +477,13 @@ class _Scope:
         ``line``. ``statement`` is the (first line, last line) of the
         statement the use is in, whose own bindings may not have happened.
         """
-        spans = [statement] if statement else []
-        return self._resolve(name, line, deferred, self.declared.get(name), True, spans)
-
-    def _resolve(self, name, line, deferred, owner, first, unfinished) -> set:
-        """``resolve`` from this scope on, with the state of the scopes
-        already passed: the global or nonlocal ``owner`` still to reach,
-        whether this is the first scope looked in, and the unfinished
-        spans."""
         targets = set()
+        # The scope a global or nonlocal statement sends the name to, until
+        # the lookup reaches it.
+        owner = None
+        first = True
+        unfinished = [statement] if statement else []
         scope = self
-        unfinished = list(unfinished)
         while scope is not None:
             if scope.kind == "annotation":
                 # Up to 3.13 an annotation is evaluated with its statement.
@@ -484,18 +499,23 @@ class _Scope:
                 owner = None
             # A global or nonlocal name skips the scopes up to the one it
             # names, and no code nested in a class body sees the names it
-            # binds.
+            # binds or declares.
             if owner is None and (first or scope.kind != "class"):
-                found, bound, falls = scope.own(name, line, deferred, unfinished)
-                targets |= found
-                if bound and not falls:
-                    return targets
+                # A global or nonlocal statement here sends the name there,
+                # here and in the code nested here.
+                owner = scope.declared.get(name)
+                if owner is None:
+                    found, bound, falls = scope.own(name, line, deferred, unfinished)
+                    targets |= found
+                    if bound and not falls:
+                        return targets
             if scope.unfinished is not None:
                 # It may run before its statement's bindings have happened.
                 unfinished.append(scope.unfinished)
-            if scope.kind in ("function", "lambda"):
-                # A function may run as soon as its def has run, so the
-                # scopes around it are read as of the def, and any later
+            if scope.kind in ("function", "lambda", "generator"):
+                # A function may run as soon as its def has run, and a
+                # generator expression's body as soon as it is made, so the
+                # scopes around them are read as of then, and any later
                 # deletion counts.
                 line, deferred = scope.line, True
             first = False
@@ -586,6 +606,19 @@ def _function_locals(node) -> frozenset:
             names.add(child.rest)
         stack.extend(ast.iter_child_nodes(child))
     return frozenset(names - declared)
+
+
+def _type_parameter_values(node) -> list:
+    """The bounds and defaults of a definition's type parameters (PEP 695,
+    Python 3.12+; defaults 3.13+), which Python evaluates when they are
+    read."""
+    values = []
+    for parameter in getattr(node, "type_params", []):
+        for field in ("bound", "default_value"):
+            value = getattr(parameter, field, None)
+            if value is not None:
+                values.append(value)
+    return values
 
 
 def _alias(scope, value, line):
@@ -701,6 +734,9 @@ class Modules:
         self.exhausted = set()
         self.tops = {}
         self.publics = {}
+        # module -> the package modules it may start when it runs.
+        self.imported = {}
+        self._reached = {}
         self._memo = {}
         self._active = set()
         self._cuts = 0
@@ -716,6 +752,56 @@ class Modules:
         if module not in self.tops:
             self.tops[module] = top
             self.publics[module] = _public_names(tree)
+            self.imported[module] = self._imports_of(module, tree)
+
+    def _imports_of(self, module, tree) -> frozenset:
+        """The package modules ``module`` may start when it runs: those its
+        imports name, anywhere in it (its code may call a function that
+        imports), or literal dynamic imports, and the packages around them.
+        The packages around ``module`` have started before it."""
+        package = self.sources.get(module, (None,))[0]
+        names = set()
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Import):
+                names.update(alias.name for alias in node.names)
+            elif isinstance(node, ast.ImportFrom):
+                base = _absolute(node.module or "", node.level, package)
+                names.add(base)
+                names.update(f"{base}.{alias.name}" for alias in node.names)
+            elif isinstance(node, ast.Call):
+                called = getattr(node.func, "attr", getattr(node.func, "id", None))
+                if called in ("import_module", "__import__"):
+                    names.update(_dynamic_imports(node, DYNAMIC_IMPORTS, package))
+        parts = module.split(".")
+        started = {".".join(parts[:end]) for end in range(1, len(parts) + 1)}
+        imported = set()
+        for name in names:
+            parts = name.split(".")
+            for end in range(1, len(parts) + 1):
+                prefix = ".".join(parts[:end])
+                if prefix in self.sources and prefix not in started:
+                    imported.add(prefix)
+        return frozenset(imported)
+
+    def reached(self, module) -> frozenset:
+        """The package modules ``module`` may start while it runs, directly
+        or through those it starts."""
+        if module not in self._reached:
+            seen, stack = set(), [module]
+            while stack:
+                current = stack.pop()
+                self.top(current)
+                fresh = self.imported[current] - seen
+                seen |= fresh
+                stack.extend(fresh)
+            self._reached[module] = frozenset(seen)
+        return self._reached[module]
+
+    def cyclic(self, importer, base) -> bool:
+        """Whether ``importer``'s star import of ``base`` may run while
+        ``base`` is still running, and see only what it has bound so far:
+        when ``base`` may start ``importer``, or is it."""
+        return importer == base or importer in self.reached(base)
 
     def guarded(self, key, cut, compute):
         """``compute()``, or ``cut`` where the lookup meets itself."""
@@ -781,8 +867,9 @@ class Modules:
     def expand_all(self, targets) -> set:
         return set().union(*map(self.expand, targets))
 
-    def star_binds(self, base, name):
-        """What ``from base import *`` binds ``name`` to, or None."""
+    def star_binds(self, base, name, importer):
+        """What ``from base import *`` in ``importer`` binds ``name`` to, or
+        None."""
         if base not in self.sources:
             mapped = self.external.get(base, {}).get(name)
             return {mapped} if mapped else None
@@ -794,6 +881,10 @@ class Modules:
             exported = True
         else:
             exported = name in public.final or name in public.earlier
+            if not exported and not name.startswith("_"):
+                # In an import cycle it may run before base sets __all__,
+                # and then binds every public name base has bound.
+                exported = self.cyclic(importer, base) and self.binding(base, name)[0]
         if not exported:
             return None
         bound, targets, _ = self.binding(base, name)
@@ -803,11 +894,13 @@ class Modules:
             return {f"{base}.{name}"}  # A submodule __all__ lists.
         return None
 
-    def star_binds_surely(self, base, name) -> bool:
-        """Whether ``from base import *``, which star_binds says may bind
-        ``name``, is sure to."""
+    def star_binds_surely(self, base, name, importer) -> bool:
+        """Whether ``from base import *`` in ``importer``, which star_binds
+        says may bind ``name``, is sure to."""
         if base not in self.sources:
             return True
+        if self.cyclic(importer, base):
+            return False  # It may run before base binds anything.
         public = self.publics[base]
         if public == EVERY_NAME:
             return False
@@ -899,6 +992,7 @@ def _build_scopes(tree, module, package, modules):
                 for argument in ast.walk(node.args)
                 if isinstance(argument, ast.arg) and argument.annotation
             ]
+            annotations += _type_parameter_values(node)
             visit_annotations(annotations, scope, node.lineno, conditional)
         name = getattr(node, "name", "<lambda>")
         if not isinstance(node, ast.Lambda):
@@ -925,6 +1019,7 @@ def _build_scopes(tree, module, package, modules):
             visit(child, scope, conditional)
         for keyword in node.keywords:
             visit(keyword.value, scope, conditional)
+        visit_annotations(_type_parameter_values(node), scope, node.lineno, conditional)
         top_level = scope.parent is None
         target = f"{module}.{node.name}" if top_level else None
         scope.bind(node.name, node.lineno, target, conditional)
@@ -939,7 +1034,9 @@ def _build_scopes(tree, module, package, modules):
         # The first iterable is evaluated in the enclosing scope; the rest
         # in the comprehension's own, reported under the enclosing name.
         visit(node.generators[0].iter, scope, conditional)
-        inner = _Scope("comprehension", scope.qualname, scope, modules, node.lineno)
+        # A generator expression runs the rest when it is iterated.
+        kind = "generator" if isinstance(node, ast.GeneratorExp) else "comprehension"
+        inner = _Scope(kind, scope.qualname, scope, modules, node.lineno)
         for index, generator in enumerate(node.generators):
             scope_of[generator] = inner
             if index:
@@ -978,6 +1075,12 @@ def _build_scopes(tree, module, package, modules):
             return visit_class(node, scope, conditional)
         if isinstance(node, COMPREHENSION_NODES):
             return visit_comprehension(node, scope, conditional)
+        if isinstance(node, TYPE_ALIAS):
+            # Its value is evaluated when it is read, like an annotation.
+            scope_of[node.name] = scope
+            scope.bind(node.name.id, node.lineno, None, conditional)
+            values = [node.value] + _type_parameter_values(node)
+            return visit_annotations(values, scope, node.lineno, conditional)
         if isinstance(node, ast.Assign):
             visit(node.value, scope, conditional)
             for target in node.targets:
@@ -1004,7 +1107,7 @@ def _build_scopes(tree, module, package, modules):
             # The target belongs to the scope around any comprehensions or
             # annotations; the value is evaluated where the expression is.
             owner = scope
-            while owner.kind in ("comprehension", "annotation"):
+            while owner.kind in ("comprehension", "generator", "annotation"):
                 owner = owner.parent
             return assign(node.target, node.value, owner, conditional, scope)
         if isinstance(node, ast.Import):
@@ -1018,7 +1121,7 @@ def _build_scopes(tree, module, package, modules):
             base = _absolute(node.module or "", node.level, package)
             for alias in node.names:
                 if alias.name == "*":
-                    scope.stars.append((node.lineno, base, conditional))
+                    scope.stars.append((node.lineno, base, conditional, module))
                 else:
                     # A submodule or a name base binds: expand decides.
                     name = alias.asname or alias.name
@@ -1663,6 +1766,7 @@ def _kinds(source: str) -> set:
         ("hash = (\n    hash('x')\n)\n", "builtin hash"),
         ("def hash(\n    value=hash('x'),\n):\n    return value\n", "builtin hash"),
         ("class hash(\n    make(hash('x')),\n):\n    pass\n", "builtin hash"),
+        ("(\n    hash\n) = (\n    hash('x')\n)\n", "builtin hash"),
         # An annotation alone binds no value in a module or class body.
         ("hash: int\nkey = hash('x')\n", "builtin hash"),
         (
@@ -1678,6 +1782,11 @@ def _kinds(source: str) -> set:
             "builtin hash",
         ),
         ("hash = str\ndef f(x):\n    return hash(x)\ndel hash\n", "builtin hash"),
+        # A walrus in a generator expression binds around it.
+        (
+            "import numpy as np\nlist((lib := np) for _ in 'x')\nlib.random.uniform()\n",
+            "random source",
+        ),
         ("import importlib\nimportlib.import_module('random')\n", "stochastic import"),
         (
             "import importlib\nimportlib.import_module(name='random')\n",
@@ -1804,6 +1913,271 @@ def test_detector_flags_each_draw_pattern(source, kind):
 )
 def test_detector_skips_deterministic_code(source):
     assert draw_findings(source) == []
+
+
+# Python runs these when they are used, not where they are written, so a
+# later deletion of a shadowing global counts; a list comprehension runs at
+# once. Each needs the syntax of the Python 3 minor version given.
+@pytest.mark.parametrize(
+    "source, reaches_builtin, minor",
+    [
+        ("hash = str\ng = (hash(v) for v in 'x')\ndel hash\nlist(g)\n", True, 11),
+        ("hash = str\ng = (hash(v) for v in 'x')\nlist(g)\n", False, 11),
+        ("hash = str\nkeys = [hash(v) for v in 'x']\ndel hash\n", False, 11),
+        ("hash = str\ntype X = hash('x')\ndel hash\nX.__value__\n", True, 12),
+        ("hash = str\ntype X = hash('x')\nX.__value__\n", False, 12),
+        (
+            "hash = str\n"
+            "type X[T: hash('x')] = list[T]\n"
+            "del hash\n"
+            "X.__type_params__[0].__bound__\n",
+            True,
+            12,
+        ),
+        (
+            "hash = str\n"
+            "def f[T: hash('x')]():\n"
+            "    pass\n"
+            "del hash\n"
+            "f.__type_params__[0].__bound__\n",
+            True,
+            12,
+        ),
+        (
+            "hash = str\n"
+            "class C[T: hash('x')]:\n"
+            "    pass\n"
+            "del hash\n"
+            "C.__type_params__[0].__bound__\n",
+            True,
+            12,
+        ),
+        (
+            "class C:\n"
+            "    hash = str\n"
+            "    def m[T: hash('x')](self):\n"
+            "        pass\n"
+            "    del hash\n"
+            "C.m.__type_params__[0].__bound__\n",
+            True,
+            12,
+        ),
+        (
+            "hash = str\n"
+            "def f[T = hash('x')]():\n"
+            "    pass\n"
+            "del hash\n"
+            "f.__type_params__[0].__default__\n",
+            True,
+            13,
+        ),
+    ],
+)
+def test_code_python_runs_when_used_sees_later_deletions(
+    source, reaches_builtin, minor
+):
+    if sys.version_info < (3, minor):
+        pytest.skip(f"needs Python 3.{minor} syntax")
+    expected = {"builtin hash"} if reaches_builtin else set()
+    assert {kind for _, _, kind in draw_findings(source)} == expected
+
+
+def test_a_type_alias_binds_its_name():
+    if sys.version_info < (3, 12):
+        pytest.skip("needs Python 3.12 syntax")
+    # The alias isn't callable, so Python raises before any builtin runs.
+    source = "type hash = str\ntry:\n    hash('x')\nexcept TypeError:\n    pass\n"
+    assert draw_findings(source) == []
+
+
+# Each is the body of a function outer that binds hash = str. A global
+# statement sends hash to the module, and so to the builtin, in the code
+# nested in its function, and in its class body and that body's
+# annotations, but not in the code nested in a class body. Python 3.13 and
+# 3.14 read each the same way.
+@pytest.mark.parametrize(
+    "body, reaches_builtin",
+    [
+        (
+            "    def middle():\n"
+            "        global hash\n"
+            "        def f(x: hash('x')):\n"
+            "            pass\n"
+            "        f.__annotations__\n"
+            "    middle()\n",
+            True,
+        ),
+        (
+            "    def middle():\n"
+            "        global hash\n"
+            "        def f() -> hash('x'):\n"
+            "            pass\n"
+            "        f.__annotations__\n"
+            "    middle()\n",
+            True,
+        ),
+        (
+            "    def middle():\n"
+            "        global hash\n"
+            "        def f(x=hash('x')):\n"
+            "            pass\n"
+            "    middle()\n",
+            True,
+        ),
+        (
+            "    def middle():\n"
+            "        global hash\n"
+            "        def f():\n"
+            "            return hash('x')\n"
+            "        f()\n"
+            "    middle()\n",
+            True,
+        ),
+        (
+            "    def middle():\n"
+            "        global hash\n"
+            "        (lambda: hash('x'))()\n"
+            "    middle()\n",
+            True,
+        ),
+        (
+            "    def middle():\n"
+            "        global hash\n"
+            "        [hash(v) for v in 'x']\n"
+            "        list(hash(v) for v in 'x')\n"
+            "    middle()\n",
+            True,
+        ),
+        (
+            "    def middle():\n"
+            "        global hash\n"
+            "        class C:\n"
+            "            key = hash('x')\n"
+            "    middle()\n",
+            True,
+        ),
+        (
+            "    def middle():\n"
+            "        global hash\n"
+            "        class C:\n"
+            "            y: hash('x') = 1\n"
+            "        C.__annotations__\n"
+            "    middle()\n",
+            True,
+        ),
+        (
+            "    def middle():\n"
+            "        global hash\n"
+            "        class C:\n"
+            "            def m(self):\n"
+            "                return hash('x')\n"
+            "        C().m()\n"
+            "    middle()\n",
+            True,
+        ),
+        (
+            "    def middle():\n"
+            "        global hash\n"
+            "        def inner():\n"
+            "            def f():\n"
+            "                return hash('x')\n"
+            "            f()\n"
+            "        inner()\n"
+            "    middle()\n",
+            True,
+        ),
+        # inner's global skips middle's binding too.
+        (
+            "    def middle():\n"
+            "        hash = str\n"
+            "        def inner():\n"
+            "            global hash\n"
+            "            def f():\n"
+            "                return hash('x')\n"
+            "            f()\n"
+            "        inner()\n"
+            "    middle()\n",
+            True,
+        ),
+        (
+            "    class C:\n"
+            "        global hash\n"
+            "        key = hash('x')\n"
+            "        keys = [v for v in [hash('x')]]\n",
+            True,
+        ),
+        (
+            "    class C:\n"
+            "        global hash\n"
+            "        y: hash('x')\n"
+            "    C.__annotations__\n",
+            True,
+        ),
+        (
+            "    class C:\n"
+            "        global hash\n"
+            "        def m(self, x: hash('x')) -> hash('y'):\n"
+            "            pass\n"
+            "    C.m.__annotations__\n",
+            True,
+        ),
+        # Not in the code nested in a class body.
+        (
+            "    class C:\n"
+            "        global hash\n"
+            "        def m(self):\n"
+            "            return hash('x')\n"
+            "    C().m()\n",
+            False,
+        ),
+        (
+            "    class C:\n"
+            "        global hash\n"
+            "        keys = [hash(v) for v in 'x']\n",
+            False,
+        ),
+        (
+            "    class C:\n"
+            "        global hash\n"
+            "        class D:\n"
+            "            key = hash('x')\n",
+            False,
+        ),
+        (
+            "    class C:\n"
+            "        global hash\n"
+            "        y: (lambda: hash('x'))()\n"
+            "    C.__annotations__\n",
+            False,
+        ),
+        # nonlocal names outer's hash; a nested binding is the nested code's.
+        (
+            "    def middle():\n"
+            "        nonlocal hash\n"
+            "        def f():\n"
+            "            return hash('x')\n"
+            "        f()\n"
+            "    middle()\n",
+            False,
+        ),
+        (
+            "    def middle():\n"
+            "        global hash\n"
+            "        def f():\n"
+            "            hash = str\n"
+            "            return hash('x')\n"
+            "        f()\n"
+            "    middle()\n",
+            False,
+        ),
+    ],
+)
+def test_global_and_nonlocal_reach_the_code_nested_in_their_scope(
+    body, reaches_builtin
+):
+    findings = draw_findings("def outer():\n    hash = str\n" + body)
+    expected = {"builtin hash"} if reaches_builtin else set()
+    assert {kind for _, _, kind in findings} == expected
 
 
 def test_draw_helpers_are_followed_through_calls():
@@ -2036,6 +2410,62 @@ def test_star_imports_see_an_earlier_all_in_a_cycle():
     api = "import numpy as lib\n__all__ = ['lib']\nfrom . import user\n__all__ = []\n"
     user = "from .api import *\nlib.random.uniform()\n"
     assert _package_kinds({"api": api, "user": user}) == ["random source"]
+    # Or before api sets __all__, when every public name it has bound is
+    # exported.
+    api = "import numpy as lib\nfrom . import user\n__all__ = []\n"
+    assert _package_kinds({"api": api, "user": user}) == ["random source"]
+    # A private name is exported only while an earlier __all__ lists it.
+    api = "import numpy as _lib\n__all__ = ['_lib']\nfrom . import user\n__all__ = []\n"
+    user = "from .api import *\n_lib.random.uniform()\n"
+    assert _package_kinds({"api": api, "user": user}) == ["random source"]
+
+
+@pytest.mark.parametrize(
+    "api",
+    [
+        # Importing api first runs user before __all__ lists hash, or before
+        # api binds it.
+        "__all__ = []\nfrom . import user\nhash = str\n__all__ = ['hash']\n",
+        "hash = str\n__all__ = []\nfrom . import user\n__all__ = ['hash']\n",
+        "from . import user\nhash = str\n",
+        # Through another module, a package's __init__, a function that
+        # imports, or a literal dynamic import.
+        "from . import other\nhash = str\n",
+        "import pkg.sub.leaf\nhash = str\n",
+        "def load():\n    from . import user\nload()\nhash = str\n",
+        "import importlib\nimportlib.import_module('pkg.user')\nhash = str\n",
+    ],
+)
+def test_star_imports_in_an_import_cycle_bind_nothing_surely(api):
+    sources = {
+        "api": api,
+        "other": "from . import user\n",
+        "sub": "from pkg import user\n",
+        "sub.leaf": "",
+        "user": "from .api import *\nkey = hash('x')\n",
+    }
+    assert _package_kinds(sources) == ["builtin hash"]
+    # A module's star import of itself sees itself part-run too.
+    itself = {"user": "from .user import *\nkey = hash('x')\nhash = str\n"}
+    assert _package_kinds(itself) == ["builtin hash"]
+
+
+def test_star_imports_see_all_of_a_module_whose_package_imports_the_importer():
+    # Importing pkg.api starts pkg first, which runs user, whose star import
+    # then runs all of api: api's import of pkg starts nothing.
+    sources = {
+        "pkg": ("pkg", "from . import user\n"),
+        "pkg.api": ("pkg", "import pkg\nhash = str\n"),
+        "pkg.user": ("pkg", "from .api import *\nkey = hash('x')\n"),
+    }
+    modules = Modules(
+        {
+            module: (package, lambda source=source: source)
+            for module, (package, source) in sources.items()
+        }
+    )
+    for module, (package, source) in sources.items():
+        assert analyse(source, f"{module}.py", module, package, modules).findings == []
 
 
 @pytest.mark.parametrize(
@@ -2058,7 +2488,13 @@ def test_star_imports_may_not_bind_some_names(api):
 
 @pytest.mark.parametrize(
     "api",
-    ["hash = str\n", "hash = str\n__all__ = ['hash']\n", "from .other import hash\n"],
+    [
+        "hash = str\n",
+        "hash = str\n__all__ = ['hash']\n",
+        "from .other import hash\n",
+        # other doesn't import user.
+        "from . import other\nhash = str\n",
+    ],
 )
 def test_star_imports_bind_what_the_module_surely_exports(api):
     user = "from .api import *\nkey = hash('x')\n"
@@ -2114,11 +2550,13 @@ def test_cyclic_named_imports_resolve_in_any_order(sources):
 
 def test_model_api_passes_on_cores_numpy_and_its_own_helpers():
     modules = package_scan().modules
-    assert "numpy" in modules.star_binds("policyengine_us.model_api", "np")
+    user = "policyengine_us.variables.household.person.age"
+    assert "numpy" in modules.star_binds("policyengine_us.model_api", "np", user)
+    assert modules.star_binds_surely("policyengine_us.model_api", "np", user)
     for api in ("policyengine_us.model_api", "policyengine_core.model_api"):
         assert "numpy.random.uniform" in modules.expand(f"{api}.np.random.uniform")
     assert "policyengine_us.model_api.all_of_variables" in modules.star_binds(
-        "policyengine_us.model_api", "all_of_variables"
+        "policyengine_us.model_api", "all_of_variables", user
     )
 
 

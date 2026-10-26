@@ -1017,9 +1017,11 @@ class SPMSimulationMixin:
             yield from branch._simulation_family()
 
     def _get_exportable_input_periods(self, variable_name, include_computed_variables):
-        # Core's subsample exports every period a holder knows, calculated
-        # ones included, and reloads them all as inputs (policyengine-core#633).
-        # A presence-tested input goes out only for the periods it is an input
+        # Core before 3.33.1 subsamples by exporting every period a holder
+        # knows, calculated ones included, and reloading them all as inputs
+        # (policyengine-core#633); from 3.33.1 its subsample rebuilds from
+        # recorded inputs and doesn't call this (policyengine-core#573). A
+        # presence-tested input goes out only for the periods it is an input
         # where this simulation reads it, on this branch or one it inherits
         # from. A calculated default, this branch's or an inherited one, would
         # otherwise come back as a supplied column of zeros.
