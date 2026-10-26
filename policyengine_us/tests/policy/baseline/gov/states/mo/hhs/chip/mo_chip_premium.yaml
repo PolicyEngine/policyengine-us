@@ -427,3 +427,28 @@
       2026-06: 198
       2026-07: 203
       2026: 2_406 # 6 x 198 + 6 x 203
+
+# Show-Me Healthy Babies pregnant women and unborn children pay no premium
+# (MO-15-0009), so a pregnancy or postpartum CHIP member alone does not trigger
+# the MO HealthNet for Kids premium. At 230% FPL a CHIP child in this tax unit
+# would pay a premium.
+- name: Missouri postpartum mother whose only CHIP eligibility is the pregnancy pathway pays no premium in 2025.
+  period: 2025
+  input:
+    people:
+      parent:
+        is_chip_eligible: true
+        is_chip_eligible_child: false
+      infant:
+        is_chip_eligible: false
+        is_chip_eligible_child: false
+    tax_units:
+      tax_unit:
+        members: [parent, infant]
+        tax_unit_medicaid_income_level: 2.30
+    households:
+      household:
+        members: [parent, infant]
+        state_code: MO
+  output:
+    mo_chip_premium: 0

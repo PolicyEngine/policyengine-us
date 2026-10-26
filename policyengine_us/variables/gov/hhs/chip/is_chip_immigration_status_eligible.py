@@ -52,7 +52,7 @@ class is_chip_immigration_status_eligible(Variable):
             & (age < p.chip.child.max_age)
         )
         # The pregnancy option runs through the state's postpartum period,
-        # including the 12-month extension where elected (SHO #21-007 Q11).
+        # including the 12-month extension where elected (SHO 21-007 Q11).
         pregnant = (
             chip_option.pregnant[state].astype(bool)
             & medicaid_option.pregnant[state].astype(bool)
