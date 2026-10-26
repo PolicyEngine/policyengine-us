@@ -11,6 +11,7 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
         "https://www.law.cornell.edu/uscode/text/42/1396a#m",
         "https://www.law.cornell.edu/uscode/text/42/1396b#v",
         "https://www.ecfr.gov/current/title-42/section-435.406#p-435.406(b)",
+        "https://www.ecfr.gov/current/title-42/section-440.255#p-440.255(c)",
     )
 
     def formula(person, period, parameters):
