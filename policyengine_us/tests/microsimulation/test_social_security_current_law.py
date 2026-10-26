@@ -2,6 +2,9 @@
 
 The same probe runs in separate Python processes against this checkout and
 main. No variable definitions or input names are substituted in the reference.
+After benefit sources change, both probes discard only formula-derived caches
+to compare freshly calculated current law. Separate intended-difference tests
+check the live head's values before that cleanup at main's eight stale routes.
 An unmodified pre-feature main checkout is required. Set PE_US_MAIN_CHECKOUT
 to that checkout, or make the reviewed main commit or a pre-feature main ref
 available locally (the fixture archives it without changing either checkout).
@@ -53,6 +56,12 @@ INGRESS_OUTCOMES = (
 )
 AMOUNTS = ((12_000, 0, 1_800, 600), (0, 6_000, 1_200, 300))
 REVIEWED_MAIN_SHA = "8986e05cab65d56435a23df1910e2d35f2c5f5bf"
+# Hand-computed per-person growth from calibration.gov.cbo.social_security
+# divided by calibration.gov.census.populations.total in each year. The IRS
+# SOI series follows this CBO growth; Core multiplies float32 benefit arrays.
+UPRATING_2024_TO_2026 = np.float32(
+    (1_665_942_000_000 / 352_304_000) / (1_454_424_000_000 / 346_588_000)
+)
 
 
 def situation(*, include_benefits=True):
@@ -108,8 +117,34 @@ def _snapshot(simulation, periods, variables=BENEFITS):
     }
 
 
+def _clear_derived_caches(simulation):
+    """Compare formula results for the same surviving supplied/raw sources.
+
+    Runtime invalidation is checked before any cleanup by the live-value
+    assertions, state machine and input regressions. This differential
+    separately compares the country formulas after source writes, including
+    main's ordinary simulations.
+    """
+    for population in simulation.populations.values():
+        for holder in population._holders.values():
+            memory = holder._memory_storage
+            for branch, period in tuple(memory.get_known_branch_periods()):
+                if memory.is_derived(period, branch):
+                    memory._arrays.pop(f"{branch}:{period}", None)
+            memory._unmark_dropped_keys()
+            memory._stop_sharing_dropped_keys()
+            memory._forget_dropped_numbers()
+            disk = holder._disk_storage
+            if disk is not None:
+                for branch, period in tuple(disk.get_known_branch_periods()):
+                    if disk.is_derived(period, branch):
+                        disk._files.pop(f"{branch}_{period}", None)
+                disk._forget_dropped_keys()
+    simulation._fast_cache = {}
+
+
 def _write_h5(path):
-    """Variable-centric v2pop-style H5, with public columns in its scored year."""
+    """Public-column H5, with source values in its scored year."""
     import h5py
 
     ids = np.array([1, 2])
@@ -188,6 +223,15 @@ def _probe():
         else None
     )
     result = {}
+    intended_differences = {}
+
+    def record_live_value(route, simulation, variable, year):
+        # Capture before normalization so the intended-difference assertions
+        # independently require the live head to invalidate stale values.
+        intended_differences[route] = np.asarray(
+            simulation.calculate(variable, year)
+        ).tolist()
+
     for label, wrapper in (
         ("simulation", Simulation),
         ("microsimulation", HouseholdMicrosimulation),
@@ -227,6 +271,10 @@ def _probe():
                     simulation, (2024, 2025, 2026, 2027)
                 )
                 simulation.set_input("social_security_retirement", 2026, [36_000, 0])
+                record_live_value(
+                    "complete_export_rewrite", simulation, "social_security", 2026
+                )
+                _clear_derived_caches(simulation)
                 result["complete_export_rewrite"] = _snapshot(simulation, (2026, 2027))
             else:
                 payload = export_source_inputs(simulation)
@@ -242,6 +290,10 @@ def _probe():
                     simulation, (2024, 2025, 2026, 2027)
                 )
                 reloaded.set_input("social_security_retirement", 2026, [36_000, 0])
+                record_live_value(
+                    "complete_export_rewrite", reloaded, "social_security", 2026
+                )
+                _clear_derived_caches(reloaded)
                 result["complete_export_rewrite"] = _snapshot(reloaded, (2026, 2027))
                 del reloaded
         del simulation
@@ -291,6 +343,10 @@ def _probe():
         }
         result[f"extraction_future_reload_{label}"] = extracted_future
         reloaded.set_input("social_security_retirement", 2024, [36_000])
+        record_live_value(
+            f"extraction_rewrite_{label}", reloaded, "social_security", 2024
+        )
+        _clear_derived_caches(reloaded)
         result[f"extraction_rewrite_{label}"] = _snapshot(
             reloaded, (2024, 2026, 2027), (*BENEFITS, *DOWNSTREAM)
         )
@@ -418,6 +474,13 @@ def _probe():
         reloaded, (2024, 2026), INGRESS_OUTCOMES
     )
     reloaded.set_input("social_security_retirement", 2024, [36_000])
+    record_live_value(
+        "dataset_builder_extraction_rewrite",
+        reloaded,
+        "social_security_retirement",
+        2026,
+    )
+    _clear_derived_caches(reloaded)
     result["dataset_builder_extraction_rewrite"] = _snapshot(
         reloaded, (2024, 2026), INGRESS_OUTCOMES
     )
@@ -491,6 +554,9 @@ def _probe():
                     assert error is simulation.store_error
                 else:
                     raise AssertionError("The compound setter did not raise")
+                if label == "nonzero":
+                    record_live_value(route, simulation, "social_security", 2023)
+                _clear_derived_caches(simulation)
                 after = _snapshot(simulation, (2023, 2024, 2026))
                 after.update(
                     _snapshot(
@@ -562,6 +628,13 @@ def _probe():
     )
     assert result["dump_restore_legacy_public"] == live
     restored.set_input("social_security_retirement", 2024, [24_000])
+    record_live_value(
+        "dump_restore_legacy_public_override",
+        restored,
+        "social_security_retirement",
+        2026,
+    )
+    _clear_derived_caches(restored)
     result["dump_restore_legacy_public_override"] = _snapshot(
         restored, (2024, 2026), INGRESS_OUTCOMES
     )
@@ -575,6 +648,14 @@ def _probe():
     assert result["dump_restore_both_names"] == live
     for candidate in (simulation, restored):
         candidate.set_input("social_security_retirement", 2024, [24_000])
+        if candidate is restored:
+            record_live_value(
+                "dump_restore_both_names_override",
+                restored,
+                "social_security_retirement",
+                2026,
+            )
+        _clear_derived_caches(candidate)
     result["dump_restore_both_names_override"] = _snapshot(
         restored, (2024, 2026), INGRESS_OUTCOMES
     )
@@ -663,6 +744,9 @@ def _probe():
             else simulation.get_branch("public_override")
         )
         copied.set_input("social_security_retirement", 2026, [24_000, 0])
+        if route == "clone":
+            record_live_value(route, copied, "social_security", 2026)
+        _clear_derived_caches(copied)
         result[route] = _snapshot(copied, (2026, 2027))
         assert _snapshot(simulation, (2024, 2026)) == parent
         assert simulation.input_variables == original_inputs
@@ -743,6 +827,9 @@ def _probe():
                 rtol=1e-7,
                 atol=0,
             )
+    intended_destination = os.environ.get("PE_US_DIFFERENTIAL_LIVE_VALUES")
+    if intended_destination:
+        Path(intended_destination).write_text(json.dumps(intended_differences))
     return result
 
 
@@ -826,14 +913,17 @@ def differential(tmp_path_factory):
     current = Path(__file__).resolve().parents[3]
     reference = _main_checkout(current, directory)
     results = {}
+    live_values = {}
     dump_directory = directory / "dumps"
     dump_directory.mkdir()
     # The main probe publishes a real legacy dump for the current probe.
     for label, checkout in (("main", reference), ("current", current)):
         destination = directory / f"{label}.json"
+        live_destination = directory / f"{label}-live.json"
         environment = dict(os.environ)
         environment["PYTHONPATH"] = str(checkout)
         environment["PE_US_DIFFERENTIAL_DUMPS"] = str(dump_directory)
+        environment["PE_US_DIFFERENTIAL_LIVE_VALUES"] = str(live_destination)
         for variable in (
             "OMP_NUM_THREADS",
             "OPENBLAS_NUM_THREADS",
@@ -862,12 +952,13 @@ def differential(tmp_path_factory):
             f"{completed.stdout[-4000:]}\n{completed.stderr[-8000:]}"
         )
         results[label] = json.loads(destination.read_text())
+        live_values[label] = json.loads(live_destination.read_text())
         print(
             f"Social Security differential ({label}): "
             f"{len(results[label])} routes, "
             f"{sum(len(values) for values in results[label].values())} arrays"
         )
-    return results["current"], results["main"]
+    return results["current"], results["main"], live_values["current"]
 
 
 @pytest.mark.parametrize(
@@ -926,7 +1017,7 @@ def differential(tmp_path_factory):
     ),
 )
 def test_legacy_public_ingress_matches_unmodified_main(differential, route):
-    current, main = differential
+    current, main, _ = differential
     for request in main[route]:
         if request in current[route] and not np.array_equal(
             current[route][request], main[route][request]
@@ -949,6 +1040,74 @@ def test_legacy_public_ingress_matches_unmodified_main(differential, route):
             main[route][request],
             err_msg=f"Legacy public ingress differs on {route}: {request}",
         )
+
+
+@pytest.mark.parametrize(
+    "route, expected",
+    (
+        # Intended difference from main: its cached total remains 24,000.
+        ("extraction_rewrite_simulation", [36_000 + 0 + 0 + 0]),
+        # Intended difference from main: its cached total remains 24,000.
+        ("extraction_rewrite_microsimulation", [36_000 + 0 + 0 + 0]),
+        # Intended difference from main: its first total remains
+        # 26,704.431640625 after the 24,000 override is replaced by 36,000.
+        (
+            "complete_export_rewrite",
+            [
+                np.float32(36_000)
+                + np.float32(1_800) * UPRATING_2024_TO_2026
+                + np.float32(600) * UPRATING_2024_TO_2026,
+                np.float32(6_000) * UPRATING_2024_TO_2026
+                + np.float32(1_200) * UPRATING_2024_TO_2026
+                + np.float32(300) * UPRATING_2024_TO_2026,
+            ],
+        ),
+        # Intended difference from main: its cached 2026 retirement remains
+        # 27,044.31640625, uprated from the previous 24,000 source.
+        (
+            "dataset_builder_extraction_rewrite",
+            [np.float32(36_000) * UPRATING_2024_TO_2026],
+        ),
+        # Intended difference from main: its cached 2023 total remains
+        # 12,000 after the nonzero raw seed's compound setter stores 24,000.
+        ("setter_failed_after_loading", [24_000 + 0 + 0 + 0]),
+        # Intended difference from main: its cached 2026 retirement remains
+        # 13,522.158203125, uprated from the restored 12,000 source.
+        (
+            "dump_restore_legacy_public_override",
+            [np.float32(24_000) * UPRATING_2024_TO_2026],
+        ),
+        # Intended difference from main: its cached 2026 retirement remains
+        # 13,522.158203125, uprated from the restored 12,000 source.
+        (
+            "dump_restore_both_names_override",
+            [np.float32(24_000) * UPRATING_2024_TO_2026],
+        ),
+        # Intended difference from main: its cloned 2026 first total remains
+        # 16,226.58984375 after retirement is overridden to 24,000.
+        (
+            "clone",
+            [
+                np.float32(24_000)
+                + np.float32(1_800) * UPRATING_2024_TO_2026
+                + np.float32(600) * UPRATING_2024_TO_2026,
+                np.float32(6_000) * UPRATING_2024_TO_2026
+                + np.float32(1_200) * UPRATING_2024_TO_2026
+                + np.float32(300) * UPRATING_2024_TO_2026,
+            ],
+        ),
+    ),
+)
+def test_intended_difference_from_main_uses_fresh_live_value(
+    differential, route, expected
+):
+    """A benefit source written after calculation replaces its stale result."""
+    _, _, live_values = differential
+    np.testing.assert_array_equal(
+        live_values[route],
+        expected,
+        err_msg=f"Intended difference from main did not use the latest source: {route}",
+    )
 
 
 if __name__ == "__main__":
