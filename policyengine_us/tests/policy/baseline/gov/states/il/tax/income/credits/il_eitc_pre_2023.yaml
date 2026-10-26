@@ -71,6 +71,33 @@
     # The 65+ expansion in 35 ILCS 5/212(b-10) starts in 2023.
     il_eitc: 0
 
+- name: Childless filer aged 65 in 2021 gets 18% of the federal EITC
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 65
+        employment_income: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: IL
+  output:
+    # IRC 32(n)(2) drops the federal maximum age for 2021 and 32(n)(3) sets
+    # the childless phase-in rate at 15.3%: 15.3% x 5,000 = 765 (below the
+    # 32(n)(4) $9,820 earned income amount and $11,610 phase-out). The IL EIC
+    # comes from the federal credit, not 35 ILCS 5/212(b-10): 18% of 765.
+    il_eitc: 137.7
+
 - name: Childless filer aged 40 in 2022 gets 18% of the federal EITC
   period: 2022
   absolute_error_margin: 0.01
@@ -94,6 +121,32 @@
   output:
     # Federal EITC is 7.65% x 5,000 = 382.50; 18% of it is 68.85.
     il_eitc: 68.85
+
+- name: Childless filer aged 40 in 2017 gets 14% of the federal EITC
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: IL
+  output:
+    # Rev. Proc. 2016-55: 2017 childless maximum 510, phase-out from 8,340.
+    # Federal EITC 7.65% x 5,000 = 382.50; 35 ILCS 5/212(a)(iv) gives 14% for
+    # 2017, so 53.55.
+    il_eitc: 53.55
 
 - name: Childless filer aged 70 in 2023 gets the expanded IL EIC
   period: 2023
@@ -170,6 +223,6 @@
         members: [head]
         state_code: IL
   output:
-    # From 2023 35 ILCS 5/212(b-5) accepts an ITIN. Childless phase-in 7.65%
+    # From 2023 35 ILCS 5/212(b-15) accepts an ITIN. Childless phase-in 7.65%
     # of 5,000 = 382.50 (below the 2023 maximum of 600); IL EIC 20% = 76.50.
     il_eitc: 76.5

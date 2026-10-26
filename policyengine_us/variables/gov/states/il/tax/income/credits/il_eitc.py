@@ -22,8 +22,9 @@ class il_eitc(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.il.tax.income.credits.eitc
         if not p.expansion_in_effect:
-            # Before 2023 the IL EIC is a match of the federal credit
-            # (Schedule IL-E/EIC Step 4, lines 5 and 6).
+            # Before 2023 the IL EIC is a percentage of the federal credit
+            # allowed, with no age or ITIN route (35 ILCS 5/212(a); Schedule
+            # IL-E/EIC Step 4, lines 5 and 6).
             return tax_unit("eitc", period) * p.match
         person = tax_unit.members
         age = person("age", period)
