@@ -6,23 +6,40 @@ values:
   2024-01-01: 301.236 # 2023Q3: (299.899 + 301.551 + 302.257) / 3
   2025-01-01: 308.729 # 2024Q3: (308.501 + 308.640 + 309.046) / 3
   2026-01-01: 317.265 # 2025Q3: (316.349 + 317.306 + 318.139) / 3
-  # Forecasts from marrying CPI-W actuals with CBO's CPI-U forecast.
-  2027-01-01: 326.149 # 2026Q3: 330.1 * 306.199 / 310.989
-  2028-01-01: 332.241 # 2027Q3: 337.3 * 306.199 / 310.989
-  2029-01-01: 339.431 # 2028Q3: 344.6 * 306.199 / 310.989
-  2030-01-01: 346.917 # 2029Q3: 352.2 * 306.199 / 310.989
-  2031-01-01: 354.6 # 2030Q3: 360.0 * 306.199 / 310.989
-  2032-01-01: 362.579 # 2031Q3: 368.1 * 306.199 / 310.989
-  2033-01-01: 370.656 # 2032Q3: 376.3 * 306.199 / 310.989
-  2034-01-01: 379.028 # 2033Q3: 384.8 * 306.199 / 310.989
-  2035-01-01: 387.598 # 2034Q3: 393.5 * 306.199 / 310.989
-  # Values for 2036-2100 are set programmatically in uprating_extensions.py
+  2027-01-01: 328.746 # 2026Q3: (327.104 + 328.481 + 330.654) / 3
+  # Forecasts carry the 2026Q3 CPI-W actual forward at CBO's February 2026
+  # quarterly CPI-U growth: 2026Q3 actual * CBO CPI-U (Q3) / CBO CPI-U (2026Q3).
+  # CBO's Economic Projections publish no CPI-W series, so CBO CPI-U Q3/Q3
+  # growth stands in for CPI-W Q3/Q3. CBO's own projected COLAs (2.3% a year
+  # for 2029-2036) match this growth (2.26% a year) to the tenth of a percent
+  # that CBO publishes.
+  2028-01-01: 336.945 # 2027Q3: 328.746 * 341.281 / 332.976
+  2029-01-01: 344.854 # 2028Q3: 328.746 * 349.291 / 332.976
+  2030-01-01: 352.722 # 2029Q3: 328.746 * 357.260 / 332.976
+  2031-01-01: 360.699 # 2030Q3: 328.746 * 365.340 / 332.976
+  2032-01-01: 368.845 # 2031Q3: 328.746 * 373.591 / 332.976
+  2033-01-01: 377.171 # 2032Q3: 328.746 * 382.024 / 332.976
+  2034-01-01: 385.681 # 2033Q3: 328.746 * 390.644 / 332.976
+  2035-01-01: 394.385 # 2034Q3: 328.746 * 399.460 / 332.976
+  2036-01-01: 403.287 # 2035Q3: 328.746 * 408.476 / 332.976
+  # Values for 2037-2100 are set programmatically in uprating_extensions.py
 metadata:
   economy: false
   unit: currency-USD
   label: SSA uprating
   reference:
-    - title: Historical values
+    - title: SSA | Cost-of-living adjustments, 1975-present
       href: https://www.ssa.gov/oact/cola/colaseries.html
-    - title: CBO Economic Projections, February 2024.
-      href: https://www.cbo.gov/publication/59710
+    - title: 42 U.S. Code § 415(i)
+      href: https://www.law.cornell.edu/uscode/text/42/415#i
+    - title: BLS CPI-W, U.S. city average, all items, not seasonally adjusted (CWUR0000SA0)
+      href: https://data.bls.gov/timeseries/CWUR0000SA0
+    - title: 2027 Cost-of-Living Adjustment (COLA) Fact Sheet
+      href: https://www.ssa.gov/news/en/cola/factsheets/2027.html
+    - title: CBO | Economic Projections | February 2026
+      # Sheet: 1. Quarterly, Row 53: CPI-U
+      href: https://www.cbo.gov/system/files/2026-02/51135-2026-02-Economic-Projections.xlsx
+    - title: CBO | Economic Projections | February 2026, quarterly CSV (variable cpiu)
+      href: https://github.com/US-CBO/cbo-data/blob/284a95665f9f2f74ed1f482feb629b43fce323da/data/economic/economic_projections/quarterly_2026-02.csv
+    - title: CBO | The Budget and Economic Outlook, 2026 to 2036 | February 2026, Chapter 3, Social Security (projected COLAs)
+      href: https://www.cbo.gov/system/files/2026-02/61882-Outlook-2026.pdf#page=74

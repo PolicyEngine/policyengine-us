@@ -1,0 +1,256 @@
+description: States provide free breakfast and lunch to students with household income at or below this percentage of the federal poverty guideline under the National School Lunch Program and School Breakfast Program.
+# 0 means no state limit above the federal free-meal limit; school_meal_tier
+# applies the higher of this value and gov.usda.school_meals.income.limit.FREE.
+# A limit that applies only to breakfast is in
+# state_free_income_limit_breakfast_only.
+# Every limit here is defined in law as a percentage of the federal poverty
+# guideline or level. The model uses each calendar year's guideline, dated
+# January 1 (Alaska and Hawaii use their own), while schools apply the
+# guideline for each July-to-June school year.
+# Assume enrollment at a covered school; each state's conditions are noted
+# beside its entry. Budget-funded limits end at their enacted funding end;
+# standing statutes carry forward.
+metadata:
+  propagate_metadata_to_children: true
+  label: State free school meal income limit as a share of the poverty guideline
+  period: year
+  unit: /1
+  breakdown:
+    - state_code
+  reference:
+    - title: 42 U.S. Code § 1758(b)(1)(A) - Program requirements
+      href: https://www.law.cornell.edu/uscode/text/42/1758#b_1_A
+AA:
+  0000-01-01: 0
+AE:
+  0000-01-01: 0
+AK:
+  0000-01-01: 0
+AL:
+  0000-01-01: 0
+AP:
+  0000-01-01: 0
+AR:
+  0000-01-01: 0
+AZ:
+  0000-01-01: 0
+CA:
+  0000-01-01: 0
+CO:
+  0000-01-01: 0
+CT:
+  0000-01-01: 0
+DC:
+  0000-01-01: 0
+DE:
+  0000-01-01: 0
+FL:
+  0000-01-01: 0
+GA:
+  0000-01-01: 0
+GU:
+  0000-01-01: 0
+HI:
+  0000-01-01: 0
+  # HRS § 302A-404(c) applies from SY 2026-27 to students enrolled in a
+  # department school. Its 300 percent table uses the Hawaii poverty guideline,
+  # as the model does. Not modeled: department schools only (Hawaii Appleseed,
+  # a secondary source, reports that charter schools are excluded); Act 139
+  # appropriated $2,800,000 for FY2027 only; one breakfast and one lunch a day.
+  2026-07-01:
+    value: 3
+    metadata:
+      reference:
+        - title: Hawaii Act 139, SLH 2025 (SB 1300 CD1), HRS § 302A-404(c)
+          href: https://data.capitol.hawaii.gov/sessions/session2025/bills/SB1300_CD1_.HTM
+        - title: Hawaii State Department of Education, 2026 expanded free school meals (July 16, 2026)
+          href: https://hawaiipublicschools.org/2026-expanded-free-school-meals/
+        - title: Hawaii State Department of Education, Free and Reduced-Price Meals Program (Expanded Income Guidelines)
+          href: https://hawaiipublicschools.org/school-services/school-food-services/free-and-reduced-priced-meals-program/
+IA:
+  0000-01-01: 0
+ID:
+  0000-01-01: 0
+IL:
+  0000-01-01: 0
+IN:
+  0000-01-01: 0
+KS:
+  0000-01-01: 0
+KY:
+  0000-01-01: 0
+LA:
+  0000-01-01: 0
+MA:
+  0000-01-01: 0
+MD:
+  0000-01-01: 0
+ME:
+  0000-01-01: 0
+MI:
+  0000-01-01: 0
+MN:
+  0000-01-01: 0
+MO:
+  0000-01-01: 0
+MP:
+  0000-01-01: 0
+MS:
+  0000-01-01: 0
+MT:
+  0000-01-01: 0
+NC:
+  0000-01-01: 0
+ND:
+  0000-01-01: 0
+  # Biennial appropriations fund free meals for public and nonpublic school
+  # students at or below the limit: 200 percent from July 1, 2023 to June 30,
+  # 2025 and 225 percent from July 1, 2025 to June 30, 2027. Nothing is enacted
+  # past June 30, 2027. Not modeled: each biennium's grant is capped at
+  # $6,000,000.
+  2023-07-01:
+    value: 2
+    metadata:
+      reference:
+        - title: North Dakota S.B. 2284 (2023), Section 17
+          href: https://ndlegis.gov/assembly/68-2023/regular/documents/23-0697-07000.pdf#page=15
+        - title: "North Dakota Department of Public Instruction, 2023 Legislative Changes: State Free (June 2023 webinar) #page 7-9,12,14-15"
+          href: https://www.nd.gov/dpi/sites/www/files/documents/ChildNutrition/SNP/State%20Free%20Webinar%206152023.pdf#page=7
+  2025-07-01:
+    value: 2.25
+    metadata:
+      reference:
+        - title: North Dakota H.B. 1013 (2025), Section 12
+          href: https://ndlegis.gov/assembly/69-2025/regular/documents/25-0157-07000.pdf#page=4
+        - title: North Dakota Department of Public Instruction, Determining 2025-2026 Free & Reduced-Price Meal Applications
+          href: https://www.nd.gov/dpi/sites/www/files/documents/ChildNutrition/SNP/FR%20Packet/ApplicationDeterminationVisual2526.pdf#page=1
+  2027-07-01:
+    value: 0
+    metadata:
+      reference:
+        - title: North Dakota H.B. 1013 (2025), Section 12
+          href: https://ndlegis.gov/assembly/69-2025/regular/documents/25-0157-07000.pdf#page=4
+NE:
+  0000-01-01: 0
+NH:
+  0000-01-01: 0
+NJ:
+  0000-01-01: 0
+  # P.L.2022, c.104 provides free breakfast and lunch from September 1, 2023
+  # for students from households with income not less than 186 percent and not
+  # more than 199 percent of the federal poverty level. P.L.2023, c.336
+  # (January 16, 2024) raised the breakfast limit to 224 percent with no end
+  # date, but its lunch schedule names only SY 2023-24 (199 percent) and
+  # SY 2024-25 (224 percent), and no later law amends either section. Free
+  # lunch up to 224 percent continued in SY 2025-26 and SY 2026-27 through the
+  # annual Working Class Families State Supplement appropriation, so this
+  # limit for both meals ends after FY2027, the last enacted appropriation;
+  # breakfast continues in state_free_income_limit_breakfast_only.
+  # The breakfast limit was legally 224 percent from January 16, 2024, but
+  # calendar 2024 reads 199 percent for both meals.
+  # Taking the higher of this and the federal limit covers all income above
+  # the federal reduced-price limit, as the Department of Agriculture's income
+  # table (Form 427) does. Not modeled: CEP sites are excluded (their meals
+  # are already free); schools where fewer than 5 percent of enrolled students
+  # are federally eligible for free or reduced-price lunch are exempt
+  # (N.J.S.A. 18A:33-5).
+  2023-09-01:
+    value: 1.99
+    metadata:
+      reference:
+        - title: New Jersey P.L.2022, c.104 (Working-Class Families' Anti-Hunger Act), N.J.S.A. 18A:33-4(a)(3), 18A:33-14a(a)(2)
+          href: https://pub.njleg.gov/Bills/2022/PL22/104_.HTM
+  2024-07-01:
+    value: 2.24
+    metadata:
+      reference:
+        - title: New Jersey P.L.2023, c.336, N.J.S.A. 18A:33-4(a)(4), 18A:33-14a(a)(3)
+          href: https://pub.njleg.state.nj.us/Bills/2022/AL23/336_.HTM
+  2025-07-01:
+    value: 2.24
+    metadata:
+      reference:
+        - title: New Jersey P.L.2025, c.74 (FY2026 Appropriations Act), Department of Agriculture State Aid, Working Class Families State Supplement
+          href: https://pub.njleg.gov/Bills/2024/AL25/74_.PDF#page=29
+        - title: New Jersey Department of Agriculture, Fiscal Year 2026 Reimbursement Rate Breakdown, Public Schools (NJEIE lunch and breakfast)
+          href: https://www.nj.gov/agriculture/divisions/fn/pdf/FY26%20Public%20School%20Rates.pdf#page=1
+  2026-07-01:
+    value: 2.24
+    metadata:
+      reference:
+        - title: New Jersey P.L.2026, c.27 (FY2027 Appropriations Act), Department of Agriculture State Aid, Working Class Families State Supplement
+          href: https://pub.njleg.gov/Bills/2026/AL26/27_.PDF#page=28
+        - title: New Jersey Department of Agriculture, Fiscal Year 2027 Reimbursement Rate Breakdown, Public Schools (NJEIE lunch and breakfast)
+          href: https://www.nj.gov/agriculture/documents/forms/FY27%20Public%20School%20Rates.pdf#page=1
+        - title: New Jersey Department of Agriculture, Form 427, Federal and New Jersey Expanded Income Eligibility Guidelines, School Year 2026-2027
+          href: https://www.nj.gov/agriculture/divisions/fn/pdf/Form%20427%20Federal%20and%20State%20Income%20Eligibility%20Guidelines%20SY%202026-2027.pdf#page=1
+  2027-07-01:
+    value: 0
+    metadata:
+      reference:
+        - title: New Jersey P.L.2026, c.27 (FY2027 Appropriations Act), Department of Agriculture State Aid, Working Class Families State Supplement
+          href: https://pub.njleg.gov/Bills/2026/AL26/27_.PDF#page=28
+NM:
+  0000-01-01: 0
+NV:
+  0000-01-01: 0
+NY:
+  0000-01-01: 0
+OH:
+  0000-01-01: 0
+OK:
+  0000-01-01: 0
+OR:
+  0000-01-01: 0
+  # HB 2536 (2021 c. 119) requires each school that does not serve free meals
+  # to all students to offer lunch, and breakfast where it is offered, at no
+  # charge up to 300 percent of the federal poverty guidelines from July 1,
+  # 2021. The Student Success Act reimbursed schools that chose to do so from
+  # July 1, 2020; that voluntary period is not encoded. Not modeled: public
+  # schools outside the community eligibility provision only; ORS 327.531(3)
+  # suspends the requirement if the Department of Education lacks
+  # reimbursement funds; private schools are not covered; ORS
+  # 327.535(8)(b)(B) makes breakfast free to all students at sites where at
+  # least 70 percent of students are eligible.
+  2021-07-01:
+    value: 3
+    metadata:
+      reference:
+        - title: Oregon Revised Statutes 327.531(2), 327.535(6), 327.545(3)
+          href: https://www.oregonlegislature.gov/bills_laws/ors/ors327.html
+        - title: "Oregon Laws 2021, c. 119 (HB 2536) #page 1-2"
+          href: https://www.oregonlegislature.gov/bills_laws/lawsstatutes/2021orlaw0119.pdf#page=1
+        - title: "Oregon Department of Education, School Nutrition Program At-A-Glance: Oregon Expanded Income Eligibility Group Reimbursement Program (October 2024)"
+          href: https://www.oregon.gov/ode/students-and-family/childnutrition/SNP/Documents/At%20A%20Glance%20Oregon%20Expanded%20Income%20Group%20Eligibility.pdf#page=1
+PA:
+  0000-01-01: 0
+PR:
+  0000-01-01: 0
+PW:
+  0000-01-01: 0
+RI:
+  0000-01-01: 0
+SC:
+  0000-01-01: 0
+SD:
+  0000-01-01: 0
+TN:
+  0000-01-01: 0
+TX:
+  0000-01-01: 0
+UT:
+  0000-01-01: 0
+VA:
+  0000-01-01: 0
+VI:
+  0000-01-01: 0
+VT:
+  0000-01-01: 0
+WA:
+  0000-01-01: 0
+WI:
+  0000-01-01: 0
+WV:
+  0000-01-01: 0
+WY:
+  0000-01-01: 0

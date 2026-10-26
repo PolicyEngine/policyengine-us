@@ -60,21 +60,22 @@ values:
     # so the household sum counts the unit's TANF once. LIEAP and SNAP are
     # not cash public assistance (2014-2017 Form 2EC instructions).
     - ssi
+    # § 15-30-2337(9)(a)(vi) – the Montana State Supplementary Payment is
+    # nontaxable cash public assistance paid with SSI; ssi excludes it.
+    - mt_ssp
     - tanf_person
     - workers_compensation
     # Guaranteed income pilot payments are outside federal AGI here, and
     # (9)(a) counts all nontaxable income; a government-funded pilot is also
     # "any other government assistance" (Schedule 2EC line 16).
     - gi_cash_assistance
-    # Disability benefits from employment other than workers' compensation
-    # (2014-2023 instructions: "Disability benefits including, but not
-    # limited to, veteran's disability, SSI payments, and workers'
-    # compensation"; from 2024, Schedule 2EC line 1 for taxable sick pay and
-    # disability pay reported as wages, line 5 for a disability pension after
-    # minimum retirement age (IRS Pub. 525), otherwise line 15). The model
-    # leaves them out of federal AGI (irs_gross_income) and
-    # dependent_gross_income, so all of them count here, once.
-    - disability_benefits
+    # Only nontaxable employment disability benefits are added here. The
+    # taxable part is already in federal AGI or a dependent's own gross
+    # income. The 2014-2023 instructions list disability benefits among
+    # other income; from 2024, Schedule 2EC uses line 1 for taxable pay
+    # reported as wages, line 5 for a disability pension after minimum
+    # retirement age, and line 15 for nontaxable disability benefits.
+    - tax_exempt_disability_benefits
     # Unemployment compensation that neither federal AGI nor a dependent's
     # own gross income counts, such as the 2020 IRC 85(c) exclusion (2020
     # line 8, "all items of income ... not reported on lines 1 through 7";
@@ -99,10 +100,11 @@ values:
     - strike_benefits
     - general_assistance
     - ssi
+    - mt_ssp
     - tanf_person
     - workers_compensation
     - gi_cash_assistance
-    - disability_benefits
+    - tax_exempt_disability_benefits
     - mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback
     - mt_refundable_credits_before_renter_credit
     - mt_elderly_homeowner_or_renter_credit_received
@@ -121,10 +123,11 @@ values:
     - strike_benefits
     - general_assistance
     - ssi
+    - mt_ssp
     - tanf_person
     - workers_compensation
     - gi_cash_assistance
-    - disability_benefits
+    - tax_exempt_disability_benefits
     - mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback
     - mt_refundable_credits_before_renter_credit
     - mt_elderly_homeowner_or_renter_credit_received

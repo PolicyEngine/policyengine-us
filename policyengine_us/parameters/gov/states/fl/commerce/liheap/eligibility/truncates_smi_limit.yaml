@@ -1,0 +1,23 @@
+description: Florida uses state median income limits truncated to whole dollars, as in the federal table, rather than rounded half up when this is true under the Low Income Home Energy Assistance Program.
+# Neither matrix states a rounding rule; the pattern is inferred from the
+# printed amounts. FY2025 rounds 60% of state median income for each size to
+# the nearest dollar (one person: $98,038 x 60% x 52% = $30,587.856, printed
+# $30,588, where the federal FY2025 table prints $30,587). FY2026 reprints the
+# federal FY2026 table, which truncates 60% of the four-person amount and then
+# each size ($32,155 for one person).
+values:
+  2024-10-01: false
+  2025-10-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Florida LIHEAP state median income limit truncation
+  reference:
+    - title: Florida FY2025 LIHEAP Payment Matrix, maximum income values
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/FL_BenefitMatrix_2025.pdf
+    - title: Florida State Median Income for FFY 2025
+      href: https://liheapch.acf.gov/profiles/povertytables/FY2025/flsmi.htm
+    - title: Florida FY2026 LIHEAP Payment Matrix, maximum income values
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/FL_BenefitMatrix_Heat-Cool_2026.pdf
+    - title: Florida State Median Income for FFY 2026
+      href: https://liheapch.acf.gov/profiles/povertytables/FY2026/flsmi.htm

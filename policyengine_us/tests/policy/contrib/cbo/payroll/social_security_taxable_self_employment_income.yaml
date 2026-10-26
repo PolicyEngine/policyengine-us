@@ -1,0 +1,81 @@
+- name: Self-employment fills the remaining cap and crosses the upper edge of the donut.
+  period: 2027
+  reforms: policyengine_us.reforms.cbo.payroll.increase_taxable_earnings_for_social_security.increase_taxable_earnings_for_social_security
+  input:
+    gov.contrib.cbo.payroll.secondary_earnings_threshold: 250_000
+    gov.irs.payroll.social_security.cap: 192_300
+    payroll_tax_gross_wages: 180_000
+    taxable_self_employment_income: 100_000
+  output:
+    # Remaining cap = 12,300; combined earnings exceed 250,000 by 30,000.
+    social_security_taxable_self_employment_income: 42_300
+
+- name: Combined earnings inside the donut do not add taxable self-employment earnings.
+  period: 2027
+  reforms: policyengine_us.reforms.cbo.payroll.increase_taxable_earnings_for_social_security.increase_taxable_earnings_for_social_security
+  input:
+    gov.contrib.cbo.payroll.secondary_earnings_threshold: 250_000
+    gov.irs.payroll.social_security.cap: 192_300
+    payroll_tax_gross_wages: 200_000
+    taxable_self_employment_income: 40_000
+  output:
+    taxable_earnings_for_social_security: 192_300
+    social_security_taxable_self_employment_income: 0
+
+- name: Combined earnings exactly at the upper edge of the donut add no taxable self-employment earnings.
+  period: 2027
+  reforms: policyengine_us.reforms.cbo.payroll.increase_taxable_earnings_for_social_security.increase_taxable_earnings_for_social_security
+  input:
+    gov.contrib.cbo.payroll.secondary_earnings_threshold: 250_000
+    gov.irs.payroll.social_security.cap: 192_300
+    payroll_tax_gross_wages: 200_000
+    taxable_self_employment_income: 50_000
+  output:
+    social_security_taxable_self_employment_income: 0
+
+- name: The first dollar above the combined earnings threshold is taxable self-employment income.
+  period: 2027
+  reforms: policyengine_us.reforms.cbo.payroll.increase_taxable_earnings_for_social_security.increase_taxable_earnings_for_social_security
+  input:
+    gov.contrib.cbo.payroll.secondary_earnings_threshold: 250_000
+    gov.irs.payroll.social_security.cap: 192_300
+    payroll_tax_gross_wages: 200_000
+    taxable_self_employment_income: 50_001
+  output:
+    social_security_taxable_self_employment_income: 1
+
+- name: Self-employment earnings below the threshold fill only the remaining cap.
+  period: 2027
+  reforms: policyengine_us.reforms.cbo.payroll.increase_taxable_earnings_for_social_security.increase_taxable_earnings_for_social_security
+  input:
+    gov.contrib.cbo.payroll.secondary_earnings_threshold: 250_000
+    gov.irs.payroll.social_security.cap: 192_300
+    payroll_tax_gross_wages: 100_000
+    taxable_self_employment_income: 100_000
+  output:
+    taxable_earnings_for_social_security: 100_000
+    social_security_taxable_self_employment_income: 92_300
+
+- name: Self-employment alone receives both the capped base and earnings above the threshold.
+  period: 2027
+  reforms: policyengine_us.reforms.cbo.payroll.increase_taxable_earnings_for_social_security.increase_taxable_earnings_for_social_security
+  input:
+    gov.contrib.cbo.payroll.secondary_earnings_threshold: 250_000
+    gov.irs.payroll.social_security.cap: 192_300
+    payroll_tax_gross_wages: 0
+    taxable_self_employment_income: 300_000
+  output:
+    # 192,300 below the cap plus 50,000 above the threshold.
+    social_security_taxable_self_employment_income: 242_300
+
+- name: Self-employment dollars are taxed once after the cap exceeds the threshold.
+  period: 2036
+  reforms: policyengine_us.reforms.cbo.payroll.increase_taxable_earnings_for_social_security.increase_taxable_earnings_for_social_security
+  input:
+    gov.contrib.cbo.payroll.secondary_earnings_threshold: 250_000
+    gov.irs.payroll.social_security.cap: 263_100
+    payroll_tax_gross_wages: 240_000
+    taxable_self_employment_income: 40_000
+  output:
+    # 23,100 of remaining cap plus 16,900 above 263,100 equals all 40,000.
+    social_security_taxable_self_employment_income: 40_000
