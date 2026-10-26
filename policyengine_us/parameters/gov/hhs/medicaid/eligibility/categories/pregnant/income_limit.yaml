@@ -1,4 +1,4 @@
-description: Maximum family income for pregnant people to qualify for Medicaid.
+description: State governments limit Medicaid pregnancy eligibility to these incomes, as a share of the federal poverty line, including the five percentage point income disregard of 42 CFR 435.603(d)(4).
 metadata:
   unit: /1
   label: Medicaid pregnant income limit
@@ -7,6 +7,10 @@ metadata:
   reference:
     - title: Medicaid and CHIP Eligibility and Enrollment Policies as of January 2022 | KFF
       href: https://files.kff.org/attachment/REPORT-Medicaid-and-CHIP-Eligibility-and-Enrollment-Policies-as-of-January-2022.pdf#page=36
+    # KFF's January 2026 table adds the disregard only at each state's highest
+    # pregnancy level, so lower levels omit it (for example, West Virginia
+    # Medicaid 185% and Colorado CHIP 260%). 42 CFR 435.603(d)(4) applies the
+    # disregard in each Title.
     - title: Medicaid and CHIP Income Eligibility Limits for Pregnant Women as a Percent of the Federal Poverty Level | KFF State Health Facts
       href: https://www.kff.org/affordable-care-act/state-indicator/medicaid-and-chip-income-eligibility-limits-for-pregnant-women-as-a-percent-of-the-federal-poverty-level/?currentTimeframe=0&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D
     - title: Medicaid and CHIP Eligibility, Enrollment, Renewal, and Cost Sharing Policies as of January 2018
@@ -15,6 +19,8 @@ metadata:
       href: https://data.medicaid.gov/dataset/d7e4cccb-1c56-5b5d-acce-5e7744c6d3b4
     - title: Medicaid and CHIP Eligibility Levels | CMS Data.Medicaid.gov CSV download (April 1, 2018)
       href: https://download.medicaid.gov/data/medicaid-and-chip-eligibility-levels.xy8t-auhk.csv
+    - title: 42 CFR 435.603(d)(4), five percentage point MAGI income disregard
+      href: https://www.law.cornell.edu/cfr/text/42/435.603#d_4
     - title: NV-25-0006, Medicaid State Plan Amendment
       href: https://www.medicaid.gov/medicaid-spa/2025-05-07/179381
     - title: Nevada Medicaid Web Announcement 3748 (200% FPL pregnancy standard)
@@ -134,6 +140,8 @@ WI:
   2018-01-01: 3.06
 WV:
   2018-01-01: 1.63
+  # Effective July 1, 2019 (WV-19-0004). YEAR-defined formulas read January 1,
+  # so this value first applies in 2020.
   2019-07-01: 1.90
 WY:
   2018-01-01: 1.59

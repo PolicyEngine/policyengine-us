@@ -148,7 +148,7 @@
   output:
     is_pregnant_for_medicaid: false
 
-- name: Pregnancy under the 185% FPL standard confers eligibility in WV
+- name: Pregnancy under the 190% FPL limit (185% plus the disregard) confers eligibility in WV
   period: 2020
   input:
     state_code: WV
@@ -157,13 +157,34 @@
   output:
     is_pregnant_for_medicaid: true
 
+# WV-19-0004 S14 sets 185% FPL; with the 5 percentage point disregard the
+# limit is 190%. 2026 household of 2: 21,640 x 1.90 / 12 = 3,426.33 -> $3,427.
+- name: Pregnancy at the 190% FPL limit confers eligibility in WV
+  period: 2026
+  input:
+    state_code: WV
+    is_pregnant: true
+    medicaid_income_level: 1.9
+  output:
+    is_pregnant_for_medicaid: true
+
+# 21,640 x 1.91 / 12 = $3,444.37 per month, above the $3,427 ceiling.
+- name: Pregnancy one point above the 190% FPL limit confers ineligibility in WV
+  period: 2026
+  input:
+    state_code: WV
+    is_pregnant: true
+    medicaid_income_level: 1.91
+  output:
+    is_pregnant_for_medicaid: false
+
 # R.I. Gen. Laws § 42-12.3-3(g): from October 1, 2022, people eligible for
 # https://webserver.rilegislature.gov/Statutes/TITLE42/42-12.3/42-12.3-3.htm
 # Medicaid or CHIP while pregnant keep full Medicaid through the postpartum
 # period. $47,000 is about 230% FPL for a household of 2 in 2024 ($20,440).
 # Use the mother's underlying indicator so the newborn's postpartum days
 # derive as infinity rather than being filled with a zero partial input.
-- name: Case 15, Rhode Island postpartum parent and newborn retain their distinct Medicaid categories.
+- name: Case 17, Rhode Island postpartum parent and newborn retain their distinct Medicaid categories.
   period: 2024
   input:
     people:
@@ -194,7 +215,7 @@
 # While pregnant, the same income is above RI's 190% Medicaid standard (195%
 # with the disregard), so an uninsured applicant is in CHIP rather than
 # Medicaid (210-RICR-30-00-1 § 1.6(A)(2)(b)(1)).
-- name: Case 16, Rhode Island uninsured pregnant applicant at 230 percent FPL receives CHIP.
+- name: Case 18, Rhode Island uninsured pregnant applicant at 230 percent FPL receives CHIP.
   period: 2024
   input:
     people:
@@ -221,7 +242,7 @@
 # disregard). Employer, individual and Medicare/military coverage are
 # independent of Medicaid enrollment, so the eligibility calculation must
 # also work without a circular dependency on medicaid_enrolled.
-- name: Case 17, Rhode Island pregnancy Medicaid covers applicants with each modeled third-party insurance source.
+- name: Case 19, Rhode Island pregnancy Medicaid covers applicants with each modeled third-party insurance source.
   period: 2024
   input:
     people:
@@ -279,7 +300,7 @@
 # The ordinary standard is 190% plus the five-point disregard; the insured
 # standard is 253% plus the disregard. The same insurance does not extend
 # another state's ordinary Medicaid pregnancy band.
-- name: Case 18, Rhode Island pregnancy income boundaries and state controls preserve the coverage split.
+- name: Case 20, Rhode Island pregnancy income boundaries and state controls preserve the coverage split.
   period: 2024
   input:
     people:
@@ -332,7 +353,7 @@
 # pregnant. At January 1, 2024, the March 2023 pregnancies are within the
 # continuation period and the November 2022 pregnancies have expired.
 # The non-qualified parent receives the state-funded continuation.
-- name: Case 19, Rhode Island citizen and undocumented postpartum parents receive coverage within the extended period.
+- name: Case 21, Rhode Island citizen and undocumented postpartum parents receive coverage within the extended period.
   period: 2024
   input:
     people:
@@ -383,7 +404,7 @@
 
 # The YEAR-defined formula reads January 1, so the October 2022 extension
 # is reflected in 2023 annual results. The parameter retains its legal date.
-- name: Case 20, Rhode Island annual postpartum eligibility reflects the October 2022 extension in 2023.
+- name: Case 22, Rhode Island annual postpartum eligibility reflects the October 2022 extension in 2023.
   period: 2023
   input:
     state_code:
@@ -412,7 +433,7 @@
 # The state-funded postpartum continuation does not change the citizenship
 # rules for someone seeking Medicaid during pregnancy. An undocumented
 # pregnant applicant instead has the existing unborn-child CHIP pathway.
-- name: Case 21, Rhode Island state-funded postpartum coverage does not bypass pregnancy immigration requirements.
+- name: Case 23, Rhode Island state-funded postpartum coverage does not bypass pregnancy immigration requirements.
   period: 2024
   input:
     state_code: RI
