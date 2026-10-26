@@ -210,13 +210,18 @@ class ss_calculator_basis_provenance(Variable):
     )
 
 
-class ss_calculator_no_prior_disability(Variable):
-    value_type = bool
+class ss_calculator_prior_disability_eligibility(Variable):
+    value_type = int
     entity = Person
     definition_period = ETERNITY
-    default_value = False
-    label = "Social Security calculator no prior disability"
-    documentation = "Assert the deceased had no prior disability benefit computation."
+    default_value = -1
+    label = "Social Security calculator prior disability eligibility"
+    documentation = (
+        "Required survivor assertion: 1 means the worker was initially eligible "
+        "through disability before death, 0 means no prior eligibility, and -1 "
+        "means unspecified. Prior eligibility also requires an authoritative "
+        "computation year."
+    )
 
 
 class ss_calculator_ordinary_non_windex(Variable):

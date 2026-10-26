@@ -129,3 +129,56 @@
     ss_calculated_payment:
       2027-03: 800
       2028-03: 1140
+
+- name: Explicit prior disability eligibility controls the pre-2026 survivor bend exception
+  # S.770 section 2(c)(2)(B): prior eligibility retains the bend increase.
+  # https://www.congress.gov/bill/119th-congress/senate-bill/770/text
+  period: 2026
+  input: &survivor_eligibility_records
+    gov.contrib.congress.s770.section_2.in_effect: true
+    gov.contrib.congress.s770.section_2.recompute_pre2026_death_before_eligibility: false
+    people:
+      no_prior: &survivor_eligibility_record
+        ss_calculator_source: survivor
+        ss_calculator_worker_id: deceased-no-prior
+        ss_calculator_birth_date: '1950-01-02'
+        ss_calculator_entitlement_month: '2020-11'
+        ss_calculator_insured: true
+        ss_calculator_no_special_monthly_test: true
+        ss_calculator_no_prior_withholding_adjustment: true
+        ss_calculator_earnings_test_no_trigger: true
+        ss_calculator_worker_birth_year: 1970
+        ss_calculator_worker_birth_date: '1970-06-15'
+        ss_calculator_death_year: 2020
+        ss_calculator_death_date: '2020-08-12'
+        ss_calculator_authoritative_year: 2020
+        ss_calculator_basis_provenance: Supplied authoritative 2020 benchmark
+        ss_calculator_prior_disability_eligibility: 0
+        ss_calculator_ordinary_non_windex: true
+        ss_calculator_monthly_amount: 2000
+        ss_calculator_valuation_month: '2020-11'
+        ss_calculator_composite_ratio: '1'
+        ss_calculator_ratio_description: Full-rate survivor with no reductions
+        ss_calculator_nonbinding_rib_lim: true
+        ss_calculator_nonbinding_family_maximum: true
+        ss_calculator_no_dual_entitlement: true
+        ss_calculator_no_earnings_test_at_valuation: true
+      prior:
+        <<: *survivor_eligibility_record
+        ss_calculator_worker_id: deceased-prior
+        ss_calculator_prior_disability_eligibility: 1
+    households:
+      household:
+        members: [no_prior, prior]
+  output:
+    ss_calculated_benefit:
+      2026-01: [2596, 2734]
+
+- name: Requested pre-2026 survivor recomputation gives both eligibility paths the bend increase
+  period: 2026
+  input:
+    <<: *survivor_eligibility_records
+    gov.contrib.congress.s770.section_2.recompute_pre2026_death_before_eligibility: true
+  output:
+    ss_calculated_benefit:
+      2026-01: [2734, 2734]

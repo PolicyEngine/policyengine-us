@@ -126,19 +126,24 @@ class SurvivorBasis:
     worker_birth_date: date | None = None
     death_date: date | None = None
     authoritative_year: int | None = None
-    no_prior_disability: bool = False
+    prior_disability_eligibility: bool | None = None
     ordinary_non_windex: bool = False
     year_only_not_january_1: bool = False
     same_year_death_before_62: bool | None = None
 
     def benchmark(self):
+        if not isinstance(self.prior_disability_eligibility, bool):
+            raise ValueError(
+                "prior_disability_eligibility must explicitly state whether the "
+                "worker was initially eligible through disability before death"
+            )
         if not self.provenance.strip():
             raise ValueError("Survivor computation-basis provenance is required")
         if not self.ordinary_non_windex:
             raise ValueError(
                 "Only ordinary non-WINDEX survivor computations are supported"
             )
-        if not self.no_prior_disability and self.authoritative_year is None:
+        if self.prior_disability_eligibility and self.authoritative_year is None:
             raise ValueError(
                 "Prior disability requires an authoritative computation basis"
             )
@@ -485,7 +490,7 @@ def calculate_year(
         restricted_survivor = (
             before62
             and record.survivor.death_year < 2026
-            and record.survivor.no_prior_disability
+            and not record.survivor.prior_disability_eligibility
         )
         death_month = (
             record.survivor.death_date.strftime("%Y-%m")

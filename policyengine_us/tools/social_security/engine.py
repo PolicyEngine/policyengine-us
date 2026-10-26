@@ -52,6 +52,12 @@ def calculator_output(person, period, parameters, output):
 
         kwargs = {}
         if source == "survivor":
+            prior_eligibility = value("prior_disability_eligibility")
+            if prior_eligibility not in (0, 1):
+                raise ValueError(
+                    "ss_calculator_prior_disability_eligibility must explicitly "
+                    "be 0 (no prior eligibility) or 1 (prior disability eligibility)"
+                )
             same_year = int(value("same_year_death_before_62"))
             if same_year not in (-1, 0, 1):
                 raise ValueError("Same-year death assertion must be -1, 0 or 1")
@@ -62,7 +68,7 @@ def calculator_output(person, period, parameters, output):
                 worker_birth_date=optional_date("worker_birth_date"),
                 death_date=optional_date("death_date"),
                 authoritative_year=int(value("authoritative_year")) or None,
-                no_prior_disability=bool(value("no_prior_disability")),
+                prior_disability_eligibility=bool(prior_eligibility),
                 ordinary_non_windex=bool(value("ordinary_non_windex")),
                 year_only_not_january_1=bool(value("year_only_not_january_1")),
                 same_year_death_before_62=None if same_year == -1 else bool(same_year),

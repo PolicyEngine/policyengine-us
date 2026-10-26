@@ -138,8 +138,15 @@ withholding in the source valuation, and ordinary non-WINDEX scope.
 
 The `ss_calculator_worker_birth_year`, `death_year`, optional exact worker birth
 and death dates, optional `authoritative_year`, and `basis_provenance` identify
-the computation benchmark. Without an authoritative basis, assert no prior
-worker disability. Derive E as the earlier of death and age-62 attainment.
+the computation benchmark. Every survivor record must explicitly supply
+`ss_calculator_prior_disability_eligibility`: 1 means the worker initially
+became eligible through disability before death; 0 means no prior eligibility.
+The default -1 means unspecified and raises `ValueError`, as does any other
+value. The pure `SurvivorBasis` input is `prior_disability_eligibility`, with
+`True`/`False` for the same answers and `None` meaning unspecified.
+Prior eligibility requires an authoritative computation basis. With no prior
+eligibility, derive E as the earlier of death and age-62 attainment unless an
+authoritative basis is supplied.
 January 1 attainment uses the preceding year. A year-only fallback requires
 `year_only_not_january_1`; death and age-62 attainment in the same year require
 exact dates or `same_year_death_before_62` (1/0; -1 means unspecified).
@@ -157,7 +164,8 @@ The default-false parameter
 `gov.contrib.congress.s770.section_2.recompute_pre2026_death_before_eligibility`
 controls only the 18% first-bend-point increase for pre-2026 deaths before any
 initial eligibility. This requires both death before age 62 and the
-`no_prior_disability` assertion. The 95% first factor still applies when false.
+explicit answer `ss_calculator_prior_disability_eligibility=0`. The 95% first
+factor still applies when false.
 An accepted authoritative prior-disability benchmark receives both changes
 regardless of the switch, as do deaths in 2026 or later. S.770 section 2(c)(2)(B) includes
 initial disability eligibility before 2026. See [the recorded modeling

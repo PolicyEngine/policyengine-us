@@ -452,8 +452,8 @@ def test_absolute_alternative_cola_replaces_1999_original_and_corrected_rate():
     assert simulation.calculate("ss_calculated_payment", "2001-08")[0] == 1066
 
 
-def _survivor():
-    return _record(
+def _survivor(**overrides):
+    record = _record(
         "deceased-worker",
         ss_calculator_source="survivor",
         ss_calculator_birth_date="1950-01-02",
@@ -465,7 +465,7 @@ def _survivor():
         ss_calculator_death_year=2025,
         ss_calculator_death_date="2025-08-12",
         ss_calculator_basis_provenance="Supplied exact worker birth and death dates",
-        ss_calculator_no_prior_disability=True,
+        ss_calculator_prior_disability_eligibility=0,
         ss_calculator_ordinary_non_windex=True,
         ss_calculator_monthly_amount=2375,
         ss_calculator_valuation_month="2026-01",
@@ -476,6 +476,8 @@ def _survivor():
         ss_calculator_no_dual_entitlement=True,
         ss_calculator_no_earnings_test_at_valuation=True,
     )
+    record.update(overrides)
+    return record
 
 
 def test_survivor_engine_derives_death_benchmark_and_first_cola():
@@ -516,3 +518,45 @@ def test_survivor_engine_s770_flag_changes_bend_increase_only(increase, expected
         0
     ] == pytest.approx(expected)
     assert simulation.calculate("ss_calculated_payment", "2026-01")[0] == 2375
+
+
+@pytest.mark.parametrize("increase,no_prior", [(False, 2596), (True, 2734)])
+def test_survivor_prior_eligibility_requires_explicit_api_input(increase, no_prior):
+    people = {}
+    for name in ("no_prior", "prior"):
+        record = _survivor(
+            ss_calculator_worker_id=name,
+            ss_calculator_entitlement_month="2020-11",
+            ss_calculator_death_year=2020,
+            ss_calculator_death_date="2020-08-12",
+            ss_calculator_authoritative_year=2020,
+            ss_calculator_monthly_amount=2000,
+            ss_calculator_valuation_month="2020-11",
+            ss_calculator_basis_provenance="Supplied authoritative 2020 benchmark",
+        )
+        record.pop("ss_calculator_prior_disability_eligibility")
+        people[name] = record
+    simulation = _simulation(
+        situation=_situation(people),
+        reform={
+            "gov.contrib.congress.s770.section_2.in_effect": {"2026-01-01": True},
+            "gov.contrib.congress.s770.section_2.recompute_pre2026_death_before_eligibility": {
+                "2026-01-01": increase
+            },
+        },
+    )
+    variable = "ss_calculator_prior_disability_eligibility"
+    # An authoritative year cannot supply the missing eligibility assertion.
+    with pytest.raises(ValueError, match=variable):
+        simulation.calculate("ss_calculated_benefit", "2026-01")
+    # Reuse the same model: failures produce no cached result, and each input
+    # update changes only the assertion, never the shared parameter tree.
+    for invalid in (-2, 2):
+        simulation.set_input(variable, "eternity", [invalid, 1])
+        with pytest.raises(ValueError, match=variable):
+            simulation.calculate("ss_calculated_benefit", "2026-01")
+    simulation.set_input(variable, "eternity", [0, 1])
+    np.testing.assert_array_equal(
+        simulation.calculate("ss_calculated_benefit", "2026-01"),
+        [no_prior, 2734],
+    )

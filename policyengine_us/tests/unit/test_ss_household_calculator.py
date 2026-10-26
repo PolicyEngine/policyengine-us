@@ -52,7 +52,7 @@ def survivor_basis(**overrides):
         worker_birth_date=date(1970, 6, 15),
         death_date=date(2020, 8, 12),
         provenance="Supplied worker birth and death dates",
-        no_prior_disability=True,
+        prior_disability_eligibility=False,
         ordinary_non_windex=True,
     )
     values.update(overrides)
@@ -580,7 +580,7 @@ def test_survivor_authoritative_and_derived_benchmarks():
     assert replace(
         basis,
         authoritative_year=2018,
-        no_prior_disability=False,
+        prior_disability_eligibility=True,
         provenance="Authoritative computation year",
     ).benchmark() == (2018, True)
     after62 = survivor_basis(
@@ -621,7 +621,7 @@ def test_survivor_year_only_fallback_requires_stated_assumption_and_same_year_as
 @pytest.mark.parametrize(
     "changes,match",
     [
-        ({"no_prior_disability": False}, "authoritative"),
+        ({"prior_disability_eligibility": True}, "authoritative"),
         ({"ordinary_non_windex": False}, "WINDEX"),
         ({"provenance": ""}, "provenance"),
         ({"death_year": 1969, "death_date": None}, "precede birth"),
@@ -956,7 +956,7 @@ def test_authoritative_survivor_year_does_not_require_fallback_birth_assumption(
         death_date=None,
         authoritative_year=2018,
         provenance="Authoritative computation year",
-        no_prior_disability=False,
+        prior_disability_eligibility=True,
         year_only_not_january_1=False,
     )
     assert basis.benchmark() == (2018, True)
@@ -1079,7 +1079,7 @@ def test_s770_prior_disability_survivor_retains_bend_increase(flag):
     record = survivor(
         survivor=survivor_basis(
             authoritative_year=2018,
-            no_prior_disability=False,
+            prior_disability_eligibility=True,
             provenance="Continuous DIB eligibility from 2018 until August 2020 death",
         ),
         entitlement_month="2020-08",
@@ -1102,3 +1102,124 @@ def test_s770_prior_disability_survivor_retains_bend_increase(flag):
     )
     assert record.benchmark() == 2018
     assert row_for(result, "2026-01").payable_benefit == 2841
+
+
+@pytest.mark.parametrize("flag", [False, True])
+@pytest.mark.parametrize("prior_eligibility", [None, False, True])
+def test_s770_authoritative_survivor_requires_explicit_prior_eligibility(
+    flag, prior_eligibility
+):
+    # A $2,000 November 2020 check recovers PIA [2000, 2001), selecting
+    # AIME 4510 from the 2020 bends 960/5785. With 95% and no bend increase,
+    # PIA 2048.0 becomes 2596.8 after the six 2020-2025 COLAs. Increasing
+    # the first bend to 1132.8 instead gives 2156.8 -> 2734.5.
+    record = survivor(
+        survivor=survivor_basis(
+            authoritative_year=2020,
+            prior_disability_eligibility=prior_eligibility,
+            provenance="Authoritative 2020 computation basis",
+        ),
+        entitlement_month="2020-08",
+        monthly_amount=D(2000),
+        valuation_month="2020-11",
+    )
+    rates = (".013", ".059", ".087", ".032", ".025", ".028")
+    events = [
+        ColaEvent(f"{year}-12", f"{year + 1}-01", D(rate))
+        for year, rate in zip(range(2020, 2026), rates)
+    ]
+    kwargs = dict(
+        cola_events=events,
+        formula_path=FormulaPath(s770=True),
+        recompute_mode="retroactive",
+        s770_survivor_bend_increase=flag,
+    )
+    if prior_eligibility is None:
+        with pytest.raises(ValueError, match="prior_disability_eligibility"):
+            compute(record, **kwargs)
+        return
+    result = compute(record, **kwargs)
+    assert result.eligibility_pia_interval == (D(2000), D(2001))
+    assert result.inferred_aime_interval[0] == D(4510)
+    row = row_for(result, "2026-01")
+    increased = prior_eligibility or flag
+    assert row.eligibility_pia == D("2156.8" if increased else "2048.0")
+    assert row.cola_pia == D("2734.5" if increased else "2596.8")
+    assert row.payable_benefit == (2734 if increased else 2596)
+
+
+@st.composite
+def authoritative_survivor_bases(draw):
+    death_year = draw(st.integers(min_value=2000, max_value=2028))
+    birth_year = death_year - draw(st.integers(min_value=45, max_value=75))
+    death_day = draw(st.sampled_from([13, 14, 15]))
+    return SurvivorBasis(
+        worker_birth_year=birth_year,
+        worker_birth_date=date(birth_year, 6, 15),
+        death_year=death_year,
+        death_date=date(death_year, 6, death_day),
+        authoritative_year=draw(
+            st.integers(min_value=1983, max_value=min(death_year, birth_year + 62))
+        ),
+        provenance="Generated authoritative initial computation year",
+        ordinary_non_windex=True,
+    )
+
+
+@settings(max_examples=80, deadline=None)
+@given(
+    basis=authoritative_survivor_bases(),
+    monthly=st.integers(min_value=0, max_value=10000),
+    flag=st.booleans(),
+)
+def test_property_survivor_prior_eligibility_only_changes_restricted_first_bend(
+    basis, monthly, flag
+):
+    record = survivor(
+        birth_date=date(1900, 1, 2),
+        survivor=basis,
+        entitlement_month=f"{basis.death_year}-06",
+        valuation_month=f"{basis.death_year}-11",
+        monthly_amount=D(monthly),
+    )
+    scoring_year = max(2026, basis.death_year + 1)
+    kwargs = dict(
+        formula_path=FormulaPath(s770=True),
+        recompute_mode="retroactive",
+        s770_survivor_bend_increase=flag,
+    )
+    # Even authoritative records cannot use the omitted answer as evidence.
+    with pytest.raises(ValueError, match="prior_disability_eligibility"):
+        compute(record, scoring_year, **kwargs)
+    explicit = [
+        compute(
+            replace(
+                record, survivor=replace(basis, prior_disability_eligibility=prior)
+            ),
+            scoring_year,
+            **kwargs,
+        )
+        for prior in (False, True)
+    ]
+    no_prior, prior = [row_for(result, f"{scoring_year}-01") for result in explicit]
+    restricted = (
+        basis.death_date < date(basis.worker_birth_year + 62, 6, 14)
+        and basis.death_year < 2026
+        and not flag
+    )
+    if not restricted:
+        assert explicit[0] == explicit[1]
+    assert prior.payable_benefit >= no_prior.payable_benefit
+    # Independent three-segment arithmetic checks the 95% first factor for
+    # both answers; only the first bend changes in the restricted case.
+    aime = Fraction(explicit[0].inferred_aime_interval[0]) if monthly else Fraction(0)
+    for row, first_bend in (
+        (no_prior, Fraction(960) if restricted else Fraction("1132.8")),
+        (prior, Fraction("1132.8")),
+    ):
+        raw = (
+            min(aime, first_bend) * Fraction(95, 100)
+            + max(0, min(aime, 5785) - first_bend) * Fraction(32, 100)
+            + max(0, aime - 5785) * Fraction(15, 100)
+        )
+        assert row.eligibility_pia == D(int(raw * 10)) / 10
