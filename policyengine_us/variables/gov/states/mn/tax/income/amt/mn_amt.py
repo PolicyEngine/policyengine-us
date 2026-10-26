@@ -8,8 +8,10 @@ class mn_amt(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
+        "https://www.revisor.mn.gov/statutes/cite/290.091#stat.290.091.3",
         "https://www.revenue.state.mn.us/sites/default/files/2023-02/m1mt_21.pdf",
         "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1mt_22.pdf",
+        "https://www.revenue.state.mn.us/sites/default/files/2026-07/m1mt-25.pdf",
     )
     defined_for = StateCode.MN
 
