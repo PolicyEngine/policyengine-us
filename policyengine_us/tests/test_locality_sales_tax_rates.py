@@ -1,0 +1,522 @@
+"""Invariants of the official locality sales tax rates.
+
+`policyengine_us/data/local_sales_tax/` stores, for the states with official
+locality rate files (New York, Virginia and the Streamlined Sales Tax states
+with local sales taxes), the combined state and local general sales tax rate
+of each county's places with their own rate and of its area outside them, as
+step functions of the date, plus the 2020 Census population of each.
+`combined_sales_tax_rate` reads them by county and place FIPS code, and
+`local_sales_tax_table` reads the IRS selector's named counties and cities.
+
+Invariants, each tested below:
+- L0 official sources only: no sales tax parameter, variable, data file or
+  build input names a non-official rate source.
+- L1 schema: FIPS formats, one state per county, dates ascending from
+  2022-01-01, consecutive rates of a key differ, rates in (0, 0.15).
+- L2 coverage: every county of a covered state, in the county FIPS dataset,
+  has a rate; the population file has exactly the rate keys; populations are
+  non-negative.
+- L3 day weighting: the annual rate of every key equals a day-by-day mean of
+  its step function, computed independently, for any year, and reproduces the
+  worksheet line 3 example (1% for 273 days, 1.75% for 92 days: 1.189%).
+- L4 bounds: a key's annual rate lies within its step values; a county's and
+  a state's population-weighted rates lie within their keys' rates.
+- L5 floors: every covered locality's annual rate is at least its state's
+  official general rate, and at least the IRS state table heading rate less
+  the IRS rounding, so worksheet line 3 is non-negative from the data, not
+  only from its floor at 0.
+- L6 lookup precedence: combined_sales_tax_rate returns the place rate, else
+  the rate outside places when the place or census block is known, else the
+  county's rate, else the state's; a county outside the household's state is
+  ignored; a state without official rates gets its heading rate.
+- L8 state rates: the official state general rates cover every covered
+  state but Nevada, at the statutory rates (New York 4%, Virginia 4.3%,
+  Minnesota 6.875%), with South Dakota's cut from 4.5% to 4.2% on 2023-07-01.
+- L7 selector lists: each year's county and place lists are disjoint across
+  tables, and name only counties and places in states that use the local
+  tables (local_sales_tax_table.yaml tests the precedence place > county >
+  state default).
+- L9 input provenance: calculated county/city defaults do not become
+  geography inputs; directly supplied values and branch ancestry remain
+  distinguishable (the YAML files test geographic values and precedence).
+"""
+
+from datetime import date, timedelta
+from pathlib import Path
+import runpy
+
+import numpy as np
+import pandas as pd
+import pytest
+import yaml
+from hypothesis import HealthCheck, given, settings
+from hypothesis import strategies as st
+from policyengine_core.periods import period as to_period
+from policyengine_core.simulations import SimulationBuilder
+
+from policyengine_us.model_api import REPO
+from policyengine_us.system import system
+from policyengine_us.tools.geography.county_helpers import (
+    load_county_fips_dataset,
+    state_fips_by_state_code,
+)
+from policyengine_us.tools.local_sales_tax_rates import (
+    annual_rates,
+    locality_populations,
+    locality_place_counties,
+    locality_rate_schedule,
+    locality_sales_tax_rates,
+    state_general_sales_tax_rates,
+    state_rate_schedule,
+)
+
+SALT = REPO.joinpath(
+    "parameters", "gov", "irs", "deductions", "itemized", "salt_and_real_estate"
+)
+SELECTOR = SALT / "local_sales_tax_table"
+TABLES = ("a", "b", "c", "d")
+IRS_YEARS = (2022, 2023, 2024, 2025)
+SCHEDULE = locality_rate_schedule()
+COVERED_STATES = sorted(SCHEDULE["state_code"].unique())
+KEYS = ["county_fips", "place_fips"]
+# New York, Virginia, and the 19 SST member states with local sales taxes.
+EXPECTED_STATES = sorted(
+    "AR GA IA KS MN NC ND NE NV NY OH OK SD TN UT VA VT WA WI WV WY".split()
+)
+# IRS headings round state rates to two decimals (Minnesota's 6.875% prints
+# as 6.88%), and South Dakota's 2023 heading averages a mid-year change.
+HEADING_ROUNDING = 0.0001
+SALES_TAX_FILES = [
+    *SALT.joinpath("state_sales_tax_table").glob("*.yaml"),
+    *SELECTOR.rglob("*.yaml"),
+    *REPO.joinpath("variables", "gov", "local", "tax", "sales").glob("*.py"),
+    *REPO.joinpath("data", "local_sales_tax").glob("*"),
+    REPO / "tools" / "local_sales_tax_rates.py",
+    REPO / "tools" / "local_sales_tax_geography.py",
+    *REPO.parent.joinpath("scripts", "local_sales_tax_rates").glob("*"),
+]
+
+
+def _dated(values, year):
+    instant = date(year, 1, 1)
+    dates = sorted(d for d in values if d <= instant)
+    return values[dates[-1]] if dates else values[min(values)]
+
+
+def test_l0_official_sources_only():
+    """L0: the sales tax files cite no non-official rate source."""
+    assert SALES_TAX_FILES
+    offenders = [
+        str(path)
+        for path in SALES_TAX_FILES
+        if path.is_file()
+        and path.suffix in {".py", ".yaml", ".csv", ".md", ".json"}
+        and any(
+            name in path.read_text().lower()
+            for name in ("taxfoundation", "tax foundation", "average_combined_rate")
+        )
+    ]
+    assert not offenders, offenders
+    assert COVERED_STATES == EXPECTED_STATES
+
+
+def test_l1_schema():
+    """L1: every row of the rate and population files."""
+    s = SCHEDULE
+    assert s["county_fips"].str.fullmatch(r"\d{5}").all()
+    assert s["place_fips"].str.fullmatch(r"(\d{5})?").all()
+    assert (s.groupby("county_fips")["state_code"].nunique() == 1).all()
+    state_fips = state_fips_by_state_code()
+    assert (s["county_fips"].str[:2] == s["state_code"].map(state_fips)).all()
+    first = s.groupby(KEYS)["effective_from"].transform("min")
+    assert (first == pd.Timestamp("2022-01-01")).all()
+    assert (s.groupby(KEYS)["effective_from"].diff().dropna() > pd.Timedelta(0)).all()
+    previous = s.groupby(KEYS)["rate"].shift()
+    assert (previous.isna() | (previous != s["rate"])).all()
+    assert ((s["rate"] > 0) & (s["rate"] < 0.15)).all()
+    populations = locality_populations()
+    assert (populations["population"] >= 0).all()
+
+
+def test_l2_coverage():
+    """L2: every county of every covered state."""
+    counties = load_county_fips_dataset()
+    covered = set(SCHEDULE["county_fips"])
+    for state in COVERED_STATES:
+        expected = set(counties.loc[counties["state"] == state, "county_fips"])
+        missing = expected - covered
+        assert not missing, f"{state}: no rate for {sorted(missing)}"
+    rate_keys = set(map(tuple, SCHEDULE[KEYS].drop_duplicates().to_numpy()))
+    population_keys = set(map(tuple, locality_populations()[KEYS].to_numpy()))
+    assert rate_keys == population_keys
+
+
+def _daily_mean(rows: pd.DataFrame, year: int) -> float:
+    """Day-by-day mean of a key's step function over a calendar year."""
+    rows = rows.sort_values("effective_from")
+    total, days, day = 0.0, 0, date(year, 1, 1)
+    while day.year == year:
+        active = rows[rows["effective_from"] <= pd.Timestamp(day)]
+        rate = active["rate"].iloc[-1] if len(active) else rows["rate"].iloc[0]
+        total += rate
+        days += 1
+        day += timedelta(days=1)
+    return total / days
+
+
+changing_keys = (
+    SCHEDULE[SCHEDULE.duplicated(KEYS, keep=False)][KEYS]
+    .drop_duplicates()
+    .to_numpy()
+    .tolist()
+)
+
+
+@settings(
+    max_examples=25,
+    deadline=None,
+    derandomize=True,
+    database=None,
+    suppress_health_check=[HealthCheck.too_slow],
+)
+@given(
+    keys=st.lists(st.sampled_from(changing_keys), min_size=1, max_size=5),
+    year=st.integers(2015, 2030),
+)
+def test_l3_day_weighting_matches_reference(keys, year):
+    """L3: keys whose rate changes, in any year from 2015 to 2030."""
+    annual = annual_rates(SCHEDULE, year)
+    for county, place in keys:
+        rows = SCHEDULE[
+            (SCHEDULE["county_fips"] == county) & (SCHEDULE["place_fips"] == place)
+        ]
+        assert annual[(county, place)] == pytest.approx(
+            _daily_mean(rows, year), abs=1e-9
+        )
+
+
+def test_l3_worksheet_line_3_example():
+    """L3: "Locality 1 imposed a 1% local general sales tax from January 1
+    through September 30, 2025 (273 days). The rate increased to 1.75% for
+    the period from October 1 through December 31, 2025 (92 days). You would
+    enter "1.189" on line 3" (2025 Instructions for Schedule A)."""
+    schedule = pd.DataFrame(
+        {
+            "county_fips": ["99999", "99999"],
+            "place_fips": ["", ""],
+            "effective_from": pd.to_datetime(["2022-01-01", "2025-10-01"]),
+            "rate": [0.01, 0.0175],
+        }
+    )
+    assert round(annual_rates(schedule, 2025)[("99999", "")] * 100, 3) == 1.189
+
+
+@pytest.mark.parametrize("year", (2021, 2022, 2025, 2026, 2027))
+def test_l4_bounds(year):
+    """L4: annual rates within the step values; averages within their keys."""
+    annual = annual_rates(SCHEDULE, year)
+    bounds = SCHEDULE.groupby(KEYS)["rate"].agg(["min", "max"])
+    assert (annual >= bounds["min"] - 1e-12).all()
+    assert (annual <= bounds["max"] + 1e-12).all()
+    rates = locality_sales_tax_rates(year)
+    by_county = annual.groupby(level="county_fips").agg(["min", "max"])
+    county = rates.county.reindex(by_county.index)
+    assert (county >= by_county["min"] - 1e-12).all()
+    assert (county <= by_county["max"] + 1e-12).all()
+    for state, value in rates.state.items():
+        in_state = rates.county[rates.county_state.reindex(rates.county.index) == state]
+        assert in_state.min() - 1e-12 <= value <= in_state.max() + 1e-12
+
+
+@pytest.mark.parametrize("year", IRS_YEARS + (2026,))
+def test_l5_rates_are_at_least_the_heading_rate(year):
+    """L5: every key of every covered state."""
+    headings = SALT.joinpath("state_sales_tax_table", "rate.yaml")
+    with headings.open() as file:
+        headings = yaml.safe_load(file)
+    annual = annual_rates(SCHEDULE, year).rename("rate").reset_index()
+    state = SCHEDULE.drop_duplicates("county_fips").set_index("county_fips")
+    annual["state_code"] = annual["county_fips"].map(state["state_code"])
+    annual["heading"] = [
+        _dated(headings[s], min(year, 2025)) for s in annual["state_code"]
+    ]
+    below = annual[annual["rate"] < annual["heading"] - HEADING_ROUNDING]
+    assert below.empty, below.head().to_dict("records")
+    official = annual["state_code"].map(state_general_sales_tax_rates(year))
+    below_state = annual[annual["rate"] < official - 1e-12]
+    assert below_state.empty, below_state.head().to_dict("records")
+
+
+def test_l8_state_rates():
+    """L8: the official state general sales tax rates."""
+    schedule = state_rate_schedule()
+    assert set(schedule["state_code"]) == set(COVERED_STATES) - {"NV"}
+    first = schedule.groupby("state_code")["effective_from"].min()
+    assert (first == pd.Timestamp("2022-01-01")).all()
+    assert ((schedule["rate"] > 0.03) & (schedule["rate"] < 0.08)).all()
+    rates = state_general_sales_tax_rates(2025)
+    assert rates["NY"] == pytest.approx(0.04)
+    assert rates["VA"] == pytest.approx(0.043)
+    assert rates["MN"] == pytest.approx(0.06875)
+    south_dakota = schedule[schedule["state_code"] == "SD"]
+    assert list(south_dakota["rate"]) == pytest.approx([0.045, 0.042])
+    assert list(south_dakota["effective_from"]) == [
+        pd.Timestamp("2022-01-01"),
+        pd.Timestamp("2023-07-01"),
+    ]
+    # 181 days at 4.5% and 184 at 4.2% in 2023.
+    assert state_general_sales_tax_rates(2023)["SD"] == pytest.approx(
+        (181 * 0.045 + 184 * 0.042) / 365
+    )
+
+
+def _households(year, **inputs):
+    n = len(next(iter(inputs.values())))
+    simulation = SimulationBuilder().build_default_simulation(system, n)
+    for name, values in inputs.items():
+        simulation.set_input(name, year, np.array(values))
+    return simulation
+
+
+@pytest.mark.parametrize("year", (2022, 2025, 2026))
+def test_l6_lookup_precedence(year):
+    """L6: a county with places that have their own rate and an area outside
+    them, in each covered state, plus a state without official rates."""
+    rates = locality_sales_tax_rates(year)
+    first_place = {}
+    for key in rates.place.index:
+        first_place.setdefault(key[:5], key)
+    states, county, place, block, expected = [], [], [], [], []
+    for state in COVERED_STATES:
+        in_state = [c for c, s in rates.county_state.items() if s == state]
+        both = [c for c in in_state if c in first_place and c in rates.outside_places]
+        c = both[0] if both else in_state[0]
+        cases = [
+            (c, "", "", rates.county[c]),  # county only
+            ("", "", "", rates.state[state]),  # state only
+            ("01001", "", "", rates.state[state]),  # county in another state
+        ]
+        if both:
+            cases += [
+                (c, first_place[c][5:], "", rates.place[first_place[c]]),
+                (c, "99999", "", rates.outside_places[c]),  # place, no own rate
+                (c, "", f"{c}0000001000", rates.outside_places[c]),  # block only
+            ]
+        for county_fips, place_fips, block_geoid, value in cases:
+            states.append(state)
+            county.append(county_fips)
+            place.append(place_fips)
+            block.append(block_geoid)
+            expected.append(value)
+    # A state without official rates: its heading rate.
+    states.append("CA")
+    county.append("06037")
+    place.append("44000")
+    block.append("")
+    expected.append(0.0725)
+    simulation = _households(
+        year,
+        state_code=states,
+        county_fips=county,
+        place_fips=place,
+        block_geoid=block,
+    )
+    actual = simulation.calculate("combined_sales_tax_rate", year)
+    np.testing.assert_allclose(actual, expected, rtol=1e-6)
+
+
+@pytest.mark.parametrize("year", IRS_YEARS)
+def test_l7_selector_lists(year):
+    """L7: county and place lists of each IRS year."""
+
+    def load(kind, letter):
+        with SELECTOR.joinpath(kind, f"{letter}.yaml").open() as file:
+            return set(_dated(yaml.safe_load(file)["values"], year) or [])
+
+    with SELECTOR.joinpath("states.yaml").open() as file:
+        local_states = set(_dated(yaml.safe_load(file)["values"], year))
+    state_fips = state_fips_by_state_code()
+    local_fips = {state_fips[s] for s in local_states}
+    counties = set(load_county_fips_dataset()["county_fips"])
+    for kind in ("county", "place"):
+        lists = {letter: load(kind, letter) for letter in TABLES}
+        for i, a in enumerate(TABLES):
+            for b in TABLES[i + 1 :]:
+                assert not lists[a] & lists[b], (kind, a, b)
+        for letter, codes in lists.items():
+            for code in codes:
+                assert code[:2] in local_fips, (kind, letter, code)
+                if kind == "county":
+                    assert code in counties, code
+                else:
+                    assert len(code) == 7 and code.isdigit(), code
+
+
+def _rate_builder():
+    """Load build tooling without constructing another policy model."""
+    return runpy.run_path(
+        str(REPO.parent / "scripts" / "local_sales_tax_rates" / "build.py")
+    )
+
+
+def test_vermont_rutland_alias_overrides_a_resolving_city_code():
+    """The obsolete town code collides with a valid Census city code."""
+    builder = _rate_builder()
+    entities = pd.DataFrame(
+        {
+            "county": ["50021", "50021"],
+            "code": ["61225", "61300"],
+            "name": ["Rutland city", "Rutland town"],
+            "classfp": ["C5", "T1"],
+        }
+    )
+    census = builder["CensusEntities"](entities.iloc[:1], entities, towns=True)
+    assert census.resolves("", "61225")
+    frame = pd.DataFrame(
+        {"county": [""], "code": ["61225"], "city": ["RUTLAND"], "records": [1156]}
+    )
+    frame.attrs["date"] = pd.Timestamp("2022-01-01")
+    aliases = {}
+    recoded = builder["alias_units"]("VT", frame, census, {}, aliases)
+    assert recoded.code.tolist() == ["61300"]
+    assert aliases[("", "61225")][0] == "61300"
+
+
+@pytest.mark.parametrize(
+    "code,when,rate",
+    [
+        ("61225", "2023-06-30", 0.06),
+        ("61225", "2023-07-01", 0.07),
+        ("45850", "2025-09-30", 0.07),
+        ("45850", "2025-10-01", 0.06),
+    ],
+)
+def test_vermont_unit_cross_check_effective_dates(code, when, rate):
+    """The official commencement and rescission dates bound the 1% tax."""
+    instant = pd.Timestamp(when)
+    units = pd.DataFrame(
+        {"county": [""], "code": [code], "rate": [rate], "date": [instant]}
+    )
+    state = pd.DataFrame({"effective_from": [instant], "rate": [0.06]})
+    _rate_builder()["check_vermont_unit_rates"](units, state, [])
+
+
+def test_vermont_unit_cross_check_rejects_early_rutland_city_tax():
+    """A resolving Census code cannot silently bypass the source audit."""
+    instant = pd.Timestamp("2022-01-01")
+    units = pd.DataFrame(
+        {"county": [""], "code": ["61225"], "rate": [0.07], "date": [instant]}
+    )
+    state = pd.DataFrame({"effective_from": [instant], "rate": [0.06]})
+    with pytest.raises(AssertionError, match="61225"):
+        _rate_builder()["check_vermont_unit_rates"](units, state, [])
+
+
+def test_l9_geography_ignores_calculated_defaults_and_accepts_late_inputs():
+    """L9: cached county/NYC formulas are not supplied geography, whereas
+    county and city inputs set directly after construction remain inputs.
+    No additional full model is constructed; the existing system is reused.
+    """
+    year = 2025
+    simulation = _households(year, state_code=["NY", "NY", "NY"])
+    # Force defaults into the cache before the resolver sees them.
+    simulation.calculate("county", year)
+    simulation.calculate("in_nyc", year)
+    rates = simulation.calculate("combined_sales_tax_rate", year)
+    np.testing.assert_allclose(rates, locality_sales_tax_rates(year).state["NY"])
+    np.testing.assert_array_equal(
+        simulation.calculate("local_sales_tax_table", year).decode_to_str(),
+        ["D", "D", "D"],
+    )
+
+    # A fresh simulation exercises direct set_input after cached defaults
+    # without depending on a particular Core release's cache invalidation.
+    simulation = _households(year, state_code=["NY", "NY", "NY"])
+    simulation.calculate("county", year)
+    simulation.calculate("in_nyc", year)
+    simulation.set_input("county", year, ["UNKNOWN", "KINGS_COUNTY_NY", "UNKNOWN"])
+    simulation.set_input("in_yonkers", year, [False, False, True])
+    np.testing.assert_allclose(
+        simulation.calculate("combined_sales_tax_rate", year),
+        [locality_sales_tax_rates(year).state["NY"], 0.08875, 0.08875],
+        rtol=1e-6,
+    )
+    np.testing.assert_array_equal(
+        simulation.calculate("local_sales_tax_table", year).decode_to_str(),
+        ["D", "A", "B"],
+    )
+
+
+def test_l9_supplied_geography_respects_branch_ancestry():
+    """L9: inherited input keys and branch-specific overrides stay distinct."""
+    year = 2025
+    simulation = _households(year, state_code=["NY"], county=["KINGS_COUNTY_NY"])
+    inherited = simulation.get_branch("inherited_geography")
+    yonkers = simulation.get_branch("yonkers_geography")
+    yonkers.set_input("county", year, ["UNKNOWN"])
+    yonkers.set_input("in_yonkers", year, [True])
+    nyc = yonkers.get_branch("nyc_geography")
+    nyc.set_input("in_yonkers", year, [False])
+    nyc.set_input("in_nyc", year, [True])
+    shadow = simulation.get_branch("calculated_geography")
+    shadow.get_holder("county").put_in_cache(
+        system.variables["county"].possible_values.encode(
+            np.array(["KINGS_COUNTY_NY"])
+        ),
+        to_period(year),
+        shadow.branch_name,
+    )
+    # Build all branches before calculating so this specifically tests input
+    # ancestry, independently of Core's invalidation of inherited caches.
+    for branch, expected in (
+        (nyc, "A"),
+        (yonkers, "B"),
+        (inherited, "A"),
+        (simulation, "A"),
+    ):
+        np.testing.assert_allclose(
+            branch.calculate("combined_sales_tax_rate", year), [0.08875]
+        )
+        np.testing.assert_array_equal(
+            branch.calculate("local_sales_tax_table", year).decode_to_str(),
+            [expected],
+        )
+    np.testing.assert_allclose(
+        shadow.calculate("combined_sales_tax_rate", year),
+        [locality_sales_tax_rates(year).state["NY"]],
+    )
+    np.testing.assert_array_equal(
+        shadow.calculate("local_sales_tax_table", year).decode_to_str(), ["D"]
+    )
+
+
+def test_l9_place_county_crosswalk_keeps_pruned_places():
+    """L9: the geographic crosswalk covers own-rate and pruned Census places."""
+    counties = locality_place_counties()
+    assert counties.index.is_unique
+    assert counties.index.str.fullmatch(r"\d{7}").all()
+    assert (counties.index.str[:2].astype(int) <= 56).all()
+    assert counties.str.fullmatch(r"\d{5}").all()
+    assert (counties.index.str[:2] == counties.str[:2]).all()
+    valid_counties = set(load_county_fips_dataset()["county_fips"])
+    assert set(counties) <= valid_counties
+    places = SCHEDULE[SCHEDULE["place_fips"] != ""]
+    rate_geoids = places["county_fips"].str[:2] + places["place_fips"]
+    assert set(rate_geoids) <= set(counties.index)
+    assert counties["3651000"] == "36047"  # NYC's largest slice: Kings County.
+    assert counties["3684000"] == "36119"  # Yonkers: Westchester County.
+    assert counties["1369000"] == "13051"  # Savannah: Chatham County.
+    assert counties["2205000"] == "22033"  # Baton Rouge: East Baton Rouge Parish.
+    assert "1305169000" not in locality_sales_tax_rates(2025).place.index
+
+
+def test_l9_yonkers_flag_carries_from_an_earlier_input_year():
+    """The formula-free Yonkers flag retains Core's input carryover behavior."""
+    simulation = _households(2025, state_code=["NY"])
+    simulation.set_input("in_yonkers", 2024, [True])
+    np.testing.assert_allclose(
+        simulation.calculate("combined_sales_tax_rate", 2025), [0.08875]
+    )
+    np.testing.assert_array_equal(
+        simulation.calculate("local_sales_tax_table", 2025).decode_to_str(), ["B"]
+    )
