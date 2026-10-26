@@ -516,3 +516,28 @@
     # one withheld from Social Security: 24,000 - 2,434.80 - 600 elderly
     # deduction = 20,965.20.
     va_eap_countable_income: 20_965.20
+
+- name: Case 23, a retiree's Medicare Part A premium is deducted along with Part B.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        taxable_private_pension_income: 24_000
+        # 30 to 39 quarters of coverage: the 2026 reduced Part A premium
+        # 311 x 12 = 3,732, paid by the member.
+        medicare_part_a_premium: 3_732
+        medicare_part_b_premium: 2_434.80
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # Exemption 15 covers "Medicare Premiums": 24,000 - 3,732 - 2,434.80 -
+    # 600 elderly deduction = 17,233.20.
+    va_eap_countable_income: 17_233.20
