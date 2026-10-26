@@ -7,7 +7,11 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
     label = "Seniors or disabled people not meeting SSI rules"
     documentation = "Whether this person qualifies for Medicaid through the State's optional aged, blind, or disabled pathway (not otherwise SSI-eligible)"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/42/1396a#m"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/42/1396a#m",
+        "https://www.law.cornell.edu/uscode/text/42/1396b#v",
+        "https://www.ecfr.gov/current/title-42/section-435.406#p-435.406(b)",
+    )
 
     def formula(person, period, parameters):
         # Some states cover aged, blind, or disabled people as categorically
