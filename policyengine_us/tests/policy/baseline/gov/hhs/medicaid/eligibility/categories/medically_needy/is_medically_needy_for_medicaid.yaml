@@ -63,7 +63,7 @@
     ssi_countable_resources: 1_500
     state_code: AR
   output:
-    # Limit 108 x 12 = 1,296. 14,160 is over it; 14,160 - 13,000 = 1,160 is not.
+    # Limit 108.33 x 12 = 1,299.96. 14,160 is over it; 14,160 - 13,000 = 1,160 is not.
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
 
@@ -83,19 +83,20 @@
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
 
-- name: Case 5, New Jersey senior qualifies after medical spenddown.
+- name: Case 5, New Jersey senior above the optional aged, blind and disabled limit qualifies after medical spenddown.
   period: 2026
   input:
     age: 70
     is_adult_for_medicaid: false
     is_optional_senior_or_disabled_for_medicaid: false
     is_ssi_recipient_for_medicaid: false
-    ssi_countable_income: 14_160
-    medicaid_medically_needy_medical_expenses: 10_000
-    ssi_countable_resources: 3_500
+    ssi_countable_income: 18_000
+    medicaid_medically_needy_medical_expenses: 14_000
+    ssi_countable_resources: 4_000
     state_code: NJ
   output:
-    # Limit 367 x 12 = 4,404. 14,160 - 10,000 = 4,160; assets 3,500 are under 4,000.
+    # 18,000 is over NJ's 100% FPL optional limit (15,960) and the SSI rate (11,928).
+    # Limit 367 x 12 = 4,404; 18,000 - 14,000 = 4,000. Assets 4,000 equal the limit.
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
 
@@ -108,10 +109,10 @@
     is_ssi_recipient_for_medicaid: false
     ssi_countable_income: 20_000
     medicaid_medically_needy_medical_expenses: 5_000
-    ssi_countable_resources: 10_000
+    ssi_countable_resources: 17_500
     state_code: IL
   output:
-    # Limit 15,960 (100% FPG). 20,000 - 5,000 = 15,000; assets 10,000 are under 17,500.
+    # Limit 15,960 (100% FPG). 20,000 - 5,000 = 15,000; assets 17,500 equal the limit.
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
 
@@ -122,32 +123,35 @@
     is_adult_for_medicaid: false
     is_optional_senior_or_disabled_for_medicaid: false
     is_ssi_recipient_for_medicaid: false
-    ssi_countable_income: 18_000
+    ssi_countable_income: 18_364
     medicaid_medically_needy_medical_expenses: 4_000
     ssi_countable_resources: 2_500
     state_code: ND
   output:
-    # Limit 0.9 x 15,960 = 14,364. 18,000 - 4,000 = 14,000; assets 2,500 are under 3,000.
+    # Limit 0.9 x 15,960 = 14,364. 18,364 - 4,000 = 14,364, equal to the limit;
+    # assets 2,500 are under 3,000.
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
 
-- name: Case 8, California senior with assets under the reinstated 2026 limit qualifies.
+- name: Case 8, California senior with assets exactly at the reinstated 2026 limit qualifies.
   period: 2026
   input:
     age: 70
     is_adult_for_medicaid: false
     is_optional_senior_or_disabled_for_medicaid: false
     is_ssi_recipient_for_medicaid: false
-    ssi_countable_income: 9_000
-    medicaid_medically_needy_medical_expenses: 2_000
-    ssi_countable_resources: 120_000
+    ssi_countable_income: 26_400
+    medicaid_medically_needy_medical_expenses: 19_500
+    ssi_countable_resources: 130_000
     state_code: CA
   output:
-    # Limit 600 x 12 = 7,200. 9,000 - 2,000 = 7,000; assets 120,000 are under 130,000.
+    # 26,400 is over the Aged and Disabled FPL limit (138% FPL, 22,024.80) and the
+    # SSI and SSP payment level. Limit 600 x 12 = 7,200; 26,400 - 19,500 = 6,900.
+    # Assets equal the 130,000 limit.
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
 
-- name: Case 9, New York senior with assets under the 2026 resource level qualifies.
+- name: Case 9, New York senior with assets at the 2026 resource level qualifies.
   period: 2026
   input:
     age: 70
@@ -156,14 +160,203 @@
     is_ssi_recipient_for_medicaid: false
     ssi_countable_income: 25_000
     medicaid_medically_needy_medical_expenses: 5_000
-    ssi_countable_resources: 30_000
+    ssi_countable_resources: 33_038
     state_code: NY
   output:
-    # Limit 1.38 x 15,960 = 22,024.80. 25,000 - 5,000 = 20,000; assets 30,000 are under 33,038.
+    # Limit 1.38 x 15,960 = 22,024.80. 25,000 - 5,000 = 20,000; assets 33,038 equal
+    # the 2026 resource level.
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
 
-- name: Case 10, California senior with assets above the July 2027 limit is ineligible in 2028.
+- name: Case 10, California senior one dollar over the reinstated 2026 asset limit is ineligible.
+  period: 2026
+  input:
+    age: 70
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_ssi_recipient_for_medicaid: false
+    ssi_countable_income: 26_400
+    medicaid_medically_needy_medical_expenses: 19_500
+    ssi_countable_resources: 130_001
+    state_code: CA
+  output:
+    # Income passes (6,900 <= 7,200); assets 130,001 exceed 130,000.
+    is_medically_needy_for_medicaid: false
+
+- name: Case 11, California senior with large assets qualifies in 2024, when non-MAGI asset limits did not apply.
+  period: 2024
+  input:
+    age: 70
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_ssi_recipient_for_medicaid: false
+    ssi_countable_income: 26_400
+    medicaid_medically_needy_medical_expenses: 19_500
+    ssi_countable_resources: 1_000_000
+    state_code: CA
+  output:
+    # ACWDL 22-25: no asset limit from January 1, 2024. Limit 600 x 12 = 7,200;
+    # 26,400 - 19,500 = 6,900.
+    is_medically_needy_for_medicaid: true
+
+- name: Case 12, New York senior with resources exactly at each year's level qualifies.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: {2022: 70, 2023: 71, 2024: 72, 2025: 73, 2026: 74}
+        is_adult_for_medicaid: {2022: false, 2023: false, 2024: false, 2025: false, 2026: false}
+        is_optional_senior_or_disabled_for_medicaid: {2022: false, 2023: false, 2024: false, 2025: false, 2026: false}
+        is_ssi_recipient_for_medicaid: {2022: false, 2023: false, 2024: false, 2025: false, 2026: false}
+        ssi_countable_income: {2022: 25_000, 2023: 25_000, 2024: 25_000, 2025: 25_000, 2026: 25_000}
+        medicaid_medically_needy_medical_expenses: {2022: 15_000, 2023: 5_000, 2024: 5_000, 2025: 5_000, 2026: 5_000}
+        ssi_countable_resources: {2022: 16_800, 2023: 30_182, 2024: 31_175, 2025: 32_396, 2026: 33_038}
+    households:
+      household:
+        members: [person1]
+        state_code: {2022: NY, 2023: NY, 2024: NY, 2025: NY, 2026: NY}
+  output:
+    # 2022: 25,000 - 15,000 = 10,000 <= 934 x 12 = 11,208.
+    # 2023-2026: 20,000 <= 1.38 x FPG (20,120.40, 20,782.80, 21,597, 22,024.80).
+    # Resources equal each year's level (GIS 22 MA/11 p2; the 2023-2026 GIS
+    # attachments).
+    is_medically_needy_for_medicaid:
+      2022: true
+      2023: true
+      2024: true
+      2025: true
+      2026: true
+
+- name: Case 13, New York, California and Illinois couples with resources exactly at the 2026 couple limits qualify.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        is_adult_for_medicaid: false
+        is_optional_senior_or_disabled_for_medicaid: false
+        is_ssi_recipient_for_medicaid: false
+        ssi_countable_income: 20_000
+        medicaid_medically_needy_medical_expenses: 6_000
+        ssi_countable_resources: 22_398
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        is_adult_for_medicaid: false
+        is_optional_senior_or_disabled_for_medicaid: false
+        is_ssi_recipient_for_medicaid: false
+        ssi_countable_income: 20_000
+        medicaid_medically_needy_medical_expenses: 6_000
+        ssi_countable_resources: 22_398
+      person3:
+        age: 72
+        is_tax_unit_head: true
+        is_adult_for_medicaid: false
+        is_optional_senior_or_disabled_for_medicaid: false
+        is_ssi_recipient_for_medicaid: false
+        ssi_countable_income: 18_000
+        medicaid_medically_needy_medical_expenses: 12_500
+        ssi_countable_resources: 97_500
+      person4:
+        age: 70
+        is_tax_unit_spouse: true
+        is_adult_for_medicaid: false
+        is_optional_senior_or_disabled_for_medicaid: false
+        is_ssi_recipient_for_medicaid: false
+        ssi_countable_income: 18_000
+        medicaid_medically_needy_medical_expenses: 12_500
+        ssi_countable_resources: 97_500
+      person5:
+        age: 71
+        is_tax_unit_head: true
+        is_adult_for_medicaid: false
+        is_optional_senior_or_disabled_for_medicaid: false
+        is_ssi_recipient_for_medicaid: false
+        ssi_countable_income: 14_000
+        medicaid_medically_needy_medical_expenses: 3_500
+        ssi_countable_resources: 8_750
+      person6:
+        age: 69
+        is_tax_unit_spouse: true
+        is_adult_for_medicaid: false
+        is_optional_senior_or_disabled_for_medicaid: false
+        is_ssi_recipient_for_medicaid: false
+        ssi_countable_income: 14_000
+        medicaid_medically_needy_medical_expenses: 3_500
+        ssi_countable_resources: 8_750
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3, person4]
+      marital_unit3:
+        members: [person5, person6]
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+      tax_unit2:
+        members: [person3, person4]
+        tax_unit_is_joint: true
+      tax_unit3:
+        members: [person5, person6]
+        tax_unit_is_joint: true
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+      spm_unit2:
+        members: [person3, person4]
+      spm_unit3:
+        members: [person5, person6]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: NY
+      household2:
+        members: [person3, person4]
+        state_code: CA
+      household3:
+        members: [person5, person6]
+        state_code: IL
+  output:
+    # NY: 40,000 - 12,000 = 28,000 <= 1.38 x 21,640 = 29,863.20; assets 44,796.
+    # CA: 36,000 - 25,000 = 11,000 <= 934 x 12 = 11,208; assets 195,000.
+    # IL: 28,000 - 7,000 = 21,000 <= 21,640; assets 17,500 (PM 07-02-01).
+    is_medically_needy_for_medicaid: [true, true, true, true, true, true]
+
+- name: Case 14, Vermont senior with income after medical expenses at the 2026 protected income level qualifies.
+  period: 2026
+  input:
+    age: 70
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_ssi_recipient_for_medicaid: false
+    ssi_countable_income: 20_000
+    medicaid_medically_needy_medical_expenses: 3_500
+    ssi_countable_resources: 1_500
+    state_code: VT
+  output:
+    # HBEE 8.06(b): income at or below the PIL. 1,375 x 12 = 16,500;
+    # 20,000 - 3,500 = 16,500, equal to the limit.
+    is_medically_needy_for_medicaid: true
+
+- name: Case 15, Vermont senior with income after medical expenses one dollar a month over the 2026 protected income level is ineligible.
+  period: 2026
+  input:
+    age: 70
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_ssi_recipient_for_medicaid: false
+    ssi_countable_income: 20_000
+    medicaid_medically_needy_medical_expenses: 3_488
+    ssi_countable_resources: 1_500
+    state_code: VT
+  output:
+    # 20,000 - 3,488 = 16,512, or 1,376 a month, over 1,375.
+    is_medically_needy_for_medicaid: false
+
+- name: Case 16, California senior with assets above the July 2027 limit is ineligible in 2028.
   period: 2028
   input:
     age: 70
@@ -180,7 +373,7 @@
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: false
 
-- name: Case 11, California senior couple with assets above the July 2027 couple limit is ineligible in 2028.
+- name: Case 17, California senior couple with assets above the July 2027 couple limit is ineligible in 2028.
   period: 2028
   input:
     people:
@@ -217,7 +410,7 @@
     is_in_medicaid_medically_needy_category: [true, true]
     is_medically_needy_for_medicaid: [false, false]
 
-- name: Case 12, California senior with assets at the July 2027 limit is eligible in 2028.
+- name: Case 18, California senior with assets at the July 2027 limit is eligible in 2028.
   period: 2028
   input:
     age: 70
@@ -235,7 +428,7 @@
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
 
-- name: Case 13, California senior couple with assets at the July 2027 couple limit is eligible in 2028.
+- name: Case 19, California senior couple with assets at the July 2027 couple limit is eligible in 2028.
   period: 2028
   input:
     people:
@@ -273,7 +466,7 @@
     is_in_medicaid_medically_needy_category: [true, true]
     is_medically_needy_for_medicaid: [true, true]
 
-- name: Case 14, California senior with assets above the July 2027 limit is still eligible in 2027.
+- name: Case 20, California senior with assets above the July 2027 limit is still eligible in 2027.
   period: 2027
   input:
     age: 70

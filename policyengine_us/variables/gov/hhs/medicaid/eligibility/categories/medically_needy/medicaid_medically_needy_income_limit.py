@@ -6,11 +6,6 @@ class medicaid_medically_needy_income_limit(Variable):
     value_type = float
     entity = Person
     label = "Medicaid medically needy income limit"
-    documentation = (
-        "Annual medically needy income limit for an individual or a married "
-        "couple. States set it as a dollar amount, a share of the federal "
-        "poverty guideline, or a share of the SSI federal benefit rate."
-    )
     unit = USD
     definition_period = YEAR
     reference = (
