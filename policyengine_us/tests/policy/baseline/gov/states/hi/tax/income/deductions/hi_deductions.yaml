@@ -3,7 +3,7 @@
   input:
     state_code: HI
     filing_status: JOINT
-    tax_unit_earned_income: 1_000
+    standard_deduction_worksheet_earned_income: 1_000
     hi_agi: 1_000
     hi_total_itemized_deductions: 5_000
     hi_reduced_itemized_deductions: 1_000
@@ -16,7 +16,7 @@
   input:
     state_code: HI
     filing_status: JOINT
-    tax_unit_earned_income: 1_000_000
+    standard_deduction_worksheet_earned_income: 1_000_000
     hi_agi: 1_000_000
     hi_total_itemized_deductions: 5_000
     hi_reduced_itemized_deductions: 1_000
@@ -29,7 +29,7 @@
   input:
     state_code: HI
     filing_status: JOINT
-    tax_unit_earned_income: 1_000
+    standard_deduction_worksheet_earned_income: 1_000
     hi_agi: 1_000
     hi_total_itemized_deductions: 1_000
     hi_reduced_itemized_deductions: 1_000
@@ -42,7 +42,7 @@
   input:
     state_code: HI
     filing_status: SEPARATE
-    tax_unit_earned_income: 1_000_000
+    standard_deduction_worksheet_earned_income: 1_000_000
     hi_agi: 1_000_000
     hi_total_itemized_deductions: 5_000
     hi_reduced_itemized_deductions: 1_000
@@ -55,7 +55,7 @@
   input:
     state_code: HI
     filing_status: JOINT
-    tax_unit_earned_income: 1_000_000
+    standard_deduction_worksheet_earned_income: 1_000_000
     hi_agi: 1_000_000
     hi_total_itemized_deductions: 5_000
     hi_reduced_itemized_deductions: 4_500
@@ -90,7 +90,7 @@
       tax_unit:
         members: [person_a, person_b]
         filing_status: JOINT
-        tax_unit_earned_income: 3_000
+        standard_deduction_worksheet_earned_income: 3_000
         hi_itemized_deductions: 0
     households:
       household:
@@ -118,7 +118,7 @@
       tax_unit:
         members: [person_b, person_a]
         filing_status: JOINT
-        tax_unit_earned_income: 3_000
+        standard_deduction_worksheet_earned_income: 3_000
         hi_itemized_deductions: 0
     households:
       household:
@@ -146,7 +146,7 @@
       tax_unit:
         members: [person_a, person_b]
         filing_status: JOINT
-        tax_unit_earned_income: 3_000
+        standard_deduction_worksheet_earned_income: 3_000
         hi_itemized_deductions: 4_000
     households:
       household:
@@ -174,7 +174,7 @@
       tax_unit:
         members: [person_b, person_a]
         filing_status: JOINT
-        tax_unit_earned_income: 3_000
+        standard_deduction_worksheet_earned_income: 3_000
         hi_itemized_deductions: 4_000
     households:
       household:
@@ -190,7 +190,7 @@
     state_code: HI
     filing_status: SINGLE
     claimed_as_dependent_on_another_return: true
-    tax_unit_earned_income: 300
+    standard_deduction_worksheet_earned_income: 300
     hi_itemized_deductions: 0
   output:
     # HRS 235-2.4(a)(3): greater of $500 or earned income ($300).
@@ -276,3 +276,48 @@
   output:
     # $3,000 - $3,000 x 0.9235 x 15.3% / 2 = $2,788.06, below the $8,800 joint amount.
     hi_deductions: 2788.06
+
+- name: 2025 single dependent filer with a 401(k) deferral uses W-2 box 1 wages
+  # N-11 instructions (2025), PDF page 20: earned income is federal Form 1040
+  # line 1 wages, which are W-2 box 1 and leave out the $2,000 elective
+  # deferral. Greater of $500 or $3,000 - $2,000 = $1,000.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 3_000
+        traditional_401k_contributions: 2_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+        hi_itemized_deductions: 0
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_deductions: 1_000
+
+- name: 2025 single dependent filer with the same box 1 wages and no deferral gets the same deduction
+  # Control for the case above: greater of $500 or $1,000 of wages.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+        hi_itemized_deductions: 0
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_deductions: 1_000

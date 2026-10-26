@@ -1,0 +1,22 @@
+description: Iowa excludes households with these uncounted income sources from the fixed income factor under the Low Income Home Energy Assistance Program.
+# Definitions, Fixed Income Household: "Only mark 'fixed income' when that is
+# the ONLY source(s) of income." Appendix C leaves these rows out of countable
+# income and adds that they are not fixed: Child Support, "Child support is
+# not considered a fixed income source", and FIP, "FIP is not considered fixed
+# income because the household composition is likely to change". Recorded FIP
+# is read from tanf, the take-up-adjusted cash assistance amount (equal to
+# ia_fip for a household that takes up FIP), as in the Oregon, Kentucky and
+# New Jersey LIHEAP income formulas. The AFLAC row (page 90) carries the same
+# note but has no model input.
+values:
+  2025-10-01:
+    - child_support_received
+    - tanf
+
+metadata:
+  unit: list
+  period: year
+  label: Iowa LIHEAP recorded income sources that are neither countable nor fixed
+  reference:
+    - title: "Iowa LIHEAP FY26 Policy and Procedures Manual, Appendix C Income Source Guide, Child Support and FIP (Family Investment Program) rows #page 92,98"
+      href: https://hhs.iowa.gov/media/17262/download?inline#page=92

@@ -10,7 +10,7 @@ class mn_social_security_subtraction(Variable):
     reference = (
         "https://www.taxformfinder.org/forms/2021/2021-minnesota-form-m1m.pdf",
         "https://www.revenue.state.mn.us/sites/default/files/2024-01/m1m-22.pdf",
-        # 2020 Schedule M1M instructions, line 12 worksheet, step 8: federal
+        # 2020 Schedule M1M instructions, line 39 worksheet, step 8: federal
         # Schedule 1 adjustments only, not Form 1040 line 10b.
         "https://www.revenue.state.mn.us/sites/default/files/2024-01/m1m_20.pdf#page=8",
     )
