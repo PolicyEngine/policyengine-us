@@ -1,0 +1,78 @@
+# 10-year level payment: balance x i / (1 - (1 + i) ^ -120), i = rate / 12,
+# at least 50 dollars and no more than the balance (34 CFR 685.208(b)(1)).
+
+- name: Case 1, 30,000 dollars at 6 percent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # 30,000 x 0.005 / (1 - 1.005 ^ -120) = 333.0615.
+    standard_repayment_payment: 333.06
+
+- name: Case 2, a zero interest rate spreads the balance evenly.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 12_000
+        federal_student_loan_interest_rate: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # 12,000 / 120 = 100.
+    standard_repayment_payment: 100
+
+- name: Case 3, a small balance pays the 50 dollar minimum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 3_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # 3,000 x 0.005 / (1 - 1.005 ^ -120) = 33.31, below the 50 minimum.
+    standard_repayment_payment: 50
+
+- name: Case 4, a balance below the minimum is the final payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    standard_repayment_payment: 30
+
+- name: Case 5, no balance means no payment.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    standard_repayment_payment: 0
