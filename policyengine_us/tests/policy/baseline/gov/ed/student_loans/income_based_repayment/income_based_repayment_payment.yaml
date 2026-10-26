@@ -317,7 +317,30 @@
   output:
     income_based_repayment_payment: [0, 0]
 
-- name: Case 14, a payment of exactly 5 dollars rises to 10 dollars.
+- name: Case 14, a borrower with a loan made on or after July 1, 2026 can't use the plan.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 34 CFR 685.209(d)(5); 20 U.S.C. 1087e(d)(6)-(7).
+    income_based_repayment_payment: 0
+
+- name: Case 15, a payment of exactly 5 dollars rises to 10 dollars.
   period: 2026-01
   absolute_error_margin: 0.001
   input:
@@ -348,7 +371,7 @@
     # float error from reading it as 4.99999.
     income_based_repayment_payment: [10, 0, 0, 0]
 
-- name: Case 15, a new borrower's payment of exactly 5 dollars rises to 10 dollars.
+- name: Case 16, a new borrower's payment of exactly 5 dollars rises to 10 dollars.
   period: 2026-01
   absolute_error_margin: 0.001
   input:
@@ -371,7 +394,7 @@
     # 1.5 x 15,960 = 23,940; 10% x 600 / 12 = 5.00 exactly -> 10.
     income_based_repayment_payment: 10
 
-- name: Case 16, a payment one dollar of income below 5 dollars is zero.
+- name: Case 17, a payment one dollar of income below 5 dollars is zero.
   period: 2026-01
   absolute_error_margin: 0.001
   input:
