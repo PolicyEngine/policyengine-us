@@ -19,8 +19,10 @@ class in_eitc_eligible(Variable):
         if p.credits.earned_income.static_conformity_in_effect:
             # IC 6-3.1-21-6(a) allows the credit to an individual "eligible
             # for an earned income tax credit under Section 32 of the
-            # Internal Revenue Code as in effect on January 1, 2023" (IC
-            # 6-3-1-11; January 1, 2026 from TY2026 per SEA 243 (2025)).
+            # Internal Revenue Code as in effect on January 1, 2023". That
+            # date is the chapter's own: SEA 243-2026 moves the general
+            # IC 6-3-1-11 date to January 1, 2026 but does not amend
+            # IC 6-3.1-21.
             # Section 32 as in effect on that date indexes its earned income,
             # phaseout and investment income amounts to the calendar year in
             # which the taxable year begins (26 U.S.C. 32(j)(1)), and

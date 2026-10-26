@@ -71,7 +71,7 @@
   output:
     in_eitc: 61.20
 
-- name: Indiana EITC TY 2026 uses the SEA 243 advanced January 1, 2026 IRC snapshot
+- name: Indiana EITC TY 2026 uses the current-year federal EITC
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -95,16 +95,16 @@
         members: [head, child]
         state_code: IN
   output:
-    # TY 2026 onwards Indiana SEA 243 (2025) advances the IRC reference to
-    # January 1, 2026. All filers take 10% of the current-year federal EITC
-    # per Schedule IN-EIC Section A; under SEA 243 the current and frozen
-    # (2026-01-01) computations coincide, so the credit is $442.70.
+    # SEA 243-2026 moves the IC 6-3-1-11 reference to January 1, 2026;
+    # IC 6-3.1-21-6(a) keeps its own January 1, 2023 date, whose section 32
+    # text indexes the amounts to the taxable year. All filers take 10% of
+    # the current-year federal EITC per Schedule IN-EIC Section A, so the
+    # credit is $442.70.
     in_eitc: 442.70
 
 - name: in_eitc childless 2026 uses the current-year federal EITC
-  # All filers use the current-year federal EITC (Schedule IN-EIC Section A);
-  # under SEA 243 the 2026 frozen-IRC snapshot equals the current federal
-  # childless EITC, so 10% x $612 = $61.20 either way.
+  # All filers use the current-year federal EITC (Schedule IN-EIC Section A),
+  # so 10% x $612 = $61.20.
   absolute_error_margin: 0.01
   period: 2026
   input:
@@ -307,3 +307,40 @@
     eitc: 0
     in_eitc_eligible: false
     in_eitc: 0
+
+- name: Indiana EITC TY2025 interest exactly at the TY2025 limit
+  # 26 U.S.C. 32(i)(1) denies the credit only if disqualified income "exceeds"
+  # the limit, $11,950 for TY2025 (Rev. Proc. 2024-40 sec. 2.06(2)).
+  # Two children: maximum credit $7,152, phaseout threshold $23,350
+  # (Rev. Proc. 2024-40 sec. 2.06(1)), phaseout rate 21.06% (32(b)(1)).
+  # AGI = 20,000 + 11,950 = 31,950.
+  # Federal EITC = 7,152 - 21.06% x (31,950 - 23,350) = 7,152 - 1,811.16 = 5,340.84.
+  # Indiana EITC = 10% x 5,340.84 = 534.08.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+        taxable_interest_income: 11_950
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: IN
+  output:
+    eitc: 5_340.84
+    in_eitc_eligible: true
+    in_eitc: 534.08
