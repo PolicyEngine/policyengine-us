@@ -1,11 +1,17 @@
-description: California increases the asset limit by this amount for each additional person under the Medi-Cal 250 Percent Working Disabled Program.
+description: California increases the asset limit by this amount for each person beyond two under the Medi-Cal 250 Percent Working Disabled Program.
 values:
   2022-07-01: 65_000
+  # Annual calculations read parameters on January 1, so the July 1, 2027 value first applies in 2028.
+  2027-07-01: 1_550
 
 metadata:
   unit: currency-USD
   period: year
-  label: California 250 Percent Working Disabled Program additional-person asset limit
+  label: California 250 Percent Working Disabled Program asset limit for each person beyond two
   reference:
     - title: Working Disabled Program | Department of Health Care Services
       href: https://www.dhcs.ca.gov/services/working-disabled-program/
+    - title: California Senate Bill 164 (Statutes of 2026, Chapter 27), Section 69 - Welfare and Institutions Code 14005.62(a), operative July 1, 2027
+      href: https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260SB164
+    - title: California Welfare and Institutions Code 14007.9(a)(1)(C)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=14007.9.&lawCode=WIC

@@ -1,0 +1,148 @@
+- name: Case 1, two-person tax unit at the 2026 two-person limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        ssi_countable_resources: 100_000
+      person2:
+        age: 43
+        ssi_countable_resources: 95_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # 100,000 + 95,000 = 195,000 is at the 195,000 two-person limit; resources
+    # may not exceed it.
+    ca_wdp_asset_eligible: [true, true]
+
+- name: Case 2, one person at the July 2027 one-person limit is eligible in 2028.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 45
+        ssi_countable_resources: 21_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # 21,000 is at the 21,000 limit; resources may not exceed it.
+    ca_wdp_asset_eligible: true
+
+- name: Case 3, one person above the July 2027 one-person limit is ineligible in 2028.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 45
+        ssi_countable_resources: 21_001
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # 21,001 is over the 21,000 limit.
+    ca_wdp_asset_eligible: false
+
+- name: Case 4, two-person tax unit at the July 2027 two-person limit is eligible in 2028.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 45
+        ssi_countable_resources: 15_500
+      person2:
+        age: 43
+        ssi_countable_resources: 15_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # 15,500 + 15,500 = 31,000 is at the 31,000 two-person limit; resources
+    # may not exceed it.
+    ca_wdp_asset_eligible: [true, true]
+
+- name: Case 5, two-person tax unit above the July 2027 two-person limit is ineligible in 2028.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 45
+        ssi_countable_resources: 15_500
+      person2:
+        age: 43
+        ssi_countable_resources: 15_501
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # 15,500 + 15,501 = 31,001 is over the 31,000 two-person limit.
+    ca_wdp_asset_eligible: [false, false]
+
+- name: Case 6, three-person tax unit at the July 2027 three-person limit is eligible in 2028.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 45
+        ssi_countable_resources: 16_000
+      person2:
+        age: 43
+        ssi_countable_resources: 16_550
+      person3:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    # Limit 31,000 + 1 x 1,550 = 32,550. 16,000 + 16,550 + 0 = 32,550 is at
+    # it; resources may not exceed it.
+    ca_wdp_asset_eligible: [true, true, true]
+
+- name: Case 7, three-person tax unit above the July 2027 three-person limit is ineligible in 2028.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 45
+        ssi_countable_resources: 16_000
+      person2:
+        age: 43
+        ssi_countable_resources: 16_551
+      person3:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    # Limit 31,000 + 1 x 1,550 = 32,550. 16,000 + 16,551 + 0 = 32,551 is over
+    # it.
+    ca_wdp_asset_eligible: [false, false, false]

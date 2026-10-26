@@ -216,3 +216,59 @@
     # combined assets of 31,001 are over the 31,000 couple limit.
     is_in_medicaid_medically_needy_category: [true, true]
     is_medically_needy_for_medicaid: [false, false]
+
+- name: Case 12, California senior with assets at the July 2027 limit is eligible in 2028.
+  period: 2028
+  input:
+    age: 70
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_ssi_recipient_for_medicaid: false
+    ssi_countable_income: 9_000
+    medicaid_medically_needy_medical_expenses: 2_000
+    ssi_countable_resources: 21_000
+    state_code: CA
+  output:
+    # Limit 600 x 12 = 7,200. 9,000 - 2,000 = 7,000 is under it, and assets
+    # of 21,000 are at the 21,000 limit that applies from July 2027; resources
+    # may not exceed it.
+    is_in_medicaid_medically_needy_category: true
+    is_medically_needy_for_medicaid: true
+
+- name: Case 13, California senior couple with assets at the July 2027 couple limit is eligible in 2028.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 72
+        is_adult_for_medicaid: false
+        is_optional_senior_or_disabled_for_medicaid: false
+        is_ssi_recipient_for_medicaid: false
+        ssi_countable_income: 9_000
+        medicaid_medically_needy_medical_expenses: 4_000
+        ssi_countable_resources: 15_500
+      person2:
+        age: 70
+        is_adult_for_medicaid: false
+        is_optional_senior_or_disabled_for_medicaid: false
+        is_ssi_recipient_for_medicaid: false
+        ssi_countable_income: 9_000
+        medicaid_medically_needy_medical_expenses: 4_000
+        ssi_countable_resources: 15_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Limit 934 x 12 = 11,208. (9,000 - 4,000) x 2 = 10,000 is under it, and
+    # combined assets of 15,500 + 15,500 = 31,000 are at the 31,000 couple
+    # limit; resources may not exceed it.
+    is_in_medicaid_medically_needy_category: [true, true]
+    is_medically_needy_for_medicaid: [true, true]
