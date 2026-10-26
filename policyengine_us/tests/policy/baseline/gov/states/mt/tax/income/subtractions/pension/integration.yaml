@@ -31,3 +31,14 @@
     # MCA 15-30-2101(25)(b): the same Montana AGI (14,940) and tax as the
     # pension case above.
     mt_income_tax: 170.76
+
+- name: Single filer aged 60 with a Survivor Benefit Plan annuity
+  period: 2023
+  input:
+    age: 60
+    military_retirement_pay_survivors: 20_000
+    state_code: MT
+  output:
+    # Form 1099-R code 7: the same Montana AGI (14,940) and tax as the
+    # pension case above.
+    mt_income_tax: 170.76
