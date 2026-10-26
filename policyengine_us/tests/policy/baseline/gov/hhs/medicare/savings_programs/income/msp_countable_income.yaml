@@ -135,3 +135,92 @@
   output:
     # 12,000 / 12 - 50 = 950.
     msp_countable_income: 950
+
+- name: Case 8, Illinois gives each Medicare spouse with income a 25 dollar exemption.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        social_security_retirement: 13_200
+      person2:
+        age: 70
+        social_security_retirement: 8_880
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # PM 15-04-03-a: both spouses apply and both have income, so two exemptions.
+    # (13,200 + 8,880) / 12 - 2 x 25 = 1,790.
+    msp_countable_income: [1_790, 1_790]
+
+- name: Case 9, Illinois allows one exemption when only one Medicare spouse has income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        social_security_retirement: 13_200
+      person2:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # PM 15-04-03-a: one exemption if only one person has income.
+    # 13,200 / 12 - 25 = 1,075.
+    msp_countable_income: [1_075, 1_075]
+
+- name: Case 10, Mississippi applies one 50 dollar exclusion to a couple's combined income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        social_security_retirement: 12_000
+      person2:
+        age: 70
+        social_security_retirement: 9_600
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # 23 Miss. Admin. Code Part 104, Rule 4.2(C)(2): one general exclusion per couple.
+    # (12,000 + 9,600) / 12 - 50 = 1,750.
+    msp_countable_income: [1_750, 1_750]

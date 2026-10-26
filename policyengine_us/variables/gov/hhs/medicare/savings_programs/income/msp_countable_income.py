@@ -16,6 +16,7 @@ class msp_countable_income(Variable):
         "https://secure.ssa.gov/apps10/poms.nsf/lnx/0501715010",
         "https://www.medicare.gov/basics/costs/help/medicare-savings-programs",
         "https://www.law.cornell.edu/uscode/text/42/1396a#r_2",
+        "https://www.dhs.state.il.us/page.aspx?item=16387",
     )
     documentation = """
     MSP countable income uses SSI methodology per 42 U.S.C. 1396d(p)(1)(B),
@@ -33,7 +34,9 @@ class msp_countable_income(Variable):
 
     Under 42 U.S.C. 1396a(r)(2) a state may exclude more than the $20 SSI
     general income exclusion; Illinois and Mississippi use their larger
-    exclusion in its place.
+    exclusion in its place. Mississippi takes it once from a couple's
+    combined income; Illinois gives each applying spouse with income their
+    own exclusion, up to that spouse's income.
     """
 
     def formula(person, period, parameters):
@@ -56,6 +59,18 @@ class msp_countable_income(Variable):
         ssi_exclusions = parameters(period).gov.ssa.ssi.income.exclusions
         general_exclusion = max_(
             ssi_exclusions.general, p.state_general_exclusion[state]
+        )
+        # Illinois gives each applying spouse one exemption on their own
+        # non-SSI income (PM 15-04-03-a); SSI and Mississippi allow one per
+        # couple.
+        own_monthly_income = add(
+            person, period, ["ssi_earned_income", "ssi_unearned_income"]
+        )
+        per_spouse = p.state_general_exclusion_per_spouse[state].astype(bool)
+        couple_general_exclusion = where(
+            per_spouse,
+            person.marital_unit.sum(min_(general_exclusion, own_monthly_income)),
+            general_exclusion,
         )
 
         spouse_earned_income = person(
@@ -81,7 +96,7 @@ class msp_countable_income(Variable):
             person.marital_unit.sum(unearned_income),
             parameters,
             year,
-            general_exclusion=general_exclusion,
+            general_exclusion=couple_general_exclusion,
         )
 
         deemed_countable = _apply_ssi_exclusions(
