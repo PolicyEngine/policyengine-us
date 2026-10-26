@@ -1016,16 +1016,21 @@ class SPMSimulationMixin:
         for branch in getattr(self, "branches", {}).values():
             yield from branch._simulation_family()
 
-    def subsample(self, *args, **kwargs):
-        # Core's subsample exports every value the simulation holds, calculated
-        # ones included, and reloads them all as inputs. A presence-tested
-        # input with no input here holds only calculated defaults, so drop them
-        # first; otherwise it would come back as a supplied column of zeros
-        # (policyengine-core#633).
-        for variable_name in PRESENCE_TESTED_INPUTS:
+    def _get_exportable_input_periods(self, variable_name, include_computed_variables):
+        # Core's subsample exports every period a holder knows, calculated
+        # ones included, and reloads them all as inputs (policyengine-core#633).
+        # A presence-tested input goes out only for the periods it is an input
+        # where this simulation reads it, on this branch or one it inherits
+        # from. A calculated default, this branch's or an inherited one, would
+        # otherwise come back as a supplied column of zeros.
+        if include_computed_variables and variable_name in PRESENCE_TESTED_INPUTS:
             holder = self.get_holder(variable_name)
-            if not holder.get_input_periods(self.branch_name):
-                holder.delete_arrays(branch_name=self.branch_name)
+            return sorted(holder.get_input_periods(self.branch_name), key=str)
+        return super()._get_exportable_input_periods(
+            variable_name, include_computed_variables
+        )
+
+    def subsample(self, *args, **kwargs):
         result = super().subsample(*args, **kwargs)
         baseline = self.branches.get("baseline")
         if baseline is not None:

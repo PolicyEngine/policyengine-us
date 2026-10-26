@@ -26,7 +26,13 @@ binding is sure to have run before the use with no ``del`` or ``except ...
 as`` cleanup that may come between (all are in an ``if``, loop, ``try``,
 ``with`` or ``match``, or the use comes first). A function may run as soon as
 its ``def`` has run, so the scopes around it count only the bindings before
-the ``def``, and every later deletion.
+the ``def``, and every later deletion. A function's ``del`` of a name it
+declares ``global`` runs whenever the function is called, so after the
+``def`` it may come between any binding and any use. A class body, a
+decorated function and a lambda may run before the statement that creates
+them has bound its names (a decorator may call the function, and an
+assignment's value may call a lambda in it), so code inside them doesn't
+take those bindings as sure.
 So ``from numpy import random as r`` followed by ``r.random(3)`` is caught,
 as are ``xp = np`` followed by ``xp.random.uniform()``, ``from
 policyengine_us.model_api import np as lib`` followed by
@@ -343,6 +349,13 @@ class _Scope:
         # name -> [line] of each del or except ... as cleanup that may unbind
         # it.
         self.deletions = {}
+        # name -> [line] of each def whose function may unbind it when
+        # called, which may be at any time after that line.
+        self.deletions_after = {}
+        # For a scope that may run before the statement creating it has bound
+        # its names (a class body, a decorated function, a lambda), that
+        # statement's (first line, last line).
+        self.unfinished = None
         # (line, module, conditional) for each star import.
         self.stars = []
         # Names a global or nonlocal statement gives to another scope.
@@ -361,13 +374,27 @@ class _Scope:
         """Record that ``name`` may be unbound at ``line``."""
         self.bind(name, line, None, conditional=True)
         owner = self.declared.get(name, self)
-        owner.deletions.setdefault(name, []).append(line)
+        # A deletion in a function, of a name another scope binds, happens
+        # when the function is called: in the owner's time, any time after
+        # the def of the outermost function between them.
+        called_after = None
+        scope = self
+        while scope is not owner:
+            if scope.kind in ("function", "lambda"):
+                called_after = scope.line
+            scope = scope.parent
+        if called_after is None:
+            owner.deletions.setdefault(name, []).append(line)
+        else:
+            owner.deletions_after.setdefault(name, []).append(called_after)
 
-    def own(self, name, line, deferred):
+    def own(self, name, line, deferred, unfinished=()):
         """(targets, bound, falls through) for ``name`` in this scope alone.
 
         The use is at ``line`` or, with ``deferred``, at any time after it;
-        a None line is once the scope has run.
+        a None line is once the scope has run. A binding within one of the
+        ``unfinished`` (first line, last line) spans may not have happened
+        yet.
         """
         entries = [(entry[0], entry[2]) for entry in self.bindings.get(name, [])]
         targets = set()
@@ -386,17 +413,27 @@ class _Scope:
         # A module or class body looks further out unless a binding is sure
         # to have run before the use, with no deletion that may come between.
         deletions = self.deletions.get(name, [])
+        deletions_after = self.deletions_after.get(name, [])
 
         def holds(bound_line):
             if deferred or line is None:
-                return (line is None or bound_line <= line) and all(
-                    deleted < bound_line for deleted in deletions
+                return (
+                    (line is None or bound_line <= line)
+                    and all(deleted < bound_line for deleted in deletions)
+                    and not deletions_after
                 )
-            return bound_line < line and not any(
-                bound_line <= deleted <= line for deleted in deletions
+            return (
+                bound_line < line
+                and not any(bound_line <= deleted <= line for deleted in deletions)
+                and not any(after <= line for after in deletions_after)
             )
 
-        sure = [entry_line for entry_line, conditional in entries if not conditional]
+        sure = [
+            entry_line
+            for entry_line, conditional in entries
+            if not conditional
+            and not any(first <= entry_line <= last for first, last in unfinished)
+        ]
         return targets, True, not any(map(holds, sure))
 
     def resolve(self, name, line=None, deferred=False) -> set:
@@ -410,6 +447,7 @@ class _Scope:
         targets = set()
         owner = self.declared.get(name)
         scope, first = self, True
+        unfinished = []
         while scope is not None:
             if scope is owner:
                 owner = None
@@ -417,10 +455,13 @@ class _Scope:
             # names, and no code nested in a class body sees the names it
             # binds.
             if owner is None and (first or scope.kind != "class"):
-                found, bound, falls = scope.own(name, line, deferred)
+                found, bound, falls = scope.own(name, line, deferred, unfinished)
                 targets |= found
                 if bound and not falls:
                     return targets
+            if scope.unfinished is not None:
+                # It may run before its statement's bindings have happened.
+                unfinished.append(scope.unfinished)
             if scope.kind in ("function", "lambda"):
                 # A function may run as soon as its def has run, so the
                 # scopes around it are read as of the def, and any later
@@ -467,7 +508,10 @@ def _function_locals(node) -> frozenset:
             declared.update(child.names)
             continue
         if isinstance(child, FUNCTION_NODES + (ast.ClassDef, ast.Lambda)):
-            # Only its name, decorators, defaults and bases are this scope's.
+            # Only its name, decorators, defaults, annotations and bases are
+            # this scope's. Up to 3.13 annotations are evaluated here, so a
+            # walrus in one binds here; 3.14 defers them and refuses a walrus
+            # in one, so the earlier rule covers both.
             if not isinstance(child, ast.Lambda):
                 names.add(child.name)
             stack.extend(getattr(child, "decorator_list", []))
@@ -476,13 +520,22 @@ def _function_locals(node) -> frozenset:
             else:
                 stack.extend(child.args.defaults)
                 stack.extend(d for d in child.args.kw_defaults if d)
+            if isinstance(child, FUNCTION_NODES):
+                stack.extend([child.returns] if child.returns else [])
+                stack.extend(
+                    argument.annotation
+                    for argument in ast.walk(child.args)
+                    if isinstance(argument, ast.arg) and argument.annotation
+                )
             continue
         if isinstance(child, COMPREHENSION_NODES):
             # Its loop variables are its own; a walrus binds here. Since 3.12
-            # CPython inlines it, and a nested nonlocal of a loop variable's
-            # name then names a cell here that only such nonlocals set, not
-            # the binding further out that 3.11 names. Following 3.11 keeps
-            # every value either can read.
+            # CPython inlines a list, set or dict comprehension (PEP 709; not a
+            # generator expression), and a nested nonlocal of a loop
+            # variable's name then names a cell here that only such nonlocals
+            # set, not the binding further out that 3.11 and a generator
+            # expression name. Following 3.11 keeps every value either can
+            # read.
             names.update(_comprehension_walrus_targets(child))
             stack.append(child.generators[0].iter)
             continue
@@ -783,6 +836,8 @@ def _build_scopes(tree, module, package, modules):
         qualname = name if scope.parent is None else f"{scope.qualname}.{name}"
         kind = "lambda" if isinstance(node, ast.Lambda) else "function"
         inner = _Scope(kind, qualname, scope, modules, node.lineno)
+        if isinstance(node, ast.Lambda) or node.decorator_list:
+            inner.unfinished = statement_span[-1]
         inner.local_names = _function_locals(node)
         body = node.body if isinstance(node.body, list) else [node.body]
         declare(inner, body)
@@ -800,6 +855,7 @@ def _build_scopes(tree, module, package, modules):
         scope.bind(node.name, node.lineno, target, conditional)
         qualname = node.name if top_level else f"{scope.qualname}.{node.name}"
         inner = _Scope("class", qualname, scope, modules, node.lineno)
+        inner.unfinished = statement_span[-1]
         declare(inner, node.body)
         for child in node.body:
             visit(child, inner)
@@ -823,7 +879,22 @@ def _build_scopes(tree, module, package, modules):
         for element in elements:
             visit(element, inner)
 
+    # (first line, last line) of each statement being visited, innermost
+    # last; a definition's decorators are part of its statement.
+    statement_span = [(1, 1)]
+
     def visit(node, scope, conditional=False):
+        if not isinstance(node, ast.stmt):
+            return visit_node(node, scope, conditional)
+        lines = [node.lineno]
+        lines += [d.lineno for d in getattr(node, "decorator_list", [])]
+        statement_span.append((min(lines), node.end_lineno))
+        try:
+            return visit_node(node, scope, conditional)
+        finally:
+            statement_span.pop()
+
+    def visit_node(node, scope, conditional):
         scope_of[node] = scope
         if isinstance(node, FUNCTION_NODES + (ast.Lambda,)):
             return visit_function(node, scope, conditional)
@@ -1360,6 +1431,36 @@ def _kinds(source: str) -> set:
             "    return middle\n",
             "random source",
         ),
+        # A walrus in a nested function's annotation binds in the function
+        # around it, so middle binds lib and inner reads numpy.
+        (
+            "import numpy as np\n"
+            "def outer():\n"
+            "    lib = None\n"
+            "    def middle():\n"
+            "        def annotated(x: (lib := np)):\n"
+            "            pass\n"
+            "        def inner():\n"
+            "            nonlocal lib\n"
+            "            return lib.random.random()\n"
+            "        return inner\n"
+            "    return middle\n",
+            "random source",
+        ),
+        (
+            "import numpy as np\n"
+            "def outer():\n"
+            "    lib = None\n"
+            "    def middle():\n"
+            "        def annotated() -> (lib := np):\n"
+            "            pass\n"
+            "        def inner():\n"
+            "            nonlocal lib\n"
+            "            return lib.random.random()\n"
+            "        return inner\n"
+            "    return middle\n",
+            "random source",
+        ),
         # A walrus in a lambda binds in the lambda, even inside a
         # comprehension, so middle doesn't bind lib.
         (
@@ -1401,6 +1502,51 @@ def _kinds(source: str) -> set:
             "key = hash('x')\n",
             "builtin hash",
         ),
+        # A function's del of a global may run after a later binding.
+        (
+            "def clear():\n"
+            "    global hash\n"
+            "    del hash\n"
+            "hash = str\n"
+            "clear()\n"
+            "key = hash('x')\n",
+            "builtin hash",
+        ),
+        (
+            "def clear():\n"
+            "    global hash\n"
+            "    if flag:\n"
+            "        del hash\n"
+            "hash = str\n"
+            "clear()\n"
+            "key = hash('x')\n",
+            "builtin hash",
+        ),
+        (
+            "def outer():\n"
+            "    def clear():\n"
+            "        global hash\n"
+            "        del hash\n"
+            "    return clear\n"
+            "hash = str\n"
+            "outer()()\n"
+            "def consumer(value):\n"
+            "    return hash(value)\n",
+            "builtin hash",
+        ),
+        # Code may run before the statement creating it binds its names: a
+        # decorator may call the function, a class body runs before its
+        # name is bound, and an assignment's value may call a lambda in it.
+        (
+            "def eager(f):\n"
+            "    return f('x')\n"
+            "@eager\n"
+            "def hash(value):\n"
+            "    return hash(value)\n",
+            "builtin hash",
+        ),
+        ("class hash:\n    answer = hash('x')\n", "builtin hash"),
+        ("hash = (lambda value: hash(value))('x')\n", "builtin hash"),
         # A function may run before a later binding, or after a deletion.
         (
             "def consumer(value):\n"
@@ -1472,6 +1618,11 @@ def test_detector_flags_each_draw_pattern(source, kind):
         "hash = str\nclass A:\n    def m(self, x):\n        return hash(x)\n",
         "hash = str\ndel hash\nhash = repr\nkey = hash('x')\n",
         "def f(x):\n    hash = str\n    del hash\n    return x\n",
+        # Deleting a local leaves it unbound (UnboundLocalError); the
+        # builtin stays hidden.
+        "def f():\n    hash = str\n    del hash\n    return hash('x')\n",
+        # Nothing can call an undecorated function before its def binds it.
+        "def hash(x):\n    return hash(x - 1) if x else 0\nhash(3)\n",
         "def f(hash):\n    return hash(1)\n",
         "class A:\n    def hash(self):\n        return 1\n    def m(self):\n"
         "        return self.hash()\n",

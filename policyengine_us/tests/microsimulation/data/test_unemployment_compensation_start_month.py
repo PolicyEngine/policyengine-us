@@ -17,11 +17,14 @@ formula:
   and wrapping into January.
 - Filtering: a dataset cut to some households keeps each person's start
   month and months of receipt.
-- A column stored for some people but not others, or stored as all zeros,
-  raises an error that names it. Presence follows the simulation's inputs,
+- A column stored for some people but not others (as zeros or as missing
+  values), or stored as all zeros, raises an error that names it. Presence follows the simulation's inputs,
   not the values, so this holds for a column set after construction and for
-  one set on a branch too. A reform that neutralizes the column leaves it
-  unsupplied.
+  one set on a branch too. A reform that neutralizes the column when the
+  simulation is built leaves it unsupplied; neutralizing it on a live
+  simulation raises.
+- Subsampling, on the default branch or a branch whose parent has calculated
+  receipt, keeps a missing column missing and a stored one stored.
 - A simulation built the way policyengine.py's input-table adapter builds one
   (an empty situation, then the dataset's populations and columns) is a
   household situation to pe-us. Without the column it keeps the retired
@@ -291,6 +294,17 @@ def test_partly_stored_column_raises_naming_it(people):
         simulation.calculate("is_receiving_unemployment_compensation", f"{YEAR}-01")
 
 
+def test_stored_column_with_missing_values_raises_naming_it(people):
+    # A column missing for some people arrives as floats with NaN. Core's
+    # NaN check covers integer inputs (unlike booleans, which it casts), so
+    # the column can't load as complete.
+    stored = _with_stored_column(people).astype({COLUMN: float})
+    stored.loc[stored.index[:2], COLUMN] = np.nan
+    with pytest.raises(ValueError, match=COLUMN):
+        simulation = Microsimulation(dataset=_dataset(stored))
+        simulation.calculate("is_receiving_unemployment_compensation", f"{YEAR}-01")
+
+
 def test_stored_column_of_zeros_raises_naming_it(people):
     # A dataset that stores the column must fill it, so an all-zero column
     # is not taken for an absent one.
@@ -363,6 +377,47 @@ def test_subsample_keeps_a_stored_start_month(people):
     stored.subsample(n=20, seed="start-month", quantize_weights=False)
     np.testing.assert_array_equal(
         _receipt_by_month(stored, YEAR), _january_start_by_month(stored, YEAR)
+    )
+
+
+def test_subsampling_a_branch_keeps_an_inherited_missing_start_month_missing(people):
+    # The branch inherits the parent's calculated default for the start month.
+    # Subsampling must not reload it as the branch's input: every month the
+    # branch has not calculated would then raise.
+    parent = Microsimulation(dataset=_dataset(people))
+    parent.calculate("is_receiving_unemployment_compensation", f"{YEAR}-01")
+    parent_receipt = _receipt_by_month(parent, YEAR)
+    branch = parent.get_branch("subsampled")
+    branch.subsample(n=20, seed="start-month", quantize_weights=False)
+    assert not branch.get_holder(COLUMN).get_input_periods(branch.branch_name)
+    np.testing.assert_array_equal(
+        _receipt_by_month(branch, YEAR), _retired_by_month(branch, YEAR)
+    )
+    # The parent keeps its population and its results.
+    np.testing.assert_array_equal(_receipt_by_month(parent, YEAR), parent_receipt)
+
+
+def test_subsampling_a_branch_keeps_an_inherited_stored_start_month(people):
+    parent = Microsimulation(dataset=_dataset(people.assign(**{COLUMN: 1})))
+    parent.calculate("is_receiving_unemployment_compensation", f"{YEAR}-01")
+    branch = parent.get_branch("subsampled")
+    branch.subsample(n=20, seed="start-month", quantize_weights=False)
+    np.testing.assert_array_equal(
+        _receipt_by_month(branch, YEAR), _january_start_by_month(branch, YEAR)
+    )
+
+
+def test_subsampling_a_branch_keeps_a_start_month_set_on_it(people):
+    # The branch inherits the parent's calculated default and stores its own
+    # input over it. (Receipt isn't calculated first: a value calculated
+    # before an input is set stays cached.)
+    parent = Microsimulation(dataset=_dataset(people))
+    parent.calculate(COLUMN, YEAR)
+    branch = parent.get_branch("subsampled")
+    branch.set_input(COLUMN, YEAR, np.ones(len(people), dtype=int))
+    branch.subsample(n=20, seed="start-month", quantize_weights=False)
+    np.testing.assert_array_equal(
+        _receipt_by_month(branch, YEAR), _january_start_by_month(branch, YEAR)
     )
 
 
@@ -448,3 +503,19 @@ def test_out_of_range_start_month_raises_naming_it(people):
     simulation = Microsimulation(dataset=_dataset(stored))
     with pytest.raises(ValueError, match=COLUMN):
         simulation.calculate("is_receiving_unemployment_compensation", f"{YEAR}-01")
+
+
+def test_neutralizing_a_stored_column_on_a_live_simulation_raises(people):
+    # Neutralizing a variable after the data has loaded keeps its input, so
+    # the column still counts as supplied, but core then returns the
+    # variable's default, 0, which the start month's check refuses.
+    neutralized = Microsimulation(dataset=_dataset(people.assign(**{COLUMN: 1})))
+    neutralized.tax_benefit_system.neutralize_variable(COLUMN)
+    assert neutralized.get_holder(COLUMN).get_input_periods(neutralized.branch_name)
+    with pytest.raises(ValueError, match=COLUMN):
+        neutralized.calculate("is_receiving_unemployment_compensation", f"{YEAR}-01")
+    # The neutralization stays with that simulation's own policy.
+    untouched = Microsimulation(dataset=_dataset(people.assign(**{COLUMN: 1})))
+    np.testing.assert_array_equal(
+        _receipt_by_month(untouched, YEAR), _january_start_by_month(untouched, YEAR)
+    )
