@@ -18,8 +18,8 @@ class va_tanf_income_eligibility(Variable):
 
         # Step 2: Countable income (after all deductions) <= Grant Standard
         countable_income = spm_unit("va_tanf_countable_income", period)
-        # Use the TANF-UP standard for two-parent units while Virginia has
-        # separate TANF-UP standards; otherwise the TANF standard applies.
+        # Two-parent (TANF-UP) units are screened at the TANF standard unless
+        # the separate TANF-UP standards are in effect.
         p_up = parameters(period).gov.states.va.dss.tanf.payment.up_grant_standard
         up_eligible = spm_unit("va_up_tanf_eligibility", period)
         uses_up_standards = up_eligible & p_up.in_effect

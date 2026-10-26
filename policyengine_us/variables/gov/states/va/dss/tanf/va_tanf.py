@@ -12,8 +12,8 @@ class va_tanf(Variable):
 
     def formula(spm_unit, period, parameters):
         # the calculated payment
-        # Two-parent (TANF-UP) units get the separate TANF-UP standards only
-        # while Virginia has them; otherwise the TANF standards apply.
+        # Two-parent (TANF-UP) units get the TANF standards unless the
+        # separate TANF-UP standards are in effect.
         p_up = parameters(period).gov.states.va.dss.tanf.payment.up_grant_standard
         up_tanf_eligibility = spm_unit("va_up_tanf_eligibility", period)
         uses_up_standards = up_tanf_eligibility & p_up.in_effect
