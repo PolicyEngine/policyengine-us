@@ -1060,6 +1060,14 @@ programs:
         full_name: Illinois Low Income Home Energy Assistance Program
         variable: il_liheap
         parameter_prefix: gov.states.il.dceo.liheap
+      - state: IA
+        status: partial
+        name: Iowa LIHEAP
+        full_name: Iowa Low Income Home Energy Assistance Program
+        variable: ia_liheap
+        parameter_prefix: gov.states.ia.hhs.liheap
+        verified_years: "2026"
+        notes: FY2026 Regular Assistance heating benefit from the points matrix, with a flat amount for households that buy propane or fuel oil. Crisis assistance, cooling and weatherization are out of scope.
       - state: IN
         status: partial
         name: Indiana EAP
