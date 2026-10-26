@@ -1,0 +1,209 @@
+# Iowa LIHEAP energy burden (REQ-025 to REQ-027). The household must have an
+# energy burden on the date of application (FY26 LIHEAP Policy and Procedures
+# Manual section 5.50 p. 22). Appendix D pp. 122-123: paying a vendor directly
+# is a burden; unsubsidized households with all utilities in the rent are
+# eligible for Regular Assistance; subsidized households with heat in the rent
+# qualify only through a secondary burden with a utility vendor (an electric
+# account), and subsidized housing with all utilities in the rent is not a
+# burden (sections 5.41-5.42 pp. 20-21):
+# https://hhs.iowa.gov/media/17262/download?inline#page=122
+# FFY2026 plan section 2.3 p. 8 (subsidized housing and utilities in rent):
+# https://liheapch.acf.gov/docs/2026/state-plans/IA_Plan_2026.pdf#page=8
+# Modeling: subsidized = receives_housing_assistance or is_in_public_housing;
+# the secondary burden is pre_subsidy_electricity_expense > 0; electric heat
+# reads pre_subsidy_electricity_expense because heating_expense uses it.
+
+- name: Case 1, paying a natural gas vendor directly is an energy burden.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Appendix D p. 122: pays vendor directly, yes.
+    ia_liheap_has_energy_burden: true
+
+- name: Case 2, unsubsidized heat included in rent is an energy burden.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Appendix D p. 122: all utilities in rent, non-subsidized, yes (Regular
+    # Assistance only); section 5.41 p. 20.
+    ia_liheap_has_energy_burden: true
+
+- name: Case 3, Section 8 tenant with heat in rent and an electric account has a burden.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        pre_subsidy_electricity_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Appendix D p. 122: heat in rent, billed directly for electric, yes.
+    ia_liheap_has_energy_burden: true
+
+- name: Case 4, Section 8 tenant with heat and electric both in rent has no burden.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        pre_subsidy_electricity_expense: 0
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Appendix D p. 123: subsidized housing, all utilities in rent, no.
+    ia_liheap_has_energy_burden: false
+
+- name: Case 5, public housing with heat in rent and no electric bill has no burden.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        pre_subsidy_electricity_expense: 0
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+        is_in_public_housing: true
+  output:
+    # Public housing is subsidized housing (Definitions pp. 84-85).
+    ia_liheap_has_energy_burden: false
+
+- name: Case 6, public housing with heat in rent and an electric account has a burden.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        pre_subsidy_electricity_expense: 840
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+        is_in_public_housing: true
+  output:
+    ia_liheap_has_energy_burden: true
+
+- name: Case 7, a known fuel with no bill and heat not in rent is no burden.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: false
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Appendix D p. 123: not charged by anyone for utilities, no.
+    ia_liheap_has_energy_burden: false
+
+- name: Case 8, subsidized tenant paying the gas vendor directly has a burden.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 950
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Appendix D p. 122: subsidized housing, pays vendor directly (utility
+    # allowance), yes.
+    ia_liheap_has_energy_burden: true
+
+- name: Case 9, electric heat paid to the utility is a burden.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_liheap_has_energy_burden: true

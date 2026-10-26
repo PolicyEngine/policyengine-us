@@ -1,4 +1,4 @@
-description: The IRS reduces the auto loan interest deduction for filers with adjusted gross income above this threshold, based on filing status.
+description: The IRS reduces the auto loan interest deduction for filers with modified adjusted gross income above this threshold, based on filing status.
 metadata:
   propagate_metadata_to_children: true
   unit: currency-USD
@@ -7,8 +7,14 @@ metadata:
   breakdown:
     - filing_status
   reference:
-    - title: H.R.1 - One Big Beautiful Bill Act
-      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+    - title: 26 U.S.C. § 163(h)(4)(C)(ii)(I)
+      href: https://www.law.cornell.edu/uscode/text/26/163#h_4_C_ii_I
+    - title: 26 CFR 1.163-16(h)(2) (T.D. 10054, 91 FR 57214)
+      href: https://www.govinfo.gov/content/pkg/FR-2026-09-08/pdf/2026-18219.pdf#page=28
+    - title: 2025 Schedule 1-A (Form 1040), line 26
+      href: https://www.irs.gov/pub/irs-pdf/f1040s1a.pdf#page=2
+    - title: 2025 Form 1040 instructions, No Tax on Car Loan Interest
+      href: https://www.irs.gov/pub/irs-pdf/i1040gi.pdf#page=109
 
 SINGLE:
   2025-01-01: 100_000
@@ -18,5 +24,6 @@ HEAD_OF_HOUSEHOLD:
   2025-01-01: 100_000
 JOINT:
   2025-01-01: 200_000
+# A surviving spouse does not file a joint return, so the $100,000 amount applies.
 SURVIVING_SPOUSE:
-  2025-01-01: 200_000
+  2025-01-01: 100_000

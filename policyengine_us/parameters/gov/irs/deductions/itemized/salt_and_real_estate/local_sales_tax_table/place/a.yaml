@@ -1,0 +1,82 @@
+description: The IRS has residents of these cities use Optional Local Sales Tax Table A.
+metadata:
+  unit: list
+  period: year
+  label: Places using Optional Local Sales Tax Table A
+  reference:
+    - title: 2022 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=17
+    - title: 2023 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=17
+    - title: 2024 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=16
+    - title: 2025 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=18
+# Cities that the IRS selector names for this table, by 2020 Census place
+# GEOID (state FIPS code and place code). The 2025 selector names the same
+# localities with the same tables as the 2024 selector, so the 2024 value
+# applies to 2025. A place's row takes precedence over its county's row.
+values:
+  2022-01-01:
+    - "0812815"  # Centennial city, CO
+    - "0816000"  # Colorado Springs city, CO
+    - "0820000"  # Denver city, CO
+    - "0862000"  # Pueblo city, CO
+    - "1702154"  # Arlington Heights village, IL
+    - "1706613"  # Bloomington city, IL
+    - "1712385"  # Champaign city, IL
+    - "1714000"  # Chicago city, IL
+    - "1714351"  # Cicero town, IL
+    - "1718823"  # Decatur city, IL
+    - "1724582"  # Evanston city, IL
+    - "1757225"  # Palatine village, IL
+    - "1759000"  # Peoria city, IL
+    - "1768003"  # Schaumburg village, IL
+    - "1770122"  # Skokie village, IL
+    - "1772000"  # Springfield city, IL
+    - "2836000"  # Jackson city, MS
+    - "3651000"  # New York city, NY
+    - "3653979"  # Norwich city, NY
+    - "4549075"  # Myrtle Beach city, SC
+  2023-01-01:
+    - "0804000"  # Aurora city, CO
+    - "0812815"  # Centennial city, CO
+    - "0816000"  # Colorado Springs city, CO
+    - "0820000"  # Denver city, CO
+    - "0862000"  # Pueblo city, CO
+    - "1702154"  # Arlington Heights village, IL
+    - "1706613"  # Bloomington city, IL
+    - "1712385"  # Champaign city, IL
+    - "1714000"  # Chicago city, IL
+    - "1714351"  # Cicero town, IL
+    - "1718823"  # Decatur city, IL
+    - "1724582"  # Evanston city, IL
+    - "1757225"  # Palatine village, IL
+    - "1759000"  # Peoria city, IL
+    - "1768003"  # Schaumburg village, IL
+    - "1770122"  # Skokie village, IL
+    - "1772000"  # Springfield city, IL
+    - "2836000"  # Jackson city, MS
+    - "3651000"  # New York city, NY
+    - "3653979"  # Norwich city, NY
+    - "4549075"  # Myrtle Beach city, SC
+  2024-01-01:
+    - "0812815"  # Centennial city, CO
+    - "0816000"  # Colorado Springs city, CO
+    - "0820000"  # Denver city, CO
+    - "0862000"  # Pueblo city, CO
+    - "1702154"  # Arlington Heights village, IL
+    - "1706613"  # Bloomington city, IL
+    - "1712385"  # Champaign city, IL
+    - "1714000"  # Chicago city, IL
+    - "1714351"  # Cicero town, IL
+    - "1718823"  # Decatur city, IL
+    - "1724582"  # Evanston city, IL
+    - "1757225"  # Palatine village, IL
+    - "1759000"  # Peoria city, IL
+    - "1768003"  # Schaumburg village, IL
+    - "1770122"  # Skokie village, IL
+    - "1772000"  # Springfield city, IL
+    - "2874840"  # Tupelo city, MS
+    - "3651000"  # New York city, NY
+    - "3653979"  # Norwich city, NY
