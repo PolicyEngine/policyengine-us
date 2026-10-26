@@ -537,6 +537,37 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
             )
         self.append(copied, copied_model)
 
+    @rule(
+        slot=TARGET,
+        component=COMPONENT,
+        period=PERIOD,
+        amount=AMOUNT,
+        replacement=AMOUNT,
+    )
+    def branch_initial_rewrite(self, slot, component, period, amount, replacement):
+        """Compose an inherited final override with a branch's initial rewrite."""
+        _, model = self.state(slot)
+        if model.visible(model.explicit, component, period) is not None:
+            # A same-period explicit twin intentionally retains the public
+            # override; this composition exercises initial source routing.
+            return
+        # Independent rules rarely choose the same component and period on
+        # a newly created branch. Keep that composition generated, checking
+        # the parent and every earlier copy after each intermediate step.
+        self.set_input(slot, component, False, period, amount, "simulation")
+        self.reported_values_and_provenance_follow_intent()
+        self.copy_simulation(slot, branch=True)
+        self.reported_values_and_provenance_follow_intent()
+        self.builder_load(
+            len(self.states) - 1,
+            component,
+            False,
+            period,
+            replacement,
+            fresh=False,
+            yaml=False,
+        )
+
     @rule(slot=TARGET)
     def dump_restore(self, slot):
         simulation, model = self.state(slot)
