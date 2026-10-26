@@ -17,10 +17,16 @@ toward reporting. Bindings come from imports, named imports and re-exports
 followed across the package, star imports, assignments of a name or
 attribute chain (``xp = np``, also in tuples), default arguments, ``global``
 and ``nonlocal`` (the nearest enclosing function that binds the name,
-wherever in its body), functions, lambdas and comprehensions. No code sees the
-names a class body it is nested in binds. A module or class body looks
-further out when no binding is sure to have run before the use (all are in
-an ``if``, loop, ``try``, ``with`` or ``match``, or the use comes first).
+wherever in its body), functions, lambdas and comprehensions. An attribute of
+a package module, or of a module EXTERNAL_EXPORTS maps, is what that module
+binds under the name, so ``api.np.random`` is numpy's random module where
+``api`` is ``policyengine_core.model_api``. No code sees the names a class
+body it is nested in binds. A module or class body looks further out when no
+binding is sure to have run before the use with no ``del`` or ``except ...
+as`` cleanup that may come between (all are in an ``if``, loop, ``try``,
+``with`` or ``match``, or the use comes first). A function may run as soon as
+its ``def`` has run, so the scopes around it count only the bindings before
+the ``def``, and every later deletion.
 So ``from numpy import random as r`` followed by ``r.random(3)`` is caught,
 as are ``xp = np`` followed by ``xp.random.uniform()``, ``from
 policyengine_us.model_api import np as lib`` followed by
@@ -68,7 +74,8 @@ of a computed name, values reached through objects or containers
 ``self.r.uniform()`` is not), the values calls return (``r =
 importlib.import_module("random")`` is caught at the import; a later
 ``r.random()`` is not), names ``match`` patterns capture, or methods as draw
-helpers.
+helpers. A lookup that nests deeper than MAX_RESOLUTION_DEPTH fails the scan
+rather than passing unresolved.
 
 EXEMPT lists reviewed occurrences that are not draws; RATCHET lists today's
 engine-time draws that still have to move into the data. Both count exact
@@ -229,7 +236,8 @@ COMPOUND_NODES = (
     ast.AsyncWith,
     ast.Match,
 )
-# Lookups nested deeper than this are treated as unresolved.
+# Lookups nested deeper than this are cut, and the package scan fails
+# (test_package_lookups_stay_within_the_depth_limit).
 MAX_RESOLUTION_DEPTH = 64
 # What ``from module import *`` binds when the module has no __all__, and
 # when its __all__ is built in a way this scan does not evaluate.
@@ -312,34 +320,29 @@ class _Alias:
             frozenset(),
             lambda: frozenset(self.scope.resolve(self.root, self.line)),
         )
-        return {".".join([root] + self.attributes) for root in roots}
-
-
-class _Imported:
-    """A name ``from base import name`` binds."""
-
-    def __init__(self, modules, base, name):
-        self.modules = modules
-        self.base = base
-        self.name = name
-
-    def targets(self):
-        return self.modules.imported(self.base, self.name)
+        return self.scope.modules.expand_all(
+            ".".join([root] + self.attributes) for root in roots
+        )
 
 
 class _Scope:
     """One namespace: a module, class, function, lambda or comprehension."""
 
-    def __init__(self, kind, qualname, parent, modules):
+    def __init__(self, kind, qualname, parent, modules, line=None):
         self.kind = kind
         self.qualname = qualname
         self.parent = parent
         self.modules = modules
+        # Where the scope starts: a function's def, for instance.
+        self.line = line
         # name -> [(line, target, conditional)]. The target is what the name
-        # refers to (a module, function or other import), an _Alias or
-        # _Imported to resolve, or None for a value. A conditional binding
+        # refers to (a module, function or other import), an _Alias to
+        # resolve, or None for a value. A conditional binding
         # (in an if, loop, try, with or match, or a deletion) may not happen.
         self.bindings = {}
+        # name -> [line] of each del or except ... as cleanup that may unbind
+        # it.
+        self.deletions = {}
         # (line, module, conditional) for each star import.
         self.stars = []
         # Names a global or nonlocal statement gives to another scope.
@@ -354,8 +357,18 @@ class _Scope:
             return owner.bind(name, line, target, conditional=True)
         self.bindings.setdefault(name, []).append((line, target, conditional))
 
+    def delete(self, name, line):
+        """Record that ``name`` may be unbound at ``line``."""
+        self.bind(name, line, None, conditional=True)
+        owner = self.declared.get(name, self)
+        owner.deletions.setdefault(name, []).append(line)
+
     def own(self, name, line, deferred):
-        """(targets, bound, falls through) for ``name`` in this scope alone."""
+        """(targets, bound, falls through) for ``name`` in this scope alone.
+
+        The use is at ``line`` or, with ``deferred``, at any time after it;
+        a None line is once the scope has run.
+        """
         entries = [(entry[0], entry[2]) for entry in self.bindings.get(name, [])]
         targets = set()
         for _, target, _ in self.bindings.get(name, []):
@@ -371,37 +384,71 @@ class _Scope:
             # A name bound anywhere in a function is local to all of it.
             return targets, True, False
         # A module or class body looks further out unless a binding is sure
-        # to have run before the use.
+        # to have run before the use, with no deletion that may come between.
+        deletions = self.deletions.get(name, [])
+
+        def holds(bound_line):
+            if deferred or line is None:
+                return (line is None or bound_line <= line) and all(
+                    deleted < bound_line for deleted in deletions
+                )
+            return bound_line < line and not any(
+                bound_line <= deleted <= line for deleted in deletions
+            )
+
         sure = [entry_line for entry_line, conditional in entries if not conditional]
-        falls = not sure or (not deferred and line is not None and line <= min(sure))
-        return targets, True, falls
+        return targets, True, not any(map(holds, sure))
 
     def resolve(self, name, line=None, deferred=False) -> set:
         """Every dotted target ``name`` may refer to at ``line``.
 
         The answer errs toward reporting: the targets of every binding that
         may be the one read, in each scope Python looks in until a binding is
-        sure to hold. ``deferred`` says the code runs once the scope has run
-        to its end, as a function body does.
+        sure to hold. ``deferred`` says the code may run at any time after
+        ``line``.
         """
         targets = set()
-        scope = self.declared.get(name, self)
-        first = True
+        owner = self.declared.get(name)
+        scope, first = self, True
         while scope is not None:
-            # No code nested in a class body sees the names it binds.
-            if first or scope.kind != "class":
+            if scope is owner:
+                owner = None
+            # A global or nonlocal name skips the scopes up to the one it
+            # names, and no code nested in a class body sees the names it
+            # binds.
+            if owner is None and (first or scope.kind != "class"):
                 found, bound, falls = scope.own(name, line, deferred)
                 targets |= found
                 if bound and not falls:
                     return targets
             if scope.kind in ("function", "lambda"):
-                # The scopes around a function have run by the time it does.
-                deferred = True
+                # A function may run as soon as its def has run, so the
+                # scopes around it are read as of the def, and any later
+                # deletion counts.
+                line, deferred = scope.line, True
             first = False
             scope = scope.parent
         if name in UNBOUND_NAMES:
             targets.add(UNBOUND_NAMES[name])
         return targets
+
+
+def _comprehension_walrus_targets(node) -> set:
+    """Names a walrus binds anywhere in a comprehension, which Python binds
+    in the function around it. A lambda inside is a scope of its own, apart
+    from its defaults."""
+    targets = set()
+    stack = [node]
+    while stack:
+        child = stack.pop()
+        if isinstance(child, ast.NamedExpr):
+            targets.add(child.target.id)
+        if isinstance(child, ast.Lambda):
+            stack.extend(child.args.defaults)
+            stack.extend(d for d in child.args.kw_defaults if d)
+            continue
+        stack.extend(ast.iter_child_nodes(child))
+    return targets
 
 
 def _function_locals(node) -> frozenset:
@@ -431,14 +478,12 @@ def _function_locals(node) -> frozenset:
                 stack.extend(d for d in child.args.kw_defaults if d)
             continue
         if isinstance(child, COMPREHENSION_NODES):
-            # Its loop variables are its own (a nested nonlocal can't read
-            # them after it ends, even where CPython inlines it); a walrus
-            # binds here.
-            names.update(
-                sub.target.id
-                for sub in ast.walk(child)
-                if isinstance(sub, ast.NamedExpr)
-            )
+            # Its loop variables are its own; a walrus binds here. Since 3.12
+            # CPython inlines it, and a nested nonlocal of a loop variable's
+            # name then names a cell here that only such nonlocals set, not
+            # the binding further out that 3.11 names. Following 3.11 keeps
+            # every value either can read.
+            names.update(_comprehension_walrus_targets(child))
             stack.append(child.generators[0].iter)
             continue
         if isinstance(child, ast.Name) and not isinstance(child.ctx, ast.Load):
@@ -548,12 +593,16 @@ class Modules:
     ``sources`` maps module names to (package name, a function returning the
     source). A lookup is a pure function of the sources: a cycle is cut
     where a lookup meets itself, and a result computed across a cut is not
-    kept, so no answer depends on the order of lookups.
+    kept, so no answer depends on the order of lookups. A lookup nested
+    deeper than ``max_depth`` is cut too, and recorded in ``exhausted``: a
+    result kept from a shallower lookup could fill that cut in another order.
     """
 
-    def __init__(self, sources: dict, external=None):
+    def __init__(self, sources: dict, external=None, max_depth=MAX_RESOLUTION_DEPTH):
         self.sources = sources
         self.external = EXTERNAL_EXPORTS if external is None else external
+        self.max_depth = max_depth
+        self.exhausted = set()
         self.tops = {}
         self.publics = {}
         self._memo = {}
@@ -576,7 +625,9 @@ class Modules:
         """``compute()``, or ``cut`` where the lookup meets itself."""
         if key in self._memo:
             return self._memo[key]
-        if key in self._active or len(self._active) > MAX_RESOLUTION_DEPTH:
+        if key in self._active or len(self._active) > self.max_depth:
+            if key not in self._active:
+                self.exhausted.add(key)
             self._cuts += 1
             return cut
         self._active.add(key)
@@ -598,14 +649,38 @@ class Modules:
 
         return self.guarded(("binding", module, name), (False, frozenset()), compute)
 
-    def imported(self, base, name) -> set:
-        """What ``from base import name`` may bind: a submodule or a name."""
-        targets = {f"{base}.{name}"}
-        if base in self.sources:
-            targets |= self.binding(base, name)[1]
-        elif self.external.get(base, {}).get(name):
-            targets.add(self.external[base][name])
-        return targets
+    def expand(self, target, start=1) -> frozenset:
+        """``target`` and what else it names, where a prefix of it at least
+        ``start`` parts long is a package module or one ``external`` maps and
+        the next part is a name that module binds.
+
+        The binding's targets, expanded, replace that prefix and name, and
+        only the rest is expanded further: a dotted name is both a module
+        path and a chain of attributes, and ``a.b`` may bind ``b`` to a path
+        through the submodule ``a.b``.
+        """
+
+        def compute():
+            found = {target}
+            parts = target.split(".")
+            for index in range(start, len(parts)):
+                base, name = ".".join(parts[:index]), parts[index]
+                if base in self.sources:
+                    bound = self.binding(base, name)[1]
+                else:
+                    mapped = self.external.get(base, {}).get(name)
+                    bound = {mapped} if mapped else set()
+                for head in self.expand_all(bound):
+                    named = ".".join([head] + parts[index + 1 :])
+                    if named != target:
+                        found |= self.expand(named, len(head.split(".")))
+            return frozenset(found)
+
+        key = ("expand", target, start)
+        return self.guarded(key, frozenset({target}), compute)
+
+    def expand_all(self, targets) -> set:
+        return set().union(*map(self.expand, targets))
 
     def star_binds(self, base, name):
         """What ``from base import *`` binds ``name`` to, or None."""
@@ -707,7 +782,7 @@ def _build_scopes(tree, module, package, modules):
             scope.bind(name, node.lineno, target, conditional)
         qualname = name if scope.parent is None else f"{scope.qualname}.{name}"
         kind = "lambda" if isinstance(node, ast.Lambda) else "function"
-        inner = _Scope(kind, qualname, scope, modules)
+        inner = _Scope(kind, qualname, scope, modules, node.lineno)
         inner.local_names = _function_locals(node)
         body = node.body if isinstance(node.body, list) else [node.body]
         declare(inner, body)
@@ -724,7 +799,7 @@ def _build_scopes(tree, module, package, modules):
         target = f"{module}.{node.name}" if top_level else None
         scope.bind(node.name, node.lineno, target, conditional)
         qualname = node.name if top_level else f"{scope.qualname}.{node.name}"
-        inner = _Scope("class", qualname, scope, modules)
+        inner = _Scope("class", qualname, scope, modules, node.lineno)
         declare(inner, node.body)
         for child in node.body:
             visit(child, inner)
@@ -733,7 +808,7 @@ def _build_scopes(tree, module, package, modules):
         # The first iterable is evaluated in the enclosing scope; the rest
         # in the comprehension's own, reported under the enclosing name.
         visit(node.generators[0].iter, scope, conditional)
-        inner = _Scope("comprehension", scope.qualname, scope, modules)
+        inner = _Scope("comprehension", scope.qualname, scope, modules, node.lineno)
         for index, generator in enumerate(node.generators):
             scope_of[generator] = inner
             if index:
@@ -787,15 +862,17 @@ def _build_scopes(tree, module, package, modules):
                 if alias.name == "*":
                     scope.stars.append((node.lineno, base, conditional))
                 else:
-                    imported = _Imported(modules, base, alias.name)
+                    # A submodule or a name base binds: expand decides.
                     name = alias.asname or alias.name
-                    scope.bind(name, node.lineno, imported, conditional)
+                    scope.bind(name, node.lineno, f"{base}.{alias.name}", conditional)
         elif isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store):
             scope.bind(node.id, node.lineno, None, conditional)
         elif isinstance(node, ast.Name) and isinstance(node.ctx, ast.Del):
-            scope.bind(node.id, node.lineno, None, True)
+            scope.delete(node.id, node.lineno)
         elif isinstance(node, ast.ExceptHandler) and node.name:
+            # Python deletes the name when the handler ends.
             scope.bind(node.name, node.lineno, None, True)
+            scope.delete(node.name, node.end_lineno)
         inside = conditional or isinstance(node, COMPOUND_NODES)
         for child in ast.iter_child_nodes(node):
             visit(child, scope, inside)
@@ -919,10 +996,10 @@ def analyse(
         if dotted is None:
             return set()
         root, attributes = dotted
-        return {
+        return modules.expand_all(
             ".".join([target] + attributes)
             for target in scope_for(node).resolve(root, node.lineno)
-        }
+        )
 
     def shift_of(node):
         if isinstance(node, ast.BinOp) and isinstance(
@@ -974,7 +1051,10 @@ def analyse(
                 attribute = _literal(node.args[1])
                 if attribute:
                     owners = targets_of(node.args[0])
-                    report_targets(node, {f"{owner}.{attribute}" for owner in owners})
+                    report_targets(
+                        node,
+                        modules.expand_all(f"{owner}.{attribute}" for owner in owners),
+                    )
             if called & XOR_FUNCTIONS and len(node.args) == 2:
                 if _is_xorshift(*node.args, shift_of):
                     report(node, "xorshift")
@@ -1186,6 +1266,19 @@ def _kinds(source: str) -> set:
             "from policyengine_core.model_api import np as lib\nlib.random.uniform()\n",
             "random source",
         ),
+        # An attribute of a module is what the module binds under the name.
+        (
+            "import policyengine_core.model_api as api\napi.np.random.uniform()\n",
+            "random source",
+        ),
+        (
+            "from policyengine_core import model_api\nmodel_api.np.random.uniform()\n",
+            "random source",
+        ),
+        (
+            "import policyengine_core.model_api as api\nlib = api.np\nlib.random.uniform()\n",
+            "random source",
+        ),
         (
             "import numpy as lib\n"
             "values = [lib.random.uniform() for _ in range(1)]\n"
@@ -1230,6 +1323,17 @@ def _kinds(source: str) -> set:
             "    return lib.random.uniform()\n",
             "random source",
         ),
+        # A global name skips the functions between it and the module.
+        (
+            "import numpy as lib\n"
+            "def outer():\n"
+            "    lib = None\n"
+            "    def inner():\n"
+            "        global lib\n"
+            "        return lib.random.random()\n"
+            "    return inner\n",
+            "random source",
+        ),
         # nonlocal names the nearest function that binds the name, not the
         # nearest function, and wherever in its body the binding is.
         (
@@ -1256,8 +1360,56 @@ def _kinds(source: str) -> set:
             "    return middle\n",
             "random source",
         ),
+        # A walrus in a lambda binds in the lambda, even inside a
+        # comprehension, so middle doesn't bind lib.
+        (
+            "def outer():\n"
+            "    import numpy as lib\n"
+            "    def middle():\n"
+            "        [(lambda: (lib := None)) for marker in ()]\n"
+            "        def inner():\n"
+            "            nonlocal lib\n"
+            "            lib.random.random()\n"
+            "            lib = None\n"
+            "        inner()\n"
+            "    middle()\n",
+            "random source",
+        ),
         ("if flag:\n    hash = str\nkey = hash('x')\n", "builtin hash"),
         ("key = hash('x')\nhash = str\n", "builtin hash"),
+        # A deletion, or the end of an except clause, may unbind a shadow.
+        ("hash = str\ndel hash\nkey = hash('x')\n", "builtin hash"),
+        (
+            "class A:\n    hash = str\n    del hash\n    key = hash('x')\n",
+            "builtin hash",
+        ),
+        (
+            "hash = str\n"
+            "try:\n"
+            "    pass\n"
+            "except ValueError as hash:\n"
+            "    pass\n"
+            "key = hash('x')\n",
+            "builtin hash",
+        ),
+        (
+            "hash = str\n"
+            "def clear():\n"
+            "    global hash\n"
+            "    del hash\n"
+            "clear()\n"
+            "key = hash('x')\n",
+            "builtin hash",
+        ),
+        # A function may run before a later binding, or after a deletion.
+        (
+            "def consumer(value):\n"
+            "    return hash(value)\n"
+            "answer = consumer('x')\n"
+            "hash = str\n",
+            "builtin hash",
+        ),
+        ("hash = str\ndef f(x):\n    return hash(x)\ndel hash\n", "builtin hash"),
         ("import importlib\nimportlib.import_module('random')\n", "stochastic import"),
         (
             "import importlib\nimportlib.import_module(name='random')\n",
@@ -1314,8 +1466,12 @@ def test_detector_flags_each_draw_pattern(source, kind):
         "random = 3\nrandom + 1\n",
         "def f(random):\n    return random.random()\n",
         "def hash(x):\n    return x\nhash(1)\n",
-        # A function sees the module's later bindings when it runs.
-        "def f(x):\n    return hash(x)\ndef hash(x):\n    return x\n",
+        # A binding sure to run before a function's def hides the builtin
+        # from its body; so does a binding after a deletion.
+        "def hash(x):\n    return x\ndef f(x):\n    return hash(x)\n",
+        "hash = str\nclass A:\n    def m(self, x):\n        return hash(x)\n",
+        "hash = str\ndel hash\nhash = repr\nkey = hash('x')\n",
+        "def f(x):\n    hash = str\n    del hash\n    return x\n",
         "def f(hash):\n    return hash(1)\n",
         "class A:\n    def hash(self):\n        return 1\n    def m(self):\n"
         "        return self.hash()\n",
@@ -1342,6 +1498,17 @@ def test_detector_flags_each_draw_pattern(source, kind):
         "    import numpy as lib\n"
         "    def middle():\n"
         "        lib = object()\n"
+        "        def inner():\n"
+        "            nonlocal lib\n"
+        "            return lib.random.random()\n"
+        "        return inner\n"
+        "    return middle\n",
+        # A walrus in a lambda's default binds where the comprehension runs,
+        # so in middle.
+        "def outer():\n"
+        "    import numpy as lib\n"
+        "    def middle():\n"
+        "        [(lambda x=(lib := None): x) for marker in ()]\n"
         "        def inner():\n"
         "            nonlocal lib\n"
         "            return lib.random.random()\n"
@@ -1473,6 +1640,89 @@ def test_named_imports_and_reexports_resolve_to_what_they_name():
     assert ("consumer", "draw helper call") in {(s, k) for _, s, k in found["c"]}
 
 
+def test_module_attributes_resolve_to_what_the_module_binds():
+    # A name passed on as an attribute of another module.
+    sources = {
+        "api": "import numpy as lib\n",
+        "bridge": "from . import api\nlib = api.lib\n",
+        "user": "from .bridge import lib\nlib.random.uniform()\n",
+    }
+    assert _package_kinds(sources) == ["random source"]
+    # A draw helper reached as an attribute of a module that re-exports it.
+    found = _package_findings(
+        {
+            "a": "def mix(x):\n    return x ^ (x >> 3)\n",
+            "b": "from .a import mix\n",
+            "c": "from . import b\ndef consumer(x):\n    return b.mix(x)\n",
+        }
+    )
+    assert ("consumer", "draw helper call") in {(s, k) for _, s, k in found["c"]}
+
+
+def test_a_package_that_rebinds_its_submodules_name_resolves():
+    # Both __init__ files bind w to the function pkg.w.w defines, so the
+    # attribute pkg.w is that function, though "pkg.w" also names a package
+    # (as policyengine_us.reforms.congress.mcdonald_rivet does).
+    sources = {
+        "pkg": ("pkg", "from .w import w\n"),
+        "pkg.w": ("pkg.w", "from .w import w\n"),
+        "pkg.w.w": ("pkg.w", "def w(x):\n    return x ^ (x >> 3)\n"),
+        "pkg.user": ("pkg", "import pkg\ndef consumer(x):\n    return pkg.w(x)\n"),
+    }
+    # This resolution needs depth 4. A low limit makes one that expands
+    # pkg.w.w.w into ever longer paths fail fast, with a recorded cut,
+    # instead of searching for minutes.
+    modules = Modules(
+        {
+            module: (package, lambda source=source: source)
+            for module, (package, source) in sources.items()
+        },
+        max_depth=5,
+    )
+    analyses = {
+        module: analyse(source, f"{module}.py", module, package, modules)
+        for module, (package, source) in sources.items()
+    }
+    helpers = draw_helpers(analyses, {})
+    assert "pkg.w.w.w" in helpers
+    calls = helper_calls(analyses["pkg.user"], helpers)
+    assert [(scope, kind) for _, scope, kind in calls] == [
+        ("consumer", "draw helper call")
+    ]
+    assert not modules.exhausted
+
+
+def test_lookups_cut_by_the_depth_limit_are_recorded():
+    # lib passes along 12 re-exports, each read where it arrives. From the
+    # consumer end, its lookup nests past a limit of 4 and is cut; from the
+    # numpy end, kept results keep each lookup shallow. A cut is recorded, so
+    # the package scan fails instead of depending on the order.
+    sources = {"m0": "import numpy as lib\n"}
+    sources |= {f"m{i}": f"from .m{i - 1} import lib\nlib\n" for i in range(1, 13)}
+    sources["user"] = "from .m12 import lib\nlib.random.uniform()\n"
+    consumer_first = list(reversed(sources))
+    for order, max_depth, cut in [
+        (consumer_first, 4, True),
+        (list(sources), 4, False),
+        (consumer_first, MAX_RESOLUTION_DEPTH, False),
+    ]:
+        modules = Modules(
+            {
+                f"pkg.{name}": ("pkg", lambda source=source: source)
+                for name, source in sources.items()
+            },
+            max_depth=max_depth,
+        )
+        analyses = {
+            name: analyse(sources[name], f"{name}.py", f"pkg.{name}", "pkg", modules)
+            for name in order
+        }
+        assert bool(modules.exhausted) == cut
+        if not cut:
+            kinds = [kind for _, _, kind in analyses["user"].findings]
+            assert kinds == ["random source"]
+
+
 @pytest.mark.parametrize(
     "api",
     [
@@ -1509,27 +1759,43 @@ def test_cyclic_star_imports_resolve_in_any_order():
     assert [kind for _, _, kind in results[0]["user"]] == ["random source"]
 
 
-def test_cyclic_named_imports_resolve_in_any_order():
-    # Looking up ``a.lib`` from ``other`` meets ``a`` again through ``b``, so
-    # ``b.lib`` is cut short there, without numpy. Keeping that partial answer
-    # would hide numpy from ``user`` whenever ``other`` is analysed first.
-    sources = {
-        "a": "if flag:\n    import numpy as lib\nelse:\n    from .b import lib\n",
-        "b": "from .a import lib\n",
-        "other": "from .a import lib\nlib.random.uniform()\n",
-        "user": "from .b import lib\nlib.random.uniform()\n",
-    }
+@pytest.mark.parametrize(
+    "sources",
+    [
+        {
+            "a": "if flag:\n    import numpy as lib\nelse:\n    from .b import lib\n",
+            "b": "from .a import lib\n",
+            "other": "from .a import lib\nlib.random.uniform()\n",
+            "user": "from .b import lib\nlib.random.uniform()\n",
+        },
+        # From via_a, a.lib leads to b.lib, then a.lib again, then b.lib,
+        # which is cut: so that inner a.lib has none of b's numpy. Keeping
+        # that partial answer would hide numpy from via_c, which reaches it
+        # only through a.lib, whenever via_a is analysed first.
+        {
+            "a": "from .b import lib\n",
+            "b": "if flag:\n    from .a import lib\nelse:\n    import numpy as lib\n",
+            "c": "from .a import lib\n",
+            "via_a": "from .a import lib\nlib.random.uniform()\n",
+            "via_c": "from .c import lib\nlib.random.uniform()\n",
+        },
+    ],
+)
+def test_cyclic_named_imports_resolve_in_any_order(sources):
     results = [
         _package_findings(sources, list(order)) for order in permutations(sources)
     ]
     assert all(result == results[0] for result in results)
-    for module in ("other", "user"):
-        assert [kind for _, _, kind in results[0][module]] == ["random source"]
+    for module, source in sources.items():
+        if "lib.random" in source:
+            assert [kind for _, _, kind in results[0][module]] == ["random source"]
 
 
 def test_model_api_passes_on_cores_numpy_and_its_own_helpers():
     modules = package_scan().modules
     assert "numpy" in modules.star_binds("policyengine_us.model_api", "np")
+    for api in ("policyengine_us.model_api", "policyengine_core.model_api"):
+        assert "numpy.random.uniform" in modules.expand(f"{api}.np.random.uniform")
     assert "policyengine_us.model_api.all_of_variables" in modules.star_binds(
         "policyengine_us.model_api", "all_of_variables"
     )
@@ -1565,6 +1831,15 @@ def test_allowlist_entries_still_match():
     assert not stale, (
         "These entries allow more than the package now has. Lower or delete "
         "them, and lower RATCHET_CEILING to match RATCHET:\n" + "\n".join(stale)
+    )
+
+
+def test_package_lookups_stay_within_the_depth_limit():
+    exhausted = package_scan().modules.exhausted
+    assert not exhausted, (
+        f"{len(exhausted)} name lookups nested deeper than MAX_RESOLUTION_DEPTH "
+        "and were cut, so what they found may depend on the order modules "
+        "were scanned in. Raise the limit. One cut: " + repr(next(iter(exhausted)))
     )
 
 

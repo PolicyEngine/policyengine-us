@@ -83,6 +83,11 @@ DATASET_SOURCE_INPUTS = frozenset({"is_spm_independent_minor_role"})
 
 COUNTY_FIPS_PATTERN = re.compile(r"[0-9]{5}")
 
+# Inputs whose presence, not their values, decides what a formula does
+# (is_receiving_unemployment_compensation). Presence is the inputs a holder
+# has, so subsample must not turn a calculated default into one.
+PRESENCE_TESTED_INPUTS = ("unemployment_compensation_start_month",)
+
 # Where a simulation keeps its behavioural-response measurements, by period
 # (``variables/gov/simulation/behavioral_response_measurements.py``). They are
 # cached formula output kept outside the holders, so the simulation's clone,
@@ -1012,6 +1017,15 @@ class SPMSimulationMixin:
             yield from branch._simulation_family()
 
     def subsample(self, *args, **kwargs):
+        # Core's subsample exports every value the simulation holds, calculated
+        # ones included, and reloads them all as inputs. A presence-tested
+        # input with no input here holds only calculated defaults, so drop them
+        # first; otherwise it would come back as a supplied column of zeros
+        # (policyengine-core#633).
+        for variable_name in PRESENCE_TESTED_INPUTS:
+            holder = self.get_holder(variable_name)
+            if not holder.get_input_periods(self.branch_name):
+                holder.delete_arrays(branch_name=self.branch_name)
         result = super().subsample(*args, **kwargs)
         baseline = self.branches.get("baseline")
         if baseline is not None:

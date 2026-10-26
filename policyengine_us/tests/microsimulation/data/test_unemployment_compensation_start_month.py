@@ -168,6 +168,17 @@ def _receipt_by_month(simulation, year) -> np.ndarray:
     )
 
 
+def _january_start_by_month(simulation, year) -> np.ndarray:
+    """Receipt when everyone's block starts in January."""
+    months = np.asarray(
+        simulation.calculate("unemployment_compensation_months", year).values
+    )
+    start = np.zeros(months.size, dtype=int)
+    return np.stack(
+        [retired_receipt(start, months, month) for month in range(1, 13)], axis=1
+    )
+
+
 def _retired_by_month(simulation, year) -> np.ndarray:
     person_id = np.asarray(simulation.calculate("person_id", year).values)
     months = np.asarray(
@@ -289,13 +300,14 @@ def test_stored_column_of_zeros_raises_naming_it(people):
         simulation.calculate("is_receiving_unemployment_compensation", f"{YEAR}-01")
 
 
-def test_start_month_set_after_construction_is_used(people, stored_simulation):
+def test_start_month_set_after_construction_is_used(people):
+    # January differs from the retired hash for most people, so ignoring the
+    # input would show.
     simulation = Microsimulation(dataset=_dataset(people))
-    simulation.set_input(COLUMN, YEAR, stored_start_month(people["person_id"]))
-    np.testing.assert_array_equal(
-        _receipt_by_month(simulation, YEAR),
-        _receipt_by_month(stored_simulation, YEAR),
-    )
+    simulation.set_input(COLUMN, YEAR, np.ones(len(people), dtype=int))
+    receipt = _receipt_by_month(simulation, YEAR)
+    np.testing.assert_array_equal(receipt, _january_start_by_month(simulation, YEAR))
+    assert (receipt != _retired_by_month(simulation, YEAR)).any()
     partial = Microsimulation(dataset=_dataset(people))
     values = stored_start_month(people["person_id"])
     values[:2] = 0
@@ -313,7 +325,7 @@ def test_start_month_of_zeros_set_after_construction_raises(people):
         simulation.calculate("is_receiving_unemployment_compensation", f"{YEAR}-01")
 
 
-def test_start_month_applies_forward_from_the_year_it_is_set(people, stored_simulation):
+def test_start_month_applies_forward_from_the_year_it_is_set(people):
     # Core carries an input forward to later periods, never backwards: a
     # year before the first input reads the default 0, which raises.
     later_only = Microsimulation(dataset=_dataset(people))
@@ -321,10 +333,36 @@ def test_start_month_applies_forward_from_the_year_it_is_set(people, stored_simu
     with pytest.raises(ValueError, match=COLUMN):
         later_only.calculate("is_receiving_unemployment_compensation", f"{YEAR}-01")
     carried = Microsimulation(dataset=_dataset(people))
-    carried.set_input(COLUMN, YEAR, stored_start_month(people["person_id"]))
+    carried.set_input(COLUMN, YEAR, np.ones(len(people), dtype=int))
+    receipt = _receipt_by_month(carried, LATER_YEAR)
+    np.testing.assert_array_equal(receipt, _january_start_by_month(carried, LATER_YEAR))
+    assert (receipt != _retired_by_month(carried, LATER_YEAR)).any()
+
+
+def test_subsample_keeps_a_missing_start_month_missing(people):
+    # Core's subsample reloads every value a simulation holds as an input,
+    # calculated ones included. Receipt calculated before it reads the start
+    # month's default, which must not come back as a supplied column of
+    # zeros: that would raise for the months not yet calculated.
+    calculated = Microsimulation(dataset=_dataset(people))
+    calculated.calculate("is_receiving_unemployment_compensation", f"{YEAR}-01")
+    untouched = Microsimulation(dataset=_dataset(people))
+    for simulation in (calculated, untouched):
+        simulation.subsample(n=20, seed="start-month", quantize_weights=False)
     np.testing.assert_array_equal(
-        _receipt_by_month(carried, LATER_YEAR),
-        _receipt_by_month(stored_simulation, LATER_YEAR),
+        _receipt_by_month(calculated, YEAR), _receipt_by_month(untouched, YEAR)
+    )
+    np.testing.assert_array_equal(
+        _receipt_by_month(untouched, YEAR), _retired_by_month(untouched, YEAR)
+    )
+
+
+def test_subsample_keeps_a_stored_start_month(people):
+    stored = Microsimulation(dataset=_dataset(people.assign(**{COLUMN: 1})))
+    stored.calculate("is_receiving_unemployment_compensation", f"{YEAR}-01")
+    stored.subsample(n=20, seed="start-month", quantize_weights=False)
+    np.testing.assert_array_equal(
+        _receipt_by_month(stored, YEAR), _january_start_by_month(stored, YEAR)
     )
 
 
