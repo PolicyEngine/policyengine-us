@@ -478,25 +478,25 @@
     is_optional_senior_or_disabled_income_eligible: [true, true]
 
 # Wisconsin's categorically needy standard is "the maximum SSI payment
-# including state supplement" (DHS 103.04(1)(c)): $994 plus the $83.78
-# supplement, $1,077.78 a month from January 2026 (MEH 39.4.1). 100% of the
-# poverty guideline ($1,330) is Wisconsin's medically needy limit, so a
-# person with $1,097.83 a month of Social Security ($1,077.83 countable) is
-# over the categorically needy standard by five cents a month.
-- name: Wisconsin individual just over the 2026 categorically needy standard is ineligible
-  period: 2026
+# including state supplement" (DHS 103.04(1)(c)): $967 plus the $83.78
+# supplement, $1,050.78 a month from January 2025 (MEH 39.4.1). 100% of the
+# 2025 one-person poverty guideline would be $15,650 a year. A person with
+# $1,070.83 a month of Social Security ($1,050.83 countable) is over the
+# categorically needy standard by five cents a month.
+- name: Wisconsin individual just over the 2025 categorically needy standard is ineligible
+  period: 2025
   input:
     people:
       person1:
         age: 70
-        medicaid_optional_senior_or_disabled_countable_income: 12_934
+        medicaid_optional_senior_or_disabled_countable_income: 12_610
     households:
       household:
         members: [person1]
         state_code: WI
   output:
-    # (994 + 83.78) x 12
-    medicaid_optional_senior_or_disabled_income_limit: [12_933.36]
+    # (967 + 83.78) x 12
+    medicaid_optional_senior_or_disabled_income_limit: [12_609.36]
     is_optional_senior_or_disabled_income_eligible: [false]
 
 # Until July 2020 Wisconsin's standard was a base amount plus the person's
@@ -537,3 +537,39 @@
     # (994 + 33) x 12
     medicaid_optional_senior_or_disabled_income_limit: [12_324]
     is_optional_senior_or_disabled_income_eligible: [false]
+
+# From August 2020 Wisconsin's standard is the fixed SSI payment plus the
+# state supplement (DHS Operations Memo 20-13), which the model reads from
+# January 2021: $794 plus the $83.78 supplement, $877.78 a month in 2021.
+# The 0.83 share of the poverty guideline would be 0.83 x 12,880 = 10,690.40.
+- name: Wisconsin uses the SSI rate plus the state supplement from 2021
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 70
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    # (794 + 83.78) x 12
+    medicaid_optional_senior_or_disabled_income_limit: [10_533.36]
+
+# Before 2024 Vermont's AABD supplement for an individual living
+# independently was $52.04 (DCF Bulletin 17-26), so the 2023 SSI/AABD
+# payment level was $914 plus $52.04, $966.04 a month (DVHA 2024 Standards
+# Change for Healthcare).
+- name: Vermont uses the $52.04 AABD supplement before 2024
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 70
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # (914 + 52.04) x 12
+    medicaid_optional_senior_or_disabled_income_limit: [11_592.48]

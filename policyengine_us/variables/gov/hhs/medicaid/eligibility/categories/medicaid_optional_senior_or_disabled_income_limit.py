@@ -16,6 +16,8 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
         "https://www.ecfr.gov/current/title-42/section-435.210",
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-015-00/0805-015-45-income-maximum/",
         "https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=1",
+        "https://www.law.cornell.edu/regulations/alaska/7-AAC-40.310",
+        "https://gc.nh.gov/rules/state_agencies/he-w800.html",
     )
 
     def formula(person, period, parameters):
@@ -52,15 +54,38 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
         ssi = parameters(period).gov.ssa.ssi.amount
         ssi_rate = where(is_couple, ssi.couple, ssi.individual) * MONTHS_IN_YEAR
         uses_ssi_rate = p.income.limit.uses_ssi_federal_benefit_rate[state].astype(bool)
-        # Other states set a monthly dollar standard of their own. In most it
-        # is the SSI rate plus a state amount, such as the state supplement.
-        standard = p.income.limit.state_standard
-        state_amount = where(
-            is_couple, standard.couple[state], standard.individual[state]
+        # Other states set a monthly dollar standard of their own: Alaska's
+        # 7 AAC 40.310 standard, or the SSI rate plus the amount above it in
+        # New Hampshire's standard of need (He-W 858.03(e)), the Vermont AABD
+        # or Wisconsin state supplement, or state_standard elsewhere.
+        states = parameters(period).gov.states
+        ak = states.ak.dpa.ssp.income_eligibility_standard
+        nh = states.nh.dhhs.ssp
+        vt = states.vt.dcf.aabd.amount
+        wi = states.wi.dhs.ssp.amount
+        nh_amount = (
+            where(
+                is_couple,
+                nh.minimum_payment_level.two_person,
+                nh.minimum_payment_level.one_person.INDEPENDENT,
+            )
+            - nh.standard_disregard[where(is_couple, 2, 1)]
         )
-        adds_ssi_rate = standard.adds_ssi_rate[state].astype(bool)
-        state_standard = state_amount * MONTHS_IN_YEAR + where(
-            adds_ssi_rate, ssi_rate, 0
+        other = p.income.limit.state_standard
+        monthly_amount = select(
+            [state == "NH", state == "VT", state == "WI"],
+            [
+                nh_amount,
+                where(is_couple, vt.couple.INDEPENDENT, vt.individual.INDEPENDENT),
+                where(is_couple, wi.couple, wi.individual),
+            ],
+            default=where(is_couple, other.couple[state], other.individual[state]),
+        )
+        ak_standard = where(is_couple, ak.couple, ak.individual) * MONTHS_IN_YEAR
+        state_standard = where(
+            state == "AK",
+            ak_standard,
+            ssi_rate + monthly_amount * MONTHS_IN_YEAR,
         )
         uses_state_standard = p.income.limit.uses_state_standard[state].astype(bool)
         return select(

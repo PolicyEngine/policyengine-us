@@ -9,8 +9,16 @@ metadata:
   reference:
     - title: POMS SI 01415.058 M.2.a, Vermont January 2026 recipient payment levels
       href: https://secure.ssa.gov/poms.nsf/lnx/0501415058#m2a
+    - title: Vermont DCF Bulletin 17-26, P-2740A SSI/AABD Payment Maximums (effective January 1, 2017 and 2018)
+      href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules-Adopted/B17-26.pdf#page=11
+    - title: Vermont DVHA, 2024 Standards Change for Healthcare, SSI/AABD Payment Maximums (effective January 1, 2023 and 2024)
+      href: https://dvha.vermont.gov/sites/dvha/files/documents/2024%20Standards%20Change%20for%20Healthcare%20FINAL%20Corrected%2012.19.pdf#page=7
 
+# The earlier values are recorded for independent living, which the Medicaid
+# aged, blind and disabled standard also uses.
 INDEPENDENT:
+  2017-01-01: 52.04
+  2024-01-01: 55.68
   2026-01-01: 55.68
 
 HOUSEHOLD_OF_ANOTHER:
