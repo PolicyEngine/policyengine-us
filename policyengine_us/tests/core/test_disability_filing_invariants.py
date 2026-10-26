@@ -25,11 +25,11 @@ References:
   retain the dependent worksheet in every year (decision d1395):
   https://www.law.cornell.edu/uscode/text/26/6012
 
-The Medicaid reference applies Table 2 to each person's gross and earned
-income. The deduction worksheet additionally subtracts Schedule 1 line 15.
-Elective deferrals are zero: the pre-existing worksheet/Medicaid treatment of
-deferrals is review P3-4, reserved for a separate change. These properties
-concern section 6012's income tests, not separate Schedule SE filing duties.
+The federal deduction worksheet and Medicaid Table 2 reference use W-2 box 1
+wages after elective deferrals, plus earned disability and business income,
+less Schedule 1 line 15 (2025 Form 1040 instructions, pp. 25 and 35).
+These properties concern section 6012's income tests, not separate Schedule
+SE filing duties.
 """
 
 import numpy as np
@@ -56,6 +56,7 @@ def filer(**inputs):
         "is_blind": False,
         "claimed_as_dependent_on_another_return": True,
         "employment_income": 0,
+        "traditional_401k_contributions": 0,
         "self_employment_income": 0,
         "taxable_interest_income": 0,
         "disability_benefits": 0,
@@ -67,11 +68,14 @@ def filer(**inputs):
 
 @st.composite
 def filers(draw):
+    wages = draw(st.integers(0, 30_000))
     return filer(
         age=draw(st.sampled_from([19, 40, 64, 65, 66, 80])),
         is_blind=draw(st.booleans()),
         claimed_as_dependent_on_another_return=draw(st.booleans()),
-        employment_income=draw(st.integers(0, 30_000)),
+        employment_income=wages,
+        # The 2024 elective-deferral limit is the smallest across YEARS.
+        traditional_401k_contributions=draw(st.integers(0, min(wages, 23_000))),
         self_employment_income=draw(
             st.one_of(st.just(0), st.integers(-10_000, 30_000))
         ),
@@ -102,12 +106,27 @@ ANCHORS = [
         tax_exempt_disability_benefits=2_000,
         disability_benefits_before_minimum_retirement_age=6_000,
     ),
-    # H2: $6,000 business profit and $5,000 of earned disability. This also
-    # distinguishes Medicaid's Table 2 earnings from the deduction worksheet.
+    # H2: $6,000 business profit and $5,000 of earned disability.
     filer(
         self_employment_income=6_000,
         disability_benefits=7_000,
         disability_benefits_before_minimum_retirement_age=5_000,
+    ),
+    # Combined deferrals/disability regression in 2025: $15,000 earned and
+    # gross income, with a $15,450 dependent deduction, means no return.
+    filer(
+        employment_income=18_000,
+        traditional_401k_contributions=6_000,
+        disability_benefits=3_000,
+        disability_benefits_before_minimum_retirement_age=3_000,
+    ),
+    # Line 15 makes both filing tests true: $2,351 gross exceeds the
+    # $901 + $1,000 - $63.65 + $450 = $2,287.35 dependent deduction.
+    filer(
+        self_employment_income=901,
+        taxable_interest_income=450,
+        disability_benefits=1_000,
+        disability_benefits_before_minimum_retirement_age=1_000,
     ),
     filer(employment_income=2_000, self_employment_income=-5_000),
     filer(employment_income=2_000, self_employment_income=-100),
@@ -181,7 +200,9 @@ def reference(person, year):
     earned_disability = min(
         taxable, max(0, person["disability_benefits_before_minimum_retirement_age"])
     )
-    wages = person["employment_income"]
+    wages = max(
+        0, person["employment_income"] - person["traditional_401k_contributions"]
+    )
     business = person["self_employment_income"]
     interest = person["taxable_interest_income"]
     gross = wages + max(0, business) + interest + taxable
@@ -193,8 +214,8 @@ def reference(person, year):
     # Schedule SE lines 4a, 4c, 12 and 13, below the Social Security cap.
     net_business = business * 0.9235
     line_15 = net_business * 0.153 / 2 if net_business >= 400 else 0
-    worksheet_line_1 = max(0, earned - line_15)
-    worksheet_deduction = min(regular, max(floor, worksheet_line_1 + EARNED_ADDITION))
+    worksheet_earned = max(0, earned - line_15)
+    worksheet_deduction = min(regular, max(floor, worksheet_earned + EARNED_ADDITION))
     claimed = person["claimed_as_dependent_on_another_return"]
     basic = worksheet_deduction if claimed else regular
     standard = basic + extra
@@ -213,11 +234,12 @@ def reference(person, year):
     # Business losses lower earned income but cannot reclassify wages or
     # disability pensions as unearned income.
     table_2_gross_limit = (
-        max(floor, min(earned, regular - EARNED_ADDITION) + EARNED_ADDITION) + extra
+        max(floor, min(worksheet_earned, regular - EARNED_ADDITION) + EARNED_ADDITION)
+        + extra
     )
     medicaid_required = (
         unearned > floor + extra
-        or earned > regular + extra
+        or worksheet_earned > regular + extra
         or gross > table_2_gross_limit
     )
     return {
