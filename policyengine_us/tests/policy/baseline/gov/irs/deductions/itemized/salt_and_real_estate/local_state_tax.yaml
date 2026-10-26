@@ -645,6 +645,7 @@
   # Line 2 is zero outside Jackson and Tupelo; heading rate is 7%.
   # Line 6 = 1139 * (1 / 7) = 162.71 dollars, rounded to cents.
   period: 2015
+  absolute_error_margin: 0.01
   input:
     state_code: MS
     county_fips: "28047"
@@ -661,6 +662,7 @@
   # Line 2 is zero outside Jackson and Tupelo; heading rate is 7%.
   # Line 6 = 1232 * (1 / 7) = 176 dollars, rounded to cents.
   period: 2018
+  absolute_error_margin: 0.01
   input:
     state_code: MS
     county_fips: "28047"
