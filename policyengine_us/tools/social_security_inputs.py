@@ -280,7 +280,6 @@ def migrate_social_security_inputs(
     # no successful holder writes to route, including in constructor probes.
     if getattr(simulation, "persons", None) is None:
         return moved
-    purged = False
     for name in SOCIAL_SECURITY_COMPONENTS:
         holder = _holder(simulation, name)
         if holder is None:
@@ -305,14 +304,7 @@ def migrate_social_security_inputs(
                 # Routing removes an exact public override and exposes its
                 # formula. A custom input handler may already have calculated
                 # values from that override while the builder was loading.
-                simulation._drop_values_that_may_depend_on(name, period)
-                if not purged:
-                    # Core's dependency drops apply only on branches. A
-                    # builder can replace a source on an ordinary simulation
-                    # whose base or downstream values are already cached.
-                    # Keep raw carry seeds and every supplied input intact.
-                    _purge_derived_arrays(simulation)
-                    purged = True
+                _purge_derived_arrays(simulation, name, period)
                 _store_source(holder, period, value.array, source_branch)
                 if explicit is None:
                     # A local source must also displace inherited public
@@ -479,12 +471,24 @@ def _select_subsample_sources(simulation, metadata, person_ids):
     }
 
 
-def _purge_derived_arrays(simulation):
-    """Discard formula results after benefit sources change.
+def _purge_derived_arrays(simulation, public, period):
+    """Drop only derived arrays Core numbers as possibly dependent.
 
-    Core's general cache drop also removes nonregistered, nonderived carry
-    seeds. Those are independent caller values and remain valid here.
+    Refresh-scope ruling (2026-10-26), rules 1–4: use the earliest dependency
+    of either source name, retain raw values and supplied inputs, and do
+    nothing without a dependency record. Core's general _drop_computed also
+    removes unregistered nonderived seeds, so it cannot serve this adapter.
     """
+    history = simulation._get_store_history()
+    dependencies = [
+        since
+        for name in (public, f"{public}_reported")
+        if (since := history.earliest_dependency(name, to_period(period))) is not None
+    ]
+    if not dependencies:
+        return 0
+    since = min(dependencies)
+    dropped = 0
     for population in simulation.populations.values():
         for holder in population._holders.values():
             for tier, storage in (
@@ -494,18 +498,52 @@ def _purge_derived_arrays(simulation):
                 if storage is None:
                     continue
                 for branch, period in tuple(storage.get_known_branch_periods()):
-                    if storage.is_derived(period, branch):
+                    key = (
+                        f"{branch}:{period}"
+                        if tier == "memory"
+                        else f"{branch}_{period}"
+                    )
+                    number = storage._sequence_numbers.get(key)
+                    if (
+                        storage.is_derived(period, branch)
+                        and number is not None
+                        and number >= since
+                    ):
                         _delete_exact(holder, period, branch, tier=tier)
+                        dropped += 1
+    if not dropped:
+        return 0
+    # _delete_exact uses Holder._evict_fast_cache per removed key. Also drop
+    # cached returns whose holders do not keep arrays (e.g. cache blacklist),
+    # just as Core's _drop_computed does, but only after an actual deletion.
     simulation._fast_cache = {}
+    from policyengine_core.simulations.simulation import (
+        _calculation_frames,
+        _taint_waiting_frames,
+    )
+
+    simulation._input_epoch += 1
+    frames = _calculation_frames.get()
+    if not frames:
+        _taint_waiting_frames(simulation)
+    for frame in frames:
+        frame.drop_epochs.setdefault(simulation, set()).add(simulation._input_epoch)
+    # Do not prune history: raw seeds and their readers can remain, unlike
+    # after Core's broader _drop_computed. Their dependency records still hold.
+    return dropped
 
 
 def install_social_security_input_compatibility():
     from policyengine_core.holders import Holder
+    from policyengine_core.holders import helpers
     from policyengine_core.simulations import Simulation as CoreSimulation
     from policyengine_core.simulations.simulation_builder import SimulationBuilder
     from policyengine_core.tools import simulation_dumper
 
     if getattr(Holder.get_array, "_social_security_readtime", False):
+        # importlib.reload replaces this module's globals while the installed
+        # wrappers remain on Core classes. Recover their physical originals.
+        _PHYSICAL.update(Holder.get_array._social_security_physical)
         return
     if getattr(Holder._set, "_social_security_compatibility", False):
         raise RuntimeError(
@@ -520,7 +558,32 @@ def install_social_security_input_compatibility():
         recorded_periods=CoreSimulation._get_set_input_periods,
         recorded_array=CoreSimulation._get_recorded_input_array,
         calculate=CoreSimulation._calculate,
+        stored_input=helpers.get_stored_input,
     )
+
+    @wraps(_PHYSICAL["stored_input"])
+    def get_stored_input(holder, period, branch_name):
+        value = _PHYSICAL["stored_input"](holder, period, branch_name)
+        if (
+            value is None
+            and holder.variable.name in SOCIAL_SECURITY_COMPONENTS
+            and _enabled(holder.simulation)
+        ):
+            # Core's divide/dispatch helpers must count an initial input even
+            # after routing hides it from public formula reads. Match Core's
+            # exact input branch and supplied-input tier checks; raw seeds and
+            # formula caches do not reserve a helper's subperiod allocation.
+            source = _physical_value(
+                holder,
+                period,
+                (f"{_SOURCE_BRANCH}{branch_name}",),
+                registered_only=True,
+            )
+            if source is not None:
+                return source.array
+        return value
+
+    helpers.get_stored_input = get_stored_input
 
     @wraps(_PHYSICAL["get_array"])
     def get_array(holder, period, branch_name="default"):
@@ -541,6 +604,7 @@ def install_social_security_input_compatibility():
         return _PHYSICAL["get_array"](holder, period, branch_name)
 
     get_array._social_security_readtime = True
+    get_array._social_security_physical = dict(_PHYSICAL)
     Holder.get_array = get_array
 
     @wraps(_PHYSICAL["get_known_periods"])
@@ -647,11 +711,9 @@ def install_social_security_input_compatibility():
         )
         if tracked:
             public = name.removesuffix("_reported")
-            simulation._drop_values_that_may_depend_on(public, period)
-            # Component bases and downstream results also depend on the
-            # reported source. Core's dependency drops run only on branches,
-            # so ordinary simulations need the same derived-only cleanup.
-            _purge_derived_arrays(simulation)
+            # Holder.set_input keeps Core's own branch dependency drop. A
+            # low-level _set has no such Core drop and must retain raw seeds.
+            _purge_derived_arrays(simulation, public, period)
         result = _PHYSICAL["set"](
             holder,
             period,
