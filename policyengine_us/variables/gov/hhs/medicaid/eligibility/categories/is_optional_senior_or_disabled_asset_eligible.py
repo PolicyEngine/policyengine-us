@@ -10,6 +10,7 @@ class is_optional_senior_or_disabled_asset_eligible(Variable):
         "https://www.law.cornell.edu/uscode/text/42/1396a#m",
         "https://www.law.cornell.edu/uscode/text/42/1396d#p",
         "https://revisor.mo.gov/main/OneSection.aspx?section=208.010",
+        "https://www.law.cornell.edu/regulations/california/22-CCR-50420",
     )
 
     def formula(person, period, parameters):
@@ -43,11 +44,14 @@ class is_optional_senior_or_disabled_asset_eligible(Variable):
         # and SC rules allow resources equal to the limit.
         within_msp_limit = assets <= msp_limit
         # RSMo 208.010.2(7): a married couple "may own resources not to
-        # exceed" the couple amount.
-        couple_may_equal_limit = is_couple & p.assets.limit.couple_limit_inclusive[
-            state
-        ].astype(bool)
+        # exceed" the couple amount. California resources may not exceed the
+        # limit (22 CCR 50420(a); WIC 14005.40(c)(5)).
+        inclusive = where(
+            is_couple,
+            p.assets.limit.couple_limit_inclusive[state],
+            p.assets.limit.individual_limit_inclusive[state],
+        ).astype(bool)
         within_state_limit = where(
-            couple_may_equal_limit, assets <= state_limit, assets < state_limit
+            inclusive, assets <= state_limit, assets < state_limit
         )
         return where(uses_msp_limit, within_msp_limit, within_state_limit)

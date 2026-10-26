@@ -8,6 +8,12 @@ metadata:
   reference:
     - title: Missouri Revised Statutes 208.010.2(7)
       href: https://revisor.mo.gov/main/OneSection.aspx?section=208.010
+    - title: California Welfare and Institutions Code 14005.40(c)(5)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=14005.40
+    - title: Cal. Code Regs. Tit. 22, § 50420(a) - Property Limit
+      href: https://www.law.cornell.edu/regulations/california/22-CCR-50420
+    - title: 42 U.S.C. 1396a(m)(1)(C)
+      href: https://www.law.cornell.edu/uscode/text/42/1396a#m_1_C
 
 AK:
   2015-01-01: false
@@ -18,7 +24,8 @@ AR:
 AZ:
   2015-01-01: false
 CA:
-  2015-01-01: false
+  # Resources may not exceed the limit (22 CCR 50420(a); WIC 14005.40(c)(5)).
+  2015-01-01: true
 CO:
   2015-01-01: false
 CT:

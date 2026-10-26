@@ -499,3 +499,57 @@
   output:
     # 14,911 combined exceeds the 2026 couple limit of 14,910.
     is_optional_senior_or_disabled_asset_eligible: [false, false]
+
+- name: California applicant at the 2026 individual resource limit is eligible.
+  period: 2026
+  input:
+    age: 70
+    ssi_countable_resources: 130_000
+    state_code: CA
+  output:
+    # WIC 14005.40(c)(5): resources that "do not exceed" the limit qualify.
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: California applicant one cent over the 2026 individual resource limit is ineligible.
+  period: 2026
+  input:
+    age: 70
+    ssi_countable_resources: 130_000.01
+    state_code: CA
+  output:
+    is_optional_senior_or_disabled_asset_eligible: false
+
+- name: California couple at the 2026 couple resource limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 97_500
+      person2:
+        age: 68
+        ssi_countable_resources: 97_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # 195,000 combined equals the two-person limit (ACWDL 25-14).
+    is_optional_senior_or_disabled_asset_eligible: [true, true]
+
+- name: California applies the July 2022 individual resource limit in 2023.
+  period: 2023
+  input:
+    age: 70
+    ssi_countable_resources: 130_000
+    state_code: CA
+  output:
+    # ACWDL 21-31: 130,000 from July 1, 2022, read in 2023; 130,000 is at it.
+    is_optional_senior_or_disabled_asset_eligible: true
