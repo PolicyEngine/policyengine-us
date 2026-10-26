@@ -347,3 +347,25 @@
     az_liheap_countable_unearned_income: 6_000
     # 22,000 + 6,000 = 28,000.
     az_liheap_countable_income: 28_000
+
+- name: Case 14, gambling losses reduce gambling winnings to the profit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        gambling_winnings: 3_000
+        gambling_losses: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_700
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Policy VI.A.6.e.ii.B "gambling profits": 3,000 - 1,000 = 2,000.
+    az_liheap_countable_unearned_income: 2_000

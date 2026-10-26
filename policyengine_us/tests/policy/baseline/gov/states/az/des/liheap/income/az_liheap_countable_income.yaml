@@ -136,3 +136,57 @@
     # 24,000 - 2,434.80 = 21,565.20: the premium comes off household income
     # whatever the source it is paid from.
     az_liheap_countable_income: 21_565.20
+
+- name: Case 5, a retiree's Medicare Part A premium is subtracted along with Part B.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        pension_income: 24_000
+        # 30 to 39 quarters of coverage: the 2026 reduced Part A premium
+        # 311 x 12 = 3,732, paid by the member.
+        medicare_part_a_premium: 3_732
+        medicare_part_b_premium: 2_434.80
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_600
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_countable_unearned_income: 24_000
+    # "Expenses related to Medicare (such as premiums)": 24,000 - 3,732 -
+    # 2,434.80 = 17,833.20.
+    az_liheap_countable_income: 17_833.20
+
+- name: Case 6, gambling losses above winnings count as zero and do not reduce wages.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+        gambling_winnings: 1_000
+        gambling_losses: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_700
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # max(1,000 - 3,000, 0) = 0 gambling profits.
+    az_liheap_countable_unearned_income: 0
+    # Wages of 20,000 are not reduced by the 2,000 net gambling loss.
+    az_liheap_countable_income: 20_000
