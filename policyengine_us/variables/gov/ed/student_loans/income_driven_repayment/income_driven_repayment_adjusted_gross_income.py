@@ -9,8 +9,9 @@ class income_driven_repayment_adjusted_gross_income(Variable):
     documentation = (
         "Adjusted gross income on the most recent federal income tax return "
         "available when the Department of Education sets the monthly payment, "
-        "which the Repayment Assistance Plan, Income-Based Repayment and SAVE "
-        "plans use as income: 20 U.S.C. 1087e(q)(4)(A) takes adjusted gross "
+        "which the Repayment Assistance Plan and the Income-Based Repayment, "
+        "SAVE, Pay As You Earn and Income-Contingent Repayment plans use as "
+        "income: 20 U.S.C. 1087e(q)(4)(A) takes adjusted gross "
         "income 'for the most recent taxable year'. That is usually the prior "
         "year's return, or documentation of current income the borrower "
         "supplies instead. Household and microsimulation inputs usually cover "

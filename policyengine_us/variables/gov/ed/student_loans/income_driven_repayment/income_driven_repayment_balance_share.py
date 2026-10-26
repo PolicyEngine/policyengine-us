@@ -6,8 +6,9 @@ class income_driven_repayment_balance_share(Variable):
     entity = Person
     label = "Income-driven repayment share of the couple's eligible balance"
     documentation = (
-        "Share of the Income-Based Repayment or SAVE plan payment that the "
-        "person owes on their Direct Loans. 34 CFR 685.209(g)(1)(i) first "
+        "Share of the Income-Based Repayment, SAVE or Pay As You Earn plan "
+        "payment that the person owes on their Direct Loans. 34 CFR "
+        "685.209(g)(1)(i) first "
         "prorates the payment by the person's share of the eligible loans of "
         "the head and spouse of their tax unit, where eligible loans are "
         "Direct and FFEL loans (federal_student_loan_balance plus "

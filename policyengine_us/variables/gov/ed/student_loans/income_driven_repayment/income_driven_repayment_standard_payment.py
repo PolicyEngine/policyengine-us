@@ -11,7 +11,8 @@ class income_driven_repayment_standard_payment(Variable):
     documentation = (
         "What the borrower would pay on the 10-year standard repayment plan "
         "based on the eligible loan balances and interest rates, the cap on "
-        "Income-Based Repayment plan payments. Eligible loans are Direct and "
+        "Income-Based Repayment and Pay As You Earn plan payments. Eligible "
+        "loans are Direct and "
         "FFEL loans other than parent PLUS loans and excepted consolidation "
         "loans. A joint filer's spouse's eligible loans count too, so this is "
         "the sum over the head and spouse of the tax unit of each one's "
