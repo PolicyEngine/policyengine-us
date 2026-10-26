@@ -27,7 +27,6 @@
     # Doubled for infant: $1,000 * 2 = $2,000
     ny_ctc_post_2024_base: 2_000
 
-# Child age 1 gets standard credit (no doubling)
 # The baseline NY child test (ny_escc_qualifying_child) accepts an ITIN, so the
 # reform does too (issue #9403).
 - name: Infant with an ITIN of a filer with an ITIN gets doubled credit
@@ -56,6 +55,7 @@
     ctc_qualifying_children: 0
     ny_ctc_post_2024_base: 2_000
 
+# Child age 1 gets standard credit (no doubling)
 - name: Child age 1 gets standard credit
   period: 2026
   reforms: policyengine_us.reforms.states.ny.a04038.ny_a04038_enhanced_escc_infants.ny_a04038_enhanced_escc_infants

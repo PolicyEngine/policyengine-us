@@ -18,6 +18,11 @@ def create_mt_ctc() -> Reform:
         entity = Person
         label = "Montana Child Tax Credit qualifying child"
         definition_period = YEAR
+        reference = (
+            "https://www.law.cornell.edu/uscode/text/26/24#c",
+            "https://www.law.cornell.edu/uscode/text/26/24#e_2",
+            "https://www.law.cornell.edu/uscode/text/26/24#h_4_C",
+        )
         defined_for = StateCode.MT
 
         def formula(person, period, parameters):
@@ -41,6 +46,11 @@ def create_mt_ctc() -> Reform:
         entity = TaxUnit
         label = "Montana Child Tax Credit qualifying children"
         definition_period = YEAR
+        reference = (
+            "https://www.law.cornell.edu/uscode/text/26/24#c",
+            "https://www.law.cornell.edu/uscode/text/26/24#e_2",
+            "https://www.law.cornell.edu/uscode/text/26/24#h_4_C",
+        )
         defined_for = StateCode.MT
         adds = ["mt_ctc_qualifying_child"]
 

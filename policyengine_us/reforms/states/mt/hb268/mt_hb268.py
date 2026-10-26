@@ -4,52 +4,24 @@ from policyengine_core.periods import instant
 
 
 def create_mt_hb268() -> Reform:
-    class mt_hb268_qualifying_child(Variable):
-        value_type = bool
-        entity = Person
-        label = "Montana HB268 qualifying child"
-        definition_period = YEAR
-        reference = (
-            "https://leg.mt.gov/bills/2023/billpdf/HB0268.pdf",
-            "https://www.law.cornell.edu/uscode/text/26/24#h_4_C",
-        )
-        defined_for = StateCode.MT
-
-        def formula(person, period, parameters):
-            # HB 268 Section 1(1) requires a taxpayer "permitted a child tax
-            # credit under section 24 of the Internal Revenue Code". A child
-            # whose filer fails the federal filer SSN rule of IRC 24(h)(7)
-            # gets the credit for other dependents under IRC 24(h)(4)(C), so
-            # the child counts if the filer has an SSN or ITIN (IRC 24(e)(2)).
-            child = person("ctc_qualifying_child_ignoring_filer_identification", period)
-            filer_has_tin = person.tax_unit(
-                "filer_meets_ctc_identification_requirements", period
-            )
-            return child & filer_has_tin
-
-    class mt_hb268_qualifying_children(Variable):
-        value_type = int
-        entity = TaxUnit
-        label = "Montana HB268 qualifying children"
-        definition_period = YEAR
-        reference = "https://leg.mt.gov/bills/2023/billpdf/HB0268.pdf"
-        defined_for = StateCode.MT
-        adds = ["mt_hb268_qualifying_child"]
-
     class mt_hb268(Variable):
         value_type = float
         entity = Person
         label = "Montana HB268 Child Tax Credit"
         definition_period = YEAR
         unit = USD
-        reference = "https://leg.mt.gov/bills/2023/billpdf/HB0268.pdf"
+        reference = "https://docs.legmt.gov/download-ticket?ticketId=6a5df83b-5948-4d76-ba4d-232fc26f9faa#page=1"
         defined_for = StateCode.MT
 
         def formula(person, period, parameters):
             eligible = person.tax_unit("mt_hb268_eligible", period)
             p = parameters(period).gov.contrib.states.mt.hb268
-            # Only count qualifying children
-            is_qualifying = person("mt_hb268_qualifying_child", period)
+            # Only count qualifying children. HB 268 Section 1(1) applies the
+            # section 24 test to the taxpayer (mt_hb268_eligible), so the
+            # child test leaves out the federal filer identification rules.
+            is_qualifying = person(
+                "ctc_qualifying_child_ignoring_filer_identification", period
+            )
             age = person("age", period)
             child_credit = p.amount.calc(age) * is_qualifying
             credit_amount = person.tax_unit.sum(child_credit)
@@ -68,14 +40,21 @@ def create_mt_hb268() -> Reform:
         entity = TaxUnit
         label = "Eligible for the Montana HB268 Child Tax Credit"
         definition_period = YEAR
-        reference = "https://leg.mt.gov/bills/2023/billpdf/HB0268.pdf"
+        reference = (
+            "https://docs.legmt.gov/download-ticket?ticketId=6a5df83b-5948-4d76-ba4d-232fc26f9faa#page=1",
+            "https://www.law.cornell.edu/uscode/text/26/24#h_4_C",
+        )
         defined_for = StateCode.MT
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.mt.hb268.income_limit
             # Per HB 268 Section 1(1), taxpayer must be "permitted a child
-            # tax credit under section 24 of the Internal Revenue Code"
-            federal_ctc_eligible = tax_unit("mt_hb268_qualifying_children", period) > 0
+            # tax credit under section 24 of the Internal Revenue Code".
+            # Section 24 includes the credit for other dependents, which IRC
+            # 24(h)(4)(C) gives for a child whose credit IRC 24(h)(7) denies,
+            # so a filer with an ITIN qualifies. A filer without any TIN gets
+            # no section 24 credit (IRC 24(e)(2)).
+            federal_ctc_eligible = tax_unit("ctc_maximum", period) > 0
             agi = tax_unit("adjusted_gross_income", period)
             agi_eligible = agi <= p.agi
             # CTC limited to filers with investment income below a certain threshold
@@ -103,8 +82,6 @@ def create_mt_hb268() -> Reform:
 
     class reform(Reform):
         def apply(self):
-            self.update_variable(mt_hb268_qualifying_child)
-            self.update_variable(mt_hb268_qualifying_children)
             self.update_variable(mt_hb268)
             self.update_variable(mt_hb268_eligible)
             self.modify_parameters(modify_parameters)
