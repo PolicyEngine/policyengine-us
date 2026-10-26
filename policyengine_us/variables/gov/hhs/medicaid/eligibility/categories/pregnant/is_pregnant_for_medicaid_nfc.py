@@ -13,11 +13,13 @@ class is_pregnant_for_medicaid_nfc(Variable):
         days_postpartum = person("count_days_postpartum", period)
         state = person.household("state_code_str", period)
         max_postpartum_days = ma.postpartum_coverage[state]
-        ri = parameters(period).gov.states.ri.eohhs.medicaid
-        ri_continuation_applies = (state == "RI") & (ri.postpartum_coverage_months > 0)
-        postpartum_eligible = where(
-            ri_continuation_applies,
-            person("ri_medicaid_postpartum_eligible", period.first_month),
-            days_postpartum < max_postpartum_days,
+        # Rhode Island's 12-month continuation adds to the 60-day postpartum
+        # period of 42 CFR 435.4; it does not replace it.
+        ri_postpartum_eligible = person(
+            "ri_medicaid_postpartum_eligible", period.first_month
         )
-        return is_pregnant | postpartum_eligible
+        return (
+            is_pregnant
+            | (days_postpartum < max_postpartum_days)
+            | ri_postpartum_eligible
+        )

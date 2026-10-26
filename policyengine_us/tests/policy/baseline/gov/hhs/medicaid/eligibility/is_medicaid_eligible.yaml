@@ -319,7 +319,12 @@
 # pregnant, including RIte Start and Title XXI, without requiring federal funds.
 # Current income does not replace that history or terminate continuation.
 # https://webserver.rilegislature.gov/Statutes/TITLE42/42-12.3/42-12.3-3.htm
-- name: Case 17, Rhode Island pregnancy history preserves coverage after income rises and prevents new coverage when income falls.
+# Without that history, income at or below the pregnancy standard qualifies
+# only within the 60-day postpartum period of 42 CFR 435.4: person 5 is 30
+# days postpartum at 180% FPL, while person 3 has the same income 300 days
+# after the pregnancy.
+# https://www.law.cornell.edu/cfr/text/42/435.4
+- name: Case 17, Rhode Island pregnancy history preserves coverage after income rises, while without it income qualifies only within 60 days postpartum.
   period: 2024
   input:
     people:
@@ -368,8 +373,8 @@
         members: [person1, person2, person3, person4, person5]
         state_code: RI
   output:
-    is_pregnant_for_medicaid: [true, false, false, false, false]
-    is_medicaid_eligible: [true, false, false, false, false]
+    is_pregnant_for_medicaid: [true, false, false, false, true]
+    is_medicaid_eligible: [true, false, false, false, true]
 
 # A new pregnancy does not end the prior pregnancy's continuation period.
 # These applicants have income above both current pregnancy ceilings, and

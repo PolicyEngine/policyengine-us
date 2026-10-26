@@ -15,18 +15,5 @@ class ri_medicaid_has_third_party_coverage(Variable):
     )
 
     def formula(person, period, parameters):
-        return (
-            add(
-                person,
-                period,
-                [
-                    "has_esi",
-                    "has_marketplace_health_coverage_at_interview",
-                    "has_non_marketplace_direct_purchase_health_coverage_at_interview",
-                    "medicare_enrolled",
-                    "has_tricare_health_coverage_at_interview",
-                    "has_champva_health_coverage_at_interview",
-                ],
-            )
-            > 0
-        )
+        p = parameters(period).gov.states.ri.eohhs.medicaid
+        return add(person, period, p.third_party_coverage) > 0

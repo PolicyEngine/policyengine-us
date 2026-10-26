@@ -24,6 +24,8 @@ class is_pregnant_for_medicaid_fc(Variable):
         # while pregnant keep full Medicaid through the postpartum period.
         "https://webserver.rilegislature.gov/Statutes/TITLE42/42-12.3/42-12.3-3.htm",
         "https://rules.sos.ri.gov/regulations/part/210-30-00-1",
+        # PDF pages 3, 15: 1115 Budget Population 6b, insured pregnant women.
+        "https://www.medicaid.gov/medicaid/section-1115-demonstrations/downloads/ri-comp-demo-appvl-11282025.pdf#page=3",
     )
 
     def formula(person, period, parameters):

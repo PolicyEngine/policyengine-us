@@ -1,0 +1,16 @@
+description: Rhode Island uses these coverage sources as third-party liability insurance under the Medicaid program.
+values:
+  0000-01-01:
+    - has_esi
+    - has_marketplace_health_coverage_at_interview
+    - has_non_marketplace_direct_purchase_health_coverage_at_interview
+    - medicare_enrolled
+    - has_tricare_health_coverage_at_interview
+    - has_champva_health_coverage_at_interview
+metadata:
+  unit: list
+  period: year
+  label: Rhode Island Medicaid third-party liability coverage sources
+  reference:
+    - title: 210-RICR-30-00-1 §§ 1.6(A)(2)(a)(2), 1.9(B)(1)
+      href: https://rules.sos.ri.gov/regulations/part/210-30-00-1

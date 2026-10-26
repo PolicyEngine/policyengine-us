@@ -174,3 +174,24 @@
     medicaid_enrolled: [true, true, true]
     medicaid_federal_share: [0, 0, 0.5501]
     medicaid_federal_cost: [0, 0, 550.1]
+
+# R.I. Gen. Laws § 42-12.3-3(b) limits RIte Start to people not eligible under
+# Title XIX or XXI, so its postpartum continuation has no Title XIX match even
+# for a citizen. Without the zero-match rule, this citizen's PREGNANT category
+# would receive Rhode Island's regular FY2024 FMAP of 55.01%.
+# https://webserver.rilegislature.gov/Statutes/TITLE42/42-12.3/42-12.3-3.htm
+- name: Rhode Island RIte Start continuation has no Title XIX match for a citizen.
+  period: 2024
+  input:
+    state_code: RI
+    age: 30
+    immigration_status: CITIZEN
+    ri_pregnancy_coverage: RITE_START
+    ri_medicaid_pregnancy_end_date: "2023-03-07"
+    medicaid_household_size: 2
+    medicaid_income_level: 4
+    takes_up_medicaid_if_eligible: true
+  output:
+    medicaid_category: PREGNANT
+    medicaid_enrolled: true
+    medicaid_federal_share: 0

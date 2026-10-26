@@ -182,8 +182,6 @@
 # https://webserver.rilegislature.gov/Statutes/TITLE42/42-12.3/42-12.3-3.htm
 # Medicaid or CHIP while pregnant keep full Medicaid through the postpartum
 # period. $47,000 is about 230% FPL for a household of 2 in 2024 ($20,440).
-# Use the mother's underlying indicator so the newborn's postpartum days
-# derive as infinity rather than being filled with a zero partial input.
 - name: Case 17, Rhode Island postpartum parent and newborn retain their distinct Medicaid categories.
   period: 2024
   input:
@@ -191,7 +189,6 @@
       person1:
         age: 28
         is_pregnant: false
-        under_60_days_postpartum: true
         ri_pregnancy_coverage: CHIP
         ri_medicaid_pregnancy_end_date: "2023-12-01"
         employment_income: 47_000
@@ -352,7 +349,9 @@
 # from October 1, 2022, including people covered under Title XXI while
 # pregnant. At January 1, 2024, the March 2023 pregnancies are within the
 # continuation period and the November 2022 pregnancies have expired.
-# The non-qualified parent receives the state-funded continuation.
+# Pregnancy Medicaid requires a qualifying immigration status, so the
+# undocumented parents had unborn-child CHIP (FCEP) coverage while pregnant
+# (210-RICR-30-00-1 § 1.6(A)(2)(a)). Their continuation is state-funded.
 - name: Case 21, Rhode Island citizen and undocumented postpartum parents receive coverage within the extended period.
   period: 2024
   input:
@@ -380,7 +379,7 @@
         is_pregnant: false
         immigration_status: UNDOCUMENTED
         count_days_postpartum: 300
-        ri_pregnancy_coverage: MEDICAID
+        ri_pregnancy_coverage: FCEP
         ri_medicaid_pregnancy_end_date: "2023-03-07"
         medicaid_household_size: 2
         medicaid_income_level: 2.3
@@ -389,7 +388,7 @@
         is_pregnant: false
         immigration_status: UNDOCUMENTED
         count_days_postpartum: 400
-        ri_pregnancy_coverage: MEDICAID
+        ri_pregnancy_coverage: FCEP
         ri_medicaid_pregnancy_end_date: "2022-11-27"
         medicaid_household_size: 2
         medicaid_income_level: 2.3
