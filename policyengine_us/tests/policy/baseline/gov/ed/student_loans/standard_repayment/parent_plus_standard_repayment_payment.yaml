@@ -86,3 +86,24 @@
         members: [person1]
   output:
     parent_plus_standard_repayment_payment: 0
+
+- name: Case 6, a parent PLUS balance given for 2024 reads unchanged in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_parent_plus_loan_balance:
+          2024: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # Held at 30,000 with no uprating; the payment amortizes it as in Case 1.
+    federal_parent_plus_loan_balance:
+      2025: 30_000
+      2026: 30_000
+    parent_plus_standard_repayment_payment:
+      2026-01: 333.06

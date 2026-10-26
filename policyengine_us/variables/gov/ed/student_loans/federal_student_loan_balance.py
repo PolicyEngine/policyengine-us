@@ -15,14 +15,14 @@ class federal_student_loan_balance(Variable):
         "federal_parent_plus_loan_balance), and FFEL or Perkins loans that have "
         "not been consolidated into a Direct Consolidation Loan (see "
         "federal_ffel_loan_balance for FFEL loans). This is the opening balance "
-        "for the year: it is uprated by CPI-U across years with no repayment "
-        "roll-forward, and within a year only the Repayment Assistance Plan's "
-        "final-payment cap draws it down."
+        "for the year. Later years hold it at its dataset (input) value, with "
+        "no price or income uprating and no repayment roll-forward; within a "
+        "year, only the Repayment Assistance Plan's final-payment cap draws it "
+        "down."
     )
     unit = USD
     quantity_type = STOCK
     definition_period = YEAR
-    uprating = "gov.bls.cpi.cpi_u"
     reference = (
         "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(c)(6)",
         "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(d)(4)",

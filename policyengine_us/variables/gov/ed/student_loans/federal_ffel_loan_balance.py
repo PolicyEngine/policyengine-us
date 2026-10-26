@@ -15,13 +15,13 @@ class federal_ffel_loan_balance(Variable):
         "(g)(3) and the 10-year standard payment cap of the Income-Based "
         "Repayment plan. FFEL loans consolidated into a Direct Consolidation "
         "Loan belong in federal_student_loan_balance instead. This is the "
-        "opening balance for the year: it is uprated by CPI-U across years "
-        "with no repayment roll-forward."
+        "opening balance for the year. Later years hold it at its dataset "
+        "(input) value, with no price or income uprating and no repayment "
+        "roll-forward."
     )
     unit = USD
     quantity_type = STOCK
     definition_period = YEAR
-    uprating = "gov.bls.cpi.cpi_u"
     reference = (
         "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(b)(5)(ii)",
         "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(b)(6)",

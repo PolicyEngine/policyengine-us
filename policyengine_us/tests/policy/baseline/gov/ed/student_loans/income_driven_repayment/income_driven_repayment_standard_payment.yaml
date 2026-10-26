@@ -107,3 +107,24 @@
   output:
     # Only the head's 20,000: 222.04.
     income_driven_repayment_standard_payment: 222.04
+
+- name: Case 6, an FFEL balance given for 2024 reads unchanged in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_ffel_loan_balance:
+          2024: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # Held at 30,000 with no uprating; the cap amortizes it: 333.06.
+    federal_ffel_loan_balance:
+      2025: 30_000
+      2026: 30_000
+    income_driven_repayment_standard_payment:
+      2026-01: 333.06
