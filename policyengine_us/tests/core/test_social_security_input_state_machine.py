@@ -238,6 +238,8 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
         self.temp = tempfile.TemporaryDirectory(prefix="ss-input-machine-")
         self.dump_count = 0
         self.branch_initial_rewrite_done = False
+        self.preservation_checks = []
+        self.helper_checks = []
 
     def teardown(self):
         self.temp.cleanup()
@@ -268,6 +270,233 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
             )
         return component, period
 
+    def prepare_core_input_drop(self, simulation, model, name, period, amount):
+        """Model Core's own branch drop, including its raw-seed behavior.
+
+        Core first reclassifies all nonregistered values as derived; only
+        registered inputs remain eligible sources after such a drop.
+        Low-level adapter writes deliberately never call this method.
+        """
+        if simulation.parent_branch is None:
+            return
+        holder = simulation.get_holder(name)
+        if holder._input_unchanged(as_period(period), [amount], simulation.branch_name):
+            return
+        since = simulation._get_store_history().earliest_dependency(
+            name, as_period(period)
+        )
+        if holder._has_unnumbered_values():
+            since = 0
+        if since is None:
+            return
+        for mapping in (model.public, model.explicit, model.overrides):
+            for key, value in tuple(mapping.items()):
+                if not value.registered:
+                    # Core first reclassifies every nonregistered seed as
+                    # derived, even when its sequence is before the cutoff.
+                    # It no longer supplies a source to uprating/carry-over.
+                    del mapping[key]
+
+    @rule(
+        component=COMPONENT,
+        helper=st.sampled_from(("divide", "dispatch", "ordinary")),
+        compound=st.sampled_from(("year:2024:2", "month:2024-01:24", "year:2024-07:2")),
+        initial=st.booleans(),
+        amount=st.integers(min_value=24_000, max_value=48_000),
+    )
+    def initial_source_then_period_helper(
+        self, component, helper, compound, initial, amount
+    ):
+        """Compare each allocation with Core running without the adapter."""
+        if helper == "ordinary":
+            compound = "month:2024-01:24"
+        inputs = {component: {"2024": [12_000]}} if initial else {}
+        adapted = self.backend.Builder().build_from_variables(
+            self.backend.system, inputs
+        )
+        self.backend.system._social_security_input_compatibility = False
+        try:
+            plain = self.backend.Builder().build_from_variables(
+                self.backend.system, inputs
+            )
+            self.apply_helper(plain, component, helper, compound, amount)
+        finally:
+            self.backend.system._social_security_input_compatibility = True
+        self.apply_helper(adapted, component, helper, compound, amount)
+        period = as_period(compound)
+        branch = adapted.branch_name
+        # The fixture's public formula multiplies its initial source by two.
+        # Compare allocations through Core's input lookup, which is the
+        # source the helper must see, rather than that reform factor.
+        years = []
+        allocation_model = Model()
+        if initial:
+            allocation_model.write(
+                component,
+                False,
+                "2024",
+                12_000,
+                True,
+                "initial helper source",
+                initial=True,
+            )
+        subperiod = period.start.period("year")
+        stop = period.start.offset(period.size, period.unit)
+        while subperiod.start < stop:
+            expected = self.backend.helpers.get_stored_input(
+                plain.get_holder(component), subperiod, plain.branch_name
+            )
+            actual = self.backend.helpers.get_stored_input(
+                adapted.get_holder(component), subperiod, branch
+            )
+            assert expected is not None and actual is not None
+            self.helper_checks.append(
+                (adapted, component, subperiod, expected.copy(), compound)
+            )
+            years.append(subperiod)
+            if not (initial and str(subperiod) == "2024"):
+                allocation_model.write(
+                    component,
+                    False,
+                    str(subperiod),
+                    float(expected[0]),
+                    True,
+                    "Core helper",
+                )
+            subperiod = subperiod.offset(1)
+        # Exercise a real compound calculation after allocations. Core's
+        # calculate_add sums annual subperiod readers instead of fabricating
+        # an exact total source for the compound.
+        actual_total = (
+            float(adapted.calculate_add(component, period)[0])
+            if period.unit == "year"
+            else sum(float(adapted.calculate(component, year)[0]) for year in years)
+        )
+        calculation_years = (
+            period.get_subperiods("year") if period.unit == "year" else years
+        )
+        expected_total = 0
+        for year in calculation_years:
+            override = allocation_model.visible(
+                allocation_model.overrides, component, str(year)
+            )
+            expected_total += (
+                override.amount
+                if override is not None
+                else allocation_model.reader_amount(component, str(year)) * 2
+            )
+        assert actual_total == expected_total
+
+    def apply_helper(self, simulation, component, helper, compound, amount):
+        if helper == "ordinary":
+            simulation.set_input(component, compound, [amount])
+        else:
+            function = getattr(self.backend.helpers, f"set_input_{helper}_by_period")
+            function(simulation.get_holder(component), as_period(compound), [amount])
+
+    @rule(component=COMPONENT, partly_failing=st.booleans())
+    def custom_input_handler_after_initial_source(self, component, partly_failing):
+        simulation = self.backend.Builder().build_from_variables(
+            self.backend.system, {component: {"2024": [12_000]}}
+        )
+        variable = self.backend.system.get_variable(component)
+        original = variable.set_input
+        failure = RuntimeError("intentional partial input handler failure")
+
+        def handler(holder, period, amount):
+            if partly_failing:
+                holder._set(as_period("2025"), [24_000], is_input=True)
+                # Calculations inside a handler must not preserve old readers
+                # when the handler subsequently raises after a successful store.
+                holder.simulation.calculate(component, as_period("2026"))
+                raise failure
+            self.backend.helpers.set_input_divide_by_period(holder, period, amount)
+
+        variable.set_input = handler
+        try:
+            try:
+                simulation.set_input(component, "month:2024-01:24", [36_000])
+            except RuntimeError as caught:
+                assert partly_failing and caught is failure
+            else:
+                assert not partly_failing
+        finally:
+            variable.set_input = original
+        self.preservation_checks.append(
+            (simulation, component + "_reported", "2024", 12_000)
+        )
+        self.preservation_checks.append((simulation, component, "2025", 24_000))
+
+    @rule(component=COMPONENT)
+    def deleting_explicit_source_reveals_initial_source(self, component):
+        simulation = self.backend.Builder().build_from_variables(
+            self.backend.system, {component: {"2024": [12_000]}}
+        )
+        reported = component + "_reported"
+        simulation.set_input(reported, "2024", [6_000])
+        assert float(simulation.calculate(reported, as_period("2024"))[0]) == 6_000
+        simulation.get_holder(reported).delete_arrays(as_period("2024"))
+        # A source read resolves current physical tiers after the deletion.
+        value = simulation.get_holder(reported).get_array(as_period("2024"))
+        assert value is not None and float(value[0]) == 12_000
+
+    @rule(component=COMPONENT, branch=st.booleans(), read_source=st.booleans())
+    def bounded_refresh_preserves_caller_values(self, component, branch, read_source):
+        """Keep pre-cutoff formulas, raw seeds and supplied inputs on every write."""
+        simulation = self.backend.DelegatingSimulation()
+        early = simulation.get_holder("early_derived")
+        early.put_in_cache([77], as_period("2025"), derived=True)
+        if read_source:
+            simulation.set_input(component, "2024", [12_000])
+        if branch:
+            simulation = simulation.get_branch("preservation")
+        if read_source:
+            simulation.calculate(component, as_period("2026"))
+        raw = simulation.get_holder("raw_seed")
+        raw.put_in_cache([99], as_period("2025"), simulation.branch_name, derived=False)
+        simulation.set_input("independent_input", "2025", [88])
+        late = simulation.get_holder("late_derived")
+        late.put_in_cache([55], as_period("2025"), simulation.branch_name, derived=True)
+        since = simulation._get_store_history().earliest_dependency(
+            component, as_period("2024")
+        )
+        simulation.get_holder(component)._set(
+            as_period("2024"), [24_000], simulation.branch_name, is_input=True
+        )
+        for name, expected in (
+            ("early_derived", 77),
+            ("raw_seed", 99),
+            ("independent_input", 88),
+        ):
+            self.preservation_checks.append((simulation, name, "2025", expected))
+        if since is not None:
+            # Intended over-approximation: the refresh-scope ruling allows
+            # an unrelated formula numbered at or after since to be dropped.
+            assert late.get_array(as_period("2025"), simulation.branch_name) is None
+        else:
+            self.preservation_checks.append((simulation, "late_derived", "2025", 55))
+
+    @invariant()
+    def caller_values_and_earlier_derived_survive(self):
+        for simulation, name, period, expected in self.preservation_checks:
+            value = simulation.get_holder(name).get_array(
+                as_period(period), simulation.branch_name
+            )
+            assert value is not None and float(value[0]) == expected, (
+                name,
+                period,
+                "adapter removed a caller value or pre-cutoff formula",
+            )
+        for simulation, component, period, expected, compound in self.helper_checks:
+            actual = self.backend.helpers.get_stored_input(
+                simulation.get_holder(component), period, simulation.branch_name
+            )
+            assert actual is not None and (actual == expected).all(), (
+                component,
+                compound,
+                "Core helper allocation",
+            )
+
     @rule(
         slot=TARGET,
         component=COMPONENT,
@@ -281,6 +510,7 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
         simulation, model = self.state(slot)
         component, period = self.write_key(model, component, period, data)
         name = self.name(component, reported)
+        self.prepare_core_input_drop(simulation, model, name, period, amount)
         if route == "holder":
             simulation.get_holder(name).set_input(
                 as_period(period), [amount], simulation.branch_name
@@ -439,6 +669,8 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
             simulation, model = None, Model()
         name = self.name(component, reported)
         builder = self.backend.Builder()
+        if simulation is not None:
+            self.prepare_core_input_drop(simulation, model, name, period, amount)
         if yaml:
             # This executes Core build_from_dict -> build_from_entities ->
             # finalize_variables_init -> Holder.set_input, including nested
@@ -490,6 +722,9 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
         simulation.__class__ = self.backend.DelegatingSimulation
         simulation.fail_after_store = True
         simulation.fail_name = self.name(component, reported)
+        self.prepare_core_input_drop(
+            simulation, model, simulation.fail_name, period, amount
+        )
         error = None
         try:
             name = self.name(component, reported)

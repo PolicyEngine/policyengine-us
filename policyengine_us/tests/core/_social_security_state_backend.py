@@ -2,26 +2,47 @@
 
 The country is intentionally never imported. Core's installed source bodies
 implement every write, builder, copy, replay, extraction and dump route below;
-the US module's complete function bodies implement the hooks. Only entities,
-arrays, periods, storage and dependency bookkeeping are synthetic. This tests
-input semantics and Core's source selection, not country benefit formulas or
-full-model performance. A reported -> base -> public formula chain exercises
+the US module's complete function bodies implement the hooks. Entity and
+variable descriptors, dataset construction, and disk dump bytes are synthetic.
+Periods, memory storage, store history, sequence numbers, dependency drops,
+eviction and period helpers use Core itself. This tests input semantics and
+Core's source selection, not country benefit formulas or full-model performance. A reported -> base -> public formula chain exercises
 cache invalidation and scored-year factors. The synthetic uprating index
 doubles each year so source changes have exact reader values.
+
+Remaining Core substitutions are limited to fixture plumbing:
+- Holder.__init__ and default_array construct one-person float arrays in
+  memory; create_disk_storage supplies the JSON-backed Disk used only by
+  dump/restore.
+- Population construction, get_holder and clone provide one person and one
+  household. System descriptors and parameters replace country legislation.
+- Simulation.__init__, build_from_populations, get_holder and
+  get_variable_population attach those populations. calculate provides its
+  single-thread fast-cache entry point, _run_formula defines the tiny
+  reported/base/public chain, _cast_formula_result converts float arrays,
+  _check_period_consistency accepts exact annual reads, and _check_for_cycle
+  skips tracing for this acyclic chain. check_macro_cache returns False;
+  subsample is unsupported because the fixture contains one person.
+- Builder entity registration/declaration and membership methods only create
+  that one-person situation; _get_person_count and check_type reflect its
+  fixed shape. Dataset.load supplies the tiny dictionary input payload.
+  get_parameter returns the fixture's doubling uprating index.
+- Dumper _dump_entity/_restore_entity replace entity serialization only;
+  Disk replaces OnDiskStorage's physical bytes. Public dump/restore bodies,
+  holder provenance, memory tiers and source restoration remain Core/US code.
 """
 
 from __future__ import annotations
 
 import ast
 import copy
-import itertools
 import json
 import logging
 import os
 import sys
 import types
 import warnings
-from contextlib import ExitStack
+from contextlib import ExitStack, nullcontext
 from contextvars import ContextVar
 from dataclasses import dataclass
 from enum import Enum
@@ -29,8 +50,21 @@ from functools import lru_cache, wraps
 from importlib.metadata import distribution
 from pathlib import Path
 from unittest.mock import patch
+from weakref import ref
 
 import numpy as np
+from policyengine_core import commons, periods
+from policyengine_core.data_storage.in_memory_storage import InMemoryStorage
+from policyengine_core.data_storage.store_history import (
+    StoreHistory,
+    _period_from_storage_key,
+    next_sequence_number,
+)
+from policyengine_core.periods import Period
+from policyengine_core.simulations import simulation as core_simulation
+
+
+as_period = periods.period
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -40,55 +74,6 @@ COMPONENTS = (
     "social_security_survivors",
     "social_security_dependents",
 )
-
-
-@dataclass(frozen=True, order=True)
-class Instant:
-    year: int
-    month: int = 1
-
-    @property
-    def date(self):
-        return (self.year, self.month)
-
-
-@dataclass(frozen=True)
-class Period:
-    start: Instant
-    size: int = 1
-    unit: str = "year"
-
-    def __iter__(self):
-        return iter((self.unit, (self.start.year, self.start.month, 1), self.size))
-
-    @property
-    def stop(self):
-        return Instant(self.start.year + self.size - 1, 12)
-
-    def __str__(self):
-        if self.unit == "eternity":
-            return "eternity"
-        return (
-            str(self.start.year)
-            if self.size == 1
-            else f"year:{self.start.year}:{self.size}"
-        )
-
-    def contains(self, other):
-        return self.start <= other.start and self.stop >= other.stop
-
-
-def as_period(value):
-    if isinstance(value, Period):
-        return value
-    if str(value) == "eternity":
-        return Period(Instant(0), unit="eternity")
-    parts = str(value).split(":")
-    return (
-        Period(Instant(int(parts[-2])), int(parts[-1]))
-        if len(parts) == 3
-        else Period(Instant(int(value)))
-    )
 
 
 @lru_cache(maxsize=None)
@@ -147,91 +132,6 @@ def compiled_hooks(source):
     return compile(code, str(source), "exec")
 
 
-class Storage:
-    """Memory arrays plus Core's separate carry-over and input-tier marks."""
-
-    is_eternal = False
-
-    def __init__(self):
-        self._arrays = {}
-        self._inputs = set()
-        self._sequence_numbers = {}
-
-    def get(self, period, branch_name="default"):
-        return self._arrays.get(f"{branch_name}:{as_period(period)}")
-
-    def has(self, period, branch_name="default"):
-        return f"{branch_name}:{as_period(period)}" in self._arrays
-
-    def is_derived(self, period, branch_name="default"):
-        return (
-            self.has(period, branch_name)
-            and f"{branch_name}:{as_period(period)}" not in self._inputs
-        )
-
-    def put(
-        self, value, period, branch_name="default", derived=False, sequence_number=None
-    ):
-        key = f"{branch_name}:{as_period(period)}"
-        self._arrays[key] = np.asarray(value).copy()
-        self._sequence_numbers[key] = sequence_number
-        if derived:
-            self._inputs.discard(key)
-        else:
-            self._inputs.add(key)
-
-    def get_known_branch_periods(self):
-        return [
-            (key.split(":", 1)[0], as_period(key.split(":", 1)[1]))
-            for key in self._arrays
-        ]
-
-    def get_known_periods(self):
-        return list(
-            dict.fromkeys(period for _, period in self.get_known_branch_periods())
-        )
-
-    def delete(self, period=None, branch_name="default"):
-        for key in list(self._arrays):
-            branch, when = key.split(":", 1)
-            if branch == branch_name and (
-                period is None or as_period(period).contains(as_period(when))
-            ):
-                del self._arrays[key]
-        self._unmark_dropped_keys()
-
-    def mark_derived_except(self, kept):
-        self._inputs.intersection_update(kept)
-
-    def drop_computed(self, since=None):
-        dropped = [
-            key
-            for key in self._arrays
-            if key not in self._inputs
-            and (since is None or (self._sequence_numbers.get(key) or 0) >= since)
-        ]
-        for key in dropped:
-            del self._arrays[key]
-        self._unmark_dropped_keys()
-        return len(dropped)
-
-    def _unmark_dropped_keys(self):
-        self._inputs.intersection_update(self._arrays)
-
-    def _stop_sharing_dropped_keys(self):
-        pass
-
-    def _forget_dropped_numbers(self):
-        self._sequence_numbers = {
-            key: number
-            for key, number in self._sequence_numbers.items()
-            if key in self._arrays
-        }
-
-    def clone(self, **kwargs):
-        return copy.deepcopy(self)
-
-
 class Disk:
     """Tiny on-disk adapter used by unchanged public Core dump functions."""
 
@@ -260,20 +160,6 @@ class Disk:
         return self.values[as_period(period)]
 
 
-class History:
-    def copy(self):
-        return History()
-
-    def record_unknown_sources(self, *args):
-        pass
-
-    def record_derived(self, *args):
-        pass
-
-    def prune(self, *args):
-        pass
-
-
 class Backend:
     """Install the unchanged hooks around unchanged Core routes in isolation."""
 
@@ -287,47 +173,10 @@ class Backend:
 
     def _setup(self):
         core = Path(distribution("policyengine-core").locate_file("policyengine_core"))
-        counter = itertools.count(1)
-
-        def next_sequence():
-            return next(counter)
-
-        periods = types.SimpleNamespace(
-            period=as_period,
-            YEAR="year",
-            MONTH="month",
-            ETERNITY="eternity",
-            DAY="day",
-            key_period_size=lambda p: p.size,
-            unit_weight=lambda unit: {"day": 1, "month": 2, "year": 3}[unit],
-        )
-        commons = types.SimpleNamespace(
-            empty_clone=lambda value: object.__new__(type(value))
-        )
-        calculation_frames = ContextVar("state_machine_frames", default=())
-        formula_simulation = ContextVar("state_machine_formula", default=None)
-        branch_clone = ContextVar("state_machine_branch_clone", default=None)
-
-        class BranchClone:
-            def __init__(self, simulation):
-                self.simulation = simulation
-                self.pending = True
-
-        class Encoder(json.JSONEncoder):
-            def default(self, value):
-                if isinstance(value, np.ndarray):
-                    return value.tolist()
-                if isinstance(value, np.generic):
-                    return value.item()
-                return super().default(value)
-
-        @dataclass
-        class PreservedInput:
-            variable_name: str
-            branch_name: str
-            period: Period
-            value: object
-            storage: str
+        calculation_frames = core_simulation._calculation_frames
+        formula_simulation = core_simulation._formula_simulation
+        branch_clone = core_simulation._branch_clone
+        BranchClone = core_simulation._BranchClone
 
         person = types.SimpleNamespace(key="person", plural="people", is_person=True)
         member = types.SimpleNamespace(
@@ -346,7 +195,7 @@ class Backend:
                 self.population = population
                 self.simulation = population.simulation
                 self.variable = self.simulation.tax_benefit_system.get_variable(name)
-                self._memory_storage = Storage()
+                self._memory_storage = InMemoryStorage(is_eternal=False)
                 self._disk_storage = None
                 self._on_disk_storable = False
                 self._do_not_store = False
@@ -356,27 +205,6 @@ class Backend:
 
             def default_array(self):
                 return np.zeros(1)
-
-            def _raise_if_input_contains_nan(self, array):
-                assert np.isfinite(array).all()
-
-            def _to_array(self, value, validate_nan=False):
-                return np.asarray(value, dtype=float).reshape(1)
-
-            def _record_store(self, *args):
-                pass
-
-            def _record_inputs(self, *args):
-                pass
-
-            def _evict_fast_cache(self, *args, **kwargs):
-                pass
-
-            def _input_unchanged(self, *args):
-                return False
-
-            def _stores(self, period, branch_name):
-                return self._memory_storage.has(period, branch_name)
 
             def _get_array_from_storage(self, period, branch_name="default"):
                 return self._memory_storage.get(period, branch_name)
@@ -439,6 +267,7 @@ class Backend:
                         definition_period="year",
                         is_neutralized=False,
                         value_type=float,
+                        dtype=np.dtype("float64"),
                         set_input=None,
                         end=None,
                         requires_computation_after=None,
@@ -447,9 +276,22 @@ class Backend:
                         calculate_output=None,
                         quantity_type="flow",
                         check_uprating_value_type=lambda: None,
-                        is_input_variable=lambda name=name: name.endswith("_reported"),
+                        is_input_variable=lambda name=name: (
+                            name.endswith("_reported")
+                            or name
+                            in (
+                                "independent_input",
+                                "raw_seed",
+                                "early_derived",
+                                "late_derived",
+                            )
+                        ),
                     )
                     for name in (
+                        "independent_input",
+                        "raw_seed",
+                        "early_derived",
+                        "late_derived",
                         *COMPONENTS,
                         *(f"{name}_reported" for name in COMPONENTS),
                         *(f"{name}_base" for name in COMPONENTS),
@@ -476,6 +318,7 @@ class Backend:
         system = System()
 
         class Simulation:
+            _open_frames = None
             default_role = "member"
             default_input_period = "2024"
             default_calculation_period = "2024"
@@ -486,6 +329,8 @@ class Backend:
                 self._user_input_contexts = []
                 self._inputs_set = 0
                 self._input_epoch = 0
+                self._store_history = None
+                self._requested_variables = None
                 self._calculations_started = 0
                 self._calculations_in_flight = 0
                 self.input_variables = []
@@ -521,18 +366,6 @@ class Backend:
 
             def get_variable_population(self, name):
                 return self.persons
-
-            def _drop_values_that_may_depend_on(self, *args):
-                pass
-
-            def _get_store_history(self):
-                return History()
-
-            def _get_requested_variables(self):
-                return set()
-
-            def _drop_computed(self, since=None):
-                raise AssertionError("Installed Core cache cleanup was not loaded")
 
             def subsample(self, *args):
                 raise NotImplementedError(
@@ -651,20 +484,25 @@ class Backend:
             logging=logging,
             log=logging.getLogger(__name__),
             commons=commons,
-            next_sequence_number=next_sequence,
+            next_sequence_number=next_sequence_number,
             _calculation_frames=calculation_frames,
             _formula_simulation=formula_simulation,
             _branch_clone=branch_clone,
             _BranchClone=BranchClone,
-            _note_unobserved_activity=lambda: None,
-            _taint_waiting_frames=lambda *args: None,
+            _note_unobserved_activity=core_simulation._note_unobserved_activity,
+            _taint_waiting_frames=core_simulation._taint_waiting_frames,
+            _frame_for=core_simulation._frame_for,
+            _RERUNS_AFTER_INPUT_CHANGE=core_simulation._RERUNS_AFTER_INPUT_CHANGE,
+            nullcontext=nullcontext,
             directory_containing=lambda path: None,
-            PreservedUserInput=PreservedInput,
-            NpEncoder=Encoder,
+            PreservedUserInput=core_simulation.PreservedUserInput,
+            StoreHistory=StoreHistory,
+            NpEncoder=core_simulation.NpEncoder,
             ETERNITY="eternity",
             YEAR="year",
             MONTH="month",
             QuantityType=types.SimpleNamespace(STOCK="stock"),
+            Enum=Enum,
             SpiralError=type("SpiralError", (Exception,), {}),
             FullTracer=type("FullTracer", (), {}),
             get_parameter=lambda *args: lambda instant: 2 ** (instant.year - 2023),
@@ -674,7 +512,7 @@ class Backend:
             _get_person_count=lambda values: 1,
             check_type=lambda *args: None,
             PeriodMismatchError=ValueError,
-            _period_from_storage_key=as_period,
+            _period_from_storage_key=_period_from_storage_key,
             copy=copy,
         )
         holder_methods = (
@@ -685,6 +523,17 @@ class Backend:
             "get_known_branch_periods",
             "set_input",
             "_set",
+            "_to_array",
+            "_raise_if_input_contains_nan",
+            "_record_store",
+            "_record_inputs",
+            "_evict_fast_cache",
+            "_input_unchanged",
+            "_is_input",
+            "_has_unnumbered_values",
+            "_stored_sequence_number",
+            "_storage_period",
+            "_stores",
             "put_in_cache",
             "_seed_input_storage",
             "_record_input_storage",
@@ -711,7 +560,15 @@ class Backend:
             for node in source_tree(helper_source).body
             if isinstance(node, ast.FunctionDef)
         )
-        core_helpers = execute(helper_source, helper_names, namespace)
+        helpers = types.ModuleType("policyengine_core.holders.helpers")
+        helpers.__dict__.update(namespace)
+        helpers.__dict__["__name__"] = helpers.__name__
+        helpers.__dict__["__package__"] = "policyengine_core.holders"
+        core_helpers = execute(helper_source, helper_names, helpers.__dict__)
+        namespace.update(core_helpers)
+        # Variable supplies this default handler for yearly FLOW variables.
+        for variable in system.variables.values():
+            variable.set_input = core_helpers["set_input_divide_by_period"]
         # Core 3.33.12 cleans overlapping raw seeds after a direct set_input;
         # 3.33.2 does this only in dispatch/divide helpers. Keep the reference
         # model tied to the installed behavior rather than a version string.
@@ -737,6 +594,9 @@ class Backend:
         )
         sim_methods = (
             "set_input",
+            "_get_store_history",
+            "_get_requested_variables",
+            "_drop_values_that_may_depend_on",
             "build_from_dataset",
             "clone",
             "get_branch",
@@ -748,6 +608,8 @@ class Backend:
             "_get_set_input_periods",
             "_get_recorded_input_array",
             "_calculate",
+            "calculate_add",
+            "_cache_option_result",
             "_calculation_start",
             "_cache_result",
             "_may_keep",
@@ -785,7 +647,7 @@ class Backend:
             Simulation=Simulation,
             OnDiskStorage=Disk,
             ETERNITY="eternity",
-            next_sequence_number=next_sequence,
+            next_sequence_number=next_sequence_number,
             DERIVED_PERIODS_FILE="derived_periods.txt",
             DUMP_FORMAT_FILE="dump_format.txt",
             DUMP_FORMAT_VERSION=1,
@@ -802,11 +664,6 @@ class Backend:
                 "_restore_input",
             ),
             dumper.__dict__,
-        )
-        helpers = module(
-            "policyengine_core.holders.helpers",
-            _period_from_storage_key=as_period,
-            **core_helpers,
         )
         period_hooks = module(
             "policyengine_us.tools.social_security_periods",
@@ -841,7 +698,10 @@ class Backend:
             ),
             "policyengine_core.simulations.simulation": module(
                 "policyengine_core.simulations.simulation",
-                _note_input_change=lambda *args: None,
+                _note_input_change=core_simulation._note_input_change,
+                _calculation_frames=calculation_frames,
+                _taint_waiting_frames=namespace["_taint_waiting_frames"],
+                NpEncoder=core_simulation.NpEncoder,
             ),
             "policyengine_core.simulations.simulation_builder": module(
                 "policyengine_core.simulations.simulation_builder",
@@ -867,13 +727,14 @@ class Backend:
             "_social_security_state_hooks",
             json=json,
             ContextVar=ContextVar,
+            ref=ref,
             dataclass=dataclass,
             wraps=wraps,
             Path=Path,
-            next_sequence_number=next_sequence,
+            next_sequence_number=next_sequence_number,
             get_stored_input=namespace["get_stored_input"],
             to_period=as_period,
-            NpEncoder=Encoder,
+            NpEncoder=core_simulation.NpEncoder,
             ETERNITY="eternity",
         )
         self.stack.enter_context(
@@ -894,6 +755,8 @@ class Backend:
         self.system = system
         self.hooks = hook_namespace
         self.dumper = dumper
+        self.helpers = helpers
+        self.next_sequence_number = next_sequence_number
 
     def close(self):
         self.stack.close()
