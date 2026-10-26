@@ -1,4 +1,4 @@
-description: Maximum income for a couple to qualify for Medicaid under the 'medically needy' pathway. States whose limit is a share of the poverty guideline or the SSI federal benefit rate (fpg_rate, ssi_rate) are omitted here from the date that rule applies.
+description: States limit income for a couple to this monthly amount under the Medicaid medically needy pathway; from the date a state's fpg_rate or ssi_rate is positive, the formula uses that rate instead.
 metadata:
   label: Medicaid medically needy pathway for couples income limit
   breakdown:
@@ -6,6 +6,8 @@ metadata:
   unit: currency-USD
   period: month
   reference:
+    - title: Arkansas DHS Division of County Operations, Health Care Eligibility Quick Reference (January 2025), AABD Adult Spend Down
+      href: https://humanservices.arkansas.gov/wp-content/uploads/Quick-Reference.pdf#page=1
     - title: "Medicaid Financial Eligibility for Seniors and People with Disabilities: Findings from a 50-State Survey | KFF"
       href: https://www.kff.org/report-section/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey-appendix-tables/
     - title: Connecticut State Plan Amendment CT-22-0031, Medically Needy Income Level (effective July 1, 2022)
@@ -34,11 +36,11 @@ metadata:
       href: https://www.medicaid.gov/medicaid/spa/downloads/NH-25-0012.pdf#page=7
     - title: New Hampshire State Plan Amendment NH-25-0019, Medically Needy Income Level (effective July 1, 2025)
       href: https://www.medicaid.gov/medicaid/spa/downloads/NH-25-0019.pdf#page=7
-    - title: New York DOH GIS 22 MA/11, 2023 Medicaid Levels and Other Updates
+    - title: New York DOH GIS 22 MA/11, Increase of Medicaid Medically Needy Income Level to 138% of the Federal Poverty Level
       href: https://www.health.ny.gov/health_care/medicaid/publications/docs/gis/22ma11.pdf#page=1
-    - title: Rhode Island 210-RICR-40-00-3, Medicaid Affordable Care Coverage Groups (version effective January 1, 2020)
+    - title: Rhode Island 210-RICR-40-00-3, Medicaid Integrated Health Care Coverage, SSI Financial Eligibility Determinations (version effective January 1, 2020)
       href: https://rules.sos.ri.gov/Regulations/part/210-40-00-3?reg_id=10945
-    - title: Rhode Island 210-RICR-40-00-3, section 3.2(A)(8), Medically Needy Income Limit
+    - title: Rhode Island 210-RICR-40-00-3, section 3.2.8(A)(8), Medically Needy Income Limit
       href: https://rules.sos.ri.gov/regulations/part/210-40-00-3
     - title: Rhode Island State Plan Amendment RI-21-0004, Medically Needy Income Level (effective January 1, 2021)
       href: https://www.medicaid.gov/medicaid/spa/downloads/RI-21-0004.pdf#page=4
@@ -58,7 +60,7 @@ AK:
 AL:
   2018-01-01: -.inf
 AR:
-  2018-01-01: 217
+  2018-01-01: 216.66
 AZ:
   2018-01-01: -.inf
 CA:
