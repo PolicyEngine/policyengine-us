@@ -11,7 +11,7 @@ class va_eap_countable_income(Variable):
         "Annual gross earned and unearned income of all household members, including "
         "members who are not citizens or qualified aliens, less $50 a month for each "
         "elderly or disabled member and less each member's out-of-pocket Medicare Part "
-        "B premium. Manual exemption 15 (Complete_Manual.pdf#page=30) exempts "
+        "A and Part B premiums. Manual exemption 15 (Complete_Manual.pdf#page=30) exempts "
         "'Medicare Premiums when deducted from Social Security or Railroad Retirement "
         "checks or when the household member is responsible for payment of the "
         "premium' and has them deducted from gross income; Part D has no premium "
@@ -58,10 +58,15 @@ class va_eap_countable_income(Variable):
         # checks or when the household member is responsible for payment of
         # the premium. NOTE: This is not an automatic exemption and therefore
         # must be manually deducted from gross income." Plan Section 1.9 counts
-        # SSA benefits "Excluding MediCare deduction". medicare_part_b_premium
-        # is each member's out-of-pocket Part B premium, zero when a Medicare
-        # Savings Program pays it; no Part D premium variable exists.
-        medicare_premiums = add(spm_unit, period, ["medicare_part_b_premium"])
+        # SSA benefits "Excluding MediCare deduction". The Part A and Part B
+        # premium variables are each member's out-of-pocket premiums, zero
+        # when a Medicare Savings Program pays them or (for Part A) when Part A
+        # is premium-free; no Part D premium variable exists.
+        medicare_premiums = add(
+            spm_unit,
+            period,
+            ["medicare_part_a_premium", "medicare_part_b_premium"],
+        )
         # Manual B.6.c: "$50.00 per elderly or disabled individual is deducted
         # from the total gross income of the household ... If an individual is
         # both aged and disabled, only one $50 deduction will be given".
