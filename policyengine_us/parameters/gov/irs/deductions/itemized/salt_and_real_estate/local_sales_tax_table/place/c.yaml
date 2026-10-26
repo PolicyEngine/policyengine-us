@@ -1,0 +1,44 @@
+description: The IRS has residents of these cities use Optional Local Sales Tax Table C.
+metadata:
+  unit: list
+  period: year
+  label: Places using Optional Local Sales Tax Table C
+  reference:
+    - title: 2022 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=17
+    - title: 2023 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=17
+    - title: 2024 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=16
+    - title: 2025 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=18
+# Cities that the IRS selector names for this table, by 2020 Census place
+# GEOID (state FIPS code and place code). The 2025 selector names the same
+# localities with the same tables as the 2024 selector, so the 2024 value
+# applies to 2025. A place's row takes precedence over its county's row.
+# Georgia: the selector's "Dekalb County (excluding Atlanta)" row leaves
+# Atlanta with the state's "any other locality" table, listed here and in
+# place/b.yaml for 2024 and 2025.
+values:
+  2022-01-01:
+    - "0238420"  # Kenai city, AK
+    - "0238970"  # Ketchikan city, AK
+    - "0240950"  # Kodiak city, AK
+    - "0283080"  # Wasilla city, AK
+    - "0473000"  # Tempe city, AZ
+    - "1304000"  # Atlanta city, GA
+    - "2874840"  # Tupelo city, MS
+  2023-01-01:
+    - "0238420"  # Kenai city, AK
+    - "0238970"  # Ketchikan city, AK
+    - "0240950"  # Kodiak city, AK
+    - "0283080"  # Wasilla city, AK
+    - "0473000"  # Tempe city, AZ
+    - "1304000"  # Atlanta city, GA
+    - "2874840"  # Tupelo city, MS
+  2024-01-01:
+    - "0238420"  # Kenai city, AK
+    - "0238970"  # Ketchikan city, AK
+    - "0240950"  # Kodiak city, AK
+    - "0283080"  # Wasilla city, AK
+    - "2836000"  # Jackson city, MS

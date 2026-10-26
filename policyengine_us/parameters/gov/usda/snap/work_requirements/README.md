@@ -39,9 +39,9 @@ to a person, based on their state.
 
 | State(s) | Model behavior | Actual policy | Status |
 | --- | --- | --- | --- |
-| All states except CA, HI, AK | HR1 in effect from 2025-07-04 (`gov.usda.snap.work_requirements.abawd.in_effect`) | Federal effective date 2025-07-04 | Modeled |
+| All states except CA | HR1 in effect from 2025-07-04 (`gov.usda.snap.work_requirements.abawd.in_effect`) | Federal effective date 2025-07-04 | Modeled |
 | CA | HR1 in effect from 2026-06-01 (`gov.states.ca.cdss.snap.work_requirements.abawd.hr1_in_effect`, per ACL 25-93) | Delayed implementation to 2026-06-01 | Modeled |
-| HI, AK | HR1 in effect from 2025-11-01 (`gov.states.hi.dhs.snap.work_requirements.abawd.hr1_in_effect`, `gov.states.ak.dpa.snap.work_requirements.abawd.hr1_in_effect`) | Delayed implementation to 2025-11-01 | Modeled |
+| HI, AK | HR1 in effect from 2025-07-04 under P.L. 119-21 section 10102, which has no later effective date (`gov.states.hi.dhs.snap.work_requirements.abawd.hr1_in_effect`, `gov.states.ak.dpa.snap.work_requirements.abawd.hr1_in_effect`, kept for counterfactuals) | Both states announced 2025-11-01, the end of the quality-control exclusion period; neither had a good-faith exemption before then | Modeled under the statute; Alaska's (o)(7) window (2025-11-01 to 2026-10-31) is modeled separately |
 | AK boroughs with ABAWD waivers | Borough and census-area waivers in `gov.usda.snap.work_requirements.abawd.waived_counties.ak` | Borough-level ABAWD waivers | Modeled; from 2025-11-01 through 2026-10-31 the FY2026 FNS waiver (20 boroughs and census areas) and the 7 U.S.C. 2015(o)(7) good-faith exemption (every area except Anchorage) together keep all 29 non-Anchorage areas waived. FNS has posted no approval document for Alaska's good-faith exemption, so the geographic scope of the nine areas it alone covers rests on the Alaska Division of Public Assistance FAQ (all areas except Anchorage), although FNS Q&A #1 (question 17) describes (o)(7) exemptions as person-level (see the `waived_counties` README) |
 
 ## Data-dependent input limitations

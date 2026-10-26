@@ -1,0 +1,328 @@
+- name: Case 1, separate SSI claims.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        va_ag_certified: true
+      person2:
+        age: 65
+        va_ag_certified: true
+    # After the entry month spouses sharing a facility are individuals for
+    # SSI (POMS SI 00501.154 B), so they sit in separate marital units.
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    ssi: [994, 994]
+    va_ag: [1_223, 1_223]
+
+- name: Case 2, joint SSI couple claim.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        va_ag_certified: true
+      person2:
+        age: 65
+        va_ag_certified: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Both aged spouses claim SSI jointly: 1,491 / 2 = 745.50 each.
+    ssi_claim_is_joint: [true, true]
+    ssi: [745.5, 745.5]
+    # Chapter D: SSA's gross SSI plus net income, 745.50 + 0.
+    va_ag_countable_income: [745.5, 745.5]
+    # 2,130 + 87 - 745.50 = 1,471.50, rounded up to 1,472.
+    va_ag: [1_472, 1_472]
+
+- name: Case 3, spouse at home has income deemed in the resident's entry month.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        va_ag_certified: true
+      person2:
+        age: 63
+        social_security_retirement: 18_000
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # In the entry month the spouses are still one marital unit, and
+    # 20 CFR 416.1163(f)(2) stops deeming only from the following month
+    # (Case 6). person2 (63, not disabled) is not SSI-eligible, so SSI
+    # deems 1,500 - 20 = 1,480: 1,491 - 1,480 = 11.
+    ssi: [11, 0]
+    # Chapter D (p. 126) uses SSA's amounts: 1,480 + 11 = 1,491.
+    # person2's own non-SSI budget is 1,500 - 20 = 1,480.
+    va_ag_countable_income: [1_491, 1_480]
+    # 2,130 + 87 - 1,491 = 726; person2 is not certified.
+    va_ag: [726, 0]
+
+- name: Case 4, initial couple resource limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+        ssi_countable_resources: 1_500
+      person2:
+        age: 65
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+        ssi_countable_resources: 1_501
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_ag: [0, 0]
+
+- name: Case 5, annual grant and SNAP income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+  output:
+    va_ag: 14_676
+    household_state_benefits: 14_676
+    snap_unearned_income: 26_604
+    hud_unearned_income: 26_604
+
+- name: Case 6, moderate earnings spouse in a separate marital unit is not deemed in ongoing care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        va_ag_certified: true
+      person2:
+        age: 60
+        employment_income: 30_000
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # After the entry month the spouse sits in a separate marital unit,
+    # so none of the spouse's 2,500 monthly earnings is deemed.
+    is_ssi_spousal_deeming_applies: [false, false]
+    ssi_income_deemed_from_ineligible_spouse: [0, 0]
+    ssi_countable_income: [0, 0]
+    # person1 gets the individual FBR: 994 - 0 = 994.
+    # person2 (60, not disabled) is not SSI-eligible.
+    uncapped_ssi: [994, 0]
+    ssi: [994, 0]
+    va_ag_eligible: [true, false]
+    va_ag_maximum_care_rate: [2_130, 2_130]
+    # Countable income 0 + 994 = 994; 2,130 + 87 - 994 = 1,223.
+    # In one marital unit, (2,500 - 85) * 0.5 = 1,207.50 would be deemed:
+    # SSI 1,491 - 1,207.50 = 283.50 and the grant 2,217 - 1,491 = 726.
+    va_ag: [1_223, 0]
+
+- name: Case 7, couple entering care together pools income in the initial month.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+        social_security_retirement: 19_200
+      person2:
+        age: 70
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+        social_security_retirement: 19_200
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Both spouses are aged, so SSI uses the couple computation.
+    ssi_claim_is_joint: [true, true]
+    ssi_couple_computation_applies: [true, true]
+    # 1,491 / 2 = 745.50 each.
+    ssi_amount_if_eligible: [745.5, 745.5]
+    # (1,600 + 1,600 - 20) / 2 = 1,590 each.
+    ssi_countable_income: [1_590, 1_590]
+    # 745.50 - 1,590 = -844.50, so no SSI.
+    uncapped_ssi: [-844.5, -844.5]
+    ssi: [0, 0]
+    # Pooled resources 0 are within the 3,000 couple limit.
+    va_ag_eligible: [true, true]
+    va_ag_maximum_care_rate: [2_130, 2_130]
+    # Non-SSI budget pools 3,200, takes one 20 exclusion and halves:
+    # (3,200 - 20) / 2 = 1,590 each (separate budgets would give 1,580).
+    va_ag_countable_income: [1_590, 1_590]
+    # 2,130 + 87 - 1,590 = 627 each (637 without the joint flag).
+    va_ag: [627, 627]
+
+- name: Case 8, asymmetric non SSI couple budgets separately after the initial month.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        va_ag_certified: true
+        social_security_retirement: 30_000
+      person2:
+        age: 70
+        va_ag_certified: true
+        social_security_retirement: 18_000
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # After the initial month SSA treats spouses sharing a facility as
+    # individuals (POMS SI 00501.154 B): 2,500 - 20 = 2,480 and
+    # 1,500 - 20 = 1,480, both above 994, so no SSI.
+    ssi_countable_income: [2_480, 1_480]
+    ssi: [0, 0]
+    va_ag_eligible: [true, true]
+    # Chapter B section 6: after the initial month each spouse is a separate unit.
+    # 2,500 - 20 = 2,480 and 1,500 - 20 = 1,480.
+    va_ag_countable_income: [2_480, 1_480]
+    # 2,217 - 2,480 is below 0, so 0; 2,217 - 1,480 = 737.
+    va_ag: [0, 737]
+
+- name: Case 9, asymmetric non SSI couple pools income in the initial month.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+        social_security_retirement: 30_000
+      person2:
+        age: 70
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+        social_security_retirement: 18_000
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    ssi_claim_is_joint: [true, true]
+    ssi_couple_computation_applies: [true, true]
+    ssi_countable_income: [1_990, 1_990]
+    # 745.50 - 1,990 = -1,244.50, so no SSI.
+    uncapped_ssi: [-1_244.5, -1_244.5]
+    ssi: [0, 0]
+    va_ag_eligible: [true, true]
+    # Both entered care on January 1, so the month is not prorated.
+    # The pooled 4,000 gets one 20 exclusion and is halved: (4,000 - 20) / 2 = 1,990.
+    va_ag_countable_income: [1_990, 1_990]
+    # 2,130 + 87 - 1,990 = 227 each (separate budgets give [0, 737]).
+    va_ag: [227, 227]
+
+- name: Case 10, initial-month couple flag entered for January budgets the spouses separately in February.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        va_ag_certified: true
+        va_ag_is_joint_initial_month:
+          2026-01: true
+        social_security_retirement: 19_200
+      person2:
+        age: 70
+        va_ag_certified: true
+        va_ag_is_joint_initial_month:
+          2026-01: true
+        social_security_retirement: 19_200
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # January pools the couple (Case 7): 2,217 - 1,590 = 627 each.
+    # February: each spouse is a separate unit: 2,217 - (1,600 - 20) = 637.
+    va_ag:
+      2026-01: [627, 627]
+      2026-02: [637, 637]

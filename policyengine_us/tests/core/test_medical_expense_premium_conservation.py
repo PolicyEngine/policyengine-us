@@ -462,8 +462,9 @@ def _state_simulation(cases, reference_system, with_se_deduction):
                 if state == "NM" and senior_eligible and not case["dependent_elsewhere"]
                 else 0
             )
+            # NMSA 7-2-5.9 and PIT-ADJ line 18 allow the full exemption.
             expectations["nm_medical_expense_exemption"].append(
-                3_000 / denominator if state == "NM" and senior_eligible else 0
+                3_000 if state == "NM" and senior_eligible else 0
             )
     simulation = Simulation(
         tax_benefit_system=reference_system,
