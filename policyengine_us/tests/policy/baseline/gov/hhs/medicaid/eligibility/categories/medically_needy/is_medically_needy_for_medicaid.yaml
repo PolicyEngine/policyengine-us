@@ -324,3 +324,34 @@
     # CA: 36,000 - 25,000 = 11,000 <= 934 x 12 = 11,208; assets 195,000.
     # IL: 28,000 - 7,000 = 21,000 <= 21,640; assets 17,500 (PM 07-02-01).
     is_medically_needy_for_medicaid: [true, true, true, true, true, true]
+
+- name: Case 14, Vermont senior with income after medical expenses at the 2026 protected income level qualifies.
+  period: 2026
+  input:
+    age: 70
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_ssi_recipient_for_medicaid: false
+    ssi_countable_income: 20_000
+    medicaid_medically_needy_medical_expenses: 3_500
+    ssi_countable_resources: 1_500
+    state_code: VT
+  output:
+    # HBEE 8.06(b): income at or below the PIL. 1,375 x 12 = 16,500;
+    # 20,000 - 3,500 = 16,500, equal to the limit.
+    is_medically_needy_for_medicaid: true
+
+- name: Case 15, Vermont senior with income after medical expenses one dollar a month over the 2026 protected income level is ineligible.
+  period: 2026
+  input:
+    age: 70
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_ssi_recipient_for_medicaid: false
+    ssi_countable_income: 20_000
+    medicaid_medically_needy_medical_expenses: 3_488
+    ssi_countable_resources: 1_500
+    state_code: VT
+  output:
+    # 20,000 - 3,488 = 16,512, or 1,376 a month, over 1,375.
+    is_medically_needy_for_medicaid: false

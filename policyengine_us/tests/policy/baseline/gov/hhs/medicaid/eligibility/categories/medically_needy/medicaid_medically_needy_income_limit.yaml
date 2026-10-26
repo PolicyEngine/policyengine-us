@@ -430,3 +430,43 @@
     medicaid_medically_needy_income_limit:
       2019: [7_104, 7_104, 7_104]
       2020: [17_240, 17_240, 12_760]
+
+- name: Case 18, Vermont uses its protected income level outside Chittenden County from 2018 to 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 68
+      person3:
+        age: 74
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: {2018: VT, 2019: VT, 2020: VT, 2021: VT, 2022: VT, 2023: VT, 2024: VT, 2025: VT, 2026: VT}
+  output:
+    # Outputs are [couple, couple, individual]. The PIL is the same for one and
+    # two people, effective each January 1, times 12: 1,041 (2018, kept in
+    # 2019), 1,091, 1,100, 1,166, 1,258, 1,300, 1,333 and 1,375.
+    medicaid_medically_needy_income_limit:
+      2018: [12_492, 12_492, 12_492]
+      2019: [12_492, 12_492, 12_492]
+      2020: [13_092, 13_092, 13_092]
+      2021: [13_200, 13_200, 13_200]
+      2022: [13_992, 13_992, 13_992]
+      2023: [15_096, 15_096, 15_096]
+      2024: [15_600, 15_600, 15_600]
+      2025: [15_996, 15_996, 15_996]
+      2026: [16_500, 16_500, 16_500]
