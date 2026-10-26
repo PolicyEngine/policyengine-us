@@ -18,10 +18,11 @@ class parent_plus_standard_repayment_payment(Variable):
         "more than the balance. It assumes the borrower is in active "
         "repayment. This is separate from standard_repayment_payment, so the "
         "income-driven repayment caps stay on the loans those plans can "
-        "repay. Parent PLUS loans made on or after July 1, 2026, which repay "
-        "under the tiered standard plan, are not modeled here, nor is "
-        "repayment of consolidated parent PLUS loans under the "
-        "Income-Contingent Repayment plan."
+        "repay. A borrower with a Direct Loan made on or after July 1, 2026 "
+        "cannot use this plan: the tiered standard plan "
+        "(tiered_standard_repayment_payment) repays their parent PLUS loans, "
+        "so this is zero for them. Repayment of consolidated parent PLUS "
+        "loans under the Income-Contingent Repayment plan is not modeled."
     )
     unit = USD
     definition_period = MONTH
@@ -40,4 +41,10 @@ class parent_plus_standard_repayment_payment(Variable):
         )
         # As in standard_repayment_payment, the minimum does not apply to a
         # final payment below it.
-        return min_(max_(amortized_payment, p.minimum_payment), balance)
+        payment = min_(max_(amortized_payment, p.minimum_payment), balance)
+        # 20 U.S.C. 1087e(d)(6)-(7) and 34 CFR 685.208(b)(1) limit this plan to
+        # borrowers with no Direct Loan made on or after July 1, 2026.
+        has_new_loan = person(
+            "has_federal_student_loan_made_on_or_after_2026_07_01", period.this_year
+        )
+        return where(has_new_loan, 0, payment)

@@ -6,13 +6,14 @@ class income_driven_repayment_eligible(Variable):
     entity = Person
     label = "Eligible for income-driven repayment of federal student loans"
     documentation = (
-        "The person has loans that the Income-Based Repayment and SAVE plans "
-        "can repay and is the head or spouse of their tax unit. Modeling "
-        "restriction: a borrower claimed as someone else's tax dependent is "
-        "treated as ineligible and owes $0, because their tax unit's adjusted "
-        "gross income is the claiming taxpayer's, not the borrower's own. The "
-        "law does not exclude these borrowers (34 CFR 685.209(c)(2)-(3)); "
-        "their payment would come from their own income."
+        "The person has loans that the Income-Based Repayment, SAVE, Pay As "
+        "You Earn and Income-Contingent Repayment plans can repay and is the "
+        "head or spouse of their tax unit. Modeling restriction: a borrower "
+        "claimed as someone else's tax dependent is treated as ineligible and "
+        "owes $0, because their tax unit's adjusted gross income is the "
+        "claiming taxpayer's, not the borrower's own. The law does not "
+        "exclude these borrowers (34 CFR 685.209(c)(2)-(5)); their payment "
+        "would come from their own income."
     )
     definition_period = MONTH
     reference = (

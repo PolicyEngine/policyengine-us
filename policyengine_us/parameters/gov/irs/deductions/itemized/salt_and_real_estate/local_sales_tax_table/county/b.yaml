@@ -1,0 +1,247 @@
+description: The IRS has residents of these counties use Optional Local Sales Tax Table B.
+metadata:
+  unit: list
+  period: year
+  label: Counties using Optional Local Sales Tax Table B
+  reference:
+    - title: 2022 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=17
+    - title: 2023 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=17
+    - title: 2024 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=16
+    - title: 2025 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=18
+# Counties (and Louisiana parishes and Alaska boroughs) that the IRS selector
+# names for this table, by 2020 Census county FIPS code. The 2025 selector
+# names the same localities with the same tables as the 2024 selector, so
+# the 2024 value applies to 2025. A place named in another row takes
+# precedence (place lists), as in "Dekalb County (excluding Atlanta)".
+values:
+  2022-01-01:
+    - "08005"  # Arapahoe County, CO
+    - "08059"  # Jefferson County, CO
+    - "13089"  # DeKalb County, GA
+    - "22033"  # East Baton Rouge Parish, LA
+    - "36001"  # Albany County, NY
+    - "36003"  # Allegany County, NY
+    - "36007"  # Broome County, NY
+    - "36009"  # Cattaraugus County, NY
+    - "36011"  # Cayuga County, NY
+    - "36015"  # Chemung County, NY
+    - "36019"  # Clinton County, NY
+    - "36023"  # Cortland County, NY
+    - "36029"  # Erie County, NY
+    - "36031"  # Essex County, NY
+    - "36033"  # Franklin County, NY
+    - "36035"  # Fulton County, NY
+    - "36037"  # Genesee County, NY
+    - "36043"  # Herkimer County, NY
+    - "36045"  # Jefferson County, NY
+    - "36049"  # Lewis County, NY
+    - "36051"  # Livingston County, NY
+    - "36053"  # Madison County, NY
+    - "36055"  # Monroe County, NY
+    - "36057"  # Montgomery County, NY
+    - "36059"  # Nassau County, NY
+    - "36063"  # Niagara County, NY
+    - "36065"  # Oneida County, NY
+    - "36067"  # Onondaga County, NY
+    - "36069"  # Ontario County, NY
+    - "36071"  # Orange County, NY
+    - "36073"  # Orleans County, NY
+    - "36075"  # Oswego County, NY
+    - "36077"  # Otsego County, NY
+    - "36079"  # Putnam County, NY
+    - "36083"  # Rensselaer County, NY
+    - "36087"  # Rockland County, NY
+    - "36089"  # St. Lawrence County, NY
+    - "36091"  # Saratoga County, NY
+    - "36093"  # Schenectady County, NY
+    - "36095"  # Schoharie County, NY
+    - "36097"  # Schuyler County, NY
+    - "36099"  # Seneca County, NY
+    - "36101"  # Steuben County, NY
+    - "36103"  # Suffolk County, NY
+    - "36105"  # Sullivan County, NY
+    - "36109"  # Tompkins County, NY
+    - "36111"  # Ulster County, NY
+    - "36113"  # Warren County, NY
+    - "36115"  # Washington County, NY
+    - "36117"  # Wayne County, NY
+    - "36119"  # Westchester County, NY
+    - "36121"  # Wyoming County, NY
+    - "36123"  # Yates County, NY
+    - "45005"  # Allendale County, SC
+    - "45009"  # Bamberg County, SC
+    - "45011"  # Barnwell County, SC
+    - "45017"  # Calhoun County, SC
+    - "45019"  # Charleston County, SC
+    - "45021"  # Cherokee County, SC
+    - "45023"  # Chester County, SC
+    - "45025"  # Chesterfield County, SC
+    - "45029"  # Colleton County, SC
+    - "45031"  # Darlington County, SC
+    - "45033"  # Dillon County, SC
+    - "45037"  # Edgefield County, SC
+    - "45041"  # Florence County, SC
+    - "45053"  # Jasper County, SC
+    - "45055"  # Kershaw County, SC
+    - "45057"  # Lancaster County, SC
+    - "45059"  # Laurens County, SC
+    - "45061"  # Lee County, SC
+    - "45065"  # McCormick County, SC
+    - "45067"  # Marion County, SC
+    - "45069"  # Marlboro County, SC
+    - "45081"  # Saluda County, SC
+    - "45085"  # Sumter County, SC
+    - "45089"  # Williamsburg County, SC
+  2023-01-01:
+    - "08059"  # Jefferson County, CO
+    - "13089"  # DeKalb County, GA
+    - "22033"  # East Baton Rouge Parish, LA
+    - "36001"  # Albany County, NY
+    - "36003"  # Allegany County, NY
+    - "36007"  # Broome County, NY
+    - "36009"  # Cattaraugus County, NY
+    - "36011"  # Cayuga County, NY
+    - "36015"  # Chemung County, NY
+    - "36019"  # Clinton County, NY
+    - "36023"  # Cortland County, NY
+    - "36029"  # Erie County, NY
+    - "36031"  # Essex County, NY
+    - "36033"  # Franklin County, NY
+    - "36035"  # Fulton County, NY
+    - "36037"  # Genesee County, NY
+    - "36043"  # Herkimer County, NY
+    - "36045"  # Jefferson County, NY
+    - "36049"  # Lewis County, NY
+    - "36051"  # Livingston County, NY
+    - "36053"  # Madison County, NY
+    - "36055"  # Monroe County, NY
+    - "36057"  # Montgomery County, NY
+    - "36059"  # Nassau County, NY
+    - "36063"  # Niagara County, NY
+    - "36065"  # Oneida County, NY
+    - "36067"  # Onondaga County, NY
+    - "36069"  # Ontario County, NY
+    - "36071"  # Orange County, NY
+    - "36073"  # Orleans County, NY
+    - "36075"  # Oswego County, NY
+    - "36077"  # Otsego County, NY
+    - "36079"  # Putnam County, NY
+    - "36083"  # Rensselaer County, NY
+    - "36087"  # Rockland County, NY
+    - "36089"  # St. Lawrence County, NY
+    - "36091"  # Saratoga County, NY
+    - "36093"  # Schenectady County, NY
+    - "36095"  # Schoharie County, NY
+    - "36097"  # Schuyler County, NY
+    - "36099"  # Seneca County, NY
+    - "36101"  # Steuben County, NY
+    - "36103"  # Suffolk County, NY
+    - "36105"  # Sullivan County, NY
+    - "36109"  # Tompkins County, NY
+    - "36111"  # Ulster County, NY
+    - "36113"  # Warren County, NY
+    - "36115"  # Washington County, NY
+    - "36117"  # Wayne County, NY
+    - "36119"  # Westchester County, NY
+    - "36121"  # Wyoming County, NY
+    - "36123"  # Yates County, NY
+    - "45005"  # Allendale County, SC
+    - "45009"  # Bamberg County, SC
+    - "45011"  # Barnwell County, SC
+    - "45015"  # Berkeley County, SC
+    - "45017"  # Calhoun County, SC
+    - "45019"  # Charleston County, SC
+    - "45021"  # Cherokee County, SC
+    - "45023"  # Chester County, SC
+    - "45025"  # Chesterfield County, SC
+    - "45029"  # Colleton County, SC
+    - "45031"  # Darlington County, SC
+    - "45033"  # Dillon County, SC
+    - "45037"  # Edgefield County, SC
+    - "45041"  # Florence County, SC
+    - "45053"  # Jasper County, SC
+    - "45055"  # Kershaw County, SC
+    - "45057"  # Lancaster County, SC
+    - "45059"  # Laurens County, SC
+    - "45061"  # Lee County, SC
+    - "45065"  # McCormick County, SC
+    - "45067"  # Marion County, SC
+    - "45069"  # Marlboro County, SC
+    - "45081"  # Saluda County, SC
+    - "45085"  # Sumter County, SC
+    - "45089"  # Williamsburg County, SC
+  2024-01-01:
+    - "08005"  # Arapahoe County, CO
+    - "08059"  # Jefferson County, CO
+    - "22033"  # East Baton Rouge Parish, LA
+    - "36001"  # Albany County, NY
+    - "36003"  # Allegany County, NY
+    - "36007"  # Broome County, NY
+    - "36009"  # Cattaraugus County, NY
+    - "36011"  # Cayuga County, NY
+    - "36015"  # Chemung County, NY
+    - "36019"  # Clinton County, NY
+    - "36023"  # Cortland County, NY
+    - "36029"  # Erie County, NY
+    - "36031"  # Essex County, NY
+    - "36033"  # Franklin County, NY
+    - "36035"  # Fulton County, NY
+    - "36037"  # Genesee County, NY
+    - "36043"  # Herkimer County, NY
+    - "36045"  # Jefferson County, NY
+    - "36049"  # Lewis County, NY
+    - "36051"  # Livingston County, NY
+    - "36053"  # Madison County, NY
+    - "36055"  # Monroe County, NY
+    - "36057"  # Montgomery County, NY
+    - "36059"  # Nassau County, NY
+    - "36063"  # Niagara County, NY
+    - "36065"  # Oneida County, NY
+    - "36067"  # Onondaga County, NY
+    - "36069"  # Ontario County, NY
+    - "36071"  # Orange County, NY
+    - "36073"  # Orleans County, NY
+    - "36075"  # Oswego County, NY
+    - "36077"  # Otsego County, NY
+    - "36079"  # Putnam County, NY
+    - "36083"  # Rensselaer County, NY
+    - "36087"  # Rockland County, NY
+    - "36089"  # St. Lawrence County, NY
+    - "36091"  # Saratoga County, NY
+    - "36093"  # Schenectady County, NY
+    - "36095"  # Schoharie County, NY
+    - "36097"  # Schuyler County, NY
+    - "36099"  # Seneca County, NY
+    - "36101"  # Steuben County, NY
+    - "36103"  # Suffolk County, NY
+    - "36105"  # Sullivan County, NY
+    - "36109"  # Tompkins County, NY
+    - "36111"  # Ulster County, NY
+    - "36113"  # Warren County, NY
+    - "36115"  # Washington County, NY
+    - "36117"  # Wayne County, NY
+    - "36119"  # Westchester County, NY
+    - "36121"  # Wyoming County, NY
+    - "36123"  # Yates County, NY
+    - "45001"  # Abbeville County, SC
+    - "45003"  # Aiken County, SC
+    - "45007"  # Anderson County, SC
+    - "45015"  # Berkeley County, SC
+    - "45027"  # Clarendon County, SC
+    - "45035"  # Dorchester County, SC
+    - "45039"  # Fairfield County, SC
+    - "45047"  # Greenwood County, SC
+    - "45049"  # Hampton County, SC
+    - "45051"  # Horry County, SC
+    - "45063"  # Lexington County, SC
+    - "45071"  # Newberry County, SC
+    - "45075"  # Orangeburg County, SC
+    - "45077"  # Pickens County, SC
+    - "45079"  # Richland County, SC
+    - "45083"  # Spartanburg County, SC
+    - "45087"  # Union County, SC
+    - "45091"  # York County, SC

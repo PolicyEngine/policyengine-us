@@ -77,7 +77,26 @@
   output:
     standard_repayment_payment: 0
 
-- name: Case 6, a balance given for 2024 reads unchanged in 2026.
+- name: Case 6, a borrower with a loan made on or after July 1, 2026 uses the tiered plan instead.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # 34 CFR 685.208(b)(1); 20 U.S.C. 1087e(d)(6)-(7). Tiered 15-year
+    # payment: 30,000 x 0.005 / (1 - 1.005 ^ -180) = 253.16.
+    standard_repayment_payment: 0
+    tiered_standard_repayment_payment: 253.16
+
+- name: Case 7, a balance given for 2024 reads unchanged in 2026.
   period: 2026
   absolute_error_margin: 0.01
   input:

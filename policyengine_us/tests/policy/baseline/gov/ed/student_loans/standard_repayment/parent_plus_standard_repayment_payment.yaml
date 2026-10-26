@@ -107,3 +107,23 @@
       2026: 30_000
     parent_plus_standard_repayment_payment:
       2026-01: 333.06
+
+- name: Case 7, a borrower with a loan made on or after July 1, 2026 repays parent PLUS loans under the tiered plan.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_parent_plus_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # The 10-year plan is closed to this borrower (685.208(b)(1)); the tiered
+    # plan repays the 30,000 over 15 years: 30,000 x 0.005 /
+    # (1 - 1.005 ^ -180) = 253.16.
+    parent_plus_standard_repayment_payment: 0
+    tiered_standard_repayment_payment: 253.16

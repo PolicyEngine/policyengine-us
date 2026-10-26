@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class save_plan_payment(Variable):
     value_type = float
     entity = Person
-    label = "SAVE plan monthly payment"
+    label = "SAVE plan monthly payment (counterfactual)"
     documentation = (
         "Monthly payment a borrower would owe under the Saving on a Valuable "
         "Education (SAVE) plan as codified in 34 CFR 685.209(f)(1): the "
