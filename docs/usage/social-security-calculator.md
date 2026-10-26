@@ -56,7 +56,9 @@ checks = simulation.calculate("ss_calculated_annual_payment", 2023)
 ```
 
 `ss_calculated_benefit` is the payable amount for an **entitlement month**;
-`ss_calculated_payment` is the check paid the following month.
+`ss_calculated_payment` is cash paid in the requested month, including any
+supplied earnings-test settlement. Ordinary checks follow entitlement by one
+month, subject to whole-month earnings-test withholding.
 `ss_calculated_annual_entitlement` sums January–December entitlement, whereas
 `ss_calculated_annual_payment` sums checks actually paid January–December.
 `ss_calculated_retirement` and `ss_calculated_survivors` expose the latter by
@@ -84,6 +86,31 @@ also require the previous year's earnings. A `-1` earnings input means missing,
 not zero. Each annual earnings record must be supplied for its exact year;
 an earlier record never carries forward. Alternatively assert `ss_calculator_earnings_test_no_trigger`; supplied
 excess earnings contradicting it fail.
+
+The default cash schedule withholds whole months, including the month whose
+deduction leaves a partial entitlement. That remainder is deferred until
+closed-year earnings reporting. [SSA Handbook §1806.2](https://www.ssa.gov/OP_Home/handbook/handbook.18/handbook-1806.html)
+says, “The partial payment is paid only at the close of the taxable year”,
+“unless otherwise requested”. [POMS RS 02501.110](https://secure.ssa.gov/poms.nsf/lnx/0302501110)
+says, “Once we receive the closed-year earnings, pay a partial monthly benefit, if due.”
+
+`ss_calculated_deferred_earnings_test_payment` reports the remainder deferred
+from this entitlement year. Supply `ss_calculator_earnings_test_settlement_month`
+for the **original earnings year**, with its actual later `YYYY-MM` payment
+month, to include settlement in that month's and year's cash totals. A date
+in or before the earnings year fails. Without a supplied date, the settlement
+remains pending; the calculator does not assume when earnings are reported.
+Settlement never changes the original entitlement or earnings-test deduction.
+
+Set `ss_calculator_immediate_earnings_test_payment` to true only when immediate
+partial payment was requested; it defaults false. The pure `calculate_year`
+API exposes the same choice as `immediate_earnings_test_payment` and accepts
+an earnings-year-to-month `earnings_test_settlement_months` mapping. Ledger
+rows retain `payable_benefit` as entitlement and expose `payment_amount` after
+deferral; dated settlement payments appear separately in `AnnualBenefit.settlements`.
+For January 2026 commencement, $800 monthly benefits and $33,400 earnings,
+the deduction is $4,460 and annual entitlement $5,140. Default 2026 checks total
+$4,000 with $340 deferred; requested immediate partial payment gives $4,340.
 
 This route requires `ss_calculator_no_special_monthly_test` and
 `ss_calculator_no_prior_withholding_adjustment`. These assert that special

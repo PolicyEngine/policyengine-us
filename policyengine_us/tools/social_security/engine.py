@@ -8,7 +8,13 @@ import numpy as np
 from policyengine_us.tools.general import has_input_for_period
 
 from .cola import read_parameter_events
-from .household import BenefitPolicies, SuppliedRecord, SurvivorBasis, calculate_year
+from .household import (
+    BenefitPolicies,
+    SuppliedRecord,
+    SurvivorBasis,
+    calculate_year,
+    month_number,
+)
 from .parameters import bend_points_at, formula_path_at
 from .pia import FormulaPath
 
@@ -102,8 +108,26 @@ def calculator_output(person, period, parameters, output):
         )
         events = read_parameter_events(parameters, through)
         earnings, before_fra, lower, higher = {}, {}, {}, {}
+        settlement_months = {}
+        earnings_years = {year - 1, year}
+        for earnings_year in range(benchmark, year + 1):
+            when = str(earnings_year)
+            if not has_input_for_period(
+                person.simulation,
+                "ss_calculator_earnings_test_settlement_month",
+                when,
+            ):
+                continue
+            settlement_month = str(value("earnings_test_settlement_month", when))
+            if not settlement_month:
+                continue
+            settlement_year = month_number(settlement_month) // 12
+            settlement_months[earnings_year] = settlement_month
+            if settlement_year == year:
+                earnings_years.add(earnings_year)
+        payment_years = earnings_years | {when + 1 for when in earnings_years}
         paths, modes, flags = {}, {}, {}
-        for payment_year in (year - 1, year, year + 1):
+        for payment_year in sorted(payment_years):
             if payment_year >= benchmark:
                 paths[payment_year], modes[payment_year] = formula_path_at(
                     parameters, benchmark, payment_year
@@ -119,7 +143,7 @@ def calculator_output(person, period, parameters, output):
                 if payment_year >= 1983
                 else False
             )
-        for earnings_year in (year - 1, year):
+        for earnings_year in sorted(earnings_years):
             when = str(earnings_year)
             # These are dated records. Core otherwise carries an earlier pure
             # annual input forward, which would turn missing earnings into an
@@ -185,7 +209,7 @@ def calculator_output(person, period, parameters, output):
                 )
             if withheld:
                 withheld_years.append(payment_year)
-        for payment_year in (year - 1, year, year + 1):
+        for payment_year in sorted(payment_years):
             if payment_year < 1983:
                 across[payment_year], payable[payment_year] = Decimal(0), Decimal(1)
                 continue
@@ -219,6 +243,10 @@ def calculator_output(person, period, parameters, output):
             pre_fra_earnings=before_fra,
             lower_exempt=lower,
             higher_exempt=higher,
+            immediate_earnings_test_payment=bool(
+                value("immediate_earnings_test_payment")
+            ),
+            earnings_test_settlement_months=settlement_months,
         )
         if output in ("retirement", "survivors"):
             selected = (
@@ -231,6 +259,8 @@ def calculator_output(person, period, parameters, output):
             result[index] = float(annual.payment_total)
         elif output == "earnings_test_reduction":
             result[index] = float(annual.earnings_test_reduction)
+        elif output == "deferred_earnings_test_payment":
+            result[index] = float(annual.deferred_earnings_test_payment)
         elif output in ("benefit", "payment", "eligibility_pia"):
             target = (
                 str(period)[:7]
@@ -243,11 +273,24 @@ def calculator_output(person, period, parameters, output):
                 if (row.payment_month if output == "payment" else row.entitlement_month)
                 == target
             )
-            result[index] = float(
-                row.eligibility_pia
-                if output == "eligibility_pia"
-                else row.payable_benefit
-            )
+            if output == "payment":
+                result[index] = float(
+                    row.payment_amount
+                    + sum(
+                        (
+                            settlement.amount
+                            for settlement in annual.settlements
+                            if settlement.payment_month == target
+                        ),
+                        Decimal(0),
+                    )
+                )
+            else:
+                result[index] = float(
+                    row.eligibility_pia
+                    if output == "eligibility_pia"
+                    else row.payable_benefit
+                )
         elif output.startswith("pia_") or output.startswith("aime_"):
             interval = (
                 annual.eligibility_pia_interval

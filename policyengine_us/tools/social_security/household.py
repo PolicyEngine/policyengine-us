@@ -1,7 +1,8 @@
 """Opt-in gross Social Security ledger for supplied, identified worker records.
 
 All amounts are monthly dollars. A ledger row is a benefit entitlement month;
-its check is paid in the following month. Both annual entitlement and check
+its ordinary check is paid in the following month, subject to whole-month
+earnings-test withholding and later settlement. Both annual entitlement and check
 totals are returned, so a partial year never becomes annual benefit / 12.
 This module does not compute family, disability, WINDEX or minimum benefits.
 """
@@ -293,6 +294,18 @@ class EntitlementMonth:
     gross_benefit: Decimal
     earnings_test_reduction: Decimal
     payable_benefit: Decimal
+    deferred_earnings_test_payment: Decimal = Decimal(0)
+
+    @property
+    def payment_amount(self):
+        return self.payable_benefit - self.deferred_earnings_test_payment
+
+
+@dataclass(frozen=True)
+class EarningsTestSettlement:
+    earnings_year: int
+    payment_month: str
+    amount: Decimal
 
 
 @dataclass(frozen=True)
@@ -303,6 +316,20 @@ class AnnualBenefit:
     earnings_test_reduction: Decimal
     eligibility_pia_interval: tuple[Decimal, Decimal] | None = None
     inferred_aime_interval: tuple[Decimal, Decimal] | None = None
+    settlements: tuple[EarningsTestSettlement, ...] = ()
+
+    @property
+    def deferred_earnings_test_payment(self):
+        # The ledger's last row always belongs to the requested entitlement year.
+        year = self.ledger[-1].entitlement_month[:4]
+        return sum(
+            (
+                row.deferred_earnings_test_payment
+                for row in self.ledger
+                if row.entitlement_month.startswith(year)
+            ),
+            Decimal(0),
+        )
 
 
 def _source_pia(record, year, bends, baseline_events):
@@ -412,6 +439,8 @@ def calculate_year(
     higher_exempt=None,
     recompute_mode="cohort",
     s770_survivor_bend_increase=False,
+    immediate_earnings_test_payment=False,
+    earnings_test_settlement_months=None,
     _include_previous_check=True,
 ):
     """Return a 13-row ledger (previous December plus January–December).
@@ -421,10 +450,25 @@ def calculate_year(
     have been withheld. The ordinary annual test is allocated to the earliest
     affected months. Special monthly/service tests and adjustments for earlier
     withheld months require explicit no-trigger assertions in this route.
+
+    Whole months are withheld by default; a partial month's remaining entitlement
+    is deferred until closed-year reporting (Handbook 1806.2, RS 02501.110).
+    Supply earnings-year -> actual later payment month in
+    earnings_test_settlement_months to post that settlement. Without a supplied
+    date it remains pending. immediate_earnings_test_payment represents an
+    explicit request to pay the partial month immediately instead.
     """
     # The inverse, its reproduction check, and the prior-year earnings-test
     # ledger all need the same immutable history, including for iterator input.
     cola_events = tuple(cola_events)
+    settlement_months = earnings_test_settlement_months or {}
+    settlement_years = set()
+    for earnings_year, payment_month in settlement_months.items():
+        payment_year = month_number(payment_month) // 12
+        if payment_year <= earnings_year:
+            raise ValueError("Earnings-test settlement must follow the earnings year")
+        if payment_year == year:
+            settlement_years.add(earnings_year)
     benchmark = record.benchmark()
     baseline_pia, aime, pia_interval = _source_pia(
         record, benchmark, bend_points, cola_events
@@ -576,7 +620,13 @@ def calculate_year(
     # Evaluate full entitlement years, even when only their last month's check
     # falls in the requested payment year. This makes request order irrelevant.
     by_month = {row.entitlement_month: row for row in rows}
-    for earnings_year in (year - 1, year) if _include_previous_check else (year,):
+    settlements = []
+    earnings_years = (
+        sorted({year - 1, year} | settlement_years)
+        if _include_previous_check
+        else (year,)
+    )
+    for earnings_year in earnings_years:
         if (
             earnings_year < 2000
             and not record.earnings_test_no_trigger
@@ -634,7 +684,7 @@ def calculate_year(
         # RS 02501.080: truncate the annual deduction to whole dollars.
         remaining = Decimal(int(remaining))
         # Fill missing earlier months using the same pure ledger calculation.
-        if earnings_year == year - 1 and remaining:
+        if earnings_year < year and remaining:
             earlier = calculate_year(
                 record,
                 earnings_year,
@@ -648,10 +698,23 @@ def calculate_year(
                 higher_exempt=higher_exempt,
                 recompute_mode=recompute_mode,
                 s770_survivor_bend_increase=s770_survivor_bend_increase,
+                immediate_earnings_test_payment=immediate_earnings_test_payment,
                 _include_previous_check=False,
             )
             old = earlier.ledger[-1]
-            by_month[old.entitlement_month] = old
+            if old.entitlement_month in by_month:
+                by_month[old.entitlement_month] = old
+            if (
+                earnings_year in settlement_years
+                and earlier.deferred_earnings_test_payment
+            ):
+                settlements.append(
+                    EarningsTestSettlement(
+                        earnings_year,
+                        settlement_months[earnings_year],
+                        earlier.deferred_earnings_test_payment,
+                    )
+                )
             continue
         for n in relevant:
             key = month_string(n)
@@ -664,6 +727,14 @@ def calculate_year(
                 row,
                 earnings_test_reduction=reduction,
                 payable_benefit=row.gross_benefit - reduction,
+                # Handbook 1806.2 / RS 02501.110: retain the whole check until
+                # closed-year reporting unless partial payment was requested.
+                deferred_earnings_test_payment=(
+                    row.gross_benefit - reduction
+                    if 0 < reduction < row.gross_benefit
+                    and not immediate_earnings_test_payment
+                    else Decimal(0)
+                ),
             )
     rows = tuple(by_month[row.entitlement_month] for row in rows)
     return AnnualBenefit(
@@ -677,9 +748,10 @@ def calculate_year(
             Decimal(0),
         ),
         sum(
-            (r.payable_benefit for r in rows if r.payment_month.startswith(str(year))),
+            (r.payment_amount for r in rows if r.payment_month.startswith(str(year))),
             Decimal(0),
-        ),
+        )
+        + sum((settlement.amount for settlement in settlements), Decimal(0)),
         sum(
             (
                 r.earnings_test_reduction
@@ -690,4 +762,5 @@ def calculate_year(
         ),
         pia_interval,
         inferred_interval,
+        tuple(settlements),
     )

@@ -51,3 +51,81 @@
     ss_calculated_retirement: 0
     ss_calculated_survivors: 0
     social_security_retirement: 20000
+
+- name: Whole-month earnings withholding defers the partial month until a supplied settlement
+  # Handbook 1806.2 and POMS RS 02501.110: partial payment follows closed-year reporting.
+  # https://www.ssa.gov/OP_Home/handbook/handbook.18/handbook-1806.html
+  # https://secure.ssa.gov/poms.nsf/lnx/0302501110
+  period: 2026
+  input: &earnings_test_record
+    # Hold COLAs at zero to isolate the published $800 earnings-test example.
+    gov.contrib.ssa.benefit_levers.cola.alternative_rate: 0
+    gov.contrib.ssa.benefit_levers.cola.start_year: 2026
+    ss_calculator_source: pia
+    ss_calculator_worker_id: worker-earnings-test
+    ss_calculator_birth_date: '1964-01-02'
+    ss_calculator_eligibility_year: 2026
+    ss_calculator_entitlement_month: '2026-01'
+    ss_calculator_supplied_pia: 800
+    ss_calculator_claiming_factor: '1'
+    ss_calculator_insured: true
+    ss_calculator_no_special_monthly_test: true
+    ss_calculator_no_prior_withholding_adjustment: true
+    ss_calculator_annual_earnings:
+      2026: 33400
+      2027: 0
+      2028: 0
+    ss_calculator_earnings_test_settlement_month:
+      2026: '2027-03'
+  output:
+    ss_calculated_earnings_test_reduction:
+      2026: 4460
+      2027: 0
+    ss_calculated_annual_entitlement:
+      2026: 5140
+      2027: 9600
+    ss_calculated_annual_payment:
+      2026: 4000
+      2027: 9940
+    ss_calculated_deferred_earnings_test_payment:
+      2026: 340
+      2027: 0
+    ss_calculated_benefit:
+      2026-06: 340
+    ss_calculated_payment:
+      2026-07: 0
+      2026-08: 800
+      2027-02: 800
+      2027-03: 1140
+      2027-04: 800
+      2028-03: 800
+
+- name: Requested immediate partial earnings-test payment is explicit
+  period: 2026
+  input:
+    <<: *earnings_test_record
+    ss_calculator_immediate_earnings_test_payment: true
+  output:
+    ss_calculated_earnings_test_reduction: 4460
+    ss_calculated_annual_entitlement: 5140
+    ss_calculated_deferred_earnings_test_payment: 0
+    ss_calculated_annual_payment:
+      2026: 4340
+      2027: 9600
+    ss_calculated_payment:
+      2026-07: 340
+      2027-03: 800
+
+- name: Delayed earnings-test settlement loads its original earnings year
+  period: 2028
+  input:
+    <<: *earnings_test_record
+    ss_calculator_earnings_test_settlement_month:
+      2026: '2028-03'
+  output:
+    ss_calculated_annual_payment:
+      2027: 9600
+      2028: 9940
+    ss_calculated_payment:
+      2027-03: 800
+      2028-03: 1140

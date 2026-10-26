@@ -40,7 +40,10 @@ class ss_calculated_annual_entitlement(Variable):
     definition_period = YEAR
     unit = USD
     label = "Calculated Social Security annual entitlement"
-    documentation = "Sum of payable entitlement months in the calendar year, before Medicare deductions."
+    documentation = (
+        "Sum of payable entitlement months in the calendar year, before Medicare "
+        "deductions, including partial earnings-test benefits awaiting settlement."
+    )
     reference = "https://www.ssa.gov/oact/cola/colaapplic.html"
 
     def formula(person, period, parameters):
@@ -53,8 +56,16 @@ class ss_calculated_annual_payment(Variable):
     definition_period = YEAR
     unit = USD
     label = "Calculated Social Security annual payment"
-    documentation = "Sum of gross checks paid in the calendar year; each check follows entitlement by one month."
-    reference = "https://www.ssa.gov/oact/cola/colaapplic.html"
+    documentation = (
+        "Sum of gross checks paid in the calendar year, including explicitly "
+        "dated settlements. Ordinary checks follow entitlement by one month; "
+        "whole-month earnings-test withholding defers partial benefits until "
+        "closed-year reporting unless immediate payment is explicitly requested."
+    )
+    reference = (
+        "https://www.ssa.gov/OP_Home/handbook/handbook.18/handbook-1806.html",
+        "https://secure.ssa.gov/poms.nsf/lnx/0302501110",
+    )
 
     def formula(person, period, parameters):
         return calculator_output(person, period, parameters, "annual_payment")
@@ -75,13 +86,37 @@ class ss_calculated_earnings_test_reduction(Variable):
         return calculator_output(person, period, parameters, "earnings_test_reduction")
 
 
+class ss_calculated_deferred_earnings_test_payment(Variable):
+    value_type = float
+    entity = Person
+    definition_period = YEAR
+    unit = USD
+    label = "Calculated Social Security deferred earnings test payment"
+    documentation = (
+        "Partial benefit withheld from this earnings year's ordinary checks, "
+        "payable after closed-year earnings reporting. No settlement date is assumed."
+    )
+    reference = (
+        "https://www.ssa.gov/OP_Home/handbook/handbook.18/handbook-1806.html",
+        "https://secure.ssa.gov/poms.nsf/lnx/0302501110",
+    )
+
+    def formula(person, period, parameters):
+        return calculator_output(
+            person, period, parameters, "deferred_earnings_test_payment"
+        )
+
+
 class ss_calculated_benefit(Variable):
     value_type = float
     entity = Person
     definition_period = MONTH
     unit = USD
     label = "Calculated Social Security benefit"
-    documentation = "Payable gross benefit for this entitlement month; the check follows next month."
+    documentation = (
+        "Payable gross benefit for this entitlement month, including any partial "
+        "earnings-test benefit whose payment is deferred until settlement."
+    )
     reference = "https://www.ssa.gov/oact/cola/colaapplic.html"
 
     def formula(person, period, parameters):
@@ -95,9 +130,14 @@ class ss_calculated_payment(Variable):
     unit = USD
     label = "Calculated Social Security payment"
     documentation = (
-        "Gross benefit check in this month for the preceding entitlement month."
+        "Gross benefit checks in this month, including explicitly dated settlements. "
+        "The preceding entitlement month's partial earnings-test benefit is "
+        "withheld pending closed-year reporting unless immediate payment is requested."
     )
-    reference = "https://www.ssa.gov/oact/cola/colaapplic.html"
+    reference = (
+        "https://www.ssa.gov/OP_Home/handbook/handbook.18/handbook-1806.html",
+        "https://secure.ssa.gov/poms.nsf/lnx/0302501110",
+    )
 
     def formula(person, period, parameters):
         return calculator_output(person, period, parameters, "payment")

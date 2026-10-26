@@ -350,7 +350,8 @@ def test_complete_payable_cut_is_valid_and_negative_benefits_are_rejected():
             compute(record, policies=policies)
 
 
-def test_ssa_published_under_fra_earnings_test():
+@pytest.mark.parametrize("immediate", [None, False, True])
+def test_ssa_published_under_fra_earnings_test(immediate):
     # https://www.ssa.gov/benefits/retirement/planner/whileworking.html
     record = retirement(
         birth_date=date(1964, 1, 2),
@@ -360,12 +361,84 @@ def test_ssa_published_under_fra_earnings_test():
         supplied_claiming_factor=D(1),
         earnings_test_no_trigger=False,
     )
-    result = compute(record, earnings={2026: 33400}, lower_exempt={2026: 24480})
+    options = (
+        {} if immediate is None else {"immediate_earnings_test_payment": immediate}
+    )
+    result = compute(
+        record, earnings={2026: 33400}, lower_exempt={2026: 24480}, **options
+    )
     assert result.earnings_test_reduction == 4460
     assert result.entitlement_total == 5140
+    # Handbook 1806.2 and RS02501.110 defer the partial June benefit until
+    # closed-year earnings reporting unless immediate payment is requested.
+    # https://www.ssa.gov/OP_Home/handbook/handbook.18/handbook-1806.html
+    # https://secure.ssa.gov/poms.nsf/lnx/0302501110
+    june = row_for(result, "2026-06")
+    assert june.payable_benefit == 340
+    assert june.payment_month == "2026-07"
+    assert june.payment_amount == (340 if immediate else 0)
+    assert result.deferred_earnings_test_payment == (0 if immediate else 340)
+    assert result.payment_total == (4340 if immediate else 4000)
+    assert not result.settlements
     assert all(
         row.earnings_test_reduction <= row.gross_benefit for row in result.ledger
     )
+
+
+@pytest.mark.parametrize("settlement_month", ["2027-03", "2028-03"])
+def test_deferred_earnings_test_payment_requires_a_dated_closed_year_settlement(
+    settlement_month,
+):
+    record = retirement(
+        birth_date=date(1964, 1, 2),
+        eligibility_year=2026,
+        entitlement_month="2026-01",
+        pia=D(800),
+        supplied_claiming_factor=D(1),
+        earnings_test_no_trigger=False,
+    )
+    year = int(settlement_month[:4])
+    inputs = dict(
+        earnings={year - 1: 0, year: 0, 2026: 33400},
+        lower_exempt={2026: 24480, year - 1: 24480, year: 24480},
+    )
+    pending = compute(record, year, **inputs)
+    settled = compute(
+        record,
+        year,
+        earnings_test_settlement_months={2026: settlement_month},
+        **inputs,
+    )
+    assert pending.payment_total == 9600
+    assert settled.payment_total == 9940
+    assert settled.entitlement_total == 9600
+    assert settled.earnings_test_reduction == 0
+    assert settled.deferred_earnings_test_payment == 0
+    assert len(settled.settlements) == 1
+    settlement = settled.settlements[0]
+    assert (settlement.earnings_year, settlement.payment_month, settlement.amount) == (
+        2026,
+        settlement_month,
+        340,
+    )
+    immediate = compute(
+        record,
+        year,
+        immediate_earnings_test_payment=True,
+        earnings_test_settlement_months={2026: settlement_month},
+        **inputs,
+    )
+    assert immediate.payment_total == 9600
+    assert not immediate.settlements
+
+
+@pytest.mark.parametrize("settlement_month", ["2026-07", "2026-12", "2025-12"])
+def test_earnings_test_settlement_cannot_precede_closed_year(settlement_month):
+    with pytest.raises(ValueError, match="must follow the earnings year"):
+        compute(
+            retirement(),
+            earnings_test_settlement_months={2026: settlement_month},
+        )
 
 
 def test_ssa_published_fra_year_earnings_test_counts_only_pre_fra_months():
@@ -422,7 +495,8 @@ def test_earnings_after_retirement_fra_do_not_reduce_benefits():
     assert compute(record, 2027, earnings={2027: 1_000_000}).entitlement_total == 12000
 
 
-def test_previous_december_withholding_and_request_order_are_consistent():
+@pytest.mark.parametrize("immediate", [False, True])
+def test_previous_december_withholding_and_request_order_are_consistent(immediate):
     record = retirement(
         birth_date=date(1964, 1, 2),
         eligibility_year=2026,
@@ -432,12 +506,15 @@ def test_previous_december_withholding_and_request_order_are_consistent():
         earnings_test_no_trigger=False,
     )
     inputs = dict(
-        earnings={2026: 43080, 2027: 0}, lower_exempt={2026: 24480, 2027: 24480}
+        earnings={2026: 43080, 2027: 0},
+        lower_exempt={2026: 24480, 2027: 24480},
+        immediate_earnings_test_payment=immediate,
     )
     later = compute(record, 2027, **inputs)
     earlier = compute(record, 2026, **inputs)
     assert row_for(earlier, "2026-12") == row_for(later, "2026-12")
-    assert later.payment_total == 9100  # December2026 remaining check300 +11x800.
+    assert row_for(earlier, "2026-12").payable_benefit == 300
+    assert later.payment_total == (9100 if immediate else 8800)
 
 
 def test_no_earnings_test_assertion_rejects_conflicting_observed_earnings():
@@ -919,8 +996,9 @@ def test_prior_year_earnings_test_does_not_require_older_earnings_history():
     )
     assert row_for(result, "2025-12").earnings_test_reduction == 500
     assert row_for(result, "2025-12").payable_benefit == 300
+    assert row_for(result, "2025-12").payment_amount == 0
     assert result.entitlement_total == 9600
-    assert result.payment_total == 9100
+    assert result.payment_total == 8800
 
 
 def test_claiming_dime_truncation_precedes_contributed_benefit_factor():

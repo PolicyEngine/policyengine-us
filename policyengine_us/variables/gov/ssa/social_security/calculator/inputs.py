@@ -136,6 +136,22 @@ class ss_calculator_earnings_test_no_trigger(Variable):
     documentation = "Assert earnings do not trigger the annual earnings test in the requested years."
 
 
+class ss_calculator_immediate_earnings_test_payment(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = ETERNITY
+    default_value = False
+    label = "Social Security calculator immediate earnings test payment"
+    documentation = (
+        "Explicitly request immediate partial earnings-test payments. By default, "
+        "whole months are withheld and the remainder awaits closed-year earnings reporting."
+    )
+    reference = (
+        "https://www.ssa.gov/OP_Home/handbook/handbook.18/handbook-1806.html",
+        "https://secure.ssa.gov/poms.nsf/lnx/0302501110",
+    )
+
+
 class ss_calculator_worker_birth_year(Variable):
     value_type = int
     entity = Person
@@ -317,6 +333,23 @@ class ss_calculator_annual_earnings(Variable):
     label = "Social Security calculator annual earnings"
     documentation = "Annual earnings subject to the annual test; -1 means missing."
     unit = USD
+
+
+class ss_calculator_earnings_test_settlement_month(Variable):
+    value_type = str
+    entity = Person
+    definition_period = YEAR
+    default_value = ""
+    label = "Social Security calculator earnings test settlement month"
+    documentation = (
+        "Actual partial-benefit settlement check month, YYYY-MM, supplied for the "
+        "earnings year being settled. The payment year must follow that earnings "
+        "year. Empty leaves the remainder pending; no settlement date is assumed."
+    )
+    reference = (
+        "https://www.ssa.gov/OP_Home/handbook/handbook.18/handbook-1806.html",
+        "https://secure.ssa.gov/poms.nsf/lnx/0302501110",
+    )
 
 
 class ss_calculator_pre_fra_earnings(Variable):

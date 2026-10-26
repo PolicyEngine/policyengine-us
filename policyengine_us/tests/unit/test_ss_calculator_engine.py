@@ -281,6 +281,12 @@ def test_annual_earnings_input_is_allocated_to_entitlement_months_before_checks(
     # a supplied 2027 observation. The next year's annual test needs its data.
     with pytest.raises(ValueError, match="Supply annual earnings"):
         simulation.calculate("ss_calculated_annual_payment", 2027)
+    # Reject a same-year settlement immediately, using this existing model.
+    simulation.set_input(
+        "ss_calculator_earnings_test_settlement_month", 2026, ["2026-07"]
+    )
+    with pytest.raises(ValueError, match="must follow the earnings year"):
+        simulation.calculate("ss_calculated_payment", "2026-04")
 
 
 def test_s770_parameter_schedule_reaches_old_cohort_at_2026():
