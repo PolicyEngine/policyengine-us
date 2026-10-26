@@ -1,4 +1,4 @@
-description: States provide pregnancy-related coverage for this number of days after a pregnancy ends under the Medicaid program.
+description: States continue eligibility as though the individual were still pregnant for this number of days after a pregnancy ends under the Medicaid program.
 # NOTE: is_pregnant_for_medicaid_nfc is YEAR-defined and reads this parameter
 # on January 1, so a mid-year effective date applies from the next calendar
 # year. 60 and 365 are the statutory minimum day counts: 42 USC 1396a(e)(5)
@@ -231,6 +231,9 @@ NH:
   2023-10-01: 365
 NJ:
   2021-01-01: 60
+  # The section 1115 amendment took effect 2021-10-28 with no deferred start
+  # (STC 43). DMAHS completed the eligibility-system change during 2022, and
+  # FFCRA continuous enrollment kept postpartum enrollees covered meanwhile.
   2021-10-28: 365
 NM:
   2021-01-01: 60

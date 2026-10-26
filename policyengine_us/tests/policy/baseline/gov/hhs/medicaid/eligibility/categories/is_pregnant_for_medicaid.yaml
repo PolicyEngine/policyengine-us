@@ -267,6 +267,16 @@
     is_pregnant_for_medicaid_nfc: false
     is_pregnant_for_medicaid: false
 
+- name: AR postpartum coverage holds inside the 60-day period in 2026
+  period: 2026
+  input:
+    state_code: AR
+    count_days_postpartum: 59
+    medicaid_income_level: 1
+  output:
+    is_pregnant_for_medicaid_nfc: true
+    is_pregnant_for_medicaid: true
+
 # SPA WI-26-0014 takes effect 2026-06-01, so annual 2026 still applies the
 # 60-day rule.
 - name: WI postpartum coverage stays at 60 days in annual 2026, before the June 2026 election
@@ -530,6 +540,18 @@
   period: 2025
   input:
     state_code: ID
+    count_days_postpartum: 90
+    medicaid_income_level: 1
+  output:
+    is_pregnant_for_medicaid_nfc: true
+    is_pregnant_for_medicaid: true
+
+# SPA UT-23-0017 takes effect on January 1, 2024, so annual 2024 applies
+# 12 months in the same year.
+- name: UT postpartum coverage extends to 12 months in 2024 under SPA UT-23-0017
+  period: 2024
+  input:
+    state_code: UT
     count_days_postpartum: 90
     medicaid_income_level: 1
   output:
