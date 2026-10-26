@@ -24,7 +24,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from hypothesis import HealthCheck, settings, strategies as st
-from hypothesis.stateful import RuleBasedStateMachine, invariant, rule
+from hypothesis.stateful import RuleBasedStateMachine, invariant, precondition, rule
 
 
 spec = importlib.util.spec_from_file_location(
@@ -237,6 +237,7 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
         self.states = [(self.backend.DelegatingSimulation(), Model())]
         self.temp = tempfile.TemporaryDirectory(prefix="ss-input-machine-")
         self.dump_count = 0
+        self.branch_initial_rewrite_done = False
 
     def teardown(self):
         self.temp.cleanup()
@@ -537,6 +538,7 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
             )
         self.append(copied, copied_model)
 
+    @precondition(lambda self: not self.branch_initial_rewrite_done)
     @rule(
         slot=TARGET,
         component=COMPONENT,
@@ -554,6 +556,8 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
         # Independent rules rarely choose the same component and period on
         # a newly created branch. Keep that composition generated, checking
         # the parent and every earlier copy after each intermediate step.
+        # One composed rewrite bounds retained-copy growth; the independent
+        # primitive rules can still compose before and after it on any state.
         self.set_input(slot, component, False, period, amount, "simulation")
         self.reported_values_and_provenance_follow_intent()
         self.copy_simulation(slot, branch=True)
@@ -567,6 +571,7 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
             fresh=False,
             yaml=False,
         )
+        self.branch_initial_rewrite_done = True
 
     @rule(slot=TARGET)
     def dump_restore(self, slot):
