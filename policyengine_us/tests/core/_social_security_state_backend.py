@@ -716,8 +716,22 @@ class Backend:
         # 3.33.2 does this only in dispatch/divide helpers. Keep the reference
         # model tied to the installed behavior rather than a version string.
         self.cleans_raw_overlaps = "_drop_calculated_over_own_period" in core_helpers
+        simulation_source = core / "simulations/simulation.py"
+        # _latest_input_key calls _end_order, which uses Core's calendar
+        # table even for yearly sources. Load that literal from the same
+        # installed module rather than maintaining a second calendar table.
+        day_offsets = next(
+            node.value
+            for node in source_tree(simulation_source).body
+            if isinstance(node, ast.Assign)
+            and any(
+                isinstance(target, ast.Name) and target.id == "_DAYS_BEFORE_MONTH"
+                for target in node.targets
+            )
+        )
+        namespace["_DAYS_BEFORE_MONTH"] = ast.literal_eval(day_offsets)
         execute(
-            core / "simulations/simulation.py",
+            simulation_source,
             ("_end_order", "_latest_input_key", "_uprating_index_value"),
             namespace,
         )
