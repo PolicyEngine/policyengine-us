@@ -15,16 +15,28 @@ class is_medically_needy_for_medicaid(Variable):
         "administration beyond the annual expense proxy."
     )
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/cfr/text/42/part-435/subpart-D"
+    reference = (
+        "https://www.law.cornell.edu/cfr/text/42/part-435/subpart-D",
+        "https://www.ecfr.gov/current/title-42/section-435.602#p-435.602(a)(2)(i)",
+        "https://www.ecfr.gov/current/title-42/section-435.831#p-435.831(d)",
+        "https://www.ecfr.gov/current/title-42/section-435.845#p-435.845(a)",
+    )
 
     def formula(person, period, parameters):
         in_category = person("is_in_medicaid_medically_needy_category", period)
         is_aged_blind_or_disabled = person("is_ssi_aged_blind_disabled", period)
         personal_income = person("ssi_countable_income", period)
         medical_expenses = person("medicaid_medically_needy_medical_expenses", period)
-        personal_assets = person("ssi_countable_resources", period)
+        # A child's resources include the excess of ineligible parents'
+        # resources (20 CFR 416.1202(b)), as ssi_countable_income already
+        # includes their deemed income. Parents' medical expenses are not
+        # deducted for the child.
+        personal_assets = person("ssi_countable_resources", period) + person(
+            "ssi_resources_deemed_from_ineligible_parent", period.first_month
+        )
         # SSI financial responsibility rules (42 CFR 435.602): the unit is
-        # the individual or the married couple, not the tax filing unit.
+        # the individual or the married couple, plus parents for a child,
+        # not the tax filing unit.
         marital_unit = person.marital_unit
         income = marital_unit.sum(personal_income - medical_expenses)
         assets = marital_unit.sum(personal_assets)

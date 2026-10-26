@@ -120,3 +120,87 @@
     # 2 x (13,080 - 8,000) = 10,160 > 650 x 12 = 7,800.
     # Each spouse alone would pass the individual limit: 5,080 <= 6,264.
     is_medically_needy_for_medicaid: [false, false]
+
+- name: Case 5, disabled child's resource test counts the parents' savings above the SSI couple allowance.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_parent: true
+        employment_income_before_lsr: 40_000
+        ssi_countable_resources: 10_000
+      person2:
+        age: 38
+        is_tax_unit_spouse: true
+        is_parent: true
+        employment_income_before_lsr: 40_000
+        ssi_countable_resources: 10_000
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        # Parents' $6,666.67 monthly wages deemed to the child (20 CFR 416.1165):
+        # (6,666.67 - 20 - 65) / 2 - 1,491 couple allowance = 1,799.83, less
+        # the child's $20 general exclusion = 1,779.83 a month.
+        ssi_countable_income: 21_358
+        medicaid_medically_needy_medical_expenses: 16_000
+        is_optional_senior_or_disabled_for_medicaid: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:
+    # person3: income 21,358 - 16,000 = 5,358 <= 522 x 12 = 6,264, but resources
+    # 0 + (20,000 - 3,000 two-parent allowance) = 17,000 > 2,000 (20 CFR 416.1202(b)).
+    is_medically_needy_for_medicaid: [false, false, false]
+
+- name: Case 6, disabled child qualifies when the parents' savings are within the SSI couple allowance.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_parent: true
+        employment_income_before_lsr: 40_000
+        ssi_countable_resources: 1_200
+      person2:
+        age: 38
+        is_tax_unit_spouse: true
+        is_parent: true
+        employment_income_before_lsr: 40_000
+        ssi_countable_resources: 1_200
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        # Deemed parental income as in Case 5.
+        ssi_countable_income: 21_358
+        medicaid_medically_needy_medical_expenses: 16_000
+        is_optional_senior_or_disabled_for_medicaid: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:
+    # person3: income 5,358 <= 6,264; resources 0 + max(2,400 - 3,000, 0) = 0 <= 2,000.
+    # Counting the parents' full 2,400 would exceed the child's 2,000 limit.
+    is_medically_needy_for_medicaid: [false, false, true]
