@@ -1191,14 +1191,15 @@ class TestGetParameterLastYear:
 
     def test_with_real_cpi_u_parameter(self):
         """Verify get_parameter_last_year works on the actual CPI-U
-        parameter YAML, returning 2035 (not 2100 from uprating_extensions)."""
+        parameter YAML, returning 2036 (not 2100 from uprating_extensions)."""
         from policyengine_us.system import system
 
         cpi_u = _resolve_parameter(system.parameters, "gov.bls.cpi.cpi_u")
         last_year = get_parameter_last_year(cpi_u)
-        # CPI-U YAML currently extends to 2035; if the YAML is updated,
-        # this assertion should be updated to match.
-        assert last_year == 2035
+        # CPI-U YAML currently extends to 2036 (CBO's February 2026
+        # projections); if the YAML is updated, this assertion should be
+        # updated to match.
+        assert last_year == 2036
 
 
 # ---------------------------------------------------------------------------

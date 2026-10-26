@@ -6,8 +6,9 @@ class income_driven_repayment_eligible(Variable):
     entity = Person
     label = "Eligible for income-driven repayment of federal student loans"
     documentation = (
-        "The person has loans that the Income-Based Repayment and SAVE plans "
-        "can repay and is the head or spouse of their tax unit."
+        "The person has loans that the Income-Based Repayment, SAVE, Pay As "
+        "You Earn and Income-Contingent Repayment plans can repay and is the "
+        "head or spouse of their tax unit."
     )
     definition_period = MONTH
     reference = (

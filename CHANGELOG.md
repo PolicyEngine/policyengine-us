@@ -1,3 +1,14 @@
+## [2.65.0] - 2026-10-26
+
+### Added
+
+- Add federal student loan Pay As You Earn, Income-Contingent Repayment and tiered standard repayment payments, and the bar that limits borrowers with a Direct Loan made on or after July 1, 2026 to the Repayment Assistance Plan or the tiered standard plan, under 20 U.S.C. 1087e(d) and 34 CFR 685.208 and 685.209.
+
+### Changed
+
+- Load CBO's February 2026 projections through 2036 into the SSA, SNAP and HHS upraters, the CPI-W series, the national average wage index and the Social Security payroll cap, growing each from its latest actual (the HHS index from its 2026 value); keep CBO's 2035 CPI-U and chained CPI-U points instead of extrapolating over them and add their 2036 points; and extend the payroll cap after 2036 with the 42 U.S.C. 430(b) fixed-base formula.
+
+
 ## [2.64.1] - 2026-10-26
 
 ### Fixed
