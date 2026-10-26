@@ -7,6 +7,8 @@
 # Bands (initial -> final over the FPL band):
 #   100-150% FPL: 0%              (flat)
 #   above 150-165% FPL: 3.19% -> 3.91%  (interpolated linearly)
+# PY2027 (Final 2027 Program Design (d)(4)): threshold [1.0, 1.5, 2.0],
+# initial [0, 0.028], final [0, 0.0528]; above 150-200% FPL: 2.8% -> 5.28%.
 # The exact nonnegative MAGI / prior-year FPG ratio selects the band; the
 # truncated aca_magi_fraction determines the rate within it. Supplied-fraction
 # cases normalize prior-year FPG to $10,000 and supply consistent MAGI to
@@ -292,13 +294,12 @@
   output:
     ca_premium_subsidy_applicable_percentage: 0
 
-# ---- Carry-forward ----
+# ---- PY2027 Final Program Design ----
 
-- name: Case 12, PY2027 schedule at 157.5% FPL -> 3.05% (revised 150-165% band).
-  # PY2027 Program Design V4 (Board Res. 2026-22) changes the 150-165% band to
-  # initial 0.0269 -> final 0.0341. bracket 1 [1.5,1.65]:
-  # position (1.575-1.5)/0.15 = 0.5 -> 0.0269 + 0.5*(0.0341-0.0269)
-  # = 0.0269 + 0.5*0.0072 = 0.0269 + 0.0036 = 0.0305.
+- name: Case 12, PY2027 157.5% FPL -> 3.172%.
+  # Final 2027 Program Design (d)(4): "Above 150% up to 200%", 2.8% -> 5.28%.
+  # bracket 1 [1.5,2.0]: position (1.575-1.5)/0.5 = 0.15
+  # -> 0.028 + 0.15*(0.0528-0.028) = 0.028 + 0.15*0.0248 = 0.028 + 0.00372 = 0.03172.
   period: 2027
   absolute_error_margin: 0.0001
   input:
@@ -318,15 +319,12 @@
         members: [person1]
         state_code: CA
   output:
-    ca_premium_subsidy_applicable_percentage: 0.0305
+    ca_premium_subsidy_applicable_percentage: 0.03172
 
-# ---- PY2027 new 165-200% FPL tier ----
-
-- name: Case 13, PY2027 exactly 165% FPL -> 3.41% from either adjacent tier.
-  # PY2027 thresholds [1,1.5,1.65,2.0]. searchsorted(..., 1.65, "left") = 2,
-  # -1 = 1 -> bracket 1 [1.5,1.65] at position 1 -> its final rate 0.0341,
-  # which equals the 165-200% tier's initial rate, so the rate is continuous
-  # at 165% (2026 had 0.0391 at this point).
+- name: Case 13, PY2027 exactly 165% FPL -> 3.544% (165% is not a PY2027 knot).
+  # PY2027 thresholds [1,1.5,2.0]. searchsorted(..., 1.65, "left") = 2, -1 = 1
+  # -> bracket 1 [1.5,2.0]: position (1.65-1.5)/0.5 = 0.3
+  # -> 0.028 + 0.3*0.0248 = 0.028 + 0.00744 = 0.03544.
   period: 2027
   absolute_error_margin: 0.0001
   input:
@@ -346,11 +344,11 @@
         members: [person1]
         state_code: CA
   output:
-    ca_premium_subsidy_applicable_percentage: 0.0341
+    ca_premium_subsidy_applicable_percentage: 0.03544
 
-- name: Case 14, PY2027 182.5% FPL (midpoint of the new 165-200% tier) -> 4.255%.
-  # bracket 2 [1.65,2.0]: position (1.825-1.65)/0.35 = 0.5.
-  # 0.0341 + 0.5*(0.051-0.0341) = 0.0341 + 0.5*0.0169 = 0.0341 + 0.00845 = 0.04255.
+- name: Case 14, PY2027 182.5% FPL -> 4.412%.
+  # bracket 1 [1.5,2.0]: position (1.825-1.5)/0.5 = 0.65
+  # -> 0.028 + 0.65*0.0248 = 0.028 + 0.01612 = 0.04412.
   period: 2027
   absolute_error_margin: 0.0001
   input:
@@ -370,12 +368,11 @@
         members: [person1]
         state_code: CA
   output:
-    ca_premium_subsidy_applicable_percentage: 0.04255
+    ca_premium_subsidy_applicable_percentage: 0.04412
 
-- name: Case 15, PY2027 199% FPL (top of the eligible band) -> ~5.05%.
-  # bracket 2 [1.65,2.0]: position (1.99-1.65)/0.35 = 0.34/0.35 = 0.971428...
-  # 0.0341 + 0.971428*(0.051-0.0341) = 0.0341 + 0.971428*0.0169 = 0.0341 +
-  # 0.016417 = 0.050517. Derived (non-round position); confirm against the model.
+- name: Case 15, PY2027 199% FPL -> 5.2304%.
+  # bracket 1 [1.5,2.0]: position (1.99-1.5)/0.5 = 0.98
+  # -> 0.028 + 0.98*0.0248 = 0.028 + 0.024304 = 0.052304.
   period: 2027
   absolute_error_margin: 0.0001
   input:
@@ -395,7 +392,31 @@
         members: [person1]
         state_code: CA
   output:
-    ca_premium_subsidy_applicable_percentage: 0.050517  # model computes 0.05051714
+    ca_premium_subsidy_applicable_percentage: 0.052304
+
+- name: Case 15a, PY2027 exactly 200% FPL -> 5.28% (top of the band).
+  # searchsorted([1,1.5,2.0], 2.0, "left") = 2, -1 = 1 -> bracket 1 [1.5,2.0]
+  # at position 1 -> the final rate 0.0528.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 20_000
+        tax_unit_fpg:
+          2026: 10_000
+        aca_magi_fraction: 2.00
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0.0528
 
 - name: Case 2b, a supplied fraction of 1.505 interpolates on the fraction given.
   # searchsorted([1.0,1.5,1.65], 1.505, "left") = 2, -1 -> bracket 1 [1.5,1.65].
@@ -552,3 +573,43 @@
   output:
     aca_magi_fraction: 1.50
     ca_premium_subsidy_applicable_percentage: 0
+
+- name: Case 16b, PY2027 raw income $23,942, just above 150% enters the 2.8% band.
+  # $23,942 / 2026 one-person FPG $15,960 = 150.0125%, "Above 150%". The
+  # truncated fraction 1.50 sits at the start of the band: rate 0.028.
+  period: 2027
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income:
+          2027: 23_942
+        is_aca_ptc_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi_fraction: 1.50
+    ca_premium_subsidy_applicable_percentage: 0.028
+
+- name: Case 16c, PY2027 raw income $31,920, exactly 200% pays 5.28%.
+  # $31,920 / $15,960 = 200.000%. The OE27 enroller deck's 200% FPL example
+  # applies "5.28% (6.78% - 1.5%)" (PDF page 37).
+  period: 2027
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income:
+          2027: 31_920
+        is_aca_ptc_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_magi_fraction: 2.00
+    ca_premium_subsidy_applicable_percentage: 0.0528

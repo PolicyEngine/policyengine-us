@@ -23,7 +23,11 @@ class ca_premium_subsidy_applicable_percentage(Variable):
     def formula(tax_unit, period, parameters):
         magi_frac = tax_unit("aca_magi_fraction", period)
         magi = max_(tax_unit("aca_magi", period), 0)
-        exact_magi_frac = magi / tax_unit("tax_unit_fpg", period.last_year)
+        # Divide in float64: a float32 quotient can round a ratio just above
+        # 150% down onto it, which side="left" would put in the 0% band.
+        exact_magi_frac = magi.astype(np.float64) / tax_unit(
+            "tax_unit_fpg", period.last_year
+        )
         p = parameters(period).gov.states.ca.hbex.premium_subsidy.applicable_percentage
 
         thresholds = np.array(p.threshold)
