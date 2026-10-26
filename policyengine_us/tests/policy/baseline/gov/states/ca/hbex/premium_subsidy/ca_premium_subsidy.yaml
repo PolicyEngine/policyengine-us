@@ -572,10 +572,9 @@
   # = 6_091.824. Eligible: 2.0 is "at or below 200 percent" (Design (d)(7)).
   # amount = max(0, 8_256 - 6_091.824 - 0.0528*31_920)
   # = 2_164.176 - 1_685.376 = 478.80 = 0.015*31_920, or $39.90 a month.
-  # aca_ptc is supplied rather than derived: the federal parameters still carry
-  # the 2026 table (6.60% at 200%) into 2027, while Rev. Proc. 2026-26 sets
-  # 6.78%. A derived credit would be $6,149.28, and the state subsidy $421.34.
-  # Derive it here once the 2027 federal table is in.
+  # aca_ptc is derived from the federal 2027 applicable percentage table
+  # (Rev. Proc. 2026-26, PolicyEngine/policyengine-us#10443), which gives 6.78%
+  # at exactly 200% FPL. The output pins that federal credit.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -591,13 +590,13 @@
         aca_magi: 31_920
         aca_magi_fraction: 2.00
         slcsp: 8_256
-        aca_ptc: 6_091.824
         tax_unit_is_filer: true
     households:
       household:
         members: [person1]
         state_code: CA
   output:
+    aca_ptc: 6_091.824
     ca_premium_subsidy_eligible: true
     ca_premium_subsidy_applicable_percentage: 0.0528
     ca_premium_subsidy: 478.80
