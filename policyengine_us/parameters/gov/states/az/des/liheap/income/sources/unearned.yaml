@@ -4,9 +4,10 @@ description: Arizona uses these person-level unearned income sources to determin
 # income", "Income from Unemployment Insurance" and "Consistent income received
 # from other sources"; the plan's Section 1.9 checks the full list. Each source
 # is floored at zero in the formula, so a rental loss does not offset other
-# income. Cash Assistance (tanf) is a household benefit and is added in
+# income. Gambling profits (winnings less losses) are added in the formula.
+# Cash Assistance (tanf) is a household benefit and is added in
 # az_liheap_countable_income, which also subtracts the household's Medicare
-# Part B premiums.
+# Part A and Part B premiums.
 values:
   2025-08-25:
     - total_unemployment_compensation
@@ -35,11 +36,6 @@ values:
     - interest_income
     - ordinary_dividend_income
     - general_assistance
-    # Section VI.A.6.e.ii.B counts "gambling profits" (page 9). Plan Section 1.9
-    # leaves one-time lump sums such as "winnings from lotteries" unchecked
-    # (page 6); gambling_winnings does not separate one-time winnings, so all
-    # are counted.
-    - gambling_winnings
     # Employment disability insurance: plan Section 1.9 checks "Insurance
     # payments made directly to the insured" (page 6), and Gross Income is
     # "The total Household income for all Household members before taxes and

@@ -9,8 +9,9 @@ class az_liheap_countable_income(Variable):
     documentation = (
         "Annual gross household income counted under Arizona LIHEAP, including "
         "the income of members who are not citizens or qualified noncitizens, "
-        "less each member's out-of-pocket Medicare Part B premium and floored "
-        "at zero. Policy VII.A.1.c.ii.D (CCSD-LIHEAP-Policy.pdf#page=14): "
+        "less each member's out-of-pocket Medicare Part A and Part B premiums "
+        "and floored at zero. Policy VII.A.1.c.ii.D "
+        "(CCSD-LIHEAP-Policy.pdf#page=14): "
         "'Expenses related to Medicare (such as premiums) should be subtracted "
         "when determining gross income'; Part D has no premium variable and is "
         "not deducted. Annual amounts stand for twelve times the policy's "
@@ -51,9 +52,14 @@ class az_liheap_countable_income(Variable):
         # Section VII.A.1.c.ii.D note (CCSD-LIHEAP-Policy.pdf#page=14):
         # "Expenses related to Medicare (such as premiums) should be
         # subtracted when determining gross income." Plan Section 1.9 counts
-        # SSA benefits "Excluding MediCare deduction". medicare_part_b_premium
-        # is each member's out-of-pocket Part B premium, zero for a member who
-        # is not enrolled or whose premium a Medicare Savings Program pays; no
-        # Part D premium variable exists.
-        medicare_premiums = add(spm_unit, period, ["medicare_part_b_premium"])
+        # SSA benefits "Excluding MediCare deduction". The Part A and Part B
+        # premium variables are each member's out-of-pocket premiums, zero for
+        # a member who is not enrolled, whose premium a Medicare Savings
+        # Program pays, or (for Part A) who has premium-free Part A; no Part D
+        # premium variable exists.
+        medicare_premiums = add(
+            spm_unit,
+            period,
+            ["medicare_part_a_premium", "medicare_part_b_premium"],
+        )
         return max_(gross_income - medicare_premiums, 0)
