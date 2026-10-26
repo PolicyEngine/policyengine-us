@@ -1,14 +1,29 @@
-description: Puerto Rico deducts this percentage of casualty loss for separate filers.
+# SEPARATE means Puerto Rico filing status 3: spouses living together at the
+# end of the year who file separately. A married person not living with the
+# spouse files as an individual taxpayer and claims the whole loss.
+description: Puerto Rico allows each spouse filing a separate return this share of the couple's casualty losses on the principal residence and on household personal property.
+values:
+  2011-01-01: 0.5
 metadata:
   unit: /1
   period: year
-  label: Puerto Rico casualty loss deduction separate filing status percentage  
+  label: Puerto Rico casualty loss deduction separate filing share
   reference:
-    - title: P.R. Laws tit. 13, § 30135 (10)(A)(ii)
-      href: https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1005/subchapter-c/30135/
-    - title: Gov. of Puerto Rico Individual Income Tax Return Form 482.0 4 
-      href: https://hacienda.pr.gov/sites/default/files/individuals_2024_rev._jul_12_24_9-30-24_informative.pdf#page=4
-    - title:  Individual Income Tax Return Instructions Booklet 2023
+    - title: P.R. Internal Revenue Code of 2011, Section 1033.15(a)(10)(A)(ii) (13 L.P.R.A. § 30135), as enacted by Act 1-2011
+      href: https://bvirtualogp.pr.gov/ogp/Bvirtual/leyesreferencia/PDF/2-ingles/0001-2011.pdf#page=188
+    - title: P.R. Internal Revenue Code of 2011, Section 1033.15(a)(10)(A)(ii), OGP English compilation (Rev. June 18, 2026)
+      href: https://bvirtualogp.pr.gov/ogp/Bvirtual/leyesreferencia/PDF/2-ingles/1-2011.pdf#page=167
+    - title: P.R. Internal Revenue Code of 2011, Section 1021.03(a)(4) (50% attribution of Section 1033.15(a)(10) deductions), OGP English compilation (Rev. June 18, 2026)
+      href: https://bvirtualogp.pr.gov/ogp/Bvirtual/leyesreferencia/PDF/2-ingles/1-2011.pdf#page=40
+    - title: P.R. Internal Revenue Code of 2011, Section 1061.01(b)(2)(B) (separate returns follow Section 1021.03(a)(1)-(6)), OGP English compilation (Rev. June 18, 2026)
+      href: https://bvirtualogp.pr.gov/ogp/Bvirtual/leyesreferencia/PDF/2-ingles/1-2011.pdf#page=321
+    - title: Act 1-2011, Section 6100.04(a)(1) (Subtitle A applies to taxable years starting after December 31, 2010)
+      href: https://bvirtualogp.pr.gov/ogp/Bvirtual/leyesreferencia/PDF/2-ingles/0001-2011.pdf#page=1313
+    - title: 2023 Individual Income Tax Return Instructions Booklet, Schedule A Individual, Part I, line 2
       href: https://hacienda.pr.gov/sites/default/files/inst_individuals_2023.pdf#page=24
-values:
-  2023-01-01: 0.5
+    - title: 2024 Individual Income Tax Return Instructions Booklet, Schedule A Individual, Part I, line 2
+      href: https://hacienda.pr.gov/sites/default/files/inst_individuals_2024.pdf#page=24
+    - title: 2025 Individual Income Tax Return Instructions Booklet, filing status 3 (married filing separately)
+      href: https://hacienda.pr.gov/sites/default/files/inst_individuals_2025.pdf#page=14
+    - title: 2025 Individual Income Tax Return Instructions Booklet, Schedule A Individual, Part I, line 2
+      href: https://hacienda.pr.gov/sites/default/files/inst_individuals_2025.pdf#page=24
