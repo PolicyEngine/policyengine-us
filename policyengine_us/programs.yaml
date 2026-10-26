@@ -1669,7 +1669,7 @@ programs:
     variable: tiered_standard_repayment_payment
     parameter_prefix: gov.ed.student_loans.tiered_standard_repayment
     verified_start_year: 2026
-    notes: Fixed monthly payment over 10, 15, 20 or 25 years by Direct Loan balance (current balance, Parent PLUS loans excluded), at least $50, for borrowers with a Direct Loan made on or after July 1, 2026, who lose access to the 10-year standard plan; not subtracted from household net income
+    notes: Fixed monthly payment over 10, 15, 20 or 25 years by total Direct Loan balance, Parent PLUS loans included (the current balance, with interest, stands in for principal at entry), at least $50, for borrowers with a Direct Loan made on or after July 1, 2026, who lose access to the 10-year standard plan; not subtracted from household net income
 
   # --- Federal tax credits ---
   - id: education_tax_credits

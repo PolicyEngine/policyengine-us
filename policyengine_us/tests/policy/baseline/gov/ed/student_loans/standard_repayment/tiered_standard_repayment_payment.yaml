@@ -1,5 +1,7 @@
 # Tiered standard plan (20 U.S.C. 1087e(d)(7)(A)(i); 34 CFR 685.208(b)(8),
-# (c)(1)) for a borrower with a Direct Loan made on or after July 1, 2026:
+# (c)(1)) for a borrower with a Direct Loan made on or after July 1, 2026.
+# The balance is federal_student_loan_balance plus
+# federal_parent_plus_loan_balance:
 #   balance less than 25,000 -> 10 years; 25,000 to less than 50,000 -> 15;
 #   50,000 to less than 100,000 -> 20; 100,000 or more -> 25.
 #   payment = balance x i / (1 - (1 + i) ^ -n), i = rate / 12, n = 12 x years,
@@ -169,3 +171,20 @@
         federal_student_loan_interest_rate: 0.06
   output:
     tiered_standard_repayment_payment: [277.54, 358.22, 644.30, 0]
+
+- name: Case 12, Parent PLUS loans count toward the tier and are repaid under the plan.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_student_loan_balance: 20_000
+        federal_parent_plus_loan_balance: 10_000
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+  output:
+    # 20,000 + 10,000 = 30,000 is in the 15-year tier (20,000 alone would be in
+    # the 10-year tier, at 222.04).
+    # 30,000 x 0.005 / (1 - 1.005 ^ -180) = 253.16.
+    tiered_standard_repayment_payment: 253.16

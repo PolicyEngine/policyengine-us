@@ -16,7 +16,11 @@ class pay_as_you_earn_payment(Variable):
         "owes nothing under it. The other limits on who can repay under the "
         "plan are not modeled: being a new borrower under 34 CFR "
         "685.209(b)(13)(i), repaying under the plan on July 1, 2024, and the "
-        "plan's end on June 30, 2028 (685.209(c)(4))."
+        "plan's end on June 30, 2028 (685.209(c)(4)). The capped payment is "
+        "rounded to the cent before the small payment adjustment, a modeling "
+        "choice: a calculated payment just under $5, such as $4.996, rounds "
+        "to $5.00 and becomes $10 rather than $0 under 685.209(g)(1)(iii), "
+        "which sets a payment of less than $5 to $0."
     )
     unit = USD
     definition_period = MONTH
@@ -42,7 +46,8 @@ class pay_as_you_earn_payment(Variable):
         standard_payment = person("standard_repayment_payment", period)
         # Payments are set in whole cents. Rounding before the small payment
         # test keeps an exact $5.00 from falling below the threshold through
-        # floating-point error.
+        # floating-point error. It also lifts an amount within half a cent
+        # below $5 to $5.00, a modeling choice described in the documentation.
         capped_payment = np.round(min_(prorated_payment, standard_payment), 2)
         small_payment = p.income_driven_repayment.small_payment
         adjusted_payment = where(
