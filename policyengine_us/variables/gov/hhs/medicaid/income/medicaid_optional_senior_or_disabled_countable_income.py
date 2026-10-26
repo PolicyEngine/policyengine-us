@@ -13,6 +13,9 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396a#m",
         "https://www.kff.org/medicaid/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey/",
+        # Connecticut unearned income disregard per member
+        "https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/upms/upm5---treatment-of-income-income-eligibility/5030_15.doc",
+        "https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/upms/upm5---treatment-of-income-income-eligibility/5045_10.doc",
         # Missouri MHABD budgeting order and rounding
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-015-00/",
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-015-00/0805-015-25/",
@@ -44,9 +47,20 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
         p = parameters(
             period
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.disregard
+        # UPM 5030.15 A subtracts the individual disregard from each member's
+        # own unearned income, and UPM 5045.10 E sums the members' results, so
+        # each spouse uses the disregard only up to their own unearned income.
+        own_unearned_monthly = person("ssi_unearned_income", period) / MONTHS_IN_YEAR
+        per_member_disregard = person.marital_unit.sum(
+            min_(own_unearned_monthly, p.individual[state])
+        )
+        applies_per_member = p.applies_per_member[state].astype(bool)
+        couple_disregard = where(
+            applies_per_member, per_member_disregard, p.couple[state]
+        )
         income_disregard = where(
             couple_computation,
-            p.couple[state],
+            couple_disregard,
             p.individual[state],
         )
         personal_countable = _apply_medicaid_optional_senior_or_disabled_exclusions(

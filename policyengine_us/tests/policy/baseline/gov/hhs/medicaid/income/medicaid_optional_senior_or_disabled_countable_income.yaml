@@ -105,3 +105,54 @@
     # rounding, 1,131.75 would exceed the $1,131 standard.
     medicaid_optional_senior_or_disabled_countable_income: 13_572
     is_optional_senior_or_disabled_income_eligible: true
+
+- name: Connecticut couple with each spouse above the individual disregard gets twice the individual disregard.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        ssi_unearned_income: 15_600
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 7_800
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # UPM 5030.15 A: (1,300 - 535) + (650 - 535) = 880 a month.
+    # 880 x 12 / 2 = 5,280 each.
+    medicaid_optional_senior_or_disabled_countable_income: [5_280, 5_280]
+
+- name: Connecticut couple gets the disregard only up to a spouse's own unearned income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        ssi_unearned_income: 18_000
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 3_600
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # UPM 5030.15 A: (1,500 - 535) + max(300 - 535, 0) = 965 a month.
+    # 965 x 12 / 2 = 5,790 each. Subtracting the 1,070 couple disregard from
+    # the combined 1,800 would give 4,380 each.
+    medicaid_optional_senior_or_disabled_countable_income: [5_790, 5_790]
