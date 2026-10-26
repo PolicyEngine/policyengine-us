@@ -28,7 +28,7 @@ class ia_ssa_federal(Variable):
         c = category.possible_values
         # NOTE: The joint-couple test uses the federal definition, which treats
         # an aged, blind or disabled spouse who is ineligible for SSI or does
-        # not apply as part of a joint claim (issue 10138).
+        # not apply as part of a joint claim (issue 10243).
         joint = person("ssi_couple_computation_applies", period)
         blind = person("is_blind", period.this_year)
         blind_count = person.marital_unit.sum(blind)

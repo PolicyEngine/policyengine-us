@@ -2118,16 +2118,17 @@
         members: [person1, person2]
         state_code: IA
   output:
-    # June: SSI with spousal deeming 1,491 - 647.50 = 843.50 (6-B p.67). Mrs. A
-    # is not aged, blind or disabled, so there is no couple budget. Care income
-    # 200 + 843.50 = 1,043.50; entry deduction 1,491 (spouse at home);
-    # participation max(1,043.50 - 130 - 1,491, 0) = 0, as on p.67;
+    # June: 6-B p.67 pays SSI with spousal deeming of 1,491 - 647.50 =
+    # 843.50; 20 CFR 416.1163(e)(2) caps it at the benefit without deeming,
+    # 994 - (200 - 20) = 814, which main does not yet apply (issue 10138).
+    # Mrs. A is not aged, blind or disabled, so there is no couple budget.
+    # Either way, care income less 130 and the 1,491 entry deduction (spouse
+    # at home) is below 0, so participation is 0, as on p.67;
     # 38.47 * 16 = 615.52. First-month deemed spouse income is not modeled.
     # July: SSI as an individual 994 - (200 - 20) = 814 (6-B p.68); care
     # income 1,014; participation 1,014 - 130 - 536.50 = 347.50 (6-B p.68);
     # 38.47 * 31 = 1,192.57 - 347.50 = 845.07.
-    ssi:
-      2026-06: [843.5, 0]
+    is_ssi_spousal_deeming_applies: [true, false]
     ia_ssa:
       2026-06: [615.52, 0]
       2026-07: [845.07, 0]
@@ -2457,6 +2458,7 @@
     # 497 is not more than 1,491 - 994 = 497, so SSI deems nothing and 8-E
     # p.12 processes person1 "as a one-person household": 1,620 - 20 = 1,600 is
     # at least 1,596.
+    ia_ssa_has_spouse: [true, true]
     is_ssi_spousal_deeming_applies: [false, false]
     ia_ssa_smme_countable_income: [1_600, 477]
     ia_ssa: [1, 0]
@@ -2906,10 +2908,11 @@
           2026: IA
   output:
     # 20 CFR 416.1167(a)(1); 8-E p.11-12 "same household": the spouse's 520
-    # pension is not deemed. person1's own income is (3,277 - 20 - 65) / 2 =
-    # 1,596, at least the one-person 1,596 (with deeming it would be 2,106,
-    # below the two-person 2,164). person2's 2,106 comes from SSI's federal
-    # deeming, which does not yet apply 20 CFR 416.1163(f)(5).
+    # pension is neither combined nor deemed (the spouse is aged, so at home
+    # the couple's income would be combined: 2,106, below the two-person
+    # 2,164). person1's own income is (3,277 - 20 - 65) / 2 = 1,596, at least
+    # the one-person 1,596. person2's 2,106 comes from SSI's federal deeming,
+    # which does not yet apply 20 CFR 416.1163(f)(5) (issue 10455).
     ia_ssa_smme_spousal_deeming_applies: [false, false]
     ia_ssa_smme_countable_income: [1_596, 2_106]
     ia_ssa: [1, 0]
@@ -2956,3 +2959,649 @@
     ia_ssa_smme_spousal_deeming_applies: [true, false]
     ia_ssa_smme_countable_income: [1_986, 1_986]
     ia_ssa: [0, 0]
+
+- name: Case 98, no child allocation comes off an aged spouse's income when an SMME applicant working above the SGA level is budgeted as a couple.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 50
+        meets_ssi_disability_criteria:
+          2026: true
+        # Wages of $3,277 a month, above the $1,690 SGA level.
+        employment_income:
+          2026: 39_324
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 70
+        # Social Security of $600 a month.
+        social_security_retirement:
+          2026: 7_200
+      person3:
+        age:
+          2026: 10
+    marital_units:
+      couple:
+        members: [person1, person2]
+      child:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: IA
+  output:
+    # 8-E p.12: the aged spouse is not an ineligible spouse, so the couple's
+    # income is combined with no allocation for the child (20 CFR 416.1163(b)
+    # allocates only from an ineligible spouse's income):
+    # (600 - 20) + (3,277 - 65) / 2 = 2,186, at least the two-person 2,164.
+    # With the 497 allocation it would be (103 - 20) + 1,606 = 1,689.
+    # person1 is not an ineligible spouse to person2 either (8-E p.12), so
+    # person2 gets the same combined 2,186 (Case 102).
+    ssi_ineligible_child_allocation: [0, 0, 497]
+    ia_ssa_smme_spousal_deeming_applies: [true, false, false]
+    ia_ssa_smme_countable_income: [2_186, 2_186, 0]
+    ia_ssa: [1, 0, 0]
+
+- name: Case 99, nothing is deemed to an SMME applicant working above the SGA level who lives in a privately paid medical facility.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 50
+        meets_ssi_disability_criteria:
+          2026: true
+        # Wages of $3,277 a month, above the $1,690 SGA level.
+        employment_income:
+          2026: 39_324
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: false
+      person2:
+        age:
+          2026: 45
+        # A pension of $520 a month.
+        pension_income:
+          2026: 6_240
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # 20 CFR 416.1167(a)(1); 8-E p.11-12 "same household": the applicant, who
+    # is in a medical facility, is not a household member, whoever pays for
+    # the stay, so the spouse's 520 pension is not deemed.
+    # (3,277 - 20 - 65) / 2 = 1,596, at least the one-person 1,596. With
+    # deeming it would be (520 - 20) + (3,277 - 65) / 2 = 2,106, below the
+    # two-person 2,164. person2's own income is 520 - 20 = 500.
+    ia_ssa_smme_spousal_deeming_applies: [false, false]
+    ia_ssa_smme_countable_income: [1_596, 500]
+    ia_ssa: [1, 0]
+
+- name: Case 100, the SGA-path deeming flag stays false for an SMME applicant whom SSI counts as disabled.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 50
+        meets_ssi_disability_criteria:
+          2026: true
+        # SSDI of $1,800 a month and no wages, so SSI counts the person as
+        # disabled.
+        social_security_disability:
+          2026: 21_600
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 45
+        # Wages of $1,000 a month.
+        employment_income:
+          2026: 12_000
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # SSI deems the spouse's 1,000 > 497 (20 CFR 416.1163), so SSI's own
+    # deeming sets the two-person guideline and the SGA-path flag stays false:
+    # (1,800 - 20) + (1,000 - 65) / 2 = 2,247.50 > 1,491, so SSI is 0, and
+    # 2,247.50 is at least the two-person 2,164. person2's own income is
+    # (1,000 - 20 - 65) / 2 = 457.50.
+    ia_ssa_smme_spousal_deeming_applies: [false, false]
+    ia_ssa_smme_countable_income: [2_247.5, 457.5]
+    ia_ssa: [1, 0]
+
+- name: Case 101, without marital units an SMME applicant working above the SGA level in a household of three adults is budgeted alone.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 50
+        meets_ssi_disability_criteria:
+          2026: true
+        # Wages of $3,277 a month, above the $1,690 SGA level.
+        employment_income:
+          2026: 39_324
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 45
+        # A pension of $520 a month.
+        pension_income:
+          2026: 6_240
+      person3:
+        age:
+          2026: 30
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: IA
+  output:
+    # With no marital units, the default unit holds all three people, so
+    # ia_ssa_has_spouse is false and each member is budgeted alone:
+    # (3,277 - 20 - 65) / 2 = 1,596, at least the one-person 1,596. If
+    # person2's 520 pension were deemed it would be 2,106, below the two-person
+    # 2,164. person2's own income is 520 - 20 = 500.
+    ia_ssa_has_spouse: [false, false, false]
+    ia_ssa_smme_spousal_deeming_applies: [false, false, false]
+    ia_ssa_smme_countable_income: [1_596, 500, 0]
+    ia_ssa: [1, 0, 0]
+
+- name: Case 102, an SMME applicant working above the SGA level is not an ineligible spouse, so the aged spouse's SMME income is combined with no child allocations.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 50
+        meets_ssi_disability_criteria:
+          2026: true
+        # Wages of $2,500 a month.
+        employment_income:
+          2026: 30_000
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 70
+        # Social Security of $1,400 a month.
+        social_security_retirement:
+          2026: 16_800
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person3:
+        age:
+          2026: 10
+      person4:
+        age:
+          2026: 10
+    marital_units:
+      couple:
+        members: [person1, person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: IA
+  output:
+    # 8-E p.12: an ineligible spouse is "not eligible for SSI or
+    # non-MAGI-related Medicaid, or State Supplementary Assistance". Each
+    # spouse is an SMME applicant with full non-MAGI-related Medicaid, so
+    # each is budgeted as an eligible couple, with no child allocations:
+    # (1,400 - 20) + (2,500 - 65) / 2 = 2,597.50, at least the two-person
+    # 2,164. SSI's own deeming from person1 to person2, after two 497
+    # allocations, gives (1,400 - 20) + (2,500 - 994 - 65) / 2 = 2,100.50.
+    ssi_ineligible_child_allocation: [0, 0, 497, 497]
+    ia_ssa_smme_spousal_deeming_applies: [true, false, false, false]
+    ia_ssa_smme_countable_income: [2_597.5, 2_597.5, 0, 0]
+    ia_ssa: [1, 1, 0, 0]
+
+- name: Case 103, two SMME applicants working above the SGA level are budgeted as an eligible couple with no child allocations.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 50
+        meets_ssi_disability_criteria:
+          2026: true
+        # Wages of $2,500 a month.
+        employment_income:
+          2026: 30_000
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 45
+        meets_ssi_disability_criteria:
+          2026: true
+        # Wages of $2,000 a month.
+        employment_income:
+          2026: 24_000
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person3:
+        age:
+          2026: 10
+      person4:
+        age:
+          2026: 10
+    marital_units:
+      couple:
+        members: [person1, person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: IA
+  output:
+    # 8-E p.12: neither spouse is an ineligible spouse, because each has
+    # full non-MAGI-related Medicaid as an SMME applicant. The couple's
+    # income is combined with no child allocations:
+    # (2,500 + 2,000 - 20 - 65) / 2 = 2,207.50, at least the two-person
+    # 2,164. With 994 of allocations taken from the other spouse's wages,
+    # it would be (2,500 + 1,006 - 85) / 2 = 1,710.50.
+    ia_ssa_smme_spousal_deeming_applies: [true, true, false, false]
+    ia_ssa_smme_countable_income: [2_207.5, 2_207.5, 0, 0]
+    ia_ssa: [1, 1, 0, 0]
+
+- name: Case 104, an aged spouse's SSI payment is not added to the combined income of an SMME applicant working above the SGA level.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 50
+        meets_ssi_disability_criteria:
+          2026: true
+        # Wages of $4,000 a month, above the $1,690 SGA level.
+        employment_income:
+          2026: 48_000
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 70
+      person3:
+        age:
+          2026: 10
+      person4:
+        age:
+          2026: 10
+      person5:
+        age:
+          2026: 10
+    marital_units:
+      couple:
+        members: [person1, person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
+      child3:
+        members: [person5]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code:
+          2026: IA
+  output:
+    # SSI treats person1 as an ineligible spouse: after three 497 allocations,
+    # 4,000 - 1,491 = 2,509 is deemed to person2, so person2's SSI is
+    # 1,491 - (2,509 - 20 - 65) / 2 = 279. 8-E p.12: person2 is aged, so
+    # person1's SMME income combines the couple with no allocations:
+    # (4,000 - 20 - 65) / 2 = 1,957.50, below the two-person 2,164, and
+    # person2 gets the same 1,957.50. The 279 is not added; with it,
+    # 2,236.50 would qualify.
+    ssi_ineligible_child_allocation: [0, 0, 497, 497, 497]
+    ssi: [0, 279, 0, 0, 0]
+    ia_ssa_smme_spousal_deeming_applies: [true, false, false, false, false]
+    ia_ssa_smme_countable_income: [1_957.5, 1_957.5, 0, 0, 0]
+    ia_ssa: [0, 0, 0, 0, 0]
+
+- name: Case 105, the aged spouse of an SMME applicant working above the SGA level uses the two-person guideline even though SSI deems nothing after child allocations.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 50
+        meets_ssi_disability_criteria:
+          2026: true
+        # Wages of $1,900 a month, above the $1,690 SGA level.
+        employment_income:
+          2026: 22_800
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 70
+        # Social Security of $1,000 a month.
+        social_security_retirement:
+          2026: 12_000
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person3:
+        age:
+          2026: 12
+      person4:
+        age:
+          2026: 9
+      person5:
+        age:
+          2026: 6
+    marital_units:
+      couple:
+        members: [person1, person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
+      child3:
+        members: [person5]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code:
+          2026: IA
+  output:
+    # 8-E p.12: neither spouse is an ineligible spouse, so each gets the
+    # couple's combined income with no child allocations:
+    # (1,000 - 20) + (1,900 - 65) / 2 = 1,897.50, below the two-person 2,164.
+    # SSI treats person1 as an ineligible spouse: three 497 allocations leave
+    # 1,900 - 1,491 = 409, not more than 497, so SSI deems nothing and pays
+    # person2 994 - 980 = 14, which is not added (Case 104).
+    # Against the one-person 1,596, person2's 1,897.50 would qualify.
+    ssi_ineligible_child_allocation: [0, 0, 497, 497, 497]
+    is_ssi_spousal_deeming_applies: [false, false, false, false, false]
+    ssi: [0, 14, 0, 0, 0]
+    ia_ssa_smme_spousal_deeming_applies: [true, false, false, false, false]
+    ia_ssa_smme_countable_income: [1_897.5, 1_897.5, 0, 0, 0]
+    ia_ssa: [0, 0, 0, 0, 0]
+
+- name: Case 106, a disabled student spouse's earned income exclusion comes off the couple's combined income for an SMME applicant working above the SGA level.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        meets_ssi_disability_criteria:
+          2026: true
+        # Wages of $3,277 a month, above the $1,690 SGA level.
+        employment_income:
+          2026: 39_324
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 20
+        is_full_time_student:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+        # Wages of $1,200 a month, below the SGA level.
+        employment_income:
+          2026: 14_400
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # person2, a disabled full-time student under 22 below the SGA level, is
+    # someone SSI counts, so person2 is not an ineligible spouse (8-E p.12).
+    # 20 CFR 416.1112(c)(3): min(min(2,410, 1,200) * 12, 9,730) = 9,730 a
+    # year, or 810.83 a month, comes off person2's wages before the couple
+    # is combined: (3,277 + 1,200 - 810.83 - 20 - 65) / 2 = 1,790.58, below
+    # the two-person 2,164. Without the exclusion, 2,196 would qualify.
+    # SSI's own deeming from person1 gives person2 the same 1,790.58
+    # ((1,200 - 810.83 - 85) / 2 + 1,638.50), so SSI is 0.
+    ssi_blind_or_disabled_working_student_exclusion: [0, 810.83]
+    ssi: [0, 0]
+    ia_ssa_smme_spousal_deeming_applies: [true, false]
+    ia_ssa_smme_countable_income: [1_790.58, 1_790.58]
+    ia_ssa: [0, 0]
+
+- name: Case 107, child allocations come off the wages of a disabled spouse working above the SGA level who is not eligible for Medicaid before deeming to an SMME applicant.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 50
+        meets_ssi_disability_criteria:
+          2026: true
+        # Wages of $2,500 a month.
+        employment_income:
+          2026: 30_000
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 45
+        meets_ssi_disability_criteria:
+          2026: true
+        # Wages of $2,000 a month; not a qualified noncitizen.
+        employment_income:
+          2026: 24_000
+        immigration_status:
+          2026: UNDOCUMENTED
+      person3:
+        age:
+          2026: 10
+      person4:
+        age:
+          2026: 7
+    marital_units:
+      couple:
+        members: [person1, person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: IA
+  output:
+    # person2 is not eligible for SSI, non-MAGI-related Medicaid or State
+    # Supplementary Assistance, so person2 is an ineligible spouse to person1
+    # (8-E p.12). Two 497 allocations come off person2's wages, and
+    # 2,000 - 994 = 1,006 is more than 497, so it is deemed:
+    # (2,500 + 1,006 - 20 - 65) / 2 = 1,710.50, below the two-person 2,164.
+    # (Case 103, where person2 has SMME coverage, combines 2,207.50.)
+    # person1 is not an ineligible spouse to person2, so person2's own figure
+    # combines the couple, 2,207.50; person2 cannot receive the supplement.
+    ssi_ineligible_child_allocation: [0, 0, 497, 497]
+    ia_ssa_smme_spousal_deeming_applies: [true, true, false, false]
+    ia_ssa_smme_countable_income: [1_710.5, 2_207.5, 0, 0]
+    ia_ssa: [0, 0, 0, 0]
+
+- name: Case 108, an SMME applicant's aged spouse keeps SSI's deeming with child allocations from a spouse working above the SGA level who is not eligible for Medicaid.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 50
+        meets_ssi_disability_criteria:
+          2026: true
+        # Wages of $2,500 a month; not a qualified noncitizen.
+        employment_income:
+          2026: 30_000
+        immigration_status:
+          2026: UNDOCUMENTED
+      person2:
+        age:
+          2026: 70
+        # Social Security of $1,400 a month.
+        social_security_retirement:
+          2026: 16_800
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person3:
+        age:
+          2026: 10
+      person4:
+        age:
+          2026: 7
+    marital_units:
+      couple:
+        members: [person1, person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: IA
+  output:
+    # person1 is not eligible for SSI, non-MAGI-related Medicaid or State
+    # Supplementary Assistance, so person1 is an ineligible spouse to person2
+    # (8-E p.12), and person2's SMME income is SSI's deeming after two 497
+    # allocations: (1,400 - 20) + (2,500 - 994 - 65) / 2 = 2,100.50, below
+    # the two-person 2,164; SSI is 0 because 2,100.50 > 1,491. (Case 102,
+    # where person1 is an SMME applicant, combines 2,597.50.) person2 is aged,
+    # so person1's own figure combines the couple,
+    # (1,400 - 20) + (2,500 - 65) / 2 = 2,597.50; person1 cannot be paid.
+    ssi_ineligible_child_allocation: [0, 0, 497, 497]
+    is_ssi_spousal_deeming_applies: [false, true, false, false]
+    ssi: [0, 0, 0, 0]
+    ia_ssa_smme_spousal_deeming_applies: [true, false, false, false]
+    ia_ssa_smme_countable_income: [2_597.5, 2_100.5, 0, 0]
+    ia_ssa: [0, 0, 0, 0]
+
+- name: Case 109, a residential care resident's dividends are excluded from care income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 65
+    # Social Security of $1,100 a month.
+    social_security_retirement:
+      2026: 13_200
+    # Dividends of $50 a month.
+    qualified_dividend_income:
+      2026: 600
+    ia_ssa_category: RESIDENTIAL_CARE
+  output:
+    # SSI: 1,100 + 50 - 20 = 1,130 > 994, so SSI is 0 (still 0 once SSI
+    # excludes dividends: 1,080 > 994). 20 CFR 416.1124(c)(22) and 8-E p.23
+    # exclude the dividends from care income: 1,100. Participation
+    # 1,100 - 130 = 970; 38.47 * 31 = 1,192.57 - 970 = 222.57. Counting the
+    # dividends gives 172.57; excluding them twice gives 272.57.
+    ssi: 0
+    ia_ssa_care_countable_income: 1_100
+    ia_ssa: 222.57

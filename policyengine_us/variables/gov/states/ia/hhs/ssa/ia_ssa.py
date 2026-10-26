@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.ia.hhs.ssa._ia_ssa_smme_spouse_income import (
+    ia_ssa_smme_spouse_is_sga_applicant,
+)
 
 
 class ia_ssa(Variable):
@@ -16,6 +19,8 @@ class ia_ssa(Variable):
         "https://www.legis.iowa.gov/docs/iac/chapter/441.52.pdf#page=1",
         # PDF pages 35, 41-49, 59-74, 76-78
         "https://hhs.iowa.gov/media/3987/download?inline=#page=35",
+        # 8-E Deeming from an Ineligible Spouse; PDF pages 12-13
+        "https://hhs.iowa.gov/media/4011/download?inline#page=12",
     )
     defined_for = "ia_ssa_eligible"
 
@@ -108,13 +113,24 @@ class ia_ssa(Variable):
         # spouse's income: an eligible couple's combined income, or income
         # deemed from a spouse, by SSI or, for an applicant working above the
         # SGA level, by ia_ssa_smme_spousal_deeming_applies (a spouse's income
-        # above the couple rate less the individual rate, or an aged, blind or
-        # disabled spouse's income; ia_ssa.yaml Cases 47-49, 81-84, 90-92 and
-        # 94-97).
+        # above the couple rate less the individual rate, or the income of a
+        # spouse who is not an ineligible spouse), or, for the aged, blind or
+        # disabled spouse of such an applicant, the couple's combined income
+        # (for example ia_ssa.yaml Cases 47-49, 82, 84, 97 and 102-105; Cases
+        # 83, 92, 96 and 99 use the one-person guideline).
+        # NOTE: SSI's deeming and couple computation, read here and in
+        # ia_ssa_smme_countable_income for anyone SSI counts, do not yet stop
+        # for an applicant at the $30 facility rate (20 CFR 416.1163(f)(5)),
+        # for a spouse who is not aged, blind or disabled and has entered a
+        # medical facility, or for a spouse in a privately paid facility (20
+        # CFR 416.1167, 416.1149, 416.1801(c); issue 10455), so the SSI
+        # path can still combine or deem in those households (Case 81 is the
+        # Medicaid-paid stay, which SSI separates).
         spouse_income = (
             joint
             | person("is_ssi_spousal_deeming_applies", period.this_year)
             | person("ia_ssa_smme_spousal_deeming_applies", period)
+            | ia_ssa_smme_spouse_is_sga_applicant(person, period)
         )
         size = where(spouse_income, 2, 1)
         # 441 IAC 75.1 revises the federal poverty level "annually on April 1",

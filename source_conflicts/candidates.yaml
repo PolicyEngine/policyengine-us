@@ -1986,7 +1986,7 @@ candidates:
 - id: us-ia:rcf-maximum-per-diem-rate
   program: ssi-state-supplement
   years:
-    from: 2026
+    from: 2023
     to: 2026
     type: calendar
   question: Is Iowa's residential care supplement based on the maximum per diem rate, or on the manual's choice of
@@ -2078,6 +2078,40 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/8017
   state: ruled
   note: 'Code not yet on main: ia_ssa.'
+- id: us-ia:smme-student-exclusion-married
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: Does the student earned income exclusion in Iowa's SMME income apply to a married student or a student
+    who heads a household?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1382a(b)(1)
+    url: https://www.law.cornell.edu/uscode/text/42/1382a
+  - kind: regulation
+    citation: 20 CFR 416.1112(c)(3)
+    url: https://www.ecfr.gov/current/title-20/section-416.1112
+  - kind: manual
+    citation: Iowa HHS Employees' Manual 8-E, Child Student's Earnings
+    url: https://hhs.iowa.gov/media/4011/download?inline#page=19
+  readings:
+    statute: The exclusion applies "if such individual is under the age of 22 and is ... a student regularly attending
+      a school, college, or university", with no marital or head-of-household test.
+    other: The student "must meet all of the following criteria", including "Not married" and "Not the head of the
+      household".
+  example: In April 2026, an SMME applicant with wages of $3,277 a month whose disabled student spouse, aged 20, earns
+    $1,200 a month has combined SMME income of $1,790.58 with the spouse's exclusion and $0 supplement; without it,
+    $2,196 and $1.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/8017
+  state: ruled
+  note: 'Code not yet on main: ia_ssa_smme_countable_income. Iowa determines SMME income according to SSI income
+    criteria (6-B p.77), and 20 CFR 416.1112(c)(3) also has no marital test.'
 - id: us-id:grocery-credit-claimable-spouse
   program: income-tax
   years:

@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.ia.hhs.ssa._smme_spouse_income import (
-    smme_spouse_income,
+from policyengine_us.variables.gov.states.ia.hhs.ssa._ia_ssa_smme_spouse_income import (
+    ia_ssa_smme_spouse_income,
+    ia_ssa_smme_spouse_is_sga_applicant,
 )
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
@@ -14,13 +15,16 @@ class ia_ssa_smme_countable_income(Variable):
     definition_period = MONTH
     unit = USD
     defined_for = StateCode.IA
-    documentation = "SSI countable income plus any SSI payment, combined for a couple whose SSI couple computation applies. For a disabled person working above the SGA level, whom SSI does not count, the person's own income, including in-kind support and maintenance and any spouse income deemed under SSI's rules, after SSI's exclusions, including the student earned income exclusion. Deductions and financial groups of a Medicaid coverage category that differ from SSI are not modeled."
+    documentation = "SSI countable income plus any SSI payment, combined for a couple whose SSI couple computation applies. For a disabled person working above the SGA level, whom SSI does not count, the person's own income, including in-kind support and maintenance and any spouse income deemed, or combined for a spouse who is not an ineligible spouse, under SSI's rules, after SSI's exclusions, including the student earned income exclusion; or, for the aged, blind or disabled spouse of such an applicant, the couple's combined income. Deductions and financial groups of a Medicaid coverage category that differ from SSI are not modeled."
     reference = (
-        # Iowa Code 249.3(4)(g)
+        # Iowa Code 249.3(4)(a)(2) and (g)
         "https://www.legis.iowa.gov/docs/code/249.pdf#page=2",
         # 441 IAC 51.7(6)
         "https://www.legis.iowa.gov/docs/iac/chapter/441.51.pdf#page=2",
+        # 6-B Income (SMME)
         "https://hhs.iowa.gov/media/3987/download?inline=#page=77",
+        # 8-E Deeming from an Ineligible Spouse; PDF pages 12-13
+        "https://hhs.iowa.gov/media/4011/download?inline#page=12",
     )
 
     def formula(person, period, parameters):
@@ -43,11 +47,22 @@ class ia_ssa_smme_countable_income(Variable):
         # 416.1112(c)(3)), in-kind support and maintenance (416.1130, 416.1140)
         # and the general and earned income exclusions (ia_ssa.yaml Cases 77,
         # 87 and 88). As 8-E pp.12-13 do, a spouse's income above the couple
-        # rate less the individual rate, or an aged, blind or disabled
-        # spouse's income, is added before the exclusions
+        # rate less the individual rate, or the income of a spouse who is not
+        # an ineligible spouse, after that spouse's own student earned income
+        # exclusion, is added before the exclusions
         # (ia_ssa_smme_spousal_deeming_applies), and ia_ssa then uses the
-        # two-person guideline (Cases 82, 90-92 and 94-97).
-        # NOTE: Income deemed from a parent is not modeled on this path.
+        # two-person guideline (for example Cases 82, 97, 102 and 103; Cases
+        # 92, 96 and 99 use the one-person guideline).
+        # NOTE: Income deemed from a parent is not modeled on this path. The
+        # student earned income exclusion, for the applicant and for a spouse
+        # who is not an ineligible spouse, follows 20 CFR 416.1112(c)(3) and
+        # 42 U.S.C. 1382a(b)(1) as amended in 2004, which have no marital or
+        # head-of-household test; 8-E p.19 still lists "Not married" and "Not
+        # the head of the household" (Cases 87 and 106). In-kind support and
+        # maintenance is the applicant's own, at the individual presumed
+        # maximum value (416.1140), the figure 8-E gives for deeming; when the
+        # couple is combined, the spouse's in-kind support and maintenance and
+        # the couple's presumed maximum value are not modeled.
         earned = max_(
             person("ssi_earned_income", period)
             - person("ssi_blind_or_disabled_working_student_exclusion", period),
@@ -57,9 +72,14 @@ class ia_ssa_smme_countable_income(Variable):
             "ssi_in_kind_support_and_maintenance", period
         )
         deemed = person("ia_ssa_smme_spousal_deeming_applies", period)
-        spouse_earned, spouse_unearned = smme_spouse_income(person, period)
+        spouse_earned, spouse_unearned = ia_ssa_smme_spouse_income(person, period)
         earned = earned + deemed * spouse_earned
         unearned = unearned + deemed * spouse_unearned
+        # NOTE: The aged, blind or disabled spouse's SSI payment is not added.
+        # SSI does not count its own payment as income, and that payment
+        # exists only because SSI treats the applicant as an ineligible spouse
+        # and takes child allocations (20 CFR 416.1160(d), 416.1163(b)); the
+        # eligible-couple budget (8-E p.12) gives no such payment (Case 104).
         own_income = (
             _apply_ssi_exclusions(
                 earned * MONTHS_IN_YEAR, unearned * MONTHS_IN_YEAR, parameters, period
@@ -68,5 +88,15 @@ class ia_ssa_smme_countable_income(Variable):
         )
         counted_by_ssi = person("is_ssi_aged_blind_disabled", period.this_year)
         income = where(counted_by_ssi, income, own_income)
+        # The aged, blind or disabled spouse of that applicant gets the same
+        # combined income, not SSI's deeming from the applicant (Cases 98 and
+        # 102).
+        applicant = deemed & person("ia_ssa_smme_coverage_eligible", period)
+        combined = person.marital_unit.sum(where(applicant, income, 0))
+        income = where(
+            ia_ssa_smme_spouse_is_sga_applicant(person, period), combined, income
+        )
+        # NOTE: For an eligible couple, ssi_countable_income takes off only
+        # half of a student spouse's earned income exclusion (issue 10456).
         joint = person("ssi_couple_computation_applies", period)
         return where(joint, person.marital_unit.sum(income), income)
