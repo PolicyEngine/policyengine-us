@@ -28,6 +28,12 @@ COMPONENTS = (
     "social_security_survivors",
     "social_security_dependents",
 )
+COMPOUND_HELPER_ROUTES = tuple(
+    f"compound_{helper}_{component}_{source}"
+    for component in COMPONENTS
+    for helper in ("divide", "dispatch", "ordinary_month")
+    for source in ("empty", "initial")
+)
 BENEFITS = (*COMPONENTS, "social_security")
 DOWNSTREAM = (
     "social_security_taxable_self_employment_income",
@@ -171,6 +177,10 @@ def _probe():
     import pandas as pd
     import yaml
     from policyengine_core.data import Dataset
+    from policyengine_core.holders.helpers import (
+        set_input_dispatch_by_period,
+        set_input_divide_by_period,
+    )
     from policyengine_core.periods import period
     from policyengine_core.reforms import Reform
     from policyengine_core.simulations import (
@@ -384,6 +394,38 @@ def _probe():
     result["yaml_core_downstream"] = _snapshot(simulation, (2026,), DOWNSTREAM)
     del simulation
     gc.collect()
+
+    # Core's compound helpers retain each existing annual source before
+    # allocating the remainder. Initial ingress must stay visible to that
+    # allocation even when the adapter reserves its physical source slot.
+    # No normalization is used: these are ordinary set-then-calculate routes
+    # and must equal unmodified main without any intended difference.
+    for component in COMPONENTS:
+        for helper_name, helper in (
+            ("divide", set_input_divide_by_period),
+            ("dispatch", set_input_dispatch_by_period),
+            ("ordinary_month", None),
+        ):
+            for source in ("empty", "initial"):
+                inputs = extraction_situation()
+                person_inputs = inputs["people"]["retiree"]
+                del person_inputs["social_security_retirement"]
+                if source == "initial":
+                    person_inputs[component] = {2024: 12_000}
+                simulation = SimulationBuilder().build_from_dict(system, inputs)
+                if helper is None:
+                    simulation.set_input(component, "month:2024-01:24", [36_000])
+                else:
+                    helper(
+                        simulation.get_holder(component),
+                        period("year:2024:2"),
+                        np.array([36_000]),
+                    )
+                result[f"compound_{helper_name}_{component}_{source}"] = _snapshot(
+                    simulation, (2024, 2025, 2026), (component, "social_security")
+                )
+                del simulation
+                gc.collect()
 
     simulation = SimulationBuilder().build_from_entities(system, situation())
     result["core_entities_builder"] = _snapshot(simulation, (2024, 2026))
@@ -1022,6 +1064,7 @@ def differential(tmp_path_factory):
         "multi_year_simulation",
         "multi_year_microsimulation",
         "h5_scored_year",
+        *COMPOUND_HELPER_ROUTES,
     ),
 )
 def test_legacy_public_ingress_matches_unmodified_main(differential, route):
