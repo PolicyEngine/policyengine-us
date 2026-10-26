@@ -749,6 +749,51 @@ candidates:
   state: ruled
   note: 'The October 2026 statute-first ruling retains the bar; obtain the statutory URL and verify the instruction
     flow''s joint-return effect. Code not yet on main: ca_eitc_eligible.'
+- id: us-ca:premium-subsidy-150-fpl-boundary
+  program: california-premium-subsidy
+  years:
+    from: 2026
+    type: program
+    note: Covered California coverage year beginning January 1.
+  question: Does exactly 150% FPL remain in the zero-contribution band under the adopted Program Design or enter
+    the paying band illustrated by Covered California's guidance and enroller example?
+  sources:
+  - kind: statute
+    citation: California Government Code 100800(c), Board-adopted program design
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=GOV&sectionNum=100800.
+  - kind: policy
+    citation: Final 2026 California Premium Subsidy Program Design, (d)(4), PDF page 2
+    url: https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=2
+  - kind: policy
+    citation: Final 2027 California Premium Subsidy Program Design, (d)(4), PDF page 2
+    url: https://hbex.coveredca.com/data-research/Final-2027-California-Premium-Subsidy-Program-Design.pdf#page=2
+  - kind: guidance
+    citation: 2026 California State Premium Subsidy Policy Explainer, Table 1, PDF page 2
+    url: https://hbex.coveredca.com/stakeholders/PDFs/2026-02_StatePremiumSub_PolicyExplainer-Final.pdf#page=2
+  - kind: guidance
+    citation: 2027 Premium Subsidy Insight, Table 1, PDF page 2
+    url: https://hbex.coveredca.com/stakeholders/PDFs/2026-03_StatePremiumSub2027_Insight_Final.pdf#page=2
+  - kind: agency-practice
+    citation: OE 2027 Enroller Kick-off, exactly 150% FPL example, PDF pages 39-40
+    url: https://hbex.coveredca.com/toolkit/webinars-briefings/downloads/OE27_Enroller_Kickoff.pdf#page=40
+  readings:
+    statute: The Board-adopted Designs place income up to 150% in the 0% band and start the paying band above
+      150%, excluding exactly 150% from that band.
+    other: The guidance labels the paying band from 150%, and the OE27 example explicitly charges 2.80% at
+      exactly 150% FPL.
+  example: The OE27 single-person example has $23,940 income at exactly 150% FPL and a 2.80% contribution;
+    the adopted Design's boundary instead gives a 0% contribution.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ca/hbex/premium_subsidy/applicable_percentage/threshold.yaml
+    - policyengine_us/variables/gov/states/ca/hbex/premium_subsidy/ca_premium_subsidy_applicable_percentage.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10301
+  state: ruled
+  note: The adopted rule's explicit above-150% wording governs the conflicting training example. Recheck if
+    Covered California amends the Design or clarifies the boundary. PR 10301 changes the boundary; PR 10305
+    handles the final 2027 schedule and eligibility limits separately.
 - id: us-ca:renter-credit-2025-joint-income-limit
   program: income-tax
   years:
