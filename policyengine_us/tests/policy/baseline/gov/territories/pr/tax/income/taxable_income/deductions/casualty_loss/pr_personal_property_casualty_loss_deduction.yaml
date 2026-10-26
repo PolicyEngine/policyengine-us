@@ -1,0 +1,158 @@
+- name: Case 1, single filer below the cap.
+  period: 2025
+  input:
+    pr_personal_property_casualty_loss: 3_000
+    filing_status: SINGLE
+    state_code: PR
+  output:
+    pr_personal_property_casualty_loss_deduction: 3_000
+
+- name: Case 2, single filer exactly at the cap.
+  period: 2025
+  input:
+    pr_personal_property_casualty_loss: 5_000
+    filing_status: SINGLE
+    state_code: PR
+  output:
+    pr_personal_property_casualty_loss_deduction: 5_000
+
+- name: Case 3, single filer above the cap.
+  # Section 1033.15(a)(10)(B)(i): limited to $5,000
+  period: 2025
+  input:
+    pr_personal_property_casualty_loss: 8_000
+    filing_status: SINGLE
+    state_code: PR
+  output:
+    pr_personal_property_casualty_loss_deduction: 5_000
+
+- name: Case 4, head of household above the cap.
+  period: 2025
+  input:
+    pr_personal_property_casualty_loss: 6_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: PR
+  output:
+    pr_personal_property_casualty_loss_deduction: 5_000
+
+- name: Case 5, surviving spouse above the cap.
+  period: 2025
+  input:
+    pr_personal_property_casualty_loss: 6_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: PR
+  output:
+    pr_personal_property_casualty_loss_deduction: 5_000
+
+- name: Case 6, joint filers share one $5,000 cap.
+  # 3,000 + 4,000 = 7,000, capped at 5,000
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        pr_personal_property_casualty_loss: 3_000
+      person2:
+        age: 43
+        pr_personal_property_casualty_loss: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PR
+  output:
+    pr_personal_property_casualty_loss_deduction: 5_000
+
+- name: Case 7, separate filer is capped at $2,500.
+  # 50% * 8,000 = 4,000, capped at 2,500
+  period: 2025
+  input:
+    pr_personal_property_casualty_loss: 8_000
+    filing_status: SEPARATE
+    state_code: PR
+  output:
+    pr_personal_property_casualty_loss_deduction: 2_500
+
+- name: Case 8, separate filer claims half of the couple's loss.
+  # Section 1021.03(a)(4) attributes (a)(10) deductions 50% to each spouse:
+  # 50% * 3,000 = 1,500, below the 2,500 cap
+  period: 2025
+  input:
+    pr_personal_property_casualty_loss: 3_000
+    filing_status: SEPARATE
+    state_code: PR
+  output:
+    pr_personal_property_casualty_loss_deduction: 1_500
+
+- name: Case 9, carryover from a prior year counts toward the annual cap.
+  # 2,000 + 2,500 = 4,500
+  period: 2025
+  input:
+    pr_personal_property_casualty_loss: 2_000
+    pr_personal_property_casualty_loss_carryover: 2_500
+    filing_status: SINGLE
+    state_code: PR
+  output:
+    pr_personal_property_casualty_loss_deduction: 4_500
+
+- name: Case 10, carryover and current loss together are capped.
+  # 2,000 + 4,000 = 6,000, capped at 5,000
+  period: 2025
+  input:
+    pr_personal_property_casualty_loss: 2_000
+    pr_personal_property_casualty_loss_carryover: 4_000
+    filing_status: SINGLE
+    state_code: PR
+  output:
+    pr_personal_property_casualty_loss_deduction: 5_000
+
+- name: Case 11, a generic casualty or theft loss does not qualify.
+  period: 2025
+  input:
+    casualty_loss: 8_000
+    filing_status: SINGLE
+    state_code: PR
+  output:
+    pr_personal_property_casualty_loss_deduction: 0
+
+- name: Case 12, a principal residence loss is not a household goods loss.
+  period: 2025
+  input:
+    pr_principal_residence_casualty_loss: 8_000
+    filing_status: SINGLE
+    state_code: PR
+  output:
+    pr_personal_property_casualty_loss_deduction: 0
+
+- name: Case 13, a dependent's loss is left off the filer's return.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        pr_personal_property_casualty_loss: 1_000
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        pr_personal_property_casualty_loss: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PR
+  output:
+    pr_personal_property_casualty_loss_deduction: 1_000
+
+- name: Case 14, no deduction with no loss.
+  period: 2025
+  input:
+    filing_status: SINGLE
+    state_code: PR
+  output:
+    pr_personal_property_casualty_loss_deduction: 0

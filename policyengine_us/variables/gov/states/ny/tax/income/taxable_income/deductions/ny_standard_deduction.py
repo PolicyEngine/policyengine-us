@@ -20,6 +20,7 @@ class ny_standard_deduction(Variable):
         filing_status = tax_unit("filing_status", period)
         single = filing_status == filing_status.possible_values.SINGLE
         dependent_elsewhere = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # Source conflict us-ny:dependent-standard-deduction-filing-status
         return where(
             single & dependent_elsewhere,
             p.dependent_elsewhere,
