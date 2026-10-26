@@ -47,3 +47,33 @@
     tax_unit_dependents: 0
   output:
     il_income_tax_rebate: 50
+
+- name: Single with negative AGI gets the base rebate
+  period: 2021
+  input:
+    adjusted_gross_income: -2_000
+    filing_status: SINGLE
+    state_code: IL
+    tax_unit_dependents: 0
+  output:
+    il_income_tax_rebate: 50
+
+- name: Single with negative AGI and one dependent
+  period: 2021
+  input:
+    adjusted_gross_income: -2_000
+    filing_status: SINGLE
+    state_code: IL
+    tax_unit_dependents: 1
+  output:
+    il_income_tax_rebate: 150
+
+- name: Joint with negative AGI and two dependents
+  period: 2021
+  input:
+    adjusted_gross_income: -500_000
+    tax_unit_is_joint: true
+    state_code: IL
+    tax_unit_dependents: 2
+  output:
+    il_income_tax_rebate: 300

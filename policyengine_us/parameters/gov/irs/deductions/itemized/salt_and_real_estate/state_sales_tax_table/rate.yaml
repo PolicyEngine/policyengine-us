@@ -20,14 +20,6 @@ metadata:
       href: https://www.irs.gov/pub/irs-prior/i1040sca--2020.pdf#page=14
     - title: 2021 Optional State Sales Tax Tables, state table headings, Instructions for Schedule A (Form 1040)
       href: https://www.irs.gov/pub/irs-prior/i1040sca--2021.pdf#page=14
-    - title: 2022 Optional State Sales Tax Tables, state table headings, Instructions for Schedule A (Form 1040)
-      href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=13
-    - title: 2023 Optional State Sales Tax Tables, state table headings, Instructions for Schedule A (Form 1040)
-      href: https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=13
-    - title: 2024 Optional State Sales Tax Tables, state table headings, Instructions for Schedule A (Form 1040)
-      href: https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=12
-    - title: 2025 Optional State Sales Tax Tables, state table headings, Instructions for Schedule A (Form 1040)
-      href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=13
     - title: 2015 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet, line 4
       href: https://www.irs.gov/pub/irs-prior/i1040sca--2015.pdf#page=5
     - title: 2016 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet, line 4
@@ -42,45 +34,36 @@ metadata:
       href: https://www.irs.gov/pub/irs-prior/i1040sca--2020.pdf#page=5
     - title: 2021 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet, line 4
       href: https://www.irs.gov/pub/irs-prior/i1040sca--2021.pdf#page=5
-    - title: 2022 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet, line 4
+    - title: "2022 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet line 4 and Optional State Sales Tax Table headings #page 5,13-16"
       href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=5
-    - title: 2023 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet, line 4
+    - title: "2023 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet line 4 and Optional State Sales Tax Table headings #page 5,13-16"
       href: https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=5
-    - title: 2024 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet, line 4
+    - title: "2024 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet line 4 and Optional State Sales Tax Table headings #page 4,12-15"
       href: https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=4
-    - title: 2025 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet, line 4
+    - title: "2025 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet line 4 and Optional State Sales Tax Table headings #page 4,13-17"
       href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=4
 # Worksheet line 4: "Enter your state general sales tax rate (shown in the
 # table heading for your state), but omit the percentage sign." Table
 # footnote 1: "Your state sales tax rate is provided next to the state name."
-# Values are the printed heading rates (four decimals in 2015-2023, two in
-# 2024 and 2025) divided by 100.
-# The California and Nevada headings include uniform local rates, and their
-# ratio denominators are the heading rates:
-# - Footnote 3: "The California table includes the 1.25% uniform local sales
-#   tax rate in addition to the 6.00% state sales tax rate for a total of
-#   7.25%" (2017-2025). In 2015 and 2016 it reads "6.25%" and "7.50%", and
-#   the line 3 instructions count only "the part of the combined rate that
-#   is more than 7.5000%".
-# - Footnote 5: "The Nevada table includes the 2.25% uniform local sales tax
-#   rate in addition to the 4.6000% state sales tax rate for a total of
-#   6.85%" (2015-2025; 2019-2021 print "4.60%").
-# Averages for the year:
-# - 2018 footnote 7 (District of Columbia): "The rate increased during 2018
-#   so the given rate is an average for the year."
-# - 2018 footnote 8 (Louisiana): "The rate decreased during 2018 so the given
-#   rate is an average for the year."
-# - 2019 footnote 7 (Utah): "The rate increased during 2019 so the given rate
-#   is an average for the year."
-# - 2023 footnote 7 (New Mexico, South Dakota): "The rate decreased during
-#   2023 so the given rate is an average for the year."
-# Some other headings are not round rates and carry no such footnote, for
-# example Kansas 6.3264% (2015), Louisiana 4.7514% (2016), South Dakota
-# 4.2923% (2016) and Utah 4.8130% (2020); they are transcribed as printed.
-# The 2017 rates are from the February 2018 revision at irs-prior; the
-# original January 2018 printing prints the same headings.
+# Values are the printed heading rates (four decimals in 2022 and 2023, two
+# in 2024 and 2025) divided by 100.
+# The California and Nevada headings (7.25% and 6.85%) include uniform local
+# rates: "The California table includes the 1.25% uniform local sales tax
+# rate in addition to the 6.00% state sales tax rate for a total of 7.25%"
+# and "The Nevada table includes the 2.25% uniform local sales tax rate in
+# addition to the 4.6000% state sales tax rate for a total of 6.85%" (table
+# footnotes 3 and 5, 2022-2025); their ratio denominators are 7.25% and 6.85%.
+# 2023 footnote 7 (New Mexico, South Dakota): "The rate decreased during
+# 2023 so the given rate is an average for the year."
 # Delaware, Montana, New Hampshire, Oregon, and the territories have no IRS
 # state table and are left out, so they default to 0.
+# In 2015 and 2016 California footnote 3 instead prints "6.25%" and
+# "7.50%"; line 3 counts only the combined rate above 7.5000%.
+# Earlier annual averages: DC (2018 footnote 7), Louisiana (2018 footnote 8),
+# and Utah (2019 footnote 7). Other non-round headings without these
+# footnotes include Kansas 6.3264% (2015), Louisiana 4.7514% (2016),
+# South Dakota 4.2923% (2016), and Utah 4.8130% (2020).
+# The January 2018 original and February 2018 revision have the same headings.
 AK:
   # No Alaska state table: "Residents of Alaska do not have a state sales
   # tax, but should follow the instructions on the next page to determine

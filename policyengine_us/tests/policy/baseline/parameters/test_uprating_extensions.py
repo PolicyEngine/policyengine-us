@@ -12,8 +12,10 @@ from policyengine_us.system import system
 from policyengine_us.tools.per_capita_uprating import per_capita_path
 from policyengine_us.parameters.uprating_extensions import (
     DEPENDENT_STANDARD_DEDUCTION_STATUTORY_BASES,
+    EDUCATOR_EXPENSE_CAP_STATUTORY_BASE,
     LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS,
     extend_dependent_standard_deduction_parameters,
+    extend_educator_expense_cap,
     get_irs_cola,
     get_irs_cola_denominator,
     round_social_security_amount,
@@ -37,6 +39,11 @@ def test_all_uprating_factors_extend_to_2100():
         ("CPI-U", parameters.gov.bls.cpi.cpi_u, "-02-01"),
         ("Chained CPI-U", parameters.gov.bls.cpi.c_cpi_u, "-02-01"),
         ("CPI-W", parameters.gov.bls.cpi.cpi_w, "-02-01"),
+        (
+            "CMS Medicare spending per enrollee",
+            parameters.calibration.gov.hhs.medicare.per_capita_cost,
+            "-01-01",
+        ),
     ]
 
     for name, param, date_suffix in uprating_params:
@@ -129,11 +136,69 @@ def test_social_security_benefit_inputs_use_gross_benefit_uprater():
 
 
 def test_cms_moop_per_capita_extends_to_2100():
-    """Health expense input upraters should not flatten after 2035."""
+    """Health expense input upraters keep growing after CMS's 2034
+    projection, at the 2033-2034 growth rate, then hold the 2100 value."""
     parameter = PARAMETERS.calibration.gov.hhs.cms.moop_per_capita
+    last_growth = parameter("2034-01-01") / parameter("2033-01-01")
 
-    assert parameter("2036-01-01") > parameter("2035-01-01")
-    assert parameter("2100-01-01") > parameter("2036-01-01")
+    assert parameter("2034-01-01") == 2_512
+    assert last_growth == pytest.approx(2_512 / 2_412, rel=1e-12)
+    for year in [2035, 2036, 2050, 2100]:
+        growth = parameter(f"{year}-01-01") / parameter(f"{year - 1}-01-01")
+        assert growth == pytest.approx(last_growth, rel=1e-12)
+    assert parameter("2150-01-01") == parameter("2100-01-01")
+
+
+def test_cms_esi_premium_per_enrollee_holds_last_projected_growth_rate():
+    """Employer plan premium inputs keep growing after CMS's 2034 projection,
+    at the 2033-2034 growth rate."""
+    parameter = PARAMETERS.calibration.gov.hhs.cms.esi_premium_per_enrollee
+    last_growth = parameter("2034-01-01") / parameter("2033-01-01")
+
+    assert parameter("2034-01-01") == 13_124
+    for year in [2035, 2036, 2050, 2100]:
+        growth = parameter(f"{year}-01-01") / parameter(f"{year - 1}-01-01")
+        assert growth == pytest.approx(last_growth, rel=1e-12)
+    assert parameter("2150-01-01") == parameter("2100-01-01")
+
+
+def test_cms_direct_purchase_premium_per_enrollee_holds_last_projected_growth_rate():
+    """Directly bought premium inputs keep growing after CMS's 2034
+    projection, at the 2033-2034 growth rate."""
+    parameter = PARAMETERS.calibration.gov.hhs.cms.direct_purchase_premium_per_enrollee
+    last_growth = parameter("2034-01-01") / parameter("2033-01-01")
+
+    assert parameter("2034-01-01") == 9_589
+    for year in [2035, 2036, 2050, 2100]:
+        growth = parameter(f"{year}-01-01") / parameter(f"{year - 1}-01-01")
+        assert growth == pytest.approx(last_growth, rel=1e-12)
+    assert parameter("2150-01-01") == parameter("2100-01-01")
+
+
+def test_medicare_part_b_premium_holds_last_projected_growth_rate():
+    """Reported Part B premium inputs keep growing after the Trustees' 2035
+    projection, at the 2034-2035 growth rate."""
+    parameter = PARAMETERS.calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee
+    last_growth = parameter("2035-01-01") / parameter("2034-01-01")
+
+    assert parameter("2035-01-01") == 360.6
+    for year in [2036, 2037, 2050, 2100]:
+        growth = parameter(f"{year}-01-01") / parameter(f"{year - 1}-01-01")
+        assert growth == pytest.approx(last_growth, rel=1e-12)
+    assert parameter("2150-01-01") == parameter("2100-01-01")
+
+
+def test_cpi_u_medical_care_holds_last_projected_growth_rate():
+    """Long-term care premium inputs keep growing after CBO's 2036
+    projection, at the 2035-2036 growth rate."""
+    parameter = PARAMETERS.gov.bls.cpi.cpi_u_medical_care
+    last_growth = parameter("2036-01-01") / parameter("2035-01-01")
+
+    assert parameter("2036-01-01") == 813.07
+    for year in [2037, 2038, 2050, 2100]:
+        growth = parameter(f"{year}-01-01") / parameter(f"{year - 1}-01-01")
+        assert growth == pytest.approx(last_growth, rel=1e-12)
+    assert parameter("2150-01-01") == parameter("2100-01-01")
 
 
 def test_soi_income_upraters_extend_without_trustees_reform():
@@ -272,6 +337,13 @@ def test_social_security_payroll_cap_formula_matches_known_values():
     assert expected_2026_cap == 184_500
     assert expected_2026_cap == payroll_cap("2026-01-01")
 
+    expected_2027_cap = round_social_security_payroll_cap(
+        payroll_cap("1994-01-01") * nawi("2025-01-01") / nawi("1992-01-01")
+    )
+
+    assert expected_2027_cap == 192_300
+    assert expected_2027_cap == payroll_cap("2027-01-01")
+
 
 def test_social_security_parameters_include_latest_official_2026_values():
     """Test announced 2026 SSA values before forecasts resume."""
@@ -302,6 +374,42 @@ def test_social_security_parameters_include_latest_official_2026_values():
     pia = parameters.gov.ssa.social_security.pia.formula_factors("2026-01-01")
     assert pia.thresholds[1] == 1_286
     assert pia.thresholds[2] == 7_749
+
+
+def test_social_security_parameters_include_latest_official_2027_values():
+    """Test announced 2027 SSA values, including those the extension derives from NAWI."""
+    parameters = PARAMETERS
+    ssa = parameters.gov.ssa
+    social_security = ssa.social_security
+
+    # 3.6% COLA: 2026Q3 CPI-W average over the 2025Q3 average.
+    assert ssa.uprating("2027-01-01") == 328.746
+    assert round(ssa.uprating("2027-01-01") / ssa.uprating("2026-01-01") - 1, 3) == (
+        0.036
+    )
+    assert ssa.ssi.amount.individual("2027-01-01") == 1_029
+    assert ssa.ssi.amount.couple("2027-01-01") == 1_544
+    student = ssa.ssi.income.exclusions.blind_or_disabled_working_student
+    assert student.amount("2027-01-01") == 2_500
+    assert student.cap("2027-01-01") == 10_080
+
+    assert parameters.gov.irs.payroll.social_security.cap("2027-01-01") == 192_300
+    assert social_security.wage_base("2027-01-01") == 192_300
+    assert social_security.quarters_of_coverage_threshold("2027-01-01") == 1_970
+    assert social_security.earnings_test.exempt_amount_under_fra("2027-01-01") == (
+        25_560
+    )
+    assert social_security.earnings_test.exempt_amount_year_of_fra("2027-01-01") == (
+        67_920
+    )
+    assert ssa.sga.non_blind("2027-01-01") == 1_770
+    assert ssa.sga.blind("2027-01-01") == 2_950
+
+    # SSA's published 2025 AWI sets the 2027 PIA bend points.
+    assert ssa.nawi("2025-01-01") == 72_800.33
+    pia = social_security.pia.formula_factors("2027-01-01")
+    assert pia.thresholds[1] == 1_340
+    assert pia.thresholds[2] == 8_077
 
 
 def test_social_security_wage_indexed_parameters_follow_statutory_rounding():
@@ -670,3 +778,108 @@ def test_dependent_standard_deduction_projections_follow_statute():
     assert dependent.additional_earned_income("2032-01-01") == 550
     assert dependent.additional_earned_income("2042-01-01") == 650
     assert dependent.amount("2042-01-01") == 1_900
+
+
+def statutory_educator_expense_cap(year):
+    """26 U.S.C. 62(d)(3): $250 plus its increase, to the nearest $50."""
+    base, base_year = EDUCATOR_EXPENSE_CAP_STATUTORY_BASE
+    increase = base * get_irs_cola(PARAMETERS, year, base_year)
+    lower = math.floor(increase / 50) * 50
+    return base + (lower if increase - lower < 25 else lower + 50)
+
+
+def encoded_educator_expense_caps():
+    """The year: value pairs written in the educator expense cap YAML."""
+    path = (
+        Path(__file__).parents[4] / "parameters/gov/irs/ald/educator_expense/cap.yaml"
+    )
+    values = yaml.safe_load(path.read_text())["values"]
+    return {int(str(date)[:4]): value for date, value in values.items()}
+
+
+def test_irs_cola_reproduces_published_educator_expense_caps():
+    """The 62(d)(3) computation matches every IRS-published cap, 2016-2026."""
+    encoded = encoded_educator_expense_caps()
+    for year in range(2016, 2027):
+        assert statutory_educator_expense_cap(year) == encoded[year], year
+
+
+def test_educator_expense_cap_encoded_values_take_precedence():
+    """The published caps in the YAML survive the statutory extension."""
+    cap = PARAMETERS.gov.irs.ald.educator_expense.cap
+    for year, value in encoded_educator_expense_caps().items():
+        assert cap(f"{year}-01-01") == value, year
+    # The 2002 value covers 2002-2015, before 62(d)(3) indexing.
+    for year in range(2002, 2016):
+        assert cap(f"{year}-01-01") == 250, year
+
+
+def test_educator_expense_cap_projections_follow_statute():
+    """Projected caps come from the $250 base, not the rounded 2026 $350."""
+    cap = PARAMETERS.gov.irs.ald.educator_expense.cap
+    last_encoded_year = max(encoded_educator_expense_caps())
+    previous = cap(f"{last_encoded_year}-01-01")
+    for year in range(last_encoded_year + 1, 2101):
+        value = cap(f"{year}-01-01")
+        assert value == statutory_educator_expense_cap(year), year
+        assert value % 50 == 0, year
+        assert value >= previous, year
+        previous = value
+    assert cap("2150-01-01") == cap("2100-01-01")
+
+    # Hand anchors. They rest on the model's CPI projection, so a CBO refresh
+    # can move them; 2031 and 2032 sit within $5 of the $125 step. The 2014
+    # denominator is 134.30. The increase, $250 x the COLA, rounds to $100
+    # while under $125: $89.57 in 2027, $112.80 in 2030 and $120.06 in 2031.
+    # It rounds to $150 from $127.32 in 2032 to $150.03 in 2035. Chaining
+    # from the rounded 2026 $350 reached $400 in 2030.
+    for year in range(2027, 2032):
+        assert cap(f"{year}-01-01") == 350, year
+    for year in range(2032, 2036):
+        assert cap(f"{year}-01-01") == 400, year
+
+
+def test_educator_expense_cap_extension_rounds_the_base_increase_to_nearest_50():
+    """Encoded years are kept; later years round the $250 base's increase."""
+
+    def months(start_year, level):
+        return {
+            **{f"{start_year}-{month:02d}-01": level for month in range(9, 13)},
+            **{f"{start_year + 1}-{month:02d}-01": level for month in range(1, 9)},
+        }
+
+    cpi = SimpleNamespace(
+        cpi_u=Parameter("cpi_u", data={**months(2013, 100), **months(2015, 200)}),
+        # Monthly observations end in August 2030; 2032 holds a projection.
+        c_cpi_u=Parameter(
+            "c_cpi_u",
+            data={**months(2015, 150), **months(2029, 102), "2032-02-01": 126},
+        ),
+    )
+    # A node, so Parameter.update can reach a parent.
+    educator_expense = ParameterNode(
+        "educator_expense",
+        data={"cap": {"values": {"2002-01-01": 250, "2030-01-01": 999}}},
+    )
+    parameters = SimpleNamespace(
+        gov=SimpleNamespace(
+            bls=SimpleNamespace(cpi=cpi),
+            irs=SimpleNamespace(ald=SimpleNamespace(educator_expense=educator_expense)),
+        )
+    )
+    extend_educator_expense_cap(parameters, 2033)
+
+    cap = educator_expense.cap
+    # Encoded years keep their values, statutory or not.
+    assert cap("2029-01-01") == 250
+    assert cap("2030-01-01") == 999
+    # Denominator: 2014 base 100 x 150 / 200 = 75. 2031 reads the observed
+    # Sep 2029-Aug 2030 window (102); 2032 has no observed month and no
+    # projection point of its own, so it reads 102 too.
+    # $250 x (102 / 75 - 1) = $90, nearest to $100 (rounding down gives $50).
+    for year in (2031, 2032):
+        assert cap(f"{year}-01-01") == 350, year
+    # 2033 reads the 2032 projection point (126).
+    # $250 x (126 / 75 - 1) = $170, nearest to $150 (rounding up gives $200).
+    assert cap("2033-01-01") == 400
+    assert cap("2040-01-01") == 400

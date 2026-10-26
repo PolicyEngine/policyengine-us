@@ -1,8 +1,10 @@
 # Federal HR1 effective date: 2025-07-04
 # CA delays to 2026-06-01 per ACL 25-93
-# HI delays to 2025-11-01
-# AK delays to 2025-11-01 (same as HI). HR1 is then in effect statewide,
-# including Anchorage, so the new Alaska Native/Indian exception applies.
+# HI and AK follow the federal date: section 10102 has no later effective
+# date, and neither state had a good-faith exemption before 2025-11-01, so
+# the model follows the statute rather than the states' announced
+# 2025-11-01 implementation. HR1 is in effect statewide, including
+# Anchorage, so the new Alaska Native/Indian exception applies.
 # Alaska's 7 U.S.C. 2015(o)(7) good-faith window (the temporary retained
 # pre-HR1 exceptions, 2025-11-01 through 2026-10-31) is tracked separately
 # by is_snap_abawd_in_good_faith_exemption_window, not by this toggle.
@@ -51,7 +53,7 @@
   output:
     is_snap_abawd_hr1_in_effect: false
 
-- name: Case 7, default state in effect between federal and HI/AK adoption dates.
+- name: Case 7, default state in effect in August 2025.
   period: 2025-08
   input:
     state_code:
@@ -59,23 +61,23 @@
   output:
     is_snap_abawd_hr1_in_effect: true
 
-- name: Case 8, HI not in effect between federal and state adoption dates.
+- name: Case 8, HI in effect from the federal date, before its announced 2025-11-01 date.
   period: 2025-08
   input:
     state_code:
       2025: HI
   output:
-    is_snap_abawd_hr1_in_effect: false
+    is_snap_abawd_hr1_in_effect: true
 
-- name: Case 9, AK not in effect between federal effective date and exemption window.
+- name: Case 9, AK in effect from the federal date, before its exemption window.
   period: 2025-08
   input:
     state_code:
       2025: AK
   output:
-    is_snap_abawd_hr1_in_effect: false
+    is_snap_abawd_hr1_in_effect: true
 
-- name: Case 10, HI in effect at state adoption date.
+- name: Case 10, HI remains in effect at its announced November 2025 implementation date.
   period: 2025-11
   input:
     state_code:
@@ -83,7 +85,7 @@
   output:
     is_snap_abawd_hr1_in_effect: true
 
-- name: Case 11, AK in effect at its 2025-11-01 adoption date (window tracked separately).
+- name: Case 11, AK in effect when its good-faith window opens on 2025-11-01 (window tracked separately).
   period: 2025-11
   input:
     state_code:
@@ -120,8 +122,8 @@
   output:
     is_snap_abawd_hr1_in_effect: true
 
-# AK adopts HR1 at 2025-11-01, so hr1_in_effect is true for every month from
-# then on, including the good-faith window. The window itself (the retained
+# AK follows the federal date, so hr1_in_effect is true for every month from
+# August 2025 on, including the good-faith window. The window itself (the retained
 # pre-HR1 exceptions) is a separate variable; see
 # is_snap_abawd_in_good_faith_exemption_window.yaml for its 2026-10 -> 2026-11
 # boundary. state_code is a YEAR variable read via period.this_year, so
@@ -134,3 +136,19 @@
       2026: AK
   output:
     is_snap_abawd_hr1_in_effect: true
+
+- name: HI not yet in effect in July 2025 (monthly parameters read the first of the month)
+  period: 2025-07
+  input:
+    state_code:
+      2025: HI
+  output:
+    is_snap_abawd_hr1_in_effect: false
+
+- name: AK not yet in effect in July 2025, like the federal toggle
+  period: 2025-07
+  input:
+    state_code:
+      2025: AK
+  output:
+    is_snap_abawd_hr1_in_effect: false

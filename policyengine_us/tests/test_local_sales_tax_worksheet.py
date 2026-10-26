@@ -21,7 +21,8 @@ Invariants, each tested below:
   the no-local states (table footnote 4), the local-table states (footnote 2,
   plus Alaska), the ratio states (footnote 1, plus California and Nevada), and
   the four states without a state table; the default-table lists partition
-  the local-table states.
+  the local-table states, including NONE for Mississippi outside its named
+  cities.
 - I2 non-negativity: local_sales_tax >= 0 for any combined rate.
 - I3 no-local zero: local_sales_tax = 0 in the ten no-local jurisdictions.
 - I4 threshold: local_sales_tax = 0 whenever the combined rate is at or below
@@ -70,6 +71,7 @@ SALT = REPO.joinpath(
 IRS_YEARS = tuple(range(2015, 2026))
 CHECKED_YEARS = IRS_YEARS + (2026, 2030)
 TABLES = ("A", "B", "C", "D")
+TABLE_SELECTIONS = TABLES + ("NONE",)
 FAMILY_SIZES = range(1, 9)
 INCOME_ROWS = range(1, 20)
 STATES = sorted(
@@ -138,7 +140,7 @@ def raw():
             t: _load(
                 SALT / "local_sales_tax_table" / "default_table" / f"{t.lower()}.yaml"
             )["values"]
-            for t in TABLES
+            for t in TABLE_SELECTIONS
         },
     }
 
@@ -182,7 +184,7 @@ class _ReferenceWorksheet:
         heading = self.heading[state]
         local_rate = max(combined - self.base[state], 0.0)
         column = min(size, 6)
-        if state in self.local_states:
+        if state in self.local_states and table != "NONE":
             # Line 2 x line 3, with line 3 in percentage points.
             return self.local_table[(table, column, row)] * local_rate * 100
         if heading == 0:
@@ -246,7 +248,7 @@ points = st.lists(
         st.sampled_from(STATES),
         st.sampled_from(FAMILY_SIZES),
         st.sampled_from(INCOME_ROWS),
-        st.sampled_from(TABLES),
+        st.sampled_from(TABLE_SELECTIONS),
     ),
     min_size=1,
     max_size=60,
@@ -286,8 +288,10 @@ def test_i1_methods_partition_the_jurisdictions(raw, year):
     groups = [no_local, local_table, ratio, no_table]
     assert sum(len(g) for g in groups) == len(STATES) == 51
     assert set().union(*groups) == set(STATES)
-    # The default tables cover each local-table state exactly once.
-    defaults = [set(_dated(raw["default"][t], year)) for t in TABLES]
+    # Default selections cover each local-table state exactly once. Mississippi
+    # has no default table; only its named cities use tables.
+    defaults = [set(_dated(raw["default"][t], year)) for t in TABLE_SELECTIONS]
+    assert set(_dated(raw["default"]["NONE"], year)) == {"MS"}
     assert sum(len(d) for d in defaults) == len(local_table)
     assert set().union(*defaults) == local_table
 
@@ -374,7 +378,7 @@ RATES = (0.0, 0.04, 0.0725, 0.0912, 0.115)
 def test_i6_matches_a_reference_worksheet(raw, year):
     """I6: every state, family size 1-8, income row, table, and five rates
     (0%, 4%, 7.25%, 9.12%, 11.5%)."""
-    grid = list(product(STATES, FAMILY_SIZES, INCOME_ROWS, TABLES, RATES))
+    grid = list(product(STATES, FAMILY_SIZES, INCOME_ROWS, TABLE_SELECTIONS, RATES))
     states, sizes, rows, tables, rates = zip(*grid)
     actual = _simulate(year, states, sizes, rows, rates, tables)
     reference = _ReferenceWorksheet(raw, year)
@@ -385,11 +389,11 @@ def test_i6_matches_a_reference_worksheet(raw, year):
 @pytest.mark.parametrize("year", CHECKED_YEARS)
 def test_i7_never_falls_as_income_row_or_family_size_rises(year):
     """I7: every state and table, family size 1-8, income row, at 9.5%."""
-    grid = list(product(STATES, TABLES, FAMILY_SIZES, INCOME_ROWS))
+    grid = list(product(STATES, TABLE_SELECTIONS, FAMILY_SIZES, INCOME_ROWS))
     states, tables, sizes, rows = zip(*grid)
     amounts = _simulate(year, states, sizes, rows, [0.095] * len(grid), tables)
     amounts = amounts.reshape(
-        len(STATES), len(TABLES), len(FAMILY_SIZES), len(INCOME_ROWS)
+        len(STATES), len(TABLE_SELECTIONS), len(FAMILY_SIZES), len(INCOME_ROWS)
     )
     assert (np.diff(amounts, axis=2) >= 0).all(), "falls as family size rises"
     assert (np.diff(amounts, axis=3) >= 0).all(), "falls as the income row rises"

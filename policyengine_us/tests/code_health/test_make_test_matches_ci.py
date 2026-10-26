@@ -20,6 +20,9 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 WORKFLOW = REPO_ROOT / ".github" / "workflows" / "pr.yaml"
 SHARD = re.compile(r"\s+--shard\s+\d+/\d+")
 MAKE_TARGET = re.compile(r"\bmake\s+([\w-]+)")
+# CI's planned Rest Python shards run this target's groups; the planner reads
+# them from its dry run (code_health/test_rest_python_groups.py).
+PLANNED_TARGETS = {"rest_python_shards.py run": "test-other-python-rest"}
 
 pytestmark = pytest.mark.skipif(
     shutil.which("make") is None or not WORKFLOW.exists(),
@@ -44,13 +47,24 @@ def make_commands(target: str) -> frozenset:
     )
 
 
+def workflow_jobs(path):
+    """Include suites in local reusable workflows as well as direct jobs."""
+    for job in yaml.safe_load(path.read_text())["jobs"].values():
+        if "uses" in job:
+            assert job["uses"].startswith("./.github/workflows/"), job["uses"]
+            yield from workflow_jobs(REPO_ROOT / job["uses"])
+        else:
+            yield job
+
+
 def ci_suites():
     """Every Make target and batch-runner command the PR workflow runs."""
     targets, commands = set(), set()
-    workflow = yaml.safe_load(WORKFLOW.read_text())
-    for job in workflow["jobs"].values():
+    for job in workflow_jobs(WORKFLOW):
         matrix = (job.get("strategy") or {}).get("matrix") or {}
-        for entry in matrix.get("include") or []:
+        # A planned matrix is an expression; its steps name the target.
+        entries = [] if isinstance(matrix, str) else matrix.get("include") or []
+        for entry in entries:
             if "target" in entry:
                 targets.add(entry["target"])
             if "cmd" in entry:
@@ -61,6 +75,9 @@ def ci_suites():
         for step in job.get("steps") or []:
             for target in MAKE_TARGET.findall(step.get("run") or ""):
                 if not target.startswith("$"):
+                    targets.add(target)
+            for command, target in PLANNED_TARGETS.items():
+                if command in (step.get("run") or ""):
                     targets.add(target)
     return {t for t in targets if t.startswith("test")}, commands
 

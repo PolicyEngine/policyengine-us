@@ -1,4 +1,4 @@
-description: PolicyEngine assigns residents of these states to Optional Local Sales Tax Table A unless their locality's table is given.
+description: The IRS has residents of these states use Optional Local Sales Tax Table A unless the selector names their city or county.
 metadata:
   unit: list
   period: year
@@ -28,15 +28,12 @@ metadata:
       href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=18
 # Each state's default is the table in the selector row for "Any locality that
 # imposes a local sales tax" or "... or any other locality that imposes a
-# local sales tax" ("Any locality", "Any other locality" or "... or any other
-# locality" in 2015 and 2016). Residents of the localities the IRS names in
-# other rows use those rows' tables (the county and place lists).
-# The 2017 lists are from the February 2018 revision at irs-prior; the
-# original January 2018 printing has the same selector.
-# Mississippi has no such row, only "City of Jackson only" and "City of
-# Tupelo only" (2016-2025), or in 2015 "Cities of Jackson and Tupelo only".
-# PolicyEngine uses the City of Jackson table: Table B in 2015, Table A in
-# 2016-2023, Table C in 2024 and 2025.
+# local sales tax". Residents of the localities the IRS names in other rows
+# use those rows' tables (the county and place lists).
+# Mississippi has no other-locality row; see none.yaml.
+# In 2015 and 2016 the default rows say "Any locality", "Any other
+# locality" or "... or any other locality". The original January 2018
+# printing has the same 2017 selector as the February 2018 revision.
 values:
   2015-01-01:
     - CO
@@ -83,12 +80,10 @@ values:
   2022-01-01:
     - CO
     - IL
-    - MS
     - UT
   2023-01-01:
     - CO
     - IL
-    - MS
     - UT
   2024-01-01:
     - CO

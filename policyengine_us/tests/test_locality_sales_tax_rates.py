@@ -32,14 +32,18 @@ Invariants, each tested below:
 - L8 state rates: the official state general rates cover every covered
   state but Nevada, at the statutory rates (New York 4%, Virginia 4.3%,
   Minnesota 6.875%), with South Dakota's cut from 4.5% to 4.2% on 2023-07-01.
-- L7 selector lists: each IRS year's (2015-2025) county and place lists are
-  disjoint across tables, and name only counties and places in states that
-  use the local tables (local_sales_tax_table.yaml tests the precedence
-  place > county > state default).
+- L7 selector lists: each year's county and place lists are disjoint across
+  tables, and name only counties and places in states that use the local
+  tables (local_sales_tax_table.yaml tests the precedence place > county >
+  state default).
+- L9 input provenance: calculated county/city defaults do not become
+  geography inputs; directly supplied values and branch ancestry remain
+  distinguishable (the YAML files test geographic values and precedence).
 """
 
 from datetime import date, timedelta
 from pathlib import Path
+import runpy
 
 import numpy as np
 import pandas as pd
@@ -47,6 +51,7 @@ import pytest
 import yaml
 from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
+from policyengine_core.periods import period as to_period
 from policyengine_core.simulations import SimulationBuilder
 
 from policyengine_us.model_api import REPO
@@ -58,6 +63,7 @@ from policyengine_us.tools.geography.county_helpers import (
 from policyengine_us.tools.local_sales_tax_rates import (
     annual_rates,
     locality_populations,
+    locality_place_counties,
     locality_rate_schedule,
     locality_sales_tax_rates,
     state_general_sales_tax_rates,
@@ -89,6 +95,7 @@ SALES_TAX_FILES = [
     *REPO.joinpath("variables", "gov", "local", "tax", "sales").glob("*.py"),
     *REPO.joinpath("data", "local_sales_tax").glob("*"),
     REPO / "tools" / "local_sales_tax_rates.py",
+    REPO / "tools" / "local_sales_tax_geography.py",
     *REPO.parent.joinpath("scripts", "local_sales_tax_rates").glob("*"),
 ]
 
@@ -346,3 +353,173 @@ def test_l7_selector_lists(year):
                     assert code in counties, code
                 else:
                     assert len(code) == 7 and code.isdigit(), code
+
+
+def _rate_builder():
+    """Load build tooling without constructing another policy model."""
+    return runpy.run_path(
+        str(REPO.parent / "scripts" / "local_sales_tax_rates" / "build.py")
+    )
+
+
+def test_vermont_rutland_alias_overrides_a_resolving_city_code():
+    """The obsolete town code collides with a valid Census city code."""
+    builder = _rate_builder()
+    entities = pd.DataFrame(
+        {
+            "county": ["50021", "50021"],
+            "code": ["61225", "61300"],
+            "name": ["Rutland city", "Rutland town"],
+            "classfp": ["C5", "T1"],
+        }
+    )
+    census = builder["CensusEntities"](entities.iloc[:1], entities, towns=True)
+    assert census.resolves("", "61225")
+    frame = pd.DataFrame(
+        {"county": [""], "code": ["61225"], "city": ["RUTLAND"], "records": [1156]}
+    )
+    frame.attrs["date"] = pd.Timestamp("2022-01-01")
+    aliases = {}
+    recoded = builder["alias_units"]("VT", frame, census, {}, aliases)
+    assert recoded.code.tolist() == ["61300"]
+    assert aliases[("", "61225")][0] == "61300"
+
+
+@pytest.mark.parametrize(
+    "code,when,rate",
+    [
+        ("61225", "2023-06-30", 0.06),
+        ("61225", "2023-07-01", 0.07),
+        ("45850", "2025-09-30", 0.07),
+        ("45850", "2025-10-01", 0.06),
+    ],
+)
+def test_vermont_unit_cross_check_effective_dates(code, when, rate):
+    """The official commencement and rescission dates bound the 1% tax."""
+    instant = pd.Timestamp(when)
+    units = pd.DataFrame(
+        {"county": [""], "code": [code], "rate": [rate], "date": [instant]}
+    )
+    state = pd.DataFrame({"effective_from": [instant], "rate": [0.06]})
+    _rate_builder()["check_vermont_unit_rates"](units, state, [])
+
+
+def test_vermont_unit_cross_check_rejects_early_rutland_city_tax():
+    """A resolving Census code cannot silently bypass the source audit."""
+    instant = pd.Timestamp("2022-01-01")
+    units = pd.DataFrame(
+        {"county": [""], "code": ["61225"], "rate": [0.07], "date": [instant]}
+    )
+    state = pd.DataFrame({"effective_from": [instant], "rate": [0.06]})
+    with pytest.raises(AssertionError, match="61225"):
+        _rate_builder()["check_vermont_unit_rates"](units, state, [])
+
+
+def test_l9_geography_ignores_calculated_defaults_and_accepts_late_inputs():
+    """L9: cached county/NYC formulas are not supplied geography, whereas
+    county and city inputs set directly after construction remain inputs.
+    No additional full model is constructed; the existing system is reused.
+    """
+    year = 2025
+    simulation = _households(year, state_code=["NY", "NY", "NY"])
+    # Force defaults into the cache before the resolver sees them.
+    simulation.calculate("county", year)
+    simulation.calculate("in_nyc", year)
+    rates = simulation.calculate("combined_sales_tax_rate", year)
+    np.testing.assert_allclose(rates, locality_sales_tax_rates(year).state["NY"])
+    np.testing.assert_array_equal(
+        simulation.calculate("local_sales_tax_table", year).decode_to_str(),
+        ["D", "D", "D"],
+    )
+
+    # A fresh simulation exercises direct set_input after cached defaults
+    # without depending on a particular Core release's cache invalidation.
+    simulation = _households(year, state_code=["NY", "NY", "NY"])
+    simulation.calculate("county", year)
+    simulation.calculate("in_nyc", year)
+    simulation.set_input("county", year, ["UNKNOWN", "KINGS_COUNTY_NY", "UNKNOWN"])
+    simulation.set_input("in_yonkers", year, [False, False, True])
+    np.testing.assert_allclose(
+        simulation.calculate("combined_sales_tax_rate", year),
+        [locality_sales_tax_rates(year).state["NY"], 0.08875, 0.08875],
+        rtol=1e-6,
+    )
+    np.testing.assert_array_equal(
+        simulation.calculate("local_sales_tax_table", year).decode_to_str(),
+        ["D", "A", "B"],
+    )
+
+
+def test_l9_supplied_geography_respects_branch_ancestry():
+    """L9: inherited input keys and branch-specific overrides stay distinct."""
+    year = 2025
+    simulation = _households(year, state_code=["NY"], county=["KINGS_COUNTY_NY"])
+    inherited = simulation.get_branch("inherited_geography")
+    yonkers = simulation.get_branch("yonkers_geography")
+    yonkers.set_input("county", year, ["UNKNOWN"])
+    yonkers.set_input("in_yonkers", year, [True])
+    nyc = yonkers.get_branch("nyc_geography")
+    nyc.set_input("in_yonkers", year, [False])
+    nyc.set_input("in_nyc", year, [True])
+    shadow = simulation.get_branch("calculated_geography")
+    shadow.get_holder("county").put_in_cache(
+        system.variables["county"].possible_values.encode(
+            np.array(["KINGS_COUNTY_NY"])
+        ),
+        to_period(year),
+        shadow.branch_name,
+    )
+    # Build all branches before calculating so this specifically tests input
+    # ancestry, independently of Core's invalidation of inherited caches.
+    for branch, expected in (
+        (nyc, "A"),
+        (yonkers, "B"),
+        (inherited, "A"),
+        (simulation, "A"),
+    ):
+        np.testing.assert_allclose(
+            branch.calculate("combined_sales_tax_rate", year), [0.08875]
+        )
+        np.testing.assert_array_equal(
+            branch.calculate("local_sales_tax_table", year).decode_to_str(),
+            [expected],
+        )
+    np.testing.assert_allclose(
+        shadow.calculate("combined_sales_tax_rate", year),
+        [locality_sales_tax_rates(year).state["NY"]],
+    )
+    np.testing.assert_array_equal(
+        shadow.calculate("local_sales_tax_table", year).decode_to_str(), ["D"]
+    )
+
+
+def test_l9_place_county_crosswalk_keeps_pruned_places():
+    """L9: the geographic crosswalk covers own-rate and pruned Census places."""
+    counties = locality_place_counties()
+    assert counties.index.is_unique
+    assert counties.index.str.fullmatch(r"\d{7}").all()
+    assert (counties.index.str[:2].astype(int) <= 56).all()
+    assert counties.str.fullmatch(r"\d{5}").all()
+    assert (counties.index.str[:2] == counties.str[:2]).all()
+    valid_counties = set(load_county_fips_dataset()["county_fips"])
+    assert set(counties) <= valid_counties
+    places = SCHEDULE[SCHEDULE["place_fips"] != ""]
+    rate_geoids = places["county_fips"].str[:2] + places["place_fips"]
+    assert set(rate_geoids) <= set(counties.index)
+    assert counties["3651000"] == "36047"  # NYC's largest slice: Kings County.
+    assert counties["3684000"] == "36119"  # Yonkers: Westchester County.
+    assert counties["1369000"] == "13051"  # Savannah: Chatham County.
+    assert counties["2205000"] == "22033"  # Baton Rouge: East Baton Rouge Parish.
+    assert "1305169000" not in locality_sales_tax_rates(2025).place.index
+
+
+def test_l9_yonkers_flag_carries_from_an_earlier_input_year():
+    """The formula-free Yonkers flag retains Core's input carryover behavior."""
+    simulation = _households(2025, state_code=["NY"])
+    simulation.set_input("in_yonkers", 2024, [True])
+    np.testing.assert_allclose(
+        simulation.calculate("combined_sales_tax_rate", 2025), [0.08875]
+    )
+    np.testing.assert_array_equal(
+        simulation.calculate("local_sales_tax_table", 2025).decode_to_str(), ["B"]
+    )

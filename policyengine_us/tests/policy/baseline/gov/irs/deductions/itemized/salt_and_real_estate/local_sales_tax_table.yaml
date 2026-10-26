@@ -2,7 +2,9 @@
 # Schedule A (Form 1040)). Each state defaults to the table in its row for
 # "Any locality that imposes a local sales tax" or "... or any other
 # locality that imposes a local sales tax". Mississippi has no such row;
-# PolicyEngine uses its "City of Jackson only" row.
+# other localities have no table (NONE): "If there is no table for your
+# locality, the table amount is considered to be zero" (2025 instructions,
+# PDF page 5).
 
 - name: Default local tables, 2022
   # 2022 selector (PDF page 17), row and table by state:
@@ -14,7 +16,7 @@
   # IL: "... or any other locality that imposes a local sales tax" -> A
   # LA: "... or any other locality that imposes a local sales tax" -> C
   # MO: "Any locality that imposes a local sales tax" -> C
-  # MS: "City of Jackson only" -> A
+  # MS: no other-locality row -> NONE
   # NC: "Any locality that imposes a local sales tax" -> B
   # NY: "Any other locality that imposes a local sales tax" -> D
   # SC: "... or any other locality that imposes a local sales tax" -> C
@@ -101,7 +103,7 @@
         members: [person_VA]
         state_code: VA
   output:
-    local_sales_tax_table: [C, C, B, A, C, A, C, C, A, B, D, C, C, A, C]
+    local_sales_tax_table: [C, C, B, A, C, A, C, C, NONE, B, D, C, C, A, C]
 
 - name: Default local tables, 2023
   # 2023 selector (PDF page 17), row and table by state:
@@ -115,7 +117,7 @@
   # KS: "Any locality that imposes a local sales tax" -> B
   # LA: "... or any other locality that imposes a local sales tax" -> C
   # MO: "Any locality that imposes a local sales tax" -> B
-  # MS: "City of Jackson only" -> A
+  # MS: no other-locality row -> NONE
   # NC: "Any locality that imposes a local sales tax" -> B
   # NY: "Any other locality that imposes a local sales tax" -> D
   # SC: "... or any other locality that imposes a local sales tax" -> C
@@ -212,7 +214,7 @@
         members: [person_VA]
         state_code: VA
   output:
-    local_sales_tax_table: [C, B, C, B, A, C, A, B, C, B, A, B, D, C, B, A, B]
+    local_sales_tax_table: [C, B, C, B, A, C, A, B, C, B, NONE, B, D, C, B, A, B]
 
 - name: Default local tables, 2024
   # 2024 selector (PDF page 16), row and table by state:
@@ -226,7 +228,7 @@
   # KS: "Any locality that imposes a local sales tax" -> B
   # LA: "Any other locality that imposes a local sales tax" -> A
   # MO: "Any locality that imposes a local sales tax" -> B
-  # MS: "City of Jackson only" -> C
+  # MS: no other-locality row -> NONE
   # NC: "Any locality that imposes a local sales tax" -> B
   # NY: "Any other locality that imposes a local sales tax" -> D
   # SC: "... or any other locality that imposes a local sales tax" -> B
@@ -323,7 +325,7 @@
         members: [person_VA]
         state_code: VA
   output:
-    local_sales_tax_table: [C, B, B, B, A, B, A, B, A, B, C, B, D, B, B, B, A]
+    local_sales_tax_table: [C, B, B, B, A, B, A, B, A, B, NONE, B, D, B, B, B, A]
 
 - name: Default local tables, 2025
   # 2025 selector (PDF page 18), row and table by state:
@@ -337,7 +339,7 @@
   # KS: "Any locality that imposes a local sales tax" -> B
   # LA: "Any other locality that imposes a local sales tax" -> A
   # MO: "Any locality that imposes a local sales tax" -> B
-  # MS: "City of Jackson only" -> C
+  # MS: no other-locality row -> NONE
   # NC: "Any locality that imposes a local sales tax" -> B
   # NY: "Any other locality that imposes a local sales tax" -> D
   # SC: "... or any other locality that imposes a local sales tax" -> B
@@ -434,7 +436,7 @@
         members: [person_VA]
         state_code: VA
   output:
-    local_sales_tax_table: [C, B, B, B, A, B, A, B, A, B, C, B, D, B, B, B, A]
+    local_sales_tax_table: [C, B, B, B, A, B, A, B, A, B, NONE, B, D, B, B, B, A]
 
 - name: A locality's table given as input overrides the state default
   # 2025 selector, Illinois: "Aurora, Elgin, Joliet, Waukegan" -> B, while
@@ -641,6 +643,60 @@
     county_fips: "13089"
   output:
     local_sales_tax_table: D
+
+- name: New York City selector accepts a state-prefixed place GEOID
+  period: 2025
+  input:
+    state_code: NY
+    county_fips: "36047"
+    place_fips: "3651000"
+  output:
+    local_sales_tax_table: A
+
+- name: Atlanta in DeKalb selector accepts a short place code
+  period: 2024
+  input:
+    state_code: GA
+    county_fips: "13089"
+    place_fips: "4000"
+  output:
+    local_sales_tax_table: B
+
+- name: Arapahoe County selector accepts a short county code
+  # 2022 Instructions for Schedule A PDF p. 17: Arapahoe County selects B;
+  # Colorado's other-locality row selects A, so this detects failed padding.
+  period: 2022
+  input:
+    state_code: CO
+    county_fips: "8005"
+  output:
+    local_sales_tax_table: B
+
+- name: Jackson, Mississippi, 2022, retains its named table
+  period: 2022
+  input:
+    state_code: MS
+    place_fips: "36000"
+  output:
+    local_sales_tax_table: A
+
+- name: Jackson, Mississippi, 2025, retains its named table
+  # 2025 Instructions for Schedule A PDF p. 18: "City of Jackson only" -> C.
+  period: 2025
+  input:
+    state_code: MS
+    place_fips: "36000"
+  output:
+    local_sales_tax_table: C
+
+- name: Other Mississippi localities have no table even in Jackson's county
+  period: 2025
+  input:
+    state_code: MS
+    county_fips: "28049"
+    place_fips: "14420"
+  output:
+    local_sales_tax_table: NONE
 
 # 2015-2021 selectors. Through 2016 the other-locality rows read "Any locality",
 # "Any other locality" or "... or any other locality".

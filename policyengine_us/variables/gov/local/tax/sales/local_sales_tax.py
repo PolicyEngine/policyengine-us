@@ -12,13 +12,15 @@ class local_sales_tax(Variable):
         "(line 6), for the optional sales tax deduction of 26 U.S.C. "
         "164(b)(5)(H): the Optional Local Sales Tax Table amount times the local "
         "rate in the states whose residents use those tables, and otherwise the "
-        "state table amount times the local rate over the state rate. The local "
-        "tables, table selector and heading rates are each year's from 2015; "
-        "before 2022 PolicyEngine applies the 2022 locality and official state "
-        "rates, which extend back from their earliest value."
+        "state table amount times the local rate over the state rate. Localities "
+        "without a table, including Mississippi outside Jackson and Tupelo, "
+        "enter zero on line 2 and use the ratio method. Before "
+        "2022 PolicyEngine applies the 2022 locality and official state rates "
+        "(parameters extend back from their earliest value). The local tables, "
+        "table selector and heading rates are each year's from 2015."
     )
     reference = (
-        # State and Local General Sales Tax Deduction Worksheet.
+        # State and Local General Sales Tax Deduction Worksheet and instructions.
         "https://www.irs.gov/pub/irs-prior/i1040sca--2015.pdf#page=5",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2016.pdf#page=5",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2017.pdf#page=5",
@@ -26,11 +28,14 @@ class local_sales_tax(Variable):
         "https://www.irs.gov/pub/irs-prior/i1040sca--2019.pdf#page=5",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2020.pdf#page=5",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2021.pdf#page=5",
-        "https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=5",
-        "https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=5",
+        # PDF pages 4-6
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=4",
+        # PDF pages 4-6
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=4",
+        # PDF pages 4-6
         "https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=4",
+        # PDF pages 4-6
         "https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=4",
-        # Worksheet line 2 and 6 instructions.
         "https://www.irs.gov/pub/irs-prior/i1040sca--2015.pdf#page=4",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2015.pdf#page=6",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2016.pdf#page=4",
@@ -43,10 +48,6 @@ class local_sales_tax(Variable):
         "https://www.irs.gov/pub/irs-prior/i1040sca--2019.pdf#page=7",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2020.pdf#page=6",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2021.pdf#page=6",
-        "https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=6",
-        "https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=6",
-        "https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=5",
-        "https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=5",
     )
 
     def formula(tax_unit, period, parameters):
@@ -62,13 +63,22 @@ class local_sales_tax(Variable):
         # (through 2017, "the number of exemptions claimed on Form 1040, line
         # 6d", which PolicyEngine also counts as tax_unit_size).
         table = tax_unit.household("local_sales_tax_table", period)
+        has_table = table != table.possible_values.NONE
+        # NONE has no IRS table to index. Use a valid lookup key, then set
+        # line 2 to zero for those households.
+        lookup_table = table.copy()
+        lookup_table[~has_table] = table.possible_values.A.index
         TAX_UNIT_SIZE_CAP = 6
         tax_unit_size = tax_unit("tax_unit_size", period)
         family_size = max_(min_(tax_unit_size, TAX_UNIT_SIZE_CAP), 1).astype(int)
         income_bracket = max_(
             tax_unit("state_sales_tax_income_bracket", period), 1
         ).astype(int)
-        base_local_tax = p.local_sales_tax_table.tax[table][family_size][income_bracket]
+        base_local_tax = where(
+            has_table,
+            p.local_sales_tax_table.tax[lookup_table][family_size][income_bracket],
+            0,
+        )
         # Line 6, "No" (line 2 is not 0): line 2 x line 3, with line 3 in
         # percentage points.
         table_amount = base_local_tax * local_rate / 0.01
@@ -80,7 +90,9 @@ class local_sales_tax(Variable):
             where=heading_rate > 0,
         )
         ratio_amount = tax_unit("state_sales_tax", period) * ratio
-        uses_local_table = np.isin(state_code_str, p.local_sales_tax_table.states)
+        uses_local_table = (
+            np.isin(state_code_str, p.local_sales_tax_table.states) & has_table
+        )
         # Full-year residents of these jurisdictions "skip lines 2 through 5,
         # enter -0- on line 6" of the worksheet.
         has_local_sales_tax = ~np.isin(

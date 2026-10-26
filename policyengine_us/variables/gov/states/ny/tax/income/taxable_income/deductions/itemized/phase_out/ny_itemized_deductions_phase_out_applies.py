@@ -19,7 +19,7 @@ class ny_itemized_deductions_phase_out_applies(Variable):
         # the pre-TCJA federal 26 U.S.C. § 68(b) applicable amount, which NY
         # continues to inflation-adjust.
         p = parameters(period).gov.states.ny.tax.income.deductions.itemized.phase_out
-        agi = tax_unit("adjusted_gross_income", period)
+        agi = tax_unit("ny_recomputed_federal_agi", period)
         filing_status = tax_unit("filing_status", period)
         applicable_amount = p.start[filing_status]
         return agi > applicable_amount
