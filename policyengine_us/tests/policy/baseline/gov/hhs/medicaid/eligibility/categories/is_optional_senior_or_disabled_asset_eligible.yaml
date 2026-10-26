@@ -212,3 +212,24 @@
   output:
     # 15,000 + 15,000 = 30,000 is under the 31,000 couple limit.
     is_optional_senior_or_disabled_asset_eligible: [true, true]
+
+# ACWDL 21-31 raised California's limit to 130,000 for one person on
+# July 1, 2022. This annual variable reads the January 1 value, so 2023 is
+# the first year it applies.
+- name: assets below the July 2022 CA limit in 2023, eligible
+  period: 2023
+  input:
+    ssi_countable_resources: 100_000
+    state_code: CA
+  output:
+    # 100,000 is under the 130,000 limit; the old 2,000 limit would fail.
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: assets above the July 2027 CA limit in 2027, still eligible
+  period: 2027
+  input:
+    ssi_countable_resources: 21_001
+    state_code: CA
+  output:
+    # January 1, 2027 still reads the 130,000 limit; 21,000 first applies in 2028.
+    is_optional_senior_or_disabled_asset_eligible: true

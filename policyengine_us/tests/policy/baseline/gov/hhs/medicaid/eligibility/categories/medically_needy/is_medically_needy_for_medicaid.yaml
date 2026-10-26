@@ -272,3 +272,20 @@
     # limit; resources may not exceed it.
     is_in_medicaid_medically_needy_category: [true, true]
     is_medically_needy_for_medicaid: [true, true]
+
+- name: Case 14, California senior with assets above the July 2027 limit is still eligible in 2027.
+  period: 2027
+  input:
+    age: 70
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_ssi_recipient_for_medicaid: false
+    ssi_countable_income: 9_000
+    medicaid_medically_needy_medical_expenses: 2_000
+    ssi_countable_resources: 21_001
+    state_code: CA
+  output:
+    # Limit 600 x 12 = 7,200. 9,000 - 2,000 = 7,000 is under it. January 1,
+    # 2027 still reads the 130,000 asset limit; 21,000 first applies in 2028.
+    is_in_medicaid_medically_needy_category: true
+    is_medically_needy_for_medicaid: true
