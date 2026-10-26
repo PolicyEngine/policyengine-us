@@ -1,3 +1,162 @@
+# Code of Alabama 40-18-15(a)(2) limits the interest deduction to "the amount
+# allowable as an interest deduction for federal income tax purposes in the
+# corresponding tax year", and the Form 40 instructions for Schedule A lines
+# 10a through 14 use "the same amount as currently allowable for federal
+# purposes" (2025 booklet, PDF pages 19-20). So Alabama allows the home
+# mortgage interest left after the 26 U.S.C. 163(h)(3) acquisition-debt
+# limits (IRS Publication 936 (2025), Table 1):
+#   grandfathered debt (1987 or earlier): no dollar limit
+#   other debt from 2017 or earlier: $1,000,000 ($500,000 separate)
+#   debt from 2018 or later: $750,000 ($375,000 separate)
+# Deductible interest = interest x qualified loan limit / total debt. The
+# expectations follow PolicyEngine's federal calculation, which uses the exact
+# ratio; Table 1 line 14 rounds it to three places, which moves some amounts
+# by up to 0.05% of the interest (for example $26,680 rather than $26,666.67
+# for the 2016 case below).
+
+- name: Interest on debt above the federal limit is not deductible
+  period: 2025
+  input:
+    state_code: AL
+    filing_status: SINGLE
+    home_mortgage_interest: 40_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    # $40,000 x $750,000 / $1,500,000 = $20,000. Before the fix Alabama
+    # allowed all $40,000.
+    deductible_mortgage_interest: 20_000
+    al_interest_deduction: 20_000
+
+- name: Interest on debt within the federal limit is fully deductible
+  period: 2025
+  input:
+    state_code: AL
+    filing_status: SINGLE
+    home_mortgage_interest: 24_000
+    first_home_mortgage_balance: 600_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    al_interest_deduction: 24_000
+
+- name: Interest is fully deductible when no balance is reported
+  period: 2025
+  input:
+    state_code: AL
+    filing_status: SINGLE
+    home_mortgage_interest: 40_000
+  output:
+    al_interest_deduction: 40_000
+
+- name: Grandfathered debt above $1,000,000 is fully deductible
+  period: 2025
+  input:
+    state_code: AL
+    filing_status: JOINT
+    home_mortgage_interest: 40_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 1986
+  output:
+    al_interest_deduction: 40_000
+
+- name: Debt from 2017 or earlier keeps the $1,000,000 limit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: AL
+    filing_status: JOINT
+    home_mortgage_interest: 40_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 2016
+  output:
+    # $40,000 x $1,000,000 / $1,500,000.
+    al_interest_deduction: 26_666.67
+
+- name: Earlier debt of $750,000 or more leaves no room under the later limit
+  period: 2025
+  input:
+    state_code: AL
+    filing_status: JOINT
+    home_mortgage_interest: 42_500
+    first_home_mortgage_balance: 900_000
+    first_home_mortgage_origination_year: 2020
+    second_home_mortgage_balance: 800_000
+    second_home_mortgage_origination_year: 2016
+  output:
+    # Qualified loan limit = $800,000 of 2016 debt; the 2020 debt adds
+    # nothing because $800,000 already exceeds $750,000.
+    # $42,500 x $800,000 / $1,700,000 = $20,000.
+    al_interest_deduction: 20_000
+
+- name: Married filing separately uses the $375,000 limit
+  period: 2025
+  input:
+    state_code: AL
+    filing_status: SEPARATE
+    home_mortgage_interest: 24_000
+    first_home_mortgage_balance: 600_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    # $24,000 x $375,000 / $600,000.
+    al_interest_deduction: 15_000
+
+- name: Investment interest is added to the federally allowed mortgage interest
+  period: 2025
+  input:
+    state_code: AL
+    filing_status: SINGLE
+    home_mortgage_interest: 40_000
+    investment_interest_expense: 2_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    al_interest_deduction: 22_000
+
+- name: The federal limit stays at $750,000 in 2026
+  period: 2026
+  input:
+    state_code: AL
+    filing_status: SINGLE
+    home_mortgage_interest: 40_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    # P.L. 119-21 section 70108 made the $750,000 limit permanent.
+    al_interest_deduction: 20_000
+
+- name: Spouses' interest is limited together and reaches the itemized total
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        home_mortgage_interest: 30_000
+      spouse:
+        age: 45
+        home_mortgage_interest: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        first_home_mortgage_balance: 1_500_000
+        first_home_mortgage_origination_year: 2020
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: AL
+  output:
+    # $40,000 x $750,000 / $1,500,000 = $20,000, split in proportion to
+    # each spouse's interest.
+    deductible_mortgage_interest: [15_000, 5_000]
+    al_interest_deduction: 20_000
+    # No other itemized deduction applies.
+    al_itemized_deductions: 20_000
+
+# Qualified mortgage insurance premiums follow the federal deduction under
+# 26 U.S.C. 163(h)(3)(E) (2021 Schedule A (Form 40), line 11).
+
 - name: Qualified premiums for both residences enter Alabama interest deduction
   period: 2021
   input:

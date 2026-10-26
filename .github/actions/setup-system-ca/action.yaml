@@ -1,0 +1,13 @@
+name: Update system certificate authorities
+description: Update and verify the Linux trust store used by native HTTPS clients.
+runs:
+  using: composite
+  steps:
+    - name: Update and verify system certificate authorities
+      shell: bash
+      env:
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        sudo apt-get update
+        sudo apt-get install --only-upgrade --yes ca-certificates
+        /usr/bin/python3 "$ACTION_PATH/verify.py"
