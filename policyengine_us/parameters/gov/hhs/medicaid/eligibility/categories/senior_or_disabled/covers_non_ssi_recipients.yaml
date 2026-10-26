@@ -32,6 +32,8 @@ metadata:
       href: https://medicaid.ms.gov/wp-content/uploads/2016/12/Appendix-A-4.pdf#page=3
     - title: "Mississippi Division of Medicaid Eligibility Policy and Procedures Manual, Section 101.02 (December 2016) #page 5,11"
       href: https://medicaid.ms.gov/wp-content/uploads/2016/12/Section-101.02.pdf#page=5
+    - title: Mississippi Division of Medicaid Annual Report, Fiscal Year 1997 - Eligibility
+      href: https://medicaid.ms.gov/wp-content/uploads/2020/11/1997.pdf#page=8
     - title: "Nevada Medical Assistance Manual B-300 - MAABD Medical Categories (March 2025), B-315, B-320 and B-340 #page 6-7,14"
       href: https://dwss.nv.gov/uploadedFiles/dwssnvgov/content/Medical/B-300%20MAABD%20MEDICAL%20CATEGORIES%20Mar%2017.pdf#page=6
     - title: 8.200.400.10(C)(1) NMAC - Supplemental security income (SSI) related medicaid
@@ -104,7 +106,10 @@ MN:
 MO:
   2018-01-01: true
 MS:
-  # The poverty-level aged and disabled group ended December 31, 2005.
+  # The poverty-level aged and disabled group was in force by fiscal year 1997,
+  # which began July 1, 1996; its start date is not sourced. It ended
+  # December 31, 2005.
+  1996-07-01: true
   2006-01-01: false
 MT:
   2018-01-01: true

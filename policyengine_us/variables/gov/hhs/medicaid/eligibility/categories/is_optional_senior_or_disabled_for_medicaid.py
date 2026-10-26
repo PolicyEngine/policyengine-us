@@ -12,9 +12,9 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
     def formula(person, period, parameters):
         # Some states cover aged, blind, or disabled people as categorically
         # needy only if they receive SSI, and have no group for those who do not.
-        # Noncitizens who fail the Medicaid immigration test cannot receive
-        # SSI either, so they stay in this group: emergency Medicaid covers
-        # them if they meet the other requirements (42 CFR 440.255(c)).
+        # Emergency Medicaid waives the SSI receipt requirement for noncitizens
+        # who fail the Medicaid immigration test (42 U.S.C. 1396b(v)(2)(B);
+        # 42 CFR 435.406(b) and 440.255(c)), so they stay in this group.
         state = person.household("state_code_str", period)
         p = parameters(
             period

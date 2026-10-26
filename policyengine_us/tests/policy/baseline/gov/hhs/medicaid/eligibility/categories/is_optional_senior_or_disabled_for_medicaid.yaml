@@ -58,3 +58,24 @@
   output:
     is_optional_senior_or_disabled_income_eligible: true
     is_optional_senior_or_disabled_for_medicaid: false
+
+# Emergency Medicaid covers noncitizens who meet the state plan's requirements
+# other than the receipt of SSI (42 U.S.C. 1396b(v)(2)(B); 42 CFR 435.406(b)).
+# Wages of $800 a month ($9,600 a year) are under 75% of the poverty guideline
+# ($11,970) before any disregard.
+- name: Case 6, undocumented aged Alabaman keeps the pathway, unlike the citizen in Case 3, and qualifies for emergency Medicaid.
+  period: 2026
+  input:
+    age: 70
+    state_code: AL
+    immigration_status: UNDOCUMENTED
+    employment_income_before_lsr: 9_600
+    has_emergency_medical_condition: true
+  output:
+    is_medicaid_immigration_status_eligible: false
+    ssi: 0
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: true
+    medicaid_category: SENIOR_OR_DISABLED
+    is_medicaid_eligible: false
+    is_emergency_medicaid_eligible: true
