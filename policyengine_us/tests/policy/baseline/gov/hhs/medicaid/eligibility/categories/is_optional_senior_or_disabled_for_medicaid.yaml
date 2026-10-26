@@ -59,11 +59,32 @@
     is_optional_senior_or_disabled_income_eligible: true
     is_optional_senior_or_disabled_for_medicaid: false
 
+# Emergency Medicaid covers noncitizens who meet the state plan's requirements
+# other than the receipt of SSI (42 U.S.C. 1396b(v)(2)(B); 42 CFR 435.406(b)).
+# Wages of $800 a month ($9,600 a year) are under 75% of the poverty guideline
+# ($11,970) before any disregard.
+- name: Case 6, undocumented aged Alabaman keeps the pathway, unlike the citizen in Case 3, and qualifies for emergency Medicaid.
+  period: 2026
+  input:
+    age: 70
+    state_code: AL
+    immigration_status: UNDOCUMENTED
+    employment_income_before_lsr: 9_600
+    has_emergency_medical_condition: true
+  output:
+    is_medicaid_immigration_status_eligible: false
+    ssi: 0
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: true
+    medicaid_category: SENIOR_OR_DISABLED
+    is_medicaid_eligible: false
+    is_emergency_medicaid_eligible: true
+
 # Arkansas's group (ARSeniors) covers only aged people (MS 23110). 2026:
 # Social Security of $900 a month leaves countable income of $10,560 a year
 # after the $20 a month disregard, under 80% of the poverty guideline
 # ($12,768).
-- name: Case 6, disabled Arkansan under 65 is not covered, since ARSeniors covers only aged people.
+- name: Case 7, disabled Arkansan under 65 is not covered, since ARSeniors covers only aged people.
   period: 2026
   input:
     age: 50
@@ -75,7 +96,7 @@
     is_optional_senior_or_disabled_income_eligible: true
     is_optional_senior_or_disabled_for_medicaid: false
 
-- name: Case 7, aged Arkansan with the same income is covered.
+- name: Case 8, aged Arkansan with the same income is covered.
   period: 2026
   input:
     age: 70
@@ -91,7 +112,7 @@
 # income and resource tests. With no income and no resources, this person
 # meets both: $0 countable income is below the $994 SSI rate, and $0 is
 # within the $2,000 resource limit.
-- name: Case 8, disabled undocumented Arkansan under 65 keeps the group for emergency Medicaid.
+- name: Case 9, disabled undocumented Arkansan under 65 keeps the group for emergency Medicaid.
   period: 2026
   input:
     age: 50
@@ -102,7 +123,7 @@
     is_medicaid_immigration_status_eligible: false
     is_optional_senior_or_disabled_for_medicaid: true
 
-- name: Case 9, disabled permanent resident under 65 who passes the immigration test is not covered.
+- name: Case 10, disabled permanent resident under 65 who passes the immigration test is not covered.
   period: 2026
   input:
     age: 50
@@ -120,7 +141,7 @@
 # $5,000 in a bank account is under Arkansas's $9,430 asset limit but over
 # SSI's $2,000 resource limit, so this noncitizen fails the SSI group's
 # resource test and, being under 65, does not qualify for ARSeniors either.
-- name: Case 10, disabled undocumented Arkansan under 65 over the SSI resource limit is not covered.
+- name: Case 11, disabled undocumented Arkansan under 65 over the SSI resource limit is not covered.
   period: 2026
   input:
     age: 50
