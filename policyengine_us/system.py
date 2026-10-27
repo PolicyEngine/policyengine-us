@@ -142,7 +142,10 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         # independently or explicitly select no ceiling.
         draw_cap = self.parameters.gov.irs.payroll.social_security.cap.clone()
         draw_cap.name = "gov.contrib.ssa.owners_draw.current_law_cap"
-        draw_cap.metadata = {"unit": "currency-USD", "economy": False}
+        draw_cap.metadata.update(
+            label="Current-law OASDI cap preserved for owners' draw", economy=False
+        )
+        draw_cap.metadata.pop("uprating", None)
         self.parameters.gov.contrib.ssa.owners_draw.add_child(
             "current_law_cap", draw_cap
         )

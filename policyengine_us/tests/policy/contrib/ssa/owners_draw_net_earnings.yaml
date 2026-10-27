@@ -1,0 +1,114 @@
+# Synthetic caps are fixed in both the ordinary tax parameter and the captured
+# current-law room parameter, so these examples do not depend on projections.
+# Unless overridden, q = 1 - 0.5 * (0.124 + 0.029) = 0.9235.
+# Policy cases are grouped to retain at most five cached reform combinations.
+- name: The standard netting factor follows changed OASDI and HI rates
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.ald.self_employment_tax.percent_deductible: 0.25
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.irs.self_employment.rate.medicare: 0.04
+    gov.irs.self_employment.rate.social_security: 0.20
+    gov.simulation.aime_lookback_years: 0
+    s_corp_income: 100_000
+  output:
+    # q = 1 - .5 * (.20 + .04) = .88, even with incremental HI off.
+    owners_draw_net_earnings_factor: 0.88
+    owners_draw_net_earnings: 88_000
+    owners_draw_oasdi_tax: 17_600
+    owners_draw_hi_tax: 0
+    # The deduction share is separate from the netting employer share.
+    self_employment_tax_ald_person: 4_400
+
+
+- name: The netting employer share follows reforms independently of the deduction share
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.ald.misc.employer_share: 0.25
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.irs.self_employment.rate.medicare: 0.04
+    gov.irs.self_employment.rate.social_security: 0.20
+    gov.simulation.aime_lookback_years: 0
+    s_corp_income: 100_000
+  output:
+    owners_draw_net_earnings_factor: 0.94
+    owners_draw_net_earnings: 94_000
+    owners_draw_oasdi_tax: 18_800
+    self_employment_tax_ald_person: 9_400
+
+
+- name: An explicit netting factor overrides the rate-derived default
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.net_earnings_factor: 0.8
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.irs.self_employment.rate.medicare: 0.04
+    gov.irs.self_employment.rate.social_security: 0.20
+    gov.simulation.aime_lookback_years: 0
+    s_corp_income: 100_000
+  output:
+    owners_draw_net_earnings_factor: 0.8
+    owners_draw_net_earnings: 80_000
+    owners_draw_oasdi_tax: 16_000
+
+
+- name: HI taxes all adjusted draw earnings and makes M7 exclude the full actual gross draw
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.include_hi: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    payroll_tax_gross_wages: [100_000, 250_000]
+    s_corp_income: [200_000, 150_000]
+  output:
+    owners_draw_gross: [200_000, 150_000]
+    owners_draw_net_earnings: [184_700, 138_525]
+    owners_draw_oasdi_base: [100_000, 0]
+    owners_draw_oasdi_tax: [12_400, 0]
+    owners_draw_hi_tax: [5_356.30, 4_017.225]
+    self_employment_medicare_tax: [5_356.30, 4_017.225]
+    self_employment_tax_ald_person: [8_878.15, 2_008.6125]
+    owners_draw_niit_exclusion: [200_000, 150_000]
+
+
+- name: Disabling the added deduction preserves the deduction for preexisting SE taxes
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.half_seca_deduction: false
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.include_hi: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    self_employment_income: 10_000
+    s_corp_income: 100_000
+  output:
+    taxable_self_employment_income: 9_235
+    owners_draw_oasdi_tax: 11_451.40
+    owners_draw_hi_tax: 2_678.15
+    # Only 9,235 * (.124 + .029) / 2 = 706.4775 is deductible.
+    self_employment_tax_ald_person: 706.4775
+

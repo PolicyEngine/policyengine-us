@@ -166,11 +166,11 @@ def create_owners_draw():
             if not _enabled(period, parameters):
                 return 0
             p = parameters(period).gov.contrib.ssa.owners_draw
-            if p.room_cap_basis == "NONE":
+            if p.room_cap_basis == 1:
                 return np.inf
-            if p.room_cap_basis != "CURRENT_LAW":
+            if p.room_cap_basis != 0:
                 raise ValueError(
-                    "Owners' draw room_cap_basis must be CURRENT_LAW or NONE"
+                    "Owners' draw room_cap_basis must be 0 (current law) or 1 (no ceiling)"
                 )
             wages = person("taxable_earnings_for_social_security", period)
             existing_se = person(

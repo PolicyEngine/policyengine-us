@@ -1,0 +1,368 @@
+# Synthetic caps are fixed in both the ordinary tax parameter and the captured
+# current-law room parameter, so these examples do not depend on projections.
+# Unless overridden, q = 1 - 0.5 * (0.124 + 0.029) = 0.9235.
+# Policy cases are grouped to retain at most five cached reform combinations.
+- name: Full draw for an S-corporation owner without wages
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    s_corp_income: 150_000
+  output:
+    owners_draw_active_income: 150_000
+    owners_draw_planned_gross: 150_000
+    owners_draw_gross: 150_000
+    owners_draw_net_earnings: 138_525
+    owners_draw_oasdi_room: 200_000
+    owners_draw_oasdi_base: 138_525
+    # 138,525 * 12.4% = 17,177.10; HI defaults off.
+    owners_draw_oasdi_tax: 17_177.10
+    owners_draw_hi_tax: 0
+    self_employment_social_security_tax: 17_177.10
+    self_employment_medicare_tax: 0
+    self_employment_tax_ald_person: 8_588.55
+    owners_draw_credited_earnings: 138_525
+    owners_draw_niit_exclusion: 150_000
+    # The source remains in gross income exactly once.
+    irs_gross_income: 150_000
+
+
+- name: Wages leave only 100000 of room for 200000 of S-corporation profits
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    payroll_tax_gross_wages: 100_000
+    s_corp_income: 200_000
+  output:
+    owners_draw_gross: 200_000
+    owners_draw_net_earnings: 184_700
+    owners_draw_oasdi_room: 100_000
+    owners_draw_oasdi_base: 100_000
+    owners_draw_oasdi_tax: 12_400
+    owners_draw_hi_tax: 0
+    self_employment_tax_ald_person: 6_200
+    # M7: only profits whose net earnings face OASDI leave active NIIT.
+    # 100,000 / 0.9235 = 108,283.7033, rather than the whole draw.
+    owners_draw_niit_exclusion: 108_283.7033
+    owners_draw_credited_earnings: 184_700
+
+
+- name: Nonpassive limited-partner profits enter the draw while general-partner SE profits do not
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    partnership_income: [100_000, 100_000]
+    partnership_self_employment_net_earnings: [0, 100_000]
+  output:
+    owners_draw_active_income: [100_000, 0]
+    owners_draw_gross: [100_000, 0]
+    owners_draw_net_earnings: [92_350, 0]
+    taxable_self_employment_income: [0, 92_350]
+    social_security_taxable_self_employment_income: [0, 92_350]
+    owners_draw_oasdi_base: [92_350, 0]
+    owners_draw_oasdi_tax: [11_451.40, 0]
+    # Both have the same OASDI liability; the general partner has it already.
+    self_employment_social_security_tax: [11_451.40, 11_451.40]
+
+
+- name: The third default phase-in year reclassifies 30 percent
+  period: 2029
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    s_corp_income: 150_000
+  output:
+    owners_draw_gross: 45_000
+    owners_draw_net_earnings: 41_557.50
+    owners_draw_oasdi_base: 41_557.50
+    owners_draw_oasdi_tax: 5_153.13
+    owners_draw_niit_exclusion: 45_000
+
+
+- name: An above-cap worker has a gross draw but no incremental OASDI or default NIIT exclusion
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    payroll_tax_gross_wages: 250_000
+    s_corp_income: 150_000
+  output:
+    owners_draw_gross: 150_000
+    owners_draw_net_earnings: 138_525
+    owners_draw_oasdi_room: 0
+    owners_draw_oasdi_base: 0
+    owners_draw_oasdi_tax: 0
+    owners_draw_niit_exclusion: 0
+    owners_draw_credited_earnings: 138_525
+
+
+- name: Signed entity profits and subsets net before the draw floor
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    # T-Q-K: 100-20-30=50; 100-(-20)-30=90; 50-20=30;
+    # -50+20=-30; and (-20-10)-(-10)=-20, all in thousands.
+    s_corp_income: [50_000, 50_000, 50_000, -50_000, -20_000]
+    partnership_income: [50_000, 50_000, -20_000, 20_000, -10_000]
+    passive_partnership_s_corp_income: [20_000, -20_000, 0, 0, 0]
+    partnership_self_employment_net_earnings: [30_000, 30_000, 0, 0, -10_000]
+    owners_draw_subsets_are_disjoint: true
+    self_employment_income: [0, 0, 0, 50_000, 50_000]
+  output:
+    owners_draw_active_income: [50_000, 90_000, 30_000, -30_000, -20_000]
+    owners_draw_gross: [50_000, 90_000, 30_000, 0, 0]
+    owners_draw_net_earnings: [46_175, 83_115, 27_705, 0, 0]
+    # E1 residual losses do not offset preexisting SE income.
+    taxable_self_employment_income: [27_705, 27_705, 0, 46_175, 36_940]
+
+
+- name: A supplied passive and already-SE intersection is subtracted only once
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    partnership_income: 100_000
+    passive_partnership_s_corp_income: 30_000
+    partnership_self_employment_net_earnings: 40_000
+    owners_draw_passive_se_overlap: 10_000
+  output:
+    # 100,000 - 30,000 - (40,000 - 10,000) = 40,000.
+    owners_draw_active_income: 40_000
+    owners_draw_gross: 40_000
+    owners_draw_net_earnings: 36_940
+
+
+- name: Material participation defaults to excluding the combined passive subset once
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    s_corp_income: [60_000, 0]
+    partnership_income: [40_000, 100_000]
+    passive_partnership_s_corp_income: [25_000, 100_000]
+  output:
+    owners_draw_active_income: [75_000, 0]
+    owners_draw_net_earnings: [69_262.50, 0]
+
+
+- name: Disabling the material-participation filter includes passive profits and still removes existing SE
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.material_participation_only: false
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    s_corp_income: 60_000
+    partnership_income: 40_000
+    passive_partnership_s_corp_income: 25_000
+    partnership_self_employment_net_earnings: 10_000
+  output:
+    owners_draw_active_income: 90_000
+    owners_draw_net_earnings: 83_115
+
+
+- name: The independent draw floor rejects adjusted earnings below 400
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    s_corp_income: [433, 434]
+  output:
+    # 433 * .9235 = 399.8755; 434 * .9235 = 400.799.
+    owners_draw_planned_gross: [433, 434]
+    owners_draw_gross: [0, 434]
+    owners_draw_net_earnings: [0, 400.799]
+    owners_draw_oasdi_tax: [0, 49.699076]
+    owners_draw_niit_exclusion: [0, 434]
+
+
+- name: The reporting floor includes equality and is independent of existing SE earnings
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.net_earnings_factor: 1
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    s_corp_income: [399, 400, 401, 800, 399]
+    self_employment_income: [0, 0, 0, 400, 1_000]
+  output:
+    owners_draw_gross: [0, 400, 401, 800, 0]
+    owners_draw_net_earnings: [0, 400, 401, 800, 0]
+    taxable_self_employment_income: [0, 0, 0, 0, 923.50]
+    owners_draw_oasdi_tax: [0, 49.60, 49.724, 99.20, 0]
+
+
+- name: Existing SE uses its adjusted capped base before allocating draw room
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    payroll_tax_gross_wages: [100_000, 100_000, 250_000]
+    self_employment_income: [50_000, 200_000, 50_000]
+    s_corp_income: [100_000, 100_000, 100_000]
+  output:
+    taxable_self_employment_income: [46_175, 184_700, 46_175]
+    social_security_taxable_self_employment_income: [46_175, 100_000, 0]
+    owners_draw_oasdi_room: [53_825, 0, 0]
+    owners_draw_oasdi_base: [53_825, 0, 0]
+    owners_draw_oasdi_tax: [6_674.30, 0, 0]
+    # 12.4% of (46,175 + 53,825) = 12,400, not a second net adjustment.
+    self_employment_social_security_tax: [12_400, 12_400, 0]
+
+
+- name: No-ceiling draw option taxes all net earnings even after wages exhaust the ordinary cap
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.contrib.ssa.owners_draw.room_cap_basis: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    payroll_tax_gross_wages: 300_000
+    s_corp_income: 400_000
+  output:
+    owners_draw_gross: 400_000
+    owners_draw_net_earnings: 369_400
+    owners_draw_oasdi_base: 369_400
+    owners_draw_oasdi_tax: 45_805.60
+    owners_draw_niit_exclusion: 400_000
+
+
+- name: The reform is inactive before the configured start year
+  period: 2026
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    s_corp_income: 150_000
+  output:
+    owners_draw_gross: 0
+    owners_draw_net_earnings: 0
+    owners_draw_oasdi_tax: 0
+
+
+- name: The default linear phase-in reaches one in 2036 and stays there
+  period: 2037
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    s_corp_income: 100_000
+  output:
+    owners_draw_gross: 100_000
+    owners_draw_net_earnings: 92_350
+    owners_draw_oasdi_tax: 11_451.40
+
+
+- name: Nondependent tax-unit aggregation leaves the dependent's draw deduction off the parents' return
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    people:
+      parent:
+        age: 45
+        s_corp_income: 10_000
+      child:
+        age: 16
+        is_tax_unit_dependent: true
+        s_corp_income: 20_000
+    tax_units:
+      unit:
+        members: [parent, child]
+  output:
+    self_employment_tax_ald_person: [572.57, 1_145.14]
+    self_employment_tax_ald: 572.57
+
+
+- name: Net draw earnings enter the ordinary AIME history and respect supplied AIME
+  period: 2036
+  absolute_error_margin: 0.001
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    age: [62, 62]
+    s_corp_income: [150_000, 150_000]
+    ss_aime_input: [0, 500]
+  output:
+    owners_draw_credited_earnings: [138_525, 138_525]
+    # One year's adjusted draw / (35 years * 12 months).
+    ss_aime: [329.8214286, 500]
+

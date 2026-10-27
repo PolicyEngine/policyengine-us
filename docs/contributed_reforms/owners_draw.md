@@ -19,9 +19,9 @@ All settings are under `gov.contrib.ssa.owners_draw`.
 | `net_earnings_factor` | `0` | Derive the standard SECA factor; a value in (0, 1] overrides it. |
 | `material_participation_only` | `true` | Use nonpassive income as the participation proxy. |
 | `include_hi` | `false` | Also tax adjusted draw earnings at the uncapped SECA HI rate. |
-| `benefit_credit` | `true` | Expose adjusted annual earnings for future benefit-ledger integration. |
+| `benefit_credit` | `true` | Add adjusted annual draw earnings to the existing AIME earnings history before its annual cap. |
 | `half_seca_deduction` | `true` | Apply the existing section 164(f) deductible share to added SECA. |
-| `room_cap_basis` | `CURRENT_LAW` | Preserve the current-law OASDI cap; `NONE` removes the draw ceiling. |
+| `room_cap_basis` | `0` | Preserve the current-law OASDI cap; `1` removes the draw ceiling. |
 
 The derived share is `min(max((year - start_year + 1) / phase_in_years, 0), 1)`.
 Activation and start-year checks still apply to explicit share overrides.
@@ -101,16 +101,21 @@ than remaining room, adjusted earnings, or actual gross draw. Adding the
 draw cannot push otherwise capped covered earnings beyond C. Increasing the
 phase-in share cannot reduce draw tax when other inputs and settings stay
 fixed. Already-SE income is removed before computing the draw, and disabled
-years retain baseline tax and deduction behavior. The `NONE` cap option
+years retain baseline tax and deduction behavior. The `1` cap option
 intentionally permits earnings above C.
 
 ## Benefit credit and active NIIT interaction
 
 `owners_draw_credited_earnings` exposes N_D when benefit credit is enabled,
-and zero otherwise. The flag has no tax effect. A future annual-history
-benefit ledger must add these earnings before applying that year's benefit
-cap; this reform does not append an amount to final AIME or alter reported
-benefits. Conventional and mini-PIA history integration remain separate work.
+and zero otherwise. The flag has no tax effect. The reform passes these
+annual earnings to the existing `ss_aime` earnings-history helper and adds
+them before applying each year's wage-base cap. A supplied positive
+`ss_aime_input` retains its baseline precedence. This reform does not append
+an amount to final AIME or alter reported benefits. This bridge inherits
+main's AIME lookback and age rules and its separate
+`gov.ssa.social_security.wage_base` path, last authored for 2026; it does not
+synchronize that path with the current tax cap. Mini-PIA integration and a
+complete annual-history ledger remain separate future work.
 
 `owners_draw_niit_exclusion` is the matching gross-profit exclusion for a
 subsequent active-NIIT reform. With OASDI only it is
