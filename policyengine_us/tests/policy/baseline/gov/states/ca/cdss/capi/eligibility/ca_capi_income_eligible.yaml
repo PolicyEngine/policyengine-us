@@ -1,21 +1,61 @@
-- name: Ineligible
-  period: 2024
+- name: Ineligible, countable income one dollar above the payment standard
+  period: 2026
   input:
-    ssi_amount_if_eligible: 2_000
-    ca_state_supplement_payment_standard: 1_000
-    ssi_countable_income: 3_001
-    ca_capi_eligible_person: true
+    age: 70
+    immigration_status: UNDOCUMENTED
+    # SSI zeroes countable income for people who fail its immigration test,
+    # so the case supplies it: 1,234.94 per month (14,819.28 per year).
+    ssi_countable_income: 14_819.28
+    living_arrangements_allow_for_food_preparation: true
     state_code: CA
   output:
+    # Standard 1,233.94 with no offset since June 2019 (WIC 18941).
+    # Countable income must be lower than the standard (MPP 49-035.1);
+    # 1,234.94 is not, so there is no CAPI.
     ca_capi_income_eligible: false
 
-- name: Eligible
-  period: 2024
+- name: Eligible, countable income one dollar below the payment standard
+  period: 2026
   input:
-    ssi_amount_if_eligible: 2_000
-    ca_state_supplement_payment_standard: 1_000
-    ssi_countable_income: 2_999
-    ca_capi_eligible_person: true
+    age: 70
+    immigration_status: UNDOCUMENTED
+    # Supplied as above: 1,232.94 per month (14,795.28 per year).
+    ssi_countable_income: 14_795.28
+    living_arrangements_allow_for_food_preparation: true
     state_code: CA
   output:
+    # 1,232.94 is lower than the 1,233.94 standard: 1 per month of CAPI.
     ca_capi_income_eligible: true
+
+- name: Ineligible, income deemed from a high-earning spouse exhausts the couple state supplement
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: UNDOCUMENTED
+        # SSI does not compute these for people who fail its immigration
+        # test, so the case supplies them. The spouse earns 5,000 per month;
+        # couple countable income is (5,000 - 20 - 65) / 2 = 2,457.50 per
+        # month (29,490 per year), all deemed.
+        is_ssi_spousal_deeming_applies: true
+        ssi_income_deemed_from_ineligible_spouse: 29_490
+        ssi_countable_income: 29_490
+      person2:
+        age: 50
+        employment_income: 60_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # POMS SI 01320.430 D. As an individual: federal 994, state 239.94.
+    # Under deeming: 2,457.50 exceeds the couple FBR 1,491 by 966.50, which
+    # exceeds the couple OSS 607.83, so neither a federal benefit nor a
+    # state supplement is due. Federal = 0, state = min(239.94, 607.83 -
+    # 966.50) = -358.67, and CAPI = max(0 - 358.67, 0) = 0 in every month.
+    ca_capi_income_eligible: false

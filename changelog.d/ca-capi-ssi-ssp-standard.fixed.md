@@ -1,0 +1,1 @@
+Pay California CAPI at the SSI/SSP payment standard (with no offset since June 2019) using one standard per living arrangement, compute each eligible person's benefit on their own income, count the SSI/SSP of a spouse who receives it, and apply spouse-to-spouse deeming.

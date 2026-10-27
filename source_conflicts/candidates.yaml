@@ -628,6 +628,83 @@ candidates:
     prs: []
   state: unreviewed
   note: Verify the legal basis for the amended-return remedy and treatment of exactly $3,000.
+- id: us-ca:capi-payment-standard-offset
+  program: capi
+  years:
+    from: 2019
+    type: calendar
+  question: From June 1, 2019, do CAPI payment standards equal the SSI/SSP standards, or remain $10 (individual),
+    $20 (CAPI couple) or $10 (couple with one SSI/SSP member) below them as the regulations state?
+  sources:
+  - kind: statute
+    citation: Cal. WIC §18941
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=18941
+  - kind: regulation
+    citation: CDSS MPP §49-050.11-.13 (Manual Letter EAS-03-09, effective 10/16/03)
+    url: https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf#page=44
+  - kind: guidance
+    citation: CDSS ACIN I-59-25, Attachment A
+    url: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACINs/2025/I-59_25.pdf#page=5
+  readings:
+    statute: CAPI benefits equal SSI/SSP benefits, retroactive to June 1, 2019.
+    other: CAPI standards are $10 below the SSI/SSP individual standard, $20 below the couple standard for a CAPI
+      couple and $10 below the couple standard when the other spouse receives SSI/SSP.
+  example: In January 2026, an aged CAPI recipient living independently with cooking facilities and no income receives
+    $1,233.94 a month under the statute, which PE-US follows, and $1,223.94 under the regulation.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ca/cdss/capi/payment_standard_offset/couple.yaml
+    - policyengine_us/parameters/gov/states/ca/cdss/capi/payment_standard_offset/mixed_couple.yaml
+    - policyengine_us/parameters/gov/states/ca/cdss/capi/payment_standard_offset/single.yaml
+    - policyengine_us/variables/gov/states/ca/cdss/capi/ca_capi_payment_standard.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10379
+  state: open
+  note: 'Pavel''s sign-off requested (statute against regulation). PE-US follows the statute: the three offsets are
+    $0 from 2019-06-01 and keep the regulation amounts before then (payment_standard_offset/*.yaml, read by
+    ca_capi_payment_standard.py). The 2003 regulation predates the 2019 statute; CDSS applies the statute in ACIN
+    I-23-19 (June 1, 2019 increase of $10 per individual and $20 per couple) and ACIN I-59-25.'
+- id: us-ca:capi-spousal-deeming-method
+  program: capi
+  years:
+    from: 1999
+    type: calendar
+  question: When income is deemed from an ineligible spouse, does CAPI take the lesser federal and lesser state amounts
+    separately, as SSA computes SSI/SSP, or the smaller of the two totals on form SOC 452?
+  sources:
+  - kind: statute
+    citation: Cal. WIC §18940(b)
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=18940
+  - kind: statute
+    citation: Cal. WIC §18941
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=18941
+  - kind: regulation
+    citation: CDSS MPP §49-035.71
+    url: https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf#page=30
+  - kind: manual
+    citation: SSA POMS SI 01320.430 D
+    url: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501320430
+  - kind: form
+    citation: CDSS SOC 452 (4/99), CAPI Income Eligibility - Adult, line C
+    url: https://www.cdss.ca.gov/cdssweb/entres/forms/English/SOC452.pdf
+  readings:
+    statute: Federal deeming rules govern CAPI and CAPI benefits equal SSI/SSP benefits, which SSA computes by taking
+      the lesser federal amount and the lesser state supplement separately (POMS SI 01320.430 D).
+    other: SOC 452 pays the smaller of the couple standard less the couple's countable income and the individual standard
+      less the recipient's own countable income.
+  example: In January 2026, a CAPI recipient with no income whose ineligible spouse earns $1,200 a month receives $1,173.44
+    under the statute and the POMS method, which PE-US follows, and $1,233.94 under SOC 452.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ca/cdss/capi/ca_capi_person.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10379
+  state: unreviewed
+  note: 'PE-US follows the statute: ca_capi_person.py takes the lesser of the federal parts and the lesser of the
+    state parts (POMS SI 01320.430 D). MPP 49-035.71 points to both 20 CFR 416.1160 et seq. and SOC 452. Verify
+    whether CDSS still uses the 1999 form''s line C rule and the years affected.'
 - id: us-ca:care-fera-housing-subsidies
   program: care-fera
   years:

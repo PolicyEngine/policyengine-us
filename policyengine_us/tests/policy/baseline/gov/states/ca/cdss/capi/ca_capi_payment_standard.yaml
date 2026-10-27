@@ -1,0 +1,343 @@
+- name: Case 1, aged individual with cooking facilities.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # WIC 18941: the CAPI standard equals the SSI/SSP aged or disabled
+    # individual standard, with no offset since June 2019 (ACIN I-59-25):
+    # 994 + 239.94 = 1,233.94.
+    ca_capi_payment_standard: 1_233.94
+
+- name: Case 2, aged individual without cooking facilities in 2025.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # 2025 aged or disabled individual standard 1,206.94 + no-cooking food
+    # allowance 128.87 (WIC 12200(e)) = 1,335.81, above the 967 federal
+    # benefit rate; no offset.
+    ca_capi_payment_standard: 1_335.81
+
+- name: Case 3, blind individual without cooking facilities gets no food allowance.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # Blind individual standard 1,318.32. The no-cooking allowance applies
+    # only to aged or disabled people (WIC 12200(e)), so the standard stays
+    # 1,318.32.
+    ca_capi_payment_standard: 1_318.32
+
+- name: Case 4, aged noncitizen couple with cooking facilities splits the couple standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 68
+        immigration_status: UNDOCUMENTED
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # Both spouses are aged, so the SSI couple computation applies.
+    # Couple standard 2,098.83 with no offset; each member receives one-half
+    # (MPP 49-055.4): 2,098.83 / 2 = 1,049.415.
+    ca_capi_payment_standard: [1_049.415, 1_049.415]
+
+- name: Case 5, aged noncitizen couple without cooking facilities adds the couple food allowance.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 68
+        immigration_status: UNDOCUMENTED
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # Couple standard 2,098.83 + couple no-cooking allowance 257.74 =
+    # 2,356.57; one-half each = 1,178.285.
+    ca_capi_payment_standard: [1_178.285, 1_178.285]
+
+- name: Case 6, noncitizen couple with one blind member uses the one-blind couple standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 60
+        is_blind: true
+        immigration_status: UNDOCUMENTED
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The one-blind couple standard 2,238.44 (WIC 12200(b)) exceeds the
+    # aged couple standard 2,098.83 and applies (MPP 49-050.27); one-half
+    # each = 1,119.22.
+    ca_capi_payment_standard: [1_119.22, 1_119.22]
+
+- name: Case 7, noncitizen spouse of an aged SSI/SSP recipient takes the whole couple standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: CITIZEN
+      person2:
+        age: 68
+        immigration_status: UNDOCUMENTED
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The citizen receives SSI/SSP, not CAPI, and counts as an eligible
+    # spouse (MPP 49-005(e)(3)). The CAPI member takes the whole couple
+    # standard (MPP 49-050.13), whose offset is 0 since June 2019 (WIC
+    # 18941): 2,098.83. ca_capi_person subtracts the citizen's SSI/SSP.
+    ca_capi_payment_standard: [0, 2_098.83]
+
+- name: Case 8, Title XIX medical facility resident takes the facility standard alone.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        immigration_status: UNDOCUMENTED
+        ca_in_medical_care_facility: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # ACIN I-59-25 and POMS SI 01415.058 code J: the Title XIX medical
+    # facility standard is 30 + 32 = 62 (MPP 49-050.26). It replaces the
+    # independent-living standard, adds no food allowance and is not floored
+    # at the federal benefit rate.
+    ca_capi_payment_standard: 62
+
+- name: Case 9, nonmedical out-of-home care uses one standard for every category.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        immigration_status: UNDOCUMENTED
+        in_out_of_home_care_facility: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # ACIN I-59-25 and POMS SI 01415.058 code B: half the couple
+    # out-of-home care standard, (2,098.83 + 1,153.31) / 2 = 3,252.14 / 2 =
+    # 1,626.07 (MPP 49-050.24). No food allowance is added.
+    ca_capi_payment_standard: 1_626.07
+
+- name: Case 10, aged and blind individual without cooking takes the higher aged amount with food.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: true
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # California pays the highest category (POMS SI 01415.058 B.2):
+    # max(blind 1,318.32, aged 1,233.94 + food 128.87 = 1,362.81) =
+    # 1,362.81. The food allowance does not stack on the blind amount.
+    ca_capi_payment_standard: 1_362.81
+
+- name: Case 11, disabled dependent child takes the disabled minor standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 10
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        immigration_status: UNDOCUMENTED
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # ACIN I-59-25 disabled minor 994 + 97.27 = 1,091.27 (MPP 49-050.25),
+    # with no food allowance. The parent is not aged, blind or disabled.
+    ca_capi_payment_standard: [0, 1_091.27]
+
+- name: Case 12, blind dependent child takes the blind standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 10
+        is_blind: true
+        immigration_status: UNDOCUMENTED
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # A blind child takes the blind amount, 1,318.32 (MPP 49-050.253).
+    ca_capi_payment_standard: [0, 1_318.32]
+
+- name: Case 13, aged couple with one blind member without cooking adds the individual food allowance.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 70
+        is_blind: true
+        immigration_status: UNDOCUMENTED
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # POMS SI 01415.058 code C note: the blind/aged couple level plus the
+    # individual restaurant allowance, 2,238.44 + 128.87 = 2,367.31. This
+    # beats the aged couple without cooking, 2,098.83 + 257.74 = 2,356.57.
+    # One-half each: 2,367.31 / 2 = 1,183.655.
+    ca_capi_payment_standard: [1_183.655, 1_183.655]
+
+- name: Case 14, 2024 independent-living standard is floored at the federal benefit rate.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The state supplement parameters hold the 1991 aged amount of 630 until
+    # 2025 (issue 7787), below the 2024 federal benefit rate of 943. CAPI
+    # equals SSI/SSP (WIC 18941), so the standard is max(630, 943) = 943.
+    ca_capi_payment_standard: 943
+
+- name: Case 15, the 10 individual offset applies through May 2019 and ends in June 2019.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The state supplement parameters hold the 1991 aged amount of 630 until
+    # 2025 (issue 7787), so the model floors the standard at the 2019 federal
+    # benefit rate: max(630, 771) = 771. The actual 2019 SSI/SSP standard was
+    # 931.72 (ACIN I-23-19). This case pins only the offset boundary:
+    # 771 - 10 = 761 through May 2019 (MPP 49-050.11) and 771 - 0 = 771 from
+    # June 1, 2019 (WIC 18941).
+    ca_capi_payment_standard:
+      2019-05: 761
+      2019-06: 771
