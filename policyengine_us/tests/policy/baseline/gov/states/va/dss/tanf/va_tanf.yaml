@@ -89,8 +89,9 @@
     va_tanf: 6_000
 
 # Max payment cap tests -- max payment = ceil(base_max * standard_multiplier)
-# For 2023: multiplier is 1.155 for all 12 months
-# Group III TANF: ceil(745*1.155)=861
+# From July 2020 base_max is the printed Section 304, Appendix 2 maximum for
+# the period, and the multiplier is 1.
+# Group III TANF, 7/22 (Transmittal 74): $861
 # Annual max = 12*861 = 10_332
 
 - name: Group III TANF capped at scaled max payment.
@@ -106,8 +107,8 @@
     # Payment 15000 capped at Group III max: 12*861 = 10_332
     va_tanf: 10_332
 
-# Group II TANF: ceil(625*1.155)=722
-# Annual max = 12*722 = 8_664
+# Group II TANF, 7/22 (Transmittal 74): $723 (ceil(625 * 1.155) = 722)
+# Annual max = 12*723 = 8_676
 
 - name: Group II TANF capped at scaled max payment.
   period: 2023
@@ -119,8 +120,8 @@
     va_tanf_countable_income: 0
     county_str: PITTSYLVANIA_COUNTY_VA
   output:
-    # Payment 15000 capped at Group II max: 12*722 = 8_664
-    va_tanf: 8_664
+    # Payment 15000 capped at Group II max: 12*723 = 8_676
+    va_tanf: 8_676
 
 # TANF-UP units are capped at the TANF maximum. The 7/21 Section 304,
 # Appendix 2 (Transmittal 71) maximum reimbursable payment is $820 in
@@ -136,7 +137,7 @@
     va_tanf_countable_income: 0
     county_str: ARLINGTON_COUNTY_VA
   output:
-    # ceil(745 * 1.1) = ceil(819.5) = 820
+    # 7/21 Group III maximum: $820
     # (the TANF-UP maximum would be ceil(648 * 1.1) = 713)
     va_tanf: 820
 
@@ -150,7 +151,7 @@
     va_tanf_countable_income: 0
     county_str: PITTSYLVANIA_COUNTY_VA
   output:
-    # ceil(625 * 1.1) = ceil(687.5) = 688
+    # 7/21 Group II maximum: $688
     # (the TANF-UP maximum would be ceil(544 * 1.1) = 599)
     va_tanf: 688
 
@@ -169,7 +170,8 @@
     va_tanf: 8_400
 
 # Since July 2021 Virginia has one schedule of standards (TANF Manual
-# Section 304, Appendix 2) for all units. January 2025 multiplier: 1.155
+# Section 304, Appendix 2) for all units. January 2025 multiplier for the
+# TANF-UP schedule: 1.155
 
 - name: In January 2025 a TANF-UP unit gets the TANF grant standard.
   period: 2025-01
@@ -195,8 +197,8 @@
     va_tanf_countable_income: 0
     county_str: ARLINGTON_COUNTY_VA
   output:
-    # Group III TANF maximum: ceil(745 * 1.155) = ceil(860.475) = 861, the
-    # 7/22 Section 304, Appendix 2 (Transmittal 74) maximum of $861
+    # Group III TANF maximum: the 7/22 Section 304, Appendix 2
+    # (Transmittal 74) maximum of $861
     # (the TANF-UP maximum would be ceil(648 * 1.155) = 749)
     va_tanf: 861
 
@@ -212,3 +214,63 @@
   output:
     # TANF grant standard $500 - countable income $100 = $400
     va_tanf: 400
+
+# The grant standard and the maximum from the printed Section 304, Appendix 2
+# tables, computed rather than given as inputs.
+
+- name: In January 2025 a Group II unit of twelve with no income gets the 7/22 maximum.
+  period: 2025-01
+  input:
+    state_code: VA
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: false
+    spm_unit_size: 12
+    va_tanf_countable_income: 0
+    county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    # Grant standard: 7/22 Group II size 10 $1,127 + 2 * $95 = $1,317
+    # 7/22 Group II maximum: $723
+    va_tanf_grant_standard: 1_317
+    va_tanf: 723
+
+- name: In January 2025 a Group II unit of three with no income gets the 7/22 standard.
+  period: 2025-01
+  input:
+    state_code: VA
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: false
+    spm_unit_size: 3
+    va_tanf_countable_income: 0
+    county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    # 7/22 Group II, size 3: $482, below the $723 maximum
+    va_tanf: 482
+
+- name: In January 2022 a Group II unit of twelve with no income gets the 7/21 maximum.
+  period: 2022-01
+  input:
+    state_code: VA
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: false
+    spm_unit_size: 12
+    va_tanf_countable_income: 0
+    county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    # Grant standard: 7/21 Group II size 10 $1,073 + 2 * $90 = $1,253
+    # 7/21 Group II maximum: $688
+    va_tanf_grant_standard: 1_253
+    va_tanf: 688
+
+- name: In January 2019 the maximum still scales the 7/20 maximum.
+  period: 2019-01
+  input:
+    state_code: VA
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: false
+    va_tanf_grant_standard: 1_500
+    va_tanf_up_grant_standard: 0
+    va_tanf_countable_income: 0
+    county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    # January 2019 multiplier: 0.8282; ceil(625 * 0.8282) = ceil(517.625) = 518
+    va_tanf: 518

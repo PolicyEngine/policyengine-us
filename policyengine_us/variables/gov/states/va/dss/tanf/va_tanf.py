@@ -25,25 +25,27 @@ class va_tanf(Variable):
 
         # compute the maximum payment
         p = parameters(period).gov.states.va.dss.tanf
-        # Access July 2020 base values
-        p_payment = parameters.gov.states.va.dss.tanf.payment(f"2020-10-01")
         county = spm_unit.household("county_str", period)
         if_group3 = np.isin(county, p.localities.group3)
+        # The separate TANF-UP schedule has only July 2020 values, which the
+        # standard multiplier scales.
+        p_up_base = parameters.gov.states.va.dss.tanf.payment.up_grant_standard(
+            f"2020-10-01"
+        )
         up_tanf_base_max = where(
             if_group3,
-            p_payment.up_grant_standard.group3.max,
-            p_payment.up_grant_standard.group2.max,
+            p_up_base.group3.max,
+            p_up_base.group2.max,
         )
+        up_tanf_max = np.ceil(up_tanf_base_max * p.standard_multiplier)
+        # The TANF maximum is the printed Section 304, Appendix 2 amount from
+        # July 2020. Earlier periods scale the July 2020 maximum.
         tanf_base_max = where(
             if_group3,
-            p_payment.grant_standard.group3.max,
-            p_payment.grant_standard.group2.max,
+            p.payment.grant_standard.group3.max,
+            p.payment.grant_standard.group2.max,
         )
-        base_max = where(
-            uses_up_standards,
-            up_tanf_base_max,
-            tanf_base_max,
-        )
-        maximum = np.ceil(base_max * p.standard_multiplier)
+        tanf_max = np.ceil(tanf_base_max * min_(p.standard_multiplier, 1))
+        maximum = where(uses_up_standards, up_tanf_max, tanf_max)
 
         return min_(payment, maximum)
