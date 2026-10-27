@@ -389,3 +389,40 @@ def test_dated_registration_components_and_revenue_accounts(dated_simulation, ye
     np.testing.assert_allclose(
         sim.calculate("s770_revenue_oasdi", year), sum(revenues), atol=0.01
     )
+
+
+class NoDrawNettingFactorIn2026(Reform):
+    """In 2026 only, q = 1 - 100% x (100% + 0%) = 0 leaves no SE netting factor."""
+
+    def apply(self):
+        def modify(parameters):
+            irs = parameters.gov.irs
+            for node, value in (
+                (irs.ald.misc.employer_share, 1),
+                (irs.self_employment.rate.social_security, 1),
+                (irs.self_employment.rate.medicare, 0),
+            ):
+                node.update(period="2026", value=value)
+            return parameters
+
+        self.modify_parameters(modify)
+
+
+def test_owners_draw_netting_factor_must_be_positive():
+    # An OASDI-only draw is excluded as its taxed base divided by q.
+    head = {
+        variable: {"2025": value, "2026": value}
+        for variable, value in (
+            ("age", 45),
+            ("s_corp_income", 100_000),
+            ("s770_draw_oasdi_base", 9_235),
+        )
+    }
+    situation = {"people": {"head": head}}
+    sim = Simulation(situation=situation, reform=NoDrawNettingFactorIn2026)
+    # Current law: q = 1 - 50% x (12.4% + 2.9%) = 0.9235; 9,235 / q = 10,000.
+    np.testing.assert_allclose(
+        sim.calculate("s770_active_business_income", 2025), [90_000], atol=0.01
+    )
+    with pytest.raises(ValueError, match="netting factor must be positive"):
+        sim.calculate("s770_active_business_income", 2026)
