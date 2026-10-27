@@ -52,7 +52,7 @@ REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 # from its dry run and spreads their files over parallel runners by recent
 # CI times, splitting a long group into chunks. A process still runs files
 # of one group only, in this order, so none holds more than its group here.
-REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core-heavy social-security-inputs core policy-parameters policy remaining-heavy remaining
+REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core-heavy ss-calculator-engine ss-calculator-differential social-security-inputs core policy-parameters policy remaining-heavy remaining
 REST_CACHED_ARRAY_TESTS := $(TESTS)/test_formulas_do_not_write_into_cached_arrays.py
 REST_HEAVY_A_TESTS := $(TESTS)/test_md_poverty_line_credit_invariants.py \
 	$(TESTS)/core/test_ald_determinism.py \
@@ -69,6 +69,15 @@ REST_HEAVY_B_TESTS := $(TESTS)/core/test_marginal_tax_rate_coverage.py \
 REST_CORE_HEAVY_TESTS := $(TESTS)/core/test_ssi_resource_deeming_invariants.py \
 	$(TESTS)/test_federal_credit_limit_order.py \
 	$(TESTS)/test_pinned_branch_credit_dependents.py
+# Supplied-record calculator API checks load no national dataset. Keep each
+# file in a separate process so retained reform trees are released on exit.
+# Local macOS/Python 3.13.9, four numeric threads: peak RSS 2.98 GiB
+# through 13 cases before the 1,800-second cap; the previous complete
+# 18-case run recorded 3.06 GiB. CI reports the complete 20-case process.
+REST_SS_CALCULATOR_ENGINE_TESTS := $(TESTS)/unit/test_ss_calculator_engine.py
+# Local macOS/Python 3.13.9, four numeric threads: all eight cases passed
+# with 2.45 GiB peak RSS, below the ~10 GB per-process target above.
+REST_SS_CALCULATOR_DIFFERENTIAL_TESTS := $(TESTS)/unit/test_ss_calculator_differential.py
 # Synthetic household input/branch checks load no national dataset. Keep their
 # retained reform systems in a separate process rather than growing core's heap.
 # Local 4 GiB-capped run peaked at 2.385 GiB before its 1800s loaded-host cap;
@@ -88,7 +97,8 @@ REST_REMAINING_HEAVY_TESTS := $(TESTS)/test_niit_section_911_magi.py \
 	$(TESTS)/test_capital_gain_distributions_loss_limit.py \
 	$(TESTS)/test_schedule_d_filer_net_capital_gain.py
 REST_LISTED_TESTS := $(REST_CACHED_ARRAY_TESTS) $(REST_HEAVY_A_TESTS) $(REST_HEAVY_B_TESTS) \
-	$(REST_CORE_HEAVY_TESTS) $(REST_SOCIAL_SECURITY_INPUT_TESTS) $(REST_POLICY_PARAMETER_TESTS) $(REST_REMAINING_HEAVY_TESTS)
+	$(REST_CORE_HEAVY_TESTS) $(REST_SS_CALCULATOR_ENGINE_TESTS) $(REST_SS_CALCULATOR_DIFFERENTIAL_TESTS) \
+	$(REST_SOCIAL_SECURITY_INPUT_TESTS) $(REST_POLICY_PARAMETER_TESTS) $(REST_REMAINING_HEAVY_TESTS)
 REST_IGNORES := $(addprefix --ignore=,$(TESTS)/policy/contrib $(TESTS)/microsimulation $(REST_SPM_TESTS))
 # $(call rest_pytest,<group>,<paths>,<more paths to ignore>) is the pytest
 # command for one group. With REST_REPORT_DIR set, each group writes its own
@@ -315,6 +325,10 @@ test-other-python-rest-heavy-b:
 	$(call rest_pytest,heavy-b,$(REST_HEAVY_B_TESTS))
 test-other-python-rest-core-heavy:
 	$(call rest_pytest,core-heavy,$(REST_CORE_HEAVY_TESTS))
+test-other-python-rest-ss-calculator-engine:
+	$(call rest_pytest,ss-calculator-engine,$(REST_SS_CALCULATOR_ENGINE_TESTS))
+test-other-python-rest-ss-calculator-differential:
+	$(call rest_pytest,ss-calculator-differential,$(REST_SS_CALCULATOR_DIFFERENTIAL_TESTS))
 test-other-python-rest-social-security-inputs:
 	$(call rest_pytest,social-security-inputs,$(REST_SOCIAL_SECURITY_INPUT_TESTS))
 test-other-python-rest-core:

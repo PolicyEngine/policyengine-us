@@ -873,6 +873,21 @@ def test_spm_and_dataset_suites_run_once_in_separate_steps_with_reports(workflow
     assert uploads[0]["with"]["name"] != "rest-test-timings"
 
 
+@pytest.mark.parametrize("name", ["engine", "differential"])
+def test_calculator_api_files_run_once_in_separate_rest_processes(
+    groups, group_files, name
+):
+    file = f"policyengine_us/tests/unit/test_ss_calculator_{name}.py"
+    group = f"ss-calculator-{name}"
+    assert group_files[group] == [file]
+    assert [owner for owner, files in group_files.items() if file in files] == [group]
+    assert groups[group]["reports"] == [
+        f"{REPORT_DIR}/rest-python-{group}.xml",
+        f"{REPORT_DIR}/rest-python-{group}-resources.txt",
+    ]
+    assert all(file not in command for command in dry_run("test-other-python-spm"))
+
+
 def test_groups_run_as_plain_pytest_without_a_report_dir(groups):
     """Locally the same groups run without GNU time, which macOS lacks."""
     plain = dry_run("test-other-python-rest")
