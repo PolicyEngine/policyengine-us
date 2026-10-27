@@ -1,6 +1,12 @@
 description: SSA sets this amount as the monthly federal SSI payment for an eligible individual residing in a medical treatment facility where Medicaid pays more than half the cost of care.
 
 values:
+  # 42 USC 1382(e)(1)(B)(i) sets "$360 per year". Pub. L. 100-203 section
+  # 9119(a) substituted that for "$300 per year", effective July 1, 1988
+  # (section 9119(c)). 20 CFR 416.414(b)(1): "For months after June 1988, the
+  # benefit rate for an eligible individual with no eligible spouse is $30 per
+  # month." Clause (iii) sets $720 per year for a couple both in a facility;
+  # ssi_amount_if_eligible applies this per-person amount to each spouse.
   1975-01-01: 25
   1988-07-01: 30
 
@@ -9,7 +15,7 @@ metadata:
   period: month
   label: SSI medical treatment facility monthly payment
   reference:
-    - title: 42 U.S.C. § 1382(e)(1)(A) - Amount of benefits for individuals in medical treatment facilities
-      href: https://www.law.cornell.edu/uscode/text/42/1382#e_1_A
+    - title: 42 U.S.C. § 1382(e)(1)(B) - Benefits for individuals in medical treatment facilities
+      href: https://www.law.cornell.edu/uscode/text/42/1382#e_1_B
     - title: 20 CFR § 416.414 - Amount of benefits; eligible individual or eligible couple in a medical treatment facility
       href: https://www.law.cornell.edu/cfr/text/20/416.414

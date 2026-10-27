@@ -2525,6 +2525,38 @@ candidates:
   state: open
   note: A source-choice decision was requested; resolve the incorporated restriction and verify applicability beyond
     2025.
+- id: us-ky:kchip-phase-iii-pregnant-citizens
+  program: chip
+  years:
+    from: 2023
+    type: calendar
+  question: Does KCHIP Phase III cover pregnant citizens at 195-213% FPL, or only pregnant people who are lawfully
+    present immigrants?
+  sources:
+  - kind: regulation
+    citation: 907 KAR 4:030 Section 2(1), version effective January 12, 2023, file page 1
+    url: https://apps.legislature.ky.gov/law/kar/downloads/docs/13741/document.engrossed.pdf#page=1
+  - kind: policy
+    citation: CMS approval letter for Kentucky CHIP State Plan Amendments KY-21-0001 and KY-21-0002, page 2
+    url: https://www.medicaid.gov/CHIP/Downloads/KY-21-0001.pdf#page=2
+  readings:
+    regulation: Eligibility requires all of the listed conditions, including "(b) Is an immigrant who is lawfully
+      present"; the section gives no route for citizens.
+    other: The state plan covers "targeted low-income pregnant individuals" in CHIP with income above 195% and up to
+      213% FPL and, in addition, elects section 2107(e)(1)(O) to cover otherwise eligible lawfully residing pregnant
+      individuals.
+  example: A Kentucky citizen who is pregnant with income at 200% FPL in 2024 is covered under the state plan and not
+    under the regulation.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/hhs/chip/pregnant/income_limit.yaml
+    - policyengine_us/variables/gov/hhs/chip/is_chip_eligible_standard_pregnant_person.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10365
+  state: unreviewed
+  note: The code follows the state plan, against the regulation. The statute (KRS 205.6481 and following) was not
+    checked. A project sign-off on the reading is pending.
 - id: us-ky:ktap-payment-maximum-2025
   program: tanf
   years:
