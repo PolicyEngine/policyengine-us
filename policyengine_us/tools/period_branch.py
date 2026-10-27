@@ -65,10 +65,30 @@ def _input_keys(branch: Simulation) -> Set[Tuple[str, str, Period]]:
     keys and its ancestors'.
     """
     visible_branches = set(branch._get_visible_branch_names())
+    source_branches = set()
+    source_names = ()
+    if getattr(
+        branch.tax_benefit_system, "_social_security_input_compatibility", False
+    ):
+        # Initial public benefit sources are genuine Core inputs stored on
+        # reserved branches, so public formulas can apply same-year levers.
+        # Keep them when clearing a branch's inherited formula results.
+        from policyengine_us.tools.social_security_inputs import (
+            SOCIAL_SECURITY_COMPONENTS,
+            _SOURCE_BRANCH,
+        )
+
+        source_names = SOCIAL_SECURITY_COMPONENTS
+        source_branches = {f"{_SOURCE_BRANCH}{name}" for name in visible_branches}
     return {
         key
         for key in getattr(branch, "_user_input_keys", set())
         if key[1] in visible_branches
+        or (
+            key[0] in source_names
+            and key[1] in source_branches
+            and branch.get_holder(key[0])._stores_user_input(key[2], key[1])
+        )
     }
 
 
