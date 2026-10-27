@@ -1,3 +1,86 @@
+## [2.72.3] - 2026-10-27
+
+### Fixed
+
+- Apply the Florida TCA $200 and 1/2 earned income disregard to current participants (is_tanf_enrolled) whatever their income after the $90 disregard, per Fla. Stat. 414.095(11)(a) and ESS manual 2420.0315, and count the $90 standard disregard as part of the first $200 instead of on top of it.
+- Phase out the Minnesota AMT exemption at 25% under Minn. Stat. 290.091, subd. 3(b), instead of the federal rate, which rises to 50% from 2026, and correct the 2025 Minnesota AMT exemption amounts to $95,300, $71,470 and $47,660.
+- Deduct the SNAP standard deduction in effect for the assistance unit's size from Virginia TANF earnings (TANF Manual 305.1 A.2.b) instead of SNAP's fiscal year 2020 amounts.
+- Pay Virginia TANF-UP (two-parent) units the TANF standards of assistance and maximum payment in every year, as the Appropriation Act's floor for two-parent families requires, instead of the July 2020 TANF-UP schedule.
+- Base the Illinois EIC on the federal EITC alone before 2023, when the age and ITIN expansion starts, and add the 35 ILCS 5/212(a) match rates for 2000 to 2017 (5%, 7.5%, 10% and 14%).
+
+
+## [2.72.2] - 2026-10-27
+
+### Fixed
+
+- Exclude filers with Montana's 2021–2023 partial pension, annuity, and IRA income exemption from the Montana AGI pooling test, which assumed only `mt_subtractions` reduce Montana AGI.
+
+
+## [2.72.1] - 2026-10-27
+
+### Fixed
+
+- Use federal EITC earned income, which nets spouses' self-employment losses, in the shared state EITC helper (IL, CO, DC, IN) and the Indiana decoupled EITC. These credits now also count net farm earnings and partnership self-employment earnings, as IRC 32(c)(2)(A)(ii) does.
+
+
+## [2.72.0] - 2026-10-27
+
+### Added
+
+- Add composable Social Security benefit levers, pure reported component inputs, and a stored-data scoring preflight. Legacy public inputs remain independent sources, exposed through a read-time reported view without automatic twin arrays or provenance stamps. Initial loading routes sources so same-year benefit factors apply; later public writes remain final overrides. Explicit reported inputs retain priority, while exact compound totals keep their period semantics. Compound helpers retain initial-input precedence. Source refreshes use Core's dependency sequence cutoff, including formula returns kept only in the fast cache, preserving raw caller values, supplied inputs and earlier formula results. Bulk cache deletion preserves surviving formula dates; a formula return whose date is lost is conservatively recalculated after a dependent source write. Builders, partial loading failures, copies, cache replay, extraction, dump restoration and subsampling preserve successful source inputs. A state machine searches combinations of write and copy routes.
+
+
+## [2.71.0] - 2026-10-27
+
+### Added
+
+- Add the IRS Optional Local Sales Tax Tables, the local table selector's counties, cities and state defaults, and the state table heading rates for 2015-2021, so the local sales tax worksheet uses each year's own values.
+  - Use no local table and the IRS ratio method for Mississippi outside Jackson and Tupelo in 2015-2021.
+
+
+## [2.70.0] - 2026-10-27
+
+### Added
+
+- Add Arizona LIHEAP Standard benefit (az_liheap): FY2026 regular benefit from the points worksheet with the greater of 60% state median income or 150% federal poverty guideline income test and TANF or SNAP categorical eligibility.
+- Add Virginia Energy Assistance Program Fuel Assistance (va_eap): FFY2026 regular heating benefit from the points matrix and the latest published value per point, with the 150% federal poverty guideline income test.
+
+
+## [2.69.1] - 2026-10-27
+
+### Changed
+
+- Single-year datasets extend through 2036 by default, the last authored CPI-U year, since 2.65.0 loaded CBO's 2036 projections.
+- Use the Colorado Legislative Council Staff September 2026 forecast's projected sales tax refund tiers for tax years 2027 to 2029 in place of the tax year 2025 placeholders.
+
+### Fixed
+
+- Uprate projected federal poverty guidelines by the CPI-U change over the two preceding calendar years (42 U.S.C. 9902(2)) with a new gov.hhs.fpg_uprating index; gov.hhs.uprating now serves only Head Start and Early Head Start spending. In the Trustees 2025 scenario, re-derive the Social Security wage base and the wage-indexed amounts from the Trustees NAWI.
+
+
+## [2.69.0] - 2026-10-27
+
+### Added
+
+- Add Montana's 2021–2023 partial pension, annuity, and IRA income exemption.
+
+
+## [2.68.0] - 2026-10-27
+
+### Added
+
+- Add an opt-in supplied-AIME/PIA Social Security household calculator and shared eligibility-year PIA service.
+  Preserve S.770 bend increases after prior disability eligibility and use whole-month earnings-test withholding with explicitly dated later settlements by default.
+  Require an explicit prior-disability eligibility answer for every supplied survivor record.
+
+
+## [2.67.1] - 2026-10-27
+
+### Fixed
+
+- Extend Medicaid postpartum coverage to 12 months in the 50 jurisdictions that elected the option (all but Arkansas), dated from each state's approved state plan amendment or section 1115 demonstration amendment, and start Illinois, Louisiana, Michigan, New Jersey and Virginia on the dates their extensions took effect instead of 2021-01-01.
+
+
 ## [2.67.0] - 2026-10-26
 
 ### Removed
