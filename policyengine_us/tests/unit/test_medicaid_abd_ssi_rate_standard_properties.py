@@ -195,7 +195,8 @@ def test_no_medicaid_without_ssi_above_the_ssi_rate(year):
     classification = categories.ssi_recipient.classification
     states = [state for state in SSI_RATE_STATES for _ in OFFSETS]
     # States without a group for people who do not receive SSI give the
-    # pathway to nobody in this citizen grid.
+    # pathway to nobody in this citizen grid. All seven states here have the
+    # group; the mask matters once North Dakota joins the grid (#10373).
     covers = np.array(
         [
             bool(categories.senior_or_disabled.covers_non_ssi_recipients[state])
@@ -272,3 +273,29 @@ def test_unflagged_states_keep_their_share_of_the_poverty_guideline(year, couple
         ]
     )
     np.testing.assert_allclose(limit, expected, rtol=1e-6)
+
+
+# States whose rules cover aged, blind, or disabled people as categorically
+# needy only if they receive SSI (cited in covers_non_ssi_recipients.yaml).
+SSI_ONLY_STATES = sorted(
+    ["AL", "DE", "GA", "KS", "KY", "MD", "MS", "ND", "NM", "NV", "SD", "TN", "TX", "WY"]
+)
+
+
+@pytest.mark.parametrize("year", YEARS)
+def test_ssi_only_states_match_their_rules(year):
+    flags = SYSTEM.parameters(
+        f"{year}-01-01"
+    ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.covers_non_ssi_recipients
+    assert sorted(state for state in STATES if not flags[state]) == SSI_ONLY_STATES
+
+
+@pytest.mark.parametrize("couple", [False, True])
+@pytest.mark.parametrize("year", YEARS)
+def test_ssi_only_states_use_the_ssi_rate(year, couple):
+    simulation = unit_simulation(year, SSI_ONLY_STATES, couple)
+    limit = simulation.calculate(
+        "medicaid_optional_senior_or_disabled_income_limit", year
+    )
+    individual, couple_rate = SSA_MONTHLY_RATES[year]
+    np.testing.assert_array_equal(limit, 12 * (couple_rate if couple else individual))

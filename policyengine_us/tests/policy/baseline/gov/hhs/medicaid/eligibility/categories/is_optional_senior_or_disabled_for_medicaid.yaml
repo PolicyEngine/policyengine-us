@@ -61,7 +61,8 @@
 # Emergency Medicaid covers noncitizens who meet the state plan's requirements
 # other than the receipt of SSI (42 U.S.C. 1396b(v)(2)(B); 42 CFR 435.406(b)).
 # In Alabama that leaves SSI's income test. Wages of $800 a month ($9,600 a
-# year) are under the SSI rate ($11,928) before any disregard.
+# year) are under the SSI rate ($11,928) before any disregard. Until #10240
+# merges, the pathway counts no income for this person; Cases 7 and 8 test it.
 - name: Case 6, undocumented aged Alabaman keeps the pathway, unlike the citizen in Case 3, and qualifies for emergency Medicaid.
   period: 2026
   input:
@@ -150,11 +151,34 @@
     is_medicaid_eligible: [false, false]
     is_emergency_medicaid_eligible: [true, false]
 
+# A permanent resident ten years after entry is past the five-year bar, so
+# passes the Medicaid immigration test, but with no qualifying quarters fails
+# SSI's noncitizen test (8 U.S.C. 1612(a)(2)(B)) and gets no SSI. Alabama has
+# no group for aged people who do not receive SSI, and the emergency Medicaid
+# exception does not reach someone who passes the Medicaid immigration test.
+- name: Case 9, Alabaman permanent resident past the five-year bar without 40 quarters does not keep the pathway.
+  period: 2026
+  input:
+    age: 70
+    state_code: AL
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 10
+    ssi_qualifying_quarters_earnings: 0
+    social_security_retirement: 10_800
+  output:
+    is_medicaid_immigration_status_eligible: true
+    ssi: 0
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: NONE
+    is_medicaid_eligible: false
+    is_emergency_medicaid_eligible: false
+
 # Arkansas's group (ARSeniors) covers only aged people (MS 23110). 2026:
 # Social Security of $900 a month leaves countable income of $10,560 a year
 # after the $20 a month disregard, under 80% of the poverty guideline
 # ($12,768).
-- name: Case 9, disabled Arkansan under 65 is not covered, since ARSeniors covers only aged people.
+- name: Case 10, disabled Arkansan under 65 is not covered, since ARSeniors covers only aged people.
   period: 2026
   input:
     age: 50
@@ -166,7 +190,7 @@
     is_optional_senior_or_disabled_income_eligible: true
     is_optional_senior_or_disabled_for_medicaid: false
 
-- name: Case 10, aged Arkansan with the same income is covered.
+- name: Case 11, aged Arkansan with the same income is covered.
   period: 2026
   input:
     age: 70
@@ -182,7 +206,7 @@
 # income and resource tests. With no income and no resources, this person
 # meets both: $0 countable income is below the $994 SSI rate, and $0 is
 # within the $2,000 resource limit.
-- name: Case 11, disabled undocumented Arkansan under 65 keeps the group for emergency Medicaid.
+- name: Case 12, disabled undocumented Arkansan under 65 keeps the group for emergency Medicaid.
   period: 2026
   input:
     age: 50
@@ -193,7 +217,7 @@
     is_medicaid_immigration_status_eligible: false
     is_optional_senior_or_disabled_for_medicaid: true
 
-- name: Case 12, disabled permanent resident under 65 who passes the immigration test is not covered.
+- name: Case 13, disabled permanent resident under 65 who passes the immigration test is not covered.
   period: 2026
   input:
     age: 50
@@ -211,7 +235,7 @@
 # $5,000 in a bank account is under Arkansas's pathway asset limit but over
 # SSI's $2,000 resource limit, so this noncitizen fails the SSI group's
 # resource test and, being under 65, does not qualify for ARSeniors either.
-- name: Case 13, disabled undocumented Arkansan under 65 over the SSI resource limit is not covered.
+- name: Case 14, disabled undocumented Arkansan under 65 over the SSI resource limit is not covered.
   period: 2026
   input:
     age: 50
@@ -230,7 +254,7 @@
 # their income. Social Security disability of $1,014 a month leaves
 # (1,014 - 20) x 12 = $11,928 countable, equal to the 2026 SSI rate of
 # $994 x 12.
-- name: Case 14, disabled Arkansan in the five-year bar with countable income equal to the SSI rate keeps the group.
+- name: Case 15, disabled Arkansan in the five-year bar with countable income equal to the SSI rate keeps the group.
   period: 2026
   input:
     age: 50
@@ -246,7 +270,7 @@
 
 # $1,015 a month leaves (1,015 - 20) x 12 = $11,940 countable, over the SSI
 # rate, though still under Arkansas's 80% of the poverty guideline ($12,768).
-- name: Case 15, the same person with countable income $1 a month over the SSI rate is not covered.
+- name: Case 16, the same person with countable income $1 a month over the SSI rate is not covered.
   period: 2026
   input:
     age: 50
