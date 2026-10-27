@@ -7180,6 +7180,89 @@ candidates:
   state: unreviewed
   note: PE-US follows Vermont's deduction; evidence concerns federal fiscal 2016-2017 and 2024 only, with intervening
     years unasserted.
+- id: us-wa:liheap-minimum-benefit-cost-cap
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does every eligible Washington household receive the plan's $250 minimum regular heating benefit, or
+    does the award follow the worksheet's share of the annual heat cost?
+  sources:
+  - kind: plan
+    citation: FY2026 LIHEAP Detailed Model Plan, section 2.6
+    url: https://liheapch.acf.gov/docs/2026/state-plans/WA_Plan_2026.pdf#page=10
+  - kind: worksheet
+    citation: FY2026 Actual and Surrogate Heat Cost Benefit Calculation Worksheet
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/WA_BenefitMatrix_2026.pdf#page=1
+  readings:
+    statute: No statute is supplied; plan section 2.6 sets a "Minimum Benefit $250" and a "Maximum Benefit $1,250"
+      with no exception.
+    other: The worksheet multiplies the annual heat cost by a heat cost multiplier of at most 0.90 and prints no
+      minimum.
+  example: A household with no countable income and a $100 annual heating cost gets $90 from the worksheet and $250
+    under the plan minimum; PE-US pays $100.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/wa/commerce/liheap/wa_liheap.py
+    - policyengine_us/parameters/gov/states/wa/commerce/liheap/payment/minimum.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10345
+  state: ruled
+  note: PE-US applies the plan minimum and maximum, then caps the award at the reported annual heating cost, as chosen
+    on 2026-10-06; no Washington source states the cap. A household whose heat is included in rent, with a known fuel
+    and no reported cost, now receives the $250 minimum with no cost cap, because the surrogate heat cost schedule
+    is not published.
+- id: us-wa:liheap-plan-agency-income-items
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does Washington LIHEAP count the plan's gross income, or apply the deductions and income items of the
+    Commerce Weatherization manual and local agencies (wage, retirement and unemployment deductions, paid support,
+    workers' compensation and VA benefits)?
+  sources:
+  - kind: plan
+    citation: FY2026 LIHEAP Detailed Model Plan, sections 1.8-1.9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/WA_Plan_2026.pdf#page=5
+  - kind: manual
+    citation: Washington State Weatherization Manual (July 2026), Policy 1.1.2 item 5.a and Exhibit 1.3.1A
+    url: https://deptofcommerce.app.box.com/s/5a32797ex8tz2blo8nwtifecokpya37j#page=15
+  - kind: agency-practice
+    citation: Clark Public Utilities, LIHEAP income requirements
+    url: https://www.clarkpublicutilities.com/residential-customers/financial-assistance/all-financial-assistance-programs/liheap-income-requirements/
+  - kind: agency-practice
+    citation: Community Action Council of Lewis, Mason and Thurston Counties, LIHEAP FAQ
+    url: https://www.liheapcalendar.com/CACLMT/FAQ
+  - kind: agency-practice
+    citation: Byrd Barr Place PY2025-2026 LIHEAP application packet
+    url: https://drive.google.com/file/d/18fvR5CL8UKpTj4Vsm7KlkitKUJclAvkR/view#page=1
+  readings:
+    statute: No statute is supplied; plan section 1.8 counts "Gross Income", and section 1.9 lists countable types
+      with no deduction field, leaves VA benefits and insurance payments unchecked and has no workers' compensation
+      row.
+    other: Policy 1.1.2 item 5.a applies a 20 percent wage allowance and 10 percent retirement and unemployment
+      deductions; Exhibit 1.3.1A lists "Child support received/paid", an L&I statement and veteran's benefits as
+      income documentation; Clark Public Utilities deducts paid child support and alimony, CACLMT deducts paid child
+      support and counts time loss for work-related injuries, and Byrd Barr asks for VA award letters.
+  example: A single adult with $30,000 of wages who pays $1,200 of child support counts $24,000 after the wage
+    allowance, above the $23,475 limit; deducting the support gives $22,800 and a $460 award on a $1,000 gas bill.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/wa/commerce/liheap/wa_liheap_countable_income.py
+    - policyengine_us/parameters/gov/states/wa/commerce/liheap/income/unearned_sources.yaml
+    - policyengine_us/parameters/gov/states/wa/commerce/liheap/income/wage_deduction_rate.yaml
+    - policyengine_us/parameters/gov/states/wa/commerce/liheap/income/retirement_deduction_rate.yaml
+    - policyengine_us/parameters/gov/states/wa/commerce/liheap/income/unemployment_deduction_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10345
+  state: unreviewed
+  note: PE-US applies the manual's 20 and 10 percent deductions, deducts paid child support and alimony and counts
+    workers' compensation with no deduction, following the manual exhibit and agencies; it follows the plan in
+    excluding VA benefits. The Commerce LIHEAP operating manual, which would settle these items, is not public.
 - id: us-wa:ltss-spousal-maintenance-rounding
   program: medicaid-ltss
   years:
