@@ -1,0 +1,27 @@
+description: Arizona uses these earned income sources to approximate countable household earnings under the Low Income Home Energy Assistance Program.
+# Section VI.A.6.e.ii.A counts "Earned income from employment, including
+# self-employment (includes wages, salaries, tips, etc.)"; the plan's Section
+# 1.9 also checks contract income, commissions, WIA employment income and work
+# study, which existing inputs report as wages. Section VII.A.1.c.ii.B counts
+# "Income from self-employment or sole-proprietorship" and Section
+# VII.A.1.c.iii.B.1 accepts a "Schedule C (Profit and Loss Statement)"; neither
+# says whether a loss offsets other income, so the existing net self-employment
+# inputs are used without a further expense deduction and each is floored at
+# zero in the formula.
+values:
+  2025-08-25:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - partnership_s_corp_income
+    - farm_operations_income
+
+metadata:
+  unit: list
+  period: year
+  label: Arizona LIHEAP countable earned income sources
+  reference:
+    - title: "Arizona DES LIHEAP Policy, revision 16A (effective July 1, 2026), Section VI.A.6.e.ii.A, Section VII.A.1.c.ii.A-B and Section VII.A.1.c.iii.B.1 #page 8,13-14"
+      href: https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=8
+    - title: "Arizona LIHEAP FY2026 State Plan, Section 1.9 (wages, self-employment income, contract income, commissions, WIA employment income and work study counted) #page 6-7"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=6

@@ -1,0 +1,198 @@
+# Virginia EAP benefit points (Complete EAP Manual Chapter D, Appendix B):
+# household size (1-2: 9, 3-5: 12, 6 or more: 15) + income points + climate
+# zone (Central Mountain 20, Southwestern Mountain 18, Northern 16, Western
+# Piedmont 13, Eastern Piedmont 12, Tidewater 8) + vulnerability points +
+# living arrangement 20 + primary fuel 10 (placeholder) + energy burden 13
+# (placeholder, 50-69 percent band). The last three add 43 for every
+# household. FFY2026 limits: size 1 23,472; 2 31,716; 3 39,972; 5 56,472;
+# 6 64,716.
+
+- name: Case 1, retiree in Fairfax County scores 103 points.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 65
+        social_security_retirement: 11_736
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [head]
+        state_code: VA
+        county: FAIRFAX_COUNTY_VA
+  output:
+    # Size 9 + income 15 (47 percent) + Northern 16 + elderly 20 + 43 = 103.
+    va_eap_points: 103
+
+- name: Case 2, two-person household in Fairfax County scores 9 size points.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 24_000
+      spouse:
+        age: 33
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [head, spouse]
+        state_code: VA
+        county: FAIRFAX_COUNTY_VA
+  output:
+    # 24,000 / 31,716 = 75.67 percent -> 8. 9 + 8 + 16 + 0 + 43 = 76.
+    va_eap_points: 76
+
+- name: Case 3, the same couple with a school-age child scores 12 size points.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 24_000
+      spouse:
+        age: 33
+      child1:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+        tanf: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: VA
+        county: FAIRFAX_COUNTY_VA
+  output:
+    # 24,000 / 39,972 = 60.04 percent -> 10. 12 + 10 + 16 + 0 + 43 = 81.
+    va_eap_points: 81
+
+- name: Case 4, five-person household in Chesterfield County scores 12 size points.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 45_000
+      spouse:
+        age: 38
+      child1:
+        age: 14
+      child2:
+        age: 11
+      child3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2, child3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_000
+        tanf: 0
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3]
+        state_code: VA
+        county: CHESTERFIELD_COUNTY_VA
+  output:
+    # 45,000 / 56,472 = 79.69 percent -> 8. 12 + 8 + 12 + 0 + 43 = 75.
+    va_eap_points: 75
+
+- name: Case 5, six-person household in Chesterfield County scores 15 size points.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 45_000
+      spouse:
+        age: 38
+      child1:
+        age: 14
+      child2:
+        age: 11
+      child3:
+        age: 8
+      child4:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2, child3, child4]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_000
+        tanf: 0
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3, child4]
+        state_code: VA
+        county: CHESTERFIELD_COUNTY_VA
+  output:
+    # 45,000 / 64,716 = 69.53 percent -> 10. 15 + 10 + 12 + 0 + 43 = 80.
+    va_eap_points: 80
+
+- name: Case 6, a working SSI recipient in Wise County scores no income points.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 24_000
+        ssi: 438
+        is_ssi_disabled: true
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: KEROSENE
+        fuel_oil_expense: 1_100
+    households:
+      household:
+        members: [head]
+        state_code: VA
+        county: WISE_COUNTY_VA
+  output:
+    # 23,838 / 23,472 = 101.56 percent -> 0. 9 + 0 + 18 + 15 + 43 = 85.
+    va_eap_points: 85
+
+- name: Case 7, three-generation household in Augusta County reaches 123 points.
+  period: 2026
+  input:
+    people:
+      grandparent:
+        age: 66
+        social_security_retirement: 12_000
+        ssi: 0
+      head:
+        age: 40
+      spouse:
+        age: 38
+      child1:
+        age: 12
+      child2:
+        age: 9
+      child3:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [grandparent, head, spouse, child1, child2, child3]
+        heating_type: WOOD
+        wood_expense: 800
+        tanf: 0
+    households:
+      household:
+        members: [grandparent, head, spouse, child1, child2, child3]
+        state_code: VA
+        county: AUGUSTA_COUNTY_VA
+  output:
+    # 12,000 - 600 = 11,400; 11,400 / 64,716 = 17.62 percent -> 25.
+    # 15 + 25 + Central Mountain 20 + elderly 20 + 43 = 123.
+    va_eap_points: 123
