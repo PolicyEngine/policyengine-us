@@ -17,6 +17,7 @@ class msp_countable_income(Variable):
         "https://www.medicare.gov/basics/costs/help/medicare-savings-programs",
         "https://www.law.cornell.edu/uscode/text/42/1396a#r_2",
         "https://www.dhs.state.il.us/page.aspx?item=16387",
+        "https://www.ilga.gov/ftp/JCAR/AdminCode/089/089001200H03350R.html",
     )
     documentation = """
     MSP countable income uses SSI methodology per 42 U.S.C. 1396d(p)(1)(B),
@@ -36,7 +37,9 @@ class msp_countable_income(Variable):
     general income exclusion; Illinois and Mississippi use their larger
     exclusion in its place. Mississippi takes it once from a couple's
     combined income; Illinois gives each applying spouse with income their
-    own exclusion, up to that spouse's income.
+    own exclusion, up to that spouse's income. Illinois gives its $25 only on
+    income other than SSI and contributions (alimony, child support, outside
+    cash help); the $20 SSI exclusion stays the floor.
     """
 
     def formula(person, period, parameters):
@@ -56,22 +59,40 @@ class msp_countable_income(Variable):
         deeming_applies = person("is_ssi_spousal_deeming_applies", year)
         state = person.household("state_code_str", period)
         p = parameters(period).gov.hhs.medicare.savings_programs.eligibility.income
-        ssi_exclusions = parameters(period).gov.ssa.ssi.income.exclusions
-        general_exclusion = max_(
-            ssi_exclusions.general, p.state_general_exclusion[state]
-        )
-        # Illinois gives each applying spouse one exemption on their own
-        # non-SSI income (PM 15-04-03-a); SSI and Mississippi allow one per
-        # couple.
+        ssi_general = parameters(period).gov.ssa.ssi.income.exclusions.general
+        state_exclusion = p.state_general_exclusion[state]
+        general_exclusion = max_(ssi_general, state_exclusion)
+        # Illinois exempts the first $25 of income other than SSI and
+        # contributions such as alimony and child support, and gives each
+        # applying spouse their own exemption (PM 15-04-03-a; 89 Ill. Adm.
+        # Code 120.335(a)(1)); SSI and Mississippi allow one per couple.
         # Floor each kind of income: a self-employment loss earns no exemption
         # and does not offset unearned income.
         own_monthly_income = max_(person("ssi_earned_income", period), 0) + max_(
             person("ssi_unearned_income", period), 0
         )
+        excludes_contributions = p.state_general_exclusion_excludes_contributions[
+            state
+        ].astype(bool)
+        contributions = add(person, period, p.contribution_sources)
+        qualifying_income = where(
+            excludes_contributions,
+            max_(own_monthly_income - contributions, 0),
+            own_monthly_income,
+        )
+        # The SSI general exclusion stays the floor (42 U.S.C. 1396a(r)(2)).
+        own_general_exclusion = where(
+            excludes_contributions,
+            max_(ssi_general, min_(state_exclusion, qualifying_income)),
+            general_exclusion,
+        )
         per_spouse = p.state_general_exclusion_per_spouse[state].astype(bool)
         couple_general_exclusion = where(
             per_spouse,
-            person.marital_unit.sum(min_(general_exclusion, own_monthly_income)),
+            max_(
+                ssi_general,
+                person.marital_unit.sum(min_(state_exclusion, qualifying_income)),
+            ),
             general_exclusion,
         )
 
@@ -86,7 +107,7 @@ class msp_countable_income(Variable):
             unearned_income,
             parameters,
             year,
-            general_exclusion=general_exclusion,
+            general_exclusion=own_general_exclusion,
         )
 
         couple_countable = _apply_ssi_exclusions(

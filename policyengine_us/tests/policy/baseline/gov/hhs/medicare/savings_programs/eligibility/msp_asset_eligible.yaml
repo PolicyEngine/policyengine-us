@@ -318,3 +318,34 @@
     msp_asset_eligible:
       1999-06: false
       1999-07: true
+
+- name: Case 21, California's couple MSP asset limit starts in July 2022.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 70
+        bank_account_assets: 75_000
+      person2:
+        age: 68
+        bank_account_assets: 75_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Federal 2022 couple limit 12,600 through June; ACWDL 21-31 limit 195,000
+    # from July 1, 2022.
+    msp_asset_eligible:
+      2022-06: [false, false]
+      2022-07: [true, true]
