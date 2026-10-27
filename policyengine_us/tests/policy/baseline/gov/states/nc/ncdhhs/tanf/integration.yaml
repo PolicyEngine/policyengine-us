@@ -476,3 +476,29 @@
     nc_tanf_countable_earned_income: 0
     # Need standard for 2: 472 a month; 0.5 * (472 - 0) = 236 a month
     nc_tanf: 236 * 12
+
+- name: A parent who receives SSI and $300 monthly child support for a child aged 5 receives $31 per month.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 35
+        receives_ssi: true
+        child_support_received: 300 * 12
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+  output:
+    # The SSI parent is not in the household size. WF-114 section XII: child
+    # support is the dependent child's income, so the 300 a month counts.
+    nc_tanf_household_size: 1
+    nc_tanf_countable_gross_unearned_income: 3_600
+    # Need standard for 1: 362 a month; 0.5 * (362 - 300) = 31 a month
+    nc_tanf: 31 * 12
