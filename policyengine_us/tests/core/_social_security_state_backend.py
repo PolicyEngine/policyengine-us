@@ -608,6 +608,7 @@ class Backend:
         )
         sim_methods = (
             "set_input",
+            "delete_arrays",
             "_get_store_history",
             "_get_requested_variables",
             "_drop_values_that_may_depend_on",

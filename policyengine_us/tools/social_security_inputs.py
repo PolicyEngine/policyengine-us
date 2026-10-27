@@ -566,7 +566,7 @@ class _FormulaFastCache(dict):
 
 
 def _derived_cached_returns(simulation):
-    """Remember numbered formula returns without retaining an old dataset.
+    """Remember formula returns without retaining an old dataset.
 
     Core's dataset rebuild detaches holders but leaves their fast-cache
     returns. Weak references and sequence numbers let the bounded refresh
@@ -622,8 +622,14 @@ def _derived_cached_returns(simulation):
             # produced this return. Skipped-storage formula returns need their
             # own number, captured by _cache_result/_record_store below.
             number = getattr(fast_cache, "_store_numbers", {}).get(key)
-            if number is not None:
-                entries[key] = (number, ref(array))
+            # Intended fail-safe (refresh-scope addendum): Core's two memo
+            # insertion paths return supplied inputs only when physically
+            # stored. After the source-view exclusions above, a fast-only
+            # return is therefore calculated, including defaults/carry-over.
+            # An unknown date cannot establish that it predates the cutoff.
+            # Keep None here so loading snapshots also retain this witness;
+            # _purge_derived_arrays still does nothing without a cutoff.
+            entries[key] = (number, ref(array))
             continue
         if holder._memory_storage.has(period, branch):
             storage = holder._memory_storage
@@ -690,10 +696,10 @@ def _purge_derived_arrays(simulation, public, period):
         if owner is not simulation:
             continue
         for key, (number, reference) in tuple(entries.items()):
-            if number >= since:
+            if number is None or number >= since:
                 array = reference()
                 if array is not None and simulation._fast_cache.get(key) is array:
-                    # A numbered formula return can outlive its holder, or
+                    # A formula return can outlive its holder, or
                     # Core can skip holder storage while memoizing the return.
                     simulation._fast_cache.pop(key)
                     dropped += 1
@@ -746,6 +752,7 @@ def install_social_security_input_compatibility():
         recorded_array=CoreSimulation._get_recorded_input_array,
         calculate=CoreSimulation._calculate,
         cache_result=CoreSimulation._cache_result,
+        delete_arrays=CoreSimulation.delete_arrays,
         record_store=Holder._record_store,
         stored_input=helpers.get_stored_input,
     )
@@ -808,6 +815,36 @@ def install_social_security_input_compatibility():
         return result
 
     CoreSimulation._cache_result = cache_result
+
+    @wraps(_PHYSICAL["delete_arrays"])
+    def delete_arrays(simulation, variable, period=None):
+        if period is not None or not _enabled(simulation):
+            return _PHYSICAL["delete_arrays"](simulation, variable, period)
+        # Core's bulk delete replaces the memo dictionary while retaining
+        # other variables' arrays. Preserve each surviving return's actual
+        # date, rather than redating it from StoreHistory's first store.
+        # The snapshot adds only numbers and weak array references.
+        entries = {
+            key: (number, ref(simulation._fast_cache[key]))
+            for key, number in getattr(
+                simulation._fast_cache, "_store_numbers", {}
+            ).items()
+            if key in simulation._fast_cache
+        }
+        try:
+            return _PHYSICAL["delete_arrays"](simulation, variable, period)
+        finally:
+            cache = simulation._fast_cache
+            numbers = {
+                key: number
+                for key, (number, reference) in entries.items()
+                if reference() is not None and cache.get(key) is reference()
+            }
+            cache = _FormulaFastCache(cache, numbers)
+            cache._owner = ref(simulation)
+            simulation._fast_cache = cache
+
+    CoreSimulation.delete_arrays = delete_arrays
 
     @wraps(_PHYSICAL["stored_input"])
     def get_stored_input(holder, period, branch_name):

@@ -531,6 +531,201 @@ def test_source_write_refreshes_fast_only_formula_returns(mode, route, source, i
 
 
 @pytest.mark.parametrize("mode", ("blacklist", "variables_to_drop"))
+@pytest.mark.parametrize(
+    "route", ("dataset", "reported_write", "branch_reported_write")
+)
+def test_bulk_delete_keeps_fast_only_dates_for_later_source_refresh(mode, route):
+    simulation = fresh_without_holder_cache(
+        mode, [PUBLIC, PUBLIC + "_base"], {PUBLIC: {"2024": [12_000.0]}}
+    )
+    if route == "branch_reported_write":
+        simulation = simulation.get_branch("child")
+    assert scalar(simulation, PUBLIC, "2024") == 12_000
+    key = (PUBLIC, period("2024"))
+    before = simulation._fast_cache[key]
+    number = simulation._fast_cache._store_numbers[key]
+    assert number >= earliest_source_dependency(simulation)
+    assert stored(simulation, *key) is None
+    assert stored(simulation, PUBLIC + "_base", "2024") is None
+    simulation.delete_arrays("independent_formula")
+    assert simulation._fast_cache[key] is before
+    epoch = simulation._input_epoch
+    if route == "dataset":
+        rebuild_with_source(simulation, 24_000.0)
+    elif route == "reported_write":
+        simulation.set_input(PUBLIC + "_reported", "2024", [24_000.0])
+    else:
+        simulation.get_holder(PUBLIC + "_reported")._set(
+            period("2024"),
+            np.array([24_000.0]),
+            simulation.branch_name,
+            is_input=True,
+        )
+    memo_survived_write = key in simulation._fast_cache
+    reported_after = scalar(simulation, PUBLIC + "_reported", "2024")
+    public_after = scalar(simulation, PUBLIC, "2024")
+    assert (reported_after, public_after) == (24_000, 24_000)
+    assert not memo_survived_write
+    assert simulation._input_epoch > epoch
+
+
+@pytest.mark.parametrize("mode", ("blacklist", "variables_to_drop"))
+def test_bulk_delete_preserves_fast_only_return_before_since(mode):
+    simulation = fresh_without_holder_cache(mode, ["independent_formula"])
+    assert scalar(simulation, "independent_formula", "2023") == 77
+    key = ("independent_formula", period("2023"))
+    before = simulation._fast_cache[key]
+    number = simulation._fast_cache._store_numbers[key]
+    simulation.set_input(PUBLIC, "2024", [12_000.0])
+    assert scalar(simulation, PUBLIC + "_reported", "2024") == 12_000
+    assert number < earliest_source_dependency(simulation)
+    simulation.delete_arrays(PUBLIC + "_base")
+    assert simulation._fast_cache[key] is before
+    # The original return's own date must survive Core's dictionary replacement.
+    assert getattr(simulation._fast_cache, "_store_numbers", {}).get(key) == number
+    epoch = simulation._input_epoch
+    simulation.set_input(PUBLIC + "_reported", "2024", [24_000.0])
+    assert simulation._fast_cache[key] is before
+    assert simulation._input_epoch == epoch
+    assert scalar(simulation, "independent_formula", "2023") == 77
+
+
+@pytest.mark.parametrize("mode", ("blacklist", "variables_to_drop"))
+def test_bulk_delete_does_not_transfer_date_to_a_different_array(mode, monkeypatch):
+    simulation = fresh_without_holder_cache(mode, ["independent_formula"])
+    assert scalar(simulation, "independent_formula", "2023") == 77
+    key = ("independent_formula", period("2023"))
+    before = simulation._fast_cache[key]
+    replacement = before.copy()
+    assert key in simulation._fast_cache._store_numbers
+    original_delete = hooks._PHYSICAL["delete_arrays"]
+
+    def replace_surviving_return(owner, name, requested=None):
+        result = original_delete(owner, name, requested)
+        # A backend can replace a return while rebuilding its dictionary.
+        # Equal values do not make this array the original numbered return.
+        owner._fast_cache[key] = replacement
+        return result
+
+    monkeypatch.setitem(hooks._PHYSICAL, "delete_arrays", replace_surviving_return)
+    simulation.delete_arrays(PUBLIC + "_base")
+    assert simulation._fast_cache[key] is replacement
+    assert simulation._fast_cache[key] is not before
+    assert key not in simulation._fast_cache._store_numbers
+
+
+@pytest.mark.parametrize("mode", ("blacklist", "variables_to_drop"))
+def test_bulk_delete_component_removes_its_date_and_keeps_base_refreshable(mode):
+    simulation = fresh_without_holder_cache(
+        mode, [PUBLIC, PUBLIC + "_base"], {PUBLIC: {"2024": [12_000.0]}}
+    )
+    assert scalar(simulation, PUBLIC, "2024") == 12_000
+    key = (PUBLIC, period("2024"))
+    base_key = (PUBLIC + "_base", period("2024"))
+    base_before = simulation._fast_cache[base_key]
+    simulation.delete_arrays(PUBLIC)
+    assert key not in simulation._fast_cache
+    assert key not in getattr(simulation._fast_cache, "_store_numbers", {})
+    assert simulation._fast_cache[base_key] is base_before
+    epoch = simulation._input_epoch
+    simulation.set_input(PUBLIC + "_reported", "2024", [24_000.0])
+    assert scalar(simulation, PUBLIC, "2024") == 24_000
+    assert simulation._input_epoch > epoch
+
+
+@pytest.mark.parametrize("mode", ("blacklist", "variables_to_drop"))
+@pytest.mark.parametrize("name", (PUBLIC, "independent_formula"))
+def test_period_delete_keeps_surviving_fast_only_dates(mode, name):
+    simulation = fresh_without_holder_cache(
+        mode,
+        [PUBLIC, PUBLIC + "_base", "independent_formula"],
+        {PUBLIC: {"2024": [12_000.0]}},
+    )
+    assert scalar(simulation, PUBLIC, "2024") == 12_000
+    assert scalar(simulation, "independent_formula", "2024") == 77
+    key = (name, period("2024"))
+    survivor = (
+        PUBLIC + "_base" if name == PUBLIC else PUBLIC,
+        period("2024"),
+    )
+    before = simulation._fast_cache[survivor]
+    number = simulation._fast_cache._store_numbers[survivor]
+    simulation.delete_arrays(name, "2024")
+    assert key not in simulation._fast_cache
+    assert key not in simulation._fast_cache._store_numbers
+    assert simulation._fast_cache[survivor] is before
+    assert simulation._fast_cache._store_numbers[survivor] == number
+    epoch = simulation._input_epoch
+    simulation.set_input(PUBLIC + "_reported", "2024", [24_000.0])
+    assert scalar(simulation, PUBLIC, "2024") == 24_000
+    assert simulation._input_epoch > epoch
+
+
+@pytest.mark.parametrize("mode", ("blacklist", "variables_to_drop"))
+def test_undated_fast_only_return_is_intentionally_dropped_without_touching_callers(
+    mode,
+):
+    names = [PUBLIC, PUBLIC + "_base", "independent_formula"]
+    simulation = fresh_without_holder_cache(mode, names, {PUBLIC: {"2024": [12_000.0]}})
+    assert scalar(simulation, PUBLIC, "2024") == 12_000
+    key = (PUBLIC, period("2024"))
+    holder = simulation.get_holder("independent_formula")
+    simulation.set_input("independent_formula", "2025", [99.0])
+    holder._set(
+        period("2026"),
+        np.array([101.0]),
+        simulation.branch_name,
+        derived=False,
+        is_input=False,
+    )
+    supplied_input = stored(simulation, "independent_formula", "2025")
+    raw_seed = stored(simulation, "independent_formula", "2026")
+    assert supplied_input is not None and raw_seed is not None
+    assert holder._is_input(period("2025"), simulation.branch_name)
+    assert not holder._is_input(period("2026"), simulation.branch_name)
+    assert not holder.is_derived(period("2025"), simulation.branch_name)
+    assert not holder.is_derived(period("2026"), simulation.branch_name)
+    assert earliest_source_dependency(simulation) is not None
+    simulation._fast_cache = dict(simulation._fast_cache)
+    epoch = simulation._input_epoch
+    simulation.get_holder(PUBLIC + "_reported")._set(
+        period("2024"),
+        np.array([24_000.0]),
+        simulation.branch_name,
+        is_input=True,
+    )
+    # Intended fail-safe: with a cutoff, an undated formula return is treated
+    # as post-cutoff. Physical inputs and raw seeds remain outside that rule.
+    assert key not in simulation._fast_cache
+    assert simulation._input_epoch > epoch
+    assert scalar(simulation, PUBLIC, "2024") == 24_000
+    assert stored(simulation, "independent_formula", "2025") is supplied_input
+    assert stored(simulation, "independent_formula", "2026") is raw_seed
+    assert holder._is_input(period("2025"), simulation.branch_name)
+    assert not holder._is_input(period("2026"), simulation.branch_name)
+    assert scalar(simulation, "independent_formula", "2025") == 99
+    assert scalar(simulation, "independent_formula", "2026") == 101
+
+
+@pytest.mark.parametrize("mode", ("blacklist", "variables_to_drop"))
+def test_bulk_delete_unread_source_load_has_no_cutoff_and_keeps_fast_return(mode):
+    names = [PUBLIC, PUBLIC + "_base", PUBLIC + "_reported", "independent_formula"]
+    simulation = fresh_without_holder_cache(mode, names)
+    assert scalar(simulation, "independent_formula", "2023") == 77
+    key = ("independent_formula", period("2023"))
+    before = simulation._fast_cache[key]
+    simulation.delete_arrays(PUBLIC + "_base")
+    assert earliest_source_dependency(simulation) is None
+    assert simulation._fast_cache[key] is before
+    epoch = simulation._input_epoch
+    rebuild_with_source(simulation, 24_000.0)
+    # No source has been read, so even an undated fast-only return is retained.
+    assert simulation._fast_cache[key] is before
+    assert simulation._input_epoch == epoch
+    assert scalar(simulation, PUBLIC, "2024") == 24_000
+
+
+@pytest.mark.parametrize("mode", ("blacklist", "variables_to_drop"))
 def test_fast_only_formula_before_since_survives_without_a_drop_witness(mode):
     simulation = fresh_without_holder_cache(mode, ["independent_formula"])
     assert scalar(simulation, "independent_formula", "2023") == 77
