@@ -189,10 +189,19 @@ def test_no_medicaid_without_ssi_above_the_ssi_rate(year):
     standard = 12 * individual
     # Section 209(b) states test SSI recipients against their own criteria,
     # so the SSI-receipt half of this property is stated for the others.
-    classification = SYSTEM.parameters(
+    categories = SYSTEM.parameters(
         f"{year}-01-01"
-    ).gov.hhs.medicaid.eligibility.categories.ssi_recipient.classification
+    ).gov.hhs.medicaid.eligibility.categories
+    classification = categories.ssi_recipient.classification
     states = [state for state in SSI_RATE_STATES for _ in OFFSETS]
+    # States without a group for people who do not receive SSI give the
+    # pathway to nobody in this citizen grid.
+    covers = np.array(
+        [
+            bool(categories.senior_or_disabled.covers_non_ssi_recipients[state])
+            for state in states
+        ]
+    )
     countable = np.array(
         [standard + offset for _ in SSI_RATE_STATES for offset in OFFSETS]
     )
@@ -219,12 +228,14 @@ def test_no_medicaid_without_ssi_above_the_ssi_rate(year):
     # Under the rate the pathway's own tests pass, and at it they pass
     # except where the state requires income below the standard.
     covered = (countable < standard) | (at_rate & ~below_only)
-    assert optional[covered].all()
-    assert not optional[~covered].any()
+    assert optional[covered & covers].all()
+    assert not optional[~covered | ~covers].any()
     not_209b = np.array([not classification.section_209b[state] for state in states])
     receives = (countable < standard) & not_209b
     assert (category[receives] == "SSI_RECIPIENT").all()
-    assert (category[at_rate & ~below_only & not_209b] == "SENIOR_OR_DISABLED").all()
+    assert (
+        category[at_rate & ~below_only & not_209b & covers] == "SENIOR_OR_DISABLED"
+    ).all()
     # In Oregon a person exactly at the rate gets neither SSI nor the pathway.
     assert not (category[at_rate & below_only] == "SENIOR_OR_DISABLED").any()
 
@@ -238,6 +249,12 @@ def test_unflagged_states_keep_their_share_of_the_poverty_guideline(year, couple
     states = [
         state for state in STATES if state not in SSI_RATE_STATES and state != "MO"
     ]
+    # States without a group for people who do not receive SSI use the SSI
+    # rate for the noncitizens their pathway still reaches.
+    covers = SYSTEM.parameters(
+        f"{year}-01-01"
+    ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.covers_non_ssi_recipients
+    states = [state for state in states if covers[state]]
     simulation = unit_simulation(year, states, couple)
     limit = simulation.calculate(
         "medicaid_optional_senior_or_disabled_income_limit", year
