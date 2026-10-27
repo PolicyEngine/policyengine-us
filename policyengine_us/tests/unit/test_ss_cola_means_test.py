@@ -290,6 +290,34 @@ def test_surviving_spouse_mapping_is_a_parameter():
     assert simulation.calculate("social_security_retirement_cola_withheld", 2027)[0]
 
 
+def test_static_cohort_proxy_is_reconstructed_within_each_score_year(means_test_system):
+    record = _record(age={2026: 70, 2035: 70})
+    for component in COMPONENTS:
+        record.pop(f"social_security_{component}_worker_eligibility_year")
+        record.pop(f"social_security_{component}_first_cola_year")
+    simulation = _simulation(
+        _situation(
+            {"worker": record},
+            {"worker": {year: 1_000_000 for year in range(2025, 2035)}},
+        ),
+        system=means_test_system,
+    )
+    # Fixed-age static cross-sections infer E2018 in2026 and E2027 in2035.
+    # Within the2035 score, all exposed events use E2027 rather than re-aging
+    # the row separately at each historical payment event.
+    assert (
+        simulation.calculate("social_security_retirement_joint_cola_factor", 2026)[0]
+        == 1
+    )
+    events = cola_events(simulation.tax_benefit_system.parameters, 2035)
+    expected = prod(
+        1 / (1 + event["rate"]) for event in events if event["payment_year"] >= 2028
+    )
+    assert simulation.calculate("social_security_retirement_joint_cola_factor", 2035)[
+        0
+    ] == pytest.approx(expected)
+
+
 def test_only_prior_tax_year_income_and_filing_status_make_the_decision(
     means_test_system,
 ):
