@@ -305,7 +305,21 @@
     # Combined 18,001 exceeds Minnesota's 18,000 couple limit.
     msp_asset_eligible: [false, false]
 
-- name: Case 20, California's MSP individual asset limit falls to 21,000 in July 2027.
+- name: Case 20, Mississippi ended the MSP asset test in July 1999.
+  period: 1999
+  input:
+    age: 67
+    bank_account_assets: 10_000
+    spm_unit_is_married: false
+    state_code: MS
+  output:
+    # Eligibility Manual page 7220: "Effective 07-01-99, there will be no
+    # resource test." 10,000 is over the federal limit in June.
+    msp_asset_eligible:
+      1999-06: false
+      1999-07: true
+
+- name: Case 21, California's MSP individual asset limit falls to 21,000 in July 2027.
   period: 2027
   input:
     age: 67
@@ -319,7 +333,7 @@
       2027-06: true
       2027-07: false
 
-- name: Case 21, California's MSP couple asset limit falls to 31,000 in July 2027.
+- name: Case 22, California's MSP couple asset limit falls to 31,000 in July 2027.
   period: 2027
   input:
     people:
@@ -350,7 +364,7 @@
       2027-06: [true, true]
       2027-07: [false, false]
 
-- name: Case 22, California's MSP individual asset limit admits assets at 21,000 in July 2027.
+- name: Case 23, California's MSP individual asset limit admits assets at 21,000 in July 2027.
   period: 2027
   input:
     age: 67
@@ -363,7 +377,7 @@
     msp_asset_eligible:
       2027-07: true
 
-- name: Case 23, California's MSP couple asset limit admits combined assets at 31,000 in July 2027.
+- name: Case 24, California's MSP couple asset limit admits combined assets at 31,000 in July 2027.
   period: 2027
   input:
     people:

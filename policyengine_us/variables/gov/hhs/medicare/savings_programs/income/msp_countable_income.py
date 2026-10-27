@@ -63,8 +63,10 @@ class msp_countable_income(Variable):
         # Illinois gives each applying spouse one exemption on their own
         # non-SSI income (PM 15-04-03-a); SSI and Mississippi allow one per
         # couple.
-        own_monthly_income = add(
-            person, period, ["ssi_earned_income", "ssi_unearned_income"]
+        # Floor each kind of income: a self-employment loss earns no exemption
+        # and does not offset unearned income.
+        own_monthly_income = max_(person("ssi_earned_income", period), 0) + max_(
+            person("ssi_unearned_income", period), 0
         )
         per_spouse = p.state_general_exclusion_per_spouse[state].astype(bool)
         couple_general_exclusion = where(

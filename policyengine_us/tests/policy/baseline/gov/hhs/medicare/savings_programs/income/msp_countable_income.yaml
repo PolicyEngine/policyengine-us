@@ -224,3 +224,34 @@
     # 23 Miss. Admin. Code Part 104, Rule 4.2(C)(2): one general exclusion per couple.
     # (12,000 + 9,600) / 12 - 50 = 1,750.
     msp_countable_income: [1_750, 1_750]
+
+- name: Case 11, Illinois allows no exemption for a spouse whose only income is a self-employment loss.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        social_security_retirement: 18_000
+      person2:
+        age: 70
+        self_employment_income_before_lsr: -6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # PM 15-04-03-a: only person1 has income other than SSI, so one $25.
+    # The loss neither earns an exemption nor offsets unearned income:
+    # 18,000 / 12 - 25 = 1,475.
+    msp_countable_income: [1_475, 1_475]
