@@ -53,8 +53,8 @@
     # Income eligibility: $316.40 <= $1,017? YES (and gross $1,000 <= $1,017)
     va_tanf_income_eligibility: true
     #
-    # Benefit: $508 - $316.40 = $191.60
-    va_tanf: 191.6
+    # Benefit: $508 - $316.40 = $191.60, rounded down to $191
+    va_tanf: 191
 
 - name: Group II locality - Single parent family
   period: 2021-01
@@ -104,8 +104,8 @@
     # Income eligibility: $91.40 <= $663? YES
     va_tanf_income_eligibility: true
     #
-    # Benefit: $332 - $91.40 = $240.60
-    va_tanf: 240.6
+    # Benefit: $332 - $91.40 = $240.60, rounded down to $240
+    va_tanf: 240
 
 - name: TANF-UP scenario - Two able-bodied adults in Group III locality
   period: 2021-01
@@ -274,8 +274,8 @@
     #   Step 2: countable $133.07 <= grant $332? YES
     va_tanf_income_eligibility: true
     #
-    # Benefit: $332 - $133.07 = $198.93
-    va_tanf: 198.93
+    # Benefit: $332 - $133.07 = $198.93, rounded down to $198
+    va_tanf: 198
 
 - name: Family with earned and unearned income (child support)
   period: 2021-01
@@ -476,8 +476,8 @@
     # Income eligibility: $116.40 <= $836? YES
     va_tanf_income_eligibility: true
     #
-    # Benefit: $417 - $116.40 = $300.60
-    va_tanf: 300.6
+    # Benefit: $417 - $116.40 = $300.60, rounded down to $300
+    va_tanf: 300
 
 - name: Family with only unearned income (child support)
   period: 2021-01
@@ -682,8 +682,8 @@
     #   Step 2: countable $106.40 <= grant $316? YES
     va_tanf_income_eligibility: true
     #
-    # Benefit: $316 - $106.40 = $209.60
-    va_tanf: 209.6
+    # Benefit: $316 - $106.40 = $209.60, rounded down to $209
+    va_tanf: 209
 
 - name: Step 1 passes but Step 2 fails (high unearned income)
   period: 2021-01
