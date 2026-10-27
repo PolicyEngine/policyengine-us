@@ -2167,7 +2167,7 @@ candidates:
 - id: us-il:hbwd-premium-earned-1251-unearned-501-cell
   program: medicaid
   years:
-    from: 2022
+    from: 2009
     type: calendar
   question: Is the Illinois Health Benefits for Workers with Disabilities premium for countable earned income of
     $1,251-1,500 and gross unearned income of $501-750 $79, as 89 Ill. Adm. Code 120.510(n)(3) prints, or $69, as
@@ -2177,12 +2177,17 @@ candidates:
     citation: 89 Ill. Adm. Code 120.510(n)(3)
     url: https://ilga.gov/commission/jcar/admincode/089/089001200I05100R.html
   - kind: form
-    citation: HFS HBWD Premium Chart (one page)
+    citation: HFS HBWD Premium Chart (one page, June 2009)
     url: https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalprograms/hbwd/documents/hfsweb004.pdf
+  - kind: guidance
+    citation: HFS 3792 (R-03-13), Health Benefits for Workers with Disabilities brochure, premium table
+    url: https://hfs.illinois.gov/medicalprograms/hbwd/hfs3792hbwd.html
   readings:
-    statute: No statute is supplied; the regulation's table (amended effective March 25, 2022) prints 79 for earned
-      income 1251-1500 and unearned income 501-750.
-    other: The HFS premium chart prints 69 for the same cell, which PE-US gives (31 + 38).
+    statute: No statute is supplied; the regulation's table prints 79 for earned income 1251-1500 and unearned
+      income 501-750, in the text effective February 1, 2009 (33 Ill. Reg. 1681) and unchanged by the amendment
+      effective March 25, 2022 (46 Ill. Reg. 5705).
+    other: The HFS premium chart (June 2009) and the HFS 3792 brochure print 69 for the same cell, which PE-US
+      gives (31 + 38).
   example: Countable earned income of $1,300 and gross unearned income of $600 a month give a $79 premium under the
     regulation and a $69 premium under the chart and in PE-US.
   pe_us:
@@ -2194,11 +2199,14 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10372
   state: unreviewed
-  note: 'PE-US gives the chart''s 69 because it adds an earned component (31) and an unearned component (38). The two
-    sources are a regulation and an agency form, with no statute, so the statute-first rule does not settle the cell.
-    The regulation''s row reads 31, 50, 79, 87, 106, and every neighbouring cell steps by about $19, so 79 may be a
-    typesetting error. The other 440 cells of the two sources agree. Issue 10471 proposes encoding the full table,
-    which needs this ruling first.'
+  note: 'PE-US gives the chart''s 69 because it adds an earned component (31) and an unearned component (38). The
+    sources are a regulation and two agency publications, with no statute, so the statute-first rule does not settle
+    the cell. CONTRIBUTING treats a regulation as binding ("Regulations are law"), which favours 79; the agency
+    tie-break applies only where the text and the canons do not settle a reading. Against 79: the regulation''s row
+    reads 31, 50, 79, 87, 106 (steps of about $19 elsewhere), and its column reads 63, 79, 76 for earned income
+    1001-1250, 1251-1500 and 1501-1750, so under 79 more earned income would lower the premium; the agency''s chart
+    and brochure print 69. The ruling decides whether 79 binds or is a scrivener''s error. The other 440 cells of the
+    regulation and the chart agree. Issue 10471 proposes encoding the full table, which needs this ruling first.'
 - id: us-il:joint-childless-eitc-dependency-skip
   program: income-tax
   years:

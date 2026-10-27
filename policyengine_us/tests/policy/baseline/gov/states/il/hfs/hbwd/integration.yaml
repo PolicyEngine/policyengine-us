@@ -112,11 +112,13 @@
     il_hbwd_employment_eligible: true
     il_hbwd_eligible: true
     il_hbwd_income_eligible: true
-    # Total income after deductions: ~$4,089
+    # Countable income: $3,498.62 earned + $400 unearned = $3,898.62
     # 350% FPL for single (2024): ~$4,393
     # Just under limit → eligible
     il_hbwd_premium: 100
-    # Premium: $100
+    # Earned $3,498.62 → 3251-3500 band → $81
+    # Unearned $400 → 251-500 band → $19
+    # Total: $81 + $19 = $100
 
 - name: Case 5, eligible with high income after exemptions.
   period: 2024-01
@@ -133,7 +135,7 @@
     il_hbwd_employment_eligible: true
     il_hbwd_asset_eligible: true
     il_hbwd_income_eligible: true
-    # Countable income after expenses and exemptions: ~$4,618
+    # Countable income after expenses and exemptions: $4,378.95
     # With exemptions, now under 350% FPL limit
     il_hbwd_eligible: true
 
@@ -157,9 +159,9 @@
     # Income calculation
     il_hbwd_gross_earned_income: 1_000
     il_hbwd_countable_income: 2_349.95
-    # Earned after expenses and exemptions: ~$850
+    # Earned after expenses and exemptions: $849.95
     # Unearned: $1,500
-    # Total: ~$2,349.95
+    # Total: $2,349.95
     il_hbwd_premium: 113
     # Earned $849.95 → 751-1000 band → $19
     # Unearned $1,500 → 1251-1500 band → $94

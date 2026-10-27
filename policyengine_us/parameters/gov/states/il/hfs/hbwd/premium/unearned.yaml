@@ -10,8 +10,12 @@ metadata:
     # cells in 120.510(n)(3); see issue 10471 for the others.
     # Thresholds are the chart's band starts (0-250, 251-500, ..., 4751-5000, 5000+), so income of
     # exactly $250 stays in the first band; $5,000 falls in the 4751-5000 band.
-    - title: 89 Ill. Admin. Code § 120.510 (n)
+    # Bands start at whole dollars, so income with cents stays in the band of its whole-dollar
+    # amount, as IDHS PM 15-04-03 drops cents.
+    - title: 89 Ill. Admin. Code § 120.510(n)(3)
       href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.510
+    - title: Illinois HFS, Health Benefits for Workers with Disabilities Premium Chart
+      href: https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalprograms/hbwd/documents/hfsweb004.pdf
 brackets:
   - threshold:
       2022-04-01: 0
