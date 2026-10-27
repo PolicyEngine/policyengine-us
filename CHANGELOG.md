@@ -1,3 +1,15 @@
+## [2.69.1] - 2026-10-27
+
+### Changed
+
+- Single-year datasets extend through 2036 by default, the last authored CPI-U year, since 2.65.0 loaded CBO's 2036 projections.
+- Use the Colorado Legislative Council Staff September 2026 forecast's projected sales tax refund tiers for tax years 2027 to 2029 in place of the tax year 2025 placeholders.
+
+### Fixed
+
+- Uprate projected federal poverty guidelines by the CPI-U change over the two preceding calendar years (42 U.S.C. 9902(2)) with a new gov.hhs.fpg_uprating index; gov.hhs.uprating now serves only Head Start and Early Head Start spending. In the Trustees 2025 scenario, re-derive the Social Security wage base and the wage-indexed amounts from the Trustees NAWI.
+
+
 ## [2.69.0] - 2026-10-27
 
 ### Added
