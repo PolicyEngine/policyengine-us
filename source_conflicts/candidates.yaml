@@ -7764,6 +7764,141 @@ candidates:
     disregard and child support paid, and the copay schedules'' comment records the chart''s "Monthly Gross Income"
     header (wy_ccap_income_eligible.py, wy_ccap_countable_income.py, wy_ccap_copay.py, copay/full_day.yaml, copay/part_day.yaml).
     Establish whether the chart header denotes a different calculation.'
+- id: us-wy:lieap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can Wyoming's 60% SMI limit exclude a large household whose income is below the federal 110%
+    poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624
+  - kind: plan
+    citation: Wyoming FY2026 LIEAP State Plan, section 2.1, 60% SMI for all household sizes
+    url: https://dfs.wyo.gov/wp-content/uploads/2025/10/FFY2026-LIEAP-State-Model-Plan.pdf#page=8
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The 60% SMI limit falls below that floor starting at household size 17.
+  example: A 17-person household earning $113,900 exceeds the $113,688 state limit but is below the $114,015 floor
+    and receives a $238 heating-oil benefit in PE-US.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wy/dfs/lieap/wy_lieap_eligible.py
+    - policyengine_us/variables/gov/states/wy/dfs/lieap/wy_lieap.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/wy/dfs/lieap/income/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10346
+  state: unreviewed
+  note: PE-US applies the floor to the prior year's guideline, rounded to cents, with the statute's strict "less
+    than" (wy_lieap_eligible.py), and sets the benefit fraction from income relative to the raised limit (wy_lieap.py);
+    the agency payment method for these households is unverified.
+- id: us-wy:lieap-income-limit-statute-lesser-of
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does W.S. 42-2-501(c), which requires eligibility at incomes not exceeding the lesser of 215% of the
+    poverty level or 60% of state median income, set a coverage minimum or the income ceiling?
+  sources:
+  - kind: statute
+    citation: W.S. 42-2-501(c)-(d)
+    url: https://wyoleg.gov/statutes/compress/title42.pdf#page=34
+  - kind: statute
+    citation: 2017 Wyo. Sess. Laws, SF0063 (Enrolled Act 43), effective July 1, 2017, striking "greater" and inserting
+      "lesser" in W.S. 42-2-501(c) and changing "state median income" to "state median household income"
+    url: https://wyoleg.gov/2017/Enroll/SF0063.pdf#page=7
+  - kind: regulation
+    citation: 049-1 Wyo. Code R. § 1-3(oo)
+    url: https://www.law.cornell.edu/regulations/wyoming/agency-049/subagency-0024/chapter-1/049-1-Wyo-Code-R-SSSS-1-3
+  - kind: regulation
+    citation: 049-1 Wyo. Code R. § 1-7(a)(ii)
+    url: https://www.law.cornell.edu/regulations/wyoming/agency-049/subagency-0024/chapter-1/049-1-Wyo-Code-R-SSSS-1-7
+  - kind: plan
+    citation: Wyoming FY2026 LIEAP State Plan, section 2.1, 60% SMI for all household sizes
+    url: https://dfs.wyo.gov/wp-content/uploads/2025/10/FFY2026-LIEAP-State-Model-Plan.pdf#page=8
+  - kind: agency-practice
+    citation: DFS 2016 statute clean-up request, Appendix C, asking to remove the 215% clause
+    url: https://wyoleg.gov/InterimCommittee/2016/10-0825AppendixC.pdf#page=8
+  readings:
+    statute: Since the 2017 amendment, the state plan must cover households with incomes at or below the lesser of
+      215% of the poverty level or 60% of state median household income, a coverage minimum that a 60% SMI limit
+      always meets.
+    other: Rules 3(oo) and 7(a)(ii), adopted under the pre-2017 "greater of" text, treat the section 42-2-501(c)
+      standard as the maximum income, which would cap the FY2026 plan's 60% of state median income at 215% of the
+      poverty level for small households.
+  example: A one-person FY2026 household with $34,000 of countable income is above 215% of the 2025 guideline
+    ($33,647.50) and within 60% of state median income ($35,829), and PE-US finds it income-eligible.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wy/dfs/lieap/wy_lieap_income_limit.py
+    - policyengine_us/parameters/gov/states/wy/dfs/lieap/smi_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10346
+  state: unreviewed
+  note: PE-US reads W.S. 42-2-501(c) as a coverage minimum and applies 60% of state median income for every size
+    (wy_lieap_income_limit.py, smi_rate.yaml). The amendment history supports that reading. Until 2017 the clause read
+    "greater of", which could require coverage above the federal maximum. DFS asked in 2016 to drop the 215% clause
+    because it uses 60% of state median income, and SF0063 then made the lesser amount the minimum. Under the ceiling
+    reading, FY2026 sizes 1-3 with incomes of $33,647.50-$35,829, $45,472.50-$46,853 and $57,297.50-$57,877 would be
+    ineligible.
+- id: us-wy:lieap-plan-vs-rules-income-items
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does Wyoming LIEAP follow the FY2026 plan or the adopted Chapter 1 rules for minors' earnings, POWER and
+    child support received, categorical eligibility, lump sums and child support paid?
+  sources:
+  - kind: regulation
+    citation: 049-1 Wyo. Code R. § 1-3(nn)
+    url: https://www.law.cornell.edu/regulations/wyoming/agency-049/subagency-0024/chapter-1/049-1-Wyo-Code-R-SSSS-1-3
+  - kind: regulation
+    citation: 049-1 Wyo. Code R. § 1-7(a)(i)
+    url: https://www.law.cornell.edu/regulations/wyoming/agency-049/subagency-0024/chapter-1/049-1-Wyo-Code-R-SSSS-1-7
+  - kind: regulation
+    citation: 049-1 Wyo. Code R. § 1-8(a)(ii)(A), (a)(ii)(L) and (a)(iii)
+    url: https://www.law.cornell.edu/regulations/wyoming/agency-049/subagency-0024/chapter-1/049-1-Wyo-Code-R-SSSS-1-8
+  - kind: regulation
+    citation: 049-1 Wyo. Code R. § 1-9(g)(ii)(B)
+    url: https://www.law.cornell.edu/regulations/wyoming/agency-049/subagency-0024/chapter-1/049-1-Wyo-Code-R-SSSS-1-9
+  - kind: plan
+    citation: Wyoming FY2026 LIEAP State Plan, sections 1.4 and 1.9
+    url: https://dfs.wyo.gov/wp-content/uploads/2025/10/FFY2026-LIEAP-State-Model-Plan.pdf#page=5
+  readings:
+    statute: No statute addresses these items. The rules exempt only the earnings of a child under 14 or of a
+      full-time student under 18 (8(a)(ii)(A)); count "the household's total gross non-exempt money received from
+      any source" with no exemption for POWER or child support received (3(nn)); list adults receiving POWER, SNAP or
+      veteran or survivor pension payments as eligible if they meet all other factors (7(a)(i)); exempt lump sums
+      such as tax refunds, rebates or credits (8(a)(ii)(L)), while 9(g)(ii)(B) lists prizes, including lottery
+      winnings, as income evidence; and deduct court-ordered child support paid "from earnings" (8(a)(iii)).
+    other: The FY2026 plan leaves the earned income of a child under 18, TANF benefits and child support unchecked as
+      countable income and checks one-time lump sums such as rebates, credits and lottery winnings (1.9), and it
+      answers "No" to categorical eligibility (1.4).
+  example: A parent with $40,000 of wages, $8,000 of child support received and a $1,500 natural gas bill has
+    countable income of $40,000 under the plan, within the $46,853 two-person limit, and PE-US pays $209.63; counting
+    the support under rule 3(nn) gives $48,000, above the limit.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/wy/dfs/lieap/income/earned_income_min_age.yaml
+    - policyengine_us/parameters/gov/states/wy/dfs/lieap/income/unearned_sources.yaml
+    - policyengine_us/variables/gov/states/wy/dfs/lieap/wy_lieap_countable_income.py
+    - policyengine_us/variables/gov/states/wy/dfs/lieap/wy_lieap_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10346
+  state: open
+  note: PE-US follows the plan for under-18 earnings, POWER and child support received (earned_income_min_age.yaml,
+    unearned_sources.yaml) and for categorical eligibility (wy_lieap_eligible.py). It follows rule 8(a)(ii)(L) over
+    the plan in excluding lump sums and has no lottery-winnings input. It deducts child support paid only from the
+    payer's own earnings (wy_lieap_countable_income.py), since rule 8(a)(iii) does not say whose earnings.
 - id: us:additional-child-credit-housing-deduction-bar
   program: income-tax
   years:
