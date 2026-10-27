@@ -4285,7 +4285,8 @@ candidates:
     follows: statute
     code:
     - policyengine_us/variables/gov/states/nh/dhhs/fanf/eligibility/nh_fanf_resources_eligible.py
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10499
   state: unreviewed
   note: He-W 656.06(a)(2) gives only the amounts and no comparison. He-W 656.04(c)(6) uses "exceed the allowable
     limit" only to start a grace period for recipients whose excess resources are personal property that cannot
