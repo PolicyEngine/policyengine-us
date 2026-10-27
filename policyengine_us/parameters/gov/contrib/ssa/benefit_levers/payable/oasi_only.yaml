@@ -1,0 +1,7 @@
+description: "Apply the supplied payable share only to OASI components rather than combined OASDI."
+values:
+  0000-01-01: false
+metadata:
+  unit: bool
+  label: Social Security payable oasi only
+  economy: false

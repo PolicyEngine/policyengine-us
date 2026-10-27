@@ -1,0 +1,9 @@
+description: Whether the supplied-input household calculator applies the contributed PIA path.
+values:
+  1983-01-01: false
+metadata:
+  unit: bool
+  label: Contributed Social Security PIA path
+  reference:
+    - title: SSA Primary Insurance Amount formula
+      href: https://www.ssa.gov/OACT/COLA/piaformula.html
