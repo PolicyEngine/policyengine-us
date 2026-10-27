@@ -8,8 +8,10 @@ class mn_amt(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
+        "https://www.revisor.mn.gov/statutes/cite/290.091#stat.290.091.3",
         "https://www.revenue.state.mn.us/sites/default/files/2023-02/m1mt_21.pdf",
         "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1mt_22.pdf",
+        "https://www.revenue.state.mn.us/sites/default/files/2026-07/m1mt-25.pdf",
     )
     defined_for = StateCode.MN
 
@@ -18,9 +20,11 @@ class mn_amt(Variable):
         # calculate gross AMT amount
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.mn.tax.income
-        p_gov = parameters(period).gov.irs.income.amt.exemption.phase_out
         excess_taxinc = max_(0, taxinc - p.amt.income_threshold[filing_status])
-        fractional_taxinc = excess_taxinc * p_gov.rate
+        # Minn. Stat. 290.091, subd. 3(b): the exemption phases out under
+        # IRC 55(d)(2) at 25%, and IRC 55(d)(4), which sets the federal 50%
+        # rate from 2026, does not apply.
+        fractional_taxinc = excess_taxinc * p.amt.phase_out_rate
         fractional_threshold = p.amt.fractional_income_threshold[filing_status]
         taxinc_amount = max_(0, fractional_threshold - fractional_taxinc)
         net_taxinc = max_(0, taxinc - taxinc_amount)

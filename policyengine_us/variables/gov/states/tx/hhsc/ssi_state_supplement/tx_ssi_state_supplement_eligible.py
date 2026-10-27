@@ -43,7 +43,7 @@ class tx_ssi_state_supplement_eligible(Variable):
             - person("ssi_income_deemed_from_ineligible_spouse", period),
             0,
         )
-        within_reduced_rate = own_countable_income <= p.amount.institutional.individual
+        within_reduced_rate = own_countable_income <= p.amount.medical_facility
         eligible_for_ssi = (
             person("is_ssi_eligible", period)
             & person("takes_up_ssi_if_eligible", period.this_year)

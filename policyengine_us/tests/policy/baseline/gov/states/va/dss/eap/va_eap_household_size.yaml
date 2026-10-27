@@ -1,0 +1,129 @@
+# Virginia EAP household size: members who are U.S. citizens or qualified
+# aliens. Other members are left out of the size, but their income still
+# counts (Complete EAP Manual B.7; see va_eap_countable_income.yaml).
+
+- name: Case 1, single citizen counts as one.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_household_size: 1
+
+- name: Case 2, family of four citizens counts four.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 36
+      spouse:
+        age: 34
+      child1:
+        age: 9
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: VA
+  output:
+    va_eap_household_size: 4
+
+- name: Case 3, undocumented parent is excluded while a permanent resident parent counts.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 38
+        immigration_status: UNDOCUMENTED
+        employment_income: 32_000
+      spouse:
+        age: 35
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+      child1:
+        age: 10
+      child2:
+        age: 7
+      child3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2, child3]
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3]
+        state_code: VA
+  output:
+    va_eap_household_size: 4
+
+- name: Case 4, refugee counts while TPS and DACA holders are not qualified aliens.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 41
+        immigration_status: REFUGEE
+      spouse:
+        age: 39
+        immigration_status: TPS
+      child1:
+        age: 19
+        immigration_status: DACA
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: VA
+  output:
+    va_eap_household_size: 2
+
+- name: Case 5, household with no citizen or qualified alien has size zero.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 33
+        immigration_status: UNDOCUMENTED
+      spouse:
+        age: 31
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: VA
+  output:
+    va_eap_household_size: 0
+
+- name: Case 6, household outside Virginia is not computed.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MD
+  output:
+    va_eap_household_size: 0
