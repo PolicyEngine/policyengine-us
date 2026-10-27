@@ -13,6 +13,7 @@ class is_chip_eligible_standard_pregnant_person(Variable):
     reference = (
         "https://www.ssa.gov/OP_Home/ssact/title21/2110.htm",
         "https://www.medicaid.gov/medicaid/national-medicaid-chip-program-information/medicaid-childrens-health-insurance-program-basic-health-program-eligibility-levels",
+        "https://www.law.cornell.edu/uscode/text/42/1397ll#d_2_C",
         "https://www.law.cornell.edu/uscode/text/8/1611#a",
         "https://www.law.cornell.edu/uscode/text/8/1641#b",
         "https://www.law.cornell.edu/cfr/text/45/155.20",

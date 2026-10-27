@@ -1,4 +1,4 @@
-description: Health coverage sources that disqualify a child or a pregnant person from CHIP eligibility.
+description: Health coverage sources that disqualify a child or a pregnant person from Children's Health Insurance Program eligibility.
 values:
   0000-01-01:
     - has_health_coverage_other_than_chip
@@ -18,9 +18,13 @@ metadata:
   period: year
   label: CHIP disqualifying health coverage sources
   reference:
-    - title: 42 CFR § 457.310(b)(2) - Health benefits coverage
+    - title: 42 CFR § 457.310(b)(2) - No other coverage standard
       href: https://www.ecfr.gov/current/title-42/section-457.310#p-457.310(b)(2)
+    - title: 42 CFR § 457.320(a)(7) - Other eligibility standards
+      href: https://www.ecfr.gov/current/title-42/section-457.320#p-457.320(a)(7)
     - title: 42 CFR § 457.320(b)(5) - Other eligibility standards
       href: https://www.ecfr.gov/current/title-42/section-457.320#p-457.320(b)(5)
-    - title: 45 CFR § 146.113(a)(1) - Excepted benefits
+    - title: 42 U.S.C. § 1397ll(d)(2)(C) - Targeted low-income pregnant woman
+      href: https://www.law.cornell.edu/uscode/text/42/1397ll#d_2_C
+    - title: 45 CFR § 146.113(a)(1) - Creditable coverage
       href: https://www.ecfr.gov/current/title-45/section-146.113#p-146.113(a)(1)
