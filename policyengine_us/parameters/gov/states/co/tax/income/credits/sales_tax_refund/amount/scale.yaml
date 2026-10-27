@@ -1,4 +1,8 @@
-description: Colorado provides this base sales tax refund amount, based on modified adjusted gross income.
+description: >-
+  Colorado provides this base sales tax refund amount, based on modified adjusted gross
+  income. The refund is attributed to the modeled eligibility tax year, even when the
+  return and payment occur later. This is the residual sales tax refund mechanism,
+  separate from Colorado Cash Back; in_effect controls whether the refund is available.
 metadata:
   period: year
   type: single_amount

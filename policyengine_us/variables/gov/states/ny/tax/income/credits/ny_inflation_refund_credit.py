@@ -5,6 +5,11 @@ class ny_inflation_refund_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "New York inflation refund"
+    documentation = (
+        "One-time New York inflation refund paid in 2025 and determined from the 2023 "
+        "return. PolicyEngine attributes it to eligibility tax year 2023 through "
+        "ny_refundable_credits. This variable is zero in other years."
+    )
     unit = USD
     definition_period = YEAR
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606#QQQ"
