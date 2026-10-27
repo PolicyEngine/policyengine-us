@@ -519,9 +519,8 @@
     nh_fanf_countable_earned_income: 750
     nh_fanf: 0
 
-- name: Case 19, applicant exactly at the 20 percent test limit gets the 50 percent benefit.
+- name: Case 19, applicant exactly at the 20 percent test limit is ineligible.
   period: 2024-01
-  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -540,11 +539,38 @@
         state_code: NH
   output:
     nh_fanf_payment_standard: 1_022
-    # Eligibility: 1,277.50 * 0.80 = 1,022 <= 1,022
+    # Eligibility: 1,277.50 * 0.80 = 1,022, not less than 1,022
+    # (RSA 167:79 III(e); FAM 611.01)
     nh_fanf_countable_earned_income_for_eligibility: 1_022
+    nh_fanf_income_eligible: false
+    nh_fanf: 0
+
+- name: Case 20, applicant just below the 20 percent test limit gets the 50 percent benefit.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 15_300  # $1,275/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 500
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_fanf_payment_standard: 1_022
+    # Eligibility: 1,275 * 0.80 = 1,020 < 1,022
+    nh_fanf_countable_earned_income_for_eligibility: 1_020
     nh_fanf_income_eligible: true
     nh_fanf_eligible: true
-    # Benefit: 1,277.50 * 0.50 = 638.75
-    nh_fanf_countable_earned_income: 638.75
-    # 1,022 - 638.75 = 383.25
-    nh_fanf: 383.25
+    # Benefit: 1,275 * 0.50 = 637.50
+    nh_fanf_countable_earned_income: 637.50
+    # 1,022 - 637.50 = 384.50
+    nh_fanf: 384.50

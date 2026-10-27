@@ -10,6 +10,7 @@ class nh_fanf_countable_income_for_eligibility(Variable):
     reference = (
         "https://gc.nh.gov/rules/state_agencies/he-w600.html",
         "https://www.dhhs.nh.gov/fam_htm/html/603_01_earned_income_disregards_eid_fam.htm",
+        "https://www.dhhs.nh.gov/fam_htm/html/611_01_computing_eligibility_fam.htm",
     )
     defined_for = StateCode.NH
 
