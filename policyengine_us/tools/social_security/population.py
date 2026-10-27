@@ -153,6 +153,10 @@ def _record_basis(person, period, parameters, component):
         for i in np.flatnonzero(positive):
             j = worker_indices[i]
             known_birth_year = supplied_birth_year and birth_years[j] > 0
+            if not known_birth_year and not str(birth_dates[j]):
+                # A supplied month/day does not make an age-, eligibility- or
+                # claim-derived birth year an observed complete date.
+                proxy[i] = True
             cohort = (
                 int(birth_years[j])
                 if known_birth_year

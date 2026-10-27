@@ -289,6 +289,22 @@
     social_security_retirement_pia_ratio_proxy: true
     social_security_retirement_pia_ratio_missing_claim_age: false
 
+- name: A supplied birth month and day still flag an age derived birth year
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    age: 62
+    social_security_birth_month: 6
+    social_security_birth_day: 15
+    social_security_retirement_claim_age_months: 747
+    social_security_retirement_reported: 18440.64
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+  output:
+    social_security_retirement_pia_ratio_eligibility_year: 2026
+    social_security_retirement_pia_ratio_claiming_adjustment: 0.7125
+    social_security_retirement_pia_ratio_proxy: true
+
 - name: Cohort gate leaves an existing beneficiary unchanged
   period: 2026
   input:

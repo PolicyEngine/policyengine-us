@@ -69,7 +69,9 @@ calculation uses the documented non-January-1 approximation and raises
 `birth_year` take precedence over a year derived from current age. When birth
 information is unavailable but a worker eligibility year is supplied, E minus
 62 can supply the approximate birth cohort for FRA and credit rates; this does
-not change the supplied eligibility year. A claiming scenario is substantive:
+not change the supplied eligibility year. Supplied month/day without an
+observed birth year or complete birth date still raises the proxy flag.
+A claiming scenario is substantive:
 in C2, replacing the
 correct age-62 adjustment of 0.70 with 1 infers AIME $2,978 instead of $5,000
 and changes the annual gain from $1,165.248 to $1,664.64 before rounding, an
