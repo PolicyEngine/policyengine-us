@@ -1043,7 +1043,7 @@
       spm_unit:
         members: [person1, person2]
         childcare_expenses: 3_600
-        # Otherwise ineligible without the child care disregard
+        # Set as an input so the child care caps apply
         # (921 KAR 2:016 Section 5(3)(b)1.c).
         ky_ktap_ineligible_without_child_care_disregard: true
     households:

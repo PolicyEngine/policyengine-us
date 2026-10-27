@@ -2418,6 +2418,38 @@ candidates:
   state: open
   note: A source-choice decision was requested; resolve the incorporated restriction and verify applicability beyond
     2025.
+- id: us-ky:ktap-incapacitated-adult-care-condition
+  program: tanf
+  years:
+    from: 2015
+    type: calendar
+  question: Does the K-TAP dependent care disregard for an incapacitated adult apply only when the case would be
+    ineligible without it?
+  sources:
+  - kind: regulation
+    citation: 921 KAR 2:016 Section 5(3)(b)1
+    url: https://apps.legislature.ky.gov/law/kar/titles/921/002/016/
+  - kind: manual
+    citation: DCBS Operations Manual Volume III, MS 2840 B.1, OMTL-616, revised 3/1/23
+    url: https://www.chfs.ky.gov/agencies/dcbs/dfs/Documents/OMVOLIII.pdf#page=162
+  readings:
+    statute: Care of "an incapacitated adult living in the home and receiving KTAP" (1.b) is a case of its own;
+      the otherwise-ineligible case (1.c) covers only child care.
+    other: The deduction needs care paid for "a child or an incapacitated adult" and a case that "would be
+      ineligible without the deduction", for the adult as for the child.
+  example: In January 2025 a unit of three has a parent who earns $1,000, a child age 5 and an incapacitated adult
+    with $100 a month of care. Without any dependent care disregard countable income is 412.50, under the 631
+    standard of need. The regulation allows the $100 disregard; the manual allows none.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ky/dcbs/ktap/income/ky_ktap_incapacitated_adult_care_disregard.py
+    - policyengine_us/variables/gov/states/ky/dcbs/ktap/income/ky_ktap_dependent_care_disregard.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10254
+  state: unreviewed
+  note: Section 5(3)(b)1.b reads the same in the versions effective 11-18-2015 and 2-16-2023. Code not yet on
+    main.
 - id: us-ky:ktap-payment-maximum-2025
   program: tanf
   years:
@@ -2445,6 +2477,36 @@ candidates:
   state: unreviewed
   note: PE-US follows the manual from November 1, 2025; determine the governing source in this regulation/manual
     conflict.
+- id: us-ky:ktap-standard-of-need-equality
+  program: tanf
+  years:
+    from: 2015
+    type: calendar
+  question: Is a K-TAP case whose countable income equals the standard of need ineligible?
+  sources:
+  - kind: regulation
+    citation: 921 KAR 2:016 Section 4(2)(b)
+    url: https://apps.legislature.ky.gov/law/kar/titles/921/002/016/
+  - kind: manual
+    citation: DCBS Operations Manual Volume III, MS 2810 B, OMTL-688, revised 3/1/26
+    url: https://www.chfs.ky.gov/agencies/dcbs/dfs/Documents/OMVOLIII.pdf#page=160
+  readings:
+    statute: The case is ineligible only when countable income "exceeds" the standard of need.
+    other: The case is ineligible when countable income "is equal to or exceeds" the standard of need.
+  example: In January 2024 a parent with one child age 5 has $375 of earnings, $452 of unearned income and $300
+    of child care. Without the child care disregard countable income is 552, equal to the standard of need (size
+    2). Under the regulation the case is not otherwise ineligible, the Section 5(3)(b)1.c child care disregard
+    does not apply, and the benefit is $0. Under the manual the $175 disregard applies and the benefit is $48.13.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ky/dcbs/ktap/income/ky_ktap_ineligible_without_child_care_disregard.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10254
+  state: unreviewed
+  note: The boundary matters only for the Section 5(3)(b)1.c child care disregard, since the ratable-reduction
+    deficit is 0 at equality. Section 4(2)(b) reads the same in the versions effective 11-18-2015 and 2-16-2023.
+    Code not yet on main.
 - id: us-ky:liheap-subsidized-income-points
   program: liheap
   years:
@@ -5467,6 +5529,34 @@ candidates:
   state: unreviewed
   note: PE-US treats the worksheet as filling silence about actual itemization; verify that interpretation against
     the statutory phrase.
+- id: us-vt:reach-up-dependent-care-order
+  program: tanf
+  years:
+    from: 2024
+    type: calendar
+  question: Does Reach Up subtract the dependent care deduction from earned income before or after the earned
+    income disregard?
+  sources:
+  - kind: regulation
+    citation: Reach Up rule 2251.1(c)(1), 08/01/2024
+    url: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2200-Reach-Up.pdf#page=71
+  - kind: guidance
+    citation: ESD Procedure P-2230A, net earned income steps 2 and 4-6
+    url: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2230A.pdf
+  readings:
+    statute: The unsubsidized sequence is business expenses, then the earned income disregard (rule 2252.3), then
+      dependent care (rule 2252.2).
+    other: Dependent care comes off first, then the $90 deduction or $350 disregard, then 25% of the subtotal.
+  example: One participant earns $1,000 and pays $100 a month of disabled adult care. The rule gives 1,000 - (350
+    + 0.25 x 650) - 100 = 387.50 of net earned income; the procedure gives (1,000 - 100 - 350) x 0.75 = 412.50.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/vt/dcf/reach_up/income/vt_reach_up_countable_earned_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10254
+  state: unreviewed
+  note: The earlier rule editions were not compared.
 - id: us-vt:renter-credit-booklet-income-limit-errors
   program: renter-credit
   years:

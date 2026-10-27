@@ -12,14 +12,15 @@ class ky_ktap_ineligible_without_child_care_disregard(Variable):
     definition_period = MONTH
     reference = (
         "https://apps.legislature.ky.gov/law/kar/titles/921/002/016/",
-        "https://www.chfs.ky.gov/agencies/dcbs/dfs/Documents/OMVOLIII.pdf",
+        # PDF pages 160, 162
+        "https://www.chfs.ky.gov/agencies/dcbs/dfs/Documents/OMVOLIII.pdf#page=160",
     )
     defined_for = StateCode.KY
 
     def formula(spm_unit, period, parameters):
-        # Per MS 2810 B, a case whose countable income equals or exceeds the
-        # standard of need is ineligible. Compute countable income with the
-        # dependent care disregard for incapacitated adults only.
+        # Per 921 KAR 2:016 Section 4(2)(b), a case whose countable income
+        # exceeds the standard of need is ineligible. Compute countable income
+        # with the dependent care disregard for incapacitated adults only.
         p = parameters(period).gov.states.ky.dcbs.ktap.income.deductions
         person = spm_unit.members
         gross_earned = person("tanf_gross_earned_income", period)
@@ -32,4 +33,4 @@ class ky_ktap_ineligible_without_child_care_disregard(Variable):
         )
         countable_unearned = spm_unit("ky_ktap_countable_unearned_income", period)
         standard_of_need = spm_unit("ky_ktap_standard_of_need", period)
-        return countable_earned + countable_unearned >= standard_of_need
+        return countable_earned + countable_unearned > standard_of_need

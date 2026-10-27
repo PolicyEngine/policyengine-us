@@ -19,15 +19,13 @@ class hi_tanf_dependent_care_deduction(Variable):
 
         # Per HAR 17-676-54.1(c)(4) and (d)(4) and the HAR 17-676-2
         # definition, the deduction covers only the cost of care for each
-        # incapacitated adult in the household (State Plan section 10.2.1(D):
-        # a disabled adult household member). Child care is not deducted.
-        adult_care_expenses = add(spm_unit, period, ["care_expenses"])
-
-        # Count disabled adults in the unit for the per-person cap
+        # incapacitated adult in the household (State Plan 10.2.2: "cost of
+        # care for a disabled adult household member"). Child care is not
+        # deducted.
         person = spm_unit.members
         is_adult = ~person("is_child", period.this_year)
         is_disabled_adult = is_adult & person("is_disabled", period.this_year)
-        num_care_recipients = spm_unit.sum(is_disabled_adult)
+        adult_care_expenses = person("care_expenses", period) * is_disabled_adult
 
         # Determine rate based on MAX of adult hours
         # If either parent works full-time, use full-time rate
@@ -39,7 +37,6 @@ class hi_tanf_dependent_care_deduction(Variable):
         # Full-time = 32+ hours/week
         # Rate is $175 (full-time) or $165 (part-time) per person
         rate = p.amount.calc(max_adult_hours)
-        max_deduction = num_care_recipients * rate
 
-        # Deduct actual cost up to max per care recipient
-        return min_(adult_care_expenses, max_deduction)
+        # Deduct each disabled adult's actual cost up to the rate
+        return spm_unit.sum(min_(adult_care_expenses, spm_unit.project(rate)))

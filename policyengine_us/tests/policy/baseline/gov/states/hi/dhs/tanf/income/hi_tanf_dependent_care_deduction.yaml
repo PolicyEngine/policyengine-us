@@ -5,7 +5,7 @@
 # Rate: $175 (full-time, 32+ hrs) or $165 (part-time, <32 hrs)
 # Uses MAX of adult hours - if either parent is full-time, use full-time rate
 # Per HAR 17-676-54.1(c)(4) and (d)(4), HAR 17-676-2 and the Hawaii TANF
-# State Plan section 10.2.1(D)
+# State Plan section 10.2.2
 
 - name: Case 1, no care expenses.
   period: 2024-01
@@ -277,8 +277,8 @@
         members: [person1, person2, person3]
         state_code: HI
   output:
-    # Expenses = 300 + 300 = 600/month
-    # Cap = 2 disabled adults x $175 = $350
+    # Expenses = 300 and 300/month, each capped at $175
+    # min(300, 175) + min(300, 175) = 350
     hi_tanf_dependent_care_deduction: 350
 
 - name: Case 12, child care and disabled adult care, only the adult care counts.
@@ -328,6 +328,94 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # Person2 is not a disabled adult, so no care recipients:
-    # min(100, 0) = 0.
+    # Person2 is not a disabled adult, so person2's care cost of
+    # 100/month does not count.
+    hi_tanf_dependent_care_deduction: 0
+
+- name: Case 14, two disabled adults, each adult's care capped separately.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 60
+        is_disabled: true
+        # $300/month
+        care_expenses: 3_600
+      person3:
+        age: 62
+        is_disabled: true
+        # $50/month
+        care_expenses: 600
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    # HAR 17-676-54.1(d)(4): the cost "for the care of each incapacitated
+    # adult", not to exceed $175 (full time).
+    # min(300, 175) + min(50, 175) = 175 + 50 = 225
+    # A pooled cap would give min(350, 2 x 175) = 350.
+    hi_tanf_dependent_care_deduction: 225
+
+- name: Case 15, two disabled adults, part-time cap applied to each adult.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 20
+      person2:
+        age: 60
+        is_disabled: true
+        # $165/month
+        care_expenses: 1_980
+      person3:
+        age: 62
+        is_disabled: true
+        # $166/month
+        care_expenses: 1_992
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    # Part time (20 hours a week): $165 cap per disabled adult.
+    # min(165, 165) + min(166, 165) = 165 + 165 = 330
+    hi_tanf_dependent_care_deduction: 330
+
+- name: Case 16, care of a member who is not a disabled adult does not count.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        # $100/month
+        care_expenses: 1_200
+      person2:
+        age: 60
+        is_disabled: true
+        care_expenses: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # The disabled adult has no care cost: min(0, 175) = 0.
+    # Person1 is not disabled, so person1's care cost does not count.
     hi_tanf_dependent_care_deduction: 0

@@ -219,7 +219,7 @@
         state_code: KY
   output:
     # Monthly period. Without child care: (400 - 175) x 0.5 + 550 = 662.50
-    # >= 631 standard of need (size 3), ineligible; so the child care
+    # > 631 standard of need (size 3), ineligible; so the child care
     # disregard applies: min(300, 175 + 200) = 300.
     ky_ktap_dependent_care_disregard: 300
     # Earned: max(400 - 175 - 300, 0) = 0; countable: 0 + 550 = 550
@@ -228,3 +228,35 @@
     ky_ktap_eligible: true
     # Benefit: min(0.55 x (631 - 550), 524) = 44.55
     ky_ktap: 44.55
+
+- name: Case 7, countable income equal to the standard of need pays no benefit.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        tanf_gross_earned_income: 375
+        tanf_gross_unearned_income: 452
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        # $300/month
+        childcare_expenses: 3_600
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    # Without child care: (375 - 175) x 0.5 + 452 = 552 = 552 standard of
+    # need (size 2). 921 KAR 2:016 Section 4(2)(b) makes a case ineligible
+    # only when income exceeds the standard, so the case is not otherwise
+    # ineligible and the child care disregard does not apply.
+    ky_ktap_ineligible_without_child_care_disregard: false
+    ky_ktap_dependent_care_disregard: 0
+    ky_ktap_countable_income: 552
+    # Benefit: 0.55 x max(552 - 552, 0) = 0
+    ky_ktap: 0

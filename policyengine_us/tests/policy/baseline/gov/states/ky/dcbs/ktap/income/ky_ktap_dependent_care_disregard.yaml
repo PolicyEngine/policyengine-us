@@ -38,7 +38,7 @@
         members: [parent, child]
         # $100/month * 12 = $1,200/year
         childcare_expenses: 1_200
-        # Otherwise ineligible without the child care disregard
+        # Set as an input so the child care caps apply
         # (921 KAR 2:016 Section 5(3)(b)1.c).
         ky_ktap_ineligible_without_child_care_disregard: true
     households:
@@ -63,7 +63,7 @@
         members: [parent, child]
         # $300/month * 12 = $3,600/year
         childcare_expenses: 3_600
-        # Otherwise ineligible without the child care disregard
+        # Set as an input so the child care caps apply
         # (921 KAR 2:016 Section 5(3)(b)1.c).
         ky_ktap_ineligible_without_child_care_disregard: true
     households:
@@ -88,7 +88,7 @@
         members: [parent, infant]
         # $400/month * 12 = $4,800/year
         childcare_expenses: 4_800
-        # Otherwise ineligible without the child care disregard
+        # Set as an input so the child care caps apply
         # (921 KAR 2:016 Section 5(3)(b)1.c).
         ky_ktap_ineligible_without_child_care_disregard: true
     households:
@@ -115,7 +115,7 @@
         members: [parent, infant, child]
         # $500/month * 12 = $6,000/year
         childcare_expenses: 6_000
-        # Otherwise ineligible without the child care disregard
+        # Set as an input so the child care caps apply
         # (921 KAR 2:016 Section 5(3)(b)1.c).
         ky_ktap_ineligible_without_child_care_disregard: true
     households:
@@ -291,7 +291,7 @@
         members: [parent, child1, child2]
         state_code: KY
   output:
-    # Without child care: (400 - 175) x 0.5 + 550 = 662.50 >= 631, ineligible.
+    # Without child care: (400 - 175) x 0.5 + 550 = 662.50 > 631, ineligible.
     # Cap: $175 (age 5) + $200 (age 1) = $375; min(300, 375) = 300
     ky_ktap_ineligible_without_child_care_disregard: true
     ky_ktap_dependent_care_disregard: 300
@@ -324,3 +324,119 @@
     # Without child care: (1,000 - 175 - 100) x 0.5 = 362.50 < 631, eligible,
     # so the child's care is not disregarded.
     ky_ktap_dependent_care_disregard: 100
+
+- name: Each incapacitated adult's care is capped separately.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      adult1:
+        age: 50
+        is_incapable_of_self_care: true
+        # $300/month
+        care_expenses: 3_600
+      adult2:
+        age: 55
+        is_incapable_of_self_care: true
+        # $50/month
+        care_expenses: 600
+    spm_units:
+      spm_unit:
+        members: [parent, adult1, adult2]
+    households:
+      household:
+        members: [parent, adult1, adult2]
+        state_code: KY
+  output:
+    # Section 5(3)(b)2: $175 per month per individual.
+    # min(300, 175) + min(50, 175) = 175 + 50 = 225 (not min(350, 2 x 175)).
+    ky_ktap_dependent_care_disregard: 225
+
+- name: An unused child cap does not absorb incapacitated adult care.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+      adult:
+        age: 50
+        is_incapable_of_self_care: true
+        # $300/month
+        care_expenses: 3_600
+    spm_units:
+      spm_unit:
+        members: [parent, child, adult]
+        childcare_expenses: 0
+        # Set as an input so the child care caps apply
+        # (921 KAR 2:016 Section 5(3)(b)1.c).
+        ky_ktap_ineligible_without_child_care_disregard: true
+    households:
+      household:
+        members: [parent, child, adult]
+        state_code: KY
+  output:
+    # Adult: min(300, 175) = 175. Child: min(0, 175) = 0.
+    # 175 + 0 = 175 (not min(300, 175 + 175) = 300).
+    ky_ktap_dependent_care_disregard: 175
+
+- name: An unused adult cap does not absorb child care.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+      adult:
+        age: 50
+        is_incapable_of_self_care: true
+        care_expenses: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, adult]
+        # $300/month
+        childcare_expenses: 3_600
+        # Set as an input so the child care caps apply
+        # (921 KAR 2:016 Section 5(3)(b)1.c).
+        ky_ktap_ineligible_without_child_care_disregard: true
+    households:
+      household:
+        members: [parent, child, adult]
+        state_code: KY
+  output:
+    # Adult: min(0, 175) = 0. Child: min(300, 175) = 175.
+    # 0 + 175 = 175 (not min(300, 175 + 175) = 300).
+    ky_ktap_dependent_care_disregard: 175
+
+- name: Child care is not disregarded when countable income equals the standard of need.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        tanf_gross_earned_income: 375
+        tanf_gross_unearned_income: 452
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        # $300/month
+        childcare_expenses: 3_600
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    # Without child care: (375 - 175) x 0.5 + 452 = 552 = 552 standard of
+    # need (size 2). Section 4(2)(b) makes a case ineligible only when income
+    # exceeds the standard, so the case is not otherwise ineligible.
+    ky_ktap_ineligible_without_child_care_disregard: false
+    ky_ktap_dependent_care_disregard: 0

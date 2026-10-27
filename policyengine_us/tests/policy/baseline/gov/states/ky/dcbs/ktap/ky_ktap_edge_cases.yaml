@@ -261,7 +261,7 @@
         members: [person1, person2]
         # $100/month * 12 = $1,200/year
         childcare_expenses: 1_200
-        # Otherwise ineligible without the child care disregard
+        # Set as an input so the child care caps apply
         # (921 KAR 2:016 Section 5(3)(b)1.c).
         ky_ktap_ineligible_without_child_care_disregard: true
     households:
@@ -435,7 +435,7 @@
       spm_unit:
         members: [person1, person2]
         childcare_expenses: 4_800
-        # Otherwise ineligible without the child care disregard
+        # Set as an input so the child care caps apply
         # (921 KAR 2:016 Section 5(3)(b)1.c).
         ky_ktap_ineligible_without_child_care_disregard: true
     households:
@@ -894,7 +894,7 @@
       spm_unit:
         members: [parent, infant]
         childcare_expenses: 6_000
-        # Otherwise ineligible without the child care disregard
+        # Set as an input so the child care caps apply
         # (921 KAR 2:016 Section 5(3)(b)1.c).
         ky_ktap_ineligible_without_child_care_disregard: true
     households:
@@ -919,7 +919,7 @@
       spm_unit:
         members: [parent, toddler]
         childcare_expenses: 6_000
-        # Otherwise ineligible without the child care disregard
+        # Set as an input so the child care caps apply
         # (921 KAR 2:016 Section 5(3)(b)1.c).
         ky_ktap_ineligible_without_child_care_disregard: true
     households:
@@ -948,7 +948,7 @@
       spm_unit:
         members: [parent, child]
         childcare_expenses: 6_000
-        # Otherwise ineligible without the child care disregard
+        # Set as an input so the child care caps apply
         # (921 KAR 2:016 Section 5(3)(b)1.c).
         ky_ktap_ineligible_without_child_care_disregard: true
     households:
@@ -999,7 +999,7 @@
       spm_unit:
         members: [parent, infant, teen]
         childcare_expenses: 6_000
-        # Otherwise ineligible without the child care disregard
+        # Set as an input so the child care caps apply
         # (921 KAR 2:016 Section 5(3)(b)1.c).
         ky_ktap_ineligible_without_child_care_disregard: true
     households:
@@ -1031,7 +1031,7 @@
         members: [parent, child]
         # Work expense $175 + dependent care cap $175 = $350
         childcare_expenses: 6_000
-        # Otherwise ineligible without the child care disregard
+        # Set as an input so the child care caps apply
         # (921 KAR 2:016 Section 5(3)(b)1.c).
         ky_ktap_ineligible_without_child_care_disregard: true
     households:
@@ -1098,7 +1098,7 @@
       spm_unit:
         members: [parent, infant]
         childcare_expenses: 6_000
-        # Otherwise ineligible without the child care disregard
+        # Set as an input so the child care caps apply
         # (921 KAR 2:016 Section 5(3)(b)1.c).
         ky_ktap_ineligible_without_child_care_disregard: true
         spm_unit_cash_assets: 0
@@ -1269,7 +1269,7 @@
         members: [parent, child]
         # $50/month * 12 = $600/year (below $175 cap)
         childcare_expenses: 600
-        # Otherwise ineligible without the child care disregard
+        # Set as an input so the child care caps apply
         # (921 KAR 2:016 Section 5(3)(b)1.c).
         ky_ktap_ineligible_without_child_care_disregard: true
     households:

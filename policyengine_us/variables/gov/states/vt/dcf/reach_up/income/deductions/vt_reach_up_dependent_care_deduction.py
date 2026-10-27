@@ -9,7 +9,8 @@ class vt_reach_up_dependent_care_deduction(Variable):
     definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/regulations/vermont/13-220-Code-Vt-R-13-170-220-X",
-        "https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2200-Reach-Up.pdf#page=74",
+        # PDF pages 71, 74-75
+        "https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2200-Reach-Up.pdf#page=71",
         "https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2230A.pdf",
     )
     defined_for = StateCode.VT
@@ -21,7 +22,9 @@ class vt_reach_up_dependent_care_deduction(Variable):
         # member who is a disabled or seriously ill adult. Section 2252.2(b)
         # covers child care only for a child who is not a member of the
         # Reach Up household, which the model does not track; child care for
-        # children in the unit is not deducted (ESD Procedure P-2230A).
+        # children in the unit is not deducted (rule 2251.1(e): child care
+        # provided as a Reach Up support service is not a dependent care
+        # expense; ESD Procedure P-2230A).
         p = parameters(period).gov.states.vt.dcf.reach_up.income.deductions
         person = spm_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)

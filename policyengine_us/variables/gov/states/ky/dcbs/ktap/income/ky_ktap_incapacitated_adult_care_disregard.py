@@ -18,9 +18,9 @@ class ky_ktap_incapacitated_adult_care_disregard(Variable):
         incapacitated_adult = person("is_adult", period.this_year) & person(
             "is_incapable_of_self_care", period.this_year
         )
-        n_incapacitated_adults = spm_unit.sum(incapacitated_adult)
-        # An incapacitated adult receives the standard age-two-or-older rate
-        # per Section 5(3)(b)2, so evaluate the schedule at the age-two boundary.
+        # Section 5(3)(b)2 caps the care of each individual. An incapacitated
+        # adult receives the standard age-two-or-older rate, so evaluate the
+        # schedule at the age-two boundary.
         max_per_adult = p.dependent_care.calc(p.dependent_care.thresholds[1])
-        adult_care_expenses = add(spm_unit, period, ["care_expenses"])
-        return min_(adult_care_expenses, n_incapacitated_adults * max_per_adult)
+        adult_care_expenses = person("care_expenses", period) * incapacitated_adult
+        return spm_unit.sum(min_(adult_care_expenses, max_per_adult))
