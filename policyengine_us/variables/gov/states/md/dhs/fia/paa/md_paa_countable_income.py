@@ -48,17 +48,14 @@ class md_paa_countable_income(Variable):
         # COMAR 07.03.07.07 counts the individual's own income and has no
         # spousal deeming. The SSI cascade deems spouse income only to people
         # SSA can pay, so people who fail SSI's citizen or qualified-noncitizen
-        # test count their own income alone. A person who reports SSI receipt
-        # (for example one SSA pays under an exception the model does not
-        # encode such as 8 U.S.C. 1612(a)(2)(E)) keeps the SSI treatment,
-        # matching md_paa_imputed_federal_ssi.
+        # test count their own income alone, including those who report SSI
+        # receipt: PAA itself has no spousal deeming.
         immigration_status = person("immigration_status", period)
         is_citizen = immigration_status == immigration_status.possible_values.CITIZEN
         is_qualified_noncitizen = person("is_ssi_qualified_noncitizen", period)
-        reports_ssi = add(person, period, ["receives_ssi"]) > 0
-        not_barred_from_ssi = is_citizen | is_qualified_noncitizen | reports_ssi
+        meets_ssi_immigration_test = is_citizen | is_qualified_noncitizen
         spousal_deemed = where(
-            not_barred_from_ssi,
+            meets_ssi_immigration_test,
             person("ssi_income_deemed_from_ineligible_spouse", period),
             0,
         )
