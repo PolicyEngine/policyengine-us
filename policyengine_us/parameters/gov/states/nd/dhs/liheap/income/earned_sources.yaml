@@ -6,10 +6,13 @@ values:
     - sstb_self_employment_income
     - farm_operations_income
     - partnership_income
+    - military_basic_pay
 # Report active net business income once, rather than repeating it in wages
 # or self-employment. Gross partnership reporting lacks policy expense detail.
-# Military pay and employer-paid disability are not added separately because
-# employment income can already contain them and their overlap is unobserved.
+# Military basic pay is an input separate from wages; the subsistence and
+# housing allowances that 415-25-05-20-05 also counts as military pay have no
+# input. Employer-paid disability is not added separately because employment
+# income can already contain it and the overlap is unobserved.
 metadata:
   unit: list
   period: year

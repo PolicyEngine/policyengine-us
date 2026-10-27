@@ -12,6 +12,7 @@ class nd_liheap_countable_income(Variable):
         "https://www.nd.gov/dhs/policymanuals/415/415_25_05_05_05.htm",
         "https://www.nd.gov/dhs/policymanuals/415/415_25_05_15.htm",
         "https://www.nd.gov/dhs/policymanuals/415/415_20_10_50.htm",
+        "https://liheapch.acf.gov/docs/2026/state-plans/ND_Plan_2026.pdf#page=6",
     )
     defined_for = StateCode.ND
 
@@ -28,22 +29,27 @@ class nd_liheap_countable_income(Variable):
             ],
         )
         person = spm_unit.members
-        premiums = person("health_insurance_premiums", period)
-        # A positive reported aggregate takes precedence over its components.
-        # Otherwise use both nonnegative reported components; do not impute
-        # Medicare premiums from the calculated premium variable.
-        reported_premiums = where(
-            premiums > 0,
-            premiums,
+        direct_premiums = person("health_insurance_premiums", period)
+        # Manual 415-25-05-05-05 allows "Medicare premiums, deductibles, and
+        # co-pays", except "Part A and B Medicare premiums for an individual
+        # who is QMB/SLMB, QI-1 or Buy-In eligible". Plan item 1.9 counts
+        # Social Security "Excluding MediCare deduction". The Part A and Part B
+        # premium variables are each member's out-of-pocket premiums, zero for
+        # a member who is not enrolled, whose premium a Medicare Savings
+        # Program pays, or (for Part A) who has premium-free Part A; no Part D
+        # premium variable exists.
+        component_premiums = (
             max_(
                 person("health_insurance_premiums_without_medicare_part_b", period),
                 0,
             )
-            + max_(person("medicare_part_b_premiums_reported", period), 0),
+            + person("medicare_part_a_premium", period)
+            + person("medicare_part_b_premium", period)
         )
+        # A positive direct premium input takes precedence over its components.
+        premiums = where(direct_premiums > 0, direct_premiums, component_premiums)
         deductions = spm_unit.sum(
-            max_(reported_premiums, 0)
-            + max_(person("pre_tax_health_insurance_premiums", period), 0)
+            premiums + max_(person("pre_tax_health_insurance_premiums", period), 0)
         ) + add(
             spm_unit,
             period,

@@ -9,6 +9,7 @@ class nd_liheap(Variable):
     label = "North Dakota LIHEAP regular heating assistance"
     reference = (
         "https://www.nd.gov/dhs/policymanuals/415/415_20_05_05.htm",
+        "https://www.nd.gov/dhs/policymanuals/415/415_20_10.htm",
         "https://www.nd.gov/dhs/policymanuals/415/415_30_05.htm",
         "https://www.nd.gov/dhs/policymanuals/415/415_30_30.htm",
         "https://www.nd.gov/dhs/policymanuals/415/415_30_15_01.htm",
@@ -38,8 +39,19 @@ class nd_liheap(Variable):
         # nonresidential-use caps need distinctions absent from current inputs.
         # Current operational rules supersede the plan's conflicting 6%-income
         # and $7,500 narrative; neither is applied to ordinary residential bills.
-        return where(
-            spm_unit("heat_expense_included_in_rent", period),
-            renter_payment,
-            direct_payment,
+        heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
+        subsidized = spm_unit(
+            "receives_housing_assistance", period
+        ) | spm_unit.household("is_in_public_housing", period)
+        # Manual 415-20-10 makes a subsidized household with heat in its rent
+        # "eligible for only the heat or electric bill in their name". Its own
+        # electric bill is paid at the share, as for any billed energy source
+        # (415-20-05-05), with nothing for the heat in its rent.
+        electric_payment = (
+            max_(spm_unit("pre_subsidy_electricity_expense", period), 0) * share
+        )
+        return select(
+            [heat_in_rent & subsidized, heat_in_rent],
+            [electric_payment, renter_payment],
+            default=direct_payment,
         )

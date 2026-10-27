@@ -187,7 +187,7 @@
         state_code: ND
   output:
     nd_liheap: 850
-- name: Case 10, subsidized heat in rent is ineligible.
+- name: Case 10, subsidized heat in rent without an own electric bill is ineligible.
   period: 2026
   input:
     people:
@@ -690,13 +690,19 @@
     nd_liheap_eligible: true
     nd_liheap: 312
 
-# Reported premium repair contract v2: supplied positive aggregate takes precedence.
-# Components represent paid, unreimbursed premiums; no calculated Medicare premium is used.
-# Source: ND manual 415-25-05-05-05, including paid Medicare premiums.
+# A positive health_insurance_premiums input takes precedence. Otherwise the
+# deduction is the non-Medicare premiums (floored at zero) plus the computed
+# out-of-pocket Medicare Part A and Part B premiums, net of Medicare Savings
+# Program coverage. 2026 Part B: 202.90 * 12 = 2,434.80 (no IRMAA at these
+# incomes); Part A is premium free at the default 40 quarters of coverage.
+# MSP: a 34,000 pension gives 34,000 / 12 - 20 = 2,813.33 a month, above the
+# QI limit of 1.35 * 15,960 / 12 = 1,795.50, so MSP pays nothing.
+# Source: ND manual 415-25-05-05-05, Medicare premiums except those MSP pays.
 # https://www.nd.gov/dhs/policymanuals/415/415_25_05_05_05.htm
 
-# Accepted C1: 34,000 - 2,400 = 31,600; the 65% band yields 650 on a 1,000 gas bill.
-- name: "Case 32, reported paid Part B premiums change the direct heating share."
+# A reported 2,400 total replaces the computed 2,434.80 Part B premium:
+# 34,000 - 2,400 = 31,600; the 65% band yields 650 on a 1,000 gas bill.
+- name: "Case 32, a reported premium total replaces the computed Part B premium."
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -707,9 +713,8 @@
         pension_income: 34_000
         ssi: 0
         medicare_enrolled: true
-        health_insurance_premiums: 0
+        health_insurance_premiums: 2_400
         health_insurance_premiums_without_medicare_part_b: 0
-        medicare_part_b_premiums_reported: 2_400
     spm_units:
       spm_unit1:
         members: ["person1"]
@@ -722,13 +727,14 @@
         members: ["person1"]
         state_code: "ND"
   output:
+    medicare_part_b_premium: 2_434.8
     nd_liheap_countable_income: 31_600
     nd_liheap_share: 0.65
     nd_liheap: 650
     msp_part_b_premium_coverage: 0
 
-# 34,000 - 1,200 - 2,400 - 600 = 29,800; the 65% share yields 650.
-- name: "Case 33, reported premium components preserve other medical deductions."
+# 34,000 - (1,200 + 2,434.80 Part B) - 600 = 29,765.20; the 65% share yields 650.
+- name: "Case 33, premium components with the computed Part B premium preserve other medical deductions."
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -741,7 +747,6 @@
         medicare_enrolled: true
         health_insurance_premiums: 0
         health_insurance_premiums_without_medicare_part_b: 1_200
-        medicare_part_b_premiums_reported: 2_400
         other_medical_expenses: 600
     spm_units:
       spm_unit1:
@@ -755,12 +760,14 @@
         members: ["person1"]
         state_code: "ND"
   output:
-    nd_liheap_countable_income: 29_800
+    medicare_part_b_premium: 2_434.8
+    nd_liheap_countable_income: 29_765.2
     nd_liheap_share: 0.65
     nd_liheap: 650
 
 # 37,000 - 1,200 aggregate - 600 other medical = 35,200; the 45% share yields 450.
-- name: "Case 34, a positive premium aggregate replaces both reported components."
+# Neither the 1,200 component nor the computed 2,434.80 Part B premium is added.
+- name: "Case 34, a positive premium aggregate replaces the components and the computed Part B premium."
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -773,7 +780,6 @@
         medicare_enrolled: true
         health_insurance_premiums: 1_200
         health_insurance_premiums_without_medicare_part_b: 1_200
-        medicare_part_b_premiums_reported: 2_400
         other_medical_expenses: 600
     spm_units:
       spm_unit1:
@@ -787,12 +793,15 @@
         members: ["person1"]
         state_code: "ND"
   output:
+    medicare_part_b_premium: 2_434.8
     nd_liheap_countable_income: 35_200
     nd_liheap_share: 0.45
     nd_liheap: 450
 
-# No reported premium means countable pension remains 34,000; the 45% share yields 450.
-- name: "Case 35, Medicare enrollment alone does not create a premium deduction."
+# With no reported premium, the computed Part B premium is deducted:
+# 34,000 - 2,434.80 = 31,565.20, within the 65% band (27,031-33,786);
+# 1,000 * 0.65 = 650. Without the deduction 34,000 is in the 45% band.
+- name: "Case 35, Medicare enrollment deducts the computed Part B premium."
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -805,7 +814,6 @@
         medicare_enrolled: true
         health_insurance_premiums: 0
         health_insurance_premiums_without_medicare_part_b: 0
-        medicare_part_b_premiums_reported: 0
     spm_units:
       spm_unit1:
         members: ["person1"]
@@ -818,9 +826,11 @@
         members: ["person1"]
         state_code: "ND"
   output:
-    nd_liheap_countable_income: 34_000
-    nd_liheap_share: 0.45
-    nd_liheap: 450
+    medicare_part_a_premium: 0
+    medicare_part_b_premium: 2_434.8
+    nd_liheap_countable_income: 31_565.2
+    nd_liheap_share: 0.65
+    nd_liheap: 650
     msp_part_b_premium_coverage: 0
 
 # Section 415-25-05-20-20 counts primary retirement pay separately from pension/VA.
@@ -1202,8 +1212,11 @@
     nd_liheap: [0, 3_000]
 
 # Section 415-25-05-20-20 counts military retirement income, which includes
-# survivor annuities. The 30,000 annuity is above the one-person 85% limit of
-# 27,030 and within the 65% limit of 33,786: 3,000 * 0.65 = 1,950.
+# survivor annuities. The 70-year-old is enrolled in Medicare by default; MSP
+# income is 30,000 / 12 - 20 = 2,480 a month, above the 1,795.50 QI limit, so
+# the 2,434.80 Part B premium is deducted: 30,000 - 2,434.80 = 27,565.20. That
+# is above the one-person 85% limit of 27,030 and within the 65% limit of
+# 33,786: 3,000 * 0.65 = 1,950.
 - name: "Case 41, a military survivor annuity counts as unearned income."
   period: 2026
   absolute_error_margin: 0.01
@@ -1224,7 +1237,8 @@
         state_code: ND
   output:
     nd_liheap_countable_unearned_income: 30_000
-    nd_liheap_countable_income: 30_000
+    medicare_part_b_premium: 2_434.8
+    nd_liheap_countable_income: 27_565.2
     nd_liheap_share: 0.65
     nd_liheap_eligible: true
     nd_liheap: 1_950
@@ -1314,3 +1328,188 @@
     nd_liheap_share: 0.65
     nd_liheap_eligible: true
     nd_liheap: 1_950
+
+# 42 U.S.C. 8624(b)(2)(B) caps income at the greater of 150% of the 2025
+# guideline, 1.5 * (15,650 + 3 * 5,500) = 48,225, and HHS's 60% of SMI,
+# floor(floor(0.6 * 129,911) * 1.00) = 77,946 for four people. The printed 60%
+# limit of 77,958 is capped at 77,946. A pension of 77,946 keeps the 45% share:
+# 3,000 * 0.45 = 1,350. A pension of 77,950 is above the cap and not below the
+# 110% floor of 1.1 * 32,150 = 35,365, so it gets 0.
+- name: "Case 43, a four-person household above HHS's 60% of state median income gets nothing."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 45, immigration_status: CITIZEN, pension_income: 77_946}
+      person2: {age: 45, immigration_status: CITIZEN}
+      person3: {age: 12, immigration_status: CITIZEN}
+      person4: {age: 9, immigration_status: CITIZEN}
+      person5: {age: 45, immigration_status: CITIZEN, pension_income: 77_950}
+      person6: {age: 45, immigration_status: CITIZEN}
+      person7: {age: 12, immigration_status: CITIZEN}
+      person8: {age: 9, immigration_status: CITIZEN}
+    tax_units:
+      tax_unit1: {members: [person1, person2, person3, person4]}
+      tax_unit2: {members: [person5, person6, person7, person8]}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+      spm_unit2:
+        members: [person5, person6, person7, person8]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+    households:
+      household1: {members: [person1, person2, person3, person4], state_code: ND}
+      household2: {members: [person5, person6, person7, person8], state_code: ND}
+  output:
+    nd_liheap_household_size: [4, 4]
+    nd_liheap_countable_income: [77_946, 77_950]
+    nd_liheap_share: [0.45, 0]
+    nd_liheap_eligible: [true, false]
+    nd_liheap: [1_350, 0]
+
+# Manual 415-25-05-05-05 bars Part A and B premiums that a Medicare Savings
+# Program pays. MSP income: 15,000 / 12 - 20 = 1,230 a month, within the QMB
+# limit of 15,960 / 12 = 1,330; no countable resources, under the 9,950 limit.
+# MSP pays the full 2,434.80 Part B premium, so nothing is deducted and the
+# 15,000 pension is in the 95% band (13,519-20,274): 1,000 * 0.95 = 950.
+# Deducting 2,434.80 would give 12,565.20 and the 100% share.
+- name: "Case 44, a Part B premium that a Medicare Savings Program pays is not deducted."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        pension_income: 15_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    msp_part_b_premium_coverage: 2_434.8
+    medicare_part_b_premium: 0
+    nd_liheap_countable_income: 15_000
+    nd_liheap_share: 0.95
+    nd_liheap: 950
+
+# With 35 quarters of coverage, Part A costs the 2026 reduced premium of
+# 311 * 12 = 3,732. MSP income of 38,000 / 12 - 20 = 3,146.67 a month is above
+# the QMB and QI limits, so the enrollee pays both premiums:
+# 38,000 - 3,732 - 2,434.80 = 31,833.20, within the 65% band (27,031-33,786):
+# 1,000 * 0.65 = 650. Deducting Part B alone (35,565.20) gives the 45% share.
+- name: "Case 45, a premium-paying Part A enrollee deducts the Part A premium."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        pension_income: 38_000
+        medicare_quarters_of_coverage: 35
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    medicare_part_a_premium: 3_732
+    medicare_part_b_premium: 2_434.8
+    nd_liheap_countable_income: 31_833.2
+    nd_liheap_share: 0.65
+    nd_liheap: 650
+
+# Manual 415-20-10: a subsidized household with heat in its rent and "the
+# opposite (heat or electricity) bill in their name" is "eligible for only the
+# heat or electric bill in their name". A 15,000 pension is in the 95% band
+# (13,519-20,274), so the 1,200 electric bill pays 1,200 * 0.95 = 1,140.
+- name: "Case 46, a subsidized heat-in-rent tenant is paid the share of its own electric bill."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        pension_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_share: 0.95
+    nd_liheap_eligible: true
+    nd_liheap: 1_140
+
+# Manual 415-30-15-01 puts kerosene in the "Other" column, whose 415-30-30
+# yearly cap is 700. A 15,000 pension gives the 95% share:
+# 700 * 0.95 / 12 = 55.42, rounded to 55 a month; 55 * 12 = 660, under the cap.
+- name: "Case 47, an unsubsidized kerosene heat-in-rent renter uses the 700 Other cap."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        pension_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: KEROSENE
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_share: 0.95
+    nd_liheap_eligible: true
+    nd_liheap: 660
+
+- name: "Case 48, a subsidized heat-in-rent tenant with UNSPECIFIED heating type and an electric bill is not paid."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        pension_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: false
+    nd_liheap: 0

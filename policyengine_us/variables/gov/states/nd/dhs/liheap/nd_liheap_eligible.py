@@ -21,6 +21,17 @@ class nd_liheap_eligible(Variable):
             "receives_housing_assistance", period
         ) | spm_unit.household("is_in_public_housing", period)
         responsibility = heat_in_rent | (spm_unit("heating_expense", period) > 0)
+        # Manual 415-20-10: "Tenants of subsidized housing in which heat is
+        # included in the rent are not eligible. If a subsidized household has
+        # heat or electricity included in their rent, but they have the
+        # opposite (heat or electricity) bill in their name, the household is
+        # eligible for only the heat or electric bill in their name."
+        # As in every state, an UNSPECIFIED heating_type is a missing input that
+        # pays nothing, so the electric-bill path needs a known heating_type.
+        own_electric_bill = (
+            spm_unit("pre_subsidy_electricity_expense", period) > 0
+        ) & (heating_type != types.UNSPECIFIED)
+        housing_eligible = ~(heat_in_rent & subsidized) | own_electric_bill
         # Residence is approximated by state/SPMUnit membership. Institutional,
         # transient-residence and tribal election/duplicate-aid facts are not
         # available; households are assumed to use the state program.
@@ -29,5 +40,5 @@ class nd_liheap_eligible(Variable):
             & (spm_unit("nd_liheap_share", period) > 0)
             & (heating_type != types.NONE)
             & responsibility
-            & ~(heat_in_rent & subsidized)
+            & housing_eligible
         )

@@ -3888,6 +3888,39 @@ candidates:
   state: unreviewed
   note: PE-US follows state rules from October 1, 2017; obtain historical versions because the supplied manual is
     a 2026 revision.
+- id: us-nd:liheap-child-earnings-exclusion
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does North Dakota LIHEAP count a minor's earnings unless the minor is a dependent child attending
+    elementary or high school half time or more?
+  sources:
+  - kind: plan
+    citation: North Dakota FFY2026 LIHEAP Detailed Model Plan, item 1.9 ("Earned income of a child under the age of
+      18")
+    url: https://liheapch.acf.gov/docs/2026/state-plans/ND_Plan_2026.pdf#page=6
+  - kind: manual
+    citation: Energy Assistance Policy Manual 415-25-05-50, Children's Earned Income
+    url: https://www.nd.gov/dhs/policymanuals/415/415_25_05_50.htm
+  readings:
+    statute: No statute is supplied; the manual excludes only "The earned income of all dependent children age 19 and
+      under and attending an elementary or high school 1/2 time or more".
+    other: Plan item 1.9 leaves "Earned income of a child under the age of 18" unchecked among the forms of countable
+      income, which excludes every minor's earnings.
+  example: A 17-year-old tax dependent who is not in school and earns $8,000 has $5,840 counted after the 27% earned
+    income deduction under the manual and $0 under the plan.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/nd/dhs/liheap/nd_liheap_countable_earned_income.py
+    - policyengine_us/parameters/gov/states/nd/dhs/liheap/income/child_earnings_age_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10342
+  state: unreviewed
+  note: PE-US follows the manual's narrower exclusion, approximated by a tax dependent under 20 in elementary or
+    secondary school. Confirm the plan's checkbox state and the policy with the state.
 - id: us-nd:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -3917,6 +3950,38 @@ candidates:
   state: unreviewed
   note: The PR applies the federal floor with the 45% minimum share from manual 415-30-05; above 28 members the floor
     also exceeds the 60% SMI extrapolation. Verify each later fiscal-year table.
+- id: us-nd:liheap-plan-income-share-design
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does North Dakota limit each household's heating costs to 6% of its income, with a $7,500 maximum
+    benefit, or pay a fixed LIHEAP share of the actual bill?
+  sources:
+  - kind: plan
+    citation: North Dakota FFY2026 LIHEAP Detailed Model Plan, items 2.5 and 2.6, pages 10-11
+    url: https://liheapch.acf.gov/docs/2026/state-plans/ND_Plan_2026.pdf#page=10
+  - kind: manual
+    citation: Energy Assistance Policy Manual 415-30-10, LIHEAP Share Percentage Table
+    url: https://www.nd.gov/dhs/policymanuals/415/415_30_10.htm
+  readings:
+    statute: No statute is supplied; manual 415-20-05-05, 415-30-05 and 415-30-10 pay a fixed 45% to 100% LIHEAP
+      share of allowable heating costs by state median income group, with no income-percentage limit or dollar
+      maximum.
+    other: Plan item 2.5 says the program "is designed to ensure that no eligible household will pay more than 6% of
+      their total income towards heating costs", and item 2.6 lists a $7,500 maximum benefit.
+  example: A household at the 100% share with an $8,000 propane bill receives $8,000 under the manual and at most
+    $7,500 under the plan's maximum.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/nd/dhs/liheap/nd_liheap.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10342
+  state: unreviewed
+  note: PE-US follows the manual's fixed share and applies neither the 6% design nor the $7,500 maximum. Confirm
+    with the state how the plan narrative relates to the share table.
 - id: us-nd:liheap-renter-table-vs-subtraction-prose
   program: liheap
   years:
@@ -3937,7 +4002,7 @@ candidates:
     other: 415-30-30-10 subtracts that share-based amount from the monthly estimated heating cost.
   example: A fuel-oil renter at the 100% share receives $183 a month under the table and $0 under the subtraction.
   pe_us:
-    follows: conflicting-source
+    follows: gap-fill
     code:
     - policyengine_us/variables/gov/states/nd/dhs/liheap/nd_liheap.py
     prs:
@@ -3963,17 +4028,58 @@ candidates:
     statute: No statute is supplied; the workbook prints $102,894, which equals 12 times the manual's $8,574.50 monthly
       limit.
     other: The manual prints $102,984 as the six-person annual limit.
-  example: A six-person household with $102,950 of countable income is ineligible under the workbook figure and
-    receives the 45% share, $1,350 on a $3,000 fuel-oil bill, under the manual figure.
+  example: Absent the federal maximum, a six-person household with $102,950 of countable income is ineligible
+    under the workbook figure and receives the 45% share, $1,350 on a $3,000 fuel-oil bill, under the manual
+    figure; with the $102,888 federal maximum both figures give $0.
   pe_us:
-    follows: conflicting-source
+    follows: gap-fill
     code:
     - policyengine_us/parameters/gov/states/nd/dhs/liheap/income_limits.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10342
   state: unreviewed
   note: PE-US follows the workbook, whose sizes 1 to 6 rise by $12,468 to $12,480 per step; $102,984 would be a
-    $12,558 step. Confirm the annual figure with the state.
+    $12,558 step. With the federal maximum applied (us-nd:liheap-table-above-federal-ceiling), both printed figures
+    exceed the $102,888 cap, so the choice no longer changes results. Confirm the annual figure with the state.
+- id: us-nd:liheap-table-above-federal-ceiling
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can North Dakota's printed 60% SMI limits pay a household whose income exceeds both 150% of the poverty
+    guideline and HHS's 60% state median income amount?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B); 42 U.S.C. 8622(11)
+    url: https://www.law.cornell.edu/uscode/text/42/8624
+  - kind: guidance
+    citation: HHS LIHEAP IM 2025-02 Attachment 4, Mandatory Use in LIHEAP for FY26, North Dakota, pages 2 and 5
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=2
+  - kind: guidance
+    citation: North Dakota FY2026 LIHEAP income limits full table (benefit matrix workbook), 60% SMI column
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/ND_BenefitMatrix_2026.xlsx
+  readings:
+    statute: Payments go only to households whose income does not exceed the greater of 150% of the poverty guideline
+      and 60% of the state median income that HHS publishes and adjusts for household size.
+    other: The printed 60% limits exceed HHS's FY2026 60% amounts by $2 to $12 at sizes 2 to 9, 11 and 12, where 60%
+      of the state median income is the greater amount.
+  example: A four-person household with $77,950 of countable income is within the $77,958 printed limit, which would
+    pay the 45% share, $1,350 on a $3,000 fuel-oil bill, but exceeds the $77,946 federal maximum (150% of the 2025
+    guideline is $48,225) and receives $0 in the PR.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/nd/dhs/liheap/nd_liheap_share.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10342
+  state: unreviewed
+  note: 'The PR caps every band at the federal maximum. Printed and capped 60% limits: size 2, $53,010 and $53,003;
+    3, $65,478 and $65,474; 4, $77,958 and $77,946; 5, $90,426 and $90,417; 6, $102,894 and $102,888; 7, $105,234
+    and $105,227; 8, $107,574 and $107,565; 9, $109,914 and $109,903; 11, $114,582 and $114,580; 12, $116,922 and
+    $116,919. Size 1 is below the ceiling, size 10 equals it, and from size 13 150% of the guideline exceeds the
+    table. Verify each later fiscal-year table.'
 - id: us-nd:stillborn-subtraction-dependency-condition
   program: income-tax
   years:
