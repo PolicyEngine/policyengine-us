@@ -48,10 +48,10 @@ _reported_request = ContextVar("reported_ss_request", default=None)
 _subsampling_social_security_sources = ContextVar(
     "subsampling_ss_sources", default=None
 )
-# Clone copies unknown attributes shallowly. Keep return metadata outside the
-# simulation so independent branches never share a mutable metadata dictionary.
-# Preserve it when importlib.reload leaves the installed Core hooks in place.
-_fast_only_returns = globals().get("_fast_only_returns", WeakKeyDictionary())
+# Pending formula returns contain only numbers and weak references. Clone
+# resets Core's fast cache; weak simulation keys keep pending stores independent.
+# Preserve them across reload while installed Core hooks remain in place.
+_pending_fast_returns = globals().get("_pending_fast_returns", WeakKeyDictionary())
 _cache_store_number = ContextVar("ss_cache_store_number", default=None)
 _PHYSICAL = {}
 
@@ -480,6 +480,82 @@ def _select_subsample_sources(simulation, metadata, person_ids):
     }
 
 
+def _remember_weak_return(entries, key, number, array):
+    def forget(reference):
+        current = entries.get(key)
+        if current is not None and current[1] is reference:
+            entries.pop(key, None)
+
+    entries[key] = (number, ref(array, forget))
+
+
+def _restore_formula_fast_cache(values, numbers):
+    return _FormulaFastCache(values, numbers)
+
+
+class _FormulaFastCache(dict):
+    """Core's memo values with the actual store number of each insertion.
+
+    A helper may number a return without memoizing it, even reusing an array
+    already in the memo. Only bracket assignment commits its new date. Values
+    have the same ownership as Core's dictionary; extra state holds numbers
+    and a weak owner only. Native clones/drops reset this cache to an empty dict.
+    """
+
+    def __init__(self, values=(), numbers=None):
+        super().__init__(values)
+        self._store_numbers = dict(numbers or {})
+        self._owner = None
+
+    def __setitem__(self, key, array):
+        super().__setitem__(key, array)
+        self._store_numbers.pop(key, None)
+        simulation = None if self._owner is None else self._owner()
+        if simulation is None:
+            return
+        name, requested = key
+        requested = None if requested is None else to_period(requested)
+        pending = _pending_fast_returns.get(simulation, {})
+        entry = pending.pop((name, requested, id(array)), None)
+        if entry is not None and entry[1]() is array:
+            self._store_numbers[key] = entry[0]
+
+    def __delitem__(self, key):
+        super().__delitem__(key)
+        self._store_numbers.pop(key, None)
+
+    def pop(self, key, *default):
+        self._store_numbers.pop(key, None)
+        return super().pop(key, *default)
+
+    def popitem(self):
+        key, array = super().popitem()
+        self._store_numbers.pop(key, None)
+        return key, array
+
+    def clear(self):
+        super().clear()
+        self._store_numbers.clear()
+
+    def update(self, *args, **kwargs):
+        for key, array in dict(*args, **kwargs).items():
+            self[key] = array
+
+    def setdefault(self, key, default=None):
+        if key not in self:
+            self[key] = default
+        return self[key]
+
+    def __ior__(self, other):
+        self.update(other)
+        return self
+
+    def __reduce__(self):
+        # Weak ownership/pending state is ephemeral. Preserve memo dates with
+        # the values, so pickle remains usable and a restored memo can refresh.
+        return _restore_formula_fast_cache, (dict(self), self._store_numbers)
+
+
 def _derived_cached_returns(simulation):
     """Remember numbered formula returns without retaining an old dataset.
 
@@ -536,9 +612,9 @@ def _derived_cached_returns(simulation):
             # StoreHistory remembers the first store, not the store which
             # produced this return. Skipped-storage formula returns need their
             # own number, captured by _cache_result/_record_store below.
-            entry = _fast_only_returns.get(simulation, {}).get((name, period))
-            if entry is not None and entry[1]() is array:
-                entries[key] = entry
+            number = getattr(fast_cache, "_store_numbers", {}).get(key)
+            if number is not None:
+                entries[key] = (number, ref(array))
             continue
         if holder._memory_storage.has(period, branch):
             storage = holder._memory_storage
@@ -708,16 +784,18 @@ def install_social_security_input_compatibility():
             numbers
             and holder._branch_storing(stored_period, simulation.branch_name) is None
         ):
-            entries = _fast_only_returns.setdefault(simulation, {})
-            key = (holder.variable.name, stored_period)
-            number = numbers[-1]
-
-            def forget(reference):
-                current = entries.get(key)
-                if current is not None and current[1] is reference:
-                    entries.pop(key, None)
-
-            entries[key] = (number, ref(result, forget))
+            cache = simulation._fast_cache
+            if not isinstance(cache, _FormulaFastCache):
+                cache = _FormulaFastCache(cache, getattr(cache, "_store_numbers", {}))
+                simulation._fast_cache = cache
+            cache._owner = ref(simulation)
+            requested = None if period is None else to_period(period)
+            _remember_weak_return(
+                _pending_fast_returns.setdefault(simulation, {}),
+                (holder.variable.name, requested, id(result)),
+                numbers[-1],
+                result,
+            )
         return result
 
     CoreSimulation._cache_result = cache_result

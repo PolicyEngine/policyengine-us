@@ -8,6 +8,7 @@ Run it separately from country-importing tests.
 from __future__ import annotations
 
 import importlib
+import pickle
 import sys
 import types
 from pathlib import Path
@@ -594,6 +595,69 @@ def test_recalculated_fast_only_return_uses_its_own_store_number(mode, monkeypat
     assert scalar(simulation, "independent_formula", "2023") == 77
     assert stores[-1] >= since
     assert simulation._get_store_history().earliest_dependency(*key) == first
+    epoch = simulation._input_epoch
+    simulation.set_input(PUBLIC, "2024", [24_000.0])
+    assert key not in simulation._fast_cache
+    assert simulation._input_epoch > epoch
+
+
+@pytest.mark.parametrize("mode", ("blacklist", "variables_to_drop"))
+@pytest.mark.parametrize("memo_before_since", (False, True), ids=("after", "before"))
+@pytest.mark.parametrize("reuse_array", (False, True), ids=("new_array", "same_array"))
+def test_nonmemoized_store_keeps_the_existing_fast_return_date(
+    mode, memo_before_since, reuse_array
+):
+    inputs = {} if memo_before_since else {PUBLIC: {"2024": [12_000.0]}}
+    simulation = fresh_without_holder_cache(mode, ["independent_formula"], inputs)
+    if not memo_before_since:
+        assert scalar(simulation, PUBLIC + "_reported", "2024") == 12_000
+    assert scalar(simulation, "independent_formula", "2023") == 77
+    key = ("independent_formula", period("2023"))
+    memo = simulation._fast_cache[key]
+    number = simulation._get_store_history().earliest_dependency(*key)
+    if memo_before_since:
+        simulation.set_input(PUBLIC, "2024", [12_000.0])
+        assert scalar(simulation, PUBLIC + "_reported", "2024") == 12_000
+    since = earliest_source_dependency(simulation)
+    assert (number < since) is memo_before_since
+    holder = simulation.get_holder("independent_formula")
+    assert stored(simulation, *key) is None
+
+    # A helper can store a result through _cache_result without inserting it
+    # into the fast cache. Even reusing the same ndarray must not change the
+    # earlier memo's date: its producing store is the original calculation.
+    candidate = memo if reuse_array else memo.copy()
+    assert (
+        simulation._cache_result(
+            holder, candidate, key[1], simulation._calculation_start()
+        )
+        is candidate
+    )
+    assert simulation._fast_cache[key] is memo
+    assert stored(simulation, *key) is None
+    epoch = simulation._input_epoch
+    simulation.set_input(PUBLIC, "2024", [24_000.0])
+    if memo_before_since:
+        assert simulation._fast_cache[key] is memo
+        assert simulation._input_epoch == epoch
+    else:
+        # Intended rule 5 drop: the original memo itself followed the cutoff.
+        assert key not in simulation._fast_cache
+        assert simulation._input_epoch > epoch
+
+
+@pytest.mark.parametrize("mode", ("blacklist", "variables_to_drop"))
+def test_pickled_fast_only_cache_retains_its_return_dates(mode):
+    simulation = fresh_without_holder_cache(
+        mode, ["independent_formula"], {PUBLIC: {"2024": [12_000.0]}}
+    )
+    assert scalar(simulation, PUBLIC + "_reported", "2024") == 12_000
+    assert scalar(simulation, "independent_formula", "2024") == 77
+    key = ("independent_formula", period("2024"))
+    assert stored(simulation, *key) is None
+    simulation._fast_cache = pickle.loads(pickle.dumps(simulation._fast_cache))
+    np.testing.assert_array_equal(simulation._fast_cache[key], [77])
+    assert stored(simulation, *key) is None
     epoch = simulation._input_epoch
     simulation.set_input(PUBLIC, "2024", [24_000.0])
     assert key not in simulation._fast_cache
