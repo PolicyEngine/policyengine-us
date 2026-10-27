@@ -2212,6 +2212,12 @@ def _kinds(source: str) -> set:
         ("__import__('numpy', fromlist={**{'random': None}})\n", "stochastic import"),
         ("__import__('numpy', fromlist=[*('random',)])\n", "stochastic import"),
         ("__import__('numpy', fromlist={*'x', *{'random': 0}})\n", "stochastic import"),
+        # At any depth.
+        (
+            "__import__('numpy', fromlist={**{**{'random': None}}})\n",
+            "stochastic import",
+        ),
+        ("__import__('numpy', fromlist=[*[*('random',)]])\n", "stochastic import"),
         ("from importlib import import_module as load\nload('zlib')\n", "hash library"),
         # Hashes.
         ('key = hash("x")\n', "builtin hash"),
@@ -3779,6 +3785,16 @@ def test_reference_paths_stay_within_the_known_paths(source):
             ["pkg.sub"],
         ),
         ("__import__('sub', {1: 0, '__package__': 'pkg.o'}, level=1)", ["pkg.o.sub"]),
+        # At any depth.
+        (
+            "__import__('sub', globals(), None, {**{**{'x': 0}}}, 1)",
+            ["pkg.sub", "pkg.sub.x"],
+        ),
+        (
+            "__import__('sub', globals(), None, [*[*['x']]], 1)",
+            ["pkg.sub", "pkg.sub.x"],
+        ),
+        ("__import__('sub', {**{**{'__package__': 'pkg.o'}}}, level=1)", ["pkg.o.sub"]),
         (
             "__import__('sub', {'__spec__': spec, '__name__': 'x.y'}, level=1)",
             ["pkg.sub"],
