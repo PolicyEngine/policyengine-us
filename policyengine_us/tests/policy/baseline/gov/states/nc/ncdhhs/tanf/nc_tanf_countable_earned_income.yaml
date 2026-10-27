@@ -55,7 +55,7 @@
     # Only the parent's earnings count: 6_000 * (1 - 0.275) = 4_350
     nc_tanf_countable_earned_income: 4_350
 
-- name: Earnings of an 18-year-old member are counted.
+- name: Earnings of an 18-year-old not in high school are counted (PolicyEngine counts every non-SSI member who is not a child).
   period: 2024
   input:
     people:
@@ -73,5 +73,33 @@
         members: [parent, adult_child]
         state_code: NC
   output:
-    # Age 18 is not below the age limit of 18: 3_000 * (1 - 0.275) = 2_175
+    # Age 18 is not below the age limit of 18, so PolicyEngine counts the
+    # earnings: 3_000 * (1 - 0.275) = 2_175. This approximates the rule, which
+    # counts parents' income (10A NCAC 71W .0408(a)(1)) and keeps an 18-year-old
+    # in high school as a child (State Plan Non-Financial Eligibility Rules 1).
     nc_tanf_countable_earned_income: 2_175
+
+- name: An SSI recipient's earnings are not counted, and the other parent's earnings are.
+  period: 2024
+  input:
+    people:
+      parent_a:
+        age: 35
+        employment_income: 4_800
+        receives_ssi: true
+      parent_b:
+        age: 35
+        employment_income: 2_000
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent_a, parent_b, child]
+    households:
+      household:
+        members: [parent_a, parent_b, child]
+        state_code: NC
+  output:
+    # State Plan Financial Rules 3: the income of SSI recipients is not counted.
+    # Only parent B's earnings count: 2_000 * (1 - 0.275) = 1_450
+    nc_tanf_countable_earned_income: 1_450

@@ -106,3 +106,31 @@
     receives_tanf: true
   output:
     nc_tanf_countable_gross_unearned_income: 5_000
+
+- name: An SSI recipient's unearned income and child support are not counted.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 35
+        social_security: 6_000
+        child_support_received: 1_000
+        receives_ssi: true
+      other_parent:
+        age: 35
+        pension_income: 1_200
+        child_support_received: 500
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, other_parent, child]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [parent, other_parent, child]
+        state_code: NC
+  output:
+    # State Plan Financial Rules 3 and 4: no income of SSI recipients is counted.
+    # Only the other parent's income counts: 1_200 + 500 = 1_700
+    nc_tanf_countable_gross_unearned_income: 1_700

@@ -449,3 +449,30 @@
   output:
     # Countable earnings: 600 * (1 - 0.275) = 435 a month; 0.5 * (544 - 435) = 54.50
     nc_tanf: 54.5 * 12
+
+- name: Two parents and a child, where the parent with $400 monthly earnings receives SSI, receive $236 per month.
+  period: 2024
+  input:
+    people:
+      parent_a:
+        age: 35
+        employment_income: 400 * 12
+        receives_ssi: true
+      parent_b:
+        age: 35
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent_a, parent_b, child]
+    households:
+      household:
+        members: [parent_a, parent_b, child]
+        state_code: NC
+  output:
+    # The SSI recipient is not in the household size, and none of their
+    # income is counted (State Plan Financial Rules 3).
+    nc_tanf_household_size: 2
+    nc_tanf_countable_earned_income: 0
+    # Need standard for 2: 472 a month; 0.5 * (472 - 0) = 236 a month
+    nc_tanf: 236 * 12
