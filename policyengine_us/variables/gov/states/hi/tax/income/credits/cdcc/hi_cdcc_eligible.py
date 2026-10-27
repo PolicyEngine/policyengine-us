@@ -14,6 +14,7 @@ class hi_cdcc_eligible(Variable):
     )
 
     def formula(tax_unit, period, parameters):
+        # Source conflict us-hi:care-credit-claimable-unclaimed-filer
         # HRS §235-55.6(a)(1) allows the credit to a taxpayer who "is not
         # claimed or is not otherwise eligible to be claimed as a dependent".
         # On a joint return a spouse who cannot be claimed may claim it for

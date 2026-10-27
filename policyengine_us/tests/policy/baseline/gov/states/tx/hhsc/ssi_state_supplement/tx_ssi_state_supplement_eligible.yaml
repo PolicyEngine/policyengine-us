@@ -138,3 +138,31 @@
     state_code: TX
   output:
     tx_ssi_state_supplement_eligible: false
+
+- name: Case 12, countable income equal to the $25 reduced standard before July 1988.
+  # 42 USC 1382(e)(1)(B)(i) said "$300 per year" until Pub. L. 100-203
+  # section 9119(a) substituted "$360 per year", effective July 1, 1988
+  # (section 9119(c)). $300/year = $25/month.
+  period: 1987
+  input:
+    is_ssi_eligible: true
+    ssi_countable_income: 300
+    is_in_medicaid_facility: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    state_code: TX
+  output:
+    tx_ssi_state_supplement_eligible: true
+
+- name: Case 13, countable income above the $25 reduced standard before July 1988.
+  # $312/year = $26/month.
+  period: 1987
+  input:
+    is_ssi_eligible: true
+    ssi_countable_income: 312
+    is_in_medicaid_facility: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    state_code: TX
+  output:
+    tx_ssi_state_supplement_eligible: false
