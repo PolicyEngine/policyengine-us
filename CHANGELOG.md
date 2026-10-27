@@ -1,3 +1,12 @@
+## [2.74.0] - 2026-10-27
+
+### Added
+
+- Add New Hampshire Fuel Assistance Program (nh_fap): PY2027 regular heating benefit from the Attachment D matrix with the 60% state median income test and a bedroom-based heating-cost estimate.
+- Add Utah HEAT (ut_heat): 2026 regular heating benefit from energy-burden points and targeted supplements with the 150% federal poverty guideline income test.
+- Add Wyoming LIEAP (wy_lieap): FY2026 regular heating benefit from the published fuel cost standards with the 60% state median income test.
+
+
 ## [2.73.2] - 2026-10-27
 
 ### Fixed
