@@ -13,12 +13,11 @@ values:
     - 1
     - 1.5
     - 1.65
-  # PY2027 Program Design V4 (adopted Board Res. 2026-22) widens the top band
-  # to under 200% FPL, adding a 165-200% bracket.
+  # The Final 2027 Program Design has two bands, "100% up to 150%" (0%) and
+  # "Above 150% up to 200%" (2.8% to 5.28%), with no knot at 165%.
   2027-01-01:
     - 1
     - 1.5
-    - 1.65
     - 2.0
 
 metadata:
@@ -30,7 +29,5 @@ metadata:
       href: https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=2
     - title: 2026 California State Premium Subsidy Policy Explainer, Table 1
       href: https://hbex.coveredca.com/stakeholders/PDFs/2026-02_StatePremiumSub_PolicyExplainer-Final.pdf#page=2
-    - title: 2027 California Premium Subsidy Program Design V4, subdiv. (d)(4)
-      href: https://board.coveredca.com/meetings/2026/May%2021,%202026/CoveredCA_2027_Premium_Subsidy_Program_Design_V4_05-19-26.pdf#page=2
-    - title: Covered California Board Resolution 2026-22
-      href: https://board.coveredca.com/meetings/2026/June%2018,%202026/2026-22.pdf
+    - title: Final 2027 California Premium Subsidy Program Design, subdiv. (d)(4) and (d)(7)
+      href: https://hbex.coveredca.com/data-research/Final-2027-California-Premium-Subsidy-Program-Design.pdf#page=2

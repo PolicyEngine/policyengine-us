@@ -13,6 +13,7 @@
 # The negative-MAGI clamp case supplies eligibility and a positive rate to
 # isolate the amount formula; its income fraction is correctly zero.
 #   CA schedule: threshold [1.0, 1.5, 1.65], initial [0, 0.0319], final [0, 0.0391]
+#   PY2027 (Final Design): threshold [1.0, 1.5, 2.0], initial [0, 0.028], final [0, 0.0528]
 
 # ---- 100-150% FPL band (applicable percentage 0%) ----
 
@@ -99,8 +100,9 @@
     ca_premium_subsidy: 3_112.50
 
 - name: Case 4, exactly 165% FPL positive subsidy (pct 3.91%, top of the ramp).
-  # pct = 0.0391 (final rate). income 26_000.
-  # amount = max(0, 7_000 - 2_500 - 0.0391*26_000) = 7_000 - 2_500 - 1_016.60 = 3_483.40.
+  # pct = 0.0391 (final rate). income 25_822.50 = 165% of the 2025 one-person
+  # FPG $15,650, the highest income "at or below 165 percent".
+  # amount = max(0, 7_000 - 2_500 - 0.0391*25_822.50) = 7_000 - 2_500 - 1_009.66 = 3_490.34.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -112,8 +114,8 @@
       tax_unit:
         members: [person1]
         tax_unit_fpg:
-          2025: 15_757.575757575758
-        aca_magi: 26_000
+          2025: 15_650
+        aca_magi: 25_822.50
         aca_magi_fraction: 1.65
         slcsp: 7_000
         aca_ptc: 2_500
@@ -123,7 +125,8 @@
         members: [person1]
         state_code: CA
   output:
-    ca_premium_subsidy: 3_483.40
+    ca_premium_subsidy_eligible: true
+    ca_premium_subsidy: 3_490.34
 
 - name: Case 5, 160% FPL with expected contribution exceeding the gap -> $0 floor.
   # pct = 0.0319 + (2/3)*0.0072 = 0.0367. income 24_000 -> 0.0367*24_000 = 880.80.
@@ -259,6 +262,7 @@
         aca_magi_fraction: 1.66
         slcsp: 6_000
         aca_ptc: 2_000
+        tax_unit_is_filer: true
     households:
       household:
         members: [person1]
@@ -295,9 +299,10 @@
 # ---- Floor edge with a positive amount ----
 
 - name: Case 11, exactly at the 100% FPL floor (1.0) with a positive subsidy.
-  # magi_frac 1.0 -> pct 0 (flat 100-150% band). Eligible: 1.0 >= fpl_floor 1.0,
-  # <= fpl_limit 1.65, in effect, APTC-eligible. income 15_000.
-  # amount = max(0, 6_000 - 3_500 - 0*15_000) = 2_500. Confirms the floor edge is
+  # magi_frac 1.0 -> pct 0 (flat 100-150% band). Eligible: income 15_650 is
+  # exactly the 2025 one-person FPG, so 1.0 >= fpl_floor 1.0, <= fpl_limit 1.65,
+  # in effect, APTC-eligible.
+  # amount = max(0, 6_000 - 3_500 - 0*15_650) = 2_500. Confirms the floor edge is
   # eligible AND pays the full post-APTC gap (pct is 0 at the bottom of the band).
   period: 2026
   absolute_error_margin: 0.01
@@ -310,8 +315,8 @@
       tax_unit:
         members: [person1]
         tax_unit_fpg:
-          2025: 15_000
-        aca_magi: 15_000
+          2025: 15_650
+        aca_magi: 15_650
         aca_magi_fraction: 1.00
         slcsp: 6_000
         aca_ptc: 3_500
@@ -321,6 +326,7 @@
         members: [person1]
         state_code: CA
   output:
+    ca_premium_subsidy_eligible: true
     ca_premium_subsidy: 2_500
 
 # ---- Mid-band interaction: APTC and pct both active, residual positive ----
@@ -409,6 +415,7 @@
         aca_magi_fraction: 1.66
         slcsp: 6_000
         aca_ptc: 2_000
+        tax_unit_is_filer: true
     households:
       household:
         members: [person1]
@@ -439,6 +446,7 @@
         aca_magi_fraction: 0.99
         slcsp: 6_000
         aca_ptc: 2_000
+        tax_unit_is_filer: true
     households:
       household:
         members: [person1]
@@ -447,15 +455,16 @@
     ca_premium_subsidy_applicable_percentage: 0
     ca_premium_subsidy: 0
 
-# ---- PY2027 carry-forward (positive amount) ----
+# ---- PY2027 Final Program Design (positive amount) ----
 
 - name: Case 16, PY2027 pays a positive subsidy at 157.5% FPL (revised schedule).
-  # in_effect is true through PY2027 and the schedule CHANGED (Board Res. 2026-22):
-  # the 150-165% band is now initial 0.0269 -> final 0.0341, so
-  # magi_frac 1.575 -> pct 0.0269 + 0.5*(0.0341-0.0269) = 0.0269 + 0.0036 = 0.0305.
-  # income 25_000. amount = max(0, 6_000 - 2_000 - 0.0305*25_000)
-  # = 6_000 - 2_000 - 762.50 = 3_237.50 (up from the 2026 value of 3_112.50 at the
-  # same FPL because the PY2027 applicable percentage in this band is lower).
+  # in_effect is true through PY2027 and the Final 2027 Program Design (d)(4)
+  # changes the schedule: one paying band "Above 150% up to 200%", initial
+  # 0.028 -> final 0.0528. magi_frac 1.575 -> position (1.575-1.5)/0.5 = 0.15
+  # -> pct 0.028 + 0.15*0.0248 = 0.03172. income 25_000.
+  # amount = max(0, 6_000 - 2_000 - 0.03172*25_000) = 6_000 - 2_000 - 793 = 3_207
+  # (up from the 2026 value of 3_112.50 at the same FPL because the PY2027
+  # applicable percentage at this point is lower).
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -478,7 +487,7 @@
         members: [person1]
         state_code: CA
   output:
-    ca_premium_subsidy: 3_237.50
+    ca_premium_subsidy: 3_207
 
 # ---- Floor from the SLCSP == APTC direction ----
 
@@ -551,3 +560,43 @@
     ca_premium_subsidy_eligible: true
     ca_premium_subsidy_applicable_percentage: 0.0355
     ca_premium_subsidy: 3_881.75
+
+# ---- PY2027 upper limit (Covered California's worked example) ----
+
+- name: Case 19, PY2027 exactly 200% FPL pays the 1.5-point gap (OE27 example).
+  # The OE27 enroller deck (PDF pages 37-38) works a single 40-year-old in
+  # Sacramento County at $31,920, exactly 200% of the 2026 one-person FPG
+  # $15,960: benchmark $688 a month, federal required contribution 6.78%,
+  # state rate 5.28% (6.78% - 1.5%), state subsidy about $40 a month.
+  # slcsp = 688*12 = 8_256. aca_ptc = 8_256 - 0.0678*31_920 = 8_256 - 2_164.176
+  # = 6_091.824. Eligible: 2.0 is "at or below 200 percent" (Design (d)(7)).
+  # amount = max(0, 8_256 - 6_091.824 - 0.0528*31_920)
+  # = 2_164.176 - 1_685.376 = 478.80 = 0.015*31_920, or $39.90 a month.
+  # aca_ptc is derived from the federal 2027 applicable percentage table
+  # (Rev. Proc. 2026-26, PolicyEngine/policyengine-us#10443), which gives 6.78%
+  # at exactly 200% FPL. The output pins that federal credit.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg:
+          2026: 15_960
+        aca_magi: 31_920
+        aca_magi_fraction: 2.00
+        slcsp: 8_256
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_ptc: 6_091.824
+    ca_premium_subsidy_eligible: true
+    ca_premium_subsidy_applicable_percentage: 0.0528
+    ca_premium_subsidy: 478.80
