@@ -4,6 +4,20 @@ metadata:
   period: year
   label: States defaulting to Optional Local Sales Tax Table A
   reference:
+    - title: 2015 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2015.pdf#page=18
+    - title: 2016 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2016.pdf#page=18
+    - title: 2017 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2017.pdf#page=19
+    - title: 2018 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2018.pdf#page=18
+    - title: 2019 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2019.pdf#page=19
+    - title: 2020 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2020.pdf#page=18
+    - title: 2021 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2021.pdf#page=18
     - title: 2022 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
       href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=17
     - title: 2023 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
@@ -17,7 +31,46 @@ metadata:
 # local sales tax". Residents of the localities the IRS names in other rows
 # use those rows' tables (the county and place lists).
 # Mississippi has no other-locality row; see none.yaml.
+# In 2015 and 2016 the default rows say "Any locality", "Any other
+# locality" or "... or any other locality". The original January 2018
+# printing has the same 2017 selector as the February 2018 revision.
 values:
+  2015-01-01:
+    - CO
+    - IL
+    - NC
+    - UT
+  2016-01-01:
+    - CO
+    - IL
+    - NC
+    - UT
+  2017-01-01:
+    - CO
+    - IL
+    - NC
+    - UT
+  2018-01-01:
+    - CO
+    - IL
+    - NC
+    - UT
+  2019-01-01:
+    - CO
+    - IL
+    - NC
+    - UT
+  2020-01-01:
+    - CO
+    - GA
+    - IL
+    - NC
+    - UT
+  2021-01-01:
+    - CO
+    - IL
+    - NC
+    - UT
   2022-01-01:
     - CO
     - IL
