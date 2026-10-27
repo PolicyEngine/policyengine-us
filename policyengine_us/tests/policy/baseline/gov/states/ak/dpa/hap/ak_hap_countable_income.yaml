@@ -1,4 +1,4 @@
-# Adopted FY2027 HAP manual; supported income components only.
+# FY2027 HAP manual; supported income components only.
 # These tests do not assert final eligibility, heating points or an award.
 # Sources:
 # http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-1_countable_income.htm
@@ -33,7 +33,7 @@
   output:
     ak_hap_countable_income: 12_000
 
-# MS 3003-4 A.7 defines gross less allowable costs; contract accepts already-net input, so no second standard expense deduction.
+# MS 3003-4 A.7 defines gross less allowable costs; the supplied input is already net, so no second standard expense deduction applies.
 - name: "Case 2, supplied net self-employment is not reduced by another fifty percent."
   period: 2027
   absolute_error_margin: 0.01
@@ -116,7 +116,7 @@
   output:
     ak_hap_countable_income: 3_800
 
-# MS 3003-1 B.6.f and contract nonnegative rental streams: 10,000 + 0 + 600.
+# MS 3003-1 B.6.f; each rental stream is floored at zero: 10,000 + 0 + 600.
 - name: "Case 5, negative rental income does not offset positive farm rental income."
   period: 2027
   absolute_error_margin: 0.01
@@ -144,7 +144,7 @@
   output:
     ak_hap_countable_income: 10_600
 
-# Contract floors each reported rental source separately; no extra expense deduction from supplied net rent.
+# Each reported rental source is floored separately; no extra expense deduction from supplied net rent.
 - name: "Case 6, negative farm rental income does not reduce positive rental income."
   period: 2027
   absolute_error_margin: 0.01
@@ -376,7 +376,7 @@
   output:
     ak_hap_countable_income: 36_000
 
-# MS 3003-6 E and contract dependent-child approximation do not exclude a minor household head's earnings.
+# MS 3003-6 E and the dependent-child approximation do not exclude a minor household head's earnings.
 - name: "Case 13, an independent minor student has countable earnings."
   period: 2027
   absolute_error_margin: 0.01
@@ -441,7 +441,7 @@
   output:
     ak_hap_countable_income: 28_200
 
-# MS 3003-1 B.2.c counts gross SSA including Medicare withholding. Contract adds no general medical, childcare or support deduction.
+# MS 3003-1 B.2.c counts gross SSA including Medicare withholding. No general medical, childcare or support deduction applies.
 - name: "Case 15, gross Social Security is not reduced by reported medical or support expenses."
   period: 2027
   absolute_error_margin: 0.01
@@ -473,8 +473,8 @@
   output:
     ak_hap_countable_income: 18_000
 
-# MS 3003-1 B.2 and B.6.c list these ordinary unearned receipts; inputs represent distinct payments.
-- name: "Case 16, retirement and regular disability or survivor receipts count."
+# MS 3003-1 B.2 and B.6.c list these ordinary unearned receipts, and 3000-2 names Railroad Retirement Act annuities; inputs represent distinct payments: 2,400 + 1,200 + 600 + 600 + 600.
+- name: "Case 16, retirement, railroad and regular disability or survivor receipts count."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -489,6 +489,7 @@
         retirement_distributions: 1_200
         disability_benefits: 600
         survivor_benefits: 600
+        railroad_benefits: 600
     spm_units:
       spm_unit1:
         members: ["person1"]
@@ -500,7 +501,7 @@
         members: ["person1"]
         state_code: "AK"
   output:
-    ak_hap_countable_income: 4_800
+    ak_hap_countable_income: 5_400
 
 # MS 3003-1 B.2 and B.6.a,b,j,o: ordinary nonexempt cash receipts. General assistance represents cash paid to the household, not a vendor payment.
 - name: "Case 17, ordinary cash assistance and compensation receipts count."
@@ -532,8 +533,8 @@
   output:
     ak_hap_countable_income: 3_000
 
-# MS 3003-1 B.6.h; ordinary receipts have no NH-style $50 disregard. Generic dividends cannot identify exempt ANCSA payments.
-- name: "Case 18, ordinary interest dividends and estate payments count in full."
+# MS 3003-1 B.6.h and B.6.n (bingo and lottery winnings); ordinary receipts have no NH-style $50 disregard. Generic dividends cannot identify exempt ANCSA payments: 120 + 240 + 120 + 600.
+- name: "Case 18, ordinary interest, dividends, estate payments and gambling winnings count in full."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -547,6 +548,7 @@
         interest_income: 120
         ordinary_dividend_income: 240
         estate_income: 120
+        gambling_winnings: 600
     spm_units:
       spm_unit1:
         members: ["person1"]
@@ -558,7 +560,7 @@
         members: ["person1"]
         state_code: "AK"
   output:
-    ak_hap_countable_income: 480
+    ak_hap_countable_income: 1_080
 
 # MS 3003-1 B.6.h. Canonical ordinary dividends aggregate the two components; do not count the aggregate and components again.
 - name: "Case 19, canonical dividend components are counted once."
@@ -614,7 +616,7 @@
   output:
     ak_hap_countable_income: 3_000
 
-# MS 3003-1 B.3 and B.6.e; contract treats support as actually retained and does not impose an unsupported blanket $50 pass-through cap. 600 + 1,200 + 2,400 ATAP.
+# MS 3003-1 B.3 and B.6.e; reported support is treated as retained, with no $50 pass-through cap. 600 + 1,200 + 2,400 ATAP.
 - name: "Case 21, retained child support and alimony are countable."
   period: 2027
   absolute_error_margin: 0.01
@@ -713,7 +715,7 @@
   output:
     ak_hap_countable_income: 8_400
 
-# MS 3003-2 A.24: 239.88 / 12 = 19.99 each month under the authorized constant-receipt proxy.
+# MS 3003-2 A.24: 239.88 / 12 = 19.99 each month under the constant monthly receipt approximation.
 - name: "Case 24, regular cash gifts strictly below twenty dollars monthly are excluded."
   period: 2027
   absolute_error_margin: 0.01
@@ -739,8 +741,8 @@
   output:
     ak_hap_countable_income: 0
 
-# MS 3003-2 A.24 excludes only amounts under $20; contract retains the whole gift at 240 / 12 = 20.
-- name: "Case 25, regular cash gifts at twenty dollars monthly count in full."
+# 7 AAC 44.042(16) exempts gifts that do not exceed $20 a month, and MS 3003-1 B.6.r counts only gifts over $20: 240 / 12 = 20 is excluded.
+- name: "Case 25, regular cash gifts of exactly twenty dollars monthly are excluded."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -763,7 +765,7 @@
         members: ["person1"]
         state_code: "AK"
   output:
-    ak_hap_countable_income: 240
+    ak_hap_countable_income: 0
 
 # MS 3003-1 B.6.r and 3003-2 A.24: 240.12 / 12 = 20.01; this is an exclusion threshold, not a $20 deduction.
 - name: "Case 26, regular cash gifts above twenty dollars monthly count in full."
@@ -824,7 +826,7 @@
   output:
     ak_hap_countable_income: 0
 
-# MS 3003-2 A.1,6,9,30 and the shared contract exclude the household member's PFD, Pell, SNAP and vendor housing benefit.
+# MS 3003-2 A.1,6,9,30 exclude the household member's PFD, Pell, SNAP and vendor housing benefit.
 - name: "Case 28, household PFD and vendor or education benefits are excluded."
   period: 2027
   absolute_error_margin: 0.01
@@ -853,7 +855,7 @@
   output:
     ak_hap_countable_income: 10_000
 
-# MS 3003-2 A.9 counts actual cash utility reimbursement; contract does not infer that a HUD allowance was paid in cash.
+# MS 3003-2 A.9 counts actual cash utility reimbursement; a HUD allowance alone does not show a cash payment.
 - name: "Case 29, a utility allowance is not automatically treated as a cash reimbursement."
   period: 2027
   absolute_error_margin: 0.01

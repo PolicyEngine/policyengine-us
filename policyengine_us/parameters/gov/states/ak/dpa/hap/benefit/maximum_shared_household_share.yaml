@@ -1,22 +1,18 @@
-description: Alaska limits a household sharing its dwelling to this share of its calculated award under the Heating Assistance Program.
-# Approved manual-based convention: section 3002-1 A.3-5 divides each award
-# by the number of eligible households, with this maximum share even when
-# only one sharing household is eligible. Actual heating payments do not
-# determine the share. This conflicts with 7 AAC 44.035(c) actual-cost sharing
-# and the earlier points adjustment in 44.080(h) and grant manual step 2.
-# This selection does not establish a regulatory amendment or verify
-# historical years before FY2027.
+description: Alaska limits a household sharing its dwelling to this share of its heating points under the Heating Assistance Program.
+# 7 AAC 44.080(h) reduces a sharing household's points to its proportionate
+# share of the dwelling's heating expenses. When no household in the dwelling
+# reports a heating expense, as with heat included in rent, that share cannot
+# be measured, so manual 3002-1 A.5 fills the gap: an equal share for each
+# eligible household, at most this share.
 values:
   2026-10-01: 0.5
 
 metadata:
   unit: /1
   period: year
-  label: Alaska HAP maximum shared household benefit share
+  label: Alaska HAP maximum shared household share
   reference:
-    - title: Alaska HAP Manual 3002-1, Types of Households, A.3-5
+    - title: Alaska HAP Manual 3002-1 A.5, Housing Percent Share
       href: http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm
-    - title: Alaska HAP Manual 3004-5, Grant Computation, Step 2 (conflicting text)
-      href: http://dpaweb.hss.state.ak.us/manuals/HAP/3004/3004-5_grant_computation.htm
-    - title: 7 AAC 44.035(c) and 44.080(h) (conflicting text)
+    - title: 7 AAC 44.080(h)
       href: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001

@@ -1,7 +1,7 @@
 description: Alaska applies this share of community oil heating points for purchased wood or coal under the Heating Assistance Program.
-# The model uses this purchased-fuel rule as an approved approximation for
-# existing WOOD/COAL inputs without procurement or pellet detail. Actual
-# self-harvested fuel and wood pellets use different published factors.
+# The model applies this purchased-fuel factor to every WOOD or COAL
+# household, since heating_type cannot identify self-harvested fuel or wood
+# pellets, whose factors differ under 7 AAC 44.080(c) and (e).
 values:
   2026-10-01: 0.8
 
@@ -10,5 +10,7 @@ metadata:
   period: year
   label: Alaska HAP purchased wood or coal point multiplier
   reference:
+    - title: 7 AAC 44.080(d)
+      href: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
     - title: Alaska HAP Manual 3004-5, Grant Computation, Step 1
       href: http://dpaweb.hss.state.ak.us/manuals/HAP/3004/3004-5_grant_computation.htm

@@ -11,7 +11,9 @@ class ak_hap_countable_income(Variable):
         "http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-1_countable_income.htm",
         "http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-2_noncountable_(exempt)_income.htm",
         "http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-4_income_from_self-employment.htm",
+        "http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-5_military_pay.htm",
         "http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-6_guidelines_for_computing_income.htm",
+        "https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001",
     )
     defined_for = StateCode.AK
 
@@ -32,15 +34,15 @@ class ak_hap_countable_income(Variable):
             & person("is_tax_unit_dependent", period)
             & school
         )
-        # Supplied net business income approximates gross receipts less
-        # allowable current costs. Do not deduct the 50% expense standard again.
-        # Each source is floored at zero, so a business loss does not offset
-        # wages or other income. Prior-period losses, disallowed tax expenses
-        # and multiple businesses within a source cannot be separated.
-        # Partnership/S-corp metadata is broader than policy net income; no
-        # expense reconstruction is imputed.
-        earned = max_(person("employment_income", period), 0)
-        for source in p.business_sources:
+        # Supplied net business income stands in for gross receipts less
+        # costs. Manual 3003-4 B deducts 50% of gross unless actual costs are
+        # higher, so net inputs overstate countable income when actual costs
+        # are under half of gross. Each source is floored at zero, so a
+        # business loss does not offset wages or other income. Prior-period
+        # losses, disallowed tax expenses and multiple businesses within a
+        # source cannot be separated.
+        earned = 0
+        for source in p.earned_sources:
             earned = earned + max_(person(source, period), 0)
         countable_earned = spm_unit.sum(where(exempt_child, 0, earned))
         # These are cash receipts, so a tax loss in an unearned source does not
@@ -55,21 +57,21 @@ class ak_hap_countable_income(Variable):
         )
         gifts = person("financial_assistance", period)
         # Existing outside cash support approximates gifts received at a
-        # constant monthly rate. The manual excludes strictly under $20 per
-        # person per month; annual data cannot identify irregular receipt dates.
+        # constant monthly rate. 7 AAC 44.042(16) exempts gifts that do not
+        # exceed $20 per person per month, and manual 3003-1 B.6.r counts
+        # gifts over $20; annual data cannot identify irregular receipt dates.
         countable_gifts = spm_unit.sum(
-            where(gifts / MONTHS_IN_YEAR < p.gift_exemption_threshold, 0, gifts)
+            where(gifts / MONTHS_IN_YEAR <= p.gift_exemption_threshold, 0, gifts)
         )
         # Reported support represents retained receipts; assignment/payment
         # routes are unavailable, so no ATAP pass-through cap is imputed.
         # Gross SSA includes Medicare withholding. No general medical, care,
         # support-paid or earned-income deduction is authorized by these rules.
         # Count the takeup-sensitive ATAP receipt once per SPM unit.
-        total = (
+        return (
             countable_earned
             + unearned
             + rental
             + countable_gifts
             + spm_unit("tanf", period)
         )
-        return max_(total, 0)

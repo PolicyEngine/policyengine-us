@@ -1,13 +1,14 @@
-# Independently derived from the adopted FY2027 source package and controlling contract.
-# Base component precedes disputed sharing and utility-allowance adjustments.
+# FY2027 sole-household award (7 AAC 44.035(c)): no dwelling share and no
+# utility-allowance reduction; ak_hap applies both at the points stage.
 # Sources (each URL listed once):
 # http://dpaweb.hss.state.ak.us/manuals/HAP/3004/3004-5_grant_computation.htm
 # http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_e.htm
 # http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm
 # http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm
 # https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
-# Geographic/name and nearest-gas approximations are documented in the research manifest.
-# 415 replaces the stale published one-person 25% cell 407 under the approved reconciliation.
+# Census places not named in Addendum A take the oil and gas points of the nearest listed
+# community; these approximations are not a state-issued crosswalk.
+# The one-person 25% ceiling is 415 under the 25% rule; Addendum E prints 407.
 # Fuel, dwelling and location are explicit; no new monetary inputs or sentinel defaults.
 
 # GRANT: 10 oil points * 1.4; minimum 2 before half-up whole-point rounding, then $175/point.
@@ -341,7 +342,7 @@
     ak_hap_base_benefit: 1_750
 
 # Current COMMUNITY table / adopted source crosswalk: 8 points * $175; Loring uses current 4 rather than legacy 5.
-- name: Case 12, Fairbanks gas follows the adopted mapping.
+- name: Case 12, Fairbanks gas follows the place crosswalk.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -371,7 +372,7 @@
     ak_hap_base_benefit: 1_400
 
 # Current COMMUNITY table / adopted source crosswalk: 5 points * $175; Loring uses current 4 rather than legacy 5.
-- name: Case 13, Anchorage gas follows the adopted mapping.
+- name: Case 13, Anchorage gas follows the place crosswalk.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -401,7 +402,7 @@
     ak_hap_base_benefit: 875
 
 # Current COMMUNITY table / adopted source crosswalk: 6 points * $175; Loring uses current 4 rather than legacy 5.
-- name: Case 14, Utqiagvik renamed from Barrow gas follows the adopted mapping.
+- name: Case 14, Utqiagvik renamed from Barrow gas follows the place crosswalk.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -431,7 +432,7 @@
     ak_hap_base_benefit: 1_050
 
 # Current COMMUNITY table / adopted source crosswalk: 21 points * $175; Loring uses current 4 rather than legacy 5.
-- name: Case 15, Utqiagvik renamed from Barrow oil follows the adopted mapping.
+- name: Case 15, Utqiagvik renamed from Barrow oil follows the place crosswalk.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -461,7 +462,7 @@
     ak_hap_base_benefit: 3_675
 
 # Current COMMUNITY table / adopted source crosswalk: 5 points * $175; Loring uses current 4 rather than legacy 5.
-- name: Case 16, Knik Fairview gas follows the adopted mapping.
+- name: Case 16, Knik Fairview gas follows the place crosswalk.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -491,7 +492,7 @@
     ak_hap_base_benefit: 875
 
 # Current COMMUNITY table / adopted source crosswalk: 7 points * $175; Loring uses current 4 rather than legacy 5.
-- name: Case 17, Knik Fairview oil follows the adopted mapping.
+- name: Case 17, Knik Fairview oil follows the place crosswalk.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -521,7 +522,7 @@
     ak_hap_base_benefit: 1_225
 
 # Current COMMUNITY table / adopted source crosswalk: 8 points * $175; Loring uses current 4 rather than legacy 5.
-- name: Case 18, North Pole current gas follows the adopted mapping.
+- name: Case 18, North Pole current gas follows the place crosswalk.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -551,7 +552,7 @@
     ak_hap_base_benefit: 1_400
 
 # Current COMMUNITY table / adopted source crosswalk: 5 points * $175; Loring uses current 4 rather than legacy 5.
-- name: Case 19, Juneau uniform consolidated oil follows the adopted mapping.
+- name: Case 19, Juneau uniform consolidated oil follows the place crosswalk.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -581,7 +582,7 @@
     ak_hap_base_benefit: 875
 
 # Current COMMUNITY table / adopted source crosswalk: 6 points * $175; Loring uses current 4 rather than legacy 5.
-- name: Case 20, Sitka uniform consolidated oil follows the adopted mapping.
+- name: Case 20, Sitka uniform consolidated oil follows the place crosswalk.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -611,7 +612,7 @@
     ak_hap_base_benefit: 1_050
 
 # Current COMMUNITY table / adopted source crosswalk: 5 points * $175; Loring uses current 4 rather than legacy 5.
-- name: Case 21, Wrangell uniform consolidated oil follows the adopted mapping.
+- name: Case 21, Wrangell uniform consolidated oil follows the place crosswalk.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -641,7 +642,7 @@
     ak_hap_base_benefit: 875
 
 # Current COMMUNITY table / adopted source crosswalk: 4 points * $175; Loring uses current 4 rather than legacy 5.
-- name: Case 22, Loring current manual oil follows the adopted mapping.
+- name: Case 22, Loring current manual oil follows the place crosswalk.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -926,7 +927,7 @@
   output:
     ak_hap_base_benefit: 0
 
-# Approved disability approximation, GRANT Step 4: 1.5 + 1 = 2.5 -> 3.
+# Disability approximation, GRANT Step 4: 1.5 + 1 = 2.5 -> 3.
 - name: Case 31, disabled qualified adult adds the vulnerability point.
   period: 2027
   absolute_error_margin: 0.01
@@ -1441,7 +1442,7 @@
     ak_hap_base_benefit: 0
 
 # One qualified adult; annual payroll 4980, no general earned disregard. Apply source band to Fairbanks 10 oil points.
-- name: Case 46, integrated wages at reconciled 25 percent use the inclusive income boundary.
+- name: Case 46, integrated wages at the 25 percent limit use the inclusive income boundary.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -1729,8 +1730,8 @@
   output:
     ak_hap_base_benefit: 0
 
-# Juneau 5 * .55 * .7 + 1 = 2.925 -> 3 * 175; positive allowance affects a later unresolved final adjustment only.
-- name: Case 54, base amount does not apply disputed utility allowance reduction.
+# Juneau 5 * .55 * .7 + 1 = 2.925 -> 3 * 175. The base omits the 7 AAC 44.080(l) reduction for this subsidized household; ak_hap applies it.
+- name: Case 54, base amount does not apply the utility allowance reduction.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -1757,7 +1758,6 @@
         - person1
         state_code: AK
         place_fips: '36400'
-        hud_utility_allowance: 1_200
   output:
     ak_hap_base_benefit: 525
 
@@ -2002,8 +2002,8 @@
   output:
     ak_hap_base_benefit: 0
 
-# Numeric 0 represents unavailable supported oil geography, not statutory ineligibility.
-- name: Case 63, unmatched place yields an unavailable modeled amount.
+# '99999' is not an Alaska Census place, so neither points table has a value; numeric 0 is not statutory ineligibility.
+- name: Case 63, a place code outside the Census gazetteer yields an unavailable modeled amount.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2062,8 +2062,8 @@
   output:
     ak_hap_base_benefit: 0
 
-# Numeric 0 represents unavailable supported oil geography, not statutory ineligibility.
-- name: Case 65, ambiguous Anchorage oil place yields an unavailable modeled amount.
+# Addendum A lists Anchorage at 8 oil points, and place 03000 covers the whole municipality (Chugiak, listed at 7, lies inside it): 8 * 1 = 8 points * $175 = $1,400.
+- name: Case 65, Anchorage municipality fuel oil uses the Anchorage oil points.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2090,9 +2090,9 @@
         state_code: AK
         place_fips: '03000'
   output:
-    ak_hap_base_benefit: 0
+    ak_hap_base_benefit: 1_400
 
-# User-approved purchased-fuel default: Fairbanks oil 10 * .8 * $175 = $1400.
+# Purchased-fuel assumption under 7 AAC 44.080(d): Fairbanks oil 10 * .8 = 8 points * $175 = $1,400.
 - name: Case 66, wood uses the purchased-fuel approximation with existing heating type.
   period: 2027
   absolute_error_margin: 0.01
@@ -2122,7 +2122,7 @@
   output:
     ak_hap_base_benefit: 1_400
 
-# User-approved purchased-fuel default: Fairbanks oil 10 * .8 * $175 = $1400.
+# Purchased-fuel assumption under 7 AAC 44.080(d): Fairbanks oil 10 * .8 = 8 points * $175 = $1,400.
 - name: Case 67, coal uses the purchased-fuel approximation with existing heating type.
   period: 2027
   absolute_error_margin: 0.01
@@ -2152,8 +2152,8 @@
   output:
     ak_hap_base_benefit: 1_400
 
-# Numeric 0 is missing modeled fuel coverage, not a legal determination that all such households are ineligible.
-- name: Case 68, other without a supported subtype yields an unavailable modeled amount.
+# 7 AAC 44.080(f) and grant step 1 put steam, hot water and vehicle gasoline on oil points; OTHER stands for them. Fairbanks oil 10 = 10 points * $175 = $1,750, with the bill in other_heating_fuel_expense.
+- name: Case 68, other heating such as steam or hot water uses oil points.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2180,10 +2180,10 @@
         state_code: AK
         place_fips: '24230'
   output:
-    ak_hap_base_benefit: 0
+    ak_hap_base_benefit: 1_750
 
-# Numeric 0 is missing modeled fuel coverage, not a legal determination that all such households are ineligible.
-- name: Case 69, solar without a supported subtype yields an unavailable modeled amount.
+# A SOLAR household's bill is grid electricity (pre_subsidy_electricity_expense), and 7 AAC 44.080(f) puts electricity on oil points: Fairbanks oil 10 = 10 points * $175 = $1,750.
+- name: Case 69, solar heat uses oil points like grid electricity.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2210,7 +2210,7 @@
         state_code: AK
         place_fips: '24230'
   output:
-    ak_hap_base_benefit: 0
+    ak_hap_base_benefit: 1_750
 
 # Numeric 0 is missing modeled fuel coverage, not a legal determination that all such households are ineligible.
 - name: Case 70, unspecified without a supported subtype yields an unavailable modeled amount.
@@ -2644,8 +2644,8 @@
   output:
     ak_hap_base_benefit: [0, 0, 1_400]
 
-# Anchorage oil mapping remains ambiguous and an unmatched place is unavailable; selecting wood or coal cannot use gas points instead.
-- name: "Case 79, purchased fuel cannot resolve unavailable oil community points."
+# Anchorage wood: oil 8 * .8 = 6.4 -> 6 points * $175 = $1,050. Place '99999' has no oil points, and selecting coal cannot use gas points instead.
+- name: "Case 79, purchased fuel scales the Anchorage oil points and cannot resolve an unavailable place."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2688,7 +2688,7 @@
         state_code: "AK"
         place_fips: "99999"
   output:
-    ak_hap_base_benefit: [0, 0]
+    ak_hap_base_benefit: [1_050, 0]
 
 # Purchased approximation is fixed for WOOD, independent of reported bill: zero wood bill plus 300 annual rent meets the existing heat-in-rent expense gate; base 8 * 175 = 1,400.
 - name: "Case 80, unsubsidized heat in rent supplies the expense gate without inferring fuel procurement."
@@ -2719,3 +2719,153 @@
         place_fips: "24230"
   output:
     ak_hap_base_benefit: 1_400
+
+# Anchorage oil 8 (Addendum A) applies to electric heat under 7 AAC 44.080(f). Social Security of 18,000 is 1,500 a month, above the one-person 75% ceiling of 1,246 and within the 100% ceiling of 1,662: factor .7. One-bedroom 8 * .55 * .7 = 3.08, plus 1 for age 70 = 4.08 -> 4 points * $175 = $700.
+- name: Case 81, an elderly Anchorage household with electric heat receives the Anchorage oil points.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        social_security: 18_000
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: ELECTRICITY
+        ak_hap_dwelling_type: ONE_BEDROOM_OR_ONE_ROOM_HOUSE
+        pre_subsidy_electricity_expense: 1_200
+        ak_atap: 0
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+        place_fips: '03000'
+  output:
+    ak_hap_countable_income: 18_000
+    ak_hap_income_factor: 0.7
+    ak_hap_base_benefit: 700
+
+# 7 AAC 44.042(16) exempts cash gifts that do not exceed $20 a month: 240 / 12 = 20. Wages of 14,800 are 1,233.33 a month, within the one-person 75% ceiling of 1,246: factor .8. Fairbanks oil 10 * .8 = 8 points * $175 = $1,400. Counting the gift would give 15,040 (1,253.33 a month) and factor .7.
+- name: Case 82, a twenty dollar monthly gift does not move a household into a lower income factor.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 14_800
+        financial_assistance: 240
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_500
+        ak_atap: 0
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_countable_income: 14_800
+    ak_hap_income_factor: 0.8
+    ak_hap_base_benefit: 1_400
+
+# Manual 3003-1 A.1 and 3003-5 B.1.a count military basic pay as earned income. 40,000 exceeds the one-person 150% ceiling of 2,493 * 12 = 29,916: factor 0, so no award. Without the pay, Fairbanks oil 10 would give $1,750.
+- name: Case 83, military basic pay counts as earned income.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        military_basic_pay: 40_000
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_500
+        ak_atap: 0
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_countable_income: 40_000
+    ak_hap_income_factor: 0
+    ak_hap_base_benefit: 0
+
+# Meadow Lakes CDP (place 47735) is not named in Addendum A; its nearest listed community, Wasilla, has 7 oil points. 7 * 1 * 1 = 7 points * $175 = $1,225.
+- name: Case 84, an unlisted Census place takes its nearest listed community's oil points.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_000
+        ak_atap: 0
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+        place_fips: '47735'
+  output:
+    ak_hap_base_benefit: 1_225
+
+# Mertarvik CDP (place 48590) is not named in Addendum A. It takes the 25 oil points of its nearest listed community, Newtok, and also its 0/AVCP marker, which routes all residents to the tribal program, so the state award is zero.
+- name: Case 85, an unlisted Census place inherits its nearest community's all-resident tribal routing.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_000
+        ak_atap: 0
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+        place_fips: '48590'
+  output:
+    ak_hap_base_benefit: 0

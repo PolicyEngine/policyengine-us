@@ -1,4 +1,4 @@
-description: Alaska excludes cash gifts strictly below this monthly amount per person under the Heating Assistance Program.
+description: Alaska excludes cash gifts at or below this monthly amount per person under the Heating Assistance Program.
 values:
   2026-10-01: 20
 
@@ -7,5 +7,9 @@ metadata:
   period: month
   label: Alaska HAP monthly cash gift exemption threshold
   reference:
-    - title: Alaska HAP Manual 3003-2 A(24), Cash Gifts
+    - title: 7 AAC 44.042(16)
+      href: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+    - title: Alaska HAP Manual 3003-1 B.6.r, Cash Gifts
+      href: http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-1_countable_income.htm
+    - title: Alaska HAP Manual 3003-2 A.24, Cash Gifts
       href: http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-2_noncountable_(exempt)_income.htm

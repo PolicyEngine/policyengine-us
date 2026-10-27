@@ -1,4 +1,4 @@
-# Adopted FY2027 HAP manual; supported income components only.
+# FY2027 HAP manual; supported income components only.
 # These tests do not assert final eligibility, heating points or an award.
 # Sources:
 # http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm
@@ -251,7 +251,7 @@
     ak_hap_household_size: 0
     ak_hap_countable_income: 12_000
 
-# Shared contract masks both components to Alaska; MS 3002-1 B requires Alaska residence.
+# Both components are limited to Alaska; MS 3002-1 B requires Alaska residence.
 - name: "Case 4, all supported HAP components are zero outside Alaska."
   period: 2027
   absolute_error_margin: 0.01

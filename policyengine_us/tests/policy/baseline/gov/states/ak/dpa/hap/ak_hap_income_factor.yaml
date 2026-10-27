@@ -1,13 +1,11 @@
-# Independently derived from the adopted FY2027 source package and controlling contract.
-# Base component precedes disputed sharing and utility-allowance adjustments.
+# FY2027 income factors from the lagged 2026 Alaska poverty guideline (Addendum E).
 # Sources (each URL listed once):
 # http://dpaweb.hss.state.ak.us/manuals/HAP/3004/3004-5_grant_computation.htm
 # http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_e.htm
 # http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm
 # http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm
 # https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
-# Geographic/name and nearest-gas approximations are documented in the research manifest.
-# 415 replaces the stale published one-person 25% cell 407 under the approved reconciliation.
+# The one-person 25% ceiling is 415 under the 25% rule; Addendum E prints 407.
 # Fuel, dwelling and location are explicit; no new monetary inputs or sentinel defaults.
 
 # GRANT Step 3: income at or below 25% receives factor 1.
@@ -74,7 +72,7 @@
   output:
     ak_hap_income_factor: 1
 
-# Controlling contract: positive qualified size is required.
+# A household with no qualified members has no income band.
 - name: Case 3, no qualified members yields zero income factor.
   period: 2027
   absolute_error_margin: 0.0001
@@ -106,7 +104,7 @@
   output:
     ak_hap_income_factor: 0
 
-# GRID discrepancy: 407/month is below adopted derived 415 ceiling.
+# Addendum E prints 407/month; the 25% rule gives a 415 ceiling, so 407 is in the lowest band.
 - name: Case 4, printed stale 407 amount stays in the lowest band.
   period: 2027
   absolute_error_margin: 0.0001
@@ -139,7 +137,7 @@
     ak_hap_income_factor: 1
 
 # floor(1662 * .25) = 415, not the stale printed 407.
-- name: Case 5, 408 remains below the reconciled 25 percent ceiling.
+- name: Case 5, 408 remains below the 25 percent ceiling.
   period: 2027
   absolute_error_margin: 0.0001
   input:
@@ -170,7 +168,7 @@
   output:
     ak_hap_income_factor: 1
 
-# GRID + contract: monthly ceiling 415 * 12 = 4980; inclusive band top.
+# Addendum E grid: monthly ceiling 415 * 12 = 4980; inclusive band top.
 - name: Case 6, exact one-person band 1 ceiling is inclusive.
   period: 2027
   absolute_error_margin: 0.0001
@@ -234,7 +232,7 @@
   output:
     ak_hap_income_factor: 0.9
 
-# GRID + contract: monthly ceiling 831 * 12 = 9972; inclusive band top.
+# Addendum E grid: monthly ceiling 831 * 12 = 9972; inclusive band top.
 - name: Case 8, exact one-person band 2 ceiling is inclusive.
   period: 2027
   absolute_error_margin: 0.0001
@@ -298,7 +296,7 @@
   output:
     ak_hap_income_factor: 0.8
 
-# GRID + contract: monthly ceiling 1246 * 12 = 14952; inclusive band top.
+# Addendum E grid: monthly ceiling 1246 * 12 = 14952; inclusive band top.
 - name: Case 10, exact one-person band 3 ceiling is inclusive.
   period: 2027
   absolute_error_margin: 0.0001
@@ -362,7 +360,7 @@
   output:
     ak_hap_income_factor: 0.7
 
-# GRID + contract: monthly ceiling 1662 * 12 = 19944; inclusive band top.
+# Addendum E grid: monthly ceiling 1662 * 12 = 19944; inclusive band top.
 - name: Case 12, exact one-person band 4 ceiling is inclusive.
   period: 2027
   absolute_error_margin: 0.0001
@@ -426,7 +424,7 @@
   output:
     ak_hap_income_factor: 0.6
 
-# GRID + contract: monthly ceiling 2077 * 12 = 24924; inclusive band top.
+# Addendum E grid: monthly ceiling 2077 * 12 = 24924; inclusive band top.
 - name: Case 14, exact one-person band 5 ceiling is inclusive.
   period: 2027
   absolute_error_margin: 0.0001
@@ -490,7 +488,7 @@
   output:
     ak_hap_income_factor: 0.5
 
-# GRID + contract: monthly ceiling 2493 * 12 = 29916; inclusive band top.
+# Addendum E grid: monthly ceiling 2493 * 12 = 29916; inclusive band top.
 - name: Case 16, exact one-person band 6 ceiling is inclusive.
   period: 2027
   absolute_error_margin: 0.0001

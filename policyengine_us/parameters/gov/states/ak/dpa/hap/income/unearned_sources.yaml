@@ -33,8 +33,8 @@ values:
 # Education grants, royalties, foster/adoption receipts, excess reimbursements
 # and cash utility reimbursements lack the detail required by the manual.
 # A HUD utility allowance alone does not establish a cash reimbursement.
-# Military wages must be reported once in employment income; its separate tax
-# subset inputs are not added. Combat/work-study/MASST exceptions are unobserved.
+# Military basic pay is its own input and counts once, as earned income.
+# Combat/work-study/MASST exceptions are unobserved.
 metadata:
   unit: list
   period: year
