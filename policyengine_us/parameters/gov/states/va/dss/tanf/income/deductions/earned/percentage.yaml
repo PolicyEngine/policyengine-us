@@ -1,4 +1,4 @@
-description: Virginia excludes this share of earnings from countable income under the Temporary Assistance for Needy Families program, after a flat deduction.
+description: Virginia excludes this share of earnings from countable income under the Temporary Assistance for Needy Families program, after the standard deduction.
 
 values:
   2016-01-01: 0.2
@@ -8,6 +8,8 @@ metadata:
   period: month
   label: Virginia TANF earnings exclusion percent
   reference:
-    - title: Virginia TANF Manual Section 302 - Earned Income Deductions
-      href: https://web.archive.org/web/20210719231146/https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=29
+    - title: 22VAC40-295-50(C)(2)
+      href: https://law.lis.virginia.gov/admincode/title22/agency40/chapter295/section50/
+    - title: "Virginia TANF Manual Section 305.1 A.2.b and 305.3 B.4 #page 32,52"
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/tanfview/tanf/Chapter-300---Need-and-Amount-of-Assistance.pdf#page=32
 

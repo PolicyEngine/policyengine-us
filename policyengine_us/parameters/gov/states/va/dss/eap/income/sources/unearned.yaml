@@ -1,0 +1,58 @@
+description: Virginia counts these unearned income sources under the Energy Assistance Program.
+# Manual C.5.a.3.c: "Gross unearned income (regardless of deductions such as
+# recoupments) received by individuals is the countable income"; C.5.a.4.c:
+# "Unearned income includes all other income received by the household that is
+# not received in exchange for labor, services, or produce." Plan Section 1.9
+# checks unemployment insurance, strike pay, SSA benefits excluding the
+# Medicare deduction, SSI, retirement and pensions, General Assistance, TANF,
+# rental income, alimony, child support and VA benefits. The plan leaves
+# interest, dividends and royalties unchecked, but the manual counts all gross
+# unearned income and its 27 exemptions do not include them, so the manual
+# controls and they count. The household's TANF is added, and exemption 15
+# Medicare premiums are deducted from gross income, in the
+# va_eap_countable_income formula.
+values:
+  2025-05-01:
+    - total_unemployment_compensation
+    - strike_benefits
+    - social_security
+    - railroad_benefits
+    - ssi
+    # Manual B.5.a names "auxiliary grants to the aged, blind and disabled" as
+    # public assistance, and no exemption covers them.
+    - va_ag
+    - pension_income
+    # Military retirement pay and survivor benefit payments.
+    - military_retirement_income
+    - retirement_distributions
+    - survivor_benefits
+    - general_assistance
+    - rental_income
+    - farm_rent_income
+    - alimony_income
+    - child_support_received
+    # Manual C.5.a.4.c names "cash contributions" as unearned income, so
+    # recurring cash help from outside the household counts.
+    - financial_assistance
+    # Exemption 23 (VA Aid and Attendance) cannot be separated from other
+    # veterans' benefits and is counted.
+    - veterans_benefits
+    - interest_income
+    - ordinary_dividend_income
+    - workers_compensation
+    - disability_benefits
+    # Exemption 19 excludes only non-recurring one-time income such as a
+    # one-time gift, so financial_assistance should hold recurring
+    # contributions only. Loans, tax refunds, scholarships, SNAP, WIC, foster
+    # care payments, utility or rental allowances and the other exemptions are
+    # not counted.
+
+metadata:
+  unit: list
+  period: year
+  label: Virginia EAP countable unearned income sources
+  reference:
+    - title: "Virginia Energy Assistance Manual, Volume IX, Chapter B.5.a Public Assistance, Chapter B.6.b Exempt Income and Chapter C.5.a.3-4 Countable Income #page 25,28-31,38,40"
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=25
+    - title: "LIHEAP FY2026 Virginia Detailed Model Plan, Section 1.9 (countable income sources) #page 5-6"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/VA_Plan_2026.pdf#page=5

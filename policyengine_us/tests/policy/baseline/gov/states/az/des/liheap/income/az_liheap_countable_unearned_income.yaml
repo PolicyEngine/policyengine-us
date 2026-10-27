@@ -1,0 +1,371 @@
+# Arizona LIHEAP countable unearned income per person. Gross unearned income
+# of every member aged 18 or older counts: SSA, SSI, retirement (including
+# Railroad Retirement), unemployment insurance, alimony, child support, rental
+# and farm rental income, gambling profits, interest, dividends, general
+# assistance, VA benefits, employment disability insurance and workers'
+# compensation (DES LIHEAP Policy rev. 16A eff. 2026-07-01, pp. 8-9 VI.A.6.e,
+# https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=8;
+# FY2026 plan 1.9,
+# https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=6).
+# Members under 18: rev. 13 p. 9 E counts none of their income; rev. 15
+# (eff. 2026-03-23) p. 9 E excludes only their earned income, so a child's
+# unearned income counts from period 2027 (parameters are read at the start
+# of the period). Each source is floored at zero per person, so a rental or
+# farm rental loss does not offset other income. Social Security counts
+# gross here: the Medicare Part B premium (policy p. 14 VII.A.1.c.ii.D note)
+# comes off household income in az_liheap_countable_income.
+# 2026 Part B standard premium 202.90 a month: 202.90 x 12 = 2,434.80.
+# 2026 SSI federal benefit rate 994 a month: 994 x 12 = 11,928.
+
+- name: Case 1, a retiree's Social Security and pension income are counted gross of the Medicare premium.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 23_712
+        # Income of 2,476 a month is above the Medicare Savings Program
+        # limits, so the retiree pays the 2,434.80 standard premium.
+        medicare_part_b_premium: 2_434.80
+        pension_income: 6_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 23,712 + 6,000 = 29,712 (plan 1.9: SSA and retirement/pension
+    # checked); the premium is not deducted at the person level.
+    az_liheap_countable_unearned_income: 29_712
+
+- name: Case 2, unemployment, child support, alimony and rent are counted.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        unemployment_compensation: 9_600
+        child_support_received: 4_800
+        alimony_income: 3_000
+        rental_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        pre_subsidy_electricity_expense: 1_500
+        gas_expense: 600
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 9,600 + 4,800 + 3,000 + 6,000 = 23,400.
+    az_liheap_countable_unearned_income: 23_400
+
+- name: Case 3, SSI, general assistance and VA benefits of a disabled adult are counted.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_disabled: true
+        ssi: 11_928
+        general_assistance: 1_200
+        veterans_benefits: 4_800
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_600
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 11,928 + 1,200 + 4,800 = 17,928 (plan 1.9: SSI, general assistance and
+    # VA benefits checked).
+    az_liheap_countable_unearned_income: 17_928
+
+- name: Case 4, interest, dividends, strike pay and an IRA distribution each count once.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        taxable_interest_income: 1_200
+        ordinary_dividend_income: 800
+        strike_benefits: 2_000
+        taxable_ira_distributions: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_700
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 1,200 + 800 + 2,000 + 3,000 = 7,000. The IRA distribution reaches the
+    # total once, through retirement_distributions.
+    az_liheap_countable_unearned_income: 7_000
+
+- name: Case 5, a child's SSI and child support are not counted in 2026 under revision 13.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+      person2:
+        age: 10
+        is_disabled: true
+        ssi: 11_928
+        child_support_received: 4_800
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Rev. 13 p. 9 E: "Income from Household members under the age of 18 is
+    # not considered Countable Income."
+    az_liheap_countable_unearned_income: [0, 0]
+    az_liheap_countable_income: 30_000
+
+- name: Case 6, the same child's SSI and child support are counted in 2027 under revision 15.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+      person2:
+        age: 10
+        is_disabled: true
+        ssi: 11_928
+        child_support_received: 4_800
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Rev. 15 p. 9 E excludes only earned income of members under 18:
+    # 11,928 + 4,800 = 16,728 counts.
+    az_liheap_countable_unearned_income: [0, 16_728]
+    # 30,000 + 16,728 = 46,728.
+    az_liheap_countable_income: 46_728
+
+- name: Case 7, a Railroad Retirement annuity is counted as retirement income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        railroad_benefits: 30_000
+        # Income of 2,500 a month is above the Medicare Savings Program
+        # limits, so the retiree pays the 2,434.80 standard premium.
+        medicare_part_b_premium: 2_434.80
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_500
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Policy p. 9 VI.A.6.e.ii.B "retirement income", p. 14 "retirement
+    # benefits"; plan 1.9 "Retirement / pension benefits" checked: 30,000.
+    az_liheap_countable_unearned_income: 30_000
+    # Household income less the Part B premium: 30,000 - 2,434.80.
+    az_liheap_countable_income: 27_565.20
+
+- name: Case 8, long-term disability insurance paid to the insured worker is counted.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 52
+        disability_benefits: 27_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        pre_subsidy_electricity_expense: 1_400
+        gas_expense: 500
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Plan 1.9 "Insurance payments made directly to the insured" checked;
+    # policy p. 4 Gross Income is all income before taxes and deductions.
+    # 60% of a 45,000 salary = 27,000 counts.
+    az_liheap_countable_unearned_income: 27_000
+    az_liheap_countable_income: 27_000
+
+- name: Case 9, workers' compensation of an injured worker is counted.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        workers_compensation: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_700
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Policy p. 4 Gross Income and p. 9 VI.A.6.e.ii.D "Consistent income
+    # received from other sources"; two-thirds of 36,000 prior wages = 24,000
+    # counts.
+    az_liheap_countable_unearned_income: 24_000
+    az_liheap_countable_income: 24_000
+
+- name: Case 10, military retirement pay is counted as retirement income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 48
+        military_retirement_pay: 26_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Policy p. 9 VI.A.6.e.ii.B counts "retirement income"; a 20-year
+    # military retiree's 2,200 a month pension counts in full.
+    az_liheap_countable_unearned_income: 26_400
+    az_liheap_countable_income: 26_400
+
+- name: Case 11, military survivor benefit payments are counted as retirement income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 55
+        military_retirement_pay_survivors: 14_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_500
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Survivor Benefit Plan annuity of 1,200 a month is retirement income
+    # under VI.A.6.e.ii.B.
+    az_liheap_countable_unearned_income: 14_400
+    az_liheap_countable_income: 14_400
+
+- name: Case 12, a rental loss does not offset wages.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 36_000
+        rental_income: -6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # max(-6,000, 0) = 0: a loss is not income (policy p. 4 Gross Income).
+    az_liheap_countable_unearned_income: 0
+    az_liheap_countable_income: 36_000
+    # 36,000 > 33,684; netting the loss (30,000) would have paid 160.
+    az_liheap_income_eligible: false
+    az_liheap_eligible: false
+    az_liheap: 0
+
+- name: Case 13, farm rent and gambling winnings are counted as unearned income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        employment_income: 22_000
+        farm_rent_income: 4_800
+        gambling_winnings: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_700
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Plan 1.9 "Rental income" checked; policy VI.A.6.e.ii.B "gambling
+    # profits": 4,800 + 1,200 = 6,000.
+    az_liheap_countable_unearned_income: 6_000
+    # 22,000 + 6,000 = 28,000.
+    az_liheap_countable_income: 28_000
+
+- name: Case 14, gambling losses reduce gambling winnings to the profit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        gambling_winnings: 3_000
+        gambling_losses: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_700
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Policy VI.A.6.e.ii.B "gambling profits": 3,000 - 1,000 = 2,000.
+    az_liheap_countable_unearned_income: 2_000

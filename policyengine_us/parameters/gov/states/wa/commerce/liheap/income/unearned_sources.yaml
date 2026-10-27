@@ -1,0 +1,42 @@
+description: Washington counts these unearned income sources without an additional deduction under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    - ssi
+    - general_assistance
+    - strike_benefits
+    - financial_assistance
+    - rental_income
+    - farm_rent_income
+    - alimony_income
+    - child_support_received
+    - interest_income
+    - ordinary_dividend_income
+    - railroad_benefits
+    - survivor_benefits
+    - workers_compensation
+
+# Income of minors is counted except earnings. TANF, State Family Assistance,
+# Refugee Cash Assistance and the state supplement to SSI (wa_ssp) are added
+# separately in the formula; general assistance represents other aid, such as
+# ABD, not those same payments again.
+# Workers' compensation counts with no deduction: plan section 1.9 has no
+# workers' compensation row, and Commerce Weatherization Manual Exhibit
+# 1.3.1A lists an L&I statement as income documentation.
+# FY2026 excludes VA benefits, insurance payments (disability_benefits and
+# life_insurance_benefits), one-time lump sums, refunds and balances. Broad
+# annual inputs cannot identify every exempt subtype.
+# Social Security is counted separately in the formula, net of the Medicare
+# Part B premium, and receives no retirement deduction.
+# Repayable loans, structured settlements, foster payments, jury pay and
+# royalties lack dedicated inputs. Work-study wages may be included in
+# employment income; do not add a duplicate amount or invent new inputs.
+# The FY2027 draft changes categories and is not adopted for this snapshot.
+metadata:
+  unit: list
+  period: year
+  label: Washington LIHEAP unearned sources
+  reference:
+    - title: "FY2026 State Plan, section 1.9 #page 5-7"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/WA_Plan_2026.pdf#page=5
+    - title: Commerce 2026 Weatherization Manual, Exhibit 1.3.1A
+      href: https://deptofcommerce.app.box.com/s/5a32797ex8tz2blo8nwtifecokpya37j#page=445

@@ -1,0 +1,109 @@
+# Tests eligibility for the Florida TCA $200 and 1/2 earned income disregard.
+# Florida Statutes 414.095(11)(a): the individual must be "1. A current
+# participant in the program; or 2. Eligible for participation in the program
+# without the earnings disregard."
+# DCF ESS Program Policy Manual 2420.0315: the member must
+#   1. have been eligible for and received TCA in one of the past four months
+#      (is_tanf_enrolled); or
+#   2. have gross countable income, less the $90 standard earned income
+#      disregard, which is less than the applicable payment standard.
+# All cases: three people, shelter obligation over $50, so the payment standard
+# is $303.
+
+- name: Case 1, current participant with income after $90 above the payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+        pre_subsidy_rent: 9_600
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    fl_tca_payment_standard: 303
+    # Income after $90 = $500 - $90 = $410 >= $303, so condition 2 fails, but
+    # the unit is a current participant (condition 1).
+    fl_tca_200_and_half_disregard_eligible: true
+
+- name: Case 2, applicant with the same income is not eligible for the disregard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+        pre_subsidy_rent: 9_600
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # Not a current participant, and $410 >= $303.
+    fl_tca_200_and_half_disregard_eligible: false
+
+- name: Case 3, applicant with income after $90 below the payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 3_600  # $300/month
+        pre_subsidy_rent: 9_600
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # Income after $90 = $300 - $90 = $210 < $303 (condition 2).
+    fl_tca_200_and_half_disregard_eligible: true
+
+- name: Case 4, applicant with income after $90 equal to the payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 4_716  # $393/month
+        pre_subsidy_rent: 9_600
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # Income after $90 = $393 - $90 = $303, which is not less than $303.
+    fl_tca_200_and_half_disregard_eligible: false

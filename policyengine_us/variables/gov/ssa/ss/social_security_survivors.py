@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.social_security_benefit_levers import (
+    SocialSecurityBenefitSource,
+)
 
 
 class social_security_survivors(Variable):
@@ -7,4 +10,18 @@ class social_security_survivors(Variable):
     definition_period = YEAR
     label = "Social Security survivors benefits"
     unit = USD
-    uprating = "calibration.gov.irs.soi.social_security"
+    documentation = "Selected source with applicable benefit levers; an explicit public input is a final override."
+
+    def formula(person, period, parameters):
+        return (
+            person("social_security_survivors_base", period)
+            * where(
+                person("social_security_survivors_source", period)
+                == SocialSecurityBenefitSource.reported,
+                person("social_security_survivors_joint_cola_factor", period)
+                * person("social_security_survivors_pia_ratio_factor", period),
+                1,
+            )
+            * person("social_security_across_the_board_factor", period)
+            * person("social_security_survivors_payable_factor", period)
+        )

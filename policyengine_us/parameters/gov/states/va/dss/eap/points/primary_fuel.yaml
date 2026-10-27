@@ -1,0 +1,25 @@
+description: Virginia awards this many benefit points for the primary heating fuel under the Energy Assistance Program.
+# PLACEHOLDER: this value is a PolicyEngine placeholder set pending VDSS
+# publication, not a published figure. VDSS sets the primary fuel points each
+# year from an annual vendor price survey and a Virginia Tech cost and
+# consumption study: the highest-cost fuel receives 20 points and each other
+# fuel receives points by its cost as a percentage of all fuel costs. The
+# survey results and the resulting points are not published, so 10 points
+# apply to every eligible household and fuel. Plan Section 2.5 reports that
+# the published FFY2025 benefits ran from $181.26 (40 points) to $634.43 (140
+# points); with these placeholders the model ranges from $271.90 (60 points)
+# to $557.39 (123 points).
+values:
+  2022-10-01: 10
+
+metadata:
+  unit: /1
+  period: year
+  label: Virginia EAP primary fuel points placeholder
+  reference:
+    - title: LIHEAP Clearinghouse Virginia FY2026 benefit matrix, Appendix B (01/03, Transmittal 03-1), primary fuel
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/VA_BenefitMatrix_2026.pdf#page=7
+    - title: Virginia Energy Assistance Manual, Volume IX, Chapter D, Appendix B (01/03, Transmittal 03-1), primary fuel
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=66
+    - title: LIHEAP FY2026 Virginia Detailed Model Plan, Section 2.5 (FFY2025 maximum benefit $634.43 and minimum benefit $181.26)
+      href: https://liheapch.acf.gov/docs/2026/state-plans/VA_Plan_2026.pdf#page=9

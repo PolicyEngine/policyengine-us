@@ -11,8 +11,8 @@ values:
   # quarterly CPI-U growth: 2026Q3 actual * CBO CPI-U (Q3) / CBO CPI-U (2026Q3).
   # CBO's Economic Projections publish no CPI-W series, so CBO CPI-U Q3/Q3
   # growth stands in for CPI-W Q3/Q3. CBO's own projected COLAs (2.3% a year
-  # for 2029-2036) match this growth (2.26% a year) to the tenth of a percent
-  # that CBO publishes.
+  # for the COLAs effective January 2029 to January 2036) match this growth
+  # (2.27% a year) to the tenth of a percent that CBO publishes.
   2028-01-01: 336.945 # 2027Q3: 328.746 * 341.281 / 332.976
   2029-01-01: 344.854 # 2028Q3: 328.746 * 349.291 / 332.976
   2030-01-01: 352.722 # 2029Q3: 328.746 * 357.260 / 332.976

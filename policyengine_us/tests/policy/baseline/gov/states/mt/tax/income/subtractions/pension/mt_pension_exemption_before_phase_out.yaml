@@ -1,0 +1,71 @@
+- name: Pension above the 2023 cap is capped at 5,060
+  period: 2023
+  input:
+    taxable_private_pension_income: 25_000
+    state_code: MT
+  output:
+    mt_pension_exemption_before_phase_out: 5_060
+
+- name: Pension and IRA income below the 2023 cap are exempt in full
+  period: 2023
+  input:
+    taxable_private_pension_income: 1_000
+    taxable_ira_distributions: 1_300
+    state_code: MT
+  output:
+    mt_pension_exemption_before_phase_out: 2_300
+
+- name: Military retired pay qualifies
+  period: 2023
+  input:
+    military_retirement_pay: 20_000
+    state_code: MT
+  output:
+    # MCA 15-30-2101(25)(b), capped at 5,060.
+    mt_pension_exemption_before_phase_out: 5_060
+
+- name: Survivor Benefit Plan annuities qualify
+  period: 2023
+  input:
+    military_retirement_pay_survivors: 20_000
+    state_code: MT
+  output:
+    # Form 1099-R code 7 (1099-R instructions, Military retirement
+    # annuities), which the line 34 instructions qualify; capped at 5,060.
+    mt_pension_exemption_before_phase_out: 5_060
+
+- name: Roth conversions qualify
+  period: 2023
+  input:
+    taxable_roth_conversions: 3_000
+    state_code: MT
+  output:
+    # Included on Form 2, page 1, line 4b (worksheet line 2).
+    mt_pension_exemption_before_phase_out: 3_000
+
+- name: A dependent's pension does not qualify
+  period: 2023
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+      dependent:
+        is_tax_unit_dependent: true
+        taxable_private_pension_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+        state_code: MT
+  output:
+    mt_pension_exemption_before_phase_out: [0, 0]
+
+- name: The exemption is repealed from 2024
+  period: 2024
+  input:
+    taxable_private_pension_income: 20_000
+    state_code: MT
+  output:
+    mt_pension_exemption_before_phase_out: 0

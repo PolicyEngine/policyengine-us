@@ -4,6 +4,20 @@ metadata:
   period: year
   label: Counties using Optional Local Sales Tax Table D
   reference:
+    - title: 2015 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2015.pdf#page=18
+    - title: 2016 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2016.pdf#page=18
+    - title: 2017 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2017.pdf#page=19
+    - title: 2018 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2018.pdf#page=18
+    - title: 2019 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2019.pdf#page=19
+    - title: 2020 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2020.pdf#page=18
+    - title: 2021 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2021.pdf#page=18
     - title: 2022 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
       href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=17
     - title: 2023 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
@@ -17,7 +31,16 @@ metadata:
 # names the same localities with the same tables as the 2024 selector, so
 # the 2024 value applies to 2025. A place named in another row takes
 # precedence (place lists), as in "Dekalb County (excluding Atlanta)".
+# The 2017 lists are from the February 2018 revision at irs-prior; the
+# original January 2018 printing has the same selector.
 values:
+  2015-01-01: []
+  2016-01-01: []
+  2017-01-01: []
+  2018-01-01: []
+  2019-01-01: []
+  2020-01-01: []
+  2021-01-01: []
   2022-01-01: []
   2023-01-01: []
   2024-01-01: []

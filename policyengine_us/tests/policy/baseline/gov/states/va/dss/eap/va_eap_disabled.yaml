@@ -1,0 +1,189 @@
+# Virginia EAP disabled member: a person receiving Social Security
+# disability, SSI as disabled, or otherwise disabled (Complete EAP Manual
+# B.6.c). Modeled as is_disabled, positive social_security_disability, or SSI
+# receipt (ssi > 0 or receives_ssi) together with is_ssi_disabled.
+
+- name: Case 1, person reported as disabled qualifies.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 45
+        is_disabled: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_disabled: true
+
+- name: Case 2, Social Security disability recipient qualifies without the disability flag.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 52
+        social_security_disability: 18_960
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_disabled: true
+
+- name: Case 3, SSI recipient who is SSI-disabled qualifies.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        ssi: 11_928
+        is_ssi_disabled: true
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_disabled: true
+
+- name: Case 4, reported SSI receipt with SSI disability qualifies when no SSI amount is supplied.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        ssi: 0
+        receives_ssi: true
+        is_ssi_disabled: true
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_disabled: true
+
+- name: Case 5, aged SSI recipient who is not SSI-disabled does not qualify.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        ssi: 11_928
+        is_ssi_disabled: false
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_disabled: false
+
+- name: Case 6, SSI disability status without SSI receipt does not qualify.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 48
+        employment_income: 30_000
+        ssi: 0
+        receives_ssi: false
+        is_ssi_disabled: true
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_disabled: false
+
+- name: Case 7, Social Security retirement alone is not disability.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 66
+        social_security_retirement: 21_600
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_disabled: false
+
+- name: Case 8, only the disabled spouse qualifies in a couple.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 47
+        employment_income: 36_000
+      spouse:
+        age: 45
+        social_security_disability: 15_600
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: VA
+  output:
+    va_eap_disabled: [false, true]
+
+- name: Case 9, disabled person outside Virginia is not computed.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 45
+        is_disabled: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MD
+  output:
+    va_eap_disabled: false
+
+- name: Case 10, a fully disabled service-connected veteran qualifies without the disability flag.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 55
+        veterans_benefits: 23_800
+        is_fully_disabled_service_connected_veteran: true
+        is_disabled: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_disabled: true

@@ -30,7 +30,12 @@ def create_il_sb3567() -> Reform:
             person = tax_unit.members
             age = person("age", period)
             age_eligible_child = age < ctc.age_limit
-            federal_ctc_eligible_child = person("ctc_qualifying_child", period)
+            # The Illinois credit builds on the Illinois EITC, which does not
+            # require the filer's social security number, so the federal CTC
+            # filer identification requirements are not applied here.
+            federal_ctc_eligible_child = person(
+                "ctc_qualifying_child_ignoring_filer_identification", period
+            )
             eligible_child = age_eligible_child & federal_ctc_eligible_child
             eligible_child_present = tax_unit.any(eligible_child)
 

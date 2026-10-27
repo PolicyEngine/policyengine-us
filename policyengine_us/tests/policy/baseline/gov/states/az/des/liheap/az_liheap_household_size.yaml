@@ -1,0 +1,167 @@
+# Arizona LIHEAP household size. Only Eligible Household Members (U.S. citizens
+# and Qualified Noncitizens under 8 U.S.C. 1641(b)) count toward the household
+# size; in a Mixed-Status Household the income of every member aged 18 or
+# older still counts (DES LIHEAP Policy rev. 16A eff. 2026-07-01, pp. 4-5
+# definitions and p. 8 VI.A.6.d,
+# https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=8).
+# The variable is defined only for Arizona households.
+
+- name: Case 1, single citizen adult counts as one.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_household_size: 1
+
+- name: Case 2, two citizen adults and two citizen children count four.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+      person2:
+        age: 36
+      person3:
+        age: 10
+      person4:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        pre_subsidy_electricity_expense: 2_000
+        gas_expense: 600
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AZ
+  output:
+    az_liheap_household_size: 4
+
+- name: Case 3, mixed-status household counts citizens only but all adult income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 34
+        immigration_status: CITIZEN
+        employment_income: 26_000
+      person2:
+        age: 36
+        immigration_status: UNDOCUMENTED
+        employment_income: 22_000
+      person3:
+        age: 9
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_700
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AZ
+  output:
+    # Policy p. 8 VI.A.6.d.i: 4 members - 1 undocumented adult = 3.
+    az_liheap_household_size: 3
+    # Policy p. 8 VI.A.6.d.ii: 26,000 + 22,000 = 48,000, both adults' wages.
+    az_liheap_countable_income: 48_000
+
+- name: Case 4, lawful permanent resident is a qualified noncitizen and counts.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+      person2:
+        age: 44
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_900
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_liheap_household_size: 2
+
+- name: Case 5, two undocumented adults count zero.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 28
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_liheap_household_size: 0
+
+- name: Case 6, DACA member is not a qualified noncitizen and is excluded.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: CITIZEN
+      person2:
+        age: 22
+        immigration_status: DACA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Policy p. 5: DACA is not on the 8 U.S.C. 1641(b) qualified list.
+    az_liheap_household_size: 1
+
+- name: Case 7, the same citizen in New Mexico has no Arizona household size.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    az_liheap_household_size: 0

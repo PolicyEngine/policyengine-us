@@ -1,0 +1,88 @@
+# 36 MRSA 5213-A(1)(A-1)(2) and 5219-KK(1)(A-1)(2)-(3) count each "qualifying child
+# or dependent" for whom the filer can claim the federal credit under section 24,
+# which includes the credit for other dependents. A child whose filer fails the
+# Child Tax Credit SSN rule gets that credit (IRC 24(h)(4)(C)) if the filer has an
+# SSN or ITIN, so the child still counts (issue #9403).
+- name: Maine counts the child of a joint return where neither spouse has an SSN in 2025
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        ssn_card_type: OTHER_NON_CITIZEN
+      spouse:
+        age: 35
+        ssn_card_type: OTHER_NON_CITIZEN
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        me_sales_and_property_tax_fairness_credit_income: 10_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: ME
+  output:
+    ctc_qualifying_children: 0
+    me_fairness_credit_qualifying_children: 1
+    me_sales_tax_fairness_credit: 250
+
+- name: Maine does not count the child of a joint return where neither spouse has any TIN in 2025
+  # No section 24 credit is allowed without a taxpayer identification number.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        ssn_card_type: NONE
+        has_tin: false
+      spouse:
+        age: 35
+        ssn_card_type: NONE
+        has_tin: false
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        me_sales_and_property_tax_fairness_credit_income: 10_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: ME
+  output:
+    ctc_qualifying_children: 0
+    me_fairness_credit_qualifying_children: 0
+    me_sales_tax_fairness_credit: 215
+
+- name: Maine counts the child of a joint return with SSNs in 2025
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+      spouse:
+        age: 35
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        me_sales_and_property_tax_fairness_credit_income: 10_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: ME
+  output:
+    ctc_qualifying_children: 1
+    me_fairness_credit_qualifying_children: 1
+    me_sales_tax_fairness_credit: 250

@@ -1,0 +1,16 @@
+description: Virginia exempts the earned income of household members younger than this age under the Energy Assistance Program.
+# Exemption 20 applies to "dependent children under 18 years of age (in or out
+# of school) living with a parent or guardian"; the model applies it to every
+# member under 18.
+values:
+  2021-10-01: 18
+
+metadata:
+  unit: year
+  period: year
+  label: Virginia EAP child earned income exemption age limit
+  reference:
+    - title: Virginia Energy Assistance Manual, Volume IX, Chapter B.6.b.20 Exempt Income
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=30
+    - title: LIHEAP FY2026 Virginia Detailed Model Plan, Section 1.9 (earned income of a child under the age of 18 not counted)
+      href: https://liheapch.acf.gov/docs/2026/state-plans/VA_Plan_2026.pdf#page=6

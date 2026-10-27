@@ -1,0 +1,15 @@
+description: Minnesota reduces the alternative minimum tax exemption by this share of alternative minimum taxable income above the phase-out threshold.
+values:
+  2021-01-01: 0.25
+
+metadata:
+  period: year
+  unit: /1
+  label: Minnesota AMT exemption phase-out rate
+  reference:
+    - title: Minnesota Statutes Section 290.091, Subd. 3(b) (phase out under IRC 55(d)(2); IRC 55(d)(4) does not apply)
+      href: https://www.revisor.mn.gov/statutes/cite/290.091#stat.290.091.3
+    - title: 26 U.S. Code § 55(d)(2) - 25 percent of alternative minimum taxable income above the threshold
+      href: https://www.law.cornell.edu/uscode/text/26/55#d_2
+    - title: 2025 Minnesota Schedule M1MT form, Line 24
+      href: https://www.revenue.state.mn.us/sites/default/files/2026-07/m1mt-25.pdf#page=1

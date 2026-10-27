@@ -1,0 +1,292 @@
+# Virginia EAP Fuel Assistance end-to-end integration tests.
+# Sources: Complete EAP Manual, Volume IX (household and income B.5-B.7,
+# medical deduction B.6.c, climate zones Appendix A, point values Appendix B);
+# 22VAC40-680-30 (points x value per point); LIHEAP FY2026 Virginia plan item
+# 2.5 (FFY2025 value per point $4.531665, used for period 2026).
+# FFY2026 annual limits (monthly x 12): 23,472 (1) / 31,716 (2) /
+# 39,972 (3) / 64,716 (6) / 72,972 (7).
+# Points = household size + income + climate zone + vulnerability + 43
+# (living arrangement 20, primary fuel placeholder 10, energy burden
+# placeholder 13).
+
+- name: Case 1, retiree in Fairfax County with natural gas heat receives 466.76.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 65
+        social_security_retirement: 11_736
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [head]
+        state_code: VA
+        county: FAIRFAX_COUNTY_VA
+  output:
+    va_eap_household_size: 1
+    va_eap_income_limit: 23_472
+    # 11,736 - 600 elderly deduction.
+    va_eap_countable_income: 11_136
+    va_eap_income_eligible: true
+    va_eap_eligible: true
+    va_eap_climate_zone: NORTHERN
+    # floor(100 x 11,136 / 23,472) = 47 -> 15.
+    va_eap_income_points: 15
+    va_eap_vulnerability_points: 20
+    # 9 + 15 + 16 + 20 + 43 = 103.
+    va_eap_points: 103
+    # 103 x 4.531665 = 466.761495.
+    va_eap: 466.76
+
+- name: Case 2, single parent in Norfolk with heat included in rent receives 376.13.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 28
+        employment_income: 26_562
+        child_support_received: 3_600
+      child1:
+        age: 4
+      child2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+        heating_type: ELECTRICITY
+        heat_expense_included_in_rent: true
+        tanf: 0
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: VA
+        county: NORFOLK_CITY_VA
+  output:
+    va_eap_household_size: 3
+    va_eap_income_limit: 39_972
+    # Full-time minimum wage 12.77 x 2,080 = 26,562 plus child support 3,600.
+    va_eap_countable_income: 30_162
+    va_eap_income_eligible: true
+    va_eap_eligible: true
+    va_eap_climate_zone: TIDEWATER
+    # floor(100 x 30,162 / 39,972) = 75 -> 8.
+    va_eap_income_points: 8
+    va_eap_vulnerability_points: 12
+    # 12 + 8 + 8 + 12 + 43 = 83.
+    va_eap_points: 83
+    # 83 x 4.531665 = 376.128195.
+    va_eap: 376.13
+
+- name: Case 3, family of seven in Chesterfield County receives 407.85.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 38
+        employment_income: 52_000
+      spouse:
+        age: 36
+      child1:
+        age: 16
+        employment_income: 4_000
+      child2:
+        age: 12
+      child3:
+        age: 9
+      child4:
+        age: 6
+      child5:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2, child3, child4, child5]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+        tanf: 0
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3, child4, child5]
+        state_code: VA
+        county: CHESTERFIELD_COUNTY_VA
+  output:
+    va_eap_household_size: 7
+    va_eap_income_limit: 72_972
+    # The 16-year-old's 4,000 of wages is exempt.
+    va_eap_countable_income: 52_000
+    va_eap_income_eligible: true
+    va_eap_eligible: true
+    va_eap_climate_zone: EASTERN_PIEDMONT
+    # floor(100 x 52,000 / 72,972) = 71 -> 8.
+    va_eap_income_points: 8
+    va_eap_vulnerability_points: 12
+    # 15 + 8 + 12 + 12 + 43 = 90.
+    va_eap_points: 90
+    # 90 x 4.531665 = 407.84985.
+    va_eap: 407.85
+
+- name: Case 4, subsidized disability recipient in Richmond paying an electric bill receives 394.25.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        social_security_disability: 18_960
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_300
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [head]
+        state_code: VA
+        county: RICHMOND_CITY_VA
+  output:
+    va_eap_household_size: 1
+    va_eap_income_limit: 23_472
+    # 18,960 - 600 disability deduction.
+    va_eap_countable_income: 18_360
+    va_eap_income_eligible: true
+    va_eap_eligible: true
+    va_eap_climate_zone: EASTERN_PIEDMONT
+    # floor(100 x 18,360 / 23,472) = 78 -> 8.
+    va_eap_income_points: 8
+    va_eap_vulnerability_points: 15
+    # 9 + 8 + 12 + 15 + 43 = 87.
+    va_eap_points: 87
+    # 87 x 4.531665 = 394.254855.
+    va_eap: 394.25
+
+- name: Case 5, working SSI recipient in Wise County above the limit receives 385.19.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 24_000
+        ssi: 438
+        is_ssi_disabled: true
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: KEROSENE
+        fuel_oil_expense: 1_100
+    households:
+      household:
+        members: [head]
+        state_code: VA
+        county: WISE_COUNTY_VA
+  output:
+    va_eap_household_size: 1
+    va_eap_income_limit: 23_472
+    # 24,000 + 438 SSI - 600 disability deduction.
+    va_eap_countable_income: 23_838
+    # Over the limit, but every member receives SSI.
+    va_eap_income_eligible: true
+    va_eap_eligible: true
+    va_eap_climate_zone: SOUTHWESTERN_MOUNTAIN
+    # floor(100 x 23,838 / 23,472) = 101 -> 0.
+    va_eap_income_points: 0
+    va_eap_vulnerability_points: 15
+    # 9 + 0 + 18 + 15 + 43 = 85.
+    va_eap_points: 85
+    # 85 x 4.531665 = 385.191525.
+    va_eap: 385.19
+
+- name: Case 6, undocumented parent with two citizen children in Prince William County receives 398.79.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 34
+        immigration_status: UNDOCUMENTED
+        employment_income: 25_000
+      child1:
+        age: 7
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        tanf: 0
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: VA
+        county: PRINCE_WILLIAM_COUNTY_VA
+  output:
+    # The parent is left out of the size but the parent's wages count.
+    va_eap_household_size: 2
+    va_eap_income_limit: 31_716
+    va_eap_countable_income: 25_000
+    va_eap_income_eligible: true
+    va_eap_eligible: true
+    va_eap_climate_zone: NORTHERN
+    # floor(100 x 25,000 / 31,716) = 78 -> 8.
+    va_eap_income_points: 8
+    va_eap_vulnerability_points: 12
+    # 9 + 8 + 16 + 12 + 43 = 88.
+    va_eap_points: 88
+    # 88 x 4.531665 = 398.78652.
+    va_eap: 398.79
+
+- name: Case 7, three-generation household in Augusta County with wood heat receives 557.39.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      grandparent:
+        age: 66
+        social_security_retirement: 12_000
+        ssi: 0
+      head:
+        age: 40
+      spouse:
+        age: 38
+      child1:
+        age: 12
+      child2:
+        age: 9
+      child3:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [grandparent, head, spouse, child1, child2, child3]
+        heating_type: WOOD
+        wood_expense: 800
+        tanf: 0
+    households:
+      household:
+        members: [grandparent, head, spouse, child1, child2, child3]
+        state_code: VA
+        county: AUGUSTA_COUNTY_VA
+  output:
+    va_eap_household_size: 6
+    va_eap_income_limit: 64_716
+    # 12,000 - 600 elderly deduction.
+    va_eap_countable_income: 11_400
+    va_eap_income_eligible: true
+    va_eap_eligible: true
+    va_eap_climate_zone: CENTRAL_MOUNTAIN
+    # floor(100 x 11,400 / 64,716) = 17 -> 25.
+    va_eap_income_points: 25
+    va_eap_vulnerability_points: 20
+    # 15 + 25 + 20 + 20 + 43 = 123.
+    va_eap_points: 123
+    # 123 x 4.531665 = 557.394795.
+    va_eap: 557.39

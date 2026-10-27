@@ -1,0 +1,64 @@
+description: Virginia awards these benefit points by countable income as a whole percent of the maximum income level for the household size under the Energy Assistance Program.
+# Appendix B: "Income as % of Max Level" 0 to 19 25 points, 20 to 29 20, 30 to
+# 39 18, 40 to 49 15, 50 to 59 13, 60 to 69 10, 70 to 79 8, 80 to 89 5, 90 to
+# 94 3, 95 to 100 1. The bands are whole percents, so thresholds are the band
+# starts and the formula floors the percent before the default (lower
+# inclusive) lookup; flooring is an inference, as the table gives no rule for
+# fractions. The table has no row above 100 percent: only a household in which
+# all members receive SSI can exceed the maximum, and it is given 0 points
+# (inference).
+brackets:
+  - threshold:
+      2021-05-01: 0
+    amount:
+      2021-05-01: 25
+  - threshold:
+      2021-05-01: 20
+    amount:
+      2021-05-01: 20
+  - threshold:
+      2021-05-01: 30
+    amount:
+      2021-05-01: 18
+  - threshold:
+      2021-05-01: 40
+    amount:
+      2021-05-01: 15
+  - threshold:
+      2021-05-01: 50
+    amount:
+      2021-05-01: 13
+  - threshold:
+      2021-05-01: 60
+    amount:
+      2021-05-01: 10
+  - threshold:
+      2021-05-01: 70
+    amount:
+      2021-05-01: 8
+  - threshold:
+      2021-05-01: 80
+    amount:
+      2021-05-01: 5
+  - threshold:
+      2021-05-01: 90
+    amount:
+      2021-05-01: 3
+  - threshold:
+      2021-05-01: 95
+    amount:
+      2021-05-01: 1
+  - threshold:
+      2021-05-01: 101
+    amount:
+      2021-05-01: 0
+
+metadata:
+  type: single_amount
+  threshold_unit: int
+  amount_unit: /1
+  period: year
+  label: Virginia EAP income points
+  reference:
+    - title: LIHEAP Clearinghouse Virginia FY2026 benefit matrix, Appendix B (05/21, Transmittal 21-1), household income as a percent of the maximum level based on 150% of the Poverty Income Guidelines
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/VA_BenefitMatrix_2026.pdf#page=6

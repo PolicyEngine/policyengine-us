@@ -1,0 +1,81 @@
+- name: Child of a filer without an SSN meets the qualifying child tests in 2026
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        ssn_card_type: NONE
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    ctc_qualifying_child_ignoring_filer_identification: [false, true]
+
+- name: Child aged 17 does not meet the qualifying child tests in 2026
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 45
+        ssn_card_type: NONE
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    ctc_qualifying_child_ignoring_filer_identification: [false, false]
+
+- name: Child without an SSN does not meet the qualifying child tests in 2026
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    ctc_qualifying_child_ignoring_filer_identification: [false, false]
+
+- name: Child of a filer who can be claimed as a dependent does not meet the qualifying child tests in 2026
+  # IRC 24(a), 152(b)(1); Publication 501, Dependent Taxpayer Test.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    ctc_qualifying_child_ignoring_filer_identification: [false, false]

@@ -8,6 +8,7 @@ local full run equal to CI's suites and free of single-process tree runs.
 """
 
 import re
+import shlex
 import shutil
 import subprocess
 from functools import lru_cache
@@ -111,3 +112,71 @@ def test_make_test_never_runs_a_whole_tree_in_one_process():
         "run YAML suites through policyengine_us/tests/test_batched.py, "
         f"not one policyengine-core process: {single_process}"
     )
+
+
+def test_contrib_ssa_yaml_has_a_dedicated_single_file_serial_route():
+    """Local/CI equality alone missed SSA when both routes excluded its YAML.
+
+    Its large reform combinations need separate files and an effective
+    one-worker limit even when CI exports POLICYENGINE_BATCH_WORKERS=2.
+    """
+    root = "policyengine_us/tests/policy/contrib"
+    ssa = f"{root}/ssa"
+    assert any((REPO_ROOT / ssa).rglob("*.yaml")), "SSA YAML coverage is absent"
+    commands = make_commands("test-yaml-structural-other")
+    batcher = "policyengine_us/tests/test_batched.py"
+    batch_commands = [
+        shlex.split(command) for command in commands if batcher in command
+    ]
+    dedicated = [arguments for arguments in batch_commands if ssa in arguments]
+    assert len(dedicated) == 1, "SSA must have one dedicated YAML invocation"
+    (arguments,) = dedicated
+    assert arguments[arguments.index("--mode") + 1] == "per-file"
+    assert arguments[arguments.index("--workers") + 1] == "1"
+    assert "POLICYENGINE_BATCH_WORKERS=1" in arguments
+
+    generic = [arguments for arguments in batch_commands if root in arguments]
+    assert len(generic) == 1
+    (arguments,) = generic
+    excluded = arguments[arguments.index("--exclude") + 1].split(",")
+    assert "ssa" in excluded, "SSA YAML must not also enter a shared subdir batch"
+    assert commands <= make_commands("test"), "The full suite must retain SSA's route"
+
+
+@pytest.mark.parametrize("workflow_name", ("python-tests.yaml", "push.yaml"))
+def test_microsimulation_fetches_the_pinned_social_security_reference(workflow_name):
+    """A shallow CI checkout otherwise skips every legacy differential case."""
+    source = (
+        REPO_ROOT
+        / "policyengine_us/tests/microsimulation/test_social_security_current_law.py"
+    ).read_text()
+    reference = re.search(
+        r"^REVIEWED_MAIN_SHA = [\"']([0-9a-f]{40})[\"']$", source, re.MULTILINE
+    )
+    assert reference, "the differential must declare its reviewed main commit"
+    expected_fetch = [
+        "git",
+        "fetch",
+        "--no-tags",
+        "--depth=1",
+        "origin",
+        reference.group(1),
+    ]
+    workflow = yaml.safe_load(
+        (REPO_ROOT / ".github/workflows" / workflow_name).read_text()
+    )
+    steps = workflow["jobs"]["Microsimulation"]["steps"]
+    fetch_steps = [
+        index
+        for index, step in enumerate(steps)
+        for line in (step.get("run") or "").splitlines()
+        if shlex.split(line) == expected_fetch
+    ]
+    test_steps = [
+        index
+        for index, step in enumerate(steps)
+        if "test-microsimulation" in MAKE_TARGET.findall(step.get("run") or "")
+    ]
+    assert len(fetch_steps) == 1, "fetch the exact pre-feature reference once"
+    assert len(test_steps) == 1, "the microsimulation suite must run once"
+    assert fetch_steps[0] < test_steps[0], "fetch the reference before the suite runs"

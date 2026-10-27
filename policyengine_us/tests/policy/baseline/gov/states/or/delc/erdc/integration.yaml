@@ -35,9 +35,10 @@
     or_erdc_eligible: true
     or_erdc: 1_490
 
-# 2027 2-person FPG = (15,960 + 5,680) x 336.766 / 328.4 = 22,191.28.
-# Initial limit = ceil(22,191.28 / 12 x 2) = ceil(3,698.55) = 3,699. The rule
-# is income < limit, so income of 3,699 is ineligible.
+# 2027 2-person FPG = (15,960 + 5,680) x 331.359 / 321.943 = 22,272.91, the
+# CPI-U change from calendar 2025 to calendar 2026 (gov.hhs.fpg_uprating).
+# Initial limit = ceil(22,272.91 / 12 x 2) = ceil(3,712.15) = 3,713. The rule
+# is income < limit, so income of 3,713 is ineligible.
 - name: Case 2, initial applicant at the strict income limit is ineligible.
   period: 2027-01
   absolute_error_margin: 0.1
@@ -55,13 +56,13 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        or_erdc_countable_income: 3_699
+        or_erdc_countable_income: 3_713
     households:
       household:
         members: [parent, child]
         state_code: OR
   output:
-    or_erdc_countable_income: 3_699
+    or_erdc_countable_income: 3_713
     or_erdc_income_eligible: false
     or_erdc_eligible: false
     or_erdc: 0

@@ -1,0 +1,120 @@
+# Arizona LIHEAP categorical eligibility: a household is categorically
+# eligible when one member's current enrollment in DES Cash Assistance (TANF)
+# or Nutrition Assistance (SNAP) is verified; SSI and veterans programs do not
+# confer it (DES LIHEAP Policy rev. 16A eff. 2026-07-01, pp. 7-8 VI.A.6.b,
+# https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=7;
+# FY2026 plan 1.4 and 1.4a,
+# https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=5).
+# snap and az_tanf are monthly variables; in a yearly test their inputs are
+# annual totals (snap 2,400 = 200 a month; az_tanf 4,164 = 347 a month).
+
+- name: Case 1, SNAP receipt makes a household above the income limit categorically eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 36_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+        snap: 2_400
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_categorically_eligible: true
+
+- name: Case 2, Cash Assistance receipt confers categorical eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 0
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_900
+        snap: 0
+        az_tanf: 4_164
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_liheap_categorically_eligible: true
+
+- name: Case 3, a household receiving neither program is not categorically eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_576
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_categorically_eligible: false
+
+- name: Case 4, SSI receipt alone does not confer categorical eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_disabled: true
+        ssi: 11_928
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_600
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Plan 1.4a: SSI is not a categorical program.
+    az_liheap_categorically_eligible: false
+
+- name: Case 5, VA benefits alone do not confer categorical eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        veterans_benefits: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        pre_subsidy_electricity_expense: 1_500
+        gas_expense: 600
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Plan 1.4a: means-tested veterans programs are not categorical.
+    az_liheap_categorically_eligible: false

@@ -1,0 +1,113 @@
+- name: Case 1, income equal to the exact annual poverty limit qualifies.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 23475
+    heating_type: ELECTRICITY
+    heating_expense: 1000
+  output:
+    wa_liheap_eligible: true
+
+- name: Case 2, income above the exact annual limit is ineligible.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 23476
+    heating_type: ELECTRICITY
+    heating_expense: 1000
+  output:
+    wa_liheap_eligible: false
+
+- name: Case 3, zero qualifying members is ineligible.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 0
+    wa_liheap_countable_income: 0
+    heating_type: ELECTRICITY
+    heating_expense: 1000
+  output:
+    wa_liheap_eligible: false
+
+- name: Case 4, no heating responsibility is ineligible.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 0
+    heating_type: ELECTRICITY
+    heating_expense: 0
+  output:
+    wa_liheap_eligible: false
+
+- name: Case 5, heat included in rent qualifies even when its cost is unknown.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 0
+    heating_type: UNSPECIFIED
+    heating_expense: 0
+    heat_expense_included_in_rent: true
+  output:
+    wa_liheap_eligible: true
+
+- name: Case 6, subsidized renters are not categorically excluded.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 0
+    heating_type: ELECTRICITY
+    heating_expense: 1000
+    receives_housing_assistance: true
+    heat_expense_included_in_rent: true
+  output:
+    wa_liheap_eligible: true
+
+- name: Case 7, NONE explicitly identifies no heating.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 0
+    heating_type: NONE
+    heating_expense: 1000
+  output:
+    wa_liheap_eligible: false
+
+- name: Case 8, no asset test is imposed.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 0
+    heating_type: ELECTRICITY
+    heating_expense: 1000
+    bank_account_assets: 1000000
+  output:
+    wa_liheap_eligible: true
+
+- name: Case 9, another state is ineligible.
+  period: 2026
+  input:
+    state_code: OR
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 0
+    heating_type: ELECTRICITY
+    heating_expense: 1000
+  output:
+    wa_liheap_eligible: false
+
+- name: Case 10, size twenty-five retains eligibility despite an unsupported award adjuster.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 25
+    wa_liheap_countable_income: 0
+    heating_type: ELECTRICITY
+    heating_expense: 1000
+  output:
+    wa_liheap_eligible: true

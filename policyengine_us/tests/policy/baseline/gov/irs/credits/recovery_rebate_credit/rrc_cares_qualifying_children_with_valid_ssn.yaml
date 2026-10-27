@@ -1,0 +1,30 @@
+# IRC 6428(a)(2) counts each "qualifying child (within the meaning of section
+# 24(c))", so the Child Tax Credit filer identification requirements do not apply
+# (issue #9403). The rebate's own identification rules are in IRC 6428(g).
+- name: CARES - Child of a joint return where one spouse has no TIN still counts
+  period: 2020
+  input:
+    people:
+      head:
+        age: 35
+        ssn_card_type: CITIZEN
+      spouse:
+        age: 35
+        ssn_card_type: NONE
+        has_tin: false
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    ctc_qualifying_children: 0
+    rrc_cares_qualifying_children_with_valid_ssn: 1
+    rrc_cares: 1_700  # 1_200 for the spouse with an SSN + 500 for the child

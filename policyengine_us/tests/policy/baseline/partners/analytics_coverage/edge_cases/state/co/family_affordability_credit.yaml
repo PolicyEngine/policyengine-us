@@ -1,8 +1,10 @@
 # YAML regression-test fixture (policyengine-us partner edge cases).
-# CO Family Affordability Credit (HB24-1311), 2026 parameters: base 3,273 per
+# CO Family Affordability Credit (HB24-1311). The 2026 credit is 0:
+# C.R.S. 39-22-130(6)(f) allows no credit when the adjustment factor is below
+# 3% (LCS memo R26-322). Without the pause the base would be 3,273 per
 # qualifying-child dependent; age multiplier 1.0 under 6, 0.75 ages 6-16, 0 at
 # 17+; AGI reduction of 6.875% per 5,000 increment above 16,000
-# (single/HOH) or 26,000 (joint), uprated values for 2026.
+# (single/HOH) or 26,000 (joint).
 - name: co_family_affordability_age_multiplier_ladder_5_6_17 (co)
   period: 2026
   absolute_error_margin: 0.1
@@ -134,14 +136,15 @@
         co_state_supplement: 0.0
         co_oap: 0.0
       child1:
-        # AGI 10,000 < 26,000 joint threshold -> no reduction;
-        # age 5 -> 3,273 x 1.0 = 3,273.
-        co_family_affordability_credit: 3_273.0
+        # 0 in 2026 (3% trigger). Without the pause: AGI 10,000 < 26,000
+        # joint threshold -> no reduction; age 5 -> 3,273 x 1.0 = 3,273.
+        co_family_affordability_credit: 0
         co_state_supplement: 0.0
         co_oap: 0.0
       child2:
-        # Age 6 -> 3,273 x 0.75 = 2,454.75.
-        co_family_affordability_credit: 2_454.75
+        # 0 in 2026 (3% trigger). Without the pause: age 6 ->
+        # 3,273 x 0.75 = 2,454.75.
+        co_family_affordability_credit: 0
         co_state_supplement: 0.0
         co_oap: 0.0
       child3:
@@ -243,9 +246,10 @@
         co_state_supplement: 0.0
         co_oap: 0.0
       child1:
-        # AGI exactly at the 26,000 joint threshold -> excess 0 -> full
-        # 3,273 x 1.0 (age under 6); $1 more starts the reduction.
-        co_family_affordability_credit: 3_273.0
+        # 0 in 2026 (3% trigger). Without the pause: AGI exactly at the
+        # 26,000 joint threshold -> excess 0 -> full 3,273 x 1.0 (age under
+        # 6); $1 more starts the reduction.
+        co_family_affordability_credit: 0
         co_state_supplement: 0.0
         co_oap: 0.0
 - name: co_family_affordability_joint_agi_26k_plus_1_first_increment (co)
@@ -341,9 +345,10 @@
         co_state_supplement: 0.0
         co_oap: 0.0
       child1:
-        # Excess 1 over the 26,000 joint threshold -> ceil(1/5,000) = 1
-        # increment x 6.875%; 3,273 x 0.93125 = 3,047.98.
-        co_family_affordability_credit: 3_047.98
+        # 0 in 2026 (3% trigger). Without the pause: excess 1 over the
+        # 26,000 joint threshold -> ceil(1/5,000) = 1 increment x 6.875%;
+        # 3,273 x 0.93125 = 3,047.98.
+        co_family_affordability_credit: 0
         co_state_supplement: 0.0
         co_oap: 0.0
 - name: co_family_affordability_hoh_agi_90k_fully_phased_out (co)

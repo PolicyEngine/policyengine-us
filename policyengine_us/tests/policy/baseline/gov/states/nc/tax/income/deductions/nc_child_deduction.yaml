@@ -58,13 +58,14 @@
   output:
     nc_child_deduction: 2_000 * 1
 
-# Regression guard for the #6374 NC resolution: NC is a static IRC-conformity state
-# (conformed to the Code as of Jan 1, 2023, N.C. Gen. Stat. 105-228.90(b)(1b)), so it
-# does NOT import the OBBBA (July 2025) filer-SSN gate on section 24. An ITIN filer
-# whose qualifying child has a valid SSN still receives the NC child deduction, because
-# nc_child_deduction keys on ctc_qualifying_children (child-SSN gate only), not the
-# federal filer-SSN gate. Fails if a filer-SSN gate is ever propagated into the NC count.
-- name: NC child deduction counts an SSN-holding child of an ITIN filer in 2025
+# G.S. 105-153.5(a1) allows the deduction for each qualifying child "for whom the
+# taxpayer is allowed the federal tax credit" under section 24 of the Code. S.L.
+# 2026-31, Section 12.(a), moved the Code date in G.S. 105-228.90(b)(7) from
+# January 1, 2023 to July 5, 2025, which includes the One Big Beautiful Bill Act's
+# filer social security number rule in IRC 24(h)(7)(A)(i). An ITIN filer whose child
+# has a valid SSN is not allowed the federal credit for that child from 2025, so the
+# NC child deduction is zero (issue #9403).
+- name: NC child deduction excludes the SSN-holding child of an ITIN filer in 2025
   period: 2025
   input:
     people:
@@ -83,6 +84,59 @@
     households:
       household:
         members: [parent, child]
+        state_code: NC
+  output:
+    ctc_qualifying_children: 0
+    nc_child_deduction: 0
+
+- name: NC child deduction counts the SSN-holding child of an ITIN filer in 2024
+  # The filer social security number rule starts in 2025.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 40
+        ssn_card_type: OTHER_NON_CITIZEN
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 25_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+  output:
+    ctc_qualifying_children: 1
+    nc_child_deduction: 3_000
+
+- name: NC child deduction counts the child of a joint return where one spouse has an SSN in 2025
+  # IRC 24(h)(7)(A)(i): on a joint return, the SSN of at least one spouse.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        ssn_card_type: OTHER_NON_CITIZEN
+      spouse:
+        age: 40
+        ssn_card_type: CITIZEN
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        adjusted_gross_income: 35_000
+    households:
+      household:
+        members: [head, spouse, child]
         state_code: NC
   output:
     ctc_qualifying_children: 1
