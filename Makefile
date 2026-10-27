@@ -23,10 +23,6 @@ TESTS := policyengine_us/tests
 REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 	$(TESTS)/core/test_spm_simulation_isolation.py \
 	$(TESTS)/core/test_spm_system.py
-# Calculator Simulation/API contracts use that same runner, with each file
-# in its own process so its reform trees are released before the next suite.
-REST_SIMULATION_API_TESTS := $(TESTS)/unit/test_ss_calculator_engine.py \
-	$(TESTS)/unit/test_ss_calculator_differential.py
 # The remaining Python tests run as one pytest process per group, one after
 # another, so each exit releases its heap before the next group starts. As a
 # single process they peaked at 15.7 GB RSS on the 16 GB runner, with 1.5M
@@ -49,26 +45,12 @@ REST_SIMULATION_API_TESTS := $(TESTS)/unit/test_ss_calculator_engine.py \
 # SSI resource deeming retains a reformed system at import and builds another
 # in its grid fixture. Core reached 13.3 GB in CI run 38141803955 after this
 # and three smaller modules arrived; isolate SSI rather than filling heavy-a
-# (8.1 GB including the pending capital-gains MTR change). These groups remain
-# sequential subprocesses within each Rest Python shard.
-REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core-heavy core policy-parameters policy remaining-heavy remaining
-# CI runs two shards of these existing isolated processes. Across seven
-# recent runs (including 38326922385 and 38289790999), their summed group
-# times were 32-45 and 32-46 minutes; variables adds about a minute to shard 1.
-# Both stay near 45 minutes, while the old serial job hit its 90-minute limit.
-# No shard runs more than one Python group at a time. Locally, leaving
-# REST_PYTHON_SHARD unset still runs every group in the original order.
-REST_PYTHON_SHARD_1_GROUPS := cached-arrays core-heavy policy-parameters remaining-heavy remaining
-REST_PYTHON_SHARD_2_GROUPS := heavy-a heavy-b core policy
-REST_PYTHON_SHARD ?=
-ifeq ($(REST_PYTHON_SHARD),)
-REST_PYTHON_SELECTED_GROUPS := $(REST_PYTHON_GROUPS)
-else
-REST_PYTHON_SELECTED_GROUPS := $(REST_PYTHON_SHARD_$(REST_PYTHON_SHARD)_GROUPS)
-ifeq ($(strip $(REST_PYTHON_SELECTED_GROUPS)),)
-$(error REST_PYTHON_SHARD must be 1 or 2)
-endif
-endif
+# (8.1 GB including the pending capital-gains MTR change).
+# CI does not run this target. tests/rest_python_shards.py reads these groups
+# from its dry run and spreads their files over parallel runners by recent
+# CI times, splitting a long group into chunks. A process still runs files
+# of one group only, in this order, so none holds more than its group here.
+REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core-heavy ss-calculator-engine ss-calculator-differential core policy-parameters policy remaining-heavy remaining
 REST_CACHED_ARRAY_TESTS := $(TESTS)/test_formulas_do_not_write_into_cached_arrays.py
 REST_HEAVY_A_TESTS := $(TESTS)/test_md_poverty_line_credit_invariants.py \
 	$(TESTS)/core/test_ald_determinism.py \
@@ -84,6 +66,15 @@ REST_HEAVY_B_TESTS := $(TESTS)/core/test_marginal_tax_rate_coverage.py \
 REST_CORE_HEAVY_TESTS := $(TESTS)/core/test_ssi_resource_deeming_invariants.py \
 	$(TESTS)/test_federal_credit_limit_order.py \
 	$(TESTS)/test_pinned_branch_credit_dependents.py
+# Supplied-record calculator API checks load no national dataset. Keep each
+# file in a separate process so retained reform trees are released on exit.
+# Local macOS/Python 3.13.9, four numeric threads: peak RSS 2.98 GiB
+# through 13 cases before the 1,800-second cap; the previous complete
+# 18-case run recorded 3.06 GiB. CI reports the complete 20-case process.
+REST_SS_CALCULATOR_ENGINE_TESTS := $(TESTS)/unit/test_ss_calculator_engine.py
+# Local macOS/Python 3.13.9, four numeric threads: all eight cases passed
+# with 2.45 GiB peak RSS, below the ~10 GB per-process target above.
+REST_SS_CALCULATOR_DIFFERENTIAL_TESTS := $(TESTS)/unit/test_ss_calculator_differential.py
 # These three parameter modules construct full reform trees; one also loads
 # a default Microsimulation only to read parameters. Release their heap before
 # the remaining policy tests, rather than stacking both in the 13.9 GB group.
@@ -98,13 +89,15 @@ REST_REMAINING_HEAVY_TESTS := $(TESTS)/test_niit_section_911_magi.py \
 	$(TESTS)/test_capital_gain_distributions_loss_limit.py \
 	$(TESTS)/test_schedule_d_filer_net_capital_gain.py
 REST_LISTED_TESTS := $(REST_CACHED_ARRAY_TESTS) $(REST_HEAVY_A_TESTS) $(REST_HEAVY_B_TESTS) \
-	$(REST_CORE_HEAVY_TESTS) $(REST_POLICY_PARAMETER_TESTS) $(REST_REMAINING_HEAVY_TESTS)
-REST_IGNORES := $(addprefix --ignore=,$(TESTS)/policy/contrib $(TESTS)/microsimulation $(REST_SPM_TESTS) $(REST_SIMULATION_API_TESTS))
+	$(REST_CORE_HEAVY_TESTS) $(REST_SS_CALCULATOR_ENGINE_TESTS) $(REST_SS_CALCULATOR_DIFFERENTIAL_TESTS) \
+	$(REST_POLICY_PARAMETER_TESTS) $(REST_REMAINING_HEAVY_TESTS)
+REST_IGNORES := $(addprefix --ignore=,$(TESTS)/policy/contrib $(TESTS)/microsimulation $(REST_SPM_TESTS))
 # $(call rest_pytest,<group>,<paths>,<more paths to ignore>) is the pytest
-# command for one group. CI sets REST_REPORT_DIR, and each group then writes
-# its own JUnit XML and GNU time report there: rest-python-<group>.xml and
-# rest-python-<group>-resources.txt. Unset, it is plain pytest, since macOS
-# /usr/bin/time has no -v.
+# command for one group. With REST_REPORT_DIR set, each group writes its own
+# JUnit XML and GNU time report there: rest-python-<group>.xml and
+# rest-python-<group>-resources.txt; rest_python_shards.py names the groups
+# from these files. Unset, it is plain pytest, since macOS /usr/bin/time has
+# no -v.
 rest_pytest = $(strip $(if $(REST_REPORT_DIR),/usr/bin/time -v -o $(REST_REPORT_DIR)/rest-python-$(1)-resources.txt) \
 	pytest $(2) --maxfail=0 $(REST_IGNORES) $(addprefix --ignore=,$(3)) \
 	$(if $(REST_REPORT_DIR),--junitxml=$(REST_REPORT_DIR)/rest-python-$(1).xml))
@@ -306,11 +299,9 @@ test-other-python:
 	pytest policyengine_us/tests/ --maxfail=0 --ignore=$(TESTS)/policy/contrib --ignore=$(TESTS)/microsimulation
 test-other-python-spm:
 	pytest $(REST_SPM_TESTS) --maxfail=0
-	pytest $(TESTS)/unit/test_ss_calculator_engine.py --maxfail=0 $(if $(findstring --junitxml=,$(PYTEST_ADDOPTS)),--junitxml=simulation-ss-calculator-engine.xml)
-	pytest $(TESTS)/unit/test_ss_calculator_differential.py --maxfail=0 $(if $(findstring --junitxml=,$(PYTEST_ADDOPTS)),--junitxml=simulation-ss-calculator-differential.xml)
 # Every group runs even after one fails; the target fails if any group did.
 test-other-python-rest:
-	@failed=""; for group in $(REST_PYTHON_SELECTED_GROUPS); do \
+	@failed=""; for group in $(REST_PYTHON_GROUPS); do \
 		echo "=== Rest Python group: $$group ==="; \
 		$(MAKE) --no-print-directory test-other-python-rest-$$group || failed="$$failed $$group"; \
 	done; \
@@ -323,6 +314,10 @@ test-other-python-rest-heavy-b:
 	$(call rest_pytest,heavy-b,$(REST_HEAVY_B_TESTS))
 test-other-python-rest-core-heavy:
 	$(call rest_pytest,core-heavy,$(REST_CORE_HEAVY_TESTS))
+test-other-python-rest-ss-calculator-engine:
+	$(call rest_pytest,ss-calculator-engine,$(REST_SS_CALCULATOR_ENGINE_TESTS))
+test-other-python-rest-ss-calculator-differential:
+	$(call rest_pytest,ss-calculator-differential,$(REST_SS_CALCULATOR_DIFFERENTIAL_TESTS))
 test-other-python-rest-core:
 	$(call rest_pytest,core,$(TESTS)/core,$(REST_LISTED_TESTS))
 test-other-python-rest-policy-parameters:
