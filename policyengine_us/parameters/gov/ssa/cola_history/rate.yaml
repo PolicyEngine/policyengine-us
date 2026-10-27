@@ -1,0 +1,70 @@
+description: Social Security applies these historical statutory cost-of-living adjustment rates, dated by their effective benefit month.
+values:
+  1975-06-01: 0.080
+  1976-06-01: 0.064
+  1977-06-01: 0.059
+  1978-06-01: 0.065
+  1979-06-01: 0.099
+  1980-06-01: 0.143
+  1981-06-01: 0.112
+  1982-06-01: 0.074
+  1983-12-01: 0.035
+  1984-12-01: 0.035
+  1985-12-01: 0.031
+  1986-12-01: 0.013
+  1987-12-01: 0.042
+  1988-12-01: 0.040
+  1989-12-01: 0.047
+  1990-12-01: 0.054
+  1991-12-01: 0.037
+  1992-12-01: 0.030
+  1993-12-01: 0.026
+  1994-12-01: 0.028
+  1995-12-01: 0.026
+  1996-12-01: 0.029
+  1997-12-01: 0.021
+  1998-12-01: 0.013
+  1999-12-01: 0.025 # Corrected from 0.024 by Public Law 106-554.
+  2000-12-01: 0.035
+  2001-12-01: 0.026
+  2002-12-01: 0.014
+  2003-12-01: 0.021
+  2004-12-01: 0.027
+  2005-12-01: 0.041
+  2006-12-01: 0.033
+  2007-12-01: 0.023
+  2008-12-01: 0.058
+  2009-12-01: 0.000
+  2010-12-01: 0.000
+  2011-12-01: 0.036
+  2012-12-01: 0.017
+  2013-12-01: 0.015
+  2014-12-01: 0.017
+  2015-12-01: 0.000
+  2016-12-01: 0.003
+  2017-12-01: 0.020
+  2018-12-01: 0.028
+  2019-12-01: 0.016
+  2020-12-01: 0.013
+  2021-12-01: 0.059
+  2022-12-01: 0.087
+  2023-12-01: 0.032
+  2024-12-01: 0.025
+  2025-12-01: 0.028
+metadata:
+  unit: /1
+  label: Social Security historical statutory COLA rate
+  economy: false
+  historical_start: 1975-06-01
+  historical_end: 2025-12-01
+  reference:
+    - title: Social Security Cost-Of-Living Adjustments
+      href: https://www.ssa.gov/OACT/COLA/colaseries.html
+documentation: |
+  Dates are effective benefit months, not payment months. The June 1975-1982
+  adjustments were first paid in July of the same year; adjustments from
+  December 1983 were first paid the following January. There was no December
+  1982 or June 1983 adjustment. Explicit zero entries retain the 2009, 2010,
+  and 2015 determinations. December 1999 includes the statutory correction to
+  2.5 percent. This audited series ends with December 2025, first paid January
+  2026; later payment-year rates use the existing gov.ssa.uprating schedule.

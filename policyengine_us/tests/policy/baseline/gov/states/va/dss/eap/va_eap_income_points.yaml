@@ -1,0 +1,96 @@
+# Virginia EAP income points: countable income as a whole percent of the
+# maximum income level for the household size (Complete EAP Manual Chapter D,
+# Appendix B, 05/21 page: 0-19 25, 20-29 20, 30-39 18, 40-49 15, 50-59 13,
+# 60-69 10, 70-79 8, 80-89 5, 90-94 3, 95-100 1). The percent is floored to a
+# whole number (inference); only an all-SSI household can exceed 100 percent,
+# and it scores 0 (inference). The band-edge cases use the size-21 limit of
+# $188,460 (15,705 x 12) because every band start is then a whole-dollar
+# income.
+
+- name: Case 1, each band start scores that band's points.
+  period: 2026
+  input:
+    state_code: [VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA]
+    va_eap_income_limit: [188_460, 188_460, 188_460, 188_460, 188_460, 188_460, 188_460, 188_460, 188_460, 188_460, 188_460]
+    # 0, 20, 30, 40, 50, 60, 70, 80, 90, 95 and 100 percent of 188,460.
+    va_eap_countable_income: [0, 37_692, 56_538, 75_384, 94_230, 113_076, 131_922, 150_768, 169_614, 179_037, 188_460]
+  output:
+    va_eap_income_points: [25, 20, 18, 15, 13, 10, 8, 5, 3, 1, 1]
+
+- name: Case 2, one dollar below each band start stays in the lower band.
+  period: 2026
+  input:
+    state_code: [VA, VA, VA, VA, VA, VA, VA, VA, VA]
+    va_eap_income_limit: [188_460, 188_460, 188_460, 188_460, 188_460, 188_460, 188_460, 188_460, 188_460]
+    # 19.9995, 29.9995, ... 94.9995 percent floor to 19, 29, ... 94.
+    va_eap_countable_income: [37_691, 56_537, 75_383, 94_229, 113_075, 131_921, 150_767, 169_613, 179_036]
+  output:
+    va_eap_income_points: [25, 20, 18, 15, 13, 10, 8, 5, 3]
+
+- name: Case 3, one-person incomes at half the limit, at the limit and above it.
+  period: 2026
+  input:
+    state_code: [VA, VA, VA, VA]
+    va_eap_income_limit: [23_472, 23_472, 23_472, 23_472]
+    va_eap_countable_income: [11_736, 23_472, 23_473, 23_838]
+  output:
+    # 50 percent -> 13; 100 percent -> 1; 100.004 percent floors to 100 -> 1;
+    # 101.56 percent (all-SSI household) -> 0.
+    va_eap_income_points: [13, 1, 1, 0]
+
+- name: Case 4, a zero income limit scores zero points.
+  period: 2026
+  input:
+    state_code: VA
+    va_eap_income_limit: 0
+    va_eap_countable_income: 0
+  output:
+    va_eap_income_points: 0
+
+- name: Case 5, retiree with half the limit in Social Security scores 15 after the elderly deduction.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 65
+        social_security_retirement: 11_736
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # 11,736 - 600 = 11,136; floor(100 x 11,136 / 23,472) = floor(47.44) = 47 -> 15.
+    va_eap_income_points: 15
+
+- name: Case 6, a working SSI recipient above the limit scores zero.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 24_000
+        ssi: 438
+        is_ssi_disabled: true
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # 24,000 + 438 - 600 = 23,838; floor(101.56) = 101 -> 0.
+    va_eap_income_points: 0
+
+- name: Case 7, household outside Virginia is not computed.
+  period: 2026
+  input:
+    state_code: MD
+    va_eap_income_limit: 23_472
+    va_eap_countable_income: 4_000
+  output:
+    va_eap_income_points: 0

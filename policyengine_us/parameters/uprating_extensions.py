@@ -1001,10 +1001,22 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         end_year=END_YEAR,
     )
 
-    # HHS poverty guideline uprating (January values, last projection year 2036)
+    # HHS uprating for Head Start and Early Head Start spending (January
+    # values, last projection year 2036)
     extend_parameter_values(
         parameters.gov.hhs.uprating,
         last_projected_year=2036,
+        end_year=END_YEAR,
+        period_month=1,
+        period_day=1,
+    )
+
+    # HHS poverty guideline uprating (January values). Each guideline year
+    # holds the prior calendar year's CPI-U (42 U.S.C. 9902(2)), so CBO's last
+    # point, calendar 2036, sits at the 2037 instant.
+    extend_parameter_values(
+        parameters.gov.hhs.fpg_uprating,
+        last_projected_year=2037,
         end_year=END_YEAR,
         period_month=1,
         period_day=1,

@@ -1,0 +1,192 @@
+# Arizona LIHEAP countable income of the household: countable earned plus
+# unearned income of every member, plus the unit's DES Cash Assistance (TANF)
+# benefit (DES LIHEAP Policy rev. 16A eff. 2026-07-01, p. 9 VI.A.6.e.ii.B
+# "Unearned income, including Social Security and TANF benefits",
+# https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=9;
+# FY2026 plan 1.9 TANF checked,
+# https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=6).
+# az_tanf is a monthly variable; in a yearly test its input is the annual
+# total. Arizona's 2026 payment standard for a parent and one child is 347 a
+# month: 347 x 12 = 4,164.
+# Members' out-of-pocket Medicare Part B premiums are subtracted from the
+# household total, floored at zero (policy p. 14 VII.A.1.c.ii.D note:
+# "Expenses related to Medicare (such as premiums) should be subtracted
+# when determining gross income"). 2026 Part B standard premium 202.90 a
+# month: 202.90 x 12 = 2,434.80.
+
+- name: Case 1, TANF received by the unit is added to the parent's wages.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 9_000
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_900
+        az_tanf: 4_164
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # 9,000 wages + 4,164 Cash Assistance = 13,164.
+    az_liheap_countable_income: 13_164
+
+- name: Case 2, earned and unearned income of two adults are summed and a child's income is excluded.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 44
+        employment_income: 26_000
+        unemployment_compensation: 2_400
+      person2:
+        age: 67
+        social_security: 18_000
+        # Their own 1,500 a month is within the Medicare Savings Program
+        # limits, so the program pays the Part B premium and nothing is
+        # subtracted.
+        medicare_part_b_premium: 0
+        ssi: 0
+      person3:
+        age: 15
+        employment_income: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        pre_subsidy_electricity_expense: 2_000
+        gas_expense: 700
+        az_tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # 26,000 + 2,400 + 18,000 = 46,400; the 15-year-old's 3,000 is excluded
+    # (rev. 13 p. 9 E).
+    az_liheap_countable_income: 46_400
+
+- name: Case 3, subtracting the Medicare Part B premium brings a retiree under the income limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 34_000
+        # Income of 2,833 a month is above the Medicare Savings Program
+        # limits, so the retiree pays the 2,434.80 standard premium.
+        medicare_part_b_premium: 2_434.80
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Social Security counts gross at the person level.
+    az_liheap_countable_unearned_income: 34_000
+    # 34,000 - 2,434.80 = 31,565.20.
+    az_liheap_countable_income: 31_565.20
+    # 31,565.20 <= 33,684; gross income of 34,000 would be over it.
+    az_liheap_income_eligible: true
+    # Income 31,565.20 / 33,684 = 0.937 -> 1; burden 1,800 / 31,565.20 =
+    # 0.057 -> 1; elderly 1; total 3 -> 160.
+    az_liheap_points: 3
+    az_liheap: 160
+
+- name: Case 4, the Medicare Part B premium is subtracted from a pension with no Social Security.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        pension_income: 24_000
+        # Income of 2,000 a month is above the Medicare Savings Program
+        # limits, so the retiree pays the 2,434.80 standard premium.
+        medicare_part_b_premium: 2_434.80
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_600
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_countable_unearned_income: 24_000
+    # 24,000 - 2,434.80 = 21,565.20: the premium comes off household income
+    # whatever the source it is paid from.
+    az_liheap_countable_income: 21_565.20
+
+- name: Case 5, a retiree's Medicare Part A premium is subtracted along with Part B.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        pension_income: 24_000
+        # 30 to 39 quarters of coverage: the 2026 reduced Part A premium
+        # 311 x 12 = 3,732, paid by the member.
+        medicare_part_a_premium: 3_732
+        medicare_part_b_premium: 2_434.80
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_600
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_countable_unearned_income: 24_000
+    # "Expenses related to Medicare (such as premiums)": 24,000 - 3,732 -
+    # 2,434.80 = 17,833.20.
+    az_liheap_countable_income: 17_833.20
+
+- name: Case 6, gambling losses above winnings count as zero and do not reduce wages.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+        gambling_winnings: 1_000
+        gambling_losses: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_700
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # max(1,000 - 3,000, 0) = 0 gambling profits.
+    az_liheap_countable_unearned_income: 0
+    # Wages of 20,000 are not reduced by the 2,000 net gambling loss.
+    az_liheap_countable_income: 20_000
