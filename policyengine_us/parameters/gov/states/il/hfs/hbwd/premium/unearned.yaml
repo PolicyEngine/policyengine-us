@@ -6,7 +6,8 @@ metadata:
   period: month
   label: Illinois HBWD unearned income premium component
   reference:
-    # Illinois presents the table as a matrix, but the values can be summed between row 1 and column 1.
+    # Summing the first column (earned) and first row (unearned) reproduces 434 of the 441
+    # cells in 120.510(n)(3); see issue 10471 for the others.
     # Thresholds are the chart's band starts (0-250, 251-500, ..., 4751-5000, 5000+), so income of
     # exactly $250 stays in the first band; $5,000 falls in the 4751-5000 band.
     - title: 89 Ill. Admin. Code § 120.510 (n)

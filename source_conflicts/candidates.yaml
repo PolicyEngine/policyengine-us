@@ -2164,6 +2164,41 @@ candidates:
   state: ruled
   note: Statute text is in the Axiom corpus; registering needs a pdftotext capture of the official instructions
     page.
+- id: us-il:hbwd-premium-earned-1251-unearned-501-cell
+  program: medicaid
+  years:
+    from: 2022
+    type: calendar
+  question: Is the Illinois Health Benefits for Workers with Disabilities premium for countable earned income of
+    $1,251-1,500 and gross unearned income of $501-750 $79, as 89 Ill. Adm. Code 120.510(n)(3) prints, or $69, as
+    the HFS premium chart prints?
+  sources:
+  - kind: regulation
+    citation: 89 Ill. Adm. Code 120.510(n)(3)
+    url: https://ilga.gov/commission/jcar/admincode/089/089001200I05100R.html
+  - kind: form
+    citation: HFS HBWD Premium Chart (one page)
+    url: https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalprograms/hbwd/documents/hfsweb004.pdf
+  readings:
+    statute: No statute is supplied; the regulation's table (amended effective March 25, 2022) prints 79 for earned
+      income 1251-1500 and unearned income 501-750.
+    other: The HFS premium chart prints 69 for the same cell, which PE-US gives (31 + 38).
+  example: Countable earned income of $1,300 and gross unearned income of $600 a month give a $79 premium under the
+    regulation and a $69 premium under the chart and in PE-US.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/parameters/gov/states/il/hfs/hbwd/premium/earned.yaml
+    - policyengine_us/parameters/gov/states/il/hfs/hbwd/premium/unearned.yaml
+    - policyengine_us/variables/gov/states/il/hfs/hbwd/il_hbwd_premium.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10372
+  state: unreviewed
+  note: 'PE-US gives the chart''s 69 because it adds an earned component (31) and an unearned component (38). The two
+    sources are a regulation and an agency form, with no statute, so the statute-first rule does not settle the cell.
+    The regulation''s row reads 31, 50, 79, 87, 106, and every neighbouring cell steps by about $19, so 79 may be a
+    typesetting error. The other 440 cells of the two sources agree. Issue 10471 proposes encoding the full table,
+    which needs this ruling first.'
 - id: us-il:joint-childless-eitc-dependency-skip
   program: income-tax
   years:
