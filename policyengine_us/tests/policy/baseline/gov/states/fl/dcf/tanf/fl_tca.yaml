@@ -239,3 +239,33 @@
     fl_tca: 164
     # Countable earned income: (600 - 90 - 110) / 2 = 200.
     # Benefit: 364 - 200 = $164.
+
+- name: Case 8, two applicant earners qualify for the $200 and 1/2 with the $90 of each earner.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 2_760  # $230/month
+        pre_subsidy_rent: 9_600
+      person2:
+        age: 28
+        employment_income_before_lsr: 2_760  # $230/month
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 30
+    fl_tca: 273
+    # Payment standard (size 3, shelter over $50): $303.
+    # 2420.0315 condition 2: (230 - 90) + (230 - 90) = 280 < 303, so both
+    # earners get the $200 and 1/2 disregard.
+    # Countable earned income: 2 x (230 - 90 - 110) / 2 = 30.
+    # Benefit: 303 - 30 = $273.
