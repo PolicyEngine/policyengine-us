@@ -75,15 +75,17 @@ counting every import in them, even in a function; the submodules a star
 import of a package loads: the module each name its ``__all__`` lists
 names below the package (``sub.leaf`` too, with ``sub``) or, where
 ``__all__`` is built otherwise, every module below it, and the same where
-a literal ``__import__`` ``fromlist`` (a list, tuple or set of names, a
-dict's keys, or a string, read by character) holds ``*``; any call
+a literal ``__import__`` ``fromlist`` holds ``*`` (read as Python iterates
+it: a list's, tuple's or set's elements, a dict's keys or a string's
+characters, a literal ``*`` or ``**`` entry's own in its place); any call
 whose literal arguments name a module as ``importlib.import_module`` or
 ``__import__`` would read them, whatever name the call is made under, a
 relative one against its literal ``package`` (or the module's
 ``__package__`` or ``__name__``) or the package its ``globals`` give, as
-Python reads them (``globals()`` or a dict literal, where the last of a
-repeated key counts: ``__package__``, else ``__spec__``, else
-``__name__`` and ``__path__``); the packages an import starts; the code of modules it may
+Python reads them (``globals()`` or a dict literal, a literal ``**``
+entry's own entries in its place and the last of a repeated key counting:
+``__package__``, else ``__spec__``, else ``__name__`` and ``__path__``);
+the packages an import starts; the code of modules it may
 reach without importing them, as another module may have loaded them: an
 attribute chain, ``getattr`` with a literal name, ``sys.modules`` with a
 literal key, or the module a literal dynamic import returns, from a name
@@ -1357,18 +1359,54 @@ def _is_none(node) -> bool:
     return isinstance(node, ast.Constant) and node.value is None
 
 
+def _dict_entries(node) -> list:
+    """(key, value) for each entry of dict literal ``node``, in order, a
+    literal ``**`` dict's own entries in its place; a computed ``**`` entry
+    gives (None, the mapping)."""
+    entries = []
+    for key, value in zip(node.keys, node.values):
+        if key is None and isinstance(value, ast.Dict):
+            entries += _dict_entries(value)
+        else:
+            entries.append((key, value))
+    return entries
+
+
+def _iterated(node) -> list:
+    """The items Python gets iterating ``node``, as far as it is literal: a
+    string's characters, a list's, tuple's or set's elements and a dict's
+    keys, a ``*`` or ``**`` entry's own in its place. An item that is not a
+    literal string is None; a computed iterable gives none."""
+    if isinstance(node, (ast.List, ast.Tuple, ast.Set)):
+        items = []
+        for element in node.elts:
+            if isinstance(element, ast.Starred):
+                items += _iterated(element.value)
+            else:
+                items.append(_literal(element))
+        return items
+    if isinstance(node, ast.Dict):
+        return [_literal(key) for key, _ in _dict_entries(node)]
+    return list(_literal(node) or "")
+
+
 def _globals_package(node, package, module):
     """The package a relative ``__import__`` with ``globals`` ``node``
     imports from, as Python reads it: ``__package__``, else
     ``__spec__.parent``, else ``__name__``, the package around it unless
     ``__path__`` is set; None where it has neither, and Python raises.
-    Anything but a dict literal (``globals()``, or a computed mapping) is
-    read as the module's own globals."""
-    if not isinstance(node, ast.Dict) or None in map(_literal, node.keys):
+    A dict literal's literal ``**`` entries are read in place; anything
+    else (``globals()``, a computed mapping, or a dict literal with a
+    computed key or ``**`` entry) is read as the module's own globals."""
+    if not isinstance(node, ast.Dict):
+        return package
+    pairs = _dict_entries(node)
+    if not all(isinstance(key, ast.Constant) for key, _ in pairs):
         return package
     # The last of a repeated key wins, as in the dict Python builds; a
-    # None value then reads as absent.
-    entries = dict(zip(map(_literal, node.keys), node.values))
+    # None value then reads as absent. Keys that aren't strings are
+    # never ones Python reads.
+    entries = {key.value: value for key, value in pairs}
     given = {key: value for key, value in entries.items() if not _is_none(value)}
     if "__package__" in given:
         return _anchor(given["__package__"], module) or package
@@ -1410,15 +1448,7 @@ def _dynamic_imports(call, called, package, module=None) -> list:
             )
             base = _absolute(name, level, relative_to) if level else name
             names.append(base)
-            fromlist = _argument(call, 3, "fromlist")
-            if isinstance(fromlist, (ast.List, ast.Tuple, ast.Set)):
-                items = [_literal(item) for item in fromlist.elts]
-            elif isinstance(fromlist, ast.Dict):
-                # A dict is iterated by key (``**`` entries name nothing).
-                items = [_literal(key) for key in fromlist.keys]
-            else:
-                # A string is iterated: each character is an item.
-                items = list(_literal(fromlist) or "")
+            items = _iterated(_argument(call, 3, "fromlist"))
             names += [f"{base}.{item}" for item in items if item]
     return names
 
@@ -2178,6 +2208,10 @@ def _kinds(source: str) -> set:
         ),
         ("__import__('numpy.random')\n", "stochastic import"),
         ("__import__('numpy', fromlist=['random'])\n", "stochastic import"),
+        # Python iterates a fromlist, unpacked entries too.
+        ("__import__('numpy', fromlist={**{'random': None}})\n", "stochastic import"),
+        ("__import__('numpy', fromlist=[*('random',)])\n", "stochastic import"),
+        ("__import__('numpy', fromlist={*'x', *{'random': 0}})\n", "stochastic import"),
         ("from importlib import import_module as load\nload('zlib')\n", "hash library"),
         # Hashes.
         ('key = hash("x")\n', "builtin hash"),
@@ -3320,6 +3354,48 @@ def _assert_users_find(sources: dict, reaches_builtin: bool):
             },
             True,
         ),
+        # And so are a literal ``**`` or ``*`` entry's own items.
+        (
+            {
+                "pkg.other": "",
+                "pkg.other.sub": "__all__ = ['user']\n",
+                "pkg.other.sub.user": "from pkg.api import *\nkey = hash('x')\n",
+                "pkg.api": "__import__('pkg.other.sub', fromlist={**{'*': None}})\n"
+                "hash = str\n",
+            },
+            True,
+        ),
+        (
+            {
+                "pkg.other": "",
+                "pkg.other.sub": "__all__ = ['user']\n",
+                "pkg.other.sub.user": "from pkg.api import *\nkey = hash('x')\n",
+                "pkg.api": "__import__('pkg.other.sub', fromlist=[*['*']])\nhash = str\n",
+            },
+            True,
+        ),
+        (
+            {
+                "pkg.other": "",
+                "pkg.other.sub": "__all__ = ['user']\n",
+                "pkg.other.sub.user": "from pkg.api import *\nkey = hash('x')\n",
+                "pkg.api": "__import__(\n"
+                "    'sub', {**{'__package__': 'pkg.other'}}, None, ['*'], 1\n"
+                ")\n"
+                "hash = str\n",
+            },
+            True,
+        ),
+        # An empty one names nothing: no star load, so user never runs.
+        (
+            {
+                "pkg.other": "",
+                "pkg.other.sub": "__all__ = ['user']\n",
+                "pkg.other.sub.user": "from pkg.api import *\nkey = hash('x')\n",
+                "pkg.api": "__import__('pkg.other.sub', fromlist={**{}})\nhash = str\n",
+            },
+            False,
+        ),
         (
             {
                 "pkg.api": "import importlib\n"
@@ -3683,6 +3759,26 @@ def test_reference_paths_stay_within_the_known_paths(source):
         ),
         ("__import__('sub', {'__name__': 'pkg.o.m', '__name__': None}, level=1)", []),
         ("__import__('sub', globals(), None, {'x': 0}, 1)", ["pkg.sub", "pkg.sub.x"]),
+        # Unpacked literal entries are read in place; computed ones give none.
+        (
+            "__import__('sub', globals(), None, {**{'x': 0}}, 1)",
+            ["pkg.sub", "pkg.sub.x"],
+        ),
+        (
+            "__import__('sub', globals(), None, [*computed, 'x'], 1)",
+            ["pkg.sub", "pkg.sub.x"],
+        ),
+        ("__import__('sub', {**{'__package__': 'pkg.o'}}, level=1)", ["pkg.o.sub"]),
+        (
+            "__import__('sub', {'__package__': 'pkg', **{'__package__': None}, "
+            "'__name__': 'pkg.o.m'}, level=1)",
+            ["pkg.o.sub"],
+        ),
+        (
+            "__import__('sub', {**{'__package__': 'pkg.o'}, **other}, level=1)",
+            ["pkg.sub"],
+        ),
+        ("__import__('sub', {1: 0, '__package__': 'pkg.o'}, level=1)", ["pkg.o.sub"]),
         (
             "__import__('sub', {'__spec__': spec, '__name__': 'x.y'}, level=1)",
             ["pkg.sub"],
