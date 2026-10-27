@@ -1,3 +1,10 @@
+## [2.69.0] - 2026-10-27
+
+### Added
+
+- Add Montana's 2021–2023 partial pension, annuity, and IRA income exemption.
+
+
 ## [2.68.0] - 2026-10-27
 
 ### Added
