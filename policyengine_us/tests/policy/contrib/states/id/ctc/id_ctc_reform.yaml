@@ -9,7 +9,7 @@
   absolute_error_margin: 0.01
   input:
     state_code: ID
-    ctc_qualifying_children: 2
+    id_ctc_qualifying_children: 2
     id_income_tax_before_non_refundable_credits: 1_000
   output:
     # id_ctc still computes 2 * 205 = 410 as a worksheet amount, but it is not
@@ -23,7 +23,7 @@
   input:
     gov.contrib.states.id.ctc.in_effect: true
     state_code: ID
-    ctc_qualifying_children: 2
+    id_ctc_qualifying_children: 2
     id_income_tax_before_non_refundable_credits: 1_000
   output:
     # Revived list is [id_ctc]; applied = min(410, 1000) = 410. Refundable off.
@@ -38,7 +38,7 @@
     gov.contrib.states.id.ctc.in_effect: true
     gov.contrib.states.id.ctc.refundable.in_effect: true
     state_code: ID
-    ctc_qualifying_children: 2
+    id_ctc_qualifying_children: 2
     id_income_tax_before_non_refundable_credits: 0
   output:
     # potential 410, nonrefundable 0 (no liability), unused 410,
@@ -54,7 +54,7 @@
     gov.contrib.states.id.ctc.refundable.in_effect: true
     gov.contrib.states.id.ctc.refundable.amount: 100
     state_code: ID
-    ctc_qualifying_children: 2
+    id_ctc_qualifying_children: 2
     id_income_tax_before_non_refundable_credits: 0
   output:
     # refund = min(410 unused, 100 * 2) = 200.
@@ -68,7 +68,7 @@
     gov.contrib.states.id.ctc.in_effect: true
     gov.states.id.tax.income.credits.ctc.amount: 300
     state_code: ID
-    ctc_qualifying_children: 2
+    id_ctc_qualifying_children: 2
     id_income_tax_before_non_refundable_credits: 1_000
   output:
     id_ctc: 600
