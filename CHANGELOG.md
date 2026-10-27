@@ -1,3 +1,66 @@
+## [2.69.1] - 2026-10-27
+
+### Changed
+
+- Single-year datasets extend through 2036 by default, the last authored CPI-U year, since 2.65.0 loaded CBO's 2036 projections.
+- Use the Colorado Legislative Council Staff September 2026 forecast's projected sales tax refund tiers for tax years 2027 to 2029 in place of the tax year 2025 placeholders.
+
+### Fixed
+
+- Uprate projected federal poverty guidelines by the CPI-U change over the two preceding calendar years (42 U.S.C. 9902(2)) with a new gov.hhs.fpg_uprating index; gov.hhs.uprating now serves only Head Start and Early Head Start spending. In the Trustees 2025 scenario, re-derive the Social Security wage base and the wage-indexed amounts from the Trustees NAWI.
+
+
+## [2.69.0] - 2026-10-27
+
+### Added
+
+- Add Montana's 2021–2023 partial pension, annuity, and IRA income exemption.
+
+
+## [2.68.0] - 2026-10-27
+
+### Added
+
+- Add an opt-in supplied-AIME/PIA Social Security household calculator and shared eligibility-year PIA service.
+  Preserve S.770 bend increases after prior disability eligibility and use whole-month earnings-test withholding with explicitly dated later settlements by default.
+  Require an explicit prior-disability eligibility answer for every supplied survivor record.
+
+
+## [2.67.1] - 2026-10-27
+
+### Fixed
+
+- Extend Medicaid postpartum coverage to 12 months in the 50 jurisdictions that elected the option (all but Arkansas), dated from each state's approved state plan amendment or section 1115 demonstration amendment, and start Illinois, Louisiana, Michigan, New Jersey and Virginia on the dates their extensions took effect instead of 2021-01-01.
+
+
+## [2.67.0] - 2026-10-26
+
+### Removed
+
+- Remove the duplicate `gov.ssa.ssi.amount.institutional` parameters; the Texas SSI supplement and its eligibility test now read `gov.ssa.ssi.amount.medical_facility`, the reduced federal rate federal SSI uses. Results are unchanged from July 1988; for earlier months the eligibility test applies the $25 rate then in force instead of raising `ParameterNotFoundError`.
+
+
+## [2.66.1] - 2026-10-26
+
+### Fixed
+
+- Backfill the Texas SSI supplement's personal needs allowance at $30 from July 1988 (no supplement before September 1999), so `tx_ssi_state_supplement` returns $0 instead of raising `ParameterNotFoundError` for July 1988 through August 1999, and document the supplement's sources from 1999 to 2026.
+
+
+## [2.66.0] - 2026-10-26
+
+### Added
+
+- Add Iowa LIHEAP Regular Assistance (ia_liheap): FY2026 regular heating benefit from the points matrix with the 200% federal poverty guideline income test.
+
+
+## [2.65.1] - 2026-10-26
+
+### Fixed
+
+- Base Indiana EITC eligibility in tax years 2024 and 2025 on the current-year federal EITC instead of a recomputed credit with the frozen 2023 investment income limit and phaseout amounts, as IC 6-3.1-21-6(a) and (e) index those amounts to the taxable year.
+
+
 ## [2.65.0] - 2026-10-26
 
 ### Added

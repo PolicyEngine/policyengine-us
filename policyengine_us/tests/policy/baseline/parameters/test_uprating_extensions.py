@@ -1,5 +1,6 @@
 """Test unified uprating extensions through 2100."""
 
+import datetime
 import math
 from pathlib import Path
 from types import SimpleNamespace
@@ -37,6 +38,7 @@ def test_all_uprating_factors_extend_to_2100():
         ("SNAP", parameters.gov.usda.snap.uprating, "-10-01"),
         ("SSA", parameters.gov.ssa.uprating, "-01-01"),
         ("HHS", parameters.gov.hhs.uprating, "-01-01"),
+        ("HHS poverty guidelines", parameters.gov.hhs.fpg_uprating, "-01-01"),
         ("CPI-U", parameters.gov.bls.cpi.cpi_u, "-02-01"),
         ("Chained CPI-U", parameters.gov.bls.cpi.c_cpi_u, "-02-01"),
         ("CPI-W", parameters.gov.bls.cpi.cpi_w, "-02-01"),
@@ -355,6 +357,13 @@ def test_social_security_payroll_cap_formula_matches_known_values():
     assert expected_2027_cap == payroll_cap("2027-01-01")
 
 
+def test_social_security_payroll_cap_rounds_150_ties_up():
+    """42 U.S.C. 430(b): a multiple of $150 (but not of $300) rounds up."""
+    assert round_social_security_payroll_cap(60_450) == 60_600
+    assert round_social_security_payroll_cap(60_150) == 60_300
+    assert round_social_security_payroll_cap(60_449.99) == 60_300
+
+
 def test_social_security_parameters_include_latest_official_2026_values():
     """Test announced 2026 SSA values before forecasts resume."""
     parameters = PARAMETERS
@@ -473,6 +482,7 @@ CBO_2026_02_QUARTERLY_CPI_U = {
     "2036Q4": 420.036,
 }
 CBO_2026_02_CALENDAR_CPI_U = {
+    2025: 322.378,
     2026: 331.807,
     2027: 340.260,
     2028: 348.295,
@@ -516,6 +526,7 @@ JUNE_2026_CPI_W = 327.075  # BLS CWUR0000SA0
 JUNE_2026_CPI_U = 333.952  # BLS CUUR0000SA0
 NAWI_2025 = 72_800.33  # SSA AWI series
 HHS_2026 = 328.4  # CBO January 2025 calendar-2026 CPI-U (328.446)
+CALENDAR_2025_CPI_U = 321.943  # BLS CUUR0000SA0 annual average (11 months)
 
 
 def _cbo_2026_02_projection_cases():
@@ -538,6 +549,13 @@ def _cbo_2026_02_projection_cases():
     for year in range(2027, 2037):
         growth = calendar[year] / calendar[2026]
         cases.append(("gov.hhs.uprating", f"{year}-01-01", HHS_2026 * growth, 3))
+    # Poverty guidelines: guideline year Y holds calendar Y - 1, the 2025
+    # actual x CBO calendar CPI-U(Y - 1) / calendar 2025.
+    for year in range(2027, 2038):
+        growth = calendar[year - 1] / calendar[2025]
+        cases.append(
+            ("gov.hhs.fpg_uprating", f"{year}-01-01", CALENDAR_2025_CPI_U * growth, 3)
+        )
     # CPI-W: each CBO CPI-U quarter at the June 2026 CPI-W / CPI-U ratio, at
     # the quarter's middle month.
     for quarter, cpi_u in quarterly.items():
@@ -585,6 +603,12 @@ def test_upraters_encode_cbo_february_2026_projections(path, date, expected, dec
     extend_parameter_values grows every year after a series' last CBO point at
     the ratio of its last two points, so these values, the last two included,
     also set the 2037-2100 path.
+
+    A monthly BLS refresh writes observed values over projection instants (see
+    get_average_for_12_months_ending_august). When it does, start the CPI-W
+    cases after the last observed quarter and the CPI-U and chained CPI-U cases
+    after the last observed February, and update JUNE_2026_CPI_W and
+    JUNE_2026_CPI_U if the projections are re-anchored.
     """
     assert PARAMETERS.get_child(path)(date) == round(expected, decimals)
 
@@ -604,6 +628,8 @@ def test_irs_uprating_averages_cbo_chained_cpi_u_points():
     """IRS(Y) averages chained CPI-U from August Y - 2 to July Y - 1 (#9105).
 
     Six months read the February Y - 2 point and six read February Y - 1.
+    A BLS refresh that writes an observed February over a projection point
+    changes the IRS years that read it; drop those years from the loop.
     """
     irs = PARAMETERS.gov.irs.uprating
     c_cpi_u = {
@@ -622,6 +648,7 @@ def test_irs_uprating_averages_cbo_chained_cpi_u_points():
         ("gov.ssa.uprating", 2036, "-01-01"),
         ("gov.usda.snap.uprating", 2036, "-10-01"),
         ("gov.hhs.uprating", 2036, "-01-01"),
+        ("gov.hhs.fpg_uprating", 2037, "-01-01"),
         ("gov.ssa.nawi", 2034, "-01-01"),
         ("gov.bls.cpi.cpi_u", 2036, "-02-01"),
         ("gov.bls.cpi.c_cpi_u", 2036, "-02-01"),
@@ -641,6 +668,77 @@ def test_upraters_extrapolate_only_after_cbo_projections(
             f"{year - 1}{date_suffix}"
         )
         assert growth == pytest.approx(last_growth, rel=1e-12)
+
+
+EXTENDED_SERIES = [
+    "gov.ssa.uprating",
+    "gov.usda.snap.uprating",
+    "gov.hhs.uprating",
+    "gov.hhs.fpg_uprating",
+    "gov.ssa.nawi",
+    "gov.irs.payroll.social_security.cap",
+    "gov.bls.cpi.cpi_u",
+    "gov.bls.cpi.c_cpi_u",
+    "gov.bls.cpi.cpi_w",
+]
+
+
+@pytest.mark.parametrize("path", EXTENDED_SERIES)
+def test_extension_keeps_every_authored_value(path):
+    """The extensions must not overwrite any value written in the YAML file."""
+    parameter = PARAMETERS.get_child(path)
+    with open(parameter.file_path) as f:
+        authored = yaml.safe_load(f)["values"]
+    for date, value in authored.items():
+        if isinstance(value, dict):
+            value = value["value"]
+        instant = date.isoformat() if isinstance(date, datetime.date) else str(date)
+        assert parameter(instant) == pytest.approx(value, abs=1e-9), instant
+
+
+# Published four-person poverty guidelines for the 48 contiguous states.
+PUBLISHED_FOUR_PERSON_FPG = {
+    2022: 27_750,
+    2023: 30_000,
+    2024: 31_200,
+    2025: 32_150,
+    2026: 33_000,
+}
+
+
+def test_poverty_guideline_index_follows_the_9902_2_interval():
+    """Guideline year Y uprates by CPI-U CY(Y-1)/CY(Y-2) (42 U.S.C. 9902(2)).
+
+    The published guidelines are rounded, so their four-person increases
+    match the index within 0.12%. Back-cast from 2022, the previous mapping
+    (gov.hhs.uprating, one year ahead) missed the 2023-2026 guidelines by
+    3.7% to 5.6%.
+    """
+    index = PARAMETERS.gov.hhs.fpg_uprating
+    for year in range(2023, 2027):
+        published = (
+            PUBLISHED_FOUR_PERSON_FPG[year] / PUBLISHED_FOUR_PERSON_FPG[year - 1]
+        )
+        lagged = index(f"{year}-01-01") / index(f"{year - 1}-01-01")
+        assert published == pytest.approx(lagged, rel=1.2e-3)
+    # HHS's 2026 notice: a 2.63% increase from calendar 2024 to calendar 2025.
+    assert index("2026-01-01") / index("2025-01-01") - 1 == pytest.approx(
+        0.0263, abs=5e-5
+    )
+
+
+def test_projected_poverty_guidelines_uprate_with_the_lagged_index():
+    """Projected guidelines grow with gov.hhs.fpg_uprating, not gov.hhs.uprating."""
+    fpg = PARAMETERS.gov.hhs.fpg
+    index = PARAMETERS.gov.hhs.fpg_uprating
+    for year in (2027, 2030, 2036, 2050):
+        growth = index(f"{year}-01-01") / index("2026-01-01")
+        for node in (fpg.first_person, fpg.additional_person):
+            for group in ("CONTIGUOUS_US", "AK", "HI"):
+                parameter = node.get_child(group)
+                assert parameter(f"{year}-01-01") == pytest.approx(
+                    parameter("2026-01-01") * growth, rel=1e-9
+                )
 
 
 def test_social_security_wage_indexed_parameters_follow_statutory_rounding():
@@ -739,6 +837,7 @@ def test_uprating_growth_rates_are_reasonable():
         ("SNAP", parameters.gov.usda.snap.uprating, "-10-01"),
         ("SSA", parameters.gov.ssa.uprating, "-01-01"),
         ("HHS", parameters.gov.hhs.uprating, "-01-01"),
+        ("HHS poverty guidelines", parameters.gov.hhs.fpg_uprating, "-01-01"),
         ("CPI-U", parameters.gov.bls.cpi.cpi_u, "-02-01"),
         ("Chained CPI-U", parameters.gov.bls.cpi.c_cpi_u, "-02-01"),
         ("CPI-W", parameters.gov.bls.cpi.cpi_w, "-02-01"),

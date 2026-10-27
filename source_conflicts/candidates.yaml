@@ -2275,37 +2275,6 @@ candidates:
   state: unreviewed
   note: 'The statute-first rule requires changing the instructions-based scope if the federal-eligibility reading
     is verified; the 2026 statutory text remains unverified. Code not yet on main: gov/states/in/tax/income/deductions/in_claim_of_right_deduction.yaml.'
-- id: us-in:eitc-current-versus-frozen-federal-base
-  program: income-tax
-  years:
-    from: 2023
-    type: tax
-  question: Is Indiana's EITC based on the current federal credit transferred by Schedule IN-EIC or the credit under
-    its January 1, 2023 conformity date?
-  sources:
-  - kind: statute
-    citation: IC 6-3-1-11; IC 6-3.1-21
-    url: null
-  - kind: form
-    citation: 2025 Schedule IN-EIC (State Form 49469), Section A, Line A-1
-    url: null
-  readings:
-    statute: Use the frozen 2023 federal base.
-    other: Use the current-year federal EITC.
-  example: A 2025 childless filer aged 30 with $8,000 wages receives $60.00 under the frozen base versus $61.20
-    under the current base.
-  pe_us:
-    follows: conflicting-source
-    code:
-    - policyengine_us/variables/gov/states/in/tax/income/credits/earned_income_credit/in_eitc.py
-    - policyengine_us/variables/gov/states/in/tax/income/credits/earned_income_credit/in_eitc_eligible.py
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/8902
-  state: unreviewed
-  note: 'PE-US follows Schedule IN-EIC: under static conformity in_eitc multiplies the current-year federal credit
-    by the match rate, and its comment argues the post-2023 federal changes are inflation indexing only (in_eitc.py).
-    in_eitc_eligible tests the frozen snapshot, January 1, 2023 through 2025 and January 1, 2026 from 2026. The
-    statute-first rule requires changing the amount base if frozen conformity is verified.'
 - id: us-in:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
