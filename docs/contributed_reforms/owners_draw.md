@@ -145,8 +145,8 @@ active residual and makes population results provisional.
 [Microcosm #1251](https://github.com/PolicyEngine/microcosm/pull/1251) repairs
 the total/passive contract, and
 [#1261](https://github.com/PolicyEngine/microcosm/pull/1261) separates entity
-totals. Population scoring requires a pinned artifact containing these
-repairs and a receipt validating the stored columns and their meanings.
+totals. Nonprovisional population scoring requires a pinned artifact containing
+these repairs and a receipt validating the stored columns and their meanings.
 No population impact is measured by this PR; the hub will measure it.
 
 ## Comparable OACT provisions
