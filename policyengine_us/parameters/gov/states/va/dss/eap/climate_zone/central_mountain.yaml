@@ -1,0 +1,35 @@
+description: Virginia assigns these counties and independent cities to the Central Mountain climate zone under the Energy Assistance Program.
+# Salem City comes from the 01/03 Appendix A ("Salem 775", manual page
+# 62) because the 06/17 page omits it without assigning it another zone; Salem
+# is an independent city surrounded by Roanoke County. Clifton Forge (560) has
+# been a town in Alleghany County since 2001 and has no county value of its
+# own; Alleghany County is listed here.
+values:
+  2017-06-01:
+    - ALLEGHANY_COUNTY_VA
+    - AUGUSTA_COUNTY_VA
+    - BATH_COUNTY_VA
+    - BOTETOURT_COUNTY_VA
+    - CRAIG_COUNTY_VA
+    - HIGHLAND_COUNTY_VA
+    - ROANOKE_COUNTY_VA
+    - ROCKBRIDGE_COUNTY_VA
+    - ROCKINGHAM_COUNTY_VA
+    - BUENA_VISTA_CITY_VA
+    - COVINGTON_CITY_VA
+    - HARRISONBURG_CITY_VA
+    - LEXINGTON_CITY_VA
+    - ROANOKE_CITY_VA
+    - SALEM_CITY_VA
+    - STAUNTON_CITY_VA
+    - WAYNESBORO_CITY_VA
+
+metadata:
+  unit: list
+  period: year
+  label: Virginia EAP Central Mountain climate zone localities
+  reference:
+    - title: LIHEAP Clearinghouse Virginia FY2026 benefit matrix, Chapter D, Appendix A Climate Zones, Central Mountain
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/VA_BenefitMatrix_2026.pdf#page=3
+    - title: Virginia Energy Assistance Manual, Volume IX, Chapter D, Appendix A Climate Zones, Central Mountain
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=62

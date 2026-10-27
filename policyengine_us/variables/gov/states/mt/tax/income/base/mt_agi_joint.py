@@ -23,6 +23,9 @@ class mt_agi_joint(Variable):
         on_return = person("is_tax_unit_head_or_spouse", period)
         additions = tax_unit.sum(person("mt_additions", period) * on_return)
         subtractions = tax_unit.sum(person("mt_subtractions", period) * on_return)
+        # A joint return claims the partial pension, annuity, and IRA income
+        # exemption once, reduced by the joint federal AGI.
+        subtractions += tax_unit("mt_pension_exemption_joint", period)
 
         # Apply pooled subtractions to pooled income
         reduced_agi = max_(agi + additions - subtractions, 0)

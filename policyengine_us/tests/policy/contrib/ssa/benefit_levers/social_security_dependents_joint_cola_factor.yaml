@@ -1,0 +1,57 @@
+- name: Positive child benefits use the explicit pre-start exposure proxy
+  period: 2027
+  input:
+    age: 8
+    gov.contrib.ssa.benefit_levers.cola.start_year: 2027
+    gov.contrib.ssa.benefit_levers.cola.pp_change: 0.0015
+    social_security_dependents_reported: 6000
+    social_security_survivors_reported: 6000
+    social_security_disability_reported: 6000
+  output:
+    social_security_dependents_joint_cola_factor: 1.0014478764478765
+    social_security_survivors_joint_cola_factor: 1.0014478764478765
+    social_security_disability_joint_cola_factor: 1.0014478764478765
+
+- name: Newly entitled child sensitivity is a separately supplied scenario
+  period: 2027
+  input:
+    age: 8
+    social_security_dependents_entitlement_year: 2027
+    gov.contrib.ssa.benefit_levers.cola.start_year: 2027
+    gov.contrib.ssa.benefit_levers.cola.pp_change: 0.0015
+    social_security_dependents_reported: 6000
+  output:
+    social_security_dependents_joint_cola_factor: 1
+
+- name: Reported zero remains zero under combined levers
+  period: 2027
+  input:
+    age: 8
+    gov.contrib.ssa.benefit_levers.cola.start_year: 2027
+    gov.contrib.ssa.benefit_levers.cola.pp_change: 0.0015
+    gov.contrib.ssa.benefit_levers.across_the_board.start_year: 2027
+    gov.contrib.ssa.benefit_levers.across_the_board.rate: 0.1
+    gov.contrib.ssa.benefit_levers.payable.share: 0.8
+    social_security_dependents_reported: 0
+  output:
+    social_security_dependents: 0
+
+- name: Supplied worker link takes precedence over a young recipient proxy
+  period: 2027
+  input:
+    gov.contrib.ssa.benefit_levers.cola.start_year: 2027
+    gov.contrib.ssa.benefit_levers.cola.pp_change: 0.0015
+    people:
+      worker:
+        age: 62
+        social_security_worker_computation_year: 2027
+      child:
+        age: 8
+        social_security_dependents_worker_id: worker
+        social_security_dependents_reported: 6000
+  output:
+    people:
+      child:
+        social_security_dependents_joint_cola_factor: 1
+      worker:
+        social_security_dependents_joint_cola_factor: 1.0014478764478765
