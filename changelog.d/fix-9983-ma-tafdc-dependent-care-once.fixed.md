@@ -1,0 +1,1 @@
+Subtract the Massachusetts TAFDC dependent care deduction once, after the 50% disregard, from the earnings of the member who pays for the care (106 CMR 704.275(A)), instead of from each earner (or half of it from each spouse on a joint return). A new input, `ma_tafdc_dependent_care_payer`, names the payer; by default it is the head or spouse with the highest gross earnings.
