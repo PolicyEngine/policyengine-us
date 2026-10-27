@@ -1,10 +1,11 @@
 """Differential coverage of payroll exclusions across vectorized tax units.
 
 Replacing gross wages and pre-tax deductions with the same W-2 box 1 wages
-must leave federal EITC and ACTC earnings/credits unchanged. California must
-retain taxable payroll HSA amounts, while gross earned income and the AMT
-earnings cap must remain independent of payroll deductions. The paired runs
-also remove dependents' wages to check that they cannot enter filer earnings.
+must leave federal EITC and ACTC earnings/credits, the CDCC earned income
+limit and the AMT earnings cap unchanged. California must retain taxable
+payroll HSA amounts, while gross earned income must remain independent of
+payroll deductions. The paired runs also remove dependents' wages to check
+that they cannot enter filer earnings.
 Additional California pairs retain payroll HSA deductions when substituting
 California taxable wages, so YCTC must agree even with business losses.
 """
@@ -54,7 +55,8 @@ def _situations():
         tax_units[f"unit_{i}"] = {
             "members": members,
             "takes_up_eitc": {YEAR: True},
-            # Force the existing cap to isolate its gross earnings dependency.
+            # Force the AMT child cap's kiddie tax flag (the cap itself only
+            # applies before 2018).
             "amt_kiddie_tax_applies": {YEAR: True},
             "amt_income": {YEAR: 200_000},
         }
@@ -156,7 +158,9 @@ def _run(situation):
         "ca_eitc_earned_income",
         "ca_yctc",
         "earned_income",
-        "adjusted_earnings",
+        "head_earned",
+        "spouse_earned",
+        "min_head_spouse_earned",
         "amt_exemption",
     )
     return {name: simulation.calculate(name, YEAR).copy() for name in outputs}
@@ -175,6 +179,10 @@ def test_payroll_exclusions_match_equivalent_taxable_compensation():
         "ctc_phase_in_relevant_earnings",
         "ctc_phase_in",
         "filer_adjusted_earnings",
+        "head_earned",
+        "spouse_earned",
+        "min_head_spouse_earned",
+        "amt_exemption",
     ):
         np.testing.assert_allclose(
             with_deductions[name],
@@ -214,7 +222,7 @@ def test_payroll_exclusions_match_equivalent_taxable_compensation():
     )
     assert np.all(with_deductions["ca_yctc"][yctc_pairs] > 0)
 
-    for name in ("earned_income", "adjusted_earnings", "amt_exemption"):
+    for name in ("earned_income",):
         np.testing.assert_allclose(
             with_deductions[name],
             no_deductions[name],

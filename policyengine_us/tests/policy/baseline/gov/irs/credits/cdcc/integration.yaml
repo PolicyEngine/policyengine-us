@@ -256,3 +256,44 @@
     count_cdcc_eligible: 2
     cdcc_relevant_expenses: 6_000
     cdcc: 1_200
+
+# IRC 21(d)(1)(B) caps expenses at the lower-earning spouse's earned income,
+# which counts wages only if includible in gross income (Treas. Reg.
+# 1.21-2(b)(3); IRC 32(c)(2)(A)(i)). Form 2441 line 5 starts from Form 1040
+# line 1z, which leaves out the spouse's traditional 401(k) deferral.
+- name: Lower-earning spouse's traditional 401(k) deferral lowers the earned income limit
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 56_000
+      spouse:
+        age: 38
+        employment_income: 4_000
+        traditional_401k_contributions_desired: 1_000
+      child1:
+        age: 5
+      child2:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        tax_unit_childcare_expenses: 9_103
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: TX
+  output:
+    # Spouse: 4,000 wages - 1,000 deferral = 3,000 taxable wages.
+    spouse_earned: 3_000
+    min_head_spouse_earned: 3_000
+    # min(9,103 expenses, 6,000 two-child limit, 3,000 earned income).
+    cdcc_relevant_expenses: 3_000
+    # AGI 56,000 + 3,000 = 59,000: 35% - 22 points
+    # (ceil((59,000 - 15,000) / 2,000)), floored at 20%.
+    # 3,000 * 20% = 600 (gross wages would give 4,000 * 20% = 800).
+    # Tax before credits: (59,000 - 31,500) taxable income
+    # -> 2,385 + 12% * 3,650 = 2,823, so the credit is not limited.
+    cdcc: 600

@@ -132,3 +132,36 @@
   output:
     # min(4,000 - 2,000, 3,000 cap, 50,000 earned) = 2,000
     ny_cdcc_qualifying_expenses: 2_000
+
+- name: Case 10, a 401(k) deferral stays in New York earned income from 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+      person2:
+        age: 38
+        employment_income: 4_000
+        traditional_401k_contributions_desired: 1_500
+      person3:
+        age: 5
+      person4:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    # Federal earned income (IRC 32(c)(2)) leaves out the deferral:
+    # 4,000 - 1,500 = 2,500.
+    spouse_earned: 2_500
+    # 606(c-2)(2)(C) counts "wages, salaries, tips and other employee
+    # compensation" with no gross-income inclusion test, so the spouse's
+    # earned income stays 4,000.
+    # min(9,000 expenses, 6,000 two-person cap, 4,000 earned) = 4,000
+    ny_cdcc_qualifying_expenses: 4_000

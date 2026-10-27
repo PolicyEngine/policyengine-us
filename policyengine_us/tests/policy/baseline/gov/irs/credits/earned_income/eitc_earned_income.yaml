@@ -360,7 +360,7 @@
     eitc_earned_income: 8500
     filer_adjusted_earnings: 8500
 
-- name: AMT kiddie-tax exemption retains its pre-2018 gross earnings cap
+- name: AMT kiddie-tax exemption caps at taxable earnings before 2018
   period: 2017
   absolute_error_margin: 0.01
   input:
@@ -384,11 +384,14 @@
   output:
     filer_adjusted_earnings: 8000
     # Ordinary exemption = 54,300 - 0.25 * (200,000 - 120,700) = 34,475.
-    # Historical cap uses gross earnings: 10,000 + 7,500 = 17,500.
-    # amt_exemption = min(34,475, 17,500) = 17,500.
-    amt_exemption: 17500
+    # IRC 59(j) earned income (IRC 911(d)(2)) counts amounts received; the
+    # deferral is not made available to the child (IRC 402(e)(3)), and the
+    # 2017 Form 8615 instructions use Form 1040 line 7 (taxable) wages.
+    # Historical cap: (10,000 - 2,000) + 7,500 = 15,500.
+    # amt_exemption = min(34,475, 15,500) = 15,500.
+    amt_exemption: 15500
 
-- name: AMT kiddie-tax exemption has no gross earnings cap from 2018
+- name: AMT kiddie-tax exemption has no earnings cap from 2018
   period: 2022
   absolute_error_margin: 0.01
   input:

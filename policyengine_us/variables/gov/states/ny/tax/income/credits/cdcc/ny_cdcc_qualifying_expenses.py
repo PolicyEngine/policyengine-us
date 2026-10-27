@@ -7,7 +7,7 @@ class ny_cdcc_qualifying_expenses(Variable):
     label = "New York child and dependent care credit qualifying expenses"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-2)(2)(D)
+    reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-2)(2)(C), (D)
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
@@ -25,10 +25,24 @@ class ny_cdcc_qualifying_expenses(Variable):
         # IRC 21(d)(2), 606(c-2) deems no earned income for a student or
         # incapacitated spouse.
         cap = p.expense_cap.calc(tax_unit("count_cdcc_eligible", period))
-        head_earned = tax_unit("head_earned", period)
+        # (C) defines earned income as "the wages, salaries, tips and other
+        # employee compensation", without IRC 32(c)(2)(A)(i)'s "only if such
+        # amounts are includible in gross income". head_earned and
+        # spouse_earned follow 32(c)(2), so add back the pre-tax payroll
+        # deductions they leave out.
+        person = tax_unit.members
+        excluded_wages = person("employment_income", period) - person(
+            "irs_employment_income", period
+        )
+        head_earned = tax_unit("head_earned", period) + tax_unit.sum(
+            excluded_wages * person("is_tax_unit_head", period)
+        )
+        spouse_earned = tax_unit("spouse_earned", period) + tax_unit.sum(
+            excluded_wages * person("is_tax_unit_spouse", period)
+        )
         earned = where(
             tax_unit("tax_unit_is_joint", period),
-            min_(head_earned, tax_unit("spouse_earned", period)),
+            min_(head_earned, spouse_earned),
             head_earned,
         )
         return min_(expenses, min_(cap, earned))
