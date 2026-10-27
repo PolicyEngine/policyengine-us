@@ -1,7 +1,11 @@
 description: Wyoming uses this share of state median income for its ordinary income limit under the Low Income Energy Assistance Program.
-# The FY2026 plan uses 60% SMI. Current Title 42 retains its eligibility
-# guarantee at the lesser of 215% FPG or 60% SMI and permits federal-compliance
-# modifications. Federal 110% FPG income protection is applied separately.
+# The FY2026 plan uses 60% SMI for every household size. W.S. 42-2-501(c)
+# requires eligibility up to the lesser of 215% FPG or 60% of state median
+# household income, read here as a coverage minimum that a 60% SMI limit
+# always meets. 2017 SF0063 replaced "greater" with "lesser" after a 2016 DFS
+# request to drop the 215% clause; rules 3(oo) and 7(a)(ii) date from the
+# earlier "greater of" text. Federal 110% FPG income protection is applied
+# separately.
 values:
   2025-10-01: 0.6
 
@@ -14,3 +18,5 @@ metadata:
       href: https://dfs.wyo.gov/wp-content/uploads/2025/10/FFY2026-LIEAP-State-Model-Plan.pdf#page=8
     - title: "Wyoming Statutes, Title 42, section 42-2-501(c)-(d) #page 34-35"
       href: https://wyoleg.gov/statutes/compress/title42.pdf#page=34
+    - title: "2017 Wyo. Sess. Laws, SF0063 (Enrolled Act 43), amending W.S. 42-2-501(c) #page 7-8"
+      href: https://wyoleg.gov/2017/Enroll/SF0063.pdf#page=7

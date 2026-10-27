@@ -1,6 +1,6 @@
 # All 96 FY2026 visible workbook values independently reconciled in source research.
-# Ratios are inside the approved bands. The zero row uses 1.01 because the
-# approved convention pays the last positive fraction at exactly 1.00.
+# Ratios fall inside the printed Table 1 rows. The zero-row cases use 1.01,
+# above the limit; Case 125 pins the "1.00 +" row at exactly 1.00.
 # https://liheapch.acf.gov/docs/2026/benefits-matricies/WY_BenefitMatrix_2026.xlsx
 
 - name: Case 1, coal published share 0.8 at ratio 0.
@@ -1347,10 +1347,11 @@
   output:
     wy_lieap: 0.0
 
-- name: Case 97, oil at inclusive ratio boundary .21.
+- name: Case 97, oil exactly at the .21 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # The printed row starting at .21 pays .75; no ratio rounding.
+  # 2,640 * .75 = 1,980; 1,980 - 198 = 1,782.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1359,12 +1360,12 @@
     wy_lieap_countable_income: 21000
     heating_type: FUEL_OIL
   output:
-    wy_lieap: 1901.00
+    wy_lieap: 1782.00
 
-- name: Case 98, oil just above inclusive ratio boundary .21.
+- name: Case 98, oil just above the .21 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # Table 1 rows start at their printed ratios; no ratio rounding.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1375,10 +1376,11 @@
   output:
     wy_lieap: 1782.00
 
-- name: Case 99, oil at inclusive ratio boundary .26.
+- name: Case 99, oil exactly at the .26 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # The printed row starting at .26 pays .70; no ratio rounding.
+  # 2,640 * .70 = 1,848; 1,848 - 185 = 1,663.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1387,12 +1389,12 @@
     wy_lieap_countable_income: 26000
     heating_type: FUEL_OIL
   output:
-    wy_lieap: 1782.00
+    wy_lieap: 1663.00
 
-- name: Case 100, oil just above inclusive ratio boundary .26.
+- name: Case 100, oil just above the .26 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # Table 1 rows start at their printed ratios; no ratio rounding.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1403,10 +1405,11 @@
   output:
     wy_lieap: 1663.00
 
-- name: Case 101, oil at inclusive ratio boundary .31.
+- name: Case 101, oil exactly at the .31 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # The printed row starting at .31 pays .65; no ratio rounding.
+  # 2,640 * .65 = 1,716; 1,716 - 172 = 1,544.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1415,12 +1418,12 @@
     wy_lieap_countable_income: 31000
     heating_type: FUEL_OIL
   output:
-    wy_lieap: 1663.00
+    wy_lieap: 1544.00
 
-- name: Case 102, oil just above inclusive ratio boundary .31.
+- name: Case 102, oil just above the .31 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # Table 1 rows start at their printed ratios; no ratio rounding.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1431,10 +1434,11 @@
   output:
     wy_lieap: 1544.00
 
-- name: Case 103, oil at inclusive ratio boundary .36.
+- name: Case 103, oil exactly at the .36 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # The printed row starting at .36 pays .60; no ratio rounding.
+  # 2,640 * .60 = 1,584; 1,584 - 158 = 1,426.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1443,12 +1447,12 @@
     wy_lieap_countable_income: 36000
     heating_type: FUEL_OIL
   output:
-    wy_lieap: 1544.00
+    wy_lieap: 1426.00
 
-- name: Case 104, oil just above inclusive ratio boundary .36.
+- name: Case 104, oil just above the .36 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # Table 1 rows start at their printed ratios; no ratio rounding.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1459,10 +1463,11 @@
   output:
     wy_lieap: 1426.00
 
-- name: Case 105, oil at inclusive ratio boundary .41.
+- name: Case 105, oil exactly at the .41 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # The printed row starting at .41 pays .55; no ratio rounding.
+  # 2,640 * .55 = 1,452; 1,452 - 145 = 1,307.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1471,12 +1476,12 @@
     wy_lieap_countable_income: 41000
     heating_type: FUEL_OIL
   output:
-    wy_lieap: 1426.00
+    wy_lieap: 1307.00
 
-- name: Case 106, oil just above inclusive ratio boundary .41.
+- name: Case 106, oil just above the .41 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # Table 1 rows start at their printed ratios; no ratio rounding.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1487,10 +1492,11 @@
   output:
     wy_lieap: 1307.00
 
-- name: Case 107, oil at inclusive ratio boundary .46.
+- name: Case 107, oil exactly at the .46 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # The printed row starting at .46 pays .50; no ratio rounding.
+  # 2,640 * .50 = 1,320; 1,320 - 132 = 1,188.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1499,12 +1505,12 @@
     wy_lieap_countable_income: 46000
     heating_type: FUEL_OIL
   output:
-    wy_lieap: 1307.00
+    wy_lieap: 1188.00
 
-- name: Case 108, oil just above inclusive ratio boundary .46.
+- name: Case 108, oil just above the .46 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # Table 1 rows start at their printed ratios; no ratio rounding.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1515,10 +1521,11 @@
   output:
     wy_lieap: 1188.00
 
-- name: Case 109, oil at inclusive ratio boundary .51.
+- name: Case 109, oil exactly at the .51 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # The printed row starting at .51 pays .45; no ratio rounding.
+  # 2,640 * .45 = 1,188; 1,188 - 119 = 1,069.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1527,12 +1534,12 @@
     wy_lieap_countable_income: 51000
     heating_type: FUEL_OIL
   output:
-    wy_lieap: 1188.00
+    wy_lieap: 1069.00
 
-- name: Case 110, oil just above inclusive ratio boundary .51.
+- name: Case 110, oil just above the .51 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # Table 1 rows start at their printed ratios; no ratio rounding.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1543,10 +1550,11 @@
   output:
     wy_lieap: 1069.00
 
-- name: Case 111, oil at inclusive ratio boundary .56.
+- name: Case 111, oil exactly at the .56 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # The printed row starting at .56 pays .40; no ratio rounding.
+  # 2,640 * .40 = 1,056; 1,056 - 106 = 950.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1555,12 +1563,12 @@
     wy_lieap_countable_income: 56000
     heating_type: FUEL_OIL
   output:
-    wy_lieap: 1069.00
+    wy_lieap: 950.00
 
-- name: Case 112, oil just above inclusive ratio boundary .56.
+- name: Case 112, oil just above the .56 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # Table 1 rows start at their printed ratios; no ratio rounding.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1571,10 +1579,11 @@
   output:
     wy_lieap: 950.00
 
-- name: Case 113, oil at inclusive ratio boundary .61.
+- name: Case 113, oil exactly at the .61 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # The printed row starting at .61 pays .35; no ratio rounding.
+  # 2,640 * .35 = 924; 924 - 92 = 832.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1583,12 +1592,12 @@
     wy_lieap_countable_income: 61000
     heating_type: FUEL_OIL
   output:
-    wy_lieap: 950.00
+    wy_lieap: 832.00
 
-- name: Case 114, oil just above inclusive ratio boundary .61.
+- name: Case 114, oil just above the .61 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # Table 1 rows start at their printed ratios; no ratio rounding.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1599,10 +1608,11 @@
   output:
     wy_lieap: 832.00
 
-- name: Case 115, oil at inclusive ratio boundary .66.
+- name: Case 115, oil exactly at the .66 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # The printed row starting at .66 pays .30; no ratio rounding.
+  # 2,640 * .30 = 792; 792 - 79 = 713.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1611,12 +1621,12 @@
     wy_lieap_countable_income: 66000
     heating_type: FUEL_OIL
   output:
-    wy_lieap: 832.00
+    wy_lieap: 713.00
 
-- name: Case 116, oil just above inclusive ratio boundary .66.
+- name: Case 116, oil just above the .66 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # Table 1 rows start at their printed ratios; no ratio rounding.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1627,10 +1637,11 @@
   output:
     wy_lieap: 713.00
 
-- name: Case 117, oil at inclusive ratio boundary .71.
+- name: Case 117, oil exactly at the .71 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # The printed row starting at .71 pays .25; no ratio rounding.
+  # 2,640 * .25 = 660; 660 - 66 = 594.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1639,12 +1650,12 @@
     wy_lieap_countable_income: 71000
     heating_type: FUEL_OIL
   output:
-    wy_lieap: 713.00
+    wy_lieap: 594.00
 
-- name: Case 118, oil just above inclusive ratio boundary .71.
+- name: Case 118, oil just above the .71 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # Table 1 rows start at their printed ratios; no ratio rounding.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1655,10 +1666,11 @@
   output:
     wy_lieap: 594.00
 
-- name: Case 119, oil at inclusive ratio boundary .76.
+- name: Case 119, oil exactly at the .76 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # The printed row starting at .76 pays .20; no ratio rounding.
+  # 2,640 * .20 = 528; 528 - 53 = 475.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1667,12 +1679,12 @@
     wy_lieap_countable_income: 76000
     heating_type: FUEL_OIL
   output:
-    wy_lieap: 594.00
+    wy_lieap: 475.00
 
-- name: Case 120, oil just above inclusive ratio boundary .76.
+- name: Case 120, oil just above the .76 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # Table 1 rows start at their printed ratios; no ratio rounding.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1683,10 +1695,11 @@
   output:
     wy_lieap: 475.00
 
-- name: Case 121, oil at inclusive ratio boundary .81.
+- name: Case 121, oil exactly at the .81 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # The printed row starting at .81 pays .15; no ratio rounding.
+  # 2,640 * .15 = 396; 396 - 40 = 356.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1695,12 +1708,12 @@
     wy_lieap_countable_income: 81000
     heating_type: FUEL_OIL
   output:
-    wy_lieap: 475.00
+    wy_lieap: 356.00
 
-- name: Case 122, oil just above inclusive ratio boundary .81.
+- name: Case 122, oil just above the .81 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # Table 1 rows start at their printed ratios; no ratio rounding.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1711,10 +1724,11 @@
   output:
     wy_lieap: 356.00
 
-- name: Case 123, oil at inclusive ratio boundary .86.
+- name: Case 123, oil exactly at the .86 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # The printed row starting at .86 pays .10; no ratio rounding.
+  # 2,640 * .10 = 264; 264 - 26 = 238.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1723,12 +1737,12 @@
     wy_lieap_countable_income: 86000
     heating_type: FUEL_OIL
   output:
-    wy_lieap: 356.00
+    wy_lieap: 238.00
 
-- name: Case 124, oil just above inclusive ratio boundary .86.
+- name: Case 124, oil just above the .86 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # Table 1 rows start at their printed ratios; no ratio rounding.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1739,10 +1753,10 @@
   output:
     wy_lieap: 238.00
 
-- name: Case 125, oil at inclusive ratio boundary 1.00.
+- name: Case 125, oil exactly at the 1.00 Table 1 row start pays zero.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # Income at the limit is eligible, but the printed "1.00 +" row pays 0.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1751,12 +1765,12 @@
     wy_lieap_countable_income: 100000
     heating_type: FUEL_OIL
   output:
-    wy_lieap: 238.00
+    wy_lieap: 0
 
-- name: Case 126, oil just above inclusive ratio boundary 1.00.
+- name: Case 126, oil just above the 1.00 Table 1 row start.
   period: 2026
   absolute_error_margin: 0.001
-  # Approved convention; no ratio rounding.
+  # Table 1 rows start at their printed ratios; no ratio rounding.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1879,10 +1893,12 @@
   output:
     wy_lieap: 0
 
-- name: Case 135, kerosene has no supported FY2026 fuel standard.
+- name: Case 135, kerosene uses the heating oil standard.
   period: 2026
   absolute_error_margin: 0.001
-  # Zero for unsupported fuel does not establish legal ineligibility.
+  # Rule 3(hh) lists diesel and oil fuel types; the oil worksheet is
+  # "Diesel Heating Oil". Ratio 0 pays .80: 2,640 * .80 = 2,112;
+  # 2,112 - round_half_up(211.2) = 1,901, below the 5,000 cost.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1891,12 +1907,14 @@
     wy_lieap_countable_income: 0
     heating_type: KEROSENE
   output:
-    wy_lieap: 0
+    wy_lieap: 1901
 
-- name: Case 136, solar has no supported FY2026 fuel standard.
+- name: Case 136, solar uses the electricity standard.
   period: 2026
   absolute_error_margin: 0.001
-  # Zero for unsupported fuel does not establish legal ineligibility.
+  # heating_expense reads a solar home's bill as its grid electricity bill.
+  # Ratio 0 pays .80: 1,712.997 * .80 = 1,370.3976;
+  # 1,370.3976 - round_half_up(137.03976) = 1,233.3976, below the 5,000 cost.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1905,12 +1923,14 @@
     wy_lieap_countable_income: 0
     heating_type: SOLAR
   output:
-    wy_lieap: 0
+    wy_lieap: 1233.3976
 
-- name: Case 137, other has no supported FY2026 fuel standard.
+- name: Case 137, other fuel uses the wood standard as the closest published worksheet.
   period: 2026
   absolute_error_margin: 0.001
-  # Zero for unsupported fuel does not establish legal ineligibility.
+  # DFS serves other fuel types but publishes six worksheets; the wood
+  # standard is the closest. Ratio 0 pays .80: 1,225 * .80 = 980;
+  # 980 - round_half_up(98) = 882, below the 5,000 cost.
   input:
     state_code: WY
     wy_lieap_household_size: 1
@@ -1919,7 +1939,7 @@
     wy_lieap_countable_income: 0
     heating_type: OTHER
   output:
-    wy_lieap: 0
+    wy_lieap: 882
 
 - name: Case 138, negative countable income does not inflate the maximum.
   period: 2026
@@ -2093,7 +2113,7 @@
     # passes the $10 cutoff and is then limited to its $9 bill.
     wy_lieap: [209.6275, 0, 9, 0]
 
-- name: Case 148, real FY2026 incomes a cent below every band ceiling preserve inclusive selection.
+- name: Case 148, real FY2026 incomes a cent below every Table 1 row start stay in the preceding row.
   period: 2026
   input:
     people:
@@ -2161,12 +2181,13 @@
       household14: {members: [person14], state_code: WY}
       household15: {members: [person15], state_code: WY}
   output:
-    # Each one-person limit is $35,829. Apply the approved .21, .26, ...,
-    # .86, 1.00 ceilings to actual wages, then the $2,640 oil standard
-    # and the workbook's rounded 10 percent holdback.
+    # Each one-person limit is $35,829, so the rows start at $35,829 times
+    # .21, .26, ..., .86 and 1.00, in cents. Wages a cent below a start stay
+    # in the preceding row, then the $2,640 oil standard and the workbook's
+    # rounded 10 percent holdback apply (person1: .80, 2,112 - 211 = 1,901).
     wy_lieap: [1901, 1782, 1663, 1544, 1426, 1307, 1188, 1069, 950, 832, 713, 594, 475, 356, 238]
 
-- name: Case 149, real FY2026 incomes exactly at every band ceiling preserve inclusive selection.
+- name: Case 149, real FY2026 incomes exactly at every Table 1 row start take that row.
   period: 2026
   input:
     people:
@@ -2234,12 +2255,15 @@
       household14: {members: [person14], state_code: WY}
       household15: {members: [person15], state_code: WY}
   output:
-    # Each one-person limit is $35,829. Apply the approved .21, .26, ...,
-    # .86, 1.00 ceilings to actual wages, then the $2,640 oil standard
-    # and the workbook's rounded 10 percent holdback.
-    wy_lieap: [1901, 1782, 1663, 1544, 1426, 1307, 1188, 1069, 950, 832, 713, 594, 475, 356, 238]
+    # Each one-person limit is $35,829, so the rows start at $35,829 times
+    # .21, .26, ..., .86 and 1.00, in cents. Wages exactly at a start take
+    # that row, then the $2,640 oil standard and the workbook's rounded
+    # 10 percent holdback apply (person1: .75, 1,980 - 198 = 1,782;
+    # person14: .10, 264 - 26 = 238). Person15 at the limit is eligible,
+    # but the "1.00 +" row pays 0.
+    wy_lieap: [1782, 1663, 1544, 1426, 1307, 1188, 1069, 950, 832, 713, 594, 475, 356, 238, 0]
 
-- name: Case 150, real FY2026 incomes a cent above every band ceiling preserve inclusive selection.
+- name: Case 150, real FY2026 incomes a cent above every Table 1 row start take that row.
   period: 2026
   input:
     people:
@@ -2307,9 +2331,10 @@
       household14: {members: [person14], state_code: WY}
       household15: {members: [person15], state_code: WY}
   output:
-    # Each one-person limit is $35,829. Apply the approved .21, .26, ...,
-    # .86, 1.00 ceilings to actual wages, then the $2,640 oil standard
-    # and the workbook's rounded 10 percent holdback.
+    # Each one-person limit is $35,829, so the rows start at $35,829 times
+    # .21, .26, ..., .86 and 1.00, in cents. Wages a cent above a start stay
+    # in that row, then the $2,640 oil standard and the workbook's rounded
+    # 10 percent holdback apply. Person15 is above the limit and ineligible.
     wy_lieap: [1782, 1663, 1544, 1426, 1307, 1188, 1069, 950, 832, 713, 594, 475, 356, 238, 0]
 
 # 42 USC 8624(b)(2)(B): income LESS THAN 110% of the 2025 guideline is
@@ -2408,3 +2433,48 @@
     wy_lieap_income_limit: 35_829
     wy_lieap_eligible: true
     wy_lieap: 139.085
+
+# Rule 3(hh) lists diesel and oil fuel types, and heating_expense reads a
+# kerosene bill as fuel_oil_expense, so the $2,640 oil standard applies.
+# 20,000 / 35,829 = .558 is below the .56 row start ($20,064.24), so the
+# .51-.55 row pays .45: 2,640 * .45 = 1,188;
+# 1,188 - round_half_up(118.8) = 1,069, below the $1,500 bill.
+- name: Case 155, a kerosene bill uses the heating oil standard.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    age: 40
+    immigration_status: CITIZEN
+    employment_income: 20_000
+    ssi: 0
+    heating_type: KEROSENE
+    fuel_oil_expense: 1_500
+  output:
+    heating_expense: 1_500
+    wy_lieap_countable_income: 20_000
+    wy_lieap_income_limit: 35_829
+    wy_lieap_eligible: true
+    wy_lieap: 1_069
+
+# Rules 3(kk), 8(b)(i)(B) and 10(e) and plan section 2.3 serve a renter
+# whose heat is included in rent on the standard benefit formula. With no
+# separate gas bill, heating_expense is 0 and no bill caps the award.
+# 20,000 / 35,829 = .558 takes the .45 fraction: 1,550.85 * .45 = 697.8825;
+# 697.8825 - round_half_up(69.78825) = 697.8825 - 70 = 627.8825.
+- name: Case 156, heat included in rent with no separate bill receives the standard gas formula.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    age: 40
+    immigration_status: CITIZEN
+    employment_income: 20_000
+    ssi: 0
+    heating_type: NATURAL_GAS
+    heat_expense_included_in_rent: true
+  output:
+    heating_expense: 0
+    wy_lieap_countable_income: 20_000
+    wy_lieap_eligible: true
+    wy_lieap: 627.8825

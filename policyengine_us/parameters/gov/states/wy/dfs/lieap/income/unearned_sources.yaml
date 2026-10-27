@@ -29,6 +29,9 @@ values:
 # Social Security is counted in the formula, net of the Medicare Part B
 # premium deducted from it (rules 8(a)(ii)(U)).
 # Contract payments and royalties lack dedicated inputs and are not imputed.
+# wy_ssp is left out because rule 8(a)(ii)(U) exempts "The optional State
+# Medicaid Supplement Benefit", the $20 State Supplemental Payment that
+# Wyoming EOM M1804 pays to receive federal match for Medicaid.
 metadata:
   unit: list
   period: year
@@ -36,5 +39,5 @@ metadata:
   reference:
     - title: "FY2026 State Plan, section 1.9 #page 5-6"
       href: https://dfs.wyo.gov/wp-content/uploads/2025/10/FFY2026-LIEAP-State-Model-Plan.pdf#page=5
-    - title: LIEAP Rules, Chapter 1, section 8(a)
-      href: https://rules.wyo.gov/Search.aspx?mode=7
+    - title: 049-1 Wyo. Code R. § 1-8(a)
+      href: https://www.law.cornell.edu/regulations/wyoming/agency-049/subagency-0024/chapter-1/049-1-Wyo-Code-R-SSSS-1-8

@@ -1,5 +1,5 @@
 description: Wyoming excludes veterans disability benefits up to this share of the federal poverty guideline under the Low Income Energy Assistance Program.
-# Approved assumptions: one household-size exclusion per SPM unit and
+# Modeling assumptions: one household-size exclusion per SPM unit and
 # total veterans_benefits as the proxy for service-connected disability income.
 # The rule does not settle multiple recipients, and the proxy can exclude
 # other VA benefits that the service-connected rule does not cover.
@@ -11,5 +11,5 @@ metadata:
   period: year
   label: Wyoming LIEAP veterans income exclusion rate
   reference:
-    - title: "LIEAP Rules, Chapter 1, section 8(a)(ii)(S)"
-      href: https://rules.wyo.gov/Search.aspx?mode=7
+    - title: 049-1 Wyo. Code R. § 1-8(a)(ii)(S)
+      href: https://www.law.cornell.edu/regulations/wyoming/agency-049/subagency-0024/chapter-1/049-1-Wyo-Code-R-SSSS-1-8

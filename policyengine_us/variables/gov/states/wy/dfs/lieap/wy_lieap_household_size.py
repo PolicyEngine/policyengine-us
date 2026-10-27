@@ -8,7 +8,7 @@ class wy_lieap_household_size(Variable):
     label = "Wyoming LIEAP household size"
     documentation = (
         "Number of U.S. citizens and qualified noncitizens in the SPM unit. "
-        "Excluding other members from household size is an approved modeling "
+        "Excluding other members from household size is a modeling "
         "assumption: Wyoming's FY2026 plan requires immigration-status "
         "verification but does not specify mixed-status household calculations. "
         "The SPM unit approximates the group sharing home heating."

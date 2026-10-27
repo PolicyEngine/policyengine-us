@@ -11,7 +11,8 @@ class wy_lieap_fpg(Variable):
     defined_for = StateCode.WY
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/8624#b_2_B",
-        "https://rules.wyo.gov/Search.aspx?mode=7",
+        # Rule 8(a)(ii)(S).
+        "https://www.law.cornell.edu/regulations/wyoming/agency-049/subagency-0024/chapter-1/049-1-Wyo-Code-R-SSSS-1-8",
     )
 
     def formula(spm_unit, period, parameters):

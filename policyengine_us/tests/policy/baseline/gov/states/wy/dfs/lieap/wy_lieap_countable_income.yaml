@@ -1,4 +1,4 @@
-# Income conventions approved October 6, 2026. Annual inputs approximate monthly income.
+# Modeling assumption: annual inputs approximate monthly income.
 # FY2026 plan section 1.9 and adopted rule section 8: the plan excludes minors,
 # TANF and child support; the rule excludes lump sums. Conflicts remain documented.
 
@@ -260,3 +260,42 @@
     employment_income: 20_000
   output:
     wy_lieap_countable_income: 0
+
+# Each listed source gets a distinct amount, so dropping any one changes the
+# total. Earned: 1,000 + 2,000 + 3,000 + 4,000 = 10,000 for an adult.
+# Unearned: 500 + 600 + 700 = 1,800. Countable: 10,000 + 1,800 = 11,800.
+- name: Case 23, business, farm, partnership, workers compensation, disability and estate income each count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    ssi: 0
+    age: 40
+    self_employment_income: 1_000
+    sstb_self_employment_income: 2_000
+    farm_operations_income: 3_000
+    partnership_s_corp_income: 4_000
+    workers_compensation: 500
+    disability_benefits: 600
+    estate_income: 700
+  output:
+    wy_lieap_countable_income: 11_800
+
+# Rule 8(a)(ii)(U) exempts Medicare deducted from SSA. The 2026 Part B
+# premium is 202.90 * 12 = 2,434.80. It is entered directly because at this
+# income a Medicare Savings Program would pay it; Case 154 in wy_lieap.yaml
+# derives the premium for a person who pays it. Social Security counts as
+# max(1,000 - 2,434.80, 0) = 0, and the excess premium cannot reduce wages:
+# 10,000 + 0 = 10,000.
+- name: Case 24, a Part B premium above Social Security cannot reduce other income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    ssi: 0
+    age: 70
+    employment_income: 10_000
+    social_security: 1_000
+    medicare_part_b_premium: 2_434.8
+  output:
+    wy_lieap_countable_income: 10_000

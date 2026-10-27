@@ -1,10 +1,12 @@
 description: Wyoming applies these modeled entitlement fractions by household income relative to the income limit under the Low Income Energy Assistance Program.
-# Approved convention: compare the unrounded ratio with inclusive upper
-# bounds .21, .26, .31, ... .86, then 1.00. The formula compares equivalent
-# income ceilings at the precision of stored monetary inputs.
-# These assumptions bridge gaps in the printed matrix; they are not recovered
-# agency rounding instructions. The positive band at exactly 1.00 is the
-# stated extension of the user's pattern and differs from the printed zero.
+# Table 1 prints rows "0 - .20", ".21- .25", ... ".86 - .99" and "1.00 +".
+# Each threshold is the printed start of its row, so a ratio exactly at a
+# start takes that row's fraction and a ratio of 1.00 or more takes zero.
+# A ratio between printed rows takes the earlier row (.205 takes the
+# "0 - .20" fraction), as if truncated to two decimals; the matrix gives no
+# rounding instruction.
+# The formula compares equivalent income ceilings at the precision of stored
+# monetary inputs.
 brackets:
   - threshold:
       2025-10-01: -.inf
@@ -80,3 +82,5 @@ metadata:
   reference:
     - title: FY2026 Benefit Matrix, visible Table 1 on all fuel worksheets
       href: https://liheapch.acf.gov/docs/2026/benefits-matricies/WY_BenefitMatrix_2026.xlsx
+    - title: 049-1 Wyo. Code R. § 1-10(c)
+      href: https://www.law.cornell.edu/regulations/wyoming/agency-049/subagency-0024/chapter-1/049-1-Wyo-Code-R-SSSS-1-10
