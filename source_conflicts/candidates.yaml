@@ -3752,13 +3752,17 @@ candidates:
   pe_us:
     follows: statute
     code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/assets/limit/couple_limit_inclusive.yaml
     - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/is_optional_senior_or_disabled_asset_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10364
-  state: open
-  note: PR 10364 follows the statute for couples until Pavel Makarchuk signs off (sign-off requested on the PR;
-    RSMo 536.014 voids a rule in conflict with state law). Individuals keep the strict test, the agency's reading
-    of the individual clause.
+  state: ruled
+  note: 'Ruled 2026-10-27 for the statute by the project lead for these Medicaid fixes; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10364#issuecomment-6451309562. RSMo 208.010.2(7) ("not to
+    exceed") governs over 13 CSR 40-8.020(4)(B) ("at or in excess of"), and RSMo 536.014 voids a rule in conflict with
+    state law. PR 10364 already follows the statute for couples (couple_limit_inclusive.yaml, MO true from 2015), so
+    the model needs no change. Individuals keep the strict test, the agency''s reading of the individual clause. The
+    register entry and the code marker follow the merge.'
 - id: us-mo:negative-federal-agi-combined-return
   program: income-tax
   years:
