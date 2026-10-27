@@ -1114,6 +1114,41 @@ candidates:
   state: unreviewed
   note: 'The rule requires statutory timing rather than the model''s 2025-11-01 proxy; verify commencement and authorized
     transitions before changing it. Code not yet on main: is_snap_sua_hr1_in_effect, snap_utility_allowance_type.'
+- id: us-ca:ssp-blind-couple-food-allowance
+  program: ssi-ssp
+  years:
+    from: 2025
+    type: calendar
+  question: Does a California couple paid the one-blind couple rate get the no-cooking food allowance for its aged
+    or disabled member?
+  sources:
+  - kind: statute
+    citation: Cal. WIC §12200(b), (e)
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200
+  - kind: manual
+    citation: SSA POMS SI 01415.058 B.1, code C note
+    url: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415058
+  - kind: guidance
+    citation: CDSS ACIN I-59-25, Attachment A
+    url: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACINs/2025/I-59_25.pdf#page=5
+  readings:
+    statute: The allowance goes only to an aged or disabled individual (12200(c)) or a couple both aged or disabled
+      (12200(d)), so a couple under the one-blind rate (12200(b)) gets none.
+    other: POMS adds the individual restaurant meals allowance for the aged or disabled member of a couple with one
+      blind member whose living arrangement lacks cooking facilities.
+  example: In January 2026, a couple of an aged person and a blind person aged 50 without cooking facilities has a
+    $2,238.44 standard under the statute, which PE-US follows for CAPI, and $2,367.31 under POMS.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ca/cdss/capi/_ca_capi_ssi_ssp_standard.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10379
+  state: unreviewed
+  note: 'PE-US follows the statute for CAPI: _ca_capi_ssi_ssp_standard.py adds no food allowance to the one-blind
+    couple rate, and a couple both aged or disabled takes the aged or disabled rate with the couple allowance when
+    that is higher. The ACIN I-59-25 table lists no such combination. Check how ca_state_supplement_food_allowance
+    treats these couples.'
 - id: us-ca:ssp-nmohc-couple-standard
   program: ssi-ssp
   years:

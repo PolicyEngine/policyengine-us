@@ -15,9 +15,11 @@ def ca_capi_ssi_ssp_standard(person, period, parameters):
       disabled amount (the disabled child amount for a dependent child, MPP
       49-050.25; blind children take the blind amount, MPP 49-050.253). Only
       the aged or disabled amount adds the food allowance for people who
-      cannot prepare meals (WIC 12200(e)); a couple with one blind member
-      adds the individual food allowance for the other member (POMS SI
-      01415.058 B.1 code C). California pays the highest category a person or
+      cannot prepare meals, for an individual under WIC 12200(c) or a couple
+      under 12200(d) (WIC 12200(e)), so the one-blind couple rate under
+      12200(b) adds none. POMS SI 01415.058 B.1 code C adds the individual
+      allowance for the aged or disabled member of such a couple; the code
+      follows the statute. California pays the highest category a person or
       couple qualifies for.
     In an SSI couple computation the couple standard sums both members'
     shares; otherwise it treats the ineligible spouse as the person's
@@ -36,9 +38,14 @@ def ca_capi_ssi_ssp_standard(person, period, parameters):
     aged_or_disabled = (age >= p.aged_or_disabled.age_threshold) | person(
         "is_ssi_disabled", period.this_year
     )
+    # NOTE: living_arrangements_allow_for_food_preparation has no default
+    # value, so unless it is set every aged or disabled person gets the
+    # no-cooking allowance.
     no_cooking = ~person.household(
         "living_arrangements_allow_for_food_preparation", period.this_year
     )
+    # NOTE: the Title XIX standard reads ca_in_medical_care_facility, while
+    # SSI reads ssi_federal_living_arrangement; the two inputs can disagree.
     medical_facility = person("ca_in_medical_care_facility", period.this_year)
     out_of_home_care = person("in_out_of_home_care_facility", period.this_year)
     out_of_home_care_share = (
@@ -61,9 +68,7 @@ def ca_capi_ssi_ssp_standard(person, period, parameters):
         joint, person.marital_unit.sum(aged_or_disabled), 2 * aged_or_disabled
     )
     two_blind = (blind_count > 1) * p.blind.married.two_blind
-    one_blind = (blind_count == 1) * (
-        p.blind.married.one_blind + no_cooking * p.allowance.food.single
-    )
+    one_blind = (blind_count == 1) * p.blind.married.one_blind
     aged_or_disabled_couple = select(
         [aged_or_disabled_count > 1, aged_or_disabled_count == 1],
         [
@@ -74,10 +79,12 @@ def ca_capi_ssi_ssp_standard(person, period, parameters):
     )
     community_couple = max_(max_(two_blind, one_blind), aged_or_disabled_couple)
 
-    # The state supplement amounts hold 1991 totals until 2025 (issue 7787),
-    # below the federal benefit rate from 2008. CAPI equals SSI/SSP (WIC
-    # 18941), and SSI alone pays at least the federal rate, so the
-    # independent-living and out-of-home care standards are floored at it.
+    # Stopgap: the state supplement amounts hold 1991 totals until 2025,
+    # below the federal benefit rate from 2008, so the independent-living and
+    # out-of-home care standards are floored at that rate (SSI alone pays at
+    # least it, and CAPI equals SSI/SSP under WIC 18941). This still leaves
+    # out the whole state supplement before 2025; issue 10480 backfills the
+    # totals and removes the floor.
     individual = select(
         [medical_facility, out_of_home_care],
         [

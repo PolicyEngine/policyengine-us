@@ -5,7 +5,8 @@
     people:
       person1:
         age: 70
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
         # 520 per month foreign pension.
         pension_income: 6_240
     households:
@@ -28,10 +29,12 @@
     people:
       person1:
         age: 72
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
       person2:
         age: 68
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -86,7 +89,7 @@
     ca_state_supplement: 0
     ca_capi: 0
 
-- name: Integration test, undocumented
+- name: Integration test, permanent resident without 40 SSI quarters
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -96,7 +99,8 @@
         employment_income: 1_000
         is_disabled: true
         meets_ssi_disability_criteria: true
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
       person2:
         age: 10
         employment_income: 0
@@ -128,7 +132,8 @@
         immigration_status: CITIZEN
       person2:
         age: 68
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -154,12 +159,14 @@
     people:
       person1:
         age: 72
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
         # 1,520 per month foreign pension.
         pension_income: 18_240
       person2:
         age: 68
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     tax_units:
       tax_unit1:
         members: [person1]
@@ -195,7 +202,8 @@
     people:
       person1:
         age: 70
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     households:
       household:
         members: [person1]
@@ -205,7 +213,9 @@
     # The state supplement parameters hold the 1991 aged amount of 630 until
     # 2025 (issue 7787). CAPI equals SSI/SSP (WIC 18941), so the standard is
     # floored at the 2024 federal benefit rate: max(630, 943) = 943 per
-    # month with no offset and no income; 943 x 12 = 11,316.
+    # month with no offset and no income; 943 x 12 = 11,316. This pins a
+    # known-low value from the stopgap floor: the published aged standard was
+    # 1,182.94 (POMS SI 01415.056); issue 10480 removes the floor.
     ca_capi_person: 11_316
     ca_capi: 11_316
 
@@ -246,7 +256,8 @@
       person2:
         age: 68
         is_tax_unit_spouse: true
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
         pension_income: 6_000 # 500 a month foreign pension
     tax_units:
       tax_unit:
@@ -266,7 +277,7 @@
     # (500 + 500 - 20) / 2 = 490 a month each (5,880 a year).
     ssi_countable_income: [5_880, 5_880]
     # The citizen's SSI is 1,450 / 2 - 490 = 235 a month.
-    # NOTE: SSA treats the undocumented spouse as an ineligible spouse
+    # NOTE: SSA treats the noncitizen spouse as an ineligible spouse
     # (20 CFR 416.1160(d)). Her 500 exceeds the 1,450 - 967 = 483 gap, so SSA
     # deems her income and pays SSI of min(967 - 480, 1,450 - 980) = 470 and
     # a state supplement of min(1,335.81 - 967, 2,315.57 - 1,450) = 368.81,

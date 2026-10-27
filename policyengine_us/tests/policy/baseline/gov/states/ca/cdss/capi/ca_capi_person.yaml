@@ -5,12 +5,14 @@
     people:
       person1:
         age: 72
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
         # 420 per month foreign pension.
         pension_income: 5_040
       person2:
         age: 68
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -35,7 +37,8 @@
     people:
       person1:
         age: 70
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
       person2:
         age: 50
         employment_income: 6_000
@@ -71,7 +74,8 @@
     people:
       person1:
         age: 70
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
       person2:
         age: 50
         employment_income: 46_404
@@ -105,7 +109,8 @@
       person1:
         age: 45
         is_blind: true
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
       person2:
         age: 42
         employment_income: 51_204
@@ -141,7 +146,8 @@
     people:
       person1:
         age: 70
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
         # 320 per month foreign pension; own countable income is 320 - 20 =
         # 300 per month.
         pension_income: 3_840
@@ -190,7 +196,8 @@
         ssi_countable_income: 0
       person2:
         age: 68
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
         # 420 per month foreign pension; her own countable income is
         # 420 - 20 = 400 per month (4,800 per year). The model's SSI couple
         # computation would split the couple's income, so the case supplies
@@ -226,7 +233,8 @@
     people:
       person1:
         age: 75
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
         ca_in_medical_care_facility: true
         # 40 per month foreign pension; own countable income is 40 - 20 = 20
         # per month.

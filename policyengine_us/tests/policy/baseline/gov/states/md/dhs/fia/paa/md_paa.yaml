@@ -298,3 +298,57 @@
     md_paa_total_cost_of_care: 1_478
     # PAA = 1,478 - 480 - 487 = 511.
     md_paa: 511
+
+# Case 11's household when person1 reports SSI receipt. PAA counts only her
+# own income (COMAR 07.03.07.07), and the imputed SSI is what SSA pays her
+# under spouse deeming: the lesser of the couple computation and the
+# individual computation (20 CFR 416.1163(d)-(e); POMS SI 01320.430).
+# 2025-01: federal SSI couple rate $1,450 and individual rate $967; provider
+# rate $1,376; PNA $102.
+- name: Case 13, aged LPR without 40 quarters who reports SSI receipt and has a working spouse.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 30 # entered in 1995
+        ssi_qualifying_quarters_earnings: 20
+        receives_ssi: true
+        social_security_survivors: 6_000 # 500 a month
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_D
+      person2:
+        age: 60
+        employment_income: 12_000 # 1,000 a month
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    md_paa_eligible: [true, false]
+    # The model's SSI fails person1 on the 40-quarter test.
+    ssi: [0, 0]
+    # person2's 12,000 a year exceeds the (1,450 - 967) x 12 = 5,796 gap, so
+    # deeming applies: couple countable 480 + (1,000 - 65) x 0.5 = 947.50
+    # less person1's own 480 = 467.50 a month.
+    ssi_income_deemed_from_ineligible_spouse: [467.50, 0]
+    # PAA counts person1's own income only: 500 - 20 = 480. person2's own
+    # countable wages are (1,000 - 20 - 65) x 0.5 = 457.50.
+    md_paa_countable_income: [480, 457.50]
+    # SSA pays min(1,450 - (480 + 467.50), 967 - 480) = min(502.50, 487) = 487.
+    md_paa_imputed_federal_ssi: [487, 0]
+    # combined_need = 1,376 + 102 = 1,478.
+    md_paa_total_cost_of_care: [1_478, 0]
+    # PAA = 1,478 - 480 - 487 = 511, the same as with no spouse (Case 12).
+    md_paa: [511, 0]

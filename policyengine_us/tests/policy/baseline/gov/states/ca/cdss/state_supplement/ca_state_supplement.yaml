@@ -416,7 +416,7 @@
 # (MPP 49-055.32), and the citizen's own half is already in his countable
 # income. 2025: the couple federal benefit rate is $1,450; the no-cooking
 # individual standard is $1,206.94 + $128.87 = $1,335.81.
-# NOTE: SSA treats the undocumented spouse as an ineligible spouse (20 CFR
+# NOTE: SSA treats the noncitizen spouse as an ineligible spouse (20 CFR
 # 416.1160(d)). Her 500 exceeds the 1,450 - 967 = 483 gap, so SSA deems her
 # income and pays SSI of min(967 - 480, 1,450 - 980) = 470 and a state
 # supplement of min(1,335.81 - 967, 2,315.57 - 1,450) = 368.81, 838.81 in
@@ -438,7 +438,8 @@
       person2:
         age: 68
         is_tax_unit_spouse: true
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
         pension_income: 6_000 # 500 a month foreign pension
     tax_units:
       tax_unit:
