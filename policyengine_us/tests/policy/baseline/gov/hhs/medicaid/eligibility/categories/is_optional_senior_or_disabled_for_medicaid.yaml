@@ -82,7 +82,9 @@
 # A permanent resident two years after entry is in the five-year bar (8 U.S.C.
 # 1613) and fails the Medicaid immigration test. The pathway then tests income
 # against the 2026 SSI rate, 12 x $994 = $11,928, at or below it (42 U.S.C.
-# 1382(a)(1)(A)). Countable income is an input.
+# 1382(a)(1)(A)). Social Security of $1,015 a month leaves countable income of
+# (1,015 - 20) x 12 = $11,940, so SSI pays nothing and the person is not an SSI
+# recipient. The pathway's countable income is an input.
 - name: Case 7, Alabaman permanent resident in the five-year bar with income over the SSI rate gets neither the pathway nor emergency Medicaid.
   period: 2026
   input:
@@ -90,10 +92,12 @@
     state_code: AL
     immigration_status: LEGAL_PERMANENT_RESIDENT
     years_since_us_entry: 2
+    social_security_retirement: 12_180
     medicaid_optional_senior_or_disabled_countable_income: 11_940
     has_emergency_medical_condition: true
   output:
     is_medicaid_immigration_status_eligible: false
+    ssi: 0
     medicaid_optional_senior_or_disabled_income_limit: 11_928
     is_optional_senior_or_disabled_income_eligible: false
     is_optional_senior_or_disabled_for_medicaid: false
@@ -101,8 +105,10 @@
     is_emergency_medicaid_eligible: false
 
 # The SSI couple rate in 2026 is 12 x $1,491 = $17,892; the couple's countable
-# income, $8,946 each, is exactly at it. Only the first spouse has an
-# emergency medical condition.
+# income, $8,946 each, is exactly at it. Social Security of $755.50 a month
+# each gives the couple (1,511 - 20) x 12 = $17,892, so SSI pays nothing and
+# neither spouse is an SSI recipient. Only the first spouse has an emergency
+# medical condition.
 - name: Case 8, Alabaman permanent-resident couple in the five-year bar at the SSI couple rate keeps the pathway.
   period: 2026
   input:
@@ -111,12 +117,14 @@
         age: 70
         immigration_status: LEGAL_PERMANENT_RESIDENT
         years_since_us_entry: 2
+        social_security_retirement: 9_066
         medicaid_optional_senior_or_disabled_countable_income: 8_946
         has_emergency_medical_condition: true
       person2:
         age: 68
         immigration_status: LEGAL_PERMANENT_RESIDENT
         years_since_us_entry: 2
+        social_security_retirement: 9_066
         medicaid_optional_senior_or_disabled_countable_income: 8_946
         has_emergency_medical_condition: false
     marital_units:
@@ -134,6 +142,7 @@
         state_code: AL
   output:
     is_medicaid_immigration_status_eligible: [false, false]
+    ssi: [0, 0]
     medicaid_optional_senior_or_disabled_income_limit: [17_892, 17_892]
     is_optional_senior_or_disabled_income_eligible: [true, true]
     is_optional_senior_or_disabled_for_medicaid: [true, true]
