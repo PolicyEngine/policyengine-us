@@ -1,10 +1,17 @@
-description: California deducts this amount from the Supplemental Security Income and State Supplementary Payment couple standard under the Cash Assistance Program for Immigrants.
+description: California deducts this amount from the Supplemental Security Income and State Supplementary Payment couple standard under the Cash Assistance Program for Immigrants until June 2019.
+values:
+  1991-01-01: 20
+  2019-06-01: 0
 metadata:
   unit: currency-USD
   period: month
   label: California CAPI couple payment standard offset
   reference:
-    - title: California Eligibility and Assistance Standards Chapter 49-050 (.1)
+    - title: California Eligibility and Assistance Standards Chapter 49-050 (.12)
       href: https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf#page=44
-values:
-  1991-01-01: 20
+    - title: California Welfare and Institutions Code Section 18941
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=18941
+    - title: California Department of Social Services, All County Information Notice I-23-19, CAPI payment standards effective June 1, 2019
+      href: https://www.cdss.ca.gov/Portals/9/ACIN/2019/I-23_19.pdf#page=2
+    - title: California Department of Social Services, All County Information Notice I-59-25, CAPI payment standards for January 2026
+      href: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACINs/2025/I-59_25.pdf#page=5
