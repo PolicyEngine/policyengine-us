@@ -4,7 +4,7 @@ The contributed COLA means test is disabled under current law. It can withhold
 an annual COLA based on the beneficiary's tax unit, while retaining the benefit
 level reached before that event. It supports both reported benefit components
 and the supplied-record household calculator. Scenario thresholds and dates
-must be supplied before scoring; PE-US does not choose package values.
+come from the scoring settings; PE-US does not choose package values.
 
 ## Policy basis and choices
 
@@ -49,7 +49,7 @@ reforms must supply the numbers.
 | `pre_receipt_cola_index` | `-1` = `follow_below_threshold` | Follow the below-line choice, or explicitly select `0` = `statutory` or `1` = `chained_cpi_u`. |
 | `income_sensitivity` | `0` = `prior_year` | Alternatively, `1` = `never_withheld` or `2` = `always_withheld`. |
 | `thresholds.base_year` | `2026` | Dollar year of the supplied lines. |
-| `thresholds.single`, `thresholds.joint` | `0`, `0` | Neutral placeholders; activation requires positive scenario lines. |
+| `thresholds.single`, `thresholds.joint` | `0`, `0` | Neutral placeholders; evaluated `prior_year` income decisions require positive scenario lines. |
 | `thresholds.index_lag` | `1` | Years before the payment year for the December CPI-U observation. |
 | `thresholds.rounding` | `100` | Dollar increment, rounded half up. |
 | `filing_groups.SINGLE` | `0` = `single` | Select the single line; `1` selects joint. |
@@ -68,6 +68,10 @@ calculated decisions; supplied decisions retain normal override precedence.
 When the automatic policy is inactive, manual component inputs retain their
 legacy carry-forward behavior. Calculator-specific decisions apply only in
 their explicitly supplied year.
+
+Positive single and joint lines are required when a `prior_year` income
+decision is evaluated. The `never_withheld` and `always_withheld` sensitivities
+and pre-receipt index-only events do not read those lines.
 
 The `a9` preset in `policyengine_us.reforms.ssa.cola_means_test` enables the
 policy and selects:
