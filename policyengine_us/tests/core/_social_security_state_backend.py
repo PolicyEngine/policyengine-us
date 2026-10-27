@@ -50,7 +50,7 @@ from functools import lru_cache, wraps
 from importlib.metadata import distribution
 from pathlib import Path
 from unittest.mock import patch
-from weakref import ref
+from weakref import WeakKeyDictionary, ref
 
 import numpy as np
 from policyengine_core import commons, periods
@@ -163,8 +163,10 @@ class Disk:
 class Backend:
     """Install the unchanged hooks around unchanged Core routes in isolation."""
 
-    def __init__(self):
+    def __init__(self, *, cache_blacklist=(), variables_to_drop=()):
         self.stack = ExitStack()
+        self.cache_blacklist = tuple(cache_blacklist)
+        self.variables_to_drop = tuple(variables_to_drop)
         try:
             self._setup()
         except BaseException:
@@ -172,6 +174,8 @@ class Backend:
             raise
 
     def _setup(self):
+        cache_blacklist = self.cache_blacklist
+        variables_to_drop = self.variables_to_drop
         core = Path(distribution("policyengine-core").locate_file("policyengine_core"))
         calculation_frames = core_simulation._calculation_frames
         formula_simulation = core_simulation._formula_simulation
@@ -198,7 +202,9 @@ class Backend:
                 self._memory_storage = InMemoryStorage(is_eternal=False)
                 self._disk_storage = None
                 self._on_disk_storable = False
-                self._do_not_store = False
+                self._do_not_store = name in (
+                    self.simulation.memory_config.variables_to_drop
+                )
 
             def _storage_period(self, period):
                 return as_period(period)
@@ -255,11 +261,11 @@ class Backend:
             _social_security_input_compatibility = True
             person_entity = person
             group_entities = [household]
-            cache_blacklist = []
             data_modified = False
             auto_carry_over_input_variables = True
 
             def __init__(self):
+                self.cache_blacklist = list(cache_blacklist)
                 self.variables = {
                     name: types.SimpleNamespace(
                         name=name,
@@ -292,6 +298,7 @@ class Backend:
                         "raw_seed",
                         "early_derived",
                         "late_derived",
+                        "unrelated_formula",
                         *COMPONENTS,
                         *(f"{name}_reported" for name in COMPONENTS),
                         *(f"{name}_base" for name in COMPONENTS),
@@ -342,7 +349,11 @@ class Backend:
                 self.invalidated_caches = set()
                 self._fast_cache = {}
                 self.start_instant = None
-                self.opt_out_cache = False
+                self.opt_out_cache = bool(cache_blacklist)
+                self.memory_config = types.SimpleNamespace(
+                    variables_to_drop=set(variables_to_drop),
+                    priority_variables=set(self.tax_benefit_system.variables),
+                )
                 self.trace = False
                 self.fail_after_store = False
                 self.build_from_populations(
@@ -396,6 +407,8 @@ class Backend:
                 pass
 
             def _run_formula(self, variable, population, period):
+                if variable.name == "unrelated_formula":
+                    return np.array([77.0])
                 if variable.name in COMPONENTS:
                     return self.calculate(f"{variable.name}_base", period) * 2
                 if variable.name.endswith("_base"):
@@ -727,6 +740,7 @@ class Backend:
             "_social_security_state_hooks",
             json=json,
             ContextVar=ContextVar,
+            WeakKeyDictionary=WeakKeyDictionary,
             ref=ref,
             dataclass=dataclass,
             wraps=wraps,

@@ -24,7 +24,13 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from hypothesis import HealthCheck, settings, strategies as st
-from hypothesis.stateful import RuleBasedStateMachine, invariant, precondition, rule
+from hypothesis.stateful import (
+    RuleBasedStateMachine,
+    initialize,
+    invariant,
+    precondition,
+    rule,
+)
 
 
 spec = importlib.util.spec_from_file_location(
@@ -42,6 +48,16 @@ COMPONENT = st.sampled_from(COMPONENTS)
 PERIOD = st.sampled_from(("2023", "2024", "2025", "year:2023:2", "year:2024:2"))
 AMOUNT = st.integers(min_value=0, max_value=48_000)
 TARGET = st.integers(min_value=0, max_value=31)
+CACHE_NAMES = (
+    *COMPONENTS,
+    *(f"{name}_base" for name in COMPONENTS),
+    *(f"{name}_reported" for name in COMPONENTS),
+    "unrelated_formula",
+)
+CACHE_CONFIGURATION = st.tuples(
+    st.sampled_from(("blacklist", "variables_to_drop")),
+    st.sets(st.sampled_from(CACHE_NAMES), min_size=1),
+)
 
 
 @dataclass
@@ -233,17 +249,28 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
 
     def __init__(self):
         super().__init__()
-        self.backend = Backend()
-        self.states = [(self.backend.DelegatingSimulation(), Model())]
+        self.backend = None
+        self.states = []
         self.temp = tempfile.TemporaryDirectory(prefix="ss-input-machine-")
         self.dump_count = 0
         self.branch_initial_rewrite_done = False
         self.preservation_checks = []
         self.helper_checks = []
 
+    @initialize(cache_configuration=CACHE_CONFIGURATION)
+    def configure_cache(self, cache_configuration):
+        """Search Core's two policies that number returns without storing arrays."""
+        mode, names = cache_configuration
+        self.backend = Backend(
+            cache_blacklist=names if mode == "blacklist" else (),
+            variables_to_drop=names if mode == "variables_to_drop" else (),
+        )
+        self.states = [(self.backend.DelegatingSimulation(), Model())]
+
     def teardown(self):
         self.temp.cleanup()
-        self.backend.close()
+        if self.backend is not None:
+            self.backend.close()
 
     def state(self, slot):
         return self.states[slot % len(self.states)]
@@ -596,10 +623,21 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
     def nonderived_cache(self, slot, component, reported, period, amount, data=None):
         simulation, model = self.state(slot)
         component, period = self.write_key(model, component, period, data)
-        simulation.get_holder(self.name(component, reported)).put_in_cache(
+        holder = simulation.get_holder(self.name(component, reported))
+        holder.put_in_cache(
             [amount], as_period(period), simulation.branch_name, derived=False
         )
-        model.write(component, reported, period, amount, False, "put_in_cache")
+        # Core's put_in_cache ignores nonderived seeds too under these
+        # policies. A raw _set still stores and is covered by low_level_store.
+        if not (
+            holder._do_not_store
+            or (
+                simulation.opt_out_cache
+                and holder.variable.name
+                in simulation.tax_benefit_system.cache_blacklist
+            )
+        ):
+            model.write(component, reported, period, amount, False, "put_in_cache")
 
     @rule(
         slot=TARGET,
@@ -869,6 +907,10 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
         for simulation, model in self.states:
             assert simulation._user_input_contexts == []
             assert not hasattr(simulation, "_social_security_automatic_reported_inputs")
+            assert (
+                float(simulation.calculate("unrelated_formula", as_period("2024"))[0])
+                == 77
+            )
             for key in model.keys():
                 component, period = key
                 expected, expected_automatic = model.reported(component, period)
