@@ -372,7 +372,9 @@
 # for a family of three over that year's guideline for three ($25,820 in
 # 2024, $26,650 in 2025), inclusive of the 5-point MAGI disregard.
 
-- name: Case 24, Texas parent limit stays at the 2021 value of 0.19 FPL in 2023.
+# The 2021 entry is a rounded share above the $230 standard (0.161 for 2023);
+# the 2018-2023 values are tracked in issue 10491.
+- name: Case 24, Texas 2023 parent limit still reads the 2021 entry of 0.19 FPL.
   period: 2023
   input:
     people:
