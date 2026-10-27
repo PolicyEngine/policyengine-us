@@ -320,11 +320,12 @@
 # Current income does not replace that history or terminate continuation.
 # https://webserver.rilegislature.gov/Statutes/TITLE42/42-12.3/42-12.3-3.htm
 # Without that history, income at or below the pregnancy standard qualifies
-# only within the 60-day postpartum period of 42 CFR 435.4: person 5 is 30
-# days postpartum at 180% FPL, while person 3 has the same income 300 days
-# after the pregnancy.
+# only within the state's day-count postpartum period (postpartum_coverage):
+# person 5 is 30 days postpartum at 180% FPL, while person 3 has the same
+# income 400 days after the pregnancy, beyond that period whether it is 60 or
+# 365 days.
 # https://www.law.cornell.edu/cfr/text/42/435.4
-- name: Case 17, Rhode Island pregnancy history preserves coverage after income rises, while without it income qualifies only within 60 days postpartum.
+- name: Case 17, Rhode Island pregnancy history preserves coverage after income rises, while without it income qualifies only within the state's day-count postpartum period.
   period: 2024
   input:
     people:
@@ -347,9 +348,9 @@
       person3:
         age: 30
         immigration_status: UNDOCUMENTED
-        count_days_postpartum: 300
+        count_days_postpartum: 400
         ri_pregnancy_coverage: NONE
-        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        ri_medicaid_pregnancy_end_date: "2022-11-27"
         medicaid_household_size: 2
         medicaid_income_level: 1.8
       person4:

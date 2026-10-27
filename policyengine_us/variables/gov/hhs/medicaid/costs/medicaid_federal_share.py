@@ -9,12 +9,14 @@ class medicaid_federal_share(Variable):
         "Federal medical assistance percentage applied to this enrollee's "
         "Medicaid expenditures. Uses the ACA expansion FMAP for expansion "
         "adults (42 U.S.C. 1396d(y)) and the state's regular FMAP for all "
-        "other enrollment groups (42 U.S.C. 1396d(b)). Rhode Island's RIte "
-        "Start postpartum route receives no Title XIX match, because RIte "
-        "Start serves people not eligible under Title XIX or XXI. Its FCEP "
-        "postpartum route receives no Title XIX match when the enrollee does "
-        "not meet Medicaid immigration requirements. Separate Title XXI "
-        "health services initiative funding is not included here."
+        "other enrollment groups (42 U.S.C. 1396d(b)). Rhode Island's "
+        "postpartum continuation receives no Title XIX match unless the "
+        "pregnancy was covered by Medicaid and the enrollee meets Medicaid "
+        "immigration requirements: RIte Start serves people not eligible "
+        "under Title XIX or XXI, and CHIP and FCEP pregnancies are Title XXI "
+        "coverage. The zero match applies even if the enrollee also meets "
+        "another federally matched group. Separate Title XXI health services "
+        "initiative funding is not included here."
     )
     unit = "/1"
     definition_period = YEAR
@@ -34,14 +36,13 @@ class medicaid_federal_share(Variable):
         categories = category.possible_values
         pregnancy_coverage = person("ri_pregnancy_coverage", period)
         coverage_types = pregnancy_coverage.possible_values
-        rite_start_pregnancy = pregnancy_coverage == coverage_types.RITE_START
-        fcep_pregnancy_without_medicaid_status = (
-            pregnancy_coverage == coverage_types.FCEP
-        ) & ~person("is_medicaid_immigration_status_eligible", period)
+        federally_matched_pregnancy = (
+            pregnancy_coverage == coverage_types.MEDICAID
+        ) & person("is_medicaid_immigration_status_eligible", period)
         no_federal_medicaid_match = (
             (state == StateCode.RI)
             & person("ri_medicaid_postpartum_eligible", period.first_month)
-            & (rite_start_pregnancy | fcep_pregnancy_without_medicaid_status)
+            & ~federally_matched_pregnancy
         )
         return select(
             [

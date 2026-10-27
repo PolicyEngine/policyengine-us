@@ -195,3 +195,36 @@
     medicaid_category: PREGNANT
     medicaid_enrolled: true
     medicaid_federal_share: 0
+
+# Only a Medicaid-covered pregnancy of someone who meets Medicaid immigration
+# requirements keeps the Title XIX match in the continuation. A citizen whose
+# pregnancy was covered by CHIP and who now takes up Medicaid instead, and an
+# undocumented resident whose pregnancy was covered by Medicaid, both get 0.
+- name: Rhode Island CHIP-history and Medicaid-history-without-status continuations have no Title XIX match.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ri_pregnancy_coverage: CHIP
+        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+        takes_up_medicaid_if_eligible: true
+        takes_up_chip_if_eligible: false
+      person2:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        ri_pregnancy_coverage: MEDICAID
+        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+        takes_up_medicaid_if_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    medicaid_enrolled: [true, true]
+    medicaid_federal_share: [0, 0]
