@@ -14,7 +14,7 @@
   output:
     is_in_medicaid_medically_needy_category: false
 
-- name: Disabled adults in Arkansas, Iowa, Illinois, North Dakota and New Jersey are in a medically needy category.
+- name: Case 3, disabled adults in Arkansas, Iowa, Illinois, North Dakota and New Jersey are in a medically needy category.
   period: 2026
   input:
     people:
@@ -55,7 +55,7 @@
     # AR AABD spend down and IL PM 15-06-02-c cover disabled people.
     is_in_medicaid_medically_needy_category: [true, true, true, true, true]
 
-- name: Senior and disabled adult in Arizona, which has no medically needy pathway for them, are not in a medically needy category.
+- name: Case 4, a senior and a disabled adult in Arizona, which has no medically needy pathway for them, are not in a medically needy category.
   period: 2026
   input:
     people:
