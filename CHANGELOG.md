@@ -1,3 +1,10 @@
+## [2.72.2] - 2026-10-27
+
+### Fixed
+
+- Exclude filers with Montana's 2021–2023 partial pension, annuity, and IRA income exemption from the Montana AGI pooling test, which assumed only `mt_subtractions` reduce Montana AGI.
+
+
 ## [2.72.1] - 2026-10-27
 
 ### Fixed
