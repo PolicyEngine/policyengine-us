@@ -1,18 +1,18 @@
-description: The US indexes the federal poverty guidelines according to this schedule, annually updating based on CPI-U in the calendar year.
+description: PolicyEngine uprates Head Start and Early Head Start spending with this index of calendar-year average CPI-U.
 values:
   # Actuals: calendar-year average CPI-U for the labeled year.
-  # NOTE: 42 U.S.C. 9902(2) and the HHS notices update guideline year Y by CPI-U
-  # CY(Y-1)/CY(Y-2). gov/hhs/fpg.yaml uprates guideline year Y with this index by
-  # CY(Y)/CY(Y-1), one year ahead of the statute. Aligning them changes this
-  # shared index, so it is left for a separate PR.
+  # NOTE: The federal poverty guidelines uprate with gov.hhs.fpg_uprating, which
+  # follows the 42 U.S.C. 9902(2) interval (CY(Y-1)/CY(Y-2)). This index now
+  # serves only Head Start and Early Head Start spending (#10451).
   2022-01-01: 292.6
   2023-01-01: 304.7
   2024-01-01: 313.6
   2025-01-01: 321.9
   # CBO forecasts. 2026 keeps CBO's January 2025 projection, which the 2026
-  # amounts derived from this index already use (the separate PR on the
-  # statutory lag above would revisit it). Later years grow it at CBO's
-  # February 2026 calendar-year CPI-U growth: 2026 * CBO CPI-U (year) / CBO CPI-U (2026).
+  # Head Start amounts derived from this index already use. The partner
+  # contract tests pin those amounts, so ending the hold needs the partner
+  # gate (#10451). Later years grow it at CBO's February 2026 calendar-year
+  # CPI-U growth: 2026 * CBO CPI-U (year) / CBO CPI-U (2026).
   2026-01-01: 328.4
   2027-01-01: 336.766 # 328.4 * 340.260 / 331.807
   2028-01-01: 344.719 # 328.4 * 348.295 / 331.807
