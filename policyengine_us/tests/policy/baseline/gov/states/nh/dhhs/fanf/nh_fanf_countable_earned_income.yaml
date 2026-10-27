@@ -1,11 +1,14 @@
-# Tests for NH FANF countable earned income
-# NH applies different earned income disregard rates:
-# - Applicants: 20% disregard (keep 80%)
-# - Recipients: 50% disregard (keep 50%), He-W 654.13(e)
-#   (the Cliff Effect Initiative's 75% disregard was a pilot for a subgroup and
-#   is not modeled)
+# Tests for NH FANF countable earned income for the benefit amount
+# The benefit uses the 50% earned income disregard (keep 50%) for every
+# eligible unit, He-W 654.13(d)-(e):
+# - Recipients: 50% disregard, He-W 654.13(e)(1)
+# - Applicants who passed the 20% eligibility test: 50% disregard,
+#   He-W 654.13(d) and (e)(3); the 20% test is in
+#   nh_fanf_countable_earned_income_for_eligibility
+# (the Cliff Effect Initiative's 75% disregard was a pilot for a subgroup and
+# is not modeled)
 # Child care deduction is also applied to earned income
-# Source: He-W 654.13; SR 97-03; FAM 603.01; BFA SR 22-28
+# Source: He-W 654.02; He-W 654.13; SR 97-03; FAM 603.01; BFA SR 22-28
 
 - name: Case 1, zero earned income.
   period: 2024-01
@@ -14,15 +17,15 @@
   output:
     nh_fanf_countable_earned_income: 0
 
-- name: Case 2, applicant with earned income, 20 percent disregard.
+- name: Case 2, applicant benefit uses the 50 percent disregard.
   period: 2024-01
   input:
     state_code: NH
     is_tanf_enrolled: false
     tanf_gross_earned_income: 1_000
   output:
-    # Applicant: 1,000 * (1 - 0.20) = 800
-    nh_fanf_countable_earned_income: 800
+    # He-W 654.13(d): 1,000 * (1 - 0.50) = 500
+    nh_fanf_countable_earned_income: 500
 
 - name: Case 3, recipient with earned income, 50 percent disregard.
   period: 2024-01
@@ -53,10 +56,10 @@
         members: [person1, person2]
         state_code: NH
   output:
-    # Applicant: 2,000 * (1 - 0.20) = 1,600
+    # Applicant benefit: 2,000 * (1 - 0.50) = 1,000
     # Child care max (under 6, full-time): $200
-    # Countable: 1,600 - 200 = 1,400
-    nh_fanf_countable_earned_income: 1_400
+    # Countable: 1,000 - 200 = 800
+    nh_fanf_countable_earned_income: 800
 
 - name: Case 5, recipient with child care deduction.
   period: 2024-01
@@ -88,7 +91,7 @@
     people:
       person1:
         age: 30
-        employment_income_before_lsr: 2_400  # $200/month gross
+        employment_income_before_lsr: 1_200  # $100/month gross
       person2:
         age: 3
     spm_units:
@@ -101,9 +104,9 @@
         members: [person1, person2]
         state_code: NH
   output:
-    # Recipient: 200 * (1 - 0.50) = 100
+    # Recipient: 100 * (1 - 0.50) = 50
     # Child care (part-time): $100
-    # Countable: max(100 - 100, 0) = 0
+    # Countable: max(50 - 100, 0) = 0
     nh_fanf_countable_earned_income: 0
 
 - name: Case 7, child care deduction exactly equals after-disregard income.

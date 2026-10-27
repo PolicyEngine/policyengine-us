@@ -1,12 +1,12 @@
 # Tests for NH FANF income eligibility
-# Formula: Net Countable Income <= Payment Standard (60% FPG)
-# Source: RSA 167:77-g; FAM 601 Table B
+# Formula: Countable Income for Eligibility <= Payment Standard (60% FPG)
+# Source: RSA 167:77-g; He-W 654.02(b)(8); He-W 654.13; FAM 601 Table B
 
 - name: Case 1, zero income is eligible.
   period: 2024-01
   input:
     state_code: NH
-    nh_fanf_countable_income: 0
+    nh_fanf_countable_income_for_eligibility: 0
     nh_fanf_payment_standard: 753
   output:
     nh_fanf_income_eligible: true
@@ -15,7 +15,7 @@
   period: 2024-01
   input:
     state_code: NH
-    nh_fanf_countable_income: 500
+    nh_fanf_countable_income_for_eligibility: 500
     nh_fanf_payment_standard: 753
   output:
     nh_fanf_income_eligible: true
@@ -24,7 +24,7 @@
   period: 2024-01
   input:
     state_code: NH
-    nh_fanf_countable_income: 753
+    nh_fanf_countable_income_for_eligibility: 753
     nh_fanf_payment_standard: 753
   output:
     nh_fanf_income_eligible: true
@@ -33,7 +33,20 @@
   period: 2024-01
   input:
     state_code: NH
-    nh_fanf_countable_income: 754
+    nh_fanf_countable_income_for_eligibility: 754
     nh_fanf_payment_standard: 753
   output:
+    nh_fanf_income_eligible: false
+
+- name: Case 5, test uses income for eligibility, not the benefit income.
+  period: 2024-01
+  input:
+    state_code: NH
+    is_tanf_enrolled: false
+    nh_fanf_countable_income: 500
+    nh_fanf_countable_income_for_eligibility: 800
+    nh_fanf_payment_standard: 753
+  output:
+    # He-W 654.13(c): the 20% test income 800 > 753, although the
+    # benefit income 500 is below the payment standard
     nh_fanf_income_eligible: false
