@@ -7,6 +7,12 @@ class is_in_medicaid_medically_needy_category(Variable):
     label = "In Medicaid medically needy category"
     documentation = "Whether this person is in a Medicaid category for which there is a medically needy pathway."
     definition_period = YEAR
+    reference = (
+        "https://www.ecfr.gov/current/title-42/section-435.301#p-435.301(b)(2)",
+        "https://www.ecfr.gov/current/title-42/section-435.322",
+        "https://www.ecfr.gov/current/title-42/section-435.324",
+        "https://www.kff.org/report-section/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey-appendix-tables/",
+    )
 
     def formula(person, period, parameters):
         mn_categories = parameters(
