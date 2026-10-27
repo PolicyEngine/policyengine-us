@@ -111,3 +111,64 @@
     # Couple 80,000. person1: 40,000 / 80,000 x 30,000 / 40,000 = 0.375.
     # person2: 40,000 / 80,000 x 20,000 / 40,000 = 0.25.
     income_driven_repayment_balance_share: [0.375, 0.25]
+
+- name: Case 7, married filing separately counts only the person's own Direct and FFEL loans.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 10_000
+      person2:
+        age: 38
+        federal_student_loan_balance: 20_000
+        federal_ffel_loan_balance: 30_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    # Separate returns: the spouse's income is not used, so the spouse's loans
+    # are not included either (685.209(e)(1)(i)(A), (e)(2)(i)) and there is no
+    # (g)(1)(i) proration. person1: 10,000 / 10,000 = 1. person2, (g)(1)(ii)
+    # alone: 20,000 / (20,000 + 30,000) = 0.4.
+    income_driven_repayment_balance_share: [1, 0.4]
+
+- name: Case 8, a spouse's Parent PLUS loans and a tax dependent's FFEL loans do not dilute the head's share.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        federal_student_loan_balance: 20_000
+      person2:
+        age: 48
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        federal_parent_plus_loan_balance: 30_000
+      person3:
+        # An adult relative claimed as a dependent, with FFEL loans made
+        # before the FFEL Program stopped new loans on June 30, 2010.
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        federal_ffel_loan_balance: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+  output:
+    # Parent PLUS loans are not eligible loans (685.209(b)(5)(i)-(ii)), and
+    # only a spouse's loans join the borrower's (685.209(e)(2)(i)), so the
+    # couple's eligible balance is person1's 20,000: 20,000 / 20,000 = 1.
+    income_driven_repayment_balance_share: [1, 0, 0]

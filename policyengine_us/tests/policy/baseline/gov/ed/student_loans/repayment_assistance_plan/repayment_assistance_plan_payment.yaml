@@ -504,3 +504,61 @@
     # 16 2/3, not 5% x 60,000 / 12 = 250.
     repayment_assistance_plan_applicable_monthly_payment: 16.67
     repayment_assistance_plan_payment: 16.67
+
+- name: Case 24, a spouse's Parent PLUS loans and a tax dependent's FFEL loans do not dilute the borrower's share.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        federal_student_loan_balance: 20_000
+      person2:
+        age: 48
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        federal_parent_plus_loan_balance: 30_000
+      person3:
+        # An adult relative claimed as a dependent (FFEL loans before 2010).
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        federal_ffel_loan_balance: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+        adjusted_gross_income: 90_000
+  output:
+    # 8% x 90,000 = 7,200 / 12 = 600; 600 - 1 x 50 = 550. Parent PLUS loans
+    # are not eligible loans (685.209(b)(5)(i)-(ii)), and only a spouse's loans
+    # join the borrower's (685.209(e)(2)(i), (g)(3)(i)), so person1's share is
+    # 20,000 / 20,000 = 1.
+    repayment_assistance_plan_eligible: [true, false, false]
+    repayment_assistance_plan_applicable_monthly_payment: 550
+    repayment_assistance_plan_payment: [550, 0, 0]
+
+- name: Case 25, the final-payment cap uses the Direct Loan balance, not FFEL loans the plan cannot repay.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 100
+        federal_ffel_loan_balance: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+  output:
+    # 5% x 60,000 = 3,000 / 12 = 250. The plan repays only the 100 of Direct
+    # Loans (685.209(d)(4)), so January pays the 100 left to repay
+    # ((q)(4)(B)(iii)) and later months pay 0.
+    repayment_assistance_plan_payment:
+      2027-01: 100
+      2027-02: 0
+      2027: 100

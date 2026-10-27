@@ -11,7 +11,9 @@ class federal_parent_plus_loan_balance(Variable):
         "Direct Consolidation Loans that repaid such loans. These excepted "
         "loans cannot be repaid under the Repayment Assistance Plan; "
         "parent_plus_standard_repayment_payment repays them under the "
-        "standard plan. This is the opening balance for the year. Later years "
+        "standard plan, over 10 years, or over 10 to 30 years for a "
+        "consolidation loan flagged by federal_parent_plus_loan_is_consolidated. "
+        "This is the opening balance for the year. Later years "
         "hold it at its dataset (input) value, with no price or income "
         "uprating and no repayment roll-forward."
     )

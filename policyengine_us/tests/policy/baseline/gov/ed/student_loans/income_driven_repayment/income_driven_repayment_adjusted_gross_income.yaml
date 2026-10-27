@@ -1,5 +1,7 @@
-# AGI on the most recent return (20 U.S.C. 1087e(q)(4)(A)). Without an input it
-# defaults to the current year's AGI.
+# AGI on the most recent return: 20 U.S.C. 1087e(q)(4)(A) for the Repayment
+# Assistance Plan; 34 CFR 685.209(b)(10)(i) for the Income-Based Repayment,
+# SAVE, Pay As You Earn and Income-Contingent Repayment plans. Without an input
+# it defaults to the current year's AGI.
 
 - name: Case 1, defaults to the current year's adjusted gross income.
   period: 2027

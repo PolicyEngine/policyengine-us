@@ -8,6 +8,7 @@ import pytest
 import yaml
 
 from policyengine_core.parameters import Parameter, ParameterNode
+from policyengine_core.variables.variable import QuantityType
 
 from policyengine_us.system import system
 from policyengine_us.tools.default_uprating import NO_DEFAULT_UPRATING_VARIABLES
@@ -295,6 +296,15 @@ def test_float_dollar_inputs_have_long_run_upraters():
     assert missing == []
     assert unresolvable == []
     assert flat == []
+
+
+def test_held_balances_are_unuprated_stocks():
+    """Each variable default_uprating.py holds at its dataset value exists,
+    declares no uprater and is a stock, so the exemption cannot go stale."""
+    for name in NO_DEFAULT_UPRATING_VARIABLES:
+        variable = system.variables[name]
+        assert variable.uprating is None, name
+        assert variable.quantity_type == QuantityType.STOCK, name
 
 
 def test_ssa_nawi_and_payroll_cap_extend_to_2100():

@@ -17,8 +17,12 @@ class income_driven_repayment_eligible(Variable):
     )
     definition_period = MONTH
     reference = (
+        "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(c)(3)",
+        "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(c)(4)",
+        "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(c)(5)",
         "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(d)(1)",
         "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(d)(2)",
+        "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(d)(3)",
     )
 
     def formula(person, period, parameters):

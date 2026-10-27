@@ -1,0 +1,43 @@
+description: The Department of Education amortizes a Direct Consolidation Loan that entered repayment on or after July 1, 2006 over this number of years under the standard repayment plan, based on the total of the consolidation loan and the borrower's other education loans.
+# A total "less than" a threshold falls in the tier below it; a total "equal
+# to or greater than" a threshold falls in the tier that starts there, which
+# matches the default right=False evaluation of the scale.
+brackets:
+  - threshold:
+      2006-07-01: 0
+    amount:
+      2006-07-01: 10
+  - threshold:
+      2006-07-01: 7_500
+    amount:
+      2006-07-01: 12
+  - threshold:
+      2006-07-01: 10_000
+    amount:
+      2006-07-01: 15
+  - threshold:
+      2006-07-01: 20_000
+    amount:
+      2006-07-01: 20
+  - threshold:
+      2006-07-01: 40_000
+    amount:
+      2006-07-01: 25
+  - threshold:
+      2006-07-01: 60_000
+    amount:
+      2006-07-01: 30
+
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: year
+  period: year
+  label: Standard repayment plan repayment period for Direct Consolidation Loans
+  reference:
+    - title: 34 CFR 685.208(b)(2)(iii)
+      href: https://www.ecfr.gov/current/title-34/section-685.208#p-685.208(b)(2)(iii)
+    - title: 34 CFR 685.208(c), (j) (as of November 17, 2016)
+      href: https://www.ecfr.gov/on/2016-11-17/title-34/section-685.208#p-685.208(j)
+    - title: 34 CFR 685.220(i)(2)(ii), (i)(3)(i)
+      href: https://www.ecfr.gov/current/title-34/section-685.220#p-685.220(i)(2)(ii)

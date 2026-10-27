@@ -103,8 +103,9 @@ INPUT_VARIABLES = [
 ]
 
 
-# Loan balances are stocks held at their dataset value: no price or income
-# index applies, and repayment is not rolled forward.
+# Federal student loan balances are stocks held at their dataset value: no
+# price or income index applies, and repayment is not rolled forward. Other
+# debts, such as auto loan balances, keep their uprating.
 NO_DEFAULT_UPRATING_VARIABLES = {
     "federal_student_loan_balance",
     "federal_parent_plus_loan_balance",

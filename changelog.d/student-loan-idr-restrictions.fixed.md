@@ -1,1 +1,0 @@
-Count FFEL debt in the student loan plans' spousal proration, use the latest return's adjusted gross income, and cap Income-Based Repayment and Pay As You Earn at the couple's combined standard payment. Add the 10-year standard payment on parent PLUS loans, and hold federal student loan balances at their dataset value in later years instead of uprating them.

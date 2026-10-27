@@ -16,7 +16,11 @@ class repayment_assistance_plan_payment(Variable):
         "and at least the minimum payment. The plan cannot repay FFEL loans "
         "(685.209(d)(4)), and (g)(3) has no FFEL adjustment like (g)(1)(ii), "
         "so a borrower's own FFEL loans raise their share of the payment on "
-        "their Direct Loans. Payments in a year stop once they add up to the "
+        "their Direct Loans. The proposed rule (91 FR 4284-85) and the final "
+        "rule's preamble (91 FR 23838) copied the Income-Based Repayment "
+        "plan's (g)(1)(i) proration 'to provide consistency with IBR' without "
+        "discussing FFEL loans, so the code follows the text of (g)(3)(i). "
+        "Payments in a year stop once they add up to the "
         "borrower's opening Direct Loan balance; interest accrual is not "
         "modeled."
     )
@@ -29,6 +33,7 @@ class repayment_assistance_plan_payment(Variable):
         "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(b)(5)",
         "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(e)(2)",
         "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(g)(3)",
+        "https://www.govinfo.gov/content/pkg/FR-2026-05-01/pdf/2026-08556.pdf#page=71",
     )
 
     def formula(person, period, parameters):

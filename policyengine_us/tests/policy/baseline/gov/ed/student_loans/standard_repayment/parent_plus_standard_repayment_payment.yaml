@@ -1,6 +1,10 @@
-# 10-year level payment on parent PLUS loans under 34 CFR 685.208(b)(1):
-# balance x i / (1 - (1 + i) ^ -120), i = rate / 12, at least 50 dollars and no
-# more than the balance.
+# Level payment on parent PLUS loans under the standard repayment plan:
+# balance x i / (1 - (1 + i) ^ -n), i = rate / 12, at least 50 dollars and no
+# more than the balance. n = 120 under 34 CFR 685.208(b)(1). For a Direct
+# Consolidation Loan that entered repayment on or after July 1, 2006,
+# 685.208(b)(2)(iii) sets 10 to 30 years by the consolidation loan plus the
+# borrower's other education loans, counted up to the consolidation loan's
+# amount (685.220(i)(2)(ii), (i)(3)(i)).
 
 - name: Case 1, 30,000 dollars of parent PLUS loans at 6 percent.
   period: 2026-01
@@ -127,3 +131,82 @@
     # (1 - 1.005 ^ -180) = 253.16.
     parent_plus_standard_repayment_payment: 0
     tiered_standard_repayment_payment: 253.16
+
+- name: Case 8, a consolidated parent PLUS loan repays over 15 to 30 years by amount.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_parent_plus_loan_balance: 30_000
+        federal_parent_plus_loan_is_consolidated: true
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 50
+        federal_parent_plus_loan_balance: 19_999.99
+        federal_parent_plus_loan_is_consolidated: true
+        federal_student_loan_interest_rate: 0.06
+      person3:
+        age: 50
+        federal_parent_plus_loan_balance: 20_000
+        federal_parent_plus_loan_is_consolidated: true
+        federal_student_loan_interest_rate: 0.06
+      person4:
+        age: 50
+        federal_parent_plus_loan_balance: 59_999.99
+        federal_parent_plus_loan_is_consolidated: true
+        federal_student_loan_interest_rate: 0.06
+      person5:
+        age: 50
+        federal_parent_plus_loan_balance: 60_000
+        federal_parent_plus_loan_is_consolidated: true
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+      tax_unit4:
+        members: [person4]
+      tax_unit5:
+        members: [person5]
+  output:
+    # No other education loans, so the term follows the consolidation loan:
+    # 30,000 -> 20 years: 30,000 x 0.005 / (1 - 1.005 ^ -240) = 214.93, not the
+    # 10-year 333.06. 19,999.99 -> 15 years (n = 180): 168.77. 20,000 -> 20
+    # years: 143.29. 59,999.99 -> 25 years (n = 300): 386.58. 60,000 -> 30
+    # years (n = 360): 359.73.
+    parent_plus_standard_repayment_payment: [214.93, 168.77, 143.29, 386.58, 359.73]
+
+- name: Case 9, other education loans set a consolidated loan's term up to its own amount.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_parent_plus_loan_balance: 15_000
+        federal_parent_plus_loan_is_consolidated: true
+        federal_student_loan_balance: 50_000
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 50
+        federal_parent_plus_loan_balance: 15_000
+        federal_parent_plus_loan_is_consolidated: true
+        federal_ffel_loan_balance: 5_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+  output:
+    # person1: the 50,000 of Direct Loans counts only up to the 15,000
+    # consolidation loan (685.220(i)(3)(i)): 15,000 + 15,000 = 30,000 -> 20
+    # years, 15,000 x 0.005 / (1 - 1.005 ^ -240) = 107.46 (30 years and 89.93
+    # if the cap were ignored). person2: 15,000 + 5,000 of FFEL = 20,000 -> 20
+    # years: 107.46 (15 years and 126.58 without the FFEL loans).
+    parent_plus_standard_repayment_payment: [107.46, 107.46]

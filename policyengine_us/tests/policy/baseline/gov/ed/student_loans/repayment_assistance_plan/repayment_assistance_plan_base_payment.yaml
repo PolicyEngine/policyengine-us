@@ -211,6 +211,11 @@
       tax_unit2:
         members: [person2]
         adjusted_gross_income: 30_001
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
   output:
     # 2% x 30,000 = 600; 3% x 30,001 = 900.03.
     repayment_assistance_plan_base_payment: [600, 900.03]
@@ -238,6 +243,11 @@
       tax_unit2:
         members: [person2]
         adjusted_gross_income: 40_001
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
   output:
     # 3% x 40,000 = 1,200; 4% x 40,001 = 1,600.04.
     repayment_assistance_plan_base_payment: [1_200, 1_600.04]
@@ -265,6 +275,11 @@
       tax_unit2:
         members: [person2]
         adjusted_gross_income: 50_001
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
   output:
     # 4% x 50,000 = 2,000; 5% x 50,001 = 2,500.05.
     repayment_assistance_plan_base_payment: [2_000, 2_500.05]
@@ -292,6 +307,11 @@
       tax_unit2:
         members: [person2]
         adjusted_gross_income: 60_001
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
   output:
     # 5% x 60,000 = 3,000; 6% x 60,001 = 3,600.06.
     repayment_assistance_plan_base_payment: [3_000, 3_600.06]
@@ -319,6 +339,11 @@
       tax_unit2:
         members: [person2]
         adjusted_gross_income: 70_001
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
   output:
     # 6% x 70,000 = 4,200; 7% x 70,001 = 4,900.07.
     repayment_assistance_plan_base_payment: [4_200, 4_900.07]
@@ -346,6 +371,11 @@
       tax_unit2:
         members: [person2]
         adjusted_gross_income: 80_001
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
   output:
     # 7% x 80,000 = 5,600; 8% x 80,001 = 6,400.08.
     repayment_assistance_plan_base_payment: [5_600, 6_400.08]
@@ -373,6 +403,11 @@
       tax_unit2:
         members: [person2]
         adjusted_gross_income: 90_001
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
   output:
     # 8% x 90,000 = 7,200; 9% x 90,001 = 8,100.09.
     repayment_assistance_plan_base_payment: [7_200, 8_100.09]
