@@ -383,11 +383,11 @@ def test_joint_cola_withholding_pp_change_and_payment_factors_apply_once():
     np.testing.assert_array_equal(
         simulation.calculate("ss_calculated_payment", "2027-01"), [913, 880]
     )
-    # Only the supplied 2027 decision withholds a COLA. January2028's 1.1%
-    # baseline plus .15 percentage points applies to both records; after the
-    # continuing .88 payment factor, the checks are924 and891 dollars.
+    # Only the supplied 2027 decision withholds a COLA. January2028's 2.5%
+    # baseline plus .15 percentage points applies to both records. Dime-rounded
+    # PIAs are 1064.9/1026.5; the continuing .88 factor gives 937/903 dollars.
     np.testing.assert_array_equal(
-        simulation.calculate("ss_calculated_payment", "2028-01"), [924, 891]
+        simulation.calculate("ss_calculated_payment", "2028-01"), [937, 903]
     )
 
 
