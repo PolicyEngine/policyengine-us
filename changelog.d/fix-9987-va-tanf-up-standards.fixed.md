@@ -1,0 +1,1 @@
+Pay Virginia TANF-UP (two-parent) units the TANF standards of assistance and maximum payment in every year, as the Appropriation Act's floor for two-parent families requires, instead of the July 2020 TANF-UP schedule.
