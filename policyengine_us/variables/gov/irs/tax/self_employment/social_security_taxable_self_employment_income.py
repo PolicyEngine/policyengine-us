@@ -11,10 +11,11 @@ class social_security_taxable_self_employment_income(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.irs.payroll.social_security
-        # This will not be negative, since
-        # taxable_earnings_for_social_security is capped at the cap.
-        cap_minus_earnings = p.cap - person(
-            "taxable_earnings_for_social_security", period
+        # Reforms may tax wages above the current-law cap. They cannot
+        # leave negative room for self-employment earnings.
+        cap_minus_earnings = max_(
+            0,
+            p.cap - person("taxable_earnings_for_social_security", period),
         )
         # Deduct SS payroll taxable wages and salaries.
         return min_(

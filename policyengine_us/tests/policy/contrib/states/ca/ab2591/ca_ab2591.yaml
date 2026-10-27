@@ -2,12 +2,13 @@
 # Allows taxpayers to elect a standard deduction equal to the federal
 # poverty line for their household size.
 # Effective for taxable years beginning on or after July 1, 2027.
-# 2027 federal poverty guidelines (CONTIGUOUS_US):
-#   first person = $16,334
-#   additional person = $5,813
-#   1-person FPL  = $16,334
-#   2-person FPL  = $22,147
-#   4-person FPL  = $33,774
+# 2027 federal poverty guidelines (CONTIGUOUS_US), 2026 values x 331.359 / 321.943,
+# the CPI-U change from calendar 2025 to calendar 2026 (gov.hhs.fpg_uprating):
+#   first person = $16,426.79
+#   additional person = $5,846.13
+#   1-person FPL  = $16,427 (rounded)
+#   2-person FPL  = $22,273 (rounded)
+#   4-person FPL  = $33,965 (rounded)
 
 - name: Single filer uses one-person FPL.
   period: 2027
@@ -28,7 +29,7 @@
         members: [person1]
         state_code: CA
   output:
-    ca_standard_deduction: 16_334
+    ca_standard_deduction: 16_427
 
 - name: Head of household with one child uses two-person FPL.
   period: 2027
@@ -53,7 +54,7 @@
         members: [person1, person2]
         state_code: CA
   output:
-    ca_standard_deduction: 22_147
+    ca_standard_deduction: 22_273
 
 - name: Head of household with two children still uses two-person FPL.
   # Bill R&TC 17073.5(b)(2) fixes HoH at the two-person FPL regardless of size.
@@ -82,7 +83,7 @@
         members: [person1, person2, person3]
         state_code: CA
   output:
-    ca_standard_deduction: 22_147
+    ca_standard_deduction: 22_273
 
 - name: Joint filers with no children use two-person FPL.
   period: 2027
@@ -107,7 +108,7 @@
         members: [person1, person2]
         state_code: CA
   output:
-    ca_standard_deduction: 22_147
+    ca_standard_deduction: 22_273
 
 - name: Joint filers with two children use four-person FPL.
   # Bill R&TC 17073.5(b)(3) scales joint FPL with the number of persons in the household.
@@ -139,7 +140,7 @@
         members: [person1, person2, person3, person4]
         state_code: CA
   output:
-    ca_standard_deduction: 33_774
+    ca_standard_deduction: 33_965
 
 - name: Married filing separately uses one-person FPL.
   period: 2027
@@ -161,7 +162,7 @@
         members: [person1]
         state_code: CA
   output:
-    ca_standard_deduction: 16_334
+    ca_standard_deduction: 16_427
 
 - name: Reform inactive leaves baseline CA standard deduction unchanged.
   period: 2027

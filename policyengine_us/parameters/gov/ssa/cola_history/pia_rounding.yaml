@@ -1,0 +1,21 @@
+description: Social Security applies this historical rounding rule to the PIA after a COLA.
+values:
+  1975-06-01: 1
+  1982-06-01: 2
+metadata:
+  unit: int
+  label: Social Security historical COLA PIA rounding rule
+  economy: false
+  reference:
+    - title: POMS RS 00601.020 A, rounding of benefits
+      href: https://secure.ssa.gov/poms.nsf/lnx/0300601020
+    - title: POMS RS 00605.021 C, computation example with historical COLAs
+      href: https://secure.ssa.gov/poms.nsf/lnx/0300605021
+documentation: |
+  Code 1 means round up to the next dime if not already a multiple of a dime.
+  Code 2 means truncate to the next lower dime. The June 1982 COLA uses code 2,
+  even where the initial PIA for a pre-1983 benchmark year rounded upward.
+  These codes describe COLA PIA rounding, not initial-PIA benchmark rounding.
+  A computation must reject any history containing a code it does not implement.
+  Reported-source proportional factors approximate changes in annual survey
+  amounts and do not reconstruct unidentified monthly benefit rounding.

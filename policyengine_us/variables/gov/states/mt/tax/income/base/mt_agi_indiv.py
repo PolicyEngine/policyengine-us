@@ -16,7 +16,12 @@ class mt_agi_indiv(Variable):
             "mt_loss_ald_reallocation", period
         )
         additions = person("mt_additions", period)
-        subtractions = person("mt_subtractions", period)
+        # The partial pension, annuity, and IRA income exemption is not in the
+        # subtractions list: on a separate return each spouse reduces it by
+        # their own federal AGI, and a joint return reduces it once.
+        subtractions = person("mt_subtractions", period) + person(
+            "mt_pension_exemption_indiv", period
+        )
         reduced_agi = max_(agi + additions - subtractions, 0)
         # Montana taxable social security benefits can be either addition or subtraction
         # if mt_taxable_social security - taxable_social_security > 0, then addition, else subtraction
