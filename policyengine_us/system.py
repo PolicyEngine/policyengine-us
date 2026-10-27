@@ -137,6 +137,16 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
             self.parameters, first_instant=f"{FIRST_MODELED_YEAR}-01-01"
         )
 
+        # Preserve the processed current-law path before user reforms can
+        # remove/change the payroll cap. Owners' draw can keep this ceiling
+        # independently or explicitly select no ceiling.
+        draw_cap = self.parameters.gov.irs.payroll.social_security.cap.clone()
+        draw_cap.name = "gov.contrib.ssa.owners_draw.current_law_cap"
+        draw_cap.metadata = {"unit": "currency-USD", "economy": False}
+        self.parameters.gov.contrib.ssa.owners_draw.add_child(
+            "current_law_cap", draw_cap
+        )
+
         if reform:
             # Applied after the parameter processing pipeline so that values
             # a reform inserts at future dates cannot act as defined values
