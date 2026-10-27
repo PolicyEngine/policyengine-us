@@ -631,3 +631,24 @@
         state_code: IA
   output:
     is_optional_senior_or_disabled_income_eligible: [true, true]
+
+- name: Minnesota senior with Social Security at 100 percent of the poverty guideline is income eligible.
+  period: 2026
+  input:
+    age: 70
+    social_security_retirement: 15_960
+    state_code: MN
+  output:
+    # Minn. Stat. 256B.056, subd. 1b: no $20 deduction. 1,330 a month equals
+    # the 2026 limit of 15,960 / 12 = 1,330.
+    is_optional_senior_or_disabled_income_eligible: true
+
+- name: Minnesota senior with Social Security one dollar a month over the poverty guideline is not income eligible.
+  period: 2026
+  input:
+    age: 70
+    social_security_retirement: 15_972
+    state_code: MN
+  output:
+    # 1,331 a month exceeds 1,330. A $20 deduction would have given 1,311.
+    is_optional_senior_or_disabled_income_eligible: false

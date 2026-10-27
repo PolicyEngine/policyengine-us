@@ -503,3 +503,16 @@
   output:
     # Only California deducts premiums: (1,000 - 20) x 12 = 11,760.
     medicaid_optional_senior_or_disabled_countable_income: 11_760
+
+- name: Minnesota applies no 20-dollar disregard, to unearned or earned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    ssi_marital_earned_income: 12_000
+    state_code: MN
+  output:
+    # Minn. Stat. 256B.056, subd. 1b: no $20, so none moves to earned income.
+    # The SSI $65 and one-half earned income exclusions still apply:
+    # (1,000 - 65) / 2 x 12 = 5,610. With the $20 it would be 5,490.
+    medicaid_optional_senior_or_disabled_countable_income: 5_610
