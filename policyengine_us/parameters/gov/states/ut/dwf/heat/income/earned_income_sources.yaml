@@ -3,7 +3,8 @@ values:
   2024-10-01:
     - employment_income
     # R982-403-4(2)(a): "wages, including military base pay"; section 403
-    # counts military pay as earned income.
+    # counts military pay as earned income. Basic pay entered here should not
+    # also be included in employment_income, or it is counted twice.
     - military_basic_pay
     - self_employment_income
     - sstb_self_employment_income

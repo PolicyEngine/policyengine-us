@@ -162,7 +162,8 @@
     ut_heat_eligible: false
 
 # NONE affirmatively denotes no home heat; with no electric bill the home is
-# not connected to an energy source (section 208).
+# not connected to an energy source (section 208) and has no energy cost
+# standard. Case 53 in ut_heat.yaml covers a NONE household with a bill.
 - name: "Case 8, no heating source and no electric bill."
   period: 2026
   input:
@@ -182,6 +183,7 @@
         members: [person1]
         state_code: UT
   output:
+    ut_heat_energy_cost_standard: 0
     ut_heat_eligible: false
 
 # No supplied responsibility.
@@ -408,3 +410,31 @@
         state_code: UT
   output:
     ut_heat_eligible: true
+
+# Case 11 with no heating type reported. Heat in unsubsidized rent makes the
+# household responsible for an energy cost, but an unspecified fuel has no
+# energy cost standard, so the household is not eligible.
+- name: "Case 18, heat in rent with no heating type reported."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        rent: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        heating_expense: 0
+        ut_heat_dwelling_type: HOUSE
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_heat_energy_cost_standard: 0
+    ut_heat_eligible: false
