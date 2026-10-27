@@ -27,9 +27,10 @@ Remaining Core substitutions are limited to fixture plumbing:
   that one-person situation; _get_person_count and check_type reflect its
   fixed shape. Dataset.load supplies the tiny dictionary input payload.
   get_parameter returns the fixture's doubling uprating index.
-- Dumper _dump_entity/_restore_entity replace entity serialization only;
-  Disk replaces OnDiskStorage's physical bytes. Public dump/restore bodies,
-  holder provenance, memory tiers and source restoration remain Core/US code.
+- Dumper _dump_entity/_restore_entity/_restore_count replace entity
+  serialization only; Disk replaces OnDiskStorage's physical bytes. Public
+  dump/restore bodies, holder provenance, memory tiers and source
+  restoration remain Core/US code.
 """
 
 from __future__ import annotations
@@ -38,6 +39,7 @@ import ast
 import copy
 import json
 import logging
+import operator
 import os
 import sys
 import types
@@ -528,6 +530,9 @@ class Backend:
             PeriodMismatchError=ValueError,
             _period_from_storage_key=_period_from_storage_key,
             copy=copy,
+            # Core 3.33.13's build_default_simulation checks its count with
+            # operator.index.
+            operator=operator,
         )
         holder_methods = (
             "clone",
@@ -668,6 +673,10 @@ class Backend:
             DUMP_FORMAT_VERSION=1,
             _dump_entity=lambda *args: None,
             _restore_entity=lambda *args: 1,
+            # From Core 3.33.13 restore_simulation also restores each
+            # population's count; the fixture's one-person populations keep
+            # theirs.
+            _restore_count=lambda *args: None,
         )
         execute(
             core / "tools/simulation_dumper.py",
