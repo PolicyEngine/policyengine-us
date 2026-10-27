@@ -75,13 +75,15 @@ counting every import in them, even in a function; the submodules a star
 import of a package loads: the module each name its ``__all__`` lists
 names below the package (``sub.leaf`` too, with ``sub``) or, where
 ``__all__`` is built otherwise, every module below it, and the same where
-a literal ``__import__`` ``fromlist`` holds ``*``; any call whose literal
-arguments name a module as ``importlib.import_module`` or ``__import__``
-would read them, whatever name the call is made under, a relative one
-against its literal ``package`` (or the module's ``__package__`` or
-``__name__``) or the package its ``globals`` give, as Python reads them
-(``globals()`` or a dict literal: ``__package__``, else ``__name__`` and
-``__path__``); the packages an import starts; the code of modules it may
+a literal ``__import__`` ``fromlist`` (a list, tuple or set of names, a
+dict's keys, or a string, read by character) holds ``*``; any call
+whose literal arguments name a module as ``importlib.import_module`` or
+``__import__`` would read them, whatever name the call is made under, a
+relative one against its literal ``package`` (or the module's
+``__package__`` or ``__name__``) or the package its ``globals`` give, as
+Python reads them (``globals()`` or a dict literal, where the last of a
+repeated key counts: ``__package__``, else ``__spec__``, else
+``__name__`` and ``__path__``); the packages an import starts; the code of modules it may
 reach without importing them, as another module may have loaded them: an
 attribute chain, ``getattr`` with a literal name, ``sys.modules`` with a
 literal key, or the module a literal dynamic import returns, from a name
@@ -1364,11 +1366,10 @@ def _globals_package(node, package, module):
     read as the module's own globals."""
     if not isinstance(node, ast.Dict) or None in map(_literal, node.keys):
         return package
-    given = {
-        _literal(key): value
-        for key, value in zip(node.keys, node.values)
-        if not _is_none(value)
-    }
+    # The last of a repeated key wins, as in the dict Python builds; a
+    # None value then reads as absent.
+    entries = dict(zip(map(_literal, node.keys), node.values))
+    given = {key: value for key, value in entries.items() if not _is_none(value)}
     if "__package__" in given:
         return _anchor(given["__package__"], module) or package
     if "__spec__" in given:
@@ -1378,8 +1379,7 @@ def _globals_package(node, package, module):
     name = _anchor(given["__name__"], module)
     if name is None:
         return package
-    named = {_literal(key) for key in node.keys}
-    return name if "__path__" in named else name.rpartition(".")[0]
+    return name if "__path__" in entries else name.rpartition(".")[0]
 
 
 def _dynamic_imports(call, called, package, module=None) -> list:
@@ -1413,6 +1413,9 @@ def _dynamic_imports(call, called, package, module=None) -> list:
             fromlist = _argument(call, 3, "fromlist")
             if isinstance(fromlist, (ast.List, ast.Tuple, ast.Set)):
                 items = [_literal(item) for item in fromlist.elts]
+            elif isinstance(fromlist, ast.Dict):
+                # A dict is iterated by key (``**`` entries name nothing).
+                items = [_literal(key) for key in fromlist.keys]
             else:
                 # A string is iterated: each character is an item.
                 items = list(_literal(fromlist) or "")
@@ -1694,7 +1697,7 @@ def analyse(
             func = node.func
             called = targets_of(func)
             if called & DYNAMIC_IMPORTS:
-                for name in _dynamic_imports(node, called, package):
+                for name in _dynamic_imports(node, called, package, module):
                     check_import(node, name)
             if "builtins.getattr" in called and len(node.args) >= 2:
                 attribute = _literal(node.args[1])
@@ -3289,6 +3292,34 @@ def _assert_users_find(sources: dict, reaches_builtin: bool):
             },
             True,
         ),
+        # The last of a repeated key wins: __package__ is None, so __name__
+        # gives the package.
+        (
+            {
+                "pkg.other": "",
+                "pkg.other.sub": "__all__ = ['user']\n",
+                "pkg.other.sub.user": "from pkg.api import *\nkey = hash('x')\n",
+                "pkg.api": "__import__(\n"
+                "    'sub',\n"
+                "    {'__package__': 'pkg', '__package__': None, '__name__': 'pkg.other.mod'},\n"
+                "    None,\n"
+                "    ['*'],\n"
+                "    1,\n"
+                ")\n"
+                "hash = str\n",
+            },
+            True,
+        ),
+        # A dict fromlist is iterated by key.
+        (
+            {
+                "pkg.other": "",
+                "pkg.other.sub": "__all__ = ['user']\n",
+                "pkg.other.sub.user": "from pkg.api import *\nkey = hash('x')\n",
+                "pkg.api": "__import__('pkg.other.sub', fromlist={'*': None})\nhash = str\n",
+            },
+            True,
+        ),
         (
             {
                 "pkg.api": "import importlib\n"
@@ -3604,6 +3635,24 @@ def test_references_are_split_by_when_they_may_run(source, run, later):
     assert (found[0] & modules, found[1] & modules) == (run, later)
 
 
+@pytest.mark.parametrize(
+    "source",
+    [
+        "import pkg\npkg.a.f()\nx.y.z\n",
+        "import pkg as p\nq = p.a\nq.b.c.f()\nimport os\nos.path.join('a')\n",
+        "import sys\nsys.modules['pkg.a'].f()\nsys.modules['os'].sep\ngetattr(o, 'n')\n",
+    ],
+)
+def test_reference_paths_stay_within_the_known_paths(source):
+    # Only paths a package module may yet be named from, and the names the
+    # rules read, are kept, so the binding fixpoint has finitely many paths
+    # to add and ends.
+    modules = {"pkg.a", "pkg.a.b"}
+    known = {path for module in modules for path in _started(module)}
+    run, later = _references_in(ast.parse(source), "pkg", set(), known, "pkg.m")
+    assert run | later <= known | REFERENCE_NAMES
+
+
 # What Python imports for each call, read from its arguments.
 @pytest.mark.parametrize(
     "call, imported",
@@ -3622,6 +3671,18 @@ def test_references_are_split_by_when_they_may_run(source, run, later):
             ["pkg.o.sub"],
         ),
         ("__import__('sub', {'__name__': 'pkg.o.m'}, level=2)", ["pkg.sub"]),
+        # The last of a repeated key wins, and None then reads as absent.
+        (
+            "__import__('sub', {'__package__': 'pkg', '__package__': None, "
+            "'__name__': 'pkg.o.m'}, level=1)",
+            ["pkg.o.sub"],
+        ),
+        (
+            "__import__('sub', {'__package__': None, '__package__': 'pkg.o'}, level=1)",
+            ["pkg.o.sub"],
+        ),
+        ("__import__('sub', {'__name__': 'pkg.o.m', '__name__': None}, level=1)", []),
+        ("__import__('sub', globals(), None, {'x': 0}, 1)", ["pkg.sub", "pkg.sub.x"]),
         (
             "__import__('sub', {'__spec__': spec, '__name__': 'x.y'}, level=1)",
             ["pkg.sub"],
@@ -3881,6 +3942,30 @@ def _is_offline(name: str) -> bool:
 def test_offline_import_check_sees_each_import_form(source):
     imports = analyse(source, package="policyengine_us.tools").imports
     assert any(_is_offline(name) for _, name in imports)
+
+
+@pytest.mark.parametrize(
+    "source, offline",
+    [
+        (
+            "from importlib import import_module\nimport_module('..taxsim', __name__)\n",
+            True,
+        ),
+        ("__import__('taxsim', {'__name__': __name__}, None, [], 1)\n", True),
+        # helper is a module, not a package: Python looks for helper.taxsim.
+        (
+            "from importlib import import_module\nimport_module('.taxsim', __name__)\n",
+            False,
+        ),
+    ],
+)
+def test_offline_import_check_resolves_against_the_modules_name(source, offline):
+    imports = analyse(
+        source,
+        module="policyengine_us.tools.helper",
+        package="policyengine_us.tools",
+    ).imports
+    assert any(_is_offline(name) for _, name in imports) is offline
 
 
 def test_model_never_imports_offline_modules():
