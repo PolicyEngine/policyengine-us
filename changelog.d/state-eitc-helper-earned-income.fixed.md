@@ -1,1 +1,0 @@
-Use federal EITC earned income, which nets spouses' self-employment losses, in the shared state EITC helper (IL, CO, DC, IN) and the Indiana decoupled EITC. These credits now also count net farm earnings and partnership self-employment earnings, as IRC 32(c)(2)(A)(ii) does.
