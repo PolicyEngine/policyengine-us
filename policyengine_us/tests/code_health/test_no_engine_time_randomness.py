@@ -194,6 +194,12 @@ EXEMPT = {
         ("<module>", "hash library"): 1,
         ("get_data_build_fingerprint", "hash use"): 1,
     },
+    # SHA-256 content check of a stored dataset, in a scoring preflight run
+    # before a Social Security reform is scored.
+    "tools/social_security_preflight.py": {
+        ("<module>", "hash library"): 1,
+        ("_file_sha256", "hash use"): 1,
+    },
     # Offline generator of YAML tests from TAXSIM output; the model never
     # imports it (test_model_never_imports_offline_modules).
     "tools/taxsim/generate_taxsim_tests.py": {
