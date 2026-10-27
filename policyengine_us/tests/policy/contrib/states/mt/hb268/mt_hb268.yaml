@@ -84,7 +84,7 @@
     tax_unit_earned_income: 66_298
     adjusted_gross_income: 55_999
     eitc_relevant_investment_income: 10_299
-    ctc_qualifying_children: 1
+    ctc_maximum: 2_000
     state_code: MT
   output:
     mt_hb268_eligible: true
@@ -97,7 +97,7 @@
     tax_unit_earned_income: 66_300
     adjusted_gross_income: 56_001
     eitc_relevant_investment_income: 10_299
-    ctc_qualifying_children: 1
+    ctc_maximum: 2_000
     state_code: MT
   output:
     mt_hb268_eligible: false
@@ -110,7 +110,7 @@
     tax_unit_earned_income: 66_300
     adjusted_gross_income: 56_000
     eitc_relevant_investment_income: 10_300
-    ctc_qualifying_children: 1
+    ctc_maximum: 2_000
     state_code: MT
   output:
     mt_hb268_eligible: false
@@ -123,12 +123,12 @@
     tax_unit_earned_income: 0
     adjusted_gross_income: 0
     eitc_relevant_investment_income: 0
-    ctc_qualifying_children: 1
+    ctc_maximum: 2_000
     state_code: MT
   output:
     mt_hb268_eligible: false
 
-- name: No federal CTC qualifying children - ineligible
+- name: No federal section 24 credit - ineligible
   period: 2023
   reforms: policyengine_us.reforms.states.mt.hb268.mt_hb268.mt_hb268
   input:
@@ -136,7 +136,7 @@
     tax_unit_earned_income: 50_000
     adjusted_gross_income: 50_000
     eitc_relevant_investment_income: 0
-    ctc_qualifying_children: 0
+    ctc_maximum: 0
     state_code: MT
   output:
     mt_hb268_eligible: false
@@ -149,7 +149,7 @@
     tax_unit_earned_income: 56_000
     adjusted_gross_income: 56_000
     eitc_relevant_investment_income: 0
-    ctc_qualifying_children: 1
+    ctc_maximum: 2_000
     state_code: MT
   output:
     mt_hb268_eligible: true
@@ -162,7 +162,7 @@
     tax_unit_earned_income: 1
     adjusted_gross_income: 1
     eitc_relevant_investment_income: 0
-    ctc_qualifying_children: 1
+    ctc_maximum: 2_000
     state_code: MT
   output:
     mt_hb268_eligible: true
@@ -326,3 +326,61 @@
   output:
     mt_hb268_eligible: true
     mt_hb268: [1_200, 0]
+
+# HB 268 Section 1(1) requires a taxpayer "permitted a child tax credit under
+# section 24". In 2025 a filer without an SSN cannot claim the federal child tax
+# credit for the child (IRC 24(h)(7)(A)(i)), but IRC 24(h)(4)(C) gives the credit
+# for other dependents ($500) for that child, so the filer qualifies if the filer
+# has an SSN or ITIN. A filer without any TIN gets no section 24 credit (IRC
+# 24(e)(2)) (issue #9403).
+- name: Filer with an ITIN gets the credit for a child under 6 in 2025
+  period: 2025
+  reforms: policyengine_us.reforms.states.mt.hb268.mt_hb268.mt_hb268
+  input:
+    gov.contrib.states.mt.hb268.in_effect: true
+    people:
+      head:
+        age: 34
+        employment_income: 30_000
+        ssn_card_type: OTHER_NON_CITIZEN
+      dep1:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dep1]
+    households:
+      household:
+        members: [head, dep1]
+        state_code: MT
+  output:
+    ctc_qualifying_children: 0
+    ctc_maximum: 500
+    mt_hb268_eligible: true
+    mt_hb268: [1_200, 0]
+
+- name: Filer without any TIN gets no credit in 2025
+  period: 2025
+  reforms: policyengine_us.reforms.states.mt.hb268.mt_hb268.mt_hb268
+  input:
+    gov.contrib.states.mt.hb268.in_effect: true
+    people:
+      head:
+        age: 34
+        employment_income: 30_000
+        ssn_card_type: NONE
+        has_tin: false
+      dep1:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dep1]
+    households:
+      household:
+        members: [head, dep1]
+        state_code: MT
+  output:
+    ctc_maximum: 0
+    mt_hb268_eligible: false
+    mt_hb268: [0, 0]
