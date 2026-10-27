@@ -526,7 +526,7 @@ def test_survivor_prior_eligibility_requires_explicit_api_input(increase, no_pri
     for name in ("no_prior", "prior"):
         record = _survivor(
             ss_calculator_worker_id=name,
-            ss_calculator_entitlement_month="2020-11",
+            ss_calculator_entitlement_month="2020-08",
             ss_calculator_death_year=2020,
             ss_calculator_death_date="2020-08-12",
             ss_calculator_authoritative_year=2020,
