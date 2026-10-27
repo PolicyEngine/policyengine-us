@@ -53,7 +53,10 @@ def earliest_input_year(simulation):
     later one.
 
     Inputs of a variable the tax-benefit system no longer has, or has
-    neutralized, are skipped: they are never read. As with
+    neutralized, are skipped: they are never read. Social Security calculator
+    records and output overrides are also skipped: a historical earnings-test
+    amount, COLA decision or calculator result is not a tax-year income return
+    for the IRMAA lookback. As with
     ``has_input_for_period``, core versions before 3.32.27 can keep
     an input key after the input is deleted, and a value recalculated for
     that period then still counts. Formulas that read this cache their
@@ -66,6 +69,7 @@ def earliest_input_year(simulation):
         if (
             branch_name in visible_branches
             and period.unit != ETERNITY
+            and not variable.startswith(("ss_calculator_", "ss_calculated_"))
             and variable in variables
             and not variables[variable].is_neutralized
         ):
