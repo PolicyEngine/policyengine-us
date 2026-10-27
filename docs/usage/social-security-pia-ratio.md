@@ -89,7 +89,7 @@ basis; conflicting record years are unsupported.
 For own retirement, a supplied worker eligibility year takes precedence. Without
 one, exact birth information or an explicitly supplied `birth_year` identifies
 the age-62 eligibility year before the current-age proxy; known entitlement
-dates and the selected claim age can also identify that year. If none of these
+dates and a supplied observed claim age can also identify that year. If none of these
 supplies a basis, each scoring year's proxy is `E = t - age_t + 62`. Rebuild
 it independently for every annual cross-section. A row whose age stays 70 and
 has no supplied basis has E=2018 in 2026 and E=2027 in 2035;
