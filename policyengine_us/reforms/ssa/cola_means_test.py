@@ -5,7 +5,8 @@ from policyengine_core.reforms import Reform
 
 class a9(Reform):
     def apply(self):
-        self.modify_parameters(self.configure_parameters)
+        # Shared systems call this unbound method with the system as self.
+        self.modify_parameters(a9.configure_parameters)
 
     @staticmethod
     def configure_parameters(parameters):
