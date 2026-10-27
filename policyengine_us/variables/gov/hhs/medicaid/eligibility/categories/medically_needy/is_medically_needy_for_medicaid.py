@@ -20,6 +20,7 @@ class is_medically_needy_for_medicaid(Variable):
         "https://www.ecfr.gov/current/title-42/section-435.602#p-435.602(a)(2)(i)",
         "https://www.ecfr.gov/current/title-42/section-435.831#p-435.831(d)",
         "https://www.ecfr.gov/current/title-42/section-435.845#p-435.845(a)",
+        "https://www.ecfr.gov/current/title-20/section-416.1202#p-416.1202(b)",
     )
 
     def formula(person, period, parameters):
@@ -29,8 +30,10 @@ class is_medically_needy_for_medicaid(Variable):
         medical_expenses = person("medicaid_medically_needy_medical_expenses", period)
         # A child's resources include the excess of ineligible parents'
         # resources (20 CFR 416.1202(b)), as ssi_countable_income already
-        # includes their deemed income. Parents' medical expenses are not
-        # deducted for the child.
+        # includes their deemed income. SSI's allocation gates apply: a child
+        # whose own resources exceed the SSI individual limit, or who fails
+        # SSI's immigration test, is deemed nothing. Parents' medical expenses
+        # are not deducted for the child.
         personal_assets = person("ssi_countable_resources", period) + person(
             "ssi_resources_deemed_from_ineligible_parent", period.first_month
         )
