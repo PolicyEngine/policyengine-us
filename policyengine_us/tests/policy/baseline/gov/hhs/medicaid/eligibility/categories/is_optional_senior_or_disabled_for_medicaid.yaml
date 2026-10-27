@@ -223,3 +223,39 @@
     is_medicaid_immigration_status_eligible: false
     is_optional_senior_or_disabled_asset_eligible: true
     is_optional_senior_or_disabled_for_medicaid: false
+
+# SSI's income test is countable income "not more than" the benefit rate
+# (42 U.S.C. 1382(a)(1)(A)). A permanent resident 2 years after entry is in
+# the five-year bar, so fails the Medicaid immigration test, but SSI counts
+# their income. Social Security disability of $1,014 a month leaves
+# (1,014 - 20) x 12 = $11,928 countable, equal to the 2026 SSI rate of
+# $994 x 12.
+- name: Case 14, disabled Arkansan in the five-year bar with countable income equal to the SSI rate keeps the group.
+  period: 2026
+  input:
+    age: 50
+    state_code: AR
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    meets_ssi_disability_criteria: true
+    social_security_disability: 12_168
+  output:
+    is_medicaid_immigration_status_eligible: false
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: true
+
+# $1,015 a month leaves (1,015 - 20) x 12 = $11,940 countable, over the SSI
+# rate, though still under Arkansas's 80% of the poverty guideline ($12,768).
+- name: Case 15, the same person with countable income $1 a month over the SSI rate is not covered.
+  period: 2026
+  input:
+    age: 50
+    state_code: AR
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    meets_ssi_disability_criteria: true
+    social_security_disability: 12_180
+  output:
+    is_medicaid_immigration_status_eligible: false
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
