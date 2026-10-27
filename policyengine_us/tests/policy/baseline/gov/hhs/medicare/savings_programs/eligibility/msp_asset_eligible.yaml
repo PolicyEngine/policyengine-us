@@ -304,3 +304,17 @@
   output:
     # Combined 18,001 exceeds Minnesota's 18,000 couple limit.
     msp_asset_eligible: [false, false]
+
+- name: Case 20, Mississippi ended the MSP asset test in July 1999.
+  period: 1999
+  input:
+    age: 67
+    bank_account_assets: 10_000
+    spm_unit_is_married: false
+    state_code: MS
+  output:
+    # Eligibility Manual page 7220: "Effective 07-01-99, there will be no
+    # resource test." 10,000 is over the federal limit in June.
+    msp_asset_eligible:
+      1999-06: false
+      1999-07: true
