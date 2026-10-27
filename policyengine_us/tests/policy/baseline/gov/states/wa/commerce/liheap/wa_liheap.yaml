@@ -499,7 +499,7 @@
   output:
     wa_liheap: 336
     wa_liheap_eligible: true
-- name: Case 50, Heat included in rent with unknown cost does not invent a surrogate.
+- name: Case 50, Unspecified fuel with heat included in rent pays zero because callers must send heating_type.
   period: 2026
   input:
     state_code: WA
@@ -511,15 +511,16 @@
   output:
     wa_liheap: 0
     wa_liheap_eligible: true
-- name: Case 51, Unknown fuel with a directly supplied heating cost supports the worksheet.
+- name: Case 51, Fuel oil bill feeds the worksheet.
   period: 2026
   input:
     state_code: WA
     wa_liheap_household_size: 1
     wa_liheap_countable_income: 6000
-    heating_type: UNSPECIFIED
-    heating_expense: 400
+    heating_type: FUEL_OIL
+    fuel_oil_expense: 400
   output:
+    heating_expense: 400
     wa_liheap: 336
 - name: Case 52, Explicit NONE heating type produces no award.
   period: 2026
@@ -660,7 +661,7 @@
     wa_liheap_income_limit: 23475
     wa_liheap_eligible: true
     wa_liheap: 590
-- name: Case 59, Minor wages are excluded while child support and SSI affect the final award.
+- name: Case 59, Minor wages are excluded while child support, SSI and the state supplement affect the final award.
   period: 2026
   input:
     people:
@@ -675,6 +676,14 @@
         employment_income: 2000
         child_support_received: 3000
         ssi: 1200
+        meets_ssi_disability_criteria: true
+    marital_units:
+      marital_unit1:
+        members:
+        - person1
+      marital_unit2:
+        members:
+        - person2
     spm_units:
       spm_unit1:
         members:
@@ -691,11 +700,16 @@
         - person2
         state_code: WA
   output:
+    # The disabled child's SSI brings the STANDARD state supplement,
+    # 35.50 * 12 = 426. Countable: 9,600 + 3,000 + 1,200 + 426 = 14,226.
+    # 14,226 / 12 / 1.36 = 871.69; 3,648.10 - 871.69 = 2,776.41.
+    # 1,460.80 / 2,776.41 = 0.52615 rounds to .53; (1.30 - .53) * 1,000 = 770.
+    wa_ssp: [0, 426]
     wa_liheap_household_size: 2
-    wa_liheap_countable_income: 13800
+    wa_liheap_countable_income: 14226
     wa_liheap_income_limit: 31725
     wa_liheap_eligible: true
-    wa_liheap: 780
+    wa_liheap: 770
 - name: Case 60, Separate SPM units and an out-of-state household remain independent in one
     simulation.
   period: 2026
@@ -921,3 +935,92 @@
     wa_liheap_countable_income: 21_565.2
     wa_liheap_eligible: true
     wa_liheap: 510
+
+# Plan section 2.6 sets a $250 minimum benefit. With heat in rent, a known
+# fuel and no reported cost, the household receives the minimum with no cost
+# cap. Countable: 12,000 * 0.80 = 9,600 (limit 23,475).
+# The worksheet multiplier would be 1.30 - .51 = .79 (1,460.80 / 2,848.10 =
+# 0.51290), applied to a heat cost that is not reported.
+- name: Case 68, Heat included in rent with a known fuel and no bill pays the minimum benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    age: 40
+    immigration_status: CITIZEN
+    employment_income: 12_000
+    ssi: 0
+    heating_type: NATURAL_GAS
+    heat_expense_included_in_rent: true
+  output:
+    heating_expense: 0
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 9_600
+    wa_liheap_eligible: true
+    wa_liheap: 250
+
+# Paid child support is deducted. Before the deduction 30,000 * 0.80 = 24,000
+# exceeds the 23,475 limit; after it 24,000 - 1,200 = 22,800 qualifies.
+# Monthly 22,800 / 12 = 1,900.00; denominator 3,648.10 - 1,900.00 = 1,748.10.
+# 1,460.80 / 1,748.10 = 0.83565 rounds to .84; (1.30 - .84) * 1,000 = 460.
+- name: Case 69, Child support paid brings wages under the income limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    age: 40
+    immigration_status: CITIZEN
+    employment_income: 30_000
+    child_support_expense: 1_200
+    ssi: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+  output:
+    wa_liheap_household_size: 1
+    wa_liheap_income_limit: 23_475
+    wa_liheap_countable_income: 22_800
+    wa_liheap_eligible: true
+    wa_liheap: 460
+
+# Workers' compensation counts with no deduction: 12,000 (limit 23,475).
+# Monthly 12,000 / 12 = 1,000.00; denominator 3,648.10 - 1,000.00 = 2,648.10.
+# 1,460.80 / 2,648.10 = 0.55164 rounds to .55; (1.30 - .55) * 1,000 = 750.
+- name: Case 70, Workers compensation counts as unearned income in the award.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    age: 45
+    immigration_status: CITIZEN
+    workers_compensation: 12_000
+    ssi: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+  output:
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 12_000
+    wa_liheap_eligible: true
+    wa_liheap: 750
+
+# An aged SSI recipient at the 2026 federal rate, 994 * 12 = 11,928, also gets
+# the STANDARD state supplement, 35.50 * 12 = 426. Both count as cash income:
+# 11,928 + 426 = 12,354 (limit 23,475).
+# Monthly 12,354 / 12 = 1,029.50; denominator 3,648.10 - 1,029.50 = 2,618.60.
+# 1,460.80 / 2,618.60 = 0.55786 rounds to .56; (1.30 - .56) * 1,000 = 740.
+- name: Case 71, The Washington state supplement to SSI counts as cash income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    age: 70
+    immigration_status: CITIZEN
+    ssi: 11_928
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+  output:
+    wa_ssp: 426
+    wa_liheap_household_size: 1
+    wa_liheap_income_limit: 23_475
+    wa_liheap_countable_income: 12_354
+    wa_liheap_eligible: true
+    wa_liheap: 740

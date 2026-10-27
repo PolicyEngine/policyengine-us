@@ -143,7 +143,7 @@
   output:
     wa_liheap_countable_income: 3600
 
-- name: Case 12, child support received counts and paid support is not deducted.
+- name: Case 12, child support received counts and paid child support is deducted.
   period: 2026
   input:
     state_code: WA
@@ -154,8 +154,9 @@
     child_support_received: 5000
     child_support_expense: 1200
   output:
-    # The plan and Commerce manual list no deduction for support paid.
-    wa_liheap_countable_income: 5000
+    # Commerce Exhibit 1.3.1A lists child support received and paid:
+    # 5,000 received - 1,200 paid = 3,800.
+    wa_liheap_countable_income: 3800
 
 - name: Case 13, VA benefits and insurance payments are excluded under the FY2026 plan.
   period: 2026
@@ -251,13 +252,25 @@
   input:
     people:
       person1: {age: 40, employment_income: 12_000, ssi: 0}
-      person2: {age: 10, employment_income: 2_000, child_support_received: 3_000, ssi: 1_200}
+      person2:
+        age: 10
+        employment_income: 2_000
+        child_support_received: 3_000
+        ssi: 1_200
+        meets_ssi_disability_criteria: true
+    marital_units:
+      marital_unit1: {members: [person1]}
+      marital_unit2: {members: [person2]}
     spm_units:
       spm_unit1: {members: [person1, person2], wa_tanf: 0, wa_sfa: 0}
     households:
       household1: {members: [person1, person2], state_code: WA}
   output:
-    wa_liheap_countable_income: 13_800
+    # A child receives SSI only when disabled; a disabled SSI recipient gets
+    # the STANDARD state supplement, 35.50 * 12 = 426.
+    # 12,000 * 0.80 = 9,600 + 3,000 child support + 1,200 SSI + 426 = 14,226.
+    wa_ssp: [0, 426]
+    wa_liheap_countable_income: 14_226
 
 - name: Case 20, income from an undocumented parent remains countable.
   period: 2026
@@ -314,3 +327,51 @@
     # 634.80 of premium is not taken from the pension.
     medicare_part_b_premium: 2_434.8
     wa_liheap_countable_income: 27_000
+
+- name: Case 24, railroad and survivor benefits count in full without the retirement deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    ssi: 0
+    wa_tanf: 0
+    wa_sfa: 0
+    age: 62
+    railroad_benefits: 3_000
+    survivor_benefits: 4_000
+  output:
+    # Unearned list, no 10% deduction: 3,000 + 4,000 = 7,000.
+    wa_liheap_countable_income: 7_000
+
+- name: Case 25, alimony and child support paid reduce countable income no lower than zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    ssi: 0
+    wa_tanf: 0
+    wa_sfa: 0
+    age: 40
+    employment_income: 6_000
+    child_support_expense: 3_600
+    alimony_expense: 2_400
+  output:
+    # 6,000 * 0.80 = 4,800; paid support 3,600 + 2,400 = 6,000.
+    # max(4,800 - 6,000, 0) = 0.
+    wa_liheap_countable_income: 0
+
+- name: Case 26, Refugee Cash Assistance counts as state cash assistance.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    ssi: 0
+    wa_tanf: 0
+    wa_sfa: 0
+    wa_rca: 5_400
+    age: 40
+  output:
+    # Size-1 payment standard 450 x 12 = 5,400 (WAC 388-478-0020). wa_rca is
+    # monthly, summed to 5,400 for the year and added once at the SPM-unit
+    # level with TANF and SFA (both 0).
+    wa_liheap_countable_income: 5_400

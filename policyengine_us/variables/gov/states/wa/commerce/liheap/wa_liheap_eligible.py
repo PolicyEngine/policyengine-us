@@ -9,8 +9,9 @@ class wa_liheap_eligible(Variable):
     documentation = (
         "Models state residence, income, qualified-member count and heating "
         "responsibility. Heat included in rent can establish responsibility "
-        "without a reported cost; the award remains unsupported until a cost "
-        "is supplied. No asset test or categorical subsidy exclusion applies. "
+        "without a reported cost; with a known fuel the award is then the "
+        "plan's minimum benefit as a lower bound. No asset test or categorical "
+        "subsidy exclusion applies. "
         "Prior receipt in the current season and application verification are "
         "not observed."
     )

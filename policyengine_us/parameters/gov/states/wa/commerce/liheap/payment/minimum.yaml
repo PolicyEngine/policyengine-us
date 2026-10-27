@@ -1,6 +1,8 @@
 description: Washington provides this scheduled minimum heating benefit under the Low Income Home Energy Assistance Program.
 # The minimum-adjusted award is capped at actual heating cost.
 # Thus positive costs below $250 may produce a smaller modeled payment.
+# Heat included in rent with a known fuel and no reported cost receives this
+# minimum with no cost cap.
 values:
   2025-10-01: 250
 

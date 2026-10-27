@@ -13,9 +13,13 @@ class wa_liheap(Variable):
         "two-decimal intermediate rounding, half-up ties and final dollar "
         "rounding are documented conventions consistent with its example. "
         "The award after the minimum and maximum is capped at reported "
-        "heating cost, with no extra mixed-status proration. "
-        "No rent-included or missing-bill cost is imputed. Zero for missing cost "
-        "or a household larger than the published adjuster table means an "
+        "heating cost, with no extra mixed-status proration. A household "
+        "whose heat is included in rent, with a known fuel and no reported "
+        "cost, receives the plan's minimum benefit without the cost cap as a "
+        "lower bound, because the surrogate heat-cost schedule is not "
+        "published; a reported cost keeps the worksheet calculation. An "
+        "unspecified fuel pays zero, so callers must send heating_type. Zero "
+        "for a household larger than the published adjuster table means an "
         "unsupported amount, not necessarily legal ineligibility. The SPM unit "
         "and its reported cost approximate the shared-heat household and cost. "
         "Years outside FY2026 are unverified estimates."
@@ -23,7 +27,7 @@ class wa_liheap(Variable):
     reference = (
         # PDF pages 1-2 (printed worksheet pages 10-11).
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/WA_BenefitMatrix_2026.pdf#page=1",
-        # Section 2.6.
+        # Sections 2.6 and 9.1, PDF pages 10,24.
         "https://liheapch.acf.gov/docs/2026/state-plans/WA_Plan_2026.pdf#page=10",
     )
     defined_for = "wa_liheap_eligible"
@@ -54,5 +58,18 @@ class wa_liheap(Variable):
         expense = max_(spm_unit("heating_expense", period), 0)
         rounded_award = np.floor(expense * multiplier + 0.5)
         # Apply the minimum and maximum first, then cap at actual heating cost.
-        award = min_(clip(rounded_award, p.minimum, p.maximum), expense)
+        cost_award = min_(clip(rounded_award, p.minimum, p.maximum), expense)
+        # Plan section 2.6 sets a $250 minimum benefit, and section 9.1 pays
+        # households whose heat is included in rent by check. The surrogate
+        # heat-cost schedule is not published, so a known-fuel household with
+        # heat in rent and no reported cost receives the minimum as a lower
+        # bound, with no cost cap. An unspecified fuel pays zero.
+        heating_type = spm_unit("heating_type", period)
+        known_fuel = heating_type != heating_type.possible_values.UNSPECIFIED
+        unpriced_heat_in_rent = (
+            spm_unit("heat_expense_included_in_rent", period)
+            & (expense <= 0)
+            & known_fuel
+        )
+        award = where(unpriced_heat_in_rent, p.minimum, cost_award)
         return where(supported_size & (denominator > 0), award, 0)

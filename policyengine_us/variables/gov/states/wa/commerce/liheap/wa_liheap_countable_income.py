@@ -14,18 +14,24 @@ class wa_liheap_countable_income(Variable):
         "at payout; existing net business income receives no further deduction. "
         "The retirement deduction covers pension income, retirement-account "
         "distributions and military retirement income. Social Security counts "
-        "net of the Medicare Part B premium; SSI counts in full. Paid child "
-        "support is not deducted. Exempt subtypes and receipts without existing "
-        "inputs are not reconstructed. Supply adjusted countable income directly "
-        "when the detailed program amount is known."
+        "net of the Medicare Part B premium; SSI counts in full. TANF, State "
+        "Family Assistance, Refugee Cash Assistance and the state supplement to "
+        "SSI count as cash assistance. Child support and alimony paid by "
+        "members are deducted, with countable income floored at zero. Exempt "
+        "subtypes and receipts without existing inputs are not reconstructed. "
+        "Supply adjusted countable income directly when the detailed program "
+        "amount is known."
     )
     reference = (
         # Section 1.9, PDF pages 5-7.
         "https://liheapch.acf.gov/docs/2026/state-plans/WA_Plan_2026.pdf#page=5",
         # FY2025-26 application, PDF pages 1-2,13.
         "https://drive.google.com/file/d/18fvR5CL8UKpTj4Vsm7KlkitKUJclAvkR/view#page=1",
-        # Policy 1.1.2 incorporates LIHEAP income rules, PDF pages 14-15.
-        "https://deptofcommerce.app.box.com/s/5a32797ex8tz2blo8nwtifecokpya37j#page=14",
+        # Policies 1.1.1-1.1.2 incorporate LIHEAP income rules; Exhibit 1.3.1A
+        # lists child support received/paid. PDF pages 13-15,445.
+        "https://deptofcommerce.app.box.com/s/5a32797ex8tz2blo8nwtifecokpya37j#page=13",
+        "https://www.clarkpublicutilities.com/residential-customers/financial-assistance/all-financial-assistance-programs/liheap-income-requirements/",
+        "https://www.liheapcalendar.com/CACLMT/FAQ",
     )
     defined_for = StateCode.WA
 
@@ -65,10 +71,20 @@ class wa_liheap_countable_income(Variable):
             + unearned
             + net_social_security
         )
-        # Each SPM-level cash payment is included once, not once per member.
+        # Plan section 1.8 counts gross income. State cash assistance counts
+        # like the counted TANF, SFA and SSI: Refugee Cash Assistance (WAC
+        # 388-400-0030) and the state supplement to SSI (WAC 388-474-0012(1)).
+        # No Washington LIHEAP source names either program. The SPM-level
+        # payments are added once, and the supplement is summed over members.
         # General assistance input represents other assistance, such as ABD.
-        assistance = add(spm_unit, period, ["tanf", "wa_sfa"])
-        # Income comes from the plan and Commerce manual, which list no
-        # deduction for child support paid. The CACLMT subgrantee FAQ deducts
-        # child support paid; not modeled (https://www.liheapcalendar.com/CACLMT/FAQ).
-        return spm_unit.sum(personal_income) + max_(assistance, 0)
+        assistance = add(spm_unit, period, ["tanf", "wa_sfa", "wa_rca", "wa_ssp"])
+        # Commerce Weatherization Manual Exhibit 1.3.1A, which Policy 1.1.1
+        # ties to the LIHEAP income guidelines, lists "Child support
+        # received/paid" as income documentation. Clark Public Utilities
+        # deducts paid child support and alimony, and CACLMT deducts paid
+        # child support.
+        support_paid = add(
+            spm_unit, period, ["child_support_expense", "alimony_expense"]
+        )
+        gross = spm_unit.sum(personal_income) + max_(assistance, 0)
+        return max_(gross - max_(support_paid, 0), 0)
