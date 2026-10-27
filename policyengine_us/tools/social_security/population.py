@@ -89,6 +89,21 @@ def _record_basis(person, period, parameters, component):
         )
     positive = reported & (amounts > 0)
     n = len(amounts)
+    if not np.any(positive):
+        return dict(
+            amounts=amounts,
+            positive=positive,
+            eligibility_year=np.zeros(n, dtype=int),
+            claiming_adjustment=[Fraction(1)] * n,
+            shares=[Fraction(1)] * n,
+            own_record_retired_worker=np.zeros(n, dtype=bool),
+            missing_claim_age=np.zeros(n, dtype=bool),
+            pre_1983=np.zeros(n, dtype=bool),
+            unmodeled=np.zeros(n, dtype=bool),
+            proxy=np.zeros(n, dtype=bool),
+            measurement_uncertainty=np.zeros(n, dtype=bool),
+            survivor_paths={},
+        )
     age = person("age", period)
     birth_years = person("birth_year", period)
     years, linked, worker_indices = resolve_worker_basis(
