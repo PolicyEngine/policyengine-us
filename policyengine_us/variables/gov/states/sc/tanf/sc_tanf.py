@@ -9,7 +9,9 @@ class sc_tanf(Variable):
     definition_period = MONTH
     defined_for = "sc_tanf_eligible"
     reference = (
-        "https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=131"
+        # PDF pages 131, 133
+        "https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=131",
+        "https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=210",
     )
 
     def formula(spm_unit, period, parameters):

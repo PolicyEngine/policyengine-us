@@ -89,7 +89,9 @@
       household:
         state_code: MD
   output:
-    # Benefit = $448 - $443.20 = $4.80, under $10 (COMAR 07.03.03.13 E(2))
+    # Net countable income $443.20 is rounded down to $443
+    # (COMAR 07.03.03.13 E(1)).
+    # Benefit = $448 - $443 = $5, under $10 (COMAR 07.03.03.13 E(2))
     md_tca: 0
 
 - name: Case 6, a benefit of exactly $10 is issued.
@@ -110,3 +112,45 @@
   output:
     # Benefit = $448 - $438 = $10
     md_tca: 10
+
+- name: Case 7, net countable income is rounded down before it is deducted.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        md_tca_eligible: true
+        md_tca_maximum_benefit: 448
+        md_tca_countable_income: 438.5
+    households:
+      household:
+        state_code: MD
+  output:
+    # Net countable income $438.50 is rounded down to $438
+    # (COMAR 07.03.03.13 E(1)).
+    # Benefit = $448 - $438 = $10, which is issued (E(2)). Without the
+    # rounding, $448 - $438.50 = $9.50 would not be issued.
+    md_tca: 10
+
+- name: Case 8, a benefit above the minimum uses the rounded-down income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        md_tca_eligible: true
+        md_tca_maximum_benefit: 727
+        md_tca_countable_income: 200.75
+    households:
+      household:
+        state_code: MD
+  output:
+    # Net countable income $200.75 is rounded down to $200.
+    # Benefit = $727 - $200 = $527
+    md_tca: 527

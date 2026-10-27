@@ -7,7 +7,8 @@ class mi_fip_income_eligible(Variable):
     label = "Eligible for Michigan FIP based on income"
     definition_period = MONTH
     reference = (
-        "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/518.pdf#page=5",
+        # PDF pages 2-5
+        "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/518.pdf#page=2",
         "https://mdhhs-pres-prod.michigan.gov/olmweb/EX/BP/Public/BEM/520.pdf#page=3",
     )
     defined_for = StateCode.MI
