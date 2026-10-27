@@ -50,7 +50,7 @@
         state_code: NH
   output:
     nh_fanf_payment_standard: 1_022
-    # Eligibility test, He-W 654.13(c): 1,000 * 0.80 = 800 <= 1,022
+    # Eligibility test, He-W 654.13(c): 1,000 * 0.80 = 800 < 1,022
     nh_fanf_countable_earned_income_for_eligibility: 800
     nh_fanf_countable_income_for_eligibility: 800
     nh_fanf_income_eligible: true
@@ -156,7 +156,7 @@
         state_code: NH
   output:
     nh_fanf_payment_standard: 1_560
-    # Eligibility: 800 * 0.80 = 640 earned + 200 unearned = 840 <= 1,560
+    # Eligibility: 800 * 0.80 = 640 earned + 200 unearned = 840 < 1,560
     nh_fanf_countable_earned_income_for_eligibility: 640
     nh_fanf_countable_income_for_eligibility: 840
     nh_fanf_eligible: true
@@ -304,7 +304,7 @@
     nh_fanf_payment_standard: 1_291
     # Child care: $200 (age 3) + $175 (age 7) = $375
     nh_fanf_child_care_deduction: 375
-    # Eligibility: 2,000 * 0.80 = 1,600 - 375 = 1,225 <= 1,291
+    # Eligibility: 2,000 * 0.80 = 1,600 - 375 = 1,225 < 1,291
     nh_fanf_countable_earned_income_for_eligibility: 1_225
     nh_fanf_countable_income_for_eligibility: 1_225
     nh_fanf_eligible: true
@@ -368,7 +368,7 @@
         state_code: NH
   output:
     nh_fanf_payment_standard: 1_291
-    # Eligibility: (500 + 500) * 0.80 = 800 <= 1,291
+    # Eligibility: (500 + 500) * 0.80 = 800 < 1,291
     nh_fanf_countable_earned_income_for_eligibility: 800
     nh_fanf_eligible: true
     # Benefit: (500 + 500) * 0.50 = 500
@@ -396,7 +396,7 @@
         members: [person1, person2]
         state_code: NH
   output:
-    # Eligibility test: 1,000 * 0.80 = 800 <= 1,022
+    # Eligibility test: 1,000 * 0.80 = 800 < 1,022
     nh_fanf_countable_earned_income_for_eligibility: 800
     nh_fanf_eligible: true
     # Benefit, He-W 654.13(d): 1,000 * 0.50 = 500
