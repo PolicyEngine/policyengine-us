@@ -1,4 +1,4 @@
-description: The state sets its Medicaid income standard for an aged, blind, or disabled married couple who do not receive SSI at this monthly amount above the SSI federal benefit rate for a couple, where no state program parameter in the model holds that amount.
+description: The state adds this monthly amount to the SSI federal benefit rate for a couple to set its Medicaid income standard for aged, blind, or disabled people who do not receive SSI, in states whose standard has no state program parameter in the model.
 metadata:
   unit: currency-USD
   period: month
@@ -14,5 +14,9 @@ metadata:
       href: https://healthandwelfare.idaho.gov/medicaid-program-income-limits
 
 # Idaho: the AABD basic allowance, equal to the SSI couple rate.
+# NOTE: gov.states.id.dhw.aabd.payment.basic_allowance holds the same
+# allowance for Idaho's AABD cash program, still at the 2000 base amounts
+# without the 501 increases (PolicyEngine/policyengine-us#10462). Once that
+# is fixed, Idaho's Medicaid standard can read from it.
 ID:
   2018-01-01: 0

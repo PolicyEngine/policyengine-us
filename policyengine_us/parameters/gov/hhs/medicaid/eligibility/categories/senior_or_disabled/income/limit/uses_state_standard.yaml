@@ -26,6 +26,10 @@ metadata:
       href: https://docs.legis.wisconsin.gov/code/admin_code/dhs/101/103/04/1/c
     - title: "Wisconsin DHS Operations Memo 20-13, SSI-Related Medicaid Categorically Needy Income Limit Changes (fixed amounts from the August 2020 benefit month) #page 1-2"
       href: https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2020-13.pdf#page=1
+    - title: Wisconsin Medicaid Eligibility Handbook 39.4.1, Release 18-01 (2018 categorically needy limits, $583.78 and $882.05 plus actual shelter up to $250.00 and $375.00)
+      href: https://www.emhandbooks.wisconsin.gov/meh-ebd/history/18-01/18-01_39.4.htm
+    - title: Wisconsin Medicaid Eligibility Handbook 39.4.1, Release 19-02 (2019 categorically needy limits, $597.78 and $903.38 plus actual shelter up to $257.00 and $385.67; SSI payment level with the supplement $854.78 and $1,289.05)
+      href: https://www.emhandbooks.wisconsin.gov/meh-ebd/history/19-02/19-02_39.4.htm
 
 AK:
   2018-01-01: true
@@ -123,11 +127,11 @@ VT:
   2018-01-01: true
 WA:
   2018-01-01: false
-# Until July 2020 Wisconsin's standard added the person's shelter costs up to a
-# cap, so the share of the poverty guideline is kept for those years.
+# Until July 2020 Wisconsin's standard was a base amount plus the person's
+# shelter costs up to a cap; the base plus the cap equals the SSI rate plus the
+# state supplement, which the model uses for those years too.
 WI:
-  2018-01-01: false
-  2020-08-01: true
+  2018-01-01: true
 WV:
   2018-01-01: false
 WY:

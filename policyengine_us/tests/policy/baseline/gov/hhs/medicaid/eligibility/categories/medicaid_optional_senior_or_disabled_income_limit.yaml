@@ -500,9 +500,11 @@
     is_optional_senior_or_disabled_income_eligible: [false]
 
 # Until July 2020 Wisconsin's standard was a base amount plus the person's
-# shelter costs up to a cap (DHS Operations Memo 20-13), so 2020 keeps the
-# share of the poverty guideline: 0.83 x 12,760.
-- name: Wisconsin keeps the poverty guideline share before August 2020
+# shelter costs up to a cap: $605.78 plus up to $261.00 in 2020 (DHS
+# Operations Memo 20-13). The model uses the base plus the cap, $866.78 a
+# month, which equals the $783 SSI rate plus the $83.78 supplement. The 0.83
+# share of the poverty guideline would be 0.83 x 12,760 = 10,590.80.
+- name: Wisconsin uses the shelter cap, the SSI rate plus the supplement, before August 2020
   period: 2020
   input:
     people:
@@ -513,7 +515,8 @@
         members: [person1]
         state_code: WI
   output:
-    medicaid_optional_senior_or_disabled_income_limit: [10_590.8]
+    # (783 + 83.78) x 12
+    medicaid_optional_senior_or_disabled_income_limit: [10_401.36]
 
 # Idaho tests these people against the AABD basic allowance (IDAPA
 # 16.03.05.301.01 and 501): $545 raised by each dollar SSI increase since
@@ -538,24 +541,6 @@
     medicaid_optional_senior_or_disabled_income_limit: [12_324]
     is_optional_senior_or_disabled_income_eligible: [false]
 
-# From August 2020 Wisconsin's standard is the fixed SSI payment plus the
-# state supplement (DHS Operations Memo 20-13), which the model reads from
-# January 2021: $794 plus the $83.78 supplement, $877.78 a month in 2021.
-# The 0.83 share of the poverty guideline would be 0.83 x 12,880 = 10,690.40.
-- name: Wisconsin uses the SSI rate plus the state supplement from 2021
-  period: 2021
-  input:
-    people:
-      person1:
-        age: 70
-    households:
-      household:
-        members: [person1]
-        state_code: WI
-  output:
-    # (794 + 83.78) x 12
-    medicaid_optional_senior_or_disabled_income_limit: [10_533.36]
-
 # Before 2024 Vermont's AABD supplement for an individual living
 # independently was $52.04 (DCF Bulletin 17-26), so the 2023 SSI/AABD
 # payment level was $914 plus $52.04, $966.04 a month (DVHA 2024 Standards
@@ -573,3 +558,63 @@
   output:
     # (914 + 52.04) x 12
     medicaid_optional_senior_or_disabled_income_limit: [11_592.48]
+
+# The remaining 2026 branches: New Hampshire's individual standard of need,
+# $994 + $27 - $13 = $1,008 (SR 26-01; MAM 601 Table A); Alaska's individual
+# standard, $1,845 (ADLTC Manual Addendum 1); Idaho's couple allowance,
+# $1,491 (DHW's $1,511 less the $20 disregard); and Wisconsin's couple
+# standard, $1,491 + $132.05 = $1,623.05 (MEH 39.4.1, Release 26-01).
+- name: Individual and couple standards in New Hampshire, Alaska, Idaho and Wisconsin in 2026
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 70
+      person3:
+        age: 72
+      person4:
+        age: 70
+      person5:
+        age: 72
+      person6:
+        age: 70
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3, person4]
+        tax_unit_is_joint: true
+      tax_unit4:
+        members: [person5, person6]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3, person4]
+      marital_unit4:
+        members: [person5, person6]
+    households:
+      household1:
+        members: [person1]
+        state_code: NH
+      household2:
+        members: [person2]
+        state_code: AK
+      household3:
+        members: [person3, person4]
+        state_code: ID
+      household4:
+        members: [person5, person6]
+        state_code: WI
+  output:
+    # NH (994 + 27 - 13) x 12; AK 1,845 x 12; ID 1,491 x 12;
+    # WI (1,491 + 132.05) x 12
+    medicaid_optional_senior_or_disabled_income_limit:
+      [12_096, 22_140, 17_892, 17_892, 19_476.6, 19_476.6]

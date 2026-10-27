@@ -93,28 +93,14 @@ BELOW_ONLY_STATES = ["OR"]
 # Annual dollars around the standard: far below, one month's dollar below,
 # exactly at, one dollar above, and well above.
 OFFSETS = [-6_000, -12, -1, 0, 1, 12, 42, 600, 6_000]
-# States with a dollar standard of their own (uses_state_standard.yaml), by
-# the first year it applies. Wisconsin's standard became a fixed amount in
-# August 2020 (DHS Operations Memo 20-13), read from January 2021. Of these,
-# Idaho also requires income below the standard: a person has financial need
-# if "their allowances ... are more than their income" (IDAPA 16.03.05.500).
-STATE_STANDARD_FIRST_YEARS = {
-    "AK": 2018,
-    "ID": 2018,
-    "NH": 2018,
-    "VT": 2018,
-    "WI": 2021,
-}
+# States with a dollar standard of their own (uses_state_standard.yaml) in
+# every year. Before August 2020 Wisconsin's standard was a base amount plus
+# shelter costs up to a cap; the model uses the base plus the cap, the SSI
+# rate plus the state supplement (DHS Operations Memo 20-13). Of these, Idaho
+# also requires income below the standard: a person has financial need if
+# "their allowances ... are more than their income" (IDAPA 16.03.05.500).
+STATE_STANDARD_STATES = ["AK", "ID", "NH", "VT", "WI"]
 STATE_STANDARD_BELOW_ONLY_STATES = ["ID"]
-
-
-def state_standard_states(year):
-    return sorted(
-        state
-        for state, first_year in STATE_STANDARD_FIRST_YEARS.items()
-        if year >= first_year
-    )
-
 
 SYSTEM = CountryTaxBenefitSystem()
 
@@ -172,7 +158,7 @@ def test_below_only_states_match_their_rules(year):
 @pytest.mark.parametrize("year", YEARS)
 def test_state_standard_states_match_their_rules(year):
     flags = limit_parameters(year).uses_state_standard
-    assert states_where(flags) == state_standard_states(year)
+    assert states_where(flags) == STATE_STANDARD_STATES
 
 
 @pytest.mark.parametrize("couple", [False, True])
@@ -270,7 +256,7 @@ def test_unflagged_states_keep_their_share_of_the_poverty_guideline(year, couple
     states = [
         state
         for state in STATES
-        if state not in SSI_RATE_STATES + state_standard_states(year) and state != "MO"
+        if state not in SSI_RATE_STATES + STATE_STANDARD_STATES and state != "MO"
     ]
     simulation = unit_simulation(year, states, couple)
     limit = simulation.calculate(

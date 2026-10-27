@@ -56,20 +56,19 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
         uses_ssi_rate = p.income.limit.uses_ssi_federal_benefit_rate[state].astype(bool)
         # Other states set a monthly dollar standard of their own: Alaska's
         # 7 AAC 40.310 standard, or the SSI rate plus the amount above it in
-        # New Hampshire's standard of need (He-W 858.03(e)), the Vermont AABD
-        # or Wisconsin state supplement, or state_standard elsewhere.
+        # New Hampshire's standard of need (He-W 858.03(e): the minimum payment
+        # level less the He-W 854.16 Medicaid standard disregard), the Vermont
+        # AABD or Wisconsin state supplement, or state_standard elsewhere.
         states = parameters(period).gov.states
         ak = states.ak.dpa.ssp.income_eligibility_standard
-        nh = states.nh.dhhs.ssp
+        nh_level = states.nh.dhhs.ssp.minimum_payment_level
         vt = states.vt.dcf.aabd.amount
         wi = states.wi.dhs.ssp.amount
-        nh_amount = (
-            where(
-                is_couple,
-                nh.minimum_payment_level.two_person,
-                nh.minimum_payment_level.one_person.INDEPENDENT,
-            )
-            - nh.standard_disregard[where(is_couple, 2, 1)]
+        disregard = p.income.disregard
+        nh_amount = where(
+            is_couple,
+            nh_level.two_person - disregard.couple[state],
+            nh_level.one_person.INDEPENDENT - disregard.individual[state],
         )
         other = p.income.limit.state_standard
         monthly_amount = select(
