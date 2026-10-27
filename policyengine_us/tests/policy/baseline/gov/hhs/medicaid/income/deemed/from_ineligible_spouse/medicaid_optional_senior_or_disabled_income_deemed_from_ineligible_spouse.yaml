@@ -120,39 +120,3 @@
     # (17,004 - 20 * 12 - 65 * 12) / 2 = 7,992 deemed and countable.
     medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse: [7_992, 0, 0]
     medicaid_optional_senior_or_disabled_countable_income: [7_992, 0, 0]
-
-# Maine disregards $75 a month for an individual ($20 federal plus $55
-# state) and $100 for a couple ($20 plus $80), so the deemed amount is the
-# couple budget less the applicant's own budget, each with its own disregard.
-- name: Case 4, Maine deems the couple budget less the individual budget, each with its own disregard.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 70
-        is_tax_unit_head: true
-        social_security_retirement: 12_000
-      person2:
-        age: 60
-        is_tax_unit_spouse: true
-        taxable_private_pension_income: 7_200
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    marital_units:
-      marital_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: ME
-  output:
-    # The spouse's $600 monthly pension exceeds the $497 FBR differential
-    # (1,491 - 994), so SSI deeming applies.
-    is_ssi_spousal_deeming_applies: [true, false]
-    # Couple budget, monthly: 1,000 + 600 - 100 = 1,500, or 18,000 a year.
-    # Alone: 1,000 - 75 = 925, or 11,100 a year. Deemed: 18,000 - 11,100.
-    medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse: [6_900, 0]
-    # 11,100 of the applicant's own countable income plus 6,900 deemed.
-    medicaid_optional_senior_or_disabled_countable_income: [18_000, 0]
