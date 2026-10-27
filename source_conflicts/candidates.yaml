@@ -660,11 +660,13 @@ candidates:
     - policyengine_us/variables/gov/states/ca/cdss/capi/ca_capi_payment_standard.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10379
-  state: open
-  note: 'Pavel''s sign-off requested (statute against regulation). PE-US follows the statute: the three offsets are
-    $0 from 2019-06-01 and keep the regulation amounts before then (payment_standard_offset/*.yaml, read by
-    ca_capi_payment_standard.py). The 2003 regulation predates the 2019 statute; CDSS applies the statute in ACIN
-    I-23-19 (June 1, 2019 increase of $10 per individual and $20 per couple) and ACIN I-59-25.'
+  state: ruled
+  note: 'Ruled 2026-10-27 for the statute by the project lead for the Medicaid fixes; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10379#issuecomment-6451310006. WIC 18941 (2019) makes CAPI
+    benefits "equivalent to the benefits provided under the SSI/SSP program" from June 1, 2019, so it governs over
+    MPP 49-050.11-.13 (2003); CDSS notices ACIN I-23-19 and I-59-25 agree. PE-US follows the statute: the three
+    offsets are $0 from 2019-06-01 and keep the regulation amounts before then (payment_standard_offset/*.yaml, read
+    by ca_capi_payment_standard.py).'
 - id: us-ca:capi-spousal-deeming-method
   program: capi
   years:
