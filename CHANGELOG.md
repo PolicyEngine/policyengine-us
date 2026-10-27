@@ -1,3 +1,10 @@
+## [2.73.2] - 2026-10-27
+
+### Fixed
+
+- Correct CHIP pregnancy income limit dates and values from state plan amendments: Kentucky starts July 1, 2022 at 218% FPL, West Virginia CHIP starts July 1, 2019, Colorado, New Jersey and Rhode Island include the 5 percentage point disregard throughout, Colorado's from-conception-to-end-of-pregnancy option starts January 1, 2025, and West Virginia's 190% Medicaid pregnancy limit starts July 1, 2019.
+
+
 ## [2.73.1] - 2026-10-27
 
 ### Fixed
