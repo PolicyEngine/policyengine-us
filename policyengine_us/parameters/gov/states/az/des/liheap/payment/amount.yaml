@@ -1,0 +1,41 @@
+description: Arizona pays this annual Standard benefit by total benefit matrix points under the Low Income Home Energy Assistance Program.
+# Worksheet Section 4: "1 - 4 $160, 5 - 8 $320, 9 - 12 $480, 13 or over $640".
+# Thresholds are the band starts, read with the default lower-inclusive calc
+# on integer points. The first threshold is 0 rather than the worksheet's 1:
+# an income-eligible household always scores at least one income point, and
+# the plan (Section 2.6) states a $160 minimum benefit, so a categorically
+# eligible household above 100% of the income limit with no burden or need
+# points receives the $160 minimum rather than nothing.
+brackets:
+  - threshold:
+      2024-10-12: 0
+    amount:
+      2024-10-12: 160
+  - threshold:
+      2024-10-12: 5
+    amount:
+      2024-10-12: 320
+  - threshold:
+      2024-10-12: 9
+    amount:
+      2024-10-12: 480
+  - threshold:
+      2024-10-12: 13
+    amount:
+      2024-10-12: 640
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: year
+  label: Arizona LIHEAP Standard benefit by points
+  reference:
+    - title: Arizona LIHEAP Eligibility Worksheet, $640 Limit (effective October 12, 2024), Section 4 Payment Matrix
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/AZ_BenefitMatrix_Heating_2026.pdf#page=1
+    - title: Arizona DES, Low Income Home Energy Assistance Program page (benefit by points table)
+      href: https://des.az.gov/liheap
+    - title: Arizona LIHEAP FY2026 State Plan, Section 2.6 (minimum benefit $160, maximum benefit $640)
+      href: https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=10
+    - title: "Arizona DES LIHEAP Policy, revision 16A (effective July 1, 2026), Section VII.B.1.a (up to $640 for a standard payment), Section VII.B.4.b and Appendix B Section 4 Benefit Calculation #page 31,35,41"
+      href: https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=31

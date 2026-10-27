@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AR, AL, DC, GA, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX
+    coverage: AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX, VA
     state_implementations:
       - state: AL
         status: partial
@@ -1004,6 +1004,14 @@ programs:
         variable: ar_liheap
         parameter_prefix: gov.states.ar.ee.aeo.liheap
         notes: FY2025-FY2026 regular heating matrices and income limits are checked; income rules follow the FFY 2025 manual (no FY2026 manual was found), and other years are unverified. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: AZ
+        status: partial
+        name: Arizona LIHEAP
+        full_name: Arizona Low Income Home Energy Assistance Program
+        variable: az_liheap
+        parameter_prefix: gov.states.az.des.liheap
+        verified_years: "2026"
+        notes: FY2026 Standard benefit covering heating and cooling bills from the point-based benefit matrix. Crisis assistance, water for evaporative cooling and weatherization are out of scope.
       - state: GA
         status: partial
         name: Georgia LIHEAP
@@ -1162,6 +1170,14 @@ programs:
         variable: tx_ceap
         parameter_prefix: gov.states.tx.tdhca.ceap
         notes: Models the 150% FPG income limit, the alternative 60% SMI limit from the FY2024 state plan (applied through 2024), benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
+      - state: VA
+        status: partial
+        name: Virginia EAP
+        full_name: Virginia Energy Assistance Program
+        variable: va_eap
+        parameter_prefix: gov.states.va.dss.eap
+        verified_years: "2026"
+        notes: FFY2026 Fuel Assistance only, using the latest published (FFY2025) value per point and placeholder fuel-type and energy-burden points until VDSS publishes its survey. Crisis, cooling and weatherization assistance are out of scope.
 
   # --- SSA programs ---
   - id: ssi
