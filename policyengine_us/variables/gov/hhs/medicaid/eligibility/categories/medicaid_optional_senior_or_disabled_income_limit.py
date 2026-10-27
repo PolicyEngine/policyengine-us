@@ -58,7 +58,7 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
         # 7 AAC 40.310 standard, or the SSI rate plus the amount above it in
         # New Hampshire's standard of need (He-W 858.03(e): the minimum payment
         # level less the He-W 854.16 Medicaid standard disregard), the Vermont
-        # AABD or Wisconsin state supplement, or state_standard elsewhere.
+        # AABD or Wisconsin state supplement, or Idaho's AABD basic allowance.
         states = parameters(period).gov.states
         ak = states.ak.dpa.ssp.income_eligibility_standard
         nh_level = states.nh.dhhs.ssp.minimum_payment_level
@@ -70,15 +70,16 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
             nh_level.two_person - disregard.couple[state],
             nh_level.one_person.INDEPENDENT - disregard.individual[state],
         )
-        other = p.income.limit.state_standard
+        id_amount = p.income.limit.state_standard.id
         monthly_amount = select(
-            [state == "NH", state == "VT", state == "WI"],
+            [state == "ID", state == "NH", state == "VT", state == "WI"],
             [
+                where(is_couple, id_amount.couple, id_amount.individual),
                 nh_amount,
                 where(is_couple, vt.couple.INDEPENDENT, vt.individual.INDEPENDENT),
                 where(is_couple, wi.couple, wi.individual),
             ],
-            default=where(is_couple, other.couple[state], other.individual[state]),
+            default=0,
         )
         ak_standard = where(is_couple, ak.couple, ak.individual) * MONTHS_IN_YEAR
         state_standard = where(

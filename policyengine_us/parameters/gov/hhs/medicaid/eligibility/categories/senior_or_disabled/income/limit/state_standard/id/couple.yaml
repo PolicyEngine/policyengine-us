@@ -1,10 +1,15 @@
-description: The state adds this monthly amount to the SSI federal benefit rate for an individual to set its Medicaid income standard for aged, blind, or disabled people who do not receive SSI, in states whose standard has no state program parameter in the model.
+description: Idaho adds this monthly amount to the SSI federal benefit rate for a couple to set its Medicaid income standard for aged, blind, or disabled people who do not receive SSI.
+# Idaho: the AABD basic allowance, equal to the SSI couple rate.
+# NOTE: gov.states.id.dhw.aabd.payment.basic_allowance holds the same
+# allowance for Idaho's AABD cash program, still at the 2000 base amounts
+# without the 501 increases (PolicyEngine/policyengine-us#10462). Once that
+# is fixed, Idaho's Medicaid standard can read from it.
+values:
+  2018-01-01: 0
 metadata:
   unit: currency-USD
   period: month
-  label: Medicaid senior or disabled state amount above the SSI individual rate
-  breakdown:
-  - state_code
+  label: Idaho Medicaid senior or disabled amount above the SSI couple rate
   reference:
     - title: IDAPA 16.03.05.501 - Basic Allowance ($545 single and $768 couple, each raised by the dollar amount of each SSI cost-of-living increase since January 1, 2001)
       href: https://adminrules.idaho.gov/rules/current/16/160305.pdf#page=39
@@ -12,11 +17,3 @@ metadata:
       href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/ID/ID-18-0002.pdf#page=5
     - title: Idaho Department of Health and Welfare, Medicaid Program Income Limits, AABD Cash and AABD Medicaid (January 2026, $1,047 and $1,511 including the $20 disregard)
       href: https://healthandwelfare.idaho.gov/medicaid-program-income-limits
-
-# Idaho: the AABD basic allowance, $33 above the SSI rate.
-# NOTE: gov.states.id.dhw.aabd.payment.basic_allowance holds the same
-# allowance for Idaho's AABD cash program, still at the 2000 base amounts
-# without the 501 increases (PolicyEngine/policyengine-us#10462). Once that
-# is fixed, Idaho's Medicaid standard can read from it.
-ID:
-  2018-01-01: 33
