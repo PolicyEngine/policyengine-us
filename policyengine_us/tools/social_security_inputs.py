@@ -20,7 +20,10 @@ from functools import wraps
 from pathlib import Path
 from weakref import WeakKeyDictionary, ref
 
-from policyengine_core.data_storage.store_history import next_sequence_number
+from policyengine_core.data_storage.store_history import (
+    advance_sequence_past,
+    next_sequence_number,
+)
 from policyengine_core.periods import period as to_period
 from policyengine_core.simulations.simulation import NpEncoder
 
@@ -490,6 +493,8 @@ def _remember_weak_return(entries, key, number, array):
 
 
 def _restore_formula_fast_cache(values, numbers):
+    if numbers:
+        advance_sequence_past(max(numbers.values()))
     return _FormulaFastCache(values, numbers)
 
 

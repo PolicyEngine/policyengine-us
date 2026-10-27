@@ -8,6 +8,7 @@ Run it separately from country-importing tests.
 from __future__ import annotations
 
 import importlib
+import itertools
 import pickle
 import sys
 import types
@@ -647,15 +648,42 @@ def test_nonmemoized_store_keeps_the_existing_fast_return_date(
 
 
 @pytest.mark.parametrize("mode", ("blacklist", "variables_to_drop"))
-def test_pickled_fast_only_cache_retains_its_return_dates(mode):
+def test_pickled_fast_only_cache_retains_its_return_dates(mode, monkeypatch):
+    from policyengine_core.data_storage import store_history
+
+    stores = []
+    original_record_store = Holder._record_store
+
+    def record_store(holder, requested, number):
+        if holder.variable.name == "independent_formula":
+            stores.append(number)
+        return original_record_store(holder, requested, number)
+
+    monkeypatch.setattr(Holder, "_record_store", record_store)
     simulation = fresh_without_holder_cache(
         mode, ["independent_formula"], {PUBLIC: {"2024": [12_000.0]}}
     )
     assert scalar(simulation, PUBLIC + "_reported", "2024") == 12_000
     assert scalar(simulation, "independent_formula", "2024") == 77
     key = ("independent_formula", period("2024"))
+    history = simulation._get_store_history()
+    first_number = history.earliest_dependency(*key)
+    assert first_number == stores[-1]
     assert stored(simulation, *key) is None
-    simulation._fast_cache = pickle.loads(pickle.dumps(simulation._fast_cache))
+    simulation._fast_cache.pop(key)
+    store_history.advance_sequence_past(store_history.next_sequence_number() + 1_000)
+    assert scalar(simulation, "independent_formula", "2024") == 77
+    memo_number = stores[-1]
+    assert first_number < memo_number
+    assert history.earliest_dependency(*key) == first_number
+    blob = pickle.dumps(simulation._fast_cache)
+    # A different process can start below the restored memo's own store
+    # number. Restoring only StoreHistory's first number would be too early.
+    with monkeypatch.context() as counter_patch:
+        counter_patch.setattr(store_history, "_sequence", itertools.count(1))
+        restored = pickle.loads(blob)
+        assert store_history.next_sequence_number() > memo_number
+    simulation._fast_cache = restored
     np.testing.assert_array_equal(simulation._fast_cache[key], [77])
     assert stored(simulation, *key) is None
     epoch = simulation._input_epoch

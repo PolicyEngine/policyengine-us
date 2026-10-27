@@ -58,6 +58,7 @@ from policyengine_core.data_storage.in_memory_storage import InMemoryStorage
 from policyengine_core.data_storage.store_history import (
     StoreHistory,
     _period_from_storage_key,
+    advance_sequence_past,
     next_sequence_number,
 )
 from policyengine_core.periods import Period
@@ -741,6 +742,7 @@ class Backend:
             json=json,
             ContextVar=ContextVar,
             WeakKeyDictionary=WeakKeyDictionary,
+            advance_sequence_past=advance_sequence_past,
             ref=ref,
             dataclass=dataclass,
             wraps=wraps,
