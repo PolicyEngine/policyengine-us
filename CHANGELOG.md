@@ -1,3 +1,225 @@
+## [2.67.0] - 2026-10-26
+
+### Removed
+
+- Remove the duplicate `gov.ssa.ssi.amount.institutional` parameters; the Texas SSI supplement and its eligibility test now read `gov.ssa.ssi.amount.medical_facility`, the reduced federal rate federal SSI uses. Results are unchanged from July 1988; for earlier months the eligibility test applies the $25 rate then in force instead of raising `ParameterNotFoundError`.
+
+
+## [2.66.1] - 2026-10-26
+
+### Fixed
+
+- Backfill the Texas SSI supplement's personal needs allowance at $30 from July 1988 (no supplement before September 1999), so `tx_ssi_state_supplement` returns $0 instead of raising `ParameterNotFoundError` for July 1988 through August 1999, and document the supplement's sources from 1999 to 2026.
+
+
+## [2.66.0] - 2026-10-26
+
+### Added
+
+- Add Iowa LIHEAP Regular Assistance (ia_liheap): FY2026 regular heating benefit from the points matrix with the 200% federal poverty guideline income test.
+
+
+## [2.65.1] - 2026-10-26
+
+### Fixed
+
+- Base Indiana EITC eligibility in tax years 2024 and 2025 on the current-year federal EITC instead of a recomputed credit with the frozen 2023 investment income limit and phaseout amounts, as IC 6-3.1-21-6(a) and (e) index those amounts to the taxable year.
+
+
+## [2.65.0] - 2026-10-26
+
+### Added
+
+- Add federal student loan Pay As You Earn, Income-Contingent Repayment and tiered standard repayment payments, and the bar that limits borrowers with a Direct Loan made on or after July 1, 2026 to the Repayment Assistance Plan or the tiered standard plan, under 20 U.S.C. 1087e(d) and 34 CFR 685.208 and 685.209.
+
+### Changed
+
+- Load CBO's February 2026 projections through 2036 into the SSA, SNAP and HHS upraters, the CPI-W series, the national average wage index and the Social Security payroll cap, growing each from its latest actual (the HHS index from its 2026 value); keep CBO's 2035 CPI-U and chained CPI-U points instead of extrapolating over them and add their 2036 points; and extend the payroll cap after 2036 with the 42 U.S.C. 430(b) fixed-base formula.
+
+
+## [2.64.1] - 2026-10-26
+
+### Fixed
+
+- Select California Premium Subsidy bands from exact nonnegative ACA MAGI divided by prior-year FPL under the adopted [2026 Program Design, (d)(4)](https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=2): exactly 150% changes from a 3.19% contribution to 0%, while income above 150% enters the 3.19% band. Retain the truncated fraction for the rate within that band, following [FTB 3849 Table 1-2 (2020)](https://www.ftb.ca.gov/forms/2020/2020-3849-instructions.pdf#page=6) and [2021](https://www.ftb.ca.gov/forms/2021/2021-3849-instructions.pdf#page=6); [2025 Form 8962 Worksheet 2 line 4](https://www.irs.gov/pub/irs-prior/i8962--2025.pdf#page=9) likewise tests "more than" on the exact amount before truncating.
+- Decide California Premium Subsidy eligibility on the exact ratio of nonnegative ACA MAGI to prior-year FPL instead of the truncated `aca_magi_fraction`, so PY2026 incomes from 165.003% to 165.994% of FPL are no longer eligible ([2026 Program Design, (d)(7)](https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=2): "at or below 165 percent"). Move PY2027 from the superseded Program Design V4 to the [Final 2027 Program Design, (d)(4) and (d)(7)](https://hbex.coveredca.com/data-research/Final-2027-California-Premium-Subsidy-Program-Design.pdf#page=2): 0% up to 150% FPL, 2.8% rising to 5.28% above 150% up to 200% (replacing V4's 2.69%-3.41% and 3.41%-5.1% bands), and eligibility "at or below 200 percent", so households at exactly 200% FPL now qualify.
+
+
+## [2.64.0] - 2026-10-26
+
+### Added
+
+- Model the IRS local general sales tax worksheet for the optional sales tax deduction: the Optional Local Sales Tax Tables (with the selector's named counties and cities) and the ratio method, with official locality rates for New York, Virginia and the Streamlined Sales Tax states, and inputs for a household's combined or local rate elsewhere. Without an entered rate, the local amount in the 16 local-sales-tax states with no official rate file in this build (AL, AK, AZ, CA, CO, FL, HI, ID, IL, LA, MO, MS, NM, PA, SC and TX) is now $0; it was 20% of the state table amount.
+  Preserve supplied county geography carried into later dataset years when resolving local sales tax rates and tables.
+
+
+## [2.63.4] - 2026-10-26
+
+### Fixed
+
+- Select California Premium Subsidy bands from exact nonnegative ACA MAGI divided by prior-year FPL under the adopted [2026 Program Design, (d)(4)](https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=2): exactly 150% changes from a 3.19% contribution to 0%, while income above 150% enters the 3.19% band. Retain the truncated fraction for the rate within that band, following [FTB 3849 Table 1-2 (2020)](https://www.ftb.ca.gov/forms/2020/2020-3849-instructions.pdf#page=6) and [2021](https://www.ftb.ca.gov/forms/2021/2021-3849-instructions.pdf#page=6); [2025 Form 8962 Worksheet 2 line 4](https://www.irs.gov/pub/irs-prior/i8962--2025.pdf#page=9) likewise tests "more than" on the exact amount before truncating.
+
+
+## [2.63.3] - 2026-10-25
+
+### Changed
+
+- Point the Indiana to Montana source-conflict candidates whose pull requests have merged at their code on main, and add candidates for conflicts that code records.
+- Point the New Mexico to Wyoming source-conflict candidates whose pull requests have merged at their code on main, and add candidates for conflicts that code records.
+
+### Fixed
+
+- Add the 2027 premium tax credit applicable percentage table from Rev. Proc. 2026-26, so 2027 no longer reuses the 2026 table.
+
+
+## [2.63.2] - 2026-10-25
+
+### Changed
+
+- Vendor the source-conflict register shared with Axiom at its newer rulespec-us commit. The register now records that nine PolicyEngine-US files cite their entries, so the guard requires those files to keep their markers. It also adds two Social Security entries implemented outside this repository.
+
+
+## [2.63.1] - 2026-10-25
+
+### Changed
+
+- Add source-conflict candidates for conflicts that the New York, Ohio, Oklahoma, Pennsylvania, Rhode Island, South Dakota and Virginia state supplement code, the Maryland Child Care Scholarship copays and New York HEAP record.
+
+
+## [2.63.0] - 2026-10-24
+
+### Added
+
+- Added state-specific `<state>_other_additions` and `<state>_other_subtractions` variables for 7 states (AL, AR, IA, IN, LA, MS, PA) to standardize custom state income additions and subtractions across all state income tax systems. Removed legacy inputs `in_other_add_backs` and `in_other_deductions` in favor of standardized `in_other_additions` and `in_other_subtractions` (breaking change for callers providing those legacy inputs).
+
+
+## [2.62.12] - 2026-10-24
+
+### Changed
+
+- Point the federal and Alaska to Hawaii source-conflict candidates whose pull requests have merged at their code on main, and add candidates for conflicts that code records.
+
+
+## [2.62.11] - 2026-10-24
+
+### Changed
+
+- Mark the deciding lines of nine source conflicts now in the register shared with Axiom, vendor the register at its newer rulespec-us commit, and drop the twelve newly registered conflicts from the candidates list.
+
+
+## [2.62.10] - 2026-10-24
+
+### Fixed
+
+- Exclude dependents' casualty losses from Arkansas returns, apply each separate-filing spouse's casualty reduction and AGI floor before proration, and limit Puerto Rico's casualty deductions to the two statutory items with the personal-property cap.
+
+
+## [2.62.9] - 2026-10-24
+
+### Fixed
+
+- Fix the CBO Social Security secondary earnings threshold reform to include self-employment earnings, avoid negative SECA and overlapping tax bases, activate for future-dated thresholds, and preserve Connecticut and Delaware paid-leave contribution bases.
+
+
+## [2.62.8] - 2026-10-24
+
+### Fixed
+
+- Use the $100,000 car loan interest deduction phase-out threshold for surviving spouses, as 26 U.S.C. 163(h)(4)(C)(ii)(I) and Schedule 1-A line 26 provide; only a joint return gets $200,000.
+
+
+## [2.62.7] - 2026-10-24
+
+### Fixed
+
+- Exclude county agency staff guardians and conservators from Minnesota Supplemental Aid guardian fees while retaining the statutory 5% of gross monthly income / $100 cap for other guardians.
+
+
+## [2.62.6] - 2026-10-24
+
+### Fixed
+
+- Measure the capital gains marginal tax rate on long-term gains, so capital gains realization responses see the preferential rates and changes to them, and scale the measured rise with income so the rate keeps its precision for large households.
+
+
+## [2.62.5] - 2026-10-24
+
+### Fixed
+
+- Label `save_plan_payment` as a counterfactual, since the SAVE plan is no longer available.
+
+
+## [2.62.4] - 2026-10-24
+
+### Changed
+
+- Run the Rest Python tests on parallel CI shards that a plan job balances from the latest release run's test times, splitting long groups, instead of two chained runners that took about 130 minutes.
+
+
+## [2.62.3] - 2026-10-23
+
+### Changed
+
+- Remove the six-job parallelism caps from Baseline and Contrib CI matrices to use available runner capacity, preserving job dependencies, memory protections, and cancellation behavior.
+
+
+## [2.62.2] - 2026-10-23
+
+### Fixed
+
+- Use Form W-2 box 1 wages, which leave out elective deferrals, and farm income as earned income in the federal, Oregon and Hawaii standard deduction worksheets for dependents and in the Medicaid dependent filing test, which now also subtracts the deductible part of self-employment tax as the worksheet does.
+
+
+## [2.62.1] - 2026-10-23
+
+### Fixed
+
+- Count only tips and overtime received by a filer (a tax unit member who is not a dependent) with a valid SSN toward the qualified tips and overtime deductions (26 U.S.C. 224(e)(1) and 225(d)(1)). A dependent's tips and overtime no longer raise the filer's deductions, and a joint return on which one spouse lacks a valid SSN now deducts the other spouse's tips and overtime instead of nothing.
+- Correct Minnesota unemployment insurance taxable wage bases for 2014 through 2026.
+
+
+## [2.62.0] - 2026-10-23
+
+### Added
+
+- Add federal student loan Income-Based Repayment, SAVE plan (counterfactual) and 10-year standard repayment payments under 20 U.S.C. 1098e and 34 CFR 685.208 and 685.209.
+
+
+## [2.61.3] - 2026-10-23
+
+### Fixed
+
+- Stop Colorado FAMLI, Paid Leave Oregon and WA Cares contributions from applying before their programs started, apply WA Cares from July 1, 2023, and add the 2019-2024 Washington Paid Family and Medical Leave premium rates and employer shares.
+
+
+## [2.61.2] - 2026-10-23
+
+### Fixed
+
+- Wisconsin's itemized deduction credit now uses only the Schedule 1 medical, interest, charitable, and casualty components, excluding miscellaneous deductions and SALT, and subtracts the charitable deduction actually claimed above the line in 2020.
+
+
+## [2.61.1] - 2026-10-23
+
+### Fixed
+
+- Count military Survivor Benefit Plan annuities (military_retirement_pay_survivors) as income in state benefit programs that listed only military_retirement_pay.
+- Count Minnesota CCAP Retirement, Survivors, and Disability Insurance, including dependents' benefits, only above the federal maximum SSI payment, per Minn. Stat. 256P.06, subd. 3(2)(xvi).
+- Base the 2021 New York supplemental EITC payment on the New York State EIC instead of the federal EITC, and apply the $25 minimum payment.
+
+
+## [2.61.0] - 2026-10-23
+
+### Added
+
+- Source captures for eight source-conflict register entries, and a Hawaii dependent care credit case for a claimable but unclaimed filer.
+- Add federal student loan balance inputs and the Repayment Assistance Plan monthly payment under 20 U.S.C. 1087e(q) and 34 CFR 685.209, effective July 1, 2026.
+
+### Fixed
+
+- Allocate Social Security taxation revenue to OASDI using the pre-1993 section 86 inclusion, including the provisional-income limit, and credit Medicare HI with the remaining revenue. Preserve signed tax differences in both shares, including when benefit inclusion reduces tax liability.
+
+
 ## [2.60.4] - 2026-10-23
 
 ### Fixed
