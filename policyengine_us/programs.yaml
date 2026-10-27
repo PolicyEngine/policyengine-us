@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX, VA
+    coverage: AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX, VA, WA
     state_implementations:
       - state: AL
         status: partial
@@ -1178,6 +1178,14 @@ programs:
         parameter_prefix: gov.states.va.dss.eap
         verified_years: "2026"
         notes: FFY2026 Fuel Assistance only, using the latest published (FFY2025) value per point and placeholder fuel-type and energy-burden points until VDSS publishes its survey. Crisis, cooling and weatherization assistance are out of scope.
+      - state: WA
+        status: partial
+        name: Washington LIHEAP
+        full_name: Washington Low Income Home Energy Assistance Program
+        variable: wa_liheap
+        parameter_prefix: gov.states.wa.commerce.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating from reported annual heating costs, with the $250 minimum when heat is included in rent. Crisis, cooling, weatherization and equipment assistance are out of scope.
 
   # --- SSA programs ---
   - id: ssi
