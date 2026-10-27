@@ -1,0 +1,64 @@
+# Monthly discretionary income: max(AGI - poverty guideline, 0) / 12
+# (34 CFR 685.209(b)(4)(iii)). 2026 guideline in the 48 states: 15,960 +
+# 5,680 per additional person.
+
+- name: Case 1, single filer above the guideline.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 41_769
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # (41,769 - 15,960) / 12 = 2,150.75.
+    income_contingent_repayment_discretionary_income: 2_150.75
+
+- name: Case 2, joint filers combine income and use a family of two.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # (60,000 - 21,640) / 12 = 3,196.67.
+    income_contingent_repayment_discretionary_income: 3_196.67
+
+- name: Case 3, income exactly at the guideline is zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    income_contingent_repayment_discretionary_income: 0

@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AR, AL, DC, GA, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX, ND
+    coverage: AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX, VA, ND
     state_implementations:
       - state: AL
         status: partial
@@ -1004,6 +1004,14 @@ programs:
         variable: ar_liheap
         parameter_prefix: gov.states.ar.ee.aeo.liheap
         notes: FY2025-FY2026 regular heating matrices and income limits are checked; income rules follow the FFY 2025 manual (no FY2026 manual was found), and other years are unverified. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: AZ
+        status: partial
+        name: Arizona LIHEAP
+        full_name: Arizona Low Income Home Energy Assistance Program
+        variable: az_liheap
+        parameter_prefix: gov.states.az.des.liheap
+        verified_years: "2026"
+        notes: FY2026 Standard benefit covering heating and cooling bills from the point-based benefit matrix. Crisis assistance, water for evaporative cooling and weatherization are out of scope.
       - state: GA
         status: partial
         name: Georgia LIHEAP
@@ -1060,6 +1068,14 @@ programs:
         full_name: Illinois Low Income Home Energy Assistance Program
         variable: il_liheap
         parameter_prefix: gov.states.il.dceo.liheap
+      - state: IA
+        status: partial
+        name: Iowa LIHEAP
+        full_name: Iowa Low Income Home Energy Assistance Program
+        variable: ia_liheap
+        parameter_prefix: gov.states.ia.hhs.liheap
+        verified_years: "2026"
+        notes: FY2026 Regular Assistance heating benefit from the points matrix, with a flat amount for households that buy propane or fuel oil. Crisis assistance, cooling and weatherization are out of scope.
       - state: IN
         status: partial
         name: Indiana EAP
@@ -1154,6 +1170,14 @@ programs:
         variable: tx_ceap
         parameter_prefix: gov.states.tx.tdhca.ceap
         notes: Models the 150% FPG income limit, the alternative 60% SMI limit from the FY2024 state plan (applied through 2024), benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
+      - state: VA
+        status: partial
+        name: Virginia EAP
+        full_name: Virginia Energy Assistance Program
+        variable: va_eap
+        parameter_prefix: gov.states.va.dss.eap
+        verified_years: "2026"
+        notes: FFY2026 Fuel Assistance only, using the latest published (FFY2025) value per point and placeholder fuel-type and energy-burden points until VDSS publishes its survey. Crisis, cooling and weatherization assistance are out of scope.
       - state: ND
         status: partial
         name: North Dakota LIHEAP
@@ -1629,7 +1653,7 @@ programs:
     variable: income_based_repayment_payment
     parameter_prefix: gov.ed.student_loans.income_based_repayment
     verified_start_year: 2026
-    notes: Monthly payment (15% or 10% for new borrowers of income above 150% of the poverty guideline, spousal proration, 10-year standard payment cap on the current balance, small payment adjustment); bar on borrowers with loans made on or after July 1, 2026, interest and forgiveness not modeled; not subtracted from household net income
+    notes: Monthly payment (15% or 10% for new borrowers of income above 150% of the poverty guideline, spousal proration, 10-year standard payment cap on the current balance, small payment adjustment); zero for borrowers with a Direct Loan made on or after July 1, 2026; interest and forgiveness not modeled; not subtracted from household net income
 
   - id: save_plan
     name: SAVE plan (counterfactual)
@@ -1642,6 +1666,42 @@ programs:
     parameter_prefix: gov.ed.student_loans.save_plan
     verified_start_year: 2026
     notes: Counterfactual monthly payment under 34 CFR 685.209(f)(1) (5% undergraduate and 10% graduate rates on income above 225% of the poverty guideline, spousal proration, small payment adjustment); computed for any period without implying the plan is available; interest and forgiveness not modeled; not subtracted from household net income
+
+  - id: pay_as_you_earn
+    name: Pay As You Earn
+    full_name: Federal student loan Pay As You Earn plan
+    category: Education
+    agency: ED
+    status: partial
+    coverage: US
+    variable: pay_as_you_earn_payment
+    parameter_prefix: gov.ed.student_loans.pay_as_you_earn
+    verified_start_year: 2026
+    notes: Monthly payment (10% of income above 150% of the poverty guideline, spousal proration, 10-year standard payment cap on the current balance, small payment adjustment); zero for borrowers with a Direct Loan made on or after July 1, 2026; enrollment limits (new borrower, repaying under PAYE on July 1, 2024) and the June 30, 2028 end not modeled; interest and forgiveness not modeled; not subtracted from household net income
+
+  - id: income_contingent_repayment
+    name: Income-Contingent Repayment
+    full_name: Federal student loan Income-Contingent Repayment plan
+    category: Education
+    agency: ED
+    status: partial
+    coverage: US
+    variable: income_contingent_repayment_payment
+    parameter_prefix: gov.ed.student_loans.income_contingent_repayment
+    verified_start_year: 2026
+    notes: Monthly payment (lesser of the 12-year fixed payment on the current balance times the income percentage factor from the 2025 and 2026 Federal Register notices, and 20% of income above the poverty guideline; $5 minimum); zero for borrowers with a Direct Loan made on or after July 1, 2026; joint repayment by married borrowers, enrollment limits and the June 30, 2028 end not modeled; interest and forgiveness not modeled; not subtracted from household net income
+
+  - id: tiered_standard_repayment
+    name: Tiered standard repayment plan
+    full_name: Federal student loan tiered standard repayment plan
+    category: Education
+    agency: ED
+    status: partial
+    coverage: US
+    variable: tiered_standard_repayment_payment
+    parameter_prefix: gov.ed.student_loans.tiered_standard_repayment
+    verified_start_year: 2026
+    notes: Fixed monthly payment over 10, 15, 20 or 25 years by total Direct Loan balance, Parent PLUS loans included (the current balance, with interest, stands in for principal at entry), at least $50, for borrowers with a Direct Loan made on or after July 1, 2026, who lose access to the 10-year standard plan; not subtracted from household net income
 
   # --- Federal tax credits ---
   - id: education_tax_credits

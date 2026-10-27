@@ -1,0 +1,449 @@
+# Iowa LIHEAP targeting points (REQ-018 to REQ-025, REQ-032). Appendix I
+# p. 137 of the FY26 LIHEAP Policy and Procedures Manual: Fixed Income Only +1,
+# Elderly (60 and older) +1, Disabled +1, Children under 6 +1, Detached
+# Dwelling +1, Subsidized Housing -2, 5-Plexes (or more than 5) -1, Heating
+# Included in Rent -4, Over $50,000 in Savings -4. Definitions pp. 79-85
+# (attached and detached dwellings, disabled, elderly, subsidized housing,
+# young child); savings are interest or dividend-bearing accounts, cash, CDs
+# and investments accessible without penalty (section 4.40 p. 14, Appendix C
+# p. 112): https://hhs.iowa.gov/media/17262/download?inline#page=137
+# Modeling: one adjustment per factor per household; subsidized housing is
+# receives_housing_assistance or is_in_public_housing; savings use
+# spm_unit_cash_assets; the dwelling input defaults to DETACHED.
+
+- name: Case 1, working-age renter in a duplex with no factors scores 0.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        ia_liheap_dwelling_type: ATTACHED_2_TO_4_UNITS
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Buildings of two to four units take neither the +1 nor the -1.
+    ia_liheap_targeting_points: 0
+
+- name: Case 2, detached house scores 1.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+        ia_liheap_dwelling_type: DETACHED
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Detached Dwelling +1 (Definitions p. 80, single-unit dwelling).
+    ia_liheap_targeting_points: 1
+
+- name: Case 3, member aged exactly 60 scores the elderly point.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 60
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        ia_liheap_dwelling_type: ATTACHED_2_TO_4_UNITS
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Elderly (60 years of age and older) +1; wages are not fixed income.
+    ia_liheap_targeting_points: 1
+
+- name: Case 4, member aged 59 does not score the elderly point.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 59
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        ia_liheap_dwelling_type: ATTACHED_2_TO_4_UNITS
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_liheap_targeting_points: 0
+
+- name: Case 5, disabled member scores 1.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        employment_income: 26_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_500
+        ia_liheap_dwelling_type: ATTACHED_2_TO_4_UNITS
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Disabled +1 (Definitions p. 80, self-declared).
+    ia_liheap_targeting_points: 1
+
+- name: Case 6, child aged 5 scores the young-child point.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        ia_liheap_dwelling_type: ATTACHED_2_TO_4_UNITS
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Children (under 6 years of age in the household) +1 (Definitions p. 85).
+    ia_liheap_targeting_points: 1
+
+- name: Case 7, child aged 6 does not score the young-child point.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        ia_liheap_dwelling_type: ATTACHED_2_TO_4_UNITS
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_liheap_targeting_points: 0
+
+- name: Case 8, apartment in a building of five or more units scores -1.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        ia_liheap_dwelling_type: ATTACHED_5_OR_MORE_UNITS
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 5-Plexes (or more than 5) -1.
+    ia_liheap_targeting_points: -1
+
+- name: Case 9, Section 8 tenant in a duplex scores -2.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        receives_housing_assistance: true
+        ia_liheap_dwelling_type: ATTACHED_2_TO_4_UNITS
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Subsidized Housing -2 (Definitions pp. 84-85 include Section 8).
+    ia_liheap_targeting_points: -2
+
+- name: Case 10, public housing tenant in a duplex scores -2.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        ia_liheap_dwelling_type: ATTACHED_2_TO_4_UNITS
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+        is_in_public_housing: true
+  output:
+    # Subsidized Housing -2 (Definitions pp. 84-85 include public housing).
+    ia_liheap_targeting_points: -2
+
+- name: Case 11, unsubsidized heat included in rent scores -4.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        ia_liheap_dwelling_type: ATTACHED_2_TO_4_UNITS
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Heating Included in Rent -4.
+    ia_liheap_targeting_points: -4
+
+- name: Case 12, savings of exactly 50,000 are not over the threshold.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        spm_unit_cash_assets: 50_000
+        ia_liheap_dwelling_type: ATTACHED_2_TO_4_UNITS
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Appendix C p. 112: "only count if Savings are over $50,000".
+    ia_liheap_targeting_points: 0
+
+- name: Case 13, savings of 50,001 score -4.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        spm_unit_cash_assets: 50_001
+        ia_liheap_dwelling_type: ATTACHED_2_TO_4_UNITS
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Over $50,000 in Savings -4.
+    ia_liheap_targeting_points: -4
+
+- name: Case 14, veteran living only on VA compensation scores the fixed-income point.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        veterans_benefits: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        ia_liheap_dwelling_type: ATTACHED_2_TO_4_UNITS
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Fixed Income Only +1 (Definitions p. 81: VA benefits are fixed income);
+    # not elderly, no disability declared.
+    ia_liheap_fixed_income_only: true
+    ia_liheap_targeting_points: 1
+
+- name: Case 15, two elderly disabled grandparents with two young grandchildren score each factor once.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        is_disabled: true
+        social_security: 18_000
+      person2:
+        age: 66
+        is_disabled: true
+        social_security: 14_000
+      person3:
+        age: 3
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_300
+        ia_liheap_dwelling_type: DETACHED
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IA
+  output:
+    # fixed income +1, elderly +1, disabled +1, young child +1, detached +1 = 5;
+    # two qualifying members per factor do not double the points (REQ-032).
+    ia_liheap_targeting_points: 5
+
+- name: Case 16, subsidized five-plex tenant with heat in rent and large savings scores -11.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        pre_subsidy_electricity_expense: 900
+        spm_unit_cash_assets: 60_000
+        ia_liheap_dwelling_type: ATTACHED_5_OR_MORE_UNITS
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # five-plex -1, subsidized -2, heat in rent -4, savings -4 = -11.
+    ia_liheap_targeting_points: -11
+
+- name: Case 17, working couple with a toddler in a subsidized eight-unit building with heat in rent scores -6.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+      person2:
+        age: 32
+        employment_income: 14_000
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        pre_subsidy_electricity_expense: 900
+        ia_liheap_dwelling_type: ATTACHED_5_OR_MORE_UNITS
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # young child +1, five-plex -1, subsidized -2, heat in rent -4 = -6.
+    ia_liheap_targeting_points: -6
+
+- name: Case 18, retiree on Social Security in a detached house scores 3.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        social_security: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        spm_unit_cash_assets: 5_000
+        ia_liheap_dwelling_type: DETACHED
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # fixed income +1, elderly +1, detached +1 = 3; 5,000 savings is not over
+    # 50,000.
+    ia_liheap_targeting_points: 3
+
+- name: Case 19, farm couple with savings over 50,000 in a detached house scores -3.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 55
+        farm_operations_income: 22_000
+      person2:
+        age: 53
+        farm_rent_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: PROPANE
+        bottled_gas_expense: 2_400
+        spm_unit_cash_assets: 60_000
+        ia_liheap_dwelling_type: DETACHED
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # detached +1, savings -4 = -3.
+    ia_liheap_targeting_points: -3
