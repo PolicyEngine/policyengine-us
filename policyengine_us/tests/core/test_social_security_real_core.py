@@ -473,9 +473,25 @@ def test_dataset_rebuild_keeps_new_input_provenance_when_old_cache_shares_key():
 
 
 @pytest.mark.parametrize("mode", ("blacklist", "variables_to_drop"))
-@pytest.mark.parametrize("route", ("dataset", "set_input", "branch_set"))
+@pytest.mark.parametrize(
+    "route,source",
+    (
+        ("dataset", PUBLIC),
+        ("set_input", PUBLIC),
+        ("set_input", PUBLIC + "_reported"),
+        ("branch_set", PUBLIC),
+        ("branch_set", PUBLIC + "_reported"),
+    ),
+    ids=(
+        "dataset_public",
+        "set_public",
+        "set_reported",
+        "branch_public",
+        "branch_reported",
+    ),
+)
 @pytest.mark.parametrize("initial", (0, 12_000), ids=("default_zero", "initial_source"))
-def test_source_write_refreshes_fast_only_formula_returns(mode, route, initial):
+def test_source_write_refreshes_fast_only_formula_returns(mode, route, source, initial):
     names = [PUBLIC, PUBLIC + "_base"]
     if not initial:
         # The review's zero-source variant also opts the reported default out.
@@ -494,20 +510,22 @@ def test_source_write_refreshes_fast_only_formula_returns(mode, route, initial):
     if route == "dataset":
         rebuild_with_source(simulation, 24_000.0)
     elif route == "set_input":
-        simulation.set_input(PUBLIC, "2024", [24_000.0])
+        simulation.set_input(source, "2024", [24_000.0])
     else:
         # Exercise the adapter itself: Core adds dependency cleanup only on
         # Holder.set_input, not on this supported lower-level branch route.
-        simulation.get_holder(PUBLIC)._set(
+        simulation.get_holder(source)._set(
             period("2024"),
             np.array([24_000.0]),
             simulation.branch_name,
             is_input=True,
         )
-    assert key not in simulation._fast_cache
+    memo_survived_write = key in simulation._fast_cache
+    reported_after = scalar(simulation, PUBLIC + "_reported", "2024")
+    public_after = scalar(simulation, PUBLIC, "2024")
+    assert (reported_after, public_after) == (24_000, 24_000)
+    assert not memo_survived_write
     assert simulation._input_epoch > epoch
-    assert scalar(simulation, PUBLIC + "_reported", "2024") == 24_000
-    assert scalar(simulation, PUBLIC, "2024") == 24_000
 
 
 @pytest.mark.parametrize("mode", ("blacklist", "variables_to_drop"))
