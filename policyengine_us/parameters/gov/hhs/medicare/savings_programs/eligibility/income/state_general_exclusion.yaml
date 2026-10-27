@@ -8,18 +8,24 @@ metadata:
   reference:
     - title: Illinois Department of Human Services Policy Manual PM 06-12-01-c - Income Exemption
       href: https://www.dhs.state.il.us/page.aspx?item=14179
-    - title: Illinois Department of Human Services Policy Manual PM 15-04-03-a - Income Disregard
+    - title: Illinois Department of Human Services Policy Manual PM 15-04-03-a - AABD Income Disregard (Community Cases)
       href: https://www.dhs.state.il.us/page.aspx?item=16387
-    - title: 89 Illinois Administrative Code 120.335(a)(1) - Exempt Income
+    - title: Illinois Department of Human Services Policy Manual PM 06-13-01-b - SLIB Income Limit
+      href: https://www.dhs.state.il.us/page.aspx?item=14218
+    - title: Illinois Department of Human Services Policy Manual PM 06-14-01-b - QI-1 Income Limit
+      href: https://www.dhs.state.il.us/page.aspx?item=14250
+    - title: 89 Illinois Administrative Code 120.335(a)(1) - Exempt Unearned Income
       href: https://www.ilga.gov/ftp/JCAR/AdminCode/089/089001200H03350R.html
-    - title: 23 Mississippi Code of Rules 104-1.1(C)(2)(b) - Income Rules
-      href: https://www.law.cornell.edu/regulations/mississippi/23-Miss-Code-R-SS-104-1-1
-    - title: Mississippi Division of Medicaid Eligibility Manual, pages 5400-5401, Countable Income (revised July 1, 1999)
-      href: https://web.archive.org/web/20140514175849/https://www.medicaid.ms.gov/wp-content/uploads/2014/03/Pages-5400-5401-Countable-Income.pdf#page=2
+    - title: "23 Mississippi Administrative Code Part 104, Rules 1.1(C)(2)(b) and 4.2 - Income Rules and General Income Exclusion #page 9,21-22"
+      href: https://www.sos.ms.gov/adminsearch/ACCode/00000278c.pdf#page=9
+    - title: Mississippi Division of Medicaid Eligibility Manual Volume III, Countable Income (revised July 1, 1999)
+      href: https://web.archive.org/web/20140514175849id_/https://www.medicaid.ms.gov/wp-content/uploads/2014/03/Pages-5400-5401-Countable-Income.pdf#page=2
 
 IL:
   0000-01-01: 0
+  # PM 06-12-01-c revision date; the exemption is in effect no later than this.
   1997-03-01: 25
 MS:
   0000-01-01: 0
+  # Eligibility Manual p. 5401 sets the break-even point at FPL + 50 from this date.
   1999-07-01: 50
