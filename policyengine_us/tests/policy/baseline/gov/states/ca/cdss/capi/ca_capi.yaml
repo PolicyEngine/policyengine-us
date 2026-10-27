@@ -8,16 +8,14 @@
         immigration_status: UNDOCUMENTED
         # 520 per month foreign pension.
         pension_income: 6_240
-        # SSI zeroes countable income for people who fail its immigration
-        # test, so the case supplies it: 520 - 20 general exclusion = 500 per
-        # month (6,000 per year).
-        ssi_countable_income: 6_000
     households:
       household:
         members: [person1]
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
+    # 520 - 20 general exclusion = 500 per month (6,000 per year).
+    ssi_countable_income: 6_000
     # Individual standard 1,233.94 (no offset since June 2019, WIC 18941),
     # less countable income 500 = 733.94 per month (MPP 49-055.32).
     # 733.94 x 12 = 8,807.28.
@@ -159,10 +157,6 @@
         immigration_status: UNDOCUMENTED
         # 1,520 per month foreign pension.
         pension_income: 18_240
-        # SSI zeroes countable income for people who fail its immigration
-        # test, so the case supplies it: 1,520 - 20 = 1,500 per month
-        # (18,000 per year).
-        ssi_countable_income: 18_000
       person2:
         age: 68
         immigration_status: UNDOCUMENTED
@@ -185,6 +179,8 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
+    # person1: 1,520 - 20 = 1,500 per month (18,000 per year).
+    ssi_countable_income: [18_000, 0]
     # Each person is assessed on their own income (MPP 49-035.1, 49-055.32).
     # person1: 1,500 is not lower than the 1,233.94 standard, so 0.
     # person2: no income, so 1,233.94 per month; x 12 = 14,807.28. Pooling
@@ -236,3 +232,63 @@
     # 1,980 a month exceeds CAPI's individual payment standard, which is at
     # most the 1,335.81 SSI/SSP no-cooking standard, so CAPI pays nothing.
     ca_capi: 0
+
+- name: Integration test, mixed couple with income, the noncitizen spouse receives CAPI
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 6_000 # 500 a month
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        immigration_status: UNDOCUMENTED
+        pension_income: 6_000 # 500 a month foreign pension
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Both spouses are aged, so the model applies the SSI couple computation:
+    # (500 + 500 - 20) / 2 = 490 a month each (5,880 a year).
+    ssi_countable_income: [5_880, 5_880]
+    # The citizen's SSI is 1,450 / 2 - 490 = 235 a month.
+    # NOTE: SSA treats the undocumented spouse as an ineligible spouse
+    # (20 CFR 416.1160(d)). Her 500 exceeds the 1,450 - 967 = 483 gap, so SSA
+    # deems her income and pays SSI of min(967 - 480, 1,450 - 980) = 470 and
+    # a state supplement of min(1,335.81 - 967, 2,315.57 - 1,450) = 368.81,
+    # 838.81 in all (POMS SI 01320.430 D; 20 CFR 416.1163(e)(2)). CAPI would
+    # then be 2,315.57 - 980 - 838.81 = 496.76 a month (5,961.12 a year). The
+    # model's couple computation for a mixed-status couple pays
+    # 235 + 610.81 = 845.81, so CAPI is 489.76 instead of 496.76. This is a
+    # pre-existing ssi_claim_is_joint limitation: it counts aged, blind or
+    # disabled head/spouse status rather than SSI eligibility. The expected
+    # values below are the model's.
+    ssi: [2_820, 0] # 235 * 12
+    # The citizen's state supplement is the 1,206.94 + 128.87 = 1,335.81
+    # no-cooking individual standard less SSI 235 and his own 490:
+    # 610.81 a month. The CAPI member's 490 is not counted.
+    ca_state_supplement: 7_329.72 # 610.81 * 12
+    # The CAPI member takes the whole couple standard (MPP 49-050.13), the
+    # 2,057.83 + 257.74 = 2,315.57 no-cooking aged couple standard, with no
+    # offset since June 2019 (WIC 18941).
+    ca_capi_payment_standard: [0, 27_786.84] # 2,315.57 * 12
+    # The couple's countable income 490 + 490 = 980 (MPP 49-055.32) and the
+    # citizen's SSI/SSP 235 + 610.81, counted as unearned income based on
+    # need (MPP 49-035.221), are subtracted:
+    # 2,315.57 - 980 - 235 - 610.81 = 489.76 a month.
+    ca_capi_person: [0, 5_877.12] # 489.76 * 12
+    ca_capi: 5_877.12

@@ -21,10 +21,16 @@ class md_paa_imputed_federal_ssi(Variable):
         # SSA cannot pay SSI to people who fail its citizen or
         # qualified-noncitizen test, so there is no federal SSI to impute.
         # PAA then pays allowable needs less net countable income
-        # (COMAR 07.03.07.09A).
+        # (COMAR 07.03.07.09A). A person who reports SSI receipt, for example
+        # one SSA pays under an exception the model does not encode such as
+        # 8 U.S.C. 1612(a)(2)(E), keeps the imputed SSI. The repository's SSI
+        # receipt convention is (ssi > 0) | receives_ssi, and ssi > 0 already
+        # implies the citizen or qualified-noncitizen test.
         immigration_status = person("immigration_status", period.this_year)
         is_citizen = immigration_status == immigration_status.possible_values.CITIZEN
         is_qualified_noncitizen = person(
             "is_ssi_qualified_noncitizen", period.this_year
         )
-        return where(is_citizen | is_qualified_noncitizen, imputed_ssi, 0)
+        reports_ssi = person("receives_ssi", period)
+        not_barred_from_ssi = is_citizen | is_qualified_noncitizen | reports_ssi
+        return where(not_barred_from_ssi, imputed_ssi, 0)
