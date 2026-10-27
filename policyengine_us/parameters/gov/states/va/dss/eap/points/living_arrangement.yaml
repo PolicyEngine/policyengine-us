@@ -1,0 +1,17 @@
+description: Virginia awards this many benefit points for the living arrangement of an eligible household under the Energy Assistance Program.
+# Every eligible living arrangement code (A, C, E, G and P) has the same value,
+# so every eligible household receives these points.
+values:
+  2003-01-01: 20
+
+metadata:
+  unit: /1
+  period: year
+  label: Virginia EAP living arrangement points
+  reference:
+    - title: LIHEAP Clearinghouse Virginia FY2026 benefit matrix, Appendix B (01/03, Transmittal 03-1), living arrangements
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/VA_BenefitMatrix_2026.pdf#page=7
+    - title: Virginia Energy Assistance Manual, Volume IX, Chapter D, Appendix B (01/03, Transmittal 03-1), living arrangements
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=66
+    - title: Virginia Fuel Assistance Application, question 2 living arrangement codes
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/403-errors/FUEL-ASSISTANCE-APPLICATION.pdf#page=1
