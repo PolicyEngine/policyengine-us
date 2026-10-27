@@ -873,6 +873,21 @@ def test_spm_and_dataset_suites_run_once_in_separate_steps_with_reports(workflow
     assert uploads[0]["with"]["name"] != "rest-test-timings"
 
 
+@pytest.mark.parametrize("name", ["engine", "differential"])
+def test_calculator_api_files_run_once_in_separate_rest_processes(
+    groups, group_files, name
+):
+    file = f"policyengine_us/tests/unit/test_ss_calculator_{name}.py"
+    group = f"ss-calculator-{name}"
+    assert group_files[group] == [file]
+    assert [owner for owner, files in group_files.items() if file in files] == [group]
+    assert groups[group]["reports"] == [
+        f"{REPORT_DIR}/rest-python-{group}.xml",
+        f"{REPORT_DIR}/rest-python-{group}-resources.txt",
+    ]
+    assert all(file not in command for command in dry_run("test-other-python-spm"))
+
+
 def test_groups_run_as_plain_pytest_without_a_report_dir(groups):
     """Locally the same groups run without GNU time, which macOS lacks."""
     plain = dry_run("test-other-python-rest")
@@ -935,6 +950,70 @@ def stub_environment(tmp_path, outcomes):
     env["STUB_CALLS"] = str(calls)
     env["STUB_OUTCOMES"] = " ".join(outcomes)
     return env, calls
+
+
+@pytest.mark.parametrize("failed_index", [None, 0, 1, 2])
+def test_social_security_processes_keep_reports_and_run_after_failures(
+    tmp_path, groups, failed_index
+):
+    """Keep three isolated processes after moving synthetic inputs to Rest."""
+    report_option = "--junitxml=simulation-microsimulation.xml"
+    microsimulation_commands = dry_run(
+        "test-microsimulation", f"PYTEST_ADDOPTS={report_option}"
+    )
+    assert len(microsimulation_commands) == 2
+    input_target = "test-other-python-rest-social-security-inputs"
+    (input_command,) = dry_run(input_target)
+    input_group = groups["social-security-inputs"]
+    assert input_command == ["pytest", *input_group["args"]]
+    commands = [*microsimulation_commands, input_command]
+    assert len(commands) == 3
+    reports = []
+    process_files = {}
+    for index, command in enumerate(microsimulation_commands):
+        args = [report_option, *command[1:]]
+        reports.append([a for a in args if a.startswith("--junitxml=")][-1])
+        process_files[str(index)] = collected_files(
+            [a for a in command[1:] if not a.startswith("--junitxml=")]
+        )
+    input_file = "policyengine_us/tests/core/test_social_security_inputs.py"
+    process_files["inputs"] = collected_files(input_command[1:])
+    assert process_files["inputs"] == [input_file]
+    reference = collected_files([str(TESTS / "microsimulation"), input_file])
+    assert partition_problems(reference, process_files) == []
+    assert all(
+        fnmatch(report.split("=", 1)[1], "simulation-*.xml") for report in reports
+    )
+    (input_report,) = [
+        report for report in input_group["reports"] if report.endswith(".xml")
+    ]
+    assert input_report == f"{REPORT_DIR}/rest-python-social-security-inputs.xml"
+    reports.append(f"--junitxml={input_report}")
+    assert len(set(reports)) == 3
+
+    outcomes = ["0"] * 3
+    if failed_index is not None:
+        outcomes[failed_index] = "1"
+    env, calls = stub_environment(tmp_path, outcomes)
+    env["PYTEST_ADDOPTS"] = report_option
+    microsimulation_result = subprocess.run(
+        ["make", "--no-print-directory", "test-microsimulation"],
+        cwd=REPO,
+        env=env,
+        capture_output=True,
+        text=True,
+    )
+    env.pop("PYTEST_ADDOPTS")
+    input_result = subprocess.run(
+        ["make", "--no-print-directory", input_target],
+        cwd=REPO,
+        env=env,
+        capture_output=True,
+        text=True,
+    )
+    assert calls.read_text().splitlines() == ["|".join(c[1:]) for c in commands]
+    assert (microsimulation_result.returncode != 0) == (failed_index in (0, 1))
+    assert (input_result.returncode != 0) == (failed_index == 2)
 
 
 def scenario_outcomes(scenario, count):
