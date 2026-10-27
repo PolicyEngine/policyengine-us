@@ -9,6 +9,7 @@ from decimal import Decimal, ROUND_HALF_UP
 import numpy as np
 from policyengine_core.model_api import Enum
 
+from policyengine_us.tools.social_security.records import resolve_worker_basis
 from policyengine_us.tools.ssa_cola_history import validate_cola_rounding_rule
 
 
@@ -161,29 +162,11 @@ def reported_joint_cola_factor(person, period, parameters, component):
         reported & ((entitlement_month < 1) | (entitlement_month > 12))
     ):
         raise ValueError("Social Security input months must lie in [1, 12]")
-    worker_year = person(f"{prefix}_worker_eligibility_year", period)
-    worker_id = person(f"{prefix}_worker_id", period)
-    shared_worker_year = person("social_security_worker_computation_year", period)
     # Links follow an explicitly supplied record basis, never a recipient-age
     # retirement assumption on an auxiliary/disability record.
-    ids = person.ids
-    known_workers = {str(identifier): i for i, identifier in enumerate(ids)}
-    linked = worker_year.copy()
-    for i, identifier in enumerate(worker_id):
-        if not reported[i]:
-            continue
-        if str(identifier) in known_workers and identifier != "":
-            worker_index = known_workers[str(identifier)]
-            record_year = worker_year[worker_index] or shared_worker_year[worker_index]
-            if linked[i] and record_year and linked[i] != record_year:
-                raise ValueError(
-                    "Conflicting supplied and linked worker computation years"
-                )
-            linked[i] = linked[i] or record_year
-            if linked[i] == 0 and first_year[i] <= 0:
-                raise ValueError("Linked worker requires an explicit eligibility year")
-        elif identifier != "":
-            raise ValueError("Social Security worker_id does not identify a person")
+    worker_year, linked, _ = resolve_worker_basis(person, period, component, reported)
+    if np.any(reported & linked & (worker_year == 0) & (first_year <= 0)):
+        raise ValueError("Linked worker requires an explicit eligibility year")
     entitlement = person(f"{prefix}_entitlement_year", period)
     age = person("age", period)
     if component == "retirement":
@@ -209,7 +192,11 @@ def reported_joint_cola_factor(person, period, parameters, component):
         if component == "retirement"
         else np.where(entitlement > 0, historical_first, proxy)
     )
-    inferred = np.where(linked > 0, linked + (linked >= 1983), recipient_origin)
+    inferred = np.where(
+        worker_year > 0,
+        worker_year + (worker_year >= 1983),
+        recipient_origin,
+    )
     first_year = np.where(first_year > 0, first_year, inferred)
     result = np.ones(len(age))
     for event in events:
