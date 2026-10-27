@@ -16,8 +16,14 @@ metadata:
       href: https://www.ilga.gov/ftp/JCAR/AdminCode/089/089001200D00740R.html
     - title: 89 Illinois Administrative Code 120.335(a)(1) - Exempt Unearned Income
       href: https://www.ilga.gov/ftp/JCAR/AdminCode/089/089001200H03350R.html
+    - title: 23 Mississippi Administrative Code Part 104, Rule 4.2(C)(1) - General Income Exclusion
+      href: https://www.sos.ms.gov/adminsearch/ACCode/00000278c.pdf#page=22
 
 IL:
   0000-01-01: false
   # Same start as state_general_exclusion.
   1997-03-01: true
+MS:
+  # Rule 4.2(C)(1): the exclusion applies to the applicant's own income,
+  # contributions included.
+  0000-01-01: false
