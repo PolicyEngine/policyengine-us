@@ -28,10 +28,10 @@
         members: [person1, person2]
         state_code: WI
   output:
-    # Age 0 years = 0 months <= 2-month limit (8 weeks, Wis. Stat. 49.148(1m)(a)1)
+    # 0 years x 52 = 0 weeks <= 8-week limit (Wis. Stat. 49.148(1m)(a)1)
     wi_works_placement: CMC
 
-- name: Case 3, CMC with an infant 1.5 months old.
+- name: Case 3, CMC with an infant 6.5 weeks old.
   period: 2025-01
   input:
     people:
@@ -44,10 +44,44 @@
         members: [person1, person2]
         state_code: WI
   output:
-    # 0.125 years x 12 = 1.5 months <= 2
+    # 0.125 years x 52 = 6.5 weeks <= 8
     wi_works_placement: CMC
 
-- name: Case 4, CSJ with an infant 3 months old.
+- name: Case 4, CMC with an infant 56 days old.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+      person2:
+        age: 0.1533
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # 0.1533 years (56 days) x 52 = 7.97 weeks <= 8. W-2 Manual 7.4.3.4
+    # ends CMC on day 56 (7 days x 8 weeks).
+    wi_works_placement: CMC
+
+- name: Case 5, CSJ with an infant 57 days old.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+      person2:
+        age: 0.1561
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # 0.1561 years (57 days) x 52 = 8.12 weeks > 8. A 2-month limit would
+    # give CMC here (0.1561 x 12 = 1.87 months).
+    wi_works_placement: CSJ
+
+- name: Case 6, CSJ with an infant 13 weeks old.
   period: 2025-01
   input:
     people:
@@ -60,10 +94,10 @@
         members: [person1, person2]
         state_code: WI
   output:
-    # 0.25 years x 12 = 3 months > 2
+    # 0.25 years x 52 = 13 weeks > 8
     wi_works_placement: CSJ
 
-- name: Case 5, CSJ with a child aged 1 year.
+- name: Case 7, CSJ with a child aged 1 year.
   period: 2025-01
   input:
     people:
@@ -76,10 +110,10 @@
         members: [person1, person2]
         state_code: WI
   output:
-    # 1 year x 12 = 12 months > 2
+    # 1 year x 52 = 52 weeks > 8
     wi_works_placement: CSJ
 
-- name: Case 6, CSJ with a child aged 2 years.
+- name: Case 8, CSJ with a child aged 2 years.
   period: 2025-01
   input:
     people:
@@ -92,10 +126,75 @@
         members: [person1, person2]
         state_code: WI
   output:
-    # 2 years x 12 = 24 months > 2
+    # 2 years x 52 = 104 weeks > 8
     wi_works_placement: CSJ
 
-- name: Case 7, ARP with pregnant person in third trimester.
+- name: Case 9, CMC with an infant 10 weeks old in January 2011.
+  period: 2011-01
+  input:
+    people:
+      person1:
+        age: 25
+      person2:
+        age: 0.19
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # 0.19 years x 52 = 9.88 weeks <= 12. The limit was 12 weeks until
+    # 2011 Wis. Act 32 cut it to 8 weeks from January 1, 2012.
+    wi_works_placement: CMC
+
+- name: Case 10, CSJ with an infant 10 weeks old in January 2012.
+  period: 2012-01
+  input:
+    people:
+      person1:
+        age: 25
+      person2:
+        age: 0.19
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # 0.19 years x 52 = 9.88 weeks > 8
+    wi_works_placement: CSJ
+
+- name: Case 11, CMC with an infant 84 days old in January 2011.
+  period: 2011-01
+  input:
+    people:
+      person1:
+        age: 25
+      person2:
+        age: 0.23
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # 0.23 years (84 days) x 52 = 11.96 weeks <= 12
+    wi_works_placement: CMC
+
+- name: Case 12, CSJ with an infant 85 days old in January 2011.
+  period: 2011-01
+  input:
+    people:
+      person1:
+        age: 25
+      person2:
+        age: 0.233
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # 0.233 years (85 days) x 52 = 12.12 weeks > 12
+    wi_works_placement: CSJ
+
+- name: Case 13, ARP with pregnant person in third trimester.
   period: 2025-01
   input:
     people:
@@ -110,7 +209,7 @@
   output:
     wi_works_placement: ARP
 
-- name: Case 8, CSJ with pregnant person not in third trimester.
+- name: Case 14, CSJ with pregnant person not in third trimester.
   period: 2025-01
   input:
     people:
@@ -125,7 +224,7 @@
   output:
     wi_works_placement: CSJ
 
-- name: Case 9, CMC takes priority over ARP.
+- name: Case 15, CMC takes priority over ARP.
   period: 2025-01
   input:
     people:

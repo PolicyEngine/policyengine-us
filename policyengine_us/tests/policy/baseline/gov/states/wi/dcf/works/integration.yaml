@@ -36,7 +36,7 @@
         is_tax_unit_head_or_spouse: true
         tanf_gross_earned_income: 1_000
       person2:
-        age: 0  # Newborn (0 x 12 = 0 months ≤ 2)
+        age: 0  # Newborn (0 x 52 = 0 weeks ≤ 8)
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -211,7 +211,7 @@
         is_tax_unit_head_or_spouse: true
         tanf_gross_earned_income: 0
       person2:
-        age: 3  # 3 x 12 = 36 months > 2 threshold
+        age: 3  # 3 x 52 = 156 weeks > 8-week limit
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -290,7 +290,7 @@
         is_tax_unit_head_or_spouse: true
         tanf_gross_earned_income: 0
       person2:
-        age: 1  # 1 x 12 = 12 months > 2 threshold
+        age: 1  # 1 x 52 = 52 weeks > 8-week limit
     spm_units:
       spm_unit:
         members: [person1, person2]

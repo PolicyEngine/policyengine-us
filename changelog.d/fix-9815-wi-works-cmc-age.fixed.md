@@ -1,1 +1,1 @@
-Compare the Wisconsin Works Custodial Parent of an Infant (CMC) age limit, which is in months, with the child's age in months, so children aged 1 and 2 no longer get the CMC placement and its $673 grant.
+Compare the Wisconsin Works Custodial Parent of an Infant (CMC) age limit with the child's age in weeks, and set the limit to 12 weeks before 2012 and 8 weeks from 2012, so children aged 1 and 2 no longer get the CMC placement and its $673 grant.
