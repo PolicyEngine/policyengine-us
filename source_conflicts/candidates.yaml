@@ -660,11 +660,13 @@ candidates:
     - policyengine_us/variables/gov/states/ca/cdss/capi/ca_capi_payment_standard.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10379
-  state: open
-  note: 'Pavel''s sign-off requested (statute against regulation). PE-US follows the statute: the three offsets are
-    $0 from 2019-06-01 and keep the regulation amounts before then (payment_standard_offset/*.yaml, read by
-    ca_capi_payment_standard.py). The 2003 regulation predates the 2019 statute; CDSS applies the statute in ACIN
-    I-23-19 (June 1, 2019 increase of $10 per individual and $20 per couple) and ACIN I-59-25.'
+  state: ruled
+  note: 'Ruled 2026-10-27 for the statute by the project lead for the Medicaid fixes; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10379#issuecomment-6451310006. WIC 18941 (2019) makes CAPI
+    benefits "equivalent to the benefits provided under the SSI/SSP program" from June 1, 2019, so it governs over
+    MPP 49-050.11-.13 (2003); CDSS notices ACIN I-23-19 and I-59-25 agree. PE-US follows the statute: the three
+    offsets are $0 from 2019-06-01 and keep the regulation amounts before then (payment_standard_offset/*.yaml, read
+    by ca_capi_payment_standard.py).'
 - id: us-ca:capi-spousal-deeming-method
   program: capi
   years:
@@ -7023,6 +7025,40 @@ candidates:
     prs: []
   state: unreviewed
   note: PE-US follows Virginia's regulation; verify the federal-fiscal-2024 report against the contemporaneous rule.
+- id: us-va:tanf-up-standards-below-tanf
+  program: tanf
+  years:
+    from: 2021
+    to: 2021
+    type: state-fiscal
+  question: From July 2020 to June 2021, do two-parent (TANF-UP) families get the frozen TANF-UP standards of
+    assistance or at least the TANF standards?
+  sources:
+  - kind: statute
+    citation: 2020 Appropriation Act (HB 30, Chapter 1289), Item 350 C
+    url: https://budget.lis.virginia.gov/item/2020/1/HB30/Chapter/1/350/
+  - kind: manual
+    citation: Virginia TANF Manual Transmittal 68 (July 1, 2020), Section 304, Appendix 3
+    url: https://web.archive.org/web/20210202151340/https://www.dss.virginia.gov/files/division/bp/tanf/manual/Transmittal_68.pdf#page=6
+  readings:
+    statute: The basic benefit payment for two-parent families "shall not be less than what they would have
+      received under TANF", so they get the TANF standards.
+    other: Two-parent families get the TANF-UP schedule in Appendix 3, which kept the July 2019 amounts while
+      TANF payments rose 15 percent.
+  example: A two-parent family of three in a Group II locality with no income gets $417 a month under the statute
+    reading and $363 under Appendix 3 in January 2021.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/va/dss/tanf/payment/up_grant_standard/in_effect.yaml
+    - policyengine_us/variables/gov/states/va/dss/tanf/va_tanf.py
+    - policyengine_us/variables/gov/states/va/dss/tanf/eligibility/va_tanf_income_eligibility.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10253
+  state: unreviewed
+  note: Transmittal 71 (July 1, 2021) removed Appendix 3, so the agency schedule applied only in state fiscal year
+    2021 (July 2020 to June 2021). The 7/20 Chapter 900, Appendix II, Example 6 (a TANF-UP household of four in Group II) uses the $499 TANF
+    standard. Before July 2020 and from July 2021 the manual has one schedule for all units.
 - id: us-vt:low-income-cdcc-threshold-equality
   program: income-tax
   years:
