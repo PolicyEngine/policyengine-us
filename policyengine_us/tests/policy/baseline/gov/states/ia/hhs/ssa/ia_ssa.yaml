@@ -286,9 +286,15 @@
       2026: IA
     age:
       2026: 65
+    # Social Security of $2,020 a month.
+    social_security_retirement:
+      2026: 24_240
     ia_ssa_category: SMME
-    ia_ssa_smme_countable_income: 2_000
   output:
+    # 2,020 - 20 = 2,000 is above 994, so SSI is 0. Without the coverage
+    # input there is no SMME.
+    ssi: 0
+    ia_ssa_smme_countable_income: 2_000
     ia_ssa: 0
 
 - name: Case 23, SMME income below 120 percent poverty.
@@ -299,10 +305,16 @@
       2026: IA
     age:
       2026: 65
+    # Social Security of $1,020 a month.
+    social_security_retirement:
+      2026: 12_240
     ia_ssa_category: SMME
     ia_ssa_smme_coverage_eligible: true
-    ia_ssa_smme_countable_income: 1_000
   output:
+    # 1,020 - 20 = 1,000 is above 994, so SSI is 0, but below January's
+    # 1.2 * 15,650 / 12 = 1,565, so no SMME.
+    ssi: 0
+    ia_ssa_smme_countable_income: 1_000
     ia_ssa: 0
 
 - name: Case 24, SMME cannot stack with blind payment.
@@ -313,12 +325,20 @@
       2026: IA
     age:
       2026: 65
+    # Social Security of $1,025 a month.
+    social_security_retirement:
+      2026: 12_300
     ia_ssa_category: SMME
     ia_ssa_smme_coverage_eligible: true
     ia_ssa_smme_countable_income: 2_000
     is_blind: true
   output:
-    ia_ssa: 22
+    # 1,025 - 20 = 1,005 is above 994, so SSI is 0, and SSA pays the blind
+    # supplement of 994 + 22 - 1,005 = 11. A federally paid supplement
+    # excludes SMME even with SMME income set above the guideline.
+    ssi: 0
+    ia_ssa_federal: 11
+    ia_ssa: 11
 
 # Iowa 6-B IHHRC resource deeming and SSI sibling reallocation.
 # https://hhs.iowa.gov/media/3987/download?inline=#page=46
@@ -1037,13 +1057,17 @@
       2026: IA
     age:
       2026: 65
+    # Social Security of $1,616 a month.
+    social_security_retirement:
+      2026: 19_392
     ia_ssa_category: SMME
     ia_ssa_smme_coverage_eligible: true
-    ia_ssa_smme_countable_income: 1_596
   output:
-    # From April, Iowa uses the 2026 guideline (441 IAC 75.1): 1.2 * 15,960 / 12
-    # = 1,596; the statute requires income "of at least" 120 percent, so 1,596
-    # qualifies.
+    # 1,616 - 20 = 1,596 is above 994, so SSI is 0. From April, Iowa uses the
+    # 2026 guideline (441 IAC 75.1): 1.2 * 15,960 / 12 = 1,596; the statute
+    # requires income "of at least" 120 percent, so 1,596 qualifies.
+    ssi: 0
+    ia_ssa_smme_countable_income: 1_596
     ia_ssa: 1
 
 - name: Case 45, SMME income one cent below 120 percent of poverty.
@@ -1054,11 +1078,16 @@
       2026: IA
     age:
       2026: 65
+    # Social Security of $1,615.99 a month.
+    social_security_retirement:
+      2026: 19_391.88
     ia_ssa_category: SMME
     ia_ssa_smme_coverage_eligible: true
-    ia_ssa_smme_countable_income: 1_595.99
   output:
-    # 1,595.99 is below April's 1.2 * 15,960 / 12 = 1,596, so no SMME.
+    # 1,615.99 - 20 = 1,595.99 is above 994, so SSI is 0, but below April's
+    # 1.2 * 15,960 / 12 = 1,596, so no SMME.
+    ssi: 0
+    ia_ssa_smme_countable_income: 1_595.99
     ia_ssa: 0
 
 - name: Case 46, manual example excludes one-third of a child's child support from participation.
@@ -2120,7 +2149,8 @@
   output:
     # June: 6-B p.67 pays SSI with spousal deeming of 1,491 - 647.50 =
     # 843.50; 20 CFR 416.1163(e)(2) caps it at the benefit without deeming,
-    # 994 - (200 - 20) = 814, which main does not yet apply (issue 10138).
+    # 994 - (200 - 20) = 814, which main does not yet apply (PR 10141
+    # applies it).
     # Mrs. A is not aged, blind or disabled, so there is no couple budget.
     # Either way, care income less 130 and the 1,491 entry deduction (spouse
     # at home) is below 0, so participation is 0, as on p.67;
@@ -2270,10 +2300,16 @@
       2026: IA
     age:
       2026: 65
+    # Social Security of $1,585 a month.
+    social_security_retirement:
+      2026: 19_020
     ia_ssa_category: SMME
     ia_ssa_smme_coverage_eligible: true
-    ia_ssa_smme_countable_income: 1_565
   output:
+    # 1,585 - 20 = 1,565 is above 994, so SSI is 0, and equals January's
+    # 1.2 * 15,650 / 12 = 1,565.
+    ssi: 0
+    ia_ssa_smme_countable_income: 1_565
     ia_ssa: 1
 
 - name: Case 79, in January SMME income one cent below the prior year's 120 percent.
@@ -2284,10 +2320,15 @@
       2026: IA
     age:
       2026: 65
+    # Social Security of $1,584.99 a month.
+    social_security_retirement:
+      2026: 19_019.88
     ia_ssa_category: SMME
     ia_ssa_smme_coverage_eligible: true
-    ia_ssa_smme_countable_income: 1_564.99
   output:
+    # 1,584.99 - 20 = 1,564.99 is above 994, so SSI is 0, but below 1,565.
+    ssi: 0
+    ia_ssa_smme_countable_income: 1_564.99
     ia_ssa: 0
 
 - name: Case 80, in January an SMME couple is compared with the prior year's two-person guideline.
@@ -2625,11 +2666,16 @@
       2026: IA
     age:
       2026: 65
+    # Social Security of $1,585 a month.
+    social_security_retirement:
+      2026: 19_020
     ia_ssa_category: SMME
     ia_ssa_smme_coverage_eligible: true
-    ia_ssa_smme_countable_income: 1_565
   output:
+    # 1,585 - 20 = 1,565 is above 994, so SSI is 0.
     # 1.2 * 15,650 / 12 = 1,565 until April (441 IAC 75.1; RC-0130 Rev. 04/25).
+    ssi: 0
+    ia_ssa_smme_countable_income: 1_565
     ia_ssa: 1
 
 - name: Case 90, a spouse's wages deemed to an SMME applicant working above the SGA level reach the two-person guideline.
@@ -3605,3 +3651,63 @@
     ssi: 0
     ia_ssa_care_countable_income: 1_100
     ia_ssa: 222.57
+
+- name: Case 110, an aged spouse whom SSI pays gets no SMME although the couple's combined income reaches the two-person guideline.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 50
+        meets_ssi_disability_criteria:
+          2026: true
+        # Wages of $4,500 a month, above the $1,690 SGA level.
+        employment_income:
+          2026: 54_000
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person2:
+        age:
+          2026: 70
+        ia_ssa_category: SMME
+        ia_ssa_smme_coverage_eligible: true
+      person3:
+        age:
+          2026: 10
+      person4:
+        age:
+          2026: 10
+      person5:
+        age:
+          2026: 10
+    marital_units:
+      couple:
+        members: [person1, person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
+      child3:
+        members: [person5]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code:
+          2026: IA
+  output:
+    # SSI treats person1 as an ineligible spouse: 4,500 - 3 * 497 = 3,009 is
+    # deemed, (3,009 - 20 - 65) / 2 = 1,462, so person2's SSI is
+    # 1,491 - 1,462 = 29. Iowa Code 249.3(4)(c) limits SMME to a person who
+    # "Would be eligible for supplemental security income benefits but for
+    # having excess income", so person2 gets no SMME although the combined
+    # (4,500 - 20 - 65) / 2 = 2,207.50 is at least the two-person 2,164.
+    ssi: [0, 29, 0, 0, 0]
+    ia_ssa_smme_countable_income: [2_207.5, 2_207.5, 0, 0, 0]
+    ia_ssa: [1, 0, 0, 0, 0]

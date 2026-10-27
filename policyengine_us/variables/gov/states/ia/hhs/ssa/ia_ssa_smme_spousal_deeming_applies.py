@@ -18,8 +18,10 @@ class ia_ssa_smme_spousal_deeming_applies(Variable):
         "https://www.ecfr.gov/current/title-20/section-416.1167",
         # 8-E PDF pages 11-13
         "https://hhs.iowa.gov/media/4011/download?inline#page=11",
-        # 8-F PDF pages 73-74, 88
+        # 8-F PDF pages 73-74, 88, 114
         "https://hhs.iowa.gov/media/4012/download?inline#page=73",
+        # 6-B PDF page 76
+        "https://hhs.iowa.gov/media/3987/download?inline=#page=76",
     )
 
     def formula(person, period, parameters):
@@ -57,14 +59,18 @@ class ia_ssa_smme_spousal_deeming_applies(Variable):
         # 8-E p.12: "An ineligible spouse is a spouse who is not eligible for
         # SSI or non-MAGI-related Medicaid, or State Supplementary Assistance."
         # Those groups are for aged, blind or disabled people (8-F PDF pages
-        # 73-74), and a worker above the SGA level who keeps Medicaid is in the
-        # 1619(b) group, "considered to be an SSI recipient" (8-F PDF page 88).
-        # So a spouse SSI treats as aged, blind or disabled, or an SMME
-        # applicant working above the SGA level, is not an ineligible spouse:
-        # the couple's income is combined with no $497 test, as SSI and
-        # msp_countable_income combine an eligible couple's income
-        # (ia_ssa.yaml Cases 97, 102, 103 and 107). This test is broader than
-        # is_ssi_ineligible_spouse.
+        # 73-74). SMME is itself State Supplementary Assistance, and an SMME
+        # applicant must receive full Medicaid under "a Medicaid coverage group
+        # that does not rely on eligibility for SSA" (6-B PDF page 76), which
+        # ia_ssa_smme_coverage_eligible records. For a disabled worker above
+        # the SGA level that can be MEPD with no premium, where SGA "is not
+        # considered" (8-F PDF page 114), or the 1619(b) group of former SSI
+        # recipients (8-F PDF page 88). So a spouse SSI treats as aged, blind
+        # or disabled, or an SMME applicant working above the SGA level, is not
+        # an ineligible spouse: the couple's income is combined with no $497
+        # test, as SSI and msp_countable_income combine an eligible couple's
+        # income (ia_ssa.yaml Cases 97, 102, 103 and 107). This test is broader
+        # than is_ssi_ineligible_spouse.
         # NOTE: 8-E tests eligibility for SSI, non-MAGI-related Medicaid or
         # State Supplementary Assistance. The model uses SSI's aged, blind or
         # disabled status and the SMME coverage input, so an aged, blind or

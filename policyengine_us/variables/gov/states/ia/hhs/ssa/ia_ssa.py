@@ -151,6 +151,14 @@ class ia_ssa(Variable):
         # model follows the statute (the statute-first rule in CONTRIBUTING.md), so
         # income of exactly 120% qualifies and one cent less does not
         # (ia_ssa.yaml Cases 44-45).
+        # Iowa Code 249.3(4)(c) limits SMME to a person who "Would be eligible
+        # for supplemental security income benefits but for having excess
+        # income or but for being engaged in substantial gainful activity and
+        # having excess income", and 6-B p.74 pays it to "certain Medicaid
+        # recipients who do not qualify for other cash assistance benefits".
+        # So a person SSI pays gets no SMME, including the aged, blind or
+        # disabled spouse of an applicant working above the SGA level, whom
+        # SSI still pays after deeming from that applicant (Case 110).
         smme = (
             person("ia_ssa_smme_coverage_eligible", period)
             & (
@@ -158,6 +166,7 @@ class ia_ssa(Variable):
                 >= p.smme_minimum_fpg_rate * poverty
             )
             & (federally_paid == 0)
+            & (person("ssi_if_takes_up", period) == 0)
         )
         state = select(
             [

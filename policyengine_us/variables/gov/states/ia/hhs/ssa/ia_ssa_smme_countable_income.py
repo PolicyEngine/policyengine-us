@@ -17,7 +17,7 @@ class ia_ssa_smme_countable_income(Variable):
     defined_for = StateCode.IA
     documentation = "SSI countable income plus any SSI payment, combined for a couple whose SSI couple computation applies. For a disabled person working above the SGA level, whom SSI does not count, the person's own income, including in-kind support and maintenance and any spouse income deemed, or combined for a spouse who is not an ineligible spouse, under SSI's rules, after SSI's exclusions, including the student earned income exclusion; or, for the aged, blind or disabled spouse of such an applicant, the couple's combined income. Deductions and financial groups of a Medicaid coverage category that differ from SSI are not modeled."
     reference = (
-        # Iowa Code 249.3(4)(a)(2) and (g)
+        # Iowa Code 249.3(4)(a)(2) and (g); PDF pages 2-3
         "https://www.legis.iowa.gov/docs/code/249.pdf#page=2",
         # 441 IAC 51.7(6)
         "https://www.legis.iowa.gov/docs/iac/chapter/441.51.pdf#page=2",
@@ -60,7 +60,7 @@ class ia_ssa_smme_countable_income(Variable):
         # head-of-household test; 8-E p.19 still lists "Not married" and "Not
         # the head of the household" (Cases 87 and 106). In-kind support and
         # maintenance is the applicant's own, at the individual presumed
-        # maximum value (416.1140), the figure 8-E gives for deeming; when the
+        # maximum value (416.1140), the individual figure 8-E gives (8-E p.56); when the
         # couple is combined, the spouse's in-kind support and maintenance and
         # the couple's presumed maximum value are not modeled.
         earned = max_(
@@ -80,6 +80,8 @@ class ia_ssa_smme_countable_income(Variable):
         # exists only because SSI treats the applicant as an ineligible spouse
         # and takes child allocations (20 CFR 416.1160(d), 416.1163(b)); the
         # eligible-couple budget (8-E p.12) gives no such payment (Case 104).
+        # A spouse whom SSI pays gets no SMME (Iowa Code 249.3(4)(c); ia_ssa,
+        # Case 110).
         own_income = (
             _apply_ssi_exclusions(
                 earned * MONTHS_IN_YEAR, unearned * MONTHS_IN_YEAR, parameters, period

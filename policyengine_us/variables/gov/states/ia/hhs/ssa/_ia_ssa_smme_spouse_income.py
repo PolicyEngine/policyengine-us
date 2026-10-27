@@ -4,8 +4,10 @@ from policyengine_us.model_api import *
 def ia_ssa_smme_spouse_is_not_ineligible(person, period):
     """Whether the other member of a two-person marital unit is not an
     ineligible spouse under 8-E p.12: a person SSI treats as aged, blind or
-    disabled, or an SMME applicant working above the SGA level, who has full
-    non-MAGI-related Medicaid (8-F PDF page 73, 1619(b) group). For an
+    disabled, or an SMME applicant working above the SGA level, who receives
+    full Medicaid under a group that does not rely on State Supplementary
+    Assistance (6-B PDF page 76), such as MEPD (8-F PDF page 114) or 1619(b)
+    (8-F PDF page 88). For an
     applicant whom SSI does not count, any such member is the spouse.
     Callers gate on ia_ssa_has_spouse, so the marital-unit sum less the
     person's own value is the spouse's."""
@@ -43,8 +45,10 @@ def ia_ssa_smme_spouse_income(person, period):
     person's own value is the spouse's. As in SSI's own deeming, support and
     alimony the spouse pays are not deducted (20 CFR 416.1161(a)(10), 8-E
     p.12; issue 10454), children are found through the applicant's tax unit,
-    and no allocation is skipped for a child who receives public
-    income-maintenance payments (416.1163(b))."""
+    no allocation is skipped for a child who receives public
+    income-maintenance payments (416.1163(b); both in PR 10146), and an
+    ineligible spouse's student earned income is not excluded
+    (416.1161(a)(27); issue 10521)."""
     earned = person("ssi_earned_income", period)
     unearned = person("ssi_unearned_income", period)
     exclusion = person("ssi_blind_or_disabled_working_student_exclusion", period)
