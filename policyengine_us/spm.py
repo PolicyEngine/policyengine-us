@@ -83,11 +83,6 @@ DATASET_SOURCE_INPUTS = frozenset({"is_spm_independent_minor_role"})
 
 COUNTY_FIPS_PATTERN = re.compile(r"[0-9]{5}")
 
-# Inputs whose presence, not their values, decides what a formula does
-# (is_receiving_unemployment_compensation). Presence is the inputs a holder
-# has, so subsample must not turn a calculated default into one.
-PRESENCE_TESTED_INPUTS = ("unemployment_compensation_start_month",)
-
 # Where a simulation keeps its behavioural-response measurements, by period
 # (``variables/gov/simulation/behavioral_response_measurements.py``). They are
 # cached formula output kept outside the holders, so the simulation's clone,
@@ -1015,24 +1010,6 @@ class SPMSimulationMixin:
         yield self
         for branch in getattr(self, "branches", {}).values():
             yield from branch._simulation_family()
-
-    def _get_exportable_input_periods(self, variable_name, include_computed_variables):
-        # Core before 3.33.1 subsamples by exporting every period a holder
-        # knows, calculated ones included, and reloading them all as inputs
-        # (policyengine-core#633); from 3.33.1 its subsample rebuilds from
-        # recorded inputs and doesn't call this (policyengine-core#573), so
-        # there this changes only to_input_dataframe and to_input_dict with
-        # include_computed_variables=True. A presence-tested input goes out
-        # only for the periods it is an input where this simulation reads
-        # it, on this branch or one it inherits from. A calculated default,
-        # this branch's or an inherited one, would otherwise come back as a
-        # supplied column of zeros.
-        if include_computed_variables and variable_name in PRESENCE_TESTED_INPUTS:
-            holder = self.get_holder(variable_name)
-            return sorted(holder.get_input_periods(self.branch_name), key=str)
-        return super()._get_exportable_input_periods(
-            variable_name, include_computed_variables
-        )
 
     def subsample(self, *args, **kwargs):
         result = super().subsample(*args, **kwargs)

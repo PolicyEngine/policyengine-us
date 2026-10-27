@@ -354,10 +354,12 @@ def test_start_month_applies_forward_from_the_year_it_is_set(people):
 
 
 def test_subsample_keeps_a_missing_start_month_missing(people):
-    # Core's subsample reloads every value a simulation holds as an input,
-    # calculated ones included. Receipt calculated before it reads the start
-    # month's default, which must not come back as a supplied column of
-    # zeros: that would raise for the months not yet calculated.
+    # Core's subsample before 3.33.1 reloaded every value a simulation held
+    # as an input, calculated ones included (policyengine-core#633); from
+    # 3.33.1, which pe-us requires, it rebuilds from recorded inputs. Receipt
+    # calculated before it reads the start month's default, which must not
+    # come back as a supplied column of zeros: that would raise for the
+    # months not yet calculated.
     calculated = Microsimulation(dataset=_dataset(people))
     calculated.calculate("is_receiving_unemployment_compensation", f"{YEAR}-01")
     untouched = Microsimulation(dataset=_dataset(people))
