@@ -35,8 +35,10 @@ class ca_amt_exemption(Variable):
         head_is_eligible_child = tax_unit.any(eligible_child & is_head)
         # Line 7
         exemption_amount_child = p_irs.child.amount
-        # Line 8
-        earned_income = tax_unit("head_earned", period)
+        # Line 8: "wages, tips, and other payments received for personal
+        # services performed", which in California include payroll HSA
+        # contributions.
+        earned_income = tax_unit("ca_head_earned", period)
         # Line 9
         total_reduced_exemption_amount = exemption_amount_child + earned_income
         # Line 10

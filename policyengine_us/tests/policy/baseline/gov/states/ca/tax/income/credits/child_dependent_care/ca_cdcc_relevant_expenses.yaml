@@ -4,7 +4,7 @@
     state_code: CA
     tax_unit_childcare_expenses: 10_000
     count_cdcc_eligible: 1
-    min_head_spouse_earned: 50_000
+    ca_cdcc_min_head_spouse_earned: 50_000
   output:
     ca_cdcc_relevant_expenses: 3_000 
 
@@ -14,7 +14,7 @@
     state_code: CA
     tax_unit_childcare_expenses: 10_000
     count_cdcc_eligible: 1
-    min_head_spouse_earned: 50_000
+    ca_cdcc_min_head_spouse_earned: 50_000
   output:
     ca_cdcc_relevant_expenses: 3_000 
 
@@ -24,7 +24,7 @@
     state_code: CA
     tax_unit_childcare_expenses: 10_000
     count_cdcc_eligible: 1
-    min_head_spouse_earned: 50_000
+    ca_cdcc_min_head_spouse_earned: 50_000
   output:
     ca_cdcc_relevant_expenses: 3_000 
 
@@ -34,7 +34,7 @@
     state_code: CA
     tax_unit_childcare_expenses: 20_000
     count_cdcc_eligible: 3
-    min_head_spouse_earned: 50_000
+    ca_cdcc_min_head_spouse_earned: 50_000
   output:
     ca_cdcc_relevant_expenses: 6_000 
 
@@ -44,7 +44,7 @@
     state_code: CA
     tax_unit_childcare_expenses: 35_000
     count_cdcc_eligible: 4
-    min_head_spouse_earned: 40_000
+    ca_cdcc_min_head_spouse_earned: 40_000
   output:
     ca_cdcc_relevant_expenses: 6_000
 
@@ -63,7 +63,7 @@
       tax_unit:
         members: [person1, person2]
         tax_unit_childcare_expenses: 0
-        min_head_spouse_earned: 50_000
+        ca_cdcc_min_head_spouse_earned: 50_000
     households:
       household:
         members: [person1, person2]
@@ -82,7 +82,7 @@
     state_code: CA
     tax_unit_childcare_expenses: 10_000
     count_cdcc_eligible: 2
-    min_head_spouse_earned: 50_000
+    ca_cdcc_min_head_spouse_earned: 50_000
     dependent_care_assistance_exclusion: 5_000
   output:
     # min(10_000 expenses, $6,000 two-child cap - $5,000 exclusion, 50_000) = 1_000.
@@ -329,3 +329,43 @@
         state_code: CA
   output:
     ca_cdcc_relevant_expenses: 3000
+
+# R&TC 17052.6(d)(2) limits earned income to "earned income subject to tax
+# under this part", and FTB 3506 line 4 counts "other taxable employee
+# compensation". California excludes a traditional 401(k) deferral but taxes
+# payroll HSA contributions (Schedule CA (540) line 1h, column C).
+- name: 2025 California earned income limit counts payroll HSA but not a 401(k) deferral
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+      spouse:
+        age: 38
+        employment_income: 6_000
+        traditional_401k_contributions_desired: 1_000
+        health_savings_account_payroll_contributions: 1_000
+      child1:
+        age: 5
+      child2:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: CA
+  output:
+    # Federal (W-2 box 1): 6,000 - 1,000 401(k) - 1,000 HSA = 4,000.
+    spouse_earned: 4_000
+    min_head_spouse_earned: 4_000
+    # California (W-2 box 16): 6,000 - 1,000 401(k) = 5,000.
+    # ca_spouse_earned = 4,000 + (5,000 - 4,000) = 5,000.
+    ca_spouse_earned: 5_000
+    ca_cdcc_min_head_spouse_earned: 5_000
+    # min(9,000 expenses, 6,000 two-person limit, federal line 31 of 6,000,
+    # 5,000 California earned income) = 5,000.
+    ca_cdcc_relevant_expenses: 5_000
