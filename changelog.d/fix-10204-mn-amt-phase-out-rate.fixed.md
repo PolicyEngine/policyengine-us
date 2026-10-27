@@ -1,0 +1,1 @@
+Phase out the Minnesota AMT exemption at 25% under Minn. Stat. 290.091, subd. 3(b), instead of the federal rate, which rises to 50% from 2026, and correct the 2025 Minnesota AMT exemption amounts to $95,300, $71,470 and $47,660.
