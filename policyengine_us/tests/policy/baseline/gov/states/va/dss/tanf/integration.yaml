@@ -144,7 +144,13 @@
     # Need standard (Group III, size 4): $1,178/month
     va_tanf_need_standard: 1_178
     #
-    # UP Grant standard (Group III, size 4): $513/month
+    # TANF grant standard (Group III, size 4): $589/month, the 7/20
+    # Section 304, Appendix 2 (Transmittal 68) standard
+    va_tanf_grant_standard: 589
+    #
+    # Separate UP grant standard (Group III, size 4, Appendix 3): $513/month,
+    # not used: the Appropriation Act's floor gives two-parent units the TANF
+    # standard
     va_tanf_up_grant_standard: 513
     #
     # No earned income
@@ -159,10 +165,10 @@
     # Income eligibility: $0 <= $1,178? YES
     va_tanf_income_eligibility: true
     #
-    # Benefit (TANF-UP): $513 - $0 = $513
-    # Maximum UP (Group III): $648/month
-    # $513 >= $10 and <= $648, so benefit = $513
-    va_tanf: 513
+    # Benefit: $589 - $0 = $589
+    # Maximum (Group III): $745/month
+    # $589 >= $10 and <= $745, so benefit = $589
+    va_tanf: 589
 
 - name: Income exceeds need standard - Not eligible
   absolute_error_margin: 0.01
@@ -616,7 +622,13 @@
     # Need standard (Group II, size 3): $836/month
     va_tanf_need_standard: 836
     #
-    # UP Grant standard (Group II, size 3): $363/month
+    # TANF grant standard (Group II, size 3): $417/month, the 7/20
+    # Section 304, Appendix 2 (Transmittal 68) standard
+    va_tanf_grant_standard: 417
+    #
+    # Separate UP grant standard (Group II, size 3, Appendix 3): $363/month,
+    # not used: the Appropriation Act's floor gives two-parent units the TANF
+    # standard
     va_tanf_up_grant_standard: 363
     #
     # No income
@@ -625,8 +637,8 @@
     # Income eligibility: $0 <= $836? YES
     va_tanf_income_eligibility: true
     #
-    # Benefit (TANF-UP): $363 - $0 = $363
-    va_tanf: 363
+    # Benefit: $417 - $0 = $417 (Group II maximum $625)
+    va_tanf: 417
 
 - name: Single person household (pregnant woman)
   period: 2021-01
@@ -727,3 +739,49 @@
     #
     # Not eligible
     va_tanf: 0
+
+- name: TANF-UP family of eight in Group III in 2025 gets the TANF maximum
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_disabled: false
+      person2:
+        age: 33
+        is_disabled: false
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 9
+      person6:
+        age: 7
+      person7:
+        age: 5
+      person8:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: VA
+        county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Both parents are able-bodied, so the unit is a TANF-UP unit.
+    va_up_tanf_eligibility: true
+    # No income.
+    va_tanf_countable_income: 0
+    va_tanf_income_eligibility: true
+    # TANF standard (Group III, size 8): $933 * 1.155 = $1,077.615
+    # The TANF standard and the TANF maximum apply:
+    # min($1,077.615, ceil($745 * 1.155) = $861) = $861
+    # 7/22 Section 304, Appendix 2 (Transmittal 74): min($1,079, $861) = $861
+    # (the TANF-UP maximum would be ceil($648 * 1.155) = $749)
+    va_tanf: 861
