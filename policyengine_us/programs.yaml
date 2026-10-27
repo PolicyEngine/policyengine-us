@@ -1132,6 +1132,14 @@ programs:
         parameter_prefix: gov.states.ne.dhhs.liheap
         verified_years: "2026"
         notes: FY2026 regular heating only, with the single-family and multifamily schedules and the earned-income disregard. Crisis, cooling and weatherization assistance are out of scope.
+      - state: NH
+        status: partial
+        name: New Hampshire FAP
+        full_name: New Hampshire Fuel Assistance Program
+        variable: nh_fap
+        parameter_prefix: gov.states.nh.doe.fap
+        verified_years: "2027"
+        notes: PY2027 regular heating, estimating heating cost with bedrooms (at least one room) as the room count; unsubsidized heat in rent receives the ordinary schedule, which prints no heat-in-rent reduction. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: NJ
         status: partial
         name: New Jersey LIHEAP
