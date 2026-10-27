@@ -24,8 +24,11 @@ further batches. For every tax unit:
 2. Reporting: `taxsim_state_agi`, and its alias `state_agi`, equal `mt_agi`
    through 2023 and federal adjusted gross income from 2024.
 3. Pooling: through 2023, a unit on the joint path with non-negative federal
-   AGI, no Montana additions or subtractions and no Social Security reports
-   federal AGI, so one spouse's loss offsets the other spouse's income.
+   AGI, no Montana additions or subtractions, no partial pension, annuity, and
+   IRA income exemption and no Social Security reports federal AGI, so one
+   spouse's loss offsets the other spouse's income. The exemption is outside
+   `mt_subtractions` (`mt_agi_indiv` and `mt_agi_joint` subtract it), so it is
+   checked separately.
 4. Bounds: `mt_agi` is never negative, and a unit outside Montana has no
    `mt_agi`.
 
@@ -72,11 +75,13 @@ TAX_UNIT_OUTPUTS = (
     "taxsim_state_agi",
     "state_agi",
     "adjusted_gross_income",
+    "mt_pension_exemption_joint",
 )
 PERSON_OUTPUTS = (
     "mt_agi_indiv",
     "mt_additions",
     "mt_subtractions",
+    "mt_pension_exemption_indiv",
     "social_security",
 )
 
@@ -196,6 +201,8 @@ def _check(units, year):
     unadjusted = (
         (run["mt_additions"] == 0)
         & (run["mt_subtractions"] == 0)
+        & (run["mt_pension_exemption_indiv"] == 0)
+        & (run["mt_pension_exemption_joint"] == 0)
         & (run["social_security"] == 0)
     )
     pooled = in_mt & ~separate & unadjusted & (run["adjusted_gross_income"] >= 0)
@@ -231,6 +238,8 @@ def test_seeded_grid(year):
             & (run["adjusted_gross_income"] >= 0)
             & (run["mt_additions"] == 0)
             & (run["mt_subtractions"] == 0)
+            & (run["mt_pension_exemption_indiv"] == 0)
+            & (run["mt_pension_exemption_joint"] == 0)
             & (run["social_security"] == 0)
         )
         assert (floored_sum[joint_path] > run["mt_agi"][joint_path] + 1).any()
