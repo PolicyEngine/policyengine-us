@@ -1,3 +1,10 @@
+## [2.74.2] - 2026-10-27
+
+### Fixed
+
+- Limit the Hawaii TANF and Vermont Reach Up dependent care deductions to the care the state rules allow (an incapacitated or disabled adult; not the unit's own children), cap each incapacitated adult's care separately in Hawaii and Kentucky, and apply the Kentucky K-TAP child care disregard only to a case that is otherwise ineligible, because its countable income exceeds the standard of need or its payment is zero (921 KAR 2:016 Sections 4(2)(b), 5(3)(b)1.c and 9(5)).
+
+
 ## [2.74.1] - 2026-10-27
 
 ### Fixed
