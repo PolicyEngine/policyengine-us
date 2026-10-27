@@ -1,3 +1,10 @@
+## [2.67.1] - 2026-10-27
+
+### Fixed
+
+- Extend Medicaid postpartum coverage to 12 months in the 50 jurisdictions that elected the option (all but Arkansas), dated from each state's approved state plan amendment or section 1115 demonstration amendment, and start Illinois, Louisiana, Michigan, New Jersey and Virginia on the dates their extensions took effect instead of 2021-01-01.
+
+
 ## [2.67.0] - 2026-10-26
 
 ### Removed
