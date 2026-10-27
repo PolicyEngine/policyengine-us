@@ -2191,22 +2191,21 @@ candidates:
   example: Countable earned income of $1,300 and gross unearned income of $600 a month give a $79 premium under the
     regulation and a $69 premium under the chart and in PE-US.
   pe_us:
-    follows: unknown
+    follows: conflicting-source
     code:
     - policyengine_us/parameters/gov/states/il/hfs/hbwd/premium/earned.yaml
     - policyengine_us/parameters/gov/states/il/hfs/hbwd/premium/unearned.yaml
     - policyengine_us/variables/gov/states/il/hfs/hbwd/il_hbwd_premium.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10372
-  state: unreviewed
-  note: 'PE-US gives the chart''s 69 because it adds an earned component (31) and an unearned component (38). The
-    sources are a regulation and two agency publications, with no statute, so the statute-first rule does not settle
-    the cell. CONTRIBUTING treats a regulation as binding ("Regulations are law"), which favours 79; the agency
-    tie-break applies only where the text and the canons do not settle a reading. Against 79: the regulation''s row
-    reads 31, 50, 79, 87, 106 (steps of about $19 elsewhere), and its column reads 63, 79, 76 for earned income
-    1001-1250, 1251-1500 and 1501-1750, so under 79 more earned income would lower the premium; the agency''s chart
-    and brochure print 69. The ruling decides whether 79 binds or is a scrivener''s error. The other 440 cells of the
-    regulation and the chart agree. Issue 10471 proposes encoding the full table, which needs this ruling first.'
+  state: ruled
+  note: 'Ruled 2026-10-27 for the regulation''s 79 by the project lead for the Medicaid fixes; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10372#issuecomment-6451385205. Under "Regulations are law" the
+    regulation binds, and the written canons have no exception for an apparent typesetting error, so the 69 in the
+    HFS chart and the HFS 3792 brochure does not override it. PE-US gives 69 because its premium adds an earned
+    component (31) and an unearned component (38), which cannot represent a cell that departs from that sum. Issue
+    10471, which encodes the full 21 x 21 table, will make PE-US follow the ruling. The other 440 cells of the
+    regulation and the chart agree.'
 - id: us-il:joint-childless-eitc-dependency-skip
   program: income-tax
   years:
