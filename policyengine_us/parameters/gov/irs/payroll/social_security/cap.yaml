@@ -61,15 +61,22 @@ values:
   # Official SSA determinations.
   2026-01-01: 184_500
   2027-01-01: 192_300
-  # CBO forecast.
-  2028-01-01: 198_600
-  2029-01-01: 206_400
-  2030-01-01: 214_200
-  2031-01-01: 222_300
-  2032-01-01: 230_100
-  2033-01-01: 237_900
-  2034-01-01: 246_000
-  2035-01-01: 254_400
+  # Forecasts apply 42 U.S.C. 430(b) to the projected NAWI in
+  # parameters/gov/ssa/nawi.yaml, which follows CBO's February 2026 CBB
+  # growth from the published 2025 NAWI:
+  # CBB(Y) = 60_600 * NAWI(Y-2) / 22_935.42, rounded to the nearest $300.
+  # The levels sit above CBO's tp_ss_max_earnings (2036: 260_400 against
+  # 258_600), because NAWI grows from SSA's published 2025 value; only CBO's
+  # growth is used.
+  2028-01-01: 199_200 # 60_600 * 75_428.91 / 22_935.42 = 199_298.38
+  2029-01-01: 206_700 # 60_600 * 78_286.07 / 22_935.42 = 206_847.57
+  2030-01-01: 214_200 # 60_600 * 81_028.94 / 22_935.42 = 214_094.78
+  2031-01-01: 221_400 # 60_600 * 83_771.81 / 22_935.42 = 221_342.00
+  2032-01-01: 228_600 # 60_600 * 86_514.68 / 22_935.42 = 228_589.21
+  2033-01-01: 236_400 # 60_600 * 89_486.12 / 22_935.42 = 236_440.36
+  2034-01-01: 243_900 # 60_600 * 92_343.28 / 22_935.42 = 243_989.55
+  2035-01-01: 252_000 # 60_600 * 95_429.00 / 22_935.42 = 252_142.64
+  2036-01-01: 260_400 # 60_600 * 98_514.73 / 22_935.42 = 260_295.76
 metadata:
   unit: currency-USD
   period: year
@@ -87,6 +94,8 @@ metadata:
       href: https://www.ssa.gov/oact/cola/cbb.html
     - title: 2027 Cost-of-Living Adjustment (COLA) Fact Sheet
       href: https://www.ssa.gov/news/en/cola/factsheets/2027.html
-    - title: CBO Tax Parameters and Effective Marginal Tax Rates | Jan 2025
-      # 1. Tax Parameters. Row 161.
-      href: https://www.cbo.gov/system/files/2025-01/53724-2025-01-Tax-Parameters.xlsx
+    - title: CBO | Tax Parameters and Effective Marginal Tax Rates | February 2026
+      # Sheet: 1. Tax Parameters, Row 155: Maximum taxable earnings for the Social Security payroll tax
+      href: https://www.cbo.gov/system/files/2026-02/53724-2026-02-Tax-Parameters.xlsx
+    - title: CBO | Tax Parameters | February 2026, CSV (variable tp_ss_max_earnings)
+      href: https://github.com/US-CBO/cbo-data/blob/284a95665f9f2f74ed1f482feb629b43fce323da/data/budget/tax_parameters/annual_cy_2026-02.csv

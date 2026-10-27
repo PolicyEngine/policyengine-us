@@ -10,6 +10,7 @@
         immigration_status: CITIZEN
         ssi_countable_resources: 500
         mn_msa_has_guardian: true
+        mn_msa_guardian_is_county_staff: false
         ssi_unearned_income: 24_000  # $2,000/mo gross
     marital_units:
       marital_unit:
@@ -40,6 +41,7 @@
         immigration_status: CITIZEN
         ssi_countable_resources: 500
         mn_msa_has_guardian: true
+        mn_msa_guardian_is_county_staff: false
         ssi_unearned_income: 36_000  # $3,000/mo gross -> 5% = $150
     marital_units:
       marital_unit:
@@ -70,6 +72,7 @@
         immigration_status: CITIZEN
         ssi_countable_resources: 500
         mn_msa_has_guardian: true
+        mn_msa_guardian_is_county_staff: false
         ssi: 0
         ssi_unearned_income: 12_000  # $1,000/mo -> 5% = $50
     marital_units:
@@ -146,6 +149,7 @@
         state_code: MN
   output:
     # min(5% of $1,999 = $99.95, $100 cap) = $99.95.
+    mn_msa_guardian_is_county_staff: false
     mn_msa_guardian_fee: 99.95
 
 - name: Case 6, gross income $1 above $2,000 boundary is capped at $100.
@@ -177,3 +181,60 @@
   output:
     # min(5% of $2,001 = $100.05, $100 cap) = $100.
     mn_msa_guardian_fee: 100
+
+- name: Case 7, county agency staff guardian receives no fee below the cap.
+  period: 2026-01
+  input:
+    state_code: MN
+    age: 70
+    mn_msa_has_guardian: true
+    mn_msa_guardian_is_county_staff: true
+    ssi: 0
+    ssi_unearned_income: 12_000  # $1,000/mo would otherwise allow $50.
+  output:
+    mn_msa_guardian_fee: 0
+
+- name: Case 8, county agency staff guardian receives no fee above the cap.
+  period: 2026-01
+  input:
+    state_code: MN
+    age: 70
+    mn_msa_has_guardian: true
+    mn_msa_guardian_is_county_staff: true
+    ssi: 0
+    ssi_unearned_income: 36_000  # $3,000/mo would otherwise allow $100.
+  output:
+    mn_msa_guardian_fee: 0
+
+- name: Case 9, county staff status only excludes that person's guardian fee.
+  period: 2026-01
+  input:
+    people:
+      county_staff_guardian_person:
+        age: 70
+        mn_msa_has_guardian: true
+        mn_msa_guardian_is_county_staff: true
+        ssi: 0
+        ssi_unearned_income: 18_000
+      nonstaff_guardian_person:
+        age: 70
+        mn_msa_has_guardian: true
+        mn_msa_guardian_is_county_staff: false
+        ssi: 0
+        ssi_unearned_income: 18_000
+    marital_units:
+      marital_unit:
+        members: [county_staff_guardian_person, nonstaff_guardian_person]
+    tax_units:
+      tax_unit:
+        members: [county_staff_guardian_person, nonstaff_guardian_person]
+    spm_units:
+      spm_unit:
+        members: [county_staff_guardian_person, nonstaff_guardian_person]
+    households:
+      household:
+        members: [county_staff_guardian_person, nonstaff_guardian_person]
+        state_code: MN
+  output:
+    # Unit gross income is $3,000/mo: only the nonstaff guardian gets the $100 cap.
+    mn_msa_guardian_fee: [0, 100]

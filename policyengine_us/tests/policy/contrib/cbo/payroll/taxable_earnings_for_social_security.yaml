@@ -1,0 +1,65 @@
+- name: Earnings above the donut threshold do not create negative SECA without self-employment income.
+  period: 2027
+  reforms: policyengine_us.reforms.cbo.payroll.increase_taxable_earnings_for_social_security.increase_taxable_earnings_for_social_security
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.cbo.payroll.secondary_earnings_threshold: 250_000
+    gov.irs.payroll.social_security.cap: 192_300
+    payroll_tax_gross_wages: 400_000
+    self_employment_income: 0
+  output:
+    # Wage base = 192,300 + (400,000 - 250,000) = 342,300.
+    taxable_earnings_for_social_security: 342_300
+    social_security_taxable_self_employment_income: 0
+    # Employee and employer each pay 342,300 * 6.2% = 21,222.60.
+    employee_social_security_tax: 21_222.60
+    employer_social_security_tax: 21_222.60
+    self_employment_social_security_tax: 0
+
+- name: Self-employment earnings above the threshold join wages in the taxable base.
+  period: 2027
+  reforms: policyengine_us.reforms.cbo.payroll.increase_taxable_earnings_for_social_security.increase_taxable_earnings_for_social_security
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.cbo.payroll.secondary_earnings_threshold: 250_000
+    gov.irs.payroll.social_security.cap: 192_300
+    payroll_tax_gross_wages: 300_000
+    self_employment_income: 50_000
+  output:
+    # Wage base = 192,300 + (300,000 - 250,000) = 242,300.
+    taxable_earnings_for_social_security: 242_300
+    # Net SE earnings = 50,000 * 0.9235 = 46,175, all above the threshold.
+    taxable_self_employment_income: 46_175
+    social_security_taxable_self_employment_income: 46_175
+    employee_social_security_tax: 15_022.60
+    employer_social_security_tax: 15_022.60
+    # SECA = 46,175 * 12.4% = 5,725.70.
+    self_employment_social_security_tax: 5_725.70
+
+- name: A cap above the threshold taxes each dollar of wages once.
+  period: 2036
+  reforms: policyengine_us.reforms.cbo.payroll.increase_taxable_earnings_for_social_security.increase_taxable_earnings_for_social_security
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.cbo.payroll.secondary_earnings_threshold: 250_000
+    gov.irs.payroll.social_security.cap: 263_100
+    payroll_tax_gross_wages: 400_000
+    self_employment_income: 0
+  output:
+    # Wage base = 263,100 + (400,000 - 263,100) = 400,000.
+    taxable_earnings_for_social_security: 400_000
+    social_security_taxable_self_employment_income: 0
+    # Each FICA share = 400,000 * 6.2% = 24,800; SECA remains zero.
+    employee_social_security_tax: 24_800
+    employer_social_security_tax: 24_800
+    self_employment_social_security_tax: 0
+
+- name: Wages between the threshold and a higher cap are taxed once.
+  period: 2036
+  reforms: policyengine_us.reforms.cbo.payroll.increase_taxable_earnings_for_social_security.increase_taxable_earnings_for_social_security
+  input:
+    gov.contrib.cbo.payroll.secondary_earnings_threshold: 250_000
+    gov.irs.payroll.social_security.cap: 263_100
+    payroll_tax_gross_wages: 255_000
+  output:
+    taxable_earnings_for_social_security: 255_000
