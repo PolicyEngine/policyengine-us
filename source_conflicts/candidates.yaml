@@ -2662,36 +2662,6 @@ candidates:
     size and capped at seven, and the parameter''s comment records the web app''s Number of Children label (benefit/payment_maximum.yaml,
     ky_ktap_payment_maximum.py). The KY FACES page is written for kinship caregivers, whose child-only cases count
     only the children, so the label may describe that audience; confirm which count the agency applies.'
-- id: us-ky:ktap-standard-of-need-equality
-  program: tanf
-  years:
-    from: 2015
-    type: calendar
-  question: Is a K-TAP case whose countable income equals the standard of need ineligible?
-  sources:
-  - kind: regulation
-    citation: 921 KAR 2:016 Section 4(2)(b)
-    url: https://apps.legislature.ky.gov/law/kar/titles/921/002/016/
-  - kind: manual
-    citation: DCBS Operations Manual Volume III, MS 2810 B, OMTL-688, revised 3/1/26
-    url: https://www.chfs.ky.gov/agencies/dcbs/dfs/Documents/OMVOLIII.pdf#page=160
-  readings:
-    statute: The case is ineligible only when countable income "exceeds" the standard of need.
-    other: The case is ineligible when countable income "is equal to or exceeds" the standard of need.
-  example: In January 2024 a parent with one child age 5 has $375 of earnings, $452 of unearned income and $300
-    of child care. Without the child care disregard countable income is 552, equal to the standard of need (size
-    2). Under the regulation the case is not otherwise ineligible, the Section 5(3)(b)1.c child care disregard
-    does not apply, and the benefit is $0. Under the manual the $175 disregard applies and the benefit is $48.13.
-  pe_us:
-    follows: statute
-    code:
-    - policyengine_us/variables/gov/states/ky/dcbs/ktap/income/ky_ktap_ineligible_without_child_care_disregard.py
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/10254
-  state: unreviewed
-  note: The boundary matters only for the Section 5(3)(b)1.c child care disregard, since the ratable-reduction
-    deficit is 0 at equality. Section 4(2)(b) reads the same in the versions effective 11-18-2015 and 2-16-2023.
-    Code not yet on main.
 - id: us-ky:liheap-subsidized-income-points
   program: liheap
   years:

@@ -229,7 +229,7 @@
     # Benefit: min(0.55 x (631 - 550), 524) = 44.55
     ky_ktap: 44.55
 
-- name: Case 7, countable income equal to the standard of need pays no benefit.
+- name: Case 7, child care disregard for a case whose countable income equals the standard of need.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -252,11 +252,15 @@
         state_code: KY
   output:
     # Without child care: (375 - 175) x 0.5 + 452 = 552 = 552 standard of
-    # need (size 2). 921 KAR 2:016 Section 4(2)(b) makes a case ineligible
-    # only when income exceeds the standard, so the case is not otherwise
-    # ineligible and the child care disregard does not apply.
-    ky_ktap_ineligible_without_child_care_disregard: false
-    ky_ktap_dependent_care_disregard: 0
-    ky_ktap_countable_income: 552
-    # Benefit: 0.55 x max(552 - 552, 0) = 0
-    ky_ktap: 0
+    # need (size 2). The payment would be min(0.55 x (552 - 552), 450) = 0,
+    # and 921 KAR 2:016 Section 9(5) makes a case with a zero payment
+    # ineligible, so the case is otherwise ineligible and the child care
+    # disregard applies (Section 5(3)(b)1.c): min(300, 175) = 175.
+    ky_ktap_ineligible_without_child_care_disregard: true
+    ky_ktap_dependent_care_disregard: 175
+    # Earned: (375 - 175 - 175) x 0.5 = 12.50; countable: 12.50 + 452 = 464.50
+    ky_ktap_countable_income: 464.5
+    # Gross income 827 <= 552 x 1.85 = 1,021.20
+    ky_ktap_eligible: true
+    # Benefit: min(0.55 x (552 - 464.50), 450) = 48.125
+    ky_ktap: 48.125

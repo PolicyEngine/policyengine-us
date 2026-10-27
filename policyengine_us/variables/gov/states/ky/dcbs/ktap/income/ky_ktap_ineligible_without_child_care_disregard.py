@@ -11,6 +11,7 @@ class ky_ktap_ineligible_without_child_care_disregard(Variable):
     label = "Kentucky K-TAP case is ineligible without the child care disregard"
     definition_period = MONTH
     reference = (
+        # Sections 4(2)(b), 5(3)(b)1.c, 9(4)(a) and 9(5)
         "https://apps.legislature.ky.gov/law/kar/titles/921/002/016/",
         # PDF pages 160, 162
         "https://www.chfs.ky.gov/agencies/dcbs/dfs/Documents/OMVOLIII.pdf#page=160",
@@ -18,10 +19,9 @@ class ky_ktap_ineligible_without_child_care_disregard(Variable):
     defined_for = StateCode.KY
 
     def formula(spm_unit, period, parameters):
-        # Per 921 KAR 2:016 Section 4(2)(b), a case whose countable income
-        # exceeds the standard of need is ineligible. Compute countable income
-        # with the dependent care disregard for incapacitated adults only.
-        p = parameters(period).gov.states.ky.dcbs.ktap.income.deductions
+        # Compute countable income with the dependent care disregard for
+        # incapacitated adults only.
+        p = parameters(period).gov.states.ky.dcbs.ktap
         person = spm_unit.members
         gross_earned = person("tanf_gross_earned_income", period)
         adult_care = spm_unit("ky_ktap_incapacitated_adult_care_disregard", period)
@@ -29,8 +29,22 @@ class ky_ktap_ineligible_without_child_care_disregard(Variable):
             person, period
         )
         countable_earned = spm_unit.sum(
-            ky_ktap_countable_earnings(gross_earned, adult_care_person, p, period)
+            ky_ktap_countable_earnings(
+                gross_earned, adult_care_person, p.income.deductions, period
+            )
         )
         countable_unearned = spm_unit("ky_ktap_countable_unearned_income", period)
+        countable_income = countable_earned + countable_unearned
         standard_of_need = spm_unit("ky_ktap_standard_of_need", period)
-        return countable_earned + countable_unearned > standard_of_need
+        # Per 921 KAR 2:016 Section 4(2)(b), a case whose countable income
+        # exceeds the standard of need is ineligible.
+        exceeds_need = countable_income > standard_of_need
+        # Per Section 9(5), a case whose payment is zero is also ineligible.
+        # Section 9(4)(a) pays the lesser of 55% of the deficit below the
+        # standard of need and the payment maximum, so the payment is zero
+        # when countable income equals the standard of need.
+        deficit = max_(standard_of_need - countable_income, 0)
+        payment_maximum = spm_unit("ky_ktap_payment_maximum", period)
+        payment = min_(deficit * p.benefit.rate, payment_maximum)
+        zero_payment = payment == 0
+        return exceeds_need | zero_payment

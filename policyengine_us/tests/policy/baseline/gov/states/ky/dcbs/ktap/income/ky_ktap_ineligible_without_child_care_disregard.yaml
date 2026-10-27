@@ -2,7 +2,9 @@
 # Per 921 KAR 2:016 Section 5(3)(b)1.c and DCBS Operations Manual Vol. III
 # MS 2840 B.1, the dependent care disregard covers child care only for a case
 # that is otherwise ineligible without it. Per 921 KAR 2:016 Section 4(2)(b),
-# a case is ineligible when countable income exceeds the standard of need.
+# a case is ineligible when countable income exceeds the standard of need,
+# and per Section 9(5) when its payment, the lesser of 55% of the deficit and
+# the payment maximum (Section 9(4)(a)), is zero.
 # Countable earned income here applies the $175 work expense, any
 # incapacitated adult care disregard, and the 50% disregard (January).
 
@@ -57,7 +59,7 @@
     # Countable income: 662.50 > 631 standard of need (size 3), ineligible.
     ky_ktap_ineligible_without_child_care_disregard: true
 
-- name: Case 3, countable income equal to the standard of need is not ineligible.
+- name: Case 3, countable income equal to the standard of need is ineligible.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -79,8 +81,35 @@
   output:
     # Countable earned: (375 - 175) x 0.5 = 100; unearned: 452
     # Countable income: 552 = standard of need (size 2): 552.
-    # Section 4(2)(b): only income that "exceeds" the standard of need makes
-    # the case ineligible, so the child care disregard does not apply.
+    # Section 4(2)(b) does not apply (552 does not exceed 552), but the
+    # payment is min(0.55 x (552 - 552), 450) = 0, so Section 9(5) makes the
+    # case ineligible.
+    ky_ktap_ineligible_without_child_care_disregard: true
+
+- name: Case 3a, countable income one dollar below the standard of need is eligible.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        tanf_gross_earned_income: 373
+        tanf_gross_unearned_income: 452
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 3_600
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    # Countable earned: (373 - 175) x 0.5 = 99; unearned: 452
+    # Countable income: 551 < 552 standard of need (size 2).
+    # Payment: min(0.55 x (552 - 551), 450) = 0.55 > 0, so the case is
+    # eligible without the child care disregard.
     ky_ktap_ineligible_without_child_care_disregard: false
 
 - name: Case 3b, countable income one dollar above the standard of need is ineligible.

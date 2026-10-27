@@ -414,7 +414,7 @@
     # 0 + 175 = 175 (not min(300, 175 + 175) = 300).
     ky_ktap_dependent_care_disregard: 175
 
-- name: Child care is not disregarded when countable income equals the standard of need.
+- name: Child care is disregarded when countable income equals the standard of need.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -436,7 +436,8 @@
         state_code: KY
   output:
     # Without child care: (375 - 175) x 0.5 + 452 = 552 = 552 standard of
-    # need (size 2). Section 4(2)(b) makes a case ineligible only when income
-    # exceeds the standard, so the case is not otherwise ineligible.
-    ky_ktap_ineligible_without_child_care_disregard: false
-    ky_ktap_dependent_care_disregard: 0
+    # need (size 2). The payment is min(0.55 x (552 - 552), 450) = 0, so
+    # Section 9(5) makes the case otherwise ineligible.
+    ky_ktap_ineligible_without_child_care_disregard: true
+    # Child care: min(300, 175 cap for age 5) = 175
+    ky_ktap_dependent_care_disregard: 175
