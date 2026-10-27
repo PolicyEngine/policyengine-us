@@ -78,11 +78,17 @@ ID_SITUATION = {
         "parent": {"age": {"2026": 30, "2028": 30}},
         "child1": {
             "age": {"2026": 2, "2028": 4},
-            "ctc_qualifying_child": {"2026": True, "2028": True},
+            "ctc_qualifying_child_ignoring_filer_identification": {
+                "2026": True,
+                "2028": True,
+            },
         },
         "child2": {
             "age": {"2026": 4, "2028": 6},
-            "ctc_qualifying_child": {"2026": True, "2028": True},
+            "ctc_qualifying_child_ignoring_filer_identification": {
+                "2026": True,
+                "2028": True,
+            },
         },
     },
     "tax_units": {

@@ -36,7 +36,7 @@ def create_id_ctc() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.id.ctc
             # Potential is the revived (nonrefundable) Idaho CTC worksheet
-            # amount, ctc_qualifying_children * amount.
+            # amount, id_ctc_qualifying_children * amount.
             potential = tax_unit("id_ctc", period)
             ordered_credits = parameters(
                 period
@@ -50,7 +50,7 @@ def create_id_ctc() -> Reform:
             )
             non_refundable = min_(potential, credit_limit)
             unused_credit = max_(potential - non_refundable, 0)
-            eligible_children = tax_unit("ctc_qualifying_children", period)
+            eligible_children = tax_unit("id_ctc_qualifying_children", period)
             refund_limit = p.refundable.amount * eligible_children
             refundable_credit = min_(unused_credit, refund_limit)
             # Only pay the refundable portion when the refundable option is on;

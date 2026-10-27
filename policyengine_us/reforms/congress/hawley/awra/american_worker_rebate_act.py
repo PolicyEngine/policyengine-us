@@ -84,7 +84,12 @@ def create_american_worker_rebate_act() -> Reform:
             "The tax rebate amount for children, under the American Worker Rebate Act."
         )
         definition_period = YEAR
-        defined_for = "ctc_qualifying_child"
+        # The bill counts "qualifying children (within the meaning of section
+        # 24(c))", so the CTC filer identification requirements do not apply;
+        # american_worker_tax_rebate_eligible applies the bill's own rules.
+        # The variable also applies the CTC child social security number rule
+        # and the IRC 152(b)(1) dependent-filer rule.
+        defined_for = "ctc_qualifying_child_ignoring_filer_identification"
 
         adds = ["gov.contrib.congress.hawley.awra.amount.non_joint"]
 
