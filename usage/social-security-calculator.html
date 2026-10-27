@@ -1,0 +1,672 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Restricted-survivor modeling ruling" href="social-security/RULINGS.html"><link rel="prev" title="Finding parameters" href="parameter-discovery.html">
+
+    <!-- Generated with Sphinx 7.4.7 and Furo 2025.12.19 -->
+        <title>Supplied-record Social Security calculator - PolicyEngine US documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">PolicyEngine US documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <span class="sidebar-brand-text">PolicyEngine US documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Government programs</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/fcc/index.html">FCC</a><input aria-label="Toggle navigation of FCC" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/fcc/lifeline.html">Lifeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/fcc/acp.html">Affordable Connectivity Program</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/hhs/index.html">HHS</a><input aria-label="Toggle navigation of HHS" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/hhs/tanf.html">Temporary Assistance for Needy Families (TANF)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/hud/index.html">HUD</a><input aria-label="Toggle navigation of HUD" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/hud/housing-assistance.html">Housing assistance</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/irs/tax.html">IRS</a><input aria-label="Toggle navigation of IRS" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/irs/credits/eitc.html">Earned Income Tax Credit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/irs/credits/cdcc.html">Child and Dependent Care Credit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/irs/credits/clean-vehicle.html">Clean vehicle credit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/irs/capital-gains.html">Capital Gains Tax</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/ssa/index.html">SSA</a><input aria-label="Toggle navigation of SSA" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/ssa/ssi.html">SSI</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/states/index.html">States</a><input aria-label="Toggle navigation of States" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gov/states/ca/index.html">California</a><input aria-label="Toggle navigation of California" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ca/calepa/carb/cvrp.html">California Clean Vehicle Rebate Project (CVRP)</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gov/states/ma/index.html">Massachusetts</a><input aria-label="Toggle navigation of Massachusetts" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ma/tax-benefit.html">Massachusetts tax and benefit system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ma/tax/income/index.html">Massachusetts income tax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ma/tax/income/credits/senior-circuit-breaker.html">Massachusetts Senior Circuit Breaker Credit</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gov/states/md/index.html">Maryland</a><input aria-label="Toggle navigation of Maryland" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/index.html">Maryland state income tax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/credits/cdcc.html">Maryland Child and Dependent Care Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/credits/ctc.html">Maryland Child Tax Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/credits/eitc.html">Maryland Earned Income Tax Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/credits/poverty-line-credit.html">Maryland Poverty Line Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/md/tax/income/deductions/standard-deduction.html">Maryland Standard Deduction</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gov/states/ny/index.html">New York</a><input aria-label="Toggle navigation of New York" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ny/cdcc.html">NY Child and Dependent Care Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ny/ctc.html">Empire State Child Credit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ny/eitc.html">New York EITC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ny/tax.html">New York state income tax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/ny/tax-benefit.html">New York State income tax</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/states/pa/tax.html">Pennsylvania</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/states/ut/ut_income_tax.html">Utah State income tax</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../gov/states/wa/index.html">Washington</a><input aria-label="Toggle navigation of Washington" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gov/states/wa/tax/income/credits/working-families-tax-credit.html">Washington Working Families Tax Credit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../gov/usda/index.html">USDA</a><input aria-label="Toggle navigation of USDA" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gov/usda/snap.html">SNAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/usda/school-meals.html">School meals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gov/usda/wic.html">WIC</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Validation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../validation/taxsim.html">Validation against TAXSIM</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="microsimulation.html">Microsimulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parameter-discovery.html">Finding parameters</a></li>
+<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">Supplied-record Social Security calculator</a><input aria-label="Toggle navigation of Supplied-record Social Security calculator" checked="" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="social-security/RULINGS.html">Restricted-survivor modeling ruling</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="speed.html">Speed</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../examples/income-sources.html">Income sources</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/usage/social-security-calculator.md" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="supplied-record-social-security-calculator">
+<h1>Supplied-record Social Security calculator<a class="headerlink" href="#supplied-record-social-security-calculator" title="Link to this heading">¶</a></h1>
+<p>The opt-in calculator implements design v3 D0, 4a-1 and the shared 4d core,
+including amendments M1–M4, the top-factor structure in M6 and M8. It returns
+<strong>gross benefits before Medicare deductions</strong>, from an identified worker record.
+Existing public benefit inputs continue to work independently.</p>
+<section id="inputs-and-outputs">
+<h2>Inputs and outputs<a class="headerlink" href="#inputs-and-outputs" title="Link to this heading">¶</a></h2>
+<p>Set <code class="docutils literal notranslate"><span class="pre">ss_calculator_source</span></code> to <code class="docutils literal notranslate"><span class="pre">aime</span></code>, <code class="docutils literal notranslate"><span class="pre">pia</span></code> or <code class="docutils literal notranslate"><span class="pre">survivor</span></code>; its default is <code class="docutils literal notranslate"><span class="pre">off</span></code>.
+The selector determines the route even when the selected amount is zero.
+Omitting the selected amount fails; it is distinct from supplying zero.
+Identity/source fields are eternal inputs. Supply exact recipient birth date,
+worker ID, entitlement month, insured status and source valuation basis. The
+only supported basis is <code class="docutils literal notranslate"><span class="pre">unreformed_eligibility</span></code>; externally reformed sources
+fail rather than applying a mechanism twice. Each member of a retired couple
+supplies their own record. Disability, spouse, child, minimum and dual-entitlement
+computations are outside this route.</p>
+<p>For own retirement, also supply <code class="docutils literal notranslate"><span class="pre">ss_calculator_eligibility_year</span></code> and either
+<code class="docutils literal notranslate"><span class="pre">ss_calculator_supplied_aime</span></code> (whole monthly dollars) or
+<code class="docutils literal notranslate"><span class="pre">ss_calculator_supplied_pia</span></code> (monthly dimes at initial eligibility). Optional
+<code class="docutils literal notranslate"><span class="pre">ss_calculator_claiming_factor</span></code> is an exact decimal <strong>string</strong>; otherwise exact
+claiming months, birth-cohort FRA, early reduction and delayed credits determine
+it. Delayed credits earned in a midyear claiming year enter the benefit the
+following January, or upon reaching 70. A January 1 birth belongs to the previous
+attainment cohort. Retirement commencement must satisfy SSA’s full-month age-62
+rule.</p>
+<p>For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">policyengine_us</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simulation</span>
+
+<span class="n">simulation</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span>
+    <span class="n">situation</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"people"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"worker"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"ss_calculator_source"</span><span class="p">:</span> <span class="s2">"aime"</span><span class="p">,</span>
+                <span class="s2">"ss_calculator_worker_id"</span><span class="p">:</span> <span class="s2">"worker-record-1"</span><span class="p">,</span>
+                <span class="s2">"ss_calculator_birth_date"</span><span class="p">:</span> <span class="s2">"1961-01-02"</span><span class="p">,</span>
+                <span class="s2">"ss_calculator_eligibility_year"</span><span class="p">:</span> <span class="mi">2023</span><span class="p">,</span>
+                <span class="s2">"ss_calculator_entitlement_month"</span><span class="p">:</span> <span class="s2">"2023-01"</span><span class="p">,</span>
+                <span class="s2">"ss_calculator_supplied_aime"</span><span class="p">:</span> <span class="mi">3000</span><span class="p">,</span>
+                <span class="s2">"ss_calculator_insured"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s2">"ss_calculator_no_special_monthly_test"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s2">"ss_calculator_no_prior_withholding_adjustment"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s2">"ss_calculator_earnings_test_no_trigger"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="c1"># SSA's 2023 example: $1,606.70 PIA, claim at 62/FRA 67 =&gt; $1,124.</span>
+<span class="n">monthly</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="s2">"ss_calculated_benefit"</span><span class="p">,</span> <span class="s2">"2023-01"</span><span class="p">)</span>
+<span class="n">checks</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="s2">"ss_calculated_annual_payment"</span><span class="p">,</span> <span class="mi">2023</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ss_calculated_benefit</span></code> is the payable amount for an <strong>entitlement month</strong>;
+<code class="docutils literal notranslate"><span class="pre">ss_calculated_payment</span></code> is cash paid in the requested month, including any
+supplied earnings-test settlement. Ordinary checks follow entitlement by one
+month, subject to whole-month earnings-test withholding.
+<code class="docutils literal notranslate"><span class="pre">ss_calculated_annual_entitlement</span></code> sums January–December entitlement, whereas
+<code class="docutils literal notranslate"><span class="pre">ss_calculated_annual_payment</span></code> sums checks actually paid January–December.
+<code class="docutils literal notranslate"><span class="pre">ss_calculated_retirement</span></code> and <code class="docutils literal notranslate"><span class="pre">ss_calculated_survivors</span></code> expose the latter by
+selected component. A first entitlement in July normally yields five checks
+in that calendar year. COLAs effective December first affect January checks.
+S.770 section 2(c)(1) first affects January 2026 benefit entitlement, normally
+paid in February. Dated custom payment-year paths use the check year.</p>
+<p>The pure <code class="docutils literal notranslate"><span class="pre">calculate_year</span></code> service returns both totals and a monthly ledger:
+eligibility PIA, PIA after each COLA, exact claiming factor, unrounded benefit,
+rounded gross benefit, capped earnings-test reduction and payable amount.
+The engine also exposes monthly <code class="docutils literal notranslate"><span class="pre">ss_calculated_eligibility_pia</span></code>, annual
+<code class="docutils literal notranslate"><span class="pre">ss_calculated_earnings_test_reduction</span></code>, and inferred PIA/AIME interval endpoints.
+An absent inference interval is exposed as zero; the source selector identifies
+which diagnostic applies.</p>
+</section>
+<section id="earnings-test-and-scope-assertions">
+<h2>Earnings test and scope assertions<a class="headerlink" href="#earnings-test-and-scope-assertions" title="Link to this heading">¶</a></h2>
+<p>Supply annual <code class="docutils literal notranslate"><span class="pre">ss_calculator_annual_earnings</span></code>. In the FRA year supply
+<code class="docutils literal notranslate"><span class="pre">ss_calculator_pre_fra_earnings</span></code>: only earnings before the retirement FRA month
+count. No earnings test applies from FRA onward. Annual excess-earnings
+deductions are truncated to whole dollars, allocated to the earliest affected
+benefit months and capped at their benefits. Calculating January’s check may
+also require the previous year’s earnings. A <code class="docutils literal notranslate"><span class="pre">-1</span></code> earnings input means missing,
+not zero. Each annual earnings record must be supplied for its exact year;
+an earlier record never carries forward. Alternatively assert <code class="docutils literal notranslate"><span class="pre">ss_calculator_earnings_test_no_trigger</span></code>; supplied
+excess earnings contradicting it fail.</p>
+<p>The default cash schedule withholds whole months, including the month whose
+deduction leaves a partial entitlement. That remainder is deferred until
+closed-year earnings reporting. <a class="reference external" href="https://www.ssa.gov/OP_Home/handbook/handbook.18/handbook-1806.html">SSA Handbook §1806.2</a>
+says, “The partial payment is paid only at the close of the taxable year”,
+“unless otherwise requested”. <a class="reference external" href="https://secure.ssa.gov/poms.nsf/lnx/0302501110">POMS RS 02501.110</a>
+says, “Once we receive the closed-year earnings, pay a partial monthly benefit, if due.”</p>
+<p><code class="docutils literal notranslate"><span class="pre">ss_calculated_deferred_earnings_test_payment</span></code> reports the remainder deferred
+from this entitlement year. Supply <code class="docutils literal notranslate"><span class="pre">ss_calculator_earnings_test_settlement_month</span></code>
+for the <strong>original earnings year</strong>, with its actual later <code class="docutils literal notranslate"><span class="pre">YYYY-MM</span></code> payment
+month, to include settlement in that month’s and year’s cash totals. A date
+in or before the earnings year fails. Without a supplied date, the settlement
+remains pending; the calculator does not assume when earnings are reported.
+Settlement never changes the original entitlement or earnings-test deduction.</p>
+<p>Set <code class="docutils literal notranslate"><span class="pre">ss_calculator_immediate_earnings_test_payment</span></code> to true only when immediate
+partial payment was requested; it defaults false. The pure <code class="docutils literal notranslate"><span class="pre">calculate_year</span></code>
+API exposes the same choice as <code class="docutils literal notranslate"><span class="pre">immediate_earnings_test_payment</span></code> and accepts
+an earnings-year-to-month <code class="docutils literal notranslate"><span class="pre">earnings_test_settlement_months</span></code> mapping. Ledger
+rows retain <code class="docutils literal notranslate"><span class="pre">payable_benefit</span></code> as entitlement and expose <code class="docutils literal notranslate"><span class="pre">payment_amount</span></code> after
+deferral; dated settlement payments appear separately in <code class="docutils literal notranslate"><span class="pre">AnnualBenefit.settlements</span></code>.
+For January 2026 commencement, <span class="math notranslate nohighlight">\(800 monthly benefits and \)</span>33,400 earnings,
+the deduction is <span class="math notranslate nohighlight">\(4,460 and annual entitlement \)</span>5,140. Default 2026 checks total
+<span class="math notranslate nohighlight">\(4,000 with \)</span>340 deferred; requested immediate partial payment gives $4,340.</p>
+<p>This route requires <code class="docutils literal notranslate"><span class="pre">ss_calculator_no_special_monthly_test</span></code> and
+<code class="docutils literal notranslate"><span class="pre">ss_calculator_no_prior_withholding_adjustment</span></code>. These assert that special
+first-year monthly/service rules and actuarial adjustments for prior withheld
+months do not affect the supplied case. Such cases need a separate computation
+or a supplied authoritative claiming factor and a valid scope assertion; this
+calculator does not silently approximate those rules. All entitlement before
+commencement, or on an uninsured record, is zero.</p>
+<p>The earnings-test implementation covers entitlement years from 2000 onward.
+Earlier years require the explicit no-trigger assertion because historical
+age limits and deduction rates differ. Positive benefits below one dollar
+before December 2006 fail explicitly: their manual year-end payment timing
+is outside the recurring monthly ledger. Later sub-dollar benefits retain
+their dimes under SSA’s payment-rounding exception.</p>
+</section>
+<section id="restricted-survivor">
+<h2>Restricted survivor<a class="headerlink" href="#restricted-survivor" title="Link to this heading">¶</a></h2>
+<p>Select <code class="docutils literal notranslate"><span class="pre">survivor</span></code> and supply monthly gross paid amount, source valuation check
+month, positive decimal-string composite ratio and a description of everything
+that ratio includes. The ratio includes the case’s survivor reduction and any
+worker delayed credits, so no further claiming factor may be supplied.
+Assert nonbinding RIB-LIM/family maximum, no dual entitlement, no earnings-test
+withholding in the source valuation, and ordinary non-WINDEX scope.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">ss_calculator_worker_birth_year</span></code>, <code class="docutils literal notranslate"><span class="pre">death_year</span></code>, optional exact worker birth
+and death dates, optional <code class="docutils literal notranslate"><span class="pre">authoritative_year</span></code>, and <code class="docutils literal notranslate"><span class="pre">basis_provenance</span></code> identify
+the computation benchmark. Every survivor record must explicitly supply
+<code class="docutils literal notranslate"><span class="pre">ss_calculator_prior_disability_eligibility</span></code>: 1 means the worker initially
+became eligible through disability before death; 0 means no prior eligibility.
+The default -1 means unspecified and raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>, as does any other
+value. The pure <code class="docutils literal notranslate"><span class="pre">SurvivorBasis</span></code> input is <code class="docutils literal notranslate"><span class="pre">prior_disability_eligibility</span></code>, with
+<code class="docutils literal notranslate"><span class="pre">True</span></code>/<code class="docutils literal notranslate"><span class="pre">False</span></code> for the same answers and <code class="docutils literal notranslate"><span class="pre">None</span></code> meaning unspecified.
+Prior eligibility requires an authoritative computation basis. With no prior
+eligibility, derive E as the earlier of death and age-62 attainment unless an
+authoritative basis is supplied.
+January 1 attainment uses the preceding year. A year-only fallback requires
+<code class="docutils literal notranslate"><span class="pre">year_only_not_january_1</span></code>; death and age-62 attainment in the same year require
+exact dates or <code class="docutils literal notranslate"><span class="pre">same_year_death_before_62</span></code> (1/0; -1 means unspecified).</p>
+<p>COLAs begin with December of the accepted computation benchmark, paid the
+following January. For a pre-62 death without prior eligibility, this is the
+death benchmark. Recovery propagates the supplied final-payment interval
+backward through the composite ratio and <strong>every rounded COLA</strong>, retaining a
+half-open eligibility-PIA interval. The lower admissible dime is the point
+convention; baseline forward computation must reproduce the supplied payment.
+When reform needs AIME, invert the fixed unreformed PIA scale at that lower
+endpoint and expose the corresponding AIME interval. Zero stays zero.</p>
+<p>The default-false parameter
+<code class="docutils literal notranslate"><span class="pre">gov.contrib.congress.s770.section_2.recompute_pre2026_death_before_eligibility</span></code>
+controls only the 18% first-bend-point increase for pre-2026 deaths before any
+initial eligibility. This requires both death before age 62 and the
+explicit answer <code class="docutils literal notranslate"><span class="pre">ss_calculator_prior_disability_eligibility=0</span></code>. The 95% first
+factor still applies when false.
+An accepted authoritative prior-disability benchmark receives both changes
+regardless of the switch, as do deaths in 2026 or later. S.770 section 2(c)(2)(B) includes
+initial disability eligibility before 2026. See <a class="reference internal" href="social-security/RULINGS.html"><span class="std std-doc">the recorded modeling
+ruling</span></a> and <a class="reference external" href="https://www.congress.gov/bill/119th-congress/senate-bill/770/text">the bill
+text</a>.</p>
+</section>
+<section id="shared-pia-paths-and-policies">
+<h2>Shared PIA paths and policies<a class="headerlink" href="#shared-pia-paths-and-policies" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">tools.social_security.pia.compute_pia</span></code> is the common pure monthly service for
+supplied AIME, recovered AIME and future history callers. Its inputs explicitly
+separate initial eligibility, formula path, scoring/payment year and cohort vs
+retroactive applicability. All computations and inverses require E &gt;= 1983.
+Historical bends back to 1979 are separate parameters, preserving legacy scale
+values. Future bends use the model’s existing wage-indexed projections.</p>
+<p><code class="docutils literal notranslate"><span class="pre">gov.contrib.ssa.pia</span></code> contains neutral bend-point multipliers, factors and cohort
+start, an <code class="docutils literal notranslate"><span class="pre">in_effect</span></code> opt-in gate, and explicit <code class="docutils literal notranslate"><span class="pre">recompute_existing</span></code>. No top-factor package schedule is
+selected. S.770 is separately enabled with
+<code class="docutils literal notranslate"><span class="pre">gov.contrib.congress.s770.section_2.in_effect</span></code> and uses original eligibility
+bend points for older beneficiaries.</p>
+<p>Full price indexing requires a frozen cohort <code class="docutils literal notranslate"><span class="pre">real_wage_scale</span></code> path: cumulative
+price growth divided by cumulative wage growth from the declared anchor. This
+scales <strong>all</strong> formula factors. Progressive indexing requires a frozen
+maximum-career AIME and PIA target, plus either <code class="docutils literal notranslate"><span class="pre">bend_point_fraction</span></code> or optional
+<code class="docutils literal notranslate"><span class="pre">threshold</span></code> dollar path under <code class="docutils literal notranslate"><span class="pre">gov.contrib.ssa.pia.progressive_price_indexing</span></code>.
+The dollar path overrides the fraction. Otherwise the protected threshold is
+BP1(E) + f * (BP2(E) - BP1(E)). There is no default fraction. Enabling a path
+without its required frozen inputs fails. Frozen scales, dollar thresholds,
+maximum AIMEs and targets require explicit January observations for each
+eligibility cohort; they never silently carry a prior cohort’s data forward.
+The policy fraction and ordinary factor schedules retain normal dated-policy
+semantics. Both indexing paths also require their own <code class="docutils literal notranslate"><span class="pre">in_effect</span></code> switch and
+start cohort; setting a fraction alone does not activate progressive indexing.
+Ordinary settings read the eligibility-year snapshot. Explicit older-cohort
+recomputation reads payment-year settings while retaining original-cohort
+bend points and frozen indexing inputs. No population percentile or solvency
+estimate supplies missing values. Scoring must pin price/wage bases, lags,
+anchor, maximum-taxable career, source hashes and combined-policy order.
+Composition order is custom bends/factors, S.770, full indexing, progressive
+protected/maximum-target construction, and final eligibility dime truncation.</p>
+<p><code class="docutils literal notranslate"><span class="pre">gov.contrib.ssa.benefit_levers.cola.pp_change</span></code>,
+<code class="docutils literal notranslate"><span class="pre">across_the_board.rate</span></code>/<code class="docutils literal notranslate"><span class="pre">start_year</span></code> and <code class="docutils literal notranslate"><span class="pre">payable.share</span></code> are the shared neutral
+payment-year parameters reused from #10400. COLA settings also accept an
+effective year/month, payment start/end year and a supplied alternative rate. The annual person
+input <code class="docutils literal notranslate"><span class="pre">ss_calculator_withhold_cola</span></code> accepts an externally resolved E3 decision
+when <code class="docutils literal notranslate"><span class="pre">cola.withholding_enabled</span></code> is true.
+Each withholding decision applies only in its supplied year; an absent year’s
+decision is false.
+Withholding sets that event’s COLA to zero, jointly with any rate change; no
+second COLA factor is applied. Payable shares must lie in [0,1], and rates must
+not imply a negative benefit. A depletion-year midyear blend is supplied in the
+annual payable-share path. E2 and E3 income/threshold computation belong to
+their respective modules; their policies and jointly calculated tax-unit
+outputs can consume this route once public wiring exists.</p>
+</section>
+<section id="public-source-selector-wiring">
+<h2>Public source-selector wiring<a class="headerlink" href="#public-source-selector-wiring" title="Link to this heading">¶</a></h2>
+<p>Source-selector PR #10400 was open when this route was built. Its canonical
+COLA history and common lever parameter files are reused here. Historical bend
+points remain in a separate table because copying its legacy scale backfill
+would change existing pre-2015 <code class="docutils literal notranslate"><span class="pre">ss_pia</span></code> outputs with this route disabled. This change adds
+no <code class="docutils literal notranslate"><span class="pre">_reported</span></code> twins and changes no public benefit formula. Once it merges,
+map its supplied-AIME/PIA retirement modes to <code class="docutils literal notranslate"><span class="pre">ss_calculated_retirement</span></code> and its
+restricted survivor mode to <code class="docutils literal notranslate"><span class="pre">ss_calculated_survivors</span></code>. Bypass population
+PIA/COLA factors and any across/payable factors already applied in this ledger;
+perform the earnings test once. Preserve explicit public final overrides.
+For joint household tax calculations before that wiring, explicitly supply the
+calculated annual checks to the existing public components in a separate
+calculation; never write them into <code class="docutils literal notranslate"><span class="pre">_reported</span></code> as if they were original data.</p>
+</section>
+<section id="sources-and-validation">
+<h2>Sources and validation<a class="headerlink" href="#sources-and-validation" title="Link to this heading">¶</a></h2>
+<p>Published fixtures cite <a class="reference external" href="https://www.ssa.gov/policy/docs/statcomps/supplement/2023/apnd.html">SSA Supplement 2023 Appendix D</a>,
+<a class="reference external" href="https://www.ssa.gov/oact/COLA/colaapplic.html">COLA application</a>, and
+<a class="reference external" href="https://www.ssa.gov/benefits/retirement/planner/whileworking.html">2026 earnings-test examples</a>.
+Historical parameters cite <a class="reference external" href="https://www.ssa.gov/OACT/COLA/bendpoints.html">bend points</a>
+and <a class="reference external" href="https://www.ssa.gov/OACT/COLA/colaseries.html">COLAs</a>. December 1999 retains
+its original 2.4% as-paid rate until the 2001 correction, then the corrected 2.5%
+path; special one-time arrears are excluded from recurring gross benefits.
+Earlier COLA rules are recorded, but E &lt; 1983 routes fail explicitly.</p>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./usage"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="social-security/RULINGS.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Restricted-survivor modeling ruling</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="parameter-discovery.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Finding parameters</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Supplied-record Social Security calculator</a><ul>
+<li><a class="reference internal" href="#inputs-and-outputs">Inputs and outputs</a></li>
+<li><a class="reference internal" href="#earnings-test-and-scope-assertions">Earnings test and scope assertions</a></li>
+<li><a class="reference internal" href="#restricted-survivor">Restricted survivor</a></li>
+<li><a class="reference internal" href="#shared-pia-paths-and-policies">Shared PIA paths and policies</a></li>
+<li><a class="reference internal" href="#public-source-selector-wiring">Public source-selector wiring</a></li>
+<li><a class="reference internal" href="#sources-and-validation">Sources and validation</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>
