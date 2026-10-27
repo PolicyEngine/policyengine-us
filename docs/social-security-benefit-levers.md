@@ -115,8 +115,10 @@ For each exposed payment event, statutory baseline rate c and configured
 addition delta give adjusted rate max(0,c+delta), without a second rounding of
 the policy addition. The joint multiplier is `(1+adjusted)/(1+c)` unless that
 event is withheld, in which case it is `1/(1+c)`. Each component's
-`_cola_withheld` term defaults false; a subsequent means-test implementation
-supplies the rules. Switching a policy off later preserves its earlier effect
+`_cola_withheld` term defaults false; the optional
+[COLA means test](social-security-cola-means-test.md) supplies prior-year income
+decisions when enabled. Explicit decisions remain available. Switching a policy
+off later preserves its earlier effect
 on the benefit level. Public reported-route benefits multiply this joint factor,
 the PIA ratio factor, the across-the-board factor, and the payable factor once.
 

@@ -1,0 +1,10 @@
+description: Enable the contributed Social Security COLA means test. Activation requires positive single and joint income thresholds supplied by the scenario.
+values:
+  0000-01-01: false
+metadata:
+  unit: bool
+  label: Social Security COLA means test enabled
+  economy: false
+  reference:
+    - title: OACT provision A9, 2026 Trustees Report basis
+      href: https://www.ssa.gov/OACT/solvency/provisions/cola.html

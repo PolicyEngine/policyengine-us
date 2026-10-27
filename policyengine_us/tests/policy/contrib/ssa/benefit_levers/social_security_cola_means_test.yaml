@@ -1,0 +1,44 @@
+- name: Prior-year income withholds only above the line in covered cohorts
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.ssa.benefit_levers.cola.means_test.enabled: true
+    gov.contrib.ssa.benefit_levers.cola.means_test.thresholds.single: 100000
+    gov.contrib.ssa.benefit_levers.cola.means_test.thresholds.joint: 200000
+    gov.contrib.ssa.benefit_levers.cola.start_year: 2027
+    gov.contrib.ssa.benefit_levers.cola.pp_change: 0.0015
+    people:
+      equal:
+        age: 63
+        social_security_retirement_worker_eligibility_year: 2026
+        social_security_retirement_first_cola_year: 2027
+        social_security_retirement_reported: 12000
+      above:
+        age: 63
+        social_security_retirement_worker_eligibility_year: 2026
+        social_security_retirement_first_cola_year: 2027
+        social_security_retirement_reported: 12000
+      older_cohort:
+        age: 64
+        social_security_retirement_worker_eligibility_year: 2025
+        social_security_retirement_first_cola_year: 2027
+        social_security_retirement_reported: 12000
+    tax_units:
+      equal:
+        members: [equal]
+        social_security_cola_means_test_magi:
+          2026: 100000
+      above:
+        members: [above]
+        social_security_cola_means_test_magi:
+          2026: 100001
+      older_cohort:
+        members: [older_cohort]
+        social_security_cola_means_test_magi:
+          2026: 100001
+  output:
+    social_security_retirement_cola_withheld: [false, true, false]
+    # January 2027 statutory rate is 3.6%. The CPI-E addition appears only
+    # in the two paid numerators; the withheld numerator is exactly one.
+    social_security_retirement:
+      [12017.374517374517, 11583.011583011583, 12017.374517374517]

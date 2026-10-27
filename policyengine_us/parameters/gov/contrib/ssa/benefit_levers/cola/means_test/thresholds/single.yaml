@@ -1,0 +1,10 @@
+description: Single-group COLA means-test income threshold in base-year dollars. Zero is an unset sentinel; activation requires a positive scenario value. The documented A9 example is 85000 in 2018 dollars, not a default package value.
+values:
+  0000-01-01: 0
+metadata:
+  unit: currency-USD
+  label: Social Security COLA means-test single income threshold
+  economy: false
+  reference:
+    - title: OACT provision A9, 2026 Trustees Report basis
+      href: https://www.ssa.gov/OACT/solvency/provisions/cola.html
