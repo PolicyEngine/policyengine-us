@@ -1,7 +1,7 @@
 # Mississippi TANF countable earned income
-# MDHS TANF Policy Manual, Volume III, pages 6025-6026: deduct from each
-# earner's monthly earnings (a) $90 for work expenses, then (b) the actual
-# cost of dependent care.
+# MDHS TANF Policy Manual, Volume III, Chapter 6, Budgeting Net Monthly
+# Earned Income: deduct from each earner's monthly earnings (a) $90 for work
+# expenses, then (b) the actual cost of dependent care.
 
 - name: Case 1, no earnings.
   period: 2026-01
@@ -129,3 +129,50 @@
     ms_tanf_countable_earned_income: 0
     # 0 earned + 600 / 12 unearned
     ms_tanf_countable_income: 50
+
+- name: Case 7, the $90 deduction is floored for each earner, not for the unit.
+  period: 2026-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 720
+      parent2:
+        age: 32
+        employment_income_before_lsr: 3_600
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MS
+  output:
+    # max(60 - 90, 0) + (300 - 90) = 0 + 210 = 210
+    # (a floor on the pooled amount would give 360 - 180 = 180)
+    ms_tanf_countable_earned_income: 210
+
+- name: Case 8, care costs for an incapacitated adult are deducted.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 6_000
+      spouse:
+        age: 32
+        care_expenses: 1_200
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, spouse, child]
+    households:
+      household:
+        members: [parent, spouse, child]
+        state_code: MS
+  output:
+    # (500 - 90) - 1_200 / 12 = 410 - 100 = 310
+    ms_tanf_countable_earned_income: 310

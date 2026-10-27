@@ -11,9 +11,11 @@ class ms_tanf_countable_income(Variable):
     reference = (
         "https://www.mdhs.ms.gov/wp-content/uploads/2018/02/MDHS_TANF-Eligibility-Flyer.pdf",
         "https://www.law.cornell.edu/regulations/mississippi/Miss-Code-tit-18-pt-19",
+        "https://www.sos.ms.gov/adminsearch/ACCode/00000330c.pdf#page=469",
     )
     # NOTE: Mississippi has 6-month and 3-month total earned income disregards
     # that cannot be tracked in PolicyEngine. This simplified implementation
-    # does not apply those time-limited disregards.
+    # does not apply those time-limited disregards. It also does not apply
+    # the special student disregard (PolicyEngine/policyengine-us#10490).
 
     adds = ["ms_tanf_countable_earned_income", "tanf_gross_unearned_income"]

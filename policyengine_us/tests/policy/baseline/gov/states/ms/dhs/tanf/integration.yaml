@@ -6,7 +6,15 @@
 # - Income limits by size: 1=$627, 2=$851, 3=$1,074, 4=$1,298, 5=$1,523
 # - Payment standards: First person $200, second $36, each additional $24
 # - Resource limit: $2,000
-# - Benefit: Maximum Payment Standard - Countable Income
+# - Countable earned income: each earner's earnings less $90, then less
+#   actual dependent care costs
+# - Benefit: Maximum Payment Standard - Countable Income; no benefit under $10
+#
+# The benefit formula is PolicyEngine's current one. MDHS pays 60% of the
+# deficit (need standard less net income), up to the maximum (Title 18,
+# Part 13, Chapter 6, Computing Benefit; Chapter 15, Table II). That change
+# is tracked in PolicyEngine/policyengine-us#10269; the Case 9 and Case 10
+# comments give the amounts under the 60% rule.
 
 - name: Case 1, single parent with one child, no income, receives maximum benefit.
   period: 2026-01
@@ -332,7 +340,9 @@
   output:
     # Monthly countable income: 200 - 90 = 110
     ms_tanf_countable_income: 110 * 12
-    # (260 - 110) * 12 = 1_800
+    # PolicyEngine's current formula: (260 - 110) * 12 = 1_800
+    # 60% of the deficit (#10269): min(floor(0.6 * (581 - 110)), 260) * 12
+    # = min(282, 260) * 12 = 3_120
     ms_tanf: 1_800
 
 - name: Case 10, parent of two with $200 a month of earnings and $50 a month of child care.
@@ -363,5 +373,7 @@
   output:
     # Monthly countable income: 200 - 90 - 50 = 60
     ms_tanf_countable_income: 60 * 12
-    # (260 - 60) * 12 = 2_400
+    # PolicyEngine's current formula: (260 - 60) * 12 = 2_400
+    # 60% of the deficit (#10269): min(floor(0.6 * (581 - 60)), 260) * 12
+    # = min(312, 260) * 12 = 3_120
     ms_tanf: 2_400

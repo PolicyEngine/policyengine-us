@@ -1,7 +1,14 @@
 # Mississippi TANF benefit calculation tests
 # Benefit = Maximum Payment Standard - Countable Income
 # If countable income exceeds payment standard, benefit = $0
+# No benefit is issued when the monthly benefit is less than $10
 # Must be eligible (ms_tanf_eligible) to receive any benefit
+#
+# These cases test PolicyEngine's current formula. MDHS pays 60% of the
+# deficit (need standard less net income), up to the maximum (Title 18,
+# Part 13, Chapter 6, Computing Benefit; Chapter 15, Table II). That change
+# is tracked in PolicyEngine/policyengine-us#10269 and will change these
+# expectations.
 
 - name: Case 1, ineligible household receives zero benefit.
   period: 2026-01
@@ -121,6 +128,9 @@
     ms_tanf_countable_income: 255
   output:
     # $260 - $255 = $5 < $10 minimum payment
+    # Under the 60% rule (#10269), countable income of 255 for a family of 3
+    # gives floor(0.6 * (581 - 255)) = 195; this case would then need
+    # countable income of 570: floor(0.6 * 11) = 6 < 10.
     ms_tanf: 0
 
 - name: Case 12, benefit equal to the $10 minimum payment is issued.
@@ -132,4 +142,6 @@
     ms_tanf_countable_income: 250
   output:
     # $260 - $250 = $10 >= $10 minimum payment
+    # Under the 60% rule (#10269), this case would need countable income of
+    # 564: floor(0.6 * 17) = 10.
     ms_tanf: 10
