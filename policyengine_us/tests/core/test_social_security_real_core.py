@@ -15,6 +15,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 from policyengine_core.entities import build_entity
+from policyengine_core.experimental import MemoryConfig
 from policyengine_core.holders import Holder, helpers
 from policyengine_core.holders.helpers import (
     set_input_dispatch_by_period,
@@ -26,6 +27,7 @@ from policyengine_core.simulations import Simulation, SimulationBuilder
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 from policyengine_core.tools import simulation_dumper
 from policyengine_core.variables import Variable
+from policyengine_core.warnings import MemoryConfigWarning
 
 
 COUNTRY_ROOT = Path(__file__).resolve().parents[2]
@@ -164,6 +166,54 @@ def fresh(inputs=None, *, enabled=True, factor=1):
     return SimulationBuilder().build_from_variables(
         make_system(enabled=enabled, factor=factor), values
     )
+
+
+def fresh_without_holder_cache(mode, names, inputs=None):
+    """Use each supported opt-out during Core's Holder initialization."""
+    system = make_system()
+    simulation = Simulation(
+        tax_benefit_system=system, populations=system.instantiate_entities()
+    )
+    if mode == "blacklist":
+        system.cache_blacklist = list(names)
+        simulation.opt_out_cache = True
+    else:
+        assert mode == "variables_to_drop"
+        with pytest.warns(MemoryConfigWarning):
+            simulation.memory_config = MemoryConfig(
+                1,
+                # The tests exercise dropping, without introducing disk I/O.
+                priority_variables=list(system.variables),
+                variables_to_drop=names,
+            )
+    # Simulation.__init__ creates empty holders while enumerating its input
+    # variables. Replace those populations so later Holder initialization
+    # reads the actual memory_config rather than its constructor default.
+    simulation.build_from_populations(system.instantiate_entities())
+    values = {"independent_input": {"2023": [70.0], "2024": [70.0]}}
+    values.update(inputs or {})
+    return SimulationBuilder().build_from_variables(
+        system, values, simulation=simulation
+    )
+
+
+def rebuild_with_source(simulation, value):
+    from policyengine_core.data import Dataset
+
+    class TinyDataset:
+        data_format = Dataset.TIME_PERIOD_ARRAYS
+        time_period = "2024"
+
+        def load(self):
+            return {
+                "person_id": {"2024": np.array([1])},
+                "household_id": {"2024": np.array([1])},
+                "person_household_id": {"2024": np.array([1])},
+                PUBLIC: {"2024": np.array([value])},
+            }
+
+    simulation.dataset = TinyDataset()
+    simulation.build_from_dataset()
 
 
 def scalar(simulation, name, requested):
@@ -422,8 +472,175 @@ def test_dataset_rebuild_keeps_new_input_provenance_when_old_cache_shares_key():
     assert scalar(simulation, PUBLIC, "2023") == 1
 
 
+@pytest.mark.parametrize("mode", ("blacklist", "variables_to_drop"))
+@pytest.mark.parametrize("route", ("dataset", "set_input", "branch_set"))
+@pytest.mark.parametrize("initial", (0, 12_000), ids=("default_zero", "initial_source"))
+def test_source_write_refreshes_fast_only_formula_returns(mode, route, initial):
+    names = [PUBLIC, PUBLIC + "_base"]
+    if not initial:
+        # The review's zero-source variant also opts the reported default out.
+        names.append(PUBLIC + "_reported")
+    inputs = {PUBLIC: {"2024": [initial]}} if initial else {}
+    simulation = fresh_without_holder_cache(mode, names, inputs)
+    if route == "branch_set":
+        simulation = simulation.get_branch("child")
+    assert scalar(simulation, PUBLIC, "2024") == initial
+    assert earliest_source_dependency(simulation) is not None
+    assert stored(simulation, PUBLIC, "2024") is None
+    assert stored(simulation, PUBLIC + "_base", "2024") is None
+    key = (PUBLIC, period("2024"))
+    assert float(simulation._fast_cache[key][0]) == initial
+    epoch = simulation._input_epoch
+    if route == "dataset":
+        rebuild_with_source(simulation, 24_000.0)
+    elif route == "set_input":
+        simulation.set_input(PUBLIC, "2024", [24_000.0])
+    else:
+        # Exercise the adapter itself: Core adds dependency cleanup only on
+        # Holder.set_input, not on this supported lower-level branch route.
+        simulation.get_holder(PUBLIC)._set(
+            period("2024"),
+            np.array([24_000.0]),
+            simulation.branch_name,
+            is_input=True,
+        )
+    assert key not in simulation._fast_cache
+    assert simulation._input_epoch > epoch
+    assert scalar(simulation, PUBLIC + "_reported", "2024") == 24_000
+    assert scalar(simulation, PUBLIC, "2024") == 24_000
+
+
+@pytest.mark.parametrize("mode", ("blacklist", "variables_to_drop"))
+def test_fast_only_formula_before_since_survives_without_a_drop_witness(mode):
+    simulation = fresh_without_holder_cache(mode, ["independent_formula"])
+    assert scalar(simulation, "independent_formula", "2023") == 77
+    key = ("independent_formula", period("2023"))
+    before = simulation._fast_cache[key]
+    assert stored(simulation, "independent_formula", "2023") is None
+    number = simulation._get_store_history().earliest_dependency(*key)
+    simulation.set_input(PUBLIC, "2024", [12_000.0])
+    assert scalar(simulation, PUBLIC + "_reported", "2024") == 12_000
+    assert number < earliest_source_dependency(simulation)
+    epoch = simulation._input_epoch
+    simulation.set_input(PUBLIC, "2024", [24_000.0])
+    # A pre-cutoff fast-only return cannot itself justify a global clear.
+    assert simulation._fast_cache[key] is before
+    assert simulation._input_epoch == epoch
+    assert scalar(simulation, "independent_formula", "2023") == 77
+
+
+@pytest.mark.parametrize("mode", ("blacklist", "variables_to_drop"))
+def test_fast_only_unrelated_formula_after_since_is_intentionally_dropped(mode):
+    simulation = fresh_without_holder_cache(
+        mode, ["independent_formula"], {PUBLIC: {"2024": [12_000.0]}}
+    )
+    assert scalar(simulation, PUBLIC + "_reported", "2024") == 12_000
+    assert scalar(simulation, "independent_formula", "2024") == 77
+    key = ("independent_formula", period("2024"))
+    assert stored(simulation, *key) is None
+    assert simulation._get_store_history().earliest_dependency(
+        *key
+    ) >= earliest_source_dependency(simulation)
+    epoch = simulation._input_epoch
+    simulation.set_input(PUBLIC, "2024", [24_000.0])
+    # Intended over-approximation: refresh-scope ruling rule 5 includes an
+    # unrelated formula return whose own store number is after the cutoff.
+    assert key not in simulation._fast_cache
+    assert simulation._input_epoch > epoch
+    assert scalar(simulation, "independent_formula", "2024") == 77
+
+
+@pytest.mark.parametrize("mode", ("blacklist", "variables_to_drop"))
+def test_recalculated_fast_only_return_uses_its_own_store_number(mode, monkeypatch):
+    stores = []
+    original_record_store = Holder._record_store
+
+    def record_store(holder, requested, number):
+        if holder.variable.name == "independent_formula":
+            stores.append(number)
+        return original_record_store(holder, requested, number)
+
+    monkeypatch.setattr(Holder, "_record_store", record_store)
+    simulation = fresh_without_holder_cache(mode, ["independent_formula"])
+    assert scalar(simulation, "independent_formula", "2023") == 77
+    key = ("independent_formula", period("2023"))
+    first = simulation._get_store_history().earliest_dependency(*key)
+    assert first == stores[-1]
+    simulation.set_input(PUBLIC, "2024", [12_000.0])
+    assert scalar(simulation, PUBLIC + "_reported", "2024") == 12_000
+    since = earliest_source_dependency(simulation)
+    assert first < since
+    # Recompute the same key after the source cutoff. StoreHistory keeps its
+    # first number, whereas the memo must be dated by this later calculation.
+    simulation._fast_cache.pop(key)
+    assert scalar(simulation, "independent_formula", "2023") == 77
+    assert stores[-1] >= since
+    assert simulation._get_store_history().earliest_dependency(*key) == first
+    epoch = simulation._input_epoch
+    simulation.set_input(PUBLIC, "2024", [24_000.0])
+    assert key not in simulation._fast_cache
+    assert simulation._input_epoch > epoch
+
+
+@pytest.mark.parametrize("mode", ("blacklist", "variables_to_drop"))
+@pytest.mark.parametrize("branch", (False, True), ids=("main", "branch"))
+@pytest.mark.parametrize("registered", (False, True), ids=("raw_seed", "input"))
+def test_not_kept_formula_name_preserves_physical_caller_values(
+    mode, branch, registered
+):
+    names = [PUBLIC, PUBLIC + "_base", "independent_formula"]
+    simulation = fresh_without_holder_cache(mode, names, {PUBLIC: {"2024": [12_000.0]}})
+    if branch:
+        simulation = simulation.get_branch("child")
+    assert scalar(simulation, PUBLIC, "2024") == 12_000
+    holder = simulation.get_holder("independent_formula")
+    if registered:
+        simulation.set_input("independent_formula", "2025", [99.0])
+    else:
+        # _set can supply a raw seed even where put_in_cache is opted out.
+        holder._set(
+            period("2025"),
+            np.array([99.0]),
+            simulation.branch_name,
+            derived=False,
+            is_input=False,
+        )
+    before = stored(simulation, "independent_formula", "2025")
+    assert sequence_number(
+        simulation, "independent_formula", "2025"
+    ) >= earliest_source_dependency(simulation)
+    assert not holder.is_derived(period("2025"), simulation.branch_name)
+    epoch = simulation._input_epoch
+    simulation.get_holder(PUBLIC)._set(
+        period("2024"),
+        np.array([24_000.0]),
+        simulation.branch_name,
+        is_input=True,
+    )
+    assert simulation._input_epoch > epoch
+    assert stored(simulation, "independent_formula", "2025") is before
+    assert holder._is_input(period("2025"), simulation.branch_name) is registered
+    assert scalar(simulation, "independent_formula", "2025") == 99
+    assert scalar(simulation, PUBLIC, "2024") == 24_000
+
+
+@pytest.mark.parametrize("mode", ("blacklist", "variables_to_drop"))
+def test_unread_source_load_preserves_fast_only_returns_without_a_cutoff(mode):
+    names = [PUBLIC, PUBLIC + "_base", PUBLIC + "_reported", "independent_formula"]
+    simulation = fresh_without_holder_cache(mode, names)
+    assert scalar(simulation, "independent_formula", "2023") == 77
+    key = ("independent_formula", period("2023"))
+    before = simulation._fast_cache[key]
+    assert earliest_source_dependency(simulation) is None
+    epoch = simulation._input_epoch
+    rebuild_with_source(simulation, 24_000.0)
+    assert simulation._input_epoch == epoch
+    assert simulation._fast_cache[key] is before
+    assert scalar(simulation, PUBLIC, "2024") == 24_000
+
+
 @pytest.mark.parametrize("initial", (False, True), ids=("raw_source", "initial_source"))
-def test_public_write_evicts_exact_reported_memo_without_dropping_other_caches(initial):
+def test_exact_reported_read_bypasses_native_memo_and_keeps_other_caches(initial):
     simulation = fresh()
     assert scalar(simulation, "independent_formula", "2024") == 77
     independent_key = ("independent_formula", period("2024"))
@@ -439,6 +656,10 @@ def test_public_write_evicts_exact_reported_memo_without_dropping_other_caches(i
             np.array([12_000.0]), period("2024"), derived=False
         )
     assert scalar(simulation, PUBLIC + "_reported", "2024") == 12_000
+    # Native Core returns this exact source directly from get_array; unlike
+    # the synthetic backend, neither supported Core version inserts a memo.
+    reported_key = (PUBLIC + "_reported", period("2024"))
+    assert reported_key not in simulation._fast_cache
     # This exact read returns the source view without storing a derived
     # reported array. There is no post-cutoff formula array to purge.
     assert (

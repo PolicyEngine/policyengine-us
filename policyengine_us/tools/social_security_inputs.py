@@ -18,7 +18,7 @@ from contextvars import ContextVar
 from dataclasses import dataclass
 from functools import wraps
 from pathlib import Path
-from weakref import ref
+from weakref import WeakKeyDictionary, ref
 
 from policyengine_core.data_storage.store_history import next_sequence_number
 from policyengine_core.periods import period as to_period
@@ -48,6 +48,11 @@ _reported_request = ContextVar("reported_ss_request", default=None)
 _subsampling_social_security_sources = ContextVar(
     "subsampling_ss_sources", default=None
 )
+# Clone copies unknown attributes shallowly. Keep return metadata outside the
+# simulation so independent branches never share a mutable metadata dictionary.
+# Preserve it when importlib.reload leaves the installed Core hooks in place.
+_fast_only_returns = globals().get("_fast_only_returns", WeakKeyDictionary())
+_cache_store_number = ContextVar("ss_cache_store_number", default=None)
 _PHYSICAL = {}
 
 
@@ -528,6 +533,12 @@ def _derived_cached_returns(simulation):
                 continue
         branch = holder._branch_storing(period, simulation.branch_name)
         if branch is None:
+            # StoreHistory remembers the first store, not the store which
+            # produced this return. Skipped-storage formula returns need their
+            # own number, captured by _cache_result/_record_store below.
+            entry = _fast_only_returns.get(simulation, {}).get((name, period))
+            if entry is not None and entry[1]() is array:
+                entries[key] = entry
             continue
         if holder._memory_storage.has(period, branch):
             storage = holder._memory_storage
@@ -562,6 +573,8 @@ def _purge_derived_arrays(simulation, public, period):
     if not dependencies:
         return 0
     since = min(dependencies)
+    # Collect before physical deletion changes the holders' slot metadata.
+    cached_returns = _derived_cached_returns(simulation)
     dropped = 0
     for population in simulation.populations.values():
         for holder in population._holders.values():
@@ -585,15 +598,18 @@ def _purge_derived_arrays(simulation, public, period):
                     ):
                         _delete_exact(holder, period, branch, tier=tier)
                         dropped += 1
-    for owner, entries in _loading_social_security_cache_entries.get():
+    for owner, entries in (
+        (simulation, cached_returns),
+        *_loading_social_security_cache_entries.get(),
+    ):
         if owner is not simulation:
             continue
         for key, (number, reference) in tuple(entries.items()):
             if number >= since:
                 array = reference()
                 if array is not None and simulation._fast_cache.get(key) is array:
-                    # This numbered formula array remains in the fast cache
-                    # after Core detached its original holder during rebuild.
+                    # A numbered formula return can outlive its holder, or
+                    # Core can skip holder storage while memoizing the return.
                     simulation._fast_cache.pop(key)
                     dropped += 1
                 entries.pop(key)
@@ -644,8 +660,67 @@ def install_social_security_input_compatibility():
         recorded_periods=CoreSimulation._get_set_input_periods,
         recorded_array=CoreSimulation._get_recorded_input_array,
         calculate=CoreSimulation._calculate,
+        cache_result=CoreSimulation._cache_result,
+        record_store=Holder._record_store,
         stored_input=helpers.get_stored_input,
     )
+
+    @wraps(_PHYSICAL["record_store"])
+    def record_store(holder, period, sequence_number):
+        result = _PHYSICAL["record_store"](holder, period, sequence_number)
+        capture = _cache_store_number.get()
+        if (
+            capture is not None
+            and capture[0]() is holder
+            and capture[1] == holder._storage_period(period)
+        ):
+            capture[2].append(sequence_number)
+        return result
+
+    Holder._record_store = record_store
+
+    @wraps(_PHYSICAL["cache_result"])
+    def cache_result(simulation, holder, array, period, input_state):
+        if not _enabled(simulation) or not (
+            holder._do_not_store
+            or (
+                simulation.opt_out_cache
+                and simulation.tax_benefit_system.cache_blacklist
+                and holder.variable.name
+                in simulation.tax_benefit_system.cache_blacklist
+            )
+        ):
+            return _PHYSICAL["cache_result"](
+                simulation, holder, array, period, input_state
+            )
+        stored_period = holder._storage_period(period)
+        numbers = []
+        token = _cache_store_number.set((ref(holder), stored_period, numbers))
+        try:
+            result = _PHYSICAL["cache_result"](
+                simulation, holder, array, period, input_state
+            )
+        finally:
+            _cache_store_number.reset(token)
+        # _cache_result can instead return a newly supplied input. With no
+        # formula store there is no number and no derived-return witness.
+        if (
+            numbers
+            and holder._branch_storing(stored_period, simulation.branch_name) is None
+        ):
+            entries = _fast_only_returns.setdefault(simulation, {})
+            key = (holder.variable.name, stored_period)
+            number = numbers[-1]
+
+            def forget(reference):
+                current = entries.get(key)
+                if current is not None and current[1] is reference:
+                    entries.pop(key, None)
+
+            entries[key] = (number, ref(result, forget))
+        return result
+
+    CoreSimulation._cache_result = cache_result
 
     @wraps(_PHYSICAL["stored_input"])
     def get_stored_input(holder, period, branch_name):
@@ -821,10 +896,10 @@ def install_social_security_input_compatibility():
             if name in SOCIAL_SECURITY_COMPONENTS:
                 reported_holder = _holder(simulation, f"{name}_reported")
                 if reported_holder is not None:
-                    # An exact reported read can memoize the public input
-                    # itself, without storing any derived array. Evict that
-                    # changed source view exactly as Core evicts the written
-                    # holder's own memo; unrelated cached returns stay intact.
+                    # Defensive for calculation backends that memoize exact
+                    # source reads. Native Core 3.33.2/3.33.12 returns these
+                    # before memo insertion. Evict only this changed view,
+                    # as Core does for the written holder's own memo.
                     reported_holder._evict_fast_cache(
                         holder._storage_period(period), effective_branch
                     )
