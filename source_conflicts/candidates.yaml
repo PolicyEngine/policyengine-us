@@ -2191,6 +2191,43 @@ candidates:
   state: ruled
   note: Ruled statute-first in October 2026; verify the incorporated dependency bar and annual questionnaire routing,
     including the 2026 draft.
+- id: us-il:msp-income-exemption-contributions
+  program: medicare-savings-programs
+  years:
+    from: 2026
+    type: calendar
+  question: Does Illinois's $25 income exemption for QMB, SLIB and QI-1 apply to contributions such as alimony and
+    child support?
+  sources:
+  - kind: regulation
+    citation: 89 Ill. Adm. Code 120.335(a)(1); 120.74 (QMB countable income under Parts 112, 113 and 120)
+    url: https://www.ilga.gov/ftp/JCAR/AdminCode/089/089001200H03350R.html
+  - kind: manual
+    citation: IDHS Policy Manual PM 15-04-03-a, reached from PM 06-12-01-b through PM 15-05-03
+    url: https://www.dhs.state.il.us/page.aspx?item=16387
+  - kind: manual
+    citation: IDHS Policy Manual PM 06-12-01-c
+    url: https://www.dhs.state.il.us/page.aspx?item=14179
+  readings:
+    statute: No statute is supplied; the regulation exempts the first $25 of income other than SSI income or contributions
+      from a spouse or other individual, and PM 15-04-03-a exempts income other than SSI income and contributions.
+    other: PM 06-12-01-c exempts the first $25 of earned or unearned income other than SSI income and names no
+      exception for contributions.
+  example: An Illinois QMB applicant whose only income is $1,000 a month of alimony counts $980 under the regulation,
+    which leaves the $20 SSI exclusion, and $975 under PM 06-12-01-c.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/hhs/medicare/savings_programs/income/msp_countable_income.py
+    - policyengine_us/parameters/gov/hhs/medicare/savings_programs/eligibility/income/state_general_exclusion_excludes_contributions.yaml
+    - policyengine_us/parameters/gov/hhs/medicare/savings_programs/eligibility/income/contribution_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10360
+  state: unreviewed
+  note: 'PE-US follows the regulation and PM 15-04-03-a: Illinois''s $25 applies only to income other than SSI and contributions
+    (alimony, child support and outside cash help), and the $20 SSI exclusion stays the floor (msp_countable_income.py,
+    state_general_exclusion_excludes_contributions.yaml, contribution_sources.yaml). Verify whether PM 06-12-01-c''s
+    silence on contributions reflects QMB policy.'
 - id: us-il:personal-exemption-claimed-vs-claimable
   program: income-tax
   years:
