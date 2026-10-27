@@ -1,7 +1,7 @@
 # Sources: Utah HEAT manual sections 202-204, 208 and March 2026 section 608.
 # The annual 2026 period represents the March 2026 snapshot.
 
-# Monthly income 1995 equals published 150% limit.
+# Wages 29,925 x 0.8 = 23,940; monthly income 1995 equals published 150% limit.
 - name: "Case 1, inclusive income limit."
   period: 2026
   input:
@@ -10,7 +10,7 @@
         age: 40
         immigration_status: CITIZEN
         ssi: 0
-        employment_income: 23_940
+        employment_income: 29_925
     spm_units:
       spm_unit:
         members: [person1]
@@ -24,7 +24,7 @@
   output:
     ut_heat_eligible: true
 
-# Monthly income 1995.01 exceeds limit.
+# Wages 29,925.15 x 0.8 = 23,940.12; monthly income 1995.01 exceeds limit.
 - name: "Case 2, income just above limit."
   period: 2026
   input:
@@ -33,7 +33,7 @@
         age: 40
         immigration_status: CITIZEN
         ssi: 0
-        employment_income: 23_940.12
+        employment_income: 29_925.15
     spm_units:
       spm_unit:
         members: [person1]
@@ -161,8 +161,9 @@
   output:
     ut_heat_eligible: false
 
-# NONE affirmatively denotes no home heat.
-- name: "Case 8, no heating source."
+# NONE affirmatively denotes no home heat; with no electric bill the home is
+# not connected to an energy source (section 208).
+- name: "Case 8, no heating source and no electric bill."
   period: 2026
   input:
     people:
@@ -174,7 +175,7 @@
       spm_unit:
         members: [person1]
         heating_type: NONE
-        heating_expense: 1_200
+        pre_subsidy_electricity_expense: 0
         ut_heat_dwelling_type: HOUSE
     households:
       household:
@@ -320,6 +321,87 @@
         heating_expense: 1_200
         ut_heat_dwelling_type: HOUSE
         receives_housing_assistance: true
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_heat_eligible: true
+
+# Section 208 and plan item 2.3: public housing counts as subsidized housing,
+# and heat included in subsidized rent is not a household energy cost.
+- name: "Case 15, public housing with heat in rent and no utility bill."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 0
+        ut_heat_dwelling_type: HOUSE
+        heat_expense_included_in_rent: true
+        pre_subsidy_electricity_expense: 0
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+        is_in_public_housing: true
+  output:
+    ut_heat_eligible: false
+
+# A public housing tenant who pays an electric bill directly is responsible for
+# an energy cost (section 208).
+- name: "Case 16, public housing with a separately paid electric bill."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 0
+        ut_heat_dwelling_type: HOUSE
+        heat_expense_included_in_rent: true
+        pre_subsidy_electricity_expense: 600
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+        is_in_public_housing: true
+  output:
+    ut_heat_eligible: true
+
+# The household reports paying for heat without a bill amount; the heating-cost
+# flag alone establishes responsibility (section 208). Case 9 is the same
+# household without the flag.
+- name: "Case 17, reported heating costs without a bill amount qualify."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 0
+        ut_heat_dwelling_type: HOUSE
+        pre_subsidy_electricity_expense: 0
+        heat_expense_included_in_rent: false
+        has_heating_expense: true
     households:
       household:
         members: [person1]

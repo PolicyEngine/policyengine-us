@@ -1,6 +1,9 @@
 description: Utah excludes all income of children below this age under the Home Energy Assistance Target program.
 values:
   2025-03-01: 18
+# Section 405 excludes earned and unearned income of a child; R982-403-5(1)
+# excludes the earned income of an unemancipated household member (candidate
+# us-ut:heat-child-unearned-income).
 metadata:
   unit: year
   period: year
@@ -8,3 +11,5 @@ metadata:
   reference:
     - title: Utah HEAT Manual, Section 405 Income Exclusions
       href: https://jobs.utah.gov/infosource/heatpolicy/Policy/Obsolete_Policy/Obsolete_400/Obsolete_405_(3_1_25_to_9_30_26)_Income_Exclusions.htm
+    - title: Utah Admin. Code R982-403-5(1)
+      href: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R982-403-5

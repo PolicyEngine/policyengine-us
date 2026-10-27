@@ -9,12 +9,18 @@ class ut_heat_countable_income(Variable):
     label = "Utah HEAT annual countable household income"
     defined_for = StateCode.UT
     reference = (
+        "https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R982-403-2",
+        "https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R982-403-6",
+        "https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R982-403-7",
         "https://jobs.utah.gov/infosource/heatpolicy/Policy/Obsolete_Policy/Obsolete_400/Obsolete_401_(10_1_24_to_9_30_26)_Income.htm",
         "https://jobs.utah.gov/infosource/heatpolicy/Policy/400_Income_Standards/402_Unearned_Income.htm",
+        "https://jobs.utah.gov/infosource/heatpolicy/Policy/400_Income_Standards/403_Earned_Income.htm",
         "https://jobs.utah.gov/infosource/heatpolicy/Policy/400_Income_Standards/404_Self-Employment/404_Self-Employment.htm",
         "https://jobs.utah.gov/infosource/heatpolicy/Policy/Obsolete_Policy/Obsolete_400/Obsolete_405_(3_1_25_to_9_30_26)_Income_Exclusions.htm",
         "https://jobs.utah.gov/infosource/heatpolicy/Policy/Obsolete_Policy/Obsolete_400/Obsolete_407_(3_1_26_to_9_30_26)_Qualified_Deductions.htm",
-        "https://jobs.utah.gov/infosource/heatpolicy/Policy/400_Income_Standards/406_No_Longer_Applicable.htm",
+        "https://jobs.utah.gov/infosource/heatpolicy/Policy/200_Program_Standards/204_Eligibility_with_Ineligible_Resident.htm",
+        "https://jobs.utah.gov/infosource/heatpolicy/assets/docs/Training/FY26/3.1.26%20Benefit%20Calculation%20Worksheet.xlsx",
+        "https://liheapch.acf.gov/docs/2026/state-plans/UT_Plan_2026.pdf#page=6",
     )
 
     def formula(spm_unit, period, parameters):
@@ -29,56 +35,39 @@ class ut_heat_countable_income(Variable):
         )
         # Annual inputs approximate the preceding eligibility month. All
         # otherwise countable adult income counts regardless of immigration.
-        # Earned income counts in full, following manual sections 401 and 406
-        # (income disregards obsolete since September 30, 2023) and the March
-        # 2026 worksheet. Utah Admin. Code R982-403-6 disregards 20% of earned
-        # income, as do manual section 204 and the FY2026 benefit matrix
-        # workbook.
-        wages = max_(person("employment_income", period), 0)
-        business = 0
-        for source in p.business_income_sources:
-            business = business + max_(person(source, period), 0)
-        rental = max_(person("rental_income", period), 0) + max_(
-            person("farm_rent_income", period), 0
-        )
-        # Existing net business inputs stand for current net amounts. They do
-        # not reconstruct HEAT expenses or isolate disallowed prior-period
-        # losses. Each business and rental source is floored at zero, so a
-        # loss does not offset other income. No business expense or insurance
-        # is deducted twice.
+        # Each source is floored at zero, so a business or rental loss does
+        # not offset other income. R982-403-6 disregards 20% of earned income,
+        # including self-employment income after business costs; section 204
+        # and the March 2026 worksheet (cell C8) apply the same disregard.
+        earned = 0
+        for source in p.earned_income_sources:
+            earned = earned + max_(person(source, period), 0)
         unearned = 0
         for source in p.unearned_income_sources:
             unearned = unearned + max_(person(source, period), 0)
-        gross = spm_unit.sum(
-            where(excluded_child, 0, wages + business + rental + unearned)
-        )
+        counted = earned * (1 - p.earned_income_disregard) + unearned
+        income = spm_unit.sum(where(excluded_child, 0, counted))
         # Child support belongs on the receiving parent. TANF/FEP/GA, ordinary
         # bank interest, educational aid and exempt nonrecurring receipts are
         # excluded. Broad inputs cannot isolate all exempt gifts, settlements,
         # combat pay, third-party payments, or cash withdrawals from trusts.
-        premiums = person("health_insurance_premiums", period)
-        # A positive aggregate premium already includes reported components.
-        # Otherwise use both reported components without deriving Medicare.
-        reported_premiums = where(
-            premiums > 0,
-            premiums,
-            max_(
-                person("health_insurance_premiums_without_medicare_part_b", period),
-                0,
-            )
-            + max_(person("medicare_part_b_premiums_reported", period), 0),
-        )
+        # Section 407 and R982-403-7(1)(b) count health insurance premiums as
+        # medical expenses. The premium aggregate takes a nonzero direct
+        # premium input, or else non-Medicare premiums plus the modeled Part B
+        # premium for enrollees net of Medicare Savings Program coverage; Part A
+        # and pretax payroll premiums are added once each.
         medical = spm_unit.sum(
-            max_(reported_premiums, 0)
+            max_(person("medical_expense_health_insurance_premiums", period), 0)
             + max_(person("pre_tax_health_insurance_premiums", period), 0)
+            + person("medicare_part_a_premium", period)
             + max_(person("other_medical_expenses", period), 0)
         )
         support_paid = add(
             spm_unit, period, ["child_support_expense", "alimony_expense"]
         )
-        # Reported medical costs approximate qualified uncompensated payments;
-        # Medicare premiums are not derived. Self-employed premiums must be
-        # included only once. Support to an included child, payment timing and
-        # medical-purpose restrictions are not identified by these inputs.
-        # The seasonal equipment deduction is outside the heating-bill scope.
-        return max_(gross - medical - max_(support_paid, 0), 0)
+        # Reported medical costs approximate qualified uncompensated payments.
+        # Self-employed premiums must be included only once. Support to an
+        # included child, payment timing and medical-purpose restrictions are
+        # not identified by these inputs. The seasonal equipment deduction is
+        # outside the heating-bill scope.
+        return max_(income - medical - max_(support_paid, 0), 0)

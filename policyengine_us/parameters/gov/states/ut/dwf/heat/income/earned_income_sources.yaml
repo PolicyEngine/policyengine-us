@@ -1,0 +1,34 @@
+description: Utah uses these earned income sources under the Home Energy Assistance Target program.
+values:
+  2024-10-01:
+    - employment_income
+    # R982-403-4(2)(a): "wages, including military base pay"; section 403
+    # counts military pay as earned income.
+    - military_basic_pay
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+    # Section 403 treats rental income as self-employment. R982-403-4(2)(k)
+    # makes rent earned when the client manages the property and
+    # R982-403-3(2)(m) makes it unearned otherwise; the inputs do not
+    # identify who manages the property, so all rent is earned here.
+    - rental_income
+    - farm_rent_income
+# The business inputs are current net amounts and do not reconstruct HEAT
+# business expenses or isolate disallowed prior-period losses. Section 404
+# counts passive S corporation income as unearned, which
+# partnership_s_corp_income does not separate.
+metadata:
+  unit: list
+  period: year
+  label: Utah HEAT earned income sources
+  reference:
+    - title: Utah Admin. Code R982-403-4(2)
+      href: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R982-403-4
+    - title: Utah Admin. Code R982-403-8
+      href: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R982-403-8
+    - title: Utah HEAT Manual, Section 403 Earned Income
+      href: https://jobs.utah.gov/infosource/heatpolicy/Policy/400_Income_Standards/403_Earned_Income.htm
+    - title: Utah HEAT Manual, Section 404 Self-Employment
+      href: https://jobs.utah.gov/infosource/heatpolicy/Policy/400_Income_Standards/404_Self-Employment/404_Self-Employment.htm

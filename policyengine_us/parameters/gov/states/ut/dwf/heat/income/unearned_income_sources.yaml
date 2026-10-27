@@ -16,19 +16,31 @@ values:
     - financial_assistance
     - alimony_income
     - child_support_received
-    - ordinary_dividend_income
+    # Trust payments, which R982-403-3(2)(h) counts.
     - estate_income
     - gambling_winnings
-# The cash contribution input represents private gifts. Section 405 exempts
-# TANF/FEP/GA and nonprofit/government aid, ordinary bank interest, educational
-# aid and enumerated nonrecurring receipts. Existing inputs do not separately
-# represent adoption payments, passive royalties or foster-child elections.
+# R982-403-5(12) excludes interest and dividend income, and plan item 1.9
+# leaves "Interest, dividends, or royalties" unchecked, so ordinary dividends
+# are not listed. The cash contribution input represents private gifts.
+# Section 405 exempts TANF/FEP/GA, financial payments made by the Department
+# of Workforce Services and financial assistance from other government
+# agencies, so the Utah state supplement (ut_ssp) is not listed either
+# (candidate us-ut:heat-tanf-dws-payments). Section 405 also exempts ordinary
+# bank interest, educational aid and enumerated nonrecurring receipts.
+# Existing inputs do not separately represent adoption payments, passive
+# royalties or foster-child elections.
 metadata:
   unit: list
   period: year
   label: Utah HEAT unearned income sources
   reference:
+    - title: Utah Admin. Code R982-403-3
+      href: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R982-403-3
+    - title: Utah Admin. Code R982-403-5
+      href: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R982-403-5
     - title: Utah HEAT Manual, Section 402 Unearned Income
       href: https://jobs.utah.gov/infosource/heatpolicy/Policy/400_Income_Standards/402_Unearned_Income.htm
     - title: Utah HEAT Manual, Section 405 Income Exclusions
       href: https://jobs.utah.gov/infosource/heatpolicy/Policy/Obsolete_Policy/Obsolete_400/Obsolete_405_(3_1_25_to_9_30_26)_Income_Exclusions.htm
+    - title: Utah FY2026 LIHEAP State Plan, Section 1.9
+      href: https://liheapch.acf.gov/docs/2026/state-plans/UT_Plan_2026.pdf#page=6

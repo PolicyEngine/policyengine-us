@@ -68,8 +68,9 @@ class ut_heat(Variable):
         target_credit = spm_unit.any(target_member) * p.target.amount
         fuel = spm_unit("heating_type", period)
         fuel_credit = np.isin(fuel.decode_to_str(), p.fuel_credit_types) * p.fuel_credit
-        # Kerosene shares propane's cost standard, but section 605 names only
-        # propane and fuel oil for this addition. No actual-expense cap applies.
+        # Kerosene shares propane's cost standard and its addition: the March
+        # 2026 worksheet has no kerosene fuel, so a kerosene household is
+        # entered as propane or oil. No actual-expense cap applies.
         # Funding-dependent extra supplements and equipment/crisis are excluded.
         # Section 607 and the March 2026 worksheet add the components with no
         # floor or ceiling. Plan section 2.6 reports $140 and $800 as estimated

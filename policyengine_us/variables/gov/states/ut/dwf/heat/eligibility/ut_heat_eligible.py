@@ -32,6 +32,10 @@ class ut_heat_eligible(Variable):
         own_wood = fuel == fuel.possible_values.WOOD
         responsible = directly_paid | (heat_in_rent & ~subsidized) | own_wood
         housing_eligible = ~subsidized | directly_paid
+        # A household with no heating (NONE) has a standard, and so
+        # qualifies, only when it pays an electric bill; one with no bill is
+        # not connected to an energy source (section 208). UNSPECIFIED has no
+        # standard.
         supported_fuel = spm_unit("ut_heat_energy_cost_standard", period) > 0
         # The annual potential award assumes no prior seasonal payment or
         # disqualifying utility credit balance. Emancipation, institutions,

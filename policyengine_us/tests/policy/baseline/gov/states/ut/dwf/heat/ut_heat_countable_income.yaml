@@ -1,9 +1,11 @@
-# Sources: Utah HEAT sections 401-407 and archived March 2026 sections 405/407.
-# Section 406 rescinded the general 20% earnings disregard.
-# Medicare and prior-period business-loss reconstruction remain outside scope.
+# Sources: Utah Admin. Code R982-403, Utah HEAT sections 401-407 and archived
+# March 2026 sections 405/407.
+# R982-403-6 and the March 2026 worksheet (cell C8) disregard 20% of earned
+# income, including net self-employment and rental income (section 403).
+# Prior-period business-loss reconstruction remains outside scope.
 
-# Sections 401 and 406 and the March 2026 worksheet count gross earnings in full.
-- name: "Case 1, gross earnings have no twenty percent disregard."
+# R982-403-6(1): 18,000 x (1 - 0.2) = 14,400.
+- name: "Case 1, twenty percent of gross earnings is disregarded."
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -24,9 +26,9 @@
         members: [person1]
         state_code: UT
   output:
-    ut_heat_countable_income: 18_000
+    ut_heat_countable_income: 14_400
 
-# Exclusion covers earned and unearned child income.
+# Exclusion covers earned and unearned child income; 15,960 x 0.8 = 12,768.
 - name: "Case 2, all income of a seventeen year old is excluded."
   period: 2026
   absolute_error_margin: 0.01
@@ -54,9 +56,9 @@
         members: [person1, person2]
         state_code: UT
   output:
-    ut_heat_countable_income: 15_960
+    ut_heat_countable_income: 12_768
 
-# Age 18 remains in school.
+# Age 18 remains in school; 15,960 x 0.8 = 12,768.
 - name: "Case 3, eighteen year old secondary student income is excluded."
   period: 2026
   absolute_error_margin: 0.01
@@ -85,9 +87,10 @@
         members: [person1, person2]
         state_code: UT
   output:
-    ut_heat_countable_income: 15_960
+    ut_heat_countable_income: 12_768
 
-# 15960+12000+2400; the exclusion ends when the person is not in school.
+# (15,960 + 12,000) x 0.8 + 2,400 = 24,768; the exclusion ends when the person
+# is not in school.
 - name: "Case 4, eighteen year old out of school income counts."
   period: 2026
   absolute_error_margin: 0.01
@@ -117,9 +120,9 @@
         members: [person1, person2]
         state_code: UT
   output:
-    ut_heat_countable_income: 30_360
+    ut_heat_countable_income: 24_768
 
-# The student exception ends after 18.
+# The student exception ends after 18; (15,960 + 12,000) x 0.8 = 22,368.
 - name: "Case 5, nineteen year old student income counts."
   period: 2026
   absolute_error_margin: 0.01
@@ -147,7 +150,7 @@
         members: [person1, person2]
         state_code: UT
   output:
-    ut_heat_countable_income: 27_960
+    ut_heat_countable_income: 22_368
 
 # Support received is parent income.
 - name: "Case 6, parent child support counts despite child income exclusion."
@@ -178,7 +181,8 @@
   output:
     ut_heat_countable_income: 3_600
 
-# Count income of all age-eligible members; no general 20% disregard.
+# Count income of all age-eligible members; section 204 allows the disregard on
+# the ineligible resident's earnings too: (12,000 + 6,000) x 0.8 = 14,400.
 - name: "Case 7, income of ineligible resident counts."
   period: 2026
   absolute_error_margin: 0.01
@@ -205,7 +209,7 @@
         members: [person1, person2]
         state_code: UT
   output:
-    ut_heat_countable_income: 18_000
+    ut_heat_countable_income: 14_400
 
 # DWS government assistance and ordinary bank interest are exempt.
 - name: "Case 8, FEP general assistance and bank interest are excluded."
@@ -233,8 +237,9 @@
   output:
     ut_heat_countable_income: 0
 
-# Recurring cash gifts and ordinary dividends count; no excluded agency classification applies.
-- name: "Case 9, ordinary dividends and cash contributions count."
+# R982-403-5(12) excludes dividend income and plan item 1.9 leaves dividends
+# unchecked; the 2,400 of recurring cash contributions counts.
+- name: "Case 9, cash contributions count but ordinary dividends do not."
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -256,7 +261,7 @@
         members: [person1]
         state_code: UT
   output:
-    ut_heat_countable_income: 3_600
+    ut_heat_countable_income: 2_400
 
 # Annual SSI input 2400=200/month; count gross SSA and pension income.
 - name: "Case 10, gross social security SSI and pension count once."
@@ -310,8 +315,9 @@
   output:
     ut_heat_countable_income: 12_000
 
-# No additional percentage business deduction.
-- name: "Case 12, net business and rental income use supplied net amounts."
+# Section 403 treats rental income as self-employment, so both supplied net
+# amounts are earned income: (12,000 + 3,600) x 0.8 = 12,480.
+- name: "Case 12, net business and rental income are earned income subject to the disregard."
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -333,9 +339,10 @@
         members: [person1]
         state_code: UT
   output:
-    ut_heat_countable_income: 15_600
+    ut_heat_countable_income: 12_480
 
-# Rental income counts only when positive; a rental loss does not offset earnings.
+# Rental income counts only when positive; a rental loss does not offset
+# earnings: 15,960 x 0.8 = 12,768.
 - name: "Case 13, negative rent does not offset earnings."
   period: 2026
   absolute_error_margin: 0.01
@@ -358,9 +365,9 @@
         members: [person1]
         state_code: UT
   output:
-    ut_heat_countable_income: 15_960
+    ut_heat_countable_income: 12_768
 
-# Qualified paid expenses 20400-2400-2040.
+# 20,400 x 0.8 = 16,320, less paid medical 2,400 and child support 2,040 = 11,880.
 - name: "Case 14, medical and support payments are deductible."
   period: 2026
   absolute_error_margin: 0.01
@@ -384,9 +391,10 @@
         members: [person1]
         state_code: UT
   output:
-    ut_heat_countable_income: 15_960
+    ut_heat_countable_income: 11_880
 
-# Medical payment by an excluded member is allowed; that member's income also counts.
+# Medical payment by an excluded member is allowed; that member's income also
+# counts: (15,960 + 6,000) x 0.8 - 6,000 = 11,568.
 - name: "Case 15, medical payments by ineligible member remain deductible."
   period: 2026
   absolute_error_margin: 0.01
@@ -414,9 +422,10 @@
         members: [person1, person2]
         state_code: UT
   output:
-    ut_heat_countable_income: 15_960
+    ut_heat_countable_income: 11_568
 
-# The supplied generic premium 1200 takes precedence over the component fallback 3600.
+# The supplied generic premium 1,200 takes precedence over the component
+# fallback 3,600: 18,000 x 0.8 - 1,200 = 13,200.
 - name: "Case 16, reported premiums are not counted twice."
   period: 2026
   absolute_error_margin: 0.01
@@ -440,9 +449,9 @@
         members: [person1]
         state_code: UT
   output:
-    ut_heat_countable_income: 16_800
+    ut_heat_countable_income: 13_200
 
-# 18000-1200-840; no automatically derived Medicare amount.
+# 18,000 x 0.8 - 1,200 - 840 = 12,360; a person under 65 has no Medicare premium.
 - name: "Case 17, supplied non Medicare premiums are the fallback."
   period: 2026
   absolute_error_margin: 0.01
@@ -467,9 +476,9 @@
         members: [person1]
         state_code: UT
   output:
-    ut_heat_countable_income: 15_960
+    ut_heat_countable_income: 12_360
 
-# Qualifying alimony paid outside the unit.
+# Qualifying alimony paid outside the unit: 18,400 x 0.8 - 2,440 = 12,280.
 - name: "Case 18, alimony paid is deductible."
   period: 2026
   absolute_error_margin: 0.01
@@ -492,9 +501,9 @@
         members: [person1]
         state_code: UT
   output:
-    ut_heat_countable_income: 15_960
+    ut_heat_countable_income: 12_280
 
-# Countable income is nonnegative.
+# Countable income is nonnegative: 1,000 x 0.8 - 2,400 floors at 0.
 - name: "Case 19, deductions floor countable income at zero."
   period: 2026
   absolute_error_margin: 0.01
@@ -519,7 +528,7 @@
   output:
     ut_heat_countable_income: 0
 
-# Enumerated deductions do not include ordinary child care.
+# Enumerated deductions do not include ordinary child care: 15,960 x 0.8 = 12,768.
 - name: "Case 20, childcare is not a general qualified deduction."
   period: 2026
   absolute_error_margin: 0.01
@@ -542,9 +551,10 @@
         members: [person1]
         state_code: UT
   output:
-    ut_heat_countable_income: 15_960
+    ut_heat_countable_income: 12_768
 
-# Each business source is floored at zero: 15,960 + 0 = 15,960; prior-period loss reconstruction unavailable.
+# Each earned source is floored at zero: (15,960 + 0) x 0.8 = 12,768;
+# prior-period loss reconstruction unavailable.
 - name: "Case 21, current net business loss does not offset other income."
   period: 2026
   absolute_error_margin: 0.01
@@ -567,15 +577,18 @@
         members: [person1]
         state_code: UT
   output:
-    ut_heat_countable_income: 15_960
+    ut_heat_countable_income: 12_768
 
-# A supplied positive premium aggregate takes precedence over its components.
-# Components represent paid, unreimbursed premiums; no calculated Medicare premium is used.
+# Section 407 and R982-403-7(1)(b) deduct health insurance premiums. A nonzero
+# direct premium input replaces the components; otherwise non-Medicare premiums
+# and the modeled Part B premium for an enrollee (net of Medicare Savings
+# Program coverage) count, and any Part A premium is added once.
 # Source: Utah HEAT section 407, effective March 1 through September 30, 2026.
-# Award arithmetic uses sections 602-604 and the March 2026 gas-house standard of 211.
 
-# 18,360 - 1,200 - 2,400 - 600 = 14,160 despite a negative aggregate report.
-- name: "Case 22, a nonpositive aggregate falls back to both reported premium components."
+# No direct premium and no Medicare Savings Program coverage, so the modeled
+# Part B premium is 202.90 x 12 = 2,434.80.
+# 18,360 - (1,200 + 2,434.80) - 600 = 14,125.20.
+- name: "Case 22, a zero direct premium falls back to non-Medicare premiums plus the modeled Part B premium."
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -586,9 +599,8 @@
         pension_income: 18_360
         ssi: 0
         medicare_enrolled: true
-        health_insurance_premiums: -1
+        health_insurance_premiums: 0
         health_insurance_premiums_without_medicare_part_b: 1_200
-        medicare_part_b_premiums_reported: 2_400
         other_medical_expenses: 600
         msp_part_b_premium_coverage: 0
     spm_units:
@@ -604,55 +616,113 @@
         members: ["person1"]
         state_code: "UT"
   output:
-    ut_heat_countable_income: 14_160
+    medicare_part_b_premium: 2_434.80
+    medical_expense_health_insurance_premiums: 3_634.80
+    ut_heat_countable_income: 14_125.20
 
-# Negative component reports cannot reduce the other positive deduction; 18,360-2,400 and 18,360-1,200.
-- name: "Case 23, reported premium components are independently nonnegative."
+# A retiree with 35 quarters of covered work pays the reduced Part A premium:
+# 311 x 12 = 3,732. Medicare Savings Program countable income is
+# 18,360 / 12 - 20 = 1,510 a month: above the QMB limit of 1,330 (no Part A
+# coverage) but below the QI limit of 1,330 x 1.35 = 1,795.50 with no assets,
+# so the program pays the 2,434.80 Part B premium.
+# 18,360 - 3,732 - 0 = 14,628.
+- name: "Case 23, a Part A premium is deducted and Medicare Savings Program coverage leaves no Part B premium."
   period: 2026
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 68
-        immigration_status: "CITIZEN"
+        immigration_status: CITIZEN
         pension_income: 18_360
         ssi: 0
         medicare_enrolled: true
-        health_insurance_premiums: 0
-        health_insurance_premiums_without_medicare_part_b: -300
-        medicare_part_b_premiums_reported: 2_400
-        msp_part_b_premium_coverage: 0
-      person2:
-        age: 68
-        immigration_status: "CITIZEN"
-        pension_income: 18_360
-        ssi: 0
-        medicare_enrolled: true
-        health_insurance_premiums: 0
-        health_insurance_premiums_without_medicare_part_b: 1_200
-        medicare_part_b_premiums_reported: -300
-        msp_part_b_premium_coverage: 0
+        medicare_quarters_of_coverage: 35
     spm_units:
-      spm_unit1:
-        members: ["person1"]
-        heating_type: "NATURAL_GAS"
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
         gas_expense: 1_000
         heat_expense_included_in_rent: false
-        ut_fep: 0
-        ut_heat_dwelling_type: "HOUSE"
-      spm_unit2:
-        members: ["person2"]
-        heating_type: "NATURAL_GAS"
-        gas_expense: 1_000
-        heat_expense_included_in_rent: false
-        ut_fep: 0
-        ut_heat_dwelling_type: "HOUSE"
+        ut_heat_dwelling_type: HOUSE
     households:
-      household1:
-        members: ["person1"]
-        state_code: "UT"
-      household2:
-        members: ["person2"]
-        state_code: "UT"
+      household:
+        members: [person1]
+        state_code: UT
   output:
-    ut_heat_countable_income: [15_960, 17_160]
+    medicare_part_a_premium: 3_732
+    msp_part_b_premium_coverage: 2_434.80
+    medicare_part_b_premium: 0
+    ut_heat_countable_income: 14_628
+
+# Every earned and unearned list entry not exercised elsewhere, for an adult.
+# Earned: (5,000 SSTB self-employment + 2,500 farm operations + 2,000
+# partnership/S corporation + 1,000 farm rent) x 0.8 = 8,400.
+# Unearned: 1,200 railroad + 2,400 retirement distributions + 3,600 survivor
+# + 4,800 disability + 600 strike + 300 gambling + 1,800 estate = 14,700.
+# 8,400 + 14,700 = 23,100.
+- name: "Case 24, remaining earned and unearned income sources count."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: CITIZEN
+        ssi: 0
+        sstb_self_employment_income: 5_000
+        farm_operations_income: 2_500
+        partnership_s_corp_income: 2_000
+        farm_rent_income: 1_000
+        railroad_benefits: 1_200
+        retirement_distributions: 2_400
+        survivor_benefits: 3_600
+        disability_benefits: 4_800
+        strike_benefits: 600
+        gambling_winnings: 300
+        estate_income: 1_800
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_heat_countable_income: 23_100
+
+# Section 405 excludes the income of an 18-year-old still in school; K-12
+# enrollment qualifies as well as secondary school: 15,960 x 0.8 = 12,768.
+- name: "Case 25, eighteen year old K-12 student income is excluded."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 15_960
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+        ssi: 0
+        is_in_k12_school: true
+        is_in_secondary_school: false
+        employment_income: 12_000
+        pension_income: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_heat_countable_income: 12_768

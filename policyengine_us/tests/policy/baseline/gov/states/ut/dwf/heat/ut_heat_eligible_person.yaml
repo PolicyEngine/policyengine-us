@@ -432,3 +432,79 @@
         members: [person2]
   output:
     ut_heat_eligible_person: [true, false]
+
+# Section 203-2B: active-duty service is an eligible criterion for a parolee
+# with no time in qualified status.
+- name: "Case 17, recent parolee on active duty qualifies."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: PAROLED_ONE_YEAR
+        ssi: 0
+        years_since_us_entry: 0
+        is_veteran: false
+        is_military: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_heat_eligible_person: true
+
+# Section 203-2B extends the service criterion to a veteran's dependent child.
+# The 10-year-old is a dependent in the veteran's tax unit and qualifies; the
+# 25-year-old child files a separate return, is not a dependent, and has no
+# qualifying service or five years in status, so does not.
+- name: "Case 18, a veteran's dependent child qualifies but a non-dependent adult child does not."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        ssi: 0
+        is_veteran: true
+        is_tax_unit_head: true
+      person2:
+        age: 10
+        immigration_status: PAROLED_ONE_YEAR
+        ssi: 0
+        years_since_us_entry: 0
+      person3:
+        age: 25
+        immigration_status: PAROLED_ONE_YEAR
+        ssi: 0
+        years_since_us_entry: 0
+        is_tax_unit_head: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        ut_heat_dwelling_type: HOUSE
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+  output:
+    ut_heat_eligible_person: [true, true, false]

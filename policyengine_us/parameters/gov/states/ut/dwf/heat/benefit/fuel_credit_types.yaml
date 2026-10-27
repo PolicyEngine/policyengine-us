@@ -2,7 +2,12 @@ description: Utah grants an additional benefit for these primary heating fuels u
 values:
   2023-03-01:
     - PROPANE
+    - KEROSENE
     - FUEL_OIL
+# Section 605 names propane and fuel oil. Table III groups kerosene with
+# propane, and the March 2026 worksheet's fuel list (GAS, PROPANE, OIL,
+# ELECTRICITY, COAL/STEAM, WOOD) has no kerosene entry, so a kerosene household
+# is entered as propane or oil, both of which carry the credit.
 metadata:
   unit: list
   period: year
@@ -10,3 +15,7 @@ metadata:
   reference:
     - title: Utah HEAT Manual, Section 605 Propane or Fuel Oil
       href: https://jobs.utah.gov/infosource/heatpolicy/Policy/600_Payment_Calculation/605_Propane_or_Fuel_Oil.htm
+    - title: Utah HEAT Manual, Section 609 Table III Monthly Energy Cost Standards
+      href: https://jobs.utah.gov/infosource/heatpolicy/Policy/600_Payment_Calculation/609_Table_III_Monthly_Energy_Cost_Standards.htm
+    - title: Utah HEAT Benefit Calculation Worksheet, effective March 1, 2026, Sheet2 fuel list
+      href: https://jobs.utah.gov/infosource/heatpolicy/assets/docs/Training/FY26/3.1.26%20Benefit%20Calculation%20Worksheet.xlsx
