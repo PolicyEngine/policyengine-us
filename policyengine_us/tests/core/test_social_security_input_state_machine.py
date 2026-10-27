@@ -667,6 +667,53 @@ class SocialSecurityInputsMachine(RuleBasedStateMachine):
             value, as_period(period), simulation.branch_name, derived=True
         )
 
+    @rule(slot=TARGET, name=st.sampled_from(CACHE_NAMES))
+    def bulk_delete_formula_cache(self, slot, name):
+        """Exercise Core's replacement of the memo dict around other returns."""
+        simulation, _ = self.state(slot)
+        holder = simulation.get_holder(name)
+        visible = set(simulation._get_visible_branch_names())
+        if any(
+            branch in visible and not storage.is_derived(period, branch)
+            for storage in (holder._memory_storage, holder._disk_storage)
+            if storage is not None
+            for branch, period in storage.get_known_branch_periods()
+        ):
+            # Delete formula caches, preserving this machine's caller source
+            # model. Core's delete API does not refresh dependent formulas
+            # after deleting caller inputs; source writes are separate rules.
+            return
+        simulation.delete_arrays(name)
+
+    @rule(
+        component=COMPONENT,
+        name=st.sampled_from(CACHE_NAMES),
+        amount=st.integers(min_value=12_001, max_value=48_000),
+    )
+    def bulk_delete_then_reported_write(self, component, name, amount):
+        """Compose a replaced memo with a later source write before other reads."""
+        simulation = self.backend.Builder().build_from_variables(
+            self.backend.system, {component: {"2024": [12_000]}}
+        )
+        model = Model()
+        model.write(component, False, "2024", 12_000, True, "builder", initial=True)
+        assert float(simulation.calculate(component, as_period("2024"))[0]) == 24_000
+        simulation.delete_arrays(name)
+        # Initial public inputs are on reserved source branches, outside
+        # Core's visible-branch bulk deletion. Every generated name therefore
+        # deletes only formula caches here, keeping the caller model intact.
+        source = simulation.get_holder(f"{component}_reported").get_array(
+            as_period("2024"), simulation.branch_name
+        )
+        assert source is not None and float(source[0]) == 12_000
+        simulation.set_input(f"{component}_reported", "2024", [amount])
+        model.write(component, True, "2024", amount, True, "after bulk delete")
+        # Add this state after the composition: warming every component
+        # beforehand would create unrelated physical formulas whose later
+        # deletion clears the memo, masking a lost fast-only return's date.
+        # Both invariants still check every state after every generated step.
+        self.append(simulation, model)
+
     @rule(
         slot=TARGET,
         component=COMPONENT,
