@@ -1,7 +1,14 @@
 description: Employee-side California State Disability Insurance contribution rate.
 values:
-  # DE 3395 lists rates from 2019; the 2019 rate also applies to earlier years.
-  0000-01-01: 0.01
+  # DE 3395 Rev. 55 lists rates from 2006; earlier years reuse the 2006 rate.
+  0000-01-01: 0.008
+  2007-01-01: 0.006
+  2008-01-01: 0.008
+  2009-01-01: 0.011
+  2011-01-01: 0.012
+  2012-01-01: 0.01
+  2015-01-01: 0.009
+  2018-01-01: 0.01
   2021-01-01: 0.012
   2022-01-01: 0.011
   2023-01-01: 0.009
@@ -18,6 +25,10 @@ metadata:
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=UIC&sectionNum=984.
     - title: California Unemployment Insurance Code Section 985
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=UIC&sectionNum=985.
+    - title: EDD, Tax Rates, Wage Limits, and Value of Meals and Lodging (DE 3395 Rev. 55 (1-13)), SDI Tax % column, 2006-2013
+      href: https://web.archive.org/web/20130124000837/http://www.edd.ca.gov/pdf_pub_ctr/de3395.pdf#page=1
+    - title: EDD, Tax Rates, Wage Limits, and Value of Meals and Lodging (DE 3395 Rev. 61 (12-17)), SDI Tax % column, 2011-2018
+      href: https://web.archive.org/web/20181221225340/https://www.edd.ca.gov/pdf_pub_ctr/de3395.pdf#page=1
     - title: EDD, Tax Rates, Wage Limits, and Value of Meals and Lodging (DE 3395 Rev. 69 (1-26)), SDI Tax % column, 2019-2026
       href: https://edd.ca.gov/siteassets/files/pdf_pub_ctr/de3395.pdf#page=1
     - title: EDD, Contribution Rates, Withholding Schedules, and Meals and Lodging Values (SDI withholding rates, 2023-2026)

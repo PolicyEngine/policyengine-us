@@ -55,3 +55,87 @@
   output:
     # DE 3395: 2026 SDI rate 1.3%, no wage limit. 1.3% x 200,000 = 2,600.
     ca_employee_state_disability_insurance_contribution: 2_600
+
+- name: Case 7, California SDI in 2010 stops at the 2010 taxable wage limit.
+  period: 2010
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 200_000
+    state_code: CA
+  output:
+    # DE 3395 Rev. 55: 2010 SDI rate 1.1%, taxable wage limit $93,316.
+    # 1.1% x min(200,000, 93,316) = 1,026.476.
+    ca_employee_state_disability_insurance_contribution: 1_026.48
+
+- name: Case 8, California SDI in 2011 uses the 1.2% rate below the taxable wage limit.
+  period: 2011
+  input:
+    employment_income: 60_000
+    state_code: CA
+  output:
+    # DE 3395 Rev. 61: 2011 SDI rate 1.2%, taxable wage limit $93,316.
+    # 1.2% x 60,000 = 720.
+    ca_employee_state_disability_insurance_contribution: 720
+
+- name: Case 9, California SDI in 2015 stops at the 2015 taxable wage limit.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 200_000
+    state_code: CA
+  output:
+    # DE 3395 Rev. 61: 2015 SDI rate 0.9%, taxable wage limit $104,378.
+    # 0.9% x min(200,000, 104,378) = 939.402.
+    ca_employee_state_disability_insurance_contribution: 939.40
+
+- name: Case 10, California SDI in 2018 stops at the 2018 taxable wage limit.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 200_000
+    state_code: CA
+  output:
+    # DE 3395 Rev. 61: 2018 SDI rate 1.0%, taxable wage limit $114,967.
+    # 1.0% x min(200,000, 114,967) = 1,149.67.
+    ca_employee_state_disability_insurance_contribution: 1_149.67
+
+- name: Case 11, California SDI in 2021 stops at the 2021 taxable wage limit.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 200_000
+    state_code: CA
+  output:
+    # DE 3395 Rev. 69: 2021 SDI rate 1.2%, taxable wage limit $128,298.
+    # 1.2% x min(200,000, 128,298) = 1,539.576.
+    ca_employee_state_disability_insurance_contribution: 1_539.58
+
+- name: Case 12, California SDI in 2023 at exactly the taxable wage limit.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 153_164
+    state_code: CA
+  output:
+    # DE 3395 Rev. 69: 2023 SDI rate 0.9%, taxable wage limit $153,164.
+    # 0.9% x 153,164 = 1,378.476, the 2023 maximum withholding.
+    ca_employee_state_disability_insurance_contribution: 1_378.48
+
+- name: Case 13, California SDI in 2022 limits each earner's wages separately.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 200_000
+      person2:
+        employment_income: 50_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # DE 3395 Rev. 69: 2022 SDI rate 1.1%, taxable wage limit $145,600.
+    # person1: 1.1% x min(200,000, 145,600) = 1,601.60.
+    # person2: 1.1% x 50,000 = 550.
+    ca_employee_state_disability_insurance_contribution: [1_601.60, 550]

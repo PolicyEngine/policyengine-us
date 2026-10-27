@@ -1,13 +1,25 @@
 description: California limits employee State Disability Insurance contributions to wages up to this amount per employee.
 values:
-  # DE 3395 lists limits from 2019; the 2019 limit also applies to earlier years.
-  0000-01-01: 118_371
+  # DE 3395 Rev. 55 lists limits from 2006; earlier years reuse the 2006 limit.
+  0000-01-01: 79_418
+  2007-01-01: 83_389
+  2008-01-01: 86_698
+  2009-01-01: 90_669
+  2010-01-01: 93_316
+  2012-01-01: 95_585
+  2013-01-01: 100_880
+  2014-01-01: 101_636
+  2015-01-01: 104_378
+  2016-01-01: 106_742
+  2017-01-01: 110_902
+  2018-01-01: 114_967
+  2019-01-01: 118_371
   2020-01-01: 122_909
   2021-01-01: 128_298
   2022-01-01: 145_600
   2023-01-01: 153_164
-  # UIC 985(b), added by SB 951 (2022): the limit does not apply to wages
-  # paid on or after January 1, 2024.
+  # UIC 985(b) (SB 951 (2022), as amended by SB 143 (2023)): the limit does
+  # not apply to wages paid on or after January 1, 2024.
   2024-01-01: .inf
 
 metadata:
@@ -17,6 +29,10 @@ metadata:
   reference:
     - title: California Unemployment Insurance Code Section 985(a) (wage limit) and (b) (no limit for wages paid on or after January 1, 2024)
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=UIC&sectionNum=985.
+    - title: EDD, Tax Rates, Wage Limits, and Value of Meals and Lodging (DE 3395 Rev. 55 (1-13)), Maximum Taxable Wage Base DI column, 2006-2013
+      href: https://web.archive.org/web/20130124000837/http://www.edd.ca.gov/pdf_pub_ctr/de3395.pdf#page=1
+    - title: EDD, Tax Rates, Wage Limits, and Value of Meals and Lodging (DE 3395 Rev. 61 (12-17)), Maximum Taxable Wage Base DI column, 2011-2018
+      href: https://web.archive.org/web/20181221225340/https://www.edd.ca.gov/pdf_pub_ctr/de3395.pdf#page=1
     - title: EDD, Tax Rates, Wage Limits, and Value of Meals and Lodging (DE 3395 Rev. 69 (1-26)), Maximum Taxable Wage Base DI column and footnote 1, 2019-2026
       href: https://edd.ca.gov/siteassets/files/pdf_pub_ctr/de3395.pdf#page=1
     - title: EDD, Contribution Rates, Withholding Schedules, and Meals and Lodging Values (2023 SDI taxable wage limit; no limit from 2024 under SB 951)
