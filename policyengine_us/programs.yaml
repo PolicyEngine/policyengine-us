@@ -1004,6 +1004,14 @@ programs:
         variable: ar_liheap
         parameter_prefix: gov.states.ar.ee.aeo.liheap
         notes: FY2025-FY2026 regular heating matrices and income limits are checked; income rules follow the FFY 2025 manual (no FY2026 manual was found), and other years are unverified. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: AZ
+        status: partial
+        name: Arizona LIHEAP
+        full_name: Arizona Low Income Home Energy Assistance Program
+        variable: az_liheap
+        parameter_prefix: gov.states.az.des.liheap
+        verified_years: "2026"
+        notes: FY2026 Standard benefit covering heating and cooling bills from the point-based benefit matrix. Crisis assistance, water for evaporative cooling and weatherization are out of scope.
       - state: GA
         status: partial
         name: Georgia LIHEAP
