@@ -1,1 +1,0 @@
-Exclude children's earnings, SSI recipients' income and 27.5% of other gross earnings from North Carolina Work First countable income, and require a payment of at least $25 a month instead of $25 per household member.
