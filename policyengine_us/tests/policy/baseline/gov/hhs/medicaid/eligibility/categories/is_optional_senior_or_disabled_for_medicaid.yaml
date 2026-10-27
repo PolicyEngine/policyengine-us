@@ -61,7 +61,8 @@
 # Emergency Medicaid covers noncitizens who meet the state plan's requirements
 # other than the receipt of SSI (42 U.S.C. 1396b(v)(2)(B); 42 CFR 435.406(b)).
 # In Alabama that leaves SSI's income test. Wages of $800 a month ($9,600 a
-# year) are under the SSI rate ($11,928) before any disregard.
+# year) are under the SSI rate ($11,928) before any disregard. Until #10240
+# merges, the pathway counts no income for this person; Cases 7 and 8 test it.
 - name: Case 6, undocumented aged Alabaman keeps the pathway, unlike the citizen in Case 3, and qualifies for emergency Medicaid.
   period: 2026
   input:
@@ -149,3 +150,26 @@
     medicaid_category: [SENIOR_OR_DISABLED, SENIOR_OR_DISABLED]
     is_medicaid_eligible: [false, false]
     is_emergency_medicaid_eligible: [true, false]
+
+# A permanent resident ten years after entry is past the five-year bar, so
+# passes the Medicaid immigration test, but with no qualifying quarters fails
+# SSI's noncitizen test (8 U.S.C. 1612(a)(2)(B)) and gets no SSI. Alabama has
+# no group for aged people who do not receive SSI, and the emergency Medicaid
+# exception does not reach someone who passes the Medicaid immigration test.
+- name: Case 9, Alabaman permanent resident past the five-year bar without 40 quarters does not keep the pathway.
+  period: 2026
+  input:
+    age: 70
+    state_code: AL
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 10
+    ssi_qualifying_quarters_earnings: 0
+    social_security_retirement: 10_800
+  output:
+    is_medicaid_immigration_status_eligible: true
+    ssi: 0
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: NONE
+    is_medicaid_eligible: false
+    is_emergency_medicaid_eligible: false

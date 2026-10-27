@@ -25,7 +25,7 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
             period
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled
         immigration_eligible = person("is_medicaid_immigration_status_eligible", period)
-        covers_group = (
+        in_covered_group = (
             p.covers_non_ssi_recipients[state].astype(bool) | ~immigration_eligible
         )
         is_senior_or_disabled = person("is_ssi_aged_blind_disabled", period)
@@ -33,4 +33,6 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
             "is_optional_senior_or_disabled_income_eligible", period
         )
         asset_eligible = person("is_optional_senior_or_disabled_asset_eligible", period)
-        return covers_group & is_senior_or_disabled & income_eligible & asset_eligible
+        return (
+            in_covered_group & is_senior_or_disabled & income_eligible & asset_eligible
+        )

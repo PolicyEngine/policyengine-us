@@ -18,6 +18,7 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
         "https://www.law.cornell.edu/uscode/text/42/1382#a",
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-015-00/0805-015-45-income-maximum/",
         "https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=1",
+        "https://www.ndlegis.gov/information/acdata/pdf/75-02-02.1.pdf#page=89",
     )
 
     def formula(person, period, parameters):
