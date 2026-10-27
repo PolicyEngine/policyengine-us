@@ -615,6 +615,8 @@ def test_nonmemoized_store_keeps_the_existing_fast_return_date(
     assert scalar(simulation, "independent_formula", "2023") == 77
     key = ("independent_formula", period("2023"))
     memo = simulation._fast_cache[key]
+    # A calculation backend may repeat the insertion without another store.
+    simulation._fast_cache[key] = memo
     number = simulation._get_store_history().earliest_dependency(*key)
     if memo_before_since:
         simulation.set_input(PUBLIC, "2024", [12_000.0])

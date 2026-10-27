@@ -513,8 +513,12 @@ class _FormulaFastCache(dict):
         self._owner = None
 
     def __setitem__(self, key, array):
+        # Reassigning the same returned object without another formula store
+        # does not change its date (some calculation backends do this twice).
+        number = self._store_numbers.get(key) if self.get(key) is array else None
         super().__setitem__(key, array)
-        self._store_numbers.pop(key, None)
+        if number is None:
+            self._store_numbers.pop(key, None)
         simulation = None if self._owner is None else self._owner()
         if simulation is None:
             return
