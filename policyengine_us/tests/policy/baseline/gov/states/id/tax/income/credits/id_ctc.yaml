@@ -1,7 +1,7 @@
 - name: One child
   period: 2022
   input:
-    ctc_qualifying_children: 1
+    id_ctc_qualifying_children: 1
     state_code: ID
   output:
     id_ctc: 205
@@ -9,7 +9,7 @@
 - name: Family with 2 children 
   period: 2018
   input:
-    ctc_qualifying_children: 2
+    id_ctc_qualifying_children: 2
     state_code: ID
   output:
     id_ctc: 410
@@ -17,7 +17,7 @@
 - name: No children
   period: 2022
   input:
-    ctc_qualifying_children: 0
+    id_ctc_qualifying_children: 0
     state_code: ID
   output:
     id_ctc: 0
@@ -29,7 +29,7 @@
   # $205 per qualifying child
   period: 2025
   input:
-    ctc_qualifying_children: 1
+    id_ctc_qualifying_children: 1
     state_code: ID
   output:
     id_ctc: 205
@@ -38,7 +38,7 @@
   # 3 children * $205 = $615
   period: 2025
   input:
-    ctc_qualifying_children: 3
+    id_ctc_qualifying_children: 3
     state_code: ID
   output:
     id_ctc: 615
@@ -46,7 +46,7 @@
 - name: No children in 2025
   period: 2025
   input:
-    ctc_qualifying_children: 0
+    id_ctc_qualifying_children: 0
     state_code: ID
   output:
     id_ctc: 0
