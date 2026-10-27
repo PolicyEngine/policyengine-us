@@ -55,15 +55,22 @@ All scenarios preserve cohort FRA, early months and delayed-credit rates.
 Under `supplied_claim_age`, a missing value, a value before 62, or a value
 after 70 leaves the affected factor at one and raises
 `_pia_ratio_missing_claim_age`. There is no silent change to another scenario.
-The `entitlement_dates` scenario requires a known month and day of birth,
-supplied as `social_security_birth_month` and `social_security_birth_day`,
-or a complete `ss_calculator_birth_date`. Zero month/day means unavailable.
-Exact dates preserve SSA attainment on the day before a birthday, including
-January 1 births.
+The `entitlement_dates` scenario uses the entitlement year/month and birth
+year/month. Supply `social_security_birth_month`; the optional
+`social_security_birth_day` refines SSA age attainment. With a known birth
+month and no day, day 2 is the explicit within-month convention and
+`_pia_ratio_proxy` is true. Zero birth month means unavailable. A complete
+`ss_calculator_birth_date` supplies the exact date instead; exact dates
+preserve attainment on the day before a birthday, including January 1 births.
 
 Where only a birth year is available for an age-month scenario, the cohort
 calculation uses the documented non-January-1 approximation and raises
-`_pia_ratio_proxy`. A claiming scenario is substantive: in C2, replacing the
+`_pia_ratio_proxy`. Exact birth information and an explicitly supplied
+`birth_year` take precedence over a year derived from current age. When birth
+information is unavailable but a worker eligibility year is supplied, E minus
+62 can supply the approximate birth cohort for FRA and credit rates; this does
+not change the supplied eligibility year. A claiming scenario is substantive:
+in C2, replacing the
 correct age-62 adjustment of 0.70 with 1 infers AIME $2,978 instead of $5,000
 and changes the annual gain from $1,165.248 to $1,664.64 before rounding, an
 overstatement of about 43%.
@@ -77,9 +84,13 @@ entitlement/onset year supplies the component's applicable basis where
 appropriate. A link must identify an existing Person and a supplied computation
 basis; conflicting record years are unsupported.
 
-For own retirement without a supplied basis, each scoring year's eligibility
-proxy is `E = t - age_t + 62`. Rebuild it independently for every annual
-cross-section. A row whose age stays 70 has E=2018 in 2026 and E=2027 in 2035;
+For own retirement, a supplied worker eligibility year takes precedence. Without
+one, exact birth information or an explicitly supplied `birth_year` identifies
+the age-62 eligibility year before the current-age proxy; known entitlement
+dates and the selected claim age can also identify that year. If none of these
+supplies a basis, each scoring year's proxy is `E = t - age_t + 62`. Rebuild
+it independently for every annual cross-section. A row whose age stays 70 and
+has no supplied basis has E=2018 in 2026 and E=2027 in 2035;
 the model does not carry an inferred cohort or claiming history between those
 rows. Integer age also leaves birthday/within-year ambiguity, so compare adjacent
 eligibility years when scoring sensitivities.
@@ -146,7 +157,7 @@ reported source benefit is annual.
 | `_inferred_aime_lower_bound` | Inclusive conditional AIME interval bound. |
 | `_inferred_aime_upper_bound` | Exclusive conditional AIME interval bound. |
 | `_pia_ratio_eligibility_year` | Underlying worker eligibility/computation year E. |
-| `_pia_ratio_claiming_adjustment` | Imputed worker claiming adjustment a; one by decomposition convention on the auxiliary composite-ratio route. |
+| `_pia_ratio_claiming_adjustment` | Imputed worker claiming adjustment a; zero means unavailable on a positive retirement record, while one is the auxiliary composite-ratio decomposition convention. |
 | `_pia_ratio_own_record_retired_worker` | Own-record retired-worker indicator. |
 | `_pia_ratio_missing_claim_age` | Required claiming information is unusable. |
 | `_pia_ratio_pre_1983` | Benchmark predates supported initial-PIA rounding. |
@@ -162,6 +173,15 @@ whether claiming data are missing or the benchmark predates 1983. For an AIME
 distribution or percentile calculation, also exclude `_pia_ratio_unmodeled`,
 `_pia_ratio_missing_claim_age` and `_pia_ratio_pre_1983` records and inspect
 the proxy and measurement-uncertainty flags.
+
+On a positive retirement record, claiming adjustment zero is an unavailable
+diagnostic sentinel until the selected scenario yields a usable adjustment.
+Missing claiming data and unsupported pre-1983 records can therefore report
+zero while keeping the benefit factor at one. Do not interpret this sentinel
+as an actuarial factor, a complete benefit cut, or a default FRA assumption;
+filter the associated flags. Disability keeps adjustment one, auxiliary
+composite ratios use one by decomposition convention, and a zero-benefit
+record keeps the neutral adjustment one.
 
 For exact dime-rounded baseline eligibility PIA z, the interval is
 `[inverse(z), inverse(z + 0.10))`; the point estimate is its lower endpoint.
@@ -183,6 +203,14 @@ adapter uses each stored scalar's shortest float32 decimal representation.
 This avoids expanding binary representation noise into an additional PIA
 dime; it does not round every annual source to cents or recover precision
 already lost when the input was stored.
+
+Named AIME point estimates and interval bounds are stored at Core's float32
+resolution. The adapter rounds them toward positive infinity so an ordinary
+cast cannot move a lower endpoint below the baseline inverse. Represented
+values can differ from the mathematical endpoint by up to one float32 step;
+use the shared pure service for exact interval membership or boundary
+calculations. It keeps rational endpoints internally, and the shared
+`PIAInverse` exposes exact Fraction bounds as well as high-precision decimals.
 
 A zero benefit produces factor one and zero monetary outputs without division.
 Negative reported amounts and nonpositive divisors are unsupported and rejected.

@@ -8,7 +8,7 @@ class social_security_retirement_pia_ratio_claiming_adjustment(Variable):
     definition_period = YEAR
     unit = "/1"
     label = "Social Security retirement pia-ratio claiming adjustment"
-    documentation = "Worker claiming adjustment used in the baseline inversion under the explicitly selected scenario. Disability uses one. An auxiliary composite worker-benefit ratio already includes its claiming adjustment and is not divided twice."
+    documentation = "Worker claiming adjustment from the explicitly selected scenario. Zero is an unavailable diagnostic sentinel for a positive retirement record until a usable adjustment is computed, including missing claiming data or an unsupported pre-1983 benchmark; inspect the flags rather than interpreting it as FRA or a benefit cut. A zero-benefit record keeps neutral adjustment one."
 
     def formula(person, period, parameters):
         return reported_pia_ratio_output(

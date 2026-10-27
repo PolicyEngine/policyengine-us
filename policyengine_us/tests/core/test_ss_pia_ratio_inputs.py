@@ -34,6 +34,7 @@ DOWNSTREAM = (
 )
 AMOUNTS = ((18_440.64, 0, 0, 0), (12_000, 6_000, 1_200, 300))
 GROUP_ENTITIES = ("household", "tax_unit", "spm_unit", "family", "marital_unit")
+GROUP_PLURALS = ("households", "tax_units", "spm_units", "families", "marital_units")
 
 
 def _write_h5(path):
@@ -72,8 +73,8 @@ def _situation():
             },
         }
     result = {"people": people}
-    for entity in GROUP_ENTITIES:
-        result[f"{entity}s"] = {person: {"members": [person]} for person in people}
+    for plural in GROUP_PLURALS:
+        result[plural] = {person: {"members": [person]} for person in people}
     for household in result["households"].values():
         household["state_code"] = {YEAR: "TX"}
     return result
@@ -196,14 +197,17 @@ def test_supplied_claim_months_load_from_h5_and_drive_inverse(country_system, tm
         simulation.calculate("social_security_retirement_claim_age_months", YEAR),
         [747, 0],
     )
+    # Core carries stored inputs forward through its ordinary dataset contract;
+    # the input has no formula/uprating, and C rebuilds inferred cohorts by year.
     np.testing.assert_array_equal(
         simulation.calculate("social_security_retirement_claim_age_months", YEAR + 1),
-        [0, 0],
+        [747, 0],
     )
     adjustment = simulation.calculate(
         "social_security_retirement_pia_ratio_claiming_adjustment", YEAR
     )
     assert adjustment[0] == pytest.approx(0.7125)
+    assert adjustment[1] == 0
     aime = simulation.calculate("social_security_retirement_inferred_aime", YEAR)
     assert aime[0] == pytest.approx(5000, abs=0.01)
     lower = simulation.calculate(
@@ -247,3 +251,43 @@ def test_claim_months_are_a_pure_annual_input(country_system):
     assert variable.default_value == 0
     assert not variable.formulas
     assert not getattr(variable, "uprating", None)
+
+
+def test_named_aime_endpoint_round_trips_after_float32_storage(country_system):
+    """A nonterminating inverse must survive storage in the Person holder."""
+    from decimal import Decimal
+    from fractions import Fraction
+
+    from policyengine_us.tools.social_security.parameters import bend_points_at
+    from policyengine_us.tools.social_security.pia import compute_pia
+
+    situation = {
+        "people": {
+            "retiree": {
+                "age": {YEAR: 62},
+                "social_security_retirement_reported": {YEAR: 60},
+                "social_security_retirement_claim_age_months": {YEAR: 804},
+            }
+        },
+        **{plural: {"group": {"members": ["retiree"]}} for plural in GROUP_PLURALS},
+    }
+    simulation = CoreSimulation(
+        situation=situation,
+        tax_benefit_system=country_system,
+        default_input_period=YEAR,
+        default_calculation_period=YEAR,
+    )
+    aime = simulation.calculate("social_security_retirement_inferred_aime", YEAR)[0]
+    lower = simulation.calculate(
+        "social_security_retirement_inferred_aime_lower_bound", YEAR
+    )[0]
+    upper = simulation.calculate(
+        "social_security_retirement_inferred_aime_upper_bound", YEAR
+    )[0]
+    assert lower == aime
+    assert lower < upper
+    assert Fraction(float(lower)) >= Fraction(50, 9)
+    assert Fraction(float(upper)) >= Fraction(17, 3)
+    assert compute_pia(
+        float(aime), YEAR, bend_points=bend_points_at(country_system.parameters, YEAR)
+    ) == Decimal("5.0")

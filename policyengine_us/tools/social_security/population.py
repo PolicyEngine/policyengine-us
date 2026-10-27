@@ -35,6 +35,7 @@ from policyengine_us.tools.social_security.population_survivor import (
 from policyengine_us.tools.social_security_benefit_levers import (
     SocialSecurityBenefitSource,
 )
+from policyengine_us.tools.period_branch import has_input
 
 
 SCENARIOS = {
@@ -106,6 +107,7 @@ def _record_basis(person, period, parameters, component):
         )
     age = person("age", period)
     birth_years = person("birth_year", period)
+    supplied_birth_year = has_input(person.simulation, "birth_year", period)
     years, linked, worker_indices = resolve_worker_basis(
         person, period, component, positive
     )
@@ -120,6 +122,10 @@ def _record_basis(person, period, parameters, component):
     policy = parameters.gov.contrib.ssa.benefit_levers.pia_ratio(period.start)
 
     if component == "retirement":
+        for i in np.flatnonzero(positive):
+            adjustments[i] = Fraction(
+                0
+            )  # Unknown until the selected scenario is usable.
         # An entitlement date is a claim date, not age-62 eligibility. In its
         # absence the scoring year's age rebuilds the cohort independently.
         # A link without an explicit computation basis is not permission to
@@ -143,50 +149,64 @@ def _record_basis(person, period, parameters, component):
         entitlement_months = person(f"{prefix}_entitlement_month", period)
         births = [None] * n
         exact_births = np.zeros(n, dtype=bool)
+        known_birth_months = np.zeros(n, dtype=bool)
         for i in np.flatnonzero(positive):
             j = worker_indices[i]
-            birth = date(int(birth_years[j]), 1, 2)
+            known_birth_year = supplied_birth_year and birth_years[j] > 0
+            cohort = (
+                int(birth_years[j])
+                if known_birth_year
+                else int(years[i]) - 62
+                if supplied[i]
+                else year - int(age[j])
+            )
+            observed_birth_month = None
+            if (
+                not known_birth_year
+                and not str(birth_dates[j])
+                and entitlement[i] > 0
+                and 744 <= months[i] <= 840
+            ):
+                if not 1 <= entitlement_months[i] <= 12:
+                    raise ValueError(
+                        "Social Security entitlement month must lie in [1, 12]"
+                    )
+                observed_birth_month = (
+                    int(entitlement[i]) * 12
+                    + int(entitlement_months[i])
+                    - 1
+                    - int(months[i])
+                )
+                cohort = observed_birth_month // 12
+            birth = date(cohort, 1, 2)
             exact_birth = False
             if str(birth_dates[j]):
                 birth = date.fromisoformat(str(birth_dates[j]))
                 exact_birth = True
-            elif birth_months[j] and birth_days[j]:
+                known_birth_months[i] = True
+            elif birth_months[j]:
                 try:
-                    birth = date(
-                        int(birth_years[j]), int(birth_months[j]), int(birth_days[j])
-                    )
+                    birth = date(cohort, int(birth_months[j]), int(birth_days[j]) or 2)
                 except ValueError as error:
                     raise ValueError(
                         "Invalid Social Security birth month/day"
                     ) from error
-                exact_birth = True
+                exact_birth = bool(birth_days[j])
+                known_birth_months[i] = True
+            elif observed_birth_month is not None:
+                birth = date(cohort, observed_birth_month % 12 + 1, 2)
             births[i], exact_births[i] = birth, exact_birth
             if not supplied[i] and not linked[i]:
                 if exact_birth:
                     years[i] = attainment_month(birth, 744) // 12
-                elif entitlement[i] > 0:
-                    # A known claim age plus entitlement month identifies the
-                    # worker's age-62 year without treating claiming as eligibility.
-                    assumed_months = {
-                        "supplied_claim_age": int(months[i]),
-                        "age_62": 744,
-                        "age_65": 780,
-                        "fra": full_retirement_age_months(birth),
-                        "age_70": 840,
-                        "entitlement_dates": 0,
-                    }[scenario]
-                    if 744 <= assumed_months <= 840:
-                        if not 1 <= entitlement_months[i] <= 12:
-                            raise ValueError(
-                                "Social Security entitlement month must lie in [1, 12]"
-                            )
-                        years[i] = (
-                            int(entitlement[i]) * 12
-                            + int(entitlement_months[i])
-                            - 1
-                            - assumed_months
-                            + 744
-                        ) // 12
+                elif known_birth_year:
+                    years[i] = birth.year + 62
+                    proxy[i] = True
+                elif observed_birth_month is not None:
+                    # Only observed claim age identifies this cohort. Changing
+                    # the sensitivity for a must not change the worker's E.
+                    years[i] = (observed_birth_month + 744) // 12
+                    proxy[i] = True
             if not years[i]:
                 years[i] = year - age[i] + 62
                 proxy[i] = True
@@ -196,7 +216,7 @@ def _record_basis(person, period, parameters, component):
             if not exact_birth:
                 proxy[i] = True
             if scenario == "entitlement_dates":
-                if not exact_birth or entitlement[i] <= 0:
+                if not known_birth_months[i] or entitlement[i] <= 0:
                     missing_claim_age[i] = True
                     continue
                 if not 1 <= entitlement_months[i] <= 12:
@@ -352,5 +372,20 @@ def reported_pia_ratio_output(person, period, parameters, component, field):
             cola_factor=cola_by_year[eligibility],
             annual_rounding_bound=bound,
         )
-        result[i] = float(getattr(inference, field))
+        value = getattr(inference, field)
+        if field == "factor":
+            value = np.float32(value)
+        else:
+            # A nearest-rounded float32 inverse may lie below its exact
+            # endpoint and lose a PIA dime. Preserve a representable ceiling.
+            represented = np.float32(value)
+            if (
+                np.isfinite(represented)
+                and Decimal.from_float(float(represented)) < value
+            ):
+                represented = np.nextafter(represented, np.float32(np.inf))
+            value = represented
+        if not np.isfinite(float(value)):
+            raise ValueError("PIA ratio output exceeds the supported numeric range")
+        result[i] = float(value)
     return result
