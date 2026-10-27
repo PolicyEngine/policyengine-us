@@ -348,18 +348,25 @@ def test_magi_excludes_social_security_and_retains_irmaa_addbacks():
 def test_supplied_income_history_overrides_the_extended_record_proxy(
     means_test_system,
 ):
-    records = {
-        "supplied_history": _record(employment_income={2026: 200_000}),
-        "extended_record": _record(employment_income={2026: 200_000}),
-    }
-    simulation = _simulation(
-        _situation(records, {"supplied_history": {2026: 90_000}}),
-        system=means_test_system,
-    )
-    np.testing.assert_array_equal(
-        simulation.calculate("social_security_retirement_cola_withheld", 2027),
-        [False, True],
-    )
+    # Core stores one complete array per input/period. A partially supplied
+    # TaxUnit input would fill other units with its default zero, so compare
+    # the supplied-history and calculated-income situations independently.
+    decisions = []
+    for histories in ({"worker": {2026: 90_000}}, {}):
+        simulation = _simulation(
+            _situation(
+                {"worker": _record(employment_income={2026: 200_000})}, histories
+            ),
+            system=means_test_system,
+        )
+        decisions.append(
+            bool(
+                simulation.calculate("social_security_retirement_cola_withheld", 2027)[
+                    0
+                ]
+            )
+        )
+    assert decisions == [False, True]
 
 
 @pytest.mark.parametrize(
@@ -387,6 +394,15 @@ def test_explicit_withholding_input_remains_a_final_decision(means_test_system):
     )
     assert simulation.calculate("social_security_retirement_cola_withheld", 2027)[0]
     assert simulation.calculate("social_security_retirement", 2027)[0] < 12_000
+
+
+def test_disabled_means_test_preserves_manual_input_carry_over():
+    simulation = _simulation(
+        _situation(
+            {"worker": _record(social_security_retirement_cola_withheld={2026: True})}
+        )
+    )
+    assert simulation.calculate("social_security_retirement_cola_withheld", 2027)[0]
 
 
 def test_zero_cola_and_downward_adjustment_floor():
@@ -474,7 +490,8 @@ def _calculator_record(name):
     return record
 
 
-def test_calculated_source_applies_withholding_and_cpi_e_once():
+@pytest.mark.parametrize("other_payment_factors", [False, True])
+def test_calculated_source_applies_withholding_and_cpi_e_once(other_payment_factors):
     reform = _reform()
     reform.update(
         {
@@ -482,6 +499,18 @@ def test_calculated_source_applies_withholding_and_cpi_e_once():
             "gov.contrib.ssa.benefit_levers.cola.pp_change": {"2020-01-01": 0.0015},
         }
     )
+    if other_payment_factors:
+        reform.update(
+            {
+                "gov.contrib.ssa.benefit_levers.across_the_board.start_year": {
+                    "2020-01-01": 2027
+                },
+                "gov.contrib.ssa.benefit_levers.across_the_board.rate": {
+                    "2020-01-01": 0.08
+                },
+                "gov.contrib.ssa.benefit_levers.payable.share": {"2020-01-01": 0.8},
+            }
+        )
     simulation = _simulation(
         _situation(
             {name: _calculator_record(name) for name in ("paid", "withheld")},
@@ -492,7 +521,8 @@ def test_calculated_source_applies_withholding_and_cpi_e_once():
     # Baseline3.6%+.15pp produces PIA1037.5 ->1037 checks. Above the
     # line, the single joint numerator produces PIA1000 ->1000 checks.
     np.testing.assert_array_equal(
-        simulation.calculate("ss_calculated_payment", "2027-01"), [1037, 1000]
+        simulation.calculate("ss_calculated_payment", "2027-01"),
+        [896, 864] if other_payment_factors else [1037, 1000],
     )
     np.testing.assert_array_equal(
         simulation.calculate("social_security_retirement_joint_cola_factor", 2027),
@@ -503,7 +533,8 @@ def test_calculated_source_applies_withholding_and_cpi_e_once():
         simulation.calculate("ss_calculated_retirement", 2027),
     )
     np.testing.assert_array_equal(
-        simulation.calculate("social_security_retirement", 2027), [12_444, 12_000]
+        simulation.calculate("social_security_retirement", 2027),
+        [10_752, 10_368] if other_payment_factors else [12_444, 12_000],
     )
 
 
@@ -678,9 +709,9 @@ def test_multi_year_income_dependency_graph_is_acyclic(means_test_system, calcul
     simulation = _simulation(_situation({"worker": record}), system=means_test_system)
     simulation.trace = True
     for year in (2028, 2029, 2030):
-        assert np.isfinite(
-            simulation.calculate("social_security_retirement", year)
-        ).all()
+        benefit = simulation.calculate("social_security_retirement", year)
+        assert np.isfinite(benefit).all()
+        assert (benefit > 0).all()
     edges = {}
 
     def key(node):

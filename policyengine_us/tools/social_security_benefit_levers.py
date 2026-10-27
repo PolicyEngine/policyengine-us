@@ -104,7 +104,7 @@ def cola_events(parameters, through_year):
     last_actual = max(e["payment_year"] for e in events)
     if through_year > last_actual:
         indices = {
-            year: parameters(f"{year}-01-01").gov.ssa.uprating
+            year: parameters.gov.ssa.uprating(f"{year}-01-01")
             for year in range(last_actual, through_year + 1)
         }
         for year, rate in projected_cola_rates(indices).items():
@@ -162,10 +162,10 @@ def reported_joint_cola_factor(person, period, parameters, component):
     if not np.any(reported):
         return 1
     year = period.start.year
-    p = parameters(period).gov.contrib.ssa.benefit_levers.cola
+    raw_policy = parameters.gov.contrib.ssa.benefit_levers.cola
+    p = raw_policy(str(period.start))
     if not 1 <= p.effective_month <= 12:
         raise ValueError("COLA effective month must lie in [1, 12]")
-    raw_policy = parameters.gov.contrib.ssa.benefit_levers.cola
     # An earlier withheld or adjusted COLA remains in the payment level after
     # a policy is switched off. Inspect the parameter history, not just today.
     active = any(
@@ -259,7 +259,7 @@ def reported_joint_cola_factor(person, period, parameters, component):
         if not np.any(exposed):
             continue
         validate_cola_rounding_rule(event["rounding_rule"])
-        policy = parameters(f"{payment_year}-01-01").gov.contrib.ssa.benefit_levers.cola
+        policy = raw_policy(f"{payment_year}-01-01")
         effective = event["effective_date"]
         applies = (
             (

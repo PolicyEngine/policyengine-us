@@ -321,6 +321,18 @@ def component_withholding(
     ):
         return person(f"social_security_{component}_cola_withheld", period)
     if not policy_active(p, year):
+        # Before E3, this was a pure annual input. Preserve Core's carry-over
+        # of supplied manual decisions when the automatic policy is inactive.
+        # Formula caches must never become manual decision sources.
+        name = f"social_security_{component}_cola_withheld"
+        earlier = [
+            when
+            for when in person.simulation._get_set_input_periods(name)
+            if when.start < period.start
+            and has_input_for_period(person.simulation, name, when)
+        ]
+        if earlier:
+            return person(name, max(earlier, key=lambda when: when.start))
         return np.zeros(len(person.ids), dtype=bool)
     eligibility_year = (
         component_eligibility_year(person, period, component)

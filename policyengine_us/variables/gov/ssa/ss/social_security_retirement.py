@@ -18,12 +18,17 @@ class social_security_retirement(Variable):
             person("social_security_retirement_source", period)
             == SocialSecurityBenefitSource.reported
         )
-        reported_factor = (
-            person("social_security_retirement_joint_cola_factor", period)
-            * person("social_security_retirement_pia_ratio_factor", period)
+        reported_benefit = (
+            base
+            * where(
+                reported,
+                person("social_security_retirement_joint_cola_factor", period)
+                * person("social_security_retirement_pia_ratio_factor", period),
+                1,
+            )
             * person("social_security_across_the_board_factor", period)
             * person("social_security_retirement_payable_factor", period)
         )
         # The calculator applies the complete payment policy before its
         # earnings test. Its public route must not repeat any of those factors.
-        return base * where(reported, reported_factor, 1)
+        return where(reported, reported_benefit, base)

@@ -61,8 +61,13 @@ reforms must supply the numbers.
 `means_test.enabled` activates both the income decision and the selected index
 without requiring another switch. The enclosing `cola.withholding_enabled`
 remains the A5 switch for externally resolved withholding decisions when the
-means test is disabled. Explicit component/year values can override the
-calculated decisions.
+means test is disabled. With either channel enabled, explicit component
+withholding values and `ss_calculator_withhold_cola` are deliberate decision
+overrides. The automatic timing, cohort and receipt restrictions apply to
+calculated decisions; supplied decisions retain normal override precedence.
+When the automatic policy is inactive, manual component inputs retain their
+legacy carry-forward behavior. Calculator-specific decisions apply only in
+their explicitly supplied year.
 
 The `a9` preset in `policyengine_us.reforms.ssa.cola_means_test` enables the
 policy and selects:
@@ -116,6 +121,8 @@ MAGI history can directly set the dedicated variable for the relevant tax
 years; supplied histories of its income sources and filing status also take
 precedence over projected records. A tax unit's decision maps to each
 beneficiary, subject to that component's exposure and cohort scope.
+Core stores complete input arrays for each variable and period; an income
+history column must supply a value for every tax unit in that array.
 
 Although prior-year AGI can depend on prior-year Social Security, every
 benefit-related lookback moves to an earlier year. The dependency chain stops
