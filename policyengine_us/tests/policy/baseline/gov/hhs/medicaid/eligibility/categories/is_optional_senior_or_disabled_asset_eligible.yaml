@@ -193,3 +193,25 @@
   output:
     # 14,000 combined minus the 12,000 exclusion leaves 2,000, under 3,000.
     is_optional_senior_or_disabled_asset_eligible: [true, true]
+
+- name: Maine couple with 15,000 of savings is ineligible, since one 12,000 exclusion covers the couple.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 72
+        bank_account_assets: 10_000
+      person2:
+        age: 70
+        stock_assets: 5_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # 15,000 minus 12,000 leaves 3,000, not under 3,000. An 8,000
+    # exclusion per spouse would leave 2,000 + 0 = 2,000.
+    is_optional_senior_or_disabled_asset_eligible: [false, false]

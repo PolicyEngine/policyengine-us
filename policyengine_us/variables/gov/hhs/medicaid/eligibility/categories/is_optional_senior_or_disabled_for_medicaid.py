@@ -33,20 +33,28 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
         # emergency Medicaid through the SSI group instead, so they keep this
         # group only if they meet SSI's income and resource tests. SSI's
         # income test is countable income "not more than" the benefit rate
-        # (42 U.S.C. 1382(a)(1)(A)).
+        # (42 U.S.C. 1382(a)(1)(A)); January's rate stands for the year.
         meets_ssi_income_test = person(
             "ssi_countable_income", period
         ) / MONTHS_IN_YEAR <= person("ssi_amount_if_eligible", period.first_month)
         meets_ssi_resource_test = person("meets_ssi_resource_test", period.first_month)
-        covers_blind_or_disabled = p.covers_blind_or_disabled[state].astype(bool) | (
-            ~immigration_eligible & meets_ssi_income_test & meets_ssi_resource_test
+        state_covers = p.covers_blind_or_disabled[state].astype(bool)
+        on_exception_path = (
+            ~state_covers
+            & ~immigration_eligible
+            & meets_ssi_income_test
+            & meets_ssi_resource_test
         )
         is_senior_or_disabled = where(
-            covers_blind_or_disabled,
+            state_covers | on_exception_path,
             person("is_ssi_aged_blind_disabled", period),
             person("is_ssi_aged", period),
         )
-        income_eligible = person(
+        # People kept only through the SSI group take its income test instead
+        # of this pathway's: for a couple, the SSI couple rate is above 80% of
+        # the poverty guideline for two.
+        exception_only = on_exception_path & ~person("is_ssi_aged", period)
+        income_eligible = exception_only | person(
             "is_optional_senior_or_disabled_income_eligible", period
         )
         asset_eligible = person("is_optional_senior_or_disabled_asset_eligible", period)

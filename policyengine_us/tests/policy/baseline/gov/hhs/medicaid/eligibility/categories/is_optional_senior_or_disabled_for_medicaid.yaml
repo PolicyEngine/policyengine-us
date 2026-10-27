@@ -283,3 +283,77 @@
     is_medicaid_immigration_status_eligible: false
     is_optional_senior_or_disabled_income_eligible: true
     is_optional_senior_or_disabled_for_medicaid: false
+
+- name: Case 17, blind Arkansan under 65 who is not disabled is not covered, since ARSeniors covers only aged people.
+  period: 2026
+  input:
+    age: 50
+    state_code: AR
+    is_blind: true
+    social_security_disability: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+
+- name: Case 18, Arkansas couple with an aged spouse and a disabled spouse under 65 covers only the aged spouse.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 6_000
+        takes_up_ssi_if_eligible: false
+      person2:
+        age: 50
+        meets_ssi_disability_criteria: true
+        social_security_disability: 6_000
+        takes_up_ssi_if_eligible: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+    is_optional_senior_or_disabled_for_medicaid: [true, false]
+
+# Each spouse has Social Security disability of $735 a month. SSI's couple
+# budget: (1,470 - 20) x 12 = 17,400, or 8,700 each, so 725 a month each,
+# at or below half the 2026 couple rate (1,491 / 2 = 745.50). The pathway's
+# own couple limit, 80% of the 2026 guideline for two (0.8 x 21,640 =
+# 17,312), is lower than the SSI couple rate, so the SSI income test
+# replaces it for people kept only through the SSI group.
+- name: Case 19, disabled Arkansas couple in the five-year bar under the SSI couple rate but over 80% of the poverty guideline keeps the group.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        meets_ssi_disability_criteria: true
+        social_security_disability: 8_820
+        takes_up_ssi_if_eligible: false
+      person2:
+        age: 50
+        is_tax_unit_spouse: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        meets_ssi_disability_criteria: true
+        social_security_disability: 8_820
+        takes_up_ssi_if_eligible: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_medicaid_immigration_status_eligible: [false, false]
+    is_optional_senior_or_disabled_income_eligible: [false, false]
+    is_optional_senior_or_disabled_for_medicaid: [true, true]
