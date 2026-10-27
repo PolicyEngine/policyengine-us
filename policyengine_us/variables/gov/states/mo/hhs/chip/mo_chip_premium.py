@@ -35,7 +35,7 @@ class mo_chip_premium(Variable):
         # Only CHIP children trigger the premium (RSMo 208.640.1). Show-Me
         # Healthy Babies pregnant women and unborn children pay no premiums
         # or cost sharing (MO-15-0009 approval letter and section 8.2.4).
-        has_chip_member = add(tax_unit, year, ["is_chip_eligible_child"]) > 0
+        has_chip_child = add(tax_unit, year, ["is_chip_eligible_child"]) > 0
         income_level = tax_unit("tax_unit_medicaid_income_level", year)
         family_size = tax_unit("tax_unit_size", year)
         pregnant_count = add(tax_unit, year, ["current_pregnancies"])
@@ -89,4 +89,4 @@ class mo_chip_premium(Variable):
             ],
             default=0,
         )
-        return has_chip_member * monthly_premium
+        return has_chip_child * monthly_premium

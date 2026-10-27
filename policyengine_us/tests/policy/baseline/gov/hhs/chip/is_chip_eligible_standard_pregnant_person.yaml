@@ -185,15 +185,15 @@
     is_medicaid_eligible: [false, false]
     is_chip_eligible_standard_pregnant_person: [true, false]
     # FCEP covers the unborn child, so it has no immigration test; both states
-    # offer it (Colorado since January 1, 2025).
+    # offer it (Colorado since October 30, 2023).
     is_chip_fcep_eligible_person: [true, true]
     is_chip_eligible_pregnant: [true, true]
 
 # Targeted low-income pregnant women stay eligible through the postpartum period
 # (42 USC 1397ll(d)(2)(A)). Colorado had not yet elected the 12-month extension
 # in 2021, so coverage ends at the model's 60-day postpartum limit. Income of
-# 230% FPL is above Colorado's Medicaid pregnancy limit (195%) and below its
-# CHIP limit (260%), each plus the 5 percentage point MAGI disregard.
+# 230% FPL is above Colorado's Medicaid pregnancy limit and below its CHIP
+# pregnancy limit.
 - name: Case 9, Colorado standard pregnancy CHIP covers 60 days postpartum before the 12-month extension.
   period: 2021
   input:
@@ -302,3 +302,21 @@
     medicaid_category: [PREGNANT, NONE]
     is_medicaid_eligible: [true, false]
     is_chip_eligible_standard_pregnant_person: [false, true]
+
+# Missouri's 12-month extension took effect July 7, 2023 (CHIP SPA MO-23-0021).
+# The annual model reads January 1, so the extension starts in 2024.
+- name: Case 13, Missouri standard pregnancy CHIP does not yet cover 12 months postpartum in 2023.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        under_12_months_postpartum: true
+        medicaid_income_level: 2.3
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    is_chip_eligible_standard_pregnant_person: false

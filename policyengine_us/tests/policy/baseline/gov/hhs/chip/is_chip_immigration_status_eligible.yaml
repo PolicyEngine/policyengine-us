@@ -328,3 +328,33 @@
         state_code: VA
   output:
     is_chip_immigration_status_eligible: [true, false]
+
+# The 12-month extension reaches lawfully residing pregnant people only in a
+# state that has also elected it (SHO 21-007 Q11). Colorado's 12-month
+# extension took effect July 1, 2022 (CHIP SPA CO-22-0039); the annual model
+# reads January 1, so 2022 still uses the 60-day period.
+- name: Case 16, Colorado pregnancy option covers a recent permanent resident 60 days postpartum, not 12 months, in 2022.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        under_60_days_postpartum: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 30
+        is_pregnant: false
+        under_12_months_postpartum: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    households:
+      household1:
+        members: [person1]
+        state_code: CO
+      household2:
+        members: [person2]
+        state_code: CO
+  output:
+    is_chip_immigration_status_eligible: [true, false]
