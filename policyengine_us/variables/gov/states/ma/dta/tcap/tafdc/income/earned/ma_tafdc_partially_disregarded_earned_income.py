@@ -11,6 +11,7 @@ class ma_tafdc_partially_disregarded_earned_income(Variable):
         "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-281",
         "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-275",  # (A)
         "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-500",  # (A)
+        "https://eohhs.ehs.state.ma.us/DTA/PolicyOnline/BEACON5/%21SSL%21/WebHelp/TAFDC/Employment/Emp_DepCareExTAFDC.htm",
     )
     defined_for = StateCode.MA
 
@@ -28,25 +29,24 @@ class ma_tafdc_partially_disregarded_earned_income(Variable):
             earned_income_after_work_related_deduction * p.percentage
         )
         # Per 106 CMR 704.275(A), the dependent care deduction is made after the
-        # 50% disregard and is the unit's actual expenditure up to the maximum,
-        # so it is subtracted once from the unit's earnings. 106 CMR 704.500(A)
-        # Steps 2-4 apply the work expense and the 50% disregard to each
-        # member, then the dependent care deduction, then total the members'
-        # countable earned income. The deduction is allocated to each member in
-        # proportion to the member's share of the unit's earnings after the 50%
-        # disregard, so the members' amounts add up to the unit's earnings after
-        # the disregard less the deduction (not less than zero).
+        # 50% disregard, and an employed applicant or client receives it for
+        # the expenditure on care. 106 CMR 704.500(A) Steps 2-4 apply the work
+        # expense and the 50% disregard to each member, then the dependent
+        # care deduction, then total the members' countable earned income.
+        # The unit's deduction is subtracted once, from the earnings of the
+        # member who pays for the care. A part of the deduction above that
+        # member's earnings does not reduce another member's earnings. If more
+        # than one member is set as a payer, they share the deduction equally.
         dependent_care_deduction = person.spm_unit(
             "ma_tafdc_dependent_care_deduction", period
         )
-        unit_earned_income_after_disregard = person.spm_unit.sum(
-            earned_income_after_disregard
-        )
+        payer = person("ma_tafdc_dependent_care_payer", period.this_year)
+        payer_count = person.spm_unit.sum(payer)
         share = np.divide(
-            earned_income_after_disregard,
-            unit_earned_income_after_disregard,
+            payer.astype(float),
+            payer_count,
             out=np.zeros_like(earned_income_after_disregard, dtype=float),
-            where=unit_earned_income_after_disregard > 0,
+            where=payer_count > 0,
         )
         return max_(
             0,
