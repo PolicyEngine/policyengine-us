@@ -1,1 +1,0 @@
-Add Virginia Energy Assistance Program Fuel Assistance (va_eap): FFY2026 regular heating benefit from the points matrix and the latest published value per point, with the 150% federal poverty guideline income test.

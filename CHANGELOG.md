@@ -1,3 +1,11 @@
+## [2.70.0] - 2026-10-27
+
+### Added
+
+- Add Arizona LIHEAP Standard benefit (az_liheap): FY2026 regular benefit from the points worksheet with the greater of 60% state median income or 150% federal poverty guideline income test and TANF or SNAP categorical eligibility.
+- Add Virginia Energy Assistance Program Fuel Assistance (va_eap): FFY2026 regular heating benefit from the points matrix and the latest published value per point, with the 150% federal poverty guideline income test.
+
+
 ## [2.69.1] - 2026-10-27
 
 ### Changed
