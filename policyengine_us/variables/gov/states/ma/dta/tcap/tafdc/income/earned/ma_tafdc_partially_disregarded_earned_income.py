@@ -10,6 +10,7 @@ class ma_tafdc_partially_disregarded_earned_income(Variable):
     reference = (
         "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-281",
         "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-275",  # (A)
+        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-500",  # (A)
     )
     defined_for = StateCode.MA
 
@@ -28,11 +29,13 @@ class ma_tafdc_partially_disregarded_earned_income(Variable):
         )
         # Per 106 CMR 704.275(A), the dependent care deduction is made after the
         # 50% disregard and is the unit's actual expenditure up to the maximum,
-        # so it is subtracted once from the unit's earnings. It is allocated to
-        # each member in proportion to the member's share of the unit's
-        # earnings after the 50% disregard, so the members' amounts add up to
-        # the unit's earnings after the disregard less the deduction (not less
-        # than zero).
+        # so it is subtracted once from the unit's earnings. 106 CMR 704.500(A)
+        # Steps 2-4 apply the work expense and the 50% disregard to each
+        # member, then the dependent care deduction, then total the members'
+        # countable earned income. The deduction is allocated to each member in
+        # proportion to the member's share of the unit's earnings after the 50%
+        # disregard, so the members' amounts add up to the unit's earnings after
+        # the disregard less the deduction (not less than zero).
         dependent_care_deduction = person.spm_unit(
             "ma_tafdc_dependent_care_deduction", period
         )

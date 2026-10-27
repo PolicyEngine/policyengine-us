@@ -37,9 +37,9 @@
 # whichever is less." The unit's deduction is subtracted once from the unit's
 # earnings after the 50% disregard; each earner carries a share in proportion
 # to their earnings after the disregard.
-# In the cases below the child is age 1 and the unit works full time, so the
-# maximum is $200 a month; care costs $3,000 a year ($250 a month), so the
-# unit's deduction is $200 a month.
+# Unless a case says otherwise, the child is age 1 and the unit works full
+# time, so the maximum is $200 a month; care costs $3,000 a year ($250 a
+# month), so the unit's deduction is $200 a month.
 
 - name: One earner on a joint return, the deduction is subtracted in full once
   period: 2026-01
@@ -143,6 +143,80 @@
     # Unit: $500 - $200 = $300. Shares 400/500 and 100/500:
     # parent1 $400 - $160 = $240; parent2 $100 - $40 = $60.
     ma_tafdc_partially_disregarded_earned_income: [240, 60, 0]
+
+- name: Two earners with two children below the cap share the deduction by earnings
+  period: 2026-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+        weekly_hours_worked_before_lsr: 40
+      parent2:
+        age: 30
+        employment_income_before_lsr: 4_800  # $400/month
+        weekly_hours_worked_before_lsr: 40
+      child1:
+        age: 1
+      child2:
+        age: 5
+    tax_units:
+      tax_unit1:
+        members: [parent1, child1, child2]
+      tax_unit2:
+        members: [parent2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        is_tanf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 4_200
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: MA
+  output:
+    # Care is $4,200 / 12 = $350 a month, $175 for each child. Child age 1:
+    # min($200, $175) = $175; child age 5: min($175, $175) = $175; total $350.
+    ma_tafdc_dependent_care_deduction: 350
+    # parent1: ($1,000 - $200) x 0.5 = $400; parent2: ($400 - $200) x 0.5 = $100.
+    # Unit: $500 - $350 = $150. Shares 400/500 and 100/500:
+    # parent1 $400 - $280 = $120; parent2 $100 - $70 = $30.
+    # Before, each earner had the full $350 subtracted: $50 and $0.
+    ma_tafdc_partially_disregarded_earned_income: [120, 30, 0, 0]
+
+- name: Two earners whose earnings after the disregard are below the deduction
+  period: 2026-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 3_600  # $300/month
+        weekly_hours_worked_before_lsr: 40
+      parent2:
+        age: 30
+        employment_income_before_lsr: 3_600  # $300/month
+        weekly_hours_worked_before_lsr: 40
+      child:
+        age: 1
+    tax_units:
+      tax_unit1:
+        members: [parent1, child]
+      tax_unit2:
+        members: [parent2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        is_tanf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 3_000
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MA
+  output:
+    ma_tafdc_dependent_care_deduction: 200
+    # Each: ($300 - $200) x 0.5 = $50; unit $100 is less than the $200
+    # deduction, so each member's amount is max($50 - $100, 0) = $0.
+    ma_tafdc_partially_disregarded_earned_income: [0, 0, 0]
 
 - name: Single parent with one child, unchanged
   period: 2026-01
