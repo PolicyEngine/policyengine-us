@@ -1,3 +1,17 @@
+## [2.73.1] - 2026-10-27
+
+### Fixed
+
+- Remove Idaho's expired child tax credit from state child tax credit totals after 2025, preserve those totals under Idaho revival reforms, and pause Colorado's family affordability tax credit from 2026.
+
+
+## [2.73.0] - 2026-10-27
+
+### Added
+
+- Add Washington LIHEAP (wa_liheap): FY2026 regular heating benefit from the Commerce benefit calculation worksheet with the 150% federal poverty guideline income test.
+
+
 ## [2.72.5] - 2026-10-27
 
 ### Fixed

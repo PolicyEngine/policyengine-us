@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX, VA, UT
+    coverage: AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OK, OR, SD, RI, TX, VA, WA
     state_implementations:
       - state: AL
         status: partial
@@ -1170,14 +1170,6 @@ programs:
         variable: tx_ceap
         parameter_prefix: gov.states.tx.tdhca.ceap
         notes: Models the 150% FPG income limit, the alternative 60% SMI limit from the FY2024 state plan (applied through 2024), benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
-      - state: VA
-        status: partial
-        name: Virginia EAP
-        full_name: Virginia Energy Assistance Program
-        variable: va_eap
-        parameter_prefix: gov.states.va.dss.eap
-        verified_years: "2026"
-        notes: FFY2026 Fuel Assistance only, using the latest published (FFY2025) value per point and placeholder fuel-type and energy-burden points until VDSS publishes its survey. Crisis, cooling and weatherization assistance are out of scope.
       - state: UT
         status: partial
         name: Utah HEAT
@@ -1186,6 +1178,22 @@ programs:
         parameter_prefix: gov.states.ut.dwf.heat
         verified_years: "2026"
         notes: Regular heating under the rules effective March 1, 2026, including the target-group and propane, kerosene or fuel oil supplements. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: VA
+        status: partial
+        name: Virginia EAP
+        full_name: Virginia Energy Assistance Program
+        variable: va_eap
+        parameter_prefix: gov.states.va.dss.eap
+        verified_years: "2026"
+        notes: FFY2026 Fuel Assistance only, using the latest published (FFY2025) value per point and placeholder fuel-type and energy-burden points until VDSS publishes its survey. Crisis, cooling and weatherization assistance are out of scope.
+      - state: WA
+        status: partial
+        name: Washington LIHEAP
+        full_name: Washington Low Income Home Energy Assistance Program
+        variable: wa_liheap
+        parameter_prefix: gov.states.wa.commerce.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating from reported annual heating costs, with the $250 minimum when heat is included in rent. Crisis, cooling, weatherization and equipment assistance are out of scope.
 
   # --- SSA programs ---
   - id: ssi
