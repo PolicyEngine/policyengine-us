@@ -157,3 +157,36 @@
         state_code: DC
   output:
     dc_tanf: 803 * 12  # 9_636
+
+- name: Case 7, a GAC child's child support is not disregarded twice.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 12_000
+        weekly_hours_worked: 40
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+      gac_child:
+        age: 8
+        is_tax_unit_dependent: true
+        is_related_to_head_or_spouse: false
+        child_support_received: 4_800
+    spm_units:
+      spm_unit:
+        members: [parent, child, gac_child]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [parent, child, gac_child]
+        state_code: DC
+  output:
+    dc_tanf_assistance_unit_size: 2
+    # The GAC child's $400 a month of child support is not a TANF member's, so it is not disregarded.
+    dc_tanf_countable_unearned_income: 400 * 12
+    dc_gac_countable_income: 400 * 12
+    # (1_000 - 160) * (1 - 2/3) = 280 a month; the GAC child's income is then removed.
+    dc_tanf_countable_income: 280 * 12
+    dc_tanf: (629 - 280) * 12  # 4_188

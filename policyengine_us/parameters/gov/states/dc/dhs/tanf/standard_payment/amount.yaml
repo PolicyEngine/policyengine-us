@@ -20,9 +20,13 @@ metadata:
       href: https://code.dccouncil.gov/us/dc/council/code/sections/4-205.52#(d-1)
     - title: DC TANF State Plan 2024 | Section 4 (4)(a)
       href: https://dhs.dc.gov/sites/default/files/dc/sites/dhs/service_content/attachments/DC%20TANF%20State%20Plan_Oct-2023.pdf#page=41
+    - title: DC TANF State Plan 2026 | FY2026 payment levels, no CPI-U adjustment for FY2027-FY2030
+      href: https://dhs.dc.gov/sites/default/files/2026-09/DC%20TANF%20State%20Plan_October%202026_Final.pdf#page=40
     - title: DCMR § 7200.2 - Payment levels
       href: https://www.dcregs.dc.gov/Common/DCMR/RuleList.aspx?ChapterNum=29-72
 
+# The FY2026 levels stay in effect through FY2030 under § 4-205.52(d-1)(1)(D).
+# CPI-U adjustments resume for FY2031 (October 2030); that update is not modeled yet.
 1:
   2016-10-01: 320
   2017-10-01: 362
@@ -123,6 +127,8 @@ metadata:
   2023-10-01: 1_786
   2024-10-01: 1_967
   2025-10-01: 2_024
+# DHS publishes FY2025 and later levels for sizes 1-10 only.
+# Sizes 11-19 keep the FY2024 § 4-205.52(c) table (#10207).
 11:
   2016-10-01: 1_344
   2017-10-01: 1_522

@@ -1,1 +1,1 @@
-Update DC TANF payment levels for sizes 1-10 to the FY2026 amounts from October 2025, disregard two thirds (not 67%) of earnings above $160, and disregard all child support received from October 2025.
+Update DC TANF payment levels for sizes 1-10 to the FY2026 amounts from October 2025, disregard two thirds (not 67%) of earnings above $160, disregard all child support received from October 2025, and disregard only TANF members' child support so a GAC child's child support is not subtracted twice.
