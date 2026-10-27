@@ -3,7 +3,7 @@
 # Physical PDF pages: 12, 17, 18, 21, 35, 36, 74.
 # Period 2027 represents the researched 2026-2027 schedule with 2026 FPG.
 # Inputs are annual; SSI and FANF totals are explicitly supplied to isolate receipts.
-# Heat-in-rent cases assert eligibility only, not an unresolved final award.
+# Heat-in-rent awards are asserted in nh_fap.yaml.
 
 # Manual pp12,17 and74; maximum is inclusive.
 - name: "Case 1, income at the 1-person annual ceiling is eligible."
@@ -760,8 +760,10 @@
   output:
     nh_fap_eligible: false
 
-# Manual p12 requires responsibility for energy costs; absent bedrooms leave no proxy estimate.
-- name: "Case 20, zero direct cost without heat in rent is ineligible."
+# Manual pp12,18: with no bill, the estimate gives the heating cost. With no
+# bedrooms the dwelling counts as one room, and with no county input the Belknap
+# fallback applies: 2,000 * 1 * 6,610 / 1,000,000 * 28.881 / 0.78 = 489.50 > 0.
+- name: "Case 20, a household with no bill and no bedrooms has a one-room heating cost."
   period: 2027
   input:
     people:
@@ -783,9 +785,10 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    nh_fap_eligible: false
+    nh_fap_eligible: true
 
-# Manual p12 has no positive-dollar expense minimum.
+# Manual p12 has no positive-dollar expense minimum. An unknown county gives no
+# estimate, so the one-cent bill alone establishes the heating cost.
 - name: "Case 21, a positive direct heating cost satisfies energy responsibility."
   period: 2027
   input:
@@ -807,10 +810,11 @@
       household1:
         members: ["person1"]
         state_code: "NH"
+        county_str: "UNKNOWN"
   output:
     nh_fap_eligible: true
 
-# Manual pp12 and21. Eligibility only: the unresolved heat-in-rent award adjustment is not asserted.
+# Manual pp12 and21. Unsubsidized heat in rent establishes energy responsibility.
 - name: "Case 22, nonsubsidized heat in rent can qualify without a separate bill."
   period: 2027
   input:
@@ -911,10 +915,13 @@
   output:
     nh_fap_eligible: true
 
-# Manual pp17,74: 50,000 - 2,000 = 48,000 is below the 48,713 ceiling;
-# the identical gross amount without a reported premium remains above it.
-- name: "Case 26, reported Medicare deductions affect income eligibility."
+# Manual pp17,74: the 2027 Part B premium of 202.90 * 12 = 2,434.80 withheld from
+# Social Security is deducted for the enrollee: 50,000 - 2,434.80 = 47,565.20, within
+# the 48,713 ceiling. Social Security of 50,000 is far above the MSP limit. The
+# person who is not enrolled in Medicare pays no premium and stays above it.
+- name: "Case 26, the withheld Part B premium brings an enrollee within the income ceiling."
   period: 2027
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -923,14 +930,14 @@
         ssi: 0
         nh_ssp: 0
         social_security: 50_000
-        medicare_part_b_premiums_reported: 2_000
+        medicare_enrolled: false
       person2:
         age: 70
         immigration_status: "CITIZEN"
         ssi: 0
         nh_ssp: 0
         social_security: 50_000
-        medicare_part_b_premiums_reported: 0
+        medicare_enrolled: true
     spm_units:
       spm_unit1:
         members: ["person1"]
@@ -954,10 +961,13 @@
         members: ["person2"]
         state_code: "NH"
   output:
-    nh_fap_countable_income: [48_000, 50_000]
-    nh_fap_eligible: [true, false]
+    medicare_part_b_premium: [0, 2_434.8]
+    nh_fap_countable_income: [50_000, 47_565.2]
+    nh_fap_eligible: [false, true]
 
 # Manual pp12,18,21,35: estimate may replace an absent actual bill; retain income, qualified-member, subsidized heat-in-rent, fuel and state requirements.
+# Unit 2 has 0 bedrooms and counts as one room: 2,000 * 1 * 7,672 / 1,000,000 * 28.881 / 0.78 = 568.14.
+# Unit 7's unknown county gives no estimate.
 - name: "Case 27, a room proxy establishes heating costs while other gates remain."
   period: 2027
   input:
@@ -1109,7 +1119,7 @@
         county_str: "COOS_COUNTY_NH"
         bedrooms: 4
   output:
-    nh_fap_eligible: [true, false, false, false, false, false, false, false, true]
+    nh_fap_eligible: [true, true, false, false, false, false, false, false, true]
 
 # The shared $50 investment exclusion leaves $25 of $75 interest countable;
 # 48,713 + 25 = 48,738 exceeds the one-person income limit.
@@ -1164,5 +1174,31 @@
         members: ["person1"]
         state_code: "NH"
         is_in_public_housing: true
+  output:
+    nh_fap_eligible: false
+
+# Manual p12 requires responsibility for heating costs. Unsubsidized heat in rent
+# passes the cost and housing tests, but heating type NONE means the home has no
+# heating, so the household is ineligible.
+- name: "Case 30, heat in rent with no heating type is ineligible."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NONE"
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
   output:
     nh_fap_eligible: false

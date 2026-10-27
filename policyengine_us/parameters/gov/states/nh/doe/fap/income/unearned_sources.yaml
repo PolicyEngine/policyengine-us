@@ -1,4 +1,6 @@
-description: New Hampshire includes these unearned income sources under the Fuel Assistance Program before its source-specific SSI and investment income exclusions.
+description: New Hampshire counts these unearned income sources under the Fuel Assistance Program.
+# nh_fap_countable_income adds adult SSI, FANF and interest and dividends
+# above the $50 exclusion to these sources.
 values:
   2026-10-01:
     - social_security
@@ -12,7 +14,6 @@ values:
     - workers_compensation
     - disability_benefits
     - nh_ssp
-    - general_assistance
     - strike_benefits
     - financial_assistance
     - alimony_income
@@ -25,14 +26,16 @@ values:
 # identify VA Aid and Attendance, educational VA benefits, special-needs
 # trusts, or irregular injury/insurance payments. Financial assistance lacks
 # the required six-month regularity flag. nh_ssp holds the APTD, ANB and OAA
-# state welfare payments; general assistance approximates other non-FANF state
-# welfare. FANF is included separately once per SPM unit.
+# state welfare payments, FANF is included separately once per SPM unit, and
+# RCA has no input. Page 15's state welfare payments are APTD, ANB, FANF, OAA
+# and RCA, and plan item 1.9 leaves General Assistance benefits unchecked, so
+# municipal general assistance (RSA 165) is not counted.
 # Rental inputs are treated as net and nonnegative without reconstructing
 # business expenses. Pension income includes annuities and insurance income.
 # Gambling winnings approximate the taxable gambling and lottery category.
-# Military pay is part of wages and is not added again. Missing taxable grants,
-# adoption subsidies, royalties and tribal receipts are not imputed; balances,
-# capital gains and regular child support received are not counted as income.
+# Missing taxable grants, adoption subsidies, royalties and tribal receipts
+# are not imputed; balances, capital gains and regular child support received
+# are not counted as income.
 metadata:
   unit: list
   period: year
@@ -40,3 +43,5 @@ metadata:
   reference:
     - title: "PY2027 New Hampshire Fuel Assistance Program Procedures Manual, Countable Income, Non-countable Income, and Rental Property Income #page 15-17,23,29"
       href: https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=15
+    - title: New Hampshire FY2026 LIHEAP State Plan, Section 1.9
+      href: https://liheapch.acf.gov/docs/2026/state-plans/NH_Plan_2026.pdf#page=6

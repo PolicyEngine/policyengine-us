@@ -9,20 +9,29 @@ class nh_fap(Variable):
     unit = USD
     label = "New Hampshire Fuel Assistance Program benefit"
     documentation = (
-        "Modeled regular heating award using actual or bedroom-proxy heating cost. "
-        "For unsubsidized heat included in rent, the model uses the ordinary fuel "
-        "schedule without an additional reduction. This approved modeling assumption "
-        "may overestimate awards: the state plan describes reduced heat-in-rent "
-        "benefits but does not specify the calculation. Bedrooms alone approximate "
-        "the program's room count. Verified against the PY2027 schedule; earlier "
-        "results are unverified historical estimates. Zero can mean unsupported "
-        "heating cost or fuel classification rather than legal ineligibility."
+        "Regular heating award from the PY2027 schedule, using the larger of the "
+        "actual heating cost and the heating-cost estimate, with bedrooms (at "
+        "least one room for a dwelling) standing in for the room count. "
+        "Unsubsidized heat included in rent receives the ordinary schedule with "
+        "no further reduction. The PY2025 manual printed separate heat-in-rent "
+        "matrices (page 74), but the PY26 benefit matrix and the PY2027 schedule "
+        "(page 78) print none. On page 9, the FFY2027 draft state plan replaces "
+        "the FY2026 plan's 'eligible for a reduced benefit' with 'eligible for a "
+        "benefit', although its item 2.3 still describes reduced heat-in-rent "
+        "benefits. Verified against the PY2027 schedule; earlier results are "
+        "unverified historical estimates. Zero can mean an unsupported heating "
+        "cost or fuel classification rather than legal ineligibility."
     )
     reference = (
         # PDF pages 10,17-21,57,74,76-78.
         "https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=10",
-        # FY2026 plan, section 2.3: heat-in-rent reduction remains unquantified.
+        # PDF pages 8-9: item 2.3 and the heat-in-rent benefit statement.
         "https://liheapch.acf.gov/docs/2026/state-plans/NH_Plan_2026.pdf#page=8",
+        # PY2025 manual, Wayback Machine capture: heat-in-rent matrices.
+        "https://web.archive.org/web/20250523173906/https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=74",
+        "https://liheapch.acf.gov/docs/2026/benefits-matricies/NH_BenefitMatrix_2026.pdf#page=1",
+        # FFY2027 draft plan, PDF pages 8-9.
+        "https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/low-income-home-energy-assistance-detailed-model-plan.pdf#page=8",
     )
     defined_for = "nh_fap_eligible"
 
@@ -60,10 +69,10 @@ class nh_fap(Variable):
         multiplier = p.payment.benefit_multiplier[heating_type]
         # Half-up whole dollars reproduce every utility matrix cell.
         benefit = np.floor(delivered_benefit * multiplier + 0.5)
-        # Approved approximation: unsubsidized heat-in-rent receives this
-        # scheduled amount, including the fuel multiplier exactly once.
-        # The state's heat-in-rent reduction remains unverified.
-        # Unknown, solar and other fuels have no supported payment
-        # classification; their zero multiplier marks an unsupported amount.
+        # Unsubsidized heat in rent receives this scheduled amount, with the
+        # fuel multiplier applied once, because the PY2027 schedule prints no
+        # heat-in-rent reduction (see the documentation).
+        # Unspecified and other fuels have no page 77 row; their zero
+        # multiplier marks an unsupported amount.
         # The schedule is not capped at the household's actual heating cost.
         return where(expense > 0, benefit, 0)

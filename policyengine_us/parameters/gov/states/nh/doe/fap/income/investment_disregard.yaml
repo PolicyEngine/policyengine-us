@@ -1,11 +1,10 @@
-description: PolicyEngine applies this annual exclusion once to each SPM unit's combined interest and dividend income under the New Hampshire Fuel Assistance Program.
-# Modeling convention: apply one $50 annual exclusion per SPM unit to
-# combined interest and dividends, as requested by the user.
-# The PY2027 manual lists the first $50 of interest and dividends separately
-# on pages 15-16, but page 17 combines them as interest "and/or" dividends.
-# It does not specify whether the allowance applies per person or household.
-# The combined-source, SPM-unit basis is an explicit modeling assumption
-# pending agency clarification.
+description: New Hampshire excludes this amount of annual interest and dividend income under the Fuel Assistance Program.
+# One $50 exclusion applies to combined interest and dividends per SPM unit,
+# following page 17's allowable expense "$50 of earned interest and/or
+# dividends annually". Page 15 counts "Interest over $50 a year" and
+# "Dividends over $50 a year", and page 16 excludes "the first $50" of each,
+# which would allow up to $100. None of these pages says whether the amount
+# applies per person or per household.
 values:
   2026-10-01: 50
 

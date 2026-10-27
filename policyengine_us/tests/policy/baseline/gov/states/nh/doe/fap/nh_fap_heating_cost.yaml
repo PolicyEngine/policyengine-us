@@ -1,10 +1,12 @@
 # Source: PY27 NH Fuel Assistance Program Procedures Manual, physical pages 17, 18, 76, 77.
 # https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf
 # Agency service counties: https://www.capnh.org/home-old
-# Using bedrooms alone is a user-approved modeling approximation, not the statutory room definition.
+# No room-count input exists, so bedrooms stand in for the manual's room count, with at
+# least one room for a dwelling. Page 17 also counts kitchens and living rooms, so this
+# understates rooms.
 # Inputs and estimates are annual; actual bills and the estimated cost are not added together.
 
-# Manual pp76-77 formula with the approved bedroom-only proxy: 2000 * 4 * 7672 / 1,000,000 * 28.881 / .78 = 2272.564431.
+# Manual pp76-77 formula with bedrooms as the room count: 2000 * 4 * 7672 / 1,000,000 * 28.881 / .78 = 2272.564431.
 - name: "Case 1, four bedrooms produce a four-room oil estimate without added rooms."
   period: 2027
   absolute_error_margin: 0.01
@@ -322,8 +324,9 @@
   output:
     nh_fap_heating_cost: [897.680723, 807.912651, 628.376506]
 
-# Approved model assumption: no room estimate for nonpositive bedrooms, so actual bills are retained.
-- name: "Case 5, zero or negative bedrooms preserve the actual bill fallback."
+# A dwelling has at least one room, so zero or negative bedrooms give the one-room
+# estimate 2000 * 1 * 7672 / 1,000,000 * 28.881 / .78 = 568.141108; larger bills replace it.
+- name: "Case 5, zero or negative bedrooms count as one room below larger actual bills."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -370,7 +373,7 @@
         county_str: "COOS_COUNTY_NH"
         bedrooms: -1
   output:
-    nh_fap_heating_cost: [0, 650, 750]
+    nh_fap_heating_cost: [568.141108, 650, 750]
 
 # Manual p18: compare actual annual cost and design heat load for best benefit; 500 is below the four-bedroom estimate.
 - name: "Case 6, the estimate is retained when the actual bill is lower."
@@ -420,8 +423,11 @@
   output:
     nh_fap_heating_cost: 5_000
 
-# No proxy for OTHER, SOLAR, UNSPECIFIED or NONE. Canonical OTHER and grid-tied SOLAR bills still permit actual-cost fallback.
-- name: "Case 8, unsupported proxy fuels retain available canonical actual bills."
+# Page 77 has no OTHER row, and UNSPECIFIED and NONE name no fuel, so they give no
+# estimate; the canonical OTHER bill is retained. SOLAR uses the electricity row,
+# as heating_expense reads a solar home's grid electricity bill:
+# 2000 * 4 * 7672 / 1,000,000 * 64.706 / 1 = 3971.395456, above the 650 bill.
+- name: "Case 8, OTHER, UNSPECIFIED and NONE give no estimate while SOLAR uses the electricity estimate."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -481,7 +487,7 @@
         county_str: "COOS_COUNTY_NH"
         bedrooms: 4
   output:
-    nh_fap_heating_cost: [250, 650, 0, 0]
+    nh_fap_heating_cost: [250, 3_971.395456, 0, 0]
 
 # Only the ten NH counties map to published agency HDD; actual-cost fallback remains available.
 - name: "Case 9, unknown and outside counties do not generate an estimate."
@@ -567,8 +573,9 @@
   output:
     nh_fap_heating_cost: 2_272.564431
 
-# With no room estimate and no positive annual cost, the component is zero.
-- name: "Case 12, negative reported bills without bedrooms have zero modeled cost."
+# A negative bill floors at zero, and 0 bedrooms count as one room:
+# 2000 * 1 * 7672 / 1,000,000 * 28.881 / .78 = 568.141108.
+- name: "Case 12, a negative bill without bedrooms leaves the one-room estimate."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -589,10 +596,11 @@
         county_str: "COOS_COUNTY_NH"
         bedrooms: 0
   output:
-    nh_fap_heating_cost: 0
+    nh_fap_heating_cost: 568.141108
 
-# The existing bedrooms zero default disables the approximate room path.
-- name: "Case 13, omitted bedrooms preserve existing actual-cost cases."
+# Omitted bedrooms default to 0, which counts as one room; the one-room estimate
+# 568.141108 exceeds the 500 bill.
+- name: "Case 13, omitted bedrooms give the one-room estimate above a smaller bill."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -612,9 +620,9 @@
         state_code: "NH"
         county_str: "COOS_COUNTY_NH"
   output:
-    nh_fap_heating_cost: 500
+    nh_fap_heating_cost: 568.141108
 
-# Approved whole-household approximation: both units use two bedrooms; no inferred private-room allocation. Factor 1400 with Coos HDD 7672.
+# Whole-household approximation: both units use two bedrooms; no inferred private-room allocation. Factor 1400 with Coos HDD 7672.
 - name: "Case 14, SPM units reuse household bedrooms with their own fuel."
   period: 2027
   absolute_error_margin: 0.01
@@ -641,3 +649,28 @@
         bedrooms: 2
   output:
     nh_fap_heating_cost: [738.216889, 392.956098]
+
+# A homeless household has no dwelling to heat, so 0 bedrooms give no room and no
+# estimate; the bill is also 0.
+- name: "Case 15, a homeless household without bedrooms gets no one-room estimate."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "FUEL_OIL"
+        fuel_oil_expense: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "COOS_COUNTY_NH"
+        is_homeless: true
+  output:
+    nh_fap_heating_cost: 0

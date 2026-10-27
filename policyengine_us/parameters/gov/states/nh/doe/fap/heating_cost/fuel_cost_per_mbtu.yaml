@@ -13,6 +13,10 @@ ELECTRICITY:
   2026-10-01: 64.706
 PROPANE:
   2026-10-01: 42.497
+# SOLAR takes the electricity row because heating_expense reads a solar
+# home's bill as its grid electricity bill.
+SOLAR:
+  2026-10-01: 64.706
 # Unsupported fuel contributes no estimate, not a legal zero cost.
 UNAVAILABLE:
   2026-10-01: 0

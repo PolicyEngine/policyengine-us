@@ -3,9 +3,9 @@
 # Physical PDF pages: 10, 17, 18, 35, 36, 74, 76, 77, 78.
 # Period 2027 represents the researched 2026-2027 schedule with 2026 FPG.
 # Inputs are annual; SSI and FANF totals are explicitly supplied to isolate receipts.
-# Final modeled awards use actual or estimated costs and the ordinary fuel schedule.
-# No additional heat-in-rent reduction is applied under the approved modeling assumption.
-# This assumption is not agency-confirmed; unsupported fuel amounts remain zero.
+# Final modeled awards use the larger of the actual and estimated costs and the
+# ordinary fuel schedule. Unsubsidized heat in rent gets no further reduction because
+# the PY2027 schedule (page 78) prints none; unsupported fuel amounts remain zero.
 
 # Manual p78, delivered DD/A cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 1, delivered matrix cost tier DD and income band A."
@@ -1823,8 +1823,10 @@
   output:
     nh_fap: 800
 
-# Manual p78 DD/A amount is750; no actual-cost cap is stated.
-- name: "Case 69, actual-cost schedule is not capped at a small positive bill."
+# Manual p78 DD/A amount is 750; no actual-cost cap is stated. The one-room Belknap
+# estimate, 2,000 * 1 * 6,610 / 1,000,000 * 28.881 / 0.78 = 489.50, exceeds the
+# 100 bill and also falls in tier DD.
+- name: "Case 69, the scheduled award is not capped at a small positive bill."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2152,7 +2154,7 @@
     nh_fap_heating_cost: [561.365854, 4_000]
     nh_fap: [563, 1_875]
 
-# Approved heat-in-rent assumption; this is not an agency-confirmed rent reduction.
+# The PY2027 schedule prints no heat-in-rent reduction, so the ordinary schedule applies.
 # Manual pp76-78: default single-family factor 2000, Belknap HDD 6610,
 # 3 bedrooms used as rooms, electricity 64.706/MBTU at efficiency 1.
 # Estimated cost = 2000 * 3 * 6610 / 1_000_000 * 64.706 = 2566.23996.
@@ -2195,7 +2197,7 @@
     nh_fap: 1_763
 
 # Manual p78 AA/A: delivered 2500; electricity and gas 2500 * 0.75 = 1875.
-# Approved assumption applies that fuel schedule once to direct-pay and heat-in-rent.
+# That fuel schedule applies once to direct-pay and heat-in-rent households.
 # Manual p21 excludes subsidized heat-in-rent, not subsidized direct-pay households.
 - name: Case 80, heat-in-rent retains each fuel schedule while subsidized heat-in-rent is excluded.
   period: 2027
@@ -2756,3 +2758,144 @@
     nh_fap_heating_cost: 2_272.564431
     nh_fap_eligible: true
     nh_fap: 1_410
+
+# Manual pp12,18,21,77-78: unsubsidized heat in rent with no bill and no bedrooms.
+# Unit 1: one room in Belknap County,
+# 2,000 * 1 * 6,610 / 1,000,000 * 28.881 / 0.78 = 489.50, tier DD; 10,000 is within
+# 75% of 15,960 (11,970), band A; DD/A = 750.
+# Unit 2: an unknown county gives no estimate, so the cost is 0 and no award is paid
+# although the household is eligible.
+- name: "Case 85, heat in rent with no bill uses the one-room estimate, and no estimate pays nothing."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+      spm_unit2:
+        members: ["person2"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "BELKNAP_COUNTY_NH"
+      household2:
+        members: ["person2"]
+        state_code: "NH"
+        county_str: "UNKNOWN"
+  output:
+    nh_fap_heating_cost: [489.495923, 0]
+    nh_fap_eligible: [true, true]
+    nh_fap: [750, 0]
+
+# Manual pp15,17: Social Security of 28,000 is 2,333.33 a month, or 2,313.33 after
+# the $20 exclusion, above the MSP limit (135% of the 2027 one-person guideline,
+# about 1,838), so the enrollee pays 202.90 * 12 = 2,434.80.
+# 28,000 - 2,434.80 = 25,565.20, 160.2% of 15,960: above 150% (23,940) and within
+# 175% (27,930), band E. The 2,000 oil bill is in tier BB; BB/E = 1,100.
+- name: "Case 86, the Part B deduction moves a Social Security recipient into a higher-paying band."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: "CITIZEN"
+        ssi: 0
+        nh_ssp: 0
+        social_security: 28_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 2_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    medicare_part_b_premium: 2_434.8
+    nh_fap_countable_income: 25_565.2
+    nh_fap: 1_100
+
+# Manual p15 and plan item 1.9: municipal general assistance is not counted.
+# 19,500 is 122.2% of 15,960: above 100% and within 125% (19,950), band C.
+# The 2,000 oil bill is in tier BB; BB/C = 1,720.
+- name: "Case 87, general assistance does not raise the income band."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 19_500
+        general_assistance: 1_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 2_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 19_500
+    nh_fap: 1_720
+
+# A solar home's bill is its grid electricity bill, so SOLAR uses the electricity
+# row and utility multiplier. The 1,200 bill exceeds the one-room Belknap estimate
+# 2,000 * 1 * 6,610 / 1,000,000 * 64.706 = 855.41 and is in tier CC; 10,000 is
+# band A; CC/A = 1,460 * 0.75 = 1,095.
+- name: "Case 88, solar heat with an electricity bill receives the utility schedule."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "SOLAR"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_heating_cost: 1_200
+    nh_fap: 1_095

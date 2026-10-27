@@ -1,4 +1,6 @@
-description: New Hampshire includes these reported business income sources under the Fuel Assistance Program, excluding each source's losses.
+description: New Hampshire counts these business income sources under the Fuel Assistance Program.
+# Each source's losses count as zero (page 26), so a loss cannot offset
+# another source.
 values:
   2026-10-01:
     - self_employment_income

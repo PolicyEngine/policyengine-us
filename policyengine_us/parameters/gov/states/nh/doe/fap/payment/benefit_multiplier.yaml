@@ -1,7 +1,9 @@
 description: New Hampshire provides this share of the delivered-fuel scheduled benefit under the Fuel Assistance Program.
 # Whole-dollar half-up rounding reproduces all 24 published utility cells.
-# Unsupported fuels have no published multiplier; zero marks an unsupported
-# amount, not a legal zero benefit.
+# SOLAR takes the electricity row because heating_expense reads a solar
+# home's bill as its grid electricity bill. OTHER has no row on page 77 and
+# no fuel on the application, and UNSPECIFIED names no fuel; zero marks an
+# unsupported amount, not a legal zero benefit.
 UNSPECIFIED:
   2026-10-01: 0
 ELECTRICITY:
@@ -14,14 +16,15 @@ KEROSENE:
   2026-10-01: 1
 PROPANE:
   2026-10-01: 1
-# Existing WOOD also represents pellets, bio-bricks and winter blends, which
-# share the 1.000 multiplier.
+# WOOD also represents pellets and bio-bricks, which share the 1.000
+# multiplier. Winter blend is a heating-oil blend entered as FUEL_OIL or
+# KEROSENE, which share the same multiplier.
 WOOD:
   2026-10-01: 1
 COAL:
   2026-10-01: 1
 SOLAR:
-  2026-10-01: 0
+  2026-10-01: 0.75
 OTHER:
   2026-10-01: 0
 NONE:

@@ -14,10 +14,15 @@ class nh_fap_heating_cost(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nh.doe.fap.heating_cost
         bedrooms = spm_unit.household("bedrooms", period)
-        # Use bedrooms alone as an approved modeling approximation,
-        # not the program's measured room count. No other rooms are inferred.
-        # Zero bedrooms cannot distinguish a studio from missing information.
-        rooms = max_(bedrooms, 0)
+        # No room-count input exists, so bedrooms stand in for the room count.
+        # Page 17 counts every room except hallways, unfinished basements,
+        # garages, attics and closets, and the application form also counts
+        # kitchen/dining and living/family rooms, so bedrooms understate rooms.
+        # A dwelling has at least one room, so a studio or an unreported
+        # bedroom count gets the one-room estimate. A homeless household has
+        # no dwelling to heat and keeps its reported count.
+        has_dwelling = ~spm_unit.household("is_homeless", period)
+        rooms = max_(bedrooms, where(has_dwelling, 1, 0))
         # Whole-household bedrooms approximate the SPM unit's dwelling;
         # private, shared and business-only room adjustments are unobserved.
         dwelling = spm_unit("nh_fap_dwelling_type", period)
@@ -35,8 +40,11 @@ class nh_fap_heating_cost(Variable):
             fuel,
             "UNAVAILABLE",
         )
-        # WOOD approximates cordwood; pellets, bio-bricks and winter blends
-        # cannot be distinguished with the existing heating type input.
+        # WOOD approximates cordwood; pellets and bio-bricks cannot be
+        # distinguished with the existing heating type input. Winter blend, a
+        # heating-oil blend, is entered as FUEL_OIL or KEROSENE, so its own
+        # page 77 cost per MBTU is not used. An unsupported county or fuel
+        # gives no estimate, whatever the room count.
         # The million divisor converts the heat-load quantity to MBTU.
         estimated_cost = (
             p.dwelling_factor[dwelling]

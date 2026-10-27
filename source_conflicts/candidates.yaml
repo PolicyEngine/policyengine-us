@@ -3968,13 +3968,15 @@ candidates:
     $185,486 limit but is below the $186,252 floor and receives the $1,720 BB/C award in the PR.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/nh/doe/fap/nh_fap_eligible.py
+    - policyengine_us/variables/gov/states/nh/doe/fap/nh_fap_income_limit.py
+    - policyengine_us/parameters/gov/states/nh/doe/fap/smi_rate.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10343
   state: unreviewed
-  note: 'The open PR applies the federal floor; verify the extended limits, since the manual prints 60% SMI amounts
-    only through eight persons. Code not yet on main: nh_fap_eligible, nh_fap_income_limit,
-    gov.states.nh.doe.fap.smi_rate.'
+  note: The open PR applies the federal floor; verify the extended limits, since the manual prints 60% SMI amounts
+    only through eight persons.
 - id: us-nh:ssp-permanent-resident-forty-quarters
   program: ssi-state-supplement
   years:
