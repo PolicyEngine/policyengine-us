@@ -7,7 +7,7 @@ class ca_capi_eligible_person(Variable):
     label = "California CAPI eligible person"
     definition_period = YEAR
     defined_for = StateCode.CA
-    # PDF pages 10, 47
+    # PDF pages 10,47
     reference = (
         "https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf#page=10"
     )

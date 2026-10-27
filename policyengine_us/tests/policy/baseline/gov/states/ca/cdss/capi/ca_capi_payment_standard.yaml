@@ -5,7 +5,8 @@
     people:
       person1:
         age: 70
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     households:
       household:
         members: [person1]
@@ -24,7 +25,8 @@
     people:
       person1:
         age: 70
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     households:
       household:
         members: [person1]
@@ -44,7 +46,8 @@
       person1:
         age: 40
         is_blind: true
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     households:
       household:
         members: [person1]
@@ -63,10 +66,12 @@
     people:
       person1:
         age: 72
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
       person2:
         age: 68
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -88,10 +93,12 @@
     people:
       person1:
         age: 72
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
       person2:
         age: 68
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -112,11 +119,13 @@
     people:
       person1:
         age: 70
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
       person2:
         age: 60
         is_blind: true
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -141,7 +150,8 @@
         immigration_status: CITIZEN
       person2:
         age: 68
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -164,7 +174,8 @@
     people:
       person1:
         age: 75
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
         ca_in_medical_care_facility: true
     households:
       household:
@@ -185,7 +196,8 @@
     people:
       person1:
         age: 75
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
         in_out_of_home_care_facility: true
     households:
       household:
@@ -206,7 +218,8 @@
       person1:
         age: 70
         is_blind: true
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     households:
       household:
         members: [person1]
@@ -225,12 +238,14 @@
     people:
       person1:
         age: 40
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
       person2:
         age: 10
         is_disabled: true
         meets_ssi_disability_criteria: true
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     marital_units:
       marital_unit1:
         members: [person1]
@@ -253,11 +268,13 @@
     people:
       person1:
         age: 40
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
       person2:
         age: 10
         is_blind: true
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     marital_units:
       marital_unit1:
         members: [person1]
@@ -272,18 +289,20 @@
     # A blind child takes the blind amount, 1,318.32 (MPP 49-050.253).
     ca_capi_payment_standard: [0, 1_318.32]
 
-- name: Case 13, aged couple with one blind member without cooking adds the individual food allowance.
+- name: Case 13, aged couple with one blind member without cooking takes the aged couple rate with the food allowance.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 72
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
       person2:
         age: 70
         is_blind: true
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -293,11 +312,13 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: false
   output:
-    # POMS SI 01415.058 code C note: the blind/aged couple level plus the
-    # individual restaurant allowance, 2,238.44 + 128.87 = 2,367.31. This
-    # beats the aged couple without cooking, 2,098.83 + 257.74 = 2,356.57.
-    # One-half each: 2,367.31 / 2 = 1,183.655.
-    ca_capi_payment_standard: [1_183.655, 1_183.655]
+    # WIC 12200(e) gives the food allowance only to an aged or disabled
+    # individual or couple (12200(c), (d)), so the one-blind couple rate
+    # (12200(b)) adds none: 2,238.44. Both spouses are aged, so the aged
+    # couple rate without cooking also applies: 2,098.83 + 257.74 = 2,356.57,
+    # the higher. One-half each: 2,356.57 / 2 = 1,178.285. POMS SI 01415.058
+    # code C would add 128.87 to the one-blind rate instead (2,367.31).
+    ca_capi_payment_standard: [1_178.285, 1_178.285]
 
 - name: Case 14, 2024 independent-living standard is floored at the federal benefit rate.
   period: 2024-01
@@ -306,7 +327,8 @@
     people:
       person1:
         age: 70
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     households:
       household:
         members: [person1]
@@ -315,7 +337,10 @@
   output:
     # The state supplement parameters hold the 1991 aged amount of 630 until
     # 2025 (issue 7787), below the 2024 federal benefit rate of 943. CAPI
-    # equals SSI/SSP (WIC 18941), so the standard is max(630, 943) = 943.
+    # equals SSI/SSP (WIC 18941), so the stopgap floor gives max(630, 943) =
+    # 943. This pins a known-low value: the published January 2024 aged
+    # standard is 943 + 239.94 = 1,182.94 (POMS SI 01415.056); issue 10480
+    # backfills the totals and removes the floor.
     ca_capi_payment_standard: 943
 
 - name: Case 15, the 10 individual offset applies through May 2019 and ends in June 2019.
@@ -325,7 +350,8 @@
     people:
       person1:
         age: 70
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     households:
       household:
         members: [person1]
@@ -335,7 +361,8 @@
     # The state supplement parameters hold the 1991 aged amount of 630 until
     # 2025 (issue 7787), so the model floors the standard at the 2019 federal
     # benefit rate: max(630, 771) = 771. The actual 2019 SSI/SSP standard was
-    # 931.72 (ACIN I-23-19). This case pins only the offset boundary:
+    # 931.72 (ACIN I-23-19), so these are known-low values from the stopgap
+    # floor (issue 10480). This case pins only the offset boundary:
     # 771 - 10 = 761 through May 2019 (MPP 49-050.11) and 771 - 0 = 771 from
     # June 1, 2019 (WIC 18941).
     ca_capi_payment_standard:

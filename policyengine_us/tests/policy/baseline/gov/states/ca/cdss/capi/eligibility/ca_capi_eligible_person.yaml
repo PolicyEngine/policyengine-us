@@ -26,16 +26,18 @@
   output:
     ca_capi_eligible_person: true
 
-- name: Eligible couple - both spouses aged and undocumented
+- name: Eligible couple - both spouses aged permanent residents without 40 SSI quarters
   period: 2026
   input:
     people:
       person1:
         age: 72
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
       person2:
         age: 68
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     marital_units:
       marital_unit:
         members: [person1, person2]

@@ -12,7 +12,7 @@ class ca_capi_person(Variable):
     definition_period = MONTH
     defined_for = "ca_capi_eligible_person"
     reference = (
-        # PDF pages 3-4, 25, 30, 47
+        # PDF pages 3-4,25,30,47
         "https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf#page=3",
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=18940",
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=18941",
@@ -38,11 +38,13 @@ class ca_capi_person(Variable):
         # Mixed couple: the spouse's SSI/SSP counts as unearned income based on
         # need (MPP 49-035.221), subtracted with the couple's countable income
         # from the couple standard (MPP 49-055.32).
-        # NOTE: an aged, blind or disabled spouse who receives neither SSI/SSP
-        # nor CAPI is an ineligible spouse (MPP 49-005(i)(2)), but the model has
-        # no spouse-to-spouse deeming for such a spouse, so this computation
-        # applies. That spouse's SSI/SSP is zero mainly when the couple's income
-        # exceeds the couple standard, which already leaves no CAPI.
+        # NOTE: the model applies this computation whenever both spouses are
+        # aged, blind or disabled (ssi_couple_computation_applies ignores SSI's
+        # noncitizen test), even when SSA would pay the spouse nothing. Such a
+        # spouse is an ineligible spouse (MPP 49-005(i)(2); 20 CFR 416.1160(d))
+        # and deeming applies. Example, January 2026: a citizen with $1,300 of
+        # Social Security and a CAPI spouse with no income get $818.83 a month
+        # in the model; the law gives $450.94 of CAPI alone (issue 10481).
         capi_eligible = person("ca_capi_eligible_person", period.this_year)
         joint = person("ssi_couple_computation_applies", period)
         mixed = joint & ~(person.marital_unit.sum(capi_eligible) > 1)

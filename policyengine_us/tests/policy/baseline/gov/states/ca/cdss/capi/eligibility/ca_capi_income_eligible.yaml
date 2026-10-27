@@ -2,7 +2,8 @@
   period: 2026
   input:
     age: 70
-    immigration_status: UNDOCUMENTED
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    ssi_qualifying_quarters_earnings: 39
     # SSI zeroes countable income for people who fail its immigration test,
     # so the case supplies it: 1,234.94 per month (14,819.28 per year).
     ssi_countable_income: 14_819.28
@@ -18,7 +19,8 @@
   period: 2026
   input:
     age: 70
-    immigration_status: UNDOCUMENTED
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    ssi_qualifying_quarters_earnings: 39
     # Supplied as above: 1,232.94 per month (14,795.28 per year).
     ssi_countable_income: 14_795.28
     living_arrangements_allow_for_food_preparation: true
@@ -33,7 +35,8 @@
     people:
       person1:
         age: 70
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
         # SSI does not compute these for people who fail its immigration
         # test, so the case supplies them. The spouse earns 5,000 per month;
         # couple countable income is (5,000 - 20 - 65) / 2 = 2,457.50 per

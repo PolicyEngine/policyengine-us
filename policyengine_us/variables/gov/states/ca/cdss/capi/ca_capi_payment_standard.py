@@ -12,7 +12,7 @@ class ca_capi_payment_standard(Variable):
     definition_period = MONTH
     defined_for = "ca_capi_eligible_person"
     reference = (
-        # PDF pages 3, 44-47
+        # PDF pages 3,44-47
         "https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf#page=3",
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200",
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=18941",

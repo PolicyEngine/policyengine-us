@@ -5,7 +5,8 @@
     people:
       person1:
         age: 70
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
         # 520 per month foreign pension.
         pension_income: 6_240
         # SSI zeroes countable income for people who fail its immigration
@@ -30,10 +31,12 @@
     people:
       person1:
         age: 72
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
       person2:
         age: 68
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -88,7 +91,7 @@
     ca_state_supplement: 0
     ca_capi: 0
 
-- name: Integration test, undocumented
+- name: Integration test, permanent resident without 40 SSI quarters
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -98,7 +101,8 @@
         employment_income: 1_000
         is_disabled: true
         meets_ssi_disability_criteria: true
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
       person2:
         age: 10
         employment_income: 0
@@ -130,7 +134,8 @@
         immigration_status: CITIZEN
       person2:
         age: 68
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -156,7 +161,8 @@
     people:
       person1:
         age: 72
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
         # 1,520 per month foreign pension.
         pension_income: 18_240
         # SSI zeroes countable income for people who fail its immigration
@@ -165,7 +171,8 @@
         ssi_countable_income: 18_000
       person2:
         age: 68
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     tax_units:
       tax_unit1:
         members: [person1]
@@ -199,7 +206,8 @@
     people:
       person1:
         age: 70
-        immigration_status: UNDOCUMENTED
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
     households:
       household:
         members: [person1]
@@ -209,6 +217,8 @@
     # The state supplement parameters hold the 1991 aged amount of 630 until
     # 2025 (issue 7787). CAPI equals SSI/SSP (WIC 18941), so the standard is
     # floored at the 2024 federal benefit rate: max(630, 943) = 943 per
-    # month with no offset and no income; 943 x 12 = 11,316.
+    # month with no offset and no income; 943 x 12 = 11,316. This pins a
+    # known-low value from the stopgap floor: the published aged standard was
+    # 1,182.94 (POMS SI 01415.056); issue 10480 removes the floor.
     ca_capi_person: 11_316
     ca_capi: 11_316
