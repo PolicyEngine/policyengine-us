@@ -1,3 +1,38 @@
+## [2.73.2] - 2026-10-27
+
+### Fixed
+
+- Correct CHIP pregnancy income limit dates and values from state plan amendments: Kentucky starts July 1, 2022 at 218% FPL, West Virginia CHIP starts July 1, 2019, Colorado, New Jersey and Rhode Island include the 5 percentage point disregard throughout, Colorado's from-conception-to-end-of-pregnancy option starts January 1, 2025, and West Virginia's 190% Medicaid pregnancy limit starts July 1, 2019.
+
+
+## [2.73.1] - 2026-10-27
+
+### Fixed
+
+- Remove Idaho's expired child tax credit from state child tax credit totals after 2025, preserve those totals under Idaho revival reforms, and pause Colorado's family affordability tax credit from 2026.
+
+
+## [2.73.0] - 2026-10-27
+
+### Added
+
+- Add Washington LIHEAP (wa_liheap): FY2026 regular heating benefit from the Commerce benefit calculation worksheet with the 150% federal poverty guideline income test.
+
+
+## [2.72.5] - 2026-10-27
+
+### Fixed
+
+- Exclude children whose filer fails the Child Tax Credit identification requirements from ctc_qualifying_children: from 2025 the filer social security number rule (IRC 24(h)(7)(A)(i)), and in every year the taxpayer identification number rule (IRC 24(e)(2)). This removes the children of ITIN filers from the North Carolina child deduction from 2025, and removes the children of filers with no TIN from the North Carolina child deduction and credit for children (2015-2017), the Utah child tax credit, the Maine fairness credits, and the New York Empire State child credit $100 minimum under its pre-2025 and post-2027 rules. Filers with no TIN also lose the 2021 American Rescue Plan Act addition to the Puerto Rico child tax credit. The Idaho Child Tax Credit and the CARES recovery rebate keep counting these children under the IRC 24(c) definition, and the Utah child tax credit and Maine fairness credits keep counting the children of ITIN filers, who get the credit for other dependents.
+
+
+## [2.72.4] - 2026-10-27
+
+### Fixed
+
+- Give the Social Security input state-machine test's Core backend the operator module and population-count restore stub that policyengine-core 3.33.13 needs, which had made the test fail on main.
+
+
 ## [2.72.3] - 2026-10-27
 
 ### Fixed
