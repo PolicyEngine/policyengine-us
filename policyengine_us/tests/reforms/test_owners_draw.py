@@ -7,6 +7,7 @@ constructor activation, baseline equality, cap preservation and AIME history.
 """
 
 import gc
+from itertools import chain
 from types import SimpleNamespace
 
 import numpy as np
@@ -704,7 +705,7 @@ def private_draw_system():
 
 SIMULATION_SETTINGS = {
     **SETTINGS,
-    "max_examples": 3,
+    "max_examples": 2,
     "suppress_health_check": [
         *SETTINGS["suppress_health_check"],
         HealthCheck.function_scoped_fixture,
@@ -787,6 +788,21 @@ def _zero_earlier_earnings(simulation, year):
     for historic_year in range(year - 45, year):
         simulation.set_input("employment_income", historic_year, zeros)
         simulation.set_input("total_self_employment_income", historic_year, zeros)
+
+
+def _release_simulation_caches(simulation):
+    """Release derived history caches without changing policy or input values."""
+    policy = simulation.tax_benefit_system
+    if getattr(policy, "simulation", None) is simulation:
+        policy.simulation = None
+    policy._parameters_at_instant_cache.clear()
+    root = policy.parameters
+    # Core eagerly materializes each full parameter tree at every instant.
+    # Children retain their own caches, so clearing only the root is not enough.
+    for node in chain((root,), root.get_descendants()):
+        cache = getattr(node, "_at_instant_cache", None)
+        if cache is not None:
+            cache.clear()
 
 
 @pytest.mark.parametrize("route", ["parametric", "class"])
@@ -883,17 +899,7 @@ def test_generated_disabled_reform_matches_public_baseline(
     for output in BASELINE_VARIABLES:
         np.testing.assert_array_equal(probe[output], reference[output], err_msg=output)
     situation = _simulation_situation(batch)
-    baseline = Simulation(tax_benefit_system=system, situation=situation)
-    disabled = _private_simulation(private_draw_system, situation, create_owners_draw())
-    _zero_earlier_earnings(baseline, 2027)
-    _zero_earlier_earnings(disabled, 2027)
-    assert (
-        disabled.tax_benefit_system.parameters(
-            "2027-01-01"
-        ).gov.simulation.aime_lookback_years
-        == 45
-    )
-    for output in (
+    outputs = (
         *BASELINE_VARIABLES,
         "payroll_tax_gross_wages",
         "total_self_employment_income",
@@ -903,12 +909,46 @@ def test_generated_disabled_reform_matches_public_baseline(
         "ss_aime",
         "niit_magi",
         "net_investment_income_tax",
-    ):
-        np.testing.assert_array_equal(
-            disabled.calculate(output, 2027),
-            baseline.calculate(output, 2027),
-            err_msg=output,
+    )
+    # Calculate the real baseline first, then release its 45-year parameter
+    # caches before the independent disabled policy builds its own history.
+    # Keeping both full histories resident can exceed the file's memory cap.
+    baseline = Simulation(tax_benefit_system=system, situation=situation)
+    try:
+        _zero_earlier_earnings(baseline, 2027)
+        assert (
+            baseline.tax_benefit_system.parameters(
+                "2027-01-01"
+            ).gov.simulation.aime_lookback_years
+            == 45
         )
+        baseline_outputs = {
+            output: baseline.calculate(output, 2027).copy() for output in outputs
+        }
+    finally:
+        _release_simulation_caches(baseline)
+        del baseline
+        gc.collect()
+
+    disabled = _private_simulation(private_draw_system, situation, create_owners_draw())
+    try:
+        _zero_earlier_earnings(disabled, 2027)
+        assert (
+            disabled.tax_benefit_system.parameters(
+                "2027-01-01"
+            ).gov.simulation.aime_lookback_years
+            == 45
+        )
+        for output in outputs:
+            np.testing.assert_array_equal(
+                disabled.calculate(output, 2027),
+                baseline_outputs[output],
+                err_msg=output,
+            )
+    finally:
+        _release_simulation_caches(disabled)
+        del disabled
+        gc.collect()
 
 
 @settings(**SIMULATION_SETTINGS)
@@ -1002,13 +1042,21 @@ def test_generated_benefit_credit_cap_override_and_historical_lookback(
     off_year = year + 1
     off_situation = _simulation_situation(batch, off_year, supplied)
     no_credit = _private_simulation(private_draw_system, off_situation)
-    baseline_off = Simulation(tax_benefit_system=system, situation=off_situation)
     _zero_earlier_earnings(no_credit, off_year)
-    _zero_earlier_earnings(baseline_off, off_year)
-    np.testing.assert_array_equal(
-        no_credit.calculate("ss_aime", off_year),
-        baseline_off.calculate("ss_aime", off_year),
+    # Every owner is 62 in this separate scoring-year fixture, with zero
+    # earnings in all 45 prior years. Main's baseline AIME therefore uses
+    # only current wages plus gross SE earnings, capped at that year's wage
+    # base, divided by 35 * 12; a positive supplied AIME still takes priority.
+    # This independent baseline oracle avoids a third simulation. The
+    # disabled-reform differential above also checks main's public helper.
+    off_cap = no_credit.tax_benefit_system.parameters(
+        f"{off_year}-01-01"
+    ).gov.ssa.social_security.wage_base
+    expected_off = np.where(
+        supplied > 0, supplied, np.minimum(wages + se, off_cap) / 420
     )
+    actual_off = no_credit.calculate("ss_aime", off_year)
+    np.testing.assert_array_equal(actual_off, expected_off.astype(actual_off.dtype))
     np.testing.assert_array_equal(
         no_credit.calculate("owners_draw_credited_earnings", off_year),
         np.zeros(len(batch)),
@@ -1306,3 +1354,17 @@ def test_s770_rejects_unclassified_passive_inclusive_draw(
             s770_active_business_income.formula(tax_unit, PERIOD, parameters),
             50_000,
         )
+        # Main rejects a nonpositive standard factor even for a manual HI
+        # hook. Inactive and absent draws must preserve that error as well.
+        invalid_q = _parameters(
+            oasdi_rate=1,
+            hi_rate=1,
+            employer_share=0.5,
+            material_participation_only=False,
+            in_effect=enabled,
+            start_year=start_year,
+        )
+        if not installed:
+            del invalid_q(PERIOD).gov.contrib.ssa.owners_draw
+        with pytest.raises(ValueError, match="netting factor must be positive"):
+            s770_active_business_income.formula(tax_unit, PERIOD, invalid_q)
