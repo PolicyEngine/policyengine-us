@@ -101,3 +101,64 @@
     health_insurance_premiums: 3_000
   output:
     self_employed_health_insurance_ald_person: 0
+
+- name: Case 7, spouses on either side of the Social Security wage base each use their own self-employment tax deduction.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_self_employed: true
+        employment_income: 200_000
+        self_employment_income: 10_000
+        health_insurance_premiums: 20_000
+      person2:
+        is_self_employed: true
+        self_employment_income: 10_000
+        health_insurance_premiums: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # person1's wages exceed the $176,100 wage base, so Schedule 1 line 15 is
+    # 10,000 x 0.9235 x 0.029 / 2 = 133.9075; person2's is
+    # 10,000 x 0.9235 x 0.153 / 2 = 706.4775.
+    self_employment_tax_ald_person: [133.9075, 706.4775]
+    # Form 7206 line 13 for each: 10,000 less their own line 15.
+    self_employed_health_insurance_ald_person: [9_866.0925, 9_293.5225]
+    self_employed_health_insurance_ald: 19_159.615
+
+- name: Case 8, a dependent's deduction is capped by their own earned income and stays off the filer's return.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 50_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        is_self_employed: true
+        self_employment_income: 3_000
+        health_insurance_premiums: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # child: 3,000 - 3,000 x 0.9235 x 0.153 / 2 = 3,000 - 211.94325.
+    self_employed_health_insurance_ald_person: [0, 2_788.05675]
+    # The child takes it on their own return.
+    self_employed_health_insurance_ald: 0
+    dependents_self_employed_health_insurance_ald: 2_788.05675

@@ -147,7 +147,9 @@ def _assert_conservation(members, simulation):
     assert (schedule_a_premium_use + se_deduction <= paid + 0.01).all()
     # All premiums here are otherwise eligible: unused premiums remain in
     # Schedule A's base, even when earnings cap the SE deduction.
-    np.testing.assert_allclose(schedule_a_premium_use + se_deduction, paid, atol=0.01)
+    np.testing.assert_allclose(
+        schedule_a_premium_use + se_deduction, paid, rtol=0, atol=0.01
+    )
 
 
 EXAMPLE_UNITS = [
