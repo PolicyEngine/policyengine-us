@@ -1,3 +1,10 @@
+## [2.76.0] - 2026-10-28
+
+### Added
+
+- Add North Dakota LIHEAP (nd_liheap): FY2026 regular heating benefit paying 45% to 100% of the annual heating bill by state median income band, with heat-in-rent payments.
+
+
 ## [2.75.1] - 2026-10-28
 
 ### Fixed
