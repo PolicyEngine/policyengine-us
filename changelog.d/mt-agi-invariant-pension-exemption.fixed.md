@@ -1,1 +1,0 @@
-Make the Montana AGI pooling test check that Montana's 2021–2023 partial pension, annuity, and IRA income exemption reduces Montana AGI by `mt_pension_exemption_joint`, instead of excluding filers who claim it.
