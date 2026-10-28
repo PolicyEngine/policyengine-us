@@ -144,7 +144,8 @@
 
 - name: Joint active NIIT excludes only the actual OASDI taxed owners draw
   period: 2027
-  absolute_error_margin: 0.03
+  # One float32 rounding step near the active base is $0.03125.
+  absolute_error_margin: 0.05
   reforms:
     - policyengine_us.reforms.ssa.owners_draw.owners_draw
     - policyengine_us.reforms.congress.s770.section_8.section_8
