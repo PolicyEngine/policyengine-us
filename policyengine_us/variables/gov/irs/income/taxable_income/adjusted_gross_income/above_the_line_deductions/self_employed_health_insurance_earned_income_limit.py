@@ -11,12 +11,15 @@ class self_employed_health_insurance_earned_income_limit(Variable):
         "business under which the health plan is established; the "
         "self-employed health insurance deduction cannot exceed it (Form "
         "7206 line 13). The model treats the person's Schedule C business as "
-        "that business. Its net profit is reduced by the part of the "
-        "deductible part of self-employment tax attributable to it (lines 5 "
-        "to 7) and by the self-employed SEP, SIMPLE and qualified plan "
-        "deduction (line 9), which the model also bases on Schedule C income. "
-        "S corporation wages (line 11) are not modeled, and self-employment "
-        "income inputs are already net of any section 911 exclusion (line 12)."
+        "that business, with SSTB and non-SSTB Schedule C income as a single "
+        "business, so a loss in one reduces line 4. Its net profit is reduced "
+        "by the part of the deductible part of self-employment tax "
+        "attributable to it (lines 5 to 7) and by the self-employed SEP, "
+        "SIMPLE and qualified plan deduction (line 9), which the model also "
+        "bases on Schedule C income. Schedule 1 line 15 is read per person: "
+        "each person's own deductible self-employment tax. S corporation "
+        "wages (line 11) are not modeled, and self-employment income inputs "
+        "are already net of any section 911 exclusion (line 12)."
     )
     definition_period = YEAR
     reference = (
