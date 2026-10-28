@@ -1,3 +1,10 @@
+## [2.75.0] - 2026-10-28
+
+### Added
+
+- Add independently enabled S.770 section 8 NII add-on and active pass-through income tax options, signed unified-base allocation, and configurable OASDI revenue transfers.
+
+
 ## [2.74.2] - 2026-10-27
 
 ### Fixed
