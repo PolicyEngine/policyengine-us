@@ -106,3 +106,60 @@
     receives_tanf: true
   output:
     nc_tanf_countable_gross_unearned_income: 5_000
+
+- name: An SSI recipient's unearned income is not counted; child support they receive for a child in the unit is.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 35
+        social_security: 6_000
+        child_support_received: 1_000
+        receives_ssi: true
+      other_parent:
+        age: 35
+        pension_income: 1_200
+        child_support_received: 500
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, other_parent, child]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [parent, other_parent, child]
+        state_code: NC
+  output:
+    # State Plan Financial Rules 3 and 4: the SSI parent's Social Security is
+    # not counted. WF-114 section XII: child support is the dependent child's
+    # income, so the SSI parent's 1_000 counts. 1_200 + 500 + 1_000 = 2_700
+    nc_tanf_countable_gross_unearned_income: 2_700
+
+- name: Child support an SSI-recipient child receives is not counted.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 35
+        pension_income: 1_200
+      ssi_child:
+        age: 8
+        child_support_received: 2_400
+        receives_ssi: true
+      child:
+        age: 5
+        child_support_received: 600
+    spm_units:
+      spm_unit:
+        members: [parent, ssi_child, child]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [parent, ssi_child, child]
+        state_code: NC
+  output:
+    # The SSI child's support is that child's own income, and no income of SSI
+    # recipients is counted (State Plan Financial Rules 3 and 4).
+    # 1_200 + 600 = 1_800
+    nc_tanf_countable_gross_unearned_income: 1_800

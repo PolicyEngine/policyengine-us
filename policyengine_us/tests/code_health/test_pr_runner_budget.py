@@ -1,11 +1,17 @@
 """Consolidating short checks must preserve coverage and failure isolation."""
 
+import importlib.util
 import math
 from pathlib import Path
 
 import yaml
 
 ROOT = Path(__file__).resolve().parents[3]
+SPEC = importlib.util.spec_from_file_location(
+    "rest_python_shards", ROOT / "policyengine_us/tests/rest_python_shards.py"
+)
+shards = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(shards)
 JOBS = yaml.safe_load((ROOT / ".github/workflows/pr.yaml").read_text())["jobs"]
 GROUP_WORKFLOWS = {
     name: yaml.safe_load((ROOT / job["uses"]).read_text())
@@ -13,7 +19,12 @@ GROUP_WORKFLOWS = {
     if "uses" in job
 }
 PYTHON_JOBS = GROUP_WORKFLOWS["PythonTests"]["jobs"]
+PUSH_JOBS = yaml.safe_load((ROOT / ".github/workflows/push.yaml").read_text())["jobs"]
 KEEP_RUNNING = "${{ !cancelled() }}"
+KEEP_RUNNING_WITH_SYSTEM_CA = (
+    "${{ !cancelled() && steps.system-ca.outcome == 'success' }}"
+)
+PLANNED_MATRIX = "${{ fromJSON(needs.RestPlan.outputs.matrix) }}"
 
 
 def action(name):
@@ -30,6 +41,20 @@ def calls(job, name):
     ]
 
 
+def planned(job):
+    return job.get("strategy", {}).get("matrix") == PLANNED_MATRIX
+
+
+def runners(job):
+    """A job's runners; a planned matrix counts its largest possible plan."""
+    if planned(job):
+        return shards.MAX_SHARDS
+    matrix = job.get("strategy", {}).get("matrix", {})
+    if "include" in matrix:
+        return len(matrix["include"])
+    return math.prod(len(values) for values in matrix.values())
+
+
 def test_pr_runner_budget_keeps_the_heavy_suites_separate():
     counts = {}
     runner_jobs = {name: job for name, job in JOBS.items() if "uses" not in job}
@@ -37,22 +62,112 @@ def test_pr_runner_budget_keeps_the_heavy_suites_separate():
         for name, job in workflow["jobs"].items():
             assert name not in runner_jobs
             runner_jobs[name] = job
+    assert {name for name, job in runner_jobs.items() if planned(job)} == {"RestPython"}
     for name, job in runner_jobs.items():
-        matrix = job.get("strategy", {}).get("matrix", {})
-        if "include" in matrix:
-            counts[name] = len(matrix["include"])
-        else:
-            counts[name] = math.prod(len(values) for values in matrix.values())
-    assert sum(counts.values()) == 26
+        if not planned(job):
+            counts[name] = runners(job)
+    # Rest hit the 90-minute timeout on #10024, #9913, #10139 and #10029
+    # in October 2026, and by run 40014592006 its two chained runners took
+    # 130 minutes. RestPlan now spreads the groups over parallel shards (five
+    # from the October reports, at most MAX_SHARDS), and Rest checks their
+    # results on a runner of its own.
+    assert sum(counts.values()) == 27
     assert {
         name: counts[name]
-        for name in ("Baseline", "Contrib", "Rest", "Microsimulation")
+        for name in ("Baseline", "Contrib", "RestPlan", "Rest", "Microsimulation")
     } == {
         "Baseline": 11,
         "Contrib": 9,
+        "RestPlan": 1,
         "Rest": 1,
         "Microsimulation": 1,
     }
+    assert (shards.MIN_SHARDS, shards.MAX_SHARDS) == (4, 12)
+
+
+def needs(job):
+    value = job.get("needs", [])
+    return [value] if isinstance(value, str) else value
+
+
+def concurrent(job):
+    return min(job.get("strategy", {}).get("max-parallel", math.inf), runners(job))
+
+
+def test_uncapped_matrices_keep_a_pr_at_27_runners_at_once():
+    # Within pr.yaml, validation runs alone; everything that needs only it starts
+    # together, the planned Python shards follow RestPlan, Rest waits for them,
+    # and Contrib waits for Baseline. The Enterprise runner capacity allows
+    # every group in each matrix to start together. The dependencies and the
+    # planner's MAX_SHARDS still bound the peak.
+    for name in ("Baseline", "Contrib"):
+        for job in (GROUP_WORKFLOWS[name]["jobs"][name], PUSH_JOBS[name]):
+            assert "max-parallel" not in job["strategy"]
+    first_wave = {}
+    for name, job in JOBS.items():
+        if needs(job) != ["ReleaseLock"]:
+            continue
+        if "uses" not in job:
+            first_wave[name] = concurrent(job)
+            continue
+        for inner_name, inner in GROUP_WORKFLOWS[name]["jobs"].items():
+            if not needs(inner):
+                first_wave[inner_name] = concurrent(inner)
+    assert not {"Rest", "RestPython", "Contrib"} & set(first_wave)
+    assert sum(first_wave.values()) == 16
+    # The shards start once RestPlan has finished. Contrib starts only after
+    # Baseline has finished, so at most Contrib's groups, the shards and every
+    # other first-wave job can be running then.
+    python = concurrent(PYTHON_JOBS["RestPython"])
+    assert python == shards.MAX_SHARDS
+    assert sum(first_wave.values()) - first_wave["RestPlan"] + python <= 27
+    single = {
+        name: n
+        for name, n in first_wave.items()
+        if name not in ("Baseline", "RestPlan")
+    }
+    contrib = concurrent(GROUP_WORKFLOWS["Contrib"]["jobs"]["Contrib"])
+    assert contrib + python + sum(single.values()) <= 27
+
+
+def test_contrib_waits_for_baseline_and_skips_when_it_fails():
+    # A plain needs (no if, or an if without a status function) skips Contrib
+    # when Baseline fails or is cancelled. Re-running the failed Baseline group
+    # then runs Contrib for the first time (fork run 38687143315); an if that
+    # let Contrib run anyway would rerun all of its finished groups.
+    assert needs(JOBS["Contrib"]) == ["ReleaseLock", "Baseline"]
+    assert "if" not in JOBS["Contrib"]
+    assert needs(PUSH_JOBS["Contrib"]) == ["ReleaseLock", "Baseline"]
+    for status in ("always()", "cancelled()", "failure()", "success()"):
+        assert status not in PUSH_JOBS["Contrib"]["if"]
+
+
+def test_yaml_suites_run_two_memory_aware_workers_per_runner():
+    for name in ("Baseline", "Contrib"):
+        for job in (GROUP_WORKFLOWS[name]["jobs"][name], PUSH_JOBS[name]):
+            assert job["env"]["POLICYENGINE_BATCH_WORKERS"] == 2
+
+
+def test_release_ci_runs_the_same_baseline_and_contrib_matrices():
+    for name in ("Baseline", "Contrib"):
+        pr_job = GROUP_WORKFLOWS[name]["jobs"][name]
+        assert PUSH_JOBS[name]["strategy"] == pr_job["strategy"]
+        assert PUSH_JOBS[name]["steps"] == pr_job["steps"]
+        assert PUSH_JOBS[name]["env"] == pr_job["env"]
+
+
+def test_no_test_job_keeps_running_after_cancellation():
+    # A job-level always() also holds after a manual or cancel-in-progress
+    # cancellation, so the job keeps running or even starts after it. A job
+    # that waits for another uses !cancelled() to run after its failure.
+    workflows = {"pr.yaml": JOBS, "push.yaml": PUSH_JOBS} | {
+        Path(job["uses"]).name: GROUP_WORKFLOWS[name]["jobs"]
+        for name, job in JOBS.items()
+        if "uses" in job
+    }
+    for file, jobs in workflows.items():
+        for name, job in jobs.items():
+            assert "always()" not in str(job.get("if", "")), (file, name)
 
 
 def test_suite_groups_have_no_extra_runners_or_triggers():
@@ -65,22 +180,37 @@ def test_suite_groups_have_no_extra_runners_or_triggers():
     for name, (label, file) in groups.items():
         assert JOBS[name] == {
             "name": label,
-            "needs": "ReleaseLock",
+            "needs": ["ReleaseLock", "Baseline"]
+            if name == "Contrib"
+            else "ReleaseLock",
             "uses": f"./.github/workflows/{file}",
         }
         # PyYAML parses the bare `on` key as True. No push/PR trigger here:
         # the draft guard must control the only route to these runners.
         assert GROUP_WORKFLOWS[name][True] == {"workflow_call": None}
-    assert set(PYTHON_JOBS) == {"Rest", "Microsimulation"}
+    assert set(PYTHON_JOBS) == {"RestPlan", "RestPython", "Rest", "Microsimulation"}
     assert {name: job["timeout-minutes"] for name, job in PYTHON_JOBS.items()} == {
-        "Rest": 90,
+        "RestPlan": 10,
+        "RestPython": 90,
+        "Rest": 5,
         "Microsimulation": 60,
     }
-    for job in PYTHON_JOBS.values():
+    expected_needs = {
+        "RestPlan": [],
+        "RestPython": ["RestPlan"],
+        "Rest": ["RestPlan", "RestPython"],
+        "Microsimulation": [],
+    }
+    for name, job in PYTHON_JOBS.items():
         assert job["runs-on"] == "ubuntu-latest"
-        assert not job.get("needs")
-        assert not job.get("strategy")
+        assert job.get("needs", []) == expected_needs[name]
+        assert bool(job.get("strategy")) == (name == "RestPython")
         assert not job.get("continue-on-error")
+    # Only the planned shards form a matrix. The summary runner checks the
+    # plan's and every shard's result; there is no variables-only runner.
+    # !cancelled(), not always(): always() kept it running after cancellation.
+    assert PYTHON_JOBS["Rest"]["if"] == KEEP_RUNNING
+    assert PYTHON_JOBS["Rest"]["name"] == "Check Rest Python shards"
 
 
 def test_sequential_variants_preserve_failures_and_allow_later_results():
@@ -95,21 +225,35 @@ def test_sequential_variants_preserve_failures_and_allow_later_results():
     ):
         variants = calls(job, name)
         assert [step["with"][key] for step in variants] == expected
-        assert all(step["if"] == KEEP_RUNNING for step in variants[1:])
+        assert all(step["if"] == KEEP_RUNNING_WITH_SYSTEM_CA for step in variants[1:])
         # A failure must remain a job failure even if a later variant passes.
         assert not JOBS[job].get("continue-on-error")
         assert all(
             not step.get("continue-on-error")
             for step in JOBS[job]["steps"] + action(name)
         )
-    # A wheel failure must not suppress metadata or any Python version.
+    # A wheel failure must not suppress metadata or any Python version once
+    # system trust setup succeeds. A failed trust check must stop every variant.
     checks = [
         step
         for step in JOBS["PackageCompatibility"]["steps"]
         if step.get("uses", "").startswith("./.github/actions/")
+        and step["uses"] != "./.github/actions/setup-system-ca"
     ]
     assert len(checks) == 7
-    assert all(step["if"] == KEEP_RUNNING for step in checks[1:])
+    # The first wheel keeps the implicit success() gate after trust setup.
+    assert "if" not in checks[0]
+    assert all(step["if"] == KEEP_RUNNING_WITH_SYSTEM_CA for step in checks[1:])
+
+
+def test_package_variants_verify_system_trust_before_setting_up_environments():
+    steps = JOBS["PackageCompatibility"]["steps"]
+    (setup,) = calls("PackageCompatibility", "setup-system-ca")
+    assert setup["id"] == "system-ca"
+    assert "if" not in setup
+    assert not setup.get("continue-on-error")
+    assert steps[0]["uses"].startswith("actions/checkout@")
+    assert steps[1] == setup
 
 
 def test_variants_use_distinct_clean_checkouts_for_locks_environments_and_outputs():
@@ -150,7 +294,7 @@ def test_variants_use_distinct_clean_checkouts_for_locks_environments_and_output
 
 def test_bundle_contract_keeps_its_dependency_and_separate_environment():
     (call,) = calls("PackageCompatibility", "bundle-metadata")
-    assert call["if"] == KEEP_RUNNING
+    assert call["if"] == KEEP_RUNNING_WITH_SYSTEM_CA
     steps = action("bundle-metadata")
     assert steps[0]["with"] == {"path": "bundle-metadata"}
     assert steps[1]["with"]["python-version"] == "3.14"

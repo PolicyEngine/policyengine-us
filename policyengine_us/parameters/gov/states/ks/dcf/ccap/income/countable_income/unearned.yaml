@@ -3,12 +3,12 @@ values:
   2021-07-01:
     # Unearned income (KEESM 6200): benefits, pensions, settlements.
     - social_security
-    - unemployment_compensation
+    - total_unemployment_compensation
     - workers_compensation
     - pension_income
     # PolicyEngine records military retirement separately from pension_income,
     # so include it under KEESM 6200 pensions and retirement.
-    - military_retirement_pay
+    - military_retirement_income
     - alimony_income
     - rental_income
     - veterans_benefits

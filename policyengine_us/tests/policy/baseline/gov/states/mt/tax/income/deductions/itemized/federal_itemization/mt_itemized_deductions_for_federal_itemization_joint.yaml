@@ -170,3 +170,86 @@
     # filing a separate return, so $15,000 of the $40,000 is allowed.
     deductible_mortgage_interest: 15_000
     mt_itemized_deductions_for_federal_itemization_joint: 15_000
+
+- name: Premiums from both residences use the full federal deduction
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        mortgage_insurance_premiums: 600
+        mt_misc_deductions: 0
+        mt_salt_deduction: 0
+        mt_medical_expense_deduction_joint: 0
+      spouse:
+        is_tax_unit_spouse: true
+        second_residence_mortgage_insurance_premiums: 1_400
+        mt_misc_deductions: 0
+        mt_salt_deduction: 0
+        mt_medical_expense_deduction_joint: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        adjusted_gross_income: 80_000
+        charitable_deduction: 0
+        mt_federal_income_tax_deduction_for_federal_itemization: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # Form 2 line 9 includes the federal premium deduction. AGI of
+    # $80,000 is below the phase-out, so all $2,000 is allowed.
+    deductible_mortgage_insurance_premiums: 2_000
+    mt_itemized_deductions_for_federal_itemization_joint: [2_000, 0]
+
+- name: Premiums from both residences use the federal phase-out before allocation
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        mortgage_insurance_premiums: 600
+        mt_misc_deductions: 0
+        mt_salt_deduction: 0
+        mt_medical_expense_deduction_joint: 0
+      spouse:
+        is_tax_unit_spouse: true
+        second_residence_mortgage_insurance_premiums: 1_400
+        mt_misc_deductions: 0
+        mt_salt_deduction: 0
+        mt_medical_expense_deduction_joint: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        adjusted_gross_income: 100_001
+        charitable_deduction: 0
+        mt_federal_income_tax_deduction_for_federal_itemization: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # Form 2 line 9 includes the federal premium deduction. At $100,001
+    # AGI the first $1,000 phase-out increment reduces $2,000 by 10%.
+    deductible_mortgage_insurance_premiums: 1_800
+    mt_itemized_deductions_for_federal_itemization_joint: [1_800, 0]
+
+- name: Premium deduction expires with the federal deduction in 2022
+  period: 2022
+  input:
+    state_code: MT
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+    adjusted_gross_income: 80_000
+    charitable_deduction: 0
+    mt_misc_deductions: 0
+    mt_medical_expense_deduction_joint: 0
+    mt_salt_deduction: 0
+    mt_federal_income_tax_deduction_for_federal_itemization: 0
+  output:
+    mt_itemized_deductions_for_federal_itemization_joint: 0

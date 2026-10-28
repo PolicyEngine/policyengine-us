@@ -21,7 +21,7 @@ def ssi_living_arrangement_amount(person, period, parameters, base_amount):
         base_amount,
     )
 
-    # 42 USC § 1382(e)(1)(A), 20 CFR § 416.414: Medical treatment
+    # 42 USC § 1382(e)(1)(B), 20 CFR § 416.414: Medical treatment
     # facility, $30/month per person.
     is_medical_facility = (
         arrangement == SSIFederalLivingArrangement.MEDICAL_TREATMENT_FACILITY

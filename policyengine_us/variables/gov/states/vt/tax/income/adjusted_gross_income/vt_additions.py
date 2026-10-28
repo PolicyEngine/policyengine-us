@@ -14,4 +14,4 @@ class vt_additions(Variable):
         "https://legislature.vermont.gov/statutes/section/32/151/05811",
     )
 
-    adds = ["tax_exempt_interest_income"]
+    adds = ["tax_exempt_interest_income", "vt_other_additions"]

@@ -46,6 +46,7 @@ class section_199a_net_capital_gain(Variable):
     ]
 
     def formula(tax_unit, period, parameters):
+        # Source conflict us:qbid-net-capital-gain-investment-election
         # Treas. Reg. 1.199A-1(b)(3): "net capital gain as defined in section
         # 1222(11) plus any qualified dividend income (as defined in section
         # 1(h)(11)(B))". Neither part is reduced by a Form 4952 line 4g

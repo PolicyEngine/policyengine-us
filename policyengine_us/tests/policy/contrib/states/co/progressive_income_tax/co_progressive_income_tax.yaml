@@ -125,7 +125,9 @@
     co_taxable_income: 13_450
     # 13,450 * 0.037 = 497.65 before non-refundable credits.
     co_income_tax_before_non_refundable_credits: 497.65
-    co_income_tax: 478.65
+    # Less the $43 tax year 2027 sales tax refund projected for the first
+    # tier (modified AGI $30,000): 497.65 - 43 = 454.65.
+    co_income_tax: 454.65
 
 - name: Case 12, end-to-end single filer with $600,000 of employment income.
   period: 2027
@@ -148,7 +150,9 @@
     # 925 + 3,150 + 17,600 + 99,000 * 0.074 = 29,001 before
     # non-refundable credits.
     co_income_tax_before_non_refundable_credits: 29_001
-    co_income_tax: 28_942
+    # Less the $137 tax year 2027 sales tax refund projected for the top
+    # tier (modified AGI over $349,000): 29,001 - 137 = 28,864.
+    co_income_tax: 28_864
 
 - name: Case 13, end-to-end single filer with $1,200,000 of employment income.
   period: 2027
@@ -171,7 +175,9 @@
     # 925 + 3,150 + 17,600 + 18,500 + 19,750 + 199,000 * 0.084
     # = 76,641 before non-refundable credits.
     co_income_tax_before_non_refundable_credits: 76_641
-    co_income_tax: 76_582
+    # Less the $137 top-tier tax year 2027 sales tax refund:
+    # 76,641 - 137 = 76,504.
+    co_income_tax: 76_504
 
 # Bracket tops are inclusive: MarginalRateTaxScale taxes the boundary
 # dollar at the lower bracket's rate.
