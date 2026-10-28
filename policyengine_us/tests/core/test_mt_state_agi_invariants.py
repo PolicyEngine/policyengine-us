@@ -40,9 +40,9 @@ tax unit:
    `max(federal AGI - mt_pension_exemption_joint, 0)`. So one spouse's loss
    offsets the other spouse's income, and the exemption is taken once. As
    #10496 explained, the exemption is outside `mt_subtractions`
-   (`mt_agi_indiv` and `mt_agi_joint` subtract it), so it is checked
-   separately: units that claim it stay in this property, and their expected
-   value nets it.
+   (`mt_agi_indiv` and `mt_agi_joint` subtract it), so the condition of no
+   subtractions does not exclude units that claim it: they stay in this
+   property, and their expected value nets it.
 4. Bounds: `mt_agi` is never negative, and a unit outside Montana has no
    `mt_agi`.
 
