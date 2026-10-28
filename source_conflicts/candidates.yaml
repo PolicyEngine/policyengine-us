@@ -35,15 +35,18 @@ candidates:
     other: Plan 1.9 counts "General Assistance and Borough of Indian Affairs (BIA) General Assistance benefits if paid
       directly to the household"; manual 3003-1 B.6.o counts BIA General Assistance payments made to the household,
       and 3003-2 A.19 exempts only General Relief Assistance payments made to a vendor.
+  example: A household with $1,200 a year of State General Relief Assistance paid to it has none of it counted under
+    7 AAC 44.042(18); plan 1.9 counts General Assistance paid directly to the household.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/parameters/gov/states/ak/dpa/hap/income/unearned_sources.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10341
-  state: open
-  note: The general_assistance input cannot tell State General Relief Assistance from BIA General Assistance, and
-    the code counts it in full. The manual is served only over http, at
+  state: unreviewed
+  note: The code reads the general_assistance input as State General Relief Assistance and leaves it out of countable
+    income under 7 AAC 44.042(18). BIA General Assistance paid to the household, which plan 1.9 and manual 3003-1 B.6.o
+    count, has no separate input, so it is not counted. The manual is served only over http, at
     http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-1_countable_income.htm.
 - id: us-ak:hap-income-limit-rounding
   program: liheap
@@ -66,16 +69,18 @@ candidates:
     other: Addendum E floors the monthly guideline and then each percentage ("All dollars rounded down to guarantee
       they are below income guidelines"), which puts 23 of its 108 limits for the six LIHEAP income factors $1 below
       the exact percentage.
-  example: For four people, 150% of the FY2027 monthly guideline of $3,437.50 is $5,156.25, but Addendum E and the
-    PR use $5,155, so a household with $5,156 of monthly income is ineligible in the PR.
+  example: For four people, 150% of the FY2027 monthly guideline of $3,437.50 is $5,156.25, so a household with $5,156
+    of monthly income is eligible under 7 AAC 44.040(a)(4) and ineligible under Addendum E's $5,155.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/variables/gov/states/ak/dpa/hap/ak_hap_income_factor.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10341
-  state: open
-  note: The manual is served only over http, at http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_e.htm.
+  state: unreviewed
+  note: The code compares income with the exact percentages of the guideline, with no whole-dollar floors. Each of the
+    108 limits is $0.04 to $1.79 a month above its floored amount. The manual is served only over http, at
+    http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_e.htm.
 - id: us-ak:hap-loring-oil-points
   program: liheap
   years:
@@ -95,17 +100,18 @@ candidates:
     statute: No statute is supplied; 7 AAC 44.080(a) assigns the community heating cost points listed in Appendix
       A, which gives Loring 5 oil points.
     other: Addendum A gives Loring 4 oil points ("99901 Loring/04/00/").
-  example: A Loring adult aged 40 with no income, a two-bedroom house and an oil bill receives 4 points, $700, in the
-    PR; Appendix A's 5 points would pay $875.
+  example: A Loring adult aged 40 with no income, a two-bedroom house and an oil bill receives 5 points, $875, under
+    Appendix A and 4 points, $700, under Addendum A.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/parameters/gov/states/ak/dpa/hap/benefit/community_points/oil.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10341
-  state: open
-  note: Tetlin also differs (Addendum A 12, Appendix A 16), but its residents are routed to their tribal program, so
-    that difference does not change results. The manual is served only over http, at
+  state: unreviewed
+  note: The code gives Loring Appendix A's 5 oil points. Tetlin also differs (Addendum A 12, Appendix A 16), and the
+    code uses Appendix A's 16; its residents are routed to their tribal program, so that value does not change
+    results. The manual is served only over http, at
     http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm.
 - id: us-ak:hap-one-person-lowest-income-limit
   program: liheap
@@ -113,7 +119,7 @@ candidates:
     from: 2027
     to: 2027
     type: federal-fiscal
-  question: Is the FY2027 one-person income ceiling for Alaska's 100% heating point factor $415, from 25% of the
+  question: Is the FY2027 one-person income ceiling for Alaska's 100% heating point factor $415.625, 25% of the
     Alaska poverty guideline, or the $407 printed in Addendum E?
   sources:
   - kind: regulation
@@ -124,11 +130,11 @@ candidates:
     url: null
   readings:
     statute: No statute is supplied; 7 AAC 44.080(i)(1) assigns 100% of points when gross monthly income is no more
-      than 25% of the Alaska poverty level, which for one person is 25% of $1,662.50 ($19,950 / 12), or $415.63.
+      than 25% of the Alaska poverty level, which for one person is 25% of $1,662.50 ($19,950 / 12), or $415.625.
     other: Addendum E prints $407, which is 25% of the prior year's floored monthly guideline ($19,550 / 12, floored
       to $1,629); its other 161 cells use the 2026 guideline.
-  example: A one-person household with $410 of monthly income receives the 1.0 income factor in the PR and would
-    receive 0.9 under Addendum E's $407.
+  example: A one-person household with $410 of monthly income receives the 1.0 income factor under the $415.625 limit
+    and 0.9 under Addendum E's $407.
   pe_us:
     follows: statute
     code:
@@ -136,8 +142,8 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10341
   state: unreviewed
-  note: The code uses $415, the 25% rule with the same whole-dollar floors Addendum E applies to every other cell
-    (see us-ak:hap-income-limit-rounding). The manual is served only over http, at
+  note: The code uses the exact 25% limit, $415.625 a month ($4,987.50 a year), with no whole-dollar floor (see
+    us-ak:hap-income-limit-rounding). The manual is served only over http, at
     http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_e.htm.
 - id: us-ak:hap-shared-household-allocation
   program: liheap
@@ -175,10 +181,14 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10341
   state: unreviewed
   note: The code follows 7 AAC 44.080(h). 7 AAC 44.035(c) is a second regulatory reading, which pays each household
-    the percentage of its sole-household dollar award equal to its share of the dwelling's heating cost. When no
-    household in the dwelling reports a heating expense, as with heat included in rent, the code fills the gap with
-    the manual's equal split among eligible households, at most 50% each. Draft rulespec-us PR 1846 proposed this id
-    with the manual reading. The manual is served only over http, at
+    the percentage of its sole-household dollar award equal to its share of the dwelling's heating cost. 7 AAC
+    44.900(11) counts heat paid indirectly through rent as a home heating cost, but the heat portion of rent is not
+    observed, so the code fills that gap with the manual's equal split. Each eligible heat-in-rent household gets an
+    equal share among the dwelling's eligible households, at most 50%, and households reporting heating bills split the
+    remaining share in proportion to their bills; when no household reports a bill, every household gets the equal
+    share. In a Fairbanks two-bedroom house where an adult household pays a $1,200 oil bill and an elderly household
+    has heat in its $6,000 rent, each gets half, so they receive $875 (5 points) and $1,050 (6 points). Draft
+    rulespec-us PR 1846 proposed this id with the manual reading. The manual is served only over http, at
     http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm.
 - id: us-ak:hap-student-earnings-exemption
   program: liheap
@@ -202,18 +212,21 @@ candidates:
     other: The manual exempts the earned income of a student under 18 who lives with, or is under the parental
       control of, an adult household member and is enrolled at least half time in elementary or secondary school,
       including during school breaks.
-  example: A 16-year-old dependent enrolled half time in high school has wages exempt in the PR; under 7 AAC
-    44.042(5) they count, because the student does not attend full time.
+  example: A 17-year-old full-time college student who is not the head of household has wages exempt under 7 AAC
+    44.042(5) and counted under the manual, which covers only elementary and secondary students.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/variables/gov/states/ak/dpa/hap/ak_hap_countable_income.py
     - policyengine_us/parameters/gov/states/ak/dpa/hap/income/child_earnings_age_limit.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10341
-  state: open
-  note: The model's school inputs do not record full-time or half-time enrollment; the code approximates the
-    manual's test with tax dependency and K-12 or secondary school attendance. The manual is served only over http,
+  state: unreviewed
+  note: The code exempts the wages (employment income and military basic pay) of a member under 18 who is a
+    full-time student (is_full_time_student) and not the tax-unit head, the closest existing input to the head of
+    household; the student's business income still counts. Half-time enrollment cannot be
+    observed, and is_full_time_student treats any K-12 attendance as full time, so a half-time high school student's
+    wages are exempt in the code. The manual is served only over http,
     at http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-2_noncountable_(exempt)_income.htm.
 - id: us-ak:hap-utility-allowance-order
   program: liheap

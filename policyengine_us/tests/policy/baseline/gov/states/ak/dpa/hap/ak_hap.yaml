@@ -4,7 +4,10 @@
 # allowance (l), then the 2.0-point minimum (m), half-up rounding (n) and the
 # 35-point cap (o). When no household in the dwelling reports a heating
 # expense, as with heat in rent, manual 3002-1 A.5 gives each eligible
-# household an equal share of at most one half. Subsidized households that
+# household an equal share of at most one half. When some households report
+# bills, each eligible heat-in-rent household takes that equal share and the
+# bill payers split the rest in proportion to their bills (7 AAC 44.900(11)
+# counts heat paid through rent). Subsidized households that
 # pay heat directly receive a HUD utility allowance for tenant-paid utilities.
 # SPM units approximate separate economic households within one dwelling.
 # Sources, each URL listed once:
@@ -184,7 +187,7 @@
 # Heat is included in every unit's unsubsidized rent, so manual 3002-1 A.5
 # divides among eligible units only, at most one half each. Fairbanks oil 10,
 # two-bedroom house 1. Income of 36,000 exceeds the one-person 150% ceiling of
-# 29,916, so those units have factor 0 and no base. Household 1 has one
+# 29,925, so those units have factor 0 and no base. Household 1 has one
 # eligible unit: min(1 / 1, .5) = .5, so 10 * .5 = 5 points = 875. Household
 # 2 has two: .5 each, so 875 and 10 * .5 * .6 = 3 points = 525 for 24,000
 # income. Household 3 has none.
@@ -605,7 +608,7 @@
     ak_hap: [4_375, 2_100]
 
 # Fairbanks oil 10 * two-bedroom house 1. The retiree's $36,000 military
-# retirement pay is above the one-person 150% ceiling of 2,493 * 12 = 29,916,
+# retirement pay is above the one-person 150% ceiling of 19,950 * 1.5 = 29,925,
 # so factor 0 and base 0; pension and veterans inputs do not count it again.
 # Each unit pays 3,000 of the dwelling's 9,000, so each zero-income neighbor
 # gets a one-third share: 10 / 3 = 3.33 -> 3 points = 525.
@@ -661,9 +664,8 @@
 # Two Fairbanks units of a parent and a 10-year-old child, each with a $3,000
 # oil bill. The unit that does not take up ATAP counts no income: factor 1,
 # 10 * 175 = 1,750. The other counts its modeled 9,852 ATAP receipt. The
-# two-person guideline floor(27,050 / 12) = 2,254 a month gives a 25% ceiling
-# of floor(563.5) * 12 = 6,756 and a 50% ceiling of 1,127 * 12 = 13,524, so
-# factor 0.9: 10 * 0.9 = 9 points * 175 = 1,575.
+# two-person guideline of 27,050 gives a 25% ceiling of 6,762.50 and a 50%
+# ceiling of 13,525, so factor 0.9: 10 * 0.9 = 9 points * 175 = 1,575.
 - name: Case 11, only received ATAP reduces the regular heating award.
   period: 2027
   absolute_error_margin: 0.01
@@ -712,8 +714,8 @@
     ak_hap_income_factor: [1, 0.9]
     ak_hap: [1_750, 1_575]
 
-# Juneau oil 5 * two-bedroom house 1. One-person annual ceilings: 50% 9,972,
-# 75% 14,952, 100% 19,944, 125% 24,924 and 150% 29,916. Income 12,000 gives
+# Juneau oil 5 * two-bedroom house 1. One-person annual ceilings: 50% 9,975,
+# 75% 14,962.50, 100% 19,950, 125% 24,937.50 and 150% 29,925. Income 12,000 gives
 # factor 0.8: 5 * 0.8 = 4 points -> 700. Income 18,000 gives 0.7: 3.5 points
 # round half up to 4 -> 700. Income 25,000 gives 0.5: 2.5 points, at least 2,
 # round half up to 3 -> 525.
@@ -862,9 +864,9 @@
 # Manual 3003-1 B.6.c counts annuities, pensions and retirement benefits, and
 # Manual 3003-2 does not exempt a military survivor annuity. An $18,000
 # Survivor Benefit Plan annuity is $1,500 a month. One-person bands use
-# floor(19,950 / 12) = 1,662 a month: the 75% ceiling is floor(1,662 * 0.75)
-# = 1,246 (14,952 a year) and the 100% ceiling is 1,662 (19,944 a year), so
-# factor 0.7. Fairbanks oil 10 * two-bedroom house 1 * 0.7 = 7 points, plus
+# 19,950 / 12 = 1,662.50 a month: the 75% ceiling is 1,662.50 * 0.75 =
+# 1,246.875 (14,962.50 a year) and the 100% ceiling is 1,662.50 (19,950 a
+# year), so factor 0.7. Fairbanks oil 10 * two-bedroom house 1 * 0.7 = 7 points, plus
 # 1 point for age 62 = 8 points; 8 * 175 = 1,400. Leaving the annuity out
 # would give factor 1 and (10 + 1) * 175 = 1,925.
 - name: Case 14, a military survivor annuity counts as unearned income.
@@ -902,8 +904,8 @@
     ak_hap: 1_400
 
 # Fairbanks oil 10 * two-bedroom house 1. Wages of 18,000 are 1,500 a month,
-# above the one-person 75% ceiling of 1,246 and within the 100% ceiling of
-# 1,662, so factor .7: 7 points and a 7 * 175 = 1,225 base. This voucher
+# above the one-person 75% ceiling of 1,246.875 and within the 100% ceiling of
+# 1,662.50, so factor .7: 7 points and a 7 * 175 = 1,225 base. This voucher
 # household pays its oil bill directly and receives a utility allowance, so
 # 44.080(l) halves the points to 3.5, which rounds half up to 4 points = 700.
 - name: Case 15, a subsidized Fairbanks household at factor seven tenths rounds its halved points up.
@@ -940,8 +942,8 @@
     ak_hap: 700
 
 # Juneau oil 5 * two-bedroom house 1. Wages of 12,000 are 1,000 a month,
-# above the one-person 50% ceiling of 831 and within the 75% ceiling of
-# 1,246, so factor .8: 4 points and a 4 * 175 = 700 base. The subsidized
+# above the one-person 50% ceiling of 831.25 and within the 75% ceiling of
+# 1,246.875, so factor .8: 4 points and a 4 * 175 = 700 base. The subsidized
 # household pays its oil bill directly, so 44.080(l) halves the points to
 # exactly 2.0, which meets the (m) minimum: 2 * 175 = 350.
 - name: Case 16, a subsidized household halved to exactly two points receives the minimum award.
@@ -975,3 +977,59 @@
     ak_hap_income_factor: 0.8
     ak_hap_base_benefit: 700
     ak_hap: 350
+
+# One Fairbanks dwelling (oil 10), both units in a two-bedroom house with no
+# income (factor 1). Unit 1 (age 40) pays a 1,200 oil bill; unit 2 (age 65) has
+# heat in its unsubsidized 6,000 rent, which passes the 200 expense test. Sole-
+# household bases: 10 * 175 = 1,750 and (10 + 1) * 175 = 1,925. Both units are
+# eligible, so the equal share is min(1 / 2, .5) = .5. 7 AAC 44.900(11) counts
+# heat paid through rent, so the heat-in-rent unit takes that .5 and the bill
+# payer gets 1,200 * (1 - .5 * 1) / 1,200 = .5. Unit 1: 10 * .5 = 5 points =
+# 875. Unit 2: 10 * .5 + 1 for age 65 = 6 points = 1,050.
+- name: Case 17, a heat-in-rent unit sharing a dwelling with a bill payer receives the equal share.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person2:
+        age: 65
+        immigration_status: CITIZEN
+        pre_subsidy_rent: 6_000
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_200
+        ak_atap: 0
+        receives_housing_assistance: false
+        heat_expense_included_in_rent: false
+      spm_unit2:
+        members: [person2]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 0
+        ak_atap: 0
+        receives_housing_assistance: false
+        heat_expense_included_in_rent: true
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_household_size: [1, 1]
+    ak_hap_countable_income: [0, 0]
+    ak_hap_income_factor: [1, 1]
+    heating_expense: [1_200, 0]
+    ak_hap_base_benefit: [1_750, 1_925]
+    ak_hap: [875, 1_050]

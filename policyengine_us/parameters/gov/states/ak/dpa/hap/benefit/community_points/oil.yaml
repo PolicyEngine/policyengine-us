@@ -1,13 +1,16 @@
 description: Alaska assigns these oil heating points by Census place under the Heating Assistance Program.
-# Derived place crosswalk: 279 direct Addendum A matches and 76 nearest-community
-# approximations. Direct matches include spelling variants such as Adak
-# (Station), Chenega Bay, Kalskag (lower/upper), Eilson AFB, Harding Lake and
-# Saint for St., and give the Anchorage municipality the Anchorage value of 8
-# (Chugiak, listed at 7, lies inside it). Every other place takes the points of
-# the nearest listed oil community by great-circle distance between Census
-# internal points. This is not a state-issued crosswalk. FY2027 Addendum A lists
-# Loring at 4 and Tetlin at 12; the 7 AAC 44.080(a) Appendix A lists 5 and 16.
-# This table uses the FY2027 Addendum A values.
+# Derived place crosswalk: 279 direct Addendum A matches, 4 ZIP-code
+# assignments and 72 nearest-community approximations. Direct matches include
+# spelling variants such as Adak (Station), Chenega Bay, Kalskag (lower/upper),
+# Eilson AFB, Harding Lake and Saint for St., and give the Anchorage
+# municipality the Anchorage value of 8 (Chugiak, listed at 7, lies inside it).
+# Four places take the community Addendum A lists for their ZIP code: Chena
+# Ridge and Goldstream (ZIP 99709, College, 10) and Covenant Life and Mosquito
+# Lake (ZIP 99827, Haines, 6). Every other place takes the points of the
+# nearest listed oil community by great-circle distance between Census internal
+# points. This is not a state-issued crosswalk. Values follow the FY2027
+# Addendum A, except Loring (5) and Tetlin (16), which follow Appendix A to
+# 7 AAC 44 under 7 AAC 44.080(a); Addendum A lists them at 4 and 12.
 "00065": # Adak city
   2026-10-01: 6
 "00650": # Akhiok city
@@ -93,7 +96,7 @@ description: Alaska assigns these oil heating points by Census place under the H
 "12680": # Chefornak city
   2026-10-01: 20
 "12920": # Chena Ridge CDP
-  2026-10-01: 11
+  2026-10-01: 10
 "12970": # Chenega CDP
   2026-10-01: 8
 "13230": # Chevak city
@@ -141,7 +144,7 @@ description: Alaska assigns these oil heating points by Census place under the H
 "17410": # Cordova city
   2026-10-01: 7
 "17670": # Covenant Life CDP
-  2026-10-01: 8
+  2026-10-01: 6
 "17740": # Craig city
   2026-10-01: 5
 "17850": # Crooked Creek CDP
@@ -241,7 +244,7 @@ description: Alaska assigns these oil heating points by Census place under the H
 "28740": # Glennallen CDP
   2026-10-01: 11
 "29130": # Goldstream CDP
-  2026-10-01: 11
+  2026-10-01: 10
 "29180": # Golovin city
   2026-10-01: 26
 "29290": # Goodnews Bay city
@@ -379,7 +382,7 @@ description: Alaska assigns these oil heating points by Census place under the H
 "44580": # Livengood CDP
   2026-10-01: 14
 "45020": # Loring CDP
-  2026-10-01: 4
+  2026-10-01: 5
 "45295": # Lowell Point CDP
   2026-10-01: 6
 "45460": # Lower Kalskag city
@@ -417,7 +420,7 @@ description: Alaska assigns these oil heating points by Census place under the H
 "50190": # Moose Pass CDP
   2026-10-01: 6
 "50800": # Mosquito Lake CDP
-  2026-10-01: 8
+  2026-10-01: 6
 "51180": # Mountain Village city
   2026-10-01: 25
 "51455": # Mud Bay CDP
@@ -650,7 +653,7 @@ description: Alaska assigns these oil heating points by Census place under the H
 "76260": # Tenakee Springs city
   2026-10-01: 7
 "76590": # Tetlin CDP
-  2026-10-01: 12
+  2026-10-01: 16
 "77140": # Thorne Bay city
   2026-10-01: 5
 "77690": # Togiak city
@@ -727,6 +730,8 @@ metadata:
   period: year
   label: Alaska HAP oil community heating points
   reference:
+    - title: 7 AAC 44.080(a) and Appendix A to 7 AAC 44
+      href: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
     - title: Alaska HAP Manual Addendum A, FFY2027 Community Listing
       href: http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm
     - title: Census 2025 Alaska Places Gazetteer

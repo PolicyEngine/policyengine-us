@@ -5,7 +5,9 @@
 # http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm
 # http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm
 # https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
-# The one-person 25% ceiling is 415 under the 25% rule; Addendum E prints 407.
+# Ceilings are exact percentages of the guideline (7 AAC 44.040(a)(4) and
+# 44.080(i)): one person 19,950 / 12 = 1,662.50 a month, so the 25% ceiling is
+# 415.625 a month (4,987.50 a year); Addendum E prints 407.
 # Fuel, dwelling and location are explicit; no new monetary inputs or sentinel defaults.
 
 # GRANT Step 3: income at or below 25% receives factor 1.
@@ -104,7 +106,7 @@
   output:
     ak_hap_income_factor: 0
 
-# Addendum E prints 407/month; the 25% rule gives a 415 ceiling, so 407 is in the lowest band.
+# Addendum E prints 407/month; the exact 25% ceiling is 415.625, so 407 is in the lowest band.
 - name: Case 4, printed stale 407 amount stays in the lowest band.
   period: 2027
   absolute_error_margin: 0.0001
@@ -136,7 +138,7 @@
   output:
     ak_hap_income_factor: 1
 
-# floor(1662 * .25) = 415, not the stale printed 407.
+# 1,662.50 * .25 = 415.625, not the printed 407; 408 a month is below it.
 - name: Case 5, 408 remains below the 25 percent ceiling.
   period: 2027
   absolute_error_margin: 0.0001
@@ -168,7 +170,7 @@
   output:
     ak_hap_income_factor: 1
 
-# Addendum E grid: monthly ceiling 415 * 12 = 4980; inclusive band top.
+# Exact 25% ceiling: 19,950 * .25 = 4,987.50 a year (415.625 a month); inclusive band top.
 - name: Case 6, exact one-person band 1 ceiling is inclusive.
   period: 2027
   absolute_error_margin: 0.0001
@@ -189,7 +191,7 @@
         ak_atap: 0
         receives_housing_assistance: false
         fuel_oil_expense: 1_000
-        ak_hap_countable_income: 4_980
+        ak_hap_countable_income: 4_987.5
         ak_hap_household_size: 1
     households:
       household1:
@@ -200,7 +202,7 @@
   output:
     ak_hap_income_factor: 1
 
-# Annual income 4980 + .12 gives monthly 415.01; next factor 0.9.
+# Annual income 4,987.50 + .12 gives monthly 415.635, a cent above 415.625; next factor 0.9.
 - name: Case 7, one cent monthly above band 1 enters the next band.
   period: 2027
   absolute_error_margin: 0.0001
@@ -221,7 +223,7 @@
         ak_atap: 0
         receives_housing_assistance: false
         fuel_oil_expense: 1_000
-        ak_hap_countable_income: 4980.12
+        ak_hap_countable_income: 4_987.62
         ak_hap_household_size: 1
     households:
       household1:
@@ -232,7 +234,7 @@
   output:
     ak_hap_income_factor: 0.9
 
-# Addendum E grid: monthly ceiling 831 * 12 = 9972; inclusive band top.
+# Exact 50% ceiling: 19,950 * .5 = 9,975 a year (831.25 a month); inclusive band top.
 - name: Case 8, exact one-person band 2 ceiling is inclusive.
   period: 2027
   absolute_error_margin: 0.0001
@@ -253,7 +255,7 @@
         ak_atap: 0
         receives_housing_assistance: false
         fuel_oil_expense: 1_000
-        ak_hap_countable_income: 9_972
+        ak_hap_countable_income: 9_975
         ak_hap_household_size: 1
     households:
       household1:
@@ -264,7 +266,7 @@
   output:
     ak_hap_income_factor: 0.9
 
-# Annual income 9972 + .12 gives monthly 831.01; next factor 0.8.
+# Annual income 9,975 + .12 gives monthly 831.26, a cent above 831.25; next factor 0.8.
 - name: Case 9, one cent monthly above band 2 enters the next band.
   period: 2027
   absolute_error_margin: 0.0001
@@ -285,7 +287,7 @@
         ak_atap: 0
         receives_housing_assistance: false
         fuel_oil_expense: 1_000
-        ak_hap_countable_income: 9972.12
+        ak_hap_countable_income: 9_975.12
         ak_hap_household_size: 1
     households:
       household1:
@@ -296,7 +298,7 @@
   output:
     ak_hap_income_factor: 0.8
 
-# Addendum E grid: monthly ceiling 1246 * 12 = 14952; inclusive band top.
+# Exact 75% ceiling: 19,950 * .75 = 14,962.50 a year (1,246.875 a month); inclusive band top.
 - name: Case 10, exact one-person band 3 ceiling is inclusive.
   period: 2027
   absolute_error_margin: 0.0001
@@ -317,7 +319,7 @@
         ak_atap: 0
         receives_housing_assistance: false
         fuel_oil_expense: 1_000
-        ak_hap_countable_income: 14_952
+        ak_hap_countable_income: 14_962.5
         ak_hap_household_size: 1
     households:
       household1:
@@ -328,7 +330,7 @@
   output:
     ak_hap_income_factor: 0.8
 
-# Annual income 14952 + .12 gives monthly 1246.01; next factor 0.7.
+# Annual income 14,962.50 + .12 gives monthly 1,246.885, a cent above 1,246.875; next factor 0.7.
 - name: Case 11, one cent monthly above band 3 enters the next band.
   period: 2027
   absolute_error_margin: 0.0001
@@ -349,7 +351,7 @@
         ak_atap: 0
         receives_housing_assistance: false
         fuel_oil_expense: 1_000
-        ak_hap_countable_income: 14952.12
+        ak_hap_countable_income: 14_962.62
         ak_hap_household_size: 1
     households:
       household1:
@@ -360,7 +362,7 @@
   output:
     ak_hap_income_factor: 0.7
 
-# Addendum E grid: monthly ceiling 1662 * 12 = 19944; inclusive band top.
+# Exact 100% ceiling: 19,950 a year (1,662.50 a month); inclusive band top.
 - name: Case 12, exact one-person band 4 ceiling is inclusive.
   period: 2027
   absolute_error_margin: 0.0001
@@ -381,7 +383,7 @@
         ak_atap: 0
         receives_housing_assistance: false
         fuel_oil_expense: 1_000
-        ak_hap_countable_income: 19_944
+        ak_hap_countable_income: 19_950
         ak_hap_household_size: 1
     households:
       household1:
@@ -392,7 +394,7 @@
   output:
     ak_hap_income_factor: 0.7
 
-# Annual income 19944 + .12 gives monthly 1662.01; next factor 0.6.
+# Annual income 19,950 + .12 gives monthly 1,662.51, a cent above 1,662.50; next factor 0.6.
 - name: Case 13, one cent monthly above band 4 enters the next band.
   period: 2027
   absolute_error_margin: 0.0001
@@ -413,7 +415,7 @@
         ak_atap: 0
         receives_housing_assistance: false
         fuel_oil_expense: 1_000
-        ak_hap_countable_income: 19944.12
+        ak_hap_countable_income: 19_950.12
         ak_hap_household_size: 1
     households:
       household1:
@@ -424,7 +426,7 @@
   output:
     ak_hap_income_factor: 0.6
 
-# Addendum E grid: monthly ceiling 2077 * 12 = 24924; inclusive band top.
+# Exact 125% ceiling: 19,950 * 1.25 = 24,937.50 a year (2,078.125 a month); inclusive band top.
 - name: Case 14, exact one-person band 5 ceiling is inclusive.
   period: 2027
   absolute_error_margin: 0.0001
@@ -445,7 +447,7 @@
         ak_atap: 0
         receives_housing_assistance: false
         fuel_oil_expense: 1_000
-        ak_hap_countable_income: 24_924
+        ak_hap_countable_income: 24_937.5
         ak_hap_household_size: 1
     households:
       household1:
@@ -456,7 +458,7 @@
   output:
     ak_hap_income_factor: 0.6
 
-# Annual income 24924 + .12 gives monthly 2077.01; next factor 0.5.
+# Annual income 24,937.50 + .12 gives monthly 2,078.135, a cent above 2,078.125; next factor 0.5.
 - name: Case 15, one cent monthly above band 5 enters the next band.
   period: 2027
   absolute_error_margin: 0.0001
@@ -477,7 +479,7 @@
         ak_atap: 0
         receives_housing_assistance: false
         fuel_oil_expense: 1_000
-        ak_hap_countable_income: 24924.12
+        ak_hap_countable_income: 24_937.62
         ak_hap_household_size: 1
     households:
       household1:
@@ -488,7 +490,7 @@
   output:
     ak_hap_income_factor: 0.5
 
-# Addendum E grid: monthly ceiling 2493 * 12 = 29916; inclusive band top.
+# Exact 150% ceiling: 19,950 * 1.5 = 29,925 a year (2,493.75 a month); inclusive band top.
 - name: Case 16, exact one-person band 6 ceiling is inclusive.
   period: 2027
   absolute_error_margin: 0.0001
@@ -509,7 +511,7 @@
         ak_atap: 0
         receives_housing_assistance: false
         fuel_oil_expense: 1_000
-        ak_hap_countable_income: 29_916
+        ak_hap_countable_income: 29_925
         ak_hap_household_size: 1
     households:
       household1:
@@ -520,7 +522,7 @@
   output:
     ak_hap_income_factor: 0.5
 
-# Annual income 29916 + .12 gives monthly 2493.01; next factor 0.
+# Annual income 29,925 + .12 gives monthly 2,493.76, a cent above 2,493.75; next factor 0.
 - name: Case 17, one cent monthly above band 6 enters the next band.
   period: 2027
   absolute_error_margin: 0.0001
@@ -541,7 +543,7 @@
         ak_atap: 0
         receives_housing_assistance: false
         fuel_oil_expense: 1_000
-        ak_hap_countable_income: 29916.12
+        ak_hap_countable_income: 29_925.12
         ak_hap_household_size: 1
     households:
       household1:
@@ -552,8 +554,8 @@
   output:
     ak_hap_income_factor: 0
 
-# floor(floor(27050/12) * .25) * 12 = 563 * 12 = 6756.
-- name: Case 18, two-person first ceiling uses both monthly floors.
+# Two-person guideline 19,950 + 7,100 = 27,050; 27,050 * .25 = 6,762.50 a year (563.54 a month).
+- name: Case 18, two-person first ceiling is the exact 25 percent amount.
   period: 2027
   absolute_error_margin: 0.0001
   input:
@@ -573,7 +575,7 @@
         ak_atap: 0
         receives_housing_assistance: false
         fuel_oil_expense: 1_000
-        ak_hap_countable_income: 6_756
+        ak_hap_countable_income: 6_762.5
         ak_hap_household_size: 2
     households:
       household1:
@@ -584,7 +586,7 @@
   output:
     ak_hap_income_factor: 1
 
-# 563.01 monthly exceeds the two-person 25% ceiling 563.
+# 6,762.62 a year (563.55 a month) exceeds the two-person 25% ceiling of 6,762.50.
 - name: Case 19, above two-person first ceiling receives ninety percent.
   period: 2027
   absolute_error_margin: 0.0001
@@ -605,7 +607,7 @@
         ak_atap: 0
         receives_housing_assistance: false
         fuel_oil_expense: 1_000
-        ak_hap_countable_income: 6756.12
+        ak_hap_countable_income: 6_762.62
         ak_hap_household_size: 2
     households:
       household1:
@@ -616,7 +618,7 @@
   output:
     ak_hap_income_factor: 0.9
 
-# GRID size 18: 125% ceiling 14650 monthly; 14650 * 12 = 175800.
+# Size 18: guideline 19,950 + 17 * 7,100 = 140,650; 125% ceiling 175,812.50 a year (14,651.04 a month).
 - name: Case 20, eighteen-person middle-high band uses published additional members.
   period: 2027
   absolute_error_margin: 0.0001
@@ -637,7 +639,7 @@
         ak_atap: 0
         receives_housing_assistance: false
         fuel_oil_expense: 1_000
-        ak_hap_countable_income: 175_800
+        ak_hap_countable_income: 175_812.5
         ak_hap_household_size: 18
     households:
       household1:
@@ -648,7 +650,7 @@
   output:
     ak_hap_income_factor: 0.6
 
-# GRID size 18: 14650.01 monthly is in the 125–150% band.
+# Size 18: 175,812.62 a year is a cent a month above the 125% ceiling, in the 125-150% band.
 - name: Case 21, above eighteen-person 125 percent enters fifty percent band.
   period: 2027
   absolute_error_margin: 0.0001
@@ -669,7 +671,7 @@
         ak_atap: 0
         receives_housing_assistance: false
         fuel_oil_expense: 1_000
-        ak_hap_countable_income: 175800.12
+        ak_hap_countable_income: 175_812.62
         ak_hap_household_size: 18
     households:
       household1:
@@ -711,3 +713,39 @@
         place_fips: '24230'
   output:
     ak_hap_income_factor: 0
+
+# 7 AAC 44.040(a)(4) and 44.080(i) use exact percentages. Four-person guideline
+# 19,950 + 3 * 7,100 = 41,250 (3,437.50 a month). The 125% ceiling is 51,562.50
+# and the 150% ceiling is 61,875 a year (5,156.25 a month). Income of 5,156 a
+# month (61,872 a year) is within 150%: factor 0.5. A ceiling floored to whole
+# monthly dollars, 5,155 (61,860 a year), would give factor 0.
+- name: Case 23, four people at 5,156 a month are within the exact 150 percent ceiling.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        ak_atap: 0
+        receives_housing_assistance: false
+        fuel_oil_expense: 1_000
+        ak_hap_countable_income: 61_872
+        ak_hap_household_size: 4
+    households:
+      household1:
+        members:
+        - person1
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap_income_factor: 0.5

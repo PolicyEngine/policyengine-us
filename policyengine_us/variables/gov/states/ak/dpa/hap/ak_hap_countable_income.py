@@ -23,16 +23,16 @@ class ak_hap_countable_income(Variable):
         # Annual inputs approximate prior-month receipts and the alternative
         # seasonal/business annualization rules. Include income of all members,
         # regardless of whether immigration status permits counting their size.
-        school = person("is_in_k12_school", period) | person(
-            "is_in_secondary_school", period
-        )
-        # Dependency and schooling approximate parental control and at least
-        # half-time elementary/high-school/GED attendance; those details are
-        # not separately observed. This exclusion applies only to earnings.
-        exempt_child = (
+        # 7 AAC 44.042(5) exempts wages of a full-time student under 18 who is
+        # not the head of household. The tax-unit head stands in for the head
+        # of household. is_full_time_student treats any K-12 attendance as
+        # full time, since part-time enrollment is not observed. Only wages
+        # (employment income and military basic pay) are exempt; the
+        # student's business income still counts.
+        exempt_student = (
             (person("age", period) < p.child_earnings_age_limit)
-            & person("is_tax_unit_dependent", period)
-            & school
+            & person("is_full_time_student", period)
+            & ~person("is_tax_unit_head", period)
         )
         # Supplied net business income stands in for gross receipts less
         # costs. Manual 3003-4 B deducts 50% of gross unless actual costs are
@@ -44,7 +44,10 @@ class ak_hap_countable_income(Variable):
         earned = 0
         for source in p.earned_sources:
             earned = earned + max_(person(source, period), 0)
-        countable_earned = spm_unit.sum(where(exempt_child, 0, earned))
+        wages = max_(person("employment_income", period), 0) + max_(
+            person("military_basic_pay", period), 0
+        )
+        countable_earned = spm_unit.sum(earned - where(exempt_student, wages, 0))
         # These are cash receipts, so a tax loss in an unearned source does not
         # offset other income. Net rental sources are separately nonnegative.
         unearned_person = 0

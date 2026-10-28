@@ -1,11 +1,13 @@
-description: Alaska excludes earnings of qualifying dependent students below this age under the Heating Assistance Program.
+description: Alaska excludes wages of full-time students below this age under the Heating Assistance Program.
 values:
   2026-10-01: 18
 
 metadata:
   unit: year
   period: year
-  label: Alaska HAP child earnings exclusion age limit
+  label: Alaska HAP student earnings exclusion age limit
   reference:
+    - title: 7 AAC 44.042(5)
+      href: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
     - title: Alaska HAP Manual 3003-2 A(15), Earnings of Elementary and Secondary Students Under Age 18
       href: http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-2_noncountable_(exempt)_income.htm

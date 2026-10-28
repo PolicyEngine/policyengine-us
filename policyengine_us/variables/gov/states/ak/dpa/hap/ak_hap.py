@@ -35,12 +35,14 @@ class ak_hap(Variable):
             first_member * spm_unit.project(heating_expense)
         )
         # 7 AAC 44.080(h) reduces a sharing household's points to its
-        # proportionate share of the dwelling's heating expenses. When no
-        # household reports a heating expense (heat in rent), manual 3002-1
-        # A.5 fills the gap: equal shares among the eligible households, at
-        # most the maximum share each. A heat-in-rent household that shares a
-        # dwelling with a household reporting a heating bill gets a zero share,
-        # because the heating portion of its rent is not observed.
+        # proportionate share of the dwelling's home heating expenses, which
+        # 7 AAC 44.900(11) defines to include heat paid indirectly through
+        # rent. The heat portion of rent is not observed, so the equal split
+        # of manual 3002-1 A.5 fills that gap: each eligible heat-in-rent
+        # household gets an equal share among the dwelling's eligible
+        # households, at most the maximum share. Households reporting heating
+        # bills split the remaining share in proportion to their bills. When
+        # no household reports a bill, every household gets the equal share.
         equal_share = where(
             household_count > 1,
             min_(
@@ -49,10 +51,22 @@ class ak_hap(Variable):
             ),
             1,
         )
-        share = np.divide(
-            heating_expense,
+        heat_in_rent = spm_unit("heat_expense_included_in_rent", period) & (
+            heating_expense == 0
+        )
+        eligible_heat_in_rent_count = spm_unit.household.sum(
+            first_member & spm_unit.project(sole_household_eligible & heat_in_rent)
+        )
+        bill_payer_share = 1 - equal_share * eligible_heat_in_rent_count
+        expense_share = np.divide(
+            heating_expense * bill_payer_share,
             dwelling_heating_expense,
-            out=equal_share,
+            out=np.zeros_like(heating_expense),
             where=dwelling_heating_expense > 0,
+        )
+        share = where(
+            (dwelling_heating_expense > 0) & ~heat_in_rent,
+            expense_share,
+            equal_share,
         )
         return ak_hap_award(spm_unit, period, parameters, share, True)

@@ -13,7 +13,6 @@ values:
     - disability_benefits
     - total_unemployment_compensation
     - workers_compensation
-    - general_assistance
     - strike_benefits
     - alimony_income
     - child_support_received
@@ -24,9 +23,11 @@ values:
     - gambling_winnings
 
 # ATAP is added once separately. ak_ssp is Alaska Adult Public Assistance,
-# distinct from exempt Senior Benefits. General assistance approximates other
-# cash public assistance, not exempt vendor-paid relief. PFD, Senior Benefits, SNAP,
-# in-kind/vendor benefits, tax refunds and balances are excluded.
+# distinct from exempt Senior Benefits. general_assistance stands for State
+# General Relief Assistance (7 AAC 38.030), which 7 AAC 44.042(18) exempts, so
+# it is not listed. BIA General Assistance paid to the household counts under
+# plan 1.9 and manual 3003-1 B.6.o but has no separate input. PFD, Senior
+# Benefits, SNAP, in-kind/vendor benefits, tax refunds and balances are excluded.
 # Broad VA/compensation inputs lack exempt-subtype detail. Generic dividends
 # cannot identify fully exempt ANCSA payments. Estate income excludes separately
 # reported interest/dividends/capital gains, avoiding component duplication.
@@ -40,6 +41,8 @@ metadata:
   period: year
   label: Alaska HAP ordinary unearned income sources
   reference:
+    - title: 7 AAC 44.042
+      href: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
     - title: Alaska HAP Manual 3003-1 B, Countable Unearned Income
       href: http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-1_countable_income.htm
     - title: Alaska HAP Manual 3003-2 A, Non-countable Income

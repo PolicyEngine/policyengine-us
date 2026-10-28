@@ -5,6 +5,7 @@
 # http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-2_noncountable_(exempt)_income.htm
 # http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-4_income_from_self-employment.htm
 # http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-6_guidelines_for_computing_income.htm
+# https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
 # Annual receipts approximate the application-month rules; computed benefits are supplied.
 
 # MS 3003-1 A.1 counts gross wages before deductions or garnishments.
@@ -231,8 +232,8 @@
   output:
     ak_hap_countable_income: 24_000
 
-# MS 3003-2 A.15; existing dependency and school facts approximate parental control and at-least-half-time enrollment.
-- name: "Case 9, dependent elementary student earnings are excluded."
+# 7 AAC 44.042(5) exempts wages of a full-time student under 18 who is not the head of household; is_full_time_student treats K-12 attendance as full time, and the 40-year-old parent is the tax-unit head: 24,000 + 0 = 24,000.
+- name: "Case 9, wages of a full-time elementary student who is not the head are excluded."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -252,7 +253,6 @@
         ak_permanent_fund_dividend: 0
         is_tax_unit_dependent: true
         is_in_k12_school: true
-        is_in_secondary_school: false
         employment_income: 1_200
     spm_units:
       spm_unit1:
@@ -267,8 +267,8 @@
   output:
     ak_hap_countable_income: 24_000
 
-# MS 3003-2 A.15 excludes earned income under age 18; reported secondary-school attendance satisfies the available-input approximation.
-- name: "Case 10, dependent secondary student wages and net business income are excluded."
+# 7 AAC 44.042(5) covers any full-time student under 18, not only elementary or secondary students, and exempts only "wages". A 17-year-old full-time college student who is not the head has the 12,000 of wages excluded, but the 2,000 of net business income counts: 24,000 + 0 + 2,000 = 26,000.
+- name: "Case 10, a full-time college student under 18 who is not the head has wages excluded and net business income counted."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -287,8 +287,8 @@
         ak_ssp: 0
         ak_permanent_fund_dividend: 0
         is_tax_unit_dependent: true
+        is_full_time_college_student: true
         is_in_k12_school: false
-        is_in_secondary_school: true
         employment_income: 12_000
         self_employment_income: 2_000
     spm_units:
@@ -302,10 +302,10 @@
         members: ["person1", "person2"]
         state_code: "AK"
   output:
-    ak_hap_countable_income: 24_000
+    ak_hap_countable_income: 26_000
 
-# MS 3003-2 A.15 exclusion requires age under 18.
-- name: "Case 11, school attendance does not exclude earnings at age eighteen."
+# 7 AAC 44.042(5) requires age under 18. This 18-year-old is a full-time high school student and not the head, so only age fails: 24,000 + 12,000 = 36,000.
+- name: "Case 11, full-time school attendance does not exclude wages at age eighteen."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -324,8 +324,7 @@
         ak_ssp: 0
         ak_permanent_fund_dividend: 0
         is_tax_unit_dependent: true
-        is_in_k12_school: false
-        is_in_secondary_school: true
+        is_in_k12_school: true
         employment_income: 12_000
     spm_units:
       spm_unit1:
@@ -340,8 +339,8 @@
   output:
     ak_hap_countable_income: 36_000
 
-# MS 3003-2 A.15 requires qualifying school attendance.
-- name: "Case 12, earnings of a dependent minor outside school count."
+# 7 AAC 44.042(5) requires full-time student status. A 17-year-old who attends neither school nor college is not a full-time student: 24,000 + 12,000 = 36,000.
+- name: "Case 12, wages of a minor who is not a full-time student count."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -361,7 +360,6 @@
         ak_permanent_fund_dividend: 0
         is_tax_unit_dependent: true
         is_in_k12_school: false
-        is_in_secondary_school: false
         employment_income: 12_000
     spm_units:
       spm_unit1:
@@ -376,8 +374,8 @@
   output:
     ak_hap_countable_income: 36_000
 
-# MS 3003-6 E and the dependent-child approximation do not exclude a minor household head's earnings.
-- name: "Case 13, an independent minor student has countable earnings."
+# 7 AAC 44.042(5) does not exempt a head of household. This 17-year-old high school student lives alone and heads a tax unit (supplied role; age ordering infers no head when no member is an adult), so the wages of 12,000 count.
+- name: "Case 13, wages of a minor student who heads a tax unit count."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -388,9 +386,8 @@
         ssi: 0
         ak_ssp: 0
         ak_permanent_fund_dividend: 0
-        is_tax_unit_dependent: false
+        tax_unit_role_input: "HEAD"
         is_in_k12_school: true
-        is_in_secondary_school: true
         employment_income: 12_000
     spm_units:
       spm_unit1:
@@ -405,7 +402,7 @@
   output:
     ak_hap_countable_income: 12_000
 
-# MS 3003-1 B.2 and 3003-6 E: 24,000 + 2,400 + 600 + 1,200; school exclusion applies only to earnings.
+# MS 3003-1 B.2 and 3003-6 E: 24,000 + 2,400 + 600 + 1,200; the 7 AAC 44.042(5) student exemption covers wages only.
 - name: "Case 14, unearned income of a dependent child remains countable."
   period: 2027
   absolute_error_margin: 0.01
@@ -425,7 +422,7 @@
         ak_ssp: 0
         ak_permanent_fund_dividend: 0
         is_tax_unit_dependent: true
-        is_in_secondary_school: true
+        is_in_k12_school: true
         social_security: 600
         pension_income: 1_200
     spm_units:
@@ -503,8 +500,8 @@
   output:
     ak_hap_countable_income: 5_400
 
-# MS 3003-1 B.2 and B.6.a,b,j,o: ordinary nonexempt cash receipts. General assistance represents cash paid to the household, not a vendor payment.
-- name: "Case 17, ordinary cash assistance and compensation receipts count."
+# MS 3003-1 B.2 and B.6.a,b,j: ordinary nonexempt cash receipts: 600 + 600 + 600 + 600 = 2,400.
+- name: "Case 17, ordinary compensation, veterans and strike receipts count."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -519,7 +516,6 @@
         workers_compensation: 600
         veterans_benefits: 600
         strike_benefits: 600
-        general_assistance: 600
     spm_units:
       spm_unit1:
         members: ["person1"]
@@ -531,7 +527,7 @@
         members: ["person1"]
         state_code: "AK"
   output:
-    ak_hap_countable_income: 3_000
+    ak_hap_countable_income: 2_400
 
 # MS 3003-1 B.6.h and B.6.n (bingo and lottery winnings); ordinary receipts have no NH-style $50 disregard. Generic dividends cannot identify exempt ANCSA payments: 120 + 240 + 120 + 600.
 - name: "Case 18, ordinary interest, dividends, estate payments and gambling winnings count in full."
@@ -906,3 +902,114 @@
         state_code: "AK"
   output:
     ak_hap_countable_income: 0
+
+# 7 AAC 44.042(5): a 16-year-old in high school is a full-time student (K-12
+# attendance is full time, by default from age), and the 40-year-old parent
+# is the inferred tax-unit head, so the student's 6,000 of wages are exempt:
+# 24,000 + 0 = 24,000.
+- name: "Case 31, wages of a 16-year-old full-time student who is not a tax-unit head are excluded."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 24_000
+      person2:
+        age: 16
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 6_000
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "AK"
+  output:
+    is_full_time_student: [false, true]
+    is_tax_unit_head: [true, false]
+    ak_hap_countable_income: 24_000
+
+# The same 16-year-old full-time student heads a separate tax unit (supplied
+# roles), so 7 AAC 44.042(5) does not exempt the wages: 24,000 + 6,000 =
+# 30,000. Only the head role differs from Case 31.
+- name: "Case 32, wages of the same 16-year-old full-time student count when the student heads a tax unit."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        tax_unit_role_input: "HEAD"
+        employment_income: 24_000
+      person2:
+        age: 16
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        tax_unit_role_input: "HEAD"
+        employment_income: 6_000
+    tax_units:
+      tax_unit1:
+        members: ["person1"]
+      tax_unit2:
+        members: ["person2"]
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "AK"
+  output:
+    is_full_time_student: [false, true]
+    is_tax_unit_head: [true, true]
+    ak_hap_countable_income: 30_000
+
+# 7 AAC 44.042(18) exempts State General Relief Assistance (7 AAC 38.030),
+# which general_assistance stands for, so the 1,200 is not counted: wages
+# 10,000 + 0 = 10,000.
+- name: "Case 33, general relief assistance is not countable income."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 10_000
+        general_assistance: 1_200
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_countable_income: 10_000

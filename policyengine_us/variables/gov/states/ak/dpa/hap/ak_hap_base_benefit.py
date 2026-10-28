@@ -85,12 +85,16 @@ def ak_hap_award(spm_unit, period, parameters, share, apply_utility_allowance):
     # never infer tribal enrollment from race. Finer residency, temporary
     # shelter duration and vendor-credit rules are also unobserved.
     state_served = ~np.isin(place, p.tribal_service_places)
+    # 7 AAC 44.040(b)(3)(B) excludes households residing on a military base.
+    # Census draws the listed places from the installations themselves.
+    on_base = np.isin(place, p.military_base_places)
     eligible = (
         (factor > 0)
         & (community_points > 0)
         & (expense > p.minimum_expense)
         & ~(heat_in_rent & subsidized)
         & state_served
+        & ~on_base
         & (points >= p.minimum_points)
     )
     rounded_points = min_(np.floor(points + 0.5), p.maximum_points)

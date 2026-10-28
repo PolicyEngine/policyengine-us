@@ -8,6 +8,7 @@ class ak_hap_income_factor(Variable):
     definition_period = YEAR
     label = "Alaska HAP income factor"
     reference = (
+        "https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001",
         "http://dpaweb.hss.state.ak.us/manuals/HAP/3004/3004-5_grant_computation.htm",
         "http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_e.htm",
     )
@@ -19,16 +20,11 @@ class ak_hap_income_factor(Variable):
         income = spm_unit("ak_hap_countable_income", period)
         state_group = spm_unit.household("state_group_str", period)
         guideline = fpg(size, state_group, period, parameters, year_lag=p.fpg_year_lag)
-        monthly_fpg = np.floor(guideline / MONTHS_IN_YEAR)
-        # Reconcile the published grid by flooring the monthly FPG before each
-        # percentage. This gives 415, not the printed 407, at the FY2027 size-1
-        # 25% ceiling. 407 matches the prior-year base; using 415 follows the
-        # explicit 25% rule, not an agency-issued correction. Historical years
-        # are unverified backfilled estimates.
-        limits = [
-            np.floor(monthly_fpg * rate) * MONTHS_IN_YEAR
-            for rate in p.income_factor.fpg_rates
-        ]
+        # 7 AAC 44.040(a)(4) and 44.080(i) compare gross monthly income with
+        # exact percentages of the monthly Alaska poverty guideline; annual
+        # amounts compare the same way. Historical years are unverified
+        # backfilled estimates.
+        limits = [guideline * rate for rate in p.income_factor.fpg_rates]
         factor = select(
             [income <= limit for limit in limits], p.income_factor.factors, default=0
         )
