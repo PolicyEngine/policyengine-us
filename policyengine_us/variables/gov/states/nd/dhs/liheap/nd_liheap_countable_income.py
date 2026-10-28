@@ -37,7 +37,9 @@ class nd_liheap_countable_income(Variable):
         # premium variables are each member's out-of-pocket premiums, zero for
         # a member who is not enrolled, whose premium a Medicare Savings
         # Program pays, or (for Part A) who has premium-free Part A; no Part D
-        # premium variable exists.
+        # premium variable exists. health_insurance_premiums_without_medicare_part_b
+        # is the non-Medicare component of the premium aggregate, so it should
+        # not include a Part A premium; one entered there is deducted twice.
         component_premiums = (
             max_(
                 person("health_insurance_premiums_without_medicare_part_b", period),

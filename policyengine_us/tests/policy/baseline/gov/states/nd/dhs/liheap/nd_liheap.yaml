@@ -1333,8 +1333,8 @@
 # guideline, 1.5 * (15,650 + 3 * 5,500) = 48,225, and HHS's 60% of SMI,
 # floor(floor(0.6 * 129,911) * 1.00) = 77,946 for four people. The printed 60%
 # limit of 77,958 is capped at 77,946. A pension of 77,946 keeps the 45% share:
-# 3,000 * 0.45 = 1,350. A pension of 77,950 is above the cap and not below the
-# 110% floor of 1.1 * 32,150 = 35,365, so it gets 0.
+# 3,000 * 0.45 = 1,350. A pension of 77,947 is one dollar above the cap and not
+# below the 110% floor of 1.1 * 32,150 = 35,365, so it gets 0.
 - name: "Case 43, a four-person household above HHS's 60% of state median income gets nothing."
   period: 2026
   absolute_error_margin: 0.01
@@ -1344,7 +1344,7 @@
       person2: {age: 45, immigration_status: CITIZEN}
       person3: {age: 12, immigration_status: CITIZEN}
       person4: {age: 9, immigration_status: CITIZEN}
-      person5: {age: 45, immigration_status: CITIZEN, pension_income: 77_950}
+      person5: {age: 45, immigration_status: CITIZEN, pension_income: 77_947}
       person6: {age: 45, immigration_status: CITIZEN}
       person7: {age: 12, immigration_status: CITIZEN}
       person8: {age: 9, immigration_status: CITIZEN}
@@ -1365,7 +1365,7 @@
       household2: {members: [person5, person6, person7, person8], state_code: ND}
   output:
     nd_liheap_household_size: [4, 4]
-    nd_liheap_countable_income: [77_946, 77_950]
+    nd_liheap_countable_income: [77_946, 77_947]
     nd_liheap_share: [0.45, 0]
     nd_liheap_eligible: [true, false]
     nd_liheap: [1_350, 0]
@@ -1437,8 +1437,12 @@
 # Manual 415-20-10: a subsidized household with heat in its rent and "the
 # opposite (heat or electricity) bill in their name" is "eligible for only the
 # heat or electric bill in their name". A 15,000 pension is in the 95% band
-# (13,519-20,274), so the 1,200 electric bill pays 1,200 * 0.95 = 1,140.
-- name: "Case 46, a subsidized heat-in-rent tenant is paid the share of its own electric bill."
+# (13,519-20,274), so the 1,200 electric bill pays 1,200 * 0.95 = 1,140. The
+# first tenant receives housing assistance; the second lives in public housing
+# without other assistance and is paid the same way. Without public housing
+# counting as subsidized housing, the second would take the unsubsidized renter
+# payment: 700 * 0.95 / 12 = 55.42, rounded to 55 a month; 55 * 12 = 660.
+- name: "Case 46, subsidized and public housing heat-in-rent tenants are paid the share of their own electric bills."
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -1447,26 +1451,42 @@
         age: 40
         immigration_status: CITIZEN
         pension_income: 15_000
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        pension_income: 15_000
     spm_units:
-      spm_unit:
+      spm_unit1:
         members: [person1]
         heating_type: NATURAL_GAS
         heat_expense_included_in_rent: true
         receives_housing_assistance: true
         pre_subsidy_electricity_expense: 1_200
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+        pre_subsidy_electricity_expense: 1_200
     households:
-      household:
+      household1:
         members: [person1]
         state_code: ND
+        is_in_public_housing: false
+      household2:
+        members: [person2]
+        state_code: ND
+        is_in_public_housing: true
   output:
-    nd_liheap_share: 0.95
-    nd_liheap_eligible: true
-    nd_liheap: 1_140
+    nd_liheap_share: [0.95, 0.95]
+    nd_liheap_eligible: [true, true]
+    nd_liheap: [1_140, 1_140]
 
-# Manual 415-30-15-01 puts kerosene in the "Other" column, whose 415-30-30
-# yearly cap is 700. A 15,000 pension gives the 95% share:
-# 700 * 0.95 / 12 = 55.42, rounded to 55 a month; 55 * 12 = 660, under the cap.
-- name: "Case 47, an unsubsidized kerosene heat-in-rent renter uses the 700 Other cap."
+# Manual 415-30-15-01 puts kerosene, wood, coal and remaining fuels in the
+# "Other" column, whose 415-30-30 yearly cap is 700; solar is a remaining fuel.
+# A 15,000 pension gives the 95% share: 700 * 0.95 / 12 = 55.42, rounded to 55
+# a month; 55 * 12 = 660, under the cap.
+- name: "Case 47, unsubsidized kerosene, wood, coal, solar and other heat-in-rent renters use the 700 Other cap."
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -1475,20 +1495,68 @@
         age: 40
         immigration_status: CITIZEN
         pension_income: 15_000
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        pension_income: 15_000
+      person3:
+        age: 40
+        immigration_status: CITIZEN
+        pension_income: 15_000
+      person4:
+        age: 40
+        immigration_status: CITIZEN
+        pension_income: 15_000
+      person5:
+        age: 40
+        immigration_status: CITIZEN
+        pension_income: 15_000
     spm_units:
-      spm_unit:
+      spm_unit1:
         members: [person1]
         heating_type: KEROSENE
         heat_expense_included_in_rent: true
         receives_housing_assistance: false
+      spm_unit2:
+        members: [person2]
+        heating_type: WOOD
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+      spm_unit3:
+        members: [person3]
+        heating_type: COAL
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+      spm_unit4:
+        members: [person4]
+        heating_type: SOLAR
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+      spm_unit5:
+        members: [person5]
+        heating_type: OTHER
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
     households:
-      household:
+      household1:
         members: [person1]
         state_code: ND
+      household2:
+        members: [person2]
+        state_code: ND
+      household3:
+        members: [person3]
+        state_code: ND
+      household4:
+        members: [person4]
+        state_code: ND
+      household5:
+        members: [person5]
+        state_code: ND
   output:
-    nd_liheap_share: 0.95
-    nd_liheap_eligible: true
-    nd_liheap: 660
+    nd_liheap_share: [0.95, 0.95, 0.95, 0.95, 0.95]
+    nd_liheap_eligible: [true, true, true, true, true]
+    nd_liheap: [660, 660, 660, 660, 660]
 
 - name: "Case 48, a subsidized heat-in-rent tenant with UNSPECIFIED heating type and an electric bill is not paid."
   period: 2026
@@ -1513,3 +1581,40 @@
   output:
     nd_liheap_eligible: false
     nd_liheap: 0
+
+# Two-person cap edge. HHS's 60% of SMI for two people is
+# floor(77,946 * 0.68) = floor(53,003.28) = 53,003, below the printed 60% limit
+# of 53,010 and above 150% of the 2025 guideline, 1.5 * 21,150 = 31,725.
+# A pension of 53,003 keeps the 45% share: 3,000 * 0.45 = 1,350. A pension of
+# 53,004 is above the cap and not below the 110% floor of 1.1 * 21,150 = 23,265,
+# so it gets 0.
+- name: "Case 49, a two-person household at HHS's 60% of state median income keeps the 45% share."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 45, immigration_status: CITIZEN, pension_income: 53_003}
+      person2: {age: 45, immigration_status: CITIZEN}
+      person3: {age: 45, immigration_status: CITIZEN, pension_income: 53_004}
+      person4: {age: 45, immigration_status: CITIZEN}
+    tax_units:
+      tax_unit1: {members: [person1, person2]}
+      tax_unit2: {members: [person3, person4]}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+    households:
+      household1: {members: [person1, person2], state_code: ND}
+      household2: {members: [person3, person4], state_code: ND}
+  output:
+    nd_liheap_household_size: [2, 2]
+    nd_liheap_countable_income: [53_003, 53_004]
+    nd_liheap_share: [0.45, 0]
+    nd_liheap_eligible: [true, false]
+    nd_liheap: [1_350, 0]

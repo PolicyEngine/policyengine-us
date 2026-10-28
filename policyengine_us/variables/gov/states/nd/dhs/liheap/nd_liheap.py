@@ -35,8 +35,10 @@ class nd_liheap(Variable):
         renter_payment = min_(monthly_renter_payment * MONTHS_IN_YEAR, renter_cap)
         # UNSPECIFIED renter fuel has no supported amount. Its zero calculation
         # is a missing-input limitation, not a legal denial of renter benefits.
-        # Annual inputs assume a full eligible year. Secondary heating and
-        # nonresidential-use caps need distinctions absent from current inputs.
+        # Annual inputs assume a full eligible year. Manual 415-20-05-05 also
+        # pays a secondary heat source; a secondary fuel's bill can sit in its
+        # own expense input but is not paid here. The nonresidential-use caps
+        # (415-20-05-05-15) need facts the inputs lack.
         # Current operational rules supersede the plan's conflicting 6%-income
         # and $7,500 narrative; neither is applied to ordinary residential bills.
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
