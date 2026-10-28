@@ -215,7 +215,8 @@ def _record_basis(person, period, parameters, component):
         for i in np.flatnonzero(positive & (years >= 1983)):
             birth = births[i]
             exact_birth = exact_births[i]
-            if not exact_birth:
+            # A sensitivity assumes claiming history even with an exact birth.
+            if not exact_birth or scenario in ("age_62", "age_65", "fra", "age_70"):
                 proxy[i] = True
             if scenario == "entitlement_dates":
                 if not known_birth_months[i] or entitlement[i] <= 0:

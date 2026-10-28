@@ -147,6 +147,46 @@ def test_missing_supplied_claim_age_has_no_actuarial_default():
     assert result["unmodeled"][0]
 
 
+@pytest.mark.parametrize(
+    ("scenario", "adjustment"),
+    (
+        ("age_62", Fraction(11, 15)),
+        ("age_65", Fraction(41, 45)),
+        ("fra", Fraction(1)),
+        ("age_70", Fraction(97, 75)),
+    ),
+)
+def test_imputed_claiming_scenario_is_flagged_with_exact_birth(scenario, adjustment):
+    # Born in 1956: FRA is 796 months. At 62 the reduction is
+    # 36/180 + 16/240; at 65 it is 16/180; at 70 the credit is 44/150.
+    result = resolve(
+        scenario=scenario,
+        age=70,
+        ss_calculator_birth_date="1956-06-15",
+        social_security_retirement_claim_age_months=0,
+    )
+    assert not result["unmodeled"][0]
+    assert result["eligibility_year"][0] == 2018
+    assert result["claiming_adjustment"][0] == adjustment
+    assert result["proxy"][0]
+
+
+@pytest.mark.parametrize("scenario", ("supplied_claim_age", "entitlement_dates"))
+def test_observed_claiming_sources_keep_exact_birth_identified(scenario):
+    result = resolve(
+        scenario=scenario,
+        age=70,
+        ss_calculator_birth_date="1956-06-15",
+        social_security_retirement_claim_age_months=780,
+        social_security_retirement_entitlement_year=2021,
+        social_security_retirement_entitlement_month=6,
+    )
+    assert not result["unmodeled"][0]
+    assert result["eligibility_year"][0] == 2018
+    assert result["claiming_adjustment"][0] == Fraction(41, 45)
+    assert not result["proxy"][0]
+
+
 def test_zero_benefit_bypasses_record_fields_and_parameter_reads():
     def zero_person(name, requested_period):
         assert requested_period == PERIOD

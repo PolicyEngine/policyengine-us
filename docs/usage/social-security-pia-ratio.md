@@ -164,7 +164,7 @@ reported source benefit is annual.
 | `_pia_ratio_missing_claim_age` | Required claiming information is unusable. |
 | `_pia_ratio_pre_1983` | Benchmark predates supported initial-PIA rounding. |
 | `_pia_ratio_unmodeled` | This amount lacks a supported identified inversion. |
-| `_pia_ratio_proxy` | An eligibility, birth or claiming approximation was used. |
+| `_pia_ratio_proxy` | An eligibility, birth or claiming approximation was used, including every resolved `age_62`, `age_65`, `fra` or `age_70` sensitivity even with an exact birth date. |
 | `_pia_ratio_measurement_uncertainty` | Annual reported measurement is not an exact eligibility PIA. |
 
 Zero monetary outputs on records without an inference are placeholders.
@@ -175,6 +175,9 @@ whether claiming data are missing or the benchmark predates 1983. For an AIME
 distribution or percentile calculation, also exclude `_pia_ratio_unmodeled`,
 `_pia_ratio_missing_claim_age` and `_pia_ratio_pre_1983` records and inspect
 the proxy and measurement-uncertainty flags.
+For identified-only distributions, also exclude `_pia_ratio_proxy` records;
+report their sensitivity results separately. The named AIME outputs include
+supported proxy inferences, so this filter must be applied by the consumer.
 
 On a positive retirement record, claiming adjustment zero is an unavailable
 diagnostic sentinel until the selected scenario yields a usable adjustment.
