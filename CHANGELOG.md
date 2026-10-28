@@ -1,3 +1,134 @@
+## [2.74.2] - 2026-10-27
+
+### Fixed
+
+- Limit the Hawaii TANF and Vermont Reach Up dependent care deductions to the care the state rules allow (an incapacitated or disabled adult; not the unit's own children), cap each incapacitated adult's care separately in Hawaii and Kentucky, and apply the Kentucky K-TAP child care disregard only to a case that is otherwise ineligible, because its countable income exceeds the standard of need or its payment is zero (921 KAR 2:016 Sections 4(2)(b), 5(3)(b)1.c and 9(5)).
+
+
+## [2.74.1] - 2026-10-27
+
+### Fixed
+
+- Update DC TANF payment levels for sizes 1-10 to the FY2026 amounts from October 2025, and for sizes 11-19 to the FY2025 and FY2026 amounts in 29 DCMR 7200.1, disregard two thirds (not 67%) of earnings above $160, disregard all child support received from October 2025, and disregard only TANF members' child support so a GAC child's child support is not subtracted twice.
+- Subtract the Massachusetts TAFDC dependent care deduction once, after the 50% disregard, from the earnings of the member who pays for the care (106 CMR 704.275(A)), instead of from each earner (or half of it from each spouse on a joint return). A new input, `ma_tafdc_dependent_care_payer`, names the payer; by default it is the head or spouse with the highest gross earnings.
+- Deduct Mississippi TANF's $90 work expense and actual dependent care costs from each earner's earnings, and do not issue benefits under $10 a month.
+- Exclude children's earnings, SSI recipients' income and 27.5% of other gross earnings from North Carolina Work First countable income, and require a payment of at least $25 a month instead of $25 per household member.
+- Use the 50% earned income disregard for New Hampshire FANF recipients from September 2022 onward, per He-W 654.13(e) and FAM 603.01, instead of the 75% Cliff Effect pilot rate, which applied only to pilot participants who started or moved to full-time work. Compute the benefit of an applicant who passes the 20% eligibility test with the 50% disregard, per He-W 654.13(d), and require net income to be less than the payment standard, per RSA 167:79 III(e).
+- Apply the $10 minimum payment in Michigan FIP (BEM 518 issuance deficit test), Virginia TANF (TANF Manual 502.1 A, with the payment rounded down to whole dollars), South Carolina TANF (S.C. Code Regs. 114-1140(A)(5)) and Maryland TCA (COMAR 07.03.03.13 E(2), with net countable income rounded down to whole dollars under E(1)).
+- Compare the Wisconsin Works Custodial Parent of an Infant (CMC) age limit with the child's age in weeks, and set the limit to 12 weeks before 2012 and 8 weeks from 2012, so children aged 1 and 2 no longer get the CMC placement and its $673 grant.
+
+
+## [2.74.0] - 2026-10-27
+
+### Added
+
+- Add New Hampshire Fuel Assistance Program (nh_fap): PY2027 regular heating benefit from the Attachment D matrix with the 60% state median income test and a bedroom-based heating-cost estimate.
+- Add Utah HEAT (ut_heat): 2026 regular heating benefit from energy-burden points and targeted supplements with the 150% federal poverty guideline income test.
+- Add Wyoming LIEAP (wy_lieap): FY2026 regular heating benefit from the published fuel cost standards with the 60% state median income test.
+
+
+## [2.73.2] - 2026-10-27
+
+### Fixed
+
+- Correct CHIP pregnancy income limit dates and values from state plan amendments: Kentucky starts July 1, 2022 at 218% FPL, West Virginia CHIP starts July 1, 2019, Colorado, New Jersey and Rhode Island include the 5 percentage point disregard throughout, Colorado's from-conception-to-end-of-pregnancy option starts January 1, 2025, and West Virginia's 190% Medicaid pregnancy limit starts July 1, 2019.
+
+
+## [2.73.1] - 2026-10-27
+
+### Fixed
+
+- Remove Idaho's expired child tax credit from state child tax credit totals after 2025, preserve those totals under Idaho revival reforms, and pause Colorado's family affordability tax credit from 2026.
+
+
+## [2.73.0] - 2026-10-27
+
+### Added
+
+- Add Washington LIHEAP (wa_liheap): FY2026 regular heating benefit from the Commerce benefit calculation worksheet with the 150% federal poverty guideline income test.
+
+
+## [2.72.5] - 2026-10-27
+
+### Fixed
+
+- Exclude children whose filer fails the Child Tax Credit identification requirements from ctc_qualifying_children: from 2025 the filer social security number rule (IRC 24(h)(7)(A)(i)), and in every year the taxpayer identification number rule (IRC 24(e)(2)). This removes the children of ITIN filers from the North Carolina child deduction from 2025, and removes the children of filers with no TIN from the North Carolina child deduction and credit for children (2015-2017), the Utah child tax credit, the Maine fairness credits, and the New York Empire State child credit $100 minimum under its pre-2025 and post-2027 rules. Filers with no TIN also lose the 2021 American Rescue Plan Act addition to the Puerto Rico child tax credit. The Idaho Child Tax Credit and the CARES recovery rebate keep counting these children under the IRC 24(c) definition, and the Utah child tax credit and Maine fairness credits keep counting the children of ITIN filers, who get the credit for other dependents.
+
+
+## [2.72.4] - 2026-10-27
+
+### Fixed
+
+- Give the Social Security input state-machine test's Core backend the operator module and population-count restore stub that policyengine-core 3.33.13 needs, which had made the test fail on main.
+
+
+## [2.72.3] - 2026-10-27
+
+### Fixed
+
+- Apply the Florida TCA $200 and 1/2 earned income disregard to current participants (is_tanf_enrolled) whatever their income after the $90 disregard, per Fla. Stat. 414.095(11)(a) and ESS manual 2420.0315, and count the $90 standard disregard as part of the first $200 instead of on top of it.
+- Phase out the Minnesota AMT exemption at 25% under Minn. Stat. 290.091, subd. 3(b), instead of the federal rate, which rises to 50% from 2026, and correct the 2025 Minnesota AMT exemption amounts to $95,300, $71,470 and $47,660.
+- Deduct the SNAP standard deduction in effect for the assistance unit's size from Virginia TANF earnings (TANF Manual 305.1 A.2.b) instead of SNAP's fiscal year 2020 amounts.
+- Pay Virginia TANF-UP (two-parent) units the TANF standards of assistance and maximum payment in every year, as the Appropriation Act's floor for two-parent families requires, instead of the July 2020 TANF-UP schedule.
+- Base the Illinois EIC on the federal EITC alone before 2023, when the age and ITIN expansion starts, and add the 35 ILCS 5/212(a) match rates for 2000 to 2017 (5%, 7.5%, 10% and 14%).
+
+
+## [2.72.2] - 2026-10-27
+
+### Fixed
+
+- Exclude filers with Montana's 2021–2023 partial pension, annuity, and IRA income exemption from the Montana AGI pooling test, which assumed only `mt_subtractions` reduce Montana AGI.
+
+
+## [2.72.1] - 2026-10-27
+
+### Fixed
+
+- Use federal EITC earned income, which nets spouses' self-employment losses, in the shared state EITC helper (IL, CO, DC, IN) and the Indiana decoupled EITC. These credits now also count net farm earnings and partnership self-employment earnings, as IRC 32(c)(2)(A)(ii) does.
+
+
+## [2.72.0] - 2026-10-27
+
+### Added
+
+- Add composable Social Security benefit levers, pure reported component inputs, and a stored-data scoring preflight. Legacy public inputs remain independent sources, exposed through a read-time reported view without automatic twin arrays or provenance stamps. Initial loading routes sources so same-year benefit factors apply; later public writes remain final overrides. Explicit reported inputs retain priority, while exact compound totals keep their period semantics. Compound helpers retain initial-input precedence. Source refreshes use Core's dependency sequence cutoff, including formula returns kept only in the fast cache, preserving raw caller values, supplied inputs and earlier formula results. Bulk cache deletion preserves surviving formula dates; a formula return whose date is lost is conservatively recalculated after a dependent source write. Builders, partial loading failures, copies, cache replay, extraction, dump restoration and subsampling preserve successful source inputs. A state machine searches combinations of write and copy routes.
+
+
+## [2.71.0] - 2026-10-27
+
+### Added
+
+- Add the IRS Optional Local Sales Tax Tables, the local table selector's counties, cities and state defaults, and the state table heading rates for 2015-2021, so the local sales tax worksheet uses each year's own values.
+  - Use no local table and the IRS ratio method for Mississippi outside Jackson and Tupelo in 2015-2021.
+
+
+## [2.70.0] - 2026-10-27
+
+### Added
+
+- Add Arizona LIHEAP Standard benefit (az_liheap): FY2026 regular benefit from the points worksheet with the greater of 60% state median income or 150% federal poverty guideline income test and TANF or SNAP categorical eligibility.
+- Add Virginia Energy Assistance Program Fuel Assistance (va_eap): FFY2026 regular heating benefit from the points matrix and the latest published value per point, with the 150% federal poverty guideline income test.
+
+
+## [2.69.1] - 2026-10-27
+
+### Changed
+
+- Single-year datasets extend through 2036 by default, the last authored CPI-U year, since 2.65.0 loaded CBO's 2036 projections.
+- Use the Colorado Legislative Council Staff September 2026 forecast's projected sales tax refund tiers for tax years 2027 to 2029 in place of the tax year 2025 placeholders.
+
+### Fixed
+
+- Uprate projected federal poverty guidelines by the CPI-U change over the two preceding calendar years (42 U.S.C. 9902(2)) with a new gov.hhs.fpg_uprating index; gov.hhs.uprating now serves only Head Start and Early Head Start spending. In the Trustees 2025 scenario, re-derive the Social Security wage base and the wage-indexed amounts from the Trustees NAWI.
+
+
+## [2.69.0] - 2026-10-27
+
+### Added
+
+- Add Montana's 2021–2023 partial pension, annuity, and IRA income exemption.
+
+
 ## [2.68.0] - 2026-10-27
 
 ### Added
