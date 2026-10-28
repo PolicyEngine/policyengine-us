@@ -2,14 +2,23 @@ description: Colorado provides this family affordability tax credit base amount 
 values:
   2024-01-01: 3_200
   2025-01-01: 3_273
+  # C.R.S. 39-22-130(6)(f): no credit is allowed below the 3% adjustment factor.
+  # LCS R26-322 confirms the credit is unavailable for 2026 and projects
+  # adjustment factors of 2.78% for 2027 and 2.71% for 2028, also below 3%.
+  # The amount stays at zero from 2026 pending a later determination.
+  2026-01-01: 0
 metadata:
   period: year
   unit: currency-USD
   label: Colorado family affordability tax credit young child amount
   reference:
-    - title: Colorado General Assembly House Bill 24-1311 Family Affordability Tax Credit
-      href: https://leg.colorado.gov/bills/hb24-1311
     - title: 2024 Colorado Child Tax Credit Instructions, Section C
       href: https://tax.colorado.gov/sites/tax/files/documents/DR0104CN_2024.pdf#page=3
-    - title: 2025 Colorado Individual Tax Filing Guide 104 Book, Section C
-      href: https://tax.colorado.gov/sites/tax/files/documents/Book104_2025.pdf#page=27
+    - title: 2025 Colorado Child Tax Credit Instructions, Section C
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR_0104CN_2025.pdf#page=3
+    - title: "House Bill 24-1311, C.R.S. 39-22-130(6), (6)(f) #page 7,10"
+      href: https://leg.colorado.gov/sites/default/files/2024a_1311_signed.pdf#page=7
+    - title: Legislative Council Staff R26-322, Treatment of Tax Credit Triggers in Fiscal Notes
+      href: https://content.leg.colorado.gov/sites/default/files/R26-322_Treatment%20of%20Tax%20Credit%20Triggers%20in%20Fiscal%20Notes%20March%202026.pdf#page=3
+    - title: Colorado Department of Revenue, Child Tax Credit and EITC FAQs (tax year 2026 pause)
+      href: https://tax.colorado.gov/ctc-eitc-faqs
