@@ -1,3 +1,17 @@
+## [2.75.1] - 2026-10-28
+
+### Fixed
+
+- Make the Montana AGI pooling test check that Montana's 2021–2023 partial pension, annuity, and IRA income exemption reduces Montana AGI by `mt_pension_exemption_joint`, instead of excluding filers who claim it.
+
+
+## [2.75.0] - 2026-10-28
+
+### Added
+
+- Add independently enabled S.770 section 8 NII add-on and active pass-through income tax options, signed unified-base allocation, and configurable OASDI revenue transfers.
+
+
 ## [2.74.2] - 2026-10-27
 
 ### Fixed

@@ -1,3 +1,4 @@
+from .congress.s770 import create_s770_section_8_reform
 from .congress.delauro import create_american_family_act_with_baby_bonus_reform
 from .states.al.hb527 import create_al_hb527_overtime_deduction_reform
 from .dc_kccatc import create_dc_kccatc_reform
@@ -601,7 +602,10 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
 
+    s770_section_8 = create_s770_section_8_reform(parameters, period)
+
     reforms = [
+        s770_section_8,
         afa_reform,
         winship_reform,
         dc_kccatc_reform,
