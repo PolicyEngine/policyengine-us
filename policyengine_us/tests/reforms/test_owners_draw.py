@@ -7,7 +7,9 @@ constructor activation, baseline equality, cap preservation and AIME history.
 """
 
 import gc
+from hashlib import sha256
 from itertools import chain
+import pickle
 from types import SimpleNamespace
 
 import numpy as np
@@ -700,6 +702,13 @@ def private_draw_system():
         if owner.system is not None:
             owner.system.simulation = None
         owner.system = None
+        for name in (
+            "baseline_variables",
+            "baseline_data_modified",
+            "parameter_root",
+            "parameter_fingerprint",
+        ):
+            owner.__dict__.pop(name, None)
         gc.collect()
 
 
@@ -790,19 +799,32 @@ def _zero_earlier_earnings(simulation, year):
         simulation.set_input("total_self_employment_income", historic_year, zeros)
 
 
-def _release_simulation_caches(simulation):
-    """Release derived history caches without changing policy or input values."""
+def _release_simulation_reference(simulation):
+    """Release holder ownership while retaining the test's readonly policy cache."""
     policy = simulation.tax_benefit_system
     if getattr(policy, "simulation", None) is simulation:
         policy.simulation = None
-    policy._parameters_at_instant_cache.clear()
-    root = policy.parameters
-    # Core eagerly materializes each full parameter tree at every instant.
-    # Children retain their own caches, so clearing only the root is not enough.
+
+
+def _parameter_policy_fingerprint(root):
+    """Fingerprint policy histories and scale structure, excluding instant caches."""
+    digest = sha256()
+    # Core's descendants include every scale bracket and its component leaves.
+    # Stream one small record per node; never serialize a node or its caches.
     for node in chain((root,), root.get_descendants()):
-        cache = getattr(node, "_at_instant_cache", None)
-        if cache is not None:
-            cache.clear()
+        record = (
+            type(node).__name__,
+            node.name,
+            tuple(getattr(node, "children", {})),
+            tuple(bracket.name for bracket in getattr(node, "brackets", ())),
+            getattr(node, "metadata", {}).get("type"),
+            tuple(
+                (value.instant_str, value.value)
+                for value in getattr(node, "values_list", ())
+            ),
+        )
+        digest.update(pickle.dumps(record, protocol=5))
+    return digest.digest()
 
 
 @pytest.mark.parametrize("route", ["parametric", "class"])
@@ -910,45 +932,86 @@ def test_generated_disabled_reform_matches_public_baseline(
         "niit_magi",
         "net_investment_income_tax",
     )
-    # Calculate the real baseline first, then release its 45-year parameter
-    # caches before the independent disabled policy builds its own history.
-    # Keeping both full histories resident can exceed the file's memory cap.
-    baseline = Simulation(tax_benefit_system=system, situation=situation)
-    try:
-        _zero_earlier_earnings(baseline, 2027)
-        assert (
-            baseline.tax_benefit_system.parameters(
-                "2027-01-01"
-            ).gov.simulation.aime_lookback_years
-            == 45
+    # This installer changes only the registry. One privately cloned policy
+    # can therefore retain its readonly 45-year parameter views for both real
+    # public simulations while their holders and arrays stay independent.
+    # Constructor activation/isolation remain covered by the original tests
+    # and both generated raised-cap constructor routes above.
+    if private_draw_system.system is None:
+        policy = system.clone()
+        policy.simulation = None
+        private_draw_system.system = policy
+        private_draw_system.baseline_variables = dict(policy.variables)
+        private_draw_system.baseline_data_modified = policy.data_modified
+        private_draw_system.parameter_root = policy.parameters
+        private_draw_system.parameter_fingerprint = _parameter_policy_fingerprint(
+            policy.parameters
         )
-        baseline_outputs = {
-            output: baseline.calculate(output, 2027).copy() for output in outputs
-        }
-    finally:
-        _release_simulation_caches(baseline)
-        del baseline
-        gc.collect()
-
-    disabled = _private_simulation(private_draw_system, situation, create_owners_draw())
+    policy = private_draw_system.system
+    policy.variables = dict(private_draw_system.baseline_variables)
+    policy.data_modified = private_draw_system.baseline_data_modified
+    root = private_draw_system.parameter_root
+    assert policy.parameters is root
+    assert (
+        _parameter_policy_fingerprint(root) == private_draw_system.parameter_fingerprint
+    )
+    assert not policy.parameters("2027-01-01").gov.contrib.ssa.owners_draw.in_effect
+    assert "owners_draw_gross" not in policy.variables
     try:
-        _zero_earlier_earnings(disabled, 2027)
-        assert (
-            disabled.tax_benefit_system.parameters(
-                "2027-01-01"
-            ).gov.simulation.aime_lookback_years
-            == 45
-        )
-        for output in outputs:
-            np.testing.assert_array_equal(
-                disabled.calculate(output, 2027),
-                baseline_outputs[output],
-                err_msg=output,
+        baseline = Simulation(tax_benefit_system=policy, situation=situation)
+        try:
+            _zero_earlier_earnings(baseline, 2027)
+            assert (
+                baseline.tax_benefit_system.parameters(
+                    "2027-01-01"
+                ).gov.simulation.aime_lookback_years
+                == 45
             )
+            baseline_outputs = {
+                output: baseline.calculate(output, 2027).copy() for output in outputs
+            }
+        finally:
+            _release_simulation_reference(baseline)
+            del baseline
+            gc.collect()
+
+        create_owners_draw().apply(policy)
+        assert policy.parameters is root
+        assert (
+            _parameter_policy_fingerprint(root)
+            == private_draw_system.parameter_fingerprint
+        )
+        assert not policy.parameters("2027-01-01").gov.contrib.ssa.owners_draw.in_effect
+        assert "owners_draw_gross" in policy.variables
+        disabled = Simulation(tax_benefit_system=policy, situation=situation)
+        try:
+            _zero_earlier_earnings(disabled, 2027)
+            assert (
+                disabled.tax_benefit_system.parameters(
+                    "2027-01-01"
+                ).gov.simulation.aime_lookback_years
+                == 45
+            )
+            for output in outputs:
+                np.testing.assert_array_equal(
+                    disabled.calculate(output, 2027),
+                    baseline_outputs[output],
+                    err_msg=output,
+                )
+            assert policy.parameters is root
+            assert (
+                _parameter_policy_fingerprint(root)
+                == private_draw_system.parameter_fingerprint
+            )
+        finally:
+            _release_simulation_reference(disabled)
+            del disabled
+            gc.collect()
     finally:
-        _release_simulation_caches(disabled)
-        del disabled
-        gc.collect()
+        # Restore all original variables, including removing added draw names.
+        # A fresh public constructor rebinds entities and holders next example.
+        policy.variables = dict(private_draw_system.baseline_variables)
+        policy.data_modified = private_draw_system.baseline_data_modified
 
 
 @settings(**SIMULATION_SETTINGS)
