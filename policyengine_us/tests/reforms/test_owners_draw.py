@@ -1,15 +1,18 @@
 """Structural activation, isolation, and vector invariants for owners' draw.
 
 Dollar examples live in owners_draw.yaml. These tests capture the installed
-formula classes and run small deterministic vectors without copying model
-trees. One integration test creates a reformed simulation against the shared
-read-only baseline to exercise the public parameter-only activation route.
+formula classes for fast deterministic and shrinking generated vectors. Public
+Simulation tests batch households under one private policy per test to exercise
+constructor activation, baseline equality, cap preservation and AIME history.
 """
 
+import gc
 from types import SimpleNamespace
 
 import numpy as np
 import pytest
+from hypothesis import HealthCheck, example, given, settings
+from hypothesis import strategies as st
 from policyengine_core.periods import period
 from policyengine_core.reforms import Reform
 
@@ -69,7 +72,15 @@ def reform_variables():
     }
 
 
-def _parameters(**overrides):
+def _parameters(
+    *,
+    oasdi_rate=0.124,
+    hi_rate=0.029,
+    employer_share=0.5,
+    cap=CAP,
+    deductible_share=0.5,
+    **overrides,
+):
     draw = SimpleNamespace(
         in_effect=True,
         start_year=2027,
@@ -81,7 +92,7 @@ def _parameters(**overrides):
         half_seca_deduction=True,
         benefit_credit=True,
         room_cap_basis=0,
-        current_law_cap=CAP,
+        current_law_cap=cap,
     )
     for name, value in overrides.items():
         setattr(draw, name, value)
@@ -94,14 +105,16 @@ def _parameters(**overrides):
                 ),
             ),
             irs=SimpleNamespace(
-                payroll=SimpleNamespace(social_security=SimpleNamespace(cap=CAP)),
+                payroll=SimpleNamespace(social_security=SimpleNamespace(cap=cap)),
                 self_employment=SimpleNamespace(
-                    rate=SimpleNamespace(social_security=0.124, medicare=0.029),
+                    rate=SimpleNamespace(social_security=oasdi_rate, medicare=hi_rate),
                     net_earnings_exemption=400,
                 ),
                 ald=SimpleNamespace(
-                    misc=SimpleNamespace(employer_share=0.5),
-                    self_employment_tax=SimpleNamespace(percent_deductible=0.5),
+                    misc=SimpleNamespace(employer_share=employer_share),
+                    self_employment_tax=SimpleNamespace(
+                        percent_deductible=deductible_share
+                    ),
                 ),
             ),
         )
@@ -361,3 +374,639 @@ def test_future_parameter_activation_captures_cap_and_preserves_baseline():
     # by removing the tax ceiling in the reformed simulation.
     assert system.parameters("2036-01-01").gov.irs.payroll.social_security.cap == cap
     assert not system.parameters("2036-01-01").gov.contrib.ssa.owners_draw.in_effect
+
+
+# Formula-level generators keep shrinking cheap: all owners in an example
+# share one policy and are calculated together as NumPy arrays.
+SETTINGS = dict(
+    max_examples=40,
+    deadline=None,
+    derandomize=True,
+    suppress_health_check=[HealthCheck.too_slow, HealthCheck.data_too_large],
+)
+
+_RATE_POLICY = st.tuples(
+    st.integers(1, 250), st.integers(1, 100), st.integers(0, 1_000)
+)
+_SIGNED_OWNER_BATCH = st.lists(
+    st.tuples(
+        st.integers(0, 1_000_000),  # wages
+        st.integers(-500_000, 500_000),  # other existing SE income
+        st.integers(-500_000, 500_000),  # active income outside SE
+        st.integers(-500_000, 500_000),  # passive-only income
+        st.integers(-500_000, 500_000),  # SE-only partnership income
+        st.integers(-500_000, 500_000),  # passive/SE intersection
+        st.integers(-500_000, 500_000),  # allocation to S corporations
+    ),
+    min_size=1,
+    max_size=12,
+)
+
+
+def _policy_rates(rates):
+    oasdi, hi, employer = rates
+    return dict(
+        oasdi_rate=oasdi / 1_000,
+        hi_rate=hi / 1_000,
+        employer_share=employer / 1_000,
+    )
+
+
+def _signed_owner_inputs(rows):
+    wages, other_se, active, passive_only, se_only, overlap, s_corp = np.asarray(
+        rows, dtype=float
+    ).T
+    # Four signed atoms supply an independent inclusion/exclusion oracle:
+    # T = A + Q_only + K_only + Q_intersect_K, Q = Q_only + overlap,
+    # K = K_only + overlap, so T - Q - K + overlap = A.
+    total = active + passive_only + se_only + overlap
+    return {
+        "payroll_tax_gross_wages": wages,
+        "self_employment_income": other_se,
+        "s_corp_income": s_corp,
+        "partnership_income": total - s_corp,
+        "passive_partnership_s_corp_income": passive_only + overlap,
+        "partnership_self_employment_net_earnings": se_only + overlap,
+        "owners_draw_subsets_are_disjoint": False,
+        "owners_draw_passive_se_overlap": overlap,
+    }, active
+
+
+@settings(**SETTINGS)
+@given(
+    rows=_SIGNED_OWNER_BATCH,
+    rates=_RATE_POLICY,
+    cap=st.integers(1_000, 1_000_000),
+    preserved_cap=st.integers(1_000, 1_000_000),
+    share=st.integers(0, 1_000),
+    override_factor=st.sampled_from([0, 0.5, 0.8, 1]),
+)
+@example(
+    rows=[
+        (0, 0, 500, 0, 0, 0, 500),  # adjusted draw exactly $400
+        (0, 0, 1_000, 0, 0, 0, 1_000),  # exactly the cap room
+        (1_000, 0, 2_000, 0, 0, 0, 2_000),  # no room
+        (2_000, 0, 2_000, 0, 0, 0, 2_000),  # above the preserved cap
+    ],
+    rates=(124, 29, 500),
+    cap=1_000,
+    preserved_cap=800,
+    share=1_000,
+    override_factor=0.8,
+)
+def test_generated_draw_bounds_and_adjustment(
+    reform_variables, rows, rates, cap, preserved_cap, share, override_factor
+):
+    inputs, _ = _signed_owner_inputs(rows)
+    policy = _policy_rates(rates)
+    parameters = _parameters(
+        **policy,
+        cap=cap,
+        current_law_cap=preserved_cap,
+        phase_in_share=share / 1_000,
+        net_earnings_factor=override_factor,
+    )
+    baseline = _calculate(BASELINE_VARIABLES, parameters, inputs)
+    values = _calculate(reform_variables, parameters, inputs)
+    q = override_factor or 1 - policy["employer_share"] * (
+        policy["oasdi_rate"] + policy["hi_rate"]
+    )
+    expected_room = np.maximum(
+        0,
+        preserved_cap
+        - baseline["taxable_earnings_for_social_security"]
+        - baseline["social_security_taxable_self_employment_income"],
+    )
+    gross = values["owners_draw_gross"]
+    net = values["owners_draw_net_earnings"]
+    base = values["owners_draw_oasdi_base"]
+    assert np.all(gross >= 0)
+    np.testing.assert_allclose(net, gross * q)
+    np.testing.assert_allclose(values["owners_draw_oasdi_room"], expected_room)
+    assert np.all(base >= 0)
+    assert np.all(base <= expected_room)
+    assert np.all(base <= gross)
+    np.testing.assert_allclose(base, np.minimum(net, expected_room))
+
+
+@settings(**SETTINGS)
+@given(
+    rows=_SIGNED_OWNER_BATCH,
+    rates=_RATE_POLICY,
+    cap=st.integers(1_000, 1_000_000),
+    shares=st.tuples(st.integers(0, 1_000), st.integers(0, 1_000)),
+)
+@example(
+    rows=[(0, 0, 100_000, 0, 0, 0, 100_000)],
+    rates=(124, 29, 500),
+    cap=200_000,
+    shares=(200, 300),  # an annual phase-in step
+)
+@example(
+    rows=[(0, 0, 800, 0, 0, 0, 800)],
+    rates=(124, 29, 500),
+    cap=200_000,
+    shares=(0, 1_000),
+)
+def test_generated_phase_in_tax_is_monotone(reform_variables, rows, rates, cap, shares):
+    inputs, _ = _signed_owner_inputs(rows)
+    lower, upper = sorted(shares)
+    taxes = [
+        _calculate(
+            reform_variables,
+            _parameters(**_policy_rates(rates), cap=cap, phase_in_share=share / 1_000),
+            inputs,
+        )["owners_draw_oasdi_tax"]
+        for share in (lower, upper)
+    ]
+    assert np.all(taxes[0] <= taxes[1])
+
+
+@settings(**SETTINGS)
+@given(
+    rows=_SIGNED_OWNER_BATCH,
+    rates=_RATE_POLICY,
+    share=st.integers(0, 1_000),
+)
+@example(
+    rows=[
+        (0, 0, 0, 0, 50_000, 0, 0),  # all income already SE
+        (0, 0, 0, -20_000, 30_000, -10_000, -20_000),  # signed net zero
+        (0, 10_000, 5_000, -5_000, 10_000, -2_000, 15_000),
+    ],
+    rates=(124, 29, 500),
+    share=1_000,
+)
+def test_generated_signed_residual_never_double_counts_se(
+    reform_variables, rows, rates, share
+):
+    inputs, active_not_se = _signed_owner_inputs(rows)
+    parameters = _parameters(**_policy_rates(rates), phase_in_share=share / 1_000)
+    baseline = _calculate(BASELINE_VARIABLES, parameters, inputs)
+    values = _calculate(reform_variables, parameters, inputs)
+    np.testing.assert_array_equal(values["owners_draw_active_income"], active_not_se)
+    planned = np.maximum(0, active_not_se) * share / 1_000
+    np.testing.assert_allclose(values["owners_draw_planned_gross"], planned)
+    assert np.all(values["owners_draw_gross"] <= planned + 1e-8)
+    for name in (
+        "payroll_tax_gross_wages",
+        "self_employment_income",
+        "partnership_self_employment_net_earnings",
+        "taxable_earnings_for_social_security",
+        "taxable_self_employment_income",
+        "social_security_taxable_self_employment_income",
+    ):
+        np.testing.assert_array_equal(values[name], baseline[name], err_msg=name)
+
+
+@settings(**SETTINGS)
+@given(
+    rows=st.lists(
+        st.tuples(
+            st.one_of(
+                st.sampled_from([0, 399, 399.99, 400, 400.01, 401]),
+                st.integers(0, 10_000),
+            ),
+            st.integers(-100_000, 100_000),
+        ),
+        min_size=1,
+        max_size=12,
+    ),
+    factor=st.sampled_from([0.5, 1]),
+)
+@example(rows=[(399.99, 100_000), (400, 0), (400.01, 100_000)], factor=0.5)
+@example(rows=[(399, 0), (400, 399), (401, -100_000)], factor=1)
+def test_generated_reporting_floor_is_separate_from_existing_se(
+    reform_variables, rows, factor
+):
+    adjusted, existing_se = np.asarray(rows, dtype=float).T
+    planned = adjusted / factor
+    values = _calculate(
+        reform_variables,
+        _parameters(net_earnings_factor=factor),
+        {"s_corp_income": planned, "self_employment_income": existing_se},
+    )
+    expected_gross = np.where(adjusted >= 400, planned, 0)
+    np.testing.assert_array_equal(values["owners_draw_gross"], expected_gross)
+    np.testing.assert_array_equal(
+        values["owners_draw_net_earnings"], expected_gross * factor
+    )
+
+
+@settings(**SETTINGS)
+@given(
+    rows=_SIGNED_OWNER_BATCH,
+    rates=_RATE_POLICY,
+    cap=st.integers(1_000, 1_000_000),
+)
+@example(
+    rows=[
+        (200_000, 0, 500_000, 0, 0, 0, 500_000),  # no OASDI room
+        (0, 0, 500_000, 0, 0, 0, 500_000),  # draw exceeds the cap
+    ],
+    rates=(124, 29, 500),
+    cap=100_000,
+)
+def test_generated_hi_defaults_off_and_is_uncapped_when_enabled(
+    reform_variables, rows, rates, cap
+):
+    inputs, _ = _signed_owner_inputs(rows)
+    policy = dict(**_policy_rates(rates), cap=cap)
+    baseline = _calculate(BASELINE_VARIABLES, _parameters(**policy), inputs)
+    default = _calculate(reform_variables, _parameters(**policy), inputs)
+    assert np.all(np.asarray(default["owners_draw_hi_tax"]) == 0)
+    np.testing.assert_array_equal(
+        default["self_employment_medicare_tax"],
+        baseline["self_employment_medicare_tax"],
+    )
+    enabled = _calculate(
+        reform_variables, _parameters(**policy, include_hi=True), inputs
+    )
+    added_hi = policy["hi_rate"] * enabled["owners_draw_net_earnings"]
+    np.testing.assert_allclose(enabled["owners_draw_hi_tax"], added_hi)
+    np.testing.assert_allclose(
+        enabled["self_employment_medicare_tax"],
+        baseline["self_employment_medicare_tax"] + added_hi,
+    )
+
+
+@settings(**SETTINGS)
+@given(
+    rows=_SIGNED_OWNER_BATCH,
+    rates=_RATE_POLICY,
+    deductible=st.integers(0, 1_000),
+    include_hi=st.booleans(),
+)
+@example(
+    rows=[(0, 50_000, 100_000, 0, 0, 0, 100_000)],
+    rates=(124, 29, 500),
+    deductible=250,
+    include_hi=True,
+)
+@example(
+    rows=[(0, 0, 100_000, 0, 0, 0, 100_000)],
+    rates=(124, 29, 500),
+    deductible=1_000,
+    include_hi=False,
+)
+def test_generated_deduction_tracks_existing_deductible_share(
+    reform_variables, rows, rates, deductible, include_hi
+):
+    inputs, _ = _signed_owner_inputs(rows)
+    policy = dict(
+        **_policy_rates(rates),
+        deductible_share=deductible / 1_000,
+        include_hi=include_hi,
+    )
+    baseline = _calculate(BASELINE_VARIABLES, _parameters(**policy), inputs)
+    enabled = _calculate(reform_variables, _parameters(**policy), inputs)
+    added_seca = enabled["owners_draw_oasdi_tax"] + enabled["owners_draw_hi_tax"]
+    np.testing.assert_allclose(
+        enabled["self_employment_tax"] - baseline["self_employment_tax"], added_seca
+    )
+    np.testing.assert_allclose(
+        enabled["self_employment_tax_ald_person"],
+        baseline["self_employment_tax_ald_person"]
+        + policy["deductible_share"] * added_seca,
+    )
+    disabled = _calculate(
+        reform_variables,
+        _parameters(**policy, half_seca_deduction=False),
+        inputs,
+    )
+    np.testing.assert_allclose(
+        disabled["self_employment_tax_ald_person"],
+        baseline["self_employment_tax_ald_person"],
+    )
+
+
+@pytest.fixture
+def private_draw_system():
+    """Keep one independent registry/parameter tree for a complete property.
+
+    Hypothesis reuses a function fixture across examples intentionally: policy
+    stays fixed, while every example gets new Simulation holders.
+    A mutable owner releases even pytest's fixture reference after the test.
+    """
+    gc.collect()
+    owner = SimpleNamespace(system=None)
+    try:
+        yield owner
+    finally:
+        if owner.system is not None:
+            owner.system.simulation = None
+        owner.system = None
+        gc.collect()
+
+
+SIMULATION_SETTINGS = {
+    **SETTINGS,
+    "max_examples": 5,
+    "suppress_health_check": [
+        *SETTINGS["suppress_health_check"],
+        HealthCheck.function_scoped_fixture,
+    ],
+}
+SIMULATION_YEAR = 2027
+SIMULATION_WINDOW = "2027-01-01.2100-12-31"
+SIMULATION_DRAW = "gov.contrib.ssa.owners_draw."
+SIMULATION_CAP = "gov.irs.payroll.social_security.cap"
+simulation_amount = st.integers(0, 600_000)
+simulation_person = st.tuples(
+    st.integers(20, 85),
+    simulation_amount,
+    st.integers(-40_000, 250_000),
+    st.integers(-100_000, 600_000),
+    st.integers(-100_000, 300_000),
+    st.integers(0, 80_000),
+    st.integers(0, 80_000),
+)
+
+
+def _simulation_situation(batch, year=SIMULATION_YEAR, supplied=None):
+    """Build separate single-person tax units in one vectorized simulation."""
+    result = {
+        entity: {}
+        for entity in (
+            "people",
+            "tax_units",
+            "families",
+            "spm_units",
+            "marital_units",
+            "households",
+        )
+    }
+    input_names = (
+        "age",
+        "employment_income",
+        "self_employment_income",
+        "s_corp_income",
+        "partnership_income",
+        "partnership_self_employment_net_earnings",
+        "passive_partnership_s_corp_income",
+    )
+    years = (year,) if isinstance(year, int) else year
+    for i, inputs in enumerate(batch):
+        name = f"owner_{i}"
+        result["people"][name] = {
+            key: {year: value for year in years}
+            for key, value in zip(input_names, inputs)
+        }
+        if supplied is not None:
+            result["people"][name]["ss_aime_input"] = {
+                year: supplied[i] for year in years
+            }
+        for entity in result.keys() - {"people"}:
+            result[entity][f"unit_{i}"] = {"members": [name]}
+        result["households"][f"unit_{i}"]["state_code"] = {year: "TX" for year in years}
+    return result
+
+
+def _private_simulation(owner, situation, reform=None):
+    # The public US constructor clones a supplied system when given a reform.
+    # Adopt that one private clone, then share its unchanged policy across new
+    # holders for every generated batch. Repeated constructors with a reform
+    # would copy the entire country tree on every example.
+    if owner.system is None:
+        simulation = Simulation(
+            tax_benefit_system=system, situation=situation, reform=reform
+        )
+        owner.system = simulation.tax_benefit_system
+        return simulation
+    return Simulation(tax_benefit_system=owner.system, situation=situation)
+
+
+def _zero_earlier_earnings(simulation, year):
+    # Supply a complete zero history through the public API after construction.
+    # This keeps the default lookback and isolates draw history from historical
+    # labor-response parameter coverage in the ordinary earnings formulas.
+    zeros = np.zeros(simulation.populations["person"].count)
+    for historic_year in range(year - 45, year):
+        simulation.set_input("employment_income", historic_year, zeros)
+        simulation.set_input("total_self_employment_income", historic_year, zeros)
+
+
+@pytest.mark.parametrize("route", ["parametric", "class"])
+@settings(**SIMULATION_SETTINGS)
+@given(batch=st.lists(simulation_person, min_size=3, max_size=8))
+@example(
+    batch=[
+        (62, 0, 0, 600_000, 0, 0, 0),
+        (62, 200_000, 0, 600_000, 0, 0, 0),
+        (62, 600_000, 250_000, 600_000, 0, 0, 0),
+    ],
+)
+def test_generated_raised_cap_paths_preserve_current_law_room(
+    private_draw_system, reform_variables, route, batch
+):
+    """Property 2: current-law, parameter and class cap paths share ordering."""
+    # The same invariant is checked cheaply first, so a source mutant can be
+    # rejected under the mutation runner's 2 GiB cap before cloning a system.
+    raised_cap = 400_000
+    probe = _calculate(
+        reform_variables,
+        _parameters(cap=raised_cap, current_law_cap=200_000),
+        {"s_corp_income": 1_000_000},
+    )
+    assert probe["owners_draw_oasdi_base"] == 200_000
+    # These subsets can be arbitrary in the off differential below. Here they
+    # are explicitly disjoint, so install that classification only in the
+    # private reformed simulation (the baseline has no such input variable).
+    situation = _simulation_situation(batch, (2027, 2028))
+    policy = {
+        SIMULATION_DRAW + "in_effect": {SIMULATION_WINDOW: True},
+        SIMULATION_DRAW + "phase_in_share": {SIMULATION_WINDOW: 1},
+        SIMULATION_CAP: {"2027-01-01.2027-12-31": raised_cap},
+    }
+
+    class RaisedCap(Reform):
+        def apply(self):
+            activation = Reform.from_dict(
+                {key: value for key, value in policy.items() if key != SIMULATION_CAP},
+                country_id="us",
+            )
+            activation.apply(self)
+            self.parameters.gov.irs.payroll.social_security.cap.update(
+                start="2027-01-01", stop="2027-12-31", value=raised_cap
+            )
+
+    simulation = _private_simulation(
+        private_draw_system, situation, policy if route == "parametric" else RaisedCap
+    )
+    for year in (2027, 2028):
+        simulation.set_input(
+            "owners_draw_subsets_are_disjoint", year, np.ones(len(batch), bool)
+        )
+        cap = system.parameters(f"{year}-01-01").gov.irs.payroll.social_security.cap
+        active_cap = raised_cap if year == 2027 else cap
+        p = simulation.tax_benefit_system.parameters(f"{year}-01-01")
+        assert p.gov.irs.payroll.social_security.cap == active_cap
+        assert p.gov.contrib.ssa.owners_draw.current_law_cap == cap
+        wages = simulation.calculate("taxable_earnings_for_social_security", year)
+        existing = simulation.calculate(
+            "social_security_taxable_self_employment_income", year
+        )
+        room = np.maximum(0, cap - wages - existing)
+        draw = simulation.calculate("owners_draw_oasdi_base", year)
+        np.testing.assert_allclose(
+            simulation.calculate("owners_draw_oasdi_room", year), room, atol=0.02
+        )
+        adjusted = simulation.calculate("owners_draw_net_earnings", year)
+        np.testing.assert_allclose(draw, np.minimum(adjusted, room), atol=0.02)
+        assert np.all(wages + existing + draw <= active_cap + 0.02)
+        assert (
+            system.parameters(f"{year}-01-01").gov.irs.payroll.social_security.cap
+            == cap
+        )
+
+
+@settings(**SIMULATION_SETTINGS)
+@given(batch=st.lists(simulation_person, min_size=3, max_size=8))
+@example(
+    batch=[
+        (62, 0, 0, 150_000, 0, 0, 0),
+        (45, 300_000, 50_000, -50_000, 50_000, 0, 0),
+        (85, 100_000, -20_000, 0, 100_000, 40_000, 20_000),
+    ]
+)
+def test_generated_disabled_reform_matches_public_baseline(
+    private_draw_system, reform_variables, batch
+):
+    """Property 3: disabled formulas agree through complete public tax paths."""
+    probe_inputs = {"s_corp_income": 150_000, "self_employment_income": 50_000}
+    parameters = _parameters(in_effect=False)
+    probe = _calculate(reform_variables, parameters, probe_inputs)
+    reference = _calculate(BASELINE_VARIABLES, parameters, probe_inputs)
+    for output in BASELINE_VARIABLES:
+        np.testing.assert_array_equal(probe[output], reference[output], err_msg=output)
+    situation = _simulation_situation(batch)
+    baseline = Simulation(tax_benefit_system=system, situation=situation)
+    disabled = _private_simulation(private_draw_system, situation, create_owners_draw())
+    _zero_earlier_earnings(baseline, 2027)
+    _zero_earlier_earnings(disabled, 2027)
+    assert (
+        disabled.tax_benefit_system.parameters(
+            "2027-01-01"
+        ).gov.simulation.aime_lookback_years
+        == 45
+    )
+    for output in (
+        *BASELINE_VARIABLES,
+        "payroll_tax_gross_wages",
+        "total_self_employment_income",
+        "irs_gross_income",
+        "adjusted_gross_income",
+        "income_tax",
+        "ss_aime",
+        "niit_magi",
+        "net_investment_income_tax",
+    ):
+        np.testing.assert_array_equal(
+            disabled.calculate(output, 2027),
+            baseline.calculate(output, 2027),
+            err_msg=output,
+        )
+
+
+@settings(**SIMULATION_SETTINGS)
+@given(
+    amounts=st.lists(
+        st.tuples(simulation_amount, st.integers(0, 250_000), simulation_amount),
+        min_size=3,
+        max_size=8,
+    ),
+    year=st.sampled_from([2027, 2036]),
+)
+@example(
+    amounts=[(0, 0, 600_000), (600_000, 0, 600_000), (0, 0, 433)],
+    year=2027,
+)
+@example(amounts=[(0, 0, 0), (0, 0, 100_000), (100_000, 50_000, 100_000)], year=2036)
+def test_generated_benefit_credit_cap_override_and_historical_lookback(
+    private_draw_system, reform_variables, amounts, year
+):
+    """Property 9 and regression: default 45-year histories are always valid."""
+    probe = _calculate(
+        reform_variables,
+        _parameters(benefit_credit=False),
+        {"s_corp_income": 150_000},
+    )
+    assert probe["owners_draw_credited_earnings"] == 0
+    historical_parameters = _parameters(in_effect=False)
+    # Historical disabled years may lack the modern reporting-floor node.
+    del historical_parameters(PERIOD).gov.irs.self_employment.net_earnings_exemption
+    historical = _calculate(
+        reform_variables,
+        historical_parameters,
+        {"s_corp_income": 150_000},
+        outputs=["owners_draw_gross"],
+    )
+    assert historical["owners_draw_gross"] == 0
+    batch = [(62, wages, se, draw, 0, 0, 0) for wages, se, draw in amounts]
+    # Both supplied and computed AIMEs occur in every generated batch.
+    supplied = np.array(
+        [
+            123.45 if i % 4 == 1 else 1_234.5 if i % 4 == 3 else 0
+            for i in range(len(batch))
+        ]
+    )
+    situation = _simulation_situation(batch, year, supplied)
+    policy = {
+        SIMULATION_DRAW + "in_effect": {SIMULATION_WINDOW: True},
+        SIMULATION_DRAW + "phase_in_share": {SIMULATION_WINDOW: 1},
+        SIMULATION_DRAW + "benefit_credit": {
+            "2027-01-01.2027-12-31": True,
+            "2028-01-01.2028-12-31": False,
+            "2036-01-01.2036-12-31": True,
+            "2037-01-01.2037-12-31": False,
+        },
+    }
+    credited = _private_simulation(private_draw_system, situation, policy)
+    _zero_earlier_earnings(credited, year)
+    p = credited.tax_benefit_system.parameters(f"{year}-01-01")
+    assert p.gov.simulation.aime_lookback_years == 45
+    wages, se, gross = np.array(amounts, dtype=float).T
+    q = 1 - p.gov.irs.ald.misc.employer_share * (
+        p.gov.irs.self_employment.rate.social_security
+        + p.gov.irs.self_employment.rate.medicare
+    )
+    adjusted = gross * q
+    adjusted = np.where(
+        adjusted >= p.gov.irs.self_employment.net_earnings_exemption, adjusted, 0
+    )
+    np.testing.assert_allclose(
+        credited.calculate("owners_draw_credited_earnings", year), adjusted, atol=0.02
+    )
+    annual_cap = p.gov.ssa.social_security.wage_base
+    # At age 62 the current year's earnings are after the indexing year. All
+    # earlier supplied earnings default to zero, so the annual ledger gives a
+    # hand-computable AIME with no projection or wage-indexing dependency.
+    covered = np.minimum(wages + se + adjusted, annual_cap)
+    expected = np.where(supplied > 0, supplied, covered / 420)
+    np.testing.assert_allclose(credited.calculate("ss_aime", year), expected, atol=0.02)
+    assert np.all(covered <= annual_cap)
+    # Calling every lookback year explicitly catches a disabled-year formula
+    # reading the net-earnings floor before its first defined year (2013).
+    for historic_year in range(year - 45, year + 1):
+        value = credited.calculate("owners_draw_gross", historic_year)
+        assert np.isfinite(value).all()
+        if historic_year < 2027:
+            np.testing.assert_array_equal(value, np.zeros(len(batch)))
+
+    # A separate batch in a configured credit-off year avoids copying the
+    # parameter tree to toggle a flag between examples. It is compared with
+    # the public baseline for that same year and exactly those earnings.
+    off_year = year + 1
+    off_situation = _simulation_situation(batch, off_year, supplied)
+    no_credit = _private_simulation(private_draw_system, off_situation)
+    baseline_off = Simulation(tax_benefit_system=system, situation=off_situation)
+    _zero_earlier_earnings(no_credit, off_year)
+    _zero_earlier_earnings(baseline_off, off_year)
+    np.testing.assert_array_equal(
+        no_credit.calculate("ss_aime", off_year),
+        baseline_off.calculate("ss_aime", off_year),
+    )
+    np.testing.assert_array_equal(
+        no_credit.calculate("owners_draw_credited_earnings", off_year),
+        np.zeros(len(batch)),
+    )
