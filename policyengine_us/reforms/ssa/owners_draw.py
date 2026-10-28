@@ -138,6 +138,8 @@ def create_owners_draw():
         label = "Actual gross owners' draw accepted by the reporting floor"
 
         def formula(person, period, parameters):
+            if not _enabled(period, parameters):
+                return 0
             planned = person("owners_draw_planned_gross", period)
             adjusted = planned * person("owners_draw_net_earnings_factor", period)
             floor = parameters(period).gov.irs.self_employment.net_earnings_exemption
