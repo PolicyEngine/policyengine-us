@@ -124,6 +124,8 @@
         age: 52
         immigration_status: CITIZEN
         is_disabled: true
+        # SSA found the person disabled, so SSI and the state supplement apply.
+        meets_ssi_disability_criteria: true
         # 2026 federal SSI benefit rate: 994 * 12 = 11,928.
         ssi: 11_928
     spm_units:
