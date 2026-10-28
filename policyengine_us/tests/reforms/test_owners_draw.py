@@ -14,6 +14,7 @@ from types import SimpleNamespace
 
 import numpy as np
 import pytest
+from policyengine_core.parameters import Parameter, ParameterNode, ParameterScale
 from hypothesis import HealthCheck, example, given, settings
 from hypothesis import strategies as st
 from policyengine_core.periods import period
@@ -810,17 +811,22 @@ def _parameter_policy_fingerprint(root):
     """Fingerprint policy histories and scale structure, excluding instant caches."""
     digest = sha256()
     # Core's descendants include every scale bracket and its component leaves.
-    # Stream one small record per node; never serialize a node or its caches.
+    # A regular node may also have a child named "brackets"; inspect scale
+    # fields only on their actual Core types. Never serialize nodes or caches.
     for node in chain((root,), root.get_descendants()):
         record = (
             type(node).__name__,
             node.name,
-            tuple(getattr(node, "children", {})),
-            tuple(bracket.name for bracket in getattr(node, "brackets", ())),
+            tuple(node.children) if isinstance(node, ParameterNode) else (),
+            (
+                tuple(bracket.name for bracket in node.brackets)
+                if isinstance(node, ParameterScale)
+                else ()
+            ),
             getattr(node, "metadata", {}).get("type"),
             tuple(
                 (value.instant_str, value.value)
-                for value in getattr(node, "values_list", ())
+                for value in (node.values_list if isinstance(node, Parameter) else ())
             ),
         )
         digest.update(pickle.dumps(record, protocol=5))
