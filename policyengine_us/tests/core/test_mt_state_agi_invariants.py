@@ -38,7 +38,11 @@ tax unit:
    AGI, no Montana additions or subtractions and no Social Security reports
    federal AGI less the joint pension exemption, floored at zero:
    `max(federal AGI - mt_pension_exemption_joint, 0)`. So one spouse's loss
-   offsets the other spouse's income, and the exemption is taken once.
+   offsets the other spouse's income, and the exemption is taken once. As
+   #10496 explained, the exemption is outside `mt_subtractions`
+   (`mt_agi_indiv` and `mt_agi_joint` subtract it), so it is checked
+   separately: units that claim it stay in this property, and their expected
+   value nets it.
 4. Bounds: `mt_agi` is never negative, and a unit outside Montana has no
    `mt_agi`.
 
@@ -82,17 +86,17 @@ PERSON_INPUTS = (
 TAX_UNIT_OUTPUTS = (
     "mt_agi",
     "mt_agi_joint",
-    "mt_pension_exemption_joint",
     "mt_files_separately",
     "taxsim_state_agi",
     "state_agi",
     "adjusted_gross_income",
+    "mt_pension_exemption_joint",
 )
 PERSON_OUTPUTS = (
     "mt_agi_indiv",
-    "mt_pension_exemption_indiv",
     "mt_additions",
     "mt_subtractions",
+    "mt_pension_exemption_indiv",
     "social_security",
 )
 
@@ -254,8 +258,8 @@ def test_seeded_grid(year):
         floored_sum = run["mt_agi_indiv"]
         joint_path = (
             run["pooled"]
-            & (run["mt_pension_exemption_joint"] == 0)
             & (run["mt_pension_exemption_indiv"] == 0)
+            & (run["mt_pension_exemption_joint"] == 0)
         )
         assert (floored_sum[joint_path] > run["mt_agi"][joint_path] + 1).any()
         # Property 3 nets a nonzero pension exemption for some unit.

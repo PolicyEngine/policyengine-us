@@ -132,9 +132,10 @@ def test_social_security_benefit_inputs_use_gross_benefit_uprater():
         "social_security_survivors",
         "social_security_dependents",
     ]:
-        assert system.variables[variable_name].uprating == per_capita_path(
-            "calibration.gov.irs.soi.social_security"
-        )
+        assert system.variables[
+            f"{variable_name}_reported"
+        ].uprating == per_capita_path("calibration.gov.irs.soi.social_security")
+        assert system.variables[variable_name].uprating is None
 
 
 def test_cms_moop_per_capita_extends_to_2100():
