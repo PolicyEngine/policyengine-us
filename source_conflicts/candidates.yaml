@@ -2525,6 +2525,78 @@ candidates:
   state: open
   note: A source-choice decision was requested; resolve the incorporated restriction and verify applicability beyond
     2025.
+- id: us-ky:kchip-phase-iii-pregnant-citizens
+  program: chip
+  years:
+    from: 2023
+    type: calendar
+  question: Does KCHIP Phase III cover pregnant citizens at 195-213% FPL, or only pregnant people who are lawfully
+    present immigrants?
+  sources:
+  - kind: regulation
+    citation: 907 KAR 4:030 Section 2(1), version effective January 12, 2023, file page 1
+    url: https://apps.legislature.ky.gov/law/kar/downloads/docs/13741/document.engrossed.pdf#page=1
+  - kind: plan
+    citation: CMS approval letter for Kentucky CHIP State Plan Amendments KY-21-0001 and KY-21-0002, file page 2; CS8,
+      Eligibility - Targeted Low-Income Pregnant Women, file page 4
+    url: https://www.medicaid.gov/CHIP/Downloads/KY-21-0001.pdf#page=2
+  readings:
+    regulation: Eligibility requires all of the listed conditions, including "(b) Is an immigrant who is lawfully
+      present"; the section gives no route for citizens.
+    other: The state plan covers "targeted low-income pregnant individuals" in CHIP with income above 195% and up to
+      213% FPL and, in addition, elects section 2107(e)(1)(O) to cover otherwise eligible lawfully residing pregnant
+      individuals.
+  example: A Kentucky citizen who is pregnant with income at 210% FPL in 2024 is covered under the state plan, which
+    PE-US follows, but not under the regulation's literal text.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/hhs/chip/pregnant/income_limit.yaml
+    - policyengine_us/variables/gov/hhs/chip/is_chip_eligible_standard_pregnant_person.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10365
+  state: ruled
+  note: 'Ruled on 2026-10-27 for the state plan under agency-breaks-ties
+    (https://github.com/PolicyEngine/policyengine-us/pull/10365#issuecomment-6445848549); the model needs no change.
+    KRS 205.6485 has the cabinet set KCHIP eligibility by regulation and says nothing about immigration status. 907
+    KAR 4:020 Section 2(1)(b), the children''s rule amended in the same 2022 package, has the same form ("Is a
+    noncitizen who meets the requirement established in 907 KAR 20:005"), and no one reads it to exclude citizen
+    children. The impact analysis for this amendment (49 Ky.R. 645-647) describes the group by income only and says
+    the amendment implements a state plan amendment to KCHIP Phase III that extends coverage to pregnant recipients,
+    which is KY-21-0001. Since the text does not settle the question, the agency''s reading decides. The register
+    entry and the code marker follow the merge.'
+- id: us-ky:ktap-incapacitated-adult-care-condition
+  program: tanf
+  years:
+    from: 2015
+    type: calendar
+  question: Does the K-TAP dependent care disregard for an incapacitated adult apply only when the case would be
+    ineligible without it?
+  sources:
+  - kind: regulation
+    citation: 921 KAR 2:016 Section 5(3)(b)1
+    url: https://apps.legislature.ky.gov/law/kar/titles/921/002/016/
+  - kind: manual
+    citation: DCBS Operations Manual Volume III, MS 2840 B.1, OMTL-616, revised 3/1/23
+    url: https://www.chfs.ky.gov/agencies/dcbs/dfs/Documents/OMVOLIII.pdf#page=162
+  readings:
+    statute: Care of "an incapacitated adult living in the home and receiving KTAP" (1.b) is a case of its own;
+      the otherwise-ineligible case (1.c) covers only child care.
+    other: The deduction needs care paid for "a child or an incapacitated adult" and a case that "would be
+      ineligible without the deduction", for the adult as for the child.
+  example: In January 2025 a unit of three has a parent who earns $1,000, a child age 5 and an incapacitated adult
+    with $100 a month of care. Without any dependent care disregard countable income is 412.50, under the 631
+    standard of need. The regulation allows the $100 disregard; the manual allows none.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ky/dcbs/ktap/income/ky_ktap_incapacitated_adult_care_disregard.py
+    - policyengine_us/variables/gov/states/ky/dcbs/ktap/income/ky_ktap_dependent_care_disregard.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10254
+  state: unreviewed
+  note: Section 5(3)(b)1.b reads the same in the versions effective 11-18-2015 and 2-16-2023. Code not yet on
+    main.
 - id: us-ky:ktap-payment-maximum-2025
   program: tanf
   years:
@@ -4450,6 +4522,43 @@ candidates:
     prs: []
   state: unreviewed
   note: Verify whether the still-listed ruling applies during these years despite its obsolete tax base.
+- id: us-nh:fap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: program
+    note: New Hampshire Fuel Assistance Program year 2026-2027 (PY2027)
+  question: Can New Hampshire's 60% SMI limit exclude a large household whose income is below the federal 110%
+    poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624
+  - kind: plan
+    citation: FY2026 New Hampshire LIHEAP State Plan section 2.1, 60% SMI for all household sizes
+    url: https://liheapch.acf.gov/docs/2026/state-plans/NH_Plan_2026.pdf#page=8
+  - kind: manual
+    citation: PY2027 New Hampshire Fuel Assistance Program Procedures Manual, Income Guidelines, 60% SMI printed for
+      sizes 1-8
+    url: https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=74
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The 60% SMI limit applies at every household size; with the federal SMI size adjustments it falls below
+      that floor starting at household size 28.
+  example: A 28-person household with $186,000 of countable income and a $2,000 fuel-oil heating cost exceeds the
+    $185,486 limit but is below the $186,252 floor and receives the $1,720 BB/C award in the PR.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/nh/doe/fap/nh_fap_eligible.py
+    - policyengine_us/variables/gov/states/nh/doe/fap/nh_fap_income_limit.py
+    - policyengine_us/parameters/gov/states/nh/doe/fap/smi_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10343
+  state: unreviewed
+  note: The open PR applies the federal floor; verify the extended limits, since the manual prints 60% SMI amounts
+    only through eight persons.
 - id: us-nh:ssp-permanent-resident-forty-quarters
   program: ssi-state-supplement
   years:
@@ -6920,6 +7029,132 @@ candidates:
   state: open
   note: 'PE-US follows the regulation; resolve the pending conflict with the information letter. Code not yet on
     main: tx_ssi_state_supplement.'
+- id: us-ut:heat-child-unearned-income
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does Utah HEAT count a child's unearned income, as Utah Admin. Code R982-403-5(1) implies by excluding only
+    an unemancipated member's earned income, or exclude all income of children, as manual section 405 does?
+  sources:
+  - kind: regulation
+    citation: Utah Admin. Code R982-403-5(1), effective June 14, 2022 (the linked Cornell LII copy carries
+      the 2014 wording, unchanged in substance for this provision)
+    url: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R982-403-5
+  - kind: manual
+    citation: Utah HEAT Manual section 405, effective March 1, 2025 to September 30, 2026
+    url: https://jobs.utah.gov/infosource/heatpolicy/Policy/Obsolete_Policy/Obsolete_400/Obsolete_405_(3_1_25_to_9_30_26)_Income_Exclusions.htm
+  readings:
+    statute: No statute is supplied; R982-403-5(1) excludes the "earned income of an unemancipated household member",
+      so a child's unearned income, such as Social Security survivor benefits, counts under R982-403-3.
+    other: Manual section 405 reads "Do not count any income of a child (earned or unearned), 17 years old or younger.
+      Do not count income of an 18 year old unless they have dropped out of school or graduated."
+  example: A parent aged 35 with $12,000 annual wages and a child aged 10 with $6,000 of Social Security survivor
+    benefits, heating a house with natural gas, receive $455 under the manual (monthly countable income $800 after
+    the earned income disregard) versus $337 under the rule (monthly $1,300).
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/ut/dwf/heat/income/child_income_age.yaml
+    - policyengine_us/parameters/gov/states/ut/dwf/heat/income/student_income_age.yaml
+    - policyengine_us/variables/gov/states/ut/dwf/heat/income/ut_heat_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10344
+  state: open
+  note: PE-US follows manual section 405 and excludes all income of members younger than 18 and of 18-year-olds in
+    secondary school (child_income_age.yaml, student_income_age.yaml, ut_heat_countable_income.py). R982-403 is a
+    current rule with its next five-year review due June 17, 2027, so decide whether it governs over the manual.
+- id: us-ut:heat-earned-income-disregard
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does Utah HEAT disregard 20% of earned income, as Utah Admin. Code R982-403-6 provides, or count earned
+    income in full, as the retired manual section 406 implies?
+  sources:
+  - kind: regulation
+    citation: Utah Admin. Code R982-403-2 and R982-403-6, effective June 14, 2022 (the linked Cornell LII
+      copy carries the 2014 wording, unchanged in substance for these provisions)
+    url: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R982-403-6
+  - kind: manual
+    citation: Utah HEAT Manual section 204, effective October 1, 2024
+    url: https://jobs.utah.gov/infosource/heatpolicy/Policy/200_Program_Standards/204_Eligibility_with_Ineligible_Resident.htm
+  - kind: worksheet
+    citation: Utah HEAT Benefit Calculation Worksheet, effective March 1, 2026, cells C8 and B11
+    url: https://jobs.utah.gov/infosource/heatpolicy/assets/docs/Training/FY26/3.1.26%20Benefit%20Calculation%20Worksheet.xlsx
+  - kind: calculator
+    citation: Utah FY2026 LIHEAP benefit matrix workbook, cells C8 and B11
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/UT_BenefitMatrix_2026.xlsx
+  - kind: manual
+    citation: Utah HEAT Manual section 401, effective October 1, 2024 to September 30, 2026
+    url: https://jobs.utah.gov/infosource/heatpolicy/Policy/Obsolete_Policy/Obsolete_400/Obsolete_401_(10_1_24_to_9_30_26)_Income.htm
+  - kind: manual
+    citation: Utah HEAT Manual section 406, income disregards obsolete September 30, 2023
+    url: https://jobs.utah.gov/infosource/heatpolicy/Policy/400_Income_Standards/406_No_Longer_Applicable.htm
+  readings:
+    statute: No statute is supplied; R982-403-2 makes countable income "gross income minus exclusions, disregards, and
+      deductions", and R982-403-6 disregards 20% of earned income, including self-employment earned income after the
+      cost of doing business. Manual section 204 ("Allow the 20% disregard on the earned income of all household
+      members"), the March 2026 worksheet (C8 = B8*0.2, "20% disregard"; B11 = B8+B9-C8-B10) and the FY2026 workbook
+      apply the same disregard.
+    other: Manual section 406 marks income disregards no longer applicable from September 30, 2023, and sections 401
+      and 603 describe countable income as gross income minus exclusions and deductions without naming a disregard.
+  example: A one-person household with $27,000 annual wages heating a house with natural gas receives $234 with the
+    disregard (monthly $1,800) and $0 without it (monthly $2,250 exceeds the $1,995 limit).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ut/dwf/heat/income/earned_income_disregard.yaml
+    - policyengine_us/variables/gov/states/ut/dwf/heat/income/ut_heat_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10344
+  state: unreviewed
+  note: PE-US follows R982-403-6, manual section 204 and the March 2026 worksheet and disregards 20% of earned income
+    after per-source zero floors (earned_income_disregard.yaml, ut_heat_countable_income.py). The worksheet PDF prints
+    only A1:B67, so its disregard column C does not appear there. The open question is whether retired section 406
+    signals a practice of counting earnings in full; no current DWS source applies one.
+- id: us-ut:heat-tanf-dws-payments
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does Utah HEAT count TANF and other financial payments made by the Department of Workforce Services, as
+    Utah Admin. Code R982-403-3(2)(l) and (n) list them, or exclude them, as manual section 405 and plan item 1.9 do?
+  sources:
+  - kind: regulation
+    citation: Utah Admin. Code R982-403-3(2)(l) and (n), effective June 14, 2022 (the linked Cornell LII
+      copy carries the 2014 wording, unchanged in substance for these provisions)
+    url: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R982-403-3
+  - kind: manual
+    citation: Utah HEAT Manual section 405, effective March 1, 2025 to September 30, 2026
+    url: https://jobs.utah.gov/infosource/heatpolicy/Policy/Obsolete_Policy/Obsolete_400/Obsolete_405_(3_1_25_to_9_30_26)_Income_Exclusions.htm
+  - kind: plan
+    citation: Utah FY2026 LIHEAP State Plan, item 1.9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/UT_Plan_2026.pdf#page=6
+  readings:
+    statute: No statute is supplied; R982-403-3(2) lists "(l) financial payments made by the Department" and "(n)
+      Temporary Assistance to Needy Families" as countable unearned income.
+    other: Manual section 405 excludes "Temporary Assistance to Needy Families (TANF), Family Employment Program (FEP),
+      General Assistance (GA), Transitional Cash Assistance, financial payments made by the Department of Workforce
+      Services, or other financial assistance from non-profits / other government agencies", and plan item 1.9 leaves
+      TANF and General Assistance benefits unchecked.
+  example: A parent aged 30 with $12,000 annual wages, $4,800 of Family Employment Program cash assistance and a child
+    aged 4, heating a house with natural gas, receives $605 under the manual and plan (monthly countable income $800
+    after the earned income disregard) versus $513 under the rule (monthly $1,200).
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/ut/dwf/heat/income/unearned_income_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10344
+  state: open
+  note: PE-US follows manual section 405 and plan item 1.9, so unearned_income_sources.yaml lists neither tanf nor the
+    Utah state supplement (ut_ssp, which adds ut_dws_ssp, a Department of Workforce Services payment, and ut_dhhs_ssp,
+    another agency payment that section 405 excludes in the same item). R982-403 is a current rule with its next
+    five-year review due June 17, 2027, so decide whether it governs over the manual and plan.
 - id: us-va:ag-entry-month-spouse-at-home
   program: ssi-state-supplement
   years:
@@ -7187,6 +7422,34 @@ candidates:
   state: unreviewed
   note: PE-US treats the worksheet as filling silence about actual itemization; verify that interpretation against
     the statutory phrase.
+- id: us-vt:reach-up-dependent-care-order
+  program: tanf
+  years:
+    from: 2024
+    type: calendar
+  question: Does Reach Up subtract the dependent care deduction from earned income before or after the earned
+    income disregard?
+  sources:
+  - kind: regulation
+    citation: Reach Up rule 2251.1(c)(1), 08/01/2024
+    url: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2200-Reach-Up.pdf#page=71
+  - kind: guidance
+    citation: ESD Procedure P-2230A, net earned income steps 2 and 4-6
+    url: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2230A.pdf
+  readings:
+    statute: The unsubsidized sequence is business expenses, then the earned income disregard (rule 2252.3), then
+      dependent care (rule 2252.2).
+    other: Dependent care comes off first, then the $90 deduction or $350 disregard, then 25% of the subtotal.
+  example: One participant earns $1,000 and pays $100 a month of disabled adult care. The rule gives 1,000 - (350
+    + 0.25 x 650) - 100 = 387.50 of net earned income; the procedure gives (1,000 - 100 - 350) x 0.75 = 412.50.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/vt/dcf/reach_up/income/vt_reach_up_countable_earned_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10254
+  state: unreviewed
+  note: The earlier rule editions were not compared.
 - id: us-vt:renter-credit-booklet-income-limit-errors
   program: renter-credit
   years:
@@ -7335,6 +7598,89 @@ candidates:
   state: unreviewed
   note: PE-US follows Vermont's deduction; evidence concerns federal fiscal 2016-2017 and 2024 only, with intervening
     years unasserted.
+- id: us-wa:liheap-minimum-benefit-cost-cap
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does every eligible Washington household receive the plan's $250 minimum regular heating benefit, or
+    does the award follow the worksheet's share of the annual heat cost?
+  sources:
+  - kind: plan
+    citation: FY2026 LIHEAP Detailed Model Plan, section 2.6
+    url: https://liheapch.acf.gov/docs/2026/state-plans/WA_Plan_2026.pdf#page=10
+  - kind: worksheet
+    citation: FY2026 Actual and Surrogate Heat Cost Benefit Calculation Worksheet
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/WA_BenefitMatrix_2026.pdf#page=1
+  readings:
+    statute: No statute is supplied; plan section 2.6 sets a "Minimum Benefit $250" and a "Maximum Benefit $1,250"
+      with no exception.
+    other: The worksheet multiplies the annual heat cost by a heat cost multiplier of at most 0.90 and prints no
+      minimum.
+  example: A household with no countable income and a $100 annual heating cost gets $90 from the worksheet and $250
+    under the plan minimum; PE-US pays $100.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/wa/commerce/liheap/wa_liheap.py
+    - policyengine_us/parameters/gov/states/wa/commerce/liheap/payment/minimum.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10345
+  state: ruled
+  note: PE-US applies the plan minimum and maximum, then caps the award at the reported annual heating cost, as chosen
+    on 2026-10-06; no Washington source states the cap. A household whose heat is included in rent, with a known fuel
+    and no reported cost, now receives the $250 minimum with no cost cap, because the surrogate heat cost schedule
+    is not published.
+- id: us-wa:liheap-plan-agency-income-items
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does Washington LIHEAP count the plan's gross income, or apply the deductions and income items of the
+    Commerce Weatherization manual and local agencies (wage, retirement and unemployment deductions, paid support,
+    workers' compensation and VA benefits)?
+  sources:
+  - kind: plan
+    citation: FY2026 LIHEAP Detailed Model Plan, sections 1.8-1.9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/WA_Plan_2026.pdf#page=5
+  - kind: manual
+    citation: Washington State Weatherization Manual (July 2026), Policy 1.1.2 item 5.a and Exhibit 1.3.1A
+    url: https://deptofcommerce.app.box.com/s/5a32797ex8tz2blo8nwtifecokpya37j#page=15
+  - kind: agency-practice
+    citation: Clark Public Utilities, LIHEAP income requirements
+    url: https://www.clarkpublicutilities.com/residential-customers/financial-assistance/all-financial-assistance-programs/liheap-income-requirements/
+  - kind: agency-practice
+    citation: Community Action Council of Lewis, Mason and Thurston Counties, LIHEAP FAQ
+    url: https://www.liheapcalendar.com/CACLMT/FAQ
+  - kind: agency-practice
+    citation: Byrd Barr Place PY2025-2026 LIHEAP application packet
+    url: https://drive.google.com/file/d/18fvR5CL8UKpTj4Vsm7KlkitKUJclAvkR/view#page=1
+  readings:
+    statute: No statute is supplied; plan section 1.8 counts "Gross Income", and section 1.9 lists countable types
+      with no deduction field, leaves VA benefits and insurance payments unchecked and has no workers' compensation
+      row.
+    other: Policy 1.1.2 item 5.a applies a 20 percent wage allowance and 10 percent retirement and unemployment
+      deductions; Exhibit 1.3.1A lists "Child support received/paid", an L&I statement and veteran's benefits as
+      income documentation; Clark Public Utilities deducts paid child support and alimony, CACLMT deducts paid child
+      support and counts time loss for work-related injuries, and Byrd Barr asks for VA award letters.
+  example: A single adult with $30,000 of wages who pays $1,200 of child support counts $24,000 after the wage
+    allowance, above the $23,475 limit; deducting the support gives $22,800 and a $460 award on a $1,000 gas bill.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/wa/commerce/liheap/wa_liheap_countable_income.py
+    - policyengine_us/parameters/gov/states/wa/commerce/liheap/income/unearned_sources.yaml
+    - policyengine_us/parameters/gov/states/wa/commerce/liheap/income/wage_deduction_rate.yaml
+    - policyengine_us/parameters/gov/states/wa/commerce/liheap/income/retirement_deduction_rate.yaml
+    - policyengine_us/parameters/gov/states/wa/commerce/liheap/income/unemployment_deduction_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10345
+  state: unreviewed
+  note: PE-US applies the manual's 20 and 10 percent deductions, deducts paid child support and alimony and counts
+    workers' compensation with no deduction, following the manual exhibit and agencies; it follows the plan in
+    excluding VA benefits. The Commerce LIHEAP operating manual, which would settle these items, is not public.
 - id: us-wa:ltss-spousal-maintenance-rounding
   program: medicaid-ltss
   years:
@@ -7670,6 +8016,141 @@ candidates:
     disregard and child support paid, and the copay schedules'' comment records the chart''s "Monthly Gross Income"
     header (wy_ccap_income_eligible.py, wy_ccap_countable_income.py, wy_ccap_copay.py, copay/full_day.yaml, copay/part_day.yaml).
     Establish whether the chart header denotes a different calculation.'
+- id: us-wy:lieap-income-floor-vs-smi-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Can Wyoming's 60% SMI limit exclude a large household whose income is below the federal 110%
+    poverty-guideline floor?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624
+  - kind: plan
+    citation: Wyoming FY2026 LIEAP State Plan, section 2.1, 60% SMI for all household sizes
+    url: https://dfs.wyo.gov/wp-content/uploads/2025/10/FFY2026-LIEAP-State-Model-Plan.pdf#page=8
+  readings:
+    statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
+    other: The 60% SMI limit falls below that floor starting at household size 17.
+  example: A 17-person household earning $113,900 exceeds the $113,688 state limit but is below the $114,015 floor
+    and receives a $238 heating-oil benefit in PE-US.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wy/dfs/lieap/wy_lieap_eligible.py
+    - policyengine_us/variables/gov/states/wy/dfs/lieap/wy_lieap.py
+    - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
+    - policyengine_us/parameters/gov/states/wy/dfs/lieap/income/fpg_year_lag.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10346
+  state: unreviewed
+  note: PE-US applies the floor to the prior year's guideline, rounded to cents, with the statute's strict "less
+    than" (wy_lieap_eligible.py), and sets the benefit fraction from income relative to the raised limit (wy_lieap.py);
+    the agency payment method for these households is unverified.
+- id: us-wy:lieap-income-limit-statute-lesser-of
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does W.S. 42-2-501(c), which requires eligibility at incomes not exceeding the lesser of 215% of the
+    poverty level or 60% of state median income, set a coverage minimum or the income ceiling?
+  sources:
+  - kind: statute
+    citation: W.S. 42-2-501(c)-(d)
+    url: https://wyoleg.gov/statutes/compress/title42.pdf#page=34
+  - kind: statute
+    citation: 2017 Wyo. Sess. Laws, SF0063 (Enrolled Act 43), effective July 1, 2017, striking "greater" and inserting
+      "lesser" in W.S. 42-2-501(c) and changing "state median income" to "state median household income"
+    url: https://wyoleg.gov/2017/Enroll/SF0063.pdf#page=7
+  - kind: regulation
+    citation: 049-1 Wyo. Code R. § 1-3(oo)
+    url: https://www.law.cornell.edu/regulations/wyoming/agency-049/subagency-0024/chapter-1/049-1-Wyo-Code-R-SSSS-1-3
+  - kind: regulation
+    citation: 049-1 Wyo. Code R. § 1-7(a)(ii)
+    url: https://www.law.cornell.edu/regulations/wyoming/agency-049/subagency-0024/chapter-1/049-1-Wyo-Code-R-SSSS-1-7
+  - kind: plan
+    citation: Wyoming FY2026 LIEAP State Plan, section 2.1, 60% SMI for all household sizes
+    url: https://dfs.wyo.gov/wp-content/uploads/2025/10/FFY2026-LIEAP-State-Model-Plan.pdf#page=8
+  - kind: agency-practice
+    citation: DFS 2016 statute clean-up request, Appendix C, asking to remove the 215% clause
+    url: https://wyoleg.gov/InterimCommittee/2016/10-0825AppendixC.pdf#page=8
+  readings:
+    statute: Since the 2017 amendment, the state plan must cover households with incomes at or below the lesser of
+      215% of the poverty level or 60% of state median household income, a coverage minimum that a 60% SMI limit
+      always meets.
+    other: Rules 3(oo) and 7(a)(ii), adopted under the pre-2017 "greater of" text, treat the section 42-2-501(c)
+      standard as the maximum income, which would cap the FY2026 plan's 60% of state median income at 215% of the
+      poverty level for small households.
+  example: A one-person FY2026 household with $34,000 of countable income is above 215% of the 2025 guideline
+    ($33,647.50) and within 60% of state median income ($35,829), and PE-US finds it income-eligible.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wy/dfs/lieap/wy_lieap_income_limit.py
+    - policyengine_us/parameters/gov/states/wy/dfs/lieap/smi_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10346
+  state: unreviewed
+  note: PE-US reads W.S. 42-2-501(c) as a coverage minimum and applies 60% of state median income for every size
+    (wy_lieap_income_limit.py, smi_rate.yaml). The amendment history supports that reading. Until 2017 the clause read
+    "greater of", which could require coverage above the federal maximum. DFS asked in 2016 to drop the 215% clause
+    because it uses 60% of state median income, and SF0063 then made the lesser amount the minimum. Under the ceiling
+    reading, FY2026 sizes 1-3 with incomes of $33,647.50-$35,829, $45,472.50-$46,853 and $57,297.50-$57,877 would be
+    ineligible.
+- id: us-wy:lieap-plan-vs-rules-income-items
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: Does Wyoming LIEAP follow the FY2026 plan or the adopted Chapter 1 rules for minors' earnings, POWER and
+    child support received, categorical eligibility, lump sums and child support paid?
+  sources:
+  - kind: regulation
+    citation: 049-1 Wyo. Code R. § 1-3(nn)
+    url: https://www.law.cornell.edu/regulations/wyoming/agency-049/subagency-0024/chapter-1/049-1-Wyo-Code-R-SSSS-1-3
+  - kind: regulation
+    citation: 049-1 Wyo. Code R. § 1-7(a)(i)
+    url: https://www.law.cornell.edu/regulations/wyoming/agency-049/subagency-0024/chapter-1/049-1-Wyo-Code-R-SSSS-1-7
+  - kind: regulation
+    citation: 049-1 Wyo. Code R. § 1-8(a)(ii)(A), (a)(ii)(L) and (a)(iii)
+    url: https://www.law.cornell.edu/regulations/wyoming/agency-049/subagency-0024/chapter-1/049-1-Wyo-Code-R-SSSS-1-8
+  - kind: regulation
+    citation: 049-1 Wyo. Code R. § 1-9(g)(ii)(B)
+    url: https://www.law.cornell.edu/regulations/wyoming/agency-049/subagency-0024/chapter-1/049-1-Wyo-Code-R-SSSS-1-9
+  - kind: plan
+    citation: Wyoming FY2026 LIEAP State Plan, sections 1.4 and 1.9
+    url: https://dfs.wyo.gov/wp-content/uploads/2025/10/FFY2026-LIEAP-State-Model-Plan.pdf#page=5
+  readings:
+    statute: No statute addresses these items. The rules exempt only the earnings of a child under 14 or of a
+      full-time student under 18 (8(a)(ii)(A)); count "the household's total gross non-exempt money received from
+      any source" with no exemption for POWER or child support received (3(nn)); list adults receiving POWER, SNAP or
+      veteran or survivor pension payments as eligible if they meet all other factors (7(a)(i)); exempt lump sums
+      such as tax refunds, rebates or credits (8(a)(ii)(L)), while 9(g)(ii)(B) lists prizes, including lottery
+      winnings, as income evidence; and deduct court-ordered child support paid "from earnings" (8(a)(iii)).
+    other: The FY2026 plan leaves the earned income of a child under 18, TANF benefits and child support unchecked as
+      countable income and checks one-time lump sums such as rebates, credits and lottery winnings (1.9), and it
+      answers "No" to categorical eligibility (1.4).
+  example: A parent with $40,000 of wages, $8,000 of child support received and a $1,500 natural gas bill has
+    countable income of $40,000 under the plan, within the $46,853 two-person limit, and PE-US pays $209.63; counting
+    the support under rule 3(nn) gives $48,000, above the limit.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/wy/dfs/lieap/income/earned_income_min_age.yaml
+    - policyengine_us/parameters/gov/states/wy/dfs/lieap/income/unearned_sources.yaml
+    - policyengine_us/variables/gov/states/wy/dfs/lieap/wy_lieap_countable_income.py
+    - policyengine_us/variables/gov/states/wy/dfs/lieap/wy_lieap_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10346
+  state: open
+  note: PE-US follows the plan for under-18 earnings, POWER and child support received (earned_income_min_age.yaml,
+    unearned_sources.yaml) and for categorical eligibility (wy_lieap_eligible.py). It follows rule 8(a)(ii)(L) over
+    the plan in excluding lump sums and has no lottery-winnings input. It deducts child support paid only from the
+    payer's own earnings (wy_lieap_countable_income.py), since rule 8(a)(iii) does not say whose earnings.
 - id: us:additional-child-credit-housing-deduction-bar
   program: income-tax
   years:

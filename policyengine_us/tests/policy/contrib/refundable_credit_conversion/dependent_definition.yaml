@@ -128,6 +128,10 @@
     people:
       filer:
         age: 38
+        # The filer meets the CTC filer SSN requirement, so the child is
+        # CTC-qualifying (an input set only on the child would default the
+        # filer to false).
+        meets_ctc_identification_requirements: true
       child:
         age: 5
         meets_eitc_identification_requirements: false
