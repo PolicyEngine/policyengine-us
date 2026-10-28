@@ -1,12 +1,14 @@
 description: Pennsylvania excludes up to this amount of monthly spousal support under the Low Income Home Energy Assistance Program.
 # Only the larger of the child support and spousal support exclusions applies.
 values:
-  2025-11-03: 50
+  2024-11-04: 50
 metadata:
   unit: currency-USD
   period: month
   label: Pennsylvania LIHEAP monthly spousal support disregard
   reference:
+    - title: Pennsylvania FY2025 LIHEAP State Plan, section 601.84(15)
+      href: https://web.archive.org/web/20250311051110/https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2025-liheap-state-plan.pdf#page=50
     - title: "Pennsylvania FY2026 LIHEAP State Plan, section 601.84(15) #page 52-53"
       href: https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=52
     - title: Pennsylvania FY2027 LIHEAP State Plan, section 601.84(15)

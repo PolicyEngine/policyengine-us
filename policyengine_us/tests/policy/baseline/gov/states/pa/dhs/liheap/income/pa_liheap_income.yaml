@@ -462,7 +462,9 @@
     military_retirement_pay: [30_000, 0]
     railroad_benefits: [0, 22_200]
     medicare_part_b_premium: [0, 2_434.8]
+    # Neither receives SSI, so neither receives the state supplement.
     ssi: [0, 0]
+    pa_ssp: [0, 0]
     tanf: [0, 0]
     heating_type: [NATURAL_GAS, NATURAL_GAS]
     gas_expense: [1_200, 1_200]
@@ -628,7 +630,9 @@
         age: 67
         immigration_status: CITIZEN
         is_tax_unit_dependent: false
+        # No SSI, so no state supplement.
         ssi: 0
+        pa_ssp: 0
         social_security_retirement: 12_000
         railroad_benefits: 6_000
         medicare_part_b_premium: 2_434.8
@@ -659,7 +663,9 @@
         age: 67
         immigration_status: CITIZEN
         is_tax_unit_dependent: false
+        # No SSI, so no state supplement.
         ssi: 0
+        pa_ssp: 0
         social_security_retirement: 600
         railroad_benefits: 600
         medicare_part_b_premium: 2_434.8

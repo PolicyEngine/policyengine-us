@@ -74,6 +74,9 @@
         # 2,900 a month is above the Medicare Savings Program limits.
         medicare_part_b_premium: 2_434.8
         ssi: 0
+        # The couple's income is above the SSI couple rate, so neither spouse
+        # receives the state supplement.
+        pa_ssp: 0
       person2:
         age: 69
         immigration_status: CITIZEN
@@ -81,6 +84,7 @@
         social_security_retirement: 12_000
         medicare_part_b_premium: 2_434.8
         ssi: 0
+        pa_ssp: 0
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -138,20 +142,22 @@
     pa_liheap_household_size: 1
     # 2025 guideline for one: 15,650 * 1.5 = 23,475.
     pa_liheap_income_limit: 23_475
-    # SSI counts as unearned income (section 601.82(4)).
-    pa_liheap_income: 11_928
-    pa_liheap_benefit_income: 11_928
+    # 2026 independent-living state supplement: 22.10 * 12 = 265.20.
+    pa_ssp: 265.2
+    # SSI and the state supplement count as unearned income (section
+    # 601.82(4)): 11,928 + 265.20 = 12,193.20.
+    pa_liheap_income: 12_193.2
+    pa_liheap_benefit_income: 12_193.2
     heating_expense: 1_800
     has_heating_expense: true
     pa_liheap_eligible: true
-    # Dated FY2026 matrix page 165, Elk kerosene, 11,000-11,999, size 1: 400
-    # (Elk fuel oil pays 355 in the same cell).
-    pa_liheap_matrix_amount: 400
+    # Dated FY2026 matrix page 165, Elk kerosene, 12,000-12,999, size 1: 349.
+    pa_liheap_matrix_amount: 349
     # SSI received because of a disability is financial assistance for
     # disability (OPS 26-07-01 page 2).
     pa_liheap_supplement: 100
-    # 400 + 100 = 500.
-    pa_liheap: 500
+    # 349 + 100 = 449.
+    pa_liheap: 449
 
 - name: Case 4, Lackawanna County single parent with child support heating with electricity.
   period: 2026

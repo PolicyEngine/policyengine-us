@@ -4,8 +4,11 @@ description: Pennsylvania counts these unearned income sources before the suppor
 # monthly disregard (handbook 650.3(9)) and the take-up-gated tanf aggregate.
 # It floors each source listed here at zero (section 601.82(2)(ii)).
 values:
-  2025-11-03:
+  2024-11-04:
     - ssi
+    # The state supplement counts with SSI (section 601.82(4)(iv)); no
+    # section 601.84 exclusion covers it.
+    - pa_ssp
     # pension_income already adds its taxable and tax-exempt components.
     - pension_income
     # Military retirement pay is a separate input from the pension inputs that
@@ -33,6 +36,8 @@ metadata:
   period: year
   label: Pennsylvania LIHEAP unearned income sources
   reference:
+    - title: Pennsylvania FY2025 LIHEAP State Plan, section 601.82(4)
+      href: https://web.archive.org/web/20250311051110/https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2025-liheap-state-plan.pdf#page=48
     - title: "Pennsylvania FY2026 LIHEAP State Plan, section 601.82(4) #page 50-51"
       href: https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=50
     - title: Pennsylvania FY2027 LIHEAP State Plan, section 601.82(4)

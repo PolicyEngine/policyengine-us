@@ -1,7 +1,7 @@
 description: Pennsylvania counts these net business income sources under the Low Income Home Energy Assistance Program.
 # Apply a zero floor to each source separately; no extra business-cost deduction.
 values:
-  2025-11-03:
+  2024-11-04:
     - self_employment_income
     - sstb_self_employment_income
     - farm_operations_income
@@ -11,6 +11,8 @@ metadata:
   period: year
   label: Pennsylvania LIHEAP net business income sources
   reference:
+    - title: Pennsylvania FY2025 LIHEAP State Plan, section 601.82(2)
+      href: https://web.archive.org/web/20250311051110/https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2025-liheap-state-plan.pdf#page=47
     - title: "Pennsylvania FY2026 LIHEAP State Plan, section 601.82(2) #page 49-50"
       href: https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=49
     - title: "Pennsylvania FY2027 LIHEAP State Plan, section 601.82(2) #page 47-48"
