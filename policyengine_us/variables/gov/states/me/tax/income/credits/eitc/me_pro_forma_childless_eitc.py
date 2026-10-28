@@ -10,9 +10,11 @@ class me_pro_forma_childless_eitc(Variable):
     documentation = (
         "Federal earned income credit recomputed for the 18-24 childless "
         "cohort Maine restores under 36 M.R.S. § 5219-S(5)-(6), ignoring the "
-        "federal minimum-age floor. All other federal § 32 requirements "
-        "(earnings, phase-out, investment income, taxpayer identification, "
-        "the bar on section 911 claimants) still apply."
+        "federal minimum-age floor. The other federal § 32 requirements "
+        "(earnings, phase-out, investment income, the bar on section 911 "
+        "claimants) still apply. Section 5219-S(7) also accepts an ITIN in "
+        "place of an SSN from 2021, which this variable does not yet model: "
+        "it still requires an SSN."
     )
     definition_period = YEAR
     reference = (
@@ -35,6 +37,8 @@ class me_pro_forma_childless_eitc(Variable):
         # age-independent, so the pro forma equals the ordinary federal EITC
         # computation with the demographic (age) gate dropped, retaining the
         # investment-income and identification (SSN) requirements of § 32.
+        # Section 5219-S(7) accepts an ITIN from 2021; the SSN test below
+        # does not yet reflect that.
         phased_in = tax_unit("eitc_phased_in", period)
         maximum = tax_unit("eitc_maximum", period)
         reduction = tax_unit("eitc_reduction", period)

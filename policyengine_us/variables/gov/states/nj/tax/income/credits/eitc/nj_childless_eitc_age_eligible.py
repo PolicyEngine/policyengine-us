@@ -8,8 +8,10 @@ class nj_childless_eitc_age_eligible(Variable):
     label = "New Jersey Eligible for EITC"
     documentation = (
         "Eligible for the New Jersey EITC as a filer without a qualifying child "
-        "who is at least 18 and ineligible for the federal credit only because "
-        "of the federal age requirements."
+        "who is at least 18, fails the federal age requirements, and meets the "
+        "federal identification, investment income, adjusted gross income and "
+        "section 911 requirements. nj_eitc also requires a positive federal "
+        "credit recomputed without the age test."
     )
     definition_period = YEAR
     reference = (
@@ -69,6 +71,9 @@ class nj_childless_eitc_age_eligible(Variable):
         # fails a federal qualification other than age.
         claims_section_911 = elects_section_911_exclusion(tax_unit, period)
 
+        # Not yet applied here: the bar on a filer who is a dependent of
+        # another taxpayer (IRC 32(c)(1)(A)(ii)(III)), which NJ-1040 line 58
+        # repeats ("You are not listed as a dependent on another tax return").
         return (
             ~separate
             & no_qualifying_children

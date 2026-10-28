@@ -31,16 +31,16 @@ class nj_eitc(Variable):
         # Section 1a(1): a percentage "of the federal earned income tax credit
         # that would be allowed". The federal credit already reflects its
         # phase-in, phase-out, take-up and filing, so a federally eligible
-        # filer gets the match on it, whatever its size. Such a filer meets
-        # the federal age test and cannot take the age path below.
+        # filer gets the match on it, whatever its size. The select below
+        # takes this path first, so such a filer never reaches the age path.
         federal_eitc_eligible = tax_unit("eitc_eligible", period)
 
-        # Section 1a(4): a childless filer ineligible for the federal credit
-        # only because of age gets the match on "the federal maximum amount
-        # for taxpayers with no qualifying child" (2025 NJ-1040 line 58: "enter
-        # $260", 40% of $649). The filer must still meet the federal earned
-        # income and AGI limits, so the federal credit recomputed without the
-        # age test must be positive. Comparing the phase-in amount with the
+        # Section 1a(4): a childless filer "ineligible to claim the federal
+        # earned income tax credit due to age requirements" gets the match on
+        # "the federal maximum amount for taxpayers with no qualifying child"
+        # (2025 NJ-1040 line 58: "enter $260", 40% of $649). The filer must
+        # still meet the federal earned income and AGI limits, so the federal
+        # credit recomputed without the age test must be positive. Comparing the phase-in amount with the
         # reduction instead would deny the credit to a low earner whose
         # unearned income puts the reduction above the phase-in amount but
         # below the maximum.

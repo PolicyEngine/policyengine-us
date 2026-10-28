@@ -96,6 +96,30 @@ def meets_federal_age(h, year):
     return spouse is not None and minimum <= spouse <= maximum
 
 
+def head_or_spouse_age_in(h, minimum, maximum):
+    """Whether the head or spouse is aged between minimum and maximum."""
+    ages = [h["head_age"], h["spouse_age"]]
+    return any(age is not None and minimum <= age <= maximum for age in ages)
+
+
+def federal_maximum_age(year):
+    # 26 U.S.C. 32(n)(2) removed the maximum age for 2021 only.
+    return np.inf if year == 2021 else 64
+
+
+def maine_childless_rate(year):
+    # 36 M.R.S. 5219-S(1): 20% for 2021; (1-A): 50% without a qualifying
+    # child from 2022.
+    return 0.2 if year == 2021 else 0.5
+
+
+def maine_known_gap(h, year):
+    """A 2021 full-time student aged 19-23, whom the model still leaves out
+    of Maine's 18-24 cohort (an open follow-up): it tests the age against
+    the ordinary federal minimum of 19, not the student minimum of 24."""
+    return year == 2021 and h["student"] and 19 <= h["head_age"] <= 23
+
+
 def calculate(households, year):
     simulation = Simulation(situation=build_situation(households, year))
     return {v: np.asarray(simulation.calculate(v, year)) for v in TAX_UNIT_OUTPUTS}
@@ -184,11 +208,55 @@ def assert_invariants(households, year, r):
     assert (r["me_pro_forma_childless_eitc"][~me] == 0).all()
     assert (r["nj_eitc"][~nj] == 0).all()
 
+    # Entitlement, not only bounds. These households have no investment
+    # income, separate return or dependency elsewhere, and every head and
+    # spouse is at least 18. So a childless filer and spouse with SSNs and no
+    # section 911 claim meet every qualification other than age that the
+    # three states keep.
+    ssn = np.array([h["ssn"] for h in households])
+    assert (r["filer_meets_eitc_identification_requirements"] == ssn).all()
+    qualified = childless & ssn & ~excludes
+    # New Jersey pays such a filer who fails only the federal age test 40%
+    # of the federal childless maximum whenever the federal credit
+    # recomputed without the age test would be positive.
+    nj_age_only = nj & qualified & ~federal_age & (pro_forma > 0)
+    np.testing.assert_allclose(
+        r["nj_eitc"][nj_age_only], nj_match * childless_maximum, atol=tol
+    )
+    # Maryland's pro forma is the whole recomputed federal credit for such a
+    # filer when the filer or spouse is under the federal maximum age.
+    under_maximum = np.array(
+        [head_or_spouse_age_in(h, 0, federal_maximum_age(year)) for h in households]
+    )
+    md_qualified = md & qualified & under_maximum
+    np.testing.assert_allclose(
+        r["federal_eitc_without_age_minimum"][md_qualified],
+        pro_forma[md_qualified],
+        atol=tol,
+    )
+    # Maine's pro forma is the whole recomputed federal credit for such a
+    # filer aged 18 to 24 who fails the federal age test, and Maine pays its
+    # childless rate on it (5219-S(5)-(6)).
+    me_cohort = np.array([head_or_spouse_age_in(h, 18, 24) for h in households])
+    gap = np.array([maine_known_gap(h, year) for h in households])
+    me_qualified = me & qualified & me_cohort & ~federal_age & ~gap
+    np.testing.assert_allclose(
+        r["me_pro_forma_childless_eitc"][me_qualified],
+        pro_forma[me_qualified],
+        atol=tol,
+    )
+    np.testing.assert_allclose(
+        r["me_eitc"][me_qualified],
+        maine_childless_rate(year) * pro_forma[me_qualified],
+        atol=tol,
+    )
+    return {"nj": nj_age_only, "md": md_qualified, "me": me_qualified}
+
 
 def check(households, year=2025):
     r = calculate(households, year)
-    assert_invariants(households, year, r)
-    return r
+    entitled = assert_invariants(households, year, r)
+    return r, entitled
 
 
 GRID = [
@@ -207,6 +275,7 @@ GRID = [
     for state in STATES
     for head_age, spouse_age, student in (
         (20, None, False),
+        (20, None, True),
         (24, None, True),
         (40, None, False),
         (70, None, False),
@@ -227,7 +296,7 @@ GRID = [
 
 
 def test_grid_invariants():
-    r = check(GRID)
+    r, entitled = check(GRID)
     state = np.array([h["state"] for h in GRID])
     excludes = np.array([h["exclusion"] > 0 for h in GRID])
     # The grid reaches the cases each rule changes.
@@ -240,9 +309,17 @@ def test_grid_invariants():
     # reduction exceeds the phase-in amount.
     assert (nj & r["nj_childless_eitc_age_eligible"] & (r["nj_eitc"] > 0)).any()
     assert (nj & (r["eitc"] > 0) & (r["eitc_reduction"] > r["eitc_phased_in"])).any()
+    # Each state's entitlement check covers paid households.
+    for s, mask in entitled.items():
+        assert (mask & (r["eitc_phased_in"] > 0)).any(), s
 
 
 def test_grid_invariants_2021():
     # In 2021 the federal childless minimum age was 19 (24 for students) and
     # there was no maximum (26 U.S.C. 32(n), as added by ARPA section 9621).
-    check(GRID, 2021)
+    r, entitled = check(GRID, 2021)
+    # A full-time student aged 20 fails the 2021 student minimum and takes
+    # New Jersey's age path. Maine's only 2021 cohort members in the grid are
+    # such students, the known gap, so its check has none to test this year.
+    assert (entitled["nj"] & (r["nj_eitc"] > 0)).any()
+    assert (entitled["md"] & (r["federal_eitc_without_age_minimum"] > 0)).any()
