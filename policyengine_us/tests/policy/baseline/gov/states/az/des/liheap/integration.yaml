@@ -1,0 +1,285 @@
+# Arizona Standard LIHEAP benefit, end to end. Sources: DES LIHEAP Policy
+# rev. 16A eff. 2026-07-01 (household and immigration pp. 4-8, categorical
+# eligibility pp. 7-8, countable income pp. 8-9 with the rev. 15 p. 9 E
+# exclusion of under-18 earned income only, benefit factors p. 10, FY27
+# Appendix A p. 39), https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=8;
+# rev. 13 eff. 2025-08-25 (FFY2026 Appendix A p. 37),
+# https://web.archive.org/web/20251030203752/https://des.az.gov/sites/default/files/dl/CCSD-LIHEAP-Policy.pdf#page=37;
+# LIHEAP Eligibility Worksheet, $640 Limit, eff. 2024-10-12 (point tables and
+# payment matrix),
+# https://liheapch.acf.gov/docs/2026/benefits-matricies/AZ_BenefitMatrix_Heating_2026.pdf#page=1;
+# FY2026 plan (categorical programs 1.4, income 1.8-1.9, $160 minimum and
+# $640 maximum 2.6), https://liheapch.acf.gov/docs/2026/state-plans/AZ_Plan_2026.pdf#page=10;
+# DES program page (formulas and examples), https://des.az.gov/liheap.
+# FFY2026 annual limits (Appendix A monthly x 12): size 1 2,807 x 12 =
+# 33,684; size 2 3,671 x 12 = 44,052; size 3 4,535 x 12 = 54,420.
+# Points: income ratio 0-20% 5, -40% 4, -60% 3, -80% 2, -100% 1; burden 5% or
+# less 0, -10% 1, -15% 2, -20% 3, -25% 4, -30% 5, over 30% 6, +2 portable
+# fuel; need 1 each for elderly 60+, disabled, veteran, child 6 or under.
+# Payment: 1-4 points 160, 5-8 320, 9-12 480, 13+ 640; 0 points pays the
+# plan's 160 minimum.
+
+- name: Case 1, two working parents and a preschooler in Phoenix with electric heat receive 320.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 14_000
+      person2:
+        age: 37
+        employment_income: 10_000
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    az_liheap_household_size: 3
+    # 14,000 + 10,000 = 24,000 (2,000 a month).
+    az_liheap_countable_income: 24_000
+    # Appendix A size 3: 4,535 x 12.
+    az_liheap_income_limit: 54_420
+    # 24,000 <= 54,420.
+    az_liheap_income_eligible: true
+    az_liheap_categorically_eligible: false
+    az_liheap_energy_cost: 2_400
+    az_liheap_eligible: true
+    # 24,000 / 54,420 = 0.441 (2,000 / 4,535 = 44%): 41%-60% band.
+    az_liheap_income_points: 3
+    # 2,400 / 24,000 = 0.10 exactly: top of the 6%-10% band, 1 point.
+    az_liheap_energy_burden_points: 1
+    # Child aged 4.
+    az_liheap_energy_need_points: 1
+    # 3 + 1 + 1 = 5: the 5-8 band.
+    az_liheap_points: 5
+    az_liheap: 320
+
+- name: Case 2, a retiree on SNAP with propane heat, under the limit after the Medicare premium, receives 320.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 36_000
+        # Income of 3,000 a month is above the Medicare Savings Program
+        # limits, so the retiree pays the 2026 standard premium of 202.90 x 12.
+        medicare_part_b_premium: 2_434.80
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        pre_subsidy_electricity_expense: 1_200
+        bottled_gas_expense: 1_500
+        snap: 2_400
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_household_size: 1
+    # Gross income less the Part B premium (policy p. 14 note):
+    # 36,000 - 2,434.80 = 33,565.20.
+    az_liheap_countable_income: 33_565.20
+    # Appendix A size 1: 2,807 x 12.
+    az_liheap_income_limit: 33_684
+    # 33,565.20 <= 33,684.
+    az_liheap_income_eligible: true
+    # SNAP receipt (200 a month) also confers categorical eligibility.
+    az_liheap_categorically_eligible: true
+    # 1,200 + 1,500.
+    az_liheap_energy_cost: 2_700
+    az_liheap_eligible: true
+    # 33,565.20 / 33,684 = 0.996: 81%-100% band.
+    az_liheap_income_points: 1
+    # 2,700 / 33,565.20 = 0.080: 6%-10% band, 1 point + 2 portable fuel.
+    az_liheap_energy_burden_points: 3
+    # Aged 60 and over.
+    az_liheap_energy_need_points: 1
+    # 1 + 3 + 1 = 5: the 5-8 band.
+    az_liheap_points: 5
+    az_liheap: 320
+
+- name: Case 3, a mixed-status family of four is sized at three and receives 160.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 34
+        immigration_status: CITIZEN
+        employment_income: 26_000
+      person2:
+        age: 36
+        immigration_status: UNDOCUMENTED
+        employment_income: 22_000
+      person3:
+        age: 9
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        pre_subsidy_electricity_expense: 2_700
+        gas_expense: 500
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AZ
+  output:
+    # Policy p. 8 VI.A.6.d.i: the undocumented parent is not counted.
+    az_liheap_household_size: 3
+    # Policy p. 8 VI.A.6.d.ii: 26,000 + 22,000, both adults' wages.
+    az_liheap_countable_income: 48_000
+    az_liheap_income_limit: 54_420
+    # 48,000 <= 54,420.
+    az_liheap_income_eligible: true
+    # 2,700 + 500.
+    az_liheap_energy_cost: 3_200
+    az_liheap_eligible: true
+    # 48,000 / 54,420 = 0.882: 81%-100% band.
+    az_liheap_income_points: 1
+    # 3,200 / 48,000 = 0.067: 6%-10% band; natural gas, no bonus.
+    az_liheap_energy_burden_points: 1
+    # Child aged 5.
+    az_liheap_energy_need_points: 1
+    # 1 + 1 + 1 = 3.
+    az_liheap_points: 3
+    az_liheap: 160
+
+- name: Case 4, a Cash Assistance family with energy included in rent receives 320.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 0
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        pre_subsidy_electricity_expense: 0
+        gas_expense: 0
+        snap: 0
+        tanf: 4_164
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_liheap_household_size: 2
+    # Cash Assistance 347 x 12 = 4,164 counts as income (policy p. 9 B).
+    az_liheap_countable_income: 4_164
+    # Appendix A size 2: 3,671 x 12.
+    az_liheap_income_limit: 44_052
+    az_liheap_income_eligible: true
+    # Current Cash Assistance enrollment (policy p. 7 VI.A.6.b).
+    az_liheap_categorically_eligible: true
+    az_liheap_energy_cost: 0
+    # Energy in rent satisfies the energy-expense requirement.
+    az_liheap_eligible: true
+    # 4,164 / 44,052 = 0.095: 0%-20% band.
+    az_liheap_income_points: 5
+    # No separate energy bill: 0 burden points.
+    az_liheap_energy_burden_points: 0
+    # Child aged 2.
+    az_liheap_energy_need_points: 1
+    # 5 + 0 + 1 = 6: the 5-8 band.
+    az_liheap_points: 6
+    az_liheap: 320
+
+- name: Case 5, an otherwise eligible household with an unspecified heating type receives nothing.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        pre_subsidy_electricity_expense: 2_000
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_household_size: 1
+    az_liheap_countable_income: 28_000
+    az_liheap_income_limit: 33_684
+    # 28,000 <= 33,684.
+    az_liheap_income_eligible: true
+    az_liheap_energy_cost: 2_000
+    # Project rule: an unspecified heating type is not eligible.
+    az_liheap_eligible: false
+    # 28,000 / 33,684 = 0.831: 81%-100% band.
+    az_liheap_income_points: 1
+    # 2,000 / 28,000 = 0.071: 6%-10% band.
+    az_liheap_energy_burden_points: 1
+    az_liheap_points: 2
+    az_liheap: 0
+
+- name: Case 6, in 2027 a child's child support counts under revision 15 and the FFY2027 limit applies.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 8
+        child_support_received: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_000
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_liheap_household_size: 2
+    # Rev. 15 p. 9 E excludes only earned income of members under 18.
+    az_liheap_countable_unearned_income: [0, 3_600]
+    # 18,000 + 3,600.
+    az_liheap_countable_income: 21_600
+    # FY27 limit: Arizona SMI 112,946; floor(0.6 x 112,946) = 67,767;
+    # floor(0.68 x 67,767) = 46,081; floor(46,081 / 12) = 3,840; FPG arm
+    # floor(1.5 x (15,960 + 5,680) / 12) = 2,705; 3,840 x 12 = 46,080. The
+    # model reproduces the published FY27 size-2 limit of 3,840 a month (DES
+    # LIHEAP Policy revision 16A, Appendix A, p. 39). Verified coverage stays
+    # FY2026; 2027 is not claimed.
+    az_liheap_income_limit: 46_080
+    az_liheap_income_eligible: true
+    az_liheap_eligible: true
+    # 21,600 / 46,080 = 0.469: 41%-60% band.
+    az_liheap_income_points: 3
+    # 2,000 / 21,600 = 0.093: 6%-10% band.
+    az_liheap_energy_burden_points: 1
+    # Child aged 8: no need point.
+    az_liheap_energy_need_points: 0
+    # 3 + 1 + 0 = 4: the 1-4 band.
+    az_liheap_points: 4
+    az_liheap: 160

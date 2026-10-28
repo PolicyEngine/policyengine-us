@@ -1,15 +1,32 @@
 description: Employer-side unemployment insurance taxable wage base for Minnesota.
 values:
+  # Unverified placeholder ($42,000 is DEED's 2024 figure). No modeled year reads it:
+  # FIRST_MODELED_YEAR is 2015, and the 2014 entry covers every later year. It keeps
+  # the parameter defined before 2014, so state selection never reads None.
   0000-01-01: 42_000
+  2014-01-01: 29_000
+  2015-01-01: 30_000
+  2016-01-01: 31_000
+  2017-01-01: 32_000
+  2018-01-01: 32_000
+  2019-01-01: 34_000
+  2020-01-01: 35_000
+  # Laws 2021, ch. 2, s. 3 sets 2021 at $35,000, notwithstanding subd. 24.
+  2021-01-01: 35_000
+  2022-01-01: 38_000
+  2023-01-01: 40_000
+  2024-01-01: 42_000
+  2025-01-01: 43_000
+  2026-01-01: 44_000
 
 metadata:
   period: year
   unit: currency-USD
   label: Minnesota unemployment taxable wage base
   reference:
-    - title: Minnesota Statutes Section 268.035
-      href: https://www.revisor.mn.gov/statutes/cite/268.035
-    - title: Minnesota unemployment tax rates
-      href: https://www.uimn.org/employers/wages-taxes/tax-rates/index.jsp
-    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
-      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=33
+    - title: Minnesota Statutes Section 268.035, subdivision 24
+      href: https://www.revisor.mn.gov/statutes/cite/268.035#stat.268.035.24
+    - title: Minnesota DEED unemployment tax rates, History of tax rate factors (2014-2026)
+      href: https://www.uimn.org/employers/wages-taxes/tax-rates/index.jsp#toggle-4
+    - title: Laws of Minnesota 2021, chapter 2, section 3 (taxable wages for calendar year 2021)
+      href: https://www.revisor.mn.gov/laws/2021/0/2/

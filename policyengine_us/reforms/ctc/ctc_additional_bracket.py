@@ -15,15 +15,8 @@ def create_ctc_additional_bracket() -> Reform:
         def formula(person, period, parameters):
             age = person("age", period)
             qualifying_child = person("ctc_qualifying_child", period)
-            filer_meets_child_ctc_id_requirements = person.tax_unit(
-                "filer_meets_child_ctc_identification_requirements", period
-            )
             p = parameters(period).gov.contrib.ctc.additional_bracket.amount
-            return (
-                qualifying_child
-                * filer_meets_child_ctc_id_requirements
-                * p.base.calc(age)
-            )
+            return qualifying_child * p.base.calc(age)
 
     class ctc_refundable_maximum(Variable):
         value_type = float
