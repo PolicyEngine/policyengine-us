@@ -25,14 +25,18 @@ class ak_hap_countable_income(Variable):
         # regardless of whether immigration status permits counting their size.
         # 7 AAC 44.042(5) exempts wages of a full-time student under 18 who is
         # not the head of household. The tax-unit head stands in for the head
-        # of household. is_full_time_student treats any K-12 attendance as
-        # full time, since part-time enrollment is not observed. Only wages
-        # (employment income and military basic pay) are exempt; the
-        # student's business income still counts.
+        # of household. A tax unit infers a head only among adults, so a minor
+        # in an SPM unit with no adult member is treated as its head.
+        # is_full_time_student treats any K-12 attendance as full time, since
+        # part-time enrollment is not observed. Only the listed wage sources
+        # are exempt; the student's business income still counts.
+        age = person("age", period)
+        adult_present = spm_unit.any(age >= p.child_earnings_age_limit)
         exempt_student = (
-            (person("age", period) < p.child_earnings_age_limit)
+            (age < p.child_earnings_age_limit)
             & person("is_full_time_student", period)
             & ~person("is_tax_unit_head", period)
+            & spm_unit.project(adult_present)
         )
         # Supplied net business income stands in for gross receipts less
         # costs. Manual 3003-4 B deducts 50% of gross unless actual costs are
@@ -43,11 +47,11 @@ class ak_hap_countable_income(Variable):
         # source cannot be separated.
         earned = 0
         for source in p.earned_sources:
-            earned = earned + max_(person(source, period), 0)
-        wages = max_(person("employment_income", period), 0) + max_(
-            person("military_basic_pay", period), 0
-        )
-        countable_earned = spm_unit.sum(earned - where(exempt_student, wages, 0))
+            amount = max_(person(source, period), 0)
+            if source in p.student_wage_sources:
+                amount = where(exempt_student, 0, amount)
+            earned = earned + amount
+        countable_earned = spm_unit.sum(earned)
         # These are cash receipts, so a tax loss in an unearned source does not
         # offset other income. Net rental sources are separately nonnegative.
         unearned_person = 0

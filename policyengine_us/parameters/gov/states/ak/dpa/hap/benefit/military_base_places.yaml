@@ -3,11 +3,13 @@ description: Alaska excludes residents of these military base Census places unde
 # the installations themselves, so their residents live on base. Addendum A
 # marks both installations 0/USA. Kodiak Station CDP (41210) is the housing
 # area of Coast Guard Base Kodiak, and Addendum A says Coast Guard members
-# living on base in provided housing do not qualify. Elmendorf AFB and Fort Richardson, also
+# living on base in provided housing do not qualify. Eareckson Station CDP
+# (20716) is drawn on Shemya Island around Eareckson Air Station, an Air Force
+# installation; Addendum A lists no community there. Elmendorf AFB and Fort Richardson, also
 # 0/USA, lie inside the Anchorage municipality with no separate Census place,
 # so their residents cannot be identified.
 values:
-  2026-10-01: ["21370", "26100", "41210"]
+  2026-10-01: ["20716", "21370", "26100", "41210"]
 
 metadata:
   unit: list

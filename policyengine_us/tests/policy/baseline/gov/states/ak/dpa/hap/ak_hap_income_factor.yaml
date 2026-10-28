@@ -107,7 +107,7 @@
     ak_hap_income_factor: 0
 
 # Addendum E prints 407/month; the exact 25% ceiling is 415.625, so 407 is in the lowest band.
-- name: Case 4, printed stale 407 amount stays in the lowest band.
+- name: Case 4, Addendum E's printed 407 a month stays in the lowest band.
   period: 2027
   absolute_error_margin: 0.0001
   input:

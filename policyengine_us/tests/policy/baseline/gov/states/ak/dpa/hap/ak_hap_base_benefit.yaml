@@ -6,8 +6,8 @@
 # http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm
 # http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm
 # https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
-# Census places not named in Addendum A take the oil and gas points of the community
-# Addendum A lists for their ZIP code (four places) or else of the nearest listed
+# Census places not named in Addendum A take the oil and gas points of the main
+# community Addendum A lists for their ZIP code (four places) or else of the nearest listed
 # community; these approximations are not a state-issued crosswalk. Oil points follow
 # Addendum A except Loring and Tetlin, which follow Appendix A to 7 AAC 44.
 # Income ceilings are exact percentages of the guideline: the one-person 25% ceiling
@@ -1540,7 +1540,7 @@
     ak_hap_income_factor: 1
 
 # Five qualified members, monthly 2,900 <= 75% ceiling 3,021.875 (48,350 * .75 / 12); 27 * .8 + 1 = 22.6 -> 23 * $175.
-- name: Case 49, Savoonga updated five-person band supersedes stale worked label.
+- name: Case 49, a Savoonga five-person household is in the 75% band.
   period: 2027
   absolute_error_margin: 0.0001
   input:
@@ -1764,7 +1764,7 @@
   output:
     ak_hap_base_benefit: 525
 
-# Current COMMUNITY 0/AVCP means all residents are routed; no race-based inference.
+# Addendum A marks Akiachak 0/AVCP: the tribe serves all residents, so no race-based inference is needed.
 - name: Case 55, all-resident tribal routing excludes Akiachak state component.
   period: 2027
   absolute_error_margin: 0.01
@@ -2877,11 +2877,13 @@
 # Addendum A marks Eielson AFB 0/USA, and Census draws Eielson AFB CDP from the
 # installation. Kodiak Station CDP is the housing area of Coast Guard Base
 # Kodiak, whose members living on base in provided housing do not qualify
-# (Addendum A). Each member's 24,000 of basic pay is in the 100-125% band
-# (19,950 < 24,000 <= 24,937.50): factor .6. Without the exclusion, Eielson
-# oil 11 * 1 * .6 = 6.6 -> 7 points * $175 = $1,225, and Kodiak Station oil
-# 6 * 1 * .6 = 3.6 -> 4 points * $175 = $700; on base each award is 0.
-- name: Case 86, Eielson AFB CDP and Kodiak Station CDP residents live on a military base and receive nothing.
+# (Addendum A). Eareckson Station CDP is drawn on Shemya Island around
+# Eareckson Air Station. Each member's 24,000 of basic pay is in the 100-125%
+# band (19,950 < 24,000 <= 24,937.50): factor .6. Without the exclusion,
+# Eielson oil 11 * 1 * .6 = 6.6 -> 7 points * $175 = $1,225, and Kodiak
+# Station and Eareckson Station oil 6 * 1 * .6 = 3.6 -> 4 points * $175 = $700;
+# on base each award is 0.
+- name: Case 86, Eielson AFB, Kodiak Station and Eareckson Station CDP residents live on a military base and receive nothing.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2894,6 +2896,13 @@
         ak_ssp: 0
         ak_permanent_fund_dividend: 0
       person2:
+        age: 30
+        immigration_status: CITIZEN
+        military_basic_pay: 24_000
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person3:
         age: 30
         immigration_status: CITIZEN
         military_basic_pay: 24_000
@@ -2915,6 +2924,13 @@
         fuel_oil_expense: 1_500
         ak_atap: 0
         receives_housing_assistance: false
+      spm_unit3:
+        members: [person3]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_500
+        ak_atap: 0
+        receives_housing_assistance: false
     households:
       household1:
         members: [person1]
@@ -2924,19 +2940,24 @@
         members: [person2]
         state_code: AK
         place_fips: '41210'
+      household3:
+        members: [person3]
+        state_code: AK
+        place_fips: '20716'
   output:
-    ak_hap_countable_income: [24_000, 24_000]
-    ak_hap_income_factor: [0.6, 0.6]
-    ak_hap_base_benefit: [0, 0]
+    ak_hap_countable_income: [24_000, 24_000, 24_000]
+    ak_hap_income_factor: [0.6, 0.6, 0.6]
+    ak_hap_base_benefit: [0, 0, 0]
 
-# Addendum A lists ZIP 99709 as College (10 oil points) and ZIP 99827 as
-# Haines (6 oil points, tribal service for Natives only). Most addresses in
+# Addendum A lists College (10 oil points) as the main community for ZIP 99709
+# and Haines (6 oil points, tribal service for Natives only) as the main
+# community for ZIP 99827, which also lists Excursion Inlet and Klukwan. Most addresses in
 # Chena Ridge CDP use ZIP 99709, and Covenant Life CDP uses ZIP 99827, so
 # they take those communities' points; Covenant Life is not an all-resident
 # tribal place. With no income the factor is 1.0 (0 <= 25% of the guideline):
 # Covenant Life 6 * 1 * 1.0 = 6 points * $175 = $1,050; Chena Ridge
 # 10 * 1 * 1.0 = 10 points * $175 = $1,750.
-- name: Case 87, Covenant Life CDP and Chena Ridge CDP take the oil points of the community listed for their ZIP code.
+- name: Case 87, Covenant Life CDP and Chena Ridge CDP take the oil points of the main community listed for their ZIP code.
   period: 2027
   absolute_error_margin: 0.01
   input:

@@ -219,14 +219,15 @@ candidates:
     code:
     - policyengine_us/variables/gov/states/ak/dpa/hap/ak_hap_countable_income.py
     - policyengine_us/parameters/gov/states/ak/dpa/hap/income/child_earnings_age_limit.yaml
+    - policyengine_us/parameters/gov/states/ak/dpa/hap/income/student_wage_sources.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10341
   state: unreviewed
   note: The code exempts the wages (employment income and military basic pay) of a member under 18 who is a
     full-time student (is_full_time_student) and not the tax-unit head, the closest existing input to the head of
-    household; the student's business income still counts. Half-time enrollment cannot be
-    observed, and is_full_time_student treats any K-12 attendance as full time, so a half-time high school student's
-    wages are exempt in the code. The manual is served only over http,
+    household, in an SPM unit with an adult member; a minor in a unit without an adult is treated as its head. The
+    student's business income still counts. Half-time enrollment cannot be observed, and is_full_time_student treats
+    any K-12 attendance as full time, so a half-time high school student's wages are exempt in the code. The manual is served only over http,
     at http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-2_noncountable_(exempt)_income.htm.
 - id: us-ak:hap-utility-allowance-order
   program: liheap

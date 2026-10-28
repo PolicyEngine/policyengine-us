@@ -4,11 +4,12 @@ description: Alaska assigns these oil heating points by Census place under the H
 # spelling variants such as Adak (Station), Chenega Bay, Kalskag (lower/upper),
 # Eilson AFB, Harding Lake and Saint for St., and give the Anchorage
 # municipality the Anchorage value of 8 (Chugiak, listed at 7, lies inside it).
-# Four places take the community Addendum A lists for their ZIP code: Chena
-# Ridge and Goldstream (ZIP 99709, College, 10) and Covenant Life and Mosquito
-# Lake (ZIP 99827, Haines, 6). Every other place takes the points of the
-# nearest listed oil community by great-circle distance between Census internal
-# points. This is not a state-issued crosswalk. Values follow the FY2027
+# Four places take the points of the main community Addendum A lists for their
+# ZIP code: Chena Ridge and Goldstream (ZIP 99709, College, 10) and Covenant
+# Life and Mosquito Lake (ZIP 99827, Haines, 6; Addendum A also lists
+# Excursion Inlet and Klukwan under 99827). Every other place takes the points
+# of the nearest listed oil community by great-circle distance between Census
+# internal points. This is not a state-issued crosswalk. Values follow the FY2027
 # Addendum A, except Loring (5) and Tetlin (16), which follow Appendix A to
 # 7 AAC 44 under 7 AAC 44.080(a); Addendum A lists them at 4 and 12.
 "00065": # Adak city

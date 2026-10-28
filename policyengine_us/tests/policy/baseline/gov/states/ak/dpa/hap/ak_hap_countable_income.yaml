@@ -267,7 +267,7 @@
   output:
     ak_hap_countable_income: 24_000
 
-# 7 AAC 44.042(5) covers any full-time student under 18, not only elementary or secondary students, and exempts only "wages". A 17-year-old full-time college student who is not the head has the 12,000 of wages excluded, but the 2,000 of net business income counts: 24,000 + 0 + 2,000 = 26,000.
+# 7 AAC 44.042(5) covers any full-time student under 18, not only elementary or secondary students, and exempts only "wages". A 17-year-old full-time college student who is not the head has 12,000 of wages and 1,200 of National Guard drill pay (military basic pay) excluded, but the 2,000 of net business income counts: 24,000 + 0 + 0 + 2,000 = 26,000.
 - name: "Case 10, a full-time college student under 18 who is not the head has wages excluded and net business income counted."
   period: 2027
   absolute_error_margin: 0.01
@@ -290,6 +290,7 @@
         is_full_time_college_student: true
         is_in_k12_school: false
         employment_income: 12_000
+        military_basic_pay: 1_200
         self_employment_income: 2_000
     spm_units:
       spm_unit1:
@@ -374,8 +375,8 @@
   output:
     ak_hap_countable_income: 36_000
 
-# 7 AAC 44.042(5) does not exempt a head of household. This 17-year-old high school student lives alone and heads a tax unit (supplied role; age ordering infers no head when no member is an adult), so the wages of 12,000 count.
-- name: "Case 13, wages of a minor student who heads a tax unit count."
+# 7 AAC 44.042(5) does not exempt a head of household. This 17-year-old high school student lives alone with no role supplied. A tax unit infers a head only among adults, so the student is not a tax-unit head, but with no adult in the SPM unit the student is treated as its head, so the wages of 12,000 count.
+- name: "Case 13, wages of a minor student living without an adult count."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -386,7 +387,6 @@
         ssi: 0
         ak_ssp: 0
         ak_permanent_fund_dividend: 0
-        tax_unit_role_input: "HEAD"
         is_in_k12_school: true
         employment_income: 12_000
     spm_units:
