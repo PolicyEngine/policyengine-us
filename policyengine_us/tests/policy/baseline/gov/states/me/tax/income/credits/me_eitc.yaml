@@ -187,3 +187,334 @@
     eitc: 0
     me_childless_eitc_age_eligible: false
     me_eitc: 0
+
+# 2021: 36 M.R.S. 5219-S(1) pays 20% of the federal credit, and the federal
+# childless minimum age was 19, or 24 for a student, with no maximum
+# (26 U.S.C. 32(n)(1)-(2)). 32(n)(3)-(4) set the phase-in rate at 15.3%, so
+# $5,000 of wages gives a federal or as-if-eligible credit of $765 and a
+# Maine credit of $153 at every age from 18 to 24, student or not. Filers
+# who fail the federal age test take the 5219-S(5) pro forma; the rest take
+# the federal credit. No filer gets both.
+- name: 2021 childless non-student aged 18 gets the Maine credit through the Maine pro forma
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 18
+        employment_income: 5_000
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: true
+    eitc: 0
+    me_pro_forma_childless_eitc: 765
+    me_eitc: 153
+
+- name: 2021 childless full-time student aged 18 gets the Maine credit through the Maine pro forma
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 18
+        employment_income: 5_000
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: true
+    eitc: 0
+    me_pro_forma_childless_eitc: 765
+    me_eitc: 153
+
+- name: 2021 childless non-student aged 19 gets the Maine credit through the federal credit
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 19
+        employment_income: 5_000
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: false
+    eitc: 765
+    me_pro_forma_childless_eitc: 0
+    me_eitc: 153
+
+- name: 2021 childless full-time student aged 19 gets the Maine credit through the Maine pro forma
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 19
+        employment_income: 5_000
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: true
+    eitc: 0
+    me_pro_forma_childless_eitc: 765
+    me_eitc: 153
+
+- name: 2021 childless non-student aged 22 gets the Maine credit through the federal credit
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 22
+        employment_income: 5_000
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: false
+    eitc: 765
+    me_pro_forma_childless_eitc: 0
+    me_eitc: 153
+
+- name: 2021 childless full-time student aged 22 gets the Maine credit through the Maine pro forma
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 22
+        employment_income: 5_000
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: true
+    eitc: 0
+    me_pro_forma_childless_eitc: 765
+    me_eitc: 153
+
+- name: 2021 childless non-student aged 23 gets the Maine credit through the federal credit
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 23
+        employment_income: 5_000
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: false
+    eitc: 765
+    me_pro_forma_childless_eitc: 0
+    me_eitc: 153
+
+- name: 2021 childless full-time student aged 23 gets the Maine credit through the Maine pro forma
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 23
+        employment_income: 5_000
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: true
+    eitc: 0
+    me_pro_forma_childless_eitc: 765
+    me_eitc: 153
+
+- name: 2021 childless non-student aged 24 gets the Maine credit through the federal credit
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 24
+        employment_income: 5_000
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: false
+    eitc: 765
+    me_pro_forma_childless_eitc: 0
+    me_eitc: 153
+
+- name: 2021 childless full-time student aged 24 gets the Maine credit through the federal credit
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 24
+        employment_income: 5_000
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: false
+    eitc: 765
+    me_pro_forma_childless_eitc: 0
+    me_eitc: 153
+# 2025: the federal childless minimum age is 25 for students and non-students
+# alike, and the maximum is 64. The phase-in rate of 7.65% gives $382.50 on
+# $5,000 of wages, and Maine pays 50% of it (5219-S(1-A)).
+- name: 2025 childless full-time student aged 22 gets the Maine pro forma credit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 22
+        employment_income: 5_000
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: true
+    eitc: 0
+    me_pro_forma_childless_eitc: 382.5
+    me_eitc: 191.25
+
+- name: 2025 childless couple aged 22 and 30 takes the federal path
+  # The 30-year-old spouse meets the federal age test, so the couple is
+  # federally eligible and outside the added cohort.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+      spouse:
+        age: 22
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: false
+    eitc: 382.5
+    me_pro_forma_childless_eitc: 0
+    me_eitc: 191.25
+
+- name: 2025 federally eligible couple aged 22 and 30 that does not take up the federal EITC gets no Maine credit
+  # Maine pays a share of the federal credit, as for any other federally
+  # eligible filer; the pro forma covers only filers who fail the federal age
+  # test.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+      spouse:
+        age: 22
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        takes_up_eitc: false
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: false
+    eitc: 0
+    me_pro_forma_childless_eitc: 0
+    me_eitc: 0
+
+- name: 2025 childless couple aged 22 and 66 gets the Maine pro forma credit
+  # Neither spouse meets the federal age test (25 to 64), and the 22-year-old
+  # is in Maine's 18-24 range.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 66
+      spouse:
+        age: 22
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: true
+    eitc: 0
+    me_pro_forma_childless_eitc: 382.5
+    me_eitc: 191.25
