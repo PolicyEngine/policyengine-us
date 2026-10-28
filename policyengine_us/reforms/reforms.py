@@ -1,3 +1,4 @@
+from .congress.s770 import create_s770_section_8_reform
 from .congress.delauro import create_american_family_act_with_baby_bonus_reform
 from .states.al.hb527 import create_al_hb527_overtime_deduction_reform
 from .dc_kccatc import create_dc_kccatc_reform
@@ -290,6 +291,9 @@ from .refundable_credit_conversion import (
 from .states.ca.ab2591 import (
     create_ca_ab2591_reform,
 )
+from .states.ca.prop3 import (
+    create_ca_prop3_reform,
+)
 from .states.ga.sb520 import (
     create_ga_sb520_reform,
 )
@@ -562,6 +566,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
     ca_ab2591 = create_ca_ab2591_reform(parameters, period)
+    ca_prop3 = create_ca_prop3_reform(parameters, period)
     ga_sb520 = create_ga_sb520_reform(parameters, period)
     hi_hb2306_cdcc = create_hi_hb2306_cdcc_reform(parameters, period)
     nc_eitc = create_nc_eitc_reform(parameters, period)
@@ -597,7 +602,10 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
 
+    s770_section_8 = create_s770_section_8_reform(parameters, period)
+
     reforms = [
+        s770_section_8,
         afa_reform,
         winship_reform,
         dc_kccatc_reform,
@@ -712,6 +720,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         tx_rebate,
         al_hb527_overtime_deduction,
         ca_ab2591,
+        ca_prop3,
         ga_sb520,
         hi_hb2306_cdcc,
         nc_eitc,

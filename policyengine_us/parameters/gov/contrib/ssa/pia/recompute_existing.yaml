@@ -1,0 +1,9 @@
+description: Whether the contributed PIA formula applies by payment year to earlier eligibility cohorts.
+values:
+  1983-01-01: false
+metadata:
+  unit: bool
+  label: Recompute PIA for existing beneficiaries
+  reference:
+    - title: SSA Primary Insurance Amount formula
+      href: https://www.ssa.gov/OACT/COLA/piaformula.html

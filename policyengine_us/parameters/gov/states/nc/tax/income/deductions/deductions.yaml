@@ -6,6 +6,7 @@ values:
     - nc_child_deduction
     - taxable_social_security
     - salt_refund_income
+    - nc_other_subtractions
   2022-01-01:
     - us_govt_interest
     - nc_standard_or_itemized_deductions
@@ -13,6 +14,7 @@ values:
     - taxable_social_security
     - nc_military_retirement_deduction
     - salt_refund_income
+    - nc_other_subtractions
 
 metadata:
   unit: list

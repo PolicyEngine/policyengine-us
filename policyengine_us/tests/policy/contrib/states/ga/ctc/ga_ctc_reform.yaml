@@ -127,3 +127,93 @@
     # $10k liability fully absorbs the $250 nonrefundable credit, leaving
     # nothing unused to refund.
     ga_refundable_ctc: 0
+
+# The refund cap counts the same children as ga_ctc_potential (Georgia's own
+# IRC 24(c) child test), not children allowed the federal credit.
+- name: Refund cap keeps the child of a filer who can be claimed as a dependent
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ga.ctc.ga_ctc_reform.ga_ctc_reform
+  input:
+    gov.contrib.states.ga.ctc.refundable.in_effect: true
+    people:
+      parent:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        ga_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    ctc_qualifying_child: [false, false]
+    ga_ctc_potential: 250
+    ga_refundable_ctc: 250
+
+- name: Refund cap keeps the child of a joint return with one claimable spouse (the claimable spouse is the head)
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ga.ctc.ga_ctc_reform.ga_ctc_reform
+  input:
+    gov.contrib.states.ga.ctc.refundable.in_effect: true
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        ga_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: GA
+  output:
+    ga_ctc_potential: 250
+    ga_refundable_ctc: 250
+
+- name: Refund cap keeps the child of a joint return with one claimable spouse (the claimable spouse is the spouse)
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ga.ctc.ga_ctc_reform.ga_ctc_reform
+  input:
+    gov.contrib.states.ga.ctc.refundable.in_effect: true
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        ga_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: GA
+  output:
+    ga_ctc_potential: 250
+    ga_refundable_ctc: 250

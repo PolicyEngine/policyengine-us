@@ -323,3 +323,22 @@
     nc_lieap_gross_income_person: [13_500, 16_800]
     nc_lieap_income: [13_500, 16_800]
   absolute_error_margin: 0.01
+
+- name: Case 13, reported unemployment compensation counts as unearned income.
+  # The unearned source list reads total_unemployment_compensation. North
+  # Carolina has no modeled unemployment insurance program, so the total is
+  # the reported amount and this control shows reported UC still counts.
+  period: 2026
+  input:
+    state_code: NC
+    age: 40
+    unemployment_compensation: 6_000
+    ssi: 0
+    social_security: 0
+    tanf: 0
+    childcare_expenses: 0
+  output:
+    total_unemployment_compensation: 6_000
+    # "Unemployment" (FNS 300.02 chart, page 24) has no work deduction.
+    nc_lieap_gross_income_person: 6_000
+  absolute_error_margin: 0.01

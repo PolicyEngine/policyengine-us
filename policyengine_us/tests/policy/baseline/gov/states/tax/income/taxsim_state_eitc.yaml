@@ -177,3 +177,71 @@
   output:
     taxsim_state_eitc: 1_163.2
     taxsim_state_ctc: 0
+
+# Montana's EITC first applies in tax year 2019 (Laws of Montana 2017, Ch. 381,
+# sec. 4), at 3% of the federal credit.
+- name: MT EITC is the state EITC from tax year 2019, its first year
+  # Federal EITC, Rev. Proc. 2018-57 sec. 3.07, one child: 0.34 * 10,000 = 3,400
+  # (earnings below the 10,370 earned income amount). Montana: 0.03 * 3,400 = 102.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 10_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MT
+  output:
+    taxsim_state_eitc: 102
+
+- name: MT EITC is the state EITC in tax year 2020
+  # Federal EITC, Rev. Proc. 2019-44 sec. 3.07, one child: 0.34 * 10,000 = 3,400
+  # (earnings below the 10,540 earned income amount). Montana: 0.03 * 3,400 = 102.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 10_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MT
+  output:
+    taxsim_state_eitc: 102
+
+- name: MT has no state EITC in tax year 2018
+  # Federal EITC, Rev. Proc. 2018-18 sec. 3.05, one child: 0.34 * 10,000 = 3,400
+  # (earnings below the 10,180 earned income amount). No Montana credit yet.
+  period: 2018
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 10_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MT
+  output:
+    eitc: 3_400
+    taxsim_state_eitc: 0

@@ -1,0 +1,92 @@
+# SA-3220 II.A-B: the published basic and enhanced rates, or the lower rate a
+# facility actually charges an SA resident. In-home payments use the published
+# rate.
+# PDF pages 204-205
+# https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=204
+- name: Case 1, adult care home uses the published basic rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+  output:
+    nc_sa_rate: 1_397
+
+- name: Case 2, special care unit uses the published enhanced rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: SPECIAL_CARE_UNIT
+  output:
+    nc_sa_rate: 1_792
+
+- name: Case 3, enhanced in-home care uses the published enhanced rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: IN_HOME_ENHANCED
+  output:
+    nc_sa_rate: 1_792
+
+- name: Case 4, lower contracted adult care home rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_facility_rate: 1_000
+  output:
+    nc_sa_rate: 1_000
+
+- name: Case 5, contracted rate above the published basic rate is capped.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_facility_rate: 2_000
+  output:
+    nc_sa_rate: 1_397
+
+- name: Case 6, lower contracted special care unit rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: SPECIAL_CARE_UNIT
+    nc_sa_facility_rate: 1_500
+  output:
+    nc_sa_rate: 1_500
+
+- name: Case 7, in-home care ignores a contracted facility rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: IN_HOME
+    nc_sa_facility_rate: 1_000
+  output:
+    nc_sa_rate: 1_397
+
+# G.S. 108A-42.1(b) adjusts the enhanced rate by the federally approved Social
+# Security cost-of-living adjustment, 3.6% for 2027.
+# https://www.ncleg.gov/EnactedLegislation/Statutes/PDF/BySection/Chapter_108A/GS_108A-42.1.pdf
+- name: Case 8, enhanced special care unit rate follows the cost-of-living adjustment in 2027.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: SPECIAL_CARE_UNIT
+  output:
+    # 1,792 * 1.036 = 1,856.51 -> 1,857.
+    nc_sa_rate: 1_857
