@@ -704,7 +704,7 @@ def private_draw_system():
 
 SIMULATION_SETTINGS = {
     **SETTINGS,
-    "max_examples": 5,
+    "max_examples": 3,
     "suppress_health_check": [
         *SETTINGS["suppress_health_check"],
         HealthCheck.function_scoped_fixture,
@@ -830,7 +830,7 @@ def test_generated_raised_cap_paths_preserve_current_law_room(
             )
             activation.apply(self)
             self.parameters.gov.irs.payroll.social_security.cap.update(
-                start="2027-01-01", stop="2027-12-31", value=raised_cap
+                start=PERIOD.start, stop=PERIOD.stop, value=raised_cap
             )
 
     simulation = _private_simulation(

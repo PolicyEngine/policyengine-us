@@ -140,3 +140,53 @@
     # Default 10% phase-in: 100,000 * .1 * .9235 = 9,235.
     # Only the current year has earnings, after age-60 indexing: 9,235 / 420.
     ss_aime: 21.98809524
+
+
+- name: Joint active NIIT excludes only the actual OASDI taxed owners draw
+  period: 2027
+  absolute_error_margin: 0.03
+  reforms:
+    - policyengine_us.reforms.ssa.owners_draw.owners_draw
+    - policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    people:
+      room:
+        age: 45
+        payroll_tax_gross_wages: 100_000
+        s_corp_income: 400_000
+      no_room:
+        age: 45
+        payroll_tax_gross_wages: 250_000
+        s_corp_income: 400_000
+    tax_units:
+      room:
+        members: [room]
+        filing_status: SINGLE
+        niit_magi: 1_000_000
+        net_investment_income: 0
+      no_room:
+        members: [no_room]
+        filing_status: SINGLE
+        niit_magi: 1_000_000
+        net_investment_income: 0
+    households:
+      household:
+        members: [room, no_room]
+        state_code: TX
+  output:
+    owners_draw_gross: [400_000, 400_000]
+    owners_draw_net_earnings: [369_400, 369_400]
+    owners_draw_oasdi_base: [100_000, 0]
+    # Benefit credit uses adjusted draw earnings independently of OASDI room.
+    owners_draw_credited_earnings: [369_400, 369_400]
+    # Default q=.9235: 100,000 / .9235 = 108,283.7033 of gross profits.
+    owners_draw_niit_exclusion: [108_283.7033, 0]
+    s770_active_business_income: [291_716.2967, 400_000]
+    s770_active_taxable_base: [291_716.2967, 400_000]
+    s770_active_business_income_tax: [47_258.0401, 64_800]
