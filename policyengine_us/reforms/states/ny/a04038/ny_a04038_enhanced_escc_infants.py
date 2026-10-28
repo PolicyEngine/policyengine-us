@@ -32,9 +32,10 @@ def create_ny_a04038_enhanced_escc_infants() -> Reform:
             person = tax_unit.members
             age = person("age", period)
 
-            # Post-2024 CTC rules (2025-2027)
-            qualifies_for_federal_ctc = person("ctc_qualifying_child", period)
-            qualifies = qualifies_for_federal_ctc & (age >= p.minimum_age)
+            # Post-2024 CTC rules (2025-2027). Use the baseline NY qualifying
+            # child (ny_ctc_post_2024_base), which allows ITIN holders and
+            # does not apply the federal filer SSN requirement.
+            qualifies = person("ny_escc_qualifying_child", period)
 
             # Calculate base credit amount by age
             credit_by_age = p.post_2024.amount.calc(age)

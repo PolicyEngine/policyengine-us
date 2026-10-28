@@ -1,0 +1,108 @@
+# Unless a case names the payer, the payer is the head or spouse with the
+# highest gross earnings, and the first such member when earnings are equal.
+
+- name: One earner on a joint return pays
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 12_000
+      parent2:
+        age: 30
+      child:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    marital_units:
+      marital_unit:
+        members: [parent1, parent2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MA
+  output:
+    ma_tafdc_dependent_care_payer: [true, false, false]
+
+- name: The higher earner pays, even when listed second
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 4_800
+      parent2:
+        age: 30
+        employment_income_before_lsr: 12_000
+      child:
+        age: 1
+    tax_units:
+      tax_unit1:
+        members: [parent1, child]
+      tax_unit2:
+        members: [parent2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MA
+  output:
+    ma_tafdc_dependent_care_payer: [false, true, false]
+
+- name: Equal earners, the first one pays
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 8_400
+      parent2:
+        age: 30
+        employment_income_before_lsr: 8_400
+      child:
+        age: 1
+    tax_units:
+      tax_unit1:
+        members: [parent1, child]
+      tax_unit2:
+        members: [parent2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MA
+  output:
+    ma_tafdc_dependent_care_payer: [true, false, false]
+
+- name: A dependent teen with higher earnings is not the payer
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income_before_lsr: 6_000
+      teen:
+        age: 16
+        employment_income_before_lsr: 9_000
+      child:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent, teen, child]
+    spm_units:
+      spm_unit:
+        members: [parent, teen, child]
+    households:
+      household:
+        members: [parent, teen, child]
+        state_code: MA
+  output:
+    ma_tafdc_dependent_care_payer: [true, false, false]
