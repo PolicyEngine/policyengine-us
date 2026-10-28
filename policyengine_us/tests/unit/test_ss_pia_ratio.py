@@ -3,7 +3,7 @@
 from decimal import Decimal
 from fractions import Fraction
 
-from hypothesis import given, strategies as st
+from hypothesis import given, settings, strategies as st
 import pytest
 
 from policyengine_us.tools.social_security.pia import (
@@ -255,6 +255,8 @@ def test_cohort_and_shared_retroactive_modes_have_distinct_applicability():
     )
 
 
+# These properties check arithmetic, not elapsed time on a shared test host.
+@settings(deadline=None)
 @given(
     st.decimals(min_value=".01", max_value="1000000", places=2), st.integers(1983, 2035)
 )
@@ -262,6 +264,7 @@ def test_every_reform_off_is_exactly_one(benefit, year):
     assert compute_pia_ratio(benefit, year, bend_points=BENDS).factor == D(1)
 
 
+@settings(deadline=None)
 @given(st.integers(1, 50000))
 def test_baseline_inverse_roundtrips_and_contains_the_original_aime(aime):
     pia = compute_pia(aime, 2020, bend_points=BENDS)
@@ -272,6 +275,7 @@ def test_baseline_inverse_roundtrips_and_contains_the_original_aime(aime):
     assert compute_pia(result.aime, 2020, bend_points=BENDS) == pia
 
 
+@settings(deadline=None)
 @given(st.integers(1, 50000))
 def test_everywhere_higher_scale_has_factor_at_least_one(aime):
     pia = compute_pia(aime, 2020, bend_points=BENDS)
@@ -281,6 +285,7 @@ def test_everywhere_higher_scale_has_factor_at_least_one(aime):
     assert result.factor >= 1
 
 
+@settings(deadline=None)
 @given(st.integers(1, 50000), st.integers(0, 100))
 def test_factor_is_never_negative_for_nonnegative_reform_scale(aime, percent):
     pia = compute_pia(aime, 2020, bend_points=BENDS)
@@ -291,6 +296,7 @@ def test_factor_is_never_negative_for_nonnegative_reform_scale(aime, percent):
     assert result.factor >= 0
 
 
+@settings(deadline=None)
 @given(st.integers(1983, 2035))
 def test_zero_remains_zero_under_an_active_reform(year):
     result = compute_pia_ratio(0, year, REVIEW_PATH, bend_points=BENDS)
