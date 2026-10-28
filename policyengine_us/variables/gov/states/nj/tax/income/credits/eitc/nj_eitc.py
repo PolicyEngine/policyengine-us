@@ -8,7 +8,11 @@ class nj_eitc(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-7/"
+        "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-7/",
+        # P.L. 2021, c.130, section 1a(1) and (4).
+        "https://pub.njleg.state.nj.us/Bills/2020/PL21/130_.HTM",
+        # 2025 NJ-1040 instructions, line 58.
+        "https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=44",
     )
     defined_for = StateCode.NJ
 
@@ -22,24 +26,31 @@ class nj_eitc(Variable):
         # If eligible for federal EITC, return federal EITC * percent_of_federal_eitc.
         # If ineligible for federal EITC only because of age, return (max federal EITC for zero children) * percent_of_federal_eitc.
         #     Note: this implies that they have no children.
-
         # Otherwise, return 0.
-        # Worksheet reference: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=43
-        federal_eitc_eligible_assuming_meets_income_test = tax_unit(
-            "eitc_eligible", period
-        )
-        federal_eitc_meets_income_test = tax_unit("eitc_phased_in", period) > tax_unit(
-            "eitc_reduction", period
-        )
-        federal_eitc_takes_up = tax_unit("takes_up_eitc", period)
-        federal_eitc_eligible = (
-            federal_eitc_eligible_assuming_meets_income_test
-            & federal_eitc_meets_income_test
-            & federal_eitc_takes_up
-        )
-        childless_eitc_age_eligible = tax_unit("nj_childless_eitc_age_eligible", period)
+
+        # Section 1a(1): a percentage "of the federal earned income tax credit
+        # that would be allowed". The federal credit already reflects its
+        # phase-in, phase-out, take-up and filing, so a federally eligible
+        # filer gets the match on it, whatever its size. Such a filer meets
+        # the federal age test and cannot take the age path below.
+        federal_eitc_eligible = tax_unit("eitc_eligible", period)
+
+        # Section 1a(4): a childless filer ineligible for the federal credit
+        # only because of age gets the match on "the federal maximum amount
+        # for taxpayers with no qualifying child" (2025 NJ-1040 line 58: "enter
+        # $260", 40% of $649). The filer must still meet the federal earned
+        # income and AGI limits, so the federal credit recomputed without the
+        # age test must be positive. Comparing the phase-in amount with the
+        # reduction instead would deny the credit to a low earner whose
+        # unearned income puts the reduction above the phase-in amount but
+        # below the maximum.
+        phased_in = tax_unit("eitc_phased_in", period)
+        maximum = tax_unit("eitc_maximum", period)
+        reduction = tax_unit("eitc_reduction", period)
+        meets_federal_income_limits = min_(phased_in, max_(0, maximum - reduction)) > 0
         childless_eitc_eligible = (
-            childless_eitc_age_eligible & federal_eitc_meets_income_test
+            tax_unit("nj_childless_eitc_age_eligible", period)
+            & meets_federal_income_limits
         )
         federal_eitc = select(
             [
