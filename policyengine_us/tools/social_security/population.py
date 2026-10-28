@@ -64,16 +64,14 @@ def _disability_proxy_year(parameters, year, scenario):
     if scenario != "pre_reform":
         raise ValueError("Choose pre_reform or current_year for disability eligibility")
     # This is an exposure sensitivity, not an observed onset distribution.
-    # Use the cohort immediately before the first enabled formula change.
-    starts = [year]
-    node = parameters.gov.contrib.ssa.pia
-    for entry in node.in_effect.values_list:
-        if entry.value and int(entry.instant_str[:4]) <= year:
-            starts.append(int(entry.instant_str[:4]))
-    for entry in parameters.gov.contrib.congress.s770.section_2.in_effect.values_list:
-        if entry.value and int(entry.instant_str[:4]) <= year:
-            starts.append(max(2026, int(entry.instant_str[:4])))
-    return max(1983, min(starts) - 1)
+    # Enablement can precede separate factor/bend/indexing gates (inline YAML
+    # reforms enable switches from 2000). Use the shared path to find the first
+    # operative formula change, rather than an enabled but neutral formula.
+    for candidate in range(1983, year + 1):
+        path, mode = formula_path_at(parameters, candidate, candidate)
+        if has_active_reform(path, candidate, candidate, mode):
+            return max(1983, candidate - 1)
+    return max(1983, year - 1)
 
 
 def _record_basis(person, period, parameters, component):
@@ -249,14 +247,11 @@ def _record_basis(person, period, parameters, component):
             )
     elif component == "disability":
         years = np.where(years > 0, years, entitlement)
-        missing = years <= 0
-        years = np.where(
-            missing,
-            _disability_proxy_year(
+        missing = positive & (years <= 0)
+        if np.any(missing):
+            years[missing] = _disability_proxy_year(
                 parameters, year, _choice(policy.disability_eligibility_proxy)
-            ),
-            years,
-        )
+            )
         proxy |= missing
     else:
         # A worker link/year and an identified composite a*s are both needed.
