@@ -36,6 +36,10 @@ from policyengine_core.parameters.operations.uprate_parameters import (
 )
 from .tools.default_uprating import add_default_uprating
 from .tools.period_branch import delete_input_values
+from .tools.social_security_inputs import (
+    install_social_security_input_compatibility,
+    migrate_social_security_inputs,
+)
 from .tools.section_911 import validate_section_911_batch_inputs
 from .tools.per_capita_uprating import (
     add_per_capita_parameters_for_parameter_uprating,
@@ -54,6 +58,8 @@ from policyengine_us.spm import (
     clone_spm_system,
     create_spm_provider,
 )
+
+install_social_security_input_compatibility()
 
 COUNTRY_DIR = Path(__file__).parent
 
@@ -95,6 +101,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
     """
 
     variables_dir = COUNTRY_DIR / "variables"
+    _social_security_input_compatibility = True
     auto_carry_over_input_variables = True
     basic_inputs = [
         "state_name",
@@ -271,6 +278,8 @@ class Simulation(SPMSimulationMixin, CoreSimulation):
         )
         if reform is not None:
             self.apply_reform(reform)
+
+        migrate_social_security_inputs(self)
 
         # Labor supply responses
 
@@ -531,6 +540,8 @@ class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
         )
         if reform is not None:
             self.apply_reform(reform)
+
+        migrate_social_security_inputs(self)
 
         # Labor supply responses
 

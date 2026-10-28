@@ -1786,7 +1786,7 @@ wheels = [
 
 [[package]]
 name = "policyengine-core"
-version = "3.32.27"
+version = "3.33.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dpath" },
@@ -1806,14 +1806,14 @@ dependencies = [
     { name = "standard-imghdr" },
     { name = "wheel" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/de/24/84c0747c64fba95e89d3acd332604ad01e8a220ce7e80cf8d342b3b213bd/policyengine_core-3.32.27.tar.gz", hash = "sha256:632e8708ec243f7b592ec857e1978df207547c1510039373e707c310173cf4e4", size = 599334, upload-time = "2026-10-09T05:44:09.236Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/84/dc/b6e44d9cdb9afee354f89584eebe310d2e6480f852ca51d55570eee5a648/policyengine_core-3.33.2.tar.gz", hash = "sha256:4f0420021a5439b8d3b7c86333e291b003f4be689aebfff49cb10ad1b6952ccb", size = 693096, upload-time = "2026-10-10T19:09:47.182Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cc/b3/fc1a10b03f2a159bc5623f0aa465887d1c1c98ee2f3118fd9ee3e8275921/policyengine_core-3.32.27-py3-none-any.whl", hash = "sha256:d0b0135939252ed628efd496988f76c0ab89bfa3b3437aa90f39000667c37687", size = 278496, upload-time = "2026-10-09T05:44:07.764Z" },
+    { url = "https://files.pythonhosted.org/packages/43/1b/9950def57dc9ec82aa2647aed02237199e347b5b7ecb898d5dfaf70014bc/policyengine_core-3.33.2-py3-none-any.whl", hash = "sha256:631e20811b74f6a7df906891efa5c78fbfd461ecefd65902b6e1456b1a0e4098", size = 301904, upload-time = "2026-10-10T19:09:45.432Z" },
 ]
 
 [[package]]
 name = "policyengine-us"
-version = "2.68.0"
+version = "2.73.2"
 source = { editable = "." }
 dependencies = [
     { name = "microdf-python" },
@@ -1845,7 +1845,7 @@ requires-dist = [
     { name = "jupyter-book", marker = "extra == 'dev'", specifier = ">=1.0.4.post1" },
     { name = "microdf-python", specifier = ">=1.0.0" },
     { name = "pandas", specifier = ">=3.0" },
-    { name = "policyengine-core", specifier = ">=3.32.27" },
+    { name = "policyengine-core", specifier = ">=3.33.1" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.9.0" },
     { name = "setuptools", marker = "extra == 'dev'", specifier = ">=80.9.0" },
     { name = "spm-calculator", specifier = ">=1.0.0,<=1.0.0.post1" },
