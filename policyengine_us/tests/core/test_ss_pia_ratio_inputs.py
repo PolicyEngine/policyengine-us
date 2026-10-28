@@ -10,9 +10,11 @@ from copy import deepcopy
 
 import numpy as np
 import pytest
+import yaml
 from policyengine_core.data import Dataset
 from policyengine_core.reforms import Reform
 from policyengine_core.simulations import Simulation as CoreSimulation
+from policyengine_core.simulations import SimulationBuilder
 
 
 YEAR = 2026
@@ -29,10 +31,12 @@ DOWNSTREAM = (
     "adjusted_gross_income",
     "income_tax",
     "household_net_income",
+    "ssi",
     "ssi_unearned_income",
     "snap_unearned_income",
 )
 AMOUNTS = ((18_440.64, 0, 0, 0), (12_000, 6_000, 1_200, 300))
+LATER_YEAR_AMOUNTS = (12_000, 6_000, 3_000, 1_000)
 GROUP_ENTITIES = ("household", "tax_unit", "spm_unit", "family", "marital_unit")
 GROUP_PLURALS = ("households", "tax_units", "spm_units", "families", "marital_units")
 
@@ -110,6 +114,12 @@ def _neutral_stacked_base(system):
     return NeutralPIARatioHooks(system)
 
 
+@pytest.fixture(scope="module")
+def neutral_stacked_base(country_system):
+    # One read-only constant-one reference serves every ingress route.
+    return _neutral_stacked_base(country_system)
+
+
 def _snapshot(simulation):
     requested = {
         name: np.asarray(simulation.calculate(name, YEAR)).copy()
@@ -126,8 +136,23 @@ def _snapshot(simulation):
     return requested, cached
 
 
+def _assert_snapshots_equal(current, reference):
+    assert current[0].keys() == reference[0].keys()
+    for name in current[0]:
+        np.testing.assert_array_equal(
+            current[0][name], reference[0][name], err_msg=name
+        )
+    assert reference[1].keys() <= current[1].keys()
+    for name in reference[1]:
+        np.testing.assert_array_equal(
+            current[1][name], reference[1][name], err_msg=name
+        )
+
+
 @pytest.mark.parametrize("ingress", ("reported_situation", "public_h5"))
-def test_all_off_matches_neutral_stacked_base(country_system, tmp_path, ingress):
+def test_all_off_matches_neutral_stacked_base(
+    country_system, neutral_stacked_base, tmp_path, ingress
+):
     """C adds no current-law change on either supported initial-ingress route."""
     if ingress == "public_h5":
         path = tmp_path / "reported_benefits_2026.h5"
@@ -141,7 +166,7 @@ def test_all_off_matches_neutral_stacked_base(country_system, tmp_path, ingress)
                 person[f"{component}_reported"] = person.pop(component)
 
     results = []
-    for system in (country_system, _neutral_stacked_base(country_system)):
+    for system in (country_system, neutral_stacked_base):
         simulation_inputs = (
             {"dataset": Dataset.from_file(path)}
             if ingress == "public_h5"
@@ -161,17 +186,130 @@ def test_all_off_matches_neutral_stacked_base(country_system, tmp_path, ingress)
             )
         results.append((requested, cached))
 
-    current, reference = results
-    assert current[0].keys() == reference[0].keys()
-    for name in current[0]:
-        np.testing.assert_array_equal(
-            current[0][name], reference[0][name], err_msg=name
+    _assert_snapshots_equal(*results)
+
+
+def _later_year_situation():
+    people = {
+        "recipient": {
+            "age": {2024: 70, YEAR: 72},
+            "taxable_interest_income": {YEAR: 30_000},
+        },
+        "spouse": {"age": {2024: 68, YEAR: 70}},
+    }
+    for component, amount in zip(COMPONENTS, LATER_YEAR_AMOUNTS):
+        people["recipient"][component] = {2024: amount}
+    situation = {
+        "people": people,
+        **{plural: {"unit": {"members": list(people)}} for plural in GROUP_PLURALS},
+    }
+    situation["households"]["unit"]["state_code"] = {YEAR: "TX"}
+    return situation
+
+
+def _build_later_year_simulation(system, route):
+    if route == "public_situation":
+        from policyengine_us import Simulation
+
+        return Simulation(situation=_later_year_situation(), tax_benefit_system=system)
+    if route == "yaml_builder":
+        # Match the public-name YAML contract consumed by Core's test runner.
+        text = yaml.safe_dump({"input": _later_year_situation()})
+        return SimulationBuilder().build_from_entities(
+            system, yaml.safe_load(text)["input"]
         )
-    assert reference[1].keys() <= current[1].keys()
-    for name in reference[1]:
-        np.testing.assert_array_equal(
-            current[1][name], reference[1][name], err_msg=name
-        )
+    simulation = SimulationBuilder().build_default_simulation(system, count=2)
+    simulation.set_input("age", YEAR, [72, 70])
+    simulation.set_input("taxable_interest_income", YEAR, [30_000, 0])
+    simulation.set_input("state_code", YEAR, ["TX", "TX"])
+    for component, amount in zip(COMPONENTS, LATER_YEAR_AMOUNTS):
+        simulation.set_input(component, 2024, [amount, 0])
+    return simulation
+
+
+@pytest.mark.parametrize(
+    "route", ("public_situation", "dataset_set_input", "yaml_builder")
+)
+def test_current_law_public_and_later_year_ingress(
+    country_system, neutral_stacked_base, route
+):
+    """Public inputs retain current law after migration and 2024-to-2026 uprating."""
+    results = []
+    for system in (country_system, neutral_stacked_base):
+        simulation = _build_later_year_simulation(system, route)
+        for component in COMPONENTS:
+            np.testing.assert_array_equal(
+                simulation.calculate(f"{component}_pia_ratio_factor", YEAR), 1
+            )
+        results.append(_snapshot(simulation))
+    _assert_snapshots_equal(*results)
+    assert results[0][0]["social_security_retirement"][0] > 12_000
+
+
+def test_household_flags_count_members_once(country_system):
+    situation = _later_year_situation()
+    for person in situation["people"].values():
+        for component in COMPONENTS:
+            person.pop(component, None)
+        person["social_security_retirement_reported"] = {YEAR: 12_000}
+    simulation = CoreSimulation(situation=situation, tax_benefit_system=country_system)
+    flags = simulation.calculate(
+        "social_security_retirement_pia_ratio_missing_claim_age", YEAR
+    )
+    counts = simulation.calculate(
+        "social_security_retirement_pia_ratio_missing_claim_age_count", YEAR
+    )
+    np.testing.assert_array_equal(flags, [True, True])
+    np.testing.assert_array_equal(counts, [2])
+    assert np.dot(counts, [3]) == np.dot(flags, [3, 3]) == 6
+
+
+def test_assumed_claim_age_proxy_outputs_exclude_identified_only(country_system):
+    """Exact birth dates do not turn an assumed claim age into observed history."""
+    people = {
+        person: {
+            "age": {YEAR: 70},
+            "ss_calculator_birth_date": {"eternity": "1956-06-15"},
+            "social_security_retirement_reported": {YEAR: 12_000},
+            "social_security_retirement_claim_age_months": {YEAR: 0},
+        }
+        for person in ("first_retiree", "second_retiree")
+    }
+    situation = {
+        "people": people,
+        **{plural: {"unit": {"members": list(people)}} for plural in GROUP_PLURALS},
+    }
+    reform = Reform.from_dict(
+        {
+            "gov.contrib.ssa.benefit_levers.pia_ratio.claiming_scenario": {
+                YEAR: ["age_65"]
+            }
+        }
+    )
+    simulation = CoreSimulation(
+        situation=situation,
+        tax_benefit_system=country_system,
+        reform=reform,
+        default_input_period=YEAR,
+        default_calculation_period=YEAR,
+    )
+    prefix = "social_security_retirement_pia_ratio_"
+    proxy = simulation.calculate(f"{prefix}proxy", YEAR)
+    np.testing.assert_array_equal(proxy, [True, True])
+    np.testing.assert_array_equal(
+        simulation.calculate(f"{prefix}proxy_count", YEAR), [2]
+    )
+    assert np.all(
+        simulation.calculate("social_security_retirement_inferred_aime", YEAR) > 0
+    )
+    identified_only = simulation.calculate(f"{prefix}own_record_retired_worker", YEAR)
+    np.testing.assert_array_equal(identified_only, [True, True])
+    for flag in ("unmodeled", "missing_claim_age", "pre_1983", "proxy"):
+        values = simulation.calculate(f"{prefix}{flag}", YEAR)
+        if flag != "proxy":
+            np.testing.assert_array_equal(values, [False, False])
+        identified_only = identified_only & ~values
+    assert not np.any(identified_only)
 
 
 def test_supplied_claim_months_load_from_h5_and_drive_inverse(country_system, tmp_path):
