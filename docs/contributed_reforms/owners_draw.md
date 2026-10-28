@@ -118,15 +118,26 @@ synchronize that path with the current tax cap. Mini-PIA integration and a
 complete annual-history ledger remain separate future work.
 
 `owners_draw_niit_exclusion` is the matching gross-profit exclusion for a
-subsequent active-NIIT reform. With OASDI only it is
+S.770 active-business NIIT option. With OASDI only it is
 `draw_oasdi_base / q`: only profits whose adjusted earnings actually face
 SECA are excluded. With HI enabled it is the entire actual gross draw D,
 because N_D faces uncapped HI. Profits beyond OASDI room remain in the active
 base when HI is off. The undrawn share and any floor-rejected planned draw
 also remain. Existing already-SE gross K_active must separately be excluded
 regardless of the OASDI cap because existing SE earnings face uncapped HI.
-No active-NIIT reform is integrated here; its subsequent PR must consume
-this output and reconcile its signed residual and thresholds.
+When both reforms are active, `s770_active_business_income` consumes this
+calculated exclusion, including an explicit net-factor override. When owners
+draw is disabled, before its start year, or uninstalled, the S.770 manual
+draw hooks retain their original behavior.
+
+The automatic joint route requires `material_participation_only: true`.
+Passive-inclusive draws remain supported by the standalone owners' draw
+reform, but the joint active-business calculation raises an explicit error
+for that setting: the aggregate draw does not identify which taxed profits
+belong in the active residual or in NII. Supporting that combination requires
+a validated source allocation, including NII's separate
+`s770_nii_fica_seca_income` hook. Subtracting the entire passive-inclusive draw
+from active profits would misallocate the remaining bases between tax rates.
 
 ## Data limitations
 

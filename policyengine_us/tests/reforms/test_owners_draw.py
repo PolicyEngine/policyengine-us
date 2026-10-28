@@ -22,6 +22,9 @@ from policyengine_us.reforms.ssa.owners_draw import (
     create_owners_draw_reform,
 )
 from policyengine_us.system import system
+from policyengine_us.variables.gov.contrib.congress.s770.s770_active_business_income import (
+    s770_active_business_income,
+)
 from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.above_the_line_deductions.self_employment_tax_ald_person import (
     self_employment_tax_ald_person,
 )
@@ -1010,3 +1013,296 @@ def test_generated_benefit_credit_cap_override_and_historical_lookback(
         no_credit.calculate("owners_draw_credited_earnings", off_year),
         np.zeros(len(batch)),
     )
+
+
+@settings(**SETTINGS)
+@given(
+    rows=st.lists(
+        st.tuples(
+            st.integers(0, 1_000_000),
+            st.integers(-100_000, 1_000_000),
+            st.integers(0, 100_000),
+            st.integers(0, 100_000),
+            st.integers(-100_000, 100_000),
+        ),
+        min_size=1,
+        max_size=12,
+    ),
+    rates=_RATE_POLICY,
+    cap=st.integers(1_000, 1_000_000),
+    share=st.integers(0, 1_000),
+    override_factor=st.sampled_from([0, 0.5, 0.8, 1]),
+    include_hi=st.booleans(),
+)
+@example(
+    rows=[(250_000, 400_000, 0, 0, 0), (100_000, 400_000, 0, 0, 0), (0, 0, 0, 0, 0)],
+    rates=(124, 29, 500),
+    cap=200_000,
+    share=1_000,
+    override_factor=0,
+    include_hi=False,
+)
+@example(
+    rows=[
+        (0, 499.99, 0, 0, 0),
+        (0, 500, 0, 0, 0),
+        (0, 500.01, 0, 0, 0),
+        (100_000, 400_000, 0, 0, 0),
+    ],
+    rates=(124, 29, 500),
+    cap=200_000,
+    share=1_000,
+    override_factor=0.8,
+    include_hi=False,
+)
+@example(
+    rows=[(250_000, 400_000, 0, 0, 0), (100_000, 400_000, 0, 0, 0), (0, -100, 0, 0, 0)],
+    rates=(124, 29, 500),
+    cap=200_000,
+    share=1_000,
+    override_factor=0,
+    include_hi=True,
+)
+@example(
+    rows=[(100_000, 400_000, 50_000, 30_000, 20_000)],
+    rates=(124, 29, 500),
+    cap=200_000,
+    share=300,
+    override_factor=0,
+    include_hi=False,
+)
+def test_generated_s770_excludes_actual_owners_draw(
+    reform_variables, rows, rates, cap, share, override_factor, include_hi
+):
+    """The active NIIT residual consumes the draw's actual M7 classification."""
+    wages, active, passive, already_se, other_se = np.asarray(rows, dtype=float).T
+    inputs = {
+        "payroll_tax_gross_wages": wages,
+        "s_corp_income": active,
+        "partnership_income": passive + already_se,
+        "passive_partnership_s_corp_income": passive,
+        "partnership_self_employment_net_earnings": already_se,
+        "self_employment_income": other_se,
+    }
+    policy = dict(
+        **_policy_rates(rates),
+        cap=cap,
+        phase_in_share=share / 1_000,
+        net_earnings_factor=override_factor,
+        include_hi=include_hi,
+    )
+    values = _calculate(reform_variables, _parameters(**policy), inputs)
+    member_values = {
+        **values,
+        "partnership_s_corp_income": active + passive + already_se,
+        "s770_passive_se_income": 0,
+        "s770_draw_gross": 0,
+        "s770_draw_oasdi_base": 0,
+        "s770_draw_hi_in_effect": False,
+        "s770_active_fica_income": 0,
+        "is_tax_unit_dependent": False,
+    }
+
+    def person(name, instant):
+        return np.asarray(member_values[name])
+
+    registry = {"owners_draw_niit_exclusion": object()}
+    person.simulation = SimpleNamespace(
+        tax_benefit_system=SimpleNamespace(variables=registry)
+    )
+    # One tax unit per owner preserves the vector batch without a model clone.
+    tax_unit = SimpleNamespace(members=person, sum=lambda array: array)
+    result = s770_active_business_income.formula(
+        tax_unit, PERIOD, _parameters(**policy)
+    )
+    np.testing.assert_allclose(result, active - values["owners_draw_niit_exclusion"])
+
+    # Installed-but-disabled, pre-start, and uninstalled draws retain the
+    # independent manual integration hooks, including their ordinary factor.
+    member_values["s770_draw_oasdi_base"] = 1_234.5
+    q = 1 - policy["employer_share"] * (policy["oasdi_rate"] + policy["hi_rate"])
+    for installed, enabled, start_year in (
+        (True, False, 2027),
+        (True, True, 2028),
+        (False, True, 2027),
+    ):
+        person.simulation.tax_benefit_system.variables = registry if installed else {}
+        result = s770_active_business_income.formula(
+            tax_unit,
+            PERIOD,
+            _parameters(**policy, in_effect=enabled, start_year=start_year),
+        )
+        np.testing.assert_allclose(result, active - 1_234.5 / q)
+
+
+@settings(**SETTINGS)
+@given(
+    rows=st.lists(
+        st.tuples(
+            st.integers(-1_000_000, 1_000_000),  # total pass-through income
+            st.integers(-1_000_000, 1_000_000),  # passive subset
+            st.integers(-1_000_000, 1_000_000),  # already-SE subset
+            st.integers(-1_000_000, 1_000_000),  # passive/SE intersection
+            st.integers(-1_000_000, 1_000_000),  # manual actual gross draw
+            st.integers(-1_000_000, 1_000_000),  # manual taxed OASDI draw
+            st.booleans(),  # manual uncapped-HI indicator
+            st.integers(-1_000_000, 1_000_000),  # active FICA exclusion
+            st.booleans(),  # dependent exclusion
+            st.integers(0, 3),  # tax-unit membership
+        ),
+        min_size=1,
+        max_size=12,
+    ),
+    rates=_RATE_POLICY,
+    override_factor=st.sampled_from([0, 0.5, 0.8, 1]),
+    include_hi=st.booleans(),
+)
+@example(
+    rows=[
+        (400_000, 20_000, 30_000, 5_000, 50_000, 1_234.5, False, 6_000, False, 0),
+        (-10_000, -5_000, -3_000, -1_000, 2_000, 9_000, True, 1_000, False, 0),
+        (400_000, 0, 0, 0, 50_000, 12_345, False, 0, True, 0),
+        (100_000, 0, 0, 0, 8_000, 50_000, True, 2_000, False, 1),
+    ],
+    rates=(124, 29, 500),
+    override_factor=0.8,
+    include_hi=True,
+)
+@example(
+    rows=[(0, 0, 0, 0, 0, 0, False, 0, False, 0)],
+    rates=(200, 40, 500),
+    override_factor=0,
+    include_hi=False,
+)
+def test_generated_disabled_owners_draw_preserves_main_s770(
+    rows, rates, override_factor, include_hi
+):
+    """Inactive draws preserve main's full signed residual and manual hooks."""
+    columns = list(zip(*rows))
+    (
+        total,
+        passive,
+        already_se,
+        overlap,
+        manual_gross,
+        manual_oasdi,
+        manual_hi,
+        active_fica,
+        dependent,
+        tax_unit_index,
+    ) = [np.asarray(column) for column in columns]
+    policy = _policy_rates(rates)
+    q = 1 - policy["employer_share"] * (policy["oasdi_rate"] + policy["hi_rate"])
+    # Independent oracle for main fe9ec1270f / #10402: net signed sources,
+    # subtract the manual M7 exclusion using main's rate-derived factor, then
+    # exclude dependents and aggregate head/spouse amounts within tax units.
+    # An owners-draw factor override must have no effect while it is inactive.
+    expected_person = np.zeros(len(rows), dtype=float)
+    for index, row in enumerate(rows):
+        t, p, se, intersection, gross, base, hi, fica, dep, _ = row
+        if not dep:
+            manual_exclusion = gross if hi else base / q
+            expected_person[index] = t - p - se + intersection - manual_exclusion - fica
+    expected = np.bincount(tax_unit_index, weights=expected_person, minlength=4)
+    values = {
+        "partnership_s_corp_income": total,
+        "passive_partnership_s_corp_income": passive,
+        "partnership_self_employment_net_earnings": already_se,
+        "s770_passive_se_income": overlap,
+        "s770_draw_gross": manual_gross,
+        "s770_draw_oasdi_base": manual_oasdi,
+        "s770_draw_hi_in_effect": manual_hi,
+        "s770_active_fica_income": active_fica,
+        "is_tax_unit_dependent": dependent,
+        # This is the actual exclusion for a disabled or pre-start draw. If
+        # the bridge accidentally consumes it, the manual hooks disappear.
+        "owners_draw_niit_exclusion": np.zeros(len(rows)),
+    }
+
+    def person(name, instant):
+        return values[name]
+
+    person.simulation = SimpleNamespace(
+        tax_benefit_system=SimpleNamespace(variables={})
+    )
+    tax_unit = SimpleNamespace(
+        members=person,
+        sum=lambda array: np.bincount(tax_unit_index, weights=array, minlength=4),
+    )
+    for installed, enabled, start_year in (
+        (True, False, 2027),
+        (True, True, 2028),
+        (False, True, 2027),
+    ):
+        person.simulation.tax_benefit_system.variables = (
+            {"owners_draw_niit_exclusion": object()} if installed else {}
+        )
+        parameters = _parameters(
+            **policy,
+            in_effect=enabled,
+            start_year=start_year,
+            net_earnings_factor=override_factor,
+            include_hi=include_hi,
+        )
+        if not installed:
+            # The main-only path must not require the draw parameter subtree.
+            del parameters(PERIOD).gov.contrib.ssa.owners_draw
+        actual = s770_active_business_income.formula(tax_unit, PERIOD, parameters)
+        np.testing.assert_allclose(actual, expected, rtol=1e-12, atol=1e-8)
+
+
+@pytest.mark.parametrize(
+    "installed, enabled, start_year",
+    [(True, True, 2027), (True, False, 2027), (True, True, 2028), (False, True, 2027)],
+)
+def test_s770_rejects_unclassified_passive_inclusive_draw(
+    reform_variables, installed, enabled, start_year
+):
+    """Only the new active joint route needs an active/NII source allocation."""
+    inputs = {
+        "s_corp_income": [200_000],
+        "passive_partnership_s_corp_income": [100_000],
+    }
+    standalone = _calculate(
+        reform_variables,
+        _parameters(material_participation_only=False),
+        inputs,
+        outputs=["owners_draw_active_income"],
+    )
+    # Passive-inclusive treatment remains available for the standalone draw.
+    np.testing.assert_array_equal(standalone["owners_draw_active_income"], [200_000])
+    values = {
+        "partnership_s_corp_income": 200_000,
+        "passive_partnership_s_corp_income": 100_000,
+        "partnership_self_employment_net_earnings": 0,
+        "s770_passive_se_income": 0,
+        "s770_draw_gross": 50_000,
+        "s770_draw_oasdi_base": 0,
+        "s770_draw_hi_in_effect": True,
+        "s770_active_fica_income": 0,
+        "is_tax_unit_dependent": False,
+        "owners_draw_niit_exclusion": 100_000,
+    }
+
+    def person(name, instant):
+        return np.asarray(values[name])
+
+    person.simulation = SimpleNamespace(
+        tax_benefit_system=SimpleNamespace(
+            variables={"owners_draw_niit_exclusion": object()} if installed else {}
+        )
+    )
+    tax_unit = SimpleNamespace(members=person, sum=lambda array: array)
+    parameters = _parameters(
+        material_participation_only=False,
+        in_effect=enabled,
+        start_year=start_year,
+    )
+    if installed and enabled and start_year <= PERIOD.start.year:
+        with pytest.raises(ValueError, match="validated active/NII allocation"):
+            s770_active_business_income.formula(tax_unit, PERIOD, parameters)
+    else:
+        np.testing.assert_array_equal(
+            s770_active_business_income.formula(tax_unit, PERIOD, parameters),
+            50_000,
+        )
