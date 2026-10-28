@@ -1,3 +1,32 @@
+## [2.74.2] - 2026-10-27
+
+### Fixed
+
+- Limit the Hawaii TANF and Vermont Reach Up dependent care deductions to the care the state rules allow (an incapacitated or disabled adult; not the unit's own children), cap each incapacitated adult's care separately in Hawaii and Kentucky, and apply the Kentucky K-TAP child care disregard only to a case that is otherwise ineligible, because its countable income exceeds the standard of need or its payment is zero (921 KAR 2:016 Sections 4(2)(b), 5(3)(b)1.c and 9(5)).
+
+
+## [2.74.1] - 2026-10-27
+
+### Fixed
+
+- Update DC TANF payment levels for sizes 1-10 to the FY2026 amounts from October 2025, and for sizes 11-19 to the FY2025 and FY2026 amounts in 29 DCMR 7200.1, disregard two thirds (not 67%) of earnings above $160, disregard all child support received from October 2025, and disregard only TANF members' child support so a GAC child's child support is not subtracted twice.
+- Subtract the Massachusetts TAFDC dependent care deduction once, after the 50% disregard, from the earnings of the member who pays for the care (106 CMR 704.275(A)), instead of from each earner (or half of it from each spouse on a joint return). A new input, `ma_tafdc_dependent_care_payer`, names the payer; by default it is the head or spouse with the highest gross earnings.
+- Deduct Mississippi TANF's $90 work expense and actual dependent care costs from each earner's earnings, and do not issue benefits under $10 a month.
+- Exclude children's earnings, SSI recipients' income and 27.5% of other gross earnings from North Carolina Work First countable income, and require a payment of at least $25 a month instead of $25 per household member.
+- Use the 50% earned income disregard for New Hampshire FANF recipients from September 2022 onward, per He-W 654.13(e) and FAM 603.01, instead of the 75% Cliff Effect pilot rate, which applied only to pilot participants who started or moved to full-time work. Compute the benefit of an applicant who passes the 20% eligibility test with the 50% disregard, per He-W 654.13(d), and require net income to be less than the payment standard, per RSA 167:79 III(e).
+- Apply the $10 minimum payment in Michigan FIP (BEM 518 issuance deficit test), Virginia TANF (TANF Manual 502.1 A, with the payment rounded down to whole dollars), South Carolina TANF (S.C. Code Regs. 114-1140(A)(5)) and Maryland TCA (COMAR 07.03.03.13 E(2), with net countable income rounded down to whole dollars under E(1)).
+- Compare the Wisconsin Works Custodial Parent of an Infant (CMC) age limit with the child's age in weeks, and set the limit to 12 weeks before 2012 and 8 weeks from 2012, so children aged 1 and 2 no longer get the CMC placement and its $673 grant.
+
+
+## [2.74.0] - 2026-10-27
+
+### Added
+
+- Add New Hampshire Fuel Assistance Program (nh_fap): PY2027 regular heating benefit from the Attachment D matrix with the 60% state median income test and a bedroom-based heating-cost estimate.
+- Add Utah HEAT (ut_heat): 2026 regular heating benefit from energy-burden points and targeted supplements with the 150% federal poverty guideline income test.
+- Add Wyoming LIEAP (wy_lieap): FY2026 regular heating benefit from the published fuel cost standards with the 60% state median income test.
+
+
 ## [2.73.2] - 2026-10-27
 
 ### Fixed
