@@ -10,7 +10,7 @@ class mo_liheap_medical_deduction(Variable):
     documentation = "Missouri's monthly medical deduction, annualized and given once per household when the applicant or spouse is elderly or disabled. Disabled means totally and permanently disabled or blind and receiving a listed disability benefit. Tax-unit heads and spouses who are citizens or legal immigrants stand in for the applicant and spouse."
     reference = (
         # PDF pages 2-3
-        "https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-19.pdf#page=2",
+        "https://web.archive.org/web/20250603190025/https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-19.pdf#page=2",
         # PDF pages 36, 48
         "https://dss.mo.gov/sites/mydss/files/media/pdf/2025/10/liheap-policy-procedure-manual.pdf#page=36",
     )

@@ -1,8 +1,10 @@
 # Missouri LIHEAP Energy Assistance eligibility: at least one qualifying
 # member; countable income at or below the 60% SMI limit, or below the
 # federal 110% poverty floor; cash resources of at most $3,000; heating costs
-# paid through the household's own fuel bill or through unsubsidized rent
-# that includes heat; and a heating fuel other than coal.
+# paid through the household's own fuel bill, through an electric supplier
+# account while the home has heating (including a subsidized tenant with heat
+# in the rent), or through unsubsidized rent that includes heat; and a heating
+# fuel other than coal.
 
 - name: Case 1, countable income exactly at the size one limit is eligible.
   period: 2026

@@ -1,9 +1,10 @@
 # Missouri LIHEAP countable income per member: earned income less the 20%
-# earned income deduction (each earned source floored at zero; none for
-# members under 18), plus unearned income (without short- and long-term
-# disability payments for members under 18), plus Social Security net of the
-# Medicare Part B premium. Members left out of the household size as
-# non-citizens have their income counted.
+# earned income deduction (none for members under 18), plus unearned income
+# (without short- and long-term disability payments for members under 18)
+# and Social Security, each source floored at zero, less the full Medicare
+# Part B premium of a member receiving Social Security or railroad
+# retirement, with the member's total floored at zero. Members left out of
+# the household size as non-citizens have their income counted.
 
 - name: Case 1, full-time minimum wage earnings after the 20 percent deduction.
   period: 2026
@@ -99,7 +100,7 @@
     # 24,000 x 0.8 = 19,200. Netting the loss would give 21,000 x 0.8 = 16,800.
     mo_liheap_countable_income_person: [19_200]
 
-- name: Case 5, Social Security counts net of the Medicare Part B premium.
+- name: Case 5, the full Medicare Part B premium is deducted for members receiving Social Security.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -124,9 +125,10 @@
   output:
     # 2026 Part B premium 202.90 x 12 = 2,434.80.
     # Person 1: 1,950 a month = 23,400 - 2,434.80 = 20,965.20.
-    # Person 2: max(1,800 - 2,434.80, 0) = 0, plus a 500 a month pension
-    # of 6,000 = 6,000.
-    mo_liheap_countable_income_person: [20_965.20, 6_000]
+    # Person 2: Social Security of 150 a month (1,800) plus a 500 a month
+    # pension of 6,000 = 7,800; the full premium is deducted from the
+    # member's total: 7,800 - 2,434.80 = 5,365.20.
+    mo_liheap_countable_income_person: [20_965.20, 5_365.20]
 
 - name: Case 6, unearned sources count in full and interest is excluded.
   period: 2026
@@ -266,3 +268,95 @@
     # child's survivor benefit of 800 a month = 9,600 counts as SSA income
     # (no Part B premium).
     mo_liheap_countable_income_person: [18_000, 9_600]
+
+- name: Case 11, a rental loss does not offset wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 45_000
+        rental_income: -5_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Wages 45,000 x 0.8 = 36,000; the rental loss is floored:
+    # max(-5,000, 0) = 0, so 36,000. No children, so no TANF; no medical
+    # deduction. 36,000 > the size 1 limit of 2,840 x 12 = 34,080 and the
+    # 110% poverty floor of 1.1 x 15,650 = 17,215 -> ineligible. Netting the
+    # loss (31,000) would make the household eligible for 326.
+    mo_liheap_countable_income_person: [36_000]
+    mo_liheap_countable_income: 36_000
+    mo_liheap_income_limit: 34_080
+    mo_liheap_eligible: false
+    mo_liheap: 0
+
+- name: Case 12, every earned income source counts after the deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 52
+        employment_income: 16_000
+        self_employment_income: 1_000
+        sstb_self_employment_income: 2_000
+        farm_operations_income: 4_000
+        partnership_s_corp_income: 8_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Wages 16,000 + self-employment 1,000 + professional-service
+    # self-employment 2,000 + farm 4,000 + partnership or S corporation
+    # 8,000 = 31,000; dropping any source changes the total.
+    # 31,000 x (1 - 0.2) = 24,800.
+    mo_liheap_countable_income_person: [24_800]
+
+- name: Case 13, remaining unearned income sources count in full.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 52
+        strike_benefits: 1_200
+        rental_income: 1_800
+        farm_rent_income: 2_400
+        alimony_income: 3_600
+      person2:
+        age: 60
+        railroad_benefits: 9_600
+        workers_compensation: 4_800
+        military_retirement_pay_survivors: 2_400
+        mo_ssp: 1_080
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Person 1: strike benefits 1,200 + rent from a building 1,800 + farm
+    # rent 2,400 + alimony 3,600 = 9,000.
+    # Person 2: railroad retirement 800 a month (9,600) + workers'
+    # compensation 4,800 + military survivor benefit 2,400 + a Missouri state
+    # supplementary payment of 90 a month (1,080, a monthly input summed over
+    # the year) = 17,880. At 60 the member is not on Medicare, so no Part B
+    # premium is deducted. Dropping any source changes a member's total.
+    mo_liheap_countable_income_person: [9_000, 17_880]

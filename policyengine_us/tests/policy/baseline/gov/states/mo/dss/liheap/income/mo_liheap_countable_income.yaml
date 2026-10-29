@@ -18,7 +18,7 @@
       spm_unit:
         members: [person1, person2, person3]
         heating_type: NATURAL_GAS
-        mo_tanf: 3_504
+        tanf: 3_504
     households:
       household:
         members: [person1, person2, person3]
@@ -122,3 +122,64 @@
     # 49,920 - 3,600 = 46,320.
     mo_liheap_household_size: 1
     mo_liheap_countable_income: 46_320
+
+- name: Case 6, the Medicare Part B premium is deducted for a railroad retiree.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        railroad_benefits: 37_000
+        medicare_part_b_premium: 2_434.80
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # 2026 Part B premium 202.90 x 12 = 2,434.80.
+    # Railroad retirement annuity 37,000 - 2,434.80 = 34,565.20.
+    # Medical deduction for an applicant 65 or older: 100 x 12 = 1,200.
+    # 34,565.20 - 1,200 = 33,365.20 <= the size 1 limit of 2,840 x 12
+    # = 34,080 -> eligible; natural gas pays 326. Without the premium
+    # deduction, 37,000 - 1,200 = 35,800 would exceed the limit.
+    mo_liheap_countable_income_person: [34_565.20]
+    mo_liheap_medical_deduction: 1_200
+    mo_liheap_countable_income: 33_365.20
+    mo_liheap_income_limit: 34_080
+    mo_liheap_eligible: true
+    mo_liheap: 326
+
+- name: Case 7, Missouri TANF the household does not take up is not counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 27
+        child_support_received: 2_400
+      person2:
+        age: 6
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        mo_tanf: 3_504
+        takes_up_tanf_if_eligible: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    # A 292 a month (3,504) Missouri TANF entitlement the household does not
+    # take up is not received, so tanf = 0. Child support received 2,400
+    # counts: 0 + 2,400 = 2,400. Counting mo_tanf would give 5,904.
+    tanf: 0
+    mo_liheap_countable_income: 2_400

@@ -1,4 +1,4 @@
-description: Missouri provides this one-time Energy Assistance payment by primary heating fuel under the Low Income Home Energy Assistance Program.
+description: Missouri provides this Energy Assistance amount for the selected fuel under the Low Income Home Energy Assistance Program.
 # The same amounts appear in the October 2025 manual (its Appendix K), the
 # FFY2026 Appendix K matrix and the FFY2027 application. 13 CSR 40-19.020(14)
 # bases payments on household size, income range and fuel source, using
@@ -6,7 +6,8 @@ description: Missouri provides this one-time Energy Assistance payment by primar
 # that decline across income ranges from 0 to 135 percent of the poverty level.
 # The FFY2026 plan, the Appendix K matrix, the October 2025 manual and the
 # 8-2026 application set one amount per fuel for incomes up to 60 percent of
-# state median income; the model applies those amounts.
+# state median income; the model applies those amounts. The household selects
+# the fuel to be paid, which may be its electric account (mo_liheap).
 NATURAL_GAS:
   2023-10-01: 326
 # Tank propane. The schedule also pays $177 for cylinder propane, which is not
@@ -39,12 +40,12 @@ UNSPECIFIED:
 metadata:
   unit: currency-USD
   period: year
-  label: Missouri LIHEAP Energy Assistance amount by heating fuel
+  label: Missouri LIHEAP Energy Assistance amount by fuel
   breakdown:
     - heating_type
   reference:
     - title: "13 CSR 40-19.020(3)(A) and (4) #page 2-3"
-      href: https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-19.pdf#page=2
+      href: https://web.archive.org/web/20250603190025/https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-19.pdf#page=2
     - title: Missouri LIHEAP FFY2026 State Plan, Sections 2.5 and 2.6
       href: https://liheapch.acf.gov/docs/2026/state-plans/MO_Plan_2026.pdf#page=9
     - title: Missouri LIHEAP FFY2026 Appendix K, Income Ranges and Benefit Amounts

@@ -1,9 +1,11 @@
 description: Missouri counts these unearned income sources under the Low Income Home Energy Assistance Program.
-# Social Security counts net of the Medicare Part B premium in
-# mo_liheap_countable_income_person, and Missouri TANF is added at the
-# household level in mo_liheap_countable_income. Short- and long-term
-# disability payments count only for members 18 or older
-# (adult_unearned_sources).
+# Each source is floored at zero, so a rental loss does not offset other
+# income. Social Security is added, and the SMI (Medicare Part B) premium of
+# a member receiving Social Security or Railroad Retirement benefits is
+# deducted, in mo_liheap_countable_income_person; TANF (the take-up-gated
+# tanf) is added at the household level in mo_liheap_countable_income.
+# Short- and long-term disability payments count only for members 18 or
+# older (adult_unearned_sources).
 # Interest and dividends are excluded (October 2025 manual, page 38), as are
 # capital gains, which page 38 treats as lump sums; page 32 lists the Form 1040
 # capital gains line among self-employment documents. Foster care payments,
@@ -48,6 +50,6 @@ metadata:
     - title: "Missouri LIHEAP Policy and Procedure Manual (October 2025), Unearned Income, Income Exclusions and Resources #page 32-34,38,40"
       href: https://dss.mo.gov/sites/mydss/files/media/pdf/2025/10/liheap-policy-procedure-manual.pdf#page=32
     - title: 13 CSR 40-19.020(2)(N), Low-Income Home Energy Assistance Program
-      href: https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-19.pdf#page=2
+      href: https://web.archive.org/web/20250603190025/https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-19.pdf#page=2
     - title: "Missouri DSS draft FFY2027 LIHEAP State Plan (report status Saved with Errors), Section 1.9 #page 5-7"
       href: https://dss.mo.gov/sites/mydss/files/media/pdf/2026/08/liheap-active-ffy2027.pdf#page=5

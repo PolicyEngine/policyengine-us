@@ -7,7 +7,7 @@ class mo_liheap_countable_income_person(Variable):
     definition_period = YEAR
     unit = USD
     label = "Missouri LIHEAP countable income per person"
-    documentation = "Gross income Missouri counts for a household member, including a member left out of the household size as a non-citizen: earned income after the earned income deduction, unearned income, and Social Security net of the Medicare Part B premium. Each earned source is floored at zero, so business and farm losses do not offset other income. Members under 18 have their earned income and their non-Social Security disability payments excluded; their Social Security and SSI count. Not modeled: a Part B premium paid by a member without Social Security (for example a Railroad Retirement beneficiary) and Medicare Part D premiums. Annual income stands in for twelve times the income of the month before application."
+    documentation = "Gross income Missouri counts for a household member, including a member left out of the household size as a non-citizen: earned income after the earned income deduction plus unearned income, less the SMI (Medicare Part B) premium of a member who receives Social Security or Railroad Retirement benefits, floored at zero. Each earned and unearned source is floored at zero, so business, farm and rental losses do not offset other income. Members under 18 have their earned income and their non-Social Security disability payments excluded; their Social Security and SSI count. Not modeled: Medicare Part D premiums. Annual income stands in for twelve times the income of the month before application."
     reference = (
         # PDF pages 5-7
         "https://liheapch.acf.gov/docs/2026/state-plans/MO_Plan_2026.pdf#page=5",
@@ -16,7 +16,7 @@ class mo_liheap_countable_income_person(Variable):
         # DSS draft FFY2027 plan (report status "Saved -- with Errors").
         # PDF pages 5-7
         "https://dss.mo.gov/sites/mydss/files/media/pdf/2026/08/liheap-active-ffy2027.pdf#page=5",
-        # PDF pages 32, 36, 38, 42-43
+        # PDF pages 32, 34, 36, 38, 42-43
         "https://dss.mo.gov/sites/mydss/files/media/pdf/2025/10/liheap-policy-procedure-manual.pdf#page=32",
     )
     defined_for = StateCode.MO
@@ -32,12 +32,19 @@ class mo_liheap_countable_income_person(Variable):
         # income, read here as Social Security and SSI.
         adult_income = countable_earned + add(person, period, p.adult_unearned_sources)
         adult = person("age", period) >= p.adult_age
-        unearned = add(person, period, p.unearned_sources)
-        # Plan section 1.9 counts Social Security excluding the Medicare
-        # deduction.
-        social_security = max_(
-            person("social_security", period)
-            - person("medicare_part_b_premium", period),
-            0,
+        # Each unearned source is floored at zero, so a rental loss does not
+        # offset other income; add() also sums monthly sources such as SSI.
+        unearned = 0
+        for source in p.unearned_sources:
+            unearned = unearned + max_(add(person, period, [source]), 0)
+        social_security = person("social_security", period)
+        # The 2025 manual (page 36) deducts the SMI premium for members who
+        # receive Social Security or Railroad Retirement benefits and pay it.
+        receives_ss_or_rrb = (social_security > 0) | (
+            person("railroad_benefits", period) > 0
         )
-        return unearned + social_security + where(adult, adult_income, 0)
+        smi_premium = where(
+            receives_ss_or_rrb, person("medicare_part_b_premium", period), 0
+        )
+        gross = unearned + social_security + where(adult, adult_income, 0)
+        return max_(gross - smi_premium, 0)
