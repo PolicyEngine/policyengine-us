@@ -99,7 +99,7 @@
   output:
     social_security_dependents: 6000
 
-- name: Calculated-base extension point bypasses population PIA and COLA factors
+- name: Complete calculated base bypasses every population benefit factor
   period: 2027
   input:
     age: 70
@@ -109,13 +109,15 @@
     gov.contrib.ssa.benefit_levers.across_the_board.rate: 0.1
     gov.contrib.ssa.benefit_levers.payable.share: 0.8
     social_security_retirement_source: supplied_pia
-    # The route itself is reserved. A supplied selected base stands in for
-    # the future service's amount already containing its reformed PIA/COLAs.
+    # This replaces the calculator's complete checks, including its PIA,
+    # COLAs, across-the-board change and payable share before the earnings test.
     social_security_retirement_base: 10000
     social_security_retirement_pia_ratio_factor: 1.2
     social_security_retirement_joint_cola_factor: 1.3
   output:
-    social_security_retirement: 8800
+    # The public route returns 10000 * 1. Applying 1.1 * 0.8 again would
+    # incorrectly reduce these already calculated checks to 8800.
+    social_security_retirement: 10000
 
 - name: Selecting an OASI-only basis before depletion remains neutral
   period: 2027
