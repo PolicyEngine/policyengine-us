@@ -79,7 +79,6 @@
     # 475 x 12 = 5,700.
     medicaid_medically_needy_income_limit: 5_700
 
-
 - name: Case 4, Kansas couple uses the SSI couple rate from July 2025.
   period: 2026
   absolute_error_margin: 0.01
@@ -103,7 +102,6 @@
     # 1,491 x 12 = 17,892.
     medicaid_medically_needy_income_limit: [17_892, 17_892]
 
-
 - name: Case 5, Minnesota uses 100 percent of the poverty guideline.
   period: 2026
   absolute_error_margin: 0.01
@@ -113,7 +111,6 @@
   output:
     # 1.00 x 15,960 = 15,960.
     medicaid_medically_needy_income_limit: 15_960
-
 
 - name: Case 6, New Hampshire couple and individual dollar limits in 2023, 2025 and 2026.
   period: 2026
@@ -169,9 +166,9 @@
         members: [person1, person2]
         state_code: NY
   output:
-    # 1.38 x 21,640 = 29,863.20.
-    medicaid_medically_needy_income_limit: [29_863.2, 29_863.2]
-
+    # 1.38 x 21,640 / 12 = 2,488.60, rounded up to 2,489 (GIS 26 MA/05):
+    # 2,489 x 12 = 29,868.
+    medicaid_medically_needy_income_limit: [29_868, 29_868]
 
 - name: Case 8, Rhode Island couple and individual dollar limits from 2019 to 2026.
   period: 2026
@@ -234,7 +231,6 @@
     # 1.00 x 21,640 = 21,640.
     medicaid_medically_needy_income_limit: [21_640, 21_640]
 
-
 - name: Case 10, Washington couple uses the one-person SSI rate.
   period: 2026
   absolute_error_margin: 0.01
@@ -258,7 +254,6 @@
     # 994 x 12 = 11,928.
     medicaid_medically_needy_income_limit: [11_928, 11_928]
 
-
 - name: Case 11, Wisconsin uses 100 percent of the poverty guideline.
   period: 2026
   absolute_error_margin: 0.01
@@ -268,7 +263,6 @@
   output:
     # 1.00 x 15,960 = 15,960.
     medicaid_medically_needy_income_limit: 15_960
-
 
 - name: Case 12, Illinois couple uses 100 percent of the two-person poverty guideline.
   period: 2026
@@ -290,9 +284,9 @@
         members: [person1, person2]
         state_code: IL
   output:
-    # 1.00 x 21,640 = 21,640.
-    medicaid_medically_needy_income_limit: [21_640, 21_640]
-
+    # 21,640 / 12 = 1,803.33, with the cents dropped (WAG 25-03-02(2)):
+    # 1,803 x 12 = 21,636.
+    medicaid_medically_needy_income_limit: [21_636, 21_636]
 
 - name: Case 13, North Dakota uses 90 percent of the poverty guideline.
   period: 2026
@@ -331,10 +325,11 @@
         state_code: {2022: NY, 2023: NY}
   output:
     # Outputs are [couple, couple, individual]. 2022: 1,367 / 934 times 12.
-    # 2023: 1.38 x 19,720 and 1.38 x 14,580.
+    # 2023: 1.38 x 19,720 / 12 = 2,267.80 and 1.38 x 14,580 / 12 = 1,676.70,
+    # rounded up to 2,268 and 1,677 a month.
     medicaid_medically_needy_income_limit:
       2022: [16_404, 16_404, 11_208]
-      2023: [27_213.6, 27_213.6, 20_120.4]
+      2023: [27_216, 27_216, 20_124]
 
 - name: Case 15, Minnesota uses 80 percent of the poverty guideline in 2019 and 81 percent in 2020.
   period: 2020
@@ -395,9 +390,11 @@
         members: [person1, person2, person3]
         state_code: {2023: ND}
   output:
-    # Outputs are [couple, couple, individual]: 0.83 x 19,720 and 0.83 x 14,580.
+    # Outputs are [couple, couple, individual]: 0.83 x 19,720 / 12 = 1,363.97
+    # and 0.83 x 14,580 / 12 = 1,008.45, rounded up to 1,364 and 1,009 a month
+    # (ML 3702).
     medicaid_medically_needy_income_limit:
-      2023: [16_367.6, 16_367.6, 12_101.4]
+      2023: [16_368, 16_368, 12_108]
 
 - name: Case 17, Wisconsin uses its dollar limit in 2019 and 100 percent of the poverty guideline from 2020.
   period: 2020
@@ -470,3 +467,108 @@
       2024: [15_600, 15_600, 15_600]
       2025: [15_996, 15_996, 15_996]
       2026: [16_500, 16_500, 16_500]
+
+- name: Case 19, Arkansas, Iowa and New Jersey couple and individual dollar limits in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 70}
+      person2: {age: 68}
+      person3: {age: 74}
+      person4: {age: 70}
+      person5: {age: 68}
+      person6: {age: 74}
+      person7: {age: 70}
+      person8: {age: 68}
+      person9: {age: 74}
+    marital_units:
+      marital_unit1: {members: [person1, person2]}
+      marital_unit2: {members: [person3]}
+      marital_unit3: {members: [person4, person5]}
+      marital_unit4: {members: [person6]}
+      marital_unit5: {members: [person7, person8]}
+      marital_unit6: {members: [person9]}
+    tax_units:
+      tax_unit1: {members: [person1, person2]}
+      tax_unit2: {members: [person3]}
+      tax_unit3: {members: [person4, person5]}
+      tax_unit4: {members: [person6]}
+      tax_unit5: {members: [person7, person8]}
+      tax_unit6: {members: [person9]}
+    households:
+      household1: {members: [person1, person2, person3], state_code: AR}
+      household2: {members: [person4, person5, person6], state_code: IA}
+      household3: {members: [person7, person8, person9], state_code: NJ}
+  output:
+    # AR: 216.66 / 108.33 x 12; IA: 483 / 483 x 12; NJ: 434 / 367 x 12.
+    medicaid_medically_needy_income_limit: [2_599.92, 2_599.92, 1_299.96, 5_796, 5_796, 5_796, 5_208, 5_208, 4_404]
+
+- name: Case 20, North Dakota uses 90 percent of the poverty guideline from 2024 and Minnesota 100 percent from 2023.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 70}
+      person2: {age: 70}
+    marital_units:
+      marital_unit1: {members: [person1]}
+      marital_unit2: {members: [person2]}
+    tax_units:
+      tax_unit1: {members: [person1]}
+      tax_unit2: {members: [person2]}
+    households:
+      household1: {members: [person1], state_code: {2023: MN, 2024: MN}}
+      household2: {members: [person2], state_code: {2023: ND, 2024: ND}}
+  output:
+    # [MN, ND]. 2023: 100% and 83% of 14,580 (ND 1,008.45 rounds up to 1,009 a month).
+    # 2024: 100% and 90% of 15,060 (ND 1,129.50 rounds up to 1,130, ML 3896).
+    medicaid_medically_needy_income_limit:
+      2023: [14_580, 12_108]
+      2024: [15_060, 13_560]
+
+- name: Case 21, aged parent claimed as a dependent on a married child's joint return uses the individual limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 50, is_tax_unit_head: true}
+      person2: {age: 48, is_tax_unit_spouse: true}
+      person3: {age: 78, is_tax_unit_dependent: true}
+    marital_units:
+      marital_unit1: {members: [person1, person2]}
+      marital_unit2: {members: [person3]}
+    tax_units:
+      tax_unit: {members: [person1, person2, person3]}
+    households:
+      household: {members: [person1, person2, person3], state_code: NY}
+  output:
+    # 42 CFR 435.602: the unit is the individual or married couple, not the tax unit.
+    # person3 is unmarried: 1.38 x 15,960 / 12 = 1,835.40, rounded up to 1,836, x 12.
+    medicaid_medically_needy_income_limit: [29_868, 29_868, 22_032]
+
+- name: Case 22, District of Columbia couple and individual limits from 2019 to 2022 follow 29 DCMR 901.1.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 70}
+      person2: {age: 68}
+      person3: {age: 74}
+    marital_units:
+      marital_unit1: {members: [person1, person2]}
+      marital_unit2: {members: [person3]}
+    tax_units:
+      tax_unit1: {members: [person1, person2]}
+      tax_unit2: {members: [person3]}
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: {2019: DC, 2020: DC, 2021: DC, 2022: DC}
+  output:
+    # Couple: 50% of the two-person guideline / 12; individual: 95% of that.
+    medicaid_medically_needy_income_limit:
+      2019: [8_454.96, 8_454.96, 8_032.2]
+      2020: [8_619.96, 8_619.96, 8_189.04]
+      2021: [8_709.96, 8_709.96, 8_274.48]
+      2022: [9_155.04, 9_155.04, 8_697.24]

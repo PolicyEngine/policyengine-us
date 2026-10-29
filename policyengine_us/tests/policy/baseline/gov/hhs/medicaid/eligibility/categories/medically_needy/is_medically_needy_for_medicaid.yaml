@@ -638,7 +638,70 @@
     # 20,000 - 3,488 = 16,512, or 1,376 a month, over 1,375.
     is_medically_needy_for_medicaid: false
 
-- name: Case 24, California senior with assets above the July 2027 limit is ineligible in 2028.
+- name: Case 24, Illinois senior with assets at the 17,500 limit qualifies in 2024.
+  period: 2024
+  input:
+    age: 70
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_ssi_recipient_for_medicaid: false
+    ssi_countable_income: 20_000
+    medicaid_medically_needy_medical_expenses: 6_000
+    ssi_countable_resources: 17_500
+    state_code: IL
+  output:
+    # Limit 15,060 (100% FPG, 2024). 20,000 - 6,000 = 14,000; assets 17,500 equal
+    # the limit from 2023-05-12, first read in 2024 (PM 07-02-01).
+    is_in_medicaid_medically_needy_category: true
+    is_medically_needy_for_medicaid: true
+
+- name: Case 25, New York senior at the published 1,836 monthly level qualifies in 2026.
+  period: 2026
+  input:
+    age: 70
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_ssi_recipient_for_medicaid: false
+    ssi_countable_income: 22_032
+    medicaid_medically_needy_medical_expenses: 0
+    ssi_countable_resources: 1_000
+    state_code: NY
+  output:
+    # GIS 26 MA/05: 1,836 x 12 = 22,032 (138% FPL is 1,835.40, rounded up).
+    is_medically_needy_for_medicaid: true
+
+- name: Case 26, New York senior one dollar a year above the published level does not qualify in 2026.
+  period: 2026
+  input:
+    age: 70
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_ssi_recipient_for_medicaid: false
+    ssi_countable_income: 22_033
+    medicaid_medically_needy_medical_expenses: 0
+    ssi_countable_resources: 1_000
+    state_code: NY
+  output:
+    # 22,033 is above the published 22,032 (1,836 x 12).
+    is_medically_needy_for_medicaid: false
+
+- name: Case 27, Illinois couple above the published 1,803 monthly level does not qualify in 2026.
+  period: 2026
+  input:
+    people:
+      person1: {age: 70, is_tax_unit_head: true, is_adult_for_medicaid: false, is_optional_senior_or_disabled_for_medicaid: false, is_ssi_recipient_for_medicaid: false, ssi_countable_income: 21_640, medicaid_medically_needy_medical_expenses: 0, ssi_countable_resources: 1_000}
+      person2: {age: 68, is_tax_unit_spouse: true, is_adult_for_medicaid: false, is_optional_senior_or_disabled_for_medicaid: false, is_ssi_recipient_for_medicaid: false, ssi_countable_income: 0, medicaid_medically_needy_medical_expenses: 0, ssi_countable_resources: 0}
+    marital_units:
+      marital_unit: {members: [person1, person2]}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    households:
+      household: {members: [person1, person2], state_code: IL}
+  output:
+    # WAG 25-03-02(2): 1,803 x 12 = 21,636 (21,640 / 12 = 1,803.33, cents dropped).
+    is_medically_needy_for_medicaid: [false, false]
+
+- name: Case 28, California senior with assets above the July 2027 limit is ineligible in 2028.
   period: 2028
   input:
     age: 70
@@ -655,7 +718,7 @@
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: false
 
-- name: Case 25, California senior couple with assets above the July 2027 couple limit is ineligible in 2028.
+- name: Case 29, California senior couple with assets above the July 2027 couple limit is ineligible in 2028.
   period: 2028
   input:
     people:
@@ -692,7 +755,7 @@
     is_in_medicaid_medically_needy_category: [true, true]
     is_medically_needy_for_medicaid: [false, false]
 
-- name: Case 26, California senior with assets at the July 2027 limit is eligible in 2028.
+- name: Case 30, California senior with assets at the July 2027 limit is eligible in 2028.
   period: 2028
   input:
     age: 70
@@ -710,7 +773,7 @@
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
 
-- name: Case 27, California senior couple with assets at the July 2027 couple limit is eligible in 2028.
+- name: Case 31, California senior couple with assets at the July 2027 couple limit is eligible in 2028.
   period: 2028
   input:
     people:
@@ -748,7 +811,7 @@
     is_in_medicaid_medically_needy_category: [true, true]
     is_medically_needy_for_medicaid: [true, true]
 
-- name: Case 28, California senior with assets above the July 2027 limit is still eligible in 2027.
+- name: Case 32, California senior with assets above the July 2027 limit is still eligible in 2027.
   period: 2027
   input:
     age: 70
@@ -765,7 +828,7 @@
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
 
-- name: Case 29, California senior couple with assets above the July 2027 couple limit is still eligible in 2027.
+- name: Case 33, California senior couple with assets above the July 2027 couple limit is still eligible in 2027.
   period: 2027
   input:
     people:

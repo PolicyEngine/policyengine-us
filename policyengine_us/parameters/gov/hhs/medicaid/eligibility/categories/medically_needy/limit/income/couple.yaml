@@ -1,4 +1,5 @@
-description: States limit income for a couple to this monthly amount under the Medicaid medically needy pathway; from the date a state's fpg_rate or ssi_rate is positive, the formula uses that rate instead.
+description: States limit monthly income for a couple to this amount under the Medicaid medically needy program.
+# NOTE: From the date a state's fpg_rate or ssi_rate is positive, the formula uses that rate instead of this amount. IL, MN, ND, UT and WA use a rate from 2018 and have no dollar entry.
 metadata:
   label: Medicaid medically needy pathway for couples income limit
   breakdown:
@@ -10,6 +11,10 @@ metadata:
       href: https://www.legis.iowa.gov/docs/iac/chapter/441.75.pdf#page=24
     - title: New Jersey DMAHS, Medically Needy Segment fact sheet
       href: https://web.archive.org/web/20260514003440id_/https://www.nj.gov/humanservices/dmahs/clients/medicaid/medically_needy_fact_sheet.pdf#page=1
+    - title: N.J.A.C. 10:70-1.2 - Purpose of the Medically Needy Manual
+      href: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-70-1-2
+    - title: N.J.A.C. 10:70-5.1 - Resource eligibility limits
+      href: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-70-5-1
     - title: CMS approval of Kansas State Plan Amendment KS-25-0019, medically needy income level
       href: https://www.medicaid.gov/medicaid/spa/downloads/KS-25-0019.pdf#page=7
     - title: Arkansas DHS Division of County Operations, Health Care Eligibility Quick Reference (January 2025), AABD Adult Spend Down
@@ -44,6 +49,8 @@ metadata:
       href: https://www.medicaid.gov/medicaid/spa/downloads/NH-25-0012.pdf#page=7
     - title: New Hampshire State Plan Amendment NH-25-0019, Medically Needy Income Level (effective July 1, 2025)
       href: https://www.medicaid.gov/medicaid/spa/downloads/NH-25-0019.pdf#page=7
+    - title: New York DOH GIS 22 MA/01, Attachment I, 2022 SSI-Related Medicaid Income and Resource Levels
+      href: https://www.health.ny.gov/health_care/medicaid/publications/docs/gis/22ma01_att1.pdf#page=2
     - title: New York DOH GIS 22 MA/11, Increase of Medicaid Medically Needy Income Level to 138% of the Federal Poverty Level
       href: https://www.health.ny.gov/health_care/medicaid/publications/docs/gis/22ma11.pdf#page=1
     - title: Rhode Island 210-RICR-40-00-3, Medicaid Integrated Health Care Coverage, SSI Financial Eligibility Determinations (version effective January 1, 2020)
@@ -104,6 +111,11 @@ CT:
   2026-03-01: 1_153
 DC:
   2018-01-01: 652
+  # NOTE: KFF 2018 reports DC's own $652 for couples; the 29 DCMR 901.1 method applies from 2019.
+  2019-01-01: 704.58
+  2020-01-01: 718.33
+  2021-01-01: 725.83
+  2022-01-01: 762.92
   2023-01-01: 821.67
   2024-01-01: 851.67
   2025-01-01: 881.25
