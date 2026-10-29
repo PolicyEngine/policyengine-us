@@ -15,7 +15,7 @@ class mt_liheap_multiplier(Variable):
         # PDF pages 57-59, 123
         "https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=57",
         # PDF pages 30, 58, 125
-        "https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=30",
+        "https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=30",
         "https://web.archive.org/web/20251117073831/https://www.dphhs.mt.gov/HCSD/energyassistance/index",
         "https://dphhs.mt.gov/HCSD/energyassistance/liheapoffices",
         "https://liheapch.acf.gov/docs/2026/state-plans/MT_Plan_2026.pdf#page=5",
@@ -34,7 +34,9 @@ class mt_liheap_multiplier(Variable):
         )
         income = spm_unit("mt_liheap_benefit_income", period)
         # The manual's examples round the poverty ratio to a whole percent
-        # (59% and 71% in the 2025-2026 edition).
+        # (59% and 71% in the 2025-2026 edition). The tables print the top band
+        # as >201% after 176-200%; a household at exactly 201% takes the top
+        # band.
         percent = np.floor(100 * income / guideline + 0.5)
         # Categorically eligible households above the income limit receive
         # the lowest multiplier (manual section 3.11; FY2026 plan item 1.6).

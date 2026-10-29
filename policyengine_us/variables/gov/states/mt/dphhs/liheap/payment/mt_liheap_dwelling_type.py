@@ -24,5 +24,5 @@ class mt_liheap_dwelling_type(Variable):
         # PDF pages 3-5
         "https://rules.mt.gov/policy-library-documents/application/pdf/fa158b2cdbf766e585e1fbf5811523e0dff4e760111590ae75d0456ee81551ad#page=3",
         # PDF pages 57, 74, 124
-        "https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=57",
+        "https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=57",
     )

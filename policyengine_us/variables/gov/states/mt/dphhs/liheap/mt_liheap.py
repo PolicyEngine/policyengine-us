@@ -16,10 +16,10 @@ class mt_liheap(Variable):
         "https://rules.mt.gov/policy-library-documents/application/pdf/5389d31b170322ad8de7c67ca74832a2fe762425962ec410fe9a737193afe951#page=1",
         # PDF pages 1-2
         "https://rules.mt.gov/policy-library-documents/application/pdf/dee81e32e61aaa09299e3eab0f50b8fe584ba1a19bc7c4c2ad41ff760a7c5ef5#page=1",
-        # PDF pages 57-59, 68, 71-74, 122
+        # PDF pages 57-59, 68, 71-74, 112, 122
         "https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=57",
-        # PDF pages 57-58, 68, 71-72, 74, 124
-        "https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=57",
+        # PDF pages 57-58, 68, 71-72, 74, 114, 124
+        "https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=57",
         # PDF pages 5, 10
         "https://liheapch.acf.gov/docs/2026/state-plans/MT_Plan_2026.pdf#page=5",
     )
@@ -29,7 +29,9 @@ class mt_liheap(Variable):
         heating_type = spm_unit("heating_type", period)
         fuel = heating_type.possible_values
         # Kerosene, a deliverable fuel under ARM 37.70.401(5), uses the fuel
-        # oil column. SOLAR and OTHER have no matrix column and pay $0.
+        # oil column. Heating assistance covers only propane, wood, coal, fuel
+        # oil, natural gas and electricity, not solar (manual section 8.1 Fuel
+        # Types), so SOLAR and OTHER pay $0, in non-traditional dwellings too.
         fuel_columns = [
             heating_type == fuel.NATURAL_GAS,
             heating_type == fuel.ELECTRICITY,
@@ -59,7 +61,7 @@ class mt_liheap(Variable):
         multiplier = spm_unit("mt_liheap_multiplier", period)
         # Rounded to the nearest dollar ($1,503 x 0.83 = $1,247 in the
         # 2025-2026 manual, section 3.23). Non-traditional dwellings receive
-        # one flat amount for every matrix fuel with no multiplier (manual
+        # one flat amount for each allowable fuel with no multiplier (manual
         # section 3.36: the benefit is not calculated); the fuel matrices hold
         # no row for them.
         regular = where(

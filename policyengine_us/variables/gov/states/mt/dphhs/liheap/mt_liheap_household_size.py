@@ -15,7 +15,7 @@ class mt_liheap_household_size(Variable):
         # PDF pages 1-2
         "https://rules.mt.gov/policy-library-documents/application/pdf/fa158b2cdbf766e585e1fbf5811523e0dff4e760111590ae75d0456ee81551ad#page=1",
         # PDF pages 36, 58
-        "https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=36",
+        "https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=36",
     )
 
     # ARM 37.70.402(8) (numbered (7) from May 23, 2026): only citizens and

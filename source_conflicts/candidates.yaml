@@ -3785,6 +3785,194 @@ candidates:
   state: open
   note: 'The source-choice question remains open; the statute-first rule requires a model change if the regulation
     expands rather than interprets statutory eligibility. Code not yet on main: mt_elderly_homeowner_or_renter_credit_gross_rent.'
+- id: us-mt:liheap-business-equity-limit
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Is Montana LIHEAP business asset equity limited to $25,000, as ARM 37.70.408(2) provides, or to the manual's
+    $29,290 (2025-2026) and $31,524 (2026-2027)?
+  sources:
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.408(2), effective May 27, 2023 and unchanged on May 23, 2026
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/68a4c23444a94d952bc1fa28f5b3c8f528f075b616525c34295b11b0630e1e4f#page=1
+  - kind: manual
+    citation: Montana LIHEAP Policy Manual 2025-2026, section 3.13, PDF page 31
+    url: https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=31
+  - kind: manual
+    citation: Montana LIHEAP Policy Manual 2026-2027, section 3.13, PDF page 31
+    url: https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=31
+  readings:
+    statute: Section 408(2) counts the equity value of business assets and allows business assets with equity value
+      that does not exceed $25,000.
+    other: Manual section 3.13 makes a household with business equity above $29,290 (2025-2026 edition) or $31,524
+      (2026-2027 edition) ineligible.
+  example: In FFY2026, a household with $27,000 of business equity is ineligible under the rule and passes the manual's
+    business equity test.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10435
+  state: ruled
+  note: 'Ruled 2026-10-21 by the user under the 2026-10-19 statute-first rule: the rule''s $25,000. Code not yet on
+    main: mt_liheap_eligible, gov.states.mt.dphhs.liheap.eligibility.resources.business_equity_limit.'
+- id: us-mt:liheap-gift-threshold
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does Montana LIHEAP count a member's monetary gifts of $50 or more a month in full until May 22, 2026 and
+    exclude monetary gifts from May 23, 2026, as ARM 37.70.407(1)(w) provides, or count recurring gifts of $500 or more
+    per household, as manual section 3.15 provides?
+  sources:
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.407(1)(w), effective May 27, 2023 to May 22, 2026
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/36b451e63d1ed5ab982f4c43f746503d7b5d88dc720f10b0fc9b151576d6e788#page=2
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.407(1)(w), effective May 23, 2026
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/67c0cce58f641eb9e573034d17d76e21e7c3c27f2f915180538f865766863b61#page=2
+  - kind: manual
+    citation: Montana LIHEAP Policy Manual 2025-2026, section 3.15, PDF page 36
+    url: https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=36
+  - kind: manual
+    citation: Montana LIHEAP Policy Manual 2026-2027, section 3.15, PDF page 36
+    url: https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=36
+  readings:
+    statute: Until May 22, 2026, (w) excludes gifts of up to $50 a month per member and counts the entire gift when it
+      is $50 or more; from May 23, 2026, (w) excludes monetary gifts.
+    other: Manual section 3.15 counts recurring monetary gifts of $500 or more per household and excludes nonrecurring
+      gifts.
+  example: In FFY2026, a member's recurring $100 a month of gifts adds $1,200 a year under the rule and nothing under
+    the manual; in FFY2027, $600 a month adds nothing under the amended rule and $7,200 under the manual.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10435
+  state: ruled
+  note: 'Ruled under the 2026-10-19 statute-first rule: follow the administrative rule in force. Code not yet on main:
+    mt_liheap_countable_income, gov.states.mt.dphhs.liheap.income.gift_minimum.'
+- id: us-mt:liheap-income-limit-size-nine
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Is a nine-member Montana LIHEAP household income-eligible only at or below 150% of the poverty guideline,
+    as ARM 37.70.406(1) provides, or at or below the published table's size-9 amount, which equals 60% of state median
+    income?
+  sources:
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.406(1), effective May 27, 2023 to May 22, 2026
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/b2d910910cc1ecf830fc66d844708df2504ed257f556ce252cc3b4d25dc84a88#page=1
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.406(1), effective May 23, 2026
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/f314cbda8448e499b69120f0401d35836fe02c4884e961091b2d56c86e3b1abc#page=1
+  - kind: manual
+    citation: Montana LIHEAP Policy Manual 2025-2026, Appendix A 9.3 Table of Income Standards, PDF page 124
+    url: https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=124
+  - kind: manual
+    citation: Montana LIHEAP Policy Manual 2026-2027, Appendix A 9.3 Table of Income Standards, PDF page 126
+    url: https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=126
+  readings:
+    statute: Section 406(1) makes households of nine or more members income-eligible only at or below 150% of the
+      poverty guideline for their size.
+    other: The 2025-2026 table prints $91,432 at size 9 and the 2026-2027 table $97,942, each 60% of state median income
+      and above 150% of the guideline.
+  example: In FFY2026, a nine-member household with $91,000 of income is eligible under the table and over 150% of the
+    2025 guideline ($89,475).
+  pe_us:
+    follows: conflicting-source
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10435
+  state: ruled
+  note: 'Ruled 2026-10-21 by the user: published income tables. Code not yet on main: mt_liheap_income_limit,
+    gov.states.mt.dphhs.liheap.eligibility.smi_rate.'
+- id: us-mt:liheap-incorporated-table-editions
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Do Montana LIHEAP's FFY2026 and FFY2027 income, resource and benefit tables follow the editions the rules
+    incorporate by reference or the 2025-2026 and 2026-2027 published tables?
+  sources:
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.406(2), effective May 27, 2023 to May 22, 2026 (2022-2023 income table)
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/b2d910910cc1ecf830fc66d844708df2504ed257f556ce252cc3b4d25dc84a88#page=1
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.406(2), effective May 23, 2026 (2025-2026 income table)
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/f314cbda8448e499b69120f0401d35836fe02c4884e961091b2d56c86e3b1abc#page=1
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.408(4), effective May 27, 2023 to May 22, 2026 (2022-2023 resource table)
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/68a4c23444a94d952bc1fa28f5b3c8f528f075b616525c34295b11b0630e1e4f#page=1
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.408(4), effective May 23, 2026 (2025-2026 resource table)
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/2421ff8e6709d83f812fd3c3a68f94c9895ab82bef2dcde672cf25d0869167c5#page=1
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.601(1), effective September 24, 2022 to May 22, 2026 (2022-2023 benefit matrix and
+      multipliers)
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/0074fe4c5989f116f77c281ac5736bf5b0f2facbfaf09daf76450ecad7fcdf47#page=1
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.601(1), effective May 23, 2026 (2025-2026 benefit matrix and multipliers)
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/b2add645c2eceddb643df5cdaf684339b968b43fc63b88f21ea882dfeb930366#page=1
+  - kind: manual
+    citation: Montana LIHEAP Policy Manual 2026-2027, Appendix A 9.1-9.4, PDF pages 124-126
+    url: https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=124
+  readings:
+    statute: Until May 22, 2026 the rules incorporate the 2022-2023 tables and from May 23, 2026 the 2025-2026 tables;
+      no rule incorporates the 2026-2027 tables.
+    other: The department publishes the 2025-2026 tables for the 2025-2026 heating season and the 2026-2027 manual tables
+      for the 2026-2027 season.
+  pe_us:
+    follows: conflicting-source
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10435
+  state: ruled
+  note: 'Ruled 2026-10-21 by the user: published income tables for FFY2026-FFY2027. Code not yet on main: mt_liheap_income_limit,
+    mt_liheap_multiplier, mt_liheap, gov.states.mt.dphhs.liheap.eligibility.resources.limit, gov.states.mt.dphhs.liheap.payment.'
+- id: us-mt:liheap-minor-member-income
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does Montana LIHEAP count the income of household members under 18, as ARM 37.70.401(1) provides, or only
+    the income of members 18 or older, as manual section 3.12 provides?
+  sources:
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.401(1), effective May 27, 2023 to May 22, 2026
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/325b36e5abb6a3bfa036c3802fc997ed50711b5407868ec8f4b61eabc538e3ed#page=1
+  - kind: regulation
+    citation: Admin. R. Mont. 37.70.401(1), effective May 23, 2026
+    url: https://rules.mt.gov/policy-library-documents/application/pdf/fa158b2cdbf766e585e1fbf5811523e0dff4e760111590ae75d0456ee81551ad#page=1
+  - kind: manual
+    citation: Montana LIHEAP Policy Manual 2026-2027, sections 3.12, 3.15 and 3.22, PDF pages 30, 35 and 58
+    url: https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=30
+  - kind: plan
+    citation: Montana FY2026 LIHEAP State Plan, item 1.9, earned income of a child under the age of 18
+    url: https://liheapch.acf.gov/docs/2026/state-plans/MT_Plan_2026.pdf#page=7
+  readings:
+    statute: Section 401(1) counts all nonexcluded income received by the members of the household; the only age-based
+      exclusion in 407(1) is (d), OASDI benefits of full-time students aged 18 to 22.
+    other: Manual section 3.12 counts only the income of members 18 or older, and sections 3.15 and 3.22 repeat it;
+      plan item 1.9 lists earned income of a child under 18.
+  example: In FFY2026, a Yellowstone County parent with $20,000 of wages and a 10-year-old with $9,600 of survivors
+    benefits in a two-bedroom house heated with natural gas receive $463 counting the child's benefits and $602
+    without them.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10435
+  state: ruled
+  note: 'Ruled under the 2026-10-19 statute-first rule: count every member''s nonexcluded income. Code not yet on
+    main: mt_liheap_countable_income, gov.states.mt.dphhs.liheap.income.student_minimum_age.'
 - id: us-mt:medical-floor-agi-base
   program: income-tax
   years:

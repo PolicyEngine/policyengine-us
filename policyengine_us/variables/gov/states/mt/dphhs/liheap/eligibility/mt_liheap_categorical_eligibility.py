@@ -20,12 +20,12 @@ class mt_liheap_categorical_eligibility(Variable):
         "https://rules.mt.gov/policy-library-documents/application/pdf/325b36e5abb6a3bfa036c3802fc997ed50711b5407868ec8f4b61eabc538e3ed#page=3",
         "https://rules.mt.gov/policy-library-documents/application/pdf/fa158b2cdbf766e585e1fbf5811523e0dff4e760111590ae75d0456ee81551ad#page=3",
         # PDF pages 27-30, 128-131
-        "https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=27",
+        "https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=27",
         "https://liheapch.acf.gov/docs/2026/state-plans/MT_Plan_2026.pdf#page=5",
     )
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.mt.dphhs.liheap.income
+        p = parameters(period).gov.states.mt.dphhs.liheap.categorical
         person = spm_unit.members
         first_month = period.first_month
         months = [
@@ -56,7 +56,7 @@ class mt_liheap_categorical_eligibility(Variable):
         )
         tanf_member = spm_unit.project(receives_tanf) & in_tanf_unit
         spouse_of_ssi_recipient = person.marital_unit.any(receives_ssi)
-        ssi_recipient_child = receives_ssi & (person("age", period) < p.adult_age)
+        ssi_recipient_child = receives_ssi & (person("age", period) < p.minor_child_age)
         # SSA considers a parent's income for a child's SSI. The head or spouse
         # of the SSI child's own tax unit stands in for the parent; an adult
         # sibling or other relative filing separately is not covered (manual

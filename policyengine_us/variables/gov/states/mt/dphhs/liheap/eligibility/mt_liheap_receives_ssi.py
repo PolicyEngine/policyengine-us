@@ -10,7 +10,7 @@ class mt_liheap_receives_ssi(Variable):
     reference = (
         "https://rules.mt.gov/policy-library-documents/application/pdf/5475239b875d29ebe7cf1f12b38458830f87a4a18c8dd600b7548603204fccd9#page=1",
         # PDF pages 28-30
-        "https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=28",
+        "https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=28",
     )
 
     def formula(person, period, parameters):

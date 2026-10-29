@@ -10,7 +10,7 @@ class mt_liheap_benefit_income(Variable):
     defined_for = StateCode.MT
     reference = (
         # PDF pages 28-30, 127, 129-131
-        "https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=28",
+        "https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=28",
         # PDF pages 25-30, 125
         "https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=25",
     )
@@ -38,6 +38,9 @@ class mt_liheap_benefit_income(Variable):
             p_ssi.couple / max_(marital_recipients, 1),
             p_ssi.individual,
         )
+        # Appendix A 9.5 prints annual amounts of $11,605 and $17,405 (2025
+        # rates) and $11,929 (2026 individual rate), $1 to $5 above 12 times
+        # the monthly rate; the annual standard here is 12 times the rate.
         ssi_standard = MONTHS_IN_YEAR * spm_unit.sum(
             where(receives_ssi, monthly_ssi_standard, 0)
         )

@@ -1,7 +1,8 @@
 description: Montana counts these sources as unearned income under the Low Income Home Energy Assistance Program.
-# Social Security net of the Medicare Part B premium, monetary gifts (none
-# from May 23, 2026; see gift_minimum.yaml) and the unit's TANF cash
-# assistance are added in the countable income formula.
+# Social Security net of the Medicare Part A and Part B premiums, monetary
+# gifts (none from May 23, 2026; see gift_minimum.yaml) and the unit's TANF
+# cash assistance are added in the countable income formula. The Montana
+# State Supplementary Payment is paid with SSI and counted with it.
 # Military retirement income is a separate input from the pension inputs that
 # pension_income adds, so both are listed. Excluded receipts such as SNAP,
 # educational grants and loans, the earned income tax credit, nonrecurring
@@ -11,6 +12,7 @@ values:
     - total_unemployment_compensation
     - strike_benefits
     - ssi
+    - mt_ssp
     - pension_income
     - retirement_distributions
     - military_retirement_income
@@ -42,6 +44,6 @@ metadata:
     - title: "Montana LIHEAP Policy Manual 2025-2026, section 3.15 #page 35-44"
       href: https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=35
     - title: "Montana LIHEAP Policy Manual 2026-2027, section 3.15 #page 35-44"
-      href: https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=35
+      href: https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=35
     - title: "Montana LIHEAP FY2026 State Plan, item 1.9 #page 6-7"
       href: https://liheapch.acf.gov/docs/2026/state-plans/MT_Plan_2026.pdf#page=6

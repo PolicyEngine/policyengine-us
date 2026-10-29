@@ -312,3 +312,50 @@
         state_code: MT
   output:
     mt_liheap_categorical_eligibility: NONE
+
+# ARM 37.70.401(23) (numbered (24) from May 23, 2026): a TANF household is
+# categorical only when every member is in the TANF assistance unit or had
+# income considered for the grant. A mother (28) and child (4) receive $575 a
+# month of TANF; the mother's own mother (58) lives with them as a dependent on
+# the mother's return and is neither a parent nor a child in the Montana TANF
+# unit, so the household is not categorical: NONE.
+- name: Case 11, a dependent grandmother outside the TANF assistance unit defeats TANF categorical eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 28
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      person3:
+        age: 58
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0
+        tanf: 6_900
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_liheap_categorical_eligibility: NONE

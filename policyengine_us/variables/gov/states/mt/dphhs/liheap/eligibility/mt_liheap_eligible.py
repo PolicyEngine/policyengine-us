@@ -16,7 +16,7 @@ class mt_liheap_eligible(Variable):
         "https://rules.mt.gov/policy-library-documents/application/pdf/f314cbda8448e499b69120f0401d35836fe02c4884e961091b2d56c86e3b1abc#page=1",
         "https://rules.mt.gov/policy-library-documents/application/pdf/68a4c23444a94d952bc1fa28f5b3c8f528f075b616525c34295b11b0630e1e4f#page=1",
         # PDF pages 28-31, 126
-        "https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=28",
+        "https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=28",
         # PDF pages 9-10
         "https://liheapch.acf.gov/docs/2026/state-plans/MT_Plan_2026.pdf#page=9",
     )

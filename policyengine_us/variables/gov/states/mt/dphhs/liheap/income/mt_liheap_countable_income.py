@@ -16,7 +16,7 @@ class mt_liheap_countable_income(Variable):
         # PDF pages 1-3
         "https://rules.mt.gov/policy-library-documents/application/pdf/67c0cce58f641eb9e573034d17d76e21e7c3c27f2f915180538f865766863b61#page=1",
         # PDF pages 30, 35-47
-        "https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=30",
+        "https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=30",
         # PDF pages 6-7
         "https://liheapch.acf.gov/docs/2026/state-plans/MT_Plan_2026.pdf#page=6",
     )
@@ -24,11 +24,9 @@ class mt_liheap_countable_income(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.mt.dphhs.liheap.income
         person = spm_unit.members
-        age = person("age", period)
-        # Only the income of members 18 or older counts (manual section 3.12),
-        # including that of ineligible noncitizen members (ARM 37.70.402(8),
-        # numbered (7) from May 23, 2026).
-        adult = age >= p.adult_age
+        # Every member's nonexcluded income counts (ARM 37.70.401(1)),
+        # including that of minors and of ineligible noncitizen members (ARM
+        # 37.70.402(8), numbered (7) from May 23, 2026).
         # Each source is floored at zero so a loss in one source cannot
         # offset another. Net business inputs stand in for receipts minus
         # self-employment deductions; the depreciation add-back, the optional
@@ -39,7 +37,12 @@ class mt_liheap_countable_income(Variable):
             income = income + max_(person(source, period, options=[ADD]), 0)
         # ARM 37.70.407(1)(d): the dependents and survivors benefits that
         # continue for full-time students aged 18 to 22 are excluded.
-        student = (age < p.student_age_limit) & person("is_full_time_student", period)
+        age = person("age", period)
+        student = (
+            (age >= p.student_minimum_age)
+            & (age < p.student_age_limit)
+            & person("is_full_time_student", period)
+        )
         student_benefits = add(
             person, period, ["social_security_dependents", "social_security_survivors"]
         )
@@ -47,17 +50,18 @@ class mt_liheap_countable_income(Variable):
             person("social_security", period) - where(student, student_benefits, 0),
             0,
         )
-        # Medicare premiums paid out of Social Security are not income
-        # (manual section 3.15, Income Exclusions).
-        net_social_security = max_(
-            social_security - person("medicare_part_b_premium", period), 0
+        # Medicare Part A and Part B premiums paid out of Social Security are
+        # not income (manual section 3.15, Income Exclusions).
+        medicare_premiums = add(
+            person, period, ["medicare_part_a_premium", "medicare_part_b_premium"]
         )
+        withheld_premiums = min_(medicare_premiums, social_security)
         # ARM 37.70.407(1)(w): a member's gifts count in full once they reach
         # the monthly minimum; from May 23, 2026 the rule excludes monetary
         # gifts and the minimum is infinite.
         gifts = max_(person("financial_assistance", period), 0)
         counted_gifts = where(gifts / MONTHS_IN_YEAR >= p.gift_minimum, gifts, 0)
-        adult_income = where(adult, income + net_social_security + counted_gifts, 0)
+        member_income = income + social_security - withheld_premiums + counted_gifts
         # Annual inputs stand in for one month of income annualized (ARM
         # 37.70.401(1); from May 23, 2026 calculated through CHIMES, with 12
         # months of self-employment receipts). No inputs hold Indian per
@@ -65,15 +69,17 @@ class mt_liheap_countable_income(Variable):
         # sales or contract-for-deed payments, so those receipts are not
         # counted.
         tanf = max_(spm_unit("tanf", period), 0)
-        # ARM 37.70.407(1)(bb): health insurance premiums reduce income, but
-        # not for categorically eligible households (manual section 3.15).
-        premiums = 0
+        # ARM 37.70.407(1)(bb): out-of-pocket health insurance premiums,
+        # including Medicare premiums not paid out of Social Security, reduce
+        # income, but not for categorically eligible households (manual
+        # section 3.15).
+        premiums = medicare_premiums - withheld_premiums
         for deduction in p.deductions:
             premiums = premiums + person(deduction, period)
         categorical = spm_unit("mt_liheap_categorical_eligibility", period)
         deductions = where(
             categorical == categorical.possible_values.NONE,
-            spm_unit.sum(where(adult, premiums, 0)),
+            spm_unit.sum(premiums),
             0,
         )
-        return max_(spm_unit.sum(adult_income) + tanf - deductions, 0)
+        return max_(spm_unit.sum(member_income) + tanf - deductions, 0)

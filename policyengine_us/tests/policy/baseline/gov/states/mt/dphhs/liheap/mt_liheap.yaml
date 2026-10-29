@@ -279,9 +279,10 @@
 # FFY2026 Yellowstone County: parents (45, $40,000 wages; 43), an SSI child
 # (10, $6,000 SSI) and a 20-year-old sibling ($25,000 wages) filing his own
 # return. The sibling's income was not considered for the SSI grant, so the
-# household is not categorical (ARM 37.70.402(3)) and takes the income test:
-# adults' income $40,000 + $25,000 = $65,000 (the child's SSI is excluded as he
-# is under 18) > $64,846 size-4 limit, so ineligible and no benefit.
+# household is not categorical (ARM 37.70.402(3)) and takes the income test.
+# Every member's income counts (ARM 37.70.401(1)): wages $40,000 + $25,000 +
+# the child's $6,000 of SSI = $71,000 > $64,846 size-4 limit, so ineligible and
+# no benefit.
 - name: Case 10, an SSI child's household with a separately filing adult sibling takes the income test.
   period: 2026
   absolute_error_margin: 0.01
@@ -332,7 +333,7 @@
         bedrooms: 3
   output:
     mt_liheap_categorical_eligibility: NONE
-    mt_liheap_countable_income: 65_000
+    mt_liheap_countable_income: 71_000
     mt_liheap_income_limit: 64_846
     mt_liheap_eligible: false
     mt_liheap: 0
@@ -382,3 +383,110 @@
     mt_liheap_multiplier: 0.51
     mt_liheap_eligible: true
     mt_liheap: 394
+
+# ARM 37.70.407(1)(bb): out-of-pocket health insurance premiums reduce the
+# income of a household that is not categorically eligible, including a
+# Medicare Part B premium withheld from a railroad retirement annuity. FFY2026
+# Yellowstone County (District 7): a 70-year-old railroad retiree with $34,000
+# of railroad benefits pays the 2026 standard Part B premium ($202.90 x 12 =
+# $2,434.80); Part A is premium-free. Countable income $34,000 - $2,434.80 =
+# $31,565.20 <= $33,719 size-1 limit. $31,565.20 / $15,650 = 201.7% -> 202%,
+# the 201% and over band -> 0.32. Single-family two-bedroom natural gas:
+# $772 x 0.32 = $247.04 -> $247.
+- name: Case 12, a railroad retiree's Medicare Part B premium is deducted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    county: YELLOWSTONE_COUNTY_MT
+    age: 70
+    immigration_status: CITIZEN
+    railroad_benefits: 34_000
+    medicare_part_b_premium: 2_434.80
+    bedrooms: 2
+    heating_type: NATURAL_GAS
+    gas_expense: 900
+    ssi: 0
+    snap: 0
+    tanf: 0
+  output:
+    mt_liheap_categorical_eligibility: NONE
+    mt_liheap_countable_income: 31_565.20
+    mt_liheap_multiplier: 0.32
+    mt_liheap: 247
+
+# ARM 37.70.407(1)(bb): a Medicare Part A premium paid out of pocket is also
+# deducted. FFY2026 Yellowstone County: a 70-year-old retired public employee
+# with a $36,000 pension and 35 quarters of Medicare-covered work buys Part A
+# at the 2026 reduced premium ($311 x 12 = $3,732) and pays the standard
+# Part B premium ($2,434.80). Countable income $36,000 - $3,732 - $2,434.80 =
+# $29,833.20 <= $33,719. $29,833.20 / $15,650 = 190.6% -> 191%, 176-200% band
+# -> 0.41. $772 x 0.41 = $316.52 -> $317.
+- name: Case 13, a Medicare Part A premium is deducted with the Part B premium.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    county: YELLOWSTONE_COUNTY_MT
+    age: 70
+    immigration_status: CITIZEN
+    taxable_public_pension_income: 36_000
+    medicare_quarters_of_coverage: 35
+    medicare_part_b_premium: 2_434.80
+    bedrooms: 2
+    heating_type: NATURAL_GAS
+    gas_expense: 900
+    ssi: 0
+    snap: 0
+    tanf: 0
+  output:
+    medicare_part_a_premium: 3_732
+    mt_liheap_countable_income: 29_833.20
+    mt_liheap_multiplier: 0.41
+    mt_liheap: 317
+
+# ARM 37.70.401(1) counts the income of every member, and the ARM
+# 37.70.407(1)(d) student exclusion starts at 18. FFY2026 Yellowstone County:
+# a parent (40, $20,000 wages) and a 10-year-old pupil with $800 a month
+# ($9,600 a year) of survivors benefits. Countable income $20,000 + $9,600 =
+# $29,600 <= $44,095 size-2 limit. $29,600 / $21,150 = 140.0% -> 140%,
+# 126-150% band -> 0.60. $772 x 0.60 = $463.20 -> $463.
+- name: Case 14, a child's survivors benefits count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income_before_lsr: 20_000
+        ssi: 0
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        social_security_survivors: 9_600
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        snap: 0
+        tanf: 0
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+        county: YELLOWSTONE_COUNTY_MT
+        bedrooms: 2
+  output:
+    is_full_time_student: [false, true]
+    mt_liheap_countable_income: 29_600
+    mt_liheap_income_limit: 44_095
+    mt_liheap_multiplier: 0.6
+    mt_liheap: 463

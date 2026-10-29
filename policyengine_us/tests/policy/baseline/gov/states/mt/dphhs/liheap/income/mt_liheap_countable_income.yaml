@@ -1,10 +1,12 @@
 # ARM 37.70.401(1), 37.70.407; LIHEAP Manual 2026-2027 sections 3.11-3.15:
-# annual gross income of members age 18 and older, Social Security net of the
-# Medicare Part B premium, gifts of $50 or more a month per member before May
-# 23, 2026 (none after), TANF cash, capital gains; health insurance premiums
-# are deducted except for categorically eligible households.
-# The parent's $30,000 of wages counts; the 17-year-old's $4,000 does not.
-- name: Case 1, only adults' income counts.
+# annual gross income of every member, Social Security net of the Medicare
+# Part A and Part B premiums withheld from it, gifts of $50 or more a month per
+# member before May 23, 2026 (none after), TANF cash, capital gains; health
+# insurance premiums, including Medicare premiums not withheld from Social
+# Security, are deducted except for categorically eligible households.
+# ARM 37.70.401(1) counts the income of all members: the parent's $30,000 of
+# wages and the 17-year-old's $4,000 both count, $34,000.
+- name: Case 1, a minor member's income counts.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -29,7 +31,7 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_liheap_countable_income: 30_000
+    mt_liheap_countable_income: 34_000
 
 # Manual section 3.15: Social Security counts net of the Medicare premium.
 # $18,000 - 2026 standard Part B premium $202.90 x 12 = $2,434.80 -> $15,565.20.
@@ -198,41 +200,11 @@
   output:
     mt_liheap_countable_income: 20_000
 
-# Manual section 3.12: "Only income from people in the household 18 years old
-# or older will be counted." Case 1 with an 18-year-old instead of a
-# 17-year-old: $30,000 + $4,000 = $34,000.
-- name: Case 9, an 18-year-old member's income counts.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 42
-        immigration_status: CITIZEN
-        employment_income: 30_000
-        ssi: 0
-      person2:
-        age: 18
-        immigration_status: CITIZEN
-        employment_income: 4_000
-        ssi: 0
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        snap: 0
-        tanf: 0
-    households:
-      household:
-        members: [person1, person2]
-        state_code: MT
-  output:
-    mt_liheap_countable_income: 34_000
-
 # ARM 37.70.407(1)(w) as amended effective May 23, 2026 excludes monetary
 # gifts, and 37.70.401(1) no longer lists them. In FFY2027 a member's $600 a
 # month of gifts ($7,200 a year, above both the old $50 rule and the manual's
 # $500 recurring test) is not counted: $12,000 of wages only.
-- name: Case 10, gifts are not counted from the May 2026 rule amendment.
+- name: Case 9, gifts are not counted from the May 2026 rule amendment.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -246,3 +218,129 @@
     tanf: 0
   output:
     mt_liheap_countable_income: 12_000
+
+# ARM 37.70.401(1) earned income: each listed source has a distinct amount, so
+# dropping any one changes the total. Wages $5,000 + self-employment $4,000 +
+# specified-service self-employment $3,000 + farm operations $2,000 +
+# partnership income $1,000 = $15,000.
+- name: Case 10, every listed earned income source counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 40
+    immigration_status: CITIZEN
+    employment_income_before_lsr: 5_000
+    self_employment_income_before_lsr: 4_000
+    sstb_self_employment_income_before_lsr: 3_000
+    farm_operations_income: 2_000
+    partnership_income: 1_000
+    ssi: 0
+    snap: 0
+    tanf: 0
+  output:
+    mt_liheap_countable_income: 15_000
+
+# ARM 37.70.401(1) unearned income: one distinct amount per listed source, in
+# $100 steps from $100 to $1,800 (100 x 171 = $17,100): unemployment $100,
+# strike benefits $200, SSI $300, private pension $400, IRA distributions $500,
+# military retirement $600, railroad retirement $700, veterans benefits $800,
+# workers' compensation $900, employer disability benefits $1,000, alimony
+# $1,100, child support $1,200, interest $1,300, dividends $1,400, rent $1,500,
+# farm rent $1,600, general assistance $1,700, short-term capital gains $1,800.
+# The Montana state supplement paid with SSI, $94 a month ($1,128 a year), also
+# counts: $17,100 + $1,128 = $18,228.
+- name: Case 11, every listed unearned income source counts, including the state supplement.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 50
+    immigration_status: CITIZEN
+    unemployment_compensation: 100
+    strike_benefits: 200
+    ssi: 300
+    taxable_private_pension_income: 400
+    taxable_ira_distributions: 500
+    military_retirement_pay: 600
+    railroad_benefits: 700
+    veterans_benefits: 800
+    workers_compensation: 900
+    disability_benefits: 1_000
+    alimony_income: 1_100
+    child_support_received: 1_200
+    taxable_interest_income: 1_300
+    qualified_dividend_income: 1_400
+    rental_income: 1_500
+    farm_rent_income: 1_600
+    general_assistance: 1_700
+    short_term_capital_gains: 1_800
+    mt_ssp: 1_128
+    snap: 0
+    tanf: 0
+  output:
+    mt_liheap_countable_income: 18_228
+
+# ARM 37.70.407(1)(d) excludes the OASDI benefits of full-time students aged 18
+# to 22 only. A parent (45, $30,000 wages) and a 23-year-old full-time college
+# student who draws $400 a month ($4,800 a year) of childhood-disability
+# survivors benefits: at 23 the exclusion has ended, so $30,000 + $4,800 =
+# $34,800.
+- name: Case 12, survivors benefits of a 23-year-old full-time student count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        employment_income_before_lsr: 30_000
+        ssi: 0
+      person2:
+        age: 23
+        immigration_status: CITIZEN
+        is_disabled: true
+        is_full_time_college_student: true
+        social_security_survivors: 4_800
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_liheap_countable_income: 34_800
+
+# Manual section 3.15: Medicare premiums paid out of Social Security are not
+# income, and categorically eligible households take no premium deduction. A
+# 67-year-old with $20,000 of wages, $150 a month ($1,800 a year) of Social
+# Security and the 2026 standard Part B premium ($202.90 x 12 = $2,434.80;
+# Part A is premium-free) receives SNAP. Social Security covers $1,800 of the
+# premium, so none of it counts; the other $634.80 is not deducted for a SNAP
+# categorical household: $20,000 (netting the whole premium or deducting the
+# rest would give $19,365.20).
+- name: Case 13, Medicare premiums above Social Security do not reduce other income of a SNAP categorical household.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 67
+    immigration_status: CITIZEN
+    employment_income_before_lsr: 20_000
+    social_security_retirement: 1_800
+    medicare_part_b_premium: 2_434.80
+    ssi: 0
+    snap: 1_200
+    tanf: 0
+  output:
+    mt_liheap_categorical_eligibility: SNAP
+    mt_liheap_countable_income: 20_000

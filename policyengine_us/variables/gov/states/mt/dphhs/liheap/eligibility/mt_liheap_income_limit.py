@@ -16,7 +16,7 @@ class mt_liheap_income_limit(Variable):
         # PDF pages 30, 123-124
         "https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=30",
         # PDF pages 30, 125-126
-        "https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=30",
+        "https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=30",
         "https://liheapch.acf.gov/docs/2026/state-plans/MT_Plan_2026.pdf#page=9",
     )
 
