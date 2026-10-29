@@ -26,7 +26,7 @@ NEW_PARAMETER_NODES = (
     # Benefit levers and COLA history also serve the reported-benefit route,
     # which remains part of the reference when the calculator is removed.
     "gov.contrib.ssa.pia",
-    "gov.contrib.congress.s770",
+    "gov.contrib.congress.s770.section_2",
     "gov.ssa.social_security.pia.bend_points",
     "gov.ssa.social_security.cola",
 )
