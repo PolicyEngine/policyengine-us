@@ -357,3 +357,36 @@
     is_medicaid_immigration_status_eligible: [false, false]
     is_optional_senior_or_disabled_income_eligible: [false, false]
     is_optional_senior_or_disabled_for_medicaid: [true, true]
+
+# The Case 19 income for a couple aged 70 with Social Security retirement.
+# Aged noncitizens who fail the immigration test also reach the SSI group
+# for emergency Medicaid, so the SSI couple test applies to them too.
+- name: Case 20, aged Arkansas couple in the five-year bar under the SSI couple rate but over 80% of the poverty guideline keeps the group.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        social_security_retirement: 8_820
+        takes_up_ssi_if_eligible: false
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        social_security_retirement: 8_820
+        takes_up_ssi_if_eligible: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_medicaid_immigration_status_eligible: [false, false]
+    is_optional_senior_or_disabled_income_eligible: [false, false]
+    is_optional_senior_or_disabled_for_medicaid: [true, true]

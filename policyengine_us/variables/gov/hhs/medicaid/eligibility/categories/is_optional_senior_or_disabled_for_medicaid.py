@@ -50,11 +50,11 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
             person("is_ssi_aged_blind_disabled", period),
             person("is_ssi_aged", period),
         )
-        # People kept only through the SSI group take its income test instead
-        # of this pathway's: for a couple, the SSI couple rate is above 80% of
-        # the poverty guideline for two.
-        exception_only = on_exception_path & ~person("is_ssi_aged", period)
-        income_eligible = exception_only | person(
+        # People on the SSI-group exception path pass with its income test:
+        # for a couple, the SSI couple rate is above 80% of the poverty
+        # guideline for two. This holds for aged people too, since 42 U.S.C.
+        # 1396b(v)(2)(B) waives only the receipt of SSI.
+        income_eligible = on_exception_path | person(
             "is_optional_senior_or_disabled_income_eligible", period
         )
         asset_eligible = person("is_optional_senior_or_disabled_asset_eligible", period)
