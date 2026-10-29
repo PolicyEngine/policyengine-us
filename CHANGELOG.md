@@ -1,3 +1,10 @@
+## [2.76.1] - 2026-10-29
+
+### Fixed
+
+- Limit the self-employed health insurance deduction to net profit less the deductible part of self-employment tax and self-employed retirement plan deductions, as 26 U.S.C. 162(l)(2)(A) and Form 7206 require.
+
+
 ## [2.76.0] - 2026-10-28
 
 ### Added
