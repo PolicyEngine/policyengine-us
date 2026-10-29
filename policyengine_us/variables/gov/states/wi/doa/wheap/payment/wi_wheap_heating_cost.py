@@ -31,9 +31,12 @@ class wi_wheap_heating_cost(Variable):
         )
         heating_type = spm_unit("heating_type", period)
         fuel = heating_type.possible_values
-        is_electricity = heating_type == fuel.ELECTRICITY
-        # Kerosene, coal and other fuels use the wood-or-other row. Solar has
-        # no fuel record and is unsupported.
+        is_electricity = (heating_type == fuel.ELECTRICITY) | (
+            heating_type == fuel.SOLAR
+        )
+        # Kerosene, coal and other fuels use the wood-or-other row. Solar heat
+        # uses the electricity row, as heating_expense reads a grid-tied solar
+        # home's electric bill.
         fuel_classes = [
             heating_type == fuel.FUEL_OIL,
             heating_type == fuel.NATURAL_GAS,

@@ -1,6 +1,7 @@
 description: Wisconsin includes these rental and royalty sources in the self-employment offset under the Home Energy Assistance Program.
-# The $120 land rent threshold and rent paid by other household members are
-# not modeled.
+# Land rent is entered as rental income type (R), which section 3.3.5
+# offsets. The $120 land rent threshold and rent paid by other household
+# members are not modeled.
 values:
   2025-10-01:
     - rental_income

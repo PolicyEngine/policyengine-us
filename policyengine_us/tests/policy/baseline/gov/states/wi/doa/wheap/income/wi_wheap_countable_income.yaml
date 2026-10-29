@@ -289,3 +289,85 @@
   output:
     # 4,000 - 6,000 = -2,000, floored at 0.
     wi_wheap_countable_income: 0
+
+- name: Case 11, every listed business, rental and unearned source counts, including the state SSI line and the Caretaker Supplement.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        # SSI 994 a month; state SSI line 83.78 a month in January-April and
+        # 92.16 from May; Caretaker Supplement 275 a month for one child.
+        ssi: 11_928
+        wi_ssp_regular: 1_072.40
+        wi_cts: 3_300
+      person2:
+        age: 9
+      person3:
+        age: 66
+        ssi: 0
+        farm_operations_income: 1_000
+        # Enters partnership_s_corp_income.
+        partnership_income: 2_000
+        farm_rent_income: 3_000
+        # Enters pension_income.
+        taxable_private_pension_income: 4_000
+        # Enters military_retirement_income.
+        military_retirement_pay: 5_000
+        veterans_benefits: 6_000
+        workers_compensation: 7_000
+        disability_benefits: 8_000
+        alimony_income: 9_000
+        strike_benefits: 1_100
+        general_assistance: 1_200
+        estate_income: 1_300
+        financial_assistance: 1_400
+        survivor_benefits: 1_500
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    # Business and rental offset group (person3): farm operations 1,000 +
+    # partnership 2,000 + farm rent 3,000 = 6,000.
+    # person3 unearned: pension 4,000 + military retirement 5,000 + veterans
+    # 6,000 + workers' compensation 7,000 + disability 8,000 + alimony 9,000
+    # = 39,000; strike 1,100 + general assistance 1,200 + trust 1,300 +
+    # financial assistance 1,400 + survivor 1,500 = 6,500; 45,500 in all.
+    # person1, Table 3.4 federal and state SSI lines plus C-Supp:
+    # 994 x 12 = 11,928; 4 x 83.78 + 8 x 92.16 = 1,072.40; 275 x 12 = 3,300;
+    # 16,300.40 in all. person3's Part B premium nets only against Social
+    # Security and Railroad Retirement, both 0.
+    # 6,000 + 45,500 + 16,300.40 = 67,800.40.
+    wi_wheap_countable_income: 67_800.40
+
+- name: Case 12, a trust loss counts as zero and does not reduce wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 52
+        employment_income_before_lsr: 40_000
+        estate_income: -2_500
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    # Each unearned source is floored at zero per member:
+    # 40,000 + max(-2,500, 0) = 40,000. Without the floor, 37,500.
+    wi_wheap_countable_income: 40_000

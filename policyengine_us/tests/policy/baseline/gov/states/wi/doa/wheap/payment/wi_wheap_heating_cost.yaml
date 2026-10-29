@@ -2,9 +2,9 @@
 # Computation C19-C35 and HT_Proxy A4:H28; PY2026 WHEAP Manual 2.3.1 and
 # 4.4.13-4.4.28). Heat proxy = base + per-room amount x rooms by fuel class and
 # dwelling type, rooms = bedrooms held between 1 and 9 (1 for a motel or
-# camper). The reported cost, less a 60 percent baseload for electric heat, is
-# held between 0.75 and 2 times the proxy; heat included in rent uses 0.75
-# times the proxy.
+# camper). The reported cost, less a 60 percent baseload for electric heat
+# (solar heat uses the electric row), is held between 0.75 and 2 times the
+# proxy; heat included in rent uses 0.75 times the proxy.
 
 - name: Case 1, natural gas cost inside the bounds is used as reported.
   period: 2026
@@ -188,7 +188,7 @@
     # cap 1,582 < 1,800. The fuel oil proxy would allow 2,850.
     wi_wheap_heating_cost: 1_582
 
-- name: Case 9, solar heating has no proxy and gives no heating cost.
+- name: Case 9, solar heat uses the electricity row and its baseload.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -199,7 +199,8 @@
       spm_unit:
         members: [person1]
         heating_type: SOLAR
-        heating_expense: 600
+        # heating_expense reads a grid-tied solar home's electric bill.
+        pre_subsidy_electricity_expense: 1_500
         wi_wheap_dwelling_type: SINGLE_FAMILY
     households:
       household:
@@ -207,5 +208,33 @@
         state_code: WI
         bedrooms: 3
   output:
-    # Manual 4.4.28.3: solar-only heat has no fuel record; no calculator class.
-    wi_wheap_heating_cost: 0
+    # Eligible cost 1,500 - 0.6 x 1,500 = 600. Single family, electric:
+    # 261 + 108 x 3 = 585; bounds 438.75 to 1,170; 600 is inside. Without
+    # the baseload the 1,500 bill would be capped at 1,170.
+    wi_wheap_heating_cost: 600
+
+- name: Case 10, heat included in rent uses 0.75 times the proxy even with a reported gas bill.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        # Gas for cooking and the water heater; heat is paid in the rent.
+        gas_expense: 360
+        heat_expense_included_in_rent: true
+        wi_wheap_dwelling_type: APARTMENT
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        bedrooms: 2
+  output:
+    # Apartment, natural gas: 116 + 68 x 2 = 252; 0.75 x 252 = 189.
+    # The 360 bill lies inside the bounds 189 to 504 and would be used if
+    # heat in rent were ignored.
+    wi_wheap_heating_cost: 189

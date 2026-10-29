@@ -29,7 +29,8 @@ class wi_wheap(Variable):
         income = spm_unit("wi_wheap_countable_income", period)
         limit = spm_unit("wi_wheap_income_limit", period)
         # Categorically eligible households above the limit are paid as if
-        # their income equaled it.
+        # their income equaled it. Calculator cell C40 computes these with
+        # actual income; this follows manual 2.3.1 item 1 and plan 1.6.
         categorical = spm_unit("wi_wheap_categorically_eligible", period)
         benefit_income = where(categorical, min_(income, limit), income)
         poverty_ratio = np.clip(

@@ -186,3 +186,34 @@
     # citizen spouse and child only. The refugee receives no SSI or W-2, so not
     # every member is a recipient (Manual 3.3.1 item 2(d)).
     wi_wheap_categorically_eligible: false
+
+- name: Case 8, W-2 household with an undocumented adult is not categorically eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 27
+        immigration_status: CITIZEN
+      person2:
+        age: 29
+        immigration_status: UNDOCUMENTED
+      person3:
+        age: 2
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        tanf: 7_296
+        snap: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    # W-2 Transitions grant 608 a month x 12 = 7,296 for the citizen parent
+    # and child. W-2 covers only citizens and qualified non-citizens, so the
+    # undocumented adult receives no qualifying benefit (Manual 3.3.1 item
+    # 2(d)). Without the citizenship condition every member would count.
+    wi_wheap_categorically_eligible: false

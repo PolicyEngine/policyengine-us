@@ -1,4 +1,6 @@
 description: Wisconsin removes this share of the reported electric bill as non-heating use when electricity is the heating fuel under the Home Energy Assistance Program.
+# HE+ removes the baseload only when one meter serves heat and other uses
+# (Computation!C22); heat-only meters are not identified.
 values:
   2025-10-01: 0.6
 metadata:

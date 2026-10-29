@@ -34,6 +34,7 @@ class wi_wheap_eligible(Variable):
         income_eligible = (income <= limit) | (income < federal_floor) | categorical
         heating_type = spm_unit("heating_type", period)
         fuel = heating_type.possible_values
+        # An application without a fuel type is denied (section 4.4.28.3).
         heating_reported = (heating_type != fuel.UNSPECIFIED) & (
             heating_type != fuel.NONE
         )
