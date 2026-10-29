@@ -1,0 +1,13 @@
+# Tests for NH FANF countable income for the eligibility test
+# Formula: countable earned income for eligibility + gross unearned income
+# Source: He-W 654.02(b)(5)
+
+- name: Case 1, earned and unearned income combined.
+  period: 2024-01
+  input:
+    state_code: NH
+    nh_fanf_countable_earned_income_for_eligibility: 640
+    tanf_gross_unearned_income: 200
+  output:
+    # 640 + 200 = 840
+    nh_fanf_countable_income_for_eligibility: 840
