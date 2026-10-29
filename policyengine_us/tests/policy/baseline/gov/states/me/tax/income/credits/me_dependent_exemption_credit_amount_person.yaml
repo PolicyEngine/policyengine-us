@@ -1,3 +1,8 @@
+# 36 MRSA 5219-SS allows the credit for each qualifying child and dependent for
+# whom the filer can claim the federal credit under section 24. The 2025 worksheet
+# counts the dependents on Form 1040ME line 13a: those for whom the filer is
+# eligible to claim the Child Tax Credit or the credit for other dependents. Both
+# federal credits need a TIN for the dependent and for each filer.
 - name: Child dependent under 6
   period: 2025
   input:
@@ -26,5 +31,142 @@
     is_tax_unit_dependent: true
     age: 2
   output:
-    # Even non-CTC children who are tax dependents qualify for ME credit
+    # A dependent who is not a CTC qualifying child still counts when the filer
+    # can claim the credit for other dependents for them.
     me_dependent_exemption_credit_amount_person: 610
+
+- name: Dependent without an SSN, ITIN or ATIN gets no credit in 2025
+  # The credit for other dependents requires the dependent's SSN, ITIN or ATIN.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 40
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: ME
+  output:
+    ctc_qualifying_child: [false, false, false]
+    ctc_individual_maximum: [0, 0, 0]
+    me_dependent_exemption_credit_amount_person: [0, 0, 0]
+    me_dependent_exemption_credit: 0
+
+- name: Child of a head of household without any TIN gets no credit in 2025
+  # Neither the Child Tax Credit nor the credit for other dependents is allowed
+  # when the filer has no SSN or ITIN.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        ssn_card_type: NONE
+        has_tin: false
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child]
+        state_code: ME
+  output:
+    ctc_individual_maximum: [0, 0]
+    me_dependent_exemption_credit_amount_person: [0, 0]
+    me_dependent_exemption_credit: 0
+
+- name: Child of a joint return where one spouse has no TIN gets no credit in 2025
+  # Each spouse on a joint return needs an SSN or ITIN for either federal credit.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+      spouse:
+        age: 30
+        ssn_card_type: NONE
+        has_tin: false
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: ME
+  output:
+    ctc_individual_maximum: [0, 0, 0]
+    me_dependent_exemption_credit_amount_person: [0, 0, 0]
+    me_dependent_exemption_credit: 0
+
+- name: Child with an SSN of a head of household with an ITIN gets the credit in 2025
+  # The filer has no valid SSN, so IRC 24(h)(7) denies the Child Tax Credit and
+  # IRC 24(h)(4)(C) allows the $500 credit for other dependents. The child is under
+  # 6, so the Maine credit is 2 x $305.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        ssn_card_type: OTHER_NON_CITIZEN
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child]
+        state_code: ME
+  output:
+    ctc_qualifying_child: [false, false]
+    ctc_individual_maximum: [0, 500]
+    me_dependent_exemption_credit_amount_person: [0, 610]
+    me_dependent_exemption_credit: 610
+
+- name: 17-year-old dependent with an SSN gets the credit in 2025
+  # The child is too old for the Child Tax Credit and gets the credit for other
+  # dependents.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+      spouse:
+        age: 45
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: ME
+  output:
+    ctc_qualifying_child: [false, false, false]
+    ctc_individual_maximum: [0, 0, 500]
+    me_dependent_exemption_credit_amount_person: [0, 0, 305]
+    me_dependent_exemption_credit: 305
