@@ -13,7 +13,7 @@ class ri_medicaid_state_funded_postpartum_eligible(Variable):
         "pregnancy was not covered by Medicaid, or who lack Medicaid "
         "immigration status. It does not apply while the person takes up "
         "Title XXI coverage for a new pregnancy, which requires income within "
-        "the CHIP limit and no third-party coverage."
+        "the CHIP limit and no coverage that bars that CHIP route."
     )
     definition_period = YEAR
     defined_for = StateCode.RI
@@ -30,13 +30,34 @@ class ri_medicaid_state_funded_postpartum_eligible(Variable):
             "is_medicaid_immigration_status_eligible", period
         )
         state = person.household("state_code", period)
-        chip_limit = parameters(period).gov.hhs.chip.pregnant.income_limit[state]
-        # Title XXI pregnancy coverage excludes third-party coverage
-        # (210-RICR-30-00-1 § 1.6(A)(2)(b); 42 CFR 457.310(b)(2)).
+        p = parameters(period).gov.hhs.chip
+        # Standard pregnancy CHIP excludes Rhode Island's third-party list
+        # (210-RICR-30-00-1 § 1.6(A)(2)(b)). Unborn-child coverage
+        # (§ 1.6(A)(2)(c)) uses the CHIP no-other-coverage test (42 CFR
+        # 457.310(b)(2)) without Medicaid enrollment, which is this
+        # continuation itself.
+        chip_immigration_eligible = person(
+            "is_chip_immigration_status_eligible", period
+        )
+        income_limit = where(
+            chip_immigration_eligible,
+            p.pregnant.income_limit[state],
+            p.fcep.income_limit[state],
+        )
+        fcep_coverage_sources = [
+            source
+            for source in p.disqualifying_health_coverage
+            if source != "medicaid_enrolled"
+        ]
+        has_disqualifying_coverage = where(
+            chip_immigration_eligible,
+            person("ri_medicaid_has_third_party_coverage", period),
+            add(person, period, fcep_coverage_sources) > 0,
+        )
         title_xxi_pregnancy = (
             person("is_pregnant", period)
-            & medicaid_income_eligible(person, period, parameters, chip_limit)
-            & ~person("ri_medicaid_has_third_party_coverage", period)
+            & medicaid_income_eligible(person, period, parameters, income_limit)
+            & ~has_disqualifying_coverage
             & person("takes_up_chip_if_eligible", period)
         )
         return continuation & ~pregnancy_group & ~title_xxi_pregnancy

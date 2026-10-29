@@ -107,3 +107,52 @@
   output:
     ri_medicaid_state_funded_postpartum_eligible: [true, false]
     is_medicaid_eligible: [true, false]
+
+# 210-RICR-30-00-1 § 1.6(A)(2)(c) bases CHIP for people without CHIP
+# immigration status on the unborn child, whom other coverage bars (42 CFR
+# 457.310(b)(2)). R.I. Gen. Laws § 42-12.3-3(g) then keeps the continuation
+# with state-only funds. The citizen takes standard CHIP, which uses Rhode
+# Island's third-party list.
+- name: Case 4, coverage that bars unborn-child CHIP keeps the continuation for a person without CHIP immigration status.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        is_pregnant: true
+        has_other_means_tested_health_coverage_at_interview: true
+        ri_pregnancy_coverage: FCEP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        takes_up_chip_if_eligible: true
+      person2:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        is_pregnant: true
+        has_health_coverage_other_than_chip: true
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        takes_up_chip_if_eligible: true
+      person3:
+        age: 30
+        immigration_status: CITIZEN
+        is_pregnant: true
+        has_other_means_tested_health_coverage_at_interview: true
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        takes_up_chip_if_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    ri_medicaid_state_funded_postpartum_eligible: [true, true, false]
+    is_medicaid_eligible: [true, true, false]
+    is_chip_fcep_eligible_person: [false, false, false]
+    chip_enrolled: [false, false, true]
