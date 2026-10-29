@@ -16,7 +16,9 @@ class rrc_cares_qualifying_children_with_valid_ssn(Variable):
         person = tax_unit.members
         # IRC 6428(a)(2) counts each "qualifying child (within the meaning of
         # section 24(c))", so the CTC filer identification requirements do not
-        # apply; IRC 6428(g) sets the rebate's own identification rules.
+        # apply; IRC 6428(g) sets the rebate's own identification rules. The
+        # variable below also applies the CTC child social security number
+        # rule and the IRC 152(b)(1) dependent-filer rule.
         is_ctc_qualifying_child = person(
             "ctc_qualifying_child_ignoring_filer_identification", period
         )
