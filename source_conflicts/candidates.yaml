@@ -8264,6 +8264,44 @@ candidates:
     threshold and federal-method conditions by year. Code not yet on main: gov/states/wv/tax/income/subtractions/wv_claim_of_right_subtraction.yaml,
     policyengine_us/variables/gov/states/wv/tax/income/subtractions/wv_subtractions.py, wv_claim_of_right_subtraction,
     gov.states.wv.tax.income.subtractions.claim_of_right.threshold.'
+- id: us-wv:medicaid-ssi-related-non-cash-income-at-standard
+  program: medicaid
+  years:
+    from: 2018
+    type: calendar
+  question: Does West Virginia's SSI-Related/Non-Cash Assistance group cover countable income exactly equal to the
+    SSI Maximum Payment level?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1396a(a)(10)(A)(ii)(I); 42 U.S.C. 1382(a)(1)(A) and (2)(A) (income "at a rate of not more than"
+      the benefit rate)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2023-title42/html/USCODE-2023-title42-chap7-subchapXVI-partA-sec1382.htm
+  - kind: regulation
+    citation: 42 CFR 435.210(b)
+    url: https://www.ecfr.gov/current/title-42/section-435.210
+  - kind: manual
+    citation: West Virginia Income Maintenance Manual § 23.11.4 (consolidated PDF built 2026-10-05, PDF p.1889)
+    url: https://bfa.wv.gov/media/40005/download?inline#page=1889
+  - kind: manual
+    citation: West Virginia Income Maintenance Manual § 4.14.3 Step 5 (PDF p.662)
+    url: https://bfa.wv.gov/media/40005/download?inline#page=662
+  readings:
+    statute: The optional group covers people who meet SSI's income requirement, which admits income at or below
+      the benefit rate.
+    other: Section 23.11.4 requires countable income "under" the SSI Maximum Payment level; the § 4.14 method it
+      applies (Step 5) makes income "equal to or less than" the level eligible.
+  example: An aged West Virginian with countable income of exactly $994 a month in 2026 qualifies under the statute
+    and Step 5 but not under § 23.11.4's wording.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/limit/requires_income_below_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10373
+  state: unreviewed
+  note: 'PE-US keeps WV out of requires_income_below_limit, so income equal to the SSI rate qualifies. This assumes
+    the group is the 42 CFR 435.210 group of section 1902(a)(10)(A)(ii)(I); West Virginia''s state plan page for the
+    group was not checked. The archived 2013 manual pairs the same two wordings (§ 16.7.H and § 10.23.C).'
 - id: us-wv:senior-modification-excluded-line-range
   program: income-tax
   years:

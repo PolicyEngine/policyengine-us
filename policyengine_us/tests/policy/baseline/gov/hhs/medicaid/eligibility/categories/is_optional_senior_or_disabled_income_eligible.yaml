@@ -631,3 +631,89 @@
         state_code: IA
   output:
     is_optional_senior_or_disabled_income_eligible: [true, true]
+
+# West Virginia's SSI-Related/Non-Cash Assistance group (IMM § 23.11.4)
+# tests countable income against the SSI Maximum Payment level in Chapter 4,
+# Appendix A: $994 a month ($11,928 a year) for one person and $1,491 a
+# month ($17,892 a year) for two in 2026. The group section reads "under"
+# that level and applies the § 4.14 method, whose Step 5 reads: "If the net
+# countable monthly income is equal to or less than the appropriate SSI
+# Maximum Payment Level, the assistance group (AG) is eligible" (§ 4.14.3).
+# The model follows Step 5 and SSI's "not more than" test, as for Colorado
+# and Iowa.
+- name: Income exactly at West Virginia's individual standard is eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 11_928
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true]
+
+# $11,929 is over the SSI standard, although it is under 75% of the 2026
+# poverty guideline ($11,970), the limit West Virginia had before.
+- name: Income one dollar over West Virginia's individual standard is ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 11_929
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    is_optional_senior_or_disabled_income_eligible: [false]
+
+- name: Joint income exactly at West Virginia's couple standard is eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 8_946
+      person2:
+        medicaid_optional_senior_or_disabled_countable_income: 8_946
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+
+# North Dakota's income level for categorically needy aged, blind, or
+# disabled recipients "is that which establishes supplemental security
+# income eligibility" (N.D.A.C. 75-02-02.1-40(1)(a)(2)): $994 a month
+# ($11,928 a year) for one person in 2026. $996 a month is over it,
+# although it is under 75% of the 2026 poverty guideline ($11,970).
+- name: North Dakota income between the SSI rate and 75% of poverty is ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 11_952
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    is_optional_senior_or_disabled_income_eligible: [false]
