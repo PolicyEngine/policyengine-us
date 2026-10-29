@@ -510,3 +510,96 @@
   output:
     # 20 CFR 416.414(b)(3): max(62 - 980, 0) = 0 and 1,233.94 - 0 = 1,233.94.
     ca_capi_person: [0, 1_233.94]
+
+- name: Case 16, CAPI member is the tax-unit head and the aged citizen spouse's income is too high for SSI/SSP, so CAPI deems the spouse's income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        immigration_status: CITIZEN
+        # 1,600 a month; countable 1,580 after the $20 exclusion.
+        social_security: 19_200
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # Case 8 with the roles swapped. The state supplement counts the citizen's
+    # own 1,580, which exceeds the 1,233.94 standard, so the citizen is paid
+    # no SSI/SSP and is an ineligible spouse (MPP 49-005(i)(2)). POMS SI
+    # 01320.430 D: federal min(994, 1,491 - 1,580) -> 0; state min(239.94,
+    # 607.83 - (1,580 - 1,491)) = 239.94.
+    ssi: [0, 0]
+    ca_state_supplement: 0
+    ca_capi_person: [239.94, 0]
+
+- name: Case 17, CAPI member is the tax-unit head and the spouse's income exceeds the couple state supplement, leaving the couple state part.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        immigration_status: CITIZEN
+        # 2,000 a month; countable 1,980 after the $20 exclusion.
+        social_security: 24_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # Case 9 with the roles swapped. POMS SI 01320.430 D: federal 0; state
+    # min(239.94, 607.83 - (1,980 - 1,491)) = min(239.94, 118.83) = 118.83.
+    ssi: [0, 0]
+    ca_state_supplement: 0
+    ca_capi_person: [118.83, 0]
+
+- name: Case 18, one CAPI person with a spouse who is not aged, blind or disabled and earns above the deeming threshold.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+      person2:
+        age: 50
+        employment_income: 24_000 # 2,000 a month
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # Case 13 above the 1,491 - 994 = 497 deeming threshold. The couple's
+    # countable income is (2,000 - 20 - 65) / 2 = 957.50 (20 CFR 416.1163).
+    # POMS SI 01320.430 D: federal min(994 - 0, 1,491 - 957.50) = 533.50;
+    # state min(239.94, 607.83) = 239.94; 533.50 + 239.94 = 773.44.
+    ca_capi_payment_standard: [1_233.94, 0]
+    ca_capi_person: [773.44, 0]
