@@ -1,0 +1,121 @@
+# Maryland computes its credits on the federal EITC that "would have been
+# allowable but for the limitation under § 32(m)" (Md. Code Tax-Gen.
+# 10-704(c)(1)(i)): the federal credit on the return as filed, with only the
+# identification requirement waived.
+#
+# Maryland's waiver relaxes the EITC's identification test only. The 2020
+# recovery rebate credits keep their own Social Security number rules (26
+# U.S.C. 6428(g), 6428A(g)), so an ITIN parent gets none of them and
+# itemizes, as on the return filed. Its AGI ($120,000) reaches the individual
+# EITC's $119,900 limit, so the 32(m)-free credit is zero. The SSN twin gets
+# both rebates, takes the standard deduction and the $300 charitable
+# deduction above the line, and its AGI of $119,700 falls under the limit.
+
+- name: Individual EITC with a $119,900 AGI limit, Maryland 2020, an ITIN parent itemizes and gets no credit
+  period: 2020
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.winship.winship_reform
+  input:
+    gov.contrib.individual_eitc.in_effect: true
+    gov.contrib.individual_eitc.agi_eitc_limit: 119_900
+    people:
+      parent:
+        age: 35
+        employment_income: 100
+        taxable_private_pension_income: 119_900
+        deductible_mortgage_interest: 18_850
+        charitable_cash_donations: 300
+        ssn_card_type: NONE
+        has_tin: true
+      child:
+        age: 3
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        salt_deduction: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    rrc_cares: 0
+    rrc_caa: 0
+    tax_unit_itemizes: true
+    adjusted_gross_income: 120_000
+    md_federal_eitc_without_ssn_requirement: 0
+    md_eitc: 0
+
+- name: Individual EITC with a $119,900 AGI limit, Maryland 2020, the SSN twin
+  period: 2020
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.winship.winship_reform
+  input:
+    gov.contrib.individual_eitc.in_effect: true
+    gov.contrib.individual_eitc.agi_eitc_limit: 119_900
+    people:
+      parent:
+        age: 35
+        employment_income: 100
+        taxable_private_pension_income: 119_900
+        deductible_mortgage_interest: 18_850
+        charitable_cash_donations: 300
+        ssn_card_type: CITIZEN
+      child:
+        age: 3
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        salt_deduction: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    rrc_cares: 1_340
+    rrc_caa: 840
+    tax_unit_itemizes: false
+    adjusted_gross_income: 119_700
+    # 34% of $100 of earnings.
+    eitc: 34
+    md_eitc: 17
+
+# With $100 less mortgage interest, the actual ITIN return still itemizes
+# (AGI $120,000), but the EITC itself would make the standard deduction pay
+# if the parent could claim it. The waived credit is computed on the AGI of
+# the return as filed, as the Maryland booklet's federal EIC worksheet reads
+# it, not on the return the parent would file if eligible.
+
+- name: Individual EITC with a $119,900 AGI limit, Maryland 2020, the waived credit takes the AGI of the return as filed
+  period: 2020
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.winship.winship_reform
+  input:
+    gov.contrib.individual_eitc.in_effect: true
+    gov.contrib.individual_eitc.agi_eitc_limit: 119_900
+    people:
+      parent:
+        age: 35
+        employment_income: 100
+        taxable_private_pension_income: 119_900
+        deductible_mortgage_interest: 18_750
+        charitable_cash_donations: 300
+        ssn_card_type: NONE
+        has_tin: true
+      child:
+        age: 3
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        salt_deduction: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    tax_unit_itemizes: true
+    adjusted_gross_income: 120_000
+    md_federal_eitc_without_ssn_requirement: 0
+    md_eitc: 0
