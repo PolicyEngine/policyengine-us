@@ -404,7 +404,7 @@
 # lag); guideline 15,960 + 16 x 5,680 = 106,840; floor round(1.1 x 106,840, 2) = 117,524
 # (the unrounded float product is 117,524.00000000001). 117,523.99 passes; exactly
 # 117,524 fails. Without the lag the model would read its CPI-projected 2027 guideline
-# (fpg.yaml uprating, 336.1 / 328.4), whose floor is about 120,280, and 117,524 would pass.
+# (gov.hhs.fpg_uprating, 331.359 / 321.943), whose floor is about 120,961, and 117,524 would pass.
 - name: Case 15, threshold edge one cent below and at the federal 110 percent floor for a seventeen member household in 2027.
   period: 2027
   input:
