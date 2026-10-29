@@ -1,6 +1,6 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
-    _ssi_couple_total,
+from policyengine_us.variables.gov.states.co.ssa.oap._spouses import (
+    co_oap_couple_total,
 )
 from policyengine_us.variables.gov.states.co.ssa.oap._precision import (
     PRECISION,
@@ -46,7 +46,7 @@ class co_oap_deeming_exempt(Variable):
         eligible = person("co_oap_eligible", year)
         receives_oap = eligible & (p.grant_standard - income > PRECISION)
         spouse_of_client = (
-            _ssi_couple_total(person, year, eligible.astype(int)) - eligible > 0
+            co_oap_couple_total(person, year, eligible.astype(int)) - eligible > 0
         )
         candidate = spouse_of_client & within_limit
         exempt = candidate & (receives_ssi | receives_oap)

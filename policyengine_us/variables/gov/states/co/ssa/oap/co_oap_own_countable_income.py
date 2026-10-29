@@ -1,6 +1,6 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
-    _ssi_spouse_index,
+from policyengine_us.variables.gov.states.co.ssa.oap._spouses import (
+    co_oap_is_married,
 )
 from policyengine_us.variables.gov.states.co.ssa.oap._precision import (
     cents,
@@ -35,7 +35,7 @@ class co_oap_own_countable_income(Variable):
         )
         # 3.533(A)(2)(c)(1): a married client's $20 disregard is split equally
         # with the spouse, so that no more than $20 applies to the couple.
-        married = _ssi_spouse_index(person, period.this_year) >= 0
+        married = co_oap_is_married(person, period.this_year)
         disregard = where(married, p.disregards.unearned / 2, p.disregards.unearned)
         # 3.533(A)(2)(c): the disregard applies to unearned income other than
         # SSI; min_ gives 0 to a client whose only unearned income is SSI
