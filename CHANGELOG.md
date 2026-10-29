@@ -1,3 +1,10 @@
+## [2.79.0] - 2026-10-29
+
+### Added
+
+- Add Iowa State Supplementary Assistance for 2026.
+
+
 ## [2.78.0] - 2026-10-29
 
 ### Added
