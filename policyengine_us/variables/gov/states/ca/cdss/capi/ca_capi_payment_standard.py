@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.states.ca.cdss.capi._ca_capi_ssi_ssp_standard import (
+    ca_capi_couple_computation,
     ca_capi_spouse_ssi_ssp,
     ca_capi_ssi_ssp_standard,
 )
@@ -24,7 +25,7 @@ class ca_capi_payment_standard(Variable):
     def formula(person, period, parameters):
         individual, couple = ca_capi_ssi_ssp_standard(person, period, parameters)
         p = parameters(period).gov.states.ca.cdss.capi.payment_standard_offset
-        joint = person("ssi_couple_computation_applies", period)
+        joint = ca_capi_couple_computation(person, period)
         capi_members = person.marital_unit.sum(
             person("ca_capi_eligible_person", period.this_year)
         )

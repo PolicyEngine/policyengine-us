@@ -69,7 +69,7 @@
   output:
     ca_state_supplement_dependent_amount: 5_988
 
-- name: Disabled noncitizen child who fails SSI's noncitizen test gets CAPI, not the state supplement.
+- name: Case 4, disabled noncitizen child who fails SSI's noncitizen test gets CAPI, not the state supplement.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -97,7 +97,7 @@
     ca_state_supplement_dependent_amount: 0
     ca_state_supplement: 0
 
-- name: Disabled citizen child keeps the state supplement above SSI.
+- name: Case 5, disabled citizen child keeps the state supplement above SSI.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
