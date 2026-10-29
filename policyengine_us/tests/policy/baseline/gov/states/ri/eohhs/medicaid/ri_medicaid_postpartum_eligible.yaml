@@ -18,7 +18,7 @@
     ri_pregnancy_coverage:
       2023: MEDICAID
       2024: MEDICAID
-    ri_medicaid_pregnancy_end_date:
+    ri_pregnancy_end_date:
       2023: "2023-01-01"
       2024: "2023-01-01"
   output:
@@ -34,7 +34,7 @@
   input:
     state_code: RI
     ri_pregnancy_coverage: MEDICAID
-    ri_medicaid_pregnancy_end_date: "2024-01-02"
+    ri_pregnancy_end_date: "2024-01-02"
   output:
     ri_medicaid_postpartum_eligible:
       2025-01: true
@@ -45,7 +45,7 @@
   input:
     state_code: RI
     ri_pregnancy_coverage: MEDICAID
-    ri_medicaid_pregnancy_end_date: "2024-02-29"
+    ri_pregnancy_end_date: "2024-02-29"
   output:
     ri_medicaid_postpartum_eligible:
       2025-02: true
@@ -56,7 +56,7 @@
   input:
     state_code: RI
     ri_pregnancy_coverage: MEDICAID
-    ri_medicaid_pregnancy_end_date: "2022-03-15"
+    ri_pregnancy_end_date: "2022-03-15"
   output:
     ri_medicaid_postpartum_eligible:
       2022-09: false
@@ -73,10 +73,10 @@
       person1:
         ri_pregnancy_coverage:
           2024: NONE
-        ri_medicaid_pregnancy_end_date:
+        ri_pregnancy_end_date:
           2024: "2023-03-07"
       person2:
-        ri_medicaid_pregnancy_end_date:
+        ri_pregnancy_end_date:
           2024: "2023-03-07"
       person3:
         ri_pregnancy_coverage:
@@ -84,17 +84,17 @@
       person4:
         ri_pregnancy_coverage:
           2024: MEDICAID
-        ri_medicaid_pregnancy_end_date:
+        ri_pregnancy_end_date:
           2024: "2024-02-01"
       person5:
         ri_pregnancy_coverage:
           2024: MEDICAID
-        ri_medicaid_pregnancy_end_date:
+        ri_pregnancy_end_date:
           2024: "2023-03-07"
       person6:
         ri_pregnancy_coverage:
           2024: MEDICAID
-        ri_medicaid_pregnancy_end_date:
+        ri_pregnancy_end_date:
           2024: "2023-03-07"
     households:
       household1:
@@ -114,19 +114,19 @@
     people:
       person1:
         ri_pregnancy_coverage: MEDICAID
-        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        ri_pregnancy_end_date: "2023-03-07"
       person2:
         ri_pregnancy_coverage: CHIP
-        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        ri_pregnancy_end_date: "2023-03-07"
       person3:
         ri_pregnancy_coverage: RITE_START
-        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        ri_pregnancy_end_date: "2023-03-07"
       person4:
         ri_pregnancy_coverage: FCEP
-        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        ri_pregnancy_end_date: "2023-03-07"
       person5:
         ri_pregnancy_coverage: NONE
-        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        ri_pregnancy_end_date: "2023-03-07"
     households:
       household:
         members: [person1, person2, person3, person4, person5]
@@ -136,3 +136,14 @@
       2024-01: [true, true, true, true, false]
     ri_chip_postpartum_eligible:
       2024-01: [false, true, false, false, false]
+
+- name: Case 7, a pregnancy ending on the first day of the evaluated month starts the continuation that month.
+  period: 2024
+  input:
+    state_code: RI
+    ri_pregnancy_coverage: MEDICAID
+    ri_pregnancy_end_date: "2024-01-01"
+  output:
+    ri_medicaid_postpartum_eligible:
+      2024-01: true
+      2024-12: true

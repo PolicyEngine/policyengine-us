@@ -7018,6 +7018,10 @@ candidates:
     citation: Rhode Island Medicaid State Plan Amendment RI-22-0024, section B, page 7
     url: https://www.medicaid.gov/medicaid/spa/downloads/RI-22-0024.pdf#page=7
   - kind: policy
+    citation: CMS section 1115 amendment approval of the Rhode Island Comprehensive Demonstration (March 21, 2024; 2019
+      to 2024), expenditure authorities, Budget Populations 6a and 6b, file page 11
+    url: https://www.medicaid.gov/medicaid/section-1115-demonstrations/downloads/ri-comphnsve-dmnstrtn-aprvl.pdf#page=11
+  - kind: policy
     citation: CMS section 1115 approval of the Rhode Island Comprehensive Demonstration (November 28, 2025), expenditure
       authorities 1(b)-(c), Budget Populations 6a and 6b
     url: https://www.medicaid.gov/medicaid/section-1115-demonstrations/downloads/ri-comp-demo-appvl-11282025.pdf#page=15
@@ -7036,9 +7040,10 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10391
   state: unreviewed
-  note: The conflict is limited to the 1115 Budget Populations 6a and 6b. The RI-22-0024 state plan groups, CHIP
-    (RI-22-0025 CS27), RIte Start and FCEP have no conflicting text. R.I. Gen. Laws 42-12.3-3(g) does not say when
-    the 12-month period begins.
+  note: The conflict is limited to the 1115 Budget Populations 6a and 6b, whose March 2024 and November 2025 approvals
+    use the same wording. The RI-22-0024 state plan groups, RIte Start and FCEP have no conflicting text, and CHIP
+    (RI-22-0025 CS27) ends the period "on the last day of the 12th month consistent with paragraphs (5) and (16) of
+    section 1902(e)". R.I. Gen. Laws 42-12.3-3(g) does not say when the 12-month period begins.
 - id: us-ri:ssp-category-d-without-federal-ssi
   program: ssi-state-supplement
   years:

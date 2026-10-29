@@ -1,0 +1,72 @@
+# R.I. Gen. Laws § 42-12.3-3(g) continues postpartum Medicaid with state-only
+# funds when federal financial participation is not available. Only a
+# Medicaid pregnancy of someone with Medicaid immigration status stays in the
+# federally matched pregnancy group.
+- name: Case 1, the state-funded continuation covers non-Medicaid histories and Medicaid histories without status.
+  period: 2024
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2023-03-07"
+      person2:
+        immigration_status: CITIZEN
+        ri_pregnancy_coverage: CHIP
+        ri_pregnancy_end_date: "2023-03-07"
+      person3:
+        immigration_status: UNDOCUMENTED
+        ri_pregnancy_coverage: FCEP
+        ri_pregnancy_end_date: "2023-03-07"
+      person4:
+        immigration_status: UNDOCUMENTED
+        ri_pregnancy_coverage: MEDICAID
+        ri_pregnancy_end_date: "2023-03-07"
+      person5:
+        immigration_status: CITIZEN
+        ri_pregnancy_coverage: MEDICAID
+        ri_pregnancy_end_date: "2023-03-07"
+      person6:
+        immigration_status: CITIZEN
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2022-11-27"
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: RI
+  output:
+    ri_medicaid_state_funded_postpartum_eligible: [true, true, true, true, false, false]
+
+# 210-RICR-30-00-1 § 1.6(A)(2)(b)(1) and (c): a new pregnancy at or below the
+# 258% CHIP limit (253% plus the disregard) qualifies for Title XXI coverage.
+- name: Case 2, a new pregnancy in the CHIP band ends the state-funded continuation only when CHIP is taken up.
+  period: 2024
+  input:
+    people:
+      person1:
+        is_pregnant: true
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.58
+        takes_up_chip_if_eligible: true
+      person2:
+        is_pregnant: true
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.59
+        takes_up_chip_if_eligible: true
+      person3:
+        is_pregnant: true
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        takes_up_chip_if_eligible: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    ri_medicaid_state_funded_postpartum_eligible: [false, true, true]

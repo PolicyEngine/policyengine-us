@@ -14,8 +14,8 @@ class medicaid_federal_share(Variable):
         "pregnancy was covered by Medicaid and the enrollee meets Medicaid "
         "immigration requirements: RIte Start serves people not eligible "
         "under Title XIX or XXI, and CHIP and FCEP pregnancies are Title XXI "
-        "coverage. The zero match applies even if the enrollee also meets "
-        "another federally matched group. Separate Title XXI health services "
+        "coverage. An enrollee who also meets a federally matched group keeps "
+        "that group's match. Separate Title XXI health services "
         "initiative funding is not included here."
     )
     unit = "/1"
@@ -34,15 +34,12 @@ class medicaid_federal_share(Variable):
         regular_fmap = p.fmap[state]
         category = person("medicaid_category", period)
         categories = category.possible_values
-        pregnancy_coverage = person("ri_pregnancy_coverage", period)
-        coverage_types = pregnancy_coverage.possible_values
-        federally_matched_pregnancy = (
-            pregnancy_coverage == coverage_types.MEDICAID
-        ) & person("is_medicaid_immigration_status_eligible", period)
+        federally_matched_route = (category != categories.NONE) & person(
+            "is_medicaid_immigration_status_eligible", period
+        )
         no_federal_medicaid_match = (
-            (state == StateCode.RI)
-            & person("ri_medicaid_postpartum_eligible", period.first_month)
-            & ~federally_matched_pregnancy
+            person("ri_medicaid_state_funded_postpartum_eligible", period)
+            & ~federally_matched_route
         )
         return select(
             [

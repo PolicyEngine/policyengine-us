@@ -23,7 +23,8 @@ class is_chip_eligible_standard_pregnant_person(Variable):
         "https://www.law.cornell.edu/cfr/text/45/155.20",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/sho-12-002.pdf",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/sho26001.pdf#page=28",
-        "https://rules.sos.ri.gov/regulations/part/210-30-00-1",
+        # 210-RICR-30-00-1 § 1.6(A)(2)(b), version effective August 17, 2025.
+        "https://risos-apa-production-public.s3.amazonaws.com/EOHHS/REG_13314_20250728104245127.pdf#page=5",
         "https://www.medicaid.gov/CHIP/Downloads/RI-22-0025.pdf#page=4",
     )
 

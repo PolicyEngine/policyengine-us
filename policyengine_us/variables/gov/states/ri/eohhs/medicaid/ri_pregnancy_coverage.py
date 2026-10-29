@@ -10,13 +10,17 @@ class RIPregnancyCoverage(Enum):
 
 
 class ri_pregnancy_coverage(Variable):
-    # Eligibility during the last completed pregnancy, including retroactive
-    # eligibility. Current income and enrollment cannot establish this history.
     value_type = Enum
     possible_values = RIPregnancyCoverage
     default_value = RIPregnancyCoverage.NONE
     entity = Person
     label = "Qualifying Rhode Island coverage during the last completed pregnancy"
+    documentation = (
+        "Eligibility during the last completed pregnancy, including retroactive "
+        "eligibility. Current income and enrollment cannot establish this "
+        "history. The input is annual: a value entered only for the year the "
+        "pregnancy ended gives no continuation in later years."
+    )
     definition_period = YEAR
     reference = (
         "https://webserver.rilegislature.gov/Statutes/TITLE42/42-12.3/42-12.3-3.htm",

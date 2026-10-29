@@ -334,7 +334,7 @@
         immigration_status: CITIZEN
         count_days_postpartum: 300
         ri_pregnancy_coverage: MEDICAID
-        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        ri_pregnancy_end_date: "2023-03-07"
         medicaid_household_size: 2
         medicaid_income_level: 4
       person2:
@@ -342,7 +342,7 @@
         immigration_status: CITIZEN
         count_days_postpartum: 300
         ri_pregnancy_coverage: NONE
-        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        ri_pregnancy_end_date: "2023-03-07"
         medicaid_household_size: 2
         medicaid_income_level: 4
       person3:
@@ -350,7 +350,7 @@
         immigration_status: UNDOCUMENTED
         count_days_postpartum: 400
         ri_pregnancy_coverage: NONE
-        ri_medicaid_pregnancy_end_date: "2022-11-27"
+        ri_pregnancy_end_date: "2022-11-27"
         medicaid_household_size: 2
         medicaid_income_level: 1.8
       person4:
@@ -358,7 +358,7 @@
         immigration_status: CITIZEN
         count_days_postpartum: 300
         ri_pregnancy_coverage: NONE
-        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        ri_pregnancy_end_date: "2023-03-07"
         medicaid_household_size: 2
         medicaid_income_level: 2.3
       person5:
@@ -366,7 +366,7 @@
         immigration_status: CITIZEN
         count_days_postpartum: 30
         ri_pregnancy_coverage: NONE
-        ri_medicaid_pregnancy_end_date: "2023-12-02"
+        ri_pregnancy_end_date: "2023-12-02"
         medicaid_household_size: 2
         medicaid_income_level: 1.8
     households:
@@ -389,7 +389,7 @@
         is_pregnant: true
         immigration_status: CITIZEN
         ri_pregnancy_coverage: MEDICAID
-        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        ri_pregnancy_end_date: "2023-03-07"
         medicaid_household_size: 2
         medicaid_income_level: 4
       person2:
@@ -397,7 +397,7 @@
         is_pregnant: true
         immigration_status: UNDOCUMENTED
         ri_pregnancy_coverage: MEDICAID
-        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        ri_pregnancy_end_date: "2023-03-07"
         medicaid_household_size: 2
         medicaid_income_level: 4
     households:
@@ -415,10 +415,27 @@
     immigration_status: CITIZEN
     count_days_postpartum: 300
     ri_pregnancy_coverage: MEDICAID
-    ri_medicaid_pregnancy_end_date: "2023-03-07"
+    ri_pregnancy_end_date: "2023-03-07"
     medicaid_household_size: 2
     medicaid_income_level: 4
     state_code: CO
   output:
     is_pregnant_for_medicaid: false
     is_medicaid_eligible: false
+
+# Annual results read January 1, so a pregnancy that ends on January 1 starts
+# the continuation in time for that year's result.
+- name: Case 20, a Rhode Island pregnancy that ends on January 1 keeps Medicaid in that year's annual result.
+  period: 2024
+  input:
+    state_code: RI
+    age: 30
+    immigration_status: CITIZEN
+    is_pregnant: false
+    ri_pregnancy_coverage: MEDICAID
+    ri_pregnancy_end_date: "2024-01-01"
+    medicaid_household_size: 2
+    medicaid_income_level: 4
+  output:
+    is_pregnant_for_medicaid: true
+    is_medicaid_eligible: true

@@ -21,7 +21,7 @@ class is_medicaid_eligible(Variable):
         ca_ffyp_eligible = person("ca_ffyp_eligible", period)
         il_hbi_eligible = person("il_hbi_eligible", period)
         ri_postpartum_eligible = person(
-            "ri_medicaid_postpartum_eligible", period.first_month
+            "ri_medicaid_state_funded_postpartum_eligible", period
         )
 
         p = parameters(period).gov.hhs.medicaid.eligibility

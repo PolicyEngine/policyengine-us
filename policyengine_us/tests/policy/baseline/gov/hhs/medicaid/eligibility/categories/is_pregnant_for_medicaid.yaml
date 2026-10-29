@@ -613,10 +613,12 @@
     is_pregnant_for_medicaid: false
 
 # R.I. Gen. Laws § 42-12.3-3(g): from October 1, 2022, people eligible for
-# https://webserver.rilegislature.gov/Statutes/TITLE42/42-12.3/42-12.3-3.htm
 # Medicaid or CHIP while pregnant keep full Medicaid through the postpartum
 # period. $47,000 is about 230% FPL for a household of 2 in 2024 ($20,440).
-- name: Case 34, Rhode Island postpartum parent and newborn retain their distinct Medicaid categories.
+# https://webserver.rilegislature.gov/Statutes/TITLE42/42-12.3/42-12.3-3.htm
+# Only a Medicaid pregnancy keeps the pregnancy group (SHO 21-007 Q6), so the
+# parent, whose pregnancy CHIP covered, stays in CHIP (RI-22-0025 CS27).
+- name: Case 34, Rhode Island postpartum parent with a CHIP-covered pregnancy stays in CHIP outside the pregnancy group, and the newborn is an infant.
   period: 2024
   input:
     people:
@@ -624,7 +626,7 @@
         age: 28
         is_pregnant: false
         ri_pregnancy_coverage: CHIP
-        ri_medicaid_pregnancy_end_date: "2023-12-01"
+        ri_pregnancy_end_date: "2023-12-01"
         employment_income: 47_000
       person2:
         age: 0
@@ -636,8 +638,8 @@
         members: [person1, person2]
         state_code: RI
   output:
-    is_pregnant_for_medicaid: [true, false]
-    medicaid_category: [PREGNANT, INFANT]
+    is_pregnant_for_medicaid: [false, false]
+    medicaid_category: [NONE, INFANT]
     is_medicaid_eligible: [true, true]
     medicaid_enrolled: [false, true]
     chip_enrolled: [true, false]
@@ -668,11 +670,11 @@
     is_chip_eligible_standard_pregnant_person: true
 
 # 210-RICR-30-00-1 § 1.6(A)(2)(a)(2) covers pregnant applicants with
-# https://rules.sos.ri.gov/regulations/part/210-30-00-1
 # third-party insurance through the upper 253% standard (258% with the
 # disregard). Employer, individual and Medicare/military coverage are
 # independent of Medicaid enrollment, so the eligibility calculation must
 # also work without a circular dependency on medicaid_enrolled.
+# https://risos-apa-production-public.s3.amazonaws.com/EOHHS/REG_13314_20250728104245127.pdf#page=5
 - name: Case 36, Rhode Island pregnancy Medicaid covers applicants with each modeled third-party insurance source.
   period: 2024
   input:
@@ -785,7 +787,8 @@
 # continuation period and the November 2022 pregnancies have expired.
 # Pregnancy Medicaid requires a qualifying immigration status, so the
 # undocumented parents had unborn-child CHIP (FCEP) coverage while pregnant
-# (210-RICR-30-00-1 § 1.6(A)(2)(a)). Their continuation is state-funded.
+# (210-RICR-30-00-1 § 1.6(A)(2)(a)). Their continuation is state-funded and
+# outside the pregnancy group.
 - name: Case 38, Rhode Island citizen and undocumented postpartum parents receive coverage within the extended period.
   period: 2024
   input:
@@ -796,7 +799,7 @@
         immigration_status: CITIZEN
         count_days_postpartum: 300
         ri_pregnancy_coverage: MEDICAID
-        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        ri_pregnancy_end_date: "2023-03-07"
         medicaid_household_size: 2
         medicaid_income_level: 2.3
       person2:
@@ -805,7 +808,7 @@
         immigration_status: CITIZEN
         count_days_postpartum: 400
         ri_pregnancy_coverage: MEDICAID
-        ri_medicaid_pregnancy_end_date: "2022-11-27"
+        ri_pregnancy_end_date: "2022-11-27"
         medicaid_household_size: 2
         medicaid_income_level: 2.3
       person3:
@@ -814,7 +817,7 @@
         immigration_status: UNDOCUMENTED
         count_days_postpartum: 300
         ri_pregnancy_coverage: FCEP
-        ri_medicaid_pregnancy_end_date: "2023-03-07"
+        ri_pregnancy_end_date: "2023-03-07"
         medicaid_household_size: 2
         medicaid_income_level: 2.3
       person4:
@@ -823,7 +826,7 @@
         immigration_status: UNDOCUMENTED
         count_days_postpartum: 400
         ri_pregnancy_coverage: FCEP
-        ri_medicaid_pregnancy_end_date: "2022-11-27"
+        ri_pregnancy_end_date: "2022-11-27"
         medicaid_household_size: 2
         medicaid_income_level: 2.3
     households:
@@ -831,7 +834,7 @@
         members: [person1, person2, person3, person4]
         state_code: RI
   output:
-    is_pregnant_for_medicaid: [true, false, true, false]
+    is_pregnant_for_medicaid: [true, false, false, false]
     is_medicaid_eligible: [true, false, true, false]
     is_chip_eligible_standard_pregnant_person: [false, false, false, false]
 
@@ -849,7 +852,7 @@
     ri_pregnancy_coverage:
       2022: MEDICAID
       2023: MEDICAID
-    ri_medicaid_pregnancy_end_date:
+    ri_pregnancy_end_date:
       2022: "2021-10-03"
       2023: "2022-10-03"
     medicaid_household_size:

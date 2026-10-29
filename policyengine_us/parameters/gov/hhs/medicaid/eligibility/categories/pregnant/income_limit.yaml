@@ -27,9 +27,15 @@ metadata:
       href: https://medicaid.nv.gov/Downloads/provider/web_announcement_3748_20251020.pdf
     - title: "West Virginia Medicaid State Plan Amendment WV-19-0004, approval letter and S14 Pregnant Women #page 3,14"
       href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/WV/WV-19-0004.pdf#page=3
-    - title: 210-RICR-30-00-1 § 1.6(A)(2)(a)
-      href: https://rules.sos.ri.gov/regulations/part/210-30-00-1
-    - title: "Rhode Island Comprehensive Demonstration section 1115 approval (November 28, 2025), Budget Population 6b insured pregnant women #page 3,15"
+    - title: 210-RICR-30-00-1 § 1.6(A)(2)(a) (version effective August 17, 2025)
+      href: https://risos-apa-production-public.s3.amazonaws.com/EOHHS/REG_13314_20250728104245127.pdf#page=5
+    - title: "Rhode Island 1115 expenditure authorities (December 23, 2013 to December 31, 2018), Budget Population 6b"
+      href: https://www.medicaid.gov/Medicaid-CHIP-Program-Information/By-Topics/Waivers/1115/downloads/ri/Comprehensive-Demonstration/ri-global-consumer-choice-compact-expnditure-auth-12232013-12312018.pdf#page=2
+    - title: "Rhode Island 1115 amendment approval (March 21, 2024; 2019 to 2024), Budget Population 6b"
+      href: https://www.medicaid.gov/medicaid/section-1115-demonstrations/downloads/ri-comphnsve-dmnstrtn-aprvl.pdf#page=11
+    - title: "Rhode Island 1115 temporary extension (December 12, 2024; through June 30, 2025), Budget Population 6b"
+      href: https://www.medicaid.gov/medicaid/section-1115-demonstrations/downloads/ri-comphnsve-dmnstrtn-tmp-extn-amndmnt.pdf#page=6
+    - title: "Rhode Island 1115 approval (November 28, 2025; 2026 to 2030), Budget Population 6b #page 3,15"
       href: https://www.medicaid.gov/medicaid/section-1115-demonstrations/downloads/ri-comp-demo-appvl-11282025.pdf#page=3
 AK:
   2018-01-01: 2.05
@@ -119,7 +125,9 @@ PA:
 RI:
   # The higher Medicaid ceiling for insured pregnant people is applied in the
   # financial-criteria formula using Rhode Island's CHIP pregnancy ceiling.
-  # Before the August 17, 2025 rule, the insured route rests on 1115 Budget Population 6b (unverified estimates).
+  # The insured route rests on 1115 Budget Population 6b since 2013 (185-250%
+  # FPL before MAGI, 190-253% after) and on 210-RICR-30-00-1 § 1.6(A)(2)(a)(2)
+  # from August 17, 2025.
   2018-01-01: 1.95
 SC:
   2018-01-01: 1.99
