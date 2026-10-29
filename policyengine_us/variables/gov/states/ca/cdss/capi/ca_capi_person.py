@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
+    _apply_ssi_exclusions,
+)
 from policyengine_us.variables.gov.states.ca.cdss.capi._ca_capi_ssi_ssp_standard import (
     ca_capi_couple_computation,
     ca_capi_in_title_xix_facility,
@@ -24,7 +27,26 @@ class ca_capi_person(Variable):
     )
 
     def formula(person, period, parameters):
-        countable_income = person("ssi_countable_income", period)
+        # When only the California facility input separates a couple that SSI
+        # computes jointly, ssi_countable_income holds half the couple's
+        # income; each spouse's own income counts (20 CFR 416.414(b)(3)).
+        # NOTE: this own income leaves out in-kind support and the student
+        # earned income exclusion, which SSI's joint computation would apply.
+        separated = person(
+            "ssi_couple_computation_applies", period
+        ) & ~ca_capi_couple_computation(person, period)
+        own_alone = (
+            _apply_ssi_exclusions(
+                person("ssi_earned_income", period.this_year),
+                person("ssi_unearned_income", period.this_year),
+                parameters,
+                period.this_year,
+            )
+            / MONTHS_IN_YEAR
+        )
+        countable_income = where(
+            separated, own_alone, person("ssi_countable_income", period)
+        )
         payment_standard = person("ca_capi_payment_standard", period)
         deemed_income = person("ssi_income_deemed_from_ineligible_spouse", period)
         own_income = max_(countable_income - deemed_income, 0)

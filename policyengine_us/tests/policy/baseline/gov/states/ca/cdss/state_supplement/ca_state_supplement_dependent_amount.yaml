@@ -120,3 +120,31 @@
     # standard: 1,091.27 - 994 = 97.27.
     ssi: [0, 994]
     ca_state_supplement: 97.27
+
+- name: Case 6, disabled citizen child who fails SSI's resource test gets no state supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 10
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        immigration_status: CITIZEN
+        bank_account_assets:
+          '2026': 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The child's 3,000 of countable resources exceed SSI's 2,000 limit (20
+    # CFR 416.1205), so the child gets no SSI and no dependent amount.
+    meets_ssi_resource_test: [true, false]
+    ssi: [0, 0]
+    ca_state_supplement_dependent_amount: 0
+    ca_state_supplement: 0

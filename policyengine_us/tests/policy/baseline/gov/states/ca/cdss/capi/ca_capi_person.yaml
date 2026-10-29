@@ -459,3 +459,60 @@
     # nothing is deemed and the individual standard applies: 1,233.94.
     ca_capi_payment_standard: [1_233.94, 0]
     ca_capi_person: [1_233.94, 0]
+
+- name: Case 14, couple with one spouse in a Title XIX facility, each spouse's own income counts.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        ca_in_medical_care_facility: true
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        # 1,000 a month; countable 980 after the $20 exclusion.
+        social_security: 12_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # 20 CFR 416.414(b)(3): each spouse's own countable income comes off
+    # that spouse's standard: 62 - 0 = 62 and 1,233.94 - 980 = 253.94.
+    ca_capi_person: [62, 253.94]
+
+- name: Case 15, couple with one spouse in a Title XIX facility, the facility resident's income stays with that spouse.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        ca_in_medical_care_facility: true
+        # 1,000 a month; countable 980 after the $20 exclusion.
+        social_security: 12_000
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # 20 CFR 416.414(b)(3): max(62 - 980, 0) = 0 and 1,233.94 - 0 = 1,233.94.
+    ca_capi_person: [0, 1_233.94]
