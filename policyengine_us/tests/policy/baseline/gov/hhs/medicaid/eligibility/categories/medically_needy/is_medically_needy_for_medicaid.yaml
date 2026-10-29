@@ -51,7 +51,289 @@
   output:
     is_medically_needy_for_medicaid: false
 
-- name: Case 3, Arkansas senior qualifies after medical spenddown.
+- name: Case 3, aged parent claimed as a tax dependent does not add income or resources to the filer's test.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        # $18,000 Social Security - $240 general exclusion.
+        ssi_countable_income: 17_760
+        medicaid_medically_needy_medical_expenses: 13_000
+        ssi_countable_resources: 500
+        is_optional_senior_or_disabled_for_medicaid: false
+      person2:
+        age: 92
+        is_tax_unit_dependent: true
+        # $4,000 pension - $240 general exclusion.
+        ssi_countable_income: 3_760
+        ssi_countable_resources: 1_800
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    # person1: 17,760 - 13,000 = 4,760 <= 522 x 12 = 6,264; resources 500 <= 2,000.
+    # Summing over the tax unit would give 8,520 and 2,300, both over the limits.
+    # person2 receives SSI (3,760 < 994 x 12), so is covered through SSI instead.
+    is_medically_needy_for_medicaid: [true, false]
+
+- name: Case 4, married couple filing separately is tested on combined income against the couple limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 68
+        # Couple's $26,400 Social Security - $240 general exclusion, split
+        # equally between the two aged spouses.
+        ssi_countable_income: 13_080
+        medicaid_medically_needy_medical_expenses: 8_000
+        ssi_countable_resources: 1_000
+        is_optional_senior_or_disabled_for_medicaid: false
+      person2:
+        age: 66
+        ssi_countable_income: 13_080
+        medicaid_medically_needy_medical_expenses: 8_000
+        ssi_countable_resources: 1_000
+        is_optional_senior_or_disabled_for_medicaid: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    # 2 x (13,080 - 8,000) = 10,160 > 650 x 12 = 7,800.
+    # Each spouse alone would pass the individual limit: 5,080 <= 6,264.
+    is_medically_needy_for_medicaid: [false, false]
+
+- name: Case 5, disabled child's resource test counts the parents' savings above the SSI couple allowance.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_parent: true
+        employment_income_before_lsr: 40_000
+        ssi_countable_resources: 10_000
+      person2:
+        age: 38
+        is_tax_unit_spouse: true
+        is_parent: true
+        employment_income_before_lsr: 40_000
+        ssi_countable_resources: 10_000
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        # Parents' $6,666.67 monthly wages deemed to the child (20 CFR 416.1165):
+        # (6,666.67 - 20 - 65) / 2 - 1,491 couple allowance = 1,799.83, less
+        # the child's $20 general exclusion = 1,779.83 a month.
+        ssi_countable_income: 21_358
+        medicaid_medically_needy_medical_expenses: 16_000
+        is_optional_senior_or_disabled_for_medicaid: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:
+    # person3: income 21,358 - 16,000 = 5,358 <= 522 x 12 = 6,264, but resources
+    # 0 + (20,000 - 3,000 two-parent allowance) = 17,000 > 2,000 (20 CFR 416.1202(b)).
+    is_medically_needy_for_medicaid: [false, false, false]
+
+- name: Case 6, disabled child qualifies when the parents' savings are within the SSI couple allowance.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_parent: true
+        employment_income_before_lsr: 40_000
+        ssi_countable_resources: 1_200
+      person2:
+        age: 38
+        is_tax_unit_spouse: true
+        is_parent: true
+        employment_income_before_lsr: 40_000
+        ssi_countable_resources: 1_200
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        # Deemed parental income as in Case 5.
+        ssi_countable_income: 21_358
+        medicaid_medically_needy_medical_expenses: 16_000
+        is_optional_senior_or_disabled_for_medicaid: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:
+    # person3: income 5,358 <= 6,264; resources 0 + max(2,400 - 3,000, 0) = 0 <= 2,000.
+    # Counting the parents' full 2,400 would exceed the child's 2,000 limit.
+    is_medically_needy_for_medicaid: [false, false, true]
+
+- name: Case 7, married couple filing separately qualifies on the couple limit when combined net income is between the two limits.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 68
+        ssi_countable_income: 10_000
+        medicaid_medically_needy_medical_expenses: 6_500
+        ssi_countable_resources: 1_000
+        is_optional_senior_or_disabled_for_medicaid: false
+      person2:
+        age: 66
+        ssi_countable_income: 10_000
+        medicaid_medically_needy_medical_expenses: 6_500
+        ssi_countable_resources: 1_000
+        is_optional_senior_or_disabled_for_medicaid: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    # 2 x (10,000 - 6,500) = 7,000: above 6,264, at or below 7,800.
+    is_medically_needy_for_medicaid: [true, true]
+
+- name: Case 8, disabled child in a joint tax unit is tested against the individual limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_parent: true
+        employment_income_before_lsr: 40_000
+        ssi_countable_resources: 1_200
+      person2:
+        age: 38
+        is_tax_unit_spouse: true
+        is_parent: true
+        employment_income_before_lsr: 40_000
+        ssi_countable_resources: 1_200
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        ssi_countable_income: 21_358
+        medicaid_medically_needy_medical_expenses: 15_000
+        is_optional_senior_or_disabled_for_medicaid: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:
+    # 21,358 - 15,000 = 6,358 > 6,264 (the couple limit 7,800 would pass).
+    is_medically_needy_for_medicaid: [false, false, false]
+
+- name: Case 9, a parent's medical expenses reduce a disabled child's countable income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_parent: true
+        employment_income_before_lsr: 40_000
+        ssi_countable_resources: 1_200
+        medicaid_medically_needy_medical_expenses: 8_000
+      person2:
+        age: 38
+        is_tax_unit_spouse: true
+        is_parent: true
+        employment_income_before_lsr: 40_000
+        ssi_countable_resources: 1_200
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        ssi_countable_income: 21_358
+        medicaid_medically_needy_medical_expenses: 10_000
+        is_optional_senior_or_disabled_for_medicaid: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:
+    # 42 CFR 435.831(d): 21,358 - (10,000 own + 8,000 parent's) = 3,358
+    # <= 522 x 12 = 6,264. Resources: nothing deemed (2,400 < 3,000).
+    is_medically_needy_for_medicaid: [false, false, true]
+
+- name: Case 10, blind adult under 65 who is not SSI-disabled qualifies after spenddown.
+  period: 2026
+  input:
+    age: 40
+    is_blind: true
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    ssi_countable_income: 12_000
+    medicaid_medically_needy_medical_expenses: 6_000
+    ssi_countable_resources: 1_000
+    state_code: MA
+  output:
+    # 12,000 - 6,000 = 6,000 <= 6,264; resources 1,000 <= 2,000.
+    is_in_medicaid_medically_needy_category: true
+    is_medically_needy_for_medicaid: true
+
+- name: Case 11, Arkansas senior qualifies after medical spenddown.
   period: 2026
   input:
     age: 70
@@ -67,7 +349,7 @@
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
 
-- name: Case 4, Iowa senior qualifies after medical spenddown.
+- name: Case 12, Iowa senior qualifies after medical spenddown.
   period: 2026
   input:
     age: 70
@@ -83,7 +365,7 @@
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
 
-- name: Case 5, New Jersey senior above the optional aged, blind and disabled limit qualifies after medical spenddown.
+- name: Case 13, New Jersey senior above the optional aged, blind and disabled limit qualifies after medical spenddown.
   period: 2026
   input:
     age: 70
@@ -100,7 +382,7 @@
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
 
-- name: Case 6, Illinois senior qualifies after medical spenddown.
+- name: Case 14, Illinois senior qualifies after medical spenddown.
   period: 2026
   input:
     age: 70
@@ -116,7 +398,7 @@
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
 
-- name: Case 7, North Dakota senior qualifies after medical spenddown.
+- name: Case 15, North Dakota senior qualifies after medical spenddown.
   period: 2026
   input:
     age: 70
@@ -133,7 +415,7 @@
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
 
-- name: Case 8, California senior with assets exactly at the reinstated 2026 limit qualifies.
+- name: Case 16, California senior with assets exactly at the reinstated 2026 limit qualifies.
   period: 2026
   input:
     age: 70
@@ -151,7 +433,7 @@
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
 
-- name: Case 9, New York senior with assets at the 2026 resource level qualifies.
+- name: Case 17, New York senior with assets at the 2026 resource level qualifies.
   period: 2026
   input:
     age: 70
@@ -168,7 +450,7 @@
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
 
-- name: Case 10, California senior one dollar over the reinstated 2026 asset limit is ineligible.
+- name: Case 18, California senior one dollar over the reinstated 2026 asset limit is ineligible.
   period: 2026
   input:
     age: 70
@@ -183,7 +465,7 @@
     # Income passes (6,900 <= 7,200); assets 130,001 exceed 130,000.
     is_medically_needy_for_medicaid: false
 
-- name: Case 11, California senior with large assets qualifies in 2024, when non-MAGI asset limits did not apply.
+- name: Case 19, California senior with large assets qualifies in 2024, when non-MAGI asset limits did not apply.
   period: 2024
   input:
     age: 70
@@ -199,7 +481,7 @@
     # 26,400 - 19,500 = 6,900.
     is_medically_needy_for_medicaid: true
 
-- name: Case 12, New York senior with resources exactly at each year's level qualifies.
+- name: Case 20, New York senior with resources exactly at each year's level qualifies.
   period: 2026
   input:
     people:
@@ -227,7 +509,7 @@
       2025: true
       2026: true
 
-- name: Case 13, New York, California and Illinois couples with resources exactly at the 2026 couple limits qualify.
+- name: Case 21, New York, California and Illinois couples with resources exactly at the 2026 couple limits qualify.
   period: 2026
   input:
     people:
@@ -325,7 +607,7 @@
     # IL: 28,000 - 7,000 = 21,000 <= 21,640; assets 17,500 (PM 07-02-01).
     is_medically_needy_for_medicaid: [true, true, true, true, true, true]
 
-- name: Case 14, Vermont senior with income after medical expenses at the 2026 protected income level qualifies.
+- name: Case 22, Vermont senior with income after medical expenses at the 2026 protected income level qualifies.
   period: 2026
   input:
     age: 70
@@ -341,7 +623,7 @@
     # 20,000 - 3,500 = 16,500, equal to the limit.
     is_medically_needy_for_medicaid: true
 
-- name: Case 15, Vermont senior with income after medical expenses one dollar a month over the 2026 protected income level is ineligible.
+- name: Case 23, Vermont senior with income after medical expenses one dollar a month over the 2026 protected income level is ineligible.
   period: 2026
   input:
     age: 70
@@ -356,7 +638,7 @@
     # 20,000 - 3,488 = 16,512, or 1,376 a month, over 1,375.
     is_medically_needy_for_medicaid: false
 
-- name: Case 16, California senior with assets above the July 2027 limit is ineligible in 2028.
+- name: Case 24, California senior with assets above the July 2027 limit is ineligible in 2028.
   period: 2028
   input:
     age: 70
@@ -373,7 +655,7 @@
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: false
 
-- name: Case 17, California senior couple with assets above the July 2027 couple limit is ineligible in 2028.
+- name: Case 25, California senior couple with assets above the July 2027 couple limit is ineligible in 2028.
   period: 2028
   input:
     people:
@@ -410,7 +692,7 @@
     is_in_medicaid_medically_needy_category: [true, true]
     is_medically_needy_for_medicaid: [false, false]
 
-- name: Case 18, California senior with assets at the July 2027 limit is eligible in 2028.
+- name: Case 26, California senior with assets at the July 2027 limit is eligible in 2028.
   period: 2028
   input:
     age: 70
@@ -428,7 +710,7 @@
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
 
-- name: Case 19, California senior couple with assets at the July 2027 couple limit is eligible in 2028.
+- name: Case 27, California senior couple with assets at the July 2027 couple limit is eligible in 2028.
   period: 2028
   input:
     people:
@@ -466,7 +748,7 @@
     is_in_medicaid_medically_needy_category: [true, true]
     is_medically_needy_for_medicaid: [true, true]
 
-- name: Case 20, California senior with assets above the July 2027 limit is still eligible in 2027.
+- name: Case 28, California senior with assets above the July 2027 limit is still eligible in 2027.
   period: 2027
   input:
     age: 70
@@ -483,7 +765,7 @@
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
 
-- name: Case 21, California senior couple with assets above the July 2027 couple limit is still eligible in 2027.
+- name: Case 29, California senior couple with assets above the July 2027 couple limit is still eligible in 2027.
   period: 2027
   input:
     people:

@@ -15,3 +15,161 @@
     is_optional_senior_or_disabled_asset_eligible: false
   output:
     is_optional_senior_or_disabled_for_medicaid: false
+
+# 2026: Social Security of $900 a month leaves countable income of $10,560 a
+# year after the $20 a month disregard, under the SSI rate ($11,928).
+- name: Case 3, aged Alabaman who does not take up SSI is not covered, since Alabama covers only SSI recipients.
+  period: 2026
+  input:
+    age: 70
+    state_code: AL
+    social_security_retirement: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    ssi: 0
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: NONE
+    is_medicaid_eligible: false
+
+- name: Case 4, the same person in Pennsylvania, which covers aged people who do not receive SSI, is covered.
+  period: 2026
+  input:
+    age: 70
+    state_code: PA
+    social_security_retirement: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    is_optional_senior_or_disabled_for_medicaid: true
+    medicaid_category: SENIOR_OR_DISABLED
+    is_medicaid_eligible: true
+
+# North Dakota covers aged, blind, or disabled people who do not receive SSI
+# only as medically needy (N.D. Admin. Code 75-02-02.1-05(3)(e)).
+- name: Case 5, disabled North Dakotan who does not take up SSI is not covered by the pathway.
+  period: 2026
+  input:
+    age: 50
+    state_code: ND
+    meets_ssi_disability_criteria: true
+    social_security_disability: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+
+# Emergency Medicaid covers noncitizens who meet the state plan's requirements
+# other than the receipt of SSI (42 U.S.C. 1396b(v)(2)(B); 42 CFR 435.406(b)).
+# In Alabama that leaves SSI's income test. Wages of $800 a month ($9,600 a
+# year) are under the SSI rate ($11,928) before any disregard. Until #10240
+# merges, the pathway counts no income for this person; Cases 7 and 8 test it.
+- name: Case 6, undocumented aged Alabaman keeps the pathway, unlike the citizen in Case 3, and qualifies for emergency Medicaid.
+  period: 2026
+  input:
+    age: 70
+    state_code: AL
+    immigration_status: UNDOCUMENTED
+    employment_income_before_lsr: 9_600
+    has_emergency_medical_condition: true
+  output:
+    is_medicaid_immigration_status_eligible: false
+    ssi: 0
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: true
+    medicaid_category: SENIOR_OR_DISABLED
+    is_medicaid_eligible: false
+    is_emergency_medicaid_eligible: true
+
+# A permanent resident two years after entry is in the five-year bar (8 U.S.C.
+# 1613) and fails the Medicaid immigration test. The pathway then tests income
+# against the 2026 SSI rate, 12 x $994 = $11,928, at or below it (42 U.S.C.
+# 1382(a)(1)(A)). Social Security of $1,015 a month leaves countable income of
+# (1,015 - 20) x 12 = $11,940, so SSI pays nothing and the person is not an SSI
+# recipient. The pathway's countable income is an input.
+- name: Case 7, Alabaman permanent resident in the five-year bar with income over the SSI rate gets neither the pathway nor emergency Medicaid.
+  period: 2026
+  input:
+    age: 70
+    state_code: AL
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    social_security_retirement: 12_180
+    medicaid_optional_senior_or_disabled_countable_income: 11_940
+    has_emergency_medical_condition: true
+  output:
+    is_medicaid_immigration_status_eligible: false
+    ssi: 0
+    medicaid_optional_senior_or_disabled_income_limit: 11_928
+    is_optional_senior_or_disabled_income_eligible: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: NONE
+    is_emergency_medicaid_eligible: false
+
+# The SSI couple rate in 2026 is 12 x $1,491 = $17,892; the couple's countable
+# income, $8,946 each, is exactly at it. Social Security of $755.50 a month
+# each gives the couple (1,511 - 20) x 12 = $17,892, so SSI pays nothing and
+# neither spouse is an SSI recipient. Only the first spouse has an emergency
+# medical condition.
+- name: Case 8, Alabaman permanent-resident couple in the five-year bar at the SSI couple rate keeps the pathway.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        social_security_retirement: 9_066
+        medicaid_optional_senior_or_disabled_countable_income: 8_946
+        has_emergency_medical_condition: true
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        social_security_retirement: 9_066
+        medicaid_optional_senior_or_disabled_countable_income: 8_946
+        has_emergency_medical_condition: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    is_medicaid_immigration_status_eligible: [false, false]
+    ssi: [0, 0]
+    medicaid_optional_senior_or_disabled_income_limit: [17_892, 17_892]
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+    is_optional_senior_or_disabled_for_medicaid: [true, true]
+    medicaid_category: [SENIOR_OR_DISABLED, SENIOR_OR_DISABLED]
+    is_medicaid_eligible: [false, false]
+    is_emergency_medicaid_eligible: [true, false]
+
+# A permanent resident ten years after entry is past the five-year bar, so
+# passes the Medicaid immigration test, but with no qualifying quarters fails
+# SSI's noncitizen test (8 U.S.C. 1612(a)(2)(B)) and gets no SSI. Alabama has
+# no group for aged people who do not receive SSI, and the emergency Medicaid
+# exception does not reach someone who passes the Medicaid immigration test.
+- name: Case 9, Alabaman permanent resident past the five-year bar without 40 quarters does not keep the pathway.
+  period: 2026
+  input:
+    age: 70
+    state_code: AL
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 10
+    ssi_qualifying_quarters_earnings: 0
+    social_security_retirement: 10_800
+  output:
+    is_medicaid_immigration_status_eligible: true
+    ssi: 0
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: NONE
+    is_medicaid_eligible: false
+    is_emergency_medicaid_eligible: false
