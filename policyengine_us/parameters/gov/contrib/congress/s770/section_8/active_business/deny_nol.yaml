@@ -1,0 +1,12 @@
+description: When the active option is enabled, add back the validated NOL deduction supplied
+  in s770_niit_nol_deduction to broadened NII before allocating the unified base. There
+  is no automatic federal section 172 deduction variable.
+values:
+  '0000-01-01': true
+metadata:
+  label: S.770 broadened NII denies NOL deduction
+  period: year
+  reference:
+  - title: S.770 (119th Congress), sections 8 and 9
+    href: https://www.congress.gov/bill/119th-congress/senate-bill/770/text
+  unit: bool

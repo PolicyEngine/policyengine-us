@@ -43,7 +43,8 @@
   output:
     fl_tca_eligible: false
     # Gross test: $1,000 < 185% FPL ($3,151) -> Pass
-    # Net test: max(max(1000-90,0)-200,0)*0.5 = 355 > $241 -> Fail
+    # Net test: income after $90 = $910 >= $241, so the $200 and 1/2
+    # disregard is denied; countable $910 > $241 -> Fail
     # Must pass BOTH tests
 
 - name: Case 3, fails gross income test.
@@ -167,7 +168,7 @@
     fl_tca_eligible: true
     # Size 8, >$50 shelter payment standard: $610.
     # Income after $90 = $210 < $610, so the $200 and 1/2 disregard applies:
-    # countable = max(max(300-90,0)-200,0)*0.5 = $5 < $610 -> net test passes.
+    # countable = max(300-90-110,0)*0.5 = $50 < $610 -> net test passes.
 
 - name: Case 7, adult-only household ineligible.
   period: 2024-01

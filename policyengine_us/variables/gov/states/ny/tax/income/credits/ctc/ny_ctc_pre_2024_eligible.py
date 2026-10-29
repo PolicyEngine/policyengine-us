@@ -11,7 +11,10 @@ class ny_ctc_pre_2024_eligible(Variable):
     label = "NY CTC pre-2024 eligibility"
     documentation = "Whether the tax unit is eligible for NY CTC under pre-2024 rules"
     definition_period = YEAR
-    reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-1)
+    reference = (
+        "https://www.nysenate.gov/legislation/laws/TAX/606",  # (c-1)
+        "https://www.tax.ny.gov/forms/html-instructions/2023/it/it213i-2023.htm",
+    )
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
@@ -24,7 +27,11 @@ class ny_ctc_pre_2024_eligible(Variable):
         person = tax_unit.members
         age = person("age", period)
 
-        # Check if we have qualifying children
+        # Check if we have qualifying children. ctc_qualifying_child includes
+        # the filer identification test, which under the pre-TCJA rules is an
+        # SSN or ITIN for each filer (IRC 24(e)); the IT-213 instructions
+        # likewise require "a valid Social Security number (SSN) or IRS
+        # individual taxpayer identification number (ITIN)" for the filer.
         if not p.pre_tcja:
             qualifies_for_federal_ctc = person("ctc_qualifying_child", period)
         else:

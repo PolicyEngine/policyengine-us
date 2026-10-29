@@ -1,0 +1,17 @@
+description: New Hampshire uses these dwelling energy factors to estimate heating cost under the Fuel Assistance Program.
+SINGLE_FAMILY_OR_MODULAR:
+  2026-10-01: 2_000
+MOBILE_HOME:
+  2026-10-01: 1_800
+APARTMENT_CONDO_OR_DUPLEX:
+  2026-10-01: 1_400
+
+metadata:
+  unit: /1
+  period: year
+  label: New Hampshire FAP dwelling energy factor
+  breakdown:
+    - nh_fap_dwelling_type
+  reference:
+    - title: "PY2027 New Hampshire Fuel Assistance Program Procedures Manual, Benefit Determination #page 76-77"
+      href: https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=76
