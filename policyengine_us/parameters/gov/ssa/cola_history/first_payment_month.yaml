@@ -1,0 +1,15 @@
+description: Social Security first pays a historical annual COLA in this calendar month.
+values:
+  1975-06-01: 7
+  1983-12-01: 1
+metadata:
+  unit: int
+  label: Social Security historical COLA first payment month
+  economy: false
+  reference:
+    - title: Social Security COLA information, history of automatic adjustments
+      href: https://www.ssa.gov/news/en/cola/
+documentation: |
+  Read this month at an event date in cola_history.rate. For a June-effective
+  event, the first payment is in July of the same year. For a December-effective
+  event, the first payment is in January of the next year.
