@@ -1,6 +1,27 @@
 from policyengine_us.model_api import *
 
 
+def earnings_before_zero_floor(person, period, parameters, taxable_wages):
+    """
+    IRC 32(c)(2) earned income before the zero floor: wages measured as
+    taxable_wages, plus self-employment earnings, less the deductible part
+    of self-employment tax. States that tax a different wage base, such as
+    California, pass their own taxable wages so that a business loss offsets
+    those wages before the floor.
+    """
+    p = parameters(period).gov.irs.ald.misc
+    adjustment = (
+        (1 - p.self_emp_tax_adj)
+        * p.employer_share
+        * person("self_employment_tax", period)
+    )
+    excluded_wages = person("employment_income", period) - taxable_wages
+    # Disability pay reported as wages is earned income (Pub. 503 (2024),
+    # file page 4).
+    earnings = add(person, period, ["earned_income", "earned_disability_benefits"])
+    return earnings - excluded_wages - adjustment
+
+
 class adjusted_earnings(Variable):
     value_type = float
     entity = Person
@@ -25,12 +46,6 @@ class adjusted_earnings(Variable):
     )
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.irs.ald.misc
-        adjustment = (
-            (1 - p.self_emp_tax_adj)
-            * p.employer_share
-            * person("self_employment_tax", period)
-        )
         # IRC 32(c)(2)(A)(i) counts employee compensation "only if such
         # amounts are includible in gross income", and Treas. Reg.
         # 1.21-2(b)(3) and IRC 129(e)(2) use that definition. Form 2441
@@ -38,10 +53,8 @@ class adjusted_earnings(Variable):
         # leaves out pre-tax payroll deductions such as traditional
         # elective deferrals (IRC 402(e)(3)). Gross earned_income is kept
         # for programs that count wages before these deductions.
-        excluded_wages = person("employment_income", period) - person(
-            "irs_employment_income", period
+        taxable_wages = person("irs_employment_income", period)
+        return max_(
+            0,
+            earnings_before_zero_floor(person, period, parameters, taxable_wages),
         )
-        # Disability pay reported as wages is earned income (Pub. 503 (2024),
-        # file page 4).
-        earnings = add(person, period, ["earned_income", "earned_disability_benefits"])
-        return max_(0, earnings - excluded_wages - adjustment)

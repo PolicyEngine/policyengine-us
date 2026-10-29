@@ -33,8 +33,8 @@ class ca_amt_exemption(Variable):
         eligible_child = person("is_qualifying_child_dependent", period)
         is_head = person("is_tax_unit_head", period)
         head_is_eligible_child = tax_unit.any(eligible_child & is_head)
-        # Line 7
-        exemption_amount_child = p_irs.child.amount
+        # Line 7: California's own amount, not the federal IRC 59(j) one.
+        exemption_amount_child = p.child.amount
         # Line 8: "wages, tips, and other payments received for personal
         # services performed", which in California include payroll HSA
         # contributions.

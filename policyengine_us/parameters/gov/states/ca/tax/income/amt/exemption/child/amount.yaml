@@ -1,0 +1,25 @@
+description: California limits the alternative minimum tax exemption of certain children under age 24 to their earned income plus this amount.
+values:
+  2021-01-01: 7_850
+  2022-01-01: 8_300
+  2023-01-01: 8_950
+  2024-01-01: 9_450
+  2025-01-01: 9_750
+metadata:
+  uprating: gov.states.ca.cpi
+  unit: currency-USD
+  period: year
+  label: California AMT child exemption additional income base
+  reference:
+    # California publishes its own amount, which differs from the federal
+    # IRC 59(j) amount (for example, $9,750 against $9,550 for 2025).
+    - title: 2021 Instructions for Schedule P (540), line 22, Exemption Worksheet line 7
+      href: https://www.ftb.ca.gov/forms/2021/2021-540-p-instructions.html
+    - title: 2022 Instructions for Schedule P (540), line 22, Exemption Worksheet line 7
+      href: https://www.ftb.ca.gov/forms/2022/2022-540-p-instructions.html
+    - title: 2023 Instructions for Schedule P (540), line 22, Exemption Worksheet line 7
+      href: https://www.ftb.ca.gov/forms/2023/2023-540-p-instructions.html
+    - title: 2024 Instructions for Schedule P (540), line 22, Exemption Worksheet line 7
+      href: https://www.ftb.ca.gov/forms/2024/2024-540-p-instructions.html
+    - title: 2025 Instructions for Schedule P (540), line 22, Exemption Worksheet line 7
+      href: https://www.ftb.ca.gov/forms/2025/2025-540-p-instructions.html

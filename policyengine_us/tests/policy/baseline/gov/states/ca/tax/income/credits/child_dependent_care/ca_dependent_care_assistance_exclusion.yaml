@@ -99,3 +99,33 @@
     ca_cdcc_min_head_spouse_earned: 4_000
     # min(5,000 benefits, 5,000 California cap, 4,000) = 4,000.
     ca_dependent_care_assistance_exclusion: 4_000
+
+- name: A self-employment loss that offsets the California wages does not raise the exclusion
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        dependent_care_employer_benefits: 5_000
+      spouse:
+        age: 38
+        employment_income: 4_000
+        health_savings_account_payroll_contributions: 1_000
+        self_employment_income: -4_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CA
+  output:
+    # Federal: max(3,000 - 4,000, 0) = 0, so the IRC 129(b) exclusion is 0.
+    dependent_care_assistance_exclusion: 0
+    # California: max(4,000 - 4,000, 0) = 0, so the exclusion stays at 0.
+    ca_cdcc_min_head_spouse_earned: 0
+    ca_dependent_care_assistance_exclusion: 0

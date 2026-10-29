@@ -7,19 +7,24 @@ class ca_cdcc_rate(Variable):
     label = "CDCC credit rate replicated to include California limitations"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.ftb.ca.gov/about-ftb/data-reports-plans/Summary-of-Federal-Income-Tax-Changes/index.html#PL-117-2-9631"
+    reference = (
+        "https://www.ftb.ca.gov/about-ftb/data-reports-plans/Summary-of-Federal-Income-Tax-Changes/index.html#PL-117-2-9631",
+        "https://www.ftb.ca.gov/forms/2025/2025-3506-instructions.html",  # Line 7
+    )
     defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
-        agi = tax_unit("adjusted_gross_income", period)
-
         year = period.start.year
-        if year == 2021:
-            period_adjusted = f"{year - 1}-01-01"
-        else:
-            period_adjusted = f"{year}-01-01"
+        if year != 2021:
+            # Outside 2021, FTB 3506 line 7 uses the federal decimal table
+            # (2025 instructions, line 7). The FTB has not published a 2026
+            # table, so 2026 onward keeps the federal rate.
+            return tax_unit("cdcc_rate", period)
 
-        p = parameters(period_adjusted).gov.irs.credits.cdcc
+        # California did not adopt the 2021 American Rescue Plan Act rate,
+        # so 2021 uses the 2020 schedule.
+        agi = tax_unit("adjusted_gross_income", period)
+        p = parameters(f"{year - 1}-01-01").gov.irs.credits.cdcc
 
         # First phase-out
         excess_agi = max_(0, agi - p.phase_out.start)  # start

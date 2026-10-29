@@ -43,8 +43,8 @@
   input:
     state_code: CA
     adjusted_gross_income: 100_001
-    cdcc: 1_000
-    ca_federal_capped_cdcc: 0
+    cdcc: 0
+    ca_federal_capped_cdcc: 1_000
   output:
     ca_cdcc: 0
 
@@ -53,8 +53,8 @@
   input:
     state_code: CA
     adjusted_gross_income: 1_000
-    cdcc: 1_000
-    ca_federal_capped_cdcc: 0
+    cdcc: 0
+    ca_federal_capped_cdcc: 1_000
   output:
     ca_cdcc: 500
 
@@ -63,8 +63,8 @@
   input:
     state_code: CA
     adjusted_gross_income: 50_000
-    cdcc: 1_000
-    ca_federal_capped_cdcc: 0
+    cdcc: 0
+    ca_federal_capped_cdcc: 1_000
   output:
     ca_cdcc: 430
 
@@ -73,7 +73,126 @@
   input:
     state_code: CA
     adjusted_gross_income: -50_000
-    cdcc: 1_000
-    ca_federal_capped_cdcc: 0
+    cdcc: 0
+    ca_federal_capped_cdcc: 1_000
   output:
     ca_cdcc: 500
+
+# FTB 3506 (2025), Part III: line 6 is the smallest of the expense limit
+# (line 3) and each spouse's California earned income (lines 4 and 5),
+# line 8 applies the federal decimal and line 10 the California decimal.
+# California taxes the spouse's $1,000 payroll HSA contribution (Schedule
+# CA (540) line 1h), so the spouse's California earned income is $4,000
+# while federal earned income is $3,000.
+- name: 2025 final credit uses California earned income, not the federal credit
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 90_000
+      spouse:
+        age: 38
+        employment_income: 4_000
+        health_savings_account_payroll_contributions: 1_000
+      child1:
+        age: 5
+      child2:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: CA
+  output:
+    # Federal: min(9,000, 6,000, 90,000, 3,000) x 20% = 600.
+    cdcc: 600
+    # Federal AGI: 90,000 + 3,000 = 93,000, so line 7 is .20 and line 9 is .34.
+    # Line 6: min(9,000, 6,000, 90,000, 4,000) = 4,000. Line 8: 800.
+    ca_federal_capped_cdcc: 800
+    # Line 10: 800 x .34 = 272.
+    ca_cdcc: 272
+    # California AGI: 93,000 + 1,000 HSA addition = 94,000. Taxable income:
+    # 94,000 - 11,412 standard deduction = 82,588. Tax: 22,158 x 1%
+    # + 30,370 x 2% + 30,060 x 4% = 221.58 + 607.40 + 1,202.40 = 2,031.38.
+    # Exemption credits: 2 x 153 + 2 x 475 = 1,256.
+    # 2,031.38 - 1,256 - 272 = 503.38.
+    ca_income_tax: 503.38
+
+# IRC 21(d), which R&TC 17052.6(d)(2) adopts, limits expenses to net earned
+# income: wages plus net earnings from self-employment (Treas. Reg.
+# 1.21-2(b)(3); FTB 3506 line 4). A business loss therefore offsets the
+# spouse's California wages, including the payroll HSA contribution.
+- name: 2021 self-employment loss that offsets all California wages leaves no credit
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 90_000
+      spouse:
+        age: 38
+        employment_income: 4_000
+        health_savings_account_payroll_contributions: 1_000
+        self_employment_income: -4_000
+      child1:
+        age: 5
+      child2:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: CA
+  output:
+    # max(4,000 California wages - 4,000 loss, 0) = 0.
+    ca_spouse_earned: 0
+    ca_cdcc_min_head_spouse_earned: 0
+    ca_cdcc_relevant_expenses: 0
+    ca_cdcc: 0
+    # California AGI: 90,000 + 3,000 - 4,000 + 1,000 HSA addition = 90,000.
+    # Taxable income: 90,000 - 9,606 = 80,394. Tax: 18,650 x 1%
+    # + 25,564 x 2% + 25,570 x 4% + 10,610 x 6%
+    # = 186.50 + 511.28 + 1,022.80 + 636.60 = 2,357.18.
+    # Exemption credits: 2 x 129 + 2 x 400 = 1,058. 2,357.18 - 1,058 = 1,299.18.
+    ca_income_tax: 1_299.18
+
+- name: 2025 self-employment loss that offsets part of the California wages
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 90_000
+      spouse:
+        age: 38
+        employment_income: 4_000
+        health_savings_account_payroll_contributions: 1_000
+        self_employment_income: -3_500
+      child1:
+        age: 5
+      child2:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: CA
+  output:
+    # Federal: max(3,000 - 3,500, 0) = 0, so no federal credit.
+    spouse_earned: 0
+    cdcc: 0
+    # California: max(4,000 - 3,500, 0) = 500.
+    ca_spouse_earned: 500
+    # Federal AGI: 90,000 + 3,000 - 3,500 = 89,500 (line 7 .20, line 9 .34).
+    # 500 x .20 x .34 = 34.
+    ca_cdcc: 34

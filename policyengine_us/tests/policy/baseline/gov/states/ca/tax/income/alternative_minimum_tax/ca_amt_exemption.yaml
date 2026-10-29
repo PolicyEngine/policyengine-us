@@ -97,6 +97,32 @@
     # California wages add back the payroll HSA contribution: 9,000.
     ca_head_earned: 9_000
     # Adult exemption: AMTI below the 347,808 threshold, so 92,749.
-    # Child: min(9,550 + 9,000, 92,749) = 18,550 (Schedule P worksheet
-    # lines 7-10).
-    ca_amt_exemption: 18_550
+    # Child (2025 Schedule P (540) instructions, line 22, Exemption
+    # Worksheet lines 7-10): line 7 is California's 9,750, not the federal
+    # 9,550, so min(9,750 + 9,000, 92,749) = 18,750.
+    ca_amt_exemption: 18_750
+
+- name: Child exemption uses the California minimum, not the federal one
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head: true
+        is_qualifying_child_dependent: true
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ca_amti: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # Adult exemption: AMTI below the threshold, so 84,550.
+    # Child (2022 Schedule P (540) instructions, line 22, Exemption
+    # Worksheet lines 7-10): min(8,300 + 5,000, 84,550) = 13,300. The
+    # federal IRC 59(j) amount of 8,200 would give 13,200.
+    ca_amt_exemption: 13_300
