@@ -1,7 +1,6 @@
-from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
-    _ssi_couple_total,
-    _ssi_spouse_index,
+from policyengine_us.variables.gov.states._spouses import (
+    state_couple_total,
+    state_is_married,
 )
 
 
@@ -12,15 +11,9 @@ def co_oap_couple_total(person, year, values):
     household. A two-person marital unit therefore retains both spouses;
     larger default groups use SSI's identified spouse pair instead.
     """
-    return where(
-        person.marital_unit.nb_persons() == 2,
-        person.marital_unit.sum(values),
-        _ssi_couple_total(person, year, values),
-    )
+    return state_couple_total(person, year, values)
 
 
 def co_oap_is_married(person, year):
     """Marriage for OAP's shared $20 disregard (3.533(A)(2)(c))."""
-    return (person.marital_unit.nb_persons() == 2) | (
-        _ssi_spouse_index(person, year) >= 0
-    )
+    return state_is_married(person, year)

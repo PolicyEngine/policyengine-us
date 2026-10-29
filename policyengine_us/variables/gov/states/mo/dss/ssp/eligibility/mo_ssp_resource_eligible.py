@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
-    _ssi_couple_total,
-    _ssi_spouse_index,
+from policyengine_us.variables.gov.states._spouses import (
+    state_couple_total,
+    state_is_married,
 )
 
 
@@ -31,15 +31,14 @@ class mo_ssp_resource_eligible(Variable):
         )
 
         # The couple limit applies to property of either spouse when the
-        # claimant is married and living with the spouse (§ 1035.005.00), so
-        # the test follows the claimant's marital unit rather than the SPM unit.
-        # Spouses separated to receive medical or nursing home care also use
-        # the couple limit; that separation is not modeled.
+        # claimant is married and living with the spouse (§ 1035.005.00).
+        # RSMo 208.010.1 also treats spouses separated to obtain medical or
+        # nursing care as living together, retaining the declared marriage.
         personal_resources = person("ssi_countable_resources", period.this_year)
-        married = _ssi_spouse_index(person, period.this_year) >= 0
+        married = state_is_married(person, period.this_year)
         countable_resources = where(
             married,
-            _ssi_couple_total(person, period.this_year, personal_resources),
+            state_couple_total(person, period.this_year, personal_resources),
             personal_resources,
         )
 

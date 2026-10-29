@@ -1,7 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
-    _ssi_couple_total,
-)
+from policyengine_us.variables.gov.states._spouses import state_couple_total
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
@@ -23,8 +21,11 @@ class va_ag_countable_income(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.va.dars.ag
+        # Chapter B section 6 tests co-residence at the first moment of the
+        # application month; subsequent placement in separate facilities does
+        # not end the joint initial-month budget recorded by this input.
         joint = (
-            _ssi_couple_total(
+            state_couple_total(
                 person,
                 period.this_year,
                 person("va_ag_is_joint_initial_month", period).astype(int),
@@ -45,10 +46,10 @@ class va_ag_countable_income(Variable):
             0,
         )
         earned = where(
-            joint, _ssi_couple_total(person, period.this_year, earned), earned
+            joint, state_couple_total(person, period.this_year, earned), earned
         )
         unearned = where(
-            joint, _ssi_couple_total(person, period.this_year, unearned), unearned
+            joint, state_couple_total(person, period.this_year, unearned), unearned
         )
         non_ssi_countable = (
             _apply_ssi_exclusions(

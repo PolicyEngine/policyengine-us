@@ -1,7 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
-    _ssi_couple_total,
-)
+from policyengine_us.variables.gov.states._spouses import state_couple_total
 
 
 class va_ag_eligible(Variable):
@@ -17,8 +15,10 @@ class va_ag_eligible(Variable):
         immigration = person("immigration_status", period.this_year)
         citizen = immigration == immigration.possible_values.CITIZEN
         immigrant = person("is_ssi_qualified_noncitizen", period.this_year)
+        # Chapter B section 6 preserves the joint initial-month resource
+        # budget when the spouses subsequently enter separate facilities.
         joint = (
-            _ssi_couple_total(
+            state_couple_total(
                 person,
                 period.this_year,
                 person("va_ag_is_joint_initial_month", period).astype(int),
@@ -27,7 +27,7 @@ class va_ag_eligible(Variable):
         )
         resources = person("ssi_countable_resources", period.this_year)
         resources = where(
-            joint, _ssi_couple_total(person, period.this_year, resources), resources
+            joint, state_couple_total(person, period.this_year, resources), resources
         )
         limits = parameters(period).gov.ssa.ssi.eligibility.resources.limit
         receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)

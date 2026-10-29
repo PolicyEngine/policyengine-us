@@ -1,7 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
-    _ssi_couple_total,
-)
+from policyengine_us.variables.gov.states._spouses import state_couple_total
 
 
 class or_ssp(Variable):
@@ -43,10 +41,13 @@ class or_ssp(Variable):
         # Community care and SSI restoration amounts depend on the SSI payment,
         # so those paths require modeled SSI rather than reported receipt.
         care = (category == c.COMMUNITY_CARE) & (ssi > 0)
-        couple = _ssi_couple_total(person, period.this_year, care.astype(int)) == 2
+        # OAR 461-155-0630(3) applies when each spouse receives SSI and
+        # community-based care services, including in separate facilities.
+        # Hub ruling: us-or:ssp-community-care-spouses-separate-facilities.
+        couple = state_couple_total(person, period.this_year, care.astype(int)) == 2
         own_excess = max_(income - standard, 0)
         spouse_excess = (
-            _ssi_couple_total(person, period.this_year, own_excess) - own_excess
+            state_couple_total(person, period.this_year, own_excess) - own_excess
         )
         couple_payment = max_(standard - income - spouse_excess, 0)
         interim = (category == c.DISABILITY_INTERIM) | (category == c.NATURALIZATION)

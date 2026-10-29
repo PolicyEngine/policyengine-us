@@ -404,3 +404,131 @@
     va_ag:
       2026-01: 558
       2026-02: 1_223
+
+# AG Manual Chapter B section 6 (PDF pp. 34-35) tests marriage/co-residence
+# at the first moment of the application month; entering separate facilities
+# later in that month retains the joint budget recorded by the input.
+# https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf#page=34
+# Joint countable income = ($1,200 + $1,200 - $20) / 2 = $1,190 each;
+# $2,130 maintenance + $87 personal needs - $1,190 = $1,027 grant each.
+# Joint resources $1,600 + $1,600 = $3,200 exceed the $3,000 couple limit.
+- name: Review VA spouses enter separate facilities during joint initial month
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+        pension_income:
+          2026: 14400
+        ssi_countable_resources:
+          2026: 1000
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        pension_income:
+          2026: 14400
+        ssi_countable_resources:
+          2026: 1000
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+    tax_units:
+      joint_tax_unit:
+        members:
+        - husband
+        - wife
+    marital_units:
+      declared_marriage:
+        members:
+        - husband
+        - wife
+    households:
+      husband_facility:
+        members:
+        - husband
+        state_code:
+          2026: VA
+      wife_facility:
+        members:
+        - wife
+        state_code:
+          2026: VA
+  output:
+    va_ag:
+    - 1027
+    - 1027
+    ssi:
+    - 0
+    - 0
+    va_ag_eligible:
+    - true
+    - true
+    va_ag_countable_income:
+    - 1190
+    - 1190
+- name: Review VA joint initial-month resources exceed couple limit across facility
+    households
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+        pension_income:
+          2026: 14400
+        ssi_countable_resources:
+          2026: 1600
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        pension_income:
+          2026: 14400
+        ssi_countable_resources:
+          2026: 1600
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+    tax_units:
+      joint_tax_unit:
+        members:
+        - husband
+        - wife
+    marital_units:
+      declared_marriage:
+        members:
+        - husband
+        - wife
+    households:
+      husband_facility:
+        members:
+        - husband
+        state_code:
+          2026: VA
+      wife_facility:
+        members:
+        - wife
+        state_code:
+          2026: VA
+  output:
+    va_ag:
+    - 0
+    - 0
+    ssi:
+    - 0
+    - 0
+    va_ag_eligible:
+    - false
+    - false
