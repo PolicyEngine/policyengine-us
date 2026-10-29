@@ -132,6 +132,8 @@
         age: 70
         railroad_benefits: 37_000
         medicare_part_b_premium: 2_434.80
+        # The model's SSI income test does not count railroad annuities.
+        ssi: 0
     spm_units:
       spm_unit:
         members: [person1]
