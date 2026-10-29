@@ -22,7 +22,7 @@ class ca_wdp_asset_eligible(Variable):
         capped_size = min_(tax_unit_size, p.max_people)
         asset_limit = where(
             capped_size >= 2,
-            p.two_people + max_(capped_size - 2, 0) * p.additional_person,
+            p.two_people + (capped_size - 2) * p.additional_person,
             p.base,
         )
         return countable_resources <= asset_limit

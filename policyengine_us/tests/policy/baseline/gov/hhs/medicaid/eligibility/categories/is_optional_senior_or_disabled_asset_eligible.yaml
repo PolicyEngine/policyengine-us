@@ -181,23 +181,23 @@
   output:
     is_optional_senior_or_disabled_asset_eligible: [false, false]
 
-- name: assets below the July 2027 CA limit in 2028, eligible
+- name: assets one dollar below the July 2027 CA limit in 2028, eligible
   period: 2028
   input:
-    ssi_countable_resources: 20_000
+    ssi_countable_resources: 20_999
     state_code: CA
   output:
-    # 20,000 is under the 21,000 limit that applies from July 2027.
+    # 20,999 is under the 21,000 limit that applies from July 2027.
     is_optional_senior_or_disabled_asset_eligible: true
 
-- name: joint filers below the July 2027 CA couple limit in 2028, eligible
+- name: joint filers one dollar below the July 2027 CA couple limit in 2028, eligible
   period: 2028
   input:
     people:
       person1:
-        ssi_countable_resources: 15_000
+        ssi_countable_resources: 15_499
       person2:
-        ssi_countable_resources: 15_000
+        ssi_countable_resources: 15_500
     marital_units:
       marital_unit1:
         members: [person1, person2]
@@ -210,7 +210,7 @@
         members: [person1, person2]
         tax_unit_is_joint: true
   output:
-    # 15,000 + 15,000 = 30,000 is under the 31,000 couple limit.
+    # 15,499 + 15,500 = 30,999 is under the 31,000 couple limit.
     is_optional_senior_or_disabled_asset_eligible: [true, true]
 
 - name: assets above the July 2027 CA limit in 2027, still eligible
@@ -221,3 +221,26 @@
   output:
     # January 1, 2027 still reads the 130,000 limit; 21,000 first applies in 2028.
     is_optional_senior_or_disabled_asset_eligible: true
+
+- name: joint filers above the July 2027 CA couple limit in 2027, still eligible
+  period: 2027
+  input:
+    people:
+      person1:
+        ssi_countable_resources: 15_500
+      person2:
+        ssi_countable_resources: 15_501
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+  output:
+    # January 1, 2027 still reads the 195,000 couple limit; 31,000 first applies in 2028.
+    is_optional_senior_or_disabled_asset_eligible: [true, true]

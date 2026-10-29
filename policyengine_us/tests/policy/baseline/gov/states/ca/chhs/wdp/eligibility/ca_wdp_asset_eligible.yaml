@@ -268,3 +268,71 @@
     # Size is capped at 10: 31,000 + 8 x 1,550 = 43,400. 21,700 + 21,701 =
     # 43,401 is over it.
     ca_wdp_asset_eligible: [false, false, false, false, false, false, false, false, false, false, false]
+
+- name: Case 12, two-person tax unit above the July 2027 two-person limit is still eligible in 2027.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 45
+        ssi_countable_resources: 15_500
+      person2:
+        age: 43
+        ssi_countable_resources: 15_501
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # January 1, 2027 still reads the 195,000 two-person limit; 31,000 first
+    # applies in 2028.
+    ca_wdp_asset_eligible: [true, true]
+
+- name: Case 13, three-person tax unit at the 2027 three-person limit is eligible.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 45
+        ssi_countable_resources: 130_000
+      person2:
+        age: 43
+        ssi_countable_resources: 130_000
+      person3:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    # January 1, 2027 reads 195,000 + 1 x 65,000 = 260,000. 130,000 + 130,000
+    # + 0 = 260,000 is at it; resources may not exceed it.
+    ca_wdp_asset_eligible: [true, true, true]
+
+- name: Case 14, two-person tax unit with large assets is eligible in 2025, when no asset limit applied.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        ssi_countable_resources: 500_000
+      person2:
+        age: 43
+        ssi_countable_resources: 500_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # ACWDL 22-25 eliminated the limit from January 1, 2024; ACWDL 25-14
+    # reinstated it from January 1, 2026.
+    ca_wdp_asset_eligible: [true, true]
