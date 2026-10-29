@@ -20,7 +20,7 @@ class ct_ssp_gross_income(Variable):
             person,
             period,
             [
-                "ssi_earned_income",
+                "ssi_earned_income_after_spousal_loss",
                 "ssi_unearned_income",
                 "ssi",
                 "ssi_earned_income_deemed_from_ineligible_spouse",

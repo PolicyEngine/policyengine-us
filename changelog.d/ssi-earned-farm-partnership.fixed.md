@@ -1,1 +1,1 @@
-Count active farm income and partnership self-employment earnings as earned income for SSI and programs using its income sources.
+Count active farm income and partnership self-employment earnings as earned income for SSI and programs using its income sources. Apply excess business losses to a spouse's earnings without reducing unearned income or creating negative student exclusions, and keep CT/MN deeming budgets consistent. Follow New Hampshire adult assistance's separate rule preventing self-employment losses from reducing wages.

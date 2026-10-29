@@ -103,3 +103,14 @@
     is_ssi_blind_or_disabled_working_student_exclusion_eligible: true
     ssi_blind_or_disabled_working_student_exclusion: 9_460
     ssi_countable_income: 2_560
+
+- name: A student's business loss cannot create a negative earned income exclusion.
+  period: 2026
+  input:
+    age: 20
+    employment_income: 2_000
+    farm_operations_income: -5_000
+    is_ssi_blind_or_disabled_working_student_exclusion_eligible: true
+  output:
+    ssi_earned_income: -3_000
+    ssi_blind_or_disabled_working_student_exclusion: 0

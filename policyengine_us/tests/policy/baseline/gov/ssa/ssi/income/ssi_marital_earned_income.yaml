@@ -61,3 +61,57 @@
         members: [head, spouse]
   output:
     ssi_marital_earned_income: [10, 10]
+
+- name: An eligible couple nets one spouse's farm loss against the other's wages exactly once.
+  period: 2026
+  input:
+    people:
+      earner:
+        age: 67
+        employment_income: 12_000
+        is_tax_unit_head: true
+      spouse:
+        age: 67
+        farm_operations_income: -5_000
+        is_tax_unit_spouse: true
+    tax_units:
+      couple:
+        members: [earner, spouse]
+        tax_unit_is_joint: true
+    marital_units:
+      couple:
+        members: [earner, spouse]
+  output:
+    ssi_earned_income_after_spousal_loss: [7_000, 0]
+    ssi_marital_earned_income: [7_000, 7_000]
+
+- name: The applicant's partnership loss reduces an ineligible spouse's earnings before deeming.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      applicant:
+        age: 67
+        partnership_self_employment_net_earnings: -5_000
+        is_tax_unit_head: true
+      spouse:
+        age: 60
+        employment_income: 20_000
+        is_tax_unit_spouse: true
+    households:
+      household:
+        members: [applicant, spouse]
+        state_code: TX
+    tax_units:
+      couple:
+        members: [applicant, spouse]
+        tax_unit_is_joint: true
+    marital_units:
+      couple:
+        members: [applicant, spouse]
+  output:
+    ssi_earned_income_after_spousal_loss: [0, 15_000]
+    ssi_marital_earned_income: [0, 15_000]
+    ssi_earned_income_deemed_from_ineligible_spouse: [15_000, 0]
+    ssi_income_deemed_from_ineligible_spouse: [6_990, 0]
+    medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse: [6_990, 0]

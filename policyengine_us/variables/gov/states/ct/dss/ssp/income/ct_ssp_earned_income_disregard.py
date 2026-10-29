@@ -19,7 +19,7 @@ class ct_ssp_earned_income_disregard(Variable):
             person,
             period,
             [
-                "ssi_earned_income",
+                "ssi_earned_income_after_spousal_loss",
                 "ssi_earned_income_deemed_from_ineligible_spouse",
             ],
         )

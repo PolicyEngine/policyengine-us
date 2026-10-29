@@ -113,3 +113,51 @@
     # (12,000 - 2,400 + 24,000 - 3,600) / 12 = 2,500 monthly.
     # Apply the couple's exclusions once: (2,500 - 20 - 65) / 2 = 1,207.50.
     msp_countable_income: [1_207.50, 1_207.50]
+
+- name: Both Medicare spouses' earnings net a business loss once before MSP exclusions.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      earner:
+        age: 68
+        employment_income: 12_000
+        is_tax_unit_head: true
+      spouse:
+        age: 67
+        farm_operations_income: -5_000
+        is_tax_unit_spouse: true
+    tax_units:
+      couple:
+        members: [earner, spouse]
+        tax_unit_is_joint: true
+    marital_units:
+      couple:
+        members: [earner, spouse]
+  output:
+    # (7,000 / 12 - 20 - 65) / 2 = 249.1667 per month.
+    msp_countable_income: [249.1667, 249.1667]
+
+- name: A non-Medicare spouse's business loss reduces the Medicare applicant's earned income even without deeming.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      applicant:
+        age: 67
+        employment_income: 12_000
+        is_tax_unit_head: true
+      spouse:
+        age: 60
+        self_employment_income: -5_000
+        is_tax_unit_spouse: true
+    tax_units:
+      couple:
+        members: [applicant, spouse]
+        tax_unit_is_joint: true
+    marital_units:
+      couple:
+        members: [applicant, spouse]
+  output:
+    # POMS SI 00820.210 B.2.c applies even when no positive income is deemed.
+    msp_countable_income: [249.1667, 0]

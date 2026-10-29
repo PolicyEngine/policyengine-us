@@ -33,7 +33,7 @@ class msp_countable_income(Variable):
 
     def formula(person, period, parameters):
         year = period.this_year
-        earned_income = person("ssi_earned_income", year)
+        earned_income = person("ssi_earned_income_after_spousal_loss", year)
         unearned_income = person("ssi_unearned_income", year)
         is_medicare_eligible = person("is_medicare_eligible", year)
         both_medicare_eligible = person.marital_unit.sum(is_medicare_eligible) == 2
