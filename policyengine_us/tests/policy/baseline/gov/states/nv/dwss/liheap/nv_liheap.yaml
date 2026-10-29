@@ -664,3 +664,56 @@
     # 18,720 <= 23,475; 2,580 - 0.0181 x 18,720 = 2,580 - 338.832 = 2,241.168
     # 18,720 / 15,650 = 1.196 -> band 3; cap 1,280 with no supplement
     nv_liheap: 1_280
+
+- name: Case 25, a Nevada and an Arizona household in one simulation.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_960
+      person2:
+        age: 8
+      person3:
+        age: 10
+      person4:
+        age: 30
+        employment_income: 24_960
+      person5:
+        age: 8
+      person6:
+        age: 10
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+      tax_unit2:
+        members: [person4, person5, person6]
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_440
+      spm_unit2:
+        members: [person4, person5, person6]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_440
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NV
+      household2:
+        members: [person4, person5, person6]
+        state_code: AZ
+  output:
+    # The Arizona unit has no Nevada household members.
+    nv_liheap_household_size: [3, 0]
+    # Nevada, as Case 1: 600 + 1,440 - 0.0181 x 24,960 = 2,040 - 451.776 = 1,588.224
+    # 24,960 / 26,650 = 0.937 -> band 2; cap 1,773
+    # Arizona: the cap lookup clips size 0 to the size 1 row (guideline
+    # 15,650 - 5,500 = 10,150, income 0 -> band 1); the benefit is 0 outside Nevada
+    nv_liheap: [1_588.224, 0]

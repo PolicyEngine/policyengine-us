@@ -40,19 +40,21 @@ values:
 # excluded. TANF counts toward the Fixed Annual Credit only
 # (nv_liheap_fac_income). The earned income tax credit, SNAP, tax refunds,
 # public housing assistance and the other Section 706 exempt income are
-# excluded. Lump sums, inheritance, insurance payments, FEMA Disaster
-# Unemployment Assistance, utility reimbursement payments and educational
-# assistance have no inputs, nor do the Fixed Annual Credit-only reverse
-# mortgage, AARP and Title V, Supported Living Arrangement, vendor payment
-# and savings or credit draw income.
+# excluded. educational_assistance is not counted: it cannot separate the
+# Title IV aid that Section 707 F exempts or net the qualifying expenses that
+# Section 705 deducts. Lump sums, inheritance, insurance payments, FEMA
+# Disaster Unemployment Assistance and utility reimbursement payments have no
+# inputs, nor do the Fixed Annual Credit-only reverse mortgage, AARP and
+# Title V, Supported Living Arrangement, vendor payment and savings or credit
+# draw income.
 metadata:
   unit: list
   period: year
   label: Nevada LIHEAP unearned income sources
   reference:
-    - title: "Nevada SFY2026 Energy Assistance Program Manual, Sections 703 B, 705 and 706 #page 44,46-48"
+    - title: "Nevada SFY2026 Energy Assistance Program Manual, Sections 703 B, 705, 706 and 707 F #page 44,46-48,51-53"
       href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=44
-    - title: "Nevada SFY2027 Energy Assistance Program Manual, Sections 703 B, 705 and 706 #page 44,46-48"
+    - title: "Nevada SFY2027 Energy Assistance Program Manual, Sections 703 B, 705, 706 and 707 F #page 44,46-48,51-53"
       href: https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/2027-eap-state-manual--08.25.26-1.pdf#page=44
     - title: Nevada FY2026 LIHEAP State Plan, Section 1.9
       href: https://liheapch.acf.gov/docs/2026/state-plans/NV_Plan_2026.pdf#page=6

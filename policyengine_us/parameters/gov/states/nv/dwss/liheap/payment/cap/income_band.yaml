@@ -1,10 +1,11 @@
 description: Nevada assigns this benefit cap income band from Fixed Annual Credit income as a share of the federal poverty guideline under the Low Income Home Energy Assistance Program.
 # The cap tables print the bands as "<75%", ">75-100%", ">100-125%" and
 # ">125-150%". Each band includes its top, so thresholds are keyed at the
-# band tops and looked up with right=True. Appendix A's printed 125% column
-# for sizes 4-8 does not equal 125% of the guideline (size 5: $53,937.50
-# against $47,062.50), so the bands use the rates. Fixed Annual Credit income
-# above 150% of the guideline uses the last band.
+# band tops and looked up with right=True. SFY2026 Appendix A's printed 125%
+# column for sizes 4-8 does not equal 125% of the guideline (size 5:
+# $53,937.50 against $47,062.50), so the bands use the rates; the SFY2027
+# column matches the rate. Fixed Annual Credit income above 150% of the
+# guideline uses the last band.
 brackets:
   # At or below 75% of the guideline.
   - threshold:

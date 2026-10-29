@@ -208,3 +208,78 @@
   output:
     # 18,720 + 24,960 (the member is excluded from size only)
     nv_liheap_countable_income: 43_680
+
+- name: Case 8, every listed earned and unearned source is counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        self_employment_income: 100
+        sstb_self_employment_income: 200
+        farm_operations_income: 300
+        partnership_s_corp_income: 400
+        military_basic_pay: 500
+      person2:
+        age: 47
+        pension_income: 600
+        # Survivor Benefit Plan annuity, counted through military_retirement_income.
+        military_retirement_pay_survivors: 700
+        railroad_benefits: 800
+        survivor_benefits: 900
+        disability_benefits: 1_000
+        # Reported benefits, counted through total_unemployment_compensation.
+        unemployment_compensation: 1_100
+        workers_compensation: 1_200
+        veterans_benefits: 1_300
+        general_assistance: 1_400
+        strike_benefits: 1_500
+        alimony_income: 1_600
+        interest_income: 1_700
+        ordinary_dividend_income: 1_800
+        estate_income: 1_900
+        financial_assistance: 2_000
+        rental_income: 2_100
+        farm_rent_income: 2_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_320
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # Earned 100 + 200 + 300 + 400 + 500 = 1,500
+    # Unearned 600 + 700 + ... + 2,200 = 17 x 1,400 = 23,800
+    # Each amount is distinct, so dropping any source lowers the total. Neither member
+    # is aged, blind or disabled, so SSI and Nevada OSS are 0; no Social Security is entered.
+    # 1,500 + 23,800
+    nv_liheap_countable_income: 25_300
+
+- name: Case 9, a rental loss does not offset wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 18_720
+        # Net loss of 200 a month on a rented-out unit.
+        rental_income: -2_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_320
+    households:
+      household:
+        members: [person1]
+        state_code: NV
+  output:
+    # 18,720 + max(-2,400, 0); without the per-source floor, 18,720 - 2,400 = 16,320
+    nv_liheap_countable_income: 18_720

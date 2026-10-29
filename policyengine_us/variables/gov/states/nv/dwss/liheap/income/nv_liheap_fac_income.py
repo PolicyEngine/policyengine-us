@@ -26,5 +26,8 @@ class nv_liheap_fac_income(Variable):
         # TANF is counted once at the SPM unit level through the
         # take-up-gated tanf total. The other Fixed Annual Credit-only income
         # types have no inputs.
+        # Section 707 M adds the two most recent quarters of earnings to
+        # unemployment benefits for the Fixed Annual Credit; quarterly
+        # earnings have no input.
         tanf = spm_unit("tanf", period)
         return eligibility_income + child_earnings + tanf

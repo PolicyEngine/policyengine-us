@@ -4211,6 +4211,69 @@ candidates:
   note: 'Ruled in October 2026 to follow the per-spouse gap-fill; verify which listed credits and rebates share
     that treatment. Code not yet on main: nm_2021_income_rebate, nm_deduction_for_certain_dependents_eligible, nm_medical_expense_credit,
     nm_cdcc_eligible.'
+- id: us-nv:liheap-cap-band-125-percent-column
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: state-fiscal
+  question: Do Nevada's SFY2026 benefit cap bands end at 125% of the poverty guideline, or at Appendix A's printed
+    125% column, which differs from that rate for household sizes 4-8?
+  sources:
+  - kind: manual
+    citation: Nevada SFY2026 Energy Assistance Program Manual, Appendix A, FY 2026 income guidelines table, 125% Poverty
+      column
+    url: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=110
+  - kind: manual
+    citation: Nevada SFY2026 Energy Assistance Program Manual, Appendix A, FY 2026 benefit cap tables, >100-125% and
+      >125-150% bands
+    url: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=111
+  readings:
+    statute: No statute or regulation is supplied (NRS 702.260 sets no band); the cap tables key the bands to 75%, 100%,
+      125% and 150% of poverty, and 125% of the $37,650 size-5 guideline is $47,062.50.
+    other: The income table prints $53,937.50 as the size-5 125% figure and $40,062.50 for size 4; the SFY2027 table
+      matches the rate.
+  example: A size-5 household with Fixed Annual Credit income of $50,000 is in the >125-150% band by the rate (cap
+    $1,411) and in the >100-125% band by the printed $53,937.50 (cap $1,568).
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10432
+  state: unreviewed
+  note: 'PE-US keys the bands to the rates, which reproduce every SFY2027 row; confirm the SFY2026 column with the
+    state. Code not yet on main: gov.states.nv.dwss.liheap.payment.cap.income_band, nv_liheap.'
+- id: us-nv:liheap-minimum-fixed-annual-credit
+  program: liheap
+  years:
+    from: 2026
+    to: 2026
+    type: state-fiscal
+  question: Is Nevada's SFY2026 minimum Fixed Annual Credit $240, as manual Sections 504 A, 505 and 702 III print, or
+    $360, as Section 803 V and the state plan set?
+  sources:
+  - kind: manual
+    citation: Nevada SFY2026 Energy Assistance Program Manual, Sections 504 A, 505 D, F and G, 702 III and 803 V, PDF
+      pages 34, 36-37, 43 and 60-61
+    url: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=34
+  - kind: plan
+    citation: Nevada FY2026 LIHEAP State Plan, Sections 2.5-2.6
+    url: https://liheapch.acf.gov/docs/2026/state-plans/NV_Plan_2026.pdf#page=9
+  readings:
+    statute: No statute or regulation is supplied (NRS 702.260 sets no minimum); Sections 504 A, 505 D, F and G and
+      702 III print a $240 minimum payment.
+    other: Section 803 V pays $360 when the computed credit is less than $360, including a negative figure, and plan
+      2.5 pays $360 for a credit of zero to $359; the SFY2027 manual prints $360 throughout.
+  example: A household with a negative computed Fixed Annual Credit receives $360 under Section 803 V and $240 under
+    Section 702 III.
+  pe_us:
+    follows: gap-fill
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10432
+  state: unreviewed
+  note: 'PE-US pays the $360 minimum in SFY2026, matching Section 803 V, both plans and the SFY2027 manual. Code not
+    yet on main: gov.states.nv.dwss.liheap.payment.minimum, nv_liheap.'
 - id: us-ny:college-tuition-credit-claimed-spouse
   program: income-tax
   years:
