@@ -418,9 +418,11 @@
     me_eitc: 324.50
 
 # § 5219-S(7) reaches only "an individual who files a federal income tax
-# return". A filer files under the federal EITC's own condition: required to
-# file, or filing voluntarily, or filing to claim a refundable credit
-# (would_file_if_eligible_for_refundable_credit, true by default).
+# return". This PR reads filing as the federal eitc formula does: required to
+# file, filing voluntarily, or would file to claim a refundable credit
+# (would_file_if_eligible_for_refundable_credit, true by default), Maine's
+# refundable EITC included. tax_unit_is_filer counts only federal credits, so
+# it calls the credit-propensity filers below nonfilers; the cases pin that.
 - name: Childless ITIN filer aged 20 who files no federal return gets no Maine EITC
   period: 2025
   absolute_error_margin: 0.01
@@ -467,8 +469,38 @@
         members: [person]
         state_code: ME
   output:
+    # 32(m) denies the federal credit, so tax_unit_is_filer finds no federal
+    # reason to file; the filer would file for Maine's credit.
+    eligible_for_refundable_credits: false
+    tax_unit_is_filer: false
     me_eitc_ssn_limitation_waived: true
     # 7.65% x $5,000.
+    me_pro_forma_childless_eitc: 382.50
+    me_eitc: 191.25
+
+- name: The same ITIN filer filing voluntarily gets the pro forma credit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 20
+        employment_income: 5_000
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        would_file_taxes_voluntarily: true
+        would_file_if_eligible_for_refundable_credit: false
+    households:
+      household:
+        members: [person]
+        state_code: ME
+  output:
+    tax_unit_is_required_to_file: false
+    tax_unit_is_filer: true
+    me_eitc_ssn_limitation_waived: true
     me_pro_forma_childless_eitc: 382.50
     me_eitc: 191.25
 
@@ -554,7 +586,7 @@
     me_pro_forma_childless_eitc: 382.50
     me_eitc: 191.25
 
-- name: The same parent filing a federal return counts the child with an ITIN
+- name: The same parent, who would file to claim a refundable credit, counts the child with an ITIN
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -575,6 +607,10 @@
         members: [parent, child]
         state_code: ME
   output:
+    # Default filing inputs. No federal credit (the child fails 32(m), and at
+    # 20 the parent fails the childless age test), so tax_unit_is_filer is
+    # false; the parent would file for Maine's credit.
+    tax_unit_is_filer: false
     me_eitc_ssn_limitation_waived: true
     me_eitc_child_count: 1
     # 34% x $5,000; 25% of it.

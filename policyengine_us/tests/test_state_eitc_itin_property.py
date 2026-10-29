@@ -23,7 +23,7 @@ household_strategy = st.fixed_dictionaries(
         "wages": st.integers(0, 60_000),
         "exclusion": st.one_of(st.just(0), st.integers(1, 60_000)),
         "takes_up": st.booleans(),
-        "files": st.booleans(),
+        "files": st.sampled_from([True, "voluntarily", False]),
     }
 )
 

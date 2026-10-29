@@ -14,9 +14,10 @@ Social Security number not valid for employment holds one valid for
 employment instead. Identification types: SSN (citizen), ITIN (ssn_card_type
 NONE, has_tin true), NONWORK (a Social Security number not valid for
 employment) and NOTIN (no taxpayer identification number, kept in the twin).
-A household with "files" false files a federal return only if required to
-(would_file_taxes_voluntarily and would_file_if_eligible_for_refundable_credit
-false).
+A household's "files" sets its filing inputs (FILING_INPUTS): true keeps the
+defaults, so it files to claim a refundable credit; "voluntarily" files
+voluntarily and not for a credit; false files a federal return only if
+required to.
 The Hypothesis version is in test_state_eitc_itin_property.py.
 """
 
@@ -31,6 +32,17 @@ STATES = ("MD", "ME", "NJ")
 ID_TYPES = ("SSN", "ITIN", "NONWORK", "NOTIN")
 # First tax year of each state's waiver.
 WAIVER_START = {"MD": 2020, "ME": 2021}
+FILING_INPUTS = {
+    True: {},
+    "voluntarily": {
+        "would_file_taxes_voluntarily": True,
+        "would_file_if_eligible_for_refundable_credit": False,
+    },
+    False: {
+        "would_file_taxes_voluntarily": False,
+        "would_file_if_eligible_for_refundable_credit": False,
+    },
+}
 
 TAX_UNIT_OUTPUTS = [
     "eitc",
@@ -154,12 +166,8 @@ def build_situation(households, year, waived=None, tax_unit_inputs=None):
             "foreign_earned_income_exclusion": {year: h["exclusion"]},
             "takes_up_eitc": {year: h["takes_up"]},
         }
-        if not h.get("files", True):
-            for variable in (
-                "would_file_taxes_voluntarily",
-                "would_file_if_eligible_for_refundable_credit",
-            ):
-                tax_units[f"tax_unit_{i}"][variable] = {year: False}
+        for variable, value in FILING_INPUTS[h.get("files", True)].items():
+            tax_units[f"tax_unit_{i}"][variable] = {year: value}
         if waived is not None:
             tax_units[f"tax_unit_{i}"]["eitc_ssn_limitation_waived"] = {
                 year: bool(waived[i])
@@ -260,7 +268,8 @@ def calculate(households, year, reform=None, federal_first=True):
     agi = np.array(simulation.calculate("adjusted_gross_income", year))[:n]
     required = np.array(simulation.calculate("tax_unit_is_required_to_file", year))
     files = [
-        h.get("files", True) or bool(required[i]) for i, h in enumerate(households)
+        bool(h.get("files", True)) or bool(required[i])
+        for i, h in enumerate(households)
     ]
     waived = [waiver_applies(h, year, f) for h, f in zip(households, files)]
     relaxed = Simulation(
@@ -480,12 +489,14 @@ GRID = [
     for head_id in ID_TYPES
     for spouse_id in (None, "SSN", "ITIN", "NOTIN")
     for child_ids in ([], ["SSN"], ["ITIN"], ["NOTIN"], ["SSN", "ITIN"])
-    # $10,000 of wages doesn't require a return, so "files" decides.
+    # $10,000 of wages doesn't require a return, so "files" decides. The
+    # take-up row files voluntarily, so each way of filing meets Maine's
+    # condition somewhere.
     for wages, exclusion, takes_up, files in (
         (10_000, 0, True, True),
         (30_000, 0, True, True),
         (10_000, 30_000, True, True),
-        (10_000, 0, False, True),
+        (10_000, 0, False, "voluntarily"),
         (10_000, 0, True, False),
     )
 ]
@@ -518,6 +529,9 @@ def test_grid_invariants():
     assert (me_cut & (t["me_eitc"] > 0)).any()
     md_paid = (state == "MD") & itin_filer & nonfiler & (r["eitc"] == 0)
     assert (md_paid & (r["md_eitc"] > 0)).any()
+    # A voluntary filer with an ITIN, filing for no credit, meets it.
+    voluntary = np.array([h["files"] == "voluntarily" for h in GRID])
+    assert ((state == "ME") & itin_filer & voluntary & (r["me_eitc"] > 0)).any()
 
 
 def test_grid_invariants_before_and_at_the_waivers():
