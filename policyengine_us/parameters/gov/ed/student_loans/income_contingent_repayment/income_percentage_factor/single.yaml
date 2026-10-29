@@ -1,0 +1,98 @@
+description: The Department of Education multiplies the 12-year fixed payment by this income percentage factor, by adjusted gross income, for single borrowers under the Income-Contingent Repayment plan.
+# Attachment 1 of the Department's annual notice lists each factor at an
+# adjusted gross income. The notice applies from July 1 to June 30 of the
+# following year. Incomes between two rows are linearly interpolated, and the
+# factor is rounded to the nearest hundredth of a percent (Interpolation
+# section of the notice). The formula reads these rows as points, not as a step
+# function, and holds the first and last factors flat outside the table.
+brackets:
+  - threshold:
+      2025-07-01: 13_722
+      2026-07-01: 13_717
+    amount:
+      2025-07-01: 0.55
+  - threshold:
+      2025-07-01: 18_881
+      2026-07-01: 18_873
+    amount:
+      2025-07-01: 0.5779
+  - threshold:
+      2025-07-01: 24_295
+      2026-07-01: 24_285
+    amount:
+      2025-07-01: 0.6057
+  - threshold:
+      2025-07-01: 29_831
+      2026-07-01: 29_819
+    amount:
+      2025-07-01: 0.6623
+  - threshold:
+      2025-07-01: 35_118
+      2026-07-01: 35_104
+    amount:
+      2025-07-01: 0.7189
+  - threshold:
+      2025-07-01: 41_786
+      2026-07-01: 41_769
+    amount:
+      2025-07-01: 0.8033
+  - threshold:
+      2025-07-01: 52_483
+      2026-07-01: 52_462
+    amount:
+      2025-07-01: 0.8877
+  - threshold:
+      2025-07-01: 65_824
+      2026-07-01: 65_798
+    amount:
+      2025-07-01: 1
+  - threshold:
+      2025-07-01: 79_170
+      2026-07-01: 79_138
+    amount:
+      2025-07-01: 1
+  - threshold:
+      2025-07-01: 95_150
+      2026-07-01: 95_112
+    amount:
+      2025-07-01: 1.118
+  - threshold:
+      2025-07-01: 121_836
+      2026-07-01: 121_787
+    amount:
+      2025-07-01: 1.235
+  - threshold:
+      2025-07-01: 172_561
+      2026-07-01: 172_492
+    amount:
+      2025-07-01: 1.412
+  - threshold:
+      2025-07-01: 197_858
+      2026-07-01: 197_779
+    amount:
+      2025-07-01: 1.5
+  - threshold:
+      2025-07-01: 352_418
+      2026-07-01: 352_277
+    amount:
+      2025-07-01: 2
+
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  label: Income-Contingent Repayment plan income percentage factor for single borrowers
+  reference:
+    - title: 34 CFR 685.209(f)(4)(i)(A)
+      href: https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(f)(4)(i)(A)
+    - title: 91 FR 23890, 34 CFR 685.209(f)(4)
+      href: https://www.govinfo.gov/content/pkg/FR-2026-05-01/pdf/2026-08556.pdf#page=123
+    - title: 91 FR 34816, Annual Updates to the Income-Contingent Repayment (ICR) Plan Formula for 2026, Attachment 1 (Single)
+      href: https://www.govinfo.gov/content/pkg/FR-2026-06-09/pdf/2026-11540.pdf#page=2
+    - title: 91 FR 34818, Annual Updates to the Income-Contingent Repayment (ICR) Plan Formula for 2026, Interpolation
+      href: https://www.govinfo.gov/content/pkg/FR-2026-06-09/pdf/2026-11540.pdf#page=4
+    - title: 91 FR 34815, Annual Updates to the Income-Contingent Repayment (ICR) Plan Formula for 2026, applicable July 1, 2026 to June 30, 2027
+      href: https://www.govinfo.gov/content/pkg/FR-2026-06-09/pdf/2026-11540.pdf#page=1
+    - title: 90 FR 37477, Annual Updates to the Income-Contingent Repayment (ICR) Plan Formula for 2025, Attachment 1 (Single), applicable July 1, 2025 to June 30, 2026
+      href: https://www.govinfo.gov/content/pkg/FR-2025-08-05/pdf/2025-14806.pdf#page=1
