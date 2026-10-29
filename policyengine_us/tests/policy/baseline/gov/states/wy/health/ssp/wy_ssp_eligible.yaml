@@ -1,0 +1,22 @@
+# W.S. 42-2-103(d): an SSI recipient must have no other income in the month.
+# https://wyoleg.gov/statutes/compress/title42.pdf#page=7
+- name: Farm profit prevents Wyoming supplement eligibility.
+  period: 2026-01
+  input:
+    state_code: WY
+    age: 70
+    ssi: 994
+    farm_operations_income: 1_200
+  output:
+    # The $100 monthly farm profit means SSI is not the sole income source.
+    wy_ssp_eligible: false
+
+- name: Partnership earnings prevent Wyoming supplement eligibility.
+  period: 2026-01
+  input:
+    state_code: WY
+    age: 70
+    ssi: 994
+    partnership_self_employment_net_earnings: 1_200
+  output:
+    wy_ssp_eligible: false

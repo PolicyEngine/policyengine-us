@@ -10,9 +10,10 @@ farm and partnership earnings zero and the remaining business incomes
 nonnegative, all SSI, MSP and direct state-reader outputs must remain exactly
 equal to this list-reversion reference. Both policies retain this patch's
 formula corrections: spouse-loss netting and nonnegative child-allocation and
-student-exclusion income. The nonnegative domain excludes these corrections
-and New Hampshire's distinct prohibition on offsetting wages with a business
-loss; YAML covers those intentional changes. An actual git-base differential
+student-exclusion income. The nonnegative domain excludes these corrections,
+New Hampshire's prohibition on offsetting wages with a business loss, and
+Kentucky's separate prohibition on one business loss offsetting another
+business; YAML covers those intentional changes. An actual git-base differential
 is run separately. A seeded, stratified sample of 200 households supplements
 the smaller Hypothesis batches, including spouses and disabled children.
 
@@ -51,16 +52,25 @@ STATES = (
     "CA",
     "CO",
     "CT",
+    "KY",
+    "MD",
     "MN",
+    "MT",
     "NC",
     "NH",
+    "NJ",
+    "NV",
+    "NY",
     "OH",
     "OK",
     "OR",
+    "PA",
+    "RI",
     "SD",
     "VA",
     "VT",
     "WI",
+    "WY",
 )
 KINDS = ("single", "couple", "ineligible_spouse", "one_parent", "two_parents")
 STATE_READERS = (
@@ -71,18 +81,33 @@ STATE_READERS = (
     "ct_ssp_countable_income",
     "ct_ssp_earned_income_disregard",
     "ct_ssp_gross_income",
+    "ky_ssp_countable_income",
+    "ky_ssp_earned_income",
+    "md_paa_countable_income",
     "mn_msa_net_income_eligible",
     "mn_msa_gross_income",
     "mn_msa_person",
+    "mt_ssp",
     "nc_sa_countable_income",
     "nh_ssp_countable_income",
+    "nj_ssp",
+    "nv_oss",
+    "ny_ssp",
     "oh_rss_countable_income",
+    "ok_ssp_countable_income",
+    "ok_ssp_own_countable_income",
     "ok_ssp_spouse_child_allocation",
     "or_ssp_countable_income",
+    "pa_ssp",
+    "ri_ssp",
     "sd_ssp_care",
+    "sd_ssp_independent",
+    "tx_ssi_state_supplement_eligible",
     "va_ag_countable_income",
     "vt_aabd_ep_countable_income",
+    "vt_aabd_federal",
     "wi_cts_gross_earned_income",
+    "wy_ssp_eligible",
 )
 OTHER_READERS = (
     "medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse",
@@ -274,11 +299,12 @@ def test_profit_repartition_preserves_ssi_earned_income(policy, batch):
 
 @settings(max_examples=12, deadline=None, suppress_health_check=[HealthCheck.too_slow])
 @example(batch=[(0, 0, 60_000, "farm_operations_income", False)])
+@example(batch=[(12_000, -6_000, 12_000, "farm_operations_income", True)])
 @given(
     batch=st.lists(
         st.tuples(
             st.integers(0, 30_000),
-            st.integers(0, 40_000),
+            st.integers(-40_000, 40_000),
             st.integers(0, 40_000),
             st.sampled_from(PROFIT_SOURCES),
             st.booleans(),

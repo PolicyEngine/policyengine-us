@@ -51,6 +51,8 @@
         members: [person1]
         state_code: KY
   output:
+    ky_ssp_earned_income:
+      2026: [0]
     ky_ssp_countable_income: [0]
 
 - name: Case 4, ineligible person — countable income is zero.
@@ -89,3 +91,161 @@
     ky_ssp_countable_income:
       2026-01: 500
       2026-02: 1_000
+
+- name: Case 6, active farming profit is earned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        farm_operations_income: 6_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ssp_earned_income:
+      2026: [6_000]
+    # MS 2450 C: active farm income is earned; ($500 - $65) / 2.
+    ky_ssp_countable_income: [217.50]
+
+- name: Case 7, qualifying partnership profit is earned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        partnership_self_employment_net_earnings: 6_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ssp_earned_income:
+      2026: [6_000]
+    ky_ssp_countable_income: [217.50]
+
+- name: Case 8, a farm loss cannot reduce wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 12_000
+        farm_operations_income: -6_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ssp_earned_income:
+      2026: [12_000]
+    # Disallowed business losses do not reduce the $1,000 monthly wage.
+    ky_ssp_countable_income: [467.50]
+
+- name: Case 9, a Schedule C loss cannot reduce another business's farm profit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        self_employment_income: -6_000
+        farm_operations_income: 6_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ssp_earned_income:
+      2026: [6_000]
+    # MS 2450 C.8(b) disallows loss from one business to another.
+    ky_ssp_countable_income: [217.50]
+
+- name: Case 10, a partnership loss cannot reduce positive SSTB income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        sstb_self_employment_income: 6_000
+        partnership_self_employment_net_earnings: -6_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ssp_earned_income:
+      2026: [6_000]
+    ky_ssp_countable_income: [217.50]
+
+- name: Case 11, pretax wage premiums cannot reduce business income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 1_200
+        pre_tax_health_insurance_premiums: 2_400
+        farm_operations_income: 6_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ssp_earned_income:
+      2026: [6_000]
+    ky_ssp_countable_income: [217.50]
+
+- name: Case 12, existing eligible-couple computation pools Kentucky own earnings.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 6_000
+        is_tax_unit_head: true
+      person2:
+        age: 70
+        farm_operations_income: 6_000
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ssp_earned_income:
+      2026: [6_000, 6_000]
+    ssi_couple_computation_applies: [true, true]
+    # Combined ($1,000 - $65) / 2, then half attributed to each person.
+    ky_ssp_countable_income: [233.75, 233.75]

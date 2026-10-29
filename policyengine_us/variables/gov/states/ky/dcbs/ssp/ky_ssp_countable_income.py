@@ -19,10 +19,22 @@ class ky_ssp_countable_income(Variable):
     )
 
     def formula(person, period, parameters):
-        # Mirror ssi_countable_income but skip the $20 general exclusion per
-        # §8(8). The $65 earned exclusion and 50% earned share still apply.
+        # Kentucky uses its own business-loss rule under MS 2450 C.8(b),
+        # incorporated by 921 KAR 2:015 §8(1). Retain the existing couple
+        # computation flag and the $65 / 50% exclusions, without §8(8)'s
+        # disallowed $20 general exclusion.
+        both_eligible = person("ssi_couple_computation_applies", period)
+        own_earned = person("ky_ssp_earned_income", period.this_year)
+        marital_earned = (
+            where(
+                both_eligible,
+                person.marital_unit.sum(own_earned),
+                own_earned,
+            )
+            / MONTHS_IN_YEAR
+        )
         earned = max_(
-            person("ssi_marital_earned_income", period)
+            marital_earned
             - person("ssi_blind_or_disabled_working_student_exclusion", period),
             0,
         )
@@ -35,7 +47,10 @@ class ky_ssp_countable_income(Variable):
         countable_earned = max_(earned - p.earned, 0) * (1 - p.earned_share)
         personal_countable = unearned + countable_earned
 
-        both_eligible = person("ssi_couple_computation_applies", period)
+        # Existing student/unearned and spouse/parent deeming inputs remain
+        # an SSI-based approximation. The ordering of Kentucky's separate
+        # §8(3) conservation and §8(6) earnings rules needs a fuller state
+        # methodology review; this own-source correction does not decide it.
         spousal_deemed = person("ssi_income_deemed_from_ineligible_spouse", period)
         is_eligible = person("is_ssi_eligible_individual", period.this_year) | person(
             "is_ssi_eligible_spouse", period.this_year

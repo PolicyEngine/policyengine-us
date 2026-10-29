@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_spouse_index,
+)
 
 
 class mn_msa_gross_income(Variable):
@@ -39,7 +42,24 @@ class mn_msa_gross_income(Variable):
             premiums = max_(
                 person("pre_tax_health_insurance_premiums", period.this_year), 0
             )
-            income += min_(wages, premiums) / MONTHS_IN_YEAR
+            restoration = min_(wages, premiums)
+            earned = person("ssi_earned_income", period.this_year)
+            if np.any(earned < 0):
+                spouse = _ssi_spouse_index(person, period.this_year)
+                safe_spouse = np.maximum(spouse, 0)
+                spouse_earned = where(spouse >= 0, earned[safe_spouse], 0)
+                spouse_restoration = where(spouse >= 0, restoration[safe_spouse], 0)
+                # Restore premiums before flooring the gross earned pool.
+                # Losses already absorbed by a spouse's positive SSI earnings
+                # must not be deducted twice. Any remaining loss absorbs own
+                # premiums first, then the spouse's, just as other earnings do.
+                own_loss = max_(-earned - max_(spouse_earned, 0), 0)
+                spouse_loss = max_(-spouse_earned - max_(earned, 0), 0)
+                restoration = max_(
+                    restoration - own_loss - max_(spouse_loss - spouse_restoration, 0),
+                    0,
+                )
+            income += restoration / MONTHS_IN_YEAR
 
         # CM 0017 substitutes the full FBR for an SSI recipient's payment.
         ssi = person("ssi", period)
