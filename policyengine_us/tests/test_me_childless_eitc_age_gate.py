@@ -91,6 +91,11 @@ def no_federal_age_test_system():
     return CountryTaxBenefitSystem(reform=reform)
 
 
+def teardown_module():
+    # Release the reformed system: CI runs other modules in this process.
+    no_federal_age_test_system.cache_clear()
+
+
 def federal_age_limits(year):
     """Minimum, student minimum and maximum childless ages under 26 U.S.C. 32."""
     if year == 2021:

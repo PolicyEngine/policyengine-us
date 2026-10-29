@@ -6,7 +6,7 @@ Hypothesis is a dev extra, so this module skips without it.
 
 import pytest
 
-from test_me_childless_eitc_age_gate import check
+from test_me_childless_eitc_age_gate import check, no_federal_age_test_system
 
 hypothesis = pytest.importorskip("hypothesis")
 st = pytest.importorskip("hypothesis.strategies")
@@ -60,3 +60,8 @@ household_strategy = st.fixed_dictionaries(
 )
 def test_random_households(households, year):
     check(households, year)
+
+
+def teardown_module():
+    # Release the reformed system: CI runs other modules in this process.
+    no_federal_age_test_system.cache_clear()
