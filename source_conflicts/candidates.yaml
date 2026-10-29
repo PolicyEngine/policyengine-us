@@ -2330,6 +2330,141 @@ candidates:
   state: ruled
   note: 'Ruled statute-first in October 2026; the rule requires replacing the approximation using claimant inputs,
     with annual verification because the supplied statutory URL is for 2026. Code not yet on main: ia_is_tax_exempt.'
+- id: us-ia:rcf-maximum-per-diem-rate
+  program: ssi-state-supplement
+  years:
+    from: 2023
+    to: 2026
+    type: calendar
+  question: Is Iowa's residential care supplement based on the maximum per diem rate, or on the manual's choice of
+    a facility rate or the $17.86 flat rate?
+  sources:
+  - kind: statute
+    citation: Iowa Code 249.12(3)
+    url: https://www.legis.iowa.gov/docs/code/249.pdf#page=5
+  - kind: regulation
+    citation: 441 IAC 52.1(3)
+    url: https://www.legis.iowa.gov/docs/iac/chapter/441.52.pdf#page=1
+  - kind: manual
+    citation: Iowa HHS Employees' Manual 6-B, Billing and Payments (RCF)
+    url: https://hhs.iowa.gov/media/3987/download?inline=#page=72
+  - kind: guidance
+    citation: Iowa HHS General Letter 6-B-45 (effective January 1, 2024)
+    url: https://hhs.iowa.gov/media/12206/download#page=24
+  - kind: guidance
+    citation: Iowa HHS State Supplementary Assistance Standards (effective January 1, 2023)
+    url: https://hhs.iowa.gov/media/9237/download
+  readings:
+    statute: Privately operated facilities "shall be reimbursed based on the maximum per diem rates established by
+      the general assembly".
+    other: The manual gives "two options", a cost-related rate up to $38.47 or "A flat per diem rate ... $17.86
+      beginning February 1, 2004".
+  example: An SSI-only resident with no facility rate entered gets $328.57 in January 2026 at the maximum rate, and
+    $0 at the flat rate (31 × 17.86 = 553.66, below the $864 participation).
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/8017
+  state: ruled
+  note: 'Code not yet on main: ia_ssa, ia_ssa_rcf_daily_rate. Iowa Code 249.12(3) names privately operated
+    facilities.'
+- id: us-ia:smme-blind-under-65
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: Can a blind person under 65 who is not disabled receive Iowa's Supplement for Medicare and Medicaid
+    Eligibles (SMME)?
+  sources:
+  - kind: statute
+    citation: Iowa Code 249.3(4)(a)
+    url: https://www.legis.iowa.gov/docs/code/249.pdf#page=2
+  - kind: regulation
+    citation: 441 IAC 51.7(2)
+    url: https://www.legis.iowa.gov/docs/iac/chapter/441.51.pdf#page=2
+  - kind: manual
+    citation: Iowa HHS Employees' Manual 6-B, SMME and SSI eligibility requirements
+    url: https://hhs.iowa.gov/media/3987/download?inline=#page=76
+  readings:
+    statute: Only a person "Sixty-five years of age or older" or "Disabled as defined by 42 U.S.C. §1382c(a)(3)"
+      qualifies, so blindness alone does not.
+    other: The rule requires "all eligibility requirements for supplemental security income benefits other than
+      limits on substantial gainful activity and income", which include blindness.
+  example: A blind 50-year-old with a $2,020 monthly pension and SMME coverage gets $0 under the statute and $1
+    under the rule.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/8017
+  state: ruled
+  note: 'Code not yet on main: ia_ssa_nonfinancial_eligible.'
+- id: us-ia:smme-income-at-least-120-percent
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: Does Iowa's SMME supplement require income of at least, or more than, 120 percent of the poverty
+    guideline?
+  sources:
+  - kind: statute
+    citation: Iowa Code 249.3(4)(g)
+    url: https://www.legis.iowa.gov/docs/code/249.pdf#page=2
+  - kind: regulation
+    citation: 441 IAC 51.7(6)
+    url: https://www.legis.iowa.gov/docs/iac/chapter/441.51.pdf#page=2
+  - kind: manual
+    citation: Iowa HHS Employees' Manual 6-B, Income (SMME)
+    url: https://hhs.iowa.gov/media/3987/download?inline=#page=77
+  readings:
+    statute: Income "of at least one hundred twenty percent of the federal poverty level" qualifies.
+    other: Income "must exceed 120 percent of the federal poverty level".
+  example: From April 2026, a single applicant with countable income of exactly $1,596 (1.2 × 15,960 / 12) gets $1
+    under the statute and $0 under the rule.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/8017
+  state: ruled
+  note: 'Code not yet on main: ia_ssa.'
+- id: us-ia:smme-student-exclusion-married
+  program: ssi-state-supplement
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: Does the student earned income exclusion in Iowa's SMME income apply to a married student or a student
+    who heads a household?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1382a(b)(1)
+    url: https://www.law.cornell.edu/uscode/text/42/1382a
+  - kind: regulation
+    citation: 20 CFR 416.1112(c)(3)
+    url: https://www.ecfr.gov/current/title-20/section-416.1112
+  - kind: manual
+    citation: Iowa HHS Employees' Manual 8-E, Child Student's Earnings
+    url: https://hhs.iowa.gov/media/4011/download?inline#page=19
+  readings:
+    statute: The exclusion applies "if such individual is under the age of 22 and is ... a student regularly attending
+      a school, college, or university", with no marital or head-of-household test.
+    other: The student "must meet all of the following criteria", including "Not married" and "Not the head of the
+      household".
+  example: In April 2026, an SMME applicant with wages of $3,277 a month whose disabled student spouse, aged 20, earns
+    $1,200 a month has combined SMME income of $1,790.58 with the spouse's exclusion and $0 supplement; without it,
+    $2,196 and $1.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/8017
+  state: ruled
+  note: 'Code not yet on main: ia_ssa_smme_countable_income. Iowa determines SMME income according to SSI income
+    criteria (6-B p.77), and 20 CFR 416.1112(c)(3) also has no marital test.'
 - id: us-id:grocery-credit-claimable-spouse
   program: income-tax
   years:
@@ -2419,6 +2554,48 @@ candidates:
   state: ruled
   note: Statute text is in the Axiom corpus; registering needs a pdftotext capture of the official instructions
     page.
+- id: us-il:hbwd-premium-earned-1251-unearned-501-cell
+  program: medicaid
+  years:
+    from: 2009
+    type: calendar
+  question: Is the Illinois Health Benefits for Workers with Disabilities premium for countable earned income of
+    $1,251-1,500 and gross unearned income of $501-750 $79, as 89 Ill. Adm. Code 120.510(n)(3) prints, or $69, as
+    the HFS premium chart prints?
+  sources:
+  - kind: regulation
+    citation: 89 Ill. Adm. Code 120.510(n)(3)
+    url: https://ilga.gov/commission/jcar/admincode/089/089001200I05100R.html
+  - kind: form
+    citation: HFS HBWD Premium Chart (one page, June 2009)
+    url: https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalprograms/hbwd/documents/hfsweb004.pdf
+  - kind: guidance
+    citation: HFS 3792 (R-03-13), Health Benefits for Workers with Disabilities brochure, premium table
+    url: https://hfs.illinois.gov/medicalprograms/hbwd/hfs3792hbwd.html
+  readings:
+    statute: No statute is supplied; the regulation's table prints 79 for earned income 1251-1500 and unearned
+      income 501-750, in the text effective February 1, 2009 (33 Ill. Reg. 1681) and unchanged by the amendment
+      effective March 25, 2022 (46 Ill. Reg. 5705).
+    other: The HFS premium chart (June 2009) and the HFS 3792 brochure print 69 for the same cell, which PE-US
+      gives (31 + 38).
+  example: Countable earned income of $1,300 and gross unearned income of $600 a month give a $79 premium under the
+    regulation and a $69 premium under the chart and in PE-US.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/il/hfs/hbwd/premium/earned.yaml
+    - policyengine_us/parameters/gov/states/il/hfs/hbwd/premium/unearned.yaml
+    - policyengine_us/variables/gov/states/il/hfs/hbwd/il_hbwd_premium.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10372
+  state: ruled
+  note: 'Ruled 2026-10-27 for the regulation''s 79 by the project lead for the Medicaid fixes; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10372#issuecomment-6451385205. Under "Regulations are law" the
+    regulation binds, and the written canons have no exception for an apparent typesetting error, so the 69 in the
+    HFS chart and the HFS 3792 brochure does not override it. PE-US gives 69 because its premium adds an earned
+    component (31) and an unearned component (38), which cannot represent a cell that departs from that sum. Issue
+    10471, which encodes the full 21 x 21 table, will make PE-US follow the ruling. The other 440 cells of the
+    regulation and the chart agree.'
 - id: us-il:joint-childless-eitc-dependency-skip
   program: income-tax
   years:
@@ -5050,20 +5227,62 @@ candidates:
   - kind: regulation
     citation: 8.15.2.9 NMAC and 8.15.2.12 NMAC
     url: https://www.srca.nm.gov/parts/title08/08.015.0002.html
+  - kind: regulation
+    citation: 8.9.3.9(F)-(G) NMAC and 8.9.3.12 NMAC (2022-11-01 to 2025-11-03)
+    url: https://www.srca.nm.gov/parts/title08/08.009.0003.html
   - kind: agency-practice
     citation: LFC Policy Brief, New Mexico Childcare Assistance Eligibility Changes (Dec 9 2025), p.2
     url: https://www.nmlegis.gov/handouts/ALFC%20120825%20Item%208%20Policy%20Brief%20Child%20Care%20Update.pdf#page=2
   readings:
-    statute: No statute supplied; the regulation provides 200% initial and 250% continuation ceilings.
+    statute: No statute supplied; the regulation (8.15.2 NMAC, then 8.9.3 NMAC from 2022-11-01) provides 200% initial
+      and 250% continuation ceilings, or 400% and 425% for essential workers in priority four plus, until the 2025-11-04
+      amendment removed the caps.
     other: Practice uses 400%/425% from May 1, 2022 and no income limit from November 1, 2025.
   pe_us:
     follows: unknown
     code:
     - policyengine_us/parameters/gov/states/nm/ececd/ccap/eligibility/fpl_limit/continuation.yaml
     - policyengine_us/parameters/gov/states/nm/ececd/ccap/eligibility/fpl_limit/initial.yaml
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10417
   state: unreviewed
   note: PE-US follows agency practice; establish authority for departure from the codified regulation.
+- id: us-nm:ccap-school-age-start-date
+  program: child-care-assistance
+  years:
+    from: 2026
+    to: 2026
+    type: program
+    note: program year as the program defines it
+  question: Does the 2026 school-age category (a child five years old by September 1 of the school year) start on
+    September 1, 2026, the date 8.9.3.19(D) NMAC names, or on 2026-09-09, when the rule that replaced 8.9.3 NMAC was
+    published and took effect?
+  sources:
+  - kind: statute
+    citation: NMSA 14-4-5 (as quoted in the New Mexico Register)
+    url: https://www.srca.nm.gov/nmac-home/new-mexico-register/volume-xxxvi-issue-4/adopted-rules-issue-4/
+  - kind: regulation
+    citation: 8.9.3.5 NMAC (rule effective 2026-09-09)
+    url: https://prod-rf-lambda.rtssaas.com/PublicFiles/d89c47bd0d70402dba89b03a22bda6d1/b0e207a9-a1a3-412d-9660-0a6e925f6f25/8.9.3.pdf#page=1
+  - kind: regulation
+    citation: 8.9.3.7(I)(3) and 8.9.3.19(D) NMAC (rule effective 2026-09-09)
+    url: https://prod-rf-lambda.rtssaas.com/PublicFiles/d89c47bd0d70402dba89b03a22bda6d1/b0e207a9-a1a3-412d-9660-0a6e925f6f25/8.9.3.pdf#page=18
+  readings:
+    statute: NMSA 14-4-5 makes no rule valid or enforceable until it is published in the New Mexico Register, and
+      8.9.3.5 gives September 9, 2026 as the effective date, so the new category applies from 2026-09-09.
+    other: 8.9.3.19(D) says that a preschool child's placement category changes to school age "Effective September 1,
+      2026".
+  example: A five-year-old in a 2-star licensed center at full time gets the $735 preschool rate for September 1-8,
+    2026 on the statute reading and the $689 school-age rate on the 8.9.3.19(D) date.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/nm/ececd/ccap/rates/age_group/months.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10417
+  state: ruled
+  note: Monthly periods resolve parameters at the first of the month, so the 60-month threshold first applies in
+    October 2026. TheAxiomFoundation/rulespec-us#1956 lists the same choice as an open point.
 - id: us-nm:medical-care-credit-mixed-age-spouses
   program: income-tax
   years:
@@ -8129,6 +8348,44 @@ candidates:
     threshold and federal-method conditions by year. Code not yet on main: gov/states/wv/tax/income/subtractions/wv_claim_of_right_subtraction.yaml,
     policyengine_us/variables/gov/states/wv/tax/income/subtractions/wv_subtractions.py, wv_claim_of_right_subtraction,
     gov.states.wv.tax.income.subtractions.claim_of_right.threshold.'
+- id: us-wv:medicaid-ssi-related-non-cash-income-at-standard
+  program: medicaid
+  years:
+    from: 2018
+    type: calendar
+  question: Does West Virginia's SSI-Related/Non-Cash Assistance group cover countable income exactly equal to the
+    SSI Maximum Payment level?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1396a(a)(10)(A)(ii)(I); 42 U.S.C. 1382(a)(1)(A) and (2)(A) (income "at a rate of not more than"
+      the benefit rate)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2023-title42/html/USCODE-2023-title42-chap7-subchapXVI-partA-sec1382.htm
+  - kind: regulation
+    citation: 42 CFR 435.210(b)
+    url: https://www.ecfr.gov/current/title-42/section-435.210
+  - kind: manual
+    citation: West Virginia Income Maintenance Manual § 23.11.4 (consolidated PDF built 2026-10-05, PDF p.1889)
+    url: https://bfa.wv.gov/media/40005/download?inline#page=1889
+  - kind: manual
+    citation: West Virginia Income Maintenance Manual § 4.14.3 Step 5 (PDF p.662)
+    url: https://bfa.wv.gov/media/40005/download?inline#page=662
+  readings:
+    statute: The optional group covers people who meet SSI's income requirement, which admits income at or below
+      the benefit rate.
+    other: Section 23.11.4 requires countable income "under" the SSI Maximum Payment level; the § 4.14 method it
+      applies (Step 5) makes income "equal to or less than" the level eligible.
+  example: An aged West Virginian with countable income of exactly $994 a month in 2026 qualifies under the statute
+    and Step 5 but not under § 23.11.4's wording.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/limit/requires_income_below_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10373
+  state: unreviewed
+  note: 'PE-US keeps WV out of requires_income_below_limit, so income equal to the SSI rate qualifies. This assumes
+    the group is the 42 CFR 435.210 group of section 1902(a)(10)(A)(ii)(I); West Virginia''s state plan page for the
+    group was not checked. The archived 2013 manual pairs the same two wordings (§ 16.7.H and § 10.23.C).'
 - id: us-wv:senior-modification-excluded-line-range
   program: income-tax
   years:
