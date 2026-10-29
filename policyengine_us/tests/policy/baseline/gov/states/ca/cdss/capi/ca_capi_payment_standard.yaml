@@ -472,3 +472,32 @@
     # Stopgap floor: (1,167 + 709) / 2 = 938, floored at the 943 FBR. A
     # known-low value: POMS SI 01415.056 gives 1,575.07 (issue 10480).
     ca_capi_payment_standard: 943
+
+- name: Case 20, CAPI couple with one spouse in a Title XIX facility is computed as two individuals.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        ca_in_medical_care_facility: true
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # With one spouse in a Title XIX facility, each is computed separately
+    # (20 CFR 416.414(b)(3)): the facility standard 62 (MPP 49-050.26) and
+    # the aged individual standard 994 + 239.94 = 1,233.94.
+    ca_capi_payment_standard: [62, 1_233.94]
+    ca_capi_person: [62, 1_233.94]

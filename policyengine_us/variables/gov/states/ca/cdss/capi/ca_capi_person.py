@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.states.ca.cdss.capi._ca_capi_ssi_ssp_standard import (
+    ca_capi_couple_computation,
     ca_capi_in_title_xix_facility,
     ca_capi_spouse_ssi_ssp,
     ca_capi_ssi_ssp_standard,
@@ -43,7 +44,7 @@ class ca_capi_person(Variable):
         # NOTE: SSI couple status ignores SSI's noncitizen test, so the model
         # can still pay such a spouse SSI that SSA would not (issue 10481).
         capi_eligible = person("ca_capi_eligible_person", period.this_year)
-        joint = person("ssi_couple_computation_applies", period)
+        joint = ca_capi_couple_computation(person, period)
         couple_with_spouse = joint & ~(person.marital_unit.sum(capi_eligible) > 1)
         spouse_ssi_ssp = ca_capi_spouse_ssi_ssp(person, period)
         couple_income = person.marital_unit.sum(countable_income)

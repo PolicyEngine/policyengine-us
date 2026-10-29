@@ -8,10 +8,14 @@ class oh_ccap_owf_basic_assistance(Variable):
     definition_period = MONTH
     label = "Ohio Works First basic assistance for Ohio CCAP income"
     defined_for = StateCode.OH
-    reference = "https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5180/2/16/5180$2-16-03_20220227.pdf"
-    # 5180:2-16-03(H)(3)(j) counts Ohio Works First cash assistance as
-    # unearned income. This is a bare input defaulting to zero: reading the
-    # computed OWF benefit would recreate the CCAP-TANF circular dependency
-    # through childcare_expenses, and OWF payment standards leave enrolled
-    # families well below the 145% intake standard and the 100%-FPG
-    # zero-copay band, so the default does not change modeled results.
+    reference = (
+        "https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5180/2/16/5180$2-16-03_20220227.pdf#page=5",
+        "https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5180/6/1/5180$6-1-03_20260801.pdf#page=4",
+    )
+    # 5180:2-16-03(H)(3)(j), now 5180:6-1-03(H)(3)(j), counts Ohio Works First
+    # cash assistance as unearned income. This is a bare input defaulting to
+    # zero: reading the computed OWF benefit would recreate the CCAP-TANF
+    # circular dependency through childcare_expenses, and OWF payment
+    # standards leave enrolled families well below the 145% intake standard
+    # and the 100%-FPG zero-copay band, so the default does not change
+    # modeled results.

@@ -7,13 +7,24 @@ from policyengine_us.variables.gov.ssa.ssi.eligibility.status.ssi_federal_living
 def ca_capi_in_title_xix_facility(person, period):
     """Whether a person lives in a Title XIX medical facility (MPP 49-050.26).
 
-    Reads both the California input and SSI's living arrangement, so the CAPI
-    standard and SSI's couple test agree.
+    Reads both the California input and SSI's living arrangement.
     """
     arrangement = person("ssi_federal_living_arrangement", period)
     return person("ca_in_medical_care_facility", period.this_year) | (
         arrangement == SSIFederalLivingArrangement.MEDICAL_TREATMENT_FACILITY
     )
+
+
+def ca_capi_couple_computation(person, period):
+    """Whether CAPI computes the person with their spouse as a couple.
+
+    SSI's couple computation, except that a couple with exactly one spouse in
+    a Title XIX facility is computed separately (20 CFR 416.414(b)(3)), when
+    only the California facility input marks it.
+    """
+    in_facility = ca_capi_in_title_xix_facility(person, period)
+    one_in_facility = person.marital_unit.sum(in_facility) == 1
+    return person("ssi_couple_computation_applies", period) & ~one_in_facility
 
 
 def ca_capi_spouse_ssi_ssp(person, period):
@@ -83,7 +94,7 @@ def ca_capi_ssi_ssp_standard(person, period, parameters):
         ),
     )
 
-    joint = person("ssi_couple_computation_applies", period)
+    joint = ca_capi_couple_computation(person, period)
     blind_count = where(joint, person.marital_unit.sum(blind), 2 * blind)
     aged_or_disabled_count = where(
         joint, person.marital_unit.sum(aged_or_disabled), 2 * aged_or_disabled
