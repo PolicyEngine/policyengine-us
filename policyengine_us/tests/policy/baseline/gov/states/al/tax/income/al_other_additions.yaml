@@ -1,0 +1,18 @@
+- name: Case 1, default al_other_additions is zero
+  period: 2024
+  input:
+    state_code: AL
+    employment_income: 50_000
+  output:
+    al_other_additions: 0
+    al_agi: 50_000
+
+- name: Case 2, al_other_additions increases AL AGI
+  period: 2024
+  input:
+    state_code: AL
+    employment_income: 50_000
+    al_other_additions: 2_000
+  output:
+    al_other_additions: 2_000
+    al_agi: 52_000
