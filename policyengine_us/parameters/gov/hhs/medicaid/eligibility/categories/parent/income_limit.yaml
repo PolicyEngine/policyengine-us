@@ -39,6 +39,18 @@ metadata:
       href: https://www.scdhhs.gov/sites/dhhs/files/waivers/2025-06-23%20Palmetto%20Pathways%20to%20Independence%20Submission%20(1).pdf
     - title: IDAPA 16.03.01.411, Income Limits for Parents and Caretaker Relatives, Table 411 | Idaho Department of Health and Welfare - $365/month for a household of three
       href: https://adminrules.idaho.gov/rules/current/16/160301.pdf#page=14
+    - title: "Eligibility Policy and Procedures Manual Appendix A-3, MAGI Income Limits 2014 to present | Mississippi Division of Medicaid - COE-075 parents and caretaker relatives, $492/month (effective March 1, 2024) and $495/month (effective March 1, 2025) for a household of three, 5% disregard included #page 2-3"
+      href: https://medicaid.ms.gov/wp-content/uploads/2026/03/Appendix-A-3-MAGI-Income-Limits.-2014-to-present.pdf#page=2
+    - title: 2026 Healthcare Coverage Options in Wyoming | Wyoming Department of Health - footnote 3, "Wyoming's Family Care population is based on the 1996 AFDC standard"
+      href: https://health.wyo.gov/wp-content/uploads/2026/03/Healthcare-Coverage-Options-in-Wyoming-2026.pdf
+    - title: Information about the 2024 HUSKY A Parents and Caretaker Relatives Transition | Connecticut DSS - Public Act 24-81 lowers the HUSKY A parent and caretaker relative limit from 160% to 138% FPL starting October 1, 2024
+      href: https://portal.ct.gov/dss/health-and-home-care/information-about-the-2024-husky-a-parents-and-caretaker-relatives-transition
+    - title: "Public Act 24-81, section 38, amending CGS 17b-261(a) effective October 1, 2024 | Connecticut General Assembly - parents and needy caretaker relatives qualify with household income not exceeding 133% (formerly 155%) of the federal poverty level #page 68-69"
+      href: https://www.cga.ct.gov/2024/ACT/PA/PDF/2024PA-00081-R00HB-05523-PA.PDF#page=68
+    - title: "State Plan Amendment CT-24-0025 (approved March 14, 2025, effective October 1, 2024) | CMS - HUSKY A parents and caretakers from 155% to 133% of the FPL, or from 160% to 138% including the 5% income disregard #page 2,5,11"
+      href: https://www.medicaid.gov/medicaid/spa/downloads/CT-24-0025.pdf#page=2
+    - title: Medicaid Income Eligibility Limits for Parents, 2002-2026 | KFF State Health Facts - family of three, 5-point disregard included (May 2024 and January 2025 columns)
+      href: https://www.kff.org/affordable-care-act/state-indicator/medicaid-income-eligibility-limits-for-parents/
 
 # Most of the states carrying a 2026 entry below set the section 1931
 # parent/caretaker standard as a frozen dollar amount, so its share of the
@@ -75,6 +87,16 @@ CO:
 CT:
   2018-01-01: 1.38
   2021-01-01: 1.60
+  # Public Act 24-81, section 38, amended CGS 17b-261(a) from October 1,
+  # 2024: HUSKY A parents and needy caretaker relatives qualify with income
+  # up to 133% of the guidelines, down from 155%. With the 5-point MAGI
+  # disregard that is 138%, down from 160% (SPA CT-24-0025). The cut covers
+  # new applicants and current enrollees: DSS changed or ended coverage
+  # above 138% on October 31, 2024, and earners could keep up to one more
+  # year of Transitional Medical Assistance. The variable is annual and
+  # reads the January 1 value, so 2024 keeps 1.60 and 1.38 applies from
+  # 2025.
+  2024-10-01: 1.38
 DC:
   2018-01-01: 2.21
   2026-01-01: 1.38
@@ -84,6 +106,13 @@ DE:
 FL:
   2018-01-01: 0.34
   2021-01-01: 0.32
+  # The $303 standard is dated April 1992 and the $486 MNIL it forms with the
+  # $183 standard disregard is dated January 2014 (DCF ESS Appendix A-7), so
+  # both held in 2024 and 2025. $486/month = $5,832/year, plus the 5-point
+  # MAGI disregard: $5,832 / $25,820 + 0.05 = 0.276 (2024) and
+  # $5,832 / $26,650 + 0.05 = 0.269 (2025).
+  2024-01-01: 0.276
+  2025-01-01: 0.269
   # $303 standard + $183 standard disregard + $114 5% MAGI disregard =
   # $600/month = $7,200/year for a family of three. The appendix publishes
   # the three components, not the $600 total (DCF ESS Appendix A-7).
@@ -144,6 +173,17 @@ MO:
 MS:
   2018-01-01: 0.28
   2021-01-01: 0.26
+  # COE-075 for a household of three, disregard included (MS DOM Appendix
+  # A-3): $492/month = $5,904/year in the table effective March 1, 2024, and
+  # $495/month = $5,940/year in the table effective March 1, 2025.
+  # $5,904 / $25,820 = 0.229 and $5,940 / $26,650 = 0.223. The State Set
+  # Income Limit is exactly $384 in every table from 2020 to 2026; each
+  # year's figure is $384 plus that year's 5% disregard. The variable is
+  # annual and reads the January 1 value, so each entry applies that year's
+  # March table to the whole year, although in January and February 2024
+  # the 2023 table's $488 (0.227) still applied.
+  2024-01-01: 0.229
+  2025-01-01: 0.223
   # $498/month = $5,976/year, disregard included (MS DOM, eff. 2026-03-01)
   2026-01-01: 0.219
 MT:
@@ -224,6 +264,12 @@ TN:
 TX:
   2018-01-01: 0.20
   2021-01-01: 0.19
+  # The $230/month C-131.2 standard is Revision 15-4, effective October 1,
+  # 2015, so it held in 2024 and 2025. $2,760/year plus the 5-point disregard:
+  # $2,760 / $25,820 + 0.05 = 0.157 (2024) and $2,760 / $26,650 + 0.05 =
+  # 0.154 (2025).
+  2024-01-01: 0.157
+  2025-01-01: 0.154
   # $230/month + $113.85 disregard = $4,126/year (Texas Works Handbook C-131)
   2026-01-01: 0.151
 UT:
@@ -246,6 +292,13 @@ WV:
 WY:
   2018-01-01: 0.59
   2021-01-01: 0.56
+  # Family Care rests on the 1996 AFDC standard (WDH, 2026 Healthcare
+  # Coverage Options in Wyoming, footnote 3), so the $873/month held in 2024
+  # and 2025. $10,476/year plus the 5-point disregard, as in the 2026 entry:
+  # $10,476 / $25,820 + 0.05 = 0.456 (2024) and $10,476 / $26,650 + 0.05 =
+  # 0.443 (2025).
+  2024-01-01: 0.456
+  2025-01-01: 0.443
   # $873/month = $10,476/year, 0.383 of the guidelines for a family of three,
   # plus the 5-point disregard (WDH Family MAGI column). That column is the
   # only one the page publishes for this group, with no disregard column, so

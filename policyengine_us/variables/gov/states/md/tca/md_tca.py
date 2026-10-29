@@ -8,10 +8,22 @@ class md_tca(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = "md_tca_eligible"
-    reference = "https://dsd.maryland.gov/regulations/Pages/07.03.03.17.aspx"
+    reference = (
+        "https://dsd.maryland.gov/regulations/Pages/07.03.03.13.aspx",
+        "https://dsd.maryland.gov/regulations/Pages/07.03.03.17.aspx",
+    )
 
     def formula(spm_unit, period, parameters):
         grant_standard = spm_unit("md_tca_maximum_benefit", period)
-        countable_income = spm_unit("md_tca_countable_income", period)
+        # Net countable income is rounded down to the nearest dollar before
+        # it is deducted (COMAR 07.03.03.13 E(1)). Rounding to cents first
+        # keeps float error from moving the income to the dollar below.
+        countable_income = np.floor(
+            np.round(spm_unit("md_tca_countable_income", period), 2)
+        )
         benefit = max_(grant_standard - countable_income, 0)
-        return min_(benefit, grant_standard)
+        capped_benefit = min_(benefit, grant_standard)
+        # A benefit is issued only when the unit is eligible for at least
+        # the minimum (COMAR 07.03.03.13 E(2)).
+        p = parameters(period).gov.states.md.tca
+        return where(capped_benefit >= p.minimum_payment, capped_benefit, 0)
