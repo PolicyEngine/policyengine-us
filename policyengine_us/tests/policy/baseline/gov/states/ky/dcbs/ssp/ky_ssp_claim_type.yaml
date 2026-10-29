@@ -145,15 +145,20 @@
 
 - name: Case 7, SSI-eligible minor with SSI-eligible adult spouse — minor fails §4(1)(c) age test.
   period: 2026-01
+  # Explicit roles avoid inferring the minor spouse as a tax dependent.
   input:
     people:
       person1:
         age: 50
+        is_tax_unit_head:
+          2026: true
         is_ssi_aged_blind_disabled: true
         meets_ssi_resource_test: true
         ky_ssp_category: CARETAKER
       person2:
         age: 17
+        is_tax_unit_spouse:
+          2026: true
         is_ssi_aged_blind_disabled: true
         meets_ssi_resource_test: true
         ky_ssp_category: CARETAKER
