@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_us.tools.state_eitc_helpers import (
-    eitc_filer_identification_met,
     eitc_section_911_eligible,
+    federal_eitc_tax_unit,
 )
 
 
@@ -42,13 +42,14 @@ class me_pro_forma_childless_eitc(Variable):
         # investment-income and identification requirements of § 32. From
         # 2021, § 5219-S(7) lets an ITIN or any Social Security number meet
         # the identification requirement of § 32(c)(1)(E).
-        phased_in = tax_unit("eitc_phased_in", period)
-        maximum = tax_unit("eitc_maximum", period)
-        reduction = tax_unit("eitc_reduction", period)
-        investment_eligible = tax_unit("eitc_investment_income_eligible", period)
         p = parameters(period).gov.states.me.tax.income.credits.eitc
-        filer_identified = eitc_filer_identification_met(
-            tax_unit, period, p.itin_eligible
+        federal = federal_eitc_tax_unit(tax_unit, period, p.itin_eligible)
+        phased_in = federal("eitc_phased_in", period)
+        maximum = federal("eitc_maximum", period)
+        reduction = federal("eitc_reduction", period)
+        investment_eligible = tax_unit("eitc_investment_income_eligible", period)
+        filer_identified = federal(
+            "filer_meets_eitc_identification_requirements", period
         )
         # § 5219-S(6) also requires the qualifications of IRC
         # 32(c)(1)(A)(ii)(III): the filer may not be a dependent of another

@@ -1,7 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.tools.state_eitc_helpers import (
-    calculate_eitc_without_ssn_limitation,
-)
+from policyengine_us.tools.state_eitc_helpers import federal_eitc_tax_unit
 
 
 class me_federal_eitc_without_ssn_requirement(Variable):
@@ -9,7 +7,7 @@ class me_federal_eitc_without_ssn_requirement(Variable):
     entity = TaxUnit
     label = "Federal EITC without the SSN requirement for Maine"
     unit = USD
-    documentation = "The federal earned income credit, computed from 2021 with an ITIN or any Social Security number accepted for the filer, spouse and qualifying children in place of the IRC 32(m) Social Security number. All other federal rules apply, including the minimum age, take-up and the bar on section 911 claimants."
+    documentation = "The federal earned income credit, computed from 2021 with an ITIN or any Social Security number accepted for the filer, spouse and qualifying children in place of the IRC 32(m) Social Security number. All other federal rules apply, including the minimum age, take-up, the bar on section 911 claimants and any reform of the federal credit."
     definition_period = YEAR
     reference = (
         "https://legislature.maine.gov/statutes/36/title36sec5219-S.html",
@@ -32,10 +30,5 @@ class me_federal_eitc_without_ssn_requirement(Variable):
         # the filer answer "Yes" to the federal SSN question with either
         # number and complete a pro forma federal EIC worksheet.
         p = parameters(period).gov.states.me.tax.income.credits.eitc
-        return calculate_eitc_without_ssn_limitation(
-            tax_unit,
-            period,
-            parameters,
-            tax_unit("me_eitc_child_count", period),
-            p.itin_eligible,
-        )
+        federal = federal_eitc_tax_unit(tax_unit, period, p.itin_eligible)
+        return federal("eitc", period)

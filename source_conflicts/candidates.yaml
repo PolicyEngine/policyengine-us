@@ -3503,6 +3503,41 @@ candidates:
   state: unreviewed
   note: Identify the instructions and years, then determine whether the gloss fills a silence or impermissibly narrows
     eligibility.
+- id: us-me:5219-S-7-itin-qualifying-children
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Does a qualifying child identified by an ITIN count for the Maine EITC, when the worksheet changes the federal
+    identification answer only for the filer and spouse?
+  sources:
+  - kind: statute
+    citation: 36 M.R.S. 5219-S(7)
+    url: https://legislature.maine.gov/statutes/36/title36sec5219-S.html
+  - kind: worksheet
+    citation: Maine Revenue Services, Earned Income Tax Credit Worksheet for Tax Year 2024, instructions
+    url: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/24_earned_income_cred_ff_0.pdf
+  readings:
+    statute: Notwithstanding section 32(m), the number that sections 32(c)(1)(E) and 32(c)(3)(D) require means an ITIN
+      or a Social Security number, so a child with an ITIN is a qualifying child.
+    other: The worksheet has the filer answer "Yes" to the federal Step 1, question 2 when "you (or your spouse, if
+      married)" filed with an SSN or ITIN, and complete the other federal steps as written, so a child without a valid
+      SSN drops out.
+  example: In 2025 a parent with $10,000 of wages whose only child has an ITIN gets $850 (25% of the one-child federal
+    amount, $3,400) under the statute, which PE-US follows, and $324.50 (50% of the childless amount, $649) under the
+    worksheet.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/me/tax/income/credits/eitc/me_eitc_child_count.py
+    - policyengine_us/variables/gov/states/me/tax/income/credits/eitc/me_federal_eitc_without_ssn_requirement.py
+    - policyengine_us/variables/gov/states/me/tax/income/credits/me_eitc.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10527
+  state: ruled
+  note: 'Subsection 7 names 32(c)(3)(D), the qualifying child''s number, so PE-US counts a child with an ITIN or any
+    Social Security number from 2021 (me_eitc_child_count.py) and takes the federal credit computed that way as the
+    basis (me_federal_eitc_without_ssn_requirement.py). Recheck if Maine Revenue Services revises the worksheet.'
 - id: us-me:property-tax-credit-unknown-utilities
   program: income-tax
   years:

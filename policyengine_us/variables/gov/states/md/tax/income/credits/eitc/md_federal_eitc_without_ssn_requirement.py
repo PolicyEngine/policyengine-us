@@ -1,7 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.tools.state_eitc_helpers import (
-    calculate_eitc_without_ssn_limitation,
-)
+from policyengine_us.tools.state_eitc_helpers import federal_eitc_tax_unit
 
 
 class md_federal_eitc_without_ssn_requirement(Variable):
@@ -9,7 +7,7 @@ class md_federal_eitc_without_ssn_requirement(Variable):
     entity = TaxUnit
     label = "Federal EITC without the SSN requirement for Maryland"
     unit = USD
-    documentation = "The federal earned income credit allowable, or that would have been allowable but for the IRC 32(m) Social Security number limitation. All other federal rules apply, including the minimum age, take-up and the bar on section 911 claimants."
+    documentation = "The federal earned income credit allowable, or that would have been allowable but for the IRC 32(m) Social Security number limitation. All other federal rules apply, including the minimum age, take-up, the bar on section 911 claimants and any reform of the federal credit."
     definition_period = YEAR
     reference = (
         "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-704&enactments=false",
@@ -32,10 +30,5 @@ class md_federal_eitc_without_ssn_requirement(Variable):
         # claim the state earned income credit by calculating the federal
         # earned income credit disregarding the SSN requirement."
         p = parameters(period).gov.states.md.tax.income.credits.eitc
-        return calculate_eitc_without_ssn_limitation(
-            tax_unit,
-            period,
-            parameters,
-            tax_unit("md_eitc_child_count", period),
-            p.itin_eligible,
-        )
+        federal = federal_eitc_tax_unit(tax_unit, period, p.itin_eligible)
+        return federal("eitc", period)

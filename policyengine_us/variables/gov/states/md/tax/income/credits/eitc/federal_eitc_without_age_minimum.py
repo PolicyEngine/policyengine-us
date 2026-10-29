@@ -1,8 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_us.tools.state_eitc_helpers import (
-    eitc_amount_for_child_count,
-    eitc_filer_identification_met,
     eitc_section_911_eligible,
+    federal_eitc_tax_unit,
 )
 
 
@@ -30,21 +29,25 @@ class federal_eitc_without_age_minimum(Variable):
         # the maximum age in § 32(c)(1)(A)(ii)(II) and other federal § 32
         # rules (investment income, section 911) still apply.
         person = tax_unit.members
-        child_count = tax_unit("md_eitc_child_count", period)
-        has_child = child_count > 0
+        p = parameters(period).gov.states.md.tax.income.credits.eitc
+        # The federal variables as computed with an ITIN or any Social
+        # Security number accepted (when Maryland waives 32(m)), so the
+        # qualifying children and phase-in and phase-out amounts are those of
+        # the federal formulas, reforms included.
+        federal = federal_eitc_tax_unit(tax_unit, period, p.itin_eligible)
+        has_child = federal("eitc_child_count", period) > 0
         # Relative parameter reference break branching in some states that
         # modify EITC age limits.
         max_age = parameters.gov.irs.credits.eitc.eligibility.age.max(period)
         is_filer_or_spouse = ~person("is_tax_unit_dependent", period)
         below_max_age = person("age", period) <= max_age
         meets_max_age = has_child | tax_unit.any(below_max_age & is_filer_or_spouse)
-        # The federal phase-in and phase-out, with the qualifying children
-        # Maryland takes into account.
-        amount = eitc_amount_for_child_count(tax_unit, period, parameters, child_count)
+        phased_in = federal("eitc_phased_in", period)
+        maximum = federal("eitc_maximum", period)
+        reduction = federal("eitc_reduction", period)
         investment_eligible = tax_unit("eitc_investment_income_eligible", period)
-        p = parameters(period).gov.states.md.tax.income.credits.eitc
-        filer_identified = eitc_filer_identification_met(
-            tax_unit, period, p.itin_eligible
+        filer_identified = federal(
+            "filer_meets_eitc_identification_requirements", period
         )
         # § 32(c)(1)(C): no credit for an individual who claims the benefits
         # of section 911. The 2025 Resident Booklet (Instruction 18) waives the
@@ -52,7 +55,7 @@ class federal_eitc_without_age_minimum(Variable):
         # federal credit for those without a qualifying child".
         section_911_eligible = eitc_section_911_eligible(tax_unit, period)
         return (
-            amount
+            min_(phased_in, max_(0, maximum - reduction))
             * investment_eligible
             * filer_identified
             * section_911_eligible

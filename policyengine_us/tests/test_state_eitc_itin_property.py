@@ -6,7 +6,7 @@ extra, so this module skips without it.
 
 import pytest
 
-from test_state_eitc_itin import ID_TYPES, STATES, check
+from test_state_eitc_itin import EITC_REFORMS, ID_TYPES, STATES, check
 
 hypothesis = pytest.importorskip("hypothesis")
 st = pytest.importorskip("hypothesis.strategies")
@@ -38,6 +38,10 @@ household_strategy = st.fixed_dictionaries(
 @hypothesis.given(
     st.lists(household_strategy, min_size=1, max_size=25),
     st.sampled_from([2019, 2020, 2021, 2022, 2025, 2026]),
+    # Current law half the time, otherwise one of the structural reforms of
+    # the federal EITC (test_state_eitc_itin.py runs each on a fixed grid).
+    # Each reform builds its own parameter tree, so they are sampled sparingly.
+    st.sampled_from([None] * len(EITC_REFORMS) + sorted(EITC_REFORMS)),
 )
-def test_random_households(households, year):
-    check(households, year)
+def test_random_households(households, year, reform):
+    check(households, year, reform)

@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.tools.state_eitc_helpers import eitc_identified_child_count
+from policyengine_us.tools.state_eitc_helpers import federal_eitc_tax_unit
 
 
 class md_eitc_child_count(Variable):
@@ -24,4 +24,5 @@ class md_eitc_child_count(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.md.tax.income.credits.eitc
-        return eitc_identified_child_count(tax_unit, period, p.itin_eligible)
+        federal = federal_eitc_tax_unit(tax_unit, period, p.itin_eligible)
+        return federal("eitc_child_count", period)
