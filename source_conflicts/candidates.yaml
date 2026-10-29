@@ -2554,6 +2554,48 @@ candidates:
   state: ruled
   note: Statute text is in the Axiom corpus; registering needs a pdftotext capture of the official instructions
     page.
+- id: us-il:hbwd-premium-earned-1251-unearned-501-cell
+  program: medicaid
+  years:
+    from: 2009
+    type: calendar
+  question: Is the Illinois Health Benefits for Workers with Disabilities premium for countable earned income of
+    $1,251-1,500 and gross unearned income of $501-750 $79, as 89 Ill. Adm. Code 120.510(n)(3) prints, or $69, as
+    the HFS premium chart prints?
+  sources:
+  - kind: regulation
+    citation: 89 Ill. Adm. Code 120.510(n)(3)
+    url: https://ilga.gov/commission/jcar/admincode/089/089001200I05100R.html
+  - kind: form
+    citation: HFS HBWD Premium Chart (one page, June 2009)
+    url: https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalprograms/hbwd/documents/hfsweb004.pdf
+  - kind: guidance
+    citation: HFS 3792 (R-03-13), Health Benefits for Workers with Disabilities brochure, premium table
+    url: https://hfs.illinois.gov/medicalprograms/hbwd/hfs3792hbwd.html
+  readings:
+    statute: No statute is supplied; the regulation's table prints 79 for earned income 1251-1500 and unearned
+      income 501-750, in the text effective February 1, 2009 (33 Ill. Reg. 1681) and unchanged by the amendment
+      effective March 25, 2022 (46 Ill. Reg. 5705).
+    other: The HFS premium chart (June 2009) and the HFS 3792 brochure print 69 for the same cell, which PE-US
+      gives (31 + 38).
+  example: Countable earned income of $1,300 and gross unearned income of $600 a month give a $79 premium under the
+    regulation and a $69 premium under the chart and in PE-US.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/il/hfs/hbwd/premium/earned.yaml
+    - policyengine_us/parameters/gov/states/il/hfs/hbwd/premium/unearned.yaml
+    - policyengine_us/variables/gov/states/il/hfs/hbwd/il_hbwd_premium.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10372
+  state: ruled
+  note: 'Ruled 2026-10-27 for the regulation''s 79 by the project lead for the Medicaid fixes; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10372#issuecomment-6451385205. Under "Regulations are law" the
+    regulation binds, and the written canons have no exception for an apparent typesetting error, so the 69 in the
+    HFS chart and the HFS 3792 brochure does not override it. PE-US gives 69 because its premium adds an earned
+    component (31) and an unearned component (38), which cannot represent a cell that departs from that sum. Issue
+    10471, which encodes the full 21 x 21 table, will make PE-US follow the ruling. The other 440 cells of the
+    regulation and the chart agree.'
 - id: us-il:joint-childless-eitc-dependency-skip
   program: income-tax
   years:
