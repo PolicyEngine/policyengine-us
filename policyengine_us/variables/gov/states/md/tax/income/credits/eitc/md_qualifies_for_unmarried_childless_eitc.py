@@ -11,7 +11,9 @@ class md_qualifies_for_unmarried_childless_eitc(Variable):
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
-        childless = tax_unit("eitc_child_count", period) == 0
+        # From 2020 a child with an ITIN or any Social Security number counts
+        # as a qualifying child (§ 10-704(c)(1)(i) and (c)(3)(i)2).
+        childless = tax_unit("md_eitc_child_count", period) == 0
         # Law says "individual".
         # Tax form instructions clarify that this means single/head/surviving spouse.
         filing_status = tax_unit("filing_status", period)

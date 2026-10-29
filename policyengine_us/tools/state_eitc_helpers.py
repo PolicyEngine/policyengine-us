@@ -25,6 +25,96 @@ def eitc_section_911_eligible(tax_unit, period):
     return ~elects_section_911_exclusion(tax_unit, period)
 
 
+def eitc_identification_met(person, period, ssn_limitation_waived):
+    """26 U.S.C. 32(c)(1)(E) and (c)(3)(D) identification for each person.
+
+    Section 32(m) limits the taxpayer identification number those paragraphs
+    require to a Social Security number valid for employment. A state that
+    waives 32(m) accepts any taxpayer identification number: an individual
+    taxpayer identification number or a Social Security number of any kind
+    (has_tin).
+    """
+
+    federal = person("meets_eitc_identification_requirements", period)
+    return federal | (ssn_limitation_waived & person("has_tin", period))
+
+
+def eitc_filer_identification_met(tax_unit, period, ssn_limitation_waived):
+    """32(c)(1)(E): the filer and any spouse each meet the identification test."""
+
+    person = tax_unit.members
+    head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+    met = eitc_identification_met(person, period, ssn_limitation_waived)
+    return tax_unit.sum(head_or_spouse & ~met) == 0
+
+
+def eitc_identified_child_count(tax_unit, period, ssn_limitation_waived):
+    """32(c)(3)(D): the qualifying children the credit takes into account."""
+
+    person = tax_unit.members
+    qualifying_child = person("is_eitc_qualifying_child", period)
+    met = eitc_identification_met(person, period, ssn_limitation_waived)
+    return tax_unit.sum(qualifying_child & met)
+
+
+def eitc_amount_for_child_count(tax_unit, period, parameters, child_count):
+    """The federal phase-in and phase-out amount for a state's child count.
+
+    Where the count matches eitc_child_count this reads the federal variables,
+    so structural reforms to them carry through; otherwise (a qualifying child
+    only the state takes into account) it recomputes from the parameters.
+    """
+
+    federal_amount = min_(
+        tax_unit("eitc_phased_in", period),
+        max_(0, tax_unit("eitc_maximum", period) - tax_unit("eitc_reduction", period)),
+    )
+    recomputed = calculate_eitc_amount_from_parameters(
+        tax_unit, period, parameters(period).gov.irs.credits.eitc, child_count
+    )
+    return where(
+        child_count == tax_unit("eitc_child_count", period),
+        federal_amount,
+        recomputed,
+    )
+
+
+def calculate_eitc_without_ssn_limitation(
+    tax_unit, period, parameters, child_count, ssn_limitation_waived
+):
+    """The federal EITC, or the one that would be allowable but for 32(m).
+
+    child_count is eitc_identified_child_count under the same waiver. Every
+    other federal rule applies as in `eitc`, including take-up and filing.
+    """
+
+    federal_eitc = tax_unit("eitc", period)
+    if not ssn_limitation_waived:
+        return federal_eitc
+    # A unit with an identified qualifying child qualifies on that child; one
+    # without takes the federal age and dependency tests.
+    demographic_eligible = (child_count > 0) | tax_unit(
+        "eitc_demographic_eligible", period
+    )
+    eligible = (
+        demographic_eligible
+        & eitc_filer_identification_met(tax_unit, period, ssn_limitation_waived)
+        & tax_unit("eitc_investment_income_eligible", period)
+        & eitc_filing_status_eligible(tax_unit, period, parameters)
+        & eitc_section_911_eligible(tax_unit, period)
+        & eitc_filing_requirement_met(tax_unit, period)
+        & tax_unit("takes_up_eitc", period)
+    )
+    recomputed = (
+        eitc_amount_for_child_count(tax_unit, period, parameters, child_count)
+        * eligible
+    )
+    # The recomputation equals the federal credit when every member has a
+    # Social Security number valid for employment, and exceeds it only
+    # through the waiver.
+    return max_(federal_eitc, recomputed)
+
+
 def eitc_filing_status_eligible(
     tax_unit, period, parameters, separate_filer_eligible=None
 ):

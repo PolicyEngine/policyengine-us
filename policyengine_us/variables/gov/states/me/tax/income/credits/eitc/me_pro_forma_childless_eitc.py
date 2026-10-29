@@ -1,5 +1,8 @@
 from policyengine_us.model_api import *
-from policyengine_us.tools.state_eitc_helpers import eitc_section_911_eligible
+from policyengine_us.tools.state_eitc_helpers import (
+    eitc_filer_identification_met,
+    eitc_section_911_eligible,
+)
 
 
 class me_pro_forma_childless_eitc(Variable):
@@ -11,10 +14,10 @@ class me_pro_forma_childless_eitc(Variable):
         "Federal earned income credit recomputed for the 18-24 childless "
         "cohort Maine restores under 36 M.R.S. § 5219-S(5)-(6), ignoring the "
         "federal minimum-age floor. The other federal § 32 requirements "
-        "(earnings, phase-out, investment income, the bar on section 911 "
-        "claimants) still apply. Section 5219-S(7) also accepts an ITIN in "
-        "place of an SSN from 2021, which this variable does not yet model: "
-        "it still requires an SSN."
+        "(earnings, phase-out, investment income, taxpayer identification, "
+        "the bar on section 911 claimants) still apply. From 2021 an ITIN or "
+        "any Social Security number meets the identification requirement "
+        "(§ 5219-S(7))."
     )
     definition_period = YEAR
     reference = (
@@ -36,14 +39,17 @@ class me_pro_forma_childless_eitc(Variable):
         # earned income credit." The federal phase-in and reduction amounts are
         # age-independent, so the pro forma equals the ordinary federal EITC
         # computation with the demographic (age) gate dropped, retaining the
-        # investment-income and identification (SSN) requirements of § 32.
-        # Section 5219-S(7) accepts an ITIN from 2021; the SSN test below
-        # does not yet reflect that.
+        # investment-income and identification requirements of § 32. From
+        # 2021, § 5219-S(7) lets an ITIN or any Social Security number meet
+        # the identification requirement of § 32(c)(1)(E).
         phased_in = tax_unit("eitc_phased_in", period)
         maximum = tax_unit("eitc_maximum", period)
         reduction = tax_unit("eitc_reduction", period)
         investment_eligible = tax_unit("eitc_investment_income_eligible", period)
-        filer_has_ssn = tax_unit("filer_meets_eitc_identification_requirements", period)
+        p = parameters(period).gov.states.me.tax.income.credits.eitc
+        filer_identified = eitc_filer_identification_met(
+            tax_unit, period, p.itin_eligible
+        )
         # § 5219-S(6) also requires the qualifications of IRC
         # 32(c)(1)(A)(ii)(III): the filer may not be a dependent of another
         # taxpayer, and on a joint return neither spouse may be (Publication
@@ -59,7 +65,7 @@ class me_pro_forma_childless_eitc(Variable):
         return (
             min_(phased_in, max_(0, maximum - reduction))
             * investment_eligible
-            * filer_has_ssn
+            * filer_identified
             * ~dependent_filer
             * section_911_eligible
         )

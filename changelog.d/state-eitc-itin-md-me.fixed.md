@@ -1,0 +1,1 @@
+Apply the Maryland and Maine EITC waivers of the 26 U.S.C. 32(m) Social Security number requirement, so filers, spouses and qualifying children with an ITIN or any Social Security number count (Maryland from 2020, Maine from 2021).

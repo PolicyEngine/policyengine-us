@@ -1,0 +1,417 @@
+# 36 M.R.S. 5219-S(7): from tax year 2021, "notwithstanding Section 32(m) of
+# the Code", the taxpayer identification number required by IRC 32(c)(1)(E)
+# and (c)(3)(D) "means a federal individual taxpayer identification number ...
+# or a social security number". An ITIN holder is ssn_card_type NONE with
+# has_tin true; a person with no taxpayer identification number has has_tin
+# false. Maine pays 25% of the federal credit with a qualifying child and 50%
+# without (5219-S(1-A)). 2025 federal amounts are from Rev. Proc. 2024-40:
+# childless maximum $649 (7.65%), one child $4,328 (34%).
+
+- name: ITIN parent with an ITIN child gets 25% of the one-child federal amount
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+      child:
+        age: 5
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ME
+  output:
+    eitc: 0
+    me_eitc_child_count: 1
+    # 34% x $10,000.
+    me_federal_eitc_without_ssn_requirement: 3_400
+    me_eitc: 850
+
+- name: SSN twin of the ITIN parent with an ITIN child
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+      child:
+        age: 5
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ME
+  output:
+    eitc: 3_400
+    me_eitc_child_count: 1
+    me_eitc: 850
+
+- name: Citizen parent whose only child has an ITIN gets the with-child rate on the one-child amount
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+      child:
+        age: 5
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ME
+  output:
+    # Federally the parent claims the childless credit (7.65% x $8,490).
+    eitc: 649
+    eitc_child_count: 0
+    me_eitc_child_count: 1
+    me_federal_eitc_without_ssn_requirement: 3_400
+    # 25% x $3,400 rather than 50% x $649.
+    me_eitc: 850
+
+- name: Parent aged 20 whose only child has an ITIN is a filer with a qualifying child, not in the age cohort
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 20
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+      child:
+        age: 2
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ME
+  output:
+    # Federally childless and below the minimum age.
+    eitc: 0
+    me_childless_eitc_age_eligible: false
+    me_pro_forma_childless_eitc: 0
+    me_federal_eitc_without_ssn_requirement: 3_400
+    me_eitc: 850
+
+- name: Childless ITIN filer aged 30 gets 50% of the childless federal amount
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: ME
+  output:
+    eitc: 0
+    me_federal_eitc_without_ssn_requirement: 649
+    me_eitc: 324.50
+
+- name: Childless ITIN filer aged 20 takes the age expansion and the ITIN rule together
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 20
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: true
+    me_pro_forma_childless_eitc: 649
+    me_federal_eitc_without_ssn_requirement: 0
+    me_eitc: 324.50
+
+- name: Childless filer with no taxpayer identification number gets no Maine EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: ME
+  output:
+    me_federal_eitc_without_ssn_requirement: 0
+    me_eitc: 0
+
+- name: Childless filer aged 20 with no taxpayer identification number gets no pro forma credit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 20
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: ME
+  output:
+    me_pro_forma_childless_eitc: 0
+    me_eitc: 0
+
+- name: A Social Security number not valid for employment meets Maine's identification test
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: OTHER_NON_CITIZEN
+      child:
+        age: 5
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ME
+  output:
+    eitc: 0
+    me_eitc_child_count: 1
+    me_eitc: 850
+
+- name: In 2020, before subsection 7, an ITIN family gets no Maine EITC
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+      child:
+        age: 5
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ME
+  output:
+    me_eitc_child_count: 0
+    me_federal_eitc_without_ssn_requirement: 0
+    me_eitc: 0
+
+- name: In 2021, the first year of subsection 7, an ITIN family gets 20% of the one-child amount
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+      child:
+        age: 5
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ME
+  output:
+    # 34% x $10,000, below the 2021 one-child maximum of $3,618 (Rev. Proc.
+    # 2020-45); 5219-S(1) pays 20% for 2021.
+    me_federal_eitc_without_ssn_requirement: 3_400
+    me_eitc: 680
+
+- name: Joint return with an ITIN spouse and a citizen child
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+      spouse:
+        age: 35
+        ssn_card_type: NONE
+        has_tin: true
+      child:
+        age: 5
+        ssn_card_type: CITIZEN
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    families:
+      family:
+        members: [head, spouse, child]
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: ME
+  output:
+    # 32(c)(1)(E) requires the spouse's number too, so no federal credit.
+    eitc: 0
+    me_federal_eitc_without_ssn_requirement: 3_400
+    me_eitc: 850
+
+- name: An ITIN parent who claims section 911 benefits gets no Maine EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+      child:
+        age: 5
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        foreign_earned_income_exclusion: 30_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: ME
+  output:
+    # 32(c)(1)(C) bars the credit; subsection 7 changes only the number.
+    me_eitc_child_count: 1
+    me_federal_eitc_without_ssn_requirement: 0
+    me_eitc: 0
+
+- name: A childless ITIN filer aged 20 who claims section 911 benefits gets no Maine EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 20
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        foreign_earned_income_exclusion: 30_000
+    households:
+      household:
+        members: [person]
+        state_code: ME
+  output:
+    me_pro_forma_childless_eitc: 0
+    me_eitc: 0
+
+- name: Childless ITIN filer aged 30 who does not take up the EITC is treated like an SSN filer
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        takes_up_eitc: false
+    households:
+      household:
+        members: [person]
+        state_code: ME
+  output:
+    # As for an SSN filer, whose federal credit is then zero.
+    me_federal_eitc_without_ssn_requirement: 0
+    me_eitc: 0
+
+- name: Childless ITIN filer aged 20 who does not take up the EITC keeps the pro forma credit, like an SSN filer
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 20
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        takes_up_eitc: false
+    households:
+      household:
+        members: [person]
+        state_code: ME
+  output:
+    # The 18-24 pro forma applies no take-up for SSN filers either.
+    me_pro_forma_childless_eitc: 649
+    me_eitc: 324.50

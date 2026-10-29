@@ -6,7 +6,7 @@
     county_str: BALTIMORE_CITY_MD
     is_eligible_md_poverty_line_credit: true
     employment_income: 10_000
-    eitc: 0
+    md_federal_eitc_without_ssn_requirement: 0
     md_local_income_tax_before_credits: 400
   output:
     # 10,000 * 0.032 = 320 < 400 remaining tax
@@ -20,7 +20,7 @@
     county_str: BALTIMORE_CITY_MD
     is_eligible_md_poverty_line_credit: true
     employment_income: 10_000
-    eitc: 50
+    md_federal_eitc_without_ssn_requirement: 50
     md_local_income_tax_before_credits: 200
   output:
     # Local EITC: min(50 * 10 * 0.032, 200) = 16
@@ -35,7 +35,7 @@
     county_str: BALTIMORE_CITY_MD
     is_eligible_md_poverty_line_credit: false
     employment_income: 10_000
-    eitc: 0
+    md_federal_eitc_without_ssn_requirement: 0
     md_local_income_tax_before_credits: 400
   output:
     md_local_poverty_line_credit: 0

@@ -2,7 +2,7 @@
   period: 2021
   input:
     filing_status: SINGLE
-    eitc_child_count: 0
+    md_eitc_child_count: 0
     state_code: MD
   output:
     md_qualifies_for_unmarried_childless_eitc: true
@@ -11,7 +11,7 @@
   period: 2021
   input:
     filing_status: JOINT
-    eitc_child_count: 0
+    md_eitc_child_count: 0
     state_code: MD
   output:
     md_qualifies_for_unmarried_childless_eitc: false
@@ -20,7 +20,7 @@
   period: 2021
   input:
     filing_status: SINGLE
-    eitc_child_count: 1
+    md_eitc_child_count: 1
     state_code: MD
   output:
     md_qualifies_for_unmarried_childless_eitc: false

@@ -7,7 +7,7 @@
   period: 2021
   input:
     md_qualifies_for_unmarried_childless_eitc: false
-    eitc_child_count: 0
+    md_eitc_child_count: 0
     eitc: 0  # age-gated federal credit is zero for the under-25 childless
     federal_eitc_without_age_minimum: 1_000
     md_income_tax_before_credits: 100
@@ -19,7 +19,7 @@
   period: 2021
   input:
     md_qualifies_for_unmarried_childless_eitc: false
-    eitc_child_count: 0
+    md_eitc_child_count: 0
     eitc: 0
     federal_eitc_without_age_minimum: 1_000
     md_income_tax_before_credits: 500
@@ -27,12 +27,12 @@
   output:
     md_married_or_has_child_refundable_eitc: 0  # max(0, 1000*0.45 - 500)
 
-- name: With-child filer uses the actual age-gated federal EITC
+- name: With-child filer uses the age-gated federal EITC without the SSN requirement
   period: 2021
   input:
     md_qualifies_for_unmarried_childless_eitc: false
-    eitc_child_count: 1
-    eitc: 1_000
+    md_eitc_child_count: 1
+    md_federal_eitc_without_ssn_requirement: 1_000
     federal_eitc_without_age_minimum: 0  # ignored for with-child filers
     md_income_tax_before_credits: 100
     state_code: MD
@@ -43,7 +43,7 @@
   period: 2021
   input:
     md_qualifies_for_unmarried_childless_eitc: true
-    eitc_child_count: 0
+    md_eitc_child_count: 0
     eitc: 1_000
     federal_eitc_without_age_minimum: 1_000
     md_income_tax_before_credits: 100

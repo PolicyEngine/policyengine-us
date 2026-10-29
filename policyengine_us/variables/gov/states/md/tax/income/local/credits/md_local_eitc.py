@@ -15,10 +15,12 @@ class md_local_eitc(Variable):
 
     def formula(tax_unit, period, parameters):
         # § 10-704(d): the credit against the county income tax equals the
-        # lesser of the federal earned income credit multiplied by 10 times
-        # the applicable county income tax rate, or the county income tax.
+        # lesser of the federal earned income credit, or the credit "that
+        # would have been allowable but for the limitation under § 32(m)",
+        # multiplied by 10 times the applicable county income tax rate, or the
+        # county income tax.
         p = parameters(period).gov.states.md.tax.income.credits.eitc.local
-        federal_eitc = tax_unit("eitc", period)
+        federal_eitc = tax_unit("md_federal_eitc_without_ssn_requirement", period)
         rate = tax_unit("md_applicable_local_tax_rate", period)
         uncapped = federal_eitc * p.rate_multiplier * rate
         local_tax = tax_unit("md_local_income_tax_before_credits", period)

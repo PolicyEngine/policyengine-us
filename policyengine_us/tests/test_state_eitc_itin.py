@@ -1,0 +1,263 @@
+"""Invariants for the Maryland and Maine EITC waivers of 26 U.S.C. 32(m).
+
+Section 32(m) confines the taxpayer identification number that 32(c)(1)(E)
+(filer and spouse) and 32(c)(3)(D) (qualifying children) require to a Social
+Security number valid for employment. Maryland computes its state and local
+credits "without regard to the limitation under § 32(m)" from tax year 2020
+(Md. Code Tax-Gen. 10-704(c) and (d); Chapter 40 of 2021). Maine accepts an
+ITIN or any Social Security number from tax year 2021 (36 M.R.S. 5219-S(7)).
+Neither waives 32(c)(1)(C), the bar on section 911 claimants.
+
+Every household runs beside a twin in which each member with an ITIN or a
+Social Security number not valid for employment holds one valid for
+employment instead. Identification types: SSN (citizen), ITIN (ssn_card_type
+NONE, has_tin true), NONWORK (a Social Security number not valid for
+employment) and NOTIN (no taxpayer identification number, kept in the twin).
+The Hypothesis version is in test_state_eitc_itin_property.py.
+"""
+
+import numpy as np
+
+from policyengine_us import Simulation
+
+STATES = ("MD", "ME", "NJ")
+ID_TYPES = ("SSN", "ITIN", "NONWORK", "NOTIN")
+# First tax year of each state's waiver.
+WAIVER_START = {"MD": 2020, "ME": 2021}
+
+TAX_UNIT_OUTPUTS = [
+    "eitc",
+    "eitc_child_count",
+    "md_eitc_child_count",
+    "md_federal_eitc_without_ssn_requirement",
+    "federal_eitc_without_age_minimum",
+    "md_eitc",
+    "md_local_eitc",
+    "me_eitc_child_count",
+    "me_federal_eitc_without_ssn_requirement",
+    "me_pro_forma_childless_eitc",
+    "me_eitc",
+]
+MD_CREDITS = [
+    "md_federal_eitc_without_ssn_requirement",
+    "federal_eitc_without_age_minimum",
+    "md_eitc",
+    "md_local_eitc",
+]
+ME_CREDITS = [
+    "me_federal_eitc_without_ssn_requirement",
+    "me_pro_forma_childless_eitc",
+    "me_eitc",
+]
+
+PERSON_INPUTS = {
+    "SSN": {"ssn_card_type": "CITIZEN", "has_tin": True},
+    "ITIN": {"ssn_card_type": "NONE", "has_tin": True},
+    "NONWORK": {"ssn_card_type": "OTHER_NON_CITIZEN", "has_tin": True},
+    "NOTIN": {"ssn_card_type": "NONE", "has_tin": False},
+}
+
+
+def person(age, id_type, year, **extra):
+    inputs = {k: {year: v} for k, v in PERSON_INPUTS[id_type].items()}
+    return {"age": {year: age}, **inputs, **{k: {year: v} for k, v in extra.items()}}
+
+
+def to_ssn(id_type):
+    return "SSN" if id_type in ("ITIN", "NONWORK") else id_type
+
+
+def ssn_twin(h):
+    """The same household with each ITIN or NONWORK number made a valid SSN."""
+    return {
+        **h,
+        "head_id": to_ssn(h["head_id"]),
+        "spouse_id": None if h["spouse_id"] is None else to_ssn(h["spouse_id"]),
+        "child_ids": [to_ssn(c) for c in h["child_ids"]],
+    }
+
+
+def build_situation(households, year):
+    people, tax_units, marital_units = {}, {}, {}
+    groups = {"households": {}, "spm_units": {}, "families": {}}
+    for i, h in enumerate(households):
+        head = f"head_{i}"
+        people[head] = person(
+            h["head_age"], h["head_id"], year, employment_income=h["wages"]
+        )
+        members = [head]
+        marital_units[f"marital_unit_{i}"] = {"members": [head]}
+        if h["spouse_id"] is not None:
+            spouse = f"spouse_{i}"
+            people[spouse] = person(h["spouse_age"], h["spouse_id"], year)
+            members.append(spouse)
+            marital_units[f"marital_unit_{i}"]["members"].append(spouse)
+        for j, id_type in enumerate(h["child_ids"]):
+            child = f"child_{i}_{j}"
+            people[child] = person(3 + 4 * j, id_type, year)
+            members.append(child)
+            marital_units[f"marital_unit_{i}_{j}"] = {"members": [child]}
+        tax_units[f"tax_unit_{i}"] = {
+            "members": members,
+            "foreign_earned_income_exclusion": {year: h["exclusion"]},
+            "takes_up_eitc": {year: h["takes_up"]},
+        }
+        groups["households"][f"household_{i}"] = {
+            "members": members,
+            "state_code": {year: h["state"]},
+        }
+        groups["spm_units"][f"spm_unit_{i}"] = {"members": members}
+        groups["families"][f"family_{i}"] = {"members": members}
+    return {
+        "people": people,
+        "tax_units": tax_units,
+        "marital_units": marital_units,
+        **groups,
+    }
+
+
+def calculate(households, year):
+    """Run the households and their SSN twins; twin[i] indexes i's twin."""
+    n = len(households)
+    combined = list(households) + [ssn_twin(h) for h in households]
+    simulation = Simulation(situation=build_situation(combined, year))
+    r = {v: np.asarray(simulation.calculate(v, year)) for v in TAX_UNIT_OUTPUTS}
+    return {v: x[:n] for v, x in r.items()}, {v: x[n:] for v, x in r.items()}
+
+
+def filer_ids(h):
+    return [h["head_id"]] + ([] if h["spouse_id"] is None else [h["spouse_id"]])
+
+
+def assert_invariants(households, year, r, t):
+    # Model outputs are float32, so comparisons allow a cent.
+    tol = 0.01
+    state = np.array([h["state"] for h in households])
+    md, me = state == "MD", state == "ME"
+    waived = {s: year >= start for s, start in WAIVER_START.items()}
+    excludes = np.array([h["exclusion"] > 0 for h in households])
+    filer_without_tin = np.array(["NOTIN" in filer_ids(h) for h in households])
+    all_valid_ssn = np.array(
+        [set(filer_ids(h) + h["child_ids"]) <= {"SSN"} for h in households]
+    )
+    takes_up = np.array([h["takes_up"] for h in households])
+
+    # Section 32(c)(1)(C): a section 911 claimant gets nothing on any path,
+    # whatever the identification of the filer, spouse and children.
+    for v in MD_CREDITS + ME_CREDITS:
+        assert (r[v][excludes] == 0).all(), v
+
+    # The credits exist only in their own state.
+    for v in MD_CREDITS + ["md_eitc_child_count"]:
+        assert (r[v][~md] == 0).all(), v
+    for v in ME_CREDITS + ["me_eitc_child_count"]:
+        assert (r[v][~me] == 0).all(), v
+
+    # Every path still requires a taxpayer identification number for the
+    # filer and spouse (32(c)(1)(E)); only its kind is waived.
+    for v in MD_CREDITS + ME_CREDITS:
+        assert (r[v][filer_without_tin] == 0).all(), v
+
+    # Child counts: the waiver counts qualifying children with any TIN.
+    for s, count in [("MD", "md_eitc_child_count"), ("ME", "me_eitc_child_count")]:
+        mask = state == s
+        accepted = {"SSN", "ITIN", "NONWORK"} if waived[s] else {"SSN"}
+        expected = np.array(
+            [sum(c in accepted for c in h["child_ids"]) for h in households]
+        )
+        np.testing.assert_array_equal(r[count][mask], expected[mask], err_msg=count)
+        assert (r[count][mask] >= r["eitc_child_count"][mask]).all(), count
+
+    # The 32(m)-free recomputation never falls below the federal credit, and
+    # is the federal credit when no one needs the waiver (a differential
+    # check of the helper against the federal variables) or before it.
+    for s, basis in [
+        ("MD", "md_federal_eitc_without_ssn_requirement"),
+        ("ME", "me_federal_eitc_without_ssn_requirement"),
+    ]:
+        mask = state == s
+        assert (r[basis][mask] >= r["eitc"][mask] - tol).all(), basis
+        same = mask & (all_valid_ssn | (not waived[s]))
+        np.testing.assert_allclose(r[basis][same], r["eitc"][same], atol=tol)
+
+    # Once the waiver applies, an ITIN or NONWORK number is treated exactly
+    # like a valid SSN: every variable matches the twin's. Before it, the
+    # final credit never exceeds the twin's (an intermediate pro forma can,
+    # since a child without a valid SSN moves the filer to the childless
+    # path). That bound holds for households that take up the EITC; for
+    # others it can fail on main too, because the childless pro formas
+    # (federal_eitc_without_age_minimum, me_pro_forma_childless_eitc) apply no
+    # take-up while the with-child paths follow the federal credit's.
+    for s, credits, final in [
+        ("MD", MD_CREDITS, ["md_eitc", "md_local_eitc"]),
+        ("ME", ME_CREDITS, ["me_eitc"]),
+    ]:
+        mask = state == s
+        if waived[s]:
+            for v in credits:
+                np.testing.assert_allclose(r[v][mask], t[v][mask], atol=tol, err_msg=v)
+        else:
+            up = mask & takes_up
+            for v in final:
+                assert (r[v][up] <= t[v][up] + tol).all(), v
+
+    for v in MD_CREDITS + ME_CREDITS:
+        assert (r[v] >= 0).all(), v
+
+
+def check(households, year=2025):
+    r, t = calculate(households, year)
+    assert_invariants(households, year, r, t)
+    return r, t
+
+
+GRID = [
+    {
+        "state": state,
+        "head_age": head_age,
+        "spouse_age": 35,
+        "head_id": head_id,
+        "spouse_id": spouse_id,
+        "child_ids": child_ids,
+        "wages": wages,
+        "exclusion": exclusion,
+        "takes_up": takes_up,
+    }
+    for state in STATES
+    for head_age in (20, 35)
+    for head_id in ID_TYPES
+    for spouse_id in (None, "SSN", "ITIN", "NOTIN")
+    for child_ids in ([], ["SSN"], ["ITIN"], ["NOTIN"], ["SSN", "ITIN"])
+    for wages, exclusion, takes_up in (
+        (10_000, 0, True),
+        (30_000, 0, True),
+        (10_000, 30_000, True),
+        (10_000, 0, False),
+    )
+]
+
+
+def test_grid_invariants():
+    r, t = check(GRID)
+    state = np.array([h["state"] for h in GRID])
+    itin_filer = np.array(["ITIN" in filer_ids(h) for h in GRID])
+    itin_child = np.array(["ITIN" in h["child_ids"] for h in GRID])
+    # The grid reaches the cases the waiver changes: ITIN filers paid by
+    # each state with no federal credit, and ITIN children that raise the
+    # amount above the federal one.
+    for s, v in [("MD", "md_eitc"), ("ME", "me_eitc")]:
+        mask = state == s
+        assert (mask & itin_filer & (r["eitc"] == 0) & (r[v] > 0)).any(), v
+    for s, basis in [
+        ("MD", "md_federal_eitc_without_ssn_requirement"),
+        ("ME", "me_federal_eitc_without_ssn_requirement"),
+    ]:
+        mask = state == s
+        assert (mask & itin_child & (r[basis] > r["eitc"] + 1)).any(), basis
+
+
+def test_grid_invariants_before_and_at_the_waivers():
+    # 2019: neither state waives 32(m). 2020: Maryland only. 2021: both,
+    # under the ARPA childless parameters.
+    for year in (2019, 2020, 2021):
+        check(GRID, year)
