@@ -4,6 +4,7 @@ values:
     # (a) Annuities, pensions, and other periodic payments.
     - pension_income
     - social_security
+    - railroad_benefits
     - disability_benefits
     - veterans_benefits
     - survivor_benefits
@@ -30,3 +31,7 @@ metadata:
   reference:
     - title: United States Code of Federal Regulations, Title 20, Subsection 416.1121
       href: https://www.law.cornell.edu/cfr/text/20/416.1121
+    - title: 42 U.S.C. 1382a(a)(2)(B)
+      href: https://www.law.cornell.edu/uscode/text/42/1382a#a_2_B
+    - title: SSA POMS SI 00830.225 Railroad Retirement Payments
+      href: https://secure.ssa.gov/poms.nsf/lnx/0500830225

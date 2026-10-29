@@ -816,7 +816,8 @@
     nh_fap_countable_income: 12_000
 
 # Manual pp15,17 deduct the Medicare premium withheld from railroad retirement.
-# railroad_benefits is not an SSI unearned source in the model, so MSP status
+# Railroad retirement counts as SSI unearned income for MSP, and 1,500 - 20 =
+# 1,480 a month is within the MSP limit (about 1,838 a month), so MSP status
 # turns on assets: 20,000 exceeds the 9,950 MSP resource limit and the enrollee
 # pays the 2027 premium of 202.90 * 12 = 2,434.80. 18,000 - 2,434.80 = 15,565.20.
 - name: "Case 28, the Part B premium withheld from railroad retirement is deducted."

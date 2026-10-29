@@ -26,3 +26,11 @@
     retirement_distributions: 1_000
   output:
     ssi_unearned_income: 1_000
+
+- name: SSI unearned income counts railroad retirement annuities.
+  period: 2026
+  input:
+    railroad_benefits: 10_800
+  output:
+    # 42 U.S.C. 1382a(a)(2)(B) lists "railroad retirement annuities and pensions".
+    ssi_unearned_income: 10_800
