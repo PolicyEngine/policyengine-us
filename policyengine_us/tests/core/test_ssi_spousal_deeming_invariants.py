@@ -1,8 +1,7 @@
 """Simulation-API invariants for SSI couples and spousal deeming.
 
-Two vectorized grid simulations, each built once per module, plus one small
-simulation per Hypothesis example (three examples, more if a failure is
-shrunk):
+Two vectorized grid simulations, each built once per module, plus small
+simulations for the generated income and state-supplement properties:
 
 - An income grid of 400 two-person households: an aged claimant with only
   unearned income and a spouse under 65 with unearned and earned income. The
@@ -19,6 +18,12 @@ shrunk):
   not depend on tax roles or on the third adult (416.1801(c), 416.1806,
   416.1160(d)), and joint claims must be symmetric and disjoint from
   ineligible-spouse status.
+- Every implemented state supplement, comparing a couple and third adult
+  with the API's default marital unit against explicit couple/single units.
+  Hypothesis varies income, age, resources and care membership; explicit
+  examples retain the payment, exclusion, eligibility and resource edges.
+  Each comparison uses two independent three-person simulations sharing the
+  same read-only system as the grids.
 
 YAML covers worked cases. Python is needed to check the for-all properties
 over every ordered edge of the grids and to compare with an oracle that does
@@ -27,10 +32,12 @@ constructs a model per household. This file routes to the Rest/core group.
 """
 
 from itertools import product
+from pathlib import Path
 
 import numpy as np
 import pytest
-from hypothesis import HealthCheck, given, settings
+import yaml
+from hypothesis import HealthCheck, example, given, settings
 from hypothesis import strategies as st
 
 from policyengine_us import Simulation
@@ -311,3 +318,342 @@ def test_role_grid_couples_match_the_same_couple_living_alone(role_grid):
             np.testing.assert_allclose(
                 role_grid["ssi"][row, 0, :2], ssi_extra[index, :2], atol=0.01
             )
+
+
+# Every implemented state supplement, including programs paid to an SPM unit
+# rather than directly to a person. Annual programs are compared annually.
+SUPPLEMENT_PROGRAMS = {
+    "AK": ("ak_ssp",),
+    "AL": ("al_ssp",),
+    "CA": ("ca_state_supplement", "ca_capi"),
+    "CO": ("co_state_supplement", "co_oap"),
+    "CT": ("ct_ssp",),
+    "DC": ("dc_ossp",),
+    "DE": ("de_ssp",),
+    "FL": ("fl_oss",),
+    "GA": ("ga_ssp",),
+    "HI": ("hi_oss",),
+    "ID": ("id_aabd",),
+    "IL": ("il_aabd",),
+    "IN": ("in_ssp",),
+    "KS": ("ks_sspp",),
+    "KY": ("ky_ssp",),
+    "LA": ("la_oss",),
+    "MA": ("ma_state_supplement",),
+    "MD": ("md_paa",),
+    "ME": ("me_ssp",),
+    "MI": ("mi_ssp",),
+    "MN": ("mn_msa",),
+    "MO": ("mo_ssp",),
+    "MT": ("mt_ssp",),
+    "NC": ("nc_sa",),
+    "NE": ("ne_aabd",),
+    "NH": ("nh_ssp",),
+    "NJ": ("nj_ssp",),
+    "NM": ("nm_ssi_state_supplement",),
+    "NV": ("nv_oss",),
+    "NY": ("ny_ssp",),
+    "OH": ("oh_rss",),
+    "OK": ("ok_ssp",),
+    "OR": ("or_ssp",),
+    "PA": ("pa_ssp",),
+    "RI": ("ri_ssp",),
+    "SC": ("sc_ssi_state_supplement",),
+    "SD": ("sd_ssp",),
+    "TX": ("tx_ssi_state_supplement",),
+    "UT": ("ut_ssp",),
+    "VA": ("va_ag",),
+    "VT": ("vt_aabd",),
+    "WA": ("wa_ssp",),
+    "WI": ("wi_ssp",),
+    "WY": ("wy_ssp",),
+}
+
+
+def test_state_supplement_inventory_matches_program_registry():
+    """The property includes every implemented supplement in the registry."""
+    registry_path = Path(__file__).resolve().parents[2] / "programs.yaml"
+    registry = yaml.safe_load(registry_path.read_text())
+    supplements = next(
+        program
+        for program in registry["programs"]
+        if program["id"] == "ssi_state_supplement"
+    )
+    implemented = {
+        entry["state"]: entry["variable"]
+        for entry in supplements["state_implementations"]
+        if entry.get("variable")
+    }
+    assert implemented.keys() == SUPPLEMENT_PROGRAMS.keys()
+    for state, variable in implemented.items():
+        assert variable in SUPPLEMENT_PROGRAMS[state], (state, variable)
+
+
+# Conditions that exercise care-only supplements and CAPI. These are inputs,
+# not substitute payment amounts or eligibility results. The builder reads
+# each variable's entity and period: Delaware's arrangement belongs to the
+# household, while most states' care settings belong to the person.
+SUPPLEMENT_CARE_INPUTS = {
+    "AL": {
+        "al_receives_elderly_disabled_medicaid_waiver": True,
+        "al_meets_snf_criteria": True,
+        "al_ssp_care_setting": "PRIVATE_HOME_IHC",
+    },
+    "CA": {
+        "immigration_status_str": "LEGAL_PERMANENT_RESIDENT",
+        "ssi_qualifying_quarters_earnings": 0,
+    },
+    "DC": {"dc_ossp_in_adult_foster_care": True},
+    "DE": {"de_ssp_living_arrangement": "CERTIFIED_RESIDENTIAL_CARE_HOME"},
+    "FL": {"fl_oss_program_track": "REDESIGN", "fl_oss_community_care_type": "ALF"},
+    "HI": {"hi_oss_care_facility_type": "COMMUNITY_CARE"},
+    "ID": {"id_aabd_living_arrangement": "ROOM_AND_BOARD"},
+    "IN": {
+        "ssi_lives_in_medical_treatment_facility": True,
+        "ssi_medicaid_pays_majority_of_care": True,
+        "medicaid_enrolled": True,
+    },
+    "KS": {
+        "ssi_lives_in_medical_treatment_facility": True,
+        "ssi_medicaid_pays_majority_of_care": True,
+    },
+    "KY": {"ky_ssp_category": "CARETAKER", "ky_ssp_care_receivers": "BOTH"},
+    "LA": {
+        "ssi_lives_in_medical_treatment_facility": True,
+        "ssi_medicaid_pays_majority_of_care": True,
+    },
+    "MD": {"md_paa_living_arrangement": "CARE_HOME_LEVEL_A"},
+    "ME": {"me_ssp_living_arrangement": "ADULT_FOSTER_HOME"},
+    "MN": {
+        "mn_msa_living_arrangement": (
+            "COUPLE_LIVING_WITH_OTHERS",
+            "COUPLE_LIVING_WITH_OTHERS",
+            "INDIVIDUAL_LIVING_WITH_OTHERS",
+        )
+    },
+    "MO": {
+        "mo_ssp_living_arrangement": "RCF_LEVEL_I",
+        "mo_snc_facility_base_charge": 2_000,
+    },
+    "MT": {"mt_ssp_payment_category": "ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME"},
+    "NC": {"nc_sa_care_setting": "ADULT_CARE_HOME"},
+    "NE": {"ne_aabd_alternate_living_arrangement": "ASSISTED_LIVING_FACILITY"},
+    "NM": {"is_in_adult_residential_care": True},
+    "OH": {"oh_rss_certified": True},
+    "OR": {"or_ssp_category": "COMMUNITY_CARE"},
+    "SC": {"is_in_residential_care_facility": True},
+    "SD": {
+        "sd_ssp_care_joint_entry": True,
+        "sd_ssp_care_certified": True,
+        "sd_ssp_care_setting": "ADULT_FOSTER_CARE",
+        "sd_ssp_approved_care_cost": 1_500,
+    },
+    "TX": {
+        "is_in_medicaid_facility": True,
+        "ssi_lives_in_medical_treatment_facility": True,
+        "ssi_medicaid_pays_majority_of_care": True,
+    },
+    "VA": {"va_ag_certified": True, "va_ag_is_joint_initial_month": True},
+    "VT": {
+        "vt_aabd_ep_level": ("PARTIAL_34", "PARTIAL_67", "FULL"),
+        "vt_aabd_ep_nonspouse_essential_person": True,
+    },
+    "WI": {"wi_ssi_e_certified": True},
+}
+
+# Also reach California SSP with citizens in nonmedical care, the under-60
+# Colorado program and the old Washington category for a disabled claimant
+# with an ineligible spouse.
+SUPPLEMENT_CASES = [(state, YEAR, "standard") for state in SUPPLEMENT_PROGRAMS] + [
+    ("CA", YEAR, "ssi_ssp"),
+    ("CO", YEAR, "and_cs"),
+    ("WA", 2022, "disabled"),
+]
+SUPPLEMENT_SCENARIO_INPUTS = {
+    "ssi_ssp": {
+        "immigration_status_str": "CITIZEN",
+        "ssi_qualifying_quarters_earnings": 40,
+        "in_out_of_home_care_facility": True,
+    },
+    "and_cs": {
+        "age": (50, 52, 70),
+        "is_disabled": (True, True, False),
+        "meets_ssi_disability_criteria": (True, True, False),
+    },
+    "disabled": {
+        "age": (40, 40, 70),
+        "is_disabled": (True, False, False),
+        "meets_ssi_disability_criteria": (True, False, False),
+    },
+}
+
+
+def _supplement_situation(
+    system,
+    state,
+    pensions,
+    ages,
+    resources,
+    care,
+    third_care,
+    explicit,
+    year=YEAR,
+    scenario="standard",
+):
+    names = ("claimant", "spouse", "third_adult")
+    situation = {"people": {}}
+    for index, name in enumerate(names):
+        situation["people"][name] = {
+            "age": {year: ages[index]},
+            "pension_income": {year: 12 * pensions[index]},
+            "ssi_countable_resources": {year: resources[index]},
+            "is_tax_unit_head": {year: index == 0},
+            "is_tax_unit_spouse": {year: index == 1},
+            "is_tax_unit_dependent": {year: index == 2},
+        }
+    groups = {
+        "household": "households",
+        "tax_unit": "tax_units",
+        "family": "families",
+        "spm_unit": "spm_units",
+    }
+    for singular, plural in groups.items():
+        situation[plural] = {singular: {"members": list(names)}}
+    situation["households"]["household"]["state_code"] = {year: state}
+
+    def set_inputs(inputs, members):
+        for name, value in inputs.items():
+            variable = system.variables[name]
+            period = f"{year}-01" if variable.definition_period == "month" else year
+            if variable.entity.is_person:
+                for index, member in enumerate(names):
+                    if member in members:
+                        selected = value[index] if isinstance(value, tuple) else value
+                        situation["people"][member][name] = {period: selected}
+            else:
+                entity = variable.entity.key
+                situation[groups[entity]][entity][name] = {period: value}
+
+    if care:
+        set_inputs(
+            SUPPLEMENT_CARE_INPUTS.get(state, {}), names if third_care else names[:2]
+        )
+    set_inputs(SUPPLEMENT_SCENARIO_INPUTS.get(scenario, {}), names)
+    if explicit:
+        situation["marital_units"] = {
+            "couple": {"members": list(names[:2])},
+            "single": {"members": [names[2]]},
+        }
+    return situation
+
+
+def _supplement_amounts(
+    state,
+    pensions,
+    ages,
+    resources,
+    care,
+    third_care,
+    explicit,
+    year=YEAR,
+    scenario="standard",
+):
+    # Reuse the same read-only system as the existing grids. Only simulations
+    # and their caches are independent. Each has three people, so omitting
+    # marital_units really uses the API's default unit, without mixing other
+    # households or states into that default group.
+    system = Simulation.default_tax_benefit_system_instance
+    simulation = Simulation(
+        situation=_supplement_situation(
+            system,
+            state,
+            pensions,
+            ages,
+            resources,
+            care,
+            third_care,
+            explicit,
+            year,
+            scenario,
+        )
+    )
+    return {
+        name: simulation.calculate(
+            name,
+            f"{year}-01"
+            if system.variables[name].definition_period == "month"
+            else year,
+        )
+        for name in SUPPLEMENT_PROGRAMS[state]
+    }
+
+
+@pytest.mark.parametrize(("state", "year", "scenario"), SUPPLEMENT_CASES)
+@settings(
+    max_examples=2,
+    deadline=None,
+    derandomize=True,
+    suppress_health_check=[HealthCheck.too_slow],
+)
+@example(
+    pensions=(0, 0, 0),
+    ages=(65, 65, 65),
+    resources=(0, 0, 0),
+    care=True,
+    third_care=True,
+)
+@example(
+    pensions=(0, 497, 994),
+    ages=(65, 64, 90),
+    resources=(0, 0, 2_001),
+    care=True,
+    third_care=False,
+)
+@example(
+    pensions=(20, 65, 1_491),
+    ages=(90, 65, 64),
+    resources=(2_000, 0, 3_001),
+    care=True,
+    third_care=True,
+)
+@example(
+    pensions=(994, 1_491, 20),
+    ages=(65, 90, 65),
+    resources=(3_000, 0, 0),
+    care=False,
+    third_care=False,
+)
+@example(
+    pensions=(0, 0, 0),
+    ages=(65, 65, 90),
+    resources=(7_000, 1_000, 5_000),
+    care=True,
+    third_care=True,
+)
+@given(
+    pensions=st.tuples(*(st.integers(0, 1_600) for _ in range(3))),
+    ages=st.tuples(*(st.sampled_from((64, 65, 90)) for _ in range(3))),
+    resources=st.tuples(*(st.integers(0, 8_000) for _ in range(3))),
+    care=st.booleans(),
+    third_care=st.booleans(),
+)
+def test_state_supplements_do_not_depend_on_omitted_marital_units(
+    state, year, scenario, pensions, ages, resources, care, third_care
+):
+    """A third adult never becomes a spouse through the default group.
+
+    YAML checks each state's independently calculated payment. This compares
+    two API representations of the same people and marriage, including
+    ineligible spouses, a third adult in a different care category, income
+    exclusions/deeming edges, and the individual/couple resource limits.
+    """
+    default = _supplement_amounts(
+        state, pensions, ages, resources, care, third_care, False, year, scenario
+    )
+    explicit = _supplement_amounts(
+        state, pensions, ages, resources, care, third_care, True, year, scenario
+    )
+    for name in SUPPLEMENT_PROGRAMS[state]:
+        np.testing.assert_allclose(
+            default[name], explicit[name], atol=0.01, err_msg=f"{state}: {name}"
+        )
