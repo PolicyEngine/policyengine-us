@@ -790,7 +790,7 @@
 # Manual p17 deducts Medicare premiums withheld from Social Security. Social
 # Security of 12,000 is 1,000 a month, or 980 after the $20 exclusion, within the
 # Medicare Savings Program limit (135% of the 2027 one-person guideline, about
-# 1,838 a month), so MSP pays the premium and nothing is withheld or deducted.
+# 1,848 a month), so MSP pays the premium and nothing is withheld or deducted.
 - name: "Case 27, no Part B deduction applies when the Medicare Savings Program pays the premium."
   period: 2027
   absolute_error_margin: 0.01
@@ -817,7 +817,7 @@
 
 # Manual pp15,17 deduct the Medicare premium withheld from railroad retirement.
 # Railroad retirement counts as SSI unearned income for MSP, and 1,500 - 20 =
-# 1,480 a month is within the MSP limit (about 1,838 a month), so MSP status
+# 1,480 a month is within the MSP limit (about 1,848 a month), so MSP status
 # turns on assets: 20,000 exceeds the 9,950 MSP resource limit and the enrollee
 # pays the 2027 premium of 202.90 * 12 = 2,434.80. 18,000 - 2,434.80 = 15,565.20.
 - name: "Case 28, the Part B premium withheld from railroad retirement is deducted."
@@ -846,7 +846,7 @@
     nh_fap_countable_income: 15_565.2
 
 # Manual pp14-17 allow support paid and the withheld Medicare premium separately.
-# Social Security of 2,000 a month is above the MSP limit (about 1,838 a month),
+# Social Security of 2,000 a month is above the MSP limit (about 1,848 a month),
 # so the premium is 2,434.80: 24,000 - 2,000 - 2,434.80 = 19,565.20.
 - name: "Case 29, support paid and the Part B premium are both deducted."
   period: 2027
@@ -901,7 +901,7 @@
 
 # Manual p17 and plan item 1.9 count Social Security net of the Medicare deduction.
 # An enrollee aged 70 needs no reported amount: 1,980 a month after the $20
-# exclusion is above the MSP limit (about 1,838), so the premium is
+# exclusion is above the MSP limit (about 1,848), so the premium is
 # 202.90 * 12 = 2,434.80 and 24,000 - 2,434.80 = 21,565.20.
 - name: "Case 31, a Medicare enrollee's Part B premium is deducted from Social Security."
   period: 2027
