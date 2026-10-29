@@ -1,4 +1,4 @@
-description: Maximum countable income limit for a couple to qualify for Medicaid under the optional senior or disabled pathway, as percent of Federal Poverty Line. States whose limit is the SSI federal benefit rate are listed in uses_ssi_federal_benefit_rate and omitted here.
+description: Maximum countable income limit for a couple to qualify for Medicaid under the optional senior or disabled pathway, as percent of Federal Poverty Line. States whose limit is the SSI federal benefit rate are listed in uses_ssi_federal_benefit_rate and omitted here; states where covers_non_ssi_recipients is false also use that rate, and their values here apply only if that flag is true.
 metadata:
   unit: /1
   label: Medicaid senior or disabled income limit (couple)
@@ -88,8 +88,6 @@ NY:
   2018-01-01: 0.82
 NC:
   2018-01-01: 1.00
-ND:
-  2018-01-01: 0.75
 OK:
   2018-01-01: 1.00
 PA:
@@ -111,8 +109,6 @@ VT:
   2021-01-01: 0.80
 VA:
   2018-01-01: 0.80
-WV:
-  2018-01-01: 0.75
 WI:
   2018-01-01: 0.83
   2021-01-01: 1.00
