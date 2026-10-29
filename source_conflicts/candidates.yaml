@@ -4992,6 +4992,41 @@ candidates:
     prs: []
   state: unreviewed
   note: Verify whether the still-listed ruling applies during these years despite its obsolete tax base.
+- id: us-nh:fanf-resource-limit-equality
+  program: tanf
+  years:
+    from: 2022
+    type: calendar
+  question: Is a New Hampshire FANF assistance group whose countable resources equal its resource limit ($1,000 for
+    applicants, $5,000 for recipients) resource-eligible?
+  sources:
+  - kind: statute
+    citation: RSA 167:79, III(f)
+    url: https://gc.nh.gov/rsa/html/xii/167/167-79.htm
+  - kind: regulation
+    citation: N.H. Admin. Rules He-W 656.06(a)
+    url: https://gc.nh.gov/rules/state_agencies/he-w600.html
+  - kind: manual
+    citation: NH DHHS Family Assistance Manual 403, Resource Limits (SR 22-17, dated 07/22)
+    url: https://www.dhhs.nh.gov/fam_htm/html/403_resource_limits_fam.htm
+  readings:
+    statute: The assistance group's countable resources "shall be less than the allowable resource limit", so
+      resources equal to the limit fail the test.
+    other: Countable resources "cannot exceed the limits", so resources equal to the limit pass.
+  example: An applicant group with exactly $1,000 in countable resources is ineligible under the statute, which PE-US
+    follows, and resource-eligible under FAM 403; the same holds for a recipient group with exactly $5,000.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/nh/dhhs/fanf/eligibility/nh_fanf_resources_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10499
+  state: unreviewed
+  note: He-W 656.06(a)(2) gives only the amounts and no comparison. He-W 656.04(c)(6) uses "exceed the allowable
+    limit" only to start a grace period for recipients whose excess resources are personal property that cannot
+    readily be converted to cash; it does not set the eligibility test. RSA 167:79, III(e) uses the same "less
+    than" wording for the income test, and FAM 611.01 follows it there. FAM 403 versions before SR 22-17 were not
+    checked, so the conflict may start earlier than 2022.
 - id: us-nh:fap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -5227,20 +5262,62 @@ candidates:
   - kind: regulation
     citation: 8.15.2.9 NMAC and 8.15.2.12 NMAC
     url: https://www.srca.nm.gov/parts/title08/08.015.0002.html
+  - kind: regulation
+    citation: 8.9.3.9(F)-(G) NMAC and 8.9.3.12 NMAC (2022-11-01 to 2025-11-03)
+    url: https://www.srca.nm.gov/parts/title08/08.009.0003.html
   - kind: agency-practice
     citation: LFC Policy Brief, New Mexico Childcare Assistance Eligibility Changes (Dec 9 2025), p.2
     url: https://www.nmlegis.gov/handouts/ALFC%20120825%20Item%208%20Policy%20Brief%20Child%20Care%20Update.pdf#page=2
   readings:
-    statute: No statute supplied; the regulation provides 200% initial and 250% continuation ceilings.
+    statute: No statute supplied; the regulation (8.15.2 NMAC, then 8.9.3 NMAC from 2022-11-01) provides 200% initial
+      and 250% continuation ceilings, or 400% and 425% for essential workers in priority four plus, until the 2025-11-04
+      amendment removed the caps.
     other: Practice uses 400%/425% from May 1, 2022 and no income limit from November 1, 2025.
   pe_us:
     follows: unknown
     code:
     - policyengine_us/parameters/gov/states/nm/ececd/ccap/eligibility/fpl_limit/continuation.yaml
     - policyengine_us/parameters/gov/states/nm/ececd/ccap/eligibility/fpl_limit/initial.yaml
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10417
   state: unreviewed
   note: PE-US follows agency practice; establish authority for departure from the codified regulation.
+- id: us-nm:ccap-school-age-start-date
+  program: child-care-assistance
+  years:
+    from: 2026
+    to: 2026
+    type: program
+    note: program year as the program defines it
+  question: Does the 2026 school-age category (a child five years old by September 1 of the school year) start on
+    September 1, 2026, the date 8.9.3.19(D) NMAC names, or on 2026-09-09, when the rule that replaced 8.9.3 NMAC was
+    published and took effect?
+  sources:
+  - kind: statute
+    citation: NMSA 14-4-5 (as quoted in the New Mexico Register)
+    url: https://www.srca.nm.gov/nmac-home/new-mexico-register/volume-xxxvi-issue-4/adopted-rules-issue-4/
+  - kind: regulation
+    citation: 8.9.3.5 NMAC (rule effective 2026-09-09)
+    url: https://prod-rf-lambda.rtssaas.com/PublicFiles/d89c47bd0d70402dba89b03a22bda6d1/b0e207a9-a1a3-412d-9660-0a6e925f6f25/8.9.3.pdf#page=1
+  - kind: regulation
+    citation: 8.9.3.7(I)(3) and 8.9.3.19(D) NMAC (rule effective 2026-09-09)
+    url: https://prod-rf-lambda.rtssaas.com/PublicFiles/d89c47bd0d70402dba89b03a22bda6d1/b0e207a9-a1a3-412d-9660-0a6e925f6f25/8.9.3.pdf#page=18
+  readings:
+    statute: NMSA 14-4-5 makes no rule valid or enforceable until it is published in the New Mexico Register, and
+      8.9.3.5 gives September 9, 2026 as the effective date, so the new category applies from 2026-09-09.
+    other: 8.9.3.19(D) says that a preschool child's placement category changes to school age "Effective September 1,
+      2026".
+  example: A five-year-old in a 2-star licensed center at full time gets the $735 preschool rate for September 1-8,
+    2026 on the statute reading and the $689 school-age rate on the 8.9.3.19(D) date.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/nm/ececd/ccap/rates/age_group/months.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10417
+  state: ruled
+  note: Monthly periods resolve parameters at the first of the month, so the 60-month threshold first applies in
+    October 2026. TheAxiomFoundation/rulespec-us#1956 lists the same choice as an open point.
 - id: us-nm:medical-care-credit-mixed-age-spouses
   program: income-tax
   years:

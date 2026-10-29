@@ -1,3 +1,41 @@
+## [2.79.5] - 2026-10-29
+
+### Fixed
+
+- Make New Hampshire FANF resource eligibility require countable resources less than the limit, per RSA 167:79 III(f).
+- Prorate the 2018-2022 New York Empire State child credit to the children aged four to 16, as Form IT-213 lines 9-12 do, instead of excluding younger children from the federal credit.
+- Count the furnace or boiler credit once, drop advanced main air circulating fans after 2022, and add the heat pump credit to the $1,200-capped total of the energy efficient home improvement credit, as 26 U.S.C. 25C(b)(5) and Form 5695 line 30 require.
+- Phase out the California AMT exemption at 25% under R&TC 17062.1 instead of the federal 2026 rate of 50%.
+- Oklahoma's EITC, Washington's Working Families Tax Credit and the New York WFTC contributed reform now net a spouse's self-employment loss against the other spouse's wages when they compute earned income.
+- Apply the Florida TCA $90 standard disregard and the $200 and 1/2 earned income disregard to each earner's earnings instead of once to the unit's total, per ESS manual 2420.0304 and 2420.0314, and subtract the $90 of each earner in the unit-level test for the $200 and 1/2 disregard.
+- Give the saver's credit its 50% rate when adjusted gross income is negative, as the Form 8880 line 9 table's first row has no lower bound.
+
+
+## [2.79.4] - 2026-10-29
+
+### Fixed
+
+- Use the printed Virginia TANF Section 304, Appendix 2 standards of assistance and maximum payments from July 2021 and July 2022, instead of scaling the July 2020 amounts, which fell up to $1.59 a month short (Group II maximum $722 instead of $723).
+
+
+## [2.79.3] - 2026-10-29
+
+### Fixed
+
+- Allow the Maine dependent exemption credit only for dependents for whom the filer can claim the federal Child Tax Credit or credit for other dependents, so a dependent without an SSN, ITIN or ATIN, or a return with a filer without an SSN or ITIN, gets no credit.
+
+
+## [2.79.2] - 2026-10-29
+
+### Fixed
+
+- Update stale comments and references in ten state benefit income source lists: renumbered rules for Ohio PFCC (OAC 5180:6-1-03), Colorado CCAP (8 CCR 1403-1 3.111(I)), New Mexico CCAP (8.9.3 NMAC) and Rhode Island CCAP (definition 29), page ranges for Pennsylvania, West Virginia, Maine and DC, and the Maryland CCS and Arkansas SRA notes on annuities.
+- Count military retirement pay and Survivor Benefit Plan annuities as unearned income in the Kansas, Mississippi, North Carolina, New Jersey and New York LIHEAP programs.
+- Count dependents who get the federal credit for other dependents, not only Child Tax Credit children, for the Maine sales tax and property tax fairness credits.
+- Cite the current Ohio PFCC (OAC 5180:6-1-03) and New Mexico CCAP (8.9.3 NMAC) rules, apply New Mexico's age-19 special-supervision limit from the 2025-11-04 rule amendment, and classify New Mexico five-year-olds as school age from September 2026.
+- Count Social Security disability and survivor benefits once in Pennsylvania Child Care Works countable income.
+
+
 ## [2.79.1] - 2026-10-29
 
 ### Fixed
