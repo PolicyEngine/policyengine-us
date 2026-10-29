@@ -454,3 +454,59 @@
   output:
     # $3,400 x 10 x 3.2% = $1,088, below the local tax.
     md_local_eitc: 1_088
+
+- name: A capital-gains response over the investment income limit bars an ITIN parent's credit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+        # The behavioral response counts as long-term capital gains, so the
+        # waived computation takes the parent's actual investment income.
+        capital_gains_behavioral_response: 12_000
+        ssn_card_type: NONE
+        has_tin: true
+      child:
+        age: 3
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    eitc_relevant_investment_income: 12_000
+    # $12,000 exceeds the 2025 limit of $11,950 (26 U.S.C. 32(i)).
+    md_federal_eitc_without_ssn_requirement: 0
+    md_eitc: 0
+
+- name: A capital-gains response under the investment income limit counts in the ITIN parent's AGI
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+        capital_gains_behavioral_response: 11_000
+        ssn_card_type: NONE
+        has_tin: true
+      child:
+        age: 3
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    adjusted_gross_income: 41_000
+    eitc: 0
+    # $4,328 - 15.98% x ($41,000 - $23,350) = $1,507.53.
+    md_federal_eitc_without_ssn_requirement: 1_507.53

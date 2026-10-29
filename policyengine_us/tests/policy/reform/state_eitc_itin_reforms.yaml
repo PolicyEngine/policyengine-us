@@ -173,3 +173,257 @@
     md_eitc_child_count: 2
     md_federal_eitc_without_ssn_requirement: 2_594.51
     md_eitc: 1_167.53
+
+# The childless pro formas evaluate the final federal eitc, so a reform of
+# that formula reaches them: the individual EITC's AGI limit and the End
+# Child Poverty Act, which neutralizes eitc. Each case runs an ITIN filer and
+# an SSN filer; without the reform both get $649 in Maryland (age 35) and
+# $324.50 in Maine (age 20).
+
+- name: Individual EITC with a $10,000 AGI limit, Maryland, childless filers aged 35 get no credit
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.winship.winship_reform
+  input:
+    gov.contrib.individual_eitc.in_effect: true
+    gov.contrib.individual_eitc.agi_eitc_limit: 10_000
+    people:
+      itin_filer:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+      ssn_filer:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+    tax_units:
+      itin_unit:
+        members: [itin_filer]
+      ssn_unit:
+        members: [ssn_filer]
+    households:
+      itin_household:
+        members: [itin_filer]
+        state_code: MD
+      ssn_household:
+        members: [ssn_filer]
+        state_code: MD
+  output:
+    eitc: [0, 0]
+    federal_eitc_without_age_minimum: [0, 0]
+    md_eitc: [0, 0]
+
+- name: Individual EITC with a $10,000 AGI limit, Maine, childless filers aged 20 get no credit
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.winship.winship_reform
+  input:
+    gov.contrib.individual_eitc.in_effect: true
+    gov.contrib.individual_eitc.agi_eitc_limit: 10_000
+    people:
+      itin_filer:
+        age: 20
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+      ssn_filer:
+        age: 20
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+    tax_units:
+      itin_unit:
+        members: [itin_filer]
+      ssn_unit:
+        members: [ssn_filer]
+    households:
+      itin_household:
+        members: [itin_filer]
+        state_code: ME
+      ssn_household:
+        members: [ssn_filer]
+        state_code: ME
+  output:
+    me_pro_forma_childless_eitc: [0, 0]
+    me_eitc: [0, 0]
+
+- name: End Child Poverty Act, Maryland, childless filers aged 35 get no credit
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
+  input:
+    gov.contrib.congress.tlaib.end_child_poverty_act.in_effect: true
+    people:
+      itin_filer:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+      ssn_filer:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+    tax_units:
+      itin_unit:
+        members: [itin_filer]
+      ssn_unit:
+        members: [ssn_filer]
+    households:
+      itin_household:
+        members: [itin_filer]
+        state_code: MD
+      ssn_household:
+        members: [ssn_filer]
+        state_code: MD
+  output:
+    federal_eitc_without_age_minimum: [0, 0]
+    md_eitc: [0, 0]
+
+- name: End Child Poverty Act, Maine, childless filers aged 20 get no credit
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
+  input:
+    gov.contrib.congress.tlaib.end_child_poverty_act.in_effect: true
+    people:
+      itin_filer:
+        age: 20
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+      ssn_filer:
+        age: 20
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+    tax_units:
+      itin_unit:
+        members: [itin_filer]
+      ssn_unit:
+        members: [ssn_filer]
+    households:
+      itin_household:
+        members: [itin_filer]
+        state_code: ME
+      ssn_household:
+        members: [ssn_filer]
+        state_code: ME
+  output:
+    me_pro_forma_childless_eitc: [0, 0]
+    me_eitc: [0, 0]
+
+# Maryland's waiver relaxes the EITC's identification test only. The 2020
+# recovery rebate credits keep their own Social Security number rules (26
+# U.S.C. 6428(g), 6428A(g)), so an ITIN parent gets none of them and
+# itemizes, as on the return filed. Its AGI ($120,000) reaches the individual
+# EITC's $119,900 limit, so the 32(m)-free credit is zero. The SSN twin gets
+# both rebates, takes the standard deduction and the $300 charitable
+# deduction above the line, and its AGI of $119,700 falls under the limit.
+
+- name: Individual EITC with a $119,900 AGI limit, Maryland 2020, an ITIN parent itemizes and gets no credit
+  period: 2020
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.winship.winship_reform
+  input:
+    gov.contrib.individual_eitc.in_effect: true
+    gov.contrib.individual_eitc.agi_eitc_limit: 119_900
+    people:
+      parent:
+        age: 35
+        employment_income: 100
+        taxable_private_pension_income: 119_900
+        deductible_mortgage_interest: 18_850
+        charitable_cash_donations: 300
+        ssn_card_type: NONE
+        has_tin: true
+      child:
+        age: 3
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        salt_deduction: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    rrc_cares: 0
+    rrc_caa: 0
+    tax_unit_itemizes: true
+    adjusted_gross_income: 120_000
+    md_federal_eitc_without_ssn_requirement: 0
+    md_eitc: 0
+
+- name: Individual EITC with a $119,900 AGI limit, Maryland 2020, the SSN twin
+  period: 2020
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.winship.winship_reform
+  input:
+    gov.contrib.individual_eitc.in_effect: true
+    gov.contrib.individual_eitc.agi_eitc_limit: 119_900
+    people:
+      parent:
+        age: 35
+        employment_income: 100
+        taxable_private_pension_income: 119_900
+        deductible_mortgage_interest: 18_850
+        charitable_cash_donations: 300
+        ssn_card_type: CITIZEN
+      child:
+        age: 3
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        salt_deduction: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    rrc_cares: 1_340
+    rrc_caa: 840
+    tax_unit_itemizes: false
+    adjusted_gross_income: 119_700
+    # 34% of $100 of earnings.
+    eitc: 34
+    md_eitc: 17
+
+# With $100 less mortgage interest, the actual ITIN return still itemizes
+# (AGI $120,000), but the EITC itself would make the standard deduction pay
+# if the parent could claim it. The waived credit is computed on the AGI of
+# the return as filed, as the Maryland booklet's federal EIC worksheet reads
+# it, not on the return the parent would file if eligible.
+
+- name: Individual EITC with a $119,900 AGI limit, Maryland 2020, the waived credit takes the AGI of the return as filed
+  period: 2020
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.winship.winship_reform
+  input:
+    gov.contrib.individual_eitc.in_effect: true
+    gov.contrib.individual_eitc.agi_eitc_limit: 119_900
+    people:
+      parent:
+        age: 35
+        employment_income: 100
+        taxable_private_pension_income: 119_900
+        deductible_mortgage_interest: 18_750
+        charitable_cash_donations: 300
+        ssn_card_type: NONE
+        has_tin: true
+      child:
+        age: 3
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        salt_deduction: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    tax_unit_itemizes: true
+    adjusted_gross_income: 120_000
+    md_federal_eitc_without_ssn_requirement: 0
+    md_eitc: 0

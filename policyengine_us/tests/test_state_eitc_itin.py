@@ -20,6 +20,8 @@ import numpy as np
 import pytest
 
 from policyengine_us import Simulation
+from policyengine_us.system import system
+from policyengine_us.tools.state_eitc_helpers import SSN_LIMITATION_WAIVED_BRANCH
 
 STATES = ("MD", "ME", "NJ")
 ID_TYPES = ("SSN", "ITIN", "NONWORK", "NOTIN")
@@ -57,14 +59,14 @@ ME_CREDITS = [
     "me_eitc",
 ]
 
-# Structural reforms of the federal EITC. Each changes either the components
-# the pro formas read (eitc_maximum, phase-in and phase-out rates) or the
-# final eitc formula (the individual EITC's AGI limit), and the state credits
-# must follow them for ITIN households as for their SSN twins. The $10,000
-# limit falls inside the childless credit's range, where the childless pro
-# formas (federal_eitc_without_age_minimum, me_pro_forma_childless_eitc) do
-# not apply it: they rebuild the credit from its components, for SSN and
-# ITIN filers alike, and the twin checks hold there too.
+# Structural reforms of the federal EITC. Each changes either the EITC's
+# components (eitc_maximum, phase-in and phase-out rates) or the final eitc
+# formula (the individual EITC's AGI limit; the End Child Poverty Act
+# neutralizes eitc), and the state credits must follow them for ITIN
+# households as for their SSN twins. The $10,000 limit falls inside the
+# childless credit's range, so the childless pro formas
+# (federal_eitc_without_age_minimum, me_pro_forma_childless_eitc), which
+# evaluate the final eitc, must apply it too.
 FOREVER = "2000-01-01.2100-12-31"
 EITC_REFORMS = {
     "streamlined": {"gov.contrib.streamlined_eitc.in_effect": {FOREVER: True}},
@@ -82,6 +84,9 @@ EITC_REFORMS = {
         "gov.contrib.congress.romney.family_security_act_2_0.eitc.apply_eitc_structure": {
             FOREVER: True
         }
+    },
+    "end_child_poverty_act": {
+        "gov.contrib.congress.tlaib.end_child_poverty_act.in_effect": {FOREVER: True}
     },
 }
 
@@ -112,7 +117,13 @@ def ssn_twin(h):
     }
 
 
-def build_situation(households, year, relax_identification=False):
+def build_situation(households, year, waived=None, tax_unit_inputs=None):
+    """The households as a situation.
+
+    `waived`, a list of booleans, sets eitc_ssn_limitation_waived by input:
+    for those tax units the EITC's identification test accepts any TIN.
+    `tax_unit_inputs` maps a tax unit variable to a value for each household.
+    """
     people, tax_units, marital_units = {}, {}, {}
     groups = {"households": {}, "spm_units": {}, "families": {}}
     for i, h in enumerate(households):
@@ -137,16 +148,19 @@ def build_situation(households, year, relax_identification=False):
             "foreign_earned_income_exclusion": {year: h["exclusion"]},
             "takes_up_eitc": {year: h["takes_up"]},
         }
+        if waived is not None:
+            tax_units[f"tax_unit_{i}"]["eitc_ssn_limitation_waived"] = {
+                year: bool(waived[i])
+            }
+        for variable, values in (tax_unit_inputs or {}).items():
+            value = values[i].item() if hasattr(values[i], "item") else values[i]
+            tax_units[f"tax_unit_{i}"][variable] = {year: value}
         groups["households"][f"household_{i}"] = {
             "members": members,
             "state_code": {year: h["state"]},
         }
         groups["spm_units"][f"spm_unit_{i}"] = {"members": members}
         groups["families"][f"family_{i}"] = {"members": members}
-    if relax_identification:
-        # 32(m) disregarded by input: any TIN meets the identification test.
-        for values in people.values():
-            values["meets_eitc_identification_requirements"] = values["has_tin"]
     return {
         "people": people,
         "tax_units": tax_units,
@@ -155,14 +169,39 @@ def build_situation(households, year, relax_identification=False):
     }
 
 
+def filer_ids(h):
+    return [h["head_id"]] + ([] if h["spouse_id"] is None else [h["spouse_id"]])
+
+
+def waiver_applies(h, year):
+    return year >= WAIVER_START.get(h["state"], np.inf)
+
+
+def pro_forma_eligible(h, year):
+    """The pro formas' eligibility, from the household's description.
+
+    The filer's and spouse's identification (any TIN once the state's waiver
+    applies) and the section 911 bar. The households have no investment
+    income, no dependent filer and no one above the federal maximum age, so
+    the other conditions hold.
+    """
+    accepted = {"SSN", "ITIN", "NONWORK"} if waiver_applies(h, year) else {"SSN"}
+    return set(filer_ids(h)) <= accepted and h["exclusion"] == 0
+
+
 def calculate(households, year, reform=None, federal_first=True):
     """Run the households and their SSN twins; twin[i] indexes i's twin.
 
     With federal_first false, the state credits are calculated before the
     federal ones. Either way the federal values must be what they would be
     without the state credits: read again afterwards, they match copies
-    taken before. The third result is the reference: the households alone in
-    a fresh simulation where any TIN meets the identification test by input.
+    taken before. The third result holds two references, each the
+    households alone in a fresh simulation, with each household's AGI as
+    calculated by input (the AGI of the return as filed) and
+    eitc_ssn_limitation_waived by input wherever the household's state
+    waives 32(m): the reference's federal variables, and "pro_forma", the
+    federal eitc with eitc_eligible set from the household's description
+    (pro_forma_eligible) and with take-up and filing by input.
     """
     n = len(households)
     combined = list(households) + [ssn_twin(h) for h in households]
@@ -184,20 +223,36 @@ def calculate(households, year, reform=None, federal_first=True):
     )
     for v in FEDERAL_OUTPUTS:
         np.testing.assert_array_equal(simulation.calculate(v, year), r[v], err_msg=v)
+    agi = np.array(simulation.calculate("adjusted_gross_income", year))[:n]
+    waived = [waiver_applies(h, year) for h in households]
     relaxed = Simulation(
-        situation=build_situation(households, year, relax_identification=True),
+        situation=build_situation(
+            households, year, waived, {"adjusted_gross_income": agi}
+        ),
         reform=EITC_REFORMS.get(reform),
     )
     reference = {v: np.array(relaxed.calculate(v, year)) for v in REFERENCE_OUTPUTS}
+    ones = [True] * n
+    pro_forma = Simulation(
+        situation=build_situation(
+            households,
+            year,
+            waived,
+            {
+                "adjusted_gross_income": agi,
+                "eitc_eligible": [pro_forma_eligible(h, year) for h in households],
+                "takes_up_eitc": ones,
+                "would_file_taxes_voluntarily": ones,
+            },
+        ),
+        reform=EITC_REFORMS.get(reform),
+    )
+    reference["pro_forma"] = np.array(pro_forma.calculate("eitc", year))
     return (
         {v: x[:n] for v, x in r.items()},
         {v: x[n:] for v, x in r.items()},
         reference,
     )
-
-
-def filer_ids(h):
-    return [h["head_id"]] + ([] if h["spouse_id"] is None else [h["spouse_id"]])
 
 
 def assert_invariants(households, year, r, t, reference, reform=None):
@@ -258,11 +313,12 @@ def assert_invariants(households, year, r, t, reference, reform=None):
         np.testing.assert_allclose(r[basis][same], r["eitc"][same], atol=tol)
 
     # Once each waiver applies, the 32(m)-free variables are those of the
-    # reference, a fresh simulation where any TIN meets the identification
-    # test by input: the waivers' definition, and a differential check of
-    # the branch. Unlike the twin, the reference also holds where another
-    # SSN rule changes the household's taxes (see the education-credit test
-    # below).
+    # reference, a fresh simulation where the EITC's identification test
+    # accepts any TIN by input and AGI is that of the return as filed: the
+    # waivers' definition, and a differential check of the branch. Unlike
+    # the twin, the reference also holds where another SSN rule changes the
+    # household's taxes (the education-credit test below; the recovery
+    # rebate credit cases in state_eitc_itin_reforms.yaml).
     for s, basis, count, pro_forma in [
         (
             "MD",
@@ -291,6 +347,38 @@ def assert_invariants(households, year, r, t, reference, reform=None):
                 atol=tol,
                 err_msg=pro_forma,
             )
+
+    # The childless pro formas are the final federal eitc, reforms included,
+    # with eitc_eligible set to their own conditions and no take-up or
+    # filing condition: the "pro_forma" reference, evaluated with those
+    # conditions written out from each household's description. Maine's is
+    # defined for its childless cohort only: a filer or spouse from Maine's
+    # minimum age up to the federal one (25, or 19 in 2021).
+    parameters = system.parameters(year)
+    me_min_age = parameters.gov.states.me.tax.income.credits.eitc.eligibility.age.min
+    federal_min_age = parameters.gov.irs.credits.eitc.eligibility.age.min
+    me_cohort = np.array(
+        [
+            any(
+                me_min_age <= age < federal_min_age
+                for age in [h["head_age"]]
+                + ([] if h["spouse_id"] is None else [h["spouse_age"]])
+            )
+            for h in households
+        ]
+    ) & (r["me_eitc_child_count"] == 0)
+    np.testing.assert_allclose(
+        r["federal_eitc_without_age_minimum"][md],
+        reference["pro_forma"][md],
+        atol=tol,
+        err_msg="federal_eitc_without_age_minimum",
+    )
+    np.testing.assert_allclose(
+        r["me_pro_forma_childless_eitc"][me],
+        np.where(me_cohort, reference["pro_forma"], 0)[me],
+        atol=tol,
+        err_msg="me_pro_forma_childless_eitc",
+    )
 
     # Once the waiver applies, an ITIN or NONWORK number is treated exactly
     # like a valid SSN: every variable matches the twin's. The generated
@@ -456,7 +544,8 @@ def test_grid_invariants_under_eitc_reforms(reform, reform_grid_baseline):
 # after the response as they are, so the 32(m)-free credit is the federal
 # formula on actual earnings with identification relaxed, whichever variable
 # is calculated first. The reference is a fresh simulation with those
-# earnings as input, identification relaxed by input, and no response.
+# earnings as input, the EITC's identification test relaxed by input, and no
+# response.
 LABOR_SUPPLY_REFORM = {
     **EITC_REFORMS["working_parents"],
     "gov.simulation.labor_supply_responses.elasticities.income": {FOREVER: -0.05},
@@ -511,9 +600,8 @@ def test_labor_supply_responses_in_either_order():
             for h, earnings in zip(itin_parents, result["earnings"][:2])
         ],
         year,
+        waived=[True, True],
     )
-    for values in reference_situation["people"].values():
-        values["meets_eitc_identification_requirements"] = {year: True}
     reference = Simulation(
         situation=reference_situation, reform=EITC_REFORMS["working_parents"]
     )
@@ -555,8 +643,8 @@ def test_other_ssn_rules_can_separate_the_twin_but_not_the_reference():
         "charitable_cash_donations": 300,
     }
 
-    def situation(households, **kwargs):
-        built = build_situation(households, year, **kwargs)
+    def situation(households, *args):
+        built = build_situation(households, year, *args)
         for i in range(len(households)):
             for k, v in parent_inputs.items():
                 built["people"][f"head_{i}"][k] = {year: v}
@@ -572,9 +660,45 @@ def test_other_ssn_rules_can_separate_the_twin_but_not_the_reference():
     )
     result = simulation.calculate(basis, year)
     itemizes = simulation.calculate("tax_unit_itemizes", year)
+    agi = simulation.calculate("adjusted_gross_income", year)
     relaxed = Simulation(
-        situation=situation([itin_parent], relax_identification=True), reform=reform
+        situation=situation([itin_parent], [True], {"adjusted_gross_income": agi[:1]}),
+        reform=reform,
     )
     assert itemizes[0] and not itemizes[1]
     assert result[0] < result[1] - 1
     np.testing.assert_allclose(result[0], relaxed.calculate("eitc", year)[0], atol=0.01)
+
+
+def test_the_waived_branch_keeps_other_ssn_rules():
+    # The 2020 recovery rebate credits require valid Social Security numbers
+    # of their own (26 U.S.C. 6428(g), 6428A(g)). Maryland's waiver relaxes
+    # the EITC's identification test only, so the branch the 32(m)-free
+    # credit is calculated in, and the itemization branches it creates,
+    # give an ITIN parent none of them, as the parent's own simulation does.
+    year = 2020
+    itin_parent = {
+        "state": "MD",
+        "head_age": 35,
+        "spouse_age": 35,
+        "head_id": "ITIN",
+        "spouse_id": None,
+        "child_ids": ["SSN"],
+        "wages": 30_000,
+        "exclusion": 0,
+        "takes_up": True,
+    }
+    simulation = Simulation(situation=build_situation([itin_parent], year))
+    basis = simulation.calculate("md_federal_eitc_without_ssn_requirement", year)
+    assert simulation.calculate("eitc", year)[0] == 0
+    assert basis[0] > 0
+    branch = simulation.branches[SSN_LIMITATION_WAIVED_BRANCH]
+    np.testing.assert_allclose(branch.calculate("eitc", year), basis)
+    branch.calculate("tax_unit_itemizes", year)
+    branches = [branch] + [
+        branch.branches[name] for name in ("itemizing", "not_itemizing")
+    ]
+    for v in ("rrc_cares", "rrc_caa"):
+        assert simulation.calculate(v, year)[0] == 0, v
+        for b in branches:
+            assert b.calculate(v, year)[0] == 0, (b.branch_name, v)

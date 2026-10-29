@@ -96,11 +96,12 @@ REST_REMAINING_HEAVY_TESTS := $(TESTS)/test_niit_section_911_magi.py \
 	$(TESTS)/unit/test_medicaid_abd_ssi_rate_standard_properties.py \
 	$(TESTS)/test_capital_gain_distributions_loss_limit.py \
 	$(TESTS)/test_schedule_d_filer_net_capital_gain.py
-# The Maryland and Maine 32(m) waiver tests simulate under seven reforms (five
+# The Maryland and Maine 32(m) waiver tests simulate under eight reforms (six
 # EITC reforms, labor-supply responses and the education-credit SSN rule).
-# Local macOS/Python 3.14, four numeric threads, both files in one process:
-# peak RSS 6.97 GiB, 2.5 of it from the labor-supply test, and 4.8 GiB still
-# resident after the first file; 481 s on a loaded host.
+# Local macOS/Python 3.14, four numeric threads, each file in its own
+# process: test_state_eitc_itin.py peaks at 7.6 GiB RSS (1.6 of it from the
+# labor-supply test) in 347 s, test_state_eitc_itin_property.py at 4.9 GiB in
+# 190 s.
 REST_STATE_EITC_ITIN_TESTS := $(TESTS)/test_state_eitc_itin.py \
 	$(TESTS)/test_state_eitc_itin_property.py
 REST_LISTED_TESTS := $(REST_CACHED_ARRAY_TESTS) $(REST_HEAVY_A_TESTS) $(REST_HEAVY_B_TESTS) \
