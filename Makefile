@@ -52,7 +52,7 @@ REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 # from its dry run and spreads their files over parallel runners by recent
 # CI times, splitting a long group into chunks. A process still runs files
 # of one group only, in this order, so none holds more than its group here.
-REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core-heavy ss-calculator-engine ss-calculator-differential social-security-inputs core policy-parameters policy remaining-heavy remaining
+REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core-heavy ss-calculator-engine ss-calculator-differential social-security-inputs core policy-parameters policy remaining-heavy state-eitc-itin remaining
 REST_CACHED_ARRAY_TESTS := $(TESTS)/test_formulas_do_not_write_into_cached_arrays.py
 REST_HEAVY_A_TESTS := $(TESTS)/test_md_poverty_line_credit_invariants.py \
 	$(TESTS)/core/test_ald_determinism.py \
@@ -96,9 +96,17 @@ REST_REMAINING_HEAVY_TESTS := $(TESTS)/test_niit_section_911_magi.py \
 	$(TESTS)/unit/test_medicaid_abd_ssi_rate_standard_properties.py \
 	$(TESTS)/test_capital_gain_distributions_loss_limit.py \
 	$(TESTS)/test_schedule_d_filer_net_capital_gain.py
+# The Maryland and Maine 32(m) waiver tests simulate under seven reforms (five
+# EITC reforms, labor-supply responses and the education-credit SSN rule).
+# Local macOS/Python 3.14, four numeric threads, both files in one process:
+# peak RSS 6.97 GiB, 2.5 of it from the labor-supply test, and 4.8 GiB still
+# resident after the first file; 481 s on a loaded host.
+REST_STATE_EITC_ITIN_TESTS := $(TESTS)/test_state_eitc_itin.py \
+	$(TESTS)/test_state_eitc_itin_property.py
 REST_LISTED_TESTS := $(REST_CACHED_ARRAY_TESTS) $(REST_HEAVY_A_TESTS) $(REST_HEAVY_B_TESTS) \
 	$(REST_CORE_HEAVY_TESTS) $(REST_SS_CALCULATOR_ENGINE_TESTS) $(REST_SS_CALCULATOR_DIFFERENTIAL_TESTS) \
-	$(REST_SOCIAL_SECURITY_INPUT_TESTS) $(REST_POLICY_PARAMETER_TESTS) $(REST_REMAINING_HEAVY_TESTS)
+	$(REST_SOCIAL_SECURITY_INPUT_TESTS) $(REST_POLICY_PARAMETER_TESTS) $(REST_REMAINING_HEAVY_TESTS) \
+	$(REST_STATE_EITC_ITIN_TESTS)
 REST_IGNORES := $(addprefix --ignore=,$(TESTS)/policy/contrib $(TESTS)/microsimulation $(REST_SPM_TESTS))
 # $(call rest_pytest,<group>,<paths>,<more paths to ignore>) is the pytest
 # command for one group. With REST_REPORT_DIR set, each group writes its own
@@ -339,6 +347,8 @@ test-other-python-rest-policy:
 	$(call rest_pytest,policy,$(TESTS)/policy,$(REST_LISTED_TESTS))
 test-other-python-rest-remaining-heavy:
 	$(call rest_pytest,remaining-heavy,$(REST_REMAINING_HEAVY_TESTS))
+test-other-python-rest-state-eitc-itin:
+	$(call rest_pytest,state-eitc-itin,$(REST_STATE_EITC_ITIN_TESTS))
 test-other-python-rest-remaining:
 	$(call rest_pytest,remaining,$(TESTS)/,$(REST_LISTED_TESTS) $(TESTS)/core $(TESTS)/policy)
 MICROSIMULATION_GROUPS := base social-security-current-law
