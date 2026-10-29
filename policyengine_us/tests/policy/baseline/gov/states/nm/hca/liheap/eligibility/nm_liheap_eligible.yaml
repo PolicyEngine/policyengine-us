@@ -1,12 +1,15 @@
 # Countable income must not exceed 150% of the poverty guideline (8.150.100.9 D and
 # 8.150.520.14 NMAC; FFY2026 size-one limit 1,956 a month = 23,472 a year). The
-# household must incur a heating cost (8.150.410.9 A): wood-gathering households have a
-# heating responsibility without a bill (8.150.410.9 C); heat included in non-subsidized
-# rent qualifies, while subsidized households with heat in rent qualify only with an
-# additional out-of-pocket cost (8.150.410.11 A-B). At least one member must be a citizen
-# or qualified non-citizen (8.150.410.13). Wages of 12,000 are about 19 hours a week at
-# the 2026 New Mexico minimum wage of 12.00; gas of 900 is 75 a month, within common
-# New Mexico winter gas bills of 60 to 120 a month.
+# household must incur an energy cost (8.150.410.9 A): a heating fuel or electric bill
+# qualifies; wood-gathering households have a heating responsibility without a bill
+# (8.150.410.9 C); heat included in non-subsidized rent qualifies, while subsidized
+# households with heat in rent qualify only with an additional out-of-pocket heating fuel
+# or electric bill (8.150.410.11 A-B). An unspecified heating fuel qualifies only with heat
+# in rent. At least one member must be a citizen or qualified non-citizen (8.150.410.13).
+# Wages of 12,000 are about 19 hours a week at the 2026 New Mexico minimum wage of 12.00;
+# gas of 900 is 75 a month, within common New Mexico winter gas bills of 60 to 120 a
+# month; electricity of 1,080 is about the EIA 2024 New Mexico average residential bill
+# of 90 a month.
 
 - name: Case 1, income exactly at the size-one limit is eligible.
   period: 2026
@@ -47,7 +50,7 @@
   output:
     nm_liheap_eligible: false
 
-- name: Case 3, a home with no heating is ineligible.
+- name: Case 3, a home with no heating and no energy bill is ineligible.
   period: 2026
   input:
     people:
@@ -248,4 +251,45 @@
         state_code: NM
   output:
     # Size 0; zero income would otherwise pass the income test
+    nm_liheap_eligible: false
+
+- name: Case 13, a home with no heating that pays an electric bill is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        pre_subsidy_electricity_expense: 1_080
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # The 1,080 electric bill is an energy cost; 12,000 <= 23,472
+    nm_liheap_eligible: true
+
+- name: Case 14, an unspecified heating fuel with an electric bill and heat outside rent is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: false
+        pre_subsidy_electricity_expense: 1_080
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # The electric bill does not replace the required heating type
     nm_liheap_eligible: false

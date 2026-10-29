@@ -4,6 +4,8 @@ values:
     # Gross OASDI benefits, including any Medicare premium deducted.
     - social_security
     - ssi
+    # New Mexico SSI state supplement (8.106.500 NMAC).
+    - nm_ssi_state_supplement
     # Retirement, disability and survivor payments.
     - pension_income
     # IRA, 401(k) and 403(b) withdrawals; the annual input cannot separate
@@ -38,7 +40,8 @@ values:
 # Security "Excluding MediCare deduction" and leaves cash gifts unchecked;
 # 8.150.520.13 NMAC counts gross OASDI including the Medicare premium and
 # contributions from family or friends and excludes lump sums, and the rule
-# is followed for these items.
+# is followed for these items, recorded as us-nm:liheap-plan-income-checklist
+# in candidates.yaml.
 metadata:
   unit: list
   period: year

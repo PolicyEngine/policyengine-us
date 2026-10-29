@@ -1,12 +1,14 @@
 # Benefit = total points x point value (8.150.620.10 A NMAC): 35 a point in FFY2026 and
-# 40 in FFY2027 (Point and Income Guides). Energy burden = monthly heating bill (annual
-# bill / 12, raised to the energy standard allowance of 291 in FFY2026 and 298 in FFY2027
-# when lower) / monthly countable income: 0 points below 6%, 1 from 6%, 2 from 11%, 3
-# from 16%; zero income receives 3; no energy points with heat in rent or gathered wood
-# (8.150.620.9 A). Propane adds 2 (8.150.620.9 A(2)). Income points: 3 at or below 110%
-# of the poverty guideline, otherwise 2 (Point and Income Guides; FFY2026 size-one cutoff
-# 1,435 a month). Two points per category for a counted member 5 or younger, 60 or older,
-# or disabled (8.150.620.9 C). Wages are at the 2026 New Mexico minimum wage of 12.00 an
+# 40 in FFY2027 (Point and Income Guides). Energy burden = monthly bill (annual heating
+# fuel or electric bill / 12, raised to the energy standard allowance of 291 in FFY2026
+# and 298 in FFY2027 when lower) / monthly countable income: 0 points below 6%, 1 from
+# 6%, 2 from 11%, 3 from 16%; zero income receives 3; the bill giving more points is used
+# (LHP 602); no energy points without a direct bill or with gathered wood (8.150.620.9 A).
+# Propane adds 2 on the propane bill (8.150.620.9 A(2)). Income points: 3 at or below
+# 100% of the guideline (8.150.620.9 B; size-one 15,650 a year), otherwise 2. Two points
+# per category for a counted member 5 or younger, 60 or older, or disabled (is_disabled,
+# SSDI, employment disability benefits or SSI as blind or disabled; 8.150.620.9 C).
+# Wages are at the 2026 New Mexico minimum wage of 12.00 an
 # hour (24,960 full time); gas of 900 is 75 a month, within common winter gas bills of 60
 # to 120; electricity of 1,080 is about the EIA 2024 New Mexico average residential bill
 # of 90 a month.
@@ -31,7 +33,7 @@
         state_code: NM
   output:
     # max(1,080 / 12, 291) / (21,825 / 12) = 291 / 1,818.75 = 0.16 -> 3 energy
-    # 1,818.75 > 1,435 -> 2 income; 5 points x 35
+    # 1,818.75 > 1,304.17 -> 2 income; 5 points x 35
     nm_liheap: 175
 
 - name: Case 2, a burden just below 16 percent receives 2 energy points.
@@ -80,7 +82,7 @@
         state_code: NM
   output:
     # max(3,960 / 12, 291) / (36,000 / 12) = 330 / 3,000 = 0.11 -> 2 energy; 2 propane
-    # 3,000 > 2,443 (size three) -> 2 income; 6 points x 35
+    # 3,000 > 2,220.83 (size three) -> 2 income; 6 points x 35
     nm_liheap: 210
 
 - name: Case 4, a burden just below 11 percent receives 1 energy point.
@@ -137,7 +139,7 @@
         state_code: NM
   output:
     # 291 / (58,200 / 12) = 291 / 4,850 = 0.06 -> 1 energy
-    # 4,850 > 3,955 (size six) -> 2 income; 3 points x 35
+    # 4,850 > 3,595.83 (size six) -> 2 income; 3 points x 35
     nm_liheap: 105
 
 - name: Case 6, a burden just below 6 percent receives no energy points and the 2-point minimum.
@@ -186,7 +188,7 @@
         members: [person1]
         state_code: NM
   output:
-    # Zero income -> 3 energy; 0 <= 1,435 -> 3 income; 6 points x 35
+    # Zero income -> 3 energy; 0 <= 1,304.17 -> 3 income; 6 points x 35
     nm_liheap: 210
 
 - name: Case 8, a propane-heated household with heat in rent receives no energy or propane points.
@@ -210,7 +212,8 @@
         members: [person1]
         state_code: NM
   output:
-    # 0 energy and 0 propane (8.150.620.9 A(3)(a)); 1,000 <= 1,435 -> 3 income; 3 points x 35
+    # 0 energy and 0 propane (8.150.620.9 A(3)(a)); 1,000 <= 1,304.17 -> 3 income
+    # 3 points x 35
     nm_liheap: 105
 
 - name: Case 9, a household heating with gathered wood receives no energy points.
@@ -256,14 +259,15 @@
     # max(600 / 12, 291) / 1,000 = 0.291 -> 3 energy; 3 income; 6 points x 35
     nm_liheap: 210
 
-- name: Case 11, income exactly at the 110 percent cutoff receives 3 income points.
+- name: Case 11, income exactly at 100 percent of the guideline receives 3 income points.
   period: 2026
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 40
-        employment_income: 17_220
+        # About 25 hours a week at 12.00.
+        employment_income: 15_650
     spm_units:
       spm_unit:
         members: [person1]
@@ -274,18 +278,18 @@
         members: [person1]
         state_code: NM
   output:
-    # 17,220 / 12 = 1,435 <= 1,435 -> 3 income; 291 / 1,435 = 0.203 -> 3 energy
-    # 6 points x 35
+    # 15,650 <= 15,650 x 1 (1,304.17 <= 1,304.17 a month) -> 3 income
+    # 291 / 1,304.17 = 0.223 -> 3 energy; 6 points x 35
     nm_liheap: 210
 
-- name: Case 12, income one dollar a year above the 110 percent cutoff receives 2 income points.
+- name: Case 12, income one dollar a year above 100 percent of the guideline receives 2 income points.
   period: 2026
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 40
-        employment_income: 17_221
+        employment_income: 15_651
     spm_units:
       spm_unit:
         members: [person1]
@@ -296,7 +300,8 @@
         members: [person1]
         state_code: NM
   output:
-    # 17,221 / 12 = 1,435.08 > 1,435 -> 2 income; 3 energy; 5 points x 35
+    # 15,651 > 15,650 (1,304.25 > 1,304.17 a month) -> 2 income
+    # 291 / 1,304.25 = 0.223 -> 3 energy; 5 points x 35
     nm_liheap: 175
 
 - name: Case 13, a five-year-old adds vulnerable points.
@@ -320,7 +325,7 @@
         members: [person1, person2]
         state_code: NM
   output:
-    # 291 / 2,080 = 0.140 -> 2 energy; 2,080 > 1,939 (size two) -> 2 income
+    # 291 / 2,080 = 0.140 -> 2 energy; 2,080 > 1,762.50 (size two) -> 2 income
     # 2 vulnerable; 6 points x 35
     nm_liheap: 210
 
@@ -366,11 +371,11 @@
         members: [person1]
         state_code: NM
   output:
-    # 291 / 1,666.67 = 0.175 -> 3 energy; 1,666.67 > 1,435 -> 2 income
+    # 291 / 1,666.67 = 0.175 -> 3 energy; 1,666.67 > 1,304.17 -> 2 income
     # 2 vulnerable; 7 points x 35
     nm_liheap: 245
 
-- name: Case 16, a disabled member adds vulnerable points.
+- name: Case 16, a member flagged as disabled without disability-based income adds vulnerable points.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -379,8 +384,8 @@
         age: 45
         is_disabled: true
         ssi: 0
-        # Disability insurance benefit of 1,500 a month.
-        social_security_disability: 18_000
+        # About 29 hours a week at 12.00.
+        employment_income: 18_000
     spm_units:
       spm_unit:
         members: [person1]
@@ -391,8 +396,8 @@
         members: [person1]
         state_code: NM
   output:
-    # 291 / 1,500 = 0.194 -> 3 energy; 1,500 > 1,435 -> 2 income
-    # 2 vulnerable; 7 points x 35
+    # 291 / 1,500 = 0.194 -> 3 energy; 18,000 > 15,650 (1,500 > 1,304.17 a month)
+    # -> 2 income; 2 vulnerable for the disability flag; 7 points x 35
     nm_liheap: 245
 
 - name: Case 17, an undocumented 65-year-old adds no vulnerable points.
@@ -417,7 +422,7 @@
         members: [person1, person2]
         state_code: NM
   output:
-    # Size one: 291 / 1,500 = 0.194 -> 3 energy; 1,500 > 1,435 -> 2 income
+    # Size one: 291 / 1,500 = 0.194 -> 3 energy; 1,500 > 1,304.17 -> 2 income
     # 0 vulnerable; 5 points x 35
     nm_liheap: 175
 
@@ -451,7 +456,7 @@
         state_code: NM
   output:
     # max(150, 291) / 1,200 = 0.243 -> 3 energy; 2 propane
-    # 1,200 <= 2,947 (size four) -> 3 income
+    # 1,200 <= 2,679.17 (size four) -> 3 income
     # 2 for the children (once) + 2 for age 62 + 2 for disability = 6; 14 points x 35
     nm_liheap: 490
 
@@ -496,7 +501,7 @@
         state_code: NM
   output:
     # max(75, 298) / (22,350 / 12) = 298 / 1,862.50 = 0.16 -> 3 energy
-    # 1,862.50 > 1,463 -> 2 income; 5 points x 40
+    # 1,862.50 > 1,330 -> 2 income; 5 points x 40
     nm_liheap: 200
 
 - name: Case 21, IRA withdrawals count as unearned income and put a retiree over the FFY2026 limit.
@@ -526,3 +531,202 @@
     # 24,400 > 1,956 x 12 = 23,472; without the withdrawals 14,400 would be
     # eligible for 3 energy + 3 income + 2 elderly = 8 points x 35 = 280
     nm_liheap: 0
+
+- name: Case 22, a subsidized tenant with heat in rent who pays an electric bill receives energy points from that bill.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        pre_subsidy_electricity_expense: 1_080
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # No gas bill; electric bill max(1,080 / 12, 291) / (12,000 / 12) = 291 / 1,000
+    # = 0.291 -> 3 energy; 12,000 <= 15,650 (1,000 <= 1,304.17 a month) -> 3 income
+    # 6 points x 35
+    nm_liheap: 210
+
+- name: Case 23, the propane bill with its propane points gives more points than a larger electric bill.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        # About 35 hours a week at 12.00.
+        employment_income: 21_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        # Propane of 75 a month averaged over the year.
+        bottled_gas_expense: 900
+        pre_subsidy_electricity_expense: 1_080
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # Propane bill: max(900 / 12, 291) / (21,600 / 12) = 291 / 1,800 = 0.162 -> 3 energy
+    # + 2 propane = 5; electric bill: max(1,080 / 12, 291) / 1,800 = 0.162 -> 3
+    # max(5, 3) = 5 (the larger electric bill alone gives 3)
+    # 21,600 > 15,650 (1,800 > 1,304.17 a month) -> 2 income; 7 points x 35
+    nm_liheap: 245
+
+- name: Case 24, Social Security disability insurance adds vulnerable points without the disability flag.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        ssi: 0
+        # Disability insurance benefit of 1,500 a month.
+        social_security_disability: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 291 / 1,500 = 0.194 -> 3 energy; 18,000 > 15,650 (1,500 > 1,304.17 a month)
+    # -> 2 income; SSDI is disability-based income -> 2 vulnerable; 7 points x 35
+    nm_liheap: 245
+
+- name: Case 25, SSI paid on the basis of disability adds vulnerable points without the disability flag.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        meets_ssi_disability_criteria: true
+        # 2026 federal SSI benefit rate of 994 a month.
+        ssi: 11_928
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 291 / 994 = 0.293 -> 3 energy; 11,928 <= 15,650 (994 <= 1,304.17 a month)
+    # -> 3 income; SSI as disabled (no earnings, so no SGA) -> 2 vulnerable
+    # 8 points x 35
+    nm_liheap: 280
+
+- name: Case 26, SSI paid on the basis of age adds elderly points but no disability points.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        ssi: 11_928
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 291 / 994 = 0.293 -> 3 energy; 994 <= 1,304.17 -> 3 income
+    # 2 for age 66; aged SSI is not disability-based income -> 0; 8 points x 35
+    nm_liheap: 280
+
+- name: Case 27, a household heating with gathered wood receives no energy points from its electric bill.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: WOOD
+        wood_expense: 0
+        pre_subsidy_electricity_expense: 1_080
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # The electric bill alone would give max(1,080 / 12, 291) / 1,000 = 0.291 -> 3
+    # energy, but gathered wood receives 0 energy (8.150.620.9 A(3)(b))
+    # 12,000 <= 15,650 (1,000 <= 1,304.17 a month) -> 3 income; 3 points x 35
+    nm_liheap: 105
+
+- name: Case 28, employment disability benefits add vulnerable points without the disability flag.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        ssi: 0
+        # Employer long-term disability benefit of 1,500 a month.
+        disability_benefits: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 291 / 1,500 = 0.194 -> 3 energy; 18,000 > 15,650 (1,500 > 1,304.17 a month)
+    # -> 2 income; employment disability benefits are disability-based income
+    # -> 2 vulnerable; 7 points x 35
+    nm_liheap: 245
+
+- name: Case 29, a blind member reported as receiving SSI adds vulnerable points.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_blind: true
+        # Reported SSI receipt with no computed SSI payment.
+        receives_ssi: true
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 291 / 1,000 = 0.291 -> 3 energy; 12,000 <= 15,650 (1,000 <= 1,304.17 a month)
+    # -> 3 income; SSI on the basis of blindness -> 2 vulnerable; 8 points x 35
+    nm_liheap: 280

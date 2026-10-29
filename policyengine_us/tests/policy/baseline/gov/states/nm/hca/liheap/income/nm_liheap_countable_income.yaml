@@ -187,3 +187,101 @@
   output:
     # 24,960 + max(-5,000, 0) + 300 = 25,260
     nm_liheap_countable_income: 25_260
+
+- name: Case 8, every earned income source is counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+        self_employment_income: 1_000
+        sstb_self_employment_income: 2_000
+        farm_operations_income: 4_000
+        partnership_s_corp_income: 8_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 12,000 + 1,000 + 2,000 + 4,000 + 8,000 = 27,000; each source has a distinct
+    # amount, so dropping any one changes the total
+    nm_liheap_countable_income: 27_000
+
+- name: Case 9, every unearned income source and the state SSI supplement are counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        # Lives in a licensed adult residential care home, so an SSI recipient
+        # receives the 100 a month state supplement.
+        is_in_adult_residential_care: true
+        # Each unearned source in list order receives 100 x its position.
+        social_security: 100
+        ssi: 200
+        pension_income: 300
+        retirement_distributions: 400
+        military_retirement_pay_survivors: 500
+        railroad_benefits: 600
+        survivor_benefits: 700
+        veterans_benefits: 800
+        disability_benefits: 900
+        workers_compensation: 1_000
+        unemployment_compensation: 1_100
+        general_assistance: 1_200
+        child_support_received: 1_300
+        alimony_income: 1_400
+        interest_income: 1_500
+        ordinary_dividend_income: 1_600
+        rental_income: 1_700
+        farm_rent_income: 1_800
+        estate_income: 1_900
+        financial_assistance: 2_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # The reported 1,100 passes through to total_unemployment_compensation.
+    total_unemployment_compensation: 1_100
+    military_retirement_income: 500
+    # SSI of 200 / 12 = 16.67 > 0 each month, age 40 >= 18, in residential care:
+    # 100 x 12 = 1,200
+    nm_ssi_state_supplement: 1_200
+    # 100 x (1 + 2 + ... + 20) = 100 x 210 = 21,000; + 1,200 supplement = 22,200
+    nm_liheap_countable_income: 22_200
+
+- name: Case 10, a rental loss is floored at zero and does not offset wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_960
+        rental_income: -6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 24,960 + max(-6,000, 0) = 24,960; without the floor 24,960 - 6,000 = 18,960
+    nm_liheap_countable_income: 24_960

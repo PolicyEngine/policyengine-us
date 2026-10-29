@@ -32,22 +32,25 @@ class nm_liheap_eligible(Variable):
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
         heating_type = spm_unit("heating_type", period)
         types = heating_type.possible_values
-        # A home without heat has no heating cost. An unspecified fuel
-        # qualifies only when heat is included in the rent.
-        fuel_qualifies = (heating_type != types.NONE) & (
-            heat_in_rent | (heating_type != types.UNSPECIFIED)
+        # heating_type is a required input and an unspecified fuel qualifies
+        # only when heat is included in the rent. A home without heating
+        # stays eligible: the energy cost may be a cooling cost, and the one
+        # regular benefit pays a heating or cooling bill the household picks.
+        known_fuel = heat_in_rent | (heating_type != types.UNSPECIFIED)
+        # A heating fuel or electric bill is an energy cost, including the
+        # additional out-of-pocket cost of a subsidized tenant whose heat is
+        # included in the rent. Electricity used only for lighting has no
+        # separate input.
+        has_energy_bill = (spm_unit("heating_expense", period) > 0) | (
+            spm_unit("pre_subsidy_electricity_expense", period) > 0
         )
-        # Heat included in unsubsidized rent qualifies even when no utility
-        # cost is designated. Subsidized tenants whose heat is included in the
-        # rent qualify only with an additional out-of-pocket heating cost.
+        # Without a bill, heat included in unsubsidized rent qualifies, and
+        # households that heat with wood they gather themselves have a heating
+        # responsibility.
         subsidized = spm_unit("receives_housing_assistance", period) | (
             spm_unit.household("is_in_public_housing", period)
         )
-        out_of_pocket = spm_unit("heating_expense", period) > 0
-        rent_responsible = ~subsidized | out_of_pocket
-        # Households that heat with wood they gather themselves have a heating
-        # responsibility without a bill.
-        wood = heating_type == types.WOOD
-        direct_responsible = spm_unit("has_heating_expense", period) | wood
-        responsible = where(heat_in_rent, rent_responsible, direct_responsible)
-        return (size > 0) & income_eligible & fuel_qualifies & responsible
+        responsible = has_energy_bill | where(
+            heat_in_rent, ~subsidized, heating_type == types.WOOD
+        )
+        return (size > 0) & income_eligible & known_fuel & responsible

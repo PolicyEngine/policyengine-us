@@ -10,12 +10,12 @@ class nm_liheap(Variable):
     label = "New Mexico LIHEAP regular heating assistance"
     documentation = (
         "New Mexico's one regular benefit per federal fiscal year, which the "
-        "household applies to heating or cooling: energy burden, propane, "
-        "income and vulnerable population points times the point value. "
-        "Heating and cooling share this one annual benefit. Verified for "
-        "FY2026 and FY2027; earlier years are unverified estimates through "
-        "parameter backfilling. Crisis assistance and weatherization are out "
-        "of scope."
+        "household applies to the heating fuel or electric bill it picks for "
+        "heating or cooling: energy burden, propane, income and vulnerable "
+        "population points times the point value. Heating and cooling share "
+        "this one annual benefit. Verified for FY2026 and FY2027; earlier "
+        "years are unverified estimates through parameter backfilling. Crisis "
+        "assistance and weatherization are out of scope."
     )
     defined_for = "nm_liheap_eligible"
     reference = (
@@ -28,47 +28,57 @@ class nm_liheap(Variable):
         # PDF pages 9-10
         "https://liheapch.acf.gov/docs/2026/state-plans/NM_Plan_2026.pdf#page=9",
         "https://www.hca.nm.gov/wp-content/uploads/DETAILED-MODEL-PLAN-LIHEAP_10_01_2026-4.pdf#page=9",
+        # PDF pages 2-3
+        "https://www.hca.nm.gov/wp-content/uploads/LHP-602-English-LIHEAP-Application-05.01.2026.pdf#page=2",
     )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nm.hca.liheap
         income = spm_unit("nm_liheap_countable_income", period)
-        heating_expense = spm_unit("heating_expense", period)
-        heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
+        heating_bill = spm_unit("heating_expense", period)
+        electric_bill = spm_unit("pre_subsidy_electricity_expense", period)
         heating_type = spm_unit("heating_type", period)
         types = heating_type.possible_values
-        # Households whose utilities are included in the rent and households
-        # that heat with wood they do not purchase receive no energy burden
-        # points.
-        unpurchased_wood = (heating_type == types.WOOD) & (heating_expense == 0)
-        receives_energy_points = ~heat_in_rent & ~unpurchased_wood
-        # The annual heating bill over 12 months, floored at the energy
-        # standard allowance, stands in for the highest monthly bill of the
-        # last 12 months, and annual income over 12 months for 30-day income.
-        # The ratio of the annual amounts equals the monthly bill over monthly
-        # income. It is computed in float64 with a single division, so a
-        # burden exactly at a cutoff lands on it even when the monthly
+        # The annual bill over 12 months, floored at the energy standard
+        # allowance, stands in for the highest monthly bill of the last 12
+        # months, and annual income over 12 months for 30-day income. The
+        # ratio of the annual amounts equals the monthly bill over monthly
+        # income. It is computed in float64 with a single division per bill,
+        # so a burden exactly at a cutoff lands on it even when the monthly
         # amounts have no exact binary value.
-        annual_bill = max_(
-            heating_expense.astype(np.float64),
-            p.payment.energy_standard_allowance * MONTHS_IN_YEAR,
-        )
+        allowance = p.payment.energy_standard_allowance * MONTHS_IN_YEAR
         income_64 = income.astype(np.float64)
         has_income = income > 0
-        burden = np.divide(
-            annual_bill,
-            income_64,
-            out=np.zeros_like(income_64),
-            where=has_income,
-        )
         burden_points = p.payment.energy_burden_points
-        # Households with zero income receive the top energy burden points.
-        energy_points = where(
-            has_income, burden_points.calc(burden), burden_points.amounts[-1]
-        )
+
+        def bill_points(bill):
+            burden = np.divide(
+                max_(bill.astype(np.float64), allowance),
+                income_64,
+                out=np.zeros_like(income_64),
+                where=has_income,
+            )
+            # Households with zero income receive the top energy burden
+            # points. Without a direct bill there are no energy points.
+            points = where(
+                has_income, burden_points.calc(burden), burden_points.amounts[-1]
+            )
+            return where(bill > 0, points, 0)
+
+        # The household picks one heating or cooling bill, modeled as the one
+        # giving more points: the heating fuel bill, with the propane points
+        # when that fuel is propane, or the electric bill. Households whose
+        # utilities are all included in the rent have no direct bill, and
+        # households that heat with wood they do not purchase receive no
+        # energy points.
         propane = heating_type == types.PROPANE
-        energy_cost_points = receives_energy_points * (
-            energy_points + propane * p.payment.propane_points
+        heating_points = bill_points(heating_bill) + where(
+            propane & (heating_bill > 0), p.payment.propane_points, 0
+        )
+        electric_points = bill_points(electric_bill)
+        unpurchased_wood = (heating_type == types.WOOD) & (heating_bill == 0)
+        energy_cost_points = where(
+            unpurchased_wood, 0, max_(heating_points, electric_points)
         )
         p_income = p.payment.income_points
         size = spm_unit("nm_liheap_household_size", period)
@@ -80,30 +90,38 @@ class nm_liheap(Variable):
             parameters,
             year_lag=p.eligibility.fpg_year_lag,
         )
-        # Three income points at or below the low-income cutoff, 110% of the
-        # guideline (see low_income_fpg_rate), and two points above it. The
-        # rate is applied to the guideline for each household size and the
-        # monthly cutoff is rounded to the nearest dollar, which reproduces
-        # the guides' printed rows for sizes 1-8. For sizes 9 and over, the
-        # guides' "each additional" increments can differ by $1 or more a
-        # month, growing with size (FFY2027 size 9: $5,629 by increment,
-        # $5,628 by rate).
-        monthly_cutoff = np.floor(
-            guideline * p_income.low_income_fpg_rate / MONTHS_IN_YEAR + 0.5
-        )
-        monthly_income = income / MONTHS_IN_YEAR
+        # Three income points at or below the low-income cutoff, a share of
+        # the guideline (see low_income_fpg_rate), and two points above it.
+        # Annual income against the annual cutoff equals the monthly test.
         income_points = where(
-            monthly_income <= monthly_cutoff, p_income.low, p_income.high
+            income <= guideline * p_income.low_income_fpg_rate,
+            p_income.low,
+            p_income.high,
         )
         # Each vulnerable group with at least one counted member adds points
-        # once. is_disabled stands in for disability-based income or a
-        # doctor's statement.
+        # once. A member receiving disability-based income (Social Security
+        # disability benefits, employment disability benefits, or SSI paid on
+        # the basis of blindness or disability, not age) qualifies, and
+        # is_disabled stands in for a doctor's statement. SSI is
+        # MONTH-defined, so add() sums it over the year.
         person = spm_unit.members
         age = person("age", period)
         counted = person("is_citizen_or_legal_immigrant", period)
         young_child = spm_unit.any(counted & (age < p.payment.young_child_max_age + 1))
         elderly = spm_unit.any(counted & (age >= p.payment.elderly_age))
-        disabled = spm_unit.any(counted & person("is_disabled", period))
+        ssi_recipient = (add(person, period, ["ssi"]) > 0) | (
+            add(person, period, ["receives_ssi"]) > 0
+        )
+        ssi_disability = ssi_recipient & (
+            person("is_blind", period) | person("is_ssi_disabled", period)
+        )
+        disability_income = (
+            add(person, period, ["social_security_disability", "disability_benefits"])
+            > 0
+        ) | ssi_disability
+        disabled = spm_unit.any(
+            counted & (person("is_disabled", period) | disability_income)
+        )
         vulnerable_groups = (
             young_child.astype(int) + elderly.astype(int) + disabled.astype(int)
         )

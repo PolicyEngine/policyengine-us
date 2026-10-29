@@ -4104,6 +4104,37 @@ candidates:
     prs: []
   state: unreviewed
   note: PE-US follows agency practice; establish authority for departure from the codified regulation.
+- id: us-nm:liheap-plan-income-checklist
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does New Mexico LIHEAP count gross Social Security including the Medicare premium, exclude lump sums, count
+    cash contributions and count earnings only of members over age 18, as the regulation provides, or follow the state
+    plan's income checklist?
+  sources:
+  - kind: regulation
+    citation: 8.150.520.12 B and 8.150.520.13 NMAC
+    url: https://www.srca.nm.gov/parts/title08/08.150.0520.html
+  - kind: plan
+    citation: FY2026 and FY2027 LIHEAP State Plans, section 1.9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/NM_Plan_2026.pdf#page=6
+  readings:
+    statute: No statute supplied; the regulation counts gross OASDI including the Medicare premium and contributions
+      from family or friends, excludes lump sums, and counts earnings of members over the age of 18.
+    other: The checklist marks Social Security excluding the Medicare deduction and one-time lump sums, and leaves cash
+      gifts and earned income of a child under 18 unchecked.
+  example: A one-person FFY2026 household with $2,000 a month of OASDI and a $202.90 Part B premium counts $2,000 under
+    the rule and $1,797.10 under the checklist.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10431
+  state: ruled
+  note: 'Statute governs (2026-10-19 rule): PE-US follows the regulation for all four items. Code not yet on main:
+    nm_liheap_countable_income, gov.states.nm.hca.liheap.income.sources.unearned, gov.states.nm.hca.liheap.income.earned_income_age.'
 - id: us-nm:liheap-three-income-points
   program: liheap
   years:
@@ -4129,12 +4160,14 @@ candidates:
   example: In FFY2026, a one-person household with monthly income of $1,400 (107% of the guideline) scores two income
     points under the regulation and three under the guides.
   pe_us:
-    follows: unknown
+    follows: statute
     code: []
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10431
   state: ruled
-  note: 'PE-US follows the guides, which HCA applies; the regulation lets the secretary adjust point values but does
-    not mention this cutoff. Code not yet on main: nm_liheap, gov.states.nm.hca.liheap.payment.income_points.low_income_fpg_rate.'
+  note: 'Statute governs (2026-10-19 rule): PE-US follows the regulation. The guides and the FFY2026 ISD 017 card apply
+    110%, and 8.150.620.10 C lets the secretary adjust point values, not the cutoff. Code not yet on main: nm_liheap,
+    gov.states.nm.hca.liheap.payment.income_points.low_income_fpg_rate.'
 - id: us-nm:medical-care-credit-mixed-age-spouses
   program: income-tax
   years:

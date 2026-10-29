@@ -1,13 +1,9 @@
 description: New Mexico sets the low-income cutoff for income points at this multiple of the federal poverty guideline under the Low Income Home Energy Assistance Program.
-# 8.150.620.9 B NMAC gives three points up to 100% of the guideline; HCA's
-# FFY2025-FFY2027 point and income guides and the FFY2026 ISD 017 card use
-# 110%, which is followed; the choice is listed in the conflict register
-# backlog (candidates.yaml) as us-nm:liheap-three-income-points. The FFY2026
-# guide prints monthly cutoffs of $1,435 to $4,964 for household sizes 1-8
-# and the FFY2027 guide $1,463 to $5,108, each 110% of the guideline over 12
-# months rounded to the nearest dollar.
+# 8.150.620.9 B NMAC gives three points for income from zero to 100% of the
+# guideline. HCA's FFY2025-FFY2027 guides and the FFY2026 ISD 017 card print a
+# 110% column, recorded as us-nm:liheap-three-income-points in candidates.yaml.
 values:
-  2025-10-01: 1.1
+  2025-10-01: 1
 
 metadata:
   unit: /1
@@ -16,9 +12,3 @@ metadata:
   reference:
     - title: 8.150.620.9 B NMAC
       href: https://www.srca.nm.gov/parts/title08/08.150.0620.html
-    - title: New Mexico LIHEAP FFY2026 Heating and Cooling Point and Income Guide, income points
-      href: https://www.hca.nm.gov/wp-content/uploads/Heating-and-Cooling-Point-and-Income-Guide-2026.pdf
-    - title: New Mexico LIHEAP FFY2027 Point and Income Guidelines, income guidelines and point thresholds
-      href: https://www.hca.nm.gov/wp-content/uploads/NM-LIHEAP-FFY-2027-Point-and-Income-Guidelines.pdf
-    - title: New Mexico ISD 017 Income Eligibility Guidelines, October 1, 2025 to September 30, 2026, LIHEAP 110% FPG or below
-      href: https://www.hca.nm.gov/wp-content/uploads/ISD-017-FPG-Cards-FY-2026-10.01.25-to-09.30.2026-final-1.pdf#page=1
