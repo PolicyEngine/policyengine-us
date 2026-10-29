@@ -676,3 +676,75 @@
         state_code: OH
   output:
     is_parent_for_medicaid_fc: [true, false, true, false]
+
+# Issue #10151: Connecticut cut HUSKY A parents and caretaker relatives from
+# 160% to 138% of the guidelines on October 1, 2024 (Public Act 24-81). A
+# parent at 1.414 qualifies under 1.60 in 2024 (the January 1 value) but not
+# under 1.38 in 2025.
+- name: Connecticut parent at 1.414 FPL is a Medicaid parent in 2024 under the 1.60 limit
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+        medicaid_income_level: 1.414
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        medicaid_income_level: 1.414
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    is_parent_for_medicaid: [true, false]
+
+- name: Connecticut parent at 1.414 FPL is not a Medicaid parent in 2025 under the 1.38 limit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+        medicaid_income_level: 1.414
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        medicaid_income_level: 1.414
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    is_parent_for_medicaid: [false, false]
+
+# Florida's 2025 limit is ($303 + $183) x 12 / $26,650 + 0.05 = 0.269, so a
+# parent at 0.30 no longer qualifies; the stale 0.32 admitted them.
+- name: Florida parent at 0.30 FPL is not a Medicaid parent in 2025 under the 0.269 limit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+        medicaid_income_level: 0.30
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        medicaid_income_level: 0.30
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: FL
+  output:
+    is_parent_for_medicaid: [false, false]

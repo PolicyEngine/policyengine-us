@@ -17,6 +17,7 @@ class is_chip_eligible_standard_pregnant_person(Variable):
         # PDF pages 2, 4, 7
         "https://www.medicaid.gov/federal-policy-guidance/downloads/sho21007.pdf#page=2",
         "https://www.medicaid.gov/medicaid/national-medicaid-chip-program-information/medicaid-childrens-health-insurance-program-basic-health-program-eligibility-levels",
+        "https://www.law.cornell.edu/uscode/text/42/1397ll#d_2_C",
         "https://www.law.cornell.edu/uscode/text/8/1611#a",
         "https://www.law.cornell.edu/uscode/text/8/1641#b",
         "https://www.law.cornell.edu/cfr/text/45/155.20",
@@ -55,10 +56,18 @@ class is_chip_eligible_standard_pregnant_person(Variable):
             person, period, parameters, income_limit
         )
 
+        # A targeted low-income pregnant woman must not be covered under a
+        # group health plan or health insurance coverage, in the same manner
+        # as a child (42 USC 1397ll(d)(2)(C) and 1397jj(b)(1)(C)).
+        has_disqualifying_coverage = person(
+            "has_chip_disqualifying_health_coverage", period
+        )
+
         return (
             is_pregnant_or_postpartum
             & state_has_pregnant_chip
             & immigration_eligible
             & ~medicaid_eligible
             & income_eligible
+            & ~has_disqualifying_coverage
         )

@@ -1,3 +1,4 @@
+from .congress.s770 import create_s770_section_8_reform
 from .congress.delauro import create_american_family_act_with_baby_bonus_reform
 from .states.al.hb527 import create_al_hb527_overtime_deduction_reform
 from .dc_kccatc import create_dc_kccatc_reform
@@ -11,6 +12,7 @@ from .congress.romney.family_security_act import (
 from .cbo.payroll import (
     create_increase_taxable_earnings_for_social_security_reform,
 )
+from .ssa.owners_draw import create_owners_draw_reform
 from .congress.wyden_smith import create_ctc_expansion_reform
 from .federal import create_abolish_federal_income_tax_reform
 from .federal import create_abolish_payroll_tax_reform
@@ -367,6 +369,7 @@ import warnings
 
 
 def create_structural_reforms_from_parameters(parameters, period):
+    owners_draw = create_owners_draw_reform(parameters, period)
     afa_reform = create_american_family_act_with_baby_bonus_reform(parameters, period)
     winship_reform = create_eitc_winship_reform(parameters, period)
     dc_kccatc_reform = create_dc_kccatc_reform(parameters, period)
@@ -601,7 +604,11 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
 
+    s770_section_8 = create_s770_section_8_reform(parameters, period)
+
     reforms = [
+        owners_draw,
+        s770_section_8,
         afa_reform,
         winship_reform,
         dc_kccatc_reform,

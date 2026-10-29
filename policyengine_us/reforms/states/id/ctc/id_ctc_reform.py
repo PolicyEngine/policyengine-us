@@ -24,6 +24,33 @@ def _first_true_instant(nodes, default):
     return min(candidates)
 
 
+def _restore_id_ctc_reporting(parameters, revival_start):
+    """Include the revived worksheet amount without erasing later credits."""
+    state_ctcs = parameters.gov.states.household.state_ctcs
+    revival_stop = instant("2100-12-31")
+    if revival_start > revival_stop:
+        return
+
+    # Snapshot every dated list before update replaces overlapping intervals.
+    # In particular, the 2027 list adds Rhode Island's credit independently.
+    dated_lists = [(revival_start, list(state_ctcs(revival_start)))]
+    dated_lists.extend(
+        (instant(value.instant_str), list(value.value))
+        for value in state_ctcs.values_list
+        if str(revival_start) < value.instant_str <= str(revival_stop)
+    )
+    dated_lists.sort(key=lambda entry: entry[0])
+    for index, (start, credits) in enumerate(dated_lists):
+        if "id_ctc" in credits:
+            continue
+        stop = (
+            dated_lists[index + 1][0].offset(-1, "day")
+            if index + 1 < len(dated_lists)
+            else revival_stop
+        )
+        state_ctcs.update(start=start, stop=stop, value=credits + ["id_ctc"])
+
+
 def create_id_ctc() -> Reform:
     class id_refundable_ctc(Variable):
         value_type = float
@@ -73,6 +100,7 @@ def create_id_ctc() -> Reform:
         # Never revive before the baseline drop date: id_ctc is already in the
         # list through 2025, so revival only matters from 2026 onward.
         revival_start = max(activation, baseline_drop)
+        _restore_id_ctc_reporting(parameters, revival_start)
         non_refundable = parameters.gov.states.id.tax.income.credits.non_refundable
         current_non_refundable = non_refundable(revival_start)
         if "id_ctc" not in current_non_refundable:
