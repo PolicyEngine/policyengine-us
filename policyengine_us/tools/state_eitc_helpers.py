@@ -2,6 +2,9 @@
 
 from policyengine_us.model_api import *
 from policyengine_us.tools.period_branch import get_branch_for_period
+from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
+    NEUTRALIZED_BEHAVIORAL_RESPONSE_VARIABLES,
+)
 from policyengine_us.tools.section_911 import elects_section_911_exclusion
 
 
@@ -38,30 +41,36 @@ def federal_eitc_tax_unit(tax_unit, period, ssn_limitation_waived):
     accepts any taxpayer identification number: an individual taxpayer
     identification number or a Social Security number of any kind (has_tin).
 
-    Without the waiver this is `tax_unit` itself. With it, it is the same tax
-    units in a branch whose meets_eitc_identification_requirements also
-    accepts has_tin, so every federal EITC variable read from it (eitc,
-    eitc_child_count, eitc_phased_in, ...) is the one that would be allowable
-    but for 32(m), under the same formulas, structural reforms and inputs
-    (take-up among them). Setting the input on the branch drops what the
-    branch holds that may have been calculated from the replaced value
-    (policyengine-core's Simulation.set_input), and the branch is created
-    again for each period (get_branch_for_period).
+    Without the waiver, or when it changes no one's identification, this is
+    `tax_unit` itself. Otherwise it is the same tax units in a branch whose
+    meets_eitc_identification_requirements also accepts has_tin, so every
+    federal EITC variable read from it (eitc, eitc_child_count,
+    eitc_phased_in, ...) is the one that would be allowable but for 32(m),
+    under the same formulas, structural reforms and inputs (take-up among
+    them). The branch also takes the behavioral responses as they are, so the
+    credit is computed on actual earnings and capital gains: identification
+    is the only thing the waiver changes. Setting an input on the branch drops
+    what the branch holds that may have been calculated from the replaced
+    value, and setting it to the value the branch already reads as an input
+    drops nothing (policyengine-core's Simulation.set_input), so the inputs
+    are set on every call. The branch is created again for each period
+    (get_branch_for_period).
     """
 
     if not ssn_limitation_waived:
         return tax_unit
+    person = tax_unit.members
+    federal_identified = person("meets_eitc_identification_requirements", period)
+    identified = federal_identified | person("has_tin", period)
+    if (identified == federal_identified).all():
+        return tax_unit
     simulation = tax_unit.simulation
     branch = get_branch_for_period(simulation, SSN_LIMITATION_WAIVED_BRANCH, period)
-    if not getattr(branch, "ssn_limitation_waived", False):
-        person = tax_unit.members
-        branch.set_input(
-            "meets_eitc_identification_requirements",
-            period,
-            person("meets_eitc_identification_requirements", period)
-            | person("has_tin", period),
-        )
-        branch.ssn_limitation_waived = True
+    variables = branch.tax_benefit_system.variables
+    for variable in NEUTRALIZED_BEHAVIORAL_RESPONSE_VARIABLES:
+        if not variables[variable].is_neutralized:
+            branch.set_input(variable, period, person(variable, period))
+    branch.set_input("meets_eitc_identification_requirements", period, identified)
     return branch.tax_unit
 
 
