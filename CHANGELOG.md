@@ -1,3 +1,16 @@
+## [2.79.5] - 2026-10-29
+
+### Fixed
+
+- Make New Hampshire FANF resource eligibility require countable resources less than the limit, per RSA 167:79 III(f).
+- Prorate the 2018-2022 New York Empire State child credit to the children aged four to 16, as Form IT-213 lines 9-12 do, instead of excluding younger children from the federal credit.
+- Count the furnace or boiler credit once, drop advanced main air circulating fans after 2022, and add the heat pump credit to the $1,200-capped total of the energy efficient home improvement credit, as 26 U.S.C. 25C(b)(5) and Form 5695 line 30 require.
+- Phase out the California AMT exemption at 25% under R&TC 17062.1 instead of the federal 2026 rate of 50%.
+- Oklahoma's EITC, Washington's Working Families Tax Credit and the New York WFTC contributed reform now net a spouse's self-employment loss against the other spouse's wages when they compute earned income.
+- Apply the Florida TCA $90 standard disregard and the $200 and 1/2 earned income disregard to each earner's earnings instead of once to the unit's total, per ESS manual 2420.0304 and 2420.0314, and subtract the $90 of each earner in the unit-level test for the $200 and 1/2 disregard.
+- Give the saver's credit its 50% rate when adjusted gross income is negative, as the Form 8880 line 9 table's first row has no lower bound.
+
+
 ## [2.79.4] - 2026-10-29
 
 ### Fixed
