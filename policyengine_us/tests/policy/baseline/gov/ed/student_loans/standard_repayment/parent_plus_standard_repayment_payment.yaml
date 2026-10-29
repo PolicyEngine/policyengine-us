@@ -210,3 +210,43 @@
     # if the cap were ignored). person2: 15,000 + 5,000 of FFEL = 20,000 -> 20
     # years: 107.46 (15 years and 126.58 without the FFEL loans).
     parent_plus_standard_repayment_payment: [107.46, 107.46]
+
+- name: Case 10, small consolidated parent PLUS loans repay over 10 or 12 years.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_parent_plus_loan_balance: 7_499.99
+        federal_parent_plus_loan_is_consolidated: true
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 50
+        federal_parent_plus_loan_balance: 7_500
+        federal_parent_plus_loan_is_consolidated: true
+        federal_student_loan_interest_rate: 0.06
+      person3:
+        age: 50
+        federal_parent_plus_loan_balance: 9_999.99
+        federal_parent_plus_loan_is_consolidated: true
+        federal_student_loan_interest_rate: 0.06
+      person4:
+        age: 50
+        federal_parent_plus_loan_balance: 10_000
+        federal_parent_plus_loan_is_consolidated: true
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+      tax_unit4:
+        members: [person4]
+  output:
+    # No other education loans. 7,499.99 -> 10 years (n = 120): 7,499.99 x
+    # 0.005 / (1 - 1.005 ^ -120) = 83.27. 7,500 -> 12 years (n = 144): 73.19.
+    # 9,999.99 -> 12 years: 97.58. 10,000 -> 15 years (n = 180): 84.39.
+    parent_plus_standard_repayment_payment: [83.27, 73.19, 97.58, 84.39]
