@@ -738,3 +738,24 @@
   output:
     # 1,331 a month exceeds 1,330. A $20 deduction would have given 1,311.
     is_optional_senior_or_disabled_income_eligible: false
+
+- name: California applicant who pays IRMAA is income eligible once the full Part B premium is disregarded in 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        medicare_enrolled: true
+        social_security_retirement: 25_200
+    tax_units:
+      tax_unit:
+        members: [person1]
+        medicare_irmaa_magi: 150_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # 2,100 - 20 - 405.80 = 1,674.20 a month, under 138% FPL (1,835.40).
+    # With only the 202.90 base premium, 1,877.10 is over the limit.
+    is_optional_senior_or_disabled_income_eligible: true

@@ -23,6 +23,7 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
         "https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/20-24.pdf#page=3",
         "https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/20-18.pdf#page=2",
         "https://www.law.cornell.edu/regulations/california/22-CCR-50555.2",
+        "https://www.law.cornell.edu/uscode/text/42/1395r#i",
         "https://www.law.cornell.edu/cfr/text/20/416.1163",
     )
 
@@ -68,22 +69,26 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
         # 22 CCR 50555.2 deducts person-paid premiums, Part B only when the
         # person pays it. From 12/2020 (ACWDL 20-18, 20-24) CA disregards Part B
         # "regardless of how the premium is paid": swap the person-paid Part B
-        # in the shared aggregate for the full base premium.
+        # in the shared aggregate for the individual's full Part B premium, the
+        # base premium plus any IRMAA (42 USC 1395r(i)), whoever pays it.
         # NOTE: medicare_enrolled (Part A and/or Part B) stands in for Part B
         # enrollment, as in medical_expense_health_insurance_premiums.
         # NOTE: gov.hhs.medicare.part_b.base_premium starts in 2021, so a
         # person-paid Part B before 2021 reads the 2021 premium.
         # NOTE: ACWDL 20-24 Example 5 also deducts a non-applicant spouse's
         # premiums. Spousal income here follows SSI deeming (20 CFR 416.1163),
-        # so that premium is not modeled.
+        # so that premium is not modeled, nor is MC 176's maintenance need
+        # deduction for the spouse (lines 19 and 21; issue 10543).
         medicare_enrolled = person("medicare_enrolled", period)
         paid_premiums = person("medical_expense_health_insurance_premiums", period)
         paid_part_b = person("medicare_part_b_premium", period) * medicare_enrolled
-        base_part_b = person("base_part_b_premium", period) * medicare_enrolled
+        full_part_b = (
+            person("gross_medicare_part_b_premium", period) * medicare_enrolled
+        )
         disregards_part_b = p.disregards_medicare_part_b_premium[state].astype(bool)
         own_premiums = where(
             disregards_part_b,
-            max_(paid_premiums - paid_part_b, 0) + base_part_b,
+            max_(paid_premiums - paid_part_b, 0) + full_part_b,
             paid_premiums,
         )
         premiums = where(

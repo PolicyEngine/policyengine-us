@@ -43,9 +43,10 @@ class is_optional_senior_or_disabled_asset_eligible(Variable):
         # The MSP resource standard (42 USC 1396d(p)(1)(C)) and the AR, OK
         # and SC rules allow resources equal to the limit.
         within_msp_limit = assets <= msp_limit
-        # RSMo 208.010.2(7): a married couple "may own resources not to
-        # exceed" the couple amount. California resources may not exceed the
-        # limit (22 CCR 50420(a); WIC 14005.40(c)(5)).
+        # RSMo 208.010.2(7): a Missouri claimant "owns or possesses resources
+        # not to exceed" the individual amount, and a married couple "may own
+        # resources not to exceed" the couple amount. California resources may
+        # not exceed the limit (22 CCR 50420(a); WIC 14005.40(c)(5)).
         inclusive = where(
             is_couple,
             p.assets.limit.couple_limit_inclusive[state],

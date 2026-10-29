@@ -8,7 +8,13 @@ metadata:
   reference:
     - title: Missouri Revised Statutes 208.010.2(7)
       href: https://revisor.mo.gov/main/OneSection.aspx?section=208.010
-    - title: California Welfare and Institutions Code 14005.40(c)(5)
+    - title: Missouri Revised Statutes 208.010.2(4) (version effective October 11, 2013 to August 28, 2016)
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=208.010&bid=10947
+    - title: "Missouri H.B. 1565 (2016), truly agreed and finally passed, section 208.010.2(4) and (7) #page 3-4"
+      href: https://house.mo.gov/billtracking/bills161/billpdf/truly/HB1565T.PDF#page=3
+    - title: "13 Missouri Code of State Regulations 40-2.030(12) (11/30/15 edition) #page 9-10"
+      href: https://web.archive.org/web/20170107023023/http://s1.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-2.pdf#page=9
+    - title: California Welfare and Institutions Code 14005.40(c)(5) (version operative January 1, 2026; (c)(3) before July 9, 2019)
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=14005.40
     - title: Cal. Code Regs. Tit. 22, § 50420(a) - Property Limit
       href: https://www.law.cornell.edu/regulations/california/22-CCR-50420
@@ -66,7 +72,10 @@ MN:
   2015-01-01: false
 MO:
   # A married claimant living with a spouse "may own resources not to exceed"
-  # the couple amount (208.010.2(4) before fiscal year 2018).
+  # the couple amount: RSMo 208.010.2(4) before August 28, 2016, and
+  # 208.010.2(7) from fiscal year 2018 (July 1, 2017). In between,
+  # 13 CSR 40-2.030(12) (11/30/15 edition) made a couple ineligible only when
+  # resources "exceed[] a value of two thousand dollars".
   2015-01-01: true
 MS:
   2015-01-01: false
