@@ -6,7 +6,8 @@
 #   "including Medicare deductions", child support, pensions and others.
 # - Excluded: "Assets drawn down from financial institutions" and "Income earned by
 #   a Household Member who is a full time high school student, unless they are the
-#   Primary Applicant" (the tax unit head). TANF is not a listed source.
+#   Primary Applicant" (the tax unit head). No exclusion names TANF, so the
+#   household's TANF grant counts once.
 # - Each source is floored at zero, so a self-employment loss cannot offset wages.
 # - Over-income households deduct documented medical expenses (IRS Publication
 #   502), "only the amount necessary to make the Household eligible".
@@ -175,7 +176,7 @@
     # 23,712 <= 36,836, so the medical premiums are not deducted: 23,712.
     me_heap_income: 23_712
 
-- name: Case 6, TANF is not counted but child support is.
+- name: Case 6, TANF and child support are counted.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -203,8 +204,9 @@
         members: [head, child1, child2]
         state_code: ME
   output:
-    # Child support 2,400; TANF is excluded: 2,400.
-    me_heap_income: 2_400
+    # Child support 2,400 + TANF 10,740 = 13,140 <= 59,504, so no medical
+    # adjustment.
+    me_heap_income: 13_140
 
 - name: Case 7, an ineligible member's income is counted.
   period: 2026
@@ -311,3 +313,111 @@
     # max(40,537, 36,836) = 40,537, still over the limit.
     me_heap_income: 40_537
     me_heap_eligible: false
+
+- name: Case 10, every earned source not pinned elsewhere counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        # A different amount for each source, so dropping any one changes the
+        # total (wages and S corporation income are pinned in Cases 1-4).
+        self_employment_income_before_lsr: 3_000
+        sstb_self_employment_income_before_lsr: 2_000
+        farm_operations_income: 1_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    # 3,000 + 2,000 + 1,000 = 6,000 <= 36,836, so no medical adjustment.
+    # Dropping a source gives 3,000, 4,000 or 5,000.
+    me_heap_income: 6_000
+
+- name: Case 11, every unearned source not pinned elsewhere counts, including Maine SSP.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 66
+        # A different amount for each source, so dropping any one changes the
+        # total (Social Security and child support are pinned in Cases 5 and 6).
+        # SSI and Maine SSP are monthly: 100 and 120 a year (10 a month).
+        ssi: 100
+        me_ssp: 120
+        unemployment_compensation: 200
+        workers_compensation: 300
+        strike_benefits: 400
+        alimony_income: 500
+        veterans_benefits: 600
+        financial_assistance: 700
+        taxable_private_pension_income: 800
+        military_retirement_pay: 900
+        disability_benefits: 1_000
+        taxable_interest_income: 1_100
+        qualified_dividend_income: 1_200
+        estate_income: 1_300
+        rental_income: 1_400
+        farm_rent_income: 1_500
+        railroad_benefits: 1_600
+        survivor_benefits: 1_700
+        pfml_benefits: 1_800
+    spm_units:
+      spm_unit:
+        members: [head]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    # 100 x (1 + 2 + ... + 18) = 100 x 171 = 17,100, plus SSP 12 x 10 = 120:
+    # 17,220. 17,220 <= 36,836, so the modeled Medicare Part B premium is not
+    # deducted.
+    me_heap_income: 17_220
+
+- name: Case 12, other medical expenses bring the Case 9 household to the limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 66
+        # 1,976 x 12 = 23,712.
+        social_security_retirement: 23_712
+        # Part-time job: 14.65 x 25 hours x 52 weeks = 19,045.
+        employment_income: 19_045
+        # Part B premium: 185 x 12 = 2,220.
+        medical_expense_health_insurance_premiums: 2_220
+        # A pair of hearing aids (IRS Publication 502).
+        other_medical_expenses: 4_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        snap: 0
+        tanf: 0
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 1_745
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [head]
+        state_code: ME
+        is_in_public_housing: false
+  output:
+    # Gross 23,712 + 19,045 = 42,757 > 36,836. 42,757 - (2,220 + 4,000) = 36,537,
+    # and only the amount needed counts: max(36,537, 36,836) = 36,836. Without
+    # the hearing aids the income is 40,537, as in Case 9.
+    me_heap_income: 36_836
+    me_heap_eligible: true

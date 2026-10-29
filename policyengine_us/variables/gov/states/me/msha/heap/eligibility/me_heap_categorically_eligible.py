@@ -15,5 +15,8 @@ class me_heap_categorically_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         # Rule 3(C)(2): members on a Maine DHHS TANF or SNAP notice of decision
-        # are income eligible.
+        # are income eligible. Their benefit is scored on actual income, which
+        # 3(C)(2) permits ("using actual vetted income"); the pre-established
+        # poverty percentages it also allows are in MaineHousing's HEAP Guide,
+        # which was posted and is no longer available.
         return add(spm_unit, period, ["snap", "tanf"]) > 0

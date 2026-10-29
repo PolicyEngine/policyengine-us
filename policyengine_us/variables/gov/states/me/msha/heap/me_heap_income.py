@@ -35,7 +35,11 @@ class me_heap_income(Variable):
         )
         counted = where(excluded_student, 0, earned) + unearned
         adult = person("age", period) >= p.minimum_age
-        gross = spm_unit.sum(counted * adult)
+        # Rule 3(C)(1) counts income from all sources unless excluded, and no
+        # exclusion names TANF. The annual tanf aggregate includes me_tanf and
+        # applies take-up; me_tanf alone is the entitlement a nonrecipient
+        # could get. The household grant is counted once, not once per member.
+        gross = spm_unit.sum(counted * adult) + spm_unit("tanf", period)
         # A household over the income limit deducts medical expenses, but only
         # the amount needed to reach the limit.
         limit = spm_unit("me_heap_income_limit", period)

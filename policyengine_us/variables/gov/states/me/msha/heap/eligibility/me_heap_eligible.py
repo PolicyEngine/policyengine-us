@@ -26,30 +26,23 @@ class me_heap_eligible(Variable):
         )
         # Rule 3(A)(4) requires a Direct Energy Cost (a heating bill the
         # household pays) or an Indirect Determinable Energy Cost (heat
-        # included in rent), and the points matrix lists the fuels.
+        # included in rent), and rule 3(B)(1)(a) a functioning heating system,
+        # so NONE is ineligible.
         energy_cost = spm_unit("has_heating_expense", period) | heat_in_rent
         # SOLAR with an electricity bill stands for a grid-tied home with
-        # electric heat and uses the electricity row; an off-grid solar-only
-        # home has no heating bill. NONE means the home has no heating.
-        # Subsidized tenants with heat in rent receive the nominal benefit
-        # without a listed fuel; OTHER and UNSPECIFIED are otherwise
-        # ineligible because heating_type is a required input.
+        # electric heat; an off-grid solar-only home has no heating bill.
+        # OTHER (pellets, corn, bio-fuel, biobricks) is eligible with an
+        # energy cost and scores no fuel points. UNSPECIFIED is ineligible
+        # because heating_type is a required input, except for subsidized
+        # tenants with heat in rent, who receive the nominal benefit without a
+        # known fuel.
         fuel = spm_unit("heating_type", period)
         fuels = fuel.possible_values
-        listed_fuel = (
-            (fuel == fuels.ELECTRICITY)
-            | (fuel == fuels.SOLAR)
-            | (fuel == fuels.PROPANE)
-            | (fuel == fuels.KEROSENE)
-            | (fuel == fuels.FUEL_OIL)
-            | (fuel == fuels.COAL)
-            | (fuel == fuels.NATURAL_GAS)
-            | (fuel == fuels.WOOD)
-        )
+        known_fuel = (fuel != fuels.UNSPECIFIED) | (heat_in_rent & subsidized)
         return (
             (size > 0)
             & ((income <= limit) | categorical)
             & energy_cost
             & (fuel != fuels.NONE)
-            & (listed_fuel | (heat_in_rent & subsidized))
+            & known_fuel
         )

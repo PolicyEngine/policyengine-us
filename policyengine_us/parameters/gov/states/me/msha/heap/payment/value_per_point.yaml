@@ -7,8 +7,14 @@ description: Maine pays this amount per benefit point under the Low Income Home 
 # template; the matrix's smallest award is 3 points (6 + 2 + 4 - 9 = 3;
 # 3 x 70% = 2.1, rounded up to 3), so the minimum does not support the value.
 # The value is reused with the June 29, 2026 matrix until MaineHousing
-# announces one. The last published values ($55 and $44 for FFY2023) belong
-# to an older energy-cost matrix and are not used.
+# announces one. The draft FFY2027 plan in the April 2026 board packet
+# (Section 2.6) repeats the $88 minimum and $1,012 maximum beside a reviewer
+# note to obtain the figures, so it supplies no new value. At $22 the June 29,
+# 2026 matrix pays from $110 (8 + 1 + 1 + 0 - 3 = 7 points for a subsidized
+# apartment heated with OTHER fuel; 7 x 0.7 = 4.9, rounded up to 5) to $1,188
+# (8 + 3 + 6 + 8 + 5 = 30 points; 30 x 1.8 = 54). The last published values
+# ($55 and $44 for FFY2023) belong to an older energy-cost matrix and are not
+# used.
 values:
   2024-10-01: 22
 
@@ -21,5 +27,7 @@ metadata:
       href: https://liheapch.acf.gov/docs/2025/state-plans/ME_Plan_2025.pdf#page=8
     - title: Maine FY2026 LIHEAP State Plan, Section 2.6
       href: https://liheapch.acf.gov/docs/2026/state-plans/ME_Plan_2026.pdf#page=10
+    - title: MaineHousing April 2026 board packet, draft FFY2027 LIHEAP State Plan, Section 2.6
+      href: https://www.mainehousing.org/docs/default-source/boarddocs/april-2026-board-packet.pdf#page=110
     - title: 99-346 CMR ch. 24, section 4(A) (effective June 29, 2026)
       href: https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=15

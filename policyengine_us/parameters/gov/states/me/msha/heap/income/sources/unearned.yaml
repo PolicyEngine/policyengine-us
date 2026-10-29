@@ -1,19 +1,23 @@
 description: Maine counts these sources as unearned income under the Low Income Home Energy Assistance Program.
-# Rule 3(C)(1)(c)-(n). Social Security (retirement and SSDI) and SSI count
-# gross, including Medicare deductions. financial_assistance stands for cash
-# gifts from someone outside the household. disability_benefits stands for
+# Rule 3(C)(1)(c)-(n). Household Income is the total income from all sources
+# unless excluded. Social Security (retirement and SSDI) and SSI count gross,
+# including Medicare deductions. financial_assistance stands for cash gifts
+# from someone outside the household. disability_benefits stands for
 # long-term disability payments, item (n) of the June 29, 2026 replacement; the
 # 2025 edition's list "includes, but is not limited to" the items it names.
 # Royalties, contract income and payments from mortgage or sales contracts
 # have no specific inputs.
-# Not counted: TANF and General Assistance, which the rule does not list and
-# the FY2026 plan's Section 1.9 leaves unchecked (General Assistance vouchers
-# are excluded non-cash income), and retirement_distributions, since assets
-# drawn down from financial institutions are excluded.
+# TANF, which no exclusion names, is a household grant counted once in
+# me_heap_income. Not counted: General Assistance, excluded as non-cash
+# voucher income (exclusion j) and without an input, and
+# retirement_distributions, since assets drawn down from financial
+# institutions are excluded (exclusion a).
 values:
   2024-07-03:
     - social_security
     - ssi
+    # Maine's state supplement to SSI.
+    - me_ssp
     - total_unemployment_compensation
     - workers_compensation
     - strike_benefits
@@ -25,7 +29,14 @@ values:
     # Government pensions include military retired pay, a separate input from
     # the pension inputs that pension_income adds.
     - military_retirement_income
+    # Item (i) regular annuity payments: Railroad Retirement Board and
+    # non-Social Security survivor annuities, gross.
+    - railroad_benefits
+    - survivor_benefits
     - disability_benefits
+    # Paid family and medical leave benefits; Maine's program pays them from
+    # May 1, 2026.
+    - pfml_benefits
     - interest_income
     - ordinary_dividend_income
     - estate_income

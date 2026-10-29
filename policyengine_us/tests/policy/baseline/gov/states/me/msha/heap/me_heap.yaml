@@ -164,3 +164,77 @@
     # 30,472 x 2 = 60,944 > 48,170, with no medical expenses or SNAP/TANF.
     me_heap_eligible: false
     me_heap: 0
+
+- name: Case 5, a public housing tenant with heat in the rent receives the nominal benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        # 14.65 x 40 hours x 52 weeks = 30,472.
+        employment_income: 30_472
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        snap: 0
+        tanf: 0
+        me_heap_dwelling_type: CONDO_DUPLEX_OR_APARTMENT
+        # The building's heat is included in the rent and its fuel is unknown.
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [head]
+        state_code: ME
+        county: KENNEBEC_COUNTY_ME
+        is_in_public_housing: true
+  output:
+    # 30,472 <= 36,836, and public housing with heat in rent needs no known fuel.
+    me_heap_eligible: true
+    # Apartment 6 + Kennebec 2 + no fuel points = 8. 30,472 / 15,650 = 194.71%
+    # -> 195%: 0.70. 8 x 0.7 = 5.6, rounded up to 6.
+    me_heap_points: 6
+    # Public housing is subsidized housing, so the nominal 21 applies, not
+    # 6 x 22 = 132.
+    me_heap: 21
+
+- name: Case 6, a homeowner heating with a fuel outside the matrix, wood pellets, scores no fuel points.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        # 14.65 x 40 hours x 52 weeks = 30,472.
+        employment_income: 30_472
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        snap: 0
+        tanf: 0
+        me_heap_dwelling_type: STICK_BUILT_OR_MODULAR
+        heating_type: OTHER
+        # Maine Department of Energy Resources survey of January 5, 2026: wood
+        # pellets 357 for a one-ton purchase.
+        other_heating_fuel_expense: 357
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [head]
+        state_code: ME
+        county: KENNEBEC_COUNTY_ME
+        is_in_public_housing: false
+  output:
+    # 30,472 <= 36,836, and the pellet bill is a direct energy cost.
+    me_heap_eligible: true
+    # 30,472 / 15,650 = 194.71% -> 195%: above 150%, 0.70.
+    me_heap_income_multiplier: 0.7
+    # Stick-built 9 + Kennebec 2 + OTHER 0 = 11. 11 x 0.7 = 7.7, rounded up to 8.
+    me_heap_points: 8
+    # 8 x 22 = 176.
+    me_heap: 176

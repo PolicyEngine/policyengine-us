@@ -1,7 +1,8 @@
 description: Maine assigns these points by primary heating fuel under the Low Income Home Energy Assistance Program.
 # The wood row is cordwood. Bio-fuel (6), corn (5) and wood pellets (5) in the
 # 2025 edition and wood pellets (4) and biobrick (3) in the June 29, 2026
-# replacement have no heating_type value and are not stored.
+# replacement have no heating_type value and are not stored. Households
+# heating with them report OTHER, which is eligible and scores no fuel points.
 electricity:
   2024-07-03: 14
   2026-06-29: 8

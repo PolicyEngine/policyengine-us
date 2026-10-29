@@ -30,7 +30,9 @@ class me_heap_points(Variable):
         listed_county = where(in_table, county, next(iter(p.county)))
         county_points = where(in_table, p.county[listed_county], 0)
         # WOOD is the cordwood row. SOLAR stands for a grid-tied home with
-        # electric heat. OTHER, NONE and UNSPECIFIED have no row.
+        # electric heat. OTHER (pellets, corn, bio-fuel, biobricks) is
+        # eligible and scores no fuel points, since those rows have no
+        # heating_type value; NONE and UNSPECIFIED have no row.
         fuel = spm_unit("heating_type", period)
         fuels = fuel.possible_values
         fuel_points = select(

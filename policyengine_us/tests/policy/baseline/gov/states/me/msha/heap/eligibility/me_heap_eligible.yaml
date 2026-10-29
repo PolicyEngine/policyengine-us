@@ -5,9 +5,10 @@
 # - Income at or below the limit, or categorical eligibility through SNAP or TANF
 #   (3(C), pages 11-15).
 # - A direct or indirect energy cost for heat and a functioning heating system
-#   (3(A)(4) and 3(B)(1), pages 10-11), with a fuel listed in the points matrix.
-#   Subsidized tenants with heat in their rent qualify for the nominal benefit
-#   whatever the fuel (3(B)(3) and 4(B), pages 11 and 17).
+#   (3(A)(4) and 3(B)(1), pages 10-11). A fuel outside the points matrix (OTHER)
+#   qualifies with its bill; an unspecified fuel qualifies only for subsidized
+#   tenants with heat in their rent, who receive the nominal benefit (3(B)(3) and
+#   4(B), pages 11 and 17).
 # Wages use Maine's 2025 minimum wage, $14.65 an hour (Maine Department of Labor):
 # 14.65 x 40 hours x 52 weeks = 30,472. The 2026 one-person limit is 36,836.
 # Heating bills: EIA's 2025-26 winter household expenditures (Short-Term Energy
@@ -41,7 +42,7 @@
     # 36,836 <= 36,836: eligible. 36,837 > 36,836: not eligible unless categorical.
     me_heap_eligible: [true, false, true]
 
-- name: Case 2, every listed fuel qualifies while no heat, other fuels, unspecified fuel and other states do not.
+- name: Case 2, every fuel with a bill qualifies, including other fuels, while no heat, unspecified fuel and other states do not.
   period: 2026
   input:
     state_code: [ME, ME, ME, ME, ME, ME, ME, ME, ME, ME, ME, NH]
@@ -63,12 +64,13 @@
     receives_housing_assistance: [false, false, false, false, false, false, false, false, false, false, false, false]
     is_in_public_housing: [false, false, false, false, false, false, false, false, false, false, false, false]
   output:
-    # Income 30,472 <= 36,836 throughout. NONE, OTHER and UNSPECIFIED have no row
-    # in the points matrix (OTHER fails even with its pellet bill); the eight listed
+    # Income 30,472 <= 36,836 throughout. NONE means no heating system
+    # (3(B)(1)(a)); OTHER qualifies with its pellet bill and scores no fuel points;
+    # UNSPECIFIED fails because heating_type is a required input; the eight listed
     # fuels with a bill qualify; New Hampshire does not.
-    me_heap_eligible: [false, false, false, true, true, true, true, true, true, true, true, false]
+    me_heap_eligible: [false, true, false, true, true, true, true, true, true, true, true, false]
 
-- name: Case 3, heat in rent qualifies subsidized tenants without a listed fuel but not unsubsidized ones.
+- name: Case 3, heat in rent qualifies subsidized tenants with an unspecified fuel but not unsubsidized ones.
   period: 2026
   input:
     state_code: [ME, ME, ME, ME, ME]
@@ -85,7 +87,7 @@
     is_in_public_housing: [false, true, false, false, false]
   output:
     # 1-2: subsidized with heat in rent qualify without a fuel.
-    # 3: an unsubsidized tenant needs a listed fuel; UNSPECIFIED has none.
+    # 3: an unsubsidized tenant needs a known fuel; UNSPECIFIED is not one.
     # 4: an unsubsidized tenant whose building burns natural gas qualifies.
     # 5: NONE means the home has no heating system, which 3(B)(1)(a) requires.
     me_heap_eligible: [true, true, false, true, false]

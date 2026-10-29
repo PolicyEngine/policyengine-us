@@ -13,8 +13,8 @@ class me_heap_income_limit(Variable):
     reference = (
         "https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=11",
         "https://liheapch.acf.gov/docs/2026/state-plans/ME_Plan_2026.pdf#page=9",
-        "https://www.mainehousing.org/charts/",
         "https://web.archive.org/web/20251101091454id_/https://www.mainehousing.org/programs-services/energy/energydetails/liheap",
+        "https://web.archive.org/web/20261015145903id_/https://www.mainehousing.org/programs-services/energy/energydetails/liheap",
         "https://www.law.cornell.edu/uscode/text/42/8624#b_2_B",
     )
 
