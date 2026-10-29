@@ -1,4 +1,5 @@
-description: States set the medically needy income limit at this share of the federal poverty guideline for a household of one or two under the Medicaid program. States not listed, or with a share of zero, use the dollar limits.
+description: States set the medically needy income limit at this share of the federal poverty guideline for a household of one or two under the Medicaid program.
+# NOTE: States not listed, or with a share of zero, use the dollar limits in individual.yaml and couple.yaml.
 metadata:
   unit: /1
   period: year
@@ -30,6 +31,10 @@ metadata:
       href: https://www.nd.gov/dhs/policymanuals/51003/Content/ML/2023/ML%203702%20Federal%20Poverty%20Level%20Updates%2004-01-2023.pdf#page=6
     - title: North Dakota State Plan Amendment ND-23-0034 (effective January 1, 2024)
       href: https://www.medicaid.gov/medicaid/spa/downloads/ND-23-0034.pdf#page=2
+    - title: North Dakota Manual Letter 3776, ACA Medically Needy (effective January 1, 2024)
+      href: https://www.nd.gov/dhs/policymanuals/51003/Content/ML/2023/ML%203776%20-ACA%20Med%20Needy.pdf#page=1
+    - title: North Dakota Non-ACA Medicaid Manual 510-05-85-40 (archived, ML 3896), 90% of poverty from April 1, 2024
+      href: https://www.nd.gov/dhs/policymanuals/51005/Archived%20Documents/2025/3896/510_05_85_40.htm
     - title: New York DOH GIS 22 MA/11, Increase of Medicaid Medically Needy Income Level to 138% of the Federal Poverty Level
       href: https://www.health.ny.gov/health_care/medicaid/publications/docs/gis/22ma11.pdf#page=1
     - title: New York State Plan Amendment NY-23-0001 (effective January 1, 2023)
@@ -41,7 +46,7 @@ metadata:
     - title: Wisconsin Statutes 49.47(4)(c)1
       href: https://docs.legis.wisconsin.gov/statutes/statutes/49/iv/47/4/c
     - title: Wisconsin DHS Operations Memo 19-26, SSI-Related Medicaid Medically Needy Income Limit Increase
-      href: https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2019-26.pdf#page=2
+      href: https://web.archive.org/web/20251031224345id_/https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2019-26.pdf#page=2
     - title: Wisconsin Medicaid Eligibility Handbook (EBD) 39.4.1 - Elderly, Blind, or Disabled Assets and Income Table
       href: https://www.emhandbooks.wisconsin.gov/meh-ebd/policy_files/39/39.4.htm
 
