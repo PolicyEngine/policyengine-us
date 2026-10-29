@@ -445,7 +445,7 @@
     ssi_countable_resources: 33_038
     state_code: NY
   output:
-    # Limit 1.38 x 15,960 = 22,024.80. 25,000 - 5,000 = 20,000; assets 33,038 equal
+    # Limit 1,836 x 12 = 22,032 (GIS 26 MA/05). 25,000 - 5,000 = 20,000; assets 33,038 equal
     # the 2026 resource level.
     is_in_medicaid_medically_needy_category: true
     is_medically_needy_for_medicaid: true
@@ -499,7 +499,7 @@
         state_code: {2022: NY, 2023: NY, 2024: NY, 2025: NY, 2026: NY}
   output:
     # 2022: 25,000 - 15,000 = 10,000 <= 934 x 12 = 11,208.
-    # 2023-2026: 20,000 <= 1.38 x FPG (20,120.40, 20,782.80, 21,597, 22,024.80).
+    # 2023-2026: 20,000 <= 12 x 1,677, 1,732, 1,800 and 1,836 (20,124, 20,784, 21,600, 22,032).
     # Resources equal each year's level (GIS 22 MA/11 p2; the 2023-2026 GIS
     # attachments).
     is_medically_needy_for_medicaid:
@@ -602,9 +602,9 @@
         members: [person5, person6]
         state_code: IL
   output:
-    # NY: 40,000 - 12,000 = 28,000 <= 1.38 x 21,640 = 29,863.20; assets 44,796.
+    # NY: 40,000 - 12,000 = 28,000 <= 2,489 x 12 = 29,868; assets 44,796.
     # CA: 36,000 - 25,000 = 11,000 <= 934 x 12 = 11,208; assets 195,000.
-    # IL: 28,000 - 7,000 = 21,000 <= 21,640; assets 17,500 (PM 07-02-01).
+    # IL: 28,000 - 7,000 = 21,000 <= 1,803 x 12 = 21,636; assets 17,500 (PM 07-02-01).
     is_medically_needy_for_medicaid: [true, true, true, true, true, true]
 
 - name: Case 22, Vermont senior with income after medical expenses at the 2026 protected income level qualifies.

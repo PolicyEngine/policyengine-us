@@ -572,3 +572,29 @@
       2020: [8_619.96, 8_619.96, 8_189.04]
       2021: [8_709.96, 8_709.96, 8_274.48]
       2022: [9_155.04, 9_155.04, 8_697.24]
+
+- name: Case 23, Illinois keeps the cents in 2022 and drops them from 2023.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 70}
+      person2: {age: 68}
+      person3: {age: 74}
+    marital_units:
+      marital_unit1: {members: [person1, person2]}
+      marital_unit2: {members: [person3]}
+    tax_units:
+      tax_unit1: {members: [person1, person2]}
+      tax_unit2: {members: [person3]}
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: {2022: IL, 2023: IL}
+  output:
+    # Outputs are [couple, couple, individual]. 2022: 18,310 and 13,590 (1,132.50 a
+    # month, not rounded). 2023: 19,720 / 12 = 1,643.33, cents dropped, 1,643 x 12;
+    # 14,580 / 12 = 1,215 exactly.
+    medicaid_medically_needy_income_limit:
+      2022: [18_310, 18_310, 13_590]
+      2023: [19_716, 19_716, 14_580]

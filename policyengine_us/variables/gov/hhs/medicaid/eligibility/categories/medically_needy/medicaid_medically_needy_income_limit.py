@@ -36,10 +36,12 @@ class medicaid_medically_needy_income_limit(Variable):
         # monthly amount at cent precision first, so floating-point noise
         # cannot move an exact whole dollar (as in medicaid_income_level).
         fpg_monthly = np.round(fpg_limit / MONTHS_IN_YEAR, 2)
+        # Illinois is the only state that drops the cents.
+        rounds_down = (state == "IL") & p.il.rounds_down_monthly
         fpg_limit = select(
             [
                 p.rounds_up_monthly[state].astype(bool),
-                p.rounds_down_monthly[state].astype(bool),
+                rounds_down,
             ],
             [
                 np.ceil(fpg_monthly) * MONTHS_IN_YEAR,
