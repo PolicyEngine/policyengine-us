@@ -1,4 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+    _ssi_spouse_index,
+)
 
 
 class mo_ssp_resource_eligible(Variable):
@@ -32,9 +36,11 @@ class mo_ssp_resource_eligible(Variable):
         # Spouses separated to receive medical or nursing home care also use
         # the couple limit; that separation is not modeled.
         personal_resources = person("ssi_countable_resources", period.this_year)
-        married = person.marital_unit.nb_persons() == 2
+        married = _ssi_spouse_index(person, period.this_year) >= 0
         countable_resources = where(
-            married, person.marital_unit.sum(personal_resources), personal_resources
+            married,
+            _ssi_couple_total(person, period.this_year, personal_resources),
+            personal_resources,
         )
 
         p = parameters(period).gov.states.mo.dss.ssp.eligibility.resource_limit

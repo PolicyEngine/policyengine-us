@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_spouse_index,
+)
 
 
 class WAStateSupplementaryPaymentCategory(Enum):
@@ -43,12 +46,9 @@ class wa_ssp_payment_category(Variable):
             "is_ssi_disabled", period.this_year
         )
 
-        marital_unit = person.marital_unit
-        ssi_recipient_count = marital_unit.sum(base_eligible)
+        spouse = _ssi_spouse_index(person, period.this_year)
         has_ineligible_spouse = (
-            (marital_unit.nb_persons() == 2)
-            & (ssi_recipient_count == 1)
-            & base_eligible
+            (spouse >= 0) & base_eligible & ~base_eligible[np.maximum(spouse, 0)]
         )
 
         in_standard_category = aged | blind | disabled_qualifies | has_ineligible_spouse

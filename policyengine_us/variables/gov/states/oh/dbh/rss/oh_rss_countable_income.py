@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
@@ -19,7 +22,7 @@ class oh_rss_countable_income(Variable):
     def formula(person, period, parameters):
         # RSS does not deem income from an ineligible spouse or parent.
         eligible = person("oh_rss_eligible", period)
-        couple = person.marital_unit.sum(eligible) == 2
+        couple = _ssi_couple_total(person, period.this_year, eligible.astype(int)) == 2
         earned = max_(
             person("ssi_earned_income", period)
             - person("ssi_blind_or_disabled_working_student_exclusion", period),
@@ -32,8 +35,12 @@ class oh_rss_countable_income(Variable):
             - person("dividend_income", period),
             0,
         )
-        earned = where(couple, person.marital_unit.sum(earned), earned)
-        unearned = where(couple, person.marital_unit.sum(unearned), unearned)
+        earned = where(
+            couple, _ssi_couple_total(person, period.this_year, earned), earned
+        )
+        unearned = where(
+            couple, _ssi_couple_total(person, period.this_year, unearned), unearned
+        )
         # NOTE: PolicyEngine's federal SSI still counts interest and dividends
         # (#10079), so for an SSI recipient with that income the SSI counted
         # here is understated and RSS is overstated by the same amount.
@@ -41,7 +48,11 @@ class oh_rss_countable_income(Variable):
         # status, so a spouse who declines SSI is still budgeted jointly
         # (#10138).
         federal_ssi = person("ssi", period)
-        federal_ssi = where(couple, person.marital_unit.sum(federal_ssi), federal_ssi)
+        federal_ssi = where(
+            couple,
+            _ssi_couple_total(person, period.this_year, federal_ssi),
+            federal_ssi,
+        )
         # Ohio applies the same $20 general, $65 earned and one-half earned
         # income exclusions (5160:1-3-03.2(D)(2)(l), (E)(5), (E)(7)), so the SSI
         # exclusion parameters are used and an SSI reform carries over to RSS.

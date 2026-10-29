@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
@@ -21,7 +24,12 @@ class va_ag_countable_income(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.va.dars.ag
         joint = (
-            person.marital_unit.sum(person("va_ag_is_joint_initial_month", period)) == 2
+            _ssi_couple_total(
+                person,
+                period.this_year,
+                person("va_ag_is_joint_initial_month", period).astype(int),
+            )
+            == 2
         )
         # NOTE: AG Manual Chapter H's exclusion list (p. 370) does not name the
         # SSI student earned income exclusion, while Chapter D (p. 123)
@@ -36,8 +44,12 @@ class va_ag_countable_income(Variable):
             - add(person, period, p.excluded_unearned_sources),
             0,
         )
-        earned = where(joint, person.marital_unit.sum(earned), earned)
-        unearned = where(joint, person.marital_unit.sum(unearned), unearned)
+        earned = where(
+            joint, _ssi_couple_total(person, period.this_year, earned), earned
+        )
+        unearned = where(
+            joint, _ssi_couple_total(person, period.this_year, unearned), unearned
+        )
         non_ssi_countable = (
             _apply_ssi_exclusions(
                 earned * MONTHS_IN_YEAR, unearned * MONTHS_IN_YEAR, parameters, period

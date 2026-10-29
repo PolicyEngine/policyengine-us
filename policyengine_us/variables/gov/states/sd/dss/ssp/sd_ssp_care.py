@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 
 
 class sd_ssp_care(Variable):
@@ -24,9 +27,18 @@ class sd_ssp_care(Variable):
         resources = person("ssi_countable_resources", period.this_year)
         # Joint entry applies only when both spouses are flagged.
         joint_entry = (
-            person.marital_unit.sum(person("sd_ssp_care_joint_entry", period)) > 1
+            _ssi_couple_total(
+                person,
+                period.this_year,
+                person("sd_ssp_care_joint_entry", period).astype(int),
+            )
+            > 1
         )
-        resources = where(joint_entry, person.marital_unit.sum(resources), resources)
+        resources = where(
+            joint_entry,
+            _ssi_couple_total(person, period.this_year, resources),
+            resources,
+        )
         limit = where(joint_entry, p.joint_entry_resource_limit, p.resource_limit)
         immigration = person("immigration_status", period.this_year)
         citizenship = (immigration == immigration.possible_values.CITIZEN) | person(
@@ -73,9 +85,7 @@ class sd_ssp_care(Variable):
         # assisted living or adult foster care is not modeled. 67:46:04:10(7)
         # and 67:46:05:42(7) count the couple's combined income and resources
         # in that month; this formula uses the entering spouse's own.
-        shared_income = person.marital_unit.sum(own_income) / (
-            person.marital_unit.nb_persons()
-        )
+        shared_income = _ssi_couple_total(person, period.this_year, own_income) / 2
         income = where(joint_entry, shared_income, own_income)
         net_income = max_(income - person("sd_ssp_care_income_deductions", period), 0)
         # 67:46:06:09: income is not applied in a partial month unless the
