@@ -92,6 +92,15 @@ def country_system():
     return system
 
 
+def _private_reformed_system(system, reform):
+    # Reform clones parameters, unlike CoreSimulation(reform=...) on an
+    # explicit system. Its generic carry-over default shadows PE-US's, so
+    # retain the country's input contract on the private wrapper as well.
+    result = reform(system)
+    result.auto_carry_over_input_variables = system.auto_carry_over_input_variables
+    return result
+
+
 def _neutral_stacked_base(system):
     """Restore the original A hooks while retaining the complete stacked model."""
     from policyengine_us.model_api import Person, Variable, YEAR
@@ -111,7 +120,7 @@ def _neutral_stacked_base(system):
                 )
                 self.update_variable(variable)
 
-    return NeutralPIARatioHooks(system)
+    return _private_reformed_system(system, NeutralPIARatioHooks)
 
 
 @pytest.fixture(scope="module")
@@ -288,9 +297,7 @@ def test_assumed_claim_age_proxy_outputs_exclude_identified_only(country_system)
     )
     simulation = CoreSimulation(
         situation=situation,
-        # Core's reform= applies in place to an explicitly supplied system.
-        # Construct the Reform wrapper so its parameter copy stays private.
-        tax_benefit_system=reform(country_system),
+        tax_benefit_system=_private_reformed_system(country_system, reform),
         default_input_period=YEAR,
         default_calculation_period=YEAR,
     )
@@ -327,7 +334,7 @@ def test_supplied_claim_months_load_from_h5_and_drive_inverse(country_system, tm
     )
     simulation = CoreSimulation(
         dataset=Dataset.from_file(path),
-        tax_benefit_system=reform(country_system),
+        tax_benefit_system=_private_reformed_system(country_system, reform),
         default_input_period=YEAR,
         default_calculation_period=YEAR,
     )
