@@ -14,7 +14,7 @@ def create_working_parents_tax_relief_act() -> Reform:
         def formula(tax_unit, period, parameters):
             person = tax_unit.members
             is_child = person("is_qualifying_child_dependent", period)
-            meets_eitc_id = person("meets_eitc_identification_requirements", period)
+            meets_eitc_id = person("eitc_identification_accepted", period)
             is_eitc_eligible_child = is_child & meets_eitc_id
             age = person("age", period)
             p = parameters(

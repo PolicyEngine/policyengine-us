@@ -1,0 +1,175 @@
+# Maryland (Md. Code Tax-Gen. 10-704) and Maine (36 M.R.S. 5219-S(7)) base
+# their credits on the federal EITC computed without the 26 U.S.C. 32(m)
+# Social Security number limitation. A reform of the federal credit carries
+# through: an ITIN family gets what its SSN twin gets under the same reform.
+
+- name: Streamlined EITC, Maine, citizen parent with an ITIN child, matches the SSN twin
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.eitc.streamlined_eitc.streamlined_eitc
+  input:
+    gov.contrib.streamlined_eitc.in_effect: true
+    people:
+      parent:
+        age: 35
+        employment_income: 15_000
+        ssn_card_type: CITIZEN
+      child:
+        age: 3
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ME
+  output:
+    me_eitc_child_count: 1
+    # The reform's one-child maximum, $3,995, not the baseline $4,328.
+    me_federal_eitc_without_ssn_requirement: 3_995
+    me_eitc: 998.75
+
+- name: Streamlined EITC, Maine, SSN twin
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.eitc.streamlined_eitc.streamlined_eitc
+  input:
+    gov.contrib.streamlined_eitc.in_effect: true
+    people:
+      parent:
+        age: 35
+        employment_income: 15_000
+        ssn_card_type: CITIZEN
+      child:
+        age: 3
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ME
+  output:
+    eitc: 3_995
+    me_eitc: 998.75
+
+- name: Streamlined EITC, Maryland, citizen parent with an ITIN child, matches the SSN twin
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.eitc.streamlined_eitc.streamlined_eitc
+  input:
+    gov.contrib.streamlined_eitc.in_effect: true
+    people:
+      parent:
+        age: 35
+        employment_income: 15_000
+        ssn_card_type: CITIZEN
+      child:
+        age: 3
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    md_eitc_child_count: 1
+    md_federal_eitc_without_ssn_requirement: 3_995
+    # No Maryland tax at this income: the refund is 45% x $3,995.
+    md_eitc: 1_797.75
+
+- name: Individual EITC with a $10,000 AGI limit, Maine, gives no credit, as the federal reform does
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.winship.winship_reform
+  input:
+    gov.contrib.individual_eitc.in_effect: true
+    gov.contrib.individual_eitc.agi_eitc_limit: 10_000
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+      child:
+        age: 3
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ME
+  output:
+    eitc: 0
+    me_federal_eitc_without_ssn_requirement: 0
+    me_eitc: 0
+
+- name: Individual EITC with a $10,000 AGI limit, Maryland, ITIN child, gives no credit
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.winship.winship_reform
+  input:
+    gov.contrib.individual_eitc.in_effect: true
+    gov.contrib.individual_eitc.agi_eitc_limit: 10_000
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+      child:
+        age: 3
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    md_eitc_child_count: 1
+    md_federal_eitc_without_ssn_requirement: 0
+    md_eitc: 0
+
+- name: Streamlined EITC, Maryland, a second child with an ITIN lowers the basis as it lowers the SSN twin's federal credit
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.eitc.streamlined_eitc.streamlined_eitc
+  input:
+    gov.contrib.streamlined_eitc.in_effect: true
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+        ssn_card_type: CITIZEN
+      child1:
+        age: 3
+        ssn_card_type: CITIZEN
+      child2:
+        age: 7
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MD
+  output:
+    # Under this reform the two-child credit at $30,000 is below the
+    # one-child credit. Maryland counts the ITIN child, so the basis is the
+    # two-child amount the SSN twin gets federally, not the larger one-child
+    # federal credit.
+    eitc: 2_932.33
+    md_eitc_child_count: 2
+    md_federal_eitc_without_ssn_requirement: 2_594.51
+    md_eitc: 1_167.53

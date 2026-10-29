@@ -1,6 +1,10 @@
 """Shared helpers for state EITC formulas that partially track federal rules."""
 
 from policyengine_us.model_api import *
+from policyengine_us.tools.period_branch import get_branch_for_period
+from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
+    NEUTRALIZED_BEHAVIORAL_RESPONSE_VARIABLES,
+)
 from policyengine_us.tools.section_911 import elects_section_911_exclusion
 
 
@@ -23,6 +27,110 @@ def eitc_section_911_eligible(tax_unit, period):
     """
 
     return ~elects_section_911_exclusion(tax_unit, period)
+
+
+SSN_LIMITATION_WAIVED_BRANCH = "eitc_without_ssn_limitation"
+
+
+def keep_return_as_filed(branch, tax_unit, period):
+    """Give `branch` the AGI and behavioral responses of `tax_unit`'s simulation.
+
+    A state credit that recomputes the federal EITC takes the amounts on the
+    federal return as filed. The Maryland booklet (Instruction 18) has an ITIN
+    filer calculate "the federal earned income credit disregarding the SSN
+    requirement", and the Maine worksheet has the filer complete a "pro forma"
+    federal EIC worksheet; the federal worksheet takes AGI from the return
+    (2024 Form 1040 instructions, Worksheet A, line 3: "Enter the amount from
+    Form 1040 or 1040-SR, line 11"). As inputs, the branch's AGI and
+    responses cannot move with the changed credit, through the itemization
+    election (whose 2020-2021 charitable deduction is above the line) or a
+    response measured on the branch's own marginal rates. The credit is then
+    computed on actual earnings, capital gains and AGI.
+    """
+
+    person = tax_unit.members
+    variables = branch.tax_benefit_system.variables
+    for variable in NEUTRALIZED_BEHAVIORAL_RESPONSE_VARIABLES:
+        if not variables[variable].is_neutralized:
+            branch.set_input(variable, period, person(variable, period))
+    branch.set_input(
+        "adjusted_gross_income", period, tax_unit("adjusted_gross_income", period)
+    )
+
+
+def federal_eitc_tax_unit(tax_unit, period):
+    """The tax units whose federal EITC variables apply their state's 32(m) rule.
+
+    Section 32(m) limits the taxpayer identification number that 32(c)(1)(E)
+    (filer and spouse) and 32(c)(3)(D) (qualifying children) require to a
+    Social Security number valid for employment. A state that waives 32(m)
+    accepts any taxpayer identification number: an individual taxpayer
+    identification number or a Social Security number of any kind (has_tin).
+    state_eitc_ssn_limitation_waived says which tax units' states waive it:
+    every Maryland return from 2020, and from 2021 a Maine return whose filer
+    files a federal return.
+
+    When the waiver changes no one's identification, this is `tax_unit`
+    itself. Otherwise it is the same tax units in a branch where
+    eitc_ssn_limitation_waived equals state_eitc_ssn_limitation_waived, so
+    the EITC variables read from it (eitc, eitc_child_count, eitc_phased_in,
+    ...) are those that would be allowable but for 32(m) for the waived tax
+    units and the federal ones for the rest, under the same formulas,
+    structural reforms and inputs (take-up among them). Every state credit
+    gives the branch the same flag, so the branch doesn't depend on which
+    state's credit the simulation calculates first. The flag reaches only the
+    EITC's identification test (eitc_identification_accepted): the recovery
+    rebate credits and other rules that require a valid Social Security
+    number keep meets_eitc_identification_requirements, in the branch and in
+    the itemization branches it creates. The branch takes the AGI and
+    behavioral responses of the return as filed (keep_return_as_filed).
+
+    Setting an input on the branch drops what the branch holds that may have
+    been calculated from the replaced value, and setting it to the value the
+    branch already reads as an input drops nothing (policyengine-core's
+    Simulation.set_input), so the inputs are set on every call. The branch is
+    created again for each period (get_branch_for_period), from the parent as
+    it stands then, so it reads that period's inputs even when they changed
+    after an earlier period's branch was created.
+    """
+
+    waived = tax_unit("state_eitc_ssn_limitation_waived", period)
+    person = tax_unit.members
+    valid_ssn = person("meets_eitc_identification_requirements", period)
+    newly_accepted = tax_unit.project(waived) & person("has_tin", period) & ~valid_ssn
+    if not newly_accepted.any():
+        return tax_unit
+    branch = get_branch_for_period(
+        tax_unit.simulation, SSN_LIMITATION_WAIVED_BRANCH, period
+    )
+    keep_return_as_filed(branch, tax_unit, period)
+    branch.set_input("eitc_ssn_limitation_waived", period, waived)
+    return branch.tax_unit
+
+
+def pro_forma_federal_eitc(federal, period, branch_name, eligible):
+    """The final federal eitc of the tax units `federal`, with `eligible` as
+    its eligibility and no take-up or filing condition.
+
+    Maryland's childless credit and Maine's 18-24 expansion compute the
+    federal credit for filers the federal age floor excludes. Evaluating the
+    final eitc formula, with eitc_eligible set to the pro forma's own
+    eligibility, carries through any reform of that formula, such as the
+    individual EITC's AGI limit or a reform that neutralizes eitc. The pro
+    formas have never applied take-up, the filing condition or the
+    separate-filer rule, so takes_up_eitc and would_file_taxes_voluntarily are
+    true and `eligible` leaves out the separate-filer rule. `federal` is the
+    tax units federal_eitc_tax_unit returns, so a waiver of 32(m) carries
+    through, and the branch takes their AGI and behavioral responses.
+    """
+
+    branch = get_branch_for_period(federal.simulation, branch_name, period)
+    keep_return_as_filed(branch, federal, period)
+    true = np.ones(federal.count, dtype=bool)
+    branch.set_input("eitc_eligible", period, eligible)
+    branch.set_input("takes_up_eitc", period, true)
+    branch.set_input("would_file_taxes_voluntarily", period, true)
+    return branch.tax_unit("eitc", period)
 
 
 def eitc_filing_status_eligible(

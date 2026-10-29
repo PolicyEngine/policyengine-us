@@ -7,7 +7,7 @@
   period: 2021
   input:
     md_qualifies_for_unmarried_childless_eitc: false
-    eitc_child_count: 0
+    md_eitc_child_count: 0
     eitc: 0  # age-gated federal credit is zero for the under-25 childless
     federal_eitc_without_age_minimum: 300
     md_income_tax_before_credits: 200  # Tax > 50% of credit ($150)
@@ -19,7 +19,7 @@
   period: 2021
   input:
     md_qualifies_for_unmarried_childless_eitc: false
-    eitc_child_count: 0
+    md_eitc_child_count: 0
     eitc: 0
     federal_eitc_without_age_minimum: 1_000
     md_income_tax_before_credits: 100  # Tax < 50% of credit ($500)
@@ -27,12 +27,12 @@
   output:
     md_married_or_has_child_non_refundable_eitc: 100  # Capped at tax
 
-- name: With-child filer uses the actual age-gated federal EITC
+- name: With-child filer uses the age-gated federal EITC without the SSN requirement
   period: 2021
   input:
     md_qualifies_for_unmarried_childless_eitc: false
-    eitc_child_count: 1
-    eitc: 1_000
+    md_eitc_child_count: 1
+    md_federal_eitc_without_ssn_requirement: 1_000
     federal_eitc_without_age_minimum: 0  # ignored for with-child filers
     md_income_tax_before_credits: 800  # Tax > 50% of credit ($500)
     state_code: MD
@@ -43,8 +43,8 @@
   period: 2026
   input:
     md_qualifies_for_unmarried_childless_eitc: false
-    eitc_child_count: 1
-    eitc: 4_427  # Typical baseline federal EITC for $25k income family
+    md_eitc_child_count: 1
+    md_federal_eitc_without_ssn_requirement: 4_427  # Typical baseline federal EITC for $25k income family
     md_income_tax_before_credits: 353.62
     state_code: MD
   output:
@@ -54,7 +54,7 @@
   period: 2021
   input:
     md_qualifies_for_unmarried_childless_eitc: false
-    eitc_child_count: 0
+    md_eitc_child_count: 0
     federal_eitc_without_age_minimum: 1_000
     md_income_tax_before_credits: 0
     state_code: MD
@@ -65,7 +65,7 @@
   period: 2021
   input:
     md_qualifies_for_unmarried_childless_eitc: true
-    eitc_child_count: 0
+    md_eitc_child_count: 0
     eitc: 300
     federal_eitc_without_age_minimum: 300
     md_income_tax_before_credits: 200

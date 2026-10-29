@@ -12,11 +12,10 @@ class filer_meets_eitc_identification_requirements(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        # Both head and spouse in the tax unit must have valid SSN card type to be eligible for the EITC
+        # Both head and spouse must meet the identification requirements:
+        # a valid SSN, or any TIN where a state credit waives 32(m).
         person = tax_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        eligible_ssn_card_type = person(
-            "meets_eitc_identification_requirements", period
-        )
-        ineligible_head_or_spouse = is_head_or_spouse & ~eligible_ssn_card_type
+        identification_accepted = person("eitc_identification_accepted", period)
+        ineligible_head_or_spouse = is_head_or_spouse & ~identification_accepted
         return tax_unit.sum(ineligible_head_or_spouse) == 0

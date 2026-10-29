@@ -4,7 +4,7 @@
   input:
     state_code_str: MD
     county_str: BALTIMORE_CITY_MD
-    eitc: 3_000
+    md_federal_eitc_without_ssn_requirement: 3_000
     md_local_income_tax_before_credits: 2_000
   output:
     # 3,000 * 10 * 0.032 = 960
@@ -16,7 +16,7 @@
   input:
     state_code_str: MD
     county_str: BALTIMORE_CITY_MD
-    eitc: 3_000
+    md_federal_eitc_without_ssn_requirement: 3_000
     md_local_income_tax_before_credits: 500
   output:
     # min(3,000 * 10 * 0.032, 500) = 500
@@ -28,7 +28,7 @@
   input:
     state_code_str: MD
     county_str: ANNE_ARUNDEL_COUNTY_MD
-    eitc: 1_000
+    md_federal_eitc_without_ssn_requirement: 1_000
     md_local_income_tax_before_credits: 10_000
   output:
     # 1,000 * 10 * 0.027 = 270
@@ -40,7 +40,7 @@
   input:
     state_code_str: MD
     county_str: BALTIMORE_CITY_MD
-    eitc: 0
+    md_federal_eitc_without_ssn_requirement: 0
     md_local_income_tax_before_credits: 2_000
   output:
     md_local_eitc: 0

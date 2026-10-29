@@ -1,0 +1,141 @@
+# Maryland (Md. Code Tax-Gen. 10-704(c)(3)) and Maine (36 M.R.S. 5219-S(5)-(6))
+# compute the federal EITC for childless filers the federal age floor
+# excludes, and from 2020 (Maryland) or 2021 (Maine) without the 26 U.S.C.
+# 32(m) Social Security number limitation.
+#
+# The childless pro formas evaluate the final federal eitc, so a reform of
+# that formula reaches them: the individual EITC's AGI limit and the End
+# Child Poverty Act, which neutralizes eitc. Each case runs an ITIN filer and
+# an SSN filer; without the reform both get $649 in Maryland (age 35) and
+# $324.50 in Maine (age 20).
+
+- name: Individual EITC with a $10,000 AGI limit, Maryland, childless filers aged 35 get no credit
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.winship.winship_reform
+  input:
+    gov.contrib.individual_eitc.in_effect: true
+    gov.contrib.individual_eitc.agi_eitc_limit: 10_000
+    people:
+      itin_filer:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+      ssn_filer:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+    tax_units:
+      itin_unit:
+        members: [itin_filer]
+      ssn_unit:
+        members: [ssn_filer]
+    households:
+      itin_household:
+        members: [itin_filer]
+        state_code: MD
+      ssn_household:
+        members: [ssn_filer]
+        state_code: MD
+  output:
+    eitc: [0, 0]
+    federal_eitc_without_age_minimum: [0, 0]
+    md_eitc: [0, 0]
+
+- name: Individual EITC with a $10,000 AGI limit, Maine, childless filers aged 20 get no credit
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.winship.winship_reform
+  input:
+    gov.contrib.individual_eitc.in_effect: true
+    gov.contrib.individual_eitc.agi_eitc_limit: 10_000
+    people:
+      itin_filer:
+        age: 20
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+      ssn_filer:
+        age: 20
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+    tax_units:
+      itin_unit:
+        members: [itin_filer]
+      ssn_unit:
+        members: [ssn_filer]
+    households:
+      itin_household:
+        members: [itin_filer]
+        state_code: ME
+      ssn_household:
+        members: [ssn_filer]
+        state_code: ME
+  output:
+    me_pro_forma_childless_eitc: [0, 0]
+    me_eitc: [0, 0]
+
+- name: End Child Poverty Act, Maryland, childless filers aged 35 get no credit
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
+  input:
+    gov.contrib.congress.tlaib.end_child_poverty_act.in_effect: true
+    people:
+      itin_filer:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+      ssn_filer:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+    tax_units:
+      itin_unit:
+        members: [itin_filer]
+      ssn_unit:
+        members: [ssn_filer]
+    households:
+      itin_household:
+        members: [itin_filer]
+        state_code: MD
+      ssn_household:
+        members: [ssn_filer]
+        state_code: MD
+  output:
+    federal_eitc_without_age_minimum: [0, 0]
+    md_eitc: [0, 0]
+
+- name: End Child Poverty Act, Maine, childless filers aged 20 get no credit
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
+  input:
+    gov.contrib.congress.tlaib.end_child_poverty_act.in_effect: true
+    people:
+      itin_filer:
+        age: 20
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+      ssn_filer:
+        age: 20
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+    tax_units:
+      itin_unit:
+        members: [itin_filer]
+      ssn_unit:
+        members: [ssn_filer]
+    households:
+      itin_household:
+        members: [itin_filer]
+        state_code: ME
+      ssn_household:
+        members: [ssn_filer]
+        state_code: ME
+  output:
+    me_pro_forma_childless_eitc: [0, 0]
+    me_eitc: [0, 0]

@@ -17,7 +17,7 @@
     state_code_str: MD
     county_str: BALTIMORE_CITY_MD
     md_taxable_income: 50_000
-    eitc: 0
+    md_federal_eitc_without_ssn_requirement: 0
   output:
     # 50,000 * 0.032 = 1,600, no local credits
     md_local_income_tax_before_refundable_credits: 1_600
@@ -29,7 +29,7 @@
     state_code_str: MD
     county_str: BALTIMORE_CITY_MD
     md_taxable_income: 14_000
-    eitc: 5_000
+    md_federal_eitc_without_ssn_requirement: 5_000
   output:
     # Local tax: 14,000 * 0.032 = 448
     # Local EITC: min(5,000 * 10 * 0.032 = 1,600, 448) = 448

@@ -1,0 +1,24 @@
+description: Maryland computes its state and local earned income credits without the Social Security number limitation of IRC 32(m), accepting an individual taxpayer identification number or any Social Security number for the filer, spouse and qualifying children, if this is true.
+values:
+  2014-01-01: false
+  # Chapter 40 of 2021 (SB 218) applies to taxable years beginning after
+  # December 31, 2019. It was to end with 2022; Chapters 3 and 4 of 2023
+  # (SB 552, HB 547) struck the end date.
+  2020-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Maryland EITC ITIN eligibility
+  reference:
+    - title: Md. Code, Tax-Gen. § 10-704(c)(1)(i), (c)(2)(iii), (c)(3)(i)2, (d)(1)(i) and (d)(2)(iii)
+      href: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-704&enactments=false
+    - title: Comptroller of Maryland, Tax Alert 03-11-2021, SB 218 (Chapter 40 of 2021)
+      href: https://www.marylandcomptroller.gov/legal-library/ta-11-mar-2021a.html
+    - title: Chapter 3 of 2023 (SB 552), Family Prosperity Act of 2023, Sections 1 to 3
+      href: https://mgaleg.maryland.gov/2023RS/chapters_noln/Ch_3_sb0552T.pdf
+    - title: Chapter 4 of 2023 (HB 547), Family Prosperity Act of 2023
+      href: https://mgaleg.maryland.gov/2023RS/chapters_noln/Ch_4_hb0547T.pdf
+    - title: 2025 Maryland Resident Booklet, Instruction 18, Line 22
+      href: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=22
+    - title: 2025 Maryland Resident Booklet, Instruction 19, Local Earned Income Credit
+      href: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=26

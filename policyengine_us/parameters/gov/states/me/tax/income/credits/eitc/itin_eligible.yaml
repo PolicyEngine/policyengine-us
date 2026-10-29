@@ -1,0 +1,17 @@
+description: Maine accepts an individual taxpayer identification number or any Social Security number for the filer, spouse and qualifying children under its earned income tax credit, in place of the IRC 32(m) Social Security number, if this is true.
+values:
+  2020-01-01: false
+  # 36 M.R.S. 5219-S(7), enacted by P.L. 2021, c. 479, section 1, applies
+  # to tax years beginning on or after January 1, 2021.
+  2021-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Maine EITC ITIN eligibility
+  reference:
+    - title: 36 M.R.S. § 5219-S(7)
+      href: https://legislature.maine.gov/statutes/36/title36sec5219-S.html
+    - title: Maine Revenue Services, Earned Income Tax Credit Worksheet for Tax Year 2024, Special instructions for line 1
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/24_earned_income_cred_ff_0.pdf
+    - title: 2025 Instructions for Form 1040ME, Schedule A, Line 4
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_gen_instr_w_cover_pg.pdf#page=10

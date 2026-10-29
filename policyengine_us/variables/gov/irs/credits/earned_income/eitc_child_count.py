@@ -18,9 +18,7 @@ class eitc_child_count(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         is_child = person("is_eitc_qualifying_child", period)
-        meets_eitc_identification_requirements = person(
-            "meets_eitc_identification_requirements", period
-        )
-        eligible_child = is_child & meets_eitc_identification_requirements
+        identification_accepted = person("eitc_identification_accepted", period)
+        eligible_child = is_child & identification_accepted
         # Only child who meets EITC identification requirements can claim benefit
         return tax_unit.sum(eligible_child)

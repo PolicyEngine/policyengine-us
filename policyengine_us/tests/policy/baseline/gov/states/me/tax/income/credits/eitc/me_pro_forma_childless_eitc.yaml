@@ -181,3 +181,47 @@
     # qualifying child.
     me_pro_forma_childless_eitc: 382.5
     me_eitc: 191.25
+
+# IRC 32(i): no credit when disqualified income exceeds $11,950 (2025, Rev.
+# Proc. 2024-40). § 5219-S(5)-(6) keeps every federal requirement but the age.
+- name: Investment income above the federal limit bars the pro forma childless credit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 20
+        employment_income: 5_000
+        taxable_interest_income: 12_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: ME
+  output:
+    me_pro_forma_childless_eitc: 0
+    me_eitc: 0
+
+- name: Investment income below the federal limit leaves the pro forma childless credit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 20
+        employment_income: 5_000
+        taxable_interest_income: 11_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: ME
+  output:
+    # AGI $16,000: $649 - 7.65% x ($16,000 - $10,620) = $237.43, below the
+    # phased-in $382.50.
+    me_pro_forma_childless_eitc: 237.43
+    me_eitc: 118.715

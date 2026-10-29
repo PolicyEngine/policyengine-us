@@ -1,0 +1,599 @@
+# Md. Code Tax-Gen. 10-704(c)(1)(i), (c)(2)(iii), (c)(3)(i)2 and (d) compute
+# the IRC 32 credit without regard to the 32(m) limitation, which confines the
+# taxpayer identification number of 32(c)(1)(E) and (c)(3)(D) to a Social
+# Security number valid for employment. Chapter 40 of 2021 applies from tax
+# year 2020. An ITIN holder is ssn_card_type NONE with has_tin true; a person
+# with no taxpayer identification number has has_tin false. 2025 federal
+# amounts are from Rev. Proc. 2024-40: childless maximum $649 (7.65%), one
+# child $4,328 (34%). Each ITIN case has an SSN twin with the same result.
+
+- name: ITIN parent with an ITIN child claims the Maryland EITC on the one-child federal amount
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+      child:
+        age: 5
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    eitc: 0
+    eitc_child_count: 0
+    md_eitc_child_count: 1
+    # 34% x $10,000, below the $4,328 maximum and the $23,350 phase-out start.
+    md_federal_eitc_without_ssn_requirement: 3_400
+    md_qualifies_for_unmarried_childless_eitc: false
+    # No Maryland tax at this income: the refund is 45% x $3,400.
+    md_eitc: 1_530
+
+- name: SSN twin of the ITIN parent with an ITIN child
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+      child:
+        age: 5
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    eitc: 3_400
+    md_eitc_child_count: 1
+    md_federal_eitc_without_ssn_requirement: 3_400
+    md_eitc: 1_530
+
+- name: Citizen parent whose only child has an ITIN uses the one-child amount, not the childless path
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+      child:
+        age: 5
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    # Federally the ITIN child is not taken into account (32(c)(3)(D)), so
+    # the parent claims the childless credit: 7.65% x $8,490 = $649.
+    eitc: 649
+    eitc_child_count: 0
+    # Maryland takes the child into account.
+    md_eitc_child_count: 1
+    md_federal_eitc_without_ssn_requirement: 3_400
+    md_qualifies_for_unmarried_childless_eitc: false
+    md_eitc: 1_530
+
+- name: A child with no taxpayer identification number leaves the parent on the childless path
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+      child:
+        age: 5
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    eitc: 649
+    md_eitc_child_count: 0
+    md_qualifies_for_unmarried_childless_eitc: true
+    federal_eitc_without_age_minimum: 649
+    # 100% of the childless federal credit (10-704(c)(3)(ii)).
+    md_eitc: 649
+
+- name: Childless ITIN filer aged 30 gets 100% of the childless federal amount
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    eitc: 0
+    federal_eitc_without_age_minimum: 649
+    md_federal_eitc_without_ssn_requirement: 649
+    md_eitc: 649
+
+- name: Childless ITIN filer aged 22 takes both the age and the SSN waivers of 10-704(c)(3)(i)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 22
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    eitc: 0
+    federal_eitc_without_age_minimum: 649
+    # The age waiver is in (c)(3); the 32(m)-only computation keeps the age test.
+    md_federal_eitc_without_ssn_requirement: 0
+    md_eitc: 649
+
+- name: Childless filer with no taxpayer identification number gets no Maryland EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    federal_eitc_without_age_minimum: 0
+    md_federal_eitc_without_ssn_requirement: 0
+    md_eitc: 0
+
+- name: A Social Security number not valid for employment also meets Maryland's identification test
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 10_000
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    # 32(m) excludes such numbers federally; Maryland disregards 32(m).
+    eitc: 0
+    federal_eitc_without_age_minimum: 649
+    md_eitc: 649
+
+- name: Before 2020 an ITIN family gets no Maryland EITC
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+      child:
+        age: 5
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    md_eitc_child_count: 0
+    md_federal_eitc_without_ssn_requirement: 0
+    federal_eitc_without_age_minimum: 0
+    md_eitc: 0
+
+- name: In 2020, the first year of Chapter 40, a childless ITIN filer gets the Maryland EITC
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 5_000
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    eitc: 0
+    # 7.65% x $5,000, below the 2020 maximum of $538 (Rev. Proc. 2019-44).
+    federal_eitc_without_age_minimum: 382.50
+    # Below the $530 cap that applied from 2020 to 2022 (10-704(c)(3)(iii)).
+    md_eitc: 382.50
+
+- name: Joint return with an ITIN spouse uses the married path on the childless federal amount
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+      spouse:
+        age: 35
+        ssn_card_type: NONE
+        has_tin: true
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    families:
+      family:
+        members: [head, spouse]
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MD
+  output:
+    # 32(c)(1)(E) requires the spouse's number too, so no federal credit.
+    eitc: 0
+    federal_eitc_without_age_minimum: 649
+    md_qualifies_for_unmarried_childless_eitc: false
+    # Refund of 45% x $649 = $292.05; no Maryland tax at this income.
+    md_eitc: 292.05
+
+- name: An ITIN parent who claims section 911 benefits gets no Maryland EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+      child:
+        age: 5
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        foreign_earned_income_exclusion: 30_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    # 32(c)(1)(C) bars the credit; 10-704 waives only the age and 32(m).
+    md_eitc_child_count: 1
+    md_federal_eitc_without_ssn_requirement: 0
+    md_eitc: 0
+
+- name: A childless ITIN filer who claims section 911 benefits gets no Maryland EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 22
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        foreign_earned_income_exclusion: 30_000
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    federal_eitc_without_age_minimum: 0
+    md_eitc: 0
+
+- name: ITIN family that does not take up the EITC is treated like its SSN twin
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+      child:
+        age: 5
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        takes_up_eitc: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    # The with-child path follows the federal credit's take-up, as for an SSN
+    # family, whose eitc is then zero.
+    md_federal_eitc_without_ssn_requirement: 0
+    md_eitc: 0
+
+- name: SSN twin of the ITIN family that does not take up the EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+      child:
+        age: 5
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        takes_up_eitc: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    eitc: 0
+    md_federal_eitc_without_ssn_requirement: 0
+    md_eitc: 0
+
+- name: Local EITC for a childless ITIN filer in Baltimore City
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        md_local_income_tax_before_credits: 2_000
+    households:
+      household:
+        members: [person]
+        state_code: MD
+        county_str: BALTIMORE_CITY_MD
+  output:
+    eitc: 0
+    # 10-704(d)(1)(i): $649 x 10 x 3.2% = $207.68, below the local tax.
+    md_local_eitc: 207.68
+
+- name: Local EITC for an ITIN parent with an ITIN child in Baltimore City
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+      child:
+        age: 5
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        md_local_income_tax_before_credits: 2_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+        county_str: BALTIMORE_CITY_MD
+  output:
+    # $3,400 x 10 x 3.2% = $1,088, below the local tax.
+    md_local_eitc: 1_088
+
+- name: A capital-gains response over the investment income limit bars an ITIN parent's credit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+        # The behavioral response counts as long-term capital gains, so the
+        # waived computation takes the parent's actual investment income.
+        capital_gains_behavioral_response: 12_000
+        ssn_card_type: NONE
+        has_tin: true
+      child:
+        age: 3
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    eitc_relevant_investment_income: 12_000
+    # $12,000 exceeds the 2025 limit of $11,950 (26 U.S.C. 32(i)).
+    md_federal_eitc_without_ssn_requirement: 0
+    md_eitc: 0
+
+- name: A capital-gains response under the investment income limit counts in the ITIN parent's AGI
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+        capital_gains_behavioral_response: 11_000
+        ssn_card_type: NONE
+        has_tin: true
+      child:
+        age: 3
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    adjusted_gross_income: 41_000
+    eitc: 0
+    # $4,328 - 15.98% x ($41,000 - $23,350) = $1,507.53.
+    md_federal_eitc_without_ssn_requirement: 1_507.53
+
+- name: A self-employment response counts in the ITIN parent's earned income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        self_employment_income_before_lsr: 5_000
+        # The return as filed carries the response, so the waived
+        # computation takes the parent's actual self-employment income.
+        self_employment_income_behavioral_response: 1_000
+        ssn_card_type: NONE
+        has_tin: true
+      child:
+        age: 3
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    # Parent, child.
+    self_employment_income: [6_000, 0]
+    eitc: 0
+    # Earned income: $6,000 less half the self-employment tax (7.65% x
+    # 92.35% x $6,000), $5,576.11; 34% of it.
+    md_federal_eitc_without_ssn_requirement: 1_895.88
+    # 45% of it.
+    md_eitc: 853.15
+
+# Md. Code Tax-Gen. 10-704 waives 32(m) with no federal filing condition
+# (unlike 36 M.R.S. 5219-S(7)), and Maryland's childless pro forma applies
+# none either, so an ITIN filer with no federal return is treated like the
+# SSN twin.
+- name: Childless ITIN filer who files no federal return gets the childless credit, like the SSN twin
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        would_file_taxes_voluntarily: false
+        would_file_if_eligible_for_refundable_credit: false
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    tax_unit_is_required_to_file: false
+    md_eitc_ssn_limitation_waived: true
+    eitc: 0
+    federal_eitc_without_age_minimum: 649
+    md_eitc: 649
+
+- name: SSN twin of the childless filer who files no federal return
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person]
+        would_file_taxes_voluntarily: false
+        would_file_if_eligible_for_refundable_credit: false
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    # The federal credit pays only a filer.
+    eitc: 0
+    federal_eitc_without_age_minimum: 649
+    md_eitc: 649

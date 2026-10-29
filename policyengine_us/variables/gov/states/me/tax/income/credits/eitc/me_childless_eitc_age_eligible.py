@@ -19,7 +19,8 @@ class me_childless_eitc_age_eligible(Variable):
         p = parameters(period).gov.states.me.tax.income.credits.eitc
 
         person = tax_unit.members
-        no_qualifying_children = tax_unit("eitc_child_count", period) == 0
+        # From 2021 a child with an ITIN counts (§ 5219-S(7)).
+        no_qualifying_children = tax_unit("me_eitc_child_count", period) == 0
 
         age = person("age", period)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
