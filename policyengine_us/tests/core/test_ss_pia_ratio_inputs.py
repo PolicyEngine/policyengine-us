@@ -288,8 +288,9 @@ def test_assumed_claim_age_proxy_outputs_exclude_identified_only(country_system)
     )
     simulation = CoreSimulation(
         situation=situation,
-        tax_benefit_system=country_system,
-        reform=reform,
+        # Core's reform= applies in place to an explicitly supplied system.
+        # Construct the Reform wrapper so its parameter copy stays private.
+        tax_benefit_system=reform(country_system),
         default_input_period=YEAR,
         default_calculation_period=YEAR,
     )
@@ -326,8 +327,7 @@ def test_supplied_claim_months_load_from_h5_and_drive_inverse(country_system, tm
     )
     simulation = CoreSimulation(
         dataset=Dataset.from_file(path),
-        tax_benefit_system=country_system,
-        reform=reform,
+        tax_benefit_system=reform(country_system),
         default_input_period=YEAR,
         default_calculation_period=YEAR,
     )
