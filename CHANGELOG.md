@@ -1,3 +1,12 @@
+## [2.79.6] - 2026-10-29
+
+### Fixed
+
+- Extend standard pregnancy CHIP eligibility, including the lawfully residing pregnancy option, through each state's Medicaid postpartum period, and charge Missouri's CHIP premium only for CHIP children.
+- Updated Medicaid's aged, blind and disabled pathway: California's $20 deduction followed by the $230/$310 disregard before December 2020, its health insurance premium deduction, and its full Medicare Part B premium disregard, income-related amount included, from December 2020; Connecticut's 2026 disregard; South Carolina's $50 disregard; no SSI $20 disregard in Minnesota (Minn. Stat. 256B.056, subd. 1b); Missouri's 2015-2026 asset limits with July 1 updates, with a couple's resources equal to the couple limit qualifying, and from fiscal year 2018 an individual's resources equal to the individual limit, under RSMo 208.010.2(7); California's resources equal to the limit qualifying, with the $130,000 / $195,000 limit from July 2022; and asset limits equal to the Medicare Savings Program resource limit in Arkansas, Oklahoma and South Carolina, where resources equal to the limit qualify.
+- Applied state Medicare Savings Program rules: no asset test in Washington from 2023 or in Mississippi from July 1999; California asset limits of $130,000 / $195,000 (July 2022 to 2023, and again from 2026); Minnesota asset limits of $10,000 / $18,000; and general income exclusions of $25 in Illinois (one for each spouse with income other than SSI and contributions such as alimony and child support) and $50 in Mississippi (once for a couple).
+
+
 ## [2.79.5] - 2026-10-29
 
 ### Fixed
