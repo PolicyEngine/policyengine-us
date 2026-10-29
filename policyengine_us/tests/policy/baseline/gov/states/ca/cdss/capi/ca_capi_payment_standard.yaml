@@ -368,3 +368,107 @@
     ca_capi_payment_standard:
       2019-05: 761
       2019-06: 771
+
+- name: Case 16, CAPI couple, the 20 couple offset applies through May 2019 and ends in June 2019.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # Couple standard max(1,167, 2019 couple FBR 1,157) = 1,167 (known-low,
+    # issue 10480). May: (1,167 - 20) / 2 = 573.50 each (MPP 49-050.12).
+    # June: 1,167 / 2 = 583.50 each (WIC 18941).
+    ca_capi_payment_standard:
+      2019-05: [573.5, 573.5]
+      2019-06: [583.5, 583.5]
+
+- name: Case 17, mixed couple, the 10 mixed-couple offset applies through May 2019 and ends in June 2019.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: CITIZEN
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The citizen is paid SSI, so the CAPI member takes the couple standard
+    # 1,167 (known-low, issue 10480). May: 1,167 - 10 = 1,157 (MPP
+    # 49-050.13). June: 1,167 (WIC 18941).
+    ca_capi_payment_standard:
+      2019-05: [0, 1_157]
+      2019-06: [0, 1_167]
+
+- name: Case 18, 2024 CAPI couple standard is floored at the couple federal benefit rate.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # Stopgap floor: max(1,167, 2024 couple FBR 1,415) / 2 = 707.50 each. A
+    # known-low value: the published 2024 couple standard is higher (issue
+    # 10480).
+    ca_capi_payment_standard: [707.5, 707.5]
+
+- name: Case 19, 2024 out-of-home care standard is floored at the federal benefit rate.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        in_out_of_home_care_facility: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # Stopgap floor: (1,167 + 709) / 2 = 938, floored at the 943 FBR. A
+    # known-low value: POMS SI 01415.056 gives 1,575.07 (issue 10480).
+    ca_capi_payment_standard: 943

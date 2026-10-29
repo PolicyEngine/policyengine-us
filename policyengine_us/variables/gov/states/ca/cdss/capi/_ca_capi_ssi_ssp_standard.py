@@ -1,32 +1,54 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.status.ssi_federal_living_arrangement import (
+    SSIFederalLivingArrangement,
+)
+
+
+def ca_capi_in_title_xix_facility(person, period):
+    """Whether a person lives in a Title XIX medical facility (MPP 49-050.26).
+
+    Reads both the California input and SSI's living arrangement, so the CAPI
+    standard and SSI's couple test agree.
+    """
+    arrangement = person("ssi_federal_living_arrangement", period)
+    return person("ca_in_medical_care_facility", period.this_year) | (
+        arrangement == SSIFederalLivingArrangement.MEDICAL_TREATMENT_FACILITY
+    )
+
+
+def ca_capi_spouse_ssi_ssp(person, period):
+    """Return the SSI and state supplement paid to the person's spouse.
+
+    Only a spouse who is not CAPI-eligible counts. ca_state_supplement is an
+    SPM-unit amount, so as a simplification the spouse's share is pro rata
+    among the unit's members eligible for it; a citizen disabled child's
+    supplement in the unit is then attributed to the spouse.
+    """
+    spouse = ~person("ca_capi_eligible_person", period.this_year)
+    spouse_ssi = person.marital_unit.sum(person("ssi", period) * spouse)
+    ssp_eligible = person("ca_state_supplement_eligible_person", period)
+    spouse_ssp_share = person.marital_unit.sum(ssp_eligible * spouse) / max_(
+        person.spm_unit.sum(ssp_eligible), 1
+    )
+    spouse_ssp = spouse_ssp_share * person.spm_unit("ca_state_supplement", period)
+    return spouse_ssi + spouse_ssp
 
 
 def ca_capi_ssi_ssp_standard(person, period, parameters):
     """Return a person's monthly SSI/SSP individual and couple standards.
 
-    CAPI payment standards equal the SSI/SSP standards (WIC 18941), and the
-    living arrangement selects one standard (MPP 49-050.2; POMS SI 01415.058
-    B). These follow ca_state_supplement_payment_standard, whose amounts
-    include the federal benefit rate:
+    CAPI equals SSI/SSP (WIC 18941), and the living arrangement selects one
+    standard (MPP 49-050.2; POMS SI 01415.058 B):
     - Title XIX medical facility: the facility standard alone (MPP 49-050.26).
-    - Nonmedical out-of-home care: one standard for every category, half the
-      couple out-of-home care standard per person (MPP 49-050.24).
-    - Independent living: the higher of the blind amount and the aged or
-      disabled amount (the disabled child amount for a dependent child, MPP
-      49-050.25; blind children take the blind amount, MPP 49-050.253). Only
-      the aged or disabled amount adds the food allowance for people who
-      cannot prepare meals, for an individual under WIC 12200(c) or a couple
-      under 12200(d) (WIC 12200(e)), so the one-blind couple rate under
-      12200(b) adds none. POMS SI 01415.058 B.1 code C adds the individual
-      allowance for the aged or disabled member of such a couple; the code
-      follows the statute. California pays the highest category a person or
-      couple qualifies for.
-    In an SSI couple computation the couple standard sums both members'
-    shares; otherwise it treats the ineligible spouse as the person's
+    - Non-medical out-of-home care: one standard for every category, half the
+      couple amount per person (WIC 12200(g); MPP 49-050.24).
+    - Independent living: the highest category the person or couple qualifies
+      for; the no-cooking allowance goes only with the aged or disabled amount
+      (WIC 12200(e)), not the one-blind couple rate (12200(b)).
+    Outside an SSI couple computation the ineligible spouse takes the person's
     category (POMS SI 01320.430 C.7).
-    NOTE: the reduced-needs standards for people living in another person's
-    household (POMS SI 01415.058 code D) are not modeled; they need their own
-    state supplement amounts (issue 7892).
+    NOTE: reduced-needs standards (POMS SI 01415.058 code D) are not modeled
+    (issue 7892).
     """
     p = parameters(period).gov.states.ca.cdss.state_supplement.payment_standard
     fbr = parameters(period).gov.ssa.ssi.amount
@@ -39,14 +61,13 @@ def ca_capi_ssi_ssp_standard(person, period, parameters):
         "is_ssi_disabled", period.this_year
     )
     # NOTE: living_arrangements_allow_for_food_preparation has no default
-    # value, so unless it is set every aged or disabled person gets the
-    # no-cooking allowance.
+    # value and the microdata do not set it, so every aged or disabled
+    # person gets the no-cooking allowance (+$128.87 a month in 2026, +$257.74
+    # for a couple) unless it is set (issue 10296).
     no_cooking = ~person.household(
         "living_arrangements_allow_for_food_preparation", period.this_year
     )
-    # NOTE: the Title XIX standard reads ca_in_medical_care_facility, while
-    # SSI reads ssi_federal_living_arrangement; the two inputs can disagree.
-    medical_facility = person("ca_in_medical_care_facility", period.this_year)
+    medical_facility = ca_capi_in_title_xix_facility(person, period)
     out_of_home_care = person("in_out_of_home_care_facility", period.this_year)
     out_of_home_care_share = (
         p.aged_or_disabled.amount.married + p.allowance.out_of_home_care
@@ -69,6 +90,8 @@ def ca_capi_ssi_ssp_standard(person, period, parameters):
     )
     two_blind = (blind_count > 1) * p.blind.married.two_blind
     one_blind = (blind_count == 1) * p.blind.married.one_blind
+    # NOTE: a couple with one aged or disabled member always has a blind
+    # member, whose rate is higher, so the second branch is only a guard.
     aged_or_disabled_couple = select(
         [aged_or_disabled_count > 1, aged_or_disabled_count == 1],
         [

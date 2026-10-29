@@ -1,5 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.states.ca.cdss.capi._ca_capi_ssi_ssp_standard import (
+    ca_capi_in_title_xix_facility,
+    ca_capi_spouse_ssi_ssp,
     ca_capi_ssi_ssp_standard,
 )
 
@@ -28,7 +30,7 @@ class ca_capi_person(Variable):
         # Deeming needs an ineligible spouse living in the same household
         # (20 CFR 416.1160(a)(1)), so a Title XIX facility resident counts
         # only their own income.
-        medical_facility = person("ca_in_medical_care_facility", period.this_year)
+        medical_facility = ca_capi_in_title_xix_facility(person, period)
         income = where(medical_facility, own_income, countable_income)
         # NOTE: the reduced-needs standards for another person's household are
         # not modeled (issue 7892), so those recipients get the
@@ -38,46 +40,37 @@ class ca_capi_person(Variable):
         # Mixed couple: the spouse's SSI/SSP counts as unearned income based on
         # need (MPP 49-035.221), subtracted with the couple's countable income
         # from the couple standard (MPP 49-055.32).
-        # NOTE: the model applies this computation whenever both spouses are
-        # aged, blind or disabled (ssi_couple_computation_applies ignores SSI's
-        # noncitizen test), even when SSA would pay the spouse nothing. Such a
-        # spouse is an ineligible spouse (MPP 49-005(i)(2); 20 CFR 416.1160(d))
-        # and deeming applies. Example, January 2026: a citizen with $1,300 of
-        # Social Security and a CAPI spouse with no income get $818.83 a month
-        # in the model; the law gives $450.94 of CAPI alone (issue 10481).
+        # NOTE: SSI couple status ignores SSI's noncitizen test, so the model
+        # can still pay such a spouse SSI that SSA would not (issue 10481).
         capi_eligible = person("ca_capi_eligible_person", period.this_year)
         joint = person("ssi_couple_computation_applies", period)
-        mixed = joint & ~(person.marital_unit.sum(capi_eligible) > 1)
-        spouse = ~capi_eligible
-        spouse_ssi = person.marital_unit.sum(person("ssi", period) * spouse)
-        # NOTE: ca_state_supplement is an SPM-unit amount; as a simplification,
-        # the spouse's share is pro rata among the unit's SSP-eligible members.
-        ssp_eligible = person("ca_state_supplement_eligible_person", period)
-        spouse_ssp_share = person.marital_unit.sum(ssp_eligible * spouse) / max_(
-            person.spm_unit.sum(ssp_eligible), 1
-        )
-        spouse_ssp = spouse_ssp_share * person.spm_unit("ca_state_supplement", period)
+        couple_with_spouse = joint & ~(person.marital_unit.sum(capi_eligible) > 1)
+        spouse_ssi_ssp = ca_capi_spouse_ssi_ssp(person, period)
         couple_income = person.marital_unit.sum(countable_income)
-        mixed_benefit = max_(
-            payment_standard - couple_income - spouse_ssi - spouse_ssp, 0
-        )
+        # A spouse counts as an eligible spouse only while receiving SSI/SSP
+        # (MPP 49-005(e)(3), 49-050.13). A spouse paid neither is an
+        # ineligible spouse (MPP 49-005(i)(2)), whose income is deemed.
+        spouse_paid = spouse_ssi_ssp > 0
+        mixed = couple_with_spouse & spouse_paid
+        unpaid_spouse = couple_with_spouse & ~spouse_paid
+        mixed_benefit = max_(payment_standard - couple_income - spouse_ssi_ssp, 0)
 
-        # MPP 49-035.71 follows the SSI spouse-to-spouse deeming steps: compute
-        # the federal and state parts as an individual and under deeming, then
-        # take the lesser of each (POMS SI 01320.430 D). WIC 18940(b) applies
-        # the federal deeming rules and WIC 18941 makes CAPI equal SSI/SSP,
-        # which SSA computes this way; the 1999 CAPI form SOC 452 takes the
-        # lesser of the two totals instead.
-        # NOTE: the federal parts use the independent-living benefit rates,
-        # matching the independent-living SSI/SSP standards.
+        # MPP 49-035.71 follows the SSI spouse-to-spouse deeming steps: the
+        # federal and state parts are each the lesser of the individual and the
+        # deeming computation (POMS SI 01320.430 D; WIC 18940(b), 18941). The
+        # 1999 CAPI form SOC 452 takes the lesser of the two totals instead.
+        # NOTE: the federal parts use the independent-living benefit rates.
         individual_standard, couple_standard = ca_capi_ssi_ssp_standard(
             person, period, parameters
         )
         fbr = parameters(period).gov.ssa.ssi.amount
         individual_federal = fbr.individual - own_income
-        couple_federal = fbr.couple - countable_income
+        deeming_income = where(unpaid_spouse, couple_income, countable_income)
+        couple_federal = fbr.couple - deeming_income
         federal = max_(min_(individual_federal, couple_federal), 0)
         individual_supplement = individual_standard - fbr.individual
+        # NOTE: a guard (POMS SI 01320.430 C.4.c); the couple state part exceeds
+        # the individual part in every modeled year.
         couple_supplement = max_(couple_standard - fbr.couple, individual_supplement)
         # Income above a federal rate reduces the matching state supplement.
         supplement = min_(
@@ -86,11 +79,13 @@ class ca_capi_person(Variable):
         )
         p = parameters(period).gov.states.ca.cdss.capi.payment_standard_offset
         deemed_benefit = max_(federal + supplement - p.single, 0)
+        # NOTE: until PR 10240 counts the income of people who fail SSI's
+        # noncitizen test, deeming from a spouse who is not aged, blind or
+        # disabled runs only with supplied inputs.
         deeming = (
-            person("is_ssi_spousal_deeming_applies", period.this_year)
-            & ~joint
-            & ~medical_facility
-        )
+            (person("is_ssi_spousal_deeming_applies", period.this_year) & ~joint)
+            | unpaid_spouse
+        ) & ~medical_facility
         return select(
             [mixed, deeming],
             [mixed_benefit, deemed_benefit],

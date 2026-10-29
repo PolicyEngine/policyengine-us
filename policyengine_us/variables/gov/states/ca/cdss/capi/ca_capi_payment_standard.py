@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.states.ca.cdss.capi._ca_capi_ssi_ssp_standard import (
+    ca_capi_spouse_ssi_ssp,
     ca_capi_ssi_ssp_standard,
 )
 
@@ -32,8 +33,10 @@ class ca_capi_payment_standard(Variable):
         # A spouse receiving SSI/SSP counts as an eligible spouse (MPP
         # 49-005(e)(3)), so the CAPI member of a mixed couple takes the whole
         # couple standard (MPP 49-050.13) and ca_capi_person subtracts that
-        # spouse's SSI/SSP.
-        mixed = joint & ~both_capi
+        # spouse's SSI/SSP. A spouse paid neither is an ineligible spouse (MPP
+        # 49-005(i)(2)), so the CAPI member takes the individual standard.
+        spouse_paid = ca_capi_spouse_ssi_ssp(person, period) > 0
+        mixed = joint & ~both_capi & spouse_paid
         return select(
             [both_capi, mixed],
             [(couple - p.couple) / 2, couple - p.mixed_couple],

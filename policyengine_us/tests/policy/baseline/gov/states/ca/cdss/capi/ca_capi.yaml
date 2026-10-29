@@ -1,4 +1,4 @@
-- name: Single eligible person
+- name: Case 1, single eligible person.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -22,7 +22,7 @@
     # 733.94 x 12 = 8,807.28.
     ca_capi: 8_807.28
 
-- name: Couple, both people eligible
+- name: Case 2, couple, both people eligible.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -50,7 +50,7 @@
     ca_capi_person: [12_592.98, 12_592.98]
     ca_capi: 25_185.96
 
-- name: Integration test, ineligible
+- name: Case 3, integration test, ineligible.
   period: 2024
   input:
     people:
@@ -67,7 +67,7 @@
   output:
     ca_capi: 0
 
-- name: Integration test, SSI eligible
+- name: Case 4, integration test, SSI eligible.
   period: 2024
   input:
     people:
@@ -89,7 +89,7 @@
     ca_state_supplement: 0
     ca_capi: 0
 
-- name: Integration test, permanent resident without 40 SSI quarters
+- name: Case 5, integration test, permanent resident without 40 SSI quarters.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -118,11 +118,12 @@
     # Disabled individual standard 1,233.94 + no-cooking food allowance
     # 128.87 (living arrangements default to no food preparation) =
     # 1,362.81 per month with no offset. Earnings of 83.33 per month fall
-    # within the $20 + $65 exclusions, so countable income is 0.
-    # 1,362.81 x 12 = 16,353.72.
+    # within the $20 + $65 exclusions, so countable income is 0 (until PR
+    # 10240, SSI also zeroes this income for people who fail its noncitizen
+    # test). 1,362.81 x 12 = 16,353.72.
     ca_capi: 16_353.72
 
-- name: Mixed couple, only the noncitizen spouse receives CAPI
+- name: Case 6, mixed couple, only the noncitizen spouse receives CAPI.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -152,7 +153,7 @@
     ca_capi_person: [0, 10_378.68]
     ca_capi: 10_378.68
 
-- name: Two unrelated eligible people in one unit, income is not pooled
+- name: Case 7, two unrelated eligible people in one unit, income is not pooled.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -195,7 +196,7 @@
     ca_capi_person: [0, 14_807.28]
     ca_capi: 14_807.28
 
-- name: Aged person in 2024, the independent-living standard is floored at the federal benefit rate
+- name: Case 8, aged person in 2024, the independent-living standard is floored at the federal benefit rate.
   period: 2024
   absolute_error_margin: 0.01
   input:
