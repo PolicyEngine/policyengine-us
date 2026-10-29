@@ -11,8 +11,9 @@ class ri_medicaid_state_funded_postpartum_eligible(Variable):
     documentation = (
         "Rhode Island's 12-month postpartum continuation for people whose "
         "pregnancy was not covered by Medicaid, or who lack Medicaid "
-        "immigration status. It does not apply while a new pregnancy "
-        "qualifies for Title XXI coverage that the person takes up."
+        "immigration status. It does not apply while the person takes up "
+        "Title XXI coverage for a new pregnancy, which requires income within "
+        "the CHIP limit and no third-party coverage."
     )
     definition_period = YEAR
     defined_for = StateCode.RI
@@ -30,9 +31,12 @@ class ri_medicaid_state_funded_postpartum_eligible(Variable):
         )
         state = person.household("state_code", period)
         chip_limit = parameters(period).gov.hhs.chip.pregnant.income_limit[state]
+        # Title XXI pregnancy coverage excludes third-party coverage
+        # (210-RICR-30-00-1 § 1.6(A)(2)(b); 42 CFR 457.310(b)(2)).
         title_xxi_pregnancy = (
             person("is_pregnant", period)
             & medicaid_income_eligible(person, period, parameters, chip_limit)
+            & ~person("ri_medicaid_has_third_party_coverage", period)
             & person("takes_up_chip_if_eligible", period)
         )
         return continuation & ~pregnancy_group & ~title_xxi_pregnancy

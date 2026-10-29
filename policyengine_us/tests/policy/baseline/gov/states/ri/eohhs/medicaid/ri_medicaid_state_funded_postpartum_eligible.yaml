@@ -70,3 +70,40 @@
         state_code: RI
   output:
     ri_medicaid_state_funded_postpartum_eligible: [false, true, true]
+
+# Title XXI pregnancy coverage requires the absence of third-party insurance
+# (210-RICR-30-00-1 § 1.6(A)(2)(b); 42 CFR 457.310(b)(2)), so an insured
+# person who is pregnant again cannot take it up and keeps the continuation,
+# which R.I. Gen. Laws § 42-12.3-3(g) provides without regard to federal
+# funding. Both had unborn-child CHIP while pregnant and are within the
+# continuation at January 1, 2024; only person 1 now has employer coverage.
+- name: Case 3, an insured new pregnancy in the CHIP band keeps the state-funded continuation.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        is_pregnant: true
+        has_esi: true
+        ri_pregnancy_coverage: FCEP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        takes_up_chip_if_eligible: true
+      person2:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        is_pregnant: true
+        ri_pregnancy_coverage: FCEP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        takes_up_chip_if_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_medicaid_state_funded_postpartum_eligible: [true, false]
+    is_medicaid_eligible: [true, false]
