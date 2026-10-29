@@ -1,3 +1,11 @@
+## [2.79.7] - 2026-10-29
+
+### Fixed
+
+- Correct Rhode Island pregnancy Medicaid and CHIP routing for people with third-party health coverage, and preserve full postpartum Medicaid based on qualifying pregnancy eligibility through the last day of the month in which the 12-month postpartum period ends, including after income changes or another pregnancy. Fixes #10390.
+- Limit Arkansas's Medicaid aged, blind and disabled pathway (ARSeniors) to people aged 65 or older, except that noncitizens who fail the immigration test and meet SSI's income and resource tests, aged or not, keep it for emergency Medicaid, and apply Maine's savings exclusion and $100 couple income disregard.
+
+
 ## [2.79.6] - 2026-10-29
 
 ### Fixed
