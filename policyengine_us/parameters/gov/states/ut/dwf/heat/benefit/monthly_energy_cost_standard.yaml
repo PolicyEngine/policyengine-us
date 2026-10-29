@@ -1,0 +1,37 @@
+description: Utah assigns these monthly energy cost standards by dwelling category and fuel under the Home Energy Assistance Target program.
+HOUSE:
+  natural_gas:
+    2023-03-01: 211
+  propane:
+    2023-03-01: 541
+  fuel_oil:
+    2023-03-01: 468
+  electricity:
+    2023-03-01: 287
+  coal:
+    2023-03-01: 92
+  wood:
+    2023-03-01: 343
+APARTMENT:
+  natural_gas:
+    2023-03-01: 161
+  propane:
+    2023-03-01: 408
+  fuel_oil:
+    2023-03-01: 354
+  electricity:
+    2023-03-01: 218
+  coal:
+    2023-03-01: 71
+  wood:
+    2023-03-01: 260
+# Section 609 groups kerosene with propane and other/steam with coal.
+metadata:
+  unit: currency-USD
+  period: month
+  label: Utah HEAT monthly energy cost standard
+  breakdown:
+    - ut_heat_dwelling_type
+  reference:
+    - title: Utah HEAT Manual, Section 609 Table III Monthly Energy Cost Standards
+      href: https://jobs.utah.gov/infosource/heatpolicy/Policy/600_Payment_Calculation/609_Table_III_Monthly_Energy_Cost_Standards.htm

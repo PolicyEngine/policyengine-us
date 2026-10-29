@@ -71,6 +71,74 @@
   output:
     ca_amt_exemption: 0
 
+- name: Single filer, 2026, exemption phases out at 25% under R&TC 17062.1, not the federal 50%
+  # Schedule P (540) Exemption Worksheet with PE's CPI-uprated 2026 amounts
+  # (the FTB has not published 2026 amounts):
+  # Line 1: 94,850.96. Line 3: 355,690.34. Line 4: 500,000 - 355,690.34 = 144,309.66.
+  # Line 5: 25% x 144,309.66 = 36,077.41. Line 6: 94,850.96 - 36,077.41 = 58,773.55.
+  # At the federal 2026 rate of 50%, line 6 would be 94,850.96 - 72,154.83 = 22,696.13.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {}
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ca_amti: 500_000
+        head_earned: 500_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_amt_exemption: 58_773.55
+
+- name: Joint filers, 2026, exemption phases out at 25%
+  # Line 1: 126,469.65. Line 3: 474,254.81. Line 4: 700,000 - 474,254.81 = 225,745.19.
+  # Line 5: 25% x 225,745.19 = 56,436.30. Line 6: 126,469.65 - 56,436.30 = 70,033.36.
+  # At 50%, line 6 would be 126,469.65 - 112,872.60 = 13,597.06.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {}
+      person2: {}
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        ca_amti: 700_000
+        head_earned: 700_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_amt_exemption: 70_033.36
+
+- name: Single filer, 2025, published amounts (control, unchanged)
+  # 2025 Schedule P (540) Exemption Worksheet:
+  # Line 1: 92,749. Line 3: 347,808. Line 4: 500,000 - 347,808 = 152,192.
+  # Line 5: 25% x 152,192 = 38,048. Line 6: 92,749 - 38,048 = 54,701.
+  period: 2025
+  input:
+    people:
+      person1: {}
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ca_amti: 500_000
+        head_earned: 500_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_amt_exemption: 54_701
+
 - name: Child exemption counts payroll HSA contributions but not a 401(k) deferral
   period: 2025
   input:

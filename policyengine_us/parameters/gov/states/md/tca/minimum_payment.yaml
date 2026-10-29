@@ -1,0 +1,13 @@
+description: Maryland issues a Temporary Cash Assistance benefit only when the assistance unit is eligible for at least this amount.
+
+values:
+  # Dated to the start of the other COMAR 07.03.03.13 E parameters.
+  2016-01-01: 10
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Maryland TCA minimum payment
+  reference:
+    - title: COMAR 07.03.03.13.E(2) - Benefit Amount
+      href: https://dsd.maryland.gov/regulations/Pages/07.03.03.13.aspx
