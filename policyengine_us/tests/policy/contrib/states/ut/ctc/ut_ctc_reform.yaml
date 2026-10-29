@@ -1,17 +1,17 @@
 - name: Default reform cap refunds 800 dollars of unused CTC for one child.
   period: 2026
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ut.ctc.ut_ctc_reform.ut_ctc_reform
   input:
     gov.contrib.states.ut.ctc.in_effect: true
     people:
       person1:
         age: 35
-        ctc_qualifying_child: false
+        ctc_qualifying_child_ignoring_filer_identification: false
         tax_exempt_interest_income: 0
       person2:
         age: 3
-        ctc_qualifying_child: true
+        ctc_qualifying_child_ignoring_filer_identification: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -31,7 +31,7 @@
 
 - name: Custom reform cap can be set to 850 dollars.
   period: 2026
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ut.ctc.ut_ctc_reform.ut_ctc_reform
   input:
     gov.contrib.states.ut.ctc.in_effect: true
@@ -39,11 +39,11 @@
     people:
       person1:
         age: 35
-        ctc_qualifying_child: false
+        ctc_qualifying_child_ignoring_filer_identification: false
         tax_exempt_interest_income: 0
       person2:
         age: 3
-        ctc_qualifying_child: true
+        ctc_qualifying_child_ignoring_filer_identification: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -60,18 +60,18 @@
 
 - name: Refundability is limited to unused CTC after the non-refundable credit.
   period: 2026
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ut.ctc.ut_ctc_reform.ut_ctc_reform
   input:
     gov.contrib.states.ut.ctc.in_effect: true
     people:
       person1:
         age: 35
-        ctc_qualifying_child: false
+        ctc_qualifying_child_ignoring_filer_identification: false
         tax_exempt_interest_income: 0
       person2:
         age: 4
-        ctc_qualifying_child: true
+        ctc_qualifying_child_ignoring_filer_identification: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -90,21 +90,21 @@
 
 - name: Joint threshold is increased to 98000 dollars.
   period: 2026
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ut.ctc.ut_ctc_reform.ut_ctc_reform
   input:
     gov.contrib.states.ut.ctc.in_effect: true
     people:
       person1:
         age: 40
-        ctc_qualifying_child: false
+        ctc_qualifying_child_ignoring_filer_identification: false
         tax_exempt_interest_income: 0
       person2:
         age: 38
-        ctc_qualifying_child: false
+        ctc_qualifying_child_ignoring_filer_identification: false
       person3:
         age: 3
-        ctc_qualifying_child: true
+        ctc_qualifying_child_ignoring_filer_identification: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -122,21 +122,21 @@
 
 - name: Joint threshold phases out above 98000 dollars.
   period: 2026
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ut.ctc.ut_ctc_reform.ut_ctc_reform
   input:
     gov.contrib.states.ut.ctc.in_effect: true
     people:
       person1:
         age: 40
-        ctc_qualifying_child: false
+        ctc_qualifying_child_ignoring_filer_identification: false
         tax_exempt_interest_income: 0
       person2:
         age: 38
-        ctc_qualifying_child: false
+        ctc_qualifying_child_ignoring_filer_identification: false
       person3:
         age: 3
-        ctc_qualifying_child: true
+        ctc_qualifying_child_ignoring_filer_identification: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -153,18 +153,18 @@
 
 - name: Single threshold remains 49000 dollars by default.
   period: 2026
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ut.ctc.ut_ctc_reform.ut_ctc_reform
   input:
     gov.contrib.states.ut.ctc.in_effect: true
     people:
       person1:
         age: 35
-        ctc_qualifying_child: false
+        ctc_qualifying_child_ignoring_filer_identification: false
         tax_exempt_interest_income: 0
       person2:
         age: 3
-        ctc_qualifying_child: true
+        ctc_qualifying_child_ignoring_filer_identification: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -181,6 +181,8 @@
 
 - name: Credit amount and refundable cap uprate in 2027.
   period: 2027
+  # The 2027 amounts come from gov.irs.uprating without rounding, so they are
+  # not whole dollars and move with each update of the inflation forecast.
   absolute_error_margin: 1
   reforms: policyengine_us.reforms.states.ut.ctc.ut_ctc_reform.ut_ctc_reform
   input:
@@ -188,11 +190,11 @@
     people:
       person1:
         age: 35
-        ctc_qualifying_child: false
+        ctc_qualifying_child_ignoring_filer_identification: false
         tax_exempt_interest_income: 0
       person2:
         age: 3
-        ctc_qualifying_child: true
+        ctc_qualifying_child_ignoring_filer_identification: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -206,3 +208,73 @@
   output:
     ut_ctc_potential: 1_030
     ut_refundable_ctc: 824
+
+# Utah Code 59-10-1047(1)(e) counts a child for whom the claimant may claim "a
+# tax credit under Section 24". In 2026 a filer without an SSN cannot claim the
+# federal child tax credit (IRC 24(h)(7)(A)(i)), but IRC 24(h)(4)(C) gives the
+# credit for other dependents for that child, so the child still counts if the
+# filer has an SSN or ITIN. A filer without any TIN gets no section 24 credit
+# (IRC 24(e)(2)) (issue #9403).
+- name: Head of household with an ITIN gets the reform's refundable CTC in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ut.ctc.ut_ctc_reform.ut_ctc_reform
+  input:
+    gov.contrib.states.ut.ctc.in_effect: true
+    people:
+      person1:
+        age: 35
+        ssn_card_type: OTHER_NON_CITIZEN
+        tax_exempt_interest_income: 0
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        ut_total_income: 20_000
+        ut_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ctc_qualifying_children: 0
+    ut_ctc_eligible_children: 1
+    ut_ctc_potential: 1_000
+    ut_ctc: 0
+    ut_refundable_ctc: 800
+
+- name: Head of household without any TIN gets no reform CTC in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ut.ctc.ut_ctc_reform.ut_ctc_reform
+  input:
+    gov.contrib.states.ut.ctc.in_effect: true
+    people:
+      person1:
+        age: 35
+        ssn_card_type: NONE
+        has_tin: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        ut_total_income: 20_000
+        ut_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ctc_eligible_children: 0
+    ut_ctc_potential: 0
+    ut_ctc: 0
+    ut_refundable_ctc: 0
