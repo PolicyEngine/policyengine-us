@@ -384,3 +384,46 @@
     msp_countable_income:
       1999-06: 480
       1999-07: 450
+
+- name: Case 18, Illinois couple whose exemptions total less than 20 dollars keeps the SSI 20 dollar floor.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        alimony_income: 12_000
+      person2:
+        age: 70
+        interest_income: 120
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # PM 15-04-03-a: alimony earns no exemption; the $10 of interest earns $10.
+    # 42 U.S.C. 1396a(r)(2) keeps the SSI $20 for the couple:
+    # (12,000 + 120) / 12 = 1,010; 1,010 - 20 = 990.
+    msp_countable_income: [990, 990]
+
+- name: Case 19, Mississippi applies its 50 dollar exclusion to alimony.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    alimony_income: 12_000
+    state_code: MS
+  output:
+    # Rule 4.2(C)(5) withholds the exclusion only from income based on need:
+    # 12,000 / 12 - 50 = 950.
+    msp_countable_income: 950
