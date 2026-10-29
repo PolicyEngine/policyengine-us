@@ -1,11 +1,12 @@
 description: Tennessee counts a household member's interest income only when it exceeds this annual amount under the Low Income Home Energy Assistance Program.
 # Interest counts only if it exceeds $200 annually and is withdrawn. No input
 # records withdrawals, so interest above the threshold is assumed withdrawn
-# and counts in full; interest at or below it is not counted. The draft 2027
-# manual lists "Dividends and/or interest that $200 annually and is
-# withdrawn", which may extend the threshold to dividends. The model keeps
-# the 2026 manual's interest-only threshold, with dividends counted in full,
-# until a final 2027 manual is posted.
+# and counts in full; interest at or below it is not counted. Section 2.13
+# names no unit for the $200 threshold; the model applies it to each member's
+# interest. The draft 2027 manual lists "Dividends and/or interest that $200
+# annually and is withdrawn", which may extend the threshold to dividends. The
+# model keeps the 2026 manual's interest-only threshold, with dividends
+# counted in full, until a final 2027 manual is posted.
 values:
   2025-10-01: 200
 

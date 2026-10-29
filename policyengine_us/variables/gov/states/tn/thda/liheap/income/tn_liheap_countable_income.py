@@ -33,16 +33,21 @@ class tn_liheap_countable_income(Variable):
         unearned = 0
         for source in p.sources.unearned:
             unearned = unearned + max_(person(source, period, options=[ADD]), 0)
-        # Net Social Security excludes Medicare premiums, and FY2026 plan
-        # Section 1.9 counts benefits excluding the Medicare deduction, so the
-        # Part B premium the person pays is subtracted.
-        social_security = max_(
-            person("social_security", period)
-            - person("medicare_part_b_premium", period),
-            0,
+        # Section 2.13 counts net income from Social Security, pensions
+        # (including military retirement pay) and VA benefits excluding
+        # Medicare premiums, and FY2026 plan Section 1.9 counts benefits
+        # excluding the Medicare deduction. Each member's Part A and Part B
+        # premiums are subtracted from those benefits, floored at zero.
+        benefits = max_(person("social_security", period), 0)
+        for source in p.sources.net_of_medicare:
+            benefits = benefits + max_(person(source, period), 0)
+        medicare_premiums = add(
+            person, period, ["medicare_part_a_premium", "medicare_part_b_premium"]
         )
+        net_benefits = max_(benefits - medicare_premiums, 0)
         # Interest counts only above the annual threshold and when withdrawn;
-        # withdrawal has no input and is assumed.
+        # withdrawal has no input and is assumed. Section 2.13 names no unit
+        # for the threshold; the model applies it to each member's interest.
         interest = max_(person("interest_income", period), 0)
         counted_interest = where(interest > p.interest_threshold, interest, 0)
         gambling = max_(
@@ -55,7 +60,7 @@ class tn_liheap_countable_income(Variable):
         person_income = (
             earned * earned_counted
             + unearned
-            + social_security
+            + net_benefits
             + counted_interest
             + gambling
         )

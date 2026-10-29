@@ -297,3 +297,101 @@
   output:
     # 994 x 12 + 1,200 = 11,928 + 1,200
     tn_liheap_countable_income: 13_128
+
+- name: Case 12, every earned income source counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 10_000
+        self_employment_income_before_lsr: 1_000
+        sstb_self_employment_income_before_lsr: 2_000
+        farm_operations_income: 3_000
+        partnership_income: 4_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Wages 10,000 + self-employment 1,000 + SSTB self-employment 2,000
+    # + farm operations 3,000 + partnership 4,000 = 20,000
+    tn_liheap_countable_income: 20_000
+
+- name: Case 13, every listed unearned income source counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        general_assistance: 1_000
+        unemployment_compensation: 2_000
+        strike_benefits: 3_000
+        workers_compensation: 4_000
+        alimony_income: 5_000
+        survivor_benefits: 6_000
+        disability_benefits: 7_000
+        qualified_dividend_income: 8_000
+        rental_income: 9_000
+        farm_rent_income: 10_000
+        estate_income: 11_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # General assistance 1,000 + unemployment 2,000 + strike 3,000
+    # + workers' compensation 4,000 + alimony 5,000 + survivor 6,000
+    # + disability 7,000 + dividends 8,000 + rental 9,000 + farm rent 10,000
+    # + estate 11,000 = 66,000
+    tn_liheap_countable_income: 66_000
+
+- name: Case 14, railroad, pension, military retirement and VA benefits are counted net of Medicare Part A and Part B premiums.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        railroad_benefits: 16_000
+        taxable_private_pension_income: 4_000
+        # Premium-free Part A at the default 40 quarters; 2026 standard
+        # Part B premium of 202.90 a month.
+        medicare_part_b_premium: 2_434.80
+      person2:
+        age: 68
+        ssi: 0
+        military_retirement_pay: 8_000
+        # Survivor benefit plan annuity.
+        military_retirement_pay_survivors: 2_000
+        veterans_benefits: 1_000
+        # 2026 reduced Part A premium of 311 a month (30-39 quarters).
+        medicare_part_a_premium: 3_732
+        medicare_part_b_premium: 2_434.80
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # person1: 16,000 + 4,000 - (0 + 2,434.80) = 17,565.20
+    # person2: (8,000 + 2,000) + 1,000 - (3,732 + 2,434.80) = 4,833.20
+    # 17,565.20 + 4,833.20 = 22,398.40
+    tn_liheap_countable_income: 22_398.40

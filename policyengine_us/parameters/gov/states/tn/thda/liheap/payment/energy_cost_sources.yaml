@@ -1,4 +1,7 @@
-description: Tennessee adds these household energy bills to compute the energy cost in the energy burden under the Low Income Home Energy Assistance Program.
+description: Tennessee uses these household energy bills for the active energy account test and the energy burden under the Low Income Home Energy Assistance Program.
+# Applicants without an active energy account are not eligible, so a positive
+# bill of any fuel with a reported heating type, or energy included in the
+# rent, meets the account test (tn_liheap_eligible).
 # The energy burden uses the annual average of all household energy usage
 # (electric, gas, propane and other fuels), preferably over 12 months, and the
 # bill data includes service, usage and delivery charges and taxes. Annual

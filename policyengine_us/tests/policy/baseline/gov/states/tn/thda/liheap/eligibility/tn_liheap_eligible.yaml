@@ -111,8 +111,9 @@
   output:
     tn_liheap_eligible: false
 
-- name: Case 5, a home with no heating is ineligible even when a heating expense is set directly.
+- name: Case 5, a home with no heating that pays an electric bill is eligible.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -123,15 +124,16 @@
         members: [person1]
         heating_type: NONE
         pre_subsidy_electricity_expense: 1_680
-        # Set directly so the energy-account test passes and the no-heating
-        # fuel rule alone decides.
-        has_heating_expense: true
     households:
       household:
         members: [person1]
         state_code: TN
   output:
-    tn_liheap_eligible: false
+    # The electric account meets the active energy account test.
+    tn_liheap_eligible: true
+    # 1,680 / 15,080 = 0.111406 -> 0.1114 -> column 5; group C
+    # (13,615.50 < 15,080 <= 18,310.50); sizes 1-2 group C column 5
+    tn_liheap: 445
 
 - name: Case 6, an unknown heating fuel with heat included in rent is eligible.
   period: 2026
@@ -152,7 +154,7 @@
   output:
     tn_liheap_eligible: true
 
-- name: Case 7, an unknown heating fuel without heat in rent is ineligible even when a heating expense is set directly.
+- name: Case 7, an unknown heating fuel without heat in rent is ineligible even with an electric bill.
   period: 2026
   input:
     people:
@@ -165,9 +167,6 @@
         heating_type: UNSPECIFIED
         pre_subsidy_electricity_expense: 1_680
         heat_expense_included_in_rent: false
-        # Set directly so the energy-account test passes and the
-        # unknown-fuel rule alone decides.
-        has_heating_expense: true
     households:
       household:
         members: [person1]

@@ -542,3 +542,158 @@
     # (1,200 + 3,000) / 90,000 = 0.046667 -> 0.0467 -> column 1;
     # nine-or-more group D column 1 = 540 (the sizes 6-8 group would give 409)
     tn_liheap: 540
+
+- name: Case 22, fuel oil, wood, coal and other fuel bills add to electricity in the energy cost.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: FUEL_OIL
+        pre_subsidy_electricity_expense: 1_200
+        fuel_oil_expense: 800
+        wood_expense: 400
+        coal_expense: 200
+        other_heating_fuel_expense: 100
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # 1,200 + 800 + 400 + 200 + 100 = 2,700
+    tn_liheap_energy_cost: 2_700
+    # 2,700 / 15,080 = 0.179045 -> 0.1790 -> column 7; group C
+    # (13,615.50 < 15,080 <= 18,310.50); sizes 1-2 group C column 7
+    tn_liheap: 700
+
+- name: Case 23, a seventeen-person household in FFY2027 uses the size-sixteen income groups beside a household outside Tennessee.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 45, employment_income_before_lsr: 50_000}
+      person2: {age: 43, employment_income_before_lsr: 30_000}
+      person3: {age: 17}
+      person4: {age: 16}
+      person5: {age: 15}
+      person6: {age: 14}
+      person7: {age: 13}
+      person8: {age: 12}
+      person9: {age: 11}
+      person10: {age: 10}
+      person11: {age: 9}
+      person12: {age: 8}
+      person13: {age: 7}
+      person14: {age: 6}
+      person15: {age: 5}
+      person16: {age: 4}
+      person17: {age: 3}
+      person18: {age: 40, employment_income_before_lsr: 15_080}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17]
+      tax_unit2:
+        members: [person18]
+    families:
+      family1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17]
+      family2:
+        members: [person18]
+    marital_units:
+      marital_unit1: {members: [person1, person2]}
+      marital_unit2: {members: [person3]}
+      marital_unit3: {members: [person4]}
+      marital_unit4: {members: [person5]}
+      marital_unit5: {members: [person6]}
+      marital_unit6: {members: [person7]}
+      marital_unit7: {members: [person8]}
+      marital_unit8: {members: [person9]}
+      marital_unit9: {members: [person10]}
+      marital_unit10: {members: [person11]}
+      marital_unit11: {members: [person12]}
+      marital_unit12: {members: [person13]}
+      marital_unit13: {members: [person14]}
+      marital_unit14: {members: [person15]}
+      marital_unit15: {members: [person16]}
+      marital_unit16: {members: [person17]}
+      marital_unit17: {members: [person18]}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_800
+        pre_subsidy_electricity_expense: 3_000
+      spm_unit2:
+        members: [person18]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_680
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17]
+        state_code: TN
+      household2:
+        members: [person18]
+        state_code: KY
+  output:
+    tn_liheap_household_size: [17, 0]
+    # floor(1.5 x (15,960 + 5,680 x 16)) = floor(1.5 x 106,840) = 160,260
+    tn_liheap_income_limit: [160_260, 0]
+    # 1,800 + 3,000 = 4,800; the Kentucky household has no Tennessee cost
+    tn_liheap_energy_cost: [4_800, 0]
+    # 50,000 + 30,000 = 80,000; size 17 uses the printed size-16 tops
+    # (group A 71,312.50, group B 87,382.50), so group B;
+    # 4,800 / 80,000 = 0.06 -> column 2; nine-or-more group B column 2.
+    # The Kentucky household runs the formula at size 0 and receives nothing.
+    tn_liheap: [605, 0]
+
+- name: Case 24, a propane bill in a home heated by electricity raises an FFY2026 benefit to the propane minimum.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        # Propane for cooking and water heating.
+        bottled_gas_expense: 200
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # (1,000 + 200) / 20,000 = 0.06 -> column 2, group D (above 18,310.50):
+    # max(250, 500)
+    tn_liheap: 500
+
+- name: Case 25, propane heat included in rent receives the FFY2026 propane minimum.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        heat_expense_included_in_rent: true
+        bottled_gas_expense: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # 0 / 15,080 = 0 -> column 1, group C: max(174, 500)
+    tn_liheap: 500
