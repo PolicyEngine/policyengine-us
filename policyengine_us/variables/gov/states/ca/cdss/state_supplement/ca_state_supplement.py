@@ -38,8 +38,11 @@ class ca_state_supplement(Variable):
         # CFR 416.1160(d)). If the spouse receives CAPI, none of the income
         # counted for CAPI is deemed (20 CFR 416.1161(a)(2)-(3)), so the
         # recipient's own income counts, not half of the couple's. Otherwise
-        # the spouse's income is deemed and SSA pays the lesser of the
-        # individual and couple computations (20 CFR 416.1163).
+        # the spouse's income is deemed (20 CFR 416.1163, 416.2025(b)(3)).
+        # Taking the lesser of the individual and couple totals gives both:
+        # it equals own income whenever the spouse would receive CAPI.
+        # NOTE: POMS SI 01320.430 D takes the lesser of each part separately;
+        # the totals keep CAPI at zero when the spouse's income is deemed.
         # NOTE: SSI couple status ignores SSI's noncitizen test, so the
         # model's SSI is still the couple computation (issue 10481).
         head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
@@ -72,19 +75,9 @@ class ca_state_supplement(Variable):
         individual_standard, couple_standard = ca_capi_ssi_ssp_standard(
             person, period, parameters
         )
-        # The spouse receives CAPI when the couple standard exceeds the
-        # couple's income plus the recipient's SSI/SSP on own income
-        # (CAPI MPP 49-050.13, 49-035.221).
-        recipient_ssi_ssp = max_(
-            person("ssi", period), individual_standard - own_countable_income
-        )
-        spouse_gets_capi = couple_standard - couple_income - recipient_ssi_ssp > 0
-        deemed_countable_income = max_(
+        mixed_countable_income = max_(
             own_countable_income,
             couple_income - (couple_standard - individual_standard),
-        )
-        mixed_countable_income = where(
-            spouse_gets_capi, own_countable_income, deemed_countable_income
         )
         person_countable_income = where(
             in_mixed_couple, mixed_countable_income, ssi_countable_income
