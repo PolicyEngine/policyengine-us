@@ -4992,6 +4992,41 @@ candidates:
     prs: []
   state: unreviewed
   note: Verify whether the still-listed ruling applies during these years despite its obsolete tax base.
+- id: us-nh:fanf-resource-limit-equality
+  program: tanf
+  years:
+    from: 2022
+    type: calendar
+  question: Is a New Hampshire FANF assistance group whose countable resources equal its resource limit ($1,000 for
+    applicants, $5,000 for recipients) resource-eligible?
+  sources:
+  - kind: statute
+    citation: RSA 167:79, III(f)
+    url: https://gc.nh.gov/rsa/html/xii/167/167-79.htm
+  - kind: regulation
+    citation: N.H. Admin. Rules He-W 656.06(a)
+    url: https://gc.nh.gov/rules/state_agencies/he-w600.html
+  - kind: manual
+    citation: NH DHHS Family Assistance Manual 403, Resource Limits (SR 22-17, dated 07/22)
+    url: https://www.dhhs.nh.gov/fam_htm/html/403_resource_limits_fam.htm
+  readings:
+    statute: The assistance group's countable resources "shall be less than the allowable resource limit", so
+      resources equal to the limit fail the test.
+    other: Countable resources "cannot exceed the limits", so resources equal to the limit pass.
+  example: An applicant group with exactly $1,000 in countable resources is ineligible under the statute, which PE-US
+    follows, and resource-eligible under FAM 403; the same holds for a recipient group with exactly $5,000.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/nh/dhhs/fanf/eligibility/nh_fanf_resources_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10499
+  state: unreviewed
+  note: He-W 656.06(a)(2) gives only the amounts and no comparison. He-W 656.04(c)(6) uses "exceed the allowable
+    limit" only to start a grace period for recipients whose excess resources are personal property that cannot
+    readily be converted to cash; it does not set the eligibility test. RSA 167:79, III(e) uses the same "less
+    than" wording for the income test, and FAM 611.01 follows it there. FAM 403 versions before SR 22-17 were not
+    checked, so the conflict may start earlier than 2022.
 - id: us-nh:fap-income-floor-vs-smi-limit
   program: liheap
   years:
