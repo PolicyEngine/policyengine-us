@@ -1403,13 +1403,21 @@ candidates:
     - policyengine_us/variables/gov/states/ca/cdss/state_supplement/payment_standard/ca_state_supplement_payment_standard.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10379
-  state: unreviewed
-  note: 'PE-US is split, although WIC 18941 makes CAPI equal SSI/SSP. CAPI follows the statute:
-    _ca_capi_ssi_ssp_standard.py adds no food allowance to the one-blind couple rate, and a couple both aged or
-    disabled takes the aged or disabled rate with the couple allowance when that is higher. The state supplement
-    follows POMS: ca_state_supplement_food_allowance.py adds the individual allowance for the aged or disabled member,
-    so in January 2026 the same couple has a $2,367.31 standard as citizens and $2,238.44 as CAPI recipients. The
-    ACIN I-59-25 table lists no such combination. The ruling should set both programs.'
+    - https://github.com/PolicyEngine/policyengine-us/pull/10546
+  state: ruled
+  ruling:
+    by: PolicyEngine
+    date: '2026-10-29'
+    record: https://github.com/PolicyEngine/policyengine-us/pull/10379#issuecomment-6509402355
+  note: 'Ruled 2026-10-29 for the statute by the project lead for the Medicaid fixes; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10379#issuecomment-6509402355. WIC 12200(e) gives the
+    no-cooking allowance only under (c) and (d), so a couple paid the one-blind rate under (b) gets none, in CAPI and
+    in the state supplement. CAPI follows the statute: _ca_capi_ssi_ssp_standard.py adds no food allowance to the
+    one-blind couple rate, and a couple both aged or disabled takes the aged or disabled rate with the couple
+    allowance when that is higher. Until PolicyEngine/policyengine-us#10546 merges, the state supplement follows
+    POMS: ca_state_supplement_food_allowance.py adds the individual allowance for the aged or disabled member, so in
+    January 2026 the same couple has a $2,367.31 standard as citizens and $2,238.44 as CAPI recipients. That PR
+    makes the state supplement follow the statute and sets pe_us.follows to statute.'
 - id: us-ca:ssp-nmohc-couple-standard
   program: ssi-ssp
   years:
