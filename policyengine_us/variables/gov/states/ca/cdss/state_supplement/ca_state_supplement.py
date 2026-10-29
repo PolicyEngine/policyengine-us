@@ -2,6 +2,9 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
+from policyengine_us.variables.gov.states.ca.cdss.capi._ca_capi_ssi_ssp_standard import (
+    ca_capi_ssi_ssp_standard,
+)
 
 
 class ca_state_supplement(Variable):
@@ -32,15 +35,21 @@ class ca_state_supplement(Variable):
         )
         meets_ssi_immigration_test = is_citizen | is_qualified_noncitizen
         # SSA treats a spouse who fails that test as an ineligible spouse (20
-        # CFR 416.1160(d)) and deems none of the spouse's income counted for
-        # CAPI (20 CFR 416.1161(a)(2)-(3)), so in such a couple the recipient's
-        # own income counts, not half of the couple's.
+        # CFR 416.1160(d)). If the spouse receives CAPI, none of the income
+        # counted for CAPI is deemed (20 CFR 416.1161(a)(2)-(3)), so the
+        # recipient's own income counts, not half of the couple's. Otherwise
+        # the spouse's income is deemed and SSA pays the lesser of the
+        # individual and couple computations (20 CFR 416.1163).
         # NOTE: SSI couple status ignores SSI's noncitizen test, so the
         # model's SSI is still the couple computation (issue 10481).
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        spouse_fails_test = (
+            person.marital_unit.sum(~meets_ssi_immigration_test & head_or_spouse) > 0
+        )
         in_mixed_couple = (
             person("ssi_couple_computation_applies", period)
             & meets_ssi_immigration_test
-            & (person.marital_unit.sum(~meets_ssi_immigration_test) > 0)
+            & spouse_fails_test
         )
         earned = max_(
             person("ssi_earned_income", period.this_year)
@@ -49,6 +58,8 @@ class ca_state_supplement(Variable):
             ),
             0,
         )
+        # NOTE: in-kind support uses the couple's presumed maximum value here,
+        # because SSI still treats the pair as a couple.
         unearned = person("ssi_unearned_income", period.this_year) + person(
             "ssi_in_kind_support_and_maintenance", period.this_year
         )
@@ -56,10 +67,27 @@ class ca_state_supplement(Variable):
         own_countable_income = (
             _apply_ssi_exclusions(earned, unearned, parameters, period) / MONTHS_IN_YEAR
         )
-        person_countable_income = where(
-            in_mixed_couple,
+        ssi_countable_income = person("ssi_countable_income", period)
+        couple_income = person.marital_unit.sum(ssi_countable_income)
+        individual_standard, couple_standard = ca_capi_ssi_ssp_standard(
+            person, period, parameters
+        )
+        # The spouse receives CAPI when the couple standard exceeds the
+        # couple's income plus the recipient's SSI/SSP on own income
+        # (CAPI MPP 49-050.13, 49-035.221).
+        recipient_ssi_ssp = max_(
+            person("ssi", period), individual_standard - own_countable_income
+        )
+        spouse_gets_capi = couple_standard - couple_income - recipient_ssi_ssp > 0
+        deemed_countable_income = max_(
             own_countable_income,
-            person("ssi_countable_income", period),
+            couple_income - (couple_standard - individual_standard),
+        )
+        mixed_countable_income = where(
+            spouse_gets_capi, own_countable_income, deemed_countable_income
+        )
+        person_countable_income = where(
+            in_mixed_couple, mixed_countable_income, ssi_countable_income
         )
         countable_income = spm_unit.sum(
             where(meets_ssi_immigration_test, person_countable_income, 0)
