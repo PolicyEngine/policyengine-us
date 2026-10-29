@@ -302,3 +302,67 @@
   output:
     # 30,000 wages + 6,000 minor's SSI; the minor's 1,000 interest and 200 dividends are excluded
     la_liheap_countable_income: 36_000
+
+- name: Case 12, SSTB, farm and partnership business income each count for an adult.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        # Distinct amounts, so dropping any earned source changes the total.
+        sstb_self_employment_income: 4_000
+        farm_operations_income: 2_000
+        partnership_s_corp_income: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # 4,000 + 2,000 + 1,000 = 7,000; no child, so FITAP is 0, and not aged,
+    # blind or disabled, so SSI is 0.
+    la_liheap_countable_income: 7_000
+
+- name: Case 13, every other unearned income source counts for an adult, including reported unemployment and a military survivor annuity.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 55
+        # Distinct amounts, so dropping any unearned source lowers the total
+        # by that source's own amount.
+        military_retirement_pay_survivors: 1_400
+        # Reported, so total_unemployment_compensation is 1,300.
+        unemployment_compensation: 1_300
+        railroad_benefits: 1_200
+        veterans_benefits: 1_100
+        disability_benefits: 1_000
+        survivor_benefits: 900
+        workers_compensation: 800
+        alimony_income: 700
+        rental_income: 600
+        strike_benefits: 500
+        farm_rent_income: 400
+        estate_income: 300
+        ordinary_dividend_income: 200
+        interest_income: 100
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # 1,400 + 1,300 + 1,200 + 1,100 + 1,000 + 900 + 800 + 700 + 600 + 500
+    # + 400 + 300 + 200 + 100 = 10,500. A childless adult under 65 who is not
+    # disabled has no FITAP, SSI, Social Security or Part B premium.
+    la_liheap_countable_income: 10_500

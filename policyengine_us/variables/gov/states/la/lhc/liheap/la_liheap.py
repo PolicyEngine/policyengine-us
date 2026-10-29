@@ -11,9 +11,14 @@ class la_liheap(Variable):
         "Louisiana's single regular heating-season award from the FFY2026 "
         "Heating and Cooling Benefit Matrix: an amount by energy burden, on a "
         "total-energy-cost basis, and household size, plus one priority group "
-        "supplement. Verified for FY2026; earlier and later years are "
-        "unverified estimates through parameter backfilling. The summer "
-        "cooling cycle, crisis assistance and weatherization are out of scope."
+        "supplement, whose disability group also covers Social Security "
+        "disability benefits and SSI paid on the basis of disability. Verified "
+        "for FY2026; earlier and later years are unverified estimates through "
+        "parameter backfilling. Louisiana also pays a separate summer cooling "
+        "award from the same matrix, with 45.5% of FY2026 funds against 25% for "
+        "heating, so program-year regular assistance can be twice this amount; "
+        "the cooling award, crisis assistance and weatherization are out of "
+        "scope."
     )
     defined_for = "la_liheap_eligible"
     reference = (
@@ -48,9 +53,20 @@ class la_liheap(Variable):
         base = p.payment.amount[band][size_group]
         person = spm_unit.members
         age = person("age", period)
+        # Section 4.2 A accepts proof of disability from the Social Security
+        # Administration, so Social Security disability benefits and SSI paid on
+        # the basis of disability also place a member in the group.
+        receives_ssi = (add(person, period, ["ssi"]) > 0) | (
+            add(person, period, ["receives_ssi"]) > 0
+        )
+        disabled = (
+            person("is_disabled", period)
+            | (person("social_security_disability", period) > 0)
+            | (receives_ssi & person("is_ssi_disabled", period))
+        )
         priority_group = (
             (age >= p.elderly_age)
-            | person("is_disabled", period)
+            | disabled
             | (age < p.payment.young_child_max_age + 1)
         )
         priority_member = person("is_citizen_or_legal_immigrant", period) & (

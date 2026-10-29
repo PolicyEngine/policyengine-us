@@ -362,3 +362,54 @@
   output:
     # 1,500 - 1,800 = -300 energy cost -> ineligible
     la_liheap: 0
+
+- name: Case 15, a Social Security disability recipient without a recorded disability receives the priority supplement.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        # SSDI of 1,200 a month, still in the 24-month Medicare waiting period
+        # (months_receiving_social_security_disability is 0), so no Part B
+        # premium is deducted.
+        social_security_disability: 14_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # Income 14,400; 1,740 / 14,400 = 0.1208 -> band 2, size 1: 350
+    # SSDI above 0 places the member in the disability group: 350 + 100
+    la_liheap: 450
+
+- name: Case 16, an SSI recipient disabled under SSI rules receives the priority supplement.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        # is_disabled is not set; no earnings, so no substantial gainful
+        # activity and is_ssi_disabled is true.
+        meets_ssi_disability_criteria: true
+        # 2026 federal SSI benefit rate of 994 a month.
+        ssi: 11_928
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # Income 994 x 12 = 11,928; 2,400 / 11,928 = 0.2012 -> band 3, size 1: 500
+    # SSI paid on the basis of disability: 500 + 100
+    la_liheap: 600

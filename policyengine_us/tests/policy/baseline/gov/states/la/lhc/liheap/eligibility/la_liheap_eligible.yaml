@@ -324,3 +324,30 @@
         state_code: TX
   output:
     la_liheap_eligible: false
+
+- name: Case 15, a public housing tenant whose utility allowance exceeds the bill is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # Only public housing marks the household as subsidized.
+        receives_housing_assistance: false
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+        is_in_public_housing: true
+        # Utility allowance of 150 a month.
+        hud_utility_allowance: 1_800
+  output:
+    # Under 60, so energy cost 1,500 - 1,800 = -300 is not positive. Income
+    # 15,080 is within the 30,618 limit and the electric bill passes the
+    # responsibility test, so only the subsidized energy cost test fails.
+    la_liheap_eligible: false

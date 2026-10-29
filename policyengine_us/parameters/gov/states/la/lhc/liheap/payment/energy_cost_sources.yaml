@@ -1,9 +1,11 @@
 description: Louisiana adds these residential energy bills to compute the total energy cost under the Low Income Home Energy Assistance Program.
 # The guide adds the bills of every energy vendor. Annual amounts stand in for
-# the application-month bill; the ratio to annual income gives the same
-# burden. Bill line items the guide includes or excludes (taxes, customer
-# charges, franchise fees, arrears, deposits) cannot be separated from these
-# totals. Community solar participants report their electric bill.
+# the application-month bill and give the guide's burden only when that month's
+# bill equals the annual monthly average; Louisiana's heating-season electric
+# bills run below that average and gas bills above it. Bill line items the
+# guide includes or excludes (taxes, customer charges, franchise fees, arrears,
+# deposits) cannot be separated from these totals. Community solar
+# participants report their electric bill.
 values:
   2025-10-01:
     - pre_subsidy_electricity_expense
