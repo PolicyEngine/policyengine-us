@@ -25,19 +25,41 @@ class s770_active_business_income(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        p = parameters(period).gov.irs
-        q = 1 - p.ald.misc.employer_share * (
-            p.self_employment.rate.social_security + p.self_employment.rate.medicare
+        draw_installed = (
+            "owners_draw_niit_exclusion"
+            in person.simulation.tax_benefit_system.variables
         )
-        if q <= 0:
-            raise ValueError("S.770 owners-draw netting factor must be positive")
-        # M7: OASDI-only draws exclude only profits actually taxed after cap
-        # room. Uncapped HI draws exclude all actual gross draw, never planned D.
-        draw_exclusion = where(
-            person("s770_draw_hi_in_effect", period),
-            person("s770_draw_gross", period),
-            person("s770_draw_oasdi_base", period) / q,
+        draw_policy = (
+            parameters(period).gov.contrib.ssa.owners_draw if draw_installed else None
         )
+        if (
+            draw_policy is not None
+            and draw_policy.in_effect
+            and period.start.year >= draw_policy.start_year
+        ):
+            if not draw_policy.material_participation_only:
+                raise ValueError(
+                    "Joint owners-draw and active-business NIIT requires "
+                    "material_participation_only=True; passive-inclusive draws "
+                    "need a validated active/NII allocation"
+                )
+            # Use the actual floor-, cap- and factor-aware exclusion. An
+            # explicit draw factor can differ from the standard SE factor.
+            draw_exclusion = person("owners_draw_niit_exclusion", period)
+        else:
+            p = parameters(period).gov.irs
+            q = 1 - p.ald.misc.employer_share * (
+                p.self_employment.rate.social_security + p.self_employment.rate.medicare
+            )
+            if q <= 0:
+                raise ValueError("S.770 owners-draw netting factor must be positive")
+            # M7: OASDI-only excludes only profits actually taxed after cap
+            # room. HI draws exclude all actual gross draw, never planned D.
+            draw_exclusion = where(
+                person("s770_draw_hi_in_effect", period),
+                person("s770_draw_gross", period),
+                person("s770_draw_oasdi_base", period) / q,
+            )
         active_se = person("partnership_self_employment_net_earnings", period) - person(
             "s770_passive_se_income", period
         )

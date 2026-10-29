@@ -1,3 +1,35 @@
+## [2.78.0] - 2026-10-29
+
+### Added
+
+- Add Alaska Heating Assistance Program (ak_hap): FY2027 regular heating benefit from community fuel points, dwelling and income factors up to 150% of the Alaska poverty guideline, with shared-dwelling and utility-allowance reductions applied to heating points under 7 AAC 44.080.
+
+
+## [2.77.0] - 2026-10-29
+
+### Added
+
+- Add an opt-in contributed reform applying SECA to owners' draws from pass-through profits, with configurable phase-in, cap, HI, deduction, and benefit-credit treatment.
+
+  Return zero draw in inactive historical years so the default AIME lookback does not read reporting-floor parameters before they exist.
+
+  Connect the actual owners' draw exclusion to the active-business NIIT reform, respecting OASDI room, optional HI and explicit net-earnings factors.
+
+
+## [2.76.2] - 2026-10-29
+
+### Fixed
+
+- Extend Maine's childless EITC expansion (36 M.R.S. 5219-S(5)-(6)) to every childless filer at least 18 and under 25 whose filer and spouse fail the federal EITC age test, including the 2021 student minimum of 24 (26 U.S.C. 32(n)(1)), so a 2021 full-time student aged 19 to 23 gets the Maine credit computed as if federally eligible. A joint return where one spouse is 18 to 24 and the other meets the federal age test now takes the Maine credit from the federal EITC, as other federally eligible filers do, so EITC take-up applies to it.
+
+
+## [2.76.1] - 2026-10-29
+
+### Fixed
+
+- Limit the self-employed health insurance deduction to net profit less the deductible part of self-employment tax and self-employed retirement plan deductions, as 26 U.S.C. 162(l)(2)(A) and Form 7206 require.
+
+
 ## [2.76.0] - 2026-10-28
 
 ### Added

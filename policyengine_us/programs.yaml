@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, MD, MS, NC, ND, NE, NH, NJ, NM, NY, OH, OK, OR, SD, RI, TX, UT, VA, WA, WY
+    coverage: AK, AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, MD, MS, NC, ND, NE, NH, NJ, NM, NY, OH, OK, OR, SD, RI, TX, UT, VA, WA, WY
     state_implementations:
       - state: AL
         status: partial
@@ -997,6 +997,14 @@ programs:
         parameter_prefix: gov.states.al.adeca.liheap
         verified_years: "2026"
         notes: FY2026 regular heating with the HUD allowance deduction and the funded IIJA supplement. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: AK
+        status: partial
+        name: Alaska HAP
+        full_name: Alaska Heating Assistance Program
+        variable: ak_hap
+        parameter_prefix: gov.states.ak.dpa.hap
+        verified_years: "2027"
+        notes: FY2027 regular heating under the federal LIHEAP component (not the state-funded AAHP), with shared-dwelling and utility-allowance reductions applied to heating points as 7 AAC 44.080 directs. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: AR
         status: partial
         name: Arkansas LIHEAP
