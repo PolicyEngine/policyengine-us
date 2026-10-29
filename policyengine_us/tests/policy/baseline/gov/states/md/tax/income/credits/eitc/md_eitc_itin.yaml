@@ -511,6 +511,39 @@
     # $4,328 - 15.98% x ($41,000 - $23,350) = $1,507.53.
     md_federal_eitc_without_ssn_requirement: 1_507.53
 
+- name: A self-employment response counts in the ITIN parent's earned income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        self_employment_income_before_lsr: 5_000
+        # The return as filed carries the response, so the waived
+        # computation takes the parent's actual self-employment income.
+        self_employment_income_behavioral_response: 1_000
+        ssn_card_type: NONE
+        has_tin: true
+      child:
+        age: 3
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MD
+  output:
+    # Parent, child.
+    self_employment_income: [6_000, 0]
+    eitc: 0
+    # Earned income: $6,000 less half the self-employment tax (7.65% x
+    # 92.35% x $6,000), $5,576.11; 34% of it.
+    md_federal_eitc_without_ssn_requirement: 1_895.88
+    # 45% of it.
+    md_eitc: 853.15
+
 # Md. Code Tax-Gen. 10-704 waives 32(m) with no federal filing condition
 # (unlike 36 M.R.S. 5219-S(7)), and Maryland's childless pro forma applies
 # none either, so an ITIN filer with no federal return is treated like the

@@ -681,7 +681,17 @@ def test_labor_supply_responses_in_either_order():
         "me_federal_eitc_without_ssn_requirement",
     ]
     credits = ["md_eitc", "me_eitc"]
-    situation = build_situation(households, year)
+    # The filing requirement by input, as it is for these households. Maine's
+    # waiver reads it on the parent, and calculating it there calculates the
+    # responses, which a branch created afterwards inherits (core's
+    # get_branch starts from the parent's cached values). By input, nothing
+    # is cached when the branch is created, so the test needs
+    # keep_return_as_filed to copy the responses (Sol r6).
+    situation = build_situation(
+        households,
+        year,
+        tax_unit_inputs={"tax_unit_is_required_to_file": [False] * len(households)},
+    )
     heads = [list(situation["people"]).index(f"head_{i}") for i in range(4)]
     results = []
     for order in (["eitc"] + bases + credits, bases + credits + ["eitc"]):
