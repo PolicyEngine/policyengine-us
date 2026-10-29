@@ -3503,6 +3503,44 @@ candidates:
   state: unreviewed
   note: Identify the instructions and years, then determine whether the gloss fills a silence or impermissibly narrows
     eligibility.
+- id: us-me:childless-eitc-age-cap
+  program: income-tax
+  years:
+    from: 2024
+    type: tax
+  question: Does Maine's EITC reach a childless filer aged 25 or older who fails the federal age test (for
+    example, aged 66), or only one aged 18 to 24?
+  sources:
+  - kind: statute
+    citation: 36 M.R.S. 5219-S(6) (an individual without a qualifying child "who is at least 18 years of age and
+      has not attained 25 years of age before the close of the taxable year")
+    url: https://legislature.maine.gov/statutes/36/title36sec5219-S.html
+  - kind: worksheet
+    citation: 2024 Maine Earned Income Tax Credit Worksheet, special instructions (check "Yes" in federal Step 4,
+      question 2, "if you (or your spouse, if married) were at least 18 years of age")
+    url: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/24_earned_income_cred_ff_0.pdf
+  - kind: instructions
+    citation: 2025 Form 1040ME instructions, Schedule A line 4, refundable earned income tax credit ("Taxpayers at
+      least age 18")
+    url: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_gen_instr_w_cover_pg.pdf#page=10
+  readings:
+    statute: Ages 18 to 24 only. A childless filer aged 25 or older gets the Maine credit only through the federal
+      credit.
+    other: Any childless filer at least 18 who otherwise qualifies for the federal credit, with no upper age.
+  example: TY2024 or TY2025, single, aged 66, no qualifying child, $5,000 of wages. The statute gives $0; the
+    worksheet gives 50% of a pro forma federal credit of $382.50, $191.25.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/me/tax/income/credits/eitc/me_childless_eitc_age_eligible.py
+    - policyengine_us/parameters/gov/states/me/tax/income/credits/eitc/eligibility/age/max.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10526
+  state: ruled
+  note: Statute first. YAML cases for single filers aged 65 and 70 in 2025 pin the cap of 24, and so does the Python
+    invariant test's statutory oracle (test_me_childless_eitc_age_gate.py). Captures of the worksheet and the
+    instructions page are in source_conflicts/sources/us-me/. Worksheets for 2020 to 2023 are unchecked, so the
+    conflict may start earlier.
 - id: us-me:property-tax-credit-unknown-utilities
   program: income-tax
   years:
