@@ -3,12 +3,18 @@ description: New Mexico assigns children to these reimbursement age categories b
 # 0 = INFANT (0-23 months), 1 = TODDLER (24-35 months),
 # 2 = PRESCHOOL (three to five year olds, 36-71 months),
 # 3 = SCHOOL_AGE (six year olds and older, 72+ months).
-# The rule that replaced 8.9.3 NMAC on 2026-09-09 makes a child school age
-# once the child is five years old by September 1 of the school year
-# (8.9.3.7(I)(3)), and 8.9.3.19(D) moves preschool children to the school age
-# category effective September 1, 2026. From that date PRESCHOOL is 36-59
-# months and SCHOOL_AGE is 60+ months; age in months approximates the
-# September 1 cutoff.
+# The rule that replaced 8.9.3 NMAC makes a child school age once the child is
+# five years old by September 1 of the school year (8.9.3.7(I)(3)).
+# 8.9.3.19(D) dates the move of preschool children to school age September 1,
+# 2026, but the rule took effect on its publication on 2026-09-09 (8.9.3.5
+# NMAC; NMSA 14-4-5: no rule is valid or enforceable until it is published in
+# the New Mexico Register). The new threshold therefore starts 2026-09-09, and
+# the monthly model first applies it in October 2026. From then PRESCHOOL is
+# 36-59 months and SCHOOL_AGE is 60+ months.
+# Age in whole years only approximates the September 1 cutoff: every child of
+# age five is school age, although a child who turns five after September 1
+# stays preschool for that school year (8.9.3.7(I)(3)(c), 8.9.3.19(D)). Late
+# in the school year, that covers most five-year-olds.
 metadata:
   type: single_amount
   threshold_unit: month
@@ -38,6 +44,6 @@ brackets:
       2016-10-01: 2
   - threshold:
       2016-10-01: 72
-      2026-09-01: 60
+      2026-09-09: 60
     amount:
       2016-10-01: 3

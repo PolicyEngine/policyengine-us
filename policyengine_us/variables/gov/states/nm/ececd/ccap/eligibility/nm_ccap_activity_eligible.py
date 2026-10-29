@@ -10,7 +10,7 @@ class nm_ccap_activity_eligible(Variable):
     reference = (
         "https://www.srca.nm.gov/parts/title08/08.015.0002.html",
         "https://www.srca.nm.gov/parts/title08/08.009.0003.html",
-        # PDF pages 3, 5, 10
+        # PDF pages 3, 5, 10-11
         "https://prod-rf-lambda.rtssaas.com/PublicFiles/d89c47bd0d70402dba89b03a22bda6d1/b0e207a9-a1a3-412d-9660-0a6e925f6f25/8.9.3.pdf#page=3",
     )
 

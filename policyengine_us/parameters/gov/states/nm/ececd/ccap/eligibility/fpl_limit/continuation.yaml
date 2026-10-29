@@ -9,9 +9,9 @@ description: New Mexico limits continuing income eligibility to this percentage 
 # once Universal Child Care took effect November 1, 2025. The 2025-11-04
 # amendment removed the ceilings from 8.9.3.12 and added category four C with
 # no income cap (8.9.3.9.H), and the rule that replaced 8.9.3 NMAC on
-# 2026-09-09 sets no income limit. We encode the operative ceilings (which is
-# what actually determined continued eligibility) rather than the superseded
-# codified 250%, and set the limit to infinity from 2025-11-01
+# 2026-09-09 sets no income limit. PolicyEngine follows the operative ceilings
+# in the LFC brief (which is what actually determined continued eligibility)
+# over the codified 250%, and sets the limit to infinity from 2025-11-01
 # (income_limit_in_effect also turns off then). Earlier operative expansions
 # (200%/400% before May 2022) predate CCAP coverage in PolicyEngine and are not
 # encoded.
