@@ -98,11 +98,134 @@
     ny_ctc: 330
     ny_ctc_pre_2024: 330
 
+- name: 2020 Empire State child credit recomputes the federal credit with line 19a
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 110_100
+        charitable_cash_donations: 300
+      person2:
+        age: 40
+      person3:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    # Federal AGI 110,100 - 300 = 109,800; IT-201 line 19a adds the 300 back.
+    adjusted_gross_income: 109_800
+    ny_recomputed_federal_agi: 110_100
+    # IT-213 Worksheet A (2020 instructions, file page 2) with line 19a:
+    # 110,100 is over the $110,000 joint threshold; the excess rounds up to
+    # $1,000, so 5% = $50 off the $1,000 credit; 33% x 950 = 313.50.
+    ny_ctc_pre_2024: 313.5
+
+- name: 2020 Empire State child credit adds only the deduction to federal AGI, recomputing nothing else
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        employment_income: 62_690
+        social_security_retirement: 30_000
+        charitable_cash_donations: 300
+      person2:
+        age: 67
+        social_security_retirement: 30_000
+      person3:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    # Line 19a = federal AGI as reported (with the taxable Social Security
+    # figured after line 10b) plus the 300: 109,521.50 + 300 = 109,821.50,
+    # under the $110,000 joint threshold, so 33% of the full $1,000 (Sol
+    # review r3).
+    adjusted_gross_income: 109_521.5
+    ny_recomputed_federal_agi: 109_821.5
+    ny_ctc_pre_2024: 330
+
+- name: 2020 Empire State child credit keeps the federal tax as reported
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        taxable_pension_income: 23_030
+        charitable_cash_donations: 300
+      person2:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # IT-213 Worksheet A lines 7-8 take Form 1040 line 18 as reported: the
+    # federal tax is $408 (AGI 22,730, head of household), which limits the
+    # nonrefundable $1,000 credit; there are no earnings for the refundable
+    # part. 33% x 408 = 134.64 (Sol review r3).
+    income_tax_before_credits: 408
+    ny_ctc_pre_2024: 134.64
+
+- name: 2020 Empire State child credit carries the federal EITC as reported
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        employment_income: 3_000
+        taxable_pension_income: 52_925
+        charitable_cash_donations: 300
+      person2:
+        age: 67
+      person3:
+        age: 10
+      person4:
+        age: 10
+      person5:
+        age: 10
+      person6:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: NY
+  output:
+    adjusted_gross_income: 55_625
+    ny_recomputed_federal_agi: 55_925
+    income_tax_before_credits: 2_992
+    # IT-213 Worksheet C line 7 carries federal Schedule 8812 line 13 as
+    # reported: the federal EITC as reported exceeds the $229.50 of payroll
+    # taxes, so the refundable part is zero, and the credit is 33% of the
+    # $2,992 of tax the nonrefundable part is limited to (Sol review r4).
+    ny_ctc_pre_2024: 987.36
+
 # Tax Law 606(c-1) uses section 24 as it existed before Public Law 115-97, which
 # requires the filer's identification number (IRC 24(e)), and the IT-213
 # instructions require "a valid Social Security number (SSN) or IRS individual
 # taxpayer identification number (ITIN)" for the filer (issue #9403).
-- name: Parent with an ITIN and a four-year-old child gets the credit in 2023
+- name: Case 5, parent with an ITIN and a four-year-old child gets the credit in 2023
   period: 2023
   input:
     people:
@@ -122,7 +245,7 @@
   output:
     ny_ctc_pre_2024: 330
 
-- name: Parent without any TIN and a four-year-old child gets no credit in 2023
+- name: Case 6, parent without any TIN and a four-year-old child gets no credit in 2023
   period: 2023
   input:
     people:

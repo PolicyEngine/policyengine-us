@@ -44,7 +44,8 @@
     filing_status: SINGLE
     state_code: NY
   output:
-    ny_itemized_deductions_reduction: 200 # 300 - 200*0.5 - 200
+    ny_itemized_deductions_reduction: 0
+    ny_itemized_deductions: 100
 
 - name: Case 5, higher income filer. 
   period: 2021
@@ -56,28 +57,75 @@
     filing_status: SINGLE
     state_code: NY
   output:
-    ny_itemized_deductions_reduction: 250 # 300 - 200*0.25 = 250 
+    ny_itemized_deductions_reduction: 0
+    ny_itemized_deductions: 50
 
 - name: Case 6 
   period: 2021
   absolute_error_margin: 0
   input:
-    ny_itemized_deductions_reduction_based_on_charitable_deduction: 100
     ny_itemized_deductions_reduction_based_on_charitable_deduction_applies: true
     ny_itemized_deductions_incremental_reduction: 50
     ny_itemized_deductions_reduction_applies: true
     state_code: NY
   output:
-    ny_itemized_deductions_reduction: 100
+    ny_itemized_deductions_reduction: 0
 
 - name: Case 7 
   period: 2021
   absolute_error_margin: 0
   input:
-    ny_itemized_deductions_reduction_based_on_charitable_deduction: 100
     ny_itemized_deductions_reduction_based_on_charitable_deduction_applies: false
     ny_itemized_deductions_incremental_reduction: 50
     ny_itemized_deductions_reduction_applies: true
     state_code: NY
   output:
     ny_itemized_deductions_reduction: 50
+
+- name: High-income NY filer ($1.5M AGI) capped at 50% of charitable deduction under § 615(g)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    employment_income: 1_500_000
+    interest_deduction: 50_000
+    charitable_cash_donations_50_pct_orgs: 60_000
+  output:
+    charitable_deduction: 60_000
+    ny_itemized_deductions_max: 110_000
+    ny_itemized_deductions_phase_out: 35_094
+    ny_itemized_deductions_reduction: 0
+    ny_itemized_deductions: 30_000
+
+- name: Ultra-high-income NY filer ($12M AGI) capped at 25% of charitable deduction under § 615(g)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    employment_income: 12_000_000
+    interest_deduction: 50_000
+    charitable_cash_donations_50_pct_orgs: 80_000
+    charitable_cash_donations_non_50_pct_orgs: 20_000
+  output:
+    charitable_deduction: 100_000
+    ny_itemized_deductions_max: 150_000
+    ny_itemized_deductions_phase_out: 120_000
+    ny_itemized_deductions_reduction: 0
+    ny_itemized_deductions: 25_000
+
+- name: Ultra-high-income NY filer with charity only still gets 25% of charity when the phase-out leaves less
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    employment_income: 12_000_000
+    charitable_cash_donations_50_pct_orgs: 100_000
+  output:
+    ny_itemized_deductions_max: 100_000
+    ny_itemized_deductions_phase_out: 80_000
+    ny_itemized_deductions_reduction: 0
+    ny_itemized_deductions: 25_000
+

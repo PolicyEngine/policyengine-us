@@ -1,0 +1,20 @@
+- name: Case 1, default hi_other_additions is zero
+  period: 2024
+  input:
+    state_code: HI
+    employment_income: 50_000
+  output:
+    hi_other_additions: 0
+    hi_additions: 0
+    hi_agi: 50_000
+
+- name: Case 2, hi_other_additions increases HI AGI
+  period: 2024
+  input:
+    state_code: HI
+    employment_income: 50_000
+    hi_other_additions: 2_000
+  output:
+    hi_other_additions: 2_000
+    hi_additions: 2_000
+    hi_agi: 52_000
