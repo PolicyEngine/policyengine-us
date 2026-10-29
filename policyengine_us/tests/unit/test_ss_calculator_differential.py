@@ -1,8 +1,10 @@
 """The optional calculator leaves the existing model disconnected and unchanged.
 
-The reference removes the new variables and parameter namespaces entirely. It
-therefore detects an accidental dependency even when a new variable's default
-value happens to be neutral. This is portable in source distributions and CI;
+The reference removes calculator-only variables and parameter namespaces. Shared
+benefit-lever parameters and statutory COLA history remain available to the
+reported-benefit formulas. It detects an accidental calculator dependency even
+when a new variable's default value happens to be neutral. This is portable in
+source distributions and CI;
 it does not need a second checkout or git at test time. The implementation's
 separate source-diff check establishes that legacy formulas/parameters were not
 edited. These comparisons exercise their live SSA and downstream dependency
@@ -21,12 +23,12 @@ from policyengine_us.tools.general import earliest_input_year
 
 CALCULATOR_PREFIXES = ("ss_calculator_", "ss_calculated_")
 NEW_PARAMETER_NODES = (
-    "gov.contrib.ssa.benefit_levers",
+    # Benefit levers and COLA history also serve the reported-benefit route,
+    # which remains part of the reference when the calculator is removed.
     "gov.contrib.ssa.pia",
-    "gov.contrib.congress.s770",
+    "gov.contrib.congress.s770.section_2",
     "gov.ssa.social_security.pia.bend_points",
     "gov.ssa.social_security.cola",
-    "gov.ssa.cola_history",
 )
 YEAR = 2026
 

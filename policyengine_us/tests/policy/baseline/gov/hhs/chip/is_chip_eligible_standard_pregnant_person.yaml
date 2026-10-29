@@ -185,6 +185,474 @@
     is_medicaid_eligible: [false, false]
     is_chip_eligible_standard_pregnant_person: [true, false]
     # FCEP covers the unborn child, so it has no immigration test; both states
-    # offer it (Colorado since October 30, 2023).
+    # offer it (Colorado since January 1, 2025).
     is_chip_fcep_eligible_person: [true, true]
     is_chip_eligible_pregnant: [true, true]
+
+# The CHIP state plans have set these pregnancy bands since before 2018:
+# Colorado 260% (CO-13-0015), New Jersey 200% (NJ-13-0018) and Rhode Island
+# 253% (RI-13-023), each plus the 5 percentage point MAGI disregard.
+# Kentucky's 213% band takes effect July 1, 2022 (KY-21-0001), and this
+# YEAR-defined variable reads the January value, so Kentucky has no group in
+# 2022.
+- name: Case 9, pregnancy bands in Colorado, New Jersey and Rhode Island include the disregard, and Kentucky's July 2022 group does not apply in 2022 annual simulations.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.63
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.03
+      person3:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.55
+      person4:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.1
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+      tax_unit4:
+        members: [person4]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+      spm_unit3:
+        members: [person3]
+      spm_unit4:
+        members: [person4]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+      family3:
+        members: [person3]
+      family4:
+        members: [person4]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+      marital_unit4:
+        members: [person4]
+    households:
+      household1:
+        members: [person1]
+        state_code: CO
+      household2:
+        members: [person2]
+        state_code: NJ
+      household3:
+        members: [person3]
+        state_code: RI
+      household4:
+        members: [person4]
+        state_code: KY
+  output:
+    is_chip_eligible_standard_pregnant_person: [true, true, true, false]
+
+# 907 KAR 4:030 Section 2(1)(e)1 sets 213% plus a five percent cushion (218%).
+# The limit is inclusive, so income exactly at 218% FPL qualifies.
+- name: Case 10, Kentucky pregnancy group covers income up to and including 218% FPL in 2023.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.1
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.25
+      person3:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.18
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+      spm_unit3:
+        members: [person3]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+      family3:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household1:
+        members: [person1]
+        state_code: KY
+      household2:
+        members: [person2]
+        state_code: KY
+      household3:
+        members: [person3]
+        state_code: KY
+  output:
+    is_chip_eligible_standard_pregnant_person: [true, false, true]
+
+# West Virginia's group starts July 1, 2019, so the 2019 annual value is still
+# -inf. Colorado's 265% limit already applied in 2019.
+- name: Case 11, West Virginia's July 2019 pregnancy group does not apply in 2019 annual simulations, and Colorado excludes income above 265% FPL.
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.5
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.66
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household1:
+        members: [person1]
+        state_code: WV
+      household2:
+        members: [person2]
+        state_code: CO
+  output:
+    is_chip_eligible_standard_pregnant_person: [false, false]
+
+# West Virginia's 300% band took effect July 1, 2019 (WV-19-0006), so 2020 is
+# the first year the YEAR-defined variable reads it.
+- name: Case 12, West Virginia pregnancy group applies in 2020.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.5
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    is_chip_eligible_standard_pregnant_person: true
+
+# The limits are inclusive, so income exactly at 265% (Colorado), 205% (New
+# Jersey) and 258% (Rhode Island) qualifies.
+- name: Case 13, income exactly at the Colorado, New Jersey and Rhode Island pregnancy limits qualifies in 2022.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.65
+      person2:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.05
+      person3:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.58
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+      spm_unit3:
+        members: [person3]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+      family3:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household1:
+        members: [person1]
+        state_code: CO
+      household2:
+        members: [person2]
+        state_code: NJ
+      household3:
+        members: [person3]
+        state_code: RI
+  output:
+    is_chip_eligible_standard_pregnant_person: [true, true, true]
+
+# West Virginia's band is 300% FPL (WV-19-0006 CS8) plus the 5 percentage point
+# disregard. 2026 household of 2 (FPG 21,640): 21,640 x 3.05 / 12 = 5,500.17
+# -> $5,501, so 305% qualifies and 306% ($5,518.20) does not.
+- name: Case 14, West Virginia pregnancy group covers income at 305% FPL in 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 3.05
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    is_chip_eligible_standard_pregnant_person: true
+
+- name: Case 15, West Virginia pregnancy group excludes income at 306% FPL in 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 3.06
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    is_chip_eligible_standard_pregnant_person: false
+
+# 2026 household of 2: 21,640 x 2.05 / 12 = 3,696.83 -> $3,697; 2.06 gives
+# $3,714.87.
+- name: Case 16, New Jersey pregnancy group excludes income at 206% FPL in 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.06
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    is_chip_eligible_standard_pregnant_person: false
+
+# 2026 household of 2: 21,640 x 2.58 / 12 = 4,652.60 -> $4,653; 2.59 gives
+# $4,670.63.
+- name: Case 17, Rhode Island pregnancy group excludes income at 259% FPL in 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.59
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    is_chip_eligible_standard_pregnant_person: false
+
+# 2026 household of 2: 21,640 x 2.18 / 12 = 3,931.27 -> $3,932; 2.19 gives
+# $3,949.30.
+- name: Case 18, Kentucky pregnancy group excludes income at 219% FPL in 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.19
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    is_chip_eligible_standard_pregnant_person: false
+
+# Kentucky's group starts July 1, 2022 (KY-21-0001), so 2021 has no group.
+- name: Case 19, Kentucky has no CHIP pregnancy group in 2021.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.1
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    is_chip_eligible_standard_pregnant_person: false
+
+# 2019 household of 2: 16,910 x 2.65 / 12 = 3,734.29 -> $3,735, so 265%
+# qualifies (the old 2.60 limit gave $3,664).
+- name: Case 20, Colorado pregnancy group covers income at 265% FPL in 2019.
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.65
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    is_chip_eligible_standard_pregnant_person: true
+
+# West Virginia's Medicaid pregnancy limit is 190% FPL (185% plus the 5
+# percentage point disregard), and its separate CHIP pregnancy band runs above
+# it to 305%. Both start July 1, 2019, so 2020 is the first annual year. 2020
+# household of 2 (FPG 17,240): 17,240 x 1.90 / 12 = 2,729.67 -> $2,730 a month
+# ($32,760 a year). At $2,730 a month the applicant stays in Medicaid; at
+# $2,731 a month ($32,772 a year) she moves to standard pregnancy CHIP.
+- name: Case 21, West Virginia pregnant applicant at the $2,730 Medicaid ceiling stays in Medicaid in 2020.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        employment_income: 32_760
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    medicaid_household_size: 2
+    is_pregnant_for_medicaid: true
+    medicaid_category: PREGNANT
+    is_medicaid_eligible: true
+    is_chip_eligible_standard_pregnant_person: false
+    chip_category: NONE
+
+- name: Case 22, West Virginia pregnant applicant $1 above the Medicaid ceiling moves to standard pregnancy CHIP in 2020.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: CITIZEN
+        employment_income: 32_772
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    medicaid_household_size: 2
+    is_pregnant_for_medicaid: false
+    medicaid_category: NONE
+    is_medicaid_eligible: false
+    is_chip_eligible_standard_pregnant_person: true
+    chip_category: PREGNANT_STANDARD

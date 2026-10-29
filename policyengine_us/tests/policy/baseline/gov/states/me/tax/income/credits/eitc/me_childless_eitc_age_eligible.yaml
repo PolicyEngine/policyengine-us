@@ -105,3 +105,209 @@
         state_code: ME
   output:
     me_childless_eitc_age_eligible: false
+
+# The added cohort is a filer or spouse aged 18 to 24 when neither meets the
+# federal age test, IRC 32(c)(1)(A)(ii)(II). Dependents' ages count for
+# neither test.
+- name: 2021 joint return with a student aged 22 and a non-student aged 22 is outside the cohort
+  # The non-student meets the 2021 federal minimum of 19.
+  period: 2021
+  input:
+    people:
+      head:
+        age: 22
+        is_full_time_student: true
+      spouse:
+        age: 22
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: false
+
+- name: 2021 joint return with students aged 22 and 20 is in the cohort
+  period: 2021
+  input:
+    people:
+      head:
+        age: 22
+        is_full_time_student: true
+      spouse:
+        age: 20
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: true
+
+- name: 2021 joint return with a student aged 22 and a spouse aged 70 is outside the cohort
+  # 26 U.S.C. 32(n)(2) removed the federal maximum age for 2021, so the
+  # 70-year-old meets the federal age test.
+  period: 2021
+  input:
+    people:
+      head:
+        age: 70
+      spouse:
+        age: 22
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: false
+
+- name: 2021 childless full-time student aged 25 is outside the cohort
+  period: 2021
+  input:
+    people:
+      head:
+        age: 25
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: false
+
+- name: 2025 childless full-time student aged 24 is in the cohort
+  period: 2025
+  input:
+    people:
+      head:
+        age: 24
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: true
+
+- name: 2025 joint return with spouses aged 22 and 30 is outside the cohort
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+      spouse:
+        age: 22
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: false
+
+- name: 2025 joint return with spouses aged 22 and 66 is in the cohort
+  period: 2025
+  input:
+    people:
+      head:
+        age: 66
+      spouse:
+        age: 22
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: true
+
+- name: 2025 joint return with spouses aged 17 and 66 is outside the cohort
+  period: 2025
+  input:
+    people:
+      head:
+        age: 66
+      spouse:
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: false
+
+- name: 2025 filer aged 20 with a dependent aged 30 is in the cohort
+  # The dependent is not an EITC qualifying child, and the dependent's age
+  # does not make the filer meet the federal age test.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+      dependent:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: true
+
+- name: 2025 filer aged 66 with a dependent aged 20 is outside the cohort
+  # The dependent's age does not place the filer in Maine's 18-24 range.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 66
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+      dependent:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: false

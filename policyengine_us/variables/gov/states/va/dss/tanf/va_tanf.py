@@ -8,14 +8,21 @@ class va_tanf(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = "va_tanf_eligibility"
-    reference = "https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/tanfx2fview/tanf/Chapter-300---Need-and-Amount-of-Assistance.pdf#page=51"
+    reference = (
+        "https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/tanfx2fview/tanf/Chapter-300---Need-and-Amount-of-Assistance.pdf#page=51",
+        "https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/tanfview/tanf/Chapter-500---Authorization-and-Payment.pdf#page=3",
+    )
 
     def formula(spm_unit, period, parameters):
         # the calculated payment
+        # Two-parent (TANF-UP) units get the TANF standards unless the
+        # separate TANF-UP standards are in effect.
+        p_up = parameters(period).gov.states.va.dss.tanf.payment.up_grant_standard
         up_tanf_eligibility = spm_unit("va_up_tanf_eligibility", period)
+        uses_up_standards = up_tanf_eligibility & p_up.in_effect
         grant_standard = spm_unit("va_tanf_grant_standard", period)
         up_grant_standard = spm_unit("va_tanf_up_grant_standard", period)
-        grant = where(up_tanf_eligibility, up_grant_standard, grant_standard)
+        grant = where(uses_up_standards, up_grant_standard, grant_standard)
         countable_income = spm_unit("va_tanf_countable_income", period)
         payment = max_(grant - countable_income, 0)
 
@@ -36,10 +43,15 @@ class va_tanf(Variable):
             p_payment.grant_standard.group2.max,
         )
         base_max = where(
-            up_tanf_eligibility,
+            uses_up_standards,
             up_tanf_base_max,
             tanf_base_max,
         )
         maximum = np.ceil(base_max * p.standard_multiplier)
 
-        return min_(payment, maximum)
+        # The payment is the budgetary deficiency adjusted to the next lower
+        # dollar; no payment is made when it is under the minimum, but the
+        # unit stays eligible (TANF Manual 502.1 A). Rounding to cents first
+        # keeps float error from dropping a whole dollar.
+        capped_payment = np.floor(np.round(min_(payment, maximum), 2))
+        return where(capped_payment >= p.minimum_payment, capped_payment, 0)
