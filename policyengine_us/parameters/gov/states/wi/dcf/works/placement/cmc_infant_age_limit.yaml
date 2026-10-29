@@ -1,15 +1,19 @@
-description: Wisconsin limits the Custodial Parent of Infant placement to parents with children at or below this age in months under the Wisconsin Works program.
+description: Wisconsin limits the Custodial Parent of an Infant placement to custodial parents of children at or below this age in weeks under the Wisconsin Works program.
 
 values:
-  2011-10-01: 2
+  1997-09-01: 12
+  2012-01-01: 8
 
 metadata:
-  unit: month
+  unit: week
   period: month
   label: Wisconsin Works CMC infant age limit
   reference:
-    # Wisconsin statute specifies 8 weeks; 2 months is an approximation.
     - title: Wisconsin Statutes 49.148(1m)(a)1
       href: https://docs.legis.wisconsin.gov/statutes/statutes/49/iii/148
-    - title: W-2 Manual 7.4.5 - Custodial Parent of an Infant
+    - title: 1997-98 Wisconsin Statutes 49.148(1m)(a)
+      href: https://docs.legis.wisconsin.gov/1997/statutes/statutes/49.pdf#page=19
+    - title: "2011 Wisconsin Act 32, sections 1361s and 9408(1d) #page 226,530"
+      href: https://docs.legis.wisconsin.gov/2011/related/acts/32.pdf#page=226
+    - title: W-2 Manual 7.4.3 - Custodial Parent of an Infant (CMC)
       href: https://dcf.wisconsin.gov/manuals/w-2-manual/Production/07/7.4.3_Custodial_Parent_of_an_Infant_CMC_.htm

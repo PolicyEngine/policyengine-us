@@ -1,0 +1,134 @@
+# Iowa LIHEAP income limit (REQ-002, REQ-003): 200 percent of the 2025 HHS
+# poverty guideline for the counted household size, with no rounding. The FY26
+# published table is 31,300 for one person plus 11,000 per additional person
+# (Appendix B p. 89 of the FY26 LIHEAP Policy and Procedures Manual, repeated
+# in Appendix A p. 88): https://hhs.iowa.gov/media/17262/download?inline#page=89
+# Agency program page, "at or below 200% of the 2025 federal poverty
+# guidelines": https://hhs.iowa.gov/programs/programs-and-services/liheap
+
+- name: Case 1, one-person limit is 31,300.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 2.0 x 15,650 = 31,300 (Appendix B, size 1).
+    ia_liheap_income_limit: 31_300
+
+- name: Case 2, four-person limit is 64,300.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 42_000
+      person2:
+        age: 36
+        employment_income: 18_000
+      person3:
+        age: 9
+      person4:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_250
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IA
+  output:
+    # 2.0 x (15,650 + 3 x 5,500) = 2.0 x 32,150 = 64,300 (Appendix B, size 4).
+    ia_liheap_income_limit: 64_300
+
+- name: Case 3, eight-person limit is 108,300.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 44
+        employment_income: 60_000
+      person2:
+        age: 42
+        employment_income: 30_000
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 12
+      person6:
+        age: 10
+      person7:
+        age: 7
+      person8:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_600
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: IA
+  output:
+    # 2.0 x (15,650 + 7 x 5,500) = 2.0 x 54,150 = 108,300 (Appendix B, size 8);
+    # 108,300 - 97,300 = 11,000, the published each-additional-person step.
+    ia_liheap_income_limit: 108_300
+
+- name: Case 4, household with no counted member has a zero limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        employment_income: 22_000
+      person2:
+        age: 28
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # 2.0 x 0 = 0.
+    ia_liheap_income_limit: 0
+
+- name: Case 5, the same household in Illinois has a zero Iowa limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # ia_liheap_household_size is zero outside Iowa, so 2.0 x 0 = 0.
+    ia_liheap_income_limit: 0
