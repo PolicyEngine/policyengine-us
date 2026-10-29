@@ -23,6 +23,5 @@ class md_eitc_child_count(Variable):
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.md.tax.income.credits.eitc
-        federal = federal_eitc_tax_unit(tax_unit, period, p.itin_eligible)
+        federal = federal_eitc_tax_unit(tax_unit, period)
         return federal("eitc_child_count", period)

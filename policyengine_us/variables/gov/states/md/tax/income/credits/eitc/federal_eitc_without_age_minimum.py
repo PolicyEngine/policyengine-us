@@ -31,11 +31,10 @@ class federal_eitc_without_age_minimum(Variable):
         # § 32(c)(1)(A)(ii)(II) and other federal § 32 rules (investment
         # income, section 911) still apply, and so does any reform of the
         # federal credit.
-        p = parameters(period).gov.states.md.tax.income.credits.eitc
         # The tax units with an ITIN or any Social Security number accepted
         # (when Maryland waives 32(m)), so the qualifying children are those
         # of the federal formulas, reforms included.
-        federal = federal_eitc_tax_unit(tax_unit, period, p.itin_eligible)
+        federal = federal_eitc_tax_unit(tax_unit, period)
         person = federal.members
         has_child = federal("eitc_child_count", period) > 0
         # Relative parameter reference break branching in some states that

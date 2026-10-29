@@ -29,6 +29,5 @@ class md_federal_eitc_without_ssn_requirement(Variable):
         # credit and are filing your Maryland return using an ITIN, you may
         # claim the state earned income credit by calculating the federal
         # earned income credit disregarding the SSN requirement."
-        p = parameters(period).gov.states.md.tax.income.credits.eitc
-        federal = federal_eitc_tax_unit(tax_unit, period, p.itin_eligible)
+        federal = federal_eitc_tax_unit(tax_unit, period)
         return federal("eitc", period)

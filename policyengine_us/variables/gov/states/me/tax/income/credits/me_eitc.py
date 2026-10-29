@@ -19,8 +19,9 @@ class me_eitc(Variable):
         # larger of the federal EITC and the pro forma amount for that
         # cohort; the pro forma is zero for tax units outside the expansion.
         # From 2021, § 5219-S(7) accepts an ITIN or any Social Security number
-        # for the filer, spouse and qualifying children, so the federal EITC
-        # is computed that way and an ITIN child is a qualifying child.
+        # for the filer, spouse and qualifying children of a filer who files a
+        # federal return, so for such a return the federal EITC is computed
+        # that way and an ITIN child is a qualifying child.
         federal_eitc = max_(
             tax_unit("me_federal_eitc_without_ssn_requirement", period),
             tax_unit("me_pro_forma_childless_eitc", period),

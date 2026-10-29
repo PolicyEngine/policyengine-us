@@ -18,7 +18,8 @@ class me_pro_forma_childless_eitc(Variable):
         "(earnings, phase-out, investment income, taxpayer identification, "
         "the bar on section 911 claimants) still apply, as does any reform of "
         "the federal credit. From 2021 an ITIN or any Social Security number "
-        "meets the identification requirement (§ 5219-S(7)). Like the federal "
+        "meets the identification requirement for a filer who files a federal "
+        "income tax return (§ 5219-S(7)). Like the federal "
         "credit, it is computed on the AGI of the return as filed; unlike it, "
         "it applies no take-up, filing condition or separate-filer rule."
     )
@@ -44,9 +45,10 @@ class me_pro_forma_childless_eitc(Variable):
         # gate dropped, the investment-income and identification
         # requirements of § 32 kept. From 2021, § 5219-S(7) lets an ITIN or
         # any Social Security number meet the identification requirement of
-        # § 32(c)(1)(E).
-        p = parameters(period).gov.states.me.tax.income.credits.eitc
-        federal = federal_eitc_tax_unit(tax_unit, period, p.itin_eligible)
+        # § 32(c)(1)(E) for a filer who files a federal return; the tax units
+        # below say whom it reaches, before the pro forma sets voluntary
+        # filing in its own branch.
+        federal = federal_eitc_tax_unit(tax_unit, period)
         # § 5219-S(6) also requires the qualifications of IRC
         # 32(c)(1)(A)(ii)(III): the filer may not be a dependent of another
         # taxpayer, and on a joint return neither spouse may be (Publication

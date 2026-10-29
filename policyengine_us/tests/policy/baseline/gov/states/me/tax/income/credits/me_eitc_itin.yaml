@@ -1,7 +1,8 @@
-# 36 M.R.S. 5219-S(7): from tax year 2021, "notwithstanding Section 32(m) of
-# the Code", the taxpayer identification number required by IRC 32(c)(1)(E)
-# and (c)(3)(D) "means a federal individual taxpayer identification number ...
-# or a social security number". An ITIN holder is ssn_card_type NONE with
+# 36 M.R.S. 5219-S(7): from tax year 2021, "for an individual who files a
+# federal income tax return, notwithstanding Section 32(m) of the Code", the
+# taxpayer identification number required by IRC 32(c)(1)(E) and (c)(3)(D)
+# "means a federal individual taxpayer identification number ... or a social
+# security number". An ITIN holder is ssn_card_type NONE with
 # has_tin true; a person with no taxpayer identification number has has_tin
 # false. Maine pays 25% of the federal credit with a qualifying child and 50%
 # without (5219-S(1-A)). 2025 federal amounts are from Rev. Proc. 2024-40:
@@ -415,3 +416,216 @@
     # The 18-24 pro forma applies no take-up for SSN filers either.
     me_pro_forma_childless_eitc: 649
     me_eitc: 324.50
+
+# § 5219-S(7) reaches only "an individual who files a federal income tax
+# return". A filer files under the federal EITC's own condition: required to
+# file, or filing voluntarily, or filing to claim a refundable credit
+# (would_file_if_eligible_for_refundable_credit, true by default).
+- name: Childless ITIN filer aged 20 who files no federal return gets no Maine EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 20
+        employment_income: 5_000
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        would_file_taxes_voluntarily: false
+        would_file_if_eligible_for_refundable_credit: false
+    households:
+      household:
+        members: [person]
+        state_code: ME
+  output:
+    # $5,000 doesn't require a return, and the filer wouldn't file one.
+    tax_unit_is_required_to_file: false
+    me_eitc_ssn_limitation_waived: false
+    me_pro_forma_childless_eitc: 0
+    me_eitc: 0
+
+- name: The same ITIN filer who would file to claim a refundable credit gets the pro forma credit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 20
+        employment_income: 5_000
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        would_file_taxes_voluntarily: false
+        would_file_if_eligible_for_refundable_credit: true
+    households:
+      household:
+        members: [person]
+        state_code: ME
+  output:
+    me_eitc_ssn_limitation_waived: true
+    # 7.65% x $5,000.
+    me_pro_forma_childless_eitc: 382.50
+    me_eitc: 191.25
+
+- name: SSN twin of the ITIN filer with no federal return keeps the pro forma credit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 20
+        employment_income: 5_000
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person]
+        would_file_taxes_voluntarily: false
+        would_file_if_eligible_for_refundable_credit: false
+    households:
+      household:
+        members: [person]
+        state_code: ME
+  output:
+    # The 18-24 pro forma applies no filing condition to an SSN filer, who
+    # needs no waiver of 32(m).
+    me_pro_forma_childless_eitc: 382.50
+    me_eitc: 191.25
+
+- name: Childless ITIN filer aged 20 required to file gets the pro forma credit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 20
+        employment_income: 17_000
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        would_file_taxes_voluntarily: false
+        would_file_if_eligible_for_refundable_credit: false
+    households:
+      household:
+        members: [person]
+        state_code: ME
+  output:
+    # $17,000 exceeds the $15,750 standard deduction, so the filer must file.
+    tax_unit_is_required_to_file: true
+    me_eitc_ssn_limitation_waived: true
+    # $649 - 7.65% x ($17,000 - $10,620).
+    me_pro_forma_childless_eitc: 160.93
+    me_eitc: 80.465
+
+- name: Citizen parent aged 20 who files no federal return doesn't count a child with an ITIN
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 20
+        employment_income: 5_000
+        ssn_card_type: CITIZEN
+      child:
+        age: 3
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        would_file_taxes_voluntarily: false
+        would_file_if_eligible_for_refundable_credit: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: ME
+  output:
+    me_eitc_ssn_limitation_waived: false
+    # Without subsection 7 the child doesn't qualify (32(m)), so the parent
+    # falls in Maine's childless 18-24 cohort, as on main.
+    me_eitc_child_count: 0
+    me_federal_eitc_without_ssn_requirement: 0
+    me_pro_forma_childless_eitc: 382.50
+    me_eitc: 191.25
+
+- name: The same parent filing a federal return counts the child with an ITIN
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 20
+        employment_income: 5_000
+        ssn_card_type: CITIZEN
+      child:
+        age: 3
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ME
+  output:
+    me_eitc_ssn_limitation_waived: true
+    me_eitc_child_count: 1
+    # 34% x $5,000; 25% of it.
+    me_federal_eitc_without_ssn_requirement: 1_700
+    me_pro_forma_childless_eitc: 0
+    me_eitc: 425
+
+- name: Childless ITIN filer aged 30 who files no federal return gets no Maine EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        would_file_taxes_voluntarily: false
+        would_file_if_eligible_for_refundable_credit: false
+    households:
+      household:
+        members: [person]
+        state_code: ME
+  output:
+    me_eitc_ssn_limitation_waived: false
+    me_federal_eitc_without_ssn_requirement: 0
+    me_eitc: 0
+
+- name: SSN twin of the childless filer aged 30 who files no federal return
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person]
+        would_file_taxes_voluntarily: false
+        would_file_if_eligible_for_refundable_credit: false
+    households:
+      household:
+        members: [person]
+        state_code: ME
+  output:
+    # The federal credit pays only a filer, and at 30 the filer is outside
+    # Maine's 18-24 pro forma.
+    eitc: 0
+    me_eitc: 0

@@ -58,47 +58,53 @@ def keep_return_as_filed(branch, tax_unit, period):
     )
 
 
-def federal_eitc_tax_unit(tax_unit, period, ssn_limitation_waived):
-    """The tax units whose federal EITC variables apply a state's 32(m) rule.
+def federal_eitc_tax_unit(tax_unit, period):
+    """The tax units whose federal EITC variables apply their state's 32(m) rule.
 
     Section 32(m) limits the taxpayer identification number that 32(c)(1)(E)
     (filer and spouse) and 32(c)(3)(D) (qualifying children) require to a
     Social Security number valid for employment. A state that waives 32(m)
     accepts any taxpayer identification number: an individual taxpayer
     identification number or a Social Security number of any kind (has_tin).
+    state_eitc_ssn_limitation_waived says which tax units' states waive it:
+    every Maryland return from 2020, and from 2021 a Maine return whose filer
+    files a federal return.
 
-    Without the waiver, or when it changes no one's identification, this is
-    `tax_unit` itself. Otherwise it is the same tax units in a branch where
-    eitc_ssn_limitation_waived is true, so the EITC variables read from it
-    (eitc, eitc_child_count, eitc_phased_in, ...) are those that would be
-    allowable but for 32(m), under the same formulas, structural reforms and
-    inputs (take-up among them). The flag reaches only the EITC's
-    identification test (eitc_identification_accepted): the recovery rebate
-    credits and other rules that require a valid Social Security number keep
-    meets_eitc_identification_requirements, in the branch and in the
-    itemization branches it creates. The branch takes the AGI and behavioral
-    responses of the return as filed (keep_return_as_filed).
+    When the waiver changes no one's identification, this is `tax_unit`
+    itself. Otherwise it is the same tax units in a branch where
+    eitc_ssn_limitation_waived equals state_eitc_ssn_limitation_waived, so
+    the EITC variables read from it (eitc, eitc_child_count, eitc_phased_in,
+    ...) are those that would be allowable but for 32(m) for the waived tax
+    units and the federal ones for the rest, under the same formulas,
+    structural reforms and inputs (take-up among them). Every state credit
+    gives the branch the same flag, so the branch doesn't depend on which
+    state's credit the simulation calculates first. The flag reaches only the
+    EITC's identification test (eitc_identification_accepted): the recovery
+    rebate credits and other rules that require a valid Social Security
+    number keep meets_eitc_identification_requirements, in the branch and in
+    the itemization branches it creates. The branch takes the AGI and
+    behavioral responses of the return as filed (keep_return_as_filed).
 
     Setting an input on the branch drops what the branch holds that may have
     been calculated from the replaced value, and setting it to the value the
     branch already reads as an input drops nothing (policyengine-core's
     Simulation.set_input), so the inputs are set on every call. The branch is
-    created again for each period (get_branch_for_period).
+    created again for each period (get_branch_for_period), from the parent as
+    it stands then, so it reads that period's inputs even when they changed
+    after an earlier period's branch was created.
     """
 
-    if not ssn_limitation_waived:
-        return tax_unit
+    waived = tax_unit("state_eitc_ssn_limitation_waived", period)
     person = tax_unit.members
     valid_ssn = person("meets_eitc_identification_requirements", period)
-    if not (person("has_tin", period) & ~valid_ssn).any():
+    newly_accepted = tax_unit.project(waived) & person("has_tin", period) & ~valid_ssn
+    if not newly_accepted.any():
         return tax_unit
     branch = get_branch_for_period(
         tax_unit.simulation, SSN_LIMITATION_WAIVED_BRANCH, period
     )
     keep_return_as_filed(branch, tax_unit, period)
-    branch.set_input(
-        "eitc_ssn_limitation_waived", period, np.ones(tax_unit.count, dtype=bool)
-    )
+    branch.set_input("eitc_ssn_limitation_waived", period, waived)
     return branch.tax_unit
 
 

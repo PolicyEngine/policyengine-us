@@ -510,3 +510,57 @@
     eitc: 0
     # $4,328 - 15.98% x ($41,000 - $23,350) = $1,507.53.
     md_federal_eitc_without_ssn_requirement: 1_507.53
+
+# Md. Code Tax-Gen. 10-704 waives 32(m) with no federal filing condition
+# (unlike 36 M.R.S. 5219-S(7)), and Maryland's childless pro forma applies
+# none either, so an ITIN filer with no federal return is treated like the
+# SSN twin.
+- name: Childless ITIN filer who files no federal return gets the childless credit, like the SSN twin
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        would_file_taxes_voluntarily: false
+        would_file_if_eligible_for_refundable_credit: false
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    tax_unit_is_required_to_file: false
+    md_eitc_ssn_limitation_waived: true
+    eitc: 0
+    federal_eitc_without_age_minimum: 649
+    md_eitc: 649
+
+- name: SSN twin of the childless filer who files no federal return
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 35
+        employment_income: 10_000
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person]
+        would_file_taxes_voluntarily: false
+        would_file_if_eligible_for_refundable_credit: false
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    # The federal credit pays only a filer.
+    eitc: 0
+    federal_eitc_without_age_minimum: 649
+    md_eitc: 649
