@@ -3520,7 +3520,8 @@ candidates:
       question 2, "if you (or your spouse, if married) were at least 18 years of age")
     url: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/24_earned_income_cred_ff_0.pdf
   - kind: instructions
-    citation: 2025 Form 1040ME instructions, Schedule A line 2 ("Taxpayers at least age 18")
+    citation: 2025 Form 1040ME instructions, Schedule A line 4, refundable earned income tax credit ("Taxpayers at
+      least age 18")
     url: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_gen_instr_w_cover_pg.pdf#page=10
   readings:
     statute: Ages 18 to 24 only. A childless filer aged 25 or older gets the Maine credit only through the federal
@@ -3536,8 +3537,10 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10526
   state: ruled
-  note: Statute first. The cap of 24 is pinned by YAML cases for single filers aged 65 and 70 in 2025. Worksheets
-    for 2020 to 2023 are unchecked, so the conflict may start earlier.
+  note: Statute first. YAML cases for single filers aged 65 and 70 in 2025 pin the cap of 24, and so does the Python
+    invariant test's statutory oracle (test_me_childless_eitc_age_gate.py). Captures of the worksheet and the
+    instructions page are in source_conflicts/sources/us-me/. Worksheets for 2020 to 2023 are unchecked, so the
+    conflict may start earlier.
 - id: us-me:property-tax-credit-unknown-utilities
   program: income-tax
   years:
