@@ -1,11 +1,17 @@
-description: The US counts these income sources as unearned income for Supplemental Security Income.
+description: The US counts these income sources as earned income for Supplemental Security Income.
 values:
   1975-01-01:
     - employment_income
     - self_employment_income
     - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_self_employment_net_earnings
 metadata:
   label: SSI earned income sources
   reference:
     - title: 20 CFR § 416.1110 - What is earned income.
       href: https://www.law.cornell.edu/cfr/text/20/416.1110
+    - title: 20 CFR § 404.1081 - Figuring your net earnings from self-employment.
+      href: https://www.ssa.gov/OP_Home/cfr20/404/404-1081.htm
+    - title: POMS SI 00820.200 - Net Earnings from Self-Employment (NESE).
+      href: https://secure.ssa.gov/poms.nsf/lnx/0500820200

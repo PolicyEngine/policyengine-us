@@ -71,3 +71,50 @@
     employer_sponsored_insurance_premiums: 1_200
   output:
     ssi_earned_income: 12_000
+
+- name: Active Schedule F farm profit is earned income.
+  period: 2026
+  input:
+    farm_operations_income: 60_000
+  output:
+    ssi_earned_income: 60_000
+
+- name: Partnership SECA earnings are earned income without counting the distributive share twice.
+  period: 2026
+  input:
+    partnership_income: 60_000
+    partnership_self_employment_net_earnings: 60_000
+  output:
+    ssi_earned_income: 60_000
+
+- name: Farm losses offset other businesses and wages before SSI exclusions.
+  period: 2026
+  input:
+    age: 67
+    employment_income: 12_000
+    self_employment_income: 4_000
+    farm_operations_income: -8_000
+    partnership_self_employment_net_earnings: 2_000
+  output:
+    # 20 CFR 404.1081(c)-(d) and 416.1111(b): aggregate signed NESE,
+    # then offset wages; (10,000 - 12 * (20 + 65)) / 2 = 4,490.
+    ssi_earned_income: 10_000
+    ssi_countable_income: 4_490
+
+- name: Excess farm losses cannot reduce unearned income.
+  period: 2026
+  input:
+    age: 67
+    employment_income: 2_000
+    farm_operations_income: -5_000
+    social_security_retirement: 6_000
+  output:
+    ssi_earned_income: -3_000
+    ssi_countable_income: 5_760
+
+- name: Small farm profits remain SSI earnings below the SE tax reporting threshold.
+  period: 2026
+  input:
+    farm_operations_income: 300
+  output:
+    ssi_earned_income: 300

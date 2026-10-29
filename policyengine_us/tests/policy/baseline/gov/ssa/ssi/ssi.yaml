@@ -25,3 +25,77 @@
     uncapped_ssi: -100
   output:
     ssi: 0
+
+- name: Texas senior with Schedule C profit receives no SSI or MSP premium coverage.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 67
+    state_code: TX
+    self_employment_income: 60_000
+  output:
+    ssi_earned_income: 60_000
+    ssi_countable_income: 29_490
+    ssi: 0
+    msp_eligible: false
+    msp_part_b_premium_coverage: 0
+    medicare_part_b_premium: 2_434.80
+
+- name: Texas senior with farm profit receives no SSI or MSP premium coverage.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 67
+    state_code: TX
+    farm_operations_income: 60_000
+  output:
+    ssi_earned_income: 60_000
+    ssi_countable_income: 29_490
+    ssi: 0
+    msp_eligible: false
+    msp_part_b_premium_coverage: 0
+    medicare_part_b_premium: 2_434.80
+
+- name: Texas senior with partnership earnings receives no SSI or MSP premium coverage.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 67
+    state_code: TX
+    partnership_self_employment_net_earnings: 60_000
+  output:
+    ssi_earned_income: 60_000
+    ssi_countable_income: 29_490
+    ssi: 0
+    msp_eligible: false
+    msp_part_b_premium_coverage: 0
+    medicare_part_b_premium: 2_434.80
+
+- name: Farm income of an ineligible spouse is deemed to a Texas senior.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      applicant:
+        age: 67
+      spouse:
+        age: 60
+        farm_operations_income: 60_000
+    households:
+      household:
+        members: [applicant, spouse]
+        state_code: TX
+    marital_units:
+      couple:
+        members: [applicant, spouse]
+    tax_units:
+      tax_unit:
+        members: [applicant, spouse]
+    spm_units:
+      spm_unit:
+        members: [applicant, spouse]
+  output:
+    ssi_earned_income: [0, 60_000]
+    ssi_earned_income_deemed_from_ineligible_spouse: [60_000, 0]
+    ssi_income_deemed_from_ineligible_spouse: [29_490, 0]
+    ssi: [0, 0]
