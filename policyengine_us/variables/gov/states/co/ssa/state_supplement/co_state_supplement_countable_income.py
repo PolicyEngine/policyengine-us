@@ -26,7 +26,7 @@ class co_state_supplement_countable_income(Variable):
         # A joint couple's in-kind support and maintenance is one presumed
         # maximum value for the couple (ssi_pmv_amount), which SSI splits
         # equally between the spouses.
-        ism_share = person("ssi_in_kind_support_and_maintenance", period) / 2
+        ism_share = person("ssi_in_kind_support_and_maintenance_monthly", period) / 2
         unearned = person("ssi_unearned_income", period) + ism_share
         ssi = person("ssi", period)
         # 3.549(A)(2)(c): $20 is deducted from unearned income other than SSI,
@@ -44,5 +44,5 @@ class co_state_supplement_countable_income(Variable):
         return where(
             couple_computation,
             own_countable,
-            person("ssi_countable_income", period),
+            person("ssi_countable_income_monthly", period),
         )

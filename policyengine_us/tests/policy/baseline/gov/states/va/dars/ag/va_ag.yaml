@@ -404,3 +404,30 @@
     va_ag:
       2026-01: 558
       2026-02: 1_223
+
+- name: Case 31, SSI recipients use each month's verified countable income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    ssi_countable_income_monthly:
+      2026-01: 100
+      2026-02: 300
+  output:
+    # January SSI: 994 - 100 = 894; February SSI: 994 - 300 = 694.
+    ssi:
+      2026-01: 894
+      2026-02: 694
+    # Other months have no income, so the annual total is 100 + 300 = 400.
+    ssi_countable_income: 400
+    # AG counts January's 100 + 894 and February's 300 + 694, both 994.
+    # The annual average, 400 / 12 = 33.33, would give 927.33 and 727.33.
+    va_ag_countable_income:
+      2026-01: 994
+      2026-02: 994
+    # Each full-month grant is 2,130 + 87 - 994 = 1,223.
+    va_ag:
+      2026-01: 1_223
+      2026-02: 1_223

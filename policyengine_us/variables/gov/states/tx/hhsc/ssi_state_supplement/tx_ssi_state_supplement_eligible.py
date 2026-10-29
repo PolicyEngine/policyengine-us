@@ -39,8 +39,8 @@ class tx_ssi_state_supplement_eligible(Variable):
         # income, held to their $30 half of the $60 couple standard (H-6000).
         p = parameters(period).gov.ssa.ssi
         own_countable_income = max_(
-            person("ssi_countable_income", period)
-            - person("ssi_income_deemed_from_ineligible_spouse", period),
+            person("ssi_countable_income_monthly", period)
+            - person("ssi_income_deemed_from_ineligible_spouse_monthly", period),
             0,
         )
         within_reduced_rate = own_countable_income <= p.amount.medical_facility

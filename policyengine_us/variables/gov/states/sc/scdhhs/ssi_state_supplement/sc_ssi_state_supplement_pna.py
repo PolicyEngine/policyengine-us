@@ -19,5 +19,5 @@ class sc_ssi_state_supplement_pna(Variable):
         ).gov.states.sc.scdhhs.ssi_state_supplement.personal_needs_allowance
         # Per S.C. Code Regs. 126-910(G): SSI-only PNA if no other
         # countable income; higher PNA if other income sources exist
-        ssi_only = person("ssi_countable_income", period) == 0
+        ssi_only = person("ssi_countable_income_monthly", period) == 0
         return where(ssi_only, p.ssi_only, p.other_income)

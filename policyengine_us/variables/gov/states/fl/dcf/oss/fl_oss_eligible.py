@@ -66,7 +66,7 @@ class fl_oss_eligible(Variable):
         receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
         # FAC 65A-2.033(2): income within OSS income standard (Group 2).
         income_standard = person("fl_oss_income_standard", period)
-        countable_income = person("ssi_countable_income", period)
+        countable_income = person("ssi_countable_income_monthly", period)
         income_within_standard = countable_income <= income_standard
         return (
             categorically_eligible

@@ -22,20 +22,5 @@ class is_ssi_spousal_deeming_applies(Variable):
     """
 
     def formula(person, period, parameters):
-        # Get spouse's deemed income (after child allocations)
-        spouse_deemed_income = add(
-            person,
-            period,
-            [
-                "ssi_earned_income_deemed_from_ineligible_spouse",
-                "ssi_unearned_income_deemed_from_ineligible_spouse",
-            ],
-        )
-
-        # Compare to FBR differential (couple rate - individual rate)
-        p = parameters(period).gov.ssa.ssi.amount
-        diff = (p.couple - p.individual) * MONTHS_IN_YEAR
-
-        # Deeming applies when spouse's deemed income exceeds the differential
-        # Note: regulation says "not more than" means ≤, so we use > for deeming
-        return spouse_deemed_income > diff
+        # Preserve the annual status input and the monthly flag's year-end output.
+        return person("is_ssi_spousal_deeming_applies_monthly", period)
