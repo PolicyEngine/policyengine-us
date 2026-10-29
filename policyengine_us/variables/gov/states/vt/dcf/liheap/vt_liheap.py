@@ -12,14 +12,15 @@ class vt_liheap(Variable):
         # PDF pages 39-41
         "https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=39",
         "https://legislature.vermont.gov/statutes/section/33/026/02605",
-        # PDF pages 7-9
-        "https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2914D.pdf#page=7",
+        # PDF pages 6-9
+        "https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2914D.pdf#page=6",
     )
     documentation = (
-        "Annual Seasonal Fuel Assistance benefit, verified for the 2025-26 and "
-        "2026-27 heating seasons (model years 2026 and 2027); earlier years use "
-        "backfilled parameters and are unverified estimates. The payment rate is "
-        "an estimate because DCF does not publish it. Applications are assumed "
+        "Annual Seasonal Fuel Assistance benefit, verified for the 2025-26 "
+        "heating season (model year 2026). Model year 2027 carries the estimated "
+        "payment rate forward and omits the larger 2026-27 oil and kerosene "
+        "benefit; it and earlier years are unverified estimates. The payment rate "
+        "is an estimate because DCF does not publish it. Applications are assumed "
         "to arrive outside December to February, so the 80%, 60% and 40% "
         "late-application reductions are not applied. Roomer or boarder "
         "households ($21) and excludable members have no inputs, and annual "

@@ -5443,12 +5443,12 @@ candidates:
     the printed table.
   pe_us:
     follows: statute
-    code:
-    - policyengine_us/variables/gov/states/vt/dcf/liheap/eligibility/vt_liheap_income_limit.py
-    prs: []
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10436
   state: ruled
-  note: Rule 2913(b) repeats both statutory tests. No document shows whether DCF applies the LIHEAP maximum to large
-    households. Code not yet on main.
+  note: 'Rule 2913(b) repeats both statutory tests. No document shows whether DCF applies the LIHEAP maximum to large
+    households. Code not yet on main: vt_liheap_income_limit.'
 - id: us-vt:liheap-income-maximum-rounding
   program: liheap
   years:
@@ -5475,12 +5475,44 @@ candidates:
     printed table and ineligible under the statute.
   pe_us:
     follows: statute
-    code:
-    - policyengine_us/variables/gov/states/vt/dcf/liheap/eligibility/vt_liheap_income_limit.py
-    prs: []
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10436
   state: ruled
-  note: The statute sets a ceiling, so the printed amount applies where it rounds below 185% (one person $2,412 a
-    month against $2,412.71). Code not yet on main.
+  note: 'The statute sets a ceiling, so the printed amount applies where it rounds below 185% (one person $2,412 a
+    month against $2,412.71). Code not yet on main: vt_liheap_income_limit.'
+- id: us-vt:liheap-plan-income-items
+  program: liheap
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: Do Seasonal Fuel Assistance strike benefits count and does income stop at 185% of the poverty guideline,
+    as the statute and rules require, although the FY2026 plan leaves strike pay unchecked and reports 60% of state
+    median income for all sizes?
+  sources:
+  - kind: statute
+    citation: 33 V.S.A. § 2604(a)
+    url: https://legislature.vermont.gov/statutes/section/33/026/02604
+  - kind: regulation
+    citation: Vermont Seasonal Fuel Assistance Rules 2911.2(b)(10) and 2913(b)
+    url: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=28
+  - kind: plan
+    citation: Vermont FY2026 LIHEAP State Plan, items 1.9 and 2.1
+    url: https://liheapch.acf.gov/docs/2026/state-plans/VT_Plan_2026.pdf#page=6
+  readings:
+    statute: Gross income follows the 3SquaresVT rules, which count strike benefits (7 CFR 273.9(b)(2)(ii); rule
+      2911.2(b)(10)), and may not exceed 185% of the poverty guideline (rule 2913(b)).
+    other: Plan 1.9 leaves Strike Pay unchecked and plan 2.1 sets 60% of state median income for all household sizes.
+  example: One person in 2026 with $24,000 of wages and $6,000 of strike benefits has $30,000 of gross income, above
+    the $28,944 limit, and is ineligible under the statute and rules; the $24,000 of wages alone is within the plan's
+    $41,075 limit (60% of state median income), so the person is eligible under the plan.
+  pe_us:
+    follows: statute
+    code: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10436
+  state: ruled
+  note: 'Statute governs (2026-10-19 rule). Code not yet on main: vt_liheap_income, vt_liheap_income_limit.'
 - id: us-vt:low-income-cdcc-threshold-equality
   program: income-tax
   years:

@@ -3,6 +3,9 @@ description: Vermont uses these sources as earned income under the Low Income Ho
 # member manages and roomer or boarder payments, under the 3SquaresVT method.
 # The model has only net business income, so each listed source is floored at
 # zero and counted in full; a loss in one source cannot offset another.
+# Under 7 CFR 273.11(a)(2)(ii) a farmer with $1,000 or more of annual gross
+# proceeds offsets a farm loss against other income; with no gross-proceeds
+# input, farm_operations_income is floored like the other sources.
 values:
   2024-06-22:
     - employment_income
@@ -23,3 +26,5 @@ metadata:
       href: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2910.pdf
     - title: Vermont FY2026 LIHEAP State Plan, Section 1.9
       href: https://liheapch.acf.gov/docs/2026/state-plans/VT_Plan_2026.pdf#page=6
+    - title: 7 CFR 273.11(a)(2)(ii)
+      href: https://www.law.cornell.edu/cfr/text/7/273.11

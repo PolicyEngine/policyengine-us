@@ -15,6 +15,9 @@ values:
     - vt_aabd
     - general_assistance
     - pension_income
+    # Railroad Retirement annuities are annuities and retirement benefits under
+    # rule 2911.2(b)(2)-(4).
+    - railroad_benefits
     # Military retired pay and Survivor Benefit Plan annuities are separate
     # inputs from the pension inputs that pension_income adds.
     - military_retirement_income

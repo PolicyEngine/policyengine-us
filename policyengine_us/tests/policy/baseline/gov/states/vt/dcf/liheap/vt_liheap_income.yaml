@@ -155,3 +155,110 @@
     # person1 is under 18 and in school but not a dependent, so rule
     # 2912(a)(12) does not exclude her wages: 11,247.60.
     vt_liheap_income: 11_247.6
+
+- name: Case 6, every earned income source counts, including a positive self-employment profit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 52
+        # One distinct amount per earned source (1, 2, 4, 8 and 16 x 1,000), so
+        # dropping any list entry changes the total.
+        employment_income: 16_000
+        self_employment_income: 1_000
+        sstb_self_employment_income: 2_000
+        farm_operations_income: 4_000
+        # partnership_s_corp_income adds partnership_income and s_corp_income.
+        partnership_income: 8_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # No Reach Up.
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # 16,000 + 1,000 + 2,000 + 4,000 + 8,000 = 31,000.
+    vt_liheap_income: 31_000
+
+- name: Case 7, every unearned income source counts, including monthly SSI and AABD, railroad retirement, reported unemployment and a military survivor annuity.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        # The k-th unearned source in list order gets 120 x k, so dropping any
+        # list entry changes the total. Where a listed variable only adds other
+        # variables, the input is a component it adds.
+        # ssi and vt_aabd are monthly: an annual input of 120 and 240 is 10 and
+        # 20 a month, summed back over the year by add().
+        ssi: 120
+        vt_aabd: 240
+        general_assistance: 360
+        # pension_income adds taxable_pension_income, which adds this.
+        taxable_private_pension_income: 480
+        railroad_benefits: 600
+        # military_retirement_income adds this Survivor Benefit Plan annuity.
+        military_retirement_pay_survivors: 720
+        # retirement_distributions adds taxable_retirement_distributions, which
+        # adds this.
+        taxable_401k_distributions: 840
+        veterans_benefits: 960
+        disability_benefits: 1_080
+        workers_compensation: 1_200
+        # A reported amount, so total_unemployment_compensation uses it.
+        unemployment_compensation: 1_320
+        # social_security adds this.
+        social_security_retirement: 1_440
+        survivor_benefits: 1_560
+        strike_benefits: 1_680
+        rental_income: 1_800
+        farm_rent_income: 1_920
+        child_support_received: 2_040
+        alimony_income: 2_160
+        # interest_income adds this.
+        taxable_interest_income: 2_280
+        # ordinary_dividend_income adds this.
+        non_qualified_dividend_income: 2_400
+        estate_income: 2_520
+        miscellaneous_income: 2_640
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # No Reach Up.
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # 120 x (1 + 2 + ... + 22) = 120 x 253 = 30,360.
+    vt_liheap_income: 30_360
+
+- name: Case 8, a rental loss does not reduce wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 47
+        # 14.42 x 25 hours x 52 weeks = 18,746.
+        employment_income: 18_746
+        # A rented-out apartment that lost money.
+        rental_income: -3_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # No Reach Up.
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Wages 18,746 + max(-3,600, 0) = 18,746, not 15,146.
+    vt_liheap_income: 18_746

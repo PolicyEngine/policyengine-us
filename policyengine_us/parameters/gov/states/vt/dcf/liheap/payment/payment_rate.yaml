@@ -4,9 +4,12 @@ description: Vermont pays this share of the base benefit as the ratable benefit 
 # ACCESS system for the current rate. 0.51 is inferred from the FFY2026 plan's
 # $2,089 maximum benefit, which equals floor(4,552 x 0.90 x 0.51), the largest
 # standard heating cost times the top heat cost percentage; 51% is the only
-# whole percent that reproduces it. The value is reused for the 2026-27 season
-# until DCF publishes that season's rate; DCF's September 16, 2026 memo said the
-# 2026-27 benefit levels were not yet determined.
+# whole percent that reproduces it. P-2914D's worked example uses 29% for
+# training only. DCF had not set the 2026-27 rate by September 16, 2026, and on
+# October 23, 2026 the Emergency Board funded a larger 2026-27 benefit for oil
+# and kerosene households (about 62 percent of estimated heating need, against
+# about 45 percent in 2025-26) without publishing a rate, so 0.51 carries
+# forward as an unverified estimate.
 values:
   2025-10-01: 0.51
 
@@ -25,3 +28,5 @@ metadata:
       href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=39
     - title: Vermont DCF memo to the Joint Fiscal Committee, Fuel Assistance Update, September 16, 2026
       href: https://ljfo.vermont.gov/assets/Meetings/Joint-Fiscal-Committee/2026-09-16/5a1aec4660/2026.09.16.-LIHEAP-Funds.-JFC.pdf#page=1
+    - title: "Vermont Emergency Board materials, October 23, 2026, Item 1, LIHEAP Fuel Proposal #page 3-5"
+      href: https://aoa.vermont.gov/sites/aoa/files/2026-10-23%20E%20Board%20BINDER%20-%20Final.pdf#page=3
