@@ -1,3 +1,14 @@
+## [2.79.2] - 2026-10-29
+
+### Fixed
+
+- Update stale comments and references in ten state benefit income source lists: renumbered rules for Ohio PFCC (OAC 5180:6-1-03), Colorado CCAP (8 CCR 1403-1 3.111(I)), New Mexico CCAP (8.9.3 NMAC) and Rhode Island CCAP (definition 29), page ranges for Pennsylvania, West Virginia, Maine and DC, and the Maryland CCS and Arkansas SRA notes on annuities.
+- Count military retirement pay and Survivor Benefit Plan annuities as unearned income in the Kansas, Mississippi, North Carolina, New Jersey and New York LIHEAP programs.
+- Count dependents who get the federal credit for other dependents, not only Child Tax Credit children, for the Maine sales tax and property tax fairness credits.
+- Cite the current Ohio PFCC (OAC 5180:6-1-03) and New Mexico CCAP (8.9.3 NMAC) rules, apply New Mexico's age-19 special-supervision limit from the 2025-11-04 rule amendment, and classify New Mexico five-year-olds as school age from September 2026.
+- Count Social Security disability and survivor benefits once in Pennsylvania Child Care Works countable income.
+
+
 ## [2.79.1] - 2026-10-29
 
 ### Fixed

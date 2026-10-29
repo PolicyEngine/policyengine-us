@@ -6,7 +6,7 @@ values:
     - farm_operations_income
     - rental_income
     # social_security already includes SSA disability, retirement, and
-    # survivor's benefits per 5180:2-16-03(H)(3)(b), so the component
+    # survivor's benefits per 5180:6-1-03(H)(3)(b), so the component
     # variables are not listed separately to avoid double-counting.
     - social_security
     - child_support_received
@@ -15,25 +15,31 @@ values:
     - total_unemployment_compensation
     - pension_income
     # PolicyEngine records military retirement separately from pension_income;
-    # it is countable under the 5180:2-16-03(H)(1)-(2) gross-unearned-income
+    # it is countable under the 5180:6-1-03(H)(1)-(2) gross-unearned-income
     # catch-all.
     - military_retirement_income
     - dividend_income
     - interest_income
     - veterans_benefits
-    # 5180:2-16-03(H)(3)(c): railroad disability, retirement, or survivor's
+    # 5180:6-1-03(H)(3)(c): railroad disability, retirement, or survivor's
     # benefits are countable unearned income.
     - railroad_benefits
     - oh_ccap_owf_basic_assistance
     #
-    # Excluded sources (5180:2-16-03(F), (I)) — so simply not listed:
+    # Rule numbers: OAC 5180:6-1-03 (effective 2026-08-01) replaced OAC
+    # 5180:2-16-03 (effective 2022-02-27). Paragraphs (F) and (H) keep their
+    # numbers. In (I), the 2026 rule adds item (5), federal and state kinship
+    # care payments, so 2022 items (I)(5)-(25) are (I)(6)-(26) in the 2026
+    # rule. The comments in this file cite the 2026 numbers.
+    #
+    # Excluded sources (5180:6-1-03(F), (I)) — so simply not listed:
     # - ssi (excluded per (I)(1)); the earned income of SSI recipients is
     #   also excluded per (F)(8), modeled person-level in
     #   oh_ccap_countable_income (cannot be expressed by a list omission).
     # - foster care maintenance and adoption assistance (I)(2),(3) — no
     #   PolicyEngine income variable.
-    # - SNAP allotments (I)(22), income tax refunds (I)(13), EITC (I)(15),
-    #   home energy assistance (I)(12), non-recurring lump sums (I)(23) — none
+    # - SNAP allotments (I)(23), income tax refunds (I)(14), EITC (I)(16),
+    #   home energy assistance (I)(13), non-recurring lump sums (I)(24) — none
     #   are in the PolicyEngine income-source list, so nothing to exclude.
     #
 metadata:
@@ -41,5 +47,7 @@ metadata:
   period: year
   label: Ohio PFCC countable income sources
   reference:
-    - title: OAC 5180:2-16-03 — Income eligibility requirements for publicly funded child care benefits
+    - title: OAC 5180:2-16-03 — Income eligibility requirements for publicly funded child care benefits (effective 2022-02-27)
       href: https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5180/2/16/5180$2-16-03_20220227.pdf
+    - title: OAC 5180:6-1-03 — Income eligibility requirements for publicly funded child care benefits (effective 2026-08-01)
+      href: https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5180/6/1/5180$6-1-03_20260801.pdf
