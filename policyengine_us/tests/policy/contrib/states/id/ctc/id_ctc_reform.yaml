@@ -15,6 +15,7 @@
     # id_ctc still computes 2 * 205 = 410 as a worksheet amount, but it is not
     # in the 2026 nonrefundable list, so no credit is applied.
     id_non_refundable_credits: 0
+    taxsim_state_ctc: 0
 
 - name: Revival applies the nonrefundable CTC capped at liability
   period: 2026
@@ -29,6 +30,7 @@
     # Revived list is [id_ctc]; applied = min(410, 1000) = 410. Refundable off.
     id_non_refundable_credits: 410
     id_refundable_ctc: 0
+    taxsim_state_ctc: 410
 
 - name: Refundable option pays unused CTC to a no-liability family
   period: 2026
@@ -44,6 +46,7 @@
     # potential 410, nonrefundable 0 (no liability), unused 410,
     # cap = 205 * 2 = 410 -> fully refundable.
     id_refundable_ctc: 410
+    taxsim_state_ctc: 410
 
 - name: Refundable cap override composes
   period: 2026
@@ -59,6 +62,7 @@
   output:
     # refund = min(410 unused, 100 * 2) = 200.
     id_refundable_ctc: 200
+    taxsim_state_ctc: 410
 
 - name: Baseline CTC amount override composes with the revival
   period: 2026
@@ -73,3 +77,4 @@
   output:
     id_ctc: 600
     id_non_refundable_credits: 600
+    taxsim_state_ctc: 600

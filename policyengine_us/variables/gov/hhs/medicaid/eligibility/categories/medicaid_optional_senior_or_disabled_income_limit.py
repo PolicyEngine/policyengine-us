@@ -14,10 +14,13 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396a#m",
         "https://www.ecfr.gov/current/title-42/section-435.210",
+        "https://www.law.cornell.edu/uscode/text/42/1396b#v",
+        "https://www.law.cornell.edu/uscode/text/42/1382#a",
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-015-00/0805-015-45-income-maximum/",
         "https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=1",
         "https://www.law.cornell.edu/regulations/alaska/7-AAC-40.310",
         "https://gc.nh.gov/rules/state_agencies/he-w800.html",
+        "https://www.ndlegis.gov/information/acdata/pdf/75-02-02.1.pdf#page=89",
     )
 
     def formula(person, period, parameters):
@@ -51,9 +54,17 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
         # dollar amount for an individual or a couple, rather than a share of
         # the poverty guideline (the group of 42 CFR 435.210; Louisiana pegs
         # its 42 U.S.C. 1396a(m) level to the same rate).
+        # States that cover aged, blind, or disabled people only if they
+        # receive SSI apply this limit to noncitizens kept in the pathway for
+        # emergency Medicaid, which waives SSI receipt alone (42 U.S.C.
+        # 1396b(v)(2)(B)), so they must meet SSI's income test. North
+        # Dakota's 209(b) recipients also read it, and its level is SSI's
+        # (N.D. Admin. Code 75-02-02.1-40(1)(a)(2)).
         ssi = parameters(period).gov.ssa.ssi.amount
         ssi_rate = where(is_couple, ssi.couple, ssi.individual) * MONTHS_IN_YEAR
-        uses_ssi_rate = p.income.limit.uses_ssi_federal_benefit_rate[state].astype(bool)
+        sets_ssi_rate = p.income.limit.uses_ssi_federal_benefit_rate[state].astype(bool)
+        covers_group = p.covers_non_ssi_recipients[state].astype(bool)
+        uses_ssi_rate = sets_ssi_rate | ~covers_group
         # Other states set a monthly dollar standard of their own: Alaska's
         # 7 AAC 40.310 standard, or the SSI rate plus the amount above it in
         # New Hampshire's standard of need (He-W 858.03(e): the minimum payment

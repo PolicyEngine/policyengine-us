@@ -1,0 +1,19 @@
+description: Utah excludes this share of earned income from countable income under the Home Energy Assistance Target program.
+values:
+  2022-06-14: 0.2
+# R982-403-6(2) applies the disregard to self-employment income after the
+# cost of doing business; the business inputs are already net amounts.
+# Worksheet cell C8 ("20% disregard") is B8*0.2, and TOTAL INCOME B11 is
+# B8+B9-C8-B10. The worksheet's print area is A1:B67, so the PDF copy omits
+# column C.
+metadata:
+  unit: /1
+  period: year
+  label: Utah HEAT earned income disregard rate
+  reference:
+    - title: Utah Admin. Code R982-403-6
+      href: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R982-403-6
+    - title: Utah HEAT Benefit Calculation Worksheet, effective March 1, 2026, cells C8 and B11
+      href: https://jobs.utah.gov/infosource/heatpolicy/assets/docs/Training/FY26/3.1.26%20Benefit%20Calculation%20Worksheet.xlsx
+    - title: Utah HEAT Manual, Section 204 Eligibility with Ineligible Resident
+      href: https://jobs.utah.gov/infosource/heatpolicy/Policy/200_Program_Standards/204_Eligibility_with_Ineligible_Resident.htm

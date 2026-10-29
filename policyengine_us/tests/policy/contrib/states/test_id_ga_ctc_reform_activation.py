@@ -21,9 +21,13 @@ in 2028.
 """
 
 from policyengine_core.periods import instant
+from policyengine_core.parameters import ParameterNode
 from policyengine_core.reforms import Reform
 
 from policyengine_us import Simulation
+from policyengine_us.reforms.states.id.ctc.id_ctc_reform import (
+    _restore_id_ctc_reporting,
+)
 
 ACTIVATION_YEAR = "2028-01-01"
 
@@ -134,5 +138,42 @@ def test__id_ctc_revival_does_not_leak_before_activation():
     assert sim.calculate("id_ctc", 2026)[0] == 410
     # ...but the revival must NOT apply it in the pre-activation year.
     assert sim.calculate("id_non_refundable_credits", 2026)[0] == 0
+    assert sim.calculate("taxsim_state_ctc", 2026)[0] == 0
     # In the activation year the revived nonrefundable credit applies.
     assert sim.calculate("id_non_refundable_credits", 2028)[0] == 410
+    assert sim.calculate("taxsim_state_ctc", 2028)[0] == 410
+
+    reporting = sim.tax_benefit_system.parameters.gov.states.household.state_ctcs
+    assert "id_ctc" not in reporting(instant("2027-01-01"))
+    assert "ri_ctc" in reporting(instant("2027-01-01"))
+    assert "ri_ctc" in reporting(instant("2028-01-01"))
+    assert reporting(instant("2028-01-01")).count("id_ctc") == 1
+
+
+def test__id_ctc_reporting_preserves_later_credits():
+    # A small parameter tree checks a revival before a later credit starts,
+    # without constructing another country model or household simulation.
+    parameters = ParameterNode(
+        "",
+        data={
+            "gov": {
+                "states": {
+                    "household": {
+                        "state_ctcs": {
+                            "values": {
+                                "2026-01-01": ["ca_yctc"],
+                                "2027-01-01": ["ca_yctc", "ri_ctc"],
+                            },
+                            "metadata": {"unit": "list"},
+                        }
+                    }
+                }
+            }
+        },
+    )
+    _restore_id_ctc_reporting(parameters, instant("2026-01-01"))
+    _restore_id_ctc_reporting(parameters, instant("2026-01-01"))
+    reporting = parameters.gov.states.household.state_ctcs
+    assert reporting(instant("2026-01-01")) == ["ca_yctc", "id_ctc"]
+    assert reporting(instant("2027-01-01")) == ["ca_yctc", "ri_ctc", "id_ctc"]
+    assert reporting(instant("2101-01-01")) == ["ca_yctc", "ri_ctc"]
