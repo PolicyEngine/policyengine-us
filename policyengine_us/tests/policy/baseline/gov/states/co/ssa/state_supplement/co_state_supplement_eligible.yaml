@@ -1,7 +1,7 @@
 - name: Case 1, ineligible senior over 60.
   period: 2023
   input:
-    is_ssi_eligible_individual: true
+    ssi: 1_200
     age: 60
     is_blind: true
     is_ssi_disabled: true
@@ -12,7 +12,7 @@
 - name: Case 2, not blind or disabled.
   period: 2023
   input:
-    is_ssi_eligible_individual: true
+    ssi: 1_200
     age: 30
     is_blind: false
     is_ssi_disabled: false
@@ -20,10 +20,10 @@
   output:
     co_state_supplement_eligible: false
 
-- name: Case 3, not SSI eligible.
+- name: Case 3, not receiving SSI.
   period: 2023
   input:
-    is_ssi_eligible_individual: false
+    ssi: 0
     age: 19
     is_blind: true
     is_ssi_disabled: true
@@ -31,10 +31,10 @@
   output:
     co_state_supplement_eligible: false
 
-- name: Case 4, SSI eligible and blind under 60.
+- name: Case 4, receives SSI and blind under 60.
   period: 2023
   input:
-    is_ssi_eligible_individual: true
+    ssi: 1_200
     age: 59
     is_blind: true
     is_ssi_disabled: false
@@ -42,10 +42,10 @@
   output:
     co_state_supplement_eligible: true
 
-- name: Case 5, SSI eligible and disabled child.
+- name: Case 5, receives SSI and disabled child.
   period: 2023
   input:
-    is_ssi_eligible_individual: true
+    ssi: 1_200
     age: 5
     is_blind: false
     is_ssi_disabled: true
@@ -56,7 +56,7 @@
 - name: Case 6, historical eligibility in 2005.
   period: 2005
   input:
-    is_ssi_eligible_individual: true
+    ssi: 1_200
     age: 40
     is_blind: false
     is_ssi_disabled: true
@@ -67,10 +67,105 @@
 - name: Case 7, age boundary at exactly 59.
   period: 2023
   input:
-    is_ssi_eligible_individual: true
+    ssi: 1_200
     age: 59
     is_blind: false
     is_ssi_disabled: true
     state_code: CO
   output:
     co_state_supplement_eligible: true
+
+- name: Case 8, reported SSI receipt qualifies with zero computed SSI.
+  period: 2026-01
+  input:
+    ssi: 0
+    receives_ssi: true
+    age: 40
+    is_blind: false
+    is_ssi_disabled: true
+    state_code: CO
+  output:
+    co_state_supplement_eligible: true
+
+- name: Case 9, both members of a disabled SSI couple are eligible.
+  # 9 CCR 2503-5 3.546: AND-CS is for clients "receiving SSI due to a
+  # disability or blindness"; 3.548(A): grants are "calculated on an
+  # individual basis with just one client per case". Each spouse of a joint
+  # SSI claim receives SSI, so each is an AND-CS client.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 50
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_head: true
+      spouse:
+        age: 52
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_state_supplement_eligible: [true, true]
+
+- name: Case 10, a disabled spouse who fails the SSI citizenship condition is not eligible.
+  # The tax-unit spouse is undocumented, so receives no SSI (8 USC 1611,
+  # 1612) and is not an AND-CS client.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 50
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_head: true
+      spouse:
+        age: 52
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        immigration_status_str: UNDOCUMENTED
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    people:
+      spouse:
+        ssi: 0
+        co_state_supplement_eligible: false
+
+- name: Case 11, a disabled adult above the SSI resource limit is not eligible.
+  # $3,000 of countable resources exceeds the $2,000 SSI limit (20 CFR
+  # 416.1205), so no SSI is paid and 3.547(D) bars AND-CS.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 45
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_countable_resources: 3_000
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi: 0
+    co_state_supplement_eligible: false

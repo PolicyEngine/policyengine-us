@@ -1,1 +1,0 @@
-Project the Medicaid long-term care home equity limits with CMS's method (the September-to-September CPI-U increase rounded to 0.1%, effective each January 1) instead of stepping the agricultural limit each February 1, drop their unpublished 2027 and 2028 values, and correct the CMS bulletin citations.

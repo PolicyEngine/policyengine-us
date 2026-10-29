@@ -248,7 +248,7 @@ def check(groups, raises):
 
 
 def test_worked_example():
-    """Integration Case 9's benefit group, from the manual: child support
+    """Integration Case 14's benefit group, from the manual: child support
     3,600, interest 1,000, and a child's Social Security 4,800 a year."""
     groups = [
         [

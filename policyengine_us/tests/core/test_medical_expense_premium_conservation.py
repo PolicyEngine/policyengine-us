@@ -142,10 +142,14 @@ def _assert_conservation(members, simulation):
     # non-premium expenses. Check the bound separately from conservation.
     assert (schedule_a_premium_use >= 0).all()
     assert (schedule_a_premium_use >= dependent_premiums).all()
-    assert (schedule_a_premium_use + se_deduction <= paid).all()
+    # The Form 7206 earnings limit leaves cents in the derived deduction, so
+    # the sums carry float32 rounding: allow a cent.
+    assert (schedule_a_premium_use + se_deduction <= paid + 0.01).all()
     # All premiums here are otherwise eligible: unused premiums remain in
     # Schedule A's base, even when earnings cap the SE deduction.
-    np.testing.assert_array_equal(schedule_a_premium_use + se_deduction, paid)
+    np.testing.assert_allclose(
+        schedule_a_premium_use + se_deduction, paid, rtol=0, atol=0.01
+    )
 
 
 EXAMPLE_UNITS = [
@@ -462,8 +466,9 @@ def _state_simulation(cases, reference_system, with_se_deduction):
                 if state == "NM" and senior_eligible and not case["dependent_elsewhere"]
                 else 0
             )
+            # NMSA 7-2-5.9 and PIT-ADJ line 18 allow the full exemption.
             expectations["nm_medical_expense_exemption"].append(
-                3_000 / denominator if state == "NM" and senior_eligible else 0
+                3_000 if state == "NM" and senior_eligible else 0
             )
     simulation = Simulation(
         tax_benefit_system=reference_system,

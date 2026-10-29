@@ -1,0 +1,255 @@
+# Iowa LIHEAP poverty-level points (REQ-017). Appendix I p. 137 of the FY26
+# LIHEAP Policy and Procedures Manual: 0 to 75 percent of poverty 8 points,
+# 76 to 100 percent 6, 101 to 125 percent 5, 126 to 200 percent 4, over 200
+# percent ineligible; "Poverty levels of .01% are rounded up to the next
+# percentage", so the bands are inclusive at their tops (a ratio of exactly
+# 0.75 scores 8, 0.7501 becomes 76 percent and scores 6):
+# https://hhs.iowa.gov/media/17262/download?inline#page=137
+# The guideline dividing the income is the 2025 guideline of Appendix B p. 89
+# (15,650 plus 5,500 per additional person), inferred because Appendix I names
+# no other table. Modeling: countable income / ia_liheap_fpg, looked up in a
+# single_amount scale keyed at the band tops with right=True; zero when the
+# guideline is zero.
+
+- name: Case 1, no countable income is 0 percent of poverty and scores 8.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 29
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 800
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 0 / 15,650 = 0 -> 0 to 75 percent.
+    ia_liheap_poverty_points: 8
+
+- name: Case 2, income at exactly 75 percent of poverty scores 8.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 11_737.5
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 11,737.5 / 15,650 = 0.75 exactly (0.75 x 15,650 = 11,737.5) -> 75 percent,
+    # the top of the 0 to 75 band.
+    ia_liheap_poverty_points: 8
+
+- name: Case 3, one dollar above 75 percent of poverty rounds up to 76 percent and scores 6.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 11_738
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 11,738 / 15,650 = 0.750032 -> 75.0032 percent rounds up to 76 percent.
+    ia_liheap_poverty_points: 6
+
+- name: Case 4, income at exactly 100 percent of poverty scores 6.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 15_650
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 15,650 / 15,650 = 1.00 -> top of the 76 to 100 band.
+    ia_liheap_poverty_points: 6
+
+- name: Case 5, income just above 100 percent of poverty scores 5.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 15_700
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 15,700 / 15,650 = 1.0032 -> 101 percent.
+    ia_liheap_poverty_points: 5
+
+- name: Case 6, family of four at exactly 125 percent of poverty scores 5.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 24_000
+      person2:
+        age: 36
+        employment_income: 16_187.5
+      person3:
+        age: 9
+      person4:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_250
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IA
+  output:
+    # 24,000 + 16,187.5 = 40,187.5; guideline 15,650 + 3 x 5,500 = 32,150;
+    # 40,187.5 / 32,150 = 1.25 exactly (1.25 x 32,150 = 40,187.5).
+    ia_liheap_poverty_points: 5
+
+- name: Case 7, family of four just above 125 percent of poverty scores 4.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 24_000
+      person2:
+        age: 36
+        employment_income: 16_500
+      person3:
+        age: 9
+      person4:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_250
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IA
+  output:
+    # 40,500 / 32,150 = 1.2597 -> 126 percent.
+    ia_liheap_poverty_points: 4
+
+- name: Case 8, income at exactly 200 percent of poverty scores 4.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 31_300
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 31,300 / 15,650 = 2.00 -> top of the 126 to 200 band.
+    ia_liheap_poverty_points: 4
+
+- name: Case 9, income above 200 percent of poverty scores no points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 31_301
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 31,301 / 15,650 = 2.00006 -> 201 percent, "Over 200%" (ineligible).
+    ia_liheap_poverty_points: 0
+    ia_liheap_eligible: false
+
+- name: Case 10, household with no counted member has a zero guideline and no points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        employment_income: 22_000
+      person2:
+        age: 28
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Guideline 0: the formula returns 0 without a band lookup (a zero ratio
+    # would otherwise score 8, as in Case 1); the household is ineligible at
+    # size 0 in any event.
+    ia_liheap_fpg: 0
+    ia_liheap_poverty_points: 0
+
+- name: Case 11, retiree at 115 percent of poverty scores 5.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        social_security: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 18,000 / 15,650 = 1.1502 -> 116 percent -> 101 to 125 band.
+    ia_liheap_poverty_points: 5

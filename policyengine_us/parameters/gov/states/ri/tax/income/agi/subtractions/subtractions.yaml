@@ -6,13 +6,15 @@ values:
     - ri_tuition_saving_program_contribution_subtraction
     - ri_retirement_income_subtraction
     - us_govt_interest
+    - ri_other_subtractions
 
   2023-01-01:
     - ri_social_security_modification
     - ri_tuition_saving_program_contribution_subtraction
     - ri_retirement_income_subtraction
     - us_govt_interest
-    - military_retirement_pay
+    - military_retirement_income
+    - ri_other_subtractions
 
 metadata:
   unit: list
