@@ -37,12 +37,14 @@ class ky_ssp_countable_income(Variable):
 
         both_eligible = person("ssi_couple_computation_applies", period)
         spousal_deemed = person("ssi_income_deemed_from_ineligible_spouse", period)
-        # Same gate as ssi_countable_income: people who are not aged, blind or
-        # disabled have no countable income of their own. KY SSP requires
-        # is_ssi_eligible, so this does not change any payment.
-        is_aged_blind_disabled = person("is_ssi_aged_blind_disabled", period.this_year)
+        # NOTE: ssi_countable_income now zeroes only people who are not aged,
+        # blind or disabled. This keeps SSI's eligibility gate, which changes
+        # nothing because KY SSP requires is_ssi_eligible.
+        is_eligible = person("is_ssi_eligible_individual", period.this_year) | person(
+            "is_ssi_eligible_spouse", period.this_year
+        )
         return where(
-            ~is_aged_blind_disabled,
+            ~is_eligible,
             0,
             where(
                 both_eligible,

@@ -80,9 +80,6 @@ class ca_capi_person(Variable):
         )
         p = parameters(period).gov.states.ca.cdss.capi.payment_standard_offset
         deemed_benefit = max_(federal + supplement - p.single, 0)
-        # NOTE: until PR 10240 counts the income of people who fail SSI's
-        # noncitizen test, deeming from a spouse who is not aged, blind or
-        # disabled runs only with supplied inputs.
         deeming = (
             (person("is_ssi_spousal_deeming_applies", period.this_year) & ~joint)
             | unpaid_spouse

@@ -118,9 +118,8 @@
     # Disabled individual standard 1,233.94 + no-cooking food allowance
     # 128.87 (living arrangements default to no food preparation) =
     # 1,362.81 per month with no offset. Earnings of 83.33 per month fall
-    # within the $20 + $65 exclusions, so countable income is 0 (until PR
-    # 10240, SSI also zeroes this income for people who fail its noncitizen
-    # test). 1,362.81 x 12 = 16,353.72.
+    # within the $20 + $65 exclusions, so countable income is 0.
+    # 1,362.81 x 12 = 16,353.72.
     ca_capi: 16_353.72
 
 - name: Case 6, mixed couple, only the noncitizen spouse receives CAPI.
@@ -281,22 +280,20 @@
     # NOTE: SSA deems none of the CAPI member's income, because income
     # counted in figuring CAPI is excluded from deeming (20 CFR
     # 416.1161(a)(2)-(3); POMS SI 01320.141 A), so it pays the citizen 487 +
-    # 368.81 = 855.81, and CAPI would be 2,315.57 - 980 - 855.81 = 479.76 a
-    # month. The model's couple computation for a mixed-status couple pays the
-    # citizen 235 + 120.81 = 355.81 and CAPI 979.76; the couple's total is the
-    # same (#10481). The expected values below are the model's.
+    # 368.81 = 855.81. The model's SSI is still the couple computation
+    # (#10481), so it pays 235 + 620.81, the same 855.81.
     ssi: [2_820, 0] # 235 * 12
     # The citizen's state supplement is the 1,206.94 + 128.87 = 1,335.81
-    # no-cooking individual standard less SSI 235 and both halves of the
-    # couple's income: 1,335.81 - 235 - 980 = 120.81 a month.
-    ca_state_supplement: 1_449.72 # 120.81 * 12
+    # no-cooking individual standard less SSI 235 and the citizen's own
+    # 500 - 20 = 480: 620.81 a month.
+    ca_state_supplement: 7_449.72 # 620.81 * 12
     # The CAPI member takes the whole couple standard (MPP 49-050.13), the
     # 2,057.83 + 257.74 = 2,315.57 no-cooking aged couple standard, with no
     # offset since June 2019 (WIC 18941).
     ca_capi_payment_standard: [0, 27_786.84] # 2,315.57 * 12
     # The couple's countable income 490 + 490 = 980 (MPP 49-055.32) and the
-    # citizen's SSI/SSP 235 + 120.81, counted as unearned income based on
+    # citizen's SSI/SSP 235 + 620.81, counted as unearned income based on
     # need (MPP 49-035.221), are subtracted:
-    # 2,315.57 - 980 - 235 - 120.81 = 979.76 a month.
-    ca_capi_person: [0, 11_757.12] # 979.76 * 12
-    ca_capi: 11_757.12
+    # 2,315.57 - 980 - 235 - 620.81 = 479.76 a month.
+    ca_capi_person: [0, 5_757.12] # 479.76 * 12
+    ca_capi: 5_757.12

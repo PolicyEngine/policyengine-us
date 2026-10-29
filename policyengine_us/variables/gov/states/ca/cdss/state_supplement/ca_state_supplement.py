@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
+    _apply_ssi_exclusions,
+)
 
 
 class ca_state_supplement(Variable):
@@ -20,20 +23,45 @@ class ca_state_supplement(Variable):
         person = spm_unit.members
         # SSI/SSP counts another member's income only when it is deemed
         # (20 CFR 416.1160(a)), and CAPI budgets its own members' income (CAPI
-        # regulations MPP 49-035). So the countable income of a member who
-        # fails SSI's citizen or qualified-noncitizen test, whether or not
-        # CAPI-eligible, is not added, unless that member is in an SSI couple
-        # computation: it splits the couple's income between the spouses, so
-        # both halves count against the couple's SSI/SSP.
-        # NOTE: SSI couple status ignores SSI's noncitizen test (issue 10481).
+        # regulations MPP 49-035), so the income of a member who fails SSI's
+        # citizen or qualified-noncitizen test is not counted.
         immigration_status = person("immigration_status", period.this_year)
         is_citizen = immigration_status == immigration_status.possible_values.CITIZEN
         is_qualified_noncitizen = person(
             "is_ssi_qualified_noncitizen", period.this_year
         )
         meets_ssi_immigration_test = is_citizen | is_qualified_noncitizen
-        in_couple_computation = person("ssi_couple_computation_applies", period)
-        counted = meets_ssi_immigration_test | in_couple_computation
-        person_countable_income = person("ssi_countable_income", period)
-        countable_income = spm_unit.sum(where(counted, person_countable_income, 0))
+        # SSA treats a spouse who fails that test as an ineligible spouse (20
+        # CFR 416.1160(d)) and deems none of the spouse's income counted for
+        # CAPI (20 CFR 416.1161(a)(2)-(3)), so in such a couple the recipient's
+        # own income counts, not half of the couple's.
+        # NOTE: SSI couple status ignores SSI's noncitizen test, so the
+        # model's SSI is still the couple computation (issue 10481).
+        in_mixed_couple = (
+            person("ssi_couple_computation_applies", period)
+            & meets_ssi_immigration_test
+            & (person.marital_unit.sum(~meets_ssi_immigration_test) > 0)
+        )
+        earned = max_(
+            person("ssi_earned_income", period.this_year)
+            - person(
+                "ssi_blind_or_disabled_working_student_exclusion", period.this_year
+            ),
+            0,
+        )
+        unearned = person("ssi_unearned_income", period.this_year) + person(
+            "ssi_in_kind_support_and_maintenance", period.this_year
+        )
+        # _apply_ssi_exclusions takes and returns annual amounts.
+        own_countable_income = (
+            _apply_ssi_exclusions(earned, unearned, parameters, period) / MONTHS_IN_YEAR
+        )
+        person_countable_income = where(
+            in_mixed_couple,
+            own_countable_income,
+            person("ssi_countable_income", period),
+        )
+        countable_income = spm_unit.sum(
+            where(meets_ssi_immigration_test, person_countable_income, 0)
+        )
         return max_(0, payment_standard - ssi - countable_income)

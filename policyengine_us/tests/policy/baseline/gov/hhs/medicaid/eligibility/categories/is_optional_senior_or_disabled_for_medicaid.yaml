@@ -61,8 +61,9 @@
 # Emergency Medicaid covers noncitizens who meet the state plan's requirements
 # other than the receipt of SSI (42 U.S.C. 1396b(v)(2)(B); 42 CFR 435.406(b)).
 # In Alabama that leaves SSI's income test. Wages of $800 a month ($9,600 a
-# year) are under the SSI rate ($11,928) before any disregard. Until #10240
-# merges, the pathway counts no income for this person; Cases 7 and 8 test it.
+# year) are under the SSI rate ($11,928) before any disregard; the pathway
+# counts that income (at most 4,290 a year after exclusions). Cases 7 and 8
+# test the income limit.
 - name: Case 6, undocumented aged Alabaman keeps the pathway, unlike the citizen in Case 3, and qualifies for emergency Medicaid.
   period: 2026
   input:
