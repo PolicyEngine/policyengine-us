@@ -16,6 +16,8 @@ metadata:
       href: https://portal.ct.gov/-/media/aginganddisability/agingservices/choices/benefitsquickguide.pdf#page=2
     - title: Connecticut CHOICES Benefits Quick Guide (Rev 04.04.2025)
       href: https://portal.ct.gov/ads/-/media/ads-beta/choices/choices-benefits-quick-guide.pdf?rev=3b8c59ca12224218bc4c4438649e7ac7#page=1
+    - title: California DHCS All County Welfare Directors Letter 20-24, Aged and Disabled Federal Poverty Level program (138 percent of the poverty level effective December 1, 2020)
+      href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/20-24.pdf#page=1
 
 AK:
   2018-01-01: 0.74
@@ -27,8 +29,9 @@ AZ:
 AR:
   2018-01-01: 0.80
 CA:
+  # The 2020-12-01 value first applies in 2021 annual calculations.
   2018-01-01: 1.00
-  2021-01-01: 1.38
+  2020-12-01: 1.38
 CT:
   2018-01-01: 0.63
   2021-01-01: 0.98

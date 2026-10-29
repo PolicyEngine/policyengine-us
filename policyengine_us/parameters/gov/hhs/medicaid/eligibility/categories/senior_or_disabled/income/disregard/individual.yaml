@@ -18,6 +18,24 @@ metadata:
       href: https://portal.ct.gov/-/media/aginganddisability/agingservices/choices/benefitsquickguide.pdf#page=2
     - title: Connecticut CHOICES Benefits Quick Guide (Rev 04.04.2025)
       href: https://portal.ct.gov/ads/-/media/ads-beta/choices/choices-benefits-quick-guide.pdf?rev=3b8c59ca12224218bc4c4438649e7ac7#page=1
+    - title: "California DHCS All County Welfare Directors Letter 00-57, Aged and Disabled Federal Poverty Level program, MC 176 financial eligibility form, line 8"
+      href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/c00-57.pdf#page=3
+    - title: "California DHCS All County Welfare Directors Letter 20-24, Aged and Disabled Federal Poverty Level program #page 2-3"
+      href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/20-24.pdf#page=2
+    - title: Connecticut DSS Program Standards Chart (as of January 1, 2026), AABD / MAABD disregards
+      href: https://portal.ct.gov/-/media/departments-and-agencies/dss/fact-sheets-and-issue-briefs/fact-sheets/dss-program-standards-chart-effective-010126.pdf
+    - title: Connecticut DSS Uniform Policy Manual 5030.15 - Unearned Income Disregards, AABD and MAABD
+      href: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/upms/upm5---treatment-of-income-income-eligibility/5030_15.doc
+    - title: Connecticut CHOICES Benefits Quick Guide (modified May 29, 2026), HUSKY C
+      href: https://portal.ct.gov/ads/-/media/ads-beta/choices/choices-benefits-quick-guide.pdf#page=3
+    - title: South Carolina DHHS Medicaid Policy and Procedures Manual 303.02.01 and 303.06.03 - ABD general income disregard
+      href: https://img1.scdhhs.gov/mppm/SCMPPM/Section_300.docx
+    - title: South Carolina Medicaid State Plan, Supplement 8a to Attachment 2.6-A (effective January 1, 2009)
+      href: https://scdhhs.gov/sites/dhhs/files/documents/stateplan/Attachment_2.6-A.pdf#page=70
+    - title: Minnesota Statutes 256B.056, subdivision 1b - Aged, blind, and disabled income methodology
+      href: https://www.revisor.mn.gov/statutes/cite/256B.056#stat.256B.056.1b
+    - title: Minnesota DHS Health Care Programs Eligibility Policy Manual 2.3.3.3.2.2, MA-ABD Disregards and Deductions
+      href: https://hcopub.dhs.state.mn.us/epm/2_3_3_3_2_2.htm
 
 AL:
   2015-01-01: 20
@@ -28,7 +46,10 @@ AZ:
 AR:
   2015-01-01: 20
 CA:
-  2015-01-01: 230
+  # The 20-dollar any-income deduction (MC 176 line 8), which ACWDL 20-24 keeps.
+  # Before December 2020 California also subtracted the disregard in
+  # additional_disregard after the SSI exclusions.
+  2015-01-01: 20
 CO:
   2015-01-01: 20
 CT:
@@ -36,6 +57,7 @@ CT:
   2023-01-01: 482
   2024-01-01: 511
   2025-01-01: 535
+  2026-01-01: 562
 DC:
   2015-01-01: 20
 DE:
@@ -70,7 +92,9 @@ MA:
 MI:
   2015-01-01: 20
 MN:
-  2015-01-01: 20
+  # Minn. Stat. 256B.056, subd. 1b: the SSI $20 general disregard is included
+  # in the standard and not deducted from income.
+  2015-01-01: 0
 MS:
   2015-01-01: 20
 MO:
@@ -104,7 +128,7 @@ PA:
 RI:
   2015-01-01: 20
 SC:
-  2015-01-01: 20
+  2015-01-01: 50
 SD:
   2015-01-01: 20
 TN:

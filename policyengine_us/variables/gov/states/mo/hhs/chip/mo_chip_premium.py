@@ -22,6 +22,9 @@ class mo_chip_premium(Variable):
     reference = (
         "https://mydss.mo.gov/childrens-health-insurance-program-chip-premium-chart",
         "https://dssmanuals.mo.gov/wp-content/uploads/2019/05/appendix-e.pdf",
+        "https://revisor.mo.gov/main/OneSection.aspx?section=208.640",
+        # PDF pages 2, 70
+        "https://www.medicaid.gov/CHIP/Downloads/MO/MO-15-0009.pdf#page=2",
     )
 
     def formula(tax_unit, period, parameters):
@@ -29,7 +32,10 @@ class mo_chip_premium(Variable):
         # count are counts, and the income level is a ratio, so none of them
         # should be divided into a monthly value.
         year = period.this_year
-        has_chip_member = add(tax_unit, year, ["is_chip_eligible"]) > 0
+        # Only CHIP children trigger the premium (RSMo 208.640.1). Show-Me
+        # Healthy Babies pregnant women and unborn children pay no premiums
+        # or cost sharing (MO-15-0009 approval letter and section 8.2.4).
+        has_chip_child = add(tax_unit, year, ["is_chip_eligible_child"]) > 0
         income_level = tax_unit("tax_unit_medicaid_income_level", year)
         family_size = tax_unit("tax_unit_size", year)
         pregnant_count = add(tax_unit, year, ["current_pregnancies"])
@@ -83,4 +89,4 @@ class mo_chip_premium(Variable):
             ],
             default=0,
         )
-        return has_chip_member * monthly_premium
+        return has_chip_child * monthly_premium
