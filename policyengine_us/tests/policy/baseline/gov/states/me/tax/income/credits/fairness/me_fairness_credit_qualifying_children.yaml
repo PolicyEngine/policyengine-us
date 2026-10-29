@@ -1,8 +1,10 @@
 # 36 MRSA 5213-A(1)(A-1)(2) and 5219-KK(1)(A-1)(2)-(3) count each "qualifying child
 # or dependent" for whom the filer can claim the federal credit under section 24,
-# which includes the credit for other dependents. A child whose filer fails the
-# Child Tax Credit SSN rule gets that credit (IRC 24(h)(4)(C)) if the filer has an
-# SSN or ITIN, so the child still counts (issue #9403).
+# which includes the credit for other dependents. Form 1040ME line 13a counts each
+# dependent for the Child Tax Credit or the credit for other dependents. A child
+# whose filer fails the Child Tax Credit SSN rule gets that credit (IRC 24(h)(4)(C))
+# if the filer has an SSN or ITIN, so the child still counts (issue #9403). Older
+# dependents and children without an SSN count when they have a TIN.
 - name: Maine counts the child of a joint return where neither spouse has an SSN in 2025
   period: 2025
   input:
@@ -86,3 +88,180 @@
     ctc_qualifying_children: 1
     me_fairness_credit_qualifying_children: 1
     me_sales_tax_fairness_credit: 250
+
+- name: Maine counts a 17-year-old dependent who gets the credit for other dependents in 2025
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+      spouse:
+        age: 45
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        me_sales_and_property_tax_fairness_credit_income: 10_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: ME
+  output:
+    ctc_qualifying_children: 0
+    me_fairness_credit_qualifying_children: 1
+    # 2025 Schedule PTFC/STFC line 8 table, joint, line 13a is 1: $4,050.
+    me_property_tax_fairness_credit_benefit_base: 4_050
+    # 2025 Schedule PTFC/STFC line 17 table, joint, $0-$50,950, line 13a is 1: $250.
+    me_sales_tax_fairness_credit: 250
+
+- name: Maine counts a child with an ITIN but no SSN in 2025
+  # IRC 24(h)(7) denies the Child Tax Credit; IRC 24(h)(4)(C) allows the credit for
+  # other dependents.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+      spouse:
+        age: 35
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        me_sales_and_property_tax_fairness_credit_income: 10_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: ME
+  output:
+    ctc_qualifying_children: 0
+    me_fairness_credit_qualifying_children: 1
+    me_sales_tax_fairness_credit: 250
+
+- name: Maine counts an adult dependent with a child for a head of household in 2025
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+      adult_dependent:
+        age: 20
+        is_tax_unit_dependent: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, adult_dependent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        me_sales_and_property_tax_fairness_credit_income: 10_000
+    households:
+      household:
+        members: [head, adult_dependent, child]
+        state_code: ME
+  output:
+    ctc_qualifying_children: 1
+    me_fairness_credit_qualifying_children: 2
+    # 2025 Schedule PTFC/STFC line 8 table, head of household, line 13a is more
+    # than 1: $4,050.
+    me_property_tax_fairness_credit_benefit_base: 4_050
+    # 2025 Schedule PTFC/STFC line 17 table, head of household, $0-$38,200, line
+    # 13a is 2: $250.
+    me_sales_tax_fairness_credit: 250
+
+- name: Maine does not count a dependent without any TIN in 2025
+  # The credit for other dependents requires the dependent's SSN, ITIN or ATIN.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+      spouse:
+        age: 45
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        me_sales_and_property_tax_fairness_credit_income: 10_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: ME
+  output:
+    ctc_qualifying_children: 0
+    me_fairness_credit_qualifying_children: 0
+    me_property_tax_fairness_credit_benefit_base: 3_300
+    me_sales_tax_fairness_credit: 215
+
+- name: Maine counts the Child Tax Credit child and the older dependent with a TIN in 2025
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+      spouse:
+        age: 45
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+      teen:
+        age: 17
+        is_tax_unit_dependent: true
+      adult_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child, teen, adult_dependent]
+        filing_status: JOINT
+        me_sales_and_property_tax_fairness_credit_income: 10_000
+    households:
+      household:
+        members: [head, spouse, child, teen, adult_dependent]
+        state_code: ME
+  output:
+    ctc_qualifying_children: 1
+    me_fairness_credit_qualifying_children: 2
+    # 2025 Schedule PTFC/STFC line 17 table, joint, $0-$50,950, line 13a is 2+: $280.
+    me_sales_tax_fairness_credit: 280
+
+- name: Maine counts only Child Tax Credit children before the credit for other dependents in 2017
+  # IRC 24(h)(4) applies from 2018, so a 17-year-old dependent does not count in 2017.
+  period: 2017
+  input:
+    people:
+      head:
+        age: 45
+      spouse:
+        age: 45
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+      teen:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child, teen]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child, teen]
+        state_code: ME
+  output:
+    ctc_qualifying_children: 1
+    me_fairness_credit_qualifying_children: 1

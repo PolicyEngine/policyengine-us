@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, MD, MS, NC, ND, NE, NH, NJ, NY, OH, OK, OR, PA, SD, RI, TX, UT, VA, WA, WY
+    coverage: AK, AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, MD, MS, NC, ND, NE, NH, NJ, NY, OH, OK, OR, PA, SD, RI, TX, UT, VA, WA, WY
     state_implementations:
       - state: AL
         status: partial
@@ -997,6 +997,14 @@ programs:
         parameter_prefix: gov.states.al.adeca.liheap
         verified_years: "2026"
         notes: FY2026 regular heating with the HUD allowance deduction and the funded IIJA supplement. Crisis, cooling, weatherization and equipment assistance are out of scope.
+      - state: AK
+        status: partial
+        name: Alaska HAP
+        full_name: Alaska Heating Assistance Program
+        variable: ak_hap
+        parameter_prefix: gov.states.ak.dpa.hap
+        verified_years: "2027"
+        notes: FY2027 regular heating under the federal LIHEAP component (not the state-funded AAHP), with shared-dwelling and utility-allowance reductions applied to heating points as 7 AAC 44.080 directs. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: AR
         status: partial
         name: Arkansas LIHEAP
@@ -1304,9 +1312,18 @@ programs:
         variable: hi_oss
         parameter_prefix: gov.states.hi.dhs.oss
       - state: IA
-        status: in_progress
-        name: Iowa SSP
-        full_name: Iowa State Supplemental Payment
+        status: partial
+        name: Iowa SSA
+        full_name: Iowa State Supplementary Assistance
+        variable: ia_ssa
+        parameter_prefix: gov.states.ia.hhs.ssa
+        verified_years: "2026"
+        notes: >-
+          Models 2026 blind, dependent-person, family-life home, residential
+          care, in-home health-related care and SMME supplements; special
+          categories need certification inputs, so microsimulation pays only
+          the blind supplement. Mandatory minimum-income-level and
+          conditional-benefit payments are not modeled.
       - state: ID
         status: complete
         name: Idaho AABD
