@@ -16,6 +16,7 @@ class md_paa_imputed_federal_ssi(Variable):
         "https://regs.maryland.gov/us/md/exec/comar/07.03.07.09",
         "https://www.law.cornell.edu/uscode/text/42/1382#e_1_A",
         "https://www.law.cornell.edu/cfr/text/20/416.1163",
+        "https://secure.ssa.gov/poms.nsf/lnx/0501320400",
     )
 
     def formula(person, period, parameters):
@@ -43,17 +44,20 @@ class md_paa_imputed_federal_ssi(Variable):
         arrangement = person("ssi_federal_living_arrangement", period)
         arrangements = SSIFederalLivingArrangement
         in_medical_facility = arrangement == arrangements.MEDICAL_TREATMENT_FACILITY
-        individual_rate = select(
-            [
-                in_medical_facility,
-                arrangement == arrangements.ANOTHER_PERSONS_HOUSEHOLD,
-            ],
-            [p.medical_facility, p.individual * (1 - p.one_third_reduction_rate)],
-            default=p.individual,
+        # The one-third reduction applies to the Federal benefit rate in use:
+        # the individual rate, or the couple rate under spouse deeming
+        # (20 CFR 416.1131; POMS SI 01320.400 B.1.e).
+        vtr_factor = where(
+            arrangement == arrangements.ANOTHER_PERSONS_HOUSEHOLD,
+            1 - p.one_third_reduction_rate,
+            1,
+        )
+        individual_rate = where(
+            in_medical_facility, p.medical_facility, p.individual * vtr_factor
         )
         individual_ssi = individual_rate - countable_income
         deemed_income = person("ssi_income_deemed_from_ineligible_spouse", period)
-        couple_ssi = p.couple - (countable_income + deemed_income)
+        couple_ssi = p.couple * vtr_factor - (countable_income + deemed_income)
         deeming = (
             person("is_ssi_spousal_deeming_applies", period.this_year)
             & ~in_medical_facility

@@ -113,3 +113,32 @@
     # (12,000 - 2,400 + 24,000 - 3,600) / 12 = 2,500 monthly.
     # Apply the couple's exclusions once: (2,500 - 20 - 65) / 2 = 1,207.50.
     msp_countable_income: [1_207.50, 1_207.50]
+
+- name: Case 6, spouse income is deemed to an aged permanent resident without 40 SSI quarters.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 10
+        ssi_qualifying_quarters_earnings: 20
+        ssi_unearned_income: 12_000
+      person2:
+        age: 55
+        is_tax_unit_spouse: true
+        ssi_earned_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    # SSI methodology deems the spouse's wages whether or not the person
+    # meets SSI's noncitizen test: 20,000 > (1,450 - 967) x 12 = 5,796.
+    # (1,000 - 20) + (1,666.67 - 65) / 2 = 980 + 800.83 = 1,780.83.
+    is_ssi_spousal_deeming_applies: [true, false]
+    msp_countable_income: [1_780.83, 790.83]

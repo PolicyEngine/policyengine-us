@@ -20,13 +20,20 @@ class ca_state_supplement(Variable):
         person = spm_unit.members
         # SSI/SSP counts another member's income only when it is deemed
         # (20 CFR 416.1160(a)), and CAPI budgets its own members' income (CAPI
-        # regulations MPP 49-035). A spouse's income already reaches the SSI
-        # recipient's own countable income through the couple computation or
-        # deeming, so a CAPI-eligible member's countable income is not added
-        # again.
-        capi_eligible = person("ca_capi_eligible_person", period.this_year)
-        person_countable_income = person("ssi_countable_income", period)
-        countable_income = spm_unit.sum(
-            where(capi_eligible, 0, person_countable_income)
+        # regulations MPP 49-035). So the countable income of a member who
+        # fails SSI's citizen or qualified-noncitizen test, whether or not
+        # CAPI-eligible, is not added, unless that member is in an SSI couple
+        # computation: it splits the couple's income between the spouses, so
+        # both halves count against the couple's SSI/SSP.
+        # NOTE: SSI couple status ignores SSI's noncitizen test (issue 10481).
+        immigration_status = person("immigration_status", period.this_year)
+        is_citizen = immigration_status == immigration_status.possible_values.CITIZEN
+        is_qualified_noncitizen = person(
+            "is_ssi_qualified_noncitizen", period.this_year
         )
+        meets_ssi_immigration_test = is_citizen | is_qualified_noncitizen
+        in_couple_computation = person("ssi_couple_computation_applies", period)
+        counted = meets_ssi_immigration_test | in_couple_computation
+        person_countable_income = person("ssi_countable_income", period)
+        countable_income = spm_unit.sum(where(counted, person_countable_income, 0))
         return max_(0, payment_standard - ssi - countable_income)

@@ -411,21 +411,22 @@
     ca_state_supplement: 4_425.72 # 368.81 * 12
 
 # Under the model's SSI couple computation each aged spouse carries half of
-# the couple's countable income. The model leaves the CAPI member's half out
-# of the citizen's state supplement because CAPI budgets the couple's income
-# (MPP 49-055.32), and the citizen's own half is already in his countable
-# income. 2025: the couple federal benefit rate is $1,450; the no-cooking
-# individual standard is $1,206.94 + $128.87 = $1,335.81.
+# the couple's countable income, and both halves count against the citizen's
+# state supplement. 2025: the couple federal benefit rate is $1,450; the
+# no-cooking individual standard is $1,206.94 + $128.87 = $1,335.81.
 # NOTE: SSA treats the noncitizen spouse as an ineligible spouse (20 CFR
-# 416.1160(d)). Her 500 exceeds the 1,450 - 967 = 483 gap, so SSA deems her
-# income and pays SSI of min(967 - 480, 1,450 - 980) = 470 and a state
-# supplement of min(1,335.81 - 967, 2,315.57 - 1,450) = 368.81, 838.81 in
-# all (POMS SI 01320.430 D; 20 CFR 416.1163(e)(2)). The model's couple
-# computation for a mixed-status couple pays 235 + 610.81 = 845.81, so CAPI
-# is 489.76 instead of 496.76. This is a pre-existing ssi_claim_is_joint
-# limitation: it counts aged, blind or disabled head/spouse status rather
-# than SSI eligibility. The expected values below are the model's.
-- name: Case 11, 2025 aged citizen married to a CAPI-eligible spouse, whose half of the couple's income is not counted.
+# 416.1160(d)), but it deems none of the spouse's income. CAPI is state-funded
+# assistance based on need, a public income-maintenance payment (20 CFR
+# 416.1142(a)(6); POMS SI 00830.175), and income counted in figuring such a
+# payment is not deemed, whoever receives it (20 CFR 416.1161(a)(2)-(3);
+# POMS SI 01320.141 A). SSA pays SSI of 967 - 480 = 487 and a state
+# supplement of 1,335.81 - 967 = 368.81, 855.81 in all. The model's couple
+# computation for a mixed-status couple pays 235 + 120.81 = 355.81, and CAPI
+# then pays 500 more than the law gives, so the couple's total is the same.
+# This is a pre-existing ssi_claim_is_joint limitation (#10481): it counts
+# aged, blind or disabled head/spouse status rather than SSI eligibility. The
+# expected values below are the model's.
+- name: Case 11, 2025 aged citizen married to a CAPI-eligible spouse, the couple computation counts both halves of the couple's income.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -466,6 +467,49 @@
     # One eligible aged member, and living_arrangements_allow_for_food_preparation
     # defaults to false, so the standard is 1,206.94 + 128.87 = 1,335.81.
     ca_state_supplement_payment_standard: 16_029.72 # 1,335.81 * 12
-    # The supplement is 1,335.81 - 235 - 490 = 610.81 a month; person2's 490
-    # is not counted.
-    ca_state_supplement: 7_329.72 # 610.81 * 12
+    # The supplement is 1,335.81 - 235 - (490 + 490) = 120.81 a month.
+    ca_state_supplement: 1_449.72 # 120.81 * 12
+
+- name: Case 12, 2025 aged citizen sharing an SPM unit with an undocumented sibling who is not CAPI-eligible keeps the supplement.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 6_000 # 500 a month
+      person2:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: UNDOCUMENTED
+        pension_income: 6_000 # 500 a month
+        # WIC 18938 and MPP 49-020 bar undocumented people from CAPI (#10482).
+        ca_capi_eligible_person: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Each has 500 - 20 = 480 a month of countable income.
+    ssi_countable_income: [5_760, 5_760]
+    ssi: [5_844, 0] # 487 * 12
+    ca_state_supplement_payment_standard: 16_029.72 # 1,335.81 * 12
+    # A sibling's income is never deemed to an SSI/SSP recipient
+    # (20 CFR 416.1160(a)), so the supplement stays 1,335.81 - 487 - 480 =
+    # 368.81 a month.
+    ca_state_supplement: 4_425.72 # 368.81 * 12
