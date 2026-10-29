@@ -243,3 +243,49 @@
     mn_eap_eligible: true
     mn_eap_pay_share: 0.2477383
     mn_eap: 828
+
+# Qualified Eligibility places households whose only income is General
+# Assistance or MFIP at an income percentile of 0, so the FFY26 pay maximum
+# 0.439 applies. Unit 1: General Assistance $4,200 ($350 a month); $800 gas +
+# $700 electricity = $1,500; 0.439 x $1,500 = $658.50, which rounds half up to
+# $659 (half to even would give $658). Unit 2: parent and child with MFIP cash
+# of $7,800 ($650 a month); $900 gas + $800 electricity = $1,700; 0.439 x
+# $1,700 = $746.30 -> $746. Under the ordinary percentile the shares would be
+# 4,200 / 37,428 -> 0.3975 ($596) and 7,800 / 48,948 (size 2 limit $4,079 x
+# 12) -> 0.3801 ($646).
+- name: Case 9, General Assistance-only and MFIP-only households get the pay maximum and a half-dollar benefit rounds up.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        general_assistance: 4_200
+      person2:
+        age: 27
+      person3:
+        age: 4
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 800
+        pre_subsidy_electricity_expense: 700
+        tanf: 0
+      spm_unit2:
+        members: [person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        pre_subsidy_electricity_expense: 800
+        tanf: 7_800
+    households:
+      household1:
+        members: [person1]
+        state_code: MN
+      household2:
+        members: [person2, person3]
+        state_code: MN
+  output:
+    mn_eap_countable_income: [4_200, 7_800]
+    mn_eap_pay_share: [0.439, 0.439]
+    mn_eap: [659, 746]

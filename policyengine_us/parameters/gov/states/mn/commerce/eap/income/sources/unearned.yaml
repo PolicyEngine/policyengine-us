@@ -1,14 +1,13 @@
 description: Minnesota counts these sources as unearned income under the Energy Assistance Program.
 values:
   2025-10-01:
-    # The formula counts Social Security and pensions net of the Medicare Part B
-    # premium, unemployment compensation with the student exclusion, retirement
-    # account distributions from age 59 1/2, and MFIP and other TANF cash
-    # through the SPM unit tanf variable.
+    # The formula counts Social Security, railroad retirement and pensions net
+    # of the Medicare Part A and Part B premiums, unemployment compensation with
+    # the student exclusion, retirement account distributions from age 59 1/2,
+    # and MFIP and other TANF cash through the SPM unit tanf variable.
     - ssi
     - general_assistance
     - military_retirement_income
-    - railroad_benefits
     - veterans_benefits
     - workers_compensation
     - disability_benefits

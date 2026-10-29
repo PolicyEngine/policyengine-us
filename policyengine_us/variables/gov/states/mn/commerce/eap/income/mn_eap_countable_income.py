@@ -9,10 +9,11 @@ class mn_eap_countable_income(Variable):
     label = "Minnesota EAP annual countable income"
     defined_for = StateCode.MN
     reference = (
-        # PDF pages 88-102, 107-108, 111
+        # PDF pages 88-102, 107-108, 110-111
         "https://mn.gov/commerce-stat/pdfs/ffy26-eap-policy-manual.pdf#page=88",
-        # PDF pages 90-103, 109-110, 113, 116
+        # PDF pages 90-103, 109-110, 112-113, 116
         "https://mn.gov/commerce-stat/pdfs/ffy27-eap-policy-manual.pdf#page=90",
+        "https://www.rrb.gov/RB30/DeductionsforOtherFederalPrograms/MedicareCoverage",
     )
 
     def formula(spm_unit, period, parameters):
@@ -43,19 +44,22 @@ class mn_eap_countable_income(Variable):
             max_(person("retirement_distributions", period), 0),
             0,
         )
-        # Social Security counts net of the Medicare premium deducted from the
-        # check, and a pension (PERA) net of Medicare paid out of it. The Part B
-        # premium is subtracted once from the combined amount. No Part D
-        # premium input exists.
+        # Social Security and railroad retirement count net of the Medicare
+        # premiums withheld from the check, and a pension (PERA) net of Medicare
+        # paid out of it. Part A and Part B premiums are subtracted once from the
+        # combined amount; Social Security and railroad annuitants have
+        # premium-free Part A. No Part D premium input exists.
         social_security = max_(person("social_security", period), 0)
         pension = max_(person("pension_income", period), 0)
-        premium = person("medicare_part_b_premium", period)
-        net_social_security_and_pension = max_(social_security + pension - premium, 0)
+        railroad = max_(person("railroad_benefits", period), 0)
+        premiums = add(
+            person, period, ["medicare_part_a_premium", "medicare_part_b_premium"]
+        )
+        net_retirement_benefits = max_(
+            social_security + pension + railroad - premiums, 0
+        )
         person_income = spm_unit.sum(
-            earned_and_unemployment
-            + unearned
-            + distributions
-            + net_social_security_and_pension
+            earned_and_unemployment + unearned + distributions + net_retirement_benefits
         )
         # Dividends, interest and royalties count only when the one-month
         # equivalent is at least $50; cash gifts only when they total at least

@@ -186,3 +186,30 @@
   output:
     mn_eap_household_size: 0
     mn_eap_eligible: false
+
+# Public housing with heat included in rent and no electric bill: wages of
+# $18,000 are under the $37,428 size 1 limit and natural gas is reported, but
+# the rent is subsidized, so heat in rent does not make the household
+# vulnerable and its energy cost is the $0 electric bill: ineligible. Read as
+# unsubsidized, the same household would be eligible on the backup matrix.
+- name: Case 6, public housing with heat in rent and no electric bill is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+        is_in_public_housing: true
+  output:
+    mn_eap_energy_cost: 0
+    mn_eap_eligible: false

@@ -284,3 +284,96 @@
   output:
     mn_eap_countable_income: 39_000
     mn_eap_eligible: false
+
+# Railroad retirement and a PERA pension count net of the Medicare premiums,
+# subtracted once from the combined Social Security, railroad and pension
+# amount. Unit 1: $38,000 railroad annuity - $2,434.80 Part B ($202.90 x 12;
+# Part A is premium-free with the default 40 quarters) = $35,565.20, under the
+# FFY26 size 1 limit of $37,428 (the gross $38,000 would be over it).
+# Percentile 35,565.20 / 37,428 = 0.9502, past the 0.896 slope end, so the
+# share is 0.108: 0.108 x ($1,000 gas + $1,000 electricity) = $216. Unit 2:
+# $30,000 PERA pension - $2,434.80 Part B - $3,732 Part A (2026 reduced
+# premium $311 x 12) = $23,833.20; 23,833.20 / 37,428 = 0.6367746; share
+# 0.439 - 0.331 x 0.6367746 / 0.896 = 0.2037630; 0.2037630 x $2,000 =
+# $407.53 -> $408.
+- name: Case 10, railroad retirement and a pension count net of Medicare Part A and Part B premiums.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        railroad_benefits: 38_000
+        medicare_part_b_premium: 2_434.8
+        ssi: 0
+      person2:
+        age: 70
+        taxable_public_pension_income: 30_000
+        medicare_part_b_premium: 2_434.8
+        medicare_part_a_premium: 3_732
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        pre_subsidy_electricity_expense: 1_000
+        tanf: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        pre_subsidy_electricity_expense: 1_000
+        tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: MN
+      household2:
+        members: [person2]
+        state_code: MN
+  output:
+    mn_eap_countable_income: [35_565.2, 23_833.2]
+    mn_eap_eligible: [true, true]
+    mn_eap: [216, 408]
+
+# Each earned and unearned list source gets a distinct amount, so dropping any
+# entry lowers the total. Earned: $1,000 self-employment + $2,000 SSTB
+# self-employment + $3,000 partnership + $4,000 farm operations + $5,000 farm
+# rent + $6,000 rental = $21,000. Unearned: $7,000 military retirement +
+# $8,000 workers' compensation + $9,000 employment disability + $10,000
+# alimony + $11,000 strike benefits + $12,000 trust income + $13,000 survivor
+# benefits = $70,000. Total $21,000 + $70,000 = $91,000.
+- name: Case 11, every earned and unearned list source counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        self_employment_income_before_lsr: 1_000
+        sstb_self_employment_income_before_lsr: 2_000
+        partnership_income: 3_000
+        farm_operations_income: 4_000
+        farm_rent_income: 5_000
+        rental_income: 6_000
+      person2:
+        age: 44
+        military_retirement_pay: 7_000
+        workers_compensation: 8_000
+        disability_benefits: 9_000
+        alimony_income: 10_000
+        strike_benefits: 11_000
+        estate_income: 12_000
+        survivor_benefits: 13_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_eap_countable_income: 91_000
