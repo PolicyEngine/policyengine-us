@@ -155,7 +155,7 @@
     ca_state_supplement_food_allowance: 118.13
     ca_state_supplement_payment_standard: 2_356.57
 
-- name: 2026 single aged and blind person without cooking facilities gets the higher of the blind and aged amounts
+- name: 2026 single aged and blind person without cooking facilities gets the higher of the blind amount and the aged amount with the food allowance
   period: 2026-01
   absolute_error_margin: 0.01
   input:
