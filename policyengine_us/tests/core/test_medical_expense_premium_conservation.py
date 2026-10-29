@@ -142,10 +142,14 @@ def _assert_conservation(members, simulation):
     # non-premium expenses. Check the bound separately from conservation.
     assert (schedule_a_premium_use >= 0).all()
     assert (schedule_a_premium_use >= dependent_premiums).all()
-    assert (schedule_a_premium_use + se_deduction <= paid).all()
+    # The Form 7206 earnings limit leaves cents in the derived deduction, so
+    # the sums carry float32 rounding: allow a cent.
+    assert (schedule_a_premium_use + se_deduction <= paid + 0.01).all()
     # All premiums here are otherwise eligible: unused premiums remain in
     # Schedule A's base, even when earnings cap the SE deduction.
-    np.testing.assert_array_equal(schedule_a_premium_use + se_deduction, paid)
+    np.testing.assert_allclose(
+        schedule_a_premium_use + se_deduction, paid, rtol=0, atol=0.01
+    )
 
 
 EXAMPLE_UNITS = [

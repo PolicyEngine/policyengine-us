@@ -7,12 +7,32 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
     label = "Seniors or disabled people not meeting SSI rules"
     documentation = "Whether this person qualifies for Medicaid through the State's optional aged, blind, or disabled pathway (not otherwise SSI-eligible)"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/42/1396a#m"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/42/1396a#m",
+        "https://www.law.cornell.edu/uscode/text/42/1396b#v",
+        "https://www.ecfr.gov/current/title-42/section-435.406#p-435.406(b)",
+        "https://www.ecfr.gov/current/title-42/section-440.255#p-440.255(c)",
+    )
 
     def formula(person, period, parameters):
+        # Some states cover aged, blind, or disabled people as categorically
+        # needy only if they receive SSI, and have no group for those who do not.
+        # Emergency Medicaid waives the SSI receipt requirement for noncitizens
+        # who fail the Medicaid immigration test (42 U.S.C. 1396b(v)(2)(B);
+        # 42 CFR 435.406(b) and 440.255(c)), so they stay in this group.
+        state = person.household("state_code_str", period)
+        p = parameters(
+            period
+        ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled
+        immigration_eligible = person("is_medicaid_immigration_status_eligible", period)
+        in_covered_group = (
+            p.covers_non_ssi_recipients[state].astype(bool) | ~immigration_eligible
+        )
         is_senior_or_disabled = person("is_ssi_aged_blind_disabled", period)
         income_eligible = person(
             "is_optional_senior_or_disabled_income_eligible", period
         )
         asset_eligible = person("is_optional_senior_or_disabled_asset_eligible", period)
-        return is_senior_or_disabled & income_eligible & asset_eligible
+        return (
+            in_covered_group & is_senior_or_disabled & income_eligible & asset_eligible
+        )

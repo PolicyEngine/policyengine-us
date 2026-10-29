@@ -8,7 +8,10 @@ class va_tanf(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = "va_tanf_eligibility"
-    reference = "https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/tanfx2fview/tanf/Chapter-300---Need-and-Amount-of-Assistance.pdf#page=51"
+    reference = (
+        "https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/tanfx2fview/tanf/Chapter-300---Need-and-Amount-of-Assistance.pdf#page=51",
+        "https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/tanfview/tanf/Chapter-500---Authorization-and-Payment.pdf#page=3",
+    )
 
     def formula(spm_unit, period, parameters):
         # the calculated payment
@@ -46,4 +49,9 @@ class va_tanf(Variable):
         )
         maximum = np.ceil(base_max * p.standard_multiplier)
 
-        return min_(payment, maximum)
+        # The payment is the budgetary deficiency adjusted to the next lower
+        # dollar; no payment is made when it is under the minimum, but the
+        # unit stays eligible (TANF Manual 502.1 A). Rounding to cents first
+        # keeps float error from dropping a whole dollar.
+        capped_payment = np.floor(np.round(min_(payment, maximum), 2))
+        return where(capped_payment >= p.minimum_payment, capped_payment, 0)

@@ -17,6 +17,7 @@ class is_chip_eligible_standard_pregnant_person(Variable):
     reference = (
         "https://www.ssa.gov/OP_Home/ssact/title21/2110.htm",
         "https://www.medicaid.gov/medicaid/national-medicaid-chip-program-information/medicaid-childrens-health-insurance-program-basic-health-program-eligibility-levels",
+        "https://www.law.cornell.edu/uscode/text/42/1397ll#d_2_C",
         "https://www.law.cornell.edu/uscode/text/8/1611#a",
         "https://www.law.cornell.edu/uscode/text/8/1641#b",
         "https://www.law.cornell.edu/cfr/text/45/155.20",
@@ -51,7 +52,20 @@ class is_chip_eligible_standard_pregnant_person(Variable):
         income_eligible = medicaid_income_eligible(
             person, period, parameters, income_limit
         )
-        ri_insurance_eligible = ~person("ri_medicaid_has_third_party_coverage", period)
+
+        # A targeted low-income pregnant woman must not be covered under a
+        # group health plan or health insurance coverage, in the same manner
+        # as a child (42 USC 1397ll(d)(2)(C) and 1397jj(b)(1)(C)).
+        has_disqualifying_coverage = person(
+            "has_chip_disqualifying_health_coverage", period
+        )
+        # 210-RICR-30-00-1 § 1.6(A)(2)(a)(2), (b): Medicaid and CHIP use the
+        # same third-party list in Rhode Island.
+        has_disqualifying_coverage = where(
+            state_code == StateCode.RI,
+            person("ri_medicaid_has_third_party_coverage", period),
+            has_disqualifying_coverage,
+        )
 
         return (
             is_pregnant
@@ -59,5 +73,5 @@ class is_chip_eligible_standard_pregnant_person(Variable):
             & immigration_eligible
             & ~medicaid_eligible
             & income_eligible
-            & ri_insurance_eligible
+            & ~has_disqualifying_coverage
         ) | person("ri_chip_postpartum_eligible", period.first_month)

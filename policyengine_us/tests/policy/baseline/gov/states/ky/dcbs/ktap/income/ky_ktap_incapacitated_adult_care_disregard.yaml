@@ -1,0 +1,190 @@
+# Kentucky K-TAP dependent care disregard for incapacitated adults
+# Per 921 KAR 2:016 Section 5(3)(b)1.b, the disregard covers an incapacitated
+# adult living in the home. Section 5(3)(b)2 caps it at $175 per month per
+# individual (full-time rate; the part-time rate is not modeled).
+
+- name: Case 1, no incapacitated adult.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 3_600
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    ky_ktap_incapacitated_adult_care_disregard: 0
+
+- name: Case 2, one incapacitated adult with care below the cap.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      adult:
+        age: 50
+        is_incapable_of_self_care: true
+        # $100/month
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [parent, adult]
+    households:
+      household:
+        members: [parent, adult]
+        state_code: KY
+  output:
+    # min(100, 175) = 100
+    ky_ktap_incapacitated_adult_care_disregard: 100
+
+- name: Case 3, one incapacitated adult with care at the cap.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      adult:
+        age: 50
+        is_incapable_of_self_care: true
+        # $175/month
+        care_expenses: 2_100
+    spm_units:
+      spm_unit:
+        members: [parent, adult]
+    households:
+      household:
+        members: [parent, adult]
+        state_code: KY
+  output:
+    # min(175, 175) = 175
+    ky_ktap_incapacitated_adult_care_disregard: 175
+
+- name: Case 4, one incapacitated adult with care above the cap.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      adult:
+        age: 50
+        is_incapable_of_self_care: true
+        # $300/month
+        care_expenses: 3_600
+    spm_units:
+      spm_unit:
+        members: [parent, adult]
+    households:
+      household:
+        members: [parent, adult]
+        state_code: KY
+  output:
+    # min(300, 175) = 175
+    ky_ktap_incapacitated_adult_care_disregard: 175
+
+- name: Case 5, two incapacitated adults are capped one by one.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      adult1:
+        age: 50
+        is_incapable_of_self_care: true
+        # $300/month
+        care_expenses: 3_600
+      adult2:
+        age: 55
+        is_incapable_of_self_care: true
+        # $50/month
+        care_expenses: 600
+    spm_units:
+      spm_unit:
+        members: [parent, adult1, adult2]
+    households:
+      household:
+        members: [parent, adult1, adult2]
+        state_code: KY
+  output:
+    # min(300, 175) + min(50, 175) = 175 + 50 = 225
+    # A pooled cap would give min(350, 2 x 175) = 350.
+    ky_ktap_incapacitated_adult_care_disregard: 225
+
+- name: Case 6, care for an adult who is not incapacitated does not count.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        # $100/month
+        care_expenses: 1_200
+      adult:
+        age: 50
+        is_incapable_of_self_care: true
+        care_expenses: 0
+    spm_units:
+      spm_unit:
+        members: [parent, adult]
+    households:
+      household:
+        members: [parent, adult]
+        state_code: KY
+  output:
+    # The incapacitated adult has no care cost: min(0, 175) = 0.
+    # The parent's care cost does not count, as the parent is not
+    # incapacitated.
+    ky_ktap_incapacitated_adult_care_disregard: 0
+
+- name: Case 7, an incapacitated child is not an incapacitated adult.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 10
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    ky_ktap_incapacitated_adult_care_disregard: 0
+
+- name: Case 8, non-KY state returns zero.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      adult:
+        age: 50
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [parent, adult]
+    households:
+      household:
+        members: [parent, adult]
+        state_code: TX
+  output:
+    ky_ktap_incapacitated_adult_care_disregard: 0
