@@ -657,12 +657,144 @@
     is_chip_eligible_standard_pregnant_person: true
     chip_category: PREGNANT_STANDARD
 
+# Targeted low-income pregnant women stay eligible through the postpartum period
+# (42 USC 1397ll(d)(2)(A)). Colorado had not yet elected the 12-month extension
+# in 2021, so coverage ends at the model's 60-day postpartum limit. Income of
+# 230% FPL is above Colorado's Medicaid pregnancy limit and below its CHIP
+# pregnancy limit.
+- name: Case 23, Colorado standard pregnancy CHIP covers 60 days postpartum before the 12-month extension.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        under_60_days_postpartum: true
+        medicaid_income_level: 2.3
+      person2:
+        age: 30
+        is_pregnant: false
+        under_12_months_postpartum: true
+        medicaid_income_level: 2.3
+    households:
+      household1:
+        members: [person1]
+        state_code: CO
+      household2:
+        members: [person2]
+        state_code: CO
+  output:
+    is_chip_eligible_standard_pregnant_person: [true, false]
+
+# Virginia's FAMIS MOMS demonstration extends CHIP pregnancy coverage to 12
+# months postpartum along with Medicaid (section 1115 approval of November 18,
+# 2021, implemented July 1, 2022). Income of 180% FPL is above Virginia's
+# Medicaid pregnancy limit (148%) and below its CHIP limit (205%).
+- name: Case 24, Virginia standard pregnancy CHIP covers 12 months postpartum.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        under_60_days_postpartum: true
+        medicaid_income_level: 1.8
+      person2:
+        age: 30
+        is_pregnant: false
+        under_12_months_postpartum: true
+        medicaid_income_level: 1.8
+      person3:
+        age: 30
+        is_pregnant: false
+        medicaid_income_level: 1.8
+    households:
+      household1:
+        members: [person1]
+        state_code: VA
+      household2:
+        members: [person2]
+        state_code: VA
+      household3:
+        members: [person3]
+        state_code: VA
+  output:
+    is_chip_eligible_standard_pregnant_person: [true, true, false]
+
+# The unborn-child (FCEP) option gets no 12-month extension (SHO 21-007, pages
+# 2, 4 and 7), and its limited postpartum care is not modeled, so postpartum
+# coverage continues through the standard pathway alone.
+- name: Case 25, postpartum Colorado person keeps standard pregnancy CHIP but not FCEP.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        under_60_days_postpartum: true
+        medicaid_income_level: 2.3
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    is_chip_eligible_standard_pregnant_person: true
+    is_chip_fcep_eligible_person: false
+    chip_category: PREGNANT_STANDARD
+
+# Medicaid covers the postpartum period up to its own pregnancy limit, so CHIP
+# applies only above it. Virginia's Medicaid pregnancy limit is 148% FPL and
+# its adult limit 138%; its CHIP limit is 205%.
+- name: Case 26, Virginia postpartum person stays in Medicaid below its pregnancy limit and moves to CHIP above it.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        under_12_months_postpartum: true
+        medicaid_income_level: 1.4
+      person2:
+        age: 30
+        is_pregnant: false
+        under_12_months_postpartum: true
+        medicaid_income_level: 1.8
+    households:
+      household1:
+        members: [person1]
+        state_code: VA
+      household2:
+        members: [person2]
+        state_code: VA
+  output:
+    medicaid_category: [PREGNANT, NONE]
+    is_medicaid_eligible: [true, false]
+    is_chip_eligible_standard_pregnant_person: [false, true]
+
+# Missouri's 12-month extension took effect July 7, 2023 (CHIP SPA MO-23-0021).
+# The annual model reads January 1, so the extension starts in 2024.
+- name: Case 27, Missouri standard pregnancy CHIP does not yet cover 12 months postpartum in 2023.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        under_12_months_postpartum: true
+        medicaid_income_level: 2.3
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    is_chip_eligible_standard_pregnant_person: false
+
 # 210-RICR-30-00-1 § 1.6(A)(2)(b)(1)-(2) requires the absence of
 # third-party insurance for standard pregnancy CHIP in Rhode Island.
 # https://risos-apa-production-public.s3.amazonaws.com/EOHHS/REG_13314_20250728104245127.pdf#page=5
 # Supply Medicaid ineligibility here to exercise the CHIP insurance gate
 # independently; the Medicaid integration cases test the insured pathway.
-- name: Case 23, Rhode Island standard pregnancy CHIP excludes third-party coverage independently of Medicaid eligibility.
+- name: Case 28, Rhode Island standard pregnancy CHIP excludes third-party coverage independently of Medicaid eligibility.
   period: 2024
   input:
     people:
@@ -734,7 +866,7 @@
 # R.I. Gen. Laws § 42-12.3-3(g) preserves the entitlement "without regard to the
 # availability of federal financial participation".
 # https://webserver.rilegislature.gov/Statutes/TITLE42/42-12.3/42-12.3-3.htm
-- name: Case 24, Rhode Island retains pregnancy CHIP despite later income, insurance, pregnancy or immigration changes.
+- name: Case 29, Rhode Island retains pregnancy CHIP despite later income, insurance, pregnancy or immigration changes.
   period: 2024
   input:
     people:
@@ -797,7 +929,7 @@
 # eligible under Title XIX, which the state-funded continuation is not.
 # https://risos-apa-production-public.s3.amazonaws.com/EOHHS/REG_13314_20250728104245127.pdf#page=5
 # https://www.law.cornell.edu/uscode/text/42/1397jj#b_1_C
-- name: Case 25, a new Rhode Island pregnancy in the CHIP band moves a state-funded continuation to CHIP.
+- name: Case 30, a new Rhode Island pregnancy in the CHIP band moves a state-funded continuation to CHIP.
   period: 2024
   input:
     people:
@@ -852,7 +984,7 @@
 # coverage and the aggregate other-coverage flag are not on Rhode Island's
 # third-party list, so these applicants stay in standard CHIP.
 # https://risos-apa-production-public.s3.amazonaws.com/EOHHS/REG_13314_20250728104245127.pdf#page=5
-- name: Case 26, Rhode Island pregnant applicants whose only coverage is outside the third-party list stay in standard CHIP.
+- name: Case 31, Rhode Island pregnant applicants whose only coverage is outside the third-party list stay in standard CHIP.
   period: 2024
   input:
     people:

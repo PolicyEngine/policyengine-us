@@ -18,6 +18,7 @@ class is_chip_immigration_status_eligible(Variable):
         "https://www.law.cornell.edu/uscode/text/42/1397gg#e_1_R",
         "https://downloads.cms.gov/cmsgov/archived-downloads/smdl/downloads/sho10006.pdf#page=2",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/SHO-12-002.pdf#page=1",
+        "https://www.medicaid.gov/federal-policy-guidance/downloads/sho21007.pdf#page=17",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/sho26001.pdf#page=6",
     )
 
@@ -50,9 +51,11 @@ class is_chip_immigration_status_eligible(Variable):
             & medicaid_option.child[state].astype(bool)
             & (age < p.chip.child.max_age)
         )
+        # The pregnancy option runs through the state's postpartum period,
+        # including the 12-month extension where elected (SHO 21-007 Q11).
         pregnant = (
             chip_option.pregnant[state].astype(bool)
             & medicaid_option.pregnant[state].astype(bool)
-            & person("is_pregnant", period)
+            & person("is_pregnant_for_medicaid_nfc", period)
         )
         return federally_eligible_status | (lawfully_residing & (child | pregnant))
