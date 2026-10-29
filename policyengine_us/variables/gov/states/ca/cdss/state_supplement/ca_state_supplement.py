@@ -42,7 +42,7 @@ class ca_state_supplement(Variable):
         # individual and couple computations (20 CFR 416.1163).
         # NOTE: SSI couple status ignores SSI's noncitizen test, so the
         # model's SSI is still the couple computation (issue 10481).
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         spouse_fails_test = (
             person.marital_unit.sum(~meets_ssi_immigration_test & head_or_spouse) > 0
         )
