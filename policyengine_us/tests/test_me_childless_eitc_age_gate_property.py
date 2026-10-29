@@ -12,10 +12,14 @@ hypothesis = pytest.importorskip("hypothesis")
 st = pytest.importorskip("hypothesis.strategies")
 
 # Filers are 18 or older: the model makes a married 17-year-old a dependent,
-# not a spouse. The YAML cases cover age 17.
+# not a spouse. The YAML cases and the under-18 witness cover age 17. The
+# fractional ages test "has not attained 25". None falls between 64 and 65:
+# the federal test (eitc_demographic_eligible, unchanged here) compares the
+# exact age with 64, and the oracle copies it.
+fractional_ages = st.sampled_from([18.5, 23.5, 24.5, 24.99])
 spouse_strategy = st.fixed_dictionaries(
     {
-        "age": st.integers(18, 80),
+        "age": st.one_of(st.integers(18, 80), fractional_ages),
         "student": st.booleans(),
         "wages": st.one_of(st.just(0), st.integers(1, 20_000)),
         "ssn": st.booleans(),
@@ -25,7 +29,9 @@ spouse_strategy = st.fixed_dictionaries(
 household_strategy = st.fixed_dictionaries(
     {
         # Mostly Maine's 18-24 range, sometimes any age.
-        "head_age": st.one_of(st.integers(18, 24), st.integers(18, 80)),
+        "head_age": st.one_of(
+            st.integers(18, 24), st.integers(18, 80), fractional_ages
+        ),
         "head_student": st.booleans(),
         "spouse": st.one_of(st.none(), spouse_strategy),
         # Age 17 at most: the model treats an unmarried filer's 18-year-old

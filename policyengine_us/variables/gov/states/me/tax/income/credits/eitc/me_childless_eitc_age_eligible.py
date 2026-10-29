@@ -33,9 +33,11 @@ class me_childless_eitc_age_eligible(Variable):
 
         age = person("age", period)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        # "Has not attained 25" holds until the 25th birthday, so compare
+        # completed years: a filer aged 24.5 is in the range.
         in_maine_age_range = (
             (age >= p.eligibility.age.min)
-            & (age <= p.eligibility.age.max)
+            & (np.floor(age) <= p.eligibility.age.max)
             & is_head_or_spouse
         )
 

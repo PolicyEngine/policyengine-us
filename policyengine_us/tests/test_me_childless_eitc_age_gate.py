@@ -19,30 +19,39 @@ Each batch of households runs three times:
 
 The checks:
 
-1. Twin equality. A household with a filer or spouse aged 18 to 24, or one
-   that meets the federal age test, gets the same Maine credit as its twin
-   without the federal age test. A filer who fails only the age test
-   therefore gets what an otherwise identical federally eligible filer gets;
-   a filer who also fails another federal requirement gets nothing either
-   way.
+1. Twin equality. A household with a filer or spouse aged at least 18 and
+   under 25, or one that meets the federal age test, gets the same Maine
+   credit as its twin without the federal age test. A filer who fails only
+   the age test therefore gets what an otherwise identical federally
+   eligible filer gets; a filer who also fails another federal requirement
+   gets nothing either way.
 2. Student status never changes the Maine credit: in 2021 it moves a filer
    aged 19 to 23 between the federal path and the Maine pro forma, at the
    same amount.
 3. The cohort matches an oracle written from the statute's ages: no
-   qualifying child, a filer or spouse aged 18 to 24, and neither meets the
-   federal age test. It also matches the federal code: for a childless
-   household with no filer claimable elsewhere, the cohort is "a filer or
-   spouse aged 18 to 24" and "not eitc_demographic_eligible".
+   qualifying child, a filer or spouse at least 18 who has not attained 25
+   (so 24.5 counts), and neither meets the federal age test. It also matches
+   the federal code: for a childless household with no filer claimable
+   elsewhere, the cohort is "a filer or spouse in Maine's range" and "not
+   eitc_demographic_eligible".
 4. One path only. Inside the cohort the federal credit is zero, outside it
    the pro forma is zero, and the Maine credit is the statutory rate times
    their sum.
-5. A childless household with no filer or spouse aged 18 to 24 that fails
-   the federal age test gets no Maine credit.
+5. A childless household with no filer or spouse in Maine's range that
+   fails the federal age test gets no Maine credit.
+6. Witnesses. Every batch also runs fixed households whose Maine credit
+   comes from the statutes, not the model: childless filers with $5,000 of
+   wages, in the cohort and on the federal path, get the Maine rate times the
+   phase-in rate times $5,000. A filer aged 17 (head by input), outside both
+   age rules, gets nothing, while the twin pays them. So no check can pass on
+   empty masks or on a credit of zero everywhere.
 
 The pro forma applies no take-up and no separate-return or section 911 rule,
 as on main (separate returns follow #10307; section 911 is #10525), so every
 household here takes up the EITC, files single or joint, and has no foreign
-earned income. The Hypothesis version is in
+earned income. Checks 1 and 2 depend on that: without take-up, the federal
+path pays nothing and the pro forma still pays, so a 2021 student aged 22
+would get more than a non-student of the same age. The Hypothesis version is in
 test_me_childless_eitc_age_gate_property.py.
 """
 
@@ -117,7 +126,17 @@ def meets_federal_age(h, year):
 
 
 def in_maine_range(h):
-    return any(18 <= age <= 24 for age, _ in filers(h))
+    # 5219-S(6): "at least 18 years of age and has not attained 25".
+    return any(18 <= age < 25 for age, _ in filers(h))
+
+
+def law_credit(year):
+    """Maine credit for a childless filer with $5,000 of wages who is eligible
+    or treated as eligible: the 26 U.S.C. 32(b) phase-in (15.3% in 2021 under
+    32(n)(3), 7.65% otherwise; $5,000 is below every year's earned income
+    amount) times the 5219-S(1) or (1-A) rate."""
+    phase_in = 0.153 if year == 2021 else 0.0765
+    return maine_rate(year, True) * phase_in * 5_000
 
 
 def build_situation(households, year, students=True):
@@ -127,6 +146,15 @@ def build_situation(households, year, students=True):
         head = f"head_{i}"
         people[head] = {
             "age": {year: h["head_age"]},
+            # A filer under 18 is a head only by input.
+            **(
+                {
+                    "is_tax_unit_head": {year: True},
+                    "is_tax_unit_dependent": {year: False},
+                }
+                if h.get("explicit_head")
+                else {}
+            ),
             "is_full_time_student": {year: students and h["head_student"]},
             "employment_income": {year: h["wages"]},
             "unemployment_compensation": {year: h["unemployment"]},
@@ -228,15 +256,72 @@ def assert_invariants(households, year, r, twin, non_student):
 
 
 def check(households, year):
-    r = calculate(households, year)
-    twin = calculate(households, year, federal_age_test=False)
-    non_student = calculate(households, year, students=False)
-    assert_invariants(households, year, r, twin, non_student)
-    return r, twin
+    n = len(households)
+    batch = households + WITNESSES
+    r = calculate(batch, year)
+    twin = calculate(batch, year, federal_age_test=False)
+    non_student = calculate(batch, year, students=False)
+    assert_invariants(batch, year, r, twin, non_student)
+    check_witnesses(year, {k: v[n:] for k, v in r.items()})
+    check_under_18_witness(year)
+    return {k: v[:n] for k, v in r.items()}, {k: v[:n] for k, v in twin.items()}
 
 
 def spouse(age, student=False, wages=0, ssn=True):
     return {"age": age, "student": student, "wages": wages, "ssn": ssn}
+
+
+def household(head_age, head_student=False, spouse_h=None, wages=5_000):
+    return {
+        "head_age": head_age,
+        "head_student": head_student,
+        "spouse": spouse_h,
+        "child_ages": [],
+        "wages": wages,
+        "unemployment": 0,
+        "interest": 0,
+        "ssn": True,
+        "claimed": False,
+    }
+
+
+# Childless households with $5,000 of wages, each with its cohort flag by year.
+WITNESSES = [
+    # A student aged 22: in the cohort every year (the 2021 student minimum is
+    # 24, the minimum is 25 in other years).
+    household(22, head_student=True),
+    # Aged 24.5: federally eligible in 2021 (minimum 19), in the cohort in
+    # other years.
+    household(24.5),
+    # Spouses aged 30 and 22: the 30-year-old meets the federal age test.
+    household(30, spouse_h=spouse(22, wages=5_000), wages=0),
+    # Spouses aged 70 and 22: federal path in 2021 (no maximum), cohort
+    # otherwise (70 exceeds 64).
+    household(70, spouse_h=spouse(22, wages=5_000), wages=0),
+]
+
+
+def witness_cohort(year):
+    return np.array([True, year != 2021, False, year != 2021])
+
+
+def check_witnesses(year, r):
+    np.testing.assert_array_equal(
+        r["me_childless_eitc_age_eligible"], witness_cohort(year)
+    )
+    np.testing.assert_allclose(r["me_eitc"], law_credit(year), atol=0.01)
+
+
+def check_under_18_witness(year):
+    # Aged 17, head by input: outside Maine's range and below every federal
+    # minimum. The model pays nothing; without the federal age test it pays
+    # the federal-path amount, so the age test is what bars the credit.
+    h = [{**household(17), "explicit_head": True}]
+    r = calculate(h, year)
+    twin = calculate(h, year, federal_age_test=False)
+    assert not r["me_childless_eitc_age_eligible"].any()
+    assert r["me_eitc"][0] == 0
+    np.testing.assert_allclose(twin["me_eitc"], law_credit(year), atol=0.01)
 
 
 GRID = [
@@ -253,7 +338,7 @@ GRID = [
     }
     # Filers are 18 or older: the model makes a married 17-year-old a
     # dependent, not a spouse. The YAML cases cover age 17.
-    for head_age in (18, 19, 22, 23, 24, 25, 30, 66)
+    for head_age in (18, 18.5, 19, 22, 24, 24.5, 25, 30, 66)
     for head_student in (False, True)
     for spouse_h in (None, spouse(18), spouse(22, True, 2_000), spouse(30), spouse(70))
     for child_ages in ([], [5])
@@ -289,7 +374,7 @@ def test_grid_invariants_2025():
     cohort = r["me_childless_eitc_age_eligible"]
     # Couples where one spouse meets the federal age test take the federal
     # path, and couples where neither does take the pro forma.
-    head_in_range = np.array([18 <= h["head_age"] <= 24 for h in GRID])
+    head_in_range = np.array([18 <= h["head_age"] < 25 for h in GRID])
     spouse_age = np.array(
         [-1 if h["spouse"] is None else h["spouse"]["age"] for h in GRID]
     )

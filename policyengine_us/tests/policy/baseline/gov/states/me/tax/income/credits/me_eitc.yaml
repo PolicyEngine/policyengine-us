@@ -518,3 +518,91 @@
     eitc: 0
     me_pro_forma_childless_eitc: 382.5
     me_eitc: 191.25
+
+- name: 2025 childless filer aged 24.5 gets the Maine pro forma credit
+  # 5219-S(6) covers a filer who "has not attained 25 years of age", which
+  # includes 24.5; the federal age test starts at 25.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 24.5
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: true
+    eitc: 0
+    me_pro_forma_childless_eitc: 382.5
+    me_eitc: 191.25
+
+- name: 2025 childless filer aged 25 gets the Maine credit through the federal credit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 25
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: false
+    eitc: 382.5
+    me_pro_forma_childless_eitc: 0
+    me_eitc: 191.25
+
+- name: 2021 childless full-time student aged 23.5 gets the Maine credit through the Maine pro forma
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 23.5
+        employment_income: 5_000
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: true
+    eitc: 0
+    me_pro_forma_childless_eitc: 765
+    me_eitc: 153
+
+- name: 2021 childless non-student aged 18.5 gets the Maine credit through the Maine pro forma
+  # The 2021 federal minimum is 19 (26 U.S.C. 32(n)(1)(A)).
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 18.5
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: true
+    eitc: 0
+    me_pro_forma_childless_eitc: 765
+    me_eitc: 153
