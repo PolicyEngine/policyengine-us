@@ -7155,6 +7155,48 @@ candidates:
   note: 'PE-US follows the manual: workers_compensation counts, as does disability_benefits, which stands in for
     TDI and TCI, and the list''s comment records the plan''s unchecked insurance item (income/sources/unearned.yaml,
     ri_liheap_income.py). Verify whether the unchecked insurance category covers these payments.'
+- id: us-ri:medicaid-postpartum-end-month
+  program: medicaid
+  years:
+    from: 2022
+    type: calendar
+  question: For Rhode Island's section 1115 Budget Populations 6a and 6b, when a pregnancy ends on the first day of
+    a month, does the 12-month postpartum period begin that day and end Medicaid in the 11th following month, or does
+    coverage run to the end of the 12th following month?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1396a(e)(16), which subparagraph (A) applies to state plans and waivers
+    url: https://www.law.cornell.edu/uscode/text/42/1396a#e_16
+  - kind: plan
+    citation: Rhode Island Medicaid State Plan Amendment RI-22-0024, section B, page 7
+    url: https://www.medicaid.gov/medicaid/spa/downloads/RI-22-0024.pdf#page=7
+  - kind: policy
+    citation: CMS section 1115 amendment approval of the Rhode Island Comprehensive Demonstration (March 21, 2024; 2019
+      to 2024), expenditure authorities, Budget Populations 6a and 6b, file page 11
+    url: https://www.medicaid.gov/medicaid/section-1115-demonstrations/downloads/ri-comphnsve-dmnstrtn-aprvl.pdf#page=11
+  - kind: policy
+    citation: CMS section 1115 approval of the Rhode Island Comprehensive Demonstration (November 28, 2025), expenditure
+      authorities 1(b)-(c), Budget Populations 6a and 6b
+    url: https://www.medicaid.gov/medicaid/section-1115-demonstrations/downloads/ri-comp-demo-appvl-11282025.pdf#page=15
+  readings:
+    statute: The 12-month period begins on the last day of pregnancy and coverage runs through the last day of the
+      month in which that period ends; RI-22-0024 repeats this wording.
+    other: The 1115 expenditure authorities for Budget Populations 6a and 6b extend coverage to the end of the 12th
+      month following the end of the pregnancy.
+  example: For a Budget Population 6b enrollee whose pregnancy ends on January 1, 2023, coverage runs through December
+    2023 under the statute and through January 2024 under the 1115 wording; any other end day gives the same last month
+    under both.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ri/eohhs/medicaid/ri_medicaid_postpartum_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10391
+  state: unreviewed
+  note: The conflict is limited to the 1115 Budget Populations 6a and 6b, whose March 2024 and November 2025 approvals
+    use the same wording. The RI-22-0024 state plan groups, RIte Start and FCEP have no conflicting text, and CHIP
+    (RI-22-0025 CS27) ends the period "on the last day of the 12th month consistent with paragraphs (5) and (16) of
+    section 1902(e)". R.I. Gen. Laws 42-12.3-3(g) does not say when the 12-month period begins.
 - id: us-ri:ssp-category-d-without-federal-ssi
   program: ssi-state-supplement
   years:

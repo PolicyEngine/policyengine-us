@@ -130,3 +130,45 @@
     is_ca_medicaid_immigration_status_eligible: [true]
     is_medicaid_eligible: [true]
     medicaid_enrolled: [true]
+
+# RI-22-0025 CS27 preserves postpartum CHIP and permits voluntary disenrollment.
+# Independent take-up inputs must retain a Medicaid enrollee when CHIP is declined.
+# https://www.medicaid.gov/CHIP/Downloads/RI-22-0025.pdf#page=4
+- name: Case 6, Rhode Island postpartum enrollment follows independent Medicaid and CHIP take-up choices.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ri_pregnancy_coverage: CHIP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+        takes_up_medicaid_if_eligible: true
+        takes_up_chip_if_eligible: false
+      person2:
+        age: 30
+        immigration_status: CITIZEN
+        ri_pregnancy_coverage: CHIP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+        takes_up_medicaid_if_eligible: true
+        takes_up_chip_if_eligible: true
+      person3:
+        age: 30
+        immigration_status: CITIZEN
+        ri_pregnancy_coverage: CHIP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 4
+        takes_up_medicaid_if_eligible: false
+        takes_up_chip_if_eligible: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    medicaid_enrolled: [true, false, false]
+    chip_enrolled: [false, true, false]
