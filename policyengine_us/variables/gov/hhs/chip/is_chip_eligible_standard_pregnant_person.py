@@ -7,11 +7,15 @@ from policyengine_us.variables.gov.hhs.medicaid.income.medicaid_income_level imp
 class is_chip_eligible_standard_pregnant_person(Variable):
     value_type = bool
     entity = Person
-    label = "Pregnant person eligible for standard CHIP"
-    documentation = "Determines if a pregnant person is eligible for the standard Children's Health Insurance Program"
+    label = "Pregnant or postpartum person eligible for standard CHIP"
+    documentation = "Determines if a pregnant or postpartum person is eligible for the standard Children's Health Insurance Program"
     definition_period = YEAR
     reference = (
         "https://www.ssa.gov/OP_Home/ssact/title21/2110.htm",
+        "https://www.law.cornell.edu/uscode/text/42/1397ll#d_2_A",
+        "https://www.law.cornell.edu/uscode/text/42/1397gg#e_1_K",
+        # PDF pages 2, 4, 7
+        "https://www.medicaid.gov/federal-policy-guidance/downloads/sho21007.pdf#page=2",
         "https://www.medicaid.gov/medicaid/national-medicaid-chip-program-information/medicaid-childrens-health-insurance-program-basic-health-program-eligibility-levels",
         "https://www.law.cornell.edu/uscode/text/42/1397ll#d_2_C",
         "https://www.law.cornell.edu/uscode/text/8/1611#a",
@@ -25,8 +29,13 @@ class is_chip_eligible_standard_pregnant_person(Variable):
         # Get state code
         state_code = person.household("state_code", period)
 
-        # Check pregnancy status
-        is_pregnant = person("is_pregnant", period)
+        # Targeted low-income pregnant women stay eligible through the 60-day
+        # postpartum period (42 USC 1397ll(d)(2)(A)). A state that extends
+        # Medicaid postpartum coverage to 12 months extends its separate CHIP
+        # too (42 USC 1397gg(e)(1)(K); New Jersey and Virginia did both through
+        # section 1115 demonstrations), so CHIP reuses the Medicaid
+        # non-financial test and its per-state postpartum period.
+        is_pregnant_or_postpartum = person("is_pregnant_for_medicaid_nfc", period)
 
         # Check if state offers CHIP program for pregnant women
         p = parameters(period).gov.hhs.chip.pregnant
@@ -55,7 +64,7 @@ class is_chip_eligible_standard_pregnant_person(Variable):
         )
 
         return (
-            is_pregnant
+            is_pregnant_or_postpartum
             & state_has_pregnant_chip
             & immigration_eligible
             & ~medicaid_eligible
