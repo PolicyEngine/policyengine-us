@@ -280,6 +280,7 @@ def exposure_parameters(**overrides):
         name: {"values": value if isinstance(value, dict) else {"0000-01-01": value}}
         for name, value in values.items()
     }
+    cola["means_test"] = {"enabled": {"values": {"0000-01-01": False}}}
     params = ParameterNode(
         data={
             "gov": {

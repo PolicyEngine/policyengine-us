@@ -174,10 +174,11 @@ def reported_joint_cola_factor(person, period, parameters, component):
         for name in ("withholding_enabled", "pp_change", "alternative_rate")
         for entry in getattr(raw_policy, name).values_list
     )
-    active |= any(
+    means_test_ever_enabled = any(
         entry.instant_str <= f"{year}-12-31" and bool(entry.value)
         for entry in raw_policy.means_test.enabled.values_list
     )
+    active |= means_test_ever_enabled
     if not active:
         return 1
     events = cola_events(parameters, year)
@@ -220,9 +221,13 @@ def reported_joint_cola_factor(person, period, parameters, component):
         indexed_cola_rate,
     )
 
-    means_eligibility = component_eligibility_year(person, period, component)
-    receipt_year = component_receipt_year(person, period, component)
-    receipt_month = component_receipt_month(person, period, component)
+    # A5's manual channel needs no calculator or tax-history inputs. Keep
+    # calculated rows outside population validation when E3 has never applied.
+    means_eligibility = receipt_year = receipt_month = None
+    if means_test_ever_enabled:
+        means_eligibility = component_eligibility_year(person, period, component)
+        receipt_year = component_receipt_year(person, period, component)
+        receipt_month = component_receipt_month(person, period, component)
     age = person("age", period)
     if component == "retirement":
         eligibility = year - age + 62
@@ -280,16 +285,20 @@ def reported_joint_cola_factor(person, period, parameters, component):
             raise ValueError(
                 "COLA change must be finite; alternative rate must be nonnegative or -1"
             )
-        index_rate = indexed_cola_rate(
-            person,
-            period,
-            parameters,
-            component,
-            payment_year,
-            baseline,
-            eligibility_year=means_eligibility,
-            receipt_year=receipt_year,
-            receipt_month=receipt_month,
+        index_rate = (
+            indexed_cola_rate(
+                person,
+                period,
+                parameters,
+                component,
+                payment_year,
+                baseline,
+                eligibility_year=means_eligibility,
+                receipt_year=receipt_year,
+                receipt_month=receipt_month,
+            )
+            if policy.means_test.enabled
+            else baseline
         )
         rate = (
             (alternative if alternative >= 0 else index_rate) + policy.pp_change
@@ -307,8 +316,12 @@ def reported_joint_cola_factor(person, period, parameters, component):
                 receipt_month=receipt_month,
                 use_explicit=True,
             )
-            if policy.withholding_enabled or policy.means_test.enabled
-            else False
+            if policy.means_test.enabled
+            else (
+                person(f"{prefix}_cola_withheld", payment_year)
+                if policy.withholding_enabled
+                else False
+            )
         )
         multiplier = cola_event_multiplier(baseline, rate - baseline, withheld)
         result *= np.where(exposed, multiplier, 1)
