@@ -618,3 +618,91 @@
     # WI (1,491 + 132.05) x 12
     medicaid_optional_senior_or_disabled_income_limit:
       [12_096, 22_140, 17_892, 17_892, 19_476.6, 19_476.6]
+
+- name: Vermont couple uses the $98.88 AABD couple supplement before 2024
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # (1,371 + 98.88) x 12
+    medicaid_optional_senior_or_disabled_income_limit: [17_638.56, 17_638.56]
+
+- name: Vermont uses the $55.68 and $105.80 AABD supplements from 2024
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 70
+      person3:
+        age: 70
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2, person3]
+    households:
+      household1:
+        members: [person1]
+        state_code: VT
+      household2:
+        members: [person2, person3]
+        state_code: VT
+  output:
+    # (943 + 55.68) x 12; (1,415 + 105.80) x 12
+    medicaid_optional_senior_or_disabled_income_limit:
+      [11_984.16, 18_249.6, 18_249.6]
+
+- name: Alaska uses the Adult Public Assistance need standard in 2019
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 70
+      person3:
+        age: 70
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2, person3]
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+      household2:
+        members: [person2, person3]
+        state_code: AK
+  output:
+    # 1,432 x 12; 2,121 x 12
+    medicaid_optional_senior_or_disabled_income_limit: [17_184, 25_452, 25_452]

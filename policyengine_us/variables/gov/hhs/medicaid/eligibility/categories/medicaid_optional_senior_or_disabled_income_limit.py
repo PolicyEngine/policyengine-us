@@ -20,6 +20,10 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
         "https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=1",
         "https://www.law.cornell.edu/regulations/alaska/7-AAC-40.310",
         "https://gc.nh.gov/rules/state_agencies/he-w800.html",
+        "https://adminrules.idaho.gov/rules/current/16/160305.pdf#page=39",
+        # PDF pages 10-11
+        "https://humanservices.vermont.gov/sites/ahsnew/files/documents/HBEE-Part-2-Eligibility-Standards.pdf#page=10",
+        "https://docs.legis.wisconsin.gov/code/admin_code/dhs/101/103/04/1/c",
         "https://www.ndlegis.gov/information/acdata/pdf/75-02-02.1.pdf#page=89",
     )
 
@@ -82,6 +86,8 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
             nh_level.one_person.INDEPENDENT - disregard.individual[state],
         )
         id_amount = p.income.limit.state_standard.id
+        # Each state flagged in uses_state_standard needs a branch here (or the
+        # Alaska branch below); otherwise it gets the SSI rate alone.
         monthly_amount = select(
             [state == "ID", state == "NH", state == "VT", state == "WI"],
             [

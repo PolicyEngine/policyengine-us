@@ -26,7 +26,7 @@ The other eight include it. Oregon is flagged in
 `gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.limit.requires_income_below_limit`.
 
 The state sets and comparisons below are written from those rules, not
-read from the parameters, so the first two tests check the parameters
+read from the parameters, so the first three tests check the parameters
 against them. Each later test evaluates a grid of households in one
 vectorized simulation and checks, for every one of the nine states and
 every year from 2018 to 2026:

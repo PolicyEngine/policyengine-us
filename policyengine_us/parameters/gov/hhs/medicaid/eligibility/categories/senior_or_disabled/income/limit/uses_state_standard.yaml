@@ -130,6 +130,9 @@ WA:
 # Until July 2020 Wisconsin's standard was a base amount plus the person's
 # shelter costs up to a cap; the base plus the cap equals the SSI rate plus the
 # state supplement, which the model uses for those years too.
+# NOTE: The supplement rose to $92.16 and $145.26 on May 1, 2026 (Operations
+# Memo 26-12). This annual limit reads January 1, so 2026 uses the January
+# amounts and the increase applies from 2027.
 WI:
   2018-01-01: true
 WV:
