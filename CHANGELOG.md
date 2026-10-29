@@ -1,3 +1,10 @@
+## [2.78.0] - 2026-10-29
+
+### Added
+
+- Add Alaska Heating Assistance Program (ak_hap): FY2027 regular heating benefit from community fuel points, dwelling and income factors up to 150% of the Alaska poverty guideline, with shared-dwelling and utility-allowance reductions applied to heating points under 7 AAC 44.080.
+
+
 ## [2.77.0] - 2026-10-29
 
 ### Added
