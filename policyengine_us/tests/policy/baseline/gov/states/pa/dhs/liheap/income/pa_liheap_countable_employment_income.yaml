@@ -13,3 +13,19 @@
     employment_income: [6_000, 6_000, 6_000, -1_000, 0]
   output:
     pa_liheap_countable_employment_income: [0, 6_000, 6_000, 0, 0]
+
+# FY2026 final plan page 49, section 601.82(1), counts wages for services on
+# behalf of an employer. An adult's 30,000 of military basic pay counts as
+# wages; a dependent 17-year-old's 6,000 is excluded like other child wages.
+- name: Case 2, military basic pay counts as wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [PA, PA]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200]
+    age: [25, 17]
+    is_tax_unit_dependent: [false, true]
+    military_basic_pay: [30_000, 6_000]
+  output:
+    pa_liheap_countable_employment_income: [30_000, 0]

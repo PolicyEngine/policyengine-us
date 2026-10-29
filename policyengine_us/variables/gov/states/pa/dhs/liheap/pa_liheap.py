@@ -9,8 +9,9 @@ class pa_liheap(Variable):
     label = "Pennsylvania LIHEAP regular heating assistance"
     defined_for = "pa_liheap_eligible"
     reference = (
-        "https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=42",
+        "https://web.archive.org/web/20251016232745/https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=42",
         "https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf#page=39",
+        "http://services.dpw.state.pa.us/oimpolicymanuals/liheap/assets/docs/2024-2025%20Low-Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29%20Supplemental%20Payments.pdf#page=1",
         "http://services.dpw.state.pa.us/oimpolicymanuals/liheap/assets/docs/2025-2026%20Low-Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29.pdf#page=1",
     )
     # Blended fuel and prior-receipt facts remain input limitations.

@@ -10,16 +10,14 @@ class pa_liheap_income(Variable):
     defined_for = StateCode.PA
     reference = (
         # Sections 601.81-601.84; PDF pages 49-54
-        "https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=49",
+        "https://web.archive.org/web/20251016232745/https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=49",
         # PDF pages 46-51
         "https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf#page=46",
         # Section 1.9 checks "Excluding MediCare deduction" in FY2026 and FY2025.
         "https://liheapch.acf.gov/docs/2026/state-plans/PA_Plan_2026.pdf#page=6",
         "https://liheapch.acf.gov/docs/2025/state-plans/PA_Plan_2025.pdf#page=6",
-        # Handbook 650.3(9) and 650.6(10), followed over the plan where they differ.
-        "http://services.dpw.state.pa.us/oimpolicymanuals/liheap/650_Income/650.3_Countable_Unearned_Income.htm",
-        "http://services.dpw.state.pa.us/OIMPolicyManuals/OIMArchive/2026-1/LIHEAP/650_Income/650.6_Income_Exclusions.htm",
-        "http://services.dpw.state.pa.us/oimpolicymanuals/liheap/650_Income/650.6_Income_Exclusions.htm",
+        "https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/055/chapter601/s601.82.html",
+        "https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/055/chapter601/s601.84.html",
     )
 
     def formula(spm_unit, period, parameters):
@@ -34,34 +32,17 @@ class pa_liheap_income(Variable):
         other = 0
         for source in [*p.sources.business, *p.sources.unearned]:
             other = other + max_(person(source, period), 0)
-        # Handbook 650.6(10) excludes "Medicare premiums deducted from Social
-        # Security, Railroad Retirement, and other benefit payments." Plan
-        # section 601.84(10) (FY2026 page 52, FY2027 page 50) and 55 Pa. Code
-        # 601.84(10) name only Social Security; the handbook governs. Railroad
-        # annuities are pensions under section 601.82(4)(viii). The one premium
-        # is netted once from the two benefits combined, floored at zero, so it
-        # reduces no other income. medicare_part_b_premium is zero for a person
-        # who is not enrolled and excludes the share a Medicare Savings Program
-        # pays, which is not withheld from the check. No Part D premium is
-        # modeled, and no input isolates other annuities that withhold it.
+        # Section 601.84(10) of the plan (FY2026 page 52, FY2027 page 50) and of
+        # 55 Pa. Code excludes Medicare premiums deducted from Social Security
+        # benefit payments, so the premium is netted from Social Security only,
+        # floored at zero, and reduces no other income. Railroad retirement
+        # counts in full as a pension. medicare_part_b_premium is zero for a
+        # person who is not enrolled and excludes the share a Medicare Savings
+        # Program pays, which is not withheld from the check. No Part D premium
+        # is modeled.
         premium = person("medicare_part_b_premium", period)
-        benefits = add(person, period, ["social_security", "railroad_benefits"])
-        net_benefits = max_(benefits - premium, 0)
-        # Handbook 650.3(9) counts "Interest and dividends from investments or
-        # bank accounts of more than $25 per month"; plan section 601.82(4)(ix)
-        # (FY2026 page 51, FY2027 page 48) sets no threshold. The handbook
-        # governs. Its income test is household income (650.1), so the $25 is
-        # applied once to the household's combined interest and dividends,
-        # assuming steady monthly receipt. A per-person reading would subtract
-        # $25 for each member with such income. Interest and dividends share
-        # one $25 because 650.3(9) lists "Interest and dividends" as a single
-        # item; applying $25 to each separately is the other reading (it would
-        # lower income Case 4 from 9,660 to 9,600).
-        investment = add(
-            spm_unit, period, ["interest_income", "ordinary_dividend_income"]
-        )
-        investment_disregard = p.monthly_interest_dividend_disregard * MONTHS_IN_YEAR
-        countable_investment = max_(investment - investment_disregard, 0)
+        social_security = person("social_security", period)
+        net_social_security = max_(social_security - premium, 0)
         # Section 601.82(4)(i) counts public assistance grants received. The
         # annual tanf aggregate includes pa_tanf and applies take-up; pa_tanf
         # alone is the grant a nonrecipient could get.
@@ -84,7 +65,5 @@ class pa_liheap_income(Variable):
         # Existing inputs cannot fully identify direct utility allowances,
         # CD/stock-sale proceeds, same-household support/rent, or refunded
         # support. Capital gains cannot proxy proceeds.
-        counted = (
-            wages + spm_unit.sum(other + net_benefits) + countable_investment + tanf
-        )
+        counted = wages + spm_unit.sum(other + net_social_security) + tanf
         return max_(counted - support_exclusion, 0)

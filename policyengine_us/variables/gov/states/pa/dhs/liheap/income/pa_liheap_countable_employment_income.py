@@ -9,7 +9,7 @@ class pa_liheap_countable_employment_income(Variable):
     label = "Pennsylvania LIHEAP countable employment income"
     defined_for = StateCode.PA
     reference = (
-        "https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=53",
+        "https://web.archive.org/web/20251016232745/https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=53",
         "https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf#page=50",
     )
 
@@ -18,7 +18,11 @@ class pa_liheap_countable_employment_income(Variable):
         dependent_child = (person("age", period) < p.child_age_limit) & person(
             "is_tax_unit_dependent", period
         )
-        # Section 601.84(21) excludes dependent children's wages, not their
-        # business or unearned income. Tax dependency approximates dependency.
-        wages = max_(person("employment_income", period), 0)
+        # Section 601.82(1) counts wages for services on behalf of an employer,
+        # which include military basic pay. Section 601.84(21) excludes
+        # dependent children's wages, not their business or unearned income.
+        # Tax dependency approximates dependency.
+        wages = max_(person("employment_income", period), 0) + max_(
+            person("military_basic_pay", period), 0
+        )
         return where(dependent_child, 0, wages)

@@ -90,10 +90,8 @@
 
 # FY2026 final plan pages 50-51 and federal plan page 6: 3,600 + 600 + 600 + 1,200
 # + 1,200 + 1,200 + 1,200 = 9,600. IRA withdrawals, general assistance and strike
-# pay count. Handbook 650.3(9) counts interest and dividends over 25 a month
-# (300 a year): max(120 + 240 - 300, 0) = 60. 9,600 + 60 = 9,660.
-# The 25 applies to interest and dividends combined, which 650.3(9) lists as one
-# item; applying it to each separately would count 0 of each and give 9,600.
+# pay count. Section 601.82(4)(ix) counts interest and dividends in full:
+# 9,600 + 120 + 240 = 9,960.
 - name: Case 4, other disjoint unearned sources count with canonical dividends.
   period: 2026
   absolute_error_margin: 0.01
@@ -124,7 +122,7 @@
         members: [person1]
         state_code: PA
   output:
-    pa_liheap_income: 9_660
+    pa_liheap_income: 9_960
 
 # FY2026 final plan page 50 counts public assistance. 6,000 wages + 600 general assistance + 1,200 child SSA + 3,600 PA TANF = 11,400.
 # pa_tanf reaches income through the take-up-gated tanf aggregate (take-up defaults to true) and is counted once for the SPM unit.
@@ -448,11 +446,10 @@
 # retirement pay and railroad retirement annuities are separate inputs from
 # pension_income. Household 1: a 2,500 a month military retirement annuity,
 # 30,000, is over the 23,475 limit. Household 2: a 1,850 a month railroad
-# annuity, 22,200. Handbook 650.6(10) excludes Medicare premiums deducted from
-# Railroad Retirement; plan section 601.84(10) names only Social Security, and
-# the handbook governs. With the 2026 standard Part B premium of 2,434.80 a
-# year: 22,200 - 2,434.80 = 19,765.20, under the 23,475 limit.
-- name: Case 15, military and railroad annuities count as pensions, railroad net of the Medicare premium.
+# annuity, 22,200. Section 601.84(10) of the plan and of 55 Pa. Code excludes
+# only Medicare premiums deducted from Social Security, so the 2,434.80 premium
+# does not reduce the railroad annuity: 22,200, under the 23,475 limit.
+- name: Case 15, military and railroad annuities count as pensions in full.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -469,15 +466,14 @@
     heating_type: [NATURAL_GAS, NATURAL_GAS]
     gas_expense: [1_200, 1_200]
   output:
-    pa_liheap_income: [30_000, 19_765.2]
+    pa_liheap_income: [30_000, 22_200]
     pa_liheap_eligible: [false, true]
 
 # FY2026 final plan page 50, section 601.82(2)(ii): a loss from one source of
 # income cannot offset another source. Household 1: 26,000 of wages and a
 # 4,000 loss on a rented house; max(-4,000, 0) = 0, so income stays 26,000,
 # over the 23,475 limit. Household 2: a 1,200 a month pension (14,400), 500 of
-# interest and a 1,000 farm rent loss. Handbook 650.3(9) counts interest over
-# 25 a month (300 a year): 14,400 + max(500 - 300, 0) + max(-1,000, 0) = 14,600.
+# interest and a 1,000 farm rent loss: 14,400 + 500 + max(-1,000, 0) = 14,900.
 - name: Case 16, rental and farm rent losses do not offset wages, pensions or interest.
   period: 2026
   absolute_error_margin: 0.01
@@ -496,7 +492,7 @@
     heating_type: [ELECTRICITY, ELECTRICITY]
     pre_subsidy_electricity_expense: [1_200, 1_200]
   output:
-    pa_liheap_income: [26_000, 14_600]
+    pa_liheap_income: [26_000, 14_900]
     pa_liheap_eligible: [false, true]
 
 # FY2026 final plan page 50, section 601.82(4)(i), counts public assistance
@@ -553,11 +549,9 @@
     tanf: [3_792, 0]
     pa_liheap_income: [3_792, 0]
 
-# Handbook 650.3(9) counts interest and dividends "of more than $25 per month";
-# plan section 601.82(4)(ix) sets no threshold, and the handbook governs. 25 a
-# month is 300 a year: max(300 - 300, 0) = 0, so interest of exactly 25 a month
-# is not counted.
-- name: Case 18, interest of exactly twenty-five dollars a month is not counted.
+# Section 601.82(4)(ix) of the plan and of 55 Pa. Code counts interest with no
+# threshold, so 25 a month of interest counts in full: 300.
+- name: Case 18, interest counts from the first dollar.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -577,84 +571,16 @@
     households:
       household:
         members: [person1]
-        state_code: PA
-  output:
-    pa_liheap_income: 0
-
-# Handbook 650.1 tests household income, so the handbook 650.3(9) disregard of
-# 25 a month (300 a year) applies once to the household's combined interest and
-# dividends, not once per member: 300 + 300 - 300 = 300. A per-member reading
-# would give 0.
-- name: Case 19, the interest disregard applies once to the household's combined interest.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        immigration_status: CITIZEN
-        is_tax_unit_dependent: false
-        ssi: 0
-        interest_income: 300
-      person2:
-        age: 38
-        immigration_status: CITIZEN
-        is_tax_unit_dependent: false
-        ssi: 0
-        interest_income: 300
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-        pa_tanf: 0
-    households:
-      household:
-        members: [person1, person2]
         state_code: PA
   output:
     pa_liheap_income: 300
 
-# Handbook 650.6(10) excludes Medicare premiums deducted from Social Security and
-# Railroad Retirement. A retiree with 1,000 a month of Social Security and 500 a
-# month of railroad retirement pays one 2026 standard Part B premium, 202.90 a
-# month (2,434.80 a year), pinned as for an enrollee without Medicare Savings
-# Program help. The premium comes off the combined benefits once:
-# 12,000 + 6,000 - 2,434.80 = 15,565.20, not 18,000 - 2 * 2,434.80 = 13,130.40.
-- name: Case 20, one Medicare premium is deducted once from Social Security and railroad retirement combined.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 67
-        immigration_status: CITIZEN
-        is_tax_unit_dependent: false
-        # No SSI, so no state supplement.
-        ssi: 0
-        pa_ssp: 0
-        social_security_retirement: 12_000
-        railroad_benefits: 6_000
-        medicare_part_b_premium: 2_434.8
-    spm_units:
-      spm_unit:
-        members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
-        pa_tanf: 0
-    households:
-      household:
-        members: [person1]
-        state_code: PA
-  output:
-    pa_liheap_income: 15_565.2
-
-# Handbook 650.6(10) excludes the Medicare premium only from the benefits it is
-# deducted from. Social Security and railroad retirement of 50 a month each
-# (1,200 a year combined) are below the 2,434.80 standard premium, pinned as for
-# an enrollee without Medicare Savings Program help: max(1,200 - 2,434.80, 0) = 0.
-# The remaining 1,234.80 does not reduce the 10,000 pension: 0 + 10,000 = 10,000.
-- name: Case 21, a Medicare premium larger than the benefits does not reduce a pension.
+# Section 601.84(10) excludes the Medicare premium only from Social Security.
+# Social Security of 50 a month (600 a year) is below the 2,434.80 standard
+# premium, pinned as for an enrollee without Medicare Savings Program help:
+# max(600 - 2,434.80, 0) = 0. The remaining premium reduces neither the 600 of
+# railroad retirement nor the 10,000 pension: 0 + 600 + 10,000 = 10,600.
+- name: Case 19, a Medicare premium larger than Social Security reduces no other income.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -681,4 +607,32 @@
         members: [person1]
         state_code: PA
   output:
-    pa_liheap_income: 10_000
+    pa_liheap_income: 10_600
+
+# FY2026 final plan page 51, section 601.82(4)(v), counts unemployment
+# compensation. With no reported amount, total_unemployment_compensation uses
+# the 5,980 of modeled state unemployment compensation.
+- name: Case 20, modeled unemployment compensation counts when none is reported.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        modeled_state_unemployment_compensation: 5_980
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        pa_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    total_unemployment_compensation: 5_980
+    pa_liheap_income: 5_980

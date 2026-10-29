@@ -10,7 +10,7 @@ class pa_liheap_income_limit(Variable):
     label = "Pennsylvania LIHEAP opening-season annual income limit"
     defined_for = StateCode.PA
     reference = (
-        "https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=10",
+        "https://web.archive.org/web/20251016232745/https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=10",
         "https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf#page=9",
     )
 

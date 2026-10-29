@@ -342,9 +342,8 @@
         age: 63
         immigration_status: CITIZEN
         is_tax_unit_dependent: false
-        # A 1,000 a month military Survivor Benefit Plan annuity, which the
-        # military retirement pay input includes.
-        military_retirement_pay: 12_000
+        # A 1,000 a month military Survivor Benefit Plan annuity.
+        military_retirement_pay_survivors: 12_000
         # A 1,800 net loss on a small rental property.
         rental_income: -1_800
         ssi: 0

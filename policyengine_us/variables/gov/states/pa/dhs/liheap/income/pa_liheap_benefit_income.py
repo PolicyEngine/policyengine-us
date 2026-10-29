@@ -9,7 +9,7 @@ class pa_liheap_benefit_income(Variable):
     label = "Pennsylvania LIHEAP annual income for benefit determination"
     defined_for = StateCode.PA
     reference = (
-        "https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=42",
+        "https://web.archive.org/web/20251016232745/https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=42",
         "https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf#page=39",
     )
 
