@@ -658,7 +658,8 @@ LABOR_SUPPLY_REFORM = {
 }
 
 
-def test_labor_supply_responses_in_either_order():
+@pytest.mark.parametrize("filing", ["formula", "input"])
+def test_labor_supply_responses_in_either_order(filing):
     year = 2025
     # An ITIN parent with an SSN child in each state, then their SSN twins.
     itin_parents = [
@@ -681,16 +682,22 @@ def test_labor_supply_responses_in_either_order():
         "me_federal_eitc_without_ssn_requirement",
     ]
     credits = ["md_eitc", "me_eitc"]
-    # The filing requirement by input, as it is for these households. Maine's
-    # waiver reads it on the parent, and calculating it there calculates the
-    # responses, which a branch created afterwards inherits (core's
-    # get_branch starts from the parent's cached values). By input, nothing
-    # is cached when the branch is created, so the test needs
-    # keep_return_as_filed to copy the responses (Sol r6).
+    # The filing requirement by formula, then by input as False, the value
+    # the formula gives these households. By formula, Maine's waiver reads it
+    # on the parent under the responses, so both orders calculate the
+    # responses before the waived branch exists, and the branch inherits them
+    # (core's get_branch starts from the parent's cached values). By input,
+    # the eitc-first order still calculates them first, but the state-first
+    # order calculates nothing before the branch exists, so the two orders
+    # agree only if keep_return_as_filed copies the responses (Sol r6, r7).
     situation = build_situation(
         households,
         year,
-        tax_unit_inputs={"tax_unit_is_required_to_file": [False] * len(households)},
+        tax_unit_inputs=(
+            {"tax_unit_is_required_to_file": [False] * len(households)}
+            if filing == "input"
+            else None
+        ),
     )
     heads = [list(situation["people"]).index(f"head_{i}") for i in range(4)]
     results = []
@@ -725,6 +732,52 @@ def test_labor_supply_responses_in_either_order():
         np.testing.assert_allclose(
             result[credit][i], reference.calculate(credit, year)[i], atol=0.01
         )
+
+
+def test_pro_formas_in_either_order_with_both_states():
+    # Both childless pro formas evaluate the federal eitc in a branch of the
+    # same waived branch, each with its own eligibility: Maryland keeps the
+    # federal maximum age, and Maine excludes a filer another taxpayer can
+    # claim. For these households the two branches' eitc differ ($0 and
+    # $76.50 in Maryland's, $649 and $0 in Maine's), so each state must read
+    # its own. In a simulation with both states, an ITIN filer aged 65 in
+    # Maryland and a claimable ITIN filer aged 20 in Maine get no pro forma
+    # credit, in either order, as each does alone.
+    year = 2025
+    households = [
+        {
+            "state": state,
+            "head_age": age,
+            "spouse_age": None,
+            "head_id": "ITIN",
+            "spouse_id": None,
+            "child_ids": [],
+            "wages": wages,
+            "exclusion": 0,
+            "takes_up": True,
+        }
+        for state, age, wages in (("MD", 65, 10_000), ("ME", 20, 1_000))
+    ]
+
+    def situation(households):
+        s = build_situation(households, year)
+        for i, h in enumerate(households):
+            if h["state"] == "ME":
+                s["people"][f"head_{i}"]["claimed_as_dependent_on_another_return"] = {
+                    year: True
+                }
+        return s
+
+    pro_formas = ["federal_eitc_without_age_minimum", "me_pro_forma_childless_eitc"]
+    alone = [
+        Simulation(situation=situation([h])).calculate(v, year)[0]
+        for h, v in zip(households, pro_formas)
+    ]
+    assert alone == [0, 0]
+    for order in (pro_formas, pro_formas[::-1]):
+        simulation = Simulation(situation=situation(households))
+        result = {v: simulation.calculate(v, year) for v in order}
+        assert [result[v][i] for i, v in enumerate(pro_formas)] == alone, order
 
 
 def test_other_ssn_rules_can_separate_the_twin_but_not_the_reference():
