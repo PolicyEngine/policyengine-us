@@ -68,3 +68,55 @@
         state_code: CA
   output:
     ca_state_supplement_dependent_amount: 5_988
+
+- name: Disabled noncitizen child who fails SSI's noncitizen test gets CAPI, not the state supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+      person2:
+        age: 10
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The child fails SSI's 40-quarter test, so the state supplement leaves
+    # out the child's standard (WIC 18938, 18941) and CAPI pays the disabled
+    # minor standard 994 + 97.27 = 1,091.27.
+    ca_capi_person: [0, 1_091.27]
+    ca_state_supplement_dependent_amount: 0
+    ca_state_supplement: 0
+
+- name: Disabled citizen child keeps the state supplement above SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 10
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # SSI 994; the state supplement tops the child up to the disabled minor
+    # standard: 1,091.27 - 994 = 97.27.
+    ssi: [0, 994]
+    ca_state_supplement: 97.27

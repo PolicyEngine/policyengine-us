@@ -1141,16 +1141,20 @@ candidates:
   example: In January 2026, a couple of an aged person and a blind person aged 50 without cooking facilities has a
     $2,238.44 standard under the statute, which PE-US follows for CAPI, and $2,367.31 under POMS.
   pe_us:
-    follows: statute
+    follows: conflicting-source
     code:
     - policyengine_us/variables/gov/states/ca/cdss/capi/_ca_capi_ssi_ssp_standard.py
+    - policyengine_us/variables/gov/states/ca/cdss/state_supplement/payment_standard/ca_state_supplement_food_allowance.py
+    - policyengine_us/variables/gov/states/ca/cdss/state_supplement/payment_standard/ca_state_supplement_payment_standard.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10379
   state: unreviewed
-  note: 'PE-US follows the statute for CAPI: _ca_capi_ssi_ssp_standard.py adds no food allowance to the one-blind
-    couple rate, and a couple both aged or disabled takes the aged or disabled rate with the couple allowance when
-    that is higher. The ACIN I-59-25 table lists no such combination. Check how ca_state_supplement_food_allowance
-    treats these couples.'
+  note: 'PE-US is split, although WIC 18941 makes CAPI equal SSI/SSP. CAPI follows the statute:
+    _ca_capi_ssi_ssp_standard.py adds no food allowance to the one-blind couple rate, and a couple both aged or
+    disabled takes the aged or disabled rate with the couple allowance when that is higher. The state supplement
+    follows POMS: ca_state_supplement_food_allowance.py adds the individual allowance for the aged or disabled member,
+    so in January 2026 the same couple has a $2,367.31 standard as citizens and $2,238.44 as CAPI recipients. The
+    ACIN I-59-25 table lists no such combination. The ruling should set both programs.'
 - id: us-ca:ssp-nmohc-couple-standard
   program: ssi-ssp
   years:
@@ -1186,8 +1190,10 @@ candidates:
     follows: statute
     code:
     - policyengine_us/parameters/gov/states/ca/cdss/state_supplement/payment_standard/allowance/out_of_home_care.yaml
+    - policyengine_us/variables/gov/states/ca/cdss/capi/_ca_capi_ssi_ssp_standard.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9709
+    - https://github.com/PolicyEngine/policyengine-us/pull/10379
   state: unreviewed
   note: 'PE-US follows the statute: the 2026 allowance is $1,153.31, from a $3,252.14 couple standard, twice the
     $1,626.07 individual rate (allowance/out_of_home_care.yaml), and the file''s comment lists the sources on each

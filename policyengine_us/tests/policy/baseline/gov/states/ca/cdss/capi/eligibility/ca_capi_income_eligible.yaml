@@ -1,4 +1,4 @@
-- name: Ineligible, countable income one dollar above the payment standard
+- name: Case 1, ineligible, countable income one dollar above the payment standard.
   period: 2026
   input:
     age: 70
@@ -15,7 +15,7 @@
     # 1,234.94 is not, so there is no CAPI.
     ca_capi_income_eligible: false
 
-- name: Eligible, countable income one dollar below the payment standard
+- name: Case 2, eligible, countable income one dollar below the payment standard.
   period: 2026
   input:
     age: 70
@@ -29,7 +29,7 @@
     # 1,232.94 is lower than the 1,233.94 standard: 1 per month of CAPI.
     ca_capi_income_eligible: true
 
-- name: Ineligible, income deemed from a high-earning spouse exhausts the couple state supplement
+- name: Case 3, ineligible, income deemed from a high-earning spouse exhausts the couple state supplement.
   period: 2026
   input:
     people:

@@ -1,4 +1,4 @@
-- name: Eligible person - undocumented
+- name: Case 1, eligible person, undocumented.
   period: 2023
   input:
     is_ssi_aged_blind_disabled: true
@@ -7,7 +7,7 @@
   output:
     ca_capi_eligible_person: true
 
-- name: Citizens are not eligible
+- name: Case 2, citizens are not eligible.
   period: 2023
   input:
     is_ssi_aged_blind_disabled: true
@@ -16,7 +16,7 @@
   output:
     ca_capi_eligible_person: false
 
-- name: Eligible person - legal permanent resident - not enough qualifying quarters for ssi
+- name: Case 3, eligible person, permanent resident without enough qualifying quarters for SSI.
   period: 2023
   input:
     is_ssi_aged_blind_disabled: true
@@ -26,7 +26,7 @@
   output:
     ca_capi_eligible_person: true
 
-- name: Eligible couple - both spouses aged permanent residents without 40 SSI quarters
+- name: Case 4, eligible couple, both spouses aged permanent residents without 40 SSI quarters.
   period: 2026
   input:
     people:
