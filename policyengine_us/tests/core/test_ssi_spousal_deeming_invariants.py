@@ -24,6 +24,12 @@ simulations for the generated income and state-supplement properties:
   examples retain the payment, exclusion, eligibility and resource edges.
   Each comparison uses two independent three-person simulations sharing the
   same read-only system as the grids.
+- Declared spouses who live in separate households in Colorado, Missouri,
+  Oregon, South Dakota and Virginia, comparing their supplements before and
+  after an unrelated adult joins either household. The marriage, separate
+  tax/family/SPM budgets, and all benefit inputs stay the same. Six explicit
+  examples and two generated examples use two small independent simulations
+  apiece per state, sharing the same read-only system.
 
 YAML covers worked cases. Python is needed to check the for-all properties
 over every ordered edge of the grids and to compare with an oracle that does
@@ -656,4 +662,206 @@ def test_state_supplements_do_not_depend_on_omitted_marital_units(
     for name in SUPPLEMENT_PROGRAMS[state]:
         np.testing.assert_allclose(
             default[name], explicit[name], atol=0.01, err_msg=f"{state}: {name}"
+        )
+
+
+# These states preserve a declared marriage for at least one separated-spouse
+# supplement budget. The cited YAML cases check that those budgets retain
+# both spouses; this property separately checks that a household member who
+# is not a spouse cannot alter them.
+# CO: 9 CCR 2503-5 3.533(A)(2)(c), 3.534(B)-(C).
+# MO: RSMo 208.010.1; DSS Manual 1035.005.00 (medical/nursing separation).
+# OR: OAR 461-155-0630(3), hub ruling
+# us-or:ssp-community-care-spouses-separate-facilities.
+# SD: ARSD 67:46:04:10(6), 67:46:05:30 (joint care-entry month).
+# VA: AG Manual Chapter B section 6 (first moment of the initial month).
+SEPARATED_SUPPLEMENT_STATES = ("CO", "MO", "OR", "SD", "VA")
+SEPARATED_PERIOD = "2026-07"
+
+
+def _separated_supplement_situation(
+    system,
+    state,
+    pensions,
+    ages,
+    resources,
+    care,
+    joint_entry,
+    third_care,
+    third_household,
+    add_third,
+):
+    situation = _supplement_situation(
+        system, state, pensions, ages, resources, care, third_care, True
+    )
+    names = ("claimant", "spouse", "third_adult")
+    if not add_third:
+        del situation["people"][names[2]]
+        names = names[:2]
+
+    for person in situation["people"].values():
+        # Use assets as a primitive input, so SSI resource eligibility is
+        # derived alongside federal income, couple status and payments.
+        person["bank_account_assets"] = person.pop("ssi_countable_resources")
+        person["is_tax_unit_head"] = {YEAR: True}
+        person["is_tax_unit_spouse"] = {YEAR: False}
+        person["is_tax_unit_dependent"] = {YEAR: False}
+        for values in person.values():
+            if PERIOD in values:
+                values[SEPARATED_PERIOD] = values.pop(PERIOD)
+
+    # Copy entity inputs, then give everyone independent nonmarital budgets.
+    # An unrelated adult shares only the chosen household. The marriage is
+    # always the same explicit two-person unit spanning the two households.
+    for plural in ("tax_units", "families", "spm_units"):
+        original = next(iter(situation[plural].values()))
+        inputs = {name: value for name, value in original.items() if name != "members"}
+        situation[plural] = {name: {**inputs, "members": [name]} for name in names}
+    household = situation["households"]["household"]
+    household_inputs = {
+        name: value for name, value in household.items() if name != "members"
+    }
+    situation["households"] = {
+        name: {**household_inputs, "members": [name]} for name in names[:2]
+    }
+    if add_third:
+        situation["households"][names[third_household]]["members"].append(names[2])
+    situation["marital_units"] = {"couple": {"members": list(names[:2])}}
+    if add_third:
+        situation["marital_units"]["single"] = {"members": [names[2]]}
+
+    entry_input = {
+        "SD": "sd_ssp_care_joint_entry",
+        "VA": "va_ag_is_joint_initial_month",
+    }.get(state)
+    for index, name in enumerate(names):
+        person = situation["people"][name]
+        if entry_input:
+            person[entry_input] = {
+                SEPARATED_PERIOD: joint_entry and care and (index < 2 or third_care)
+            }
+        if care and (index < 2 or third_care):
+            if state == "SD":
+                person["sd_ssp_approved_care_cost"] = {SEPARATED_PERIOD: 2_000}
+            elif state == "OR":
+                # OAR 461-140-0040(5)(e)(D): inaccessible income is excluded.
+                # This primitive keeps the community-care payment positive
+                # when modeled SSI would otherwise fill the federal standard.
+                person["or_ssp_inaccessible_income"] = {
+                    SEPARATED_PERIOD: (194, 94, 0)[index]
+                }
+    return situation
+
+
+@pytest.mark.parametrize("state", SEPARATED_SUPPLEMENT_STATES)
+@settings(
+    max_examples=2,
+    deadline=None,
+    derandomize=True,
+    suppress_health_check=[HealthCheck.too_slow],
+)
+@example(
+    pensions=(0, 0, 1_491),
+    ages=(65, 65, 90),
+    resources=(7_000, 1_000, 5_000),
+    care=True,
+    joint_entry=True,
+    third_care=False,
+    third_household=0,
+)
+@example(
+    pensions=(20, 65, 0),
+    ages=(90, 65, 64),
+    resources=(1_000, 15_000, 0),
+    care=True,
+    joint_entry=False,
+    third_care=True,
+    third_household=1,
+)
+@example(
+    pensions=(1_200, 1_200, 3_000),
+    ages=(65, 65, 90),
+    resources=(0, 0, 3_001),
+    care=True,
+    joint_entry=True,
+    third_care=False,
+    third_household=0,
+)
+@example(
+    pensions=(1_800, 1_200, 20),
+    ages=(65, 90, 65),
+    resources=(1_600, 1_400, 2_001),
+    care=True,
+    joint_entry=True,
+    third_care=True,
+    third_household=1,
+)
+@example(
+    pensions=(0, 0, 994),
+    ages=(65, 65, 65),
+    resources=(1_600, 1_600, 0),
+    care=True,
+    joint_entry=True,
+    third_care=True,
+    third_household=0,
+)
+@example(
+    pensions=(994, 1_491, 20),
+    ages=(65, 64, 90),
+    resources=(2_000, 0, 0),
+    care=False,
+    joint_entry=False,
+    third_care=False,
+    third_household=1,
+)
+@given(
+    pensions=st.tuples(*(st.integers(0, 3_000) for _ in range(3))),
+    ages=st.tuples(*(st.sampled_from((64, 65, 90)) for _ in range(3))),
+    resources=st.tuples(*(st.integers(0, 16_000) for _ in range(3))),
+    care=st.booleans(),
+    joint_entry=st.booleans(),
+    third_care=st.booleans(),
+    third_household=st.integers(0, 1),
+)
+def test_separated_spouses_supplements_ignore_unrelated_household_adult(
+    state, pensions, ages, resources, care, joint_entry, third_care, third_household
+):
+    """A third adult cannot change either separately housed spouse's grant.
+
+    YAML checks the states' independent legal computations. This comparison
+    needs the simulation API to add a person while preserving the explicit
+    marriage across two households and the spouses' independent other units.
+    Both simulations share only the read-only system; caches stay separate.
+    """
+    system = Simulation.default_tax_benefit_system_instance
+    amounts = []
+    for add_third in (False, True):
+        simulation = Simulation(
+            situation=_separated_supplement_situation(
+                system,
+                state,
+                pensions,
+                ages,
+                resources,
+                care,
+                joint_entry,
+                third_care,
+                third_household,
+                add_third,
+            )
+        )
+        amounts.append(
+            {
+                name: simulation.calculate(
+                    name,
+                    SEPARATED_PERIOD
+                    if system.variables[name].definition_period == "month"
+                    else YEAR,
+                )[:2]
+                for name in SUPPLEMENT_PROGRAMS[state]
+            }
+        )
+    for name in SUPPLEMENT_PROGRAMS[state]:
+        np.testing.assert_allclose(
+            amounts[0][name], amounts[1][name], atol=0.01, err_msg=f"{state}: {name}"
         )
