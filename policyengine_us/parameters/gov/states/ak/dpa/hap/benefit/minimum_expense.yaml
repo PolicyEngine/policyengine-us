@@ -1,0 +1,11 @@
+description: Alaska requires annual heating expenses to exceed this amount under the Heating Assistance Program.
+values:
+  2026-10-01: 200
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Alaska HAP annual heating expense threshold
+  reference:
+    - title: Alaska HAP Manual 3002-1 A.1, Eligible Household
+      href: http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm

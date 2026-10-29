@@ -11,6 +11,261 @@
 # unreviewed.
 version: 1
 candidates:
+- id: us-ak:hap-general-relief-assistance
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: federal-fiscal
+  question: Does Alaska count general assistance paid directly to a household as heating assistance income, although
+    7 AAC 44.042(18) exempts General Relief Assistance payments?
+  sources:
+  - kind: regulation
+    citation: 7 AAC 44.042(18)
+    url: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+  - kind: plan
+    citation: FY2026 Alaska LIHEAP State Plan 1.9
+    url: https://liheapch.acf.gov/docs/2026/state-plans/AK_Plan_2026.pdf#page=7
+  - kind: manual
+    citation: Alaska HAP Manual 3003-1 B.6.o and 3003-2 A.19
+    url: null
+  readings:
+    statute: No statute is supplied; 7 AAC 44.042(18) excludes payments received under 7 AAC 38.030 (General Relief
+      Assistance) from gross monthly income.
+    other: Plan 1.9 counts "General Assistance and Borough of Indian Affairs (BIA) General Assistance benefits if paid
+      directly to the household"; manual 3003-1 B.6.o counts BIA General Assistance payments made to the household,
+      and 3003-2 A.19 exempts only General Relief Assistance payments made to a vendor.
+  example: A household with $1,200 a year of State General Relief Assistance paid to it has none of it counted under
+    7 AAC 44.042(18); plan 1.9 counts General Assistance paid directly to the household.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ak/dpa/hap/income/unearned_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10341
+  state: unreviewed
+  note: The code reads the general_assistance input as State General Relief Assistance and leaves it out of countable
+    income under 7 AAC 44.042(18). BIA General Assistance paid to the household, which plan 1.9 and manual 3003-1 B.6.o
+    count, has no separate input, so it is not counted. The manual is served only over http, at
+    http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-1_countable_income.htm.
+- id: us-ak:hap-income-limit-rounding
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: federal-fiscal
+  question: Are Alaska's heating assistance income limits exact percentages of the monthly Alaska poverty guideline,
+    or Addendum E's amounts, which round the monthly guideline and then each percentage down to whole dollars?
+  sources:
+  - kind: regulation
+    citation: 7 AAC 44.040(a)(4) and 44.080(i)
+    url: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+  - kind: manual
+    citation: Alaska HAP Manual Addendum E, FFY 2027 AK Federal Poverty Income Guidelines
+    url: null
+  readings:
+    statute: No statute is supplied; 7 AAC 44.040(a)(4) and 44.080(i) compare gross monthly income with exact
+      percentages of the Alaska poverty level.
+    other: Addendum E floors the monthly guideline and then each percentage ("All dollars rounded down to guarantee
+      they are below income guidelines"), which puts 23 of its 108 limits for the six LIHEAP income factors $1 below
+      the exact percentage.
+  example: For four people, 150% of the FY2027 monthly guideline of $3,437.50 is $5,156.25, so a household with $5,156
+    of monthly income is eligible under 7 AAC 44.040(a)(4) and ineligible under Addendum E's $5,155.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ak/dpa/hap/ak_hap_income_factor.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10341
+  state: unreviewed
+  note: The code compares income with the exact percentages of the guideline, with no whole-dollar floors. Each of the
+    108 limits is $0.04 to $1.79 a month above its floored amount. The manual is served only over http, at
+    http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_e.htm.
+- id: us-ak:hap-loring-oil-points
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: federal-fiscal
+  question: Does Loring receive 4 oil heating cost points, as in the FY2027 Addendum A, or 5, as in Appendix A to
+    7 AAC 44?
+  sources:
+  - kind: regulation
+    citation: 7 AAC 44.080(a) and Appendix A to 7 AAC 44, item (170) Loring
+    url: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+  - kind: manual
+    citation: Alaska HAP Manual Addendum A, FFY2027 Community Listing, 99901 Loring
+    url: null
+  readings:
+    statute: No statute is supplied; 7 AAC 44.080(a) assigns the community heating cost points listed in Appendix
+      A, which gives Loring 5 oil points.
+    other: Addendum A gives Loring 4 oil points ("99901 Loring/04/00/").
+  example: A Loring adult aged 40 with no income, a two-bedroom house and an oil bill receives 5 points, $875, under
+    Appendix A and 4 points, $700, under Addendum A.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ak/dpa/hap/benefit/community_points/oil.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10341
+  state: unreviewed
+  note: The code gives Loring Appendix A's 5 oil points. Tetlin also differs (Addendum A 12, Appendix A 16), and the
+    code uses Appendix A's 16; its residents are routed to their tribal program, so that value does not change
+    results. The manual is served only over http, at
+    http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm.
+- id: us-ak:hap-one-person-lowest-income-limit
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: federal-fiscal
+  question: Is the FY2027 one-person income ceiling for Alaska's 100% heating point factor $415.625, 25% of the
+    Alaska poverty guideline, or the $407 printed in Addendum E?
+  sources:
+  - kind: regulation
+    citation: 7 AAC 44.080(i)(1)
+    url: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+  - kind: manual
+    citation: Alaska HAP Manual Addendum E, FFY 2027 AK Federal Poverty Income Guidelines, one person, 0% - 25%
+    url: null
+  readings:
+    statute: No statute is supplied; 7 AAC 44.080(i)(1) assigns 100% of points when gross monthly income is no more
+      than 25% of the Alaska poverty level, which for one person is 25% of $1,662.50 ($19,950 / 12), or $415.625.
+    other: Addendum E prints $407, which is 25% of the prior year's floored monthly guideline ($19,550 / 12, floored
+      to $1,629); its other 161 cells use the 2026 guideline.
+  example: A one-person household with $410 of monthly income receives the 1.0 income factor under the $415.625 limit
+    and 0.9 under Addendum E's $407.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ak/dpa/hap/ak_hap_income_factor.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10341
+  state: unreviewed
+  note: The code uses the exact 25% limit, $415.625 a month ($4,987.50 a year), with no whole-dollar floor (see
+    us-ak:hap-income-limit-rounding). The manual is served only over http, at
+    http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_e.htm.
+- id: us-ak:hap-shared-household-allocation
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: federal-fiscal
+  question: Does Alaska reduce a sharing household's heating assistance to its share of the dwelling's heating cost at
+    the heating-point stage, or divide each dollar award equally among the dwelling's eligible households?
+  sources:
+  - kind: regulation
+    citation: 7 AAC 44.080(h) and 44.035(c)
+    url: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+  - kind: manual
+    citation: Alaska HAP Manual 3002-1 A.3 and A.5, Multiple Households Residing in the Same Dwelling and Housing
+      Percent Share
+    url: null
+  readings:
+    statute: No statute is supplied; 7 AAC 44.080(h) reduces each sharing household's heating cost points under
+      (a)-(g) to its proportionate share of the home heating expenses, before the income factor (i), the vulnerable
+      point (k), the 2.0-point minimum (m) and the rounding (n).
+    other: The manual divides each household's dollar award by the number of eligible households in the dwelling,
+      never pays a sharer more than 50%, disregards what each household contributes to heat or rent, and adds the
+      vulnerable point before the share.
+  example: Two eligible Fairbanks households paying 25% and 75% of the heating bills, with sole-household awards of
+    $1,925 and $1,050, receive $700 (3.5 points, rounded to 4) and $875 (4.5 points, rounded to 5) under 7 AAC
+    44.080(h), $962.50 and $525 under the manual, and $481.25 and $787.50 under 7 AAC 44.035(c).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ak/dpa/hap/ak_hap.py
+    - policyengine_us/variables/gov/states/ak/dpa/hap/ak_hap_base_benefit.py
+    - policyengine_us/parameters/gov/states/ak/dpa/hap/benefit/maximum_shared_household_share.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10341
+  state: unreviewed
+  note: The code follows 7 AAC 44.080(h). 7 AAC 44.035(c) is a second regulatory reading, which pays each household
+    the percentage of its sole-household dollar award equal to its share of the dwelling's heating cost. 7 AAC
+    44.900(11) counts heat paid indirectly through rent as a home heating cost, but the heat portion of rent is not
+    observed, so the code fills that gap with the manual's equal split. Each eligible heat-in-rent household gets an
+    equal share among the dwelling's eligible households, at most 50%, and households reporting heating bills split the
+    remaining share in proportion to their bills; when no household reports a bill, every household gets the equal
+    share. In a Fairbanks two-bedroom house where an adult household pays a $1,200 oil bill and an elderly household
+    has heat in its $6,000 rent, each gets half, so they receive $875 (5 points) and $1,050 (6 points). Draft
+    rulespec-us PR 1846 proposed this id with the manual reading. The manual is served only over http, at
+    http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm.
+- id: us-ak:hap-student-earnings-exemption
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: federal-fiscal
+  question: Are a student's wages exempt from Alaska heating assistance income when the student is under 18, attends
+    school full time and is not the head of household, or when the student is under 18, under parental control and
+    enrolled at least half time in elementary or secondary school?
+  sources:
+  - kind: regulation
+    citation: 7 AAC 44.042(5)
+    url: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+  - kind: manual
+    citation: Alaska HAP Manual 3003-2 A.15, Earnings of Elementary and Secondary Students Under Age 18
+    url: null
+  readings:
+    statute: No statute is supplied; 7 AAC 44.042(5) exempts "wages received by a full-time student under 18 years
+      of age who is not the head of household".
+    other: The manual exempts the earned income of a student under 18 who lives with, or is under the parental
+      control of, an adult household member and is enrolled at least half time in elementary or secondary school,
+      including during school breaks.
+  example: A 17-year-old full-time college student who is not the head of household has wages exempt under 7 AAC
+    44.042(5) and counted under the manual, which covers only elementary and secondary students.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ak/dpa/hap/ak_hap_countable_income.py
+    - policyengine_us/parameters/gov/states/ak/dpa/hap/income/child_earnings_age_limit.yaml
+    - policyengine_us/parameters/gov/states/ak/dpa/hap/income/student_wage_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10341
+  state: unreviewed
+  note: The code exempts the wages (employment income and military basic pay) of a member under 18 who is a
+    full-time student (is_full_time_student) and not the tax-unit head, the closest existing input to the head of
+    household, in an SPM unit with an adult member; a minor in a unit without an adult is treated as its head. The
+    student's business income still counts. Half-time enrollment cannot be observed, and is_full_time_student treats
+    any K-12 attendance as full time, so a half-time high school student's wages are exempt in the code. The manual is served only over http,
+    at http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-2_noncountable_(exempt)_income.htm.
+- id: us-ak:hap-utility-allowance-order
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: federal-fiscal
+  question: Does Alaska's 50% subsidized-housing utility-allowance reduction apply to heating points before the
+    2.0-point minimum and rounding, or to the rounded dollar award?
+  sources:
+  - kind: regulation
+    citation: 7 AAC 44.080(l)-(n)
+    url: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+  - kind: manual
+    citation: Alaska HAP Manual 3004-5, Grant Computation, Step 8
+    url: null
+  readings:
+    statute: No statute is supplied; 7 AAC 44.080(l) halves the heating cost points determined under (a)-(k), and
+      (m) and (n) then apply the 2.0-point minimum and the rounding to whole points.
+    other: The manual applies the 2.0-point minimum, rounding, the 35-point cap and the benefit rate first, then
+      halves the dollar award in step 8.
+  example: A one-person Juneau household with 3.0 points, direct oil bills and a utility allowance has its points
+    halved to 1.5 under 7 AAC 44.080(l)-(m), below the 2.0 minimum, so it receives $0; the manual pays $262.50 ($525
+    halved).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ak/dpa/hap/ak_hap.py
+    - policyengine_us/variables/gov/states/ak/dpa/hap/ak_hap_base_benefit.py
+    - policyengine_us/parameters/gov/states/ak/dpa/hap/benefit/utility_allowance_reduction.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10341
+  state: unreviewed
+  note: The code follows 7 AAC 44.080(l)-(n). It infers the allowance for subsidized households that pay heat
+    directly, because HUD sets a utility allowance for tenant-paid utilities (24 CFR 965.502(a) and 982.517(a)(1)).
+    The manual's step 8 example 1 halves a $700 award to $350, where the regulation's order gives 1.95 points and no
+    award. The manual is served only over http, at
+    http://dpaweb.hss.state.ak.us/manuals/HAP/3004/3004-5_grant_computation.htm.
 - id: us-ak:snap-abawd-implementation-date
   program: snap
   years:
