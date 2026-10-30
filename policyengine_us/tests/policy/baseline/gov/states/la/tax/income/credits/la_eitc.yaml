@@ -13,3 +13,153 @@
     state_code: LA
   output:
     la_eitc: 0
+
+
+- name: 2024 single filer who can be claimed as a dependent gets no Louisiana EITC
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a]
+        state_code: LA
+  output:
+    # No childless federal EITC to match (IRC 32(c)(1)(A)(ii)(III)).
+    la_eitc: 0
+
+- name: 2024 single filer who cannot be claimed gets the Louisiana EITC
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a]
+        state_code: LA
+  output:
+    # $76.50 x .05 = $3.825.
+    la_eitc: 3.825
+
+- name: 2024 joint return with one claimable spouse gets no Louisiana EITC (the claimable spouse is the head)
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: LA
+  output:
+    # Either spouse being claimable bars the childless federal EITC.
+    la_eitc: 0
+
+- name: 2024 joint return with one claimable spouse gets no Louisiana EITC (the claimable spouse is the spouse)
+  period: 2024
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: LA
+  output:
+    la_eitc: 0
+
+- name: 2024 joint return with both spouses claimable gets no Louisiana EITC
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: LA
+  output:
+    la_eitc: 0
+
+- name: 2024 joint return with no claimable spouse gets the Louisiana EITC
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: LA
+  output:
+    # $1,000 x .0765 = $76.50; x .05 = $3.825.
+    la_eitc: 3.825

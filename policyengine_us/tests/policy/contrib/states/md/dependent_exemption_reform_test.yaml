@@ -156,3 +156,32 @@
   # step-down is driven through the contrib schedule, not just a flat amount.
   output: {md_total_personal_exemptions: 2_400}
 
+
+
+- name: MD dependent exemption reform - joint return with a claimable spouse keeps only the other spouse's exemption (the claimable spouse is the head)
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    people:
+      person_a: {age: 30, employment_income: 500, claimed_as_dependent_on_another_return: true, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_b: {age: 30, employment_income: 500, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_a, person_b, child], filing_status: JOINT}}
+    households: {household: {members: [person_a, person_b, child], state_name: MD}}
+  # Filing status 6: no exemption for the claimable spouse; no dependents (IRC 152(b)(1));
+  # 1 x 3,200.
+  output: {md_total_personal_exemptions: 3_200}
+
+- name: MD dependent exemption reform - joint return with a claimable spouse keeps only the other spouse's exemption (the claimable spouse is the spouse)
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    people:
+      person_b: {age: 30, employment_income: 500, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_a: {age: 30, employment_income: 500, claimed_as_dependent_on_another_return: true, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_b, person_a, child], filing_status: JOINT}}
+    households: {household: {members: [person_b, person_a, child], state_name: MD}}
+  output: {md_total_personal_exemptions: 3_200}
