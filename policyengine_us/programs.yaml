@@ -987,7 +987,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, MD, MN, MS, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, SD, RI, TN, TX, UT, VA, VT, WA, WI, WY
+    coverage: AK, AR, AL, AZ, DC, GA, Riverside County, MA, FL, IL, IA, IN, KS, KY, LA, MD, MN, MS, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, SD, RI, TN, TX, UT, VA, VT, WA, WI, WY
     state_implementations:
       - state: AL
         status: partial
@@ -1108,6 +1108,14 @@ programs:
         parameter_prefix: gov.states.ky.dcbs.liheap
         verified_years: "2025-2026"
         notes: FY2025-FY2026 regular heating only, from the published benefit workbooks. Crisis and cooling assistance are out of scope.
+      - state: LA
+        status: partial
+        name: Louisiana LIHEAP
+        full_name: Louisiana Low Income Home Energy Assistance Program
+        variable: la_liheap
+        parameter_prefix: gov.states.la.lhc.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating-season benefit from the energy burden matrix, including the $100 priority supplement. The larger summer cooling award, crisis and weatherization assistance are out of scope.
       - state: MD
         status: partial
         name: Maryland MEAP
