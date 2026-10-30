@@ -36,16 +36,22 @@ class medicaid_medically_needy_income_limit(Variable):
         # monthly amount at cent precision first, so floating-point noise
         # cannot move an exact whole dollar (as in medicaid_income_level).
         fpg_monthly = np.round(fpg_limit / MONTHS_IN_YEAR, 2)
-        # Illinois is the only state that drops the cents.
-        rounds_down = (state == "IL") & p.il.rounds_down_monthly
+        # Illinois rounds to the nearest dollar before 2025, then drops the cents.
+        in_il = state == "IL"
+        rounds_down = in_il & p.il.rounds_down_monthly
+        # Half a dollar rounds up ($1,132.50 to $1,133 in 2022); np.round
+        # would round it to the even dollar.
+        rounds_to_nearest = in_il & p.il.rounds_to_nearest_monthly
         fpg_limit = select(
             [
                 p.rounds_up_monthly[state].astype(bool),
                 rounds_down,
+                rounds_to_nearest,
             ],
             [
                 np.ceil(fpg_monthly) * MONTHS_IN_YEAR,
                 np.floor(fpg_monthly) * MONTHS_IN_YEAR,
+                np.floor(fpg_monthly + 0.5) * MONTHS_IN_YEAR,
             ],
             default=fpg_limit,
         )

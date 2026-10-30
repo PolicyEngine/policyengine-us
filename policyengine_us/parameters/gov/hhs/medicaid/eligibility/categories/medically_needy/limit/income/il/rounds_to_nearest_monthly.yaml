@@ -1,0 +1,17 @@
+description: Illinois rounds the monthly medically needy income limit to the nearest whole dollar under the Medicaid program, if this is true.
+values:
+  # KFF 2018 ($1,012 / $1,372) and IDHS 2019-2024 tables round to the nearest dollar
+  # ($1,133 / $1,526 in 2022; $2,072 for $2,071.67 for three in 2023).
+  2018-01-01: true
+  2025-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Illinois Medicaid medically needy income limit rounded to the nearest whole dollar
+  reference:
+    - title: "KFF, Medicaid Financial Eligibility for Seniors and People with Disabilities: Findings from a 50-State Survey, Appendix Table 3 (2018), Illinois $1,012 / $1,372"
+      href: https://www.kff.org/report-section/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey-appendix-tables/
+    - title: Illinois DHS WAG 25-03-02(2), 2022 Income Standards, AABD 100% FPL ($1,133 / $1,526) (archived September 28, 2022)
+      href: https://web.archive.org/web/20220928154002/https://www.dhs.state.il.us/page.aspx?item=21741
+    - title: Illinois DHS WAG 25-03-02(2), 2024 Monthly Income Standards, AABD 100% FPL ($1,255 / $1,703) (archived July 15, 2024)
+      href: https://web.archive.org/web/20240715015033/https://www.dhs.state.il.us/page.aspx?item=21741
