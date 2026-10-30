@@ -1,1 +1,1 @@
-Build each pinned parameter tree once per process instead of once per simulation, so New York's and Alabama's recomputed federal credits no longer copy the tax-benefit system for every simulation.
+Copy only the parameters a pinned policy changes, so New York's and Alabama's recomputed federal credits no longer copy the whole tax-benefit system for each simulation.

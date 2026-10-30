@@ -1,48 +1,31 @@
-"""Module-level cache of pinned parameter trees (issue #8114).
+"""Tax-benefit systems pinned to earlier parameters (issue #8114).
 
 The NY EITC/CTC formulas recompute the federal EITC/CTC with parameters
-pinned to an earlier vintage (pre-ARPA 2020, pre-TCJA 2017). Cloning the
-parameter tree inside the formula rebuilds about 130,000 nodes and takes
-seconds and about 0.5 GB; this cache builds each pinned tree once per
-process and reuses it across simulations. Each simulation reads that tree
-through a cheap system of its own (see policyengine_us.spm.pin_spm_policy).
+pinned to an earlier vintage (pre-ARPA 2020, pre-TCJA 2017). A pinned system
+copies only the subtrees a pin edits and reads every other parameter from the
+tree it came from, so it costs a fraction of a second and almost no memory
+(see policyengine_us.spm.pin_spm_policy).
 
 The pinned system must be treated as read-only by all callers.
 """
 
 import weakref
-from typing import NamedTuple
 
-from policyengine_core.parameters import Parameter, ParameterNode
+from policyengine_core.parameters import Parameter
 from policyengine_core.periods import instant
 
 from policyengine_us.spm import pin_spm_policy
 
+# Every parameter that a function below edits sits in one of these subtrees. An
+# edit anywhere else would reach every simulation that reads the same tree.
+PINNED_SUBTREES = (
+    "gov.irs.credits",
+    "gov.irs.gross_income.dependent_care_assistance_programs",
+)
 
-class _PinnedTree(NamedTuple):
-    """A pinned tree, and the system most recently built to read it.
-
-    Nothing here holds a simulation or a base system, so the cache keeps the
-    parameter tree alive and nothing else. A weakref (rather than id() alone)
-    also guards against id reuse after an object is garbage-collected.
-    """
-
-    # The tree this one was cloned from. Every ordinary simulation has its own
-    # system but reads the same tree, so the tree, not the system, decides
-    # whether a pin still applies. A reform detaches a private copy in place
-    # (see policyengine_us.spm.SharedParameterPolicy), so a pin built before
-    # that reform is not reused after it.
-    source: weakref.ref
-    tree: ParameterNode
-    at_instant_cache: dict
-    base: weakref.ref
-    pinned: weakref.ref
-
-
-# pin name -> the _PinnedTree built most recently, one per pin, so a process
-# that moves between source trees rebuilds on each move but holds at most one
-# pinned tree per pin.
-_PINNED_TBS_CACHE = {}
+# base system -> pin name -> weakref to the system pinned from it. The branch
+# that reads a pinned system holds it, so this cache keeps nothing alive.
+_PINNED_TBS_CACHE = weakref.WeakKeyDictionary()
 
 # Variables without "ctc", "cdcc" or "eitc" in their names that read those
 # credits, so a branch that recomputes them under pinned rules must drop these
@@ -59,36 +42,22 @@ IRC_2020_RECOMPUTED_VARIABLES = ("dependent_care_assistance_exclusion",)
 
 def _get_pinned_tbs(base_tbs, pin_name, pin_fn):
     parameters = base_tbs.parameters
-    # Editing a parameter clears the at-instant cache of every node above it,
-    # so this key survives in the root's cache only while no one has edited the
-    # tree in place. That cache has instant strings as keys, so it cannot clash.
-    unedited = f"pinned_tbs.{pin_name}"
-    entry = _PINNED_TBS_CACHE.get(pin_name)
+    pins = _PINNED_TBS_CACHE.setdefault(base_tbs, {})
+    pin = pins.get(pin_name)
+    pinned = None if pin is None else pin()
+    # A reform changes a system and keeps its identity: it detaches a private
+    # tree in place (see policyengine_us.spm.SharedParameterPolicy), or swaps
+    # entries in the variable registry.
     if (
-        entry is None
-        or entry.source() is not parameters
-        or unedited not in parameters._at_instant_cache
+        pinned is None
+        or pinned.source_parameters is not parameters
+        or pinned.source_variables != base_tbs.variables
     ):
-        # Plant the key first, so an edit made during the clone also shows.
-        parameters._at_instant_cache[unedited] = True
-        pinned = pin_spm_policy(base_tbs, parameters.clone(), {})
+        pinned = pin_spm_policy(base_tbs, PINNED_SUBTREES)
+        pinned.source_parameters = parameters
+        pinned.source_variables = dict(base_tbs.variables)
         pin_fn(pinned)
-    else:
-        pinned = entry.pinned()
-        if (
-            pinned is not None
-            and entry.base() is base_tbs
-            and pinned.variables == base_tbs.variables
-        ):
-            return pinned
-        pinned = pin_spm_policy(base_tbs, entry.tree, entry.at_instant_cache)
-    _PINNED_TBS_CACHE[pin_name] = _PinnedTree(
-        weakref.ref(parameters),
-        pinned.parameters,
-        pinned._parameters_at_instant_cache,
-        weakref.ref(base_tbs),
-        weakref.ref(pinned),
-    )
+        pins[pin_name] = weakref.ref(pinned)
     return pinned
 
 
