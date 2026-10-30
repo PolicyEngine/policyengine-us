@@ -1,0 +1,24 @@
+description: New Mexico uses this monthly energy standard allowance as the minimum monthly energy bill for the energy burden under the Low Income Home Energy Assistance Program.
+# 8.150.620.9 A(4) NMAC applies the allowance when the applicant's monthly
+# utility costs are less than the standard or are not available. The FFY2027
+# guide labels the $298 amount the Standard Utility Allowance, and the FFY2027
+# ISD 017 card lists it as the LIHEAP Energy Standard Allowance (ESA).
+values:
+  2025-10-01: 291
+  2026-10-01: 298
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: New Mexico LIHEAP energy standard allowance
+  reference:
+    - title: 8.150.620.9 A(4) NMAC
+      href: https://www.srca.nm.gov/parts/title08/08.150.0620.html
+    - title: New Mexico LIHEAP FFY2026 Heating and Cooling Point and Income Guide, energy points
+      href: https://www.hca.nm.gov/wp-content/uploads/Heating-and-Cooling-Point-and-Income-Guide-2026.pdf
+    - title: New Mexico LIHEAP FFY2027 Point and Income Guidelines, energy burden
+      href: https://www.hca.nm.gov/wp-content/uploads/NM-LIHEAP-FFY-2027-Point-and-Income-Guidelines.pdf
+    - title: New Mexico ISD 017 Income Eligibility Guidelines, October 1, 2025 to September 30, 2026, LIHEAP information
+      href: https://www.hca.nm.gov/wp-content/uploads/ISD-017-FPG-Cards-FY-2026-10.01.25-to-09.30.2026-final-1.pdf#page=1
+    - title: New Mexico ISD 017 FFY 2027 Income Eligibility Guidelines for SNAP and Cash, deductions
+      href: https://www.hca.nm.gov/wp-content/uploads/ISD-017-FPG-Form-FY-2027-10.01.26-to-09.30.2027-SNAP-and-Cash.pdf#page=1

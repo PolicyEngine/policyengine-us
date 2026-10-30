@@ -697,6 +697,37 @@
     # letter's result.
     is_optional_senior_or_disabled_income_eligible: [false, false]
 
+# Maine's couple disregard is the $20 federal disregard plus its $80 state
+# disregard (10-144 C.M.R. ch. 332, Chart 3.1; Part 7, § 7-4, Section 4.3).
+- name: Maine's 100-dollar couple disregard brings a couple under the poverty guideline for two.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        social_security_retirement: 13_200
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        social_security_retirement: 9_480
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    ssi_couple_computation_applies: [true, true]
+    # Monthly, 1,100 + 790 - 100 = 1,790, or 21,480 a year split between
+    # the spouses.
+    medicaid_optional_senior_or_disabled_countable_income: [10_740, 10_740]
+    # 21,480 is under the 2026 guideline for two (21,640). A 75-dollar
+    # disregard would leave 21,780, over the guideline.
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+
 - name: An aged permanent resident without 40 SSI quarters has their pension counted.
   period: 2025
   absolute_error_margin: 0.01

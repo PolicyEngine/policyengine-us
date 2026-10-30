@@ -1,0 +1,17 @@
+description: Tennessee derives the benefit matrix income group tops from the federal poverty guideline when this is true, and otherwise uses the printed income group tops, under the Low Income Home Energy Assistance Program.
+# FY2026 tops follow fixed rates of the 2025 guideline. The FY2027 LI-12 tops
+# are not a fixed rate of the 2026 guideline for every size (size 12 group A
+# is $55,592.50, 70.87% of $78,440), so FY2027 uses the printed values.
+values:
+  2025-10-01: true
+  2026-10-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Tennessee LIHEAP income group poverty guideline rates in effect
+  reference:
+    - title: Tennessee LIHEAP 2026 Benefit Matrix, income end
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/2026-LIHEAP-Eligible-Income-Household-Size-Benefits.pdf
+    - title: "Tennessee FY2027 LIHEAP Benefit Matrix (LI-12), income end #page 1-4"
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/2027-LIHEAP-LI-12-Eligible-Income-Benefit-Matrix.pdf#page=1

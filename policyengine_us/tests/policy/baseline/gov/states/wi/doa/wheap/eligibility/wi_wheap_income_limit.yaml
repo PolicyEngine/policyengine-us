@@ -1,0 +1,151 @@
+# Wisconsin WHEAP annual income limit: 60 percent of state median income by
+# household size (Wis. Stat. 16.27(5)(b)). PY2026 annual limits from WHEAP
+# Manual Appendix E (sizes 1-8) and the FFY2026 HE+ Benefit Calculator
+# SMI_Lookup sheet (sizes 9-20). Household size counts eligible members only.
+
+- name: Case 1, one-person household.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    # Appendix E, size 1 annual income: 38,421.
+    wi_wheap_income_limit: 38_421
+
+- name: Case 2, four-person household.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+      person2:
+        age: 36
+      person3:
+        age: 10
+      person4:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WI
+  output:
+    # Appendix E, size 4: 73,888 (floor of 0.6 x 123,148 four-person SMI).
+    wi_wheap_income_limit: 73_888
+
+- name: Case 3, eight-person household.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 42
+      person2:
+        age: 40
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 12
+      person6:
+        age: 10
+      person7:
+        age: 7
+      person8:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: WI
+  output:
+    # Appendix E, size 8: 101,965.
+    wi_wheap_income_limit: 101_965
+
+- name: Case 4, twenty-person household uses the last row of the calculator table.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        wi_wheap_household_size: 20
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    # Size supplied directly. SMI_Lookup row 20 annual income: 128,565.
+    wi_wheap_income_limit: 128_565
+
+- name: Case 5, an undocumented member does not raise the household size for the limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 34
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 32
+        immigration_status: CITIZEN
+      person3:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    # Manual 4.4.26.2: two eligible members, so the size 2 limit 50,243
+    # applies instead of the size 3 limit 62,065.
+    wi_wheap_income_limit: 50_243
+
+- name: Case 6, household with no eligible member has no limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 29
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Size 0; the table starts at size 1.
+    wi_wheap_income_limit: 0

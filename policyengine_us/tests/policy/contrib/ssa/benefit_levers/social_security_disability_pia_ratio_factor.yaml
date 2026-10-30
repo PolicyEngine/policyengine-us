@@ -1,0 +1,60 @@
+- name: A supplied onset year identifies disability PIA without a claiming reduction
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 45
+    social_security_disability_entitlement_year: 2026
+    social_security_disability_reported: 25881.60
+    gov.ssa.social_security.pia.bend_points.first: 960
+    gov.ssa.social_security.pia.bend_points.second: 5785
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+    gov.contrib.ssa.pia.bend_point_multipliers.first: 1.15
+  output:
+    social_security_disability_pia_ratio_eligibility_year: 2026
+    social_security_disability_pia_ratio_claiming_adjustment: 1
+    social_security_disability_pia_ratio_missing_claim_age: false
+    social_security_disability_inferred_aime: 5000
+    social_security_disability_pia_ratio_factor: 1.0643082344
+    social_security_disability: 27546
+    social_security_disability_pia_ratio_proxy: false
+    social_security_disability_pia_ratio_own_record_retired_worker: false
+
+- name: Missing disability onset is an explicitly labelled pre reform proxy
+  period: 2026
+  input:
+    age: 45
+    social_security_disability_reported: 12000
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+    gov.contrib.ssa.pia.factors.start_year: 2026
+  output:
+    social_security_disability_pia_ratio_eligibility_year: 2025
+    social_security_disability_pia_ratio_claiming_adjustment: 1
+    social_security_disability_pia_ratio_proxy: true
+    social_security_disability_pia_ratio_factor: 1
+    social_security_disability: 12000
+
+- name: Current year disability proxy is selected by parameter
+  period: 2026
+  input:
+    age: 45
+    social_security_disability_reported: 12000
+    gov.contrib.ssa.benefit_levers.pia_ratio.disability_eligibility_proxy: [current_year]
+  output:
+    social_security_disability_pia_ratio_eligibility_year: 2026
+    social_security_disability_pia_ratio_proxy: true
+    social_security_disability_pia_ratio_factor: 1
+
+- name: Supplied disability eligibility overrides the proxy choice
+  period: 2026
+  input:
+    age: 45
+    social_security_disability_worker_eligibility_year: 2018
+    social_security_disability_entitlement_year: 2020
+    social_security_disability_reported: 12000
+    gov.contrib.ssa.benefit_levers.pia_ratio.disability_eligibility_proxy: [current_year]
+  output:
+    social_security_disability_pia_ratio_eligibility_year: 2018
+    social_security_disability_pia_ratio_proxy: false
+    social_security_disability_pia_ratio_factor: 1
