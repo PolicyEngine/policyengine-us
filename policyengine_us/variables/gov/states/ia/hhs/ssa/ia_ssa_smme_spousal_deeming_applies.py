@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.ia.hhs.ssa._ia_ssa_spouses import (
+    ia_ssa_spouse_value,
+)
 from policyengine_us.variables.gov.states.ia.hhs.ssa._ia_ssa_smme_spouse_income import (
     ia_ssa_smme_spouse_income,
     ia_ssa_smme_spouse_is_not_ineligible,
@@ -53,9 +56,8 @@ class ia_ssa_smme_spousal_deeming_applies(Variable):
         # the same household" with the spouse. A spouse in a residential care
         # facility after the month of entry, whom ia_ssa_care_countable_income
         # budgets alone, is still treated as a household member here.
-        apart = person.marital_unit.any(
-            person("ssi_lives_in_medical_treatment_facility", period)
-        )
+        medical = person("ssi_lives_in_medical_treatment_facility", period)
+        apart = medical | ia_ssa_spouse_value(person, period, medical)
         # 8-E p.12: "An ineligible spouse is a spouse who is not eligible for
         # SSI or non-MAGI-related Medicaid, or State Supplementary Assistance."
         # Those groups are for aged, blind or disabled people (8-F PDF pages
