@@ -1,0 +1,1 @@
+Leave state and local tax refunds and the section 68 itemized deduction reduction out of federal alternative minimum taxable income, and leave Colorado's state income tax addback and refund subtraction out of Colorado alternative minimum taxable income.
