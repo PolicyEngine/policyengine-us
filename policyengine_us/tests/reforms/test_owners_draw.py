@@ -3,7 +3,8 @@
 Dollar examples live in owners_draw.yaml. These tests capture the installed
 formula classes for fast deterministic and shrinking generated vectors. Public
 Simulation tests batch households under one private policy per test to exercise
-constructor activation, baseline equality, cap preservation and AIME history.
+constructor activation, baseline equality, cap preservation and AIME history;
+they pause automatic garbage collection while they run (see paused_gc).
 """
 
 import gc
@@ -303,7 +304,7 @@ def test_invalid_policy_settings_fail_explicitly(
         )
 
 
-def test_future_parameter_activation_captures_cap_and_preserves_baseline():
+def test_future_parameter_activation_captures_cap_and_preserves_baseline(paused_gc):
     years = (2026, 2036, 2037)
     situation = {
         "people": {
@@ -688,14 +689,36 @@ def test_generated_deduction_tracks_existing_deductible_share(
 
 
 @pytest.fixture
-def private_draw_system():
+def paused_gc():
+    """Pause automatic collection while a test clones or reads a full tree.
+
+    Every automatic collection traverses all the objects the shared country
+    system and its parameter views hold, and cloning or materializing a
+    parameter tree triggers many of them. Setup still starts from a fully
+    collected heap. With no collection running, nothing leaves the young
+    generation, so a young collection at teardown frees everything the test
+    released, its private system included, without traversing the shared
+    system again. The next test's full collection catches anything an explicit
+    mid-test collection (Hypothesis's first in a process) promoted.
+    """
+    gc.collect()
+    gc.disable()
+    try:
+        yield
+    finally:
+        gc.collect(0)
+        gc.enable()
+
+
+@pytest.fixture
+def private_draw_system(paused_gc):
     """Keep one independent registry/parameter tree for a complete property.
 
     Hypothesis reuses a function fixture across examples intentionally: policy
     stays fixed, while every example gets new Simulation holders.
-    A mutable owner releases even pytest's fixture reference after the test.
+    A mutable owner releases even pytest's fixture reference after the test,
+    before paused_gc collects it.
     """
-    gc.collect()
     owner = SimpleNamespace(system=None)
     try:
         yield owner
@@ -710,7 +733,6 @@ def private_draw_system():
             "parameter_fingerprint",
         ):
             owner.__dict__.pop(name, None)
-        gc.collect()
 
 
 SIMULATION_SETTINGS = {
@@ -979,7 +1001,6 @@ def test_generated_disabled_reform_matches_public_baseline(
         finally:
             _release_simulation_reference(baseline)
             del baseline
-            gc.collect()
 
         create_owners_draw().apply(policy)
         assert policy.parameters is root
@@ -1012,7 +1033,6 @@ def test_generated_disabled_reform_matches_public_baseline(
         finally:
             _release_simulation_reference(disabled)
             del disabled
-            gc.collect()
     finally:
         # Restore all original variables, including removing added draw names.
         # A fresh public constructor rebinds entities and holders next example.
