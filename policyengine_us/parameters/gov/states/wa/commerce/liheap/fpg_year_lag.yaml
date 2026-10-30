@@ -1,0 +1,15 @@
+description: Washington uses the federal poverty guideline from this many years before the modeled fiscal year under the Low Income Home Energy Assistance Program.
+# FY2026 uses 2025 FPG; FY2027's threshold sheet uses 2026 FPG.
+# Compare exact annual amounts; provider monthly displays differ in rounding.
+values:
+  2025-10-01: 1
+
+metadata:
+  unit: year
+  period: year
+  label: Washington LIHEAP poverty guideline year lag
+  reference:
+    - title: "Byrd Barr FY2025-26 application, income table"
+      href: https://drive.google.com/file/d/18fvR5CL8UKpTj4Vsm7KlkitKUJclAvkR/view#page=1
+    - title: "PY27 LIHEAP eligibility guidelines"
+      href: https://deptofcommerce.app.box.com/s/3fp0xz4y2x2p4hedw9ww4sk7ma36srlx

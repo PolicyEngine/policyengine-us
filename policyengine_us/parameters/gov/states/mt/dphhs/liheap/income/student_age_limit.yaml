@@ -1,0 +1,17 @@
+description: Montana excludes Social Security child benefits of full-time students below this age under the Low Income Home Energy Assistance Program.
+# ARM 37.70.407(1)(d) excludes the extension of Old-Age, Survivors, and
+# Disability Insurance benefits for full-time students aged 18 to 22, that is,
+# below the twenty-third birthday. The lower bound is student_minimum_age.yaml.
+values:
+  2025-10-01: 23
+metadata:
+  unit: year
+  period: year
+  label: Montana LIHEAP student Social Security exclusion age limit
+  reference:
+    - title: Admin. R. Mont. 37.70.407(1)(d), effective May 27, 2023 and unchanged on May 23, 2026
+      href: https://rules.mt.gov/policy-library-documents/application/pdf/36b451e63d1ed5ab982f4c43f746503d7b5d88dc720f10b0fc9b151576d6e788#page=1
+    - title: "Montana LIHEAP Policy Manual 2025-2026, sections 3.15 Income Exclusions and 8.1 Definitions #page 40,116"
+      href: https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=40
+    - title: "Montana LIHEAP Policy Manual 2026-2027, sections 3.15 Income Exclusions and 8.1 Definitions #page 40,119"
+      href: https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=40

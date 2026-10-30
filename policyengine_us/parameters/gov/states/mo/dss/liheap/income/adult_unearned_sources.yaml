@@ -1,0 +1,19 @@
+description: Missouri counts these unearned income sources only for household members at or above the adult age under the Low Income Home Energy Assistance Program.
+# The October 2025 manual does not count the unearned income from disability
+# of a household member under 18 but counts the member's SSA income. Social
+# Security and SSI are read as SSA income and count at any age.
+# disability_benefits (employment-based disability payments other than Social
+# Security and workers' compensation) stands in for the manual's short- and
+# long-term disability payments; workers' compensation and veterans benefits
+# count at any age (unearned_sources).
+values:
+  2025-10-01:
+    - disability_benefits
+
+metadata:
+  unit: list
+  period: year
+  label: Missouri LIHEAP adult-only unearned income sources
+  reference:
+    - title: "Missouri LIHEAP Policy and Procedure Manual (October 2025), Unearned Income and Earnings of Children #page 34,38"
+      href: https://dss.mo.gov/sites/mydss/files/media/pdf/2025/10/liheap-policy-procedure-manual.pdf#page=34

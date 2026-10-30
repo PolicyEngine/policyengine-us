@@ -1,0 +1,18 @@
+description: Utah treats these observable citizenship or immigration statuses as eligible without an additional waiting period under the Home Energy Assistance Target program.
+values:
+  2025-10-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+    - REFUGEE
+    - ASYLEE
+    - DEPORTATION_WITHHELD
+    - CUBAN_HAITIAN_ENTRANT
+metadata:
+  unit: list
+  period: year
+  label: Utah HEAT eligible citizenship and immigration statuses
+  reference:
+    - title: Utah HEAT Manual, Section 203-1 US Citizenship
+      href: https://jobs.utah.gov/infosource/heatpolicy/Policy/200_Program_Standards/203_Citizenship_and_Non-Citizenship_Requirements/203-1_US_Citizenship.htm
+    - title: Utah HEAT Manual, Section 203-2B Qualified and Eligible Non-Citizens
+      href: https://jobs.utah.gov/infosource/heatpolicy/Policy/200_Program_Standards/203_Citizenship_and_Non-Citizenship_Requirements/203-2B_Qualified_and_Eligible_Non-Citizens.htm

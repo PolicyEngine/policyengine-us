@@ -15,10 +15,13 @@ values:
     # premium.
     - ssi
     - pension_income
-    # Military retirement pay is a separate input from the pension inputs that
+    # Military retirement income (retiree pay plus Survivor Benefit Plan
+    # annuities) is a separate input from the pension inputs that
     # pension_income adds, so both are listed; a household reports the amount
-    # in one or the other.
-    - military_retirement_pay
+    # in one or the other. Manual 1200.7 includes annuities (page 65) and
+    # pensions (page 66). A military survivor annuity belongs in
+    # military_retirement_pay_survivors, not survivor_benefits.
+    - military_retirement_income
     # Manual application item 12 groups Railroad Retirement with Social
     # Security; only Social Security is netted of the Medicare premium.
     - railroad_benefits

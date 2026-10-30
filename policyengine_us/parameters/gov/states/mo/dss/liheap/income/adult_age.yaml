@@ -1,0 +1,22 @@
+description: Missouri excludes the earned income and the disability income of household members below this age under the Low Income Home Energy Assistance Program.
+# The October 2025 manual leaves out the earned income and the disability
+# income of a household member under 18 but counts the member's SSA income
+# (adult_unearned_sources lists the disability payments). The FFY2026 plan does
+# not count the earned income of a child under 18, and the 8-2026 application
+# asks for job income only from members 18 or older.
+values:
+  2023-10-01: 18
+
+metadata:
+  unit: year
+  period: year
+  label: Missouri LIHEAP adult age
+  reference:
+    - title: Missouri LIHEAP FFY2026 State Plan, Section 1.9
+      href: https://liheapch.acf.gov/docs/2026/state-plans/MO_Plan_2026.pdf#page=6
+    - title: Missouri LIHEAP application MO 886-4576 (8-2026), Part 5 Household Income
+      href: https://dssmanuals.mo.gov/wp-content/uploads/2022/02/liheap-application.pdf#page=4
+    - title: Missouri LIHEAP Policy and Procedure Manual (October 2025), Earnings of Children
+      href: https://dss.mo.gov/sites/mydss/files/media/pdf/2025/10/liheap-policy-procedure-manual.pdf#page=38
+    - title: Missouri DSS draft FFY2027 LIHEAP State Plan (report status Saved with Errors), Section 1.9
+      href: https://dss.mo.gov/sites/mydss/files/media/pdf/2026/08/liheap-active-ffy2027.pdf#page=6

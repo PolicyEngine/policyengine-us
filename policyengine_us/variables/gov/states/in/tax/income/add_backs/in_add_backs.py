@@ -20,7 +20,7 @@ class in_add_backs(Variable):
         "in_bonus_depreciation_add_back",
         "in_nol_add_back",
         "in_oos_municipal_obligation_interest_add_back",
-        "in_other_add_backs",
+        "in_other_additions",
         "in_section_179_expense_add_back",
         "in_tax_add_back",
     ]

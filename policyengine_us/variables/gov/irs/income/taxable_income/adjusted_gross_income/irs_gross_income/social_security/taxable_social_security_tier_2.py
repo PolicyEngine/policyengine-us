@@ -6,7 +6,11 @@ class taxable_social_security_tier_2(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Taxable Social Security (tier 2)"
-    documentation = "Taxable Social Security from 50-85% taxation tier, credited to Medicare HI trust fund"
+    documentation = (
+        "Current-law taxable Social Security less its first-tier component. "
+        "The HI revenue allocation instead measures the increase in tax "
+        "liability over the pre-1993 section 86 counterfactual."
+    )
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/86#a_2"
 

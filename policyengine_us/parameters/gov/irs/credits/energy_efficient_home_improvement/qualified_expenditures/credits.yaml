@@ -1,5 +1,7 @@
-description: The US includes these capped credits in determining the total energy efficient home improvement tax credit.
+description: The US sums these capped credits before applying the annual limit of the energy efficient home improvement tax credit.
 values:
+  # Before the Inflation Reduction Act, heat pumps are energy property inside
+  # the overall limit.
   2006-01-01:
     - capped_energy_efficient_door_credit
     - capped_energy_efficient_insulation_credit
@@ -9,25 +11,25 @@ values:
     - capped_qualified_furnace_or_hot_water_boiler_credit
     - capped_energy_efficient_central_air_conditioner_credit
     - capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit
-    - capped_qualified_furnace_or_hot_water_boiler_credit
-  # Inflation Reduction Act removed roof credits and added audit credits.
-  # It also adds biomass stoves and boilers, but that is taken care of in 
-  # heat_pump_heat_pump_water_heater_biomass_stove_boiler.yaml.
+  # Inflation Reduction Act removed roof and advanced main air circulating fan
+  # credits and added audit credits. Heat pumps, heat pump water heaters, and
+  # biomass stoves and boilers have their own $2,000 limit and are added after
+  # the $1,200 limit (Form 5695 lines 27 to 30).
   2023-01-01:
     - capped_energy_efficient_door_credit
     - capped_energy_efficient_insulation_credit
     - capped_energy_efficient_window_credit
-    - capped_advanced_main_air_circulating_fan_credit
     - capped_qualified_furnace_or_hot_water_boiler_credit
-    - capped_advanced_main_air_circulating_fan_credit
     - capped_energy_efficient_central_air_conditioner_credit
-    - capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit
-    - capped_qualified_furnace_or_hot_water_boiler_credit
     - capped_home_energy_audit_credit
 metadata:
   label: Energy efficiency improvements that qualify for energy efficient home improvement credit
   reference:
     - title: 26 U.S.C. § 25C(g)
       href: https://www.law.cornell.edu/uscode/text/26/25C#c_3
+    - title: 26 U.S.C. § 25C(d)(2)
+      href: https://www.law.cornell.edu/uscode/text/26/25C#d_2
     - title: Inflation Reduction Act, Part 3, Section 13301
       href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=341
+    - title: 2025 Form 5695, Part II, line 27
+      href: https://www.irs.gov/pub/irs-pdf/f5695.pdf#page=2

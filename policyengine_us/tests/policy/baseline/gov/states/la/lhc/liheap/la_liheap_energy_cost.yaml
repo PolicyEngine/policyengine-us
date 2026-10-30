@@ -1,0 +1,129 @@
+# Service Delivery Guide (rev. January 1, 2024) pages 37-40: residential energy bills
+# from every vendor are added; sewer and water fees are excluded; a subsidized
+# household subtracts its utility allowance (vendor costs - utility allowance = TEC),
+# except applicants 60 or older. Electricity of 1,740 is about the EIA 2024 Louisiana
+# average residential bill of 145 a month; gas of 600 is about 50 a month.
+
+- name: Case 1, energy bills from all vendors are added, water and sewer are excluded, and no allowance is deducted without housing assistance.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        receives_housing_assistance: false
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_740
+        # Firewood for a fireplace.
+        wood_expense: 200
+        water_expense: 480
+        sewage_expense: 360
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+        is_in_public_housing: false
+        # The local schedule amount, which is not deducted without housing assistance.
+        hud_utility_allowance: 1_200
+  output:
+    # 600 + 1,740 + 200 = 2,540
+    la_liheap_energy_cost: 2_540
+
+- name: Case 2, a subsidized household with a 59-year-old has the utility allowance deducted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 59
+    spm_units:
+      spm_unit:
+        members: [person1]
+        receives_housing_assistance: true
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+        # Section 8 utility allowance of 100 a month.
+        hud_utility_allowance: 1_200
+  output:
+    # 1,740 - 1,200 = 540
+    la_liheap_energy_cost: 540
+
+- name: Case 3, a public housing household whose allowance exceeds its bill has a negative energy cost.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        receives_housing_assistance: false
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+        is_in_public_housing: true
+        hud_utility_allowance: 1_800
+  output:
+    # 1,500 - 1,800 = -300
+    la_liheap_energy_cost: -300
+
+- name: Case 4, a subsidized household with a 60-year-old member keeps the full bill.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+      person2:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        receives_housing_assistance: true
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+        hud_utility_allowance: 1_200
+  output:
+    # Applicants 60 or older are exempt: no deduction
+    la_liheap_energy_cost: 1_740
+
+- name: Case 5, an undocumented 65-year-old does not exempt the household from the deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 65
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        receives_housing_assistance: true
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+        hud_utility_allowance: 1_200
+  output:
+    # Only counted members qualify for the exemption: 1,740 - 1,200 = 540
+    la_liheap_energy_cost: 540

@@ -1,0 +1,24 @@
+description: Louisiana counts these sources as earned income of adult members not enrolled in high school under the Low Income Home Energy Assistance Program.
+# The guide counts gross wages, salaries and commissions, military pay and net
+# receipts from self-employment (self-employment income less business
+# expenses). The existing net business inputs get no further deduction, and
+# each source is floored at zero, so a loss in one source cannot offset another.
+values:
+  2025-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+
+metadata:
+  unit: list
+  period: year
+  label: Louisiana LIHEAP earned income sources
+  reference:
+    - title: "Louisiana LIHEAP Service Delivery Guide, revised January 1, 2024, Section 3.6 C.1 and Appendix E #page 29-30,82,84-85"
+      href: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20REVISED%20January%201_%202024.pdf#page=29
+    - title: "Louisiana LIHEAP Service Delivery Guide, effective April 1, 2026, Section 3.6 C.1 and Appendix E #page 34-35,89,91-92"
+      href: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20FINAL%20-%20Effective%20April%201%2c%202026.pdf#page=34
+    - title: "Louisiana FY2026 LIHEAP State Plan, Sections 1.8-1.9 #page 5-7"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/LA_Plan_2026.pdf#page=5
