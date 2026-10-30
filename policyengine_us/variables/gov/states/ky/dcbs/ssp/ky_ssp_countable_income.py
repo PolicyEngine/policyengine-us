@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
+    _apply_ssi_exclusions,
+)
 
 
 class ky_ssp_countable_income(Variable):
@@ -47,11 +50,41 @@ class ky_ssp_countable_income(Variable):
         countable_earned = max_(earned - p.earned, 0) * (1 - p.earned_share)
         personal_countable = unearned + countable_earned
 
-        # Existing student/unearned and spouse/parent deeming inputs remain
-        # an SSI-based approximation. The ordering of Kentucky's separate
+        # Retain the SSI deeming difference and threshold, using Kentucky
+        # earnings on both sides so neither spouse's loss crosses to the other.
+        # Section 8(6) combines earnings before the $65 / half disregard.
+        year = period.this_year
+        spouse_earned = person(
+            "ky_ssp_earned_income_deemed_from_ineligible_spouse", year
+        )
+        spouse_unearned = person(
+            "ssi_unearned_income_deemed_from_ineligible_spouse", year
+        )
+        own_unearned = person("ssi_unearned_income", year)
+        amount = parameters(period).gov.ssa.ssi.amount
+        deeming_applies = (
+            spouse_earned + spouse_unearned
+            > (amount.couple - amount.individual) * MONTHS_IN_YEAR
+        ) & person("is_ssi_eligible_individual", year)
+        alone_countable = _apply_ssi_exclusions(
+            own_earned, own_unearned, parameters, year
+        )
+        couple_countable = _apply_ssi_exclusions(
+            own_earned + spouse_earned,
+            own_unearned + spouse_unearned,
+            parameters,
+            year,
+        )
+        spousal_deemed = (
+            deeming_applies
+            * max_(couple_countable - alone_countable, 0)
+            / MONTHS_IN_YEAR
+        )
+
+        # Existing student/unearned and parent deeming inputs remain an
+        # SSI-based approximation. The ordering of Kentucky's separate
         # §8(3) conservation and §8(6) earnings rules needs a fuller state
-        # methodology review; this own-source correction does not decide it.
-        spousal_deemed = person("ssi_income_deemed_from_ineligible_spouse", period)
+        # methodology review; this loss correction does not decide it.
         is_eligible = person("is_ssi_eligible_individual", period.this_year) | person(
             "is_ssi_eligible_spouse", period.this_year
         )

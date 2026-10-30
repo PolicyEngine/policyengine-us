@@ -249,3 +249,96 @@
     ssi_couple_computation_applies: [true, true]
     # Combined ($1,000 - $65) / 2, then half attributed to each person.
     ky_ssp_countable_income: [233.75, 233.75]
+
+- name: Case 13, applicant farm loss cannot reduce ineligible spouse wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      applicant:
+        age: 67
+        farm_operations_income: -6_000
+        is_tax_unit_head: true
+      spouse:
+        age: 60
+        employment_income: 20_000
+        is_tax_unit_spouse: true
+    marital_units:
+      couple:
+        members: [applicant, spouse]
+    tax_units:
+      couple:
+        members: [applicant, spouse]
+    households:
+      household:
+        members: [applicant, spouse]
+        state_code: KY
+  output:
+    ky_ssp_earned_income:
+      2026: [0, 20_000]
+    # Before this fix SSI-based deemed earnings were $14,000; now $20,000.
+    ky_ssp_earned_income_deemed_from_ineligible_spouse:
+      2026: [20_000, 0]
+    # Before: $540.83. Retained deeming: ($20,000 / 12 - $85) / 2.
+    ky_ssp_countable_income: [790.83, 0]
+
+- name: Case 14, ineligible spouse business loss cannot reduce that spouse wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      applicant:
+        age: 67
+        farm_operations_income: 0
+        is_tax_unit_head: true
+      spouse:
+        age: 60
+        employment_income: 20_000
+        self_employment_income: -6_000
+        is_tax_unit_spouse: true
+    marital_units:
+      couple:
+        members: [applicant, spouse]
+    tax_units:
+      couple:
+        members: [applicant, spouse]
+    households:
+      household:
+        members: [applicant, spouse]
+        state_code: KY
+  output:
+    ky_ssp_earned_income:
+      2026: [0, 20_000]
+    # Before: $14,000 deemed earnings and $540.83 monthly countable income.
+    ky_ssp_earned_income_deemed_from_ineligible_spouse:
+      2026: [20_000, 0]
+    ky_ssp_countable_income: [790.83, 0]
+
+- name: Case 15, combine applicant and spouse earnings before the earned disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      applicant:
+        age: 67
+        employment_income: 600
+        is_tax_unit_head: true
+      spouse:
+        age: 60
+        employment_income: 20_000
+        is_tax_unit_spouse: true
+    marital_units:
+      couple:
+        members: [applicant, spouse]
+    tax_units:
+      couple:
+        members: [applicant, spouse]
+    households:
+      household:
+        members: [applicant, spouse]
+        state_code: KY
+  output:
+    ky_ssp_earned_income_deemed_from_ineligible_spouse:
+      2026: [20_000, 0]
+    # Section 8(6): retained deeming combines $600 + $20,000 before exclusions.
+    ky_ssp_countable_income: [815.83, 0]
