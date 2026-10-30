@@ -1,4 +1,4 @@
-description: The IRA sums the following elements as qualified retirement savings contributions when computing the saver's credit.  
+description: The IRS sums the following elements as qualified retirement savings contributions when computing the saver's credit.
 values:
   2018-01-01:
     - traditional_ira_contributions
@@ -7,7 +7,7 @@ values:
     - traditional_403b_contributions
     - roth_401k_contributions
     - roth_403b_contributions
-    - self_employed_pension_contributions
+    - self_employed_pension_elective_deferrals
     - able_contributions_person
 
   2026-01-01:
@@ -17,7 +17,7 @@ values:
     - traditional_403b_contributions
     - roth_401k_contributions
     - roth_403b_contributions
-    - self_employed_pension_contributions
+    - self_employed_pension_elective_deferrals
 
 metadata:
   unit: list
@@ -26,7 +26,13 @@ metadata:
   reference:
     - title: 26 U.S. Code § 25B - (d)
       href: https://www.law.cornell.edu/uscode/text/26/25B#d_1
-    - title: 2023 Publication 590-A
-      href: https://www.irs.gov/pub/irs-pdf/p590a.pdf#page=45
-    - title: 2023 Form 8880
-      href: https://www.irs.gov/pub/irs-pdf/f8880.pdf#page=2
+    - title: 26 U.S. Code § 402(g)(3) - elective deferrals
+      href: https://www.law.cornell.edu/uscode/text/26/402#g_3
+    - title: 2025 Publication 590-A, eligible contributions
+      href: https://www.irs.gov/pub/irs-prior/p590a--2025.pdf#page=47
+    - title: 2022 Publication 590-A, eligible contributions
+      href: https://www.irs.gov/pub/irs-prior/p590a--2022.pdf#page=45
+    - title: 2025 Form 8880 instructions, line 2
+      href: https://www.irs.gov/pub/irs-prior/f8880--2025.pdf#page=2
+    - title: 2022 Form 8880 instructions, line 2
+      href: https://www.irs.gov/pub/irs-prior/f8880--2022.pdf#page=2
