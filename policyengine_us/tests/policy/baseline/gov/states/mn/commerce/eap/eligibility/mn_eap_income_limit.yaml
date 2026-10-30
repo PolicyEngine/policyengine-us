@@ -1,0 +1,146 @@
+# The monthly limit is 50% of state median income for sizes 1-18 and 110% of
+# the prior year's federal poverty guideline for sizes 19-20 (FFY26 EAP Policy
+# Manual and FFY27 EAP Policy Manual, Chapter 3, "Maximum EAP Income
+# Guidelines" tables; Appendix 4A 'Income Guidelines'!B2:B21). The model stores
+# the annual equivalent, 12 x the one-month maximum. Above size 20 the larger of
+# the two standards applies (42 U.S.C. 8624(b)(2)(B) floor).
+
+# FFY26 one-month maximums: size 1 $3,119 x 12 = $37,428; size 4 $5,999 x 12 =
+# $71,988; size 18 $10,079 x 12 = $120,948 (50% SMI binds: 110% FPG would give
+# $10,005); size 19 $10,509 x 12 = $126,108 (110% FPG binds). Size 21 by hand:
+# 2025 FPG $15,650 + 20 x $5,500 = $125,650 x 1.1 = $138,215 / 12 = $11,517.92
+# -> $11,517 (50% SMI: $143,998 x 1.77 x 0.5 / 12 = $10,619.85 is lower);
+# $11,517 x 12 = $138,204. Size 0 returns $0.
+- name: Case 1, FFY2026 annual equivalent limits for sizes 0, 1, 4, 18, 19 and 21.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 40
+      person3:
+        age: 40
+      person4:
+        age: 40
+      person5:
+        age: 40
+      person6:
+        age: 40
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        mn_eap_household_size: 0
+        heating_type: NATURAL_GAS
+      spm_unit2:
+        members: [person2]
+        mn_eap_household_size: 1
+        heating_type: NATURAL_GAS
+      spm_unit3:
+        members: [person3]
+        mn_eap_household_size: 4
+        heating_type: NATURAL_GAS
+      spm_unit4:
+        members: [person4]
+        mn_eap_household_size: 18
+        heating_type: NATURAL_GAS
+      spm_unit5:
+        members: [person5]
+        mn_eap_household_size: 19
+        heating_type: NATURAL_GAS
+      spm_unit6:
+        members: [person6]
+        mn_eap_household_size: 21
+        heating_type: NATURAL_GAS
+    households:
+      household1:
+        members: [person1]
+        state_code: MN
+      household2:
+        members: [person2]
+        state_code: MN
+      household3:
+        members: [person3]
+        state_code: MN
+      household4:
+        members: [person4]
+        state_code: MN
+      household5:
+        members: [person5]
+        state_code: MN
+      household6:
+        members: [person6]
+        state_code: MN
+  output:
+    mn_eap_income_limit: [0, 37_428, 71_988, 120_948, 126_108, 138_204]
+
+# FFY27 one-month maximums: size 1 $3,205 x 12 = $38,460; size 4 $6,164 x 12 =
+# $73,968; size 18 $10,355 x 12 = $124,260 (50% SMI binds: 110% FPG would give
+# $10,314); size 19 $10,835 x 12 = $130,020 (110% FPG binds). Size 21 by hand:
+# 2026 FPG $15,960 + 20 x $5,680 = $129,560 x 1.1 = $142,516 / 12 = $11,876.33
+# -> $11,876 (50% SMI: $147,939 x 1.77 x 0.5 / 12 = $10,910.50 is lower);
+# $11,876 x 12 = $142,512.
+- name: Case 2, FFY2027 annual equivalent limits for sizes 0, 1, 4, 18, 19 and 21.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 40
+      person3:
+        age: 40
+      person4:
+        age: 40
+      person5:
+        age: 40
+      person6:
+        age: 40
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        mn_eap_household_size: 0
+        heating_type: NATURAL_GAS
+      spm_unit2:
+        members: [person2]
+        mn_eap_household_size: 1
+        heating_type: NATURAL_GAS
+      spm_unit3:
+        members: [person3]
+        mn_eap_household_size: 4
+        heating_type: NATURAL_GAS
+      spm_unit4:
+        members: [person4]
+        mn_eap_household_size: 18
+        heating_type: NATURAL_GAS
+      spm_unit5:
+        members: [person5]
+        mn_eap_household_size: 19
+        heating_type: NATURAL_GAS
+      spm_unit6:
+        members: [person6]
+        mn_eap_household_size: 21
+        heating_type: NATURAL_GAS
+    households:
+      household1:
+        members: [person1]
+        state_code: MN
+      household2:
+        members: [person2]
+        state_code: MN
+      household3:
+        members: [person3]
+        state_code: MN
+      household4:
+        members: [person4]
+        state_code: MN
+      household5:
+        members: [person5]
+        state_code: MN
+      household6:
+        members: [person6]
+        state_code: MN
+  output:
+    mn_eap_income_limit: [0, 38_460, 73_968, 124_260, 130_020, 142_512]

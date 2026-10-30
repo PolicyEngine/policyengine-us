@@ -1,0 +1,135 @@
+# The income limit is 150% of the federal poverty guideline for the program year,
+# annual and unrounded (NRS 702.260(3); EAP Manual 701 and Appendix A). SFY2026 uses
+# the 2025 guidelines (15,650 + 5,500 per added person) and SFY2027 the 2026
+# guidelines (15,960 + 5,680); sizes above eight add the guideline increment.
+# Household size counts citizens and qualified non-citizens outside the five-year bar
+# only (Manual 302 C, 502 A.I, 802 I).
+# Gas of 600 is 50 a month and electricity of 1,320 is 110 a month, within typical
+# Nevada natural gas (40-90) and EIA residential electricity (100-130) monthly bills.
+
+- name: Case 1, an undocumented member is excluded from household size so the SFY2026 size-one limit applies.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 42
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_320
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_liheap_household_size: 1
+    # 15,650 x 1.5
+    nv_liheap_income_limit: 23_475
+
+- name: Case 2, a nine-person household adds the guideline increment for an SFY2026 limit of 89,475.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 40}
+      person2: {age: 38}
+      person3: {age: 17}
+      person4: {age: 16}
+      person5: {age: 14}
+      person6: {age: 12}
+      person7: {age: 10}
+      person8: {age: 8}
+      person9: {age: 6}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_320
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code: NV
+  output:
+    nv_liheap_household_size: 9
+    # (15,650 + 5,500 x 8) x 1.5 = 59,650 x 1.5; Appendix A adds 8,250 per person over eight
+    nv_liheap_income_limit: 89_475
+
+- name: Case 3, a one-person household uses the SFY2027 limit of 23,940.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_320
+    households:
+      household:
+        members: [person1]
+        state_code: NV
+  output:
+    # 15,960 x 1.5
+    nv_liheap_income_limit: 23_940
+
+- name: Case 4, a nine-person household adds the guideline increment for an SFY2027 limit of 92,100.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 40}
+      person2: {age: 38}
+      person3: {age: 17}
+      person4: {age: 16}
+      person5: {age: 14}
+      person6: {age: 12}
+      person7: {age: 10}
+      person8: {age: 8}
+      person9: {age: 6}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_320
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code: NV
+  output:
+    # (15,960 + 5,680 x 8) x 1.5 = 61,400 x 1.5; Appendix A adds 8,520 per person over eight
+    nv_liheap_income_limit: 92_100
+
+- name: Case 5, a household of only undocumented members has size zero and no income limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_320
+    households:
+      household:
+        members: [person1]
+        state_code: NV
+  output:
+    nv_liheap_household_size: 0
+    nv_liheap_income_limit: 0
