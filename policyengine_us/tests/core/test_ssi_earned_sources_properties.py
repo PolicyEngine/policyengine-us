@@ -13,9 +13,11 @@ formula corrections: spouse-loss netting and nonnegative child-allocation and
 student-exclusion income. The nonnegative domain excludes these corrections,
 New Hampshire's prohibition on offsetting wages with a business loss, and
 Kentucky's separate prohibition on one business loss offsetting another
-business; YAML covers those intentional changes. An actual git-base differential
-is run separately. A seeded, stratified sample of 200 households supplements
-the smaller Hypothesis batches, including spouses and disabled children.
+business. Separate generated loss properties cover those intentional changes,
+including losses belonging to either spouse, children and students. An actual
+git-base differential is run separately. A seeded, stratified sample of 200
+households supplements the smaller Hypothesis batches, including spouses and
+disabled children.
 
 All households in a batch share one vectorized simulation. The module reuses
 the read-only country singleton and constructs its parameter-only reference
@@ -44,6 +46,12 @@ MAIN_EARNED_SOURCES = (
 )
 PROFIT_SOURCES = (
     "self_employment_income",
+    "farm_operations_income",
+    "partnership_self_employment_net_earnings",
+)
+BUSINESS_SOURCES = (
+    "self_employment_income",
+    "sstb_self_employment_income",
     "farm_operations_income",
     "partnership_self_employment_net_earnings",
 )
@@ -329,6 +337,260 @@ def test_ssi_never_rises_when_business_profit_rises(policy, batch):
     )
     pairs = np.asarray(amounts).reshape(-1, 2)
     assert np.all(pairs[:, 1] <= pairs[:, 0])
+
+
+@st.composite
+def unearned_income_with_losses(draw):
+    adults = [_person(interest_income=draw(st.integers(241, 24_000)))]
+    if draw(st.booleans()):
+        adults.append(
+            _person(
+                age=draw(st.sampled_from((60, 67))),
+                interest_income=draw(st.integers(241, 24_000)),
+            )
+        )
+    losses = deepcopy(adults)
+    # Every generated household has a loss; either spouse can own it, and
+    # both can have losses. Nobody has positive earnings in either version,
+    # so total countable income consists entirely of countable unearned income.
+    loss_owner = draw(st.integers(0, len(adults) - 1))
+    for i, adult in enumerate(losses):
+        if i == loss_owner or draw(st.booleans()):
+            adult[draw(st.sampled_from(BUSINESS_SOURCES))] = -draw(
+                st.integers(1, 40_000)
+            )
+    state = draw(st.sampled_from(STATES))
+    return (
+        {"state": state, "adults": adults},
+        {"state": state, "adults": losses},
+    )
+
+
+@settings(max_examples=6, deadline=None, suppress_health_check=[HealthCheck.too_slow])
+@given(batch=st.lists(unearned_income_with_losses(), min_size=1, max_size=4))
+def test_business_loss_never_reduces_countable_unearned_income(policy, batch):
+    simulation = _simulation(
+        policy, [household for pair in batch for household in pair]
+    )
+    for name in ("ssi_unearned_income", "ssi_countable_income"):
+        totals = simulation.populations["household"].sum(
+            simulation.calculate(name, YEAR)
+        )
+        pairs = np.asarray(totals).reshape(-1, 2)
+        np.testing.assert_array_equal(pairs[:, 0], pairs[:, 1], err_msg=name)
+
+
+@st.composite
+def couples_with_business_losses(draw):
+    loss_owner = draw(st.integers(0, 1))
+    adults = []
+    for i in range(2):
+        wages = draw(st.integers(0, 30_000))
+        premiums = draw(st.integers(0, 40_000))
+        # Draw signed final earnings, then obtain them with wages and one
+        # business. The selected spouse always has a residual business loss;
+        # the other spouse can have a profit or another residual loss.
+        earned = draw(
+            st.integers(-40_000, -1)
+            if i == loss_owner
+            else st.integers(-40_000, 40_000)
+        )
+        business = earned - wages + min(wages, premiums)
+        source = draw(st.sampled_from(BUSINESS_SOURCES))
+        adults.append(
+            _person(
+                age=67 if i == 0 else draw(st.sampled_from((60, 67))),
+                employment_income=wages,
+                pre_tax_health_insurance_premiums=premiums,
+                **{source: business},
+            )
+        )
+    return {"state": draw(st.sampled_from(STATES)), "adults": adults}
+
+
+@settings(max_examples=6, deadline=None, suppress_health_check=[HealthCheck.too_slow])
+@example(
+    batch=[
+        {
+            "state": "TX",
+            "adults": [
+                _person(employment_income=12_000),
+                _person(age=60, farm_operations_income=-5_000),
+            ],
+        },
+        {
+            "state": "CT",
+            "adults": [
+                _person(partnership_self_employment_net_earnings=-9_000),
+                _person(age=60, employment_income=4_000),
+            ],
+        },
+    ]
+)
+@given(batch=st.lists(couples_with_business_losses(), min_size=1, max_size=4))
+def test_spousal_loss_pool_is_nonnegative_and_conserves_net_earnings(policy, batch):
+    simulation = _simulation(policy, batch)
+    earned = simulation.calculate("ssi_earned_income", YEAR).reshape(-1, 2)
+    after_loss = simulation.calculate("ssi_earned_income_after_spousal_loss", YEAR)
+    assert np.all(after_loss >= 0)
+    np.testing.assert_array_equal(
+        after_loss.reshape(-1, 2).sum(axis=1),
+        np.maximum(earned.sum(axis=1), 0),
+    )
+
+
+@st.composite
+def child_and_student_losses(draw):
+    wages = draw(st.integers(0, 2_000))
+    child = _person(
+        age=draw(st.integers(6, 17)),
+        interest_income=draw(st.integers(0, 6_000)),
+        is_ssi_ineligible_child=True,
+    )
+    child_with_loss = {
+        **child,
+        "employment_income": wages,
+        draw(st.sampled_from(BUSINESS_SOURCES)): -wages - draw(st.integers(1, 20_000)),
+    }
+    student_wages = draw(st.integers(0, 12_000))
+    student = _person(
+        age=draw(st.integers(18, 21)),
+        employment_income=student_wages,
+        is_ssi_blind_or_disabled_working_student_exclusion_eligible=True,
+        **{
+            draw(st.sampled_from(BUSINESS_SOURCES)): -student_wages
+            - draw(st.integers(1, 30_000))
+        },
+    )
+    state = draw(st.sampled_from(STATES))
+    return (
+        {"state": state, "adults": [_person(age=45)], "children": [child]},
+        {
+            "state": state,
+            "adults": [_person(age=45)],
+            "children": [child_with_loss],
+        },
+        {"state": state, "adults": [student]},
+    )
+
+
+@settings(max_examples=6, deadline=None, suppress_health_check=[HealthCheck.too_slow])
+@given(batch=st.lists(child_and_student_losses(), min_size=1, max_size=4))
+def test_residual_loss_cannot_raise_child_allocation_or_negate_student_exclusion(
+    policy, batch
+):
+    simulation = _simulation(
+        policy, [household for group in batch for household in group]
+    )
+    allocations = simulation.populations["household"].sum(
+        simulation.calculate("ssi_ineligible_child_allocation", YEAR)
+    )
+    allocations = np.asarray(allocations).reshape(-1, 3)
+    # Compare against zero earned income: a residual business loss cannot
+    # offset the child's unearned income or enlarge its allocation.
+    np.testing.assert_array_equal(allocations[:, 0], allocations[:, 1])
+    exclusions = simulation.calculate(
+        "ssi_blind_or_disabled_working_student_exclusion", YEAR
+    )
+    assert np.all(exclusions >= 0)
+    # Every eligible student's signed earnings are negative in this batch.
+    np.testing.assert_array_equal(exclusions, np.zeros_like(exclusions))
+
+
+@st.composite
+def nonpositive_combined_business_income(draw):
+    businesses = [draw(st.integers(-20_000, 20_000)) for _ in range(3)]
+    businesses.append(-sum(businesses) - draw(st.integers(0, 20_000)))
+    return (
+        draw(st.integers(0, 50_000)),
+        draw(st.booleans()),
+        businesses,
+        draw(st.sampled_from(tuple(state for state in STATES if state != "NH"))),
+    )
+
+
+@settings(max_examples=6, deadline=None, suppress_health_check=[HealthCheck.too_slow])
+@example(batch=[(12_000, False, [4_000, 0, -6_000, 0], "TX")])
+@given(batch=st.lists(nonpositive_combined_business_income(), min_size=1, max_size=4))
+def test_nh_nonpositive_combined_business_income_preserves_wages_only_value(
+    policy, batch
+):
+    households = []
+    for wages, blind, businesses, other_state in batch:
+        person = _person(
+            employment_income=wages,
+            is_blind=blind,
+            # Hold federal SSI at zero so its permitted wage-loss offset
+            # cannot conceal New Hampshire's separate earned-income rule.
+            takes_up_ssi_if_eligible=False,
+            ssi_unearned_income=0,
+        )
+        with_businesses = {**person, **dict(zip(BUSINESS_SOURCES, businesses))}
+        households.extend(
+            (
+                {"state": "NH", "adults": [person]},
+                {"state": "NH", "adults": [with_businesses]},
+                {"state": other_state, "adults": [with_businesses]},
+            )
+        )
+    simulation = _simulation(policy, households)
+    countable = simulation.calculate("nh_ssp_countable_income", MONTH).reshape(-1, 3)
+    np.testing.assert_array_equal(countable[:, 0], countable[:, 1])
+    np.testing.assert_array_equal(countable[:, 2], np.zeros(len(batch)))
+
+
+@st.composite
+def separate_business_profits_and_losses(draw):
+    # Every generated case has both a profit and a loss. Permuting sources
+    # exercises each business's floor, including farm and partnership inputs.
+    businesses = draw(
+        st.permutations(
+            (
+                draw(st.integers(1, 40_000)),
+                -draw(st.integers(1, 40_000)),
+                draw(st.integers(-40_000, 40_000)),
+                draw(st.integers(-40_000, 40_000)),
+            )
+        )
+    )
+    return (
+        draw(st.integers(0, 60_000)),
+        draw(st.integers(-10_000, 100_000)),
+        businesses,
+        draw(st.sampled_from(tuple(state for state in STATES if state != "KY"))),
+    )
+
+
+@settings(max_examples=6, deadline=None, suppress_health_check=[HealthCheck.too_slow])
+@example(batch=[(12_000, 0, (10_000, 0, -6_000, 0), "NH")])
+@given(batch=st.lists(separate_business_profits_and_losses(), min_size=1, max_size=4))
+def test_ky_own_earned_income_preserves_each_business_profit(policy, batch):
+    households = []
+    expected = []
+    for wages, premiums, businesses, other_state in batch:
+        person = _person(
+            employment_income=wages,
+            pre_tax_health_insurance_premiums=premiums,
+            **dict(zip(BUSINESS_SOURCES, businesses)),
+        )
+        households.extend(
+            (
+                {"state": "KY", "adults": [person]},
+                {"state": other_state, "adults": [person]},
+            )
+        )
+        expected.extend(
+            (
+                wages
+                - min(wages, max(premiums, 0))
+                + sum(max(profit, 0) for profit in businesses),
+                0,
+            )
+        )
+    simulation = _simulation(policy, households)
+    np.testing.assert_array_equal(
+        simulation.calculate("ky_ssp_earned_income", YEAR), expected
+    )
 
 
 @st.composite
