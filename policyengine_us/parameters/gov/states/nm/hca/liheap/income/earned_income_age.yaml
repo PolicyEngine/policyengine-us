@@ -1,0 +1,18 @@
+description: New Mexico counts the earned income of household members older than this age under the Low Income Home Energy Assistance Program.
+# 8.150.520.12 B NMAC counts "the gross earned income of all household members
+# over the age of 18", so the earnings of a member aged 18 or younger are not
+# counted. The FY2026 plan leaves "Earned income of a child under the age of
+# 18" unchecked (Section 1.9), recorded as us-nm:liheap-plan-income-checklist
+# in candidates.yaml.
+values:
+  2025-10-01: 18
+
+metadata:
+  unit: year
+  period: year
+  label: New Mexico LIHEAP earned income age
+  reference:
+    - title: 8.150.520.12 B NMAC
+      href: https://www.srca.nm.gov/parts/title08/08.150.0520.html
+    - title: New Mexico FY2026 LIHEAP State Plan, Section 1.9
+      href: https://liheapch.acf.gov/docs/2026/state-plans/NM_Plan_2026.pdf#page=6

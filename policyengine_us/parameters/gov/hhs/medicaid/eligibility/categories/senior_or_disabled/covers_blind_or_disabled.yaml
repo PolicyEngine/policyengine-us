@@ -1,0 +1,124 @@
+description: The state covers blind or disabled people under age 65, as well as aged people, under the Medicaid optional senior or disabled pathway, if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: Medicaid senior or disabled pathway covers blind or disabled people
+  breakdown:
+  - state_code
+  reference:
+    - title: 42 CFR 435.210 - Optional eligibility for individuals who meet the income and resource requirements of the cash assistance programs
+      href: https://www.ecfr.gov/current/title-42/section-435.210
+    - title: 42 U.S. Code § 1396a(m)(1)(A) - Poverty-level aged and disabled group
+      href: https://www.law.cornell.edu/uscode/text/42/1396a#m_1_A
+    - title: KFF, Medicaid Financial Eligibility for Seniors and People with Disabilities - Findings from a 50-State Survey (2018), Appendix Table 1, note 2
+      href: https://www.kff.org/report-section/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey-appendix-tables/
+    - title: Arkansas Medical Services Policy Manual, B-321 ARSeniors
+      href: https://humanservices.arkansas.gov/wp-content/uploads/MS-Policy-9.26-New.pdf#page=60
+    - title: Ark. Code R. 016.20.02-014, Policy Directive MS 02-07, MS 23110 - Eligibility Requirements
+      href: https://www.law.cornell.edu/regulations/arkansas/016-20-02-Ark-Code-R-SS-014
+    - title: Arkansas DHS Health Care Eligibility Quick Reference (January 2025), ARSeniors
+      href: https://web.archive.org/web/20251030205724/https://humanservices.arkansas.gov/wp-content/uploads/Quick-Reference.pdf#page=2
+
+AK:
+  2018-01-01: true
+AL:
+  2018-01-01: true
+AR:
+  # ARSeniors covers only people aged 65 or older.
+  2002-10-01: false
+AZ:
+  2018-01-01: true
+CA:
+  2018-01-01: true
+CO:
+  2018-01-01: true
+CT:
+  2018-01-01: true
+DC:
+  2018-01-01: true
+DE:
+  2018-01-01: true
+FL:
+  2018-01-01: true
+GA:
+  2018-01-01: true
+HI:
+  2018-01-01: true
+IA:
+  2018-01-01: true
+ID:
+  2018-01-01: true
+IL:
+  2018-01-01: true
+IN:
+  2018-01-01: true
+KS:
+  2018-01-01: true
+KY:
+  2018-01-01: true
+LA:
+  2018-01-01: true
+MA:
+  2018-01-01: true
+MD:
+  2018-01-01: true
+ME:
+  2018-01-01: true
+MI:
+  2018-01-01: true
+MN:
+  2018-01-01: true
+MO:
+  2018-01-01: true
+MS:
+  2018-01-01: true
+MT:
+  2018-01-01: true
+NC:
+  2018-01-01: true
+ND:
+  2018-01-01: true
+NE:
+  2018-01-01: true
+NH:
+  2018-01-01: true
+NJ:
+  2018-01-01: true
+NM:
+  2018-01-01: true
+NV:
+  2018-01-01: true
+NY:
+  2018-01-01: true
+OH:
+  2018-01-01: true
+OK:
+  2018-01-01: true
+OR:
+  2018-01-01: true
+PA:
+  2018-01-01: true
+RI:
+  2018-01-01: true
+SC:
+  2018-01-01: true
+SD:
+  2018-01-01: true
+TN:
+  2018-01-01: true
+TX:
+  2018-01-01: true
+UT:
+  2018-01-01: true
+VA:
+  2018-01-01: true
+VT:
+  2018-01-01: true
+WA:
+  2018-01-01: true
+WI:
+  2018-01-01: true
+WV:
+  2018-01-01: true
+WY:
+  2018-01-01: true
