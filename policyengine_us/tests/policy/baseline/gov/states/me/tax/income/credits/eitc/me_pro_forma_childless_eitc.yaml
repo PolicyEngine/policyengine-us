@@ -134,3 +134,50 @@
   output:
     # 7.65% x $1,000.
     me_pro_forma_childless_eitc: 76.5
+
+# 36 M.R.S. 5219-S(6) gives "eligible individual" "the same meaning as under
+# Section 32(c)(1) of the Code", and 32(c)(1)(C) excludes an individual who
+# claims the benefits of section 911. The Maine EITC worksheet keeps the
+# federal Form 2555 stop (2024 Form 1040 instructions, EIC Step 1,
+# question 3).
+- name: Section 911 claimant in the 18-24 cohort has no pro forma childless credit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 21
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_earned_income_exclusion: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_pro_forma_childless_eitc: 0
+    me_eitc: 0
+
+- name: The same filer without a section 911 exclusion has the pro forma childless credit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 21
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_earned_income_exclusion: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # 7.65% x $5,000 = $382.50; Maine allows 50% to a filer without a
+    # qualifying child.
+    me_pro_forma_childless_eitc: 382.5
+    me_eitc: 191.25
