@@ -12,6 +12,7 @@ class ar_medicaid_work_requirement_eligible(Variable):
         "https://www.medicaid.gov/medicaid/section-1115-demo/demonstration-and-waiver-list/81021",
         "https://www.kff.org/medicaid/issue-brief/state-data-for-medicaid-work-requirements-in-arkansas/",
         "https://www.law.cornell.edu/regulations/arkansas/016-20-18-Ark-Code-R-003",
+        "https://www.ecfr.gov/current/title-42/section-440.315#p-440.315(f)",
     )
     defined_for = StateCode.AR
 
@@ -34,17 +35,23 @@ class ar_medicaid_work_requirement_eligible(Variable):
         is_disabled = person("is_disabled", period)
         is_blind = person("is_blind", period)
         is_incapable_of_self_care = person("is_incapable_of_self_care", period)
+        meets_ssi_disability_criteria = person("meets_ssi_disability_criteria", period)
+        # The medically-frail definition includes a disability determination
+        # based on Social Security criteria (42 CFR 440.315(f)).
+        eligible_disabled = (
+            is_disabled
+            | is_blind
+            | is_incapable_of_self_care
+            | meets_ssi_disability_criteria
+        )
 
         has_eligible_dependent_child = person.tax_unit.any(
             is_dependent & (age <= p.dependent_age_limit)
         )
-        has_disabled_dependent = person.tax_unit.any(
-            is_dependent & (is_disabled | is_blind | is_incapable_of_self_care)
-        )
+        has_disabled_dependent = person.tax_unit.any(is_dependent & eligible_disabled)
         receives_unemployment_compensation = (
             person("total_unemployment_compensation", period) > 0
         )
-        eligible_disabled = is_disabled | is_blind | is_incapable_of_self_care
 
         observable_exemption = (
             is_pregnant
